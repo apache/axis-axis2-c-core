@@ -20,7 +20,9 @@
 <project    default="axis2c:build-all"
             xmlns:j="jelly:core"
             xmlns:maven="jelly:maven">
-
+	<property environment="env"/>
+	<property name="apr_home" value="${env.APR_HOME}"/>
+	<property name="cutest_home" value="${env.CUTEST_HOME}"/>
     <goal name="axis2c:build-all">
         <maven:reactor  basedir="${basedir}"
                         includes="modules/core/project.xml,modules/xml/project.xml"
