@@ -14,33 +14,36 @@
  * limitations under the License.
  */
 
-#include <axis2c_om_namespace.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#ifndef _AXISC_OM_TEXT_H_
+#define _AXISC_OM_TEXT_H_
+#include <axis2c_om_attribute.h>
 
+struct om_text_s;
+typedef struct om_text_s om_text_t;
 
-
-om_namespace_t *create_om_namespace(const char *uri,const char *prefix)
+struct om_text_s
 {
-	om_namespace_t *ns=(om_namespace_t*)malloc(sizeof(om_namespace_t));
-	if(!ns)
-	{
-		//fprintf(stderr,"Couldnot allocate momery");
-		return NULL;
-	}
-	ns->uri		= strdup(uri);
-	ns->prefix	= strdup(prefix);
-	return ns;
-}
+	char *value;
+	// mtom stuff
+	char *mime_type;
+	int optimize;
+	int is_binary;
+	char *content_id;
+	om_attribute_t *attribute;
+
+};
+
+node_t *create_om_text(const char *value);
+
+char* om_text_get_text(om_text_t *textnode);
+node_t *create_om_text_with_parent(node_t *parent,const char *value);
 
 
 
-void free_om_namespace(om_namespace_t *ns)
-{
-	if(ns)
-		free(ns);
-}
 
-int om_namespace_equals(om_namespace_t *ns1,om_namespace_t *ns2);
+
+
+
+#endif // _AXISC_OM_TEXT_H_
+
 

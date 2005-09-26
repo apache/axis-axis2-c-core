@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "om_element.h"
-#include "om_attribute.h"
+#include <axis2c_om_element.h>
+#include <axis2c_om_attribute.h>
 #include <stdlib.h>
 
 

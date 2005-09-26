@@ -14,33 +14,25 @@
  * limitations under the License.
  */
 
-#include <axis2c_om_namespace.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#ifndef _AXISC_OM_COMMENT_H_
+#define _AXISC_OM_COMMENT_H_
+#include <axis2c_node.h>
 
 
-
-om_namespace_t *create_om_namespace(const char *uri,const char *prefix)
+struct om_comment_s;
+typedef struct om_comment_s om_comment_t;
+struct om_comment_s
 {
-	om_namespace_t *ns=(om_namespace_t*)malloc(sizeof(om_namespace_t));
-	if(!ns)
-	{
-		//fprintf(stderr,"Couldnot allocate momery");
-		return NULL;
-	}
-	ns->uri		= strdup(uri);
-	ns->prefix	= strdup(prefix);
-	return ns;
-}
+	char *value;
+};
+
+node_t *create_om_comment(const char *value);
+void om_comment_free(node_t *comment_node);
+
+#endif // _AXISC_OM_COMMENT_H_
 
 
 
-void free_om_namespace(om_namespace_t *ns)
-{
-	if(ns)
-		free(ns);
-}
 
-int om_namespace_equals(om_namespace_t *ns1,om_namespace_t *ns2);
+
 

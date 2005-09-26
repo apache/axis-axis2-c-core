@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "om_comment.h"
-#include "string.h"
+#include <axis2c_om_comment.h>
+#include <string.h>
 
 
 node_t *create_om_comment(const char *value)

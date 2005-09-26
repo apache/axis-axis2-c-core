@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "om_text.h"
-#include "string.h"
-#include "node.h"
+#include <axis2c_om_text.h>
+#include <string.h>
+#include <axis2c_node.h>
 
 node_t *create_om_text(const char *value)
 {

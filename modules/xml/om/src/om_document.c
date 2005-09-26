@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "om_document.h"
-#include "stdlib.h"
+#include <axis2c_om_document.h>
+#include <stdlib.h>
 
 om_document_t *create_om_document()
 {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "node.h"
+#include <axis2c_node.h>
 
 node_t *create_node()
 {
@@ -82,6 +82,10 @@ node_t *detach_node(node_t *node_to_detach)
 		{
 		node_to_detach->prev_sibling->next_sibling = node_to_detach->next_sibling;
 		}
+        if( NULL != (node_to_detach->next_sibling))
+        {
+           node_to_detach->next_sibling->prev_sibling = node_to_detach->prev_sibling;
+        }
 	node_to_detach->parent = NULL;
 	return node;
 }

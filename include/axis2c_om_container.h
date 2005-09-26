@@ -14,33 +14,14 @@
  * limitations under the License.
  */
 
-#include <axis2c_om_namespace.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <axis2c_node.h>
+
+struct om_container_s;
+typedef struct om_container_s om_container_t;
+
+struct om_container_s{
+	node_t *tree;
+};
 
 
-
-om_namespace_t *create_om_namespace(const char *uri,const char *prefix)
-{
-	om_namespace_t *ns=(om_namespace_t*)malloc(sizeof(om_namespace_t));
-	if(!ns)
-	{
-		//fprintf(stderr,"Couldnot allocate momery");
-		return NULL;
-	}
-	ns->uri		= strdup(uri);
-	ns->prefix	= strdup(prefix);
-	return ns;
-}
-
-
-
-void free_om_namespace(om_namespace_t *ns)
-{
-	if(ns)
-		free(ns);
-}
-
-int om_namespace_equals(om_namespace_t *ns1,om_namespace_t *ns2);
 

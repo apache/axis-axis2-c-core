@@ -1,17 +1,31 @@
-#include <strutil.h>
 #include <CuTest.h>
 #include <string.h>
 #include <stdio.h>
-#include <node.h>
+#include <axis2c_node.h>
 
-void Testnode_detach(CuTest *tc) {
-	node_t test_node = malloc(sizeof(node_t));
-        CuAssertStrEquals(tc, expected, actual);
+void Testdetach_node(CuTest *tc) {
+	node_t* parent = create_node();
+        node_t* prev_sibling = create_node();
+        node_add_child(parent, prev_sibling);
+        node_t* test_node = create_node();
+        node_add_child(parent, test_node);
+        node_t* next_sibling = create_node();
+        node_add_child(parent, next_sibling);
+        
+        node_t* temp_parent = detach_node(test_node);
+        puts("came");
+        if(0 == temp_parent) puts("parent is null\n");
+        node_t* expected = temp_parent->first_child;
+        printf("came2");
+        if(0 == expected) puts("expected is null\n");
+        node_t* actual = next_sibling;
+
+        CuAssertPtrEquals(tc, expected, actual); 
     }
 
-    CuSuite* StrUtilGetSuite() {
+    CuSuite* detach_nodeGetSuite() {
         CuSuite* suite = CuSuiteNew();
-        SUITE_ADD_TEST(suite, TestStrToUpper);
+        SUITE_ADD_TEST(suite, Testdetach_node);
         return suite;
     }
 
@@ -19,7 +33,7 @@ void Testnode_detach(CuTest *tc) {
         CuString *output = CuStringNew();
         CuSuite* suite = CuSuiteNew();
 
-        CuSuiteAddSuite(suite, StrUtilGetSuite());
+        CuSuiteAddSuite(suite, detach_nodeGetSuite());
 
         CuSuiteRun(suite);
         CuSuiteSummary(suite, output);

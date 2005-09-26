@@ -14,33 +14,31 @@
  * limitations under the License.
  */
 
+#ifndef _AXISC_OM_ATTRIBUTE_H_
+#define _AXISC_OM_ATTRIBUTE_H_
+
+#include <axis2c_qname.h>
+#include <axis2c_node.h>
 #include <axis2c_om_namespace.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+
+
+struct om_attribute_s;
+typedef struct om_attribute_s om_attribute_t;
+
+struct om_attribute_s{
+	char *localname;
+	char *value;
+	om_namespace_t *ns;
+};
+
+om_attribute_t *create_om_attribute(const char *localname,const char *value,om_namespace_t *ns);
+qname_t *om_attribute_get_qname(om_attribute_t *attribute);
+void om_attribute_free(om_attribute_t *attr);
 
 
 
-om_namespace_t *create_om_namespace(const char *uri,const char *prefix)
-{
-	om_namespace_t *ns=(om_namespace_t*)malloc(sizeof(om_namespace_t));
-	if(!ns)
-	{
-		//fprintf(stderr,"Couldnot allocate momery");
-		return NULL;
-	}
-	ns->uri		= strdup(uri);
-	ns->prefix	= strdup(prefix);
-	return ns;
-}
 
 
 
-void free_om_namespace(om_namespace_t *ns)
-{
-	if(ns)
-		free(ns);
-}
-
-int om_namespace_equals(om_namespace_t *ns1,om_namespace_t *ns2);
+#endif   // _AXISC_ATTRIBUTE_H_
 

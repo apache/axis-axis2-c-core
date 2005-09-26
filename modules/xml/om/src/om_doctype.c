@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "om_doctype.h"
+#include <axis2c_om_doctype.h>
 
 node_t *create_om_doctype(const char *value)
 {	

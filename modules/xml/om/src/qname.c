@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "qname.h"
+#include <axis2c_qname.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>

@@ -14,33 +14,23 @@
  * limitations under the License.
  */
 
-#include <axis2c_om_namespace.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#ifndef _AXISC_QNAME_H_
+#define _AXISC_QNAME_H_
 
+static const char XML_NAMESPACE_URI[] ="http://www.w3c.org/XML/1998/namespace";
 
+struct qname_s;
+typedef struct qname_s qname_t;
 
-om_namespace_t *create_om_namespace(const char *uri,const char *prefix)
-{
-	om_namespace_t *ns=(om_namespace_t*)malloc(sizeof(om_namespace_t));
-	if(!ns)
-	{
-		//fprintf(stderr,"Couldnot allocate momery");
-		return NULL;
-	}
-	ns->uri		= strdup(uri);
-	ns->prefix	= strdup(prefix);
-	return ns;
-}
+struct qname_s{
+	char *localpart;
+	char *ns_uri;
+	char *prefix;
+	
+};
 
+qname_t *create_qname(const char *localname,const char *ns_uri,const char *prefix);
+void free_qname(qname_t *qn);
 
-
-void free_om_namespace(om_namespace_t *ns)
-{
-	if(ns)
-		free(ns);
-}
-
-int om_namespace_equals(om_namespace_t *ns1,om_namespace_t *ns2);
+#endif // _AXISC_QNAME_H_
 
