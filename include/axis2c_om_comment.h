@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-#ifndef _AXISC_OM_COMMENT_H_
-#define _AXISC_OM_COMMENT_H_
+#ifndef AXIS2C_OM_COMMENT_H
+#define AXIS2C_OM_COMMENT_H
 #include <axis2c_node.h>
 
 
-struct om_comment_s;
-typedef struct om_comment_s om_comment_t;
-struct om_comment_s
+typedef struct axis2c_om_comment_t
 {
 	char *value;
-};
+}axis2c_om_comment_t;
 
-axis2c_node_t *create_om_comment(const char *value);
-void om_comment_free(node_t *comment_node);
+axis2c_node_t *axis2c_create_om_comment(const char *value);
+void axis2c_om_comment_free(axis2c_om_comment_t *comment_node);
 
-#endif // _AXISC_OM_COMMENT_H_
+#endif // AXIS2C_OM_COMMENT_H
 
 
 

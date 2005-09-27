@@ -21,7 +21,7 @@
 axis2c_node_t *axis2c_create_om_comment(const char *value)
 {
     axis2c_node_t *node = NULL;
-    om_comment_t *comment = NULL;
+    axis2c_om_comment_t *comment = NULL;
 
     node = axis2c_create_node();
     if (!node)
@@ -29,7 +29,7 @@ axis2c_node_t *axis2c_create_om_comment(const char *value)
 	fprintf(stderr, "%d Error", AXIS2C_ERROR_OM_MEMORY_ALLOCATION);
 	return NULL;
     }
-    comment = (om_comment_t *) malloc(sizeof(om_comment_t));
+    comment = (axis2c_om_comment_t *) malloc(sizeof(axis2c_om_comment_t));
     if (!comment)
     {
 	free(node);
@@ -49,7 +49,7 @@ axis2c_node_t *axis2c_create_om_comment(const char *value)
 }
 
 
-void axis2c_om_comment_free(om_comment_t * comment)
+void axis2c_om_comment_free(axis2c_om_comment_t * comment)
 {
     if (comment)
     {
@@ -64,24 +64,24 @@ void axis2c_om_comment_free(om_comment_t * comment)
 *
 */
 
-char *axis2c_om_comment_get_value(node_t * comment_node)
+char *axis2c_om_comment_get_value(axis2c_node_t * comment_node)
 {
     if (!comment_node || comment_node->element_type != OM_COMMENT)
     {
 	return NULL;
     }
-    return strdup(((om_comment_t *) (comment_node->data_element))->value);
+    return strdup(((axis2c_om_comment_t *) (comment_node->data_element))->value);
 }
 
-void axis2c_om_comment_set_value(node_t * comment_node, const char *value)
+void axis2c_om_comment_set_value(axis2c_node_t * comment_node, const char *value)
 {
-    om_comment_t *comm = NULL;
+    axis2c_om_comment_t *comm = NULL;
 
     if (!comment_node || comment_node->element_type != OM_COMMENT)
     {
 	return;
     }
-    comm = ((om_comment_t *) (comment_node->data_element));
+    comm = ((axis2c_om_comment_t *) (comment_node->data_element));
 
     if (comm->value)
     {
@@ -89,3 +89,4 @@ void axis2c_om_comment_set_value(node_t * comment_node, const char *value)
     }
     comm->value = strdup(value);
 }
+
