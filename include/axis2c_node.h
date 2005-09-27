@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef _AXISC_NODE_H_
-#define _AXISC_NODE_H_
+#ifndef AXIS2C_NODE_H
+#define AXIS2C_NODE_H
 
 #include <apr.h>
 #include <apr_pools.h>
@@ -40,9 +40,6 @@ enum omtypes{
 	OM_TEXT=80
 };
 
-struct node_s;
-typedef struct node_s node_t;
-
 /*
 * This is the structure that defines a node in om tree 
 * parent   - parent node if one is available
@@ -50,51 +47,49 @@ typedef struct node_s node_t;
 * element_type - the type of the element one of omtypes
 * data_element  - stores the structs created for storing xml 
 */
-
-
-struct node_s{
-	struct node_s *parent;
-	struct node_s *prev_sibling;
-	struct node_s *next_sibling;
-	struct node_s *first_child;
-	struct node_s *last_child;
+typedef struct axis2c_node_t{
+	struct axis2c_node_t *parent;
+	struct axis2c_node_t *prev_sibling;
+	struct axis2c_node_t *next_sibling;
+	struct axis2c_node_t *first_child;
+	struct axis2c_node_t *last_child;
 	XML_PullParser *parser;
 	int element_type;
 	int done;
 	void* data_element;
-};
+}axis2c_node_t;
 
 
 //create a node and allocate memory
-node_t *create_node();
+axis2c_node_t *axis2c_create_node();
 //free a given nod
-void free_node(node_t *);
+void axis2c_free_node(axis2c_node_t *);
 // add a node as a child of parent node
-void node_add_child(node_t *parent,node_t *child);
+void axis2c_node_add_child(axis2c_node_t *parent,axis2c_node_t *child);
 // detach a node form the parent and reset the other links
-node_t *node_detach(node_t *node_to_detach);
+axis2c_node_t *axis2c_node_detach(axis2c_node_t *node_to_detach);
 // insert a sibling node 
-void node_insert_sibling_after(node_t *current_ele,node_t *nodeto_insert);
-void node_insert_sibling_before(node_t *current_ele,node_t *nodeto_insert);
+void axis2c_node_insert_sibling_after(axis2c_node_t *current_ele,axis2c_node_t *nodeto_insert);
+void axis2c_node_insert_sibling_before(axis2c_node_t *current_ele,axis2c_node_t *nodeto_insert);
 
 // build the tree 
-int node_build(node_t *node);
+int axis2c_node_build(axis2c_node_t *node);
 
 
 
-void node_set_parent(node_t *parent);
+void axis2c_node_set_parent(axis2c_node_t *parent);
 
-node_t *node_get_next_sibling(node_t *node);
+axis2c_node_t *axis2c_node_get_next_sibling(axis2c_node_t *node);
 
-node_t *node_set_next_sibling(node_t *node);
-
-
-
-
+axis2c_node_t *axis2c_node_set_next_sibling(axis2c_node_t *node);
 
 
 
 
 
 
-#endif // _AXISC_NODE_
+
+
+
+
+#endif // AXIS2C_NODE

@@ -16,9 +16,9 @@
 
 #include <axis2c_node.h>
 
-node_t *axis2c_create_node()
+axis2c_node_t *axis2c_create_node()
 {
-    node_t *node = (node_t *) malloc(sizeof(node_t));
+    axis2c_node_t *node = (axis2c_node_t *) malloc(sizeof(axis2c_node_t));
     if (!node)
     {
 	return NULL;
@@ -36,14 +36,14 @@ node_t *axis2c_create_node()
 }
 
 
-void axis2c_free_node(node_t * node)
+void axis2c_free_node(axis2c_node_t * node)
 {
     if (!node)
 	return;
     //if(node->
 }
 
-void axis2c_node_add_child(node_t * parent, node_t * child)
+void axis2c_node_add_child(axis2c_node_t * parent, axis2c_node_t * child)
 {
     if (!parent || !child)
 	return;
@@ -62,44 +62,45 @@ void axis2c_node_add_child(node_t * parent, node_t * child)
 
 
 
-node_t *axis2c_detach_node(node_t * node_to_detach)
+axis2c_node_t *axis2c_detach_node(axis2c_node_t * axis2c_node_to_detach)
 {
-    node_t *parent = NULL;
-    node_t *next_sibling = NULL;
-    if (!node_to_detach)
+    axis2c_node_t *parent = NULL;
+    axis2c_node_t *next_sibling = NULL;
+    if (!axis2c_node_to_detach)
     {
 	return NULL;
     }
 
-    if (!(node_to_detach->parent))
+    if (!(axis2c_node_to_detach->parent))
     {
 	/* nodes that do not have a parent can't be detached
 	 */
 	return NULL;
     }
-    parent = node_to_detach->parent;
-    if ((node_to_detach->prev_sibling) == NULL)
+    parent = axis2c_node_to_detach->parent;
+    if ((axis2c_node_to_detach->prev_sibling) == NULL)
     {
-	parent->first_child = node_to_detach->next_sibling;
+	parent->first_child = axis2c_node_to_detach->next_sibling;
     }
     else
     {
-	node_to_detach->prev_sibling->next_sibling =
-	    node_to_detach->next_sibling;
+	axis2c_node_to_detach->prev_sibling->next_sibling =
+	    axis2c_node_to_detach->next_sibling;
     }
-    if (!(node_to_detach->next_sibling))
+    if (!(axis2c_node_to_detach->next_sibling))
     {
-	node_to_detach->next_sibling->prev_sibling =
-	    node_to_detach->prev_sibling;
+	axis2c_node_to_detach->next_sibling->prev_sibling =
+	    axis2c_node_to_detach->prev_sibling;
     }
 
-    node_to_detach->parent = NULL;
+    axis2c_node_to_detach->parent = NULL;
 
-    return node_to_detach;
+    return axis2c_node_to_detach;
 
 }
 
-void axis2c_node_set_parent(node_t * node)
+void axis2c_node_set_parent(axis2c_node_t * node)
 {
 
 }
+
