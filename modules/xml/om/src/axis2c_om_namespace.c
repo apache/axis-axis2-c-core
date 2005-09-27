@@ -51,18 +51,17 @@ int axis2c_om_namespace_equals(axis2c_om_namespace_t * ns1,
     int prefixes_differ = 0;
 
     if (!ns1 || !ns2)
-        return 0;
+	return 0;
 
     if (ns1->uri && ns2->uri)
-        uris_differ = strcmp(ns1->uri, ns2->uri);
+	uris_differ = strcmp(ns1->uri, ns2->uri);
     else
-        uris_differ = (ns1->uri || ns2->uri);
+	uris_differ = (ns1->uri || ns2->uri);
 
     if (ns1->prefix && ns2->prefix)
-        prefixes_differ = strcmp(ns1->prefix, ns2->prefix);
+	prefixes_differ = strcmp(ns1->prefix, ns2->prefix);
     else
-        prefixes_differ = (ns1->prefix || ns2->prefix);
+	prefixes_differ = (ns1->prefix || ns2->prefix);
 
     return (!uris_differ && !prefixes_differ);
 }
-
