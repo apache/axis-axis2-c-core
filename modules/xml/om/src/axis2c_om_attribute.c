@@ -24,7 +24,7 @@
 
 om_attribute_t *axis2c_create_om_attribute(const char *localname,
 					   const char *value,
-					   om_namespace_t * ns)
+					   axis2c_om_namespace_t * ns)
 {
     om_attribute_t *attr =
 	(om_attribute_t *) malloc(sizeof(om_attribute_t));

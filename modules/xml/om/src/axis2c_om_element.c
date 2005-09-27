@@ -19,7 +19,7 @@
 #include <stdlib.h>
 
 node_t *axis2c_create_om_element(const char *localname,
-				 om_namespace_t * ns)
+				 axis2c_om_namespace_t * ns)
 {
     node_t *node = axis2c_create_node();
     if (node)
@@ -51,7 +51,7 @@ node_t *axis2c_create_om_element(const char *localname,
 // create an om element using localname namespace and parent element
 
 node_t *axis2c_create_om_element_with_parent(const char *localname,
-					     om_namespace_t * ns,
+					     axis2c_om_namespace_t * ns,
 					     node_t * parent)
 {
     node_t *curr_node = axis2c_create_om_element(localname, ns);
@@ -92,12 +92,12 @@ node_t *axis2c_create_om_element_with_qname_parent(qname_t * qname,
 }
 
 
-om_namespace_t *axis2c_om_element_find_namespace(node_t * element_node,
+axis2c_om_namespace_t *axis2c_om_element_find_namespace(node_t * element_node,
 						 const char *uri,
 						 const char *prefix)
 {
     //om_element_t *ele=NULL;
-    om_namespace_t *ns = NULL;
+    axis2c_om_namespace_t *ns = NULL;
     if (!element_node)
     {
 	return NULL;
@@ -130,8 +130,8 @@ om_namespace_t *axis2c_om_element_find_namespace(node_t * element_node,
 
 // declare a namespace for this om element
 
-om_namespace_t *axis2c_om_element_declare_namespace(node_t * element_node,
-						    om_namespace_t * ns)
+axis2c_om_namespace_t *axis2c_om_element_declare_namespace(node_t * element_node,
+						    axis2c_om_namespace_t * ns)
 {
     apr_status_t status;
     om_element_t *element = NULL;
@@ -155,7 +155,7 @@ om_namespace_t *axis2c_om_element_declare_namespace(node_t * element_node,
 }
 
 
-om_namespace_t
+axis2c_om_namespace_t
     *axis2c_om_element_declare_namespace_with_ns_uri_prefix(node_t *
 							    element_node,
 							    const char
@@ -163,7 +163,7 @@ om_namespace_t
 							    const char
 							    *prefix)
 {
-    om_namespace_t *nsp = NULL;
+    axis2c_om_namespace_t *nsp = NULL;
     nsp = axis2c_create_om_namespace(uri, prefix);
     if (nsp)
 	return axis2c_om_element_declare_namespace(element_node, nsp);
@@ -175,7 +175,7 @@ om_namespace_t
 *   can be used to retrive a prefix of a known namespace uri
 *
 */
-om_namespace_t *axis2c_om_element_find_declared_namespace(node_t *
+axis2c_om_namespace_t *axis2c_om_element_find_declared_namespace(node_t *
 							  element_node,
 							  const char *uri,
 							  const char
@@ -206,14 +206,14 @@ om_namespace_t *axis2c_om_element_find_declared_namespace(node_t *
 
 
 
-static om_namespace_t *axis2c_om_element_handle_namespace_with_qname(node_t
+static axis2c_om_namespace_t *axis2c_om_element_handle_namespace_with_qname(node_t
 								     *
 								     element_node,
 								     qname_t
 								     *
 								     qname)
 {
-    om_namespace_t *pns = NULL;
+    axis2c_om_namespace_t *pns = NULL;
     char *ns_uri = qname->ns_uri;
     if (ns_uri != NULL)
     {
@@ -244,12 +244,12 @@ static om_namespace_t *axis2c_om_element_handle_namespace_with_qname(node_t
 
 
 
-static om_namespace_t *axis2c_om_element_handle_namespace(node_t *
+static axis2c_om_namespace_t *axis2c_om_element_handle_namespace(node_t *
 							  element_node,
-							  om_namespace_t *
+							  axis2c_om_namespace_t *
 							  ns)
 {
-    om_namespace_t *ns1 = NULL;
+    axis2c_om_namespace_t *ns1 = NULL;
     if (!ns || !element_node)
     {
 	// namespace null handle condition
@@ -363,10 +363,10 @@ om_attribute_t *axis2c_om_attribute_add_attribute_with_namespace(node_t *
 								 *attribute_name,
 								 const char
 								 *value,
-								 om_namespace_t
+								 axis2c_om_namespace_t
 								 * ns)
 {
-    om_namespace_t *t = NULL;
+    axis2c_om_namespace_t *t = NULL;
     if (!element_node)
     {
 	return NULL;
@@ -421,9 +421,9 @@ void om_element_remove_attribute(om_element_t *element,om_attribute_t *attribute
 }
 */
 
-void axis2c_om_element_set_namespace(node_t * node, om_namespace_t * ns)
+void axis2c_om_element_set_namespace(node_t * node, axis2c_om_namespace_t * ns)
 {
-    om_namespace_t *nsp = NULL;
+    axis2c_om_namespace_t *nsp = NULL;
     if (ns && node && (node->data_element))
     {
 	nsp = axis2c_om_element_handle_namespace(node, ns);

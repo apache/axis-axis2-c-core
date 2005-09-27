@@ -28,10 +28,10 @@ typedef struct om_attribute_s om_attribute_t;
 struct om_attribute_s{
 	char *localname;
 	char *value;
-	om_namespace_t *ns;
+	axis2c_om_namespace_t *ns;
 };
 
-om_attribute_t *create_om_attribute(const char *localname,const char *value,om_namespace_t *ns);
+om_attribute_t *create_om_attribute(const char *localname,const char *value,axis2c_om_namespace_t *ns);
 qname_t *om_attribute_get_qname(om_attribute_t *attribute);
 void om_attribute_free(om_attribute_t *attr);
 
