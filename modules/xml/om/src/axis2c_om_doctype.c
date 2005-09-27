@@ -17,16 +17,16 @@
 #include <axis2c_om_doctype.h>
 #include <stdlib.h>
 
-axis2c_node_t *axis2c_create_om_doctype(node_t * parent, const char *value)
+axis2c_node_t *axis2c_create_om_doctype(axis2c_node_t * parent, const char *value)
 {
-    om_doctype_t *doctype = NULL;
+    axis2c_om_doctype_t *doctype = NULL;
     axis2c_node_t *node = axis2c_create_node();
     if (!node)
     {
 	//fprintf(stderr,"Error");
 	return NULL;
     }
-    doctype = (om_doctype_t *) malloc(sizeof(om_doctype_t));
+    doctype = (axis2c_om_doctype_t *) malloc(sizeof(axis2c_om_doctype_t));
     if (!doctype)
     {
 	free(node);
@@ -43,16 +43,16 @@ axis2c_node_t *axis2c_create_om_doctype(node_t * parent, const char *value)
     return node;
 }
 
-axis2c_node_t *axis2c_create_empty_om_doctype(node_t * parent)
+axis2c_node_t *axis2c_create_empty_om_doctype(axis2c_node_t * parent)
 {
     axis2c_node_t *node = NULL;
-    om_doctype_t *doctype = NULL;
+    axis2c_om_doctype_t *doctype = NULL;
     if (!node)
     {				// error handling       
 	return NULL;
     }
 
-    doctype = (om_doctype_t *) malloc(sizeof(om_doctype_t));
+    doctype = (axis2c_om_doctype_t *) malloc(sizeof(axis2c_om_doctype_t));
 
     if (!doctype)
     {
@@ -70,7 +70,7 @@ axis2c_node_t *axis2c_create_empty_om_doctype(node_t * parent)
     return node;
 }
 
-void axis2c_free_om_doctype(om_doctype_t * om_doc)
+void axis2c_free_om_doctype(axis2c_om_doctype_t * om_doc)
 {
     if (om_doc)
     {
@@ -80,25 +80,27 @@ void axis2c_free_om_doctype(om_doctype_t * om_doc)
     }
 }
 
-char *axis2c_om_doctype_get_value(node_t * doctype_node)
+char *axis2c_om_doctype_get_value(axis2c_node_t * doctype_node)
 {
     if (!doctype_node || doctype_node->element_type != OM_DOCTYPE)
     {
 	return NULL;
     }
-    return strdup(((om_doctype_t *) (doctype_node->data_element))->value);
+    return strdup(((axis2c_om_doctype_t *) (doctype_node->data_element))->value);
 }
-void axis2c_om_doctype_set_value(node_t * doctype_node, const char *value)
+void axis2c_om_doctype_set_value(axis2c_node_t * doctype_node, const char *value)
 {
-    om_doctype_t *doctype = NULL;
+    axis2c_om_doctype_t *doctype = NULL;
     if (!doctype_node || doctype_node->element_type != OM_DOCTYPE)
     {
 	return;
     }
-    doctype = (om_doctype_t *) (doctype_node->data_element);
+    doctype = (axis2c_om_doctype_t *) (doctype_node->data_element);
     if (doctype->value)
     {
 	free(doctype->value);
     }
     doctype->value = strdup(value);
 }
+
+

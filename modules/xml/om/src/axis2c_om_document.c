@@ -19,12 +19,12 @@
 #include <stdlib.h>
 
 
-om_document_t *axis2c_create_om_document_with_root(node_t * root_ele,
+om_document_t *axis2c_create_om_document_with_root(axis2c_node_t * root_ele,
 						   stax_om_builder_t *
 						   builder)
 {
 
-    om_document_t *doc = (om_document_t *) malloc(sizeof(om_document_t));
+    axis2c_om_document_t *doc = (axis2c_om_document_t *) malloc(sizeof(axis2c_om_document_t));
     if (!doc)
     {
 
@@ -38,9 +38,9 @@ om_document_t *axis2c_create_om_document_with_root(node_t * root_ele,
     return doc;
 }
 
-om_document_t *axis2c_create_om_document(stax_om_builder_t * builder)
+axis2c_om_document_t *axis2c_create_om_document(stax_om_builder_t * builder)
 {
-    om_document_t *doc = (om_document_t *) malloc(sizeof(om_document_t));
+    axis2c_om_document_t *doc = (axis2c_om_document_t *) malloc(sizeof(axis2c_om_document_t));
     if (!doc)
     {
 	return NULL;
@@ -53,21 +53,21 @@ om_document_t *axis2c_create_om_document(stax_om_builder_t * builder)
     doc->last_child = NULL;
 }
 
-void axis2c_free_om_document(om_document_t * doc)
+void axis2c_free_om_document(axis2c_om_document_t * doc)
 {
 
 
 
 }
 
-axis2c_node_t *axis2c_om_document_get_document_element(om_document_t * document)
+axis2c_axis2c_node_t *axis2c_om_document_get_document_element(axis2c_om_document_t * document)
 {
     //while(document->root_element == NULL)
     //{}
     return document->root_element;
 }
 
-void axis2c_om_document_set_charset_encoding(om_document_t * document,
+void axis2c_om_document_set_charset_encoding(axis2c_om_document_t * document,
 					     char *charset_encoding)
 {
     if (document)
@@ -79,7 +79,7 @@ void axis2c_om_document_set_charset_encoding(om_document_t * document,
     }
 }
 
-char *axis2c_om_document_get_charset_encoding(om_document_t * document)
+char *axis2c_om_document_get_charset_encoding(axis2c_om_document_t * document)
 {
     if (document)
     {
@@ -88,7 +88,7 @@ char *axis2c_om_document_get_charset_encoding(om_document_t * document)
 }
 
 
-void axis2c_om_document_add_child(om_document_t * document, axis2c_node_t * child)
+void axis2c_om_document_add_child(axis2c_om_document_t * document, axis2c_node_t * child)
 {
     if (!document || !child || child->element_type != OM_ELEMENT)
     {
@@ -108,3 +108,5 @@ void axis2c_om_document_add_child(om_document_t * document, axis2c_node_t * chil
     }
     child->next_sibling = NULL;
 }
+
+
