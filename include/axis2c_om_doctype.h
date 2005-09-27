@@ -22,13 +22,11 @@
 struct om_doctype_s;
 typedef struct om_doctype_s om_doctype_t;
 
-struct om_doctype_s
-{
-	char *value;
+struct om_doctype_s {
+    char *value;
 };
 
-node_t *create_om_doctype(const char *value);
-char *om_text_get_text(node_t *text_node);
+axis2c_node_t *create_om_doctype(const char *value);
+char *om_text_get_text(node_t * text_node);
 
-#endif //  _AXISC_OM_DOCTYPE_H_
-
+#endif				//  _AXISC_OM_DOCTYPE_H_

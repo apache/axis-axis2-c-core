@@ -41,14 +41,15 @@ void free_om_element(node_t * element_node);
 *	Create an om element using localname and namespace
 *
 */
-node_t *create_om_element(const char *localname, axis2c_om_namespace_t * ns);
+axis2c_node_t *create_om_element(const char *localname,
+				 axis2c_om_namespace_t * ns);
 /*
 *	create om element using localname namespace and parent element
 *
 */
-node_t *create_om_element_with_parent(const char *localname,
-				      axis2c_om_namespace_t * ns,
-				      node_t * parent);
+axis2c_node_t *create_om_element_with_parent(const char *localname,
+					     axis2c_om_namespace_t * ns,
+					     axis2c_node_t * parent);
 
 
 /*
@@ -56,8 +57,8 @@ node_t *create_om_element_with_parent(const char *localname,
 *	start to find from current element and go up the hierarchy
 *
 */
-node_t *create_om_element_with_qname_parent(qname_t * qname,
-					    node_t * parent);
+axis2c_node_t *create_om_element_with_qname_parent(qname_t * qname,
+						   axis2c_node_t * parent);
 
 
 
@@ -71,7 +72,8 @@ axis2c_om_namespace_t *om_element_find_namespace(node_t * element_node,
 
 // declare a namespace in current element
 axis2c_om_namespace_t *om_element_declare_namespace(om_element_t * element,
-						    axis2c_om_namespace_t * ns);
+						    axis2c_om_namespace_t *
+						    ns);
 
 axis2c_om_namespace_t *om_element_find_declared_namespace(om_element_t *
 							  element_node,
@@ -85,11 +87,10 @@ om_attribute_t *om_element_add_attribute(om_element_t * element,
 om_attribute_t *om_attribute_add_attribute_with_namespace(node_t *
 							  element_node,
 							  const char
-							  *attribute_name,
-							  const char
+							  *attribute_name, const char
 							  *value,
-							  axis2c_om_namespace_t *
-							  ns);
+							  axis2c_om_namespace_t
+							  * ns);
 
 static char *construct_key_from_qname(qname_t * qname);
 
@@ -102,12 +103,14 @@ static axis2c_om_namespace_t *om_element_handle_namespace_with_qname(node_t
 								     qname);
 //void om_element_remove_attribute(om_element_t *element,om_attribute_t *attribute);
 
-void om_element_set_namespace(node_t * element_node, axis2c_om_namespace_t * ns);
+void om_element_set_namespace(node_t * element_node,
+			      axis2c_om_namespace_t * ns);
 
 axis2c_om_namespace_t
-    *om_element_declare_namespace_with_nsuri_prefix(om_element_t * element,
-						    const char *uri,
-						    const char *prefix);
+    * om_element_declare_namespace_with_nsuri_prefix(om_element_t *
+						     element,
+						     const char *uri,
+						     const char *prefix);
 
 
 

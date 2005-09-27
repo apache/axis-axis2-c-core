@@ -26,7 +26,7 @@ struct om_comment_s
 	char *value;
 };
 
-node_t *create_om_comment(const char *value);
+axis2c_node_t *create_om_comment(const char *value);
 void om_comment_free(node_t *comment_node);
 
 #endif // _AXISC_OM_COMMENT_H_

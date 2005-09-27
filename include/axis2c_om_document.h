@@ -23,9 +23,9 @@ typedef struct om_document_s om_document_t;
 
 struct om_document_s
 {
-	node_t *root_element;
-	node_t *first_child;
-	node_t *last_child;
+	axis2c_node_t *root_element;
+	axis2c_node_t *first_child;
+	axis2c_node_t *last_child;
 };
 
 om_document_t *create_om_document();

@@ -20,7 +20,7 @@ struct om_container_s;
 typedef struct om_container_s om_container_t;
 
 struct om_container_s{
-	node_t *tree;
+	axis2c_node_t *tree;
 };
 
 

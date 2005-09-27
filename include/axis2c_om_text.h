@@ -30,10 +30,10 @@ typedef struct axis2c_om_text_t
 
 };
 
-node_t *axis2c_create_om_text(const char *value);
+axis2c_node_t *axis2c_create_om_text(const char *value);
 
 char* axis2c_om_text_get_text(om_text_t *textnode);
-node_t *axis2c_create_om_text_with_parent(axis2c_node_t *parent,const char *value);
+axis2c_node_t *axis2c_create_om_text_with_parent(axis2c_node_t *parent,const char *value);
 
 
 
