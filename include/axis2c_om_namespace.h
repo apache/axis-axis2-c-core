@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-#ifndef _AXISC_OM_NAMESPACE_H_
-#define _AXISC_OM_NAMESPACE_H_
+#ifndef AXIS2C_OM_NAMESPACE_H
+#define AXIS2C_OM_NAMESPACE_H
 
-struct om_namespace_s;
-typedef struct om_namespace_s om_namespace_t;
-
-struct om_namespace_s{
-	char *uri;
-	char *prefix;
-};
+typedef struct axis2c_om_namespace_t {
+    char *uri;
+    char *prefix;
+} axis2c_om_namespace_t;
 
 
-om_namespace_t *create_om_namespace(const char *uri,const char *prefix);
-void free_om_namespace(om_namespace_t *ns);
-int om_namespace_equals(om_namespace_t *ns1,om_namespace_t *ns2);
+axis2c_om_namespace_t *axis2c_create_om_namespace(const char *uri,
+						  const char *prefix);
+void axis2c_free_om_namespace(axis2c_om_namespace_t * ns);
+int axis2c_om_namespace_equals(axis2c_om_namespace_t * ns1,
+			       axis2c_om_namespace_t * ns2);
 
-#endif // _AXISC_OM_NAMESPACE
-
+#endif				// AXIS2C_OM_NAMESPACE
