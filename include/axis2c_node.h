@@ -21,11 +21,6 @@
 #include <apr_pools.h>
 #include <xmlpullparser.h>
 
-#define TRUE  1                    // to be used as boolean values
-#define FALSE 0
-
-
-
 static apr_pool_t *om_pool; // a memory pool to be used for this module
 
 

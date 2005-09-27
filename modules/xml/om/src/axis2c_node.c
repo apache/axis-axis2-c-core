@@ -30,7 +30,7 @@ axis2c_node_t *axis2c_create_node()
     node->parent = NULL;
     node->element_type = 0;
     node->done = FALSE;
-    node->builder = NULL;
+//    node->builder = NULL;
     node->data_element = NULL;
     return node;
 }
