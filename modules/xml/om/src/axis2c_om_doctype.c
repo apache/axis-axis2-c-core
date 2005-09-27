@@ -17,10 +17,10 @@
 #include <axis2c_om_doctype.h>
 #include <stdlib.h>
 
-node_t *axis2c_create_om_doctype(node_t * parent, const char *value)
+axis2c_node_t *axis2c_create_om_doctype(node_t * parent, const char *value)
 {
     om_doctype_t *doctype = NULL;
-    node_t *node = axis2c_create_node();
+    axis2c_node_t *node = axis2c_create_node();
     if (!node)
     {
 	//fprintf(stderr,"Error");
@@ -43,9 +43,9 @@ node_t *axis2c_create_om_doctype(node_t * parent, const char *value)
     return node;
 }
 
-node_t *axis2c_create_empty_om_doctype(node_t * parent)
+axis2c_node_t *axis2c_create_empty_om_doctype(node_t * parent)
 {
-    node_t *node = NULL;
+    axis2c_node_t *node = NULL;
     om_doctype_t *doctype = NULL;
     if (!node)
     {				// error handling       

@@ -32,9 +32,9 @@ stax_om_builder_t *create_stax_om_builder(XML_PullParser *parser)
 	return builder;
 }
 
-node_t *stax_om_builder_create_om_element(stax_om_builder_t *builder)
+axis2c_node_t *stax_om_builder_create_om_element(stax_om_builder_t *builder)
 {
-	node_t *om_element;
+	axis2c_node_t *om_element;
 
 
 

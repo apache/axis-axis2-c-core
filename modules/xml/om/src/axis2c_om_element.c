@@ -18,10 +18,10 @@
 #include <axis2c_om_attribute.h>
 #include <stdlib.h>
 
-node_t *axis2c_create_om_element(const char *localname,
+axis2c_node_t *axis2c_create_om_element(const char *localname,
 				 axis2c_om_namespace_t * ns)
 {
-    node_t *node = axis2c_create_node();
+    axis2c_node_t *node = axis2c_create_node();
     if (node)
     {
 	om_element_t *element =
@@ -50,11 +50,11 @@ node_t *axis2c_create_om_element(const char *localname,
 
 // create an om element using localname namespace and parent element
 
-node_t *axis2c_create_om_element_with_parent(const char *localname,
+axis2c_node_t *axis2c_create_om_element_with_parent(const char *localname,
 					     axis2c_om_namespace_t * ns,
-					     node_t * parent)
+					     axis2c_node_t * parent)
 {
-    node_t *curr_node = axis2c_create_om_element(localname, ns);
+    axis2c_node_t *curr_node = axis2c_create_om_element(localname, ns);
     if (!curr_node)
     {
 	//unable to create an element 
@@ -71,10 +71,10 @@ node_t *axis2c_create_om_element_with_parent(const char *localname,
 }
 
 // create an om_element using qname and parent 
-node_t *axis2c_create_om_element_with_qname_parent(qname_t * qname,
-						   node_t * parent)
+axis2c_node_t *axis2c_create_om_element_with_qname_parent(qname_t * qname,
+						   axis2c_node_t * parent)
 {
-    node_t *node = NULL;;
+    axis2c_node_t *node = NULL;;
     if (!qname)
     {
 	return NULL;		// can't create an element

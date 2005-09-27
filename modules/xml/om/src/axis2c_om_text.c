@@ -45,7 +45,7 @@ axis2c_node_t *axis2c_create_om_text(const char *value)
 axis2c_node_t *axis2c_create_om_text_with_parent(axis2c_node_t * parent,
 					  const char *value)
 {
-    node_t *node;
+    axis2c_node_t *node;
     if (!parent)
 	return NULL;
     node = axis2c_create_om_text(value);

@@ -60,7 +60,7 @@ void axis2c_free_om_document(om_document_t * doc)
 
 }
 
-node_t *axis2c_om_document_get_document_element(om_document_t * document)
+axis2c_node_t *axis2c_om_document_get_document_element(om_document_t * document)
 {
     //while(document->root_element == NULL)
     //{}
@@ -88,7 +88,7 @@ char *axis2c_om_document_get_charset_encoding(om_document_t * document)
 }
 
 
-void axis2c_om_document_add_child(om_document_t * document, node_t * child)
+void axis2c_om_document_add_child(om_document_t * document, axis2c_node_t * child)
 {
     if (!document || !child || child->element_type != OM_ELEMENT)
     {

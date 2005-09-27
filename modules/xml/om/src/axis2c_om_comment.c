@@ -18,9 +18,9 @@
 #include <string.h>
 #include <axis2c_errno.h>
 
-node_t *axis2c_create_om_comment(const char *value)
+axis2c_node_t *axis2c_create_om_comment(const char *value)
 {
-    node_t *node = NULL;
+    axis2c_node_t *node = NULL;
     om_comment_t *comment = NULL;
 
     node = axis2c_create_node();
