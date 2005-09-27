@@ -26,7 +26,7 @@
 *   
 */
 
-axis2c_node_t *axis2c_create_om_processing_instruction(axis2c_node_t * parent,
+axis2c_node_t *axis2c_create_om_processing_instruction_with_parent(axis2c_node_t * parent,
 						const char *target,
 						const char *value)
 {

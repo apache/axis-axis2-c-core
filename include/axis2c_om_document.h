@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-#ifndef _AXISC_OM_DOCUMENT_H_
-#define _AXISC_OM_DOCUMENT_H_
-#include "axis2c_node.h"
+#ifndef AXIS2C_OM_DOCUMENT_H
+#define AXIS2C_OM_DOCUMENT_H
+#include <axis2c_node.h>
 
-struct om_document_s;
-typedef struct om_document_s om_document_t;
 
-struct om_document_s
+typedef struct axis2c_om_document_t
 {
 	axis2c_node_t *root_element;
 	axis2c_node_t *first_child;
 	axis2c_node_t *last_child;
 };
 
-om_document_t *create_om_document();
-void free_om_document(om_document_t *document);
+axis2c_om_document_t *axis2c_create_om_document();
+void axis2c_free_om_document(axis2c_om_document_t *document);
 
 
 
 
-#endif // _AXISC_OM_DOCUMENT_H_
+#endif // AXIS2C_OM_DOCUMENT_H
 

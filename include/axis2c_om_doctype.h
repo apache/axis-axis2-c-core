@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-#ifndef _AXISC_OM_DOCTYPE_H_
-#define _AXISC_OM_DOCTYPE_H_
+#ifndef AXIS2C_OM_DOCTYPE_H
+#define AXIS2C_OM_DOCTYPE_H
 #include <axis2c_node.h>
 
 
 struct om_doctype_s;
 typedef struct om_doctype_s om_doctype_t;
 
-struct om_doctype_s {
+typedef struct axis2c_om_doctype_t {
     char *value;
-};
+}axis2c_om_doctype_t;
 
 axis2c_node_t *create_om_doctype(const char *value);
-char *om_text_get_text(node_t * text_node);
+char *om_text_get_text(axis2c_node_t * text_node);
 
-#endif				//  _AXISC_OM_DOCTYPE_H_
+#endif				//  AXIS2C_OM_DOCTYPE_H
