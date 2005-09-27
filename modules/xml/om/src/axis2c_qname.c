@@ -20,10 +20,10 @@
 #include <stdio.h>
 
 
-qname_t *axis2c_create_qname(const char *localname, const char *ns_uri,
+axis2c_qname_t *axis2c_create_qname(const char *localname, const char *ns_uri,
 			     const char *prefix)
 {
-    qname_t *qn = (qname_t *) malloc(sizeof(qname_t));
+    axis2c_qname_t *qn = (axis2c_qname_t *) malloc(sizeof(axis2c_qname_t));
     if (!qn)
     {
 	//fprintf(stderr,"Error allocating memory");
@@ -35,7 +35,7 @@ qname_t *axis2c_create_qname(const char *localname, const char *ns_uri,
     return qn;
 }
 
-void axis2c_free_qname(qname_t * qn)
+void axis2c_free_qname(axis2c_qname_t * qn)
 {
     if (qn)
 	free(qn);
