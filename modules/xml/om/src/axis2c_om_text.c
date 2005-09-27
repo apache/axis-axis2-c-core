@@ -18,16 +18,16 @@
 #include <string.h>
 #include <axis2c_node.h>
 
-node_t *axis2c_create_om_text(const char *value)
+axis2c_node_t *axis2c_create_om_text(const char *value)
 {
-    om_text_t *text;
-    node_t *node = axis2c_create_node();
+    axis2c_om_text_t *text;
+    axis2c_node_t *node = axis2c_create_node();
     if (!node)
     {
 	// error handling
 	return NULL;
     }
-    text = (om_text_t *) malloc(sizeof(om_text_t));
+    text = (axis2c_om_text_t *) malloc(sizeof(axis2c_om_text_t));
     if (!text)
     {
 	// error handling
@@ -42,7 +42,7 @@ node_t *axis2c_create_om_text(const char *value)
     return node;
 }
 
-node_t *axis2c_create_om_text_with_parent(node_t * parent,
+axis2c_node_t *axis2c_create_om_text_with_parent(axis2c_node_t * parent,
 					  const char *value)
 {
     node_t *node;
@@ -61,7 +61,7 @@ node_t *axis2c_create_om_text_with_parent(node_t * parent,
     return node;
 }
 
-char *axis2c_om_text_get_text(om_text_t * text)
+char *axis2c_om_text_get_text(axis2c_om_text_t * text)
 {
     if (!text)
     {
@@ -78,3 +78,4 @@ char *axis2c_om_text_get_text(om_text_t * text)
     }
     return NULL;
 }
+

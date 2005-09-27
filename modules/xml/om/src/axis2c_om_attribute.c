@@ -22,12 +22,12 @@
 #include <string.h>
 
 
-om_attribute_t *axis2c_create_om_attribute(const char *localname,
+axis2c_om_attribute_t *axis2c_create_om_attribute(const char *localname,
 					   const char *value,
 					   axis2c_om_namespace_t * ns)
 {
-    om_attribute_t *attr =
-	(om_attribute_t *) malloc(sizeof(om_attribute_t));
+    axis2c_om_attribute_t *attr =
+	(axis2c_om_attribute_t *) malloc(sizeof(axis2c_om_attribute_t));
     if (!attr)
     {
 
@@ -40,7 +40,7 @@ om_attribute_t *axis2c_create_om_attribute(const char *localname,
     return attr;
 }
 
-void axis2c_om_attribute_free(om_attribute_t * attr)
+void axis2c_om_attribute_free(axis2c_om_attribute_t * attr)
 {
     if (attr)
     {
@@ -53,9 +53,9 @@ void axis2c_om_attribute_free(om_attribute_t * attr)
 
 }
 
-qname_t *axis2c_om_attribute_get_qname(om_attribute_t * attr)
+axis2c_qname_t *axis2c_om_attribute_get_qname(axis2c_om_attribute_t * attr)
 {
-    qname_t *qn = NULL;
+    axis2c_qname_t *qn = NULL;
     if (attr)
     {
 	if (attr->ns)
@@ -72,3 +72,4 @@ qname_t *axis2c_om_attribute_get_qname(om_attribute_t * attr)
     return NULL;
 
 }
+

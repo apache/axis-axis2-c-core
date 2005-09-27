@@ -14,36 +14,33 @@
  * limitations under the License.
  */
 
-#ifndef _AXISC_OM_TEXT_H_
-#define _AXISC_OM_TEXT_H_
+#ifndef AXIS2C_OM_TEXT_H
+#define AXIS2C_OM_TEXT_H
 #include <axis2c_om_attribute.h>
 
-struct om_text_s;
-typedef struct om_text_s om_text_t;
-
-struct om_text_s
+typedef struct axis2c_om_text_t
 {
 	char *value;
-	// mtom stuff
+	// mtom stuff should go here
 	char *mime_type;
 	int optimize;
 	int is_binary;
 	char *content_id;
-	om_attribute_t *attribute;
+	axis2c_om_attribute_t *attribute;
 
 };
 
-node_t *create_om_text(const char *value);
+node_t *axis2c_create_om_text(const char *value);
 
-char* om_text_get_text(om_text_t *textnode);
-node_t *create_om_text_with_parent(node_t *parent,const char *value);
-
-
+char* axis2c_om_text_get_text(om_text_t *textnode);
+node_t *axis2c_create_om_text_with_parent(axis2c_node_t *parent,const char *value);
 
 
 
 
 
-#endif // _AXISC_OM_TEXT_H_
+
+
+#endif // AXIS2C_OM_TEXT_H
 
 
