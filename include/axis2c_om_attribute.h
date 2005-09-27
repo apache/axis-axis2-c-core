@@ -14,26 +14,22 @@
  * limitations under the License.
  */
 
-#ifndef _AXISC_OM_ATTRIBUTE_H_
-#define _AXISC_OM_ATTRIBUTE_H_
+#ifndef AXIS2C_OM_ATTRIBUTE_H
+#define AXIS2C_OM_ATTRIBUTE_H
 
 #include <axis2c_qname.h>
 #include <axis2c_node.h>
 #include <axis2c_om_namespace.h>
 
-
-struct om_attribute_s;
-typedef struct om_attribute_s om_attribute_t;
-
-struct om_attribute_s{
+typedef struct axis2c_om_attribute_t{
 	char *localname;
 	char *value;
 	axis2c_om_namespace_t *ns;
-};
+}axis2c_om_attribute_t;
 
-om_attribute_t *create_om_attribute(const char *localname,const char *value,axis2c_om_namespace_t *ns);
-qname_t *om_attribute_get_qname(om_attribute_t *attribute);
-void om_attribute_free(om_attribute_t *attr);
+axis2c_om_attribute_t *axis2c_create_om_attribute(const char *localname,const char *value, axis2c_om_namespace_t *ns);
+axis2c_qname_t *axis2c_om_attribute_get_qname(axis2c_om_attribute_t *attribute);
+void axis2c_om_attribute_free(axis2c_om_attribute_t *attr);
 
 
 

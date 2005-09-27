@@ -19,18 +19,15 @@
 
 static const char XML_NAMESPACE_URI[] ="http://www.w3c.org/XML/1998/namespace";
 
-struct qname_s;
-typedef struct qname_s qname_t;
-
-struct qname_s{
+typedef struct axis2c_qname_t{
 	char *localpart;
 	char *ns_uri;
 	char *prefix;
 	
-};
+}axis2c_qname_t;
 
-qname_t *create_qname(const char *localname,const char *ns_uri,const char *prefix);
-void free_qname(qname_t *qn);
+axis2c_qname_t *axis2c_create_qname(const char *localname,const char *ns_uri,const char *prefix);
+void axis2c_free_qname(axis2c_qname_t *qn);
 
 #endif // _AXISC_QNAME_H_
 
