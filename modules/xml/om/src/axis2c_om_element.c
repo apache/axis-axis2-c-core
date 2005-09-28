@@ -24,8 +24,8 @@ axis2c_node_t *axis2c_create_om_element(const char *localname,
     axis2c_node_t *node = axis2c_create_node();
     if (node)
     {
-	om_element_t *element =
-	    (om_element_t *) malloc(sizeof(om_element_t));
+	axis2c_om_element_t *element =
+	    (axis2c_om_element_t *) malloc(sizeof(axis2c_om_element_t));
 	if (element)
 	{
 	    element->localname = strdup(localname);
@@ -71,7 +71,7 @@ axis2c_node_t *axis2c_create_om_element_with_parent(const char *localname,
 }
 
 // create an om_element using qname and parent 
-axis2c_node_t *axis2c_create_om_element_with_qname_parent(qname_t * qname,
+axis2c_node_t *axis2c_create_om_element_with_qname_parent(axis2c_qname_t * qname,
 						   axis2c_node_t * parent)
 {
     axis2c_node_t *node = NULL;;
@@ -85,14 +85,14 @@ axis2c_node_t *axis2c_create_om_element_with_qname_parent(qname_t * qname,
 					     parent);
     if (node)
     {
-	((om_element_t *) (node->data_element))->ns =
+	((axis2c_om_element_t *) (node->data_element))->ns =
 	    axis2c_om_element_handle_namespace_with_qname(node, qname);
     }
     return node;
 }
 
 
-axis2c_om_namespace_t *axis2c_om_element_find_namespace(node_t * element_node,
+axis2c_om_namespace_t *axis2c_om_element_find_namespace(axis2c_om_element_t* element_node,
 						 const char *uri,
 						 const char *prefix)
 {
@@ -130,17 +130,17 @@ axis2c_om_namespace_t *axis2c_om_element_find_namespace(node_t * element_node,
 
 // declare a namespace for this om element
 
-axis2c_om_namespace_t *axis2c_om_element_declare_namespace(node_t * element_node,
+axis2c_om_namespace_t *axis2c_om_element_declare_namespace(axis2c_om_element_t* element_node,
 						    axis2c_om_namespace_t * ns)
 {
     apr_status_t status;
-    om_element_t *element = NULL;
+    axis2c_om_element_t *element = NULL;
     if (!element_node || !ns || !element_node->data_element
 	|| element_node->element_type != OM_ELEMENT)
     {
 	return NULL;
     }
-    element = (om_element_t *) (element_node->data_element);
+    element = (axis2c_om_element_t *) (element_node->data_element);
     if (!element->namespaces)
     {
 	if (!om_pool)
@@ -156,7 +156,7 @@ axis2c_om_namespace_t *axis2c_om_element_declare_namespace(node_t * element_node
 
 
 axis2c_om_namespace_t
-    *axis2c_om_element_declare_namespace_with_ns_uri_prefix(node_t *
+    *axis2c_om_element_declare_namespace_with_ns_uri_prefix(axis2c_node_t *
 							    element_node,
 							    const char
 							    *uri,
@@ -175,19 +175,19 @@ axis2c_om_namespace_t
 *   can be used to retrive a prefix of a known namespace uri
 *
 */
-axis2c_om_namespace_t *axis2c_om_element_find_declared_namespace(node_t *
+axis2c_om_namespace_t *axis2c_om_element_find_declared_namespace(axis2c_node_t *
 							  element_node,
 							  const char *uri,
 							  const char
 							  *prefix)
 {
     void *ns = NULL;
-    om_element_t *element = NULL;
+    axis2c_om_element_t *element = NULL;
     if (!element_node || !ns || element_node->element_type != OM_ELEMENT)
     {
 	return NULL;
     }
-    element = (om_element_t *) (element_node->data_element);
+    element = (axis2c_om_element_t *) (element_node->data_element);
     if (!prefix || strcmp(prefix, "") == 0)
     {
 	// should traverse through the namespaces 
@@ -206,10 +206,10 @@ axis2c_om_namespace_t *axis2c_om_element_find_declared_namespace(node_t *
 
 
 
-static axis2c_om_namespace_t *axis2c_om_element_handle_namespace_with_qname(node_t
+static axis2c_om_namespace_t *axis2c_om_element_handle_namespace_with_qname(axis2c_node_t
 								     *
 								     element_node,
-								     qname_t
+								     axis2c_qname_t
 								     *
 								     qname)
 {
@@ -244,7 +244,7 @@ static axis2c_om_namespace_t *axis2c_om_element_handle_namespace_with_qname(node
 
 
 
-static axis2c_om_namespace_t *axis2c_om_element_handle_namespace(node_t *
+static axis2c_om_namespace_t *axis2c_om_element_handle_namespace(axis2c_node_t *
 							  element_node,
 							  axis2c_om_namespace_t *
 							  ns)
@@ -267,12 +267,12 @@ static axis2c_om_namespace_t *axis2c_om_element_handle_namespace(node_t *
 }
 
 
-om_attribute_t *axis2c_om_element_add_attribute(node_t * element_node,
-						om_attribute_t * attr)
+axis2c_om_attribute_t *axis2c_om_element_add_attribute(axis2c_node_t * element_node,
+						axis2c_om_attribute_t * attr)
 {
     apr_status_t status;
-    qname_t *t = NULL;
-    om_element_t *element = NULL;
+    axis2c_qname_t *t = NULL;
+    axis2c_om_element_t *element = NULL;
     char *key = NULL;
 
     if (!element_node || element_node->element_type != OM_ELEMENT)
@@ -280,7 +280,7 @@ om_attribute_t *axis2c_om_element_add_attribute(node_t * element_node,
 	//fprintf(stderr,"Error");
 	return NULL;
     }
-    element = (om_element_t *) (element_node->data_element);
+    element = (axis2c_om_element_t *) (element_node->data_element);
 
     if (!(element->attributes))
     {
@@ -298,19 +298,19 @@ om_attribute_t *axis2c_om_element_add_attribute(node_t * element_node,
     return attr;
 }
 
-om_attribute_t *axis2c_om_element_get_attribute(node_t * element_node,
-						qname_t * qname)
+axis2c_om_attribute_t *axis2c_om_element_get_attribute(axis2c_node_t * element_node,
+						axis2c_qname_t * qname)
 {
     char *key = NULL;
-    om_element_t *element = NULL;
+    axis2c_om_element_t *element = NULL;
     if (!element_node || !qname
 	|| element_node->element_type != OM_ELEMENT)
     {
 	return NULL;
     }
-    element = (om_element_t *) (element_node->data_element);
+    element = (axis2c_om_element_t *) (element_node->data_element);
     key = axis2c_construct_key_from_qname(qname);
-    return (om_attribute_t
+    return (axis2c_om_attribute_t
 	    *) (apr_hash_get(element->attributes, key,
 			     APR_HASH_KEY_STRING));
 }
@@ -318,7 +318,7 @@ om_attribute_t *axis2c_om_element_get_attribute(node_t * element_node,
 
 
 
-static char *axis2c_construct_key_from_qname(qname_t * qname)
+static char *axis2c_construct_key_from_qname(axis2c_qname_t * qname)
 {
 
     // concatanation order is localpart prefix namespaceuri
@@ -357,7 +357,7 @@ static char *axis2c_construct_key_from_qname(qname_t * qname)
 *
 */
 
-om_attribute_t *axis2c_om_attribute_add_attribute_with_namespace(node_t *
+axis2c_om_attribute_t *axis2c_om_attribute_add_attribute_with_namespace(axis2c_node_t *
 								 element_node,
 								 const char
 								 *attribute_name,
@@ -421,18 +421,18 @@ void om_element_remove_attribute(om_element_t *element,om_attribute_t *attribute
 }
 */
 
-void axis2c_om_element_set_namespace(node_t * node, axis2c_om_namespace_t * ns)
+void axis2c_om_element_set_namespace(axis2c_node_t * node, axis2c_om_namespace_t * ns)
 {
     axis2c_om_namespace_t *nsp = NULL;
     if (ns && node && (node->data_element))
     {
 	nsp = axis2c_om_element_handle_namespace(node, ns);
     }
-    ((om_element_t *) node->data_element)->ns = nsp;
+    ((axis2c_om_element_t *) node->data_element)->ns = nsp;
 }
 
 
-void axis2c_free_om_element(om_element_t * element)
+void axis2c_free_om_element(axis2c_om_element_t * element)
 {
     if (element)
     {
@@ -454,16 +454,16 @@ void axis2c_free_om_element(om_element_t * element)
     }
 }
 
-void axis2c_om_element_set_localname(node_t * element_node,
+void axis2c_om_element_set_localname(axis2c_node_t * element_node,
 				     const char *localname)
 {
-    om_element_t *element = NULL;
+    axis2c_om_element_t *element = NULL;
     if (!element_node || element_node->element_type != OM_ELEMENT)
     {
 	// not correct element or null pointer
 	return;
     }
-    element = (om_element_t *) (element_node->data_element);
+    element = (axis2c_om_element_t *) (element_node->data_element);
     if (element->localname)
     {
 	free(element->localname);
@@ -471,12 +471,12 @@ void axis2c_om_element_set_localname(node_t * element_node,
     element->localname = strdup(localname);
 }
 
-char *axis2c_om_element_get_localname(node_t * element_node)
+char *axis2c_om_element_get_localname(axis2c_node_t * element_node)
 {
     if (!element_node || element_node->element_type != OM_ELEMENT)
     {
 	return NULL;
     }
-    return strdup(((om_element_t *) (element_node->data_element))->
+    return strdup(((axis2c_om_element_t *) (element_node->data_element))->
 		  localname);
 }

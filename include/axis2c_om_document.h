@@ -19,18 +19,17 @@
 #include <axis2c_node.h>
 
 
-typedef struct axis2c_om_document_t
-{
-	axis2c_node_t *root_element;
-	axis2c_node_t *first_child;
-	axis2c_node_t *last_child;
-};
+typedef struct axis2c_om_document_t {
+    axis2c_node_t *root_element;
+    axis2c_node_t *first_child;
+    axis2c_node_t *last_child;
+    char *char_set_encoding;
+} axis2c_om_document_t;
 
 axis2c_om_document_t *axis2c_create_om_document();
-void axis2c_free_om_document(axis2c_om_document_t *document);
+void axis2c_free_om_document(axis2c_om_document_t * document);
 
 
 
 
-#endif // AXIS2C_OM_DOCUMENT_H
-
+#endif				// AXIS2C_OM_DOCUMENT_H

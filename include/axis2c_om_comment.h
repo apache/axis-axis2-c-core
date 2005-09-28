@@ -19,18 +19,11 @@
 #include <axis2c_node.h>
 
 
-typedef struct axis2c_om_comment_t
-{
-	char *value;
-}axis2c_om_comment_t;
+typedef struct axis2c_om_comment_t {
+    char *value;
+} axis2c_om_comment_t;
 
 axis2c_node_t *axis2c_create_om_comment(const char *value);
-void axis2c_om_comment_free(axis2c_om_comment_t *comment_node);
+void axis2c_om_comment_free(axis2c_om_comment_t * comment_node);
 
-#endif // AXIS2C_OM_COMMENT_H
-
-
-
-
-
-
+#endif				// AXIS2C_OM_COMMENT_H

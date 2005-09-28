@@ -34,5 +34,4 @@
 
 
 
-#endif // _AXISC_STAX_OMBUILDER_H_
-
+#endif				// _AXISC_STAX_OMBUILDER_H_

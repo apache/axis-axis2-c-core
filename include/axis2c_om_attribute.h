@@ -21,20 +21,23 @@
 #include <axis2c_node.h>
 #include <axis2c_om_namespace.h>
 
-typedef struct axis2c_om_attribute_t{
-	char *localname;
-	char *value;
-	axis2c_om_namespace_t *ns;
-}axis2c_om_attribute_t;
+typedef struct axis2c_om_attribute_t {
+    char *localname;
+    char *value;
+    axis2c_om_namespace_t *ns;
+} axis2c_om_attribute_t;
 
-axis2c_om_attribute_t *axis2c_create_om_attribute(const char *localname,const char *value, axis2c_om_namespace_t *ns);
-axis2c_qname_t *axis2c_om_attribute_get_qname(axis2c_om_attribute_t *attribute);
-void axis2c_om_attribute_free(axis2c_om_attribute_t *attr);
+axis2c_om_attribute_t *axis2c_create_om_attribute(const char *localname,
+						  const char *value,
+						  axis2c_om_namespace_t *
+						  ns);
+axis2c_qname_t *axis2c_om_attribute_get_qname(axis2c_om_attribute_t *
+					      attribute);
+void axis2c_om_attribute_free(axis2c_om_attribute_t * attr);
 
 
 
 
 
 
-#endif   // _AXISC_ATTRIBUTE_H_
-
+#endif				// _AXISC_ATTRIBUTE_H_

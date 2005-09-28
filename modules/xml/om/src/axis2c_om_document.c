@@ -60,7 +60,7 @@ void axis2c_free_om_document(axis2c_om_document_t * doc)
 
 }
 
-axis2c_axis2c_node_t *axis2c_om_document_get_document_element(axis2c_om_document_t * document)
+axis2c_node_t *axis2c_om_document_get_document_element(axis2c_om_document_t * document)
 {
     //while(document->root_element == NULL)
     //{}

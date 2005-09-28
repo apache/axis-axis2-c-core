@@ -19,9 +19,6 @@
 struct om_container_s;
 typedef struct om_container_s om_container_t;
 
-struct om_container_s{
-	axis2c_node_t *tree;
+struct om_container_s {
+    axis2c_node_t *tree;
 };
-
-
-
