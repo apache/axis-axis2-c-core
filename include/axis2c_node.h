@@ -25,16 +25,17 @@ static apr_pool_t *om_pool; // a memory pool to be used for this module
 
 typedef struct axis2c_stax_om_builder_s  axis2c_stax_om_builder_t;
 
-enum OMTYPES{
-	AXIS2C_OM_DOCUMENT=10,
-	AXIS2C_OM_ELEMENT=20,
-	AXIS2C_OM_DOCTYPE=30,
-	AXIS2C_OM_COMMENT=40,
-	AXIS2C_OM_ATTRIBUTE=50,
-	AXIS2C_OM_NAMESPACE=60,
-	AXIS2C_OM_PROCESSING_INSTRUCTION=70,
-	AXIS2C_OM_TEXT=80
-};
+typedef enum axis2c_om_types_t {
+    AXIS2C_OM_INVALID = -1,
+	AXIS2C_OM_DOCUMENT = 10,
+	AXIS2C_OM_ELEMENT = 20,
+	AXIS2C_OM_DOCTYPE = 30,
+	AXIS2C_OM_COMMENT = 40,
+	AXIS2C_OM_ATTRIBUTE = 50,
+	AXIS2C_OM_NAMESPACE = 60,
+	AXIS2C_OM_PROCESSING_INSTRUCTION = 70,
+	AXIS2C_OM_TEXT = 80
+} axis2c_om_types_t;
 
 /*
 * This is the structure that defines a node in om tree 
@@ -50,7 +51,7 @@ typedef struct axis2c_node_t {
 	struct axis2c_node_t *first_child;
 	struct axis2c_node_t *last_child;
 	axis2c_stax_om_builder_t *builder;
-	int element_type;
+	axis2c_om_types_t element_type;
 	int done;
 	void* data_element;
 } axis2c_node_t;

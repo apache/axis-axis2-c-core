@@ -28,7 +28,7 @@ axis2c_node_t *axis2c_create_node()
     node->next_sibling = NULL;
     node->prev_sibling = NULL;
     node->parent = NULL;
-    node->element_type = 0;
+    node->element_type = AXIS2C_OM_INVALID;
     node->done = FALSE;
     node->builder = NULL;
     node->data_element = NULL;
