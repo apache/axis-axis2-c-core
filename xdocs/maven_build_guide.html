@@ -4,3 +4,23 @@ e.g.:
 export CUTEST_HOME=/usr/local/apps/cutest
 export APR_HOME=/usr/local
 
+Axis2c use maven two with nar plugin instead of the native plugin.
+For further information about nar visit
+
+http://java.freehep.org/freehep-nar-plugin/index.html
+
+You need to download nar plugin(freehep-nar-plugin-0.2.jar) and copy
+it into maven plugin folder.
+
+You also need to copy freehep-download-plugin (freehep-download-plugin-1.0.2.jar) into
+.maven/repositoy/freehep/plugin folder(If it does not automatically download for you)
+
+Also copy cpptasks jar (cpptasks-1.0b3-patched-1.6.jar) into
+.maven/repositoy/ant-contrib/jars folder (If it does not automatically download for you)
+
+If your platform is other than linux you need to change the main
+project.properties (residing at the project root folder) file according 
+to your environment. For help to do that visit 
+
+see http://java.freehep.org/freehep-nar-plugin/properties.html
+
