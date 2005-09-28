@@ -1,17 +1,21 @@
 Coding Convention
-Header file names should be prefixed with 'axis2c_'
-e.g. axis2c_om_element.h
+    Header file names should be prefixed with 'axis2c_'
+    e.g.axis2c_om_element.h
+    
+    Header macro definition should be the same as the header file name but in all uppercase.Use _H in place of .h 
+    e.g.for axis2c_om_element.h AXIS2C_OM_ELEMENT_H 
+    
+    enum members should be prefixed with 'AXIS2C_' e.g.
+    AXIS2C_OM_DOCUMENT 
+    
+    struct names should be prefixed with 'axis2c' 
+    e.g. axis2c_node 
+    
+    Code formatting 
+    We can use the indent program with following options:
+    indent -nbad - bap - nbc - bbo - bl - bli0 - bls - ncdb - nce - cp1 - cs - di2 -ndj - nfc1 - nfca - hnl - i4 - ip5 - lp - pcs - nprs - psl - saf - sai -saw - nsc - nsob - ts4 - nut - nbfda
 
-Header macro definition should be the same as the header file name but in all uppercase. Use _H in place of .h
-e.g. for axis2c_om_element.h AXIS2C_OM_ELEMENT_H
+    In addition the above, for those that are not defined above, we could use the following guides in decreasing preference:
+        http://httpd.apache.org/dev/styleguide.html
+        http://www.gnu.org/prep/standards/standards.html
 
-enum members should be prefixed with 'AXIS2C_'
-e.g. AXIS2C_OM_DOCUMENT
-
-struct names should be prefixed with 'axis2c'
-e.g. axis2c_node
-
-Code formatting
-We use indent with following options:
-
-indent -nbad -bap -nbc -bbo -bl -bli0 -bls -ncdb -nce -cp1 -cs -di2 -ndj -nfc1 -nfca -hnl -i4 -ip5 -lp -pcs -nprs -psl -saf -sai -saw -nsc -nsob -ts4 -nut -nbfda
