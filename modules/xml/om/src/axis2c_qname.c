@@ -20,8 +20,8 @@
 #include <stdio.h>
 
 
-axis2c_qname_t *axis2c_create_qname(const char *localname, const char *ns_uri,
-			     const char *prefix)
+axis2c_qname_t *axis2c_create_qname(const char *localname,
+				    const char *ns_uri, const char *prefix)
 {
     axis2c_qname_t *qn = (axis2c_qname_t *) malloc(sizeof(axis2c_qname_t));
     if (!qn)

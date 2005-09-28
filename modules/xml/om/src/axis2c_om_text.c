@@ -38,12 +38,12 @@ axis2c_node_t *axis2c_create_om_text(const char *value)
     text->content_id = NULL;
     text->mime_type = NULL;
     node->data_element = text;
-    node->element_type = OM_TEXT;
+    node->element_type = AXIS2C_OM_TEXT;
     return node;
 }
 
 axis2c_node_t *axis2c_create_om_text_with_parent(axis2c_node_t * parent,
-					  const char *value)
+						 const char *value)
 {
     axis2c_node_t *node;
     if (!parent)
@@ -78,4 +78,3 @@ char *axis2c_om_text_get_text(axis2c_om_text_t * text)
     }
     return NULL;
 }
-

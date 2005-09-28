@@ -17,7 +17,8 @@
 #include <axis2c_om_doctype.h>
 #include <stdlib.h>
 
-axis2c_node_t *axis2c_create_om_doctype(axis2c_node_t * parent, const char *value)
+axis2c_node_t *axis2c_create_om_doctype(axis2c_node_t * parent,
+					const char *value)
 {
     axis2c_om_doctype_t *doctype = NULL;
     axis2c_node_t *node = axis2c_create_node();
@@ -34,7 +35,7 @@ axis2c_node_t *axis2c_create_om_doctype(axis2c_node_t * parent, const char *valu
     }
     doctype->value = strdup(value);
     node->data_element = doctype;
-    node->element_type = OM_DOCTYPE;
+    node->element_type =AXIS2C_OM_DOCTYPE;
     if (parent)
     {
 	node->parent = parent;
@@ -61,7 +62,7 @@ axis2c_node_t *axis2c_create_empty_om_doctype(axis2c_node_t * parent)
     }
     doctype->value = NULL;
     node->data_element = doctype;
-    node->element_type = OM_DOCTYPE;
+    node->element_type =AXIS2C_OM_DOCTYPE;
     if (parent)
     {
 	node->parent = parent;
@@ -82,16 +83,18 @@ void axis2c_free_om_doctype(axis2c_om_doctype_t * om_doc)
 
 char *axis2c_om_doctype_get_value(axis2c_node_t * doctype_node)
 {
-    if (!doctype_node || doctype_node->element_type != OM_DOCTYPE)
+    if (!doctype_node || doctype_node->element_type !=AXIS2C_OM_DOCTYPE)
     {
 	return NULL;
     }
-    return strdup(((axis2c_om_doctype_t *) (doctype_node->data_element))->value);
+    return strdup(((axis2c_om_doctype_t *) (doctype_node->data_element))->
+		  value);
 }
-void axis2c_om_doctype_set_value(axis2c_node_t * doctype_node, const char *value)
+void axis2c_om_doctype_set_value(axis2c_node_t * doctype_node,
+				 const char *value)
 {
     axis2c_om_doctype_t *doctype = NULL;
-    if (!doctype_node || doctype_node->element_type != OM_DOCTYPE)
+    if (!doctype_node || doctype_node->element_type !=AXIS2C_OM_DOCTYPE)
     {
 	return;
     }
@@ -102,5 +105,3 @@ void axis2c_om_doctype_set_value(axis2c_node_t * doctype_node, const char *value
     }
     doctype->value = strdup(value);
 }
-
-

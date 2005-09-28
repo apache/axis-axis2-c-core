@@ -19,12 +19,14 @@
 #include <stdlib.h>
 
 
-om_document_t *axis2c_create_om_document_with_root(axis2c_node_t * root_ele,
-						   stax_om_builder_t *
-						   builder)
+axis2c_om_document_t *axis2c_create_om_document_with_root(axis2c_node_t *
+							  root_ele,
+							  axis2c_stax_om_builder_t
+							  * builder)
 {
 
-    axis2c_om_document_t *doc = (axis2c_om_document_t *) malloc(sizeof(axis2c_om_document_t));
+    axis2c_om_document_t *doc =
+	(axis2c_om_document_t *) malloc(sizeof(axis2c_om_document_t));
     if (!doc)
     {
 
@@ -38,9 +40,11 @@ om_document_t *axis2c_create_om_document_with_root(axis2c_node_t * root_ele,
     return doc;
 }
 
-axis2c_om_document_t *axis2c_create_om_document(stax_om_builder_t * builder)
+axis2c_om_document_t *axis2c_create_om_document(axis2c_stax_om_builder_t *
+						builder)
 {
-    axis2c_om_document_t *doc = (axis2c_om_document_t *) malloc(sizeof(axis2c_om_document_t));
+    axis2c_om_document_t *doc =
+	(axis2c_om_document_t *) malloc(sizeof(axis2c_om_document_t));
     if (!doc)
     {
 	return NULL;
@@ -51,6 +55,7 @@ axis2c_om_document_t *axis2c_create_om_document(stax_om_builder_t * builder)
     doc->done = FALSE;
     doc->first_child = NULL;
     doc->last_child = NULL;
+    return doc;
 }
 
 void axis2c_free_om_document(axis2c_om_document_t * doc)
@@ -60,14 +65,16 @@ void axis2c_free_om_document(axis2c_om_document_t * doc)
 
 }
 
-axis2c_node_t *axis2c_om_document_get_document_element(axis2c_om_document_t * document)
+axis2c_node_t *axis2c_om_document_get_document_element(axis2c_om_document_t
+						       * document)
 {
     //while(document->root_element == NULL)
     //{}
     return document->root_element;
 }
 
-void axis2c_om_document_set_charset_encoding(axis2c_om_document_t * document,
+void axis2c_om_document_set_charset_encoding(axis2c_om_document_t *
+					     document,
 					     char *charset_encoding)
 {
     if (document)
@@ -79,18 +86,22 @@ void axis2c_om_document_set_charset_encoding(axis2c_om_document_t * document,
     }
 }
 
-char *axis2c_om_document_get_charset_encoding(axis2c_om_document_t * document)
+char *axis2c_om_document_get_charset_encoding(axis2c_om_document_t *
+					      document)
 {
     if (document)
     {
-	return strdup(document->char_set_encoding);
+	return document->char_set_encoding;
     }
+
+    return NULL;
 }
 
 
-void axis2c_om_document_add_child(axis2c_om_document_t * document, axis2c_node_t * child)
+void axis2c_om_document_add_child(axis2c_om_document_t * document,
+				  axis2c_node_t * child)
 {
-    if (!document || !child || child->element_type != OM_ELEMENT)
+    if (!document || !child || child->element_type != AXIS2C_OM_ELEMENT)
     {
 	//error
 	return;
@@ -100,13 +111,10 @@ void axis2c_om_document_add_child(axis2c_om_document_t * document, axis2c_node_t
     {
 	document->first_child = child;
 	child->prev_sibling = NULL;
-    }
-    else
+    } else
     {
 	child->prev_sibling = document->last_child;
 	document->last_child->next_sibling = child;
     }
     child->next_sibling = NULL;
 }
-
-

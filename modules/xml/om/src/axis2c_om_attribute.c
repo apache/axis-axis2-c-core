@@ -23,8 +23,9 @@
 
 
 axis2c_om_attribute_t *axis2c_create_om_attribute(const char *localname,
-					   const char *value,
-					   axis2c_om_namespace_t * ns)
+						  const char *value,
+						  axis2c_om_namespace_t *
+						  ns)
 {
     axis2c_om_attribute_t *attr =
 	(axis2c_om_attribute_t *) malloc(sizeof(axis2c_om_attribute_t));
@@ -62,8 +63,7 @@ axis2c_qname_t *axis2c_om_attribute_get_qname(axis2c_om_attribute_t * attr)
 	{
 	    qn = axis2c_create_qname(attr->localname, attr->ns->uri,
 				     attr->ns->prefix);
-	}
-	else
+	} else
 	{
 	    qn = axis2c_create_qname(attr->localname, NULL, NULL);
 	}
@@ -72,4 +72,3 @@ axis2c_qname_t *axis2c_om_attribute_get_qname(axis2c_om_attribute_t * attr)
     return NULL;
 
 }
-

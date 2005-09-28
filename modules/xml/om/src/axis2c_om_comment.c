@@ -44,7 +44,7 @@ axis2c_node_t *axis2c_create_om_comment(const char *value)
     }
 
     node->data_element = comment;
-    node->element_type = OM_COMMENT;
+    node->element_type =AXIS2C_OM_COMMENT;
     return node;
 }
 
@@ -66,18 +66,20 @@ void axis2c_om_comment_free(axis2c_om_comment_t * comment)
 
 char *axis2c_om_comment_get_value(axis2c_node_t * comment_node)
 {
-    if (!comment_node || comment_node->element_type != OM_COMMENT)
+    if (!comment_node || comment_node->element_type !=AXIS2C_OM_COMMENT)
     {
 	return NULL;
     }
-    return strdup(((axis2c_om_comment_t *) (comment_node->data_element))->value);
+    return strdup(((axis2c_om_comment_t *) (comment_node->data_element))->
+		  value);
 }
 
-void axis2c_om_comment_set_value(axis2c_node_t * comment_node, const char *value)
+void axis2c_om_comment_set_value(axis2c_node_t * comment_node,
+				 const char *value)
 {
     axis2c_om_comment_t *comm = NULL;
 
-    if (!comment_node || comment_node->element_type != OM_COMMENT)
+    if (!comment_node || comment_node->element_type !=AXIS2C_OM_COMMENT)
     {
 	return;
     }
@@ -89,4 +91,3 @@ void axis2c_om_comment_set_value(axis2c_node_t * comment_node, const char *value
     }
     comm->value = strdup(value);
 }
-
