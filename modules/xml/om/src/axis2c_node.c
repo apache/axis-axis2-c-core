@@ -30,7 +30,7 @@ axis2c_node_t *axis2c_create_node()
     node->parent = NULL;
     node->element_type = 0;
     node->done = FALSE;
-//    node->builder = NULL;
+    node->builder = NULL;
     node->data_element = NULL;
     return node;
 }
@@ -50,8 +50,7 @@ void axis2c_node_add_child(axis2c_node_t * parent, axis2c_node_t * child)
     if (parent->first_child == NULL)
     {
 	parent->first_child = child;
-    }
-    else
+    } else
     {
 	parent->last_child->next_sibling = child;
 	child->prev_sibling = parent->last_child;
@@ -81,8 +80,7 @@ axis2c_node_t *axis2c_detach_node(axis2c_node_t * axis2c_node_to_detach)
     if ((axis2c_node_to_detach->prev_sibling) == NULL)
     {
 	parent->first_child = axis2c_node_to_detach->next_sibling;
-    }
-    else
+    } else
     {
 	axis2c_node_to_detach->prev_sibling->next_sibling =
 	    axis2c_node_to_detach->next_sibling;
@@ -103,4 +101,3 @@ void axis2c_node_set_parent(axis2c_node_t * node)
 {
 
 }
-
