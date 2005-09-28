@@ -41,7 +41,7 @@ typedef struct element
   NAMESPACE *namespace;
   DEPTH *depth;
   ELEMENT *prev;
-} element;
+};
 
 typedef struct stack
 {

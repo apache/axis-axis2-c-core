@@ -31,6 +31,7 @@ typedef struct token
   char *end;
   int last;
   int size;
+  int ref;
 }TOKEN;
 
 
@@ -62,4 +63,5 @@ int Token_compare (TOKEN *tok, const char *st, int n, int unicode_state);
 char *Token_convert_utf16_to_utf8 (char *buffer, int length);
 int Token_length_utf16 (unsigned int utf16_ch);
 char *Token_build_utf8 (unsigned int utf16_ch, int length);
+char *Token_char_ref (char *buffer);
 #endif

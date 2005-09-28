@@ -198,10 +198,11 @@ XML_PullParser_openToken (XML_PullParser *parser)
 
 
 PRIVATE void
-XML_PullParser_closeToken (XML_PullParser *parser, int t)
+XML_PullParser_closeToken (XML_PullParser *parser, int t, int refer)
 {
   ELEMENT *e= Stack_last (parser->stack);
   e->token->type = t;
+  e->token->ref = refer;
   e->token->end = XML_PullParser_lastChar (parser)-1;
 }
 
@@ -249,14 +250,14 @@ XML_PullParser_processVersionInfo (XML_PullParser *parser)
 	  && 'n' == XML_PullParser_nextChar (parser, 0))
 	{
 	  ic = XML_PullParser_nextChar (parser, 0);
-	  XML_PullParser_closeToken (parser, Attribute);
+	  XML_PullParser_closeToken (parser, Attribute, 0);
 	  quote = XML_PullParser_processEq (parser, ic);
 	  nc = XML_PullParser_nextChar (parser, 0); 
 	  /* 0, since we don't expect EOF line here */
 	  XML_PullParser_openToken (parser);
 	  while ( quote != nc)
 	    nc = XML_PullParser_nextChar (parser, 0);
-	  XML_PullParser_closeToken (parser, AttValue);
+	  XML_PullParser_closeToken (parser, AttValue, 0);
 	  nc = XML_PullParser_nextChar (parser, 0);
 	  return XML_PullParser_skipS (parser, nc);
 	}
@@ -285,13 +286,13 @@ XML_PullParser_processEncodingDecl (XML_PullParser *parser)
        && 'g' == XML_PullParser_nextChar (parser, 0))
     {
       ic = XML_PullParser_nextChar (parser, 0);
-      XML_PullParser_closeToken (parser, Attribute);
+      XML_PullParser_closeToken (parser, Attribute, 0);
       quote = XML_PullParser_processEq (parser, ic);
       nc = XML_PullParser_nextChar (parser, 0);
       XML_PullParser_openToken (parser);
       while (quote != nc)
 	nc = XML_PullParser_nextChar (parser, 0);
-      XML_PullParser_closeToken (parser, AttValue);
+      XML_PullParser_closeToken (parser, AttValue, 0);
       nc = XML_PullParser_nextChar (parser, 0);
       return XML_PullParser_skipS (parser, nc);
     }
@@ -318,7 +319,7 @@ XML_PullParser_processSDDecl (XML_PullParser *parser)
        && 'n' == XML_PullParser_nextChar (parser, 0)
        && 'e' == XML_PullParser_nextChar (parser, 0))
   ic = XML_PullParser_nextChar (parser, 0);
-  XML_PullParser_closeToken (parser, Attribute);
+  XML_PullParser_closeToken (parser, Attribute, 0);
   quote = XML_PullParser_processEq (parser, ic);
   nc = XML_PullParser_nextChar (parser, 0);
   XML_PullParser_openToken (parser);
@@ -342,7 +343,7 @@ XML_PullParser_processSDDecl (XML_PullParser *parser)
       else
 	XML_PullParser_Exception (p_FILE, LINE);
     }
-  XML_PullParser_closeToken (parser, AttValue);
+  XML_PullParser_closeToken (parser, AttValue, 0);
   nc = XML_PullParser_nextChar (parser, 0);
   return XML_PullParser_skipS (parser, nc);
 }
@@ -427,14 +428,14 @@ XML_PullParser_processName (XML_PullParser *parser)
   {
     if ( ':' == c)
       {
-	XML_PullParser_closeToken (parser, Prefix);
+	XML_PullParser_closeToken (parser, Prefix, 0);
 	c = XML_PullParser_nextChar (parser, 0);
 	XML_PullParser_openToken (parser);
       }
     else 
       c = XML_PullParser_nextChar (parser, 0);
   }
-  XML_PullParser_closeToken (parser, Name);
+  XML_PullParser_closeToken (parser, Name, 0);
 
   return c;
 }
@@ -453,7 +454,7 @@ XML_PullParser_processAttValue (XML_PullParser *parser, int quote)
 	  c = XML_PullParser_nextChar (parser, 0);
 	  if (quote == c)
 	    {
-	      XML_PullParser_closeToken (parser, AttValue);
+	      XML_PullParser_closeToken (parser, AttValue, 0);
 	      return XML_PullParser_nextChar (parser, 0);
 	    }
 	}
@@ -506,19 +507,24 @@ PRIVATE int
 XML_PullParser_processCharData (XML_PullParser *parser)
 {
   int c;
+  int ref = 0;
   EVENT = CHARACTER;
   XML_PullParser_openToken (parser);
   do
     {
       c = XML_PullParser_nextChar (parser, -1);
+
+      if (c == '&')
+	ref = 1;
+
       if (c == -1)
 	{
-	XML_PullParser_closeToken (parser, CharData);
+	XML_PullParser_closeToken (parser, CharData, ref);
 	return 0;
 	}
     }
   while (c != '<');
-  XML_PullParser_closeToken (parser, CharData);
+  XML_PullParser_closeToken (parser, CharData, ref);
   return c;
 }
 

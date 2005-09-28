@@ -95,7 +95,7 @@ PRIVATE int XML_PullParser_processVersionInfo (XML_PullParser *p);
 PRIVATE int XML_PullParser_processEncodingDecl (XML_PullParser *p);
 PRIVATE int XML_PullParser_processSDDecl (XML_PullParser *p);
 PRIVATE void XML_PullParser_openToken (XML_PullParser *p);
-PRIVATE void XML_PullParser_closeToken (XML_PullParser *p, int t);
+PRIVATE void XML_PullParser_closeToken (XML_PullParser *p, int t, int refer);
 PRIVATE char* XML_PullParser_lastChar (XML_PullParser *p);
 PRIVATE int XML_PullParser_processEq (XML_PullParser *p, int c);
 PRIVATE void XML_PullParser_addAttribute (XML_PullParser *p, TOKEN *name, TOKEN *value);

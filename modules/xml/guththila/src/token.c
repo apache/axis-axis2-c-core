@@ -90,6 +90,67 @@ Token_count (TOKEN *tok)
   return tok->last;
 }
 
+char*
+Token_char_ref (char *buffer)
+{
+  int len;
+  int ii;
+  int ix;
+  len = strlen (buffer);
+  char *ref_buffer = (char *) malloc (len+1);
+  for (ii = 0, ix = 0; ii < len; ii++, ix++)
+    {
+      if (buffer[ii] == '&')
+	{
+	  if (buffer[ii+1] == 'a' 
+	      && buffer[ii+2] == 'm'
+	      && buffer[ii+3] == 'p'
+	      && buffer[ii+4] == ';')
+	    {
+	      ref_buffer[ix] = '&';
+	      ii += 4;
+	    }
+	  else if (buffer[ii+1] == 'g'
+		   && buffer[ii+2] == 't'
+		   && buffer[ii+3] == ';')
+	    {
+	      ref_buffer[ix] = '>';
+	      ii += 3;
+	    }
+	  else if (buffer[ii+1] == 'l'
+		   && buffer[ii+2] == 't'
+		   && buffer[ii+3] == ';')
+	    {
+	      ref_buffer[ix] = '<';
+	      ii += 3;
+	    }
+	  else if (buffer[ii+1] == 'q'
+		   && buffer[ii+2] == 'u'
+		   && buffer[ii+3] == 'o'
+		   && buffer[ii+4] == 't'
+		   && buffer[ii+5] == ';')
+	    {
+	      ref_buffer[ix] = '"';
+	      ii +=5;
+	    }
+	  else if (buffer[ii+1] == 'a'
+		   && buffer[ii+2] == 'p'
+		   && buffer[ii+3] == 'o'
+		   && buffer[ii+4] == 's'
+		   && buffer[ii+5] == ';')
+	    {
+	      ref_buffer[ix] = '\'';
+	      ii +=5;
+	    }
+	  else 
+	    Token_Exception ();
+	}
+      else
+	ref_buffer[ix] = buffer[ii];
+    }
+  return ref_buffer;
+}
+
 
 char *
 Token_toString (TOKEN *tok, int unicode)
@@ -104,7 +165,10 @@ Token_toString (TOKEN *tok, int unicode)
 	  buffer = (char *) malloc (length + 1);
 	  memcpy (buffer, tok->start, length);
 	  buffer[length] = 0;
-	  return buffer;
+	  if (tok->ref)
+	    Token_char_ref (buffer);
+	  else
+	    return buffer;
 	}
       else
 	{
