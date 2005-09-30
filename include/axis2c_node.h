@@ -77,7 +77,7 @@ void axis2c_node_insert_sibling_before(axis2c_node_t *current_ele,axis2c_node_t 
 // build the tree 
 int axis2c_node_build(axis2c_node_t *node);
 
-void axis2c_node_set_parent(axis2c_node_t *parent);
+void axis2c_node_set_parent(axis2c_node_t *node,axis2c_node_t *parent);
 
 axis2c_node_t *axis2c_node_get_next_sibling(axis2c_node_t *node);
 
