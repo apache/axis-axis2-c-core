@@ -21,7 +21,7 @@
 #include <apr_pools.h>
 #include <xmlpullparser.h>
 
-static apr_pool_t *om_pool; // a memory pool to be used for this module
+//static apr_pool_t *om_pool; // a memory pool to be used for this module
 
 typedef struct axis2c_stax_om_builder_s  axis2c_stax_om_builder_t;
 

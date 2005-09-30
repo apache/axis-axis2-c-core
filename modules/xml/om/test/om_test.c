@@ -1,47 +1,46 @@
-#include <CuTest.h>
-#include <string.h>
 #include <stdio.h>
+#include <axis2c_om_element.h>
+#include <axis2c_om_namespace.h>
 #include <axis2c_node.h>
+#include <apr.h>
 
-void Testdetach_node(CuTest *tc) {
-	node_t* parent = create_node();
-        node_t* prev_sibling = create_node();
-        node_add_child(parent, prev_sibling);
-        node_t* test_node = create_node();
-        node_add_child(parent, test_node);
-        node_t* next_sibling = create_node();
-        node_add_child(parent, next_sibling);
-        
-        node_t* temp_parent = detach_node(test_node);
-        puts("came");
-        if(0 == temp_parent) puts("parent is null\n");
-        node_t* expected = temp_parent->first_child;
-        printf("came2");
-        if(0 == expected) puts("expected is null\n");
-        node_t* actual = next_sibling;
+/**
+ *  This code shows how the currently implemented code support building of om tree programmtically
+ *
+ */
 
-        CuAssertPtrEquals(tc, expected, actual); 
-    }
 
-    CuSuite* detach_nodeGetSuite() {
-        CuSuite* suite = CuSuiteNew();
-        SUITE_ADD_TEST(suite, Testdetach_node);
-        return suite;
-    }
 
- void RunAllTests(void) {
-        CuString *output = CuStringNew();
-        CuSuite* suite = CuSuiteNew();
 
-        CuSuiteAddSuite(suite, detach_nodeGetSuite());
 
-        CuSuiteRun(suite);
-        CuSuiteSummary(suite, output);
-        CuSuiteDetails(suite, output);
-        printf("%s\n", output->buffer);
-    }
+int main()
+{
+    axis2c_om_attribute_t *attr1;
+	axis2c_om_namespace_t *ns1;
+	axis2c_node_t *root,*ele1,*ele2;
+	
+	if(apr_initialize()!= APR_SUCCESS)
+	{
+		return -1;
+	}
 
-    int main(void) {
-        RunAllTests();
-        return 0;
-    }
+
+	ns1  = axis2c_create_om_namespace("ns1","test");
+	
+	root = axis2c_create_om_element("root",ns1);
+	ele1 = axis2c_create_om_element_with_parent("ele1",ns1,root);
+	ele2 = axis2c_create_om_element("ele2",ns1);
+
+	axis2c_node_add_child(ele1,ele2);
+
+	attr1 = axis2c_create_om_attribute("attribute1","x",ns1);
+
+	axis2c_om_element_add_attribute(ele2,attr1);
+	
+
+	printf("%s",axis2c_om_element_get_localname(ele2->parent->parent));
+    
+    getchar();
+    
+    return 0;
+}

@@ -34,7 +34,7 @@ enum element_types
 
 typedef struct element ELEMENT;
 
-typedef struct element
+struct element
 {
   TOKEN *token;
   ATTRIBUTE *attribute;

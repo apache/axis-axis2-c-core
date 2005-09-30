@@ -19,10 +19,12 @@
 axis2c_node_t *axis2c_create_node()
 {
     axis2c_node_t *node = (axis2c_node_t *) malloc(sizeof(axis2c_node_t));
-    if (!node)
+   
+   if (!node)
     {
-	return NULL;
+    	return NULL;
     }
+    
     node->first_child = NULL;
     node->last_child = NULL;
     node->next_sibling = NULL;
@@ -40,23 +42,28 @@ void axis2c_free_node(axis2c_node_t * node)
 {
     if (!node)
 	return;
-    //if(node->
+    
+    
 }
 
 void axis2c_node_add_child(axis2c_node_t * parent, axis2c_node_t * child)
 {
     if (!parent || !child)
 	return;
+    
     if (parent->first_child == NULL)
     {
-	parent->first_child = child;
-    } else
-    {
-	parent->last_child->next_sibling = child;
-	child->prev_sibling = parent->last_child;
+	    parent->first_child = child;
     }
+    else
+    {
+	    parent->last_child->next_sibling = child;
+	    child->prev_sibling = parent->last_child;
+    }
+    
     child->parent = parent;
     parent->last_child = child;
+
 }
 
 
@@ -64,7 +71,7 @@ void axis2c_node_add_child(axis2c_node_t * parent, axis2c_node_t * child)
 axis2c_node_t *axis2c_node_detach(axis2c_node_t * node_to_detach)
 {
     axis2c_node_t *parent = NULL;
-    axis2c_node_t *next_sibling = NULL;
+
     if (!node_to_detach)
     {
 	    return NULL;
@@ -72,10 +79,10 @@ axis2c_node_t *axis2c_node_detach(axis2c_node_t * node_to_detach)
 
     if (!(node_to_detach->parent))
     {
-	/* nodes that do not have a parent can't be detached
-	 */
+	    /* nodes that do not have a parent can't be detached  */
     	return NULL;
     }
+    
     parent = node_to_detach->parent;
     
     if ((node_to_detach->prev_sibling) == NULL)
@@ -118,11 +125,13 @@ void axis2c_node_set_parent(axis2c_node_t * node,axis2c_node_t *parent)
 	}
 	node->parent = parent;
 }
+
 /**
  * This will insert a sibling just after the current information item
  *@param node the node in consideration
  *@param nodeto_insert the node that will be inserted
  */
+ 
 void axis2c_node_insert_sibling_after(axis2c_node_t *node,axis2c_node_t *nodeto_insert)
 {
 	if(!node || !nodeto_insert )
@@ -136,7 +145,8 @@ void axis2c_node_insert_sibling_after(axis2c_node_t *node,axis2c_node_t *nodeto_
 	{
 		node->next_sibling->prev_sibling = nodeto_insert;
 	}
-	nodeto_insert->next_sibling = node->next_sibling;
+
+    nodeto_insert->next_sibling = node->next_sibling;
 	node->next_sibling = nodeto_insert;
 }
 

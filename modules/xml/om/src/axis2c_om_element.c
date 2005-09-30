@@ -18,6 +18,8 @@
 #include <axis2c_om_attribute.h>
 #include <stdlib.h>
 
+static apr_pool_t *om_pool;
+
 axis2c_node_t *axis2c_create_om_element(const char *localname,
 					axis2c_om_namespace_t * ns)
 {
@@ -168,8 +170,11 @@ axis2c_om_element_declare_namespace_with_ns_uri_prefix(axis2c_node_t *
 {
     axis2c_om_namespace_t *nsp = NULL;
     nsp = axis2c_create_om_namespace(uri, prefix);
+  
     if (nsp)
-	return axis2c_om_element_declare_namespace(element_node, nsp);
+	
+    return axis2c_om_element_declare_namespace(element_node, nsp);
+    
     return NULL;
 }
 
@@ -185,20 +190,27 @@ axis2c_om_namespace_t
 					       const char *prefix)
 {
     void *ns = NULL;
+    apr_hash_index_t *hashindex;
     axis2c_om_element_t *element = NULL;
+    
     if (!element_node || !ns || element_node->element_type != AXIS2C_OM_ELEMENT)
     {
-	return NULL;
+	    return NULL;
     }
+
     element = (axis2c_om_element_t *) (element_node->data_element);
     if (!prefix || strcmp(prefix, "") == 0)
     {
-	// should traverse through the namespaces 
-
-
+	     for(hashindex = apr_hash_first(om_pool,element->namespaces);hashindex;hashindex = apr_hash_next(hashindex))
+         {
+            apr_hash_this(hashindex,NULL,NULL,&ns);
+            if(strcmp(((axis2c_om_namespace_t*)(ns))->uri,uri))
+                return (axis2c_om_namespace_t*)(ns);
+         
+         }
     }
     ns = apr_hash_get(element->namespaces, prefix, APR_HASH_KEY_STRING);
-    return (void *) ns;
+    return (axis2c_om_namespace_t *) ns;
 }
 
 /*
@@ -252,8 +264,7 @@ static axis2c_om_namespace_t
     axis2c_om_namespace_t *ns1 = NULL;
     if (!ns || !element_node)
     {
-	// namespace null handle condition
-
+	    
     }
     ns1 =
 	axis2c_om_element_find_namespace(element_node, ns->uri,
