@@ -23,7 +23,7 @@
 
     <goal name="build-module">
         <maven:reactor  basedir="${basedir}"
-                        includes="om/project.xml,soap/project.xml"
+                        includes="om/project.xml,soap/project.xml,guththila/project.xml"
                         goals="build-sub-module"
                         banner="Building Axis2C"
                         ignoreFailures="false"/>
