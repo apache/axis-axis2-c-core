@@ -16,31 +16,59 @@
 
 #ifndef AXIS2C_OM_TEXT_H
 #define AXIS2C_OM_TEXT_H
+
+/**
+ * @file axis2c_om_attribute.h
+ * @brief  represents xml text element
+ */
+
+
 #include <axis2c_om_attribute.h>
 
 typedef struct axis2c_om_text_t
 {
 	char *value;
-	
+	axis2c_om_namespace_t *ns;
+
 	char *mime_type;
 	int optimize;
+	char *localname;
 	int is_binary;
 	char *content_id;
 	axis2c_om_attribute_t *attribute;
-
 }axis2c_om_text_t;
 
-axis2c_node_t *axis2c_create_om_text(const char *value);
 
+/**
+ * Create a text struct and stores in in a node struct and returns a pointer
+ * to the axis2c_node_t struct
+ * the data_element field of node struct points to the acctual axis2c_text_t struct
+ * The element type of axis2c_node_t struct will be of type AXIS2C_OM_TEXT
+ * @param parent This can be null The parent element should be of type AXIS2C_OM_ELEMENT
+ * @return pointer to a axis2c_node_t struct containing the text struct
+ */
+
+axis2c_node_t *axis2c_om_text_create(axis2c_node_t *parent,const char *value);
+
+
+/**
+ * access the value of the text struct
+ * @param textnode node
+ * @return char * to the value
+ */
 char* axis2c_om_text_get_text(axis2c_om_text_t *textnode);
-axis2c_node_t *axis2c_create_om_text_with_parent(axis2c_node_t *parent,const char *value);
 
+/**
+ *	free an axis2c_om_text_t structure
+ */
 
-
+void axis2c_om_text_free(axis2c_om_text_t *text);
+/**
+ *	axis2c
+ *
+ */
 
 
 
 
 #endif // AXIS2C_OM_TEXT_H
-
-

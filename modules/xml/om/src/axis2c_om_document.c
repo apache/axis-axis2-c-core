@@ -17,19 +17,18 @@
 
 #include <axis2c_om_document.h>
 #include <stdlib.h>
+#include <axis2c_errno.h>
 
-
-axis2c_om_document_t *axis2c_create_om_document_with_root(axis2c_node_t *
-							  root_ele,
-							  axis2c_stax_om_builder_t
-							  * builder)
+axis2c_om_document_t *axis2c_om_document_create(axis2c_node_t * root_ele, 
+									axis2c_stax_om_builder_t * builder)
 {
 
-    axis2c_om_document_t *doc =
-	(axis2c_om_document_t *) malloc(sizeof(axis2c_om_document_t));
+    axis2c_om_document_t *doc = (axis2c_om_document_t *) malloc(
+										sizeof(axis2c_om_document_t));
     if (!doc)
     {
-
+		fprintf(stderr,"%d Error",AXIS2C_ERROR_OM_MEMORY_ALLOCATION);
+		return NULL;
     }
     doc->builder = builder;
     doc->root_element = root_ele;
@@ -40,81 +39,70 @@ axis2c_om_document_t *axis2c_create_om_document_with_root(axis2c_node_t *
     return doc;
 }
 
-axis2c_om_document_t *axis2c_create_om_document(axis2c_stax_om_builder_t *
-						builder)
-{
-    axis2c_om_document_t *doc =
-	(axis2c_om_document_t *) malloc(sizeof(axis2c_om_document_t));
-    if (!doc)
-    {
-	return NULL;
-    }
-    //doc->builder = builder;
-    doc->char_set_encoding = strdup(CHAR_SET_ENCODING);
-    doc->xml_version = strdup(XML_VERSION);
-    doc->done = FALSE;
-    doc->first_child = NULL;
-    doc->last_child = NULL;
-    return doc;
-}
 
 void axis2c_free_om_document(axis2c_om_document_t * doc)
 {
-
-
-
+	if(doc)
+	{
+		if(doc->char_set_encoding)
+			free(doc->char_set_encoding);
+		if(doc->xml_version)
+			free(doc->xml_version);
+		/*   */		
+	
+	free(doc);
+	}
 }
 
-axis2c_node_t *axis2c_om_document_get_document_element(axis2c_om_document_t
-						       * document)
-{
-    //while(document->root_element == NULL)
-    //{}
-    return document->root_element;
-}
 
-void axis2c_om_document_set_charset_encoding(axis2c_om_document_t *
-					     document,
-					     char *charset_encoding)
-{
-    if (document)
-    {
-	if (document->char_set_encoding)
-	    free(document->char_set_encoding);
-
-	document->char_set_encoding = strdup(charset_encoding);
-    }
-}
-
-char *axis2c_om_document_get_charset_encoding(axis2c_om_document_t *
-					      document)
+void axis2c_om_document_set_char_set_encoding(axis2c_om_document_t *document,
+					    const char *char_set_encoding)
 {
     if (document)
     {
-	return document->char_set_encoding;
+		if (document->char_set_encoding)
+		{
+			free(document->char_set_encoding);
+		}
+	document->char_set_encoding = strdup(char_set_encoding);
     }
-
-    return NULL;
 }
-
 
 void axis2c_om_document_add_child(axis2c_om_document_t * document,
 				  axis2c_node_t * child)
 {
-    if (!document || !child || child->element_type != AXIS2C_OM_ELEMENT)
-    {
-	//error
-	return;
-
-    }
+    if (!document || !child)
+    {	/* nothing to do */
+		return;
+	}
     if (document->first_child == NULL)
     {
-	document->first_child = child;
-	child->prev_sibling = NULL;
-    } else
+		document->first_child = child;
+		child->prev_sibling = NULL;
+    }
+	else
     {
-	child->prev_sibling = document->last_child;
-	document->last_child->next_sibling = child;
+		child->prev_sibling = document->last_child;
+		document->last_child->next_sibling = child;
     }
     child->next_sibling = NULL;
+}
+
+
+void axis2c_om_document_set_xmlversion(axis2c_om_document_t *document,const char *xmlversion)
+{
+	if(document)
+	{
+		if(document->xml_version)
+		{
+			free(document->xml_version);
+		}
+		document->xml_version = strdup(xmlversion);
+	}
+}
+
+
+void axis2c_om_document_build_next(axis2c_om_document_t *document)
+{
+	axis2c_stax_om_builder_next(document->builder);
 }

@@ -16,11 +16,11 @@
 
 #include <axis2c_node.h>
 
-axis2c_node_t *axis2c_create_node()
+axis2c_node_t *axis2c_node_create()
 {
     axis2c_node_t *node = (axis2c_node_t *) malloc(sizeof(axis2c_node_t));
    
-   if (!node)
+	if (!node)
     {
     	return NULL;
     }
@@ -38,19 +38,18 @@ axis2c_node_t *axis2c_create_node()
 }
 
 
-void axis2c_free_node(axis2c_node_t * node)
+void axis2c_node_free(axis2c_node_t * node)
 {
     if (!node)
 	return;
-    
-    
 }
 
 void axis2c_node_add_child(axis2c_node_t * parent, axis2c_node_t * child)
 {
     if (!parent || !child)
-	return;
-    
+	{
+		return;
+    }
     if (parent->first_child == NULL)
     {
 	    parent->first_child = child;
@@ -103,13 +102,12 @@ axis2c_node_t *axis2c_node_detach(axis2c_node_t * node_to_detach)
     node_to_detach->parent = NULL;
 
     return node_to_detach;
-
 }
 
 void axis2c_node_set_parent(axis2c_node_t * node,axis2c_node_t *parent)
 {
 	if(!parent || !node)
-	{/*null pointers */
+	{
 		return ;
 	}
 
@@ -117,7 +115,8 @@ void axis2c_node_set_parent(axis2c_node_t * node,axis2c_node_t *parent)
 	{/* same parent already exist */
 		return ;
 	}
-	/* if a new parent is assigned in  place of existing one first the node should  be detached  */
+	/* if a new parent is assigned in  place of existing */
+	/*	one first the node should  be detached  */
 
 	if(!(node->parent))
 	{
@@ -128,51 +127,51 @@ void axis2c_node_set_parent(axis2c_node_t * node,axis2c_node_t *parent)
 
 /**
  * This will insert a sibling just after the current information item
- *@param node the node in consideration
- *@param nodeto_insert the node that will be inserted
+ * @param node the node in consideration
+ * @param nodeto_insert the node that will be inserted
  */
  
-void axis2c_node_insert_sibling_after(axis2c_node_t *node,axis2c_node_t *nodeto_insert)
+void axis2c_node_insert_sibling_after(axis2c_node_t *node,
+			axis2c_node_t *node_to_insert)
 {
-	if(!node || !nodeto_insert )
+	if(!node || !node_to_insert )
 	{
 		return ;
 	}
-	nodeto_insert->parent = node->parent;
-	nodeto_insert->prev_sibling = node;
+	node_to_insert->parent = node->parent;
+	node_to_insert->prev_sibling = node;
 	
 	if(node->next_sibling)
 	{
-		node->next_sibling->prev_sibling = nodeto_insert;
+		node->next_sibling->prev_sibling = node_to_insert;
 	}
 
-    nodeto_insert->next_sibling = node->next_sibling;
-	node->next_sibling = nodeto_insert;
+    node_to_insert->next_sibling = node->next_sibling;
+	node->next_sibling = node_to_insert;
 }
 
 
-void axis2c_node_insert_sibling_before(axis2c_node_t *node,axis2c_node_t *nodeto_insert)
+void axis2c_node_insert_sibling_before(axis2c_node_t *node,
+		axis2c_node_t *node_to_insert)
 {
-	if(!node || !nodeto_insert )
+	if(!node || !node_to_insert )
 	{
 		return;
 	}
 
-	nodeto_insert->parent = node->parent;
+	node_to_insert->parent = node->parent;
 
-	nodeto_insert->prev_sibling = node->prev_sibling;
-	nodeto_insert->next_sibling = node;
+	node_to_insert->prev_sibling = node->prev_sibling;
+	node_to_insert->next_sibling = node;
 
 	if(!(node->prev_sibling))
 	{
-		node->parent->first_child = nodeto_insert;
+		node->parent->first_child = node_to_insert;
 	}
 	else
 	{
-		node->prev_sibling->next_sibling = nodeto_insert;
+		node->prev_sibling->next_sibling = node_to_insert;
 	
 	}
-	node->prev_sibling = nodeto_insert;
+	node->prev_sibling = node_to_insert;
 }
-
-

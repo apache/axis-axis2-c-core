@@ -16,22 +16,55 @@
 
 #ifndef AXIS2C_OM_DOCTYPE_H
 #define AXIS2C_OM_DOCTYPE_H
-#include <axis2c_node.h>
 
+/**
+ *@file axis2c_om_doctype.h	
+ *@brief defines struct representing xml DTD and its manipulation functions
+ */
+
+#include <axis2c_node.h>
 
 typedef struct axis2c_om_doctype_t
 {
 	char *value;
 }axis2c_om_doctype_t;
 
-axis2c_node_t *create_om_doctype(axis2c_node_t *parent,const char *value);
+/**
+ * Create a doctype struct and stores in in a node struct and returns a pointer
+ * to the axis2c_node_t struct
+ * the data_element field of node struct points to the acctual axis2c_doctype_t struct
+ * The element type of axis2c_node_t struct will be of type AXIS2C_OM_DOCTYPE
+ * @return pointer to a axis2c_node_t struct containing the doctype struct
+ */
 
-axis2c_node_t *create_empty_om_doctype(axis2c_node_t *parent);
+axis2c_node_t *axis2c_om_doctype_create(axis2c_node_t *parent,const char *value);
 
-void free_om_doctype(axis2c_om_doctype_t *om_doc);
+/**
+ *	create an axis2c_om_doctype_t struct with parent 
+ *  value field will be set to null
+ *  @return poniter to a axis2c_node_t 
+ */
 
+
+axis2c_node_t *axis2c_om_doctype_create_empty_doctype(axis2c_node_t *parent);
+
+/**
+ *	free the axis2c_om_doctype_t struct
+ *	@param om_doc pointer to axis2c_om_doctype_t struct
+ */
+void axis2c_om_doctype_free(axis2c_om_doctype_t *om_doc);
+
+/**
+ *	accessor function to get value of doctype
+ *	@param om_doc pointer to axis2c_om_doctype_t struct
+ */
 char *om_doctype_get_value(axis2c_node_t *doctype_node);
 
+/**
+ *	mutator function to get value of doctype
+ *	@param om_doc pointer to axis2c_om_doctype_t struct
+ *  @param value value to be set in om_doctype
+ */
 void om_doctype_set_value(axis2c_node_t *doctype_node,const char *value);
 
 #endif				//  AXIS2C_OM_DOCTYPE_H

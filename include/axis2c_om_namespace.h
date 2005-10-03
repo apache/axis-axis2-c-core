@@ -17,14 +17,39 @@
 #ifndef AXIS2C_OM_NAMESPACE_H
 #define AXIS2C_OM_NAMESPACE_H
 
+/**
+ * @file axis2c_om_namespace.h
+ * @brief defines axis2c_om_namespace data structure, used for constructing the om tree and its 
+ * manipulation functions
+ * represents an xml namespace
+ */
+
+#include <axis2c.h>
+
+
 typedef struct axis2c_om_namespace_t {
     char *uri;
     char *prefix;
 } axis2c_om_namespace_t;
 
+/**
+ *	creates an axis2c_om_namespace
+ *  @param axis2c_om_namesapce_t pointer to axis2c_om_namespace_t struct
+ */
 
-axis2c_om_namespace_t *axis2c_create_om_namespace(const char *uri,  const char *prefix);
-void axis2c_free_om_namespace(axis2c_om_namespace_t * ns);
-int axis2c_om_namespace_equals(axis2c_om_namespace_t * ns1, axis2c_om_namespace_t * ns2);
+axis2c_om_namespace_t *axis2c_om_namespace_create(const char *uri,  const char *prefix);
+
+/**
+ * free an om_namespcae
+ *
+ */
+void axis2c_om_namespace_free(axis2c_om_namespace_t * ns);
+/**
+ *	compares two namepsaces
+ * @param ns1 ,ns2 namespace to be compared
+ * @return true if ns1 equals ns2 , false otherwise	
+ */
+
+boolean_t axis2c_om_namespace_equals(axis2c_om_namespace_t * ns1, axis2c_om_namespace_t * ns2);
 
 #endif	// AXIS2C_OM_NAMESPACE

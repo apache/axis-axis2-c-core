@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-
-
-
-
 #include <axis2c_om_attribute.h>
 #include <string.h>
 
 
-axis2c_om_attribute_t *axis2c_create_om_attribute(const char *localname,
-						  const char *value,
-						  axis2c_om_namespace_t *
-						  ns)
+axis2c_om_attribute_t *axis2c_om_attribute_create(const char *localname,
+						  const char *value,axis2c_om_namespace_t *ns)
 {
-    axis2c_om_attribute_t *attr =
-	(axis2c_om_attribute_t *) malloc(sizeof(axis2c_om_attribute_t));
+    axis2c_om_attribute_t *attr = (axis2c_om_attribute_t *) malloc(
+										sizeof(axis2c_om_attribute_t));
     if (!attr)
     {
-
-	return NULL;
+		return NULL;
     }
 
     attr->localname = strdup(localname);
@@ -45,30 +38,37 @@ void axis2c_om_attribute_free(axis2c_om_attribute_t * attr)
 {
     if (attr)
     {
-	free(attr->localname);
-	free(attr->value);
-	/* should namespace pointer be  ...
-	 */
-
-    }
+		if(attr->localname)
+		{
+			free(attr->localname);
+		}
+		if(attr->value)
+		{
+			free(attr->value);
+		}
+		if(attr->ns)
+		{
+			axis2c_om_namespace_free(attr->ns);
+		}
+		free(attr);
+	}
 
 }
 
 axis2c_qname_t *axis2c_om_attribute_get_qname(axis2c_om_attribute_t * attr)
 {
-    axis2c_qname_t *qn = NULL;
-    if (attr)
-    {
-	if (attr->ns)
+    axis2c_qname_t *qname = NULL;
+    if (!attr)
 	{
-	    qn = axis2c_create_qname(attr->localname, attr->ns->uri,
-				     attr->ns->prefix);
-	} else
-	{
-	    qn = axis2c_create_qname(attr->localname, NULL, NULL);
+		return NULL;
 	}
-	return qn;
-    }
-    return NULL;
-
+		if (attr->ns)
+		{
+	    	qname = axis2c_qname_create(attr->localname, attr->ns->uri,attr->ns->prefix);
+		}
+		else
+		{
+		    qname = axis2c_qname_create(attr->localname, NULL, NULL);
+		}
+		return qname;
 }

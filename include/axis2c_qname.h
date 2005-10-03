@@ -17,6 +17,14 @@
 #ifndef AXISC_QNAME_H
 #define AXISC_QNAME_H
 
+
+/**
+ * @file axis2c_qname.h
+ * @brief represents a qualified name
+ */
+
+#include <axis2c.h>
+
 static const char XML_NAMESPACE_URI[] ="http://www.w3c.org/XML/1998/namespace";
 
 typedef struct axis2c_qname_t{
@@ -26,8 +34,22 @@ typedef struct axis2c_qname_t{
 	
 }axis2c_qname_t;
 
-axis2c_qname_t *axis2c_create_qname(const char *localname,const char *ns_uri,const char *prefix);
-void axis2c_free_qname(axis2c_qname_t *qn);
+/**
+ *	creates a qname struct
+ *
+ */
+
+axis2c_qname_t *axis2c_qname_create(const char *localname,const char *ns_uri,const char *prefix);
+/**
+ * Free a qname struct
+ */
+
+void axis2c_qname_free(axis2c_qname_t *qn);
+/**
+ *	compare tow qname structs and returns true (1) if equals and false (0) otherwise
+ *
+ */
+
+boolean_t axis2c_qname_equals(axis2c_qname_t *qn1,axis2c_qname_t *qn2);
 
 #endif // AXISC_QNAME_H
-

@@ -15,36 +15,50 @@
  */
 
 #include <axis2c_om_namespace.h>
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <axis2c.h>
 
 
 
-axis2c_om_namespace_t *axis2c_create_om_namespace(const char *uri,
+axis2c_om_namespace_t *axis2c_om_namespace_create(const char *uri,
 						  const char *prefix)
 {
-    axis2c_om_namespace_t *ns =
-	(axis2c_om_namespace_t *) malloc(sizeof(axis2c_om_namespace_t));
+    axis2c_om_namespace_t *ns = (axis2c_om_namespace_t *) malloc(
+										sizeof(axis2c_om_namespace_t));
     if (!ns)
     {
-	//fprintf(stderr,"Couldnot allocate momery");
-	return NULL;
+		return NULL;
     }
     ns->uri = strdup(uri);
     ns->prefix = strdup(prefix);
+	if(!(ns->prefix) || !(ns->uri))
+	{
+		free(ns);
+		return NULL;	
+	}	
     return ns;
 }
 
 
 
-void axis2c_free_om_namespace(axis2c_om_namespace_t * ns)
+void axis2c_om_namespace_free(axis2c_om_namespace_t * ns)
 {
     if (ns)
-	free(ns);
+	{ 
+		if(ns->prefix)
+		{
+			free(ns->prefix);
+		}
+		if(ns->uri)
+		{
+			free(ns->uri);
+		}
+		free(ns);
+	}
 }
 
-int axis2c_om_namespace_equals(axis2c_om_namespace_t * ns1,
+boolean_t axis2c_om_namespace_equals(axis2c_om_namespace_t * ns1,
 			       axis2c_om_namespace_t * ns2)
 {
     int uris_differ = 0;
@@ -54,14 +68,14 @@ int axis2c_om_namespace_equals(axis2c_om_namespace_t * ns1,
 	return 0;
 
     if (ns1->uri && ns2->uri)
-	uris_differ = strcmp(ns1->uri, ns2->uri);
+		uris_differ = strcmp(ns1->uri, ns2->uri);
     else
-	uris_differ = (ns1->uri || ns2->uri);
+		uris_differ = (ns1->uri || ns2->uri);
 
     if (ns1->prefix && ns2->prefix)
-	prefixes_differ = strcmp(ns1->prefix, ns2->prefix);
+		prefixes_differ = strcmp(ns1->prefix, ns2->prefix);
     else
-	prefixes_differ = (ns1->prefix || ns2->prefix);
+		prefixes_differ = (ns1->prefix || ns2->prefix);
 
     return (!uris_differ && !prefixes_differ);
 }

@@ -16,6 +16,12 @@
 
 #ifndef AXIS2C_OM_PI_H
 #define AXIS2C_OM_PI_H
+
+/**
+ * @file axis2c_om_processing_instruction.h
+ * @brief represents a xml processing instruction also known as PI
+ */
+
 #include <axis2c_node.h>
 
 typedef struct axis2c_om_processing_instruction_t {
@@ -23,27 +29,28 @@ typedef struct axis2c_om_processing_instruction_t {
     char *value;
 } axis2c_om_processing_instruction_t;
 
-axis2c_node_t
-    *axis2c_create_om_processing_instruction_with_parent(axis2c_node_t *
-							 parent,
-							 const char
-							 *target,
-							 const char
-							 *value);
+/**
+ *  creates axis2c_om_processing_instruction and 
+ *	@return a pointer to axis2c_node_t struct containing PI
+ */ 
 
-axis2c_node_t *axis2c_create_om_processing_instruction(axis2c_node_t *
-						       parent);
+axis2c_node_t *axis2c_om_processing_instruction_create(axis2c_node_t *parent
+					,const char *target,const char *value);
+/**
+ *  creates empty axis2c_om_processing_instruction and 
+ *	@return a pointer to axis2c_node_t struct containing PI
+ */
 
-void axis2c_om_processing_instruction_serialize_with_cache(FILE *
-							   output_stream);
-
-void
-axis2c_om_processing_instruction_discard(axis2c_om_processing_instruction_t
-					 * om_pi);
+axis2c_node_t *axis2c_create_om_processing_instruction_create_empty(axis2c_node_t *parent);
 
 
 
+void axis2c_om_processing_instruction_serialize_with_cache(FILE *output_stream);
+/**
+ *
+ *
+ */
 
-
+void axis2c_om_processing_instruction_discard(axis2c_om_processing_instruction_t *om_pi);
 
 #endif				// AXIS2C_OM_PI_H

@@ -17,21 +17,22 @@
 #include <axis2c_om_text.h>
 #include <string.h>
 #include <axis2c_node.h>
+#include <axis2c_errno.h>
 
-axis2c_node_t *axis2c_create_om_text(const char *value)
+axis2c_node_t *axis2c_create_om_text(axis2c_node_t *parent,const char *value)
 {
     axis2c_om_text_t *text;
-    axis2c_node_t *node = axis2c_create_node();
+    axis2c_node_t *node = axis2c_node_create();
     if (!node)
     {
-	// error handling
-	return NULL;
+		fprintf(stderr,"%d Error",AXIS2C_ERROR_OM_MEMORY_ALLOCATION);
+		return NULL;
     }
     text = (axis2c_om_text_t *) malloc(sizeof(axis2c_om_text_t));
     if (!text)
     {
-	// error handling
-	return NULL;
+		fprintf(stderr,"%d Error",AXIS2C_ERROR_OM_MEMORY_ALLOCATION);
+		return NULL;
     }
     text->value = strdup(value);
     text->attribute = NULL;
@@ -39,38 +40,28 @@ axis2c_node_t *axis2c_create_om_text(const char *value)
     text->mime_type = NULL;
     node->data_element = text;
     node->element_type = AXIS2C_OM_TEXT;
+
+	if(parent && parent->element_type == AXIS2C_OM_ELEMENT)
+	{
+		node->done = true;
+		node->parent = parent;
+		axis2c_node_add_child(parent,node);
+	}
     return node;
 }
 
-axis2c_node_t *axis2c_create_om_text_with_parent(axis2c_node_t * parent,
-						 const char *value)
-{
-    axis2c_node_t *node;
-    if (!parent)
-	return NULL;
-    node = axis2c_create_om_text(value);
-    if (!node)
-    {
-	// error handling
-	return NULL;
-    }
-    node->done = TRUE;
-    // set parent as the parent of this text node
-    node->parent = parent;
-    axis2c_node_add_child(parent, node);
-    return node;
-}
+
 
 char *axis2c_om_text_get_text(axis2c_om_text_t * text)
 {
     if (!text)
     {
-	// error 
-	return NULL;
+		return NULL;
     }
     if (text->value)
-	return text->value;
-
+	{
+		return text->value;
+	}
     else
     {
 	//MTOM handling logic should go hear

@@ -17,13 +17,20 @@
 #ifndef AXIS2C_NODE_H
 #define AXIS2C_NODE_H
 
+/**
+ * @file axis2c_node.h
+ * @brief defines node data structure, used for constructing the om tree and its 
+ *	manipulation functions
+ */
+
+
+#include <axis2c.h>
 #include <apr.h>
 #include <apr_pools.h>
 #include <xmlpullparser.h>
 
-//static apr_pool_t *om_pool; // a memory pool to be used for this module
+typedef struct axis2c_stax_om_builder_s axis2c_stax_om_builder_t;
 
-typedef struct axis2c_stax_om_builder_s  axis2c_stax_om_builder_t;
 
 typedef enum axis2c_om_types_t {
     AXIS2C_OM_INVALID = -1,
@@ -37,12 +44,17 @@ typedef enum axis2c_om_types_t {
 	AXIS2C_OM_TEXT = 80
 } axis2c_om_types_t;
 
-/*
+/**
 * This is the structure that defines a node in om tree 
-* parent   - parent node if one is available
-* parser   - carries a pointer to the XML_PullParser 
-* element_type - the type of the element one of omtypes
-* data_element  - stores the structs created for storing xml 
+* @param parent   - parent node if one is available
+* @param parser   - carries a pointer to the XML_PullParser 
+* @param element_type - the type of the element one of omtypes
+* @param data_element  - stores the structs created for storing xml elements
+*						e.g axis2c_om_element_t axis2c_om_text_t  
+*
+* we keep pointers parent , previous sibling , next sibling , 
+* first child and last child for constructing and navigating the tree
+*
 */
 typedef struct axis2c_node_t {
 	struct axis2c_node_t *parent;
@@ -52,36 +64,60 @@ typedef struct axis2c_node_t {
 	struct axis2c_node_t *last_child;
 	axis2c_stax_om_builder_t *builder;
 	axis2c_om_types_t element_type;
-	int done;
+	boolean_t done;
 	void* data_element;
 } axis2c_node_t;
 
+/**
+ * Create a node struct.
+ * @return a node or NULL if there isn't enough memory
+ */
 
-//create a node and allocate memory
-axis2c_node_t *axis2c_create_node();
+axis2c_node_t *axis2c_node_create();
 
-//free a given nod
-void axis2c_free_node(axis2c_node_t *node);
+/**
+ * destroy the node .
+ * @param node to free
+ */
+void axis2c_node_free(axis2c_node_t *node);
 
-// add a node as a child of parent node
+/**
+ * adds a child node to this node .
+ * @param parent  parent node
+ * @param child   child node
+ */
+
+
 void axis2c_node_add_child(axis2c_node_t *parent,axis2c_node_t *child);
 
-// detach a node form the parent and reset the other links
+/**
+ *	detach a node from the tree and resets the links
+ *	@param node_to_detach the node to be detached
+ *
+ */
+
 axis2c_node_t *axis2c_node_detach(axis2c_node_t *node_to_detach);
 
-// insert a sibling node 
-void axis2c_node_insert_sibling_after(axis2c_node_t *current_ele,axis2c_node_t *nodeto_insert);
+/**
+ *	inserts a sibling node after the current node
+ *	@param current_node  the node in consideration 
+ *  @param node_to_insert the node that will be inserted 
+ */
+
+void axis2c_node_insert_sibling_after(axis2c_node_t *current_nodee,axis2c_node_t *node_to_insert);
 
 void axis2c_node_insert_sibling_before(axis2c_node_t *current_ele,axis2c_node_t *nodeto_insert);
 
-// build the tree 
-int axis2c_node_build(axis2c_node_t *node);
+
+//int axis2c_node_build(axis2c_node_t *node);
+
+/**
+ *	set a parent node to a given node
+ * @param node 
+ * @param parent the node that will be set as parent
+ */
 
 void axis2c_node_set_parent(axis2c_node_t *node,axis2c_node_t *parent);
 
-axis2c_node_t *axis2c_node_get_next_sibling(axis2c_node_t *node);
 
-axis2c_node_t *axis2c_node_set_next_sibling(axis2c_node_t *node);
-
-#endif // AXIS2C_NODE
-
+#endif // AXIS2C_NODE_H
