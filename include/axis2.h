@@ -1,8 +1,8 @@
-#ifndef AXIS2C_H
-#define AXIS2C_H
+#ifndef AXIS2_H
+#define AXIS2_H
 
 /**
- * @file axis2c.h
+ * @file axis2.h
  * @brief Axis2c specific global declarations
  */
 
@@ -13,6 +13,6 @@
 enum boolean_s {false, true};
 typedef enum boolean_s boolean_t; 
 
-apr_hash_t *axis2c_apr_hash_make(apr_pool_t *om_pool);                                        
+apr_hash_t *axis2_apr_hash_make(apr_pool_t *om_pool);                                        
 
-#endif /* AXIS2C_H */
+#endif /* AXIS2_H */
