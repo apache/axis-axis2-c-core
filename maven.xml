@@ -24,10 +24,10 @@
 	<property environment="env"/>
 	<property name="apr.home" value="${env.APR_HOME}"/>
 	<property name="cutest.home" value="${env.CUTEST_HOME}"/>
-	<property name="axis2c.include" value="../../../"/>
+	<property name="axis2c.home" value="${env.AXIS2C_HOME}"/>
     <goal name="axis2c:build-all">
         <maven:reactor  basedir="${basedir}"
-                        includes="modules/core/project.xml,modules/xml/project.xml"
+                        includes="modules/common/project.xml,modules/core/project.xml,modules/xml/project.xml"
                         goals="build-module"
                         banner="Building Axis2C"
                         ignoreFailures="false"/>
