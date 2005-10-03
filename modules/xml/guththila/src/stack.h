@@ -18,8 +18,9 @@
  */
 
 
-#ifndef __STACK_INCLUDED__
-#define __STACK_INCLUDED__
+#ifndef STACK_H
+#define STACK_H
+
 #include "token.h"
 #include "attribute.h"
 #include "namespace.h"
@@ -34,7 +35,7 @@ enum element_types
 
 typedef struct element ELEMENT;
 
-struct element
+typedef struct element
 {
   TOKEN *token;
   ATTRIBUTE *attribute;
@@ -67,4 +68,4 @@ void Stack_clear (STACK *st);
 ELEMENT *Stack_get (STACK *st, int i);
 
 
-#endif /* end of__STACK_INCLUDED__ */
+#endif /* STACK_H */

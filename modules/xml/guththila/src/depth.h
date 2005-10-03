@@ -18,8 +18,8 @@
  */
 
 
-#ifndef __DEPTH__INCLUDED__
-#define __DEPTH__INCLUDED__
+#ifndef DEPTH_H
+#define DEPTH_H
 
 typedef struct depth
 {
@@ -29,4 +29,4 @@ typedef struct depth
 }DEPTH;
 
 
-#endif /* end DEPTH__INCLUDED */
+#endif /* DEPTH_H*/

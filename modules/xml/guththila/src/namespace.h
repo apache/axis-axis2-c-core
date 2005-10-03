@@ -18,8 +18,8 @@
  */
 
 
-#ifndef __NAMESPACE__INCLUDED__
-#define __NAMESPACE__INCLUDED__
+#ifndef NAMESPACE_H
+#define NAMESPACE_H
 #include "token.h"
 
 typedef struct namespace
@@ -32,4 +32,4 @@ typedef struct namespace
 
 
 
-#endif
+#endif /* NAMESPACE_H */

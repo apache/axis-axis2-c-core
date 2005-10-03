@@ -21,6 +21,7 @@
 #ifndef __BUFFER__INCLUDED__
 #define __BUFFER__INCLUDED__
 #include <stdlib.h>
+
 struct Buffer
 {
   int size;
@@ -29,6 +30,7 @@ struct Buffer
   int offset;
   char *buff;
 };
+
 typedef struct Buffer BUFFER;
 BUFFER *Buffer_createBuffer (int size);
 void Buffer_freeBuffer (BUFFER *name);

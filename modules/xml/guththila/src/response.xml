@@ -1,7 +1,7 @@
 <!-- this is a comments -->
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <SOAP-ENV:Body>
-<ns1:addResponse xmlns:ns1="http://localhost/axis/Calculator">
+<ns1:addResponse testAttribute = "real test" xmlns:ns1="http://localhost/axis/Calculator">
 <!-- this is a comments	
 now we want to test it more
 Because each XML entity not accompanied by external encoding information and not in  UTF-8 and UTF-16 encoding must begin with an XML encoding declaration, in which the first characters must be -

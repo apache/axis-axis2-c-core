@@ -2,7 +2,7 @@
 int main (int argc, char *argv[])
 {
   READER *red;
-  FILE *fp = fopen (argv[1], "r");
+  FILE *fp = fopen ("response.xml", "r");
   red = Reader_createReader (fp);
   XML_PullParser *parser = XML_PullParser_createPullParser (red);
   XML_PullParser_read (parser);
@@ -51,7 +51,9 @@ int main (int argc, char *argv[])
 	    ia = XML_PullParser_getAttributeCount (parser);
 	    for ( ; ia > 0; ia--)
 	      {
-		p = XML_PullParser_getAttributePrefix_by_number (parser, ia);
+		/* p = XML_PullParser_getAttributePrefix_by_number
+		   (parser, ia); */
+		p = XML_PullParser_getAttributeNamespace_by_number (parser, ia);
 		if (p)
 		  {
 		    printf (" %s:", p);

@@ -18,8 +18,8 @@
  */
 
 
-#ifndef __READER__INCLUDED__
-#define __READER__INCLUDED__
+#ifndef READER_H
+#define READER_H
 #include <stdio.h>
 #include <stdlib.h>
 #include "buffer.h"
@@ -36,4 +36,4 @@ int Reader_read (char *buffer, int offset, int length, READER *r);
 int Reader_setInputStream (READER *r, FILE *fp);
 void Reader_freeReader (READER *r);
 
-#endif
+#endif /* READER_H */

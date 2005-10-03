@@ -18,8 +18,8 @@
  */
 
 
-#ifndef __TOKEN__INCLUDED__
-#define __TOKEN__INCLUDED__
+#ifndef TOKEN_H
+#define TOKEN_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -64,4 +64,5 @@ char *Token_convert_utf16_to_utf8 (char *buffer, int length);
 int Token_length_utf16 (unsigned int utf16_ch);
 char *Token_build_utf8 (unsigned int utf16_ch, int length);
 char *Token_char_ref (char *buffer);
-#endif
+
+#endif /* TOKEN_H */

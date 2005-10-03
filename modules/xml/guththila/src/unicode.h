@@ -18,8 +18,8 @@
  */
 
 
-#ifndef __UNICODE__INCLUDED__
-#define __UNICODE__INCLUDED__
+#ifndef UNICODE_H
+#define UNICODE_H
 
 typedef unsigned char UTF8_char;
 typedef unsigned short UTF16_char;
@@ -44,4 +44,4 @@ char * strdupUnicode (char *, int);
 #endif /* __UNICODE__FUNCTIONS__ */
 
 
-#endif /* __UNICODE__INCLUDED__ */
+#endif /* UNICODE_H */

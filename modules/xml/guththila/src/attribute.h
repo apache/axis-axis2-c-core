@@ -17,8 +17,8 @@
  * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)	
  */
 
-#ifndef __ATTRIBUTE_INCLUDED__
-#define __ATTRIBUTE_INCLUDED__
+#ifndef ATTRIBUTE_H
+#define ATTRIBUTE_H
 #include "token.h"
 
 typedef struct attribute
@@ -28,4 +28,4 @@ typedef struct attribute
   TOKEN *value;
 }ATTRIBUTE;
 
-#endif /* finish Attribute included */
+#endif /* ATTRIBUTE_H */
