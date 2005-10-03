@@ -6,6 +6,7 @@
 int
 main ()
 {
+    printf("START\n");
     if ( apr_initialize () != APR_SUCCESS )
         return -1;
     axis2_node_t *ele1, *ele2, *ele3;
@@ -28,9 +29,5 @@ main ()
 
     axis2_node_add_child (ele1, ele2);
 
-
-
-
-
-
+    printf("DONE\n");
 }

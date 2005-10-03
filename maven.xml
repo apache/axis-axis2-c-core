@@ -27,7 +27,7 @@
 	<property name="axis2.home" value="${env.AXIS2C_HOME}"/>
     <goal name="axis2:build-all">
         <maven:reactor  basedir="${basedir}"
-                        includes="modules/common/project.xml,modules/core/project.xml,modules/xml/project.xml"
+                        includes="modules/common/project.xml,modules/core/project.xml,modules/xml/project.xml,modules/test/project.xml"
                         goals="build-module"
                         banner="Building Axis2C"
                         ignoreFailures="false"/>
