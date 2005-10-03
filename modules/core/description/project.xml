@@ -19,9 +19,9 @@
 
 <project>
   <extend>../../../project.xml</extend>
-  <id>axis2c-core-description</id>
+  <id>axis2-core-description</id>
   <name>DESCRIPTION module</name>
-  <package>axis2c.core.description.*</package>
+  <package>axis2.core.description.*</package>
   <description>DESCRIPTION project.</description>
   <shortDescription>DESCRIPTION project</shortDescription>
 

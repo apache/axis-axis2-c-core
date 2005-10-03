@@ -19,9 +19,9 @@
 
 <project>
   <extend>../../../project.xml</extend>
-  <id>axis2c-xml-soap</id>
+  <id>axis2-xml-soap</id>
   <name>SOAP module</name>
-  <package>axis2c.xml.soap.*</package>
+  <package>axis2.xml.soap.*</package>
   <description>SOAP project.</description>
   <shortDescription>SOAP project</shortDescription>
 

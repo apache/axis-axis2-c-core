@@ -45,7 +45,7 @@
     <issueTrackingUrl>http://issues.apache.org/jira/browse/AXISCPP</issueTrackingUrl>
     <siteAddress>ws.apache.org</siteAddress>
     <siteDirectory/>
-    <distributionDirectory>/axis2c/dist/${pom.artifactId}/</distributionDirectory>
+    <distributionDirectory>/axis2/dist/${pom.artifactId}/</distributionDirectory>
 
     <!--
     <repository>

@@ -19,9 +19,9 @@
 
 <project>
   <extend>../../../project.xml</extend>
-  <id>axis2c-core-engine</id>
+  <id>axis2-core-engine</id>
   <name>ENGINE module</name>
-  <package>axis2c.core.engine.*</package>
+  <package>axis2.core.engine.*</package>
   <description>ENGINE project.</description>
   <shortDescription>ENGINE project</shortDescription>
 </project>

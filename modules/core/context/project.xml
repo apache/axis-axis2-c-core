@@ -19,9 +19,9 @@
 
 <project>
   <extend>../../../project.xml</extend>
-  <id>axis2c-core-context</id>
+  <id>axis2-core-context</id>
   <name>CONTEXT module</name>
-  <package>axis2c.core.context.*</package>
+  <package>axis2.core.context.*</package>
   <description>CONTEXT project.</description>
   <shortDescription>CONTEXT project</shortDescription>
 

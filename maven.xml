@@ -17,15 +17,15 @@
  */
 -->
 
-<project    default="axis2c:build-all"
+<project    default="axis2:build-all"
             xmlns:j="jelly:core"
             xmlns:maven="jelly:maven">
         
 	<property environment="env"/>
 	<property name="apr.home" value="${env.APR_HOME}"/>
 	<property name="cutest.home" value="${env.CUTEST_HOME}"/>
-	<property name="axis2c.home" value="${env.AXIS2C_HOME}"/>
-    <goal name="axis2c:build-all">
+	<property name="axis2.home" value="${env.AXIS2C_HOME}"/>
+    <goal name="axis2:build-all">
         <maven:reactor  basedir="${basedir}"
                         includes="modules/common/project.xml,modules/core/project.xml,modules/xml/project.xml"
                         goals="build-module"

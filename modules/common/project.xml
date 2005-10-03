@@ -19,9 +19,9 @@
 
 <project>
   <extend>../../project.xml</extend>
-  <id>axis2c-common</id>
+  <id>axis2-common</id>
   <name>COMMON module</name>
-  <package>axis2c.common.*</package>
+  <package>axis2.common.*</package>
   <description>COMMON module project.</description>
   <shortDescription>COMMON module project</shortDescription>
 

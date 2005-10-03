@@ -19,9 +19,9 @@
 
 <project>
   <extend>../../../project.xml</extend>
-  <id>axis2c-xml-guththila</id>
+  <id>axis2-xml-guththila</id>
   <name>OM Framework</name>
-  <package>axis2c.xml.guththila.*</package>
+  <package>axis2.xml.guththila.*</package>
   <description>Guththila project.</description>
   <shortDescription>Guththila project</shortDescription>
 

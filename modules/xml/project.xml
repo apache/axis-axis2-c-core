@@ -19,9 +19,9 @@
 
 <project>
   <extend>../../project.xml</extend>
-  <id>axis2c-xml</id>
+  <id>axis2-xml</id>
   <name>XML module</name>
-  <package>axis2c.xml.*</package>
+  <package>axis2.xml.*</package>
   <description>XML module project.</description>
   <shortDescription>XML module project</shortDescription>
 

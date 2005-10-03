@@ -19,9 +19,9 @@
 
 <project>
   <extend>../../../project.xml</extend>
-  <id>axis2c-xml-om</id>
+  <id>axis2-xml-om</id>
   <name>OM Framework</name>
-  <package>axis2c.xml.om.*</package>
+  <package>axis2.xml.om.*</package>
   <description>OM project.</description>
   <shortDescription>OM project</shortDescription>
 
