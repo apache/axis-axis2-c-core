@@ -19,6 +19,7 @@
 
 #include <axis2_om_namespace.h>
 #include <axis2_om_attribute.h>
+#include <axis2_om_output.h>
 #include <axis2_node.h>
 #include <apr.h>
 #include <apr_hash.h>
@@ -133,6 +134,8 @@ void axis2_om_element_set_localname(axis2_node_t *element_node,const char *local
  */
 char *axis2_om_element_get_localname(axis2_node_t *element_node);
 
+int axis2_om_element_serialize_start_part(axis2_om_element_t *element_node, axis2_om_output_t* om_output);
 
+int axis2_om_element_serialize_end_part(axis2_om_element_t *element_node, axis2_om_output_t* om_output);
 
 #endif	// AXIS2_OM_ELEMENT_H
