@@ -1,26 +1,109 @@
-You need to set the environment variables CUTEST_HOME and APR_HOME.
-cutest is used for unit testing and apr is the portable runtime used
-e.g.:
-export CUTEST_HOME=/usr/local/apps/cutest
-export APR_HOME=/usr/local
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <title>No title</title>
+  <meta name="generator" content="amaya 9.2.2, see http://www.w3.org/Amaya/"
+  />
+</head>
 
-Axis2c use maven two with nar plugin instead of the native plugin.
-For further information about nar visit
+<body>
+<h2 style="text-align: center; text-indent: 4pt">Axis2/C Maven build
+guide</h2>
 
-http://java.freehep.org/freehep-nar-plugin/index.html
+<p style="text-align: justify; text-indent: 4pt">You need to set the
+environment variables CUTEST_HOME and APR_HOME.</p>
 
-You need to download nar plugin(freehep-nar-plugin-0.2.jar) and copy
-it into maven plugin folder.
+<p style="text-align: justify; text-indent: 4pt">cutest is used for unit
+testing and apr is the portable runtime used</p>
 
-You also need to copy freehep-download-plugin (freehep-download-plugin-1.0.2.jar) into
-.maven/repositoy/freehep/plugin folder(If it does not automatically download for you)
+<p style="text-align: justify; text-indent: 4pt">e.g.:</p>
 
-Also copy cpptasks jar (cpptasks-1.0b3-patched-1.6.jar) into
-.maven/repositoy/ant-contrib/jars folder (If it does not automatically download for you)
+<p style="text-align: justify; text-indent: 4pt"><code>export
+CUTEST_HOME=/usr/local/apps/cutest</code></p>
 
-If your platform is other than linux you need to change the main
-project.properties (residing at the project root folder) file according 
-to your environment. For help to do that visit 
+<p style="text-align: justify; text-indent: 4pt"><code>export
+APR_HOME=/usr/local</code></p>
 
-see http://java.freehep.org/freehep-nar-plugin/properties.html
+<p style="text-align: justify; text-indent: 4pt"></p>
 
+<p style="text-align: justify; text-indent: 4pt">You also need to set an
+environment variable called AXISC_HOME</p>
+
+<p style="text-align: justify; text-indent: 4pt">which points to the path
+where you build the source.(We will try</p>
+
+<p style="text-align: justify; text-indent: 4pt">to avoid this requirement by
+taking the relative paths in maven</p>
+
+<p style="text-align: justify; text-indent: 4pt">build. But currently trying
+to do so didn't work)</p>
+
+<p style="text-align: justify; text-indent: 4pt"></p>
+
+<p style="text-align: justify; text-indent: 4pt">Axis2c use maven two with
+nar plugin instead of the native plugin.</p>
+
+<p style="text-align: justify; text-indent: 4pt">For further information
+about nar visit</p>
+
+<p style="text-align: justify; text-indent: 4pt"></p>
+
+<p style="text-align: justify; text-indent: 4pt"><a
+href="http://java.freehep.org/freehep-nar-plugin/index.html">http://java.freehep.org/freehep-nar-plugin/index.html</a></p>
+
+<p style="text-align: justify; text-indent: 4pt"></p>
+
+<p style="text-align: justify; text-indent: 4pt">You need to download nar
+plugin(freehep-nar-plugin-0.2.jar) and copy</p>
+
+<p style="text-align: justify; text-indent: 4pt">it into maven plugin
+folder.</p>
+
+<p style="text-align: justify; text-indent: 4pt"></p>
+
+<p style="text-align: justify; text-indent: 4pt">You also need to copy
+freehep-download-plugin (freehep-download-plugin-1.0.2.jar) into</p>
+
+<p
+style="text-align: justify; text-indent: 4pt">.maven/repositoy/freehep/plugin
+folder(If it does not automatically download for you)</p>
+
+<p style="text-align: justify; text-indent: 4pt"></p>
+
+<p style="text-align: justify; text-indent: 4pt">Also copy cpptasks jar
+(cpptasks-1.0b3-patched-1.6.jar) into</p>
+
+<p
+style="text-align: justify; text-indent: 4pt">.maven/repositoy/ant-contrib/jars
+folder (If it does not automatically download for you)</p>
+
+<p style="text-align: justify; text-indent: 4pt"></p>
+
+<p style="text-align: justify; text-indent: 4pt">If your platform is other
+than linux you need to change the main</p>
+
+<p style="text-align: justify; text-indent: 4pt">project.properties (residing
+at the project root folder) file according</p>
+
+<p style="text-align: justify; text-indent: 4pt">to your environment. For
+help to do that visit</p>
+
+<p style="text-align: justify; text-indent: 4pt"></p>
+
+<p style="text-align: justify; text-indent: 4pt">see</p>
+
+<p><a
+href="http://java.freehep.org/freehep-nar-plugin/properties.html">http://java.freehep.org/freehep-nar-plugin/properties.html</a></p>
+
+<p></p>
+
+<p style="text-align: justify; text-indent: 4pt"></p>
+
+<p></p>
+
+<p style="text-align: justify; text-indent: 4pt"></p>
+</body>
+</html>
