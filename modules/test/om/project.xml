@@ -19,11 +19,11 @@
 
 <project>
   <extend>../../../project.xml</extend>
-  <id>axis2-xml-om</id>
-  <name>OM Framework</name>
+  <id>axis2-test-om</id>
+  <name>OM Test Framework</name>
   <package>axis2.xml.om.*</package>
-  <description>OM project.</description>
-  <shortDescription>OM project</shortDescription>
+  <description>OM Test project.</description>
+  <shortDescription>OM Test project</shortDescription>
 
   <dependencies>
      <!--dependency>
