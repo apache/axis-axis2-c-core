@@ -19,11 +19,15 @@
 
 #include <apr_strings.h>
   
-  guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(FILE* writer, char* encoding, int prefix_defaulting)
+  guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(FILE* writer, const char* encoding, int prefix_defaulting)
 {
+    if (!writer)
+        return 0;
+    
     guththila_xml_stream_writer_t *stream_writer = (guththila_xml_stream_writer_t*) malloc (sizeof (guththila_xml_stream_writer_t));
     stream_writer->writer = writer;
-    stream_writer->encoding = encoding;
+    if (encoding)
+        stream_writer->encoding = encoding;
     stream_writer->prefix_defaulting = prefix_defaulting;
 
       //initialize APR pool, we ned this pool to allocate memory to hash map and stack

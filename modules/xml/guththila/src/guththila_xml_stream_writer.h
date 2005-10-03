@@ -49,7 +49,7 @@ typedef struct
     int empty_element;
 } guththila_xml_stream_writer_t;
                    
-guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(FILE* writer, char* encoding, int is_prefix_defaulting);
+guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(FILE* writer, const char* encoding, int is_prefix_defaulting);
   
   int guththila_xml_stream_writer_end_start_element(guththila_xml_stream_writer_t* stream_writer);
   
