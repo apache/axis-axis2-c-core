@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+ 
 #include <axis2_om_processing_instruction.h>
-#include <axis2_node.h>
+#include <axis2_om_node.h>
 #include <stdlib.h>
 #include <axis2_errno.h>
 
-/**
-*	allocate memory for processing instruction structure and assign the values;
-*	This structure is set to axis2_node_t structure and returned.
-*
-*/
-
-axis2_node_t *axis2_create_om_processing_instruction_with_parent(
-		axis2_node_t *parent,const char *target,const char *value)
+axis2_om_processing_instruction_t *axis2_om_processing_instruction_create(axis2_om_node_t *parent,const char *target,const char *value,axis2_om_node_t *pinode)
 {
     axis2_om_processing_instruction_t *pi = NULL;
-    axis2_node_t *pi_node = axis2_node_create();
+    axis2_om_node_t *pi_node = axis2_node_create();
     
 	if (pi_node)
     {
@@ -59,12 +52,15 @@ axis2_node_t *axis2_create_om_processing_instruction_with_parent(
 		pi_node->parent = parent;
 		axis2_node_add_child(parent, pi_node);
     }
-    return pi_node;
+	pinode = pi_node;
+	
+    return pi;
 }
 
-axis2_node_t *axis2_create_empty_om_processing_instruction(axis2_node_t *parent)
+axis2_om_processing_instruction_t *axis2_om_processing_instruction_create_empty(axis2_om_node_t *parent
+								,axis2_om_node_t *node)
 {
-    axis2_node_t *pi_node = NULL;
+    axis2_om_node_t *pi_node = NULL;
     axis2_om_processing_instruction_t *pi = NULL;
     pi_node = axis2_node_create();
     if (pi_node)
@@ -87,11 +83,12 @@ axis2_node_t *axis2_create_empty_om_processing_instruction(axis2_node_t *parent)
 		pi_node->parent = parent;
 		axis2_node_add_child(parent, pi_node);
     }
-    return pi_node;
+	node = pi_node;
+    return pi;
 }
 
 
-char *axis2_om_processing_instruction_get_value(axis2_node_t * pi_node)
+char *axis2_om_processing_instruction_get_value(axis2_om_node_t * pi_node)
 {
     if (!pi_node || pi_node->element_type !=AXIS2_OM_PROCESSING_INSTRUCTION)
     {
@@ -100,7 +97,7 @@ char *axis2_om_processing_instruction_get_value(axis2_node_t * pi_node)
     return ((axis2_om_processing_instruction_t *)(pi_node->data_element))->value;
 }
 
-char *axis2_om_processing_instruction_get_target(axis2_node_t * pi_node)
+char *axis2_om_processing_instruction_get_target(axis2_om_node_t * pi_node)
 {
     if (!pi_node || pi_node->element_type !=AXIS2_OM_PROCESSING_INSTRUCTION)
     {
@@ -109,7 +106,7 @@ char *axis2_om_processing_instruction_get_target(axis2_node_t * pi_node)
     return ((axis2_om_processing_instruction_t *)(pi_node->data_element))->target;
 }
 
-void axis2_om_processing_instruction_set_value(axis2_node_t * pi_node,
+void axis2_om_processing_instruction_set_value(axis2_om_node_t * pi_node,
 						const char *value)
 {
     axis2_om_processing_instruction_t *pi = NULL;
@@ -126,7 +123,7 @@ void axis2_om_processing_instruction_set_value(axis2_node_t * pi_node,
     pi = NULL;
 }
 
-void axis2_om_processing_instruction_set_target(axis2_node_t * pi_node,
+void axis2_om_processing_instruction_set_target(axis2_om_node_t * pi_node,
 						 const char *value)
 {
     axis2_om_processing_instruction_t *pi = NULL;

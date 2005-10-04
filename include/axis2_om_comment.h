@@ -31,12 +31,15 @@ typedef struct axis2_om_comment_t
 
 /**
  * Create a comment struct and stores in in a node struct and returns a pointer
- * to the axis2_node_t struct
+ * to the axis2_om_comment_t struct
  * the data_element field of node struct points to the acctual axis2_comment struct
  * The element type of axis2_node_t struct will be of type AXIS2_OM_COMMENT
+ * @param value value of the comment
+ * @param comment_node This is an out parameter, stores the acctual om_comment in
+ *        this node struct pointer
  * @return pointer to a node_t struct containing the comment struct
  */
-axis2_node_t *axis2_om_comment_create(const char *value);
+axis2_om_comment_t *axis2_om_comment_create(const char *value,axis2_om_node_t *comment_node);
 
 /**
  *	free a axis2_comment struct
@@ -51,7 +54,7 @@ void axis2_om_comment_free(axis2_om_comment_t *comment);
  * @param comment_node pointer to comment node
  */
 
-char *axis2_om_comment_get_value(axis2_node_t *comment_node);
+char *axis2_om_comment_get_value(axis2_om_node_t *comment_node);
 
 /**
  *  to set the value of a existing comment node	
@@ -59,7 +62,7 @@ char *axis2_om_comment_get_value(axis2_node_t *comment_node);
  */
 
 
-void axis2_om_comment_set_value(axis2_node_t *comment_node,const char *value);
+void axis2_om_comment_set_value(axis2_om_node_t *comment_node,const char *value);
 
 
 #endif // AXIS2_OM_COMMENT_H

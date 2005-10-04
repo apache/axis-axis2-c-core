@@ -18,9 +18,9 @@
 #include <string.h>
 #include <axis2_errno.h>
 
-axis2_node_t *axis2_om_comment_create(const char *value)
+axis2_om_comment_t *axis2_om_comment_create(const char *value,axis2_om_node_t *cnode)
 {
-    axis2_node_t *node = NULL;
+    axis2_om_node_t *node = NULL;
     axis2_om_comment_t *comment = NULL;
 
     node = axis2_node_create();
@@ -44,7 +44,8 @@ axis2_node_t *axis2_om_comment_create(const char *value)
 
     node->data_element = comment;
     node->element_type =AXIS2_OM_COMMENT;
-    return node;
+	cnode = node;
+    return comment;
 }
 
 
@@ -60,7 +61,7 @@ void axis2_om_comment_free(axis2_om_comment_t * comment)
     }
 }
 
-char *axis2_om_comment_get_value(axis2_node_t * comment_node)
+char *axis2_om_comment_get_value(axis2_om_node_t * comment_node)
 {
     if (!comment_node || comment_node->element_type !=AXIS2_OM_COMMENT)
     {
@@ -69,7 +70,7 @@ char *axis2_om_comment_get_value(axis2_node_t * comment_node)
     return ((axis2_om_comment_t *) (comment_node->data_element))->value;
 }
 
-void axis2_om_comment_set_value(axis2_node_t * comment_node,
+void axis2_om_comment_set_value(axis2_om_node_t * comment_node,
 				 const char *value)
 {
     axis2_om_comment_t *comment = NULL;

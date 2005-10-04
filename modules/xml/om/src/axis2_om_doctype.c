@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,10 +18,11 @@
 #include <stdlib.h>
 #include <axis2_errno.h>
 
-axis2_node_t *axis2_create_om_doctype(axis2_node_t * parent,const char *value)
+
+axis2_om_doctype_t *axis2_om_doctype_create(axis2_om_node_t *parent , const char *value, axis2_om_node_t *doc_node)
 {
     axis2_om_doctype_t *doctype = NULL;
-    axis2_node_t *node = axis2_node_create();
+    axis2_om_node_t *node = axis2_node_create();
     if (!node)
     {
 		return NULL;
@@ -44,12 +45,13 @@ axis2_node_t *axis2_create_om_doctype(axis2_node_t * parent,const char *value)
 		node->parent = parent;
 		axis2_node_add_child(parent, node);
     }
-    return node;
+	doc_node = node;
+    return doctype;
 }
 
-axis2_node_t *axis2_om_doctype_create_empty_doctype(axis2_node_t * parent)
+axis2_om_doctype_t *axis2_om_doctype_create_empty_doctype(axis2_om_node_t * parent,axis2_om_node_t *doc_node)
 {
-    axis2_node_t *node = NULL;
+    axis2_om_node_t *node = NULL;
     axis2_om_doctype_t *doctype = NULL;
     if (!node)
     {	       
@@ -73,7 +75,8 @@ axis2_node_t *axis2_om_doctype_create_empty_doctype(axis2_node_t * parent)
 		node->parent = parent;
 		axis2_node_add_child(parent, node);
     }
-    return node;
+	doc_node = node;
+    return doctype;
 }
 
 void axis2_free_om_doctype(axis2_om_doctype_t * om_doc)
@@ -88,7 +91,7 @@ void axis2_free_om_doctype(axis2_om_doctype_t * om_doc)
     }
 }
 
-char *axis2_om_doctype_get_value(axis2_node_t * doctype_node)
+char *axis2_om_doctype_get_value(axis2_om_node_t * doctype_node)
 {
     if (!doctype_node || doctype_node->element_type !=AXIS2_OM_DOCTYPE)
     {
@@ -97,7 +100,7 @@ char *axis2_om_doctype_get_value(axis2_node_t * doctype_node)
     return ((axis2_om_doctype_t *) (doctype_node->data_element))->value;
 }
 
-void axis2_om_doctype_set_value(axis2_node_t * doctype_node,const char *value)
+void axis2_om_doctype_set_value(axis2_om_node_t * doctype_node,const char *value)
 {
     axis2_om_doctype_t *doctype = NULL;
     if (!doctype_node || doctype_node->element_type !=AXIS2_OM_DOCTYPE)

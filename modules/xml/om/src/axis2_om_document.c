@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <axis2_errno.h>
 
-axis2_om_document_t *axis2_om_document_create(axis2_node_t * root_ele, 
+axis2_om_document_t *axis2_om_document_create(axis2_om_node_t * root_ele, 
 									axis2_stax_om_builder_t * builder)
 {
 
@@ -69,7 +69,7 @@ void axis2_om_document_set_char_set_encoding(axis2_om_document_t *document,
 }
 
 void axis2_om_document_add_child(axis2_om_document_t * document,
-				  axis2_node_t * child)
+				  axis2_om_node_t * child)
 {
     if (!document || !child)
     {	/* nothing to do */

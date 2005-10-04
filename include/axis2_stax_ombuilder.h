@@ -34,11 +34,11 @@
 struct axis2_stax_om_builder_s
 {
 	XML_PullParser			*parser;	
-	axis2_node_t			*lastnode;
+	axis2_om_node_t			*lastnode;
 	axis2_om_document_t	*document;
-	boolean_t				done;
-	boolean_t				parser_accessed;
-	boolean_t				cache;
+	int				done;
+	int				parser_accessed;
+	int				cache;
 };
 
 /**
@@ -56,7 +56,7 @@ axis2_stax_om_builder_t *axis2_stax_om_builder_create(XML_PullParser *parser);
  *  isn't enough memory
  */
 
-axis2_node_t *axis2_stax_om_builder_create_om_element(
+axis2_om_node_t *axis2_stax_om_builder_create_om_element(
 						axis2_stax_om_builder_t *builder);
 
 /**
@@ -66,21 +66,21 @@ axis2_node_t *axis2_stax_om_builder_create_om_element(
  */
 
 
-axis2_node_t *axis2_stax_om_builder_create_om_comment(
+axis2_om_node_t *axis2_stax_om_builder_create_om_comment(
 						axis2_stax_om_builder_t *builder);
 
 /**
  *	create an om doctype
  *
  */
-axis2_node_t *axis2_stax_om_builder_create_om_doctype(
+axis2_om_node_t *axis2_stax_om_builder_create_om_doctype(
 						axis2_stax_om_builder_t *builder_t);
 
 /**
  *	create om_processing_instruction
  */
 
-axis2_node_t *axis2_stax_om_builder_create_om_processing_instruction(
+axis2_om_node_t *axis2_stax_om_builder_create_om_processing_instruction(
 						axis2_stax_om_builder_t *builder);
 
 /**
@@ -98,28 +98,37 @@ int axis2_stax_om_builder_next(axis2_stax_om_builder_t *builder);
  *
  */
 
-void axis2_stax_om_builder_process_attributes(axis2_stax_om_builder_t *builder,axis2_node_t *element_node);
+void axis2_stax_om_builder_process_attributes(axis2_stax_om_builder_t *builder,axis2_om_node_t *element_node);
 
 /**
  *	create om text
  *
  */
-axis2_node_t *axis2_stax_om_builder_create_om_text(axis2_stax_om_builder_t *builder);
+axis2_om_node_t *axis2_stax_om_builder_create_om_text(axis2_stax_om_builder_t *builder);
 
 /**
  *	discard building an element
  */
 
 
-void axis2_stax_om_builder_discard(axis2_stax_om_builder_t *builder,axis2_node_t *element_node);
+void axis2_stax_om_builder_discard(axis2_stax_om_builder_t *builder,axis2_om_node_t *element_node);
 
 /**
  *	process namespaces 
  *
  */
 
-axis2_node_t *axis2_stax_om_builder_process_namespace_data(axis2_stax_om_builder_t *builder,axis2_node_t *element,int is_soap_element);
+axis2_om_node_t *axis2_stax_om_builder_process_namespace_data(axis2_stax_om_builder_t *builder,axis2_om_node_t *element,int is_soap_element);
 
+char *axis2_stax_om_builder_get_attribute_name(axis2_stax_om_builder_t *builder,int i);
+
+char *axis2_stax_om_builder_get_attribute_prefix(axis2_stax_om_builder_t *builder,int i);
+
+
+char *axis2_stax_om_builder_get_attribute_namespace(axis2_stax_om_builder_t *builder,int i);
+
+
+int axis2_stax_om_builder_get_attribute_count(axis2_stax_om_builder_t *builder);
 
 
 

@@ -31,40 +31,45 @@ typedef struct axis2_om_doctype_t
 
 /**
  * Create a doctype struct and stores in in a node struct and returns a pointer
- * to the axis2_node_t struct
+ * to the axis2_axis2_om_doctype_t struct
  * the data_element field of node struct points to the acctual axis2_doctype_t struct
  * The element type of axis2_node_t struct will be of type AXIS2_OM_DOCTYPE
- * @return pointer to a axis2_node_t struct containing the doctype struct
+ * param doctype The out paremeter that must be passed 
+ * return pointer to a axis2_node_t struct containing the doctype struct
  */
 
-axis2_node_t *axis2_om_doctype_create(axis2_node_t *parent,const char *value);
+
+
+axis2_om_doctype_t *axis2_om_doctype_create(axis2_om_node_t *parent,const char *value,axis2_om_node_t *doctype_node);
+
 
 /**
  *	create an axis2_om_doctype_t struct with parent 
  *  value field will be set to null
- *  @return poniter to a axis2_node_t 
+ *  return poniter to a axis2_node_t 
  */
 
 
-axis2_node_t *axis2_om_doctype_create_empty_doctype(axis2_node_t *parent);
+axis2_om_doctype_t *axis2_om_doctype_create_empty_doctype(axis2_om_node_t *parent,axis2_om_node_t *doctype_node);
 
 /**
  *	free the axis2_om_doctype_t struct
- *	@param om_doc pointer to axis2_om_doctype_t struct
+ *	param om_doc pointer to axis2_om_doctype_t struct
  */
 void axis2_om_doctype_free(axis2_om_doctype_t *om_doc);
 
 /**
  *	accessor function to get value of doctype
- *	@param om_doc pointer to axis2_om_doctype_t struct
+ *	param om_doc pointer to axis2_om_doctype_t struct
  */
-char *om_doctype_get_value(axis2_node_t *doctype_node);
+char *om_doctype_get_value(axis2_om_node_t *doctype_node);
 
 /**
  *	mutator function to get value of doctype
- *	@param om_doc pointer to axis2_om_doctype_t struct
- *  @param value value to be set in om_doctype
+ *	param om_doc pointer to axis2_om_doctype_t struct
+ *  param value value to be set in om_doctype
  */
-void om_doctype_set_value(axis2_node_t *doctype_node,const char *value);
+ 
+void om_doctype_set_value(axis2_om_node_t *doctype_node,const char *value);
 
 #endif				//  AXIS2_OM_DOCTYPE_H

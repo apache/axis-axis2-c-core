@@ -4,21 +4,21 @@
 #include <axis2_node.h>
 
 void Testnode_detach(CuTest *tc) {
-	axis2_node_t* parent = axis2_node_create();
-    axis2_node_t* prev_sibling = axis2_node_create();
+	axis2_om_node_t* parent = axis2_node_create();
+    axis2_om_node_t* prev_sibling = axis2_node_create();
     axis2_node_add_child(parent, prev_sibling);
-    axis2_node_t* test_node = axis2_node_create();
+    axis2_om_node_t* test_node = axis2_node_create();
     axis2_node_add_child(parent, test_node);
-    axis2_node_t* next_sibling = axis2_node_create();
+    axis2_om_node_t* next_sibling = axis2_node_create();
     axis2_node_add_child(parent, next_sibling);
         
-    axis2_node_t* temp_parent = axis2_node_detach(test_node);
+    axis2_om_node_t* temp_parent = axis2_node_detach(test_node);
     puts("came");
     if(0 == temp_parent) puts("parent is null\n");
-    axis2_node_t* expected = temp_parent->first_child;
+    axis2_om_node_t* expected = temp_parent->first_child;
     printf("came2");
     if(0 == expected) puts("expected is null\n");
-        axis2_node_t* actual = next_sibling;
+        axis2_om_node_t* actual = next_sibling;
 
     CuAssertPtrEquals(tc, expected, actual); 
 }

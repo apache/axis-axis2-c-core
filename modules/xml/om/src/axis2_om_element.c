@@ -22,11 +22,11 @@
 
 static apr_pool_t *om_pool;
 
-axis2_node_t *
-axis2_om_element_create (const char *localname, axis2_om_namespace_t * ns,
-                         axis2_node_t * parent)
+axis2_om_element_t *
+axis2_om_element_create (axis2_om_node_t * parent,const char *localname,
+			axis2_om_namespace_t * ns,axis2_om_node_t *ele_node)
 {
-    axis2_node_t *node;
+    axis2_om_node_t *node;
     axis2_om_element_t *element;
     if (!localname)
     {
@@ -62,38 +62,39 @@ axis2_om_element_create (const char *localname, axis2_om_namespace_t * ns,
     node->element_type = AXIS2_OM_ELEMENT;
     node->data_element = element;
     axis2_om_element_set_namespace (node, ns);
-
-    return node;
+	ele_node = node;
+    return element;
 
 }
 
 
 /* create an om_element using qname and parent */
-axis2_node_t *
-axis2_om_element_create_with_qname (axis2_qname_t * qname,
-                                    axis2_node_t * parent)
+axis2_om_element_t *
+axis2_om_element_create_with_qname (axis2_om_node_t * parent,
+				axis2_qname_t * qname,axis2_om_node_t *ele_node)
 {
-    axis2_node_t *node = NULL;;
+	axis2_om_element_t *element;
+    axis2_om_node_t *node = NULL;;
     if (!qname)
     {
         return NULL;            /* can't create an element */
     }
-    node = axis2_om_element_create (qname->localpart, NULL, parent);
+     element = axis2_om_element_create (parent,qname->localpart, NULL,node);
     if (node)
     {
         ((axis2_om_element_t *) (node->data_element))->ns =
             axis2_om_element_handle_namespace_with_qname (node, qname);
     }
-    return node;
+	ele_node = node;
+    return element;
 }
 
-axis2_node_t *
-axis2_om_element_create_with_builder (const char *localname,
-                                      axis2_om_namespace_t * ns,
-                                      axis2_node_t * parent,
-                                      axis2_stax_om_builder_t * builder)
+axis2_om_element_t *
+axis2_om_element_create_with_builder (axis2_om_node_t * parent,
+				const char *localname,axis2_om_namespace_t * ns
+                              ,axis2_stax_om_builder_t * builder,axis2_om_node_t *ele_node)
 {
-    axis2_node_t *node;
+    axis2_om_node_t *node;
     axis2_om_element_t *element;
     if (!localname)
     {
@@ -131,11 +132,12 @@ axis2_om_element_create_with_builder (const char *localname,
         axis2_node_add_child (parent, node);
     }
     axis2_om_element_set_namespace (node, ns);
-    return node;
+	ele_node = node;
+    return element;
 }
 
 axis2_om_namespace_t *
-axis2_om_element_find_namespace (axis2_node_t
+axis2_om_element_find_namespace (axis2_om_node_t
                                  * element_node, const char *uri,
                                  const char *prefix)
 {
@@ -169,7 +171,7 @@ axis2_om_element_find_namespace (axis2_node_t
 /* declare a namespace for this om element */
 
 axis2_om_namespace_t *
-axis2_om_element_declare_namespace (axis2_node_t *
+axis2_om_element_declare_namespace (axis2_om_node_t *
                                     element_node, axis2_om_namespace_t * ns)
 {
     apr_status_t status;
@@ -199,7 +201,7 @@ axis2_om_element_declare_namespace (axis2_node_t *
 
 
 axis2_om_namespace_t *
-axis2_om_element_declare_namespace_with_ns_uri_prefix (axis2_node_t *
+axis2_om_element_declare_namespace_with_ns_uri_prefix (axis2_om_node_t *
                                                        element_node,
                                                        const char *uri,
                                                        const char *prefix)
@@ -219,7 +221,7 @@ axis2_om_element_declare_namespace_with_ns_uri_prefix (axis2_node_t *
 *
 */
 axis2_om_namespace_t *
-axis2_om_element_find_declared_namespace (axis2_node_t * element_node,
+axis2_om_element_find_declared_namespace (axis2_om_node_t * element_node,
                                           const char *uri, const char *prefix)
 {
     void *ns = NULL;
@@ -258,7 +260,7 @@ axis2_om_element_find_declared_namespace (axis2_node_t * element_node,
 
 
 static axis2_om_namespace_t *
-axis2_om_element_handle_namespace_with_qname (axis2_node_t * element_node,
+axis2_om_element_handle_namespace_with_qname (axis2_om_node_t * element_node,
                                               axis2_qname_t * qname)
 {
     axis2_om_namespace_t *pns = NULL;
@@ -287,7 +289,7 @@ axis2_om_element_handle_namespace_with_qname (axis2_node_t * element_node,
 }
 
 static axis2_om_namespace_t *
-axis2_om_element_handle_namespace (axis2_node_t
+axis2_om_element_handle_namespace (axis2_om_node_t
                                    * element_node, axis2_om_namespace_t * ns)
 {
     axis2_om_namespace_t *ns1 = NULL;
@@ -306,7 +308,7 @@ axis2_om_element_handle_namespace (axis2_node_t
 
 
 axis2_om_attribute_t *
-axis2_om_element_add_attribute (axis2_node_t * element_node,
+axis2_om_element_add_attribute (axis2_om_node_t * element_node,
                                 axis2_om_attribute_t * attr)
 {
     apr_status_t status;
@@ -336,7 +338,7 @@ axis2_om_element_add_attribute (axis2_node_t * element_node,
 }
 
 axis2_om_attribute_t *
-axis2_om_element_get_attribute (axis2_node_t * element_node,
+axis2_om_element_get_attribute (axis2_om_node_t * element_node,
                                 axis2_qname_t * qname)
 {
     char *key = NULL;
@@ -358,7 +360,7 @@ axis2_om_element_get_attribute (axis2_node_t * element_node,
 */
 
 axis2_om_attribute_t *
-axis2_om_element_add_attribute_with_namespace (axis2_node_t * element_node,
+axis2_om_element_add_attribute_with_namespace (axis2_om_node_t * element_node,
                                                const char *attribute_name,
                                                const char *value,
                                                axis2_om_namespace_t * ns)
@@ -384,7 +386,7 @@ axis2_om_element_add_attribute_with_namespace (axis2_node_t * element_node,
 
 
 void
-axis2_om_element_set_namespace (axis2_node_t * node,
+axis2_om_element_set_namespace (axis2_om_node_t * node,
                                 axis2_om_namespace_t * ns)
 {
     axis2_om_namespace_t *nsp = NULL;
@@ -423,7 +425,7 @@ axis2_free_om_element (axis2_om_element_t * element)
 }
 
 void
-axis2_om_element_set_localname (axis2_node_t * element_node,
+axis2_om_element_set_localname (axis2_om_node_t * element_node,
                                 const char *localname)
 {
     axis2_om_element_t *element = NULL;
@@ -441,7 +443,7 @@ axis2_om_element_set_localname (axis2_node_t * element_node,
 }
 
 char *
-axis2_om_element_get_localname (axis2_node_t * element_node)
+axis2_om_element_get_localname (axis2_om_node_t * element_node)
 {
     if (!element_node || element_node->element_type != AXIS2_OM_ELEMENT)
     {

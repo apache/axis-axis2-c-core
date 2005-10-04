@@ -16,13 +16,14 @@
 
 #include <axis2_om_text.h>
 #include <string.h>
-#include <axis2_node.h>
+#include <axis2_om_node.h>
 #include <axis2_errno.h>
 
-axis2_node_t *axis2_create_om_text(axis2_node_t *parent,const char *value)
+axis2_om_text_t *axis2_om_text_create(axis2_om_node_t *parent,const char *value
+						,axis2_om_node_t *text_node)
 {
     axis2_om_text_t *text;
-    axis2_node_t *node = axis2_node_create();
+    axis2_om_node_t *node = axis2_node_create();
     if (!node)
     {
 		fprintf(stderr,"%d Error",AXIS2_ERROR_OM_MEMORY_ALLOCATION);
@@ -47,7 +48,8 @@ axis2_node_t *axis2_create_om_text(axis2_node_t *parent,const char *value)
 		node->parent = parent;
 		axis2_node_add_child(parent,node);
 	}
-    return node;
+	text_node = node;
+    return text;
 }
 
 

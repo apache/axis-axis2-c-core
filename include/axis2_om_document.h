@@ -34,9 +34,9 @@
 
 typedef struct axis2_om_document_t
 {
-	axis2_node_t *root_element;
-	axis2_node_t *first_child;
-	axis2_node_t *last_child;
+	axis2_om_node_t *root_element;
+	axis2_om_node_t *first_child;
+	axis2_om_node_t *last_child;
 	int done;
 	axis2_stax_om_builder_t *builder;
 	char *char_set_encoding;
@@ -52,7 +52,7 @@ typedef struct axis2_om_document_t
  *  @param builder pointer to xml builder 
  */
 
-axis2_om_document_t *axis2_om_document_create(axis2_node_t *root_ele,axis2_stax_om_builder_t *builder);
+axis2_om_document_t *axis2_om_document_create(axis2_om_node_t *root_ele,axis2_stax_om_builder_t *builder);
 
 /** 
  *  Free axis2_om_document_t struct
@@ -73,7 +73,7 @@ void axis2_om_document_build_next(axis2_om_document_t *document);
 /**
  *	adds the child node as a child to the back of the list
  */
-void axis2_om_document_add_child(axis2_om_document_t *document,axis2_node_t *child);
+void axis2_om_document_add_child(axis2_om_document_t *document,axis2_om_node_t *child);
 
 /**
  *	This cause the parser to proceed 	
@@ -82,7 +82,7 @@ void axis2_om_document_add_child(axis2_om_document_t *document,axis2_node_t *chi
  */
 
 
-axis2_node_t *axis2_om_document_get_first_child(axis2_om_document_t *document);
+axis2_om_node_t *axis2_om_document_get_first_child(axis2_om_document_t *document);
 
 /**
  * set the CHAR SET ENCODING of this document

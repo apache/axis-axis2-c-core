@@ -56,30 +56,30 @@ typedef enum axis2_om_types_t {
 * first child and last child for constructing and navigating the tree
 *
 */
-typedef struct axis2_node_t {
-	struct axis2_node_t *parent;
-	struct axis2_node_t *prev_sibling;
-	struct axis2_node_t *next_sibling;
-	struct axis2_node_t *first_child;
-	struct axis2_node_t *last_child;
+typedef struct axis2_om_node_t {
+	struct axis2_om_node_t *parent;
+	struct axis2_om_node_t *prev_sibling;
+	struct axis2_om_node_t *next_sibling;
+	struct axis2_om_node_t *first_child;
+	struct axis2_om_node_t *last_child;
 	axis2_stax_om_builder_t *builder;
 	axis2_om_types_t element_type;
 	boolean_t done;
 	void* data_element;
-} axis2_node_t;
+} axis2_om_node_t;
 
 /**
  * Create a node struct.
  * @return a node or NULL if there isn't enough memory
  */
 
-axis2_node_t *axis2_node_create();
+axis2_om_node_t *axis2_node_create();
 
 /**
  * destroy the node .
  * @param node to free
  */
-void axis2_node_free(axis2_node_t *node);
+void axis2_node_free(axis2_om_node_t *node);
 
 /**
  * adds a child node to this node .
@@ -88,7 +88,7 @@ void axis2_node_free(axis2_node_t *node);
  */
 
 
-void axis2_node_add_child(axis2_node_t *parent,axis2_node_t *child);
+void axis2_node_add_child(axis2_om_node_t *parent,axis2_om_node_t *child);
 
 /**
  *	detach a node from the tree and resets the links
@@ -96,7 +96,7 @@ void axis2_node_add_child(axis2_node_t *parent,axis2_node_t *child);
  *
  */
 
-axis2_node_t *axis2_node_detach(axis2_node_t *node_to_detach);
+axis2_om_node_t *axis2_node_detach(axis2_om_node_t *node_to_detach);
 
 /**
  *	inserts a sibling node after the current node
@@ -104,12 +104,12 @@ axis2_node_t *axis2_node_detach(axis2_node_t *node_to_detach);
  *  @param node_to_insert the node that will be inserted 
  */
 
-void axis2_node_insert_sibling_after(axis2_node_t *current_nodee,axis2_node_t *node_to_insert);
+void axis2_node_insert_sibling_after(axis2_om_node_t *current_nodee,axis2_om_node_t *node_to_insert);
 
-void axis2_node_insert_sibling_before(axis2_node_t *current_ele,axis2_node_t *nodeto_insert);
+void axis2_node_insert_sibling_before(axis2_om_node_t *current_ele,axis2_om_node_t *nodeto_insert);
 
 
-//int axis2_node_build(axis2_node_t *node);
+//int axis2_node_build(axis2_om_node_t *node);
 
 /**
  *	set a parent node to a given node
@@ -117,7 +117,7 @@ void axis2_node_insert_sibling_before(axis2_node_t *current_ele,axis2_node_t *no
  * @param parent the node that will be set as parent
  */
 
-void axis2_node_set_parent(axis2_node_t *node,axis2_node_t *parent);
+void axis2_node_set_parent(axis2_om_node_t *node,axis2_om_node_t *parent);
 
 
 #endif // AXIS2_NODE_H

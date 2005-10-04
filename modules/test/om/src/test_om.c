@@ -9,25 +9,26 @@ main ()
     printf("START\n");
     if ( apr_initialize () != APR_SUCCESS )
         return -1;
-    axis2_node_t *ele1, *ele2, *ele3;
+    axis2_om_element_t *ele1, *ele2, *ele3;
+    axis2_om_node_t *node1, *node2, *node3;
     axis2_om_attribute_t *attr1, *attr2;
     axis2_om_namespace_t *ns1, *ns2;
 
 
     ns1 = axis2_om_namespace_create ("ns", "test");
-    ele1 = axis2_om_element_create ("root", ns1, NULL);
+    ele1 = axis2_om_element_create (NULL, "root", ns1, node1);
 
     ns2 = axis2_om_namespace_create ("ns1", "test1");
-    ele2 = axis2_om_element_create ("ele1", ns2, ele1);
+    ele2 = axis2_om_element_create (ele1, "ele1", ns2, node1);
 
     attr1 = axis2_om_attribute_create ("ele1", "attr1", ns2);
 
     axis2_om_element_add_attribute (ele2, attr1);
 
 
-    ele3 = axis2_om_element_create ("ele2", ns2, NULL);
+    ele3 = axis2_om_element_create (NULL, "ele3", ns2, node3);
 
-    axis2_node_add_child (ele1, ele2);
+    axis2_node_add_child (node1, node2);
 
     printf("DONE\n");
 }
