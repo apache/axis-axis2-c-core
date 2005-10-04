@@ -34,6 +34,7 @@ axis2_om_node_t *axis2_om_node_create()
     node->done = FALSE;
     node->builder = NULL;
     node->data_element = NULL;
+	node->current_child = NULL;
     return node;
 }
 
@@ -174,4 +175,41 @@ void axis2_om_node_insert_sibling_before(axis2_om_node_t *node,
 	
 	}
 	node->prev_sibling = node_to_insert;
+}
+
+axis2_om_node_t *axis2_om_node_get_first_child(axis2_om_node_t *parent_node)
+{
+	/**  */
+	if(!parent_node)
+	{
+		return NULL;
+	}
+	if(parent_node->first_child)
+	{
+		parent_node->current_child = parent_node->first_child;
+		return parent_node->first_child;		
+	}
+	return NULL;
+}
+axis2_om_node_t *axis2_om_node_get_next_child(axis2_om_node_t *parent_node)
+{
+	axis2_om_node_t *node=NULL;
+	if(parent_node && !(parent_node->first_child))
+	{
+		fprintf(stderr,"Error ");
+		return NULL;	
+	}
+	
+	if(parent_node && parent_node->first_child  && !(parent_node->current_child))	
+	{
+		fprintf(stderr,"Error first call get_first_child");
+		return NULL;		
+	}
+	if(parent_node->current_child->next_sibling)
+	{
+		node= parent_node->current_child->next_sibling;
+		parent_node->current_child = node;
+		return node;		
+	}
+	return NULL;
 }

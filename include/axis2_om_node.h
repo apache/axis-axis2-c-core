@@ -61,6 +61,7 @@ typedef struct axis2_om_node_t {
 	struct axis2_om_node_t *prev_sibling;
 	struct axis2_om_node_t *next_sibling;
 	struct axis2_om_node_t *first_child;
+	struct axis2_om_node_t *current_child;
 	struct axis2_om_node_t *last_child;
 	axis2_stax_om_builder_t *builder;
 	axis2_om_types_t element_type;
@@ -118,6 +119,12 @@ void axis2_om_node_insert_sibling_before(axis2_om_node_t *current_ele,axis2_om_n
  */
 
 void axis2_om_node_set_parent(axis2_om_node_t *node,axis2_om_node_t *parent);
+
+
+
+axis2_om_node_t *axis2_om_node_get_first_child(axis2_om_node_t *parent_node);
+
+axis2_om_node_t *axis2_om_node_get_next_child(axis2_om_node_t *parent_node);
 
 
 #endif // AXIS2_NODE_H
