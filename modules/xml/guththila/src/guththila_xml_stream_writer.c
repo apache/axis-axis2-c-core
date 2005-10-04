@@ -173,7 +173,9 @@
         guththila_xml_stream_writer_end_start_element(stream_writer);
 
         char* current_prefix = guththila_xml_stream_writer_get_prefix(stream_writer, namespace_uri);
-        int is_current = ( strcmp(prefix, current_prefix) != 0 );
+        int is_current = 0;
+        if(current_prefix)
+            is_current = ( strcmp(prefix, current_prefix) != 0 );
         fputs("<", stream_writer->writer);
 
         if (prefix && strlen(prefix) != 0)
