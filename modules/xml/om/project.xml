@@ -26,11 +26,12 @@
   <shortDescription>OM project</shortDescription>
 
   <dependencies>
-     <!--dependency>
-        <groupId>j2ee</groupId>
-        <artifactId>j2ee</artifactId>
-        <version>1.3.1</version>
-     </dependency-->
+    <!--dependency>
+        <groupId>axis2</groupId>
+        <artifactId>libaxis2-xml-guththila-nar</artifactId>
+        <version>0.0</version>
+        <type>nar</type>
+        </dependency-->
   </dependencies>
 
 </project>
