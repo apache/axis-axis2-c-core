@@ -24,9 +24,9 @@ static apr_pool_t *om_pool;
 
 axis2_om_element_t *
 axis2_om_element_create (axis2_om_node_t * parent,const char *localname,
-			axis2_om_namespace_t * ns,axis2_om_node_t *ele_node)
+			axis2_om_namespace_t * ns,axis2_om_node_t **element_node)
 {
-    axis2_om_node_t *node;
+    //axis2_om_node_t *node;
     axis2_om_element_t *element;
     if (!localname)
     {
@@ -34,8 +34,8 @@ axis2_om_element_create (axis2_om_node_t * parent,const char *localname,
         return NULL;
     }
 
-    node = axis2_om_node_create ();
-    if (!node)
+    (*element_node) = axis2_om_node_create ();
+    if (!(*element_node))
     {
         fprintf (stderr, "%d Error", AXIS2_ERROR_OM_MEMORY_ALLOCATION);
         return NULL;
@@ -44,7 +44,7 @@ axis2_om_element_create (axis2_om_node_t * parent,const char *localname,
 
     if (!element)
     {
-        axis2_om_node_free (node);
+        axis2_om_node_free ((*element_node));
         return NULL;
     }
     element->ns = NULL;
@@ -55,14 +55,14 @@ axis2_om_element_create (axis2_om_node_t * parent,const char *localname,
 
     if (parent)
     {
-        node->parent = parent;
-        axis2_om_node_add_child (parent, node);
+        (*element_node)->parent = parent;
+        axis2_om_node_add_child (parent, (*element_node));
     }
-    node->done = true;
-    node->element_type = AXIS2_OM_ELEMENT;
-    node->data_element = element;
-    axis2_om_element_set_namespace (node, ns);
-	ele_node = node;
+    (*element_node)->done = true;
+    (*element_node)->element_type = AXIS2_OM_ELEMENT;
+    (*element_node)->data_element = element;
+    axis2_om_element_set_namespace ((*element_node), ns);
+    
     return element;
 
 }
@@ -71,7 +71,7 @@ axis2_om_element_create (axis2_om_node_t * parent,const char *localname,
 /* create an om_element using qname and parent */
 axis2_om_element_t *
 axis2_om_element_create_with_qname (axis2_om_node_t * parent,
-				axis2_qname_t * qname,axis2_om_node_t *ele_node)
+				axis2_qname_t * qname,axis2_om_node_t **element_node)
 {
 	axis2_om_element_t *element;
     axis2_om_node_t *node = NULL;;
@@ -85,14 +85,14 @@ axis2_om_element_create_with_qname (axis2_om_node_t * parent,
         ((axis2_om_element_t *) (node->data_element))->ns =
             axis2_om_element_handle_namespace_with_qname (node, qname);
     }
-	ele_node = node;
+	(*element_node) = node;
     return element;
 }
 
 axis2_om_element_t *
 axis2_om_element_create_with_builder (axis2_om_node_t * parent,
 				const char *localname,axis2_om_namespace_t * ns
-                              ,axis2_stax_om_builder_t * builder,axis2_om_node_t *ele_node)
+                              ,axis2_stax_om_builder_t * builder,axis2_om_node_t **element_node)
 {
     axis2_om_node_t *node;
     axis2_om_element_t *element;
@@ -132,7 +132,7 @@ axis2_om_element_create_with_builder (axis2_om_node_t * parent,
         axis2_om_node_add_child (parent, node);
     }
     axis2_om_element_set_namespace (node, ns);
-	ele_node = node;
+	(*element_node) = node;
     return element;
 }
 
