@@ -42,7 +42,10 @@ main ()
     // serializing stuff
      om_output = axis2_create_om_output(stdout);
      axis2_om_element_serialize_start_part(ele3, om_output);
+     axis2_om_element_serialize_end_part(ele3, om_output);
     // end serializing stuff
     
     printf("\nDONE\n");
+
+    return 0;
 }

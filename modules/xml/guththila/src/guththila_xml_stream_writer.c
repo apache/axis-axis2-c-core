@@ -62,17 +62,19 @@
         }
 
           //pop last element and delete that elelemt
-        char** del_element = (char**) apr_array_pop( stream_writer->element_stack );
+        char*** del_element = (char***) apr_array_pop( stream_writer->element_stack );
         if (del_element)
         {
-            if (del_element[0])
-                free(del_element[0]);
-            if (del_element[1])
-                free(del_element[1]);
+            if ((*del_element)[0])
+                free((*del_element)[0]);
+            if ((*del_element)[1])
+                free((*del_element)[1]);
             free(del_element);
         }
         del_element = 0;
+        
           //end pop element
+          
 
         stream_writer->empty_element = 0;
     }
@@ -94,10 +96,10 @@
     fputs(local_name, stream_writer->writer);
 
           //push element to stack
-    char** new_element = (char**)apr_array_push(stream_writer->element_stack);
-    new_element = (char**) malloc( sizeof(char**) * 2 );
-    new_element[0] = 0;
-    new_element[1] = strdup(local_name);
+    char*** new_element = (char***)apr_array_push(stream_writer->element_stack);
+    *new_element = (char**) malloc( sizeof(char**) * 2 );
+    (*new_element)[0] = 0;
+    (*new_element)[1] = strdup(local_name);
           //end push element
 
     stream_writer->in_start_element = 1;
@@ -145,13 +147,14 @@
             guththila_xml_stream_writer_write_namespace(stream_writer, prefix, namespace_uri);
     }
         //push element to stack
-    char** new_element = (char**)apr_array_push(stream_writer->element_stack);
-    new_element = (char**) malloc( sizeof(char**) * 2 );
+    //char** new_element = (char**)apr_array_push(stream_writer->element_stack);
+    char*** new_element = (char***)apr_array_push(stream_writer->element_stack);
+    *new_element = (char**) malloc( sizeof(char**) * 2 );
     if(prefix)
-        new_element[0] = strdup(prefix);
+        (*new_element)[0] = strdup(prefix);
     else
-        new_element[0] = 0;
-    new_element[1] = strdup(local_name);
+        (*new_element)[0] = 0;
+    (*new_element)[1] = strdup(local_name);
           //end push element
       
     stream_writer->in_start_element = 1;
@@ -193,13 +196,15 @@
         }
 
         //push element to stack
-        char** new_element = (char**)apr_array_push(stream_writer->element_stack);
-        new_element = (char**) malloc( sizeof(char**) * 2 );
+        //char** new_element = (char**)apr_array_push(stream_writer->element_stack);
+    char*** new_element = (char***)apr_array_push(stream_writer->element_stack);
+        
+        *new_element = (char**) malloc( sizeof(char**) * 2 );
         if(prefix)
-            new_element[0] = strdup(prefix);
+            (*new_element)[0] = strdup(prefix);
         else
-            new_element[0] = 0;
-        new_element[1] = strdup(local_name);
+            (*new_element)[0] = 0;
+        (*new_element)[1] = strdup(local_name);
           //end push element
 
         stream_writer->in_start_element = 1;
@@ -249,7 +254,7 @@
         guththila_xml_stream_writer_end_start_element(stream_writer);
     
             // pop element stack
-        char** element_data = (char**) apr_array_pop(stream_writer->element_stack);
+        char*** element_data = (char***) apr_array_pop(stream_writer->element_stack);
         if (!element_data )
             return GUTHTHILA_STREAM_WRITER_ERROR_ELEMENT_STACK_EMPTY;
 
@@ -257,24 +262,27 @@
 
         fputs("</", stream_writer->writer);
 
-        if (element_data[0] && strlen(element_data[0]) > 0 )
+        if ((*element_data)[0] && strlen((*element_data)[0]) > 0 )
         {
-            fputs(element_data[0], stream_writer->writer);
+            fputs((*element_data)[0], stream_writer->writer);
             fputs(":", stream_writer->writer);
-            free( element_data[0]);
+            free( (*element_data)[0]);
         }
 
-        if(element_data[1] && strlen(element_data[1]) > 0)
+        if((*element_data)[1] && strlen((*element_data)[1]) > 0)
         {
-            fputs(element_data[1], stream_writer->writer);
-            free( element_data[1]);
+            fputs((*element_data)[1], stream_writer->writer);
+            printf("...%s...\n", (*element_data)[1]);
+            free( (*element_data)[1]);
         }
         else
             return GUTHTHILA_STREAM_WRITER_ERROR_ELEMENT_STACK_EMPTY;
         
         fputs(">", stream_writer->writer);
         
-        element_data = 0;
+        printf("guththila_xml_stream_writer_write_end_element END\n");
+       
+        *element_data = 0;
 
         return GUTHTHILA_SUCCESS;
     }
