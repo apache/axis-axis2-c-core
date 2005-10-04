@@ -250,11 +250,7 @@
         char** element_data = (char**) apr_array_pop(stream_writer->element_stack);
         if (!element_data )
             return GUTHTHILA_STREAM_WRITER_ERROR_ELEMENT_STACK_EMPTY;
-        if(element_data[0])
-            free( element_data[0]);
-        if(element_data[1])
-            free( element_data[1]);
-        element_data = 0;
+
             //end pop element stack
 
         fputs("</", stream_writer->writer);
@@ -263,9 +259,21 @@
         {
             fputs(element_data[0], stream_writer->writer);
             fputs(":", stream_writer->writer);
+            free( element_data[0]);
         }
-        fputs(element_data[1], stream_writer->writer);
+
+        if(element_data[1] && strlen(element_data[1]) > 0)
+        {
+            fputs(element_data[1], stream_writer->writer);
+            free( element_data[1]);
+        }
+        else
+            return GUTHTHILA_STREAM_WRITER_ERROR_ELEMENT_STACK_EMPTY;
+        
         fputs(">", stream_writer->writer);
+        
+        element_data = 0;
+
         return GUTHTHILA_SUCCESS;
     }
 

@@ -59,11 +59,14 @@ int axis2_om_output_write(axis2_om_output_t* om_output, axis2_om_types_t type, i
             va_end(ap);
             switch (no_of_args)
             {
+                case 0:
+                    guththila_xml_stream_writer_write_end_element( om_output->xml_writer);
                 case 1:
                     guththila_xml_stream_writer_write_start_element( om_output->xml_writer, args_list[0] );
                     break;
                 case 2:
                     guththila_xml_stream_writer_write_start_element_with_namespace( om_output->xml_writer, args_list[0], args_list[1] );
+                    break;
                 case 3:
                     guththila_xml_stream_writer_write_start_element_with_namespace_prefix( om_output->xml_writer, args_list[0], args_list[1], args_list[2] );
                     break;
