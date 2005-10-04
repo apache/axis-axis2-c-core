@@ -18,7 +18,7 @@
 #define AXIS2_NODE_H
 
 /**
- * @file axis2_node.h
+ * @file axis2_om_node.h
  * @brief defines node data structure, used for constructing the om tree and its 
  *	manipulation functions
  */
@@ -73,13 +73,13 @@ typedef struct axis2_om_node_t {
  * @return a node or NULL if there isn't enough memory
  */
 
-axis2_om_node_t *axis2_node_create();
+axis2_om_node_t *axis2_om_node_create();
 
 /**
  * destroy the node .
  * @param node to free
  */
-void axis2_node_free(axis2_om_node_t *node);
+void axis2_om_node_free(axis2_om_node_t *node);
 
 /**
  * adds a child node to this node .
@@ -88,7 +88,7 @@ void axis2_node_free(axis2_om_node_t *node);
  */
 
 
-void axis2_node_add_child(axis2_om_node_t *parent,axis2_om_node_t *child);
+void axis2_om_node_add_child(axis2_om_node_t *parent,axis2_om_node_t *child);
 
 /**
  *	detach a node from the tree and resets the links
@@ -96,7 +96,7 @@ void axis2_node_add_child(axis2_om_node_t *parent,axis2_om_node_t *child);
  *
  */
 
-axis2_om_node_t *axis2_node_detach(axis2_om_node_t *node_to_detach);
+axis2_om_node_t *axis2_om_node_detach(axis2_om_node_t *node_to_detach);
 
 /**
  *	inserts a sibling node after the current node
@@ -104,12 +104,12 @@ axis2_om_node_t *axis2_node_detach(axis2_om_node_t *node_to_detach);
  *  @param node_to_insert the node that will be inserted 
  */
 
-void axis2_node_insert_sibling_after(axis2_om_node_t *current_nodee,axis2_om_node_t *node_to_insert);
+void axis2_om_node_insert_sibling_after(axis2_om_node_t *current_nodee,axis2_om_node_t *node_to_insert);
 
-void axis2_node_insert_sibling_before(axis2_om_node_t *current_ele,axis2_om_node_t *nodeto_insert);
+void axis2_om_node_insert_sibling_before(axis2_om_node_t *current_ele,axis2_om_node_t *nodeto_insert);
 
 
-//int axis2_node_build(axis2_om_node_t *node);
+//int axis2_om_node_build(axis2_om_node_t *node);
 
 /**
  *	set a parent node to a given node
@@ -117,7 +117,7 @@ void axis2_node_insert_sibling_before(axis2_om_node_t *current_ele,axis2_om_node
  * @param parent the node that will be set as parent
  */
 
-void axis2_node_set_parent(axis2_om_node_t *node,axis2_om_node_t *parent);
+void axis2_om_node_set_parent(axis2_om_node_t *node,axis2_om_node_t *parent);
 
 
 #endif // AXIS2_NODE_H

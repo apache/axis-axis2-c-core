@@ -18,7 +18,7 @@
 #define AXIS2_OM_OUTPUT_H
 
 #include <guththila_xml_stream_writer.h>
-#include <axis2_node.h>
+#include <axis2_om_node.h>
 
 #include <stdarg.h>
 

@@ -28,7 +28,7 @@
 #define XMLNS_PREFIX "xml"
 
 #include <xmlpullparser.h>
-#include <axis2_node.h>
+#include <axis2_om_node.h>
 #include <axis2_om_document.h>
 
 struct axis2_stax_om_builder_s
@@ -52,7 +52,7 @@ axis2_stax_om_builder_t *axis2_stax_om_builder_create(XML_PullParser *parser);
 /**
  *	Create an om element and adds to the document
  *	@param builder pointer to the builder
- *  @param returns a pointer to axis2_node_t containing the element or NULL if there
+ *  @param returns a pointer to axis2_om_node_t containing the element or NULL if there
  *  isn't enough memory
  */
 

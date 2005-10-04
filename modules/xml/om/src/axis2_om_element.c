@@ -34,7 +34,7 @@ axis2_om_element_create (axis2_om_node_t * parent,const char *localname,
         return NULL;
     }
 
-    node = axis2_node_create ();
+    node = axis2_om_node_create ();
     if (!node)
     {
         fprintf (stderr, "%d Error", AXIS2_ERROR_OM_MEMORY_ALLOCATION);
@@ -44,7 +44,7 @@ axis2_om_element_create (axis2_om_node_t * parent,const char *localname,
 
     if (!element)
     {
-        axis2_node_free (node);
+        axis2_om_node_free (node);
         return NULL;
     }
     element->ns = NULL;
@@ -56,7 +56,7 @@ axis2_om_element_create (axis2_om_node_t * parent,const char *localname,
     if (parent)
     {
         node->parent = parent;
-        axis2_node_add_child (parent, node);
+        axis2_om_node_add_child (parent, node);
     }
     node->done = true;
     node->element_type = AXIS2_OM_ELEMENT;
@@ -102,7 +102,7 @@ axis2_om_element_create_with_builder (axis2_om_node_t * parent,
         return NULL;
     }
 
-    node = axis2_node_create ();
+    node = axis2_om_node_create ();
     if (!node)
     {
         fprintf (stderr, "%d Error", AXIS2_ERROR_OM_MEMORY_ALLOCATION);
@@ -112,7 +112,7 @@ axis2_om_element_create_with_builder (axis2_om_node_t * parent,
 
     if (!element)
     {
-        axis2_node_free (node);
+        axis2_om_node_free (node);
         return NULL;
     }
     element->localname = strdup (localname);
@@ -129,7 +129,7 @@ axis2_om_element_create_with_builder (axis2_om_node_t * parent,
     if (parent)
     {
         node->parent = parent;
-        axis2_node_add_child (parent, node);
+        axis2_om_node_add_child (parent, node);
     }
     axis2_om_element_set_namespace (node, ns);
 	ele_node = node;

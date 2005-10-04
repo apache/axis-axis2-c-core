@@ -23,7 +23,7 @@ axis2_om_text_t *axis2_om_text_create(axis2_om_node_t *parent,const char *value
 						,axis2_om_node_t *text_node)
 {
     axis2_om_text_t *text;
-    axis2_om_node_t *node = axis2_node_create();
+    axis2_om_node_t *node = axis2_om_node_create();
     if (!node)
     {
 		fprintf(stderr,"%d Error",AXIS2_ERROR_OM_MEMORY_ALLOCATION);
@@ -46,7 +46,7 @@ axis2_om_text_t *axis2_om_text_create(axis2_om_node_t *parent,const char *value
 	{
 		node->done = true;
 		node->parent = parent;
-		axis2_node_add_child(parent,node);
+		axis2_om_node_add_child(parent,node);
 	}
 	text_node = node;
     return text;

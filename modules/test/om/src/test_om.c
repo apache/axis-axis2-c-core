@@ -1,5 +1,5 @@
 #include <apr.h>
-#include <axis2_node.h>
+#include <axis2_om_node.h>
 #include <axis2_om_element.h>
 
 
@@ -28,7 +28,7 @@ main ()
 
     ele3 = axis2_om_element_create (NULL, "ele3", ns2, node3);
 
-    axis2_node_add_child (node1, node2);
+    axis2_om_node_add_child (node1, node2);
 
     printf("DONE\n");
 }

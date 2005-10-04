@@ -22,7 +22,7 @@
  * @brief represents a xml processing instruction also known as PI
  */
 
-#include <axis2_node.h>
+#include <axis2_om_node.h>
 
 typedef struct axis2_om_processing_instruction_t {
     char *target;
@@ -31,13 +31,13 @@ typedef struct axis2_om_processing_instruction_t {
 
 /**
  *  creates axis2_om_processing_instruction and 
- *	@return a pointer to axis2_node_t struct containing PI
+ *	@return a pointer to axis2_om_node_t struct containing PI
  */ 
 
 axis2_om_processing_instruction_t *axis2_om_processing_instruction_create(axis2_om_node_t *parent,const char *target,const char *value,axis2_om_node_t *node);
 /**
  *  creates empty axis2_om_processing_instruction and 
- *	@return a pointer to axis2_node_t struct containing PI
+ *	@return a pointer to axis2_om_node_t struct containing PI
  */
 
 axis2_om_processing_instruction_t *axis2_om_processing_instruction_create_empty(axis2_om_node_t *parent,axis2_om_node_t *node);

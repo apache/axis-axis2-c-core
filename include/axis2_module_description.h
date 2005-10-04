@@ -9,7 +9,7 @@
 #include <axis2_operation_description.h>
 #include <axis2_engine_config.h>
 #include <axis2_description_param_include.h>
-#include <axis2_node.h>
+#include <axis2_om_node.h>
 #include <apr_hash.h>
 
 /**

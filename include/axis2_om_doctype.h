@@ -22,7 +22,7 @@
  *@brief defines struct representing xml DTD and its manipulation functions
  */
 
-#include <axis2_node.h>
+#include <axis2_om_node.h>
 
 typedef struct axis2_om_doctype_t
 {
@@ -33,9 +33,9 @@ typedef struct axis2_om_doctype_t
  * Create a doctype struct and stores in in a node struct and returns a pointer
  * to the axis2_axis2_om_doctype_t struct
  * the data_element field of node struct points to the acctual axis2_doctype_t struct
- * The element type of axis2_node_t struct will be of type AXIS2_OM_DOCTYPE
+ * The element type of axis2_om_node_t struct will be of type AXIS2_OM_DOCTYPE
  * param doctype The out paremeter that must be passed 
- * return pointer to a axis2_node_t struct containing the doctype struct
+ * return pointer to a axis2_om_node_t struct containing the doctype struct
  */
 
 
@@ -46,7 +46,7 @@ axis2_om_doctype_t *axis2_om_doctype_create(axis2_om_node_t *parent,const char *
 /**
  *	create an axis2_om_doctype_t struct with parent 
  *  value field will be set to null
- *  return poniter to a axis2_node_t 
+ *  return poniter to a axis2_om_node_t 
  */
 
 

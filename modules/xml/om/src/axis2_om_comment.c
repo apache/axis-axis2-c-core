@@ -23,7 +23,7 @@ axis2_om_comment_t *axis2_om_comment_create(const char *value,axis2_om_node_t *c
     axis2_om_node_t *node = NULL;
     axis2_om_comment_t *comment = NULL;
 
-    node = axis2_node_create();
+    node = axis2_om_node_create();
     if (!node)
     {
 		fprintf(stderr, "%d Error", AXIS2_ERROR_OM_MEMORY_ALLOCATION);

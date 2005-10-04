@@ -43,7 +43,7 @@ typedef struct axis2_om_text_t
  * Create a text struct and stores in in a node struct and returns a pointer
  * to the axis2_om_text_t struct
  * the data_element field of node struct points to the acctual axis2_text_t struct
- * The element type of axis2_node_t struct will be of type AXIS2_OM_TEXT
+ * The element type of axis2_om_node_t struct will be of type AXIS2_OM_TEXT
  * @param parent This can be null The parent element should be of type AXIS2_OM_ELEMENT
  * @return pointer to a axis2_om_text_t struct 
  */

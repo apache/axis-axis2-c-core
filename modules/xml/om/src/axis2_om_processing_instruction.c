@@ -22,7 +22,7 @@
 axis2_om_processing_instruction_t *axis2_om_processing_instruction_create(axis2_om_node_t *parent,const char *target,const char *value,axis2_om_node_t *pinode)
 {
     axis2_om_processing_instruction_t *pi = NULL;
-    axis2_om_node_t *pi_node = axis2_node_create();
+    axis2_om_node_t *pi_node = axis2_om_node_create();
     
 	if (pi_node)
     {
@@ -50,7 +50,7 @@ axis2_om_processing_instruction_t *axis2_om_processing_instruction_create(axis2_
     if (parent)
     {
 		pi_node->parent = parent;
-		axis2_node_add_child(parent, pi_node);
+		axis2_om_node_add_child(parent, pi_node);
     }
 	pinode = pi_node;
 	
@@ -62,7 +62,7 @@ axis2_om_processing_instruction_t *axis2_om_processing_instruction_create_empty(
 {
     axis2_om_node_t *pi_node = NULL;
     axis2_om_processing_instruction_t *pi = NULL;
-    pi_node = axis2_node_create();
+    pi_node = axis2_om_node_create();
     if (pi_node)
     {
 		pi = (axis2_om_processing_instruction_t *)malloc(
@@ -81,7 +81,7 @@ axis2_om_processing_instruction_t *axis2_om_processing_instruction_create_empty(
     if (parent)
     {
 		pi_node->parent = parent;
-		axis2_node_add_child(parent, pi_node);
+		axis2_om_node_add_child(parent, pi_node);
     }
 	node = pi_node;
     return pi;

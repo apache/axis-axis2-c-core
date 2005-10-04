@@ -16,7 +16,7 @@
 
 #include <axis2_om_node.h>
 
-axis2_om_node_t *axis2_node_create()
+axis2_om_node_t *axis2_om_node_create()
 {
     axis2_om_node_t *node = (axis2_om_node_t *) malloc(sizeof(axis2_om_node_t));
    
@@ -38,13 +38,13 @@ axis2_om_node_t *axis2_node_create()
 }
 
 
-void axis2_node_free(axis2_om_node_t * node)
+void axis2_om_node_free(axis2_om_node_t * node)
 {
     if (!node)
 	return;
 }
 
-void axis2_node_add_child(axis2_om_node_t * parent, axis2_om_node_t * child)
+void axis2_om_node_add_child(axis2_om_node_t * parent, axis2_om_node_t * child)
 {
     if (!parent || !child)
 	{
@@ -67,7 +67,7 @@ void axis2_node_add_child(axis2_om_node_t * parent, axis2_om_node_t * child)
 
 
 
-axis2_om_node_t *axis2_node_detach(axis2_om_node_t * node_to_detach)
+axis2_om_node_t *axis2_om_node_detach(axis2_om_node_t * node_to_detach)
 {
     axis2_om_node_t *parent = NULL;
 
@@ -104,7 +104,7 @@ axis2_om_node_t *axis2_node_detach(axis2_om_node_t * node_to_detach)
     return node_to_detach;
 }
 
-void axis2_node_set_parent(axis2_om_node_t * node,axis2_om_node_t *parent)
+void axis2_om_node_set_parent(axis2_om_node_t * node,axis2_om_node_t *parent)
 {
 	if(!parent || !node)
 	{
@@ -120,7 +120,7 @@ void axis2_node_set_parent(axis2_om_node_t * node,axis2_om_node_t *parent)
 
 	if(!(node->parent))
 	{
-		axis2_node_detach(node);
+		axis2_om_node_detach(node);
 	}
 	node->parent = parent;
 }
@@ -131,7 +131,7 @@ void axis2_node_set_parent(axis2_om_node_t * node,axis2_om_node_t *parent)
  * @param nodeto_insert the node that will be inserted
  */
  
-void axis2_node_insert_sibling_after(axis2_om_node_t *node,
+void axis2_om_node_insert_sibling_after(axis2_om_node_t *node,
 			axis2_om_node_t *node_to_insert)
 {
 	if(!node || !node_to_insert )
@@ -151,7 +151,7 @@ void axis2_node_insert_sibling_after(axis2_om_node_t *node,
 }
 
 
-void axis2_node_insert_sibling_before(axis2_om_node_t *node,
+void axis2_om_node_insert_sibling_before(axis2_om_node_t *node,
 		axis2_om_node_t *node_to_insert)
 {
 	if(!node || !node_to_insert )

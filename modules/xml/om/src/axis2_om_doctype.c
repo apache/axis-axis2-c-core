@@ -22,7 +22,7 @@
 axis2_om_doctype_t *axis2_om_doctype_create(axis2_om_node_t *parent , const char *value, axis2_om_node_t *doc_node)
 {
     axis2_om_doctype_t *doctype = NULL;
-    axis2_om_node_t *node = axis2_node_create();
+    axis2_om_node_t *node = axis2_om_node_create();
     if (!node)
     {
 		return NULL;
@@ -43,7 +43,7 @@ axis2_om_doctype_t *axis2_om_doctype_create(axis2_om_node_t *parent , const char
 	if (parent)
     {
 		node->parent = parent;
-		axis2_node_add_child(parent, node);
+		axis2_om_node_add_child(parent, node);
     }
 	doc_node = node;
     return doctype;
@@ -73,7 +73,7 @@ axis2_om_doctype_t *axis2_om_doctype_create_empty_doctype(axis2_om_node_t * pare
 	if (parent)
     {
 		node->parent = parent;
-		axis2_node_add_child(parent, node);
+		axis2_om_node_add_child(parent, node);
     }
 	doc_node = node;
     return doctype;

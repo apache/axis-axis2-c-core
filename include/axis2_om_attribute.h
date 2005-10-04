@@ -23,7 +23,7 @@
  */
 
 #include <axis2_qname.h>
-#include <axis2_node.h>
+#include <axis2_om_node.h>
 #include <axis2_om_namespace.h>
 
 /**

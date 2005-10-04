@@ -22,7 +22,7 @@
  * @brief defines axis2_om_comment_t struct, and manipulation functions
  */
 
-#include <axis2_node.h>
+#include <axis2_om_node.h>
 
 typedef struct axis2_om_comment_t
 {
@@ -33,7 +33,7 @@ typedef struct axis2_om_comment_t
  * Create a comment struct and stores in in a node struct and returns a pointer
  * to the axis2_om_comment_t struct
  * the data_element field of node struct points to the acctual axis2_comment struct
- * The element type of axis2_node_t struct will be of type AXIS2_OM_COMMENT
+ * The element type of axis2_om_node_t struct will be of type AXIS2_OM_COMMENT
  * @param value value of the comment
  * @param comment_node This is an out parameter, stores the acctual om_comment in
  *        this node struct pointer
