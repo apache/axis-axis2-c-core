@@ -272,15 +272,12 @@
         if((*element_data)[1] && strlen((*element_data)[1]) > 0)
         {
             fputs((*element_data)[1], stream_writer->writer);
-            printf("...%s...\n", (*element_data)[1]);
             free( (*element_data)[1]);
         }
         else
             return GUTHTHILA_STREAM_WRITER_ERROR_ELEMENT_STACK_EMPTY;
         
         fputs(">", stream_writer->writer);
-        
-        printf("guththila_xml_stream_writer_write_end_element END\n");
        
         *element_data = 0;
 

@@ -40,7 +40,7 @@ main ()
     axis2_om_node_add_child (node1, node3);
 
     // serializing stuff
-     om_output = axis2_create_om_output(stdout);
+     om_output = axis2_create_om_output(stderr);
      axis2_om_element_serialize_start_part(ele3, om_output);
      axis2_om_element_serialize_end_part(ele3, om_output);
     // end serializing stuff
