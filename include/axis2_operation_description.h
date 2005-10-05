@@ -1,7 +1,7 @@
 #ifndef AXIS2_OPERATION_DESCRIPTION_H
 #define AXIS2_OPERATION_DESCRIPTION_H
 
-#include <axis2_description.h>
+#include <axis2_operation_description.h>
 #include <axis2_description_param_include.h>
 
 typedef struct axis2_operation_description_s axis2_operation_description_t;

@@ -191,6 +191,7 @@ axis2_om_node_t *axis2_om_node_get_first_child(axis2_om_node_t *parent_node)
 	}
 	return NULL;
 }
+
 axis2_om_node_t *axis2_om_node_get_next_child(axis2_om_node_t *parent_node)
 {
 	axis2_om_node_t *node=NULL;
@@ -213,3 +214,4 @@ axis2_om_node_t *axis2_om_node_get_next_child(axis2_om_node_t *parent_node)
 	}
 	return NULL;
 }
+
