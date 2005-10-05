@@ -1,6 +1,7 @@
 #ifndef AXIS2_OPERATION_DESCRIPTION_H
 #define AXIS2_OPERATION_DESCRIPTION_H
 
+#include <axis2_description.h>
 #include <axis2_description_param_include.h>
 
 typedef struct axis2_operation_description_s axis2_operation_description_t;
@@ -49,10 +50,10 @@ axis2_operation_description_t
 axis2_operation_description_t *create_axis2_operation_description_with_name 
 	(axis2_description_param_include_t *param_include, axis2_qname_t *name);
 
-void free_axis2_operation_description (axis2_operation_description_t
+int free_axis2_operation_description (axis2_operation_description_t
     *operation_desc);
 
-void axis2_operation_description_add_parameter(axis2_operation_description_t
+int axis2_operation_description_add_parameter(axis2_operation_description_t
 	*operation_desc, axis2_parameter_t *param);
 
 axis2_parameter_t *axis2_operation_description_get_parameter(
@@ -61,10 +62,10 @@ axis2_parameter_t *axis2_operation_description_get_parameter(
 axis2_parameter_t *axis2_operation_description_get_parameters(
 	axis2_operation_description_t * operation_desc);
 
-void axis2_operation_description_set_parent(axis2_operation_description_t *operation_description
-	, axis2_service_description_t *service_description);
+int axis2_operation_description_set_parent(axis2_operation_description_t
+	*operation_desc, axis2_service_description_t *service_description);
 
-axis2_service_description_t *axis2_operation_description_get_parent(axis2_operation_description_t 
-	*operation_desc);
+axis2_service_description_t *axis2_operation_description_get_parent
+	(axis2_operation_description_t *operation_desc);
 
 #endif //AXIS2_OPERATION_DESCRIPTION_H

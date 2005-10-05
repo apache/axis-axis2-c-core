@@ -58,7 +58,7 @@ void axis2_om_namespace_free(axis2_om_namespace_t * ns)
 	}
 }
 
-boolean_t axis2_om_namespace_equals(axis2_om_namespace_t * ns1,
+int axis2_om_namespace_equals(axis2_om_namespace_t * ns1,
 			       axis2_om_namespace_t * ns2)
 {
     int uris_differ = 0;

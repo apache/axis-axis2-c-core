@@ -76,10 +76,10 @@ apr_hash_t *axis2_descriptin_param_include_get_parameters
 }
 
 /* To check whether the paramter is locked at any level */
-boolean_t axis2_description_param_include_is_parameter_locked
+int axis2_description_param_include_is_parameter_locked
     (axis2_description_param_include_t * param_include, char *param_name)
 {
 	return ((axis2_parameter_t *)(apr_hash_get 
 		(param_include->parameters, strdup(param_name), APR_HASH_KEY_STRING)))->is_locked;
-	return false;
+	return FALSE;
 }

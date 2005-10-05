@@ -58,7 +58,7 @@ axis2_om_element_create (axis2_om_node_t * parent,const char *localname,
         (*element_node)->parent = parent;
         axis2_om_node_add_child (parent, (*element_node));
     }
-    (*element_node)->done = true;
+    (*element_node)->done = TRUE;
     (*element_node)->element_type = AXIS2_OM_ELEMENT;
     (*element_node)->data_element = element;
     axis2_om_element_set_namespace ((*element_node), ns);
@@ -123,7 +123,7 @@ axis2_om_element_create_with_builder (axis2_om_node_t * parent,
 
     node->builder = builder;
     node->data_element = element;
-    node->done = false;
+    node->done = FALSE;
     node->element_type = AXIS2_OM_ELEMENT;
 
     if (parent)

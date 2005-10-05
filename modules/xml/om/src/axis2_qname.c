@@ -64,7 +64,7 @@ void axis2_free_qname(axis2_qname_t * qn)
 	}
 }
 
-boolean_t axis2_qname_equals(axis2_qname_t *qn1,axis2_qname_t *qn2)
+int axis2_qname_equals(axis2_qname_t *qn1,axis2_qname_t *qn2)
 {
 	int uris_differ = 0;
 	int localparts_differ = 0;
@@ -73,7 +73,7 @@ boolean_t axis2_qname_equals(axis2_qname_t *qn1,axis2_qname_t *qn2)
 	{
 		if( qn1 == qn2)
 		{
-			return true;
+			return TRUE;
 		}
 	}
 	if(qn1->localpart && qn2->localpart)

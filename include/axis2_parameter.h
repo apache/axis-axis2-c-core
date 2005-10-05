@@ -27,7 +27,7 @@ typedef struct
     void *value;
     axis2_om_element_t *param_element;
     int type;
-    boolean_t is_locked;
+    int is_locked;
 } axis2_parameter_t;
 
 axis2_parameter_t *axis2_parameter_create ();
@@ -48,10 +48,10 @@ void axis2_parameter_set_value (axis2_parameter_t * param, void *value);
 
 void *axis2_parameter_get_value (axis2_parameter_t * param);
 
-boolean_t axis2_parameter_is_locked (axis2_parameter_t * param);
+int axis2_parameter_is_locked (axis2_parameter_t * param);
 
 void axis2_parameter_set_locked (axis2_parameter_t * param,
-                                  boolean_t locked);
+                                  int locked);
 
 void axis2_parameter_set_param_element (axis2_parameter_t * param,
                                          axis2_om_element_t * om_element);

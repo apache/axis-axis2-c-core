@@ -50,6 +50,6 @@ void axis2_om_namespace_free(axis2_om_namespace_t * ns);
  * @return true if ns1 equals ns2 , false otherwise	
  */
 
-boolean_t axis2_om_namespace_equals(axis2_om_namespace_t * ns1, axis2_om_namespace_t * ns2);
+int axis2_om_namespace_equals(axis2_om_namespace_t * ns1, axis2_om_namespace_t * ns2);
 
 #endif	// AXIS2_OM_NAMESPACE

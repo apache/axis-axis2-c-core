@@ -58,7 +58,7 @@ void *axis2_parameter_get_value (axis2_parameter_t * param)
 	return NULL;
 }
 
-boolean_t axis2_parameter_is_locked (axis2_parameter_t * param)
+int axis2_parameter_is_locked (axis2_parameter_t * param)
 {
 	if(param)
 		return param->is_locked;
@@ -66,7 +66,7 @@ boolean_t axis2_parameter_is_locked (axis2_parameter_t * param)
 }
 
 void axis2_parameter_set_locked (axis2_parameter_t * param,
-                                  boolean_t is_locked)
+                                  int is_locked)
 {
 	if(param)
 		param->is_locked = is_locked;

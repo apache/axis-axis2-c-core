@@ -65,7 +65,7 @@ typedef struct axis2_om_node_t {
 	struct axis2_om_node_t *last_child;
 	axis2_stax_om_builder_t *builder;
 	axis2_om_types_t element_type;
-	boolean_t done;
+	int done;
 	void* data_element;
 } axis2_om_node_t;
 

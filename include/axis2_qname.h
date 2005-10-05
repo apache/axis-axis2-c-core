@@ -50,6 +50,6 @@ void axis2_qname_free(axis2_qname_t *qn);
  *
  */
 
-boolean_t axis2_qname_equals(axis2_qname_t *qn1,axis2_qname_t *qn2);
+int axis2_qname_equals(axis2_qname_t *qn1,axis2_qname_t *qn2);
 
 #endif // AXIS2_QNAME_H

@@ -44,7 +44,7 @@ axis2_om_text_t *axis2_om_text_create(axis2_om_node_t *parent,const char *value
 
 	if(parent && parent->element_type == AXIS2_OM_ELEMENT)
 	{
-		node->done = true;
+		node->done = TRUE;
 		node->parent = parent;
 		axis2_om_node_add_child(parent,node);
 	}

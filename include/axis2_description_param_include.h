@@ -21,7 +21,7 @@
 typedef struct axis2_description_param_include_t
 {
     apr_hash_t *parameters;
-    boolean_t is_locked;
+    int is_locked;
 } axis2_description_param_include_t;
 
 /*
@@ -40,11 +40,11 @@ axis2_parameter_t *axis2_description_param_include_get_parameter
     (axis2_description_param_include_t * param_include, char *name);
 
 /* To get all the parameters in a given description */
-apr_hash_t *axis2_descriptin_param_include_get_parameters
+apr_hash_t *axis2_description_param_include_get_parameters
     (axis2_description_param_include_t * param_include);
 
 /* To check whether the paramter is locked at any level */
-boolean_t axis2_description_param_include_is_parameter_locked
+int axis2_description_param_include_is_parameter_locked
     (axis2_description_param_include_t * param_include, char *param_name);
 
 #endif //AXIS2_DESCRIPTION_PARAM_INCLUDE_H
