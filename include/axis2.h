@@ -10,6 +10,11 @@
 #include <apr_pools.h>
 #include <apr_hash.h>
 
+/* Parametrized macro definitions for memory handling */
+#define MALLOC(s) (malloc((s)))
+#define REALLOC(p,s) (realloc((p),(s)))
+#define FREE(p) (free((p)))
+
 enum boolean_s {false, true};
 typedef enum boolean_s boolean_t; 
 
