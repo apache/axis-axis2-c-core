@@ -89,5 +89,5 @@ int axis2_om_output_write(axis2_om_output_t* om_output, axis2_om_types_t type, i
             break;
     };
   
-    return 1;
+    return AXIS2_SUCCESS;
 }

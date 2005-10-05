@@ -25,12 +25,14 @@
 
 
 #include <axis2.h>
+#include <axis2_errno.h>
 #include <apr.h>
 #include <apr_pools.h>
 #include <xmlpullparser.h>
 
 typedef struct axis2_stax_om_builder_s axis2_stax_om_builder_t;
-
+typedef struct axis2_om_output_s axis2_om_output_t;
+typedef struct axis2_om_element_s axis2_om_element_t;
 
 typedef enum axis2_om_types_t {
     AXIS2_OM_INVALID = -1,
@@ -120,11 +122,10 @@ void axis2_om_node_insert_sibling_before(axis2_om_node_t *current_ele,axis2_om_n
 
 void axis2_om_node_set_parent(axis2_om_node_t *node,axis2_om_node_t *parent);
 
-
-
 axis2_om_node_t *axis2_om_node_get_first_child(axis2_om_node_t *parent_node);
 
 axis2_om_node_t *axis2_om_node_get_next_child(axis2_om_node_t *parent_node);
 
+int *axis2_om_node_serialize(axis2_om_node_t *om_node, axis2_om_output_t * om_output);
 
 #endif // AXIS2_NODE_H

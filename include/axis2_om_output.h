@@ -24,7 +24,7 @@
 
 static const char* DEFAULT_CHAR_SET_ENCODING = "utf-8";
 
-typedef struct {
+struct axis2_om_output_s {
     guththila_xml_stream_writer_t* xml_writer;
     int do_optimize;
     FILE* out_stream;
@@ -37,7 +37,7 @@ typedef struct {
     char* char_set_encoding;
     char* xml_version;
     int ignore_xml_declaration;
-} axis2_om_output_t;
+};
 
 axis2_om_output_t* axis2_create_om_output( FILE* stream);
 

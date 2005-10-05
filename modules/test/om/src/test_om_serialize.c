@@ -2,6 +2,8 @@
 #include <axis2_om_node.h>
 #include <axis2_om_element.h>
 #include <unistd.h>
+#include <axis2_errno.h>
+
 
 int
 main ()
@@ -30,7 +32,7 @@ main ()
     
 
 
-    ele3 = axis2_om_element_create (NULL, "ele3",ns3 , &node3);
+    ele3 = axis2_om_element_create (NULL, "ele3", NULL , &node3);
 
     if (ele3->ns)
         printf("%s\n",ele3->ns->uri);
@@ -43,6 +45,13 @@ main ()
      om_output = axis2_create_om_output(stderr);
      axis2_om_element_serialize_start_part(ele3, om_output);
      axis2_om_element_serialize_end_part(ele3, om_output);
+
+     int status = axis2_om_node_serialize(node1, om_output);
+     if (status != AXIS2_SUCCESS)
+     {
+        printf("\naxis2_om_node_serialize failed\n");
+        return status;
+     }
     // end serializing stuff
     
     printf("\nDONE\n");

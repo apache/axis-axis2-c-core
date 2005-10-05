@@ -456,26 +456,29 @@ int
 axis2_om_element_serialize_start_part (axis2_om_element_t * element_node,
                                        axis2_om_output_t * om_output)
 {
+    int status = AXIS2_SUCCESS;
     // TODO : handle null pointer errors
     if (element_node->ns && element_node->ns->uri && element_node->ns->prefix)
-        axis2_om_output_write (om_output, AXIS2_OM_ELEMENT, 3,
+        status = axis2_om_output_write (om_output, AXIS2_OM_ELEMENT, 3,
                                element_node->localname, element_node->ns->uri,
                                element_node->ns->prefix);
     else if (element_node->ns && element_node->ns->uri)
-        axis2_om_output_write (om_output, AXIS2_OM_ELEMENT, 2,
+        status = axis2_om_output_write (om_output, AXIS2_OM_ELEMENT, 2,
                                element_node->localname,
                                element_node->ns->uri);
     else
-        axis2_om_output_write (om_output, AXIS2_OM_ELEMENT, 1,
+        status = axis2_om_output_write (om_output, AXIS2_OM_ELEMENT, 1,
                                element_node->localname);
 
-
+    return status;
 }
 
 int
 axis2_om_element_serialize_end_part (axis2_om_element_t * element_node,
                                      axis2_om_output_t * om_output)
 {
+    int status = AXIS2_SUCCESS;
     // TODO : handle null pointer errors
-    axis2_om_output_write (om_output, AXIS2_OM_ELEMENT, 0);
+    status = axis2_om_output_write (om_output, AXIS2_OM_ELEMENT, 0);
+    return status;
 }

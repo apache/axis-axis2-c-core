@@ -215,3 +215,44 @@ axis2_om_node_t *axis2_om_node_get_next_child(axis2_om_node_t *parent_node)
 	return NULL;
 }
 
+int *axis2_om_node_serialize(axis2_om_node_t *om_node, axis2_om_output_t * om_output)
+{
+    if (!om_node || !om_output)
+        return AXIS2_ERROR_INVALID_POINTER_PARAMATERS;
+    
+    int status = AXIS2_SUCCESS;
+    
+    switch (om_node->element_type)
+    {
+        case AXIS2_OM_ELEMENT:
+            status = axis2_om_element_serialize_start_part( (axis2_om_element_t*)om_node->data_element, om_output );
+            if (status != AXIS2_SUCCESS) 
+                return status;
+            break;
+             
+    }
+
+    // handle children
+    axis2_om_node_t *child_node = axis2_om_node_get_first_child(om_node);
+
+    while (child_node)
+    {
+        status = axis2_om_node_serialize(child_node, om_output);
+            if (status != AXIS2_SUCCESS) 
+                return status;
+        child_node = axis2_om_node_get_next_child(om_node);
+    }
+        
+    switch (om_node->element_type)
+    {
+        case AXIS2_OM_ELEMENT:
+            status = axis2_om_element_serialize_end_part( (axis2_om_element_t*)om_node->data_element, om_output );
+            if (status != AXIS2_SUCCESS) 
+                return status;
+            break;
+    }
+    
+    return status;
+
+}
+
