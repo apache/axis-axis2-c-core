@@ -25,6 +25,7 @@
 #include <axis2_qname.h>
 #include <axis2_om_node.h>
 #include <axis2_om_namespace.h>
+#include <axis2_om_output.h>
 
 /**
  * localname   
@@ -63,5 +64,7 @@ axis2_qname_t *axis2_om_attribute_get_qname(axis2_om_attribute_t *attribute);
  */
 
 void axis2_om_attribute_free(axis2_om_attribute_t *attr);
+
+int axis2_om_attribute_serialize(axis2_om_attribute_t *attribute, axis2_om_output_t* om_output);
 
 #endif /* AXIS2_OM_ATTRIBUTE_H */

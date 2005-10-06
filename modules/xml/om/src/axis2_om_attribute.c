@@ -72,3 +72,22 @@ axis2_qname_t *axis2_om_attribute_get_qname(axis2_om_attribute_t * attr)
 		}
 		return qname;
 }
+
+
+int axis2_om_attribute_serialize(axis2_om_attribute_t *attribute, axis2_om_output_t* om_output)
+{
+    int status = AXIS2_SUCCESS;
+    // TODO : handle null pointer errors
+    if (attribute->ns && attribute->ns->uri && attribute->ns->prefix)
+        status = axis2_om_output_write (om_output, AXIS2_OM_ATTRIBUTE, 4,
+                               attribute->localname, attribute->value, attribute->ns->uri,
+                               attribute->ns->prefix);
+    else if (attribute->ns && attribute->ns->uri)
+        status = axis2_om_output_write (om_output, AXIS2_OM_ATTRIBUTE, 3,
+                               attribute->localname, attribute->value, attribute->ns->uri);
+    else 
+        status = axis2_om_output_write (om_output, AXIS2_OM_ATTRIBUTE, 2,
+                               attribute->localname, attribute->value);
+    return status;
+}
+

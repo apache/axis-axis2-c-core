@@ -470,6 +470,30 @@ axis2_om_element_serialize_start_part (axis2_om_element_t * element_node,
         status = axis2_om_output_write (om_output, AXIS2_OM_ELEMENT, 1,
                                element_node->localname);
 
+    // serialize attributes
+    if (element_node->attributes)
+    {
+        apr_hash_index_t *hi;
+        void *val;
+        for (hi = apr_hash_first(om_pool, element_node->attributes); hi; hi = apr_hash_next(hi)) 
+        {
+            apr_hash_this(hi, NULL, NULL, &val);
+    
+            if (val)            
+                status = axis2_om_attribute_serialize( (axis2_om_attribute_t*)val, om_output);
+            else
+            {
+                status = AXIS2_FAILURE;
+            }
+        }
+    }
+    
+    // serialize namespaces
+    if (element_node->namespaces)
+    {
+        
+    }
+    
     return status;
 }
 

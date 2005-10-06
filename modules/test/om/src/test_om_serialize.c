@@ -17,18 +17,18 @@ main ()
     axis2_om_namespace_t *ns1 = NULL, *ns2 = NULL, *ns3 = NULL;
     axis2_om_output_t* om_output = NULL;
 
-    ns1 = axis2_om_namespace_create ("ns1", "test1");
-    ns2 = axis2_om_namespace_create ("ns2", "test2");
-    ns3 = axis2_om_namespace_create ("ns3", "test3");
+    ns1 = axis2_om_namespace_create ("ns1uri", "ns1prefix");
+    ns2 = axis2_om_namespace_create ("ns2uri", "ns2prefix");
+    ns3 = axis2_om_namespace_create ("ns3uri", "ns3prefix");
     
     ele1 = axis2_om_element_create (NULL, "root", ns1, &node1);
     if (node1->first_child)
         printf("has first_child\n");
 
-    ele2 = axis2_om_element_create (node1, "ele1", ns2, &node2);
+    ele2 = axis2_om_element_create (node1, "ele2", ns2, &node2);
 
-    attr1 = axis2_om_attribute_create ("ele1", "attr1", ns2);
-    axis2_om_element_add_attribute (ele2, attr1);
+    attr1 = axis2_om_attribute_create ("attr1key", "attr1value", ns1);
+    axis2_om_element_add_attribute (node2, attr1);
     
 
 

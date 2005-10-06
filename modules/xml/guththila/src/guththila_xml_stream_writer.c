@@ -607,7 +607,7 @@
                 {
                     fputs( to_write, stream_writer->writer);
 
-                    free (to_write);
+                    //free (to_write);
                 }
                 else
                     return GUTHTHILA_STREAM_WRITER_ERROR_OUT_OF_MEMORY;
@@ -629,7 +629,7 @@
                 {
                     fputs( to_write, stream_writer->writer);
 
-                    free (to_write);
+                    //free (to_write);
                 }
                 else
                     return GUTHTHILA_STREAM_WRITER_ERROR_OUT_OF_MEMORY;
@@ -652,7 +652,7 @@
             {
                 fputs( to_write, stream_writer->writer);
 
-                free (to_write);
+                //free (to_write);
             }
             else
                 return GUTHTHILA_STREAM_WRITER_ERROR_OUT_OF_MEMORY;
