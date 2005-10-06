@@ -385,6 +385,9 @@
         if (!prefix)
             prefix = GUTHTHILA_DEFAULT_NS_PREFIX;
 
+        char* declared_prefix = guththila_xml_stream_writer_get_prefix(stream_writer, namespace_uri);
+        if (declared_prefix && strcmp(prefix, declared_prefix) == 0)
+            return GUTHTHILA_SUCCESS;
         guththila_xml_stream_writer_set_prefix(stream_writer, prefix, namespace_uri);
         
         fputs(" ", stream_writer->writer);
