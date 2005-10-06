@@ -35,8 +35,8 @@
 typedef struct axis2_om_document_t
 {
 	axis2_om_node_t *root_element;
-	axis2_om_node_t *first_child;
 	axis2_om_node_t *last_child;
+	axis2_om_node_t *first_child;
 	int done;
 	axis2_stax_om_builder_t *builder;
 	char *char_set_encoding;
@@ -82,7 +82,7 @@ void axis2_om_document_add_child(axis2_om_document_t *document,axis2_om_node_t *
  */
 
 
-axis2_om_node_t *axis2_om_document_get_first_child(axis2_om_document_t *document);
+axis2_om_node_t *axis2_om_document_get_root_element(axis2_om_document_t *document);
 
 /**
  * set the CHAR SET ENCODING of this document
@@ -95,7 +95,12 @@ void axis2_document_set_char_set_encoding(axis2_om_document_t *char_set_encoding
 void axis2_document_set_xmlversion(axis2_om_document_t *document);
 
 
+axis2_om_node_t *axis2_om_document_get_next_sibling(axis2_om_document_t *document);
 
+
+axis2_om_node_t *axis2_om_document_get_first_child(axis2_om_document_t *document);
+
+axis2_om_node_t *axis2_om_document_get_current_child(axis2_om_document_t *document);
 
 /*	to implement
  *	get first child with qname

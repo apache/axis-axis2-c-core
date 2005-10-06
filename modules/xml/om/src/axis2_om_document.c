@@ -18,13 +18,12 @@
 #include <axis2_om_document.h>
 #include <stdlib.h>
 #include <axis2_errno.h>
+#include <axis2_stax_ombuilder.h>
 
-axis2_om_document_t *axis2_om_document_create(axis2_om_node_t * root_ele, 
-									axis2_stax_om_builder_t * builder)
+axis2_om_document_t *axis2_om_document_create(axis2_om_node_t * root_ele,axis2_stax_om_builder_t * builder)
 {
 
-    axis2_om_document_t *doc = (axis2_om_document_t *) malloc(
-										sizeof(axis2_om_document_t));
+    axis2_om_document_t *doc = (axis2_om_document_t *) malloc(sizeof(axis2_om_document_t));
     if (!doc)
     {
 		fprintf(stderr,"%d Error",AXIS2_ERROR_OM_MEMORY_ALLOCATION);
@@ -36,6 +35,11 @@ axis2_om_document_t *axis2_om_document_create(axis2_om_node_t * root_ele,
     doc->last_child = NULL;
     doc->char_set_encoding = CHAR_SET_ENCODING;
     doc->xml_version = XML_VERSION;
+    doc->done = FALSE;
+    if(builder)
+    {
+        builder->document=doc;
+    }
     return doc;
 }
 
@@ -71,21 +75,17 @@ void axis2_om_document_set_char_set_encoding(axis2_om_document_t *document,
 void axis2_om_document_add_child(axis2_om_document_t * document,
 				  axis2_om_node_t * child)
 {
-    if (!document || !child)
-    {	/* nothing to do */
-		return;
-	}
-    if (document->first_child == NULL)
-    {
-		document->first_child = child;
-		child->prev_sibling = NULL;
-    }
-	else
-    {
-		child->prev_sibling = document->last_child;
-		document->last_child->next_sibling = child;
-    }
-    child->next_sibling = NULL;
+   if(!(document->root_element) && child)
+   {
+        document->root_element = child;
+   
+   }
+   
+   if(document->root_element && child)
+   {
+        axis2_om_node_add_child(document->root_element,child);
+   }
+   
 }
 
 
@@ -104,5 +104,64 @@ void axis2_om_document_set_xmlversion(axis2_om_document_t *document,const char *
 
 void axis2_om_document_build_next(axis2_om_document_t *document)
 {
+   // printf("next");
 	axis2_stax_om_builder_next(document->builder);
+}
+
+
+axis2_om_node_t *axis2_om_document_get_root_element(axis2_om_document_t *document)
+{
+        if(document && document->root_element)
+        {
+            return document->root_element;
+        }
+        else
+        {   
+            while(!document->root_element)
+                axis2_om_document_build_next(document);
+        }
+        
+        return document->root_element;
+           
+}
+
+axis2_om_node_t *axis2_om_document_get_next_sibling(axis2_om_document_t *document)
+{
+    axis2_om_node_t *lastchild =document->builder->lastnode;
+    if(document && document->builder && document->builder->lastnode)
+    {
+         
+        if(!(lastchild->parent))
+        {
+            /* if parent is null there can't be siblings */
+            return NULL;
+        }
+        while( !(lastchild->next_sibling) && !(lastchild->parent->done))
+            axis2_om_document_build_next(document); 
+    }
+    return lastchild->next_sibling;
+}
+
+axis2_om_node_t *axis2_om_document_get_first_child(axis2_om_document_t *document)
+{
+    axis2_om_node_t *current_child = NULL;
+    current_child = document->builder->lastnode;
+    if(current_child)
+    {
+        while(!(current_child->first_child)&& !(current_child->done))
+        {
+           axis2_om_document_build_next(document);
+        }
+       if(current_child->first_child)
+        return current_child->first_child;
+        else
+            return NULL;
+        
+    }
+    
+}
+
+axis2_om_node_t *axis2_om_document_get_child(axis2_om_document_t *document)
+{
+    return document->builder->lastnode;
 }

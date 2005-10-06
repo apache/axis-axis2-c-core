@@ -21,8 +21,36 @@
 #include <axis2_om_element.h>
 #include <axis2_errno.h>
 #include <xmlpullparser.h>
+#include <axis2_om_text.h>
 
-axis2_stax_om_builder_t *create_stax_om_builder(XML_PullParser *parser)
+const char XMLNS_URI[] ="http://www.w3.org/XML/1998/namespace";
+const char XMLNS_PREFIX[]= "xml";
+
+static int isnot_whitespace(char s[])
+{
+   
+    int n=0;
+     
+    for(n = strlen(s)-1;n>=0;n--)
+        if(s[n] !=' ' && s[n] !='\t' && s[n] != '\n')
+            break;
+    if(n== -1)
+        n =0;
+    
+    return n;
+}
+
+static int trim(char s[])
+{
+    int n;
+    for(n = strlen(s)-1;n>=0;n--)
+        if(s[n] !=' ' && s[n] !='\t' && s[n] != '\n')
+            break;
+    s[n+1] = '\0';
+  return n;
+}
+
+axis2_stax_om_builder_t *axis2_stax_om_builder_create(XML_PullParser *parser)
 {
 	axis2_om_document_t *document;
 	axis2_stax_om_builder_t *builder = (axis2_stax_om_builder_t*)malloc(sizeof(axis2_stax_om_builder_t));
@@ -31,19 +59,15 @@ axis2_stax_om_builder_t *create_stax_om_builder(XML_PullParser *parser)
 		fprintf(stderr," %d Error ",AXIS2_ERROR_OM_MEMORY_ALLOCATION);
 		return NULL;
 	}
-	builder->parser = parser;
-	builder->cache  = TRUE;
+	builder->parser  = parser;
+	builder->cache   = TRUE;
 	builder->parser_accessed = FALSE;
 	builder->done   = FALSE;
-	builder->lastnode=NULL;
-
-	document = axis2_om_document_create(NULL,builder);
-	if(document)
-	{
-		builder->document = document;
-	}
+	builder->lastnode = NULL;
+    builder->document= NULL;
 	return builder;
 }
+
 
 axis2_om_node_t *axis2_stax_om_builder_create_om_element(
 						axis2_stax_om_builder_t *builder)
@@ -53,28 +77,29 @@ axis2_om_node_t *axis2_stax_om_builder_create_om_element(
 	
 	if(!(builder->lastnode))
 	{	/*  */
-		axis2_om_element_create_with_builder(NULL,localname,NULL,builder,element_node);
+		axis2_om_element_create(NULL,localname,NULL,&element_node);
 		builder->document->root_element = element_node;
-		axis2_om_document_add_child(builder->document,element_node);
+		
+		//axis2_om_document_add_child(builder->document,element_node);
 	}
 	else if(builder->lastnode->done)
 	{	/*  */
-		 axis2_om_element_create_with_builder(builder->lastnode->parent,localname,NULL
-				,builder,element_node);
+		axis2_om_element_create(builder->lastnode->parent,localname,NULL,&element_node);
 		builder->lastnode->next_sibling = element_node;
 		element_node->prev_sibling = builder->lastnode;
 	}
 	else 
 	{	/* */
-		axis2_om_element_create_with_builder(builder->lastnode,localname,NULL,builder,element_node);
+		axis2_om_element_create(builder->lastnode,localname,NULL,&element_node);
 		builder->lastnode->first_child = element_node;
 		element_node->parent = builder->lastnode;
 	}
-
-	// process namespace data
+    axis2_stax_om_builder_process_attributes(builder,element_node);
+	axis2_stax_om_builder_process_namespace_data(builder,element_node,0);
+	
 	// process attributes
 
-return NULL;
+return element_node;
 }
 
 axis2_om_node_t *axis2_stax_om_builder_create_om_comment(
@@ -90,6 +115,7 @@ axis2_om_node_t *axis2_stax_om_builder_create_om_doctype(
 						axis2_stax_om_builder_t *builder)
 {
 	/*  guththila does not support yet */
+	return NULL;
 }
 
 
@@ -97,25 +123,24 @@ axis2_om_node_t *axis2_stax_om_builder_create_om_processing_instruction(
 						axis2_stax_om_builder_t *builder)
 {
 	/* guththila does not support yet */
-
-
-
-
-
+	return NULL;
 }
 
 void axis2_stax_om_builder_end_element(axis2_stax_om_builder_t *builder)
 {	
 	axis2_om_node_t *parent;
-	if(builder->lastnode->done)
+	if(builder->lastnode)
 	{
-		parent = builder->lastnode->parent;
-		parent->done = TRUE;
-		builder->lastnode = parent;
-	}
-	else
-	{
-		builder->lastnode->done = TRUE;
+    	if(builder->lastnode->done)
+	    {
+		    parent = builder->lastnode->parent;
+		    parent->done = TRUE;
+		    builder->lastnode = parent;
+	    }
+	    else
+	    {
+		    builder->lastnode->done = TRUE;
+	    }
 	}
 }
 
@@ -123,47 +148,50 @@ void axis2_stax_om_builder_end_element(axis2_stax_om_builder_t *builder)
 int axis2_stax_om_builder_next(axis2_stax_om_builder_t *builder)
 {
 	int token = 0;
+
+	
 	if(builder->done)
 	{
-		fprintf(stderr,"%d Errpr",-1);
+		fprintf(stderr,"%d Error",-1);
 		return NULL;
 	}
 	
 	token = XML_PullParser_next (builder->parser);
+	 if(token = -1)
+    {
+        builder->done = TRUE;
+        return 0;
+    }
 	if(!(builder->cache))
 	{
 		return token;
 	}
-
+   
 
 	switch(token)
 	{
 	case START_DOCUMENT:
 		{
 		
+		axis2_stax_om_builder_process_start_document(builder);
 		}
 		break;
 
 	case START_ELEMENT:
 		{
-			builder->lastnode = axis2_stax_om_builder_create_om_element(builder);
+		    
+		builder->lastnode = axis2_stax_om_builder_create_om_element(builder);
 		}
 		break;
 	case END_ELEMENT:
 		{
-		
-			axis2_stax_om_builder_end_element(builder);
-	
-		
-		
-		}
+		  axis2_stax_om_builder_end_element(builder);
+	   	}
 		break;
 	case CHARACTER:
 		{
-			builder->lastnode = axis2_stax_om_builder_create_om_text(builder);
 		
-		
-		
+		builder->lastnode = axis2_stax_om_builder_create_om_text(builder);
 		}
 		break;
 	case COMMENT:
@@ -176,6 +204,7 @@ int axis2_stax_om_builder_next(axis2_stax_om_builder_t *builder)
 		
 		
 	};
+	
 }
 
 
@@ -189,16 +218,19 @@ void axis2_stax_om_builder_process_attributes(axis2_stax_om_builder_t *builder,a
 	int attribute_count = XML_PullParser_getAttributeCount(builder->parser);
 	for(i=0 ; i < attribute_count ; i++)
 	{
-			
+	    
 		uri     = XML_PullParser_getAttributeNamespace_by_number(builder->parser,i);
 		prefix  = XML_PullParser_getAttributePrefix_by_number(builder->parser,i);
-		if(strcmp(uri,"") != 0)
-		{
-			ns = axis2_om_element_find_namespace(element_node,uri,prefix);	
+		//printf("\nAttribute count %d %s %s\n",attribute_count,uri,prefix);
+		
+		if(uri){
+		    if(strcmp(uri," ") != 0);
+		    {
+			    ns = axis2_om_element_find_namespace(element_node,uri,prefix);	
+		    }
 		}
 		
-		if(ns == NULL && (prefix != NULL) && 	(uri != NULL)
-				&& (strcmp(prefix,XMLNS_PREFIX) == 0)
+		if(ns == NULL && prefix && uri	&& (strcmp(prefix,XMLNS_PREFIX) == 0)
 				&& (strcmp(uri,XMLNS_URI) == 0))
 		{
 			axis2_om_element_declare_namespace_with_ns_uri_prefix(element_node,
@@ -210,64 +242,106 @@ void axis2_stax_om_builder_process_attributes(axis2_stax_om_builder_t *builder,a
 		axis2_om_element_add_attribute_with_namespace(element_node
 				,XML_PullParser_getAttributeName_by_number(builder->parser,i)
 				,XML_PullParser_getAttributeValue_by_number(builder->parser,i),ns);	
+				
+		
 	}
+	
 }
 
 
 axis2_om_node_t *axis2_stax_om_builder_create_om_text(axis2_stax_om_builder_t *builder)
 {
-	axis2_om_node_t *node;
-	if(builder->lastnode)
+    char *value;
+	axis2_om_node_t *node=NULL;
+	//axis2_om_text_t *t,*t1;
+	value = XML_PullParser_getValue(builder->parser);
+	
+
+	
+	
+	if(!value || !(builder->lastnode) )
 	{
-		fprintf(stderr," ERROR");
-		return NULL;
+	         return builder->lastnode;
 	}
+	
+	if(!isnot_whitespace(value))
+	        return builder->lastnode;
+	
 	if(builder->lastnode->done)
 	{
 		axis2_om_text_create(builder->lastnode->parent,
-			XML_PullParser_getValue(builder->parser),node);		
+			value,&node);
+					
 	}
 	else
-	{
-		axis2_om_text_create(builder->lastnode,
-			XML_PullParser_getValue(builder->parser),node);		
-		
+	{  
+		 axis2_om_text_create(builder->lastnode,value,&node);
 	}
 	return node;	
 }
 
 
-void axis2_stax_om_builder_discard(axis2_stax_om_builder_t *builder,axis2_om_node_t *element_node)
+void axis2_stax_om_builder_discard_element(axis2_stax_om_builder_t *builder)
 {
-/*	axis2_om_node_t *element;
-	if(element_node->done || !(builder->cache))
+   axis2_om_node_t *element=NULL;
+   axis2_om_node_t *prev_node=NULL;
+   axis2_om_node_t *parent = NULL;
+   element = builder->lastnode;
+	
+	if(element->done || !(builder->cache))
 	{
 		fprintf(stderr," Error");
 		return;		
 	}
 	
-		cache = FALSE;
-		do
-		(
-			while(XML_PullParser_next(builder->parser) != END_ELEMENT);
-				
-		}while(
-				
-	 
+	builder->cache = FALSE;
+	do
+	{   
+		while(XML_PullParser_next(builder->parser) != END_ELEMENT);
+	}while(!(element->done));
 	
+	//All children of this element is build 
 	
+	prev_node = element->prev_sibling;
+	if(prev_node)
+	{
+	    prev_node->next_sibling = NULL;
 	
-	
-	
-	
-	
-	
-	
-	
-*/	
-	
-	
+	}else
+	{
+	    parent = element->parent;
+	    parent->first_child = NULL;
+	    builder->lastnode = parent;
+	}
+	builder->cache = TRUE;
 }
+
+void axis2_stax_om_builder_process_start_document(axis2_stax_om_builder_t* builder)
+{
+    /* skiping */
+    ATTRIBUTE *a;
+	char *p;
+	 int ix;
+    if(!(builder->document))
+    {
+        return;
+    }
+   
+    ix = XML_PullParser_getAttributeCount (builder->parser);
+    for (; ix > 0; ix--)
+    {
+		a = XML_PullParser_getAttribute (builder->parser);
+		p = XML_PullParser_getAttributeName (builder->parser, a);
+		free (p);
+		p = XML_PullParser_getAttributeValue (builder->parser, a);
+    	free (p);
+    }
+}
+
+
+
+
+
 
 
 axis2_om_node_t *axis2_stax_om_builder_process_namespace_data(axis2_stax_om_builder_t *builder,axis2_om_node_t *element,int is_soap_element)
@@ -275,18 +349,33 @@ axis2_om_node_t *axis2_stax_om_builder_process_namespace_data(axis2_stax_om_buil
 	int i=0;
 	char *nsuri  = NULL;
 	char *prefix = NULL;
+	char *uri=NULL;
+	char *prefixi=NULL;
 	NAMESPACE *NS;
+	
+	
+	int namespace_count;
+	
+	
 	axis2_om_namespace_t *ns,*ns1;
-	int namespace_count = XML_PullParser_getNamespaceCount (builder->parser);
-	for( i = 0 ; i < namespace_count ; i++)
+	//e = Stack_last (builder->parser->dep);
+	//d = e->depth->count;
+	namespace_count = XML_PullParser_getNamespaceCount (builder->parser);
+	
+	for( ;namespace_count >0 ; namespace_count--)
 	{
-		axis2_om_element_declare_namespace_with_ns_uri_prefix(element,XML_PullParser_getNamespaceUri_by_number(builder->parser,i),XML_PullParser_getNamespacePrefix_by_number(builder->parser,i));
+	   // uri = XML_PullParser_getNamespaceUri_by_number(builder->parser,namespace_count);
+	   // prefix = XML_PullParser_getNamespacePrefix_by_number(builder->parser,namespace_count);
+		axis2_om_element_declare_namespace_with_ns_uri_prefix(element,XML_PullParser_getNamespaceUri_by_number(builder->parser,namespace_count),XML_PullParser_getNamespacePrefix_by_number(builder->parser,namespace_count));
+	
 	}
-	/* set own namespace */
+	// set own namespace //
+	
 	NS = XML_PullParser_getNamespace(builder->parser);
 	nsuri  =XML_PullParser_getNamespaceUri(builder->parser,NS);
 	prefix =XML_PullParser_getNamespacePrefix(builder->parser,NS);
-	if(strcmp(nsuri,"") != 0)
+    
+	if(strcmp(nsuri," ") != 0)
 	{
 		if(!prefix)
 		{
@@ -304,17 +393,21 @@ axis2_om_node_t *axis2_stax_om_builder_process_namespace_data(axis2_stax_om_buil
 		else
 		{
 			ns = axis2_om_element_find_namespace(element,nsuri,prefix);
+			
 			if(!ns)
 			{
 				ns1 = axis2_om_namespace_create(nsuri,prefix);
-				axis2_om_element_set_namespace(element,ns);
+				axis2_om_element_set_namespace(element,ns1);
+				
 			}
 			else
 			{
+			    
 				axis2_om_element_set_namespace(element,ns);
 			}
 		}
 	}
+	
 }
 
 char *axis2_stax_om_builder_get_attribute_prefix(axis2_stax_om_builder_t *builder,int i)
@@ -338,3 +431,4 @@ char *axis2_stax_om_builder_get_attribute_namespace(axis2_stax_om_builder_t *bui
 {
 	XML_PullParser_getAttributeNamespace_by_number(	builder->parser,i);
 }
+

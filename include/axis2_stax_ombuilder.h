@@ -24,8 +24,7 @@
 
 
 
-#define XMLNS_URI "http://www.w3.org/XML/1998/namespace"
-#define XMLNS_PREFIX "xml"
+
 
 #include <xmlpullparser.h>
 #include <axis2_om_node.h>
@@ -39,6 +38,7 @@ struct axis2_stax_om_builder_s
 	int				done;
 	int				parser_accessed;
 	int				cache;
+	//apr_array_header_t *element_stack;
 };
 
 /**
@@ -123,6 +123,10 @@ axis2_om_node_t *axis2_stax_om_builder_process_namespace_data(axis2_stax_om_buil
 char *axis2_stax_om_builder_get_attribute_name(axis2_stax_om_builder_t *builder,int i);
 
 char *axis2_stax_om_builder_get_attribute_prefix(axis2_stax_om_builder_t *builder,int i);
+
+void axis2_stax_om_builder_process_start_document(axis2_stax_om_builder_t* builder);
+
+
 
 
 char *axis2_stax_om_builder_get_attribute_namespace(axis2_stax_om_builder_t *builder,int i);
