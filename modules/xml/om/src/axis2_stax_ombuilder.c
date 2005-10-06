@@ -157,11 +157,7 @@ int axis2_stax_om_builder_next(axis2_stax_om_builder_t *builder)
 	}
 	
 	token = XML_PullParser_next (builder->parser);
-	 if(token = -1)
-    {
-        builder->done = TRUE;
-        return 0;
-    }
+
 	if(!(builder->cache))
 	{
 		return token;
