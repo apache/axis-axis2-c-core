@@ -25,6 +25,7 @@
  */
 
 #include <axis2.h>
+#include <axis2_om_output.h>
 
 
 typedef struct axis2_om_namespace_t {
@@ -43,13 +44,15 @@ axis2_om_namespace_t *axis2_om_namespace_create(const char *uri,  const char *pr
  * free an om_namespcae
  *
  */
-void axis2_om_namespace_free(axis2_om_namespace_t * ns);
+void axis2_om_namespace_free(axis2_om_namespace_t * om_namespace);
 /**
  *	compares two namepsaces
  * @param ns1 ,ns2 namespace to be compared
  * @return true if ns1 equals ns2 , false otherwise	
  */
 
-int axis2_om_namespace_equals(axis2_om_namespace_t * ns1, axis2_om_namespace_t * ns2);
+int axis2_om_namespace_equals(axis2_om_namespace_t *om_namespace1, axis2_om_namespace_t *om_namespace2);
+
+int axis2_om_namespace_serialize(axis2_om_namespace_t *om_namespace, axis2_om_output_t* om_output);
 
 #endif	// AXIS2_OM_NAMESPACE

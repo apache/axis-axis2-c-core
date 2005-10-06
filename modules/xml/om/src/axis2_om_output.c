@@ -102,17 +102,23 @@ axis2_om_output_write (axis2_om_output_t * om_output, axis2_om_types_t type,
 
         }
         break;
-        /*case AXIS2_OM_DOCUMENT:
-           b= 10,
-           = 20,
-           AXIS2_OM_DOCTYPE = 30,
-           AXIS2_OM_COMMENT = 40,
 
-           AXIS2_OM_NAMESPACE = 60,
-           AXIS2_OM_PROCESSING_INSTRUCTION = 70,
-           AXIS2_OM_TEXT = 80 */
-    default:
-        break;
+        case AXIS2_OM_NAMESPACE:
+            status = guththila_xml_stream_writer_write_namespace(om_output->xml_writer, args_list[0], args_list[1]);
+            break;
+        case AXIS2_OM_TEXT:
+            status = guththila_xml_stream_writer_write_characters(om_output->xml_writer, args_list[0]);
+            break;
+        case AXIS2_OM_DOCUMENT:
+            break;
+        case AXIS2_OM_DOCTYPE:
+            break;
+        case AXIS2_OM_COMMENT:
+            break;
+        case AXIS2_OM_PROCESSING_INSTRUCTION:
+            break;
+        default:
+            break;
     };
 
     if (status == GUTHTHILA_SUCCESS)

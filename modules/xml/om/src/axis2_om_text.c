@@ -71,3 +71,13 @@ char *axis2_om_text_get_text(axis2_om_text_t * text)
     }
     return NULL;
 }
+
+int axis2_om_text_serialize(axis2_om_text_t *om_text, axis2_om_output_t* om_output)
+{
+    int status = AXIS2_SUCCESS;
+    // TODO : handle null pointer errors
+    if (om_text->value)
+        status = axis2_om_output_write (om_output, AXIS2_OM_TEXT, 1,
+                                        om_text->value);
+    return status;
+}

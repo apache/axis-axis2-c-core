@@ -15,6 +15,7 @@
  */
 
 #include <axis2_om_node.h>
+#include <axis2_om_text.h>
 
 axis2_om_node_t *axis2_om_node_create()
 {
@@ -229,7 +230,10 @@ int *axis2_om_node_serialize(axis2_om_node_t *om_node, axis2_om_output_t * om_ou
             if (status != AXIS2_SUCCESS) 
                 return status;
             break;
-             
+        case AXIS2_OM_TEXT:
+            status = axis2_om_text_serialize((axis2_om_text_t*)om_node->data_element, om_output );
+            return status;
+            break;
     }
 
     // handle children

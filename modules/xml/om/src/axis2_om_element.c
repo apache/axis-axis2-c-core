@@ -491,7 +491,19 @@ axis2_om_element_serialize_start_part (axis2_om_element_t * element_node,
     // serialize namespaces
     if (element_node->namespaces)
     {
-        
+        apr_hash_index_t *hi;
+        void *val;
+        for (hi = apr_hash_first(om_pool, element_node->namespaces); hi; hi = apr_hash_next(hi)) 
+        {
+            apr_hash_this(hi, NULL, NULL, &val);
+    
+            if (val)            
+                status = axis2_om_namespace_serialize( (axis2_om_namespace_t*)val, om_output);
+            else
+            {
+                status = AXIS2_FAILURE;
+            }
+        }        
     }
     
     return status;

@@ -28,6 +28,7 @@
 typedef struct axis2_om_text_t
 {
 	char *value;
+    // The following fields are for MTOM
 	axis2_om_namespace_t *ns;
 
 	char *mime_type;
@@ -70,6 +71,7 @@ void axis2_om_text_free(axis2_om_text_t *text);
  */
 
 
+int axis2_om_text_serialize(axis2_om_text_t *om_text, axis2_om_output_t* om_output);
 
 
 #endif // AXIS2_OM_TEXT_H

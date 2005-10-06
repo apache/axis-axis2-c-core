@@ -79,3 +79,14 @@ int axis2_om_namespace_equals(axis2_om_namespace_t * ns1,
 
     return (!uris_differ && !prefixes_differ);
 }
+
+int axis2_om_namespace_serialize(axis2_om_namespace_t *om_namespace, axis2_om_output_t* om_output)
+{
+    int status = AXIS2_SUCCESS;
+    // TODO : handle null pointer errors
+    if (om_namespace->uri && om_namespace->prefix)
+        status = axis2_om_output_write (om_output, AXIS2_OM_NAMESPACE, 2,
+                                        om_namespace->prefix, om_namespace->uri);
+    return status;
+
+}
