@@ -890,8 +890,8 @@ void
 XML_PullParser_addNamespace (XML_PullParser * parser, guththila_token_t * name,
 			     guththila_token_t * uri)
 {
-  NAMESPACE *ns;
-  ns = (NAMESPACE *) malloc (sizeof (NAMESPACE));
+  guththila_namespace_t *ns;
+  ns = (guththila_namespace_t *) malloc (sizeof (guththila_namespace_t));
   ns->name = guththila_token_to_string (name, parser->unicode_state);
   ns->length = strlen (ns->name);
   ns->uri = guththila_token_to_string (uri, parser->unicode_state);
@@ -1058,7 +1058,7 @@ XML_PullParser_getNamespaceCount (XML_PullParser * parser)
 }
 
 
-NAMESPACE *
+guththila_namespace_t *
 XML_PullParser_getNamespace (XML_PullParser * parser)
 {
   ELEMENT *e;
@@ -1071,7 +1071,7 @@ XML_PullParser_getNamespace (XML_PullParser * parser)
 
 
 char *
-XML_PullParser_getNamespacePrefix (XML_PullParser * parser, NAMESPACE * ns)
+XML_PullParser_getNamespacePrefix (XML_PullParser * parser, guththila_namespace_t * ns)
 {
   if (ns)
     return strdup (ns->name);
@@ -1081,7 +1081,7 @@ XML_PullParser_getNamespacePrefix (XML_PullParser * parser, NAMESPACE * ns)
 
 
 char *
-XML_PullParser_getNamespaceUri (XML_PullParser * parser, NAMESPACE * ns)
+XML_PullParser_getNamespaceUri (XML_PullParser * parser, guththila_namespace_t * ns)
 {
   if (ns)
     return strdup (ns->uri);
@@ -1095,7 +1095,7 @@ XML_PullParser_getNamespacePrefix_by_number (XML_PullParser * parser, int i)
 {
   int ix = parser->namesp->pointer;
   ELEMENT *e;
-  NAMESPACE *ns = NULL;
+  guththila_namespace_t *ns = NULL;
   if (i > ix)
     XML_PullParser_Exception (p_FILE, LINE);
   else
@@ -1113,7 +1113,7 @@ XML_PullParser_getNamespaceUri_by_number (XML_PullParser * parser, int i)
 {
   int ix = parser->namesp->pointer;
   ELEMENT *e;
-  NAMESPACE *ns = NULL;
+  guththila_namespace_t *ns = NULL;
   if (i > ix)
     XML_PullParser_Exception (p_FILE, LINE);
   else
@@ -1133,7 +1133,7 @@ XML_PullParser_getAttributeNamespace_by_number (XML_PullParser *parser, int i)
   int ii;
   int ix = parser->namesp->pointer;
   ELEMENT *e;
-  NAMESPACE *ns = NULL;
+  guththila_namespace_t *ns = NULL;
   att_prefix = XML_PullParser_getAttributePrefix_by_number (parser, i);
     
   for (ii = 0; ii <= ix; ii++)

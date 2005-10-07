@@ -115,7 +115,7 @@
     if (!local_name)
         return GUTHTHILA_STREAM_WRITER_ERROR_LOCAL_NAME_NULL;
     if (!namespace_uri)
-        return GUTHTHILA_STREAM_WRITER_ERROR_NAMESPACE_NULL;
+        return GUTHTHILA_STREAM_WRITER_ERROR_guththila_namespace_t_NULL;
       
     guththila_xml_stream_writer_end_start_element(stream_writer);
         
@@ -128,7 +128,7 @@
         if (stream_writer->prefix_defaulting)
             prefix = GUTHTHILA_DEFAULT_NS_PREFIX;
         else
-            return GUTHTHILA_STREAM_WRITER_ERROR_NAMESPACE_NOT_DECLARED;
+            return GUTHTHILA_STREAM_WRITER_ERROR_guththila_namespace_t_NOT_DECLARED;
     }
       
     fputs("<", stream_writer->writer);
@@ -169,7 +169,7 @@
     if (!local_name)
         return GUTHTHILA_STREAM_WRITER_ERROR_LOCAL_NAME_NULL;
     if (!namespace_uri)
-        return GUTHTHILA_STREAM_WRITER_ERROR_NAMESPACE_NULL;
+        return GUTHTHILA_STREAM_WRITER_ERROR_guththila_namespace_t_NULL;
     if (!prefix)
         return GUTHTHILA_STREAM_WRITER_ERROR_PREFIX_NULL;
     
@@ -328,7 +328,7 @@
                 guththila_xml_stream_writer_write_namespace(stream_writer, prefix, namespace_uri);
             }
             else
-                return GUTHTHILA_STREAM_WRITER_ERROR_NAMESPACE_NOT_DECLARED;
+                return GUTHTHILA_STREAM_WRITER_ERROR_guththila_namespace_t_NOT_DECLARED;
         }
 
         fputs(" ", stream_writer->writer);
@@ -357,10 +357,10 @@
             if (stream_writer->prefix_defaulting)
                 guththila_xml_stream_writer_write_namespace(stream_writer, prefix, namespace_uri);
             else
-                return GUTHTHILA_STREAM_WRITER_ERROR_NAMESPACE_NOT_DECLARED;
+                return GUTHTHILA_STREAM_WRITER_ERROR_guththila_namespace_t_NOT_DECLARED;
         }
         else if (strcmp(current_prefix, prefix) != 0 )
-            return GUTHTHILA_STREAM_WRITER_ERROR_NAMESPACE_NOT_DECLARED;
+            return GUTHTHILA_STREAM_WRITER_ERROR_guththila_namespace_t_NOT_DECLARED;
 
         fputs(" ", stream_writer->writer);
 
@@ -576,7 +576,7 @@
             return GUTHTHILA_STREAM_WRITER_ERROR_PREFIX_NULL;
 
         if (!uri)
-            return GUTHTHILA_STREAM_WRITER_ERROR_NAMESPACE_NULL;
+            return GUTHTHILA_STREAM_WRITER_ERROR_guththila_namespace_t_NULL;
     
         if ( strcmp(prefix, "xml") == 0 || strcmp (prefix, "xmlns") == 0)
             return GUTHTHILA_STREAM_WRITER_ERROR_ILLEGAL_PREFIX;

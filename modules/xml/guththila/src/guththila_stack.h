@@ -39,7 +39,7 @@ typedef struct element
 {
   guththila_token_t *token;
   guththila_attribute_t *attribute;
-  NAMESPACE *namespace;
+  guththila_namespace_t *namespace;
   guththila_depth_t *depth;
   ELEMENT *prev;
 };
@@ -61,7 +61,7 @@ void Stack_free (STACK *st);
 void Stack_free_rec (STACK *st, ELEMENT *el);
 ELEMENT *Stack_last (STACK *st);
 ELEMENT *Stack_pull (STACK *st);
-int Stack_push_namespace (STACK *st, NAMESPACE *ns);
+int Stack_push_namespace (STACK *st, guththila_namespace_t *ns);
 ELEMENT *Stack_pull_current (STACK *st);
 int Stack_push_depth (STACK *st, guththila_depth_t *d);
 void Stack_clear (STACK *st);

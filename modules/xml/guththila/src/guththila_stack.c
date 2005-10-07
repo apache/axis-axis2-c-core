@@ -150,7 +150,7 @@ Stack_pull (STACK *stack)
 
 
 int 
-Stack_push_namespace (STACK *stack, NAMESPACE *ns)
+Stack_push_namespace (STACK *stack, guththila_namespace_t *ns)
 {
   if (stack)
     {

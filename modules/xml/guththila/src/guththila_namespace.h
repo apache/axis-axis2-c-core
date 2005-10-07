@@ -18,18 +18,18 @@
  */
 
 
-#ifndef NAMESPACE_H
-#define NAMESPACE_H
+#ifndef GUTHTHILA_NAMESPACE_H
+#define GUTHTHILA_NAMESPACE_H
 #include "guththila_token.h"
 
-typedef struct namespace
+typedef struct guththila_namespace_s
 {
   char *name;
   int length;
   char *uri;
   int lengthuri;
-}NAMESPACE;
+} guththila_namespace_t;
 
 
 
-#endif /* NAMESPACE_H */
+#endif /* GUTHTHILA_NAMESPACE_H */
