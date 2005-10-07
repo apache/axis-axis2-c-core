@@ -41,7 +41,7 @@
  *   throwing Xml_PullParser_Exception
  */
 
-enum status
+enum guththila_status
 {
   S_0 = 0,
   S_1,
@@ -50,17 +50,17 @@ enum status
   S_4
 };
 
-enum event_types
+enum guththila_event_types
 {
-  START_DOCUMENT = 10,
-  START_guththila_element_t = 20,
-  END_guththila_element_t = 30,
-  EMPTY_guththila_element_t = 40,
-  CHARACTER = 50,
-  ENTITY_REFERANCE = 60,
-  COMMENT = 70
+  GUTHTHILA_START_DOCUMENT = 10,
+  GUTHTHILA_START_ELEMENT = 20,
+  GUTHTHILA_END_ELEMENT = 30,
+  GUTHTHILA_EMPTY_ELEMENT = 40,
+  GUTHTHILA_CHARACTER = 50,
+  GUTHTHILA_ENTITY_REFERANCE = 60,
+  GUTHTHILA_COMMENT = 70
 };
-enum event_types EVENT;
+enum guththila_event_types guththila_event;
 
 
 typedef struct guththila_xml_pull_parser_s
@@ -78,7 +78,7 @@ typedef struct guththila_xml_pull_parser_s
   int offset;
   int last;
   int unicode_state;
-  enum status STATUS;
+  enum guththila_status status;
 } guththila_xml_pull_parser_t;
 
 

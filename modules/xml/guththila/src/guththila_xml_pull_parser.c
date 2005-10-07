@@ -36,7 +36,7 @@ guththila_xml_pull_parser_create (guththila_reader_t * r)
   parser->_next = 0;
   parser->offset = 0;
   parser->last = -1;
-  parser->STATUS = S_1;
+  parser->status = S_1;
   parser->unicode_state = None;
   return parser;
 }
@@ -374,7 +374,7 @@ guththila_xml_pull_parser_process_xml_decl (guththila_xml_pull_parser_t * parser
 	  if ('>' != guththila_xml_pull_parser_next_char(parser, 0))
 	    guththila_xml_pull_parser_exception (p_FILE, LINE);
 	  else
-	    EVENT = START_DOCUMENT;
+	    guththila_event = GUTHTHILA_START_DOCUMENT;
 	}
     }
   else
@@ -392,7 +392,7 @@ guththila_xml_pull_parser_reset (guththila_xml_pull_parser_t * parser)
   parser->value = NULL;
   guththila_stack_clear (parser->attrib);
   guththila_stack_clear (parser->stack);
-  if (EVENT == END_guththila_element_t || EVENT == EMPTY_guththila_element_t)
+  if (guththila_event == GUTHTHILA_END_ELEMENT || guththila_event == GUTHTHILA_EMPTY_ELEMENT)
     guththila_xml_pull_parser_close_element (parser);
 }
 
@@ -490,12 +490,12 @@ guththila_xml_pull_parser_processSTagOrEmptyElem (guththila_xml_pull_parser_t * 
   int c;
   c = guththila_xml_pull_parser_process_name (parser);
   c = guththila_xml_pull_parser_skip_spaces (parser, c);
-  EVENT = START_guththila_element_t;
+  guththila_event = GUTHTHILA_START_ELEMENT;
   for (;;)
     {
       if ('/' == c)
 	{
-	  EVENT = EMPTY_guththila_element_t;
+	  guththila_event = GUTHTHILA_EMPTY_ELEMENT;
 	  if ('>' == guththila_xml_pull_parser_next_char(parser, 0))
 	    return c;
 	  else
@@ -514,7 +514,7 @@ guththila_xml_pull_parser_process_char_data (guththila_xml_pull_parser_t * parse
 {
   int c;
   int ref = 0;
-  EVENT = CHARACTER;
+  guththila_event = GUTHTHILA_CHARACTER;
   guththila_xml_pull_parser_open_token (parser);
   do
     {
@@ -543,7 +543,7 @@ guththila_xml_pull_parser_process_empty_tag (guththila_xml_pull_parser_t * parse
   c = guththila_xml_pull_parser_process_name (parser);
   c = guththila_xml_pull_parser_skip_spaces (parser, c);
   if ('>' == c)
-    EVENT = END_guththila_element_t;
+    guththila_event = GUTHTHILA_END_ELEMENT;
   else
     guththila_xml_pull_parser_exception (p_FILE, LINE);
   return c;
@@ -554,7 +554,7 @@ int
 guththila_xml_pull_parser_process_pi (guththila_xml_pull_parser_t * parser)
 {
   int c;
-  EVENT = COMMENT;
+  guththila_event = GUTHTHILA_COMMENT;
   c = guththila_xml_pull_parser_next_char(parser, 0);
   while ('<' != c)
     c = guththila_xml_pull_parser_next_char(parser, 0);
@@ -580,7 +580,7 @@ guththila_xml_pull_parser_process_comment (guththila_xml_pull_parser_t * parser)
 		{
 		  if ('>' == guththila_xml_pull_parser_next_char(parser, 0))
 		    {
-		      EVENT = COMMENT;
+		      guththila_event = GUTHTHILA_COMMENT;
 		      while ('<' != c)
 			{
 			  c = guththila_xml_pull_parser_next_char(parser, -1);
@@ -615,55 +615,55 @@ guththila_xml_pull_parser_tokenize (guththila_xml_pull_parser_t * parser)
       if (c == -1)
 	return -1;
 
-      switch (parser->STATUS)
+      switch (parser->status)
 	{
 	case S_1:
 	  if ('<' == c)
-	    parser->STATUS = S_2;
+	    parser->status = S_2;
 	  else
-	    parser->STATUS = S_0;
+	    parser->status = S_0;
 	  break;
 	case S_2:
 	  {
 	    if ('?' == c)
 	      {
 		guththila_xml_pull_parser_process_xml_decl (parser);
-		parser->STATUS = S_3;
+		parser->status = S_3;
 	      }
 	    else if ('!' == c)
 	      {
 		guththila_xml_pull_parser_process_comment (parser);
-		parser->STATUS = S_4;
+		parser->status = S_4;
 	      }
 	    else
 	      {
 		guththila_xml_pull_parser_processSTagOrEmptyElem (parser);
-		parser->STATUS = S_3;
+		parser->status = S_3;
 	      }
 	  }
 	  break;
 	case S_3:
 	  if ('<' == c)
-	    parser->STATUS = S_4;
+	    parser->status = S_4;
 	  else
 	    {
 	      c = guththila_xml_pull_parser_process_char_data (parser);
 	      if ('<' == c)
 		{
-		  parser->STATUS = S_4;
-		  return EVENT;
+		  parser->status = S_4;
+		  return guththila_event;
 		}
 	      else if ('\0' == c)
-		parser->STATUS = S_3;
+		parser->status = S_3;
 	      else
-		parser->STATUS = S_0;
+		parser->status = S_0;
 	    }
 	  break;
 	case S_4:
 	  if ('/' == c)
 	    {
 	      guththila_xml_pull_parser_process_empty_tag (parser);
-	      parser->STATUS = S_3;
+	      parser->status = S_3;
 	    }
 	  else if ('?' == c)
 	    guththila_xml_pull_parser_process_pi (parser);
@@ -672,15 +672,15 @@ guththila_xml_pull_parser_tokenize (guththila_xml_pull_parser_t * parser)
 	  else
 	    {
 	      guththila_xml_pull_parser_processSTagOrEmptyElem (parser);
-	      parser->STATUS = S_3;
+	      parser->status = S_3;
 	    }
 	  break;
 	case S_0:
 	  guththila_xml_pull_parser_exception (p_FILE, LINE);
 	}
     }
-  while (parser->STATUS != S_3);
-  return EVENT;
+  while (parser->status != S_3);
+  return guththila_event;
 }
 
 
@@ -695,7 +695,7 @@ guththila_xml_pull_parser_next (guththila_xml_pull_parser_t * parser)
     case -1:
       return -1;
 
-    case START_DOCUMENT:
+    case GUTHTHILA_START_DOCUMENT:
       {
 	int ix;
 	guththila_element_t *e;
@@ -716,8 +716,8 @@ guththila_xml_pull_parser_next (guththila_xml_pull_parser_t * parser)
 	  }
       }
       break;
-    case START_guththila_element_t:
-    case EMPTY_guththila_element_t:
+    case GUTHTHILA_START_ELEMENT:
+    case GUTHTHILA_EMPTY_ELEMENT:
       {
 	int is = 0;
 	guththila_element_t *e;
@@ -782,7 +782,7 @@ guththila_xml_pull_parser_next (guththila_xml_pull_parser_t * parser)
 	guththila_xml_pull_parser_open_element (parser);
       }
       break;
-    case END_guththila_element_t:
+    case GUTHTHILA_END_ELEMENT:
       {
 	guththila_element_t *e;
 	e = guththila_stack_pull (parser->stack);
@@ -793,20 +793,20 @@ guththila_xml_pull_parser_next (guththila_xml_pull_parser_t * parser)
 	  parser->prefix = e->token;
       }
       break;
-    case CHARACTER:
+    case GUTHTHILA_CHARACTER:
       {
 	guththila_element_t *e;
 	e = guththila_stack_pull (parser->stack);
 	parser->value = e->token;
       }
       break;
-    case ENTITY_REFERANCE:
+    case GUTHTHILA_ENTITY_REFERANCE:
       break;
-    case COMMENT:
+    case GUTHTHILA_COMMENT:
       break;
 
     };
-  return EVENT;
+  return guththila_event;
 }
 
 

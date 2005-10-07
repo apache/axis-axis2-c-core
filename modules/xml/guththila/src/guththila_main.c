@@ -31,7 +31,7 @@ int main (int argc, char *argv[])
     {
       switch (c)
 	{
-	case START_DOCUMENT :
+	case GUTHTHILA_START_DOCUMENT :
 	  {
 	    printf ("<?xml ");
 	    int ix;
@@ -51,8 +51,8 @@ int main (int argc, char *argv[])
 	    printf ("?>");
 	  }
 	  break;
-	case START_guththila_element_t:
-	case EMPTY_guththila_element_t:
+	case GUTHTHILA_START_ELEMENT:
+	case GUTHTHILA_EMPTY_ELEMENT:
 	  {
 	    printf ("<");
 	    int ia;
@@ -109,13 +109,13 @@ int main (int argc, char *argv[])
 		printf ("%s\" ", p);
 		free (p);
 		}
-	    if (EVENT == START_guththila_element_t)
+	    if (guththila_event == GUTHTHILA_START_ELEMENT)
 	      printf (">");
 	    else
 	      printf ("/>");
 	  }
 	  break;
-	  case END_guththila_element_t:
+	  case GUTHTHILA_END_ELEMENT:
 	  {
 	    printf ("</");
 	    char *p;
@@ -131,7 +131,7 @@ int main (int argc, char *argv[])
 	    printf (">");
 	  }
 	  break;
-	case CHARACTER:
+	case GUTHTHILA_CHARACTER:
 	  {
 	  char *p;
 	  p = guththila_xml_pull_parser_get_value (parser);
@@ -139,7 +139,7 @@ int main (int argc, char *argv[])
 	  free (p);
 	  }
 	  break;
-	case COMMENT:
+	case GUTHTHILA_COMMENT:
 	  break;
 	};
     }

@@ -53,7 +53,7 @@
     if (!stream_writer)
         return GUTHTHILA_STREAM_WRITER_ERROR_STREAM_STRUCT_NULL;
     if (!stream_writer->in_start_element)
-        return GUTHTHILA_STREAM_WRITER_ERROR_NOT_IN_START_guththila_element_t;
+        return GUTHTHILA_STREAM_WRITER_ERROR_NOT_IN_GUTHTHILA_START_ELEMENT;
     if (stream_writer->empty_element)
     {
         if (fputs("/", stream_writer->writer) == EOF)
@@ -416,14 +416,14 @@
         guththila_xml_stream_writer_end_start_element(stream_writer);
 
         if (!data)
-            return GUTHTHILA_STREAM_WRITER_ERROR_COMMENT_NULL;
+            return GUTHTHILA_STREAM_WRITER_ERROR_GUTHTHILA_COMMENT_NULL;
 
         char* ptr = data;
         while (*ptr)
         {
             if (*ptr++ == '-')
                 if (*ptr == '-')
-                    return GUTHTHILA_STREAM_WRITER_ERROR_ILLEGAL_COMMENT;
+                    return GUTHTHILA_STREAM_WRITER_ERROR_ILLEGAL_GUTHTHILA_COMMENT;
         }
         
         fputs("<!--", stream_writer->writer);
