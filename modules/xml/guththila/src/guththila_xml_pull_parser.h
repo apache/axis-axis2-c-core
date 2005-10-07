@@ -66,7 +66,7 @@ enum event_types EVENT;
 typedef struct xmlpullpaser
 {
   guththila_buffer_t *buffer;
-  READER *reader;
+  guththila_reader_t *reader;
   guththila_token_t *prefix;
   guththila_token_t *name;
   guththila_token_t *value;
@@ -120,7 +120,7 @@ int XML_PullParser_from_utf16 (XML_PullParser * p, int eof);
 int XML_PullParser_is_valid_starting_char (XML_PullParser * p, int c);
 
 int XML_PullParser_next (XML_PullParser * p);
-XML_PullParser *XML_PullParser_createPullParser (READER * r);
+XML_PullParser *XML_PullParser_createPullParser (guththila_reader_t * r);
 void XML_PullParser_freePullParser ();
 int XML_PullParser_getAttributeCount (XML_PullParser * p);
 char *XML_PullParser_getAttributeName (XML_PullParser * p, guththila_attribute_t * att);

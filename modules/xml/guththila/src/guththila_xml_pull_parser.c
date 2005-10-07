@@ -20,7 +20,7 @@
 #include "guththila_xml_pull_parser.h"
 
 XML_PullParser *
-XML_PullParser_createPullParser (READER * r)
+XML_PullParser_createPullParser (guththila_reader_t * r)
 {
   XML_PullParser *parser =
     (XML_PullParser *) malloc (sizeof (XML_PullParser));
@@ -116,7 +116,7 @@ XML_PullParser_read (XML_PullParser * parser)
 	}
     }
   c =
-    Reader_read ((parser->buffer->buff), (parser->_next),
+    guththila_reader_read ((parser->buffer->buff), (parser->_next),
 		 (parser->buffer->size) - (parser->_next), parser->reader);
   parser->last += c;
   return !c;

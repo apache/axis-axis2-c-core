@@ -21,9 +21,9 @@
 
 int main (int argc, char *argv[])
 {
-  READER *red;
+  guththila_reader_t *red;
   FILE *fp = fopen ("response.xml", "r");
-  red = Reader_createReader (fp);
+  red = guththila_reader_create (fp);
   XML_PullParser *parser = XML_PullParser_createPullParser (red);
   XML_PullParser_read (parser);
   int c;

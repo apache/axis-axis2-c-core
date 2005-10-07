@@ -18,22 +18,21 @@
  */
 
 
-#ifndef READER_H
-#define READER_H
+#ifndef GUTHTHILA_READER_H
+#define GUTHTHILA_READER_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "guththila_buffer.h"
-struct reader;
-typedef struct reader READER;
 
-struct reader
+typedef struct guththila_reader_s
 {
   FILE *fp;
-};
+} guththila_reader_t;
 
-READER *Reader_createReader (FILE *fp);
-int Reader_read (char *buffer, int offset, int length, READER *r);
-int Reader_setInputStream (READER *r, FILE *fp);
-void Reader_freeReader (READER *r);
+guththila_reader_t *guththila_reader_create (FILE *fp);
+int guththila_reader_read (char *buffer, int offset, int length, guththila_reader_t *r);
+int guththila_reader_set_input_stream (guththila_reader_t *r, FILE *fp);
+void guththila_reader_free (guththila_reader_t *r);
 
-#endif /* READER_H */
+#endif /* GUTHTHILA_READER_H */

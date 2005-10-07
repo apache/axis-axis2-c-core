@@ -21,10 +21,10 @@
 #include "guththila_reader.h"
 
 
-READER *
-Reader_createReader (FILE *fp)
+guththila_reader_t *
+guththila_reader_create (FILE *fp)
 {
-  READER *reader = (READER *) malloc (sizeof(READER));
+  guththila_reader_t *reader = (guththila_reader_t *) malloc (sizeof(guththila_reader_t));
   if (fp)
     reader->fp = fp;
   return reader;
@@ -32,7 +32,7 @@ Reader_createReader (FILE *fp)
 
 
 void
-Reader_freeReader (READER *r)
+guththila_reader_free (guththila_reader_t *r)
 {
   if (r)
     free (r);
@@ -40,14 +40,14 @@ Reader_freeReader (READER *r)
 
 
 int
-Reader_read (char *buffer, int offset, int length, READER *r)
+guththila_reader_read (char *buffer, int offset, int length, guththila_reader_t *r)
 {
   return (int)fread (buffer+offset, 1, length, r->fp);
 }
 
 
 int 
-Reader_setInputStream (READER *r, FILE *fp)
+guththila_reader_set_input_stream (guththila_reader_t *r, FILE *fp)
 {
   if (fp)
     {
