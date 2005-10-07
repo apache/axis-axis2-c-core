@@ -21,17 +21,17 @@
 #include "guththila_token.h"
 #include "guththila_unicode.h"
 
-TOKEN *
+guththila_token_t *
 Token_createTokenBuffer (int size)
 {
-  TOKEN *tok = (TOKEN *) malloc (sizeof(TOKEN)*size);
+  guththila_token_t *tok = (guththila_token_t *) malloc (sizeof(guththila_token_t)*size);
   tok->size = size;
   return tok;
 }
 
 
 void
-Token_freeTokenBuffer (TOKEN *tok)
+Token_freeTokenBuffer (guththila_token_t *tok)
 {
   if (tok)
     free (tok);
@@ -47,7 +47,7 @@ Token_Exception ()
 
 
 int
-Token_length (TOKEN *tok)
+Token_length (guththila_token_t *tok)
 {
   if (tok->end)
     return (tok->end) - (tok->start) + 1;
@@ -57,17 +57,17 @@ Token_length (TOKEN *tok)
 }
 
 
-TOKEN *
-Token_grow (TOKEN *tok)
+guththila_token_t *
+Token_grow (guththila_token_t *tok)
 {
   tok->size <<= 1;
-  tok = (TOKEN *) realloc (tok, sizeof(TOKEN)*tok->size);
+  tok = (guththila_token_t *) realloc (tok, sizeof(guththila_token_t)*tok->size);
   return tok;
 }
 
 
-TOKEN *
-Token_append (TOKEN *tok)
+guththila_token_t *
+Token_append (guththila_token_t *tok)
 {
   if (++ (tok->last) > (tok->size))
     Token_grow (tok);
@@ -75,8 +75,8 @@ Token_append (TOKEN *tok)
 }
 
 
-TOKEN *
-Token_last (TOKEN *tok)
+guththila_token_t *
+Token_last (guththila_token_t *tok)
 {
   if (tok->last < 0)
     Token_Exception ();
@@ -85,7 +85,7 @@ Token_last (TOKEN *tok)
 
 
 int
-Token_count (TOKEN *tok)
+Token_count (guththila_token_t *tok)
 {
   return tok->last;
 }
@@ -153,7 +153,7 @@ Token_char_ref (char *buffer)
 
 
 char *
-Token_toString (TOKEN *tok, int unicode)
+Token_toString (guththila_token_t *tok, int unicode)
 {
   if (tok)
     {
@@ -187,7 +187,7 @@ Token_toString (TOKEN *tok, int unicode)
 
 
 void
-Token_relocate (TOKEN *tok, int offset)
+Token_relocate (guththila_token_t *tok, int offset)
 {
   tok->start -= offset;
   tok->end -= offset;
@@ -195,7 +195,7 @@ Token_relocate (TOKEN *tok, int offset)
 
 
 int
-Token_compare (TOKEN *tok, const char *s, int n, int unicode_state)
+Token_compare (guththila_token_t *tok, const char *s, int n, int unicode_state)
 {
   if (unicode_state == None)
     return strncmp (tok->start, s, n);

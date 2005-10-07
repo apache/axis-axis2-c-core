@@ -67,9 +67,9 @@ typedef struct xmlpullpaser
 {
   BUFFER *buffer;
   READER *reader;
-  TOKEN *prefix;
-  TOKEN *name;
-  TOKEN *value;
+  guththila_token_t *prefix;
+  guththila_token_t *name;
+  guththila_token_t *value;
   STACK *stack;
   STACK *attrib;
   STACK *namesp;
@@ -95,11 +95,11 @@ void XML_PullParser_openToken (XML_PullParser * p);
 void XML_PullParser_closeToken (XML_PullParser * p, int t, int refer);
 char *XML_PullParser_lastChar (XML_PullParser * p);
 int XML_PullParser_processEq (XML_PullParser * p, int c);
-void XML_PullParser_addAttribute (XML_PullParser * p, TOKEN * name,
-				  TOKEN * value);
+void XML_PullParser_addAttribute (XML_PullParser * p, guththila_token_t * name,
+				  guththila_token_t * value);
 void XML_PullParser_addAttribute_with_prefix (XML_PullParser * p,
-					      TOKEN * prefix, TOKEN * name,
-					      TOKEN * value);
+					      guththila_token_t * prefix, guththila_token_t * name,
+					      guththila_token_t * value);
 int XML_PullParser_processCharData (XML_PullParser * p);
 int XML_PullParser_processSTagOrEmtyElem (XML_PullParser * p);
 int XML_PullParser_processComment (XML_PullParser * p);
@@ -112,8 +112,8 @@ int XML_PullParser_processAttValue (XML_PullParser * p, int c);
 int XML_PullParser_isS (int c);
 void XML_PullParser_relocateTokens (XML_PullParser * p, int offset);
 void XML_PullParser_shift (XML_PullParser * p);
-void XML_PullParser_addNamespace (XML_PullParser * p, TOKEN * name,
-				  TOKEN * uri);
+void XML_PullParser_addNamespace (XML_PullParser * p, guththila_token_t * name,
+				  guththila_token_t * uri);
 void XML_PullParser_openElement (XML_PullParser * p);
 void XML_PullParser_closeElement (XML_PullParser * p);
 int XML_PullParser_from_utf16 (XML_PullParser * p, int eof);

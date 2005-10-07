@@ -29,9 +29,9 @@ XML_PullParser_createPullParser (READER * r)
   parser->attrib = Stack_createStack ();
   parser->namesp = Stack_createStack ();
   parser->dep = Stack_createStack ();
-  parser->name = (TOKEN *) malloc (sizeof (TOKEN));
-  parser->prefix = (TOKEN *) malloc (sizeof (TOKEN));
-  parser->value = (TOKEN *) malloc (sizeof (TOKEN));
+  parser->name = (guththila_token_t *) malloc (sizeof (guththila_token_t));
+  parser->prefix = (guththila_token_t *) malloc (sizeof (guththila_token_t));
+  parser->value = (guththila_token_t *) malloc (sizeof (guththila_token_t));
   parser->reader = r;
   parser->_next = 0;
   parser->offset = 0;
@@ -194,7 +194,7 @@ XML_PullParser_lastChar (XML_PullParser * parser)
 void
 XML_PullParser_openToken (XML_PullParser * parser)
 {
-  TOKEN *t = (TOKEN *) malloc (sizeof (TOKEN));
+  guththila_token_t *t = (guththila_token_t *) malloc (sizeof (guththila_token_t));
   t->type = Unknown;
   t->start = XML_PullParser_lastChar (parser);
   Stack_push (parser->stack, t, NULL);
@@ -699,8 +699,8 @@ XML_PullParser_next (XML_PullParser * parser)
       {
 	int ix;
 	ELEMENT *e;
-	TOKEN *att_name;
-	TOKEN *att_value;
+	guththila_token_t *att_name;
+	guththila_token_t *att_value;
 	ix = Stack_size (parser->stack);
 	for (; ix > 0; ix--)
 	  {
@@ -721,8 +721,8 @@ XML_PullParser_next (XML_PullParser * parser)
       {
 	int is = 0;
 	ELEMENT *e;
-	TOKEN *name = NULL;
-	TOKEN *value = NULL;
+	guththila_token_t *name = NULL;
+	guththila_token_t *value = NULL;
 	is = Stack_size (parser->stack);
 	for (; is > 0 && Stack_size (parser->stack); is--)
 	  {
@@ -859,8 +859,8 @@ XML_PullParser_closeElement (XML_PullParser * parser)
 
 
 void
-XML_PullParser_addAttribute (XML_PullParser * parser, TOKEN * name,
-			     TOKEN * value)
+XML_PullParser_addAttribute (XML_PullParser * parser, guththila_token_t * name,
+			     guththila_token_t * value)
 {
   ATTRIBUTE *att;
   att = (ATTRIBUTE *) malloc (sizeof (ATTRIBUTE));
@@ -873,8 +873,8 @@ XML_PullParser_addAttribute (XML_PullParser * parser, TOKEN * name,
 
 void
 XML_PullParser_addAttribute_with_prefix (XML_PullParser * parser,
-					 TOKEN * prefix, TOKEN * name,
-					 TOKEN * value)
+					 guththila_token_t * prefix, guththila_token_t * name,
+					 guththila_token_t * value)
 {
   ATTRIBUTE *att;
   att = (ATTRIBUTE *) malloc (sizeof (ATTRIBUTE));
@@ -887,8 +887,8 @@ XML_PullParser_addAttribute_with_prefix (XML_PullParser * parser,
 
 
 void
-XML_PullParser_addNamespace (XML_PullParser * parser, TOKEN * name,
-			     TOKEN * uri)
+XML_PullParser_addNamespace (XML_PullParser * parser, guththila_token_t * name,
+			     guththila_token_t * uri)
 {
   NAMESPACE *ns;
   ns = (NAMESPACE *) malloc (sizeof (NAMESPACE));

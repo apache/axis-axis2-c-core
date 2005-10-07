@@ -18,13 +18,13 @@
  */
 
 
-#ifndef TOKEN_H
-#define TOKEN_H
+#ifndef GUTHTHILA_guththila_token_t_H
+#define GUTHTHILA_guththila_token_t_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct token
+typedef struct guththila_token_s
 {
   int type;
   char *start;
@@ -32,10 +32,10 @@ typedef struct token
   int last;
   int size;
   int ref;
-}TOKEN;
+} guththila_token_t;
 
 
-enum _type
+enum guththila_token_type
   {
     Unknown = 1,
     Name,
@@ -46,23 +46,21 @@ enum _type
     CharData
   };
 
-enum _type TYPE;
 
-
-TOKEN* Token_createTokenBuffer(int size);
-void Token_freeTokenBuffer (TOKEN *tok);
-int Token_length (TOKEN *tok);
+guththila_token_t* Token_createTokenBuffer(int size);
+void Token_freeTokenBuffer (guththila_token_t *tok);
+int Token_length (guththila_token_t *tok);
 void Token_Exception ();
-TOKEN* Token_append (TOKEN *tok);
-TOKEN* Token_grow (TOKEN *tok);
-TOKEN* Token_last (TOKEN *tok);
-int Token_count (TOKEN *tok);
-char* Token_toString (TOKEN *tok, int unicode);
-void Token_relocate (TOKEN *tok, int offset);
-int Token_compare (TOKEN *tok, const char *st, int n, int unicode_state);
+guththila_token_t* Token_append (guththila_token_t *tok);
+guththila_token_t* Token_grow (guththila_token_t *tok);
+guththila_token_t* Token_last (guththila_token_t *tok);
+int Token_count (guththila_token_t *tok);
+char* Token_toString (guththila_token_t *tok, int unicode);
+void Token_relocate (guththila_token_t *tok, int offset);
+int Token_compare (guththila_token_t *tok, const char *st, int n, int unicode_state);
 char *Token_convert_utf16_to_utf8 (char *buffer, int length);
 int Token_length_utf16 (unsigned int utf16_ch);
 char *Token_build_utf8 (unsigned int utf16_ch, int length);
 char *Token_char_ref (char *buffer);
 
-#endif /* TOKEN_H */
+#endif /* GUTHTHILA_guththila_token_t_H */

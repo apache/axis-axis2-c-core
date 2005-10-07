@@ -38,7 +38,7 @@ Stack_createStack ()
 
 
 int 
-Stack_push (STACK *stack, TOKEN *tok, ATTRIBUTE *attr)
+Stack_push (STACK *stack, guththila_token_t *tok, ATTRIBUTE *attr)
 {
   if (stack)
     {

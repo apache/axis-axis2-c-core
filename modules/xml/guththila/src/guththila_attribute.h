@@ -23,9 +23,9 @@
 
 typedef struct attribute
 {
-  TOKEN *prefix;
-  TOKEN *name;
-  TOKEN *value;
+  guththila_token_t *prefix;
+  guththila_token_t *name;
+  guththila_token_t *value;
 }ATTRIBUTE;
 
 #endif /* ATTRIBUTE_H */
