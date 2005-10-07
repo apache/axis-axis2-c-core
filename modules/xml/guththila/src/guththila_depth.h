@@ -18,15 +18,15 @@
  */
 
 
-#ifndef DEPTH_H
-#define DEPTH_H
+#ifndef GUTHTHILA_DEPTH_H
+#define GUTHTHILA_DEPTH_H
 
-typedef struct depth
+typedef struct guththila_depth_s
 {
   int total;
   int count;
   int first;
-}DEPTH;
+} guththila_depth_t;
 
 
-#endif /* DEPTH_H*/
+#endif /*GUTHTHILA_DEPTH_H*/

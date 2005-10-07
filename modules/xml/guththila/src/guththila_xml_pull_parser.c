@@ -814,8 +814,8 @@ void
 XML_PullParser_openElement (XML_PullParser * parser)
 {
   int ii;
-  DEPTH *m = (DEPTH *) malloc (sizeof (DEPTH));
-  DEPTH *l = NULL;
+  guththila_depth_t *m = (guththila_depth_t *) malloc (sizeof (guththila_depth_t));
+  guththila_depth_t *l = NULL;
   ELEMENT *e;
   ii = Stack_size (parser->dep);
   if (!ii)

@@ -204,7 +204,7 @@ Stack_pull_current (STACK *stack)
 
 
 int 
-Stack_push_depth (STACK *stack, DEPTH *d)
+Stack_push_depth (STACK *stack, guththila_depth_t *d)
 {
   if (stack)
     {

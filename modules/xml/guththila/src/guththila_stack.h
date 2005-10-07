@@ -40,7 +40,7 @@ typedef struct element
   guththila_token_t *token;
   guththila_attribute_t *attribute;
   NAMESPACE *namespace;
-  DEPTH *depth;
+  guththila_depth_t *depth;
   ELEMENT *prev;
 };
 
@@ -63,7 +63,7 @@ ELEMENT *Stack_last (STACK *st);
 ELEMENT *Stack_pull (STACK *st);
 int Stack_push_namespace (STACK *st, NAMESPACE *ns);
 ELEMENT *Stack_pull_current (STACK *st);
-int Stack_push_depth (STACK *st, DEPTH *d);
+int Stack_push_depth (STACK *st, guththila_depth_t *d);
 void Stack_clear (STACK *st);
 ELEMENT *Stack_get (STACK *st, int i);
 
