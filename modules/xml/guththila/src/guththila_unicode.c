@@ -18,7 +18,7 @@
  */
 
 
-#include "unicode.h"
+#include "guththila_unicode.h"
 #include <stdlib.h>
 #include <string.h>
 #ifdef UNICODE_OUT  /* This variable for Obtain UTF-16 Output */

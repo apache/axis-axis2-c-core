@@ -19,7 +19,7 @@
 
 
 #include "guththila_token.h"
-#include "unicode.h"
+#include "guththila_unicode.h"
 
 TOKEN *
 Token_createTokenBuffer (int size)

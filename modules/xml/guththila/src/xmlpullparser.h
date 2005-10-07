@@ -25,12 +25,12 @@
 #include <string.h>
 #include <ctype.h>
 #include "guththila_buffer.h"
-#include "reader.h"
+#include "guththila_reader.h"
 #include "guththila_token.h"
 #include "guththila_namespace.h"
 #include "guththila_depth.h"
 #include "guththila_stack.h"
-#include "unicode.h"
+#include "guththila_unicode.h"
 
 #define p_FILE __FILE__		/* file name */
 #define LINE __LINE__		/* line number */
