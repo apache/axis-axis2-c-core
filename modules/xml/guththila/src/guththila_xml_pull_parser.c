@@ -862,8 +862,8 @@ void
 XML_PullParser_addAttribute (XML_PullParser * parser, guththila_token_t * name,
 			     guththila_token_t * value)
 {
-  ATTRIBUTE *att;
-  att = (ATTRIBUTE *) malloc (sizeof (ATTRIBUTE));
+  guththila_attribute_t *att;
+  att = (guththila_attribute_t *) malloc (sizeof (guththila_attribute_t));
   att->name = name;
   att->value = value;
   att->prefix = NULL;
@@ -876,8 +876,8 @@ XML_PullParser_addAttribute_with_prefix (XML_PullParser * parser,
 					 guththila_token_t * prefix, guththila_token_t * name,
 					 guththila_token_t * value)
 {
-  ATTRIBUTE *att;
-  att = (ATTRIBUTE *) malloc (sizeof (ATTRIBUTE));
+  guththila_attribute_t *att;
+  att = (guththila_attribute_t *) malloc (sizeof (guththila_attribute_t));
   att->name = name;
   att->value = value;
   att->prefix = prefix;
@@ -907,7 +907,7 @@ XML_PullParser_getAttributeCount (XML_PullParser * parser)
 }
 
 
-ATTRIBUTE *
+guththila_attribute_t *
 XML_PullParser_getAttribute (XML_PullParser * parser)
 {
   ELEMENT *e;
@@ -920,7 +920,7 @@ XML_PullParser_getAttribute (XML_PullParser * parser)
 
 
 char *
-XML_PullParser_getAttributeName (XML_PullParser * parser, ATTRIBUTE * att)
+XML_PullParser_getAttributeName (XML_PullParser * parser, guththila_attribute_t * att)
 {
   if (!att)
     XML_PullParser_Exception (p_FILE, LINE);
@@ -931,7 +931,7 @@ XML_PullParser_getAttributeName (XML_PullParser * parser, ATTRIBUTE * att)
 
 
 char *
-XML_PullParser_getAttributeValue (XML_PullParser * parser, ATTRIBUTE * att)
+XML_PullParser_getAttributeValue (XML_PullParser * parser, guththila_attribute_t * att)
 {
   if (!att)
     XML_PullParser_Exception (p_FILE, LINE);
@@ -942,7 +942,7 @@ XML_PullParser_getAttributeValue (XML_PullParser * parser, ATTRIBUTE * att)
 
 
 char *
-XML_PullParser_getAttributePrefix (XML_PullParser * parser, ATTRIBUTE * att)
+XML_PullParser_getAttributePrefix (XML_PullParser * parser, guththila_attribute_t * att)
 {
   if (!att)
     XML_PullParser_Exception (p_FILE, LINE);
@@ -957,7 +957,7 @@ XML_PullParser_getAttributePrefix_by_number (XML_PullParser * parser, int i)
 {
   int ix = parser->attrib->pointer;
   ELEMENT *e;
-  ATTRIBUTE *att = NULL;
+  guththila_attribute_t *att = NULL;
   if (i > ix)
     XML_PullParser_Exception (p_FILE, LINE);
   else
@@ -980,7 +980,7 @@ XML_PullParser_getAttributeName_by_number (XML_PullParser * parser, int i)
 {
   int ix = parser->attrib->pointer;
   ELEMENT *e;
-  ATTRIBUTE *att = NULL;
+  guththila_attribute_t *att = NULL;
   if (i > ix)
     XML_PullParser_Exception (p_FILE, LINE);
   else
@@ -1003,7 +1003,7 @@ XML_PullParser_getAttributeValue_by_number (XML_PullParser * parser, int i)
 {
   int ix = parser->attrib->pointer;
   ELEMENT *e;
-  ATTRIBUTE *att = NULL;
+  guththila_attribute_t *att = NULL;
   if (i > ix)
     XML_PullParser_Exception (p_FILE, LINE);
   else

@@ -38,7 +38,7 @@ typedef struct element ELEMENT;
 typedef struct element
 {
   guththila_token_t *token;
-  ATTRIBUTE *attribute;
+  guththila_attribute_t *attribute;
   NAMESPACE *namespace;
   DEPTH *depth;
   ELEMENT *prev;
@@ -55,7 +55,7 @@ typedef struct stack
 
 /* stack implementation */
 STACK *Stack_createStack ();
-int Stack_push (STACK *st, guththila_token_t *tok, ATTRIBUTE *attr);
+int Stack_push (STACK *st, guththila_token_t *tok, guththila_attribute_t *attr);
 int Stack_size (STACK *st);
 void Stack_free (STACK *st);
 void Stack_free_rec (STACK *st, ELEMENT *el);

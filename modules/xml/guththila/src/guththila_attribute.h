@@ -17,15 +17,15 @@
  * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)	
  */
 
-#ifndef ATTRIBUTE_H
-#define ATTRIBUTE_H
+#ifndef GUTHTHILA_ATTRIBUTE_H
+#define GUTHTHILA_ATTRIBUTE_H
 #include "guththila_token.h"
 
-typedef struct attribute
+typedef struct guththila_attribute_s
 {
   guththila_token_t *prefix;
   guththila_token_t *name;
   guththila_token_t *value;
-}ATTRIBUTE;
+} guththila_attribute_t;
 
-#endif /* ATTRIBUTE_H */
+#endif /* GUTHTHILA_ATTRIBUTE_H */

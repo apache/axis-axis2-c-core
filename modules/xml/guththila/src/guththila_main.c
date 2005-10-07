@@ -18,7 +18,7 @@ int main (int argc, char *argv[])
 	    ix = XML_PullParser_getAttributeCount (parser);
 	    for (; ix > 0; ix--)
 	      {
-		ATTRIBUTE *a;
+		guththila_attribute_t *a;
 		char *p;
 		a = XML_PullParser_getAttribute (parser);
 		p = XML_PullParser_getAttributeName (parser, a);

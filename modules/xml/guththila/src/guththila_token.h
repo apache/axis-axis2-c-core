@@ -18,8 +18,8 @@
  */
 
 
-#ifndef GUTHTHILA_guththila_token_t_H
-#define GUTHTHILA_guththila_token_t_H
+#ifndef GUTHTHILA_TOKEN_H
+#define GUTHTHILA_TOKEN_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -63,4 +63,4 @@ int guththila_token_length_utf16 (unsigned int utf16_ch);
 char *guththila_token_build_utf8 (unsigned int utf16_ch, int length);
 char *guththila_token_char_ref (char *buffer);
 
-#endif /* GUTHTHILA_guththila_token_t_H */
+#endif /* GUTHTHILA_TOKEN_H */
