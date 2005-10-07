@@ -22,7 +22,7 @@
 #define READER_H
 #include <stdio.h>
 #include <stdlib.h>
-#include "buffer.h"
+#include "guththila_buffer.h"
 struct reader;
 typedef struct reader READER;
 

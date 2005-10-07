@@ -24,12 +24,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "buffer.h"
+#include "guththila_buffer.h"
 #include "reader.h"
 #include "guththila_token.h"
-#include "namespace.h"
-#include "depth.h"
-#include "stack.h"
+#include "guththila_namespace.h"
+#include "guththila_depth.h"
+#include "guththila_stack.h"
 #include "unicode.h"
 
 #define p_FILE __FILE__		/* file name */

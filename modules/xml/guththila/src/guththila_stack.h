@@ -22,9 +22,9 @@
 #define STACK_H
 
 #include "guththila_token.h"
-#include "attribute.h"
-#include "namespace.h"
-#include "depth.h"
+#include "guththila_attribute.h"
+#include "guththila_namespace.h"
+#include "guththila_depth.h"
 
 enum element_types
   {

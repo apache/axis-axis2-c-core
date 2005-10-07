@@ -18,7 +18,7 @@
  */
 
 
-#include "buffer.h"
+#include "guththila_buffer.h"
 
 BUFFER * 
 Buffer_createBuffer (int size)

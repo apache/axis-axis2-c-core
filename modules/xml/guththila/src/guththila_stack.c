@@ -18,7 +18,7 @@
  */
 
 
-#include "stack.h"
+#include "guththila_stack.h"
 
 STACK *
 Stack_createStack ()
