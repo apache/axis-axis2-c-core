@@ -51,8 +51,8 @@ int main (int argc, char *argv[])
 	    printf ("?>");
 	  }
 	  break;
-	case START_ELEMENT:
-	case EMPTY_ELEMENT:
+	case START_guththila_element_t:
+	case EMPTY_guththila_element_t:
 	  {
 	    printf ("<");
 	    int ia;
@@ -67,7 +67,7 @@ int main (int argc, char *argv[])
 	    p = XML_PullParser_getName (parser);
 	    printf ("%s", p);
 	    free (p);
-	    ELEMENT *e;
+	    guththila_element_t *e;
 	    ia = XML_PullParser_getAttributeCount (parser);
 	    for ( ; ia > 0; ia--)
 	      {
@@ -95,7 +95,7 @@ int main (int argc, char *argv[])
 		    free (p);
 		  }
 	      }
-	    e = Stack_last (parser->dep);
+	    e = guththila_stack_last (parser->dep);
 	    d = e->depth->count;
 	    guththila_namespace_t *ns ;
 	    for (; d > 0; d--)
@@ -109,13 +109,13 @@ int main (int argc, char *argv[])
 		printf ("%s\" ", p);
 		free (p);
 		}
-	    if (EVENT == START_ELEMENT)
+	    if (EVENT == START_guththila_element_t)
 	      printf (">");
 	    else
 	      printf ("/>");
 	  }
 	  break;
-	  case END_ELEMENT:
+	  case END_guththila_element_t:
 	  {
 	    printf ("</");
 	    char *p;

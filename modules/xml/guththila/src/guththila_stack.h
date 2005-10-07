@@ -18,54 +18,54 @@
  */
 
 
-#ifndef STACK_H
-#define STACK_H
+#ifndef GUTHTHILA_STACK_H
+#define GUTHTHILA_STACK_H
 
 #include "guththila_token.h"
 #include "guththila_attribute.h"
 #include "guththila_namespace.h"
 #include "guththila_depth.h"
 
-enum element_types
+enum guththila_element_types
   {
     token_element,
     attribute_element,
     namespace_element
   };
 
-typedef struct element ELEMENT;
+typedef struct guththila_element_s guththila_element_t;
 
-typedef struct element
+struct guththila_element_s
 {
   guththila_token_t *token;
   guththila_attribute_t *attribute;
   guththila_namespace_t *namespace;
   guththila_depth_t *depth;
-  ELEMENT *prev;
+  guththila_element_t *prev;
 };
 
-typedef struct stack
+typedef struct guththila_stack_s
 {
-  enum element_types ELEMENT_TYPE; 
+  enum guththila_element_types element_type; 
   int pointer;
   int current_pos;
-  ELEMENT *tail;
-  ELEMENT *current;
-}STACK;
+  guththila_element_t *tail;
+  guththila_element_t *current;
+} guththila_stack_t;
 
 /* stack implementation */
-STACK *Stack_createStack ();
-int Stack_push (STACK *st, guththila_token_t *tok, guththila_attribute_t *attr);
-int Stack_size (STACK *st);
-void Stack_free (STACK *st);
-void Stack_free_rec (STACK *st, ELEMENT *el);
-ELEMENT *Stack_last (STACK *st);
-ELEMENT *Stack_pull (STACK *st);
-int Stack_push_namespace (STACK *st, guththila_namespace_t *ns);
-ELEMENT *Stack_pull_current (STACK *st);
-int Stack_push_depth (STACK *st, guththila_depth_t *d);
-void Stack_clear (STACK *st);
-ELEMENT *Stack_get (STACK *st, int i);
+guththila_stack_t *guththila_stack_create ();
+int guththila_stack_push (guththila_stack_t *st, guththila_token_t *tok, guththila_attribute_t *attr);
+int guththila_stack_size (guththila_stack_t *st);
+void guththila_stack_free (guththila_stack_t *st);
+void guththila_stack_free_rec (guththila_stack_t *st, guththila_element_t *el);
+guththila_element_t *guththila_stack_last (guththila_stack_t *st);
+guththila_element_t *guththila_stack_pull (guththila_stack_t *st);
+int guththila_stack_push_namespace (guththila_stack_t *st, guththila_namespace_t *ns);
+guththila_element_t *guththila_stack_pull_current (guththila_stack_t *st);
+int guththila_stack_push_depth (guththila_stack_t *st, guththila_depth_t *d);
+void guththila_stack_clear (guththila_stack_t *st);
+guththila_element_t *guththila_stack_get (guththila_stack_t *st, int i);
 
 
-#endif /* STACK_H */
+#endif /* GUTHTHILA_STACK_H */

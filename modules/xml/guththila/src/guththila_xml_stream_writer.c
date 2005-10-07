@@ -53,7 +53,7 @@
     if (!stream_writer)
         return GUTHTHILA_STREAM_WRITER_ERROR_STREAM_STRUCT_NULL;
     if (!stream_writer->in_start_element)
-        return GUTHTHILA_STREAM_WRITER_ERROR_NOT_IN_START_ELEMENT;
+        return GUTHTHILA_STREAM_WRITER_ERROR_NOT_IN_START_guththila_element_t;
     if (stream_writer->empty_element)
     {
         if (fputs("/", stream_writer->writer) == EOF)
@@ -256,7 +256,7 @@
             // pop element stack
         char*** element_data = (char***) apr_array_pop(stream_writer->element_stack);
         if (!element_data )
-            return GUTHTHILA_STREAM_WRITER_ERROR_ELEMENT_STACK_EMPTY;
+            return GUTHTHILA_STREAM_WRITER_ERROR_guththila_element_t_guththila_stack_t_EMPTY;
 
             //end pop element stack
 
@@ -275,7 +275,7 @@
             free( (*element_data)[1]);
         }
         else
-            return GUTHTHILA_STREAM_WRITER_ERROR_ELEMENT_STACK_EMPTY;
+            return GUTHTHILA_STREAM_WRITER_ERROR_guththila_element_t_guththila_stack_t_EMPTY;
         
         fputs(">", stream_writer->writer);
        

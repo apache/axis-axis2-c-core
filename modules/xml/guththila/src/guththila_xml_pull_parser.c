@@ -25,10 +25,10 @@ XML_PullParser_createPullParser (guththila_reader_t * r)
   XML_PullParser *parser =
     (XML_PullParser *) malloc (sizeof (XML_PullParser));
   parser->buffer = guththila_buffer_create (1024);
-  parser->stack = Stack_createStack ();
-  parser->attrib = Stack_createStack ();
-  parser->namesp = Stack_createStack ();
-  parser->dep = Stack_createStack ();
+  parser->stack = guththila_stack_create ();
+  parser->attrib = guththila_stack_create ();
+  parser->namesp = guththila_stack_create ();
+  parser->dep = guththila_stack_create ();
   parser->name = (guththila_token_t *) malloc (sizeof (guththila_token_t));
   parser->prefix = (guththila_token_t *) malloc (sizeof (guththila_token_t));
   parser->value = (guththila_token_t *) malloc (sizeof (guththila_token_t));
@@ -50,13 +50,13 @@ XML_PullParser_freePullParser (XML_PullParser * parser)
   if (parser->reader)
     free (parser->reader);
   if (parser->stack)
-    Stack_free (parser->stack);
+    guththila_stack_free (parser->stack);
   if (parser->attrib)
-    Stack_free (parser->attrib);
+    guththila_stack_free (parser->attrib);
   if (parser->namesp)
-    Stack_free (parser->namesp);
+    guththila_stack_free (parser->namesp);
   if (parser->dep)
-    Stack_free (parser->dep);
+    guththila_stack_free (parser->dep);
   free ((void *) parser);
 }
 
@@ -72,10 +72,10 @@ XML_PullParser_Exception (char *file, int line)
 void
 XML_PullParser_relocateTokens (XML_PullParser * parser, int offset)
 {
-  ELEMENT *el;
+  guththila_element_t *el;
   int isize;
-  isize = Stack_size (parser->stack);
-  el = Stack_last (parser->stack);
+  isize = guththila_stack_size (parser->stack);
+  el = guththila_stack_last (parser->stack);
   for (; isize > 0; isize--)
     {
       guththila_token_relocate (el->token, offset);
@@ -197,14 +197,14 @@ XML_PullParser_openToken (XML_PullParser * parser)
   guththila_token_t *t = (guththila_token_t *) malloc (sizeof (guththila_token_t));
   t->type = Unknown;
   t->start = XML_PullParser_lastChar (parser);
-  Stack_push (parser->stack, t, NULL);
+  guththila_stack_push (parser->stack, t, NULL);
 }
 
 
 void
 XML_PullParser_closeToken (XML_PullParser * parser, int t, int refer)
 {
-  ELEMENT *e = Stack_last (parser->stack);
+  guththila_element_t *e = guththila_stack_last (parser->stack);
   e->token->type = t;
   e->token->ref = refer;
   e->token->end = XML_PullParser_lastChar (parser) - 1;
@@ -390,9 +390,9 @@ XML_PullParser_reset (XML_PullParser * parser)
   parser->name = NULL;
   parser->prefix = NULL;
   parser->value = NULL;
-  Stack_clear (parser->attrib);
-  Stack_clear (parser->stack);
-  if (EVENT == END_ELEMENT || EVENT == EMPTY_ELEMENT)
+  guththila_stack_clear (parser->attrib);
+  guththila_stack_clear (parser->stack);
+  if (EVENT == END_guththila_element_t || EVENT == EMPTY_guththila_element_t)
     XML_PullParser_closeElement (parser);
 }
 
@@ -490,12 +490,12 @@ XML_PullParser_processSTagOrEmptyElem (XML_PullParser * parser)
   int c;
   c = XML_PullParser_processName (parser);
   c = XML_PullParser_skipS (parser, c);
-  EVENT = START_ELEMENT;
+  EVENT = START_guththila_element_t;
   for (;;)
     {
       if ('/' == c)
 	{
-	  EVENT = EMPTY_ELEMENT;
+	  EVENT = EMPTY_guththila_element_t;
 	  if ('>' == XML_PullParser_nextChar (parser, 0))
 	    return c;
 	  else
@@ -543,7 +543,7 @@ XML_PullParser_processETag (XML_PullParser * parser)
   c = XML_PullParser_processName (parser);
   c = XML_PullParser_skipS (parser, c);
   if ('>' == c)
-    EVENT = END_ELEMENT;
+    EVENT = END_guththila_element_t;
   else
     XML_PullParser_Exception (p_FILE, LINE);
   return c;
@@ -698,17 +698,17 @@ XML_PullParser_next (XML_PullParser * parser)
     case START_DOCUMENT:
       {
 	int ix;
-	ELEMENT *e;
+	guththila_element_t *e;
 	guththila_token_t *att_name;
 	guththila_token_t *att_value;
-	ix = Stack_size (parser->stack);
+	ix = guththila_stack_size (parser->stack);
 	for (; ix > 0; ix--)
 	  {
-	    e = Stack_pull (parser->stack);
+	    e = guththila_stack_pull (parser->stack);
 	    if (e->token->type == AttValue)
 	      {
 		att_value = e->token;
-		e = Stack_pull (parser->stack);
+		e = guththila_stack_pull (parser->stack);
 		ix--;
 		att_name = e->token;
 		XML_PullParser_addAttribute (parser, att_name, att_value);
@@ -716,23 +716,23 @@ XML_PullParser_next (XML_PullParser * parser)
 	  }
       }
       break;
-    case START_ELEMENT:
-    case EMPTY_ELEMENT:
+    case START_guththila_element_t:
+    case EMPTY_guththila_element_t:
       {
 	int is = 0;
-	ELEMENT *e;
+	guththila_element_t *e;
 	guththila_token_t *name = NULL;
 	guththila_token_t *value = NULL;
-	is = Stack_size (parser->stack);
-	for (; is > 0 && Stack_size (parser->stack); is--)
+	is = guththila_stack_size (parser->stack);
+	for (; is > 0 && guththila_stack_size (parser->stack); is--)
 	  {
-	    e = Stack_pull (parser->stack);
+	    e = guththila_stack_pull (parser->stack);
 	    /* be careful about memory leaks, when we pull it we get
 	       seperate Element need to free it properly */
 	    if (e->token->type == AttValue)
 	      {
 		value = e->token;
-		e = Stack_pull (parser->stack);
+		e = guththila_stack_pull (parser->stack);
 		is--;
 		name = e->token;
 		if (!guththila_token_compare
@@ -750,11 +750,11 @@ XML_PullParser_next (XML_PullParser * parser)
 	      }
 	    else if (e->token->type == Prefix)
 	      {
-		ELEMENT *ex;
+		guththila_element_t *ex;
 		if (!guththila_token_compare
 		    (e->token, "xmlns", 5, parser->unicode_state))
 		  {
-		    ex = Stack_pull (parser->attrib);
+		    ex = guththila_stack_pull (parser->attrib);
 		    XML_PullParser_addNamespace (parser, ex->attribute->name,
 						 ex->attribute->value);
 		  }
@@ -764,7 +764,7 @@ XML_PullParser_next (XML_PullParser * parser)
 		      parser->prefix = e->token;
 		    else
 		      {
-			ex = Stack_pull (parser->attrib);
+			ex = guththila_stack_pull (parser->attrib);
 			XML_PullParser_addAttribute_with_prefix (parser,
 								 e->token,
 								 ex->
@@ -782,21 +782,21 @@ XML_PullParser_next (XML_PullParser * parser)
 	XML_PullParser_openElement (parser);
       }
       break;
-    case END_ELEMENT:
+    case END_guththila_element_t:
       {
-	ELEMENT *e;
-	e = Stack_pull (parser->stack);
+	guththila_element_t *e;
+	e = guththila_stack_pull (parser->stack);
 	if (e->token->type == Name)
 	  parser->name = e->token;
-	e = Stack_pull (parser->stack);
+	e = guththila_stack_pull (parser->stack);
 	if (e->token->type == Prefix)
 	  parser->prefix = e->token;
       }
       break;
     case CHARACTER:
       {
-	ELEMENT *e;
-	e = Stack_pull (parser->stack);
+	guththila_element_t *e;
+	e = guththila_stack_pull (parser->stack);
 	parser->value = e->token;
       }
       break;
@@ -816,23 +816,23 @@ XML_PullParser_openElement (XML_PullParser * parser)
   int ii;
   guththila_depth_t *m = (guththila_depth_t *) malloc (sizeof (guththila_depth_t));
   guththila_depth_t *l = NULL;
-  ELEMENT *e;
-  ii = Stack_size (parser->dep);
+  guththila_element_t *e;
+  ii = guththila_stack_size (parser->dep);
   if (!ii)
     {
       m->first = 0;
-      m->total = Stack_size (parser->namesp);
+      m->total = guththila_stack_size (parser->namesp);
       m->count = m->total;
-      Stack_push_depth (parser->dep, m);
+      guththila_stack_push_depth (parser->dep, m);
     }
   else
     {
-      e = Stack_pull_current (parser->dep);
+      e = guththila_stack_pull_current (parser->dep);
       l = e->depth;
       m->first = l->first + l->count;
-      m->total = Stack_size (parser->namesp);
+      m->total = guththila_stack_size (parser->namesp);
       m->count = m->total - l->total;
-      Stack_push_depth (parser->dep, m);
+      guththila_stack_push_depth (parser->dep, m);
     }
 }
 
@@ -840,14 +840,14 @@ XML_PullParser_openElement (XML_PullParser * parser)
 void
 XML_PullParser_closeElement (XML_PullParser * parser)
 {
-  ELEMENT *d;
-  ELEMENT *e;
+  guththila_element_t *d;
+  guththila_element_t *e;
   int ii;
-  d = Stack_pull (parser->dep);
+  d = guththila_stack_pull (parser->dep);
   ii = d->depth->count;
   for (; ii > 0; ii--)
     {
-      e = Stack_pull (parser->namesp);
+      e = guththila_stack_pull (parser->namesp);
       if (e->namespace->name)
 	free (e->namespace->name);
       if (e->namespace->uri)
@@ -867,7 +867,7 @@ XML_PullParser_addAttribute (XML_PullParser * parser, guththila_token_t * name,
   att->name = name;
   att->value = value;
   att->prefix = NULL;
-  Stack_push (parser->attrib, NULL, att);
+  guththila_stack_push (parser->attrib, NULL, att);
 }
 
 
@@ -881,7 +881,7 @@ XML_PullParser_addAttribute_with_prefix (XML_PullParser * parser,
   att->name = name;
   att->value = value;
   att->prefix = prefix;
-  Stack_push (parser->attrib, NULL, att);
+  guththila_stack_push (parser->attrib, NULL, att);
   /* Element can keep , tokens and attributes here token set to null */
 }
 
@@ -896,22 +896,22 @@ XML_PullParser_addNamespace (XML_PullParser * parser, guththila_token_t * name,
   ns->length = strlen (ns->name);
   ns->uri = guththila_token_to_string (uri, parser->unicode_state);
   ns->lengthuri = strlen (ns->uri);
-  Stack_push_namespace (parser->namesp, ns);
+  guththila_stack_push_namespace (parser->namesp, ns);
 }
 
 
 int
 XML_PullParser_getAttributeCount (XML_PullParser * parser)
 {
-  return Stack_size (parser->attrib);
+  return guththila_stack_size (parser->attrib);
 }
 
 
 guththila_attribute_t *
 XML_PullParser_getAttribute (XML_PullParser * parser)
 {
-  ELEMENT *e;
-  e = Stack_pull (parser->attrib);
+  guththila_element_t *e;
+  e = guththila_stack_pull (parser->attrib);
   if (e->attribute)
     return e->attribute;
   else
@@ -956,13 +956,13 @@ char *
 XML_PullParser_getAttributePrefix_by_number (XML_PullParser * parser, int i)
 {
   int ix = parser->attrib->pointer;
-  ELEMENT *e;
+  guththila_element_t *e;
   guththila_attribute_t *att = NULL;
   if (i > ix)
     XML_PullParser_Exception (p_FILE, LINE);
   else
     {
-      e = Stack_last (parser->attrib);
+      e = guththila_stack_last (parser->attrib);
       for (; ix > i; ix--)
 	{
 	  if (e->prev)
@@ -979,13 +979,13 @@ char *
 XML_PullParser_getAttributeName_by_number (XML_PullParser * parser, int i)
 {
   int ix = parser->attrib->pointer;
-  ELEMENT *e;
+  guththila_element_t *e;
   guththila_attribute_t *att = NULL;
   if (i > ix)
     XML_PullParser_Exception (p_FILE, LINE);
   else
     {
-      e = Stack_last (parser->attrib);
+      e = guththila_stack_last (parser->attrib);
       for (; ix > i; ix--)
 	{
 	  if (e->prev)
@@ -1002,13 +1002,13 @@ char *
 XML_PullParser_getAttributeValue_by_number (XML_PullParser * parser, int i)
 {
   int ix = parser->attrib->pointer;
-  ELEMENT *e;
+  guththila_element_t *e;
   guththila_attribute_t *att = NULL;
   if (i > ix)
     XML_PullParser_Exception (p_FILE, LINE);
   else
     {
-      e = Stack_last (parser->attrib);
+      e = guththila_stack_last (parser->attrib);
       for (; ix > i; ix--)
 	{
 	  if (e->prev)
@@ -1052,7 +1052,7 @@ int
 XML_PullParser_getNamespaceCount (XML_PullParser * parser)
 {
   if (parser->namesp)
-    return Stack_size (parser->namesp);
+    return guththila_stack_size (parser->namesp);
   else
     return 0;
 }
@@ -1061,8 +1061,8 @@ XML_PullParser_getNamespaceCount (XML_PullParser * parser)
 guththila_namespace_t *
 XML_PullParser_getNamespace (XML_PullParser * parser)
 {
-  ELEMENT *e;
-  e = Stack_pull_current (parser->namesp);
+  guththila_element_t *e;
+  e = guththila_stack_pull_current (parser->namesp);
   if (e->namespace)
     return e->namespace;
   else
@@ -1094,13 +1094,13 @@ char *
 XML_PullParser_getNamespacePrefix_by_number (XML_PullParser * parser, int i)
 {
   int ix = parser->namesp->pointer;
-  ELEMENT *e;
+  guththila_element_t *e;
   guththila_namespace_t *ns = NULL;
   if (i > ix)
     XML_PullParser_Exception (p_FILE, LINE);
   else
     {
-      e = Stack_get (parser->namesp, i);
+      e = guththila_stack_get (parser->namesp, i);
       if (e->namespace)
 	ns = e->namespace;
     }
@@ -1112,13 +1112,13 @@ char *
 XML_PullParser_getNamespaceUri_by_number (XML_PullParser * parser, int i)
 {
   int ix = parser->namesp->pointer;
-  ELEMENT *e;
+  guththila_element_t *e;
   guththila_namespace_t *ns = NULL;
   if (i > ix)
     XML_PullParser_Exception (p_FILE, LINE);
   else
     {
-      e = Stack_get (parser->namesp, i);
+      e = guththila_stack_get (parser->namesp, i);
       if (e->namespace)
 	ns = e->namespace;
     }
@@ -1132,13 +1132,13 @@ XML_PullParser_getAttributeNamespace_by_number (XML_PullParser *parser, int i)
   char *att_prefix;
   int ii;
   int ix = parser->namesp->pointer;
-  ELEMENT *e;
+  guththila_element_t *e;
   guththila_namespace_t *ns = NULL;
   att_prefix = XML_PullParser_getAttributePrefix_by_number (parser, i);
     
   for (ii = 0; ii <= ix; ii++)
     {
-      e = Stack_get (parser->namesp, ii);
+      e = guththila_stack_get (parser->namesp, ii);
       if (e)
 	{
 	  if (e->namespace && att_prefix)

@@ -20,10 +20,10 @@
 
 #include "guththila_stack.h"
 
-STACK *
-Stack_createStack ()
+guththila_stack_t *
+guththila_stack_create ()
 {
-  STACK *st = (STACK *) malloc (sizeof (STACK));
+  guththila_stack_t *st = (guththila_stack_t *) malloc (sizeof (guththila_stack_t));
   if (st)
     {
       st->pointer = 0;
@@ -38,11 +38,11 @@ Stack_createStack ()
 
 
 int 
-Stack_push (STACK *stack, guththila_token_t *tok, guththila_attribute_t *attr)
+guththila_stack_push (guththila_stack_t *stack, guththila_token_t *tok, guththila_attribute_t *attr)
 {
   if (stack)
     {
-      ELEMENT *e = (ELEMENT *) malloc (sizeof (ELEMENT));
+      guththila_element_t *e = (guththila_element_t *) malloc (sizeof (guththila_element_t));
       e->token = tok;
       e->attribute = attr;
       if (stack->pointer == 0)
@@ -69,7 +69,7 @@ Stack_push (STACK *stack, guththila_token_t *tok, guththila_attribute_t *attr)
 
 
 int
-Stack_size (STACK *stack)
+guththila_stack_size (guththila_stack_t *stack)
 {
   if (stack->pointer)
     return stack->pointer;
@@ -79,12 +79,12 @@ Stack_size (STACK *stack)
 
 
 void 
-Stack_free (STACK *stack)
+guththila_stack_free (guththila_stack_t *stack)
 {
   if (stack && (stack->pointer > 0))
     {
-      ELEMENT *ele = stack->tail;
-      Stack_free_rec (stack, ele);
+      guththila_element_t *ele = stack->tail;
+      guththila_stack_free_rec (stack, ele);
       free (ele);
       free (stack);
     }
@@ -92,7 +92,7 @@ Stack_free (STACK *stack)
 
 
 void
-Stack_free_rec (STACK *stack, ELEMENT *elem)
+guththila_stack_free_rec (guththila_stack_t *stack, guththila_element_t *elem)
 {
   if (elem->prev == NULL)
     {
@@ -101,14 +101,14 @@ Stack_free_rec (STACK *stack, ELEMENT *elem)
   else 
     {
       elem = elem->prev;
-      Stack_free_rec (stack, elem);
+      guththila_stack_free_rec (stack, elem);
       free (elem);
     }
 }
 
 
-ELEMENT *
-Stack_last (STACK *stack)
+guththila_element_t *
+guththila_stack_last (guththila_stack_t *stack)
 {
   if (stack)
     return stack->tail;
@@ -117,10 +117,10 @@ Stack_last (STACK *stack)
 }
 
 
-ELEMENT *
-Stack_pull (STACK *stack)
+guththila_element_t *
+guththila_stack_pull (guththila_stack_t *stack)
 {
-  ELEMENT *e;
+  guththila_element_t *e;
   if (stack)
     {
       e = stack->tail;
@@ -150,11 +150,11 @@ Stack_pull (STACK *stack)
 
 
 int 
-Stack_push_namespace (STACK *stack, guththila_namespace_t *ns)
+guththila_stack_push_namespace (guththila_stack_t *stack, guththila_namespace_t *ns)
 {
   if (stack)
     {
-      ELEMENT *e = (ELEMENT *) malloc (sizeof (ELEMENT));
+      guththila_element_t *e = (guththila_element_t *) malloc (sizeof (guththila_element_t));
       e->namespace = ns;
       e->attribute = NULL;
       e->token = NULL;
@@ -181,10 +181,10 @@ Stack_push_namespace (STACK *stack, guththila_namespace_t *ns)
 }
 
 
-ELEMENT *
-Stack_pull_current (STACK *stack)
+guththila_element_t *
+guththila_stack_pull_current (guththila_stack_t *stack)
 {
-  ELEMENT *e;
+  guththila_element_t *e;
   e = stack->current;
   if (stack->current_pos != 0)
     {
@@ -204,11 +204,11 @@ Stack_pull_current (STACK *stack)
 
 
 int 
-Stack_push_depth (STACK *stack, guththila_depth_t *d)
+guththila_stack_push_depth (guththila_stack_t *stack, guththila_depth_t *d)
 {
   if (stack)
     {
-      ELEMENT *e = (ELEMENT *) malloc (sizeof (ELEMENT));
+      guththila_element_t *e = (guththila_element_t *) malloc (sizeof (guththila_element_t));
       e->namespace = NULL;
       e->attribute = NULL;
       e->token = NULL;
@@ -237,21 +237,21 @@ Stack_push_depth (STACK *stack, guththila_depth_t *d)
 
 
 void
-Stack_clear (STACK *stack)
+guththila_stack_clear (guththila_stack_t *stack)
 {
-  ELEMENT *e; 
+  guththila_element_t *e; 
   e = stack->tail;
   if (e)
     {
-      Stack_pull (stack);
+      guththila_stack_pull (stack);
       e = stack->tail;
     }
   stack->pointer = 0 ;
 }
 
 
-ELEMENT *
-Stack_get (STACK *stack , int i)
+guththila_element_t *
+guththila_stack_get (guththila_stack_t *stack , int i)
 {
   if (i)
     {
@@ -259,7 +259,7 @@ Stack_get (STACK *stack , int i)
         return stack->tail;
       else
         {
-          ELEMENT *e;
+          guththila_element_t *e;
           int ix = stack->pointer;
           e = stack->tail;
           for ( ; ix > ((stack->pointer+1) - i); ix--)

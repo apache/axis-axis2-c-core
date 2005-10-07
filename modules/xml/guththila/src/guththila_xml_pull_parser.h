@@ -53,9 +53,9 @@ enum status
 enum event_types
 {
   START_DOCUMENT = 10,
-  START_ELEMENT = 20,
-  END_ELEMENT = 30,
-  EMPTY_ELEMENT = 40,
+  START_guththila_element_t = 20,
+  END_guththila_element_t = 30,
+  EMPTY_guththila_element_t = 40,
   CHARACTER = 50,
   ENTITY_REFERANCE = 60,
   COMMENT = 70
@@ -70,10 +70,10 @@ typedef struct xmlpullpaser
   guththila_token_t *prefix;
   guththila_token_t *name;
   guththila_token_t *value;
-  STACK *stack;
-  STACK *attrib;
-  STACK *namesp;
-  STACK *dep;
+  guththila_stack_t *stack;
+  guththila_stack_t *attrib;
+  guththila_stack_t *namesp;
+  guththila_stack_t *dep;
   int _next;
   int offset;
   int last;
