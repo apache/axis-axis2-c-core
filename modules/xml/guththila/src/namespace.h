@@ -20,7 +20,7 @@
 
 #ifndef NAMESPACE_H
 #define NAMESPACE_H
-#include "token.h"
+#include "guththila_token.h"
 
 typedef struct namespace
 {

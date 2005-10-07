@@ -26,7 +26,7 @@
 #include <ctype.h>
 #include "buffer.h"
 #include "reader.h"
-#include "token.h"
+#include "guththila_token.h"
 #include "namespace.h"
 #include "depth.h"
 #include "stack.h"

@@ -19,7 +19,7 @@
 
 #ifndef ATTRIBUTE_H
 #define ATTRIBUTE_H
-#include "token.h"
+#include "guththila_token.h"
 
 typedef struct attribute
 {

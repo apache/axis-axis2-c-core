@@ -21,7 +21,7 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include "token.h"
+#include "guththila_token.h"
 #include "attribute.h"
 #include "namespace.h"
 #include "depth.h"
