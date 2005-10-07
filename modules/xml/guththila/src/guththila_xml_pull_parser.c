@@ -78,7 +78,7 @@ XML_PullParser_relocateTokens (XML_PullParser * parser, int offset)
   el = Stack_last (parser->stack);
   for (; isize > 0; isize--)
     {
-      Token_relocate (el->token, offset);
+      guththila_token_relocate (el->token, offset);
       el = el->prev;
     }
 }
@@ -735,7 +735,7 @@ XML_PullParser_next (XML_PullParser * parser)
 		e = Stack_pull (parser->stack);
 		is--;
 		name = e->token;
-		if (!Token_compare
+		if (!guththila_token_compare
 		    (e->token, "xmlns", 5, parser->unicode_state))
 		  XML_PullParser_addNamespace (parser, name, value);
 		else
@@ -751,7 +751,7 @@ XML_PullParser_next (XML_PullParser * parser)
 	    else if (e->token->type == Prefix)
 	      {
 		ELEMENT *ex;
-		if (!Token_compare
+		if (!guththila_token_compare
 		    (e->token, "xmlns", 5, parser->unicode_state))
 		  {
 		    ex = Stack_pull (parser->attrib);
@@ -892,9 +892,9 @@ XML_PullParser_addNamespace (XML_PullParser * parser, guththila_token_t * name,
 {
   NAMESPACE *ns;
   ns = (NAMESPACE *) malloc (sizeof (NAMESPACE));
-  ns->name = Token_toString (name, parser->unicode_state);
+  ns->name = guththila_token_to_string (name, parser->unicode_state);
   ns->length = strlen (ns->name);
-  ns->uri = Token_toString (uri, parser->unicode_state);
+  ns->uri = guththila_token_to_string (uri, parser->unicode_state);
   ns->lengthuri = strlen (ns->uri);
   Stack_push_namespace (parser->namesp, ns);
 }
@@ -925,7 +925,7 @@ XML_PullParser_getAttributeName (XML_PullParser * parser, ATTRIBUTE * att)
   if (!att)
     XML_PullParser_Exception (p_FILE, LINE);
   if (att->name->end)
-    return Token_toString (att->name, parser->unicode_state);
+    return guththila_token_to_string (att->name, parser->unicode_state);
   return NULL;
 }
 
@@ -936,7 +936,7 @@ XML_PullParser_getAttributeValue (XML_PullParser * parser, ATTRIBUTE * att)
   if (!att)
     XML_PullParser_Exception (p_FILE, LINE);
   if (att->value->end)
-    return Token_toString (att->value, parser->unicode_state);
+    return guththila_token_to_string (att->value, parser->unicode_state);
   return NULL;
 }
 
@@ -947,7 +947,7 @@ XML_PullParser_getAttributePrefix (XML_PullParser * parser, ATTRIBUTE * att)
   if (!att)
     XML_PullParser_Exception (p_FILE, LINE);
   if (att->prefix->end)
-    return Token_toString (att->prefix, parser->unicode_state);
+    return guththila_token_to_string (att->prefix, parser->unicode_state);
   return NULL;
 }
 
@@ -971,7 +971,7 @@ XML_PullParser_getAttributePrefix_by_number (XML_PullParser * parser, int i)
       if (e->attribute)
 	att = e->attribute;
     }
-  return Token_toString (att->prefix, parser->unicode_state);
+  return guththila_token_to_string (att->prefix, parser->unicode_state);
 }
 
 
@@ -994,7 +994,7 @@ XML_PullParser_getAttributeName_by_number (XML_PullParser * parser, int i)
       if (e->attribute)
 	att = e->attribute;
     }
-  return Token_toString (att->name, parser->unicode_state);
+  return guththila_token_to_string (att->name, parser->unicode_state);
 }
 
 
@@ -1017,7 +1017,7 @@ XML_PullParser_getAttributeValue_by_number (XML_PullParser * parser, int i)
       if (e->attribute)
 	att = e->attribute;
     }
-  return Token_toString (att->value, parser->unicode_state);
+  return guththila_token_to_string (att->value, parser->unicode_state);
 }
 
 
@@ -1025,7 +1025,7 @@ char *
 XML_PullParser_getName (XML_PullParser * parser)
 {
   if (parser->name->end)
-    return Token_toString (parser->name, parser->unicode_state);
+    return guththila_token_to_string (parser->name, parser->unicode_state);
   return NULL;
 }
 
@@ -1034,7 +1034,7 @@ char *
 XML_PullParser_getValue (XML_PullParser * parser)
 {
   if (parser->value->end)
-    return Token_toString (parser->value, parser->unicode_state);
+    return guththila_token_to_string (parser->value, parser->unicode_state);
   return NULL;
 }
 
@@ -1043,7 +1043,7 @@ char *
 XML_PullParser_getPrefix (XML_PullParser * parser)
 {
   if (parser->prefix)
-    return Token_toString (parser->prefix, parser->unicode_state);
+    return guththila_token_to_string (parser->prefix, parser->unicode_state);
   return NULL;
 }
 

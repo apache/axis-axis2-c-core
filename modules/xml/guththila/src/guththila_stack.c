@@ -63,7 +63,7 @@ Stack_push (STACK *stack, guththila_token_t *tok, ATTRIBUTE *attr)
 	}
     }
   else
-    Token_Exception ();
+    guththila_token_exception ();
   return 0;
 }
 
@@ -176,7 +176,7 @@ Stack_push_namespace (STACK *stack, NAMESPACE *ns)
 	}
     }
   else
-    Token_Exception ();
+    guththila_token_exception ();
   return 0;
 }
 
@@ -231,7 +231,7 @@ Stack_push_depth (STACK *stack, DEPTH *d)
 	}
     }
   else
-    Token_Exception ();
+    guththila_token_exception ();
   return 0;
 }
 
