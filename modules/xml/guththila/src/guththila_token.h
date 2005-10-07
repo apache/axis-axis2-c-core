@@ -38,12 +38,12 @@ typedef struct guththila_token_s
 enum guththila_token_type
   {
     Unknown = 1,
-    Name,
-    Value,
-    Attribute,
-    AttValue,
-    Prefix,
-    CharData
+    _name,
+    _value,
+    _attribute,
+    _attribute_value,
+    _prefix,
+    _char_data
   };
 
 

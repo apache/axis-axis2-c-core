@@ -24,10 +24,10 @@ int main (int argc, char *argv[])
   guththila_reader_t *red;
   FILE *fp = fopen ("response.xml", "r");
   red = guththila_reader_create (fp);
-  XML_PullParser *parser = XML_PullParser_createPullParser (red);
-  XML_PullParser_read (parser);
+  guththila_xml_pull_parser_t *parser = guththila_xml_pull_parser_create (red);
+  guththila_xml_pull_parser_read (parser);
   int c;
-  while ((c = XML_PullParser_next (parser)) != -1)
+  while ((c = guththila_xml_pull_parser_next (parser)) != -1)
     {
       switch (c)
 	{
@@ -35,16 +35,16 @@ int main (int argc, char *argv[])
 	  {
 	    printf ("<?xml ");
 	    int ix;
-	    ix = XML_PullParser_getAttributeCount (parser);
+	    ix = guththila_xml_pull_parser_get_attribute_count (parser);
 	    for (; ix > 0; ix--)
 	      {
 		guththila_attribute_t *a;
 		char *p;
-		a = XML_PullParser_getAttribute (parser);
-		p = XML_PullParser_getAttributeName (parser, a);
+		a = guththila_xml_pull_parser_get_attribute (parser);
+		p = guththila_xml_pull_parser_get_attribute_name (parser, a);
 		printf ("%s=\"", p);
 		free (p);
-		p = XML_PullParser_getAttributeValue (parser, a);
+		p = guththila_xml_pull_parser_get_attribute_value (parser, a);
 		printf ("%s\" ", p);
 		free (p);
 	      }
@@ -58,39 +58,39 @@ int main (int argc, char *argv[])
 	    int ia;
 	    int d;
 	    char *p;
-	     p = XML_PullParser_getPrefix (parser);
+	     p = guththila_xml_pull_parser_get_prefix (parser);
 	    if (p)
 	      {
 		printf ("%s:", p);
 		free (p);
 	      }
-	    p = XML_PullParser_getName (parser);
+	    p = guththila_xml_pull_parser_get_name (parser);
 	    printf ("%s", p);
 	    free (p);
 	    guththila_element_t *e;
-	    ia = XML_PullParser_getAttributeCount (parser);
+	    ia = guththila_xml_pull_parser_get_attribute_count (parser);
 	    for ( ; ia > 0; ia--)
 	      {
-		/* p = XML_PullParser_getAttributePrefix_by_number
+		/* p = guththila_xml_pull_parser_get_attribute_prefix_by_number
 		   (parser, ia); */
-		p = XML_PullParser_getAttributeNamespace_by_number (parser, ia);
+		p = guththila_xml_pull_parser_get_attribute_namespace_by_number (parser, ia);
 		if (p)
 		  {
 		    printf (" %s:", p);
 		    free (p);
-		    p = XML_PullParser_getAttributeName_by_number (parser, ia);
+		    p = guththila_xml_pull_parser_get_attribute_name_by_number (parser, ia);
 		    printf ("%s=\"", p);
 		    free (p);
-		    p = XML_PullParser_getAttributeValue_by_number (parser, ia);
+		    p = guththila_xml_pull_parser_get_attribute_value_by_number (parser, ia);
 		    printf ("%s\"", p);
 		    free (p);
 		  }
 		else
 		  {
-		    p = XML_PullParser_getAttributeName_by_number (parser, ia);
+		    p = guththila_xml_pull_parser_get_attribute_name_by_number (parser, ia);
 		    printf (" %s=\"", p);
 		    free (p);
-		    p = XML_PullParser_getAttributeValue_by_number (parser, ia);
+		    p = guththila_xml_pull_parser_get_attribute_value_by_number (parser, ia);
 		    printf ("%s\"", p);
 		    free (p);
 		  }
@@ -100,12 +100,12 @@ int main (int argc, char *argv[])
 	    guththila_namespace_t *ns ;
 	    for (; d > 0; d--)
 	      {
-		p = XML_PullParser_getNamespacePrefix_by_number (parser, d);
+		p = guththila_xml_pull_parser_get_namespace_prefix_by_number (parser, d);
 		if (strncmp (p, "xmlns", 5))
 		  printf (" xmlns:");
 		printf ("%s=\"", p);
 		free (p);
-		p = XML_PullParser_getNamespaceUri_by_number (parser, d);
+		p = guththila_xml_pull_parser_get_namespace_uri_by_number (parser, d);
 		printf ("%s\" ", p);
 		free (p);
 		}
@@ -119,13 +119,13 @@ int main (int argc, char *argv[])
 	  {
 	    printf ("</");
 	    char *p;
-	    p = XML_PullParser_getPrefix (parser);
+	    p = guththila_xml_pull_parser_get_prefix (parser);
 	    if (p)
 	      {
 		printf ("%s:", p);
 		free (p);
 	      }
-	    p = XML_PullParser_getName (parser);
+	    p = guththila_xml_pull_parser_get_name (parser);
 	    printf ("%s", p);
 	    free (p);
 	    printf (">");
@@ -134,7 +134,7 @@ int main (int argc, char *argv[])
 	case CHARACTER:
 	  {
 	  char *p;
-	  p = XML_PullParser_getValue (parser);
+	  p = guththila_xml_pull_parser_get_value (parser);
 	  printf (p);
 	  free (p);
 	  }
@@ -143,7 +143,7 @@ int main (int argc, char *argv[])
 	  break;
 	};
     }
-  XML_PullParser_freePullParser (parser);
+  guththila_xml_pull_parser_free (parser);
   return 0;
 }
 
