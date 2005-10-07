@@ -65,7 +65,7 @@ enum event_types EVENT;
 
 typedef struct xmlpullpaser
 {
-  BUFFER *buffer;
+  guththila_buffer_t *buffer;
   READER *reader;
   guththila_token_t *prefix;
   guththila_token_t *name;

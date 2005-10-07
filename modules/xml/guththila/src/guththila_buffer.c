@@ -20,10 +20,10 @@
 
 #include "guththila_buffer.h"
 
-BUFFER * 
-Buffer_createBuffer (int size)
+guththila_buffer_t * 
+guththila_buffer_create (int size)
 {
-  BUFFER *name = malloc (sizeof(BUFFER));
+  guththila_buffer_t *name = malloc (sizeof(guththila_buffer_t));
   name->size = size;
   name->offset = 0;
   name->last = 0;
@@ -37,7 +37,7 @@ Buffer_createBuffer (int size)
 
 
 void 
-Buffer_freeBuffer (BUFFER *name)
+guththila_buffer_free (guththila_buffer_t *name)
 {
   if (name)
     {
@@ -48,11 +48,11 @@ Buffer_freeBuffer (BUFFER *name)
 }
 
 
-BUFFER *
-Buffer_grow (BUFFER *name)
+guththila_buffer_t *
+guththila_buffer_grow (guththila_buffer_t *name)
 {
   name->size <<= 1;
-  BUFFER *x = (BUFFER *) realloc (name, name->size);
+  guththila_buffer_t *x = (guththila_buffer_t *) realloc (name, name->size);
   if (x)
     name = x; 
   else

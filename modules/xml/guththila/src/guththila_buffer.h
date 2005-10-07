@@ -18,22 +18,22 @@
  */
 
 
-#ifndef __BUFFER__INCLUDED__
-#define __BUFFER__INCLUDED__
+#ifndef GUTHTHILA_BUFFER_H
+#define GUTHTHILA_BUFFER_H
+
 #include <stdlib.h>
 
-struct Buffer
+typedef struct guththila_buffer_s
 {
   int size;
   int next;
   int last;
   int offset;
   char *buff;
-};
+} guththila_buffer_t;
 
-typedef struct Buffer BUFFER;
-BUFFER *Buffer_createBuffer (int size);
-void Buffer_freeBuffer (BUFFER *name);
-BUFFER *Buffer_grow (BUFFER *name);
+guththila_buffer_t *guththila_buffer_create (int size);
+void guththila_buffer_free (guththila_buffer_t *name);
+guththila_buffer_t *guththila_buffer_grow (guththila_buffer_t *name);
 
-#endif
+#endif // GUTHTHILA_BUFFER_H

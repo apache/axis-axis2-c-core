@@ -24,7 +24,7 @@ XML_PullParser_createPullParser (READER * r)
 {
   XML_PullParser *parser =
     (XML_PullParser *) malloc (sizeof (XML_PullParser));
-  parser->buffer = Buffer_createBuffer (1024);
+  parser->buffer = guththila_buffer_create (1024);
   parser->stack = Stack_createStack ();
   parser->attrib = Stack_createStack ();
   parser->namesp = Stack_createStack ();
@@ -108,9 +108,9 @@ XML_PullParser_read (XML_PullParser * parser)
 	}
       else
 	{
-	  BUFFER *b;
+	  guththila_buffer_t *b;
 	  b = parser->buffer;
-	  parser->buffer = Buffer_grow (parser->buffer);
+	  parser->buffer = guththila_buffer_grow (parser->buffer);
 	  XML_PullParser_relocateTokens (parser,
 					 (b->size - parser->buffer->size));
 	}
