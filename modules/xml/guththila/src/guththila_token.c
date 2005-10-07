@@ -42,7 +42,9 @@ void
 guththila_token_exception ()
 {
   printf ("Throws new token Exception");
-  exit (0);
+  // Samisa : we should define the error code and error desctioption and return error code to user
+  // no use of using printf within a library
+  // please delete this comment once this is fixed.
 }
 
 
