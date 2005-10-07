@@ -17,7 +17,7 @@
  * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)	
  */
 
-#include "guththila_xmlpullparser.h"
+#include "guththila_xml_pull_parser.h"
 
 XML_PullParser *
 XML_PullParser_createPullParser (READER * r)

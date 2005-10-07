@@ -1,4 +1,4 @@
-#include "guththila_xmlpullparser.h"
+#include "guththila_xml_pull_parser.h"
 int main (int argc, char *argv[])
 {
   READER *red;
