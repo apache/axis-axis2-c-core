@@ -152,21 +152,21 @@ XML_PullParser_nextChar (XML_PullParser * parser, int eof)
     }
   if (parser->_next == 0)
     {
-      UTF8_char iu = (UTF8_char) parser->buffer->buff[parser->_next++];
+      guththila_UTF8_char iu = (guththila_UTF8_char) parser->buffer->buff[parser->_next++];
 
       if (0xff == iu
-	  && 0xfe == (UTF8_char) parser->buffer->buff[parser->_next++])
+	  && 0xfe == (guththila_UTF8_char) parser->buffer->buff[parser->_next++])
 	{
 	  parser->unicode_state = LE;
 	}
       else if (0xfe == iu
-	       && 0xff == (UTF8_char) parser->buffer->buff[parser->_next++])
+	       && 0xff == (guththila_UTF8_char) parser->buffer->buff[parser->_next++])
 	{
 	  parser->unicode_state = BE;
 	}
       else if (0xef == iu
-	       && 0xbb == (UTF8_char) parser->buffer->buff[parser->_next++]
-	       && 0xbf == (UTF8_char) parser->buffer->buff[parser->_next++])
+	       && 0xbb == (guththila_UTF8_char) parser->buffer->buff[parser->_next++]
+	       && 0xbf == (guththila_UTF8_char) parser->buffer->buff[parser->_next++])
 	{
 	  parser->unicode_state = None;
 	}

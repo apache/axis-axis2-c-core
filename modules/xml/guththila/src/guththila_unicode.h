@@ -18,11 +18,11 @@
  */
 
 
-#ifndef UNICODE_H
-#define UNICODE_H
+#ifndef GUTHTHILA_UNICODE_H
+#define GUTHTHILA_UNICODE_H
 
-typedef unsigned char UTF8_char;
-typedef unsigned short UTF16_char;
+typedef unsigned char guththila_UTF8_char;
+typedef unsigned short guththila_UTF16_char;
 
 /*! These are the values of UTF-16 Document
  * After , BOM (Byter Oreder Mark) was determined unicodeState
@@ -31,17 +31,17 @@ typedef unsigned short UTF16_char;
  * LE = Little Endian UTF-16 Document
  * BE = Big Endian UTF-16 Document
  * For the time being Endianess make no effect to the parsing  */
-enum UTF16_endianess {None=1, LE, BE};
+enum guththila_UTF16_endianess {None=1, LE, BE};
 
 #ifdef __UNICODE__FUNCTIONS__
-#define strlen(x) strlenUnicode(x) 
-#define strndup(x, y) strdupUnicode(x, y)
+#define strlen(x) guththila_strlen_unicode(x) 
+#define strndup(x, y) guththila_strdup_unicode(x, y)
 
-UTF8_char strlenUnicode (char *);
+guththila_UTF8_char guththila_strlen_unicode (char *);
 
-char * strdupUnicode (char *, int);
+char * guththila_strdup_unicode (char *, int);
 
 #endif /* __UNICODE__FUNCTIONS__ */
 
 
-#endif /* UNICODE_H */
+#endif /* GUTHTHILA_UNICODE_H */

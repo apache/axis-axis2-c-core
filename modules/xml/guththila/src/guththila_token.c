@@ -233,7 +233,7 @@ guththila_token_length_utf16 (unsigned int utf16_ch)
 char*
 guththila_token_build_utf8 (unsigned int utf16_ch, int length)
 {
-  UTF8_char mask = 0;
+  guththila_UTF8_char mask = 0;
   int ii = 0;
   char *buffer = (char *) calloc (length + 1, 1);
   if (length == 1)
@@ -286,7 +286,7 @@ guththila_token_convert_utf16_to_utf8 (char *buffer, int length)
   int ii = 0;
   for (ii = 0; length > ii ; )
     {
-      utf16_char = *((UTF16_char *)&input_buffer[ii]);
+      utf16_char = *((guththila_UTF16_char *)&input_buffer[ii]);
       ii += 2;
       length_utf16 = guththila_token_length_utf16 (utf16_char);
       output_char = guththila_token_build_utf8 (utf16_char, length_utf16);

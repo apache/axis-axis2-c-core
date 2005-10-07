@@ -26,19 +26,19 @@
 /*! In order to determine length of UTF-16 Buffer 
  * Basicall char *p should be a Utf-16 Buffer  */
 
-UTF8_char 
-strlenUnicode (char *p)
+guththila_UTF8_char 
+guththila_strlen_unicode (char *p)
 {
-  UTF8_char len = 0;
-  UTF8_char d;
-  UTF16_char c ;
+  guththila_UTF8_char len = 0;
+  guththila_UTF8_char d;
+  guththila_UTF16_char c ;
   char* s = p;
-  c = *((UTF16_char *)&s[len]);
+  c = *((guththila_UTF16_char *)&s[len]);
   if (c)
     {
       while (c)
 	{
-	  c = *((UTF16_char *)&s[len]);
+	  c = *((guththila_UTF16_char *)&s[len]);
 	  len +=2;
 	  d = s[len];
 	  if(!d)
@@ -55,7 +55,7 @@ strlenUnicode (char *p)
 
 /*!To Duplicate UTF-16 String  */
 char * 
-strdupUnicode (char* p, int length)
+guththila_strdup_unicode (char* p, int length)
 {
   char *s;
   s = (char *)calloc (length+1, 1);
