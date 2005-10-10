@@ -57,7 +57,9 @@ typedef enum axis2_om_types_t {
 * we keep pointers parent , previous sibling , next sibling , 
 * first child and last child for constructing and navigating the tree
 *
-*/
+*/      
+  
+
 typedef struct axis2_om_node_t {
 	struct axis2_om_node_t *parent;
 	struct axis2_om_node_t *prev_sibling;
