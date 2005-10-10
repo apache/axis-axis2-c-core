@@ -30,10 +30,10 @@ typedef struct axis2_environment_ops {
 
 typedef struct axis2_environment {
     struct axis2_environment_ops *ops;
-    axis2_allocator_t *allocator;
-    axis2_error_t *error;
-    axis2_stream_t *stream;
-    axis2_log_t *log;
+    axis2_allocator_t *allocator;   /* memory allocation routines */
+    axis2_error_t *error;           /* error handling */
+    axis2_stream_t *stream;         /* IO routines */
+    axis2_log_t *log;               /* logging routines */
 } axis2_environment_t;
 
 axis2_environment_t *axis2_environment_create(axis2_allocator_t *allocator, axis2_error_t *error, axis2_stream_t *stream, axis2_log_t *log);
