@@ -20,6 +20,7 @@
 #include <axis2_allocator.h>
 #include <axis2_error.h>
 #include <axis2_stream.h>
+#include <axis2_log.h>
 
 struct axis2_environment;
 struct axis2_environment_ops;
@@ -32,8 +33,9 @@ typedef struct axis2_environment {
     axis2_allocator_t *allocator;
     axis2_error_t *error;
     axis2_stream_t *stream;
+    axis2_log_t *log;
 } axis2_environment_t;
 
-axis2_environment_t *axis2_environment_create(axis2_allocator_t *allocator, axis2_error_t *error, axis2_stream_t *stream);
+axis2_environment_t *axis2_environment_create(axis2_allocator_t *allocator, axis2_error_t *error, axis2_stream_t *stream, axis2_log_t *log);
 
 #endif /* AXIS2_ENVIRONMENT_H */
