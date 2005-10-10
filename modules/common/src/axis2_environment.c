@@ -16,7 +16,7 @@
 
 #include <axis2_environment.h>
 
-axis2_environment_t *axis2_environment_create(axis2_allocator_t *allocator, axis2_error_t *error, axis2_stream_t *stream)
+axis2_environment_t *axis2_environment_create(axis2_allocator_t *allocator, axis2_error_t *error, axis2_stream_t *stream, axis2_log_t *log)
 {
     if (!allocator)
         return NULL;
@@ -33,6 +33,9 @@ axis2_environment_t *axis2_environment_create(axis2_allocator_t *allocator, axis
 
     if (!stream)
         environment->stream = axis2_stream_create(allocator, NULL);
+
+    if (!log)
+        environment->log = axis2_log_create(allocator, NULL);
 
     return environment;
 }
