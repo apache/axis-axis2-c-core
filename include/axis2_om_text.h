@@ -64,17 +64,17 @@ typedef struct axis2_om_text
    /**
 	* Text value
 	*/	
-	char *value; 
+	axis2_char *value; 
 	
    /**
     * The following fields are for MTOM
     */
 	//axis2_om_namespace_t *ns;
-	char *mime_type;
+	axis2_char *mime_type;
 	int optimize;
-	char *localname;
+	axis2_char *localname;
 	int is_binary;
-	char *content_id;
+	axis2_char *content_id;
 	//axis2_om_attribute_t *attribute;
 } axis2_om_text_t;
 
@@ -89,7 +89,7 @@ typedef struct axis2_om_text
  * @return pointer to newly created text struct 
  */
 
-axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om_node_t *parent,const char *value
+axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om_node_t *parent,const axis2_char *value
 						,axis2_om_node_t **node);
 
 #define axis2_om_text_serialize(environment, om_text, om_output) ((om_text)->ops->serialize(environment, om_text, om_output))
