@@ -26,9 +26,9 @@
 
 #include <axis2.h>
 #include <axis2_errno.h>
-#include <apr.h>
-#include <apr_pools.h>
-#include <xmlpullparser.h>
+//#include <apr.h>
+//#include <apr_pools.h>
+
 
 typedef struct axis2_stax_om_builder_s axis2_stax_om_builder_t;
 typedef struct axis2_om_output_s axis2_om_output_t;

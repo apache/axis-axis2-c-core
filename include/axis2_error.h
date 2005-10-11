@@ -42,7 +42,8 @@ typedef enum axis2_status_codes {
 
 typedef enum axis2_error_codes {
     AXIS2_ERROR_NONE = 0,
-    AXIS2_ERROR_NO_MEMORY
+    AXIS2_ERROR_NO_MEMORY,
+    AXIS2_ERROR_INVALID_NULL_PARAMETER
 } axis2_error_codes_t;
 
 

@@ -19,59 +19,80 @@
 
 /**
  * @file axis2_om_attribute.h
- * @brief  represents xml text element
+ * @brief Represents XML text element
  */
 
+#include <axis2_environment.h>
+#include <axis2_om_node.h>
 
-#include <axis2_om_attribute.h>
+struct axis2_om_text;
+struct axis2_om_text_ops;
+    
+/** \struct axis2_om_text_ops_t
+    \brief OM Text operations struct
 
-typedef struct axis2_om_text_t
+    Encapsulator struct for operations of axis2_om_text_t
+*/
+typedef struct axis2_om_text_ops
 {
-	char *value;
-    // The following fields are for MTOM
-	axis2_om_namespace_t *ns;
+  /**
+    * Free an axis2_om_text_t structure
+    * @return Status code
+    */
+    int (*free)(axis2_environment_t *environment, struct axis2_om_text *om_text);
+    
+  /**
+    * Serialize operation
+    * @param om_output OM output handler to be used in serializing
+    * @return Status code
+    */
+    int (*serialize)(axis2_environment_t *environment, const struct axis2_om_text *om_text, axis2_om_output_t* om_output);
+} axis2_om_text_ops_t;
+    
+/** \struct axis2_om_text_t
+    \brief OM Text struct
 
+    Handles the XML text in OM
+*/
+typedef struct axis2_om_text
+{
+  /**
+    * OM text related operations
+    */
+    axis2_om_text_ops_t* ops;
+    
+   /**
+	* Text value
+	*/	
+	char *value; 
+	
+   /**
+    * The following fields are for MTOM
+    */
+	//axis2_om_namespace_t *ns;
 	char *mime_type;
 	int optimize;
 	char *localname;
 	int is_binary;
 	char *content_id;
-	axis2_om_attribute_t *attribute;
-}axis2_om_text_t;
+	//axis2_om_attribute_t *attribute;
+} axis2_om_text_t;
 
 
 /**
- * Create a text struct and stores in in a node struct and returns a pointer
- * to the axis2_om_text_t struct
- * the data_element field of node struct points to the acctual axis2_text_t struct
- * The element type of axis2_om_node_t struct will be of type AXIS2_OM_TEXT
- * @param parent This can be null The parent element should be of type AXIS2_OM_ELEMENT
- * @return pointer to a axis2_om_text_t struct 
+ * Create a text struct and stores it in a node struct and returns a pointer
+ * to the newly created text struct
+ * @param parent Parent of the new node. If null newly created node becomes a root node
+ *          The parent element must be of type AXIS2_OM_ELEMENT
+ * @param value Text value 
+ * @param node Out parameter to store the newly created node
+ * @return pointer to newly created text struct 
  */
 
-axis2_om_text_t *axis2_om_text_create(axis2_om_node_t *parent,const char *value
-						,axis2_om_node_t *node);
+axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om_node_t *parent,const char *value
+						,axis2_om_node_t **node);
 
+#define axis2_om_text_serialize(environment, om_text, om_output) ((om_text)->ops->serialize(environment, om_text, om_output))
+#define axis2_om_text_free(environment, om_text) ((om_text)->ops->free(environment, om_text))
 
-/**
- * access the value of the text struct
- * @param textnode node
- * @return char * to the value
- */
-char* axis2_om_text_get_text(axis2_om_text_t *textnode);
-
-/**
- *	free an axis2_om_text_t structure
- */
-
-void axis2_om_text_free(axis2_om_text_t *text);
-/**
- *	axis2
- *
- */
-
-
-int axis2_om_text_serialize(axis2_om_text_t *om_text, axis2_om_output_t* om_output);
-
-
-#endif // AXIS2_OM_TEXT_H
+#endif /* AXIS2_OM_TEXT_H */

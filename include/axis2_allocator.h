@@ -17,7 +17,6 @@
 #ifndef AXIS2_MEMORY_ALLOCATOR_H
 #define AXIS2_MEMORY_ALLOCATOR_H
 
-#include <stdlib.h>
 #include <axis2_defines.h>
 
 typedef struct 
@@ -25,6 +24,7 @@ typedef struct
     void *(*malloc)(size_t size);
     void *(*realloc)(void *ptr,size_t size);
     void (*free)(void *ptr);
+    void* (*strdup)(const void *ptr);
 }axis2_allocator_t;
 
 /**
@@ -40,5 +40,6 @@ axis2_allocator_t *
 #define axis2_malloc(allocator, size) ((allocator)->malloc(size))
 #define axis2_realloc(allocator, ptr, size) ((allocator)->realloc(ptr, size))
 #define axis2_free(allocator, ptr) ((allocator)->free(ptr))
+#define axis2_strdup(allocator, ptr) ((allocator)->strdup(ptr))
 
 #endif /* AXIS2_MEMORY_ALLOCATOR_H */

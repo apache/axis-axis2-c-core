@@ -31,17 +31,20 @@ typedef enum axis2_log_levels
 struct axis2_log;
 struct axis2_log_ops;
 
-typedef struct axis2_log_ops {
-    int (*write)(const void *buffer, size_t count);
+typedef struct axis2_log_ops
+{
+    int (*write) (const void *buffer, size_t count);
 } axis2_log_ops_t;
 
-typedef struct axis2_log {
+typedef struct axis2_log
+{
     struct axis2_log_ops *ops;
     axis2_log_levels_t level;
-    int enabled; /*boolean*/
+    int enabled;                /*boolean */
 } axis2_log_t;
 
-axis2_log_t *axis2_log_create(axis2_allocator_t* allocator, axis2_log_ops_t* operations);
+axis2_log_t *axis2_log_create (axis2_allocator_t * allocator,
+                               axis2_log_ops_t * operations);
 
 #define axis2_log_write(log, buffer, count) ((log)->ops->write(buffer, count))
 

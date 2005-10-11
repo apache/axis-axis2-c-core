@@ -15,64 +15,102 @@
  */
 
 #include <axis2_om_text.h>
-#include <string.h>
+/*#include <string.h>
 #include <axis2_om_node.h>
 #include <axis2_errno.h>
+*/
 
-axis2_om_text_t *axis2_om_text_create(axis2_om_node_t *parent,const char *value
-						,axis2_om_node_t *text_node)
+/* operations */
+int axis2_om_text_ops_free(axis2_environment_t *environment, axis2_om_text_t *om_text);
+int axis2_om_text_ops_serialize(axis2_environment_t *environment, const axis2_om_text_t *om_text, axis2_om_output_t* om_output);
+
+axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om_node_t *parent,const char *value
+						,axis2_om_node_t **node)
 {
-    axis2_om_text_t *text;
-    axis2_om_node_t *node = axis2_om_node_create();
+    axis2_om_text_t *om_text = NULL;
+    
     if (!node)
     {
-		fprintf(stderr,"%d Error",AXIS2_ERROR_OM_MEMORY_ALLOCATION);
-		return NULL;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        return NULL;
     }
-    text = (axis2_om_text_t *) malloc(sizeof(axis2_om_text_t));
-    if (!text)
+    
+    *node = axis2_om_node_create();
+    
+    if (!(*node))
     {
-		fprintf(stderr,"%d Error",AXIS2_ERROR_OM_MEMORY_ALLOCATION);
+        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;        
 		return NULL;
     }
-    text->value = strdup(value);
-    text->attribute = NULL;
-    text->content_id = NULL;
-    text->mime_type = NULL;
-    node->data_element = text;
-    node->element_type = AXIS2_OM_TEXT;
+    
+    om_text = (axis2_om_text_t*) axis2_malloc(environment->allocator, sizeof(axis2_om_text_t));
+    
+    if (!om_text)
+    {
+        axis2_free(environment->allocator, *node);
+		environment->error->errorno = AXIS2_ERROR_NO_MEMORY;        
+		return NULL;
+    }
+    
+    om_text->value = NULL;
+    if (value)
+        om_text->value = (char*) axis2_strdup(environment->allocator, value);
+    
+    //om_text->attribute = NULL;
+    om_text->content_id = NULL;
+    om_text->mime_type = NULL;
+    
+    (*node)->data_element = om_text;
+    (*node)->element_type = AXIS2_OM_TEXT;
 
+    (*node)->done = AXIS2_FALSE;
+    
 	if(parent && parent->element_type == AXIS2_OM_ELEMENT)
 	{
-		node->done = TRUE;
-		node->parent = parent;
-		axis2_om_node_add_child(parent,node);
+		(*node)->parent = parent;
+		axis2_om_node_add_child(parent,*node);
 	}
-	text_node = node;
-    return text;
-}
-
-
-
-char *axis2_om_text_get_text(axis2_om_text_t * text)
-{
-    if (!text)
+    
+    /* operations */
+    om_text->ops = NULL;
+    om_text->ops = (axis2_om_text_ops_t*) axis2_malloc(environment->allocator, sizeof(axis2_om_text_ops_t));
+    
+    if (!om_text->ops)
     {
+        axis2_free(environment->allocator, *node);
+        axis2_free(environment->allocator, om_text);
+		environment->error->errorno = AXIS2_ERROR_NO_MEMORY;        
 		return NULL;
     }
-    if (text->value)
-	{
-		return text->value;
-	}
-    else
-    {
-	//MTOM handling logic should go hear
+    
+    om_text->ops->free = axis2_om_text_ops_free;
+    om_text->ops->serialize = axis2_om_text_ops_serialize;
 
-    }
-    return NULL;
+    return om_text;
 }
 
-int axis2_om_text_serialize(axis2_om_text_t *om_text, axis2_om_output_t* om_output)
+
+int axis2_om_text_ops_free(axis2_environment_t *environment, axis2_om_text_t *om_text)
+{
+    if (!om_text)
+    {
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        return AXIS2_FAILURE;
+    }
+    
+    if (om_text->value)
+        axis2_free(environment->allocator, om_text->value);
+    
+    if (om_text->ops)
+        axis2_free(environment->allocator, om_text->ops);
+    
+    if (om_text)
+        axis2_free(environment->allocator, om_text);
+    
+    return AXIS2_SUCCESS;
+}
+
+int axis2_om_text_ops_serialize(axis2_environment_t *environment, const axis2_om_text_t *om_text, axis2_om_output_t* om_output)
 {
     int status = AXIS2_SUCCESS;
     // TODO : handle null pointer errors

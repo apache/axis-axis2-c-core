@@ -6,14 +6,14 @@
  * @brief Axis2c Error Codes
  */
 
-#include <apr_errno.h>
+//#include <apr_errno.h>
 
 /**
  * AXIS2_START_ERROR is where the AXIS2 specific error values start.
  * In apr_errno.h APR_OS_START_USERERR is defined as start of the 
  * error codes for applications using apr.
  */
-#define AXIS2_START_ERROR    APR_OS_START_USERERR
+#define AXIS2_START_ERROR    20000
 
 #define AXIS2_ERROR_SPACE    50000
 
@@ -54,7 +54,7 @@
  */
 
 #define AXIS2_SUCCESS        (AXIS2_START_STATUS + 1)
-#define AXIS2_FAILURE       (APR_OS_START_STATUS + 2)
+#define AXIS2_FAILURE       (AXIS2_START_STATUS + 2)
 
 
 /** @} */

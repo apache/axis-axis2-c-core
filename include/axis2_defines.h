@@ -2,10 +2,14 @@
 #define AXIS2_H
 
 /**
- * @file axis2.h
- * @brief Axis2c specific global declarations
+ * @file axis2_defines.h
+ * @brief Useful definitions, which may have platform concerns
  */
+ 
+#include <stddef.h>
 
 typedef char axis2_char;
+#define AXIS2_TRUE 1
+#define AXIS2_FALSE 0
 
 #endif /* AXIS2_H */

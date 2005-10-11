@@ -15,6 +15,16 @@
  */
 
 #include <axis2_allocator.h>
+#include <stdlib.h>
+#include <string.h>
+
+void* axis2_allocator_strdup(void* ptr)
+{
+    if (ptr)
+        return strdup(ptr);
+    else
+        return NULL;
+}
 
 axis2_allocator_t *axis2_allocator_init(
                 axis2_allocator_t *allocator)
@@ -30,7 +40,7 @@ axis2_allocator_t *axis2_allocator_init(
             allocator->malloc = malloc;
             allocator->realloc = realloc;
             allocator->free = free;
-            
+            allocator->strdup = axis2_allocator_strdup;
             return allocator;
         }
      }
