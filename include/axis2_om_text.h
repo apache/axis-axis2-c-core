@@ -69,13 +69,13 @@ typedef struct axis2_om_text
    /**
     * The following fields are for MTOM
     */
-	//axis2_om_namespace_t *ns;
+	/*axis2_om_namespace_t *ns;*/
 	axis2_char *mime_type;
 	int optimize;
 	axis2_char *localname;
 	int is_binary;
 	axis2_char *content_id;
-	//axis2_om_attribute_t *attribute;
+	/*axis2_om_attribute_t *attribute;*/
 } axis2_om_text_t;
 
 

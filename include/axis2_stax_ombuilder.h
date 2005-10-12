@@ -26,19 +26,19 @@
 
 
 
-#include <xmlpullparser.h>
+#include <guththila_xml_pull_parser.h>
 #include <axis2_om_node.h>
 #include <axis2_om_document.h>
 
 struct axis2_stax_om_builder_s
 {
-	XML_PullParser			*parser;	
+	guththila_xml_pull_parser_t			*parser;	
 	axis2_om_node_t			*lastnode;
 	axis2_om_document_t	*document;
 	int				done;
 	int				parser_accessed;
 	int				cache;
-	//apr_array_header_t *element_stack;
+	/*apr_array_header_t *element_stack;*/
 };
 
 /**
@@ -47,7 +47,7 @@ struct axis2_stax_om_builder_s
  *				   [ Guththila ]	
  */
 
-axis2_stax_om_builder_t *axis2_stax_om_builder_create(XML_PullParser *parser);
+axis2_stax_om_builder_t *axis2_stax_om_builder_create(guththila_xml_pull_parser_t *parser);
 
 /**
  *	Create an om element and adds to the document

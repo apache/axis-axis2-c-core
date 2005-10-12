@@ -17,7 +17,8 @@
 
 #include <axis2_om_document.h>
 #include <stdlib.h>
-#include <axis2_errno.h>
+#include <axis2_error.h>
+#include <axis2_defines.h>
 #include <axis2_stax_ombuilder.h>
 
 axis2_om_document_t *axis2_om_document_create(axis2_om_node_t * root_ele,axis2_stax_om_builder_t * builder)
@@ -26,7 +27,7 @@ axis2_om_document_t *axis2_om_document_create(axis2_om_node_t * root_ele,axis2_s
     axis2_om_document_t *doc = (axis2_om_document_t *) malloc(sizeof(axis2_om_document_t));
     if (!doc)
     {
-		fprintf(stderr,"%d Error",AXIS2_ERROR_OM_MEMORY_ALLOCATION);
+		/*fprintf(stderr,"%d Error",AXIS2_ERROR_NO_MEMORY);*/
 		return NULL;
     }
     doc->builder = builder;
@@ -35,7 +36,7 @@ axis2_om_document_t *axis2_om_document_create(axis2_om_node_t * root_ele,axis2_s
     doc->last_child = NULL;
     doc->char_set_encoding = CHAR_SET_ENCODING;
     doc->xml_version = XML_VERSION;
-    doc->done = FALSE;
+    doc->done = AXIS2_FALSE;
     if(builder)
     {
         builder->document=doc;
@@ -104,7 +105,7 @@ void axis2_om_document_set_xmlversion(axis2_om_document_t *document,const char *
 
 void axis2_om_document_build_next(axis2_om_document_t *document)
 {
-   // printf("next");
+   /* printf("next");*/
 	axis2_stax_om_builder_next(document->builder);
 }
 

@@ -16,6 +16,7 @@
 
 #include <axis2_om_attribute.h>
 #include <string.h>
+#include <axis2_defines.h>
 
 
 axis2_om_attribute_t *axis2_om_attribute_create(const char *localname,
@@ -76,8 +77,8 @@ axis2_qname_t *axis2_om_attribute_get_qname(axis2_om_attribute_t * attr)
 
 int axis2_om_attribute_serialize(axis2_om_attribute_t *attribute, axis2_om_output_t* om_output)
 {
-    int status = AXIS2_SUCCESS;
-    // TODO : handle null pointer errors
+    int status = AXIS2_TRUE;
+    /* TODO : handle null pointer errors*/
     if (attribute->ns && attribute->ns->uri && attribute->ns->prefix)
         status = axis2_om_output_write (om_output, AXIS2_OM_ATTRIBUTE, 4,
                                attribute->localname, attribute->value, attribute->ns->uri,
@@ -90,4 +91,3 @@ int axis2_om_attribute_serialize(axis2_om_attribute_t *attribute, axis2_om_outpu
                                attribute->localname, attribute->value);
     return status;
 }
-

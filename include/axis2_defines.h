@@ -1,5 +1,5 @@
-#ifndef AXIS2_H
-#define AXIS2_H
+#ifndef AXIS2_DEFINES_H
+#define AXIS2_DEFINES_H
 
 /**
  * @file axis2_defines.h
@@ -12,4 +12,4 @@ typedef char axis2_char;
 #define AXIS2_TRUE 1
 #define AXIS2_FALSE 0
 
-#endif /* AXIS2_H */
+#endif /* AXIS2_DEFINES_H */

@@ -6,7 +6,7 @@
  * @brief Axis2c Error Codes
  */
 
-//#include <apr_errno.h>
+/*#include <apr_errno.h>*/
 
 /**
  * AXIS2_START_ERROR is where the AXIS2 specific error values start.

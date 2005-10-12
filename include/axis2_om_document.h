@@ -18,7 +18,7 @@
 #define AXIS2_OM_DOCUMENT_H
 #include <axis2_om_node.h>
 
-//typedef struct axis2_stax_om_builder_t axis2_stax_om_builder_t;
+/*typedef struct axis2_stax_om_builder_t axis2_stax_om_builder_t;*/
 
 /**
  * @file axis2_om_node.h

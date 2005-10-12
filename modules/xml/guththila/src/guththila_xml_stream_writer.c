@@ -32,7 +32,7 @@
         stream_writer->encoding = encoding;
     stream_writer->prefix_defaulting = prefix_defaulting;
 
-      //initialize APR pool, we ned this pool to allocate memory to hash map and stack
+      /*initialize APR pool, we ned this pool to allocate memory to hash map and stack*/
 
     
 
@@ -64,7 +64,7 @@
             return GUTHTHILA_STREAM_WRITER_ERROR_WRITING_TO_STREAM;
         }
 
-          //pop last element and delete that elelemt
+          /*pop last element and delete that elelemt */
         del_element = (char***) apr_array_pop( stream_writer->element_stack );
         if (del_element)
         {
@@ -76,7 +76,7 @@
         }
         del_element = 0;
         
-          //end pop element
+          /*end pop element*/
           
 
         stream_writer->empty_element = 0;
@@ -95,16 +95,16 @@
     if (!local_name)
         return GUTHTHILA_STREAM_WRITER_ERROR_LOCAL_NAME_NULL;
     guththila_xml_stream_writer_end_start_element(stream_writer);
-          //namespaces.pushContext();
+          /*namespaces.pushContext();*/
     fputs("<", stream_writer->writer);
     fputs(local_name, stream_writer->writer);
 
-          //push element to stack
+          /*push element to stack*/
     new_element = (char***)apr_array_push(stream_writer->element_stack);
     *new_element = (char**) malloc( sizeof(char**) * 2 );
     (*new_element)[0] = 0;
     (*new_element)[1] = strdup(local_name);
-          //end push element
+          /*end push element*/
 
     stream_writer->in_start_element = 1;
 
@@ -153,8 +153,8 @@
         if (prefix)
             guththila_xml_stream_writer_write_namespace(stream_writer, prefix, namespace_uri);
     }
-        //push element to stack
-    //char** new_element = (char**)apr_array_push(stream_writer->element_stack);
+        /*push element to stack*/
+    /*char** new_element = (char**)apr_array_push(stream_writer->element_stack);*/
     new_element = (char***)apr_array_push(stream_writer->element_stack);
     *new_element = (char**) malloc( sizeof(char**) * 2 );
     if(prefix)
@@ -162,7 +162,7 @@
     else
         (*new_element)[0] = 0;
     (*new_element)[1] = strdup(local_name);
-          //end push element
+          /*end push element*/
       
     stream_writer->in_start_element = 1;
       
@@ -205,8 +205,8 @@
                 guththila_xml_stream_writer_write_namespace(stream_writer, prefix, namespace_uri);
         }
 
-        //push element to stack
-        //char** new_element = (char**)apr_array_push(stream_writer->element_stack);
+        /*push element to stack*/
+        /*char** new_element = (char**)apr_array_push(stream_writer->element_stack);*/
         new_element = (char***)apr_array_push(stream_writer->element_stack);
         
         *new_element = (char**) malloc( sizeof(char**) * 2 );
@@ -215,7 +215,7 @@
         else
             (*new_element)[0] = 0;
         (*new_element)[1] = strdup(local_name);
-          //end push element
+          /*end push element*/
 
         stream_writer->in_start_element = 1;
 
@@ -264,12 +264,12 @@
         char*** element_data;
         guththila_xml_stream_writer_end_start_element(stream_writer);
     
-            // pop element stack
+            /* pop element stack*/
         element_data = (char***) apr_array_pop(stream_writer->element_stack);
         if (!element_data )
             return GUTHTHILA_STREAM_WRITER_ERROR_guththila_element_t_guththila_stack_t_EMPTY;
 
-            //end pop element stack
+            /*end pop element stack*/
 
         fputs("</", stream_writer->writer);
 
@@ -549,7 +549,7 @@
         if (!version)
             version = "1.0";
     
-        encoding = "UTF-8"; // The parameter is ignored
+        encoding = "UTF-8"; /* The parameter is ignored*/
     
         if ( (strcmp("1.0", version) != 0) && (strcmp("1.1", version) != 0 ) )
             return GUTHTHILA_STREAM_WRITER_ERROR_ILLEGAL_XML_VERSION;
@@ -599,7 +599,7 @@
             return GUTHTHILA_STREAM_WRITER_ERROR_ILLEGAL_PREFIX;
 
         apr_hash_set(stream_writer->namespace_hash, uri, APR_HASH_KEY_STRING, prefix);
-        apr_hash_set(stream_writer->prefix_hash, prefix, APR_HASH_KEY_STRING, uri); //over write another prefix
+        apr_hash_set(stream_writer->prefix_hash, prefix, APR_HASH_KEY_STRING, uri); /*over write another prefix*/
         return GUTHTHILA_SUCCESS;
     }
 
@@ -629,7 +629,7 @@
                 {
                     fputs( to_write, stream_writer->writer);
 
-                    //free (to_write);
+                    /*free (to_write);*/
                 }
                 else
                     return GUTHTHILA_STREAM_WRITER_ERROR_OUT_OF_MEMORY;
@@ -651,7 +651,7 @@
                 {
                     fputs( to_write, stream_writer->writer);
 
-                    //free (to_write);
+                    /*free (to_write);*/
                 }
                 else
                     return GUTHTHILA_STREAM_WRITER_ERROR_OUT_OF_MEMORY;
@@ -674,7 +674,7 @@
             {
                 fputs( to_write, stream_writer->writer);
 
-                //free (to_write);
+                /*free (to_write);*/
             }
             else
                 return GUTHTHILA_STREAM_WRITER_ERROR_OUT_OF_MEMORY;
@@ -682,4 +682,3 @@
 
         return GUTHTHILA_SUCCESS;
     }
-

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_NODE_H
-#define AXIS2_NODE_H
+#ifndef AXIS2_OM_NODE_H
+#define AXIS2_OM_NODE_H
 
 /**
  * @file axis2_om_node.h
@@ -25,10 +25,6 @@
 
 
 #include <axis2.h>
-#include <axis2_errno.h>
-//#include <apr.h>
-//#include <apr_pools.h>
-
 
 typedef struct axis2_stax_om_builder_s axis2_stax_om_builder_t;
 typedef struct axis2_om_output_s axis2_om_output_t;
@@ -114,7 +110,7 @@ void axis2_om_node_insert_sibling_after(axis2_om_node_t *current_nodee,axis2_om_
 void axis2_om_node_insert_sibling_before(axis2_om_node_t *current_ele,axis2_om_node_t *nodeto_insert);
 
 
-//int axis2_om_node_build(axis2_om_node_t *node);
+/*int axis2_om_node_build(axis2_om_node_t *node);*/
 
 /**
  *	set a parent node to a given node
@@ -130,4 +126,4 @@ axis2_om_node_t *axis2_om_node_get_next_child(axis2_om_node_t *parent_node);
 
 int *axis2_om_node_serialize(axis2_om_node_t *om_node, axis2_om_output_t * om_output);
 
-#endif // AXIS2_NODE_H
+#endif /* AXIS2_OM_NODE_H */

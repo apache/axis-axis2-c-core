@@ -30,7 +30,7 @@
 
 #define  GUTHTHILA_DEFAULT_NS_PREFIX    ""
 
-static apr_pool_t *guththila_apr_pool; // a memory pool to be used for this module
+static apr_pool_t *guththila_apr_pool; /* a memory pool to be used for this module */
             
 
 /**
@@ -42,9 +42,9 @@ typedef struct
     FILE* writer;
     char* encoding;
     int prefix_defaulting;
-    apr_array_header_t *element_stack; //stack of element names (apr array is FILO)
-    apr_hash_t* namespace_hash; //hash map with key:namespace and value:prefix
-    apr_hash_t* prefix_hash; //hash map with key:prefix and value:namespace
+    apr_array_header_t *element_stack; /*stack of element names (apr array is FILO)*/
+    apr_hash_t* namespace_hash; /*hash map with key:namespace and value:prefix */
+    apr_hash_t* prefix_hash; /*hash map with key:prefix and value:namespace*/
     int in_start_element;
     int empty_element;
 } guththila_xml_stream_writer_t;
@@ -131,4 +131,3 @@ guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(FILE* writer, 
 
 
 #endif //GUTHTHILA_XML_STREAM_WRITER_H
-

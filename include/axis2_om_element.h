@@ -27,11 +27,11 @@
 
 
 struct axis2_om_element_s{
-	axis2_om_namespace_t *ns;			// current namespace
+	axis2_om_namespace_t *ns;			/* current namespace*/
 	char *localname;			
-	int pns_counter;            // prefix namespace counter
-	apr_hash_t *attributes;     // a hashtable for storing attributes 
-	apr_hash_t *namespaces;		// hashtable for storing namespaces
+	int pns_counter;            /* prefix namespace counter*/
+	apr_hash_t *attributes;     /* a hashtable for storing attributes */
+	apr_hash_t *namespaces;		/* hashtable for storing namespaces*/
 };
 
 

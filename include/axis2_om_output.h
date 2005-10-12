@@ -28,8 +28,8 @@ struct axis2_om_output_s {
     guththila_xml_stream_writer_t* xml_writer;
     int do_optimize;
     FILE* out_stream;
-    //apr_array_t binary_node_list;
-    //buffered_soap_out_stream;
+    /*apr_array_t binary_node_list;*/
+    /*buffered_soap_out_stream;*/
     char* mime_boundary;
     char*  root_content_id;
     int next_id;

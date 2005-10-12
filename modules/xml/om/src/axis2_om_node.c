@@ -32,7 +32,7 @@ axis2_om_node_t *axis2_om_node_create()
     node->prev_sibling = NULL;
     node->parent = NULL;
     node->element_type = AXIS2_OM_INVALID;
-    node->done = FALSE;
+    node->done = AXIS2_FALSE;
     node->builder = NULL;
     node->data_element = NULL;
 	node->current_child = NULL;
@@ -198,13 +198,13 @@ axis2_om_node_t *axis2_om_node_get_next_child(axis2_om_node_t *parent_node)
 	axis2_om_node_t *node=NULL;
 	if(parent_node && !(parent_node->first_child))
 	{
-		fprintf(stderr,"Error ");
+		/*fprintf(stderr,"Error ");*/
 		return NULL;	
 	}
 	
 	if(parent_node && parent_node->first_child  && !(parent_node->current_child))	
 	{
-		fprintf(stderr,"Error first call get_first_child");
+		/*fprintf(stderr,"Error first call get_first_child");*/
 		return NULL;		
 	}
 	if(parent_node->current_child->next_sibling)
@@ -236,7 +236,7 @@ int *axis2_om_node_serialize(axis2_om_node_t *om_node, axis2_om_output_t * om_ou
             break;
     }
 
-    // handle children
+    /* handle children*/
     axis2_om_node_t *child_node = axis2_om_node_get_first_child(om_node);
 
     while (child_node)
@@ -259,4 +259,3 @@ int *axis2_om_node_serialize(axis2_om_node_t *om_node, axis2_om_output_t * om_ou
     return status;
 
 }
-

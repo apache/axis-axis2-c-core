@@ -22,7 +22,7 @@ axis2_parameter_t *axis2_service_description_get_parameters(
 axis2_operation_description_t *axis2_service_description_get_operation_with_char(
 	axis2_service_description_t *service_desc, char* name);
 
-apr_hash_t axis2_service_description_get_operations(
+apr_hash_t *axis2_service_description_get_operations(
 	axis2_service_description_t *service_desc);
 	
 void setParent(axis2_service_description_t *service_description
