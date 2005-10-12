@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
@@ -10,10 +10,60 @@
 </head>
 
 <body>
-<h2 style="text-align: center">Developer Guide</h2>
+<h1 style="text-align: center">Developer Guide</h1>
 
-<a href="axis2_coding_convention.html"><h3>Coding Convention</h3></a>
+<h2>1 Naming Conventions</h2>
 
+<p><a href="axis2_coding_convention.html">Coding Convention</a></p>
 
+<p></p>
+
+<p></p>
+
+<h2>2 Unit Tests</h2>
+
+<p>To add tests to a module follow the following procedure</p>
+
+<p></p>
+
+<h3>2.1 Adding tests to module test sutie</h3>
+
+<p>Suppose I need to add a new test in the common module</p>
+
+<p>1. write the test function in common/test/common_test.c</p>
+
+<p>2. add the test into the common test suite</p>
+
+<p>ex.</p>
+
+<p>CuSuite* axis2_commonGetSuite() {</p>
+
+<p>CuSuite* suite = CuSuiteNew();</p>
+
+<p>SUITE_ADD_TEST(suite, Testaxis2_stream_ops_read);</p>
+
+<p>SUITE_ADD_TEST(suite, Testaxis2_stream_ops_write);</p>
+
+<p>SUITE_ADD_TEST(suite, Testaxis2_log_ops_write);</p>
+
+<p>return suite;</p>
+
+<p>}</p>
+
+<p></p>
+
+<h3>2.2 Main Test Suite</h3>
+
+<p>There is a main test suite to test unit tests of all the modules at once
+in test/unit folder</p>
+
+<p>To add a unit tests of a module to the main test suite at the line to the
+main.c file there.</p>
+
+<p>ex:</p>
+
+<p>CuSuiteAddSuite(suite, axis2_commonGetSuite());</p>
+
+<p></p>
 </body>
 </html>
