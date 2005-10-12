@@ -18,7 +18,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-void* axis2_allocator_strdup(void* ptr)
+void* axis2_allocator_strdup(const void* ptr);
+
+void* axis2_allocator_strdup(const void* ptr)
 {
     if (ptr)
         return strdup(ptr);
