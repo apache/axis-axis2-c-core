@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_MEMORY_ALLOCATOR_H
-#define AXIS2_MEMORY_ALLOCATOR_H
+#ifndef AXIS2_ALLOCATOR_H
+#define AXIS2_ALLOCATOR_H
 
 #include <axis2_defines.h>
 
@@ -42,4 +42,4 @@ axis2_allocator_t *
 #define axis2_free(allocator, ptr) ((allocator)->free(ptr))
 #define axis2_strdup(allocator, ptr) ((allocator)->strdup(ptr))
 
-#endif /* AXIS2_MEMORY_ALLOCATOR_H */
+#endif /* AXIS2_ALLOCATOR_H */
