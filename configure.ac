@@ -14,7 +14,7 @@ AM_PROG_LIBTOOL
 
 # Checks for libraries.
 
-CFLAGS="$CFLAGS -ansi -D_GNU_SOURCE -Wall -Wmissing-prototypes -Wstrict-prototypes -D_LARGEFILE64_SOURCE -g"
+CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -g"
 #CFLAGS="$CFLAGS -Wall -ansi -Wshadow -DLINUX=2 -D_REENTRANT -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -g -O2 -pthread"
 LDFLAGS="$LDFLAGS -L${CUTEST_HOME}/lib/ -lcutest -L${APR_HOME}/lib -lapr-1"
 # Checks for header files.

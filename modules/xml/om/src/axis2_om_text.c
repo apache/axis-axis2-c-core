@@ -17,6 +17,7 @@
 #include <axis2_om_text.h>
 /*#include <string.h>
 #include <axis2_om_node.h>
+#include <axis2_om_output.h>
 #include <axis2_errno.h>
 */
 
@@ -56,7 +57,7 @@ axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om
     if (value)
         om_text->value = (axis2_char*) axis2_strdup(environment->allocator, value);
     
-    //om_text->attribute = NULL;
+    /* om_text->attribute = NULL; */
     om_text->content_id = NULL;
     om_text->mime_type = NULL;
     
@@ -113,7 +114,7 @@ int axis2_om_text_ops_free(axis2_environment_t *environment, axis2_om_text_t *om
 int axis2_om_text_ops_serialize(axis2_environment_t *environment, const axis2_om_text_t *om_text, axis2_om_output_t* om_output)
 {
     int status = AXIS2_SUCCESS;
-    // TODO : handle null pointer errors
+    /* TODO : handle null pointer errors */
     if (om_text->value)
         status = axis2_om_output_write (om_output, AXIS2_OM_TEXT, 1,
                                         om_text->value);
