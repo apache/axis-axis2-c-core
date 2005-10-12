@@ -51,8 +51,9 @@ guththila_buffer_free (guththila_buffer_t *name)
 guththila_buffer_t *
 guththila_buffer_grow (guththila_buffer_t *name)
 {
+  guththila_buffer_t *x;
   name->size <<= 1;
-  guththila_buffer_t *x = (guththila_buffer_t *) realloc (name, name->size);
+  x = (guththila_buffer_t *) realloc (name, name->size);
   if (x)
     name = x; 
   else

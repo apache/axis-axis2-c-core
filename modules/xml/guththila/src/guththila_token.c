@@ -98,8 +98,9 @@ guththila_token_char_ref (char *buffer)
   int len;
   int ii;
   int ix;
+  char *ref_buffer;
   len = strlen (buffer);
-  char *ref_buffer = (char *) malloc (len+1);
+  ref_buffer = (char *) malloc (len+1);
   for (ii = 0, ix = 0; ii < len; ii++, ix++)
     {
       if (buffer[ii] == '&')

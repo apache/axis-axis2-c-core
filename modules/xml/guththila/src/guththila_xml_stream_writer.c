@@ -21,10 +21,12 @@
   
   guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(FILE* writer, char* encoding, int prefix_defaulting)
 {
+    apr_status_t status;
+    guththila_xml_stream_writer_t *stream_writer;
     if (!writer)
         return 0;
     
-    guththila_xml_stream_writer_t *stream_writer = (guththila_xml_stream_writer_t*) malloc (sizeof (guththila_xml_stream_writer_t));
+    stream_writer = (guththila_xml_stream_writer_t*) malloc (sizeof (guththila_xml_stream_writer_t));
     stream_writer->writer = writer;
     if (encoding)
         stream_writer->encoding = encoding;
@@ -32,7 +34,7 @@
 
       //initialize APR pool, we ned this pool to allocate memory to hash map and stack
 
-    apr_status_t status;
+    
 
     if (!guththila_apr_pool)
     {
@@ -50,6 +52,7 @@
 
   int guththila_xml_stream_writer_end_start_element(guththila_xml_stream_writer_t* stream_writer)
 {
+    char*** del_element;
     if (!stream_writer)
         return GUTHTHILA_STREAM_WRITER_ERROR_STREAM_STRUCT_NULL;
     if (!stream_writer->in_start_element)
@@ -62,7 +65,7 @@
         }
 
           //pop last element and delete that elelemt
-        char*** del_element = (char***) apr_array_pop( stream_writer->element_stack );
+        del_element = (char***) apr_array_pop( stream_writer->element_stack );
         if (del_element)
         {
             if ((*del_element)[0])
@@ -86,6 +89,7 @@
 
   int guththila_xml_stream_writer_write_start_element(guththila_xml_stream_writer_t* stream_writer, char* local_name)
 {
+    char*** new_element;
     if (!stream_writer)
         return GUTHTHILA_STREAM_WRITER_ERROR_STREAM_STRUCT_NULL;
     if (!local_name)
@@ -96,7 +100,7 @@
     fputs(local_name, stream_writer->writer);
 
           //push element to stack
-    char*** new_element = (char***)apr_array_push(stream_writer->element_stack);
+    new_element = (char***)apr_array_push(stream_writer->element_stack);
     *new_element = (char**) malloc( sizeof(char**) * 2 );
     (*new_element)[0] = 0;
     (*new_element)[1] = strdup(local_name);
@@ -110,6 +114,9 @@
   
   int guththila_xml_stream_writer_write_start_element_with_namespace(guththila_xml_stream_writer_t* stream_writer, char* local_name, char* namespace_uri)
 {
+    int is_declared ;
+    char*** new_element;
+    char* prefix;
     if (!stream_writer)
         return GUTHTHILA_STREAM_WRITER_ERROR_STREAM_STRUCT_NULL;
     if (!local_name)
@@ -119,9 +126,9 @@
       
     guththila_xml_stream_writer_end_start_element(stream_writer);
         
-    char* prefix = guththila_xml_stream_writer_get_prefix(stream_writer, namespace_uri);
+    prefix = guththila_xml_stream_writer_get_prefix(stream_writer, namespace_uri);
 
-    int is_declared = (prefix != 0);
+    is_declared = (prefix != 0);
       
     if (!is_declared)
     {
@@ -148,7 +155,7 @@
     }
         //push element to stack
     //char** new_element = (char**)apr_array_push(stream_writer->element_stack);
-    char*** new_element = (char***)apr_array_push(stream_writer->element_stack);
+    new_element = (char***)apr_array_push(stream_writer->element_stack);
     *new_element = (char**) malloc( sizeof(char**) * 2 );
     if(prefix)
         (*new_element)[0] = strdup(prefix);
@@ -164,6 +171,9 @@
 
   int guththila_xml_stream_writer_write_start_element_with_namespace_prefix(guththila_xml_stream_writer_t* stream_writer, char* local_name, char* namespace_uri, char* prefix)
 {
+    char* current_prefix;
+    int is_current = 0;
+    char*** new_element;
     if (!stream_writer)
         return GUTHTHILA_STREAM_WRITER_ERROR_STREAM_STRUCT_NULL;
     if (!local_name)
@@ -175,8 +185,8 @@
     
         guththila_xml_stream_writer_end_start_element(stream_writer);
 
-        char* current_prefix = guththila_xml_stream_writer_get_prefix(stream_writer, namespace_uri);
-        int is_current = 0;
+        current_prefix = guththila_xml_stream_writer_get_prefix(stream_writer, namespace_uri);
+        
         if(current_prefix)
             is_current = ( strcmp(prefix, current_prefix) != 0 );
         fputs("<", stream_writer->writer);
@@ -197,7 +207,7 @@
 
         //push element to stack
         //char** new_element = (char**)apr_array_push(stream_writer->element_stack);
-    char*** new_element = (char***)apr_array_push(stream_writer->element_stack);
+        new_element = (char***)apr_array_push(stream_writer->element_stack);
         
         *new_element = (char**) malloc( sizeof(char**) * 2 );
         if(prefix)
@@ -251,10 +261,11 @@
 
     int guththila_xml_stream_writer_write_end_element(guththila_xml_stream_writer_t* stream_writer)
     {
+        char*** element_data;
         guththila_xml_stream_writer_end_start_element(stream_writer);
     
             // pop element stack
-        char*** element_data = (char***) apr_array_pop(stream_writer->element_stack);
+        element_data = (char***) apr_array_pop(stream_writer->element_stack);
         if (!element_data )
             return GUTHTHILA_STREAM_WRITER_ERROR_guththila_element_t_guththila_stack_t_EMPTY;
 
@@ -316,10 +327,11 @@
     
     int guththila_xml_stream_writer_write_attribute_with_namespace(guththila_xml_stream_writer_t* stream_writer, char* local_name, char* value, char* namespace_uri)
     {
+        char* prefix;
         if (!stream_writer->in_start_element)
             return GUTHTHILA_STREAM_WRITER_ERROR_ILLEGAL_STATE;
 
-        char* prefix = guththila_xml_stream_writer_get_prefix(stream_writer, namespace_uri);
+        prefix = guththila_xml_stream_writer_get_prefix(stream_writer, namespace_uri);
         if (!prefix)
         {
             if (stream_writer->prefix_defaulting)
@@ -348,10 +360,11 @@
 
     int guththila_xml_stream_writer_write_attribute_with_namespace_prefix(guththila_xml_stream_writer_t* stream_writer, char* local_name, char* value, char* namespace_uri, char* prefix)
     {
+        char* current_prefix;
         if (!stream_writer->in_start_element)
             return GUTHTHILA_STREAM_WRITER_ERROR_ILLEGAL_STATE;
         
-        char* current_prefix = guththila_xml_stream_writer_get_prefix(stream_writer, namespace_uri);
+        current_prefix = guththila_xml_stream_writer_get_prefix(stream_writer, namespace_uri);
         if (!current_prefix)
         {
             if (stream_writer->prefix_defaulting)
@@ -379,13 +392,14 @@
 
     int guththila_xml_stream_writer_write_namespace(guththila_xml_stream_writer_t* stream_writer, char* prefix, char* namespace_uri)
     {
+        char* declared_prefix;
         if (!stream_writer->in_start_element)
             return GUTHTHILA_STREAM_WRITER_ERROR_ILLEGAL_STATE;
         
         if (!prefix)
             prefix = GUTHTHILA_DEFAULT_NS_PREFIX;
 
-        char* declared_prefix = guththila_xml_stream_writer_get_prefix(stream_writer, namespace_uri);
+        declared_prefix = guththila_xml_stream_writer_get_prefix(stream_writer, namespace_uri);
         if (declared_prefix && strcmp(prefix, declared_prefix) == 0)
             return GUTHTHILA_SUCCESS;
         guththila_xml_stream_writer_set_prefix(stream_writer, prefix, namespace_uri);
@@ -413,12 +427,13 @@
 
     int guththila_xml_stream_writer_write_comment(guththila_xml_stream_writer_t* stream_writer, char* data)
     {
+        char* ptr;
         guththila_xml_stream_writer_end_start_element(stream_writer);
 
         if (!data)
             return GUTHTHILA_STREAM_WRITER_ERROR_GUTHTHILA_COMMENT_NULL;
 
-        char* ptr = data;
+        ptr = data;
         while (*ptr)
         {
             if (*ptr++ == '-')
@@ -464,12 +479,13 @@
 
     int guththila_xml_stream_writer_write_cdata(guththila_xml_stream_writer_t* stream_writer, char* data)
     {
+        char* ptr;
         if (!data)
             return GUTHTHILA_STREAM_WRITER_ERROR_CDATA_NULL;
     
         guththila_xml_stream_writer_end_start_element(stream_writer);
 
-        char* ptr = data;
+        ptr = data;
         while (*ptr)
         {
             if (*ptr++ == ']')
@@ -563,10 +579,11 @@
 
     char* guththila_xml_stream_writer_get_prefix(guththila_xml_stream_writer_t* stream_writer, char* uri)
     {
+        char* prefix;
         if (!uri)
             return 0;
     
-        char* prefix = apr_hash_get(stream_writer->namespace_hash, uri, APR_HASH_KEY_STRING );
+        prefix = apr_hash_get(stream_writer->namespace_hash, uri, APR_HASH_KEY_STRING );
         return prefix;
     }
 
@@ -594,11 +611,13 @@
 
     int guththila_xml_stream_writer_write_encoded(guththila_xml_stream_writer_t* stream_writer, char* text, int in_attr)
     {
+        char* start;
+        char* ptr;
         if (!text)
             return GUTHTHILA_STREAM_WRITER_ERROR_TEXT_NULL;
     
-        char* start = text;
-        char* ptr = text;
+        start = text;
+        ptr = text;
     
         for (ptr = text; *ptr; ptr++)
         {
