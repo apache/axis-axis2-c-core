@@ -12,9 +12,9 @@
 <body>
 <h1 style="text-align: center">Developer Guide</h1>
 
-<h2>1 Naming Conventions</h2>
+<h2>1 Coding Conventions</h2>
 
-<p><a href="axis2_coding_convention.html">Coding Convention</a></p>
+<p>Please have a look at <a href="axis2_coding_convention.html">Coding Convention</a> document.</p>
 
 <p></p>
 
@@ -22,19 +22,19 @@
 
 <h2>2 Unit Tests</h2>
 
-<p>To add tests to a module follow the following procedure</p>
+<p>To add unit tests for a module there are two steps to be follwed, first add the unit test to the module's test suite, second call it from the main unit test suite.</p>
 
 <p></p>
 
-<h3>2.1 Adding tests to module test sutie</h3>
+<h3>2.1 Adding a Unit Test to a Module's Unit Test Sutie</h3>
 
-<p>Suppose I need to add a new test in the common module</p>
+<p>Suppose you need to add a new test in the common module</p>
 
-<p>1. write the test function in common/test/common_test.c</p>
+<p>1. Write the test functions in modules/common/test/common_test.c</p>
 
-<p>2. add the test into the common test suite</p>
+<p>2. Add the test into the common module's unit test suite</p>
 
-<p>ex.</p>
+<p>e.g.</p>
 
 <p>CuSuite* axis2_commonGetSuite() {</p>
 
@@ -52,15 +52,15 @@
 
 <p></p>
 
-<h3>2.2 Main Test Suite</h3>
+<h3>2.2 Calling the Unit Test from Main Unit Test Suite</h3>
 
-<p>There is a main test suite to test unit tests of all the modules at once
-in test/unit folder</p>
+<p>There is a main test suite to call all the unit tests of all the modules at once
+in modules/test/unit folder</p>
 
-<p>To add a unit tests of a module to the main test suite at the line to the
-main.c file there.</p>
+<p>To add a unit test of a module to the main test suite add a 'CuSuiteAddSuite' line to the
+modules/test/unit/main.c file there.</p>
 
-<p>ex:</p>
+<p>e.g.</p>
 
 <p>CuSuiteAddSuite(suite, axis2_commonGetSuite());</p>
 
