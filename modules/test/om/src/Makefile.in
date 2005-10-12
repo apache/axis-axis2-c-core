@@ -51,7 +51,7 @@ CONFIG_CLEAN_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
-am_test_om_OBJECTS = test_om_serialize.$(OBJEXT)
+am_test_om_OBJECTS = test_om.$(OBJEXT)
 test_om_OBJECTS = $(am_test_om_OBJECTS)
 am__DEPENDENCIES_1 =
 test_om_DEPENDENCIES = $(am__DEPENDENCIES_1) \
@@ -178,7 +178,7 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 SUBDIRS = 
 AM_CPPFLAGS = $(CPPFLAGS)
-test_om_SOURCES = test_om_serialize.c
+test_om_SOURCES = test_om.c
 test_om_LDADD = $(LDFLAGS) ../../../xml/om/src/libom.la ../../../xml/guththila/src/libguththila.la -ldl
 INCLUDES = -I${CUTEST_HOME}/include -I${APR_HOME}/include/apr-1 -I../../../xml/guththila/src -I../../../../include
 all: all-recursive
@@ -252,7 +252,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_om_serialize.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_om.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

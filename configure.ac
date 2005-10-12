@@ -50,4 +50,6 @@ AC_OUTPUT([Makefile \
     modules/common/test/Makefile \
     modules/test/Makefile \
     modules/test/om/Makefile \
-    modules/test/om/src/Makefile])
+    modules/test/om/src/Makefile \
+    modules/test/common/Makefile \
+    modules/test/unit/Makefile])

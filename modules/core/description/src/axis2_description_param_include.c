@@ -1,9 +1,24 @@
+/*
+ * Copyright 2004,2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
 #include <axis2_description_param_include.h>
-#include <stdlib.h>
 
 static apr_pool_t *om_pool;
 
-void axis2_description_param_include_add_parameter
+int axis2_description_param_include_add_parameter
     (axis2_description_param_include_t *param_include,
      axis2_parameter_t * param);
 	 
@@ -18,7 +33,7 @@ apr_hash_t *axis2_description_param_include_get_parameters
 int axis2_description_param_include_is_parameter_locked
     (axis2_description_param_include_t *param_include, char *param_name);
 	 
-axis2_description_param_include_t *create_axis2_description_param_include ()
+axis2_description_param_include_t *axis2_description_param_include_create ()
 {
 	axis2_description_param_include_t *param_include = 
 		(axis2_description_param_include_t *)
@@ -53,33 +68,33 @@ axis2_description_param_include_t *create_axis2_description_param_include ()
 			}
 			else
 				fprintf(stderr, "*** error_code:%d, %s\n",
-					AXIS2_ERROR_OM_MEMORY_ALLOCATION,
-					"AXIS2_ERROR_OM_MEMORY_ALLOCATION");
+					AXIS2_ERROR_NO_MEMORY,
+					"AXIS2_ERROR_NO_MEMORY");
 		}else
 		{
 			fprintf(stderr, "*** error_code:%d, %s\n", 
-					AXIS2_ERROR_OM_MEMORY_ALLOCATION,
-			 		"AXIS2_ERROR_OM_MEMORY_ALLOCATION");
+					AXIS2_ERROR_NO_MEMORY,
+			 		"AXIS2_ERROR_NO_MEMORY");
 		}
 		
 	}
 	else
 		fprintf(stderr, "*** error_code:%d, %s\n", 
-			AXIS2_ERROR_OM_MEMORY_ALLOCATION
-			, "AXIS2_ERROR_OM_MEMORY_ALLOCATION");
+			AXIS2_ERROR_NO_MEMORY
+			, "AXIS2_ERROR_NO_MEMORY");
 	
 	
 	return NULL;
 }
 
-void free_axis2_description_param_include (axis2_description_param_include_t
+int axis2_description_param_include_free (axis2_description_param_include_t
     *param_include)
 {
 	if(param_include)
 		free(param_include);
 }
 
-void axis2_description_param_include_add_parameter
+int axis2_description_param_include_add_parameter
     (axis2_description_param_include_t *param_include,
      axis2_parameter_t * param)
 {
@@ -97,8 +112,9 @@ void axis2_description_param_include_add_parameter
 				APR_HASH_KEY_STRING, param);
 		}
 	}
-	fprintf(stderr, "*** error_code:%d, %s\n", AXIS2_ERROR_NULL_MEMORY_ACCESS
-		, "AXIS2_ERROR_NULL_MEMORY_ACCESS");
+	fprintf(stderr, "*** error_code:%d, %s\n"
+		, AXIS2_ERROR_INVALID_NULL_PARAMETER
+		, "AXIS2_ERROR_INVALID_NULL_PARAMETER");
 
 }
 

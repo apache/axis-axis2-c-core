@@ -1,13 +1,18 @@
-#include <axis2_allocator.h>
-#include <axis2_environment.h>
+#include "common_test.h"
 
-int main()
-{
-    char buff[10];
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
-    axis2_environment_t *env = axis2_environment_create(allocator, NULL, NULL, NULL);
-    axis2_stream_read(env->stream, buff, 10);
-    axis2_stream_write(env->stream, buff, 10);
-    axis2_log_write(env->log, buff, 10);
+void RunAllTests(void) {
+    CuString *output = CuStringNew();
+    CuSuite* suite = CuSuiteNew();
+
+    CuSuiteAddSuite(suite, axis2_commonGetSuite());
+
+    CuSuiteRun(suite);
+    CuSuiteSummary(suite, output);
+    CuSuiteDetails(suite, output);
+    printf("%s\n", output->buffer);
+}
+
+int main(void) {
+    RunAllTests();
     return 0;
 }
