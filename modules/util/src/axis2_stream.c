@@ -56,9 +56,9 @@ int axis2_stream_ops_read (void *buffer, size_t count)
     int i = 0;
     for(i = 0; i < count -1; i++ )
     {
-        ((axis2_char*)buffer)[i] = 'a';
+        ((axis2_char_t*)buffer)[i] = 'a';
     }
-    ((axis2_char*)buffer)[i] = '\0';
+    ((axis2_char_t*)buffer)[i] = '\0';
     return 0;
 }
 
@@ -69,7 +69,7 @@ int axis2_stream_ops_write(const void *buffer, size_t count)
     
     int i =0;
     for(i = 0; i < count; i++)
-        printf("%c", ((axis2_char*)buffer)[i]);
+        printf("%c", ((axis2_char_t*)buffer)[i]);
     return 0;
 }
 

@@ -54,7 +54,7 @@ int axis2_log_ops_write(const void *buffer, size_t count)
     
     int i =0;
     for(i = 0; i < count; i++)
-        fprintf(stderr, "%c", ((axis2_char*)buffer)[i]);
+        fprintf(stderr, "%c", ((axis2_char_t*)buffer)[i]);
     printf("\n");
     return 0;
 }

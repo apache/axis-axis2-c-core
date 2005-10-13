@@ -16,9 +16,9 @@
 
 #include <axis2_error.h>
 
-axis2_char *axis2_error_ops_get_message();
+axis2_char_t *axis2_error_ops_get_message();
 
-axis2_char *axis2_error_ops_get_message()
+axis2_char_t *axis2_error_ops_get_message()
 {
     return "This is the default error code";
 }
