@@ -48,6 +48,9 @@ AC_OUTPUT([Makefile \
     modules/common/Makefile \
     modules/common/src/Makefile \
     modules/common/test/Makefile \
+    modules/util/Makefile \
+    modules/util/src/Makefile \
+    modules/util/test/Makefile \
     modules/test/Makefile \
     modules/test/om/Makefile \
     modules/test/om/src/Makefile \
