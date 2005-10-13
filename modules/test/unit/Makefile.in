@@ -51,11 +51,13 @@ CONFIG_CLEAN_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
-am_unit_test_OBJECTS = main.$(OBJEXT) common_test.$(OBJEXT)
+am_unit_test_OBJECTS = main.$(OBJEXT)
 unit_test_OBJECTS = $(am_unit_test_OBJECTS)
 am__DEPENDENCIES_1 =
 unit_test_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	../../common/src/libcommon.la
+	../../common/test/libcommon_test.la \
+	../../util/test/libutil_test.la ../../common/src/libcommon.la \
+	../../util/src/libutil.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -177,8 +179,8 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 SUBDIRS = 
 AM_CPPFLAGS = $(CPPFLAGS)
-unit_test_SOURCES = main.c ../../common/test/common_test.c
-unit_test_LDADD = $(LDFLAGS) ../../common/src/libcommon.la -ldl
+unit_test_SOURCES = main.c
+unit_test_LDADD = $(LDFLAGS) ../../common/test/libcommon_test.la ../../util/test/libutil_test.la ../../common/src/libcommon.la ../../util/src/libutil.la -ldl
 INCLUDES = -I${CUTEST_HOME}/include -I${APR_HOME}/include/apr-1 -I../../../include
 all: all-recursive
 
@@ -251,7 +253,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common_test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 
 .c.o:
@@ -274,20 +275,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
-
-common_test.o: ../../common/test/common_test.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT common_test.o -MD -MP -MF "$(DEPDIR)/common_test.Tpo" -c -o common_test.o `test -f '../../common/test/common_test.c' || echo '$(srcdir)/'`../../common/test/common_test.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/common_test.Tpo" "$(DEPDIR)/common_test.Po"; else rm -f "$(DEPDIR)/common_test.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../../common/test/common_test.c' object='common_test.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o common_test.o `test -f '../../common/test/common_test.c' || echo '$(srcdir)/'`../../common/test/common_test.c
-
-common_test.obj: ../../common/test/common_test.c
-@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT common_test.obj -MD -MP -MF "$(DEPDIR)/common_test.Tpo" -c -o common_test.obj `if test -f '../../common/test/common_test.c'; then $(CYGPATH_W) '../../common/test/common_test.c'; else $(CYGPATH_W) '$(srcdir)/../../common/test/common_test.c'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/common_test.Tpo" "$(DEPDIR)/common_test.Po"; else rm -f "$(DEPDIR)/common_test.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../../common/test/common_test.c' object='common_test.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o common_test.obj `if test -f '../../common/test/common_test.c'; then $(CYGPATH_W) '../../common/test/common_test.c'; else $(CYGPATH_W) '$(srcdir)/../../common/test/common_test.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
