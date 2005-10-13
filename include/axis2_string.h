@@ -22,8 +22,8 @@
 
 typedef struct axis2_string
 {
-    void* (*strdup)(const void *ptr);
-    int (*strcmp)(const axis2_char_t *s1, const axis2_char_t *s2);
+    void* (*axis2_string_strdup)(const void *ptr);
+    int (*axis2_string_strcmpa)(const axis2_char_t *s1, const axis2_char_t *s2);
 }axis2_string_t;
 
 /**
@@ -36,7 +36,7 @@ typedef struct axis2_string
 axis2_string_t *
     axis2_string_create(axis2_allocator_t *allocator, axis2_string_t *string);
     
-#define axis2_strdup(string, ptr) ((string)->strdup(ptr))
-#define axis2_strcmp(string, s1, s2) ((string)->strcmp(s1, s2))
+#define axis2_strdup(string, ptr) ((string)->axis2_string_strdupa(ptr))
+#define axis2_strcmp(string, s1, s2) ((string)->axis2_string_strcmpa(s1, s2))
 
 #endif /* AXIS2_STRING_H */

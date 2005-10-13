@@ -21,9 +21,9 @@
 
 typedef struct axis2_allocator
 {
-    void *(*malloc)(size_t size);
-    void *(*realloc)(void *ptr,size_t size);
-    void (*free)(void *ptr);
+    void *(*axis2_allocator_malloc)(size_t size);
+    void *(*axis2_allocator_realloc)(void *ptr,size_t size);
+    void (*axis2_allocator_free)(void *ptr);
 }axis2_allocator_t;
 
 /**
@@ -36,8 +36,8 @@ typedef struct axis2_allocator
 axis2_allocator_t *
     axis2_allocator_init(axis2_allocator_t *allocator);
     
-#define axis2_malloc(allocator, size) ((allocator)->malloc(size))
-#define axis2_realloc(allocator, ptr, size) ((allocator)->realloc(ptr, size))
-#define axis2_free(allocator, ptr) ((allocator)->free(ptr))
+#define axis2_malloc(allocator, size) ((allocator)->axis2_allocator_malloc(size))
+#define axis2_realloc(allocator, ptr, size) ((allocator)->axis2_allocator_realloc(ptr, size))
+#define axis2_free(allocator, ptr) ((allocator)->axis2_allocator_free(ptr))
 
 #endif /* AXIS2_ALLOCATOR_H */

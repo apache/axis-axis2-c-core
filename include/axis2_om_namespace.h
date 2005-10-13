@@ -22,6 +22,7 @@
  * @brief defines axis2_om_namespace data structure, used for representing XML namespaces in OM
  */
 
+#include <axis2_defines.h>
 #include <axis2_environment.h>
 #include <axis2_om_output.h>
 
@@ -47,14 +48,14 @@ typedef struct axis2_om_namespace_ops
     * @param om_namespace2 second namespace to be compared
     * @return true if the two namespaces are equal, false otherwise	
     */
-    axis2_bool_t (*equals)(axis2_environment_t *environment, axis2_om_namespace_t *om_namespace1, axis2_om_namespace_t *om_namespace2);
+    axis2_bool_t (*equals)(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace1, struct axis2_om_namespace *om_namespace2);
 
   /**
     * Serialize operation
     * @param om_output OM output handler to be used in serializing
     * @return Status code
     */
-    axis2_status_t (*serialize)(axis2_environment_t *environment, axis2_om_namespace_t *om_namespace, axis2_om_output_t* om_output);
+    axis2_status_t (*serialize)(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace, axis2_om_output_t* om_output);
 
 } axis2_om_namespace_ops_t;
 
@@ -64,7 +65,17 @@ typedef struct axis2_om_namespace_ops
     Handles the XML namespace in OM
 */
 typedef struct axis2_om_namespace {
+  /**
+    * OM text related operations
+    */
+    axis2_om_namespace_ops_t* ops;
+  /**
+    * OM namespace URI
+    */
     axis2_char_t *uri;
+  /**
+    * OM namespace prefix
+    */
     axis2_char_t *prefix;
 } axis2_om_namespace_t;
 
