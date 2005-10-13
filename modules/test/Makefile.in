@@ -152,7 +152,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-SUBDIRS = om common unit
+SUBDIRS = util common om unit
 all: all-recursive
 
 .SUFFIXES:

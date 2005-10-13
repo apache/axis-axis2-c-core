@@ -20,8 +20,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <apr_hash.h>
-
 #include <axis2_om_element.h>
 #include <axis2_qname.h>
 #include <axis2.h>

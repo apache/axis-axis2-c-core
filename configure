@@ -20511,7 +20511,7 @@ fi
 
 #AC_CHECK_FUNCS([memmove])
 
-                                                                                                                                                                                                                                                                              ac_config_files="$ac_config_files Makefile modules/Makefile modules/core/Makefile modules/core/context/Makefile modules/core/context/src/Makefile modules/core/description/Makefile modules/core/description/src/Makefile modules/core/engine/Makefile modules/core/engine/src/Makefile modules/xml/Makefile modules/xml/guththila/Makefile modules/xml/guththila/src/Makefile modules/xml/soap/Makefile modules/xml/soap/src/Makefile modules/xml/om/Makefile modules/xml/om/src/Makefile modules/common/Makefile modules/common/src/Makefile modules/common/test/Makefile modules/util/Makefile modules/util/src/Makefile modules/util/test/Makefile modules/test/Makefile modules/test/om/Makefile modules/test/om/src/Makefile modules/test/common/Makefile modules/test/unit/Makefile"
+                                                                                                                                                                                                                                                                                        ac_config_files="$ac_config_files Makefile modules/Makefile modules/core/Makefile modules/core/context/Makefile modules/core/context/src/Makefile modules/core/description/Makefile modules/core/description/src/Makefile modules/core/engine/Makefile modules/core/engine/src/Makefile modules/xml/Makefile modules/xml/guththila/Makefile modules/xml/guththila/src/Makefile modules/xml/soap/Makefile modules/xml/soap/src/Makefile modules/xml/om/Makefile modules/xml/om/src/Makefile modules/common/Makefile modules/common/src/Makefile modules/common/test/Makefile modules/util/Makefile modules/util/src/Makefile modules/util/test/Makefile modules/test/Makefile modules/test/om/Makefile modules/test/om/src/Makefile modules/test/common/Makefile modules/test/util/Makefile modules/test/unit/Makefile"
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure
@@ -21094,6 +21094,7 @@ do
   "modules/test/om/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/test/om/Makefile" ;;
   "modules/test/om/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/test/om/src/Makefile" ;;
   "modules/test/common/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/test/common/Makefile" ;;
+  "modules/test/util/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/test/util/Makefile" ;;
   "modules/test/unit/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/test/unit/Makefile" ;;
   "depfiles" ) CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
   "axis2_config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS axis2_config.h" ;;

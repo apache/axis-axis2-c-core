@@ -1,1 +1,1 @@
-SUBDIRS = om common unit
+SUBDIRS = util common om unit

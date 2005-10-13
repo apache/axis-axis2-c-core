@@ -152,7 +152,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-SUBDIRS = common core xml test util
+SUBDIRS = util common xml core test
 all: all-recursive
 
 .SUFFIXES:
