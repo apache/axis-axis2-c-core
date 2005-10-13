@@ -19,7 +19,7 @@
 
 #include <axis2_defines.h>
 
-typedef struct 
+typedef struct axis2_allocator
 {
     void *(*malloc)(size_t size);
     void *(*realloc)(void *ptr,size_t size);
