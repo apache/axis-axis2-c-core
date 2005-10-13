@@ -25,7 +25,7 @@
 int axis2_om_text_ops_free(axis2_environment_t *environment, axis2_om_text_t *om_text);
 int axis2_om_text_ops_serialize(axis2_environment_t *environment, const axis2_om_text_t *om_text, axis2_om_output_t* om_output);
 
-axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om_node_t *parent,const axis2_char *value
+axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om_node_t *parent,const axis2_char_t *value
 						,axis2_om_node_t **node)
 {
     axis2_om_text_t *om_text = NULL;
@@ -55,7 +55,7 @@ axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om
     
     om_text->value = NULL;
     if (value)
-        om_text->value = (axis2_char*) axis2_strdup(environment->allocator, value);
+        om_text->value = (axis2_char_t*) axis2_strdup(environment->allocator, value);
     
     /* om_text->attribute = NULL; */
     om_text->content_id = NULL;

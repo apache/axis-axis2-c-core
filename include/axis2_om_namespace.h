@@ -19,16 +19,30 @@
 
 /**
  * @file axis2_om_namespace.h
- * @brief defines axis2_om_namespace data structure, used for constructing the om tree and its 
- * manipulation functions
- * represents an xml namespace
+ * @brief defines axis2_om_namespace data structure, used for representing XML namespaces in OM
  */
 
-#include <axis2.h>
+#include <axis2_environment.h>
 #include <axis2_om_output.h>
 
+struct axis2_om_namespace;
+struct axis2_om_namespace_ops;
+	
+/** \struct axis2_om_namespace_ops_t
+    \brief OM Namespace operations struct
 
-typedef struct axis2_om_namespace_t {
+    Encapsulator struct for operations of axis2_om_namespace_t
+*/
+typedef struct axis2_om_namespace_ops
+{
+} axis2_om_namespace_ops_t;
+
+/** \struct axis2_om_namespace_t
+    \brief OM namespace struct
+
+    Handles the XML namespace in OM
+*/
+typedef struct axis2_om_namespace {
     char *uri;
     char *prefix;
 } axis2_om_namespace_t;

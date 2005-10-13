@@ -24,7 +24,7 @@ struct axis2_error;
 struct axis2_error_ops;
 
 typedef struct axis2_error_ops {
-    axis2_char* (*get_message)();
+    axis2_char_t* (*get_message)();
 } axis2_error_ops_t;
 
 typedef struct axis2_error {
