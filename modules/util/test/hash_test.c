@@ -80,4 +80,6 @@ main ()
 
     printf ("\n demo get %s \n",
             ((a *) axis2_hash_get (ht, key4, AXIS2_HASH_KEY_STRING))->value);
+
+    return 0;
 }
