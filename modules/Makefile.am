@@ -1,1 +1,1 @@
-SUBDIRS = common core xml test
+SUBDIRS = common core xml test util
