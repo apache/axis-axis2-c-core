@@ -23,7 +23,7 @@ void* axis2_allocator_strdup(const void* ptr);
 void* axis2_allocator_strdup(const void* ptr)
 {
     if (ptr)
-        return strdup(ptr);
+        return (void*)strdup(ptr);
     else
         return NULL;
 }
