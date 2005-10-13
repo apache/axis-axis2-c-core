@@ -14,25 +14,43 @@
  * limitations under the License.
  */
 
-#include <axis2_allocator.h>
+#include <axis2_string.h>
 #include <stdlib.h>
 #include <string.h>
 
-axis2_allocator_t *axis2_allocator_init(
-                axis2_allocator_t *allocator)
+void* axis2_string_strdup(const void* ptr)
 {
-    if(allocator)
-        return allocator;
+    if (ptr)
+        return (void*)strdup(ptr);
+    else
+        return NULL;
+}
+
+int axis2_string_strcmp(const axis2_char_t *s1, const axis2_char_t *s2)
+{
+    if (s1 && s2)
+        return strcmp(s1, s2);
+    else
+        return -1;
+}
+
+axis2_string_t *axis2_string_create(axis2_allocator_t *allocator,
+                axis2_string_t *string)
+{
+    if(string)
+        return string;
+
+    if (!allocator)
+        return NULL;
         
     else
     {
-        allocator = (axis2_allocator_t*)malloc(sizeof(axis2_allocator_t));
-        if(allocator)
+        string = (axis2_string_t*)axis2_malloc(allocator, sizeof(axis2_string_t));
+        if(string)
         {
-            allocator->malloc = malloc;
-            allocator->realloc = realloc;
-            allocator->free = free;
-            return allocator;
+            string->strdup = axis2_string_strdup;
+            string->strcmp = axis2_string_strcmp;
+            return string;
         }
      }
     return NULL;
