@@ -9,6 +9,8 @@
 #include <stddef.h>
 
 typedef char axis2_char;
+typedef unsigned int axis2_ssize_t;
+
 #define AXIS2_TRUE 1
 #define AXIS2_FALSE 0
 
