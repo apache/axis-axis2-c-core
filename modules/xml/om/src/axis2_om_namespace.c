@@ -15,75 +15,134 @@
  */
 
 #include <axis2_om_namespace.h>
-#include <string.h>
-#include <stdlib.h>
-#include <axis2.h>
 
+axis2_status_t axis2_om_namespace_ops_free(axis2_environment_t *environment, axis2_om_namespace_t *om_namespace);
 
+axis2_bool_t axis2_om_namespace_ops_equals(axis2_environment_t *environment, axis2_om_namespace_t *ns1,	axis2_om_namespace_t *ns2);
 
-axis2_om_namespace_t *axis2_om_namespace_create(const char *uri,
-						  const char *prefix)
+axis2_status_t axis2_om_namespace_ops_serialize(axis2_environment_t *environment, axis2_om_namespace_t *om_namespace, axis2_om_output_t* om_output);
+
+axis2_om_namespace_t *axis2_om_namespace_create(axis2_environment_t *environment, 
+        const axis2_char_t *uri,  const axis2_char_t *prefix)
+
 {
-    axis2_om_namespace_t *ns = (axis2_om_namespace_t *) malloc(
+    axis2_om_namespace_t *ns = NULL;
+    
+    if (!uri) /* there must be a URI */
+    {
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        return NULL;
+    }
+    
+    ns = (axis2_om_namespace_t*) axis2_malloc(environment->allocator, 
 										sizeof(axis2_om_namespace_t));
+    
     if (!ns)
     {
+        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;        
 		return NULL;
     }
-    ns->uri = strdup(uri);
-    ns->prefix = strdup(prefix);
-	if(!(ns->prefix) || !(ns->uri))
-	{
-		free(ns);
-		return NULL;	
-	}	
+    
+    ns->uri = (axis2_char_t*)axis2_strdup(environment->string, uri);
+    if (!ns->uri)
+    {
+        axis2_free(environment->allocator, ns);
+        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;        
+		return NULL;
+    }
+    
+    ns->prefix = NULL;
+    if (prefix)
+    {
+        ns->prefix = (axis2_char_t*)axis2_strdup(environment->string, prefix);
+        if (!ns->prefix)
+        {
+            axis2_free(environment->allocator, ns);
+            axis2_free(environment->allocator, ns->uri);
+            environment->error->errorno = AXIS2_ERROR_NO_MEMORY;        
+            return NULL;
+        }    
+	}
+    
+    /* operations */
+    ns->ops = NULL;
+    ns->ops = (axis2_om_namespace_ops_t*) axis2_malloc(environment->allocator, sizeof(axis2_om_namespace_ops_t));
+    
+    if (!ns->ops)
+    {
+        axis2_free(environment->allocator, ns);
+        axis2_free(environment->allocator, ns->uri);
+        axis2_free(environment->allocator, ns->prefix);
+		environment->error->errorno = AXIS2_ERROR_NO_MEMORY;        
+		return NULL;
+    }
+    
+    ns->ops->free = axis2_om_namespace_ops_free;
+    ns->ops->equals = axis2_om_namespace_ops_equals;
+    ns->ops->serialize = axis2_om_namespace_ops_serialize;
+    
     return ns;
 }
 
 
 
-void axis2_om_namespace_free(axis2_om_namespace_t * ns)
+axis2_status_t axis2_om_namespace_ops_free(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace)
 {
-    if (ns)
+    if (om_namespace)
 	{ 
-		if(ns->prefix)
+		if(om_namespace->prefix)
 		{
-			free(ns->prefix);
+			axis2_free(environment->allocator, om_namespace->prefix);
+            om_namespace->prefix = NULL;
 		}
-		if(ns->uri)
+        
+		if(om_namespace->uri)
 		{
-			free(ns->uri);
+			axis2_free(environment->allocator, om_namespace->uri);
+            om_namespace->uri = NULL;
 		}
-		free(ns);
+        
+        if(om_namespace->ops)
+		{
+			axis2_free(environment->allocator, om_namespace->ops);
+            om_namespace->ops = NULL;
+		}
+        
+		axis2_free(environment->allocator, om_namespace);
 	}
 }
 
-int axis2_om_namespace_equals(axis2_om_namespace_t * ns1,
+axis2_bool_t axis2_om_namespace_ops_equals(axis2_environment_t *environment, axis2_om_namespace_t * ns1,
 			       axis2_om_namespace_t * ns2)
 {
     int uris_differ = 0;
     int prefixes_differ = 0;
 
     if (!ns1 || !ns2)
-	return 0;
+	return AXIS2_FALSE;
 
     if (ns1->uri && ns2->uri)
-		uris_differ = strcmp(ns1->uri, ns2->uri);
+		uris_differ = axis2_strcmp(environment->string, ns1->uri, ns2->uri);
     else
 		uris_differ = (ns1->uri || ns2->uri);
 
     if (ns1->prefix && ns2->prefix)
-		prefixes_differ = strcmp(ns1->prefix, ns2->prefix);
+		prefixes_differ = axis2_strcmp(environment->string, ns1->prefix, ns2->prefix);
     else
 		prefixes_differ = (ns1->prefix || ns2->prefix);
 
     return (!uris_differ && !prefixes_differ);
 }
 
-int axis2_om_namespace_serialize(axis2_om_namespace_t *om_namespace, axis2_om_output_t* om_output)
+axis2_status_t axis2_om_namespace_ops_serialize(axis2_environment_t *environment, axis2_om_namespace_t *om_namespace, axis2_om_output_t* om_output)
 {
     int status = AXIS2_SUCCESS;
-    // TODO : handle null pointer errors
+    if (!om_namespace || !om_output)
+    {
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        return AXIS2_FAILURE;
+    }
+    
     if (om_namespace->uri && om_namespace->prefix)
         status = axis2_om_output_write (om_output, AXIS2_OM_NAMESPACE, 2,
                                         om_namespace->prefix, om_namespace->uri);

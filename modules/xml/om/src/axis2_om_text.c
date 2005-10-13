@@ -28,6 +28,7 @@ int axis2_om_text_ops_serialize(axis2_environment_t *environment, const axis2_om
 axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om_node_t *parent,const axis2_char_t *value
 						,axis2_om_node_t **node)
 {
+    
     axis2_om_text_t *om_text = NULL;
     
     if (!node)
@@ -114,7 +115,13 @@ int axis2_om_text_ops_free(axis2_environment_t *environment, axis2_om_text_t *om
 int axis2_om_text_ops_serialize(axis2_environment_t *environment, const axis2_om_text_t *om_text, axis2_om_output_t* om_output)
 {
     int status = AXIS2_SUCCESS;
-    /* TODO : handle null pointer errors */
+
+    if (!om_text || !om_output)
+    {
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        return AXIS2_FAILURE;
+    }
+    
     if (om_text->value)
         status = axis2_om_output_write (om_output, AXIS2_OM_TEXT, 1,
                                         om_text->value);
