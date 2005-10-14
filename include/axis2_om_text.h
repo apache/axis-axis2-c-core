@@ -18,25 +18,44 @@
 #define AXIS2_OM_TEXT_H
 
 /**
- * @file axis2_om_attribute.h
- * @brief Represents XML text element
+ * @file axis2_om_text.h
+ * @brief Axis2 OM XML text
  */
 
 #include <axis2_environment.h>
 #include <axis2_om_node.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/** @defgroup axis2_om AXIOM (Axis Object Model)
+  * @ingroup axis2
+  * @{
+  */
+
+/** @} */ 
+
+/**
+ * @defgroup axis2_om_text OM Text
+ * @ingroup axis2_om 
+ * @{
+ */
+
+/** @cond */
 struct axis2_om_text;
 struct axis2_om_text_ops;
+/** @endcond */
     
-/** \struct axis2_om_text_ops_t
-    \brief OM text operations struct
+/** @struct axis2_om_text_ops
+    @brief OM text operations struct
 
     Encapsulator struct for operations of axis2_om_text_t
 */
 typedef struct axis2_om_text_ops
 {
   /**
-    * Free an axis2_om_text_t structure
+	* Free an axis2_om_text_t structure
     * @return Status code
     */
     int (*free)(axis2_environment_t *environment, struct axis2_om_text *om_text);
@@ -47,9 +66,11 @@ typedef struct axis2_om_text_ops
     * @return Status code
     */
     int (*serialize)(axis2_environment_t *environment, const struct axis2_om_text *om_text, axis2_om_output_t* om_output);
+		
+	int k;
 } axis2_om_text_ops_t;
     
-/** \struct axis2_om_text_t
+/** \struct axis2_om_text
     \brief OM Text struct
 
     Handles the XML text in OM
@@ -94,5 +115,11 @@ axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om
 
 #define axis2_om_text_serialize(environment, om_text, om_output) ((om_text)->ops->serialize(environment, om_text, om_output))
 #define axis2_om_text_free(environment, om_text) ((om_text)->ops->free(environment, om_text))
+
+/** @} */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* AXIS2_OM_TEXT_H */

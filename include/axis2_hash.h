@@ -19,7 +19,7 @@
 
 /**
  * @file axis2_hash.h
- * @brief AXIS2 Hash Tables
+ * @brief Axis2 Hash Tables
  */
 
 #include <axis2_defines.h>
@@ -31,7 +31,7 @@ extern "C" {
 
 /**
  * @defgroup axis2_hash Hash Tables
- * @ingroup AXIS2 
+ * @ingroup axis2 
  * @{
  */
 
