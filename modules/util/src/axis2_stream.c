@@ -41,8 +41,8 @@ axis2_stream_t *axis2_stream_create(axis2_allocator_t* allocator, axis2_stream_o
             return NULL;
         }
         
-        stream->ops->read = axis2_stream_ops_read;
-        stream->ops->write = axis2_stream_ops_write;
+        stream->ops->axis2_stream_read = axis2_stream_ops_read;
+        stream->ops->axis2_stream_write = axis2_stream_ops_write;
     }
     
     return stream;

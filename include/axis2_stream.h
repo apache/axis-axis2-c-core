@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain count copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -23,8 +23,8 @@ struct axis2_stream;
 struct axis2_stream_ops;
 
 typedef struct axis2_stream_ops {
-    int (*read)(void *buffer, size_t count);
-    int (*write)(const void *buffer, size_t count);
+    int (*axis2_stream_read)(void *buffer, size_t count);
+    int (*axis2_stream_write)(const void *buffer, size_t count);
 } axis2_stream_ops_t;
 
 typedef struct axis2_stream {
@@ -33,7 +33,7 @@ typedef struct axis2_stream {
 
 axis2_stream_t *axis2_stream_create(axis2_allocator_t* allocator, axis2_stream_ops_t* operations);
 
-#define axis2_stream_read(stream, a, b) ((stream)->ops->read(a, b))
-#define axis2_stream_write(stream, a, b) ((stream)->ops->write(a, b))
+#define axis2_stream_read(stream, buffer, count) ((stream)->ops->axis2_stream_read(buffer, count))
+#define axis2_stream_write(stream, buffer, count) ((stream)->ops->axis2_stream_write(buffer, count))
         
 #endif /* AXIS2_STREAM_H */
