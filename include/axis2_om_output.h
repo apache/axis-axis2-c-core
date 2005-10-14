@@ -17,30 +17,28 @@
 #ifndef AXIS2_OM_OUTPUT_H
 #define AXIS2_OM_OUTPUT_H
 
-#include <guththila_xml_stream_writer.h>
+#include <axis2_defines.h>
+#include <axis2_environment.h>
 #include <axis2_om_node.h>
 
-#include <stdarg.h>
+
 
 static const char* DEFAULT_CHAR_SET_ENCODING = "utf-8";
 
-struct axis2_om_output_s {
-    guththila_xml_stream_writer_t* xml_writer;
-    int do_optimize;
-    FILE* out_stream;
-    /*apr_array_t binary_node_list;*/
-    /*buffered_soap_out_stream;*/
-    char* mime_boundary;
-    char*  root_content_id;
+struct axis2_om_output {
+    void *xml_writer;
+    axis2_bool_t do_optimize;
+    axis2_char_t *mime_boundary;
+    axis2_char_t *root_content_id;
     int next_id;
-    int is_soap_11;
-    char* char_set_encoding;
-    char* xml_version;
-    int ignore_xml_declaration;
+    axis2_bool_t is_soap_11;
+    axis2_char_t *char_set_encoding;
+    axis2_char_t *xml_version;
+    axis2_bool_t ignore_xml_declaration;
 };
 
-axis2_om_output_t* axis2_create_om_output( FILE* stream);
+axis2_om_output_t* axis2_create_om_output(axis2_environment_t *environment, void* xml_writer);
 
-int axis2_om_output_write(axis2_om_output_t* om_output, axis2_om_types_t type, int no_of_args, ... );
+axis2_status_t axis2_om_output_write(axis2_environment_t *environment, axis2_om_output_t *om_output, axis2_om_types_t type, int no_of_args, ... );
 
-#endif // AXIS2_OM_OUTPUT_H
+#endif /* AXIS2_OM_OUTPUT_H */

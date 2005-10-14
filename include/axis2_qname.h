@@ -84,4 +84,4 @@ axis2_qname_t *axis2_qname_create(axis2_environment_t *environment ,const axis2_
 #define axis2_qname_free(environment,qname) ((qname)->ops->axis2_qname_ops_free(environment,qname))
 #define axis2_qname_equals(environment,qname1,qname2) ((qname1)->ops->axis2_qname_ops_equals(environment,qname1,qname2))
 
-#endif // AXIS2_QNAME_H
+#endif /* AXIS2_QNAME_H */

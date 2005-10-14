@@ -22,12 +22,10 @@
  * @brief defines axis2_om_node_t struct and its operations
  */
 #include <axis2_environment.h>
-#include <axis2_om_output.h>
 
 struct axis2_om_node;
 struct axis2_om_node_ops;
-//struct axis2_om_output;
-//typedef struct axis2_om_output axis2_om_output_t;
+typedef struct axis2_om_output axis2_om_output_t;
 
 
 /** 
