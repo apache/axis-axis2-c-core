@@ -25,10 +25,10 @@ props.file.type=project
 anjuta.version=1.2.3
 anjuta.compatibility.level=1
 
-project.name=axis2c
+project.name=c
 project.type=GENERIC
 project.target.type=EXECUTABLE
-project.version=0.00
+project.version=0.99
 project.author=damitha
 project.source.target=unknown
 project.has.gettext=0
@@ -96,7 +96,14 @@ module.include.files=\
 	include/axis2_log.h\
 	include/axis2_stream.h\
 	include/axis2_om_output.h\
-	modules/xml/guththila/src/guththila_xml_pull_parser.h
+	modules/xml/guththila/src/guththila_xml_pull_parser.h\
+	include/axis2_hash.h\
+	include/axis2_string.h\
+	modules/util/test/util_error_test.h\
+	modules/util/test/util_hash_test.h\
+	modules/util/test/util_log_test.h\
+	modules/util/test/util_stream_test.h\
+	modules/util/test/util_test.h
 
 module.source.name=.
 module.source.type=
@@ -130,12 +137,25 @@ module.source.files=\
 	modules/xml/om/src/axis2_qname.c\
 	modules/xml/om/src/axis2_stax_ombuilder.c\
 	modules/xml/om/src/axis2_om_node.c\
-	modules/common/src/axis2_allocator.c\
-	modules/common/src/axis2_environment.c\
-	modules/common/src/axis2_error.c\
-	modules/common/src/axis2_log.c\
-	modules/common/src/axis2_stream.c\
-	modules/xml/guththila/src/guththila_xml_pull_parser.c
+	modules/xml/guththila/src/guththila_xml_pull_parser.c\
+	modules/util/src/axis2_allocator.c\
+	modules/util/src/axis2_environment.c\
+	modules/util/src/axis2_error.c\
+	modules/util/src/axis2_hash.c\
+	modules/util/src/axis2_log.c\
+	modules/util/src/axis2_stream.c\
+	modules/util/src/axis2_string.c\
+	modules/util/test/hash_test.c\
+	modules/util/test/main.c\
+	modules/util/test/util_error_test.c\
+	modules/util/test/util_hash_test.c\
+	modules/util/test/util_log_test.c\
+	modules/util/test/util_stream_test.c\
+	modules/util/test/util_test.c\
+	modules/test/unit/main.c\
+	modules/test/util/test_util.c\
+	modules/test/common/test_common.c\
+	modules/test/om/src/test_om.c
 
 module.pixmap.name=.
 module.pixmap.type=
@@ -152,8 +172,8 @@ module.help.files=
 module.doc.name=.
 module.doc.type=
 module.doc.files=\
-	xdocs/developer_guide.html\
-	xdocs/maven_build_guide.html
+	xdocs/maven_build_guide.html\
+	xdocs/axis2_developer_guide.html
 
 module.po.files=
 
