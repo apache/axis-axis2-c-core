@@ -19,9 +19,9 @@
 #include <stdlib.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_stax_ombuilder.h>
+#include <axis2_om_stax_builder.h>
 
-axis2_om_document_t *axis2_om_document_create(axis2_om_node_t * root_ele,axis2_stax_om_builder_t * builder)
+axis2_om_document_t *axis2_om_document_create(axis2_om_node_t * root_ele,axis2_om_stax_builder_t * builder)
 {
 
     axis2_om_document_t *doc = (axis2_om_document_t *) malloc(sizeof(axis2_om_document_t));
