@@ -20,117 +20,152 @@
 
 
 
-axis2_status_t axis2_om_attribute_impl_free(axis2_environment_t *environment,axis2_om_attribute_t * attr);
+axis2_status_t axis2_om_attribute_impl_free (axis2_environment_t *
+                                             environment,
+                                             axis2_om_attribute_t *
+                                             attribute);
 
-axis2_qname_t *axis2_om_attribute_impl_get_qname(axis2_environment_t *environment,axis2_om_attribute_t * attr);
+axis2_qname_t *axis2_om_attribute_impl_get_qname (axis2_environment_t *
+                                                  environment,
+                                                  axis2_om_attribute_t *
+                                                  attribute);
 
-axis2_status_t axis2_om_attribute_impl_serialize(axis2_environment_t *environment,axis2_om_attribute_t *attribute, axis2_om_output_t* om_output);
+axis2_status_t axis2_om_attribute_impl_serialize (axis2_environment_t *
+                                                  environment,
+                                                  axis2_om_attribute_t *
+                                                  attribute,
+                                                  axis2_om_output_t *
+                                                  om_output);
 
-				  
-axis2_om_attribute_t *axis2_om_attribute_create(axis2_environment_t *environment,const axis2_char_t *localname,
-						  const axis2_char_t *value,axis2_om_namespace_t *ns)
+
+axis2_om_attribute_t *
+axis2_om_attribute_create (axis2_environment_t * environment,
+                           const axis2_char_t * localname,
+                           const axis2_char_t * value,
+                           axis2_om_namespace_t * ns)
 {
-    axis2_om_attribute_t *attr = NULL;
-    if(!localname)
+    axis2_om_attribute_t *attribute = NULL;
+    if (!localname)
     {   /** localname is mandatory */
         environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
         return NULL;
     }
-    
-    attr = (axis2_om_attribute_t *)axis2_malloc(environment->allocator,sizeof(axis2_om_attribute_t));
-    if (!attr)
+
+    attribute =
+        (axis2_om_attribute_t *) axis2_malloc (environment->allocator,
+                                               sizeof (axis2_om_attribute_t));
+    if (!attribute)
     {
         environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
-		return NULL;
+        return NULL;
     }
     /**  initialize fields */
-    attr->localname = axis2_strdup(environment->string,localname);
-    if(!(attr->localname))
+    attribute->localname = axis2_strdup (environment->string, localname);
+    if (!(attribute->localname))
     {
-        axis2_free(environment->allocator,attr);
+        axis2_free (environment->allocator, attribute);
         environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
         return NULL;
     }
-    attr->value = axis2_strdup(environment->string,value);
-    if(!(attr->value))
+    attribute->value = axis2_strdup (environment->string, value);
+    if (!(attribute->value))
     {
-        axis2_free(environment->allocator,attr);
-        axis2_free(environment->allocator,attr);
+        axis2_free (environment->allocator, attribute);
+        axis2_free (environment->allocator, attribute);
         environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
         return NULL;
     }
-    attr->ns = ns;
-    
+    attribute->ns = ns;
+
     /** operations */
-    
-    attr->ops = axis2_malloc(environment->allocator,sizeof(axis2_om_attribute_ops_t));
-    if(!(attr->ops))
+
+    attribute->ops =
+        axis2_malloc (environment->allocator,
+                      sizeof (axis2_om_attribute_ops_t));
+    if (!(attribute->ops))
     {
         environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
-        axis2_free(environment->allocator,attr->localname);
-        axis2_free(environment->allocator,attr->value);
-        axis2_free(environment->allocator,attr);
+        axis2_free (environment->allocator, attribute->localname);
+        axis2_free (environment->allocator, attribute->value);
+        axis2_free (environment->allocator, attribute);
         return NULL;
     }
-    attr->ops->axis2_om_attribute_ops_free = axis2_om_attribute_impl_free; 
-    attr->ops->axis2_om_attribute_ops_get_qname = axis2_om_attribute_impl_get_qname;
-    attr->ops->axis2_om_attribute_ops_serialize = axis2_om_attribute_impl_serialize;
-    return attr;
+    attribute->ops->axis2_om_attribute_ops_free =
+        axis2_om_attribute_impl_free;
+    attribute->ops->axis2_om_attribute_ops_get_qname =
+        axis2_om_attribute_impl_get_qname;
+    attribute->ops->axis2_om_attribute_ops_serialize =
+        axis2_om_attribute_impl_serialize;
+    return attribute;
 }
 
-axis2_status_t axis2_om_attribute_impl_free(axis2_environment_t *environment,axis2_om_attribute_t * attr)
+axis2_status_t
+axis2_om_attribute_impl_free (axis2_environment_t * environment,
+                              axis2_om_attribute_t * attribute)
 {
-    if (attr)
+    if (attribute)
     {
-      	if(attr->localname)
-		{
-			axis2_free(environment->allocator,attr->localname);
-		}
-		if(attr->value)
-		{
-			free(environment->allocator,attr->value);
-		}
-		axis2_free(environment->allocator,attr);
-		return AXIS2_SUCCESS;
-	}
-	AXIS2_FAILURE;
+        if (attribute->localname)
+        {
+            axis2_free (environment->allocator, attribute->localname);
+        }
+        if (attribute->value)
+        {
+            axis2_free (environment->allocator, attribute->value);
+        }
+        axis2_free (environment->allocator, attribute);
+        return AXIS2_SUCCESS;
+    }
+    return AXIS2_FAILURE;
 }
 
-axis2_qname_t *axis2_om_attribute_impl_get_qname(axis2_environment_t *environment,axis2_om_attribute_t *attr)
+axis2_qname_t *
+axis2_om_attribute_impl_get_qname (axis2_environment_t * environment,
+                                   axis2_om_attribute_t * attribute)
 {
     axis2_qname_t *qname = NULL;
-    if (!attr)
-	{
-	    environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
-		return NULL;
-	}
-	if (attr->ns)
-	   	qname = axis2_qname_create(environment,attr->localname,attr->ns->uri,attr->ns->prefix);
-	else
-	    qname = axis2_qname_create(environment,attr->localname,NULL,NULL);
-	
-	return qname;
+    if (!attribute)
+    {
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        return NULL;
+    }
+    if (attribute->ns)
+        qname =
+            axis2_qname_create (environment, attribute->localname,
+                                attribute->ns->uri, attribute->ns->prefix);
+    else
+        qname =
+            axis2_qname_create (environment, attribute->localname, NULL,
+                                NULL);
+
+    return qname;
 }
 
 
-axis2_status_t axis2_om_attribute_impl_serialize(axis2_environment_t *environment,axis2_om_attribute_t *attribute, axis2_om_output_t* om_output)
+axis2_status_t
+axis2_om_attribute_impl_serialize (axis2_environment_t * environment,
+                                   axis2_om_attribute_t * attribute,
+                                   axis2_om_output_t * om_output)
 {
-    int status = AXIS2_TRUE;
-    if(!attribute || !om_output)
+    int status = AXIS2_SUCCESS;
+    if (!attribute || !om_output)
     {
         environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
         return AXIS2_FAILURE;
     }
-    
+
     if (attribute->ns && attribute->ns->uri && attribute->ns->prefix)
-        status = axis2_om_output_write (om_output, AXIS2_OM_ATTRIBUTE, 4,
-                               attribute->localname, attribute->value, attribute->ns->uri,
-                               attribute->ns->prefix);
+        status = axis2_om_output_write (environment, om_output, AXIS2_OM_ATTRIBUTE, 4,
+                                        attribute->localname,
+                                        attribute->value, attribute->ns->uri,
+                                        attribute->ns->prefix);
     else if (attribute->ns && attribute->ns->uri)
-        status = axis2_om_output_write (om_output, AXIS2_OM_ATTRIBUTE, 3,
-                               attribute->localname, attribute->value, attribute->ns->uri);
-    else 
-        status = axis2_om_output_write (om_output, AXIS2_OM_ATTRIBUTE, 2,
-                               attribute->localname, attribute->value);
+        status = axis2_om_output_write (environment, om_output, AXIS2_OM_ATTRIBUTE, 3,
+                                        attribute->localname,
+                                        attribute->value, attribute->ns->uri);
+    else
+        status = axis2_om_output_write (environment, om_output, AXIS2_OM_ATTRIBUTE, 2,
+                                        attribute->localname,
+                                        attribute->value);
     return status;
 }
