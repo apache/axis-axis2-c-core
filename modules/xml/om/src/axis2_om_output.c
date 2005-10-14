@@ -15,46 +15,52 @@
  */
 
 #include <axis2_om_output.h>
-
+#include <stdarg.h>
+#include <guththila_xml_stream_writer.h>
 
 axis2_om_output_t *
-axis2_create_om_output (FILE * stream)
+axis2_create_om_output (axis2_environment_t *environment, void* xml_writer)
 {
     axis2_om_output_t *om_output =
-        (axis2_om_output_t *) malloc (sizeof (axis2_om_output_t));
+        (axis2_om_output_t *) axis2_malloc (environment->allocator, sizeof (axis2_om_output_t));
 
     if (!om_output)
-        return 0;
-
-    om_output->out_stream = stream;
-    om_output->xml_writer =
-        guththila_create_xml_stream_writer (om_output->out_stream,
-                                            DEFAULT_CHAR_SET_ENCODING, 1);
-    om_output->do_optimize = 0;
+    {
+        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;        
+		return NULL;
+    }
+	
+	om_output->xml_writer = NULL;
+	if (xml_writer)
+		om_output->xml_writer = xml_writer;
+	else
+		om_output->xml_writer = guththila_create_xml_stream_writer (stdout,
+                                            DEFAULT_CHAR_SET_ENCODING, AXIS2_TRUE);
+    om_output->do_optimize = AXIS2_FALSE;
     om_output->mime_boundary = 0;
     om_output->root_content_id = 0;
     om_output->next_id = 0;
-    om_output->is_soap_11 = 1;
-    om_output->char_set_encoding = 0;
-    om_output->xml_version = 0;
-    om_output->ignore_xml_declaration = 0;
+    om_output->is_soap_11 = AXIS2_TRUE;
+    om_output->char_set_encoding = NULL;
+    om_output->xml_version = NULL;
+    om_output->ignore_xml_declaration = AXIS2_TRUE;
 
     return om_output;
 }
 
 int
-axis2_om_output_write (axis2_om_output_t * om_output, axis2_om_types_t type,
+axis2_om_output_write (axis2_environment_t *environment, axis2_om_output_t * om_output, axis2_om_types_t type,
                        int no_of_args, ...)
 {
     int status = AXIS2_SUCCESS;
-    char *args_list[no_of_args];
+    axis2_char_t *args_list[no_of_args];
     int i = 0;
     va_list ap;
 
     va_start (ap, no_of_args);
     for (i = 0; i < no_of_args; i++)
     {
-        args_list[i] = va_arg (ap, char *);
+        args_list[i] = va_arg (ap, axis2_char_t *);
     }
     va_end (ap);
 
