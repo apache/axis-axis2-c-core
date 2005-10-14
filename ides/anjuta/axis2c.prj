@@ -132,6 +132,7 @@ module.source.files=\
 	modules/xml/om/src/axis2_om_document.c\
 	modules/xml/om/src/axis2_om_element.c\
 	modules/xml/om/src/axis2_om_namespace.c\
+	modules/xml/om/src/axis2_om_output.c\
 	modules/xml/om/src/axis2_om_processing_instruction.c\
 	modules/xml/om/src/axis2_om_text.c\
 	modules/xml/om/src/axis2_qname.c\
