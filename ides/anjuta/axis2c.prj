@@ -25,10 +25,10 @@ props.file.type=project
 anjuta.version=1.2.3
 anjuta.compatibility.level=1
 
-project.name=c
+project.name=axis2c
 project.type=GENERIC
 project.target.type=EXECUTABLE
-project.version=0.99
+project.version=0.00
 project.author=damitha
 project.source.target=unknown
 project.has.gettext=0
