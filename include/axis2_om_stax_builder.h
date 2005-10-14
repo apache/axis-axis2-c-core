@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_STAX_OMBUILDER_H
-#define AXIS2_STAX_OMBUILDER_H
+#ifndef AXIS2_OM_STAX_BUILDER_H
+#define AXIS2_OM_STAX_BUILDER_H
 
 /**
- * @file axis2_stax_om_builder.h
+ * @file axis2_om_stax_builder.h
  * @brief om model stax builder 
  */
-
-
-
-
 
 #include <guththila_xml_pull_parser.h>
 #include <axis2_om_node.h>
 #include <axis2_om_document.h>
 
-struct axis2_stax_om_builder_s
+struct axis2_om_stax_builder
 {
 	guththila_xml_pull_parser_t			*parser;	
 	axis2_om_node_t			*lastnode;
@@ -47,7 +43,7 @@ struct axis2_stax_om_builder_s
  *				   [ Guththila ]	
  */
 
-axis2_stax_om_builder_t *axis2_stax_om_builder_create(guththila_xml_pull_parser_t *parser);
+axis2_om_stax_builder_t *axis2_om_stax_builder_create(guththila_xml_pull_parser_t *parser);
 
 /**
  *	Create an om element and adds to the document
@@ -56,8 +52,8 @@ axis2_stax_om_builder_t *axis2_stax_om_builder_create(guththila_xml_pull_parser_
  *  isn't enough memory
  */
 
-axis2_om_node_t *axis2_stax_om_builder_create_om_element(
-						axis2_stax_om_builder_t *builder);
+axis2_om_node_t *axis2_om_stax_builder_create_om_element(
+						axis2_om_stax_builder_t *builder);
 
 /**
  *	creates an om comment
@@ -65,75 +61,68 @@ axis2_om_node_t *axis2_stax_om_builder_create_om_element(
  *  @returns 
  */
 
-
-axis2_om_node_t *axis2_stax_om_builder_create_om_comment(
-						axis2_stax_om_builder_t *builder);
+axis2_om_node_t *axis2_om_stax_builder_create_om_comment(
+						axis2_om_stax_builder_t *builder);
 
 /**
  *	create an om doctype
  *
  */
-axis2_om_node_t *axis2_stax_om_builder_create_om_doctype(
-						axis2_stax_om_builder_t *builder_t);
+axis2_om_node_t *axis2_om_stax_builder_create_om_doctype(
+						axis2_om_stax_builder_t *builder_t);
 
 /**
  *	create om_processing_instruction
  */
 
-axis2_om_node_t *axis2_stax_om_builder_create_om_processing_instruction(
-						axis2_stax_om_builder_t *builder);
+axis2_om_node_t *axis2_om_stax_builder_create_om_processing_instruction(
+						axis2_om_stax_builder_t *builder);
 
 /**
  *	End element processing
  */
-void axis2_stax_om_builder_end_element(axis2_stax_om_builder_t *builder);
+void axis2_om_stax_builder_end_element(axis2_om_stax_builder_t *builder);
 /**
  *	move parser forward and reacts to events 
  */
 
-int axis2_stax_om_builder_next(axis2_stax_om_builder_t *builder);
+int axis2_om_stax_builder_next(axis2_om_stax_builder_t *builder);
 
 /**
  *	process attrbites 
  *
  */
 
-void axis2_stax_om_builder_process_attributes(axis2_stax_om_builder_t *builder,axis2_om_node_t *element_node);
+void axis2_om_stax_builder_process_attributes(axis2_om_stax_builder_t *builder,axis2_om_node_t *element_node);
 
 /**
  *	create om text
  *
  */
-axis2_om_node_t *axis2_stax_om_builder_create_om_text(axis2_stax_om_builder_t *builder);
+axis2_om_node_t *axis2_om_stax_builder_create_om_text(axis2_om_stax_builder_t *builder);
 
 /**
  *	discard building an element
  */
 
 
-void axis2_stax_om_builder_discard(axis2_stax_om_builder_t *builder,axis2_om_node_t *element_node);
+void axis2_om_stax_builder_discard(axis2_om_stax_builder_t *builder,axis2_om_node_t *element_node);
 
 /**
  *	process namespaces 
  *
  */
 
-axis2_om_node_t *axis2_stax_om_builder_process_namespace_data(axis2_stax_om_builder_t *builder,axis2_om_node_t *element,int is_soap_element);
+axis2_om_node_t *axis2_om_stax_builder_process_namespace_data(axis2_om_stax_builder_t *builder,axis2_om_node_t *element,int is_soap_element);
 
-char *axis2_stax_om_builder_get_attribute_name(axis2_stax_om_builder_t *builder,int i);
+char *axis2_om_stax_builder_get_attribute_name(axis2_om_stax_builder_t *builder,int i);
 
-char *axis2_stax_om_builder_get_attribute_prefix(axis2_stax_om_builder_t *builder,int i);
+char *axis2_om_stax_builder_get_attribute_prefix(axis2_om_stax_builder_t *builder,int i);
 
-void axis2_stax_om_builder_process_start_document(axis2_stax_om_builder_t* builder);
+void axis2_om_stax_builder_process_start_document(axis2_om_stax_builder_t* builder);
 
+char *axis2_om_stax_builder_get_attribute_namespace(axis2_om_stax_builder_t *builder,int i);
 
+int axis2_om_stax_builder_get_attribute_count(axis2_om_stax_builder_t *builder);
 
-
-char *axis2_stax_om_builder_get_attribute_namespace(axis2_stax_om_builder_t *builder,int i);
-
-
-int axis2_stax_om_builder_get_attribute_count(axis2_stax_om_builder_t *builder);
-
-
-
-#endif // AXIS2_STAX_OMBUILDER_H
+#endif /* AXIS2_OM_STAX_BUILDER_H */

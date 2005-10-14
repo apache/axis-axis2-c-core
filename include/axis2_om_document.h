@@ -16,9 +16,10 @@
 
 #ifndef AXIS2_OM_DOCUMENT_H
 #define AXIS2_OM_DOCUMENT_H
+
 #include <axis2_om_node.h>
 
-/*typedef struct axis2_stax_om_builder_t axis2_stax_om_builder_t;*/
+/*typedef struct axis2_om_stax_builder_t axis2_om_stax_builder_t;*/
 
 /**
  * @file axis2_om_node.h
@@ -26,7 +27,7 @@
  *	
  */
 
-
+typedef struct axis2_om_stax_builder axis2_om_stax_builder_t;
 
 #define CHAR_SET_ENCODING "UTF-8"
 #define XML_VERSION	"1.0"
@@ -38,7 +39,7 @@ typedef struct axis2_om_document_t
 	axis2_om_node_t *last_child;
 	axis2_om_node_t *first_child;
 	int done;
-	axis2_stax_om_builder_t *builder;
+	axis2_om_stax_builder_t *builder;
 	char *char_set_encoding;
 	char *xml_version;
 
@@ -52,7 +53,7 @@ typedef struct axis2_om_document_t
  *  @param builder pointer to xml builder 
  */
 
-axis2_om_document_t *axis2_om_document_create(axis2_om_node_t *root_ele,axis2_stax_om_builder_t *builder);
+axis2_om_document_t *axis2_om_document_create(axis2_om_node_t *root_ele,axis2_om_stax_builder_t *builder);
 
 /** 
  *  Free axis2_om_document_t struct
@@ -108,7 +109,4 @@ axis2_om_node_t *axis2_om_document_get_current_child(axis2_om_document_t *docume
  *	get children with name
  */
 
-
-
-
-#endif // AXIS2_OM_DOCUMENT_H
+#endif /* AXIS2_OM_DOCUMENT_H */

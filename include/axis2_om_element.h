@@ -58,7 +58,7 @@ axis2_om_element_t *axis2_om_element_create_with_qname(axis2_om_node_t *parent,a
 						,axis2_om_node_t **node);
 
 axis2_om_element_t *axis2_om_element_create_with_builder(axis2_om_node_t *parent,
-		const char *localname,axis2_om_namespace_t *ns,axis2_stax_om_builder_t *builder,axis2_om_node_t **node);
+		const char *localname,axis2_om_namespace_t *ns,axis2_om_stax_builder_t *builder,axis2_om_node_t **node);
 													
 
 /*
