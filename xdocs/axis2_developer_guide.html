@@ -14,7 +14,8 @@
 
 <h2>1 Coding Conventions</h2>
 
-<p>Please have a look at <a href="axis2_coding_convention.html">Coding Convention</a> document.</p>
+<p>Please have a look at <a href="axis2_coding_convention.html">Coding
+Convention</a> document.</p>
 
 <p></p>
 
@@ -22,48 +23,254 @@
 
 <h2>2 Unit Tests</h2>
 
-<p>To add unit tests for a module there are two steps to be follwed, first add the unit test to the module's test suite, second call it from the main unit test suite.</p>
+<p>To add unit tests for a module there are two steps to be follwed, first
+add the unit test to the module's test suite, second add the modules test
+suite to the main unit test suite.</p>
+
+<p>We are using CuTest which is an opensource effort for unit testing.</p>
 
 <p></p>
 
 <h3>2.1 Adding a Unit Test to a Module's Unit Test Sutie</h3>
 
-<p>Suppose you need to add a new test in the common module</p>
+<p></p>
 
-<p>1. Write the test functions in modules/common/test/common_test.c</p>
+<p>Suppose you need to add a new test in the util module. I take for example
+the unit tests for axis2 stream.</p>
 
-<p>2. Add the test into the common module's unit test suite</p>
+<p>There is two files called util_stream_test.c/.h added into
+modules/util/test folder.</p>
 
-<p>e.g.</p>
+<p style="text-indent: 8pt"><strong><code>#include
+"util_stream_test.h"</code></strong></p>
 
-<p>CuSuite* axis2_commonGetSuite() {</p>
+<p style="text-indent: 8pt"><strong><code>void
+Testaxis2_stream_ops_read(CuTest *tc)</code></strong></p>
 
-<p>CuSuite* suite = CuSuiteNew();</p>
+<p style="text-indent: 8pt"><strong><code> {</code></strong></p>
 
-<p>SUITE_ADD_TEST(suite, Testaxis2_stream_ops_read);</p>
+<p style="text-indent: 32pt"><strong><code>char
+actual[10];</code></strong></p>
 
-<p>SUITE_ADD_TEST(suite, Testaxis2_stream_ops_write);</p>
+<p style="text-indent: 32pt"><strong><code>axis2_allocator_t *allocator =
+axis2_allocator_init(NULL);</code></strong></p>
 
-<p>SUITE_ADD_TEST(suite, Testaxis2_log_ops_write);</p>
+<p style="text-indent: 32pt"><strong><code>axis2_environment_t *env =
+axis2_environment_create(allocator,</code></strong></p>
 
-<p>return suite;</p>
+<p style="text-indent: 32pt"><strong><code> NULL, NULL, NULL,
+NULL);</code></strong></p>
 
-<p>}</p>
+<p style="text-indent: 32pt"><strong><code>axis2_stream_read(env-&gt;stream,
+actual, 10);</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>char *expected =
+strdup("aaaaaaaaa");</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>CuAssertStrEquals(tc, expected,
+actual);</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>}</code></strong></p>
 
 <p></p>
 
-<h3>2.2 Calling the Unit Test from Main Unit Test Suite</h3>
-
-<p>There is a main test suite to call all the unit tests of all the modules at once
-in modules/test/unit folder</p>
-
-<p>To add a unit test of a module to the main test suite add a 'CuSuiteAddSuite' line to the
-modules/test/unit/main.c file there.</p>
-
-<p>e.g.</p>
-
-<p>CuSuiteAddSuite(suite, axis2_commonGetSuite());</p>
+<p>In the header file prototype of the funciton included.</p>
 
 <p></p>
+
+<p>Now in util_test.c file add the new function to the test suite</p>
+
+<p></p>
+
+<p style="text-indent: 8pt"><strong><code>#include
+"util_test.h"</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code></code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>#include
+&lt;axis2_allocator.h&gt;</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>#include
+&lt;axis2_environment.h&gt;</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>CuSuite*
+axis2_utilGetSuite()</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>{</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>CuSuite* suite = </code><span
+style="color: #0000FF"><code></code></span><code>CuSuiteNew();</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><span
+style="color: #0000FF"><code>SUITE_ADD_TEST(suite,
+Testaxis2_stream_ops_read);</code></span></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>SUITE_ADD_TEST(suite,
+Testaxis2_stream_ops_write);</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>SUITE_ADD_TEST(suite,
+Testaxis2_log_ops_write);</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>SUITE_ADD_TEST(suite,
+Testaxis2_hash_ops_get);</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>return suite;</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>}</code></strong></p>
+
+<p></p>
+
+<h3>2.2 Adding the Module test suite to the Main Unit Test Suite</h3>
+
+<p>Now make sure that in the main test suite this module test suite is
+added.</p>
+
+<p></p>
+
+<p style="text-indent: 8pt"><strong><code>#include
+&lt;CuTest.h&gt;</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>#include
+"../../util/test/util_test.h"</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>#include
+"../../common/test/common_test.h"</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code></code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>void
+RunAllTests(void)</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>{</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>CuString *output =
+CuStringNew();</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>CuSuite* suite =
+CuSuiteNew();</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code></code></strong></p>
+
+<p style="text-indent: 32pt"><strong><span
+style="color: #0000FF"><code>CuSuiteAddSuite(suite,
+axis2_utilGetSuite());</code></span></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>CuSuiteAddSuite(suite,
+axis2_commonGetSuite());</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code></code></strong></p>
+
+<p
+style="text-indent: 32pt"><strong><code>CuSuiteRun(suite);</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>CuSuiteSummary(suite,
+output);</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>CuSuiteDetails(suite,
+output);</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>printf("%s\n",
+output-&gt;buffer);</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>}</code></strong></p>
+
+<p style="text-indent: 8pt"><strong></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>int main(void)</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>{</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>RunAllTests();</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>return 0;</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>}</code></strong></p>
+
+<p></p>
+
+<p>When compiled an executable is created in module/util/test to run the
+module test and in modules/test/unit</p>
+
+<p>to run the main test suite.</p>
+
+<h2>3 System Tests</h2>
+
+<p>For each module system tests has to be added in modules/test/&lt;module
+folder&gt;</p>
+
+<p>For example to test the OM we need to add lines in
+modules/test/om/test_om.c</p>
+
+<p><strong><code>#include &lt;axis2_stax_ombuilder.h&gt;</code></strong></p>
+
+<p><strong><code>#include &lt;axis2_om_document.h&gt;</code></strong></p>
+
+<p><strong><code>#include &lt;axis2_om_node.h&gt;</code></strong></p>
+
+<p><strong><code>#include &lt;axis2_om_element.h&gt;</code></strong></p>
+
+<p><strong><code>#include &lt;axis2_om_text.h&gt;</code></strong></p>
+
+<p><strong><code>#include &lt;apr.h&gt;</code></strong></p>
+
+<p><code></code></p>
+
+<p style="text-indent: 8pt"><strong><code>int
+test_om_build()</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>{</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>READER *red =
+NULL;</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>XML_PullParser *parser =
+NULL;</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>axis2_om_element_t
+*ele1=NULL,*ele2=NULL,*ele3 = NULL,*ele4 = NULL;</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>axis2_stax_om_builder_t *builder =
+NULL;</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>axis2_om_document_t *document =
+NULL;</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>axis2_om_node_t *node1 = NULL
+,*node2 = NULL ,*node3 = NULL ;</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>FILE</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>......</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>......</code></strong></p>
+
+<p style="text-indent: 32pt"><strong><code>......</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>}</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>int main(void)</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>{</code></strong></p>
+
+<p
+style="text-indent: 32pt"><strong><code>test_om_build();</code></strong></p>
+
+<p
+style="text-indent: 32pt"><strong><code>test_om_serialize();</code></strong></p>
+
+<p style="text-indent: 8pt"><strong><code>}</code></strong></p>
+
+<p>So for each system test you need to add a new function and call it from
+main method.</p>
+
+<p></p>
+
+<p></p>
+
+<p></p>
+
+<p></p>
+
+<p style="text-indent: 8pt"><strong></strong></p>
 </body>
 </html>
