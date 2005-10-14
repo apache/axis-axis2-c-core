@@ -6,6 +6,7 @@
 #include <CuTest.h>
 #include <axis2_allocator.h>
 #include <axis2_environment.h>
+#include <axis2_string.h>
 
 void Testaxis2_log_ops_write(CuTest *tc);
 

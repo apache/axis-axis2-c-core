@@ -72,4 +72,3 @@ int axis2_stream_ops_write(const void *buffer, size_t count)
         printf("%c", ((axis2_char_t*)buffer)[i]);
     return 0;
 }
-

@@ -3,4 +3,5 @@
 
 int main()
 {
+    return AXIS2_SUCCESS;
 }
