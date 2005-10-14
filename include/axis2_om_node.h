@@ -19,16 +19,21 @@
 
 /**
  * @file axis2_om_node.h
- * @brief defines node data structure, used for constructing the om tree and its 
- *	manipulation functions
+ * @brief defines axis2_om_node_t struct and its operations
+ */
+#include <axis2_environment.h>
+#include <axis2_om_output.h>
+
+struct axis2_om_node;
+struct axis2_om_node_ops;
+//struct axis2_om_output;
+//typedef struct axis2_om_output axis2_om_output_t;
+
+
+/** 
+ *   Types used in OM 
  */
 
-
-#include <axis2.h>
-
-typedef struct axis2_stax_om_builder_s axis2_stax_om_builder_t;
-typedef struct axis2_om_output_s axis2_om_output_t;
-typedef struct axis2_om_element_s axis2_om_element_t;
 
 typedef enum axis2_om_types_t {
     AXIS2_OM_INVALID = -1,
@@ -42,6 +47,92 @@ typedef enum axis2_om_types_t {
 	AXIS2_OM_TEXT = 80
 } axis2_om_types_t;
 
+
+/**
+ *  Encapsulator struct of axis2_om_node operations
+ */    
+ 
+typedef struct axis2_om_node_ops
+{
+   /**
+    *   Free an om node and its all children
+    *   @return status code
+    */
+    axis2_status_t (*axis2_om_node_ops_free)(axis2_environment_t *environment,
+        struct axis2_om_node *om_node);
+   /**
+    *   Add child node as child to parent
+    *   @param parent
+    *   @param child  
+    *   @return status code   
+    */
+    axis2_status_t (*axis2_om_node_ops_add_child)(axis2_environment_t *environment,
+        struct axis2_om_node *parent,struct axis2_om_node *child);
+    
+    /**
+     *  detach this node from the node and reset the links
+     *  @return a pointer to detached node 
+     */
+    struct axis2_om_node *(*axis2_om_node_ops_detach)(axis2_environment_t *environment,
+        struct axis2_om_node *om_node);
+    
+   /**
+    *  Inserts a sibling node after the current node
+    *  @param current_node  
+    *  @param node_to_insert the node that will be inserted 
+    *  @return return status code 
+    */
+    axis2_status_t (*axis2_om_node_ops_insert_sibling_after)(axis2_environment_t *environment,
+        struct axis2_om_node *current_node,struct axis2_om_node *node_to_insert);
+    
+   /**
+    *	Inserts a sibling node after the current node
+    *	@param current_node   
+    *  @param node_to_insert the node that will be inserted 
+    *  @return status code
+    */
+
+    axis2_status_t (*axis2_om_node_ops_insert_sibling_before)(axis2_environment_t *environment,
+        struct axis2_om_node *current_node,struct axis2_om_node *node_to_insert);
+        
+   /**
+    * set a parent node to a given node
+    * @param child_node  
+    * @param parent the node that will be set as parent
+    * @return status code
+    */
+
+    axis2_status_t (*axis2_om_node_ops_set_parent)(axis2_environment_t *environment,
+        struct axis2_om_node *child_node,struct axis2_om_node *parent_node);
+   
+   /** get the first child of a node
+    *  returns the first child node of this node
+    * @param 
+    *  @return returns a pointer to first child if there is no child returns null
+    */
+   struct axis2_om_node *(*axis2_om_node_ops_get_first_child)(axis2_environment_t *environment,
+        struct axis2_om_node *parent_node);
+   /**
+    * get the next child of this node
+    * This function should only be called after a call to get_first_child function
+    *  @param parent_node
+    *  @return pointer to next child , if there isn't next child returns null
+    */
+    struct axis2_om_node *(*axis2_om_node_ops_get_next_child)(axis2_environment_t *environment,
+        struct axis2_om_node *parent_node);
+        
+   /**
+    *   serialize operation of node
+    *   @returns status code
+    */
+    
+    axis2_status_t (*axis2_om_node_ops_serialize)(axis2_environment_t *environment,
+        struct axis2_om_node *om_node, axis2_om_output_t * om_output);
+
+
+}axis2_om_node_ops_t;
+
+
 /**
 * This is the structure that defines a node in om tree 
 * @param parent   - parent node if one is available
@@ -53,77 +144,48 @@ typedef enum axis2_om_types_t {
 * we keep pointers parent , previous sibling , next sibling , 
 * first child and last child for constructing and navigating the tree
 *
-*/      
-  
+*/
 
-typedef struct axis2_om_node_t {
-	struct axis2_om_node_t *parent;
-	struct axis2_om_node_t *prev_sibling;
-	struct axis2_om_node_t *next_sibling;
-	struct axis2_om_node_t *first_child;
-	struct axis2_om_node_t *current_child;
-	struct axis2_om_node_t *last_child;
-	axis2_stax_om_builder_t *builder;
-	axis2_om_types_t element_type;
+typedef struct axis2_om_node{
+    /** operations of this struct */
+    axis2_om_node_ops_t *ops;
+    /** links that maintain the tree */
+	struct axis2_om_node *parent;
+	struct axis2_om_node *prev_sibling;
+	struct axis2_om_node *next_sibling;
+	struct axis2_om_node *first_child;
+	struct axis2_om_node *current_child;
+	struct axis2_om_node *last_child;
+	
+	/** indicate the type stored in data_element */
+	axis2_om_types_t node_type;
+	/** done true means that this node is completely built , false otherwise */
 	int done;
+	
+	/** instances of om struct types will be stored here                    */
 	void* data_element;
 } axis2_om_node_t;
 
 /**
  * Create a node struct.
- * @return a node or NULL if there isn't enough memory
+ * @return a pointer to node struct instance null otherwise
  */
 
-axis2_om_node_t *axis2_om_node_create();
+axis2_om_node_t *axis2_om_node_create(axis2_environment_t *environment);
 
-/**
- * destroy the node .
- * @param node to free
- */
-void axis2_om_node_free(axis2_om_node_t *node);
+#define axis2_om_node_free(environment,om_node) ((om_node)->ops->axis2_om_node_ops_free(environment,om_node))
+#define axis2_om_node_add_child(environment,parent,child) ((parent)->ops->axis2_om_node_ops_add_child(environment,parent,child))
+#define axis2_om_node_detach(environment,om_node) ((om_node)->ops->axis2_om_node_ops_detach(environment,om_node))
+#define axis2_om_node_insert_sibling_after(environment,current_node,node_to_insert) \
+        ((current_node)->ops->axis2_om_node_ops_insert_sibling_after(environment,current_node,node_to_insert))
 
-/**
- * adds a child node to this node .
- * @param parent  parent node
- * @param child   child node
- */
-
-
-void axis2_om_node_add_child(axis2_om_node_t *parent,axis2_om_node_t *child);
-
-/**
- *	detach a node from the tree and resets the links
- *	@param node_to_detach the node to be detached
- *
- */
-
-axis2_om_node_t *axis2_om_node_detach(axis2_om_node_t *node_to_detach);
-
-/**
- *	inserts a sibling node after the current node
- *	@param current_node  the node in consideration 
- *  @param node_to_insert the node that will be inserted 
- */
-
-void axis2_om_node_insert_sibling_after(axis2_om_node_t *current_nodee,axis2_om_node_t *node_to_insert);
-
-void axis2_om_node_insert_sibling_before(axis2_om_node_t *current_ele,axis2_om_node_t *nodeto_insert);
+#define axis2_om_node_insert_sibling_before(environment,current_node,node_to_insert) ((current_node)->ops->axis2_om_node_ops_insert_sibling_before(environment,current_node,node_to_insert))
+#define axis2_om_node_set_parent(environment,child_node,parent_node) ((child_node)->ops->axis2_om_node_ops_set_parent(environment,child_node,parent_node))
+#define axis2_om_node_get_first_child(environment,om_node) ((om_node)->ops->axis2_om_node_get_ops_first_child(environment,om_node))
+#define axis2_om_node_get_next_child(environment,om_node) ((om_node)->ops->axis2_om_node_get_ops_next_child(environemt,om_node))
+#define axis2_om_node_serialize(environment,om_node,om_output) ((om_node)->ops->axis2_om_node_ops_serialize(environment,om_node,om_output))
 
 
-/*int axis2_om_node_build(axis2_om_node_t *node);*/
 
-/**
- *	set a parent node to a given node
- * @param node 
- * @param parent the node that will be set as parent
- */
-
-void axis2_om_node_set_parent(axis2_om_node_t *node,axis2_om_node_t *parent);
-
-axis2_om_node_t *axis2_om_node_get_first_child(axis2_om_node_t *parent_node);
-
-axis2_om_node_t *axis2_om_node_get_next_child(axis2_om_node_t *parent_node);
-
-int *axis2_om_node_serialize(axis2_om_node_t *om_node, axis2_om_output_t * om_output);
 
 #endif /* AXIS2_OM_NODE_H */
