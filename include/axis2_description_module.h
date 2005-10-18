@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <axis2.h>
-#include <axis2_errno.h>
 #include <axis2_qname.h>
 #include <axis2_operation_description.h>
 #include <axis2_engine_config.h>

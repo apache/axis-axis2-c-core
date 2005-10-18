@@ -16,7 +16,6 @@
 
 #include <axis2_om_comment.h>
 #include <string.h>
-#include <axis2_errno.h>
 
 /**
  *	free a axis2_comment struct
