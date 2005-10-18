@@ -65,10 +65,11 @@ int
 guththila_xml_pull_parser_exception (char *file, int line)
 {
   printf ("Throws guththila_xml_pull_parser_exception \t %s \t %d \n", file, line);
-  // Samisa: we should define a set of error codes and a corresponding error message set
-  // rather than printing the above line to the console, we should be appending the
-  // above string to the error message corresponding to the current error code
-  // please delete this comment once this is fixed
+  /* Samisa: we should define a set of error codes and a corresponding error message set
+   rather than printing the above line to the console, we should be appending the
+   above string to the error message corresponding to the current error code
+   please delete this comment once this is fixed
+	*/
 }
 
 

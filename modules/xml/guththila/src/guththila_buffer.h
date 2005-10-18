@@ -36,4 +36,4 @@ guththila_buffer_t *guththila_buffer_create (int size);
 void guththila_buffer_free (guththila_buffer_t *name);
 guththila_buffer_t *guththila_buffer_grow (guththila_buffer_t *name);
 
-#endif // GUTHTHILA_BUFFER_H
+#endif /* GUTHTHILA_BUFFER_H */
