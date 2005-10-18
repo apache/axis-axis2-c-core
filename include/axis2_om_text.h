@@ -66,8 +66,6 @@ typedef struct axis2_om_text_ops
     * @return Status code
     */
     int (*serialize)(axis2_environment_t *environment, const struct axis2_om_text *om_text, axis2_om_output_t* om_output);
-		
-	int k;
 } axis2_om_text_ops_t;
     
 /** \struct axis2_om_text

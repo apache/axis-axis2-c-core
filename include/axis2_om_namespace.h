@@ -92,4 +92,4 @@ axis2_om_namespace_t *axis2_om_namespace_create(axis2_environment_t *environment
 #define axis2_om_namespace_equals(environment, om_namespace1, om_namespace2) ((om_namespace1)->ops->equals(environment, om_namespace1, om_namespace2))
 #define axis2_om_namespace_serialize(environment, om_namespace,om_output) ((om_namespace)->ops->serialize(environment, om_namespace, om_output))
 
-#endif	// AXIS2_OM_NAMESPACE
+#endif	/* AXIS2_OM_NAMESPACE */

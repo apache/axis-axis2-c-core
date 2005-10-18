@@ -23,11 +23,26 @@
  */
 
 #include <axis2_om_node.h>
-
-typedef struct axis2_om_comment_t
+ 
+struct axis2_om_comment;
+struct axis2_om_comment_ops;
+    
+typedef struct axis2_om_comment_ops
 {
+  /**
+    * Free a axis2_comment struct
+    * @param comment pointer to the axis2_commnet 
+    *
+    */
+    axis2_status_t (*axis2_om_comment_ops_free)(axis2_environment_t *environment, struct axis2_om_comment *comment);
+
+} axis2_om_comment_ops_t;
+
+typedef struct axis2_om_comment
+{
+    axis2_om_comment_ops_t *ops;
 	char *value;
-}axis2_om_comment_t;
+} axis2_om_comment_t;
 
 /**
  * Create a comment struct and stores in in a node struct and returns a pointer
@@ -39,30 +54,8 @@ typedef struct axis2_om_comment_t
  *        this node struct pointer
  * @return pointer to a node_t struct containing the comment struct
  */
-axis2_om_comment_t *axis2_om_comment_create(const char *value,axis2_om_node_t *comment_node);
+axis2_om_comment_t *axis2_om_comment_create(axis2_environment_t *environment, const axis2_char_t *value, axis2_om_node_t **comment_node);
 
-/**
- *	free a axis2_comment struct
- * @param comment pointer to the axis2_commnet 
- *
- */
+#define axis2_om_comment_free(environment, comment) ((comment)->ops->axis2_om_comment_ops_free(environment, comment))
 
-void axis2_om_comment_free(axis2_om_comment_t *comment);
-
-/**
- *  to get the value of a existing comment node	
- * @param comment_node pointer to comment node
- */
-
-char *axis2_om_comment_get_value(axis2_om_node_t *comment_node);
-
-/**
- *  to set the value of a existing comment node	
- * @param comment_node pointer to comment node
- */
-
-
-void axis2_om_comment_set_value(axis2_om_node_t *comment_node,const char *value);
-
-
-#endif // AXIS2_OM_COMMENT_H
+#endif /* AXIS2_OM_COMMENT_H */
