@@ -113,7 +113,8 @@ module.include.files=\
 	include/axis2_description_parameter.h\
 	include/axis2_description_service.h\
 	include/axis2_description_servicegroup.h\
-	modules/core/description/test/description_test.h
+	modules/core/description/test/description_test.h\
+	include/axis2_core.h
 
 module.source.name=.
 module.source.type=
