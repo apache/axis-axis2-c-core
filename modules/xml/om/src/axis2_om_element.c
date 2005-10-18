@@ -188,7 +188,9 @@ axis2_om_element_impl_find_namespace (axis2_environment_t *environment, axis2_om
             }
         }
     }
-    ns = axis2_hash_get (element->namespaces, prefix, AXIS2_HASH_KEY_STRING);
+	
+	if (element->namespaces)
+		ns = axis2_hash_get (element->namespaces, prefix, AXIS2_HASH_KEY_STRING);
     
     if (ns)
     {

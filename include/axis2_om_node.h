@@ -178,10 +178,10 @@ axis2_om_node_t *axis2_om_node_create(axis2_environment_t *environment);
         ((current_node)->ops->axis2_om_node_ops_insert_sibling_after(environment,current_node,node_to_insert))
 
 #define axis2_om_node_insert_sibling_before(environment,current_node,node_to_insert) ((current_node)->ops->axis2_om_node_ops_insert_sibling_before(environment,current_node,node_to_insert))
-#define axis2_om_node_set_parent(environment,child_node,parent_node) ((child_node)->ops->axis2_om_node_ops_set_parent(environment,child_node,parent_node))
-#define axis2_om_node_get_first_child(environment,om_node) ((om_node)->ops->axis2_om_node_get_ops_first_child(environment,om_node))
-#define axis2_om_node_get_next_child(environment,om_node) ((om_node)->ops->axis2_om_node_get_ops_next_child(environemt,om_node))
-#define axis2_om_node_serialize(environment,om_node,om_output) ((om_node)->ops->axis2_om_node_ops_serialize(environment,om_node,om_output))
+#define axis2_om_node_set_parent(environment,child_node,parent_node) ((child_node)->ops->axis2_om_node_ops_set_parent(environment, child_node,parent_node))
+#define axis2_om_node_get_first_child(environment, om_node) ((om_node)->ops->axis2_om_node_ops_get_first_child(environment, om_node))
+#define axis2_om_node_get_next_child(environment, om_node) ((om_node)->ops->axis2_om_node_ops_get_next_child(environment, om_node))
+#define axis2_om_node_serialize(environment, om_node, om_output) ((om_node)->ops->axis2_om_node_ops_serialize(environment, om_node, om_output))
 
 
 

@@ -15,6 +15,8 @@
  */
 
 #include <axis2_om_node.h>
+#include <axis2_om_element.h>
+#include <axis2_om_text.h>
 
 axis2_status_t axis2_om_node_impl_free(axis2_environment_t *environment,axis2_om_node_t * node);
 axis2_status_t axis2_om_node_impl_add_child(axis2_environment_t *environment,axis2_om_node_t * parent, axis2_om_node_t * child);
@@ -289,9 +291,9 @@ axis2_om_node_t *axis2_om_node_impl_get_next_child(axis2_environment_t *environm
 	return NULL;
 }
 
-axis2_status_t *axis2_om_node_impl_serialize(axis2_environment_t *environment,axis2_om_node_t *om_node, axis2_om_output_t * om_output)
+axis2_status_t *axis2_om_node_impl_serialize(axis2_environment_t *environment, axis2_om_node_t *om_node, axis2_om_output_t * om_output)
 {
-/*   axis2_om_node_t *child_node = NULL;
+   axis2_om_node_t *child_node = NULL;
     int status = AXIS2_SUCCESS;
     
     if (!om_node || !om_output)
@@ -302,12 +304,12 @@ axis2_status_t *axis2_om_node_impl_serialize(axis2_environment_t *environment,ax
     switch (om_node->node_type)
     {
         case AXIS2_OM_ELEMENT:
-            status = axis2_om_element_serialize_start_part( (axis2_om_element_t*)om_node->data_element, om_output );
+            status = axis2_om_element_serialize_start_part(environment, (axis2_om_element_t*)om_node->data_element, om_output );
             if (status != AXIS2_SUCCESS) 
                 return status;
             break;
         case AXIS2_OM_TEXT:
-            status = axis2_om_text_serialize((axis2_om_text_t*)om_node->data_element, om_output );
+            status = axis2_om_text_serialize(environment, (axis2_om_text_t*)om_node->data_element, om_output );
             return status;
             break;
     }
@@ -317,22 +319,22 @@ axis2_status_t *axis2_om_node_impl_serialize(axis2_environment_t *environment,ax
 
     while (child_node)
     {
-        status = axis2_om_node_serialize(child_node, om_output);
+        status = axis2_om_node_serialize(environment, child_node, om_output);
             if (status != AXIS2_SUCCESS) 
                 return status;
-        child_node = axis2_om_node_get_next_child(om_node);
+        child_node = axis2_om_node_get_next_child(environment, om_node);
     }
         
-    switch (om_node->element_type)
+    switch (om_node->node_type)
     {
         case AXIS2_OM_ELEMENT:
-            status = axis2_om_element_serialize_end_part( (axis2_om_element_t*)om_node->data_element, om_output );
+            status = axis2_om_element_serialize_end_part(environment, (axis2_om_element_t*)om_node->data_element, om_output );
             if (status != AXIS2_SUCCESS) 
                 return status;
             break;
     }
     
     return status;
-*/
+
 return AXIS2_SUCCESS;
 }

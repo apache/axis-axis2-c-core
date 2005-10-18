@@ -26,7 +26,7 @@
 #include <axis2_environment.h>
 
 
-const axis2_char_t XML_NAMESPACE_URI[] ="http://www.w3c.org/XML/1998/namespace";
+static const axis2_char_t XML_NAMESPACE_URI[] ="http://www.w3c.org/XML/1998/namespace";
 
 struct axis2_qname;
 struct axis2_qname_ops;

@@ -123,7 +123,7 @@ axis2_status_t axis2_om_text_impl_serialize(axis2_environment_t *environment, co
     }
     
     if (om_text->value)
-        status = axis2_om_output_write (om_output, AXIS2_OM_TEXT, 1,
+        status = axis2_om_output_write (environment, om_output, AXIS2_OM_TEXT, 1,
                                         om_text->value);
     return status;
 }
