@@ -414,7 +414,7 @@ axis2_om_element_set_namespace (axis2_om_node_t * node,
 }
 */
 
-axis2_status_t axis2_om_element_ops_free(axis2_environment_t *environment, struct axis2_om_element *element)
+axis2_status_t axis2_om_element_impl_free(axis2_environment_t *environment, struct axis2_om_element *element)
 {
     if (!element)
     {
