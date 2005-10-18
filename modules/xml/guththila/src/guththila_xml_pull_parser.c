@@ -70,6 +70,7 @@ guththila_xml_pull_parser_exception (char *file, int line)
    above string to the error message corresponding to the current error code
    please delete this comment once this is fixed
 	*/
+	return -1;
 }
 
 

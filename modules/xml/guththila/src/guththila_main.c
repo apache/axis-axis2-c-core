@@ -97,7 +97,7 @@ int main (int argc, char *argv[])
 	      }
 	    e = guththila_stack_last (parser->dep);
 	    d = e->depth->count;
-	    guththila_namespace_t *ns ;
+	    
 	    for (; d > 0; d--)
 	      {
 		p = guththila_xml_pull_parser_get_namespace_prefix_by_number (parser, d);
@@ -146,4 +146,3 @@ int main (int argc, char *argv[])
   guththila_xml_pull_parser_free (parser);
   return 0;
 }
-

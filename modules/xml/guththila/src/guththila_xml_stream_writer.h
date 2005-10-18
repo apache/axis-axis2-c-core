@@ -116,4 +116,4 @@ guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(FILE* writer, 
   int guththila_xml_stream_writer_write_encoded(guththila_xml_stream_writer_t* stream_writer, char* text, int in_attr);
 
 
-#endif //GUTHTHILA_XML_STREAM_WRITER_H
+#endif /*GUTHTHILA_XML_STREAM_WRITER_H*/

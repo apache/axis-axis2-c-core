@@ -185,7 +185,7 @@ guththila_token_to_string (guththila_token_t *tok, int unicode)
 	  return guththila_token_convert_utf16_to_utf8 (buffer, length);
 	}
     }
-  else
+  
     return NULL;
 }
 
