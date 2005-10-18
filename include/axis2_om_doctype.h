@@ -24,8 +24,21 @@
 
 #include <axis2_om_node.h>
 
-typedef struct axis2_om_doctype_t
+struct axis2_om_doctype;
+struct axis2_om_doctype_ops;	
+
+typedef struct axis2_om_doctype_ops
 {
+	/**
+	 *	free the axis2_om_doctype_t struct
+	 *	param om_doc pointer to axis2_om_doctype_t struct
+	 */
+	axis2_status_t (*axis2_om_doctype_ops_free)(axis2_environment_t *environment, struct axis2_om_doctype *om_doctype);
+} axis2_om_doctype_ops_t;
+
+typedef struct axis2_om_doctype
+{
+	axis2_om_doctype_ops_t* ops;
 	char *value;
 }axis2_om_doctype_t;
 
@@ -40,36 +53,9 @@ typedef struct axis2_om_doctype_t
 
 
 
-axis2_om_doctype_t *axis2_om_doctype_create(axis2_om_node_t *parent,const char *value,axis2_om_node_t *doctype_node);
+axis2_om_doctype_t *axis2_om_doctype_create(axis2_environment_t *environment, axis2_om_node_t *parent, const axis2_char_t *value, axis2_om_node_t **node);
+
+#define axis2_om_doctype_free(environment, doctype) ((doctype)->ops->axis2_om_doctype_ops_free(environment, doctype))
 
 
-/**
- *	create an axis2_om_doctype_t struct with parent 
- *  value field will be set to null
- *  return poniter to a axis2_om_node_t 
- */
-
-
-axis2_om_doctype_t *axis2_om_doctype_create_empty_doctype(axis2_om_node_t *parent,axis2_om_node_t *doctype_node);
-
-/**
- *	free the axis2_om_doctype_t struct
- *	param om_doc pointer to axis2_om_doctype_t struct
- */
-void axis2_om_doctype_free(axis2_om_doctype_t *om_doc);
-
-/**
- *	accessor function to get value of doctype
- *	param om_doc pointer to axis2_om_doctype_t struct
- */
-char *om_doctype_get_value(axis2_om_node_t *doctype_node);
-
-/**
- *	mutator function to get value of doctype
- *	param om_doc pointer to axis2_om_doctype_t struct
- *  param value value to be set in om_doctype
- */
- 
-void om_doctype_set_value(axis2_om_node_t *doctype_node,const char *value);
-
-#endif				//  AXIS2_OM_DOCTYPE_H
+#endif				/* AXIS2_OM_DOCTYPE_H */

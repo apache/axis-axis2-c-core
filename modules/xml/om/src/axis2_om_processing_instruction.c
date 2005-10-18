@@ -15,128 +15,104 @@
  */
  
 #include <axis2_om_processing_instruction.h>
-#include <axis2_om_node.h>
-#include <stdlib.h>
-#include <axis2_errno.h>
 
-axis2_om_processing_instruction_t *axis2_om_processing_instruction_create(axis2_om_node_t *parent,const char *target,const char *value,axis2_om_node_t *pinode)
+axis2_status_t axis2_om_processing_instruction_impl_free(axis2_environment_t *environment, axis2_om_processing_instruction_t *processing_instruction);
+
+axis2_om_processing_instruction_t *axis2_om_processing_instruction_create(axis2_environment_t *environment, axis2_om_node_t *parent,const axis2_char_t *target,const axis2_char_t *value, axis2_om_node_t **node)
 {
-    axis2_om_processing_instruction_t *pi = NULL;
-    axis2_om_node_t *pi_node = axis2_om_node_create();
-    
-	if (pi_node)
-    {
-		pi = (axis2_om_processing_instruction_t *)malloc(
-				sizeof(axis2_om_processing_instruction_t));
-		if (!pi)
-		{
-	    	free(pi_node);
-	    	fprintf(stderr, "%d error", AXIS2_ERROR_OM_MEMORY_ALLOCATION);
-	    	return NULL;
-		}
-		if(target)
-		{
-			pi->target = strdup(target);
-		}
-		if(value)
-		{
-			pi->value = strdup(value);
-		}
-	}
-    
-	pi_node->data_element = pi;
-    pi_node->element_type =AXIS2_OM_PROCESSING_INSTRUCTION;
-
-    if (parent)
-    {
-		pi_node->parent = parent;
-		axis2_om_node_add_child(parent, pi_node);
-    }
-	pinode = pi_node;
+    axis2_om_processing_instruction_t *processing_instruction = NULL;
 	
-    return pi;
-}
-
-axis2_om_processing_instruction_t *axis2_om_processing_instruction_create_empty(axis2_om_node_t *parent
-								,axis2_om_node_t *node)
-{
-    axis2_om_node_t *pi_node = NULL;
-    axis2_om_processing_instruction_t *pi = NULL;
-    pi_node = axis2_om_node_create();
-    if (pi_node)
+	if (!node || !target || !value)
     {
-		pi = (axis2_om_processing_instruction_t *)malloc(
-				sizeof(axis2_om_processing_instruction_t));
-		if (!pi)
-		{
-	    	free(pi_node);
-	    	return NULL;
-		}
-		pi->target = NULL;
-		pi->value = NULL;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        return NULL;
     }
-    
-	pi_node->data_element = pi;
-    pi_node->element_type =AXIS2_OM_PROCESSING_INSTRUCTION;
-    if (parent)
-    {
-		pi_node->parent = parent;
-		axis2_om_node_add_child(parent, pi_node);
-    }
-	node = pi_node;
-    return pi;
-}
 
-
-char *axis2_om_processing_instruction_get_value(axis2_om_node_t * pi_node)
-{
-    if (!pi_node || pi_node->element_type !=AXIS2_OM_PROCESSING_INSTRUCTION)
+    *node = axis2_om_node_create(environment);
+    if (!*node)
     {
+		environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
     }
-    return ((axis2_om_processing_instruction_t *)(pi_node->data_element))->value;
+    
+    processing_instruction = (axis2_om_processing_instruction_t *) axis2_malloc(environment->allocator, sizeof(axis2_om_processing_instruction_t));
+    if (!processing_instruction)
+    {
+		axis2_om_node_free(environment, *node);
+		environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		return NULL;
+    }
+    
+    processing_instruction->value = NULL;
+    
+    if (value)
+    {
+        processing_instruction->value = axis2_strdup(environment->string, value);
+        if (!processing_instruction->value)
+        {
+            axis2_free(environment->allocator, processing_instruction);
+			axis2_om_node_free(environment, *node);            
+            environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
+            return NULL;
+        }
+    }
+	
+	processing_instruction->target = NULL;
+    
+    if (target)
+    {
+        processing_instruction->target = axis2_strdup(environment->string, target);
+        if (!processing_instruction->target)
+        {
+			axis2_free(environment->allocator, processing_instruction->value);
+            axis2_free(environment->allocator, processing_instruction);
+			axis2_om_node_free(environment, *node);            
+            environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
+            return NULL;
+        }
+    }
+
+    (*node)->data_element = processing_instruction;
+    (*node)->node_type = AXIS2_OM_PROCESSING_INSTRUCTION;
+	
+	if (parent)
+    {
+        (*node)->parent = parent;
+        axis2_om_node_add_child (environment, parent, (*node));
+    }
+	
+    /* operations */
+    processing_instruction->ops = NULL;
+    processing_instruction->ops = (axis2_om_processing_instruction_ops_t*) axis2_malloc(environment->allocator, sizeof(axis2_om_processing_instruction_ops_t));
+    if (!processing_instruction->ops)
+    {
+        axis2_free(environment->allocator, processing_instruction->value);
+		axis2_free(environment->allocator, processing_instruction->target);
+		axis2_free(environment->allocator, processing_instruction);        
+		axis2_om_node_free(environment, *node);        
+        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
+        return NULL;
+    }
+    
+    processing_instruction->ops->axis2_om_processing_instruction_ops_free = axis2_om_processing_instruction_impl_free;
+	
+    return processing_instruction;
 }
 
-char *axis2_om_processing_instruction_get_target(axis2_om_node_t * pi_node)
+axis2_status_t axis2_om_processing_instruction_impl_free(axis2_environment_t *environment, axis2_om_processing_instruction_t *processing_instruction)
 {
-    if (!pi_node || pi_node->element_type !=AXIS2_OM_PROCESSING_INSTRUCTION)
+    if (processing_instruction)
     {
-	return NULL;
+		if (processing_instruction->value)
+		{
+	    	axis2_free(environment->allocator, processing_instruction->value);
+		}
+		
+		if (processing_instruction->target)
+		{
+	    	axis2_free(environment->allocator, processing_instruction->target);
+		}
+		
+		axis2_free(environment->allocator, processing_instruction);
     }
-    return ((axis2_om_processing_instruction_t *)(pi_node->data_element))->target;
-}
-
-void axis2_om_processing_instruction_set_value(axis2_om_node_t * pi_node,
-						const char *value)
-{
-    axis2_om_processing_instruction_t *pi = NULL;
-    if (!pi_node || pi_node->element_type !=AXIS2_OM_PROCESSING_INSTRUCTION)
-    {
-		return;
-    }
-    pi = ((axis2_om_processing_instruction_t *)(pi_node->data_element));
-    if (pi->value)
-    {
-		free(pi->value);
-    }
-    pi->value = strdup(value);
-    pi = NULL;
-}
-
-void axis2_om_processing_instruction_set_target(axis2_om_node_t * pi_node,
-						 const char *value)
-{
-    axis2_om_processing_instruction_t *pi = NULL;
-    if (!pi_node || pi_node->element_type != AXIS2_OM_PROCESSING_INSTRUCTION)
-    {
-		return;
-    }
-    pi = (axis2_om_processing_instruction_t *) (pi_node->data_element);
-    if (pi->target)
-    {
-		free(pi->target);
-    }
-    pi->target = strdup(value);
-    pi = NULL;
-    return;
 }

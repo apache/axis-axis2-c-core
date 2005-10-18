@@ -24,9 +24,18 @@
 
 #include <axis2_om_node.h>
 
-typedef struct axis2_om_processing_instruction_t {
-    char *target;
-    char *value;
+struct axis2_om_processing_instruction;
+struct axis2_om_processing_instruction_ops;
+
+typedef struct axis2_om_processing_instruction_ops
+{
+	axis2_status_t (*axis2_om_processing_instruction_ops_free)(axis2_environment_t *environment, struct axis2_om_processing_instruction *om_pi);
+} axis2_om_processing_instruction_ops_t;
+
+typedef struct axis2_om_processing_instruction {
+	axis2_om_processing_instruction_ops_t *ops;
+    axis2_char_t *target;
+    axis2_char_t *value;
 } axis2_om_processing_instruction_t;
 
 /**
@@ -34,22 +43,6 @@ typedef struct axis2_om_processing_instruction_t {
  *	@return a pointer to axis2_om_node_t struct containing PI
  */ 
 
-axis2_om_processing_instruction_t *axis2_om_processing_instruction_create(axis2_om_node_t *parent,const char *target,const char *value,axis2_om_node_t *node);
-/**
- *  creates empty axis2_om_processing_instruction and 
- *	@return a pointer to axis2_om_node_t struct containing PI
- */
+axis2_om_processing_instruction_t *axis2_om_processing_instruction_create(axis2_environment_t *environment, axis2_om_node_t *parent,const axis2_char_t *target,const axis2_char_t *value,axis2_om_node_t **node);
 
-axis2_om_processing_instruction_t *axis2_om_processing_instruction_create_empty(axis2_om_node_t *parent,axis2_om_node_t *node);
-
-
-
-void axis2_om_processing_instruction_serialize_with_cache(FILE *output_stream);
-/**
- *
- *
- */
-
-void axis2_om_processing_instruction_discard(axis2_om_processing_instruction_t *om_pi);
-
-#endif				// AXIS2_OM_PI_H
+#endif				/* AXIS2_OM_PI_H */

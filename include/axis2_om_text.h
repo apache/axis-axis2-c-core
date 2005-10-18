@@ -58,14 +58,14 @@ typedef struct axis2_om_text_ops
 	* Free an axis2_om_text_t structure
     * @return Status code
     */
-    int (*free)(axis2_environment_t *environment, struct axis2_om_text *om_text);
+    axis2_status_t (*axis2_om_text_ops_free)(axis2_environment_t *environment, struct axis2_om_text *om_text);
     
   /**
     * Serialize operation
     * @param om_output OM output handler to be used in serializing
     * @return Status code
     */
-    int (*serialize)(axis2_environment_t *environment, const struct axis2_om_text *om_text, axis2_om_output_t* om_output);
+    axis2_status_t (*axis2_om_text_ops_serialize)(axis2_environment_t *environment, const struct axis2_om_text *om_text, axis2_om_output_t* om_output);
 } axis2_om_text_ops_t;
     
 /** \struct axis2_om_text
@@ -111,8 +111,8 @@ typedef struct axis2_om_text
 axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om_node_t *parent,const axis2_char_t *value
 						,axis2_om_node_t **node);
 
-#define axis2_om_text_serialize(environment, om_text, om_output) ((om_text)->ops->serialize(environment, om_text, om_output))
-#define axis2_om_text_free(environment, om_text) ((om_text)->ops->free(environment, om_text))
+#define axis2_om_text_serialize(environment, om_text, om_output) ((om_text)->ops->axis2_om_text_ops_serialize(environment, om_text, om_output))
+#define axis2_om_text_free(environment, om_text) ((om_text)->ops->axis2_om_text_ops_free(environment, om_text))
 
 /** @} */
 

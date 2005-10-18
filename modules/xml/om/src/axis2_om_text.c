@@ -22,8 +22,8 @@
 */
 
 /* operations */
-int axis2_om_text_ops_free(axis2_environment_t *environment, axis2_om_text_t *om_text);
-int axis2_om_text_ops_serialize(axis2_environment_t *environment, const axis2_om_text_t *om_text, axis2_om_output_t* om_output);
+axis2_status_t axis2_om_text_impl_free(axis2_environment_t *environment, axis2_om_text_t *om_text);
+axis2_status_t axis2_om_text_impl_serialize(axis2_environment_t *environment, const axis2_om_text_t *om_text, axis2_om_output_t* om_output);
 
 axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om_node_t *parent,const axis2_char_t *value
 						,axis2_om_node_t **node)
@@ -85,14 +85,14 @@ axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om
 		return NULL;
     }
     
-    om_text->ops->free = axis2_om_text_ops_free;
-    om_text->ops->serialize = axis2_om_text_ops_serialize;
+    om_text->ops->axis2_om_text_ops_free = axis2_om_text_impl_free;
+    om_text->ops->axis2_om_text_ops_serialize = axis2_om_text_impl_serialize;
 
     return om_text;
 }
 
 
-int axis2_om_text_ops_free(axis2_environment_t *environment, axis2_om_text_t *om_text)
+axis2_status_t axis2_om_text_impl_free(axis2_environment_t *environment, axis2_om_text_t *om_text)
 {
     if (!om_text)
     {
@@ -112,7 +112,7 @@ int axis2_om_text_ops_free(axis2_environment_t *environment, axis2_om_text_t *om
     return AXIS2_SUCCESS;
 }
 
-int axis2_om_text_ops_serialize(axis2_environment_t *environment, const axis2_om_text_t *om_text, axis2_om_output_t* om_output)
+axis2_status_t axis2_om_text_impl_serialize(axis2_environment_t *environment, const axis2_om_text_t *om_text, axis2_om_output_t* om_output)
 {
     int status = AXIS2_SUCCESS;
 

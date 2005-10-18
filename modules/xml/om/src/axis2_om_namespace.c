@@ -144,7 +144,7 @@ axis2_status_t axis2_om_namespace_ops_serialize(axis2_environment_t *environment
     }
     
     if (om_namespace->uri && om_namespace->prefix)
-        status = axis2_om_output_write (om_output, AXIS2_OM_NAMESPACE, 2,
+        status = axis2_om_output_write (environment, om_output, AXIS2_OM_NAMESPACE, 2,
                                         om_namespace->prefix, om_namespace->uri);
     return status;
 
