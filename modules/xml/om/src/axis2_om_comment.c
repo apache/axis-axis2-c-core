@@ -18,72 +18,82 @@
 #include <string.h>
 #include <axis2_errno.h>
 
-axis2_om_comment_t *axis2_om_comment_create(const char *value,axis2_om_node_t *cnode)
-{
-    axis2_om_node_t *node = NULL;
-    axis2_om_comment_t *comment = NULL;
+/**
+ *	free a axis2_comment struct
+ * @param comment pointer to the axis2_commnet 
+ *
+ */
+axis2_status_t axis2_om_comment_impl_free(axis2_environment_t *environment, axis2_om_comment_t *comment);
 
-    node = axis2_om_node_create();
+axis2_om_comment_t *axis2_om_comment_create(axis2_environment_t *environment, const axis2_char_t *value, axis2_om_node_t **node)
+{
+    *node = NULL;
+    axis2_om_comment_t *comment = NULL;
+    
     if (!node)
     {
-		fprintf(stderr, "%d Error", AXIS2_ERROR_OM_MEMORY_ALLOCATION);
-		return NULL;
-    }
-    comment = (axis2_om_comment_t *) malloc(sizeof(axis2_om_comment_t));
-    if (!comment)
-    {
-		free(node);
-		fprintf(stderr, "%d Error", AXIS2_ERROR_OM_MEMORY_ALLOCATION);
-		return NULL;
-    }
-    comment->value = strdup(value);
-    if (!comment->value)
-    {
-		fprintf(stderr, "%d Error", AXIS2_ERROR_OM_MEMORY_ALLOCATION);
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        return NULL;
     }
 
-    node->data_element = comment;
-    node->element_type =AXIS2_OM_COMMENT;
-	cnode = node;
+    *node = axis2_om_node_create(environment);
+    if (!*node)
+    {
+		environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		return NULL;
+    }
+    
+    comment = (axis2_om_comment_t *) axis2_malloc(environment->allocator, sizeof(axis2_om_comment_t));
+    if (!comment)
+    {
+		axis2_om_node_free(environment, *node);
+		environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		return NULL;
+    }
+    
+    comment->value = NULL;
+    
+    if (value)
+    {
+        comment->value = axis2_strdup(environment->string, value);
+        if (!comment->value)
+        {
+            axis2_om_node_free(environment, *node);
+            axis2_free(environment->allocator, comment);
+            environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
+            return NULL;
+        }
+    }
+
+    (*node)->data_element = comment;
+    (*node)->node_type = AXIS2_OM_COMMENT;
+	
+    /* operations */
+    comment->ops = NULL;
+    comment->ops = (axis2_om_comment_ops_t*) axis2_malloc(environment->allocator, sizeof(axis2_om_comment_ops_t));
+    if (!comment->ops)
+    {
+        axis2_om_node_free(environment, *node);
+        axis2_free(environment->allocator, comment);
+        axis2_free(environment->allocator, comment->value);
+        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
+        return NULL;
+    }
+    
+    comment->ops->axis2_om_comment_ops_free = axis2_om_comment_impl_free;
+    
     return comment;
 }
 
 
-void axis2_om_comment_free(axis2_om_comment_t * comment)
+axis2_status_t axis2_om_comment_impl_free(axis2_environment_t *environment, axis2_om_comment_t *comment)
 {
     if (comment)
     {
 		if (comment->value)
 		{
-	    	free(comment->value);
+	    	axis2_free(environment->allocator, comment->value);
 		}
-		free(comment);
+		axis2_free(environment->allocator, comment);
     }
-}
-
-char *axis2_om_comment_get_value(axis2_om_node_t * comment_node)
-{
-    if (!comment_node || comment_node->element_type !=AXIS2_OM_COMMENT)
-    {
-		return NULL;
-    }
-    return ((axis2_om_comment_t *) (comment_node->data_element))->value;
-}
-
-void axis2_om_comment_set_value(axis2_om_node_t * comment_node,
-				 const char *value)
-{
-    axis2_om_comment_t *comment = NULL;
-
-    if (!comment_node || comment_node->element_type !=AXIS2_OM_COMMENT)
-    {
-		return;
-    }
-    comment = ((axis2_om_comment_t *) (comment_node->data_element));
-
-    if (comment->value)
-    {
-		free(comment->value);
-    }
-    comment->value = strdup(value);
 }

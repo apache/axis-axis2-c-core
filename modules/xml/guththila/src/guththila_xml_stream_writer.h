@@ -21,33 +21,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <apr.h>
-#include <apr_pools.h>
-#include <apr_hash.h>
-#include <apr_tables.h>
 
 #include "guththila_errno.h"
 
 #define  GUTHTHILA_DEFAULT_NS_PREFIX    ""
 
-static apr_pool_t *guththila_apr_pool; /* a memory pool to be used for this module */
-            
+           
 
 /**
  * guththila_xml_stream_writer_t - Stream Writer Structure
  */
+typedef struct guththila_xml_stream_writer guththila_xml_stream_writer_t;
 
-typedef struct
-{
-    FILE* writer;
-    char* encoding;
-    int prefix_defaulting;
-    apr_array_header_t *element_stack; /*stack of element names (apr array is FILO)*/
-    apr_hash_t* namespace_hash; /*hash map with key:namespace and value:prefix */
-    apr_hash_t* prefix_hash; /*hash map with key:prefix and value:namespace*/
-    int in_start_element;
-    int empty_element;
-} guththila_xml_stream_writer_t;
+
                    
 guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(FILE* writer, char* encoding, int is_prefix_defaulting);
   

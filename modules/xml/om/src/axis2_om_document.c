@@ -16,153 +16,214 @@
 
 
 #include <axis2_om_document.h>
-#include <stdlib.h>
-#include <axis2_error.h>
-#include <axis2_defines.h>
 #include <axis2_om_stax_builder.h>
 
-axis2_om_document_t *axis2_om_document_create(axis2_om_node_t * root_ele,axis2_om_stax_builder_t * builder)
+axis2_status_t axis2_om_document_impl_free(axis2_environment_t *environment, axis2_om_document_t * document);
+axis2_status_t axis2_om_document_impl_add_child(axis2_environment_t *environment, axis2_om_document_t *document,
+				  axis2_om_node_t *child);
+axis2_status_t axis2_om_document_impl_build_next(axis2_environment_t *environment, axis2_om_document_t *document);
+axis2_om_node_t *axis2_om_document_impl_get_root_element(axis2_environment_t *environment, axis2_om_document_t *document);
+axis2_om_node_t *axis2_om_document_impl_get_next_sibling(axis2_environment_t *environment, axis2_om_document_t *document);
+axis2_om_node_t *axis2_om_document_impl_get_first_child(axis2_environment_t *environment, axis2_om_document_t *document);
+axis2_om_node_t *axis2_om_document_impl_get_next_child(axis2_environment_t *environment, axis2_om_document_t *document);
+
+axis2_om_document_t *axis2_om_document_create(axis2_environment_t *environment, axis2_om_node_t * root, axis2_om_stax_builder_t * builder)
 {
 
-    axis2_om_document_t *doc = (axis2_om_document_t *) malloc(sizeof(axis2_om_document_t));
-    if (!doc)
+    axis2_om_document_t *document = (axis2_om_document_t *) axis2_malloc(environment->allocator, sizeof(axis2_om_document_t));
+    
+    if (!document)
     {
-		/*fprintf(stderr,"%d Error",AXIS2_ERROR_NO_MEMORY);*/
+		environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
     }
-    doc->builder = builder;
-    doc->root_element = root_ele;
-    doc->first_child = NULL;
-    doc->last_child = NULL;
-    doc->char_set_encoding = CHAR_SET_ENCODING;
-    doc->xml_version = XML_VERSION;
-    doc->done = AXIS2_FALSE;
+    document->builder = builder;
+    document->root_element = root;
+    document->first_child = NULL;
+    document->last_child = NULL;
+    
+    document->char_set_encoding = NULL;
+    document->char_set_encoding = (axis2_char_t*) axis2_strdup(environment->string, CHAR_SET_ENCODING);
+    
+    if (!document->char_set_encoding)
+    {
+        axis2_free(environment->allocator, document);
+		environment->error->errorno = AXIS2_ERROR_NO_MEMORY;        
+		return NULL;
+    }
+    
+    document->xml_version = NULL;
+    document->xml_version = (axis2_char_t*) axis2_strdup(environment->string, XML_VERSION);
+    if (!document->xml_version)
+    {
+        axis2_free(environment->allocator, document);
+        axis2_free(environment->allocator, document->char_set_encoding);
+		environment->error->errorno = AXIS2_ERROR_NO_MEMORY;        
+		return NULL;
+    }
+    
+    document->done = AXIS2_FALSE;
+    
     if(builder)
     {
-        builder->document=doc;
+        builder->document = document;
     }
-    return doc;
-}
-
-
-void axis2_free_om_document(axis2_om_document_t * doc)
-{
-	if(doc)
-	{
-		if(doc->char_set_encoding)
-			free(doc->char_set_encoding);
-		if(doc->xml_version)
-			free(doc->xml_version);
-		/*   */		
-	
-	free(doc);
-	}
-}
-
-
-void axis2_om_document_set_char_set_encoding(axis2_om_document_t *document,
-					    const char *char_set_encoding)
-{
-    if (document)
+    
+    /* operations */
+    document->ops = NULL;
+    document->ops = (axis2_om_document_ops_t*) axis2_malloc(environment->allocator, sizeof(axis2_om_document_ops_t));
+    
+    if (!document->ops)
     {
-		if (document->char_set_encoding)
-		{
-			free(document->char_set_encoding);
-		}
-	document->char_set_encoding = strdup(char_set_encoding);
+        axis2_free(environment->allocator, document);
+        axis2_free(environment->allocator, document->char_set_encoding);
+        axis2_free(environment->allocator, document->xml_version);
+		environment->error->errorno = AXIS2_ERROR_NO_MEMORY;        
+		return NULL;
     }
+    
+    document->ops->axis2_om_document_ops_free = axis2_om_document_impl_free;
+    document->ops->axis2_om_document_ops_add_child = axis2_om_document_impl_add_child;
+    document->ops->axis2_om_document_ops_build_next = axis2_om_document_impl_build_next;
+    document->ops->axis2_om_document_ops_get_root_element = axis2_om_document_impl_get_root_element;
+    document->ops->axis2_om_document_ops_get_next_sibling = axis2_om_document_impl_get_next_sibling;
+    document->ops->axis2_om_document_ops_get_first_child = axis2_om_document_impl_get_first_child;
+    document->ops->axis2_om_document_ops_get_next_child = axis2_om_document_impl_get_next_child;
+    return document;
 }
 
-void axis2_om_document_add_child(axis2_om_document_t * document,
-				  axis2_om_node_t * child)
+
+axis2_status_t axis2_om_document_impl_free(axis2_environment_t *environment, axis2_om_document_t * document)
 {
-   if(!(document->root_element) && child)
+	if(document)
+	{
+		if(document->char_set_encoding)
+			axis2_free(environment->allocator, document->char_set_encoding);
+		if(document->xml_version)
+			axis2_free(environment->allocator, document->xml_version);
+        
+        (document->root_element)->ops->axis2_om_node_ops_free(environment, document->root_element);
+        
+        axis2_free(environment->allocator, document);
+	}
+    return AXIS2_SUCCESS;
+}
+
+
+axis2_status_t axis2_om_document_impl_add_child(axis2_environment_t *environment, axis2_om_document_t *document,
+				  axis2_om_node_t *child)
+{
+   if (!document || ! child)
+    {
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        return AXIS2_FAILURE;
+    }
+    
+    if(!(document->root_element) && child)
    {
         document->root_element = child;
+       return AXIS2_SUCCESS;
    
    }
    
    if(document->root_element && child)
    {
-        axis2_om_node_add_child(document->root_element,child);
+        return axis2_om_node_add_child(environment, document->root_element,child);
    }
+   
+   return AXIS2_FAILURE;
    
 }
 
-
-void axis2_om_document_set_xmlversion(axis2_om_document_t *document,const char *xmlversion)
+axis2_status_t axis2_om_document_impl_build_next(axis2_environment_t *environment, axis2_om_document_t *document)
 {
-	if(document)
-	{
-		if(document->xml_version)
-		{
-			free(document->xml_version);
-		}
-		document->xml_version = strdup(xmlversion);
-	}
+   return axis2_om_stax_builder_next(document->builder);
 }
 
 
-void axis2_om_document_build_next(axis2_om_document_t *document)
+axis2_om_node_t *axis2_om_document_impl_get_root_element(axis2_environment_t *environment, axis2_om_document_t *document)
 {
-   /* printf("next");*/
-	axis2_stax_om_builder_next(document->builder);
-}
-
-
-axis2_om_node_t *axis2_om_document_get_root_element(axis2_om_document_t *document)
-{
+    axis2_status_t status = AXIS2_SUCCESS;
         if(document && document->root_element)
         {
             return document->root_element;
         }
         else
         {   
-            while(!document->root_element)
-                axis2_om_document_build_next(document);
+            status = (document)->ops->axis2_om_document_ops_build_next(environment, document);
+            if (document->root_element)
+                return document->root_element;
+            else
+            {
+                if (status != AXIS2_SUCCESS)
+                    environment->error->errorno = status;
+                return NULL;
+            }
         }
-        
-        return document->root_element;
-           
 }
 
-axis2_om_node_t *axis2_om_document_get_next_sibling(axis2_om_document_t *document)
+axis2_om_node_t *axis2_om_document_impl_get_next_sibling(axis2_environment_t *environment, axis2_om_document_t *document)
 {
-    axis2_om_node_t *lastchild =document->builder->lastnode;
+    axis2_om_node_t *lastchild = NULL;
     if(document && document->builder && document->builder->lastnode)
     {
-         
+        lastchild = document->builder->lastnode;
         if(!(lastchild->parent))
         {
-            /* if parent is null there can't be siblings */
-            return NULL;
+            return NULL; /* if parent is null there can't be siblings */
         }
         while( !(lastchild->next_sibling) && !(lastchild->parent->done))
-            axis2_om_document_build_next(document); 
+            axis2_om_document_build_next(environment, document); 
+        return lastchild->next_sibling;
     }
-    return lastchild->next_sibling;
+    return NULL;
 }
 
-axis2_om_node_t *axis2_om_document_get_first_child(axis2_om_document_t *document)
+axis2_om_node_t *axis2_om_document_impl_get_first_child(axis2_environment_t *environment, axis2_om_document_t *document)
 {
     axis2_om_node_t *current_child = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
     current_child = document->builder->lastnode;
     if(current_child)
     {
         while(!(current_child->first_child)&& !(current_child->done))
         {
-           axis2_om_document_build_next(document);
+           status = axis2_om_document_build_next(environment, document);
         }
-       if(current_child->first_child)
-        return current_child->first_child;
+
+        if(current_child->first_child)
+            return current_child->first_child;
         else
+        {
+            if (status != AXIS2_SUCCESS)
+                environment->error->errorno = status;
             return NULL;
-        
+        }        
     }
-    
+    return NULL;    
 }
 
-axis2_om_node_t *axis2_om_document_get_child(axis2_om_document_t *document)
+axis2_om_node_t *axis2_om_document_impl_get_next_child(axis2_environment_t *environment, axis2_om_document_t *document)
 {
-    return document->builder->lastnode;
+    axis2_om_node_t *current_child = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+    current_child = document->builder->lastnode;
+    if(current_child && current_child->parent->first_child)
+    {
+        status = axis2_om_document_build_next(environment, document);
+
+        if(current_child->last_child)
+            return current_child->last_child;
+        else
+        {
+            if (status != AXIS2_SUCCESS)
+                environment->error->errorno = status;
+            return NULL;
+        }        
+    }
+    else
+    {
+        environment->error->errorno = AXIS2_ERROR_INVALID_ITERATOR_STATE;
+        return NULL;    
+    }
 }

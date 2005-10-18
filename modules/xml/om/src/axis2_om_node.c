@@ -277,7 +277,7 @@ axis2_om_node_t *axis2_om_node_impl_get_next_child(axis2_environment_t *environm
 	
 	if(parent_node && parent_node->first_child  && !(parent_node->current_child))	
 	{
-		environment->error->errorno = AXIS2_ERROR_INVALID_OPERATION;
+		environment->error->errorno = AXIS2_ERROR_INVALID_ITERATOR_STATE;
 		return NULL;		
 	}
 	if(parent_node->current_child->next_sibling)
@@ -336,5 +336,3 @@ axis2_status_t *axis2_om_node_impl_serialize(axis2_environment_t *environment,ax
 */
 return AXIS2_SUCCESS;
 }
-
-

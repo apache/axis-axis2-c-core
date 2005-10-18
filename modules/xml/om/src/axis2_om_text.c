@@ -37,7 +37,7 @@ axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om
         return NULL;
     }
     
-    *node = axis2_om_node_create();
+    *node = axis2_om_node_create(environment);
     
     if (!(*node))
     {
@@ -56,21 +56,21 @@ axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om
     
     om_text->value = NULL;
     if (value)
-        om_text->value = (axis2_char_t*) axis2_strdup(environment->allocator, value);
+        om_text->value = (axis2_char_t*) axis2_strdup(environment->string, value);
     
     /* om_text->attribute = NULL; */
     om_text->content_id = NULL;
     om_text->mime_type = NULL;
     
     (*node)->data_element = om_text;
-    (*node)->element_type = AXIS2_OM_TEXT;
+    (*node)->node_type = AXIS2_OM_TEXT;
 
     (*node)->done = AXIS2_FALSE;
     
-	if(parent && parent->element_type == AXIS2_OM_ELEMENT)
+	if(parent && parent->node_type == AXIS2_OM_ELEMENT)
 	{
 		(*node)->parent = parent;
-		axis2_om_node_add_child(parent,*node);
+		axis2_om_node_add_child(environment, parent,*node);
 	}
     
     /* operations */
