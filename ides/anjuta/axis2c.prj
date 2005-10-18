@@ -70,8 +70,6 @@ module.include.files=\
 	include/axis2.h\
 	include/axis2_description_param_include.h\
 	include/axis2_engine_config.h\
-	include/axis2_errno.h\
-	include/axis2_module_description.h\
 	include/axis2_om_attribute.h\
 	include/axis2_om_comment.h\
 	include/axis2_om_doctype.h\
@@ -80,12 +78,9 @@ module.include.files=\
 	include/axis2_om_namespace.h\
 	include/axis2_om_processing_instruction.h\
 	include/axis2_om_text.h\
-	include/axis2_operation_description.h\
-	include/axis2_parameter.h\
 	include/axis2_qname.h\
-	include/axis2_service_description.h\
-	include/axis2_servicegroup_description.h\
-	include/axis2_stax_ombuilder.h\
+	include/axis2_om_stax_builder.h\
+	include/axis2c.h\
 	include/axis2_om_node.h\
 	include/axis2_environment.h\
 	include/axis2_allocator.h\
@@ -101,7 +96,24 @@ module.include.files=\
 	modules/util/test/util_hash_test.h\
 	modules/util/test/util_log_test.h\
 	modules/util/test/util_stream_test.h\
-	modules/util/test/util_test.h
+	modules/util/test/util_test.h\
+	modules/xml/guththila/src/guththila_attribute.h\
+	modules/xml/guththila/src/guththila_buffer.h\
+	modules/xml/guththila/src/guththila_depth.h\
+	modules/xml/guththila/src/guththila_errno.h\
+	modules/xml/guththila/src/guththila_namespace.h\
+	modules/xml/guththila/src/guththila_reader.h\
+	modules/xml/guththila/src/guththila_stack.h\
+	modules/xml/guththila/src/guththila_token.h\
+	modules/xml/guththila/src/guththila_unicode.h\
+	modules/xml/guththila/src/guththila_xml_stream_writer.h\
+	modules/xml/guththila/src/guththila_xml_pull_parser.h\
+	include/axis2_description_module.h\
+	include/axis2_description_operation.h\
+	include/axis2_description_parameter.h\
+	include/axis2_description_service.h\
+	include/axis2_description_servicegroup.h\
+	modules/core/description/test/description_test.h
 
 module.source.name=.
 module.source.type=
@@ -109,28 +121,29 @@ module.source.files=\
 	modules/common/src/axis2.c\
 	modules/core/description/src/axis2_description_param_include.c\
 	modules/core/description/src/axis2_module_description.c\
-	modules/core/description/src/axis2_operation_description.c\
-	modules/core/description/src/axis2_parameter.c\
-	modules/core/description/src/axis2_service_description.c\
-	modules/core/description/src/axis2_servicegroup_description.c\
 	modules/core/engine/src/axis2_engine_config.c\
 	modules/core/description/test/description_test.c\
 	modules/common/test/common_test.c\
 	modules/core/engine/test/engine_test.c\
+	modules/xml/guththila/src/buffer.c\
 	modules/xml/guththila/src/guththila_xml_stream_writer.c\
+	modules/xml/guththila/src/main.c\
+	modules/xml/guththila/src/reader.c\
+	modules/xml/guththila/src/stack.c\
+	modules/xml/guththila/src/token.c\
+	modules/xml/guththila/src/unicode.c\
+	modules/xml/guththila/src/guththila_xml_pull_parser.c\
 	modules/xml/om/src/axis2_om_attribute.c\
 	modules/xml/om/src/axis2_om_comment.c\
 	modules/xml/om/src/axis2_om_doctype.c\
 	modules/xml/om/src/axis2_om_document.c\
 	modules/xml/om/src/axis2_om_element.c\
 	modules/xml/om/src/axis2_om_namespace.c\
-	modules/xml/om/src/axis2_om_output.c\
 	modules/xml/om/src/axis2_om_processing_instruction.c\
 	modules/xml/om/src/axis2_om_text.c\
 	modules/xml/om/src/axis2_qname.c\
-	modules/xml/om/src/axis2_stax_ombuilder.c\
+	modules/xml/om/src/axis2_om_stax_builder.c\
 	modules/xml/om/src/axis2_om_node.c\
-	modules/xml/guththila/src/guththila_xml_pull_parser.c\
 	modules/util/src/axis2_allocator.c\
 	modules/util/src/axis2_environment.c\
 	modules/util/src/axis2_error.c\
@@ -138,6 +151,7 @@ module.source.files=\
 	modules/util/src/axis2_log.c\
 	modules/util/src/axis2_stream.c\
 	modules/util/src/axis2_string.c\
+	modules/util/test/hash_test.c\
 	modules/util/test/main.c\
 	modules/util/test/util_error_test.c\
 	modules/util/test/util_hash_test.c\
@@ -148,22 +162,12 @@ module.source.files=\
 	modules/test/util/test_util.c\
 	modules/test/common/test_common.c\
 	modules/test/om/src/test_om.c\
-	modules/xml/guththila/src/guththila_attribute.h\
-	modules/xml/guththila/src/guththila_buffer.c\
-	modules/xml/guththila/src/guththila_buffer.h\
-	modules/xml/guththila/src/guththila_depth.h\
-	modules/xml/guththila/src/guththila_errno.h\
-	modules/xml/guththila/src/guththila_main.c\
-	modules/xml/guththila/src/guththila_namespace.h\
-	modules/xml/guththila/src/guththila_reader.c\
-	modules/xml/guththila/src/guththila_reader.h\
-	modules/xml/guththila/src/guththila_stack.c\
-	modules/xml/guththila/src/guththila_stack.h\
-	modules/xml/guththila/src/guththila_token.c\
-	modules/xml/guththila/src/guththila_token.h\
-	modules/xml/guththila/src/guththila_unicode.c\
-	modules/xml/guththila/src/guththila_unicode.h\
-	modules/xml/guththila/src/guththila_xml_pull_parser.h
+	modules/core/description/src/axis2_description_module.c\
+	modules/core/description/src/axis2_description_operation.c\
+	modules/core/description/src/axis2_description_parameter.c\
+	modules/core/description/src/axis2_description_service.c\
+	modules/core/description/src/axis2_description_servicegroup.c\
+	modules/core/description/test/main.c
 
 module.pixmap.name=.
 module.pixmap.type=
