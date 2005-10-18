@@ -35,10 +35,15 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+target_triplet = @target@
 subdir = modules
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/conftools/libtool.m4 \
+	$(top_srcdir)/conftools/libtool.m4 \
+	$(top_srcdir)/conftools/ac_c_bigendian_cross.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -54,7 +59,7 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	uninstall-recursive
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = $(SUBDIRS)
+DIST_SUBDIRS = util common xml core test
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMDEP_FALSE = @AMDEP_FALSE@
@@ -68,6 +73,14 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+COND_CORE_FALSE = @COND_CORE_FALSE@
+COND_CORE_TRUE = @COND_CORE_TRUE@
+COND_GUTHTHILA_FALSE = @COND_GUTHTHILA_FALSE@
+COND_GUTHTHILA_TRUE = @COND_GUTHTHILA_TRUE@
+COND_TEST_FALSE = @COND_TEST_FALSE@
+COND_TEST_TRUE = @COND_TEST_TRUE@
+COND_XML_FALSE = @COND_XML_FALSE@
+COND_XML_TRUE = @COND_XML_TRUE@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
@@ -151,8 +164,17 @@ program_transform_name = @program_transform_name@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
+target = @target@
 target_alias = @target_alias@
-SUBDIRS = util common xml core test
+target_cpu = @target_cpu@
+target_os = @target_os@
+target_vendor = @target_vendor@
+@COND_XML_TRUE@MAYBE_XML = xml
+@COND_CORE_TRUE@MAYBE_CORE = core
+@COND_TEST_TRUE@MAYBE_TEST = test
+
+#SUBDIRS = util common xml core test
+SUBDIRS = util common $(MAYBE_XML) $(MAYBE_CORE)  $(MAYBE_TEST)
 all: all-recursive
 
 .SUFFIXES:
@@ -461,6 +483,7 @@ uninstall-info: uninstall-info-recursive
 	mostlyclean-recursive pdf pdf-am ps ps-am tags tags-recursive \
 	uninstall uninstall-am uninstall-info-am
 
+#SUBDIRS = util common test
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

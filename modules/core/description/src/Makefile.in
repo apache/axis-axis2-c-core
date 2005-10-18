@@ -38,10 +38,15 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+target_triplet = @target@
 subdir = modules/core/description/src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/conftools/libtool.m4 \
+	$(top_srcdir)/conftools/libtool.m4 \
+	$(top_srcdir)/conftools/ac_c_bigendian_cross.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -51,9 +56,9 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libdescription_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libdescription_la_OBJECTS = axis2_description_param_include.lo \
-	axis2_operation_description.lo axis2_service_description.lo \
-	axis2_module_description.lo axis2_parameter.lo \
-	axis2_servicegroup_description.lo
+	axis2_description_operation.lo axis2_description_service.lo \
+	axis2_description_module.lo axis2_description_parameter.lo \
+	axis2_description_servicegroup.lo
 libdescription_la_OBJECTS = $(am_libdescription_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -83,6 +88,14 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+COND_CORE_FALSE = @COND_CORE_FALSE@
+COND_CORE_TRUE = @COND_CORE_TRUE@
+COND_GUTHTHILA_FALSE = @COND_GUTHTHILA_FALSE@
+COND_GUTHTHILA_TRUE = @COND_GUTHTHILA_TRUE@
+COND_TEST_FALSE = @COND_TEST_FALSE@
+COND_TEST_TRUE = @COND_TEST_TRUE@
+COND_XML_FALSE = @COND_XML_FALSE@
+COND_XML_TRUE = @COND_XML_TRUE@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
@@ -166,12 +179,24 @@ program_transform_name = @program_transform_name@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
+target = @target@
 target_alias = @target_alias@
+target_cpu = @target_cpu@
+target_os = @target_os@
+target_vendor = @target_vendor@
 noinst_LTLIBRARIES = libdescription.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libdescription_la_SOURCES = axis2_description_param_include.c axis2_operation_description.c axis2_service_description.c axis2_module_description.c axis2_parameter.c axis2_servicegroup_description.c
+libdescription_la_SOURCES = axis2_description_param_include.c \
+                            axis2_description_operation.c \
+                            axis2_description_service.c \
+                            axis2_description_module.c \
+                            axis2_description_parameter.c \
+                            axis2_description_servicegroup.c
+
 libdescription_la_LIBADD = $(LDFLAGS)
-INCLUDES = -I$(APR_HOME)/include/apr-1 -I${CUTEST_HOME}/include -I../../../xml/guththila/src -I../../../../include 
+INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
+            -I$(top_builddir)/modules/xml/guththila/src  
+
 all: all-am
 
 .SUFFIXES:
@@ -223,12 +248,12 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_description_module.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_description_operation.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_description_param_include.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_module_description.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_operation_description.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_parameter.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_service_description.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_servicegroup_description.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_description_parameter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_description_service.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_description_servicegroup.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

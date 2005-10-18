@@ -38,10 +38,15 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+target_triplet = @target@
 subdir = modules/xml/om/src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/conftools/libtool.m4 \
+	$(top_srcdir)/conftools/libtool.m4 \
+	$(top_srcdir)/conftools/ac_c_bigendian_cross.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -92,6 +97,14 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+COND_CORE_FALSE = @COND_CORE_FALSE@
+COND_CORE_TRUE = @COND_CORE_TRUE@
+COND_GUTHTHILA_FALSE = @COND_GUTHTHILA_FALSE@
+COND_GUTHTHILA_TRUE = @COND_GUTHTHILA_TRUE@
+COND_TEST_FALSE = @COND_TEST_FALSE@
+COND_TEST_TRUE = @COND_TEST_TRUE@
+COND_XML_FALSE = @COND_XML_FALSE@
+COND_XML_TRUE = @COND_XML_TRUE@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
@@ -175,7 +188,11 @@ program_transform_name = @program_transform_name@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
+target = @target@
 target_alias = @target_alias@
+target_cpu = @target_cpu@
+target_os = @target_os@
+target_vendor = @target_vendor@
 lib_LTLIBRARIES = libom.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libom_la_SOURCES = axis2_om_attribute.c axis2_om_document.c axis2_om_node.c axis2_om_text.c axis2_om_comment.c axis2_om_element.c axis2_om_output.c axis2_qname.c axis2_om_doctype.c axis2_om_namespace.c axis2_om_processing_instruction.c axis2_stax_ombuilder.c

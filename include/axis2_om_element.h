@@ -18,13 +18,12 @@
 #define AXIS2_OM_ELEMENT_H
 
 #include <axis2_om_namespace.h>
+#include <axis2_stax_ombuilder.h>
 #include <axis2_om_attribute.h>
 #include <axis2_om_output.h>
 #include <axis2_om_node.h>
-#include <apr.h>
-#include <apr_hash.h>
 
-
+typedef struct axis2_om_element_s axis2_om_element_t;
 
 struct axis2_om_element_s{
 	axis2_om_namespace_t *ns;			/* current namespace*/
@@ -36,7 +35,7 @@ struct axis2_om_element_s{
 
 
 /*
-*	Create an om element using localname and namespace and parent
+*Create an om element using localname and namespace and parent
 *@param localname can't be null
 *@param ns   namespace can be null
 *@param parent can be null

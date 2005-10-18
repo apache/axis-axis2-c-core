@@ -1,2 +1,2 @@
 SUBDIRS = modules
-EXTRA_DIST = docs lib bin Doxyfile
+include_HEADERS=$(top_builddir)/include/*.h

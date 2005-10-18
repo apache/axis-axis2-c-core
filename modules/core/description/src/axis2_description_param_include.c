@@ -16,132 +16,165 @@
  
 #include <axis2_description_param_include.h>
 
-static apr_pool_t *om_pool;
+/** @struct axis2_description_param_include
+  * @brief DESCRIPTION param_include struct
+  *	Holder for parameters
+  *  
+*/  
+struct axis2_description_param_include_s
+{
+	axis2_description_param_include_ops_t *ops;
+    axis2_hash_t *params;
+    axis2_bool_t is_locked;	
+};
 
-int axis2_description_param_include_add_parameter
-    (axis2_description_param_include_t *param_include,
-     axis2_parameter_t * param);
+/* Function prototypes */
+
+axis2_status_t axis2_description_param_include_ops_free 
+	(axis2_description_param_include_t *param_include);
+
+axis2_status_t axis2_description_param_include_ops_add_parameter
+    (axis2_environment_t *environment
+	, axis2_description_param_include_t *param_include
+    , const axis2_description_param_t *param);
 	 
-axis2_parameter_t *axis2_description_param_include_get_parameter
-    (axis2_description_param_include_t *param_include, char *name);
+axis2_description_param_t *axis2_description_param_include_ops_get_parameter
+    (axis2_environment_t *env, axis2_description_param_include_t *param_include
+	, const axis2_char_t *name);
 
-/* To get all the parameters in a given description */
-apr_hash_t *axis2_description_param_include_get_parameters
-    (axis2_description_param_include_t *param_include);
+axis2_hash_t *axis2_description_param_include_ops_get_parameters
+    (axis2_environment_t *env
+	, axis2_description_param_include_t *param_include);
 
-/* To check whether the paramter is locked at any level */
-int axis2_description_param_include_is_parameter_locked
-    (axis2_description_param_include_t *param_include, char *param_name);
-	 
-axis2_description_param_include_t *axis2_description_param_include_create ()
+axis2_status_t axis2_description_param_include_ops_is_parameter_locked
+    (axis2_environment_t *env, axis2_description_param_include_t *param_include
+	, const axis2_char_t *param_name);
+
+/* End of function prototypes */
+
+axis2_description_param_include_ops_t *axis2_description_param_include_get_ops
+		(axis2_environment_t *env
+		, axis2_description_param_include_t *param_include)
+{
+	if(!param_include)
+	{
+		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return NULL;
+	}
+	return param_include->ops;
+}
+
+axis2_description_param_include_t *axis2_description_param_include_create (
+		axis2_environment_t *env)
 {
 	axis2_description_param_include_t *param_include = 
 		(axis2_description_param_include_t *)
 		malloc(sizeof(axis2_description_param_include_t));
-	if(param_include)
+	if(!param_include)
 	{
-		axis2_description_param_include_ops_t *ops = 
-			malloc(sizeof(axis2_description_param_include_ops_t));
-		if(ops)
-		{
-			param_include->ops->add_parameter = 
-				(axis2_description_param_include_add_parameter_t) 
-						axis2_description_param_include_add_parameter;
-			param_include->ops->get_parameter = 
-				(axis2_description_param_include_get_parameter_t) 
-						axis2_description_param_include_get_parameter;
-			param_include->ops->get_parameters = 
-				(axis2_description_param_include_get_parameters_t) 
-						axis2_description_param_include_get_parameters;
-			param_include->ops->is_parameter_locked = 
-				(axis2_description_param_include_is_parameter_locked_t) 
-						axis2_description_param_include_is_parameter_locked;
-			
-			apr_pool_create (&om_pool, NULL);
-			param_include->parameters = 
-				(apr_hash_t *) axis2_apr_hash_make (om_pool);
-			if(param_include->parameters)
-			{
-				
-				param_include->is_locked = FALSE;
-				return param_include;
-			}
-			else
-				fprintf(stderr, "*** error_code:%d, %s\n",
-					AXIS2_ERROR_NO_MEMORY,
-					"AXIS2_ERROR_NO_MEMORY");
-		}else
-		{
-			fprintf(stderr, "*** error_code:%d, %s\n", 
-					AXIS2_ERROR_NO_MEMORY,
-			 		"AXIS2_ERROR_NO_MEMORY");
-		}
-		
+		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		return NULL;
 	}
-	else
-		fprintf(stderr, "*** error_code:%d, %s\n", 
-			AXIS2_ERROR_NO_MEMORY
-			, "AXIS2_ERROR_NO_MEMORY");
-	
-	
-	return NULL;
+	axis2_description_param_include_ops_t *ops = 
+		malloc(sizeof(axis2_description_param_include_ops_t));
+	if(!ops)
+	{
+		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		return NULL;
+	}
+	ops->free = (axis2_description_param_include_free_t) 
+				axis2_description_param_include_ops_free;
+	ops->add_parameter = (axis2_description_param_include_add_parameter_t) 
+				axis2_description_param_include_ops_add_parameter;
+	ops->get_parameter = (axis2_description_param_include_get_parameter_t) 
+				axis2_description_param_include_ops_get_parameter;
+	ops->get_parameters = (axis2_description_param_include_get_parameters_t) 
+				axis2_description_param_include_ops_get_parameters;
+	ops->is_parameter_locked = (axis2_description_param_include_is_parameter_locked_t) 
+				axis2_description_param_include_ops_is_parameter_locked;
+	param_include->ops = ops;
+				
+	param_include->params = axis2_hash_make (env);				
+	if(!param_include->params)
+	{
+		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		return NULL;			
+	}	
+	param_include->is_locked = AXIS2_FALSE;
+	return param_include;
 }
 
-int axis2_description_param_include_free (axis2_description_param_include_t
-    *param_include)
+axis2_status_t axis2_description_param_include_ops_free 
+		(axis2_description_param_include_t *param_include)
 {
 	if(param_include)
 		free(param_include);
+	return AXIS2_SUCCESS;
 }
 
-int axis2_description_param_include_add_parameter
-    (axis2_description_param_include_t *param_include,
-     axis2_parameter_t * param)
+axis2_status_t axis2_description_param_include_ops_add_parameter
+    	(axis2_environment_t *env
+		, axis2_description_param_include_t *param_include
+    	, const axis2_description_param_t *param)
 {
-	if(param_include)
+	if(!param_include)
 	{
-		if (!(param_include->parameters))
-		{        
-            apr_pool_create (&om_pool, NULL);
-			param_include->parameters = 
-				(apr_hash_t *) axis2_apr_hash_make (om_pool);
-		}
-		if(param)
-		{
-			apr_hash_set (param_include->parameters, param->name,
-				APR_HASH_KEY_STRING, param);
-		}
+		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
 	}
-	fprintf(stderr, "*** error_code:%d, %s\n"
-		, AXIS2_ERROR_INVALID_NULL_PARAMETER
-		, "AXIS2_ERROR_INVALID_NULL_PARAMETER");
+	if(!param)
+	{
+		return AXIS2_ERROR_INVALID_NULL_PARAMETER;	
+	}
+	if (!(param_include->params))
+	{                    
+		param_include->params = axis2_hash_make (env);
+	}	
+	axis2_hash_set (param_include->params		
+		, axis2_description_param_get_name(env, param)
+		, AXIS2_HASH_KEY_STRING, param);
+	
+	return AXIS2_SUCCESS;
 
 }
 
-axis2_parameter_t *axis2_description_param_include_get_parameter
-    (axis2_description_param_include_t * param_include, char *name)
+axis2_description_param_t *axis2_description_param_include_ops_get_parameter
+    	(axis2_environment_t* env
+		, axis2_description_param_include_t *param_include
+		, const axis2_char_t *name)
 {
-	if(param_include)
-		return (axis2_parameter_t *)(apr_hash_get 
-		(param_include->parameters, strdup(name), APR_HASH_KEY_STRING));
-	return NULL;
+	if(!param_include)
+	{
+		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return NULL;
+	}
+	return (axis2_description_param_t *)(axis2_hash_get 
+		(param_include->params, env->string->axis2_string_strdup(name)
+		, AXIS2_HASH_KEY_STRING));
 }
 
-/* To get all the parameters in a given description */
-apr_hash_t *axis2_descriptin_param_include_get_parameters
-    (axis2_description_param_include_t * param_include)
+axis2_hash_t *axis2_descriptin_param_include_get_parameters
+    	(axis2_environment_t *env
+		, axis2_description_param_include_t * param_include)
 {
-	if(param_include)
-		return param_include->parameters;
-	return NULL;
+	if(!param_include)
+	{
+		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return NULL;
+	}
+	return param_include->params;
 }
 
-/* To check whether the paramter is locked at any level */
-int axis2_description_param_include_is_parameter_locked
-    (axis2_description_param_include_t * param_include, char *param_name)
+axis2_status_t axis2_description_param_include_ops_is_parameter_locked
+    	(axis2_environment_t *env
+		, axis2_description_param_include_t *param_include
+		, const axis2_char_t *param_name)
 {
-	return ((axis2_parameter_t *)(apr_hash_get 
-		(param_include->parameters, strdup(param_name), 
-			APR_HASH_KEY_STRING)))->is_locked;
-	return FALSE;
+	axis2_description_param_t *param = (axis2_description_param_t *)
+		(axis2_hash_get (param_include->params
+		, axis2_strdup(env->string, param_name)
+		, AXIS2_HASH_KEY_STRING));
+	
+	if(!param)
+		return AXIS2_ERROR_INVALID_NULL_PARAMETER;	
+	return axis2_description_param_is_locked(env, param);
 }

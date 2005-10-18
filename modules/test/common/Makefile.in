@@ -38,19 +38,24 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = test_common$(EXEEXT)
+target_triplet = @target@
+prgbin_PROGRAMS = test_common$(EXEEXT)
 subdir = modules/test/common
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/conftools/libtool.m4 \
+	$(top_srcdir)/conftools/libtool.m4 \
+	$(top_srcdir)/conftools/ac_c_bigendian_cross.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/axis2_config.h
 CONFIG_CLEAN_FILES =
-am__installdirs = "$(DESTDIR)$(bindir)"
-binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
-PROGRAMS = $(bin_PROGRAMS)
+am__installdirs = "$(DESTDIR)$(prgbindir)"
+prgbinPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
+PROGRAMS = $(prgbin_PROGRAMS)
 am_test_common_OBJECTS = test_common.$(OBJEXT)
 test_common_OBJECTS = $(am_test_common_OBJECTS)
 am__DEPENDENCIES_1 =
@@ -91,6 +96,14 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+COND_CORE_FALSE = @COND_CORE_FALSE@
+COND_CORE_TRUE = @COND_CORE_TRUE@
+COND_GUTHTHILA_FALSE = @COND_GUTHTHILA_FALSE@
+COND_GUTHTHILA_TRUE = @COND_GUTHTHILA_TRUE@
+COND_TEST_FALSE = @COND_TEST_FALSE@
+COND_TEST_TRUE = @COND_TEST_TRUE@
+COND_XML_FALSE = @COND_XML_FALSE@
+COND_XML_TRUE = @COND_XML_TRUE@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
@@ -174,7 +187,12 @@ program_transform_name = @program_transform_name@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
+target = @target@
 target_alias = @target_alias@
+target_cpu = @target_cpu@
+target_os = @target_os@
+target_vendor = @target_vendor@
+prgbindir = $(prefix)/bin/system_test
 SUBDIRS = 
 AM_CPPFLAGS = $(CPPFLAGS)
 test_common_SOURCES = test_common.c
@@ -213,30 +231,30 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-install-binPROGRAMS: $(bin_PROGRAMS)
+install-prgbinPROGRAMS: $(prgbin_PROGRAMS)
 	@$(NORMAL_INSTALL)
-	test -z "$(bindir)" || $(mkdir_p) "$(DESTDIR)$(bindir)"
-	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	test -z "$(prgbindir)" || $(mkdir_p) "$(DESTDIR)$(prgbindir)"
+	@list='$(prgbin_PROGRAMS)'; for p in $$list; do \
 	  p1=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
 	  if test -f $$p \
 	     || test -f $$p1 \
 	  ; then \
 	    f=`echo "$$p1" | sed 's,^.*/,,;$(transform);s/$$/$(EXEEXT)/'`; \
-	   echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(binPROGRAMS_INSTALL) '$$p' '$(DESTDIR)$(bindir)/$$f'"; \
-	   $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(binPROGRAMS_INSTALL) "$$p" "$(DESTDIR)$(bindir)/$$f" || exit 1; \
+	   echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(prgbinPROGRAMS_INSTALL) '$$p' '$(DESTDIR)$(prgbindir)/$$f'"; \
+	   $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(prgbinPROGRAMS_INSTALL) "$$p" "$(DESTDIR)$(prgbindir)/$$f" || exit 1; \
 	  else :; fi; \
 	done
 
-uninstall-binPROGRAMS:
+uninstall-prgbinPROGRAMS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	@list='$(prgbin_PROGRAMS)'; for p in $$list; do \
 	  f=`echo "$$p" | sed 's,^.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/'`; \
-	  echo " rm -f '$(DESTDIR)$(bindir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(bindir)/$$f"; \
+	  echo " rm -f '$(DESTDIR)$(prgbindir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(prgbindir)/$$f"; \
 	done
 
-clean-binPROGRAMS:
-	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+clean-prgbinPROGRAMS:
+	@list='$(prgbin_PROGRAMS)'; for p in $$list; do \
 	  f=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
@@ -463,7 +481,7 @@ check: check-recursive
 all-am: Makefile $(PROGRAMS)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(bindir)"; do \
+	for dir in "$(DESTDIR)$(prgbindir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-recursive
@@ -492,7 +510,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-recursive
 
-clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
+clean-am: clean-generic clean-libtool clean-prgbinPROGRAMS \
+	mostlyclean-am
 
 distclean: distclean-recursive
 	-rm -rf ./$(DEPDIR)
@@ -510,9 +529,9 @@ info: info-recursive
 
 info-am:
 
-install-data-am:
+install-data-am: install-prgbinPROGRAMS
 
-install-exec-am: install-binPROGRAMS
+install-exec-am:
 
 install-info: install-info-recursive
 
@@ -538,24 +557,24 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS uninstall-info-am
+uninstall-am: uninstall-info-am uninstall-prgbinPROGRAMS
 
 uninstall-info: uninstall-info-recursive
 
 .PHONY: $(RECURSIVE_TARGETS) CTAGS GTAGS all all-am check check-am \
-	clean clean-binPROGRAMS clean-generic clean-libtool \
+	clean clean-generic clean-libtool clean-prgbinPROGRAMS \
 	clean-recursive ctags ctags-recursive distclean \
 	distclean-compile distclean-generic distclean-libtool \
 	distclean-recursive distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-binPROGRAMS \
-	install-data install-data-am install-exec install-exec-am \
-	install-info install-info-am install-man install-strip \
-	installcheck installcheck-am installdirs installdirs-am \
-	maintainer-clean maintainer-clean-generic \
+	html-am info info-am install install-am install-data \
+	install-data-am install-exec install-exec-am install-info \
+	install-info-am install-man install-prgbinPROGRAMS \
+	install-strip installcheck installcheck-am installdirs \
+	installdirs-am maintainer-clean maintainer-clean-generic \
 	maintainer-clean-recursive mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
 	pdf pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
-	uninstall-binPROGRAMS uninstall-info-am
+	uninstall-info-am uninstall-prgbinPROGRAMS
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

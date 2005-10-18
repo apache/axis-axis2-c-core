@@ -1,7 +1,13 @@
-bin_PROGRAMS = unit_test
+prgbindir=$(prefix)/bin/unit_test
+prgbin_PROGRAMS = main_unit_test_suite
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS)
-unit_test_SOURCES = main.c
+main_unit_test_suite_SOURCES = main.c
 
-unit_test_LDADD   =  $(LDFLAGS) ../../common/test/libtest_common.la ../../util/test/libtest_util.la ../../common/src/libcommon.la ../../util/src/libutil.la -ldl
-INCLUDES = -I${CUTEST_HOME}/include -I../../../include
+main_unit_test_suite_LDADD   =  $(LDFLAGS) \
+                    $(top_builddir)/modules/common/test/libtest_common.la \
+                    $(top_builddir)/modules/util/test/libtest_util.la \
+                    $(top_builddir)/modules/common/src/libcommon.la \
+                    $(top_builddir)/modules/util/src/libutil.la
+
+INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include

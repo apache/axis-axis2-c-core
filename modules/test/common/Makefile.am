@@ -1,4 +1,5 @@
-bin_PROGRAMS = test_common
+prgbindir=$(prefix)/bin/system_test
+prgbin_PROGRAMS = test_common
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS)
 test_common_SOURCES = test_common.c
