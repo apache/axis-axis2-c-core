@@ -16,11 +16,11 @@
 
 #include <axis2_om_namespace.h>
 
-axis2_status_t axis2_om_namespace_ops_free(axis2_environment_t *environment, axis2_om_namespace_t *om_namespace);
+axis2_status_t axis2_om_namespace_impl_free(axis2_environment_t *environment, axis2_om_namespace_t *om_namespace);
 
-axis2_bool_t axis2_om_namespace_ops_equals(axis2_environment_t *environment, axis2_om_namespace_t *ns1,	axis2_om_namespace_t *ns2);
+axis2_bool_t axis2_om_namespace_impl_equals(axis2_environment_t *environment, axis2_om_namespace_t *ns1,	axis2_om_namespace_t *ns2);
 
-axis2_status_t axis2_om_namespace_ops_serialize(axis2_environment_t *environment, axis2_om_namespace_t *om_namespace, axis2_om_output_t* om_output);
+axis2_status_t axis2_om_namespace_impl_serialize(axis2_environment_t *environment, axis2_om_namespace_t *om_namespace, axis2_om_output_t* om_output);
 
 axis2_om_namespace_t *axis2_om_namespace_create(axis2_environment_t *environment, 
         const axis2_char_t *uri,  const axis2_char_t *prefix)
@@ -77,16 +77,16 @@ axis2_om_namespace_t *axis2_om_namespace_create(axis2_environment_t *environment
 		return NULL;
     }
     
-    ns->ops->free = axis2_om_namespace_ops_free;
-    ns->ops->equals = axis2_om_namespace_ops_equals;
-    ns->ops->serialize = axis2_om_namespace_ops_serialize;
+    ns->ops->axis2_om_namespace_ops_free = axis2_om_namespace_impl_free;
+    ns->ops->axis2_om_namespace_ops_equals = axis2_om_namespace_impl_equals;
+    ns->ops->axis2_om_namespace_ops_serialize = axis2_om_namespace_impl_serialize;
     
     return ns;
 }
 
 
 
-axis2_status_t axis2_om_namespace_ops_free(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace)
+axis2_status_t axis2_om_namespace_impl_free(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace)
 {
     if (om_namespace)
 	{ 
@@ -110,9 +110,10 @@ axis2_status_t axis2_om_namespace_ops_free(axis2_environment_t *environment, str
         
 		axis2_free(environment->allocator, om_namespace);
 	}
+	return AXIS2_SUCCESS;
 }
 
-axis2_bool_t axis2_om_namespace_ops_equals(axis2_environment_t *environment, axis2_om_namespace_t * ns1,
+axis2_bool_t axis2_om_namespace_impl_equals(axis2_environment_t *environment, axis2_om_namespace_t * ns1,
 			       axis2_om_namespace_t * ns2)
 {
     int uris_differ = 0;
@@ -134,7 +135,7 @@ axis2_bool_t axis2_om_namespace_ops_equals(axis2_environment_t *environment, axi
     return (!uris_differ && !prefixes_differ);
 }
 
-axis2_status_t axis2_om_namespace_ops_serialize(axis2_environment_t *environment, axis2_om_namespace_t *om_namespace, axis2_om_output_t* om_output)
+axis2_status_t axis2_om_namespace_impl_serialize(axis2_environment_t *environment, axis2_om_namespace_t *om_namespace, axis2_om_output_t* om_output)
 {
     int status = AXIS2_SUCCESS;
     if (!om_namespace || !om_output)

@@ -26,9 +26,21 @@
 #include <axis2_environment.h>
 #include <axis2_om_output.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * @defgroup axis2_om_text OM Text
+ * @ingroup axis2_om 
+ * @{
+ */
+
+/** @cond */
 struct axis2_om_namespace;
 struct axis2_om_namespace_ops;
-	
+/** @endcond */
+
 /** \struct axis2_om_namespace_ops_t
     \brief OM Namespace operations struct
 
@@ -38,24 +50,27 @@ typedef struct axis2_om_namespace_ops
 {
   /**
     * Free an om_namespcae
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     * @return Status code    
     */
-    axis2_status_t (*free)(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace);
+    axis2_status_t (*axis2_om_namespace_ops_free)(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace);
 
   /**
     * Compares two namepsaces
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     * @param om_namespace1 first namespase
     * @param om_namespace2 second namespace to be compared
     * @return true if the two namespaces are equal, false otherwise	
     */
-    axis2_bool_t (*equals)(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace1, struct axis2_om_namespace *om_namespace2);
+    axis2_bool_t (*axis2_om_namespace_ops_equals)(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace1, struct axis2_om_namespace *om_namespace2);
 
   /**
     * Serialize operation
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     * @param om_output OM output handler to be used in serializing
     * @return Status code
     */
-    axis2_status_t (*serialize)(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace, axis2_om_output_t* om_output);
+    axis2_status_t (*axis2_om_namespace_ops_serialize)(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace, axis2_om_output_t* om_output);
 
 } axis2_om_namespace_ops_t;
 
@@ -88,8 +103,14 @@ typedef struct axis2_om_namespace {
 
 axis2_om_namespace_t *axis2_om_namespace_create(axis2_environment_t *environment, const axis2_char_t *uri,  const axis2_char_t *prefix);
 
-#define axis2_om_namespace_free(environment, om_namespace) ((om_namespace)->ops->free(environment, om_namespace))
-#define axis2_om_namespace_equals(environment, om_namespace1, om_namespace2) ((om_namespace1)->ops->equals(environment, om_namespace1, om_namespace2))
-#define axis2_om_namespace_serialize(environment, om_namespace,om_output) ((om_namespace)->ops->serialize(environment, om_namespace, om_output))
+#define axis2_om_namespace_free(environment, om_namespace) ((om_namespace)->ops->axis2_om_namespace_ops_free(environment, om_namespace))
+#define axis2_om_namespace_equals(environment, om_namespace1, om_namespace2) ((om_namespace1)->ops->axis2_om_namespace_ops_equals(environment, om_namespace1, om_namespace2))
+#define axis2_om_namespace_serialize(environment, om_namespace,om_output) ((om_namespace)->ops->axis2_om_namespace_ops_serialize(environment, om_namespace, om_output))
+
+/** @} */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif	/* AXIS2_OM_NAMESPACE */

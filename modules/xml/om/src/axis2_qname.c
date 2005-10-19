@@ -63,13 +63,7 @@ axis2_bool_t axis2_qname_impl_equals(axis2_environment_t *environment,axis2_qnam
         return AXIS2_FALSE;
 	}
 		
-	if(qn1 && qn2)
-	{
-		if( qn1 == qn2)
-		{
-			return AXIS2_TRUE;
-		}
-	}
+	
 	if(qn1->localpart && qn2->localpart)
 	{
 		localparts_differ = axis2_strcmp(environment->string  ,qn1->localpart , qn2->localpart);

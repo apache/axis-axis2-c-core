@@ -23,65 +23,125 @@
 #include <axis2_om_node.h>
 #include <axis2_hash.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * @defgroup axis2_om_element OM element
+ * @ingroup axis2_om 
+ * @{
+ */
+
+/** @cond */
+
 struct axis2_om_element;
 struct axis2_om_element_ops;
+/** @endcond */
+
+/** @struct axis2_om_element_ops
+    @brief OM element operations struct
+
+    Encapsulator struct for operations of axis2_om_element_t
+*/
+
 
 typedef struct axis2_om_element_ops
 {
     /*
     *	Find a namespace in the scope of the document 
     *	start to find from current element and go up the hierarchy
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param node om_node containing an instance of om_element
+    * @param uri namespace uri
+    * @param prefix namespace prefix
+    * @return axis2_om_namespace_t pointer
     */
     
     axis2_om_namespace_t *(*axis2_om_element_ops_find_namespace)( axis2_environment_t *environment, 
                 axis2_om_node_t *node, const axis2_char_t *uri,const axis2_char_t *prefix);
-    /*
-    declare a namespace in current element (in the scope of this element )
+   /**
+    * declare a namespace in current element (in the scope of this element )
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param element axis2_om_element_struct pointer
+    * @param ns pointer to a om_namespace 
+    * @return status code 
     */
     
     axis2_status_t (*axis2_om_element_ops_declare_namespace)(axis2_environment_t *environment, struct axis2_om_element *element, axis2_om_namespace_t *ns);
-    /**
-     *	find namespaces in the scope of current element
-     */
     
-    /*axis2_om_namespace_t *(*axis2_om_element_ops_find_declared_namespace)(axis2_environment_t *environment, struct axis2_om_element *element, const axis2_char_t *uri,const axis2_char_t *prefix);*/
     /**
-     *
+     * find namespaces in the scope of current element
+     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+     * @param element pointer to an om element
+     * @param prefix namespace prefix
+     * @param uri    namespace uri
+     */
+    axis2_om_namespace_t *(*axis2_om_element_ops_find_declared_namespace)(axis2_environment_t *environment, struct axis2_om_element *element, const axis2_char_t *uri,const axis2_char_t *prefix);
+    
+    /**
+     *  Finds a namespace using qname
+     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    
      */
     
     axis2_om_namespace_t *(*axis2_om_element_ops_find_namespace_with_qname)(axis2_environment_t *environment, axis2_om_node_t *node, axis2_qname_t *qname);
     
     /**
      *	add an attribute to current element
+     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    
      * @param ns namespace Optional
      */
     
     axis2_status_t (*axis2_om_element_ops_add_attribute)(axis2_environment_t *environment, struct axis2_om_element *element, axis2_om_attribute_t *attribute);
     
     /**
-     *	return the requested attribute
+     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+     * @param element OM Element
+     * @qname Qname  
+     * @return the requested attribute
      */
     
     axis2_om_attribute_t *(*axis2_om_element_ops_get_attribute)(axis2_environment_t *environment, struct axis2_om_element *element, axis2_qname_t *qname);
     
-    
-    /**
-     *	declare a namespace in the scope of this element
-     */
-    
-    /*axis2_om_namespace_t *(*axis2_om_element_ops_declare_namespace_with_ns_uri_prefix)(axis2_environment_t *environment, struct axis2_om_element *element, const axis2_char_t* uri,const axis2_char_t *prefix);*/
-    /**
+     /**
      *	Free Om element 
+     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+     * @param element OM element
+     * @returns status code  
      *
      */
     
     axis2_status_t (*axis2_om_element_ops_free)(axis2_environment_t *environment, struct axis2_om_element *element);
+  
+   /**
+    *   serialize operation
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param element OM Element
+    * @param om_output OM output
+    * @return status code  
+    */ 
     
     axis2_status_t (*axis2_om_element_ops_serialize_start_part)(axis2_environment_t *environment, struct axis2_om_element *element, axis2_om_output_t* om_output);
-    
+   
+   /**
+    *  serialize operation
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param element OM Element
+    * @param om_output OM output
+    * @return status code  
+    */  
     axis2_status_t (*axis2_om_element_ops_serialize_end_part)(axis2_environment_t *environment, struct axis2_om_element *element, axis2_om_output_t* om_output);
 
 } axis2_om_element_ops_t;
+
+/** \struct axis2_om_element
+    \brief OM element struct
+
+    Handles the XML element in OM
+*/
+
 
 typedef struct axis2_om_element{
 	axis2_om_element_ops_t *ops;
@@ -123,9 +183,16 @@ axis2_om_element_t *axis2_om_element_create_with_qname(axis2_environment_t *envi
 #define axis2_om_element_find_namespace_with_qname (environment, element, qname) ((element)->ops->axis2_om_element_ops_find_namespace_with_qname (environment, element, qname))
 #define axis2_om_element_add_attribute(environment, element, attribute) ((element)->ops->axis2_om_element_ops_add_attribute(environment, element, attribute))
 #define axis2_om_element_get_attribute(environment, element, qname) ((element)->ops->axis2_om_element_ops_get_attribute(environment, element, qname))
-#define axis2_om_element_free(environment, element) ((element)->ops->axis2_om_element_ops_free(environment, element);)
+#define axis2_om_element_find_declared_namespace(environment,element,uri,prefix) ((element)->ops->axis2_om_element_find_declared_namespace(environment,element,uri,prefix))
+#define axis2_om_element_free(environment, element) ((element)->ops->axis2_om_element_ops_free(environment, element))
 #define axis2_om_element_serialize_start_part(environment, element, om_output) ((element)->ops->axis2_om_element_ops_serialize_start_part(environment, element, om_output))
 #define axis2_om_element_serialize_end_part(environment, element, om_output) ((element)->ops->axis2_om_element_ops_serialize_end_part(environment, element, om_output))
 
+/** @} */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif	/* AXIS2_OM_ELEMENT_H */

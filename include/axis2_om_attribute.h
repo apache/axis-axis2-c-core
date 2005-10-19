@@ -26,10 +26,22 @@
 #include <axis2_om_namespace.h>
 #include <axis2_om_output.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+/**
+ * @defgroup axis2_om_text OM Text
+ * @ingroup axis2_om 
+ * @{
+ */
+
+/** @cond */
 
 struct axis2_om_attribute;
 struct axis2_om_attribute_ops;
+/** @endcond */
+    
 
 /**  \struct axis2_om_attribute
  *   \brief OM attribute operations struct
@@ -40,6 +52,7 @@ typedef struct axis2_om_attribute_ops
 {
    /**
     *  Free an axis2_om_attribute struct
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     *  @return Status code
     */
 
@@ -47,6 +60,7 @@ typedef struct axis2_om_attribute_ops
 
    /** 
     *  Creates and returns a qname struct for this attribute
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     *  @param om_attribute
     *  @return returns null on error 
     */
@@ -55,6 +69,7 @@ typedef struct axis2_om_attribute_ops
 
    /**
     * Serialize operation
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     * @param om_output OM output handler to be used in serializing
     * @return Status code
     */
@@ -63,7 +78,11 @@ typedef struct axis2_om_attribute_ops
 
 }axis2_om_attribute_ops_t;
 
-
+/** \struct axis2_om_attribute
+ *   \brief OM attribute struct
+ *
+ *   Handles the XML attribute in OM
+ */
 
 typedef struct axis2_om_attribute 
 {
@@ -80,7 +99,7 @@ typedef struct axis2_om_attribute
 
 /**
  * creates an om_attribute structure 
- * @environment axis2_environment
+ * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
  * @param localname The local part of the attribute name
  * @param value normalized attribute value
  * @param ns The namespace name, if any, of the attribute 
@@ -94,5 +113,10 @@ axis2_om_attribute_t *axis2_om_attribute_create(axis2_environment_t *environment
 #define axis2_om_attribute_get_qname(environment, om_attribute) ((om_attribute)->ops->axis2_om_attribute_ops_get_qname(environment, om_attribute))
 #define axis2_om_attribute_serialize(environment, om_attribute,om_ouput) ((om_attribute)->ops->axis2_om_attribute_ops_serialize(environment, om_attribute,om_output))
 
+/** @} */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* AXIS2_OM_ATTRIBUTE_H */

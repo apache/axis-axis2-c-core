@@ -26,7 +26,7 @@ axis2_status_t axis2_om_node_impl_insert_sibling_after(axis2_environment_t *envi
 axis2_status_t axis2_om_node_impl_insert_sibling_before(axis2_environment_t *environment ,axis2_om_node_t *node,axis2_om_node_t *node_to_insert);
 axis2_om_node_t *axis2_om_node_impl_get_first_child(axis2_environment_t *environment,axis2_om_node_t *parent_node);
 axis2_om_node_t *axis2_om_node_impl_get_next_child(axis2_environment_t *environment,axis2_om_node_t *parent_node);
-axis2_status_t *axis2_om_node_impl_serialize(axis2_environment_t *environment,axis2_om_node_t *om_node, axis2_om_output_t * om_output);
+axis2_status_t axis2_om_node_impl_serialize(axis2_environment_t *environment,axis2_om_node_t *om_node, axis2_om_output_t * om_output);
 
 
 axis2_om_node_t *axis2_om_node_create(axis2_environment_t *environment)
@@ -81,7 +81,7 @@ axis2_status_t axis2_om_node_impl_free(axis2_environment_t *environment,axis2_om
    }
    if(node->first_child)
    {
-        while(!(node->first_child))
+        while(node->first_child)
         {
             axis2_om_node_t *node = NULL;
             node = axis2_om_node_detach(environment,node->first_child);
@@ -112,6 +112,7 @@ axis2_status_t axis2_om_node_impl_free(axis2_environment_t *environment,axis2_om
    }
    
    axis2_free(environment->allocator,node->ops);
+   axis2_free(environment->allocator,node);
    return AXIS2_SUCCESS;
 }
 
@@ -291,14 +292,16 @@ axis2_om_node_t *axis2_om_node_impl_get_next_child(axis2_environment_t *environm
 	return NULL;
 }
 
-axis2_status_t *axis2_om_node_impl_serialize(axis2_environment_t *environment, axis2_om_node_t *om_node, axis2_om_output_t * om_output)
+axis2_status_t axis2_om_node_impl_serialize(axis2_environment_t *environment, axis2_om_node_t *om_node, axis2_om_output_t * om_output)
 {
    axis2_om_node_t *child_node = NULL;
     int status = AXIS2_SUCCESS;
     
     if (!om_node || !om_output)
-        return AXIS2_ERROR_INVALID_NULL_PARAMETER;
-    
+    {
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        return AXIS2_FAILURE;
+    }
     
     
     switch (om_node->node_type)

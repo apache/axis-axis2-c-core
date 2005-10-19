@@ -27,6 +27,9 @@ axis2_status_t axis2_om_element_impl_declare_namespace(axis2_environment_t *envi
 axis2_om_namespace_t *
 axis2_om_element_impl_find_namespace_with_qname (axis2_environment_t *environment, axis2_om_node_t * element,
                                               axis2_qname_t * qname);
+                                              
+axis2_om_namespace_t *axis2_om_element_impl_find_declared_namespace(axis2_environment_t *environment, struct axis2_om_element *element, const axis2_char_t *uri,const axis2_char_t *prefix);
+   
 axis2_status_t axis2_om_element_impl_add_attribute(axis2_environment_t *environment, struct axis2_om_element *element, axis2_om_attribute_t *attribute);
 axis2_om_attribute_t *axis2_om_element_impl_get_attribute(axis2_environment_t *environment, struct axis2_om_element *element, axis2_qname_t *qname);
 axis2_status_t axis2_om_element_impl_free(axis2_environment_t *environment, struct axis2_om_element *element);
@@ -113,6 +116,7 @@ axis2_om_element_create (axis2_environment_t *environment, axis2_om_node_t * par
     element->ops->axis2_om_element_ops_add_attribute = axis2_om_element_impl_add_attribute;
     element->ops->axis2_om_element_ops_get_attribute = axis2_om_element_impl_get_attribute;
     element->ops->axis2_om_element_ops_free = axis2_om_element_impl_free;
+    element->ops->axis2_om_element_ops_find_declared_namespace = axis2_om_element_impl_find_declared_namespace;
     element->ops->axis2_om_element_ops_serialize_start_part = axis2_om_element_impl_serialize_start_part;
     element->ops->axis2_om_element_ops_serialize_end_part = axis2_om_element_impl_serialize_end_part;
     
@@ -254,37 +258,39 @@ axis2_om_element_declare_namespace_with_ns_uri_prefix (axis2_om_node_t *
 *   can be used to retrive a prefix of a known namespace uri
 *
 */
-/*axis2_om_namespace_t *
-axis2_om_element_find_declared_namespace (axis2_om_node_t * element,
-                                          const axis2_char_t *uri, const axis2_char_t *prefix)
-{
-    void *ns = NULL;
-    axis2_hash_index_t *hashindex;
-    axis2_om_element_t *element = NULL;
 
-    if (!element || !ns
-        || element->element_type != AXIS2_OM_ELEMENT)
+
+axis2_om_namespace_t *axis2_om_element_impl_find_declared_namespace(axis2_environment_t *environment, struct axis2_om_element *element, const axis2_char_t *uri,const axis2_char_t *prefix)
+{
+    axis2_hash_index_t *hash_index = NULL;
+    void *ns=NULL;
+    if(!element || !(element->namespaces))
     {
         return NULL;
-    }
-
-    element = (axis2_om_element_t *) (element->data_element);
-    if (!prefix || strcmp (prefix, "") == 0)
+    } 
+    if(!prefix || axis2_strcmp(environment->string,prefix,"") == 0)
     {
-        for (hashindex = axis2_hash_first (om_pool, element->namespaces);
-             hashindex; hashindex = axis2_hash_next (hashindex))
+       for (hash_index = axis2_hash_first (environment, element->namespaces);
+             hash_index; hash_index = axis2_hash_next (hash_index))
         {
-            axis2_hash_this (hashindex, NULL, NULL, &ns);
-            if (strcmp (((axis2_om_namespace_t *) (ns))->uri, uri))
+            axis2_hash_this (hash_index, NULL, NULL, &ns);
+            if (axis2_strcmp (environment->string ,((axis2_om_namespace_t *) (ns))->uri, uri))
             {
                 return (axis2_om_namespace_t *) (ns);
             }
         }
+        return NULL;
     }
-    ns = axis2_hash_get (element->namespaces, prefix, APR_HASH_KEY_STRING);
-    return (axis2_om_namespace_t *) ns;
+    ns = axis2_hash_get(element->namespaces,prefix,AXIS2_HASH_KEY_STRING);
+    if(ns)
+        return (axis2_om_namespace_t*)ns;
+    else
+        return NULL;
+
 }
-*/
+
+
+
 
 /*
 *	This will find a namespace with the given uri and prefix, in the scope of the docuemnt.

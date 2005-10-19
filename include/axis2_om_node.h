@@ -23,10 +23,21 @@
  */
 #include <axis2_environment.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * @defgroup axis2_om_node  OM Node
+ * @ingroup axis2_om 
+ * @{
+ */
+
+/** @cond */
 struct axis2_om_node;
 struct axis2_om_node_ops;
 typedef struct axis2_om_output axis2_om_output_t;
-
+/** @endcond */
 
 /** 
  *   Types used in OM 
@@ -46,29 +57,34 @@ typedef enum axis2_om_types_t {
 } axis2_om_types_t;
 
 
-/**
- *  Encapsulator struct of axis2_om_node operations
- */    
+/** @struct axis2_om_node_ops
+    @brief OM Node operations struct
+
+    Encapsulator struct for operations of axis2_om_node_t
+*/  
  
 typedef struct axis2_om_node_ops
 {
    /**
-    *   Free an om node and its all children
-    *   @return status code
+    * Free an om node and its all children
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @return status code
     */
     axis2_status_t (*axis2_om_node_ops_free)(axis2_environment_t *environment,
         struct axis2_om_node *om_node);
    /**
     *   Add child node as child to parent
-    *   @param parent
-    *   @param child  
-    *   @return status code   
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param parent
+    * @param child  
+    * @return status code   
     */
     axis2_status_t (*axis2_om_node_ops_add_child)(axis2_environment_t *environment,
         struct axis2_om_node *parent,struct axis2_om_node *child);
     
     /**
      *  detach this node from the node and reset the links
+     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
      *  @return a pointer to detached node 
      */
     struct axis2_om_node *(*axis2_om_node_ops_detach)(axis2_environment_t *environment,
@@ -76,6 +92,7 @@ typedef struct axis2_om_node_ops
     
    /**
     *  Inserts a sibling node after the current node
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     *  @param current_node  
     *  @param node_to_insert the node that will be inserted 
     *  @return return status code 
@@ -84,8 +101,9 @@ typedef struct axis2_om_node_ops
         struct axis2_om_node *current_node,struct axis2_om_node *node_to_insert);
     
    /**
-    *	Inserts a sibling node after the current node
-    *	@param current_node   
+    * Inserts a sibling node after the current node
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    *  @param current_node   
     *  @param node_to_insert the node that will be inserted 
     *  @return status code
     */
@@ -95,6 +113,7 @@ typedef struct axis2_om_node_ops
         
    /**
     * set a parent node to a given node
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     * @param child_node  
     * @param parent the node that will be set as parent
     * @return status code
@@ -105,6 +124,7 @@ typedef struct axis2_om_node_ops
    
    /** get the first child of a node
     *  returns the first child node of this node
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     * @param 
     *  @return returns a pointer to first child if there is no child returns null
     */
@@ -113,6 +133,7 @@ typedef struct axis2_om_node_ops
    /**
     * get the next child of this node
     * This function should only be called after a call to get_first_child function
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     *  @param parent_node
     *  @return pointer to next child , if there isn't next child returns null
     */
@@ -121,7 +142,9 @@ typedef struct axis2_om_node_ops
         
    /**
     *   serialize operation of node
-    *   @returns status code
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.    
+    *    @returns status code
     */
     
     axis2_status_t (*axis2_om_node_ops_serialize)(axis2_environment_t *environment,
@@ -166,6 +189,7 @@ typedef struct axis2_om_node{
 
 /**
  * Create a node struct.
+ * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
  * @return a pointer to node struct instance null otherwise
  */
 
@@ -183,7 +207,11 @@ axis2_om_node_t *axis2_om_node_create(axis2_environment_t *environment);
 #define axis2_om_node_get_next_child(environment, om_node) ((om_node)->ops->axis2_om_node_ops_get_next_child(environment, om_node))
 #define axis2_om_node_serialize(environment, om_node, om_output) ((om_node)->ops->axis2_om_node_ops_serialize(environment, om_node, om_output))
 
+/** @} */
 
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif /* AXIS2_OM_NODE_H */
