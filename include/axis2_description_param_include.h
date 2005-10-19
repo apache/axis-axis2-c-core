@@ -52,19 +52,31 @@ extern "C"
  * @{
  */	
 
-/** @cond */
-struct axis2_description_param_include_ops_s;
-	
-struct axis2_description_param_include_s;
-/** @endcond */	
-	
-typedef struct axis2_description_param_include_ops_s 
-		axis2_description_param_include_ops_t;
-	
-typedef struct axis2_description_param_include_s 
-		axis2_description_param_include_t;
+/*************************** Function macros **********************************/
 
-/* Function pointers */
+#define axis2_description_param_include_free(env, param_include) \
+	(axis2_description_param_include_get_ops(env, param_include)->free (env, \
+	param_include))
+	
+#define axis2_description_param_include_add_param(env, param_include, \
+	param) (axis2_description_param_include_get_ops(env, \
+	param_include)->add_param (env, param_include, param))
+	
+#define axis2_description_param_include_get_param(env, param_include) \
+	(axis2_description_param_include_get_ops(env, \
+	param_include)->get_param (env, param_include))
+	
+#define axis2_description_param_include_get_params(env, param_include) \
+	(axis2_description_param_include_get_ops(env, \
+	param_include)->get_params (env, param_include))
+	
+#define axis2_description_param_include_is_param_locked(env, \
+	param_include) (axis2_description_param_include_get_ops(env, \
+	param_include)->is_param_locked (env, param_include))
+
+/*************************** End of function macros ***************************/
+
+/***************************** Function pointers ******************************/
 
 /** Deallocate memory
   * @return status code
@@ -77,7 +89,7 @@ typedef axis2_status_t (*axis2_description_param_include_free_t)
   * @param parameters
   * @return status code
   */
-typedef axis2_status_t (*axis2_description_param_include_add_parameter_t)
+typedef axis2_status_t (*axis2_description_param_include_add_param_t)
     	(axis2_environment_t *env
 		, axis2_description_param_include_t *param_include
      	,const axis2_description_param_t *param);
@@ -86,7 +98,7 @@ typedef axis2_status_t (*axis2_description_param_include_add_parameter_t)
   * @param parameter name
   * @return parameter
   */
-typedef axis2_description_param_t *(*axis2_description_param_include_get_parameter_t)
+typedef axis2_description_param_t *(*axis2_description_param_include_get_param_t)
     	(axis2_environment_t *env
 		, axis2_description_param_include_t *param_include
 		, const axis2_char_t *name);
@@ -94,7 +106,7 @@ typedef axis2_description_param_t *(*axis2_description_param_include_get_paramet
 /** To get all the parameters in a given description
   * @return all the parameters contained
   */
-typedef axis2_hash_t *(*axis2_description_param_include_get_parameters_t)
+typedef axis2_hash_t *(*axis2_description_param_include_get_params_t)
     	(axis2_environment_t *env
 		, axis2_description_param_include_t *param_include);
 
@@ -102,12 +114,13 @@ typedef axis2_hash_t *(*axis2_description_param_include_get_parameters_t)
   * @param parameter name
   * @return whether parameter is locked
   */
-typedef axis2_bool_t (*axis2_description_param_include_is_parameter_locked_t)
+typedef axis2_bool_t (*axis2_description_param_include_is_param_locked_t)
     	(axis2_environment_t *env
 		, axis2_description_param_include_t *param_include
 		, const axis2_char_t *param_name);
 
-/* End of function pointers */
+/****************************** End of function pointers **********************/
+
 /**
   * Paramter can be any thing it can be XML element with number of child 
   * elements
@@ -116,13 +129,13 @@ struct axis2_description_param_include_ops_s
 {
 	axis2_description_param_include_free_t free;
 	
-    axis2_description_param_include_add_parameter_t add_parameter;
+    axis2_description_param_include_add_param_t add_param;
 	
-	axis2_description_param_include_get_parameter_t get_parameter;
+	axis2_description_param_include_get_param_t get_param;
 	
-	axis2_description_param_include_get_parameters_t get_parameters;
+	axis2_description_param_include_get_params_t get_params;
 	
-	axis2_description_param_include_is_parameter_locked_t is_parameter_locked;
+	axis2_description_param_include_is_param_locked_t is_param_locked;
 	
 };
 

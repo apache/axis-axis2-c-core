@@ -121,7 +121,6 @@ module.source.type=
 module.source.files=\
 	modules/common/src/axis2.c\
 	modules/core/description/src/axis2_description_param_include.c\
-	modules/core/description/src/axis2_module_description.c\
 	modules/core/engine/src/axis2_engine_config.c\
 	modules/core/description/test/description_test.c\
 	modules/common/test/common_test.c\

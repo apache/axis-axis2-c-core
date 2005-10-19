@@ -28,29 +28,29 @@ struct axis2_description_param_include_s
     axis2_bool_t is_locked;	
 };
 
-/* Function prototypes */
+/************************* Function prototypes ********************************/
 
 axis2_status_t axis2_description_param_include_ops_free 
 	(axis2_description_param_include_t *param_include);
 
-axis2_status_t axis2_description_param_include_ops_add_parameter
+axis2_status_t axis2_description_param_include_ops_add_param
     (axis2_environment_t *environment
 	, axis2_description_param_include_t *param_include
     , const axis2_description_param_t *param);
 	 
-axis2_description_param_t *axis2_description_param_include_ops_get_parameter
+axis2_description_param_t *axis2_description_param_include_ops_get_param
     (axis2_environment_t *env, axis2_description_param_include_t *param_include
 	, const axis2_char_t *name);
 
-axis2_hash_t *axis2_description_param_include_ops_get_parameters
+axis2_hash_t *axis2_description_param_include_ops_get_params
     (axis2_environment_t *env
 	, axis2_description_param_include_t *param_include);
 
-axis2_status_t axis2_description_param_include_ops_is_parameter_locked
+axis2_status_t axis2_description_param_include_ops_is_param_locked
     (axis2_environment_t *env, axis2_description_param_include_t *param_include
 	, const axis2_char_t *param_name);
 
-/* End of function prototypes */
+/************************** End of function prototypes ************************/
 
 axis2_description_param_include_ops_t *axis2_description_param_include_get_ops
 		(axis2_environment_t *env
@@ -84,14 +84,14 @@ axis2_description_param_include_t *axis2_description_param_include_create (
 	}
 	ops->free = (axis2_description_param_include_free_t) 
 				axis2_description_param_include_ops_free;
-	ops->add_parameter = (axis2_description_param_include_add_parameter_t) 
-				axis2_description_param_include_ops_add_parameter;
-	ops->get_parameter = (axis2_description_param_include_get_parameter_t) 
-				axis2_description_param_include_ops_get_parameter;
-	ops->get_parameters = (axis2_description_param_include_get_parameters_t) 
-				axis2_description_param_include_ops_get_parameters;
-	ops->is_parameter_locked = (axis2_description_param_include_is_parameter_locked_t) 
-				axis2_description_param_include_ops_is_parameter_locked;
+	ops->add_param = (axis2_description_param_include_add_param_t) 
+				axis2_description_param_include_ops_add_param;
+	ops->get_param = (axis2_description_param_include_get_param_t) 
+				axis2_description_param_include_ops_get_param;
+	ops->get_params = (axis2_description_param_include_get_params_t) 
+				axis2_description_param_include_ops_get_params;
+	ops->is_param_locked = (axis2_description_param_include_is_param_locked_t) 
+				axis2_description_param_include_ops_is_param_locked;
 	param_include->ops = ops;
 				
 	param_include->params = axis2_hash_make (env);				
@@ -104,6 +104,8 @@ axis2_description_param_include_t *axis2_description_param_include_create (
 	return param_include;
 }
 
+/*************************** Start of operation impls *************************/
+
 axis2_status_t axis2_description_param_include_ops_free 
 		(axis2_description_param_include_t *param_include)
 {
@@ -112,7 +114,7 @@ axis2_status_t axis2_description_param_include_ops_free
 	return AXIS2_SUCCESS;
 }
 
-axis2_status_t axis2_description_param_include_ops_add_parameter
+axis2_status_t axis2_description_param_include_ops_add_param
     	(axis2_environment_t *env
 		, axis2_description_param_include_t *param_include
     	, const axis2_description_param_t *param)
@@ -137,7 +139,7 @@ axis2_status_t axis2_description_param_include_ops_add_parameter
 
 }
 
-axis2_description_param_t *axis2_description_param_include_ops_get_parameter
+axis2_description_param_t *axis2_description_param_include_ops_get_param
     	(axis2_environment_t* env
 		, axis2_description_param_include_t *param_include
 		, const axis2_char_t *name)
@@ -152,7 +154,7 @@ axis2_description_param_t *axis2_description_param_include_ops_get_parameter
 		, AXIS2_HASH_KEY_STRING));
 }
 
-axis2_hash_t *axis2_descriptin_param_include_get_parameters
+axis2_hash_t *axis2_descriptin_param_include_get_params
     	(axis2_environment_t *env
 		, axis2_description_param_include_t * param_include)
 {

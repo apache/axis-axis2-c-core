@@ -28,6 +28,7 @@
 #include <axis2_environment.h>
 #include <axis2_allocator.h>
 #include <axis2_string.h>
+#include <axis2_core.h>
 
 /*#include <axis2_om_element.h>*/
 
@@ -49,15 +50,36 @@ extern "C"
  * @{
  */	
  
-/** @cond */
-struct axis2_description_param_ops_s;
-struct axis2_description_param_s;
-/** @endcond */
+/************************* Start of function macros ***************************/
 
-typedef struct axis2_description_param_ops_s axis2_description_param_ops_t;
-typedef struct axis2_description_param_s axis2_description_param_t;
+#define axis2_description_param_free(env, param) \
+	(axis2_description_param_get_ops(env, param)->free (env, param))
 
-/* Function pointers */
+#define axis2_description_param_set_name(env, param, name) \
+	(axis2_description_param_get_ops(env, param)->set_name (env, param \
+	, name))
+
+#define axis2_description_param_get_name(env, param) \
+	(axis2_description_param_get_ops(env, param)->get_name (env, param))
+	
+#define axis2_description_param_set_value(env, param, value) \
+	(axis2_description_param_get_ops(env, param)->set_value (env \
+	, param, value))
+
+#define axis2_description_param_get_value(env, param) \
+	(axis2_description_param_get_ops(env, param)->get_value (env, param))
+	
+#define axis2_description_param_is_locked(env, param) \
+	(axis2_description_param_get_ops(env, param)->is_locked (env, param))
+	
+#define axis2_description_param_set_locked(env, param, locked) \
+	(axis2_description_param_get_ops(env, param)->set_locked (env \
+	, param, locked))
+	
+/*********************** End of function macros *******************************/
+
+/***********************Start of function pointers ****************************/
+
 /**
   * memeory deallocation operation
   * @return Status code
@@ -152,7 +174,7 @@ typedef axis2_status_t (*axis2_description_param_set_type_t)
 typedef int (*axis2_description_param_get_type_t) 
 	(axis2_environment_t *env, axis2_description_param_t *param);
 
-/* End of function pointers */
+/************************ End of function pointers ****************************/
 
 typedef enum axis2_parameter_types {
     AXIS2_PARAMETER_INVALID = -1,
@@ -204,31 +226,6 @@ axis2_description_param_t *axis2_description_param_create
 axis2_description_param_t *axis2_description_param_create_with_name_value 
 	(axis2_environment_t *env, const axis2_char_t *name
 	, const axis2_char_t *value);
-
-
-#define axis2_description_param_free(env, param) \
-	(axis2_description_param_get_ops(env, param)->free (env, param))
-
-#define axis2_description_param_set_name(env, param, name) \
-	(axis2_description_param_get_ops(env, param)->set_name (env, param \
-	, name))
-
-#define axis2_description_param_get_name(env, param) \
-	(axis2_description_param_get_ops(env, param)->get_name (env, param))
-	
-#define axis2_description_param_set_value(env, param, value) \
-	(axis2_description_param_get_ops(env, param)->set_value (env \
-	, param, value))
-
-#define axis2_description_param_get_value(env, param) \
-	(axis2_description_param_get_ops(env, param)->get_value (env, param))
-	
-#define axis2_description_param_is_locked(env, param) \
-	(axis2_description_param_get_ops(env, param)->is_locked (env, param))
-	
-#define axis2_description_param_set_locked(env, param, locked) \
-	(axis2_description_param_get_ops(env, param)->set_locked (env \
-	, param, locked))
 
 /** @} */
 

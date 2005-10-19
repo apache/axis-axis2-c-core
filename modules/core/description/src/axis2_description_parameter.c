@@ -32,7 +32,8 @@ struct axis2_description_param_s
     axis2_bool_t is_locked;
 };
 
-/* Function prototypes */
+/***************************** Function prototypes ****************************/
+
 axis2_status_t axis2_description_param_ops_free (axis2_environment_t *env
 	, axis2_description_param_t * param);
 
@@ -67,7 +68,7 @@ axis2_status_t axis2_description_param_ops_set_type (axis2_environment_t *env
 int axis2_description_param_ops_get_type (axis2_environment_t *env
 		, axis2_description_param_t * param);
 
-/* End of function prototypes */
+/************************** End of function prototypes ************************/
 
 axis2_description_param_ops_t *axis2_description_param_get_ops
 	(axis2_environment_t *env, axis2_description_param_t *param)
@@ -81,8 +82,9 @@ axis2_description_param_ops_t *axis2_description_param_get_ops
 	return (axis2_description_param_ops_t *) param->ops;	
 }
 
+
 axis2_description_param_t *axis2_description_param_create 
-	(axis2_environment_t *env)
+		(axis2_environment_t *env)
 {
 	axis2_description_param_t *param 
 	= (axis2_description_param_t *) axis2_malloc (env->allocator
@@ -122,41 +124,21 @@ axis2_description_param_t *axis2_description_param_create
 	param->is_locked = AXIS2_FALSE;
 	return param;	
 }	
-	
+
+
 axis2_description_param_t *axis2_description_param_create_with_name_value 
 		(axis2_environment_t *env, const axis2_char_t *name
 		, const axis2_char_t *value)
 {
 	
-	axis2_description_param_t *param 
-		= (axis2_description_param_t *) axis2_malloc (env->allocator
-		, sizeof(axis2_description_param_t));
+	
+	axis2_description_param_t *param = axis2_description_param_create(env);
 	if(!param)
 	{
 		/* set the error code*/
 		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
 	}
-	axis2_description_param_ops_t *ops
-		= (axis2_description_param_ops_t *) axis2_malloc (env->allocator
-		, sizeof(axis2_description_param_ops_t));
-	if(!ops)
-	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
-		axis2_free(env->allocator, param);	
-	}
-	ops->free = axis2_description_param_ops_free;
-	ops->set_name = axis2_description_param_ops_set_name;
-	ops->get_name = axis2_description_param_ops_get_name;
-	ops->set_value = axis2_description_param_ops_set_value;
-	ops->get_value = axis2_description_param_ops_get_value;
-	ops->is_locked = axis2_description_param_ops_is_locked;
-	ops->set_locked = axis2_description_param_ops_set_locked;
-	/*ops->set_param_element = axis2_description_param_ops_set_param_element;*/
-	ops->get_param_element = axis2_description_param_ops_get_param_element;
-	ops->set_type = axis2_description_param_ops_set_type;
-	ops->get_type = axis2_description_param_ops_get_type;
 	
-	param->ops = ops;	
 	param->name = axis2_strdup (env->string, name);
 	if(!param->name)
 	{
@@ -175,6 +157,8 @@ axis2_description_param_t *axis2_description_param_create_with_name_value
 	param->is_locked = AXIS2_FALSE;
 	return param;
 }
+
+/**********************Start of operation impls********************************/
 
 axis2_status_t axis2_description_param_ops_free (axis2_environment_t *env
 		,axis2_description_param_t * param)
