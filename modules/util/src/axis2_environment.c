@@ -18,10 +18,11 @@
 
 axis2_environment_t *axis2_environment_create(axis2_allocator_t *allocator, axis2_error_t *error, axis2_stream_t *stream, axis2_log_t *log, axis2_string_t *string)
 {
+    axis2_environment_t *environment;
     if (!allocator)
         return NULL;
 
-    axis2_environment_t *environment = (axis2_environment_t*)axis2_malloc(allocator, sizeof(axis2_environment_t));
+    environment = (axis2_environment_t*)axis2_malloc(allocator, sizeof(axis2_environment_t));
 
     if (!environment)
         return NULL;

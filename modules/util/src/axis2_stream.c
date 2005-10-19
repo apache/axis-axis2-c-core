@@ -22,9 +22,10 @@ int axis2_stream_ops_write(const void *buffer, size_t count);
 
 axis2_stream_t *axis2_stream_create(axis2_allocator_t* allocator, axis2_stream_ops_t* operations)
 {
+    axis2_stream_t *stream;
     if (!allocator)
         return NULL;
-    axis2_stream_t *stream = (axis2_stream_t*)axis2_malloc(allocator, sizeof(axis2_stream_t));
+    stream = (axis2_stream_t*)axis2_malloc(allocator, sizeof(axis2_stream_t));
 
     if (!stream)
         return NULL;
@@ -50,10 +51,11 @@ axis2_stream_t *axis2_stream_create(axis2_allocator_t* allocator, axis2_stream_o
 
 int axis2_stream_ops_read (void *buffer, size_t count)
 {
+    int i;
     if (!buffer)
         return -1;
 
-    int i = 0;
+    i = 0;
     for(i = 0; i < count -1; i++ )
     {
         ((axis2_char_t*)buffer)[i] = 'a';
@@ -64,10 +66,11 @@ int axis2_stream_ops_read (void *buffer, size_t count)
 
 int axis2_stream_ops_write(const void *buffer, size_t count)
 {
+    int i ;
     if (!buffer)
         return -1;
     
-    int i =0;
+    i =0;
     for(i = 0; i < count; i++)
         printf("%c", ((axis2_char_t*)buffer)[i]);
     return 0;

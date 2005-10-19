@@ -101,6 +101,7 @@ typedef struct axis2_om_text
 /**
  * Create a text struct and stores it in a node struct and returns a pointer
  * to the newly created text struct
+ * @param environment Environment. MUST  NOT be NULL, if NULL behaviour is undefined.
  * @param parent Parent of the new node. If null newly created node becomes a root node
  *          The parent element must be of type AXIS2_OM_ELEMENT
  * @param value Text value 

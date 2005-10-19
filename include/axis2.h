@@ -9,10 +9,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 /** @defgroup axis2 Axis2/C project
   *  @{
  */
 
 /** @} */ 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* AXIS2_H */

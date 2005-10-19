@@ -19,6 +19,11 @@
 
 #include <axis2_defines.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 typedef struct axis2_allocator
 {
     void *(*axis2_allocator_malloc)(size_t size);
@@ -39,5 +44,9 @@ axis2_allocator_t *
 #define axis2_malloc(allocator, size) ((allocator)->axis2_allocator_malloc(size))
 #define axis2_realloc(allocator, ptr, size) ((allocator)->axis2_allocator_realloc(ptr, size))
 #define axis2_free(allocator, ptr) ((allocator)->axis2_allocator_free(ptr))
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* AXIS2_ALLOCATOR_H */

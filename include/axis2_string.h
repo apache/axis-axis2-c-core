@@ -20,6 +20,10 @@
 #include <axis2_defines.h>
 #include <axis2_allocator.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct axis2_string
 {
     void* (*axis2_string_strdup)(const void *ptr);
@@ -38,5 +42,9 @@ axis2_string_t *
     
 #define axis2_strdup(string, ptr) ((string)->axis2_string_strdup(ptr))
 #define axis2_strcmp(string, s1, s2) ((string)->axis2_string_strcmp(s1, s2))
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* AXIS2_STRING_H */

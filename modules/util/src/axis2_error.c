@@ -25,10 +25,11 @@ axis2_char_t *axis2_error_ops_get_message()
 
 axis2_error_t *axis2_error_create(axis2_allocator_t* allocator)
 {
+    axis2_error_t *error;
     if (!allocator)
         return NULL;
     
-    axis2_error_t *error = (axis2_error_t*)axis2_malloc(allocator, sizeof(axis2_error_t ));
+    error = (axis2_error_t*)axis2_malloc(allocator, sizeof(axis2_error_t ));
 
     if (!error)
         return NULL;

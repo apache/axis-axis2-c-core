@@ -19,6 +19,10 @@
 
 #include <axis2_allocator.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct axis2_stream;
 struct axis2_stream_ops;
 
@@ -35,5 +39,9 @@ axis2_stream_t *axis2_stream_create(axis2_allocator_t* allocator, axis2_stream_o
 
 #define axis2_stream_read(stream, buffer, count) ((stream)->ops->axis2_stream_read(buffer, count))
 #define axis2_stream_write(stream, buffer, count) ((stream)->ops->axis2_stream_write(buffer, count))
+
+#ifdef __cplusplus
+}
+#endif
         
 #endif /* AXIS2_STREAM_H */

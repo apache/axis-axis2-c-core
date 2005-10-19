@@ -20,6 +20,10 @@
 #include <axis2_defines.h>
 #include <axis2_allocator.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct axis2_error;
 struct axis2_error_ops;
 
@@ -48,6 +52,10 @@ typedef enum axis2_error_codes {
     AXIS2_ERROR_INVALID_ITERATOR_STATE,
     AXIS2_ERROR_INVALID_NODE_TYPE
 } axis2_error_codes_t;
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif /* AXIS2_ERROR_H */

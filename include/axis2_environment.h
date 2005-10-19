@@ -23,10 +23,15 @@
 #include <axis2_log.h>
 #include <axis2_string.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct axis2_environment;
 struct axis2_environment_ops;
 
 typedef struct axis2_environment_ops {
+int test;
 } axis2_environment_ops_t;
 
 typedef struct axis2_environment {
@@ -39,5 +44,9 @@ typedef struct axis2_environment {
 } axis2_environment_t;
 
 axis2_environment_t *axis2_environment_create(axis2_allocator_t *allocator, axis2_error_t *error, axis2_stream_t *stream, axis2_log_t *log, axis2_string_t *string);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* AXIS2_ENVIRONMENT_H */

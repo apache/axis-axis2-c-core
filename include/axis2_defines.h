@@ -8,6 +8,10 @@
  
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef char axis2_char_t;
 typedef int axis2_bool_t;
 typedef int axis2_status_t;
@@ -15,5 +19,9 @@ typedef unsigned int axis2_ssize_t;
 
 #define AXIS2_TRUE 1
 #define AXIS2_FALSE 0
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* AXIS2_DEFINES_H */

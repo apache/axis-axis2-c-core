@@ -19,6 +19,10 @@
 
 #include <axis2_allocator.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum axis2_log_levels
 {
     AXIS2_LOG_DEBUG = 0,
@@ -48,5 +52,8 @@ axis2_log_t *axis2_log_create (axis2_allocator_t * allocator,
 
 #define axis2_log_write(log, buffer, count) ((log)->ops->write(buffer, count))
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* AXIS2_LOG_H */
