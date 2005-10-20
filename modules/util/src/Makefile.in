@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-SOURCES = $(libutil_la_SOURCES)
+SOURCES = $(libaxis2_util_la_SOURCES)
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -62,11 +62,11 @@ am__installdirs = "$(DESTDIR)$(libdir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libutil_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libutil_la_OBJECTS = axis2_hash.lo axis2_allocator.lo \
+libaxis2_util_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am_libaxis2_util_la_OBJECTS = axis2_hash.lo axis2_allocator.lo \
 	axis2_environment.lo axis2_error.lo axis2_stream.lo \
 	axis2_log.lo axis2_string.lo
-libutil_la_OBJECTS = $(am_libutil_la_OBJECTS)
+libaxis2_util_la_OBJECTS = $(am_libaxis2_util_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -78,8 +78,8 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libutil_la_SOURCES)
-DIST_SOURCES = $(libutil_la_SOURCES)
+SOURCES = $(libaxis2_util_la_SOURCES)
+DIST_SOURCES = $(libaxis2_util_la_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -191,9 +191,9 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
-lib_LTLIBRARIES = libutil.la
+lib_LTLIBRARIES = libaxis2_util.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libutil_la_SOURCES = axis2_hash.c \
+libaxis2_util_la_SOURCES = axis2_hash.c \
                         axis2_allocator.c \
                         axis2_environment.c \
                         axis2_error.c \
@@ -201,8 +201,8 @@ libutil_la_SOURCES = axis2_hash.c \
                         axis2_log.c \
                         axis2_string.c
 
-libutil_la_LIBADD = $(LDFLAGS)
-INCLUDES = -I../../../include -I${CUTEST_HOME}/include
+libaxis2_util_la_LIBADD = $(LDFLAGS)
+INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include
 all: all-am
 
 .SUFFIXES:
@@ -263,8 +263,8 @@ clean-libLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libutil.la: $(libutil_la_OBJECTS) $(libutil_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(libutil_la_LDFLAGS) $(libutil_la_OBJECTS) $(libutil_la_LIBADD) $(LIBS)
+libaxis2_util.la: $(libaxis2_util_la_OBJECTS) $(libaxis2_util_la_DEPENDENCIES) 
+	$(LINK) -rpath $(libdir) $(libaxis2_util_la_LDFLAGS) $(libaxis2_util_la_OBJECTS) $(libaxis2_util_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

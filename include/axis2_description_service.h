@@ -47,7 +47,47 @@ extern "C"
  */
 
 /**************************** Start of function macros ************************/
+	
+#define axis2_description_service_free(env, service_desc) \
+		(axis2_description_service_get_ops(env, service_desc)->free \
+		(env, service_desc));
 
+#define axis2_description_service_add_param(env, service_desc, param) \
+		(axis2_description_service_get_ops(env, service_desc)->add_param \
+		(env, service_desc, param));
+		
+#define axis2_description_service_get_param(env, service_desc) \
+		(axis2_description_service_get_ops(env, service_desc)->get_param \
+		(env, service_desc));
+		
+#define axis2_description_service_get_params(env, service_desc) \
+		(axis2_description_service_get_ops(env, service_desc)->get_params \
+		(env, service_desc));
+
+#define axis2_description_service_add_operation(env, service_desc, operation_desc) \
+		(axis2_description_service_get_ops(env, service_desc)->add_operation \
+		(env, service_desc, operation_desc));
+
+#define axis2_description_service_get_operation_with_qname(env, service_desc) \
+		(axis2_description_service_get_ops(env, service_desc)->get_operation_with_qname \
+		(env, service_desc));
+		
+#define axis2_description_service_get_operation_with_name(env, service_desc) \
+		(axis2_description_service_get_ops(env, service_desc)->get_operation_with_name \
+		(env, service_desc));
+
+#define axis2_description_service_get_operations(env, service_desc) \
+		(axis2_description_service_get_ops(env, service_desc)->get_operations \
+		(env, service_desc));
+		
+#define axis2_description_service_set_parent(env, service_desc \
+		, servicegroup_desc) (axis2_description_service_get_ops(env, \
+		service_desc)->set_parent (env, service_desc, servicegroup_desc));
+		
+#define axis2_description_service_get_parent(env, service_desc) \
+		(axis2_description_service_get_ops(env, service_desc)->get_parent \
+		(env, service_desc));
+		
 /**************************** End of function macros **************************/	
 /**************************** Function pointers *******************************/
 	

@@ -68,7 +68,7 @@ prglibLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(prglib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libtest_common_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/modules/common/src/libcommon.la
+	$(top_builddir)/modules/common/src/libaxis2_common.la
 am_libtest_common_la_OBJECTS = common_test.lo
 libtest_common_la_OBJECTS = $(am_libtest_common_la_OBJECTS)
 prgbinPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
@@ -76,7 +76,7 @@ PROGRAMS = $(prgbin_PROGRAMS)
 am_common_test_OBJECTS = main.$(OBJEXT)
 common_test_OBJECTS = $(am_common_test_OBJECTS)
 common_test_DEPENDENCIES = $(am__DEPENDENCIES_1) libtest_common.la \
-	$(top_builddir)/modules/common/src/libcommon.la
+	$(top_builddir)/modules/common/src/libaxis2_common.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -210,12 +210,12 @@ AM_CPPFLAGS = $(CPPFLAGS)
 libtest_common_la_SOURCES = common_test.c
 include_HEADERS = $(top_builddir)/modules/common/test/*.h
 libtest_common_la_LIBADD = $(LDFLAGS) \
-                    $(top_builddir)/modules/common/src/libcommon.la
+                    $(top_builddir)/modules/common/src/libaxis2_common.la
 
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include
 common_test_SOURCES = main.c
 common_test_LDADD = $(LDFLAGS) libtest_common.la \
-                    $(top_builddir)/modules/common/src/libcommon.la
+                    $(top_builddir)/modules/common/src/libaxis2_common.la
 
 all: all-am
 

@@ -68,7 +68,7 @@ prglibLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(prglib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libtest_util_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/modules/util/src/libutil.la
+	$(top_builddir)/modules/util/src/libaxis2_util.la
 am_libtest_util_la_OBJECTS = util_hash_test.lo util_stream_test.lo \
 	util_log_test.lo util_error_test.lo util_test.lo
 libtest_util_la_OBJECTS = $(am_libtest_util_la_OBJECTS)
@@ -77,7 +77,7 @@ PROGRAMS = $(prgbin_PROGRAMS)
 am_util_test_OBJECTS = main.$(OBJEXT)
 util_test_OBJECTS = $(am_util_test_OBJECTS)
 util_test_DEPENDENCIES = $(am__DEPENDENCIES_1) libtest_util.la \
-	$(top_builddir)/modules/util/src/libutil.la
+	$(top_builddir)/modules/util/src/libaxis2_util.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -210,10 +210,10 @@ prglib_LTLIBRARIES = libtest_util.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libtest_util_la_SOURCES = util_hash_test.c util_stream_test.c util_log_test.c util_error_test.c util_test.c
 include_HEADERS = $(top_builddir)/modules/util/test/*.h
-libtest_util_la_LIBADD = $(LDFLAGS) $(top_builddir)/modules/util/src/libutil.la
+libtest_util_la_LIBADD = $(LDFLAGS) $(top_builddir)/modules/util/src/libaxis2_util.la
 INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include
 util_test_SOURCES = main.c
-util_test_LDADD = $(LDFLAGS) libtest_util.la  $(top_builddir)/modules/util/src/libutil.la
+util_test_LDADD = $(LDFLAGS) libtest_util.la  $(top_builddir)/modules/util/src/libaxis2_util.la
 all: all-am
 
 .SUFFIXES:

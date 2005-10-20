@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-SOURCES = $(libengine_la_SOURCES)
+SOURCES = $(libaxis2_engine_la_SOURCES)
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -54,10 +54,10 @@ CONFIG_HEADER = $(top_builddir)/axis2_config.h
 CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libengine_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libengine_la_OBJECTS = axis2_engine_config.lo \
+libaxis2_engine_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am_libaxis2_engine_la_OBJECTS = axis2_engine_config.lo \
 	axis2_engine_msg_receiver.lo
-libengine_la_OBJECTS = $(am_libengine_la_OBJECTS)
+libaxis2_engine_la_OBJECTS = $(am_libaxis2_engine_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -69,8 +69,8 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libengine_la_SOURCES)
-DIST_SOURCES = $(libengine_la_SOURCES)
+SOURCES = $(libaxis2_engine_la_SOURCES)
+DIST_SOURCES = $(libaxis2_engine_la_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -182,11 +182,11 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
-noinst_LTLIBRARIES = libengine.la
+noinst_LTLIBRARIES = libaxis2_engine.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libengine_la_SOURCES = axis2_engine_config.c axis2_engine_msg_receiver.c
-libengine_la_LIBADD = $(LDFLAGS)
-INCLUDES = -I$(APR_HOME)/include/apr-1 -I${CUTEST_HOME}/include -I../../../xml/guththila/src -I../../../../include 
+libaxis2_engine_la_SOURCES = axis2_engine_config.c axis2_engine_msg_receiver.c
+libaxis2_engine_la_LIBADD = $(LDFLAGS)
+INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/modules/xml/guththila/src -I$(top_builddir)/include 
 all: all-am
 
 .SUFFIXES:
@@ -229,8 +229,8 @@ clean-noinstLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libengine.la: $(libengine_la_OBJECTS) $(libengine_la_DEPENDENCIES) 
-	$(LINK)  $(libengine_la_LDFLAGS) $(libengine_la_OBJECTS) $(libengine_la_LIBADD) $(LIBS)
+libaxis2_engine.la: $(libaxis2_engine_la_OBJECTS) $(libaxis2_engine_la_DEPENDENCIES) 
+	$(LINK)  $(libaxis2_engine_la_LDFLAGS) $(libaxis2_engine_la_OBJECTS) $(libaxis2_engine_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

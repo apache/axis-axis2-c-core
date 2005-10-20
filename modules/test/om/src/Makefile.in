@@ -60,7 +60,7 @@ am_test_om_OBJECTS = test_om.$(OBJEXT)
 test_om_OBJECTS = $(am_test_om_OBJECTS)
 am__DEPENDENCIES_1 =
 test_om_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/modules/xml/om/src/libom.la \
+	$(top_builddir)/modules/xml/om/src/libaxis2_om.la \
 	$(top_builddir)/modules/xml/guththila/src/libguththila.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -197,11 +197,11 @@ prgbindir = $(prefix)/bin/system_test
 SUBDIRS = 
 AM_CPPFLAGS = $(CPPFLAGS) -DLINUX=2 -D_REENTRANT -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -g -O2 -pthread
 test_om_SOURCES = test_om.c
-test_om_LDADD = $(LDFLAGS) $(top_builddir)/modules/xml/om/src/libom.la \
+test_om_LDADD = $(LDFLAGS) $(top_builddir)/modules/xml/om/src/libaxis2_om.la \
                     $(top_builddir)/modules/xml/guththila/src/libguththila.la
 
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/xml/guththila/src -I${APR_HOME}/include/apr-1
+            -I$(top_builddir)/modules/xml/guththila/src
 
 all: all-recursive
 

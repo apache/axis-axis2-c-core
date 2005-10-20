@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-SOURCES = $(libom_la_SOURCES)
+SOURCES = $(libaxis2_om_la_SOURCES)
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -62,13 +62,13 @@ am__installdirs = "$(DESTDIR)$(libdir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libom_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libom_la_OBJECTS = axis2_om_attribute.lo axis2_om_document.lo \
+libaxis2_om_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am_libaxis2_om_la_OBJECTS = axis2_om_attribute.lo axis2_om_document.lo \
 	axis2_om_node.lo axis2_om_text.lo axis2_om_comment.lo \
 	axis2_om_element.lo axis2_om_output.lo axis2_qname.lo \
 	axis2_om_doctype.lo axis2_om_namespace.lo \
 	axis2_om_processing_instruction.lo axis2_om_stax_builder.lo
-libom_la_OBJECTS = $(am_libom_la_OBJECTS)
+libaxis2_om_la_OBJECTS = $(am_libaxis2_om_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -80,8 +80,8 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libom_la_SOURCES)
-DIST_SOURCES = $(libom_la_SOURCES)
+SOURCES = $(libaxis2_om_la_SOURCES)
+DIST_SOURCES = $(libaxis2_om_la_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -193,11 +193,22 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
-lib_LTLIBRARIES = libom.la
+lib_LTLIBRARIES = libaxis2_om.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libom_la_SOURCES = axis2_om_attribute.c axis2_om_document.c axis2_om_node.c axis2_om_text.c axis2_om_comment.c axis2_om_element.c axis2_om_output.c axis2_qname.c axis2_om_doctype.c axis2_om_namespace.c axis2_om_processing_instruction.c axis2_om_stax_builder.c
-libom_la_LIBADD = $(LDFLAGS)
-INCLUDES = -I../../../../include -I../../guththila/src -I$(APR_HOME)/include/apr-1 -I${CUTEST_HOME}/include
+libaxis2_om_la_SOURCES = axis2_om_attribute.c \
+                        axis2_om_document.c \
+                        axis2_om_node.c \
+                        axis2_om_text.c \
+                        axis2_om_comment.c \
+                        axis2_om_element.c \
+                        axis2_om_output.c \
+                        axis2_qname.c axis2_om_doctype.c \
+                        axis2_om_namespace.c \
+                        axis2_om_processing_instruction.c \
+                        axis2_om_stax_builder.c
+
+libaxis2_om_la_LIBADD = $(LDFLAGS)
+INCLUDES = -I$(top_builddir)/include -I$(top_builddir)/modules/xml/guththila/src -I${CUTEST_HOME}/include
 all: all-am
 
 .SUFFIXES:
@@ -258,8 +269,8 @@ clean-libLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libom.la: $(libom_la_OBJECTS) $(libom_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(libom_la_LDFLAGS) $(libom_la_OBJECTS) $(libom_la_LIBADD) $(LIBS)
+libaxis2_om.la: $(libaxis2_om_la_OBJECTS) $(libaxis2_om_la_DEPENDENCIES) 
+	$(LINK) -rpath $(libdir) $(libaxis2_om_la_LDFLAGS) $(libaxis2_om_la_OBJECTS) $(libaxis2_om_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

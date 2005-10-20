@@ -15,7 +15,7 @@ struct axis2_description_service_s
 
 };
 
-/*************************** Function pointers ********************************/
+/*************************** Function headers ********************************/
 
 axis2_status_t axis2_description_service_ops_free (axis2_environment_t *env
 		, axis2_description_service_t *service_desc);
@@ -55,7 +55,7 @@ axis2_status_t axis2_description_service_ops_set_parent(axis2_environment_t *env
 axis2_description_servicegroup_t *axis2_description_service_ops_get_parent
 		(axis2_environment_t *env, axis2_description_service_t *service_desc);
 		
-/************************* End of function pointers ***************************/
+/************************* End of function headers ***************************/
 
 axis2_description_service_ops_t * axis2_description_service_get_ops
 		(axis2_environment_t *env, axis2_description_service_t *service_desc)

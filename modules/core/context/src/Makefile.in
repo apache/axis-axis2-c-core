@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-SOURCES = $(libcontext_la_SOURCES)
+SOURCES = $(libaxis2_context_la_SOURCES)
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -54,9 +54,9 @@ CONFIG_HEADER = $(top_builddir)/axis2_config.h
 CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libcontext_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libcontext_la_OBJECTS = axis2_context_msg_context.lo
-libcontext_la_OBJECTS = $(am_libcontext_la_OBJECTS)
+libaxis2_context_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am_libaxis2_context_la_OBJECTS = axis2_context_msg_context.lo
+libaxis2_context_la_OBJECTS = $(am_libaxis2_context_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -68,8 +68,8 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libcontext_la_SOURCES)
-DIST_SOURCES = $(libcontext_la_SOURCES)
+SOURCES = $(libaxis2_context_la_SOURCES)
+DIST_SOURCES = $(libaxis2_context_la_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -181,11 +181,11 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
-noinst_LTLIBRARIES = libcontext.la
+noinst_LTLIBRARIES = libaxis2_context.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libcontext_la_SOURCES = axis2_context_msg_context.c
-libcontext_la_LIBADD = $(LDFLAGS)
-INCLUDES = -I$(APR_HOME)/include/apr-1 -I${CUTEST_HOME}/include -I../../../xml/guththila/src -I../../../../include 
+libaxis2_context_la_SOURCES = axis2_context_msg_context.c
+libaxis2_context_la_LIBADD = $(LDFLAGS)
+INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/modules/xml/guththila/src -I$(top_builddir)/include 
 all: all-am
 
 .SUFFIXES:
@@ -228,8 +228,8 @@ clean-noinstLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libcontext.la: $(libcontext_la_OBJECTS) $(libcontext_la_DEPENDENCIES) 
-	$(LINK)  $(libcontext_la_LDFLAGS) $(libcontext_la_OBJECTS) $(libcontext_la_LIBADD) $(LIBS)
+libaxis2_context.la: $(libaxis2_context_la_OBJECTS) $(libaxis2_context_la_DEPENDENCIES) 
+	$(LINK)  $(libaxis2_context_la_LDFLAGS) $(libaxis2_context_la_OBJECTS) $(libaxis2_context_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

@@ -43,12 +43,24 @@ extern "C"
  * @ingroup axis2_description 
  * @{
  */
+
+/**************************** Start of function macros ************************/
 	
+#define axis2_description_servicegroup_add_service(env, servicegroup_desc \
+		, service_desc) (axis2_description_service_get_ops(env, \
+		servicegroup_desc)->get_param (env, servicegroup_desc, service_desc));
+	
+/**************************** End of function macros **************************/	
 /**************************** Function pointers *******************************/
 
+/** Add a service to the serivce group
+  * @param service to be added
+  * @return status code
+  */
 typedef axis2_status_t (*axis2_description_servicegroup_add_service_t)
 		(axis2_environment_t *env
-		, axis2_description_servicegroup_t* service_group);
+		, axis2_description_servicegroup_t *servicegroup_desc
+		, axis2_description_service_t *service_desc);
 
 /*************************** End of function pointers *************************/
 
@@ -58,6 +70,10 @@ struct axis2_description_servicegroup_ops_s
 };
 
 axis2_description_servicegroup_ops_t *axis2_description_servicegroup_get_ops
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc);
+
+axis2_description_servicegroup_t *axis2_description_servicegroup_create
 		(axis2_environment_t *env);
 
 /** @} */

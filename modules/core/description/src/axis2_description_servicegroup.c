@@ -32,18 +32,30 @@ struct axis2_description_servicegroup_s
 
 axis2_status_t axis2_description_servicegroup_ops_add_service
 		(axis2_environment_t *env
-		, axis2_description_servicegroup_t* service_group);
+		, axis2_description_servicegroup_t* servicegroup_desc
+		, axis2_description_service_t *service_desc);
 
 /***************************** End of function headers ************************/
 
 axis2_description_servicegroup_ops_t *axis2_description_servicegroup_get_ops
-		(axis2_environment_t *env);
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc)
+{
+	return NULL;
+}
+
+axis2_description_servicegroup_t *axis2_description_servicegroup_create
+		(axis2_environment_t *env)
+{
+	return NULL;
+}
 
 /******************************************************************************/
 
 axis2_status_t axis2_description_servicegroup_ops_add_service
 		(axis2_environment_t *env
-		, axis2_description_servicegroup_t* service_group)
+		, axis2_description_servicegroup_t *servicegroup_desc
+		, axis2_description_service_t *service_desc)
 {
 	return 0;
 }

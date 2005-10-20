@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-SOURCES = $(libcommon_la_SOURCES)
+SOURCES = $(libaxis2_common_la_SOURCES)
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -62,9 +62,9 @@ am__installdirs = "$(DESTDIR)$(libdir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libcommon_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libcommon_la_OBJECTS = axis2.lo
-libcommon_la_OBJECTS = $(am_libcommon_la_OBJECTS)
+libaxis2_common_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am_libaxis2_common_la_OBJECTS = axis2.lo
+libaxis2_common_la_OBJECTS = $(am_libaxis2_common_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -76,8 +76,8 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libcommon_la_SOURCES)
-DIST_SOURCES = $(libcommon_la_SOURCES)
+SOURCES = $(libaxis2_common_la_SOURCES)
+DIST_SOURCES = $(libaxis2_common_la_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -189,10 +189,10 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
-lib_LTLIBRARIES = libcommon.la
+lib_LTLIBRARIES = libaxis2_common.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libcommon_la_SOURCES = axis2.c
-libcommon_la_LIBADD = $(LDFLAGS)
+libaxis2_common_la_SOURCES = axis2.c
+libaxis2_common_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include
 all: all-am
 
@@ -254,8 +254,8 @@ clean-libLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libcommon.la: $(libcommon_la_OBJECTS) $(libcommon_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(libcommon_la_LDFLAGS) $(libcommon_la_OBJECTS) $(libcommon_la_LIBADD) $(LIBS)
+libaxis2_common.la: $(libaxis2_common_la_OBJECTS) $(libaxis2_common_la_DEPENDENCIES) 
+	$(LINK) -rpath $(libdir) $(libaxis2_common_la_LDFLAGS) $(libaxis2_common_la_OBJECTS) $(libaxis2_common_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

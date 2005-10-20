@@ -1,6 +1,6 @@
-noinst_LTLIBRARIES = libsoap.la
+noinst_LTLIBRARIES = libaxis2_soap.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libsoap_la_SOURCES =
+libaxis2_soap_la_SOURCES =
 
-libsoap_la_LIBADD = $(LDFLAGS)
-INCLUDES = -I../../../../include -I$(APR_HOME)/include/apr-1 -I${CUTEST_HOME}/include
+libaxis2_soap_la_LIBADD = $(LDFLAGS)
+INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include
