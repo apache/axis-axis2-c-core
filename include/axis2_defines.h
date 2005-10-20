@@ -22,18 +22,18 @@ typedef unsigned int axis2_ssize_t;
 
 /* Calling convention for exposed functions */
 #if defined(WIN32) 
-#define AXISC_STORAGE_CLASS_INFO __declspec(dllexport)
+#define AXIS2_STORAGE_CLASS_INFO __declspec(dllexport)
 #else
-#define AXISC_STORAGE_CLASS_INFO 
+#define AXIS2_STORAGE_CLASS_INFO 
 #endif
 
 #if defined(__GNUC__)
-#define AXISCCALL __attribute__((cdecl))
+#define AXIS2_CALL __attribute__((cdecl))
 #else /* unix or win32 */
 #if defined(__unix)
-#define AXISCCALL
+#define AXIS2_CALL
 #else
-#define AXISCCALL __stdcall
+#define AXIS2_CALL __stdcall
 #endif
 #endif
 
