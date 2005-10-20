@@ -473,6 +473,9 @@ axis2_om_node_t *axis2_om_stax_builder_impl_next(axis2_environment_t *environmen
 		case GUTHTHILA_END_ELEMENT:
 			  axis2_om_stax_builder_end_element(environment, builder);
 			break;
+		case GUTHTHILA_SPACE:
+			/* Do nothing*/
+			break;
 		case GUTHTHILA_CHARACTER:
 			node = axis2_om_stax_builder_create_om_text(environment, builder);
 			break;

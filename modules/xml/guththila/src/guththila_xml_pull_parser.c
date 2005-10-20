@@ -19,6 +19,13 @@
 
 #include "guththila_xml_pull_parser.h"
 
+static int
+guththila_is_space (int c)
+{
+  return (0x20 == c || 0x9 == c || 0xD == c || 0xA == c);
+}
+
+
 guththila_xml_pull_parser_t *
 guththila_xml_pull_parser_create (guththila_reader_t * r)
 {
@@ -519,12 +526,17 @@ guththila_xml_pull_parser_process_char_data (guththila_xml_pull_parser_t * parse
 {
   int c;
   int ref = 0;
+  int all_spaces = 1;
+  int last_event = guththila_event;
   guththila_event = GUTHTHILA_CHARACTER;
   guththila_xml_pull_parser_open_token (parser);
   do
     {
       c = guththila_xml_pull_parser_next_char(parser, -1);
 
+	  if (c != '<')
+		  all_spaces = (all_spaces && guththila_is_space(c));
+		
       if (c == '&')
 	ref = 1;
 
@@ -535,6 +547,9 @@ guththila_xml_pull_parser_process_char_data (guththila_xml_pull_parser_t * parse
 	}
     }
   while (c != '<');
+
+  if (all_spaces)
+	  guththila_event = GUTHTHILA_SPACE;
   guththila_xml_pull_parser_close_token (parser, _char_data, ref);
   return c;
 }
