@@ -71,7 +71,28 @@ extern "C"
 		(axis2_description_operation_get_ops(env, \
 		operation_desc)->get_parent (env, operation_desc));
 	
+#define axis2_description_operation_get_name(env, operation_desc) \
+		(axis2_description_operation_get_ops(env, operation_desc)->get_name \
+		(env, operation_desc));
 
+#define axis2_description_operation_set_msg_exchange_pattern(env, \
+		operation_desc, msg_exchange_pattern) \
+		(axis2_description_operation_get_ops(env, \
+		operation_desc)->set_msg_exchange_pattern (env, \
+		operation_desc, msg_exchange_pattern));
+		
+#define axis2_description_operation_get_msg_exchange_pattern(env, operation_desc) \
+		(axis2_description_operation_get_ops(env, \
+		operation_desc)->get_msg_exchange_pattern (env, operation_desc));
+		
+#define axis2_description_operation_set_msg_receiver(env, \
+		operation_desc, msg_receiver) (axis2_description_operation_get_ops(env, \
+		operation_desc)->set_msg_receiver (env, operation_desc, msg_receiver));
+		
+#define axis2_description_operation_get_msg_receiver(env, operation_desc) \
+		(axis2_description_operation_get_ops(env, \
+		operation_desc)->get_msg_receiver (env, operation_desc));
+		
 /************************** End of function macros ****************************/
 
 /************************** Start of function pointers ************************/
@@ -123,8 +144,6 @@ struct axis2_description_operation_ops_s
 {
 	axis2_description_operation_free_t free;
 	
-	axis2_description_operation_get_name_t get_name;
-
 	axis2_description_operation_add_param_t add_param;
 
 	axis2_description_operation_get_param_t get_param;
@@ -134,13 +153,19 @@ struct axis2_description_operation_ops_s
 	axis2_description_operation_set_parent_t set_parent;
 
 	axis2_description_operation_get_parent_t get_parent;
+	
+	axis2_description_operation_get_name_t get_name;
+	
 	axis2_description_operation_set_msg_exchange_pattern_t set_msg_exchange_pattern;
+	
 	axis2_description_operation_get_msg_exchange_pattern_t get_msg_exchange_pattern;
+	
 	axis2_description_operation_set_msg_receiver_t set_msg_receiver;
+	
 	axis2_description_operation_get_msg_receiver_t get_msg_receiver;
 };
 
-axis2_description_operation_t *axis2_description_operation_get_ops
+axis2_description_operation_ops_t *axis2_description_operation_get_ops
 		(axis2_environment_t *env
 		, axis2_description_operation_t *operation_desc);
 
