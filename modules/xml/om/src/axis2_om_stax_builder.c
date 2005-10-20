@@ -271,6 +271,7 @@ axis2_status_t axis2_om_stax_builder_process_namespaces(axis2_environment_t *env
 	axis2_status_t status = AXIS2_SUCCESS;	
 	int namespace_count = 0;	
 	axis2_om_namespace_t *om_ns = NULL;
+	axis2_char_t *temp_prefix = NULL;
 	
 	namespace_count = guththila_xml_pull_parser_get_namespacecount (builder->parser);
 	
@@ -289,8 +290,25 @@ axis2_status_t axis2_om_stax_builder_process_namespaces(axis2_environment_t *env
 		}	
 	}
 	/* set own namespace */
+	temp_prefix = guththila_xml_pull_parser_get_prefix(builder->parser);
 	
-	ns = guththila_xml_pull_parser_get_namespace(builder->parser);
+	if (temp_prefix)
+	{
+		om_ns =  axis2_om_element_find_namespace(environment, node, NULL, temp_prefix);
+		
+		if (om_ns)
+		{
+				((axis2_om_element_t*)(node->data_element))->ns = om_ns;
+		}
+		else
+		{
+			environment->error->errorno = AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE;
+			return AXIS2_FAILURE;
+		}
+		
+	}
+	
+	/*ns = guththila_xml_pull_parser_get_namespace(builder->parser);
 	nsuri  = guththila_xml_pull_parser_get_namespace_uri(builder->parser, ns);
 	prefix = guththila_xml_pull_parser_get_namespace_prefix(builder->parser, ns);
     
@@ -309,7 +327,7 @@ axis2_status_t axis2_om_stax_builder_process_namespaces(axis2_environment_t *env
 				}
 				else
 				{
-					/* something went wrong */
+
 					return AXIS2_FAILURE;
 				}
 			}
@@ -332,7 +350,6 @@ axis2_status_t axis2_om_stax_builder_process_namespaces(axis2_environment_t *env
 				}
 				else
 				{
-					/* something went wrong */
 					return AXIS2_FAILURE;
 				}
 			}
@@ -342,7 +359,7 @@ axis2_status_t axis2_om_stax_builder_process_namespaces(axis2_environment_t *env
 				((axis2_om_element_t*)(node->data_element))->ns = om_ns;
 			}
 		}
-	}
+	}*/
 	
 	return status;
 }
@@ -352,6 +369,7 @@ axis2_om_node_t *axis2_om_stax_builder_create_om_element(axis2_environment_t *en
 {
 	axis2_om_node_t *element_node;
 	axis2_char_t *localname = NULL;
+	
 	axis2_char_t *temp_localname = guththila_xml_pull_parser_get_name (builder->parser);
 	
 	if (!temp_localname)

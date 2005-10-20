@@ -50,9 +50,11 @@ test_om_build ()
     node1 = axis2_om_document_get_root_element (environment, document);
     printf ("root localname %s\n",
             ((axis2_om_element_t *) (node1->data_element))->localname);
-    printf ("root ns prefix %s\n",
+    if (((axis2_om_element_t *)(node1->data_element))->ns)
+        printf ("root ns prefix %s\n",
             ((axis2_om_element_t *) (node1->data_element))->ns->prefix);
-    printf ("root ns uri %s\n",
+    if (((axis2_om_element_t *)(node1->data_element))->ns)
+        printf ("root ns uri %s\n",
             ((axis2_om_element_t *) (node1->data_element))->ns->uri);
 
 
