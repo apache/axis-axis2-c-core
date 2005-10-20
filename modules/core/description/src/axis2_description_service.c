@@ -210,9 +210,22 @@ axis2_status_t axis2_description_service_ops_add_operation
 	if (!(service_desc->wasaction_opeartionmap))
 	{                    
 		service_desc->wasaction_opeartionmap = axis2_hash_make (env);
-	}	
+	}
+	axis2_description_operation_ops_t *tempopt = 
+		(axis2_description_operation_get_ops(env, operation_desc));
+	
+	if(!tempopt) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		
+	axis2_qname_t *tempqname = tempopt->get_name(env, operation_desc);
+	
+	if(!tempqname) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		
+	axis2_char_t *tempname = tempqname->localpart;
+	
+	if(!tempname) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	
 	axis2_hash_set (service_desc->wasaction_opeartionmap		
-		, axis2_description_operation_get_name(env, operation_desc)
+		, tempname
 		, AXIS2_HASH_KEY_STRING, operation_desc);
 	
 	return AXIS2_SUCCESS;
@@ -228,6 +241,10 @@ axis2_description_operation_t
 		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;		
 	}
+	return (axis2_description_operation_t *) (axis2_hash_get 
+		(service_desc->wasaction_opeartionmap, operation_name->localpart
+		, AXIS2_HASH_KEY_STRING));
+	
 }	
 
 axis2_description_operation_t 
@@ -240,6 +257,9 @@ axis2_description_operation_t
 		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;		
 	}
+	return (axis2_description_operation_t *) (axis2_hash_get 
+		(service_desc->wasaction_opeartionmap
+		, axis2_strdup(env->string, name), AXIS2_HASH_KEY_STRING));
 }
 
 axis2_hash_t *axis2_description_service_ops_get_operations

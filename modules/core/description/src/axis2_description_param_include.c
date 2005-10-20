@@ -146,7 +146,7 @@ axis2_description_param_t *axis2_description_param_include_ops_get_param
 		return NULL;
 	}
 	return (axis2_description_param_t *)(axis2_hash_get 
-		(param_include->params, env->string->axis2_string_strdup(name)
+		(param_include->params, axis2_strdup(env->string, name)
 		, AXIS2_HASH_KEY_STRING));
 }
 

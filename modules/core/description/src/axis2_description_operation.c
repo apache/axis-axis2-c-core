@@ -76,7 +76,7 @@ axis2_engine_msg_receiver_t *axis2_description_operation_ops_get_msg_receiver
 		
 /************************* End of function headers ****************************/	
 
-axis2_description_operation_t *axis2_description_operation_get_ops
+axis2_description_operation_ops_t *axis2_description_operation_get_ops
 		(axis2_environment_t *env, axis2_description_operation_t *operation_desc)
 {
 	if(!operation_desc)
