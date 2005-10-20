@@ -68,7 +68,7 @@ typedef struct axis2_om_element_ops
     * @return status code 
     */
     
-    axis2_status_t (*axis2_om_element_ops_declare_namespace)(axis2_environment_t *environment, struct axis2_om_element *element, axis2_om_namespace_t *ns);
+    axis2_status_t (*axis2_om_element_ops_declare_namespace)(axis2_environment_t *environment, axis2_om_node_t *node, axis2_om_namespace_t *ns);
     
     /**
      * find namespaces in the scope of current element
@@ -178,8 +178,8 @@ axis2_om_element_t *axis2_om_element_create(axis2_environment_t *environment, ax
 axis2_om_element_t *axis2_om_element_create_with_qname(axis2_environment_t *environment, axis2_om_node_t *parent,axis2_qname_t *qname
 						,axis2_om_node_t **node);
 
-#define axis2_om_element_find_namespace(environment, node, uri, prefix) ((node->data_element)->ops->axis2_om_element_ops_find_namespace(environment, node, uri, prefix))
-#define axis2_om_element_declare_namespace(environment, element, ns) ((element)->ops->axis2_om_element_ops_declare_namespace(environment, element, ns) )
+#define axis2_om_element_find_namespace(environment, node, uri, prefix) (((axis2_om_element_t*)(node->data_element))->ops->axis2_om_element_ops_find_namespace(environment, node, uri, prefix))
+#define axis2_om_element_declare_namespace(environment, node, ns) (((axis2_om_element_t*)(node->data_element))->ops->axis2_om_element_ops_declare_namespace(environment, node, ns) )
 #define axis2_om_element_find_namespace_with_qname (environment, element, qname) ((element)->ops->axis2_om_element_ops_find_namespace_with_qname (environment, element, qname))
 #define axis2_om_element_add_attribute(environment, element, attribute) ((element)->ops->axis2_om_element_ops_add_attribute(environment, element, attribute))
 #define axis2_om_element_get_attribute(environment, element, qname) ((element)->ops->axis2_om_element_ops_get_attribute(environment, element, qname))

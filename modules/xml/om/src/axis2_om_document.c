@@ -137,7 +137,7 @@ axis2_status_t axis2_om_document_impl_add_child(axis2_environment_t *environment
 
 axis2_status_t axis2_om_document_impl_build_next(axis2_environment_t *environment, axis2_om_document_t *document)
 {
-   return axis2_om_stax_builder_next(document->builder);
+   return axis2_om_stax_builder_next(environment, document->builder);
 }
 
 

@@ -23,7 +23,7 @@ axis2_om_namespace_t *
 axis2_om_element_impl_find_namespace (axis2_environment_t *environment, axis2_om_node_t
                                  *node, const axis2_char_t *uri,
                                  const axis2_char_t *prefix);
-axis2_status_t axis2_om_element_impl_declare_namespace(axis2_environment_t *environment, axis2_om_element_t *element, axis2_om_namespace_t *ns);                                 
+axis2_status_t axis2_om_element_impl_declare_namespace(axis2_environment_t *environment, axis2_om_node_t *node, axis2_om_namespace_t *ns);
 axis2_om_namespace_t *
 axis2_om_element_impl_find_namespace_with_qname (axis2_environment_t *environment, axis2_om_node_t * element,
                                               axis2_qname_t * qname);
@@ -212,15 +212,26 @@ axis2_om_element_impl_find_namespace (axis2_environment_t *environment, axis2_om
 
 /* declare a namespace for this om element */
 
-axis2_status_t axis2_om_element_impl_declare_namespace(axis2_environment_t *environment, axis2_om_element_t *element, axis2_om_namespace_t *ns)
+axis2_status_t axis2_om_element_impl_declare_namespace(axis2_environment_t *environment, axis2_om_node_t *node, axis2_om_namespace_t *ns)
 {
-    
-    if (!element || !ns)
+	axis2_om_namespace_t *declared_ns = NULL;
+    axis2_om_element_t *element = NULL;
+    if (!node || !ns)
     {
         environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
         return AXIS2_FAILURE;
     }
+	
+	declared_ns = axis2_om_element_impl_find_namespace (environment, node->parent, declared_ns->uri, declared_ns->prefix);
 
+	if (declared_ns)
+	{
+		/*Namespace already declared, so return*/
+		return AXIS2_SUCCESS;
+	}
+	
+	element = (axis2_om_element_t*)node->data_element;
+	
     if (!element->namespaces)
     {
         element->namespaces = axis2_hash_make (environment);

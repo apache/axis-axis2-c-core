@@ -22,19 +22,36 @@
  * @brief om model stax builder 
  */
 
-#include <guththila_xml_pull_parser.h>
 #include <axis2_om_node.h>
 #include <axis2_om_document.h>
+#include <axis2_environment.h>
+
+struct axis2_om_stax_builder;
+struct axis2_om_stax_builder_ops;
+
+typedef struct axis2_om_stax_builder_ops
+{
+
+/**
+ *	move parser forward and reacts to events 
+ */
+
+axis2_om_node_t *(*axis2_om_stax_builder_ops_next)(axis2_environment_t *environment, axis2_om_stax_builder_t *builder);
+
+axis2_status_t (*axis2_om_stax_builder_ops_discard_current_element)(axis2_environment_t *environment, axis2_om_stax_builder_t *builder);
+
+
+} axis2_om_stax_builder_ops_t;
 
 struct axis2_om_stax_builder
 {
-	guththila_xml_pull_parser_t			*parser;	
-	axis2_om_node_t			*lastnode;
+	axis2_om_stax_builder_ops_t *ops;
+	void *parser;	
+	axis2_om_node_t *lastnode;
 	axis2_om_document_t	*document;
-	int				done;
-	int				parser_accessed;
-	int				cache;
-	/*apr_array_header_t *element_stack;*/
+	axis2_bool_t done;
+	axis2_bool_t parser_accessed;
+	axis2_bool_t cache;
 };
 
 /**
@@ -43,86 +60,10 @@ struct axis2_om_stax_builder
  *				   [ Guththila ]	
  */
 
-axis2_om_stax_builder_t *axis2_om_stax_builder_create(guththila_xml_pull_parser_t *parser);
+axis2_om_stax_builder_t *axis2_om_stax_builder_create(axis2_environment_t *environment, void *parser);
 
-/**
- *	Create an om element and adds to the document
- *	@param builder pointer to the builder
- *  @param returns a pointer to axis2_om_node_t containing the element or NULL if there
- *  isn't enough memory
- */
+#define axis2_om_stax_builder_next(environment, builder) ((builder)->ops->axis2_om_stax_builder_ops_next(environment, builder))
+#define axis2_om_stax_builder_discard_current_element(environment, builder) ((builder)->ops->axis2_om_stax_builder_ops_discard_current_element(environment, builder))
 
-axis2_om_node_t *axis2_om_stax_builder_create_om_element(
-						axis2_om_stax_builder_t *builder);
-
-/**
- *	creates an om comment
- *	@param builder
- *  @returns 
- */
-
-axis2_om_node_t *axis2_om_stax_builder_create_om_comment(
-						axis2_om_stax_builder_t *builder);
-
-/**
- *	create an om doctype
- *
- */
-axis2_om_node_t *axis2_om_stax_builder_create_om_doctype(
-						axis2_om_stax_builder_t *builder_t);
-
-/**
- *	create om_processing_instruction
- */
-
-axis2_om_node_t *axis2_om_stax_builder_create_om_processing_instruction(
-						axis2_om_stax_builder_t *builder);
-
-/**
- *	End element processing
- */
-void axis2_om_stax_builder_end_element(axis2_om_stax_builder_t *builder);
-/**
- *	move parser forward and reacts to events 
- */
-
-int axis2_om_stax_builder_next(axis2_om_stax_builder_t *builder);
-
-/**
- *	process attrbites 
- *
- */
-
-void axis2_om_stax_builder_process_attributes(axis2_om_stax_builder_t *builder,axis2_om_node_t *element_node);
-
-/**
- *	create om text
- *
- */
-axis2_om_node_t *axis2_om_stax_builder_create_om_text(axis2_om_stax_builder_t *builder);
-
-/**
- *	discard building an element
- */
-
-
-void axis2_om_stax_builder_discard(axis2_om_stax_builder_t *builder,axis2_om_node_t *element_node);
-
-/**
- *	process namespaces 
- *
- */
-
-axis2_om_node_t *axis2_om_stax_builder_process_namespace_data(axis2_om_stax_builder_t *builder,axis2_om_node_t *element,int is_soap_element);
-
-char *axis2_om_stax_builder_get_attribute_name(axis2_om_stax_builder_t *builder,int i);
-
-char *axis2_om_stax_builder_get_attribute_prefix(axis2_om_stax_builder_t *builder,int i);
-
-void axis2_om_stax_builder_process_start_document(axis2_om_stax_builder_t* builder);
-
-char *axis2_om_stax_builder_get_attribute_namespace(axis2_om_stax_builder_t *builder,int i);
-
-int axis2_om_stax_builder_get_attribute_count(axis2_om_stax_builder_t *builder);
 
 #endif /* AXIS2_OM_STAX_BUILDER_H */
