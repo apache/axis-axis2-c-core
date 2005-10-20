@@ -55,7 +55,8 @@ CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libengine_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libengine_la_OBJECTS = axis2_engine_config.lo
+am_libengine_la_OBJECTS = axis2_engine_config.lo \
+	axis2_engine_msg_receiver.lo
 libengine_la_OBJECTS = $(am_libengine_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -183,7 +184,7 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 noinst_LTLIBRARIES = libengine.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libengine_la_SOURCES = axis2_engine_config.c
+libengine_la_SOURCES = axis2_engine_config.c axis2_engine_msg_receiver.c
 libengine_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(APR_HOME)/include/apr-1 -I${CUTEST_HOME}/include -I../../../xml/guththila/src -I../../../../include 
 all: all-am
@@ -238,6 +239,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_engine_config.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_engine_msg_receiver.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

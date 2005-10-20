@@ -119,13 +119,9 @@ axis2_status_t axis2_description_param_include_ops_add_param
 		, axis2_description_param_include_t *param_include
     	, const axis2_description_param_t *param)
 {
-	if(!param_include)
+	if(!param_include || !param)
 	{
 		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
-	}
-	if(!param)
-	{
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;	
 	}
 	if (!(param_include->params))
 	{                    

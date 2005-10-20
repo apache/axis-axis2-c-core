@@ -18,23 +18,32 @@
 #define AXIS2_ENGINE_CONFIG_H
 
 /**
- * @file axis2_engine_config.h
- * @brief Global states of all the Axis can
- *        can be accessed here
- */
+  * @file axis2_engine_config.h
+  * @brief Global states of all the Axis can
+  *        can be accessed here
+  */
 
-#include <axis2.h>
-#include <axis2_error.h>
-#include <axis2_defines.h>
-#include <axis2_environment.h>
-#include <axis2_allocator.h>
-#include <axis2_string.h>
 #include <axis2_core.h>
-
 #include <axis2_description_param_include.h>
 #include <axis2_description_servicegroup.h>
 
+#ifdef __cplusplus
+extern "C" 
+{
+#endif
+/** @defgroup axis2_context CONTEXT (Axis2 Information model)
+  * @ingroup axis2
+  * @{
+  */
 
+/** @} */ 
+
+/**
+ * @defgroup axis2_context_ CONTEXT engine_config
+ * @ingroup axis2_engine_config 
+ * @{
+ */
+	
 /**
  * The palce where all the global states of Axis is accessed.
  * All the global states kept in the <code>EngineRegistry</code> and all the
@@ -43,8 +52,10 @@
  */
 
 /**
- * <p>This holds the information about engine. </p>
- */
+  * @struct axis2_engine_config
+  * @brief CONTEXT engine_config operations
+  * This holds the information about engine.
+  */
 typedef struct
 {
     axis2_description_param_include_t * param_include;
@@ -65,4 +76,8 @@ void axis2_engine_config_get_service(axis2_engine_config_t *engine_config,
 void axis2_engine_config_remove_service(axis2_engine_config_t *engine_config,
     char *name);
 
+/** @} */
+#ifdef __cplusplus
+}
+#endif
 #endif /* AXIS2_ENGINE_CONFIG_H */

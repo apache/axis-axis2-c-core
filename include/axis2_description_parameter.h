@@ -21,15 +21,8 @@
  * @file axis2_parameter.h
  * @brief axis2 DESCRIPTION CORE parameter
  */
- 
-#include <axis2.h>
-#include <axis2_error.h>
-#include <axis2_defines.h>
-#include <axis2_environment.h>
-#include <axis2_allocator.h>
-#include <axis2_string.h>
-#include <axis2_core.h>
 
+#include <axis2_core.h>
 /*#include <axis2_om_element.h>*/
 
 #ifdef __cplusplus

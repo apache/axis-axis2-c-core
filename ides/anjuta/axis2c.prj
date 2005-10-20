@@ -114,7 +114,9 @@ module.include.files=\
 	include/axis2_description_service.h\
 	include/axis2_description_servicegroup.h\
 	modules/core/description/test/description_test.h\
-	include/axis2_core.h
+	include/axis2_core.h\
+	include/axis2_context_msg_context.h\
+	include/axis2_engine_msg_receiver.h
 
 module.source.name=.
 module.source.type=
@@ -167,7 +169,9 @@ module.source.files=\
 	modules/core/description/src/axis2_description_parameter.c\
 	modules/core/description/src/axis2_description_service.c\
 	modules/core/description/src/axis2_description_servicegroup.c\
-	modules/core/description/test/main.c
+	modules/core/description/test/main.c\
+	modules/core/context/src/axis2_context_msg_context.c\
+	modules/core/engine/src/axis2_engine_msg_receiver.c
 
 module.pixmap.name=.
 module.pixmap.type=
