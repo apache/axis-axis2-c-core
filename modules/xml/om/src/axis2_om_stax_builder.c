@@ -468,6 +468,8 @@ axis2_om_node_t *axis2_om_stax_builder_impl_next(axis2_environment_t *environmen
 		case GUTHTHILA_START_ELEMENT:
 			node = axis2_om_stax_builder_create_om_element(environment, builder);
 			break;
+		case GUTHTHILA_EMPTY_ELEMENT:
+			node = axis2_om_stax_builder_create_om_element(environment, builder);
 		case GUTHTHILA_END_ELEMENT:
 			  axis2_om_stax_builder_end_element(environment, builder);
 			break;
