@@ -57,7 +57,7 @@ typedef struct axis2_om_document_ops
      *	causes the parser to proceed if the xml input is not finised yet
      *	@param document 
      */
-    axis2_status_t (*axis2_om_document_ops_build_next)(axis2_environment_t *environment, struct axis2_om_document *document);
+    axis2_om_node_t *(*axis2_om_document_ops_build_next)(axis2_environment_t *environment, struct axis2_om_document *document);
 
     /**
      *	adds the child node as a child to the back of the list

@@ -21,7 +21,7 @@
 axis2_status_t axis2_om_document_impl_free(axis2_environment_t *environment, axis2_om_document_t * document);
 axis2_status_t axis2_om_document_impl_add_child(axis2_environment_t *environment, axis2_om_document_t *document,
 				  axis2_om_node_t *child);
-axis2_status_t axis2_om_document_impl_build_next(axis2_environment_t *environment, axis2_om_document_t *document);
+axis2_om_node_t *axis2_om_document_impl_build_next(axis2_environment_t *environment, axis2_om_document_t *document);
 axis2_om_node_t *axis2_om_document_impl_get_root_element(axis2_environment_t *environment, axis2_om_document_t *document);
 axis2_om_node_t *axis2_om_document_impl_get_next_sibling(axis2_environment_t *environment, axis2_om_document_t *document);
 axis2_om_node_t *axis2_om_document_impl_get_first_child(axis2_environment_t *environment, axis2_om_document_t *document);
@@ -135,8 +135,21 @@ axis2_status_t axis2_om_document_impl_add_child(axis2_environment_t *environment
    
 }
 
-axis2_status_t axis2_om_document_impl_build_next(axis2_environment_t *environment, axis2_om_document_t *document)
+axis2_om_node_t *axis2_om_document_impl_build_next(axis2_environment_t *environment, axis2_om_document_t *document)
 {
+	if (!document)
+    {
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        return NULL;
+    }
+	
+	if (!(document->root_element))
+	{
+		return axis2_om_stax_builder_next(environment, document->builder);
+	}
+	else if (document->root_element->done)
+		return NULL; /* Nothing wrong but done with pulling */
+	
    return axis2_om_stax_builder_next(environment, document->builder);
 }
 

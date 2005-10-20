@@ -92,7 +92,7 @@ axis2_om_element_create (axis2_environment_t *environment, axis2_om_node_t * par
         element->ns = axis2_om_element_impl_find_namespace (environment, *node, ns->uri, ns->prefix);
         if (!(element->ns))
         {
-            if (axis2_om_element_impl_declare_namespace(environment, element, ns) == AXIS2_SUCCESS)
+            if (axis2_om_element_impl_declare_namespace(environment, *node, ns) == AXIS2_SUCCESS)
              element->ns = ns;
         }
     }
@@ -222,7 +222,7 @@ axis2_status_t axis2_om_element_impl_declare_namespace(axis2_environment_t *envi
         return AXIS2_FAILURE;
     }
 	
-	declared_ns = axis2_om_element_impl_find_namespace (environment, node->parent, declared_ns->uri, declared_ns->prefix);
+	declared_ns = axis2_om_element_impl_find_namespace (environment, node, ns->uri, ns->prefix);
 
 	if (declared_ns)
 	{
@@ -230,9 +230,15 @@ axis2_status_t axis2_om_element_impl_declare_namespace(axis2_environment_t *envi
 		return AXIS2_SUCCESS;
 	}
 	
-	element = (axis2_om_element_t*)node->data_element;
+	element = (axis2_om_element_t*)(node->data_element);
 	
-    if (!element->namespaces)
+	if (!element)
+	{
+		environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        return AXIS2_FAILURE;
+	}
+	
+    if (!(element->namespaces))
     {
         element->namespaces = axis2_hash_make (environment);
         if (!(element->namespaces))

@@ -15,9 +15,10 @@
  */
 
 #include <axis2_om_text.h>
+#include <axis2_om_output.h>
 /*#include <string.h>
 #include <axis2_om_node.h>
-#include <axis2_om_output.h>
+
 #include <axis2_errno.h>
 */
 

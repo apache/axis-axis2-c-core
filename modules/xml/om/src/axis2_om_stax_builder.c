@@ -193,6 +193,7 @@ axis2_om_node_t *axis2_om_stax_builder_create_om_text(axis2_environment_t *envir
 		 axis2_om_text_create(environment, builder->lastnode, value, &node);
 	}
 	
+	node->done = AXIS2_TRUE;	
 	builder->lastnode = node;
 	
 	return node;	
