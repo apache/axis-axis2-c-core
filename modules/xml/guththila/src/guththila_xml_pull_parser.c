@@ -515,8 +515,10 @@ guththila_xml_pull_parser_processSTagOrEmptyElem (guththila_xml_pull_parser_t * 
 	}
       else if ('>' == c)
 	return c;
-      else
-	c = guththila_xml_pull_parser_process_attribute (parser, c);
+      else{
+		c = guththila_xml_pull_parser_process_attribute (parser, c);
+		c = guththila_xml_pull_parser_skip_spaces (parser, c);
+	  }
     }
 }
 

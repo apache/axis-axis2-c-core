@@ -443,8 +443,11 @@ axis2_status_t axis2_om_stax_builder_end_element(axis2_environment_t *environmen
     	if(builder->lastnode->done)
 	    {
 		    parent = builder->lastnode->parent;
-		    parent->done = AXIS2_TRUE;
-		    builder->lastnode = parent;
+			if (parent)
+			{
+				parent->done = AXIS2_TRUE;
+				builder->lastnode = parent;
+			}
 	    }
 	    else
 	    {
