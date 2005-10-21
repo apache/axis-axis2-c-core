@@ -91,7 +91,7 @@ typedef unsigned int axis2_ssize_t;
  * AXIS2_DECLARE(rettype) axis2_func(args)
  * @endcode
  */
-#define AXIS2_DECLARE(type)            type
+#define AXIS2_DECLARE(type)            type AXIS2_CALL
 
 /**
  * Axis2 Core variable argument and hook functions are declared with 
