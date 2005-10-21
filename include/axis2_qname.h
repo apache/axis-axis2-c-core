@@ -26,7 +26,8 @@
 #include <axis2_environment.h>
 
 
-static const axis2_char_t XML_NAMESPACE_URI[] ="http://www.w3c.org/XML/1998/namespace";
+static const axis2_char_t XML_NAMESPACE_URI[] =
+    "http://www.w3c.org/XML/1998/namespace";
 
 struct axis2_qname;
 struct axis2_qname_ops;
@@ -36,9 +37,10 @@ typedef struct axis2_qname_ops
     /**
      *  Free a qname struct
      *  @return Status code
-     */ 
-     axis2_status_t (*axis2_qname_ops_free)(axis2_environment_t *environment,struct axis2_qname *qname);
-     
+     */
+    axis2_status_t (*axis2_qname_ops_free) (axis2_environment_t * environment,
+                                            struct axis2_qname * qname);
+
      /** 
       * Compare two qnames
       * prefix is ignored when comparing
@@ -46,26 +48,28 @@ typedef struct axis2_qname_ops
       * @return true if qname1 equals qname2, false otherwise 
       */
 
-     axis2_bool_t (*axis2_qname_ops_equals)(axis2_environment_t *environment,struct axis2_qname *qname1,struct axis2_qname *qname2);
+    axis2_bool_t (*axis2_qname_ops_equals) (axis2_environment_t * environment,
+                                            struct axis2_qname * qname1,
+                                            struct axis2_qname * qname2);
 
-}axis2_qname_ops_t;
+} axis2_qname_ops_t;
 
 typedef struct axis2_qname
 {
     /** operations related to qname */
-     axis2_qname_ops_t *ops;
-     
+    axis2_qname_ops_t *ops;
+
     /** localpart of qname is mandatory */
-    
+
     axis2_char_t *localpart;
-    
+
     /** namespace uri is optional */
     axis2_char_t *namespace_uri;
-    
+
     /**  prefix mandatory */
     axis2_char_t *prefix;
-   
-}axis2_qname_t;
+
+} axis2_qname_t;
 
 /**
  *	creates a qname struct
@@ -78,7 +82,10 @@ typedef struct axis2_qname
  * @return a pointer to newly created qname struct
  */
 
-axis2_qname_t *axis2_qname_create(axis2_environment_t *environment ,const axis2_char_t *localpart,const axis2_char_t *namespace_uri, const axis2_char_t *prefix);
+axis2_qname_t *axis2_qname_create (axis2_environment_t * environment,
+                                   const axis2_char_t * localpart,
+                                   const axis2_char_t * namespace_uri,
+                                   const axis2_char_t * prefix);
 
 
 #define axis2_qname_free(environment,qname) ((qname)->ops->axis2_qname_ops_free(environment,qname))

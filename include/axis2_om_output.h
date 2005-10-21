@@ -27,7 +27,8 @@
 #include <axis2_om_node.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**
@@ -36,7 +37,7 @@ extern "C" {
  * @{
  */
 
-static const char* DEFAULT_CHAR_SET_ENCODING = "utf-8";
+    static const char *DEFAULT_CHAR_SET_ENCODING = "utf-8";
 
 
 /** \struct axis2_om_output
@@ -45,21 +46,22 @@ static const char* DEFAULT_CHAR_SET_ENCODING = "utf-8";
     The XML writer interface struct of om
 */
 
-struct axis2_om_output {
-    /* The xml writer */
-    void *xml_writer;
-       
-    axis2_bool_t do_optimize;
-    axis2_char_t *mime_boundary;
-    axis2_char_t *root_content_id;
-    int next_id;
-    axis2_bool_t is_soap_11;
-    axis2_char_t *char_set_encoding;
-    /* xml version */
-    axis2_char_t *xml_version;
-    
-    axis2_bool_t ignore_xml_declaration;
-};
+    struct axis2_om_output
+    {
+        /* The xml writer */
+        void *xml_writer;
+
+        axis2_bool_t do_optimize;
+        axis2_char_t *mime_boundary;
+        axis2_char_t *root_content_id;
+        int next_id;
+        axis2_bool_t is_soap_11;
+        axis2_char_t *char_set_encoding;
+        /* xml version */
+        axis2_char_t *xml_version;
+
+        axis2_bool_t ignore_xml_declaration;
+    };
 /**
  * creates output struct and returns a pointer to newly created struct
  * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
@@ -68,7 +70,8 @@ struct axis2_om_output {
  * @return om_output_t 
  */
 
-axis2_om_output_t* axis2_create_om_output(axis2_environment_t *environment, void* xml_writer);
+    axis2_om_output_t *axis2_create_om_output (axis2_environment_t *
+                                               environment, void *xml_writer);
 
 /**
  *  Performs xml writing .
@@ -80,7 +83,10 @@ axis2_om_output_t* axis2_create_om_output(axis2_environment_t *environment, void
  *  @returns status code 
  */
 
-axis2_status_t axis2_om_output_write(axis2_environment_t *environment, axis2_om_output_t *om_output, axis2_om_types_t type, int no_of_args, ... );
+    axis2_status_t axis2_om_output_write (axis2_environment_t * environment,
+                                          axis2_om_output_t * om_output,
+                                          axis2_om_types_t type,
+                                          int no_of_args, ...);
 
 /** @} */
 
@@ -88,4 +94,4 @@ axis2_status_t axis2_om_output_write(axis2_environment_t *environment, axis2_om_
 }
 #endif
 
-#endif /* AXIS2_OM_OUTPUT_H */
+#endif                          /* AXIS2_OM_OUTPUT_H */

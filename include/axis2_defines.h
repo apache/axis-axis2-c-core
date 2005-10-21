@@ -5,20 +5,21 @@
  * @file axis2_defines.h
  * @brief Useful definitions, which may have platform concerns
  */
- 
+
 #include <stddef.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**
   * Type definitions
   */
-typedef char axis2_char_t;
-typedef int axis2_bool_t;
-typedef int axis2_status_t;
-typedef unsigned int axis2_ssize_t;
+    typedef char axis2_char_t;
+    typedef int axis2_bool_t;
+    typedef int axis2_status_t;
+    typedef unsigned int axis2_ssize_t;
 
 /**
   * Boolean values
@@ -29,7 +30,7 @@ typedef unsigned int axis2_ssize_t;
 /**
   *	Exporting 
   */
-#if defined(WIN32) 
+#if defined(WIN32)
 #define AXIS2_EXPORT __declspec(dllexport)
 #else
 #define AXIS2_EXPORT
@@ -38,7 +39,7 @@ typedef unsigned int axis2_ssize_t;
 /**
   *	Importing
   */
-#if defined(WIN32) 
+#if defined(WIN32)
 #define AXIS2_IMPORT __declspec(dllimport)
 #else
 #define AXIS2_IMPORT
@@ -49,10 +50,10 @@ typedef unsigned int axis2_ssize_t;
   */
 #if defined(__GNUC__)
 #define AXIS2_CALL __attribute__((cdecl))
-#else 
+#else
 #if defined(__unix)
 #define AXIS2_CALL
-#else /* WIN32 */
+#else                           /* WIN32 */
 #define AXIS2_CALL __stdcall
 #endif
 #endif
@@ -80,7 +81,7 @@ typedef unsigned int axis2_ssize_t;
  */
 # define AXIS2_DECLARE_EXPORT
 
-#endif /* def DOXYGEN */
+#endif                          /* def DOXYGEN */
 
 #if !defined(WIN32)
 /**
@@ -132,4 +133,4 @@ typedef unsigned int axis2_ssize_t;
 }
 #endif
 
-#endif /* AXIS2_DEFINES_H */
+#endif                          /* AXIS2_DEFINES_H */

@@ -10,7 +10,8 @@
 #include <stdio.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 
@@ -18,10 +19,10 @@ extern "C" {
   *  @{
  */
 
-/** @} */ 
+/** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIS2_H */
+#endif                          /* AXIS2_H */

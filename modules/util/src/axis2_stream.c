@@ -17,61 +17,67 @@
 #include <axis2_stream.h>
 #include <stdio.h>
 
-int axis2_stream_ops_read (void *buffer, size_t count);
-int axis2_stream_ops_write(const void *buffer, size_t count);
-
-axis2_stream_t *axis2_stream_create(axis2_allocator_t* allocator, axis2_stream_ops_t* operations)
+axis2_status_t axis2_stream_impl_write (const void *buffer, size_t count);
+axis2_status_t axis2_stream_impl_read (void *buffer, size_t count);
+axis2_stream_t *
+axis2_stream_create (axis2_allocator_t * allocator,
+                     axis2_stream_ops_t * operations)
 {
     axis2_stream_t *stream;
     if (!allocator)
         return NULL;
-    stream = (axis2_stream_t*)axis2_malloc(allocator, sizeof(axis2_stream_t));
+    stream =
+        (axis2_stream_t *) axis2_malloc (allocator, sizeof (axis2_stream_t));
 
     if (!stream)
         return NULL;
-    
+
     if (operations)
         stream->ops = operations;
     else
     {
-        stream->ops = (axis2_stream_ops_t*)axis2_malloc(allocator, sizeof(axis2_stream_ops_t));
+        stream->ops =
+            (axis2_stream_ops_t *) axis2_malloc (allocator,
+                                                 sizeof (axis2_stream_ops_t));
 
         if (!stream->ops)
         {
-            axis2_free(allocator, stream);
+            axis2_free (allocator, stream);
             return NULL;
         }
-        
-        stream->ops->axis2_stream_read = axis2_stream_ops_read;
-        stream->ops->axis2_stream_write = axis2_stream_ops_write;
+
+        stream->ops->axis2_stream_ops_read = axis2_stream_impl_read;
+        stream->ops->axis2_stream_ops_write = axis2_stream_impl_write;
     }
-    
+
     return stream;
 }
 
-int axis2_stream_ops_read (void *buffer, size_t count)
+axis2_status_t
+axis2_stream_impl_read (void *buffer, size_t count)
 {
     int i;
     if (!buffer)
         return -1;
 
     i = 0;
-    for(i = 0; i < count -1; i++ )
+    for (i = 0; i < count - 1; i++)
     {
-        ((axis2_char_t*)buffer)[i] = 'a';
+        ((axis2_char_t *) buffer)[i] = 'a';
     }
-    ((axis2_char_t*)buffer)[i] = '\0';
+    ((axis2_char_t *) buffer)[i] = '\0';
     return 0;
 }
 
-int axis2_stream_ops_write(const void *buffer, size_t count)
+axis2_status_t
+axis2_stream_impl_write (const void *buffer, size_t count)
 {
-    int i ;
+    int i;
     if (!buffer)
         return -1;
-    
-    i =0;
-    for(i = 0; i < count; i++)
-        printf("%c", ((axis2_char_t*)buffer)[i]);
+
+    i = 0;
+    for (i = 0; i < count; i++)
+        printf ("%c", ((axis2_char_t *) buffer)[i]);
     return 0;
 }

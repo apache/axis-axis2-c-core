@@ -25,7 +25,8 @@
 #include <axis2_om_node.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**
@@ -35,36 +36,39 @@ extern "C" {
  */
 
 /** @cond */
-struct axis2_om_doctype;
-struct axis2_om_doctype_ops;	
+    struct axis2_om_doctype;
+    struct axis2_om_doctype_ops;
 /** @endcond */
-    
+
 /** @struct axis2_om_doctype_ops
     @brief OM doctype operations struct
 
     Encapsulator struct for operations of axis2_om_doctype_t
 */
-typedef struct axis2_om_doctype_ops
-{
-	/**
+    typedef struct axis2_om_doctype_ops
+    {
+    /**
 	 *	free the axis2_om_doctype_t struct
 	 * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
 	 * @param om_doc pointer to axis2_om_doctype_t struct
 	 * @returns status code
 	 */
-	axis2_status_t (*axis2_om_doctype_ops_free)(axis2_environment_t *environment, struct axis2_om_doctype *om_doctype);
-} axis2_om_doctype_ops_t;
+        axis2_status_t (*axis2_om_doctype_ops_free) (axis2_environment_t *
+                                                     environment,
+                                                     struct axis2_om_doctype *
+                                                     om_doctype);
+    } axis2_om_doctype_ops_t;
 
 /** \struct axis2_om_doctype
     \brief OM doctype struct
 
     Handles the XML document type in OM
 */
-typedef struct axis2_om_doctype
-{
-	axis2_om_doctype_ops_t* ops;
-	char *value;
-}axis2_om_doctype_t;
+    typedef struct axis2_om_doctype
+    {
+        axis2_om_doctype_ops_t *ops;
+        char *value;
+    } axis2_om_doctype_t;
 
 /**
  * Create a doctype struct and stores in in a node struct and returns a pointer
@@ -76,7 +80,11 @@ typedef struct axis2_om_doctype
  * @return pointer to a axis2_om_node_t struct containing the doctype struct
  */
 
-axis2_om_doctype_t *axis2_om_doctype_create(axis2_environment_t *environment, axis2_om_node_t *parent, const axis2_char_t *value, axis2_om_node_t **node);
+    axis2_om_doctype_t *axis2_om_doctype_create (axis2_environment_t *
+                                                 environment,
+                                                 axis2_om_node_t * parent,
+                                                 const axis2_char_t * value,
+                                                 axis2_om_node_t ** node);
 
 #define axis2_om_doctype_free(environment, doctype) ((doctype)->ops->axis2_om_doctype_ops_free(environment, doctype))
 
@@ -85,4 +93,4 @@ axis2_om_doctype_t *axis2_om_doctype_create(axis2_environment_t *environment, ax
 }
 #endif
 
-#endif				/* AXIS2_OM_DOCTYPE_H */
+#endif                          /* AXIS2_OM_DOCTYPE_H */

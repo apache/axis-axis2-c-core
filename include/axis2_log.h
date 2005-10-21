@@ -20,40 +20,81 @@
 #include <axis2_allocator.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-typedef enum axis2_log_levels
-{
-    AXIS2_LOG_DEBUG = 0,
-    AXIS2_LOG_INFO,
-    AXIS2_LOG_WARNING,
-    AXIS2_LOG_ERROR,
-    AXIS2_LOG_CRITICAL
-} axis2_log_levels_t;
+    struct axis2_log;
+    struct axis2_log_ops;
 
-struct axis2_log;
-struct axis2_log_ops;
+/**
+ * @defgroup axis2_log Log
+ * @ingroup axis2_util 
+ * @{
+ */
 
-typedef struct axis2_log_ops
-{
-    int (*write) (const void *buffer, size_t count);
-} axis2_log_ops_t;
+/** 
+  * \brief Axis2 log levels
+  */
+    typedef enum axis2_log_levels
+    {
+        /** Debug level, logs everything */
+        AXIS2_LOG_DEBUG = 0,
+        /** Info level, logs information */
+        AXIS2_LOG_INFO,
+        /** Warning level, logs only warnings */
+        AXIS2_LOG_WARNING,
+        /** Error level, logs only errors */
+        AXIS2_LOG_ERROR,
+        /** Critical level, logs only critical errors */
+        AXIS2_LOG_CRITICAL
+    } axis2_log_levels_t;
 
-typedef struct axis2_log
-{
-    struct axis2_log_ops *ops;
-    axis2_log_levels_t level;
-    int enabled;                /*boolean */
-} axis2_log_t;
+  /** 
+    * \brief Axis2 log operations struct
+    *
+    * Encapsulator struct for operations of axis2_log
+    */
+    typedef struct axis2_log_ops
+    {
+      /**
+        * writes to the log
+        * @param buffer buffer to be written to log
+        * @param size size of the buffer to be written to log
+        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        */
+        AXIS2_DECLARE(axis2_status_t) (*axis2_log_ops_write) (const void *buffer, size_t count);
+    } axis2_log_ops_t;
 
-axis2_log_t *axis2_log_create (axis2_allocator_t * allocator,
-                               axis2_log_ops_t * operations);
+  /** 
+    * \brief Axis2 Log struct
+    *
+    * Log is the encapsulating struct for all log related data and operations
+    */
+    typedef struct axis2_log
+    {
+        /** Log related operations */
+        struct axis2_log_ops *ops;
+        /** Log level */
+        axis2_log_levels_t level;
+        /** Is logging enabled? */
+        axis2_bool_t enabled;
+    } axis2_log_t;
+ 
+  /**
+    * Creates a log struct
+    * @param allocator allocator to be used. Mandatory, cannot be NULL    
+    * @return pointer to the newly created log struct 
+    */
+    AXIS2_DECLARE(axis2_log_t *) axis2_log_create (axis2_allocator_t * allocator,
+                                   axis2_log_ops_t * operations);
 
-#define axis2_log_write(log, buffer, count) ((log)->ops->write(buffer, count))
+#define axis2_log_write(log, buffer, count) ((log)->ops->axis2_log_ops_write(buffer, count))
 
+/** @} */
+    
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIS2_LOG_H */
+#endif                          /* AXIS2_LOG_H */

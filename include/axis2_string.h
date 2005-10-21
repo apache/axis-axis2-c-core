@@ -21,30 +21,55 @@
 #include <axis2_allocator.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-typedef struct axis2_string
-{
-    void* (*axis2_string_strdup)(const void *ptr);
-    int (*axis2_string_strcmp)(const axis2_char_t *s1, const axis2_char_t *s2);
-}axis2_string_t;
-
 /**
-*   if the parsed string is null a default string is created
-*   otherwise the parsed string is returned. If there isn't enough 
-*   memory for allocation NULL is returned.
-*   @param string user defined allcator
-*/
+ * @defgroup axis2_string String
+ * @ingroup axis2_util 
+ * @{
+ */
 
-axis2_string_t *
-    axis2_string_create(axis2_allocator_t *allocator, axis2_string_t *string);
-    
+/** 
+  * \brief Axis2 string operations
+  *
+  * Encapsulator for string handling routines
+  */
+    typedef struct axis2_string
+    {
+      /**
+        * duplicates the given string
+        * @param ptr string to be duplicated
+        * @return pointer to the duplicated string
+        */
+        AXIS2_DECLARE(void *) (*axis2_string_strdup) (const void *ptr);
+      /**
+        * compares the given two strings
+        * @param s1 first string to be compared
+        * @param s2 second string to be compared
+        * @return 0 if the two strings are equal, else non zero
+        */
+        AXIS2_DECLARE(int) (*axis2_string_strcmp) (const axis2_char_t * s1,
+                                    const axis2_char_t * s2);
+    } axis2_string_t;
+
+ /**
+    * Creates) a string struct
+    * @param allocator allocator to be used. Mandatory, cannot be NULL
+    * @param string user defined string. Optional, can be NULL. If NULL, a default string will be returned.
+    * @return pointer to newly created string. NULL on error.
+    */
+    AXIS2_DECLARE(axis2_string_t *) axis2_string_create (axis2_allocator_t * allocator,
+                                         axis2_string_t * string);
+
 #define axis2_strdup(string, ptr) ((string)->axis2_string_strdup(ptr))
 #define axis2_strcmp(string, s1, s2) ((string)->axis2_string_strcmp(s1, s2))
 
+/** @} */
+    
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIS2_STRING_H */
+#endif                          /* AXIS2_STRING_H */

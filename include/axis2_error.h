@@ -21,49 +21,108 @@
 #include <axis2_allocator.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-struct axis2_error;
-struct axis2_error_ops;
+    struct axis2_error;
+    struct axis2_error_ops;
 
-typedef struct axis2_error_ops {
-    axis2_char_t* (*get_message)();
-} axis2_error_ops_t;
+/**
+ * @defgroup axis2_error Error
+ * @ingroup axis2_util 
+ * @{
+ */
 
-typedef struct axis2_error {
-    struct axis2_error_ops *ops;
-    int errorno;
-} axis2_error_t;
+  /** 
+    * \brief Axis2 error operations struct
+    *
+    * Encapsulator struct for operations of axis2_error
+    */
+    typedef struct axis2_error_ops
+    {
+      /**
+        * get error message for the last error
+        * @return error message for the last error. NULL on error.
+        */
+        AXIS2_DECLARE(axis2_char_t *) (*axis2_error_ops_get_message) ();
+    } axis2_error_ops_t;
 
-axis2_error_t *axis2_error_create(axis2_allocator_t* allocator);
+  /** 
+    * \brief Axis2 Error struct
+    *
+    * Error holds the last errorno
+    */
+    typedef struct axis2_error
+    {
+        /** error related operations */
+        struct axis2_error_ops *ops;
+        /** last error number */
+        int errorno;
+    } axis2_error_t;
 
-#define axis2_error_get_message(error) ((error)->ops->get_message())
+  /**
+    * Creates an error struct
+    * @param allocator allocator to be used. Mandatory, cannot be NULL    
+    * @return pointer to the newly created error struct 
+    */
+    AXIS2_DECLARE(axis2_error_t *) axis2_error_create (axis2_allocator_t * allocator);
 
-typedef enum axis2_status_codes {
-    AXIS2_FAILURE = 0,
-    AXIS2_SUCCESS
-} axis2_status_codes_t;
+#define axis2_error_get_message(error) ((error)->ops->axis2_error_ops_get_message())
 
-typedef enum axis2_error_codes {
-    AXIS2_ERROR_NONE = 0,
-    AXIS2_ERROR_NO_MEMORY,
-    AXIS2_ERROR_INVALID_NULL_PARAMETER,
-    AXIS2_ERROR_INVALID_ITERATOR_STATE,
-    AXIS2_ERROR_INVALID_NODE_TYPE,
-	AXIS2_ERROR_PULL_PARSER_ELEMENT_NULL,
-	AXIS2_ERROR_PULL_PARSER_VALUE_NULL,
-	AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL,
-	AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL,
-	AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD,
-	AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL,
-	AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE,
-	AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED
-} axis2_error_codes_t;
+  /** 
+    * \brief Axis2 status codes
+    *
+    * Possible status values for Axis2
+    */
+    typedef enum axis2_status_codes
+    {
+        /** Failure state */
+        AXIS2_FAILURE = 0,
+        /** Success state */
+        AXIS2_SUCCESS
+    } axis2_status_codes_t;
 
+  /** 
+    * \brief Axis2 error codes
+    *
+    * Set of error codes for Axis2
+    */
+    typedef enum axis2_error_codes
+    {
+        /** No error */
+        AXIS2_ERROR_NONE = 0,
+        /** Out of memory */
+        AXIS2_ERROR_NO_MEMORY,
+        /** NULL paramater was passed when a non NULL parameter was expected */
+        AXIS2_ERROR_INVALID_NULL_PARAMETER,
+        /** Iterator state invalid e.g. next called before calling first */
+        AXIS2_ERROR_INVALID_ITERATOR_STATE,
+        /** Node type is different from what is expected */
+        AXIS2_ERROR_INVALID_NODE_TYPE,
+        /** Pull parser returned NULL element */
+        AXIS2_ERROR_PULL_PARSER_ELEMENT_NULL,
+        /** Pull parser returned NULL value */
+        AXIS2_ERROR_PULL_PARSER_VALUE_NULL,
+        /** Builder done with pulling. Cannot pull any more */
+        AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL,
+        /** Bulder's last node is NULL when it is not supposed to be NULL */
+        AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL,
+        /** Discard faile because the builder state is invalid */
+        AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD,
+        /** Document root is NULL, when it is not supposed to be NULL */
+        AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL,
+        /** Undefined namespace used */
+        AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE,
+        /** Trying to release unallocated memory */
+        AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED
+    } axis2_error_codes_t;
+
+/** @} */
+    
 #ifdef __cplusplus
 }
 #endif
 
 
-#endif /* AXIS2_ERROR_H */
+#endif                          /* AXIS2_ERROR_H */

@@ -17,47 +17,50 @@
 #include <axis2_log.h>
 #include <stdio.h>
 
-int axis2_log_ops_write(const void *buffer, size_t count);
+axis2_status_t axis2_log_impl_write (const void *buffer, size_t count);
 
-axis2_log_t *axis2_log_create(axis2_allocator_t* allocator, axis2_log_ops_t* operations)
-{   
+axis2_log_t *
+axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * operations)
+{
     axis2_log_t *log;
     if (!allocator)
         return NULL;
 
-    log = (axis2_log_t*)axis2_malloc(allocator, sizeof(axis2_log_t));
+    log = (axis2_log_t *) axis2_malloc (allocator, sizeof (axis2_log_t));
 
     if (!log)
         return NULL;
-    
+
     if (operations)
         log->ops = operations;
     else
     {
-        log->ops = (axis2_log_ops_t*)axis2_malloc(allocator, sizeof(axis2_log_ops_t));
+        log->ops =
+            (axis2_log_ops_t *) axis2_malloc (allocator,
+                                              sizeof (axis2_log_ops_t));
 
         if (!log->ops)
         {
-            axis2_free(allocator, log);
+            axis2_free (allocator, log);
             return NULL;
         }
-        
-        log->ops->write = axis2_log_ops_write;
+
+        log->ops->axis2_log_ops_write = axis2_log_impl_write;
     }
-    
+
     return log;
 }
 
-int axis2_log_ops_write(const void *buffer, size_t count)
+axis2_status_t
+axis2_log_impl_write (const void *buffer, size_t count)
 {
     int i;
     if (!buffer)
         return -1;
-    
-    i =0;
-    for(i = 0; i < count; i++)
-        fprintf(stderr, "%c", ((axis2_char_t*)buffer)[i]);
-    printf("\n");
+
+    i = 0;
+    for (i = 0; i < count; i++)
+        fprintf (stderr, "%c", ((axis2_char_t *) buffer)[i]);
+    printf ("\n");
     return 0;
 }
-

@@ -26,12 +26,13 @@
 #include <axis2_environment.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**
  * @defgroup axis2_hash Hash Tables
- * @ingroup axis2 
+ * @ingroup axis2_util 
  * @{
  */
 
@@ -50,12 +51,12 @@ extern "C" {
 /**
  * Abstract type for hash tables.
  */
-typedef struct axis2_hash_t axis2_hash_t;
+    typedef struct axis2_hash_t axis2_hash_t;
 
 /**
  * Abstract type for scanning hash tables.
  */
-typedef struct axis2_hash_index_t axis2_hash_index_t;
+    typedef struct axis2_hash_index_t axis2_hash_index_t;
 
 /**
  * Callback functions for calculating hash values.
@@ -63,19 +64,21 @@ typedef struct axis2_hash_index_t axis2_hash_index_t;
  * @param klen The length of the key, or AXIS2_HASH_KEY_STRING to use the string 
  *             length. If AXIS2_HASH_KEY_STRING then returns the actual key length.
  */
-typedef unsigned int (*axis2_hashfunc_t)(const char *key, axis2_ssize_t *klen);
+    typedef unsigned int (*axis2_hashfunc_t) (const char *key,
+                                              axis2_ssize_t * klen);
 
 /**
  * The default hash function.
  */
-unsigned int axis2_hashfunc_default(const char *key, axis2_ssize_t *klen);
+    unsigned int axis2_hashfunc_default (const char *key,
+                                         axis2_ssize_t * klen);
 
 /**
  * Create a hash table.
  * @param environment The environment to allocate the hash table out of
  * @return The hash table just created
   */
-axis2_hash_t *axis2_hash_make(axis2_environment_t *environment);
+    axis2_hash_t *axis2_hash_make (axis2_environment_t * environment);
 
 /**
  * Create a hash table with a custom hash function
@@ -83,8 +86,8 @@ axis2_hash_t *axis2_hash_make(axis2_environment_t *environment);
  * @param hash_func A custom hash function.
  * @return The hash table just created
   */
-axis2_hash_t *axis2_hash_make_custom(axis2_environment_t *environment, 
-                                               axis2_hashfunc_t hash_func);
+    axis2_hash_t *axis2_hash_make_custom (axis2_environment_t * environment,
+                                          axis2_hashfunc_t hash_func);
 
 /**
  * Make a copy of a hash table
@@ -93,8 +96,8 @@ axis2_hash_t *axis2_hash_make_custom(axis2_environment_t *environment,
  * @return The hash table just created
  * @remark Makes a shallow copy
  */
-axis2_hash_t *axis2_hash_copy(axis2_environment_t *environment,
-                                        const axis2_hash_t *h);
+    axis2_hash_t *axis2_hash_copy (axis2_environment_t * environment,
+                                   const axis2_hash_t * h);
 
 /**
  * Associate a value with a key in a hash table.
@@ -104,8 +107,8 @@ axis2_hash_t *axis2_hash_copy(axis2_environment_t *environment,
  * @param val Value to associate with the key
  * @remark If the value is NULL the hash entry is deleted.
  */
-void axis2_hash_set(axis2_hash_t *ht, const void *key,
-                               axis2_ssize_t klen, const void *val);
+    void axis2_hash_set (axis2_hash_t * ht, const void *key,
+                         axis2_ssize_t klen, const void *val);
 
 /**
  * Look up the value associated with a key in a hash table.
@@ -114,8 +117,8 @@ void axis2_hash_set(axis2_hash_t *ht, const void *key,
  * @param klen Length of the key. Can be AXIS2_HASH_KEY_STRING to use the string length.
  * @return Returns NULL if the key is not present.
  */
-void *axis2_hash_get(axis2_hash_t *ht, const void *key,
-                                 axis2_ssize_t klen);
+    void *axis2_hash_get (axis2_hash_t * ht, const void *key,
+                          axis2_ssize_t klen);
 
 /**
  * Start iterating over the entries in a hash table.
@@ -145,7 +148,8 @@ void *axis2_hash_get(axis2_hash_t *ht, const void *key,
  * }
  * </PRE>
  */
-axis2_hash_index_t *axis2_hash_first(axis2_environment_t *environment, axis2_hash_t *ht);
+    axis2_hash_index_t *axis2_hash_first (axis2_environment_t * environment,
+                                          axis2_hash_t * ht);
 
 /**
  * Continue iterating over the entries in a hash table.
@@ -153,7 +157,7 @@ axis2_hash_index_t *axis2_hash_first(axis2_environment_t *environment, axis2_has
  * @return a pointer to the updated iteration state.  NULL if there are no more  
  *         entries.
  */
-axis2_hash_index_t *axis2_hash_next(axis2_hash_index_t *hi);
+    axis2_hash_index_t *axis2_hash_next (axis2_hash_index_t * hi);
 
 /**
  * Get the current entry's details from the iteration state.
@@ -164,15 +168,15 @@ axis2_hash_index_t *axis2_hash_next(axis2_hash_index_t *hi);
  * @remark The return pointers should point to a variable that will be set to the
  *         corresponding data, or they may be NULL if the data isn't interesting.
  */
-void axis2_hash_this(axis2_hash_index_t *hi, const void **key, 
-                                axis2_ssize_t *klen, void **val);
+    void axis2_hash_this (axis2_hash_index_t * hi, const void **key,
+                          axis2_ssize_t * klen, void **val);
 
 /**
  * Get the number of key/value pairs in the hash table.
  * @param ht The hash table
  * @return The number of key/value pairs in the hash table.
  */
-unsigned int axis2_hash_count(axis2_hash_t *ht);
+    unsigned int axis2_hash_count (axis2_hash_t * ht);
 
 /**
  * Merge two hash tables into one new hash table. The values of the overlay
@@ -183,9 +187,9 @@ unsigned int axis2_hash_count(axis2_hash_t *ht);
  * @param base The table that represents the initial values of the new table
  * @return A new hash table containing all of the data from the two passed in
  */
-axis2_hash_t *axis2_hash_overlay(axis2_environment_t *environment,
-                                           const axis2_hash_t *overlay, 
-                                           const axis2_hash_t *base);
+    axis2_hash_t *axis2_hash_overlay (axis2_environment_t * environment,
+                                      const axis2_hash_t * overlay,
+                                      const axis2_hash_t * base);
 
 /**
  * Merge two hash tables into one new hash table. If the same key
@@ -201,21 +205,17 @@ axis2_hash_t *axis2_hash_overlay(axis2_environment_t *environment,
  * @param data Client data to pass to the merger function
  * @return A new hash table containing all of the data from the two passed in
  */
-axis2_hash_t *axis2_hash_merge(axis2_environment_t *environment,
-                                         const axis2_hash_t *h1,
-                                         const axis2_hash_t *h2,
-                                         void * (*merger)(axis2_environment_t *environment,
+    axis2_hash_t *axis2_hash_merge (axis2_environment_t * environment,
+                                    const axis2_hash_t * h1,
+                                    const axis2_hash_t * h2,
+                                    void *(*merger) (axis2_environment_t *
+                                                     environment,
                                                      const void *key,
                                                      axis2_ssize_t klen,
                                                      const void *h1_val,
                                                      const void *h2_val,
                                                      const void *data),
-                                         const void *data);
-
-/**
- * Get a pointer to the environment which the hash table was created in
- */
-/*AXIS2_POOL_DECLARE_ACCESSOR(hash);*/
+                                    const void *data);
 
 /** @} */
 
@@ -223,4 +223,4 @@ axis2_hash_t *axis2_hash_merge(axis2_environment_t *environment,
 }
 #endif
 
-#endif	/* !AXIS2_HASH_H */
+#endif                          /* !AXIS2_HASH_H */

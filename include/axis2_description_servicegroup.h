@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #ifndef AXIS2_DESCRIPTION_SERVICEGROUP_H
 #define AXIS2_DESCRIPTION_SERVICEGROUP_H
 
@@ -21,13 +21,13 @@
  * @file axis2_description_servicegroup.h
  * @brief axis2 DESCRIPTION CORE servicegroup
  */
- 
+
 #include <axis2_core.h>
 #include <axis2_description_param_include.h>
 #include <axis2_description_service.h>
 
 #ifdef __cplusplus
-extern "C" 
+extern "C"
 {
 #endif
 
@@ -36,7 +36,7 @@ extern "C"
   * @{
   */
 
-/** @} */ 
+/** @} */
 
 /**
  * @defgroup axis2_description_servicegroup DESCRIPTION Servicegroup
@@ -45,39 +45,40 @@ extern "C"
  */
 
 /**************************** Start of function macros ************************/
-	
+
 #define axis2_description_servicegroup_add_service(env, servicegroup_desc \
 		, service_desc) (axis2_description_service_get_ops(env, \
 		servicegroup_desc)->get_param (env, servicegroup_desc, service_desc));
-	
-/**************************** End of function macros **************************/	
+
+/**************************** End of function macros **************************/
 /**************************** Function pointers *******************************/
 
 /** Add a service to the serivce group
   * @param service to be added
   * @return status code
   */
-typedef axis2_status_t (*axis2_description_servicegroup_add_service_t)
-		(axis2_environment_t *env
-		, axis2_description_servicegroup_t *servicegroup_desc
-		, axis2_description_service_t *service_desc);
+    typedef axis2_status_t (*axis2_description_servicegroup_add_service_t)
+        (axis2_environment_t * env,
+         axis2_description_servicegroup_t * servicegroup_desc,
+         axis2_description_service_t * service_desc);
 
 /*************************** End of function pointers *************************/
 
-struct axis2_description_servicegroup_ops_s
-{
-	axis2_description_servicegroup_add_service_t add_service;	
-};
+    struct axis2_description_servicegroup_ops_s
+    {
+        axis2_description_servicegroup_add_service_t add_service;
+    };
 
-axis2_description_servicegroup_ops_t *axis2_description_servicegroup_get_ops
-		(axis2_environment_t *env
-		, axis2_description_servicegroup_t *servicegroup_desc);
+    axis2_description_servicegroup_ops_t
+        *axis2_description_servicegroup_get_ops (axis2_environment_t * env,
+                                                 axis2_description_servicegroup_t
+                                                 * servicegroup_desc);
 
-axis2_description_servicegroup_t *axis2_description_servicegroup_create
-		(axis2_environment_t *env);
+    axis2_description_servicegroup_t *axis2_description_servicegroup_create
+        (axis2_environment_t * env);
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_DESCRIPTION_SERVICEGROUP_H	*/
+#endif                          /* AXIS2_DESCRIPTION_SERVICEGROUP_H  */

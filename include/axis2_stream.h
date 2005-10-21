@@ -20,28 +20,69 @@
 #include <axis2_allocator.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-struct axis2_stream;
-struct axis2_stream_ops;
+    struct axis2_stream;
+    struct axis2_stream_ops;
 
-typedef struct axis2_stream_ops {
-    int (*axis2_stream_read)(void *buffer, size_t count);
-    int (*axis2_stream_write)(const void *buffer, size_t count);
-} axis2_stream_ops_t;
+/**
+ * @defgroup axis2_stream Stream
+ * @ingroup axis2_util 
+ * @{
+ */
 
-typedef struct axis2_stream {
-    struct axis2_stream_ops *ops;
-} axis2_stream_t;
+  /** 
+    * \brief Axis2 stream operations struct
+    *
+    * Encapsulator struct for operations of axis2_stream
+    */
+    typedef struct axis2_stream_ops
+    {
+      /**
+        * reads from stream
+        * @param buffer buffer into which the content is to be read
+        * @param size size of the buffer
+        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        */
+        AXIS2_DECLARE(axis2_status_t) (*axis2_stream_ops_read) (void *buffer, size_t count);
+      /**
+        * writes into stream
+        * @param buffer buffer to be written
+        * @param size size of the buffer
+        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        */
+        AXIS2_DECLARE(axis2_status_t) (*axis2_stream_ops_write) (const void *buffer, size_t count);
+    } axis2_stream_ops_t;
 
-axis2_stream_t *axis2_stream_create(axis2_allocator_t* allocator, axis2_stream_ops_t* operations);
+  /** 
+    * \brief Axis2 Stream struct
+    *
+    * Stream is the encapsulating struct for all stream related operations
+    */
+    typedef struct axis2_stream
+    {
+        /** Stream related operations */
+        struct axis2_stream_ops *ops;
+    } axis2_stream_t;
 
-#define axis2_stream_read(stream, buffer, count) ((stream)->ops->axis2_stream_read(buffer, count))
-#define axis2_stream_write(stream, buffer, count) ((stream)->ops->axis2_stream_write(buffer, count))
+  /**
+    * Creates a stream struct
+    * @param allocator allocator to be used. Mandatory, cannot be NULL
+    * @param operations operations struct. Optional, can be NULL. If null default operations would be assigned.
+    * @return pointer to the newly created log struct 
+    */
+    AXIS2_DECLARE(axis2_stream_t *) axis2_stream_create (axis2_allocator_t * allocator,
+                                         axis2_stream_ops_t * operations);
 
+#define axis2_stream_read(stream, buffer, count) ((stream)->ops->axis2_stream_ops_read(buffer, count))
+#define axis2_stream_write(stream, buffer, count) ((stream)->ops->axis2_stream_ops_write(buffer, count))
+
+/** @} */
+    
 #ifdef __cplusplus
 }
 #endif
-        
-#endif /* AXIS2_STREAM_H */
+
+#endif                          /* AXIS2_STREAM_H */

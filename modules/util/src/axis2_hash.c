@@ -31,12 +31,13 @@
 
 typedef struct axis2_hash_entry_t axis2_hash_entry_t;
 
-struct axis2_hash_entry_t {
+struct axis2_hash_entry_t
+{
     axis2_hash_entry_t *next;
-    unsigned int      hash;
-    const void       *key;
-    axis2_ssize_t       klen;
-    const void       *val;
+    unsigned int hash;
+    const void *key;
+    axis2_ssize_t klen;
+    const void *val;
 };
 
 /*
@@ -46,10 +47,11 @@ struct axis2_hash_entry_t {
  * hash entry to be freed or otherwise mangled between calls to
  * axis2_hash_next().
  */
-struct axis2_hash_index_t {
-    axis2_hash_t         *ht;
-    axis2_hash_entry_t   *this, *next;
-    unsigned int        index;
+struct axis2_hash_index_t
+{
+    axis2_hash_t *ht;
+    axis2_hash_entry_t *this, *next;
+    unsigned int index;
 };
 
 /*
@@ -59,45 +61,50 @@ struct axis2_hash_index_t {
  * The count of hash entries may be greater depending on the chosen
  * collision rate.
  */
-struct axis2_hash_t {
-    axis2_environment_t          *environment;
-    axis2_hash_entry_t   **array;
-    axis2_hash_index_t     iterator;  /* For axis2_hash_first(NULL, ...) */
-    unsigned int         count, max;
-    axis2_hashfunc_t       hash_func;
-    axis2_hash_entry_t    *free;  /* List of recycled entries */
+struct axis2_hash_t
+{
+    axis2_environment_t *environment;
+    axis2_hash_entry_t **array;
+    axis2_hash_index_t iterator;    /* For axis2_hash_first(NULL, ...) */
+    unsigned int count, max;
+    axis2_hashfunc_t hash_func;
+    axis2_hash_entry_t *free;   /* List of recycled entries */
 };
 
-#define INITIAL_MAX 15 /* tunable == 2^n - 1 */
+#define INITIAL_MAX 15          /* tunable == 2^n - 1 */
 
 
 /*
  * Hash creation functions.
  */
 
-static axis2_hash_entry_t **alloc_array(axis2_hash_t *ht, unsigned int max)
+static axis2_hash_entry_t **
+alloc_array (axis2_hash_t * ht, unsigned int max)
 {
-   return memset (axis2_malloc(ht->environment->allocator, 
-                    sizeof(*ht->array) * (max + 1)), 0, sizeof(*ht->array) * (max + 1) );
+    return memset (axis2_malloc (ht->environment->allocator,
+                                 sizeof (*ht->array) * (max + 1)), 0,
+                   sizeof (*ht->array) * (max + 1));
 }
 
-axis2_hash_t *axis2_hash_make(axis2_environment_t *environment)
+axis2_hash_t *
+axis2_hash_make (axis2_environment_t * environment)
 {
     axis2_hash_t *ht;
-    ht = axis2_malloc(environment->allocator, sizeof(axis2_hash_t));
+    ht = axis2_malloc (environment->allocator, sizeof (axis2_hash_t));
     ht->environment = environment;
     ht->free = NULL;
     ht->count = 0;
     ht->max = INITIAL_MAX;
-    ht->array = alloc_array(ht, ht->max);
+    ht->array = alloc_array (ht, ht->max);
     ht->hash_func = axis2_hashfunc_default;
     return ht;
 }
 
-axis2_hash_t *axis2_hash_make_custom(axis2_environment_t *environment,
-                                               axis2_hashfunc_t hash_func)
+axis2_hash_t *
+axis2_hash_make_custom (axis2_environment_t * environment,
+                        axis2_hashfunc_t hash_func)
 {
-    axis2_hash_t *ht = axis2_hash_make(environment);
+    axis2_hash_t *ht = axis2_hash_make (environment);
     ht->hash_func = hash_func;
     return ht;
 }
@@ -107,10 +114,12 @@ axis2_hash_t *axis2_hash_make_custom(axis2_environment_t *environment,
  * Hash iteration functions.
  */
 
-axis2_hash_index_t *axis2_hash_next(axis2_hash_index_t *hi)
+axis2_hash_index_t *
+axis2_hash_next (axis2_hash_index_t * hi)
 {
     hi->this = hi->next;
-    while (!hi->this) {
+    while (!hi->this)
+    {
         if (hi->index > hi->ht->max)
             return NULL;
 
@@ -120,11 +129,12 @@ axis2_hash_index_t *axis2_hash_next(axis2_hash_index_t *hi)
     return hi;
 }
 
-axis2_hash_index_t *axis2_hash_first(axis2_environment_t *environment, axis2_hash_t *ht)
+axis2_hash_index_t *
+axis2_hash_first (axis2_environment_t * environment, axis2_hash_t * ht)
 {
     axis2_hash_index_t *hi;
     if (environment)
-        hi = axis2_malloc(environment->allocator, sizeof(*hi));
+        hi = axis2_malloc (environment->allocator, sizeof (*hi));
     else
         hi = &ht->iterator;
 
@@ -132,17 +142,19 @@ axis2_hash_index_t *axis2_hash_first(axis2_environment_t *environment, axis2_has
     hi->index = 0;
     hi->this = NULL;
     hi->next = NULL;
-    return axis2_hash_next(hi);
+    return axis2_hash_next (hi);
 }
 
-void axis2_hash_this(axis2_hash_index_t *hi,
-                                const void **key,
-                                axis2_ssize_t *klen,
-                                void **val)
+void
+axis2_hash_this (axis2_hash_index_t * hi,
+                 const void **key, axis2_ssize_t * klen, void **val)
 {
-    if (key)  *key  = hi->this->key;
-    if (klen) *klen = hi->this->klen;
-    if (val)  *val  = (void *)hi->this->val;
+    if (key)
+        *key = hi->this->key;
+    if (klen)
+        *klen = hi->this->klen;
+    if (val)
+        *val = (void *) hi->this->val;
 }
 
 
@@ -150,15 +162,17 @@ void axis2_hash_this(axis2_hash_index_t *hi,
  * Expanding a hash table
  */
 
-static void expand_array(axis2_hash_t *ht)
+static void
+expand_array (axis2_hash_t * ht)
 {
     axis2_hash_index_t *hi;
     axis2_hash_entry_t **new_array;
     unsigned int new_max;
 
     new_max = ht->max * 2 + 1;
-    new_array = alloc_array(ht, new_max);
-    for (hi = axis2_hash_first(NULL, ht); hi; hi = axis2_hash_next(hi)) {
+    new_array = alloc_array (ht, new_max);
+    for (hi = axis2_hash_first (NULL, ht); hi; hi = axis2_hash_next (hi))
+    {
         unsigned int i = hi->this->hash & new_max;
         hi->this->next = new_array[i];
         new_array[i] = hi->this;
@@ -167,13 +181,14 @@ static void expand_array(axis2_hash_t *ht)
     ht->max = new_max;
 }
 
-unsigned int axis2_hashfunc_default(const char *char_key, axis2_ssize_t *klen)
+unsigned int
+axis2_hashfunc_default (const char *char_key, axis2_ssize_t * klen)
 {
     unsigned int hash = 0;
-    const unsigned char *key = (const unsigned char *)char_key;
+    const unsigned char *key = (const unsigned char *) char_key;
     const unsigned char *p;
     axis2_ssize_t i;
-    
+
     /*
      * This is the popular `times 33' hash algorithm which is used by
      * perl and also appears in Berkeley DB. This is one of the best
@@ -211,15 +226,19 @@ unsigned int axis2_hashfunc_default(const char *char_key, axis2_ssize_t *klen)
      *
      *                  -- Ralf S. Engelschall <rse@engelschall.com>
      */
-     
-    if (*klen == AXIS2_HASH_KEY_STRING) {
-        for (p = key; *p; p++) {
+
+    if (*klen == AXIS2_HASH_KEY_STRING)
+    {
+        for (p = key; *p; p++)
+        {
             hash = hash * 33 + *p;
         }
         *klen = p - key;
     }
-    else {
-        for (p = key, i = *klen; i; i--, p++) {
+    else
+    {
+        for (p = key, i = *klen; i; i--, p++)
+        {
             hash = hash * 33 + *p;
         }
     }
@@ -237,22 +256,21 @@ unsigned int axis2_hashfunc_default(const char *char_key, axis2_ssize_t *klen)
  * that hash entries can be removed.
  */
 
-static axis2_hash_entry_t **find_entry(axis2_hash_t *ht,
-                                     const void *key,
-                                     axis2_ssize_t klen,
-                                     const void *val)
+static axis2_hash_entry_t **
+find_entry (axis2_hash_t * ht,
+            const void *key, axis2_ssize_t klen, const void *val)
 {
     axis2_hash_entry_t **hep, *he;
     unsigned int hash;
 
-    hash = ht->hash_func(key, &klen);
+    hash = ht->hash_func (key, &klen);
 
     /* scan linked list */
     for (hep = &ht->array[hash & ht->max], he = *hep;
-         he; hep = &he->next, he = *hep) {
+         he; hep = &he->next, he = *hep)
+    {
         if (he->hash == hash
-            && he->klen == klen
-            && memcmp(he->key, key, klen) == 0)
+            && he->klen == klen && memcmp (he->key, key, klen) == 0)
             break;
     }
     if (he || !val)
@@ -262,41 +280,43 @@ static axis2_hash_entry_t **find_entry(axis2_hash_t *ht,
     if ((he = ht->free) != NULL)
         ht->free = he->next;
     else
-        he = axis2_malloc(ht->environment->allocator, sizeof(*he));
+        he = axis2_malloc (ht->environment->allocator, sizeof (*he));
     he->next = NULL;
     he->hash = hash;
-    he->key  = key;
+    he->key = key;
     he->klen = klen;
-    he->val  = val;
+    he->val = val;
     *hep = he;
     ht->count++;
     return hep;
 }
 
-axis2_hash_t *axis2_hash_copy(axis2_environment_t *environment,
-                                        const axis2_hash_t *orig)
+axis2_hash_t *
+axis2_hash_copy (axis2_environment_t * environment, const axis2_hash_t * orig)
 {
     axis2_hash_t *ht;
     axis2_hash_entry_t *new_vals;
     unsigned int i, j;
 
-    ht = axis2_malloc(environment->allocator, sizeof(axis2_hash_t) +
-                    sizeof(*ht->array) * (orig->max + 1) +
-                    sizeof(axis2_hash_entry_t) * orig->count);
+    ht = axis2_malloc (environment->allocator, sizeof (axis2_hash_t) +
+                       sizeof (*ht->array) * (orig->max + 1) +
+                       sizeof (axis2_hash_entry_t) * orig->count);
     ht->environment = environment;
     ht->free = NULL;
     ht->count = orig->count;
     ht->max = orig->max;
     ht->hash_func = orig->hash_func;
-    ht->array = (axis2_hash_entry_t **)((char *)ht + sizeof(axis2_hash_t));
+    ht->array = (axis2_hash_entry_t **) ((char *) ht + sizeof (axis2_hash_t));
 
-    new_vals = (axis2_hash_entry_t *)((char *)(ht) + sizeof(axis2_hash_t) +
-                                    sizeof(*ht->array) * (orig->max + 1));
+    new_vals = (axis2_hash_entry_t *) ((char *) (ht) + sizeof (axis2_hash_t) +
+                                       sizeof (*ht->array) * (orig->max + 1));
     j = 0;
-    for (i = 0; i <= ht->max; i++) {
+    for (i = 0; i <= ht->max; i++)
+    {
         axis2_hash_entry_t **new_entry = &(ht->array[i]);
         axis2_hash_entry_t *orig_entry = orig->array[i];
-        while (orig_entry) {
+        while (orig_entry)
+        {
             *new_entry = &new_vals[j++];
             (*new_entry)->hash = orig_entry->hash;
             (*new_entry)->key = orig_entry->key;
@@ -310,27 +330,27 @@ axis2_hash_t *axis2_hash_copy(axis2_environment_t *environment,
     return ht;
 }
 
-void *axis2_hash_get(axis2_hash_t *ht,
-                                 const void *key,
-                                 axis2_ssize_t klen)
+void *
+axis2_hash_get (axis2_hash_t * ht, const void *key, axis2_ssize_t klen)
 {
     axis2_hash_entry_t *he;
-    he = *find_entry(ht, key, klen, NULL);
+    he = *find_entry (ht, key, klen, NULL);
     if (he)
-        return (void *)he->val;
+        return (void *) he->val;
     else
         return NULL;
 }
 
-void axis2_hash_set(axis2_hash_t *ht,
-                               const void *key,
-                               axis2_ssize_t klen,
-                               const void *val)
+void
+axis2_hash_set (axis2_hash_t * ht,
+                const void *key, axis2_ssize_t klen, const void *val)
 {
     axis2_hash_entry_t **hep;
-    hep = find_entry(ht, key, klen, val);
-    if (*hep) {
-        if (!val) {
+    hep = find_entry (ht, key, klen, val);
+    if (*hep)
+    {
+        if (!val)
+        {
             /* delete entry */
             axis2_hash_entry_t *old = *hep;
             *hep = (*hep)->next;
@@ -338,81 +358,92 @@ void axis2_hash_set(axis2_hash_t *ht,
             ht->free = old;
             --ht->count;
         }
-        else {
+        else
+        {
             /* replace entry */
             (*hep)->val = val;
             /* check that the collision rate isn't too high */
-            if (ht->count > ht->max) {
-                expand_array(ht);
+            if (ht->count > ht->max)
+            {
+                expand_array (ht);
             }
         }
     }
     /* else key not present and val==NULL */
 }
 
-unsigned int axis2_hash_count(axis2_hash_t *ht)
+unsigned int
+axis2_hash_count (axis2_hash_t * ht)
 {
     return ht->count;
 }
 
-axis2_hash_t *axis2_hash_overlay(axis2_environment_t *environment,
-                                          const axis2_hash_t *overlay,
-                                          const axis2_hash_t *base)
+axis2_hash_t *
+axis2_hash_overlay (axis2_environment_t * environment,
+                    const axis2_hash_t * overlay, const axis2_hash_t * base)
 {
-    return axis2_hash_merge(environment, overlay, base, NULL, NULL);
+    return axis2_hash_merge (environment, overlay, base, NULL, NULL);
 }
 
-axis2_hash_t *axis2_hash_merge(axis2_environment_t *environment,
-                                         const axis2_hash_t *overlay,
-                                         const axis2_hash_t *base,
-                                         void * (*merger)(axis2_environment_t *environment,
-                                                     const void *key,
-                                                     axis2_ssize_t klen,
-                                                     const void *h1_val,
-                                                     const void *h2_val,
-                                                     const void *data),
-                                         const void *data)
+axis2_hash_t *
+axis2_hash_merge (axis2_environment_t * environment,
+                  const axis2_hash_t * overlay,
+                  const axis2_hash_t * base,
+                  void *(*merger) (axis2_environment_t * environment,
+                                   const void *key,
+                                   axis2_ssize_t klen,
+                                   const void *h1_val,
+                                   const void *h2_val,
+                                   const void *data), const void *data)
 {
     axis2_hash_t *res;
     axis2_hash_entry_t *new_vals = NULL;
     axis2_hash_entry_t *iter;
     axis2_hash_entry_t *ent;
-    unsigned int i,j,k;
+    unsigned int i, j, k;
 
 #if AXIS2_POOL_DEBUG
     /* we don't copy keys and values, so it's necessary that
      * overlay->a.environment and base->a.environment have a life span at least
      * as long as p
      */
-    if (!axis2_environment_is_ancestor(overlay->environment, p)) {
-        fprintf(stderr,
-                "axis2_hash_merge: overlay's environment is not an ancestor of p\n");
-        abort();
+    if (!axis2_environment_is_ancestor (overlay->environment, p))
+    {
+        fprintf (stderr,
+                 "axis2_hash_merge: overlay's environment is not an ancestor of p\n");
+        abort ();
     }
-    if (!axis2_environment_is_ancestor(base->environment, p)) {
-        fprintf(stderr,
-                "axis2_hash_merge: base's environment is not an ancestor of p\n");
-        abort();
+    if (!axis2_environment_is_ancestor (base->environment, p))
+    {
+        fprintf (stderr,
+                 "axis2_hash_merge: base's environment is not an ancestor of p\n");
+        abort ();
     }
 #endif
 
-    res = axis2_malloc(environment->allocator, sizeof(axis2_hash_t));
+    res = axis2_malloc (environment->allocator, sizeof (axis2_hash_t));
     res->environment = environment;
     res->free = NULL;
     res->hash_func = base->hash_func;
     res->count = base->count;
     res->max = (overlay->max > base->max) ? overlay->max : base->max;
-    if (base->count + overlay->count > res->max) {
+    if (base->count + overlay->count > res->max)
+    {
         res->max = res->max * 2 + 1;
     }
-    res->array = alloc_array(res, res->max);
-    if (base->count + overlay->count) {
-        new_vals = axis2_malloc(environment->allocator, sizeof(axis2_hash_entry_t) *
-                              (base->count + overlay->count));
+    res->array = alloc_array (res, res->max);
+    if (base->count + overlay->count)
+    {
+        new_vals =
+            axis2_malloc (environment->allocator,
+                          sizeof (axis2_hash_entry_t) * (base->count +
+                                                         overlay->count));
     }
     j = 0;
-    for (k = 0; k <= base->max; k++) {
-        for (iter = base->array[k]; iter; iter = iter->next) {
+    for (k = 0; k <= base->max; k++)
+    {
+        for (iter = base->array[k]; iter; iter = iter->next)
+        {
             i = iter->hash & res->max;
             new_vals[j].klen = iter->klen;
             new_vals[j].key = iter->key;
@@ -424,23 +455,31 @@ axis2_hash_t *axis2_hash_merge(axis2_environment_t *environment,
         }
     }
 
-    for (k = 0; k <= overlay->max; k++) {
-        for (iter = overlay->array[k]; iter; iter = iter->next) {
+    for (k = 0; k <= overlay->max; k++)
+    {
+        for (iter = overlay->array[k]; iter; iter = iter->next)
+        {
             i = iter->hash & res->max;
-            for (ent = res->array[i]; ent; ent = ent->next) {
+            for (ent = res->array[i]; ent; ent = ent->next)
+            {
                 if ((ent->klen == iter->klen) &&
-                    (memcmp(ent->key, iter->key, iter->klen) == 0)) {
-                    if (merger) {
-                        ent->val = (*merger)(environment, iter->key, iter->klen,
-                                             iter->val, ent->val, data);
+                    (memcmp (ent->key, iter->key, iter->klen) == 0))
+                {
+                    if (merger)
+                    {
+                        ent->val =
+                            (*merger) (environment, iter->key, iter->klen,
+                                       iter->val, ent->val, data);
                     }
-                    else {
+                    else
+                    {
                         ent->val = iter->val;
                     }
                     break;
                 }
             }
-            if (!ent) {
+            if (!ent)
+            {
                 new_vals[j].klen = iter->klen;
                 new_vals[j].key = iter->key;
                 new_vals[j].val = iter->val;
@@ -454,4 +493,3 @@ axis2_hash_t *axis2_hash_merge(axis2_environment_t *environment,
     }
     return res;
 }
-

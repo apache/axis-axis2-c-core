@@ -36,22 +36,27 @@ typedef struct axis2_om_stax_builder_ops
  *	move parser forward and reacts to events 
  */
 
-axis2_om_node_t *(*axis2_om_stax_builder_ops_next)(axis2_environment_t *environment, axis2_om_stax_builder_t *builder);
+    axis2_om_node_t *(*axis2_om_stax_builder_ops_next) (axis2_environment_t *
+                                                        environment,
+                                                        axis2_om_stax_builder_t
+                                                        * builder);
 
-axis2_status_t (*axis2_om_stax_builder_ops_discard_current_element)(axis2_environment_t *environment, axis2_om_stax_builder_t *builder);
+      axis2_status_t (*axis2_om_stax_builder_ops_discard_current_element)
+        (axis2_environment_t * environment,
+         axis2_om_stax_builder_t * builder);
 
 
 } axis2_om_stax_builder_ops_t;
 
 struct axis2_om_stax_builder
 {
-	axis2_om_stax_builder_ops_t *ops;
-	void *parser;	
-	axis2_om_node_t *lastnode;
-	axis2_om_document_t	*document;
-	axis2_bool_t done;
-	axis2_bool_t parser_accessed;
-	axis2_bool_t cache;
+    axis2_om_stax_builder_ops_t *ops;
+    void *parser;
+    axis2_om_node_t *lastnode;
+    axis2_om_document_t *document;
+    axis2_bool_t done;
+    axis2_bool_t parser_accessed;
+    axis2_bool_t cache;
 };
 
 /**
@@ -60,7 +65,9 @@ struct axis2_om_stax_builder
  *				   [ Guththila ]	
  */
 
-axis2_om_stax_builder_t *axis2_om_stax_builder_create(axis2_environment_t *environment, void *parser);
+axis2_om_stax_builder_t *axis2_om_stax_builder_create (axis2_environment_t *
+                                                       environment,
+                                                       void *parser);
 
 #define axis2_om_stax_builder_next(environment, builder) ((builder)->ops->axis2_om_stax_builder_ops_next(environment, builder))
 #define axis2_om_stax_builder_discard_current_element(environment, builder) ((builder)->ops->axis2_om_stax_builder_ops_discard_current_element(environment, builder))

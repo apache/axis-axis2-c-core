@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #ifndef AXIS2_ENGINE_MSG_CONTEXT_H
 #define AXIS2_ENGINE_MSG_CONTEXT_H
 
@@ -22,12 +22,12 @@
   * @file axis2_context_msg_context.h
   * @brief axis2 ENGINE CORE msg_context
   */
-  
+
 #include <axis2_core.h>
 #include <axis2_context_msg_context.h>
 
 #ifdef __cplusplus
-extern "C" 
+extern "C"
 {
 #endif
 
@@ -36,16 +36,16 @@ extern "C"
   * @{
   */
 
-/** @} */ 
+/** @} */
 
 /**
  * @defgroup axis2_context_msg_context ENGINE Msg_context
  * @ingroup axis2_context 
  * @{
  */
-	
+
 /************************** Start of function macros **************************/
-	
+
 #define axis2_context_msg_ctx_free(env, msg_ctx) \
 		(axis2_context_msg_ctx_get_ops(env, \
 		msg_ctx)->free (env, msg_ctx));
@@ -54,27 +54,25 @@ extern "C"
 
 /************************** Start of function pointers ************************/
 
-typedef axis2_status_t (*axis2_context_msg_ctx_free_t) 
-		(axis2_environment_t *env
-		, axis2_context_msg_ctx_t *msg_ctx);
+    typedef axis2_status_t (*axis2_context_msg_ctx_free_t)
+        (axis2_environment_t * env, axis2_context_msg_ctx_t * msg_ctx);
 
 /**************************** End of function pointers ************************/
 
-struct axis2_context_msg_ctx_ops_s
-{
-	axis2_context_msg_ctx_free_t free;
-};
+    struct axis2_context_msg_ctx_ops_s
+    {
+        axis2_context_msg_ctx_free_t free;
+    };
 
-axis2_context_msg_ctx_t *axis2_context_msg_ctx_get_ops
-		(axis2_environment_t *env
-		, axis2_context_msg_ctx_t *msg_ctx);
+    axis2_context_msg_ctx_t *axis2_context_msg_ctx_get_ops
+        (axis2_environment_t * env, axis2_context_msg_ctx_t * msg_ctx);
 
-axis2_context_msg_ctx_t 
-		*axis2_context_msg_ctx_create (axis2_environment_t *env);
+      axis2_context_msg_ctx_t
+        * axis2_context_msg_ctx_create (axis2_environment_t * env);
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIS2_ENGINE_MSG_CONTEXT_H */
+#endif                          /* AXIS2_ENGINE_MSG_CONTEXT_H */

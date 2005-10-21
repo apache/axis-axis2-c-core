@@ -27,7 +27,8 @@
 #include <axis2_om_output.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**
@@ -37,8 +38,8 @@ extern "C" {
  */
 
 /** @cond */
-struct axis2_om_namespace;
-struct axis2_om_namespace_ops;
+    struct axis2_om_namespace;
+    struct axis2_om_namespace_ops;
 /** @endcond */
 
 /** \struct axis2_om_namespace_ops_t
@@ -46,14 +47,18 @@ struct axis2_om_namespace_ops;
 
     Encapsulator struct for operations of axis2_om_namespace_t
 */
-typedef struct axis2_om_namespace_ops
-{
+    typedef struct axis2_om_namespace_ops
+    {
   /**
     * Free an om_namespcae
     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     * @return Status code    
     */
-    axis2_status_t (*axis2_om_namespace_ops_free)(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace);
+        axis2_status_t (*axis2_om_namespace_ops_free) (axis2_environment_t *
+                                                       environment,
+                                                       struct
+                                                       axis2_om_namespace *
+                                                       om_namespace);
 
   /**
     * Compares two namepsaces
@@ -62,7 +67,14 @@ typedef struct axis2_om_namespace_ops
     * @param om_namespace2 second namespace to be compared
     * @return true if the two namespaces are equal, false otherwise	
     */
-    axis2_bool_t (*axis2_om_namespace_ops_equals)(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace1, struct axis2_om_namespace *om_namespace2);
+        axis2_bool_t (*axis2_om_namespace_ops_equals) (axis2_environment_t *
+                                                       environment,
+                                                       struct
+                                                       axis2_om_namespace *
+                                                       om_namespace1,
+                                                       struct
+                                                       axis2_om_namespace *
+                                                       om_namespace2);
 
   /**
     * Serialize operation
@@ -70,29 +82,33 @@ typedef struct axis2_om_namespace_ops
     * @param om_output OM output handler to be used in serializing
     * @return Status code
     */
-    axis2_status_t (*axis2_om_namespace_ops_serialize)(axis2_environment_t *environment, struct axis2_om_namespace *om_namespace, axis2_om_output_t* om_output);
+        axis2_status_t (*axis2_om_namespace_ops_serialize)
+            (axis2_environment_t * environment,
+             struct axis2_om_namespace * om_namespace,
+             axis2_om_output_t * om_output);
 
-} axis2_om_namespace_ops_t;
+    } axis2_om_namespace_ops_t;
 
 /** \struct axis2_om_namespace_t
     \brief OM namespace struct
 
     Handles the XML namespace in OM
 */
-typedef struct axis2_om_namespace {
+    typedef struct axis2_om_namespace
+    {
   /**
     * OM text related operations
     */
-    axis2_om_namespace_ops_t* ops;
+        axis2_om_namespace_ops_t *ops;
   /**
     * OM namespace URI
     */
-    axis2_char_t *uri;
+        axis2_char_t *uri;
   /**
     * OM namespace prefix
     */
-    axis2_char_t *prefix;
-} axis2_om_namespace_t;
+        axis2_char_t *prefix;
+    } axis2_om_namespace_t;
 
 /**
  *	Creates an axis2_om_namespace_t struct
@@ -101,7 +117,11 @@ typedef struct axis2_om_namespace {
  *  @return a pointer to newly created axis2_om_namespace_t struct
  */
 
-axis2_om_namespace_t *axis2_om_namespace_create(axis2_environment_t *environment, const axis2_char_t *uri,  const axis2_char_t *prefix);
+    axis2_om_namespace_t *axis2_om_namespace_create (axis2_environment_t *
+                                                     environment,
+                                                     const axis2_char_t * uri,
+                                                     const axis2_char_t *
+                                                     prefix);
 
 #define axis2_om_namespace_free(environment, om_namespace) ((om_namespace)->ops->axis2_om_namespace_ops_free(environment, om_namespace))
 #define axis2_om_namespace_equals(environment, om_namespace1, om_namespace2) ((om_namespace1)->ops->axis2_om_namespace_ops_equals(environment, om_namespace1, om_namespace2))
@@ -113,4 +133,4 @@ axis2_om_namespace_t *axis2_om_namespace_create(axis2_environment_t *environment
 }
 #endif
 
-#endif	/* AXIS2_OM_NAMESPACE */
+#endif                          /* AXIS2_OM_NAMESPACE */

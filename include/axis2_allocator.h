@@ -17,36 +17,66 @@
 #ifndef AXIS2_ALLOCATOR_H
 #define AXIS2_ALLOCATOR_H
 
+/**
+ * @file axis2_allocator.h
+ * @brief Axis2 memory allocator interface
+ */
+
 #include <axis2_defines.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-
-typedef struct axis2_allocator
-{
-    void *(*axis2_allocator_malloc)(size_t size);
-    void *(*axis2_allocator_realloc)(void *ptr,size_t size);
-    void (*axis2_allocator_free)(void *ptr);
-}axis2_allocator_t;
-
 /**
-*   if the parsed allocator is null a default allocator is created
-*   otherwise the parsed allocator is returned. If there isn't enough 
-*   memory for allocation NULL is returned.
-*   @param allocator user defined allcator
-*/
+ * @defgroup axis2_allocator Memory Allocator
+ * @ingroup axis2_util 
+ * @{
+ */
 
-axis2_allocator_t *
-    axis2_allocator_init(axis2_allocator_t *allocator);
-    
+/** 
+  * \brief Axis2 memory allocator
+  *
+  * Encapsulator for memory allocating routines
+  */
+    typedef struct axis2_allocator
+    {
+      /**
+        * allocates memory
+        * @param size size of the memory block to be allocated
+        * @return pointer to the allocated memory block
+        */
+        AXIS2_DECLARE(void *) (*axis2_allocator_malloc) (size_t size);
+      /**
+        * re-llocates memory
+        * @param ptr memory block who's size to be changed
+        * @param size size of the memory block to be allocated
+        * @return pointer to the allocated memory block
+        */
+        AXIS2_DECLARE(void *) (*axis2_allocator_realloc) (void *ptr, size_t size);
+      /**
+        * frees memory
+        * @param ptr pointer to be freed
+        */
+        AXIS2_DECLARE(void) (*axis2_allocator_free) (void *ptr);
+    } axis2_allocator_t;
+
+  /**
+    * Initializes (creates) an allocator.
+    * @param allocator user defined allcator. Optional, can be NULL. If NULL, a default allocator will be returned.
+    * @return initialized allocator. NULL on error.
+    */
+    AXIS2_DECLARE(axis2_allocator_t *) axis2_allocator_init (axis2_allocator_t * allocator);
+
 #define axis2_malloc(allocator, size) ((allocator)->axis2_allocator_malloc(size))
 #define axis2_realloc(allocator, ptr, size) ((allocator)->axis2_allocator_realloc(ptr, size))
 #define axis2_free(allocator, ptr) ((allocator)->axis2_allocator_free(ptr))
 
+/** @} */
+    
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIS2_ALLOCATOR_H */
+#endif                          /* AXIS2_ALLOCATOR_H */

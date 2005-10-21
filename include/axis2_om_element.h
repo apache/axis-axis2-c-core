@@ -24,7 +24,8 @@
 #include <axis2_hash.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**
@@ -35,8 +36,8 @@ extern "C" {
 
 /** @cond */
 
-struct axis2_om_element;
-struct axis2_om_element_ops;
+    struct axis2_om_element;
+    struct axis2_om_element_ops;
 /** @endcond */
 
 /** @struct axis2_om_element_ops
@@ -46,20 +47,25 @@ struct axis2_om_element_ops;
 */
 
 
-typedef struct axis2_om_element_ops
-{
-    /*
-    *	Find a namespace in the scope of the document 
-    *	start to find from current element and go up the hierarchy
-    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
-    * @param node om_node containing an instance of om_element
-    * @param uri namespace uri
-    * @param prefix namespace prefix
-    * @return axis2_om_namespace_t pointer
-    */
-    
-    axis2_om_namespace_t *(*axis2_om_element_ops_find_namespace)( axis2_environment_t *environment, 
-                axis2_om_node_t *node, const axis2_char_t *uri,const axis2_char_t *prefix);
+    typedef struct axis2_om_element_ops
+    {
+        /*
+         *  Find a namespace in the scope of the document 
+         *  start to find from current element and go up the hierarchy
+         * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+         * @param node om_node containing an instance of om_element
+         * @param uri namespace uri
+         * @param prefix namespace prefix
+         * @return axis2_om_namespace_t pointer
+         */
+
+        axis2_om_namespace_t
+            *(*axis2_om_element_ops_find_namespace) (axis2_environment_t *
+                                                     environment,
+                                                     axis2_om_node_t * node,
+                                                     const axis2_char_t * uri,
+                                                     const axis2_char_t *
+                                                     prefix);
    /**
     * declare a namespace in current element (in the scope of this element )
     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
@@ -67,9 +73,11 @@ typedef struct axis2_om_element_ops
     * @param ns pointer to a om_namespace 
     * @return status code 
     */
-    
-    axis2_status_t (*axis2_om_element_ops_declare_namespace)(axis2_environment_t *environment, axis2_om_node_t *node, axis2_om_namespace_t *ns);
-    
+
+          axis2_status_t (*axis2_om_element_ops_declare_namespace)
+            (axis2_environment_t * environment, axis2_om_node_t * node,
+             axis2_om_namespace_t * ns);
+
     /**
      * find namespaces in the scope of current element
      * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
@@ -77,34 +85,49 @@ typedef struct axis2_om_element_ops
      * @param prefix namespace prefix
      * @param uri    namespace uri
      */
-    axis2_om_namespace_t *(*axis2_om_element_ops_find_declared_namespace)(axis2_environment_t *environment, struct axis2_om_element *element, const axis2_char_t *uri,const axis2_char_t *prefix);
-    
+        axis2_om_namespace_t
+            *(*axis2_om_element_ops_find_declared_namespace)
+            (axis2_environment_t * environment,
+             struct axis2_om_element * element, const axis2_char_t * uri,
+             const axis2_char_t * prefix);
+
     /**
      *  Finds a namespace using qname
      * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     
      */
-    
-    axis2_om_namespace_t *(*axis2_om_element_ops_find_namespace_with_qname)(axis2_environment_t *environment, axis2_om_node_t *node, axis2_qname_t *qname);
-    
+
+        axis2_om_namespace_t
+            *(*axis2_om_element_ops_find_namespace_with_qname)
+            (axis2_environment_t * environment, axis2_om_node_t * node,
+             axis2_qname_t * qname);
+
     /**
      *	add an attribute to current element
      * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     
      * @param ns namespace Optional
      */
-    
-    axis2_status_t (*axis2_om_element_ops_add_attribute)(axis2_environment_t *environment, struct axis2_om_element *element, axis2_om_attribute_t *attribute);
-    
+
+          axis2_status_t (*axis2_om_element_ops_add_attribute)
+            (axis2_environment_t * environment,
+             struct axis2_om_element * element,
+             axis2_om_attribute_t * attribute);
+
     /**
      * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
      * @param element OM Element
      * @qname Qname  
      * @return the requested attribute
      */
-    
-    axis2_om_attribute_t *(*axis2_om_element_ops_get_attribute)(axis2_environment_t *environment, struct axis2_om_element *element, axis2_qname_t *qname);
-    
+
+        axis2_om_attribute_t
+            *(*axis2_om_element_ops_get_attribute) (axis2_environment_t *
+                                                    environment,
+                                                    struct axis2_om_element *
+                                                    element,
+                                                    axis2_qname_t * qname);
+
      /**
      *	Free Om element 
      * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
@@ -112,29 +135,38 @@ typedef struct axis2_om_element_ops
      * @returns status code  
      *
      */
-    
-    axis2_status_t (*axis2_om_element_ops_free)(axis2_environment_t *environment, struct axis2_om_element *element);
-  
+
+          axis2_status_t (*axis2_om_element_ops_free) (axis2_environment_t *
+                                                       environment,
+                                                       struct axis2_om_element
+                                                       * element);
+
    /**
     *   serialize operation
     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     * @param element OM Element
     * @param om_output OM output
     * @return status code  
-    */ 
-    
-    axis2_status_t (*axis2_om_element_ops_serialize_start_part)(axis2_environment_t *environment, struct axis2_om_element *element, axis2_om_output_t* om_output);
-   
+    */
+
+          axis2_status_t (*axis2_om_element_ops_serialize_start_part)
+            (axis2_environment_t * environment,
+             struct axis2_om_element * element,
+             axis2_om_output_t * om_output);
+
    /**
     *  serialize operation
     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     * @param element OM Element
     * @param om_output OM output
     * @return status code  
-    */  
-    axis2_status_t (*axis2_om_element_ops_serialize_end_part)(axis2_environment_t *environment, struct axis2_om_element *element, axis2_om_output_t* om_output);
+    */
+          axis2_status_t (*axis2_om_element_ops_serialize_end_part)
+            (axis2_environment_t * environment,
+             struct axis2_om_element * element,
+             axis2_om_output_t * om_output);
 
-} axis2_om_element_ops_t;
+    } axis2_om_element_ops_t;
 
 /** \struct axis2_om_element
     \brief OM element struct
@@ -143,17 +175,18 @@ typedef struct axis2_om_element_ops
 */
 
 
-typedef struct axis2_om_element{
-	axis2_om_element_ops_t *ops;
+    typedef struct axis2_om_element
+    {
+        axis2_om_element_ops_t *ops;
     /** Element's namespace */
-    axis2_om_namespace_t *ns;
+        axis2_om_namespace_t *ns;
     /** Element's local name */
-	axis2_char_t *localname;	
+        axis2_char_t *localname;
     /** List of attributes */
-	axis2_hash_t *attributes;     
+        axis2_hash_t *attributes;
     /** List of namespaces */
-	axis2_hash_t *namespaces;		
-} axis2_om_element_t;
+        axis2_hash_t *namespaces;
+    } axis2_om_element_t;
 
 
 /*
@@ -163,9 +196,13 @@ typedef struct axis2_om_element{
 *@param parent can be null
 *@return   Returns axis2_om_element_t pointer If there isn't enough memory null is returned
 */
-axis2_om_element_t *axis2_om_element_create(axis2_environment_t *environment, axis2_om_node_t *parent,
-						const axis2_char_t *localname, axis2_om_namespace_t *ns,
-						axis2_om_node_t **node);
+    axis2_om_element_t *axis2_om_element_create (axis2_environment_t *
+                                                 environment,
+                                                 axis2_om_node_t * parent,
+                                                 const axis2_char_t *
+                                                 localname,
+                                                 axis2_om_namespace_t * ns,
+                                                 axis2_om_node_t ** node);
 
 /**
  *	create an om element using a qname 
@@ -175,8 +212,12 @@ axis2_om_element_t *axis2_om_element_create(axis2_environment_t *environment, ax
  */
 
 
-axis2_om_element_t *axis2_om_element_create_with_qname(axis2_environment_t *environment, axis2_om_node_t *parent,axis2_qname_t *qname
-						,axis2_om_node_t **node);
+    axis2_om_element_t
+        *axis2_om_element_create_with_qname (axis2_environment_t *
+                                             environment,
+                                             axis2_om_node_t * parent,
+                                             axis2_qname_t * qname,
+                                             axis2_om_node_t ** node);
 
 #define axis2_om_element_find_namespace(environment, node, uri, prefix) (((axis2_om_element_t*)(node->data_element))->ops->axis2_om_element_ops_find_namespace(environment, node, uri, prefix))
 #define axis2_om_element_declare_namespace(environment, node, ns) (((axis2_om_element_t*)(node->data_element))->ops->axis2_om_element_ops_declare_namespace(environment, node, ns) )
@@ -195,4 +236,4 @@ axis2_om_element_t *axis2_om_element_create_with_qname(axis2_environment_t *envi
 }
 #endif
 
-#endif	/* AXIS2_OM_ELEMENT_H */
+#endif                          /* AXIS2_OM_ELEMENT_H */

@@ -16,33 +16,39 @@
 
 #include <axis2_error.h>
 
-axis2_char_t *axis2_error_ops_get_message();
+axis2_char_t * axis2_error_impl_get_message ();
 
-axis2_char_t *axis2_error_ops_get_message()
-{
-    return "This is the default error code";
-}
-
-axis2_error_t *axis2_error_create(axis2_allocator_t* allocator)
+axis2_error_t *
+axis2_error_create (axis2_allocator_t * allocator)
 {
     axis2_error_t *error;
     if (!allocator)
         return NULL;
-    
-    error = (axis2_error_t*)axis2_malloc(allocator, sizeof(axis2_error_t ));
+
+    error =
+        (axis2_error_t *) axis2_malloc (allocator, sizeof (axis2_error_t));
 
     if (!error)
         return NULL;
-    
-    error->ops = (axis2_error_ops_t*)axis2_malloc(allocator, sizeof(axis2_error_ops_t));
+
+    error->ops =
+        (axis2_error_ops_t *) axis2_malloc (allocator,
+                                            sizeof (axis2_error_ops_t));
 
     if (!error->ops)
     {
-        axis2_free(allocator, error);
+        axis2_free (allocator, error);
         return NULL;
     }
-    
-    error->ops->get_message = axis2_error_ops_get_message;
-    
+
+    error->ops->axis2_error_ops_get_message = axis2_error_impl_get_message;
+
     return error;
+}
+
+axis2_char_t *
+axis2_error_impl_get_message ()
+{
+    /** TODO: Need to fill in the error message list and get the error from that list */
+    return "This is the default error code";
 }

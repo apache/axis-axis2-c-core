@@ -17,6 +17,11 @@
 #ifndef AXIS2_ENVIRONMENT_H
 #define AXIS2_ENVIRONMENT_H
 
+/**
+ * @file axis2_environment.h
+ * @brief Axis2 environment that acts as a container for error, log and memory allocator routines
+ */
+
 #include <axis2_allocator.h>
 #include <axis2_error.h>
 #include <axis2_stream.h>
@@ -24,29 +29,78 @@
 #include <axis2_string.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-struct axis2_environment;
-struct axis2_environment_ops;
+/** @defgroup axis2_util Axis2 utilities
+  * @ingroup axis2
+  * @{
+  */
 
-typedef struct axis2_environment_ops {
-int test;
-} axis2_environment_ops_t;
+/** @} */
 
-typedef struct axis2_environment {
-    struct axis2_environment_ops *ops;
-    axis2_allocator_t *allocator;   /* memory allocation routines */
-    axis2_error_t *error;           /* error handling */
-    axis2_stream_t *stream;         /* IO routines */
-    axis2_log_t *log;               /* logging routines */
-    axis2_string_t *string;         /* string routines */
-} axis2_environment_t;
+    struct axis2_environment;
+    struct axis2_environment_ops;
 
-axis2_environment_t *axis2_environment_create(axis2_allocator_t *allocator, axis2_error_t *error, axis2_stream_t *stream, axis2_log_t *log, axis2_string_t *string);
+/**
+ * @defgroup axis2_environment Environment Container
+ * @ingroup axis2_util 
+ * @{
+ */
+
+  /** 
+    * \brief Axis2 Environment operations struct
+    *
+    * Encapsulator struct for operations of axis2_environment
+    */
+    typedef struct axis2_environment_ops
+    {
+        /** This is a dummy member */
+        int dummy;
+    } axis2_environment_ops_t;
+
+  /** 
+    * \brief Axis2 Environment struct
+    *
+    * Environment acts as a container for error, log, memory allocator and other routines
+    */
+    typedef struct axis2_environment
+    {
+        /** Environment related operations */
+        axis2_environment_ops_t *ops;
+        /** Memory allocation routines */
+        axis2_allocator_t *allocator;
+        /** Error handling */
+        axis2_error_t *error;
+        /** IO routines */
+        axis2_stream_t *stream;
+        /** Logging routines */
+        axis2_log_t *log;
+        /** String routines */
+        axis2_string_t *string;
+    } axis2_environment_t;
+
+  /**
+    * Creates an environment struct
+    * @param allocator pointer to an instance of allocator struct. Mandatory, cannot be NULL
+    * @param error pointer to an instance of error struct. Optional, can be NULL. If NULL default error handler would be used.
+    * @param stream pointer to an instance of stream struct. Optional, can be NULL. If NULL default stream handler would be used.
+    * @param log pointer to an instance of log struct. Optional, can be NULL. If NULL default log handler would be used.
+    * @param string pointer to an instance of string struct. Optional, can be NULL. If NULL default string handler would be used.
+    * @return pointer to the newly created environment struct 
+    */
+    AXIS2_DECLARE(axis2_environment_t *) axis2_environment_create (axis2_allocator_t *
+                                                   allocator,
+                                                   axis2_error_t * error,
+                                                   axis2_stream_t * stream,
+                                                   axis2_log_t * log,
+                                                   axis2_string_t * string);
+
+/** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIS2_ENVIRONMENT_H */
+#endif                          /* AXIS2_ENVIRONMENT_H */

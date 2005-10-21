@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/** @defgroup axis2_om AXIOM (Axis Object Model)
+  * @ingroup axis2
+  * @{
+  */
+
+/** @} */
 #ifndef AXIS2_OM_TEXT_H
 #define AXIS2_OM_TEXT_H
 
@@ -26,15 +32,9 @@
 #include <axis2_om_node.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
-
-/** @defgroup axis2_om AXIOM (Axis Object Model)
-  * @ingroup axis2
-  * @{
-  */
-
-/** @} */ 
 
 /**
  * @defgroup axis2_om_text OM Text
@@ -43,63 +43,72 @@ extern "C" {
  */
 
 /** @cond */
-struct axis2_om_text;
-struct axis2_om_text_ops;
+    struct axis2_om_text;
+    struct axis2_om_text_ops;
 /** @endcond */
-    
+
 /** @struct axis2_om_text_ops
     @brief OM text operations struct
 
     Encapsulator struct for operations of axis2_om_text_t
 */
-typedef struct axis2_om_text_ops
-{
+    typedef struct axis2_om_text_ops
+    {
   /**
 	* Free an axis2_om_text_t structure
     * @return Status code
     */
-    axis2_status_t (*axis2_om_text_ops_free)(axis2_environment_t *environment, struct axis2_om_text *om_text);
-    
+        axis2_status_t (*axis2_om_text_ops_free) (axis2_environment_t *
+                                                  environment,
+                                                  struct axis2_om_text *
+                                                  om_text);
+
   /**
     * Serialize operation
     * @param om_output OM output handler to be used in serializing
     * @return Status code
     */
-    axis2_status_t (*axis2_om_text_ops_serialize)(axis2_environment_t *environment, const struct axis2_om_text *om_text, axis2_om_output_t* om_output);
-} axis2_om_text_ops_t;
-    
+        axis2_status_t (*axis2_om_text_ops_serialize) (axis2_environment_t *
+                                                       environment,
+                                                       const struct
+                                                       axis2_om_text *
+                                                       om_text,
+                                                       axis2_om_output_t *
+                                                       om_output);
+    } axis2_om_text_ops_t;
+
 /** \struct axis2_om_text
     \brief OM Text struct
 
     Handles the XML text in OM
 */
-typedef struct axis2_om_text
-{
+    typedef struct axis2_om_text
+    {
   /**
     * OM text related operations
     */
-    axis2_om_text_ops_t* ops;
-    
+        axis2_om_text_ops_t *ops;
+
    /**
 	* Text value
-	*/	
-	axis2_char_t *value; 
-	
+	*/
+        axis2_char_t *value;
+
    /**
     * The following fields are for MTOM
     */
-	/*axis2_om_namespace_t *ns;*/
-	axis2_char_t *mime_type;
-	int optimize;
-	axis2_char_t *localname;
-	int is_binary;
-	axis2_char_t *content_id;
-	/*axis2_om_attribute_t *attribute;*/
-} axis2_om_text_t;
+        /*axis2_om_namespace_t *ns; */
+        axis2_char_t *mime_type;
+        int optimize;
+        axis2_char_t *localname;
+        int is_binary;
+        axis2_char_t *content_id;
+        /*axis2_om_attribute_t *attribute; */
+    } axis2_om_text_t;
 
 
 /**
- * Create a text struct and stores it in a node struct and returns a pointer
+ * Creates a text struct and stores it in a node struct and returns a pointer
  * to the newly created text struct
  * @param environment Environment. MUST  NOT be NULL, if NULL behaviour is undefined.
  * @param parent Parent of the new node. If null newly created node becomes a root node
@@ -109,8 +118,10 @@ typedef struct axis2_om_text
  * @return pointer to newly created text struct 
  */
 
-axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om_node_t *parent,const axis2_char_t *value
-						,axis2_om_node_t **node);
+    axis2_om_text_t *axis2_om_text_create (axis2_environment_t * environment,
+                                           axis2_om_node_t * parent,
+                                           const axis2_char_t * value,
+                                           axis2_om_node_t ** node);
 
 #define axis2_om_text_serialize(environment, om_text, om_output) ((om_text)->ops->axis2_om_text_ops_serialize(environment, om_text, om_output))
 #define axis2_om_text_free(environment, om_text) ((om_text)->ops->axis2_om_text_ops_free(environment, om_text))
@@ -121,4 +132,4 @@ axis2_om_text_t *axis2_om_text_create(axis2_environment_t *environment, axis2_om
 }
 #endif
 
-#endif /* AXIS2_OM_TEXT_H */
+#endif                          /* AXIS2_OM_TEXT_H */

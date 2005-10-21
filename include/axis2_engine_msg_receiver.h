@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #ifndef AXIS2_ENGINE_MSG_RECEIVER_H
 #define AXIS2_ENGINE_MSG_RECEIVER_H
 
@@ -22,11 +22,11 @@
   * @file axis2_engine_msg_receiver.h
   * @brief axis2 ENGINE CORE msg_receiver
   */
-  
+
 #include <axis2_core.h>
 
 #ifdef __cplusplus
-extern "C" 
+extern "C"
 {
 #endif
 
@@ -35,16 +35,16 @@ extern "C"
   * @{
   */
 
-/** @} */ 
+/** @} */
 
 /**
  * @defgroup axis2_engine_msg_receiver ENGINE Msg_receiver
  * @ingroup axis2_engine 
  * @{
  */
-	
+
 /************************** Start of function macros **************************/
-	
+
 #define axis2_engine_msg_receiver_free(env, msg_receiver) \
 		(axis2_engine_msg_receiver_get_ops(env, \
 		msg_receiver)->free (env, msg_receiver));
@@ -57,33 +57,34 @@ extern "C"
 
 /************************** Start of function pointers ************************/
 
-typedef axis2_status_t (*axis2_engine_msg_receiver_free_t) 
-		(axis2_environment_t *env
-		, axis2_engine_msg_receiver_t *msg_receiver);
+    typedef axis2_status_t (*axis2_engine_msg_receiver_free_t)
+        (axis2_environment_t * env,
+         axis2_engine_msg_receiver_t * msg_receiver);
 
-typedef axis2_status_t (*axis2_engine_msg_receiver_receive_t)
-		(axis2_environment_t *env, axis2_engine_msg_receiver_t *msg_receiver
-		, axis2_context_msg_ctx_t *msg_ctx);
+    typedef axis2_status_t (*axis2_engine_msg_receiver_receive_t)
+        (axis2_environment_t * env,
+         axis2_engine_msg_receiver_t * msg_receiver,
+         axis2_context_msg_ctx_t * msg_ctx);
 
 /**************************** End of function pointers ************************/
 
-struct axis2_engine_msg_receiver_ops_s
-{
-	axis2_engine_msg_receiver_free_t free;
-	
-	axis2_engine_msg_receiver_receive_t receive;
-};
+    struct axis2_engine_msg_receiver_ops_s
+    {
+        axis2_engine_msg_receiver_free_t free;
 
-axis2_engine_msg_receiver_t *axis2_engine_msg_receiver_get_ops
-		(axis2_environment_t *env
-		, axis2_engine_msg_receiver_t *msg_receiver);
+        axis2_engine_msg_receiver_receive_t receive;
+    };
 
-axis2_engine_msg_receiver_t 
-		*axis2_engine_msg_receiver_create (axis2_environment_t *env);
+    axis2_engine_msg_receiver_t *axis2_engine_msg_receiver_get_ops
+        (axis2_environment_t * env,
+         axis2_engine_msg_receiver_t * msg_receiver);
+
+      axis2_engine_msg_receiver_t
+        * axis2_engine_msg_receiver_create (axis2_environment_t * env);
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIS2_ENGINE_MSG_RECEIVER_H */
+#endif                          /* AXIS2_ENGINE_MSG_RECEIVER_H */

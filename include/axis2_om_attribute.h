@@ -27,7 +27,8 @@
 #include <axis2_om_output.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**
@@ -38,25 +39,29 @@ extern "C" {
 
 /** @cond */
 
-struct axis2_om_attribute;
-struct axis2_om_attribute_ops;
+    struct axis2_om_attribute;
+    struct axis2_om_attribute_ops;
 /** @endcond */
-    
+
 
 /**  \struct axis2_om_attribute
  *   \brief OM attribute operations struct
  *
  *   Encapsulator struct for axis2_om_attribute_t
  */
-typedef struct axis2_om_attribute_ops
-{
+    typedef struct axis2_om_attribute_ops
+    {
    /**
     *  Free an axis2_om_attribute struct
     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     *  @return Status code
     */
 
-    axis2_status_t (*axis2_om_attribute_ops_free)(axis2_environment_t *environment, struct axis2_om_attribute *om_attribute);
+        axis2_status_t (*axis2_om_attribute_ops_free) (axis2_environment_t *
+                                                       environment,
+                                                       struct
+                                                       axis2_om_attribute *
+                                                       om_attribute);
 
    /** 
     *  Creates and returns a qname struct for this attribute
@@ -65,7 +70,11 @@ typedef struct axis2_om_attribute_ops
     *  @return returns null on error 
     */
 
-    axis2_qname_t *(*axis2_om_attribute_ops_get_qname)(axis2_environment_t *environment,struct axis2_om_attribute *om_attribute);
+        axis2_qname_t
+            *(*axis2_om_attribute_ops_get_qname) (axis2_environment_t *
+                                                  environment,
+                                                  struct axis2_om_attribute *
+                                                  om_attribute);
 
    /**
     * Serialize operation
@@ -74,9 +83,14 @@ typedef struct axis2_om_attribute_ops
     * @return Status code
     */
 
-    int (*axis2_om_attribute_ops_serialize)(axis2_environment_t *environment,struct axis2_om_attribute *om_attribute,axis2_om_output_t *om_output);
+        int (*axis2_om_attribute_ops_serialize) (axis2_environment_t *
+                                                 environment,
+                                                 struct axis2_om_attribute *
+                                                 om_attribute,
+                                                 axis2_om_output_t *
+                                                 om_output);
 
-}axis2_om_attribute_ops_t;
+    } axis2_om_attribute_ops_t;
 
 /** \struct axis2_om_attribute
  *   \brief OM attribute struct
@@ -84,18 +98,18 @@ typedef struct axis2_om_attribute_ops
  *   Handles the XML attribute in OM
  */
 
-typedef struct axis2_om_attribute 
-{
+    typedef struct axis2_om_attribute
+    {
     /** operations of attributes */
-    axis2_om_attribute_ops_t *ops;
+        axis2_om_attribute_ops_t *ops;
 
     /** localname of this attribute  */
-    axis2_char_t *localname;
+        axis2_char_t *localname;
     /** value of this attribute */
-    axis2_char_t *value;
+        axis2_char_t *value;
     /** attribute namespace */
-    axis2_om_namespace_t *ns;
-}axis2_om_attribute_t;
+        axis2_om_namespace_t *ns;
+    } axis2_om_attribute_t;
 
 /**
  * creates an om_attribute structure 
@@ -106,7 +120,14 @@ typedef struct axis2_om_attribute
  * @return The a pointer to newly created attribute struct 
  */
 
-axis2_om_attribute_t *axis2_om_attribute_create(axis2_environment_t *environment ,const axis2_char_t *localname,const axis2_char_t *value, axis2_om_namespace_t *ns);
+    axis2_om_attribute_t *axis2_om_attribute_create (axis2_environment_t *
+                                                     environment,
+                                                     const axis2_char_t *
+                                                     localname,
+                                                     const axis2_char_t *
+                                                     value,
+                                                     axis2_om_namespace_t *
+                                                     ns);
 
 /* macros */
 #define axis2_om_attribute_free(environment, om_attribute) ((om_attribute)->ops->axis2_om_attribute_ops_free(environment, om_attribute))
@@ -119,4 +140,4 @@ axis2_om_attribute_t *axis2_om_attribute_create(axis2_environment_t *environment
 }
 #endif
 
-#endif /* AXIS2_OM_ATTRIBUTE_H */
+#endif                          /* AXIS2_OM_ATTRIBUTE_H */

@@ -25,7 +25,8 @@
 #include <axis2_om_node.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**
@@ -35,39 +36,42 @@ extern "C" {
  */
 
 /** @cond */
-struct axis2_om_comment;
-struct axis2_om_comment_ops;
+    struct axis2_om_comment;
+    struct axis2_om_comment_ops;
 /** @endcond */
-    
+
 /** @struct axis2_om_comment_ops
  *   @brief OM comment operations struct
  *   Encapsulator struct for operations of axis2_om_comment_t
  */
-  
-typedef struct axis2_om_comment_ops
-{
+
+    typedef struct axis2_om_comment_ops
+    {
   /**
     * Free a axis2_comment struct
     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
     * @param comment pointer to the axis2_commnet 
     * @returns status code
     */
-    axis2_status_t (*axis2_om_comment_ops_free)(axis2_environment_t *environment, struct axis2_om_comment *comment);
+        axis2_status_t (*axis2_om_comment_ops_free) (axis2_environment_t *
+                                                     environment,
+                                                     struct axis2_om_comment *
+                                                     comment);
 
-} axis2_om_comment_ops_t;
+    } axis2_om_comment_ops_t;
 
 /** \struct axis2_om_comment
     \brief OM comment struct
 
     Handles the XML comment in OM
 */
-typedef struct axis2_om_comment
-{
+    typedef struct axis2_om_comment
+    {
     /** operations struct */
-    axis2_om_comment_ops_t *ops;
-	/** value */
-	char *value;
-} axis2_om_comment_t;
+        axis2_om_comment_ops_t *ops;
+    /** value */
+        char *value;
+    } axis2_om_comment_t;
 
 /**
  * Create a comment struct and stores in in a node struct and returns a pointer
@@ -79,7 +83,11 @@ typedef struct axis2_om_comment
  *        this node struct pointer
  * @return pointer to a node_t struct containing the comment struct
  */
-axis2_om_comment_t *axis2_om_comment_create(axis2_environment_t *environment, const axis2_char_t *value, axis2_om_node_t **comment_node);
+    axis2_om_comment_t *axis2_om_comment_create (axis2_environment_t *
+                                                 environment,
+                                                 const axis2_char_t * value,
+                                                 axis2_om_node_t **
+                                                 comment_node);
 
 #define axis2_om_comment_free(environment, comment) ((comment)->ops->axis2_om_comment_ops_free(environment, comment))
 /** @} */
@@ -88,4 +96,4 @@ axis2_om_comment_t *axis2_om_comment_create(axis2_environment_t *environment, co
 }
 #endif
 
-#endif /* AXIS2_OM_COMMENT_H */
+#endif                          /* AXIS2_OM_COMMENT_H */
