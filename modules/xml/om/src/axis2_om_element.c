@@ -19,55 +19,62 @@
 #include <axis2_om_namespace.h>
 
 
-axis2_om_namespace_t
-    *axis2_om_element_impl_find_namespace (axis2_environment_t * environment,
+axis2_om_namespace_t *
+    AXIS2_CALL axis2_om_element_impl_find_namespace (axis2_environment_t * environment,
                                            axis2_om_node_t * node,
                                            const axis2_char_t * uri,
                                            const axis2_char_t * prefix);
-axis2_status_t axis2_om_element_impl_declare_namespace (axis2_environment_t *
+                                           
+axis2_status_t AXIS2_CALL axis2_om_element_impl_declare_namespace (axis2_environment_t *
                                                         environment,
                                                         axis2_om_node_t *
                                                         node,
                                                         axis2_om_namespace_t *
                                                         ns);
-axis2_om_namespace_t
-    *axis2_om_element_impl_find_namespace_with_qname (axis2_environment_t *
+                                                        
+axis2_om_namespace_t *
+    AXIS2_CALL axis2_om_element_impl_find_namespace_with_qname (axis2_environment_t *
                                                       environment,
                                                       axis2_om_node_t *
                                                       element,
                                                       axis2_qname_t * qname);
-
-axis2_om_namespace_t
-    *axis2_om_element_impl_find_declared_namespace (axis2_environment_t *
+/*
+axis2_om_namespace_t *
+    AXIS2_CALL axis2_om_element_impl_find_declared_namespace (axis2_environment_t *
                                                     environment,
                                                     struct axis2_om_element
                                                     *element,
                                                     const axis2_char_t * uri,
                                                     const axis2_char_t *
                                                     prefix);
+*/
 
-axis2_status_t axis2_om_element_impl_add_attribute (axis2_environment_t *
+axis2_status_t AXIS2_CALL axis2_om_element_impl_add_attribute (axis2_environment_t *
                                                     environment,
                                                     struct axis2_om_element
                                                     *element,
                                                     axis2_om_attribute_t *
                                                     attribute);
-axis2_om_attribute_t *axis2_om_element_impl_get_attribute (axis2_environment_t
+                                                    
+axis2_om_attribute_t * AXIS2_CALL axis2_om_element_impl_get_attribute (axis2_environment_t
                                                            * environment,
                                                            struct
                                                            axis2_om_element
                                                            *element,
                                                            axis2_qname_t *
                                                            qname);
-axis2_status_t axis2_om_element_impl_free (axis2_environment_t * environment,
+                                                           
+axis2_status_t AXIS2_CALL axis2_om_element_impl_free (axis2_environment_t * environment,
                                            struct axis2_om_element *element);
-axis2_status_t axis2_om_element_impl_serialize_start_part (axis2_environment_t
+                                               
+axis2_status_t AXIS2_CALL axis2_om_element_impl_serialize_start_part (axis2_environment_t
                                                            * environment,
                                                            axis2_om_element_t
                                                            * element,
                                                            axis2_om_output_t *
                                                            om_output);
-axis2_status_t axis2_om_element_impl_serialize_end_part (axis2_environment_t *
+                                           
+axis2_status_t AXIS2_CALL axis2_om_element_impl_serialize_end_part (axis2_environment_t *
                                                          environment,
                                                          axis2_om_element_t *
                                                          element,
@@ -170,8 +177,8 @@ axis2_om_element_create (axis2_environment_t * environment,
     element->ops->axis2_om_element_ops_get_attribute =
         axis2_om_element_impl_get_attribute;
     element->ops->axis2_om_element_ops_free = axis2_om_element_impl_free;
-    element->ops->axis2_om_element_ops_find_declared_namespace =
-        axis2_om_element_impl_find_declared_namespace;
+    /*element->ops->axis2_om_element_ops_find_declared_namespace =
+        axis2_om_element_impl_find_declared_namespace;*/
     element->ops->axis2_om_element_ops_serialize_start_part =
         axis2_om_element_impl_serialize_start_part;
     element->ops->axis2_om_element_ops_serialize_end_part =
@@ -181,8 +188,6 @@ axis2_om_element_create (axis2_environment_t * environment,
 
 }
 
-
-/* create an om_element using qname and parent */
 axis2_om_element_t *
 axis2_om_element_create_with_qname (axis2_environment_t * environment,
                                     axis2_om_node_t * parent,
@@ -213,7 +218,7 @@ axis2_om_element_create_with_qname (axis2_environment_t * environment,
             if (!(element->ns))
             {
                 if (axis2_om_element_impl_declare_namespace
-                    (environment, element, ns) == AXIS2_SUCCESS)
+                    (environment, *node, ns) == AXIS2_SUCCESS)
                     element->ns = ns;
             }
         }
@@ -280,9 +285,6 @@ axis2_om_element_impl_find_namespace (axis2_environment_t * environment,
     return NULL;
 }
 
-
-/* declare a namespace for this om element */
-
 axis2_status_t
 axis2_om_element_impl_declare_namespace (axis2_environment_t * environment,
                                          axis2_om_node_t * node,
@@ -331,30 +333,7 @@ axis2_om_element_impl_declare_namespace (axis2_environment_t * environment,
     return AXIS2_SUCCESS;
 }
 
-
-/*axis2_om_namespace_t *
-axis2_om_element_declare_namespace_with_ns_uri_prefix (axis2_om_node_t *
-                                                       element,
-                                                       const axis2_char_t *uri,
-                                                       const axis2_char_t *prefix)
-{
-    axis2_om_namespace_t *nsp = NULL;
-    nsp = axis2_om_namespace_create (uri, prefix);
-    if (nsp)
-    {
-        return axis2_om_element_declare_namespace (element, nsp);
-    }
-    return NULL;
-}
-*/
-
 /*
-*	checks for the namespace in the current om element 
-*   can be used to retrive a prefix of a known namespace uri
-*
-*/
-
-
 axis2_om_namespace_t *
 axis2_om_element_impl_find_declared_namespace (axis2_environment_t *
                                                environment,
@@ -391,17 +370,7 @@ axis2_om_element_impl_find_declared_namespace (axis2_environment_t *
         return NULL;
 
 }
-
-
-
-
-/*
-*	This will find a namespace with the given uri and prefix, in the scope of the docuemnt.
-* This will start to find from the current element and goes up in the hiararchy until this finds one.
-*
 */
-
-
 
 axis2_om_namespace_t *
 axis2_om_element_impl_find_namespace_with_qname (axis2_environment_t *
@@ -426,26 +395,6 @@ axis2_om_element_impl_find_namespace_with_qname (axis2_environment_t *
         return NULL;
     }
 }
-
-/*
-static axis2_om_namespace_t *
-axis2_om_element_handle_namespace (axis2_om_node_t
-                                   * element, axis2_om_namespace_t * ns)
-{
-    axis2_om_namespace_t *ns1 = NULL;
-    if (!ns || !element)
-    {
-        return NULL;
-    }
-    ns1 = axis2_om_element_find_namespace (element, ns->uri, ns->prefix);
-
-    if (!ns1)
-    {
-        ns1 = axis2_om_element_declare_namespace (element, ns);
-    }
-    return ns1;
-}
-*/
 
 axis2_status_t
 axis2_om_element_impl_add_attribute (axis2_environment_t * environment,
@@ -491,51 +440,6 @@ axis2_om_element_impl_get_attribute (axis2_environment_t * environment,
                                 sizeof (axis2_qname_t)));
 }
 
-/*
-*  The node passed to the method should have the data element as of type OM_ELEMENT
-*/
-
-/*axis2_om_attribute_t *
-axis2_om_element_add_attribute_with_namespace (axis2_om_node_t * element,
-                                               const axis2_char_t *attribute_name,
-                                               const axis2_char_t *value,
-                                               axis2_om_namespace_t * ns)
-{
-    axis2_om_namespace_t *namespace1 = NULL;
-    if (!element || element->element_type != AXIS2_OM_ELEMENT)
-    {
-        return NULL;
-    }
-    if (ns)
-    {
-        namespace1 = axis2_om_element_find_namespace (element, ns->uri,
-                                                      ns->prefix);
-        if (namespace1 == NULL)
-        {
-            return NULL;
-        }
-    }
-    return axis2_om_element_add_attribute (element,
-                                           axis2_om_attribute_create
-                                           (attribute_name, value, ns));
-}
-*/
-
-/*
-void
-axis2_om_element_set_namespace (axis2_om_node_t * node,
-                                axis2_om_namespace_t * ns)
-{
-    axis2_om_namespace_t *nsp = NULL;
-    if (ns && node && (node->data_element))
-    {
-        nsp = axis2_om_element_handle_namespace (node, ns);
-    }
-    ((axis2_om_element_t *) (node->data_element))->ns = nsp;
-    nsp = NULL;
-}
-*/
-
 axis2_status_t
 axis2_om_element_impl_free (axis2_environment_t * environment,
                             struct axis2_om_element *element)
@@ -559,7 +463,7 @@ axis2_om_element_impl_free (axis2_environment_t * environment,
         if (element->attributes)
         {
             /* TODO: free attributes */
-            /*need to eterate and free individual attributes */
+            /*need to iterate and free individual attributes */
         }
         if (element->namespaces)
         {
@@ -571,35 +475,6 @@ axis2_om_element_impl_free (axis2_environment_t * environment,
     }
     return AXIS2_SUCCESS;
 }
-
-/*void
-axis2_om_element_set_localname (axis2_om_node_t * element,
-                                const axis2_char_t *localname)
-{
-    axis2_om_element_t *element = NULL;
-    if (!element || element->element_type != AXIS2_OM_ELEMENT)
-    {
-        return;
-    }
-    element = (axis2_om_element_t *) (element->data_element);
-
-    if (element->localname)
-    {
-        free (element->localname);
-    }
-    element->localname = strdup (localname);
-}
-
-axis2_char_t *
-axis2_om_element_get_localname (axis2_om_node_t * element)
-{
-    if (!element || element->element_type != AXIS2_OM_ELEMENT)
-    {
-        return NULL;
-    }
-    return ((axis2_om_element_t *) (element->data_element))->localname;
-}
-*/
 
 axis2_status_t
 axis2_om_element_impl_serialize_start_part (axis2_environment_t * environment,
