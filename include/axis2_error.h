@@ -115,7 +115,9 @@ extern "C"
         /** Undefined namespace used */
         AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE,
         /** Trying to release unallocated memory */
-        AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED
+        AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED,
+		/** Struct is not properly initialized */
+		AXIS2_ERROR_STRUCT_NOT_INITIALIZED
     } axis2_error_codes_t;
 
 /** @} */

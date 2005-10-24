@@ -65,7 +65,7 @@ am__DEPENDENCIES_1 =
 libaxis2_util_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libaxis2_util_la_OBJECTS = axis2_hash.lo axis2_allocator.lo \
 	axis2_environment.lo axis2_error.lo axis2_stream.lo \
-	axis2_log.lo axis2_string.lo
+	axis2_log.lo axis2_string.lo axis2_file_diff.lo
 libaxis2_util_la_OBJECTS = $(am_libaxis2_util_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -199,7 +199,8 @@ libaxis2_util_la_SOURCES = axis2_hash.c \
                         axis2_error.c \
                         axis2_stream.c \
                         axis2_log.c \
-                        axis2_string.c
+                        axis2_string.c \
+                        axis2_file_diff.c
 
 libaxis2_util_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include
@@ -275,6 +276,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_allocator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_environment.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_error.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_file_diff.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_hash.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_log.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_stream.Plo@am__quote@

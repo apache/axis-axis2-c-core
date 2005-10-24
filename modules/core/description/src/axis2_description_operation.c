@@ -169,8 +169,9 @@ axis2_description_operation_t *axis2_description_operation_create_with_name
 axis2_status_t axis2_description_operation_ops_free (axis2_environment_t *env
 		, axis2_description_operation_t *operation_desc)
 {
-	if(operation_desc){
-		free(operation_desc);
+	if(operation_desc)
+	{
+		axis2_free(env->allocator, operation_desc);
 		return AXIS2_SUCCESS;
 	}
 	return AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED;

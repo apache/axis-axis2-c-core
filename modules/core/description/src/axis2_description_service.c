@@ -11,7 +11,7 @@ struct axis2_description_service_s
 	axis2_description_param_include_t *param_include;
 	axis2_description_servicegroup_t *parent;
 	axis2_hash_t *wasaction_opeartionmap;
-	axis2_qname_t *qname;    
+	axis2_qname_t *name;    
 
 };
 
@@ -54,6 +54,9 @@ axis2_status_t axis2_description_service_ops_set_parent(axis2_environment_t *env
 
 axis2_description_servicegroup_t *axis2_description_service_ops_get_parent
 		(axis2_environment_t *env, axis2_description_service_t *service_desc);
+		
+axis2_qname_t *axis2_description_service_ops_get_name
+		(axis2_environment_t *env, axis2_description_service_t *service_desc);	
 		
 /************************* End of function headers ***************************/
 
@@ -119,7 +122,7 @@ axis2_description_service_t *axis2_description_service_create
 		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
 		return NULL;			
 	}
-	service_desc->qname = NULL;
+	service_desc->name = NULL;
 
 	return service_desc;	
 }
@@ -134,7 +137,7 @@ axis2_description_service_t *axis2_description_service_create_with_qname
 		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
-	service_desc->qname = axis2_strdup(env->string, qname);
+	service_desc->name = axis2_strdup(env->string, qname);
 	
 	return service_desc;
 }
@@ -145,8 +148,11 @@ axis2_status_t axis2_description_service_ops_free
 		(axis2_environment_t *env, axis2_description_service_t *service_desc)
 {
 	if(service_desc)
+	{
 		axis2_free(env->allocator, service_desc);
-	return AXIS2_SUCCESS;
+		return AXIS2_SUCCESS;
+	}
+	return AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED;
 }
 
 axis2_status_t axis2_description_service_ops_add_param(axis2_environment_t *env
@@ -294,4 +300,15 @@ axis2_description_servicegroup_t *axis2_description_service_ops_get_parent
 		return NULL;	
 	}
 	return service_desc->parent;
+}
+
+axis2_qname_t *axis2_description_service_ops_get_name
+		(axis2_environment_t *env, axis2_description_service_t *service_desc)
+{
+	if(!env || !service_desc)
+	{
+		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return NULL;	
+	}
+	return service_desc->name;
 }

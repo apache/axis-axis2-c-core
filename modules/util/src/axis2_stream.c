@@ -14,11 +14,23 @@
  * limitations under the License.
  */
 
-#include <axis2_stream.h>
+#include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
+
+#include <axis2_stream.h>
 
 axis2_status_t axis2_stream_impl_write (const void *buffer, size_t count);
 axis2_status_t axis2_stream_impl_read (void *buffer, size_t count);
+
+void *axis2_stream_impl_file_open(const char *file_name, const char *options);
+		
+axis2_status_t axis2_stream_impl_file_close(void *file_ptr);
+
+axis2_char_t axis2_stream_impl_file_get_char(void *file_ptr);
+
+axis2_status_t axis2_stream_impl_file_unget_char(const char chr, void *file_ptr);
+
 axis2_stream_t *
 axis2_stream_create (axis2_allocator_t * allocator,
                      axis2_stream_ops_t * operations)
@@ -48,6 +60,13 @@ axis2_stream_create (axis2_allocator_t * allocator,
 
         stream->ops->axis2_stream_ops_read = axis2_stream_impl_read;
         stream->ops->axis2_stream_ops_write = axis2_stream_impl_write;
+		stream->ops->axis2_stream_ops_file_open = axis2_stream_impl_file_open;
+		stream->ops->axis2_stream_ops_file_close = axis2_stream_impl_file_close;
+		stream->ops->axis2_stream_ops_file_get_char = axis2_stream_impl_file_get_char;
+		stream->ops->axis2_stream_ops_file_unget_char = axis2_stream_impl_file_unget_char;
+		
+		stream->file = NULL;
+		stream->axis2_eof = EOF;
     }
 
     return stream;
@@ -79,5 +98,35 @@ axis2_stream_impl_write (const void *buffer, size_t count)
     i = 0;
     for (i = 0; i < count; i++)
         printf ("%c", ((axis2_char_t *) buffer)[i]);
+		
     return 0;
+}
+
+void *axis2_stream_impl_file_open(const char *file_name, const char *options)
+{
+	char *f_name = (char*) strdup(file_name);
+	if(!f_name) return NULL;
+	char *f_opt = (char*) strdup(options);
+	if(!f_opt) return NULL;
+	
+	FILE *file_ptr = fopen (f_name, f_opt);
+	return file_ptr;
+}
+
+axis2_status_t axis2_stream_impl_file_close(void *file_ptr)
+{
+	if(!file_ptr) return -1;
+	return (axis2_status_t) fclose(file_ptr);
+}
+
+axis2_char_t axis2_stream_impl_file_get_char(void *file_ptr)
+{
+	if(!file_ptr) return -1;
+	return (axis2_char_t) fgetc(file_ptr);
+}
+
+axis2_status_t axis2_stream_impl_file_unget_char(const char chr, void *file_ptr)
+{
+	if(!file_ptr) return -1;
+	return (axis2_status_t) ungetc(chr, file_ptr);
 }

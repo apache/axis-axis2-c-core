@@ -22,18 +22,36 @@
   */
 struct axis2_description_servicegroup_s
 {
+	axis2_description_servicegroup_ops_t *ops;
 	axis2_description_param_include_t *param_include;
-	axis2_qname_t *servicegroup_name;
+	axis2_char_t *servicegroup_name;
 	axis2_hash_t *services;
 	
 };
 
 /***************************** Function headers *******************************/
 
+axis2_status_t axis2_description_servicegroup_ops_free(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc);
+
+axis2_status_t axis2_description_servicegroup_ops_set_name
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc
+		, axis2_char_t *name);
+
+axis2_char_t *axis2_description_servicegroup_ops_get_name
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc);
+
 axis2_status_t axis2_description_servicegroup_ops_add_service
 		(axis2_environment_t *env
 		, axis2_description_servicegroup_t* servicegroup_desc
 		, axis2_description_service_t *service_desc);
+
+axis2_description_service_t *axis2_description_servicegroup_ops_get_service
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc
+		, const axis2_qname_t* service_name);
 
 /***************************** End of function headers ************************/
 
@@ -41,21 +59,126 @@ axis2_description_servicegroup_ops_t *axis2_description_servicegroup_get_ops
 		(axis2_environment_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc)
 {
-	return NULL;
+	if(!env || !servicegroup_desc)
+	{
+		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return NULL;
+	}
+	return servicegroup_desc->ops;
 }
 
 axis2_description_servicegroup_t *axis2_description_servicegroup_create
 		(axis2_environment_t *env)
 {
-	return NULL;
+	axis2_description_servicegroup_t *servicegroup_desc 
+		= (axis2_description_servicegroup_t *)
+		axis2_malloc (env->allocator, sizeof(axis2_description_servicegroup_t));
+	if(!servicegroup_desc)
+	{
+		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		return NULL;
+	}
+	axis2_description_servicegroup_ops_t *ops 
+		= (axis2_description_servicegroup_ops_t *)
+		axis2_malloc (env->allocator, sizeof(axis2_description_servicegroup_ops_t));
+	if(!ops)
+	{
+		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		return NULL;	
+	}
+	ops->free = axis2_description_servicegroup_ops_free;
+	ops->set_name = axis2_description_servicegroup_ops_set_name;
+	ops->get_name = axis2_description_servicegroup_ops_get_name;
+	ops->add_service = axis2_description_servicegroup_ops_add_service;
+	ops->get_service = axis2_description_servicegroup_ops_get_service;
+	
+	servicegroup_desc->ops = ops;
+	
+	axis2_description_param_include_t *param_include 
+		= (axis2_description_param_include_t *)
+		axis2_description_param_include_create(env);		
+	if(!param_include)
+	{
+		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		return NULL;
+	}
+
+	servicegroup_desc->param_include = param_include;
+	
+	/*servicegroup_desc->parent = NULL;*/
+	
+	servicegroup_desc->services = axis2_hash_make (env);				
+	if(!servicegroup_desc->services)
+	{
+		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		return NULL;			
+	}
+	servicegroup_desc->servicegroup_name = NULL;
+
+	return servicegroup_desc;	
 }
 
 /******************************************************************************/
+
+axis2_status_t axis2_description_servicegroup_ops_free(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc)
+{
+	if(!env || !servicegroup_desc)
+		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	axis2_free(env->allocator, servicegroup_desc);
+	return AXIS2_SUCCESS;
+}
+
+axis2_status_t axis2_description_servicegroup_ops_set_name
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc
+		, axis2_char_t *name)
+{
+	if(!env || !servicegroup_desc)
+		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	axis2_char_t *tempname = axis2_strdup(env->string, name);
+	if(!tempname) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	servicegroup_desc->servicegroup_name = name;
+	return AXIS2_SUCCESS;
+}
+
+axis2_char_t *axis2_description_servicegroup_ops_get_name
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc)
+{
+	if(!servicegroup_desc)
+	{
+		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return NULL;
+	}
+	return servicegroup_desc->servicegroup_name;
+}
 
 axis2_status_t axis2_description_servicegroup_ops_add_service
 		(axis2_environment_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc
 		, axis2_description_service_t *service_desc)
 {
-	return 0;
+	if(!env || servicegroup_desc || service_desc)
+		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	
+	axis2_qname_t *tempname = axis2_description_service_get_name(env, service_desc);
+	axis2_hash_set (servicegroup_desc->services, tempname->localpart
+		, AXIS2_HASH_KEY_STRING, service_desc);
+	return AXIS2_SUCCESS;
+}
+
+axis2_description_service_t *axis2_description_servicegroup_ops_get_service
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc
+		, const axis2_qname_t* service_name)
+{
+	if(!servicegroup_desc || ! service_name)
+	{
+		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return NULL;
+	}
+	return (axis2_description_service_t *) (axis2_hash_get 
+		(servicegroup_desc->services, service_name->localpart
+		, AXIS2_HASH_KEY_STRING));
 }

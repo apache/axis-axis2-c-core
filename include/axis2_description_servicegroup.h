@@ -46,36 +46,88 @@ extern "C"
 
 /**************************** Start of function macros ************************/
 
+#define axis2_description_servicegroup_free(env, servicegroup_desc) \
+		(axis2_description_servicegroup_get_ops(env, \
+		servicegroup_desc)->free (env, servicegroup_desc));
+	
+#define axis2_description_servicegroup_set_name(env, servicegroup_desc \
+		, servicegroup_name) (axis2_description_servicegroup_get_ops(env, \
+		servicegroup_desc)->set_name (env, servicegroup_desc, servicegroup_name));
+		
+#define axis2_description_servicegroup_get_name(env, servicegroup_desc) \
+		(axis2_description_servicegroup_get_ops(env, \
+		servicegroup_desc)->get_name(env, servicegroup_desc));
+
 #define axis2_description_servicegroup_add_service(env, servicegroup_desc \
-		, service_desc) (axis2_description_service_get_ops(env, \
+		, service_desc) (axis2_description_servicegroup_get_ops(env, \
 		servicegroup_desc)->get_param (env, servicegroup_desc, service_desc));
+
+#define axis2_description_servicegroup_get_service(env, servicegroup_desc \
+		, service_desc) ((axis2_description_servicegroup_get_ops(env, \
+		servicegroup_desc)->get_service(env, servicegroup_desc, service_desc));
 
 /**************************** End of function macros **************************/
 /**************************** Function pointers *******************************/
+
+/** Deallocate memory
+  * @return status code
+  */
+typedef axis2_status_t (*axis2_description_servicegroup_free_t)
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc);
+
+/** Set name of the service group_member
+  * @param servicegroup_name
+  * @return status_code
+  */
+typedef axis2_status_t (*axis2_description_servicegroup_set_name_t)
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc
+		, axis2_char_t *servicegroup_name);
+		
+/** get the service group name
+  * @return service group name
+  */
+typedef axis2_char_t *(*axis2_description_servicegroup_get_name_t)
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc);
 
 /** Add a service to the serivce group
   * @param service to be added
   * @return status code
   */
-    typedef axis2_status_t (*axis2_description_servicegroup_add_service_t)
-        (axis2_environment_t * env,
-         axis2_description_servicegroup_t * servicegroup_desc,
-         axis2_description_service_t * service_desc);
+typedef axis2_status_t (*axis2_description_servicegroup_add_service_t)
+		(axis2_environment_t * env,
+	 	axis2_description_servicegroup_t * servicegroup_desc,
+	 	axis2_description_service_t * service_desc);
+
+/** Get the service from service group_member
+  * @param service_name
+  * @return service description
+  */
+typedef axis2_description_service_t 
+		*(*axis2_description_servicegroup_get_service_t)
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc
+		, const axis2_qname_t* service_name);		
 
 /*************************** End of function pointers *************************/
 
-    struct axis2_description_servicegroup_ops_s
-    {
-        axis2_description_servicegroup_add_service_t add_service;
-    };
+struct axis2_description_servicegroup_ops_s
+{
+	axis2_description_servicegroup_free_t free;
+	axis2_description_servicegroup_set_name_t set_name;
+	axis2_description_servicegroup_get_name_t get_name;
+	axis2_description_servicegroup_add_service_t add_service;
+	axis2_description_servicegroup_get_service_t get_service;
+};
 
-    axis2_description_servicegroup_ops_t
-        *axis2_description_servicegroup_get_ops (axis2_environment_t * env,
-                                                 axis2_description_servicegroup_t
-                                                 * servicegroup_desc);
+axis2_description_servicegroup_ops_t *axis2_description_servicegroup_get_ops 
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc);
 
-    axis2_description_servicegroup_t *axis2_description_servicegroup_create
-        (axis2_environment_t * env);
+axis2_description_servicegroup_t *axis2_description_servicegroup_create
+		(axis2_environment_t *env);
 
 /** @} */
 #ifdef __cplusplus

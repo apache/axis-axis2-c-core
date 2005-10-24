@@ -18,6 +18,7 @@
 #define AXIS2_STRING_H
 
 #include <axis2_defines.h>
+#include <axis2_error.h>
 #include <axis2_allocator.h>
 
 #ifdef __cplusplus

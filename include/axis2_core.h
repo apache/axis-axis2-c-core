@@ -121,7 +121,13 @@ struct axis2_engine_msg_receiver_ops_s;
 typedef struct axis2_engine_msg_receiver_s axis2_engine_msg_receiver_t;
 typedef struct axis2_engine_msg_receiver_ops_s axis2_engine_msg_receiver_ops_t;
 	
-
+/** @cond */
+struct axis2_engine_config_s;
+struct axis2_engine_config_ops_s;
+/** @endcond */
+typedef struct axis2_engine_config_s axis2_engine_config_t;
+typedef struct axis2_engine_config_ops_s axis2_engine_config_ops_t;
+	
 #ifdef __cplusplus
 }
 #endif

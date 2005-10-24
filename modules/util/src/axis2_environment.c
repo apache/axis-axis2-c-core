@@ -39,10 +39,7 @@ axis2_environment_create (axis2_allocator_t * allocator,
     else
         environment->error = error;
 
-    if (!stream)
-        environment->stream = axis2_stream_create (allocator, NULL);
-    else
-        environment->stream = stream;
+    environment->stream = axis2_stream_create (allocator, NULL);    
 
     if (!log)
         environment->log = axis2_log_create (allocator, NULL);

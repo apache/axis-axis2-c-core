@@ -17,21 +17,23 @@
 #include <stdio.h>
 #include <axis2_hash.h>
 #include <axis2_string.h>
+#include <axis2_file_diff.h>
 
 typedef struct a
 {
-    char *value;
+    axis2_char_t *value;
 } a;
 
-
-
-int test_hash_get ()
+axis2_environment_t *test_init()
 {
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_string_t *string = axis2_allocator_init (NULL);
-    axis2_environment_t *environment =
-        axis2_environment_create (allocator, NULL, NULL, NULL, string);
+	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+    axis2_environment_t *env =
+    	axis2_environment_create (allocator, NULL, NULL, NULL, NULL);
+	return env;
+}
 
+int test_hash_get (axis2_environment_t *environment)
+{
     axis2_hash_t *ht;
     a *a1, *a2, *a3, *a4;
 
@@ -53,7 +55,6 @@ int test_hash_get ()
     a2->value = axis2_strdup(environment->string, "value2");
     a3->value = axis2_strdup(environment->string, "value3");
     a4->value = axis2_strdup(environment->string, "value4");
-
 
     ht = axis2_hash_make (environment);
 
@@ -85,7 +86,20 @@ int test_hash_get ()
     return 0;
 }
 
+/**
+  * This test is intended to test whether given two files are equal or not.
+  * Spaces and new lines are ignored in comparing
+  */
+int test_file_diff(axis2_environment_t *env)
+{
+	axis2_char_t *expected_file_name = axis2_strdup(env->string, "expected");
+    axis2_char_t *actual_file_name = axis2_strdup(env->string, "actual");	
+    axis2_file_diff(env, expected_file_name, actual_file_name);
+}
+
 int main(void)
 {
-   test_hash_get(); 
+	axis2_environment_t *env = test_init();
+	test_file_diff(env);
+	test_hash_get(env); 
 }

@@ -164,9 +164,11 @@ axis2_status_t axis2_description_param_ops_free (axis2_environment_t *env
 		,axis2_description_param_t * param)
 {
 	if(param)
-		free(param);
-	
-	return AXIS2_SUCCESS;
+	{
+		axis2_free(env->allocator, param);
+		return AXIS2_SUCCESS;
+	}
+	return AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED;
 }
 
 axis2_status_t axis2_description_param_ops_set_name (axis2_environment_t *env
