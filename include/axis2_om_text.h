@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-/** @defgroup axis2_om AXIOM (Axis Object Model)
-  * @ingroup axis2
-  * @{
-  */
-
-/** @} */
 #ifndef AXIS2_OM_TEXT_H
 #define AXIS2_OM_TEXT_H
 
@@ -30,11 +24,15 @@
 
 #include <axis2_environment.h>
 #include <axis2_om_node.h>
+#include <axis2_om_output.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+    struct axis2_om_text;
+    struct axis2_om_text_ops;
 
 /**
  * @defgroup axis2_om_text OM Text
@@ -42,33 +40,31 @@ extern "C"
  * @{
  */
 
-/** @cond */
-    struct axis2_om_text;
-    struct axis2_om_text_ops;
-/** @endcond */
-
-/** @struct axis2_om_text_ops
-    @brief OM text operations struct
-
-    Encapsulator struct for operations of axis2_om_text_t
-*/
+  /** 
+    * @brief OM text operations struct
+    * Encapsulator struct for operations of axis2_om_text
+    */
     typedef struct axis2_om_text_ops
     {
-  /**
-	* Free an axis2_om_text_t structure
-    * @return Status code
-    */
-        axis2_status_t (*axis2_om_text_ops_free) (axis2_environment_t *
+      /**
+        * Free an axis2_om_text struct
+        * @param environment environment. Mandatory, MUST NOT be NULL, if NULL behaviour is undefined.
+        * @param om_text pointer to om text struct to be freed
+        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        */
+        AXIS2_DECLARE(axis2_status_t) (*axis2_om_text_ops_free) (axis2_environment_t *
                                                   environment,
                                                   struct axis2_om_text *
                                                   om_text);
 
-  /**
-    * Serialize operation
-    * @param om_output OM output handler to be used in serializing
-    * @return Status code
-    */
-        axis2_status_t (*axis2_om_text_ops_serialize) (axis2_environment_t *
+      /**
+        * Serialize operation
+        * @param environment environment. Mandatory, MUST NOT be NULL, if NULL behaviour is undefined.
+        * @param om_text pointer to om text struct to be serialized
+        * @param om_output OM output handler to be used in serializing
+        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        */
+        AXIS2_DECLARE(axis2_status_t) (*axis2_om_text_ops_serialize) (axis2_environment_t *
                                                        environment,
                                                        const struct
                                                        axis2_om_text *
@@ -77,48 +73,36 @@ extern "C"
                                                        om_output);
     } axis2_om_text_ops_t;
 
-/** \struct axis2_om_text
+/** 
     \brief OM Text struct
-
     Handles the XML text in OM
 */
     typedef struct axis2_om_text
     {
-  /**
-    * OM text related operations
-    */
+        /** OM text related operations */
         axis2_om_text_ops_t *ops;
-
-   /**
-	* Text value
-	*/
+        /** Text value */
         axis2_char_t *value;
-
-   /**
-    * The following fields are for MTOM
-    */
-        /*axis2_om_namespace_t *ns; */
+        /** The following fields are for MTOM
+            TODO: Implement MTOM support */
         axis2_char_t *mime_type;
-        int optimize;
+        axis2_bool_t optimize;
         axis2_char_t *localname;
-        int is_binary;
+        axis2_bool_t is_binary;
         axis2_char_t *content_id;
-        /*axis2_om_attribute_t *attribute; */
     } axis2_om_text_t;
 
 
-/**
- * Creates a text struct and stores it in a node struct and returns a pointer
- * to the newly created text struct
- * @param environment Environment. MUST  NOT be NULL, if NULL behaviour is undefined.
- * @param parent Parent of the new node. If null newly created node becomes a root node
- *          The parent element must be of type AXIS2_OM_ELEMENT
- * @param value Text value 
- * @param node Out parameter to store the newly created node
- * @return pointer to newly created text struct 
- */
-
-    axis2_om_text_t *axis2_om_text_create (axis2_environment_t * environment,
+  /**
+    * Creates a new text struct
+    * @param environment Environment. MUST  NOT be NULL, if NULL behaviour is undefined.
+    * @param parent parent of the new node. Optinal, can be NULL. 
+    *          The parent element must be of type AXIS2_OM_ELEMENT
+    * @param value Text value 
+    * @param node Out parameter to store the newly created node
+    * @return pointer to newly created text struct 
+    */
+    AXIS2_DECLARE(axis2_om_text_t *) axis2_om_text_create (axis2_environment_t * environment,
                                            axis2_om_node_t * parent,
                                            const axis2_char_t * value,
                                            axis2_om_node_t ** node);

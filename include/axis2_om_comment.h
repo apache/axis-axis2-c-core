@@ -29,67 +29,65 @@ extern "C"
 {
 #endif
 
+    struct axis2_om_comment;
+    struct axis2_om_comment_ops;
+
 /**
- * @defgroup axis2_om_comment OM comment
+ * @defgroup axis2_om_comment OM Comment
  * @ingroup axis2_om 
  * @{
  */
 
-/** @cond */
-    struct axis2_om_comment;
-    struct axis2_om_comment_ops;
-/** @endcond */
 
-/** @struct axis2_om_comment_ops
- *   @brief OM comment operations struct
- *   Encapsulator struct for operations of axis2_om_comment_t
- */
-
+  /** 
+    *   @brief OM comment operations struct
+    *   Encapsulator struct for operations of axis2_om_comment_t
+    */
     typedef struct axis2_om_comment_ops
     {
-  /**
-    * Free a axis2_comment struct
-    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
-    * @param comment pointer to the axis2_commnet 
-    * @returns status code
-    */
-        axis2_status_t (*axis2_om_comment_ops_free) (axis2_environment_t *
+      /**
+        * Free a axis2_comment struct
+        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+        * @param comment pointer to axis2_commnet struct to be freed
+        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        */
+        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_comment_ops_free) (axis2_environment_t *
                                                      environment,
                                                      struct axis2_om_comment *
                                                      comment);
 
     } axis2_om_comment_ops_t;
 
-/** \struct axis2_om_comment
-    \brief OM comment struct
-
-    Handles the XML comment in OM
-*/
+  /** 
+    * \brief OM comment struct
+    * Handles the XML comment in OM
+    */
     typedef struct axis2_om_comment
     {
-    /** operations struct */
+        /** operations struct */
         axis2_om_comment_ops_t *ops;
-    /** value */
-        char *value;
+        /** comment text */
+        axis2_char_t *value;
     } axis2_om_comment_t;
 
-/**
- * Create a comment struct and stores in in a node struct and returns a pointer
- * to the axis2_om_comment_t struct
- * the data_element field of node struct points to the acctual axis2_comment struct
- * The element type of axis2_om_node_t struct will be of type AXIS2_OM_COMMENT
- * @param value value of the comment
- * @param comment_node This is an out parameter, stores the acctual om_comment in
- *        this node struct pointer
- * @return pointer to a node_t struct containing the comment struct
- */
-    axis2_om_comment_t *axis2_om_comment_create (axis2_environment_t *
+  /**
+    * Creates a comment struct
+    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param value comment text
+    * @param comment_node This is an out parameter. Mandatory, cannot be NULL.
+    *                       Returns the node corresponding to the comment created.
+    *                       Node type will be set to AXIS2_OM_COMMENT
+    * @return a pointer to the newly created comment struct
+    */
+    AXIS2_DECLARE(axis2_om_comment_t *) axis2_om_comment_create (axis2_environment_t *
                                                  environment,
                                                  const axis2_char_t * value,
                                                  axis2_om_node_t **
                                                  comment_node);
 
+/** free given comment */
 #define axis2_om_comment_free(environment, comment) ((comment)->ops->axis2_om_comment_ops_free(environment, comment))
+
 /** @} */
 
 #ifdef __cplusplus

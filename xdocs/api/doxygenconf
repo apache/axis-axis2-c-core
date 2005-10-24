@@ -987,13 +987,15 @@ INCLUDE_FILE_PATTERNS  =
 # instead of the = operator.
 
 PREDEFINED             = AXIS2_DECLARE(x)=x \
-                         AXIS2_DECLARE_NONSTD(x)=x
+                         AXIS2_DECLARE_NONSTD(x)=x \
+                         AXIS2_DECLARE_DATA= \
+                         AXIS2_CALL= 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then 
 # this tag can be used to specify a list of macro names that should be expanded. 
 # The macro definition that is found in the sources will be used. 
 # Use the PREDEFINED tag if you want to use a different macro definition.
 
-EXPAND_AS_DEFINED      = AXIS2_DECLARE
+EXPAND_AS_DEFINED      = AXIS2_DECLARAE AXIS2_DECLARE_NONSTD AXIS2_DECLARE_DATA AXIS2_CALL
 
 # If the SKIP_FUNCTION_MACROS tag is set to YES (the default) then 
 # doxygen's preprocessor will remove all function-like macros that are alone 

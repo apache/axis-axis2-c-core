@@ -38,17 +38,17 @@ typedef struct axis2_om_stax_builder_ops
 
     axis2_om_node_t *(*axis2_om_stax_builder_ops_next) (axis2_environment_t *
                                                         environment,
-                                                        axis2_om_stax_builder_t
+                                                        struct axis2_om_stax_builder
                                                         * builder);
 
       axis2_status_t (*axis2_om_stax_builder_ops_discard_current_element)
         (axis2_environment_t * environment,
-         axis2_om_stax_builder_t * builder);
+         struct axis2_om_stax_builder * builder);
 
 
 } axis2_om_stax_builder_ops_t;
 
-struct axis2_om_stax_builder
+typedef struct axis2_om_stax_builder
 {
     axis2_om_stax_builder_ops_t *ops;
     void *parser;
@@ -57,7 +57,7 @@ struct axis2_om_stax_builder
     axis2_bool_t done;
     axis2_bool_t parser_accessed;
     axis2_bool_t cache;
-};
+} axis2_om_stax_builder_t;
 
 /**
  *	create an stax_om_builder

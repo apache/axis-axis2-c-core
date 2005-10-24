@@ -29,66 +29,66 @@ extern "C"
 {
 #endif
 
+    struct axis2_om_doctype;
+    struct axis2_om_doctype_ops;
+
 /**
- * @defgroup axis2_om_text OM Text
+ * @defgroup axis2_om_doctype OM Doctype
  * @ingroup axis2_om 
  * @{
  */
 
-/** @cond */
-    struct axis2_om_doctype;
-    struct axis2_om_doctype_ops;
-/** @endcond */
-
-/** @struct axis2_om_doctype_ops
-    @brief OM doctype operations struct
-
-    Encapsulator struct for operations of axis2_om_doctype_t
-*/
+  /**
+    * \brief OM doctype operations struct
+    * Encapsulator struct for operations of axis2_om_doctype
+    */
     typedef struct axis2_om_doctype_ops
     {
-    /**
-	 *	free the axis2_om_doctype_t struct
-	 * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
-	 * @param om_doc pointer to axis2_om_doctype_t struct
-	 * @returns status code
-	 */
-        axis2_status_t (*axis2_om_doctype_ops_free) (axis2_environment_t *
+      /**
+        * free doctype struct
+        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+        * @param om_doctype pointer to doctype struct to be freed
+        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        */
+        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_doctype_ops_free) (axis2_environment_t *
                                                      environment,
                                                      struct axis2_om_doctype *
                                                      om_doctype);
     } axis2_om_doctype_ops_t;
 
-/** \struct axis2_om_doctype
-    \brief OM doctype struct
-
-    Handles the XML document type in OM
-*/
+  /**
+    * \brief OM doctype struct
+    * Handles XML document type in OM
+    */
     typedef struct axis2_om_doctype
     {
+        /** Doctype related operations */
         axis2_om_doctype_ops_t *ops;
-        char *value;
+        /** Doctype value */
+        axis2_char_t *value;
     } axis2_om_doctype_t;
 
-/**
- * Create a doctype struct and stores in in a node struct and returns a pointer
- * to the axis2_axis2_om_doctype_t struct
- * the data_element field of node struct points to the acctual axis2_doctype_t struct
- * The element type of axis2_om_node_t struct will be of type AXIS2_OM_DOCTYPE
- * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
- * @param node This is an outparameter
- * @return pointer to a axis2_om_node_t struct containing the doctype struct
- */
-
-    axis2_om_doctype_t *axis2_om_doctype_create (axis2_environment_t *
+  /**
+    * Creates a doctype struct
+    * @param environment Environment. MUST  NOT be NULL, if NULL behaviour is undefined.
+    * @param parent parent of the new node. Optinal, can be NULL. 
+    * @param value doctype value 
+    * @param node This is an out parameter. Mandatory, cannot be NULL.
+    *                       Returns the node corresponding to the doctype created.
+    *                       Node type will be set to AXIS2_OM_DOCTYPE
+    * @return pointer to newly created doctype struct 
+    */
+    AXIS2_DECLARE(axis2_om_doctype_t *) axis2_om_doctype_create (axis2_environment_t *
                                                  environment,
                                                  axis2_om_node_t * parent,
                                                  const axis2_char_t * value,
                                                  axis2_om_node_t ** node);
 
+/** free given doctype */    
 #define axis2_om_doctype_free(environment, doctype) ((doctype)->ops->axis2_om_doctype_ops_free(environment, doctype))
 
 /** @} */
+    
 #ifdef __cplusplus
 }
 #endif

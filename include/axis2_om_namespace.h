@@ -31,18 +31,17 @@ extern "C"
 {
 #endif
 
+    struct axis2_om_namespace;
+    struct axis2_om_namespace_ops;
+    
 /**
- * @defgroup axis2_om_text OM Text
+ * @defgroup axis2_om_namespace OM Namespace
  * @ingroup axis2_om 
  * @{
  */
 
-/** @cond */
-    struct axis2_om_namespace;
-    struct axis2_om_namespace_ops;
-/** @endcond */
 
-/** \struct axis2_om_namespace_ops_t
+/** 
     \brief OM Namespace operations struct
 
     Encapsulator struct for operations of axis2_om_namespace_t
@@ -89,7 +88,7 @@ extern "C"
 
     } axis2_om_namespace_ops_t;
 
-/** \struct axis2_om_namespace_t
+/** 
     \brief OM namespace struct
 
     Handles the XML namespace in OM

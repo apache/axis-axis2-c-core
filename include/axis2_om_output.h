@@ -32,7 +32,7 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_om_output OM_output
+ * @defgroup axis2_om_output OM Output
  * @ingroup axis2_om 
  * @{
  */
@@ -40,13 +40,13 @@ extern "C"
     static const char *DEFAULT_CHAR_SET_ENCODING = "utf-8";
 
 
-/** \struct axis2_om_output
+/** 
     \brief OM Output struct
 
     The XML writer interface struct of om
 */
 
-    struct axis2_om_output
+    typedef struct axis2_om_output
     {
         /* The xml writer */
         void *xml_writer;
@@ -61,7 +61,7 @@ extern "C"
         axis2_char_t *xml_version;
 
         axis2_bool_t ignore_xml_declaration;
-    };
+    } axis2_om_output_t;
 /**
  * creates output struct and returns a pointer to newly created struct
  * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.

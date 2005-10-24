@@ -25,12 +25,12 @@
 #include <axis2_defines.h>
 #include <axis2_environment.h>
 
+struct axis2_qname;
+struct axis2_qname_ops;
 
 static const axis2_char_t XML_NAMESPACE_URI[] =
     "http://www.w3c.org/XML/1998/namespace";
 
-struct axis2_qname;
-struct axis2_qname_ops;
 
 typedef struct axis2_qname_ops
 {

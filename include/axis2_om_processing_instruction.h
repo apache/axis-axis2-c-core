@@ -29,18 +29,18 @@ extern "C"
 {
 #endif
 
+    struct axis2_om_processing_instruction;
+    struct axis2_om_processing_instruction_ops;
+    
+    
 /**
- * @defgroup axis2_om_text OM Text
+ * @defgroup axis2_om_processing_instruction OM Processing Instruction
  * @ingroup axis2_om 
  * @{
  */
 
-/** @cond */
-    struct axis2_om_processing_instruction;
-    struct axis2_om_processing_instruction_ops;
-/** @endcond */
 
-/** @struct axis2_om_processing_instruction_ops
+/** 
     @brief OM text operations struct
 
     Encapsulator struct for operations of axis2_om_processing_instruction
@@ -58,7 +58,7 @@ extern "C"
              struct axis2_om_processing_instruction * om_pi);
     } axis2_om_processing_instruction_ops_t;
 
-/** \struct axis2_om_processing_instruction
+/** 
     \brief OM processing_instruction
 
     Handles the XML processing instructions in OM

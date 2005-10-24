@@ -18,19 +18,17 @@
 #include <string.h>
 #include <axis2_defines.h>
 
-
-
-axis2_status_t axis2_om_attribute_impl_free (axis2_environment_t *
+axis2_status_t AXIS2_CALL axis2_om_attribute_impl_free (axis2_environment_t *
                                              environment,
                                              axis2_om_attribute_t *
                                              attribute);
 
-axis2_qname_t *axis2_om_attribute_impl_get_qname (axis2_environment_t *
+axis2_qname_t * AXIS2_CALL axis2_om_attribute_impl_get_qname (axis2_environment_t *
                                                   environment,
                                                   axis2_om_attribute_t *
                                                   attribute);
 
-axis2_status_t axis2_om_attribute_impl_serialize (axis2_environment_t *
+axis2_status_t AXIS2_CALL axis2_om_attribute_impl_serialize (axis2_environment_t *
                                                   environment,
                                                   axis2_om_attribute_t *
                                                   attribute,
@@ -46,7 +44,7 @@ axis2_om_attribute_create (axis2_environment_t * environment,
 {
     axis2_om_attribute_t *attribute = NULL;
     if (!localname)
-    {   /** localname is mandatory */
+    {   /* localname is mandatory */
         environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
         return NULL;
     }
@@ -155,17 +153,18 @@ axis2_om_attribute_impl_serialize (axis2_environment_t * environment,
     }
 
     if (attribute->ns && attribute->ns->uri && attribute->ns->prefix)
-        status = axis2_om_output_write (environment, om_output, AXIS2_OM_ATTRIBUTE, 4,
-                                        attribute->localname,
-                                        attribute->value, attribute->ns->uri,
-                                        attribute->ns->prefix);
+        status =
+            axis2_om_output_write (environment, om_output, AXIS2_OM_ATTRIBUTE,
+                                   4, attribute->localname, attribute->value,
+                                   attribute->ns->uri, attribute->ns->prefix);
     else if (attribute->ns && attribute->ns->uri)
-        status = axis2_om_output_write (environment, om_output, AXIS2_OM_ATTRIBUTE, 3,
-                                        attribute->localname,
-                                        attribute->value, attribute->ns->uri);
+        status =
+            axis2_om_output_write (environment, om_output, AXIS2_OM_ATTRIBUTE,
+                                   3, attribute->localname, attribute->value,
+                                   attribute->ns->uri);
     else
-        status = axis2_om_output_write (environment, om_output, AXIS2_OM_ATTRIBUTE, 2,
-                                        attribute->localname,
-                                        attribute->value);
+        status =
+            axis2_om_output_write (environment, om_output, AXIS2_OM_ATTRIBUTE,
+                                   2, attribute->localname, attribute->value);
     return status;
 }

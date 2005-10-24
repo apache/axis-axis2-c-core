@@ -28,22 +28,19 @@ extern "C"
 {
 #endif
 
+    struct axis2_om_element;
+    struct axis2_om_element_ops;
+
 /**
- * @defgroup axis2_om_element OM element
+ * @defgroup axis2_om_element OM Element
  * @ingroup axis2_om 
  * @{
  */
 
-/** @cond */
 
-    struct axis2_om_element;
-    struct axis2_om_element_ops;
-/** @endcond */
-
-/** @struct axis2_om_element_ops
-    @brief OM element operations struct
-
-    Encapsulator struct for operations of axis2_om_element_t
+/** 
+  * @brief OM element operations struct
+  * Encapsulator struct for operations of axis2_om_element_t
 */
 
 
@@ -168,7 +165,7 @@ extern "C"
 
     } axis2_om_element_ops_t;
 
-/** \struct axis2_om_element
+/**
     \brief OM element struct
 
     Handles the XML element in OM

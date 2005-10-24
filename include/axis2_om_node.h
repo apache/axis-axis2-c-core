@@ -17,9 +17,16 @@
 #ifndef AXIS2_OM_NODE_H
 #define AXIS2_OM_NODE_H
 
+/** @defgroup axis2_om AXIOM (Axis Object Model)
+  * @ingroup axis2
+  * @{
+  */
+
+/** @} */
+
 /**
  * @file axis2_om_node.h
- * @brief defines axis2_om_node_t struct and its operations
+ * @brief defines axis2_om_node struct and its operations
  */
 #include <axis2_environment.h>
 
@@ -28,23 +35,19 @@ extern "C"
 {
 #endif
 
+    struct axis2_om_node;
+    struct axis2_om_node_ops;
+    struct axis2_om_output;
+
 /**
  * @defgroup axis2_om_node  OM Node
  * @ingroup axis2_om 
  * @{
  */
 
-/** @cond */
-    struct axis2_om_node;
-    struct axis2_om_node_ops;
-    typedef struct axis2_om_output axis2_om_output_t;
-/** @endcond */
-
 /** 
  *   Types used in OM 
  */
-
-
     typedef enum axis2_om_types_t
     {
         AXIS2_OM_INVALID = 0,
@@ -59,17 +62,16 @@ extern "C"
     } axis2_om_types_t;
 
 
-/** @struct axis2_om_node_ops
-    @brief OM Node operations struct
-
-    Encapsulator struct for operations of axis2_om_node_t
-*/
+  /** 
+    * @brief OM Node operations struct
+    * Encapsulator struct for operations of axis2_om_node_t
+    */
 
     typedef struct axis2_om_node_ops
     {
    /**
     * Free an om node and its all children
-    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
     * @return status code
     */
         axis2_status_t (*axis2_om_node_ops_free) (axis2_environment_t *
@@ -78,7 +80,7 @@ extern "C"
                                                   om_node);
    /**
     *   Add child node as child to parent
-    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
     * @param parent
     * @param child  
     * @return status code   
@@ -92,7 +94,7 @@ extern "C"
 
     /**
      *  detach this node from the node and reset the links
-     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+     * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
      *  @return a pointer to detached node 
      */
         struct axis2_om_node *(*axis2_om_node_ops_detach) (axis2_environment_t
@@ -103,7 +105,7 @@ extern "C"
 
    /**
     *  Inserts a sibling node after the current node
-    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
     *  @param current_node  
     *  @param node_to_insert the node that will be inserted 
     *  @return return status code 
@@ -115,7 +117,7 @@ extern "C"
 
    /**
     * Inserts a sibling node after the current node
-    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
     *  @param current_node   
     *  @param node_to_insert the node that will be inserted 
     *  @return status code
@@ -128,7 +130,7 @@ extern "C"
 
    /**
     * set a parent node to a given node
-    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
     * @param child_node  
     * @param parent the node that will be set as parent
     * @return status code
@@ -143,7 +145,7 @@ extern "C"
 
    /** get the first child of a node
     *  returns the first child node of this node
-    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
     * @param 
     *  @return returns a pointer to first child if there is no child returns null
     */
@@ -155,7 +157,7 @@ extern "C"
    /**
     * get the next child of this node
     * This function should only be called after a call to get_first_child function
-    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
     *  @param parent_node
     *  @return pointer to next child , if there isn't next child returns null
     */
@@ -166,8 +168,7 @@ extern "C"
                                                   parent_node);
 
    /**
-    *   serialize operation of node
-    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
+    * serialize operation of node
     * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.    
     *    @returns status code
     */
@@ -176,7 +177,7 @@ extern "C"
                                                          environment,
                                                          struct axis2_om_node
                                                          * om_node,
-                                                         axis2_om_output_t *
+                                                         struct axis2_om_output *
                                                          om_output);
 
 
