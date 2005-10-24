@@ -34,7 +34,7 @@ struct guththila_xml_stream_writer
 
   guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(guththila_environment_t *environment,FILE* writer, guththila_char_t* encoding, int prefix_defaulting)
 {
-    guththila_status_t status;
+ /*   guththila_status_t status; */
     guththila_xml_stream_writer_t *stream_writer;
     if (!writer)
         return 0;
@@ -45,7 +45,6 @@ struct guththila_xml_stream_writer
         stream_writer->encoding = encoding;
     stream_writer->prefix_defaulting = prefix_defaulting;
 
-      /*initialize APR pool, we ned this pool to allocate memory to hash map and stack*/
 
    
 

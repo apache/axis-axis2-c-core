@@ -530,7 +530,7 @@ guththila_xml_pull_parser_process_char_data (guththila_environment_t *environmen
   int c;
   int ref = 0;
   int all_spaces = 1;
-  int last_event = guththila_event;
+/*  int last_event = guththila_event; */
   guththila_event = GUTHTHILA_CHARACTER;
   guththila_xml_pull_parser_open_token (environment,parser);
   do

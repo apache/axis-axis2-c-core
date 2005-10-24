@@ -1,5 +1,5 @@
 lib_LTLIBRARIES = libguththila.la
-AM_CPPFLAGS = $(CPPFLAGS) -DLINUX=2 -D_REENTRANT -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -g -O2 -pthread
+AM_CPPFLAGS = $(CPPFLAGS) 
 libguththila_la_SOURCES = guththila_token.c \
                             guththila_xml_pull_parser.c \
                             guththila_buffer.c \
@@ -7,7 +7,14 @@ libguththila_la_SOURCES = guththila_token.c \
                             guththila_stack.c \
                             guththila_unicode.c \
                             guththila_main.c \
-                            guththila_reader.c
+                            guththila_reader.c \
+                            guththila_allocator.c \
+                            guththila_array.c \
+                            guththila_string.c \
+                            guththila_stream.c \
+                            guththila_environment.c \
+                            guththila_log.c \
+                            guththila_error.c 
 
 libguththila_la_LIBADD = $(LDFLAGS)
-INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include -I${APR_HOME}/include/apr-1
+INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include 

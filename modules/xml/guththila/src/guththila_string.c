@@ -17,13 +17,11 @@
 #include <guththila_string.h>
 #include <stdlib.h>
 #include <string.h>
-#include "guththila_unicode.h"
-#include "guththila_defines.h"
 
 void* guththila_string_ops_strdup(const void* ptr)
 {
     if (ptr)
-        return (void*)strdup(ptr);
+        return (void*)strdup((const char*)ptr);
     else
         return NULL;
 }
