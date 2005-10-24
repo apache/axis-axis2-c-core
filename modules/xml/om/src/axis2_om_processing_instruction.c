@@ -16,7 +16,7 @@
 
 #include <axis2_om_processing_instruction.h>
 
-axis2_status_t axis2_om_processing_instruction_impl_free (axis2_environment_t
+axis2_status_t AXIS2_CALL axis2_om_processing_instruction_impl_free (axis2_environment_t
                                                           * environment,
                                                           axis2_om_processing_instruction_t
                                                           *
