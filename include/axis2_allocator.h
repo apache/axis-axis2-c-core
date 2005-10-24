@@ -47,19 +47,19 @@ extern "C"
         * @param size size of the memory block to be allocated
         * @return pointer to the allocated memory block
         */
-        AXIS2_DECLARE(void *) (*axis2_allocator_malloc) (size_t size);
+        AXIS2_DECLARE_DATA void * (AXIS2_CALL *axis2_allocator_malloc) (size_t size);
       /**
         * re-llocates memory
         * @param ptr memory block who's size to be changed
         * @param size size of the memory block to be allocated
         * @return pointer to the allocated memory block
         */
-        AXIS2_DECLARE(void *) (*axis2_allocator_realloc) (void *ptr, size_t size);
+        AXIS2_DECLARE_DATA void * (AXIS2_CALL *axis2_allocator_realloc) (void *ptr, size_t size);
       /**
         * frees memory
         * @param ptr pointer to be freed
         */
-        AXIS2_DECLARE(void) (*axis2_allocator_free) (void *ptr);
+        AXIS2_DECLARE_DATA void (AXIS2_CALL *axis2_allocator_free) (void *ptr);
     } axis2_allocator_t;
 
   /**

@@ -45,7 +45,7 @@ extern "C"
         * get error message for the last error
         * @return error message for the last error. NULL on error.
         */
-        AXIS2_DECLARE(axis2_char_t *) (*axis2_error_ops_get_message) ();
+        AXIS2_DECLARE_DATA axis2_char_t * (AXIS2_CALL *axis2_error_ops_get_message) ();
     } axis2_error_ops_t;
 
   /** 

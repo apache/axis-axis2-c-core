@@ -16,7 +16,7 @@
 
 #include <axis2_error.h>
 
-axis2_char_t * axis2_error_impl_get_message ();
+axis2_char_t * AXIS2_CALL axis2_error_impl_get_message ();
 
 axis2_error_t *
 axis2_error_create (axis2_allocator_t * allocator)

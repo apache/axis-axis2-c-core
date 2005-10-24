@@ -20,16 +20,16 @@
 
 #include <axis2_stream.h>
 
-axis2_status_t axis2_stream_impl_write (const void *buffer, size_t count);
-axis2_status_t axis2_stream_impl_read (void *buffer, size_t count);
+axis2_status_t AXIS2_CALL axis2_stream_impl_write (const void *buffer, size_t count);
+axis2_status_t AXIS2_CALL axis2_stream_impl_read (void *buffer, size_t count);
 
-void *axis2_stream_impl_file_open(const char *file_name, const char *options);
+void* AXIS2_CALL axis2_stream_impl_file_open(const char *file_name, const char *options);
 		
-axis2_status_t axis2_stream_impl_file_close(void *file_ptr);
+axis2_status_t AXIS2_CALL axis2_stream_impl_file_close(void *file_ptr);
 
-axis2_char_t axis2_stream_impl_file_get_char(void *file_ptr);
+axis2_char_t AXIS2_CALL axis2_stream_impl_file_get_char(void *file_ptr);
 
-axis2_status_t axis2_stream_impl_file_unget_char(const char chr, void *file_ptr);
+axis2_status_t AXIS2_CALL axis2_stream_impl_file_unget_char(const char chr, void *file_ptr);
 
 axis2_stream_t *
 axis2_stream_create (axis2_allocator_t * allocator,

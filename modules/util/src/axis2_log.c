@@ -17,7 +17,7 @@
 #include <axis2_log.h>
 #include <stdio.h>
 
-axis2_status_t axis2_log_impl_write (const void *buffer, size_t count);
+axis2_status_t AXIS2_CALL axis2_log_impl_write (const void *buffer, size_t count);
 
 axis2_log_t *
 axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * operations)

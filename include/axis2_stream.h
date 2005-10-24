@@ -46,7 +46,7 @@ extern "C"
         * @param size size of the buffer
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        AXIS2_DECLARE(axis2_status_t) (*axis2_stream_ops_read) (void *buffer
+        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_stream_ops_read) (void *buffer
 			, size_t count);
 		/**
         * writes into stream
@@ -54,7 +54,7 @@ extern "C"
         * @param size size of the buffer
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        AXIS2_DECLARE(axis2_status_t) (*axis2_stream_ops_write) 
+        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_stream_ops_write) 
 			(const void *buffer, size_t count);
 		
 		/**
@@ -63,22 +63,22 @@ extern "C"
 		 * @param options file options given.
 		 * @return status code
 		 */
-		AXIS2_DECLARE(void *) (*axis2_stream_ops_file_open)
-				(const char *file_name, const char *options);
+		AXIS2_DECLARE_DATA (void *) (AXIS2_CALL  *axis2_stream_ops_file_open)
+			(const char *file_name, const char *options);
 		
 		/**
 		 * close a file
 		 * @param file_ptr file pointer of the file need to be closed
 		 * @return status code
 		 */
-		AXIS2_DECLARE(axis2_status_t) (*axis2_stream_ops_file_close) 
+		AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_stream_ops_file_close) 
 				(void *file_ptr);
 		
 		/** reads a once character from a file
 		 * @param file_ptr pointer to the file to be read from
 		 * @return char read
 		 */
-		AXIS2_DECLARE(axis2_char_t) (*axis2_stream_ops_file_get_char) 
+		AXIS2_DECLARE_DATA axis2_char_t (AXIS2_CALL *axis2_stream_ops_file_get_char) 
 				(void *file_ptr);
 		
 		/** write a previously read character back to the file stream
@@ -87,7 +87,7 @@ extern "C"
 		 *        and need to be written back to
 		 * @return status code
 		 */
-		AXIS2_DECLARE(axis2_status_t) (*axis2_stream_ops_file_unget_char) 
+		AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_stream_ops_file_unget_char) 
 				(const char chr, void *file_ptr);
 				
     } axis2_stream_ops_t;
