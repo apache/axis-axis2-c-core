@@ -40,17 +40,16 @@ extern "C"
     static const char *DEFAULT_CHAR_SET_ENCODING = "utf-8";
 
 
-/** 
-    \brief OM Output struct
-
-    The XML writer interface struct of om
-*/
-
+  /** 
+    * \brief OM Output struct
+    * The XML writer interface struct of om
+    */
     typedef struct axis2_om_output
     {
-        /* The xml writer */
+        /** xml stream writer. Should implement the Guththila pull parser interface */
         void *xml_writer;
 
+        /* following fields are not used currently but will be used in the future */
         axis2_bool_t do_optimize;
         axis2_char_t *mime_boundary;
         axis2_char_t *root_content_id;
@@ -59,29 +58,29 @@ extern "C"
         axis2_char_t *char_set_encoding;
         /* xml version */
         axis2_char_t *xml_version;
-
         axis2_bool_t ignore_xml_declaration;
     } axis2_om_output_t;
-/**
- * creates output struct and returns a pointer to newly created struct
- * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
- * @param xml_writer XML_WRITER . IF null default xml writer(guththila writer ) will be created 
- *   with stdout as the output stream
- * @return om_output_t 
- */
+    
+  /**
+    * creates OM output struct 
+    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param xml_writer XML writer. Optional, can be NULL. If NULL default xml writer
+    *           (guththila writer ) will be created with stdout as the output stream
+    * @return a pointer to newly created output struct.
+    */
 
     axis2_om_output_t *axis2_create_om_output (axis2_environment_t *
                                                environment, void *xml_writer);
 
-/**
- *  Performs xml writing .
- *  Accepts variable number of args depending on the on type 
- *  @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
- *  @param om_output OM OUTPUT 
- *  @param type Type is one of the om_types e.g AXIS2_OM_ELEMENT
- *  @param no_of_args Number of arguments passed.
- *  @returns status code 
- */
+  /**
+    *  Performs xml writing.
+    *  Accepts variable number of args depending on the on OM type to be serialized
+    *  @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+    *  @param om_output Output struct to be used 
+    *  @param type one of the OM types
+    *  @param no_of_args number of arguments passed in the variable parameter list
+    *  @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+    */
 
     axis2_status_t axis2_om_output_write (axis2_environment_t * environment,
                                           axis2_om_output_t * om_output,

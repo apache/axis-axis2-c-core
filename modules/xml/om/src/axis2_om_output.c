@@ -140,14 +140,7 @@ axis2_om_output_write (axis2_environment_t * environment,
                                                           xml_writer,
                                                           args_list[0]);
         break;
-    case AXIS2_OM_DOCUMENT:
-        break;
-    case AXIS2_OM_DOCTYPE:
-        break;
-    case AXIS2_OM_COMMENT:
-        break;
-    case AXIS2_OM_PROCESSING_INSTRUCTION:
-        break;
+    
     default:
         break;
     };

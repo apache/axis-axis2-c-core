@@ -377,19 +377,8 @@ axis2_om_node_impl_serialize (axis2_environment_t * environment,
                                      data_element, om_output);
         return status;
         break;
-    case AXIS2_OM_INVALID:
-        break;
-    case AXIS2_OM_DOCUMENT:
-        break;
-    case AXIS2_OM_DOCTYPE:
-        break;
-    case AXIS2_OM_COMMENT:
-        break;
-    case AXIS2_OM_ATTRIBUTE:
-        break;
-    case AXIS2_OM_NAMESPACE:
-        break;
-    case AXIS2_OM_PROCESSING_INSTRUCTION:
+    
+    default:
         break;
     }
 
@@ -415,21 +404,8 @@ axis2_om_node_impl_serialize (axis2_environment_t * environment,
         if (status != AXIS2_SUCCESS)
             return status;
         break;
-    case AXIS2_OM_TEXT:
-        break;
-    case AXIS2_OM_INVALID:
-        break;
-    case AXIS2_OM_DOCUMENT:
-        break;
-    case AXIS2_OM_DOCTYPE:
-        break;
-    case AXIS2_OM_COMMENT:
-        break;
-    case AXIS2_OM_ATTRIBUTE:
-        break;
-    case AXIS2_OM_NAMESPACE:
-        break;
-    case AXIS2_OM_PROCESSING_INSTRUCTION:
+    
+    default:
         break;
     }
 
