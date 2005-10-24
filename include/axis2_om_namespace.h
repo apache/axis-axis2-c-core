@@ -40,33 +40,32 @@ extern "C"
  * @{
  */
 
-
-/** 
-    \brief OM Namespace operations struct
-
-    Encapsulator struct for operations of axis2_om_namespace_t
-*/
+  /** 
+    * \brief OM Namespace operations struct
+    * Encapsulator struct for operations of axis2_om_namespace
+    */
     typedef struct axis2_om_namespace_ops
     {
-  /**
-    * Free an om_namespcae
-    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
-    * @return Status code    
-    */
-        axis2_status_t (*axis2_om_namespace_ops_free) (axis2_environment_t *
+      /**
+        * Frees given OM namespcae
+        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+        * @param om_namespace namespace to be freed.
+        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        */
+        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_namespace_ops_free) (axis2_environment_t *
                                                        environment,
                                                        struct
                                                        axis2_om_namespace *
                                                        om_namespace);
 
-  /**
-    * Compares two namepsaces
-    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
-    * @param om_namespace1 first namespase
-    * @param om_namespace2 second namespace to be compared
-    * @return true if the two namespaces are equal, false otherwise	
-    */
-        axis2_bool_t (*axis2_om_namespace_ops_equals) (axis2_environment_t *
+      /**
+        * Compares two namepsaces
+        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+        * @param om_namespace1 first namespase to be compared
+        * @param om_namespace2 second namespace to be compared
+        * @return true if the two namespaces are equal, false otherwise	
+        */
+        AXIS2_DECLARE_DATA axis2_bool_t (AXIS2_CALL *axis2_om_namespace_ops_equals) (axis2_environment_t *
                                                        environment,
                                                        struct
                                                        axis2_om_namespace *
@@ -75,55 +74,51 @@ extern "C"
                                                        axis2_om_namespace *
                                                        om_namespace2);
 
-  /**
-    * Serialize operation
-    * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
-    * @param om_output OM output handler to be used in serializing
-    * @return Status code
-    */
-        axis2_status_t (*axis2_om_namespace_ops_serialize)
+      /**
+        * Serializes given namespace 
+        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+        * @param om_namespace namespace to be serialized.
+        * @param om_output OM output handler to be used in serializing
+        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        */
+        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_namespace_ops_serialize)
             (axis2_environment_t * environment,
              struct axis2_om_namespace * om_namespace,
              axis2_om_output_t * om_output);
 
     } axis2_om_namespace_ops_t;
 
-/** 
-    \brief OM namespace struct
-
-    Handles the XML namespace in OM
-*/
+  /** 
+    * \brief OM namespace struct
+    * Handles the XML namespace in OM
+    */
     typedef struct axis2_om_namespace
     {
-  /**
-    * OM text related operations
-    */
+        /** OM namespace related operations */
         axis2_om_namespace_ops_t *ops;
-  /**
-    * OM namespace URI
-    */
+        /** namespace URI */
         axis2_char_t *uri;
-  /**
-    * OM namespace prefix
-    */
+        /** namespace prefix  */
         axis2_char_t *prefix;
     } axis2_om_namespace_t;
 
-/**
- *	Creates an axis2_om_namespace_t struct
- *  @param uri namespace URI
- *  @param prefix namespace prefix
- *  @return a pointer to newly created axis2_om_namespace_t struct
- */
-
-    axis2_om_namespace_t *axis2_om_namespace_create (axis2_environment_t *
+  /**
+    * Creates a namespace struct
+    * @param uri namespace URI
+    * @param prefix namespace prefix
+    * @return a pointer to newly created namespace struct
+    */
+    AXIS2_DECLARE(axis2_om_namespace_t *) axis2_om_namespace_create (axis2_environment_t *
                                                      environment,
                                                      const axis2_char_t * uri,
                                                      const axis2_char_t *
                                                      prefix);
 
+/** frees given namespace */
 #define axis2_om_namespace_free(environment, om_namespace) ((om_namespace)->ops->axis2_om_namespace_ops_free(environment, om_namespace))
+/** compares the given two namespaces for equality */
 #define axis2_om_namespace_equals(environment, om_namespace1, om_namespace2) ((om_namespace1)->ops->axis2_om_namespace_ops_equals(environment, om_namespace1, om_namespace2))
+/** serializes given namespace */
 #define axis2_om_namespace_serialize(environment, om_namespace,om_output) ((om_namespace)->ops->axis2_om_namespace_ops_serialize(environment, om_namespace, om_output))
 
 /** @} */
