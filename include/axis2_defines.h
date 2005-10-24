@@ -21,6 +21,12 @@ extern "C"
     typedef int axis2_status_t;
     typedef unsigned int axis2_ssize_t;
 
+/* These constant definitions should later be moved to platform dependant
+ * files
+ */
+
+#define AXIS2_EOLN '\0'
+	
 /**
   * Boolean values
   */

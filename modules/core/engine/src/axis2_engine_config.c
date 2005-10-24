@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
+#include <string.h>
+
 #include <axis2_engine_config.h>
+
 
 /**
   * @struct axis2_engine_config
@@ -192,6 +195,26 @@ axis2_description_service_t *axis2_engine_config_ops_get_service(
 		axis2_environment_t *env, axis2_engine_config_t *engine_config
 		, const axis2_char_t* service_name)
 {
+	axis2_description_servicegroup_t *sg = NULL;
+	int len = strlen(service_name);
+	axis2_char_t *service_st[2];
+	service_st[1] = (axis2_char_t*) axis2_malloc
+		(env->allocator, len * sizeof(axis2_char_t));
+	service_st[2] = (axis2_char_t*) axis2_malloc
+		(env->allocator, len * sizeof(axis2_char_t));
+	if(AXIS2_SUCCESS == split_service_name(env, service_name, service_st))
+	{
+		axis2_char_t *grp_name = *(service_st + 2);
+		sg = axis2_engine_config_ops_get_servicegroup(env, engine_config
+			, grp_name);
+		if(!sg)
+			return NULL;
+	}
+	axis2_char_t *srv_name = *(service_st + 1);
+	axis2_qname_t *qname = (axis2_qname_t*) axis2_qname_create(env, srv_name, NULL, NULL); 
+	
+	/*return axis2_description_servicegroup_get_service(env, sg, qname);*/
+	return NULL;
 			
 }
 
@@ -209,21 +232,28 @@ axis2_status_t axis2_engine_config_ops_remove_service
  * service group name is "foo" and service name is "foo"
  * meaning foo := foo:foo
  * @param service_name
- * @return axis2_char_t* 
+ * @return service name and group name 
  */
 axis2_status_t split_service_name(axis2_environment_t *env
 		, axis2_char_t *service_name, axis2_char_t **service_name_st)
 {
-	char *srv_name = strchr(service_name, SERVICE_NAME_SPLIT_CHAR);
-	if(NULL == srv_name)
-	{
-		*(service_name_st + 1) = srv_name;
-		*(service_name_st + 2) = srv_name;
-	}
-	srv_name = '\0';
-	char *grp_name = service_name;
-	srv_name = srv_name + 1;
-	*(service_name_st + 1) = srv_name;
-	*(service_name_st + 2) = grp_name;
-	return AXIS2_SUCCESS;
+	if(!service_name_st)
+    {
+        return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+    }
+    axis2_char_t *srv_name = strpbrk(service_name, SERVICE_NAME_SPLIT_CHAR);
+    if(NULL == srv_name)
+    {
+        *(service_name_st + 1) = service_name;
+        *(service_name_st + 2) = service_name;
+        return AXIS2_SUCCESS;
+    }
+    srv_name[0] = AXIS2_EOLN;
+    axis2_char_t *grp_name = axis2_malloc(env->allocator, strlen(service_name));
+    sscanf(service_name, "%s", grp_name);
+    srv_name = srv_name + 1;
+    *(service_name_st + 1) = srv_name;
+    *(service_name_st + 2) = grp_name;
+	
+    return AXIS2_SUCCESS;	
 }
