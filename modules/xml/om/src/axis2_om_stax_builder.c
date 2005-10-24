@@ -32,32 +32,6 @@ axis2_om_stax_builder_impl_discard_current_element (axis2_environment_t *
                                                     axis2_om_stax_builder_t *
                                                     builder);
 
-static int
-isnot_whitespace (axis2_char_t s[])
-{
-
-    int n = 0;
-
-    for (n = strlen (s) - 1; n >= 0; n--)
-        if (s[n] != ' ' && s[n] != '\t' && s[n] != '\n')
-            break;
-    if (n == -1)
-        n = 0;
-
-    return n;
-}
-
-static int
-trim (axis2_char_t s[])
-{
-    int n;
-    for (n = strlen (s) - 1; n >= 0; n--)
-        if (s[n] != ' ' && s[n] != '\t' && s[n] != '\n')
-            break;
-    s[n + 1] = '\0';
-    return n;
-}
-
 axis2_om_stax_builder_t *
 axis2_om_stax_builder_create (axis2_environment_t * environment, void *parser)
 {
@@ -510,6 +484,8 @@ axis2_om_stax_builder_impl_next (axis2_environment_t * environment,
                 axis2_om_stax_builder_create_om_text (environment, builder);
             break;
         case GUTHTHILA_COMMENT:
+            break;
+        default:
             break;
         }
     }
