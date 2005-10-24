@@ -18,39 +18,39 @@
 #include <axis2_om_element.h>
 #include <axis2_om_text.h>
 
-axis2_status_t axis2_om_node_impl_free (axis2_environment_t * environment,
+axis2_status_t AXIS2_CALL axis2_om_node_impl_free (axis2_environment_t * environment,
                                         axis2_om_node_t * node);
-axis2_status_t axis2_om_node_impl_add_child (axis2_environment_t *
+axis2_status_t AXIS2_CALL axis2_om_node_impl_add_child (axis2_environment_t *
                                              environment,
                                              axis2_om_node_t * parent,
                                              axis2_om_node_t * child);
-axis2_om_node_t *axis2_om_node_impl_detach (axis2_environment_t * environment,
+axis2_om_node_t * AXIS2_CALL axis2_om_node_impl_detach (axis2_environment_t * environment,
                                             axis2_om_node_t * node_to_detach);
-axis2_status_t axis2_om_node_impl_set_parent (axis2_environment_t *
+axis2_status_t AXIS2_CALL axis2_om_node_impl_set_parent (axis2_environment_t *
                                               environment,
                                               axis2_om_node_t * node,
                                               axis2_om_node_t * parent);
-axis2_status_t axis2_om_node_impl_insert_sibling_after (axis2_environment_t *
+axis2_status_t AXIS2_CALL axis2_om_node_impl_insert_sibling_after (axis2_environment_t *
                                                         environment,
                                                         axis2_om_node_t *
                                                         node,
                                                         axis2_om_node_t *
                                                         node_to_insert);
-axis2_status_t axis2_om_node_impl_insert_sibling_before (axis2_environment_t *
+axis2_status_t AXIS2_CALL axis2_om_node_impl_insert_sibling_before (axis2_environment_t *
                                                          environment,
                                                          axis2_om_node_t *
                                                          node,
                                                          axis2_om_node_t *
                                                          node_to_insert);
-axis2_om_node_t *axis2_om_node_impl_get_first_child (axis2_environment_t *
+axis2_om_node_t * AXIS2_CALL axis2_om_node_impl_get_first_child (axis2_environment_t *
                                                      environment,
                                                      axis2_om_node_t *
                                                      parent_node);
-axis2_om_node_t *axis2_om_node_impl_get_next_child (axis2_environment_t *
+axis2_om_node_t * AXIS2_CALL axis2_om_node_impl_get_next_child (axis2_environment_t *
                                                     environment,
                                                     axis2_om_node_t *
                                                     parent_node);
-axis2_status_t axis2_om_node_impl_serialize (axis2_environment_t *
+axis2_status_t AXIS2_CALL axis2_om_node_impl_serialize (axis2_environment_t *
                                              environment,
                                              axis2_om_node_t * om_node,
                                              axis2_om_output_t * om_output);
@@ -377,6 +377,20 @@ axis2_om_node_impl_serialize (axis2_environment_t * environment,
                                      data_element, om_output);
         return status;
         break;
+    case AXIS2_OM_INVALID:
+        break;
+    case AXIS2_OM_DOCUMENT:
+        break;
+    case AXIS2_OM_DOCTYPE:
+        break;
+    case AXIS2_OM_COMMENT:
+        break;
+    case AXIS2_OM_ATTRIBUTE:
+        break;
+    case AXIS2_OM_NAMESPACE:
+        break;
+    case AXIS2_OM_PROCESSING_INSTRUCTION:
+        break;
     }
 
 
@@ -400,6 +414,22 @@ axis2_om_node_impl_serialize (axis2_environment_t * environment,
                                                  om_output);
         if (status != AXIS2_SUCCESS)
             return status;
+        break;
+    case AXIS2_OM_TEXT:
+        break;
+    case AXIS2_OM_INVALID:
+        break;
+    case AXIS2_OM_DOCUMENT:
+        break;
+    case AXIS2_OM_DOCTYPE:
+        break;
+    case AXIS2_OM_COMMENT:
+        break;
+    case AXIS2_OM_ATTRIBUTE:
+        break;
+    case AXIS2_OM_NAMESPACE:
+        break;
+    case AXIS2_OM_PROCESSING_INSTRUCTION:
         break;
     }
 
