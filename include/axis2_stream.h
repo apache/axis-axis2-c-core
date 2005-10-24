@@ -62,8 +62,8 @@ extern "C"
 		 * @param file_name file to be opened
 		 * @param options file options given.
 		 * @return status code
-		 */
-		AXIS2_DECLARE_DATA (void *) (AXIS2_CALL  *axis2_stream_ops_file_open)
+		 */ 
+		AXIS2_DECLARE_DATA void * (AXIS2_CALL  *axis2_stream_ops_file_open)
 			(const char *file_name, const char *options);
 		
 		/**
