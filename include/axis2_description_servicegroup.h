@@ -60,7 +60,7 @@ extern "C"
 
 #define axis2_description_servicegroup_add_service(env, servicegroup_desc \
 		, service_desc) (axis2_description_servicegroup_get_ops(env, \
-		servicegroup_desc)->get_param (env, servicegroup_desc, service_desc));
+		servicegroup_desc)->add_service (env, servicegroup_desc, service_desc));
 
 #define axis2_description_servicegroup_get_service(env, servicegroup_desc \
 		, service_desc) ((axis2_description_servicegroup_get_ops(env, \

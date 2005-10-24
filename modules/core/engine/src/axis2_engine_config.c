@@ -165,16 +165,34 @@ axis2_status_t axis2_engine_config_ops_add_service(
 		axis2_environment_t *env, axis2_engine_config_t *engine_config
 		, const axis2_description_service_t *service_desc)
 {
-	if(!engine_config || engine_config->servicegroup_desc) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	if(!engine_config || !service_desc) 
+		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
 	
-		
+	axis2_description_servicegroup_t *servicegroup_desc 
+		= axis2_description_servicegroup_create(env);
+	
+	if(!servicegroup_desc)
+		return AXIS2_ERROR_NO_MEMORY;
+	
+	axis2_qname_t *servicegroup_qname = axis2_description_service_get_name
+		(env, service_desc);
+	
+	axis2_char_t *servicegroup_name = servicegroup_qname->localpart;
+	
+	axis2_description_servicegroup_set_name(env, servicegroup_desc
+		, servicegroup_name);
+	
+	axis2_description_servicegroup_add_service(env, servicegroup_desc
+		, service_desc);
+	
+	return AXIS2_SUCCESS;
 }
 
 axis2_description_service_t *axis2_engine_config_ops_get_service(
 		axis2_environment_t *env, axis2_engine_config_t *engine_config
 		, const axis2_char_t* service_name)
 {
-		
+			
 }
 
 axis2_status_t axis2_engine_config_ops_remove_service
@@ -182,4 +200,30 @@ axis2_status_t axis2_engine_config_ops_remove_service
 		, const axis2_char_t *name)
 {
 	
+}
+	
+/**
+ * To split a given service name into it's service group name and service name.
+ * if the service name is foo:bar then service group name is "foo" and 
+ * service name is "bar" but if the service name is only the "foo" we asume 
+ * service group name is "foo" and service name is "foo"
+ * meaning foo := foo:foo
+ * @param service_name
+ * @return axis2_char_t* 
+ */
+axis2_status_t split_service_name(axis2_environment_t *env
+		, axis2_char_t *service_name, axis2_char_t **service_name_st)
+{
+	char *srv_name = strchr(service_name, SERVICE_NAME_SPLIT_CHAR);
+	if(NULL == srv_name)
+	{
+		*(service_name_st + 1) = srv_name;
+		*(service_name_st + 2) = srv_name;
+	}
+	srv_name = '\0';
+	char *grp_name = service_name;
+	srv_name = srv_name + 1;
+	*(service_name_st + 1) = srv_name;
+	*(service_name_st + 2) = grp_name;
+	return AXIS2_SUCCESS;
 }

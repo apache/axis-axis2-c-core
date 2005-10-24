@@ -60,7 +60,7 @@ extern "C"
 	
 /************************ End of message exchange patters *********************/	
 	
-	
+#define SERVICE_NAME_SPLIT_CHAR ':'	
 /** @cond */
 struct axis2_description_param_ops_s;
 struct axis2_description_param_s;
