@@ -18,16 +18,22 @@
  */
 
 #include "guththila_xml_pull_parser.h"
+#include "guththila_defines.h"
+#include "guththila_environment.h"
 
 int main (int argc, char *argv[])
 {
   guththila_reader_t *red;
   FILE *fp = fopen ("response.xml", "r");
-  red = guththila_reader_create (fp);
-  guththila_xml_pull_parser_t *parser = guththila_xml_pull_parser_create (red);
-  guththila_xml_pull_parser_read (parser);
+  guththila_environment_t *environment;
+  guththila_allocator_t *allocator;
+  allocator = guththila_allocator_init(NULL);
+  environment = guththila_environment_create(allocator,NULL,NULL,NULL,NULL);
+  red = guththila_reader_create (environment,fp);
+  guththila_xml_pull_parser_t *parser = guththila_xml_pull_parser_create (environment,red);
+  guththila_xml_pull_parser_read (environment,parser);
   int c;
-  while ((c = guththila_xml_pull_parser_next (parser)) != -1)
+  while ((c = guththila_xml_pull_parser_next (environment,parser)) != -1)
     {
       switch (c)
 	{
@@ -35,16 +41,16 @@ int main (int argc, char *argv[])
 	  {
 	    printf ("<?xml ");
 	    int ix;
-	    ix = guththila_xml_pull_parser_get_attribute_count (parser);
+	    ix = guththila_xml_pull_parser_get_attribute_count (environment,parser);
 	    for (; ix > 0; ix--)
 	      {
 		guththila_attribute_t *a;
 		char *p;
-		a = guththila_xml_pull_parser_get_attribute (parser);
-		p = guththila_xml_pull_parser_get_attribute_name (parser, a);
+		a = guththila_xml_pull_parser_get_attribute (environment,parser);
+		p = guththila_xml_pull_parser_get_attribute_name (environment,parser, a);
 		printf ("%s=\"", p);
 		free (p);
-		p = guththila_xml_pull_parser_get_attribute_value (parser, a);
+		p = guththila_xml_pull_parser_get_attribute_value (environment,parser, a);
 		printf ("%s\" ", p);
 		free (p);
 	      }
@@ -58,54 +64,54 @@ int main (int argc, char *argv[])
 	    int ia;
 	    int d;
 	    char *p;
-	     p = guththila_xml_pull_parser_get_prefix (parser);
+	     p = guththila_xml_pull_parser_get_prefix (environment,parser);
 	    if (p)
 	      {
 		printf ("%s:", p);
 		free (p);
 	      }
-	    p = guththila_xml_pull_parser_get_name (parser);
+	    p = guththila_xml_pull_parser_get_name (environment,parser);
 	    printf ("%s", p);
 	    free (p);
 	    guththila_element_t *e;
-	    ia = guththila_xml_pull_parser_get_attribute_count (parser);
+	    ia = guththila_xml_pull_parser_get_attribute_count (environment,parser);
 	    for ( ; ia > 0; ia--)
 	      {
 		/* p = guththila_xml_pull_parser_get_attribute_prefix_by_number
 		   (parser, ia); */
-		p = guththila_xml_pull_parser_get_attribute_namespace_by_number (parser, ia);
+		p = guththila_xml_pull_parser_get_attribute_namespace_by_number (environment,parser, ia);
 		if (p)
 		  {
 		    printf (" %s:", p);
 		    free (p);
-		    p = guththila_xml_pull_parser_get_attribute_name_by_number (parser, ia);
+		    p = guththila_xml_pull_parser_get_attribute_name_by_number (environment,parser, ia);
 		    printf ("%s=\"", p);
 		    free (p);
-		    p = guththila_xml_pull_parser_get_attribute_value_by_number (parser, ia);
+		    p = guththila_xml_pull_parser_get_attribute_value_by_number (environment,parser, ia);
 		    printf ("%s\"", p);
 		    free (p);
 		  }
 		else
 		  {
-		    p = guththila_xml_pull_parser_get_attribute_name_by_number (parser, ia);
+		    p = guththila_xml_pull_parser_get_attribute_name_by_number (environment,parser, ia);
 		    printf (" %s=\"", p);
 		    free (p);
-		    p = guththila_xml_pull_parser_get_attribute_value_by_number (parser, ia);
+		    p = guththila_xml_pull_parser_get_attribute_value_by_number (environment,parser, ia);
 		    printf ("%s\"", p);
 		    free (p);
 		  }
 	      }
-	    e = guththila_stack_last (parser->dep);
+	    e = guththila_stack_last (environment,parser->dep);
 	    d = e->depth->count;
 	    
 	    for (; d > 0; d--)
 	      {
-		p = guththila_xml_pull_parser_get_namespace_prefix_by_number (parser, d);
+		p = guththila_xml_pull_parser_get_namespace_prefix_by_number (environment,parser, d);
 		if (strncmp (p, "xmlns", 5))
 		  printf (" xmlns:");
 		printf ("%s=\"", p);
 		free (p);
-		p = guththila_xml_pull_parser_get_namespace_uri_by_number (parser, d);
+		p = guththila_xml_pull_parser_get_namespace_uri_by_number (environment,parser, d);
 		printf ("%s\" ", p);
 		free (p);
 		}
@@ -119,13 +125,13 @@ int main (int argc, char *argv[])
 	  {
 	    printf ("</");
 	    char *p;
-	    p = guththila_xml_pull_parser_get_prefix (parser);
+	    p = guththila_xml_pull_parser_get_prefix (environment,parser);
 	    if (p)
 	      {
 		printf ("%s:", p);
 		free (p);
 	      }
-	    p = guththila_xml_pull_parser_get_name (parser);
+	    p = guththila_xml_pull_parser_get_name (environment,parser);
 	    printf ("%s", p);
 	    free (p);
 	    printf (">");
@@ -134,7 +140,7 @@ int main (int argc, char *argv[])
 	case GUTHTHILA_CHARACTER:
 	  {
 	  char *p;
-	  p = guththila_xml_pull_parser_get_value (parser);
+	  p = guththila_xml_pull_parser_get_value (environment,parser);
 	  printf (p);
 	  free (p);
 	  }
@@ -143,6 +149,6 @@ int main (int argc, char *argv[])
 	  break;
 	};
     }
-  guththila_xml_pull_parser_free (parser);
+  guththila_xml_pull_parser_free (environment,parser);
   return 0;
 }

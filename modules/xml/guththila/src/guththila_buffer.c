@@ -17,43 +17,44 @@
  * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)	
  */
 
-
+#include "guththila_environment.h"
 #include "guththila_buffer.h"
 
 guththila_buffer_t * 
-guththila_buffer_create (int size)
+guththila_buffer_create (guththila_environment_t *environment,int size)
 {
-  guththila_buffer_t *name = malloc (sizeof(guththila_buffer_t));
+  guththila_buffer_t *name = guththila_malloc (environment->allocator , sizeof(guththila_buffer_t));
   name->size = size;
   name->offset = 0;
   name->last = 0;
   name->next = 0;
-  if (name->buff)
-    free (name->buff);
+  name->buff = NULL;
   if (size != 0)
-    name->buff = (char *) malloc (size);
+    name->buff = (guththila_char_t *) guththila_malloc (environment->allocator,size);
   return name;
 }
 
 
 void 
-guththila_buffer_free (guththila_buffer_t *name)
+guththila_buffer_free (guththila_environment_t *environment, guththila_buffer_t *name)
 {
   if (name)
     {
       if (name->buff)
-	free (name->buff);
+	  {
+	        guththila_free (environment->allocator,name->buff);
+	  }
       free (name);
     }
 }
 
 
 guththila_buffer_t *
-guththila_buffer_grow (guththila_buffer_t *name)
+guththila_buffer_grow (guththila_environment_t *environment,guththila_buffer_t *name)
 {
   guththila_buffer_t *x;
   name->size <<= 1;
-  x = (guththila_buffer_t *) realloc (name, name->size);
+  x = (guththila_buffer_t *)guththila_realloc (environment->allocator,name, name->size);
   if (x)
     name = x; 
   else

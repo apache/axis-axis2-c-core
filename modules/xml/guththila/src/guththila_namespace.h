@@ -24,9 +24,9 @@
 
 typedef struct guththila_namespace_s
 {
-  char *name;
+  guththila_char_t *name;
   int length;
-  char *uri;
+  guththila_char_t *uri;
   int lengthuri;
 } guththila_namespace_t;
 

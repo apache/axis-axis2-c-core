@@ -20,6 +20,8 @@
 
 #ifndef GUTHTHILA_TOKEN_H
 #define GUTHTHILA_TOKEN_H
+
+#include "guththila_environment.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,8 +29,8 @@
 typedef struct guththila_token_s
 {
   int type;
-  char *start;
-  char *end;
+  guththila_char_t *start;
+  guththila_char_t *end;
   int last;
   int size;
   int ref;
@@ -47,20 +49,20 @@ enum guththila_token_type
   };
 
 
-guththila_token_t* guththila_token_create_token_buffer(int size);
-void guththila_token_free_token_buffer (guththila_token_t *tok);
-int guththila_token_length (guththila_token_t *tok);
+guththila_token_t* guththila_token_create_token_buffer(guththila_environment_t *environment,int size);
+void guththila_token_free_token_buffer (guththila_environment_t *environment,guththila_token_t *tok);
+int guththila_token_length (guththila_environment_t *environment,guththila_token_t *tok);
 void guththila_token_exception ();
-guththila_token_t* guththila_token_append (guththila_token_t *tok);
-guththila_token_t* guththila_token_grow (guththila_token_t *tok);
-guththila_token_t* guththila_token_last (guththila_token_t *tok);
-int guththila_token_count (guththila_token_t *tok);
-char* guththila_token_to_string (guththila_token_t *tok, int unicode);
-void guththila_token_relocate (guththila_token_t *tok, int offset);
-int guththila_token_compare (guththila_token_t *tok, const char *st, int n, int unicode_state);
-char *guththila_token_convert_utf16_to_utf8 (char *buffer, int length);
-int guththila_token_length_utf16 (unsigned int utf16_ch);
-char *guththila_token_build_utf8 (unsigned int utf16_ch, int length);
-char *guththila_token_char_ref (char *buffer);
+guththila_token_t* guththila_token_append (guththila_environment_t *environment,guththila_token_t *tok);
+guththila_token_t* guththila_token_grow (guththila_environment_t *environment,guththila_token_t *tok);
+guththila_token_t* guththila_token_last (guththila_environment_t *environment,guththila_token_t *tok);
+int guththila_token_count (guththila_environment_t *environment,guththila_token_t *tok);
+guththila_char_t* guththila_token_to_string (guththila_environment_t *environment,guththila_token_t *tok, int unicode);
+void guththila_token_relocate (guththila_environment_t *environment,guththila_token_t *tok, int offset);
+int guththila_token_compare (guththila_environment_t *environment,guththila_token_t *tok, const guththila_char_t *st, int n, int unicode_state);
+guththila_char_t *guththila_token_convert_utf16_to_utf8 (guththila_environment_t *environment,guththila_char_t *buffer, int length);
+int guththila_token_length_utf16 (guththila_environment_t *environment,unsigned int utf16_ch);
+guththila_char_t *guththila_token_build_utf8 (guththila_environment_t *environment,unsigned int utf16_ch, int length);
+guththila_char_t *guththila_token_char_ref (guththila_environment_t *environment,guththila_char_t *buffer);
 
 #endif /* GUTHTHILA_TOKEN_H */

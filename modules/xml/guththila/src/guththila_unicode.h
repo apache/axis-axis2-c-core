@@ -34,12 +34,12 @@ typedef unsigned short guththila_UTF16_char;
 enum guththila_UTF16_endianess {None=1, LE, BE};
 
 #ifdef __UNICODE__FUNCTIONS__
-#define strlen(x) guththila_strlen_unicode(x) 
+/* #define strlen(x) guththila_strlen_unicode(x) 
 #define strndup(x, y) guththila_strdup_unicode(x, y)
+*/
+guththila_UTF8_char guththila_strlen_unicode (guththila_char_t *);
 
-guththila_UTF8_char guththila_strlen_unicode (char *);
-
-char * guththila_strdup_unicode (char *, int);
+guththila_char_t * guththila_strdup_unicode (guththila_char_t *, int);
 
 #endif /* __UNICODE__FUNCTIONS__ */
 

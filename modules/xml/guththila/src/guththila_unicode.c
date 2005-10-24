@@ -24,15 +24,15 @@
 #ifdef UNICODE_OUT  /* This variable for Obtain UTF-16 Output */
 
 /*! In order to determine length of UTF-16 Buffer 
- * Basicall char *p should be a Utf-16 Buffer  */
+ * Basicall guththila_char_t *p should be a Utf-16 Buffer  */
 
 guththila_UTF8_char 
-guththila_strlen_unicode (char *p)
+guththila_strlen_unicode (guththila_char_t *p)
 {
   guththila_UTF8_char len = 0;
   guththila_UTF8_char d;
   guththila_UTF16_char c ;
-  char* s = p;
+  guththila_char_t* s = p;
   c = *((guththila_UTF16_char *)&s[len]);
   if (c)
     {
@@ -54,12 +54,12 @@ guththila_strlen_unicode (char *p)
 }
 
 /*!To Duplicate UTF-16 String  */
-char * 
-guththila_strdup_unicode (char* p, int length)
+guththila_char_t * 
+guththila_strdup_unicode (guththila_char_t* p, int length)
 {
-  char *s;
-  s = (char *)calloc (length+1, 1);
+  guththila_char_t *s;
+  s = (guththila_char_t *)calloc (length+1, 1);
   s[length] = 0;
-  return (char *)memcpy (s, p, length);
+  return (guththila_char_t *)memcpy (s, p, length);
 }
 #endif /*end of UNICODE_OUT definition  */

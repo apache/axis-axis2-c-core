@@ -22,6 +22,8 @@
 #define GUTHTHILA_BUFFER_H
 
 #include <stdlib.h>
+#include "guththila_environment.h"
+
 
 typedef struct guththila_buffer_s
 {
@@ -29,11 +31,12 @@ typedef struct guththila_buffer_s
   int next;
   int last;
   int offset;
-  char *buff;
+  guththila_char_t *buff;
 } guththila_buffer_t;
 
-guththila_buffer_t *guththila_buffer_create (int size);
-void guththila_buffer_free (guththila_buffer_t *name);
-guththila_buffer_t *guththila_buffer_grow (guththila_buffer_t *name);
+guththila_buffer_t *guththila_buffer_create (guththila_environment_t *environment,int size);
+void guththila_buffer_free (guththila_environment_t *environment, guththila_buffer_t *name);
+
+guththila_buffer_t *guththila_buffer_grow (guththila_environment_t *environment,guththila_buffer_t *name);
 
 #endif /* GUTHTHILA_BUFFER_H */
