@@ -52,7 +52,7 @@ extern "C"
         * @param om_text pointer to om text struct to be freed
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        AXIS2_DECLARE(axis2_status_t) (*axis2_om_text_ops_free) (axis2_environment_t *
+        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_text_ops_free) (axis2_environment_t *
                                                   environment,
                                                   struct axis2_om_text *
                                                   om_text);
@@ -64,7 +64,7 @@ extern "C"
         * @param om_output OM output handler to be used in serializing
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        AXIS2_DECLARE(axis2_status_t) (*axis2_om_text_ops_serialize) (axis2_environment_t *
+        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_text_ops_serialize) (axis2_environment_t *
                                                        environment,
                                                        const struct
                                                        axis2_om_text *
@@ -73,10 +73,10 @@ extern "C"
                                                        om_output);
     } axis2_om_text_ops_t;
 
-/** 
-    \brief OM Text struct
-    Handles the XML text in OM
-*/
+  /** 
+    * \brief OM Text struct
+    * Handles the XML text in OM
+    */
     typedef struct axis2_om_text
     {
         /** OM text related operations */
@@ -98,8 +98,10 @@ extern "C"
     * @param environment Environment. MUST  NOT be NULL, if NULL behaviour is undefined.
     * @param parent parent of the new node. Optinal, can be NULL. 
     *          The parent element must be of type AXIS2_OM_ELEMENT
-    * @param value Text value 
-    * @param node Out parameter to store the newly created node
+    * @param value Text value. Optinal, can be NULL.
+    * @param comment_node This is an out parameter. Mandatory, cannot be NULL.
+    *                       Returns the node corresponding to the text struct created.
+    *                       Node type will be set to AXIS2_OM_TEXT    
     * @return pointer to newly created text struct 
     */
     AXIS2_DECLARE(axis2_om_text_t *) axis2_om_text_create (axis2_environment_t * environment,
@@ -107,7 +109,9 @@ extern "C"
                                            const axis2_char_t * value,
                                            axis2_om_node_t ** node);
 
+/** serializes given text */
 #define axis2_om_text_serialize(environment, om_text, om_output) ((om_text)->ops->axis2_om_text_ops_serialize(environment, om_text, om_output))
+/** frees given text */
 #define axis2_om_text_free(environment, om_text) ((om_text)->ops->axis2_om_text_ops_free(environment, om_text))
 
 /** @} */

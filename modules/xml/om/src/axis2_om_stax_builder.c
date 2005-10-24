@@ -22,12 +22,12 @@
 const axis2_char_t XMLNS_URI[] = "http://www.w3.org/XML/1998/namespace";
 const axis2_char_t XMLNS_PREFIX[] = "xml";
 
-axis2_om_node_t *axis2_om_stax_builder_impl_next (axis2_environment_t *
+axis2_om_node_t * AXIS2_CALL axis2_om_stax_builder_impl_next (axis2_environment_t *
                                                   environment,
                                                   axis2_om_stax_builder_t *
                                                   builder);
 axis2_status_t
-axis2_om_stax_builder_impl_discard_current_element (axis2_environment_t *
+AXIS2_CALL axis2_om_stax_builder_impl_discard_current_element (axis2_environment_t *
                                                     environment,
                                                     axis2_om_stax_builder_t *
                                                     builder);
@@ -198,10 +198,7 @@ axis2_om_stax_builder_create_om_text (axis2_environment_t * environment,
         value = axis2_strdup (environment->string, temp_value);
         axis2_free (environment->allocator, temp_value);    /*should use guththila free here */
     }
-    /* Parser should fire a SPACE event here
-       if(!isnot_whitespace(value))
-       return NULL;
-     */
+
     if (builder->lastnode->done)
     {
         axis2_om_text_create (environment, builder->lastnode->parent, value,

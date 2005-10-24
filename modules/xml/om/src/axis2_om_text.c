@@ -23,9 +23,9 @@
 */
 
 /* operations */
-axis2_status_t axis2_om_text_impl_free (axis2_environment_t * environment,
+axis2_status_t AXIS2_CALL axis2_om_text_impl_free (axis2_environment_t * environment,
                                         axis2_om_text_t * om_text);
-axis2_status_t axis2_om_text_impl_serialize (axis2_environment_t *
+axis2_status_t AXIS2_CALL axis2_om_text_impl_serialize (axis2_environment_t *
                                              environment,
                                              const axis2_om_text_t * om_text,
                                              axis2_om_output_t * om_output);
