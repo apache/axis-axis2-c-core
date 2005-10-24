@@ -37,7 +37,7 @@ extern "C"
  * @{
  */
 
-    static const char *DEFAULT_CHAR_SET_ENCODING = "utf-8";
+ /*  static  const char *DEFAULT_CHAR_SET_ENCODING = "utf-8"; */
 
 
   /** 

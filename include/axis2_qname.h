@@ -31,7 +31,18 @@ struct axis2_qname_ops;
 static const axis2_char_t XML_NAMESPACE_URI[] =
     "http://www.w3c.org/XML/1998/namespace";
 
+/**
+ * @defgroup axis2_qname represents qualified name 
+ * @ingroup axis2_util
+ * @{
+ */
 
+/**
+ * \brief Axis2 qname operations struct
+ *
+ * Encapsulator struct for operations of axis2_qname
+ */
+                      
 typedef struct axis2_qname_ops
 {
     /**
@@ -90,5 +101,8 @@ axis2_qname_t *axis2_qname_create (axis2_environment_t * environment,
 
 #define axis2_qname_free(environment,qname) ((qname)->ops->axis2_qname_ops_free(environment,qname))
 #define axis2_qname_equals(environment,qname1,qname2) ((qname1)->ops->axis2_qname_ops_equals(environment,qname1,qname2))
+
+/** @} */
+
 
 #endif /* AXIS2_QNAME_H */

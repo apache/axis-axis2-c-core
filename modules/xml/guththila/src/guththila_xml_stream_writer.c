@@ -32,7 +32,7 @@ struct guththila_xml_stream_writer
     int empty_element;
 };
 
-  guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(guththila_environment_t *environment,FILE* writer, guththila_char_t* encoding, int prefix_defaulting)
+  guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(guththila_environment_t *environment,FILE* writer,guththila_char_t* encoding, int prefix_defaulting)
 {
  /*   guththila_status_t status; */
     guththila_xml_stream_writer_t *stream_writer;

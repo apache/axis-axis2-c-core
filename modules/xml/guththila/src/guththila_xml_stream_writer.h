@@ -35,7 +35,7 @@ typedef struct guththila_xml_stream_writer guththila_xml_stream_writer_t;
 
 
                    
-guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(guththila_environment_t *environment,FILE* writer, guththila_char_t* encoding, int is_prefix_defaulting);
+guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(guththila_environment_t *environment,FILE* writer,guththila_char_t* encoding, int is_prefix_defaulting);
   
   int guththila_xml_stream_writer_end_start_element(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer);
   

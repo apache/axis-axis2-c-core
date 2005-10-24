@@ -99,5 +99,7 @@ axis2_om_comment_impl_free (axis2_environment_t * environment,
             axis2_free (environment->allocator, comment->value);
         }
         axis2_free (environment->allocator, comment);
+        return AXIS2_SUCCESS;
     }
+    return AXIS2_FAILURE;
 }

@@ -18,6 +18,8 @@
 #include <stdarg.h>
 #include <guththila_xml_stream_writer.h>
 
+#define   DEFAULT_CHAR_SET_ENCODING  "utf-8"
+
 guththila_environment_t *om_output_guththila_environment = NULL;
 guththila_allocator_t *om_output_guththila_allocator = NULL;
 

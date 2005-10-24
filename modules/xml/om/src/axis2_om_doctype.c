@@ -104,5 +104,7 @@ axis2_om_doctype_impl_free (axis2_environment_t * environment,
             axis2_free (environment->allocator, doctype->value);
         }
         axis2_free (environment->allocator, doctype);
+        return AXIS2_SUCCESS;
     }
+    return AXIS2_FAILURE;
 }

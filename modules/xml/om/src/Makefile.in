@@ -65,9 +65,9 @@ am__DEPENDENCIES_1 =
 libaxis2_om_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libaxis2_om_la_OBJECTS = axis2_om_attribute.lo axis2_om_document.lo \
 	axis2_om_node.lo axis2_om_text.lo axis2_om_comment.lo \
-	axis2_om_element.lo axis2_om_output.lo axis2_qname.lo \
-	axis2_om_doctype.lo axis2_om_namespace.lo \
-	axis2_om_processing_instruction.lo axis2_om_stax_builder.lo
+	axis2_om_element.lo axis2_om_output.lo axis2_om_doctype.lo \
+	axis2_om_namespace.lo axis2_om_processing_instruction.lo \
+	axis2_om_stax_builder.lo
 libaxis2_om_la_OBJECTS = $(am_libaxis2_om_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -202,10 +202,10 @@ libaxis2_om_la_SOURCES = axis2_om_attribute.c \
                         axis2_om_comment.c \
                         axis2_om_element.c \
                         axis2_om_output.c \
-                        axis2_qname.c axis2_om_doctype.c \
+                        axis2_om_doctype.c \
                         axis2_om_namespace.c \
                         axis2_om_processing_instruction.c \
-                        axis2_om_stax_builder.c
+                        axis2_om_stax_builder.c 
 
 libaxis2_om_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include -I$(top_builddir)/modules/xml/guththila/src -I${CUTEST_HOME}/include
@@ -289,7 +289,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_om_processing_instruction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_om_stax_builder.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_om_text.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_qname.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
