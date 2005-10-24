@@ -16,11 +16,6 @@
 
 #include <axis2_om_text.h>
 #include <axis2_om_output.h>
-/*#include <string.h>
-#include <axis2_om_node.h>
-
-#include <axis2_errno.h>
-*/
 
 /* operations */
 axis2_status_t AXIS2_CALL axis2_om_text_impl_free (axis2_environment_t * environment,
