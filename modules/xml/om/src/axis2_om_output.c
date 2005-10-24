@@ -18,6 +18,9 @@
 #include <stdarg.h>
 #include <guththila_xml_stream_writer.h>
 
+guththila_environment_t *om_output_guththila_environment = NULL;
+guththila_allocator_t *om_output_guththila_allocator = NULL;
+
 axis2_om_output_t *
 axis2_create_om_output (axis2_environment_t * environment, void *xml_writer)
 {
@@ -35,9 +38,14 @@ axis2_create_om_output (axis2_environment_t * environment, void *xml_writer)
     if (xml_writer)
         om_output->xml_writer = xml_writer;
     else
-        om_output->xml_writer = guththila_create_xml_stream_writer (stdout,
+	{
+		
+  		om_output_guththila_allocator = guththila_allocator_init(NULL);
+  		om_output_guththila_environment = guththila_environment_create(om_output_guththila_allocator,NULL,NULL,NULL,NULL);
+        om_output->xml_writer = guththila_create_xml_stream_writer (om_output_guththila_environment, stdout,
                                                                     DEFAULT_CHAR_SET_ENCODING,
                                                                     AXIS2_TRUE);
+	}
     om_output->do_optimize = AXIS2_FALSE;
     om_output->mime_boundary = 0;
     om_output->root_content_id = 0;
@@ -77,12 +85,12 @@ axis2_om_output_write (axis2_environment_t * environment,
         {
         case 0:
             status =
-                guththila_xml_stream_writer_write_end_element (om_output->
+                guththila_xml_stream_writer_write_end_element (om_output_guththila_environment, om_output->
                                                                xml_writer);
             break;
         case 1:
             status =
-                guththila_xml_stream_writer_write_start_element (om_output->
+                guththila_xml_stream_writer_write_start_element (om_output_guththila_environment, om_output->
                                                                  xml_writer,
                                                                  args_list
                                                                  [0]);
@@ -90,12 +98,12 @@ axis2_om_output_write (axis2_environment_t * environment,
         case 2:
             status =
                 guththila_xml_stream_writer_write_start_element_with_namespace
-                (om_output->xml_writer, args_list[0], args_list[1]);
+                (om_output_guththila_environment, om_output->xml_writer, args_list[0], args_list[1]);
             break;
         case 3:
             status =
                 guththila_xml_stream_writer_write_start_element_with_namespace_prefix
-                (om_output->xml_writer, args_list[0], args_list[1],
+                (om_output_guththila_environment, om_output->xml_writer, args_list[0], args_list[1],
                  args_list[2]);
             break;
         }
@@ -106,7 +114,7 @@ axis2_om_output_write (axis2_environment_t * environment,
         {
         case 2:
             status =
-                guththila_xml_stream_writer_write_attribute (om_output->
+                guththila_xml_stream_writer_write_attribute (om_output_guththila_environment, om_output->
                                                              xml_writer,
                                                              args_list[0],
                                                              args_list[1]);
@@ -114,13 +122,13 @@ axis2_om_output_write (axis2_environment_t * environment,
         case 3:
             status =
                 guththila_xml_stream_writer_write_attribute_with_namespace
-                (om_output->xml_writer, args_list[0], args_list[1],
+                (om_output_guththila_environment, om_output->xml_writer, args_list[0], args_list[1],
                  args_list[2]);
             break;
         case 4:
             status =
                 guththila_xml_stream_writer_write_attribute_with_namespace_prefix
-                (om_output->xml_writer, args_list[0], args_list[1],
+                (om_output_guththila_environment, om_output->xml_writer, args_list[0], args_list[1],
                  args_list[2], args_list[3]);
             break;
 
@@ -129,14 +137,14 @@ axis2_om_output_write (axis2_environment_t * environment,
 
     case AXIS2_OM_NAMESPACE:
         status =
-            guththila_xml_stream_writer_write_namespace (om_output->
+            guththila_xml_stream_writer_write_namespace (om_output_guththila_environment, om_output->
                                                          xml_writer,
                                                          args_list[0],
                                                          args_list[1]);
         break;
     case AXIS2_OM_TEXT:
         status =
-            guththila_xml_stream_writer_write_characters (om_output->
+            guththila_xml_stream_writer_write_characters (om_output_guththila_environment, om_output->
                                                           xml_writer,
                                                           args_list[0]);
         break;
