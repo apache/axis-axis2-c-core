@@ -19,7 +19,7 @@
 void *expected_file, *actual_file; /* File pointers */
 
 /* private function header */
-axis2_status_t axis2_file_diff_clean(axis2_environment_t *env, int);
+axis2_status_t axis2_file_diff_clean(axis2_environment_t *env);
 
 axis2_status_t axis2_file_diff(axis2_environment_t *env
 		, axis2_char_t* expected_file_name, axis2_char_t* actual_file_name)
@@ -31,9 +31,10 @@ axis2_status_t axis2_file_diff(axis2_environment_t *env
 		, "rt");
 	
 	if( expected_file == NULL || actual_file == NULL ) {
-		printf("Unable to open one of datafile %s, %s\n", expected_file_name
-			, actual_file_name );
-		axis2_file_diff_clean(env, 1 );
+		/*printf("Unable to open one of datafile %s, %s\n", expected_file_name
+			, actual_file_name );*/
+		axis2_file_diff_clean(env);
+		return AXIS2_ERROR_COULD_NOT_OPEN_FILE;
 	}
 	
    	int ch1, ch2;
@@ -99,7 +100,7 @@ axis2_status_t axis2_file_diff(axis2_environment_t *env
 				axis2_stream_write(env->stream, buffer2, k);
 				axis2_stream_write(env->stream, "\n", 1);
 
-                axis2_file_diff_clean(env, 1);
+                axis2_file_diff_clean(env);
             }
             j++;k++;
             buffer1[j] = ch1;
@@ -128,11 +129,11 @@ axis2_status_t axis2_file_diff(axis2_environment_t *env
    	return AXIS2_SUCCESS;
 }
 
-axis2_status_t axis2_file_diff_clean (axis2_environment_t *env, int exitcode )
+axis2_status_t axis2_file_diff_clean (axis2_environment_t *env)
 {
 	if(expected_file != NULL )
     	axis2_stream_file_close(env->stream, expected_file);
    	if(actual_file != NULL )
     	axis2_stream_file_close(env->stream, actual_file);
-    exit(exitcode);
+	return AXIS2_SUCCESS;
 }

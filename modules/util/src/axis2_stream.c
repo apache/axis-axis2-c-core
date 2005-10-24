@@ -33,22 +33,64 @@ axis2_status_t axis2_stream_impl_file_unget_char(const char chr, void *file_ptr)
 
 axis2_stream_t *
 axis2_stream_create (axis2_allocator_t * allocator,
-                     axis2_stream_ops_t * operations)
+                     axis2_stream_t * stream)
 {
-    axis2_stream_t *stream;
-    if (!allocator)
-        return NULL;
-    stream =
+	if(stream)
+	{
+		if(stream->ops)
+		{
+			if(!stream->ops->axis2_stream_ops_read)
+				stream->ops->axis2_stream_ops_read = axis2_stream_impl_read;
+			if(!stream->ops->axis2_stream_ops_write)
+				stream->ops->axis2_stream_ops_write = axis2_stream_impl_write;
+			if(!stream->ops->axis2_stream_ops_file_open)
+				stream->ops->axis2_stream_ops_file_open = axis2_stream_impl_file_open;
+			if(!stream->ops->axis2_stream_ops_file_close)
+				stream->ops->axis2_stream_ops_file_close = axis2_stream_impl_file_close;
+			if(!stream->ops->axis2_stream_ops_file_get_char)
+				stream->ops->axis2_stream_ops_file_get_char 
+				= axis2_stream_impl_file_get_char;
+			if(!stream->ops->axis2_stream_ops_file_unget_char)
+				stream->ops->axis2_stream_ops_file_unget_char 
+				= axis2_stream_impl_file_unget_char;
+		}
+		else if (allocator)
+		{
+			stream->ops =
+            (axis2_stream_ops_t *) axis2_malloc (allocator,
+                                                 sizeof (axis2_stream_ops_t));
+
+			if (!stream->ops)
+			{
+				axis2_free (allocator, stream->ops);
+				return NULL;
+			}
+
+			stream->ops->axis2_stream_ops_read = axis2_stream_impl_read;
+			stream->ops->axis2_stream_ops_write = axis2_stream_impl_write;
+			stream->ops->axis2_stream_ops_file_open = axis2_stream_impl_file_open;
+			stream->ops->axis2_stream_ops_file_close = axis2_stream_impl_file_close;
+			stream->ops->axis2_stream_ops_file_get_char 
+				= axis2_stream_impl_file_get_char;
+			stream->ops->axis2_stream_ops_file_unget_char 
+				= axis2_stream_impl_file_unget_char;
+		}
+		else 
+			return NULL;
+		
+		if(!stream->axis2_eof)
+			stream->axis2_eof = EOF;
+		
+		return stream;
+	}
+	else if(allocator)
+	{
+		stream =
         (axis2_stream_t *) axis2_malloc (allocator, sizeof (axis2_stream_t));
 
-    if (!stream)
-        return NULL;
-
-    if (operations)
-        stream->ops = operations;
-    else
-    {
-        stream->ops =
+		if (!stream)
+			return NULL;
+		stream->ops =
             (axis2_stream_ops_t *) axis2_malloc (allocator,
                                                  sizeof (axis2_stream_ops_t));
 
@@ -57,19 +99,20 @@ axis2_stream_create (axis2_allocator_t * allocator,
             axis2_free (allocator, stream);
             return NULL;
         }
-
-        stream->ops->axis2_stream_ops_read = axis2_stream_impl_read;
+		stream->ops->axis2_stream_ops_read = axis2_stream_impl_read;
         stream->ops->axis2_stream_ops_write = axis2_stream_impl_write;
 		stream->ops->axis2_stream_ops_file_open = axis2_stream_impl_file_open;
 		stream->ops->axis2_stream_ops_file_close = axis2_stream_impl_file_close;
-		stream->ops->axis2_stream_ops_file_get_char = axis2_stream_impl_file_get_char;
-		stream->ops->axis2_stream_ops_file_unget_char = axis2_stream_impl_file_unget_char;
-		
-		stream->file = NULL;
+		stream->ops->axis2_stream_ops_file_get_char 
+			= axis2_stream_impl_file_get_char;
+		stream->ops->axis2_stream_ops_file_unget_char 
+			= axis2_stream_impl_file_unget_char;
 		stream->axis2_eof = EOF;
-    }
-
-    return stream;
+		
+		return stream;
+	}
+	
+    return NULL;
 }
 
 axis2_status_t

@@ -63,7 +63,7 @@ extern "C"
 		 * @param options file options given.
 		 * @return status code
 		 */
-		AXIS2_DECLARE(axis2_status_t) (*axis2_stream_ops_file_open)
+		AXIS2_DECLARE(void *) (*axis2_stream_ops_file_open)
 				(const char *file_name, const char *options);
 		
 		/**
@@ -101,7 +101,6 @@ extern "C"
     {
         /** Stream related operations */
         struct axis2_stream_ops *ops;
-		void *file;
 		int axis2_eof;
     } axis2_stream_t;
 
@@ -112,7 +111,7 @@ extern "C"
     * @return pointer to the newly created log struct 
     */
     AXIS2_DECLARE(axis2_stream_t *) axis2_stream_create (axis2_allocator_t * allocator,
-                                         axis2_stream_ops_t * operations);
+                                         axis2_stream_t * stream);
 
 #define axis2_stream_read(stream, buffer, count) \
 		((stream)->ops->axis2_stream_ops_read(buffer, count))

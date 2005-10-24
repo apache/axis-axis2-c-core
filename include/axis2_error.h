@@ -117,7 +117,9 @@ extern "C"
         /** Trying to release unallocated memory */
         AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED,
 		/** Struct is not properly initialized */
-		AXIS2_ERROR_STRUCT_NOT_INITIALIZED
+		AXIS2_ERROR_STRUCT_NOT_INITIALIZED,
+		/** Could not open the file */
+		AXIS2_ERROR_COULD_NOT_OPEN_FILE
     } axis2_error_codes_t;
 
 /** @} */
