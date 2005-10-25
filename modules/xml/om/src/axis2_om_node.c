@@ -142,7 +142,7 @@ axis2_om_node_impl_free (axis2_environment_t * environment,
         /* axis2_om_prcessing_instruction_free(environment,(axis2_om_processing_instruction)node->data_element) */
         break;
     case AXIS2_OM_TEXT:
-        /* axis2_om_text_free(environment,(axis2_om_text_t*)node->data_element); */
+        axis2_om_text_free(environment,(axis2_om_text_t*)node->data_element);
         break;
 
     default:
