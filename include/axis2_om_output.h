@@ -66,11 +66,12 @@ extern "C"
     * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
     * @param xml_writer XML writer. Optional, can be NULL. If NULL default xml writer
     *           (guththila writer ) will be created with stdout as the output stream
+	* @param writer_env writer envioronment. Optional, can be NULL.
     * @return a pointer to newly created output struct.
     */
 
     axis2_om_output_t *axis2_create_om_output (axis2_environment_t *
-                                               environment, void *xml_writer);
+                                               environment, void *xml_writer, void* writer_env);
 
   /**
     *  Performs xml writing.
