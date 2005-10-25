@@ -80,7 +80,6 @@ module.include.files=\
 	include/axis2_om_text.h\
 	include/axis2_qname.h\
 	include/axis2_om_stax_builder.h\
-	include/axis2c.h\
 	include/axis2_om_node.h\
 	include/axis2_environment.h\
 	include/axis2_allocator.h\
@@ -113,7 +112,6 @@ module.include.files=\
 	include/axis2_description_parameter.h\
 	include/axis2_description_service.h\
 	include/axis2_description_servicegroup.h\
-	modules/core/description/test/description_test.h\
 	include/axis2_core.h\
 	include/axis2_context_msg_context.h\
 	include/axis2_engine_msg_receiver.h
@@ -127,13 +125,7 @@ module.source.files=\
 	modules/core/description/test/description_test.c\
 	modules/common/test/common_test.c\
 	modules/core/engine/test/engine_test.c\
-	modules/xml/guththila/src/buffer.c\
 	modules/xml/guththila/src/guththila_xml_stream_writer.c\
-	modules/xml/guththila/src/main.c\
-	modules/xml/guththila/src/reader.c\
-	modules/xml/guththila/src/stack.c\
-	modules/xml/guththila/src/token.c\
-	modules/xml/guththila/src/unicode.c\
 	modules/xml/guththila/src/guththila_xml_pull_parser.c\
 	modules/xml/om/src/axis2_om_attribute.c\
 	modules/xml/om/src/axis2_om_comment.c\
@@ -153,7 +145,6 @@ module.source.files=\
 	modules/util/src/axis2_log.c\
 	modules/util/src/axis2_stream.c\
 	modules/util/src/axis2_string.c\
-	modules/util/test/hash_test.c\
 	modules/util/test/main.c\
 	modules/util/test/util_error_test.c\
 	modules/util/test/util_hash_test.c\
@@ -169,9 +160,9 @@ module.source.files=\
 	modules/core/description/src/axis2_description_parameter.c\
 	modules/core/description/src/axis2_description_service.c\
 	modules/core/description/src/axis2_description_servicegroup.c\
-	modules/core/description/test/main.c\
 	modules/core/context/src/axis2_context_msg_context.c\
-	modules/core/engine/src/axis2_engine_msg_receiver.c
+	modules/core/engine/src/axis2_engine_msg_receiver.c\
+	modules/xml/om/src/axis2_om_output.c
 
 module.pixmap.name=.
 module.pixmap.type=
