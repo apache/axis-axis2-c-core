@@ -89,7 +89,8 @@ test_om_build (char *file_name)
     om_output = axis2_om_output_create (environment, NULL, NULL);
     axis2_om_node_serialize (environment, node1, om_output);
 	axis2_free (environment->allocator, om_output);
-    printf ("\n\n");
+    guththila_xml_pull_parser_free (my_guththila_environment, parser);
+	printf ("\n\n");
 }
 
 /*
