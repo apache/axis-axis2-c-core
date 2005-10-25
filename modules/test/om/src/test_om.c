@@ -175,6 +175,8 @@ test_om_serialize ()
         printf ("\naxis2_om_node_serialize success\n");
     /* end serializing stuff */
 
+    axis2_om_node_free(environment, node1);
+    
     printf ("\nDONE\n");
 
     return 0;
