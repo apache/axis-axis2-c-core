@@ -59,8 +59,7 @@ PROGRAMS = $(prgbin_PROGRAMS)
 am_test_util_OBJECTS = test_util.$(OBJEXT)
 test_util_OBJECTS = $(am_test_util_OBJECTS)
 am__DEPENDENCIES_1 =
-test_util_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/modules/util/src/libaxis2_util.la
+test_util_DEPENDENCIES = $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -196,7 +195,9 @@ prgbindir = $(prefix)/bin/system_test
 SUBDIRS = 
 AM_CPPFLAGS = $(CPPFLAGS)
 test_util_SOURCES = test_util.c
-test_util_LDADD = $(LDFLAGS) $(top_builddir)/modules/util/src/libaxis2_util.la
+
+#test_util_LDADD   =  $(LDFLAGS) $(top_builddir)/modules/util/src/libaxis2_util.la
+test_util_LDADD = $(LDFLAGS) -L$(top_builddir)/modules/util/src/.libs -laxis2_util
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include
 all: all-recursive
 
