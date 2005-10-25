@@ -381,6 +381,8 @@ axis2_om_stax_builder_create_om_element (axis2_environment_t * environment,
                                               element_node, 0);
 
     builder->lastnode = element_node;
+	
+	/*axis2_free(environment->allocator, localname);*/
 
     return element_node;
 }

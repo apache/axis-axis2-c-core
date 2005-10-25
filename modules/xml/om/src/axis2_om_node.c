@@ -121,9 +121,9 @@ axis2_om_node_impl_free (axis2_environment_t * environment,
     {
         while (node->first_child)
         {
-            axis2_om_node_t *node = NULL;
-            node = axis2_om_node_detach (environment, node->first_child);
-            axis2_om_node_free (environment, node);
+            axis2_om_node_t *child_node = NULL;
+            child_node = axis2_om_node_detach (environment, node->first_child);
+            axis2_om_node_free (environment, child_node);
         }
     }
     switch (node->node_type)
@@ -205,7 +205,7 @@ axis2_om_node_impl_detach (axis2_environment_t * environment,
         node_to_detach->prev_sibling->next_sibling =
             node_to_detach->next_sibling;
     }
-    if (!(node_to_detach->next_sibling))
+    if ((node_to_detach->next_sibling))
     {
         node_to_detach->next_sibling->prev_sibling =
             node_to_detach->prev_sibling;
