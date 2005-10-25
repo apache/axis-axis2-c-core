@@ -496,3 +496,35 @@ axis2_hash_merge (axis2_environment_t * environment,
     }
     return res;
 }
+
+
+static void axis2_hash_entry_free(axis2_environment_t *environment,axis2_hash_entry_t *hash_entry)
+{	
+	axis2_hash_entry_t *entry;
+	if(!hash_entry)
+		return;
+	if(hash_entry->next)
+	{
+		axis2_hash_entry_free(environment,hash_entry->next);
+	}
+	axis2_free(environment->allocator,hash_entry->key);
+	axis2_free(environment->allocator,hash_entry->val);
+	axis2_free(environment->allocator,hash_entry);
+	return;		
+}
+
+axis2_status_t axis2_hash_free(axis2_environment_t *environment,axis2_hash_t *ht)
+{
+    int i=0;
+    if(ht)
+    {
+         while((ht->array[i]))
+              axis2_hash_entry_free(environment,(axis2_hash_entry_t*)(ht->array[i]));
+         if(ht->free)
+              axis2_hash_entry_free(environment,ht->free);
+         axis2_free(environment->allocator,ht);
+         return AXIS2_SUCCESS;
+    }
+    return AXIS2_FAILURE;
+}
+                                                                            
