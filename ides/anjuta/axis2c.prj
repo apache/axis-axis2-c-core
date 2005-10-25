@@ -135,7 +135,6 @@ module.source.files=\
 	modules/xml/om/src/axis2_om_namespace.c\
 	modules/xml/om/src/axis2_om_processing_instruction.c\
 	modules/xml/om/src/axis2_om_text.c\
-	modules/xml/om/src/axis2_qname.c\
 	modules/xml/om/src/axis2_om_stax_builder.c\
 	modules/xml/om/src/axis2_om_node.c\
 	modules/util/src/axis2_allocator.c\
@@ -162,7 +161,8 @@ module.source.files=\
 	modules/core/description/src/axis2_description_servicegroup.c\
 	modules/core/context/src/axis2_context_msg_context.c\
 	modules/core/engine/src/axis2_engine_msg_receiver.c\
-	modules/xml/om/src/axis2_om_output.c
+	modules/xml/om/src/axis2_om_output.c\
+	modules/util/src/axis2_qname.c
 
 module.pixmap.name=.
 module.pixmap.type=
