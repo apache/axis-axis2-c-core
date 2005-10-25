@@ -5,16 +5,18 @@
 #include <axis2_om_text.h>
 
 #include <stdio.h>
-#include <apr.h>
-#include <apr_general.h>
 #include <guththila_xml_pull_parser.h>
 
 axis2_allocator_t *allocator = NULL;
 axis2_string_t *string = NULL;
 axis2_environment_t *environment = NULL;
 
+guththila_environment_t *my_guththila_environment = NULL;
+guththila_allocator_t *my_guththila_allocator = NULL;
+
+
 int
-test_om_build ()
+test_om_build (char *file_name)
 {
     guththila_reader_t *reader = NULL;
     guththila_xml_pull_parser_t *parser = NULL;
@@ -25,20 +27,14 @@ test_om_build ()
     FILE *fp = NULL;
     axis2_om_output_t *om_output = NULL;
 
-    fp = fopen ("test.xml", "r");
+    fp = fopen (file_name, "r");
 
-    reader = guththila_reader_create (fp);
+    reader = guththila_reader_create (my_guththila_environment, fp);
 
-    parser = guththila_xml_pull_parser_create (reader);
+    parser = guththila_xml_pull_parser_create (my_guththila_environment, reader);
 
-    guththila_xml_pull_parser_read (parser);
+    guththila_xml_pull_parser_read (my_guththila_environment, parser);
 
-
-/*    if(apr_initialize() != APR_SUCCESS)
-    {
-       return;
-    }
-    */
     if (!fp)
     {
         printf ("Read Failed");
@@ -182,13 +178,18 @@ test_om_serialize ()
 }
 
 int
-main (void)
+main (int argc, char *argv[])
 {
+	char *file_name = "test.xml"; 
+	if (argc > 1)
+		file_name = argv[1];
     allocator = axis2_allocator_init (NULL);
     environment =
         axis2_environment_create (allocator, NULL, NULL, NULL, NULL);
-    if (apr_initialize () != APR_SUCCESS)
-        return -1;
-    test_om_build ();
+	
+	my_guththila_allocator = guththila_allocator_init(NULL);
+	my_guththila_environment = guththila_environment_create(my_guththila_allocator, NULL, NULL, NULL, NULL);
+
+    test_om_build (file_name);
     test_om_serialize ();
 }
