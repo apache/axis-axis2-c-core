@@ -88,6 +88,7 @@ test_om_build (char *file_name)
     printf ("Serialize pulled document\n");
     om_output = axis2_om_output_create (environment, NULL, NULL);
     axis2_om_node_serialize (environment, node1, om_output);
+	axis2_free (environment->allocator, om_output);
     printf ("\n\n");
 }
 
@@ -176,7 +177,8 @@ test_om_serialize ()
     /* end serializing stuff */
 
     axis2_om_node_free(environment, node1);
-    
+    axis2_free (environment->allocator, om_output);
+	
     printf ("\nDONE\n");
 
     return 0;
