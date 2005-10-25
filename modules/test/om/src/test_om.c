@@ -40,7 +40,7 @@ test_om_build (char *file_name)
         printf ("Read Failed");
     }
 
-    builder = axis2_om_stax_builder_create (environment, parser);
+    builder = axis2_om_stax_builder_create (environment, parser, my_guththila_environment);
     document = axis2_om_document_create (environment, NULL, builder);
     printf ("START: pull document\n");
     node1 = axis2_om_document_get_root_element (environment, document);
@@ -63,18 +63,21 @@ test_om_build (char *file_name)
 
         switch (node2->node_type)
         {
-        case AXIS2_OM_ELEMENT:
-            if (((axis2_om_element_t *) (node2->data_element))->localname)
-                printf ("Element localname %s\n",
+			case AXIS2_OM_ELEMENT:
+				if (((axis2_om_element_t *) (node2->data_element))->localname)
+					printf ("Element localname %s\n",
                         ((axis2_om_element_t *) (node2->data_element))->
                         localname);
             break;
-        case AXIS2_OM_TEXT:
-            if (((axis2_om_text_t *) (node2->data_element))
-                && ((axis2_om_text_t *) (node2->data_element))->value)
-                printf ("Element Text value %s\n",
+			case AXIS2_OM_TEXT:
+				if (((axis2_om_text_t *) (node2->data_element))
+					&& ((axis2_om_text_t *) (node2->data_element))->value)
+					printf ("Element Text value %s\n",
                         ((axis2_om_text_t *) (node2->data_element))->value);
             break;
+			
+			default:
+			break;
         }
 
         node2 = axis2_om_document_build_next (environment, document);

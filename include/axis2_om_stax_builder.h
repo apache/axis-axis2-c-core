@@ -101,11 +101,12 @@ extern "C"
     * @param parser pull parser to be used by the builder. Parser should implement the
     *           Guththila interface. If NULL, default xml parser
     *           (guththila pull parser) will be created with stdin as the input stream.
+	* @param parser_env parser envioronment. Optional, can be NULL.
     * @return a pointer to the newly created builder struct. 
     */
     AXIS2_DECLARE( axis2_om_stax_builder_t *) axis2_om_stax_builder_create (axis2_environment_t
                                                            * environment,
-                                                           void *parser);
+                                                           void *parser, void* parser_env);
 
 /** builds next node */
 #define axis2_om_stax_builder_next(environment, builder) ((builder)->ops->axis2_om_stax_builder_ops_next(environment, builder))

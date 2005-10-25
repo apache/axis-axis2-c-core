@@ -43,7 +43,7 @@ axis2_create_om_output (axis2_environment_t * environment, void *xml_writer)
 	{
 		
   		om_output_guththila_allocator = guththila_allocator_init(NULL);
-  		om_output_guththila_environment = guththila_environment_create(om_output_guththila_allocator,NULL,NULL,NULL,NULL);
+  		om_output_guththila_environment = guththila_environment_create(om_output_guththila_allocator, NULL, NULL, NULL, NULL);
         om_output->xml_writer = guththila_create_xml_stream_writer (om_output_guththila_environment, stdout,
                                                                     DEFAULT_CHAR_SET_ENCODING,
                                                                     AXIS2_TRUE);

@@ -36,7 +36,7 @@ AXIS2_CALL axis2_om_stax_builder_impl_discard_current_element (axis2_environment
                                                     builder);
 
 axis2_om_stax_builder_t *
-axis2_om_stax_builder_create (axis2_environment_t * environment, void *parser)
+axis2_om_stax_builder_create (axis2_environment_t * environment, void *parser, void* parser_env)
 {
     axis2_om_stax_builder_t *builder =
         (axis2_om_stax_builder_t *) axis2_malloc (environment->allocator,
@@ -51,7 +51,11 @@ axis2_om_stax_builder_create (axis2_environment_t * environment, void *parser)
 
     builder->parser = NULL;
     if (parser)
+	{
         builder->parser = parser;
+		if (parser_env)
+			om_stax_builder_guththila_environment =  (guththila_environment_t*) parser_env;
+	}
     else
     {
         /* create the default Guththila pull parser */

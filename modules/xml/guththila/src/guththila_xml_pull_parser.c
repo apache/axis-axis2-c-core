@@ -205,11 +205,11 @@ guththila_xml_pull_parser_last_char (guththila_environment_t *environment,guthth
 
 
 void
-guththila_xml_pull_parser_open_token (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser)
+guththila_xml_pull_parser_open_token (guththila_environment_t *environment, guththila_xml_pull_parser_t * parser)
 {
-  guththila_token_t *t = (guththila_token_t *) guththila_malloc(environment->allocator,sizeof (guththila_token_t));
+  guththila_token_t *t = (guththila_token_t *) guththila_malloc(environment->allocator, sizeof (guththila_token_t));
   t->type = Unknown;
-  t->start = guththila_xml_pull_parser_last_char (environment,parser);
+  t->start = guththila_xml_pull_parser_last_char (environment, parser);
   guththila_stack_push (environment,parser->stack, t, NULL);
 }
 
@@ -217,10 +217,10 @@ guththila_xml_pull_parser_open_token (guththila_environment_t *environment,gutht
 void
 guththila_xml_pull_parser_close_token (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser, int t, int refer)
 {
-  guththila_element_t *e = guththila_stack_last (environment,parser->stack);
+  guththila_element_t *e = guththila_stack_last (environment, parser->stack);
   e->token->type = t;
   e->token->ref = refer;
-  e->token->end = guththila_xml_pull_parser_last_char (environment,parser) - 1;
+  e->token->end = guththila_xml_pull_parser_last_char (environment, parser) - 1;
 }
 
 
@@ -872,10 +872,20 @@ guththila_xml_pull_parser_close_element (guththila_environment_t *environment,gu
     {
       e = guththila_stack_pull (environment,parser->namesp);
       if (e->namespace->name)
-	free (e->namespace->name);
+	  {
+		free (e->namespace->name);
+		  e->namespace->name = NULL;
+	  }
       if (e->namespace->uri)
-	free (e->namespace->uri);
-      free (e);
+	  {
+		free (e->namespace->uri);
+		  e->namespace->uri = NULL;
+	  }
+	  if (e)
+	  {
+		  /*free (e);*/
+		  e = NULL;
+	  }
     }
 
 }
