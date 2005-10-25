@@ -14,7 +14,8 @@ libguththila_la_SOURCES = guththila_token.c \
                             guththila_stream.c \
                             guththila_environment.c \
                             guththila_log.c \
-                            guththila_error.c 
+                            guththila_error.c \
+                            guththila_hash.c
 
 libguththila_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include 
