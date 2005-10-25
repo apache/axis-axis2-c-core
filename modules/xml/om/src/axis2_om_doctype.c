@@ -20,7 +20,7 @@ axis2_status_t AXIS2_CALL axis2_om_doctype_impl_free (axis2_environment_t * envi
                                            axis2_om_doctype_t * doctype);
 
 axis2_om_doctype_t *
-axis2_om_doctype_create (axis2_environment_t * environment,
+AXIS2_CALL axis2_om_doctype_create (axis2_environment_t * environment,
                          axis2_om_node_t * parent, const axis2_char_t * value,
                          axis2_om_node_t ** node)
 {

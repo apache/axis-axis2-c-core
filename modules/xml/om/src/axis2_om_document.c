@@ -47,7 +47,7 @@ axis2_om_node_t * AXIS2_CALL axis2_om_document_impl_get_next_child (axis2_enviro
                                                         document);
 
 axis2_om_document_t *
-axis2_om_document_create (axis2_environment_t * environment,
+AXIS2_CALL axis2_om_document_create (axis2_environment_t * environment,
                           axis2_om_node_t * root,
                           axis2_om_stax_builder_t * builder)
 {

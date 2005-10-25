@@ -83,7 +83,7 @@ axis2_status_t AXIS2_CALL axis2_om_element_impl_serialize_end_part (axis2_enviro
 
 
 axis2_om_element_t *
-axis2_om_element_create (axis2_environment_t * environment,
+AXIS2_CALL axis2_om_element_create (axis2_environment_t * environment,
                          axis2_om_node_t * parent,
                          const axis2_char_t * localname,
                          axis2_om_namespace_t * ns, axis2_om_node_t ** node)
@@ -189,7 +189,7 @@ axis2_om_element_create (axis2_environment_t * environment,
 }
 
 axis2_om_element_t *
-axis2_om_element_create_with_qname (axis2_environment_t * environment,
+AXIS2_CALL axis2_om_element_create_with_qname (axis2_environment_t * environment,
                                     axis2_om_node_t * parent,
                                     axis2_qname_t * qname,
                                     axis2_om_node_t ** node)

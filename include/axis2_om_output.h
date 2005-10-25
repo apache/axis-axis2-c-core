@@ -70,7 +70,7 @@ extern "C"
     * @return a pointer to newly created output struct.
     */
 
-    axis2_om_output_t *axis2_create_om_output (axis2_environment_t *
+    axis2_om_output_t *axis2_om_output_create (axis2_environment_t *
                                                environment, void *xml_writer, void* writer_env);
 
   /**

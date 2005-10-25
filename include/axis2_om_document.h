@@ -179,7 +179,7 @@ extern "C"
     * @param builder pointer to xml builder 
     * @return pointer to the newly created document.
     */
-    AXIS2_DECLARE(axis2_om_document_t *) axis2_om_document_ops_create (axis2_environment_t *
+    AXIS2_DECLARE(axis2_om_document_t *) axis2_om_document_create (axis2_environment_t *
                                                        environment,
                                                        axis2_om_node_t * root,
                                                        struct

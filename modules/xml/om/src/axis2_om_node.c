@@ -57,7 +57,7 @@ axis2_status_t AXIS2_CALL axis2_om_node_impl_serialize (axis2_environment_t *
 
 
 axis2_om_node_t *
-axis2_om_node_create (axis2_environment_t * environment)
+AXIS2_CALL axis2_om_node_create (axis2_environment_t * environment)
 {
     axis2_om_node_t *node =
         (axis2_om_node_t *) axis2_malloc (environment->allocator,

@@ -37,7 +37,7 @@ axis2_status_t AXIS2_CALL axis2_om_attribute_impl_serialize (axis2_environment_t
 
 
 axis2_om_attribute_t *
-axis2_om_attribute_create (axis2_environment_t * environment,
+AXIS2_CALL axis2_om_attribute_create (axis2_environment_t * environment,
                            const axis2_char_t * localname,
                            const axis2_char_t * value,
                            axis2_om_namespace_t * ns)

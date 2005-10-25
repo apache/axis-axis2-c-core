@@ -34,7 +34,7 @@ axis2_status_t AXIS2_CALL axis2_om_namespace_impl_serialize (axis2_environment_t
                                                   om_output);
 
 axis2_om_namespace_t *
-axis2_om_namespace_create (axis2_environment_t * environment,
+AXIS2_CALL axis2_om_namespace_create (axis2_environment_t * environment,
                            const axis2_char_t * uri,
                            const axis2_char_t * prefix)
 {

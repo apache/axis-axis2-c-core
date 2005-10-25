@@ -21,7 +21,7 @@ axis2_status_t AXIS2_CALL axis2_om_comment_impl_free (axis2_environment_t * envi
                                            axis2_om_comment_t * comment);
 
 axis2_om_comment_t *
-axis2_om_comment_create (axis2_environment_t * environment,
+AXIS2_CALL axis2_om_comment_create (axis2_environment_t * environment,
                          const axis2_char_t * value, axis2_om_node_t ** node)
 {
     *node = NULL;

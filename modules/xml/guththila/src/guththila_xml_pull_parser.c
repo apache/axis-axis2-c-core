@@ -883,7 +883,7 @@ guththila_xml_pull_parser_close_element (guththila_environment_t *environment,gu
 	  }
 	  if (e)
 	  {
-		  /*free (e);*/
+		  free (e);
 		  e = NULL;
 	  }
     }
