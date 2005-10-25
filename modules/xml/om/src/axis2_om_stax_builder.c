@@ -19,8 +19,10 @@
 #include <axis2_om_text.h>
 #include <guththila_xml_pull_parser.h>
 
+
 guththila_environment_t *om_stax_builder_guththila_environment = NULL;
 guththila_allocator_t *om_stax_builder_guththila_allocator = NULL;
+axis2_bool_t parser_created_locally = AXIS2_FALSE;
 
 const axis2_char_t XMLNS_URI[] = "http://www.w3.org/XML/1998/namespace";
 const axis2_char_t XMLNS_PREFIX[] = "xml";
@@ -35,6 +37,10 @@ AXIS2_CALL axis2_om_stax_builder_impl_discard_current_element (axis2_environment
                                                     axis2_om_stax_builder_t *
                                                     builder);
 
+axis2_status_t
+AXIS2_CALL axis2_om_stax_builder_impl_free(axis2_environment_t * environment,
+													axis2_om_stax_builder_t *builder);
+													
 axis2_om_stax_builder_t *
 AXIS2_CALL axis2_om_stax_builder_create (axis2_environment_t * environment, void *parser, void* parser_env)
 {
@@ -62,7 +68,7 @@ AXIS2_CALL axis2_om_stax_builder_create (axis2_environment_t * environment, void
 		om_stax_builder_guththila_allocator = guththila_allocator_init(NULL);
   		om_stax_builder_guththila_environment = guththila_environment_create(om_stax_builder_guththila_allocator, NULL, NULL, NULL, NULL);
         guththila_reader_t *reader = guththila_reader_create (om_stax_builder_guththila_environment, stdin);
-
+		
         if (!reader)
         {
             environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
@@ -76,6 +82,7 @@ AXIS2_CALL axis2_om_stax_builder_create (axis2_environment_t * environment, void
             environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
             return NULL;
         }
+		parser_created_locally = AXIS2_TRUE;
     }
 
     builder->cache = AXIS2_TRUE;
@@ -103,7 +110,8 @@ AXIS2_CALL axis2_om_stax_builder_create (axis2_environment_t * environment, void
         axis2_om_stax_builder_impl_next;
     builder->ops->axis2_om_stax_builder_ops_discard_current_element =
         axis2_om_stax_builder_impl_discard_current_element;
-
+	builder->ops->axis2_om_stax_builder_ops_free =
+		axis2_om_stax_builder_impl_free;
     return builder;
 }
 
@@ -500,4 +508,23 @@ axis2_om_stax_builder_impl_next (axis2_environment_t * environment,
     while (!node);
 
     return node;
+}
+
+
+axis2_status_t 
+AXIS2_CALL axis2_om_stax_builder_impl_free(axis2_environment_t *environment,axis2_om_stax_builder_t *builder)
+{
+   
+    if(builder)
+	{
+		if(builder->parser && parser_created_locally)
+        {
+			guththila_xml_pull_parser_free(om_stax_builder_guththila_environment,builder->parser);
+            parser_created_locally = AXIS2_FALSE;
+        }   
+		if(builder->ops)
+			axis2_free(environment->allocator,builder->ops);
+		axis2_free(environment->allocator,builder);
+		return AXIS2_SUCCESS;	
+	}
 }
