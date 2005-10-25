@@ -216,6 +216,17 @@ extern "C"
                                                      const void *h2_val,
                                                      const void *data),
                                     const void *data);
+									
+/**
+ * @param environment The environment to use for hash table
+ * @param ht hash table to be freed
+ * @return return status code 
+ *
+ */
+									
+	axis2_status_t axis2_hash_free(axis2_environment_t *environment,
+									axis2_hash_t *ht);
+									
 
 /** @} */
 
