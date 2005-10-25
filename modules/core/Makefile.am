@@ -1,1 +1,1 @@
-SUBDIRS = context description engine
+SUBDIRS = description context engine

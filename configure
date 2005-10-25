@@ -1035,7 +1035,7 @@ Optional Features:
   --disable-dependency-tracking  speeds up one-time build
   --enable-dependency-tracking   do not reject slow dependency extractors
   --disable-libtool-lock  avoid locking (might break parallel builds)
-  --enable-tests    build tests. default=no
+  --enable-tests    build tests. default=yes
   --enable-guththila    build guththila. default=yes
 
 Optional Packages:
@@ -22852,12 +22852,9 @@ fi
 
 #AC_CHECK_FUNCS([memmove])
 
-#want_xml=no
+#Following two lines are temporary and will be removed
 want_xml=yes
 want_core=yes
-#want_test=no
-want_test=yes
-want_guththila=yes
 
 echo "$as_me:$LINENO: checking whether to build tests" >&5
 echo $ECHO_N "checking whether to build tests... $ECHO_C" >&6
@@ -22880,7 +22877,7 @@ echo "${ECHO_T}yes" >&6
 else
   echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
-  want_test=no
+  want_test=yes
 
 fi;
 
@@ -22909,6 +22906,7 @@ echo "${ECHO_T}yes" >&6
 
 fi;
 
+#Following two lines are temporary and will be removed
 
 
 if test "$want_xml" = yes; then

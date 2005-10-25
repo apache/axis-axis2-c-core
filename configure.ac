@@ -42,15 +42,12 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
-#want_xml=no
+#Following two lines are temporary and will be removed
 want_xml=yes
 want_core=yes
-#want_test=no
-want_test=yes
-want_guththila=yes
 
 AC_MSG_CHECKING(whether to build tests)
-AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
+AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
@@ -63,7 +60,7 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
     ;;
   esac ],
   AC_MSG_RESULT(no)
-  want_test=no
+  want_test=yes
 )
 
 AC_MSG_CHECKING(whether to build guththila)
@@ -83,6 +80,7 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila. default=yes],
   want_guththila=yes
 )
 
+#Following two lines are temporary and will be removed
 AM_CONDITIONAL([COND_XML], [test "$want_xml" = yes])
 AM_CONDITIONAL([COND_CORE], [test "$want_core" = yes])
 AM_CONDITIONAL([COND_TEST], [test "$want_test" = yes])

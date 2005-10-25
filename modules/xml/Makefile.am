@@ -2,4 +2,4 @@ if COND_GUTHTHILA
   MAYBE_GUTHTHILA = guththila
 endif
 
-SUBDIRS = om soap $(MAYBE_GUTHTHILA)
+SUBDIRS = $(MAYBE_GUTHTHILA) om soap
