@@ -140,7 +140,7 @@ extern "C"
  *     axis2_hash_index_t *hi;
  *     void *val;
  *     int sum = 0;
- *     for (hi = axis2_hash_first(p, ht); hi; hi = axis2_hash_next(hi)) {
+ *     for (hi = axis2_hash_first(p, ht); hi; hi = axis2_hash_next(p, hi)) {
  *         axis2_hash_this(hi, NULL, NULL, &val);
  *         sum += *(int *)val;
  *     }
@@ -157,7 +157,7 @@ extern "C"
  * @return a pointer to the updated iteration state.  NULL if there are no more  
  *         entries.
  */
-    axis2_hash_index_t *axis2_hash_next (axis2_hash_index_t * hi);
+    axis2_hash_index_t *axis2_hash_next (axis2_environment_t * environment, axis2_hash_index_t * hi);
 
 /**
  * Get the current entry's details from the iteration state.

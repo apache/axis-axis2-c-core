@@ -253,7 +253,7 @@ axis2_om_element_impl_find_namespace (axis2_environment_t * environment,
     if (!prefix || axis2_strcmp (environment->string, prefix, "") == 0)
     {
         for (hashindex = axis2_hash_first (environment, element->namespaces);
-             hashindex; hashindex = axis2_hash_next (hashindex))
+             hashindex; hashindex = axis2_hash_next (environment, hashindex))
         {
             axis2_hash_this (hashindex, NULL, NULL, &ns);
             if (ns
@@ -444,6 +444,8 @@ axis2_status_t
 axis2_om_element_impl_free (axis2_environment_t * environment,
                             struct axis2_om_element *element)
 {
+	axis2_status_t status = AXIS2_SUCCESS;
+	
     if (!element)
     {
         environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
@@ -462,18 +464,35 @@ axis2_om_element_impl_free (axis2_environment_t * environment,
         }
         if (element->attributes)
         {
+			axis2_free(environment->allocator, element->attributes);
             /* TODO: free attributes */
             /*need to iterate and free individual attributes */
         }
         if (element->namespaces)
         {
+			axis2_hash_index_t *hi;
+			void *val;
+			for (hi = axis2_hash_first (environment, element->namespaces); hi;
+				 hi = axis2_hash_next (environment, hi))
+			{
+				axis2_hash_this (hi, NULL, NULL, &val);
+	/*
+				if (val)
+					status =
+						axis2_om_namespace_free (environment, (axis2_om_namespace_t *)val);
+				else
+				{
+					status = AXIS2_FAILURE;
+				}*/
+			}
+			axis2_free(environment->allocator, element->namespaces);
             /*TODO: free namespaces */
             /*need to eterate and free individual namespaces */
         }
         axis2_free (environment->allocator, element->ops);
         axis2_free (environment->allocator, element);
     }
-    return AXIS2_SUCCESS;
+    return status;
 }
 
 axis2_status_t
@@ -509,7 +528,7 @@ axis2_om_element_impl_serialize_start_part (axis2_environment_t * environment,
         axis2_hash_index_t *hi;
         void *val;
         for (hi = axis2_hash_first (environment, element->attributes); hi;
-             hi = axis2_hash_next (hi))
+             hi = axis2_hash_next (environment, hi))
         {
             axis2_hash_this (hi, NULL, NULL, &val);
 
@@ -531,7 +550,7 @@ axis2_om_element_impl_serialize_start_part (axis2_environment_t * environment,
         axis2_hash_index_t *hi;
         void *val;
         for (hi = axis2_hash_first (environment, element->namespaces); hi;
-             hi = axis2_hash_next (hi))
+             hi = axis2_hash_next (environment, hi))
         {
             axis2_hash_this (hi, NULL, NULL, &val);
 

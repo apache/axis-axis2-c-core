@@ -115,13 +115,16 @@ axis2_hash_make_custom (axis2_environment_t * environment,
  */
 
 axis2_hash_index_t *
-axis2_hash_next (axis2_hash_index_t * hi)
+axis2_hash_next (axis2_environment_t * environment, axis2_hash_index_t * hi)
 {
     hi->this = hi->next;
     while (!hi->this)
     {
         if (hi->index > hi->ht->max)
+		{
+			axis2_free (environment->allocator, hi);
             return NULL;
+		}
 
         hi->this = hi->ht->array[hi->index++];
     }
@@ -142,7 +145,7 @@ axis2_hash_first (axis2_environment_t * environment, axis2_hash_t * ht)
     hi->index = 0;
     hi->this = NULL;
     hi->next = NULL;
-    return axis2_hash_next (hi);
+    return axis2_hash_next (environment, hi);
 }
 
 void
@@ -171,7 +174,7 @@ expand_array (axis2_hash_t * ht)
 
     new_max = ht->max * 2 + 1;
     new_array = alloc_array (ht, new_max);
-    for (hi = axis2_hash_first (NULL, ht); hi; hi = axis2_hash_next (hi))
+    for (hi = axis2_hash_first (NULL, ht); hi; hi = axis2_hash_next (NULL, hi))
     {
         unsigned int i = hi->this->hash & new_max;
         hi->this->next = new_array[i];

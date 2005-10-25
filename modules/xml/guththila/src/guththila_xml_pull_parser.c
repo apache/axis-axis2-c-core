@@ -36,9 +36,6 @@ guththila_xml_pull_parser_create (guththila_environment_t *environment,guththila
   parser->attrib = guththila_stack_create (environment);
   parser->namesp = guththila_stack_create (environment);
   parser->dep = guththila_stack_create (environment);
-  /*parser->name = (guththila_token_t *) guththila_malloc (environment->allocator,sizeof (guththila_token_t));
-  parser->prefix = (guththila_token_t *) guththila_malloc (environment->allocator,sizeof (guththila_token_t));
-  parser->value = (guththila_token_t *) guththila_malloc (environment->allocator,sizeof (guththila_token_t));*/
   parser->name = NULL;
   parser->prefix = NULL;
   parser->value = NULL;

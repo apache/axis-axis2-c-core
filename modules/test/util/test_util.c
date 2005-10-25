@@ -63,7 +63,7 @@ int test_hash_get (axis2_environment_t *environment)
     axis2_hash_set (ht, key3, AXIS2_HASH_KEY_STRING, a3);
     axis2_hash_set (ht, key4, AXIS2_HASH_KEY_STRING, a4);
 
-    for (i = axis2_hash_first (environment, ht); i; i = axis2_hash_next (i))
+    for (i = axis2_hash_first (environment, ht); i; i = axis2_hash_next (environment, i))
     {
 
         axis2_hash_this (i, NULL, NULL, &v);
