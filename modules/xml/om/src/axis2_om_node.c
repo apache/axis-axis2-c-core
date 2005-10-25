@@ -129,7 +129,7 @@ axis2_om_node_impl_free (axis2_environment_t * environment,
     switch (node->node_type)
     {
     case AXIS2_OM_ELEMENT:
-        /*axis2_om_element_free(environment,(axis2_om_element_t*)node->data_element) */
+        axis2_om_element_free(environment, (axis2_om_element_t*)node->data_element);
         break;
 
     case AXIS2_OM_COMMENT:
