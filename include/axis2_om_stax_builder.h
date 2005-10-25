@@ -70,6 +70,8 @@ extern "C"
             (axis2_environment_t * environment,
              struct axis2_om_stax_builder * builder);
 
+			 
+		AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_stax_builder_ops_free)(axis2_environment_t *envioronment,struct axis2_om_stax_builder *builder);
 
     } axis2_om_stax_builder_ops_t;
 
@@ -112,7 +114,10 @@ extern "C"
 #define axis2_om_stax_builder_next(environment, builder) ((builder)->ops->axis2_om_stax_builder_ops_next(environment, builder))
 /** discards current node */
 #define axis2_om_stax_builder_discard_current_element(environment, builder) ((builder)->ops->axis2_om_stax_builder_ops_discard_current_element(environment, builder))
-
+/** free builder */
+#define axis2_om_stax_builder_free(environment,builder) ((builder)->ops->axis2_om_stax_builder_ops_free(environment,builder))
+	
+	
 /** @} */
 
 
