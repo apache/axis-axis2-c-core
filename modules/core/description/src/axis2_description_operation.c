@@ -49,6 +49,10 @@ axis2_hash_t *axis2_description_operation_ops_get_params
 		(axis2_environment_t *env
 		, axis2_description_operation_t *operation_desc);
 
+axis2_bool_t axis2_description_operation_ops_is_param_locked(
+		axis2_environment_t *env, axis2_description_operation_t *operation_desc
+		, const axis2_char_t *param_name);
+
 axis2_status_t axis2_description_operation_ops_set_parent
 		(axis2_environment_t *env, axis2_description_operation_t *operation_desc
 		, axis2_description_service_t *service_desc);
@@ -84,7 +88,7 @@ axis2_description_operation_ops_t *axis2_description_operation_get_ops
 		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;	
 	}
-	return (axis2_description_operation_t *) operation_desc->ops;
+	return (axis2_description_operation_ops_t *) operation_desc->ops;
 }
 
 axis2_description_operation_t *axis2_description_operation_create 
@@ -225,7 +229,28 @@ axis2_hash_t *axis2_description_operation_ops_get_params(
 	
 	return axis2_description_param_include_get_params(env
 		, operation_desc->param_include);
-}	
+}
+
+axis2_bool_t axis2_description_operation_ops_is_param_locked(
+		axis2_environment_t *env, axis2_description_operation_t *operation_desc
+		, const axis2_char_t *param_name)
+{
+	if(!env || !operation_desc || !operation_desc->param_include)
+	{
+		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_FALSE;
+	}
+	axis2_char_t *tempname = axis2_strdup(env->string, param_name);
+	if(!tempname)
+	{
+		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		return AXIS2_FALSE;
+	}
+		
+	return axis2_description_param_include_is_param_locked (env
+		, operation_desc->param_include, param_name); 
+	
+}
 
 axis2_status_t axis2_description_operation_ops_set_parent
 		(axis2_environment_t *env ,axis2_description_operation_t *operation_desc
