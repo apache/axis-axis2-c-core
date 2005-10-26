@@ -20,17 +20,6 @@ struct axis2_description_service_s
 axis2_status_t axis2_description_service_ops_free (axis2_environment_t *env
 		, axis2_description_service_t *service_desc);
 
-axis2_status_t axis2_description_service_ops_add_param(axis2_environment_t *env
-		, axis2_description_service_t *operation_desc
-		, axis2_description_param_t *param);
-
-axis2_description_param_t *axis2_description_service_ops_get_param
-		(axis2_environment_t *env, axis2_description_service_t *service_desc
-		, const axis2_char_t *name);
-
-axis2_hash_t *axis2_description_service_ops_get_params
-		(axis2_environment_t *env, axis2_description_service_t *service_desc);
-
 axis2_status_t axis2_description_service_ops_add_operation
 		(axis2_environment_t *env, axis2_description_service_t *service_desc
 		, axis2_description_operation_t *operation_desc);
@@ -57,6 +46,21 @@ axis2_description_servicegroup_t *axis2_description_service_ops_get_parent
 		
 axis2_qname_t *axis2_description_service_ops_get_name
 		(axis2_environment_t *env, axis2_description_service_t *service_desc);	
+
+axis2_status_t axis2_description_service_ops_add_param(axis2_environment_t *env
+		, axis2_description_service_t *service_desc
+		, axis2_description_param_t *param);
+
+axis2_description_param_t *axis2_description_service_ops_get_param
+		(axis2_environment_t *env, axis2_description_service_t *service_desc
+		, const axis2_char_t *name);
+
+axis2_hash_t *axis2_description_service_ops_get_params
+		(axis2_environment_t *env, axis2_description_service_t *service_desc);
+
+axis2_bool_t axis2_description_service_ops_is_param_locked(
+		axis2_environment_t *env, axis2_description_service_t *service_desc
+		, const axis2_char_t *param_name);
 		
 /************************* End of function headers ***************************/
 
@@ -147,6 +151,8 @@ axis2_description_service_t *axis2_description_service_create_with_qname
 axis2_status_t axis2_description_service_ops_free
 		(axis2_environment_t *env, axis2_description_service_t *service_desc)
 {
+	if(!env)
+		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
 	if(service_desc)
 	{
 		axis2_free(env->allocator, service_desc);
@@ -155,55 +161,6 @@ axis2_status_t axis2_description_service_ops_free
 	return AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED;
 }
 
-axis2_status_t axis2_description_service_ops_add_param(axis2_environment_t *env
-		, axis2_description_service_t *service_desc
-		, axis2_description_param_t *param)
-{
-	if(!service_desc || !service_desc->param_include || !param)
-	{
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
-	}
-	axis2_hash_set (axis2_description_param_include_get_params(env
-		, service_desc->param_include), axis2_description_param_get_name(env
-		, param)
-		, AXIS2_HASH_KEY_STRING, param);	
-	return AXIS2_SUCCESS;
-}
-
-axis2_description_param_t *axis2_description_service_ops_get_param(
-		axis2_environment_t *env, axis2_description_service_t *service_desc
-		, const axis2_char_t *name)
-{
-	if(!service_desc || !service_desc->param_include)
-	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
-		return NULL;
-	}
-	axis2_char_t *tempname = axis2_strdup(env->string, name);
-	if(!tempname)
-	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
-		return NULL;
-	}
-		
-	return (axis2_description_param_t *)(axis2_hash_get 
-		(axis2_description_param_include_get_params(env
-		, service_desc->param_include), tempname, AXIS2_HASH_KEY_STRING));
-	
-}
-
-axis2_hash_t *axis2_description_service_ops_get_params
-		(axis2_environment_t *env, axis2_description_service_t *service_desc)
-{
-	if(!service_desc)
-	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
-		return NULL;		
-	}
-	return axis2_description_param_include_get_params(env
-		, service_desc->param_include);
-	
-}
 
 axis2_status_t axis2_description_service_ops_add_operation
 		(axis2_environment_t *env, axis2_description_service_t *service_desc
@@ -311,4 +268,75 @@ axis2_qname_t *axis2_description_service_ops_get_name
 		return NULL;	
 	}
 	return service_desc->name;
+}
+
+axis2_status_t axis2_description_service_ops_add_param(axis2_environment_t *env
+		, axis2_description_service_t *service_desc
+		, axis2_description_param_t *param)
+{
+	if(!env || !service_desc || !service_desc->param_include || !param)
+	{
+		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	}
+	axis2_hash_set (axis2_description_param_include_get_params(env
+		, service_desc->param_include), axis2_description_param_get_name(env
+		, param)
+		, AXIS2_HASH_KEY_STRING, param);	
+	return AXIS2_SUCCESS;
+}
+
+axis2_description_param_t *axis2_description_service_ops_get_param(
+		axis2_environment_t *env, axis2_description_service_t *service_desc
+		, const axis2_char_t *name)
+{
+	if(!env || !service_desc || !service_desc->param_include)
+	{
+		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return NULL;
+	}
+	axis2_char_t *tempname = axis2_strdup(env->string, name);
+	if(!tempname)
+	{
+		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		return NULL;
+	}
+		
+	return (axis2_description_param_t *)(axis2_hash_get 
+		(axis2_description_param_include_get_params(env
+		, service_desc->param_include), tempname, AXIS2_HASH_KEY_STRING));
+	
+}
+
+axis2_hash_t *axis2_description_service_ops_get_params
+		(axis2_environment_t *env, axis2_description_service_t *service_desc)
+{
+	if(!env || !service_desc)
+	{
+		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return NULL;		
+	}
+	return axis2_description_param_include_get_params(env
+		, service_desc->param_include);
+	
+}
+
+axis2_bool_t axis2_description_service_ops_is_param_locked(
+		axis2_environment_t *env, axis2_description_service_t *service_desc
+		, const axis2_char_t *param_name)
+{
+	if(!env || !service_desc || !service_desc->param_include)
+	{
+		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_FALSE;
+	}
+	axis2_char_t *tempname = axis2_strdup(env->string, param_name);
+	if(!tempname)
+	{
+		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		return AXIS2_FALSE;
+	}
+		
+	return axis2_description_param_include_is_param_locked (env
+		, service_desc->param_include, param_name); 
+	
 }

@@ -63,9 +63,32 @@ extern "C"
 		servicegroup_desc)->add_service (env, servicegroup_desc, service_desc));
 
 #define axis2_description_servicegroup_get_service(env, servicegroup_desc \
-		, service_desc) ((axis2_description_servicegroup_get_ops(env, \
+		, service_desc) (axis2_description_servicegroup_get_ops(env, \
 		servicegroup_desc)->get_service(env, servicegroup_desc, service_desc));
+		
+#define axis2_description_servicegroup_remove_service(env, servicegroup_desc \
+		, service_name) (axis2_description_servicegroup_get_ops(env, \
+		servicegroup_desc)->remove_service(env, servicegroup_desc, service_name));		
 
+#define axis2_description_servicegroup_add_param(env, servicegroup_desc, param) \
+		(axis2_description_servicegroup_get_ops(env, \
+		servicegroup_desc)->add_param(env, servicegroup_desc, param));
+		
+		
+
+#define axis2_description_servicegroup_get_param(env, servicegroup_desc, name) \
+		(axis2_description_servicegroup_get_ops(env, \
+		servicegroup_desc)->get_param(env, servicegroup_desc, name));
+		
+#define axis2_description_servicegroup_get_params(env, servicegroup_desc) \
+		(axis2_description_servicegroup_get_ops(env, \
+		servicegroup_desc)->get_params(env, servicegroup_desc));
+		
+		
+#define axis2_description_servicegroup_is_param_locked(env, servicegroup_desc \
+		, param_name)(axis2_description_servicegroup_get_ops(env, \
+		servicegroup_desc)->is_param_locked(env, servicegroup_desc, param_name));
+		
 /**************************** End of function macros **************************/
 /**************************** Function pointers *******************************/
 
@@ -109,8 +132,31 @@ typedef axis2_description_service_t
 		*(*axis2_description_servicegroup_get_service_t)
 		(axis2_environment_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc
-		, const axis2_qname_t* service_name);		
+		, const axis2_qname_t* service_name);
 
+typedef axis2_status_t (*axis2_description_servicegroup_remove_service_t)
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc
+		, const axis2_qname_t* service_name);
+		
+typedef axis2_status_t (*axis2_description_servicegroup_add_param_t)
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc
+		, axis2_description_param_t *param);
+		
+
+typedef axis2_description_param_t *(*axis2_description_servicegroup_get_param_t)(
+		axis2_environment_t *env, axis2_description_servicegroup_t *servicegroup_desc
+		, const axis2_char_t *name);
+		
+typedef axis2_hash_t *(*axis2_description_servicegroup_get_params_t)
+		(axis2_environment_t *env
+		, axis2_description_servicegroup_t *servicegroup_desc);
+		
+typedef axis2_bool_t (*axis2_description_servicegroup_is_param_locked_t)
+		(axis2_environment_t *env, axis2_description_servicegroup_t *servicegroup_desc
+		, const axis2_char_t *param_name);
+		
 /*************************** End of function pointers *************************/
 
 struct axis2_description_servicegroup_ops_s
@@ -120,6 +166,11 @@ struct axis2_description_servicegroup_ops_s
 	axis2_description_servicegroup_get_name_t get_name;
 	axis2_description_servicegroup_add_service_t add_service;
 	axis2_description_servicegroup_get_service_t get_service;
+	axis2_description_servicegroup_remove_service_t remove_service;
+	axis2_description_servicegroup_add_param_t add_param;
+	axis2_description_servicegroup_get_param_t get_param;
+	axis2_description_servicegroup_get_params_t get_params;
+	axis2_description_servicegroup_is_param_locked_t is_param_locked;
 };
 
 axis2_description_servicegroup_ops_t *axis2_description_servicegroup_get_ops 
