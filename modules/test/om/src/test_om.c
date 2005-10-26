@@ -31,7 +31,8 @@ test_om_build (char *file_name)
 
     reader = guththila_reader_create (my_guththila_environment, fp);
 
-    parser = guththila_xml_pull_parser_create (my_guththila_environment, reader);
+    parser =
+        guththila_xml_pull_parser_create (my_guththila_environment, reader);
 
     guththila_xml_pull_parser_read (my_guththila_environment, parser);
 
@@ -40,18 +41,20 @@ test_om_build (char *file_name)
         printf ("Read Failed");
     }
 
-    builder = axis2_om_stax_builder_create (environment, parser, my_guththila_environment);
+    builder =
+        axis2_om_stax_builder_create (environment, parser,
+                                      my_guththila_environment);
     document = axis2_om_document_create (environment, NULL, builder);
     printf ("START: pull document\n");
     node1 = axis2_om_document_get_root_element (environment, document);
     printf ("root localname %s\n",
             ((axis2_om_element_t *) (node1->data_element))->localname);
-    if (((axis2_om_element_t *)(node1->data_element))->ns)
+    if (((axis2_om_element_t *) (node1->data_element))->ns)
         printf ("root ns prefix %s\n",
-            ((axis2_om_element_t *) (node1->data_element))->ns->prefix);
-    if (((axis2_om_element_t *)(node1->data_element))->ns)
+                ((axis2_om_element_t *) (node1->data_element))->ns->prefix);
+    if (((axis2_om_element_t *) (node1->data_element))->ns)
         printf ("root ns uri %s\n",
-            ((axis2_om_element_t *) (node1->data_element))->ns->uri);
+                ((axis2_om_element_t *) (node1->data_element))->ns->uri);
 
 
     node2 = axis2_om_document_build_next (environment, document);
@@ -63,21 +66,21 @@ test_om_build (char *file_name)
 
         switch (node2->node_type)
         {
-			case AXIS2_OM_ELEMENT:
-				if (((axis2_om_element_t *) (node2->data_element))->localname)
-					printf ("Element localname %s\n",
+        case AXIS2_OM_ELEMENT:
+            if (((axis2_om_element_t *) (node2->data_element))->localname)
+                printf ("Element localname %s\n",
                         ((axis2_om_element_t *) (node2->data_element))->
                         localname);
             break;
-			case AXIS2_OM_TEXT:
-				if (((axis2_om_text_t *) (node2->data_element))
-					&& ((axis2_om_text_t *) (node2->data_element))->value)
-					printf ("Element Text value %s\n",
+        case AXIS2_OM_TEXT:
+            if (((axis2_om_text_t *) (node2->data_element))
+                && ((axis2_om_text_t *) (node2->data_element))->value)
+                printf ("Element Text value %s\n",
                         ((axis2_om_text_t *) (node2->data_element))->value);
             break;
-			
-			default:
-			break;
+
+        default:
+            break;
         }
 
         node2 = axis2_om_document_build_next (environment, document);
@@ -88,9 +91,12 @@ test_om_build (char *file_name)
     printf ("Serialize pulled document\n");
     om_output = axis2_om_output_create (environment, NULL, NULL);
     axis2_om_node_serialize (environment, node1, om_output);
-	axis2_free (environment->allocator, om_output);
+    axis2_free (environment->allocator, om_output);
+    axis2_om_document_free (environment, document);
+    axis2_om_stax_builder_free (environment, builder);
     guththila_xml_pull_parser_free (my_guththila_environment, parser);
-	printf ("\n\n");
+	
+    printf ("\n\n");
 }
 
 /*
@@ -177,9 +183,9 @@ test_om_serialize ()
         printf ("\naxis2_om_node_serialize success\n");
     /* end serializing stuff */
 
-    axis2_om_node_free(environment, node1);
+    axis2_om_node_free (environment, node1);
     axis2_free (environment->allocator, om_output);
-	
+
     printf ("\nDONE\n");
 
     return 0;
@@ -188,15 +194,17 @@ test_om_serialize ()
 int
 main (int argc, char *argv[])
 {
-	char *file_name = "test.xml"; 
-	if (argc > 1)
-		file_name = argv[1];
+    char *file_name = "test.xml";
+    if (argc > 1)
+        file_name = argv[1];
     allocator = axis2_allocator_init (NULL);
     environment =
         axis2_environment_create (allocator, NULL, NULL, NULL, NULL);
-	
-	my_guththila_allocator = guththila_allocator_init(NULL);
-	my_guththila_environment = guththila_environment_create(my_guththila_allocator, NULL, NULL, NULL, NULL);
+
+    my_guththila_allocator = guththila_allocator_init (NULL);
+    my_guththila_environment =
+        guththila_environment_create (my_guththila_allocator, NULL, NULL,
+                                      NULL, NULL);
 
     test_om_build (file_name);
     test_om_serialize ();

@@ -121,10 +121,10 @@ axis2_hash_next (axis2_environment_t * environment, axis2_hash_index_t * hi)
     while (!hi->this)
     {
         if (hi->index > hi->ht->max)
-		{
-			axis2_free (environment->allocator, hi);
+        {
+            axis2_free (environment->allocator, hi);
             return NULL;
-		}
+        }
 
         hi->this = hi->ht->array[hi->index++];
     }
@@ -174,7 +174,8 @@ expand_array (axis2_hash_t * ht)
 
     new_max = ht->max * 2 + 1;
     new_array = alloc_array (ht, new_max);
-    for (hi = axis2_hash_first (NULL, ht); hi; hi = axis2_hash_next (NULL, hi))
+    for (hi = axis2_hash_first (NULL, ht); hi;
+         hi = axis2_hash_next (NULL, hi))
     {
         unsigned int i = hi->this->hash & new_max;
         hi->this->next = new_array[i];
@@ -498,33 +499,34 @@ axis2_hash_merge (axis2_environment_t * environment,
 }
 
 
-static void axis2_hash_entry_free(axis2_environment_t *environment,axis2_hash_entry_t *hash_entry)
-{	
-	axis2_hash_entry_t *entry;
-	if(!hash_entry)
-		return;
-	if(hash_entry->next)
-	{
-		axis2_hash_entry_free(environment,hash_entry->next);
-	}
-	axis2_free(environment->allocator,hash_entry->key);
-	axis2_free(environment->allocator,hash_entry->val);
-	axis2_free(environment->allocator,hash_entry);
-	return;		
+static void
+axis2_hash_entry_free (axis2_environment_t * environment,
+                       axis2_hash_entry_t * hash_entry)
+{
+    printf ("hash entry called ");
+    if (!hash_entry)
+        return;
+    if (hash_entry->next)
+    {
+        axis2_hash_entry_free (environment, hash_entry->next);
+    }
+    /* axis2_free(environment->allocator,hash_entry->key); 
+       axis2_free(environment->allocator,hash_entry->val);
+     */
+    axis2_free (environment->allocator, hash_entry);
+    return;
 }
 
-axis2_status_t axis2_hash_free(axis2_environment_t *environment,axis2_hash_t *ht)
+axis2_status_t
+axis2_hash_free (axis2_environment_t * environment, axis2_hash_t * ht)
 {
-    int i=0;
-    if(ht)
+    if (ht)
     {
-         while((ht->array[i]))
-              axis2_hash_entry_free(environment,(axis2_hash_entry_t*)(ht->array[i]));
-         if(ht->free)
-              axis2_hash_entry_free(environment,ht->free);
-         axis2_free(environment->allocator,ht);
-         return AXIS2_SUCCESS;
+        if (ht->free)
+            axis2_hash_entry_free (environment, ht->free);
+        axis2_free (environment->allocator, ht->array);
+        axis2_free (environment->allocator, ht);
+        return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
 }
-                                                                            
