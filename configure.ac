@@ -108,6 +108,9 @@ AC_CONFIG_FILES([Makefile \
     modules/util/Makefile \
     modules/util/src/Makefile \
     modules/util/test/Makefile \
+    modules/wsdl/Makefile \
+    modules/wsdl/src/Makefile \
+    modules/wsdl/test/Makefile \
     modules/test/Makefile \
     modules/test/om/Makefile \
     modules/test/om/src/Makefile \

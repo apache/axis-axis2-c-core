@@ -8,6 +8,6 @@ if COND_TEST
   MAYBE_TEST = test
 endif
 
-#SUBDIRS = util common xml core test
+#SUBDIRS = util common xml core wsdl test
 SUBDIRS = util common $(MAYBE_XML) $(MAYBE_CORE)  $(MAYBE_TEST)
 #SUBDIRS = util common test

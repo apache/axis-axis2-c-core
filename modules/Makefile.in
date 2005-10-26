@@ -173,7 +173,7 @@ target_vendor = @target_vendor@
 @COND_CORE_TRUE@MAYBE_CORE = core
 @COND_TEST_TRUE@MAYBE_TEST = test
 
-#SUBDIRS = util common xml core test
+#SUBDIRS = util common xml core wsdl test
 SUBDIRS = util common $(MAYBE_XML) $(MAYBE_CORE)  $(MAYBE_TEST)
 all: all-recursive
 
