@@ -293,7 +293,7 @@ axis2_om_stax_builder_process_namespaces (axis2_environment_t * environment,
     axis2_char_t *temp_prefix = NULL;
 
     namespace_count =
-        guththila_xml_pull_parser_get_namespacecount (om_stax_builder_guththila_environment, builder->parser);
+        guththila_xml_pull_parser_get_namespace_count (om_stax_builder_guththila_environment, builder->parser);
 
     for (; namespace_count > 0; namespace_count--)
     {
