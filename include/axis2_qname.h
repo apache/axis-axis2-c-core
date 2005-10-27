@@ -43,13 +43,13 @@ static const axis2_char_t XML_NAMESPACE_URI[] =
  * Encapsulator struct for operations of axis2_qname
  */
                       
-typedef struct axis2_qname_ops
+AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
 {
     /**
      *  Free a qname struct
      *  @return Status code
      */
-    axis2_status_t (*axis2_qname_ops_free) (axis2_environment_t * environment,
+    axis2_status_t (AXIS2_CALL *axis2_qname_ops_free) (axis2_environment_t * environment,
                                             struct axis2_qname * qname);
 
      /** 
@@ -59,7 +59,7 @@ typedef struct axis2_qname_ops
       * @return true if qname1 equals qname2, false otherwise 
       */
 
-    axis2_bool_t (*axis2_qname_ops_equals) (axis2_environment_t * environment,
+    axis2_bool_t (AXIS2_CALL *axis2_qname_ops_equals) (axis2_environment_t * environment,
                                             struct axis2_qname * qname1,
                                             struct axis2_qname * qname2);
 
@@ -93,7 +93,7 @@ typedef struct axis2_qname
  * @return a pointer to newly created qname struct
  */
 
-axis2_qname_t *axis2_qname_create (axis2_environment_t * environment,
+AXIS2_DECLARE(axis2_qname_t *) axis2_qname_create (axis2_environment_t * environment,
                                    const axis2_char_t * localpart,
                                    const axis2_char_t * namespace_uri,
                                    const axis2_char_t * prefix);

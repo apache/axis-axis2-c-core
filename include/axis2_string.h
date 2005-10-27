@@ -37,21 +37,21 @@ extern "C"
   *
   * Encapsulator for string handling routines
   */
-    typedef struct axis2_string
+   AXIS2_DECLARE_DATA typedef struct axis2_string
     {
       /**
         * duplicates the given string
         * @param ptr string to be duplicated
         * @return pointer to the duplicated string
         */
-        AXIS2_DECLARE_DATA void * (AXIS2_CALL *axis2_string_strdup) (const void *ptr);
+        void * (AXIS2_CALL *axis2_string_strdup) (const void *ptr);
       /**
         * compares the given two strings
         * @param s1 first string to be compared
         * @param s2 second string to be compared
         * @return 0 if the two strings are equal, else non zero
         */
-        AXIS2_DECLARE_DATA int (AXIS2_CALL *axis2_string_strcmp) (const axis2_char_t * s1,
+        int (AXIS2_CALL *axis2_string_strcmp) (const axis2_char_t * s1,
                                     const axis2_char_t * s2);
     } axis2_string_t;
 

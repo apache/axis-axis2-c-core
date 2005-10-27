@@ -78,7 +78,7 @@ extern "C"
  * @param environment The environment to allocate the hash table out of
  * @return The hash table just created
   */
-    axis2_hash_t *axis2_hash_make (axis2_environment_t * environment);
+  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make (axis2_environment_t * environment);
 
 /**
  * Create a hash table with a custom hash function
@@ -86,7 +86,7 @@ extern "C"
  * @param hash_func A custom hash function.
  * @return The hash table just created
   */
-    axis2_hash_t *axis2_hash_make_custom (axis2_environment_t * environment,
+   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make_custom (axis2_environment_t * environment,
                                           axis2_hashfunc_t hash_func);
 
 /**
@@ -96,7 +96,7 @@ extern "C"
  * @return The hash table just created
  * @remark Makes a shallow copy
  */
-    axis2_hash_t *axis2_hash_copy (axis2_environment_t * environment,
+  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_copy (axis2_environment_t * environment,
                                    const axis2_hash_t * h);
 
 /**
@@ -107,7 +107,7 @@ extern "C"
  * @param val Value to associate with the key
  * @remark If the value is NULL the hash entry is deleted.
  */
-    void axis2_hash_set (axis2_hash_t * ht, const void *key,
+  AXIS2_DECLARE(void) axis2_hash_set (axis2_hash_t * ht, const void *key,
                          axis2_ssize_t klen, const void *val);
 
 /**
@@ -117,7 +117,7 @@ extern "C"
  * @param klen Length of the key. Can be AXIS2_HASH_KEY_STRING to use the string length.
  * @return Returns NULL if the key is not present.
  */
-    void *axis2_hash_get (axis2_hash_t * ht, const void *key,
+   AXIS2_DECLARE(void*) axis2_hash_get (axis2_hash_t * ht, const void *key,
                           axis2_ssize_t klen);
 
 /**
@@ -148,7 +148,7 @@ extern "C"
  * }
  * </PRE>
  */
-    axis2_hash_index_t *axis2_hash_first (axis2_environment_t * environment,
+ AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_first (axis2_environment_t * environment,
                                           axis2_hash_t * ht);
 
 /**
@@ -157,7 +157,7 @@ extern "C"
  * @return a pointer to the updated iteration state.  NULL if there are no more  
  *         entries.
  */
-    axis2_hash_index_t *axis2_hash_next (axis2_environment_t * environment, axis2_hash_index_t * hi);
+ AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_next (axis2_environment_t * environment, axis2_hash_index_t * hi);
 
 /**
  * Get the current entry's details from the iteration state.
@@ -168,7 +168,7 @@ extern "C"
  * @remark The return pointers should point to a variable that will be set to the
  *         corresponding data, or they may be NULL if the data isn't interesting.
  */
-    void axis2_hash_this (axis2_hash_index_t * hi, const void **key,
+ AXIS2_DECLARE(void) axis2_hash_this (axis2_hash_index_t * hi, const void **key,
                           axis2_ssize_t * klen, void **val);
 
 /**
@@ -187,7 +187,7 @@ extern "C"
  * @param base The table that represents the initial values of the new table
  * @return A new hash table containing all of the data from the two passed in
  */
-    axis2_hash_t *axis2_hash_overlay (axis2_environment_t * environment,
+  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_overlay (axis2_environment_t * environment,
                                       const axis2_hash_t * overlay,
                                       const axis2_hash_t * base);
 
@@ -205,7 +205,7 @@ extern "C"
  * @param data Client data to pass to the merger function
  * @return A new hash table containing all of the data from the two passed in
  */
-    axis2_hash_t *axis2_hash_merge (axis2_environment_t * environment,
+  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_merge (axis2_environment_t * environment,
                                     const axis2_hash_t * h1,
                                     const axis2_hash_t * h2,
                                     void *(*merger) (axis2_environment_t *
@@ -216,6 +216,7 @@ extern "C"
                                                      const void *h2_val,
                                                      const void *data),
                                     const void *data);
+
 									
 /**
  * @param environment The environment to use for hash table
@@ -224,9 +225,10 @@ extern "C"
  *
  */
 									
-	axis2_status_t axis2_hash_free(axis2_environment_t *environment,
+AXIS2_DECLARE(axis2_status_t) axis2_hash_free(axis2_environment_t *environment,
 									axis2_hash_t *ht);
 									
+
 
 /** @} */
 

@@ -16,7 +16,7 @@
 
 #include <axis2_environment.h>
 
-axis2_environment_t *
+AXIS2_DECLARE(axis2_environment_t *)
 axis2_environment_create (axis2_allocator_t * allocator,
                           axis2_error_t * error, axis2_stream_t * stream,
                           axis2_log_t * log, axis2_string_t * string)

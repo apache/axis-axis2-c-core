@@ -19,7 +19,7 @@
 
 axis2_status_t AXIS2_CALL axis2_log_impl_write (const void *buffer, size_t count);
 
-axis2_log_t *
+AXIS2_DECLARE(axis2_log_t *)
 axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * operations)
 {
     axis2_log_t *log;
@@ -51,7 +51,7 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * operations)
     return log;
 }
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_log_impl_write (const void *buffer, size_t count)
 {
     int i;

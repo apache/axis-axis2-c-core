@@ -31,7 +31,7 @@ axis2_char_t AXIS2_CALL axis2_stream_impl_file_get_char(void *file_ptr);
 
 axis2_status_t AXIS2_CALL axis2_stream_impl_file_unget_char(const char chr, void *file_ptr);
 
-axis2_stream_t *
+AXIS2_DECLARE(axis2_stream_t *)
 axis2_stream_create (axis2_allocator_t * allocator,
                      axis2_stream_t * stream)
 {
@@ -115,7 +115,7 @@ axis2_stream_create (axis2_allocator_t * allocator,
     return NULL;
 }
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_stream_impl_read (void *buffer, size_t count)
 {
     int i;
@@ -131,7 +131,7 @@ axis2_stream_impl_read (void *buffer, size_t count)
     return 0;
 }
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_stream_impl_write (const void *buffer, size_t count)
 {
     int i;
@@ -145,30 +145,32 @@ axis2_stream_impl_write (const void *buffer, size_t count)
     return 0;
 }
 
-void *axis2_stream_impl_file_open(const char *file_name, const char *options)
+void* AXIS2_CALL axis2_stream_impl_file_open(const char *file_name, const char *options)
 {
+    FILE *file_ptr;
+    char *f_opt;
 	char *f_name = (char*) strdup(file_name);
 	if(!f_name) return NULL;
-	char *f_opt = (char*) strdup(options);
+	    f_opt = (char*) strdup(options);
 	if(!f_opt) return NULL;
 	
-	FILE *file_ptr = fopen (f_name, f_opt);
+	file_ptr = fopen (f_name, f_opt);
 	return file_ptr;
 }
 
-axis2_status_t axis2_stream_impl_file_close(void *file_ptr)
+axis2_status_t AXIS2_CALL axis2_stream_impl_file_close(void *file_ptr)
 {
 	if(!file_ptr) return -1;
 	return (axis2_status_t) fclose(file_ptr);
 }
 
-axis2_char_t axis2_stream_impl_file_get_char(void *file_ptr)
+axis2_char_t AXIS2_CALL axis2_stream_impl_file_get_char(void *file_ptr)
 {
 	if(!file_ptr) return -1;
 	return (axis2_char_t) fgetc(file_ptr);
 }
 
-axis2_status_t axis2_stream_impl_file_unget_char(const char chr, void *file_ptr)
+axis2_status_t AXIS2_CALL axis2_stream_impl_file_unget_char(const char chr, void *file_ptr)
 {
 	if(!file_ptr) return -1;
 	return (axis2_status_t) ungetc(chr, file_ptr);

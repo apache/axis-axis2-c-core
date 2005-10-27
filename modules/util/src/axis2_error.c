@@ -18,7 +18,7 @@
 
 axis2_char_t * AXIS2_CALL axis2_error_impl_get_message ();
 
-axis2_error_t *
+AXIS2_DECLARE(axis2_error_t*)
 axis2_error_create (axis2_allocator_t * allocator)
 {
     axis2_error_t *error;
@@ -46,7 +46,7 @@ axis2_error_create (axis2_allocator_t * allocator)
     return error;
 }
 
-axis2_char_t *
+axis2_char_t * AXIS2_CALL
 axis2_error_impl_get_message ()
 {
     /** TODO: Need to fill in the error message list and get the error from that list */

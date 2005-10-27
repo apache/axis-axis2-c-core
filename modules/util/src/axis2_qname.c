@@ -24,13 +24,13 @@ axis2_status_t AXIS2_CALL  axis2_qname_impl_free (axis2_environment_t * environm
 axis2_bool_t AXIS2_CALL  axis2_qname_impl_equals (axis2_environment_t * environment,
                                       axis2_qname_t * qn1,
                                       axis2_qname_t * qn2);
-axis2_qname_t AXIS2_CALL  *axis2_qname_create (axis2_environment_t * environment,
+/*AXIS2_DECLARE(axis2_qname_t*) axis2_qname_create (axis2_environment_t * environment,
                                    const axis2_char_t * localpart,
                                    const axis2_char_t * namespace_uri,
                                    const axis2_char_t * prefix);
+*/
 
-
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_qname_impl_free (axis2_environment_t * environment,
                        axis2_qname_t * qname)
 {
@@ -60,7 +60,7 @@ axis2_qname_impl_free (axis2_environment_t * environment,
 
 }
 
-axis2_bool_t
+axis2_bool_t AXIS2_CALL
 axis2_qname_impl_equals (axis2_environment_t * environment,
                          axis2_qname_t * qn1, axis2_qname_t * qn2)
 {
@@ -100,7 +100,7 @@ axis2_qname_impl_equals (axis2_environment_t * environment,
 }
 
 
-axis2_qname_t *
+AXIS2_DECLARE(axis2_qname_t *)
 axis2_qname_create (axis2_environment_t * environment,
                     const axis2_char_t * localpart,
                     const axis2_char_t * namespace_uri,

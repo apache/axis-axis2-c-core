@@ -24,6 +24,10 @@ axis2_status_t axis2_file_diff_clean(axis2_environment_t *env);
 axis2_status_t axis2_file_diff(axis2_environment_t *env
 		, axis2_char_t* expected_file_name, axis2_char_t* actual_file_name)
 {
+    int ch1, ch2;
+    int j = 0, k = 0;
+   	axis2_char_t *buffer1, *buffer2;
+   	int flag1 = 0, flag2 = 0;
 	expected_file = axis2_stream_file_open (env->stream
 		, expected_file_name, "rt");
 	 
@@ -37,16 +41,14 @@ axis2_status_t axis2_file_diff(axis2_environment_t *env
 		return AXIS2_ERROR_COULD_NOT_OPEN_FILE;
 	}
 	
-   	int ch1, ch2;
-   	axis2_char_t *buffer1, *buffer2;
-   	int flag1 = 0, flag2 = 0;
+   	
    
    	buffer1 = (axis2_char_t*) axis2_malloc(env->allocator, 8096 * sizeof(axis2_char_t));
    	buffer2 = (axis2_char_t*) axis2_malloc(env->allocator, 8096 * sizeof(axis2_char_t));
    	ch1 = axis2_stream_file_get_char (env->stream, expected_file);
    	ch2 = axis2_stream_file_get_char (env->stream, actual_file);
 	
-   	int j = 0, k = 0;
+   	
    	while(1)
    	{
         

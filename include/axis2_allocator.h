@@ -34,32 +34,34 @@ extern "C"
  * @ingroup axis2_util 
  * @{
  */
+ 
+ 
 
 /** 
   * \brief Axis2 memory allocator
   *
   * Encapsulator for memory allocating routines
   */
-    typedef struct axis2_allocator
+   AXIS2_DECLARE_DATA typedef struct axis2_allocator
     {
       /**
         * allocates memory
         * @param size size of the memory block to be allocated
         * @return pointer to the allocated memory block
         */
-        AXIS2_DECLARE_DATA void * (AXIS2_CALL *axis2_allocator_malloc) (size_t size);
+         void * (*axis2_allocator_malloc) (size_t size);
       /**
         * re-llocates memory
         * @param ptr memory block who's size to be changed
         * @param size size of the memory block to be allocated
         * @return pointer to the allocated memory block
         */
-        AXIS2_DECLARE_DATA void * (AXIS2_CALL *axis2_allocator_realloc) (void *ptr, size_t size);
+         void * (*axis2_allocator_realloc) (void *ptr, size_t size);
       /**
         * frees memory
         * @param ptr pointer to be freed
         */
-        AXIS2_DECLARE_DATA void (AXIS2_CALL *axis2_allocator_free) (void *ptr);
+         void (*axis2_allocator_free) (void *ptr);
     } axis2_allocator_t;
 
   /**
@@ -79,4 +81,4 @@ extern "C"
 }
 #endif
 
-#endif                          /* AXIS2_ALLOCATOR_H */
+#endif    /* AXIS2_ALLOCATOR_H */

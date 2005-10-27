@@ -86,7 +86,7 @@ alloc_array (axis2_hash_t * ht, unsigned int max)
                    sizeof (*ht->array) * (max + 1));
 }
 
-axis2_hash_t *
+AXIS2_DECLARE(axis2_hash_t*)
 axis2_hash_make (axis2_environment_t * environment)
 {
     axis2_hash_t *ht;
@@ -100,7 +100,7 @@ axis2_hash_make (axis2_environment_t * environment)
     return ht;
 }
 
-axis2_hash_t *
+AXIS2_DECLARE(axis2_hash_t*)
 axis2_hash_make_custom (axis2_environment_t * environment,
                         axis2_hashfunc_t hash_func)
 {
@@ -114,7 +114,7 @@ axis2_hash_make_custom (axis2_environment_t * environment,
  * Hash iteration functions.
  */
 
-axis2_hash_index_t *
+AXIS2_DECLARE(axis2_hash_index_t*)
 axis2_hash_next (axis2_environment_t * environment, axis2_hash_index_t * hi)
 {
     hi->this = hi->next;
@@ -132,7 +132,7 @@ axis2_hash_next (axis2_environment_t * environment, axis2_hash_index_t * hi)
     return hi;
 }
 
-axis2_hash_index_t *
+AXIS2_DECLARE(axis2_hash_index_t*)
 axis2_hash_first (axis2_environment_t * environment, axis2_hash_t * ht)
 {
     axis2_hash_index_t *hi;
@@ -148,7 +148,7 @@ axis2_hash_first (axis2_environment_t * environment, axis2_hash_t * ht)
     return axis2_hash_next (environment, hi);
 }
 
-void
+AXIS2_DECLARE(void)
 axis2_hash_this (axis2_hash_index_t * hi,
                  const void **key, axis2_ssize_t * klen, void **val)
 {
@@ -295,7 +295,7 @@ find_entry (axis2_hash_t * ht,
     return hep;
 }
 
-axis2_hash_t *
+AXIS2_DECLARE(axis2_hash_t*)
 axis2_hash_copy (axis2_environment_t * environment, const axis2_hash_t * orig)
 {
     axis2_hash_t *ht;
@@ -334,7 +334,7 @@ axis2_hash_copy (axis2_environment_t * environment, const axis2_hash_t * orig)
     return ht;
 }
 
-void *
+AXIS2_DECLARE(void*)
 axis2_hash_get (axis2_hash_t * ht, const void *key, axis2_ssize_t klen)
 {
     axis2_hash_entry_t *he;
@@ -345,7 +345,7 @@ axis2_hash_get (axis2_hash_t * ht, const void *key, axis2_ssize_t klen)
         return NULL;
 }
 
-void
+AXIS2_DECLARE(void)
 axis2_hash_set (axis2_hash_t * ht,
                 const void *key, axis2_ssize_t klen, const void *val)
 {
@@ -382,14 +382,14 @@ axis2_hash_count (axis2_hash_t * ht)
     return ht->count;
 }
 
-axis2_hash_t *
+AXIS2_DECLARE(axis2_hash_t*)
 axis2_hash_overlay (axis2_environment_t * environment,
                     const axis2_hash_t * overlay, const axis2_hash_t * base)
 {
     return axis2_hash_merge (environment, overlay, base, NULL, NULL);
 }
 
-axis2_hash_t *
+AXIS2_DECLARE(axis2_hash_t*)
 axis2_hash_merge (axis2_environment_t * environment,
                   const axis2_hash_t * overlay,
                   const axis2_hash_t * base,
@@ -498,7 +498,6 @@ axis2_hash_merge (axis2_environment_t * environment,
     return res;
 }
 
-
 static void
 axis2_hash_entry_free (axis2_environment_t * environment,
                        axis2_hash_entry_t * hash_entry)
@@ -517,7 +516,7 @@ axis2_hash_entry_free (axis2_environment_t * environment,
     return;
 }
 
-axis2_status_t
+AXIS2_DECLARE(axis2_status_t)
 axis2_hash_free (axis2_environment_t * environment, axis2_hash_t * ht)
 {
     if (ht)

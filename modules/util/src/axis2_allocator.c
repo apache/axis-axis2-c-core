@@ -17,7 +17,7 @@
 #include <axis2_allocator.h>
 #include <stdlib.h>
 
-axis2_allocator_t *
+AXIS2_DECLARE(axis2_allocator_t *)
 axis2_allocator_init (axis2_allocator_t * allocator)
 {
     if (allocator)

@@ -39,13 +39,13 @@ extern "C"
     *
     * Encapsulator struct for operations of axis2_error
     */
-    typedef struct axis2_error_ops
+   AXIS2_DECLARE_DATA typedef struct axis2_error_ops
     {
       /**
         * get error message for the last error
         * @return error message for the last error. NULL on error.
         */
-        AXIS2_DECLARE_DATA axis2_char_t * (AXIS2_CALL *axis2_error_ops_get_message) ();
+         axis2_char_t * (AXIS2_CALL *axis2_error_ops_get_message) ();
     } axis2_error_ops_t;
 
   /** 
