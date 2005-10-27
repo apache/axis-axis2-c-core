@@ -30,6 +30,4 @@ typedef struct guththila_namespace_s
   int lengthuri;
 } guththila_namespace_t;
 
-
-
 #endif /* GUTHTHILA_NAMESPACE_H */

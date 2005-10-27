@@ -23,24 +23,30 @@
 
 int main (int argc, char *argv[])
 {
-  guththila_reader_t *red;
-  FILE *fp = fopen ("response.xml", "r");
-  guththila_environment_t *environment;
+  int c;
+  FILE *fp ;
   guththila_allocator_t *allocator;
+  guththila_reader_t *red;
+  guththila_environment_t *environment;
+  guththila_xml_pull_parser_t *parser;
+  
+  
+  fp = fopen ("response.xml", "r");
   allocator = guththila_allocator_init(NULL);
   environment = guththila_environment_create(allocator,NULL,NULL,NULL,NULL);
   red = guththila_reader_create (environment,fp);
-  guththila_xml_pull_parser_t *parser = guththila_xml_pull_parser_create (environment,red);
+  parser = guththila_xml_pull_parser_create (environment,red);
   guththila_xml_pull_parser_read (environment,parser);
-  int c;
+  
   while ((c = guththila_xml_pull_parser_next (environment,parser)) != -1)
     {
       switch (c)
 	{
 	case GUTHTHILA_START_DOCUMENT :
 	  {
-	    printf ("<?xml ");
 	    int ix;
+	    printf ("<?xml ");
+	    
 	    ix = guththila_xml_pull_parser_get_attribute_count (environment,parser);
 	    for (; ix > 0; ix--)
 	      {
@@ -60,10 +66,12 @@ int main (int argc, char *argv[])
 	case GUTHTHILA_START_ELEMENT:
 	case GUTHTHILA_EMPTY_ELEMENT:
 	  {
-	    printf ("<");
 	    int ia;
 	    int d;
 	    char *p;
+	    guththila_element_t *e;
+	    printf ("<");
+	    
 	     p = guththila_xml_pull_parser_get_prefix (environment,parser);
 	    if (p)
 	      {
@@ -73,7 +81,7 @@ int main (int argc, char *argv[])
 	    p = guththila_xml_pull_parser_get_name (environment,parser);
 	    printf ("%s", p);
 	    free (p);
-	    guththila_element_t *e;
+	    
 	    ia = guththila_xml_pull_parser_get_attribute_count (environment,parser);
 	    for ( ; ia > 0; ia--)
 	      {
@@ -123,8 +131,9 @@ int main (int argc, char *argv[])
 	  break;
 	  case GUTHTHILA_END_ELEMENT:
 	  {
-	    printf ("</");
 	    char *p;
+	    printf ("</");
+	    
 	    p = guththila_xml_pull_parser_get_prefix (environment,parser);
 	    if (p)
 	      {

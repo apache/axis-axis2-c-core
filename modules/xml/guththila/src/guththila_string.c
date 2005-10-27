@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void* guththila_string_ops_strdup(const void* ptr)
+void* GUTHTHILA_CALL guththila_string_ops_strdup(const void* ptr)
 {
     if (ptr)
         return (void*)strdup((const char*)ptr);
@@ -26,7 +26,7 @@ void* guththila_string_ops_strdup(const void* ptr)
         return NULL;
 }
 
-int guththila_string_ops_strcmp(const guththila_char_t *s1, const guththila_char_t *s2)
+int GUTHTHILA_CALL guththila_string_ops_strcmp(const guththila_char_t *s1, const guththila_char_t *s2)
 {
     if (s1 && s2)
         return strcmp(s1, s2);
@@ -36,7 +36,7 @@ int guththila_string_ops_strcmp(const guththila_char_t *s1, const guththila_char
 
 
 
-int guththila_string_ops_strlen(const guththila_char_t *s)
+int GUTHTHILA_CALL guththila_string_ops_strlen(const guththila_char_t *s)
 {
     if(s)
     {
@@ -52,7 +52,7 @@ int guththila_string_ops_strlen(const guththila_char_t *s)
     else
         return -1;
 }
-guththila_char_t* guththila_string_ops_strndup(const guththila_char_t *s1,size_t len)
+guththila_char_t* GUTHTHILA_CALL guththila_string_ops_strndup(const guththila_char_t *s1,size_t len)
 {
     if(s1)
     {
@@ -82,7 +82,7 @@ guththila_char_t* guththila_string_ops_strndup(const guththila_char_t *s1,size_t
 
 
 
-guththila_string_t *guththila_string_create(guththila_allocator_t *allocator,
+GUTHTHILA_DECLARE(guththila_string_t*) guththila_string_create(guththila_allocator_t *allocator,
                 guththila_string_t *string)
 {
     if(string)

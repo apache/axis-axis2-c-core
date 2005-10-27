@@ -17,9 +17,9 @@
 #include <guththila_log.h>
 #include <stdio.h>
 
-int guththila_log_impl_write(const void *buffer, size_t count);
+int GUTHTHILA_CALL guththila_log_impl_write(const void *buffer, size_t count);
 
-guththila_log_t *guththila_log_create(guththila_allocator_t* allocator, guththila_log_ops_t* operations)
+GUTHTHILA_DECLARE(guththila_log_t*) guththila_log_create(guththila_allocator_t* allocator, guththila_log_ops_t* operations)
 {   
     guththila_log_t *log;
     if (!allocator)
@@ -48,7 +48,7 @@ guththila_log_t *guththila_log_create(guththila_allocator_t* allocator, guththil
     return log;
 }
 
-int guththila_log_impl_write(const void *buffer, size_t count)
+int GUTHTHILA_CALL guththila_log_impl_write(const void *buffer, size_t count)
 {
     int i;
     if (!buffer)
@@ -60,4 +60,3 @@ int guththila_log_impl_write(const void *buffer, size_t count)
     printf("\n");
     return 0;
 }
-

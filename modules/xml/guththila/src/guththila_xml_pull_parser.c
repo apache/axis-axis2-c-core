@@ -26,7 +26,7 @@ guththila_is_space (int c)
 }
 
 
-guththila_xml_pull_parser_t *
+GUTHTHILA_DECLARE(guththila_xml_pull_parser_t *)
 guththila_xml_pull_parser_create (guththila_environment_t *environment,guththila_reader_t * r)
 {
   guththila_xml_pull_parser_t *parser =
@@ -50,7 +50,7 @@ guththila_xml_pull_parser_create (guththila_environment_t *environment,guththila
 }
 
 
-void
+GUTHTHILA_DECLARE(void)
 guththila_xml_pull_parser_free (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser)
 {
   if (parser->buffer)
@@ -108,7 +108,7 @@ guththila_xml_pull_parser_shift (guththila_environment_t *environment,guththila_
 }
 
 
-int
+GUTHTHILA_DECLARE(int)
 guththila_xml_pull_parser_read (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser)
 {
   int c = 0;
@@ -707,7 +707,7 @@ guththila_xml_pull_parser_tokenize (guththila_environment_t *environment,guththi
 }
 
 
-int
+GUTHTHILA_DECLARE(int)
 guththila_xml_pull_parser_next (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser)
 {
   int ix;
@@ -933,14 +933,14 @@ guththila_xml_pull_parser_add_namespace (guththila_environment_t *environment,gu
 }
 
 
-int
+GUTHTHILA_DECLARE(int)
 guththila_xml_pull_parser_get_attribute_count (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser)
 {
   return guththila_stack_size (environment,parser->attrib);
 }
 
 
-guththila_attribute_t *
+GUTHTHILA_DECLARE(guththila_attribute_t *)
 guththila_xml_pull_parser_get_attribute (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser)
 {
   guththila_element_t *e;
@@ -952,7 +952,7 @@ guththila_xml_pull_parser_get_attribute (guththila_environment_t *environment,gu
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_attribute_name (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser, guththila_attribute_t * att)
 {
   if (!att)
@@ -963,7 +963,7 @@ guththila_xml_pull_parser_get_attribute_name (guththila_environment_t *environme
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_attribute_value (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser, guththila_attribute_t * att)
 {
   if (!att)
@@ -974,7 +974,7 @@ guththila_xml_pull_parser_get_attribute_value (guththila_environment_t *environm
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_attribute_prefix (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser, guththila_attribute_t * att)
 {
   if (!att)
@@ -985,7 +985,7 @@ guththila_xml_pull_parser_get_attribute_prefix (guththila_environment_t *environ
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_attribute_prefix_by_number (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser, int i)
 {
   int ix = parser->attrib->pointer;
@@ -1008,7 +1008,7 @@ guththila_xml_pull_parser_get_attribute_prefix_by_number (guththila_environment_
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_attribute_name_by_number (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser, int i)
 {
   int ix = parser->attrib->pointer;
@@ -1031,7 +1031,7 @@ guththila_xml_pull_parser_get_attribute_name_by_number (guththila_environment_t 
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_attribute_value_by_number (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser, int i)
 {
   int ix = parser->attrib->pointer;
@@ -1054,7 +1054,7 @@ guththila_xml_pull_parser_get_attribute_value_by_number (guththila_environment_t
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_name (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser)
 {
   if (parser->name->end)
@@ -1063,7 +1063,7 @@ guththila_xml_pull_parser_get_name (guththila_environment_t *environment,guththi
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_value (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser)
 {
   if (parser->value->end)
@@ -1072,7 +1072,7 @@ guththila_xml_pull_parser_get_value (guththila_environment_t *environment,guthth
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_prefix (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser)
 {
   if (parser->prefix)
@@ -1081,8 +1081,8 @@ guththila_xml_pull_parser_get_prefix (guththila_environment_t *environment,gutht
 }
 
 
-int
-guththila_xml_pull_parser_get_namespacecount (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser)
+GUTHTHILA_DECLARE(int)
+guththila_xml_pull_parser_get_namespace_count (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser)
 {
   if (parser->namesp)
     return guththila_stack_size (environment,parser->namesp);
@@ -1091,7 +1091,7 @@ guththila_xml_pull_parser_get_namespacecount (guththila_environment_t *environme
 }
 
 
-guththila_namespace_t *
+GUTHTHILA_DECLARE(guththila_namespace_t *)
 guththila_xml_pull_parser_get_namespace (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser)
 {
   guththila_element_t *e;
@@ -1103,7 +1103,7 @@ guththila_xml_pull_parser_get_namespace (guththila_environment_t *environment,gu
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_namespace_prefix (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser, guththila_namespace_t * ns)
 {
   if (ns)
@@ -1113,7 +1113,7 @@ guththila_xml_pull_parser_get_namespace_prefix (guththila_environment_t *environ
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_namespace_uri (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser, guththila_namespace_t * ns)
 {
   if (ns)
@@ -1123,7 +1123,7 @@ guththila_xml_pull_parser_get_namespace_uri (guththila_environment_t *environmen
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_namespace_prefix_by_number (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser, int i)
 {
   int ix = parser->namesp->pointer;
@@ -1141,7 +1141,7 @@ guththila_xml_pull_parser_get_namespace_prefix_by_number (guththila_environment_
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_namespace_uri_by_number (guththila_environment_t *environment,guththila_xml_pull_parser_t * parser, int i)
 {
   int ix = parser->namesp->pointer;
@@ -1159,7 +1159,7 @@ guththila_xml_pull_parser_get_namespace_uri_by_number (guththila_environment_t *
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_xml_pull_parser_get_attribute_namespace_by_number (guththila_environment_t *environment,guththila_xml_pull_parser_t *parser, int i)
 {
   guththila_char_t *att_prefix;

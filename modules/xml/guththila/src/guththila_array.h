@@ -67,7 +67,7 @@ struct guththila_array_header_t {
  * @param a The array to check
  * @return True if empty, False otherwise
  */
-int guththila_is_empty_array(const guththila_array_header_t *a);
+GUTHTHILA_DECLARE(int) guththila_is_empty_array(const guththila_array_header_t *a);
 
 /**
  * Create an array
@@ -76,7 +76,7 @@ int guththila_is_empty_array(const guththila_array_header_t *a);
  * @param elt_size The size of each element in the array.
  * @return The new array
  */
-guththila_array_header_t * guththila_array_make(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_array_header_t *) guththila_array_make(guththila_environment_t *environment,
                                                  int nelts, int elt_size);
 
 /**
@@ -86,7 +86,7 @@ guththila_array_header_t * guththila_array_make(guththila_environment_t *environ
  * @remark If there are no free spots in the array, then this function will
  *         allocate new space for the new element.
  */
-void * guththila_array_push(guththila_array_header_t *arr);
+GUTHTHILA_DECLARE(void *) guththila_array_push(guththila_array_header_t *arr);
 
 /**
  * Remove an element from an array (as a first-in, last-out stack)
@@ -94,7 +94,7 @@ void * guththila_array_push(guththila_array_header_t *arr);
  * @return Location of the element in the array.
  * @remark If there are no elements in the array, NULL is returned.
  */
-void * guththila_array_pop(guththila_array_header_t *arr);
+GUTHTHILA_DECLARE(void *) guththila_array_pop(guththila_array_header_t *arr);
 
 /**
  * Concatenate two arrays together
@@ -102,7 +102,7 @@ void * guththila_array_pop(guththila_array_header_t *arr);
  *            array
  * @param src The source array to add to the destination array
  */
-void guththila_array_cat(guththila_array_header_t *dst,
+GUTHTHILA_DECLARE(void) guththila_array_cat(guththila_array_header_t *dst,
 			        const guththila_array_header_t *src);
 
 /**
@@ -114,7 +114,7 @@ void guththila_array_cat(guththila_array_header_t *dst,
  *         for the elements to be copied if (and only if) the code subsequently
  *         does a push or arraycat.
  */
-guththila_array_header_t * guththila_array_copy(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_array_header_t *) guththila_array_copy(guththila_environment_t *environment,
                                       const guththila_array_header_t *arr);
 /**
  * Copy the headers of the array, and arrange for the elements to be copied if
@@ -124,7 +124,7 @@ guththila_array_header_t * guththila_array_copy(guththila_environment_t *environ
  * @return An exact copy of the array passed in
  * @remark The alternate guththila_array_copy copies the *entire* array.
  */
-guththila_array_header_t * guththila_array_copy_hdr(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_array_header_t *) guththila_array_copy_hdr(guththila_environment_t *environment,
                                       const guththila_array_header_t *arr);
 
 /**
@@ -134,7 +134,7 @@ guththila_array_header_t * guththila_array_copy_hdr(guththila_environment_t *env
  * @param second The array to put second in the new array.
  * @return A new array containing the data from the two arrays passed in.
 */
-guththila_array_header_t * guththila_array_append(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_array_header_t *) guththila_array_append(guththila_environment_t *environment,
                                       const guththila_array_header_t *first,
                                       const guththila_array_header_t *second);
 
@@ -149,11 +149,14 @@ guththila_array_header_t * guththila_array_append(guththila_environment_t *envir
  * @param sep The separator to use
  * @return A string containing all of the data in the array.
  */
-guththila_char_t * guththila_array_pstrcat(guththila_environment_t *p,
+GUTHTHILA_DECLARE(guththila_char_t *) guththila_array_pstrcat(guththila_environment_t *p,
 				      const guththila_array_header_t *arr,
 				      const guththila_char_t sep);
 
 
+
+GUTHTHILA_DECLARE(guththila_status_t) guththila_array_free(guththila_environment_t *environment,
+                      guththila_array_header_t *header);
 /** @} */
 
 #ifdef __cplusplus

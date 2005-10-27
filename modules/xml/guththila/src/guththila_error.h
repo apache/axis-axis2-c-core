@@ -27,8 +27,8 @@ extern "C" {
 struct guththila_error;
 struct guththila_error_ops;
 
-typedef struct guththila_error_ops {
-    guththila_char_t* (*get_message)();
+GUTHTHILA_DECLARE_DATA typedef struct guththila_error_ops {
+    guththila_char_t* (GUTHTHILA_CALL *get_message)();
 } guththila_error_ops_t;
 
 typedef struct guththila_error {
@@ -36,7 +36,7 @@ typedef struct guththila_error {
     int errorno;
 } guththila_error_t;
 
-guththila_error_t *guththila_error_create(guththila_allocator_t* allocator);
+GUTHTHILA_DECLARE(guththila_error_t*) guththila_error_create(guththila_allocator_t* allocator);
 
 #define guththila_error_get_message(error) ((error)->ops->get_message())
 

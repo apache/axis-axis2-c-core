@@ -24,7 +24,7 @@ extern "C" {
 #endif
 
 
-typedef struct guththila_allocator
+GUTHTHILA_DECLARE_DATA typedef struct guththila_allocator
 {
     void *(*guththila_allocator_malloc)(size_t size);
     void *(*guththila_allocator_realloc)(void *ptr,size_t size);
@@ -39,7 +39,7 @@ typedef struct guththila_allocator
 *   @param allocator user defined allcator
 */
 
-guththila_allocator_t *
+GUTHTHILA_DECLARE(guththila_allocator_t*)
     guththila_allocator_init(guththila_allocator_t *allocator);
     
 #define guththila_malloc(allocator, size) ((allocator)->guththila_allocator_malloc(size))

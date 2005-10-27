@@ -17,10 +17,10 @@
 #include <guththila_stream.h>
 #include <stdio.h>
 
-int guththila_stream_ops_read (void *buffer, size_t count);
-int guththila_stream_ops_write(const void *buffer, size_t count);
+int GUTHTHILA_CALL guththila_stream_ops_read (void *buffer, size_t count);
+int GUTHTHILA_CALL guththila_stream_ops_write(const void *buffer, size_t count);
 
-guththila_stream_t *guththila_stream_create(guththila_allocator_t* allocator, guththila_stream_ops_t* operations)
+GUTHTHILA_DECLARE(guththila_stream_t*) guththila_stream_create(guththila_allocator_t* allocator, guththila_stream_ops_t* operations)
 {
     guththila_stream_t *stream;
     if (!allocator)
@@ -49,7 +49,7 @@ guththila_stream_t *guththila_stream_create(guththila_allocator_t* allocator, gu
     return stream;
 }
 
-int guththila_stream_ops_read (void *buffer, size_t count)
+int GUTHTHILA_CALL guththila_stream_ops_read (void *buffer, size_t count)
 {
     int i;
     if (!buffer)
@@ -64,7 +64,7 @@ int guththila_stream_ops_read (void *buffer, size_t count)
     return 0;
 }
 
-int guththila_stream_ops_write(const void *buffer, size_t count)
+int GUTHTHILA_CALL guththila_stream_ops_write(const void *buffer, size_t count)
 {
     int i ;
     if (!buffer)

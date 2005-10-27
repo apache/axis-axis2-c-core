@@ -75,7 +75,7 @@ unsigned int guththila_hashfunc_default(const guththila_char_t *key, guththila_s
  * @param environment The environment to allocate the hash table out of
  * @return The hash table just created
   */
-guththila_hash_t *guththila_hash_make(guththila_environment_t *environment);
+GUTHTHILA_DECLARE(guththila_hash_t *) guththila_hash_make(guththila_environment_t *environment);
 
 /**
  * Create a hash table with a custom hash function
@@ -83,7 +83,7 @@ guththila_hash_t *guththila_hash_make(guththila_environment_t *environment);
  * @param hash_func A custom hash function.
  * @return The hash table just created
   */
-guththila_hash_t *guththila_hash_make_custom(guththila_environment_t *environment, 
+GUTHTHILA_DECLARE(guththila_hash_t *) guththila_hash_make_custom(guththila_environment_t *environment, 
                                                guththila_hashfunc_t hash_func);
 
 /**
@@ -93,7 +93,7 @@ guththila_hash_t *guththila_hash_make_custom(guththila_environment_t *environmen
  * @return The hash table just created
  * @remark Makes a shallow copy
  */
-guththila_hash_t *guththila_hash_copy(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_copy(guththila_environment_t *environment,
                                         const guththila_hash_t *h);
 
 /**
@@ -104,7 +104,7 @@ guththila_hash_t *guththila_hash_copy(guththila_environment_t *environment,
  * @param val Value to associate with the key
  * @remark If the value is NULL the hash entry is deleted.
  */
-void guththila_hash_set(guththila_hash_t *ht, const void *key,
+GUTHTHILA_DECLARE(void) guththila_hash_set(guththila_hash_t *ht, const void *key,
                                guththila_ssize_t klen, const void *val);
 
 /**
@@ -114,7 +114,7 @@ void guththila_hash_set(guththila_hash_t *ht, const void *key,
  * @param klen Length of the key. Can be GUTHTHILA_HASH_KEY_STRING to use the string length.
  * @return Returns NULL if the key is not present.
  */
-void *guththila_hash_get(guththila_hash_t *ht, const void *key,
+GUTHTHILA_DECLARE(void*) guththila_hash_get(guththila_hash_t *ht, const void *key,
                                  guththila_ssize_t klen);
 
 /**
@@ -145,7 +145,7 @@ void *guththila_hash_get(guththila_hash_t *ht, const void *key,
  * }
  * </PRE>
  */
-guththila_hash_index_t *guththila_hash_first(guththila_environment_t *environment, guththila_hash_t *ht);
+GUTHTHILA_DECLARE(guththila_hash_index_t*) guththila_hash_first(guththila_environment_t *environment, guththila_hash_t *ht);
 
 /**
  * Continue iterating over the entries in a hash table.
@@ -153,7 +153,7 @@ guththila_hash_index_t *guththila_hash_first(guththila_environment_t *environmen
  * @return a pointer to the updated iteration state.  NULL if there are no more  
  *         entries.
  */
-guththila_hash_index_t *guththila_hash_next(guththila_hash_index_t *hi);
+GUTHTHILA_DECLARE(guththila_hash_index_t*) guththila_hash_next(guththila_hash_index_t *hi);
 
 /**
  * Get the current entry's details from the iteration state.
@@ -164,7 +164,7 @@ guththila_hash_index_t *guththila_hash_next(guththila_hash_index_t *hi);
  * @remark The return pointers should point to a variable that will be set to the
  *         corresponding data, or they may be NULL if the data isn't interesting.
  */
-void guththila_hash_this(guththila_hash_index_t *hi, const void **key, 
+GUTHTHILA_DECLARE(void) guththila_hash_this(guththila_hash_index_t *hi, const void **key, 
                                 guththila_ssize_t *klen, void **val);
 
 /**
@@ -183,7 +183,7 @@ unsigned int guththila_hash_count(guththila_hash_t *ht);
  * @param base The table that represents the initial values of the new table
  * @return A new hash table containing all of the data from the two passed in
  */
-guththila_hash_t *guththila_hash_overlay(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_overlay(guththila_environment_t *environment,
                                            const guththila_hash_t *overlay, 
                                            const guththila_hash_t *base);
 
@@ -201,7 +201,7 @@ guththila_hash_t *guththila_hash_overlay(guththila_environment_t *environment,
  * @param data Client data to pass to the merger function
  * @return A new hash table containing all of the data from the two passed in
  */
-guththila_hash_t *guththila_hash_merge(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_merge(guththila_environment_t *environment,
                                          const guththila_hash_t *h1,
                                          const guththila_hash_t *h2,
                                          void * (*merger)(guththila_environment_t *environment,

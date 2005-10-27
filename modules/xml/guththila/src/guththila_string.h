@@ -23,12 +23,12 @@
 extern "C" {
 #endif
 
-typedef struct guththila_string
+GUTHTHILA_DECLARE_DATA typedef struct guththila_string
 {
-    void* (*guththila_string_strdup)(const void *ptr);
-    int (*guththila_string_strcmp)(const guththila_char_t *s1, const guththila_char_t *s2);
-    guththila_char_t *(*guththila_string_strndup)(const guththila_char_t *s1,size_t n);
-    int  (*guththila_string_strlen)(const guththila_char_t *s);
+    void* (GUTHTHILA_CALL *guththila_string_strdup)(const void *ptr);
+    int (GUTHTHILA_CALL *guththila_string_strcmp)(const guththila_char_t *s1, const guththila_char_t *s2);
+    guththila_char_t *(GUTHTHILA_CALL *guththila_string_strndup)(const guththila_char_t *s1,size_t n);
+    int  (GUTHTHILA_CALL *guththila_string_strlen)(const guththila_char_t *s);
 }guththila_string_t;
 
 /**
@@ -38,7 +38,7 @@ typedef struct guththila_string
 *   @param string user defined allcator
 */
 
-guththila_string_t *
+GUTHTHILA_DECLARE(guththila_string_t*)
     guththila_string_create(guththila_allocator_t *allocator, guththila_string_t *string);
     
 #define guththila_strdup(string, ptr) ((string)->guththila_string_strdup(ptr))

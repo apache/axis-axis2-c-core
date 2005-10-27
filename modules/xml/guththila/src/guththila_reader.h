@@ -32,9 +32,9 @@ typedef struct guththila_reader_s
   FILE *fp;
 } guththila_reader_t;
 
-guththila_reader_t *guththila_reader_create (guththila_environment_t *environment,FILE *fp);
-int guththila_reader_read (guththila_environment_t *environment,guththila_char_t *buffer, int offset, int length, guththila_reader_t *r);
-int guththila_reader_set_input_stream (guththila_environment_t *environment,guththila_reader_t *r, FILE *fp);
-void guththila_reader_free (guththila_environment_t *environment,guththila_reader_t *r);
+GUTHTHILA_DECLARE(guththila_reader_t*) guththila_reader_create (guththila_environment_t *environment,FILE *fp);
+GUTHTHILA_DECLARE(int) guththila_reader_read (guththila_environment_t *environment,guththila_char_t *buffer, int offset, int length, guththila_reader_t *r);
+GUTHTHILA_DECLARE(int) guththila_reader_set_input_stream (guththila_environment_t *environment,guththila_reader_t *r, FILE *fp);
+GUTHTHILA_DECLARE(void) guththila_reader_free (guththila_environment_t *environment,guththila_reader_t *r);
 
 #endif /* GUTHTHILA_READER_H */

@@ -54,18 +54,17 @@ typedef struct guththila_stack_s
 } guththila_stack_t;
 
 /* stack implementation */
-guththila_stack_t *guththila_stack_create (guththila_environment_t *environment);
-int guththila_stack_push (guththila_environment_t *environment,guththila_stack_t *st, guththila_token_t *tok, guththila_attribute_t *attr);
-int guththila_stack_size (guththila_environment_t *environment,guththila_stack_t *st);
-void guththila_stack_free (guththila_environment_t *environment,guththila_stack_t *st);
-void guththila_stack_free_rec (guththila_environment_t *environment,guththila_stack_t *st, guththila_element_t *el);
-guththila_element_t *guththila_stack_last (guththila_environment_t *environment,guththila_stack_t *st);
-guththila_element_t *guththila_stack_pull (guththila_environment_t *environment,guththila_stack_t *st);
-int guththila_stack_push_namespace (guththila_environment_t *environment,guththila_stack_t *st, guththila_namespace_t *ns);
-guththila_element_t *guththila_stack_pull_current (guththila_environment_t *environment,guththila_stack_t *st);
-int guththila_stack_push_depth (guththila_environment_t *environment,guththila_stack_t *st, guththila_depth_t *d);
-void guththila_stack_clear (guththila_environment_t *environment,guththila_stack_t *st);
-guththila_element_t *guththila_stack_get (guththila_environment_t *environment,guththila_stack_t *st, int i);
-
+GUTHTHILA_DECLARE(guththila_stack_t*) guththila_stack_create (guththila_environment_t *environment);
+GUTHTHILA_DECLARE(int) guththila_stack_push (guththila_environment_t *environment,guththila_stack_t *st, guththila_token_t *tok, guththila_attribute_t *attr);
+GUTHTHILA_DECLARE(int) guththila_stack_size (guththila_environment_t *environment,guththila_stack_t *st);
+GUTHTHILA_DECLARE(void) guththila_stack_free (guththila_environment_t *environment,guththila_stack_t *st);
+GUTHTHILA_DECLARE(void) guththila_stack_free_rec (guththila_environment_t *environment,guththila_stack_t *st, guththila_element_t *el);
+GUTHTHILA_DECLARE(guththila_element_t*) guththila_stack_last (guththila_environment_t *environment,guththila_stack_t *st);
+GUTHTHILA_DECLARE(guththila_element_t*) guththila_stack_pull (guththila_environment_t *environment,guththila_stack_t *st);
+GUTHTHILA_DECLARE(int) guththila_stack_push_namespace (guththila_environment_t *environment,guththila_stack_t *st, guththila_namespace_t *ns);
+GUTHTHILA_DECLARE(guththila_element_t*) guththila_stack_pull_current (guththila_environment_t *environment,guththila_stack_t *st);
+GUTHTHILA_DECLARE(int) guththila_stack_push_depth (guththila_environment_t *environment,guththila_stack_t *st, guththila_depth_t *d);
+GUTHTHILA_DECLARE(void) guththila_stack_clear (guththila_environment_t *environment,guththila_stack_t *st);
+GUTHTHILA_DECLARE(guththila_element_t*) guththila_stack_get (guththila_environment_t *environment,guththila_stack_t *st, int i);
 
 #endif /* GUTHTHILA_STACK_H */

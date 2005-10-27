@@ -16,14 +16,12 @@
 
 #include <guththila_error.h>
 
- guththila_char_t *guththila_error_ops_get_message();
-
-guththila_char_t *guththila_error_ops_get_message()
+guththila_char_t* GUTHTHILA_CALL guththila_error_ops_get_message()
 {
     return "This is the default error code";
 }
 
-guththila_error_t *guththila_error_create(guththila_allocator_t* allocator)
+GUTHTHILA_DECLARE(guththila_error_t *) guththila_error_create(guththila_allocator_t* allocator)
 {
     guththila_error_t *error;
     if (!allocator)

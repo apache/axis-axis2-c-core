@@ -35,9 +35,9 @@ typedef enum guththila_log_levels
 struct guththila_log;
 struct guththila_log_ops;
 
-typedef struct guththila_log_ops
+GUTHTHILA_DECLARE_DATA typedef struct guththila_log_ops
 {
-    int (*guththila_log_ops_write) (const void *buffer, size_t count);
+    int (GUTHTHILA_CALL *guththila_log_ops_write) (const void *buffer, size_t count);
 } guththila_log_ops_t;
 
 typedef struct guththila_log
@@ -47,7 +47,7 @@ typedef struct guththila_log
     int enabled;                /*boolean */
 } guththila_log_t;
 
-guththila_log_t *guththila_log_create (guththila_allocator_t * allocator,
+GUTHTHILA_DECLARE(guththila_log_t*) guththila_log_create (guththila_allocator_t * allocator,
                                guththila_log_ops_t * operations);
 
 #define guththila_log_write(log, buffer, count) ((log)->ops->guththila_log_ops_write(buffer, count))

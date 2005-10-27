@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-guththila_allocator_t *guththila_allocator_init(
+GUTHTHILA_DECLARE(guththila_allocator_t*) guththila_allocator_init(
                 guththila_allocator_t *allocator)
 {
     if(allocator)

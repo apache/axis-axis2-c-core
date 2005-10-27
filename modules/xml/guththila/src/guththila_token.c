@@ -21,7 +21,7 @@
 #include "guththila_token.h"
 #include "guththila_unicode.h"
 
-guththila_token_t *
+GUTHTHILA_DECLARE(guththila_token_t *)
 guththila_token_create_token_buffer (guththila_environment_t *environment,int size)
 {
   guththila_token_t *tok = (guththila_token_t *)guththila_malloc (environment->allocator,sizeof(guththila_token_t)*size);
@@ -30,7 +30,7 @@ guththila_token_create_token_buffer (guththila_environment_t *environment,int si
 }
 
 
-void
+GUTHTHILA_DECLARE(void)
 guththila_token_free_token_buffer (guththila_environment_t *environment,guththila_token_t *tok)
 {
   if (tok)
@@ -38,7 +38,7 @@ guththila_token_free_token_buffer (guththila_environment_t *environment,guththil
 }
 
 
-void 
+GUTHTHILA_DECLARE(void )
 guththila_token_exception ()
 {
   printf ("Throws new token Exception");
@@ -49,7 +49,7 @@ guththila_token_exception ()
 }
 
 
-int
+GUTHTHILA_DECLARE(int)
 guththila_token_length (guththila_environment_t *environment,guththila_token_t *tok)
 {
   if (tok->end)
@@ -60,7 +60,7 @@ guththila_token_length (guththila_environment_t *environment,guththila_token_t *
 }
 
 
-guththila_token_t *
+GUTHTHILA_DECLARE(guththila_token_t *)
 guththila_token_grow (guththila_environment_t *environment,guththila_token_t *tok)
 {
   tok->size <<= 1;
@@ -69,7 +69,7 @@ guththila_token_grow (guththila_environment_t *environment,guththila_token_t *to
 }
 
 
-guththila_token_t *
+GUTHTHILA_DECLARE(guththila_token_t *)
 guththila_token_append (guththila_environment_t *environment,guththila_token_t *tok)
 {
   if (++ (tok->last) > (tok->size))
@@ -78,7 +78,7 @@ guththila_token_append (guththila_environment_t *environment,guththila_token_t *
 }
 
 
-guththila_token_t *
+GUTHTHILA_DECLARE(guththila_token_t *)
 guththila_token_last (guththila_environment_t *environment,guththila_token_t *tok)
 {
   if (tok->last < 0)
@@ -87,13 +87,13 @@ guththila_token_last (guththila_environment_t *environment,guththila_token_t *to
 }
 
 
-int
+GUTHTHILA_DECLARE(int)
 guththila_token_count (guththila_environment_t *environment,guththila_token_t *tok)
 {
   return tok->last;
 }
 
-guththila_char_t*
+GUTHTHILA_DECLARE(guththila_char_t*)
 guththila_token_char_ref (guththila_environment_t *environment,guththila_char_t *buffer)
 {
   int len;
@@ -156,7 +156,7 @@ guththila_token_char_ref (guththila_environment_t *environment,guththila_char_t 
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_token_to_string (guththila_environment_t *environment,guththila_token_t *tok, int unicode)
 {
   if (tok)
@@ -190,7 +190,7 @@ guththila_token_to_string (guththila_environment_t *environment,guththila_token_
 }
 
 
-void
+GUTHTHILA_DECLARE(void)
 guththila_token_relocate (guththila_environment_t *environment,guththila_token_t *tok, int offset)
 {
   tok->start -= offset;
@@ -198,7 +198,7 @@ guththila_token_relocate (guththila_environment_t *environment,guththila_token_t
 }
 
 
-int
+GUTHTHILA_DECLARE(int)
 guththila_token_compare (guththila_environment_t *environment,guththila_token_t *tok, const guththila_char_t *s, int n, int unicode_state)
 {
   if (unicode_state == None)
@@ -212,7 +212,7 @@ guththila_token_compare (guththila_environment_t *environment,guththila_token_t 
 }
 
 
-int
+GUTHTHILA_DECLARE(int)
 guththila_token_length_utf16 (guththila_environment_t *environment,unsigned int utf16_ch)
 {
   int length;
@@ -234,7 +234,7 @@ guththila_token_length_utf16 (guththila_environment_t *environment,unsigned int 
 }
 
 
-guththila_char_t*
+GUTHTHILA_DECLARE(guththila_char_t*)
 guththila_token_build_utf8 (guththila_environment_t *environment,unsigned int utf16_ch, int length)
 {
   guththila_UTF8_char mask = 0;
@@ -278,7 +278,7 @@ guththila_token_build_utf8 (guththila_environment_t *environment,unsigned int ut
 }
 
 
-guththila_char_t *
+GUTHTHILA_DECLARE(guththila_char_t *)
 guththila_token_convert_utf16_to_utf8 (guththila_environment_t *environment,guththila_char_t *buffer, int length)
 {
   unsigned int utf16_char = 0;

@@ -20,7 +20,7 @@
 #include "guththila_environment.h"
 #include "guththila_buffer.h"
 
-guththila_buffer_t * 
+GUTHTHILA_DECLARE(guththila_buffer_t *) 
 guththila_buffer_create (guththila_environment_t *environment,int size)
 {
   guththila_buffer_t *name = guththila_malloc (environment->allocator , sizeof(guththila_buffer_t));
@@ -35,7 +35,7 @@ guththila_buffer_create (guththila_environment_t *environment,int size)
 }
 
 
-void 
+GUTHTHILA_DECLARE(void) 
 guththila_buffer_free (guththila_environment_t *environment, guththila_buffer_t *name)
 {
   if (name)
@@ -49,7 +49,7 @@ guththila_buffer_free (guththila_environment_t *environment, guththila_buffer_t 
 }
 
 
-guththila_buffer_t *
+GUTHTHILA_DECLARE(guththila_buffer_t *)
 guththila_buffer_grow (guththila_environment_t *environment,guththila_buffer_t *name)
 {
   guththila_buffer_t *x;

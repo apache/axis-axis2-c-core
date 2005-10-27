@@ -20,7 +20,7 @@
 #include "guththila_environment.h"
 #include "guththila_stack.h"
 
-guththila_stack_t *
+GUTHTHILA_DECLARE(guththila_stack_t *)
 guththila_stack_create (guththila_environment_t *environment)
 {
   guththila_stack_t *st = (guththila_stack_t *) guththila_malloc (environment->allocator,sizeof (guththila_stack_t));
@@ -37,7 +37,7 @@ guththila_stack_create (guththila_environment_t *environment)
 }
 
 
-int 
+GUTHTHILA_DECLARE(int) 
 guththila_stack_push (guththila_environment_t *environment,guththila_stack_t *stack, guththila_token_t *tok, guththila_attribute_t *attr)
 {
   if (stack)
@@ -68,7 +68,7 @@ guththila_stack_push (guththila_environment_t *environment,guththila_stack_t *st
 }
 
 
-int
+GUTHTHILA_DECLARE(int)
 guththila_stack_size (guththila_environment_t *environment,guththila_stack_t *stack)
 {
   if (stack->pointer)
@@ -78,7 +78,7 @@ guththila_stack_size (guththila_environment_t *environment,guththila_stack_t *st
 }
 
 
-void 
+GUTHTHILA_DECLARE(void) 
 guththila_stack_free (guththila_environment_t *environment,guththila_stack_t *stack)
 {
   if (stack && (stack->pointer > 0))
@@ -91,7 +91,7 @@ guththila_stack_free (guththila_environment_t *environment,guththila_stack_t *st
 }
 
 
-void
+GUTHTHILA_DECLARE(void)
 guththila_stack_free_rec (guththila_environment_t *environment,guththila_stack_t *stack, guththila_element_t *elem)
 {
   if (elem->prev == NULL)
@@ -107,7 +107,7 @@ guththila_stack_free_rec (guththila_environment_t *environment,guththila_stack_t
 }
 
 
-guththila_element_t *
+GUTHTHILA_DECLARE(guththila_element_t *)
 guththila_stack_last (guththila_environment_t *environment,guththila_stack_t *stack)
 {
   if (stack)
@@ -117,7 +117,7 @@ guththila_stack_last (guththila_environment_t *environment,guththila_stack_t *st
 }
 
 
-guththila_element_t *
+GUTHTHILA_DECLARE(guththila_element_t *)
 guththila_stack_pull (guththila_environment_t *environment,guththila_stack_t *stack)
 {
   guththila_element_t *e;
@@ -149,7 +149,7 @@ guththila_stack_pull (guththila_environment_t *environment,guththila_stack_t *st
 }
 
 
-int 
+GUTHTHILA_DECLARE(int) 
 guththila_stack_push_namespace (guththila_environment_t *environment,guththila_stack_t *stack, guththila_namespace_t *ns)
 {
   if (stack)
@@ -181,7 +181,7 @@ guththila_stack_push_namespace (guththila_environment_t *environment,guththila_s
 }
 
 
-guththila_element_t *
+GUTHTHILA_DECLARE(guththila_element_t *)
 guththila_stack_pull_current (guththila_environment_t *environment,guththila_stack_t *stack)
 {
   guththila_element_t *e;
@@ -203,7 +203,7 @@ guththila_stack_pull_current (guththila_environment_t *environment,guththila_sta
 }
 
 
-int 
+GUTHTHILA_DECLARE(int) 
 guththila_stack_push_depth (guththila_environment_t *environment,guththila_stack_t *stack, guththila_depth_t *d)
 {
   if (stack)
@@ -236,7 +236,7 @@ guththila_stack_push_depth (guththila_environment_t *environment,guththila_stack
 }
 
 
-void
+GUTHTHILA_DECLARE(void)
 guththila_stack_clear (guththila_environment_t *environment,guththila_stack_t *stack)
 {
   guththila_element_t *e; 
@@ -250,7 +250,7 @@ guththila_stack_clear (guththila_environment_t *environment,guththila_stack_t *s
 }
 
 
-guththila_element_t *
+GUTHTHILA_DECLARE(guththila_element_t *)
 guththila_stack_get (guththila_environment_t *environment,guththila_stack_t *stack , int i)
 {
   if (i)

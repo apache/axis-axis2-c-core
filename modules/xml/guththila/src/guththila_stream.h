@@ -26,16 +26,16 @@ extern "C" {
 struct guththila_stream;
 struct guththila_stream_ops;
 
-typedef struct guththila_stream_ops {
-    int (*guththila_stream_read)(void *buffer, size_t count);
-    int (*guththila_stream_write)(const void *buffer, size_t count);
+ GUTHTHILA_DECLARE_DATA typedef struct guththila_stream_ops {
+    int (GUTHTHILA_CALL *guththila_stream_read)(void *buffer, size_t count);
+    int (GUTHTHILA_CALL *guththila_stream_write)(const void *buffer, size_t count);
 } guththila_stream_ops_t;
 
 typedef struct guththila_stream {
     struct guththila_stream_ops *ops;
 } guththila_stream_t;
 
-guththila_stream_t *guththila_stream_create(guththila_allocator_t* allocator, guththila_stream_ops_t* operations);
+GUTHTHILA_DECLARE(guththila_stream_t*) guththila_stream_create(guththila_allocator_t* allocator, guththila_stream_ops_t* operations);
 
 #define guththila_stream_read(stream, buffer, count) ((stream)->ops->guththila_stream_read(buffer, count))
 #define guththila_stream_write(stream, buffer, count) ((stream)->ops->guththila_stream_write(buffer, count))

@@ -32,7 +32,7 @@ struct guththila_xml_stream_writer
     int empty_element;
 };
 
-  guththila_xml_stream_writer_t* guththila_create_xml_stream_writer(guththila_environment_t *environment,FILE* writer,guththila_char_t* encoding, int prefix_defaulting)
+GUTHTHILA_DECLARE(guththila_xml_stream_writer_t*) guththila_create_xml_stream_writer(guththila_environment_t *environment,FILE* writer,guththila_char_t* encoding, int prefix_defaulting)
 {
  /*   guththila_status_t status; */
     guththila_xml_stream_writer_t *stream_writer;
@@ -57,7 +57,7 @@ struct guththila_xml_stream_writer
     return stream_writer;
 }
 
-  int guththila_xml_stream_writer_end_start_element(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_end_start_element(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer)
 {
     guththila_char_t*** del_element;
     if (!stream_writer)
@@ -94,7 +94,7 @@ struct guththila_xml_stream_writer
     return GUTHTHILA_SUCCESS;
 }
 
-  int guththila_xml_stream_writer_write_start_element(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_start_element(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name)
 {
     guththila_char_t*** new_element;
     if (!stream_writer)
@@ -119,7 +119,7 @@ struct guththila_xml_stream_writer
 }
 
   
-  int guththila_xml_stream_writer_write_start_element_with_namespace(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* namespace_uri)
+ GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_start_element_with_namespace(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* namespace_uri)
 {
     int is_declared ;
     guththila_char_t*** new_element;
@@ -176,7 +176,7 @@ struct guththila_xml_stream_writer
     return GUTHTHILA_SUCCESS;
 }
 
-  int guththila_xml_stream_writer_write_start_element_with_namespace_prefix(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* namespace_uri, guththila_char_t* prefix)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_start_element_with_namespace_prefix(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* namespace_uri, guththila_char_t* prefix)
 {
     guththila_char_t* current_prefix;
     int is_current = 0;
@@ -230,7 +230,7 @@ struct guththila_xml_stream_writer
     }
 
 
-    int guththila_xml_stream_writer_write_empty_element(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_empty_element(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name)
     {
         int ret = guththila_xml_stream_writer_write_start_element(environment,stream_writer,  local_name);
         
@@ -242,7 +242,7 @@ struct guththila_xml_stream_writer
         return GUTHTHILA_SUCCESS;
     }
 
-    int guththila_xml_stream_writer_write_empty_element_with_namespace(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* namespace_uri)
+   GUTHTHILA_DECLARE( int) guththila_xml_stream_writer_write_empty_element_with_namespace(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* namespace_uri)
     {
         int ret = guththila_xml_stream_writer_write_start_element_with_namespace(environment,stream_writer,  local_name, namespace_uri);
         
@@ -254,7 +254,7 @@ struct guththila_xml_stream_writer
         return GUTHTHILA_SUCCESS;
     }
 
-    int guththila_xml_stream_writer_write_empty_element_with_namespace_prefix(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* namespace_uri, guththila_char_t* prefix)
+  GUTHTHILA_DECLARE( int) guththila_xml_stream_writer_write_empty_element_with_namespace_prefix(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* namespace_uri, guththila_char_t* prefix)
     {
         int ret = guththila_xml_stream_writer_write_start_element_with_namespace_prefix(environment,stream_writer,  local_name, namespace_uri, prefix);
         
@@ -266,7 +266,7 @@ struct guththila_xml_stream_writer
         return GUTHTHILA_SUCCESS;
     }
 
-    int guththila_xml_stream_writer_write_end_element(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer)
+   GUTHTHILA_DECLARE( int) guththila_xml_stream_writer_write_end_element(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer)
     {
         guththila_char_t*** element_data;
         guththila_xml_stream_writer_end_start_element(environment,stream_writer);
@@ -303,7 +303,7 @@ struct guththila_xml_stream_writer
     }
 
 
-    int guththila_xml_stream_writer_write_end_document(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_end_document(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer)
 
     {
         while (!guththila_is_empty_array(stream_writer->element_stack))
@@ -317,7 +317,7 @@ struct guththila_xml_stream_writer
     }
 
 
-    int guththila_xml_stream_writer_write_attribute(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* value)
+ GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_attribute(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* value)
     {
         if (!stream_writer->in_start_element)
             return GUTHTHILA_STREAM_WRITER_ERROR_ILLEGAL_STATE;
@@ -332,7 +332,7 @@ struct guththila_xml_stream_writer
     }
 
     
-    int guththila_xml_stream_writer_write_attribute_with_namespace(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* value, guththila_char_t* namespace_uri)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_attribute_with_namespace(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* value, guththila_char_t* namespace_uri)
     {
         guththila_char_t* prefix;
         if (!stream_writer->in_start_element)
@@ -365,7 +365,7 @@ struct guththila_xml_stream_writer
         return GUTHTHILA_SUCCESS;
     }
 
-    int guththila_xml_stream_writer_write_attribute_with_namespace_prefix(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* value, guththila_char_t* namespace_uri, guththila_char_t* prefix)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_attribute_with_namespace_prefix(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* local_name, guththila_char_t* value, guththila_char_t* namespace_uri, guththila_char_t* prefix)
     {
         guththila_char_t* current_prefix;
         if (!stream_writer->in_start_element)
@@ -397,7 +397,7 @@ struct guththila_xml_stream_writer
         return GUTHTHILA_SUCCESS;
     }
 
-    int guththila_xml_stream_writer_write_namespace(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* prefix, guththila_char_t* namespace_uri)
+ GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_namespace(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* prefix, guththila_char_t* namespace_uri)
     {
         guththila_char_t* declared_prefix;
         if (!stream_writer->in_start_element)
@@ -425,14 +425,14 @@ struct guththila_xml_stream_writer
         return GUTHTHILA_SUCCESS;
     }
 
-    int guththila_xml_stream_writer_write_default_namespace(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* namespace_uri)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_default_namespace(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* namespace_uri)
     {
         int ret = guththila_xml_stream_writer_write_namespace(environment,stream_writer, GUTHTHILA_DEFAULT_NS_PREFIX, namespace_uri);
         return ret;
     }
 
 
-    int guththila_xml_stream_writer_write_comment(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* data)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_comment(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* data)
     {
         guththila_char_t* ptr;
         guththila_xml_stream_writer_end_start_element(environment,stream_writer);
@@ -456,13 +456,13 @@ struct guththila_xml_stream_writer
     }
 
    
-    int guththila_xml_stream_writer_write_processing_instruction(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* target)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_processing_instruction(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* target)
     {
         int ret = guththila_xml_stream_writer_write_processing_instruction_data(environment,stream_writer, target, 0);
         return ret;
     }
 
-    int guththila_xml_stream_writer_write_processing_instruction_data(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* target, guththila_char_t* data)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_processing_instruction_data(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* target, guththila_char_t* data)
     {
         if (!target)
             return GUTHTHILA_STREAM_WRITER_ERROR_PROCESSING_INSTRUCTION_TARGET_NULL;
@@ -484,7 +484,7 @@ struct guththila_xml_stream_writer
     }
 
 
-    int guththila_xml_stream_writer_write_cdata(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* data)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_cdata(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* data)
     {
         guththila_char_t* ptr;
         if (!data)
@@ -508,7 +508,7 @@ struct guththila_xml_stream_writer
     }
 
 
-    int guththila_xml_stream_writer_write_dtd(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* dtd)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_dtd(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* dtd)
     {
         if (!dtd)
             return GUTHTHILA_STREAM_WRITER_ERROR_DTD_NULL;
@@ -521,7 +521,7 @@ struct guththila_xml_stream_writer
     }
 
 
-    int guththila_xml_stream_writer_write_entity_ref(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* name)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_entity_ref(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* name)
     {
         if (!name)
             return GUTHTHILA_STREAM_WRITER_ERROR_ENTITY_REF_NULL;
@@ -536,14 +536,14 @@ struct guththila_xml_stream_writer
     }
 
 
-    int guththila_xml_stream_writer_write_start_document(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_start_document(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer)
     {
         int ret = guththila_xml_stream_writer_write_start_document_with_version_encoding(environment,stream_writer, 0, 0);
         return ret;
     }
 
 
-    int guththila_xml_stream_writer_write_start_document_with_version(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* version)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_start_document_with_version(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* version)
     {
         int ret = guththila_xml_stream_writer_write_start_document_with_version_encoding(environment,stream_writer, 0, version);
         return ret;
@@ -551,7 +551,7 @@ struct guththila_xml_stream_writer
     }
 
    
-    int guththila_xml_stream_writer_write_start_document_with_version_encoding(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* encoding, guththila_char_t* version)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_start_document_with_version_encoding(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* encoding, guththila_char_t* version)
     {
         if (!version)
             version = "1.0";
@@ -571,7 +571,7 @@ struct guththila_xml_stream_writer
         return GUTHTHILA_SUCCESS;
     }
 
-    int guththila_xml_stream_writer_write_characters(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* text)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_characters(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* text)
     {
         if (!text)
             return GUTHTHILA_STREAM_WRITER_ERROR_TEXT_NULL;
@@ -584,7 +584,7 @@ struct guththila_xml_stream_writer
         return GUTHTHILA_SUCCESS;
     }
 
-    guththila_char_t* guththila_xml_stream_writer_get_prefix(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* uri)
+GUTHTHILA_DECLARE(guththila_char_t*) guththila_xml_stream_writer_get_prefix(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* uri)
     {
         guththila_char_t* prefix;
         if (!uri)
@@ -594,7 +594,7 @@ struct guththila_xml_stream_writer
         return prefix;
     }
 
-    int guththila_xml_stream_writer_set_prefix(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* prefix, guththila_char_t* uri)
+    GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_set_prefix(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* prefix, guththila_char_t* uri)
     {
         if (!prefix)
             return GUTHTHILA_STREAM_WRITER_ERROR_PREFIX_NULL;
@@ -611,12 +611,12 @@ struct guththila_xml_stream_writer
     }
 
 
-    int guththila_xml_stream_writer_set_default_prefix(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* uri){
+ GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_set_default_prefix(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* uri){
         return guththila_xml_stream_writer_set_prefix(environment,stream_writer, GUTHTHILA_DEFAULT_NS_PREFIX, uri);
 
     }
 
-    int guththila_xml_stream_writer_write_encoded(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* text, int in_attr)
+GUTHTHILA_DECLARE(int) guththila_xml_stream_writer_write_encoded(guththila_environment_t *environment,guththila_xml_stream_writer_t* stream_writer, guththila_char_t* text, int in_attr)
     {
         guththila_char_t* start;
         guththila_char_t* ptr;
@@ -688,4 +688,4 @@ struct guththila_xml_stream_writer
         }
 
         return GUTHTHILA_SUCCESS;
-    }
+}

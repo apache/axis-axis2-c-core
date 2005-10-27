@@ -42,6 +42,4 @@ guththila_UTF8_char guththila_strlen_unicode (guththila_char_t *);
 guththila_char_t * guththila_strdup_unicode (guththila_char_t *, int);
 
 #endif /* __UNICODE__FUNCTIONS__ */
-
-
 #endif /* GUTHTHILA_UNICODE_H */

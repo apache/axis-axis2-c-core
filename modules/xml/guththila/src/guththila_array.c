@@ -55,12 +55,12 @@ static void make_array_core(guththila_array_header_t *res, guththila_environment
     res->nalloc = nelts;	/* ...but this many allocated */
 }
 
-int guththila_is_empty_array(const guththila_array_header_t *a)
+GUTHTHILA_DECLARE(int) guththila_is_empty_array(const guththila_array_header_t *a)
 {
     return ((a == NULL) || (a->nelts == 0));
 }
 
-guththila_array_header_t * guththila_array_make(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_array_header_t *) guththila_array_make(guththila_environment_t *environment,
 						int nelts, int elt_size)
 {
     guththila_array_header_t *res;
@@ -70,7 +70,7 @@ guththila_array_header_t * guththila_array_make(guththila_environment_t *environ
     return res;
 }
 
-void * guththila_array_pop(guththila_array_header_t *arr)
+GUTHTHILA_DECLARE(void *) guththila_array_pop(guththila_array_header_t *arr)
 {
     if (guththila_is_empty_array(arr)) {
         return NULL;
@@ -79,7 +79,7 @@ void * guththila_array_pop(guththila_array_header_t *arr)
     return arr->elts + (arr->elt_size * (--arr->nelts));
 }
 
-void * guththila_array_push(guththila_array_header_t *arr)
+GUTHTHILA_DECLARE(void *) guththila_array_push(guththila_array_header_t *arr)
 {
     if (arr->nelts == arr->nalloc) {
         int new_size = (arr->nalloc <= 0) ? 1 : arr->nalloc * 2;
@@ -115,7 +115,7 @@ static void *guththila_array_push_noclear(guththila_array_header_t *arr)
     return arr->elts + (arr->elt_size * (arr->nelts - 1));
 }
 */
-void guththila_array_cat(guththila_array_header_t *dst,
+GUTHTHILA_DECLARE(void) guththila_array_cat(guththila_array_header_t *dst,
 			       const guththila_array_header_t *src)
 {
     int elt_size = dst->elt_size;
@@ -140,7 +140,7 @@ void guththila_array_cat(guththila_array_header_t *dst,
     dst->nelts += src->nelts;
 }
 
-guththila_array_header_t * guththila_array_copy(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_array_header_t *) guththila_array_copy(guththila_environment_t *environment,
 						const guththila_array_header_t *arr)
 {
     guththila_array_header_t *res =
@@ -170,7 +170,7 @@ static  void copy_array_hdr_core(guththila_array_header_t *res,
     res->nalloc = arr->nelts;	/* Force overflow on push */
 }
 
-guththila_array_header_t *
+GUTHTHILA_DECLARE(guththila_array_header_t *)
     guththila_array_copy_hdr(guththila_environment_t *environment,
 		       const guththila_array_header_t *arr)
 {
@@ -184,7 +184,7 @@ guththila_array_header_t *
 
 /* The above is used here to avoid consing multiple new array bodies... */
 
-guththila_array_header_t *
+GUTHTHILA_DECLARE(guththila_array_header_t *)
     guththila_array_append(guththila_environment_t *environment,
 		      const guththila_array_header_t *first,
 		      const guththila_array_header_t *second)
@@ -201,7 +201,7 @@ guththila_array_header_t *
  * or if there are no elements in the array.
  * If sep is non-NUL, it will be inserted between elements as a separator.
  */
-guththila_char_t * guththila_array_pstrcat(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_char_t *) guththila_array_pstrcat(guththila_environment_t *environment,
 				     const guththila_array_header_t *arr,
 				     const guththila_char_t sep)
 {
@@ -255,4 +255,17 @@ guththila_char_t * guththila_array_pstrcat(guththila_environment_t *environment,
 
     return res;
 }
+
+GUTHTHILA_DECLARE(guththila_status_t) guththila_array_free(guththila_environment_t *environment,
+                                guththila_array_header_t *header)
+ {
+    if(header != NULL)
+    {
+        if(header->elts != NULL)
+            guththila_free(environment->allocator,header->elts);
+         guththila_free(environment->allocator,header);
+        return GUTHTHILA_SUCCESS; 
+    }
+ }
+                            
 

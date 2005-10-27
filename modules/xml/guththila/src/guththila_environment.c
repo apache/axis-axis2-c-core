@@ -16,7 +16,7 @@
 
 #include <guththila_environment.h>
 
-guththila_environment_t *guththila_environment_create(guththila_allocator_t *allocator, guththila_error_t *error, guththila_stream_t *stream, guththila_log_t *log, guththila_string_t *string)
+GUTHTHILA_DECLARE(guththila_environment_t*) guththila_environment_create(guththila_allocator_t *allocator, guththila_error_t *error, guththila_stream_t *stream, guththila_log_t *log, guththila_string_t *string)
 {
     guththila_environment_t *environment;
     if (!allocator)

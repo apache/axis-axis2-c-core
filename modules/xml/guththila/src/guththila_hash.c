@@ -81,7 +81,7 @@ static guththila_hash_entry_t **alloc_array(guththila_hash_t *ht, unsigned int m
                     sizeof(*ht->array) * (max + 1)), 0, sizeof(*ht->array) * (max + 1) );
 }
 
-guththila_hash_t *guththila_hash_make(guththila_environment_t *environment)
+GUTHTHILA_DECLARE(guththila_hash_t *) guththila_hash_make(guththila_environment_t *environment)
 {
     guththila_hash_t *ht;
     ht = guththila_malloc(environment->allocator, sizeof(guththila_hash_t));
@@ -94,7 +94,7 @@ guththila_hash_t *guththila_hash_make(guththila_environment_t *environment)
     return ht;
 }
 
-guththila_hash_t *guththila_hash_make_custom(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_make_custom(guththila_environment_t *environment,
                                                guththila_hashfunc_t hash_func)
 {
     guththila_hash_t *ht = guththila_hash_make(environment);
@@ -107,7 +107,7 @@ guththila_hash_t *guththila_hash_make_custom(guththila_environment_t *environmen
  * Hash iteration functions.
  */
 
-guththila_hash_index_t *guththila_hash_next(guththila_hash_index_t *hi)
+GUTHTHILA_DECLARE(guththila_hash_index_t*) guththila_hash_next(guththila_hash_index_t *hi)
 {
     hi->this = hi->next;
     while (!hi->this) {
@@ -120,7 +120,7 @@ guththila_hash_index_t *guththila_hash_next(guththila_hash_index_t *hi)
     return hi;
 }
 
-guththila_hash_index_t *guththila_hash_first(guththila_environment_t *environment, guththila_hash_t *ht)
+GUTHTHILA_DECLARE(guththila_hash_index_t*) guththila_hash_first(guththila_environment_t *environment, guththila_hash_t *ht)
 {
     guththila_hash_index_t *hi;
     if (environment)
@@ -135,7 +135,7 @@ guththila_hash_index_t *guththila_hash_first(guththila_environment_t *environmen
     return guththila_hash_next(hi);
 }
 
-void guththila_hash_this(guththila_hash_index_t *hi,
+GUTHTHILA_DECLARE(void) guththila_hash_this(guththila_hash_index_t *hi,
                                 const void **key,
                                 guththila_ssize_t *klen,
                                 void **val)
@@ -273,7 +273,7 @@ static guththila_hash_entry_t **find_entry(guththila_hash_t *ht,
     return hep;
 }
 
-guththila_hash_t *guththila_hash_copy(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_copy(guththila_environment_t *environment,
                                         const guththila_hash_t *orig)
 {
     guththila_hash_t *ht;
@@ -310,7 +310,7 @@ guththila_hash_t *guththila_hash_copy(guththila_environment_t *environment,
     return ht;
 }
 
-void *guththila_hash_get(guththila_hash_t *ht,
+GUTHTHILA_DECLARE(void*) guththila_hash_get(guththila_hash_t *ht,
                                  const void *key,
                                  guththila_ssize_t klen)
 {
@@ -322,7 +322,7 @@ void *guththila_hash_get(guththila_hash_t *ht,
         return NULL;
 }
 
-void guththila_hash_set(guththila_hash_t *ht,
+GUTHTHILA_DECLARE(void) guththila_hash_set(guththila_hash_t *ht,
                                const void *key,
                                guththila_ssize_t klen,
                                const void *val)
@@ -355,14 +355,14 @@ unsigned int guththila_hash_count(guththila_hash_t *ht)
     return ht->count;
 }
 
-guththila_hash_t *guththila_hash_overlay(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_overlay(guththila_environment_t *environment,
                                           const guththila_hash_t *overlay,
                                           const guththila_hash_t *base)
 {
     return guththila_hash_merge(environment, overlay, base, NULL, NULL);
 }
 
-guththila_hash_t *guththila_hash_merge(guththila_environment_t *environment,
+GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_merge(guththila_environment_t *environment,
                                          const guththila_hash_t *overlay,
                                          const guththila_hash_t *base,
                                          void * (*merger)(guththila_environment_t *environment,
@@ -454,4 +454,3 @@ guththila_hash_t *guththila_hash_merge(guththila_environment_t *environment,
     }
     return res;
 }
-
