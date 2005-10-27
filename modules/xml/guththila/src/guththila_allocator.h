@@ -20,17 +20,18 @@
 #include <guththila_defines.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 
-GUTHTHILA_DECLARE_DATA typedef struct guththila_allocator
-{
-    void *(*guththila_allocator_malloc)(size_t size);
-    void *(*guththila_allocator_realloc)(void *ptr,size_t size);
-    void (*guththila_allocator_free)(void *ptr);
-    void *(*guththila_allocator_calloc)(size_t nelem, size_t elsize);
-}guththila_allocator_t;
+    GUTHTHILA_DECLARE_DATA typedef struct guththila_allocator
+    {
+        void *(*guththila_allocator_malloc) (size_t size);
+        void *(*guththila_allocator_realloc) (void *ptr, size_t size);
+        void (*guththila_allocator_free) (void *ptr);
+        void *(*guththila_allocator_calloc) (size_t nelem, size_t elsize);
+    } guththila_allocator_t;
 
 /**
 *   if the parsed allocator is null a default allocator is created
@@ -39,9 +40,9 @@ GUTHTHILA_DECLARE_DATA typedef struct guththila_allocator
 *   @param allocator user defined allcator
 */
 
-GUTHTHILA_DECLARE(guththila_allocator_t*)
-    guththila_allocator_init(guththila_allocator_t *allocator);
-    
+      GUTHTHILA_DECLARE (guththila_allocator_t *)
+        guththila_allocator_init (guththila_allocator_t * allocator);
+
 #define guththila_malloc(allocator, size) ((allocator)->guththila_allocator_malloc(size))
 #define guththila_realloc(allocator, ptr, size) ((allocator)->guththila_allocator_realloc(ptr, size))
 #define guththila_free(allocator, ptr) ((allocator)->guththila_allocator_free(ptr))
@@ -50,4 +51,4 @@ GUTHTHILA_DECLARE(guththila_allocator_t*)
 }
 #endif
 
-#endif /* GUTHTHILA_ALLOCATOR_H */
+#endif                          /* GUTHTHILA_ALLOCATOR_H */

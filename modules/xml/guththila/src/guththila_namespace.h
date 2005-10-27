@@ -24,10 +24,10 @@
 
 typedef struct guththila_namespace_s
 {
-  guththila_char_t *name;
-  int length;
-  guththila_char_t *uri;
-  int lengthuri;
+    guththila_char_t *name;
+    int length;
+    guththila_char_t *uri;
+    int lengthuri;
 } guththila_namespace_t;
 
 #endif /* GUTHTHILA_NAMESPACE_H */

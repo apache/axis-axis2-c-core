@@ -16,13 +16,21 @@
 
 #include <guththila_environment.h>
 
-GUTHTHILA_DECLARE(guththila_environment_t*) guththila_environment_create(guththila_allocator_t *allocator, guththila_error_t *error, guththila_stream_t *stream, guththila_log_t *log, guththila_string_t *string)
+GUTHTHILA_DECLARE (guththila_environment_t *)
+guththila_environment_create (guththila_allocator_t * allocator,
+                              guththila_error_t * error,
+                              guththila_stream_t * stream,
+                              guththila_log_t * log,
+                              guththila_string_t * string)
 {
     guththila_environment_t *environment;
     if (!allocator)
         return NULL;
 
-    environment = (guththila_environment_t*)guththila_malloc(allocator, sizeof(guththila_environment_t));
+    environment =
+        (guththila_environment_t *) guththila_malloc (allocator,
+                                                      sizeof
+                                                      (guththila_environment_t));
 
     if (!environment)
         return NULL;
@@ -30,25 +38,24 @@ GUTHTHILA_DECLARE(guththila_environment_t*) guththila_environment_create(guththi
     environment->allocator = allocator;
 
     if (!error)
-        environment->error = guththila_error_create(allocator);
+        environment->error = guththila_error_create (allocator);
     else
         environment->error = error;
 
     if (!stream)
-        environment->stream = guththila_stream_create(allocator, NULL);
+        environment->stream = guththila_stream_create (allocator, NULL);
     else
         environment->stream = stream;
 
     if (!log)
-        environment->log = guththila_log_create(allocator, NULL);
+        environment->log = guththila_log_create (allocator, NULL);
     else
         environment->log = log;
 
     if (!string)
-        environment->string = guththila_string_create(allocator, NULL);
+        environment->string = guththila_string_create (allocator, NULL);
     else
         environment->string = string;
 
     return environment;
 }
-

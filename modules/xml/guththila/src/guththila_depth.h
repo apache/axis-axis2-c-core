@@ -23,10 +23,10 @@
 
 typedef struct guththila_depth_s
 {
-  int total;
-  int count;
-  int first;
+    int total;
+    int count;
+    int first;
 } guththila_depth_t;
 
 
-#endif /*GUTHTHILA_DEPTH_H*/
+#endif /*GUTHTHILA_DEPTH_H */

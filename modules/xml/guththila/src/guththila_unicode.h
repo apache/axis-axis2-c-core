@@ -31,7 +31,8 @@ typedef unsigned short guththila_UTF16_char;
  * LE = Little Endian UTF-16 Document
  * BE = Big Endian UTF-16 Document
  * For the time being Endianess make no effect to the parsing  */
-enum guththila_UTF16_endianess {None=1, LE, BE};
+enum guththila_UTF16_endianess
+{ None = 1, LE, BE };
 
 #ifdef __UNICODE__FUNCTIONS__
 /* #define strlen(x) guththila_strlen_unicode(x) 
@@ -39,7 +40,7 @@ enum guththila_UTF16_endianess {None=1, LE, BE};
 */
 guththila_UTF8_char guththila_strlen_unicode (guththila_char_t *);
 
-guththila_char_t * guththila_strdup_unicode (guththila_char_t *, int);
+guththila_char_t *guththila_strdup_unicode (guththila_char_t *, int);
 
 #endif /* __UNICODE__FUNCTIONS__ */
 #endif /* GUTHTHILA_UNICODE_H */

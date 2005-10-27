@@ -18,16 +18,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-GUTHTHILA_DECLARE(guththila_allocator_t*) guththila_allocator_init(
-                guththila_allocator_t *allocator)
+GUTHTHILA_DECLARE (guththila_allocator_t *)
+guththila_allocator_init (guththila_allocator_t * allocator)
 {
-    if(allocator)
+    if (allocator)
         return allocator;
-        
+
     else
     {
-        allocator = (guththila_allocator_t*)malloc(sizeof(guththila_allocator_t));
-        if(allocator)
+        allocator =
+            (guththila_allocator_t *) malloc (sizeof (guththila_allocator_t));
+        if (allocator)
         {
             allocator->guththila_allocator_malloc = malloc;
             allocator->guththila_allocator_realloc = realloc;
@@ -35,6 +36,6 @@ GUTHTHILA_DECLARE(guththila_allocator_t*) guththila_allocator_init(
             allocator->guththila_allocator_calloc = calloc;
             return allocator;
         }
-     }
+    }
     return NULL;
 }

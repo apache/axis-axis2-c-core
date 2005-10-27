@@ -17,46 +17,55 @@
 #include <guththila_log.h>
 #include <stdio.h>
 
-int GUTHTHILA_CALL guththila_log_impl_write(const void *buffer, size_t count);
+int GUTHTHILA_CALL guththila_log_impl_write (const void *buffer,
+                                             size_t count);
 
-GUTHTHILA_DECLARE(guththila_log_t*) guththila_log_create(guththila_allocator_t* allocator, guththila_log_ops_t* operations)
-{   
+GUTHTHILA_DECLARE (guththila_log_t *)
+guththila_log_create (guththila_allocator_t * allocator,
+                      guththila_log_ops_t * operations)
+{
     guththila_log_t *log;
     if (!allocator)
         return NULL;
 
-    log = (guththila_log_t*)guththila_malloc(allocator, sizeof(guththila_log_t));
+    log =
+        (guththila_log_t *) guththila_malloc (allocator,
+                                              sizeof (guththila_log_t));
 
     if (!log)
         return NULL;
-    
+
     if (operations)
         log->ops = operations;
     else
     {
-        log->ops = (guththila_log_ops_t*)guththila_malloc(allocator, sizeof(guththila_log_ops_t));
+        log->ops =
+            (guththila_log_ops_t *) guththila_malloc (allocator,
+                                                      sizeof
+                                                      (guththila_log_ops_t));
 
         if (!log->ops)
         {
-            guththila_free(allocator, log);
+            guththila_free (allocator, log);
             return NULL;
         }
-        
+
         log->ops->guththila_log_ops_write = guththila_log_impl_write;
     }
-    
+
     return log;
 }
 
-int GUTHTHILA_CALL guththila_log_impl_write(const void *buffer, size_t count)
+int GUTHTHILA_CALL
+guththila_log_impl_write (const void *buffer, size_t count)
 {
     int i;
     if (!buffer)
         return -1;
-    
-    i =0;
-    for(i = 0; i < count; i++)
-        fprintf(stderr, "%c", ((guththila_char_t*)buffer)[i]);
-    printf("\n");
+
+    i = 0;
+    for (i = 0; i < count; i++)
+        fprintf (stderr, "%c", ((guththila_char_t *) buffer)[i]);
+    printf ("\n");
     return 0;
 }

@@ -31,12 +31,13 @@
 
 typedef struct guththila_hash_entry_t guththila_hash_entry_t;
 
-struct guththila_hash_entry_t {
+struct guththila_hash_entry_t
+{
     guththila_hash_entry_t *next;
-    unsigned int      hash;
-    const void       *key;
-    guththila_ssize_t       klen;
-    const void       *val;
+    unsigned int hash;
+    const void *key;
+    guththila_ssize_t klen;
+    const void *val;
 };
 
 /*
@@ -46,10 +47,11 @@ struct guththila_hash_entry_t {
  * hash entry to be freed or otherwise mangled between calls to
  * guththila_hash_next().
  */
-struct guththila_hash_index_t {
-    guththila_hash_t         *ht;
-    guththila_hash_entry_t   *this, *next;
-    unsigned int        index;
+struct guththila_hash_index_t
+{
+    guththila_hash_t *ht;
+    guththila_hash_entry_t *this, *next;
+    unsigned int index;
 };
 
 /*
@@ -59,45 +61,50 @@ struct guththila_hash_index_t {
  * The count of hash entries may be greater depending on the chosen
  * collision rate.
  */
-struct guththila_hash_t {
-    guththila_environment_t          *environment;
-    guththila_hash_entry_t   **array;
-    guththila_hash_index_t     iterator;  /* For guththila_hash_first(NULL, ...) */
-    unsigned int         count, max;
-    guththila_hashfunc_t       hash_func;
-    guththila_hash_entry_t    *free;  /* List of recycled entries */
+struct guththila_hash_t
+{
+    guththila_environment_t *environment;
+    guththila_hash_entry_t **array;
+    guththila_hash_index_t iterator;    /* For guththila_hash_first(NULL, ...) */
+    unsigned int count, max;
+    guththila_hashfunc_t hash_func;
+    guththila_hash_entry_t *free;   /* List of recycled entries */
 };
 
-#define INITIAL_MAX 15 /* tunable == 2^n - 1 */
+#define INITIAL_MAX 15          /* tunable == 2^n - 1 */
 
 
 /*
  * Hash creation functions.
  */
 
-static guththila_hash_entry_t **alloc_array(guththila_hash_t *ht, unsigned int max)
+static guththila_hash_entry_t **
+alloc_array (guththila_hash_t * ht, unsigned int max)
 {
-   return memset (guththila_malloc(ht->environment->allocator, 
-                    sizeof(*ht->array) * (max + 1)), 0, sizeof(*ht->array) * (max + 1) );
+    return memset (guththila_malloc (ht->environment->allocator,
+                                     sizeof (*ht->array) * (max + 1)), 0,
+                   sizeof (*ht->array) * (max + 1));
 }
 
-GUTHTHILA_DECLARE(guththila_hash_t *) guththila_hash_make(guththila_environment_t *environment)
+GUTHTHILA_DECLARE (guththila_hash_t *)
+guththila_hash_make (guththila_environment_t * environment)
 {
     guththila_hash_t *ht;
-    ht = guththila_malloc(environment->allocator, sizeof(guththila_hash_t));
+    ht = guththila_malloc (environment->allocator, sizeof (guththila_hash_t));
     ht->environment = environment;
     ht->free = NULL;
     ht->count = 0;
     ht->max = INITIAL_MAX;
-    ht->array = alloc_array(ht, ht->max);
+    ht->array = alloc_array (ht, ht->max);
     ht->hash_func = guththila_hashfunc_default;
     return ht;
 }
 
-GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_make_custom(guththila_environment_t *environment,
-                                               guththila_hashfunc_t hash_func)
+GUTHTHILA_DECLARE (guththila_hash_t *)
+guththila_hash_make_custom (guththila_environment_t * environment,
+                            guththila_hashfunc_t hash_func)
 {
-    guththila_hash_t *ht = guththila_hash_make(environment);
+    guththila_hash_t *ht = guththila_hash_make (environment);
     ht->hash_func = hash_func;
     return ht;
 }
@@ -107,10 +114,12 @@ GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_make_custom(guththila_enviro
  * Hash iteration functions.
  */
 
-GUTHTHILA_DECLARE(guththila_hash_index_t*) guththila_hash_next(guththila_hash_index_t *hi)
+GUTHTHILA_DECLARE (guththila_hash_index_t *)
+guththila_hash_next (guththila_hash_index_t * hi)
 {
     hi->this = hi->next;
-    while (!hi->this) {
+    while (!hi->this)
+    {
         if (hi->index > hi->ht->max)
             return NULL;
 
@@ -120,11 +129,13 @@ GUTHTHILA_DECLARE(guththila_hash_index_t*) guththila_hash_next(guththila_hash_in
     return hi;
 }
 
-GUTHTHILA_DECLARE(guththila_hash_index_t*) guththila_hash_first(guththila_environment_t *environment, guththila_hash_t *ht)
+GUTHTHILA_DECLARE (guththila_hash_index_t *)
+guththila_hash_first (guththila_environment_t * environment,
+                      guththila_hash_t * ht)
 {
     guththila_hash_index_t *hi;
     if (environment)
-        hi = guththila_malloc(environment->allocator, sizeof(*hi));
+        hi = guththila_malloc (environment->allocator, sizeof (*hi));
     else
         hi = &ht->iterator;
 
@@ -132,17 +143,20 @@ GUTHTHILA_DECLARE(guththila_hash_index_t*) guththila_hash_first(guththila_enviro
     hi->index = 0;
     hi->this = NULL;
     hi->next = NULL;
-    return guththila_hash_next(hi);
+    return guththila_hash_next (hi);
 }
 
-GUTHTHILA_DECLARE(void) guththila_hash_this(guththila_hash_index_t *hi,
-                                const void **key,
-                                guththila_ssize_t *klen,
-                                void **val)
+GUTHTHILA_DECLARE (void) guththila_hash_this (guththila_hash_index_t * hi,
+                                              const void **key,
+                                              guththila_ssize_t * klen,
+                                              void **val)
 {
-    if (key)  *key  = hi->this->key;
-    if (klen) *klen = hi->this->klen;
-    if (val)  *val  = (void *)hi->this->val;
+    if (key)
+        *key = hi->this->key;
+    if (klen)
+        *klen = hi->this->klen;
+    if (val)
+        *val = (void *) hi->this->val;
 }
 
 
@@ -150,15 +164,18 @@ GUTHTHILA_DECLARE(void) guththila_hash_this(guththila_hash_index_t *hi,
  * Expanding a hash table
  */
 
-static void expand_array(guththila_hash_t *ht)
+static void
+expand_array (guththila_hash_t * ht)
 {
     guththila_hash_index_t *hi;
     guththila_hash_entry_t **new_array;
     unsigned int new_max;
 
     new_max = ht->max * 2 + 1;
-    new_array = alloc_array(ht, new_max);
-    for (hi = guththila_hash_first(NULL, ht); hi; hi = guththila_hash_next(hi)) {
+    new_array = alloc_array (ht, new_max);
+    for (hi = guththila_hash_first (NULL, ht); hi;
+         hi = guththila_hash_next (hi))
+    {
         unsigned int i = hi->this->hash & new_max;
         hi->this->next = new_array[i];
         new_array[i] = hi->this;
@@ -167,13 +184,16 @@ static void expand_array(guththila_hash_t *ht)
     ht->max = new_max;
 }
 
-unsigned int guththila_hashfunc_default(const guththila_char_t *char_key, guththila_ssize_t *klen)
+unsigned int
+guththila_hashfunc_default (const guththila_char_t * char_key,
+                            guththila_ssize_t * klen)
 {
     unsigned int hash = 0;
-    const guththila_unsigned_char_t *key = (const guththila_unsigned_char_t *)char_key;
+    const guththila_unsigned_char_t *key =
+        (const guththila_unsigned_char_t *) char_key;
     const guththila_unsigned_char_t *p;
     guththila_ssize_t i;
-    
+
     /*
      * This is the popular `times 33' hash algorithm which is used by
      * perl and also appears in Berkeley DB. This is one of the best
@@ -211,15 +231,19 @@ unsigned int guththila_hashfunc_default(const guththila_char_t *char_key, guthth
      *
      *                  -- Ralf S. Engelschall <rse@engelschall.com>
      */
-     
-    if (*klen == GUTHTHILA_HASH_KEY_STRING) {
-        for (p = key; *p; p++) {
+
+    if (*klen == GUTHTHILA_HASH_KEY_STRING)
+    {
+        for (p = key; *p; p++)
+        {
             hash = hash * 33 + *p;
         }
         *klen = p - key;
     }
-    else {
-        for (p = key, i = *klen; i; i--, p++) {
+    else
+    {
+        for (p = key, i = *klen; i; i--, p++)
+        {
             hash = hash * 33 + *p;
         }
     }
@@ -237,22 +261,21 @@ unsigned int guththila_hashfunc_default(const guththila_char_t *char_key, guthth
  * that hash entries can be removed.
  */
 
-static guththila_hash_entry_t **find_entry(guththila_hash_t *ht,
-                                     const void *key,
-                                     guththila_ssize_t klen,
-                                     const void *val)
+static guththila_hash_entry_t **
+find_entry (guththila_hash_t * ht,
+            const void *key, guththila_ssize_t klen, const void *val)
 {
     guththila_hash_entry_t **hep, *he;
     unsigned int hash;
 
-    hash = ht->hash_func(key, &klen);
+    hash = ht->hash_func (key, &klen);
 
     /* scan linked list */
     for (hep = &ht->array[hash & ht->max], he = *hep;
-         he; hep = &he->next, he = *hep) {
+         he; hep = &he->next, he = *hep)
+    {
         if (he->hash == hash
-            && he->klen == klen
-            && memcmp(he->key, key, klen) == 0)
+            && he->klen == klen && memcmp (he->key, key, klen) == 0)
             break;
     }
     if (he || !val)
@@ -262,41 +285,48 @@ static guththila_hash_entry_t **find_entry(guththila_hash_t *ht,
     if ((he = ht->free) != NULL)
         ht->free = he->next;
     else
-        he = guththila_malloc(ht->environment->allocator, sizeof(*he));
+        he = guththila_malloc (ht->environment->allocator, sizeof (*he));
     he->next = NULL;
     he->hash = hash;
-    he->key  = key;
+    he->key = key;
     he->klen = klen;
-    he->val  = val;
+    he->val = val;
     *hep = he;
     ht->count++;
     return hep;
 }
 
-GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_copy(guththila_environment_t *environment,
-                                        const guththila_hash_t *orig)
+GUTHTHILA_DECLARE (guththila_hash_t *)
+guththila_hash_copy (guththila_environment_t * environment,
+                     const guththila_hash_t * orig)
 {
     guththila_hash_t *ht;
     guththila_hash_entry_t *new_vals;
     unsigned int i, j;
 
-    ht = guththila_malloc(environment->allocator, sizeof(guththila_hash_t) +
-                    sizeof(*ht->array) * (orig->max + 1) +
-                    sizeof(guththila_hash_entry_t) * orig->count);
+    ht = guththila_malloc (environment->allocator, sizeof (guththila_hash_t) +
+                           sizeof (*ht->array) * (orig->max + 1) +
+                           sizeof (guththila_hash_entry_t) * orig->count);
     ht->environment = environment;
     ht->free = NULL;
     ht->count = orig->count;
     ht->max = orig->max;
     ht->hash_func = orig->hash_func;
-    ht->array = (guththila_hash_entry_t **)((guththila_char_t *)ht + sizeof(guththila_hash_t));
+    ht->array =
+        (guththila_hash_entry_t **) ((guththila_char_t *) ht +
+                                     sizeof (guththila_hash_t));
 
-    new_vals = (guththila_hash_entry_t *)((guththila_char_t *)(ht) + sizeof(guththila_hash_t) +
-                                    sizeof(*ht->array) * (orig->max + 1));
+    new_vals =
+        (guththila_hash_entry_t *) ((guththila_char_t *) (ht) +
+                                    sizeof (guththila_hash_t) +
+                                    sizeof (*ht->array) * (orig->max + 1));
     j = 0;
-    for (i = 0; i <= ht->max; i++) {
+    for (i = 0; i <= ht->max; i++)
+    {
         guththila_hash_entry_t **new_entry = &(ht->array[i]);
         guththila_hash_entry_t *orig_entry = orig->array[i];
-        while (orig_entry) {
+        while (orig_entry)
+        {
             *new_entry = &new_vals[j++];
             (*new_entry)->hash = orig_entry->hash;
             (*new_entry)->key = orig_entry->key;
@@ -310,27 +340,29 @@ GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_copy(guththila_environment_t
     return ht;
 }
 
-GUTHTHILA_DECLARE(void*) guththila_hash_get(guththila_hash_t *ht,
-                                 const void *key,
-                                 guththila_ssize_t klen)
+GUTHTHILA_DECLARE (void *) guththila_hash_get (guththila_hash_t * ht,
+                                               const void *key,
+                                               guththila_ssize_t klen)
 {
     guththila_hash_entry_t *he;
-    he = *find_entry(ht, key, klen, NULL);
+    he = *find_entry (ht, key, klen, NULL);
     if (he)
-        return (void *)he->val;
+        return (void *) he->val;
     else
         return NULL;
 }
 
-GUTHTHILA_DECLARE(void) guththila_hash_set(guththila_hash_t *ht,
-                               const void *key,
-                               guththila_ssize_t klen,
-                               const void *val)
+GUTHTHILA_DECLARE (void) guththila_hash_set (guththila_hash_t * ht,
+                                             const void *key,
+                                             guththila_ssize_t klen,
+                                             const void *val)
 {
     guththila_hash_entry_t **hep;
-    hep = find_entry(ht, key, klen, val);
-    if (*hep) {
-        if (!val) {
+    hep = find_entry (ht, key, klen, val);
+    if (*hep)
+    {
+        if (!val)
+        {
             /* delete entry */
             guththila_hash_entry_t *old = *hep;
             *hep = (*hep)->next;
@@ -338,81 +370,94 @@ GUTHTHILA_DECLARE(void) guththila_hash_set(guththila_hash_t *ht,
             ht->free = old;
             --ht->count;
         }
-        else {
+        else
+        {
             /* replace entry */
             (*hep)->val = val;
             /* check that the collision rate isn't too high */
-            if (ht->count > ht->max) {
-                expand_array(ht);
+            if (ht->count > ht->max)
+            {
+                expand_array (ht);
             }
         }
     }
     /* else key not present and val==NULL */
 }
 
-unsigned int guththila_hash_count(guththila_hash_t *ht)
+unsigned int
+guththila_hash_count (guththila_hash_t * ht)
 {
     return ht->count;
 }
 
-GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_overlay(guththila_environment_t *environment,
-                                          const guththila_hash_t *overlay,
-                                          const guththila_hash_t *base)
+GUTHTHILA_DECLARE (guththila_hash_t *)
+guththila_hash_overlay (guththila_environment_t * environment,
+                        const guththila_hash_t * overlay,
+                        const guththila_hash_t * base)
 {
-    return guththila_hash_merge(environment, overlay, base, NULL, NULL);
+    return guththila_hash_merge (environment, overlay, base, NULL, NULL);
 }
 
-GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_merge(guththila_environment_t *environment,
-                                         const guththila_hash_t *overlay,
-                                         const guththila_hash_t *base,
-                                         void * (*merger)(guththila_environment_t *environment,
-                                                     const void *key,
-                                                     guththila_ssize_t klen,
-                                                     const void *h1_val,
-                                                     const void *h2_val,
-                                                     const void *data),
-                                         const void *data)
+GUTHTHILA_DECLARE (guththila_hash_t *)
+guththila_hash_merge (guththila_environment_t * environment,
+                      const guththila_hash_t * overlay,
+                      const guththila_hash_t * base,
+                      void *(*merger) (guththila_environment_t * environment,
+                                       const void *key,
+                                       guththila_ssize_t klen,
+                                       const void *h1_val, const void *h2_val,
+                                       const void *data), const void *data)
 {
     guththila_hash_t *res;
     guththila_hash_entry_t *new_vals = NULL;
     guththila_hash_entry_t *iter;
     guththila_hash_entry_t *ent;
-    unsigned int i,j,k;
+    unsigned int i, j, k;
 
 #if GUTHTHILA_POOL_DEBUG
     /* we don't copy keys and values, so it's necessary that
      * overlay->a.environment and base->a.environment have a life span at least
      * as long as p
      */
-    if (!guththila_environment_is_ancestor(overlay->environment, p)) {
-        fprintf(stderr,
-                "guththila_hash_merge: overlay's environment is not an ancestor of p\n");
-        abort();
+    if (!guththila_environment_is_ancestor (overlay->environment, p))
+    {
+        fprintf (stderr,
+                 "guththila_hash_merge: overlay's environment is not an ancestor of p\n");
+        abort ();
     }
-    if (!guththila_environment_is_ancestor(base->environment, p)) {
-        fprintf(stderr,
-                "guththila_hash_merge: base's environment is not an ancestor of p\n");
-        abort();
+    if (!guththila_environment_is_ancestor (base->environment, p))
+    {
+        fprintf (stderr,
+                 "guththila_hash_merge: base's environment is not an ancestor of p\n");
+        abort ();
     }
 #endif
 
-    res = guththila_malloc(environment->allocator, sizeof(guththila_hash_t));
+    res =
+        guththila_malloc (environment->allocator, sizeof (guththila_hash_t));
     res->environment = environment;
     res->free = NULL;
     res->hash_func = base->hash_func;
     res->count = base->count;
     res->max = (overlay->max > base->max) ? overlay->max : base->max;
-    if (base->count + overlay->count > res->max) {
+    if (base->count + overlay->count > res->max)
+    {
         res->max = res->max * 2 + 1;
     }
-    res->array = alloc_array(res, res->max);
-    if (base->count + overlay->count) {
-        new_vals = guththila_malloc(environment->allocator, sizeof(guththila_hash_entry_t) *
-                              (base->count + overlay->count));
+    res->array = alloc_array (res, res->max);
+    if (base->count + overlay->count)
+    {
+        new_vals =
+            guththila_malloc (environment->allocator,
+                              sizeof (guththila_hash_entry_t) * (base->count +
+                                                                 overlay->
+                                                                 count));
     }
     j = 0;
-    for (k = 0; k <= base->max; k++) {
-        for (iter = base->array[k]; iter; iter = iter->next) {
+    for (k = 0; k <= base->max; k++)
+    {
+        for (iter = base->array[k]; iter; iter = iter->next)
+        {
             i = iter->hash & res->max;
             new_vals[j].klen = iter->klen;
             new_vals[j].key = iter->key;
@@ -424,23 +469,31 @@ GUTHTHILA_DECLARE(guththila_hash_t*) guththila_hash_merge(guththila_environment_
         }
     }
 
-    for (k = 0; k <= overlay->max; k++) {
-        for (iter = overlay->array[k]; iter; iter = iter->next) {
+    for (k = 0; k <= overlay->max; k++)
+    {
+        for (iter = overlay->array[k]; iter; iter = iter->next)
+        {
             i = iter->hash & res->max;
-            for (ent = res->array[i]; ent; ent = ent->next) {
+            for (ent = res->array[i]; ent; ent = ent->next)
+            {
                 if ((ent->klen == iter->klen) &&
-                    (memcmp(ent->key, iter->key, iter->klen) == 0)) {
-                    if (merger) {
-                        ent->val = (*merger)(environment, iter->key, iter->klen,
-                                             iter->val, ent->val, data);
+                    (memcmp (ent->key, iter->key, iter->klen) == 0))
+                {
+                    if (merger)
+                    {
+                        ent->val =
+                            (*merger) (environment, iter->key, iter->klen,
+                                       iter->val, ent->val, data);
                     }
-                    else {
+                    else
+                    {
                         ent->val = iter->val;
                     }
                     break;
                 }
             }
-            if (!ent) {
+            if (!ent)
+            {
                 new_vals[j].klen = iter->klen;
                 new_vals[j].key = iter->key;
                 new_vals[j].val = iter->val;

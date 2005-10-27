@@ -20,16 +20,22 @@
 #include <guththila_defines.h>
 #include <guththila_allocator.h>
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-GUTHTHILA_DECLARE_DATA typedef struct guththila_string
-{
-    void* (GUTHTHILA_CALL *guththila_string_strdup)(const void *ptr);
-    int (GUTHTHILA_CALL *guththila_string_strcmp)(const guththila_char_t *s1, const guththila_char_t *s2);
-    guththila_char_t *(GUTHTHILA_CALL *guththila_string_strndup)(const guththila_char_t *s1,size_t n);
-    int  (GUTHTHILA_CALL *guththila_string_strlen)(const guththila_char_t *s);
-}guththila_string_t;
+    GUTHTHILA_DECLARE_DATA typedef struct guththila_string
+    {
+        void *(GUTHTHILA_CALL * guththila_string_strdup) (const void *ptr);
+        int (GUTHTHILA_CALL *
+             guththila_string_strcmp) (const guththila_char_t * s1,
+                                       const guththila_char_t * s2);
+        guththila_char_t *(GUTHTHILA_CALL *
+                           guththila_string_strndup) (const guththila_char_t *
+                                                      s1, size_t n);
+        int (GUTHTHILA_CALL *
+             guththila_string_strlen) (const guththila_char_t * s);
+    } guththila_string_t;
 
 /**
 *   if the parsed string is null a default string is created
@@ -38,9 +44,10 @@ GUTHTHILA_DECLARE_DATA typedef struct guththila_string
 *   @param string user defined allcator
 */
 
-GUTHTHILA_DECLARE(guththila_string_t*)
-    guththila_string_create(guththila_allocator_t *allocator, guththila_string_t *string);
-    
+      GUTHTHILA_DECLARE (guththila_string_t *)
+        guththila_string_create (guththila_allocator_t * allocator,
+                                 guththila_string_t * string);
+
 #define guththila_strdup(string, ptr) ((string)->guththila_string_strdup(ptr))
 #define guththila_strcmp(string, s1, s2) ((string)->guththila_string_strcmp(s1, s2))
 #define guththila_strndup(string,s1,n) ((string)->guththila_string_strndup(s1,n))
@@ -50,4 +57,4 @@ GUTHTHILA_DECLARE(guththila_string_t*)
 }
 #endif
 
-#endif /* GUTHTHILA_STRING_H */
+#endif                          /* GUTHTHILA_STRING_H */

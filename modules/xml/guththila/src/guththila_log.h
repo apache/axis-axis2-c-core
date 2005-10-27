@@ -20,35 +20,38 @@
 #include <guththila_allocator.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-typedef enum guththila_log_levels
-{
-    GUTHTHILA_LOG_DEBUG = 0,
-    GUTHTHILA_LOG_INFO,
-    GUTHTHILA_LOG_WARNING,
-    GUTHTHILA_LOG_ERROR,
-    GUTHTHILA_LOG_CRITICAL
-} guththila_log_levels_t;
+    typedef enum guththila_log_levels
+    {
+        GUTHTHILA_LOG_DEBUG = 0,
+        GUTHTHILA_LOG_INFO,
+        GUTHTHILA_LOG_WARNING,
+        GUTHTHILA_LOG_ERROR,
+        GUTHTHILA_LOG_CRITICAL
+    } guththila_log_levels_t;
 
-struct guththila_log;
-struct guththila_log_ops;
+    struct guththila_log;
+    struct guththila_log_ops;
 
-GUTHTHILA_DECLARE_DATA typedef struct guththila_log_ops
-{
-    int (GUTHTHILA_CALL *guththila_log_ops_write) (const void *buffer, size_t count);
-} guththila_log_ops_t;
+    GUTHTHILA_DECLARE_DATA typedef struct guththila_log_ops
+    {
+        int (GUTHTHILA_CALL * guththila_log_ops_write) (const void *buffer,
+                                                        size_t count);
+    } guththila_log_ops_t;
 
-typedef struct guththila_log
-{
-    struct guththila_log_ops *ops;
-    guththila_log_levels_t level;
-    int enabled;                /*boolean */
-} guththila_log_t;
+    typedef struct guththila_log
+    {
+        struct guththila_log_ops *ops;
+        guththila_log_levels_t level;
+        int enabled;            /*boolean */
+    } guththila_log_t;
 
-GUTHTHILA_DECLARE(guththila_log_t*) guththila_log_create (guththila_allocator_t * allocator,
-                               guththila_log_ops_t * operations);
+      GUTHTHILA_DECLARE (guththila_log_t *)
+        guththila_log_create (guththila_allocator_t * allocator,
+                              guththila_log_ops_t * operations);
 
 #define guththila_log_write(log, buffer, count) ((log)->ops->guththila_log_ops_write(buffer, count))
 
@@ -56,4 +59,4 @@ GUTHTHILA_DECLARE(guththila_log_t*) guththila_log_create (guththila_allocator_t 
 }
 #endif
 
-#endif /* GUTHTHILA_LOG_H */
+#endif                          /* GUTHTHILA_LOG_H */

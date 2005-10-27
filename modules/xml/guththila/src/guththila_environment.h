@@ -25,29 +25,37 @@
 #include <guththila_string.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-struct guththila_environment;
-struct guththila_environment_ops;
+    struct guththila_environment;
+    struct guththila_environment_ops;
 
-typedef struct guththila_environment_ops {
-int test;
-} guththila_environment_ops_t;
+    typedef struct guththila_environment_ops
+    {
+        int test;
+    } guththila_environment_ops_t;
 
-typedef struct guththila_environment {
-    struct guththila_environment_ops *ops;
-    guththila_allocator_t *allocator;   /* memory allocation routines */
-    guththila_error_t *error;           /* error handling */
-    guththila_stream_t *stream;         /* IO routines */
-    guththila_log_t *log;               /* logging routines */
-    guththila_string_t *string;         /* string routines */
-} guththila_environment_t;
+    typedef struct guththila_environment
+    {
+        struct guththila_environment_ops *ops;
+        guththila_allocator_t *allocator;   /* memory allocation routines */
+        guththila_error_t *error;   /* error handling */
+        guththila_stream_t *stream; /* IO routines */
+        guththila_log_t *log;   /* logging routines */
+        guththila_string_t *string; /* string routines */
+    } guththila_environment_t;
 
-GUTHTHILA_DECLARE(guththila_environment_t*) guththila_environment_create(guththila_allocator_t *allocator, guththila_error_t *error, guththila_stream_t *stream, guththila_log_t *log, guththila_string_t *string);
+      GUTHTHILA_DECLARE (guththila_environment_t *)
+        guththila_environment_create (guththila_allocator_t * allocator,
+                                      guththila_error_t * error,
+                                      guththila_stream_t * stream,
+                                      guththila_log_t * log,
+                                      guththila_string_t * string);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* GUTHTHILA_ENVIRONMENT_H */
+#endif                          /* GUTHTHILA_ENVIRONMENT_H */

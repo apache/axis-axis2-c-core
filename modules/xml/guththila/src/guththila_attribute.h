@@ -24,9 +24,9 @@
 
 typedef struct guththila_attribute_s
 {
-  guththila_token_t *prefix;
-  guththila_token_t *name;
-  guththila_token_t *value;
+    guththila_token_t *prefix;
+    guththila_token_t *name;
+    guththila_token_t *value;
 } guththila_attribute_t;
 
 #endif /* GUTHTHILA_ATTRIBUTE_H */

@@ -18,60 +18,70 @@
 #include <stdio.h>
 
 int GUTHTHILA_CALL guththila_stream_ops_read (void *buffer, size_t count);
-int GUTHTHILA_CALL guththila_stream_ops_write(const void *buffer, size_t count);
+int GUTHTHILA_CALL guththila_stream_ops_write (const void *buffer,
+                                               size_t count);
 
-GUTHTHILA_DECLARE(guththila_stream_t*) guththila_stream_create(guththila_allocator_t* allocator, guththila_stream_ops_t* operations)
+GUTHTHILA_DECLARE (guththila_stream_t *)
+guththila_stream_create (guththila_allocator_t * allocator,
+                         guththila_stream_ops_t * operations)
 {
     guththila_stream_t *stream;
     if (!allocator)
         return NULL;
-    stream = (guththila_stream_t*)guththila_malloc(allocator, sizeof(guththila_stream_t));
+    stream =
+        (guththila_stream_t *) guththila_malloc (allocator,
+                                                 sizeof (guththila_stream_t));
 
     if (!stream)
         return NULL;
-    
+
     if (operations)
         stream->ops = operations;
     else
     {
-        stream->ops = (guththila_stream_ops_t*)guththila_malloc(allocator, sizeof(guththila_stream_ops_t));
+        stream->ops =
+            (guththila_stream_ops_t *) guththila_malloc (allocator,
+                                                         sizeof
+                                                         (guththila_stream_ops_t));
 
         if (!stream->ops)
         {
-            guththila_free(allocator, stream);
+            guththila_free (allocator, stream);
             return NULL;
         }
-        
+
         stream->ops->guththila_stream_read = guththila_stream_ops_read;
         stream->ops->guththila_stream_write = guththila_stream_ops_write;
     }
-    
+
     return stream;
 }
 
-int GUTHTHILA_CALL guththila_stream_ops_read (void *buffer, size_t count)
+int GUTHTHILA_CALL
+guththila_stream_ops_read (void *buffer, size_t count)
 {
     int i;
     if (!buffer)
         return -1;
 
     i = 0;
-    for(i = 0; i < count -1; i++ )
+    for (i = 0; i < count - 1; i++)
     {
-        ((guththila_char_t*)buffer)[i] = 'a';
+        ((guththila_char_t *) buffer)[i] = 'a';
     }
-    ((guththila_char_t*)buffer)[i] = '\0';
+    ((guththila_char_t *) buffer)[i] = '\0';
     return 0;
 }
 
-int GUTHTHILA_CALL guththila_stream_ops_write(const void *buffer, size_t count)
+int GUTHTHILA_CALL
+guththila_stream_ops_write (const void *buffer, size_t count)
 {
-    int i ;
+    int i;
     if (!buffer)
         return -1;
-    
-    i =0;
-    for(i = 0; i < count; i++)
-        printf("%c", ((guththila_char_t*)buffer)[i]);
+
+    i = 0;
+    for (i = 0; i < count; i++)
+        printf ("%c", ((guththila_char_t *) buffer)[i]);
     return 0;
 }

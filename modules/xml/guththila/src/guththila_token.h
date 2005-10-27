@@ -28,17 +28,17 @@
 
 typedef struct guththila_token_s
 {
-  int type;
-  guththila_char_t *start;
-  guththila_char_t *end;
-  int last;
-  int size;
-  int ref;
+    int type;
+    guththila_char_t *start;
+    guththila_char_t *end;
+    int last;
+    int size;
+    int ref;
 } guththila_token_t;
 
 
 enum guththila_token_type
-  {
+{
     Unknown = 1,
     _name,
     _value,
@@ -46,23 +46,53 @@ enum guththila_token_type
     _attribute_value,
     _prefix,
     _char_data
-  };
+};
 
 
-GUTHTHILA_DECLARE(guththila_token_t*) guththila_token_create_token_buffer(guththila_environment_t *environment,int size);
-GUTHTHILA_DECLARE(void) guththila_token_free_token_buffer (guththila_environment_t *environment,guththila_token_t *tok);
-GUTHTHILA_DECLARE(int) guththila_token_length (guththila_environment_t *environment,guththila_token_t *tok);
-GUTHTHILA_DECLARE(void) guththila_token_exception ();
-GUTHTHILA_DECLARE(guththila_token_t*) guththila_token_append (guththila_environment_t *environment,guththila_token_t *tok);
-GUTHTHILA_DECLARE(guththila_token_t*) guththila_token_grow (guththila_environment_t *environment,guththila_token_t *tok);
-GUTHTHILA_DECLARE(guththila_token_t*) guththila_token_last (guththila_environment_t *environment,guththila_token_t *tok);
-GUTHTHILA_DECLARE(int) guththila_token_count (guththila_environment_t *environment,guththila_token_t *tok);
-GUTHTHILA_DECLARE(guththila_char_t*) guththila_token_to_string (guththila_environment_t *environment,guththila_token_t *tok, int unicode);
-GUTHTHILA_DECLARE(void) guththila_token_relocate (guththila_environment_t *environment,guththila_token_t *tok, int offset);
-GUTHTHILA_DECLARE(int) guththila_token_compare (guththila_environment_t *environment,guththila_token_t *tok, const guththila_char_t *st, int n, int unicode_state);
-GUTHTHILA_DECLARE(guththila_char_t*) guththila_token_convert_utf16_to_utf8 (guththila_environment_t *environment,guththila_char_t *buffer, int length);
-GUTHTHILA_DECLARE(int) guththila_token_length_utf16 (guththila_environment_t *environment,unsigned int utf16_ch);
-GUTHTHILA_DECLARE(guththila_char_t*) guththila_token_build_utf8 (guththila_environment_t *environment,unsigned int utf16_ch, int length);
-GUTHTHILA_DECLARE(guththila_char_t*) guththila_token_char_ref (guththila_environment_t *environment,guththila_char_t *buffer);
+GUTHTHILA_DECLARE (guththila_token_t *)
+guththila_token_create_token_buffer (guththila_environment_t * environment,
+                                     int size);
+GUTHTHILA_DECLARE (void)
+guththila_token_free_token_buffer (guththila_environment_t * environment,
+                                   guththila_token_t * tok);
+GUTHTHILA_DECLARE (int)
+guththila_token_length (guththila_environment_t * environment,
+                        guththila_token_t * tok);
+GUTHTHILA_DECLARE (void)
+guththila_token_exception ();
+GUTHTHILA_DECLARE (guththila_token_t *)
+guththila_token_append (guththila_environment_t * environment,
+                        guththila_token_t * tok);
+GUTHTHILA_DECLARE (guththila_token_t *)
+guththila_token_grow (guththila_environment_t * environment,
+                      guththila_token_t * tok);
+GUTHTHILA_DECLARE (guththila_token_t *)
+guththila_token_last (guththila_environment_t * environment,
+                      guththila_token_t * tok);
+GUTHTHILA_DECLARE (int)
+guththila_token_count (guththila_environment_t * environment,
+                       guththila_token_t * tok);
+GUTHTHILA_DECLARE (guththila_char_t *)
+guththila_token_to_string (guththila_environment_t * environment,
+                           guththila_token_t * tok, int unicode);
+GUTHTHILA_DECLARE (void)
+guththila_token_relocate (guththila_environment_t * environment,
+                          guththila_token_t * tok, int offset);
+GUTHTHILA_DECLARE (int)
+guththila_token_compare (guththila_environment_t * environment,
+                         guththila_token_t * tok, const guththila_char_t * st,
+                         int n, int unicode_state);
+GUTHTHILA_DECLARE (guththila_char_t *)
+guththila_token_convert_utf16_to_utf8 (guththila_environment_t * environment,
+                                       guththila_char_t * buffer, int length);
+GUTHTHILA_DECLARE (int)
+guththila_token_length_utf16 (guththila_environment_t * environment,
+                              unsigned int utf16_ch);
+GUTHTHILA_DECLARE (guththila_char_t *)
+guththila_token_build_utf8 (guththila_environment_t * environment,
+                            unsigned int utf16_ch, int length);
+GUTHTHILA_DECLARE (guththila_char_t *)
+guththila_token_char_ref (guththila_environment_t * environment,
+                          guththila_char_t * buffer);
 
 #endif /* GUTHTHILA_TOKEN_H */
