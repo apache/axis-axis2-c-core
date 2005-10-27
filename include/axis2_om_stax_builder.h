@@ -106,7 +106,7 @@ extern "C"
 	* @param parser_env parser envioronment. Optional, can be NULL.
     * @return a pointer to the newly created builder struct. 
     */
-    AXIS2_DECLARE( axis2_om_stax_builder_t *) axis2_om_stax_builder_create (axis2_environment_t
+    AXIS2_DECLARE(axis2_om_stax_builder_t *) axis2_om_stax_builder_create (axis2_environment_t
                                                            * environment,
                                                            void *parser, void* parser_env);
 
