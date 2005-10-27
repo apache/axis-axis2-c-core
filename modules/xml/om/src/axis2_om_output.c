@@ -19,12 +19,13 @@
 #include <guththila_xml_stream_writer.h>
 
 #define   DEFAULT_CHAR_SET_ENCODING  "utf-8"
+#define MAX_ARGS  4
 
 guththila_environment_t *om_output_guththila_environment = NULL;
 guththila_allocator_t *om_output_guththila_allocator = NULL;
 
-axis2_om_output_t *
-AXIS2_CALL axis2_om_output_create (axis2_environment_t * environment, void *xml_writer, void* writer_env)
+AXIS2_DECLARE(axis2_om_output_t *)
+axis2_om_output_create (axis2_environment_t * environment, void *xml_writer, void* writer_env)
 {
     axis2_om_output_t *om_output =
         (axis2_om_output_t *) axis2_malloc (environment->allocator,
@@ -70,7 +71,7 @@ axis2_om_output_write (axis2_environment_t * environment,
                        int no_of_args, ...)
 {
     int status = AXIS2_SUCCESS;
-    axis2_char_t *args_list[no_of_args];
+    axis2_char_t *args_list[MAX_ARGS];
     int i = 0;
     va_list ap;
 

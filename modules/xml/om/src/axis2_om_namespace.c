@@ -33,8 +33,8 @@ axis2_status_t AXIS2_CALL axis2_om_namespace_impl_serialize (axis2_environment_t
                                                   axis2_om_output_t *
                                                   om_output);
 
-axis2_om_namespace_t *
-AXIS2_CALL axis2_om_namespace_create (axis2_environment_t * environment,
+AXIS2_DECLARE(axis2_om_namespace_t *)
+ axis2_om_namespace_create (axis2_environment_t * environment,
                            const axis2_char_t * uri,
                            const axis2_char_t * prefix)
 {
@@ -104,7 +104,7 @@ AXIS2_CALL axis2_om_namespace_create (axis2_environment_t * environment,
 
 
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_om_namespace_impl_free (axis2_environment_t * environment,
                               struct axis2_om_namespace * om_namespace)
 {
@@ -133,7 +133,7 @@ axis2_om_namespace_impl_free (axis2_environment_t * environment,
     return AXIS2_SUCCESS;
 }
 
-axis2_bool_t
+axis2_bool_t AXIS2_CALL
 axis2_om_namespace_impl_equals (axis2_environment_t * environment,
                                 axis2_om_namespace_t * ns1,
                                 axis2_om_namespace_t * ns2)
@@ -158,7 +158,7 @@ axis2_om_namespace_impl_equals (axis2_environment_t * environment,
     return (!uris_differ && !prefixes_differ);
 }
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_om_namespace_impl_serialize (axis2_environment_t * environment,
                                    axis2_om_namespace_t * om_namespace,
                                    axis2_om_output_t * om_output)

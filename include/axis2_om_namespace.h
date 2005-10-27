@@ -44,7 +44,7 @@ extern "C"
     * \brief OM Namespace operations struct
     * Encapsulator struct for operations of axis2_om_namespace
     */
-    typedef struct axis2_om_namespace_ops
+ AXIS2_DECLARE_DATA   typedef struct axis2_om_namespace_ops
     {
       /**
         * Frees given OM namespcae
@@ -52,7 +52,7 @@ extern "C"
         * @param om_namespace namespace to be freed.
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_namespace_ops_free) (axis2_environment_t *
+        axis2_status_t (AXIS2_CALL *axis2_om_namespace_ops_free) (axis2_environment_t *
                                                        environment,
                                                        struct
                                                        axis2_om_namespace *
@@ -65,7 +65,7 @@ extern "C"
         * @param om_namespace2 second namespace to be compared
         * @return true if the two namespaces are equal, false otherwise	
         */
-        AXIS2_DECLARE_DATA axis2_bool_t (AXIS2_CALL *axis2_om_namespace_ops_equals) (axis2_environment_t *
+        axis2_bool_t (AXIS2_CALL *axis2_om_namespace_ops_equals) (axis2_environment_t *
                                                        environment,
                                                        struct
                                                        axis2_om_namespace *
@@ -81,7 +81,7 @@ extern "C"
         * @param om_output OM output handler to be used in serializing
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_namespace_ops_serialize)
+        axis2_status_t (AXIS2_CALL *axis2_om_namespace_ops_serialize)
             (axis2_environment_t * environment,
              struct axis2_om_namespace * om_namespace,
              axis2_om_output_t * om_output);

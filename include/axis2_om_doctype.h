@@ -42,7 +42,7 @@ extern "C"
     * \brief OM doctype operations struct
     * Encapsulator struct for operations of axis2_om_doctype
     */
-    typedef struct axis2_om_doctype_ops
+ AXIS2_DECLARE_DATA   typedef struct axis2_om_doctype_ops
     {
       /**
         * free doctype struct
@@ -50,7 +50,7 @@ extern "C"
         * @param om_doctype pointer to doctype struct to be freed
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_doctype_ops_free) (axis2_environment_t *
+         axis2_status_t (AXIS2_CALL *axis2_om_doctype_ops_free) (axis2_environment_t *
                                                      environment,
                                                      struct axis2_om_doctype *
                                                      om_doctype);

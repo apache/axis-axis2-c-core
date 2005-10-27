@@ -65,9 +65,10 @@ AXIS2_CALL axis2_om_stax_builder_create (axis2_environment_t * environment, void
     else
     {
         /* create the default Guththila pull parser */
+        guththila_reader_t *reader = NULL;
 		om_stax_builder_guththila_allocator = guththila_allocator_init(NULL);
   		om_stax_builder_guththila_environment = guththila_environment_create(om_stax_builder_guththila_allocator, NULL, NULL, NULL, NULL);
-        guththila_reader_t *reader = guththila_reader_create (om_stax_builder_guththila_environment, stdin);
+        reader = guththila_reader_create (om_stax_builder_guththila_environment, stdin);
 		
         if (!reader)
         {
@@ -234,7 +235,7 @@ axis2_om_stax_builder_create_om_text (axis2_environment_t * environment,
 }
 
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_om_stax_builder_impl_discard_current_element (axis2_environment_t *
                                                     environment,
                                                     axis2_om_stax_builder_t *
@@ -405,7 +406,7 @@ axis2_om_stax_builder_create_om_comment (axis2_environment_t * environment,
 }
 
 
-axis2_om_node_t *
+axis2_om_node_t * 
 axis2_om_stax_builder_create_om_doctype (axis2_environment_t * environment,
                                          axis2_om_stax_builder_t * builder)
 {
@@ -413,8 +414,8 @@ axis2_om_stax_builder_create_om_doctype (axis2_environment_t * environment,
     return NULL;
 }
 
-
-axis2_om_node_t *
+ 
+axis2_om_node_t * 
 axis2_om_stax_builder_create_om_processing_instruction (axis2_environment_t *
                                                         environment,
                                                         axis2_om_stax_builder_t
@@ -424,7 +425,7 @@ axis2_om_stax_builder_create_om_processing_instruction (axis2_environment_t *
     return NULL;
 }
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_om_stax_builder_end_element (axis2_environment_t * environment,
                                    axis2_om_stax_builder_t * builder)
 {
@@ -450,7 +451,7 @@ axis2_om_stax_builder_end_element (axis2_environment_t * environment,
 }
 
 
-axis2_om_node_t *
+axis2_om_node_t * AXIS2_CALL
 axis2_om_stax_builder_impl_next (axis2_environment_t * environment,
                                  axis2_om_stax_builder_t * builder)
 {

@@ -45,7 +45,7 @@ extern "C"
     * @brief OM stax builder operations struct
     * Encapsulator struct for operations of axis2_om_stax_builder
     */
-    typedef struct axis2_om_stax_builder_ops
+ AXIS2_DECLARE_DATA    typedef struct axis2_om_stax_builder_ops
     {
       /**
         * Builds the next node from stream. Moves pull parser forward and reacts to events.
@@ -54,7 +54,7 @@ extern "C"
         * @return a pointer to the next node, or NULL if there are no more nodes.
         *           On erros sets the error and returns NULL.
         */
-        AXIS2_DECLARE_DATA axis2_om_node_t * 
+        axis2_om_node_t * 
             (AXIS2_CALL *axis2_om_stax_builder_ops_next) (axis2_environment_t *
                                                 environment,
                                                 struct axis2_om_stax_builder *
@@ -66,12 +66,12 @@ extern "C"
         * @param builder pointer to stax builder struct to be used
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_stax_builder_ops_discard_current_element)
+        axis2_status_t (AXIS2_CALL *axis2_om_stax_builder_ops_discard_current_element)
             (axis2_environment_t * environment,
              struct axis2_om_stax_builder * builder);
 
 			 
-		AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_stax_builder_ops_free)(axis2_environment_t *envioronment,struct axis2_om_stax_builder *builder);
+		axis2_status_t (AXIS2_CALL *axis2_om_stax_builder_ops_free)(axis2_environment_t *envioronment,struct axis2_om_stax_builder *builder);
 
     } axis2_om_stax_builder_ops_t;
 

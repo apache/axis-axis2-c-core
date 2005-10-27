@@ -36,8 +36,8 @@ axis2_status_t AXIS2_CALL axis2_om_attribute_impl_serialize (axis2_environment_t
                                                   om_output);
 
 
-axis2_om_attribute_t *
-AXIS2_CALL axis2_om_attribute_create (axis2_environment_t * environment,
+AXIS2_DECLARE(axis2_om_attribute_t*)
+ axis2_om_attribute_create (axis2_environment_t * environment,
                            const axis2_char_t * localname,
                            const axis2_char_t * value,
                            axis2_om_namespace_t * ns)
@@ -97,7 +97,7 @@ AXIS2_CALL axis2_om_attribute_create (axis2_environment_t * environment,
     return attribute;
 }
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_om_attribute_impl_free (axis2_environment_t * environment,
                               axis2_om_attribute_t * attribute)
 {
@@ -117,7 +117,7 @@ axis2_om_attribute_impl_free (axis2_environment_t * environment,
     return AXIS2_FAILURE;
 }
 
-axis2_qname_t *
+axis2_qname_t* AXIS2_CALL
 axis2_om_attribute_impl_get_qname (axis2_environment_t * environment,
                                    axis2_om_attribute_t * attribute)
 {
@@ -140,7 +140,7 @@ axis2_om_attribute_impl_get_qname (axis2_environment_t * environment,
 }
 
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_om_attribute_impl_serialize (axis2_environment_t * environment,
                                    axis2_om_attribute_t * attribute,
                                    axis2_om_output_t * om_output)

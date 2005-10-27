@@ -44,7 +44,7 @@ extern "C"
     * @brief OM text operations struct
     * Encapsulator struct for operations of axis2_om_text
     */
-    typedef struct axis2_om_text_ops
+ AXIS2_DECLARE_DATA   typedef struct axis2_om_text_ops
     {
       /**
         * Free an axis2_om_text struct
@@ -52,7 +52,7 @@ extern "C"
         * @param om_text pointer to om text struct to be freed
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_text_ops_free) (axis2_environment_t *
+        axis2_status_t (AXIS2_CALL *axis2_om_text_ops_free) (axis2_environment_t *
                                                   environment,
                                                   struct axis2_om_text *
                                                   om_text);
@@ -64,7 +64,7 @@ extern "C"
         * @param om_output OM output handler to be used in serializing
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_text_ops_serialize) (axis2_environment_t *
+        axis2_status_t (AXIS2_CALL *axis2_om_text_ops_serialize) (axis2_environment_t *
                                                        environment,
                                                        const struct
                                                        axis2_om_text *

@@ -120,7 +120,7 @@ AXIS2_CALL axis2_om_processing_instruction_create (axis2_environment_t * environ
     return processing_instruction;
 }
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_om_processing_instruction_impl_free (axis2_environment_t * environment,
                                            axis2_om_processing_instruction_t *
                                            processing_instruction)

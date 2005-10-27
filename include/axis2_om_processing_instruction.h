@@ -44,7 +44,7 @@ extern "C"
     * @brief OM text operations struct
     * Encapsulator struct for operations of axis2_om_processing_instruction
     */
-    typedef struct axis2_om_processing_instruction_ops
+   AXIS2_DECLARE_DATA  typedef struct axis2_om_processing_instruction_ops
     {
         /**
          * Frees an instance of axis2_om_processing_instruction
@@ -52,7 +52,7 @@ extern "C"
          * @param om_pi processing instruction to be freed.
          * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
          */
-        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_processing_instruction_ops_free)
+        axis2_status_t (AXIS2_CALL *axis2_om_processing_instruction_ops_free)
             (axis2_environment_t * environment,
              struct axis2_om_processing_instruction * om_pi);
     } axis2_om_processing_instruction_ops_t;

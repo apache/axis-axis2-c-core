@@ -49,7 +49,7 @@ extern "C"
     * @brief OM document operations struct
     * Encapsulator struct for operations of axis2_om_document_t
     */
-    typedef struct axis2_om_document_ops
+ AXIS2_DECLARE_DATA   typedef struct axis2_om_document_ops
     {
 
       /** 
@@ -58,7 +58,7 @@ extern "C"
         * @param document pointer to document struct to be freed
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_document_ops_free) (axis2_environment_t *
+        axis2_status_t (AXIS2_CALL *axis2_om_document_ops_free) (axis2_environment_t *
                                                       environment,
                                                       struct axis2_om_document
                                                       * document);
@@ -69,7 +69,7 @@ extern "C"
         * @param document document whose next node is to be built. Mandatory, cannot be NULL
         * @return pointer to the next node. NULL on error.
         */
-        AXIS2_DECLARE_DATA axis2_om_node_t
+        axis2_om_node_t
             *(AXIS2_CALL *axis2_om_document_ops_build_next) (axis2_environment_t *
                                                   environment,
                                                   struct axis2_om_document *
@@ -82,7 +82,7 @@ extern "C"
         * @param child child node to be added. Mandatory, cannot be NULL.
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_document_ops_add_child)
+        axis2_status_t (AXIS2_CALL *axis2_om_document_ops_add_child)
             (axis2_environment_t * environment,
              struct axis2_om_document * document, axis2_om_node_t * child);
 
@@ -93,7 +93,7 @@ extern "C"
         * @return returns a pointer to the root node. If no root present, this method tries to 
         *             build the root. Returns NULL on error. 
         */
-        AXIS2_DECLARE_DATA axis2_om_node_t
+        axis2_om_node_t
             * (AXIS2_CALL *axis2_om_document_ops_get_root_element) (axis2_environment_t *
                                                          environment,
                                                          struct
@@ -108,7 +108,7 @@ extern "C"
         *           till the next sibling is found. Returns NULL if no sibling is present.
         *           On error, returns NULL and set the error. 
         */
-        AXIS2_DECLARE_DATA axis2_om_node_t
+        axis2_om_node_t
             * (AXIS2_CALL *axis2_om_document_ops_get_next_sibling) (axis2_environment_t *
                                                          environment,
                                                          struct
@@ -124,7 +124,7 @@ extern "C"
         *           till the first child is found. Returns NULL if no child is present.
         *           On error, returns NULL and sets the error. 
         */
-        AXIS2_DECLARE_DATA axis2_om_node_t
+        axis2_om_node_t
             * (AXIS2_CALL *axis2_om_document_ops_get_first_child) (axis2_environment_t *
                                                         environment,
                                                         struct
@@ -140,7 +140,7 @@ extern "C"
         *           till the next child is found. Returns NULL if no child is present.
         *           On error, returns NULL and sets the error. 
         */
-        AXIS2_DECLARE_DATA axis2_om_node_t
+        axis2_om_node_t
             * (AXIS2_CALL *axis2_om_document_ops_get_next_child) (axis2_environment_t *
                                                        environment,
                                                        struct

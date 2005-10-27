@@ -44,7 +44,7 @@ extern "C"
  *   \brief OM attribute operations struct
  *   Encapsulator struct for axis2_om_attribute
  */
-    typedef struct axis2_om_attribute_ops
+ AXIS2_DECLARE_DATA   typedef struct axis2_om_attribute_ops
     {
       /**
         * Free an axis2_om_attribute struct
@@ -53,7 +53,7 @@ extern "C"
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
 
-        AXIS2_DECLARE_DATA axis2_status_t (AXIS2_CALL *axis2_om_attribute_ops_free) (axis2_environment_t *
+         axis2_status_t (AXIS2_CALL *axis2_om_attribute_ops_free) (axis2_environment_t *
                                                        environment,
                                                        struct
                                                        axis2_om_attribute *
@@ -66,7 +66,7 @@ extern "C"
         * @return returns qname for given attribute. NULL on error 
         */
 
-        AXIS2_DECLARE_DATA axis2_qname_t
+         axis2_qname_t
             *(AXIS2_CALL *axis2_om_attribute_ops_get_qname) (axis2_environment_t *
                                                   environment,
                                                   struct axis2_om_attribute *
@@ -80,7 +80,7 @@ extern "C"
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
 
-        AXIS2_DECLARE_DATA int (AXIS2_CALL *axis2_om_attribute_ops_serialize) (axis2_environment_t *
+         int (AXIS2_CALL *axis2_om_attribute_ops_serialize) (axis2_environment_t *
                                                  environment,
                                                  struct axis2_om_attribute *
                                                  om_attribute,

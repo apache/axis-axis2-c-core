@@ -25,7 +25,7 @@ axis2_status_t AXIS2_CALL axis2_om_text_impl_serialize (axis2_environment_t *
                                              const axis2_om_text_t * om_text,
                                              axis2_om_output_t * om_output);
 
-axis2_om_text_t *
+AXIS2_DECLARE(axis2_om_text_t*)
 axis2_om_text_create (axis2_environment_t * environment,
                       axis2_om_node_t * parent, const axis2_char_t * value,
                       axis2_om_node_t ** node)
@@ -99,7 +99,7 @@ axis2_om_text_create (axis2_environment_t * environment,
 }
 
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_om_text_impl_free (axis2_environment_t * environment,
                          axis2_om_text_t * om_text)
 {
@@ -121,7 +121,7 @@ axis2_om_text_impl_free (axis2_environment_t * environment,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_om_text_impl_serialize (axis2_environment_t * environment,
                               const axis2_om_text_t * om_text,
                               axis2_om_output_t * om_output)
