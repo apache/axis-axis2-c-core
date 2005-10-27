@@ -7,10 +7,9 @@ typedef struct a
 
 void Testaxis2_hash_ops_get(CuTest *tc)
 {
-	axis2_string_t *string = axis2_allocator_init (NULL);    
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_environment_t *environment =
-        axis2_environment_create (allocator, NULL, NULL, NULL, string);
+        axis2_environment_create (allocator, NULL, NULL, NULL, NULL);
 
     axis2_hash_t *ht;
     a *actual, *expected;
