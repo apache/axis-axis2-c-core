@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libaxis2_description.la
+lib_LTLIBRARIES = libaxis2_description.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_description_la_SOURCES = axis2_description_param_include.c \
                             axis2_description_operation.c \

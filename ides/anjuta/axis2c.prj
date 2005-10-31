@@ -115,7 +115,9 @@ module.include.files=\
 	include/axis2_core.h\
 	include/axis2_context_msg_context.h\
 	include/axis2_engine_msg_receiver.h\
-	include/axis2_file_diff.h
+	include/axis2_file_diff.h\
+	include/axis2_wsdl_operation.h\
+	include/axis2_wsdl_service.h
 
 module.source.name=.
 module.source.type=
@@ -164,7 +166,9 @@ module.source.files=\
 	modules/core/engine/src/axis2_engine_msg_receiver.c\
 	modules/xml/om/src/axis2_om_output.c\
 	modules/util/src/axis2_qname.c\
-	modules/util/src/axis2_file_diff.c
+	modules/util/src/axis2_file_diff.c\
+	modules/wsdl/src/axis2_wsdl_operation.c\
+	modules/wsdl/src/axis2_wsdl_service.c
 
 module.pixmap.name=.
 module.pixmap.type=

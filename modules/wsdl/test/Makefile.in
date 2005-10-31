@@ -67,16 +67,14 @@ am__installdirs = "$(DESTDIR)$(prglibdir)" "$(DESTDIR)$(prgbindir)" \
 prglibLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(prglib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libtest_wsdl_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/modules/wsdl/src/libaxis2_wsdl.la
+libtest_wsdl_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libtest_wsdl_la_OBJECTS =
 libtest_wsdl_la_OBJECTS = $(am_libtest_wsdl_la_OBJECTS)
 prgbinPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(prgbin_PROGRAMS)
 am_wsdl_test_OBJECTS = main.$(OBJEXT)
 wsdl_test_OBJECTS = $(am_wsdl_test_OBJECTS)
-wsdl_test_DEPENDENCIES = $(am__DEPENDENCIES_1) libtest_wsdl.la \
-	$(top_builddir)/modules/wsdl/src/libaxis2_wsdl.la
+wsdl_test_DEPENDENCIES = $(am__DEPENDENCIES_1) libtest_wsdl.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -209,10 +207,13 @@ prglib_LTLIBRARIES = libtest_wsdl.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libtest_wsdl_la_SOURCES = 
 include_HEADERS = $(top_builddir)/modules/wsdl/test/*.h
-libtest_wsdl_la_LIBADD = $(LDFLAGS) $(top_builddir)/modules/wsdl/src/libaxis2_wsdl.la
+libtest_wsdl_la_LIBADD = $(LDFLAGS) -L$(top_builddir)/modules/wsdl/src/.libs -laxis2_wsdl
 INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include
 wsdl_test_SOURCES = main.c
-wsdl_test_LDADD = $(LDFLAGS) libtest_wsdl.la  $(top_builddir)/modules/wsdl/src/libaxis2_wsdl.la
+wsdl_test_LDADD = $(LDFLAGS) libtest_wsdl.la  \
+                    -L$(top_builddir)/modules/wsdl/src/.libs -laxis2_wsdl \
+                    -L$(top_builddir)/modules/util/src/.libs -laxis2_util
+
 all: all-am
 
 .SUFFIXES:

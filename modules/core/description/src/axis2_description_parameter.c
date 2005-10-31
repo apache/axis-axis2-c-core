@@ -59,8 +59,8 @@ axis2_status_t axis2_description_param_ops_set_locked (axis2_environment_t *env
 	, axis2_description_param_t * param, const axis2_om_element_t * om_element);
 */										 
 
-axis2_description_param_t *axis2_description_param_ops_get_param_element 
-	(axis2_environment_t *env, axis2_description_param_t *param);
+/*axis2_description_param_t *axis2_description_param_ops_get_param_element 
+	(axis2_environment_t *env, axis2_description_param_t *param);*/
 
 axis2_status_t axis2_description_param_ops_set_type (axis2_environment_t *env
 	, axis2_description_param_t * param, const int type);
@@ -112,7 +112,7 @@ axis2_description_param_t *axis2_description_param_create
 	ops->is_locked = axis2_description_param_ops_is_locked;
 	ops->set_locked = axis2_description_param_ops_set_locked;
 	/*ops->set_param_element = axis2_description_param_ops_set_param_element;*/
-	ops->get_param_element = axis2_description_param_ops_get_param_element;
+	/*ops->get_param_element = axis2_description_param_ops_get_param_element;*/
 	ops->set_type = axis2_description_param_ops_set_type;
 	ops->get_type = axis2_description_param_ops_get_type;
 	

@@ -93,6 +93,7 @@ AC_CONFIG_FILES([Makefile \
     modules/core/context/src/Makefile \
     modules/core/description/Makefile \
     modules/core/description/src/Makefile \
+    modules/core/description/test/Makefile \
     modules/core/engine/Makefile \
     modules/core/engine/src/Makefile \
     modules/xml/Makefile \

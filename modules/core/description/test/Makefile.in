@@ -14,7 +14,9 @@
 
 @SET_MAKE@
 
-SOURCES = $(libaxis2_wsdl_la_SOURCES)
+
+
+SOURCES = $(libtest_description_la_SOURCES) $(description_test_SOURCES)
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -22,7 +24,7 @@ VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-top_builddir = ../../..
+top_builddir = ../../../..
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 INSTALL = @INSTALL@
 install_sh_DATA = $(install_sh) -c -m 644
@@ -39,8 +41,10 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-subdir = modules/wsdl/src
-DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
+prgbin_PROGRAMS = description_test$(EXEEXT)
+subdir = modules/core/description/test
+DIST_COMMON = $(include_HEADERS) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/conftools/libtool.m4 \
@@ -58,14 +62,20 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(libdir)"
-libLTLIBRARIES_INSTALL = $(INSTALL)
-LTLIBRARIES = $(lib_LTLIBRARIES)
+am__installdirs = "$(DESTDIR)$(prglibdir)" "$(DESTDIR)$(prgbindir)" \
+	"$(DESTDIR)$(includedir)"
+prglibLTLIBRARIES_INSTALL = $(INSTALL)
+LTLIBRARIES = $(prglib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libaxis2_wsdl_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libaxis2_wsdl_la_OBJECTS = axis2_wsdl_operation.lo \
-	axis2_wsdl_service.lo axis2_wsdl_component.lo
-libaxis2_wsdl_la_OBJECTS = $(am_libaxis2_wsdl_la_OBJECTS)
+libtest_description_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am_libtest_description_la_OBJECTS = description_test.lo
+libtest_description_la_OBJECTS = $(am_libtest_description_la_OBJECTS)
+prgbinPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
+PROGRAMS = $(prgbin_PROGRAMS)
+am_description_test_OBJECTS = main.$(OBJEXT)
+description_test_OBJECTS = $(am_description_test_OBJECTS)
+description_test_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	libtest_description.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -77,8 +87,12 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libaxis2_wsdl_la_SOURCES)
-DIST_SOURCES = $(libaxis2_wsdl_la_SOURCES)
+SOURCES = $(libtest_description_la_SOURCES) \
+	$(description_test_SOURCES)
+DIST_SOURCES = $(libtest_description_la_SOURCES) \
+	$(description_test_SOURCES)
+includeHEADERS_INSTALL = $(INSTALL_HEADER)
+HEADERS = $(include_HEADERS)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -190,14 +204,21 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
-lib_LTLIBRARIES = libaxis2_wsdl.la
+prgbindir = $(prefix)/bin/unit_test
+prglibdir = $(prefix)/lib/unit_test
+prglib_LTLIBRARIES = libtest_description.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_wsdl_la_SOURCES = axis2_wsdl_operation.c \
-                        axis2_wsdl_service.c \
-                        axis2_wsdl_component.c
+libtest_description_la_SOURCES = description_test.c
+include_HEADERS = $(top_builddir)/modules/core/description/test/*.h
+libtest_description_la_LIBADD = $(LDFLAGS) -L$(top_builddir)/modules/core/description/src/.libs \
+                                -laxis2_description
 
-libaxis2_wsdl_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include
+description_test_SOURCES = main.c
+description_test_LDADD = $(LDFLAGS) libtest_description.la  \
+                    -L$(top_builddir)/modules/core/description/src/.libs -laxis2_description \
+                    -L$(top_builddir)/modules/util/src/.libs -laxis2_util
+
 all: all-am
 
 .SUFFIXES:
@@ -211,9 +232,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  modules/wsdl/src/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  modules/core/description/test/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  modules/wsdl/src/Makefile
+	  $(AUTOMAKE) --gnu  modules/core/description/test/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -231,35 +252,66 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+install-prglibLTLIBRARIES: $(prglib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
-	test -z "$(libdir)" || $(mkdir_p) "$(DESTDIR)$(libdir)"
-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	test -z "$(prglibdir)" || $(mkdir_p) "$(DESTDIR)$(prglibdir)"
+	@list='$(prglib_LTLIBRARIES)'; for p in $$list; do \
 	  if test -f $$p; then \
 	    f=$(am__strip_dir) \
-	    echo " $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(libdir)/$$f'"; \
-	    $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(libdir)/$$f"; \
+	    echo " $(LIBTOOL) --mode=install $(prglibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(prglibdir)/$$f'"; \
+	    $(LIBTOOL) --mode=install $(prglibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(prglibdir)/$$f"; \
 	  else :; fi; \
 	done
 
-uninstall-libLTLIBRARIES:
+uninstall-prglibLTLIBRARIES:
 	@$(NORMAL_UNINSTALL)
-	@set -x; list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	@set -x; list='$(prglib_LTLIBRARIES)'; for p in $$list; do \
 	  p=$(am__strip_dir) \
-	  echo " $(LIBTOOL) --mode=uninstall rm -f '$(DESTDIR)$(libdir)/$$p'"; \
-	  $(LIBTOOL) --mode=uninstall rm -f "$(DESTDIR)$(libdir)/$$p"; \
+	  echo " $(LIBTOOL) --mode=uninstall rm -f '$(DESTDIR)$(prglibdir)/$$p'"; \
+	  $(LIBTOOL) --mode=uninstall rm -f "$(DESTDIR)$(prglibdir)/$$p"; \
 	done
 
-clean-libLTLIBRARIES:
-	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+clean-prglibLTLIBRARIES:
+	-test -z "$(prglib_LTLIBRARIES)" || rm -f $(prglib_LTLIBRARIES)
+	@list='$(prglib_LTLIBRARIES)'; for p in $$list; do \
 	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
 	  test "$$dir" != "$$p" || dir=.; \
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libaxis2_wsdl.la: $(libaxis2_wsdl_la_OBJECTS) $(libaxis2_wsdl_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(libaxis2_wsdl_la_LDFLAGS) $(libaxis2_wsdl_la_OBJECTS) $(libaxis2_wsdl_la_LIBADD) $(LIBS)
+libtest_description.la: $(libtest_description_la_OBJECTS) $(libtest_description_la_DEPENDENCIES) 
+	$(LINK) -rpath $(prglibdir) $(libtest_description_la_LDFLAGS) $(libtest_description_la_OBJECTS) $(libtest_description_la_LIBADD) $(LIBS)
+install-prgbinPROGRAMS: $(prgbin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	test -z "$(prgbindir)" || $(mkdir_p) "$(DESTDIR)$(prgbindir)"
+	@list='$(prgbin_PROGRAMS)'; for p in $$list; do \
+	  p1=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
+	  if test -f $$p \
+	     || test -f $$p1 \
+	  ; then \
+	    f=`echo "$$p1" | sed 's,^.*/,,;$(transform);s/$$/$(EXEEXT)/'`; \
+	   echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(prgbinPROGRAMS_INSTALL) '$$p' '$(DESTDIR)$(prgbindir)/$$f'"; \
+	   $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(prgbinPROGRAMS_INSTALL) "$$p" "$(DESTDIR)$(prgbindir)/$$f" || exit 1; \
+	  else :; fi; \
+	done
+
+uninstall-prgbinPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(prgbin_PROGRAMS)'; for p in $$list; do \
+	  f=`echo "$$p" | sed 's,^.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/'`; \
+	  echo " rm -f '$(DESTDIR)$(prgbindir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(prgbindir)/$$f"; \
+	done
+
+clean-prgbinPROGRAMS:
+	@list='$(prgbin_PROGRAMS)'; for p in $$list; do \
+	  f=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
+	  echo " rm -f $$p $$f"; \
+	  rm -f $$p $$f ; \
+	done
+description_test$(EXEEXT): $(description_test_OBJECTS) $(description_test_DEPENDENCIES) 
+	@rm -f description_test$(EXEEXT)
+	$(LINK) $(description_test_LDFLAGS) $(description_test_OBJECTS) $(description_test_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -267,9 +319,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_wsdl_component.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_wsdl_operation.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_wsdl_service.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/description_test.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -301,6 +352,23 @@ clean-libtool:
 distclean-libtool:
 	-rm -f libtool
 uninstall-info-am:
+install-includeHEADERS: $(include_HEADERS)
+	@$(NORMAL_INSTALL)
+	test -z "$(includedir)" || $(mkdir_p) "$(DESTDIR)$(includedir)"
+	@list='$(include_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(includeHEADERS_INSTALL) '$$d$$p' '$(DESTDIR)$(includedir)/$$f'"; \
+	  $(includeHEADERS_INSTALL) "$$d$$p" "$(DESTDIR)$(includedir)/$$f"; \
+	done
+
+uninstall-includeHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(include_HEADERS)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(includedir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(includedir)/$$f"; \
+	done
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -351,6 +419,7 @@ distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
 distdir: $(DISTFILES)
+	$(mkdir_p) $(distdir)/$(top_builddir)/modules/core/description/test
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -379,9 +448,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES)
+all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)"; do \
+	for dir in "$(DESTDIR)$(prglibdir)" "$(DESTDIR)$(prgbindir)" "$(DESTDIR)$(includedir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-am
@@ -410,8 +479,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	mostlyclean-am
+clean-am: clean-generic clean-libtool clean-prgbinPROGRAMS \
+	clean-prglibLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -429,9 +498,10 @@ info: info-am
 
 info-am:
 
-install-data-am:
+install-data-am: install-includeHEADERS install-prgbinPROGRAMS \
+	install-prglibLTLIBRARIES
 
-install-exec-am: install-libLTLIBRARIES
+install-exec-am:
 
 install-info: install-info-am
 
@@ -457,20 +527,23 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES
+uninstall-am: uninstall-includeHEADERS uninstall-info-am \
+	uninstall-prgbinPROGRAMS uninstall-prglibLTLIBRARIES
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool ctags distclean \
-	distclean-compile distclean-generic distclean-libtool \
-	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-exec \
-	install-exec-am install-info install-info-am \
-	install-libLTLIBRARIES install-man install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-info-am \
-	uninstall-libLTLIBRARIES
+	clean-libtool clean-prgbinPROGRAMS clean-prglibLTLIBRARIES \
+	ctags distclean distclean-compile distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-exec install-exec-am \
+	install-includeHEADERS install-info install-info-am \
+	install-man install-prgbinPROGRAMS install-prglibLTLIBRARIES \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags uninstall uninstall-am \
+	uninstall-includeHEADERS uninstall-info-am \
+	uninstall-prgbinPROGRAMS uninstall-prglibLTLIBRARIES
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

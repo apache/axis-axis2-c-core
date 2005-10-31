@@ -150,9 +150,9 @@ axis2_description_param_t *axis2_description_param_include_ops_get_param
 		, AXIS2_HASH_KEY_STRING));
 }
 
-axis2_hash_t *axis2_descriptin_param_include_get_params
+axis2_hash_t *axis2_description_param_include_ops_get_params
     	(axis2_environment_t *env
-		, axis2_description_param_include_t * param_include)
+		, axis2_description_param_include_t *param_include)
 {
 	if(!param_include)
 	{
@@ -162,7 +162,7 @@ axis2_hash_t *axis2_descriptin_param_include_get_params
 	return param_include->params;
 }
 
-axis2_status_t axis2_description_param_include_ops_is_parameter_locked
+axis2_status_t axis2_description_param_include_ops_is_param_locked
     	(axis2_environment_t *env
 		, axis2_description_param_include_t *param_include
 		, const axis2_char_t *param_name)

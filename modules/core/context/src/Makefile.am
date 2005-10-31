@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libaxis2_context.la
+lib_LTLIBRARIES = libaxis2_context.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_context_la_SOURCES = axis2_context_msg_context.c
 

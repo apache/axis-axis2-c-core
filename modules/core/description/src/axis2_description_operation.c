@@ -264,7 +264,7 @@ axis2_status_t axis2_description_operation_ops_set_parent
 	return AXIS2_SUCCESS;
 }
 
-axis2_description_service_t *axis2_description_ops_operation_ops_get_parent
+axis2_description_service_t *axis2_description_operation_ops_get_parent
 		(axis2_environment_t *env
 		, axis2_description_operation_t *operation_desc)
 {

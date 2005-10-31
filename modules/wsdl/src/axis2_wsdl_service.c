@@ -20,61 +20,60 @@
   * @brief WSDL service
   * This holds operations of wsdl service
   */
-struct axis2_wsdl_service_s
+  
+typedef struct axis2_wsdl_impl_service_s axis2_wsdl_impl_service_t;  
+  
+struct axis2_wsdl_impl_service_s
 {
-	axis2_wsdl_service_ops_t *ops;
+	axis2_wsdl_service_t wsdl_srv;
 	
 };
 
 /***************************** Function headers *******************************/
 
-axis2_status_t axis2_wsdl_service_ops_free(axis2_environment_t *env
+axis2_status_t axis2_wsdl_service_free(axis2_environment_t *env
 		, axis2_wsdl_service_t *wsdl_srv);
 
 
 /***************************** End of function headers ************************/
 
-axis2_wsdl_service_ops_t *axis2_wsdl_service_get_ops
-		(axis2_environment_t *env
-		, axis2_wsdl_service_t *wsdl_srv)
+axis2_status_t axis2_wsdl_service_create
+		(axis2_environment_t *env, axis2_wsdl_service_t **wsdl_srv)
 {
-	if(!env || !wsdl_srv)
+	axis2_wsdl_impl_service_t *wsdl_impl_srv 
+		= (axis2_wsdl_impl_service_t *)
+		axis2_malloc (env->allocator, sizeof(axis2_wsdl_service_t));
+	if(NULL == wsdl_impl_srv)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
-		return NULL;
+		return AXIS2_ERROR_NO_MEMORY;
 	}
-	return wsdl_srv->ops;
-}
-
-axis2_wsdl_service_t *axis2_wsdl_service_create
-		(axis2_environment_t *env)
-{
-	axis2_wsdl_service_t *wsdl_srv 
+	axis2_wsdl_service_t *wsdl_srv_l
 		= (axis2_wsdl_service_t *)
 		axis2_malloc (env->allocator, sizeof(axis2_wsdl_service_t));
-	if(!wsdl_srv)
+	if(NULL == wsdl_srv_l)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
-		return NULL;
+		axis2_free(env->allocator, wsdl_impl_srv);
+		return AXIS2_ERROR_NO_MEMORY;
 	}
-	axis2_wsdl_service_ops_t *ops 
+	wsdl_srv_l->ops 
 		= (axis2_wsdl_service_ops_t *)
 		axis2_malloc (env->allocator, sizeof(axis2_wsdl_service_ops_t));
-	if(!ops)
+	if(NULL == wsdl_srv_l->ops)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
-		return NULL;	
+		axis2_free(env->allocator, wsdl_impl_srv);
+		axis2_free(env->allocator, wsdl_srv_l);
+		return AXIS2_ERROR_NO_MEMORY;	
 	}
-	ops->free = axis2_wsdl_service_ops_free;
+	(wsdl_srv_l->ops)->free = axis2_wsdl_service_free;
+	wsdl_impl_srv->wsdl_srv = *wsdl_srv_l;
+	*(wsdl_srv) = &(wsdl_impl_srv->wsdl_srv);
 	
-	wsdl_srv->ops = ops;
-	
-	return wsdl_srv;	
+	return AXIS2_SUCCESS;	
 }
 
 /******************************************************************************/
 
-axis2_status_t axis2_wsdl_service_ops_free(axis2_environment_t *env
+axis2_status_t axis2_wsdl_service_free(axis2_environment_t *env
 		, axis2_wsdl_service_t *wsdl_srv)
 {
 	if(!env || !wsdl_srv)
