@@ -19,7 +19,7 @@
 #include <string.h>
 
 void* AXIS2_CALL
-axis2_string_ops_strdup (const void *ptr)
+axis2_strdup (const void *ptr)
 {
     if (ptr)
     {
@@ -32,7 +32,7 @@ axis2_string_ops_strdup (const void *ptr)
 }
 
 int AXIS2_CALL
-axis2_string_ops_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
+axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
 {
     if (s1 && s2)
         return strcmp (s1, s2);
@@ -40,27 +40,3 @@ axis2_string_ops_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
         return -1;
 }
 
-AXIS2_DECLARE(axis2_string_t *)
-axis2_string_create (axis2_allocator_t * allocator, axis2_string_t * string)
-{
-	if(string)
-	{
-		if(!string->axis2_string_strdup)
-			string->axis2_string_strdup = axis2_string_ops_strdup;
-		if(!string->axis2_string_strcmp)
-			string->axis2_string_strcmp = axis2_string_ops_strcmp;
-	}
-	else if (allocator)
-	{
-        string =
-            (axis2_string_t *) axis2_malloc (allocator,
-                                             sizeof (axis2_string_t));
-        if (string)
-        {
-            string->axis2_string_strdup = axis2_string_ops_strdup;
-            string->axis2_string_strcmp = axis2_string_ops_strcmp;
-            return string;
-        }
-    }
-    return NULL;
-}

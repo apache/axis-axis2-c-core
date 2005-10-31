@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain count copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_STRING_H
-#define AXIS2_STRING_H
+#ifndef AXIS2_STREAM_DEFAULT_H
+#define AXIS2_STREAM_DEFAULT_H
 
-#include <axis2_defines.h>
-#include <axis2_error.h>
-#include <axis2_allocator.h>
+#include <axis2_stream.h>
+#include "axis2_allocator_default.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -27,16 +26,20 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_string String
+ * @defgroup axis2_stream Stream
  * @ingroup axis2_util 
  * @{
  */
 
-void* AXIS2_CALL
-axis2_strdup (const void *ptr);
+  /**
+    * Creates a stream struct
+    * @param allocator allocator to be used. Mandatory, cannot be NULL
+    * @param operations operations struct. Optional, can be NULL. If null default operations would be assigned.
+    * @return pointer to the newly created log struct 
+    */
+    AXIS2_DECLARE(axis2_stream_t *) axis2_stream_create (axis2_allocator_t * allocator,
+                                         axis2_stream_t * stream);
 
-int AXIS2_CALL
-axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2);
 
 /** @} */
     
@@ -44,4 +47,4 @@ axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2);
 }
 #endif
 
-#endif                          /* AXIS2_STRING_H */
+#endif                          /* AXIS2_STREAM_DEFAULT_H */

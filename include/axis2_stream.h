@@ -110,8 +110,8 @@ extern "C"
     * @param operations operations struct. Optional, can be NULL. If null default operations would be assigned.
     * @return pointer to the newly created log struct 
     */
-    AXIS2_DECLARE(axis2_stream_t *) axis2_stream_create (axis2_allocator_t * allocator,
-                                         axis2_stream_t * stream);
+/*    AXIS2_DECLARE(axis2_stream_t *) axis2_stream_create (axis2_allocator_t * allocator,
+                                         axis2_stream_t * stream);*/
 
 #define axis2_stream_read(stream, buffer, count) \
 		((stream)->ops->axis2_stream_ops_read(buffer, count))

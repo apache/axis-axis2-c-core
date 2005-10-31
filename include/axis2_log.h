@@ -86,8 +86,8 @@ extern "C"
     * @param allocator allocator to be used. Mandatory, cannot be NULL    
     * @return pointer to the newly created log struct 
     */
-    AXIS2_DECLARE(axis2_log_t *) axis2_log_create (axis2_allocator_t * allocator,
-                                   axis2_log_ops_t * operations);
+   /* AXIS2_DECLARE(axis2_log_t *) axis2_log_create (axis2_allocator_t * allocator,
+                                   axis2_log_ops_t * operations);*/
 
 #define axis2_log_write(log, buffer, count) ((log)->ops->axis2_log_ops_write(buffer, count))
 

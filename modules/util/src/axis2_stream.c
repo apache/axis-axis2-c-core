@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <axis2_stream.h>
+#include <axis2_stream_default.h>
 
 axis2_status_t AXIS2_CALL axis2_stream_impl_write (const void *buffer, size_t count);
 axis2_status_t AXIS2_CALL axis2_stream_impl_read (void *buffer, size_t count);

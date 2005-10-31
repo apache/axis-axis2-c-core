@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_log.h>
+#include <axis2_log_default.h>
 #include <stdio.h>
 
 axis2_status_t AXIS2_CALL axis2_log_impl_write (const void *buffer, size_t count);

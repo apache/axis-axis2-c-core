@@ -26,7 +26,6 @@
 #include <axis2_error.h>
 #include <axis2_stream.h>
 #include <axis2_log.h>
-#include <axis2_string.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -50,25 +49,12 @@ extern "C"
  */
 
   /** 
-    * \brief Axis2 Environment operations struct
-    *
-    * Encapsulator struct for operations of axis2_environment
-    */
-    typedef struct axis2_environment_ops
-    {
-        /** This is a dummy member */
-        int dummy;
-    } axis2_environment_ops_t;
-
-  /** 
     * \brief Axis2 Environment struct
     *
     * Environment acts as a container for error, log, memory allocator and other routines
     */
     typedef struct axis2_environment
     {
-        /** Environment related operations */
-        axis2_environment_ops_t *ops;
         /** Memory allocation routines */
         axis2_allocator_t *allocator;
         /** Error handling */
@@ -77,8 +63,6 @@ extern "C"
         axis2_stream_t *stream;
         /** Logging routines */
         axis2_log_t *log;
-        /** String routines */
-        axis2_string_t *string;
     } axis2_environment_t;
 
   /**
@@ -94,8 +78,7 @@ extern "C"
                                                    allocator,
                                                    axis2_error_t * error,
                                                    axis2_stream_t * stream,
-                                                   axis2_log_t * log,
-                                                   axis2_string_t * string);
+                                                   axis2_log_t * log);
 
 /** @} */
 

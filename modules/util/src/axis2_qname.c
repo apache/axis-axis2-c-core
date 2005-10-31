@@ -36,7 +36,7 @@ axis2_qname_impl_free (axis2_environment_t * environment,
 {
     if (!qname)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
         return AXIS2_FAILURE;
     }
     if (qname->localpart)
@@ -70,7 +70,7 @@ axis2_qname_impl_equals (axis2_environment_t * environment,
 
     if (!qn1 || !qn2)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
         return AXIS2_FALSE;
     }
 
@@ -78,7 +78,7 @@ axis2_qname_impl_equals (axis2_environment_t * environment,
     if (qn1->localpart && qn2->localpart)
     {
         localparts_differ =
-            axis2_strcmp (environment->string, qn1->localpart,
+            axis2_strcmp (qn1->localpart,
                           qn2->localpart);
     }
     else
@@ -88,7 +88,7 @@ axis2_qname_impl_equals (axis2_environment_t * environment,
     if (qn1->namespace_uri && qn2->namespace_uri)
     {
         uris_differ =
-            axis2_strcmp (environment->string, qn1->namespace_uri,
+            axis2_strcmp (qn1->namespace_uri,
                           qn2->namespace_uri);
     }
     else
@@ -111,7 +111,7 @@ axis2_qname_create (axis2_environment_t * environment,
     /* localpart or prefix can't be null */
     if (!localpart)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
         return NULL;
     }
 
@@ -119,48 +119,48 @@ axis2_qname_create (axis2_environment_t * environment,
                                          sizeof (axis2_qname_t));
     if (!qn)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
         return NULL;
     }
     /* set properties */
 
-    qn->localpart = axis2_strdup (environment->string, localpart);
+    qn->localpart = axis2_strdup (localpart);
     if (!(qn->localpart))
     {
         axis2_free (environment->allocator, qn);
-        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
+        environment->error->error_number = AXIS2_ERROR_NO_MEMORY;
         return NULL;
     }
 
     if (!prefix)
     {
-        qn->prefix = axis2_strdup (environment->string, "");
+        qn->prefix = axis2_strdup ("");
     }
     else
     {
-        qn->prefix = axis2_strdup (environment->string, prefix);
+        qn->prefix = axis2_strdup (prefix);
     }
     if (!(qn->prefix))
     {
         axis2_free (environment->allocator, qn->localpart);
         axis2_free (environment->allocator, qn);
-        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
+        environment->error->error_number = AXIS2_ERROR_NO_MEMORY;
         return NULL;
     }
     if (!namespace_uri)
     {
-        qn->namespace_uri = axis2_strdup (environment->string, "");
+        qn->namespace_uri = axis2_strdup ("");
     }
     else
     {
-        qn->namespace_uri = axis2_strdup (environment->string, namespace_uri);
+        qn->namespace_uri = axis2_strdup (namespace_uri);
     }
     if (!(qn->namespace_uri))
     {
         axis2_free (environment->allocator, qn->localpart);
         axis2_free (environment->allocator, qn->prefix);
         axis2_free (environment->allocator, qn);
-        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
+        environment->error->error_number = AXIS2_ERROR_NO_MEMORY;
         return NULL;
     }
 
@@ -176,7 +176,7 @@ axis2_qname_create (axis2_environment_t * environment,
             axis2_free (environment->allocator, qn->namespace_uri);
         axis2_free (environment->allocator, qn->prefix);
         axis2_free (environment->allocator, qn);
-        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
+        environment->error->error_number = AXIS2_ERROR_NO_MEMORY;
         return NULL;
     }
 

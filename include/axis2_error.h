@@ -45,7 +45,7 @@ extern "C"
         * get error message for the last error
         * @return error message for the last error. NULL on error.
         */
-         axis2_char_t * (AXIS2_CALL *axis2_error_ops_get_message) ();
+         axis2_char_t * (AXIS2_CALL *axis2_error_ops_get_message) (int error_number);
     } axis2_error_ops_t;
 
   /** 
@@ -58,7 +58,7 @@ extern "C"
         /** error related operations */
         struct axis2_error_ops *ops;
         /** last error number */
-        int errorno;
+        int error_number;
     } axis2_error_t;
 
   /**

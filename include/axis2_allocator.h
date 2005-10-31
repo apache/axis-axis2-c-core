@@ -69,7 +69,7 @@ extern "C"
     * @param allocator user defined allcator. Optional, can be NULL. If NULL, a default allocator will be returned.
     * @return initialized allocator. NULL on error.
     */
-    AXIS2_DECLARE(axis2_allocator_t *) axis2_allocator_init (axis2_allocator_t * allocator);
+    /*AXIS2_DECLARE(axis2_allocator_t *) axis2_allocator_init (axis2_allocator_t * allocator);*/
 
 #define axis2_malloc(allocator, size) ((allocator)->axis2_allocator_malloc(size))
 #define axis2_realloc(allocator, ptr, size) ((allocator)->axis2_allocator_realloc(ptr, size))

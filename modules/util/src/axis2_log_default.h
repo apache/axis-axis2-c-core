@@ -14,29 +14,34 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_STRING_H
-#define AXIS2_STRING_H
+#ifndef AXIS2_LOG_DEFAULT_H
+#define AXIS2_LOG_DEFAULT_H
 
-#include <axis2_defines.h>
-#include <axis2_error.h>
-#include <axis2_allocator.h>
+#include <axis2_log.h>
+
+#include "axis2_allocator_default.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+
 /**
- * @defgroup axis2_string String
+ * @defgroup axis2_log Log
  * @ingroup axis2_util 
  * @{
  */
 
-void* AXIS2_CALL
-axis2_strdup (const void *ptr);
+  /**
+    * Creates a log struct
+    * @param allocator allocator to be used. Mandatory, cannot be NULL    
+    * @return pointer to the newly created log struct 
+    */
+    AXIS2_DECLARE(axis2_log_t *) axis2_log_create (axis2_allocator_t * allocator,
+                                   axis2_log_ops_t * operations);
 
-int AXIS2_CALL
-axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2);
+#define axis2_log_write(log, buffer, count) ((log)->ops->axis2_log_ops_write(buffer, count))
 
 /** @} */
     
@@ -44,4 +49,4 @@ axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2);
 }
 #endif
 
-#endif                          /* AXIS2_STRING_H */
+#endif                          /* AXIS2_LOG_DEFAULT_H */

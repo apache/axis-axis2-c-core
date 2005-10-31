@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_allocator.h>
+#include <axis2_allocator_default.h>
 #include <stdlib.h>
 
 AXIS2_DECLARE(axis2_allocator_t *)

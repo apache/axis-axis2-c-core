@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_STRING_H
-#define AXIS2_STRING_H
+#ifndef AXIS2_ALLOCATOR_DEFAULT_H
+#define AXIS2_ALLOCATOR_DEFAULT_H
+
+/**
+ * @file axis2_allocator_default.h
+ * @brief Axis2 default memory allocator interface
+ */
 
 #include <axis2_defines.h>
-#include <axis2_error.h>
+
 #include <axis2_allocator.h>
 
 #ifdef __cplusplus
@@ -27,16 +32,17 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_string String
+ * @defgroup axis2_allocator Default Memory Allocator
  * @ingroup axis2_util 
  * @{
  */
 
-void* AXIS2_CALL
-axis2_strdup (const void *ptr);
-
-int AXIS2_CALL
-axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2);
+  /**
+    * Initializes (creates) an allocator.
+    * @param allocator user defined allcator. Optional, can be NULL. If NULL, a default allocator will be returned.
+    * @return initialized allocator. NULL on error.
+    */
+    AXIS2_DECLARE(axis2_allocator_t *) axis2_allocator_init (axis2_allocator_t * allocator);
 
 /** @} */
     
@@ -44,4 +50,4 @@ axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2);
 }
 #endif
 
-#endif                          /* AXIS2_STRING_H */
+#endif    /* AXIS2_ALLOCATOR_DEFAULT_H */
