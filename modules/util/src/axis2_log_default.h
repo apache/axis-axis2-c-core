@@ -18,8 +18,9 @@
 #define AXIS2_LOG_DEFAULT_H
 
 #include <axis2_log.h>
+#include <axis2_allocator.h>
 
-#include "axis2_allocator_default.h"
+#include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C"

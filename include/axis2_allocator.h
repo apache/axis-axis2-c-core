@@ -44,24 +44,26 @@ extern "C"
   */
    AXIS2_DECLARE_DATA typedef struct axis2_allocator
     {
+    
+
       /**
         * allocates memory
         * @param size size of the memory block to be allocated
         * @return pointer to the allocated memory block
         */
-         void * (*axis2_allocator_malloc) (size_t size);
+         void * (*malloc) (size_t size);
       /**
         * re-llocates memory
         * @param ptr memory block who's size to be changed
         * @param size size of the memory block to be allocated
         * @return pointer to the allocated memory block
         */
-         void * (*axis2_allocator_realloc) (void *ptr, size_t size);
+         void * (*realloc) (void *ptr, size_t size);
       /**
         * frees memory
         * @param ptr pointer to be freed
         */
-         void (*axis2_allocator_free) (void *ptr);
+         void (*free) (void *ptr);
     } axis2_allocator_t;
 
   /**
@@ -71,9 +73,9 @@ extern "C"
     */
     /*AXIS2_DECLARE(axis2_allocator_t *) axis2_allocator_init (axis2_allocator_t * allocator);*/
 
-#define axis2_malloc(allocator, size) ((allocator)->axis2_allocator_malloc(size))
-#define axis2_realloc(allocator, ptr, size) ((allocator)->axis2_allocator_realloc(ptr, size))
-#define axis2_free(allocator, ptr) ((allocator)->axis2_allocator_free(ptr))
+#define AXIS2_MALLOC(allocator, size) ((allocator)->malloc(size))
+#define AXIS2_REALLOC(allocator, ptr, size) ((allocator)->realloc(ptr, size))
+#define AXIS2_FREE(allocator, ptr) ((allocator)->free(ptr))
 
 /** @} */
     

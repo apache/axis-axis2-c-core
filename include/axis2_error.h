@@ -41,11 +41,19 @@ extern "C"
     */
    AXIS2_DECLARE_DATA typedef struct axis2_error_ops
     {
+
+      /**
+        * deallocate memory of a error struct
+        * @return axis2_status_t status code
+        */
+
+        axis2_status_t (AXIS2_CALL *free)(struct axis2_error *error);
+        
       /**
         * get error message for the last error
         * @return error message for the last error. NULL on error.
         */
-         axis2_char_t * (AXIS2_CALL *axis2_error_ops_get_message) (int error_number);
+         axis2_char_t * (AXIS2_CALL *get_message) (int error_number);
     } axis2_error_ops_t;
 
   /** 
@@ -61,14 +69,9 @@ extern "C"
         int error_number;
     } axis2_error_t;
 
-  /**
-    * Creates an error struct
-    * @param allocator allocator to be used. Mandatory, cannot be NULL    
-    * @return pointer to the newly created error struct 
-    */
-    AXIS2_DECLARE(axis2_error_t *) axis2_error_create (axis2_allocator_t * allocator);
 
-#define axis2_error_get_message(error) ((error)->ops->axis2_error_ops_get_message())
+#define AXIS2_ERROR_FREE(error) ((error->ops)->free(error))
+#define AXIS2_ERROR_GET_MESSAGE(error) ((error)->ops->axis2_error_ops_get_message())
 
   /** 
     * \brief Axis2 status codes

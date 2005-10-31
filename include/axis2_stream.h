@@ -40,6 +40,14 @@ extern "C"
     */
   AXIS2_DECLARE_DATA  typedef struct axis2_stream_ops
     {
+
+      /**
+       * deletes the stream
+       * @return axis2_status_t AXIS2_SUCCESS on success else AXIS2_FAILURE
+       */
+
+       axis2_status_t (AXIS2_CALL *free) (struct axis2_stream *stream);
+       
       /**
         * reads from stream
         * @param buffer buffer into which the content is to be read
@@ -104,26 +112,19 @@ extern "C"
 		int axis2_eof;
     } axis2_stream_t;
 
-  /**
-    * Creates a stream struct
-    * @param allocator allocator to be used. Mandatory, cannot be NULL
-    * @param operations operations struct. Optional, can be NULL. If null default operations would be assigned.
-    * @return pointer to the newly created log struct 
-    */
-/*    AXIS2_DECLARE(axis2_stream_t *) axis2_stream_create (axis2_allocator_t * allocator,
-                                         axis2_stream_t * stream);*/
+#define AXIS2_STREAM_FREE(stream) ((stream->ops)->free(stream))
 
-#define axis2_stream_read(stream, buffer, count) \
+#define AXIS2_STREAM_READ(stream, buffer, count) \
 		((stream)->ops->axis2_stream_ops_read(buffer, count))
-#define axis2_stream_write(stream, buffer, count) \
+#define AXIS2_STREAM_WRITE(stream, buffer, count) \
 		((stream)->ops->axis2_stream_ops_write(buffer, count))
-#define axis2_stream_file_open(stream, file_name, options) \
+#define AXIS2_STREAM_FILE_OPEN(stream, file_name, options) \
 		((stream)->ops->axis2_stream_ops_file_open(file_name, options))
-#define axis2_stream_file_close(stream, file_ptr) \
+#define AXIS2_STREAM_FILE_CLOSE(stream, file_ptr) \
 		((stream)->ops->axis2_stream_ops_file_close(file_ptr))
-#define axis2_stream_file_get_char(stream, file_ptr) \
+#define AXIS2_STREAM_FILE_GET_CHAR(stream, file_ptr) \
 		((stream)->ops->axis2_stream_ops_file_get_char(file_ptr))
-#define axis2_stream_file_unget_char(stream, chr, file_ptr) \
+#define AXIS2_STREAM_FILE_UNGET_CHAR(stream, chr, file_ptr) \
 		((stream)->ops->axis2_stream_ops_file_unget_char(chr, file_ptr))	
 
 /** @} */

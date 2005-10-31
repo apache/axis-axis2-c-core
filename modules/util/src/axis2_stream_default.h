@@ -18,7 +18,10 @@
 #define AXIS2_STREAM_DEFAULT_H
 
 #include <axis2_stream.h>
-#include "axis2_allocator_default.h"
+#include <axis2_allocator.h>
+#include <axis2_defines.h>
+
+#include <string.h>
 
 #ifdef __cplusplus
 extern "C"

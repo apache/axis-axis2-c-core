@@ -57,6 +57,14 @@ extern "C"
     */
     typedef struct axis2_log_ops
     {
+    
+      /**
+       * deletes the log
+       * @return axis2_status_t AXIS2_SUCCESS on success else AXIS2_FAILURE
+       */
+
+       axis2_status_t (AXIS2_CALL *free) (struct axis2_log *log);
+
       /**
         * writes to the log
         * @param buffer buffer to be written to log
@@ -89,7 +97,8 @@ extern "C"
    /* AXIS2_DECLARE(axis2_log_t *) axis2_log_create (axis2_allocator_t * allocator,
                                    axis2_log_ops_t * operations);*/
 
-#define axis2_log_write(log, buffer, count) ((log)->ops->axis2_log_ops_write(buffer, count))
+#define AXIS2_LOG_FREE(log) ((log->ops)->free(log))
+#define AXIS22_LOG_WRITE(log, buffer, count) ((log)->ops->axis2_log_ops_write(buffer, count))
 
 /** @} */
     

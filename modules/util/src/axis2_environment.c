@@ -16,6 +16,32 @@
 
 #include <axis2_environment.h>
 
+#include <axis2_error_default.h>
+#include <axis2_stream_default.h>
+#include <axis2_log_default.h>
+
+
+AXIS2_DECLARE(axis2_status_t )
+axis2_environment_free (axis2_environment_t *env)
+{
+    if(NULL != env && NULL != env->allocator)
+        free (env->allocator);
+
+    if(NULL != env && NULL != env->stream)
+		AXIS2_STREAM_FREE(env->stream);
+
+    if(NULL != env && NULL != env->log)
+        AXIS2_LOG_FREE(env->log);
+	
+	if(NULL != env && NULL != env->error)
+        AXIS2_ERROR_FREE(env->error);
+    
+    if(NULL != env)
+        free (env);
+	
+	return 0;  
+}
+
 AXIS2_DECLARE(axis2_environment_t *)
 axis2_environment_create (axis2_allocator_t * allocator,
                           axis2_error_t * error, axis2_stream_t * stream,
@@ -26,7 +52,7 @@ axis2_environment_create (axis2_allocator_t * allocator,
         return NULL;
 
     environment =
-        (axis2_environment_t *) axis2_malloc (allocator,
+        (axis2_environment_t *) AXIS2_MALLOC (allocator,
                                               sizeof (axis2_environment_t));
 
     if (!environment)

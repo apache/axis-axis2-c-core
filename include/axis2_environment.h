@@ -80,6 +80,17 @@ extern "C"
                                                    axis2_stream_t * stream,
                                                    axis2_log_t * log);
 
+  /**
+    * Creates an environment struct
+    * @param allocator pointer to an instance of allocator struct. Mandatory, cannot be NULL
+    * @param error pointer to an instance of error struct. Optional, can be NULL. If NULL default error handler would be used.
+    * @param stream pointer to an instance of stream struct. Optional, can be NULL. If NULL default stream handler would be used.
+    * @param log pointer to an instance of log struct. Optional, can be NULL. If NULL default log handler would be used.
+    * @param string pointer to an instance of string struct. Optional, can be NULL. If NULL default string handler would be used.
+    * @return pointer to the newly created environment struct 
+    */
+    AXIS2_DECLARE(axis2_status_t) axis2_environment_free (axis2_environment_t *env);
+
 /** @} */
 
 #ifdef __cplusplus

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_allocator_default.h>
+#include <axis2_allocator.h>
 #include <stdlib.h>
 
 AXIS2_DECLARE(axis2_allocator_t *)
@@ -28,9 +28,9 @@ axis2_allocator_init (axis2_allocator_t * allocator)
         allocator = (axis2_allocator_t *) malloc (sizeof (axis2_allocator_t));
         if (allocator)
         {
-            allocator->axis2_allocator_malloc = malloc;
-            allocator->axis2_allocator_realloc = realloc;
-            allocator->axis2_allocator_free = free;
+            allocator->malloc = malloc;
+            allocator->realloc = realloc;
+            allocator->free = free;
             return allocator;
         }
     }

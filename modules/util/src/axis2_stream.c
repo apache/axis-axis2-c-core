@@ -20,7 +20,10 @@
 
 #include <axis2_stream_default.h>
 
+axis2_status_t AXIS2_CALL axis2_stream_impl_free ();
+
 axis2_status_t AXIS2_CALL axis2_stream_impl_write (const void *buffer, size_t count);
+
 axis2_status_t AXIS2_CALL axis2_stream_impl_read (void *buffer, size_t count);
 
 void* AXIS2_CALL axis2_stream_impl_file_open(const char *file_name, const char *options);
@@ -39,6 +42,8 @@ axis2_stream_create (axis2_allocator_t * allocator,
 	{
 		if(stream->ops)
 		{
+            if(!stream->ops->free)
+                (stream->ops)->free = axis2_stream_impl_free;
 			if(!stream->ops->axis2_stream_ops_read)
 				stream->ops->axis2_stream_ops_read = axis2_stream_impl_read;
 			if(!stream->ops->axis2_stream_ops_write)
@@ -57,15 +62,17 @@ axis2_stream_create (axis2_allocator_t * allocator,
 		else if (allocator)
 		{
 			stream->ops =
-            (axis2_stream_ops_t *) axis2_malloc (allocator,
+            (axis2_stream_ops_t *) AXIS2_MALLOC (allocator,
                                                  sizeof (axis2_stream_ops_t));
 
 			if (!stream->ops)
 			{
-				axis2_free (allocator, stream->ops);
+				AXIS2_FREE (allocator, stream->ops);
 				return NULL;
 			}
-
+            
+            if(!stream->ops->free)
+                (stream->ops)->free = axis2_stream_impl_free;
 			stream->ops->axis2_stream_ops_read = axis2_stream_impl_read;
 			stream->ops->axis2_stream_ops_write = axis2_stream_impl_write;
 			stream->ops->axis2_stream_ops_file_open = axis2_stream_impl_file_open;
@@ -86,17 +93,17 @@ axis2_stream_create (axis2_allocator_t * allocator,
 	else if(allocator)
 	{
 		stream =
-        (axis2_stream_t *) axis2_malloc (allocator, sizeof (axis2_stream_t));
+        (axis2_stream_t *) AXIS2_MALLOC (allocator, sizeof (axis2_stream_t));
 
 		if (!stream)
 			return NULL;
 		stream->ops =
-            (axis2_stream_ops_t *) axis2_malloc (allocator,
+            (axis2_stream_ops_t *) AXIS2_MALLOC (allocator,
                                                  sizeof (axis2_stream_ops_t));
 
         if (!stream->ops)
         {
-            axis2_free (allocator, stream);
+            AXIS2_FREE (allocator, stream);
             return NULL;
         }
 		stream->ops->axis2_stream_ops_read = axis2_stream_impl_read;
@@ -113,6 +120,20 @@ axis2_stream_create (axis2_allocator_t * allocator,
 	}
 	
     return NULL;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_stream_impl_free (axis2_stream_t *stream)
+{
+    if (NULL != stream && NULL != stream->ops)
+    {
+        free (stream->ops);
+    }
+    if (NULL != stream)
+    {
+        free (stream); 
+    }
+    return 0;
 }
 
 axis2_status_t AXIS2_CALL

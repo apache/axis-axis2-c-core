@@ -17,6 +17,20 @@
 #include <axis2_log_default.h>
 #include <stdio.h>
 
+axis2_status_t AXIS2_CALL
+axis2_log_impl_free (axis2_log_t *log)
+{
+    if (NULL != log && NULL != log->ops)
+    {
+        free (log->ops);
+    }
+    if (NULL != log)
+    {
+        free (log); 
+    }
+    return 0;
+}
+
 axis2_status_t AXIS2_CALL axis2_log_impl_write (const void *buffer, size_t count);
 
 AXIS2_DECLARE(axis2_log_t *)
@@ -26,7 +40,7 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * operations)
     if (!allocator)
         return NULL;
 
-    log = (axis2_log_t *) axis2_malloc (allocator, sizeof (axis2_log_t));
+    log = (axis2_log_t *) AXIS2_MALLOC (allocator, sizeof (axis2_log_t));
 
     if (!log)
         return NULL;
@@ -36,12 +50,12 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * operations)
     else
     {
         log->ops =
-            (axis2_log_ops_t *) axis2_malloc (allocator,
+            (axis2_log_ops_t *) AXIS2_MALLOC (allocator,
                                               sizeof (axis2_log_ops_t));
 
         if (!log->ops)
         {
-            axis2_free (allocator, log);
+            AXIS2_FREE (allocator, log);
             return NULL;
         }
 
