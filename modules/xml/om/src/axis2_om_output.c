@@ -25,7 +25,7 @@ guththila_environment_t *om_output_guththila_environment = NULL;
 guththila_allocator_t *om_output_guththila_allocator = NULL;
 
 AXIS2_DECLARE(axis2_om_output_t *)
-axis2_om_output_create (axis2_environment_t * environment, void *xml_writer, void* writer_env)
+axis2_om_output_create (axis2_env_t * environment, void *xml_writer, void* writer_env)
 {
     axis2_om_output_t *om_output =
         (axis2_om_output_t *) axis2_malloc (environment->allocator,
@@ -66,7 +66,7 @@ axis2_om_output_create (axis2_environment_t * environment, void *xml_writer, voi
 }
 
 int
-axis2_om_output_write (axis2_environment_t * environment,
+axis2_om_output_write (axis2_env_t * environment,
                        axis2_om_output_t * om_output, axis2_om_types_t type,
                        int no_of_args, ...)
 {

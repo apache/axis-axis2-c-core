@@ -28,7 +28,7 @@ struct axis2_context_msg_ctx_s
 	
 /*************************** Function headers *********************************/
 
-axis2_status_t axis2_context_msg_ctx_ops_free (axis2_environment_t *env
+axis2_status_t axis2_context_msg_ctx_ops_free (axis2_env_t *env
 		, axis2_context_msg_ctx_t *msg_ctx);	
 
 
@@ -36,7 +36,7 @@ axis2_status_t axis2_context_msg_ctx_ops_free (axis2_environment_t *env
 /************************* End of function headers ****************************/	
 
 axis2_context_msg_ctx_t *axis2_context_msg_ctx_get_ops
-		(axis2_environment_t *env, axis2_context_msg_ctx_t *msg_ctx)
+		(axis2_env_t *env, axis2_context_msg_ctx_t *msg_ctx)
 {
 	if(!msg_ctx)
 	{
@@ -47,7 +47,7 @@ axis2_context_msg_ctx_t *axis2_context_msg_ctx_get_ops
 }
 
 axis2_context_msg_ctx_t *axis2_context_msg_ctx_create 
-		(axis2_environment_t *env)
+		(axis2_env_t *env)
 {
 	axis2_context_msg_ctx_ops_t *ops = NULL;
 	axis2_context_msg_ctx_t *msg_ctx = 
@@ -74,7 +74,7 @@ axis2_context_msg_ctx_t *axis2_context_msg_ctx_create
 
 /******************************************************************************/
 
-axis2_status_t axis2_context_msg_ctx_ops_free (axis2_environment_t *env
+axis2_status_t axis2_context_msg_ctx_ops_free (axis2_env_t *env
 		, axis2_context_msg_ctx_t *msg_ctx)
 {
 	if(msg_ctx){

@@ -82,7 +82,7 @@ extern "C"
   * @return status code
   */
 typedef axis2_status_t (*axis2_description_param_include_free_t)
-		(axis2_environment_t * env,
+		(axis2_env_t * env,
 		 axis2_description_param_include_t * param_include);
 
 /** Add a parameter
@@ -90,7 +90,7 @@ typedef axis2_status_t (*axis2_description_param_include_free_t)
   * @return status code
   */
 typedef axis2_status_t (*axis2_description_param_include_add_param_t)
-		(axis2_environment_t * env,
+		(axis2_env_t * env,
 		 axis2_description_param_include_t * param_include,
 		 const axis2_description_param_t * param);
 
@@ -100,14 +100,14 @@ typedef axis2_status_t (*axis2_description_param_include_add_param_t)
   */
 typedef axis2_description_param_t
 		*(*axis2_description_param_include_get_param_t) 
-		(axis2_environment_t *env, axis2_description_param_include_t *param_include,
+		(axis2_env_t *env, axis2_description_param_include_t *param_include,
 		const axis2_char_t *name);
 
 /** To get all the parameters in a given description
   * @return all the parameters contained
   */
 typedef axis2_hash_t *(*axis2_description_param_include_get_params_t)
-        (axis2_environment_t * env,
+        (axis2_env_t * env,
          axis2_description_param_include_t * param_include);
 
 /** To check whether the paramter is locked at any level
@@ -115,7 +115,7 @@ typedef axis2_hash_t *(*axis2_description_param_include_get_params_t)
   * @return whether parameter is locked
   */
 typedef axis2_bool_t (*axis2_description_param_include_is_param_locked_t)
-		(axis2_environment_t *env,
+		(axis2_env_t *env,
 		axis2_description_param_include_t *param_include,
 		const axis2_char_t *param_name);
 
@@ -144,14 +144,14 @@ struct axis2_description_param_include_ops_s
   * @return operations for axis2_description_param_include_t
   */
 axis2_description_param_include_ops_t*axis2_description_param_include_get_ops 
-		(axis2_environment_t *env, axis2_description_param_include_t *param_include);
+		(axis2_env_t *env, axis2_description_param_include_t *param_include);
 
 /**
   *	Create axis2_description_param_include_t
   * @return axis2_description_param_include_t
   */
 axis2_description_param_include_t *axis2_description_param_include_create
-        (axis2_environment_t * env);
+        (axis2_env_t * env);
 
 /** @} */
 

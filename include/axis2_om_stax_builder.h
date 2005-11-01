@@ -55,7 +55,7 @@ extern "C"
         *           On erros sets the error and returns NULL.
         */
         axis2_om_node_t * 
-            (AXIS2_CALL *axis2_om_stax_builder_ops_next) (axis2_environment_t *
+            (AXIS2_CALL *axis2_om_stax_builder_ops_next) (axis2_env_t *
                                                 environment,
                                                 struct axis2_om_stax_builder *
                                                 builder);
@@ -67,11 +67,11 @@ extern "C"
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *axis2_om_stax_builder_ops_discard_current_element)
-            (axis2_environment_t * environment,
+            (axis2_env_t * environment,
              struct axis2_om_stax_builder * builder);
 
 			 
-		axis2_status_t (AXIS2_CALL *axis2_om_stax_builder_ops_free)(axis2_environment_t *envioronment,struct axis2_om_stax_builder *builder);
+		axis2_status_t (AXIS2_CALL *axis2_om_stax_builder_ops_free)(axis2_env_t *envioronment,struct axis2_om_stax_builder *builder);
 
     } axis2_om_stax_builder_ops_t;
 
@@ -106,7 +106,7 @@ extern "C"
 	* @param parser_env parser envioronment. Optional, can be NULL.
     * @return a pointer to the newly created builder struct. 
     */
-    AXIS2_DECLARE(axis2_om_stax_builder_t *) axis2_om_stax_builder_create (axis2_environment_t
+    AXIS2_DECLARE(axis2_om_stax_builder_t *) axis2_om_stax_builder_create (axis2_env_t
                                                            * environment,
                                                            void *parser, void* parser_env);
 

@@ -82,7 +82,7 @@ extern "C"
         * @param om_node node to be freed.
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *axis2_om_node_ops_free) (axis2_environment_t *
+        axis2_status_t (AXIS2_CALL *axis2_om_node_ops_free) (axis2_env_t *
                                                   environment,
                                                   struct axis2_om_node *
                                                   om_node);
@@ -93,7 +93,7 @@ extern "C"
         * @param child child node. Mandatory, cannot be NULL.
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *axis2_om_node_ops_add_child) (axis2_environment_t *
+        axis2_status_t (AXIS2_CALL *axis2_om_node_ops_add_child) (axis2_env_t *
                                                        environment,
                                                        struct axis2_om_node *
                                                        parent,
@@ -106,7 +106,7 @@ extern "C"
         * @param om_node node to be detached. Mandatory, cannot be NULL.
         * @return a pointer to detached node, NULL on error.
         */
-        struct axis2_om_node *(AXIS2_CALL *axis2_om_node_ops_detach) (axis2_environment_t
+        struct axis2_om_node *(AXIS2_CALL *axis2_om_node_ops_detach) (axis2_env_t
                                                            * environment,
                                                            struct
                                                            axis2_om_node *
@@ -120,7 +120,7 @@ extern "C"
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *axis2_om_node_ops_insert_sibling_after)
-            (axis2_environment_t * environment,
+            (axis2_env_t * environment,
              struct axis2_om_node * current_node,
              struct axis2_om_node * node_to_insert);
 
@@ -132,7 +132,7 @@ extern "C"
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *axis2_om_node_ops_insert_sibling_before)
-            (axis2_environment_t * environment,
+            (axis2_env_t * environment,
              struct axis2_om_node * current_node,
              struct axis2_om_node * node_to_insert);
 
@@ -143,7 +143,7 @@ extern "C"
         * @param parent the node that will be set as parent. Mandatory, cannot be NULL.
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *axis2_om_node_ops_set_parent) (axis2_environment_t
+        axis2_status_t (AXIS2_CALL *axis2_om_node_ops_set_parent) (axis2_env_t
                                                           * environment,
                                                           struct axis2_om_node
                                                           * child_node,
@@ -158,7 +158,7 @@ extern "C"
         *           On error sets the error and returns NULL
         */
         struct axis2_om_node
-            *(AXIS2_CALL *axis2_om_node_ops_get_first_child) (axis2_environment_t *
+            *(AXIS2_CALL *axis2_om_node_ops_get_first_child) (axis2_env_t *
                                                    environment,
                                                    struct axis2_om_node *
                                                    parent_node);
@@ -172,7 +172,7 @@ extern "C"
         *           On error sets the error and returns NULL
         */
         struct axis2_om_node
-            *(AXIS2_CALL *axis2_om_node_ops_get_next_child) (axis2_environment_t *
+            *(AXIS2_CALL *axis2_om_node_ops_get_next_child) (axis2_env_t *
                                                   environment,
                                                   struct axis2_om_node *
                                                   parent_node);
@@ -185,7 +185,7 @@ extern "C"
         * @param om_output OM output handler to be used in serializing
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *axis2_om_node_ops_serialize) (axis2_environment_t *
+        axis2_status_t (AXIS2_CALL *axis2_om_node_ops_serialize) (axis2_env_t *
                                                          environment,
                                                          struct axis2_om_node
                                                          * om_node,
@@ -239,7 +239,7 @@ extern "C"
     * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
     * @return a pointer to newly created node struct. NULL on error. 
     */
-    AXIS2_DECLARE(axis2_om_node_t *) axis2_om_node_create (axis2_environment_t * environment);
+    AXIS2_DECLARE(axis2_om_node_t *) axis2_om_node_create (axis2_env_t * environment);
 
 /** frees given node */
 #define axis2_om_node_free(environment,om_node) ((om_node)->ops->axis2_om_node_ops_free(environment,om_node))

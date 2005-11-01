@@ -35,7 +35,7 @@ struct axis2_wsdl_impl_operation_s
 
 /***************************** Function headers *******************************/
 
-axis2_status_t axis2_wsdl_operation_free (axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_free (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt);
 
 /**
@@ -43,7 +43,7 @@ axis2_status_t axis2_wsdl_operation_free (axis2_environment_t *env
  * @return axis2_char_t* msg_exchange_pattern
  */
 axis2_status_t axis2_wsdl_operation_get_msg_exchange_pattern 
-		(axis2_environment_t *env, axis2_wsdl_operation_t *wsdl_opt
+		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
 		, axis2_char_t **pattern);
 
 /**
@@ -53,14 +53,14 @@ axis2_status_t axis2_wsdl_operation_get_msg_exchange_pattern
  * @return status code
  */
 axis2_status_t axis2_wsdl_operation_set_msg_exchange_pattern
-		(axis2_environment_t *env, axis2_wsdl_operation_t *wsdl_opt
+		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
 		, const axis2_char_t *msg_exchange_pattern);
 
 /**
  * get name
  * @return axis2_qname_t** operation name
  */
-axis2_status_t axis2_wsdl_operation_get_name (axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_get_name (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, axis2_qname_t **name);
 
 /**
@@ -68,14 +68,14 @@ axis2_status_t axis2_wsdl_operation_get_name (axis2_environment_t *env
  *
  * @param axis2_qname_t* operation name
  */
-axis2_status_t axis2_wsdl_operation_set_name (axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_set_name (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, const axis2_qname_t *name);
 
 /**
  * get style
  * return axis2_char_t** style
  */
-axis2_status_t axis2_wsdl_operation_get_style (axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_get_style (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, axis2_char_t **style);
 
 /**
@@ -83,7 +83,7 @@ axis2_status_t axis2_wsdl_operation_get_style (axis2_environment_t *env
  * @param axis2_char_t* style
  * @return status code
  */
-axis2_status_t axis2_wsdl_operation_set_style (axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_set_style (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, const axis2_char_t *style);
 		
 
@@ -91,14 +91,14 @@ axis2_status_t axis2_wsdl_operation_set_style (axis2_environment_t *env
  * Sets the properties of the operation if any
  * @param axis2_hash_t* properties
  */
-axis2_status_t axis2_wsdl_operation_set_component_properties(axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_set_component_properties(axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, axis2_hash_t *properties);
 
 /**
  * Returns the properties that are specific to this WSDL operation
  * @return axis2_hash_t** component properties
  */
-axis2_status_t axis2_wsdl_operation_get_component_properties(axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_get_component_properties(axis2_env_t *env
 		,axis2_wsdl_operation_t *wsdl_opt, axis2_hash_t **properties);
 
 /**
@@ -106,7 +106,7 @@ axis2_status_t axis2_wsdl_operation_get_component_properties(axis2_environment_t
  * @param void* Key in the map
  * @param void* value to be put
  */
-axis2_status_t axis2_wsdl_operation_set_component_property(axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_set_component_property(axis2_env_t *env
 	, axis2_wsdl_operation_t *wsdl_opt, const void *key, void *value);
 	
 
@@ -116,14 +116,14 @@ axis2_status_t axis2_wsdl_operation_set_component_property(axis2_environment_t *
  * @param void* key for the map search.
  * @return void* value for the key
  */
-axis2_status_t axis2_wsdl_operation_get_component_property(axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_get_component_property(axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, const void *key, void **value) ;
 
 
 /***************************** End of function headers ************************/
 
 axis2_status_t axis2_wsdl_operation_create
-		(axis2_environment_t *env, axis2_wsdl_operation_t **wsdl_opt)
+		(axis2_env_t *env, axis2_wsdl_operation_t **wsdl_opt)
 {
 	axis2_wsdl_impl_operation_t *wsdl_impl_opt 
 		= (axis2_wsdl_impl_operation_t *)
@@ -164,7 +164,7 @@ axis2_status_t axis2_wsdl_operation_create
 
 /******************************************************************************/
 
-axis2_status_t axis2_wsdl_operation_free(axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_free(axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt)
 {
 	if(!env || !wsdl_opt)
@@ -174,7 +174,7 @@ axis2_status_t axis2_wsdl_operation_free(axis2_environment_t *env
 }
 
 axis2_status_t axis2_wsdl_operation_get_msg_exchange_pattern 
-		(axis2_environment_t *env, axis2_wsdl_operation_t *wsdl_opt
+		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
 		, axis2_char_t **pattern)
 {
 	if(NULL == wsdl_opt)
@@ -184,7 +184,7 @@ axis2_status_t axis2_wsdl_operation_get_msg_exchange_pattern
 }
 
 axis2_status_t axis2_wsdl_operation_set_msg_exchange_pattern
-		(axis2_environment_t *env, axis2_wsdl_operation_t *wsdl_opt
+		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
 		, const axis2_char_t *msg_exchange_pattern)
 {
 	if(NULL == wsdl_opt || NULL == msg_exchange_pattern) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
@@ -195,7 +195,7 @@ axis2_status_t axis2_wsdl_operation_set_msg_exchange_pattern
 	return AXIS2_SUCCESS;
 }
 
-axis2_status_t axis2_wsdl_operation_get_name (axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_get_name (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, axis2_qname_t **name)
 {
 	if(NULL == wsdl_opt)
@@ -204,7 +204,7 @@ axis2_status_t axis2_wsdl_operation_get_name (axis2_environment_t *env
 	return AXIS2_SUCCESS;
 }
 
-axis2_status_t axis2_wsdl_operation_set_name (axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_set_name (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, const axis2_qname_t *name)
 {
 	if(NULL == wsdl_opt || NULL == name) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
@@ -214,7 +214,7 @@ axis2_status_t axis2_wsdl_operation_set_name (axis2_environment_t *env
 	return AXIS2_SUCCESS;
 }
 
-axis2_status_t axis2_wsdl_operation_get_style (axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_get_style (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, axis2_char_t **style)
 {
 	if(NULL == wsdl_opt) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
@@ -223,7 +223,7 @@ axis2_status_t axis2_wsdl_operation_get_style (axis2_environment_t *env
 	return AXIS2_SUCCESS;
 }
 
-axis2_status_t axis2_wsdl_operation_set_style (axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_set_style (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, const axis2_char_t *style)
 {
 	if(NULL == wsdl_opt || NULL == style) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
@@ -238,7 +238,7 @@ axis2_status_t axis2_wsdl_operation_set_style (axis2_environment_t *env
  * Sets the properties of the operation if any
  * @param axis2_hash_t* properties
  */
-axis2_status_t axis2_wsdl_operation_set_component_properties(axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_set_component_properties(axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, axis2_hash_t *properties)
 {
 	axis2_wsdl_impl_operation_t *wsdl_impl_opt = (axis2_wsdl_impl_operation_t *)
@@ -258,7 +258,7 @@ axis2_status_t axis2_wsdl_operation_set_component_properties(axis2_environment_t
  * Returns the properties that are specific to this WSDL operation
  * @return axis2_hash_t** component properties
  */
-axis2_status_t axis2_wsdl_operation_get_component_properties(axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_get_component_properties(axis2_env_t *env
 		,axis2_wsdl_operation_t *wsdl_opt, axis2_hash_t **properties)
 {
 	axis2_wsdl_impl_operation_t *wsdl_impl_opt = (axis2_wsdl_impl_operation_t *)
@@ -278,7 +278,7 @@ axis2_status_t axis2_wsdl_operation_get_component_properties(axis2_environment_t
  * @param void* Key in the map
  * @param void* value to be put
  */
-axis2_status_t axis2_wsdl_operation_set_component_property(axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_set_component_property(axis2_env_t *env
 	, axis2_wsdl_operation_t *wsdl_opt, const void *key, void *value)
 {
 	axis2_wsdl_impl_operation_t *wsdl_impl_opt = (axis2_wsdl_impl_operation_t *)
@@ -301,7 +301,7 @@ axis2_status_t axis2_wsdl_operation_set_component_property(axis2_environment_t *
  * @param void* key for the map search.
  * @return void* value for the key
  */
-axis2_status_t axis2_wsdl_operation_get_component_property(axis2_environment_t *env
+axis2_status_t axis2_wsdl_operation_get_component_property(axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, const void *key, void **value)
 {
 	axis2_wsdl_impl_operation_t *wsdl_impl_opt = (axis2_wsdl_impl_operation_t *)

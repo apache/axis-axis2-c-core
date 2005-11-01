@@ -71,7 +71,7 @@ typedef struct axis2_wsdl_service_s axis2_wsdl_service_t;
 /** Deallocate memory
   * @return status code
   */
-typedef axis2_status_t (*axis2_wsdl_service_free_t) (axis2_environment_t *env
+typedef axis2_status_t (*axis2_wsdl_service_free_t) (axis2_env_t *env
 		, axis2_wsdl_service_t *wsdl_srv);
 
 
@@ -90,7 +90,7 @@ struct axis2_wsdl_service_s
 };
 
 axis2_status_t axis2_wsdl_service_create
-		(axis2_environment_t *env, axis2_wsdl_service_t **wsdl_srv);
+		(axis2_env_t *env, axis2_wsdl_service_t **wsdl_srv);
 
 /** @} */
 #ifdef __cplusplus

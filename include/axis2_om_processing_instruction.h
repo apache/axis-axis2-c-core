@@ -53,7 +53,7 @@ extern "C"
          * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *axis2_om_processing_instruction_ops_free)
-            (axis2_environment_t * environment,
+            (axis2_env_t * environment,
              struct axis2_om_processing_instruction * om_pi);
     } axis2_om_processing_instruction_ops_t;
 
@@ -83,7 +83,7 @@ extern "C"
     * @return a pointer tonewly created processing instruction struct 
     */
     AXIS2_DECLARE(axis2_om_processing_instruction_t *) 
-        axis2_om_processing_instruction_create (axis2_environment_t *
+        axis2_om_processing_instruction_create (axis2_env_t *
                                                  environment,
                                                  axis2_om_node_t * parent,
                                                  const axis2_char_t * target,

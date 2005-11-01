@@ -19,19 +19,19 @@
 #include <axis2_defines.h>
 
 
-axis2_status_t AXIS2_CALL  axis2_qname_impl_free (axis2_environment_t * environment,
+axis2_status_t AXIS2_CALL  axis2_qname_impl_free (axis2_env_t * environment,
                                       axis2_qname_t * qname);
-axis2_bool_t AXIS2_CALL  axis2_qname_impl_equals (axis2_environment_t * environment,
+axis2_bool_t AXIS2_CALL  axis2_qname_impl_equals (axis2_env_t * environment,
                                       axis2_qname_t * qn1,
                                       axis2_qname_t * qn2);
-/*AXIS2_DECLARE(axis2_qname_t*) axis2_qname_create (axis2_environment_t * environment,
+/*AXIS2_DECLARE(axis2_qname_t*) axis2_qname_create (axis2_env_t * environment,
                                    const axis2_char_t * localpart,
                                    const axis2_char_t * namespace_uri,
                                    const axis2_char_t * prefix);
 */
 
 axis2_status_t AXIS2_CALL
-axis2_qname_impl_free (axis2_environment_t * environment,
+axis2_qname_impl_free (axis2_env_t * environment,
                        axis2_qname_t * qname)
 {
     if (!qname)
@@ -41,27 +41,27 @@ axis2_qname_impl_free (axis2_environment_t * environment,
     }
     if (qname->localpart)
     {
-        axis2_free (environment->allocator, qname->localpart);
+        AXIS2_FREE (environment->allocator, qname->localpart);
     }
     if (qname->namespace_uri)
     {
-        axis2_free (environment->allocator, qname->namespace_uri);
+        AXIS2_FREE (environment->allocator, qname->namespace_uri);
     }
     if (qname->prefix)
     {
-        axis2_free (environment->allocator, qname->prefix);
+        AXIS2_FREE (environment->allocator, qname->prefix);
     }
     if (qname->ops)
     {
-        axis2_free (environment->allocator, qname->ops);
+        AXIS2_FREE (environment->allocator, qname->ops);
     }
-    axis2_free (environment->allocator, qname);
+    AXIS2_FREE (environment->allocator, qname);
     return AXIS2_SUCCESS;
 
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_qname_impl_equals (axis2_environment_t * environment,
+axis2_qname_impl_equals (axis2_env_t * environment,
                          axis2_qname_t * qn1, axis2_qname_t * qn2)
 {
 
@@ -101,7 +101,7 @@ axis2_qname_impl_equals (axis2_environment_t * environment,
 
 
 AXIS2_DECLARE(axis2_qname_t *)
-axis2_qname_create (axis2_environment_t * environment,
+axis2_qname_create (axis2_env_t * environment,
                     const axis2_char_t * localpart,
                     const axis2_char_t * namespace_uri,
                     const axis2_char_t * prefix)
@@ -115,7 +115,7 @@ axis2_qname_create (axis2_environment_t * environment,
         return NULL;
     }
 
-    qn = (axis2_qname_t *) axis2_malloc (environment->allocator,
+    qn = (axis2_qname_t *) AXIS2_MALLOC (environment->allocator,
                                          sizeof (axis2_qname_t));
     if (!qn)
     {
@@ -127,7 +127,7 @@ axis2_qname_create (axis2_environment_t * environment,
     qn->localpart = axis2_strdup (localpart);
     if (!(qn->localpart))
     {
-        axis2_free (environment->allocator, qn);
+        AXIS2_FREE (environment->allocator, qn);
         environment->error->error_number = AXIS2_ERROR_NO_MEMORY;
         return NULL;
     }
@@ -142,8 +142,8 @@ axis2_qname_create (axis2_environment_t * environment,
     }
     if (!(qn->prefix))
     {
-        axis2_free (environment->allocator, qn->localpart);
-        axis2_free (environment->allocator, qn);
+        AXIS2_FREE (environment->allocator, qn->localpart);
+        AXIS2_FREE (environment->allocator, qn);
         environment->error->error_number = AXIS2_ERROR_NO_MEMORY;
         return NULL;
     }
@@ -157,9 +157,9 @@ axis2_qname_create (axis2_environment_t * environment,
     }
     if (!(qn->namespace_uri))
     {
-        axis2_free (environment->allocator, qn->localpart);
-        axis2_free (environment->allocator, qn->prefix);
-        axis2_free (environment->allocator, qn);
+        AXIS2_FREE (environment->allocator, qn->localpart);
+        AXIS2_FREE (environment->allocator, qn->prefix);
+        AXIS2_FREE (environment->allocator, qn);
         environment->error->error_number = AXIS2_ERROR_NO_MEMORY;
         return NULL;
     }
@@ -167,15 +167,15 @@ axis2_qname_create (axis2_environment_t * environment,
 
     qn->ops = NULL;
     qn->ops =
-        axis2_malloc (environment->allocator, sizeof (axis2_qname_ops_t));
+        AXIS2_MALLOC (environment->allocator, sizeof (axis2_qname_ops_t));
     /* operations */
     if (!qn->ops)
     {
-        axis2_free (environment->allocator, qn->localpart);
+        AXIS2_FREE (environment->allocator, qn->localpart);
         if (qn->namespace_uri)
-            axis2_free (environment->allocator, qn->namespace_uri);
-        axis2_free (environment->allocator, qn->prefix);
-        axis2_free (environment->allocator, qn);
+            AXIS2_FREE (environment->allocator, qn->namespace_uri);
+        AXIS2_FREE (environment->allocator, qn->prefix);
+        AXIS2_FREE (environment->allocator, qn);
         environment->error->error_number = AXIS2_ERROR_NO_MEMORY;
         return NULL;
     }

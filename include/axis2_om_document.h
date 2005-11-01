@@ -58,7 +58,7 @@ extern "C"
         * @param document pointer to document struct to be freed
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-        axis2_status_t (AXIS2_CALL *axis2_om_document_ops_free) (axis2_environment_t *
+        axis2_status_t (AXIS2_CALL *axis2_om_document_ops_free) (axis2_env_t *
                                                       environment,
                                                       struct axis2_om_document
                                                       * document);
@@ -70,7 +70,7 @@ extern "C"
         * @return pointer to the next node. NULL on error.
         */
         axis2_om_node_t
-            *(AXIS2_CALL *axis2_om_document_ops_build_next) (axis2_environment_t *
+            *(AXIS2_CALL *axis2_om_document_ops_build_next) (axis2_env_t *
                                                   environment,
                                                   struct axis2_om_document *
                                                   document);
@@ -83,7 +83,7 @@ extern "C"
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *axis2_om_document_ops_add_child)
-            (axis2_environment_t * environment,
+            (axis2_env_t * environment,
              struct axis2_om_document * document, axis2_om_node_t * child);
 
       /**
@@ -94,7 +94,7 @@ extern "C"
         *             build the root. Returns NULL on error. 
         */
         axis2_om_node_t
-            * (AXIS2_CALL *axis2_om_document_ops_get_root_element) (axis2_environment_t *
+            * (AXIS2_CALL *axis2_om_document_ops_get_root_element) (axis2_env_t *
                                                          environment,
                                                          struct
                                                          axis2_om_document *
@@ -109,7 +109,7 @@ extern "C"
         *           On error, returns NULL and set the error. 
         */
         axis2_om_node_t
-            * (AXIS2_CALL *axis2_om_document_ops_get_next_sibling) (axis2_environment_t *
+            * (AXIS2_CALL *axis2_om_document_ops_get_next_sibling) (axis2_env_t *
                                                          environment,
                                                          struct
                                                          axis2_om_document *
@@ -125,7 +125,7 @@ extern "C"
         *           On error, returns NULL and sets the error. 
         */
         axis2_om_node_t
-            * (AXIS2_CALL *axis2_om_document_ops_get_first_child) (axis2_environment_t *
+            * (AXIS2_CALL *axis2_om_document_ops_get_first_child) (axis2_env_t *
                                                         environment,
                                                         struct
                                                         axis2_om_document *
@@ -141,7 +141,7 @@ extern "C"
         *           On error, returns NULL and sets the error. 
         */
         axis2_om_node_t
-            * (AXIS2_CALL *axis2_om_document_ops_get_next_child) (axis2_environment_t *
+            * (AXIS2_CALL *axis2_om_document_ops_get_next_child) (axis2_env_t *
                                                        environment,
                                                        struct
                                                        axis2_om_document *
@@ -179,7 +179,7 @@ extern "C"
     * @param builder pointer to xml builder 
     * @return pointer to the newly created document.
     */
-    AXIS2_DECLARE(axis2_om_document_t *) axis2_om_document_create (axis2_environment_t *
+    AXIS2_DECLARE(axis2_om_document_t *) axis2_om_document_create (axis2_env_t *
                                                        environment,
                                                        axis2_om_node_t * root,
                                                        struct

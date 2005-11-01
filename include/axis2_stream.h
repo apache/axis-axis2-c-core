@@ -117,15 +117,15 @@ extern "C"
 #define AXIS2_STREAM_READ(stream, buffer, count) \
 		((stream)->ops->read(buffer, count))
 #define AXIS2_STREAM_WRITE(stream, buffer, count) \
-		((stream)->ops->write(buffer, count))
+		((stream->ops)->write(buffer, count))
 #define AXIS2_STREAM_FILE_OPEN(stream, file_name, options) \
-		((stream)->file_open(file_name, options))
+		((stream->ops)->file_open(file_name, options))
 #define AXIS2_STREAM_FILE_CLOSE(stream, file_ptr) \
-		((stream)->ops->file_close(file_ptr))
+		((stream->ops)->file_close(file_ptr))
 #define AXIS2_STREAM_FILE_GET_CHAR(stream, file_ptr) \
-		((stream)->ops->file_get_char(file_ptr))
+		((stream->ops)->file_get_char(file_ptr))
 #define AXIS2_STREAM_FILE_UNGET_CHAR(stream, chr, file_ptr) \
-		((stream)->ops->file_unget_char(chr, file_ptr))	
+		((stream->ops)->file_unget_char(chr, file_ptr))	
 
 /** @} */
     

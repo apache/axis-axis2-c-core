@@ -34,26 +34,26 @@ axis2_status_t axis2_description_param_include_ops_free
 	(axis2_description_param_include_t *param_include);
 
 axis2_status_t axis2_description_param_include_ops_add_param
-    (axis2_environment_t *environment
+    (axis2_env_t *environment
 	, axis2_description_param_include_t *param_include
     , const axis2_description_param_t *param);
 	 
 axis2_description_param_t *axis2_description_param_include_ops_get_param
-    (axis2_environment_t *env, axis2_description_param_include_t *param_include
+    (axis2_env_t *env, axis2_description_param_include_t *param_include
 	, const axis2_char_t *name);
 
 axis2_hash_t *axis2_description_param_include_ops_get_params
-    (axis2_environment_t *env
+    (axis2_env_t *env
 	, axis2_description_param_include_t *param_include);
 
 axis2_status_t axis2_description_param_include_ops_is_param_locked
-    (axis2_environment_t *env, axis2_description_param_include_t *param_include
+    (axis2_env_t *env, axis2_description_param_include_t *param_include
 	, const axis2_char_t *param_name);
 
 /************************** End of function prototypes ************************/
 
 axis2_description_param_include_ops_t *axis2_description_param_include_get_ops
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_param_include_t *param_include)
 {
 	if(!param_include)
@@ -65,7 +65,7 @@ axis2_description_param_include_ops_t *axis2_description_param_include_get_ops
 }
 
 axis2_description_param_include_t *axis2_description_param_include_create (
-		axis2_environment_t *env)
+		axis2_env_t *env)
 {
 	axis2_description_param_include_t *param_include = 
 		(axis2_description_param_include_t *)
@@ -115,7 +115,7 @@ axis2_status_t axis2_description_param_include_ops_free
 }
 
 axis2_status_t axis2_description_param_include_ops_add_param
-    	(axis2_environment_t *env
+    	(axis2_env_t *env
 		, axis2_description_param_include_t *param_include
     	, const axis2_description_param_t *param)
 {
@@ -136,7 +136,7 @@ axis2_status_t axis2_description_param_include_ops_add_param
 }
 
 axis2_description_param_t *axis2_description_param_include_ops_get_param
-    	(axis2_environment_t* env
+    	(axis2_env_t* env
 		, axis2_description_param_include_t *param_include
 		, const axis2_char_t *name)
 {
@@ -151,7 +151,7 @@ axis2_description_param_t *axis2_description_param_include_ops_get_param
 }
 
 axis2_hash_t *axis2_description_param_include_ops_get_params
-    	(axis2_environment_t *env
+    	(axis2_env_t *env
 		, axis2_description_param_include_t *param_include)
 {
 	if(!param_include)
@@ -163,7 +163,7 @@ axis2_hash_t *axis2_description_param_include_ops_get_params
 }
 
 axis2_status_t axis2_description_param_include_ops_is_param_locked
-    	(axis2_environment_t *env
+    	(axis2_env_t *env
 		, axis2_description_param_include_t *param_include
 		, const axis2_char_t *param_name)
 {

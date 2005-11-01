@@ -31,55 +31,55 @@ struct axis2_description_servicegroup_s
 
 /***************************** Function headers *******************************/
 
-axis2_status_t axis2_description_servicegroup_ops_free(axis2_environment_t *env
+axis2_status_t axis2_description_servicegroup_ops_free(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc);
 
 axis2_status_t axis2_description_servicegroup_ops_set_name
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc
 		, axis2_char_t *name);
 
 axis2_char_t *axis2_description_servicegroup_ops_get_name
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc);
 
 axis2_status_t axis2_description_servicegroup_ops_add_service
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t* servicegroup_desc
 		, axis2_description_service_t *service_desc);
 
 axis2_description_service_t *axis2_description_servicegroup_ops_get_service
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc
 		, const axis2_qname_t* service_name);
 		
 axis2_status_t axis2_description_servicegroup_ops_remove_service
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc
 		, const axis2_qname_t* service_name);
 		
 axis2_status_t axis2_description_servicegroup_ops_add_param
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc
 		, axis2_description_param_t *param);
 		
 
 axis2_description_param_t *axis2_description_servicegroup_ops_get_param(
-		axis2_environment_t *env, axis2_description_servicegroup_t *servicegroup_desc
+		axis2_env_t *env, axis2_description_servicegroup_t *servicegroup_desc
 		, const axis2_char_t *name);
 		
 axis2_hash_t *axis2_description_servicegroup_ops_get_params
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc);
 		
 axis2_bool_t axis2_description_servicegroup_ops_is_param_locked(
-		axis2_environment_t *env, axis2_description_servicegroup_t *servicegroup_desc
+		axis2_env_t *env, axis2_description_servicegroup_t *servicegroup_desc
 		, const axis2_char_t *param_name);
 
 /***************************** End of function headers ************************/
 
 axis2_description_servicegroup_ops_t *axis2_description_servicegroup_get_ops
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc)
 {
 	if(!env || !servicegroup_desc)
@@ -91,7 +91,7 @@ axis2_description_servicegroup_ops_t *axis2_description_servicegroup_get_ops
 }
 
 axis2_description_servicegroup_t *axis2_description_servicegroup_create
-		(axis2_environment_t *env)
+		(axis2_env_t *env)
 {
 	axis2_description_servicegroup_t *servicegroup_desc 
 		= (axis2_description_servicegroup_t *)
@@ -143,7 +143,7 @@ axis2_description_servicegroup_t *axis2_description_servicegroup_create
 
 /******************************************************************************/
 
-axis2_status_t axis2_description_servicegroup_ops_free(axis2_environment_t *env
+axis2_status_t axis2_description_servicegroup_ops_free(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc)
 {
 	if(!env || !servicegroup_desc)
@@ -153,7 +153,7 @@ axis2_status_t axis2_description_servicegroup_ops_free(axis2_environment_t *env
 }
 
 axis2_status_t axis2_description_servicegroup_ops_set_name
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc
 		, axis2_char_t *name)
 {
@@ -166,7 +166,7 @@ axis2_status_t axis2_description_servicegroup_ops_set_name
 }
 
 axis2_char_t *axis2_description_servicegroup_ops_get_name
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc)
 {
 	if(!env || !servicegroup_desc)
@@ -178,7 +178,7 @@ axis2_char_t *axis2_description_servicegroup_ops_get_name
 }
 
 axis2_status_t axis2_description_servicegroup_ops_add_service
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc
 		, axis2_description_service_t *service_desc)
 {
@@ -192,7 +192,7 @@ axis2_status_t axis2_description_servicegroup_ops_add_service
 }
 
 axis2_description_service_t *axis2_description_servicegroup_ops_get_service
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc
 		, const axis2_qname_t* service_name)
 {
@@ -207,7 +207,7 @@ axis2_description_service_t *axis2_description_servicegroup_ops_get_service
 }
 
 axis2_status_t axis2_description_servicegroup_ops_remove_service
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc
 		, const axis2_qname_t* service_name)
 {
@@ -222,7 +222,7 @@ axis2_status_t axis2_description_servicegroup_ops_remove_service
 }
 
 axis2_status_t axis2_description_servicegroup_ops_add_param
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc
 		, axis2_description_param_t *param)
 {
@@ -238,7 +238,7 @@ axis2_status_t axis2_description_servicegroup_ops_add_param
 }
 
 axis2_description_param_t *axis2_description_servicegroup_ops_get_param(
-		axis2_environment_t *env, axis2_description_servicegroup_t *servicegroup_desc
+		axis2_env_t *env, axis2_description_servicegroup_t *servicegroup_desc
 		, const axis2_char_t *name)
 {
 	if(!env || !servicegroup_desc || !servicegroup_desc->param_include)
@@ -260,7 +260,7 @@ axis2_description_param_t *axis2_description_servicegroup_ops_get_param(
 }
 
 axis2_hash_t *axis2_description_servicegroup_ops_get_params
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_servicegroup_t *servicegroup_desc)
 {
 	if(!env || !servicegroup_desc)
@@ -274,7 +274,7 @@ axis2_hash_t *axis2_description_servicegroup_ops_get_params
 }
 
 axis2_bool_t axis2_description_servicegroup_ops_is_param_locked(
-		axis2_environment_t *env, axis2_description_servicegroup_t *servicegroup_desc
+		axis2_env_t *env, axis2_description_servicegroup_t *servicegroup_desc
 		, const axis2_char_t *param_name)
 {
 	if(!env || !servicegroup_desc || !servicegroup_desc->param_include)

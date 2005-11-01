@@ -55,7 +55,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         *           NULL and sets the errorno in environment.
         */
         axis2_om_namespace_t *
-            (AXIS2_CALL *axis2_om_element_ops_find_namespace) (axis2_environment_t *
+            (AXIS2_CALL *axis2_om_element_ops_find_namespace) (axis2_env_t *
                                                      environment,
                                                      axis2_om_node_t * node,
                                                      const axis2_char_t * uri,
@@ -70,7 +70,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *axis2_om_element_ops_declare_namespace)
-            (axis2_environment_t * environment, axis2_om_node_t *node,
+            (axis2_env_t * environment, axis2_om_node_t *node,
              axis2_om_namespace_t * ns);
 
       /**
@@ -82,7 +82,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         */
         /*   AXIS2_DECLARE_DATA axis2_om_namespace_t
             *(AXIS2_CALL *axis2_om_element_ops_find_declared_namespace)
-            (axis2_environment_t * environment,
+            (axis2_env_t * environment,
              struct axis2_om_element * element, const axis2_char_t * uri,
              const axis2_char_t * prefix);
              */
@@ -98,7 +98,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         */
          axis2_om_namespace_t *
             (AXIS2_CALL *axis2_om_element_ops_find_namespace_with_qname)
-            (axis2_environment_t *environment, axis2_om_node_t *node,
+            (axis2_env_t *environment, axis2_om_node_t *node,
              axis2_qname_t *qname);
 
       /**
@@ -109,7 +109,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
          axis2_status_t (AXIS2_CALL *axis2_om_element_ops_add_attribute)
-            (axis2_environment_t * environment,
+            (axis2_env_t * environment,
              struct axis2_om_element * element,
              axis2_om_attribute_t * attribute);
 
@@ -122,7 +122,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         *           On error, returns NULL and sets the error.
         */
          axis2_om_attribute_t *
-            (AXIS2_CALL *axis2_om_element_ops_get_attribute) (axis2_environment_t *
+            (AXIS2_CALL *axis2_om_element_ops_get_attribute) (axis2_env_t *
                                                     environment,
                                                     struct axis2_om_element *
                                                     element,
@@ -134,7 +134,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * @param element OM element to be freed.
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-         axis2_status_t (AXIS2_CALL *axis2_om_element_ops_free) (axis2_environment_t *
+         axis2_status_t (AXIS2_CALL *axis2_om_element_ops_free) (axis2_env_t *
                                                        environment,
                                                        struct axis2_om_element
                                                        * element);
@@ -147,7 +147,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *axis2_om_element_ops_serialize_start_part)
-            (axis2_environment_t * environment,
+            (axis2_env_t * environment,
              struct axis2_om_element * element,
              axis2_om_output_t * om_output);
 
@@ -160,7 +160,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *axis2_om_element_ops_serialize_end_part)
-            (axis2_environment_t * environment,
+            (axis2_env_t * environment,
              struct axis2_om_element * element,
              axis2_om_output_t * om_output);
 
@@ -196,7 +196,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
     *                       Node type will be set to AXIS2_OM_ELEMENT
     * @return a pointer to the newly created element struct
     */
-    AXIS2_DECLARE(axis2_om_element_t *) axis2_om_element_create (axis2_environment_t *
+    AXIS2_DECLARE(axis2_om_element_t *) axis2_om_element_create (axis2_env_t *
                                                  environment,
                                                  axis2_om_node_t * parent,
                                                  const axis2_char_t *
@@ -215,7 +215,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
     * @return a pointer to the newly created element struct
     */
     AXIS2_DECLARE(axis2_om_element_t *) 
-        axis2_om_element_create_with_qname (axis2_environment_t *
+        axis2_om_element_create_with_qname (axis2_env_t *
                                              environment,
                                              axis2_om_node_t * parent,
                                              axis2_qname_t * qname,

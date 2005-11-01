@@ -9,7 +9,7 @@
 
 axis2_allocator_t *allocator = NULL;
 axis2_string_t *string = NULL;
-axis2_environment_t *environment = NULL;
+axis2_env_t *environment = NULL;
 
 guththila_environment_t *my_guththila_environment = NULL;
 guththila_allocator_t *my_guththila_allocator = NULL;

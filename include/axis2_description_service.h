@@ -106,57 +106,57 @@ extern "C"
 
 
 typedef axis2_status_t (*axis2_description_service_free_t)
-		(axis2_environment_t * env,
+		(axis2_env_t * env,
 	 	axis2_description_service_t * service_desc);
 
 typedef axis2_status_t (*axis2_description_service_add_operation_t)
-		(axis2_environment_t * env,
+		(axis2_env_t * env,
 	 	axis2_description_service_t * service_desc,
 	 	axis2_description_operation_t * operation_desc);
 
 typedef axis2_description_operation_t
 		*(*axis2_description_service_get_operation_with_qname_t)
-		(axis2_environment_t * env,
+		(axis2_env_t * env,
 	 	axis2_description_service_t * service_desc,
 	 	axis2_qname_t * operation_name);
 
 typedef axis2_description_operation_t
 		* (*axis2_description_service_get_operation_with_name_t)
-		(axis2_environment_t * env,
+		(axis2_env_t * env,
 	 	axis2_description_service_t * service_desc,
 	 	const axis2_char_t * operation_name);
 
 typedef axis2_hash_t *(*axis2_description_service_get_operations_t)
-		(axis2_environment_t * env,
+		(axis2_env_t * env,
 	 	axis2_description_service_t * service_desc);
 
 typedef axis2_status_t (*axis2_description_service_set_parent_t)
-		(axis2_environment_t * env,
+		(axis2_env_t * env,
 	 	axis2_description_service_t * service_desc,
 	 	axis2_description_servicegroup_t * servicegroup_desc);
 
 typedef axis2_description_servicegroup_t
 		* (*axis2_description_service_get_parent_t)
-		(axis2_environment_t * env,
+		(axis2_env_t * env,
 	 	axis2_description_service_t * service_desc);
 		 
 typedef axis2_qname_t *(*axis2_description_service_get_name_t)
-		(axis2_environment_t *env, axis2_description_service_t *service_desc);
+		(axis2_env_t *env, axis2_description_service_t *service_desc);
 		
 typedef axis2_status_t (*axis2_description_service_add_param_t)
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_description_service_t *service_desc
 		, axis2_description_param_t *param);
 
 typedef axis2_description_param_t *(*axis2_description_service_get_param_t)
-		(axis2_environment_t *env, axis2_description_service_t *service_desc
+		(axis2_env_t *env, axis2_description_service_t *service_desc
 		, const axis2_char_t *name);
 
 typedef axis2_hash_t *(*axis2_description_service_get_params_t)
-		(axis2_environment_t *env, axis2_description_service_t *service_desc);
+		(axis2_env_t *env, axis2_description_service_t *service_desc);
 
 typedef axis2_bool_t (*axis2_description_service_is_param_locked_t)
-		(axis2_environment_t *env, axis2_description_service_t *service_desc
+		(axis2_env_t *env, axis2_description_service_t *service_desc
 		, const axis2_char_t *param_name);		
 
 /************************ End function pointers *******************************/
@@ -199,14 +199,14 @@ struct axis2_description_service_ops_s
   * @return operation struct for service
   */
 axis2_description_service_ops_t *axis2_description_service_get_ops
-        (axis2_environment_t *env, axis2_description_service_t *service_desc);
+        (axis2_env_t *env, axis2_description_service_t *service_desc);
 
 /** Create a service with qualified name
   * @param qualified name
   * @return service struct
   */
 axis2_description_service_t *axis2_description_service_create_with_qname
-        (axis2_environment_t *env, axis2_qname_t *qname);
+        (axis2_env_t *env, axis2_qname_t *qname);
 
 /** @} */
 #ifdef __cplusplus

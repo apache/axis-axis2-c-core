@@ -31,14 +31,14 @@ struct axis2_wsdl_impl_service_s
 
 /***************************** Function headers *******************************/
 
-axis2_status_t axis2_wsdl_service_free(axis2_environment_t *env
+axis2_status_t axis2_wsdl_service_free(axis2_env_t *env
 		, axis2_wsdl_service_t *wsdl_srv);
 
 
 /***************************** End of function headers ************************/
 
 axis2_status_t axis2_wsdl_service_create
-		(axis2_environment_t *env, axis2_wsdl_service_t **wsdl_srv)
+		(axis2_env_t *env, axis2_wsdl_service_t **wsdl_srv)
 {
 	axis2_wsdl_impl_service_t *wsdl_impl_srv 
 		= (axis2_wsdl_impl_service_t *)
@@ -73,7 +73,7 @@ axis2_status_t axis2_wsdl_service_create
 
 /******************************************************************************/
 
-axis2_status_t axis2_wsdl_service_free(axis2_environment_t *env
+axis2_status_t axis2_wsdl_service_free(axis2_env_t *env
 		, axis2_wsdl_service_t *wsdl_srv)
 {
 	if(!env || !wsdl_srv)

@@ -50,7 +50,7 @@ extern "C"
         * @param om_doctype pointer to doctype struct to be freed
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-         axis2_status_t (AXIS2_CALL *axis2_om_doctype_ops_free) (axis2_environment_t *
+         axis2_status_t (AXIS2_CALL *axis2_om_doctype_ops_free) (axis2_env_t *
                                                      environment,
                                                      struct axis2_om_doctype *
                                                      om_doctype);
@@ -78,7 +78,7 @@ extern "C"
     *                       Node type will be set to AXIS2_OM_DOCTYPE
     * @return pointer to newly created doctype struct 
     */
-    AXIS2_DECLARE(axis2_om_doctype_t *) axis2_om_doctype_create (axis2_environment_t *
+    AXIS2_DECLARE(axis2_om_doctype_t *) axis2_om_doctype_create (axis2_env_t *
                                                  environment,
                                                  axis2_om_node_t * parent,
                                                  const axis2_char_t * value,

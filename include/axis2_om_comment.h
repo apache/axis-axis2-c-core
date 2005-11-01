@@ -51,7 +51,7 @@ extern "C"
         * @param comment pointer to axis2_commnet struct to be freed
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-         axis2_status_t (AXIS2_CALL *axis2_om_comment_ops_free) (axis2_environment_t *
+         axis2_status_t (AXIS2_CALL *axis2_om_comment_ops_free) (axis2_env_t *
                                                      environment,
                                                      struct axis2_om_comment *
                                                      comment);
@@ -79,7 +79,7 @@ extern "C"
     *                       Node type will be set to AXIS2_OM_COMMENT
     * @return a pointer to the newly created comment struct
     */
-    AXIS2_DECLARE(axis2_om_comment_t *) axis2_om_comment_create (axis2_environment_t *
+    AXIS2_DECLARE(axis2_om_comment_t *) axis2_om_comment_create (axis2_env_t *
                                                  environment,
                                                  const axis2_char_t * value,
                                                  axis2_om_node_t **

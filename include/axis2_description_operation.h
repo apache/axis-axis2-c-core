@@ -102,49 +102,49 @@ extern "C"
 /************************** Start of function pointers ************************/
 
 typedef axis2_status_t (*axis2_description_operation_free_t)
-        (axis2_environment_t * env,
+        (axis2_env_t * env,
          axis2_description_operation_t * operation_desc);
 
 typedef axis2_status_t (*axis2_description_operation_add_param_t)
-        (axis2_environment_t *env, axis2_description_operation_t *operation_desc
+        (axis2_env_t *env, axis2_description_operation_t *operation_desc
         , axis2_description_param_t *param);
 
 typedef axis2_description_param_t *(*axis2_description_operation_get_param_t) 
-		(axis2_environment_t *env, axis2_description_operation_t *operation_desc
+		(axis2_env_t *env, axis2_description_operation_t *operation_desc
         , const axis2_char_t *name);
 
 typedef axis2_hash_t *(*axis2_description_operation_get_params_t)
-        (axis2_environment_t *env, axis2_description_operation_t *operation_desc);
+        (axis2_env_t *env, axis2_description_operation_t *operation_desc);
 		 
 typedef axis2_bool_t (*axis2_description_operation_is_param_locked_t)
-		(axis2_environment_t *env, axis2_description_operation_t *operation_desc
+		(axis2_env_t *env, axis2_description_operation_t *operation_desc
 		, const axis2_char_t *param_name);
 		 
 
 typedef axis2_status_t (*axis2_description_operation_set_parent_t)
-        (axis2_environment_t *env, axis2_description_operation_t *operation_desc
+        (axis2_env_t *env, axis2_description_operation_t *operation_desc
          , axis2_description_service_t *service_desc);
 
 typedef axis2_description_service_t *(*axis2_description_operation_get_parent_t) 
-		(axis2_environment_t *env, axis2_description_operation_t *operation_desc);
+		(axis2_env_t *env, axis2_description_operation_t *operation_desc);
 
 typedef axis2_qname_t *(*axis2_description_operation_get_name_t)
-        (axis2_environment_t * env, axis2_description_operation_t * operation_desc);
+        (axis2_env_t * env, axis2_description_operation_t * operation_desc);
 
 typedef axis2_status_t (*axis2_description_operation_set_msg_exchange_pattern_t)
-        (axis2_environment_t *env, axis2_description_operation_t *operation_desc
+        (axis2_env_t *env, axis2_description_operation_t *operation_desc
          , axis2_char_t *pattern);
 
 typedef axis2_char_t *(*axis2_description_operation_get_msg_exchange_pattern_t)
-        (axis2_environment_t *env, axis2_description_operation_t *operation_desc);
+        (axis2_env_t *env, axis2_description_operation_t *operation_desc);
 
 typedef axis2_status_t (*axis2_description_operation_set_msg_receiver_t)
-        (axis2_environment_t * env,
+        (axis2_env_t * env,
          axis2_description_operation_t * operation_desc,
          axis2_engine_msg_receiver_t * msg_receiver);
 
 typedef axis2_engine_msg_receiver_t *(*axis2_description_operation_get_msg_receiver_t)
-        (axis2_environment_t *env, axis2_description_operation_t *operation_desc);
+        (axis2_env_t *env, axis2_description_operation_t *operation_desc);
 
 /**************************** End of function pointers ************************/
 
@@ -178,13 +178,13 @@ struct axis2_description_operation_ops_s
 };
 
 axis2_description_operation_ops_t *axis2_description_operation_get_ops
-		(axis2_environment_t *env, axis2_description_operation_t *operation_desc);
+		(axis2_env_t *env, axis2_description_operation_t *operation_desc);
 
 axis2_description_operation_t *axis2_description_operation_create 
-		(axis2_environment_t *env);
+		(axis2_env_t *env);
 
 axis2_description_operation_t *axis2_description_operation_create_with_name 
-		(axis2_environment_t *env, axis2_qname_t *name);
+		(axis2_env_t *env, axis2_qname_t *name);
 
 /** @} */
 #ifdef __cplusplus

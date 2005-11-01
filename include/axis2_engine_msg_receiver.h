@@ -58,11 +58,11 @@ extern "C"
 /************************** Start of function pointers ************************/
 
     typedef axis2_status_t (*axis2_engine_msg_receiver_free_t)
-        (axis2_environment_t * env,
+        (axis2_env_t * env,
          axis2_engine_msg_receiver_t * msg_receiver);
 
     typedef axis2_status_t (*axis2_engine_msg_receiver_receive_t)
-        (axis2_environment_t * env,
+        (axis2_env_t * env,
          axis2_engine_msg_receiver_t * msg_receiver,
          axis2_context_msg_ctx_t * msg_ctx);
 
@@ -76,11 +76,11 @@ extern "C"
     };
 
     axis2_engine_msg_receiver_t *axis2_engine_msg_receiver_get_ops
-        (axis2_environment_t * env,
+        (axis2_env_t * env,
          axis2_engine_msg_receiver_t * msg_receiver);
 
       axis2_engine_msg_receiver_t
-        * axis2_engine_msg_receiver_create (axis2_environment_t * env);
+        * axis2_engine_msg_receiver_create (axis2_env_t * env);
 
 /** @} */
 #ifdef __cplusplus

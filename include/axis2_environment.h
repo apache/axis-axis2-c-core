@@ -63,7 +63,7 @@ extern "C"
         axis2_stream_t *stream;
         /** Logging routines */
         axis2_log_t *log;
-    } axis2_environment_t;
+    } axis2_env_t;
 
   /**
     * Creates an environment struct
@@ -74,7 +74,7 @@ extern "C"
     * @param string pointer to an instance of string struct. Optional, can be NULL. If NULL default string handler would be used.
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_environment_t *) axis2_environment_create (axis2_allocator_t *
+    AXIS2_DECLARE(axis2_env_t *) axis2_environment_create (axis2_allocator_t *
                                                    allocator,
                                                    axis2_error_t * error,
                                                    axis2_stream_t * stream,
@@ -89,7 +89,7 @@ extern "C"
     * @param string pointer to an instance of string struct. Optional, can be NULL. If NULL default string handler would be used.
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_status_t) axis2_environment_free (axis2_environment_t *env);
+    AXIS2_DECLARE(axis2_status_t) axis2_environment_free (axis2_env_t *env);
 
 /** @} */
 

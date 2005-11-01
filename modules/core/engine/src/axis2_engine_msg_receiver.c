@@ -28,17 +28,17 @@ struct axis2_engine_msg_receiver_s
 	
 /*************************** Function headers *********************************/
 
-axis2_status_t axis2_engine_msg_receiver_ops_free (axis2_environment_t *env
+axis2_status_t axis2_engine_msg_receiver_ops_free (axis2_env_t *env
 		, axis2_engine_msg_receiver_t *msg_receiver);	
 
-axis2_status_t axis2_engine_msg_receiver_ops_receive (axis2_environment_t *env
+axis2_status_t axis2_engine_msg_receiver_ops_receive (axis2_env_t *env
 		, axis2_engine_msg_receiver_t *msg_receiver
 		, axis2_context_msg_ctx_t *msg_ctx);
 		
 /************************* End of function headers ****************************/	
 
 axis2_engine_msg_receiver_t *axis2_engine_msg_receiver_get_ops
-		(axis2_environment_t *env, axis2_engine_msg_receiver_t *msg_receiver)
+		(axis2_env_t *env, axis2_engine_msg_receiver_t *msg_receiver)
 {
 	if(!msg_receiver)
 	{
@@ -49,7 +49,7 @@ axis2_engine_msg_receiver_t *axis2_engine_msg_receiver_get_ops
 }
 
 axis2_engine_msg_receiver_t *axis2_engine_msg_receiver_create 
-		(axis2_environment_t *env)
+		(axis2_env_t *env)
 {
 	axis2_engine_msg_receiver_ops_t *ops = NULL;
 	axis2_engine_msg_receiver_t *msg_receiver = 
@@ -76,7 +76,7 @@ axis2_engine_msg_receiver_t *axis2_engine_msg_receiver_create
 
 /******************************************************************************/
 
-axis2_status_t axis2_engine_msg_receiver_ops_free (axis2_environment_t *env
+axis2_status_t axis2_engine_msg_receiver_ops_free (axis2_env_t *env
 		, axis2_engine_msg_receiver_t *msg_receiver)
 {
 	if(msg_receiver){
@@ -86,7 +86,7 @@ axis2_status_t axis2_engine_msg_receiver_ops_free (axis2_environment_t *env
 	return AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED;
 }
 
-axis2_status_t axis2_engine_msg_receive(axis2_environment_t *env
+axis2_status_t axis2_engine_msg_receive(axis2_env_t *env
 		, axis2_engine_msg_receiver_t *msg_receiver
 		, axis2_context_msg_ctx_t *msg_ctx)
 {

@@ -33,37 +33,37 @@ struct axis2_engine_config_s
 	
 /***************************** Function prototypes ****************************/
 
-axis2_status_t axis2_engine_config_ops_free (axis2_environment_t *env
+axis2_status_t axis2_engine_config_ops_free (axis2_env_t *env
 		,axis2_engine_config_t * engine_config);
 
 axis2_status_t axis2_engine_config_ops_add_service_group
-		(axis2_environment_t *env, axis2_engine_config_t *engine_config
+		(axis2_env_t *env, axis2_engine_config_t *engine_config
     	, axis2_description_servicegroup_t *service_group_desc);
 
 axis2_description_servicegroup_t *axis2_engine_config_ops_get_servicegroup(
-		axis2_environment_t *env, axis2_engine_config_t *engine_config
+		axis2_env_t *env, axis2_engine_config_t *engine_config
 		, const axis2_char_t* servicegroup_name);
 
 axis2_status_t axis2_engine_config_ops_add_service(
-		axis2_environment_t *env, axis2_engine_config_t *engine_config
+		axis2_env_t *env, axis2_engine_config_t *engine_config
 		, const axis2_description_service_t* service_desc);
 
 axis2_description_service_t *axis2_engine_config_ops_get_service(
-		axis2_environment_t *env, axis2_engine_config_t *engine_config
+		axis2_env_t *env, axis2_engine_config_t *engine_config
 		, const axis2_char_t* service_name);
 
 axis2_status_t axis2_engine_config_ops_remove_service
-		(axis2_environment_t *env, axis2_engine_config_t *engine_config
+		(axis2_env_t *env, axis2_engine_config_t *engine_config
 		, const axis2_char_t *name);
 		
-axis2_status_t split_service_name(axis2_environment_t *env
+axis2_status_t split_service_name(axis2_env_t *env
 		, axis2_char_t *service_name, axis2_char_t **service_name_st);
 		
 
 /************************** End of function prototypes ************************/
 
 axis2_engine_config_ops_t *axis2_engine_config_get_ops
-	(axis2_environment_t *env, axis2_engine_config_t *engine_config)
+	(axis2_env_t *env, axis2_engine_config_t *engine_config)
 {
 	if(!engine_config)
 	{
@@ -76,7 +76,7 @@ axis2_engine_config_ops_t *axis2_engine_config_get_ops
 
 
 axis2_engine_config_t *axis2_engine_config_create 
-		(axis2_environment_t *env)
+		(axis2_env_t *env)
 {
 	axis2_engine_config_t *engine_config
 	= (axis2_engine_config_t *) axis2_malloc (env->allocator
@@ -121,7 +121,7 @@ axis2_engine_config_t *axis2_engine_config_create
 
 /**********************Start of operation impls********************************/
 
-axis2_status_t axis2_engine_config_ops_free (axis2_environment_t *env
+axis2_status_t axis2_engine_config_ops_free (axis2_env_t *env
 		,axis2_engine_config_t * engine_config)
 {
 	if(engine_config)
@@ -132,7 +132,7 @@ axis2_status_t axis2_engine_config_ops_free (axis2_environment_t *env
 }
 
 axis2_status_t axis2_engine_config_ops_add_service_group
-		(axis2_environment_t *env, axis2_engine_config_t *engine_config
+		(axis2_env_t *env, axis2_engine_config_t *engine_config
     	, axis2_description_servicegroup_t *servicegroup_desc)
 {
 	if(!engine_config || !servicegroup_desc)
@@ -149,7 +149,7 @@ axis2_status_t axis2_engine_config_ops_add_service_group
 }
 
 axis2_description_servicegroup_t *axis2_engine_config_ops_get_servicegroup(
-		axis2_environment_t *env, axis2_engine_config_t *engine_config
+		axis2_env_t *env, axis2_engine_config_t *engine_config
 		, const axis2_char_t* servicegroup_name)
 {
 	if(!engine_config)
@@ -169,7 +169,7 @@ axis2_description_servicegroup_t *axis2_engine_config_ops_get_servicegroup(
 }
 
 axis2_status_t axis2_engine_config_ops_add_service(
-		axis2_environment_t *env, axis2_engine_config_t *engine_config
+		axis2_env_t *env, axis2_engine_config_t *engine_config
 		, const axis2_description_service_t *service_desc)
 {
 	if(!engine_config || !service_desc) 
@@ -196,7 +196,7 @@ axis2_status_t axis2_engine_config_ops_add_service(
 }
 
 axis2_description_service_t *axis2_engine_config_ops_get_service(
-		axis2_environment_t *env, axis2_engine_config_t *engine_config
+		axis2_env_t *env, axis2_engine_config_t *engine_config
 		, const axis2_char_t* service_name)
 {
 	if(!env || !engine_config)
@@ -235,7 +235,7 @@ axis2_description_service_t *axis2_engine_config_ops_get_service(
 }
 
 axis2_status_t axis2_engine_config_ops_remove_service
-		(axis2_environment_t *env, axis2_engine_config_t *engine_config
+		(axis2_env_t *env, axis2_engine_config_t *engine_config
 		, const axis2_char_t *service_name)
 {
 	if(!env || !engine_config)
@@ -278,7 +278,7 @@ axis2_status_t axis2_engine_config_ops_remove_service
  * @param service_name
  * @return service name and group name 
  */
-axis2_status_t split_service_name(axis2_environment_t *env
+axis2_status_t split_service_name(axis2_env_t *env
 		, axis2_char_t *service_name, axis2_char_t **service_name_st)
 {
 	if(!service_name_st)

@@ -25,6 +25,8 @@
 #include <axis2_defines.h>
 #include <axis2_environment.h>
 
+#include <axis2_string.h>
+
 struct axis2_qname;
 struct axis2_qname_ops;
 
@@ -49,7 +51,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
      *  Free a qname struct
      *  @return Status code
      */
-    axis2_status_t (AXIS2_CALL *axis2_qname_ops_free) (axis2_environment_t * environment,
+    axis2_status_t (AXIS2_CALL *axis2_qname_ops_free) (axis2_env_t * environment,
                                             struct axis2_qname * qname);
 
      /** 
@@ -59,7 +61,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
       * @return true if qname1 equals qname2, false otherwise 
       */
 
-    axis2_bool_t (AXIS2_CALL *axis2_qname_ops_equals) (axis2_environment_t * environment,
+    axis2_bool_t (AXIS2_CALL *axis2_qname_ops_equals) (axis2_env_t * environment,
                                             struct axis2_qname * qname1,
                                             struct axis2_qname * qname2);
 
@@ -93,14 +95,14 @@ typedef struct axis2_qname
  * @return a pointer to newly created qname struct
  */
 
-AXIS2_DECLARE(axis2_qname_t *) axis2_qname_create (axis2_environment_t * environment,
+AXIS2_DECLARE(axis2_qname_t *) axis2_qname_create (axis2_env_t * environment,
                                    const axis2_char_t * localpart,
                                    const axis2_char_t * namespace_uri,
                                    const axis2_char_t * prefix);
 
 
-#define axis2_qname_free(environment,qname) ((qname)->ops->axis2_qname_ops_free(environment,qname))
-#define axis2_qname_equals(environment,qname1,qname2) ((qname1)->ops->axis2_qname_ops_equals(environment,qname1,qname2))
+#define AXIS2_QNAME_FREE(environment,qname) ((qname)->ops->axis2_qname_ops_free(environment,qname))
+#define AXIS2_QNAME_EQUALS(environment,qname1,qname2) ((qname1)->ops->axis2_qname_ops_equals(environment,qname1,qname2))
 
 /** @} */
 

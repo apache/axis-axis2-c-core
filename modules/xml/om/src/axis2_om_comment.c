@@ -17,11 +17,11 @@
 #include <axis2_om_comment.h>
 #include <string.h>
 
-axis2_status_t AXIS2_CALL axis2_om_comment_impl_free (axis2_environment_t * environment,
+axis2_status_t AXIS2_CALL axis2_om_comment_impl_free (axis2_env_t * environment,
                                            axis2_om_comment_t * comment);
 
 AXIS2_DECLARE(axis2_om_comment_t*)
- axis2_om_comment_create (axis2_environment_t * environment,
+ axis2_om_comment_create (axis2_env_t * environment,
                          const axis2_char_t * value, axis2_om_node_t ** node)
 {
     axis2_om_comment_t *comment = NULL;
@@ -89,7 +89,7 @@ AXIS2_DECLARE(axis2_om_comment_t*)
 
 
 axis2_status_t AXIS2_CALL
-axis2_om_comment_impl_free (axis2_environment_t * environment,
+axis2_om_comment_impl_free (axis2_env_t * environment,
                             axis2_om_comment_t * comment)
 {
     if (comment)

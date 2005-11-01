@@ -16,11 +16,11 @@
 
 #include <axis2_om_doctype.h>
 
-axis2_status_t AXIS2_CALL axis2_om_doctype_impl_free (axis2_environment_t * environment,
+axis2_status_t AXIS2_CALL axis2_om_doctype_impl_free (axis2_env_t * environment,
                                            axis2_om_doctype_t * doctype);
 
 AXIS2_DECLARE(axis2_om_doctype_t *)
- axis2_om_doctype_create (axis2_environment_t * environment,
+ axis2_om_doctype_create (axis2_env_t * environment,
                          axis2_om_node_t * parent, const axis2_char_t * value,
                          axis2_om_node_t ** node)
 {
@@ -94,7 +94,7 @@ AXIS2_DECLARE(axis2_om_doctype_t *)
 
 
 axis2_status_t AXIS2_CALL
-axis2_om_doctype_impl_free (axis2_environment_t * environment,
+axis2_om_doctype_impl_free (axis2_env_t * environment,
                             axis2_om_doctype_t * doctype)
 {
     if (doctype)

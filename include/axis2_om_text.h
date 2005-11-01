@@ -52,7 +52,7 @@ extern "C"
         * @param om_text pointer to om text struct to be freed
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *axis2_om_text_ops_free) (axis2_environment_t *
+        axis2_status_t (AXIS2_CALL *axis2_om_text_ops_free) (axis2_env_t *
                                                   environment,
                                                   struct axis2_om_text *
                                                   om_text);
@@ -64,7 +64,7 @@ extern "C"
         * @param om_output OM output handler to be used in serializing
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *axis2_om_text_ops_serialize) (axis2_environment_t *
+        axis2_status_t (AXIS2_CALL *axis2_om_text_ops_serialize) (axis2_env_t *
                                                        environment,
                                                        const struct
                                                        axis2_om_text *
@@ -104,7 +104,7 @@ extern "C"
     *                       Node type will be set to AXIS2_OM_TEXT    
     * @return pointer to newly created text struct 
     */
-    AXIS2_DECLARE(axis2_om_text_t *) axis2_om_text_create (axis2_environment_t * environment,
+    AXIS2_DECLARE(axis2_om_text_t *) axis2_om_text_create (axis2_env_t * environment,
                                            axis2_om_node_t * parent,
                                            const axis2_char_t * value,
                                            axis2_om_node_t ** node);

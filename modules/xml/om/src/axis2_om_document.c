@@ -18,36 +18,36 @@
 #include <axis2_om_document.h>
 #include <axis2_om_stax_builder.h>
 
-axis2_status_t AXIS2_CALL axis2_om_document_impl_free (axis2_environment_t * environment,
+axis2_status_t AXIS2_CALL axis2_om_document_impl_free (axis2_env_t * environment,
                                             axis2_om_document_t * document);
-axis2_status_t AXIS2_CALL axis2_om_document_impl_add_child (axis2_environment_t *
+axis2_status_t AXIS2_CALL axis2_om_document_impl_add_child (axis2_env_t *
                                                  environment,
                                                  axis2_om_document_t *
                                                  document,
                                                  axis2_om_node_t * child);
-axis2_om_node_t * AXIS2_CALL axis2_om_document_impl_build_next (axis2_environment_t *
+axis2_om_node_t * AXIS2_CALL axis2_om_document_impl_build_next (axis2_env_t *
                                                     environment,
                                                     axis2_om_document_t *
                                                     document);
-axis2_om_node_t * AXIS2_CALL axis2_om_document_impl_get_root_element (axis2_environment_t
+axis2_om_node_t * AXIS2_CALL axis2_om_document_impl_get_root_element (axis2_env_t
                                                           * environment,
                                                           axis2_om_document_t
                                                           * document);
-axis2_om_node_t * AXIS2_CALL axis2_om_document_impl_get_next_sibling (axis2_environment_t
+axis2_om_node_t * AXIS2_CALL axis2_om_document_impl_get_next_sibling (axis2_env_t
                                                           * environment,
                                                           axis2_om_document_t
                                                           * document);
-axis2_om_node_t * AXIS2_CALL axis2_om_document_impl_get_first_child (axis2_environment_t *
+axis2_om_node_t * AXIS2_CALL axis2_om_document_impl_get_first_child (axis2_env_t *
                                                          environment,
                                                          axis2_om_document_t *
                                                          document);
-axis2_om_node_t * AXIS2_CALL axis2_om_document_impl_get_next_child (axis2_environment_t *
+axis2_om_node_t * AXIS2_CALL axis2_om_document_impl_get_next_child (axis2_env_t *
                                                         environment,
                                                         axis2_om_document_t *
                                                         document);
 
 AXIS2_DECLARE(axis2_om_document_t *)
-axis2_om_document_create (axis2_environment_t * environment,
+axis2_om_document_create (axis2_env_t * environment,
                           axis2_om_node_t * root,
                           axis2_om_stax_builder_t * builder)
 {
@@ -130,7 +130,7 @@ axis2_om_document_create (axis2_environment_t * environment,
 
 
 axis2_status_t AXIS2_CALL
-axis2_om_document_impl_free (axis2_environment_t * environment,
+axis2_om_document_impl_free (axis2_env_t * environment,
                              axis2_om_document_t * document)
 {
     if (document)
@@ -151,7 +151,7 @@ axis2_om_document_impl_free (axis2_environment_t * environment,
 
 
 axis2_status_t AXIS2_CALL
-axis2_om_document_impl_add_child (axis2_environment_t * environment,
+axis2_om_document_impl_add_child (axis2_env_t * environment,
                                   axis2_om_document_t * document,
                                   axis2_om_node_t * child)
 {
@@ -179,7 +179,7 @@ axis2_om_document_impl_add_child (axis2_environment_t * environment,
 }
 
 axis2_om_node_t* AXIS2_CALL
-axis2_om_document_impl_build_next (axis2_environment_t * environment,
+axis2_om_document_impl_build_next (axis2_env_t * environment,
                                    axis2_om_document_t * document)
 {
     if (!document)
@@ -200,7 +200,7 @@ axis2_om_document_impl_build_next (axis2_environment_t * environment,
 
 
 axis2_om_node_t * AXIS2_CALL
-axis2_om_document_impl_get_root_element (axis2_environment_t * environment,
+axis2_om_document_impl_get_root_element (axis2_env_t * environment,
                                          axis2_om_document_t * document)
 {
     axis2_status_t status = AXIS2_SUCCESS;
@@ -226,7 +226,7 @@ axis2_om_document_impl_get_root_element (axis2_environment_t * environment,
 }
 
 axis2_om_node_t * AXIS2_CALL
-axis2_om_document_impl_get_next_sibling (axis2_environment_t * environment,
+axis2_om_document_impl_get_next_sibling (axis2_env_t * environment,
                                          axis2_om_document_t * document)
 {
     axis2_om_node_t *lastchild = NULL;
@@ -246,7 +246,7 @@ axis2_om_document_impl_get_next_sibling (axis2_environment_t * environment,
 }
 
 axis2_om_node_t* AXIS2_CALL
-axis2_om_document_impl_get_first_child (axis2_environment_t * environment,
+axis2_om_document_impl_get_first_child (axis2_env_t * environment,
                                         axis2_om_document_t * document)
 {
     axis2_om_node_t *current_child = NULL;
@@ -273,7 +273,7 @@ axis2_om_document_impl_get_first_child (axis2_environment_t * environment,
 }
 
 axis2_om_node_t* AXIS2_CALL
-axis2_om_document_impl_get_next_child (axis2_environment_t * environment,
+axis2_om_document_impl_get_next_child (axis2_env_t * environment,
                                        axis2_om_document_t * document)
 {
     axis2_om_node_t *current_child = NULL;

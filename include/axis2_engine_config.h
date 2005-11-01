@@ -64,19 +64,19 @@ extern "C"
 /************************* End of function macros *****************************/
 /************************* Start of function pointers *************************/
 
-typedef axis2_status_t (*axis2_engine_config_free_t)(axis2_environment_t *env,
+typedef axis2_status_t (*axis2_engine_config_free_t)(axis2_env_t *env,
 		axis2_engine_config_t *engine_config);
 		
 typedef axis2_status_t (*axis2_engine_config_add_service_group_t)
-		(axis2_environment_t *env, axis2_engine_config_t *engine_config
+		(axis2_env_t *env, axis2_engine_config_t *engine_config
     	, axis2_description_servicegroup_t *service_group_desc);
 
 typedef axis2_description_service_t *(*axis2_engine_config_get_service_t)
-		(axis2_environment_t *env, axis2_engine_config_t *engine_config
+		(axis2_env_t *env, axis2_engine_config_t *engine_config
 		, const axis2_char_t* service_name);
 
 typedef axis2_status_t (*axis2_engine_config_remove_service_t)
-		(axis2_environment_t *env, axis2_engine_config_t *engine_config
+		(axis2_env_t *env, axis2_engine_config_t *engine_config
 		, const axis2_char_t *name);	
 		
 /************************* End of function pointers ***************************/
@@ -104,13 +104,13 @@ struct axis2_engine_config_ops_s
 /** function to get the operations consturct for axis2_engine_config_create
  * @return operation struct
  */
-axis2_engine_config_ops_t *axis2_engine_config_get_ops(axis2_environment_t *env,
+axis2_engine_config_ops_t *axis2_engine_config_get_ops(axis2_env_t *env,
 		axis2_engine_config_t *config);
 
 /** create axis_engine_config struct
  * @return axis_engine_config struct
  */
-axis2_engine_config_t *axis2_engine_config_create(axis2_environment_t *env);
+axis2_engine_config_t *axis2_engine_config_create(axis2_env_t *env);
 
 /** @} */
 #ifdef __cplusplus

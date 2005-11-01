@@ -71,7 +71,7 @@ typedef struct axis2_wsdl_component_s axis2_wsdl_component_t;
  * @return status code
  */
 typedef axis2_status_t (*axis2_wsdl_component_free_t)
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_wsdl_component_t *wsdl_component);
 
 /**
@@ -79,7 +79,7 @@ typedef axis2_status_t (*axis2_wsdl_component_free_t)
  * @return axis2_hash_t** component properties
  */
 typedef axis2_status_t (*axis2_wsdl_component_get_component_properties_t)
-		(axis2_environment_t *env, axis2_wsdl_component_t *wsdl_component
+		(axis2_env_t *env, axis2_wsdl_component_t *wsdl_component
 		, axis2_hash_t **properties);
 
 /**
@@ -87,7 +87,7 @@ typedef axis2_status_t (*axis2_wsdl_component_get_component_properties_t)
  * @param axis2_hash_t* properties
  */
 typedef axis2_status_t (*axis2_wsdl_component_set_component_properties_t) 
-		(axis2_environment_t *env, axis2_wsdl_component_t *wsdl_component
+		(axis2_env_t *env, axis2_wsdl_component_t *wsdl_component
 		, axis2_hash_t *properties);
 
 /**
@@ -96,7 +96,7 @@ typedef axis2_status_t (*axis2_wsdl_component_set_component_properties_t)
  * @param void* value to be put
  */
 typedef axis2_status_t (*axis2_wsdl_component_set_component_property_t) 
-	(axis2_environment_t *env, axis2_wsdl_component_t *wsdl_component
+	(axis2_env_t *env, axis2_wsdl_component_t *wsdl_component
 	, const void *key, void *value);
 	
 
@@ -107,7 +107,7 @@ typedef axis2_status_t (*axis2_wsdl_component_set_component_property_t)
  * @return void* value for the key
  */
 typedef axis2_status_t (*axis2_wsdl_component_get_component_property_t) 
-		(axis2_environment_t *env, axis2_wsdl_component_t *wsdl_component
+		(axis2_env_t *env, axis2_wsdl_component_t *wsdl_component
 		, const void *key, void **value) ;
 
 		
@@ -131,7 +131,7 @@ struct axis2_wsdl_component_s
 /** create a wsdl component
  * @return axis2_wsdl_component_t ** allocated component
  */
-axis2_status_t axis2_wsdl_component_create (axis2_environment_t *env
+axis2_status_t axis2_wsdl_component_create (axis2_env_t *env
 		, axis2_wsdl_component_t **wsdl_component);
 
 /** @} */

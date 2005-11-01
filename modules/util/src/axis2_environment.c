@@ -22,7 +22,7 @@
 
 
 AXIS2_DECLARE(axis2_status_t )
-axis2_environment_free (axis2_environment_t *env)
+axis2_environment_free (axis2_env_t *env)
 {
     if(NULL != env && NULL != env->allocator)
         free (env->allocator);
@@ -42,18 +42,18 @@ axis2_environment_free (axis2_environment_t *env)
 	return 0;  
 }
 
-AXIS2_DECLARE(axis2_environment_t *)
+AXIS2_DECLARE(axis2_env_t *)
 axis2_environment_create (axis2_allocator_t * allocator,
                           axis2_error_t * error, axis2_stream_t * stream,
                           axis2_log_t * log)
 {
-    axis2_environment_t *environment;
+    axis2_env_t *environment;
     if (!allocator)
         return NULL;
 
     environment =
-        (axis2_environment_t *) AXIS2_MALLOC (allocator,
-                                              sizeof (axis2_environment_t));
+        (axis2_env_t *) AXIS2_MALLOC (allocator,
+                                              sizeof (axis2_env_t));
 
     if (!environment)
         return NULL;

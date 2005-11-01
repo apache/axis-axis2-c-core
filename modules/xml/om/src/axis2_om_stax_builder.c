@@ -27,22 +27,22 @@ axis2_bool_t parser_created_locally = AXIS2_FALSE;
 const axis2_char_t XMLNS_URI[] = "http://www.w3.org/XML/1998/namespace";
 const axis2_char_t XMLNS_PREFIX[] = "xml";
 
-axis2_om_node_t * AXIS2_CALL axis2_om_stax_builder_impl_next (axis2_environment_t *
+axis2_om_node_t * AXIS2_CALL axis2_om_stax_builder_impl_next (axis2_env_t *
                                                   environment,
                                                   axis2_om_stax_builder_t *
                                                   builder);
 axis2_status_t
-AXIS2_CALL axis2_om_stax_builder_impl_discard_current_element (axis2_environment_t *
+AXIS2_CALL axis2_om_stax_builder_impl_discard_current_element (axis2_env_t *
                                                     environment,
                                                     axis2_om_stax_builder_t *
                                                     builder);
 
 axis2_status_t
-AXIS2_CALL axis2_om_stax_builder_impl_free(axis2_environment_t * environment,
+AXIS2_CALL axis2_om_stax_builder_impl_free(axis2_env_t * environment,
 													axis2_om_stax_builder_t *builder);
 													
 axis2_om_stax_builder_t *
-AXIS2_CALL axis2_om_stax_builder_create (axis2_environment_t * environment, void *parser, void* parser_env)
+AXIS2_CALL axis2_om_stax_builder_create (axis2_env_t * environment, void *parser, void* parser_env)
 {
     axis2_om_stax_builder_t *builder =
         (axis2_om_stax_builder_t *) axis2_malloc (environment->allocator,
@@ -117,7 +117,7 @@ AXIS2_CALL axis2_om_stax_builder_create (axis2_environment_t * environment, void
 }
 
 axis2_status_t
-axis2_om_stax_builder_process_attributes (axis2_environment_t * environment,
+axis2_om_stax_builder_process_attributes (axis2_env_t * environment,
                                           axis2_om_stax_builder_t * builder,
                                           axis2_om_node_t * element_node)
 {
@@ -190,7 +190,7 @@ axis2_om_stax_builder_process_attributes (axis2_environment_t * environment,
 
 
 axis2_om_node_t *
-axis2_om_stax_builder_create_om_text (axis2_environment_t * environment,
+axis2_om_stax_builder_create_om_text (axis2_env_t * environment,
                                       axis2_om_stax_builder_t * builder)
 {
     axis2_char_t *value = NULL;
@@ -236,7 +236,7 @@ axis2_om_stax_builder_create_om_text (axis2_environment_t * environment,
 
 
 axis2_status_t AXIS2_CALL
-axis2_om_stax_builder_impl_discard_current_element (axis2_environment_t *
+axis2_om_stax_builder_impl_discard_current_element (axis2_env_t *
                                                     environment,
                                                     axis2_om_stax_builder_t *
                                                     builder)
@@ -283,7 +283,7 @@ axis2_om_stax_builder_impl_discard_current_element (axis2_environment_t *
 }
 
 axis2_status_t
-axis2_om_stax_builder_process_namespaces (axis2_environment_t * environment,
+axis2_om_stax_builder_process_namespaces (axis2_env_t * environment,
                                           axis2_om_stax_builder_t * builder,
                                           axis2_om_node_t * node,
                                           int is_soap_element)
@@ -341,7 +341,7 @@ axis2_om_stax_builder_process_namespaces (axis2_environment_t * environment,
 }
 
 axis2_om_node_t *
-axis2_om_stax_builder_create_om_element (axis2_environment_t * environment,
+axis2_om_stax_builder_create_om_element (axis2_env_t * environment,
                                          axis2_om_stax_builder_t * builder)
 {
     axis2_om_node_t *element_node;
@@ -397,7 +397,7 @@ axis2_om_stax_builder_create_om_element (axis2_environment_t * environment,
 }
 
 axis2_om_node_t *
-axis2_om_stax_builder_create_om_comment (axis2_environment_t * environment,
+axis2_om_stax_builder_create_om_comment (axis2_env_t * environment,
                                          axis2_om_stax_builder_t * builder)
 {
 
@@ -407,7 +407,7 @@ axis2_om_stax_builder_create_om_comment (axis2_environment_t * environment,
 
 
 axis2_om_node_t * 
-axis2_om_stax_builder_create_om_doctype (axis2_environment_t * environment,
+axis2_om_stax_builder_create_om_doctype (axis2_env_t * environment,
                                          axis2_om_stax_builder_t * builder)
 {
     /*  guththila does not support doctype */
@@ -416,7 +416,7 @@ axis2_om_stax_builder_create_om_doctype (axis2_environment_t * environment,
 
  
 axis2_om_node_t * 
-axis2_om_stax_builder_create_om_processing_instruction (axis2_environment_t *
+axis2_om_stax_builder_create_om_processing_instruction (axis2_env_t *
                                                         environment,
                                                         axis2_om_stax_builder_t
                                                         * builder)
@@ -426,7 +426,7 @@ axis2_om_stax_builder_create_om_processing_instruction (axis2_environment_t *
 }
 
 axis2_status_t AXIS2_CALL
-axis2_om_stax_builder_end_element (axis2_environment_t * environment,
+axis2_om_stax_builder_end_element (axis2_env_t * environment,
                                    axis2_om_stax_builder_t * builder)
 {
     axis2_om_node_t *parent;
@@ -452,7 +452,7 @@ axis2_om_stax_builder_end_element (axis2_environment_t * environment,
 
 
 axis2_om_node_t * AXIS2_CALL
-axis2_om_stax_builder_impl_next (axis2_environment_t * environment,
+axis2_om_stax_builder_impl_next (axis2_env_t * environment,
                                  axis2_om_stax_builder_t * builder)
 {
     int token = 0;
@@ -513,7 +513,7 @@ axis2_om_stax_builder_impl_next (axis2_environment_t * environment,
 
 
 axis2_status_t 
-AXIS2_CALL axis2_om_stax_builder_impl_free(axis2_environment_t *environment,axis2_om_stax_builder_t *builder)
+AXIS2_CALL axis2_om_stax_builder_impl_free(axis2_env_t *environment,axis2_om_stax_builder_t *builder)
 {
    
     if(builder)

@@ -101,7 +101,7 @@ typedef struct axis2_wsdl_operation_s axis2_wsdl_operation_t;
   * @return status code
   */
 typedef axis2_status_t (*axis2_wsdl_operation_free_t)
-		(axis2_environment_t *env
+		(axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt);
 
 /**
@@ -109,7 +109,7 @@ typedef axis2_status_t (*axis2_wsdl_operation_free_t)
  * @return axis2_char_t* msg_exchange_pattern
  */
 typedef axis2_status_t (*axis2_wsdl_operation_get_msg_exchange_pattern_t) 
-		(axis2_environment_t *env, axis2_wsdl_operation_t *wsdl_opt
+		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
 		, axis2_char_t **pattern);
 
 /**
@@ -119,14 +119,14 @@ typedef axis2_status_t (*axis2_wsdl_operation_get_msg_exchange_pattern_t)
  * @return status code
  */
 typedef axis2_status_t (*axis2_wsdl_operation_set_msg_exchange_pattern_t)
-		(axis2_environment_t *env, axis2_wsdl_operation_t *wsdl_opt
+		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
 		, const axis2_char_t *msg_exchange_pattern);
 
 /**
  * get name
  * @return axis2_qname_t** operation name
  */
-typedef axis2_status_t (*axis2_wsdl_operation_get_name_t) (axis2_environment_t *env
+typedef axis2_status_t (*axis2_wsdl_operation_get_name_t) (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, axis2_qname_t **name);
 
 /**
@@ -134,14 +134,14 @@ typedef axis2_status_t (*axis2_wsdl_operation_get_name_t) (axis2_environment_t *
  *
  * @param axis2_qname_t* operation name
  */
-typedef axis2_status_t (*axis2_wsdl_operation_set_name_t) (axis2_environment_t *env
+typedef axis2_status_t (*axis2_wsdl_operation_set_name_t) (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, const axis2_qname_t *name);
 
 /**
  * get style
  * return axis2_char_t** style
  */
-typedef axis2_status_t (*axis2_wsdl_operation_get_style_t) (axis2_environment_t *env
+typedef axis2_status_t (*axis2_wsdl_operation_get_style_t) (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, axis2_char_t **style);
 
 /**
@@ -149,7 +149,7 @@ typedef axis2_status_t (*axis2_wsdl_operation_get_style_t) (axis2_environment_t 
  * @param axis2_char_t* style
  * @return status code
  */
-typedef axis2_status_t (*axis2_wsdl_operation_set_style_t) (axis2_environment_t *env
+typedef axis2_status_t (*axis2_wsdl_operation_set_style_t) (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, const axis2_char_t *style);
 
 /**
@@ -157,7 +157,7 @@ typedef axis2_status_t (*axis2_wsdl_operation_set_style_t) (axis2_environment_t 
  * @param axis2_hash_t* properties
  */
 typedef axis2_status_t (*axis2_wsdl_operation_set_component_properties_t)
-		(axis2_environment_t *env, axis2_wsdl_operation_t *wsdl_opt
+		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
 		, axis2_hash_t *properties);
 
 /**
@@ -165,7 +165,7 @@ typedef axis2_status_t (*axis2_wsdl_operation_set_component_properties_t)
  * @return axis2_hash_t** component properties
  */
 typedef axis2_status_t (*axis2_wsdl_operation_get_component_properties_t)
-		(axis2_environment_t *env, axis2_wsdl_operation_t *wsdl_opt
+		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
 		, axis2_hash_t **properties);
 
 /**
@@ -174,7 +174,7 @@ typedef axis2_status_t (*axis2_wsdl_operation_get_component_properties_t)
  * @param void* value to be put
  */
 typedef axis2_status_t (*axis2_wsdl_operation_set_component_property_t)
-		(axis2_environment_t *env, axis2_wsdl_operation_t *wsdl_opt
+		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
 		, const void *key, void *value);
 	
 
@@ -185,7 +185,7 @@ typedef axis2_status_t (*axis2_wsdl_operation_set_component_property_t)
  * @return void* value for the key
  */
 typedef axis2_status_t (*axis2_wsdl_operation_get_component_property_t)
-		(axis2_environment_t *env, axis2_wsdl_operation_t *wsdl_opt
+		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
 		, const void *key, void **value) ;
 		
 /*************************** End of function pointers *************************/
@@ -212,7 +212,7 @@ struct axis2_wsdl_operation_s
 };
 
 axis2_status_t axis2_wsdl_operation_create
-		(axis2_environment_t *env, axis2_wsdl_operation_t **wsdl_opt);
+		(axis2_env_t *env, axis2_wsdl_operation_t **wsdl_opt);
 
 /** @} */
 #ifdef __cplusplus

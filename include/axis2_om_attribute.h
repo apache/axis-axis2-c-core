@@ -53,7 +53,7 @@ extern "C"
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
 
-         axis2_status_t (AXIS2_CALL *axis2_om_attribute_ops_free) (axis2_environment_t *
+         axis2_status_t (AXIS2_CALL *axis2_om_attribute_ops_free) (axis2_env_t *
                                                        environment,
                                                        struct
                                                        axis2_om_attribute *
@@ -67,7 +67,7 @@ extern "C"
         */
 
          axis2_qname_t
-            *(AXIS2_CALL *axis2_om_attribute_ops_get_qname) (axis2_environment_t *
+            *(AXIS2_CALL *axis2_om_attribute_ops_get_qname) (axis2_env_t *
                                                   environment,
                                                   struct axis2_om_attribute *
                                                   om_attribute);
@@ -80,7 +80,7 @@ extern "C"
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
 
-         int (AXIS2_CALL *axis2_om_attribute_ops_serialize) (axis2_environment_t *
+         int (AXIS2_CALL *axis2_om_attribute_ops_serialize) (axis2_env_t *
                                                  environment,
                                                  struct axis2_om_attribute *
                                                  om_attribute,
@@ -113,7 +113,7 @@ extern "C"
     * @param ns namespace, if any, of the attribute. Optional, can be NULL
     * @return a pointer to newly created attribute struct 
     */
-    AXIS2_DECLARE(axis2_om_attribute_t *) axis2_om_attribute_create (axis2_environment_t *
+    AXIS2_DECLARE(axis2_om_attribute_t *) axis2_om_attribute_create (axis2_env_t *
                                                      environment,
                                                      const axis2_char_t *
                                                      localname,

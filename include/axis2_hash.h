@@ -78,7 +78,7 @@ extern "C"
  * @param environment The environment to allocate the hash table out of
  * @return The hash table just created
   */
-  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make (axis2_environment_t * environment);
+  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make (axis2_env_t * environment);
 
 /**
  * Create a hash table with a custom hash function
@@ -86,7 +86,7 @@ extern "C"
  * @param hash_func A custom hash function.
  * @return The hash table just created
   */
-   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make_custom (axis2_environment_t * environment,
+   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make_custom (axis2_env_t * environment,
                                           axis2_hashfunc_t hash_func);
 
 /**
@@ -96,7 +96,7 @@ extern "C"
  * @return The hash table just created
  * @remark Makes a shallow copy
  */
-  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_copy (axis2_environment_t * environment,
+  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_copy (axis2_env_t * environment,
                                    const axis2_hash_t * h);
 
 /**
@@ -135,7 +135,7 @@ extern "C"
 /**
  * <PRE>
  * 
- * int sum_values(axis2_environment_t *environment, axis2_hash_t *ht)
+ * int sum_values(axis2_env_t *environment, axis2_hash_t *ht)
  * {
  *     axis2_hash_index_t *hi;
  *     void *val;
@@ -148,7 +148,7 @@ extern "C"
  * }
  * </PRE>
  */
- AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_first (axis2_environment_t * environment,
+ AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_first (axis2_env_t * environment,
                                           axis2_hash_t * ht);
 
 /**
@@ -157,7 +157,7 @@ extern "C"
  * @return a pointer to the updated iteration state.  NULL if there are no more  
  *         entries.
  */
- AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_next (axis2_environment_t * environment, axis2_hash_index_t * hi);
+ AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_next (axis2_env_t * environment, axis2_hash_index_t * hi);
 
 /**
  * Get the current entry's details from the iteration state.
@@ -187,7 +187,7 @@ extern "C"
  * @param base The table that represents the initial values of the new table
  * @return A new hash table containing all of the data from the two passed in
  */
-  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_overlay (axis2_environment_t * environment,
+  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_overlay (axis2_env_t * environment,
                                       const axis2_hash_t * overlay,
                                       const axis2_hash_t * base);
 
@@ -205,10 +205,10 @@ extern "C"
  * @param data Client data to pass to the merger function
  * @return A new hash table containing all of the data from the two passed in
  */
-  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_merge (axis2_environment_t * environment,
+  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_merge (axis2_env_t * environment,
                                     const axis2_hash_t * h1,
                                     const axis2_hash_t * h2,
-                                    void *(*merger) (axis2_environment_t *
+                                    void *(*merger) (axis2_env_t *
                                                      environment,
                                                      const void *key,
                                                      axis2_ssize_t klen,
@@ -225,7 +225,7 @@ extern "C"
  *
  */
 									
-AXIS2_DECLARE(axis2_status_t) axis2_hash_free(axis2_environment_t *environment,
+AXIS2_DECLARE(axis2_status_t) axis2_hash_free(axis2_env_t *environment,
 									axis2_hash_t *ht);
 									
 

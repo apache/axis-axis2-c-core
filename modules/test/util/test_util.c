@@ -24,15 +24,15 @@ typedef struct a
     axis2_char_t *value;
 } a;
 
-axis2_environment_t *test_init()
+axis2_env_t *test_init()
 {
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_environment_t *env =
+    axis2_env_t *env =
     	axis2_environment_create (allocator, NULL, NULL, NULL, NULL);
 	return env;
 }
 
-int test_hash_get (axis2_environment_t *environment)
+int test_hash_get (axis2_env_t *environment)
 {
     axis2_hash_t *ht;
     a *a1, *a2, *a3, *a4;
@@ -90,7 +90,7 @@ int test_hash_get (axis2_environment_t *environment)
   * This test is intended to test whether given two files are equal or not.
   * Spaces and new lines are ignored in comparing
   */
-int test_file_diff(axis2_environment_t *env)
+int test_file_diff(axis2_env_t *env)
 {
 	axis2_char_t *expected_file_name = axis2_strdup(env->string, "expected");
     axis2_char_t *actual_file_name = axis2_strdup(env->string, "actual");	
@@ -99,7 +99,7 @@ int test_file_diff(axis2_environment_t *env)
 
 int main(void)
 {
-	axis2_environment_t *env = test_init();
+	axis2_env_t *env = test_init();
 	test_file_diff(env);
 	test_hash_get(env); 
 }

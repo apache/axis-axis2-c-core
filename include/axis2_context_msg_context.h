@@ -55,7 +55,7 @@ extern "C"
 /************************** Start of function pointers ************************/
 
     typedef axis2_status_t (*axis2_context_msg_ctx_free_t)
-        (axis2_environment_t * env, axis2_context_msg_ctx_t * msg_ctx);
+        (axis2_env_t * env, axis2_context_msg_ctx_t * msg_ctx);
 
 /**************************** End of function pointers ************************/
 
@@ -65,10 +65,10 @@ extern "C"
     };
 
     axis2_context_msg_ctx_t *axis2_context_msg_ctx_get_ops
-        (axis2_environment_t * env, axis2_context_msg_ctx_t * msg_ctx);
+        (axis2_env_t * env, axis2_context_msg_ctx_t * msg_ctx);
 
       axis2_context_msg_ctx_t
-        * axis2_context_msg_ctx_create (axis2_environment_t * env);
+        * axis2_context_msg_ctx_create (axis2_env_t * env);
 
 /** @} */
 #ifdef __cplusplus

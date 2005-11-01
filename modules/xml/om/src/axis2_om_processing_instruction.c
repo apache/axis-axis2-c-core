@@ -16,14 +16,14 @@
 
 #include <axis2_om_processing_instruction.h>
 
-axis2_status_t AXIS2_CALL axis2_om_processing_instruction_impl_free (axis2_environment_t
+axis2_status_t AXIS2_CALL axis2_om_processing_instruction_impl_free (axis2_env_t
                                                           * environment,
                                                           axis2_om_processing_instruction_t
                                                           *
                                                           processing_instruction);
 
 axis2_om_processing_instruction_t *
-AXIS2_CALL axis2_om_processing_instruction_create (axis2_environment_t * environment,
+AXIS2_CALL axis2_om_processing_instruction_create (axis2_env_t * environment,
                                         axis2_om_node_t * parent,
                                         const axis2_char_t * target,
                                         const axis2_char_t * value,
@@ -121,7 +121,7 @@ AXIS2_CALL axis2_om_processing_instruction_create (axis2_environment_t * environ
 }
 
 axis2_status_t AXIS2_CALL
-axis2_om_processing_instruction_impl_free (axis2_environment_t * environment,
+axis2_om_processing_instruction_impl_free (axis2_env_t * environment,
                                            axis2_om_processing_instruction_t *
                                            processing_instruction)
 {
