@@ -84,7 +84,7 @@ axis2_description_servicegroup_ops_t *axis2_description_servicegroup_get_ops
 {
 	if(!env || !servicegroup_desc)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
 	return servicegroup_desc->ops;
@@ -95,18 +95,18 @@ axis2_description_servicegroup_t *axis2_description_servicegroup_create
 {
 	axis2_description_servicegroup_t *servicegroup_desc 
 		= (axis2_description_servicegroup_t *)
-		axis2_malloc (env->allocator, sizeof(axis2_description_servicegroup_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_description_servicegroup_t));
 	if(!servicegroup_desc)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
 	axis2_description_servicegroup_ops_t *ops 
 		= (axis2_description_servicegroup_ops_t *)
-		axis2_malloc (env->allocator, sizeof(axis2_description_servicegroup_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_description_servicegroup_ops_t));
 	if(!ops)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;	
 	}
 	ops->free = axis2_description_servicegroup_ops_free;
@@ -122,7 +122,7 @@ axis2_description_servicegroup_t *axis2_description_servicegroup_create
 		axis2_description_param_include_create(env);		
 	if(!param_include)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
 
@@ -133,7 +133,7 @@ axis2_description_servicegroup_t *axis2_description_servicegroup_create
 	servicegroup_desc->services = axis2_hash_make (env);				
 	if(!servicegroup_desc->services)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;			
 	}
 	servicegroup_desc->servicegroup_name = NULL;
@@ -148,7 +148,7 @@ axis2_status_t axis2_description_servicegroup_ops_free(axis2_env_t *env
 {
 	if(!env || !servicegroup_desc)
 		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
-	axis2_free(env->allocator, servicegroup_desc);
+	AXIS2_FREE(env->allocator, servicegroup_desc);
 	return AXIS2_SUCCESS;
 }
 
@@ -159,7 +159,7 @@ axis2_status_t axis2_description_servicegroup_ops_set_name
 {
 	if(!env || !servicegroup_desc)
 		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
-	axis2_char_t *tempname = axis2_strdup(env->string, name);
+	axis2_char_t *tempname = axis2_strdup(name);
 	if(!tempname) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
 	servicegroup_desc->servicegroup_name = name;
 	return AXIS2_SUCCESS;
@@ -171,7 +171,7 @@ axis2_char_t *axis2_description_servicegroup_ops_get_name
 {
 	if(!env || !servicegroup_desc)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
 	return servicegroup_desc->servicegroup_name;
@@ -198,7 +198,7 @@ axis2_description_service_t *axis2_description_servicegroup_ops_get_service
 {
 	if(!env || !servicegroup_desc || ! service_name)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
 	return (axis2_description_service_t *) (axis2_hash_get 
@@ -243,13 +243,13 @@ axis2_description_param_t *axis2_description_servicegroup_ops_get_param(
 {
 	if(!env || !servicegroup_desc || !servicegroup_desc->param_include)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
-	axis2_char_t *tempname = axis2_strdup(env->string, name);
+	axis2_char_t *tempname = axis2_strdup(name);
 	if(!tempname)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
 		
@@ -265,7 +265,7 @@ axis2_hash_t *axis2_description_servicegroup_ops_get_params
 {
 	if(!env || !servicegroup_desc)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;		
 	}
 	return axis2_description_param_include_get_params(env
@@ -279,13 +279,13 @@ axis2_bool_t axis2_description_servicegroup_ops_is_param_locked(
 {
 	if(!env || !servicegroup_desc || !servicegroup_desc->param_include)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return AXIS2_FALSE;
 	}
-	axis2_char_t *tempname = axis2_strdup(env->string, param_name);
+	axis2_char_t *tempname = axis2_strdup(param_name);
 	if(!tempname)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return AXIS2_FALSE;
 	}
 		

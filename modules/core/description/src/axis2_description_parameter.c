@@ -76,7 +76,7 @@ axis2_description_param_ops_t *axis2_description_param_get_ops
 	if(!param)
 	{
 		/* set error code*/
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
 	return (axis2_description_param_ops_t *) param->ops;	
@@ -87,21 +87,21 @@ axis2_description_param_t *axis2_description_param_create
 		(axis2_env_t *env)
 {
 	axis2_description_param_t *param 
-	= (axis2_description_param_t *) axis2_malloc (env->allocator
+	= (axis2_description_param_t *) AXIS2_MALLOC (env->allocator
 	, sizeof(axis2_description_param_t));
 	if(!param)
 	{
 		/* set the error code*/
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
 	axis2_description_param_ops_t *ops
-		= (axis2_description_param_ops_t *) axis2_malloc (env->allocator
+		= (axis2_description_param_ops_t *) AXIS2_MALLOC (env->allocator
 		, sizeof(axis2_description_param_ops_t));
 	if(!ops)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
-		axis2_free(env->allocator, param);
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
+		AXIS2_FREE(env->allocator, param);
 		return NULL;		
 	}
 	ops->free = axis2_description_param_ops_free;
@@ -136,20 +136,20 @@ axis2_description_param_t *axis2_description_param_create_with_name_value
 	if(!param)
 	{
 		/* set the error code*/
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 	}
 	
-	param->name = axis2_strdup (env->string, name);
+	param->name = axis2_strdup (name);
 	if(!param->name)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
-		axis2_free(env->allocator, param);
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
+		AXIS2_FREE(env->allocator, param);
 	}
-	param->value = axis2_strdup (env->string, value);
+	param->value = axis2_strdup (value);
 	if(!param->value)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
-		axis2_free(env->allocator, param);
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
+		AXIS2_FREE(env->allocator, param);
 		return NULL;
 	}
 	/*param->param_element = NULL;*/
@@ -165,7 +165,7 @@ axis2_status_t axis2_description_param_ops_free (axis2_env_t *env
 {
 	if(param)
 	{
-		axis2_free(env->allocator, param);
+		AXIS2_FREE(env->allocator, param);
 		return AXIS2_SUCCESS;
 	}
 	return AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED;
@@ -179,7 +179,7 @@ axis2_status_t axis2_description_param_ops_set_name (axis2_env_t *env
 		/* return the error code*/
 		return AXIS2_ERROR_INVALID_NULL_PARAMETER;		
 	}
-	param->name = axis2_strdup(env->string, name);
+	param->name = axis2_strdup(name);
 	return AXIS2_SUCCESS;	
 }
 
@@ -189,7 +189,7 @@ axis2_char_t *axis2_description_param_ops_get_name (axis2_env_t *env
 	if(!param)
 	{
 		/* set error code*/	
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;	
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;	
 		return NULL;
 	}
 	return param->name;
@@ -212,7 +212,7 @@ void *axis2_description_param_ops_get_value (axis2_env_t *env
 	if(!param)
 	{
 		/* set error code*/	
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;		
 	}
 	return param->value;
@@ -223,7 +223,7 @@ axis2_bool_t axis2_description_param_ops_is_locked (axis2_env_t *env
 {
 	if(!param)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
 	}
 	return param->is_locked;
@@ -258,7 +258,7 @@ axis2_description_param_t *axis2_description_param_get_param_element
 {
 	if(!param)
 	{
-		env->error.errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error.error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
 	return (axis2_description_param_t *) param->param_element;

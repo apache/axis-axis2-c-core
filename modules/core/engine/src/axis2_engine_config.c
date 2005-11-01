@@ -68,7 +68,7 @@ axis2_engine_config_ops_t *axis2_engine_config_get_ops
 	if(!engine_config)
 	{
 		/* set error code*/
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
 	return (axis2_engine_config_ops_t *) engine_config->ops;	
@@ -79,21 +79,21 @@ axis2_engine_config_t *axis2_engine_config_create
 		(axis2_env_t *env)
 {
 	axis2_engine_config_t *engine_config
-	= (axis2_engine_config_t *) axis2_malloc (env->allocator
+	= (axis2_engine_config_t *) AXIS2_MALLOC (env->allocator
 	, sizeof(axis2_engine_config_t));
 	if(!engine_config)
 	{
 		/* set the error code*/
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
 	axis2_engine_config_ops_t *ops
-		= (axis2_engine_config_ops_t *) axis2_malloc (env->allocator
+		= (axis2_engine_config_ops_t *) AXIS2_MALLOC (env->allocator
 		, sizeof(axis2_engine_config_ops_t));
 	if(!ops)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
-		axis2_free(env->allocator, engine_config);
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
+		AXIS2_FREE(env->allocator, engine_config);
 		return NULL;		
 	}
 	ops->free = axis2_engine_config_ops_free;
@@ -108,7 +108,7 @@ axis2_engine_config_t *axis2_engine_config_create
 		axis2_description_param_include_create(env);		
 	if(!param_include)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
 
@@ -126,7 +126,7 @@ axis2_status_t axis2_engine_config_ops_free (axis2_env_t *env
 {
 	if(engine_config)
 	{
-		axis2_free(env->allocator, engine_config);
+		AXIS2_FREE(env->allocator, engine_config);
 	}
 	return AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED;
 }
@@ -154,13 +154,13 @@ axis2_description_servicegroup_t *axis2_engine_config_ops_get_servicegroup(
 {
 	if(!engine_config)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
-	axis2_char_t *tempname = axis2_strdup(env->string, servicegroup_name);
+	axis2_char_t *tempname = axis2_strdup(servicegroup_name);
 	if(!tempname)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
 	return (axis2_description_servicegroup_t *) (axis2_hash_get 
@@ -201,22 +201,22 @@ axis2_description_service_t *axis2_engine_config_ops_get_service(
 {
 	if(!env || !engine_config)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
-	axis2_char_t *tempname = axis2_strdup(env->string, service_name);
+	axis2_char_t *tempname = axis2_strdup(service_name);
 	if(!tempname)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
 	
 	axis2_description_servicegroup_t *sg = NULL;
 	int len = strlen(service_name);
 	axis2_char_t *service_st[2];
-	service_st[1] = (axis2_char_t*) axis2_malloc
+	service_st[1] = (axis2_char_t*) AXIS2_MALLOC
 		(env->allocator, len * sizeof(axis2_char_t));
-	service_st[2] = (axis2_char_t*) axis2_malloc
+	service_st[2] = (axis2_char_t*) AXIS2_MALLOC
 		(env->allocator, len * sizeof(axis2_char_t));
 	if(AXIS2_SUCCESS == split_service_name(env, service_name, service_st))
 	{
@@ -240,16 +240,16 @@ axis2_status_t axis2_engine_config_ops_remove_service
 {
 	if(!env || !engine_config)
 		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
-	axis2_char_t *tempname = axis2_strdup(env->string, service_name);
+	axis2_char_t *tempname = axis2_strdup(service_name);
 	if(!tempname)
 		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
 	
 	axis2_description_servicegroup_t *sg = NULL;
 	int len = strlen(service_name);
 	axis2_char_t *service_st[2];
-	service_st[1] = (axis2_char_t*) axis2_malloc
+	service_st[1] = (axis2_char_t*) AXIS2_MALLOC
 		(env->allocator, len * sizeof(axis2_char_t));
-	service_st[2] = (axis2_char_t*) axis2_malloc
+	service_st[2] = (axis2_char_t*) AXIS2_MALLOC
 		(env->allocator, len * sizeof(axis2_char_t));
 	
 	if(AXIS2_SUCCESS == split_service_name(env, service_name, service_st))
@@ -293,7 +293,7 @@ axis2_status_t split_service_name(axis2_env_t *env
         return AXIS2_SUCCESS;
     }
     srv_name[0] = AXIS2_EOLN;
-    axis2_char_t *grp_name = axis2_malloc(env->allocator, strlen(service_name));
+    axis2_char_t *grp_name = AXIS2_MALLOC(env->allocator, strlen(service_name));
     sscanf(service_name, "%s", grp_name);
     srv_name = srv_name + 1;
     *(service_name_st + 1) = srv_name;

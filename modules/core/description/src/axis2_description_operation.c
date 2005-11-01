@@ -85,7 +85,7 @@ axis2_description_operation_ops_t *axis2_description_operation_get_ops
 {
 	if(!operation_desc)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;	
 	}
 	return (axis2_description_operation_ops_t *) operation_desc->ops;
@@ -96,18 +96,18 @@ axis2_description_operation_t *axis2_description_operation_create
 {
 	axis2_description_operation_ops_t *ops = NULL;
 	axis2_description_operation_t *operation_desc = 
-		(axis2_description_operation_t *) axis2_malloc (env->allocator
+		(axis2_description_operation_t *) AXIS2_MALLOC (env->allocator
 		, sizeof (axis2_description_operation_t));
 	if(!operation_desc)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
-	ops = (axis2_description_operation_ops_t *) axis2_malloc(env->allocator,
+	ops = (axis2_description_operation_ops_t *) AXIS2_MALLOC(env->allocator,
 		sizeof(axis2_description_operation_ops_t));
 	if(!ops)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}	
 	ops->free = axis2_description_operation_ops_free;
@@ -131,7 +131,7 @@ axis2_description_operation_t *axis2_description_operation_create
 		axis2_description_param_include_create(env);		
 	if(!param_include)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
 
@@ -156,12 +156,12 @@ axis2_description_operation_t *axis2_description_operation_create_with_name
 	
 	if(!operation_desc)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
 	if(!name)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}		
 						
@@ -175,7 +175,7 @@ axis2_status_t axis2_description_operation_ops_free (axis2_env_t *env
 {
 	if(operation_desc)
 	{
-		axis2_free(env->allocator, operation_desc);
+		AXIS2_FREE(env->allocator, operation_desc);
 		return AXIS2_SUCCESS;
 	}
 	return AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED;
@@ -203,13 +203,13 @@ axis2_description_param_t *axis2_description_operation_ops_get_param(
 {
 	if(!operation_desc || !operation_desc->param_include)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
-	axis2_char_t *tempname = axis2_strdup(env->string, name);
+	axis2_char_t *tempname = axis2_strdup(name);
 	if(!tempname)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
 		
@@ -223,7 +223,7 @@ axis2_hash_t *axis2_description_operation_ops_get_params(
 {
 	if(!operation_desc || !operation_desc->param_include)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
 	
@@ -237,13 +237,13 @@ axis2_bool_t axis2_description_operation_ops_is_param_locked(
 {
 	if(!env || !operation_desc || !operation_desc->param_include)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return AXIS2_FALSE;
 	}
-	axis2_char_t *tempname = axis2_strdup(env->string, param_name);
+	axis2_char_t *tempname = axis2_strdup(param_name);
 	if(!tempname)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return AXIS2_FALSE;
 	}
 		
@@ -270,7 +270,7 @@ axis2_description_service_t *axis2_description_operation_ops_get_parent
 {
 	if(!operation_desc)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
 	return operation_desc->parent;
@@ -281,7 +281,7 @@ axis2_qname_t *axis2_description_operation_ops_get_name
 {
 	if(!operation_desc)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
 	return operation_desc->name;
@@ -295,7 +295,7 @@ axis2_status_t axis2_description_operation_ops_set_msg_exchange_pattern
 	{
 		return AXIS2_ERROR_INVALID_NULL_PARAMETER;		
 	}
-	operation_desc->msg_exchange_pattern = axis2_strdup(env->string, pattern);
+	operation_desc->msg_exchange_pattern = axis2_strdup(pattern);
 	if(!operation_desc->msg_exchange_pattern)
 		return AXIS2_ERROR_NO_MEMORY;
 	return AXIS2_SUCCESS;
@@ -306,7 +306,7 @@ axis2_char_t *axis2_description_operation_ops_get_msg_exchange_pattern
 {
 	if(!operation_desc)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
 	return operation_desc->msg_exchange_pattern;
@@ -331,7 +331,7 @@ axis2_engine_msg_receiver_t *axis2_description_operation_ops_get_msg_receiver
 {
 	if(!operation_desc)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;
 	}
 	return operation_desc->msg_receiver;

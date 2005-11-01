@@ -42,7 +42,7 @@ axis2_engine_msg_receiver_t *axis2_engine_msg_receiver_get_ops
 {
 	if(!msg_receiver)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;	
 	}
 	return (axis2_engine_msg_receiver_t *) msg_receiver->ops;
@@ -53,18 +53,18 @@ axis2_engine_msg_receiver_t *axis2_engine_msg_receiver_create
 {
 	axis2_engine_msg_receiver_ops_t *ops = NULL;
 	axis2_engine_msg_receiver_t *msg_receiver = 
-		(axis2_engine_msg_receiver_t *) axis2_malloc (env->allocator
+		(axis2_engine_msg_receiver_t *) AXIS2_MALLOC (env->allocator
 		, sizeof (axis2_engine_msg_receiver_t));
 	if(!msg_receiver)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
-	ops = (axis2_engine_msg_receiver_ops_t *) axis2_malloc(env->allocator,
+	ops = (axis2_engine_msg_receiver_ops_t *) AXIS2_MALLOC(env->allocator,
 		sizeof(axis2_engine_msg_receiver_ops_t));
 	if(!ops)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}	
 	ops->free = axis2_engine_msg_receiver_ops_free;

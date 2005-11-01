@@ -40,7 +40,7 @@ axis2_context_msg_ctx_t *axis2_context_msg_ctx_get_ops
 {
 	if(!msg_ctx)
 	{
-		env->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
 		return NULL;	
 	}
 	return (axis2_context_msg_ctx_t *) msg_ctx->ops;
@@ -51,18 +51,18 @@ axis2_context_msg_ctx_t *axis2_context_msg_ctx_create
 {
 	axis2_context_msg_ctx_ops_t *ops = NULL;
 	axis2_context_msg_ctx_t *msg_ctx = 
-		(axis2_context_msg_ctx_t *) axis2_malloc (env->allocator
+		(axis2_context_msg_ctx_t *) AXIS2_MALLOC (env->allocator
 		, sizeof (axis2_context_msg_ctx_t));
 	if(!msg_ctx)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
-	ops = (axis2_context_msg_ctx_ops_t *) axis2_malloc(env->allocator,
+	ops = (axis2_context_msg_ctx_ops_t *) AXIS2_MALLOC(env->allocator,
 		sizeof(axis2_context_msg_ctx_ops_t));
 	if(!ops)
 	{
-		env->error->errorno = AXIS2_ERROR_NO_MEMORY;
+		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}	
 	ops->free = axis2_context_msg_ctx_ops_free;
