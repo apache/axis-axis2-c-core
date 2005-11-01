@@ -211,7 +211,10 @@ AM_CPPFLAGS = $(CPPFLAGS)
 libtest_util_la_SOURCES = util_hash_test.c util_stream_test.c util_log_test.c util_error_test.c util_test.c
 include_HEADERS = $(top_builddir)/modules/util/test/*.h
 libtest_util_la_LIBADD = $(LDFLAGS) $(top_builddir)/modules/util/src/libaxis2_util.la
-INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include
+INCLUDES = -I$(top_builddir)/include \
+            -I${CUTEST_HOME}/include \
+            -I$(top_builddir)/modules/util/src
+
 util_test_SOURCES = main.c
 util_test_LDADD = $(LDFLAGS) libtest_util.la  $(top_builddir)/modules/util/src/libaxis2_util.la
 all: all-am

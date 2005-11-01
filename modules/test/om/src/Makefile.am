@@ -9,4 +9,5 @@ test_om_LDADD   =  $(LDFLAGS) -L$(top_builddir)/modules/xml/om/src/.libs -laxis2
                     -L$(top_builddir)/modules/util/src/.libs -laxis2_util
                     
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/xml/guththila/src
+            -I$(top_builddir)/modules/xml/guththila/src \
+            -I$(top_builddir)/modules/util/src

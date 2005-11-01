@@ -201,7 +201,9 @@ main_unit_test_suite_LDADD = $(LDFLAGS) \
                     -L$(top_builddir)/modules/xml/om/test/.libs -ltest_om \
                     -L$(top_builddir)/modules/xml/guththila/src/.libs -lguththila
 
-INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include
+INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
+            -I$(top_builddir)/modules/util/src
+
 all: all-recursive
 
 .SUFFIXES:

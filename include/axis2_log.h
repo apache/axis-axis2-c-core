@@ -91,7 +91,7 @@ extern "C"
  
 
 #define AXIS2_LOG_FREE(log) ((log->ops)->free(log))
-#define AXIS22_LOG_WRITE(log, buffer, count) ((log)->ops->write(buffer, count))
+#define AXIS2_LOG_WRITE(log, buffer, count) ((log)->ops->write(buffer, count))
 
 /** @} */
     

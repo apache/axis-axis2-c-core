@@ -6,7 +6,9 @@ libtest_util_la_SOURCES = util_hash_test.c util_stream_test.c util_log_test.c ut
 include_HEADERS=$(top_builddir)/modules/util/test/*.h
 
 libtest_util_la_LIBADD = $(LDFLAGS) $(top_builddir)/modules/util/src/libaxis2_util.la
-INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include
+INCLUDES = -I$(top_builddir)/include \
+            -I${CUTEST_HOME}/include \
+            -I$(top_builddir)/modules/util/src
 
 prgbin_PROGRAMS = util_test
 util_test_SOURCES = main.c

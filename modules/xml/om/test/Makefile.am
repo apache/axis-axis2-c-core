@@ -6,7 +6,9 @@ libtest_om_la_SOURCES = om_test.c
 include_HEADERS=$(top_builddir)/modules/xml/om/test/*.h
 
 libtest_om_la_LIBADD = $(LDFLAGS) -L$(top_builddir)/modules/xml/om/src/.libs -laxis2_om
-INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include
+INCLUDES = -I$(top_builddir)/include \
+            -I${CUTEST_HOME}/include \
+            -I$(top_builddir)/modules/util/src
 
 prgbin_PROGRAMS = om_test
 om_test_SOURCES = main.c

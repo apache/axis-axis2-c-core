@@ -9,7 +9,7 @@ void Testaxis2_hash_ops_get(CuTest *tc)
 {
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *environment =
-        axis2_environment_create (allocator, NULL, NULL, NULL, NULL);
+        axis2_environment_create (allocator, NULL, NULL, NULL);
 
     axis2_hash_t *ht;
     a *actual, *expected;
@@ -19,10 +19,10 @@ void Testaxis2_hash_ops_get(CuTest *tc)
 
     char *key1 = "key1";
 
-    actual = (a *) axis2_malloc(environment->allocator, sizeof (a));
+    actual = (a *) AXIS2_MALLOC(environment->allocator, sizeof (a));
 
 
-    actual->value = axis2_strdup(environment->string, "value1");
+    actual->value = axis2_strdup("value1");
 
 
     ht = axis2_hash_make (environment);
