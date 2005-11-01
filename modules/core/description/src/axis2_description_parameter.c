@@ -34,44 +34,44 @@ struct axis2_description_param_s
 
 /***************************** Function prototypes ****************************/
 
-axis2_status_t axis2_description_param_ops_free (axis2_env_t *env
-	, axis2_description_param_t * param);
+axis2_status_t axis2_description_param_ops_free (
+	axis2_description_param_t *param, axis2_env_t *env);
 
-axis2_status_t axis2_description_param_ops_set_name (axis2_env_t *env
-	, axis2_description_param_t * param, const axis2_char_t *name);
+axis2_status_t axis2_description_param_ops_set_name (
+	axis2_description_param_t *param, axis2_env_t *env, const axis2_char_t *name);
 
-axis2_char_t *axis2_description_param_ops_get_name (axis2_env_t *env
-	, axis2_description_param_t * param);
+axis2_char_t *axis2_description_param_ops_get_name (
+	axis2_description_param_t *param, axis2_env_t *env);
 
-axis2_status_t axis2_description_param_ops_set_value (axis2_env_t *env
-	, axis2_description_param_t * param, void *value);
+axis2_status_t axis2_description_param_ops_set_value (
+	axis2_description_param_t *param, axis2_env_t *env, void *value);
 
-void *axis2_description_param_ops_get_value (axis2_env_t *env
-	, axis2_description_param_t * param);
+void *axis2_description_param_ops_get_value (
+	axis2_description_param_t *param, axis2_env_t *env);
 
-axis2_bool_t axis2_description_param_ops_is_locked (axis2_env_t *env
-	, axis2_description_param_t * param);
+axis2_bool_t axis2_description_param_ops_is_locked (
+	axis2_description_param_t *param, axis2_env_t *env);
 
-axis2_status_t axis2_description_param_ops_set_locked (axis2_env_t *env
-	, axis2_description_param_t * param, const axis2_bool_t locked);
+axis2_status_t axis2_description_param_ops_set_locked (
+	axis2_description_param_t *param, axis2_env_t *env, const axis2_bool_t locked);
 
-/*void axis2_description_param_ops_set_param_element (axis2_env_t *env
-	, axis2_description_param_t * param, const axis2_om_element_t * om_element);
+/*void axis2_description_param_ops_set_param_element (
+	axis2_description_param_t *param, axis2_env_t *env, const axis2_om_element_t * om_element);
 */										 
 
 /*axis2_description_param_t *axis2_description_param_ops_get_param_element 
-	(axis2_env_t *env, axis2_description_param_t *param);*/
+	(axis2_description_param_t *param, axis2_env_t *env);*/
 
-axis2_status_t axis2_description_param_ops_set_type (axis2_env_t *env
-	, axis2_description_param_t * param, const int type);
+axis2_status_t axis2_description_param_ops_set_type (
+	axis2_description_param_t *param, axis2_env_t *env, const int type);
 
-int axis2_description_param_ops_get_type (axis2_env_t *env
-		, axis2_description_param_t * param);
+int axis2_description_param_ops_get_type (
+		axis2_description_param_t *param, axis2_env_t *env);
 
 /************************** End of function prototypes ************************/
 
 axis2_description_param_ops_t *axis2_description_param_get_ops
-	(axis2_env_t *env, axis2_description_param_t *param)
+	(axis2_description_param_t *param, axis2_env_t *env)
 {
 	if(!param)
 	{
@@ -160,8 +160,8 @@ axis2_description_param_t *axis2_description_param_create_with_name_value
 
 /**********************Start of operation impls********************************/
 
-axis2_status_t axis2_description_param_ops_free (axis2_env_t *env
-		,axis2_description_param_t * param)
+axis2_status_t axis2_description_param_ops_free (axis2_description_param_t *param,
+		axis2_env_t *env)
 {
 	if(param)
 	{
@@ -171,8 +171,9 @@ axis2_status_t axis2_description_param_ops_free (axis2_env_t *env
 	return AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED;
 }
 
-axis2_status_t axis2_description_param_ops_set_name (axis2_env_t *env
-		, axis2_description_param_t * param, const axis2_char_t *name)
+axis2_status_t axis2_description_param_ops_set_name 
+        (axis2_description_param_t *param, axis2_env_t *env
+        , const axis2_char_t *name)
 {
 	if(!param)
 	{
@@ -183,8 +184,8 @@ axis2_status_t axis2_description_param_ops_set_name (axis2_env_t *env
 	return AXIS2_SUCCESS;	
 }
 
-axis2_char_t *axis2_description_param_ops_get_name (axis2_env_t *env
-		, axis2_description_param_t *param)
+axis2_char_t *axis2_description_param_ops_get_name 
+        (axis2_description_param_t *param, axis2_env_t *env)
 {
 	if(!param)
 	{
@@ -195,8 +196,8 @@ axis2_char_t *axis2_description_param_ops_get_name (axis2_env_t *env
 	return param->name;
 }
 
-axis2_status_t axis2_description_param_ops_set_value (axis2_env_t *env
-		, axis2_description_param_t * param, void *value)
+axis2_status_t axis2_description_param_ops_set_value 
+        (axis2_description_param_t *param, axis2_env_t *env, void *value)
 {
 	if(!param)
 	{
@@ -206,8 +207,8 @@ axis2_status_t axis2_description_param_ops_set_value (axis2_env_t *env
 	return AXIS2_SUCCESS;
 }	
 
-void *axis2_description_param_ops_get_value (axis2_env_t *env
-		, axis2_description_param_t * param)
+void *axis2_description_param_ops_get_value 
+        (axis2_description_param_t *param, axis2_env_t *env)
 {
 	if(!param)
 	{
@@ -218,8 +219,8 @@ void *axis2_description_param_ops_get_value (axis2_env_t *env
 	return param->value;
 }
 
-axis2_bool_t axis2_description_param_ops_is_locked (axis2_env_t *env
-		, axis2_description_param_t * param)
+axis2_bool_t axis2_description_param_ops_is_locked 
+        (axis2_description_param_t *param, axis2_env_t *env)
 {
 	if(!param)
 	{
@@ -229,8 +230,8 @@ axis2_bool_t axis2_description_param_ops_is_locked (axis2_env_t *env
 	return param->is_locked;
 }
 
-axis2_status_t axis2_description_param_ops_set_locked (axis2_env_t *env
-		, axis2_description_param_t * param, const axis2_bool_t is_locked)
+axis2_status_t axis2_description_param_ops_set_locked 
+        (axis2_description_param_t *param, axis2_env_t *env, const axis2_bool_t is_locked)
 {
 	if(!param)
 	{
@@ -241,7 +242,7 @@ axis2_status_t axis2_description_param_ops_set_locked (axis2_env_t *env
 }
 
 /*axis2_status_t axis2_description_param_ops_set_param_element 
-		(axis2_env_t *env, axis2_description_param_t * param
+		(axis2_description_param_t *param, axis2_env_t *env
         , const axis2_om_element_t * om_element)
 {
 	if(!param)
@@ -254,7 +255,7 @@ axis2_status_t axis2_description_param_ops_set_locked (axis2_env_t *env
 }
 
 axis2_description_param_t *axis2_description_param_get_param_element 
-		(axis2_env_t *env, axis2_description_param_t *param)
+		(axis2_description_param_t *param, axis2_env_t *env)
 {
 	if(!param)
 	{
@@ -264,8 +265,8 @@ axis2_description_param_t *axis2_description_param_get_param_element
 	return (axis2_description_param_t *) param->param_element;
 }*/
 
-axis2_status_t axis2_description_param_ops_set_type (axis2_env_t *env
-		, axis2_description_param_t * param, const int type)
+axis2_status_t axis2_description_param_ops_set_type 
+        (axis2_description_param_t *param, axis2_env_t *env, const int type)
 {
 	if(!param)
 	{
@@ -275,8 +276,8 @@ axis2_status_t axis2_description_param_ops_set_type (axis2_env_t *env
 	return AXIS2_SUCCESS;
 }
 
-int axis2_description_param_ops_get_type (axis2_env_t *env
-		, axis2_description_param_t * param)
+int axis2_description_param_ops_get_type (
+		axis2_description_param_t *param, axis2_env_t *env)
 {
 	if(!param)
 	{

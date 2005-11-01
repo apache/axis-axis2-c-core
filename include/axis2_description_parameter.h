@@ -45,29 +45,29 @@ extern "C"
 
 /************************* Start of function macros ***************************/
 
-#define axis2_description_param_free(env, param) \
-	(axis2_description_param_get_ops(env, param)->free (env, param))
+#define axis2_description_param_free(param, env) \
+	(axis2_description_param_get_ops(param, env)->free (param, env))
 
-#define axis2_description_param_set_name(env, param, name) \
-	(axis2_description_param_get_ops(env, param)->set_name (env, param \
+#define axis2_description_param_set_name(param, env, name) \
+	(axis2_description_param_get_ops(param, env)->set_name (param, env \
 	, name))
 
-#define axis2_description_param_get_name(env, param) \
-	(axis2_description_param_get_ops(env, param)->get_name (env, param))
+#define axis2_description_param_get_name(param, env) \
+	(axis2_description_param_get_ops(param, env)->get_name (param, env))
 
-#define axis2_description_param_set_value(env, param, value) \
-	(axis2_description_param_get_ops(env, param)->set_value (env \
-	, param, value))
+#define axis2_description_param_set_value(param, env, value) \
+	(axis2_description_param_get_ops(param, env)->set_value (param \
+	, env, value))
 
-#define axis2_description_param_get_value(env, param) \
-	(axis2_description_param_get_ops(env, param)->get_value (env, param))
+#define axis2_description_param_get_value(param, env) \
+	(axis2_description_param_get_ops(param, env)->get_value (param, env))
 
-#define axis2_description_param_is_locked(env, param) \
-	(axis2_description_param_get_ops(env, param)->is_locked (env, param))
+#define axis2_description_param_is_locked(param, env) \
+	(axis2_description_param_get_ops(param, env)->is_locked (param, env))
 
-#define axis2_description_param_set_locked(env, param, locked) \
-	(axis2_description_param_get_ops(env, param)->set_locked (env \
-	, param, locked))
+#define axis2_description_param_set_locked(param, env, locked) \
+	(axis2_description_param_get_ops(param, env)->set_locked (param \
+	, env, locked))
 
 /*********************** End of function macros *******************************/
 
@@ -77,55 +77,55 @@ extern "C"
   * memeory deallocation operation
   * @return Status code
   */
-    typedef axis2_status_t (*axis2_description_param_free_t)
-        (axis2_env_t * env, axis2_description_param_t * param);
+typedef axis2_status_t (*axis2_description_param_free_t)
+        (axis2_description_param_t *param, axis2_env_t *env);
 
 /**
   * parameter name set operation
   * @param parameter name
   * @return Status code
   */
-    typedef axis2_status_t (*axis2_description_param_set_name_t)
-        (axis2_env_t * env, axis2_description_param_t * param,
-         const axis2_char_t * name);
+typedef axis2_status_t (*axis2_description_param_set_name_t)
+        (axis2_description_param_t *param, axis2_env_t *env,
+         const axis2_char_t *name);
 
 /**
   * parameter name get operation
   * @return parameter name
   */
-    typedef axis2_char_t *(*axis2_description_param_get_name_t)
-        (axis2_env_t * env, axis2_description_param_t * param);
+typedef axis2_char_t *(*axis2_description_param_get_name_t)
+        (axis2_description_param_t *param, axis2_env_t *env);
 
 /**
   * parameter value set operation
   * @param parameter value
   * @return Status code
   */
-    typedef axis2_status_t (*axis2_description_param_set_value_t)
-        (axis2_env_t * env, axis2_description_param_t * param,
+typedef axis2_status_t (*axis2_description_param_set_value_t)
+        (axis2_description_param_t *param, axis2_env_t *env,
          void *value);
 
 /**
   * parameter value get operation
   * @return parameter value
   */
-    typedef void *(*axis2_description_param_get_value_t)
-        (axis2_env_t * env, axis2_description_param_t * param);
+typedef void *(*axis2_description_param_get_value_t)
+        (axis2_description_param_t *param, axis2_env_t *env);
 
 /**
   * parameter lock check operation
   * @return whether parameter is locked or not
   */
-    typedef axis2_bool_t (*axis2_description_param_is_locked_t)
-        (axis2_env_t * env, axis2_description_param_t * param);
+typedef axis2_bool_t (*axis2_description_param_is_locked_t)
+        (axis2_description_param_t *param, axis2_env_t *env);
 
 /**
   * parameter lock set operation
   * @param lock boolean value 
   * @return Status code
   */
-    typedef axis2_status_t (*axis2_description_param_set_locked_t)
-        (axis2_env_t * env, axis2_description_param_t * param,
+typedef axis2_status_t (*axis2_description_param_set_locked_t)
+        (axis2_description_param_t *param, axis2_env_t *env,
          const axis2_bool_t locked);
 
 /**
@@ -139,7 +139,7 @@ extern "C"
   * @return Status code
   */
 /*typedef axis2_status_t (*axis2_description_param_set_param_element_t) 
-	(axis2_env_t *env, axis2_description_param_t *param
+	(axis2_description_param_t *param, *axis2_env_t *env
 	, axis2_om_element_t * om_element);
 */
 
@@ -147,28 +147,23 @@ extern "C"
   * param element get operation
   * @return parameter element
   */
-    typedef axis2_description_param_t
-        *
-        (*axis2_description_param_get_param_element_t) (axis2_env_t *
-                                                        env,
-                                                        axis2_description_param_t
-                                                        * param);
+typedef axis2_description_param_t *(*axis2_description_param_get_param_element_t) 
+        (axis2_description_param_t *param, axis2_env_t *env);
 
 /**
   * parameter type set operation
   * @param parameter type
   * @return Status code
   */
-    typedef axis2_status_t (*axis2_description_param_set_type_t)
-        (axis2_env_t * env, axis2_description_param_t * param,
-         const int type);
+typedef axis2_status_t (*axis2_description_param_set_type_t)
+        (axis2_description_param_t *param, axis2_env_t *env, const int type);
 
 /**
   * parameter type get operation
   * @return parameter type
   */
-    typedef int (*axis2_description_param_get_type_t)
-        (axis2_env_t * env, axis2_description_param_t * param);
+typedef int (*axis2_description_param_get_type_t)
+        (axis2_description_param_t *param, axis2_env_t *env);
 
 /************************ End of function pointers ****************************/
 
@@ -205,14 +200,14 @@ extern "C"
   * @return operations for axis2_description_param_t
   */
     axis2_description_param_ops_t *axis2_description_param_get_ops
-        (axis2_env_t * env, axis2_description_param_t * param);
+        (axis2_description_param_t *param, axis2_env_t *env);
 
 /**
   *	Create axis2_description_param_t
   * @return axis2_description_param_t
   */
     axis2_description_param_t *axis2_description_param_create
-        (axis2_env_t * env);
+        (axis2_env_t *env);
 
 /**
  * Create parameter with name and value
@@ -221,8 +216,8 @@ extern "C"
  * @return axis2_description_param_t
  */
     axis2_description_param_t *axis2_description_param_create_with_name_value
-        (axis2_env_t * env, const axis2_char_t * name,
-         const axis2_char_t * value);
+        (axis2_env_t *env, const axis2_char_t *name,
+         const axis2_char_t *value);
 
 /** @} */
 

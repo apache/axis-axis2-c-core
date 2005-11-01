@@ -34,54 +34,52 @@ struct axis2_description_operation_s
 	
 /*************************** Function headers *********************************/
 
-axis2_status_t axis2_description_operation_ops_free (axis2_env_t *env
-		, axis2_description_operation_t *operation_desc);	
+axis2_status_t axis2_description_operation_ops_free 
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env);	
 
 axis2_status_t axis2_description_operation_ops_add_param
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env
 		, axis2_description_param_t *param);
 
 axis2_description_param_t *axis2_description_operation_ops_get_param
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env
 		, const axis2_char_t *name);
 
 axis2_hash_t *axis2_description_operation_ops_get_params
-		(axis2_env_t *env
-		, axis2_description_operation_t *operation_desc);
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env);
 
 axis2_bool_t axis2_description_operation_ops_is_param_locked(
-		axis2_env_t *env, axis2_description_operation_t *operation_desc
+		axis2_description_operation_t *operation_desc, axis2_env_t *env
 		, const axis2_char_t *param_name);
 
 axis2_status_t axis2_description_operation_ops_set_parent
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env
 		, axis2_description_service_t *service_desc);
 
 axis2_description_service_t *axis2_description_operation_ops_get_parent
-		(axis2_env_t *env
-		, axis2_description_operation_t *operation_desc);
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env);
 		
 axis2_qname_t *axis2_description_operation_ops_get_name
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc);
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env);
 
 axis2_status_t axis2_description_operation_ops_set_msg_exchange_pattern 
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env
 		, axis2_char_t *pattern);
 		
 axis2_char_t *axis2_description_operation_ops_get_msg_exchange_pattern 
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc);
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env);
 		
 axis2_status_t axis2_description_operation_ops_set_msg_receiver 
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env
 		, axis2_engine_msg_receiver_t *msg_receiver);
 
 axis2_engine_msg_receiver_t *axis2_description_operation_ops_get_msg_receiver 
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc);
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env);
 		
 /************************* End of function headers ****************************/	
 
 axis2_description_operation_ops_t *axis2_description_operation_get_ops
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc)
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env)
 {
 	if(!operation_desc)
 	{
@@ -170,8 +168,8 @@ axis2_description_operation_t *axis2_description_operation_create_with_name
 
 /******************************************************************************/
 
-axis2_status_t axis2_description_operation_ops_free (axis2_env_t *env
-		, axis2_description_operation_t *operation_desc)
+axis2_status_t axis2_description_operation_ops_free
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env)
 {
 	if(operation_desc)
 	{
@@ -182,23 +180,23 @@ axis2_status_t axis2_description_operation_ops_free (axis2_env_t *env
 }	
 	
 axis2_status_t axis2_description_operation_ops_add_param
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env
 		, axis2_description_param_t *param)
 {
 	if(!operation_desc || !operation_desc->param_include || !param)
 	{
 		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
 	}
-	axis2_hash_set (axis2_description_param_include_get_params(env
-		, operation_desc->param_include), axis2_description_param_get_name(env
-		, param)
+	axis2_hash_set (axis2_description_param_include_get_params
+		(operation_desc->param_include, env), axis2_description_param_get_name
+		(param, env)
 		, AXIS2_HASH_KEY_STRING, param);	
 	return AXIS2_SUCCESS;
 	
 }
 
 axis2_description_param_t *axis2_description_operation_ops_get_param(
-		axis2_env_t *env, axis2_description_operation_t *operation_desc
+		axis2_description_operation_t *operation_desc, axis2_env_t *env
 		, const axis2_char_t *name)
 {
 	if(!operation_desc || !operation_desc->param_include)
@@ -214,12 +212,12 @@ axis2_description_param_t *axis2_description_operation_ops_get_param(
 	}
 		
 	return (axis2_description_param_t *)(axis2_hash_get 
-		(axis2_description_param_include_get_params(env
-		, operation_desc->param_include), tempname, AXIS2_HASH_KEY_STRING));
+		(axis2_description_param_include_get_params(operation_desc->param_include
+		, env), tempname, AXIS2_HASH_KEY_STRING));
 }
 
 axis2_hash_t *axis2_description_operation_ops_get_params(
-		axis2_env_t *env, axis2_description_operation_t *operation_desc)
+		axis2_description_operation_t *operation_desc, axis2_env_t *env)
 {
 	if(!operation_desc || !operation_desc->param_include)
 	{
@@ -227,12 +225,12 @@ axis2_hash_t *axis2_description_operation_ops_get_params(
 		return NULL;
 	}
 	
-	return axis2_description_param_include_get_params(env
-		, operation_desc->param_include);
+	return axis2_description_param_include_get_params(operation_desc->param_include
+		, env);
 }
 
 axis2_bool_t axis2_description_operation_ops_is_param_locked(
-		axis2_env_t *env, axis2_description_operation_t *operation_desc
+		axis2_description_operation_t *operation_desc, axis2_env_t *env
 		, const axis2_char_t *param_name)
 {
 	if(!env || !operation_desc || !operation_desc->param_include)
@@ -247,13 +245,13 @@ axis2_bool_t axis2_description_operation_ops_is_param_locked(
 		return AXIS2_FALSE;
 	}
 		
-	return axis2_description_param_include_is_param_locked (env
-		, operation_desc->param_include, param_name); 
+	return axis2_description_param_include_is_param_locked
+		(operation_desc->param_include, env, param_name); 
 	
 }
 
 axis2_status_t axis2_description_operation_ops_set_parent
-		(axis2_env_t *env ,axis2_description_operation_t *operation_desc
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env
 		, axis2_description_service_t *service_desc)
 {
 	if(!operation_desc || !service_desc)
@@ -265,8 +263,7 @@ axis2_status_t axis2_description_operation_ops_set_parent
 }
 
 axis2_description_service_t *axis2_description_operation_ops_get_parent
-		(axis2_env_t *env
-		, axis2_description_operation_t *operation_desc)
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env)
 {
 	if(!operation_desc)
 	{
@@ -277,7 +274,7 @@ axis2_description_service_t *axis2_description_operation_ops_get_parent
 }
 
 axis2_qname_t *axis2_description_operation_ops_get_name
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc)
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env)
 {
 	if(!operation_desc)
 	{
@@ -288,7 +285,7 @@ axis2_qname_t *axis2_description_operation_ops_get_name
 }
 
 axis2_status_t axis2_description_operation_ops_set_msg_exchange_pattern 
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env
 		, axis2_char_t *pattern)
 {
 	if(!operation_desc)
@@ -302,7 +299,7 @@ axis2_status_t axis2_description_operation_ops_set_msg_exchange_pattern
 }
 
 axis2_char_t *axis2_description_operation_ops_get_msg_exchange_pattern 
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc)
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env)
 {
 	if(!operation_desc)
 	{
@@ -313,7 +310,7 @@ axis2_char_t *axis2_description_operation_ops_get_msg_exchange_pattern
 }
 
 axis2_status_t axis2_description_operation_ops_set_msg_receiver 
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env
 		, axis2_engine_msg_receiver_t *msg_receiver)
 {
 	if(!operation_desc)
@@ -327,7 +324,7 @@ axis2_status_t axis2_description_operation_ops_set_msg_receiver
 }
 
 axis2_engine_msg_receiver_t *axis2_description_operation_ops_get_msg_receiver 
-		(axis2_env_t *env, axis2_description_operation_t *operation_desc)
+		(axis2_description_operation_t *operation_desc, axis2_env_t *env)
 {
 	if(!operation_desc)
 	{

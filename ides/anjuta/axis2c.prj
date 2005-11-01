@@ -89,8 +89,6 @@ module.include.files=\
 	include/axis2_stream.h\
 	include/axis2_om_output.h\
 	modules/xml/guththila/src/guththila_xml_pull_parser.h\
-	include/axis2_hash.h\
-	include/axis2_string.h\
 	modules/util/test/util_error_test.h\
 	modules/util/test/util_hash_test.h\
 	modules/util/test/util_log_test.h\
@@ -115,12 +113,14 @@ module.include.files=\
 	include/axis2_core.h\
 	include/axis2_context_msg_context.h\
 	include/axis2_engine_msg_receiver.h\
-	include/axis2_file_diff.h\
 	include/axis2_wsdl_operation.h\
 	include/axis2_wsdl_service.h\
 	modules/util/src/axis2_error_default.h\
 	modules/util/src/axis2_log_default.h\
-	modules/util/src/axis2_stream_default.h
+	modules/util/src/axis2_stream_default.h\
+	modules/util/src/axis2_file_diff.h\
+	modules/util/src/axis2_hash.h\
+	modules/util/src/axis2_string.h
 
 module.source.name=.
 module.source.type=
@@ -171,7 +171,8 @@ module.source.files=\
 	modules/util/src/axis2_qname.c\
 	modules/util/src/axis2_file_diff.c\
 	modules/wsdl/src/axis2_wsdl_operation.c\
-	modules/wsdl/src/axis2_wsdl_service.c
+	modules/wsdl/src/axis2_wsdl_service.c\
+	modules/wsdl/src/axis2_wsdl_component.c
 
 module.pixmap.name=.
 module.pixmap.type=
