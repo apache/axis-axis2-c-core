@@ -117,7 +117,10 @@ module.include.files=\
 	include/axis2_engine_msg_receiver.h\
 	include/axis2_file_diff.h\
 	include/axis2_wsdl_operation.h\
-	include/axis2_wsdl_service.h
+	include/axis2_wsdl_service.h\
+	modules/util/src/axis2_error_default.h\
+	modules/util/src/axis2_log_default.h\
+	modules/util/src/axis2_stream_default.h
 
 module.source.name=.
 module.source.type=
