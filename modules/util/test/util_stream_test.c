@@ -1,6 +1,6 @@
 #include "util_stream_test.h"
 
-void Testaxis2_stream_ops_read(CuTest *tc) {
+void Testaxis2_stream_read(CuTest *tc) {
 
     char actual[10];
     axis2_allocator_t *allocator = axis2_allocator_init(NULL);
@@ -10,7 +10,7 @@ void Testaxis2_stream_ops_read(CuTest *tc) {
     CuAssertStrEquals(tc, expected, actual);
 }
 
-void Testaxis2_stream_ops_write(CuTest *tc) {
+void Testaxis2_stream_write(CuTest *tc) {
 
     char actual[10];
     axis2_allocator_t *allocator = axis2_allocator_init(NULL);

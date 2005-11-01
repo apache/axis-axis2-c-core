@@ -6,10 +6,10 @@
 
 CuSuite* axis2_utilGetSuite() {
     CuSuite* suite = CuSuiteNew();
-    SUITE_ADD_TEST(suite, Testaxis2_stream_ops_read);
-    SUITE_ADD_TEST(suite, Testaxis2_stream_ops_write);
-    SUITE_ADD_TEST(suite, Testaxis2_log_ops_write);
-    SUITE_ADD_TEST(suite, Testaxis2_hash_ops_get);
+    SUITE_ADD_TEST(suite, Testaxis2_stream_read);
+    SUITE_ADD_TEST(suite, Testaxis2_stream_write);
+    SUITE_ADD_TEST(suite, Testaxis2_log_write);
+    SUITE_ADD_TEST(suite, Testaxis2_hash_get);
     return suite;
 }
 

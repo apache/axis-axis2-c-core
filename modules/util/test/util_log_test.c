@@ -1,6 +1,6 @@
 #include "util_log_test.h"
 
-void Testaxis2_log_ops_write(CuTest *tc) 
+void Testaxis2_log_write(CuTest *tc) 
 {
 
     char actual[10];

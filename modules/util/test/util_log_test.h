@@ -8,6 +8,6 @@
 #include <axis2_environment.h>
 #include <axis2_string.h>
 
-void Testaxis2_log_ops_write(CuTest *tc);
+void Testaxis2_log_write(CuTest *tc);
 
 #endif /* UTIL_LOG_TEST_H*/

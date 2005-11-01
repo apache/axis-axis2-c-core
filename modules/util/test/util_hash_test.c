@@ -5,7 +5,7 @@ typedef struct a
     char *value;
 } a;
 
-void Testaxis2_hash_ops_get(CuTest *tc)
+void Testaxis2_hash_get(CuTest *tc)
 {
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *environment =

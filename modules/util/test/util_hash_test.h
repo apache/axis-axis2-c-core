@@ -9,6 +9,6 @@
 #include <axis2_hash.h>
 #include <axis2_string.h>
 
-void Testaxis2_hash_ops_get(CuTest *tc);
+void Testaxis2_hash_get(CuTest *tc);
 
 #endif /* UTIL_HASH_TEST_H*/
