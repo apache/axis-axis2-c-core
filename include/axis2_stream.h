@@ -54,7 +54,7 @@ extern "C"
         * @param size size of the buffer
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *axis2_stream_ops_read) (void *buffer
+        axis2_status_t (AXIS2_CALL *read) (void *buffer
 			, size_t count);
 		/**
         * writes into stream
@@ -62,7 +62,7 @@ extern "C"
         * @param size size of the buffer
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *axis2_stream_ops_write) 
+        axis2_status_t (AXIS2_CALL *write) 
 			(const void *buffer, size_t count);
 		
 		/**
@@ -71,7 +71,7 @@ extern "C"
 		 * @param options file options given.
 		 * @return status code
 		 */ 
-		void * (AXIS2_CALL  *axis2_stream_ops_file_open)
+		void * (AXIS2_CALL  *file_open)
 			(const char *file_name, const char *options);
 		
 		/**
@@ -79,14 +79,14 @@ extern "C"
 		 * @param file_ptr file pointer of the file need to be closed
 		 * @return status code
 		 */
-		axis2_status_t (AXIS2_CALL *axis2_stream_ops_file_close) 
+		axis2_status_t (AXIS2_CALL *file_close) 
 				(void *file_ptr);
 		
 		/** reads a once character from a file
 		 * @param file_ptr pointer to the file to be read from
 		 * @return char read
 		 */
-		axis2_char_t (AXIS2_CALL *axis2_stream_ops_file_get_char) 
+		axis2_char_t (AXIS2_CALL *file_get_char) 
 				(void *file_ptr);
 		
 		/** write a previously read character back to the file stream
@@ -95,7 +95,7 @@ extern "C"
 		 *        and need to be written back to
 		 * @return status code
 		 */
-		axis2_status_t (AXIS2_CALL *axis2_stream_ops_file_unget_char) 
+		axis2_status_t (AXIS2_CALL *file_unget_char) 
 				(const char chr, void *file_ptr);
 				
     } axis2_stream_ops_t;
@@ -115,17 +115,17 @@ extern "C"
 #define AXIS2_STREAM_FREE(stream) ((stream->ops)->free(stream))
 
 #define AXIS2_STREAM_READ(stream, buffer, count) \
-		((stream)->ops->axis2_stream_ops_read(buffer, count))
+		((stream)->ops->read(buffer, count))
 #define AXIS2_STREAM_WRITE(stream, buffer, count) \
-		((stream)->ops->axis2_stream_ops_write(buffer, count))
+		((stream)->ops->write(buffer, count))
 #define AXIS2_STREAM_FILE_OPEN(stream, file_name, options) \
-		((stream)->ops->axis2_stream_ops_file_open(file_name, options))
+		((stream)->file_open(file_name, options))
 #define AXIS2_STREAM_FILE_CLOSE(stream, file_ptr) \
-		((stream)->ops->axis2_stream_ops_file_close(file_ptr))
+		((stream)->ops->file_close(file_ptr))
 #define AXIS2_STREAM_FILE_GET_CHAR(stream, file_ptr) \
-		((stream)->ops->axis2_stream_ops_file_get_char(file_ptr))
+		((stream)->ops->file_get_char(file_ptr))
 #define AXIS2_STREAM_FILE_UNGET_CHAR(stream, chr, file_ptr) \
-		((stream)->ops->axis2_stream_ops_file_unget_char(chr, file_ptr))	
+		((stream)->ops->file_unget_char(chr, file_ptr))	
 
 /** @} */
     

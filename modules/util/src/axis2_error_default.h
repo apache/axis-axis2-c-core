@@ -26,9 +26,6 @@ extern "C"
 {
 #endif
 
-    struct axis2_error;
-    struct axis2_error_ops;
-
 /**
  * @defgroup axis2_error Error
  * @ingroup axis2_util 
@@ -43,8 +40,6 @@ extern "C"
     */
     AXIS2_DECLARE(axis2_error_t *) axis2_error_create (axis2_allocator_t * allocator);
 
-#define AXIS2_ERROR_FREE(error) ((error->ops)->free(error))
-#define AXIS2_ERROR_GET_MESSAGE(error) ((error)->ops->axis2_error_ops_get_message())
 
 /** @} */
     

@@ -71,7 +71,7 @@ extern "C"
         * @param size size of the buffer to be written to log
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *axis2_log_ops_write) (const void *buffer, size_t count);
+        axis2_status_t (AXIS2_CALL *write) (const void *buffer, size_t count);
     } axis2_log_ops_t;
 
   /** 
@@ -89,16 +89,9 @@ extern "C"
         axis2_bool_t enabled;
     } axis2_log_t;
  
-  /**
-    * Creates a log struct
-    * @param allocator allocator to be used. Mandatory, cannot be NULL    
-    * @return pointer to the newly created log struct 
-    */
-   /* AXIS2_DECLARE(axis2_log_t *) axis2_log_create (axis2_allocator_t * allocator,
-                                   axis2_log_ops_t * operations);*/
 
 #define AXIS2_LOG_FREE(log) ((log->ops)->free(log))
-#define AXIS22_LOG_WRITE(log, buffer, count) ((log)->ops->axis2_log_ops_write(buffer, count))
+#define AXIS22_LOG_WRITE(log, buffer, count) ((log)->ops->write(buffer, count))
 
 /** @} */
     

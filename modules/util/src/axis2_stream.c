@@ -44,19 +44,19 @@ axis2_stream_create (axis2_allocator_t * allocator,
 		{
             if(!stream->ops->free)
                 (stream->ops)->free = axis2_stream_impl_free;
-			if(!stream->ops->axis2_stream_ops_read)
-				stream->ops->axis2_stream_ops_read = axis2_stream_impl_read;
-			if(!stream->ops->axis2_stream_ops_write)
-				stream->ops->axis2_stream_ops_write = axis2_stream_impl_write;
-			if(!stream->ops->axis2_stream_ops_file_open)
-				stream->ops->axis2_stream_ops_file_open = axis2_stream_impl_file_open;
-			if(!stream->ops->axis2_stream_ops_file_close)
-				stream->ops->axis2_stream_ops_file_close = axis2_stream_impl_file_close;
-			if(!stream->ops->axis2_stream_ops_file_get_char)
-				stream->ops->axis2_stream_ops_file_get_char 
+			if(!stream->ops->read)
+				stream->ops->read = axis2_stream_impl_read;
+			if(!stream->ops->write)
+				stream->ops->write = axis2_stream_impl_write;
+			if(!stream->ops->file_open)
+				stream->ops->file_open = axis2_stream_impl_file_open;
+			if(!stream->ops->file_close)
+				stream->ops->file_close = axis2_stream_impl_file_close;
+			if(!stream->ops->file_get_char)
+				stream->ops->file_get_char 
 				= axis2_stream_impl_file_get_char;
-			if(!stream->ops->axis2_stream_ops_file_unget_char)
-				stream->ops->axis2_stream_ops_file_unget_char 
+			if(!stream->ops->file_unget_char)
+				stream->ops->file_unget_char 
 				= axis2_stream_impl_file_unget_char;
 		}
 		else if (allocator)
@@ -73,13 +73,13 @@ axis2_stream_create (axis2_allocator_t * allocator,
             
             if(!stream->ops->free)
                 (stream->ops)->free = axis2_stream_impl_free;
-			stream->ops->axis2_stream_ops_read = axis2_stream_impl_read;
-			stream->ops->axis2_stream_ops_write = axis2_stream_impl_write;
-			stream->ops->axis2_stream_ops_file_open = axis2_stream_impl_file_open;
-			stream->ops->axis2_stream_ops_file_close = axis2_stream_impl_file_close;
-			stream->ops->axis2_stream_ops_file_get_char 
+			stream->ops->read = axis2_stream_impl_read;
+			stream->ops->write = axis2_stream_impl_write;
+			stream->ops->file_open = axis2_stream_impl_file_open;
+			stream->ops->file_close = axis2_stream_impl_file_close;
+			stream->ops->file_get_char 
 				= axis2_stream_impl_file_get_char;
-			stream->ops->axis2_stream_ops_file_unget_char 
+			stream->ops->file_unget_char 
 				= axis2_stream_impl_file_unget_char;
 		}
 		else 
@@ -106,13 +106,13 @@ axis2_stream_create (axis2_allocator_t * allocator,
             AXIS2_FREE (allocator, stream);
             return NULL;
         }
-		stream->ops->axis2_stream_ops_read = axis2_stream_impl_read;
-        stream->ops->axis2_stream_ops_write = axis2_stream_impl_write;
-		stream->ops->axis2_stream_ops_file_open = axis2_stream_impl_file_open;
-		stream->ops->axis2_stream_ops_file_close = axis2_stream_impl_file_close;
-		stream->ops->axis2_stream_ops_file_get_char 
+		stream->ops->read = axis2_stream_impl_read;
+        stream->ops->write = axis2_stream_impl_write;
+		stream->ops->file_open = axis2_stream_impl_file_open;
+		stream->ops->file_close = axis2_stream_impl_file_close;
+		stream->ops->file_get_char 
 			= axis2_stream_impl_file_get_char;
-		stream->ops->axis2_stream_ops_file_unget_char 
+		stream->ops->file_unget_char 
 			= axis2_stream_impl_file_unget_char;
 		stream->axis2_eof = EOF;
 		

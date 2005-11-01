@@ -71,7 +71,7 @@ extern "C"
 
 
 #define AXIS2_ERROR_FREE(error) ((error->ops)->free(error))
-#define AXIS2_ERROR_GET_MESSAGE(error) ((error)->ops->axis2_error_ops_get_message())
+#define AXIS2_ERROR_GET_MESSAGE(error) ((error)->ops->get_message())
 
   /** 
     * \brief Axis2 status codes

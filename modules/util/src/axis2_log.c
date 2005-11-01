@@ -59,7 +59,7 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * operations)
             return NULL;
         }
 
-        log->ops->axis2_log_ops_write = axis2_log_impl_write;
+        log->ops->write = axis2_log_impl_write;
     }
 
     return log;
