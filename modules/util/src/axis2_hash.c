@@ -81,7 +81,7 @@ struct axis2_hash_t
 static axis2_hash_entry_t **
 alloc_array (axis2_hash_t * ht, unsigned int max)
 {
-    return memset (axis2_malloc (ht->environment->allocator,
+    return memset (AXIS2_MALLOC (ht->environment->allocator,
                                  sizeof (*ht->array) * (max + 1)), 0,
                    sizeof (*ht->array) * (max + 1));
 }
@@ -90,7 +90,7 @@ AXIS2_DECLARE(axis2_hash_t*)
 axis2_hash_make (axis2_environment_t * environment)
 {
     axis2_hash_t *ht;
-    ht = axis2_malloc (environment->allocator, sizeof (axis2_hash_t));
+    ht = AXIS2_MALLOC (environment->allocator, sizeof (axis2_hash_t));
     ht->environment = environment;
     ht->free = NULL;
     ht->count = 0;
@@ -122,7 +122,7 @@ axis2_hash_next (axis2_environment_t * environment, axis2_hash_index_t * hi)
     {
         if (hi->index > hi->ht->max)
         {
-            axis2_free (environment->allocator, hi);
+            AXIS2_FREE (environment->allocator, hi);
             return NULL;
         }
 
@@ -137,7 +137,7 @@ axis2_hash_first (axis2_environment_t * environment, axis2_hash_t * ht)
 {
     axis2_hash_index_t *hi;
     if (environment)
-        hi = axis2_malloc (environment->allocator, sizeof (*hi));
+        hi = AXIS2_MALLOC (environment->allocator, sizeof (*hi));
     else
         hi = &ht->iterator;
 
@@ -284,7 +284,7 @@ find_entry (axis2_hash_t * ht,
     if ((he = ht->free) != NULL)
         ht->free = he->next;
     else
-        he = axis2_malloc (ht->environment->allocator, sizeof (*he));
+        he = AXIS2_MALLOC (ht->environment->allocator, sizeof (*he));
     he->next = NULL;
     he->hash = hash;
     he->key = key;
@@ -302,7 +302,7 @@ axis2_hash_copy (axis2_environment_t * environment, const axis2_hash_t * orig)
     axis2_hash_entry_t *new_vals;
     unsigned int i, j;
 
-    ht = axis2_malloc (environment->allocator, sizeof (axis2_hash_t) +
+    ht = AXIS2_MALLOC (environment->allocator, sizeof (axis2_hash_t) +
                        sizeof (*ht->array) * (orig->max + 1) +
                        sizeof (axis2_hash_entry_t) * orig->count);
     ht->environment = environment;
@@ -425,7 +425,7 @@ axis2_hash_merge (axis2_environment_t * environment,
     }
 #endif
 
-    res = axis2_malloc (environment->allocator, sizeof (axis2_hash_t));
+    res = AXIS2_MALLOC (environment->allocator, sizeof (axis2_hash_t));
     res->environment = environment;
     res->free = NULL;
     res->hash_func = base->hash_func;
@@ -439,7 +439,7 @@ axis2_hash_merge (axis2_environment_t * environment,
     if (base->count + overlay->count)
     {
         new_vals =
-            axis2_malloc (environment->allocator,
+            AXIS2_MALLOC (environment->allocator,
                           sizeof (axis2_hash_entry_t) * (base->count +
                                                          overlay->count));
     }
@@ -512,7 +512,7 @@ axis2_hash_entry_free (axis2_environment_t * environment,
     /* axis2_free(environment->allocator,hash_entry->key); 
        axis2_free(environment->allocator,hash_entry->val);
      */
-    axis2_free (environment->allocator, hash_entry);
+    AXIS2_FREE (environment->allocator, hash_entry);
     return;
 }
 
@@ -523,8 +523,8 @@ axis2_hash_free (axis2_environment_t * environment, axis2_hash_t * ht)
     {
         if (ht->free)
             axis2_hash_entry_free (environment, ht->free);
-        axis2_free (environment->allocator, ht->array);
-        axis2_free (environment->allocator, ht);
+        AXIS2_FREE(environment->allocator, ht->array);
+        AXIS2_FREE (environment->allocator, ht);
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
