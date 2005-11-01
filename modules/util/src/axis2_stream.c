@@ -20,7 +20,7 @@
 
 #include <axis2_stream_default.h>
 
-axis2_status_t AXIS2_CALL axis2_stream_impl_free ();
+axis2_status_t AXIS2_CALL axis2_stream_impl_free (axis2_stream_t *stream);
 
 axis2_status_t AXIS2_CALL axis2_stream_impl_write (const void *buffer, size_t count);
 
