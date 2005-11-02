@@ -94,9 +94,6 @@ axis2_description_service_t *axis2_description_service_create
 	}
 	ops->free = axis2_description_service_ops_free;
 	ops->add_operation = axis2_description_service_ops_add_operation;
-	ops->add_param = axis2_description_service_ops_add_param;
-	ops->get_param = axis2_description_service_ops_get_param;
-	ops->get_params = axis2_description_service_ops_get_params;
 	ops->get_operation_with_qname = 
 		axis2_description_service_ops_get_operation_with_qname;
 	ops->get_operation_with_name = 
@@ -104,6 +101,10 @@ axis2_description_service_t *axis2_description_service_create
 	ops->get_operations = axis2_description_service_ops_get_operations;
 	ops->set_parent = axis2_description_service_ops_set_parent;
 	ops->get_parent = axis2_description_service_ops_get_parent;
+	ops->get_name = axis2_description_service_ops_get_name;
+	ops->add_param = axis2_description_service_ops_add_param;
+	ops->get_param = axis2_description_service_ops_get_param;
+	ops->get_params = axis2_description_service_ops_get_params;
 	
 	srv_desc->ops = ops;
 	

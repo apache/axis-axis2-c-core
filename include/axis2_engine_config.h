@@ -46,37 +46,37 @@ extern "C"
 
 /************************* Start of function macros	***************************/
 	
-#define axis2_engine_config_free(env, engine_config) (axis2_engine_get_ops(env, \
-		engine_config)->free(env, engine_config);
+#define axis2_engine_config_free(engine_config, env) (axis2_engine_get_ops \
+		(engine_config, env)->free(engine_config, env);
 	
-#define axis2_engine_config_add_service_group(env, engine_config, \
+#define axis2_engine_config_add_service_group(engine_config, env, \
 		service_group_desc) (axis2_engine_config_get_ops(env, \
-		engine_config)->add_service_group (env, engine_config, service_group_desc));
+		engine_config)->add_service_group (engine_config, env, service_group_desc));
 		
-#define axis2_engine_config_get_service(env, engine_config, service_name) \
-		(axis2_engine_config_get_ops(env, engine_config)->get_service(env, \
-		engine_config, service_name));
+#define axis2_engine_config_get_service(engine_config, env, service_name) \
+		(axis2_engine_config_get_ops(engine_config, env)->get_service \
+		(engine_config, env, service_name));
 
-#define axis2_engine_config_remove_service(env, engine_config, service_name) \
-		(axis2_engine_config_get_ops(env, engine_config)->remove_service(env, \
-		engine_config, service_name));
+#define axis2_engine_config_remove_service(engine_config, env, service_name) \
+		(axis2_engine_config_get_ops(engine_config, env)->remove_service \
+		(engine_config, env, service_name));
 		
 /************************* End of function macros *****************************/
 /************************* Start of function pointers *************************/
 
-typedef axis2_status_t (*axis2_engine_config_free_t)(axis2_env_t *env,
-		axis2_engine_config_t *engine_config);
+typedef axis2_status_t (*axis2_engine_config_free_t)
+		(axis2_engine_config_t *engine_config, axis2_env_t *env);
 		
 typedef axis2_status_t (*axis2_engine_config_add_service_group_t)
-		(axis2_env_t *env, axis2_engine_config_t *engine_config
+		(axis2_engine_config_t *engine_config, axis2_env_t *env
     	, axis2_description_servicegroup_t *service_group_desc);
 
 typedef axis2_description_service_t *(*axis2_engine_config_get_service_t)
-		(axis2_env_t *env, axis2_engine_config_t *engine_config
+		(axis2_engine_config_t *engine_config, axis2_env_t *env
 		, const axis2_char_t* service_name);
 
 typedef axis2_status_t (*axis2_engine_config_remove_service_t)
-		(axis2_env_t *env, axis2_engine_config_t *engine_config
+		(axis2_engine_config_t *engine_config, axis2_env_t *env
 		, const axis2_char_t *name);	
 		
 /************************* End of function pointers ***************************/

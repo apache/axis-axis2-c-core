@@ -63,8 +63,7 @@ axis2_description_param_t *axis2_description_servicegroup_ops_get_param(
 		, const axis2_char_t *name);
 		
 axis2_hash_t *axis2_description_servicegroup_ops_get_params
-		(axis2_env_t *env
-		, axis2_description_servicegroup_t *srvgrp_desc);
+		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env);
 		
 axis2_bool_t axis2_description_servicegroup_ops_is_param_locked(
 		axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
@@ -73,8 +72,7 @@ axis2_bool_t axis2_description_servicegroup_ops_is_param_locked(
 /***************************** End of function headers ************************/
 
 axis2_description_servicegroup_ops_t *axis2_description_servicegroup_get_ops
-		(axis2_env_t *env
-		, axis2_description_servicegroup_t *srvgrp_desc)
+		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env)
 {
 	if(!env || !srvgrp_desc)
 	{
@@ -108,6 +106,11 @@ axis2_description_servicegroup_t *axis2_description_servicegroup_create
 	ops->get_name = axis2_description_servicegroup_ops_get_name;
 	ops->add_service = axis2_description_servicegroup_ops_add_service;
 	ops->get_service = axis2_description_servicegroup_ops_get_service;
+	ops->remove_service = axis2_description_servicegroup_ops_remove_service;
+	ops->add_param = axis2_description_servicegroup_ops_add_param;
+	ops->get_param = axis2_description_servicegroup_ops_get_param;
+	ops->get_params = axis2_description_servicegroup_ops_get_params;
+	ops->is_param_locked = axis2_description_servicegroup_ops_is_param_locked;
 	
 	srvgrp_desc->ops = ops;
 	
@@ -248,8 +251,7 @@ axis2_description_param_t *axis2_description_servicegroup_ops_get_param(
 }
 
 axis2_hash_t *axis2_description_servicegroup_ops_get_params
-		(axis2_env_t *env
-		, axis2_description_servicegroup_t *srvgrp_desc)
+		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env)
 {
 	if(!env || !srvgrp_desc)
 	{

@@ -69,7 +69,7 @@ extern "C"
 		(srv_desc, env));
 
 #define axis2_description_service_set_parent(srv_desc, env \
-		, servicegroup_desc) (axis2_description_service_get_ops(service_desc \
+		, servicegroup_desc) (axis2_description_service_get_ops(srv_desc \
 		, env)->set_parent (srv_desc, env, servicegroup_desc));
 
 #define axis2_description_service_get_parent(srv_desc, env) \
@@ -77,28 +77,28 @@ extern "C"
 		(srv_desc, env));
 		
 #define axis2_description_service_get_name(srv_desc, env) \
-		(axis2_description_service_get_ops(srv_desc, env)->get_name(service_desc \
+		(axis2_description_service_get_ops(srv_desc, env)->get_name(srv_desc \
 		, env));
 		
 #define axis2_description_service_add_param(srv_desc, env, param) \
-		(axis2_description_service_get_ops(srv_desc, env)->add_param(service_desc \
+		(axis2_description_service_get_ops(srv_desc, env)->add_param(srv_desc \
 		, env, param));
 		
 
 #define axis2_description_service_get_param(srv_desc, env, name) \
-		(axis2_description_service_get_ops(srv_desc, env)->get_param(env \
-		, service_desc, name));
+		(axis2_description_service_get_ops(srv_desc, env)->get_param(srv_desc \
+		, env, name));
 		
 
 #define axis2_description_service_get_params(srv_desc, env) \
-		(axis2_description_service_get_ops(srv_desc, env)->get_params(env \
-		, service_desc));
+		(axis2_description_service_get_ops(srv_desc, env)->get_params(srv_desc \
+		, env));
 		
 		
 
 #define axis2_description_service_is_param_locked(srv_desc, env, \
 		param_name) (axis2_description_service_get_ops(env \
-		, service_desc)->is_parameter_locked(srv_desc, env, param_name));
+		, srv_desc)->is_parameter_locked(srv_desc, env, param_name));
 				
 
 /**************************** End of function macros **************************/
