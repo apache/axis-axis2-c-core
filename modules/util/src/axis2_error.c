@@ -17,7 +17,18 @@
 #include <stdlib.h>
 #include "axis2_error_default.h"
 
-axis2_char_t * AXIS2_CALL axis2_error_impl_get_message (int error_number);
+axis2_char_t * AXIS2_CALL axis2_error_impl_get_message (axis2_error_t *error
+		, axis2_error_codes_t error_number);
+		
+axis2_status_t AXIS2_CALL
+axis2_error_impl_set_error_number (axis2_error_t *error, axis2_error_codes_t error_number);
+
+axis2_status_t AXIS2_CALL
+axis2_error_impl_set_status_code (axis2_error_t *error, axis2_status_codes_t status_code);
+
+axis2_status_t AXIS2_CALL
+axis2_error_impl_get_status_code (axis2_error_t *error);
+
 
 axis2_status_t AXIS2_CALL
 axis2_error_impl_free (axis2_error_t *error)
@@ -57,13 +68,37 @@ axis2_error_create (axis2_allocator_t * allocator)
     }
 
     error->ops->get_message = axis2_error_impl_get_message;
+	error->ops->set_error_number = axis2_error_impl_set_error_number;
+	error->ops->set_status_code = axis2_error_impl_set_status_code;
+	error->ops->get_status_code = axis2_error_impl_get_status_code;
+
 
     return error;
 }
 
 axis2_char_t * AXIS2_CALL
-axis2_error_impl_get_message (int error_number)
+axis2_error_impl_get_message (axis2_error_t *error, axis2_error_codes_t error_number)
 {
     /** TODO: Need to fill in the error message list and get the error from that list */
     return "This is the default error code";
+}
+
+axis2_status_t AXIS2_CALL
+axis2_error_impl_set_error_number (axis2_error_t *error, axis2_error_codes_t error_number)
+{
+    error->error_number = error_number; 
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_error_impl_set_status_code (axis2_error_t *error, axis2_status_codes_t status_code)
+{
+    error->status_code = status_code; 
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_error_impl_get_status_code (axis2_error_t *error)
+{
+    return error->status_code;
 }

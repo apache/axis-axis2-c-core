@@ -11,4 +11,5 @@ libaxis2_util_la_SOURCES = axis2_hash.c \
                         axis2_qname.c
 
 libaxis2_util_la_LIBADD = $(LDFLAGS)
-INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include
+INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include \
+            -I$(top_builddir)/modules/util/src

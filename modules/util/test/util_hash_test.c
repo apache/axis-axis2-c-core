@@ -29,7 +29,7 @@ void Testaxis2_hash_get(CuTest *tc)
 
     axis2_hash_set (ht, key1, AXIS2_HASH_KEY_STRING, actual);
 
-    for (i = axis2_hash_first (environment, ht); i; i = axis2_hash_next (environment, i))
+    for (i = axis2_hash_first (ht, environment); i; i = axis2_hash_next (environment, i))
     {
 
         axis2_hash_this (i, NULL, NULL, &v);

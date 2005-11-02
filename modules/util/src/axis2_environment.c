@@ -74,3 +74,14 @@ axis2_environment_create (axis2_allocator_t * allocator,
 
     return environment;
 }
+
+AXIS2_DECLARE(axis2_status_t)
+axis2_environment_check_status (axis2_env_t *env)
+{
+    if(NULL == env)
+    {
+        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
+		AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_ENVIRONMENT_IS_NULL);		
+    }
+	return AXIS2_ERROR_GET_STATUS_CODE(env->error);
+}

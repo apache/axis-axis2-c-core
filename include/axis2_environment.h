@@ -64,8 +64,6 @@ extern "C"
         /** Logging routines */
         axis2_log_t *log;
 		
-		/** Status code */
-		axis2_status_t status;
     } axis2_env_t;
 
   /**
@@ -93,6 +91,11 @@ extern "C"
     * @return pointer to the newly created environment struct 
     */
     AXIS2_DECLARE(axis2_status_t) axis2_environment_free (axis2_env_t *env);
+
+    /**
+      *
+      */
+    AXIS2_DECLARE(axis2_status_t) axis2_environment_check_status (axis2_env_t *env);
 
 /** @} */
 

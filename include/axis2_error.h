@@ -27,6 +27,8 @@ extern "C"
 
     struct axis2_error;
     struct axis2_error_ops;
+	typedef enum axis2_status_codes axis2_status_codes_t;
+	typedef enum axis2_error_codes axis2_error_codes_t;
 
 /**
  * @defgroup axis2_error Error
@@ -53,7 +55,17 @@ extern "C"
         * get error message for the last error
         * @return error message for the last error. NULL on error.
         */
-         axis2_char_t * (AXIS2_CALL *get_message) (int error_number);
+         axis2_char_t * (AXIS2_CALL *get_message) (struct axis2_error *error
+				, axis2_error_codes_t error_number);
+		
+		 axis2_status_t  (AXIS2_CALL *set_error_number) (struct axis2_error *error
+				,  axis2_error_codes_t error_number);
+		
+         axis2_status_t  (AXIS2_CALL *set_status_code) (struct axis2_error *error
+				, axis2_status_codes_t status_code);
+		
+         axis2_status_t  (AXIS2_CALL *get_status_code) (struct axis2_error *error);
+			 
     } axis2_error_ops_t;
 
   /** 
@@ -67,31 +79,43 @@ extern "C"
         struct axis2_error_ops *ops;
         /** last error number */
         int error_number;
+
+        int status_code;
     } axis2_error_t;
 
 
 #define AXIS2_ERROR_FREE(error) ((error->ops)->free(error))
-#define AXIS2_ERROR_GET_MESSAGE(error) ((error)->ops->get_message())
+
+#define AXIS2_ERROR_GET_MESSAGE(error, status_code) ((error)->ops->get_message \
+        (error, status_code))
+
+#define AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number) \
+        ((error)->ops->set_error_number(error, error_number))
+	
+#define AXIS2_ERROR_SET_STATUS_CODE(error, status_code) \
+        ((error)->ops->set_status_code(error, status_code))
+        
+#define AXIS2_ERROR_GET_STATUS_CODE(error) ((error)->ops->get_status_code(error))
 
   /** 
     * \brief Axis2 status codes
     *
     * Possible status values for Axis2
     */
-    typedef enum axis2_status_codes
+    enum axis2_status_codes
     {
         /** Failure state */
         AXIS2_FAILURE = 0,
         /** Success state */
         AXIS2_SUCCESS
-    } axis2_status_codes_t;
+    };
 
   /** 
     * \brief Axis2 error codes
     *
     * Set of error codes for Axis2
     */
-    typedef enum axis2_error_codes
+    enum axis2_error_codes
     {
         /** No error */
         AXIS2_ERROR_NONE = 0,
@@ -122,8 +146,10 @@ extern "C"
 		/** Struct is not properly initialized */
 		AXIS2_ERROR_STRUCT_NOT_INITIALIZED,
 		/** Could not open the file */
-		AXIS2_ERROR_COULD_NOT_OPEN_FILE
-    } axis2_error_codes_t;
+		AXIS2_ERROR_COULD_NOT_OPEN_FILE,
+		/** Environment passed is null */
+		AXIS2_ERROR_ENVIRONMENT_IS_NULL
+    };
 
 /** @} */
     
