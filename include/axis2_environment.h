@@ -63,6 +63,9 @@ extern "C"
         axis2_stream_t *stream;
         /** Logging routines */
         axis2_log_t *log;
+		
+		/** Status code */
+		axis2_status_t status;
     } axis2_env_t;
 
   /**
