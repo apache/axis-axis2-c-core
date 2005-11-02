@@ -22948,7 +22948,7 @@ else
 fi
 
 
-                                                                                                                                                                                                                                                                                                                                          ac_config_files="$ac_config_files Makefile modules/Makefile modules/core/Makefile modules/core/context/Makefile modules/core/context/src/Makefile modules/core/description/Makefile modules/core/description/src/Makefile modules/core/description/test/Makefile modules/core/engine/Makefile modules/core/engine/src/Makefile modules/xml/Makefile modules/xml/guththila/Makefile modules/xml/guththila/src/Makefile modules/xml/soap/Makefile modules/xml/soap/src/Makefile modules/xml/om/Makefile modules/xml/om/src/Makefile modules/xml/om/test/Makefile modules/common/Makefile modules/common/src/Makefile modules/common/test/Makefile modules/util/Makefile modules/util/src/Makefile modules/util/test/Makefile modules/wsdl/Makefile modules/wsdl/src/Makefile modules/wsdl/test/Makefile modules/test/Makefile modules/test/om/Makefile modules/test/om/src/Makefile modules/test/common/Makefile modules/test/util/Makefile modules/test/unit/Makefile"
+                                                                                                                                                                                                                                                                                                                                                              ac_config_files="$ac_config_files Makefile modules/Makefile modules/core/Makefile modules/core/context/Makefile modules/core/context/src/Makefile modules/core/description/Makefile modules/core/description/src/Makefile modules/core/description/test/Makefile modules/core/engine/Makefile modules/core/engine/src/Makefile modules/core/handlers/Makefile modules/core/handlers/src/Makefile modules/xml/Makefile modules/xml/guththila/Makefile modules/xml/guththila/src/Makefile modules/xml/soap/Makefile modules/xml/soap/src/Makefile modules/xml/om/Makefile modules/xml/om/src/Makefile modules/xml/om/test/Makefile modules/common/Makefile modules/common/src/Makefile modules/common/test/Makefile modules/util/Makefile modules/util/src/Makefile modules/util/test/Makefile modules/wsdl/Makefile modules/wsdl/src/Makefile modules/wsdl/test/Makefile modules/test/Makefile modules/test/om/Makefile modules/test/om/src/Makefile modules/test/common/Makefile modules/test/util/Makefile modules/test/unit/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -23559,6 +23559,8 @@ do
   "modules/core/description/test/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/description/test/Makefile" ;;
   "modules/core/engine/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/engine/Makefile" ;;
   "modules/core/engine/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/engine/src/Makefile" ;;
+  "modules/core/handlers/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/handlers/Makefile" ;;
+  "modules/core/handlers/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/handlers/src/Makefile" ;;
   "modules/xml/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/Makefile" ;;
   "modules/xml/guththila/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/guththila/Makefile" ;;
   "modules/xml/guththila/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/guththila/src/Makefile" ;;

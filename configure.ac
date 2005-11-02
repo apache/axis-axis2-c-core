@@ -96,6 +96,8 @@ AC_CONFIG_FILES([Makefile \
     modules/core/description/test/Makefile \
     modules/core/engine/Makefile \
     modules/core/engine/src/Makefile \
+    modules/core/handlers/Makefile \
+    modules/core/handlers/src/Makefile \
     modules/xml/Makefile \
     modules/xml/guththila/Makefile \
     modules/xml/guththila/src/Makefile \
