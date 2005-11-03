@@ -76,7 +76,7 @@ extern "C"
  * @param environment The environment to allocate the hash table out of
  * @return The hash table just created
   */
-  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make (axis2_env_t *environment);
+  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make (axis2_env_t **environment);
 
 /**
  * Create a hash table with a custom hash function
@@ -84,7 +84,7 @@ extern "C"
  * @param hash_func A custom hash function.
  * @return The hash table just created
   */
-   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make_custom (axis2_env_t *environment
+   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make_custom (axis2_env_t **environment
    			, axis2_hashfunc_t hash_func);
 
 /**
@@ -95,7 +95,7 @@ extern "C"
  * @remark Makes a shallow copy
  */
   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_copy (const axis2_hash_t *ht
-  			, axis2_env_t *environment);
+  			, axis2_env_t **environment);
 
 /**
  * Associate a value with a key in a hash table.
@@ -147,7 +147,7 @@ extern "C"
  * </PRE>
  */
  AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_first (axis2_hash_t *ht
- 			,axis2_env_t *environment);
+ 			,axis2_env_t **environment);
 
 /**
  * Continue iterating over the entries in a hash table.
@@ -155,7 +155,7 @@ extern "C"
  * @return a pointer to the updated iteration state.  NULL if there are no more  
  *         entries.
  */
- AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_next (axis2_env_t *environment
+ AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_next (axis2_env_t **environment
  			, axis2_hash_index_t *hi);
 
 /**
@@ -187,7 +187,7 @@ extern "C"
  * @return A new hash table containing all of the data from the two passed in
  */
   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_overlay (const axis2_hash_t *overlay
-  			,axis2_env_t *environment, const axis2_hash_t *base);
+  			,axis2_env_t **environment, const axis2_hash_t *base);
 
 /**
  * Merge two hash tables into one new hash table. If the same key
@@ -204,7 +204,7 @@ extern "C"
  * @return A new hash table containing all of the data from the two passed in
  */
   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_merge (const axis2_hash_t *h1
-  			, axis2_env_t *environment, const axis2_hash_t *h2
+  			, axis2_env_t **environment, const axis2_hash_t *h2
             , void *(*merger) (axis2_env_t *environment, const void *key
             , axis2_ssize_t klen, const void *h1_val, const void *h2_val
             , const void *data), const void *data);
@@ -218,7 +218,7 @@ extern "C"
  */
 									
 AXIS2_DECLARE(axis2_status_t) axis2_hash_free(axis2_hash_t *ht
-		, axis2_env_t *environment);
+		, axis2_env_t **environment);
 									
 
 
