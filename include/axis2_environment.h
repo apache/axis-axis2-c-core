@@ -19,7 +19,8 @@
 
 /**
  * @file axis2_environment.h
- * @brief Axis2 environment that acts as a container for error, log and memory allocator routines
+ * @brief Axis2 environment that acts as a container for error, log and memory 
+ *  allocator routines
  */
 
 #include <axis2_allocator.h>
@@ -51,7 +52,8 @@ extern "C"
   /** 
     * \brief Axis2 Environment struct
     *
-    * Environment acts as a container for error, log, memory allocator and other routines
+    * Environment acts as a container for error, log, memory allocator and other
+    * routines
     */
     typedef struct axis2_environment
     {
@@ -63,23 +65,47 @@ extern "C"
         axis2_stream_t *stream;
         /** Logging routines */
         axis2_log_t *log;
+		/** This flag indicate whether logging is enabled or not */
+		axis2_bool_t log_enabled;
 		
     } axis2_env_t;
 
-  /**
-    * Creates an environment struct
-    * @param allocator pointer to an instance of allocator struct. Mandatory, cannot be NULL
-    * @param error pointer to an instance of error struct. Optional, can be NULL. If NULL default error handler would be used.
-    * @param stream pointer to an instance of stream struct. Optional, can be NULL. If NULL default stream handler would be used.
-    * @param log pointer to an instance of log struct. Optional, can be NULL. If NULL default log handler would be used.
-    * @param string pointer to an instance of string struct. Optional, can be NULL. If NULL default string handler would be used.
+	/**
+    * Creates an environment struct. Users of axis2 should not use this function
+	* to create an environment. He should use the other two create functions.
+    * @param allocator pointer to an instance of allocator struct. Must be non-NULL    
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_env_t *) axis2_environment_create (axis2_allocator_t *
-                                                   allocator,
-                                                   axis2_error_t * error,
-                                                   axis2_stream_t * stream,
-                                                   axis2_log_t * log);
+    AXIS2_DECLARE(axis2_env_t *) axis2_environment_create (axis2_allocator_t
+                                                   *allocator);                                                   
+	
+  /**
+    * Creates an environment struct
+    * @param allocator pointer to an instance of allocator struct. Must be non-NULL
+    * @param error pointer to an instance of error struct. Must be non-NULL.
+    * @param stream pointer to an instance of stream struct. Must be non-NULL.
+    * it would be taken as a flag for no logging.    
+    * @return pointer to the newly created environment struct 
+    */
+    AXIS2_DECLARE(axis2_env_t *) axis2_environment_create_with_error_stream 
+													(axis2_allocator_t *allocator
+                                                   , axis2_error_t *error
+                                                   , axis2_stream_t *stream);
+	
+	/**
+    * Creates an environment struct
+    * @param allocator pointer to an instance of allocator struct. Must be non-NULL
+    * @param error pointer to an instance of error struct. Must be non-NULL.
+    * @param stream pointer to an instance of stream struct. Must be non-NULL.
+    * @param log pointer to an instance of log struct. May be NULL. If NULL
+    * it would be taken as a flag for no logging.    
+    * @return pointer to the newly created environment struct 
+    */
+    AXIS2_DECLARE(axis2_env_t *) axis2_environment_create_with_error_stream_log 
+													(axis2_allocator_t *allocator
+                                                   , axis2_error_t *error
+                                                   , axis2_stream_t *stream
+                                                   , axis2_log_t *log);
 
   /**
     * Creates an environment struct
