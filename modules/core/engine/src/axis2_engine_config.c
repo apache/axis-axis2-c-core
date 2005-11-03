@@ -18,15 +18,16 @@
 
 #include <axis2_engine_config.h>
 
+typedef struct axis2_engine_impl_config_s axis2_engine_impl_config_t;
 
 /**
-  * @struct axis2_engine_config
-  * @brief ENGINE engine_config operations
+  * @struct axis2_engine_impl_config
+  * @brief ENGINE engine_config impl
   * This holds the information about engine.
   */
-struct axis2_engine_config_s
+struct axis2_engine_impl_config_s
 {
-	axis2_engine_config_ops_t *ops;
+	axis2_engine_config_t engine;
     axis2_description_param_include_t * param_include;
     axis2_hash_t *service_groups;
 };
@@ -42,11 +43,11 @@ axis2_status_t axis2_engine_config_ops_add_service_group
 
 axis2_description_servicegroup_t *axis2_engine_config_ops_get_servicegroup
 		(axis2_engine_config_t *engine_config, axis2_env_t *env
-		, const axis2_char_t* servicegroup_name);
+		, const axis2_char_t *servicegroup_name);
 
 axis2_status_t axis2_engine_config_ops_add_service
 		(axis2_engine_config_t *engine_config, axis2_env_t *env
-		, const axis2_description_service_t* service_desc);
+		, axis2_description_service_t* service_desc);
 
 axis2_description_service_t *axis2_engine_config_ops_get_service
 		(axis2_engine_config_t *engine_config, axis2_env_t *env
@@ -56,67 +57,58 @@ axis2_status_t axis2_engine_config_ops_remove_service
 		(axis2_engine_config_t *engine_config, axis2_env_t *env
 		, const axis2_char_t *name);
 		
-axis2_status_t split_service_name(axis2_env_t *env, axis2_char_t *service_name
-		, axis2_char_t **service_name_st);
+axis2_status_t split_service_name(axis2_env_t *env
+		, const axis2_char_t *service_name, axis2_char_t **service_name_st);
 		
 
 /************************** End of function prototypes ************************/
 
-axis2_engine_config_ops_t *axis2_engine_config_get_ops
-	(axis2_env_t *env, axis2_engine_config_t *engine_config)
-{
-	if(!engine_config)
-	{
-		/* set error code*/
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
-		return NULL;
-	}
-	return (axis2_engine_config_ops_t *) engine_config->ops;	
-}
-
-
 axis2_engine_config_t *axis2_engine_config_create 
-		(axis2_env_t *env)
+		(axis2_env_t **env)
 {
-	axis2_engine_config_t *engine_config
-	= (axis2_engine_config_t *) AXIS2_MALLOC (env->allocator
-	, sizeof(axis2_engine_config_t));
-	if(!engine_config)
+	axis2_engine_impl_config_t *engine_impl_config
+		= (axis2_engine_impl_config_t *) AXIS2_MALLOC ((*env)->allocator
+		, sizeof(axis2_engine_impl_config_t));
+	
+	if(NULL == engine_impl_config)
 	{
 		/* set the error code*/
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
+		(*env)->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
+	
 	axis2_engine_config_ops_t *ops
 		= (axis2_engine_config_ops_t *) AXIS2_MALLOC (env->allocator
 		, sizeof(axis2_engine_config_ops_t));
-	if(!ops)
+	if(NULL == ops)
 	{
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
-		AXIS2_FREE(env->allocator, engine_config);
+		(*env)->error->error_number = AXIS2_ERROR_NO_MEMORY;
+		AXIS2_FREE((*env)->allocator, engine_impl_config);
 		return NULL;		
 	}
 	ops->free = axis2_engine_config_ops_free;
 	ops->add_service_group = axis2_engine_config_ops_add_service_group;
+	ops->get_service_group = axis2_engine_config_ops_get_servicegroup;
+	ops->add_service = axis2_engine_config_ops_add_service;
 	ops->get_service = axis2_engine_config_ops_get_service;
 	ops->remove_service = axis2_engine_config_ops_remove_service;
 	
-	engine_config->ops = ops;
+	(engine_impl_config->engine_config).ops = ops;
 
 	axis2_description_param_include_t *param_include 
 		= (axis2_description_param_include_t *)
 		axis2_description_param_include_create(env);		
-	if(!param_include)
+	if(NULL == param_include)
 	{
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
+		(*env)->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
 
-	engine_config->param_include = param_include;
+	(engine_impl_config->engine_config).param_include = param_include;
 	
-	engine_config->service_groups = NULL;
+	(engine_impl_config->engine_config).service_groups = NULL;
 	
-	return engine_config;	
+	return &(engine_impl_config->engine_config);	
 }	
 
 /**********************Start of operation impls********************************/
@@ -150,7 +142,7 @@ axis2_status_t axis2_engine_config_ops_add_service_group
 
 axis2_description_servicegroup_t *axis2_engine_config_ops_get_servicegroup
 		(axis2_engine_config_t *engine_config, axis2_env_t *env
-		, const axis2_char_t* servicegroup_name)
+		, const axis2_char_t *servicegroup_name)
 {
 	if(!engine_config)
 	{
@@ -164,15 +156,15 @@ axis2_description_servicegroup_t *axis2_engine_config_ops_get_servicegroup
 		return NULL;
 	}
 	return (axis2_description_servicegroup_t *) (axis2_hash_get 
-		(engine_config->service_groups, servicegroup_name
+		(engine_config->service_groups, tempname
 		, AXIS2_HASH_KEY_STRING));
 }
 
 axis2_status_t axis2_engine_config_ops_add_service
 		(axis2_engine_config_t *engine_config, axis2_env_t *env
-		, const axis2_description_service_t *service_desc)
+		, axis2_description_service_t *srv_desc)
 {
-	if(!engine_config || !service_desc) 
+	if(NULL == engine_config || NULL == srv_desc) 
 		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
 	
 	axis2_description_servicegroup_t *servicegroup_desc 
@@ -181,8 +173,7 @@ axis2_status_t axis2_engine_config_ops_add_service
 	if(!servicegroup_desc)
 		return AXIS2_ERROR_NO_MEMORY;
 	
-	axis2_qname_t *servicegroup_qname = axis2_description_service_get_name
-		(service_desc, env);
+	axis2_qname_t *servicegroup_qname = axis2_description_service_get_name(srv_desc, env);
 	
 	axis2_char_t *servicegroup_name = servicegroup_qname->localpart;
 	
@@ -190,7 +181,7 @@ axis2_status_t axis2_engine_config_ops_add_service
 		, servicegroup_name);
 	
 	axis2_description_servicegroup_add_service(servicegroup_desc, env
-		, service_desc);
+		, srv_desc);
 	
 	return AXIS2_SUCCESS;
 }
@@ -279,24 +270,25 @@ axis2_status_t axis2_engine_config_ops_remove_service
  * @return service name and group name 
  */
 axis2_status_t split_service_name
-		(axis2_env_t *env, axis2_char_t *service_name, axis2_char_t **service_name_st)
+		(axis2_env_t *env, const axis2_char_t *service_name, axis2_char_t **service_name_st)
 {
+	axis2_char_t *srv_name_temp = axis2_strdup(service_name);
 	if(!service_name_st)
     {
         return AXIS2_ERROR_INVALID_NULL_PARAMETER;
     }
-    axis2_char_t *srv_name = strpbrk(service_name, SERVICE_NAME_SPLIT_CHAR);
-    if(NULL == srv_name)
+    axis2_char_t *srv_name_l = strpbrk(srv_name_temp, SERVICE_NAME_SPLIT_CHAR);
+    if(NULL == srv_name_l)
     {
-        *(service_name_st + 1) = service_name;
-        *(service_name_st + 2) = service_name;
+        *(service_name_st + 1) = srv_name_temp;
+        *(service_name_st + 2) = srv_name_temp;
         return AXIS2_SUCCESS;
     }
-    srv_name[0] = AXIS2_EOLN;
-    axis2_char_t *grp_name = AXIS2_MALLOC(env->allocator, strlen(service_name));
-    sscanf(service_name, "%s", grp_name);
-    srv_name = srv_name + 1;
-    *(service_name_st + 1) = srv_name;
+    srv_name_l[0] = AXIS2_EOLN;
+    axis2_char_t *grp_name = AXIS2_MALLOC(env->allocator, strlen(srv_name_temp));
+    sscanf(srv_name_temp, "%s", grp_name);
+    srv_name_l = srv_name_l + 1;
+    *(service_name_st + 1) = srv_name_l;
     *(service_name_st + 2) = grp_name;
 	
     return AXIS2_SUCCESS;	

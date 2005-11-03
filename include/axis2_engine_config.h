@@ -46,12 +46,20 @@ extern "C"
 
 /************************* Start of function macros	***************************/
 	
-#define axis2_engine_config_free(engine_config, env) (axis2_engine_get_ops \
-		(engine_config, env)->free(engine_config, env);
+#define axis2_engine_config_free(engine_config, env) \
+		(engine_config->free(engine_config, env);
 	
 #define axis2_engine_config_add_service_group(engine_config, env, \
-		service_group_desc) (axis2_engine_config_get_ops(env, \
-		engine_config)->add_service_group (engine_config, env, service_group_desc));
+		service_group_desc) (axis2_engine_config_get_ops(engine_config, \
+		, env)->add_service_group (engine_config, env, service_group_desc));
+
+#define axis2_engine_config_get_service_group(engine_config, env, \
+		servicegroup_name) (axis2_engine_config_get_ops(engine_config \
+		, env)->get_service_group (engine_config, env, servicegroup_name));
+
+#define axis2_engine_config_add_service(engine_config, env, service_desc) \
+		(axis2_engine_config_get_ops(engine_config, env)->get_service \
+		(engine_config, env, service_desc));
 		
 #define axis2_engine_config_get_service(engine_config, env, service_name) \
 		(axis2_engine_config_get_ops(engine_config, env)->get_service \
@@ -70,7 +78,15 @@ typedef axis2_status_t (*axis2_engine_config_free_t)
 typedef axis2_status_t (*axis2_engine_config_add_service_group_t)
 		(axis2_engine_config_t *engine_config, axis2_env_t *env
     	, axis2_description_servicegroup_t *service_group_desc);
+		
+typedef axis2_description_servicegroup_t *(*axis2_engine_config_get_service_group_t)
+		(axis2_engine_config_t *engine_config, axis2_env_t *env
+		, const axis2_char_t *servicegroup_name);
 
+typedef axis2_status_t (*axis2_engine_config_add_service_t)
+		(axis2_engine_config_t *engine_config, axis2_env_t *env
+		, axis2_description_service_t* service_desc);
+		
 typedef axis2_description_service_t *(*axis2_engine_config_get_service_t)
 		(axis2_engine_config_t *engine_config, axis2_env_t *env
 		, const axis2_char_t* service_name);
@@ -97,20 +113,26 @@ struct axis2_engine_config_ops_s
 {
 	axis2_engine_config_free_t free;
 	axis2_engine_config_add_service_group_t add_service_group;
+	axis2_engine_config_get_service_group_t get_service_group;
+	axis2_engine_config_add_service_t add_service;
 	axis2_engine_config_get_service_t get_service;
 	axis2_engine_config_remove_service_t remove_service;
 };
 
-/** function to get the operations consturct for axis2_engine_config_create
- * @return operation struct
- */
-axis2_engine_config_ops_t *axis2_engine_config_get_ops(axis2_env_t *env,
-		axis2_engine_config_t *config);
+/**
+  * @struct axis2_engine_config
+  * @brief ENGINE engine_config
+  * This holds operations of the engine struct.
+  */
+struct axis2_engine_config_s
+{
+	axis2_engine_config_ops_t *ops;
+};
 
 /** create axis_engine_config struct
  * @return axis_engine_config struct
  */
-axis2_engine_config_t *axis2_engine_config_create(axis2_env_t *env);
+axis2_engine_config_t *axis2_engine_config_create(axis2_env_t **env);
 
 /** @} */
 #ifdef __cplusplus

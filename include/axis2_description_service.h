@@ -134,7 +134,7 @@ typedef axis2_description_servicegroup_t
 		(axis2_description_service_t *srv_desc, axis2_env_t *env);
 		 
 typedef axis2_qname_t *(*axis2_description_service_get_name_t)
-		(axis2_description_service_t *srv_desc, axis2_env_t *env);
+		(const axis2_description_service_t *srv_desc, axis2_env_t *env);
 		
 typedef axis2_status_t (*axis2_description_service_add_param_t)
 		(axis2_description_service_t *srv_desc, axis2_env_t *env
@@ -184,6 +184,17 @@ struct axis2_description_service_ops_s
 	axis2_description_service_get_params_t get_params;
 	
 	axis2_description_service_is_param_locked_t is_param_locked;
+};
+
+/**
+  * @struct axis2_description_service
+  * @brief DESCRIPTION service struct
+  * This holds operations on the service struct
+  */
+struct axis2_description_service_s
+{
+	axis2_description_service_ops_t *ops;   
+
 };
 
 /** To get the operation struct for axis_description_service_t call this
