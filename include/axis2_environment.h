@@ -97,7 +97,7 @@ extern "C"
       */
     AXIS2_DECLARE(axis2_status_t) axis2_environment_check_status (axis2_env_t *env);
 
-    #define AXIS2_ENVIRONMENT_CHECK(env,error_return) \
+    #define AXIS2_ENV_CHECK(env, error_return) \
     if(!env || !(*env))  \
 	{ \
 		axis2_allocator_t *allocator = axis2_allocator_init (NULL); \
