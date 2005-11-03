@@ -19,12 +19,11 @@
 
 
 /**
-  * @file axis2_context_msg_context.h
+  * @file axis2_context_messsage.h
   * @brief axis2 ENGINE CORE msg_context
   */
 
 #include <axis2_core.h>
-#include <axis2_context_msg_context.h>
 
 #ifdef __cplusplus
 extern "C"
