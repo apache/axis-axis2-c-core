@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <axis2_description_servicegroup.h>
+#include <axis2_description_service_group.h>
 
 /** @struct axis2_description_servicegroup_s
   * @brief DESCRIPTION servicegroup
