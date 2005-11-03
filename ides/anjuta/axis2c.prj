@@ -68,8 +68,6 @@ module.include.name=.
 module.include.type=
 module.include.files=\
 	include/axis2.h\
-	include/axis2_description_param_include.h\
-	include/axis2_engine_config.h\
 	include/axis2_om_attribute.h\
 	include/axis2_om_comment.h\
 	include/axis2_om_doctype.h\
@@ -105,14 +103,7 @@ module.include.files=\
 	modules/xml/guththila/src/guththila_unicode.h\
 	modules/xml/guththila/src/guththila_xml_stream_writer.h\
 	modules/xml/guththila/src/guththila_xml_pull_parser.h\
-	include/axis2_description_module.h\
-	include/axis2_description_operation.h\
-	include/axis2_description_parameter.h\
-	include/axis2_description_service.h\
-	include/axis2_description_servicegroup.h\
 	include/axis2_core.h\
-	include/axis2_context_msg_context.h\
-	include/axis2_engine_msg_receiver.h\
 	include/axis2_wsdl_operation.h\
 	include/axis2_wsdl_service.h\
 	modules/util/src/axis2_error_default.h\
@@ -120,14 +111,23 @@ module.include.files=\
 	modules/util/src/axis2_stream_default.h\
 	modules/util/src/axis2_file_diff.h\
 	modules/util/src/axis2_hash.h\
-	modules/util/src/axis2_string.h
+	modules/util/src/axis2_string.h\
+	include/axis2_engine_configuration.h\
+	include/axis2_handler.h\
+	include/axis2_message_context.h\
+	include/axis2_message_receiver.h\
+	include/axis2_module.h\
+	include/axis2_operation.h\
+	include/axis2_parameter.h\
+	include/axis2_parameter_container.h\
+	include/axis2_service.h\
+	include/axis2_service_group.h\
+	include/axis2_wsdl_component.h
 
 module.source.name=.
 module.source.type=
 module.source.files=\
 	modules/common/src/axis2.c\
-	modules/core/description/src/axis2_description_param_include.c\
-	modules/core/engine/src/axis2_engine_config.c\
 	modules/core/description/test/description_test.c\
 	modules/common/test/common_test.c\
 	modules/core/engine/test/engine_test.c\
@@ -160,19 +160,22 @@ module.source.files=\
 	modules/test/util/test_util.c\
 	modules/test/common/test_common.c\
 	modules/test/om/src/test_om.c\
-	modules/core/description/src/axis2_description_module.c\
-	modules/core/description/src/axis2_description_operation.c\
-	modules/core/description/src/axis2_description_parameter.c\
-	modules/core/description/src/axis2_description_service.c\
-	modules/core/description/src/axis2_description_servicegroup.c\
-	modules/core/context/src/axis2_context_msg_context.c\
-	modules/core/engine/src/axis2_engine_msg_receiver.c\
 	modules/xml/om/src/axis2_om_output.c\
 	modules/util/src/axis2_qname.c\
 	modules/util/src/axis2_file_diff.c\
-	modules/wsdl/src/axis2_wsdl_operation.c\
-	modules/wsdl/src/axis2_wsdl_service.c\
-	modules/wsdl/src/axis2_wsdl_component.c
+	modules/core/context/src/context_message.c\
+	modules/core/description/src/module.c\
+	modules/core/description/src/operation.c\
+	modules/core/description/src/parameter.c\
+	modules/core/description/src/parameter_container.c\
+	modules/core/description/src/service.c\
+	modules/core/description/src/service_group.c\
+	modules/core/engine/src/engine_configuration.c\
+	modules/core/engine/src/message_receiver.c\
+	modules/core/handlers/src/axis2_handler.c\
+	modules/wsdl/src/wsdl_component.c\
+	modules/wsdl/src/wsdl_operation.c\
+	modules/wsdl/src/wsdl_service.c
 
 module.pixmap.name=.
 module.pixmap.type=
