@@ -63,11 +63,9 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libaxis2_description_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libaxis2_description_la_OBJECTS =  \
-	axis2_description_param_include.lo \
-	axis2_description_operation.lo axis2_description_service.lo \
-	axis2_description_module.lo axis2_description_parameter.lo \
-	axis2_description_servicegroup.lo
+am_libaxis2_description_la_OBJECTS = parameter_container.lo \
+	operation.lo service.lo module.lo parameter.lo \
+	service_group.lo
 libaxis2_description_la_OBJECTS =  \
 	$(am_libaxis2_description_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
@@ -196,12 +194,12 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 lib_LTLIBRARIES = libaxis2_description.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_description_la_SOURCES = axis2_description_param_include.c \
-                            axis2_description_operation.c \
-                            axis2_description_service.c \
-                            axis2_description_module.c \
-                            axis2_description_parameter.c \
-                            axis2_description_servicegroup.c
+libaxis2_description_la_SOURCES = parameter_container.c \
+                            operation.c \
+                            service.c \
+                            module.c \
+                            parameter.c \
+                            service_group.c
 
 libaxis2_description_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
@@ -277,12 +275,12 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_description_module.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_description_operation.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_description_param_include.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_description_parameter.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_description_service.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_description_servicegroup.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/module.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/operation.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/parameter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/parameter_container.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/service.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/service_group.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

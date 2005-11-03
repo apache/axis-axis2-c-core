@@ -63,8 +63,8 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libaxis2_wsdl_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libaxis2_wsdl_la_OBJECTS = axis2_wsdl_operation.lo \
-	axis2_wsdl_service.lo axis2_wsdl_component.lo
+am_libaxis2_wsdl_la_OBJECTS = wsdl_operation.lo wsdl_service.lo \
+	wsdl_component.lo
 libaxis2_wsdl_la_OBJECTS = $(am_libaxis2_wsdl_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -192,9 +192,9 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 lib_LTLIBRARIES = libaxis2_wsdl.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_wsdl_la_SOURCES = axis2_wsdl_operation.c \
-                        axis2_wsdl_service.c \
-                        axis2_wsdl_component.c
+libaxis2_wsdl_la_SOURCES = wsdl_operation.c \
+                        wsdl_service.c \
+                        wsdl_component.c
 
 libaxis2_wsdl_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include
@@ -267,9 +267,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_wsdl_component.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_wsdl_operation.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_wsdl_service.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_component.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_operation.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_service.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
