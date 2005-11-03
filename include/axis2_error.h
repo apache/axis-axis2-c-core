@@ -104,8 +104,10 @@ extern "C"
     */
     enum axis2_status_codes
     {
+        /** Critical Failure state */
+        AXIS2_CRTICAL_FAILURE = -1,
         /** Failure state */
-        AXIS2_FAILURE = 0,
+        AXIS2_FAILURE,
         /** Success state */
         AXIS2_SUCCESS
     };
