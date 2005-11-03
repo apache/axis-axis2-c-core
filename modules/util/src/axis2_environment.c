@@ -15,14 +15,9 @@
  */
 
 #include <axis2_environment.h>
+#include <stdlib.h>
 
-#include <axis2_error_default.h>
-#include <axis2_stream_default.h>
-#include <axis2_log_default.h>
-
-
-AXIS2_DECLARE(axis2_status_t )
-axis2_environment_free (axis2_env_t *env)
+AXIS2_DECLARE(axis2_status_t) axis2_environment_free (axis2_env_t *env)
 {
     if(NULL != env && NULL != env->allocator)
         free (env->allocator);
@@ -43,37 +38,66 @@ axis2_environment_free (axis2_env_t *env)
 }
 
 AXIS2_DECLARE(axis2_env_t *)
-axis2_environment_create (axis2_allocator_t * allocator,
-                          axis2_error_t * error, axis2_stream_t * stream,
-                          axis2_log_t * log)
+axis2_environment_create (axis2_allocator_t *allocator)
+{
+	axis2_env_t *environment;
+    if (NULL == allocator)
+        return NULL;
+
+    environment =
+        (axis2_env_t *) AXIS2_MALLOC (allocator, sizeof (axis2_env_t));
+
+    if (NULL == environment)
+        return NULL;
+
+    environment->allocator = allocator;
+	
+	return environment;
+    
+}
+
+AXIS2_DECLARE(axis2_env_t *)
+axis2_environment_create_with_error_stream (axis2_allocator_t *allocator
+                          , axis2_error_t *error, axis2_stream_t *stream)
+{
+	return axis2_environment_create_with_error_stream_log(allocator, error
+		, stream, NULL);    
+}
+
+AXIS2_DECLARE(axis2_env_t *)
+axis2_environment_create_with_error_stream_log (axis2_allocator_t *allocator
+                          , axis2_error_t *error, axis2_stream_t *stream
+                          , axis2_log_t *log)
 {
     axis2_env_t *environment;
-    if (!allocator)
+    if (NULL == allocator)
         return NULL;
 
     environment =
         (axis2_env_t *) AXIS2_MALLOC (allocator,
                                               sizeof (axis2_env_t));
 
-    if (!environment)
+    if (NULL == environment)
         return NULL;
 
     environment->allocator = allocator;
 
-    if (!error)
-        environment->error = axis2_error_create (allocator);
-    else
-        environment->error = error;
+    if (NULL == error)
+        return NULL;
+    environment->error = error;
 
-    environment->stream = axis2_stream_create (allocator, stream);    
+	if(NULL == stream)
+		return NULL;
+    environment->stream = stream;    
 
-    if (!log)
-        environment->log = axis2_log_create (allocator, NULL);
-    else
-        environment->log = log;
+    if (NULL == log)
+        environment->log_enabled = AXIS2_FALSE;
+	environment->log_enabled = AXIS2_TRUE;
+    environment->log = log;
 
     return environment;
 }
+
 
 AXIS2_DECLARE(axis2_status_t)
 axis2_environment_check_status (axis2_env_t *env)

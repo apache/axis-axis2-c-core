@@ -35,8 +35,8 @@ axis2_char_t AXIS2_CALL axis2_stream_impl_file_get_char(void *file_ptr);
 axis2_status_t AXIS2_CALL axis2_stream_impl_file_unget_char(const char chr, void *file_ptr);
 
 AXIS2_DECLARE(axis2_stream_t *)
-axis2_stream_create (axis2_allocator_t * allocator,
-                     axis2_stream_t * stream)
+axis2_stream_create (axis2_allocator_t *allocator
+                     , axis2_stream_t *stream)
 {
 	if(stream)
 	{
