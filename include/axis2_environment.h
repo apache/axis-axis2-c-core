@@ -133,6 +133,11 @@ extern "C"
 		        AXIS2_ERROR_ENVIRONMENT_IS_NULL); \
 		return error_return; \
 	} \
+    else \
+    { \
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_SUCCESS); \
+    }
+    
 
 /** @} */
 
