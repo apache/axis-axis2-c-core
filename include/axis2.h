@@ -9,6 +9,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define AXIS2_FUNC_PARAMETER_CHECK(object, env, error_return) \
+    AXIS2_ENV_CHECK(env, error_return);\    
+    if (!object) \
+    { \
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAMETER); \
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE); \
+        return error_return; \
+    }
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -18,6 +27,7 @@ extern "C"
 /** @defgroup axis2 Axis2/C project
   *  @{
  */
+
 
 /** @} */
 
