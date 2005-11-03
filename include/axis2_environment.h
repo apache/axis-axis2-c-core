@@ -99,6 +99,23 @@ extern "C"
 
 /** @} */
 
+AXIS2_ENVIRONMENT_CHECK(env,error_return) \
+    if(!env || !(*env))  \
+	{ \
+		axis2_allocator_t *allocator = axis2_allocator_init (NULL); \
+        *env = axis2_environment_create (allocator, NULL, NULL, NULL); \
+		AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);  \
+		AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, \
+		        AXIS2_ERROR_ENVIRONMENT_IS_NULL); \
+		return error_return; \
+	} \
+
+    
+
+
+
+
+
 #ifdef __cplusplus
 }
 #endif
