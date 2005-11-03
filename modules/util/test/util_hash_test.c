@@ -1,5 +1,5 @@
 #include "util_hash_test.h"
-
+#include "axis2_string.h"
 typedef struct a
 {
     char *value;
@@ -22,14 +22,14 @@ void Testaxis2_hash_get(CuTest *tc)
     actual = (a *) AXIS2_MALLOC(environment->allocator, sizeof (a));
 
 
-    actual->value = axis2_strdup("value1");
+    actual->value = strdup("value1");
 
 
-    ht = axis2_hash_make (environment);
+    ht = axis2_hash_make (&environment);
 
     axis2_hash_set (ht, key1, AXIS2_HASH_KEY_STRING, actual);
 
-    for (i = axis2_hash_first (ht, environment); i; i = axis2_hash_next (environment, i))
+    for (i = axis2_hash_first (ht, &environment); i; i = axis2_hash_next (&environment, i))
     {
 
         axis2_hash_this (i, NULL, NULL, &v);
