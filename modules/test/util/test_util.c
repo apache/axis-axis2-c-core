@@ -18,6 +18,8 @@
 #include <axis2_hash.h>
 #include <axis2_string.h>
 #include <axis2_file_diff.h>
+#include <axis2_error_default.h>
+#include <axis2_stream_default.h>
 
 typedef struct a
 {
@@ -27,8 +29,9 @@ typedef struct a
 axis2_env_t *test_init()
 {
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env =
-    	axis2_environment_create (allocator, NULL, NULL, NULL);
+    axis2_error_t *error = axis2_error_create (allocator);
+	axis2_stream_t *stream = axis2_stream_create (allocator, NULL);
+    axis2_env_t *env = axis2_environment_create_with_error_stream (allocator, error, stream);
 	return env;
 }
 
@@ -56,14 +59,14 @@ int test_hash_get (axis2_env_t *environment)
     a3->value = axis2_strdup("value3");
     a4->value = axis2_strdup("value4");
 
-    ht = axis2_hash_make (environment);
+    ht = axis2_hash_make (&environment);
 
     axis2_hash_set (ht, key1, AXIS2_HASH_KEY_STRING, a1);
     axis2_hash_set (ht, key2, AXIS2_HASH_KEY_STRING, a2);
     axis2_hash_set (ht, key3, AXIS2_HASH_KEY_STRING, a3);
     axis2_hash_set (ht, key4, AXIS2_HASH_KEY_STRING, a4);
 
-    for (i = axis2_hash_first (environment, ht); i; i = axis2_hash_next (environment, i))
+    for (i = axis2_hash_first (ht, &environment); i; i = axis2_hash_next (&environment, i))
     {
 
         axis2_hash_this (i, NULL, NULL, &v);
@@ -103,7 +106,9 @@ char* test_funct_for_test_env_null(axis2_env_t **env)
 	if(NULL == *env)
 	{
 		axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-        *env = axis2_environment_create (allocator, NULL, NULL, NULL);
+		axis2_error_t *error = axis2_error_create (allocator);
+		axis2_stream_t *stream = axis2_stream_create (allocator, NULL);
+        *env = axis2_environment_create_with_error_stream (allocator, error, stream);
 		AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
 		AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_ENVIRONMENT_IS_NULL);		
 		return NULL;
