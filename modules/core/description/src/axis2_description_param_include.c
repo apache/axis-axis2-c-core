@@ -112,19 +112,20 @@ axis2_status_t axis2_description_param_include_ops_free
 }
 
 axis2_status_t axis2_description_param_include_ops_add_param
-    	(axis2_description_param_include_t *param_include, axis2_env_t *env
+    	(axis2_description_param_include_t *param_include, axis2_env_t **env
     	, const axis2_description_param_t *param)
 {
-	if(!param_include || !param)
+	AXIS2_FUNC_PARAMETER_CHECK(param_include, env, NULL)
+	if(NULL == param)
 	{
 		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
 	}
-	if (!(param_include->params))
+	if (NULL == (param_include->params))
 	{                    
-		param_include->params = axis2_hash_make (env);
+		param_include->params = axis2_hash_make (*env);
 	}	
 	axis2_hash_set (param_include->params		
-		, axis2_description_param_get_name(param, env)
+		, axis2_description_param_get_name(param, *env)
 		, AXIS2_HASH_KEY_STRING, param);
 	
 	return AXIS2_SUCCESS;
@@ -135,11 +136,7 @@ axis2_description_param_t *axis2_description_param_include_ops_get_param
     	(axis2_description_param_include_t *param_include, axis2_env_t *env
 		, const axis2_char_t *name)
 {
-	if(!param_include)
-	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
-		return NULL;
-	}
+	AXIS2_FUNC_PARAMETER_CHECK(param_include, env, NULL)
 	return (axis2_description_param_t *)(axis2_hash_get 
 		(param_include->params, axis2_strdup(name)
 		, AXIS2_HASH_KEY_STRING));

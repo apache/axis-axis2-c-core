@@ -1,13 +1,15 @@
 #include <axis2_description_service.h>
 
+typedef struct axis2_description_impl_service_s axis2_description_impl_service_t;
+	
 /**
-  * @struct axis2_description_service
-  * @brief DESCRIPTION service struct
+  * @struct axis2_description_impl_service
+  * @brief DESCRIPTION service struct impl
   * This holds the information about service
   */
-struct axis2_description_service_s
+struct axis2_description_impl_service_s
 {
-	axis2_description_service_ops_t *ops;
+	axis2_description_service_t service;
 	axis2_description_param_include_t *param_include;
 	axis2_description_servicegroup_t *parent;
 	axis2_hash_t *wasaction_opeartionmap;
@@ -45,7 +47,7 @@ axis2_description_servicegroup_t *axis2_description_service_ops_get_parent
 		(axis2_description_service_t *srv_desc, axis2_env_t *env);
 		
 axis2_qname_t *axis2_description_service_ops_get_name
-		(axis2_description_service_t *srv_desc, axis2_env_t *env);	
+		(const axis2_description_service_t *srv_desc, axis2_env_t *env);	
 
 axis2_status_t axis2_description_service_ops_add_param
 		(axis2_description_service_t *srv_desc, axis2_env_t *env
@@ -64,7 +66,7 @@ axis2_bool_t axis2_description_service_ops_is_param_locked(
 		
 /************************* End of function headers ***************************/
 
-axis2_description_service_ops_t * axis2_description_service_get_ops
+axis2_description_service_ops_t *axis2_description_service_get_ops
 		(axis2_description_service_t *srv_desc, axis2_env_t *env)
 {
 	if(NULL == srv_desc)
@@ -261,7 +263,7 @@ axis2_description_servicegroup_t *axis2_description_service_ops_get_parent
 }
 
 axis2_qname_t *axis2_description_service_ops_get_name
-		(axis2_description_service_t *srv_desc, axis2_env_t *env)
+		(const axis2_description_service_t *srv_desc, axis2_env_t *env)
 {
 	if(!env || !srv_desc)
 	{
