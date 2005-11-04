@@ -157,7 +157,7 @@ axis2_om_document_impl_add_child (axis2_env_t * environment,
 {
     if (!document || !child)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
 
@@ -184,7 +184,7 @@ axis2_om_document_impl_build_next (axis2_env_t * environment,
 {
     if (!document)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
 

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_DESCRIPTION_PARAM_INCLUDE_H
-#define AXIS2_DESCRIPTION_PARAM_INCLUDE_H
+#ifndef AXIS2_PARAM_CONTAINER_H
+#define AXIS2_PARAM_CONTAINER_H
 
 /**
  * @file axis2_param_container.h
@@ -47,7 +47,7 @@ extern "C"
 /** @} */
 
 /**
- * @defgroup axis2_description_parameter_include DESCRIPTION ParameterInclude
+ * @defgroup axis2_description_param_include DESCRIPTION ParameterInclude
  * @ingroup axis2_description 
  * @{
  */
@@ -65,8 +65,8 @@ struct axis2_param_container_ops_s
 	axis2_status_t (AXIS2_CALL *free)(axis2_param_container_t *param_container,
 										axis2_env_t **env);
 
-	/** Add a parameter
-     * @param parameters
+	/** Add a param
+     * @param params
      * @return status code
      */
 	axis2_status_t (AXIS2_CALL *add_param)
@@ -74,9 +74,9 @@ struct axis2_param_container_ops_s
 										axis2_env_t **env,
 		 								axis2_param_t *param);
 
-	/** To get a parameter in a given description 
-     * @param parameter name
-     * @return parameter
+	/** To get a param in a given description 
+     * @param param name
+     * @return param
      */
 	axis2_param_t *(AXIS2_CALL *get_param) 
 									(axis2_param_container_t *param_container, 
@@ -84,16 +84,16 @@ struct axis2_param_container_ops_s
 										const axis2_char_t *name);
 
 
-	/** To get all the parameters in a given description
-	 * @return all the parameters contained
+	/** To get all the params in a given description
+	 * @return all the params contained
 	 */
 	axis2_hash_t *(AXIS2_CALL *get_params)
 									(axis2_param_container_t *param_container, 
 										axis2_env_t **env);
 	
 	/** To check whether the paramter is locked at any level
-	 * @param parameter name
-	 * @return whether parameter is locked
+	 * @param param name
+	 * @return whether param is locked
 	 */
 	axis2_bool_t (AXIS2_CALL *is_param_locked)
 									(axis2_param_container_t *param_container, 
@@ -104,7 +104,7 @@ struct axis2_param_container_ops_s
 
 /** @struct axis2_description_param_include
   * @brief DESCRIPTION param_include struct
-  *	Holder for parameters
+  *	Holder for params
   *  
 */  
 struct axis2_param_container_s
@@ -121,19 +121,19 @@ axis2_param_container_t
 
 /*************************** Function macros **********************************/
 
-#define AXIS2_PARAMETER_CONTAINER_FREE(param_container, env) \
+#define AXIS2_PARAM_CONTAINER_FREE(param_container, env) \
 		((param_container->ops)->free (env, param_container))
 
-#define AXIS2_PARAMETER_CONTAINER_ADD_PARAMETER(param_container, env, param) \
+#define AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container, env, param) \
 		((param_container->ops)->add_param (param_container, env, param))
 
-#define AXIS2_PARAMETER_CONTAINER_GET_PARAMETER(param_container, env) \
+#define AXIS2_PARAM_CONTAINER_GET_PARAM(param_container, env) \
 		((param_container->ops)->get_param (param_container, env))
 
-#define AXIS2_PARAMETER_CONTAINER_GET_PARAMETERS(param_container, env) \
+#define AXIS2_PARAM_CONTAINER_GET_PARAMS(param_container, env) \
 		((param_container->ops)->get_params (param_container, env))
 
-#define AXIS2_PARAMETER_CONTAINER_IS_PARAMETER_LOCKED(param_container, env, \
+#define AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(param_container, env, \
 		param_name) \
 		((param_container->ops)->is_param_locked (param_container, env, \
 		param_name))
@@ -145,4 +145,4 @@ axis2_param_container_t
 #ifdef __cplusplus
 }
 #endif
-#endif                          /* AXIS2_DESCRIPTION_PARAM_INCLUDE_H */
+#endif                          /* AXIS2_PARAM_CONTAINER_H */

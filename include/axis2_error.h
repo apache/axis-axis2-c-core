@@ -124,7 +124,7 @@ extern "C"
         /** Out of memory */
         AXIS2_ERROR_NO_MEMORY,
         /** NULL paramater was passed when a non NULL parameter was expected */
-        AXIS2_ERROR_INVALID_NULL_PARAMETER,
+        AXIS2_ERROR_INVALID_NULL_PARAM,
         /** Iterator state invalid e.g. next called before calling first */
         AXIS2_ERROR_INVALID_ITERATOR_STATE,
         /** Node type is different from what is expected */

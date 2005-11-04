@@ -36,7 +36,7 @@ axis2_qname_impl_free (axis2_env_t * environment,
 {
     if (!qname)
     {
-        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
     if (qname->localpart)
@@ -70,7 +70,7 @@ axis2_qname_impl_equals (axis2_env_t * environment,
 
     if (!qn1 || !qn2)
     {
-        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FALSE;
     }
 
@@ -111,7 +111,7 @@ axis2_qname_create (axis2_env_t * environment,
     /* localpart or prefix can't be null */
     if (!localpart)
     {
-        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
 
@@ -119,7 +119,7 @@ axis2_qname_create (axis2_env_t * environment,
                                          sizeof (axis2_qname_t));
     if (!qn)
     {
-        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
     /* set properties */

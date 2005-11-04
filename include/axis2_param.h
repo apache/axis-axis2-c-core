@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_PARAMETER_H
-#define AXIS2_PARAMETER_H
+#ifndef AXIS2_PARAM_H
+#define AXIS2_PARAM_H
 
 /**
  * @file axis2_param.h
- * @brief Axis2 parameter interface
+ * @brief Axis2 param interface
  */
 
 #include <axis2_defines.h>
@@ -33,47 +33,47 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_parameter Handlers
+ * @defgroup axis2_param Handlers
  * @ingroup axis2_core_description
  * @{
  */
     
 /**
-  * TEXT PARAMETER
+  * TEXT PARAM
   */
-  static const int AXIS2_TEXT_PARAMETER = 0;
+  static const int AXIS2_TEXT_PARAM = 0;
 
 /**
- * Field DOM_PARAMETER
+ * Field DOM_PARAM
  */
-  static const int AXIS2_DOM_PARAMETER = 1;
+  static const int AXIS2_DOM_PARAM = 1;
     
 
 /**
- *   \brief parameter operations struct
+ *   \brief param operations struct
  */
 AXIS2_DECLARE_DATA   struct axis2_param_ops_s 
     {
     
     /**
      * Parameter name accessor
-     * @return name of the parameter
+     * @return name of the param
      */
-    axis2_char_t* (AXIS2_CALL *get_name)(axis2_param_t *parameter, 
+    axis2_char_t* (AXIS2_CALL *get_name)(axis2_param_t *param, 
 											axis2_env_t **env);
 
     /**
      * Parameter value accessor
      * @return Object
      */
-    void* (AXIS2_CALL *get_value)(axis2_param_t *parameter, 
+    void* (AXIS2_CALL *get_value)(axis2_param_t *param, 
 									axis2_env_t **env);
 
     /**
-     * parameter name mutator
+     * param name mutator
      * @param name
      */
-     axis2_status_t (AXIS2_CALL *set_name)(axis2_param_t *parameter, 
+     axis2_status_t (AXIS2_CALL *set_name)(axis2_param_t *param, 
 		 									axis2_env_t **env, 
 	 										axis2_char_t *name);
 
@@ -82,7 +82,7 @@ AXIS2_DECLARE_DATA   struct axis2_param_ops_s
      *
      * @param value
      */
-     axis2_status_t (AXIS2_CALL *set_value)(axis2_param_t *parameter, 
+     axis2_status_t (AXIS2_CALL *set_value)(axis2_param_t *param, 
 		 										axis2_env_t **env, 
 	 											void *value);
 
@@ -91,7 +91,7 @@ AXIS2_DECLARE_DATA   struct axis2_param_ops_s
      *
      * @return boolean
      */
-     axis2_bool_t (AXIS2_CALL *is_locked)(axis2_param_t *parameter,
+     axis2_bool_t (AXIS2_CALL *is_locked)(axis2_param_t *param,
 											 axis2_env_t **env);
 
     /**
@@ -99,7 +99,7 @@ AXIS2_DECLARE_DATA   struct axis2_param_ops_s
      *
      * @param value
      */
-     axis2_status_t (AXIS2_CALL *set_locked)(axis2_param_t *parameter,
+     axis2_status_t (AXIS2_CALL *set_locked)(axis2_param_t *param,
 											 	axis2_env_t **env,
 											 	axis2_bool_t value);
 
@@ -108,24 +108,24 @@ AXIS2_DECLARE_DATA   struct axis2_param_ops_s
      *
      * @return int
      */
-     int (AXIS2_CALL *get_parameter_type)(axis2_param_t *parameter, 
+     int (AXIS2_CALL *get_param_type)(axis2_param_t *param, 
 		 									axis2_env_t **env);
 
-     axis2_status_t (AXIS2_CALL *set_parameter_type)(axis2_param_t *parameter, 
+     axis2_status_t (AXIS2_CALL *set_param_type)(axis2_param_t *param, 
 														axis2_env_t **env,
 														int type);
 
     /**
      *  Paramter can be any thing it can be XML element with number of child 
 	 *  elements , so if someone wants to access the XML elemet we need to store 
-	 *  that , at the deployment time , to store the XMLelment of the parameter 
+	 *  that , at the deployment time , to store the XMLelment of the param 
 	 *  can use this method it will store whole
      * <parameter name="ServiceClass1" locked="false">org.apache.axis2.sample.
 	 * echo.EchoImpl</parameter> element
      * @param element  <code>OMElement<code>
      */
 
-     axis2_status_t (AXIS2_CALL *set_parameter_element)(axis2_param_t *parameter, 
+     axis2_status_t (AXIS2_CALL *set_param_element)(axis2_param_t *param, 
 														axis2_env_t **env, 
 														axis2_om_node_t *element);
 
@@ -133,11 +133,11 @@ AXIS2_DECLARE_DATA   struct axis2_param_ops_s
      *  To get the whole paramter element
      * @return <code>OMElement<code>
      */
-     axis2_om_node_t* (AXIS2_CALL *get_parameter_element)
-													(axis2_param_t *parameter, 
+     axis2_om_node_t* (AXIS2_CALL *get_param_element)
+													(axis2_param_t *param, 
 														axis2_env_t **env);
          
-     axis2_status_t (AXIS2_CALL *free)(axis2_param_t *parameter, 
+     axis2_status_t (AXIS2_CALL *free)(axis2_param_t *param, 
 	 									axis2_env_t **env);
 };
  
@@ -151,39 +151,39 @@ struct axis2_param_s
 };
 
 /**
- * creates parameter struct
+ * creates param struct
  */
 AXIS2_DECLARE(axis2_param_t*) 
-axis2_parameter_create(axis2_env_t **env, 
+axis2_param_create(axis2_env_t **env, 
 						axis2_char_t *name, 
 						void *value);
 
-#define AXIS2_PARAMETER_FREE(param, env) \
+#define AXIS2_PARAM_FREE(param, env) \
     ((param->ops)->free (param, env))
 
-#define AXIS2_PARAMETER_SET_NAME(param, env, name) \
+#define AXIS2_PARAM_SET_NAME(param, env, name) \
     ((param->ops)->set_name (param, env, name))
 
-#define AXIS2_PARAMETER_GET_NAME(param, env) \
+#define AXIS2_PARAM_GET_NAME(param, env) \
     ((param->ops)->get_name (param, env))
 
-#define AXIS2_PARAMETER_SET_VALUE(param, env, value) \
+#define AXIS2_PARAM_SET_VALUE(param, env, value) \
     (((param->ops)->set_value (param , env, value))
 
-#define AXIS2_PARAMETER_GET_VALUE(param, env) \
+#define AXIS2_PARAM_GET_VALUE(param, env) \
     ((param->ops)->get_value (param, env))
 
-#define AXIS2_PARAMETER_IS_LOCKED(param, env) \
+#define AXIS2_PARAM_IS_LOCKED(param, env) \
     ((param->ops)->is_locked (param, env))
 
-#define AXIS2_PARAMETER_SET_LOCKED(param, env, locked) \
+#define AXIS2_PARAM_SET_LOCKED(param, env, locked) \
     ((param->ops)->set_locked (param, env, locked))
 
-#define AXIS2_PARAMETER_SET_ELEMENT(param, env, element) \
-    (((param->ops)->set_parameter_element (param , env, element))
+#define AXIS2_PARAM_SET_ELEMENT(param, env, element) \
+    (((param->ops)->set_param_element (param , env, element))
 
-#define AXIS2_PARAMETER_GET_ELEMENT(param, env) \
-    ((param->ops)->get_parameter_element (param, env))
+#define AXIS2_PARAM_GET_ELEMENT(param, env) \
+    ((param->ops)->get_param_element (param, env))
 	
 /** @} */
     
@@ -191,4 +191,4 @@ axis2_parameter_create(axis2_env_t **env,
 }
 #endif
 
-#endif    /* AXIS2_PARAMETER_H */
+#endif    /* AXIS2_PARAM_H */

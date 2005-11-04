@@ -109,7 +109,7 @@ axis2_status_t axis2_wsdl_component_free (axis2_env_t *env
 axis2_status_t axis2_wsdl_component_get_component_properties(axis2_env_t *env
 		,axis2_wsdl_component_t *wsdl_component, axis2_hash_t **properties)
 {
-	if(NULL == wsdl_component) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	if(NULL == wsdl_component) return AXIS2_ERROR_INVALID_NULL_PARAM;
 	axis2_wsdl_impl_component_t *wsdl_impl_component 
 		= (axis2_wsdl_impl_component_t*)(wsdl_component);
 	*properties = wsdl_impl_component->component_properties;
@@ -124,7 +124,7 @@ axis2_status_t axis2_wsdl_component_set_component_properties(axis2_env_t *env
 		, axis2_wsdl_component_t *wsdl_component, axis2_hash_t *properties) 
 {
 	if(NULL == wsdl_component || NULL == properties) 
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	
 	axis2_wsdl_impl_component_t *wsdl_impl_component
 		= (axis2_wsdl_impl_component_t *) wsdl_component;
@@ -144,7 +144,7 @@ axis2_status_t axis2_wsdl_component_set_component_property(axis2_env_t *env
 	, axis2_wsdl_component_t *wsdl_component, const void *key, void *value) 
 {
 	if(NULL ==wsdl_component || NULL == key || NULL == value) 
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
     axis2_wsdl_impl_component_t *wsdl_impl_component
 		= (axis2_wsdl_impl_component_t *) wsdl_component;
 	axis2_hash_set (wsdl_impl_component->component_properties		
@@ -163,7 +163,7 @@ axis2_status_t axis2_wsdl_component_get_component_property(axis2_env_t *env
 		, axis2_wsdl_component_t *wsdl_component,const void *key, void **value) 
 {
 	if(NULL == wsdl_component || NULL == key) 
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 		
 	axis2_wsdl_impl_component_t *wsdl_impl_component
 		= (axis2_wsdl_impl_component_t *) wsdl_component;

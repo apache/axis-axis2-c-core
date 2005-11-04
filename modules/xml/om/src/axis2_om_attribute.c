@@ -45,7 +45,7 @@ AXIS2_DECLARE(axis2_om_attribute_t*)
     axis2_om_attribute_t *attribute = NULL;
     if (!localname)
     {   /* localname is mandatory */
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
 
@@ -124,7 +124,7 @@ axis2_om_attribute_impl_get_qname (axis2_env_t * environment,
     axis2_qname_t *qname = NULL;
     if (!attribute)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
     if (attribute->ns)
@@ -148,7 +148,7 @@ axis2_om_attribute_impl_serialize (axis2_env_t * environment,
     int status = AXIS2_SUCCESS;
     if (!attribute || !om_output)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
 

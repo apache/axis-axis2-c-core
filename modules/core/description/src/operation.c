@@ -83,7 +83,7 @@ axis2_description_operation_ops_t *axis2_description_operation_get_ops
 {
 	if(!operation_desc)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;	
 	}
 	return (axis2_description_operation_ops_t *) operation_desc->ops;
@@ -159,7 +159,7 @@ axis2_description_operation_t *axis2_description_operation_create_with_name
 	}
 	if(!name)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}		
 						
@@ -185,7 +185,7 @@ axis2_status_t axis2_description_operation_ops_add_param
 {
 	if(!operation_desc || !operation_desc->param_include || !param)
 	{
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	}
 	axis2_hash_set (axis2_description_param_include_get_params
 		(operation_desc->param_include, env), axis2_description_param_get_name
@@ -201,7 +201,7 @@ axis2_description_param_t *axis2_description_operation_ops_get_param(
 {
 	if(!operation_desc || !operation_desc->param_include)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}
 	axis2_char_t *tempname = axis2_strdup(name);
@@ -221,7 +221,7 @@ axis2_hash_t *axis2_description_operation_ops_get_params(
 {
 	if(!operation_desc || !operation_desc->param_include)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}
 	
@@ -235,7 +235,7 @@ axis2_bool_t axis2_description_operation_ops_is_param_locked(
 {
 	if(!env || !operation_desc || !operation_desc->param_include)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return AXIS2_FALSE;
 	}
 	axis2_char_t *tempname = axis2_strdup(param_name);
@@ -256,7 +256,7 @@ axis2_status_t axis2_description_operation_ops_set_parent
 {
 	if(!operation_desc || !service_desc)
 	{
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	}
 	operation_desc->parent = service_desc;
 	return AXIS2_SUCCESS;
@@ -267,7 +267,7 @@ axis2_description_service_t *axis2_description_operation_ops_get_parent
 {
 	if(!operation_desc)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}
 	return operation_desc->parent;
@@ -278,7 +278,7 @@ axis2_qname_t *axis2_description_operation_ops_get_name
 {
 	if(!operation_desc)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}
 	return operation_desc->name;
@@ -290,7 +290,7 @@ axis2_status_t axis2_description_operation_ops_set_msg_exchange_pattern
 {
 	if(!operation_desc)
 	{
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;		
+		return AXIS2_ERROR_INVALID_NULL_PARAM;		
 	}
 	operation_desc->msg_exchange_pattern = axis2_strdup(pattern);
 	if(!operation_desc->msg_exchange_pattern)
@@ -303,7 +303,7 @@ axis2_char_t *axis2_description_operation_ops_get_msg_exchange_pattern
 {
 	if(!operation_desc)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}
 	return operation_desc->msg_exchange_pattern;
@@ -315,7 +315,7 @@ axis2_status_t axis2_description_operation_ops_set_msg_receiver
 {
 	if(!operation_desc)
 	{
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;		
+		return AXIS2_ERROR_INVALID_NULL_PARAM;		
 	}
 	operation_desc->msg_receiver = msg_receiver;
 	if(!operation_desc->msg_receiver)
@@ -328,7 +328,7 @@ axis2_engine_msg_receiver_t *axis2_description_operation_ops_get_msg_receiver
 {
 	if(!operation_desc)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}
 	return operation_desc->msg_receiver;

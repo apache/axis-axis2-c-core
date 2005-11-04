@@ -77,7 +77,7 @@ axis2_status_t axis2_wsdl_service_free(axis2_env_t *env
 		, axis2_wsdl_service_t *wsdl_srv)
 {
 	if(!env || !wsdl_srv)
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	axis2_free(env->allocator, wsdl_srv);
 	return AXIS2_SUCCESS;
 }

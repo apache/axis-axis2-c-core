@@ -42,7 +42,7 @@ AXIS2_DECLARE(axis2_om_namespace_t *)
 
     if (!uri)                   /* there must be a URI */
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
 
@@ -166,7 +166,7 @@ axis2_om_namespace_impl_serialize (axis2_env_t * environment,
     int status = AXIS2_SUCCESS;
     if (!om_namespace || !om_output)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
 

@@ -10,11 +10,11 @@
 #include <stdio.h>
 #include <axis2_env.h>
 
-#define AXIS2_FUNC_PARAMETER_CHECK(object, env, error_return) \
+#define AXIS2_FUNC_PARAM_CHECK(object, env, error_return) \
     AXIS2_ENV_CHECK(env, error_return);\
     if (!object) \
     { \
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAMETER); \
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM); \
         AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE); \
         return error_return; \
     }\

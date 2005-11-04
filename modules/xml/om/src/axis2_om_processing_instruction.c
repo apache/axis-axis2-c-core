@@ -33,7 +33,7 @@ AXIS2_CALL axis2_om_processing_instruction_create (axis2_env_t * environment,
 
     if (!node || !target || !value)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
 

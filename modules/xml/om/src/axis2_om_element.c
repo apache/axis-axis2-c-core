@@ -81,7 +81,7 @@ axis2_om_element_create (axis2_env_t * environment,
     axis2_om_element_t *element;
     if (!localname || !node)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
 
@@ -188,7 +188,7 @@ axis2_om_element_create_with_qname (axis2_env_t * environment,
 
     if (!qname || !(*node))
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;            /* can't create an element */
     }
 
@@ -229,7 +229,7 @@ axis2_om_element_impl_find_namespace (axis2_env_t * environment,
 
     if (!node)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
     if (!(node->data_element) || node->node_type != AXIS2_OM_ELEMENT)
@@ -284,7 +284,7 @@ axis2_om_element_impl_declare_namespace (axis2_env_t * environment,
     axis2_om_element_t *element = NULL;
     if (!node || !ns)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
 
@@ -302,7 +302,7 @@ axis2_om_element_impl_declare_namespace (axis2_env_t * environment,
 
     if (!element)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
 
@@ -370,7 +370,7 @@ axis2_om_element_impl_find_namespace_with_qname (axis2_env_t *
 {
     if (!element || !qname)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
 
@@ -395,7 +395,7 @@ axis2_om_element_impl_add_attribute (axis2_env_t * environment,
 
     if (!element || !attribute)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
 
@@ -421,7 +421,7 @@ axis2_om_element_impl_get_attribute (axis2_env_t * environment,
 {
     if (!element || !qname)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
 
@@ -438,7 +438,7 @@ axis2_om_element_impl_free (axis2_env_t * environment,
 
     if (!element)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
 
@@ -495,7 +495,7 @@ axis2_om_element_impl_serialize_start_part (axis2_env_t * environment,
     int status = AXIS2_SUCCESS;
     if (!element || !om_output)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
 
@@ -570,7 +570,7 @@ axis2_om_element_impl_serialize_end_part (axis2_env_t * environment,
 
     if (!om_output)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
 

@@ -71,7 +71,7 @@ axis2_description_service_ops_t *axis2_description_service_get_ops
 {
 	if(NULL == srv_desc)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}
 	return srv_desc->ops;
@@ -155,7 +155,7 @@ axis2_status_t axis2_description_service_ops_free
 		(axis2_description_service_t *srv_desc, axis2_env_t *env)
 {
 	if(!env)
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	if(srv_desc)
 	{
 		AXIS2_FREE(env->allocator, srv_desc);
@@ -171,7 +171,7 @@ axis2_status_t axis2_description_service_ops_add_operation
 {
 	if(!srv_desc || !operation_desc)
 	{
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	}
 	if (!(srv_desc->wasaction_opeartionmap))
 	{                    
@@ -180,15 +180,15 @@ axis2_status_t axis2_description_service_ops_add_operation
 	axis2_description_operation_ops_t *tempopt = 
 		(axis2_description_operation_get_ops(operation_desc, env));
 	
-	if(!tempopt) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	if(!tempopt) return AXIS2_ERROR_INVALID_NULL_PARAM;
 		
 	axis2_qname_t *tempqname = tempopt->get_name(operation_desc, env);
 	
-	if(!tempqname) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	if(!tempqname) return AXIS2_ERROR_INVALID_NULL_PARAM;
 		
 	axis2_char_t *tempname = tempqname->localpart;
 	
-	if(!tempname) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	if(!tempname) return AXIS2_ERROR_INVALID_NULL_PARAM;
 	
 	axis2_hash_set (srv_desc->wasaction_opeartionmap		
 		, tempname
@@ -204,7 +204,7 @@ axis2_description_operation_t
 {
 	if(!srv_desc || !srv_desc->wasaction_opeartionmap)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;		
 	}
 	return (axis2_description_operation_t *) (axis2_hash_get 
@@ -220,7 +220,7 @@ axis2_description_operation_t
 {
 	if(!srv_desc || !srv_desc->wasaction_opeartionmap)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;		
 	}
 	return (axis2_description_operation_t *) (axis2_hash_get 
@@ -233,7 +233,7 @@ axis2_hash_t *axis2_description_service_ops_get_operations
 {
 	if(!srv_desc)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;		
 	}
 	return srv_desc->wasaction_opeartionmap;
@@ -245,7 +245,7 @@ axis2_status_t axis2_description_service_ops_set_parent
 {
 	if(!srv_desc || !servicegroup_desc)
 	{
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;	
+		return AXIS2_ERROR_INVALID_NULL_PARAM;	
 	}
 	srv_desc->parent = servicegroup_desc;
 	return AXIS2_SUCCESS;
@@ -256,7 +256,7 @@ axis2_description_servicegroup_t *axis2_description_service_ops_get_parent
 {
 	if(!srv_desc || !srv_desc->parent)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;	
 	}
 	return srv_desc->parent;
@@ -267,7 +267,7 @@ axis2_qname_t *axis2_description_service_ops_get_name
 {
 	if(!env || !srv_desc)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;	
 	}
 	return srv_desc->name;
@@ -279,7 +279,7 @@ axis2_status_t axis2_description_service_ops_add_param
 {
 	if(!env || !srv_desc || !srv_desc->param_include || !param)
 	{
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	}
 	axis2_hash_set (axis2_description_param_include_get_params
 		(srv_desc->param_include, env), axis2_description_param_get_name(param
@@ -294,7 +294,7 @@ axis2_description_param_t *axis2_description_service_ops_get_param(
 {
 	if(!env || !srv_desc || !srv_desc->param_include)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}
 	axis2_char_t *tempname = axis2_strdup(name);
@@ -315,7 +315,7 @@ axis2_hash_t *axis2_description_service_ops_get_params
 {
 	if(!env || !srv_desc)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;		
 	}
 	return axis2_description_param_include_get_params(srv_desc->param_include, env);
@@ -328,7 +328,7 @@ axis2_bool_t axis2_description_service_ops_is_param_locked
 {
 	if(!env || !srv_desc || !srv_desc->param_include)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return AXIS2_FALSE;
 	}
 	axis2_char_t *tempname = axis2_strdup(param_name);

@@ -114,7 +114,7 @@ axis2_om_node_impl_free (axis2_env_t * environment,
 
     if (!node)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
     if (node->first_child)
@@ -161,7 +161,7 @@ axis2_om_node_impl_add_child (axis2_env_t * environment,
 {
     if (!parent || !child)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
     if (parent->first_child == NULL)
@@ -190,7 +190,7 @@ axis2_om_node_impl_detach (axis2_env_t * environment,
     if (!node_to_detach || !(node_to_detach->parent))
     {
         /* nodes that do not have a parent can't be detached  */
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
 
@@ -222,7 +222,7 @@ axis2_om_node_impl_set_parent (axis2_env_t * environment,
 {
     if (!parent || !node)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
     if (parent == node->parent)
@@ -255,7 +255,7 @@ axis2_om_node_impl_insert_sibling_after (axis2_env_t * environment,
 {
     if (!node || !node_to_insert)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
     node_to_insert->parent = node->parent;
@@ -278,7 +278,7 @@ axis2_om_node_impl_insert_sibling_before (axis2_env_t * environment,
 {
     if (!node || !node_to_insert)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
 
@@ -306,7 +306,7 @@ axis2_om_node_impl_get_first_child (axis2_env_t * environment,
     /**  */
     if (!parent_node)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
     if (parent_node->first_child)
@@ -325,7 +325,7 @@ axis2_om_node_impl_get_next_child (axis2_env_t * environment,
     axis2_om_node_t *node = NULL;
     if (parent_node && !(parent_node->first_child))
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
 
@@ -354,7 +354,7 @@ axis2_om_node_impl_serialize (axis2_env_t * environment,
 
     if (!om_node || !om_output)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
 

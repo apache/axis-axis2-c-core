@@ -168,7 +168,7 @@ axis2_status_t axis2_wsdl_operation_free(axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt)
 {
 	if(!env || !wsdl_opt)
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	axis2_free(env->allocator, wsdl_opt);
 	return AXIS2_SUCCESS;
 }
@@ -178,7 +178,7 @@ axis2_status_t axis2_wsdl_operation_get_msg_exchange_pattern
 		, axis2_char_t **pattern)
 {
 	if(NULL == wsdl_opt)
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	*pattern = ((axis2_wsdl_impl_operation_t *) wsdl_opt)->msg_exchange_pattern;
 	return AXIS2_SUCCESS;
 }
@@ -187,7 +187,7 @@ axis2_status_t axis2_wsdl_operation_set_msg_exchange_pattern
 		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
 		, const axis2_char_t *msg_exchange_pattern)
 {
-	if(NULL == wsdl_opt || NULL == msg_exchange_pattern) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	if(NULL == wsdl_opt || NULL == msg_exchange_pattern) return AXIS2_ERROR_INVALID_NULL_PARAM;
 		
 	((axis2_wsdl_impl_operation_t *)(wsdl_opt))->msg_exchange_pattern 
 		= axis2_strdup(env->string, msg_exchange_pattern);
@@ -199,7 +199,7 @@ axis2_status_t axis2_wsdl_operation_get_name (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, axis2_qname_t **name)
 {
 	if(NULL == wsdl_opt)
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	*name = ((axis2_wsdl_impl_operation_t *) wsdl_opt)->name;
 	return AXIS2_SUCCESS;
 }
@@ -207,7 +207,7 @@ axis2_status_t axis2_wsdl_operation_get_name (axis2_env_t *env
 axis2_status_t axis2_wsdl_operation_set_name (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, const axis2_qname_t *name)
 {
-	if(NULL == wsdl_opt || NULL == name) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	if(NULL == wsdl_opt || NULL == name) return AXIS2_ERROR_INVALID_NULL_PARAM;
 		
 	((axis2_wsdl_impl_operation_t *)(wsdl_opt))->name = axis2_strdup(env->string
 		, name);
@@ -217,7 +217,7 @@ axis2_status_t axis2_wsdl_operation_set_name (axis2_env_t *env
 axis2_status_t axis2_wsdl_operation_get_style (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, axis2_char_t **style)
 {
-	if(NULL == wsdl_opt) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	if(NULL == wsdl_opt) return AXIS2_ERROR_INVALID_NULL_PARAM;
 	
 	*style = ((axis2_wsdl_impl_operation_t *)(wsdl_opt))->style;
 	return AXIS2_SUCCESS;
@@ -226,7 +226,7 @@ axis2_status_t axis2_wsdl_operation_get_style (axis2_env_t *env
 axis2_status_t axis2_wsdl_operation_set_style (axis2_env_t *env
 		, axis2_wsdl_operation_t *wsdl_opt, const axis2_char_t *style)
 {
-	if(NULL == wsdl_opt || NULL == style) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	if(NULL == wsdl_opt || NULL == style) return AXIS2_ERROR_INVALID_NULL_PARAM;
 	
 	((axis2_wsdl_impl_operation_t *)(wsdl_opt))->style = axis2_strdup(env->string
 		, style);
@@ -244,7 +244,7 @@ axis2_status_t axis2_wsdl_operation_set_component_properties(axis2_env_t *env
 	axis2_wsdl_impl_operation_t *wsdl_impl_opt = (axis2_wsdl_impl_operation_t *)
 		(wsdl_opt);
 	if(NULL == wsdl_impl_opt || wsdl_impl_opt->wsdl_component || NULL == properties) 
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	
 	if(AXIS2_SUCCESS != AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTIES(env
 		, wsdl_impl_opt->wsdl_component, properties))
@@ -263,7 +263,7 @@ axis2_status_t axis2_wsdl_operation_get_component_properties(axis2_env_t *env
 {
 	axis2_wsdl_impl_operation_t *wsdl_impl_opt = (axis2_wsdl_impl_operation_t *)
 		(wsdl_opt);
-	if(NULL == wsdl_impl_opt) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+	if(NULL == wsdl_impl_opt) return AXIS2_ERROR_INVALID_NULL_PARAM;
 	
 	if(AXIS2_SUCCESS != AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTIES(env
 		, wsdl_impl_opt->wsdl_component, properties))
@@ -284,7 +284,7 @@ axis2_status_t axis2_wsdl_operation_set_component_property(axis2_env_t *env
 	axis2_wsdl_impl_operation_t *wsdl_impl_opt = (axis2_wsdl_impl_operation_t *)
 		(wsdl_opt);
 	if(NULL == wsdl_impl_opt || wsdl_impl_opt->wsdl_component || NULL == key 
-		|| NULL == value) return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		|| NULL == value) return AXIS2_ERROR_INVALID_NULL_PARAM;
 	
 	if(AXIS2_SUCCESS != AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(env
 		, wsdl_impl_opt->wsdl_component, key, value))
@@ -307,7 +307,7 @@ axis2_status_t axis2_wsdl_operation_get_component_property(axis2_env_t *env
 	axis2_wsdl_impl_operation_t *wsdl_impl_opt = (axis2_wsdl_impl_operation_t *)
 		(wsdl_opt);
 	if(NULL == wsdl_impl_opt || NULL == key) 
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	
 	if(AXIS2_SUCCESS != AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(env
 		, wsdl_impl_opt->wsdl_component, key, value))

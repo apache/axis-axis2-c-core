@@ -42,7 +42,7 @@ axis2_engine_msg_receiver_t *axis2_engine_msg_receiver_get_ops
 {
 	if(!msg_receiver)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;	
 	}
 	return (axis2_engine_msg_receiver_t *) msg_receiver->ops;

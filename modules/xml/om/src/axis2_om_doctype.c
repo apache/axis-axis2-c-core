@@ -28,7 +28,7 @@ AXIS2_DECLARE(axis2_om_doctype_t *)
 
     if (!node)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
 

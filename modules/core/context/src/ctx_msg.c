@@ -40,7 +40,7 @@ axis2_context_msg_ctx_t *axis2_context_msg_ctx_get_ops
 {
 	if(!msg_ctx)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;	
 	}
 	return (axis2_context_msg_ctx_t *) msg_ctx->ops;

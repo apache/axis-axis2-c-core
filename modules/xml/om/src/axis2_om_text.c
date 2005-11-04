@@ -35,7 +35,7 @@ axis2_om_text_create (axis2_env_t * environment,
 
     if (!node)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return NULL;
     }
 
@@ -105,7 +105,7 @@ axis2_om_text_impl_free (axis2_env_t * environment,
 {
     if (!om_text)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
 
@@ -130,7 +130,7 @@ axis2_om_text_impl_serialize (axis2_env_t * environment,
 
     if (!om_text || !om_output)
     {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
         return AXIS2_FAILURE;
     }
 

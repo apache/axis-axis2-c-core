@@ -129,7 +129,7 @@ axis2_status_t axis2_engine_config_ops_add_service_group
 {
 	if(!engine_config || !servicegroup_desc)
 	{
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	}
 	
 	axis2_char_t *tempname = axis2_description_servicegroup_get_name
@@ -146,13 +146,13 @@ axis2_description_servicegroup_t *axis2_engine_config_ops_get_servicegroup
 {
 	if(!engine_config)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}
 	axis2_char_t *tempname = axis2_strdup(servicegroup_name);
 	if(!tempname)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}
 	return (axis2_description_servicegroup_t *) (axis2_hash_get 
@@ -165,7 +165,7 @@ axis2_status_t axis2_engine_config_ops_add_service
 		, axis2_description_service_t *srv_desc)
 {
 	if(NULL == engine_config || NULL == srv_desc) 
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	
 	axis2_description_servicegroup_t *servicegroup_desc 
 		= axis2_description_servicegroup_create(env);
@@ -192,13 +192,13 @@ axis2_description_service_t *axis2_engine_config_ops_get_service
 {
 	if(!env || !engine_config)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}
 	axis2_char_t *tempname = axis2_strdup(service_name);
 	if(!tempname)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}
 	
@@ -230,10 +230,10 @@ axis2_status_t axis2_engine_config_ops_remove_service
 		, const axis2_char_t *service_name)
 {
 	if(!env || !engine_config)
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	axis2_char_t *tempname = axis2_strdup(service_name);
 	if(!tempname)
-		return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	
 	axis2_description_servicegroup_t *sg = NULL;
 	int len = strlen(service_name);
@@ -249,7 +249,7 @@ axis2_status_t axis2_engine_config_ops_remove_service
 		sg = axis2_engine_config_ops_get_servicegroup(engine_config, env
 			, grp_name);
 		if(!sg)
-			return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+			return AXIS2_ERROR_INVALID_NULL_PARAM;
 	}
 	axis2_char_t *srv_name = *(service_st + 1);
 	axis2_qname_t *qname = (axis2_qname_t*) axis2_qname_create(srv_name, env
@@ -275,7 +275,7 @@ axis2_status_t split_service_name
 	axis2_char_t *srv_name_temp = axis2_strdup(service_name);
 	if(!service_name_st)
     {
-        return AXIS2_ERROR_INVALID_NULL_PARAMETER;
+        return AXIS2_ERROR_INVALID_NULL_PARAM;
     }
     axis2_char_t *srv_name_l = strpbrk(srv_name_temp, SERVICE_NAME_SPLIT_CHAR);
     if(NULL == srv_name_l)
