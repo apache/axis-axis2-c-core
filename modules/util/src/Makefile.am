@@ -2,7 +2,7 @@ lib_LTLIBRARIES = libaxis2_util.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_util_la_SOURCES = hash.c \
                         allocator.c \
-                        environment.c \
+                        env.c \
                         error.c \
                         stream.c \
                         log.c \

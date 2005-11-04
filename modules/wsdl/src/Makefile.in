@@ -63,7 +63,7 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libaxis2_wsdl_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libaxis2_wsdl_la_OBJECTS = wsdl_operation.lo wsdl_service.lo \
+am_libaxis2_wsdl_la_OBJECTS = wsdl_operation.lo wsdl_svc.lo \
 	wsdl_component.lo
 libaxis2_wsdl_la_OBJECTS = $(am_libaxis2_wsdl_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
@@ -193,7 +193,7 @@ target_vendor = @target_vendor@
 lib_LTLIBRARIES = libaxis2_wsdl.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_wsdl_la_SOURCES = wsdl_operation.c \
-                        wsdl_service.c \
+                        wsdl_svc.c \
                         wsdl_component.c
 
 libaxis2_wsdl_la_LIBADD = $(LDFLAGS)
@@ -269,7 +269,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_component.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_operation.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_service.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_svc.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

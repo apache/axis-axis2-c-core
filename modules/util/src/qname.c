@@ -15,7 +15,7 @@
  */
 
 #include <axis2_qname.h>
-#include <axis2_environment.h>
+#include <axis2_env.h>
 #include <axis2_defines.h>
 
 

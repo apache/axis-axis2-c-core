@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_environment.h>
+#include <axis2_env.h>
 #include <stdlib.h>
 
 AXIS2_DECLARE(axis2_status_t) axis2_environment_free (axis2_env_t *env)

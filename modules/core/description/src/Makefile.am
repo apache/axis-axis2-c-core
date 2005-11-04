@@ -2,10 +2,10 @@ lib_LTLIBRARIES = libaxis2_description.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_description_la_SOURCES = param_container.c \
                             operation.c \
-                            service.c \
+                            svc.c \
                             module.c \
                             param.c \
-                            service_group.c \
+                            svc_grp.c \
                             phase_rule.c
 
 libaxis2_description_la_LIBADD = $(LDFLAGS)

@@ -63,9 +63,8 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libaxis2_description_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libaxis2_description_la_OBJECTS = parameter_container.lo \
-	operation.lo service.lo module.lo parameter.lo \
-	service_group.lo
+am_libaxis2_description_la_OBJECTS = param_container.lo operation.lo \
+	svc.lo module.lo param.lo svc_grp.lo phase_rule.lo
 libaxis2_description_la_OBJECTS =  \
 	$(am_libaxis2_description_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
@@ -194,12 +193,13 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 lib_LTLIBRARIES = libaxis2_description.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_description_la_SOURCES = parameter_container.c \
+libaxis2_description_la_SOURCES = param_container.c \
                             operation.c \
-                            service.c \
+                            svc.c \
                             module.c \
-                            parameter.c \
-                            service_group.c
+                            param.c \
+                            svc_grp.c \
+                            phase_rule.c
 
 libaxis2_description_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
@@ -277,10 +277,11 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/module.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/operation.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/parameter.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/parameter_container.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/service.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/service_group.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/param.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/param_container.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/phase_rule.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/svc.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/svc_grp.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

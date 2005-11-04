@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = libaxis2_context.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_context_la_SOURCES = context_message.c
+libaxis2_context_la_SOURCES = ctx_msg.c
 
 libaxis2_context_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I${CUTEST_HOME}/include \
