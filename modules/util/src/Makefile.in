@@ -63,9 +63,8 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libaxis2_util_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libaxis2_util_la_OBJECTS = axis2_hash.lo axis2_allocator.lo \
-	axis2_environment.lo axis2_error.lo axis2_stream.lo \
-	axis2_log.lo axis2_string.lo axis2_file_diff.lo axis2_qname.lo
+am_libaxis2_util_la_OBJECTS = hash.lo allocator.lo environment.lo \
+	error.lo stream.lo log.lo string.lo file_diff.lo qname.lo
 libaxis2_util_la_OBJECTS = $(am_libaxis2_util_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -193,15 +192,15 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 lib_LTLIBRARIES = libaxis2_util.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_util_la_SOURCES = axis2_hash.c \
-                        axis2_allocator.c \
-                        axis2_environment.c \
-                        axis2_error.c \
-                        axis2_stream.c \
-                        axis2_log.c \
-                        axis2_string.c \
-                        axis2_file_diff.c \
-                        axis2_qname.c
+libaxis2_util_la_SOURCES = hash.c \
+                        allocator.c \
+                        environment.c \
+                        error.c \
+                        stream.c \
+                        log.c \
+                        string.c \
+                        file_diff.c \
+                        qname.c
 
 libaxis2_util_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include \
@@ -276,15 +275,15 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_allocator.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_environment.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_error.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_file_diff.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_hash.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_log.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_qname.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_stream.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_string.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/allocator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/environment.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file_diff.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hash.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/qname.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/string.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

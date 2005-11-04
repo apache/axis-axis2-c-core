@@ -18,13 +18,13 @@
 #define AXIS2_DESCRIPTION_SERVICE_H
 
 /**
-  * @file axis2_description_service.h
+  * @file axis2_service.h
   * @brief axis2 DESCRIPTION CORE service
   */
 
 #include <axis2_core.h>
-#include <axis2_description_param_include.h>
-#include <axis2_description_operation.h>
+#include <axis2_parameter_container.h>
+#include <axis2_operation.h>
 #include <axis2_description_servicegroup.h>
 #include <axis2_qname.h>
 
@@ -138,9 +138,9 @@ typedef axis2_qname_t *(*axis2_description_service_get_name_t)
 		
 typedef axis2_status_t (*axis2_description_service_add_param_t)
 		(axis2_description_service_t *srv_desc, axis2_env_t *env
-		, axis2_description_param_t *param);
+		, axis2_param_t *param);
 
-typedef axis2_description_param_t *(*axis2_description_service_get_param_t)
+typedef axis2_param_t *(*axis2_description_service_get_param_t)
 		(axis2_description_service_t *srv_desc, axis2_env_t *env
 		, const axis2_char_t *name);
 

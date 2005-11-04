@@ -19,7 +19,7 @@
 
 
 /**
-  * @file axis2_engine_msg_receiver.h
+  * @file axis2_message_receiver.h
   * @brief axis2 ENGINE CORE msg_receiver
   */
 

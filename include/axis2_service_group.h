@@ -23,8 +23,8 @@
  */
 
 #include <axis2_core.h>
-#include <axis2_description_param_include.h>
-#include <axis2_description_service.h>
+#include <axis2_parameter_container.h>
+#include <axis2_service.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -135,10 +135,10 @@ typedef axis2_status_t (*axis2_description_servicegroup_remove_service_t)
 		
 typedef axis2_status_t (*axis2_description_servicegroup_add_param_t)
 		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
-		, axis2_description_param_t *param);
+		, axis2_param_t *param);
 		
 
-typedef axis2_description_param_t *(*axis2_description_servicegroup_get_param_t)(
+typedef axis2_param_t *(*axis2_description_servicegroup_get_param_t)(
 		axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
 		, const axis2_char_t *name);
 		

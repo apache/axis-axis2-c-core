@@ -59,7 +59,7 @@ preferences.autoformat.custom.style= -i8 -sc -bli0 -bl0 -cbi0 -ss
 preferences.indent.opening=0
 preferences.autoformat.disable=1
 preferences.indent.automatic=1
-preferences.use.tabs=0
+preferences.use.tabs=1
 preferences.indent.size=4
 preferences.tabsize=4
 preferences.indent.closing=0
@@ -122,9 +122,7 @@ module.include.files=\
 	include/axis2_parameter_container.h\
 	include/axis2_service.h\
 	include/axis2_service_group.h\
-	include/axis2_wsdl_component.h\
-	include/axis2_handler_desc.h\
-	include/axis2_phase_rule.h
+	include/axis2_wsdl_component.h
 
 module.source.name=.
 module.source.type=
@@ -145,13 +143,6 @@ module.source.files=\
 	modules/xml/om/src/axis2_om_text.c\
 	modules/xml/om/src/axis2_om_stax_builder.c\
 	modules/xml/om/src/axis2_om_node.c\
-	modules/util/src/axis2_allocator.c\
-	modules/util/src/axis2_environment.c\
-	modules/util/src/axis2_error.c\
-	modules/util/src/axis2_hash.c\
-	modules/util/src/axis2_log.c\
-	modules/util/src/axis2_stream.c\
-	modules/util/src/axis2_string.c\
 	modules/util/test/main.c\
 	modules/util/test/util_error_test.c\
 	modules/util/test/util_hash_test.c\
@@ -163,8 +154,6 @@ module.source.files=\
 	modules/test/common/test_common.c\
 	modules/test/om/src/test_om.c\
 	modules/xml/om/src/axis2_om_output.c\
-	modules/util/src/axis2_qname.c\
-	modules/util/src/axis2_file_diff.c\
 	modules/core/context/src/context_message.c\
 	modules/core/description/src/module.c\
 	modules/core/description/src/operation.c\
@@ -178,7 +167,15 @@ module.source.files=\
 	modules/wsdl/src/wsdl_component.c\
 	modules/wsdl/src/wsdl_operation.c\
 	modules/wsdl/src/wsdl_service.c\
-	modules/core/description/src/phase_rule.c
+	modules/util/src/allocator.c\
+	modules/util/src/environment.c\
+	modules/util/src/error.c\
+	modules/util/src/file_diff.c\
+	modules/util/src/hash.c\
+	modules/util/src/log.c\
+	modules/util/src/qname.c\
+	modules/util/src/stream.c\
+	modules/util/src/string.c
 
 module.pixmap.name=.
 module.pixmap.type=

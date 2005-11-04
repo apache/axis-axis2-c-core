@@ -17,10 +17,10 @@
 #include <axis2_parameter.h>
 #include <axis2.h>
 
-typedef struct axis2_parameter_impl
+typedef struct axis2_param_impl_s
 {
     /** Parameter struct */
-    axis2_parameter_t parameter;
+    axis2_param_t parameter;
     /** Parameter name */
     axis2_char_t *name;
     /** Parameter value */
@@ -35,29 +35,66 @@ typedef struct axis2_parameter_impl
      * org.apache.axis2.sample.echo.EchoImpl</parameter>
      */
     axis2_om_node_t *parameter_element ;
-} axis2_parameter_impl_t;
+} axis2_param_impl_t;
 
-#define AXIS2_INTF_TO_IMPL(parameter) ((axis2_parameter_impl_t *)parameter)
+#define AXIS2_INTF_TO_IMPL(parameter) ((axis2_param_impl_t *)parameter)
 
-axis2_char_t* AXIS2_CALL axis2_parameter_get_name(struct axis2_parameter *parameter, axis2_env_t **env);
-void* AXIS2_CALL axis2_parameter_get_value(struct axis2_parameter *parameter, axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_parameter_set_name(struct axis2_parameter *parameter, axis2_env_t **env, axis2_char_t *name);
-axis2_status_t AXIS2_CALL axis2_parameter_set_value(struct axis2_parameter *parameter, axis2_env_t **env, void *value);
-axis2_bool_t AXIS2_CALL axis2_parameter_is_locked(struct axis2_parameter *parameter, axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_parameter_set_locked(struct axis2_parameter *parameter, axis2_env_t **env, axis2_bool_t value);
-int AXIS2_CALL axis2_parameter_get_parameter_type(struct axis2_parameter *parameter, axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_parameter_set_parameter_type(struct axis2_parameter *parameter, axis2_env_t **env, int type);
-axis2_status_t AXIS2_CALL axis2_parameter_set_parameter_element(struct axis2_parameter *parameter, axis2_env_t **env, axis2_om_node_t *element);
-axis2_om_node_t* AXIS2_CALL axis2_parameter_get_parameter_element(struct axis2_parameter *parameter, axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_parameter_free(struct axis2_parameter *parameter, axis2_env_t **env);
+axis2_char_t* AXIS2_CALL 
+axis2_parameter_get_name(axis2_param_t *parameter, 
+							axis2_env_t **env);
+	
+void* AXIS2_CALL 
+axis2_parameter_get_value(axis2_param_t *parameter, 
+							axis2_env_t **env);
+	
+axis2_status_t AXIS2_CALL 
+axis2_parameter_set_name(axis2_param_t *parameter, 
+							axis2_env_t **env, 
+							axis2_char_t *name);
 
-axis2_parameter_t* AXIS2_CALL axis2_parameter_create(axis2_env_t **env, axis2_char_t *name, void *value)
+axis2_status_t AXIS2_CALL 
+axis2_parameter_set_value(axis2_param_t *parameter, 
+							axis2_env_t **env, 
+							void *value);
+
+axis2_bool_t AXIS2_CALL 
+axis2_parameter_is_locked(axis2_param_t *parameter, 
+							axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL 
+axis2_parameter_set_locked(axis2_param_t *parameter, 
+							axis2_env_t **env, 
+							axis2_bool_t value);
+
+int AXIS2_CALL 
+axis2_parameter_get_parameter_type(axis2_param_t *parameter, 
+									axis2_env_t **env);
+axis2_status_t AXIS2_CALL 
+axis2_parameter_set_parameter_type(axis2_param_t *parameter, 
+									axis2_env_t **env, 
+									int type);
+
+axis2_status_t AXIS2_CALL 
+axis2_parameter_set_parameter_element(axis2_param_t *parameter, 
+										axis2_env_t **env, 
+										axis2_om_node_t *element);
+
+axis2_om_node_t* AXIS2_CALL 
+axis2_parameter_get_parameter_element(axis2_param_t *parameter, 
+										axis2_env_t **env);
+axis2_status_t AXIS2_CALL 
+axis2_parameter_free(axis2_param_t *parameter, 
+						axis2_env_t **env);
+
+axis2_param_t* AXIS2_CALL 
+axis2_parameter_create(axis2_env_t **env, 
+						axis2_char_t *name, void *value)
 {
-    axis2_parameter_impl_t *parameter_impl = NULL;
+    axis2_param_impl_t *parameter_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
-    parameter_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_parameter_t) );
+    parameter_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_param_impl_t) );
     if (!parameter_impl)
     { 
         AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
@@ -78,30 +115,34 @@ axis2_parameter_t* AXIS2_CALL axis2_parameter_create(axis2_env_t **env, axis2_ch
     parameter_impl->parameter.ops->set_value = axis2_parameter_set_value; 
     parameter_impl->parameter.ops->is_locked = axis2_parameter_is_locked;
     parameter_impl->parameter.ops->set_locked = axis2_parameter_set_locked;
-    parameter_impl->parameter.ops->get_parameter_type = axis2_parameter_get_parameter_type;
-    parameter_impl->parameter.ops->set_parameter_type = axis2_parameter_set_parameter_type;
-    parameter_impl->parameter.ops->set_parameter_element = axis2_parameter_set_parameter_element;
-    parameter_impl->parameter.ops->get_parameter_element = axis2_parameter_get_parameter_element;
+    parameter_impl->parameter.ops->get_parameter_type = 
+		axis2_parameter_get_parameter_type;
+    parameter_impl->parameter.ops->set_parameter_type = 
+		axis2_parameter_set_parameter_type;
+    parameter_impl->parameter.ops->set_parameter_element = 
+		axis2_parameter_set_parameter_element;
+    parameter_impl->parameter.ops->get_parameter_element = 
+		axis2_parameter_get_parameter_element;
     parameter_impl->parameter.ops->free = axis2_parameter_free;
     
     return &(parameter_impl->parameter);
 }
 
-axis2_char_t* AXIS2_CALL axis2_parameter_get_name(struct axis2_parameter *parameter, axis2_env_t **env)
+axis2_char_t* AXIS2_CALL axis2_parameter_get_name(axis2_param_t *parameter, axis2_env_t **env)
 {
     AXIS2_FUNC_PARAMETER_CHECK(parameter, env, NULL);
     
     return AXIS2_INTF_TO_IMPL(parameter)->name;
 }
 
-void* AXIS2_CALL axis2_parameter_get_value(struct axis2_parameter *parameter, axis2_env_t **env)
+void* AXIS2_CALL axis2_parameter_get_value(axis2_param_t *parameter, axis2_env_t **env)
 {
     AXIS2_FUNC_PARAMETER_CHECK(parameter, env, NULL);
     
     return AXIS2_INTF_TO_IMPL(parameter)->value;
 }
 
-axis2_status_t AXIS2_CALL axis2_parameter_set_name(struct axis2_parameter *parameter, axis2_env_t **env, axis2_char_t *name)
+axis2_status_t AXIS2_CALL axis2_parameter_set_name(axis2_param_t *parameter, axis2_env_t **env, axis2_char_t *name)
 {
     AXIS2_FUNC_PARAMETER_CHECK(parameter, env, AXIS2_FAILURE);
     
@@ -109,7 +150,7 @@ axis2_status_t AXIS2_CALL axis2_parameter_set_name(struct axis2_parameter *param
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL axis2_parameter_set_value(struct axis2_parameter *parameter, axis2_env_t **env, void *value)
+axis2_status_t AXIS2_CALL axis2_parameter_set_value(axis2_param_t *parameter, axis2_env_t **env, void *value)
 {
     AXIS2_FUNC_PARAMETER_CHECK(parameter, env, AXIS2_FAILURE);
     
@@ -117,14 +158,14 @@ axis2_status_t AXIS2_CALL axis2_parameter_set_value(struct axis2_parameter *para
     return AXIS2_SUCCESS;
 }
 
-axis2_bool_t AXIS2_CALL axis2_parameter_is_locked(struct axis2_parameter *parameter, axis2_env_t **env)
+axis2_bool_t AXIS2_CALL axis2_parameter_is_locked(axis2_param_t *parameter, axis2_env_t **env)
 {
     AXIS2_FUNC_PARAMETER_CHECK(parameter, env, AXIS2_FAILURE);
     
     return AXIS2_INTF_TO_IMPL(parameter)->locked;
 }
 
-axis2_status_t AXIS2_CALL axis2_parameter_set_locked(struct axis2_parameter *parameter, axis2_env_t **env, axis2_bool_t value)
+axis2_status_t AXIS2_CALL axis2_parameter_set_locked(axis2_param_t *parameter, axis2_env_t **env, axis2_bool_t value)
 {
     AXIS2_FUNC_PARAMETER_CHECK(parameter, env, AXIS2_FAILURE);
     
@@ -132,14 +173,14 @@ axis2_status_t AXIS2_CALL axis2_parameter_set_locked(struct axis2_parameter *par
     return AXIS2_SUCCESS;
 }
 
-int AXIS2_CALL axis2_parameter_get_parameter_type(struct axis2_parameter *parameter, axis2_env_t **env)
+int AXIS2_CALL axis2_parameter_get_parameter_type(axis2_param_t *parameter, axis2_env_t **env)
 {
     AXIS2_FUNC_PARAMETER_CHECK(parameter, env, AXIS2_FAILURE);
     
     return AXIS2_INTF_TO_IMPL(parameter)->type;
 }
 
-axis2_status_t AXIS2_CALL axis2_parameter_set_parameter_type(struct axis2_parameter *parameter, axis2_env_t **env, int type)
+axis2_status_t AXIS2_CALL axis2_parameter_set_parameter_type(axis2_param_t *parameter, axis2_env_t **env, int type)
 {
     AXIS2_FUNC_PARAMETER_CHECK(parameter, env, AXIS2_FAILURE);
     
@@ -148,7 +189,7 @@ axis2_status_t AXIS2_CALL axis2_parameter_set_parameter_type(struct axis2_parame
 
 }
 
-axis2_status_t AXIS2_CALL axis2_parameter_set_parameter_element(struct axis2_parameter *parameter, axis2_env_t **env, axis2_om_node_t *element)
+axis2_status_t AXIS2_CALL axis2_parameter_set_parameter_element(axis2_param_t *parameter, axis2_env_t **env, axis2_om_node_t *element)
 {
     AXIS2_FUNC_PARAMETER_CHECK(parameter, env, AXIS2_FAILURE);
     
@@ -157,17 +198,18 @@ axis2_status_t AXIS2_CALL axis2_parameter_set_parameter_element(struct axis2_par
 
 }
 
-axis2_om_node_t* AXIS2_CALL axis2_parameter_get_parameter_element(struct axis2_parameter *parameter, axis2_env_t **env)
+axis2_om_node_t* AXIS2_CALL axis2_parameter_get_parameter_element(axis2_param_t *parameter, axis2_env_t **env)
 {
     AXIS2_FUNC_PARAMETER_CHECK(parameter, env, AXIS2_FAILURE);
     
     return AXIS2_INTF_TO_IMPL(parameter)->parameter_element;
 }
 
-axis2_status_t AXIS2_CALL axis2_parameter_free(struct axis2_parameter *parameter, axis2_env_t **env)
+axis2_status_t AXIS2_CALL axis2_parameter_free(axis2_param_t *parameter, axis2_env_t **env)
 {
-    /* no need to free members here as we do not make deep copies in create */
     AXIS2_FUNC_PARAMETER_CHECK(parameter, env, AXIS2_FAILURE);
+	if(NULL != parameter->ops)
+		AXIS2_FREE((*env)->allocator, parameter->ops);
     AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(parameter));    
     return AXIS2_SUCCESS;
 }

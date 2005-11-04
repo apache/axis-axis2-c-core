@@ -18,7 +18,7 @@
 #define AXIS2_DESCRIPTION_PARAM_INCLUDE_H
 
 /**
- * @file axis2_description_param_include.h
+ * @file axis2_parameter_container.h
  * @brief Parameter handling
  */
 
@@ -32,7 +32,7 @@
 
 /*#include <axis2_om_element.h>*/
 #include <axis2_qname.h>
-#include <axis2_description_parameter.h>
+#include <axis2_parameter.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -52,103 +52,93 @@ extern "C"
  * @{
  */
 
-/*************************** Function macros **********************************/
-
-#define axis2_description_param_include_free(param_include, env) \
-	(axis2_description_param_include_get_ops(param_include, env)->free (env, \
-	param_include))
-
-#define axis2_description_param_include_add_param(param_include, env, \
-	param) (axis2_description_param_include_get_ops(param_include, \
-    env)->add_param (param_include, env, param))
-
-#define axis2_description_param_include_get_param(param_include, env) \
-	(axis2_description_param_include_get_ops(param_include, \
-    env)->get_param (param_include, env))
-
-#define axis2_description_param_include_get_params(param_include, env) \
-	(axis2_description_param_include_get_ops(param_include, \
-    env)->get_params (param_include, env))
-
-#define axis2_description_param_include_is_param_locked(param_include, env, \
-    param_name) (axis2_description_param_include_get_ops(param_include, \
-    env)->is_param_locked (param_include, env, param_name))
-
-/*************************** End of function macros ***************************/
-
-/***************************** Function pointers ******************************/
-
-/** Deallocate memory
-  * @return status code
-  */
-typedef axis2_status_t (*axis2_description_param_include_free_t)
-		(axis2_env_t * env,
-		 axis2_description_param_include_t * param_include);
-
-/** Add a parameter
-  * @param parameters
-  * @return status code
-  */
-typedef axis2_status_t (*axis2_description_param_include_add_param_t)
-		(axis2_description_param_include_t *param_include, axis2_env_t *env,
-		 const axis2_description_param_t * param);
-
-/** To get a parameter in a given description 
-  * @param parameter name
-  * @return parameter
-  */
-typedef axis2_description_param_t
-		*(*axis2_description_param_include_get_param_t) 
-		(axis2_description_param_include_t *param_include, axis2_env_t *env,
-		const axis2_char_t *name);
-
-/** To get all the parameters in a given description
-  * @return all the parameters contained
-  */
-typedef axis2_hash_t *(*axis2_description_param_include_get_params_t)
-        (axis2_description_param_include_t *param_include, axis2_env_t *env);
-
-/** To check whether the paramter is locked at any level
-  * @param parameter name
-  * @return whether parameter is locked
-  */
-typedef axis2_bool_t (*axis2_description_param_include_is_param_locked_t)
-		(axis2_description_param_include_t *param_include, axis2_env_t *env,
-		const axis2_char_t *param_name);
-
-/****************************** End of function pointers **********************/
 
 /**
   * Paramter can be any thing it can be XML element with number of child 
   * elements
   */
-struct axis2_description_param_include_ops_s
+struct axis2_param_container_ops_s
 {
-	axis2_description_param_include_free_t free;
+	/** Deallocate memory
+  	 * @return status code
+  	 */
+	axis2_status_t (AXIS2_CALL *free)(axis2_param_container_t *param_container,
+										axis2_env_t **env);
 
-	axis2_description_param_include_add_param_t add_param;
+	/** Add a parameter
+     * @param parameters
+     * @return status code
+     */
+	axis2_status_t (AXIS2_CALL *add_param)
+									(axis2_param_container_t *param_container,
+										axis2_env_t **env,
+		 								axis2_param_t *param);
 
-	axis2_description_param_include_get_param_t get_param;
+	/** To get a parameter in a given description 
+     * @param parameter name
+     * @return parameter
+     */
+	axis2_param_t *(AXIS2_CALL *get_param) 
+									(axis2_param_container_t *param_container, 
+										axis2_env_t **env,
+										const axis2_char_t *name);
 
-	axis2_description_param_include_get_params_t get_params;
 
-	axis2_description_param_include_is_param_locked_t is_param_locked;
+	/** To get all the parameters in a given description
+	 * @return all the parameters contained
+	 */
+	axis2_hash_t *(AXIS2_CALL *get_params)
+									(axis2_param_container_t *param_container, 
+										axis2_env_t **env);
+	
+	/** To check whether the paramter is locked at any level
+	 * @param parameter name
+	 * @return whether parameter is locked
+	 */
+	axis2_bool_t (AXIS2_CALL *is_param_locked)
+									(axis2_param_container_t *param_container, 
+										axis2_env_t **env,
+										const axis2_char_t *param_name) ;
 
 };
 
-/** This will return the operations struct of the 
-  * axis2_description_param_include_t struct
-  * @return operations for axis2_description_param_include_t
-  */
-axis2_description_param_include_ops_t *axis2_description_param_include_get_ops 
-		(axis2_description_param_include_t *param_include, axis2_env_t *env);
+/** @struct axis2_description_param_include
+  * @brief DESCRIPTION param_include struct
+  *	Holder for parameters
+  *  
+*/  
+struct axis2_param_container_s
+{
+	axis2_param_container_ops_t *ops;
+};
 
 /**
-  *	Create axis2_description_param_include_t
-  * @return axis2_description_param_include_t
+  *	Create axis2_param_container_t
+  * @return axis2_param_container_t
   */
-axis2_description_param_include_t *axis2_description_param_include_create
-        (axis2_env_t * env);
+axis2_param_container_t 
+*axis2_param_container_create (axis2_env_t **env);
+
+/*************************** Function macros **********************************/
+
+#define AXIS2_PARAMETER_CONTAINER_FREE(param_container, env) \
+	((param_container->ops)->free (env, param_container))
+
+#define AXIS2_PARAMETER_CONTAINER_ADD_PARAMETER(param_container, env, param) \
+		((param_container->ops)->add_param (param_container, env, param))
+
+#define AXIS2_PARAMETER_CONTAINER_GET_PARAMETER(param_container, env) \
+		((param_container->ops)->get_param (param_container, env))
+
+#define AXIS2_PARAMETER_CONTAINER_GET_PARAMETERS(param_container, env) \
+		((param_container->ops)->get_params (param_container, env))
+
+#define AXIS2_PARAMETER_CONTAINER_IS_PARAMETER_LOCKED(param_container, env, \
+		param_name) \
+		((param_container->ops)->is_param_locked (param_container, env, \
+		param_name))
+
+/*************************** End of function macros ***************************/
 
 /** @} */
 
