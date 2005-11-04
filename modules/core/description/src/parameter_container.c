@@ -24,8 +24,7 @@
 typedef struct axis2_param_container_impl_s
 {
 	axis2_param_container_t param_container;
-    axis2_hash_t *params;
-    axis2_bool_t is_locked;	
+    axis2_hash_t *params;	
 } axis2_param_container_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(param_container) \
@@ -99,7 +98,7 @@ axis2_param_container_create (axis2_env_t **env)
         AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
 		return NULL;			
 	}	
-	param_container_impl->is_locked = AXIS2_FALSE;
+	
 	return &(param_container_impl->param_container);
 }
 
