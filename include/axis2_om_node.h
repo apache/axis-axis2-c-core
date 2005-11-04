@@ -28,7 +28,7 @@
  * @file axis2_om_node.h
  * @brief defines axis2_om_node struct and its operations
  */
-#include <axis2_environment.h>
+#include <axis2_env.h>
 
 #ifdef __cplusplus
 extern "C"

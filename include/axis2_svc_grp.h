@@ -23,8 +23,8 @@
  */
 
 #include <axis2_core.h>
-#include <axis2_parameter_container.h>
-#include <axis2_service.h>
+#include <axis2_param_container.h>
+#include <axis2_svc.h>
 
 #ifdef __cplusplus
 extern "C"

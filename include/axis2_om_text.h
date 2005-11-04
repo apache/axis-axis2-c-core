@@ -22,7 +22,7 @@
  * @brief Axis2 OM XML text
  */
 
-#include <axis2_environment.h>
+#include <axis2_env.h>
 #include <axis2_om_node.h>
 #include <axis2_om_output.h>
 

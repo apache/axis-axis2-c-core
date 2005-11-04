@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <axis2_allocator.h>
-#include <axis2_environment.h>
+#include <axis2_env.h>
 
 CuSuite* axis2_commonGetSuite();
 

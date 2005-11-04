@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <CuTest.h>
-#include <axis2_environment.h>
+#include <axis2_env.h>
 #include <axis2_allocator.h>
 #include <axis2_error_default.h>
 #include <axis2_stream_default.h>

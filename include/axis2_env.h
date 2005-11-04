@@ -18,7 +18,7 @@
 #define AXIS2_ENVIRONMENT_H
 
 /**
- * @file axis2_environment.h
+ * @file axis2_env.h
  * @brief Axis2 environment that acts as a container for error, log and memory 
  *  allocator routines
  */

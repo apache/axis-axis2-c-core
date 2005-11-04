@@ -18,13 +18,13 @@
 #define AXIS2_ENGINE_CONFIG_H
 
 /**
-  * @file axis2_engine_configuration.h
+  * @file axis2_engine_config.h
   * @brief Global states of all the Axis can
   *        can be accessed here
   */
 
 #include <axis2_core.h>
-#include <axis2_parameter_container.h>
+#include <axis2_param_container.h>
 #include <axis2_description_servicegroup.h>
 
 #ifdef __cplusplus

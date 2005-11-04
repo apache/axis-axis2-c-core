@@ -24,7 +24,7 @@
 
 #include <axis2_om_node.h>
 #include <axis2_om_document.h>
-#include <axis2_environment.h>
+#include <axis2_env.h>
 
 #ifdef __cplusplus
 extern "C"

@@ -18,12 +18,12 @@
 #define AXIS2_PARAMETER_H
 
 /**
- * @file axis2_parameter.h
+ * @file axis2_param.h
  * @brief Axis2 parameter interface
  */
 
 #include <axis2_defines.h>
-#include <axis2_environment.h>
+#include <axis2_env.h>
 #include <axis2_om_node.h>
 #include <axis2_core.h>
 

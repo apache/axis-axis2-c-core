@@ -18,21 +18,21 @@
 #define AXIS2_DESCRIPTION_PARAM_INCLUDE_H
 
 /**
- * @file axis2_parameter_container.h
+ * @file axis2_param_container.h
  * @brief Parameter handling
  */
 
 #include <axis2.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_environment.h>
+#include <axis2_env.h>
 #include <axis2_allocator.h>
 #include <axis2_string.h>
 #include <axis2_hash.h>
 
 /*#include <axis2_om_element.h>*/
 #include <axis2_qname.h>
-#include <axis2_parameter.h>
+#include <axis2_param.h>
 
 #ifdef __cplusplus
 extern "C"

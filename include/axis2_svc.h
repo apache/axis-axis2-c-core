@@ -18,12 +18,12 @@
 #define AXIS2_DESCRIPTION_SERVICE_H
 
 /**
-  * @file axis2_service.h
+  * @file axis2_svc.h
   * @brief axis2 DESCRIPTION CORE service
   */
 
 #include <axis2_core.h>
-#include <axis2_parameter_container.h>
+#include <axis2_param_container.h>
 #include <axis2_operation.h>
 #include <axis2_description_servicegroup.h>
 #include <axis2_qname.h>

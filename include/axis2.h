@@ -8,7 +8,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <axis2_environment.h>
+#include <axis2_env.h>
 
 #define AXIS2_FUNC_PARAMETER_CHECK(object, env, error_return) \
     AXIS2_ENV_CHECK(env, error_return);\
