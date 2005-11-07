@@ -14,16 +14,16 @@
  * limitations under the License.
  */
  
-#include <axis2_description_service_group.h>
+#include <axis2_svc_grp.h>
 
-/** @struct axis2_description_servicegroup_s
+/** @struct axis2_svc_grp_s
   * @brief DESCRIPTION servicegroup
   * This holds the information about the servicegroup_name
   */
-struct axis2_description_servicegroup_s
+struct axis2_svc_grp_s
 {
-	axis2_description_servicegroup_ops_t *ops;
-	axis2_description_param_include_t *param_include;
+	axis2_svc_grp_ops_t *ops;
+	axis2_param_container_t *param_container;
 	axis2_char_t *servicegroup_name;
 	axis2_hash_t *services;
 	
@@ -31,48 +31,48 @@ struct axis2_description_servicegroup_s
 
 /***************************** Function headers *******************************/
 
-axis2_status_t axis2_description_servicegroup_ops_free
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env);
+axis2_status_t axis2_svc_grp_ops_free
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env);
 
-axis2_status_t axis2_description_servicegroup_ops_set_name
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+axis2_status_t axis2_svc_grp_ops_set_name
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, axis2_char_t *name);
 
-axis2_char_t *axis2_description_servicegroup_ops_get_name
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env);
+axis2_char_t *axis2_svc_grp_ops_get_name
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env);
 
-axis2_status_t axis2_description_servicegroup_ops_add_service
-		(axis2_description_servicegroup_t* srvgrp_desc, axis2_env_t *env
-		, axis2_description_service_t *service_desc);
+axis2_status_t axis2_svc_grp_ops_add_service
+		(axis2_svc_grp_t* srvgrp_desc, axis2_env_t *env
+		, axis2_svc_t *service_desc);
 
-axis2_description_service_t *axis2_description_servicegroup_ops_get_service
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+axis2_svc_t *axis2_svc_grp_ops_get_service
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, const axis2_qname_t* service_name);
 		
-axis2_status_t axis2_description_servicegroup_ops_remove_service
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+axis2_status_t axis2_svc_grp_ops_remove_service
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, const axis2_qname_t* service_name);
 		
-axis2_status_t axis2_description_servicegroup_ops_add_param
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
-		, axis2_description_param_t *param);
+axis2_status_t axis2_svc_grp_ops_add_param
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
+		, axis2_param_t *param);
 		
 
-axis2_description_param_t *axis2_description_servicegroup_ops_get_param(
-		axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+axis2_param_t *axis2_svc_grp_ops_get_param(
+		axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, const axis2_char_t *name);
 		
-axis2_hash_t *axis2_description_servicegroup_ops_get_params
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env);
+axis2_hash_t *axis2_svc_grp_ops_get_params
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env);
 		
-axis2_bool_t axis2_description_servicegroup_ops_is_param_locked(
-		axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+axis2_bool_t axis2_svc_grp_ops_is_param_locked(
+		axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, const axis2_char_t *param_name);
 
 /***************************** End of function headers ************************/
 
-axis2_description_servicegroup_ops_t *axis2_description_servicegroup_get_ops
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env)
+axis2_svc_grp_ops_t *axis2_svc_grp_get_ops
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env)
 {
 	if(!env || !srvgrp_desc)
 	{
@@ -82,48 +82,48 @@ axis2_description_servicegroup_ops_t *axis2_description_servicegroup_get_ops
 	return srvgrp_desc->ops;
 }
 
-axis2_description_servicegroup_t *axis2_description_servicegroup_create
+axis2_svc_grp_t *axis2_svc_grp_create
 		(axis2_env_t *env)
 {
-	axis2_description_servicegroup_t *srvgrp_desc 
-		= (axis2_description_servicegroup_t *)
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_description_servicegroup_t));
+	axis2_svc_grp_t *srvgrp_desc 
+		= (axis2_svc_grp_t *)
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_svc_grp_t));
 	if(!srvgrp_desc)
 	{
 		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
-	axis2_description_servicegroup_ops_t *ops 
-		= (axis2_description_servicegroup_ops_t *)
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_description_servicegroup_ops_t));
+	axis2_svc_grp_ops_t *ops 
+		= (axis2_svc_grp_ops_t *)
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_svc_grp_ops_t));
 	if(!ops)
 	{
 		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;	
 	}
-	ops->free = axis2_description_servicegroup_ops_free;
-	ops->set_name = axis2_description_servicegroup_ops_set_name;
-	ops->get_name = axis2_description_servicegroup_ops_get_name;
-	ops->add_service = axis2_description_servicegroup_ops_add_service;
-	ops->get_service = axis2_description_servicegroup_ops_get_service;
-	ops->remove_service = axis2_description_servicegroup_ops_remove_service;
-	ops->add_param = axis2_description_servicegroup_ops_add_param;
-	ops->get_param = axis2_description_servicegroup_ops_get_param;
-	ops->get_params = axis2_description_servicegroup_ops_get_params;
-	ops->is_param_locked = axis2_description_servicegroup_ops_is_param_locked;
+	ops->free = axis2_svc_grp_ops_free;
+	ops->set_name = axis2_svc_grp_ops_set_name;
+	ops->get_name = axis2_svc_grp_ops_get_name;
+	ops->add_service = axis2_svc_grp_ops_add_service;
+	ops->get_service = axis2_svc_grp_ops_get_service;
+	ops->remove_service = axis2_svc_grp_ops_remove_service;
+	ops->add_param = axis2_svc_grp_ops_add_param;
+	ops->get_param = axis2_svc_grp_ops_get_param;
+	ops->get_params = axis2_svc_grp_ops_get_params;
+	ops->is_param_locked = axis2_svc_grp_ops_is_param_locked;
 	
 	srvgrp_desc->ops = ops;
 	
-	axis2_description_param_include_t *param_include 
-		= (axis2_description_param_include_t *)
-		axis2_description_param_include_create(env);		
-	if(!param_include)
+	axis2_param_container_t *param_container 
+		= (axis2_param_container_t *)
+		axis2_param_container_create(env);		
+	if(!param_container)
 	{
 		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
 		return NULL;
 	}
 
-	srvgrp_desc->param_include = param_include;
+	srvgrp_desc->param_container = param_container;
 	
 	/*srvgrp_desc->parent = NULL;*/
 	
@@ -140,8 +140,8 @@ axis2_description_servicegroup_t *axis2_description_servicegroup_create
 
 /******************************************************************************/
 
-axis2_status_t axis2_description_servicegroup_ops_free
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env)
+axis2_status_t axis2_svc_grp_ops_free
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env)
 {
 	if(!env || !srvgrp_desc)
 		return AXIS2_ERROR_INVALID_NULL_PARAM;
@@ -149,8 +149,8 @@ axis2_status_t axis2_description_servicegroup_ops_free
 	return AXIS2_SUCCESS;
 }
 
-axis2_status_t axis2_description_servicegroup_ops_set_name
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+axis2_status_t axis2_svc_grp_ops_set_name
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, axis2_char_t *name)
 {
 	if(!env || !srvgrp_desc)
@@ -161,8 +161,8 @@ axis2_status_t axis2_description_servicegroup_ops_set_name
 	return AXIS2_SUCCESS;
 }
 
-axis2_char_t *axis2_description_servicegroup_ops_get_name
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env)
+axis2_char_t *axis2_svc_grp_ops_get_name
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env)
 {
 	if(!env || !srvgrp_desc)
 	{
@@ -172,21 +172,21 @@ axis2_char_t *axis2_description_servicegroup_ops_get_name
 	return srvgrp_desc->servicegroup_name;
 }
 
-axis2_status_t axis2_description_servicegroup_ops_add_service
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
-		, axis2_description_service_t *service_desc)
+axis2_status_t axis2_svc_grp_ops_add_service
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
+		, axis2_svc_t *service_desc)
 {
 	if(!env || srvgrp_desc || service_desc)
 		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	
-	axis2_qname_t *tempname = axis2_description_service_get_name(service_desc, env);
+	axis2_qname_t *tempname = axis2_svc_get_name(service_desc, env);
 	axis2_hash_set (srvgrp_desc->services, tempname->localpart
 		, AXIS2_HASH_KEY_STRING, service_desc);
 	return AXIS2_SUCCESS;
 }
 
-axis2_description_service_t *axis2_description_servicegroup_ops_get_service
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env 
+axis2_svc_t *axis2_svc_grp_ops_get_service
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env 
 		, const axis2_qname_t* service_name)
 {
 	if(!env || !srvgrp_desc || ! service_name)
@@ -194,13 +194,13 @@ axis2_description_service_t *axis2_description_servicegroup_ops_get_service
 		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
 	}
-	return (axis2_description_service_t *) (axis2_hash_get 
+	return (axis2_svc_t *) (axis2_hash_get 
 		(srvgrp_desc->services, service_name->localpart
 		, AXIS2_HASH_KEY_STRING));
 }
 
-axis2_status_t axis2_description_servicegroup_ops_remove_service
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+axis2_status_t axis2_svc_grp_ops_remove_service
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, const axis2_qname_t* service_name)
 {
 	if(!env || !srvgrp_desc || ! service_name)
@@ -213,26 +213,26 @@ axis2_status_t axis2_description_servicegroup_ops_remove_service
 	return AXIS2_SUCCESS;
 }
 
-axis2_status_t axis2_description_servicegroup_ops_add_param
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
-		, axis2_description_param_t *param)
+axis2_status_t axis2_svc_grp_ops_add_param
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
+		, axis2_param_t *param)
 {
-	if(!env || !srvgrp_desc || !srvgrp_desc->param_include || !param)
+	if(!env || !srvgrp_desc || !srvgrp_desc->param_container || !param)
 	{
 		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	}
-	axis2_hash_set (axis2_description_param_include_get_params
-		(srvgrp_desc->param_include, env), axis2_description_param_get_name
+	axis2_hash_set (axis2_param_container_get_params
+		(srvgrp_desc->param_container, env), axis2_param_get_name
 		(param, env)
 		, AXIS2_HASH_KEY_STRING, param);	
 	return AXIS2_SUCCESS;
 }
 
-axis2_description_param_t *axis2_description_servicegroup_ops_get_param(
-		axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+axis2_param_t *axis2_svc_grp_ops_get_param(
+		axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, const axis2_char_t *name)
 {
-	if(!env || !srvgrp_desc || !srvgrp_desc->param_include)
+	if(!env || !srvgrp_desc || !srvgrp_desc->param_container)
 	{
 		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;
@@ -244,30 +244,30 @@ axis2_description_param_t *axis2_description_servicegroup_ops_get_param(
 		return NULL;
 	}
 		
-	return (axis2_description_param_t *)(axis2_hash_get 
-		(axis2_description_param_include_get_params
-		(srvgrp_desc->param_include, env), tempname, AXIS2_HASH_KEY_STRING));
+	return (axis2_param_t *)(axis2_hash_get 
+		(axis2_param_container_get_params
+		(srvgrp_desc->param_container, env), tempname, AXIS2_HASH_KEY_STRING));
 	
 }
 
-axis2_hash_t *axis2_description_servicegroup_ops_get_params
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env)
+axis2_hash_t *axis2_svc_grp_ops_get_params
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env)
 {
 	if(!env || !srvgrp_desc)
 	{
 		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return NULL;		
 	}
-	return axis2_description_param_include_get_params(srvgrp_desc->param_include
+	return axis2_param_container_get_params(srvgrp_desc->param_container
 		, env);
 	
 }
 
-axis2_bool_t axis2_description_servicegroup_ops_is_param_locked(
-		axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+axis2_bool_t axis2_svc_grp_ops_is_param_locked(
+		axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, const axis2_char_t *param_name)
 {
-	if(!env || !srvgrp_desc || !srvgrp_desc->param_include)
+	if(!env || !srvgrp_desc || !srvgrp_desc->param_container)
 	{
 		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
 		return AXIS2_FALSE;
@@ -279,7 +279,7 @@ axis2_bool_t axis2_description_servicegroup_ops_is_param_locked(
 		return AXIS2_FALSE;
 	}
 		
-	return axis2_description_param_include_is_param_locked
-		(srvgrp_desc->param_include, env, param_name); 
+	return axis2_param_container_is_param_locked
+		(srvgrp_desc->param_container, env, param_name); 
 	
 }

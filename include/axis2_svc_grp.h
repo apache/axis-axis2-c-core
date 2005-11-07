@@ -96,57 +96,57 @@ extern "C"
   * @return status code
   */
 typedef axis2_status_t (*axis2_description_servicegroup_free_t)
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env);
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env);
 
 /** Set name of the service group_member
   * @param servicegroup_name
   * @return status_code
   */
 typedef axis2_status_t (*axis2_description_servicegroup_set_name_t)
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, axis2_char_t *servicegroup_name);
 		
 /** get the service group name
   * @return service group name
   */
 typedef axis2_char_t *(*axis2_description_servicegroup_get_name_t)
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env);
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env);
 
 /** Add a service to the serivce group
   * @param service to be added
   * @return status code
   */
 typedef axis2_status_t (*axis2_description_servicegroup_add_service_t)
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
-	 	, axis2_description_service_t *service_desc);
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
+	 	, axis2_svc_t *service_desc);
 
 /** Get the service from service group_member
   * @param service_name
   * @return service description
   */
-typedef axis2_description_service_t 
+typedef axis2_svc_t 
 		*(*axis2_description_servicegroup_get_service_t)
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, const axis2_qname_t* service_name);
 
 typedef axis2_status_t (*axis2_description_servicegroup_remove_service_t)
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, const axis2_qname_t *service_name);
 		
 typedef axis2_status_t (*axis2_description_servicegroup_add_param_t)
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, axis2_param_t *param);
 		
 
 typedef axis2_param_t *(*axis2_description_servicegroup_get_param_t)(
-		axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+		axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, const axis2_char_t *name);
 		
 typedef axis2_hash_t *(*axis2_description_servicegroup_get_params_t)
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env);
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env);
 		
 typedef axis2_bool_t (*axis2_description_servicegroup_is_param_locked_t)
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env
 		, const axis2_char_t *param_name);
 		
 /*************************** End of function pointers *************************/
@@ -166,9 +166,9 @@ struct axis2_description_servicegroup_ops_s
 };
 
 axis2_description_servicegroup_ops_t *axis2_description_servicegroup_get_ops 
-		(axis2_description_servicegroup_t *srvgrp_desc, axis2_env_t *env);
+		(axis2_svc_grp_t *srvgrp_desc, axis2_env_t *env);
 
-axis2_description_servicegroup_t *axis2_description_servicegroup_create
+axis2_svc_grp_t *axis2_description_servicegroup_create
 		(axis2_env_t *env);
 
 /** @} */

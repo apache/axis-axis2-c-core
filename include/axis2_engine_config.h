@@ -77,17 +77,17 @@ typedef axis2_status_t (*axis2_engine_config_free_t)
 		
 typedef axis2_status_t (*axis2_engine_config_add_service_group_t)
 		(axis2_engine_config_t *engine_config, axis2_env_t *env
-    	, axis2_description_servicegroup_t *service_group_desc);
+    	, axis2_svc_grp_t *service_group_desc);
 		
-typedef axis2_description_servicegroup_t *(*axis2_engine_config_get_service_group_t)
+typedef axis2_svc_grp_t *(*axis2_engine_config_get_service_group_t)
 		(axis2_engine_config_t *engine_config, axis2_env_t *env
 		, const axis2_char_t *servicegroup_name);
 
 typedef axis2_status_t (*axis2_engine_config_add_service_t)
 		(axis2_engine_config_t *engine_config, axis2_env_t *env
-		, axis2_description_service_t* service_desc);
+		, axis2_svc_t* service_desc);
 		
-typedef axis2_description_service_t *(*axis2_engine_config_get_service_t)
+typedef axis2_svc_t *(*axis2_engine_config_get_service_t)
 		(axis2_engine_config_t *engine_config, axis2_env_t *env
 		, const axis2_char_t* service_name);
 

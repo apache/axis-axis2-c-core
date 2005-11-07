@@ -113,7 +113,6 @@ module.include.files=\
 	include/axis2_handler.h\
 	include/axis2_module.h\
 	include/axis2_operation.h\
-	include/axis2_service.h\
 	include/axis2_wsdl_component.h\
 	include/axis2_engine_config.h\
 	include/axis2_env.h\

@@ -19,7 +19,7 @@
 
 /**
  * @file axis2_param_container.h
- * @brief Parameter handling
+ * @brief Axis2 Param container interface
  */
 
 #include <axis2.h>
@@ -39,34 +39,26 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_description DESCRIPTION (Axis2 Information model)
-  * @ingroup axis2
-  * @{
-  */
-
-/** @} */
-
-/**
- * @defgroup axis2_description_param_include DESCRIPTION ParameterInclude
- * @ingroup axis2_description 
+/** @defgroup axis2_param_container Parameter Container
+ * @ingroup axis2_description
  * @{
  */
 
 
-/**
-  * Paramter can be any thing it can be XML element with number of child 
-  * elements
-  */
-struct axis2_param_container_ops_s
+/** 
+ * @brief Param Container operations struct
+ * Encapsulator struct for operations of axis2_param_container
+ */
+AXIS2_DECLARE_DATA struct axis2_param_container_ops_s
 {
-	/** Deallocate memory
+	/** De-allocate memory
   	 * @return status code
   	 */
 	axis2_status_t (AXIS2_CALL *free)(axis2_param_container_t *param_container,
 										axis2_env_t **env);
 
 	/** Add a param
-     * @param params
+     * @param param param to be added
      * @return status code
      */
 	axis2_status_t (AXIS2_CALL *add_param)
@@ -75,7 +67,7 @@ struct axis2_param_container_ops_s
 		 								axis2_param_t *param);
 
 	/** To get a param in a given description 
-     * @param param name
+     * @param name param name
      * @return param
      */
 	axis2_param_t *(AXIS2_CALL *get_param) 
@@ -92,7 +84,7 @@ struct axis2_param_container_ops_s
 										axis2_env_t **env);
 	
 	/** To check whether the paramter is locked at any level
-	 * @param param name
+	 * @param param_name name of the param
 	 * @return whether param is locked
 	 */
 	axis2_bool_t (AXIS2_CALL *is_param_locked)
@@ -102,22 +94,21 @@ struct axis2_param_container_ops_s
 
 };
 
-/** @struct axis2_description_param_include
-  * @brief DESCRIPTION param_include struct
-  *	Holder for params
-  *  
-*/  
-struct axis2_param_container_s
+/** 
+ * @brief Param container struct
+ *	Container for params  
+ */  
+AXIS2_DECLARE_DATA struct axis2_param_container_s
 {
 	axis2_param_container_ops_t *ops;
 };
 
 /**
-  *	Create axis2_param_container_t
-  * @return axis2_param_container_t
-  */
-axis2_param_container_t 
-*axis2_param_container_create (axis2_env_t **env);
+ * Creates param container struct
+ * @return pointer to newly created param container
+ */
+AXIS2_DECLARE(axis2_param_container_t *) 
+axis2_param_container_create (axis2_env_t **env);
 
 /*************************** Function macros **********************************/
 
@@ -145,4 +136,4 @@ axis2_param_container_t
 #ifdef __cplusplus
 }
 #endif
-#endif                          /* AXIS2_PARAM_CONTAINER_H */
+#endif  /* AXIS2_PARAM_CONTAINER_H */

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_DESCRIPTION_OPERATION_H
-#define AXIS2_DESCRIPTION_OPERATION_H
+#ifndef AXIS2_OPERATION_H
+#define AXIS2_OPERATION_H
 
 /**
   * @file axis2_operation.h
-  * @brief axis2 DESCRIPTION CORE operation
+  * @brief axis2 operation interface
   */
 
 #include <axis2_core.h>
@@ -32,160 +32,152 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_description DESCRIPTION (Axis2 Information model)
-  * @ingroup axis2
+/** @defgroup axis2_operation Operation Description
+  * @ingroup axis2_core_description
   * @{
   */
 
-/** @} */
+struct axis2_svc_s;
+struct axis2_msg_recv_s;
+typedef struct axis2_operation_s axis2_operation_t;
+typedef struct axis2_operation_s axis2_operation_t;    
+    
+/** 
+ * @brief Operation operations struct
+ * Encapsulator struct for operations of axis2_operation
+ */    
+AXIS2_DECLARE_DATA struct axis2_operation_ops_s
+{
+    /** De-allocate memory
+  	 * @return status code
+  	 */
+	axis2_status_t (AXIS2_CALL *free) (axis2_operation_t *operation, 
+                                        axis2_env_t **env);
 
-/**
- * @defgroup axis2_description_operation DESCRIPTION Operation
- * @ingroup axis2_description 
- * @{
+    /**
+     * Method addParameter
+     *
+     * @param param Parameter that will be added
+     */
+	axis2_status_t (AXIS2_CALL *add_param)(axis2_operation_t *operation, 
+                                            axis2_env_t **env, 
+                                            axis2_param_t *param);
+    
+    /**
+     * Method getParameter
+     *
+     * @param name Name of the parameter
+     */
+	axis2_param_t *(AXIS2_CALL *get_param)(axis2_operation_t *operation, 
+                                            axis2_env_t **env,
+                                            const axis2_char_t *name);
+
+
+	axis2_hash_t *(AXIS2_CALL *get_params) (axis2_operation_t *operation, 
+                                                axis2_env_t **env);
+
+    //to check whether a given paramter is locked
+	axis2_bool_t (AXIS2_CALL *is_param_locked) (axis2_operation_t *operation, 
+                                                axis2_env_t **env,
+		                                        const axis2_char_t *param_name);
+	
+	axis2_status_t (AXIS2_CALL *set_parent) (axis2_operation_t *operation, 
+                                     *axis2_env_t **env,
+                                     axis2_svc_t *service_desc);
+
+	struct axis2_svc_s *(AXIS2_CALL *get_parent) (axis2_operation_t *operation, 
+                                            axis2_env_t **env);
+
+	axis2_qname_t *(AXIS2_CALL *get_name) (axis2_operation_t *operation, 
+                                            axis2_env_t **env);
+
+	axis2_status_t (AXIS2_CALL *set_msg_exchange_pattern) 
+                                                (axis2_operation_t *operation, 
+                                                axis2_env_t **env,
+                                                axis2_char_t *pattern);
+
+	axis2_char_t *(AXIS2_CALL *get_msg_exchange_pattern)
+                                                (axis2_operation_t *operation, 
+                                                axis2_env_t **env);
+
+	axis2_status_t (AXIS2_CALL *set_msg_recv) (axis2_operation_t *operation, 
+                                        axis2_env_t **env,
+                                        struct axis2_msg_recv_s *msg_recv);
+
+	struct axis2_msg_recv_s *(AXIS2_CALL *get_msg_recv) (axis2_operation_t *operation, 
+                                                    axis2_env_t **env);
+};
+
+/** 
+ * @brief Operaton struct
+ *	Axis2 Operation   
+ */  
+AXIS2_DECLARE_DATA struct axis2_operation_s
+{
+	axis2_operation_ops_t *ops;
+};
+
+/** 
+ * Creates operation struct
+ * @return pointer to newly created operation
  */
+AXIS2_DECLARE(axis2_operation_t *)
+axis2_operation_create (axis2_env_t **env);
+
+/** 
+ * Creates operation struct with name
+ * @param name operation name
+ * @return pointer to newly created operation
+ */
+AXIS2_DECLARE(axis2_operation_t *)
+axis2_operation_create_with_name (axis2_env_t **env, 
+                                                axis2_qname_t *name);
+
 
 /************************** Start of function macros **************************/
 
-#define axis2_description_operation_free(operation_desc, env) \
-		(axis2_description_operation_get_ops(operation_desc \
-		, env)->free (operation_desc, env));
+#define AXIS2_OPERATION_FREE(operation, env) \
+        ((operation->ops)->free (operation, env));
 
-#define axis2_description_operation_add_param(operation_desc, env, param) \
-		(axis2_description_operation_get_ops(operation_desc \
-		, env)->add_param (operation_desc, env, param));
+#define AXIS2_OPERATION_ADD_PARAM(operation, env, param) \
+		((operation->ops)->add_param (operation, env, param));
 
-#define axis2_description_operation_get_param get_param(operation_desc, env) \
-		(axis2_description_operation_get_ops(operation_desc \
-		, env)->get_param (operation_desc, env));
+#define AXIS2_OPERATION_GET_PARAM(operation, env) \
+		((operation->ops)->get_param (operation, env));
 
-#define axis2_description_operation_get_params get_params(operation_desc, env) \
-		(axis2_description_operation_get_ops(operation_desc \
-		, env)->get_params (operation_desc, env));
+#define AXIS2_OPERATION_GET_PARAMS(operation, env) \
+		((operation->ops)->get_params (operation, env));
 
-#define axis2_description_operation_is_param_locked(operation_desc, env \
-		, param_name) (axis2_description_operation_get_ops(operation_desc \
-		, env)->is_param_locked(operation_desc, env, param_name));
+#define AXIS2_OPERATION_IS_PARAM_LOCKED(operation, env, param_name) \
+        ((operation->ops)->is_param_locked(operation, env, param_name));
 
-#define axis2_operation_set_parent(operation_desc, env, \
-		service_desc) (axis2_description_operation_get_ops(operation_desc \
-		, env)->set_parent (operation_desc, env, service_desc));
+#define AXIS2_OPERATION_SET_PARENT(operation, env, service_desc) \
+        ((operation->ops)->set_parent (operation, env, service_desc));
 
-#define axis2_description_operation_get_parent(operation_desc, env) \
-		(axis2_description_operation_get_ops(operation_desc \
-		, env)->get_parent (operation_desc, env));
+#define AXIS2_OPERATION_GET_PARENT(operation, env) \
+		((operation->ops)->get_parent (operation, env));
 
-#define axis2_description_operation_get_name(operation_desc, env) \
-		(axis2_description_operation_get_ops(operation_desc, env)->get_name \
-		(operation_desc, env));
+#define AXIS2_OPERATION_GET_NAME(operation, env) \
+		((operation->ops)->get_name (operation, env));
 
-#define axis2_operation_set_msg_exchange_pattern(operation_desc \
-		, env, msg_exchange_pattern) \
-		(axis2_description_operation_get_ops(operation_desc \
-		, env)->set_msg_exchange_pattern (operation_desc \
-		, env, msg_exchange_pattern));
+#define AXIS2_OPERATION_SET_MSG_EXCHANGE_PATTERN(operation , env, \
+        msg_exchange_pattern) \
+		((operation->ops)->set_msg_exchange_pattern (operation, env, \
+        msg_exchange_pattern));
 
-#define axis2_description_operation_get_msg_exchange_pattern(operation_desc, env) \
-		(axis2_description_operation_get_ops(operation_desc \
-		, env)->get_msg_exchange_pattern (operation_desc, env));
+#define AXIS2_OPERATION_GET_MSG_EXCHANGE_PATTERN(operation, env) \
+		((operation->ops)->get_msg_exchange_pattern (operation, env));
 
-#define axis2_operation_set_msg_receiver(operation_desc \
-		, env, msg_receiver) (axis2_description_operation_get_ops(operation_desc \
-		, env)->set_msg_receiver (operation_desc, env, msg_receiver));
+#define AXIS2_OPERATION_SET_MSG_RECEIVER(operation, env, msg_recv) \
+        ((operation->ops)->set_msg_recv (operation, env, msg_recv));
 
-#define axis2_description_operation_get_msg_receiver(operation_desc, env) \
-		(axis2_description_operation_get_ops(operation_desc \
-		, env)->get_msg_receiver (operation_desc, env));
+#define AXIS2_OPERATION_GET_MSG_RECEIVER(operation, env) \
+		((operation->ops)->get_msg_recv (operation, env));
 
 /************************** End of function macros ****************************/
-
-/************************** Start of function pointers ************************/
-
-typedef axis2_status_t (*axis2_description_operation_free_t)
-        (axis2_description_operation_t *operation_desc, axis2_env_t *env);
-
-typedef axis2_status_t (*axis2_description_operation_add_param_t)
-        (axis2_description_operation_t *operation_desc, axis2_env_t *env
-        , axis2_param_t *param);
-
-typedef axis2_param_t *(*axis2_description_operation_get_param_t) 
-		(axis2_description_operation_t *operation_desc, axis2_env_t *env
-        , const axis2_char_t *name);
-
-typedef axis2_hash_t *(*axis2_description_operation_get_params_t)
-        (axis2_description_operation_t *operation_desc, axis2_env_t *env);
-		 
-typedef axis2_bool_t (*axis2_description_operation_is_param_locked_t)
-		(axis2_description_operation_t *operation_desc, axis2_env_t *env
-		, const axis2_char_t *param_name);
-		 
-
-typedef axis2_status_t (*axis2_operation_set_parent_t)
-        (axis2_description_operation_t *operation_desc, axis2_env_t *env
-         , axis2_description_service_t *service_desc);
-
-typedef axis2_description_service_t *(*axis2_description_operation_get_parent_t) 
-		(axis2_description_operation_t *operation_desc, axis2_env_t *env);
-
-typedef axis2_qname_t *(*axis2_description_operation_get_name_t)
-        (axis2_description_operation_t *operation_desc, axis2_env_t *env);
-
-typedef axis2_status_t (*axis2_operation_set_msg_exchange_pattern_t)
-        (axis2_description_operation_t *operation_desc, axis2_env_t *env
-         , axis2_char_t *pattern);
-
-typedef axis2_char_t *(*axis2_description_operation_get_msg_exchange_pattern_t)
-        (axis2_description_operation_t *operation_desc, axis2_env_t *env);
-
-typedef axis2_status_t (*axis2_operation_set_msg_receiver_t)
-        (axis2_description_operation_t *operation_desc, axis2_env_t *env,
-         axis2_engine_msg_receiver_t *msg_receiver);
-
-typedef axis2_engine_msg_receiver_t *(*axis2_description_operation_get_msg_receiver_t)
-        (axis2_description_operation_t *operation_desc, axis2_env_t *env);
-
-/**************************** End of function pointers ************************/
-
-struct axis2_description_operation_ops_s
-{
-	axis2_description_operation_free_t free;
-
-	axis2_description_operation_add_param_t add_param;
-
-	axis2_description_operation_get_param_t get_param;
-
-	axis2_description_operation_get_params_t get_params;
-
-	axis2_description_operation_is_param_locked_t is_param_locked;
-	
-	axis2_operation_set_parent_t set_parent;
-
-	axis2_description_operation_get_parent_t get_parent;
-
-	axis2_description_operation_get_name_t get_name;
-
-	axis2_operation_set_msg_exchange_pattern_t
-		set_msg_exchange_pattern;
-
-	axis2_description_operation_get_msg_exchange_pattern_t
-		get_msg_exchange_pattern;
-
-	axis2_operation_set_msg_receiver_t set_msg_receiver;
-
-	axis2_description_operation_get_msg_receiver_t get_msg_receiver;
-};
-
-axis2_description_operation_ops_t *axis2_description_operation_get_ops
-		(axis2_description_operation_t *operation_desc, axis2_env_t *env);
-
-axis2_description_operation_t *axis2_description_operation_create 
-		(axis2_env_t *env);
-
-axis2_description_operation_t *axis2_description_operation_create_with_name 
-		(axis2_env_t *env, axis2_qname_t *name);
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif                          /* AXIS2_DESCRIPTION_OPERATION_H */
+#endif  /* AXIS2_OPERATION_H */

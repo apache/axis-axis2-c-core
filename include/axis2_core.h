@@ -81,27 +81,27 @@ typedef struct axis2_param_container_s axis2_param_container_t;
 
 /** @cond */
 struct axis2_operation_s;
-struct axis2_description_operation_ops_s;
+struct axis2_operation_ops_s;
 /** @endcond */
-typedef struct axis2_operation_s axis2_description_operation_t;
-typedef struct axis2_description_operation_ops_s 
-		axis2_description_operation_ops_t;
+typedef struct axis2_operation_s axis2_operation_t;
+typedef struct axis2_operation_ops_s 
+		axis2_operation_ops_t;
 
 
 /** @cond */
-struct axis2_description_service_s;
-struct axis2_description_service_ops_s;
+struct axis2_svc_s;
+struct axis2_svc_ops_s;
 /** @endcond */
-typedef struct axis2_description_service_s axis2_description_service_t;
-typedef struct axis2_description_service_ops_s 
-		axis2_description_service_ops_t;
+typedef struct axis2_svc_s axis2_svc_t;
+typedef struct axis2_svc_ops_s 
+		axis2_svc_ops_t;
 
 
 /** @cond */
 struct axis2_description_servicegroup_s;
 struct axis2_description_servicegroup_ops_s;
 /** @endcond */	
-typedef struct axis2_description_servicegroup_s axis2_description_servicegroup_t;
+typedef struct axis2_description_servicegroup_s axis2_svc_grp_t;
 typedef struct axis2_description_servicegroup_ops_s 
 		axis2_description_servicegroup_ops_t;
 
@@ -114,11 +114,11 @@ typedef struct axis2_context_msg_ctx_s axis2_context_msg_ctx_t;
 typedef struct axis2_context_msg_ctx_ops_s axis2_context_msg_ctx_ops_t;
 	
 /** @cond */
-struct axis2_engine_msg_receiver_s;
-struct axis2_engine_msg_receiver_ops_s;
+struct axis2_engine_msg_recv_s;
+struct axis2_engine_msg_recv_ops_s;
 /** @endcond */
-typedef struct axis2_engine_msg_receiver_s axis2_engine_msg_receiver_t;
-typedef struct axis2_engine_msg_receiver_ops_s axis2_engine_msg_receiver_ops_t;
+typedef struct axis2_engine_msg_recv_s axis2_msg_recv_t;
+typedef struct axis2_engine_msg_recv_ops_s axis2_engine_msg_recv_ops_t;
 	
 /** @cond */
 struct axis2_engine_config_s;

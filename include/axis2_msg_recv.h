@@ -20,7 +20,7 @@
 
 /**
   * @file axis2_msg_recv.h
-  * @brief axis2 ENGINE CORE msg_receiver
+  * @brief axis2 ENGINE CORE msg_recv
   */
 
 #include <axis2_core.h>
@@ -38,49 +38,49 @@ extern "C"
 /** @} */
 
 /**
- * @defgroup axis2_engine_msg_receiver ENGINE Msg_receiver
+ * @defgroup axis2_engine_msg_recv ENGINE Msg_receiver
  * @ingroup axis2_engine 
  * @{
  */
 
 /************************** Start of function macros **************************/
 
-#define axis2_engine_msg_receiver_free(env, msg_receiver) \
-		(axis2_engine_msg_receiver_get_ops(env, \
-		msg_receiver)->free (env, msg_receiver));
+#define axis2_engine_msg_recv_free(env, msg_recv) \
+		(axis2_engine_msg_recv_get_ops(env, \
+		msg_recv)->free (env, msg_recv));
 
-#define axis2_engine_msg_receiver_receive(env, msg_receiver, msg_ctx) \
-		(axis2_engine_msg_receiver_get_ops(env, \
-		msg_receiver)->receive (env, msg_receiver, msg_ctx));
+#define axis2_engine_msg_recv_receive(env, msg_recv, msg_ctx) \
+		(axis2_engine_msg_recv_get_ops(env, \
+		msg_recv)->receive (env, msg_recv, msg_ctx));
 
 /************************** End of function macros ****************************/
 
 /************************** Start of function pointers ************************/
 
-    typedef axis2_status_t (*axis2_engine_msg_receiver_free_t)
+    typedef axis2_status_t (*axis2_engine_msg_recv_free_t)
         (axis2_env_t * env,
-         axis2_engine_msg_receiver_t * msg_receiver);
+         axis2_msg_recv_t * msg_recv);
 
-    typedef axis2_status_t (*axis2_engine_msg_receiver_receive_t)
+    typedef axis2_status_t (*axis2_engine_msg_recv_receive_t)
         (axis2_env_t * env,
-         axis2_engine_msg_receiver_t * msg_receiver,
+         axis2_msg_recv_t * msg_recv,
          axis2_context_msg_ctx_t * msg_ctx);
 
 /**************************** End of function pointers ************************/
 
-    struct axis2_engine_msg_receiver_ops_s
+    struct axis2_engine_msg_recv_ops_s
     {
-        axis2_engine_msg_receiver_free_t free;
+        axis2_engine_msg_recv_free_t free;
 
-        axis2_engine_msg_receiver_receive_t receive;
+        axis2_engine_msg_recv_receive_t receive;
     };
 
-    axis2_engine_msg_receiver_t *axis2_engine_msg_receiver_get_ops
+    axis2_msg_recv_t *axis2_engine_msg_recv_get_ops
         (axis2_env_t * env,
-         axis2_engine_msg_receiver_t * msg_receiver);
+         axis2_msg_recv_t * msg_recv);
 
-      axis2_engine_msg_receiver_t
-        * axis2_engine_msg_receiver_create (axis2_env_t * env);
+      axis2_msg_recv_t
+        * axis2_engine_msg_recv_create (axis2_env_t * env);
 
 /** @} */
 #ifdef __cplusplus
