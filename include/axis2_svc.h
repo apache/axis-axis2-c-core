@@ -38,6 +38,9 @@ extern "C"
   * @{
   */
 
+struct axis2_svc_grp_s;
+typedef struct axis2_svc_s axis2_svc_t;
+    
 /** 
  * @brief Service operations struct
  * Encapsulator struct for operations of axis2_svc
@@ -65,9 +68,9 @@ struct axis2_svc_ops_s
 
 	axis2_status_t (AXIS2_CALL *set_parent) (axis2_svc_t *svc, 
                                                 axis2_env_t **env,
-	 	                                        axis2_svc_grp_t *svc_grp);
+	 	                                        struct axis2_svc_grp_s *svc_grp);
 
-	axis2_svc_grp_t *(AXIS2_CALL *get_parent) (axis2_svc_t *svc, 
+	struct axis2_svc_grp_s *(AXIS2_CALL *get_parent) (axis2_svc_t *svc, 
                                                 axis2_env_t **env);
 	
 	axis2_qname_t *(AXIS2_CALL *get_name) (const axis2_svc_t *svc, 

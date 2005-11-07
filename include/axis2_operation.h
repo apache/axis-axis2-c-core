@@ -39,7 +39,6 @@ extern "C"
 
 struct axis2_svc_s;
 struct axis2_msg_recv_s;
-typedef struct axis2_operation_s axis2_operation_t;
 typedef struct axis2_operation_s axis2_operation_t;    
     
 /** 
@@ -83,7 +82,7 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops_s
 	
 	axis2_status_t (AXIS2_CALL *set_parent) (axis2_operation_t *operation, 
                                      *axis2_env_t **env,
-                                     axis2_svc_t *service_desc);
+                                     struct axis2_svc_s *service_desc);
 
 	struct axis2_svc_s *(AXIS2_CALL *get_parent) (axis2_operation_t *operation, 
                                             axis2_env_t **env);

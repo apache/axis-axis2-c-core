@@ -63,50 +63,6 @@ extern "C"
 #define SERVICE_NAME_SPLIT_CHAR ":"
 
 /** @cond */
-struct axis2_param_ops_s;
-struct axis2_param_s;
-/** @endcond */
-typedef struct axis2_param_ops_s axis2_param_ops_t;
-typedef struct axis2_param_s axis2_param_t;
-
-
-
-/** @cond */
-struct axis2_param_container_ops_s;
-struct axis2_param_container_s;
-/** @endcond */		
-typedef struct axis2_param_container_ops_s axis2_param_container_ops_t;	
-typedef struct axis2_param_container_s axis2_param_container_t;
-
-
-/** @cond */
-struct axis2_operation_s;
-struct axis2_operation_ops_s;
-/** @endcond */
-typedef struct axis2_operation_s axis2_operation_t;
-typedef struct axis2_operation_ops_s 
-		axis2_operation_ops_t;
-
-
-/** @cond */
-struct axis2_svc_s;
-struct axis2_svc_ops_s;
-/** @endcond */
-typedef struct axis2_svc_s axis2_svc_t;
-typedef struct axis2_svc_ops_s 
-		axis2_svc_ops_t;
-
-
-/** @cond */
-struct axis2_description_servicegroup_s;
-struct axis2_description_servicegroup_ops_s;
-/** @endcond */	
-typedef struct axis2_description_servicegroup_s axis2_svc_grp_t;
-typedef struct axis2_description_servicegroup_ops_s 
-		axis2_description_servicegroup_ops_t;
-
-
-/** @cond */
 struct axis2_context_msg_ctx_s;
 struct axis2_context_msg_ctx_ops_s;
 /** @endcond */
