@@ -113,13 +113,13 @@ axis2_param_container_create (axis2_env_t **env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_PARAM_CONTAINER_FREE(param_container, env) \
-		((param_container->ops)->free (env, param_container))
+		((param_container->ops)->free (param_container, env))
 
 #define AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container, env, param) \
 		((param_container->ops)->add_param (param_container, env, param))
 
-#define AXIS2_PARAM_CONTAINER_GET_PARAM(param_container, env) \
-		((param_container->ops)->get_param (param_container, env))
+#define AXIS2_PARAM_CONTAINER_GET_PARAM(param_container, env, name) \
+		((param_container->ops)->get_param (param_container, env, name))
 
 #define AXIS2_PARAM_CONTAINER_GET_PARAMS(param_container, env) \
 		((param_container->ops)->get_params (param_container, env))
