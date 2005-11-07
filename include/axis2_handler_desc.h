@@ -25,6 +25,7 @@
 #include <axis2_defines.h>
 #include <axis2_qname.h>
 #include <axis2_param.h>
+#include <axis2_param_container.h>
 #include <axis2_phase_rule.h>
 #include <axis2_handler.h>
 

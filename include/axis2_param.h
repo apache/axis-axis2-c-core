@@ -32,6 +32,9 @@ extern "C"
 {
 #endif
 
+struct axis2_param;
+struct axis2_param_ops;
+
 /**
  * @defgroup axis2_param Handlers
  * @ingroup axis2_core_description
@@ -52,28 +55,28 @@ extern "C"
 /**
  *   \brief param operations struct
  */
-AXIS2_DECLARE_DATA   struct axis2_param_ops_s 
+AXIS2_DECLARE_DATA typedef struct axis2_param_ops
     {
     
     /**
      * Parameter name accessor
      * @return name of the param
      */
-    axis2_char_t* (AXIS2_CALL *get_name)(axis2_param_t *param, 
+    axis2_char_t* (AXIS2_CALL *get_name)(struct axis2_param *param, 
 											axis2_env_t **env);
 
     /**
      * Parameter value accessor
      * @return Object
      */
-    void* (AXIS2_CALL *get_value)(axis2_param_t *param, 
+    void* (AXIS2_CALL *get_value)(struct axis2_param *param, 
 									axis2_env_t **env);
 
     /**
      * param name mutator
      * @param name
      */
-     axis2_status_t (AXIS2_CALL *set_name)(axis2_param_t *param, 
+     axis2_status_t (AXIS2_CALL *set_name)(struct axis2_param *param, 
 		 									axis2_env_t **env, 
 	 										axis2_char_t *name);
 
@@ -82,7 +85,7 @@ AXIS2_DECLARE_DATA   struct axis2_param_ops_s
      *
      * @param value
      */
-     axis2_status_t (AXIS2_CALL *set_value)(axis2_param_t *param, 
+     axis2_status_t (AXIS2_CALL *set_value)(struct axis2_param *param, 
 		 										axis2_env_t **env, 
 	 											void *value);
 
@@ -91,7 +94,7 @@ AXIS2_DECLARE_DATA   struct axis2_param_ops_s
      *
      * @return boolean
      */
-     axis2_bool_t (AXIS2_CALL *is_locked)(axis2_param_t *param,
+     axis2_bool_t (AXIS2_CALL *is_locked)(struct axis2_param *param,
 											 axis2_env_t **env);
 
     /**
@@ -99,7 +102,7 @@ AXIS2_DECLARE_DATA   struct axis2_param_ops_s
      *
      * @param value
      */
-     axis2_status_t (AXIS2_CALL *set_locked)(axis2_param_t *param,
+     axis2_status_t (AXIS2_CALL *set_locked)(struct axis2_param *param,
 											 	axis2_env_t **env,
 											 	axis2_bool_t value);
 
@@ -108,10 +111,10 @@ AXIS2_DECLARE_DATA   struct axis2_param_ops_s
      *
      * @return int
      */
-     int (AXIS2_CALL *get_param_type)(axis2_param_t *param, 
+     int (AXIS2_CALL *get_param_type)(struct axis2_param *param, 
 		 									axis2_env_t **env);
 
-     axis2_status_t (AXIS2_CALL *set_param_type)(axis2_param_t *param, 
+     axis2_status_t (AXIS2_CALL *set_param_type)(struct axis2_param *param, 
 														axis2_env_t **env,
 														int type);
 
@@ -125,7 +128,7 @@ AXIS2_DECLARE_DATA   struct axis2_param_ops_s
      * @param element  <code>OMElement<code>
      */
 
-     axis2_status_t (AXIS2_CALL *set_param_element)(axis2_param_t *param, 
+     axis2_status_t (AXIS2_CALL *set_param_element)(struct axis2_param *param, 
 														axis2_env_t **env, 
 														axis2_om_node_t *element);
 
@@ -134,21 +137,21 @@ AXIS2_DECLARE_DATA   struct axis2_param_ops_s
      * @return <code>OMElement<code>
      */
      axis2_om_node_t* (AXIS2_CALL *get_param_element)
-													(axis2_param_t *param, 
+													(struct axis2_param *param, 
 														axis2_env_t **env);
          
-     axis2_status_t (AXIS2_CALL *free)(axis2_param_t *param, 
+     axis2_status_t (AXIS2_CALL *free)(struct axis2_param *param, 
 	 									axis2_env_t **env);
-};
+}axis2_param_ops_t;
  
 /** 
  * \brief Parameter struct
  */
-struct axis2_param_s
+typedef struct axis2_param
 {
 	/** Parameter related operations */
 	axis2_param_ops_t *ops;
-};
+}axis2_param_t;
 
 /**
  * creates param struct

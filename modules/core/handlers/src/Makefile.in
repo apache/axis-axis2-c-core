@@ -63,7 +63,7 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libaxis2_handlers_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libaxis2_handlers_la_OBJECTS = axis2_handler.lo
+am_libaxis2_handlers_la_OBJECTS = handler.lo
 libaxis2_handlers_la_OBJECTS = $(am_libaxis2_handlers_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -191,7 +191,7 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 lib_LTLIBRARIES = libaxis2_handlers.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_handlers_la_SOURCES = axis2_handler.c 
+libaxis2_handlers_la_SOURCES = handler.c 
 libaxis2_handlers_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/include \
@@ -266,7 +266,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_handler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/handler.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
