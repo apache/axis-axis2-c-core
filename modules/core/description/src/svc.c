@@ -233,12 +233,10 @@ axis2_svc_set_parent (axis2_svc_t *svc,
 		                axis2_svc_grp_t *svc_grp)
 {
     AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(
-	if(!svc || !svc_grp)
-	{
-		return AXIS2_ERROR_INVALID_NULL_PARAM;	
-	}
-	svc->parent = svc_grp;
+    AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
+	
+	AXIS2_INTF_TO_IMPL(svc)->parent = svc_grp;
+    
 	return AXIS2_SUCCESS;
 }
 
@@ -246,24 +244,19 @@ axis2_svc_grp_t * AXIS2_CALL
 axis2_svc_get_parent (axis2_svc_t *svc, 
                         axis2_env_t **env)
 {
-	if(!svc || !svc->parent)
-	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
-		return NULL;	
-	}
-	return svc->parent;
+    AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
+    if(NULL == AXIS2_INTF_TO_IMPL(svc)->parent)
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_PARENT_NULL, NULL);
+	
+	return AXIS2_INTF_TO_IMPL(svc)->parent;
 }
 
 axis2_qname_t * AXIS2_CALL
 axis2_svc_get_name (const axis2_svc_t *svc, 
                     axis2_env_t **env)
 {
-	if(!env || !svc)
-	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
-		return NULL;	
-	}
-	return svc->name;
+	AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
+	return AXIS2_INTF_TO_IMPL(svc)->name;
 }
 
 axis2_status_t AXIS2_CALL
@@ -271,14 +264,16 @@ axis2_svc_add_param (axis2_svc_t *svc,
                         axis2_env_t **env,
 		                axis2_param_t *param)
 {
-	if(!env || !svc || !svc->param_container || !param)
+    AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, param, AXIS2_FAILURE);
+    
+	if(NULL == AXIS2_INTF_TO_IMPL(svc)->param_container)
 	{
-		return AXIS2_ERROR_INVALID_NULL_PARAM;
+		AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER_NOT_SET, AXIS2_FAILURE);
 	}
-	axis2_hash_set (axis2_param_container_get_params
-		(svc->param_container, env), axis2_param_get_name(param
-		, env)
-		, AXIS2_HASH_KEY_STRING, param);	
+	axis2_hash_set (AXIS2_PARAM_CONTAINER_GET_PARAMS(svc->param_container, env),
+        AXIS2_PARAM_GET_NAME(param, env), AXIS2_HASH_KEY_STRING, param);	
 	return AXIS2_SUCCESS;
 }
 
@@ -287,21 +282,22 @@ axis2_svc_get_param (axis2_svc_t *svc,
                         axis2_env_t **env,
 		                const axis2_char_t *name)
 {
-	if(!env || !svc || !svc->param_container)
+    AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FAILURE);
+    
+	if(NULL == AXIS2_INTF_TO_IMPL(svc)->param_container)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
-		return NULL;
+		AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER_NOT_SET, AXIS2_FAILURE);
 	}
+    
 	axis2_char_t *tempname = axis2_strdup(name);
-	if(!tempname)
-	{
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
-		return NULL;
-	}
+	if(NULL == tempname)
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+        AXIS2_FAILURE);
 		
 	return (axis2_param_t *)(axis2_hash_get 
-		(axis2_param_container_get_params(svc->param_container, env)
-		, tempname, AXIS2_HASH_KEY_STRING));
+		(AXIS2_PARAM_CONTAINER_GET_PARAMS(AXIS2_INTF_TO_IMPL(svc)->
+        param_container, env), tempname, AXIS2_HASH_KEY_STRING));
 	
 }
 
@@ -309,12 +305,9 @@ axis2_hash_t * AXIS2_CALL
 axis2_svc_get_params (axis2_svc_t *svc, 
                         axis2_env_t **env)
 {
-	if(!env || !svc)
-	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
-		return NULL;		
-	}
-	return axis2_param_container_get_params(svc->param_container, env);
+	AXIS2_FUNC_PARAM_CHECK(svc, env);
+	return AXIS2_PARAM_CONTAINER_GET_PARAMS(AXIS2_INTF_TO_IMPL(svc)->
+        param_container, env);
 	
 }
 
@@ -323,19 +316,19 @@ axis2_svc_is_param_locked (axis2_svc_t *svc,
                             axis2_env_t **env,
 		                    const axis2_char_t *param_name)
 {
-	if(!env || !svc || !svc->param_container)
+    AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FALSE);
+    if(NULL == AXIS2_INTF_TO_IMPL(svc)->param_container)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
-		return AXIS2_FALSE;
+		AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER_NOT_SET, AXIS2_FALSE);
 	}
+	
 	axis2_char_t *tempname = axis2_strdup(param_name);
-	if(!tempname)
-	{
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
-		return AXIS2_FALSE;
-	}
+	if(NULL == tempname)
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+        AXIS2_FAILURE);
 		
-	return axis2_param_container_is_param_locked
-		(svc->param_container, env, param_name); 
+	return AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED
+		(AXIS2_INTF_TO_IMPL(svc)->param_container, env, param_name); 
 	
 }
