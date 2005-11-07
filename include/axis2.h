@@ -62,10 +62,10 @@
  * @return If function return a status code return AXIS2_SUCCESS. Else if
  *         function return a type pointer return NULL
  */    
-#define AXIS2_ERROR_SET(error_number, env, error_return) \
+#define AXIS2_ERROR_SET(error_number, error, error_return) \
     { \
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, error_number); \
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE); \
+        AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number); \
+        AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_FAILURE); \
         return error_return; \
     }      
 

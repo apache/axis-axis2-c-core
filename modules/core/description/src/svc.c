@@ -215,7 +215,7 @@ axis2_svc_get_operation_with_name (axis2_svc_t *svc,
     
 	return (axis2_operation_t *) (axis2_hash_get 
 		(AXIS2_INTF_TO_IMPL(svc)->wasaction_opeartionmap
-		, axis2_strdup(temp_name), AXIS2_HASH_KEY_STRING));
+		, temp_name, AXIS2_HASH_KEY_STRING));
 }
 
 axis2_hash_t * AXIS2_CALL
