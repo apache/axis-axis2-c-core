@@ -119,6 +119,8 @@ AC_CONFIG_FILES([Makefile \
     modules/test/om/Makefile \
     modules/test/om/src/Makefile \
     modules/test/common/Makefile \
+    modules/test/core/Makefile \
+    modules/test/core/handlers/Makefile \
     modules/test/util/Makefile \
     modules/test/unit/Makefile])
     
