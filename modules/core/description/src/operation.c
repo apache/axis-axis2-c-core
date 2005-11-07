@@ -147,7 +147,7 @@ axis2_operation_create_with_name (axis2_env_t **env, axis2_qname_t *qname)
 	{
 		AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
-    AXIS2_PARAM_CHECK(env, operation_impl, AXIS2_FAILURE);	
+    AXIS2_PARAM_CHECK(env, qname, AXIS2_FAILURE);	
 	
     operation_impl->qname = qname;    
 	return &(operation_impl->operation);	
@@ -167,7 +167,7 @@ axis2_operation_free (axis2_operation_t *operation, axis2_env_t **env)
 	    AXIS2_PARAM_CONTAINER_FREE(AXIS2_INTF_TO_IMPL(operation)->param_container
         , env);
     
-/*    if(NULL != AXIS2_INTF_TO_IMPL(operation)->parent)
+    if(NULL != AXIS2_INTF_TO_IMPL(operation)->parent)
 	    AXIS2_SVC_FREE(AXIS2_INTF_TO_IMPL(operation)->parent, env);
     
     if(NULL != AXIS2_INTF_TO_IMPL(operation)->qname)
@@ -175,7 +175,7 @@ axis2_operation_free (axis2_operation_t *operation, axis2_env_t **env)
     
     if(NULL != AXIS2_INTF_TO_IMPL(operation)->msg_recv)
 	    AXIS2_MSG_RECV_FREE(AXIS2_INTF_TO_IMPL(operation)->msg_recv, env);
-*/    
+    
     if(NULL != AXIS2_INTF_TO_IMPL(operation)->msg_exchange_pattern)
 	    AXIS2_FREE((*env)->allocator, 
         AXIS2_INTF_TO_IMPL(operation)->msg_exchange_pattern);

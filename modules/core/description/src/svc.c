@@ -16,6 +16,8 @@ struct axis2_svc_impl_s
 
 };
 
+#define AXIS2_INTF_TO_IMPL(svc) ((axis2_operation_impl_t *)svc)
+
 /*************************** Function headers ********************************/
 
 axis2_status_t AXIS2_CALL 
@@ -23,7 +25,7 @@ axis2_svc_free (axis2_svc_t *svc, axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_svc_add_operation (axis2_svc_t *svc, axis2_env_t **env
-		,                   axis2_operation_t *operation_desc);
+		,                   axis2_operation_t *operation);
 
 axis2_operation_t * AXIS2_CALL
 axis2_svc_get_operation_with_qname (axis2_svc_t *svc, axis2_env_t **env,
@@ -65,74 +67,65 @@ axis2_svc_is_param_locked (axis2_svc_t *svc, axis2_env_t **env,
 axis2_svc_t * AXIS2_CALL
 axis2_svc_create (axis2_env_t **env)
 {
-	axis2_svc_t *svc = (axis2_svc_t *)
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_svc_t));
-	if(!svc)
+    AXIS2_ENV_CHECK(env, NULL);
+	axis2_svc_impl_t *svc_impl = (axis2_svc_impl_t *)
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_svc_impl_t));
+    if(NULL == svc_impl)
 	{
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
-		return NULL;
+		AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
-	axis2_svc_ops_t *ops = (axis2_svc_ops_t *)
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_svc_ops_t));
-	if(!ops)
-	{
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
-		return NULL;	
-	}
-	ops->free = axis2_svc_free;
-	ops->add_operation = axis2_svc_add_operation;
-	ops->get_operation_with_qname = 
-		axis2_svc_get_operation_with_qname;
-	ops->get_operation_with_name = 
-		axis2_svc_get_operation_with_name;
-	ops->get_operations = axis2_svc_get_operations;
-	ops->set_parent = axis2_svc_set_parent;
-	ops->get_parent = axis2_svc_get_parent;
-	ops->get_name = axis2_svc_get_name;
-	ops->add_param = axis2_svc_add_param;
-	ops->get_param = axis2_svc_get_param;
-	ops->get_params = axis2_svc_get_params;
 	
-	svc->ops = ops;
+	svc_impl->ops->free = axis2_svc_free;
+	svc_impl->ops->add_operation = axis2_svc_add_operation;
+	svc_impl->ops->get_operation_with_qname = 
+		axis2_svc_get_operation_with_qname;
+	svc_impl->ops->get_operation_with_name = 
+		axis2_svc_get_operation_with_name;
+	svc_impl->ops->get_operations = axis2_svc_get_operations;
+	svc_impl->ops->set_parent = axis2_svc_set_parent;
+	svc_impl->ops->get_parent = axis2_svc_get_parent;
+	svc_impl->ops->get_name = axis2_svc_get_name;
+	svc_impl->ops->add_param = axis2_svc_add_param;
+	svc_impl->ops->get_param = axis2_svc_get_param;
+	svc_impl->ops->get_params = axis2_svc_get_params;
 	
 	axis2_param_container_t *param_container 
 		= (axis2_param_container_t *)
 		axis2_param_container_create(env);		
-	if(!param_container)
+	if(NULL == param_container)
 	{
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
-		return NULL;
+        AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, NULL);		
 	}
 
-	svc->param_container = param_container;
+	svc_impl->param_container = param_container;
 	
-	svc->parent = NULL;
+	svc_impl->parent = NULL;
 	
-	svc->wasaction_opeartionmap = axis2_hash_make (env);				
-	if(!svc->wasaction_opeartionmap)
+	svc_impl->wasaction_opeartionmap = axis2_hash_make (env);				
+	if(NULL == svc_impl->wasaction_opeartionmap)
 	{
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
-		return NULL;			
+		AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, NULL);		
 	}
-	svc->name = NULL;
+	svc_impl->name = NULL;
 
-	return svc;	
+	return &(svc_impl->svc);	
 }
 
 axis2_svc_t * AXIS2_CALL
 axis2_svc_create_with_qname (axis2_env_t **env, 
                                 axis2_qname_t *qname)
 {
-	axis2_svc_t *svc = 
-		axis2_svc_create(env);
-	if(!svc)
+	axis2_svc_impl_t *svc_impl = axis2_svc_create(env);
+	if(NULL == svc_impl)
 	{
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
-		return NULL;
+		AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
-	svc->name = axis2_strdup(qname);
+    
+    AXIS2_PARAM_CHECK(env, qname, AXIS2_FAILURE);
+    
+	svc_impl->name = qname;
 	
-	return svc;
+	return &(svc_impl->svc);
 }
 
 /********************** Start of function implementations ********************/
@@ -141,46 +134,54 @@ axis2_status_t AXIS2_CALL
 axis2_svc_free (axis2_svc_t *svc, 
                 axis2_env_t **env)
 {
-	if(!env)
-		return AXIS2_ERROR_INVALID_NULL_PARAM;
-	if(svc)
-	{
-		AXIS2_FREE(env->allocator, svc);
-		return AXIS2_SUCCESS;
-	}
-	return AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED;
+    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+	if(NULL != svc->ops)
+		AXIS2_FREE((*env)->allocator, svc->ops);
+    
+    if(NULL != AXIS2_INTF_TO_IMPL(svc)->param_container)
+	    AXIS2_PARAM_CONTAINER_FREE(AXIS2_INTF_TO_IMPL(svc)->param_container
+        , env);
+    
+    if(NULL != AXIS2_INTF_TO_IMPL(svc)->parent)
+	    AXIS2_SVC_GRP_FREE(AXIS2_INTF_TO_IMPL(svc)->parent, env);
+    
+    if(NULL != AXIS2_INTF_TO_IMPL(svc)->wasaction_opeartionmap)
+		axis2_hash_free(AXIS2_INTF_TO_IMPL(svc)->wasaction_opeartionmap, env);
+    
+    if(NULL != AXIS2_INTF_TO_IMPL(svc)->qname)
+	    AXIS2_QNAME_FREE(AXIS2_INTF_TO_IMPL(svc)->qname, env);  
+    
+	AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(svc));
+    
+	return AXIS2_SUCCESS;
 }
 
 
 axis2_status_t AXIS2_CALL
 axis2_svc_add_operation (axis2_svc_t *svc,
                             axis2_env_t **env,
-		                    axis2_operation_t *operation_desc)
+		                    axis2_operation_t *operation)
 {
-	if(!svc || !operation_desc)
-	{
-		return AXIS2_ERROR_INVALID_NULL_PARAM;
-	}
-	if (!(svc->wasaction_opeartionmap))
-	{                    
-		svc->wasaction_opeartionmap = axis2_hash_make (env);
-	}
-	axis2_operation_ops_t *tempopt = 
-		(axis2_operation_get_ops(operation_desc, env));
+    AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env, operation, AXIS2_FALSE);
 	
-	if(!tempopt) return AXIS2_ERROR_INVALID_NULL_PARAM;
-		
-	axis2_qname_t *tempqname = tempopt->get_name(operation_desc, env);
+	if (NULL == (AXIS2_INTF_TO_IMPL(svc)->wasaction_opeartionmap))
+	{                    
+		AXIS2_INTF_TO_IMPL(svc)->wasaction_opeartionmap = axis2_hash_make (env);
+	}
+    
+    axis2_qname_t *tempqname = AXIS2_OPERATION_GET_NAME(operation, env);
 	
 	if(!tempqname) return AXIS2_ERROR_INVALID_NULL_PARAM;
 		
 	axis2_char_t *tempname = tempqname->localpart;
 	
-	if(!tempname) return AXIS2_ERROR_INVALID_NULL_PARAM;
+    if(NULL == tempname)
+        AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 	
-	axis2_hash_set (svc->wasaction_opeartionmap		
+	axis2_hash_set (AXIS2_INTF_TO_IMPL(svc)->wasaction_opeartionmap		
 		, tempname
-		, AXIS2_HASH_KEY_STRING, operation_desc);
+		, AXIS2_HASH_KEY_STRING, operation);
 	
 	return AXIS2_SUCCESS;
 }
@@ -190,14 +191,15 @@ axis2_svc_get_operation_with_qname (axis2_svc_t *svc,
                                         axis2_env_t **env,
 		                                axis2_qname_t *operation_name)
 {
-	if(!svc || !svc->wasaction_opeartionmap)
+    AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
+    AXIS2_PARAM_CHECK(env, operation_name, NULL);
+	if(NULL == AXIS2_INTF_TO_IMPL(svc)->wasaction_opeartionmap)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
-		return NULL;		
+		AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_INVALID_NULL_PARAM, NULL);	
 	}
-	return (axis2_operation_t *) (axis2_hash_get 
-		(svc->wasaction_opeartionmap, operation_name->localpart
-		, AXIS2_HASH_KEY_STRING));
+    
+	return (axis2_operation_t *) (axis2_hash_get (AXIS2_INTF_TO_IMPL(svc)->
+        wasaction_opeartionmap, operation_name->localpart, AXIS2_HASH_KEY_STRING));
 	
 }	
 
@@ -206,13 +208,14 @@ axis2_svc_get_operation_with_name (axis2_svc_t *svc,
                                     axis2_env_t **env,
 		                            const axis2_char_t* name)
 {
-	if(!svc || !svc->wasaction_opeartionmap)
-	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
-		return NULL;		
-	}
+    AXIS2_FUNC_PARAM_CHECK(env, svc, NULL);
+    AXIS2_PARAM_CHECK(env, name, NULL);
+	axis2_char_t temp_name = axis2_strdup(name);
+    AXIS2_PARAM_CHECK(env, 
+    if(NULL == temp_name)
+        AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_INVALID_NULL_PARAM);
 	return (axis2_operation_t *) (axis2_hash_get 
-		(svc->wasaction_opeartionmap
+		(AXIS2_INTF_TO_IMPL(svc)->wasaction_opeartionmap
 		, axis2_strdup(name), AXIS2_HASH_KEY_STRING));
 }
 
