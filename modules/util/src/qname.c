@@ -16,64 +16,222 @@
 
 #include <axis2_qname.h>
 #include <axis2_env.h>
+#include <axis2.h>
 #include <axis2_defines.h>
 
+/********************************** Function prototypes *****************/
 
-axis2_status_t AXIS2_CALL  axis2_qname_impl_free (axis2_env_t * environment,
-                                      axis2_qname_t * qname);
-axis2_bool_t AXIS2_CALL  axis2_qname_impl_equals (axis2_env_t * environment,
-                                      axis2_qname_t * qn1,
-                                      axis2_qname_t * qn2);
-/*AXIS2_DECLARE(axis2_qname_t*) axis2_qname_create (axis2_env_t * environment,
-                                   const axis2_char_t * localpart,
-                                   const axis2_char_t * namespace_uri,
-                                   const axis2_char_t * prefix);
-*/
+axis2_status_t AXIS2_CALL 
+axis2_qname_free ( axis2_qname_t * qname,
+                   axis2_env_t **env);
+
+
+axis2_bool_t AXIS2_CALL 
+axis2_qname_equals (axis2_qname_t * qname,
+                    axis2_env_t **env,
+                    axis2_qname_t * qname1);
+
+axis2_qname_t* AXIS2_CALL
+axis2_qname_clone(axis2_qname_t *qname,
+                  axis2_env_t **env);
+                                      
+axis2_char_t* AXIS2_CALL
+axis2_qname_get_uri(axis2_qname_t *qname,
+                    axis2_env_t **env);
+                                        
+axis2_char_t* AXIS2_CALL 
+axis2_qname_get_prefix(axis2_qname_t *qname,
+                        axis2_env_t **env);
+
+axis2_char_t* AXIS2_CALL 
+axis2_qname_get_localname(axis2_qname_t *qname,
+                          axis2_env_t **env);
+                                            
+axis2_status_t AXIS2_CALL 
+axis2_qname_set_uri(axis2_qname_t *qname,
+                     axis2_env_t **env,
+                     const axis2_char_t *uri);
 
 axis2_status_t AXIS2_CALL
-axis2_qname_impl_free (axis2_env_t * environment,
-                       axis2_qname_t * qname)
+axis2_qname_set_prefix(axis2_qname_t *qname,
+                        axis2_env_t **env,
+                        const axis2_char_t *prefix);
+
+axis2_status_t AXIS2_CALL
+axis2_qname_set_localpart(axis2_qname_t *qname,                                                                                                                                                                                
+                          axis2_env_t **env,
+                          const axis2_char_t *localname);                   
+
+
+
+/*************************************** qname struct *********************/
+
+typedef struct axis2_qname_impl_t
 {
-    if (!qname)
+    /* this should be first member */
+    axis2_qname_t qname;
+    /** localpart of qname is mandatory */
+
+    axis2_char_t *localpart;
+
+    /** namespace uri is optional */
+    axis2_char_t *namespace_uri;
+
+    /**  prefix mandatory */
+    axis2_char_t *prefix;
+
+}axis2_qname_impl_t;
+
+
+/************************* Macro ****************************************/
+
+#define AXIS2_INTF_TO_IMPL(qname) ((axis2_qname_impl_t*)qname)
+
+/************************************************************************/
+
+AXIS2_DECLARE(axis2_qname_t *)
+axis2_qname_create (axis2_env_t **env,
+                    const axis2_char_t * localpart,
+                    const axis2_char_t * namespace_uri,
+                    const axis2_char_t * prefix)
+{
+
+    axis2_qname_impl_t *qn = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+   
+    /* localpart or prefix can't be null */
+    if (!localpart)
     {
-        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
-        return AXIS2_FAILURE;
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        return NULL;
     }
-    if (qname->localpart)
+
+    qn = (axis2_qname_impl_t *) AXIS2_MALLOC ((*env)->allocator,
+                                             sizeof (axis2_qname_t));
+    if (!qn)
     {
-        AXIS2_FREE (environment->allocator, qname->localpart);
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        return NULL;
     }
-    if (qname->namespace_uri)
+    /* set properties */
+
+    qn->localpart = (axis2_char_t *)axis2_strdup (localpart);
+    if (!(qn->localpart))
     {
-        AXIS2_FREE (environment->allocator, qname->namespace_uri);
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_FREE ((*env)->allocator, qn);
+        return NULL;
     }
-    if (qname->prefix)
+
+    if (!prefix)
     {
-        AXIS2_FREE (environment->allocator, qname->prefix);
+        qn->prefix = (axis2_char_t*)axis2_strdup("");
+    }
+    else
+    {
+        qn->prefix =(axis2_char_t*)axis2_strdup (prefix);
+    }
+    if (!(qn->prefix))
+    {
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_FREE ((*env)->allocator, qn->localpart);
+        AXIS2_FREE ((*env)->allocator, qn);
+        return NULL;
+    }
+    if (!namespace_uri)
+    {
+        qn->namespace_uri = (axis2_char_t*)axis2_strdup ("");
+    }
+    else
+    {
+        qn->namespace_uri = (axis2_char_t*)axis2_strdup (namespace_uri);
+    }
+    if (!(qn->namespace_uri))
+    {
+        AXIS2_FREE ((*env)->allocator, qn->localpart);
+        AXIS2_FREE ((*env)->allocator, qn->prefix);
+        AXIS2_FREE ((*env)->allocator, qn);
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        return NULL;
+    }
+
+   
+    qn->qname.ops = NULL;
+    qn->qname.ops = (axis2_qname_ops_t*)AXIS2_MALLOC ((*env)->allocator,
+                                                      sizeof (axis2_qname_ops_t));
+ 
+    if (!qn->qname.ops)
+    {
+        AXIS2_FREE ((*env)->allocator, qn->localpart);
+        if (qn->namespace_uri)
+            AXIS2_FREE ((*env)->allocator, qn->namespace_uri);
+        AXIS2_FREE ((*env)->allocator, qn->prefix);
+        AXIS2_FREE ((*env)->allocator, qn);
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    //qn->qname.ops->free = axis2_qname_impl_free;
+    //qn->qname.ops->equals = axis2_qname_impl_equals;
+    return &(qn->qname);
+}
+
+
+axis2_status_t AXIS2_CALL 
+axis2_qname_free ( axis2_qname_t * qname,
+                   axis2_env_t **env)
+{   
+    AXIS2_FUNC_PARAM_CHECK(qname, env, AXIS2_FAILURE);
+    
+    if (AXIS2_INTF_TO_IMPL(qname)->localpart)
+    {
+        AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(qname)->localpart);
+    }
+    if (AXIS2_INTF_TO_IMPL(qname)->namespace_uri)
+    {
+        AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(qname)->namespace_uri);
+    }
+    if (AXIS2_INTF_TO_IMPL(qname)->prefix)
+    {
+        AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(qname)->prefix);
     }
     if (qname->ops)
     {
-        AXIS2_FREE (environment->allocator, qname->ops);
+        AXIS2_FREE ((*env)->allocator, qname->ops);
     }
-    AXIS2_FREE (environment->allocator, qname);
+    AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(qname));
     return AXIS2_SUCCESS;
 
 }
 
-axis2_bool_t AXIS2_CALL
-axis2_qname_impl_equals (axis2_env_t * environment,
-                         axis2_qname_t * qn1, axis2_qname_t * qn2)
-{
 
+axis2_bool_t AXIS2_CALL
+axis2_qname_equals (axis2_qname_t *qname,
+                    axis2_env_t **env, 
+                    axis2_qname_t * qname1)
+{
+    axis2_qname_impl_t *qn1 = NULL;
+    axis2_qname_impl_t *qn2 = NULL;
     int uris_differ = 0;
     int localparts_differ = 0;
 
-    if (!qn1 || !qn2)
+    AXIS2_FUNC_PARAM_CHECK(qname ,env, AXIS2_FALSE);
+    
+    if (!qname1)
     {
-        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
 
+    qn1 = AXIS2_INTF_TO_IMPL(qname);
+    qn2 = AXIS2_INTF_TO_IMPL(qname1);
 
     if (qn1->localpart && qn2->localpart)
     {
@@ -100,87 +258,90 @@ axis2_qname_impl_equals (axis2_env_t * environment,
 }
 
 
-AXIS2_DECLARE(axis2_qname_t *)
-axis2_qname_create (axis2_env_t * environment,
-                    const axis2_char_t * localpart,
-                    const axis2_char_t * namespace_uri,
-                    const axis2_char_t * prefix)
+axis2_qname_t* AXIS2_CALL
+axis2_qname_clone(axis2_qname_t *qname,
+                  axis2_env_t **env)
 {
-
-    axis2_qname_t *qn = NULL;
-    /* localpart or prefix can't be null */
-    if (!localpart)
-    {
-        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
-        return NULL;
-    }
-
-    qn = (axis2_qname_t *) AXIS2_MALLOC (environment->allocator,
-                                         sizeof (axis2_qname_t));
-    if (!qn)
-    {
-        environment->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
-        return NULL;
-    }
-    /* set properties */
-
-    qn->localpart = axis2_strdup (localpart);
-    if (!(qn->localpart))
-    {
-        AXIS2_FREE (environment->allocator, qn);
-        environment->error->error_number = AXIS2_ERROR_NO_MEMORY;
-        return NULL;
-    }
-
-    if (!prefix)
-    {
-        qn->prefix = axis2_strdup ("");
-    }
-    else
-    {
-        qn->prefix = axis2_strdup (prefix);
-    }
-    if (!(qn->prefix))
-    {
-        AXIS2_FREE (environment->allocator, qn->localpart);
-        AXIS2_FREE (environment->allocator, qn);
-        environment->error->error_number = AXIS2_ERROR_NO_MEMORY;
-        return NULL;
-    }
-    if (!namespace_uri)
-    {
-        qn->namespace_uri = axis2_strdup ("");
-    }
-    else
-    {
-        qn->namespace_uri = axis2_strdup (namespace_uri);
-    }
-    if (!(qn->namespace_uri))
-    {
-        AXIS2_FREE (environment->allocator, qn->localpart);
-        AXIS2_FREE (environment->allocator, qn->prefix);
-        AXIS2_FREE (environment->allocator, qn);
-        environment->error->error_number = AXIS2_ERROR_NO_MEMORY;
-        return NULL;
-    }
-
-
-    qn->ops = NULL;
-    qn->ops =
-        AXIS2_MALLOC (environment->allocator, sizeof (axis2_qname_ops_t));
-    /* operations */
-    if (!qn->ops)
-    {
-        AXIS2_FREE (environment->allocator, qn->localpart);
-        if (qn->namespace_uri)
-            AXIS2_FREE (environment->allocator, qn->namespace_uri);
-        AXIS2_FREE (environment->allocator, qn->prefix);
-        AXIS2_FREE (environment->allocator, qn);
-        environment->error->error_number = AXIS2_ERROR_NO_MEMORY;
-        return NULL;
-    }
-
-    qn->ops->axis2_qname_ops_free = axis2_qname_impl_free;
-    qn->ops->axis2_qname_ops_equals = axis2_qname_impl_equals;
-    return qn;
+    axis2_qname_impl_t *qname_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(qname, env, NULL);
+    qname_impl = AXIS2_INTF_TO_IMPL(qname);
+    return axis2_qname_create(env, qname_impl->localpart,
+                              qname_impl->namespace_uri,
+                              qname_impl->prefix);
 }
+
+
+                  
+axis2_char_t* AXIS2_CALL
+axis2_qname_get_uri(axis2_qname_t *qname,
+                    axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(qname, env,NULL);
+    return AXIS2_INTF_TO_IMPL(qname)->namespace_uri;
+}                    
+                                        
+axis2_char_t* AXIS2_CALL 
+axis2_qname_get_prefix(axis2_qname_t *qname,
+                        axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(qname, env,NULL);
+    return AXIS2_INTF_TO_IMPL(qname)->prefix;
+}
+
+
+axis2_char_t* AXIS2_CALL 
+axis2_qname_get_localpart(axis2_qname_t *qname,
+                          axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(qname, env,NULL);
+    return AXIS2_INTF_TO_IMPL(qname)->localpart;
+}                          
+                                            
+axis2_status_t AXIS2_CALL 
+axis2_qname_set_uri(axis2_qname_t *qname,
+                     axis2_env_t **env,
+                     const axis2_char_t *uri)
+{
+    AXIS2_FUNC_PARAM_CHECK(qname, env,AXIS2_FAILURE);
+    if(!uri)
+    {
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    AXIS2_INTF_TO_IMPL(qname)->namespace_uri = (axis2_char_t*)axis2_strdup(uri);
+    return AXIS2_SUCCESS;
+}
+
+
+axis2_status_t AXIS2_CALL
+axis2_qname_set_prefix(axis2_qname_t *qname,
+                        axis2_env_t **env,
+                        const axis2_char_t *prefix)
+{
+    AXIS2_FUNC_PARAM_CHECK(qname, env,AXIS2_FAILURE);
+    if(!prefix)
+    {
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    AXIS2_INTF_TO_IMPL(qname)->prefix = (axis2_char_t*)axis2_strdup(prefix);
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_qname_set_localpart(axis2_qname_t *qname,                                                                                                                                                                                
+                          axis2_env_t **env,
+                          const axis2_char_t *localpart)
+{
+    AXIS2_FUNC_PARAM_CHECK(qname, env,AXIS2_FAILURE);
+    if(!localpart)
+    {
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    AXIS2_INTF_TO_IMPL(qname)->localpart = (axis2_char_t*)axis2_strdup(localpart);
+    return AXIS2_SUCCESS;
+}                          
