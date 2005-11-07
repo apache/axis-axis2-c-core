@@ -150,7 +150,9 @@ extern "C"
 		/** Could not open the file */
 		AXIS2_ERROR_COULD_NOT_OPEN_FILE,
 		/** Environment passed is null */
-		AXIS2_ERROR_ENVIRONMENT_IS_NULL
+		AXIS2_ERROR_ENVIRONMENT_IS_NULL,
+        /** Parameter locked, Cannot override */
+        AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE
     };
 
 /** @} */
