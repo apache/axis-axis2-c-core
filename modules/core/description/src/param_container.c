@@ -67,12 +67,12 @@ axis2_param_container_create (axis2_env_t **env)
 	
 	
 	if(NULL == param_container_impl)
-        AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, NULL); 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
 	
 	axis2_param_container_ops_t *ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_param_container_ops_t));
 	if(NULL == ops)
-		AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	ops->free =  axis2_param_container_free;
 	ops->add_param =  axis2_param_container_add_param;
 	ops->get_param =  axis2_param_container_get_param;
@@ -83,7 +83,7 @@ axis2_param_container_create (axis2_env_t **env)
 				
 	param_container_impl->params = axis2_hash_make (env);
 	if(NULL == param_container_impl->params)
-		AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, NULL);	
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);	
 	
 	return &(param_container_impl->param_container);
 }
@@ -111,7 +111,7 @@ axis2_param_container_add_param (axis2_param_container_t *param_container,
 					axis2_param_t *param)
 {
 	AXIS2_FUNC_PARAM_CHECK(param_container, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env, param, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, param, AXIS2_FAILURE);
 	
 	if (NULL == (AXIS2_INTF_TO_IMPL(param_container)->params))
 	{                    
@@ -156,7 +156,7 @@ axis2_param_container_is_param_locked (axis2_param_container_t *param_container,
 		(axis2_hash_get (AXIS2_INTF_TO_IMPL(param_container)->params
 			, axis2_strdup(param_name), AXIS2_HASH_KEY_STRING));
 	
-    AXIS2_PARAM_CHECK(env, param, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, param, AXIS2_FAILURE);
 	
 	return AXIS2_PARAM_IS_LOCKED(param, env);
 }

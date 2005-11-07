@@ -100,7 +100,7 @@ axis2_operation_create (axis2_env_t **env)
      
 	if(NULL == operation_impl)
 	{
-		AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
 	
 	operation_impl->ops->free = axis2_operation_free;
@@ -121,7 +121,7 @@ axis2_operation_create (axis2_env_t **env)
 		axis2_param_container_create(env);		
 	if(NULL == param_container)
 	{
-        AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, NULL);		
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);		
 	}
 
 	operation_impl->param_container = param_container;
@@ -145,9 +145,9 @@ axis2_operation_create_with_name (axis2_env_t **env, axis2_qname_t *qname)
     
 	if(NULL == operation_impl)
 	{
-		AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
-    AXIS2_PARAM_CHECK(env, qname, AXIS2_FAILURE);	
+    AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);	
 	
     operation_impl->qname = qname;    
 	return &(operation_impl->operation);	
@@ -191,9 +191,9 @@ axis2_operation_add_param (axis2_operation_t *operation,
 		                        axis2_param_t *param)
 {
     AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FALSE);
-    AXIS2_PARAM_CHECK(env, AXIS2_INTF_TO_IMPL(operation)->param_container, 
+    AXIS2_PARAM_CHECK((*env)->error, AXIS2_INTF_TO_IMPL(operation)->param_container, 
         AXIS2_FALSE);
-    AXIS2_PARAM_CHECK(env, param, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK((*env)->error, param, AXIS2_FALSE);
 	
 	axis2_hash_set 
         (AXIS2_PARAM_CONTAINER_GET_PARAMS(AXIS2_INTF_TO_IMPL(operation)->
@@ -209,12 +209,12 @@ axis2_operation_get_param (axis2_operation_t *operation,
 		                        const axis2_char_t *name)
 {
 	AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FALSE);
-    AXIS2_PARAM_CHECK(env, AXIS2_INTF_TO_IMPL(operation)->param_container, 
+    AXIS2_PARAM_CHECK((*env)->error, AXIS2_INTF_TO_IMPL(operation)->param_container, 
         AXIS2_FALSE);
 	
 	axis2_char_t *tempname = axis2_strdup(name);
 	if(NULL == tempname)
-        AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FALSE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FALSE);
 		
 	return (axis2_param_t *)(axis2_hash_get (
         AXIS2_PARAM_CONTAINER_GET_PARAMS(AXIS2_INTF_TO_IMPL(operation)->
@@ -226,7 +226,7 @@ axis2_operation_get_params(axis2_operation_t *operation,
                                 axis2_env_t **env)
 {
 	AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FALSE);
-    AXIS2_PARAM_CHECK(env, AXIS2_INTF_TO_IMPL(operation)->param_container, 
+    AXIS2_PARAM_CHECK((*env)->error, AXIS2_INTF_TO_IMPL(operation)->param_container, 
         AXIS2_FALSE);
 	
 	return AXIS2_PARAM_CONTAINER_GET_PARAMS
@@ -239,12 +239,12 @@ axis2_operation_is_param_locked(axis2_operation_t *operation,
 		                            const axis2_char_t *param_name)
 {
     AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FALSE);
-    AXIS2_PARAM_CHECK(env, AXIS2_INTF_TO_IMPL(operation)->param_container, 
+    AXIS2_PARAM_CHECK((*env)->error, AXIS2_INTF_TO_IMPL(operation)->param_container, 
         AXIS2_FALSE);
 	
 	axis2_char_t *tempname = axis2_strdup(param_name);
 	if(NULL == tempname)
-        AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FALSE); 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FALSE); 
 		
 	return AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED
 		(AXIS2_INTF_TO_IMPL(operation)->param_container, env, tempname); 
@@ -257,7 +257,7 @@ axis2_operation_set_parent (axis2_operation_t *operation,
 		                        axis2_svc_t *svc)
 {
     AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env, msg_recv, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_recv, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(operation)->parent = svc;
 	return AXIS2_SUCCESS;
 }
@@ -287,7 +287,7 @@ axis2_operation_set_msg_exchange_pattern (axis2_operation_t *operation,
     AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
 	AXIS2_INTF_TO_IMPL(operation)->msg_exchange_pattern = axis2_strdup(pattern);
 	if(NULL == AXIS2_INTF_TO_IMPL(operation)->msg_exchange_pattern)
-        AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 		
 	return AXIS2_SUCCESS;
 }
@@ -306,7 +306,7 @@ axis2_operation_set_msg_recv (axis2_operation_t *operation,
 		                        axis2_engine_msg_recv_t *msg_recv)
 {
     AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env, msg_recv, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_recv, AXIS2_FAILURE);
 	AXIS2_INTF_TO_IMPL(operation)->msg_recv = msg_recv;
 	
 	return AXIS2_SUCCESS;
