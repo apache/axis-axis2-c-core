@@ -33,7 +33,7 @@ extern "C"
 
     struct axis2_handler;
     struct axis2_handler_ops;
-    struct axis2_handler_description;
+    struct axis2_handler_desc;
     struct axis2_msg_ctx;
 
 /**
@@ -64,7 +64,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *init) (struct axis2_handler * handler, 
                                            axis2_env_t **env, 
-                                           struct axis2_handler_description *handler_desc);
+                                           struct axis2_handler_desc *handler_desc);
 
       /**
         * Invoke is called to do the actual work of the Handler object.
@@ -98,7 +98,7 @@ extern "C"
          * @param name
          * @return
          */
-         axis2_param_t* (AXIS2_CALL *get_parameter) (struct axis2_handler * handler, 
+         axis2_param_t* (AXIS2_CALL *get_param) (struct axis2_handler * handler, 
                                                          axis2_env_t **env, 
                                                          axis2_char_t *name);
 
@@ -108,7 +108,7 @@ extern "C"
         *
         * @return
         */
-        struct axis2_handler_description* (AXIS2_CALL * get_handler_desc) (struct axis2_handler * handler, 
+        struct axis2_handler_desc* (AXIS2_CALL * get_handler_desc) (struct axis2_handler * handler, 
                                                                            axis2_env_t **env);
     } axis2_handler_ops_t;
 	
@@ -128,7 +128,11 @@ extern "C"
 AXIS2_DECLARE(axis2_handler_t*) axis2_handler_create(axis2_env_t **env);
     
 #define AXIS2_HANDLER_FREE(handler, env) ((handler)->ops->free(handler, env))
-    
+#define AXIS2_HANDLER_INIT(handler, env, handler_desc) ((handler)->ops->init(handler, env, handler_desc))
+#define AXIS2_HANDLER_INVOKE(handler, env, msg_ctx) ((handler)->ops->invoke(handler, env, msg_ctx))
+#define AXIS2_HANDLER_GET_NAME(handler, env) ((handler)->ops->get_name(handler, env))
+#define AXIS2_HANDLER_GET_PARAM(handler, env, name) ((handler)->ops->get_param(handler, env, name))
+#define AXIS2_HANDLER_GET_HANDLER_DESC(handler, env) ((handler)->ops->get_handler_desc(handler, env))
 /** @} */
     
 #ifdef __cplusplus
