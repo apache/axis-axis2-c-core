@@ -24,7 +24,7 @@
 
 #include <axis2_defines.h>
 #include <axis2_qname.h>
-#include <axis2_parameter.h>
+#include <axis2_param.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -68,6 +68,8 @@ extern "C"
 
         axis2_status_t (AXIS2_CALL *free) (struct axis2_phase_rule *phase_rule, 
                                            axis2_env_t **env);
+        struct axis2_phase_rule* (AXIS2_CALL *clone) (struct axis2_phase_rule *phase_rule, 
+                                           axis2_env_t **env);
     } axis2_phase_rule_ops_t;
 	
    /** 
@@ -91,11 +93,12 @@ AXIS2_DECLARE(axis2_phase_rule_t*) axis2_phase_rule_create(axis2_env_t **env, ax
 #define AXIS2_PHASE_RULE_SET_AFTER(phase_rule, env, after) ((phase_rule)->ops->set_after(phase_rule, env, after))
 #define AXIS2_PHASE_RULE_GET_NAME(phase_rule, env) ((phase_rule)->ops->get_name(phase_rule, env))
 #define AXIS2_PHASE_RULE_SET_NAME(phase_rule, env, name) ((phase_rule)->ops->set_name(phase_rule, env, name))
-#define AXIS2_PHASE_RULE_IS_PHASE_FIRST(phase_rule, env) ((phase_rule)->ops->is_phase_first((phase_rule, env))
-#define AXIS2_PHASE_RULE_GET_PHASE_FIRST(phase_rule, env, phase_first) ((phase_rule)->ops->set_phase_first(phase_rule, env, phase_first))
+#define AXIS2_PHASE_RULE_IS_PHASE_FIRST(phase_rule, env) ((phase_rule)->ops->is_phase_first(phase_rule, env))
+#define AXIS2_PHASE_RULE_SET_PHASE_FIRST(phase_rule, env, phase_first) ((phase_rule)->ops->set_phase_first(phase_rule, env, phase_first))
 #define AXIS2_PHASE_RULE_IS_PHASE_LAST(phase_rule, env) ((phase_rule)->ops->is_phase_last(phase_rule, env))
-#define AXIS2_PHASE_RULE_GET_PHASE_LAST(phase_rule, env, phase_last) ((phase_rule)->ops->set_phase_last(phase_rule, env, phase_last))
+#define AXIS2_PHASE_RULE_SET_PHASE_LAST(phase_rule, env, phase_last) ((phase_rule)->ops->set_phase_last(phase_rule, env, phase_last))
 #define AXIS2_PHASE_RULE_FREE(phase_rule, env) ((phase_rule)->ops->free(phase_rule, env))
+#define AXIS2_PHASE_RULE_CLONE(phase_rule, env) ((phase_rule)->ops->clone(phase_rule, env))
     
 /** @} */
     
