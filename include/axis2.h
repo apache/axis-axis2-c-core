@@ -64,7 +64,7 @@
  */    
 #define AXIS2_ERROR_SET(error_number, env, error_return) \
     { \
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM); \
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, error_number); \
         AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE); \
         return error_return; \
     }      

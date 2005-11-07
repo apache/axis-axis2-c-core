@@ -211,12 +211,11 @@ axis2_svc_get_operation_with_name (axis2_svc_t *svc,
     AXIS2_FUNC_PARAM_CHECK(env, svc, NULL);
     AXIS2_PARAM_CHECK(env, name, NULL);
 	axis2_char_t temp_name = axis2_strdup(name);
-    AXIS2_PARAM_CHECK(env, 
-    if(NULL == temp_name)
-        AXIS2_ERROR_HANDLE(env, AXIS2_ERROR_INVALID_NULL_PARAM);
+    AXIS2_PARAM_CHECK(env, temp_name, NULL); 
+    
 	return (axis2_operation_t *) (axis2_hash_get 
 		(AXIS2_INTF_TO_IMPL(svc)->wasaction_opeartionmap
-		, axis2_strdup(name), AXIS2_HASH_KEY_STRING));
+		, axis2_strdup(temp_name), AXIS2_HASH_KEY_STRING));
 }
 
 axis2_hash_t * AXIS2_CALL
