@@ -83,15 +83,15 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
     axis2_char_t* (AXIS2_CALL *get_localpart)(struct axis2_qname *qname,
                                               axis2_env_t **env);
                                               
-    axis2_status_t* (AXIS2_CALL *set_uri)(struct axis2_qname *qname,
+    axis2_status_t (AXIS2_CALL *set_uri)(struct axis2_qname *qname,
                                           axis2_env_t **env,
                                           const axis2_char_t *uri);
     
-    axis2_status_t* (AXIS2_CALL *set_prefix)(struct axis2_qname *qname,
+    axis2_status_t (AXIS2_CALL *set_prefix)(struct axis2_qname *qname,
                                              axis2_env_t **env,
                                              const axis2_char_t *prefix);
 
-    axis2_status_t* (AXIS2_CALL *set_localpart)(struct axis2_qname *qname,                                                                                                                                                                                
+    axis2_status_t (AXIS2_CALL *set_localpart)(struct axis2_qname *qname,                                                                                                                                                                                
                                                 axis2_env_t **env,
                                                 const axis2_char_t *localpart);
                                                 

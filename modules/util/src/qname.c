@@ -44,7 +44,7 @@ axis2_qname_get_prefix(axis2_qname_t *qname,
                         axis2_env_t **env);
 
 axis2_char_t* AXIS2_CALL 
-axis2_qname_get_localname(axis2_qname_t *qname,
+axis2_qname_get_localpart(axis2_qname_t *qname,
                           axis2_env_t **env);
                                             
 axis2_status_t AXIS2_CALL 
@@ -177,8 +177,15 @@ axis2_qname_create (axis2_env_t **env,
         return NULL;
     }
 
-    //qn->qname.ops->free = axis2_qname_impl_free;
-    //qn->qname.ops->equals = axis2_qname_impl_equals;
+    qn->qname.ops->free = axis2_qname_free;
+    qn->qname.ops->equals = axis2_qname_equals;
+    qn->qname.ops->clone = axis2_qname_clone;
+    qn->qname.ops->get_localpart = axis2_qname_get_localpart;
+    qn->qname.ops->get_prefix = axis2_qname_get_prefix;
+    qn->qname.ops->get_uri = axis2_qname_get_uri;
+    qn->qname.ops->set_uri = axis2_qname_set_uri;
+    qn->qname.ops->set_prefix = axis2_qname_set_prefix;
+    qn->qname.ops->set_localpart =axis2_qname_set_localpart;
     return &(qn->qname);
 }
 
