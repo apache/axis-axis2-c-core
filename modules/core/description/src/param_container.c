@@ -101,7 +101,7 @@ axis2_param_container_free (axis2_param_container_t *param_container,
 	if(NULL != AXIS2_INTF_TO_IMPL(param_container)->params)
 		AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(param_container)->params);
 	
-    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(param_container));    
+    axis2_hash_free(AXIS2_INTF_TO_IMPL(param_container), env);    
     return AXIS2_SUCCESS;
 }
 

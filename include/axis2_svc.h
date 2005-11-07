@@ -44,54 +44,54 @@ extern "C"
  */    
 struct axis2_svc_ops_s
 {
-	axis2_status_t (AXIS2_CALL *free) (axis2_svc_t *srv_desc, axis2_env_t **env);
+	axis2_status_t (AXIS2_CALL *free) (axis2_svc_t *svc, axis2_env_t **env);
 
-	axis2_status_t (AXIS2_CALL *add_operation) (axis2_svc_t *srv_desc, 
+	axis2_status_t (AXIS2_CALL *add_operation) (axis2_svc_t *svc, 
                                                 axis2_env_t **env,
 	 	                                        axis2_operation_t *operation);
 
 	axis2_operation_t *(AXIS2_CALL *get_operation_with_qname) (
-                                                  axis2_svc_t *srv_desc, 
+                                                  axis2_svc_t *svc, 
                                                   axis2_env_t **env,
 	 	                                          axis2_qname_t *operation_name);
 
 	axis2_operation_t *(AXIS2_CALL *get_operation_with_name) (
-                                            axis2_svc_t *srv_desc, 
+                                            axis2_svc_t *svc, 
                                             axis2_env_t **env,
 	 	                                    const axis2_char_t * operation_name);
 
-	axis2_hash_t *(AXIS2_CALL *get_operations) (axis2_svc_t *srv_desc, 
+	axis2_hash_t *(AXIS2_CALL *get_operations) (axis2_svc_t *svc, 
                                                     axis2_env_t **env);
 
-	axis2_status_t (AXIS2_CALL *set_parent) (axis2_svc_t *srv_desc, 
+	axis2_status_t (AXIS2_CALL *set_parent) (axis2_svc_t *svc, 
                                                 axis2_env_t **env,
 	 	                                        axis2_svc_grp_t *svc_grp);
 
-	axis2_svc_grp_t *(AXIS2_CALL *get_parent) (axis2_svc_t *srv_desc, 
+	axis2_svc_grp_t *(AXIS2_CALL *get_parent) (axis2_svc_t *svc, 
                                                 axis2_env_t **env);
 	
-	axis2_qname_t *(AXIS2_CALL *get_name) (const axis2_svc_t *srv_desc, 
+	axis2_qname_t *(AXIS2_CALL *get_name) (const axis2_svc_t *svc, 
                                             axis2_env_t **env);
 
-	axis2_status_t (AXIS2_CALL *add_param) (axis2_svc_t *srv_desc, 
+	axis2_status_t (AXIS2_CALL *add_param) (axis2_svc_t *svc, 
                                                 axis2_env_t **env,
 		                                        axis2_param_t *param);
 
-	axis2_param_t *(AXIS2_CALL *get_param) (axis2_svc_t *srv_desc, 
+	axis2_param_t *(AXIS2_CALL *get_param) (axis2_svc_t *svc, 
                                                 axis2_env_t **env,
 		                                        const axis2_char_t *name);
 
-	axis2_hash_t *(AXIS2_CALL *get_params) (axis2_svc_t *srv_desc, 
+	axis2_hash_t *(AXIS2_CALL *get_params) (axis2_svc_t *svc, 
                                                 axis2_env_t **env);
 	
-	axis2_bool_t (AXIS2_CALL *is_param_locked) (axis2_svc_t *srv_desc, 
+	axis2_bool_t (AXIS2_CALL *is_param_locked) (axis2_svc_t *svc, 
                                                 axis2_env_t **env,
 		                                        const axis2_char_t *param_name);
 };
 
 /** 
  * @brief Service struct
- *	Axis2 Service  
+  *	Axis2 Service  
  */
 struct axis2_svc_s
 {
@@ -118,57 +118,34 @@ axis2_svc_create_with_qname (axis2_env_t **env,
 
 /**************************** Start of function macros ************************/
 
-#define axis2_svc_free(srv_desc, env) \
-		(axis2_svc_get_ops(srv_desc, env)->free \
-		(srv_desc, env));
+#define AXIS2_SVC_FREE(svc, env) (AXIS2_SVC_get_ops(svc, env)->free (svc, env));
 
-#define axis2_svc_add_operation(srv_desc, env, operation_desc) \
-		(axis2_svc_get_ops(srv_desc, env)->add_operation \
-		(srv_desc, env, operation_desc));
+#define AXIS2_SVC_ADD_OPERATION(svc, env, operation) \
+		(svc->ops->add_operation (svc, env, operation));
 
-#define axis2_svc_get_operation_with_qname(srv_desc, env) \
-		(axis2_svc_get_ops(srv_desc, env)->get_operation_with_qname \
-		(srv_desc, env));
+#define AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env) \
+		(svc->ops->get_operation_with_qname (svc, env));
 
-#define axis2_svc_get_operation_with_name(srv_desc, env) \
-		(axis2_svc_get_ops(srv_desc, env)->get_operation_with_name \
-		(srv_desc, env));
+#define AXIS2_SVC_GET_OPERATION_WITH_NAME(svc, env) \
+		(svc->ops->get_operation_with_name (svc, env));
 
-#define axis2_svc_get_operations(srv_desc, env) \
-		(axis2_svc_get_ops(srv_desc, env)->get_operations \
-		(srv_desc, env));
+#define AXIS2_SVC_GET_OPERATIONS(svc, env) (svc->ops->get_operations (svc, env));
 
-#define axis2_svc_set_parent(srv_desc, env \
-		, svc_grp) (axis2_svc_get_ops(srv_desc \
-		, env)->set_parent (srv_desc, env, svc_grp));
+#define AXIS2_SVC_SET_PARENT(svc, env , svc_grp) (svc->ops->set_parent \
+        (svc, env, svc_grp));
 
-#define axis2_svc_get_parent(srv_desc, env) \
-		(axis2_svc_get_ops(srv_desc, env)->get_parent \
-		(srv_desc, env));
+#define AXIS2_SVC_GET_PARENT(svc, env) (svc->ops->get_parent (svc, env));
 		
-#define axis2_svc_get_name(srv_desc, env) \
-		(axis2_svc_get_ops(srv_desc, env)->get_name(srv_desc \
-		, env));
+#define AXIS2_SVC_GET_NAME(svc, env) (svc->ops->get_name(svc , env));
 		
-#define axis2_svc_add_param(srv_desc, env, param) \
-		(axis2_svc_get_ops(srv_desc, env)->add_param(srv_desc \
-		, env, param));
+#define AXIS2_SVC_ADD_PARAM(svc, env, param) (svc->ops->add_param(svc , env, param));
 		
-
-#define axis2_svc_get_param(srv_desc, env, name) \
-		(axis2_svc_get_ops(srv_desc, env)->get_param(srv_desc \
-		, env, name));
+#define AXIS2_SVC_GET_PARAM(svc, env, name) (svc->ops->get_param(svc , env, name));
 		
-
-#define axis2_svc_get_params(srv_desc, env) \
-		(axis2_svc_get_ops(srv_desc, env)->get_params(srv_desc \
-		, env));
+#define AXIS2_SVC_GET_PARAMS(svc, env) (svc->ops->get_params(svc , env));
 		
-		
-
-#define axis2_svc_is_param_locked(srv_desc, env, \
-		param_name) (axis2_svc_get_ops(env \
-		, srv_desc)->is_parameter_locked(srv_desc, env, param_name));
+#define AXIS2_SVC_IS_PARAM_LOCKED(svc, env, param_name) \
+        (svc->ops->is_parameter_locked(svc, env, param_name));
 				
 
 /**************************** End of function macros **************************/
