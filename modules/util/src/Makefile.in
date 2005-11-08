@@ -64,7 +64,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libaxis2_util_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libaxis2_util_la_OBJECTS = hash.lo allocator.lo env.lo error.lo \
-	stream.lo log.lo string.lo file_diff.lo qname.lo
+	stream.lo log.lo string.lo file_diff.lo qname.lo array_list.lo
 libaxis2_util_la_OBJECTS = $(am_libaxis2_util_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -200,7 +200,8 @@ libaxis2_util_la_SOURCES = hash.c \
                         log.c \
                         string.c \
                         file_diff.c \
-                        qname.c
+                        qname.c \
+                        array_list.c
 
 libaxis2_util_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include \
@@ -276,6 +277,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/allocator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/array_list.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/env.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file_diff.Plo@am__quote@

@@ -351,4 +351,4 @@ axis2_qname_set_localpart(axis2_qname_t *qname,
     }
     AXIS2_INTF_TO_IMPL(qname)->localpart = (axis2_char_t*)axis2_strdup(localpart);
     return AXIS2_SUCCESS;
-}                          
+}

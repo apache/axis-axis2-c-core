@@ -70,7 +70,8 @@ am__DEPENDENCIES_1 =
 libtest_util_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(top_builddir)/modules/util/src/libaxis2_util.la
 am_libtest_util_la_OBJECTS = util_hash_test.lo util_stream_test.lo \
-	util_log_test.lo util_error_test.lo util_test.lo
+	util_log_test.lo util_error_test.lo util_test.lo \
+	util_array_list_test.lo
 libtest_util_la_OBJECTS = $(am_libtest_util_la_OBJECTS)
 prgbinPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(prgbin_PROGRAMS)
@@ -207,8 +208,8 @@ target_vendor = @target_vendor@
 prgbindir = $(prefix)/bin/unit_test
 prglibdir = $(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_util.la
-AM_CPPFLAGS = $(CPPFLAGS)
-libtest_util_la_SOURCES = util_hash_test.c util_stream_test.c util_log_test.c util_error_test.c util_test.c
+AM_CPPFLAGS = $(CPPFLAGS) -g
+libtest_util_la_SOURCES = util_hash_test.c util_stream_test.c util_log_test.c util_error_test.c util_test.c util_array_list_test.c
 include_HEADERS = $(top_builddir)/modules/util/test/*.h
 libtest_util_la_LIBADD = $(LDFLAGS) $(top_builddir)/modules/util/src/libaxis2_util.la
 INCLUDES = -I$(top_builddir)/include \
@@ -318,6 +319,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util_array_list_test.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util_error_test.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util_hash_test.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util_log_test.Plo@am__quote@

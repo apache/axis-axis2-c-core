@@ -1,8 +1,8 @@
 prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_util.la
-AM_CPPFLAGS = $(CPPFLAGS)
-libtest_util_la_SOURCES = util_hash_test.c util_stream_test.c util_log_test.c util_error_test.c util_test.c
+AM_CPPFLAGS = $(CPPFLAGS) -g
+libtest_util_la_SOURCES = util_hash_test.c util_stream_test.c util_log_test.c util_error_test.c util_test.c util_array_list_test.c
 include_HEADERS=$(top_builddir)/modules/util/test/*.h
 
 libtest_util_la_LIBADD = $(LDFLAGS) $(top_builddir)/modules/util/src/libaxis2_util.la

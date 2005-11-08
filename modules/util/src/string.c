@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void* AXIS2_CALL
+void* 
 axis2_strdup (const void *ptr)
 {
     if (ptr)
@@ -31,7 +31,7 @@ axis2_strdup (const void *ptr)
     }
 }
 
-int AXIS2_CALL
+int 
 axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
 {
     if (s1 && s2)

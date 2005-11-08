@@ -8,7 +8,8 @@ libaxis2_util_la_SOURCES = hash.c \
                         log.c \
                         string.c \
                         file_diff.c \
-                        qname.c
+                        qname.c \
+                        array_list.c
 
 libaxis2_util_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include \
