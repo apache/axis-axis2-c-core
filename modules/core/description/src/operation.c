@@ -24,7 +24,7 @@ typedef struct axis2_operation_impl_s
 {
 	axis2_operation_t operation;
 	axis2_param_container_t *param_container;
-	axis2_svc_t *parent;
+	struct axis2_svc_s *parent;
 	axis2_qname_t *qname;
 	axis2_msg_recv_t *msg_recv;
 	axis2_char_t* msg_exchange_pattern;
@@ -82,9 +82,9 @@ axis2_operation_get_msg_exchange_pattern (axis2_operation_t *operation,
 axis2_status_t AXIS2_CALL
 axis2_operation_set_msg_recv (axis2_operation_t *operation, 
                                 axis2_env_t **env,
-                                axis2_engine_msg_recv_t *msg_recv);
+                                axis2_msg_recv_t *msg_recv);
 
-axis2_engine_msg_recv_t * AXIS2_CALL
+axis2_msg_recv_t * AXIS2_CALL
 axis2_operation_get_msg_recv (axis2_operation_t *operation, 
                                 axis2_env_t **env);
 		
@@ -103,24 +103,25 @@ axis2_operation_create (axis2_env_t **env)
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
 	
-	operation_impl->ops->free = axis2_operation_free;
-	operation_impl->ops->add_param = axis2_operation_add_param;
-	operation_impl->ops->get_param = axis2_operation_get_param;
-	operation_impl->ops->get_params = axis2_operation_get_params;
-	operation_impl->ops->set_parent = axis2_operation_set_parent;
-	operation_impl->ops->get_parent = axis2_operation_get_parent;
-	operation_impl->ops->get_name = axis2_operation_get_name;
-	operation_impl->ops->set_msg_exchange_pattern 
+	operation_impl->operation.ops->free = axis2_operation_free;
+	operation_impl->operation.ops->add_param = axis2_operation_add_param;
+	operation_impl->operation.ops->get_param = axis2_operation_get_param;
+	operation_impl->operation.ops->get_params = axis2_operation_get_params;
+	operation_impl->operation.ops->set_parent = axis2_operation_set_parent;
+	operation_impl->operation.ops->get_parent = axis2_operation_get_parent;
+	operation_impl->operation.ops->get_name = axis2_operation_get_name;
+	operation_impl->operation.ops->set_msg_exchange_pattern 
 		= axis2_operation_set_msg_exchange_pattern;
-	operation_impl->ops->get_msg_exchange_pattern
+	operation_impl->operation.ops->get_msg_exchange_pattern
 		= axis2_operation_get_msg_exchange_pattern;
-	operation_impl->ops->set_msg_recv = axis2_operation_set_msg_recv;
-	operation_impl->ops->get_msg_recv = axis2_operation_get_msg_recv;
+	operation_impl->operation.ops->set_msg_recv = axis2_operation_set_msg_recv;
+	operation_impl->operation.ops->get_msg_recv = axis2_operation_get_msg_recv;
 	
 	axis2_param_container_t *param_container = (axis2_param_container_t *)
 		axis2_param_container_create(env);		
 	if(NULL == param_container)
 	{
+        AXIS2_FREE((*env)->allocator, operation_impl);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);		
 	}
 
@@ -257,7 +258,7 @@ axis2_operation_set_parent (axis2_operation_t *operation,
 		                        axis2_svc_t *svc)
 {
     AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_recv, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, svc, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(operation)->parent = svc;
 	return AXIS2_SUCCESS;
 }
@@ -276,7 +277,7 @@ axis2_operation_get_name (axis2_operation_t *operation,
 {
     AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
 	
-    return AXIS2_INTF_TO_IMPL(operation)->name;
+    return AXIS2_INTF_TO_IMPL(operation)->qname;
 }
 
 axis2_status_t AXIS2_CALL 
@@ -303,7 +304,7 @@ axis2_operation_get_msg_exchange_pattern (axis2_operation_t *operation,
 axis2_status_t AXIS2_CALL 
 axis2_operation_set_msg_recv (axis2_operation_t *operation, 
                                 axis2_env_t **env,
-		                        axis2_engine_msg_recv_t *msg_recv)
+		                        axis2_msg_recv_t *msg_recv)
 {
     AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_recv, AXIS2_FAILURE);
@@ -312,7 +313,7 @@ axis2_operation_set_msg_recv (axis2_operation_t *operation,
 	return AXIS2_SUCCESS;
 }
 
-axis2_engine_msg_recv_t * AXIS2_CALL
+axis2_msg_recv_t * AXIS2_CALL
 axis2_operation_get_msg_recv (axis2_operation_t *operation, 
                                 axis2_env_t **env)
 {

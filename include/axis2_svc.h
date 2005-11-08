@@ -39,6 +39,8 @@ extern "C"
   */
 
 struct axis2_svc_grp_s;
+struct axis2_operation_s;    
+typedef struct axis2_svc_ops_s axis2_svc_ops_t;   
 typedef struct axis2_svc_s axis2_svc_t;
     
 /** 
@@ -51,14 +53,14 @@ struct axis2_svc_ops_s
 
 	axis2_status_t (AXIS2_CALL *add_operation) (axis2_svc_t *svc, 
                                                 axis2_env_t **env,
-	 	                                        axis2_operation_t *operation);
+	 	                                        struct axis2_operation_s *operation);
 
-	axis2_operation_t *(AXIS2_CALL *get_operation_with_qname) (
+	struct axis2_operation_s *(AXIS2_CALL *get_operation_with_qname) (
                                                   axis2_svc_t *svc, 
                                                   axis2_env_t **env,
 	 	                                          axis2_qname_t *operation_name);
 
-	axis2_operation_t *(AXIS2_CALL *get_operation_with_name) (
+	struct axis2_operation_s *(AXIS2_CALL *get_operation_with_name) (
                                             axis2_svc_t *svc, 
                                             axis2_env_t **env,
 	 	                                    const axis2_char_t * operation_name);
@@ -121,7 +123,7 @@ axis2_svc_create_with_qname (axis2_env_t **env,
 
 /**************************** Start of function macros ************************/
 
-#define AXIS2_SVC_FREE(svc, env) (AXIS2_SVC_get_ops(svc, env)->free (svc, env));
+#define AXIS2_SVC_FREE(svc, env) (svc->ops->free (svc, env));
 
 #define AXIS2_SVC_ADD_OPERATION(svc, env, operation) \
 		(svc->ops->add_operation (svc, env, operation));

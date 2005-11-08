@@ -19,7 +19,7 @@
 
 /**
  * @file axis2_svc_grp.h
- * @brief axis2 service group interface
+ * @brief axis2 Service Group interface
  */
 
 #include <axis2_core.h>
@@ -32,11 +32,12 @@ extern "C"
 #endif
 
 /** @defgroup axis2_svc_grp Service group description
-  * @ingroup axis2_description
+  * @ingroup axis2_core_description
   * @{
   */
 
 struct axis2_svc_s;
+typedef struct axis2_svc_grp_ops_s axis2_svc_grp_ops_t;    
 typedef struct axis2_svc_grp_s axis2_svc_grp_t;
     
 /** 
@@ -81,8 +82,8 @@ struct axis2_svc_grp_ops_s
      * @return service description
      */
 	struct axis2_svc_s *(AXIS2_CALL *get_svc) (axis2_svc_grp_t *svc_grp, 
-                                        axis2_env_t **env,
-		,                               const axis2_qname_t* svc_name);
+                                                axis2_env_t **env,
+	                                            const axis2_qname_t *svc_name);
         
 	axis2_status_t (AXIS2_CALL *remove_svc) (axis2_svc_grp_t *svc_grp, 
                                              axis2_env_t **env,
@@ -97,7 +98,7 @@ struct axis2_svc_grp_ops_s
                                                 const axis2_char_t *name);
         
 	axis2_hash_t *(AXIS2_CALL *get_params) (axis2_svc_grp_t *svc_grp, 
-                                                axis2_env_t *env);
+                                                axis2_env_t **env);
     
 	axis2_bool_t (AXIS2_CALL *is_param_locked) (axis2_svc_grp_t *svc_grp, 
                                                 axis2_env_t **env, 

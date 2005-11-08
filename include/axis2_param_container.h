@@ -47,7 +47,6 @@ struct axis2_param_container_ops;
  * @{
  */
 
-
 /** 
  * @brief Param Container operations struct
  * Encapsulator struct for operations of axis2_param_container

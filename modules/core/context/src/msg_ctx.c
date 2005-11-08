@@ -16,7 +16,7 @@
  
 #include <axis2_msg_ctx.h>
 
-typedef axis2_msg_ctx_impl_s axis2_msg_ctx_impl_t;
+typedef struct axis2_msg_ctx_impl_s axis2_msg_ctx_impl_t;
 
 /** 
  * @brief Message Context struct impl
@@ -27,7 +27,7 @@ struct axis2_msg_ctx_impl_s
 	axis2_msg_ctx_t msg_ctx;
 };
 
-#define AXIS2_INTF_TO_IMPL(msg_ctx) ((axis2_msg_ctx_impl_t *)msg_ctx)
+#define AXIS2_INTF_TO_IMPL(msg_ctx) ((axis2_msg_ctx_impl_t *) msg_ctx)
 
 /*************************** Function headers *********************************/
 
@@ -43,24 +43,22 @@ axis2_msg_ctx_t * AXIS2_CALL
 axis2_msg_ctx_create (axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    
-	axis2_context_msg_ctx_ops_t *ops = NULL;
-    
+ 
 	axis2_msg_ctx_impl_t *msg_ctx_impl = (axis2_msg_ctx_impl_t *) AXIS2_MALLOC (
-        env->allocator, sizeof (axis2_msg_ctx_impl_t));
+        (*env)->allocator, sizeof (axis2_msg_ctx_impl_t));
     
 	if(NULL == msg_ctx_impl)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	
-	msg_ctx_impl->msg_ctx.ops = (axis2_msg_ctx_ops_t *) AXIS2_MALLOC(env->allocator,
+	msg_ctx_impl->msg_ctx.ops = (axis2_msg_ctx_ops_t *) AXIS2_MALLOC((*env)->allocator,
 		sizeof(axis2_msg_ctx_ops_t));
 	if(NULL == msg_ctx_impl->msg_ctx.ops)
 	{
-        AXIS2_FREE((*env)->allocato, msg_ctx_impl);
+        AXIS2_FREE((*env)->allocator, msg_ctx_impl);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
 	
-	msg_ctx_impl->msg_ctx.ops->free = axis2_msg_ctx_free;
+	(msg_ctx_impl->msg_ctx.ops)->free = axis2_msg_ctx_free;
 						
 	return &(msg_ctx_impl->msg_ctx);
 }
@@ -75,7 +73,7 @@ axis2_msg_ctx_free (axis2_msg_ctx_t *msg_ctx,
     if(NULL == msg_ctx->ops)
         AXIS2_FREE((*env)->allocator, msg_ctx->ops);
     
-    AXIS2_FREE((env*)->allocator, AXIS2_INTF_TO_IMPL(msg_ctx));
+    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(msg_ctx));
     
     return AXIS2_SUCCESS;
 }

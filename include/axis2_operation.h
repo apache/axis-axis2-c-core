@@ -39,6 +39,7 @@ extern "C"
 
 struct axis2_svc_s;
 struct axis2_msg_recv_s;
+typedef struct axis2_operation_ops_s axis2_operation_ops_t;    
 typedef struct axis2_operation_s axis2_operation_t;    
     
 /** 
@@ -75,13 +76,15 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops_s
 	axis2_hash_t *(AXIS2_CALL *get_params) (axis2_operation_t *operation, 
                                                 axis2_env_t **env);
 
-    //to check whether a given paramter is locked
+    /**
+     * To check whether a given paramter is locked
+     */
 	axis2_bool_t (AXIS2_CALL *is_param_locked) (axis2_operation_t *operation, 
                                                 axis2_env_t **env,
 		                                        const axis2_char_t *param_name);
 	
 	axis2_status_t (AXIS2_CALL *set_parent) (axis2_operation_t *operation, 
-                                     *axis2_env_t **env,
+                                     axis2_env_t **env,
                                      struct axis2_svc_s *service_desc);
 
 	struct axis2_svc_s *(AXIS2_CALL *get_parent) (axis2_operation_t *operation, 

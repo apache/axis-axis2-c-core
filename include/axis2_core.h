@@ -61,27 +61,6 @@ extern "C"
 /************************ End of message exchange patters *********************/	
 	
 #define SERVICE_NAME_SPLIT_CHAR ":"
-
-/** @cond */
-struct axis2_context_msg_ctx_s;
-struct axis2_context_msg_ctx_ops_s;
-/** @endcond */
-typedef struct axis2_context_msg_ctx_s axis2_context_msg_ctx_t;
-typedef struct axis2_context_msg_ctx_ops_s axis2_context_msg_ctx_ops_t;
-	
-/** @cond */
-struct axis2_engine_msg_recv_s;
-struct axis2_engine_msg_recv_ops_s;
-/** @endcond */
-typedef struct axis2_engine_msg_recv_s axis2_msg_recv_t;
-typedef struct axis2_engine_msg_recv_ops_s axis2_engine_msg_recv_ops_t;
-	
-/** @cond */
-struct axis2_engine_config_s;
-struct axis2_engine_config_ops_s;
-/** @endcond */
-typedef struct axis2_engine_config_s axis2_engine_config_t;
-typedef struct axis2_engine_config_ops_s axis2_engine_config_ops_t;
 	
 #ifdef __cplusplus
 }

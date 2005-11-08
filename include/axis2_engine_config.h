@@ -14,128 +14,109 @@
  * limitations under the License.
  */
  
-#ifndef AXIS2_ENGINE_CONFIG_H
-#define AXIS2_ENGINE_CONFIG_H
+#ifndef AXIS2_CONFIG_H
+#define AXIS2_CONFIG_H
 
 /**
-  * @file axis2_engine_config.h
-  * @brief Global states of all the Axis can
-  *        can be accessed here
-  */
+ * @file axis2_config.h
+ * @brief axis2 engine configuration interface. Global states of all the Axis2
+ *        can be accessed here
+ */
 
 #include <axis2_core.h>
 #include <axis2_param_container.h>
-#include <axis2_description_servicegroup.h>
+#include <axis2_svc_grp.h>
 
 #ifdef __cplusplus
 extern "C" 
 {
 #endif
-/** @defgroup axis2_context CONTEXT (Axis2 Information model)
-  * @ingroup axis2
+/** @defgroup axis2_config Axis Configuration
+  * @ingroup axis2_core_engine
   * @{
   */
 
-/** @} */ 
-
-/**
- * @defgroup axis2_engine_ ENGINE engine_config
- * @ingroup axis2_engine_config 
- * @{
+typedef struct axis2_engine_config_ops_s axis2_engine_config_ops_t;
+typedef struct axis2_engine_config_s axis2_engine_config_t;
+    
+struct axis2_svc_grp_s;
+struct axis2_svc_s;
+struct axis2_operation_s;    
+    
+/** 
+ * @brief Engine Configuration operations struct
+ * Encapsulator struct for operations of axis2_config
  */
+struct axis2_engine_config_ops_s
+{
+	axis2_status_t (AXIS2_CALL *free) (axis2_engine_config_t *engine_config, 
+                                        axis2_env_t **env);
+    
+	axis2_status_t (AXIS2_CALL *add_svc_grp) (axis2_engine_config_t *engine_config, 
+                                                axis2_env_t **env, 
+                                                struct axis2_svc_grp_s *svc_grp);
+    
+	struct axis2_svc_grp_s *(AXIS2_CALL *get_svc_grp) (
+                                            axis2_engine_config_t *engine_config, 
+                                            axis2_env_t **env, 
+                                            const axis2_char_t *svc_grp_name);
+    
+	axis2_status_t (AXIS2_CALL *add_svc) (axis2_engine_config_t *engine_config, 
+                                            axis2_env_t **env, 
+                                            struct axis2_svc_s* svc);
+    
+	struct axis2_svc_s *(AXIS2_CALL *get_svc) (axis2_engine_config_t *engine_config, 
+                                        axis2_env_t **env, 
+                                        const axis2_char_t* svc_name);
+    
+	axis2_status_t (AXIS2_CALL *remove_svc) (axis2_engine_config_t *engine_config, 
+                                                axis2_env_t **env, 
+                                                const axis2_char_t *name);
+};
 
-/************************* Start of function macros	***************************/
-	
-#define axis2_engine_config_free(engine_config, env) \
-		(engine_config->free(engine_config, env);
-	
-#define axis2_engine_config_add_service_group(engine_config, env, \
-		service_group_desc) (axis2_engine_config_get_ops(engine_config, \
-		, env)->add_service_group (engine_config, env, service_group_desc));
-
-#define axis2_engine_config_get_service_group(engine_config, env, \
-		servicegroup_name) (axis2_engine_config_get_ops(engine_config \
-		, env)->get_service_group (engine_config, env, servicegroup_name));
-
-#define axis2_engine_config_add_service(engine_config, env, service_desc) \
-		(axis2_engine_config_get_ops(engine_config, env)->get_service \
-		(engine_config, env, service_desc));
-		
-#define axis2_engine_config_get_service(engine_config, env, service_name) \
-		(axis2_engine_config_get_ops(engine_config, env)->get_service \
-		(engine_config, env, service_name));
-
-#define axis2_engine_config_remove_service(engine_config, env, service_name) \
-		(axis2_engine_config_get_ops(engine_config, env)->remove_service \
-		(engine_config, env, service_name));
-		
-/************************* End of function macros *****************************/
-/************************* Start of function pointers *************************/
-
-typedef axis2_status_t (*axis2_engine_config_free_t)
-		(axis2_engine_config_t *engine_config, axis2_env_t *env);
-		
-typedef axis2_status_t (*axis2_engine_config_add_service_group_t)
-		(axis2_engine_config_t *engine_config, axis2_env_t *env
-    	, axis2_svc_grp_t *service_group_desc);
-		
-typedef axis2_svc_grp_t *(*axis2_engine_config_get_service_group_t)
-		(axis2_engine_config_t *engine_config, axis2_env_t *env
-		, const axis2_char_t *servicegroup_name);
-
-typedef axis2_status_t (*axis2_engine_config_add_service_t)
-		(axis2_engine_config_t *engine_config, axis2_env_t *env
-		, axis2_svc_t* service_desc);
-		
-typedef axis2_svc_t *(*axis2_engine_config_get_service_t)
-		(axis2_engine_config_t *engine_config, axis2_env_t *env
-		, const axis2_char_t* service_name);
-
-typedef axis2_status_t (*axis2_engine_config_remove_service_t)
-		(axis2_engine_config_t *engine_config, axis2_env_t *env
-		, const axis2_char_t *name);	
-		
-/************************* End of function pointers ***************************/
-	
 /**
+ * @brief Engine configuration struct
+ * Axis2 Engine Configuration
  * The palce where all the global states of Axis is accessed.
  * All the global states kept in the <code>EngineRegistry</code> and all the
  * Service states kept in the <code>MessageContext</code>. Other runtime
  * artifacts does not keep states forward from the execution.
  */
-
-/**
-  * @struct axis2_engine_config_ops
-  * @brief ENGINE engine_config operations
-  * This holds the operations of the engine axis2_engine_config.
-  */
-struct axis2_engine_config_ops_s
-{
-	axis2_engine_config_free_t free;
-	axis2_engine_config_add_service_group_t add_service_group;
-	axis2_engine_config_get_service_group_t get_service_group;
-	axis2_engine_config_add_service_t add_service;
-	axis2_engine_config_get_service_t get_service;
-	axis2_engine_config_remove_service_t remove_service;
-};
-
-/**
-  * @struct axis2_engine_config
-  * @brief ENGINE engine_config
-  * This holds operations of the engine struct.
-  */
 struct axis2_engine_config_s
 {
 	axis2_engine_config_ops_t *ops;
 };
 
-/** create axis_engine_config struct
- * @return axis_engine_config struct
+/** create Engine configuration struct
+ * @return pointer to newly created engine configuration
  */
-axis2_engine_config_t *axis2_engine_config_create(axis2_env_t **env);
+axis2_engine_config_t * AXIS2_CALL 
+axis2_engine_config_create(axis2_env_t **env);
+
+/************************* Start of function macros	***************************/
+	
+#define AXIS2_ENGINE_CONFIG_free(engine_config, env) \
+		(engine_config->free(engine_config, env);
+	
+#define AXIS2_ENGINE_CONFIG_add_svc_grp(engine_config, env, svc_grp) \
+        (engine_config->ops->add_svc_grp (engine_config, env, svc_grp));
+
+#define AXIS2_ENGINE_CONFIG_GET_SVC_GRP(engine_config, env, svc_grp_name) \
+        (engine_config->ops->get_svc_grp (engine_config, env, svc_grp_name));
+
+#define AXIS2_ENGINE_CONFIG_ADD_SVC(engine_config, env, svc) \
+		(engine_config->ops->get_svc (engine_config, env, svc));
+		
+#define AXIS2_ENGINE_CONFIG_GET_SVC(engine_config, env, svc_name) \
+		(engine_config->ops->get_svc (engine_config, env, svc_name));
+
+#define AXIS2_ENGINE_CONFIG_REMOVE_SVC(engine_config, env, svc_name) \
+		(engine_config->ops->remove_svc (engine_config, env, svc_name));
+
+/************************* End of function macros *****************************/
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_ENGINE_CONFIG_H */
+#endif /* AXIS2_CONFIG_H */

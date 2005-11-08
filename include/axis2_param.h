@@ -50,8 +50,7 @@ struct axis2_param_ops;
  * Field DOM_PARAM
  */
   static const int AXIS2_DOM_PARAM = 1;
-    
-
+       
 /**
  *   \brief param operations struct
  */

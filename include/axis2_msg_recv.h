@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_ENGINE_MSG_RECEIVER_H
-#define AXIS2_ENGINE_MSG_RECEIVER_H
+#ifndef AXIS2_MSG_RECV_H
+#define AXIS2_MSG_RECV_H
 
 
 /**
   * @file axis2_msg_recv.h
-  * @brief axis2 ENGINE CORE msg_recv
+  * @brief axis Message Receiver interface
   */
 
 #include <axis2_core.h>
@@ -30,61 +30,57 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_engine ENGINE (Axis2 Information model)
-  * @ingroup axis2
+/** @defgroup axis2_msg_recv Message Receiver
+  * @ingroup axis2_core_engine
   * @{
   */
 
-/** @} */
+struct axis2_msg_ctx_s;
+typedef struct axis2_msg_recv_s axis2_msg_recv_t;
+typedef struct axis2_msg_recv_ops_s axis2_msg_recv_ops_t;
 
-/**
- * @defgroup axis2_engine_msg_recv ENGINE Msg_receiver
- * @ingroup axis2_engine 
- * @{
+/** 
+ * @brief Message Receiver operations struct
+ * Encapsulator struct for operations of axis2_msg_recv
+ */     
+struct axis2_msg_recv_ops_s
+{
+    /** 
+     * Deallocate memory
+     * @return status code
+     */
+    axis2_status_t (AXIS2_CALL *free) (axis2_msg_recv_t *msg_recv,
+                                        axis2_env_t **env);
+
+    axis2_status_t (AXIS2_CALL *receive) (axis2_msg_recv_t *msg_recv,
+                                            axis2_env_t **env,
+                                            struct axis2_msg_ctx_s *msg_ctx);
+};
+
+/** 
+ * @brief Message Receiver struct
+  *	Axis2 Message Receiver
  */
+struct axis2_msg_recv_s
+{
+    axis2_msg_recv_ops_t *ops;    
+};
+
+AXIS2_DECLARE(axis2_msg_recv_t *)
+axis2_msg_recv_create (axis2_env_t **env);
 
 /************************** Start of function macros **************************/
 
-#define axis2_engine_msg_recv_free(env, msg_recv) \
-		(axis2_engine_msg_recv_get_ops(env, \
-		msg_recv)->free (env, msg_recv));
+#define AXIS2_MSG_RECV_FREE(msg_recv, env) (msg_recv->ops->free (msg_recv, env));
 
-#define axis2_engine_msg_recv_receive(env, msg_recv, msg_ctx) \
-		(axis2_engine_msg_recv_get_ops(env, \
-		msg_recv)->receive (env, msg_recv, msg_ctx));
+#define AXIS2_MSG_RECV_RECEIVE(msg_recv, env, msg_ctx) \
+		(msg_recv->ops->receive (msg_recv, env, msg_ctx));
 
 /************************** End of function macros ****************************/
-
-/************************** Start of function pointers ************************/
-
-    typedef axis2_status_t (*axis2_engine_msg_recv_free_t)
-        (axis2_env_t * env,
-         axis2_msg_recv_t * msg_recv);
-
-    typedef axis2_status_t (*axis2_engine_msg_recv_receive_t)
-        (axis2_env_t * env,
-         axis2_msg_recv_t * msg_recv,
-         axis2_context_msg_ctx_t * msg_ctx);
-
-/**************************** End of function pointers ************************/
-
-    struct axis2_engine_msg_recv_ops_s
-    {
-        axis2_engine_msg_recv_free_t free;
-
-        axis2_engine_msg_recv_receive_t receive;
-    };
-
-    axis2_msg_recv_t *axis2_engine_msg_recv_get_ops
-        (axis2_env_t * env,
-         axis2_msg_recv_t * msg_recv);
-
-      axis2_msg_recv_t
-        * axis2_engine_msg_recv_create (axis2_env_t * env);
-
+    
 /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* AXIS2_ENGINE_MSG_RECEIVER_H */
+#endif                          /* AXIS2_MSG_RECV_H */

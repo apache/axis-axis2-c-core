@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_ENGINE_MSG_CONTEXT_H
-#define AXIS2_ENGINE_MSG_CONTEXT_H
+#ifndef AXIS2_MSG_CTX_H
+#define AXIS2_MSG_CTX_H
 
 
 /**
-  * @file axis2_context_messsage.h
-  * @brief axis2 ENGINE CORE msg_context
+  * @file axis2_msg_ctx.h
+  * @brief axis2 Message Context interface
   */
 
 #include <axis2_core.h>
@@ -30,48 +30,49 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_context ENGINE (Axis2 Information model)
-  * @ingroup axis2
-  * @{
-  */
-
-/** @} */
-
-/**
- * @defgroup axis2_context_msg_context ENGINE Msg_context
- * @ingroup axis2_context 
+/** @defgroup axis2_msg_ctx Message Context 
+ * @ingroup axis2_core_context
  * @{
  */
+    
+typedef struct axis2_msg_ctx_ops_s axis2_msg_ctx_ops_t;
+typedef struct axis2_msg_ctx_s axis2_msg_ctx_t;    
+    
+/** 
+ * @brief Message Context operations struct
+ * Encapsulator struct for operations of axis2_msg_ctx
+ */  
+struct axis2_msg_ctx_ops_s
+{
+    /** 
+     * Deallocate memory
+     * @return status code
+     */
+    axis2_status_t (AXIS2_CALL *free)(axis2_msg_ctx_t *msg_ctx,
+                                        axis2_env_t **env); 
+};
 
+/** 
+ * @brief Message Context struct
+  *	Axis2 Message Context
+ */
+struct axis2_msg_ctx_s
+{
+    axis2_msg_ctx_ops_t *ops;    
+};
+
+AXIS2_DECLARE(axis2_msg_ctx_t *)
+axis2_msg_ctx_create (axis2_env_t **env);
+    
 /************************** Start of function macros **************************/
 
-#define axis2_context_msg_ctx_free(env, msg_ctx) \
-		(axis2_context_msg_ctx_get_ops(env, \
-		msg_ctx)->free (env, msg_ctx));
+#define AXIS2_MSG_CTX_FREE(env, msg_ctx) (msg_ctx->ops->free (env, msg_ctx));
 
-/************************** End of function macros ****************************/
-
-/************************** Start of function pointers ************************/
-
-    typedef axis2_status_t (*axis2_context_msg_ctx_free_t)
-        (axis2_env_t * env, axis2_context_msg_ctx_t * msg_ctx);
-
-/**************************** End of function pointers ************************/
-
-    struct axis2_context_msg_ctx_ops_s
-    {
-        axis2_context_msg_ctx_free_t free;
-    };
-
-    axis2_context_msg_ctx_t *axis2_context_msg_ctx_get_ops
-        (axis2_env_t * env, axis2_context_msg_ctx_t * msg_ctx);
-
-      axis2_context_msg_ctx_t
-        * axis2_context_msg_ctx_create (axis2_env_t * env);
+/************************** End of function macros ****************************/    
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* AXIS2_ENGINE_MSG_CONTEXT_H */
+#endif                          /* AXIS2_MSG_CTX_H */

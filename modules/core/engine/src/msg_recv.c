@@ -14,81 +14,79 @@
  * limitations under the License.
  */
  
-#include <axis2_engine_msg_recv.h>
+#include <axis2_msg_recv.h>
 
-/**
-  * @struct axis2_engine_msg_recv_s
-  * @brief ENGINE msg_recv
-  * This holds the information about msg_recv.
-  */
-struct axis2_engine_msg_recv_s
+typedef struct axis2_msg_recv_impl_s axis2_msg_recv_impl_t;
+/** 
+ * @brief Message Receiver struct impl
+ * Axis2 Message Receiver impl  
+ */ 
+struct axis2_msg_recv_impl_s
 {
-	axis2_engine_msg_recv_ops_t *ops;
+	axis2_msg_recv_t msg_recv;
 };
+
+#define AXIS2_INTF_TO_IMPL(msg_recv) ((axis2_msg_recv_impl_t *) msg_recv)
 	
 /*************************** Function headers *********************************/
 
-axis2_status_t axis2_engine_msg_recv_ops_free (axis2_env_t *env
-		, axis2_engine_msg_recv_t *msg_recv);	
+axis2_status_t AXIS2_CALL
+axis2_msg_recv_free (axis2_msg_recv_t *msg_recv,
+                            axis2_env_t **env);
 
-axis2_status_t axis2_engine_msg_recv_ops_receive (axis2_env_t *env
-		, axis2_engine_msg_recv_t *msg_recv
-		, axis2_context_msg_ctx_t *msg_ctx);
+axis2_status_t AXIS2_CALL
+axis2_msg_recv_receive (axis2_msg_recv_t *msg_recv,
+                                axis2_env_t **env,
+		                        struct axis2_msg_ctx_s *msg_ctx);
 		
 /************************* End of function headers ****************************/	
 
-axis2_engine_msg_recv_t *axis2_engine_msg_recv_get_ops
-		(axis2_env_t *env, axis2_engine_msg_recv_t *msg_recv)
+axis2_msg_recv_t * AXIS2_CALL
+axis2_msg_recv_create (axis2_env_t **env)
 {
-	if(!msg_recv)
+    AXIS2_ENV_CHECK(env, NULL);
+    
+	axis2_msg_recv_ops_t *ops = NULL;
+	axis2_msg_recv_impl_t *msg_recv_impl = 
+        (axis2_msg_recv_impl_t *) AXIS2_MALLOC ((*env)->allocator
+		    , sizeof (axis2_msg_recv_impl_t));
+	if(NULL == msg_recv_impl)
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+	ops = (axis2_msg_recv_ops_t *) AXIS2_MALLOC((*env)->allocator,
+		sizeof(axis2_msg_recv_ops_t));
+    
+    msg_recv_impl->msg_recv.ops = (axis2_msg_recv_ops_t *) AXIS2_MALLOC(
+        (*env)->allocator, sizeof(axis2_msg_recv_ops_t));
+	if(NULL == msg_recv_impl->msg_recv.ops)
 	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
-		return NULL;	
+        AXIS2_FREE((*env)->allocator, msg_recv_impl);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
-	return (axis2_engine_msg_recv_t *) msg_recv->ops;
-}
-
-axis2_engine_msg_recv_t *axis2_engine_msg_recv_create 
-		(axis2_env_t *env)
-{
-	axis2_engine_msg_recv_ops_t *ops = NULL;
-	axis2_engine_msg_recv_t *msg_recv = 
-		(axis2_engine_msg_recv_t *) AXIS2_MALLOC (env->allocator
-		, sizeof (axis2_engine_msg_recv_t));
-	if(!msg_recv)
-	{
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
-		return NULL;
-	}
-	ops = (axis2_engine_msg_recv_ops_t *) AXIS2_MALLOC(env->allocator,
-		sizeof(axis2_engine_msg_recv_ops_t));
-	if(!ops)
-	{
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
-		return NULL;
-	}	
-	ops->free = axis2_engine_msg_recv_ops_free;
-	
-	msg_recv->ops = ops;
+    
+	msg_recv_impl->msg_recv.ops->free = axis2_msg_recv_free;
 						
-	return msg_recv;
+	return &(msg_recv_impl->msg_recv);
 }
 
 /******************************************************************************/
 
-axis2_status_t axis2_engine_msg_recv_ops_free (axis2_env_t *env
-		, axis2_engine_msg_recv_t *msg_recv)
+axis2_status_t AXIS2_CALL
+axis2_msg_recv_free (axis2_msg_recv_t *msg_recv,
+                        axis2_env_t **env)
 {
-	if(msg_recv){
-		free(msg_recv);
-		return AXIS2_SUCCESS;
-	}
-	return AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED;
+    AXIS2_FUNC_PARAM_CHECK(msg_recv, env, AXIS2_FAILURE);
+	if(NULL != msg_recv->ops)
+		AXIS2_FREE((*env)->allocator, msg_recv->ops);
+    
+    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(msg_recv));
+    
+	return AXIS2_SUCCESS;
 }
 
-axis2_status_t axis2_engine_msg_receive(axis2_env_t *env
-		, axis2_engine_msg_recv_t *msg_recv
-		, axis2_context_msg_ctx_t *msg_ctx)
+axis2_status_t AXIS2_CALL
+axis2_msg_receive (axis2_msg_recv_t *msg_recv,
+                    axis2_env_t **env,
+		            struct axis2_msg_ctx_s *msg_ctx)
 {
 	return AXIS2_SUCCESS;
 }

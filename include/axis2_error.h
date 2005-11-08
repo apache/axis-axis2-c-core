@@ -153,10 +153,16 @@ extern "C"
 		AXIS2_ERROR_ENVIRONMENT_IS_NULL,
         /** Parent requested, but parent is null */
         AXIS2_ERROR_INVALID_STATE_PARENT_NULL,
-        /** Parameter container not set */
-        AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER_NOT_SET,
         /** Parameter locked, Cannot override */
-        AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE
+        AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
+        /** Parameter container not set */
+        AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER,
+        /** Operation accessed has invalid state */
+        AXIS2_ERROR_INVALID_STATE_OPERATION,
+        /** Service accessed has invalid state */
+        AXIS2_ERROR_INVALID_STATE_SVC,
+        /** Service group accessed has invalid state */
+        AXIS2_ERROR_INVALID_STATE_SVC_GRP
     };
 
 /** @} */
