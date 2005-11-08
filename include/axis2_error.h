@@ -162,7 +162,9 @@ extern "C"
         /** Service accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_SVC,
         /** Service group accessed has invalid state */
-        AXIS2_ERROR_INVALID_STATE_SVC_GRP
+        AXIS2_ERROR_INVALID_STATE_SVC_GRP,
+        /** Array list index out of bounds */
+        AXIS2_ERROR_INDEX_OUT_OF_BOUNDS
     };
 
 /** @} */

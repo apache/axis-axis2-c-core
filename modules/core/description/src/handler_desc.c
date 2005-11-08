@@ -113,15 +113,7 @@ axis2_handler_desc_t* AXIS2_CALL axis2_handler_desc_create(axis2_env_t **env, ax
     {
         handler_desc_impl->qname = qname; /* shallow copy */
     }
-    
-    if (!handler_desc_impl->handler_desc.ops)
-    {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
-        axis2_handler_desc_free(&(handler_desc_impl->handler_desc), env);
-        return NULL;        
-    }
-    
+
     /* initialize operations */
     handler_desc_impl->handler_desc.ops = NULL;
     handler_desc_impl->handler_desc.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_handler_desc_ops_t) );
