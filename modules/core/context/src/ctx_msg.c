@@ -14,72 +14,68 @@
  * limitations under the License.
  */
  
-#include <axis2_context_msg_context.h>
+#include <axis2_msg_ctx.h>
 
-/**
-  * @struct axis2_context_msg_ctx_s
-  * @brief CONTEXT msg_ctx
-  * This holds the information about msg_ctx.
-  */
-struct axis2_context_msg_ctx_s
+typedef axis2_msg_ctx_impl_s axis2_msg_ctx_impl_t;
+
+/** 
+ * @brief Message Context struct impl
+ * Axis2 Message Context impl  
+ */  
+struct axis2_msg_ctx_impl_s
 {
-	axis2_context_msg_ctx_ops_t *ops;
+	axis2_msg_ctx_t msg_ctx;
 };
-	
+
+#define AXIS2_INTF_TO_IMPL(msg_ctx) ((axis2_msg_ctx_impl_t *)msg_ctx)
+
 /*************************** Function headers *********************************/
 
-axis2_status_t axis2_context_msg_ctx_ops_free (axis2_env_t *env
-		, axis2_context_msg_ctx_t *msg_ctx);	
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_free (axis2_msg_ctx_t *msg_ctx,
+                    axis2_env_t **env);	
 
 
 		
 /************************* End of function headers ****************************/	
 
-axis2_context_msg_ctx_t *axis2_context_msg_ctx_get_ops
-		(axis2_env_t *env, axis2_context_msg_ctx_t *msg_ctx)
+axis2_msg_ctx_t * AXIS2_CALL
+axis2_msg_ctx_create (axis2_env_t **env)
 {
-	if(!msg_ctx)
-	{
-		env->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
-		return NULL;	
-	}
-	return (axis2_context_msg_ctx_t *) msg_ctx->ops;
-}
-
-axis2_context_msg_ctx_t *axis2_context_msg_ctx_create 
-		(axis2_env_t *env)
-{
+    AXIS2_ENV_CHECK(env, NULL);
+    
 	axis2_context_msg_ctx_ops_t *ops = NULL;
-	axis2_context_msg_ctx_t *msg_ctx = 
-		(axis2_context_msg_ctx_t *) AXIS2_MALLOC (env->allocator
-		, sizeof (axis2_context_msg_ctx_t));
-	if(!msg_ctx)
-	{
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
-		return NULL;
-	}
-	ops = (axis2_context_msg_ctx_ops_t *) AXIS2_MALLOC(env->allocator,
-		sizeof(axis2_context_msg_ctx_ops_t));
-	if(!ops)
-	{
-		env->error->error_number = AXIS2_ERROR_NO_MEMORY;
-		return NULL;
-	}	
-	ops->free = axis2_context_msg_ctx_ops_free;
+    
+	axis2_msg_ctx_impl_t *msg_ctx_impl = (axis2_msg_ctx_impl_t *) AXIS2_MALLOC (
+        env->allocator, sizeof (axis2_msg_ctx_impl_t));
+    
+	if(NULL == msg_ctx_impl)
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	
-	msg_ctx->ops = ops;
+	msg_ctx_impl->msg_ctx.ops = (axis2_msg_ctx_ops_t *) AXIS2_MALLOC(env->allocator,
+		sizeof(axis2_msg_ctx_ops_t));
+	if(NULL == msg_ctx_impl->msg_ctx.ops)
+	{
+        AXIS2_FREE((*env)->allocato, msg_ctx_impl);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+	}
+	
+	msg_ctx_impl->msg_ctx.ops->free = axis2_msg_ctx_free;
 						
-	return msg_ctx;
+	return &(msg_ctx_impl->msg_ctx);
 }
 
 /******************************************************************************/
 
-axis2_status_t axis2_context_msg_ctx_ops_free (axis2_env_t *env
-		, axis2_context_msg_ctx_t *msg_ctx)
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_free (axis2_msg_ctx_t *msg_ctx,
+                        axis2_env_t **env)
 {
-	if(msg_ctx){
-		free(msg_ctx);
-		return AXIS2_SUCCESS;
-	}
-	return AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED;
+    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);
+    if(NULL == msg_ctx->ops)
+        AXIS2_FREE((*env)->allocator, msg_ctx->ops);
+    
+    AXIS2_FREE((env*)->allocator, AXIS2_INTF_TO_IMPL(msg_ctx));
+    
+    return AXIS2_SUCCESS;
 }
