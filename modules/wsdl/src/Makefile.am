@@ -5,4 +5,6 @@ libaxis2_wsdl_la_SOURCES = wsdl_operation.c \
                         wsdl_component.c
 
 libaxis2_wsdl_la_LIBADD = $(LDFLAGS)
-INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include
+INCLUDES = -I$(top_builddir)/include \
+            -I${CUTEST_HOME}/include \
+            -I$(top_builddir)/modules/util/src

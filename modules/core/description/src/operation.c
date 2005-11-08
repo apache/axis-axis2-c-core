@@ -102,6 +102,14 @@ axis2_operation_create (axis2_env_t **env)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
+    
+    operation_impl->operation.ops = AXIS2_MALLOC((*env)->allocator, 
+        sizeof(axis2_operation_ops_t));
+	if(NULL == operation_impl->operation.ops)
+	{
+        AXIS2_FREE((*env)->allocator, operation_impl);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+	}
 	
 	operation_impl->operation.ops->free = axis2_operation_free;
 	operation_impl->operation.ops->add_param = axis2_operation_add_param;

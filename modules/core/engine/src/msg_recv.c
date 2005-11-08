@@ -46,17 +46,16 @@ axis2_msg_recv_create (axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     
-	axis2_msg_recv_ops_t *ops = NULL;
 	axis2_msg_recv_impl_t *msg_recv_impl = 
         (axis2_msg_recv_impl_t *) AXIS2_MALLOC ((*env)->allocator
 		    , sizeof (axis2_msg_recv_impl_t));
+    
 	if(NULL == msg_recv_impl)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
-	ops = (axis2_msg_recv_ops_t *) AXIS2_MALLOC((*env)->allocator,
-		sizeof(axis2_msg_recv_ops_t));
     
     msg_recv_impl->msg_recv.ops = (axis2_msg_recv_ops_t *) AXIS2_MALLOC(
         (*env)->allocator, sizeof(axis2_msg_recv_ops_t));
+    
 	if(NULL == msg_recv_impl->msg_recv.ops)
 	{
         AXIS2_FREE((*env)->allocator, msg_recv_impl);

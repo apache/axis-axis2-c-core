@@ -1,14 +1,13 @@
 #include <axis2_wsdl_component.h>
 #include <string.h>
 
-typedef struct  axis2_wsdl_impl_component_s axis2_wsdl_impl_component_t;
+typedef struct  axis2_wsdl_component_impl_s axis2_wsdl_component_impl_t;
 
-/**
-  * @struct axis2_wsdl_impl_component
-  * @brief WSDL component struct
-  * Component is used to hold component properties
-  */ 
-struct axis2_wsdl_impl_component_s
+/** 
+ * @brief Wsdl Component struct impl
+ *	Axis2 Wsdl Component impl  
+ */
+struct axis2_wsdl_component_impl_s
 {
 	axis2_wsdl_component_t wsdl_component;
 	axis2_hash_t *component_properties;
@@ -16,52 +15,48 @@ struct axis2_wsdl_impl_component_s
 
 /***************************** Function headers *******************************/
 
-axis2_status_t axis2_wsdl_component_free (axis2_env_t *env
-		, axis2_wsdl_component_t *wsdl_component);
+axis2_status_t AXIS2_CALL
+axis2_wsdl_component_free (axis2_wsdl_component_t *wsdl_component,
+                            axis2_env_t **env);
 
-/**
- * Sets the properties of the Component if any
- * @param axis2_hash_t* properties
- */
-axis2_status_t axis2_wsdl_component_set_component_properties(axis2_env_t *env
-		, axis2_wsdl_component_t *wsdl_component, axis2_hash_t *properties);
+axis2_status_t AXIS2_CALL
+axis2_wsdl_component_set_component_properties(
+                                        axis2_wsdl_component_t *wsdl_component,
+                                        axis2_env_t **env,
+		                                axis2_hash_t *properties);
 
-/**
- * Returns the properties that are specific to this WSDL Component
- * @return axis2_hash_t** component properties
- */
-axis2_status_t axis2_wsdl_component_get_component_properties(axis2_env_t *env
-		,axis2_wsdl_component_t *wsdl_component, axis2_hash_t **properties);
+axis2_hash_t * AXIS2_CALL
+axis2_wsdl_component_get_component_properties(
+                                        axis2_wsdl_component_t *wsdl_component,
+                                        axis2_env_t **env);
 
-/**
- * Will set the property keyed with the relavent key
- * @param void* Key in the map
- * @param void* value to be put
- */
-axis2_status_t axis2_wsdl_component_set_component_property(axis2_env_t *env
-	, axis2_wsdl_component_t *wsdl_component, const void *key, void *value);
+axis2_status_t AXIS2_CALL
+axis2_wsdl_component_set_component_property(
+	                                    axis2_wsdl_component_t *wsdl_component, 
+                                        axis2_env_t **env,
+                                        const void *key, 
+                                        void *value);
 	
-
-/**
- * Gets the component property
- *
- * @param void* key for the map search.
- * @return void* value for the key
- */
-axis2_status_t axis2_wsdl_component_get_component_property(axis2_env_t *env
-		, axis2_wsdl_component_t *wsdl_component, const void *key, void **value) ;
+void * AXIS2_CALL
+axis2_wsdl_component_get_component_property(
+		                                axis2_wsdl_component_t *wsdl_component,
+                                        axis2_env_t **env,
+                                        const void *key);
 		
 /***************************** End of function headers ************************/
 
-axis2_status_t axis2_wsdl_component_create (axis2_env_t *env
-		, axis2_wsdl_component_t **wsdl_component)
+axis2_wsdl_component_t * AXIS2_CALL 
+axis2_wsdl_component_create (axis2_env_t **env)
 {
-	axis2_wsdl_impl_component_t *wsdl_impl_component 
-		= (axis2_wsdl_impl_component_t *)
-		axis2_malloc (env->allocator, sizeof(axis2_wsdl_impl_component_t));
-	if(!wsdl_impl_component)
+    AXIS2_ENV_CHECK(env, NULL);
+    
+	axis2_wsdl_component_impl_t *wsdl_impl_component = 
+        (axis2_wsdl_component_impl_t *) AXIS2_MALLOC (env->allocator, 
+        sizeof(axis2_wsdl_component_impl_t));
+    
+	if(NULL == wsdl_impl_component)
 	{
-		return AXIS2_ERROR_NO_MEMORY;
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
 	
 	axis2_wsdl_component_t *wsdl_component_local 
@@ -94,7 +89,8 @@ axis2_status_t axis2_wsdl_component_create (axis2_env_t *env
 
 /******************************************************************************/
 
-axis2_status_t axis2_wsdl_component_free (axis2_env_t *env
+axis2_status_t AXIS2_CALL 
+axis2_wsdl_component_free (axis2_env_t *env
 		, axis2_wsdl_component_t *wsdl_component)
 {
 	if(NULL != wsdl_component)
@@ -102,32 +98,26 @@ axis2_status_t axis2_wsdl_component_free (axis2_env_t *env
 	return AXIS2_SUCCESS;
 }
 
-/**
- * Returns the properties that are specific to this WSDL Component
- * @return axis2_hash_t** component properties
- */
-axis2_status_t axis2_wsdl_component_get_component_properties(axis2_env_t *env
+axis2_status_t AXIS2_CALL
+axis2_wsdl_component_get_component_properties(axis2_env_t *env
 		,axis2_wsdl_component_t *wsdl_component, axis2_hash_t **properties)
 {
 	if(NULL == wsdl_component) return AXIS2_ERROR_INVALID_NULL_PARAM;
-	axis2_wsdl_impl_component_t *wsdl_impl_component 
-		= (axis2_wsdl_impl_component_t*)(wsdl_component);
+	axis2_wsdl_component_impl_t *wsdl_impl_component 
+		= (axis2_wsdl_component_impl_t*)(wsdl_component);
 	*properties = wsdl_impl_component->component_properties;
 	return AXIS2_SUCCESS;
 }
 
-/**
- * Sets the properties of the Component if any
- * @param axis2_hash_t* properties
- */
-axis2_status_t axis2_wsdl_component_set_component_properties(axis2_env_t *env
+axis2_status_t AXIS2_CALL
+axis2_wsdl_component_set_component_properties(axis2_env_t *env
 		, axis2_wsdl_component_t *wsdl_component, axis2_hash_t *properties) 
 {
 	if(NULL == wsdl_component || NULL == properties) 
 		return AXIS2_ERROR_INVALID_NULL_PARAM;
 	
-	axis2_wsdl_impl_component_t *wsdl_impl_component
-		= (axis2_wsdl_impl_component_t *) wsdl_component;
+	axis2_wsdl_component_impl_t *wsdl_impl_component
+		= (axis2_wsdl_component_impl_t *) wsdl_component;
 	wsdl_impl_component->component_properties = axis2_malloc(env->allocator
 		, sizeof(axis2_wsdl_component_t));
 	memcpy(wsdl_impl_component->component_properties, properties
@@ -135,38 +125,29 @@ axis2_status_t axis2_wsdl_component_set_component_properties(axis2_env_t *env
 	return AXIS2_SUCCESS;
 }
 
-/**
- * Will set the property keyed with the relavent key
- * @param void* Key in the map
- * @param void* value to be put
- */
-axis2_status_t axis2_wsdl_component_set_component_property(axis2_env_t *env
+axis2_status_t AXIS2_CALL
+axis2_wsdl_component_set_component_property(axis2_env_t *env
 	, axis2_wsdl_component_t *wsdl_component, const void *key, void *value) 
 {
 	if(NULL ==wsdl_component || NULL == key || NULL == value) 
 		return AXIS2_ERROR_INVALID_NULL_PARAM;
-    axis2_wsdl_impl_component_t *wsdl_impl_component
-		= (axis2_wsdl_impl_component_t *) wsdl_component;
+    axis2_wsdl_component_impl_t *wsdl_impl_component
+		= (axis2_wsdl_component_impl_t *) wsdl_component;
 	axis2_hash_set (wsdl_impl_component->component_properties		
 		, key
 		, sizeof(key), value);
 	return AXIS2_SUCCESS;
 }
 
-/**
- * Gets the component property
- *
- * @param void* key for the map search.
- * @return void* value for the key
- */
-axis2_status_t axis2_wsdl_component_get_component_property(axis2_env_t *env
-		, axis2_wsdl_component_t *wsdl_component,const void *key, void **value) 
+void * AXIS2_CALL
+axis2_wsdl_component_get_component_property(axis2_env_t *env
+		, axis2_wsdl_component_t *wsdl_component,const void *key) 
 {
 	if(NULL == wsdl_component || NULL == key) 
 		return AXIS2_ERROR_INVALID_NULL_PARAM;
 		
-	axis2_wsdl_impl_component_t *wsdl_impl_component
-		= (axis2_wsdl_impl_component_t *) wsdl_component;
+	axis2_wsdl_component_impl_t *wsdl_impl_component
+		= (axis2_wsdl_component_impl_t *) wsdl_component;
 	
 	*value = (void *)(axis2_hash_get (wsdl_impl_component->component_properties
 		, key, sizeof(key)));

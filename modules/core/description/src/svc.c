@@ -74,7 +74,14 @@ axis2_svc_create (axis2_env_t **env)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
-	
+    
+    svc_impl->svc.ops = AXIS2_MALLOC((*env)->allocator, sizeof(axis2_svc_ops_t));
+	if(NULL == svc_impl->svc.ops)
+	{
+        AXIS2_FREE((*env)->allocator, svc_impl);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+	}
+    
 	svc_impl->svc.ops->free = axis2_svc_free;
 	svc_impl->svc.ops->add_operation = axis2_svc_add_operation;
 	svc_impl->svc.ops->get_operation_with_qname = 

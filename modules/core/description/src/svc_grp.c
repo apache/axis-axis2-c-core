@@ -89,11 +89,21 @@ axis2_svc_grp_t * AXIS2_CALL
 axis2_svc_grp_create (axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, NULL);
+    
 	axis2_svc_grp_impl_t *svc_grp_impl = (axis2_svc_grp_impl_t *)
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_svc_grp_impl_t));
+    
 	if(NULL == svc_grp_impl)
 	    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	
+    svc_grp_impl->svc_grp.ops = AXIS2_MALLOC((*env)->allocator, 
+            sizeof(axis2_svc_grp_ops_t));
+	if(NULL == svc_grp_impl->svc_grp.ops)
+	{
+        AXIS2_FREE((*env)->allocator, svc_grp_impl);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+	}
+    
 	svc_grp_impl->svc_grp.ops->free = axis2_svc_grp_free;
 	svc_grp_impl->svc_grp.ops->set_name = axis2_svc_grp_set_name;
 	svc_grp_impl->svc_grp.ops->get_name = axis2_svc_grp_get_name;

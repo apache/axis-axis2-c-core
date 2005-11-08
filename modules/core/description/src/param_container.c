@@ -69,17 +69,23 @@ axis2_param_container_create (axis2_env_t **env)
 	if(NULL == param_container_impl)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
 	
-	axis2_param_container_ops_t *ops = 
+	param_container_impl->param_container.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_param_container_ops_t));
-	if(NULL == ops)
+	if(NULL == param_container_impl->param_container.ops)
+    {
+        AXIS2_FREE((*env)->allocator, param_container_impl);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
-	ops->free =  axis2_param_container_free;
-	ops->add_param =  axis2_param_container_add_param;
-	ops->get_param =  axis2_param_container_get_param;
-	ops->get_params = axis2_param_container_get_params;
-	ops->is_param_locked = axis2_param_container_is_param_locked;
-	
-	param_container_impl->param_container.ops = ops;
+    }
+    
+	param_container_impl->param_container.ops->free =  axis2_param_container_free;
+	param_container_impl->param_container.ops->add_param =  
+        axis2_param_container_add_param;
+	param_container_impl->param_container.ops->get_param =  
+        axis2_param_container_get_param;
+	param_container_impl->param_container.ops->get_params = 
+        axis2_param_container_get_params;
+	param_container_impl->param_container.ops->is_param_locked = 
+        axis2_param_container_is_param_locked;
 				
 	param_container_impl->params = axis2_hash_make (env);
 	if(NULL == param_container_impl->params)
