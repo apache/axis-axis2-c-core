@@ -38,7 +38,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_environment_free (axis2_env_t *env)
 }
 
 AXIS2_DECLARE(axis2_env_t *)
-axis2_environment_create (axis2_allocator_t *allocator)
+axis2_env_create (axis2_allocator_t *allocator)
 {
 	axis2_env_t *environment;
     if (NULL == allocator)
@@ -57,15 +57,15 @@ axis2_environment_create (axis2_allocator_t *allocator)
 }
 
 AXIS2_DECLARE(axis2_env_t *)
-axis2_environment_create_with_error_stream (axis2_allocator_t *allocator
+axis2_env_create_with_error_stream (axis2_allocator_t *allocator
                           , axis2_error_t *error, axis2_stream_t *stream)
 {
-	return axis2_environment_create_with_error_stream_log(allocator, error
+	return axis2_env_create_with_error_stream_log(allocator, error
 		, stream, NULL);    
 }
 
 AXIS2_DECLARE(axis2_env_t *)
-axis2_environment_create_with_error_stream_log (axis2_allocator_t *allocator
+axis2_env_create_with_error_stream_log (axis2_allocator_t *allocator
                           , axis2_error_t *error, axis2_stream_t *stream
                           , axis2_log_t *log)
 {

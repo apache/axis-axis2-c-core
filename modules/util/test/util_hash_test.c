@@ -9,7 +9,7 @@ void Testaxis2_hash_get(CuTest *tc)
 {
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *environment =
-        axis2_environment_create (allocator);
+        axis2_env_create (allocator);
 
     axis2_hash_t *ht;
     a *actual, *expected;

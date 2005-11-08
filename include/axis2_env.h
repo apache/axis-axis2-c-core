@@ -76,7 +76,7 @@ extern "C"
     * @param allocator pointer to an instance of allocator struct. Must be non-NULL    
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_env_t *) axis2_environment_create (axis2_allocator_t
+    AXIS2_DECLARE(axis2_env_t *) axis2_env_create (axis2_allocator_t
                                                    *allocator);                                                   
 	
   /**
@@ -87,7 +87,7 @@ extern "C"
     * it would be taken as a flag for no logging.    
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_env_t *) axis2_environment_create_with_error_stream 
+    AXIS2_DECLARE(axis2_env_t *) axis2_env_create_with_error_stream 
 													(axis2_allocator_t *allocator
                                                    , axis2_error_t *error
                                                    , axis2_stream_t *stream);
@@ -101,7 +101,7 @@ extern "C"
     * it would be taken as a flag for no logging.    
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_env_t *) axis2_environment_create_with_error_stream_log 
+    AXIS2_DECLARE(axis2_env_t *) axis2_env_create_with_error_stream_log 
 													(axis2_allocator_t *allocator
                                                    , axis2_error_t *error
                                                    , axis2_stream_t *stream
@@ -127,7 +127,7 @@ extern "C"
     if(!env || !(*env))  \
 	{ \
 		axis2_allocator_t *allocator = axis2_allocator_init (NULL); \
-        *env = axis2_environment_create (allocator); \
+        *env = axis2_env_create (allocator); \
 		AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_CRTICAL_FAILURE);  \
 		AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, \
 		        AXIS2_ERROR_ENVIRONMENT_IS_NULL); \

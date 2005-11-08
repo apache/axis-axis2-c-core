@@ -159,7 +159,8 @@ axis2_svc_grp_free (axis2_svc_grp_t *svc_grp,
     if(NULL != AXIS2_INTF_TO_IMPL(svc_grp)->svc_grp_name)
         AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(svc_grp)->svc_grp_name);
     
-    axis2_hash_free(AXIS2_INTF_TO_IMPL(svc_grp)->svcs, env);
+    if(NULL != AXIS2_INTF_TO_IMPL(svc_grp)->svcs)
+        axis2_hash_free(AXIS2_INTF_TO_IMPL(svc_grp)->svcs, env);
     
 	AXIS2_FREE((*env)->allocator, svc_grp);
 	return AXIS2_SUCCESS;

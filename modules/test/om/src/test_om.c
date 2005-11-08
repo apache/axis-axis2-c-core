@@ -199,7 +199,7 @@ main (int argc, char *argv[])
         file_name = argv[1];
     allocator = axis2_allocator_init (NULL);
     environment =
-        axis2_environment_create (allocator, NULL, NULL, NULL, NULL);
+        axis2_env_create (allocator, NULL, NULL, NULL, NULL);
 
     my_guththila_allocator = guththila_allocator_init (NULL);
     my_guththila_environment =

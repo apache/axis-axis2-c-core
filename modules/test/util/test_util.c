@@ -31,7 +31,7 @@ axis2_env_t *test_init()
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_error_t *error = axis2_error_create (allocator);
 	axis2_stream_t *stream = axis2_stream_create (allocator, NULL);
-    axis2_env_t *env = axis2_environment_create_with_error_stream (allocator, error, stream);
+    axis2_env_t *env = axis2_env_create_with_error_stream (allocator, error, stream);
 	return env;
 }
 
@@ -108,7 +108,7 @@ char* test_funct_for_test_env_null(axis2_env_t **env)
 		axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 		axis2_error_t *error = axis2_error_create (allocator);
 		axis2_stream_t *stream = axis2_stream_create (allocator, NULL);
-        *env = axis2_environment_create_with_error_stream (allocator, error, stream);
+        *env = axis2_env_create_with_error_stream (allocator, error, stream);
 		AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
 		AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_ENVIRONMENT_IS_NULL);		
 		return NULL;
