@@ -52,7 +52,7 @@ struct axis2_wsdl_component_ops_s
      * Returns the properties that are specific to this WSDL Component
      * @return axis2_hash_t component properties
      */
-    axis2_hash_t *properties (AXIS2_CALL *get_component_properties)
+    axis2_hash_t *(AXIS2_CALL *get_component_properties)
                                         (axis2_wsdl_component_t *wsdl_component, 
                                         axis2_env_t **env);
     
