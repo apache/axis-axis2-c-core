@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-#include <axis2_env.h>
 #include <stdlib.h>
 
-AXIS2_DECLARE(axis2_status_t) axis2_environment_free (axis2_env_t *env)
+#include <axis2_env.h>
+#include <axis2_error_default.h>
+
+AXIS2_DECLARE(axis2_status_t) axis2_env_free (axis2_env_t *env)
 {
     if(NULL != env && NULL != env->allocator)
         free (env->allocator);
@@ -105,7 +107,7 @@ axis2_env_create_with_error_stream_log (axis2_allocator_t *allocator
 
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_environment_check_status (axis2_env_t *env)
+axis2_env_check_status (axis2_env_t *env)
 {
     if(NULL == env)
     {

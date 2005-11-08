@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_ENVIRONMENT_H
-#define AXIS2_ENVIRONMENT_H
+#ifndef AXIS2_ENV_H
+#define AXIS2_ENV_H
 
 /**
  * @file axis2_env.h
@@ -24,7 +24,7 @@
  */
 
 #include <axis2_allocator.h>
-#include <axis2_error_default.h>
+#include <axis2_error.h>
 #include <axis2_stream.h>
 #include <axis2_log.h>
 
@@ -116,12 +116,12 @@ extern "C"
     * @param string pointer to an instance of string struct. Optional, can be NULL. If NULL default string handler would be used.
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_status_t) axis2_environment_free (axis2_env_t *env);
+    AXIS2_DECLARE(axis2_status_t) axis2_env_free (axis2_env_t *env);
 
     /**
       *
       */
-    AXIS2_DECLARE(axis2_status_t) axis2_environment_check_status (axis2_env_t *env);
+    AXIS2_DECLARE(axis2_status_t) axis2_env_check_status (axis2_env_t *env);
 
     #define AXIS2_ENV_CHECK(env, error_return) \
     if(!env || !(*env))  \
@@ -153,4 +153,4 @@ extern "C"
 }
 #endif
 
-#endif                          /* AXIS2_ENVIRONMENT_H */
+#endif                          /* AXIS2_ENV_H */

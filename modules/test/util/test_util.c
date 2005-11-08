@@ -126,7 +126,7 @@ int test_env_null()
 	 * test_funct_for_test_env_null
 	 */
 	char *msg = test_funct_for_test_env_null(&env);
-	int status = axis2_environment_check_status(env);
+	int status = axis2_env_check_status(env);
 	if(AXIS2_SUCCESS == status)
 		printf("%s\n", msg);
 	else
