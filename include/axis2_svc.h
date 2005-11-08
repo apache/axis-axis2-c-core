@@ -27,6 +27,7 @@
 #include <axis2_operation.h>
 #include <axis2_svc_grp.h>
 #include <axis2_qname.h>
+#include <axis2_error.h>
 
 #ifdef __cplusplus
 extern "C"

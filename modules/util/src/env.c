@@ -51,6 +51,11 @@ axis2_env_create (axis2_allocator_t *allocator)
         return NULL;
 
     environment->allocator = allocator;
+    
+    /* Create default error */
+    environment->error = axis2_error_create (allocator);
+    if(NULL == environment->error)
+        return NULL;
 	
 	return environment;
     

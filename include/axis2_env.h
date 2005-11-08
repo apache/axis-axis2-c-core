@@ -24,7 +24,7 @@
  */
 
 #include <axis2_allocator.h>
-#include <axis2_error.h>
+#include <axis2_error_default.h>
 #include <axis2_stream.h>
 #include <axis2_log.h>
 
