@@ -117,6 +117,11 @@ extern "C"
     * @return pointer to the newly created environment struct 
     */
     AXIS2_DECLARE(axis2_status_t) axis2_env_free (axis2_env_t *env);
+    
+    /**
+     * Enables logging
+     */
+    AXIS2_DECLARE(axis2_status_t) axis2_env_enable_log (axis2_env_t *env, axis2_bool_t enable);
 
     /**
       *

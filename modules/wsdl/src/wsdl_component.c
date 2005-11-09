@@ -15,6 +15,7 @@ struct axis2_wsdl_component_impl_s
 
 #define AXIS2_INTF_TO_IMPL(wsdl_component) \
         ((axis2_wsdl_component_impl_t *)(wsdl_component))
+
 /***************************** Function headers *******************************/
 
 axis2_status_t AXIS2_CALL
@@ -63,6 +64,7 @@ axis2_wsdl_component_create (axis2_env_t **env)
 	
 	wsdl_impl_component->wsdl_component.ops = (axis2_wsdl_component_ops_t *)
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_component_ops_t));
+    
 	if(NULL == wsdl_impl_component->wsdl_component.ops)
 	{
 		AXIS2_FREE ((*env)->allocator, wsdl_impl_component);
@@ -70,7 +72,19 @@ axis2_wsdl_component_create (axis2_env_t **env)
 	}
     
 	wsdl_impl_component->wsdl_component.ops->free = axis2_wsdl_component_free;
-	
+    
+	wsdl_impl_component->wsdl_component.ops->set_component_properties =
+        axis2_wsdl_component_set_component_properties;
+    
+    wsdl_impl_component->wsdl_component.ops->get_component_properties =
+        axis2_wsdl_component_get_component_properties;
+    
+    wsdl_impl_component->wsdl_component.ops->set_component_property =
+        axis2_wsdl_component_set_component_property;
+    
+    wsdl_impl_component->wsdl_component.ops->get_component_property =
+        axis2_wsdl_component_get_component_property;
+    
 	wsdl_impl_component->component_properties = axis2_hash_make (env);
 	
 	return &(wsdl_impl_component->wsdl_component);

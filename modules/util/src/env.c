@@ -106,13 +106,12 @@ axis2_env_create_with_error_stream_log (axis2_allocator_t *allocator
 }
 
 
-AXIS2_DECLARE(axis2_status_t)
+axis2_status_t AXIS2_CALL
 axis2_env_check_status (axis2_env_t *env)
 {
     if(NULL == env)
     {
-        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
-		AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_ENVIRONMENT_IS_NULL);		
+        AXIS2_ENV_CHECK(&env, AXIS2_CRTICAL_FAILURE);
     }
 	return AXIS2_ERROR_GET_STATUS_CODE(env->error);
 }

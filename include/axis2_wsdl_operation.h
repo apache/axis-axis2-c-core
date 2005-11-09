@@ -19,7 +19,7 @@
 
 /**
  * @file axis2_wsdl_operation.h
- * @brief axis2 WSDL  operation
+ * @brief axis2 wsdl operation interface
  */
 
 #include <axis2.h>
@@ -42,131 +42,111 @@ typedef struct axis2_wsdl_operation_ops_s axis2_wsdl_operation_ops_t;
 typedef struct axis2_wsdl_operation_s axis2_wsdl_operation_t;	
 	
 
-/** @defgroup axis2_wsdl WSDL (Axis2 wsdl)
-  * @ingroup axis2
+/** @defgroup axis2_wsdl_operation Wsdl Operation
+  * @ingroup axis2_wsdl
   * @{
   */
 
-
-/**************************** Function pointers *******************************/
-
-/** Deallocate memory
-  * @return status code
-  */
-typedef axis2_status_t (*axis2_wsdl_operation_free_t)
-		(axis2_env_t *env
-		, axis2_wsdl_operation_t *wsdl_opt);
-
-/**
- * get the message exchange pattern
- * @return axis2_char_t* msg_exchange_pattern
- */
-typedef axis2_status_t (*axis2_wsdl_operation_get_msg_exchange_pattern_t) 
-		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
-		, axis2_char_t **pattern);
-
-/**
- * set the message exchange pattern
- *
- * @param axis2_char_t *message exchange pattern
- * @return status code
- */
-typedef axis2_status_t (*axis2_wsdl_operation_set_msg_exchange_pattern_t)
-		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
-		, const axis2_char_t *msg_exchange_pattern);
-
-/**
- * get name
- * @return axis2_qname_t** operation name
- */
-typedef axis2_status_t (*axis2_wsdl_operation_get_name_t) (axis2_env_t *env
-		, axis2_wsdl_operation_t *wsdl_opt, axis2_qname_t **name);
-
-/**
- * set name
- *
- * @param axis2_qname_t* operation name
- */
-typedef axis2_status_t (*axis2_wsdl_operation_set_name_t) (axis2_env_t *env
-		, axis2_wsdl_operation_t *wsdl_opt, const axis2_qname_t *name);
-
-/**
- * get style
- * return axis2_char_t** style
- */
-typedef axis2_status_t (*axis2_wsdl_operation_get_style_t) (axis2_env_t *env
-		, axis2_wsdl_operation_t *wsdl_opt, axis2_char_t **style);
-
-/**
- * set style
- * @param axis2_char_t* style
- * @return status code
- */
-typedef axis2_status_t (*axis2_wsdl_operation_set_style_t) (axis2_env_t *env
-		, axis2_wsdl_operation_t *wsdl_opt, const axis2_char_t *style);
-
-/**
- * Sets the properties of the operation if any
- * @param axis2_hash_t* properties
- */
-typedef axis2_status_t (*axis2_wsdl_operation_set_component_properties_t)
-		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
-		, axis2_hash_t *properties);
-
-/**
- * Returns the properties that are specific to this WSDL operation
- * @return axis2_hash_t** component properties
- */
-typedef axis2_status_t (*axis2_wsdl_operation_get_component_properties_t)
-		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
-		, axis2_hash_t **properties);
-
-/**
- * Will set the property keyed with the relavent key
- * @param void* Key in the map
- * @param void* value to be put
- */
-typedef axis2_status_t (*axis2_wsdl_operation_set_component_property_t)
-		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
-		, const void *key, void *value);
-	
-
-
-typedef  ;
-		
-/*************************** End of function pointers *************************/
-
 struct axis2_wsdl_operation_ops_s
 {
-	axis2_wsdl_operation_free_t free;
+	/** Deallocate memory
+     * @return status code
+     */
+    axis2_status_t (AXIS2_CALL *free) (axis2_wsdl_operation_t *wsdl_operation,
+                            axis2_env_t **env);
+        
+    /**
+     * set the message exchange pattern
+     * @param axis2_char_t message exchange pattern
+     * @return status code
+     */
+    axis2_status_t (AXIS2_CALL *set_msg_exchange_pattern)
+                                    (axis2_wsdl_operation_t *wsdl_operation, 
+                                        axis2_env_t **env, 
+                                        const axis2_char_t *msg_exchange_pattern);
+  
+    /**
+     * get the message exchange pattern
+     * @return axis2_char_t message exchange pattern
+     */
+    axis2_char_t *(AXIS2_CALL *get_msg_exchange_pattern) 
+		                                (axis2_wsdl_operation_t *wsdl_operation, 
+                                            axis2_env_t **env);
+
+    /**
+     * Set the wsdl operation name
+     * @param axis2_qname_t* operation name
+     */
+    axis2_status_t (AXIS2_CALL *set_name) (
+                                        axis2_wsdl_operation_t *wsdl_operation, 
+                                        axis2_env_t **env,
+                                        const axis2_qname_t *name);
+                                        
+    /**
+     * Get the name of wsdl operation
+     * @return axis2_qname_t wsdl operation name
+     */
+    axis2_qname_t *(AXIS2_CALL *get_name) (
+                                        axis2_wsdl_operation_t *wsdl_operation,
+                                        axis2_env_t **env);
     
-	axis2_wsdl_operation_get_msg_exchange_pattern_t get_msg_exchange_pattern;
-    
-	axis2_wsdl_operation_set_msg_exchange_pattern_t set_msg_exchange_pattern;
-    
-	axis2_wsdl_operation_get_name_t get_name;
-    
-	axis2_wsdl_operation_set_name_t set_name;
-    
-	axis2_wsdl_operation_get_style_t get_style;
-    
-	axis2_wsdl_operation_set_style_t set_style;
-    
-	axis2_wsdl_operation_set_component_properties_t set_component_properties;
-    
-	axis2_wsdl_operation_get_component_properties_t get_component_properties;
-    
-	axis2_wsdl_operation_set_component_property_t set_component_property;
+
+    /**
+     * set style
+     * @param axis2_char_t style
+     * @return status code
+     */
+    axis2_status_t (AXIS2_CALL *set_style) (axis2_env_t *env
+    , axis2_wsdl_operation_t *wsdl_operation, const axis2_char_t *style);
     
     /**
- * Gets the component property
- *
- * @param void* key for the map search.
- * @return void* value for the key
- */
-	axis2_status_t (*get_component_property)
-		(axis2_env_t *env, axis2_wsdl_operation_t *wsdl_opt
-		, const void *key, void **value) ;
+     * Get style
+     * @return axis2_char_t style
+     */
+    axis2_char_t *(AXIS2_CALL *get_style) (
+                                        axis2_wsdl_operation_t *wsdl_operation,
+                                        axis2_env_t **env);
+    
+    
+    
+    /**
+     * Sets the properties of the operation if any
+     * @param axis2_hash_t properties
+     */
+    axis2_status_t (AXIS2_CALL *set_component_properties) (
+                                        axis2_wsdl_operation_t *wsdl_operation,
+                                        axis2_env_t **env,
+                                        axis2_hash_t *properties);
+    
+    /**
+     * Returns the properties that are specific to this WSDL operation
+     * @return axis2_hash_t component properties
+      */
+    axis2_hash_t *(AXIS2_CALL *get_component_properties) (
+                                        axis2_wsdl_operation_t *wsdl_operation,
+                                        axis2_env_t **env);
+    
+    /**
+     * Will set the property keyed with the relavent key
+     * @param void Key in the map
+     * @param void value to be put
+     * @return status code
+     */
+    axis2_status_t (AXIS2_CALL *set_component_property) (
+                                    axis2_wsdl_operation_t *wsdl_operation,
+                                    axis2_env_t **env, 
+                                    const void *key, 
+                                    void *value);
+    
+    /**
+     * Gets the component property
+     * @param void key for the map search.
+     * @return void value for the key
+     */
+    void *(AXIS2_CALL *get_component_property) (
+                                        axis2_wsdl_operation_t *wsdl_operation,
+                                        axis2_env_t **env, 
+                                        const void *key);
 
 };
 
@@ -175,43 +155,43 @@ struct axis2_wsdl_operation_s
 	axis2_wsdl_operation_ops_t *ops;
 };
 
-axis2_status_t axis2_wsdl_operation_create
-		(axis2_env_t *env, axis2_wsdl_operation_t **wsdl_opt);
+AXIS2_DECLARE(axis2_wsdl_operation_t *) axis2_wsdl_operation_create (
+                                                            axis2_env_t *env);
 
 /**************************** Start of function macros ************************/
 
-#define AXIS2_WSDL_OPERATION_FREE(wsdl_opt, env) \
-		((wsdl_opt->ops)->free (wsdl_opt, env))
+#define AXIS2_WSDL_OPERATION_FREE(wsdl_operation, env) \
+		((wsdl_operation->ops)->free (wsdl_operation, env))
 	
-#define AXIS2_WSDL_OPERATION_GET_MSG_EXCHANGE_PATTERN(wsdl_opt, env, pattern) \
-		((wsdl_opt->ops)->get_msg_exchange_pattern(wsdl_opt, env, pattern))
+#define AXIS2_WSDL_OPERATION_GET_MSG_EXCHANGE_PATTERN(wsdl_operation, env, pattern) \
+		((wsdl_operation->ops)->get_msg_exchange_pattern(wsdl_operation, env, pattern))
 		
-#define AXIS2_WSDL_OPERATION_SET_MSG_EXCHANGE_PATTERN(wsdl_opt, env, pattern) \
-		((wsdl_opt->ops)->set_msg_exchange_pattern(wsdl_opt, env, pattern))
+#define AXIS2_WSDL_OPERATION_SET_MSG_EXCHANGE_PATTERN(wsdl_operation, env, pattern) \
+		((wsdl_operation->ops)->set_msg_exchange_pattern(wsdl_operation, env, pattern))
 		
-#define AXIS2_WSDL_OPERATION_GET_NAME(wsdl_opt, env, name) \
-		((wsdl_opt->ops)->get_name(wsdl_opt, env, name))
+#define AXIS2_WSDL_OPERATION_GET_NAME(wsdl_operation, env, name) \
+		((wsdl_operation->ops)->get_name(wsdl_operation, env, name))
 		
-#define AXIS2_WSDL_OPERATION_SET_NAME(wsdl_opt, env, name) \
-		((wsdl_opt->ops)->set_name(wsdl_opt, env, name))
+#define AXIS2_WSDL_OPERATION_SET_NAME(wsdl_operation, env, name) \
+		((wsdl_operation->ops)->set_name(wsdl_operation, env, name))
 		
-#define AXIS2_WSDL_OPERATION_SET_STYLE(wsdl_opt, env, style) \
-		((wsdl_opt->ops)->get_style(wsdl_opt, env, style))
+#define AXIS2_WSDL_OPERATION_SET_STYLE(wsdl_operation, env, style) \
+		((wsdl_operation->ops)->get_style(wsdl_operation, env, style))
 		
-#define AXIS2_WSDL_OPERATION_GET_STYLE(wsdl_opt, env, style) \
-		((wsdl_opt->ops)->set_style(wsdl_opt, env, style))
+#define AXIS2_WSDL_OPERATION_GET_STYLE(wsdl_operation, env, style) \
+		((wsdl_operation->ops)->set_style(wsdl_operation, env, style))
 		
-#define AXIS2_WSDL_OPERATION_SET_COMPONENT_PROPERTIES(wsdl_opt, env, properties) \
-		((wsdl_opt->ops)->set_component_properties(wsdl_opt, env, properties))
+#define AXIS2_WSDL_OPERATION_SET_COMPONENT_PROPERTIES(wsdl_operation, env, properties) \
+		((wsdl_operation->ops)->set_component_properties(wsdl_operation, env, properties))
 		
-#define AXIS2_WSDL_OPERATION_GET_COMPONENT_PROPERTIES(wsdl_opt, env, properties) \
-		((wsdl_opt->ops)->get_component_properties(wsdl_opt, env, properties))
+#define AXIS2_WSDL_OPERATION_GET_COMPONENT_PROPERTIES(wsdl_operation, env, properties) \
+		((wsdl_operation->ops)->get_component_properties(wsdl_operation, env, properties))
 
-#define AXIS2_WSDL_OPERATION_SET_COMPONENT_PROPERTY(wsdl_opt, env, property) \
-		((wsdl_opt->ops)->set_component_property(wsdl_opt, env, property))
+#define AXIS2_WSDL_OPERATION_SET_COMPONENT_PROPERTY(wsdl_operation, env, property) \
+		((wsdl_operation->ops)->set_component_property(wsdl_operation, env, property))
 		
-#define AXIS2_WSDL_OPERATION_GET_COMPONENT_PROPERTY(wsdl_opt, env, property) \
-		((wsdl_opt->ops)->get_component_property(wsdl_opt, env, property))		
+#define AXIS2_WSDL_OPERATION_GET_COMPONENT_PROPERTY(wsdl_operation, env, property) \
+		((wsdl_operation->ops)->get_component_property(wsdl_operation, env, property))		
 		
 /**************************** End of function macros **************************/
 
