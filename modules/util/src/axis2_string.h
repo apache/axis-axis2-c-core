@@ -19,7 +19,7 @@
 
 #include <axis2_defines.h>
 #include <axis2_error.h>
-#include <axis2_allocator.h>
+#include <axis2_env.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -32,11 +32,14 @@ extern "C"
  * @{
  */
 
-void* 
-axis2_strdup (const void *ptr);
+    void* 
+    axis2_strdup (const void *ptr, axis2_env_t **env);
 
-int 
-axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2);
+    int 
+    axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2);
+
+#define AXIS2_STRDUP(pts, env) axis2_strdup(pts, env)
+#define AXIS2_STRCMP(s1, s2) axis2_strcmp(s1, s2)
 
 /** @} */
     

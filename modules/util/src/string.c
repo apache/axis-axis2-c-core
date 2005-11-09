@@ -17,13 +17,23 @@
 #include <axis2_string.h>
 #include <stdlib.h>
 #include <string.h>
+#include <axis2.h>
 
-void* 
-axis2_strdup (const void *ptr)
+void* AXIS2_CALL
+axis2_strdup (const void *ptr, axis2_env_t **env)
 {
+    AXIS2_FUNC_PARAM_CHECK(ptr, env, NULL);
     if (ptr)
     {
-        return (void *) strdup (ptr);
+        int len = strlen(ptr);
+        char* str = (char*) AXIS2_MALLOC( (*env)->allocator, sizeof(char) * (len + 1 ));
+        if (!str)
+        {
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return NULL;
+        }
+        memcpy(str, ptr, len + 1);
+        return (void *) str;
     }
     else
     {
@@ -31,7 +41,7 @@ axis2_strdup (const void *ptr)
     }
 }
 
-int 
+int AXIS2_CALL
 axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
 {
     if (s1 && s2)
