@@ -52,9 +52,26 @@ extern "C"
          * @param om_pi processing instruction to be freed.
          * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *axis2_om_processing_instruction_ops_free)
-            (axis2_env_t * environment,
-             struct axis2_om_processing_instruction * om_pi);
+        axis2_status_t 
+        (AXIS2_CALL *free)(struct axis2_om_processing_instruction * om_pi,
+                           axis2_env_t **env);
+        axis2_status_t 
+        (AXIS2_CALL *set_value)(struct axis2_om_processing_instruction *om_pi,
+                                axis2_env_t **env,
+                                const axis2_char_t* value);
+        axis2_status_t 
+        (AXIS2_CALL *set_target)(struct axis2_om_processing_instruction *om_pi,
+                                axis2_env_t **env,
+                                const axis2_char_t* target);
+        axis2_char_t*
+        (AXIS2_CALL *get_target)(struct axis2_om_processing_instruction *om_pi,
+                                 axis2_env_t **env);
+        axis2_char_t*
+        (AXIS2_CALL *get_value)(struct axis2_om_processing_instruction *om_pi,
+                                axis2_env_t **env);                                                                                                                           
+                           
+                                          
+                                          
     } axis2_om_processing_instruction_ops_t;
 
   /** 
@@ -65,10 +82,7 @@ extern "C"
     {
         /** operations struct  */
         axis2_om_processing_instruction_ops_t *ops;
-        /** processing instruction  target */
-        axis2_char_t *target;
-        /** processing instruction  value */
-        axis2_char_t *value;
+
     } axis2_om_processing_instruction_t;
 
   /**
@@ -83,15 +97,25 @@ extern "C"
     * @return a pointer tonewly created processing instruction struct 
     */
     AXIS2_DECLARE(axis2_om_processing_instruction_t *) 
-        axis2_om_processing_instruction_create (axis2_env_t *
-                                                 environment,
-                                                 axis2_om_node_t * parent,
-                                                 const axis2_char_t * target,
-                                                 const axis2_char_t * value,
-                                                 axis2_om_node_t ** node);
+        axis2_om_processing_instruction_create (axis2_env_t **env,
+                                                axis2_om_node_t * parent,
+                                                const axis2_char_t * target,
+                                                const axis2_char_t * value,
+                                                axis2_om_node_t ** node);
 
 /** frees given processing instruction */
-#define axis2_om_processing_instruction_free(environment,pi) ((pi)->ops->axis2_om_processing_instruction_impl_free(environment,pi))
+#define AXIS2_OM_PROCESSING_INSTRUCTION_FREE(pi,env) \
+        ((pi)->ops->free(pi, env))
+#define AXIS2_OM_PROCESSING_INSTRUCION_SET_VALUE(pi,env,value) \
+        ((pi)->ops->set_value(pi,env,value))
+#define AXIS2_OM_PROCESSING_INSTRUCTION_GET_VALUE(pi,env) \
+        ((pi)->ops->get_value(pi,env))        
+#define AXIS2_OM_PROCESSING_INSTRUCION_SET_TARGET(pi,env,value) \
+        ((pi)->ops->set_target(pi,env,value))
+#define AXIS2_OM_PROCESSING_INSTRUCTION_GET_TARGET(pi,env) \
+        ((pi)->ops->get_target(pi,env))
+
+#define AXIS2        
 
 /** @} */
 #ifdef __cplusplus

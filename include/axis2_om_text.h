@@ -52,10 +52,8 @@ extern "C"
         * @param om_text pointer to om text struct to be freed
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *axis2_om_text_ops_free) (axis2_env_t *
-                                                  environment,
-                                                  struct axis2_om_text *
-                                                  om_text);
+        axis2_status_t (AXIS2_CALL *free) (struct axis2_om_text *om_text,
+                                           axis2_env_t **env);
 
       /**
         * Serialize operation
@@ -64,13 +62,18 @@ extern "C"
         * @param om_output OM output handler to be used in serializing
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *axis2_om_text_ops_serialize) (axis2_env_t *
-                                                       environment,
-                                                       const struct
-                                                       axis2_om_text *
-                                                       om_text,
-                                                       axis2_om_output_t *
-                                                       om_output);
+        axis2_status_t (AXIS2_CALL *serialize) (struct axis2_om_text *om_text,
+                                                axis2_env_t **env,
+                                                axis2_om_output_t *om_output);
+                                                
+        axis2_status_t (AXIS2_CALL *set_value)(struct axis2_om_text *om_text,
+                                               axis2_env_t **env,
+                                               const axis2_char_t *value);
+
+        axis2_char_t* (AXIS2_CALL *get_value)(struct axis2_om_text *om_text,
+                                              axis2_env_t **env);                                               
+                                               
+                                                                                                
     } axis2_om_text_ops_t;
 
   /** 
@@ -81,15 +84,7 @@ extern "C"
     {
         /** OM text related operations */
         axis2_om_text_ops_t *ops;
-        /** Text value */
-        axis2_char_t *value;
-        /** The following fields are for MTOM
-            TODO: Implement MTOM support */
-        axis2_char_t *mime_type;
-        axis2_bool_t optimize;
-        axis2_char_t *localname;
-        axis2_bool_t is_binary;
-        axis2_char_t *content_id;
+
     } axis2_om_text_t;
 
 
@@ -104,15 +99,27 @@ extern "C"
     *                       Node type will be set to AXIS2_OM_TEXT    
     * @return pointer to newly created text struct 
     */
-    AXIS2_DECLARE(axis2_om_text_t *) axis2_om_text_create (axis2_env_t * environment,
-                                           axis2_om_node_t * parent,
-                                           const axis2_char_t * value,
-                                           axis2_om_node_t ** node);
+    AXIS2_DECLARE(axis2_om_text_t *) 
+    axis2_om_text_create (axis2_env_t **env,
+                          axis2_om_node_t *parent,
+                          const axis2_char_t *value,
+                          axis2_om_node_t ** node);
+                          
+/** frees given text */
+#define AXIS2_OM_TEXT_FREE( om_text,env) \
+        ((om_text)->ops->free(om_text,env))                          
 
 /** serializes given text */
-#define axis2_om_text_serialize(environment, om_text, om_output) ((om_text)->ops->axis2_om_text_ops_serialize(environment, om_text, om_output))
-/** frees given text */
-#define axis2_om_text_free(environment, om_text) ((om_text)->ops->axis2_om_text_ops_free(environment, om_text))
+#define AXIS2_OM_TEXT_SERIALIZE(om_text, env, om_output) \
+        ((om_text)->ops->serialize(om_text, env, om_output))
+        
+#define AXIS2_OM_TEXT_GET_VALUE(om_text, env) \
+        ((om_text)->ops->get_value(om_text, env))
+
+#define AXIS2_OM_TEXT_SET_VALUE(om_text, env, value) \
+        ((om_text)->ops->set_value(om_text, env, value))
+                        
+
 
 /** @} */
 

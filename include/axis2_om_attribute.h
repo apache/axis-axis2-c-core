@@ -53,11 +53,9 @@ extern "C"
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
 
-         axis2_status_t (AXIS2_CALL *axis2_om_attribute_ops_free) (axis2_env_t *
-                                                       environment,
-                                                       struct
-                                                       axis2_om_attribute *
-                                                       om_attribute);
+         axis2_status_t 
+         (AXIS2_CALL *free) (struct axis2_om_attribute *om_attribute,
+                                                    axis2_env_t **env);
 
       /** 
         * Creates and returns a qname struct for this attribute
@@ -66,11 +64,9 @@ extern "C"
         * @return returns qname for given attribute. NULL on error 
         */
 
-         axis2_qname_t
-            *(AXIS2_CALL *axis2_om_attribute_ops_get_qname) (axis2_env_t *
-                                                  environment,
-                                                  struct axis2_om_attribute *
-                                                  om_attribute);
+         axis2_qname_t *
+         (AXIS2_CALL *get_qname) (struct axis2_om_attribute *om_attribute,
+                                                         axis2_env_t **env);
 
       /**
         * Serialize operation
@@ -80,12 +76,38 @@ extern "C"
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
 
-         int (AXIS2_CALL *axis2_om_attribute_ops_serialize) (axis2_env_t *
-                                                 environment,
-                                                 struct axis2_om_attribute *
-                                                 om_attribute,
-                                                 axis2_om_output_t *
-                                                 om_output);
+         int 
+         (AXIS2_CALL *serialize) (struct axis2_om_attribute *om_attribute,
+                                                 axis2_env_t **env,
+                                                 axis2_om_output_t *om_output);
+        axis2_char_t* 
+        (AXIS2_CALL *get_localname)(struct axis2_om_attribute *om_attribute,
+                                    axis2_env_t **env);
+
+        axis2_char_t* 
+        (AXIS2_CALL *get_value)(struct axis2_om_attribute *om_attribute,
+                                axis2_env_t **env);
+
+        axis2_om_namespace_t* 
+        (AXIS2_CALL *get_namespace)(struct axis2_om_attribute *om_attribute,
+                                    axis2_env_t **env);
+
+        axis2_status_t 
+        (AXIS2_CALL *set_localname)(struct axis2_om_attribute *om_attribute,
+                                    axis2_env_t **env,
+                                    const axis2_char_t *localname);
+
+        axis2_status_t 
+        (AXIS2_CALL *set_value)(struct axis2_om_attribute *om_attribute,
+                                axis2_env_t **env,
+                                const axis2_char_t *value);
+
+        axis2_status_t 
+        (AXIS2_CALL *set_namespace)(struct axis2_om_attribute *om_attribute,
+                                    axis2_env_t **env,
+                                    axis2_om_namespace_t *om_namespace);
+                                                                                                                                                                                             
+
 
     } axis2_om_attribute_ops_t;
 
@@ -97,12 +119,7 @@ extern "C"
     {
         /** operations of attribute struct */
         axis2_om_attribute_ops_t *ops;
-        /** localname of this attribute  */
-        axis2_char_t *localname;
-        /** value of this attribute */
-        axis2_char_t *value;
-        /** attribute namespace */
-        axis2_om_namespace_t *ns;
+       
     } axis2_om_attribute_t;
 
   /**
@@ -113,22 +130,45 @@ extern "C"
     * @param ns namespace, if any, of the attribute. Optional, can be NULL
     * @return a pointer to newly created attribute struct 
     */
-    AXIS2_DECLARE(axis2_om_attribute_t *) axis2_om_attribute_create (axis2_env_t *
-                                                     environment,
-                                                     const axis2_char_t *
-                                                     localname,
-                                                     const axis2_char_t *
-                                                     value,
-                                                     axis2_om_namespace_t *
-                                                     ns);
+    AXIS2_DECLARE(axis2_om_attribute_t *)
+     axis2_om_attribute_create (axis2_env_t **env,
+                                const axis2_char_t *localname,
+                                const axis2_char_t *value,
+                                axis2_om_namespace_t *ns);
 
-/* macros */
+/******************** Macros *********************************************/
+
 /** free given attribute */
-#define axis2_om_attribute_free(environment, om_attribute) ((om_attribute)->ops->axis2_om_attribute_ops_free(environment, om_attribute))
+#define AXIS2_OM_ATTRIBUTE_FREE(om_attribute, env) \
+        ((om_attribute)->ops->free(om_attribute, env))
+        
 /** get qname of given attribute */
-#define axis2_om_attribute_get_qname(environment, om_attribute) ((om_attribute)->ops->axis2_om_attribute_ops_get_qname(environment, om_attribute))
+#define AXIS2_OM_ATTRIBUTE_GET_QNAME(om_attribute,env) \
+        ((om_attribute)->ops->get_qname(om_attribute, env))
+        
 /** serialize given attribute */
-#define axis2_om_attribute_serialize(environment, om_attribute,om_ouput) ((om_attribute)->ops->axis2_om_attribute_ops_serialize(environment, om_attribute,om_output))
+#define AXIS2_OM_ATTRIBUTE_SERIALIZE(om_attribute, env, om_ouput) \
+        ((om_attribute)->ops->serialize(om_attribute, env, om_output))
+        
+#define AXIS2_OM_ATTRIBUTE_GET_NAMESPACE(om_attribute, env) \
+        ((om_attribute)->ops->get_namespace(om_attribute, env))
+
+#define AXIS2_OM_ATTRIBUTE_GET_LOCALNAME(om_attribute, env) \
+        ((om_attribute)->ops->get_localname(om_attribute, env))
+        
+#define AXIS2_OM_ATTRIBUTE_GET_VALUE(om_attribute, env) \
+        ((om_attribute)->ops->get_value(om_attribute, env))
+               
+#define AXIS2_OM_ATTRIBUTE_SET_NAMESPACE(om_attribute, env) \
+        ((om_attribute)->ops->set_namespace(om_attribute, env))
+        
+#define AXIS2_OM_ATTRIBUTE_SET_LOCALNAME(om_attribute, env) \
+        ((om_attribute)->ops->set_localname(om_attribute, env))
+
+#define AXIS2_OM_ATTRIBUTE_SET_VALUE(om_attribute, env) \
+        ((om_attribute)->ops->set_value(om_attribute, env))
+                
+                
 
 /** @} */
 

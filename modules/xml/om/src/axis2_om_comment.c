@@ -15,91 +15,129 @@
  */
 
 #include <axis2_om_comment.h>
-#include <string.h>
+#include <axis2_string.h>
 
-axis2_status_t AXIS2_CALL axis2_om_comment_impl_free (axis2_env_t * environment,
-                                           axis2_om_comment_t * comment);
+axis2_status_t AXIS2_CALL
+axis2_om_comment_free (axis2_om_comment_t *om_comment,
+                       axis2_env_t **env);
+
+axis2_char_t* AXIS2_CALL
+axis2_om_comment_get_value(axis2_om_comment_t *om_comment,
+                           axis2_env_t **env);
+axis2_status_t AXIS2_CALL
+axis2_om_comment_set_value(axis2_om_comment_t *om_comment,
+                           axis2_env_t **env,
+                           const axis2_char_t *value);
+                                                                             
+/***************************** axis2_om_comment_struct ******************/
+
+typedef struct axis2_om_comment_impl_t
+{
+    axis2_om_comment_t om_comment;
+    /** comment text */
+    axis2_char_t *value;
+
+}axis2_om_comment_impl_t;
+/***************************** Macro **********************************/
+
+#define AXIS2_INTF_TO_IMPL(om_comment) ((axis2_om_comment_impl_t*)om_comment)
+
+
+/*************************** End Macro *******************************/
 
 AXIS2_DECLARE(axis2_om_comment_t*)
- axis2_om_comment_create (axis2_env_t * environment,
-                         const axis2_char_t * value, axis2_om_node_t ** node)
+axis2_om_comment_create(axis2_env_t **env,
+                        const axis2_char_t * value,
+                        axis2_om_node_t ** node)
 {
-    axis2_om_comment_t *comment = NULL;
+    axis2_om_comment_impl_t *comment = NULL;
     *node = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, value, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, node, NULL);
     
-    if (!node)
-    {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
-        return NULL;
-    }
-
-    *node = axis2_om_node_create (environment);
+    *node = axis2_om_node_create (env);
     if (!*node)
     {
-        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
-        return NULL;
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
-
-    comment =
-        (axis2_om_comment_t *) axis2_malloc (environment->allocator,
-                                             sizeof (axis2_om_comment_t));
+    
+    comment = (axis2_om_comment_impl_t *) AXIS2_MALLOC((*env)->allocator,
+                                             sizeof (axis2_om_comment_impl_t));
     if (!comment)
     {
-        axis2_om_node_free (environment, *node);
-        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
-        return NULL;
+        AXIS2_OM_NODE_FREE (*node, env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
 
     comment->value = NULL;
 
     if (value)
     {
-        comment->value = axis2_strdup (environment->string, value);
+        comment->value = (axis2_char_t*)AXIS2_STRDUP(value,env);
         if (!comment->value)
         {
-            axis2_om_node_free (environment, *node);
-            axis2_free (environment->allocator, comment);
-            environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
-            return NULL;
+            AXIS2_FREE ((*env)->allocator,comment);
+            AXIS2_OM_NODE_FREE (*node, env);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         }
     }
 
-    (*node)->data_element = comment;
-    (*node)->node_type = AXIS2_OM_COMMENT;
+    AXIS2_OM_NODE_SET_DATA_ELEMENT((*node), env, comment);
+    AXIS2_OM_NODE_SET_NODE_TYPE((*node), env, AXIS2_OM_COMMENT);
 
     /* operations */
-    comment->ops = NULL;
-    comment->ops =
-        (axis2_om_comment_ops_t *) axis2_malloc (environment->allocator,
-                                                 sizeof
-                                                 (axis2_om_comment_ops_t));
-    if (!comment->ops)
+    comment->om_comment.ops = NULL;
+    comment->om_comment.ops = (axis2_om_comment_ops_t *)AXIS2_MALLOC(
+                              (*env)->allocator,sizeof(axis2_om_comment_ops_t));
+    if (!comment->om_comment.ops)
     {
-        axis2_om_node_free (environment, *node);
-        axis2_free (environment->allocator, comment);
-        axis2_free (environment->allocator, comment->value);
-        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
-        return NULL;
+        AXIS2_FREE ((*env)->allocator, comment);
+        AXIS2_FREE ((*env)->allocator, comment->value);
+        AXIS2_FREE ((*env)->allocator,*node);
+        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_NO_MEMORY, NULL);
     }
 
-    comment->ops->axis2_om_comment_ops_free = axis2_om_comment_impl_free;
-
-    return comment;
+    comment->om_comment.ops->free = axis2_om_comment_free;
+    comment->om_comment.ops->set_value = axis2_om_comment_set_value;
+    comment->om_comment.ops->get_value = axis2_om_comment_get_value;
+    return &(comment->om_comment);
 }
 
 
 axis2_status_t AXIS2_CALL
-axis2_om_comment_impl_free (axis2_env_t * environment,
-                            axis2_om_comment_t * comment)
+axis2_om_comment_free (axis2_om_comment_t *om_comment,
+                       axis2_env_t **env)
 {
-    if (comment)
+    AXIS2_FUNC_PARAM_CHECK(om_comment, env, AXIS2_FAILURE);
+    if (om_comment)
     {
-        if (comment->value)
+        if (AXIS2_INTF_TO_IMPL(om_comment)->value)
         {
-            axis2_free (environment->allocator, comment->value);
+            AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_comment)->value);
         }
-        axis2_free (environment->allocator, comment);
+        AXIS2_FREE((*env)->allocator,AXIS2_INTF_TO_IMPL(om_comment));
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
 }
+
+axis2_char_t* AXIS2_CALL
+axis2_om_comment_get_value(axis2_om_comment_t *om_comment,
+                           axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(om_comment, env, NULL);
+    return AXIS2_INTF_TO_IMPL(om_comment)->value;
+}   
+
+                        
+axis2_status_t AXIS2_CALL
+axis2_om_comment_set_value(axis2_om_comment_t *om_comment,
+                           axis2_env_t **env,
+                           const axis2_char_t *value)
+{
+    AXIS2_FUNC_PARAM_CHECK(om_comment, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(om_comment)->value = (axis2_char_t*)AXIS2_STRDUP(value,env);
+    return AXIS2_SUCCESS;
+}                           

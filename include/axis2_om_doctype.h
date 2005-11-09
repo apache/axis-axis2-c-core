@@ -50,10 +50,16 @@ extern "C"
         * @param om_doctype pointer to doctype struct to be freed
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-         axis2_status_t (AXIS2_CALL *axis2_om_doctype_ops_free) (axis2_env_t *
-                                                     environment,
-                                                     struct axis2_om_doctype *
-                                                     om_doctype);
+        axis2_status_t (AXIS2_CALL *free) (struct axis2_om_doctype *om_doctype,
+                                            axis2_env_t **env);
+
+        axis2_char_t* (AXIS2_CALL *get_value)(struct axis2_om_doctype *om_doctype,
+                                              axis2_env_t **env);
+
+        axis2_status_t (AXIS2_CALL *set_value)(struct axis2_om_doctype *om_doctype,
+                                               axis2_env_t **env,
+                                               const axis2_char_t *value);
+                                                                                                                                      
     } axis2_om_doctype_ops_t;
 
   /**
@@ -64,8 +70,7 @@ extern "C"
     {
         /** Doctype related operations */
         axis2_om_doctype_ops_t *ops;
-        /** Doctype value */
-        axis2_char_t *value;
+
     } axis2_om_doctype_t;
 
   /**
@@ -78,14 +83,22 @@ extern "C"
     *                       Node type will be set to AXIS2_OM_DOCTYPE
     * @return pointer to newly created doctype struct 
     */
-    AXIS2_DECLARE(axis2_om_doctype_t *) axis2_om_doctype_create (axis2_env_t *
-                                                 environment,
-                                                 axis2_om_node_t * parent,
-                                                 const axis2_char_t * value,
-                                                 axis2_om_node_t ** node);
+    AXIS2_DECLARE(axis2_om_doctype_t *)
+    axis2_om_doctype_create (axis2_env_t **env,
+                             axis2_om_node_t * parent,
+                             const axis2_char_t * value,
+                             axis2_om_node_t ** node);
 
 /** free given doctype */    
-#define axis2_om_doctype_free(environment, doctype) ((doctype)->ops->axis2_om_doctype_ops_free(environment, doctype))
+#define AXIS2_OM_DOCTYPE_FREE(doctype,env) \
+        ((doctype)->ops->free(doctype,env))
+
+#define AXIS2_OM_DOCTYPE_GET_VALUE(doctype,env) \
+        ((doctype)->ops->get_value(doctype,value))
+
+#define AXIS2_OM_DOCTYPE_SET_VALUE(doctype,env,value) \
+        ((doctype)->ops->set_value(doctype,env,value))
+                       
 
 /** @} */
     

@@ -54,11 +54,8 @@ extern "C"
         * @return a pointer to the next node, or NULL if there are no more nodes.
         *           On erros sets the error and returns NULL.
         */
-        axis2_om_node_t * 
-            (AXIS2_CALL *axis2_om_stax_builder_ops_next) (axis2_env_t *
-                                                environment,
-                                                struct axis2_om_stax_builder *
-                                                builder);
+        axis2_om_node_t*(AXIS2_CALL *next) (struct axis2_om_stax_builder *builder,
+                                            axis2_env_t **env);
 
       /**
         * Discards the element that is being built currently.
@@ -66,12 +63,29 @@ extern "C"
         * @param builder pointer to stax builder struct to be used
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-        axis2_status_t (AXIS2_CALL *axis2_om_stax_builder_ops_discard_current_element)
-            (axis2_env_t * environment,
-             struct axis2_om_stax_builder * builder);
+        axis2_status_t (AXIS2_CALL *discard_current_element)(
+                           struct axis2_om_stax_builder *builder,axis2_env_t **env);
 
 			 
-		axis2_status_t (AXIS2_CALL *axis2_om_stax_builder_ops_free)(axis2_env_t *envioronment,struct axis2_om_stax_builder *builder);
+		axis2_status_t (AXIS2_CALL *free)(struct axis2_om_stax_builder *builder,
+		                                  axis2_env_t **env);
+
+
+        axis2_om_node_t* (AXIS2_CALL *get_lastnode)(struct axis2_om_stax_builder *builder,
+                                                    axis2_env_t **env);
+                                                    
+        axis2_om_document_t* (AXIS2_CALL *get_document)(struct axis2_om_stax_builder *builder,
+                                                    axis2_env_t **env);
+                                                    
+        axis2_status_t (AXIS2_CALL *set_lastnode)(struct axis2_om_stax_builder *builder,
+                                                  axis2_env_t **env,
+                                                  axis2_om_node_t *om_node);
+                                                    
+        axis2_status_t  (AXIS2_CALL *set_document)(struct axis2_om_stax_builder *builder,
+                                                   axis2_env_t **env,
+                                                   axis2_om_document_t *document);                                                    
+                                                           
+
 
     } axis2_om_stax_builder_ops_t;
 
@@ -83,19 +97,8 @@ extern "C"
     {
         /** operations struct */
         axis2_om_stax_builder_ops_t *ops;
-        /** pull parser instance used by the builder */
-        void *parser;
-        /** last node the builder found */
-        axis2_om_node_t *lastnode;
-        /** document associated with the builder */
-        axis2_om_document_t *document;
-        /** done building the document? */
-        axis2_bool_t done;
-        /** parser was accessed? */
-        axis2_bool_t parser_accessed;
-        /** caching enabled? */
-        axis2_bool_t cache;
-    } axis2_om_stax_builder_t;
+       
+    }axis2_om_stax_builder_t;
 
   /**
     * creates an stax builder
@@ -106,17 +109,32 @@ extern "C"
 	* @param parser_env parser envioronment. Optional, can be NULL.
     * @return a pointer to the newly created builder struct. 
     */
-    AXIS2_DECLARE(axis2_om_stax_builder_t *) axis2_om_stax_builder_create (axis2_env_t
-                                                           * environment,
-                                                           void *parser, void* parser_env);
+    AXIS2_DECLARE(axis2_om_stax_builder_t *)
+    axis2_om_stax_builder_create (axis2_env_t **env,
+                                  void *parser,
+                                  void* parser_env);
 
 /** builds next node */
-#define axis2_om_stax_builder_next(environment, builder) ((builder)->ops->axis2_om_stax_builder_ops_next(environment, builder))
+#define AXIS2_OM_STAX_BUILDER_NEXT(builder,env) \
+        ((builder)->ops->next(builder, env))
 /** discards current node */
-#define axis2_om_stax_builder_discard_current_element(environment, builder) ((builder)->ops->axis2_om_stax_builder_ops_discard_current_element(environment, builder))
+#define AXIS2_OM_STAX_BUILDER_DISCARD(builder,env) \
+        ((builder)->ops->discard_current_element(builder, env))
 /** free builder */
-#define axis2_om_stax_builder_free(environment,builder) ((builder)->ops->axis2_om_stax_builder_ops_free(environment,builder))
-	
+#define AXIS2_OM_STAX_BUILDER_FREE(builder,env) \
+        ((builder)->ops->free(builder,env))
+        
+#define AXIS2_OM_STAX_BUILDER_SET_DOCUMENT(builder,env,document) \
+        ((builder)->ops->set_document(builder,env,document))
+
+#define AXIS2_OM_STAX_BUILDER_SET_LASTNODE(builder,env,lastnode) \
+        ((builder)->ops->set_lastnode(builder,env,lastnode))
+        
+#define AXIS2_OM_STAX_BUILDER_GET_LASTNODE(builder,env) \
+        ((builder)->ops->get_lastnode(builder,env)) 
+
+#define AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(builder,env) \
+        ((builder)->ops->get_document(builder,env))
 	
 /** @} */
 

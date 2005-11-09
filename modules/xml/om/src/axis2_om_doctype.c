@@ -15,96 +15,136 @@
   */
 
 #include <axis2_om_doctype.h>
+#include <axis2_string.h>
 
-axis2_status_t AXIS2_CALL axis2_om_doctype_impl_free (axis2_env_t * environment,
-                                           axis2_om_doctype_t * doctype);
+axis2_status_t AXIS2_CALL
+axis2_om_doctype_free (axis2_om_doctype_t *om_doctype,
+                       axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_om_doctype_set_value(axis2_om_doctype_t *om_doctype,
+                           axis2_env_t **env,
+                           const axis2_char_t *value);
+
+axis2_char_t* AXIS2_CALL
+axis2_om_doctype_get_value(axis2_om_doctype_t *om_doctype,
+                           axis2_env_t **env);                                                  
+                       
+/************************ axis2_om_doctype struct *********************/
+
+typedef struct axis2_om_doctype_impl_t
+{
+    /* this should be first member for casting to work */
+    axis2_om_doctype_t om_doctype;
+    /** Doctype value */
+    axis2_char_t *value;
+    
+}axis2_om_doctype_impl_t;
+
+/*************************** Macro ***********************************/
+                       
+#define AXIS2_INTF_TO_IMPL(om_doctype) ((axis2_om_doctype_impl_t*)om_doctype)
+
+/********************************************************************/
 
 AXIS2_DECLARE(axis2_om_doctype_t *)
- axis2_om_doctype_create (axis2_env_t * environment,
-                         axis2_om_node_t * parent, const axis2_char_t * value,
+axis2_om_doctype_create (axis2_env_t **env,
+                         axis2_om_node_t * parent,
+                         const axis2_char_t * value,
                          axis2_om_node_t ** node)
 {
-    axis2_om_doctype_t *doctype = NULL;
+    axis2_om_doctype_impl_t *doctype = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error,node,NULL);
 
-    if (!node)
-    {
-        environment->error->errorno = AXIS2_ERROR_INVALID_NULL_PARAM;
-        return NULL;
-    }
-
-    *node = axis2_om_node_create (environment);
+    *node = axis2_om_node_create (env);
     if (!*node)
     {
-        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
-        return NULL;
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY,NULL);
     }
 
-    doctype =
-        (axis2_om_doctype_t *) axis2_malloc (environment->allocator,
-                                             sizeof (axis2_om_doctype_t));
+    doctype = (axis2_om_doctype_impl_t *) AXIS2_MALLOC ((*env)->allocator,
+                                             sizeof (axis2_om_doctype_impl_t));
+                                             
     if (!doctype)
     {
-        axis2_om_node_free (environment, *node);
-        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
-        return NULL;
+        AXIS2_OM_NODE_FREE ( *node, env);
+        AXIS2_ERROR_SET((*env)->error , AXIS2_ERROR_NO_MEMORY, NULL);
     }
 
     doctype->value = NULL;
 
     if (value)
     {
-        doctype->value = axis2_strdup (environment->string, value);
+        doctype->value =(axis2_char_t*)AXIS2_STRDUP(value,env);
         if (!doctype->value)
         {
-            axis2_om_node_free (environment, *node);
-            axis2_free (environment->allocator, doctype);
-            environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
-            return NULL;
+            AXIS2_FREE ((*env)->allocator, doctype);
+            AXIS2_OM_NODE_FREE (*node, env);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         }
     }
 
-    (*node)->data_element = doctype;
-    (*node)->node_type = AXIS2_OM_DOCTYPE;
+    AXIS2_OM_NODE_SET_DATA_ELEMENT((*node), env, doctype);
+    AXIS2_OM_NODE_SET_NODE_TYPE((*node), env, AXIS2_OM_DOCTYPE);
 
     if (parent)
     {
-        (*node)->parent = parent;
-        axis2_om_node_add_child (environment, parent, (*node));
+        AXIS2_OM_NODE_SET_PARENT((*node), env, parent);
+        AXIS2_OM_NODE_ADD_CHILD((*node), env, parent);
     }
 
     /* operations */
-    doctype->ops = NULL;
-    doctype->ops =
-        (axis2_om_doctype_ops_t *) axis2_malloc (environment->allocator,
-                                                 sizeof
-                                                 (axis2_om_doctype_ops_t));
-    if (!doctype->ops)
+    doctype->om_doctype.ops = NULL;
+    doctype->om_doctype.ops = (axis2_om_doctype_ops_t *) AXIS2_MALLOC (
+                                (*env)->allocator,sizeof(axis2_om_doctype_ops_t));
+                                
+    if (!doctype->om_doctype.ops)
     {
-        axis2_om_node_free (environment, *node);
-        axis2_free (environment->allocator, doctype);
-        axis2_free (environment->allocator, doctype->value);
-        environment->error->errorno = AXIS2_ERROR_NO_MEMORY;
-        return NULL;
+        AXIS2_FREE((*env)->allocator, doctype);
+        AXIS2_FREE ((*env)->allocator, doctype->value);
+        AXIS2_OM_NODE_FREE( *node, env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
 
-    doctype->ops->axis2_om_doctype_ops_free = axis2_om_doctype_impl_free;
+    doctype->om_doctype.ops->free = axis2_om_doctype_free;
 
-    return doctype;
+    return &(doctype->om_doctype);
 }
 
 
 axis2_status_t AXIS2_CALL
-axis2_om_doctype_impl_free (axis2_env_t * environment,
-                            axis2_om_doctype_t * doctype)
+axis2_om_doctype_free (axis2_om_doctype_t *om_doctype,
+                       axis2_env_t **env)
 {
-    if (doctype)
+    if (om_doctype)
     {
-        if (doctype->value)
+        if (AXIS2_INTF_TO_IMPL(om_doctype)->value)
         {
-            axis2_free (environment->allocator, doctype->value);
+            AXIS2_FREE ((*env)->allocator,AXIS2_INTF_TO_IMPL(om_doctype)->value);
         }
-        axis2_free (environment->allocator, doctype);
+        AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_doctype));
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_om_doctype_set_value(axis2_om_doctype_t *om_doctype,
+                           axis2_env_t **env,
+                           const axis2_char_t *value)
+{
+    AXIS2_FUNC_PARAM_CHECK(om_doctype, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(om_doctype)->value = 
+        (axis2_char_t*)AXIS2_STRDUP(value,env);
+    return AXIS2_SUCCESS;
+}                           
+
+axis2_char_t* AXIS2_CALL
+axis2_om_doctype_get_value(axis2_om_doctype_t *om_doctype,
+                           axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(om_doctype, env, NULL);
+    return AXIS2_INTF_TO_IMPL(om_doctype)->value;
 }

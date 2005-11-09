@@ -51,11 +51,17 @@ extern "C"
         * @param comment pointer to axis2_commnet struct to be freed
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-         axis2_status_t (AXIS2_CALL *axis2_om_comment_ops_free) (axis2_env_t *
-                                                     environment,
-                                                     struct axis2_om_comment *
-                                                     comment);
+        axis2_status_t (AXIS2_CALL *free) (struct axis2_om_comment *om_comment,
+                                           axis2_env_t **env);
 
+        axis2_char_t* (AXIS2_CALL *get_value)(struct axis2_om_comment *om_comment,
+                                               axis2_env_t **env);
+
+        axis2_status_t (AXIS2_CALL *set_value)(struct axis2_om_comment *om_comment,
+                                              axis2_env_t **env,
+                                              const axis2_char_t* value);
+                                                                                            
+                                              
     } axis2_om_comment_ops_t;
 
   /** 
@@ -66,8 +72,7 @@ extern "C"
     {
         /** operations struct */
         axis2_om_comment_ops_t *ops;
-        /** comment text */
-        axis2_char_t *value;
+
     } axis2_om_comment_t;
 
   /**
@@ -79,14 +84,21 @@ extern "C"
     *                       Node type will be set to AXIS2_OM_COMMENT
     * @return a pointer to the newly created comment struct
     */
-    AXIS2_DECLARE(axis2_om_comment_t *) axis2_om_comment_create (axis2_env_t *
-                                                 environment,
-                                                 const axis2_char_t * value,
-                                                 axis2_om_node_t **
-                                                 comment_node);
+    AXIS2_DECLARE(axis2_om_comment_t *) 
+    axis2_om_comment_create (axis2_env_t **env,
+                             const axis2_char_t *value,
+                             axis2_om_node_t **comment_node);
 
 /** free given comment */
-#define axis2_om_comment_free(environment, comment) ((comment)->ops->axis2_om_comment_ops_free(environment, comment))
+#define AXIS2_OM_COMMENT_FREE(om_comment, env) \
+        ((om_comment)->ops->free(om_comment, env))
+
+#define AXIS2_OM_COMMENT_GET_VALUE(om_comment, env) \
+        ((om_comment)->ops->get_value(om_comment, env))
+        
+#define AXIS2_OM_COMMENT_SET_VALUE(om_comment, env, value) \
+        ((om_comment)->ops->set_value(om_comment, env, value))
+                        
 
 /** @} */
 

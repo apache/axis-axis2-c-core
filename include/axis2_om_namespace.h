@@ -52,11 +52,8 @@ extern "C"
         * @param om_namespace namespace to be freed.
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-        axis2_status_t (AXIS2_CALL *axis2_om_namespace_ops_free) (axis2_env_t *
-                                                       environment,
-                                                       struct
-                                                       axis2_om_namespace *
-                                                       om_namespace);
+        axis2_status_t (AXIS2_CALL *free) (struct axis2_om_namespace *om_namespace,
+                                           axis2_env_t **env);
 
       /**
         * Compares two namepsaces
@@ -65,14 +62,9 @@ extern "C"
         * @param om_namespace2 second namespace to be compared
         * @return true if the two namespaces are equal, false otherwise	
         */
-        axis2_bool_t (AXIS2_CALL *axis2_om_namespace_ops_equals) (axis2_env_t *
-                                                       environment,
-                                                       struct
-                                                       axis2_om_namespace *
-                                                       om_namespace1,
-                                                       struct
-                                                       axis2_om_namespace *
-                                                       om_namespace2);
+        axis2_bool_t (AXIS2_CALL *equals) (struct axis2_om_namespace *om_namespace,
+                                           axis2_env_t **env,
+                                           struct axis2_om_namespace *om_namespace1);
 
       /**
         * Serializes given namespace 
@@ -81,10 +73,27 @@ extern "C"
         * @param om_output OM output handler to be used in serializing
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-        axis2_status_t (AXIS2_CALL *axis2_om_namespace_ops_serialize)
-            (axis2_env_t * environment,
-             struct axis2_om_namespace * om_namespace,
-             axis2_om_output_t * om_output);
+        axis2_status_t (AXIS2_CALL *serialize)(struct axis2_om_namespace *om_namespace,
+                                               axis2_env_t **env,
+                                               axis2_om_output_t * om_output);
+                                                       
+                                                       
+        axis2_char_t* (AXIS2_CALL *get_uri)(struct axis2_om_namesapce *om_namespace,
+                                            axis2_env_t **env);
+
+        axis2_char_t* (AXIS2_CALL *get_prefix)(struct axis2_om_namespace *om_namespace,
+                                               axis2_env_t **env);
+        
+        axis2_status_t (AXIS2_CALL *set_uri)(struct axis2_om_namespace *om_namespace,
+                                            axis2_env_t **env,
+                                            const axis2_char_t *uri);
+        
+        axis2_status_t (AXIS2_CALL *set_prefix)(struct axis2_om_namespace *om_namespace,
+                                                axis2_env_t **env,
+                                                const axis2_char_t *prefix);
+                                                                                   
+                                                  
+                                                  
 
     } axis2_om_namespace_ops_t;
 
@@ -96,10 +105,7 @@ extern "C"
     {
         /** OM namespace related operations */
         axis2_om_namespace_ops_t *ops;
-        /** namespace URI */
-        axis2_char_t *uri;
-        /** namespace prefix  */
-        axis2_char_t *prefix;
+        
     } axis2_om_namespace_t;
 
   /**
@@ -108,18 +114,34 @@ extern "C"
     * @param prefix namespace prefix
     * @return a pointer to newly created namespace struct
     */
-    AXIS2_DECLARE(axis2_om_namespace_t *) axis2_om_namespace_create (axis2_env_t *
-                                                     environment,
-                                                     const axis2_char_t * uri,
-                                                     const axis2_char_t *
-                                                     prefix);
+    AXIS2_DECLARE(axis2_om_namespace_t *)
+    axis2_om_namespace_create (axis2_env_t **env,
+                               const axis2_char_t * uri,
+                               const axis2_char_t *prefix);
 
 /** frees given namespace */
-#define axis2_om_namespace_free(environment, om_namespace) ((om_namespace)->ops->axis2_om_namespace_ops_free(environment, om_namespace))
+#define AXIS2_OM_NAMESPACE_FREE(om_namespace,env) \
+        ((om_namespace)->ops->free(om_namespace, env))
+        
 /** compares the given two namespaces for equality */
-#define axis2_om_namespace_equals(environment, om_namespace1, om_namespace2) ((om_namespace1)->ops->axis2_om_namespace_ops_equals(environment, om_namespace1, om_namespace2))
+#define AXIS2_OM_NAMESPACE_EQUALS(om_namespace, env, om_namespace1) \
+        ((om_namespace)->ops->equals(om_namespace, env, om_namespace1))
+        
 /** serializes given namespace */
-#define axis2_om_namespace_serialize(environment, om_namespace,om_output) ((om_namespace)->ops->axis2_om_namespace_ops_serialize(environment, om_namespace, om_output))
+#define AXIS2_OM_NAMESPACE_SERIALIZE(om_namespace,env, om_output) \
+        ((om_namespace)->ops->serialize(om_namespace, env,om_output))
+        
+#define AXIS2_OM_NAMESPACE_GET_PREFIX(om_namespace, env) \
+        ((om_namespace)->ops->get_prefix(om_namespace, env))
+
+#define AXIS2_OM_NAMESPACE_GET_URI(om_namespace, env) \
+        ((om_namespace)->ops->get_uri(om_namespace, env))
+
+#define AXIS2_OM_NAMESPACE_SET_URI(om_namespace, env, uri) \
+        ((om_namespace)->ops->set_uri(om_namespace, env, uri))
+
+#define AXIS2_OM_NAMESPACE_SET_PREFIX(om_namespace, env, prefix) \
+        ((om_namespace)->ops->set_prefix(om_namesapce, env, prefix))
 
 /** @} */
 
