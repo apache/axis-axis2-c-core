@@ -121,12 +121,18 @@ extern "C"
     /**
      * Enables logging
      */
-    AXIS2_DECLARE(axis2_status_t) axis2_env_enable_log (axis2_env_t *env, axis2_bool_t enable);
+    AXIS2_DECLARE(axis2_status_t) axis2_env_enable_log (axis2_env_t **env, axis2_bool_t enable);
 
     /**
-      *
+      * Checks the status code of environment
       */
-    AXIS2_DECLARE(axis2_status_t) axis2_env_check_status (axis2_env_t *env);
+    AXIS2_DECLARE(axis2_status_t) axis2_env_check_status (axis2_env_t **env);
+    
+    /**
+      * Writes given message to the log
+      */
+    AXIS2_DECLARE(axis2_status_t) axis2_env_write_log (axis2_env_t **env, const char* message);
+    #define AXIS2_LOG(env, message) axis2_env_write_log (env,message)
 
     #define AXIS2_ENV_CHECK(env, error_return) \
     if(!env || !(*env))  \

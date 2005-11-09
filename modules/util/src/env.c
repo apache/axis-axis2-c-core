@@ -18,8 +18,9 @@
 
 #include <axis2_env.h>
 #include <axis2_error_default.h>
+#include <axis2_string.h>
 
-AXIS2_DECLARE(axis2_status_t) axis2_env_free (axis2_env_t *env)
+axis2_status_t AXIS2_CALL axis2_env_free (axis2_env_t *env)
 {
     if(NULL != env && NULL != env->allocator)
         free (env->allocator);
@@ -39,7 +40,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_env_free (axis2_env_t *env)
 	return 0;  
 }
 
-AXIS2_DECLARE(axis2_env_t *)
+axis2_env_t* AXIS2_CALL
 axis2_env_create (axis2_allocator_t *allocator)
 {
 	axis2_env_t *environment;
@@ -63,7 +64,7 @@ axis2_env_create (axis2_allocator_t *allocator)
     
 }
 
-AXIS2_DECLARE(axis2_env_t *)
+axis2_env_t* AXIS2_CALL
 axis2_env_create_with_error_stream (axis2_allocator_t *allocator
                           , axis2_error_t *error, axis2_stream_t *stream)
 {
@@ -71,7 +72,7 @@ axis2_env_create_with_error_stream (axis2_allocator_t *allocator
 		, stream, NULL);    
 }
 
-AXIS2_DECLARE(axis2_env_t *)
+axis2_env_t * AXIS2_CALL
 axis2_env_create_with_error_stream_log (axis2_allocator_t *allocator
                           , axis2_error_t *error, axis2_stream_t *stream
                           , axis2_log_t *log)
@@ -107,11 +108,32 @@ axis2_env_create_with_error_stream_log (axis2_allocator_t *allocator
 
 
 axis2_status_t AXIS2_CALL
-axis2_env_check_status (axis2_env_t *env)
+axis2_env_check_status (axis2_env_t **env)
 {
-    if(NULL == env)
+    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+
+	return AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
+}
+
+axis2_status_t AXIS2_CALL axis2_env_enable_log (axis2_env_t **env, axis2_bool_t enable)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+
+    (*env)->log_enabled = enable;
+    
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL axis2_env_write_log (axis2_env_t **env, const char* message)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+
+    if (! ((*env)->log_enabled))
+        return AXIS2_SUCCESS;
+ 
+    if (message && (*env)->log)
     {
-        AXIS2_ENV_CHECK(&env, AXIS2_CRTICAL_FAILURE);
+        AXIS2_LOG_WRITE((*env)->log, message, strlen(message) );
     }
-	return AXIS2_ERROR_GET_STATUS_CODE(env->error);
+    return AXIS2_SUCCESS;
 }
