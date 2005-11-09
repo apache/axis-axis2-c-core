@@ -174,8 +174,8 @@ module.source.files=\
 	modules/core/description/src/svc_grp.c\
 	modules/core/engine/src/engine_config.c\
 	modules/core/engine/src/msg_recv.c\
-	modules/wsdl/src/wsdl_scv.c\
-	modules/core/context/src/msg_ctx.c
+	modules/core/context/src/msg_ctx.c\
+	modules/wsdl/src/wsdl_svc.c
 
 module.pixmap.name=.
 module.pixmap.type=

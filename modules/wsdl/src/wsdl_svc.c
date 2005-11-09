@@ -14,70 +14,69 @@
  * limitations under the License.
  */
  
-#include <axis2_wsdl_service.h>
+#include <axis2_wsdl_svc.h>
 
-/** @struct axis2_wsdl_service_s
-  * @brief WSDL service
-  * This holds operations of wsdl service
-  */
+/** 
+ * @brief Wsdl Service struct impl
+ *	Axis2 Wsdl Service impl  
+ */
+typedef struct axis2_wsdl_svc_impl_s axis2_wsdl_svc_impl_t;  
   
-typedef struct axis2_wsdl_impl_service_s axis2_wsdl_impl_service_t;  
-  
-struct axis2_wsdl_impl_service_s
+struct axis2_wsdl_svc_impl_s
 {
-	axis2_wsdl_service_t wsdl_srv;
+	axis2_wsdl_svc_t wsdl_svc;
 	
 };
 
+#define AXIS2_INTF_TO_IMPL(wsdl_svc) ((axis2_wsdl_svc_impl_t *)(wsdl_svc))
+
 /***************************** Function headers *******************************/
 
-axis2_status_t axis2_wsdl_service_free(axis2_env_t *env
-		, axis2_wsdl_service_t *wsdl_srv);
+axis2_status_t AXIS2_CALL 
+axis2_wsdl_svc_free(axis2_wsdl_svc_t *wsdl_svc,
+                    axis2_env_t **env);
 
 
 /***************************** End of function headers ************************/
 
-axis2_status_t axis2_wsdl_service_create
-		(axis2_env_t *env, axis2_wsdl_service_t **wsdl_srv)
+axis2_wsdl_svc_t * AXIS2_CALL 
+axis2_wsdl_svc_create (axis2_env_t **env)
 {
-	axis2_wsdl_impl_service_t *wsdl_impl_srv 
-		= (axis2_wsdl_impl_service_t *)
-		axis2_malloc (env->allocator, sizeof(axis2_wsdl_service_t));
-	if(NULL == wsdl_impl_srv)
+    AXIS2_ENV_CHECK(env, NULL);
+    
+	axis2_wsdl_svc_impl_t *wsdl_svc_impl = (axis2_wsdl_svc_impl_t *)
+		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_svc_t));
+	if(NULL == wsdl_svc_impl)
 	{
-		return AXIS2_ERROR_NO_MEMORY;
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
-	axis2_wsdl_service_t *wsdl_srv_l
-		= (axis2_wsdl_service_t *)
-		axis2_malloc (env->allocator, sizeof(axis2_wsdl_service_t));
-	if(NULL == wsdl_srv_l)
-	{
-		axis2_free(env->allocator, wsdl_impl_srv);
-		return AXIS2_ERROR_NO_MEMORY;
-	}
-	wsdl_srv_l->ops 
-		= (axis2_wsdl_service_ops_t *)
-		axis2_malloc (env->allocator, sizeof(axis2_wsdl_service_ops_t));
-	if(NULL == wsdl_srv_l->ops)
-	{
-		axis2_free(env->allocator, wsdl_impl_srv);
-		axis2_free(env->allocator, wsdl_srv_l);
-		return AXIS2_ERROR_NO_MEMORY;	
-	}
-	(wsdl_srv_l->ops)->free = axis2_wsdl_service_free;
-	wsdl_impl_srv->wsdl_srv = *wsdl_srv_l;
-	*(wsdl_srv) = &(wsdl_impl_srv->wsdl_srv);
 	
-	return AXIS2_SUCCESS;	
+	wsdl_svc_impl->wsdl_svc.ops = 
+        (axis2_wsdl_svc_ops_t *) AXIS2_MALLOC ((*env)->allocator, 
+        sizeof(axis2_wsdl_svc_ops_t));
+    
+	if(NULL == wsdl_svc_impl->wsdl_svc.ops)
+	{
+		AXIS2_FREE((*env)->allocator, wsdl_svc_impl);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);	
+	}
+    
+	wsdl_svc_impl->wsdl_svc.ops->free = axis2_wsdl_svc_free;
+	
+	return &(wsdl_svc_impl->wsdl_svc);
 }
 
 /******************************************************************************/
 
-axis2_status_t axis2_wsdl_service_free(axis2_env_t *env
-		, axis2_wsdl_service_t *wsdl_srv)
+axis2_status_t AXIS2_CALL
+axis2_wsdl_svc_free (axis2_wsdl_svc_t *wsdl_svc,
+                        axis2_env_t **env)
 {
-	if(!env || !wsdl_srv)
-		return AXIS2_ERROR_INVALID_NULL_PARAM;
-	axis2_free(env->allocator, wsdl_srv);
+	AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
+    if(NULL != wsdl_svc->ops)
+        AXIS2_FREE((*env)->allocator, wsdl_svc->ops);
+    
+	AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(wsdl_svc));
+    
 	return AXIS2_SUCCESS;
 }

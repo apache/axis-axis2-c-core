@@ -169,9 +169,22 @@ axis2_wsdl_operation_free (axis2_wsdl_operation_t *wsdl_operation,
     
     if(NULL != wsdl_operation->ops)
         AXIS2_FREE((*env)->allocator, wsdl_operation->ops);
+    
     if(NULL != AXIS2_INTF_TO_IMPL(wsdl_operation)->wsdl_component)
         AXIS2_WSDL_COMPONENT_FREE(AXIS2_INTF_TO_IMPL(wsdl_operation)->
             wsdl_component, env);
+    
+    if(NULL != AXIS2_INTF_TO_IMPL(wsdl_operation)->msg_exchange_pattern)
+        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(wsdl_operation)->
+            msg_exchange_pattern);
+    
+    if(NULL != AXIS2_INTF_TO_IMPL(wsdl_operation)->name)
+        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(wsdl_operation)->
+            name);
+    
+    if(NULL != AXIS2_INTF_TO_IMPL(wsdl_operation)->style)
+        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(wsdl_operation)->
+            style);
     
     AXIS2_FREE((*env)->allocator, wsdl_operation);
 	return AXIS2_SUCCESS;

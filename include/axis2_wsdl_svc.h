@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WSDL_SERVICE_H
-#define AXIS2_WSDL_SERVICE_H
+#ifndef AXIS2_WSDL_SVC_H
+#define AXIS2_WSDL_SVC_H
 
 /**
- * @file axis2_wsdl_service.h
- * @brief axis2 WSDL  service
+ * @file axis2_wsdl_svc.h
+ * @brief axis2 wsdl service interface
  */
 
 #include <axis2.h>
@@ -37,63 +37,54 @@ extern "C"
 {
 #endif
 
-/** @cond */
-struct axis2_wsdl_service_ops_s;
-struct axis2_wsdl_service_s;
-/** @endcond */
-typedef struct axis2_wsdl_service_ops_s axis2_wsdl_service_ops_t;
-typedef struct axis2_wsdl_service_s axis2_wsdl_service_t;
+typedef struct axis2_wsdl_svc_ops_s axis2_wsdl_svc_ops_t;
+typedef struct axis2_wsdl_svc_s axis2_wsdl_svc_t;
 	
-/** @defgroup axis2_wsdl WSDL (Axis2 wsdl)
-  * @ingroup axis2
+/** @defgroup axis2_wsdl_svc Wsdl Service
+  * @ingroup axis2_wsdl
   * @{
   */
 
-/** @} */
+/** 
+ * @brief Wsdl Service operations struct
+ * Encapsulator struct for operations of axis2_wsdl_service
+ */
+struct axis2_wsdl_svc_ops_s
+{
+    /** Deallocate memory
+     * @return status code
+     */
+	axis2_status_t (AXIS2_CALL *free) (axis2_wsdl_svc_t *wsdl_svc, 
+                                        axis2_env_t **env);
+
+};
 
 /**
- * @defgroup axis2_wsdl_service WSDL Service
- * @ingroup axis2_wsdl 
- * @{
+ * @brief Wsdl Service struct
+ * Axis2 Wsdl Service
  */
+struct axis2_wsdl_svc_s
+{
+	axis2_wsdl_svc_ops_t *ops;
+};
+
+/** create Wsdl Service struct
+ * @return pointer to newly created wsdl service
+ */
+AXIS2_DECLARE(axis2_wsdl_svc_t *) 
+axis2_wsdl_svc_create (axis2_env_t **env);
 
 /**************************** Start of function macros ************************/
 
-#define AXIS2_WSDL_SERVICE_FREE(env, wsdl_srv) ((wsdl_srv->ops)->free (env, \
-		wsdl_srv))
+#define AXIS2_WSDL_SERVICE_FREE(wsdl_svc, env) ((wsdl_svc->ops)->free (wsdl_svc, \
+		env))
 
 
 	
 		
 /**************************** End of function macros **************************/
-/**************************** Function pointers *******************************/
-
-/** Deallocate memory
-  * @return status code
-  */
-typedef axis2_status_t (*axis2_wsdl_service_free_t) (axis2_env_t *env
-		, axis2_wsdl_service_t *wsdl_srv);
-
-
-		
-/*************************** End of function pointers *************************/
-
-struct axis2_wsdl_service_ops_s
-{
-	axis2_wsdl_service_free_t free;
-
-};
-
-struct axis2_wsdl_service_s
-{
-	axis2_wsdl_service_ops_t *ops;
-};
-
-axis2_status_t axis2_wsdl_service_create
-		(axis2_env_t *env, axis2_wsdl_service_t **wsdl_srv);
-
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WSDL_SERVICE_H  */
+#endif /* AXIS2_WSDL_SVC_H  */

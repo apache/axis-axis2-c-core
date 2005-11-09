@@ -35,7 +35,7 @@ axis2_env_t *test_init()
 	return env;
 }
 
-int test_hash_get (axis2_env_t *environment)
+int test_hash_get (axis2_env_t *env)
 {
     axis2_hash_t *ht;
     a *a1, *a2, *a3, *a4;
@@ -48,25 +48,25 @@ int test_hash_get (axis2_env_t *environment)
     char *key3 = "key3";
     char *key4 = "key4";
 
-    a1 = (a *) AXIS2_MALLOC(environment->allocator, sizeof (a));
-    a2 = (a *) AXIS2_MALLOC(environment->allocator, sizeof (a));
-    a3 = (a *) AXIS2_MALLOC(environment->allocator, sizeof (a));
-    a4 = (a *) AXIS2_MALLOC(environment->allocator, sizeof (a));
+    a1 = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    a2 = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    a3 = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    a4 = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
 
 
-    a1->value = axis2_strdup("value1");
-    a2->value = axis2_strdup("value2");
-    a3->value = axis2_strdup("value3");
-    a4->value = axis2_strdup("value4");
+    a1->value = AXIS2_STRDUP("value1", &env);
+    a2->value = AXIS2_STRDUP("value2", &env);
+    a3->value = AXIS2_STRDUP("value3", &env);
+    a4->value = AXIS2_STRDUP("value4", &env);
 
-    ht = axis2_hash_make (&environment);
+    ht = axis2_hash_make (&env);
 
     axis2_hash_set (ht, key1, AXIS2_HASH_KEY_STRING, a1);
     axis2_hash_set (ht, key2, AXIS2_HASH_KEY_STRING, a2);
     axis2_hash_set (ht, key3, AXIS2_HASH_KEY_STRING, a3);
     axis2_hash_set (ht, key4, AXIS2_HASH_KEY_STRING, a4);
 
-    for (i = axis2_hash_first (ht, &environment); i; i = axis2_hash_next (&environment, i))
+    for (i = axis2_hash_first (ht, &env); i; i = axis2_hash_next (&env, i))
     {
 
         axis2_hash_this (i, NULL, NULL, &v);
@@ -95,8 +95,10 @@ int test_hash_get (axis2_env_t *environment)
   */
 int test_file_diff(axis2_env_t *env)
 {
-	axis2_char_t *expected_file_name = axis2_strdup("expected");
-    axis2_char_t *actual_file_name = axis2_strdup("actual");	
+	/*axis2_char_t *expected_file_name = AXIS2_STRDUP("expected", &env);
+    axis2_char_t *actual_file_name = AXIS2_STRDUP("actual", &env);	*/
+	axis2_char_t *expected_file_name = strdup("expected");
+    axis2_char_t *actual_file_name = strdup("actual");	
     axis2_file_diff(env, expected_file_name, actual_file_name);
 	return 0;
 }
@@ -113,7 +115,7 @@ char* test_funct_for_test_env_null(axis2_env_t **env)
 		AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_ENVIRONMENT_IS_NULL);		
 		return NULL;
 	}
-	return "environment not null, so be happy";	
+	return "env not null, so be happy";	
 }
 
 int test_env_null()
@@ -126,7 +128,7 @@ int test_env_null()
 	 * test_funct_for_test_env_null
 	 */
 	char *msg = test_funct_for_test_env_null(&env);
-	int status = axis2_env_check_status(env);
+	int status = axis2_env_check_status(&env);
 	if(AXIS2_SUCCESS == status)
 		printf("%s\n", msg);
 	else
