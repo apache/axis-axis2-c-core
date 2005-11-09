@@ -305,7 +305,7 @@ axis2_status_t AXIS2_CALL axis2_handler_desc_set_class_name(struct axis2_handler
     
     if (class_name)
     {
-        handler_desc_impl->class_name = axis2_strdup(class_name);
+        handler_desc_impl->class_name = AXIS2_STRDUP(class_name, env);
         if (!handler_desc_impl->class_name)
         {
             AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);

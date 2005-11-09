@@ -139,7 +139,7 @@ axis2_param_container_get_param (axis2_param_container_t *param_container,
 	AXIS2_FUNC_PARAM_CHECK(param_container, env, NULL);
 	
 	return (axis2_param_t *)(axis2_hash_get (AXIS2_INTF_TO_IMPL(param_container)->
-		params, axis2_strdup(name), AXIS2_HASH_KEY_STRING));
+		params, AXIS2_STRDUP(name, env), AXIS2_HASH_KEY_STRING));
 }
 
 axis2_hash_t * AXIS2_CALL 
@@ -160,7 +160,7 @@ axis2_param_container_is_param_locked (axis2_param_container_t *param_container,
 	
 	axis2_param_t *param = (axis2_param_t *)
 		(axis2_hash_get (AXIS2_INTF_TO_IMPL(param_container)->params
-			, axis2_strdup(param_name), AXIS2_HASH_KEY_STRING));
+			, AXIS2_STRDUP(param_name, env), AXIS2_HASH_KEY_STRING));
 	
     AXIS2_PARAM_CHECK((*env)->error, param, AXIS2_FAILURE);
 	

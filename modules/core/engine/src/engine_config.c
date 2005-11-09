@@ -262,7 +262,7 @@ split_svc_name (axis2_env_t **env,
                 const axis2_char_t *svc_name, 
                 axis2_char_t **svc_name_st)
 {
-	axis2_char_t *svc_name_temp = axis2_strdup(svc_name);
+	axis2_char_t *svc_name_temp = AXIS2_STRDUP(svc_name, env);
 	if(!svc_name_st)
     {
         return AXIS2_ERROR_INVALID_NULL_PARAM;

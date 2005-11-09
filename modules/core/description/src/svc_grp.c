@@ -173,7 +173,7 @@ axis2_svc_grp_set_name (axis2_svc_grp_t *svc_grp,
 {
     AXIS2_FUNC_PARAM_CHECK(svc_grp, env, AXIS2_FAILURE);
 	
-	axis2_char_t *tempname = axis2_strdup(name);
+	axis2_char_t *tempname = AXIS2_STRDUP(name, env);
     if(NULL == tempname)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 	
@@ -268,7 +268,7 @@ axis2_svc_grp_get_param (axis2_svc_grp_t *svc_grp,
 	    AXIS2_ERROR_SET((*env)->error
         , AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, NULL);
     
-	axis2_char_t *tempname = axis2_strdup(name);
+	axis2_char_t *tempname = AXIS2_STRDUP(name, env);
     
 	if(NULL == tempname)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FALSE);
@@ -301,7 +301,7 @@ axis2_svc_grp_is_param_locked (axis2_svc_grp_t *svc_grp,
 	    AXIS2_ERROR_SET((*env)->error
         , AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, AXIS2_FALSE);
 	
-	axis2_char_t *tempname = axis2_strdup(param_name);
+	axis2_char_t *tempname = AXIS2_STRDUP(param_name, env);
 	if(NULL == tempname)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FALSE);
 	

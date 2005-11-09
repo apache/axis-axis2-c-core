@@ -221,7 +221,7 @@ axis2_svc_get_operation_with_name (axis2_svc_t *svc,
 {
     AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, name, NULL);
-	axis2_char_t *temp_name = axis2_strdup(name);
+	axis2_char_t *temp_name = AXIS2_STRDUP(name, env);
     AXIS2_PARAM_CHECK((*env)->error, temp_name, NULL); 
     
 	return (struct axis2_operation_s *) (axis2_hash_get 
@@ -302,7 +302,7 @@ axis2_svc_get_param (axis2_svc_t *svc,
             AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, AXIS2_FAILURE);
 	}
     
-	axis2_char_t *tempname = axis2_strdup(name);
+	axis2_char_t *tempname = AXIS2_STRDUP(name, env);
 	if(NULL == tempname)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM,
         AXIS2_FAILURE);
@@ -335,7 +335,7 @@ axis2_svc_is_param_locked (axis2_svc_t *svc,
             AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, AXIS2_FALSE);
 	}
 	
-	axis2_char_t *tempname = axis2_strdup(param_name);
+	axis2_char_t *tempname = AXIS2_STRDUP(param_name, env);
 	if(NULL == tempname)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM,
         AXIS2_FAILURE);
