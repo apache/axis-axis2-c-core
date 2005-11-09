@@ -129,6 +129,8 @@ struct axis2_array_list* AXIS2_CALL axis2_array_list_create(axis2_env_t **env, i
     array_list_impl->array_list.ops->check_bound_inclusive = axis2_array_list_check_bound_inclusive;
     array_list_impl->array_list.ops->check_bound_exclusive = axis2_array_list_check_bound_exclusive;            
     array_list_impl->array_list.ops->free = axis2_array_list_free;
+
+    return &(array_list_impl->array_list);
 }
 
 
@@ -239,7 +241,7 @@ axis2_status_t AXIS2_CALL axis2_array_list_add(struct axis2_array_list *array_li
     AXIS2_FUNC_PARAM_CHECK(array_list, env, AXIS2_FAILURE);
     
     array_list_impl = AXIS2_INTF_TO_IMPL(array_list);    
-    
+   
     if (array_list_impl->size == array_list_impl->capacity)
       if (axis2_array_list_ensure_capacity(array_list, env, array_list_impl->size + 1) != AXIS2_SUCCESS )
           return AXIS2_FAILURE;
