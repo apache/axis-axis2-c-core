@@ -80,7 +80,7 @@ struct axis2_wsdl_operation_ops_s
     axis2_status_t (AXIS2_CALL *set_name) (
                                         axis2_wsdl_operation_t *wsdl_operation, 
                                         axis2_env_t **env,
-                                        const axis2_qname_t *name);
+                                        axis2_qname_t *name);
                                         
     /**
      * Get the name of wsdl operation
@@ -96,8 +96,10 @@ struct axis2_wsdl_operation_ops_s
      * @param axis2_char_t style
      * @return status code
      */
-    axis2_status_t (AXIS2_CALL *set_style) (axis2_env_t *env
-    , axis2_wsdl_operation_t *wsdl_operation, const axis2_char_t *style);
+    axis2_status_t (AXIS2_CALL *set_style) (
+                                        axis2_wsdl_operation_t *wsdl_operation,
+                                        axis2_env_t **env,
+                                        const axis2_char_t *style);
     
     /**
      * Get style
@@ -156,7 +158,7 @@ struct axis2_wsdl_operation_s
 };
 
 AXIS2_DECLARE(axis2_wsdl_operation_t *) axis2_wsdl_operation_create (
-                                                            axis2_env_t *env);
+                                                            axis2_env_t **env);
 
 /**************************** Start of function macros ************************/
 
@@ -187,11 +189,11 @@ AXIS2_DECLARE(axis2_wsdl_operation_t *) axis2_wsdl_operation_create (
 #define AXIS2_WSDL_OPERATION_GET_COMPONENT_PROPERTIES(wsdl_operation, env, properties) \
 		((wsdl_operation->ops)->get_component_properties(wsdl_operation, env, properties))
 
-#define AXIS2_WSDL_OPERATION_SET_COMPONENT_PROPERTY(wsdl_operation, env, property) \
-		((wsdl_operation->ops)->set_component_property(wsdl_operation, env, property))
+#define AXIS2_WSDL_OPERATION_SET_COMPONENT_PROPERTY(wsdl_operation, env, key, value) \
+		((wsdl_operation->ops)->set_component_property(wsdl_operation, env, key, value))
 		
-#define AXIS2_WSDL_OPERATION_GET_COMPONENT_PROPERTY(wsdl_operation, env, property) \
-		((wsdl_operation->ops)->get_component_property(wsdl_operation, env, property))		
+#define AXIS2_WSDL_OPERATION_GET_COMPONENT_PROPERTY(wsdl_operation, env, key) \
+		((wsdl_operation->ops)->get_component_property(wsdl_operation, env, key))		
 		
 /**************************** End of function macros **************************/
 

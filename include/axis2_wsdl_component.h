@@ -106,20 +106,16 @@ axis2_wsdl_component_create (axis2_env_t **env);
 		((wsdl_component->ops)->set_component_properties(wsdl_component , env, \
             properties))
 	
-#define AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTIES(wsdl_component, env, \
-		properties) \
-		((wsdl_component->ops)->get_component_properties(wsdl_component, env, \
-		    properties))
+#define AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTIES(wsdl_component, env) \
+		((wsdl_component->ops)->get_component_properties(wsdl_component, env))
 
 #define AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(wsdl_component, env, \
 		key, value) \
-		((wsdl_component->ops)->set_component_property(env , wsdl_component, \
+		((wsdl_component->ops)->set_component_property(wsdl_component, env,\
             key, value))
 		
-#define AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(wsdl_component, env, \
-		key, value) \
-		((wsdl_component->ops)->get_component_property(wsdl_component, env, \
-            key, value))
+#define AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(wsdl_component, env, key) \
+		((wsdl_component->ops)->get_component_property(wsdl_component, env, key))
 		
 /**************************** End of function macros **************************/
 

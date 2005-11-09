@@ -163,6 +163,8 @@ extern "C"
         AXIS2_ERROR_INVALID_STATE_SVC,
         /** Service group accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_SVC_GRP,
+        /** Wsdl operation accessed has invalid state */
+        AXIS2_ERROR_INVALID_STATE_WSDL_OPERATION,
         /** Array list index out of bounds */
         AXIS2_ERROR_INDEX_OUT_OF_BOUNDS
     };
