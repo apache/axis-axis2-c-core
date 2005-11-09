@@ -22,7 +22,7 @@ void Testaxis2_hash_get(CuTest *tc)
     actual = (a *) AXIS2_MALLOC(environment->allocator, sizeof (a));
 
 
-    actual->value = strdup("value1");
+    actual->value = AXIS2_STRDUP("value1", &environment);
 
 
     ht = axis2_hash_make (&environment);

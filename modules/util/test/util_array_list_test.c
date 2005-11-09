@@ -18,8 +18,8 @@ void Testaxis2_array_list_get(CuTest *tc)
     actual2 = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
 
 
-    actual->value = axis2_strdup("value1");
-    actual2->value = axis2_strdup("value2");
+    actual->value = AXIS2_STRDUP("value1", &env);
+    actual2->value = AXIS2_STRDUP("value2", &env);
 
 
     al = axis2_array_list_create (&env, 10);
