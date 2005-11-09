@@ -251,8 +251,8 @@ axis2_engine_config_remove_svc (axis2_engine_config_t *engine_config,
                 AXIS2_FAILURE);
 	}
 	axis2_char_t *svc_name_l = *(svc_st + 1);
-	axis2_qname_t *qname = (axis2_qname_t*) axis2_qname_create(svc_name_l, env
-		, NULL, NULL);
+	axis2_qname_t *qname = (axis2_qname_t*) axis2_qname_create(env, svc_name_l,
+		NULL, NULL);
 	
 	return AXIS2_SVC_GRP_REMOVE_SVC(sg, env, qname);
 }
