@@ -107,6 +107,7 @@ axis2_svc_create (axis2_env_t **env)
 		axis2_param_container_create(env);		
 	if(NULL == param_container)
 	{
+        AXIS2_FREE((*env)->allocator, svc_impl->svc.ops);
         AXIS2_FREE((*env)->allocator, svc_impl);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);		
 	}
@@ -117,6 +118,8 @@ axis2_svc_create (axis2_env_t **env)
 		axis2_param_container_create(env);		
 	if(NULL == wsdl_svc)
 	{
+        AXIS2_FREE((*env)->allocator, svc_impl->svc.ops);
+        AXIS2_PARAM_CONTAINER_FREE(svc_impl->param_container, env);
         AXIS2_FREE((*env)->allocator, svc_impl);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);		
 	}
@@ -128,8 +131,10 @@ axis2_svc_create (axis2_env_t **env)
 	svc_impl->wasaction_opeartionmap = axis2_hash_make (env);				
 	if(NULL == svc_impl->wasaction_opeartionmap)
 	{
+        AXIS2_FREE((*env)->allocator, svc_impl->svc.ops);
+        AXIS2_PARAM_CONTAINER_FREE(svc_impl->param_container, env);
+        AXIS2_WSDL_SVC_FREE(svc_impl->wsdl_svc, env);
         AXIS2_FREE((*env)->allocator, svc_impl);
-        AXIS2_FREE((*env)->allocator, svc_impl->param_container);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);		
 	}
 	svc_impl->qname = NULL;
