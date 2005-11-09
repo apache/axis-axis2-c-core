@@ -78,7 +78,7 @@ extern "C"
                                                axis2_om_output_t * om_output);
                                                        
                                                        
-        axis2_char_t* (AXIS2_CALL *get_uri)(struct axis2_om_namesapce *om_namespace,
+        axis2_char_t* (AXIS2_CALL *get_uri)(struct axis2_om_namespace *om_namespace,
                                             axis2_env_t **env);
 
         axis2_char_t* (AXIS2_CALL *get_prefix)(struct axis2_om_namespace *om_namespace,
