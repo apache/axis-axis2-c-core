@@ -47,6 +47,26 @@ axis2_svc_set_name(axis2_wsdl_svc_t *wsdl_svc,
                     axis2_env_t **env, 
                     axis2_qname_t *qname);
 
+axis2_hash_t * AXIS2_CALL
+axis2_wsdl_svc_get_component_properties(axis2_wsdl_svc_t *wsdl_svc,
+                                        axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_wsdl_svc_set_component_properties(axis2_wsdl_svc_t *wsdl_svc,
+                                        axis2_env_t **env,
+                                        axis2_hash_t *properties);
+
+axis2_wsdl_component_t * AXIS2_CALL
+axis2_wsdl_svc_get_component_property(axis2_wsdl_svc_t *wsdl_svc,
+                                        axis2_env_t **env,
+                                        const axis2_char_t *key);
+
+axis2_status_t AXIS2_CALL
+axis2_wsdl_svc_set_component_property (axis2_wsdl_svc_t *wsdl_svc,
+                                        axis2_env_t **env,
+                                        const void *key,
+                                        void *value);
+
 /***************************** End of function headers ************************/
 
 axis2_wsdl_svc_t * AXIS2_CALL 
