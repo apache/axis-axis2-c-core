@@ -10,6 +10,7 @@ struct axis2_svc_impl_s
 {
 	axis2_svc_t svc;
 	axis2_param_container_t *param_container;
+    axis2_wsdl_svc_t *wsdl_svc;
 	axis2_svc_grp_t *parent;
 	axis2_hash_t *wasaction_opeartionmap;
 	axis2_qname_t *qname;    
@@ -44,7 +45,12 @@ axis2_svc_set_parent (axis2_svc_t *svc, axis2_env_t **env,
 
 axis2_svc_grp_t * AXIS2_CALL
 axis2_svc_get_parent (axis2_svc_t *svc, axis2_env_t **env);
-		
+
+axis2_status_t AXIS2_CALL
+axis2_svc_set_name (const axis2_svc_t *svc, 
+                    axis2_env_t **env,
+                    axis2_qname_t *qname);
+
 axis2_qname_t * AXIS2_CALL
 axis2_svc_get_name (const axis2_svc_t *svc, axis2_env_t **env);	
 
@@ -91,21 +97,31 @@ axis2_svc_create (axis2_env_t **env)
 	svc_impl->svc.ops->get_operations = axis2_svc_get_operations;
 	svc_impl->svc.ops->set_parent = axis2_svc_set_parent;
 	svc_impl->svc.ops->get_parent = axis2_svc_get_parent;
+    svc_impl->svc.ops->set_name = axis2_svc_set_name;
 	svc_impl->svc.ops->get_name = axis2_svc_get_name;
 	svc_impl->svc.ops->add_param = axis2_svc_add_param;
 	svc_impl->svc.ops->get_param = axis2_svc_get_param;
 	svc_impl->svc.ops->get_params = axis2_svc_get_params;
 	
-	axis2_param_container_t *param_container 
-		= (axis2_param_container_t *)
+	axis2_param_container_t *param_container = (axis2_param_container_t *)
 		axis2_param_container_create(env);		
 	if(NULL == param_container)
 	{
         AXIS2_FREE((*env)->allocator, svc_impl);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);		
 	}
+    
+    svc_impl->param_container = param_container;
+    
+    axis2_wsdl_svc_t *wsdl_svc = (axis2_wsdl_svc_t *)
+		axis2_param_container_create(env);		
+	if(NULL == wsdl_svc)
+	{
+        AXIS2_FREE((*env)->allocator, svc_impl);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);		
+	}
 
-	svc_impl->param_container = param_container;
+	svc_impl->wsdl_svc = wsdl_svc;
 	
 	svc_impl->parent = NULL;
 	
@@ -150,6 +166,10 @@ axis2_svc_free (axis2_svc_t *svc,
     
     if(NULL != AXIS2_INTF_TO_IMPL(svc)->param_container)
 	    AXIS2_PARAM_CONTAINER_FREE(AXIS2_INTF_TO_IMPL(svc)->param_container
+        , env);
+    
+    if(NULL != AXIS2_INTF_TO_IMPL(svc)->wsdl_svc)
+	    AXIS2_PARAM_CONTAINER_FREE(AXIS2_INTF_TO_IMPL(svc)->wsdl_svc
         , env);
     
     if(NULL != AXIS2_INTF_TO_IMPL(svc)->parent)
@@ -262,12 +282,23 @@ axis2_svc_get_parent (axis2_svc_t *svc,
 	return AXIS2_INTF_TO_IMPL(svc)->parent;
 }
 
+axis2_status_t AXIS2_CALL
+axis2_svc_set_name (const axis2_svc_t *svc, 
+                    axis2_env_t **env,
+                    axis2_qname_t *qname)
+{
+	AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FAILURE);
+    AXIS2_WSDL_SERVICE_SET_NAME(AXIS2_INTF_TO_IMPL(svc)->wsdl_svc, env, qname);
+    
+    return AXIS2_SUCCESS;
+}
+
 axis2_qname_t * AXIS2_CALL
 axis2_svc_get_name (const axis2_svc_t *svc, 
                     axis2_env_t **env)
 {
 	AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
-	return AXIS2_INTF_TO_IMPL(svc)->qname;
+    return AXIS2_WSDL_SERVICE_GET_NAME(AXIS2_INTF_TO_IMPL(svc)->wsdl_svc, env);
 }
 
 axis2_status_t AXIS2_CALL

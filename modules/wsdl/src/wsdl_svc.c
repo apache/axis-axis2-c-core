@@ -25,6 +25,7 @@ typedef struct axis2_wsdl_svc_impl_s axis2_wsdl_svc_impl_t;
 struct axis2_wsdl_svc_impl_s
 {
 	axis2_wsdl_svc_t wsdl_svc;
+    axis2_qname_t *qname;
 	
 };
 
@@ -36,6 +37,14 @@ axis2_status_t AXIS2_CALL
 axis2_wsdl_svc_free(axis2_wsdl_svc_t *wsdl_svc,
                     axis2_env_t **env);
 
+axis2_qname_t * AXIS2_CALL 
+axis2_svc_get_name(axis2_wsdl_svc_t *wsdl_svc, 
+                    axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_svc_set_name(axis2_wsdl_svc_t *wsdl_svc, 
+                    axis2_env_t **env, 
+                    axis2_qname_t *qname);
 
 /***************************** End of function headers ************************/
 
@@ -62,6 +71,8 @@ axis2_wsdl_svc_create (axis2_env_t **env)
 	}
     
 	wsdl_svc_impl->wsdl_svc.ops->free = axis2_wsdl_svc_free;
+    wsdl_svc_impl->wsdl_svc.ops->get_name = axis2_svc_get_name;
+    wsdl_svc_impl->wsdl_svc.ops->set_name = axis2_svc_set_name;
 	
 	return &(wsdl_svc_impl->wsdl_svc);
 }
@@ -79,4 +90,24 @@ axis2_wsdl_svc_free (axis2_wsdl_svc_t *wsdl_svc,
 	AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(wsdl_svc));
     
 	return AXIS2_SUCCESS;
+}
+
+axis2_qname_t * AXIS2_CALL 
+axis2_svc_get_name(axis2_wsdl_svc_t *wsdl_svc, 
+                    axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(wsdl_svc)->qname; 
+}
+
+axis2_status_t AXIS2_CALL
+axis2_svc_set_name(axis2_wsdl_svc_t *wsdl_svc, 
+                    axis2_env_t **env, 
+                    axis2_qname_t *qname) 
+{
+    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(wsdl_svc)->qname = qname;
+    
+    return AXIS2_SUCCESS;
 }

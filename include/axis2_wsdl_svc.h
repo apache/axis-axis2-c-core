@@ -29,6 +29,7 @@
 #include <axis2_allocator.h>
 #include <axis2_string.h>
 #include <axis2_hash.h>
+#include <axis2_qname.h>
 
 #include <axis2_wsdl_component.h>
 
@@ -57,6 +58,20 @@ struct axis2_wsdl_svc_ops_s
 	axis2_status_t (AXIS2_CALL *free) (axis2_wsdl_svc_t *wsdl_svc, 
                                         axis2_env_t **env);
 
+    /**
+     * Get wsdl service name
+     * @return wsdl service name
+     */
+    axis2_qname_t * (AXIS2_CALL *get_name)(axis2_wsdl_svc_t *wsdl_svc,
+                                            axis2_env_t **env);
+
+    /**
+     * Set wsdl serivce name
+     * @param set wsdl service name
+     */
+    axis2_status_t (AXIS2_CALL *set_name) (axis2_wsdl_svc_t *wsdl_svc,
+                                            axis2_env_t **env,
+                                            axis2_qname_t *qname);
 };
 
 /**
@@ -66,6 +81,7 @@ struct axis2_wsdl_svc_ops_s
 struct axis2_wsdl_svc_s
 {
 	axis2_wsdl_svc_ops_t *ops;
+    
 };
 
 /** create Wsdl Service struct
@@ -79,7 +95,11 @@ axis2_wsdl_svc_create (axis2_env_t **env);
 #define AXIS2_WSDL_SERVICE_FREE(wsdl_svc, env) ((wsdl_svc->ops)->free (wsdl_svc, \
 		env))
 
+#define AXIS2_WSDL_SERVICE_GET_NAME(wsdl_svc, env) \
+        ((wsdl_svc->ops)->get_name (wsdl_svc, env))
 
+#define AXIS2_WSDL_SERVICE_SET_NAME(wsdl_svc, env, qname) \
+        ((wsdl_svc->ops)->set_name (wsdl_svc, env, qname))
 	
 		
 /**************************** End of function macros **************************/
