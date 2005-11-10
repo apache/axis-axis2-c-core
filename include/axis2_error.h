@@ -176,7 +176,9 @@ extern "C"
         /** Last handler of phase already set */
         AXIS2_ERROR_PHASE_LAST_HANDLER_ALREADY_SET,
         /** Invalid last handler for phase  */
-        AXIS2_ERROR_INVALID_PHASE_LAST_HANDLER
+        AXIS2_ERROR_INVALID_PHASE_LAST_HANDLER,
+        /** Only one handler allowed for phase, adding handler is not allowed  */
+        AXIS2_ERROR_PHASE_ADD_HANDLER_INVALID
     };
 
 /** @} */
