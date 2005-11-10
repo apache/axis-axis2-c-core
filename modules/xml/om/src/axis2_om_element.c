@@ -218,6 +218,17 @@ axis2_om_element_create (axis2_env_t **env,
     element->om_element.ops->serialize_end_part =
         axis2_om_element_serialize_end_part;
     
+    element->om_element.ops->set_localname = 
+        axis2_om_element_set_localname;
+    element->om_element.ops->set_namespace =
+        axis2_om_element_set_namespace;
+        
+    element->om_element.ops->get_localname =
+        axis2_om_element_get_localname;
+    
+    element->om_element.ops->get_namespace =
+        axis2_om_element_get_namespace;
+    
     return &(element->om_element);
 
 }
@@ -454,6 +465,7 @@ axis2_om_element_add_attribute (axis2_om_element_t *om_element,
                                 axis2_env_t **env,
                                 axis2_om_attribute_t *attribute)
 {
+    
     axis2_qname_t *qname = NULL;
     AXIS2_FUNC_PARAM_CHECK(om_element, env, AXIS2_FAILURE);
     if (!attribute)
@@ -466,6 +478,7 @@ axis2_om_element_add_attribute (axis2_om_element_t *om_element,
 
     if (!(AXIS2_INTF_TO_IMPL(om_element)->attributes))
     {
+        
         AXIS2_INTF_TO_IMPL(om_element)->attributes = axis2_hash_make (env);
         if (!(AXIS2_INTF_TO_IMPL(om_element)->attributes))
             return AXIS2_FAILURE;
@@ -691,15 +704,20 @@ axis2_om_element_set_namespace(axis2_om_element_t *om_element,
                                axis2_om_node_t *node)
 {
     axis2_om_namespace_t *om_ns = NULL;
-    axis2_status_t status;
+    axis2_status_t status = AXIS2_FAILURE;
     AXIS2_FUNC_PARAM_CHECK(om_element, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error,ns , AXIS2_FAILURE);
+      
     om_ns = axis2_om_element_find_namespace(om_element,env,node,
                                 AXIS2_OM_NAMESPACE_GET_URI(ns, env),
                                 AXIS2_OM_NAMESPACE_GET_PREFIX(ns , env));
-    if(om_ns == NULL)
+    if(!om_ns)
+    {
         status = axis2_om_element_declare_namespace(om_element, env, node, ns);
-    if(status = AXIS2_SUCCESS)
+        AXIS2_INTF_TO_IMPL(om_element)->ns = ns;
+    }
+    else
         AXIS2_INTF_TO_IMPL(om_element)->ns = om_ns;
+    
     return AXIS2_SUCCESS;                                
-}                               
+}

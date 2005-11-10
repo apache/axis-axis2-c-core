@@ -148,3 +148,5 @@ axis2_om_doctype_get_value(axis2_om_doctype_t *om_doctype,
     AXIS2_FUNC_PARAM_CHECK(om_doctype, env, NULL);
     return AXIS2_INTF_TO_IMPL(om_doctype)->value;
 }
+
+

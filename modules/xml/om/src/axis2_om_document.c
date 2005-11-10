@@ -76,18 +76,19 @@ axis2_om_document_create (axis2_env_t **env,
     axis2_om_document_impl_t *document = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-
+    
     document = (axis2_om_document_impl_t *) AXIS2_MALLOC (
-                (*env)->allocator, sizeof (axis2_om_document_t));
+                (*env)->allocator, sizeof (axis2_om_document_impl_t));
     
     if (!document)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY,NULL); 
-
+    
     document->builder = builder;
     document->root_element = root;
     document->first_child = NULL;
     document->last_child = NULL;
-
+   
+   
     document->char_set_encoding = NULL;
     document->char_set_encoding = (axis2_char_t *) AXIS2_STRDUP(CHAR_SET_ENCODING,env);
 
@@ -101,26 +102,26 @@ axis2_om_document_create (axis2_env_t **env,
     document->xml_version = (axis2_char_t *) AXIS2_STRDUP(XML_VERSION,env);
     if (!document->xml_version)
     {
-        AXIS2_FREE((*env)->allocator, document);
+        
         AXIS2_FREE((*env)->allocator, document->char_set_encoding);
+        AXIS2_FREE((*env)->allocator, document);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
-
+    
     document->done = AXIS2_FALSE;
 
-    if (builder)
-        AXIS2_OM_STAX_BUILDER_SET_DOCUMENT (builder, env, &(document->om_document));
+    
 
-    /* operations */
     document->om_document.ops = NULL;
     document->om_document.ops = (axis2_om_document_ops_t *) AXIS2_MALLOC ((*env)->allocator,
                                                   sizeof(axis2_om_document_ops_t));
 
     if (!document->om_document.ops)
     {
-        AXIS2_FREE((*env)->allocator, document);
+        
         AXIS2_FREE((*env)->allocator, document->char_set_encoding);
         AXIS2_FREE((*env)->allocator, document->xml_version);
+        AXIS2_FREE((*env)->allocator, document);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
   
@@ -129,6 +130,10 @@ axis2_om_document_create (axis2_env_t **env,
     document->om_document.ops->build_next = axis2_om_document_build_next;
     document->om_document.ops->get_root_element = axis2_om_document_get_root_element;
     document->om_document.ops->set_root_element = axis2_om_document_set_root_element;
+    
+    if (builder)
+        AXIS2_OM_STAX_BUILDER_SET_DOCUMENT (builder, env, &(document->om_document) );
+    
     return &(document->om_document);
 }
 
@@ -137,6 +142,7 @@ axis2_om_document_free (axis2_om_document_t *om_document,
                         axis2_env_t **env)
 {
     axis2_om_document_impl_t *document = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(document, env, AXIS2_FAILURE);
     document = AXIS2_INTF_TO_IMPL(om_document);
     
@@ -144,13 +150,13 @@ axis2_om_document_free (axis2_om_document_t *om_document,
         AXIS2_FREE((*env)->allocator, document->char_set_encoding);
     if (document->xml_version)
         AXIS2_FREE((*env)->allocator, document->xml_version);
-
+    
     AXIS2_OM_NODE_FREE(document->root_element, env);
     
     if(document->om_document.ops)
         AXIS2_FREE((*env)->allocator, document->om_document.ops);
 
-    AXIS2_FREE((*env)->allocator, document);
+    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(document));
     return AXIS2_SUCCESS;
 }
 
@@ -183,8 +189,10 @@ axis2_om_document_build_next (axis2_om_document_t *om_document,
                                    axis2_env_t **env)
 {
     axis2_om_document_impl_t *document = NULL;
-    AXIS2_FUNC_PARAM_CHECK(document, env, NULL);
-
+      
+    
+    AXIS2_FUNC_PARAM_CHECK(om_document, env, NULL);
+  
     document = AXIS2_INTF_TO_IMPL(om_document);
     
     if (!(document->root_element))
@@ -202,21 +210,28 @@ axis2_om_node_t * AXIS2_CALL
 axis2_om_document_get_root_element (axis2_om_document_t * document,
                                     axis2_env_t **env)
 {
-   
     axis2_om_node_t *node = NULL;
     AXIS2_FUNC_PARAM_CHECK(document, env, NULL);
     
     if (AXIS2_INTF_TO_IMPL(document)->root_element)
     {
+        
+        
         return AXIS2_INTF_TO_IMPL(document)->root_element;
     }
     else
-    {
+    {  
         node = axis2_om_document_build_next(document, env);
+            
         if (AXIS2_INTF_TO_IMPL(document)->root_element)
+        {
+            
             return AXIS2_INTF_TO_IMPL(document)->root_element;
+        }
         else
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL, NULL);
+            
+        
     }
 }
 
@@ -225,8 +240,9 @@ axis2_om_document_set_root_element(axis2_om_document_t *document,
                                    axis2_env_t **env,
                                    axis2_om_node_t *node)
 {
+    
     AXIS2_FUNC_PARAM_CHECK(document, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(document)->root_element = node;
     return AXIS2_SUCCESS;
-}                                   
+}

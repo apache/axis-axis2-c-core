@@ -140,4 +140,4 @@ axis2_om_comment_set_value(axis2_om_comment_t *om_comment,
     AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(om_comment)->value = (axis2_char_t*)AXIS2_STRDUP(value,env);
     return AXIS2_SUCCESS;
-}                           
+}

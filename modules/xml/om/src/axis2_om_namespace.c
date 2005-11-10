@@ -285,4 +285,4 @@ axis2_om_namespace_set_prefix(axis2_om_namespace_t *om_namespace,
     }
     AXIS2_INTF_TO_IMPL(om_namespace)->prefix = (axis2_char_t*)AXIS2_STRDUP(prefix,env);
     return AXIS2_SUCCESS; 
-}                               
+}

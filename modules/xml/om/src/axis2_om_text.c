@@ -179,7 +179,5 @@ axis2_om_text_set_value(axis2_om_text_t *om_text,
     AXIS2_PARAM_CHECK((*env)->error , om_text, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(om_text)->value = (axis2_char_t*)AXIS2_STRDUP(value,env);
     return AXIS2_SUCCESS;
-}                       
-                        
-                        
-                        
+}
+

@@ -138,9 +138,18 @@ axis2_om_attribute_create (axis2_env_t **env,
         AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
         return NULL;
     }
-  /*  attribute->ops->free = axis2_om_attribute_impl_free;
-    attribute->ops->get_qname = axis2_om_attribute_impl_get_qname;
-    attribute->ops->serialize = axis2_om_attribute_impl_serialize; */
+    attribute->om_attribute.ops->free = axis2_om_attribute_free;
+    attribute->om_attribute.ops->get_qname = axis2_om_attribute_get_qname;
+    attribute->om_attribute.ops->serialize = axis2_om_attribute_serialize; 
+    
+    attribute->om_attribute.ops->get_localname = axis2_om_attribute_get_localname;
+    attribute->om_attribute.ops->get_value = axis2_om_attribute_get_value;
+    attribute->om_attribute.ops->get_namespace = axis2_om_attribute_get_namespace;
+    
+    attribute->om_attribute.ops->set_localname = axis2_om_attribute_set_localname;
+    attribute->om_attribute.ops->set_namespace = axis2_om_attribute_set_namespace;
+    attribute->om_attribute.ops->set_value = axis2_om_attribute_set_value;
+    
     return &(attribute->om_attribute);
 }
 
@@ -214,13 +223,13 @@ axis2_om_attribute_serialize (axis2_om_attribute_t *om_attribute,
     attribute = AXIS2_INTF_TO_IMPL(om_attribute);
         
     if (attribute->ns && AXIS2_OM_NAMESPACE_GET_URI(attribute->ns,env) && 
-        AXIS2_OM_NAMESPACE_GET_URI(attribute->ns,env))
+        AXIS2_OM_NAMESPACE_GET_PREFIX(attribute->ns,env))
     {    
         status = axis2_om_output_write (om_output, env, AXIS2_OM_ATTRIBUTE, 4,
                                         attribute->localname,
                                         attribute->value,
                                         AXIS2_OM_NAMESPACE_GET_URI(attribute->ns, env),
-                                        AXIS2_OM_NAMESPACE_GET_URI(attribute->ns, env));
+                                        AXIS2_OM_NAMESPACE_GET_PREFIX(attribute->ns, env));
     }                                   
     else if (attribute->ns && AXIS2_OM_NAMESPACE_GET_URI(attribute->ns,env))
     {
@@ -309,4 +318,4 @@ axis2_om_attribute_set_namespace(axis2_om_attribute_t *om_attribute,
     }
     AXIS2_INTF_TO_IMPL(om_attribute)->ns = om_namespace;
     return AXIS2_SUCCESS;
-}                                 
+}
