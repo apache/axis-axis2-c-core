@@ -168,7 +168,9 @@ extern "C"
         /** Array list index out of bounds */
         AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
         /** Both before and after handlers cannot be the same */
-        AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME
+        AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME,
+        /** First handler of phase already set */
+        AXIS2_ERROR_PHASE_FIRST_HANDLER_ALREADY_SET
     };
 
 /** @} */
