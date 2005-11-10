@@ -102,10 +102,8 @@ extern "C"
  */
 AXIS2_DECLARE(axis2_handler_desc_t*) axis2_handler_desc_create(axis2_env_t **env, axis2_qname_t *qname);
     
-#define AXIS2_HANDLER_DESC_GET_BEFORE(handler_desc, env) ((handler_desc)->ops->get_before(handler_desc, env))
-#define AXIS2_HANDLER_DESC_SET_BEFORE(handler_desc, env, before) ((handler_desc)->ops->set_before(handler_desc, env, before))
-#define AXIS2_HANDLER_DESC_GET_AFTER(handler_desc, env) ((handler_desc)->ops->get_after(handler_desc, env))
-#define AXIS2_HANDLER_DESC_SET_AFTER(handler_desc, env, after) ((handler_desc)->ops->set_after(handler_desc, env, after))
+#define AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env) ((handler_desc)->ops->get_rules(handler_desc, env))
+#define AXIS2_HANDLER_DESC_SET_RULES(handler_desc, env, rules) ((handler_desc)->ops->set_rules(handler_desc, env, rules))
 #define AXIS2_HANDLER_DESC_GET_QNAME(handler_desc, env) ((handler_desc)->ops->get_qname(handler_desc, env))
 #define AXIS2_HANDLER_DESC_SET_QNAME(handler_desc, env, name) ((handler_desc)->ops->set_qname(handler_desc, env, name))
 #define AXIS2_HANDLER_DESC_GET_PARAM(handler_desc, env, name) ((handler_desc)->ops->get_param(handler_desc, env, name))

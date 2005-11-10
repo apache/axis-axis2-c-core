@@ -166,7 +166,9 @@ extern "C"
         /** Wsdl operation accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_WSDL_OPERATION,
         /** Array list index out of bounds */
-        AXIS2_ERROR_INDEX_OUT_OF_BOUNDS
+        AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
+        /** Both before and after handlers cannot be the same */
+        AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME
     };
 
 /** @} */
