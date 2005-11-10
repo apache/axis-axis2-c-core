@@ -143,7 +143,7 @@ axis2_om_document_free (axis2_om_document_t *om_document,
 {
     axis2_om_document_impl_t *document = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(document, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(om_document, env, AXIS2_FAILURE);
     document = AXIS2_INTF_TO_IMPL(om_document);
     
     if (document->char_set_encoding)

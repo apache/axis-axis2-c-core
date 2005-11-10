@@ -243,7 +243,7 @@ axis2_om_node_create (axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL axis2_om_node_free(axis2_om_node_t *om_node,axis2_env_t **env)
 {
-    printf("node free");
+    
     axis2_om_node_t *child_node = NULL;
       
     AXIS2_FUNC_PARAM_CHECK(om_node,env,AXIS2_FAILURE);
@@ -262,7 +262,7 @@ axis2_status_t AXIS2_CALL axis2_om_node_free(axis2_om_node_t *om_node,axis2_env_
     switch (AXIS2_INTF_TO_IMPL(om_node)->node_type)
     {
     case AXIS2_OM_ELEMENT:
-        printf(" om element free");
+        
         AXIS2_OM_ELEMENT_FREE((axis2_om_element_t*)(AXIS2_INTF_TO_IMPL(om_node)->data_element), env);
         break;
 
@@ -333,15 +333,16 @@ axis2_om_node_detach (axis2_om_node_t *om_node,
     AXIS2_FUNC_PARAM_CHECK(om_node, env, NULL);
     
     parent = AXIS2_INTF_TO_IMPL(om_node)->parent;
+    
+    AXIS2_PARAM_CHECK((*env)->error,parent,NULL);
+    
 
-
-
-    if ((AXIS2_INTF_TO_IMPL(om_node)->prev_sibling) == NULL)
+    if (!(AXIS2_INTF_TO_IMPL(om_node)->prev_sibling))
     {
-        AXIS2_INTF_TO_IMPL(om_node)->first_child = AXIS2_INTF_TO_IMPL(om_node)->next_sibling;
+        AXIS2_INTF_TO_IMPL(parent)->first_child = AXIS2_INTF_TO_IMPL(om_node)->next_sibling;
     }
     else
-    {
+    {    
         axis2_om_node_t *prev_sib = NULL;
         prev_sib  = AXIS2_INTF_TO_IMPL(om_node)->prev_sibling;
         if(prev_sib)
@@ -385,7 +386,7 @@ axis2_om_node_set_parent (axis2_om_node_t *om_node,
     /* if a new parent is assigned in  place of existing 
      *  one first the node should  be detached  
      */
-    if(!(AXIS2_INTF_TO_IMPL(om_node)->parent))
+    if((AXIS2_INTF_TO_IMPL(om_node)->parent))
     {
         axis2_om_node_detach(om_node,env);
     }
