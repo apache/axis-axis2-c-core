@@ -171,8 +171,12 @@ extern "C"
         AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME,
         /** First handler of phase already set */
         AXIS2_ERROR_PHASE_FIRST_HANDLER_ALREADY_SET,
-        /** Invalid first handler of phase  */
-        AXIS2_ERROR_INVALID_PHASE_FIRST_HANDLER
+        /** Invalid first handler for phase  */
+        AXIS2_ERROR_INVALID_PHASE_FIRST_HANDLER,
+        /** Last handler of phase already set */
+        AXIS2_ERROR_PHASE_LAST_HANDLER_ALREADY_SET,
+        /** Invalid last handler for phase  */
+        AXIS2_ERROR_INVALID_PHASE_LAST_HANDLER
     };
 
 /** @} */
