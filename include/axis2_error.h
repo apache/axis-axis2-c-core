@@ -180,7 +180,9 @@ extern "C"
         /** Only one handler allowed for phase, adding handler is not allowed  */
         AXIS2_ERROR_PHASE_ADD_HANDLER_INVALID,
         /** Invalid handler rules  */
-        AXIS2_ERROR_INVALID_HANDLER_RULES
+        AXIS2_ERROR_INVALID_HANDLER_RULES,
+        /** Invalid handler state */
+        AXIS2_ERROR_INVALID_HANDLER_STATE
     };
 
 /** @} */
