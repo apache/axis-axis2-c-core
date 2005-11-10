@@ -178,7 +178,9 @@ extern "C"
         /** Invalid last handler for phase  */
         AXIS2_ERROR_INVALID_PHASE_LAST_HANDLER,
         /** Only one handler allowed for phase, adding handler is not allowed  */
-        AXIS2_ERROR_PHASE_ADD_HANDLER_INVALID
+        AXIS2_ERROR_PHASE_ADD_HANDLER_INVALID,
+        /** Invalid handler rules  */
+        AXIS2_ERROR_INVALID_HANDLER_RULES
     };
 
 /** @} */
