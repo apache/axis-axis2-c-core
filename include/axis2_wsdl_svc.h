@@ -73,21 +73,21 @@ struct axis2_wsdl_svc_ops_s
                                             axis2_env_t **env,
                                             axis2_qname_t *qname);
     
-    axis2_hash_t * (AXIS2_CALL *axis2_wsdl_svc_get_component_properties) (
+    axis2_hash_t * (AXIS2_CALL *get_component_properties) (
                                                     axis2_wsdl_svc_t *wsdl_svc,
                                                     axis2_env_t **env);
 
-    axis2_status_t (AXIS2_CALL *axis2_wsdl_svc_set_component_properties) (
+    axis2_status_t (AXIS2_CALL *set_component_properties) (
                                                     axis2_wsdl_svc_t *wsdl_svc,
                                                     axis2_env_t **env,
                                                     axis2_hash_t *properties);
 
-    axis2_wsdl_component_t * (AXIS2_CALL *axis2_wsdl_svc_get_component_property) (
+    axis2_wsdl_component_t * (AXIS2_CALL *get_component_property) (
                                                     axis2_wsdl_svc_t *wsdl_svc,
                                                     axis2_env_t **env,
                                                     const axis2_char_t *key);
 
-    axis2_status_t (AXIS2_CALL *axis2_wsdl_svc_set_component_property) (
+    axis2_status_t (AXIS2_CALL *set_component_property) (
                                                     axis2_wsdl_svc_t *wsdl_svc,
                                                     axis2_env_t **env,
                                                     const void *key,
@@ -113,16 +113,28 @@ axis2_wsdl_svc_create (axis2_env_t **env);
 
 /**************************** Start of function macros ************************/
 
-#define AXIS2_WSDL_SERVICE_FREE(wsdl_svc, env) ((wsdl_svc->ops)->free (wsdl_svc, \
+#define AXIS2_WSDL_SVC_FREE(wsdl_svc, env) ((wsdl_svc->ops)->free (wsdl_svc, \
 		env))
 
-#define AXIS2_WSDL_SERVICE_GET_NAME(wsdl_svc, env) \
+#define AXIS2_WSDL_SVC_GET_NAME(wsdl_svc, env) \
         ((wsdl_svc->ops)->get_name (wsdl_svc, env))
 
-#define AXIS2_WSDL_SERVICE_SET_NAME(wsdl_svc, env, qname) \
+#define AXIS2_WSDL_SVC_SET_NAME(wsdl_svc, env, qname) \
         ((wsdl_svc->ops)->set_name (wsdl_svc, env, qname))
-	
-		
+
+#define AXIS2_WSDL_SVC_GET_COMPONENT_PROPERTIES(wsdl_svc, env) \
+        ((wsdl_svc->ops)->get_component_properties(wsdl_svc, env))
+
+#define AXIS2_WSDL_SVC_SET_COMPONENT_PROPERTIES(wsdl_svc, env, properties) \
+        ((wsdl_svc->ops)->set_component_properties(wsdl_svc, env, properties))
+
+#define AXIS2_WSDL_SVC_GET_COMPONENT_PROPERTY(wsdl_svc, env, key) \
+        ((wsdl_svc->ops)->get_component_property(wsdl_svc, env, key))
+
+#define AXIS2_WSDL_SVC_SET_COMPONENT_PROPERTY(wsdl_svc, env, key, value) \
+        ((wsdl_svc->ops)->set_component_property(wsdl_svc, env, key, value))
+
+
 /**************************** End of function macros **************************/
 /** @} */
 #ifdef __cplusplus

@@ -99,7 +99,7 @@ struct axis2_wsdl_operation_ops_s
     axis2_status_t (AXIS2_CALL *set_style) (
                                         axis2_wsdl_operation_t *wsdl_operation,
                                         axis2_env_t **env,
-                                        const axis2_char_t *style);
+                                        axis2_char_t *style);
     
     /**
      * Get style
@@ -165,29 +165,29 @@ AXIS2_DECLARE(axis2_wsdl_operation_t *) axis2_wsdl_operation_create (
 #define AXIS2_WSDL_OPERATION_FREE(wsdl_operation, env) \
 		((wsdl_operation->ops)->free (wsdl_operation, env))
 	
-#define AXIS2_WSDL_OPERATION_GET_MSG_EXCHANGE_PATTERN(wsdl_operation, env, pattern) \
-		((wsdl_operation->ops)->get_msg_exchange_pattern(wsdl_operation, env, pattern))
+#define AXIS2_WSDL_OPERATION_GET_MSG_EXCHANGE_PATTERN(wsdl_operation, env) \
+		((wsdl_operation->ops)->get_msg_exchange_pattern(wsdl_operation, env))
 		
 #define AXIS2_WSDL_OPERATION_SET_MSG_EXCHANGE_PATTERN(wsdl_operation, env, pattern) \
 		((wsdl_operation->ops)->set_msg_exchange_pattern(wsdl_operation, env, pattern))
 		
-#define AXIS2_WSDL_OPERATION_GET_NAME(wsdl_operation, env, name) \
-		((wsdl_operation->ops)->get_name(wsdl_operation, env, name))
+#define AXIS2_WSDL_OPERATION_GET_NAME(wsdl_operation, env) \
+		((wsdl_operation->ops)->get_name(wsdl_operation, env))
 		
 #define AXIS2_WSDL_OPERATION_SET_NAME(wsdl_operation, env, name) \
 		((wsdl_operation->ops)->set_name(wsdl_operation, env, name))
 		
 #define AXIS2_WSDL_OPERATION_SET_STYLE(wsdl_operation, env, style) \
-		((wsdl_operation->ops)->get_style(wsdl_operation, env, style))
-		
-#define AXIS2_WSDL_OPERATION_GET_STYLE(wsdl_operation, env, style) \
 		((wsdl_operation->ops)->set_style(wsdl_operation, env, style))
+		
+#define AXIS2_WSDL_OPERATION_GET_STYLE(wsdl_operation, env) \
+		((wsdl_operation->ops)->get_style(wsdl_operation, env))
 		
 #define AXIS2_WSDL_OPERATION_SET_COMPONENT_PROPERTIES(wsdl_operation, env, properties) \
 		((wsdl_operation->ops)->set_component_properties(wsdl_operation, env, properties))
 		
-#define AXIS2_WSDL_OPERATION_GET_COMPONENT_PROPERTIES(wsdl_operation, env, properties) \
-		((wsdl_operation->ops)->get_component_properties(wsdl_operation, env, properties))
+#define AXIS2_WSDL_OPERATION_GET_COMPONENT_PROPERTIES(wsdl_operation, env) \
+		((wsdl_operation->ops)->get_component_properties(wsdl_operation, env))
 
 #define AXIS2_WSDL_OPERATION_SET_COMPONENT_PROPERTY(wsdl_operation, env, key, value) \
 		((wsdl_operation->ops)->set_component_property(wsdl_operation, env, key, value))

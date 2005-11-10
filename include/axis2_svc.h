@@ -98,6 +98,26 @@ struct axis2_svc_ops_s
 	axis2_bool_t (AXIS2_CALL *is_param_locked) (axis2_svc_t *svc, 
                                                 axis2_env_t **env,
 		                                        const axis2_char_t *param_name);
+
+    axis2_hash_t * (AXIS2_CALL *get_component_properties) (
+                                                    axis2_svc_t *svc,
+                                                    axis2_env_t **env);
+
+    axis2_status_t (AXIS2_CALL *set_component_properties) (
+                                                    axis2_svc_t *svc,
+                                                    axis2_env_t **env,
+                                                    axis2_hash_t *properties);
+
+    axis2_wsdl_component_t * (AXIS2_CALL *get_component_property) (
+                                                    axis2_svc_t *svc,
+                                                    axis2_env_t **env,
+                                                    const axis2_char_t *key);
+
+    axis2_status_t (AXIS2_CALL *set_component_property) (
+                                                    axis2_svc_t *svc,
+                                                    axis2_env_t **env,
+                                                    const void *key,
+                                                    void *value);
 };
 
 /** 
@@ -160,7 +180,18 @@ axis2_svc_create_with_qname (axis2_env_t **env,
 #define AXIS2_SVC_IS_PARAM_LOCKED(svc, env, param_name) \
         (svc->ops->is_parameter_locked(svc, env, param_name));
 				
+#define AXIS2_SVC_GET_COMPONENT_PROPERTIES(svc, env) \
+        ((svc->ops)->get_component_properties(svc, env))
 
+#define AXIS2_SVC_SET_COMPONENT_PROPERTIES(svc, env, properties) \
+        ((svc->ops)->set_component_properties(svc, env, properties))
+
+#define AXIS2_SVC_GET_COMPONENT_PROPERTY(svc, env, key) \
+        ((svc->ops)->get_component_property(svc, env, key))
+
+#define AXIS2_SVC_SET_COMPONENT_PROPERTY(svc, env, key, value) \
+        ((svc->ops)->set_component_property(svc, env, key, value))
+        
 /**************************** End of function macros **************************/
 
 /** @} */

@@ -24,6 +24,7 @@
 
 #include <axis2_core.h>
 #include <axis2_param_container.h>
+#include <axis2_wsdl_operation.h>
 #include <axis2_svc.h>
 #include <axis2_msg_recv.h>
 
@@ -90,13 +91,17 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops_s
 	struct axis2_svc_s *(AXIS2_CALL *get_parent) (axis2_operation_t *operation, 
                                             axis2_env_t **env);
 
+    axis2_status_t (AXIS2_CALL *set_name) (axis2_operation_t *operation, 
+                                            axis2_env_t **env,
+                                            axis2_qname_t *qname);
+    
 	axis2_qname_t *(AXIS2_CALL *get_name) (axis2_operation_t *operation, 
                                             axis2_env_t **env);
 
 	axis2_status_t (AXIS2_CALL *set_msg_exchange_pattern) 
                                                 (axis2_operation_t *operation, 
                                                 axis2_env_t **env,
-                                                axis2_char_t *pattern);
+                                                const axis2_char_t *pattern);
 
 	axis2_char_t *(AXIS2_CALL *get_msg_exchange_pattern)
                                                 (axis2_operation_t *operation, 
@@ -108,6 +113,13 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops_s
 
 	struct axis2_msg_recv_s *(AXIS2_CALL *get_msg_recv) (axis2_operation_t *operation, 
                                                     axis2_env_t **env);
+    
+    axis2_char_t *(AXIS2_CALL *get_style) (axis2_operation_t *operation,
+                                            axis2_env_t **env);
+
+    axis2_status_t  (AXIS2_CALL *set_style) (axis2_operation_t *operation,
+                                                axis2_env_t **env,
+                                                axis2_char_t *style);
 };
 
 /** 
@@ -159,6 +171,15 @@ axis2_operation_create_with_name (axis2_env_t **env,
 #define AXIS2_OPERATION_GET_PARENT(operation, env) \
 		((operation->ops)->get_parent (operation, env));
 
+#define AXIS2_OPERATION_SET_MSG_RECEIVER(operation, env, msg_recv) \
+        ((operation->ops)->set_msg_recv (operation, env, msg_recv));
+
+#define AXIS2_OPERATION_GET_MSG_RECEIVER(operation, env) \
+		((operation->ops)->get_msg_recv (operation, env));
+
+#define AXIS2_OPERATION_SET_NAME(operation, env, qname) \
+		((operation->ops)->set_name (operation, env, qname));
+        
 #define AXIS2_OPERATION_GET_NAME(operation, env) \
 		((operation->ops)->get_name (operation, env));
 
@@ -168,13 +189,13 @@ axis2_operation_create_with_name (axis2_env_t **env,
         msg_exchange_pattern));
 
 #define AXIS2_OPERATION_GET_MSG_EXCHANGE_PATTERN(operation, env) \
-		((operation->ops)->get_msg_exchange_pattern (operation, env));
+		((operation->ops)->get_msg_exchange_pattern (operation, env));        
 
-#define AXIS2_OPERATION_SET_MSG_RECEIVER(operation, env, msg_recv) \
-        ((operation->ops)->set_msg_recv (operation, env, msg_recv));
-
-#define AXIS2_OPERATION_GET_MSG_RECEIVER(operation, env) \
-		((operation->ops)->get_msg_recv (operation, env));
+#define AXIS2_OPERATION_GET_STYLE(operation, env) \
+		((operation->ops)->get_style (operation, env));
+        
+#define AXIS2_OPERATION_SET_STYLE(operation, env, style) \
+		((operation->ops)->set_style (operation, env, style));        
 
 /************************** End of function macros ****************************/
 

@@ -15,5 +15,6 @@ prgbin_PROGRAMS = description_test
 description_test_SOURCES = main.c
 description_test_LDADD   =  $(LDFLAGS) libtest_description.la  \
                     -L$(top_builddir)/modules/core/description/src/.libs -laxis2_description \
-                    -L$(top_builddir)/modules/util/src/.libs -laxis2_util
+                    -L$(top_builddir)/modules/util/src/.libs -laxis2_util \
+                    -L$(top_builddir)/modules/wsdl/src/.libs -laxis2_wsdl
 

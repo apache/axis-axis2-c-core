@@ -67,7 +67,27 @@ axis2_svc_get_params (axis2_svc_t *svc, axis2_env_t **env);
 axis2_bool_t AXIS2_CALL
 axis2_svc_is_param_locked (axis2_svc_t *svc, axis2_env_t **env,
 		                    const axis2_char_t *param_name);
-		
+
+axis2_hash_t * AXIS2_CALL
+axis2_svc_get_component_properties(axis2_svc_t *svc,
+                                        axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_svc_set_component_properties(axis2_svc_t *svc,
+                                        axis2_env_t **env,
+                                        axis2_hash_t *properties);
+
+axis2_wsdl_component_t * AXIS2_CALL
+axis2_svc_get_component_property(axis2_svc_t *svc,
+                                        axis2_env_t **env,
+                                        const axis2_char_t *key);
+
+axis2_status_t AXIS2_CALL
+axis2_svc_set_component_property (axis2_svc_t *svc,
+                                        axis2_env_t **env,
+                                        const void *key,
+                                        void *value);
+
 /************************* End of function headers ***************************/
 
 axis2_svc_t * AXIS2_CALL
@@ -102,7 +122,11 @@ axis2_svc_create (axis2_env_t **env)
 	svc_impl->svc.ops->add_param = axis2_svc_add_param;
 	svc_impl->svc.ops->get_param = axis2_svc_get_param;
 	svc_impl->svc.ops->get_params = axis2_svc_get_params;
-	
+    svc_impl->svc.ops->get_component_properties = axis2_svc_get_component_properties;
+    svc_impl->svc.ops->set_component_properties = axis2_svc_set_component_properties;
+	svc_impl->svc.ops->get_component_property = axis2_svc_get_component_property;
+    svc_impl->svc.ops->set_component_property = axis2_svc_set_component_property;
+    
 	axis2_param_container_t *param_container = (axis2_param_container_t *)
 		axis2_param_container_create(env);		
 	if(NULL == param_container)
@@ -293,9 +317,8 @@ axis2_svc_set_name (const axis2_svc_t *svc,
                     axis2_qname_t *qname)
 {
 	AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FAILURE);
-    AXIS2_WSDL_SERVICE_SET_NAME(AXIS2_INTF_TO_IMPL(svc)->wsdl_svc, env, qname);
     
-    return AXIS2_SUCCESS;
+    return AXIS2_WSDL_SVC_SET_NAME(AXIS2_INTF_TO_IMPL(svc)->wsdl_svc, env, qname);
 }
 
 axis2_qname_t * AXIS2_CALL
@@ -303,7 +326,7 @@ axis2_svc_get_name (const axis2_svc_t *svc,
                     axis2_env_t **env)
 {
 	AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
-    return AXIS2_WSDL_SERVICE_GET_NAME(AXIS2_INTF_TO_IMPL(svc)->wsdl_svc, env);
+    return AXIS2_WSDL_SVC_GET_NAME(AXIS2_INTF_TO_IMPL(svc)->wsdl_svc, env);
 }
 
 axis2_status_t AXIS2_CALL
@@ -379,4 +402,50 @@ axis2_svc_is_param_locked (axis2_svc_t *svc,
 	return AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED
 		(AXIS2_INTF_TO_IMPL(svc)->param_container, env, param_name); 
 	
+}
+
+axis2_hash_t * AXIS2_CALL
+axis2_svc_get_component_properties(axis2_svc_t *svc,
+                                        axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
+    
+    return AXIS2_WSDL_SVC_GET_COMPONENT_PROPERTIES(AXIS2_INTF_TO_IMPL(svc)->
+        wsdl_svc, env);
+}
+
+axis2_status_t AXIS2_CALL
+axis2_svc_set_component_properties(axis2_svc_t *svc,
+                                        axis2_env_t **env,
+                                        axis2_hash_t *properties)
+{
+    AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FAILURE);
+    
+    return AXIS2_WSDL_SVC_SET_COMPONENT_PROPERTIES(AXIS2_INTF_TO_IMPL(svc)->
+        wsdl_svc, env, properties);
+}
+
+axis2_wsdl_component_t * AXIS2_CALL
+axis2_svc_get_component_property(axis2_svc_t *svc,
+                                        axis2_env_t **env,
+                                        const axis2_char_t *key)
+{
+    AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, key, NULL);
+    
+    return AXIS2_WSDL_SVC_GET_COMPONENT_PROPERTY(AXIS2_INTF_TO_IMPL(svc)->
+        wsdl_svc, env, key); 
+}
+
+axis2_status_t AXIS2_CALL
+axis2_svc_set_component_property (axis2_svc_t *svc,
+                                        axis2_env_t **env,
+                                        const void *key,
+                                        void *value)
+{
+    AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, key, AXIS2_FAILURE);
+    
+    return AXIS2_WSDL_SVC_SET_COMPONENT_PROPERTY(AXIS2_INTF_TO_IMPL(svc)->
+        wsdl_svc, env, (axis2_char_t *) key, value);
 }

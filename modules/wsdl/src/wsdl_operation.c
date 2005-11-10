@@ -64,7 +64,7 @@ axis2_wsdl_operation_get_name (axis2_wsdl_operation_t *wsdl_operation,
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_operation_set_style (axis2_wsdl_operation_t *wsdl_operation,
                                     axis2_env_t **env,
-		                            const axis2_char_t *style);
+		                            axis2_char_t *style);
 
 axis2_char_t * AXIS2_CALL 
 axis2_wsdl_operation_get_style (axis2_wsdl_operation_t *wsdl_operation,
@@ -244,16 +244,12 @@ axis2_wsdl_operation_get_name (axis2_wsdl_operation_t *wsdl_operation,
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_operation_set_style (axis2_wsdl_operation_t *wsdl_operation,
                                     axis2_env_t **env,
-		                            const axis2_char_t *style)
+		                            axis2_char_t *style)
 {
     AXIS2_FUNC_PARAM_CHECK(wsdl_operation, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, style, AXIS2_FAILURE);
     
-    axis2_char_t *tempstyle = AXIS2_STRDUP(style, env);
-    if(NULL == tempstyle)
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-    
-	AXIS2_INTF_TO_IMPL(wsdl_operation)->style = tempstyle;
+	AXIS2_INTF_TO_IMPL(wsdl_operation)->style = style;
 	
 	return AXIS2_SUCCESS;		
 }
