@@ -170,7 +170,9 @@ extern "C"
         /** Both before and after handlers cannot be the same */
         AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME,
         /** First handler of phase already set */
-        AXIS2_ERROR_PHASE_FIRST_HANDLER_ALREADY_SET
+        AXIS2_ERROR_PHASE_FIRST_HANDLER_ALREADY_SET,
+        /** Invalid first handler of phase  */
+        AXIS2_ERROR_INVALID_PHASE_FIRST_HANDLER
     };
 
 /** @} */
