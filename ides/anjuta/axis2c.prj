@@ -55,7 +55,7 @@ preferences.build.option.autosave=0
 preferences.make=make
 preferences.build.option.keep.going=1
 preferences.build.option.warn.undef=0
-preferences.autoformat.custom.style= -i8 -sc -bli0 -bl0 -cbi0 -ss
+preferences.autoformat.custom.style=-nbad -bap -nbc -bbo -bl -bli0 -bls -ncdb -nce -cp1 -cs -di2 -ndj -nfc1 -nfca -hnl -i4 -ip5 -lp -pcs -nprs -psl -saf -sai -saw -nsc -nsob -ts4 -nut -nbfda
 preferences.indent.opening=0
 preferences.autoformat.disable=1
 preferences.indent.automatic=1
@@ -125,7 +125,9 @@ module.include.files=\
 	include/axis2_wsdl_svc.h\
 	include/axis2_flow.h\
 	include/axis2_flow_container.h\
-	modules/util/src/axis2_array_list.h
+	modules/util/src/axis2_array_list.h\
+	modules/util/test/util_array_list_test.h\
+	include/axis2_handler_desc.h
 
 module.source.name=.
 module.source.type=
@@ -181,7 +183,10 @@ module.source.files=\
 	modules/wsdl/src/wsdl_svc.c\
 	modules/core/description/src/flow.c\
 	modules/core/description/src/flow_container.c\
-	modules/util/src/array_list.c
+	modules/util/src/array_list.c\
+	modules/util/test/util_array_list_test.c\
+	modules/core/description/src/handler_desc.c\
+	modules/core/engine/src/handler.c
 
 module.pixmap.name=.
 module.pixmap.type=
