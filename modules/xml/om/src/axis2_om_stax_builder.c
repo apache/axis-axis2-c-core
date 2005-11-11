@@ -324,13 +324,13 @@ axis2_om_stax_builder_discard_current_element (axis2_om_stax_builder_t *om_stax_
     prev_node = AXIS2_OM_NODE_GET_PREVIOUS_SIBLING(element, env);
     if (prev_node)
     {
-        AXIS2_OM_NODE_FREE(AXIS2_OM_NODE_GET_NEXT_SIBLING(prev_node, env), env);
+        AXIS2_OM_NODE_FREE_TREE(AXIS2_OM_NODE_GET_NEXT_SIBLING(prev_node, env), env);
         AXIS2_OM_NODE_SET_NEXT_SIBLING(prev_node, env, NULL);        
     }
     else
     {
         parent = AXIS2_OM_NODE_GET_PARENT(element, env);
-        AXIS2_OM_NODE_FREE(AXIS2_OM_NODE_GET_FIRST_CHILD(parent, env), env);
+        AXIS2_OM_NODE_FREE_TREE(AXIS2_OM_NODE_GET_FIRST_CHILD(parent, env), env);
         AXIS2_OM_NODE_SET_FIRST_CHILD(parent, env, NULL);
         builder->lastnode = parent;
     }
@@ -439,7 +439,7 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
         
         /*
         if (AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(builder->document, env))
-             AXIS2_OM_NODE_FREE (
+             AXIS2_OM_NODE_FREE_TREE(
                 AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(builder->document, env),env);*/
                 
         AXIS2_OM_DOCUMENT_SET_ROOT_ELEMENT(builder->document, env, element_node);

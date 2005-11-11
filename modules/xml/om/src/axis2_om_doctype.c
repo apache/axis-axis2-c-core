@@ -68,7 +68,7 @@ axis2_om_doctype_create (axis2_env_t **env,
                                              
     if (!doctype)
     {
-        AXIS2_OM_NODE_FREE ( *node, env);
+        AXIS2_FREE ((*env)->allocator, (*node));
         AXIS2_ERROR_SET((*env)->error , AXIS2_ERROR_NO_MEMORY, NULL);
     }
 
@@ -80,7 +80,7 @@ axis2_om_doctype_create (axis2_env_t **env,
         if (!doctype->value)
         {
             AXIS2_FREE ((*env)->allocator, doctype);
-            AXIS2_OM_NODE_FREE (*node, env);
+            AXIS2_FREE ((*env)->allocator, (*node));
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         }
     }
@@ -103,7 +103,7 @@ axis2_om_doctype_create (axis2_env_t **env,
     {
         AXIS2_FREE((*env)->allocator, doctype);
         AXIS2_FREE ((*env)->allocator, doctype->value);
-        AXIS2_OM_NODE_FREE( *node, env);
+        AXIS2_FREE ((*env)->allocator, *node);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
 
@@ -148,5 +148,3 @@ axis2_om_doctype_get_value(axis2_om_doctype_t *om_doctype,
     AXIS2_FUNC_PARAM_CHECK(om_doctype, env, NULL);
     return AXIS2_INTF_TO_IMPL(om_doctype)->value;
 }
-
-

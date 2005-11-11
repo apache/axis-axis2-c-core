@@ -21,8 +21,8 @@
 /*************************** function prototypes ******************************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_om_node_free (axis2_om_node_t * om_node,
-                    axis2_env_t **env);
+axis2_om_node_free_tree (axis2_om_node_t * om_node,
+                        axis2_env_t **env);
 
 
 axis2_status_t AXIS2_CALL 
@@ -192,7 +192,7 @@ axis2_om_node_create (axis2_env_t **env)
     }
     /* assign fucn pointers */
     node->om_node.ops->add_child = axis2_om_node_add_child;
-    node->om_node.ops->free = axis2_om_node_free;
+    node->om_node.ops->free = axis2_om_node_free_tree;
     node->om_node.ops->detach = axis2_om_node_detach;
     
     node->om_node.ops->insert_sibling_after = axis2_om_node_insert_sibling_after;
@@ -238,7 +238,8 @@ axis2_om_node_create (axis2_env_t **env)
  *  before calling this function first free 
 */ 
 
-axis2_status_t AXIS2_CALL axis2_om_node_free(axis2_om_node_t *om_node,axis2_env_t **env)
+axis2_status_t AXIS2_CALL axis2_om_node_free_tree(axis2_om_node_t *om_node,
+                                                  axis2_env_t **env)
 {
     
     axis2_om_node_t *child_node = NULL;
@@ -252,7 +253,7 @@ axis2_status_t AXIS2_CALL axis2_om_node_free(axis2_om_node_t *om_node,axis2_env_
         {
             
             child_node = AXIS2_OM_NODE_DETACH (AXIS2_INTF_TO_IMPL(om_node)->first_child, env);
-            AXIS2_OM_NODE_FREE ( child_node , env);
+            AXIS2_OM_NODE_FREE_TREE ( child_node , env);
         }
     }
     

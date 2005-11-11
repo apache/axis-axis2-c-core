@@ -77,7 +77,7 @@ axis2_om_processing_instruction_create (axis2_env_t **env,
                               
     if (!processing_instruction)
     {
-        AXIS2_OM_NODE_FREE (*node, env);
+        AXIS2_FREE ((*env)->allocator,(*node));
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
     processing_instruction->value = NULL;
@@ -200,5 +200,3 @@ axis2_om_processing_instruction_get_target(axis2_om_processing_instruction_t *om
     AXIS2_FUNC_PARAM_CHECK(om_pi, env, NULL);
     return AXIS2_INTF_TO_IMPL(om_pi)->target;
 }
-
-

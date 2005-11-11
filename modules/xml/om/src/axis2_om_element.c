@@ -143,7 +143,7 @@ axis2_om_element_create (axis2_env_t **env,
 
     if (!element)
     {
-        AXIS2_OM_NODE_FREE ((*node), env);
+        AXIS2_FREE ((*env)->allocator, (*node));
         AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
         AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
         return NULL;
@@ -157,7 +157,7 @@ axis2_om_element_create (axis2_env_t **env,
     if (!element->localname)
     {
         AXIS2_FREE ((*env)->allocator, element);
-        AXIS2_OM_NODE_FREE ( (*node), env);
+        AXIS2_FREE ((*env)->allocator, (*node));
         AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
         AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
         return NULL;
@@ -194,7 +194,7 @@ axis2_om_element_create (axis2_env_t **env,
     {
         AXIS2_FREE ((*env)->allocator, element->localname);
         AXIS2_FREE ((*env)->allocator, element);
-        AXIS2_OM_NODE_FREE ( (*node), env);
+        AXIS2_FREE ((*env)->allocator,(*node));
         AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
         AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
         return NULL;

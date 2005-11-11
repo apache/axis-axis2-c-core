@@ -178,7 +178,7 @@ test_om_serialize ()
         printf ("\naxis2_om_node_serialize success\n");
     /* end serializing stuff */
 
-     AXIS2_OM_NODE_FREE(node1,&environment);
+     AXIS2_OM_NODE_FREE_TREE(node1,&environment);
      AXIS2_FREE(environment->allocator,om_output);
      printf ("\nDONE\n");
 

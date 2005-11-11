@@ -66,7 +66,7 @@ axis2_om_comment_create(axis2_env_t **env,
                                              sizeof (axis2_om_comment_impl_t));
     if (!comment)
     {
-        AXIS2_OM_NODE_FREE (*node, env);
+        AXIS2_FREE ((*env)->allocator, (*node));
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
 
@@ -78,7 +78,7 @@ axis2_om_comment_create(axis2_env_t **env,
         if (!comment->value)
         {
             AXIS2_FREE ((*env)->allocator,comment);
-            AXIS2_OM_NODE_FREE (*node, env);
+            AXIS2_FREE ((*env)->allocator, (*node));
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         }
     }
