@@ -1,5 +1,1 @@
-if COND_GUTHTHILA
-  MAYBE_GUTHTHILA = guththila
-endif
-
-SUBDIRS = $(MAYBE_GUTHTHILA) om soap
+SUBDIRS = om soap

@@ -1,0 +1,8 @@
+if COND_GUTHTHILA
+  MAYBE_GUTHTHILA = guththila
+endif
+if COND_LIBXML2
+  MAYBE_LIBXML2 = libxml2
+endif
+
+SUBDIRS = src test $(MAYBE_GUTHTHILA) $(MAYBE_LIBXML2)
