@@ -1,1 +1,1 @@
-SUBDIRS = om soap
+SUBDIRS = om soap guththila
