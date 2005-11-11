@@ -9,5 +9,5 @@ if COND_TEST
 endif
 
 #SUBDIRS = util common xml core wsdl test
-SUBDIRS = util common $(MAYBE_XML) $(MAYBE_CORE) wsdl $(MAYBE_TEST)
+SUBDIRS = util common $(MAYBE_XML) wsdl $(MAYBE_CORE) $(MAYBE_TEST)
 #SUBDIRS = util common test

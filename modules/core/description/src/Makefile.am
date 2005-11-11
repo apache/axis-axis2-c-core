@@ -7,7 +7,9 @@ libaxis2_description_la_SOURCES = param_container.c \
                             param.c \
                             svc_grp.c \
                             phase_rule.c \
-                            handler_desc.c
+                            handler_desc.c \
+                            flow.c \
+                            flow_container.c
 
 libaxis2_description_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
