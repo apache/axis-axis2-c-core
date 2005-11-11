@@ -100,9 +100,6 @@ test_om_build (char *file_name)
     AXIS2_OM_NODE_SERIALIZE (node1, &environment , om_output);
     
     AXIS2_FREE (environment->allocator, om_output);
-    /* AXIS2_OM_NODE_FREE(node1,&environment);    */
-
-    AXIS2_OM_STAX_BUILDER_FREE ( builder, &environment);
     guththila_xml_pull_parser_free (my_guththila_environment, parser);
     
     printf ("\n\n");

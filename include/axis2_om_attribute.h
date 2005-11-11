@@ -159,14 +159,14 @@ extern "C"
 #define AXIS2_OM_ATTRIBUTE_GET_VALUE(om_attribute, env) \
         ((om_attribute)->ops->get_value(om_attribute, env))
                
-#define AXIS2_OM_ATTRIBUTE_SET_NAMESPACE(om_attribute, env) \
-        ((om_attribute)->ops->set_namespace(om_attribute, env))
+#define AXIS2_OM_ATTRIBUTE_SET_NAMESPACE(om_attribute, env,ns) \
+        ((om_attribute)->ops->set_namespace(om_attribute, env,ns))
         
-#define AXIS2_OM_ATTRIBUTE_SET_LOCALNAME(om_attribute, env) \
-        ((om_attribute)->ops->set_localname(om_attribute, env))
+#define AXIS2_OM_ATTRIBUTE_SET_LOCALNAME(om_attribute, env,localname) \
+        ((om_attribute)->ops->set_localname(om_attribute, env,localname))
 
-#define AXIS2_OM_ATTRIBUTE_SET_VALUE(om_attribute, env) \
-        ((om_attribute)->ops->set_value(om_attribute, env))
+#define AXIS2_OM_ATTRIBUTE_SET_VALUE(om_attribute, env,value) \
+        ((om_attribute)->ops->set_value(om_attribute, env,value))
                 
                 
 

@@ -138,27 +138,7 @@ extern "C"
                                                  axis2_env_t **env,
                                                  struct axis2_om_node *parent_node);
 
-       /** 
-        * gets the first child of a given node
-        * @param env Environment. MUST NOT be NULL, if NULL behaviour is undefined.
-        * @param parent_node node whose first child is to be returnd.
-        * @return a pointer to first child if there is one, else returns NULL.
-        *           On error sets the error and returns NULL
-        */
-        struct axis2_om_node *(AXIS2_CALL *iterator_get_first_child)(struct axis2_om_node *om_node,
-                                                                     axis2_env_t **env);
-                                                   
-       /**
-        * Gets the next child of the given node.
-        * This function should only be called after a call to get_first_child function
-        * @param env Environment. MUST NOT be NULL, if NULL behaviour is undefined.
-        * @param parent_node node whose next child is to be returned.
-        *  @return a pointer to next child if there is one, else returns NULL.
-        *           On error sets the error and returns NULL
-        */
-        struct axis2_om_node* (AXIS2_CALL *iterator_get_next_child) (struct axis2_om_node *om_node,
-                                               axis2_env_t **env);
-
+       
        /**
         * Serializes the given node. This operation makes the node go through its children and 
         * serialize them in order.
@@ -269,15 +249,7 @@ AXIS2_DECLARE(axis2_om_node_t *) axis2_om_node_create (axis2_env_t **env);
 /** sets the parent of the given node */
 #define AXIS2_OM_NODE_SET_PARENT(om_node,env,parent_node) \
         ((om_node)->ops->set_parent(om_node,env,parent_node))
-   
-/** gets the first child of the given node */
-#define AXIS2_OM_NODE_ITERATOR_GET_FIRST_CHILD(om_node,env) \
-        ((om_node)->ops->iterator_get_first_child(om_node,env))
-/** gets the next child of the given node */
 
-#define AXIS2_OM_NODE_ITERATOR_GET_NEXT_CHILD(om_node,env) \
-        ((om_node)->ops->iterator_get_next_child(om_node,env))
-/** serializes the given node */
 #define AXIS2_OM_NODE_SERIALIZE(om_node,env, om_output) \
         ((om_node)->ops->serialize(om_node,env,om_output))
    

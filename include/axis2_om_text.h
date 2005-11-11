@@ -118,7 +118,7 @@ extern "C"
 
 #define AXIS2_OM_TEXT_SET_VALUE(om_text, env, value) \
         ((om_text)->ops->set_value(om_text, env, value))
-                        
+              
 
 
 /** @} */
