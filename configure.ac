@@ -63,28 +63,33 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
   want_test=yes
 )
 
-AC_MSG_CHECKING(whether to build guththila)
-AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila. default=yes],
-[ case "${enableval}" in
+AC_MSG_CHECKING(give the xml pull parser you wish to use. eg:libxml2)
+AC_ARG_WITH(pull-parser,
+[  --with-pull-parser[=PARSER]      build the pull parser wrapper library. PARSER=libxml2/guththila],
+[ case "$withval" in
   no)
     AC_MSG_RESULT(no)
-    want_guththila=no
+    want_parser=no
     ;;
   *)
     AC_MSG_RESULT(yes)
-    want_guththila=yes
-    
-    ;;
+
+    dnl pull parser to use
+    want_parser="$withval"
+  
+  ;;
   esac ],
-  AC_MSG_RESULT(yes)
-  want_guththila=yes
+  AC_MSG_RESULT(no)
+  want_parser="guththila"
 )
 
 #Following two lines are temporary and will be removed
 AM_CONDITIONAL([COND_XML], [test "$want_xml" = yes])
 AM_CONDITIONAL([COND_CORE], [test "$want_core" = yes])
 AM_CONDITIONAL([COND_TEST], [test "$want_test" = yes])
-AM_CONDITIONAL([COND_GUTHTHILA], [test "$want_guththila" = yes])
+
+PULL_PARSER=$want_parser
+AC_SUBST(PULL_PARSER)
 
 AC_CONFIG_FILES([Makefile \
     modules/Makefile \
@@ -101,6 +106,15 @@ AC_CONFIG_FILES([Makefile \
     modules/xml/Makefile \
     modules/xml/guththila/Makefile \
     modules/xml/guththila/src/Makefile \
+    modules/xml/parser/Makefile \
+    modules/xml/parser/guththila/Makefile \
+    modules/xml/parser/guththila/src/Makefile \
+    modules/xml/parser/guththila/impl/Makefile \
+    modules/xml/parser/guththila/impl/src/Makefile \
+    modules/xml/parser/guththila/test/Makefile \
+    modules/xml/parser/libxml2/Makefile \
+    modules/xml/parser/libxml2/src/Makefile \
+    modules/xml/parser/libxml2/test/Makefile \
     modules/xml/soap/Makefile \
     modules/xml/soap/src/Makefile \
     modules/xml/om/Makefile \
