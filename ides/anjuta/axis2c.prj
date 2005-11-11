@@ -122,7 +122,10 @@ module.include.files=\
 	include/axis2_param_container.h\
 	include/axis2_svc.h\
 	include/axis2_svc_grp.h\
-	include/axis2_wsdl_svc.h
+	include/axis2_wsdl_svc.h\
+	include/axis2_flow.h\
+	include/axis2_flow_container.h\
+	modules/util/src/axis2_array_list.h
 
 module.source.name=.
 module.source.type=
@@ -175,7 +178,10 @@ module.source.files=\
 	modules/core/engine/src/engine_config.c\
 	modules/core/engine/src/msg_recv.c\
 	modules/core/context/src/msg_ctx.c\
-	modules/wsdl/src/wsdl_svc.c
+	modules/wsdl/src/wsdl_svc.c\
+	modules/core/description/src/flow.c\
+	modules/core/description/src/flow_container.c\
+	modules/util/src/array_list.c
 
 module.pixmap.name=.
 module.pixmap.type=
