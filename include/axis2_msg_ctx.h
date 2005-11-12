@@ -35,14 +35,14 @@ extern "C"
  * @{
  */
     
-typedef struct axis2_msg_ctx_ops_s axis2_msg_ctx_ops_t;
-typedef struct axis2_msg_ctx_s axis2_msg_ctx_t;    
+typedef struct axis2_msg_ctx_ops axis2_msg_ctx_ops_t;
+typedef struct axis2_msg_ctx axis2_msg_ctx_t;    
     
 /** 
  * @brief Message Context operations struct
  * Encapsulator struct for operations of axis2_msg_ctx
  */  
-struct axis2_msg_ctx_ops_s
+struct axis2_msg_ctx_ops
 {
     /** 
      * Deallocate memory
@@ -50,13 +50,23 @@ struct axis2_msg_ctx_ops_s
      */
     axis2_status_t (AXIS2_CALL *free)(axis2_msg_ctx_t *msg_ctx,
                                         axis2_env_t **env); 
+   /**
+    *
+    */
+    axis2_status_t (AXIS2_CALL *set_paused_phase_name)(axis2_msg_ctx_t *msg_ctx,
+                                        axis2_env_t **env, axis2_char_t *name); 
+   /**
+    *
+    */    
+    axis2_bool_t (AXIS2_CALL *is_paused)(axis2_msg_ctx_t *msg_ctx,
+                                         axis2_env_t **env); 
 };
 
 /** 
  * @brief Message Context struct
   *	Axis2 Message Context
  */
-struct axis2_msg_ctx_s
+struct axis2_msg_ctx
 {
     axis2_msg_ctx_ops_t *ops;    
 };
@@ -66,7 +76,9 @@ axis2_msg_ctx_create (axis2_env_t **env);
     
 /************************** Start of function macros **************************/
 
-#define AXIS2_MSG_CTX_FREE(env, msg_ctx) (msg_ctx->ops->free (env, msg_ctx));
+#define AXIS2_MSG_CTX_FREE(msg_ctx, env) ((msg_ctx)->ops->free (msg_ctx, env))
+#define AXIS2_MSG_CTX_SET_PAUSED_PHASE_NAME(msg_ctx, env, name) ((msg_ctx)->ops->set_paused_phase_name(msg_ctx, env, name))
+#define AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env) ((msg_ctx)->ops->is_paused (msg_ctx, env))
 
 /************************** End of function macros ****************************/    
 

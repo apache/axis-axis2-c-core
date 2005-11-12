@@ -101,7 +101,9 @@ extern "C"
  * @param qname qname, can be NULL
  */
 AXIS2_DECLARE(axis2_handler_desc_t*) axis2_handler_desc_create(axis2_env_t **env, axis2_qname_t *qname);
-    
+
+#define AXIS2_HANDLER_DESC_GET_HANDLER(handler_desc, env) ((handler_desc)->ops->get_handler(handler_desc, env))
+#define AXIS2_HANDLER_DESC_SET_HANDLER(handler_desc, env, handler) ((handler_desc)->ops->set_handler(handler_desc, env, handler))
 #define AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env) ((handler_desc)->ops->get_rules(handler_desc, env))
 #define AXIS2_HANDLER_DESC_SET_RULES(handler_desc, env, rules) ((handler_desc)->ops->set_rules(handler_desc, env, rules))
 #define AXIS2_HANDLER_DESC_GET_QNAME(handler_desc, env) ((handler_desc)->ops->get_qname(handler_desc, env))

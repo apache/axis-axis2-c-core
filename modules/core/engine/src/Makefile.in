@@ -64,7 +64,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libaxis2_engine_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libaxis2_engine_la_OBJECTS = handler.lo msg_recv.lo \
-	engine_config.lo
+	engine_config.lo phase.lo
 libaxis2_engine_la_OBJECTS = $(am_libaxis2_engine_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -191,7 +191,7 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 lib_LTLIBRARIES = libaxis2_engine.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_engine_la_SOURCES = handler.c msg_recv.c engine_config.c
+libaxis2_engine_la_SOURCES = handler.c msg_recv.c engine_config.c phase.c
 libaxis2_engine_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/xml/guththila/src \
@@ -270,6 +270,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/engine_config.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/msg_recv.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/phase.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
