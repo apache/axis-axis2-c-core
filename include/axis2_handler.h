@@ -69,19 +69,27 @@ extern "C"
       /**
         * Invoke is called to do the actual work of the Handler object.
         * If there is a fault during the processing of this method it is
-        * invoke's job to catch the exception and undo any partial work
-        * that has been completed.  Once we leave 'invoke' if a fault
-        * is thrown, this classes 'onFault' method will be called.
-        * Invoke should rethrow any exceptions it catches, wrapped in
-        * an AxisFault.
+        * invoke's job to report the error and undo any partial work
+        * that has been completed. 
         *
         * @param msgContext the <code>axis2_context_message</code> to process with this
         *                   <code>Handler</code>.
-        * @throws AxisFault if the handler encounters an error
         */
         axis2_status_t (AXIS2_CALL *invoke) (struct axis2_handler * handler, 
                                              axis2_env_t **env,
                                              struct axis2_msg_ctx *msg_ctx);
+      /**
+        * set invoke can be used to set the invoke method to be called in a 
+        * handler invokation. The deriving struct should implement the 
+        * invoke method and use this method to set the function pointer
+        *
+        * @param 
+        */
+        axis2_status_t (AXIS2_CALL *set_invoke) (struct axis2_handler * handler, 
+                                             axis2_env_t **env,
+                                             axis2_status_t (AXIS2_CALL *invoke_func_ptr) (struct axis2_handler*, 
+                                             axis2_env_t**,
+                                             struct axis2_msg_ctx*));
 
 
       /**
@@ -130,6 +138,7 @@ AXIS2_DECLARE(axis2_handler_t*) axis2_handler_create(axis2_env_t **env);
 #define AXIS2_HANDLER_FREE(handler, env) ((handler)->ops->free(handler, env))
 #define AXIS2_HANDLER_INIT(handler, env, handler_desc) ((handler)->ops->init(handler, env, handler_desc))
 #define AXIS2_HANDLER_INVOKE(handler, env, msg_ctx) ((handler)->ops->invoke(handler, env, msg_ctx))
+#define AXIS2_HANDLER_SET_INVOKE(handler, env, invoke) ((handler)->ops->set_invoke(handler, env, invoke))
 #define AXIS2_HANDLER_GET_NAME(handler, env) ((handler)->ops->get_name(handler, env))
 #define AXIS2_HANDLER_GET_PARAM(handler, env, name) ((handler)->ops->get_param(handler, env, name))
 #define AXIS2_HANDLER_GET_HANDLER_DESC(handler, env) ((handler)->ops->get_handler_desc(handler, env))
