@@ -60,6 +60,9 @@ struct axis2_msg_ctx_ops
     */    
     axis2_bool_t (AXIS2_CALL *is_paused)(axis2_msg_ctx_t *msg_ctx,
                                          axis2_env_t **env); 
+    /* TODO change void* to real return type */
+    void* (AXIS2_CALL *get_relates_to)(axis2_msg_ctx_t *msg_ctx,
+                                         axis2_env_t **env); 
 };
 
 /** 
@@ -79,6 +82,7 @@ axis2_msg_ctx_create (axis2_env_t **env);
 #define AXIS2_MSG_CTX_FREE(msg_ctx, env) ((msg_ctx)->ops->free (msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_PAUSED_PHASE_NAME(msg_ctx, env, name) ((msg_ctx)->ops->set_paused_phase_name(msg_ctx, env, name))
 #define AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env) ((msg_ctx)->ops->is_paused (msg_ctx, env))
+#define AXIS2_MSG_CTX_GET_RELATES_TO(msg_ctx, env) ((msg_ctx)->ops->get_relates_to(msg_ctx, env))
 
 /************************** End of function macros ****************************/    
 

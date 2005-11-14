@@ -121,14 +121,15 @@ extern "C"
       /**
         * derived struct accessor
         */        
-        void* (AXIS2_CALL *get_derived)(struct axis2_handler * handler, 
+        /*void* (AXIS2_CALL *get_derived)(struct axis2_handler * handler, 
                                                           axis2_env_t **env);
-        
+        */
       /**
         * derived struct mutator
         */        
-        axis2_status_t (AXIS2_CALL *set_derived)(struct axis2_handler * handler, 
+        /*axis2_status_t (AXIS2_CALL *set_derived)(struct axis2_handler * handler, 
                                                           axis2_env_t **env, void* derived);
+        */
     } axis2_handler_ops_t;
 	
    /** 
@@ -153,8 +154,9 @@ AXIS2_DECLARE(axis2_handler_t*) axis2_handler_create(axis2_env_t **env);
 #define AXIS2_HANDLER_GET_NAME(handler, env) ((handler)->ops->get_name(handler, env))
 #define AXIS2_HANDLER_GET_PARAM(handler, env, name) ((handler)->ops->get_param(handler, env, name))
 #define AXIS2_HANDLER_GET_HANDLER_DESC(handler, env) ((handler)->ops->get_handler_desc(handler, env))
-#define AXIS2_HANDLER_GET_DERIVED(handler, env) ((handler)->ops->get_derived(handler, env))
+/*#define AXIS2_HANDLER_GET_DERIVED(handler, env) ((handler)->ops->get_derived(handler, env))
 #define AXIS2_HANDLER_SET_DERIVED(handler, env, derived) ((handler)->ops->set_derived(handler, env, derived))
+    */
 /** @} */
     
 #ifdef __cplusplus
