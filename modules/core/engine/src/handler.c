@@ -21,6 +21,8 @@ typedef struct axis2_handler_impl
 {
     /** Handler struct */
     axis2_handler_t handler;
+    /** Derived struct */
+    void* derived;
     /** Handler description. This is a referance, hence a shallow copy. */
     axis2_handler_desc_t *handler_desc;
 } axis2_handler_impl_t;
@@ -48,6 +50,10 @@ axis2_status_t AXIS2_CALL axis2_handler_init (struct axis2_handler * handler,
                                               struct axis2_handler_desc *handler_desc);
 axis2_handler_desc_t* AXIS2_CALL axis2_handler_get_handler_desc (struct axis2_handler * handler, 
                                                           axis2_env_t **env);
+void* AXIS2_CALL axis2_handler_get_derived(struct axis2_handler * handler, 
+                                                          axis2_env_t **env);
+axis2_status_t AXIS2_CALL axis2_handler_set_derived(struct axis2_handler * handler, 
+                                                          axis2_env_t **env, void* derived);
 
 
 axis2_handler_t* AXIS2_CALL axis2_handler_create(axis2_env_t **env)
@@ -64,6 +70,7 @@ axis2_handler_t* AXIS2_CALL axis2_handler_create(axis2_env_t **env)
         return NULL;        
     }
 
+    handler_impl->derived = NULL;
     handler_impl->handler_desc = NULL;
     
     /* initialize operations */
@@ -84,6 +91,8 @@ axis2_handler_t* AXIS2_CALL axis2_handler_create(axis2_env_t **env)
     handler_impl->handler.ops->get_name = axis2_handler_get_name;
     handler_impl->handler.ops->get_param = axis2_handler_get_param;
     handler_impl->handler.ops->get_handler_desc = axis2_handler_get_handler_desc;
+    handler_impl->handler.ops->get_derived= axis2_handler_get_derived;
+    handler_impl->handler.ops->set_derived= axis2_handler_set_derived;
     
     return &(handler_impl->handler);
 }
@@ -172,4 +181,19 @@ axis2_handler_desc_t* AXIS2_CALL axis2_handler_get_handler_desc (struct axis2_ha
 {
     AXIS2_FUNC_PARAM_CHECK(handler, env, NULL);
     return AXIS2_INTF_TO_IMPL(handler)->handler_desc;
+}
+
+void* AXIS2_CALL axis2_handler_get_derived(struct axis2_handler * handler, 
+                                                          axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(handler, env, NULL);
+    return AXIS2_INTF_TO_IMPL(handler)->derived;
+}
+axis2_status_t AXIS2_CALL axis2_handler_set_derived(struct axis2_handler * handler, 
+                                                          axis2_env_t **env, void* derived)
+{
+    AXIS2_FUNC_PARAM_CHECK(handler, env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(handler)->derived = derived;
+    
+    return AXIS2_SUCCESS;    
 }
