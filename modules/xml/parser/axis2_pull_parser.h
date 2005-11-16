@@ -31,7 +31,6 @@ extern "C"
 {
 #endif
 
-
 typedef struct axis2_pull_parser_ops axis2_pull_parser_ops_t;
 typedef struct axis2_pull_parser axis2_pull_parser_t;
 
@@ -86,7 +85,10 @@ AXIS2_DECLARE_DATA struct axis2_pull_parser_ops
         
         int (AXIS2_CALL *get_attribute_count)(axis2_pull_parser_t *parser,
                                               axis2_env_t **env);
-        
+        /* iterations start with 1 and not zero based
+         * 
+         *
+         */
         axis2_char_t* (AXIS2_CALL *get_attribute_name_by_number)
                                                     (axis2_pull_parser_t *parser,
                                                      axis2_env_t **env,
@@ -139,7 +141,7 @@ AXIS2_DECLARE_DATA struct axis2_pull_parser_ops
                                                 
         
     };
-    
+     
 /** 
  * @brief axis2_pull_parser struct
   *	Axis2 OM pull_parser
@@ -155,7 +157,7 @@ struct axis2_pull_parser
  */
 
 AXIS2_DECLARE(axis2_pull_parser_t *)
-axis2_pull_parser_create(axis2_env_t **env);
+axis2_pull_parser_create(axis2_env_t **env,void *stream);
 
 /********************************* Macros *************************************/
 
