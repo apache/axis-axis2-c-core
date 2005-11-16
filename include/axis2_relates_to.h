@@ -23,8 +23,6 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_qname.h>
-#include <axis2_handler.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -50,14 +48,14 @@ extern "C"
          *
          * @return
          */
-        axis2_char_t* (AXIS2_CALL *get_value)(struct axis_relates_to *relates_to, axis2_env_t **env);
+        axis2_char_t* (AXIS2_CALL *get_value)(struct axis2_relates_to *relates_to, axis2_env_t **env);
 
         /**
          * Method set_value
          *
          * @param value
          */
-        axis2_status_t (AXIS2_CALL *set_value)(struct axis_relates_to *relates_to, axis2_env_t **env, 
+        axis2_status_t (AXIS2_CALL *set_value)(struct axis2_relates_to *relates_to, axis2_env_t **env, 
                                  axis2_char_t * value);
 
         /**
@@ -65,14 +63,14 @@ extern "C"
          *
          * @return
          */
-        axis2_char_t* (AXIS2_CALL *get_relationship_type)(struct axis_relates_to *relates_to, axis2_env_t **env);
+        axis2_char_t* (AXIS2_CALL *get_relationship_type)(struct axis2_relates_to *relates_to, axis2_env_t **env);
 
         /**
          * Method set_relationship_type
          *
          * @param relationship_type
          */
-        axis2_status_t (AXIS2_CALL *set_relationship_type)(struct axis_relates_to *relates_to, axis2_env_t **env, 
+        axis2_status_t (AXIS2_CALL *set_relationship_type)(struct axis2_relates_to *relates_to, axis2_env_t **env, 
                                              axis2_char_t *relationship_type);
         
        /**

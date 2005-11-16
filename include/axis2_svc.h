@@ -41,29 +41,29 @@ extern "C"
   * @{
   */
 
-struct axis2_svc_grp_s;
-struct axis2_operation_s;    
-typedef struct axis2_svc_ops_s axis2_svc_ops_t;   
-typedef struct axis2_svc_s axis2_svc_t;
+struct axis2_svc_grp;
+struct axis2_operation;    
+typedef struct axis2_svc_ops axis2_svc_ops_t;   
+typedef struct axis2_svc axis2_svc_t;
     
 /** 
  * @brief Service operations struct
  * Encapsulator struct for operations of axis2_svc
  */    
-struct axis2_svc_ops_s
+struct axis2_svc_ops
 {
 	axis2_status_t (AXIS2_CALL *free) (axis2_svc_t *svc, axis2_env_t **env);
 
 	axis2_status_t (AXIS2_CALL *add_operation) (axis2_svc_t *svc, 
                                                 axis2_env_t **env,
-	 	                                        struct axis2_operation_s *operation);
+	 	                                        struct axis2_operation *operation);
 
-	struct axis2_operation_s *(AXIS2_CALL *get_operation_with_qname) (
+	struct axis2_operation *(AXIS2_CALL *get_operation_with_qname) (
                                                   axis2_svc_t *svc, 
                                                   axis2_env_t **env,
 	 	                                          axis2_qname_t *operation_name);
 
-	struct axis2_operation_s *(AXIS2_CALL *get_operation_with_name) (
+	struct axis2_operation *(AXIS2_CALL *get_operation_with_name) (
                                             axis2_svc_t *svc, 
                                             axis2_env_t **env,
 	 	                                    const axis2_char_t * operation_name);
@@ -73,9 +73,9 @@ struct axis2_svc_ops_s
 
 	axis2_status_t (AXIS2_CALL *set_parent) (axis2_svc_t *svc, 
                                                 axis2_env_t **env,
-	 	                                        struct axis2_svc_grp_s *svc_grp);
+	 	                                        struct axis2_svc_grp *svc_grp);
 
-	struct axis2_svc_grp_s *(AXIS2_CALL *get_parent) (axis2_svc_t *svc, 
+	struct axis2_svc_grp *(AXIS2_CALL *get_parent) (axis2_svc_t *svc, 
                                                 axis2_env_t **env);
 	
     axis2_status_t (AXIS2_CALL *set_name) (const axis2_svc_t *svc, 
