@@ -78,7 +78,7 @@ struct axis2_svc_ops
 	struct axis2_svc_grp *(AXIS2_CALL *get_parent) (axis2_svc_t *svc, 
                                                 axis2_env_t **env);
 	
-    axis2_status_t (AXIS2_CALL *set_name) (const axis2_svc_t *svc, 
+    axis2_status_t (AXIS2_CALL *set_name) (axis2_svc_t *svc, 
                                             axis2_env_t **env,
                                             axis2_qname_t *qname);
     
@@ -125,7 +125,7 @@ struct axis2_svc_ops
  * @brief Service struct
   *	Axis2 Service  
  */
-struct axis2_svc_s
+struct axis2_svc
 {
 	axis2_svc_ops_t *ops;   
 

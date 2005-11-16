@@ -25,7 +25,7 @@ typedef struct axis2_operation_impl_s
 	axis2_operation_t operation;
 	axis2_param_container_t *param_container;
     axis2_wsdl_operation_t *wsdl_operation;
-	struct axis2_svc_s *parent;
+	struct axis2_svc *parent;
 	axis2_msg_recv_t *msg_recv;
 } axis2_operation_impl_t;
 
@@ -349,10 +349,10 @@ axis2_operation_is_param_locked(axis2_operation_t *operation,
     axis2_bool_t locked = AXIS2_FALSE;
     /* checking the locked value of parent*/
     parent_l = axis2_operation_get_parent(operation, env);
-    /*if(NULL != parent_l)
+    if(NULL != parent_l)
     {
         locked = AXIS2_SVC_IS_PARAM_LOCKED(parent_l, env, param_name);
-    }*/
+    }
     if(AXIS2_TRUE == locked)
     {
         return AXIS2_TRUE;

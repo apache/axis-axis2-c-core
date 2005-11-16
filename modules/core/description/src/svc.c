@@ -28,13 +28,13 @@ axis2_svc_free (axis2_svc_t *svc, axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_svc_add_operation (axis2_svc_t *svc, axis2_env_t **env
-		,                   struct axis2_operation_s *operation);
+		,                   struct axis2_operation *operation);
 
-struct axis2_operation_s * AXIS2_CALL
+struct axis2_operation * AXIS2_CALL
 axis2_svc_get_operation_with_qname (axis2_svc_t *svc, axis2_env_t **env,
 		                            axis2_qname_t *operation_name);
 		
-struct axis2_operation_s * AXIS2_CALL
+struct axis2_operation * AXIS2_CALL
 axis2_svc_get_operation_with_name (axis2_svc_t *svc, axis2_env_t **env,
 		                            const axis2_char_t* operation_name);
 
@@ -49,7 +49,7 @@ axis2_svc_grp_t * AXIS2_CALL
 axis2_svc_get_parent (axis2_svc_t *svc, axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_svc_set_name (const axis2_svc_t *svc, 
+axis2_svc_set_name (axis2_svc_t *svc, 
                     axis2_env_t **env,
                     axis2_qname_t *qname);
 
@@ -258,7 +258,7 @@ axis2_svc_free (axis2_svc_t *svc,
 axis2_status_t AXIS2_CALL
 axis2_svc_add_operation (axis2_svc_t *svc,
                             axis2_env_t **env,
-		                    struct axis2_operation_s *operation)
+		                    struct axis2_operation *operation)
 {
     AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, operation, AXIS2_FALSE);
@@ -284,7 +284,7 @@ axis2_svc_add_operation (axis2_svc_t *svc,
 	return AXIS2_SUCCESS;
 }
 
-struct axis2_operation_s * AXIS2_CALL
+struct axis2_operation * AXIS2_CALL
 axis2_svc_get_operation_with_qname (axis2_svc_t *svc,
                                         axis2_env_t **env,
 		                                axis2_qname_t *operation_name)
@@ -296,13 +296,13 @@ axis2_svc_get_operation_with_qname (axis2_svc_t *svc,
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM, NULL);	
 	}
     
-	return (struct axis2_operation_s *) (axis2_hash_get (AXIS2_INTF_TO_IMPL(svc)->
+	return (struct axis2_operation *) (axis2_hash_get (AXIS2_INTF_TO_IMPL(svc)->
         wasaction_opeartionmap, AXIS2_QNAME_GET_LOCALPART(operation_name, env),
         AXIS2_HASH_KEY_STRING));
 	
 }	
 
-struct axis2_operation_s * AXIS2_CALL
+struct axis2_operation * AXIS2_CALL
 axis2_svc_get_operation_with_name (axis2_svc_t *svc, 
                                     axis2_env_t **env,
 		                            const axis2_char_t* name)
@@ -312,7 +312,7 @@ axis2_svc_get_operation_with_name (axis2_svc_t *svc,
 	axis2_char_t *temp_name = AXIS2_STRDUP(name, env);
     AXIS2_PARAM_CHECK((*env)->error, temp_name, NULL); 
     
-	return (struct axis2_operation_s *) (axis2_hash_get 
+	return (struct axis2_operation *) (axis2_hash_get 
 		(AXIS2_INTF_TO_IMPL(svc)->wasaction_opeartionmap
 		, temp_name, AXIS2_HASH_KEY_STRING));
 }
@@ -351,7 +351,7 @@ axis2_svc_get_parent (axis2_svc_t *svc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_svc_set_name (const axis2_svc_t *svc, 
+axis2_svc_set_name (axis2_svc_t *svc, 
                     axis2_env_t **env,
                     axis2_qname_t *qname)
 {

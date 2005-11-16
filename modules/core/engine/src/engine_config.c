@@ -53,9 +53,9 @@ axis2_engine_config_get_svc_grp (axis2_engine_config_t *engine_config,
 axis2_status_t AXIS2_CALL 
 axis2_engine_config_add_svc (axis2_engine_config_t *engine_config, 
                                 axis2_env_t **env,
-		                        struct axis2_svc_s *svc);
+		                        struct axis2_svc *svc);
 
-struct axis2_svc_s * 
+struct axis2_svc * 
 AXIS2_CALL axis2_engine_config_get_svc (axis2_engine_config_t *engine_config, 
                                         axis2_env_t **env,
 		                                const axis2_char_t* svc_name);
@@ -198,7 +198,7 @@ axis2_engine_config_get_svc_grp (axis2_engine_config_t *engine_config,
 axis2_status_t AXIS2_CALL 
 axis2_engine_config_add_svc (axis2_engine_config_t *engine_config, 
                                 axis2_env_t **env, 
-                                struct axis2_svc_s *svc)
+                                struct axis2_svc *svc)
 {
     AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc, AXIS2_FAILURE);
@@ -225,7 +225,7 @@ axis2_engine_config_add_svc (axis2_engine_config_t *engine_config,
 	return AXIS2_SUCCESS;
 }
 
-struct axis2_svc_s * AXIS2_CALL 
+struct axis2_svc * AXIS2_CALL 
 axis2_engine_config_get_svc (axis2_engine_config_t *engine_config, 
                                 axis2_env_t **env,
 		                        const axis2_char_t* svc_name)

@@ -8,7 +8,8 @@ main_unit_test_suite_LDADD   =  $(LDFLAGS) \
                     -L$(top_builddir)/modules/common/test/.libs -ltest_common \
                     -L$(top_builddir)/modules/util/test/.libs -ltest_util \
                     -L$(top_builddir)/modules/xml/om/test/.libs -ltest_om \
-                    -L$(top_builddir)/modules/xml/guththila/src/.libs -lguththila
+                    -L$(top_builddir)/modules/xml/parser/guththila/src/.libs -laxis2_guththila \
+                    -L$(top_builddir)/modules/xml/parser/guththila/impl/src/.libs -lguththila
 
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util/src
