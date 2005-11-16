@@ -1,1 +1,1 @@
-SUBDIRS = om soap guththila
+SUBDIRS = parser om soap

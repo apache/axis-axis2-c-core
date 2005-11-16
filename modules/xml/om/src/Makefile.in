@@ -44,7 +44,6 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/conftools/libtool.m4 \
-	$(top_srcdir)/conftools/libtool.m4 \
 	$(top_srcdir)/conftools/ac_c_bigendian_cross.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -210,7 +209,8 @@ libaxis2_om_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/xml/guththila/src \
             -I${CUTEST_HOME}/include \
-            -I$(top_builddir)/modules/util/src
+            -I$(top_builddir)/modules/util/src \
+            -I$(top_builddir)/modules/xml/parser
 
 all: all-am
 
