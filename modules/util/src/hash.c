@@ -90,6 +90,8 @@ AXIS2_DECLARE(axis2_hash_t*)
 axis2_hash_make (axis2_env_t **environment)
 {
     axis2_hash_t *ht;
+    AXIS2_ENV_CHECK(environment, NULL);
+    
     ht = AXIS2_MALLOC ((*environment)->allocator, sizeof (axis2_hash_t));
     ht->environment = (*environment);
     ht->free = NULL;
@@ -104,7 +106,9 @@ AXIS2_DECLARE(axis2_hash_t*)
 axis2_hash_make_custom (axis2_env_t **environment,
                         axis2_hashfunc_t hash_func)
 {
-    axis2_hash_t *ht = axis2_hash_make (environment);
+    axis2_hash_t *ht;
+    AXIS2_ENV_CHECK(environment, NULL);
+    ht = axis2_hash_make (environment);
     ht->hash_func = hash_func;
     return ht;
 }
@@ -117,6 +121,7 @@ axis2_hash_make_custom (axis2_env_t **environment,
 AXIS2_DECLARE(axis2_hash_index_t*)
 axis2_hash_next (axis2_env_t **environment, axis2_hash_index_t *hi)
 {
+    AXIS2_ENV_CHECK(environment, NULL);
     hi->this = hi->next;
     while (!hi->this)
     {
@@ -136,6 +141,7 @@ AXIS2_DECLARE(axis2_hash_index_t*)
 axis2_hash_first (axis2_hash_t *ht, axis2_env_t **environment)
 {
     axis2_hash_index_t *hi;
+    AXIS2_ENV_CHECK(environment, NULL);
     if (environment && *environment)
         hi = AXIS2_MALLOC ((*environment)->allocator, sizeof (*hi));
     else
@@ -301,6 +307,8 @@ axis2_hash_copy (const axis2_hash_t *orig, axis2_env_t **environment)
     axis2_hash_t *ht;
     axis2_hash_entry_t *new_vals;
     unsigned int i, j;
+    
+    AXIS2_ENV_CHECK(environment, NULL);
 
     ht = AXIS2_MALLOC ((*environment)->allocator, sizeof (axis2_hash_t) +
                        sizeof (*ht->array) * (orig->max + 1) +
@@ -386,6 +394,7 @@ AXIS2_DECLARE(axis2_hash_t*)
 axis2_hash_overlay (const axis2_hash_t *overlay, axis2_env_t **environment
 		, const axis2_hash_t * base)
 {
+    AXIS2_ENV_CHECK(environment, NULL);
     return axis2_hash_merge (overlay, environment, base, NULL, NULL);
 }
 
@@ -400,7 +409,8 @@ axis2_hash_merge (const axis2_hash_t *overlay, axis2_env_t **environment
     axis2_hash_entry_t *iter;
     axis2_hash_entry_t *ent;
     unsigned int i, j, k;
-
+    AXIS2_ENV_CHECK(environment, NULL);
+    
 #if AXIS2_POOL_DEBUG
     /* we don't copy keys and values, so it's necessary that
      * overlay->a.environment and base->a.environment have a life span at least
@@ -496,16 +506,13 @@ axis2_hash_merge (const axis2_hash_t *overlay, axis2_env_t **environment
 static void
 axis2_hash_entry_free (axis2_env_t **environment, axis2_hash_entry_t *hash_entry)
 {
-    printf ("hash entry called ");
+    AXIS2_ENV_CHECK(environment, NULL);
     if (!hash_entry)
         return;
     if (hash_entry->next)
     {
         axis2_hash_entry_free (environment, hash_entry->next);
     }
-    /* axis2_free(environment->allocator,hash_entry->key); 
-       axis2_free(environment->allocator,hash_entry->val);
-     */
     AXIS2_FREE ((*environment)->allocator, hash_entry);
     return;
 }
@@ -513,6 +520,7 @@ axis2_hash_entry_free (axis2_env_t **environment, axis2_hash_entry_t *hash_entry
 AXIS2_DECLARE(axis2_status_t)
 axis2_hash_free (axis2_hash_t *ht, axis2_env_t** environment)
 {
+    AXIS2_ENV_CHECK(environment, NULL);
     if (ht)
     {
         if (ht->free)
