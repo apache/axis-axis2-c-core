@@ -83,7 +83,7 @@ axis2_relates_to_t* AXIS2_CALL axis2_relates_to_create(axis2_env_t **env, axis2_
 
 axis2_char_t* AXIS2_CALL axis2_relates_to_get_value(struct axis_relates_to *relates_to, axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(relates_to, env,NULL);
+    AXIS2_FUNC_PARAM_CHECK(relates_to, env, NULL);
     return AXIS2_INTF_TO_IMPL(relates_to)->value;
 }
 
@@ -116,7 +116,7 @@ axis2_status_t AXIS2_CALL axis2_relates_to_set_value(struct axis_relates_to *rel
 
 axis2_char_t* AXIS2_CALL axis2_relates_to_get_relationship_type(struct axis_relates_to *relates_to, axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(relates_to, env,NULL);
+    AXIS2_FUNC_PARAM_CHECK(relates_to, env, NULL);
     return AXIS2_INTF_TO_IMPL(relates_to)->relationship_type;
 }
 
@@ -124,7 +124,7 @@ axis2_status_t AXIS2_CALL axis2_relates_to_set_relationship_type(struct axis_rel
 {
     axis2_relates_to_impl_t *relates_to_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(qname, env,AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(relates_to, env, AXIS2_FAILURE);
     
     relates_to_impl = AXIS2_INTF_TO_IMPL(relates_to);
     
