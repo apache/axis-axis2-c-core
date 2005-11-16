@@ -60,7 +60,7 @@ struct axis2_msg_ctx_ops
     */    
     axis2_bool_t (AXIS2_CALL *is_paused)(axis2_msg_ctx_t *msg_ctx,
                                          axis2_env_t **env); 
-    /* TODO change void* to real return type */
+    /** TODO change void* to real return type */
     void* (AXIS2_CALL *get_relates_to)(axis2_msg_ctx_t *msg_ctx,
                                          axis2_env_t **env); 
 };
