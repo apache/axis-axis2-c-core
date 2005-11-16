@@ -218,7 +218,7 @@ context_test_LDADD = $(LDFLAGS) libtest_context.la  \
                     -L$(top_builddir)/modules/core/context/src/.libs -laxis2_context \
                     -L$(top_builddir)/modules/util/src/.libs -laxis2_util \
                     -L$(top_builddir)/modules/wsdl/src/.libs -laxis2_wsdl \
-                    -L$(top_builddir)/modules/description/src/.libs -laxis2_description
+                    -L$(top_builddir)/modules/core/description/src/.libs -laxis2_description
 
 all: all-am
 
