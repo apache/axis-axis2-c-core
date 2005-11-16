@@ -46,7 +46,6 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/conftools/libtool.m4 \
-	$(top_srcdir)/conftools/libtool.m4 \
 	$(top_srcdir)/conftools/ac_c_bigendian_cross.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -64,8 +63,7 @@ am__installdirs = "$(DESTDIR)$(prglibdir)" "$(DESTDIR)$(prgbindir)"
 prglibLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(prglib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libtest_guththila_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/modules/xml/parser/guththila/src/libaxis2_guththila.la
+libtest_guththila_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libtest_guththila_la_OBJECTS = guththila_test.lo
 libtest_guththila_la_OBJECTS = $(am_libtest_guththila_la_OBJECTS)
 prgbinPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
@@ -73,8 +71,7 @@ PROGRAMS = $(prgbin_PROGRAMS)
 am_guththila_test_OBJECTS = main.$(OBJEXT)
 guththila_test_OBJECTS = $(am_guththila_test_OBJECTS)
 guththila_test_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	libtest_guththila.la \
-	$(top_builddir)/modules/xml/parser/guththila/src/libaxis2_guththila.la
+	libtest_guththila.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -92,14 +89,14 @@ DIST_SOURCES = $(libtest_guththila_la_SOURCES) \
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/damitha/projects/c/conftools/missing --run aclocal-1.9
+ACLOCAL = ${SHELL} /home/nandika/axis2/c/conftools/missing --run aclocal-1.9
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/damitha/projects/c/conftools/missing --run tar
+AMTAR = ${SHELL} /home/nandika/axis2/c/conftools/missing --run tar
 AR = ar
-AUTOCONF = ${SHELL} /home/damitha/projects/c/conftools/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/damitha/projects/c/conftools/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/damitha/projects/c/conftools/missing --run automake-1.9
+AUTOCONF = ${SHELL} /home/nandika/axis2/c/conftools/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/nandika/axis2/c/conftools/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/nandika/axis2/c/conftools/missing --run automake-1.9
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
@@ -125,19 +122,19 @@ ECHO_N = -n
 ECHO_T = 
 EGREP = grep -E
 EXEEXT = 
-F77 = g77
+F77 = f95
 FFLAGS = -g -O2
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = ${SHELL} $(install_sh) -c -s
-LDFLAGS =  -L/home/damitha/programs/cutest/lib/
+LDFLAGS =  -L/home/nandika/software/cutest/lib/
 LIBOBJS = 
 LIBS = -lcutest -ldl
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/damitha/projects/c/conftools/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/nandika/axis2/c/conftools/missing --run makeinfo
 OBJEXT = o
 PACKAGE = axis2
 PACKAGE_BUGREPORT = 
@@ -155,7 +152,7 @@ VERSION = 1.0.0
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
-ac_ct_F77 = g77
+ac_ct_F77 = f95
 ac_ct_RANLIB = ranlib
 ac_ct_STRIP = strip
 am__fastdepCC_FALSE = #
@@ -182,7 +179,7 @@ host_os = linux-gnu
 host_vendor = redhat
 includedir = ${prefix}/include
 infodir = ${prefix}/info
-install_sh = /home/damitha/projects/c/conftools/install-sh
+install_sh = /home/nandika/axis2/c/conftools/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localstatedir = ${prefix}/var
@@ -204,12 +201,16 @@ prglibdir = $(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_guththila.la
 AM_CPPFLAGS = $(CPPFLAGS) -g
 libtest_guththila_la_SOURCES = guththila_test.c
-libtest_guththila_la_LIBADD = $(LDFLAGS) $(top_builddir)/modules/xml/parser/guththila/src/libaxis2_guththila.la
+libtest_guththila_la_LIBADD = $(LDFLAGS) -L$(top_builddir)/modules/xml/parser/guththila/src -laxis2_guththila
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include
 
 guththila_test_SOURCES = main.c
-guththila_test_LDADD = $(LDFLAGS) libtest_guththila.la  $(top_builddir)/modules/xml/parser/guththila/src/libaxis2_guththila.la
+guththila_test_LDADD = $(LDFLAGS) libtest_guththila.la  \
+                            -L$(top_builddir)/modules/xml/parser/guththila/src -laxis2_guththila \
+                            -L$(top_builddir)/modules/xml/parser/guththila/impl/src -lguththila \
+                            -L$(top_builddir)/modules/util/src -laxis2_util
+
 all: all-am
 
 .SUFFIXES:

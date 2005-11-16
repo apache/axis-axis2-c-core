@@ -46,7 +46,6 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/conftools/libtool.m4 \
-	$(top_srcdir)/conftools/libtool.m4 \
 	$(top_srcdir)/conftools/ac_c_bigendian_cross.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -64,8 +63,7 @@ am__installdirs = "$(DESTDIR)$(prglibdir)" "$(DESTDIR)$(prgbindir)"
 prglibLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(prglib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libtest_guththila_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/modules/xml/parser/guththila/src/libaxis2_guththila.la
+libtest_guththila_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libtest_guththila_la_OBJECTS = guththila_test.lo
 libtest_guththila_la_OBJECTS = $(am_libtest_guththila_la_OBJECTS)
 prgbinPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
@@ -73,8 +71,7 @@ PROGRAMS = $(prgbin_PROGRAMS)
 am_guththila_test_OBJECTS = main.$(OBJEXT)
 guththila_test_OBJECTS = $(am_guththila_test_OBJECTS)
 guththila_test_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	libtest_guththila.la \
-	$(top_builddir)/modules/xml/parser/guththila/src/libaxis2_guththila.la
+	libtest_guththila.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -204,12 +201,16 @@ prglibdir = $(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_guththila.la
 AM_CPPFLAGS = $(CPPFLAGS) -g
 libtest_guththila_la_SOURCES = guththila_test.c
-libtest_guththila_la_LIBADD = $(LDFLAGS) $(top_builddir)/modules/xml/parser/guththila/src/libaxis2_guththila.la
+libtest_guththila_la_LIBADD = $(LDFLAGS) -L$(top_builddir)/modules/xml/parser/guththila/src -laxis2_guththila
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include
 
 guththila_test_SOURCES = main.c
-guththila_test_LDADD = $(LDFLAGS) libtest_guththila.la  $(top_builddir)/modules/xml/parser/guththila/src/libaxis2_guththila.la
+guththila_test_LDADD = $(LDFLAGS) libtest_guththila.la  \
+                            -L$(top_builddir)/modules/xml/parser/guththila/src -laxis2_guththila \
+                            -L$(top_builddir)/modules/xml/parser/guththila/impl/src -lguththila \
+                            -L$(top_builddir)/modules/util/src -laxis2_util
+
 all: all-am
 
 .SUFFIXES:
