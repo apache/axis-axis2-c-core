@@ -65,7 +65,8 @@ am__DEPENDENCIES_1 =
 libaxis2_wsdl_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libaxis2_wsdl_la_OBJECTS = wsdl_operation.lo wsdl_svc.lo \
 	wsdl_component.lo wsdl_feature.lo wsdl_property.lo \
-	wsdl_extensible_component.lo wsdl_interface.lo
+	wsdl_extensible_component.lo wsdl_interface.lo \
+	wsdl_binding_fault.lo
 libaxis2_wsdl_la_OBJECTS = $(am_libaxis2_wsdl_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -198,7 +199,8 @@ libaxis2_wsdl_la_SOURCES = wsdl_operation.c \
                         wsdl_feature.c \
                         wsdl_property.c \
                         wsdl_extensible_component.c \
-                        wsdl_interface.c
+                        wsdl_interface.c \
+                        wsdl_binding_fault.c
 
 libaxis2_wsdl_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include \
@@ -274,6 +276,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_binding_fault.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_component.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_extensible_component.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_feature.Plo@am__quote@

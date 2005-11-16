@@ -318,15 +318,10 @@ axis2_engine_config_get_param (axis2_engine_config_t *engine_config,
 		AXIS2_ERROR_SET((*env)->error, 
             AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, AXIS2_FAILURE);
 	}
-    
-	axis2_char_t *tempname = AXIS2_STRDUP(name, env);
-	if(NULL == tempname)
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM,
-        AXIS2_FAILURE);
 		
 	return (axis2_param_t *)(axis2_hash_get 
 		(AXIS2_PARAM_CONTAINER_GET_PARAMS(AXIS2_INTF_TO_IMPL(engine_config)->
-        param_container, env), tempname, AXIS2_HASH_KEY_STRING));
+        param_container, env), name, AXIS2_HASH_KEY_STRING));
 	
 }
 

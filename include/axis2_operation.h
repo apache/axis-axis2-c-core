@@ -29,8 +29,6 @@
 #include <axis2_msg_recv.h>
 #include <axis2_array_list.h>
 
-#include "description.h"
-
 #ifdef __cplusplus
 extern "C"
 {

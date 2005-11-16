@@ -6,7 +6,8 @@ libaxis2_wsdl_la_SOURCES = wsdl_operation.c \
                         wsdl_feature.c \
                         wsdl_property.c \
                         wsdl_extensible_component.c \
-                        wsdl_interface.c
+                        wsdl_interface.c \
+                        wsdl_binding_fault.c
 
 libaxis2_wsdl_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include \
