@@ -349,10 +349,10 @@ axis2_operation_is_param_locked(axis2_operation_t *operation,
     axis2_bool_t locked = AXIS2_FALSE;
     /* checking the locked value of parent*/
     parent_l = axis2_operation_get_parent(operation, env);
-    if(NULL != parent_l)
+    /*if(NULL != parent_l)
     {
         locked = AXIS2_SVC_IS_PARAM_LOCKED(parent_l, env, param_name);
-    }
+    }*/
     if(AXIS2_TRUE == locked)
     {
         return AXIS2_TRUE;
