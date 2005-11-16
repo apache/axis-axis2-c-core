@@ -45,7 +45,6 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/conftools/libtool.m4 \
-	$(top_srcdir)/conftools/libtool.m4 \
 	$(top_srcdir)/conftools/ac_c_bigendian_cross.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -195,12 +194,13 @@ SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -O2 -pthread
 test_om_SOURCES = test_om.c
 test_om_LDADD = $(LDFLAGS) -L$(top_builddir)/modules/xml/om/src/.libs -laxis2_om \
-                    -L$(top_builddir)/modules/xml/guththila/src/.libs -lguththila \
+                    -L$(top_builddir)/modules/xml/parser/guththila/src/.libs -laxis2_guththila \
+                    -L$(top_builddir)/modules/xml/parser/guththila/impl/src/.libs -lguththila \
                     -L$(top_builddir)/modules/util/src/.libs -laxis2_util
 
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/xml/guththila/src \
-            -I$(top_builddir)/modules/util/src
+            -I$(top_builddir)/modules/xml/parser \
+            -I$(top_builddir)/modules/util/src 
 
 all: all-recursive
 

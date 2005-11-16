@@ -5,20 +5,15 @@
 #include <axis2_om_text.h>
 
 #include <stdio.h>
-#include <guththila_xml_pull_parser.h>
+#include <axis2_xml_writer.h>
 
 axis2_allocator_t *allocator = NULL;
 axis2_env_t *environment = NULL;
-
-guththila_environment_t *my_guththila_environment = NULL;
-guththila_allocator_t *my_guththila_allocator = NULL;
 
 
 int
 test_om_build (char *file_name)
 {
-    guththila_reader_t *reader = NULL;
-    guththila_xml_pull_parser_t *parser = NULL;
     axis2_om_element_t *ele1 = NULL, *ele2 = NULL, *ele3 = NULL, *ele4 = NULL;
     axis2_om_stax_builder_t *builder = NULL;
     axis2_om_text_t *text = NULL;
@@ -27,27 +22,19 @@ test_om_build (char *file_name)
     FILE *fp = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_om_namespace_t* ns = NULL;
+    axis2_xml_writer_t *xml_writer = NULL;
 
     fp = fopen (file_name, "r");
   
    
-    reader = guththila_reader_create (my_guththila_environment, fp);
-
-    parser =
-        guththila_xml_pull_parser_create (my_guththila_environment, reader);
-
-    guththila_xml_pull_parser_read (my_guththila_environment, parser);
- 
-    
-    builder = axis2_om_stax_builder_create (&environment, parser,
-                                      my_guththila_environment);
+    builder = axis2_om_stax_builder_create (&environment,fp);
            
     document = axis2_om_document_create (&environment, NULL, builder);
     node1 = AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT (document,&environment);
     if(node1)
     {
         printf ("NODE TYPE %d\n",AXIS2_OM_NODE_GET_NODE_TYPE(node1,&environment));
-    
+        
         ele1 =AXIS2_OM_NODE_GET_DATA_ELEMENT(node1,&environment);
         if(ele1)
              
@@ -75,14 +62,14 @@ test_om_build (char *file_name)
         case AXIS2_OM_ELEMENT:
             ele2 =(axis2_om_element_t*) AXIS2_OM_NODE_GET_DATA_ELEMENT(node2, &environment);
             if(ele2 && AXIS2_OM_ELEMENT_GET_LOCALNAME(ele2,&environment))
-                printf("Element localname %s\n" , AXIS2_OM_ELEMENT_GET_LOCALNAME(ele2,&environment)); 
+                printf("\n localname %s\n" , AXIS2_OM_ELEMENT_GET_LOCALNAME(ele2,&environment)); 
                         
             break;
         case AXIS2_OM_TEXT:
             
             text = (axis2_om_text_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node2,&environment);    
             if( text && AXIS2_OM_TEXT_GET_VALUE(text ,&environment))
-                printf("Text value %s \n", AXIS2_OM_TEXT_GET_VALUE(text,&environment));
+                printf("\n text value  %s \n", AXIS2_OM_TEXT_GET_VALUE(text,&environment));
             break;
 
         default:
@@ -95,14 +82,13 @@ test_om_build (char *file_name)
     printf ("END: pull document\n");
 
     printf ("Serialize pulled document\n");
-   
-    om_output = axis2_om_output_create (&environment, NULL, NULL);
+    
+    om_output = axis2_om_output_create (&environment, NULL);
     AXIS2_OM_NODE_SERIALIZE (node1, &environment , om_output);
     
     AXIS2_FREE (environment->allocator, om_output);
-    guththila_xml_pull_parser_free (my_guththila_environment, parser);
     
-    printf ("\n\n");
+    printf ("\ndone\n");
 }
 
 
@@ -164,8 +150,8 @@ test_om_serialize ()
     AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(ele4,&environment, attr2);
     
    
-    /* serializing stuff */ 
-    om_output = axis2_om_output_create (&environment, NULL, NULL);
+    /* serializing stuff */
+    om_output = axis2_om_output_create (&environment, NULL);
 
     printf ("Serialize built document\n");
     int status = AXIS2_OM_NODE_SERIALIZE (node1,&environment ,om_output);
@@ -193,11 +179,6 @@ main (int argc, char *argv[])
         file_name = argv[1];
     allocator = axis2_allocator_init (NULL);
     environment = axis2_env_create (allocator);
-
-    my_guththila_allocator = guththila_allocator_init (NULL);
-    my_guththila_environment =
-        guththila_environment_create (my_guththila_allocator, NULL, NULL,
-                                      NULL, NULL);
 
     test_om_build (file_name);
     test_om_serialize ();    
