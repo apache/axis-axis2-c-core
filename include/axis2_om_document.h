@@ -144,7 +144,7 @@ extern "C"
         ((document)->ops->set_root_element(document,env,om_node))       
 
 #define AXIS2_OM_DOCUMENT_BUILD_ALL(document,env) \
-        ((document)->ops->build_all(document,env)
+        ((document)->ops->build_all(document,env))
 
 /** @} */
 
