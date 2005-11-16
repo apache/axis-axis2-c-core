@@ -39,7 +39,11 @@ axis2_om_document_get_root_element (axis2_om_document_t *document,
 axis2_status_t  AXIS2_CALL
 axis2_om_document_set_root_element(axis2_om_document_t *document,
                                    axis2_env_t **env,
-                                   axis2_om_node_t *node);                                
+                                   axis2_om_node_t *node);  
+
+axis2_om_node_t* AXIS2_CALL
+axis2_om_document_build_all(struct axis2_om_document *document,
+                            axis2_env_t **env); 
                                   
 /********************************* end of function pointers ******************/
 
@@ -130,7 +134,7 @@ axis2_om_document_create (axis2_env_t **env,
     document->om_document.ops->build_next = axis2_om_document_build_next;
     document->om_document.ops->get_root_element = axis2_om_document_get_root_element;
     document->om_document.ops->set_root_element = axis2_om_document_set_root_element;
-    
+    document->om_document.ops->build_all = axis2_om_document_build_all;
     if (builder)
         AXIS2_OM_STAX_BUILDER_SET_DOCUMENT (builder, env, &(document->om_document) );
     
@@ -245,4 +249,15 @@ axis2_om_document_set_root_element(axis2_om_document_t *document,
     AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(document)->root_element = node;
     return AXIS2_SUCCESS;
+}
+
+axis2_om_node_t* AXIS2_CALL
+axis2_om_document_build_all(struct axis2_om_document *document,
+                            axis2_env_t **env)
+{   
+    AXIS2_FUNC_PARAM_CHECK(document,env, NULL);
+    do{ 
+        AXIS2_OM_DOCUMENT_BUILD_NEXT(document,env);
+    }while(!AXIS2_OM_NODE_GET_BUILD_STATUS(AXIS2_INTF_TO_IMPL(document)->root_element,env));
+    return AXIS2_INTF_TO_IMPL(document)->root_element;    
 }
