@@ -93,7 +93,10 @@ extern "C"
                                                         
         axis2_status_t (AXIS2_CALL *set_root_element)(struct axis2_om_document *document,
                                                        axis2_env_t **env,
-                                                       axis2_om_node_t *om_node);                                                        
+                                                       axis2_om_node_t *om_node);
+        
+        axis2_om_node_t* (AXIS2_CALL *build_all)(struct axis2_om_document *document,
+                                                axis2_env_t **env);            
 
 
     } axis2_om_document_ops_t;
@@ -140,6 +143,8 @@ extern "C"
 #define AXIS2_OM_DOCUMENT_SET_ROOT_ELEMENT(document,env,om_node) \
         ((document)->ops->set_root_element(document,env,om_node))       
 
+#define AXIS2_OM_DOCUMENT_BUILD_ALL(document,env) \
+        ((document)->ops->build_all(document,env)
 
 /** @} */
 
