@@ -25,6 +25,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_om_node.h>
+#include <axis2_xml_writer.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -47,7 +48,7 @@ extern "C"
     typedef struct axis2_om_output
     {
         /** xml stream writer. Should implement the Guththila pull parser interface */
-        void *xml_writer;
+        axis2_xml_writer_t *xml_writer;
 
         /* following fields are not used currently but will be used in the future */
         axis2_bool_t do_optimize;
@@ -71,7 +72,7 @@ extern "C"
     */
 
     AXIS2_DECLARE(axis2_om_output_t*) 
-    axis2_om_output_create (axis2_env_t **environment, void *xml_writer, void* writer_env);
+    axis2_om_output_create (axis2_env_t **environment, axis2_xml_writer_t *xml_writer);
 
   /**
     *  Performs xml writing.
@@ -95,5 +96,3 @@ extern "C"
 #endif
 
 #endif                          /* AXIS2_OM_OUTPUT_H */
-
-
