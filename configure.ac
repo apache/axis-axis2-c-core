@@ -8,7 +8,6 @@ AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADER(axis2_config.h)
 AC_PROG_LIBTOOL
-sinclude(conftools/libtool.m4)
 sinclude(conftools/ac_c_bigendian_cross.m4)
 # Checks for programs.
 AC_PROG_CXX
@@ -108,9 +107,9 @@ AC_CONFIG_FILES([Makefile \
     modules/xml/guththila/src/Makefile \
     modules/xml/parser/Makefile \
     modules/xml/parser/guththila/Makefile \
-    modules/xml/parser/guththila/src/Makefile \
     modules/xml/parser/guththila/impl/Makefile \
     modules/xml/parser/guththila/impl/src/Makefile \
+    modules/xml/parser/guththila/src/Makefile \
     modules/xml/parser/guththila/test/Makefile \
     modules/xml/parser/libxml2/Makefile \
     modules/xml/parser/libxml2/src/Makefile \
