@@ -29,6 +29,7 @@
 #include <axis2_svc_grp.h>
 #include <axis2_qname.h>
 #include <axis2_error.h>
+#include <axis2_array_list.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -146,39 +147,47 @@ AXIS2_DECLARE(axis2_svc_t *)
 axis2_svc_create_with_qname (axis2_env_t **env, 
                                 axis2_qname_t *qname);
 
+/** 
+ * Creates service struct with wsdl service
+ * @param wsdl_svc wsdl service
+ * @return pointer to newly created service
+ */
+axis2_svc_t * AXIS2_CALL
+axis2_svc_create_with_wsdl_svc (axis2_env_t **env, 
+                                axis2_wsdl_svc_t *wsdl_svc);
 
 /**************************** Start of function macros ************************/
 
-#define AXIS2_SVC_FREE(svc, env) (svc->ops->free (svc, env));
+#define AXIS2_SVC_FREE(svc, env) (svc->ops->free (svc, env))
 
 #define AXIS2_SVC_ADD_OPERATION(svc, env, operation) \
-		(svc->ops->add_operation (svc, env, operation));
+		(svc->ops->add_operation (svc, env, operation))
 
 #define AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env) \
-		(svc->ops->get_operation_with_qname (svc, env));
+		(svc->ops->get_operation_with_qname (svc, env))
 
 #define AXIS2_SVC_GET_OPERATION_WITH_NAME(svc, env) \
-		(svc->ops->get_operation_with_name (svc, env));
+		(svc->ops->get_operation_with_name (svc, env))
 
-#define AXIS2_SVC_GET_OPERATIONS(svc, env) (svc->ops->get_operations (svc, env));
+#define AXIS2_SVC_GET_OPERATIONS(svc, env) (svc->ops->get_operations (svc, env))
 
 #define AXIS2_SVC_SET_PARENT(svc, env , svc_grp) (svc->ops->set_parent \
-        (svc, env, svc_grp));
+        (svc, env, svc_grp))
 
-#define AXIS2_SVC_GET_PARENT(svc, env) (svc->ops->get_parent (svc, env));
+#define AXIS2_SVC_GET_PARENT(svc, env) (svc->ops->get_parent (svc, env))
 
-#define AXIS2_SVC_SET_NAME(svc, env, qname) (svc->ops->set_name(svc , env, qname));
+#define AXIS2_SVC_SET_NAME(svc, env, qname) (svc->ops->set_name(svc , env, qname))
 
-#define AXIS2_SVC_GET_NAME(svc, env) (svc->ops->get_name(svc , env));
+#define AXIS2_SVC_GET_NAME(svc, env) (svc->ops->get_name(svc , env))
 		
-#define AXIS2_SVC_ADD_PARAM(svc, env, param) (svc->ops->add_param(svc , env, param));
+#define AXIS2_SVC_ADD_PARAM(svc, env, param) (svc->ops->add_param(svc , env, param))
 		
-#define AXIS2_SVC_GET_PARAM(svc, env, name) (svc->ops->get_param(svc , env, name));
+#define AXIS2_SVC_GET_PARAM(svc, env, name) (svc->ops->get_param(svc , env, name))
 		
-#define AXIS2_SVC_GET_PARAMS(svc, env) (svc->ops->get_params(svc , env));
+#define AXIS2_SVC_GET_PARAMS(svc, env) (svc->ops->get_params(svc , env))
 		
 #define AXIS2_SVC_IS_PARAM_LOCKED(svc, env, param_name) \
-        (svc->ops->is_parameter_locked(svc, env, param_name));
+        (svc->ops->is_param_locked(svc, env, param_name))
 				
 #define AXIS2_SVC_GET_COMPONENT_PROPERTIES(svc, env) \
         ((svc->ops)->get_component_properties(svc, env))

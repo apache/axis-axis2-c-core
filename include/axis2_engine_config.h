@@ -72,6 +72,21 @@ struct axis2_engine_config_ops_s
 	axis2_status_t (AXIS2_CALL *remove_svc) (axis2_engine_config_t *engine_config, 
                                                 axis2_env_t **env, 
                                                 const axis2_char_t *name);
+    
+    axis2_status_t (AXIS2_CALL *add_param) (axis2_engine_config_t *engine_config, 
+                                                axis2_env_t **env,
+		                                        axis2_param_t *param);
+
+	axis2_param_t *(AXIS2_CALL *get_param) (axis2_engine_config_t *engine_config, 
+                                                axis2_env_t **env,
+		                                        const axis2_char_t *name);
+
+	axis2_array_list_t *(AXIS2_CALL *get_params) (axis2_engine_config_t *engine_config, 
+                                                axis2_env_t **env);
+	
+	axis2_bool_t (AXIS2_CALL *is_param_locked) (axis2_engine_config_t *engine_config, 
+                                                axis2_env_t **env,
+		                                        const axis2_char_t *param_name);
 };
 
 /**
@@ -95,23 +110,35 @@ axis2_engine_config_create(axis2_env_t **env);
 
 /************************* Start of function macros	***************************/
 	
-#define AXIS2_ENGINE_CONFIG_free(engine_config, env) \
-		(engine_config->free(engine_config, env);
+#define AXIS2_ENGINE_CONFIG_FREE(engine_config, env) \
+		(engine_config->ops->free(engine_config, env)
 	
-#define AXIS2_ENGINE_CONFIG_add_svc_grp(engine_config, env, svc_grp) \
-        (engine_config->ops->add_svc_grp (engine_config, env, svc_grp));
+#define AXIS2_ENGINE_CONFIG_ADD_SVC_GRP(engine_config, env, svc_grp) \
+        (engine_config->ops->add_svc_grp (engine_config, env, svc_grp))
 
 #define AXIS2_ENGINE_CONFIG_GET_SVC_GRP(engine_config, env, svc_grp_name) \
-        (engine_config->ops->get_svc_grp (engine_config, env, svc_grp_name));
+        (engine_config->ops->get_svc_grp (engine_config, env, svc_grp_name))
 
 #define AXIS2_ENGINE_CONFIG_ADD_SVC(engine_config, env, svc) \
-		(engine_config->ops->get_svc (engine_config, env, svc));
+		(engine_config->ops->get_svc (engine_config, env, svc))
 		
 #define AXIS2_ENGINE_CONFIG_GET_SVC(engine_config, env, svc_name) \
-		(engine_config->ops->get_svc (engine_config, env, svc_name));
+		(engine_config->ops->get_svc (engine_config, env, svc_name))
 
 #define AXIS2_ENGINE_CONFIG_REMOVE_SVC(engine_config, env, svc_name) \
-		(engine_config->ops->remove_svc (engine_config, env, svc_name));
+		(engine_config->ops->remove_svc (engine_config, env, svc_name))
+        
+#define AXIS2_ENGINE_CONFIG_ADD_PARAM(engine_config, env, param) \
+        (engine_config->ops->add_param(engine_config , env, param))
+		
+#define AXIS2_ENGINE_CONFIG_GET_PARAM(engine_config, env, name) \
+        (engine_config->ops->get_param(engine_config , env, name))
+		
+#define AXIS2_ENGINE_CONFIG_GET_PARAMS(engine_config, env) \
+        (engine_config->ops->get_params(engine_config , env))
+		
+#define AXIS2_ENGINE_CONFIG_IS_PARAM_LOCKED(engine_config, env, param_name) \
+        (engine_config->ops->is_parameter_locked(engine_config, env, param_name))
 
 /************************* End of function macros *****************************/
 

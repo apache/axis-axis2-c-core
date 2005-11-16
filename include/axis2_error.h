@@ -157,6 +157,8 @@ extern "C"
         AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
         /** Parameter container not set */
         AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER,
+        /** Parameter not set */
+        AXIS2_ERROR_INVALID_STATE_PARAM,
         /** Operation accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_OPERATION,
         /** Service accessed has invalid state */
@@ -182,7 +184,9 @@ extern "C"
         /** Invalid handler rules  */
         AXIS2_ERROR_INVALID_HANDLER_RULES,
         /** Invalid handler state */
-        AXIS2_ERROR_INVALID_HANDLER_STATE
+        AXIS2_ERROR_INVALID_HANDLER_STATE,
+        /** No such element */
+        AXIS2_ERROR_NO_SUCH_ELEMENT
     };
 
 /** @} */

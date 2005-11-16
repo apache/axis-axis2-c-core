@@ -28,6 +28,7 @@
 #include <axis2_env.h>
 #include <axis2_allocator.h>
 #include <axis2_string.h>
+#include <axis2_array_list.h>
 #include <axis2_hash.h>
 
 /*#include <axis2_om_element.h>*/
@@ -81,7 +82,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_container_ops
 	/** To get all the params in a given description
 	 * @return all the params contained
 	 */
-	axis2_hash_t *(AXIS2_CALL *get_params)
+	axis2_array_list_t *(AXIS2_CALL *get_params)
 									(struct axis2_param_container *param_container, 
 										axis2_env_t **env);
 	

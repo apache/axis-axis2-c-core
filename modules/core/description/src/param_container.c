@@ -45,7 +45,7 @@ axis2_param_container_get_param (axis2_param_container_t *param_container,
 						axis2_env_t **env, 
 						const axis2_char_t *name);
 
-axis2_hash_t * AXIS2_CALL 
+axis2_array_list_t * AXIS2_CALL 
 axis2_param_container_get_params (axis2_param_container_t *param_container, 
 						axis2_env_t **env);
 
@@ -89,7 +89,11 @@ axis2_param_container_create (axis2_env_t **env)
 				
 	param_container_impl->params = axis2_hash_make (env);
 	if(NULL == param_container_impl->params)
+    {
+        AXIS2_FREE((*env)->allocator, param_container_impl->param_container.ops);
+        AXIS2_FREE((*env)->allocator, param_container_impl);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);	
+    }
 	
 	return &(param_container_impl->param_container);
 }
@@ -142,13 +146,26 @@ axis2_param_container_get_param (axis2_param_container_t *param_container,
 		params, AXIS2_STRDUP(name, env), AXIS2_HASH_KEY_STRING));
 }
 
-axis2_hash_t * AXIS2_CALL 
+axis2_array_list_t * AXIS2_CALL 
 axis2_param_container_get_params (axis2_param_container_t *param_container, 
 		axis2_env_t **env)
 {
+    axis2_hash_index_t *i = 0;
+    axis2_hash_t *hash_l = NULL;
+    /* create an array list with the initial default capacity */
+    axis2_array_list_t *array_list_l = axis2_array_list_create(env, 0);
+    void *value = NULL;
+    
 	AXIS2_FUNC_PARAM_CHECK(param_container, env, NULL);
-	
-	return AXIS2_INTF_TO_IMPL(param_container)->params;
+    
+	hash_l = AXIS2_INTF_TO_IMPL(param_container)->params;
+    for (i = axis2_hash_first (hash_l, env); i; i = axis2_hash_next (env, i))
+    {
+        axis2_hash_this (i, NULL, NULL, &value);
+        AXIS2_ARRAY_LIST_ADD(array_list_l, env, value);
+    }
+    
+	return array_list_l;
 }
 
 axis2_status_t AXIS2_CALL 

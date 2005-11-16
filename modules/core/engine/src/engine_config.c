@@ -65,6 +65,25 @@ axis2_engine_config_remove_svc (axis2_engine_config_t *engine_config,
                                     axis2_env_t **env,
 		                            const axis2_char_t *name);
 
+axis2_status_t AXIS2_CALL
+axis2_engine_config_add_param (axis2_engine_config_t *engine_config, 
+                                axis2_env_t **env, 
+                                axis2_param_t *param);
+
+axis2_param_t * AXIS2_CALL
+axis2_engine_config_get_param (axis2_engine_config_t *engine_config, 
+                                axis2_env_t **env,
+		                        const axis2_char_t *name);
+
+axis2_array_list_t * AXIS2_CALL
+axis2_engine_config_get_params (axis2_engine_config_t *engine_config, 
+                                axis2_env_t **env);
+
+axis2_bool_t AXIS2_CALL
+axis2_engine_config_is_param_locked (axis2_engine_config_t *engine_config, 
+                                        axis2_env_t **env,
+		                                const axis2_char_t *param_name);
+                            
 /**
  * To split a given svc name into it's svc grp name and svc name.
  * if the svc name is foo:bar then svc grp name is "foo" and 
@@ -94,11 +113,22 @@ axis2_engine_config_create (axis2_env_t **env)
 	    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	
 	engine_config_impl->engine_config.ops->free = axis2_engine_config_free;
-	engine_config_impl->engine_config.ops->add_svc_grp = axis2_engine_config_add_svc_grp;
-	engine_config_impl->engine_config.ops->get_svc_grp = axis2_engine_config_get_svc_grp;
+	engine_config_impl->engine_config.ops->add_svc_grp = 
+        axis2_engine_config_add_svc_grp;
+	engine_config_impl->engine_config.ops->get_svc_grp = 
+        axis2_engine_config_get_svc_grp;
 	engine_config_impl->engine_config.ops->add_svc = axis2_engine_config_add_svc;
 	engine_config_impl->engine_config.ops->get_svc = axis2_engine_config_get_svc;
-	engine_config_impl->engine_config.ops->remove_svc = axis2_engine_config_remove_svc;
+	engine_config_impl->engine_config.ops->remove_svc = 
+        axis2_engine_config_remove_svc;
+    engine_config_impl->engine_config.ops->add_param = 
+        axis2_engine_config_add_param;
+	engine_config_impl->engine_config.ops->get_param = 
+        axis2_engine_config_get_param;
+	engine_config_impl->engine_config.ops->get_params = 
+        axis2_engine_config_get_params;
+    engine_config_impl->engine_config.ops->is_param_locked = 
+            axis2_engine_config_is_param_locked;
 
 	axis2_param_container_t *param_container = (axis2_param_container_t *)
 		axis2_param_container_create(env);		
@@ -256,6 +286,82 @@ axis2_engine_config_remove_svc (axis2_engine_config_t *engine_config,
 	
 	return AXIS2_SVC_GRP_REMOVE_SVC(sg, env, qname);
 }
+
+axis2_status_t AXIS2_CALL
+axis2_engine_config_add_param (axis2_engine_config_t *engine_config, 
+                        axis2_env_t **env,
+		                axis2_param_t *param)
+{
+    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, param, AXIS2_FAILURE);
+    
+	if(NULL == AXIS2_INTF_TO_IMPL(engine_config)->param_container)
+	{
+		AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, AXIS2_FAILURE);
+	}
+	axis2_hash_set (AXIS2_PARAM_CONTAINER_GET_PARAMS(AXIS2_INTF_TO_IMPL(engine_config)->
+        param_container, env), AXIS2_PARAM_GET_NAME(param, env), 
+        AXIS2_HASH_KEY_STRING, param);	
+	return AXIS2_SUCCESS;
+}
+
+axis2_param_t * AXIS2_CALL
+axis2_engine_config_get_param (axis2_engine_config_t *engine_config, 
+                        axis2_env_t **env,
+		                const axis2_char_t *name)
+{
+    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    
+	if(NULL == AXIS2_INTF_TO_IMPL(engine_config)->param_container)
+	{
+		AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, AXIS2_FAILURE);
+	}
+    
+	axis2_char_t *tempname = AXIS2_STRDUP(name, env);
+	if(NULL == tempname)
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+        AXIS2_FAILURE);
+		
+	return (axis2_param_t *)(axis2_hash_get 
+		(AXIS2_PARAM_CONTAINER_GET_PARAMS(AXIS2_INTF_TO_IMPL(engine_config)->
+        param_container, env), tempname, AXIS2_HASH_KEY_STRING));
+	
+}
+
+axis2_array_list_t * AXIS2_CALL
+axis2_engine_config_get_params (axis2_engine_config_t *engine_config, 
+                        axis2_env_t **env)
+{
+	AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
+	return AXIS2_PARAM_CONTAINER_GET_PARAMS(AXIS2_INTF_TO_IMPL(engine_config)->
+        param_container, env);
+	
+}
+
+axis2_bool_t AXIS2_CALL
+axis2_engine_config_is_param_locked (axis2_engine_config_t *engine_config, 
+                            axis2_env_t **env,
+		                    const axis2_char_t *param_name)
+{
+    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FALSE);
+    if(NULL == AXIS2_INTF_TO_IMPL(engine_config)->param_container)
+	{
+		AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, AXIS2_FALSE);
+	}
+	
+	axis2_char_t *tempname = AXIS2_STRDUP(param_name, env);
+	if(NULL == tempname)
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+        AXIS2_FAILURE);
+		
+	return AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED
+		(AXIS2_INTF_TO_IMPL(engine_config)->param_container, env, param_name); 
+	
+}
+
 	
 axis2_status_t 
 split_svc_name (axis2_env_t **env, 
