@@ -311,7 +311,7 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops
     axis2_status_t (AXIS2_CALL * 
     set_wsdl_opeartion) (axis2_operation_t *operation,
                                     axis2_env_t **env,
-                                    axis2_wsdl_operation_t *wsdl_operation);                                           
+                                    struct axis2_wsdl_operation *wsdl_operation);                                           
 };
 
 /** 
@@ -348,7 +348,7 @@ axis2_operation_create_with_name (axis2_env_t **env,
  */
 AXIS2_DECLARE(axis2_operation_t *) 
 axis2_operation_create_with_wsdl_operation (axis2_env_t **env, 
-                                            axis2_wsdl_operation_t *wsdl_operation);
+                                            struct axis2_wsdl_operation *wsdl_operation);
 
 /************************** Start of function macros **************************/
 
