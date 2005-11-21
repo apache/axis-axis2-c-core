@@ -37,7 +37,7 @@ typedef struct guththila_xml_stream_writer guththila_xml_stream_writer_t;
 
 GUTHTHILA_DECLARE (guththila_xml_stream_writer_t *)
 guththila_create_xml_stream_writer (guththila_environment_t * environment,
-                                    FILE * writer,
+                                    void * writer,
                                     guththila_char_t * encoding,
                                     int is_prefix_defaulting);
 

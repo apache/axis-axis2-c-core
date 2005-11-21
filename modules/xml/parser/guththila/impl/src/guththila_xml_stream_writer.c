@@ -35,19 +35,29 @@ struct guththila_xml_stream_writer
 
 GUTHTHILA_DECLARE (guththila_xml_stream_writer_t *)
 guththila_create_xml_stream_writer (guththila_environment_t * environment,
-                                    FILE * writer,
+                                    void * writer,
                                     guththila_char_t * encoding,
                                     int prefix_defaulting)
 {
     /*   guththila_status_t status; */
     guththila_xml_stream_writer_t *stream_writer;
+    FILE *fp = NULL;
     if (!writer)
         return 0;
 
     stream_writer =
         (guththila_xml_stream_writer_t *) GUTHTHILA_MALLOC (environment->allocator,
                                           sizeof(guththila_xml_stream_writer_t));
+    if(writer)
+    {
+        fp = fopen(writer, "w");
+        if(!fp)
+            return GUTHTHILA_STREAM_WRITER_ERROR_FILE_NOT_FOUND;            
+        stream_writer->writer = fp;
+    }
+    else{
     stream_writer->writer = stdout;
+    }
     stream_writer->encoding = NULL;
     if (encoding)
         stream_writer->encoding = GUTHTHILA_STRDUP(environment, encoding);
