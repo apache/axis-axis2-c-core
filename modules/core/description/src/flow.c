@@ -20,7 +20,7 @@
  * @brief Flow struct impl
  *	Axis2 Flow impl  
  */
-typedef struct axis2_flow_impl_s
+typedef struct axis2_flow_impl
 {
 	axis2_flow_t flow;
     /**

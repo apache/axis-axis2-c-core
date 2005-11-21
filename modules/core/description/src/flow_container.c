@@ -20,7 +20,7 @@
  * @brief Flow container struct impl
  *	Container for flows  
  */ 
-typedef struct axis2_flow_container_impl_s
+typedef struct axis2_flow_container_impl
 {
 	axis2_flow_container_t flow_container;
     /**

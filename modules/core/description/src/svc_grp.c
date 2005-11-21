@@ -16,13 +16,13 @@
  
 #include <axis2_svc_grp.h>
 
-typedef struct axis2_svc_grp_impl_s axis2_svc_grp_impl_t;
+typedef struct axis2_svc_grp_impl axis2_svc_grp_impl_t;
 
 /** 
  * @brief Service group struct impl
  * Axis2 Service group impl  
  */  
-struct axis2_svc_grp_impl_s
+struct axis2_svc_grp_impl
 {
 	axis2_svc_grp_t svc_grp;
 	axis2_param_container_t *param_container;
