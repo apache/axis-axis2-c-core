@@ -532,29 +532,46 @@ axis2_om_element_free (axis2_om_element_t *om_element,
         }
         if (AXIS2_INTF_TO_IMPL(om_element)->attributes)
         {
-            axis2_hash_free (AXIS2_INTF_TO_IMPL(om_element)->attributes, env);
-
-            /* TODO: free attributes */
-            /*need to iterate and free individual attributes */
-        }
-        if (AXIS2_INTF_TO_IMPL(om_element)->namespaces)
-        {
             axis2_hash_index_t *hi;
             void *val = NULL;
-            for (hi = axis2_hash_first (AXIS2_INTF_TO_IMPL(om_element)->namespaces, env); hi;
+            /*
+            for (hi = axis2_hash_first (AXIS2_INTF_TO_IMPL(om_element)->attributes, env); hi;
                  hi = axis2_hash_next ( env, hi))
             {
-            /*   axis2_hash_this (hi, NULL, NULL, &val);
+               axis2_hash_this (hi, NULL, NULL, &val);
 
-                      if (val)
-                   status = axis2_om_namespace_free (environment, (axis2_om_namespace_t *)val);
+                   if (val)
+                   status = AXIS2_OM_ATTRIBUTE_FREE ((axis2_om_attribute_t *)val, env);
                    else
                    {
                    status = AXIS2_FAILURE;
                    }
                    val = NULL;
-                */
+                   
             }
+            */
+           axis2_hash_free (AXIS2_INTF_TO_IMPL(om_element)->attributes, env);
+        }
+        if (AXIS2_INTF_TO_IMPL(om_element)->namespaces)
+        {
+            axis2_hash_index_t *hi;
+            void *val = NULL;
+            /*
+            for (hi = axis2_hash_first (AXIS2_INTF_TO_IMPL(om_element)->namespaces, env); hi;
+                 hi = axis2_hash_next ( env, hi))
+            {
+               axis2_hash_this (hi, NULL, NULL, &val);
+
+                   if (val)
+                   status = AXIS2_OM_NAMESPACE_FREE ((axis2_om_namespace_t *)val, env);
+                   else
+                   {
+                   status = AXIS2_FAILURE;
+                   }
+                   val = NULL;
+                   
+            }
+            */
             axis2_hash_free (AXIS2_INTF_TO_IMPL(om_element)->namespaces, env);
             /*TODO: free namespaces */
            /* need to iterate and free individual namespaces */

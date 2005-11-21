@@ -49,66 +49,93 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
 
     AXIS2_DECLARE_DATA struct axis2_xml_writer_ops 
     {
+       /**
+        * Free xml writer
+        * @param writer pointer to xml_writer struct
+        * @returns status code 
+        *       AXIS2_SUCCESS on success and AXIS2_FAILURE on error
+        */
         
         axis2_status_t (AXIS2_CALL *free)(axis2_xml_writer_t *writer,
                                           axis2_env_t **env);
-        
+       /**
+        *   Write start part of xml element
+        */
         axis2_status_t (AXIS2_CALL *write_start_element)(
                                     axis2_xml_writer_t *writer,
                                     axis2_env_t **env, axis2_char_t *localname);
-        
+       /**
+        *        writer end part of start element
+        */
         axis2_status_t (AXIS2_CALL *end_start_element)(axis2_xml_writer_t *writer,
                                                        axis2_env_t **env);
-        
+        /**
+         * Write element with namespace uri
+         */
         axis2_status_t (AXIS2_CALL *write_start_element_with_namespace)(
                                         axis2_xml_writer_t *writer,
                                         axis2_env_t **env,
                                         axis2_char_t *localname,
                                         axis2_char_t *namespace_uri);
-        
+        /**
+         * Write element with namespace uri and prefix
+         */
         axis2_status_t (AXIS2_CALL *write_start_element_with_namespace_prefix)(
                                         axis2_xml_writer_t *writer,
                                         axis2_env_t **env,
                                         axis2_char_t *localname,
                                         axis2_char_t *namespace_uri,
                                         axis2_char_t *prefix);       
-                                    
+        /**
+         * write empty_element 
+         */         
         axis2_status_t (AXIS2_CALL *write_empty_element)(
                                         axis2_xml_writer_t *writer,
                                         axis2_env_t **env,
                                         axis2_char_t *localname);
+        /**
+         * write empty_element with namespace uri
+         */
         
         axis2_status_t (AXIS2_CALL *write_empty_element_with_namespace)(
                                         axis2_xml_writer_t *writer,
                                         axis2_env_t **env,
                                         axis2_char_t *localname,
                                         axis2_char_t *namespace_uri);
-
+        /**
+         * write empty element with namespace uri and prefix 
+         */
         axis2_status_t (AXIS2_CALL *write_empty_element_with_namespace_prefix)(
                                         axis2_xml_writer_t *writer,
                                         axis2_env_t **env,
                                         axis2_char_t *localname,
                                         axis2_char_t *namespace_uri,
                                         axis2_char_t *prefix);
-
+        /**
+         * write end element 
+         */
         axis2_status_t (AXIS2_CALL *write_end_element)(axis2_xml_writer_t *writer,
                                                        axis2_env_t **env);
-        
+        /**
+         * write end document
+         */
         axis2_status_t (AXIS2_CALL *write_end_document)(axis2_xml_writer_t *writer,
                                                        axis2_env_t **env);
-        
+        /**
+         * write attribute 
+         */
         axis2_status_t (AXIS2_CALL *write_attribute)(axis2_xml_writer_t *writer,
                                                      axis2_env_t **env,
                                                      axis2_char_t *localname,
                                                      axis2_char_t *value);
-                                                       
+         
         axis2_status_t (AXIS2_CALL *write_attribute_with_namespace)(
                                                   axis2_xml_writer_t *writer,
                                                   axis2_env_t **env,
                                                   axis2_char_t *localname,
                                                   axis2_char_t *value,
                                                   axis2_char_t *namespace_uri);
-                                                  
+
         axis2_status_t (AXIS2_CALL *write_attribute_with_namespace_prefix)(
                                                   axis2_xml_writer_t *writer,
                                                   axis2_env_t **env,

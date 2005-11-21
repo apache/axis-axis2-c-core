@@ -2,7 +2,9 @@ prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_om.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libtest_om_la_SOURCES = om_test.c
+libtest_om_la_SOURCES = om_test.c om_node_test.c
+
+                        
 include_HEADERS=$(top_builddir)/modules/xml/om/test/*.h
 
 libtest_om_la_LIBADD = $(LDFLAGS) -L$(top_builddir)/modules/xml/om/src/.libs -laxis2_om

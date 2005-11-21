@@ -49,7 +49,7 @@ extern "C"
     {
       /**
         * Builds the next node from stream. Moves pull parser forward and reacts to events.
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+        * @param environment Environment. MUST NOT be NULL, .
         * @param builder pointer to stax builder struct to be used
         * @return a pointer to the next node, or NULL if there are no more nodes.
         *           On erros sets the error and returns NULL.
@@ -59,7 +59,7 @@ extern "C"
 
       /**
         * Discards the element that is being built currently.
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+        * @param environment Environment. MUST NOT be NULL, .
         * @param builder pointer to stax builder struct to be used
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
@@ -102,11 +102,21 @@ extern "C"
 
   /**
     * creates an stax builder
-    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param environment Environment. MUST NOT be NULL, .
     * @return a pointer to the newly created builder struct. 
     */
     AXIS2_DECLARE(axis2_om_stax_builder_t *)
-    axis2_om_stax_builder_create (axis2_env_t **env,void* stream);
+    axis2_om_stax_builder_create_for_file (axis2_env_t **env,char* filename);
+
+    /**
+    * creates an stax builder
+    * @param environment Environment. MUST NOT be NULL, .
+    * @return a pointer to the newly created builder struct. 
+    */
+    AXIS2_DECLARE(axis2_om_stax_builder_t *)
+    axis2_om_stax_builder_create_for_memory (axis2_env_t **env,
+                                             int (*read_input_callback)(char *buffer,int size),
+                                             void (*close_input_callback)(void));
 
 /** builds next node */
 #define AXIS2_OM_STAX_BUILDER_NEXT(builder,env) \

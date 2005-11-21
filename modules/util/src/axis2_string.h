@@ -32,10 +32,10 @@ extern "C"
  * @{
  */
 
-    void* 
+    AXIS2_DECLARE(void*)
     axis2_strdup (const void *ptr, axis2_env_t **env);
 
-    int 
+    AXIS2_DECLARE(int)
     axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2);
 
 #define AXIS2_STRDUP(pts, env) axis2_strdup(pts, env)

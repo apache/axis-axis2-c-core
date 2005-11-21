@@ -14,8 +14,7 @@
 
 
 
-
-SOURCES = $(libtest_guththila_la_SOURCES) $(guththila_test_SOURCES)
+SOURCES = $(guththila_test_SOURCES)
 
 srcdir = .
 top_srcdir = ../../../../..
@@ -53,25 +52,13 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/axis2_config.h
 CONFIG_CLEAN_FILES =
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(prglibdir)" "$(DESTDIR)$(prgbindir)"
-prglibLTLIBRARIES_INSTALL = $(INSTALL)
-LTLIBRARIES = $(prglib_LTLIBRARIES)
-am__DEPENDENCIES_1 =
-libtest_guththila_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libtest_guththila_la_OBJECTS = guththila_test.lo
-libtest_guththila_la_OBJECTS = $(am_libtest_guththila_la_OBJECTS)
+am__installdirs = "$(DESTDIR)$(prgbindir)"
 prgbinPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(prgbin_PROGRAMS)
-am_guththila_test_OBJECTS = main.$(OBJEXT)
+am_guththila_test_OBJECTS = guththila_test.$(OBJEXT)
 guththila_test_OBJECTS = $(am_guththila_test_OBJECTS)
-guththila_test_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	libtest_guththila.la
+am__DEPENDENCIES_1 =
+guththila_test_DEPENDENCIES = $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -83,20 +70,26 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libtest_guththila_la_SOURCES) $(guththila_test_SOURCES)
-DIST_SOURCES = $(libtest_guththila_la_SOURCES) \
-	$(guththila_test_SOURCES)
+SOURCES = $(guththila_test_SOURCES)
+DIST_SOURCES = $(guththila_test_SOURCES)
+RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
+	html-recursive info-recursive install-data-recursive \
+	install-exec-recursive install-info-recursive \
+	install-recursive installcheck-recursive installdirs-recursive \
+	pdf-recursive ps-recursive uninstall-info-recursive \
+	uninstall-recursive
 ETAGS = etags
 CTAGS = ctags
+DIST_SUBDIRS = $(SUBDIRS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/damitha/projects/c/conftools/missing --run aclocal-1.9
+ACLOCAL = ${SHELL} /home/nandika/axis2/c/conftools/missing --run aclocal-1.9
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/damitha/projects/c/conftools/missing --run tar
+AMTAR = ${SHELL} /home/nandika/axis2/c/conftools/missing --run tar
 AR = ar
-AUTOCONF = ${SHELL} /home/damitha/projects/c/conftools/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/damitha/projects/c/conftools/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/damitha/projects/c/conftools/missing --run automake-1.9
+AUTOCONF = ${SHELL} /home/nandika/axis2/c/conftools/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/nandika/axis2/c/conftools/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/nandika/axis2/c/conftools/missing --run automake-1.9
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
@@ -122,19 +115,19 @@ ECHO_N = -n
 ECHO_T = 
 EGREP = grep -E
 EXEEXT = 
-F77 = g77
+F77 = f95
 FFLAGS = -g -O2
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = ${SHELL} $(install_sh) -c -s
-LDFLAGS =  -L/home/damitha/programs/cutest/lib/
+LDFLAGS =  -L/home/nandika/software/cutest/lib/
 LIBOBJS = 
 LIBS = -lcutest -ldl
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/damitha/projects/c/conftools/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/nandika/axis2/c/conftools/missing --run makeinfo
 OBJEXT = o
 PACKAGE = axis2
 PACKAGE_BUGREPORT = 
@@ -152,7 +145,7 @@ VERSION = 1.0.0
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
-ac_ct_F77 = g77
+ac_ct_F77 = f95
 ac_ct_RANLIB = ranlib
 ac_ct_STRIP = strip
 am__fastdepCC_FALSE = #
@@ -179,7 +172,7 @@ host_os = linux-gnu
 host_vendor = redhat
 includedir = ${prefix}/include
 infodir = ${prefix}/info
-install_sh = /home/damitha/projects/c/conftools/install-sh
+install_sh = /home/nandika/axis2/c/conftools/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localstatedir = ${prefix}/var
@@ -196,22 +189,13 @@ target_alias =
 target_cpu = i686
 target_os = linux-gnu
 target_vendor = redhat
-prgbindir = $(prefix)/bin/unit_test
-prglibdir = $(prefix)/lib/unit_test
-prglib_LTLIBRARIES = libtest_guththila.la
-AM_CPPFLAGS = $(CPPFLAGS) -g
-libtest_guththila_la_SOURCES = guththila_test.c
-libtest_guththila_la_LIBADD = $(LDFLAGS) -L$(top_builddir)/modules/xml/parser/guththila/src -laxis2_guththila
-INCLUDES = -I$(top_builddir)/include \
-            -I${CUTEST_HOME}/include
-
-guththila_test_SOURCES = main.c
-guththila_test_LDADD = $(LDFLAGS) libtest_guththila.la  \
-                            -L$(top_builddir)/modules/xml/parser/guththila/src -laxis2_guththila \
-                            -L$(top_builddir)/modules/xml/parser/guththila/impl/src -lguththila \
-                            -L$(top_builddir)/modules/util/src -laxis2_util
-
-all: all-am
+prgbindir = $(prefix)/bin/system_test            
+SUBDIRS = 
+AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
+guththila_test_SOURCES = guththila_test.c
+guththila_test_LDADD = $(LDFLAGS)  -L$(top_builddir)/modules/xml/parser/guththila/impl/src -lguththila 
+INCLUDES = -I$(top_builddir)/modules/xml/parser/guththila/impl/src
+all: all-recursive
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
@@ -244,35 +228,6 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-install-prglibLTLIBRARIES: $(prglib_LTLIBRARIES)
-	@$(NORMAL_INSTALL)
-	test -z "$(prglibdir)" || $(mkdir_p) "$(DESTDIR)$(prglibdir)"
-	@list='$(prglib_LTLIBRARIES)'; for p in $$list; do \
-	  if test -f $$p; then \
-	    f=$(am__strip_dir) \
-	    echo " $(LIBTOOL) --mode=install $(prglibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(prglibdir)/$$f'"; \
-	    $(LIBTOOL) --mode=install $(prglibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(prglibdir)/$$f"; \
-	  else :; fi; \
-	done
-
-uninstall-prglibLTLIBRARIES:
-	@$(NORMAL_UNINSTALL)
-	@set -x; list='$(prglib_LTLIBRARIES)'; for p in $$list; do \
-	  p=$(am__strip_dir) \
-	  echo " $(LIBTOOL) --mode=uninstall rm -f '$(DESTDIR)$(prglibdir)/$$p'"; \
-	  $(LIBTOOL) --mode=uninstall rm -f "$(DESTDIR)$(prglibdir)/$$p"; \
-	done
-
-clean-prglibLTLIBRARIES:
-	-test -z "$(prglib_LTLIBRARIES)" || rm -f $(prglib_LTLIBRARIES)
-	@list='$(prglib_LTLIBRARIES)'; for p in $$list; do \
-	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
-	  test "$$dir" != "$$p" || dir=.; \
-	  echo "rm -f \"$${dir}/so_locations\""; \
-	  rm -f "$${dir}/so_locations"; \
-	done
-libtest_guththila.la: $(libtest_guththila_la_OBJECTS) $(libtest_guththila_la_DEPENDENCIES) 
-	$(LINK) -rpath $(prglibdir) $(libtest_guththila_la_LDFLAGS) $(libtest_guththila_la_OBJECTS) $(libtest_guththila_la_LIBADD) $(LIBS)
 install-prgbinPROGRAMS: $(prgbin_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	test -z "$(prgbindir)" || $(mkdir_p) "$(DESTDIR)$(prgbindir)"
@@ -311,8 +266,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-include ./$(DEPDIR)/guththila_test.Plo
-include ./$(DEPDIR)/main.Po
+include ./$(DEPDIR)/guththila_test.Po
 
 .c.o:
 	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -345,6 +299,77 @@ distclean-libtool:
 	-rm -f libtool
 uninstall-info-am:
 
+# This directory's subdirectories are mostly independent; you can cd
+# into them and run `make' without going through this Makefile.
+# To change the values of `make' variables: instead of editing Makefiles,
+# (1) if the variable is set in `config.status', edit `config.status'
+#     (which will cause the Makefiles to be regenerated when you run `make');
+# (2) otherwise, pass the desired values on the `make' command line.
+$(RECURSIVE_TARGETS):
+	@failcom='exit 1'; \
+	for f in x $$MAKEFLAGS; do \
+	  case $$f in \
+	    *=* | --[!k]*);; \
+	    *k*) failcom='fail=yes';; \
+	  esac; \
+	done; \
+	dot_seen=no; \
+	target=`echo $@ | sed s/-recursive//`; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    dot_seen=yes; \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	  || eval $$failcom; \
+	done; \
+	if test "$$dot_seen" = "no"; then \
+	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
+	fi; test -z "$$fail"
+
+mostlyclean-recursive clean-recursive distclean-recursive \
+maintainer-clean-recursive:
+	@failcom='exit 1'; \
+	for f in x $$MAKEFLAGS; do \
+	  case $$f in \
+	    *=* | --[!k]*);; \
+	    *k*) failcom='fail=yes';; \
+	  esac; \
+	done; \
+	dot_seen=no; \
+	case "$@" in \
+	  distclean-* | maintainer-clean-*) list='$(DIST_SUBDIRS)' ;; \
+	  *) list='$(SUBDIRS)' ;; \
+	esac; \
+	rev=''; for subdir in $$list; do \
+	  if test "$$subdir" = "."; then :; else \
+	    rev="$$subdir $$rev"; \
+	  fi; \
+	done; \
+	rev="$$rev ."; \
+	target=`echo $@ | sed s/-recursive//`; \
+	for subdir in $$rev; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	  || eval $$failcom; \
+	done && test -z "$$fail"
+tags-recursive:
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  test "$$subdir" = . || (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) tags); \
+	done
+ctags-recursive:
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  test "$$subdir" = . || (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) ctags); \
+	done
+
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
@@ -355,10 +380,23 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	mkid -fID $$unique
 tags: TAGS
 
-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
+	if ($(ETAGS) --etags-include --version) >/dev/null 2>&1; then \
+	  include_option=--etags-include; \
+	  empty_fix=.; \
+	else \
+	  include_option=--include; \
+	  empty_fix=; \
+	fi; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    test ! -f $$subdir/TAGS || \
+	      tags="$$tags $$include_option=$$here/$$subdir/TAGS"; \
+	  fi; \
+	done; \
 	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
@@ -371,7 +409,7 @@ TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 	    $$tags $$unique; \
 	fi
 ctags: CTAGS
-CTAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+CTAGS: ctags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
@@ -420,22 +458,38 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
+	list='$(DIST_SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    test -d "$(distdir)/$$subdir" \
+	    || $(mkdir_p) "$(distdir)/$$subdir" \
+	    || exit 1; \
+	    distdir=`$(am__cd) $(distdir) && pwd`; \
+	    top_distdir=`$(am__cd) $(top_distdir) && pwd`; \
+	    (cd $$subdir && \
+	      $(MAKE) $(AM_MAKEFLAGS) \
+	        top_distdir="$$top_distdir" \
+	        distdir="$$distdir/$$subdir" \
+	        distdir) \
+	      || exit 1; \
+	  fi; \
+	done
 check-am: all-am
-check: check-am
-all-am: Makefile $(LTLIBRARIES) $(PROGRAMS)
-installdirs:
-	for dir in "$(DESTDIR)$(prglibdir)" "$(DESTDIR)$(prgbindir)"; do \
+check: check-recursive
+all-am: Makefile $(PROGRAMS)
+installdirs: installdirs-recursive
+installdirs-am:
+	for dir in "$(DESTDIR)$(prgbindir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
-install: install-am
-install-exec: install-exec-am
-install-data: install-data-am
-uninstall: uninstall-am
+install: install-recursive
+install-exec: install-exec-recursive
+install-data: install-data-recursive
+uninstall: uninstall-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 
-installcheck: installcheck-am
+installcheck: installcheck-recursive
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
 	  install_sh_PROGRAM="$(INSTALL_STRIP_PROGRAM)" INSTALL_STRIP_FLAG=-s \
@@ -451,71 +505,73 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-clean: clean-am
+clean: clean-recursive
 
 clean-am: clean-generic clean-libtool clean-prgbinPROGRAMS \
-	clean-prglibLTLIBRARIES mostlyclean-am
+	mostlyclean-am
 
-distclean: distclean-am
+distclean: distclean-recursive
 	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-libtool distclean-tags
 
-dvi: dvi-am
+dvi: dvi-recursive
 
 dvi-am:
 
-html: html-am
+html: html-recursive
 
-info: info-am
+info: info-recursive
 
 info-am:
 
-install-data-am: install-prgbinPROGRAMS install-prglibLTLIBRARIES
+install-data-am: install-prgbinPROGRAMS
 
 install-exec-am:
 
-install-info: install-info-am
+install-info: install-info-recursive
 
 install-man:
 
 installcheck-am:
 
-maintainer-clean: maintainer-clean-am
+maintainer-clean: maintainer-clean-recursive
 	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
-mostlyclean: mostlyclean-am
+mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-pdf: pdf-am
+pdf: pdf-recursive
 
 pdf-am:
 
-ps: ps-am
+ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-info-am uninstall-prgbinPROGRAMS \
-	uninstall-prglibLTLIBRARIES
+uninstall-am: uninstall-info-am uninstall-prgbinPROGRAMS
 
-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libtool clean-prgbinPROGRAMS clean-prglibLTLIBRARIES \
-	ctags distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
+uninstall-info: uninstall-info-recursive
+
+.PHONY: $(RECURSIVE_TARGETS) CTAGS GTAGS all all-am check check-am \
+	clean clean-generic clean-libtool clean-prgbinPROGRAMS \
+	clean-recursive ctags ctags-recursive distclean \
+	distclean-compile distclean-generic distclean-libtool \
+	distclean-recursive distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am install-data \
 	install-data-am install-exec install-exec-am install-info \
 	install-info-am install-man install-prgbinPROGRAMS \
-	install-prglibLTLIBRARIES install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-info-am \
-	uninstall-prgbinPROGRAMS uninstall-prglibLTLIBRARIES
+	install-strip installcheck installcheck-am installdirs \
+	installdirs-am maintainer-clean maintainer-clean-generic \
+	maintainer-clean-recursive mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
+	pdf pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
+	uninstall-info-am uninstall-prgbinPROGRAMS
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

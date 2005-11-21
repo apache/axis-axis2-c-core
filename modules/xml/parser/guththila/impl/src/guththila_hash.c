@@ -81,7 +81,7 @@ struct guththila_hash_t
 static guththila_hash_entry_t **
 alloc_array (guththila_hash_t * ht, unsigned int max)
 {
-    return memset (guththila_malloc (ht->environment->allocator,
+    return memset (GUTHTHILA_MALLOC (ht->environment->allocator,
                                      sizeof (*ht->array) * (max + 1)), 0,
                    sizeof (*ht->array) * (max + 1));
 }
@@ -90,7 +90,7 @@ GUTHTHILA_DECLARE (guththila_hash_t *)
 guththila_hash_make (guththila_environment_t * environment)
 {
     guththila_hash_t *ht;
-    ht = guththila_malloc (environment->allocator, sizeof (guththila_hash_t));
+    ht = GUTHTHILA_MALLOC (environment->allocator, sizeof (guththila_hash_t));
     ht->environment = environment;
     ht->free = NULL;
     ht->count = 0;
@@ -135,7 +135,7 @@ guththila_hash_first (guththila_environment_t * environment,
 {
     guththila_hash_index_t *hi;
     if (environment)
-        hi = guththila_malloc (environment->allocator, sizeof (*hi));
+        hi = GUTHTHILA_MALLOC (environment->allocator, sizeof (*hi));
     else
         hi = &ht->iterator;
 
@@ -285,7 +285,7 @@ find_entry (guththila_hash_t * ht,
     if ((he = ht->free) != NULL)
         ht->free = he->next;
     else
-        he = guththila_malloc (ht->environment->allocator, sizeof (*he));
+        he = GUTHTHILA_MALLOC (ht->environment->allocator, sizeof (*he));
     he->next = NULL;
     he->hash = hash;
     he->key = key;
@@ -304,7 +304,7 @@ guththila_hash_copy (guththila_environment_t * environment,
     guththila_hash_entry_t *new_vals;
     unsigned int i, j;
 
-    ht = guththila_malloc (environment->allocator, sizeof (guththila_hash_t) +
+    ht = GUTHTHILA_MALLOC (environment->allocator, sizeof (guththila_hash_t) +
                            sizeof (*ht->array) * (orig->max + 1) +
                            sizeof (guththila_hash_entry_t) * orig->count);
     ht->environment = environment;
@@ -434,7 +434,7 @@ guththila_hash_merge (guththila_environment_t * environment,
 #endif
 
     res =
-        guththila_malloc (environment->allocator, sizeof (guththila_hash_t));
+        GUTHTHILA_MALLOC (environment->allocator, sizeof (guththila_hash_t));
     res->environment = environment;
     res->free = NULL;
     res->hash_func = base->hash_func;
@@ -448,7 +448,7 @@ guththila_hash_merge (guththila_environment_t * environment,
     if (base->count + overlay->count)
     {
         new_vals =
-            guththila_malloc (environment->allocator,
+            GUTHTHILA_MALLOC (environment->allocator,
                               sizeof (guththila_hash_entry_t) * (base->count +
                                                                  overlay->
                                                                  count));
@@ -506,4 +506,36 @@ guththila_hash_merge (guththila_environment_t * environment,
         }
     }
     return res;
+}
+
+
+static void
+guththila_hash_entry_free (guththila_environment_t *environment,
+                           guththila_hash_entry_t *hash_entry)
+{
+    if(!environment)    return;
+    if (!hash_entry)
+        return;
+    if (hash_entry->next)
+    {
+        guththila_hash_entry_free (environment, hash_entry->next);
+    }
+    GUTHTHILA_FREE (environment->allocator, hash_entry);
+    return;
+}
+
+GUTHTHILA_DECLARE(guththila_status_t)
+guththila_hash_free (guththila_environment_t *environment,
+                     guththila_hash_t *ht)
+{
+    if(!environment) return GUTHTHILA_FAILURE;
+    if (ht)
+    {
+        if (ht->free)
+            guththila_hash_entry_free (environment, ht->free);
+        GUTHTHILA_FREE(environment->allocator, ht->array);
+        GUTHTHILA_FREE (environment->allocator, ht);
+        return GUTHTHILA_SUCCESS;
+    }
+    return GUTHTHILA_FAILURE;
 }

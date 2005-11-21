@@ -48,63 +48,52 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
        /*
         * Find a namespace in the scope of the document.
         * Start to find from the given node and go up the hierarchy.
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
-        * @param node node containing an instance of an OM element. Mandatory, cannot be NULL.
-        * @param uri namespace uri. Mandatory, cannot be NULL.
-        * @param prefix namespace prefix. Optional, can be NULL.
+        * @param node node containing an instance of an OM element,cannot be NULL.
+        * @param env Environment. MUST NOT be NULL.
+        * @param uri namespace uri..
+        * @param prefix namespace prefix. can be NULL.
         * @return pointer to the namespace, if found, else NULL. On error, returns 
         *           NULL and sets the errorno in environment.
         */
-        axis2_om_namespace_t* (AXIS2_CALL *find_namespace)(struct axis2_om_element *om_element,
-                                                           axis2_env_t **env,
-                                                           axis2_om_node_t *node,
-                                                           const axis2_char_t *uri,
-                                                           const axis2_char_t *prefix);
+        axis2_om_namespace_t* (AXIS2_CALL *find_namespace)
+                                        (struct axis2_om_element *om_element,
+                                        axis2_env_t **env,
+                                        axis2_om_node_t *node,
+                                        const axis2_char_t *uri,
+                                        const axis2_char_t *prefix);
       /**
         * Declare a namespace in current element (in the scope of this element ).
         * It checks to see if it is already declared.
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
-        * @param node node containing an instance of an OM element. Mandatory, cannot be NULL.
+        * @param node node containing an instance of an OM element.
+        * @param env Environment. MUST NOT be NULL.
         * @param ns pointer to the namespace struct to be declared
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-        axis2_status_t (AXIS2_CALL *declare_namespace)(struct axis2_om_element *om_element,
-                                                       axis2_env_t **env,
-                                                       axis2_om_node_t *node,
-                                                       axis2_om_namespace_t * ns);
-
-      /**
-        * find namespaces in the scope of current element
-        * @param environment Environment .MUST NOT be NULL, if NULL behaviour is undefined.
-        * @param element pointer to an om element
-        * @param prefix namespace prefix
-        * @param uri    namespace uri
-        */
-        /*   AXIS2_DECLARE_DATA axis2_om_namespace_t
-            *(AXIS2_CALL *axis2_om_element_ops_find_declared_namespace)
-            (axis2_env_t * environment,
-             struct axis2_om_element * element, const axis2_char_t * uri,
-             const axis2_char_t * prefix);
-             */
-
-      /**
+        axis2_status_t (AXIS2_CALL *declare_namespace)
+                                        (struct axis2_om_element *om_element,
+                                         axis2_env_t **env,
+                                         axis2_om_node_t *node,
+                                         axis2_om_namespace_t * ns);
+       /**
         * Finds a namespace using qname
         * Start to find from the given node and go up the hierarchy.
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
-        * @param node node containing an instance of an OM element. Mandatory, cannot be NULL.
-        * @param qname qname of the namespace to be found. Mandatory, cannot be NULL.
+        * @param om_element om_element contained in node
+        * @param env Environment. MUST NOT be NULL.
+        * @param node node containing an instance of an OM element, cannot be NULL.                                        
+        * @param qname qname of the namespace to be found. cannot be NULL.
         * @return pointer to the namespace, if found, else NULL. On error, returns 
         *           NULL and sets the errorno in environment.
         */
-         axis2_om_namespace_t *(AXIS2_CALL *find_namespace_with_qname)(struct axis2_om_element *om_element,
-                                                                       axis2_env_t **env,
-                                                                       axis2_om_node_t *node,
-                                                                       axis2_qname_t *qname);
+         axis2_om_namespace_t *(AXIS2_CALL *find_namespace_with_qname)
+                                            (struct axis2_om_element *om_element,
+                                             axis2_env_t **env,
+                                             axis2_om_node_t *node,
+                                             axis2_qname_t *qname);
 
       /**
         * Adds an attribute to current element
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
-        * @param element element to which the attribute is to be added. Mandatory, cannot be NULL.
+        * @param om_element element to which the attribute is to be added.cannot be NULL.
+        * @param env Environment. MUST NOT be NULL.
         * @param attribute attribute to be added.
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
@@ -114,8 +103,8 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
 
       /**
         * Gets (finds) the attribute with the given qname
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
         * @param element element whose attribute is to be found. Mandatory, cannot be NULL.
+        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
         * @qname qname qname of the attribute to be found. Mandatory, cannot be NULL.
         * @return a pointer to the attribute with given qname if found, else NULL.
         *           On error, returns NULL and sets the error.
@@ -126,53 +115,62 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
 
       /**
         * Frees given element 
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
         * @param element OM element to be freed.
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        * @param env Environment. MUST NOT be NULL.
+         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
          axis2_status_t (AXIS2_CALL *free) (struct axis2_om_element *element,
                                             axis2_env_t **env);
 
       /**
         * Serializes the start part of the given element
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
         * @param element element to be serialized.
+        * @param env Environment. MUST NOT be NULL.
         * @param om_output OM output handler to be used in serializing
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *serialize_start_part)(struct axis2_om_element *om_element,
-                                                          axis2_env_t **env,
-                                                          axis2_om_output_t * om_output);
+        axis2_status_t (AXIS2_CALL *serialize_start_part)
+                                                (struct axis2_om_element *om_element,
+                                                 axis2_env_t **env,
+                                                 axis2_om_output_t * om_output);
 
       /**
         * Serializes the end part of the given element. serialize_start_part must 
         *     have been called before calling this method.
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
-        * @param element element to be serialized.
+        * @param om_element element to be serialized.
+        * @param env Environment must not be null.
         * @param om_output OM output handler to be used in serializing
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *serialize_end_part)(struct axis2_om_element *om_element,
-                                                        axis2_env_t **env,
-                                                        axis2_om_output_t * om_output);
+        axis2_status_t (AXIS2_CALL *serialize_end_part)
+                                                    (struct axis2_om_element *om_element,
+                                                     axis2_env_t **env,
+                                                     axis2_om_output_t * om_output);
                                                         
-                                                        
+       /**
+        *   returns the localname of this element
+        */        
         axis2_char_t* (AXIS2_CALL *get_localname)(struct axis2_om_element *om_element,
                                                   axis2_env_t **env);
-
+       /**
+        *   set the localname of this element
+        */
         axis2_status_t (AXIS2_CALL *set_localname)(struct axis2_om_element *om_element,
                                                   axis2_env_t **env,
                                                   const axis2_char_t *localname);
-        
-        axis2_om_namespace_t *(AXIS2_CALL *get_namespace)(struct axis2_om_element *om_element,
-                                                          axis2_env_t **env);
-                                                          
+        /**
+         * returns the namespace of om_element 
+         */
+        axis2_om_namespace_t *(AXIS2_CALL *get_namespace)
+                                                (struct axis2_om_element *om_element,
+                                                 axis2_env_t **env);
+        /**
+        * returns the namespace of om_element 
+        */                                         
         axis2_status_t (AXIS2_CALL *set_namespace)(struct axis2_om_element *om_element,
                                                    axis2_env_t **env,
                                                    axis2_om_namespace_t *ns,
                                                    axis2_om_node_t *node);                                                                                                                                                              
-                                                                                                                  
-
     } axis2_om_element_ops_t;
 
     
@@ -189,11 +187,11 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
 
   /**
     * Creates an OM element with given local name
-    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
-    * @param parent parent of the element node to be created. Optional, can be NULL.
-    * @param localname local name of the elment. Mandatory, cannot be NULL.
-    * @param ns namespace of the element. Optional, can be NULL.
-    * @param node This is an out parameter. Mandatory, cannot be NULL.
+    * @param env Environment. MUST NOT be NULL.
+    * @param parent parent of the element node to be created. can be NULL.
+    * @param localname local name of the elment. cannot be NULL.
+    * @param ns namespace of the element.  can be NULL.
+    * @param node This is an out parameter. cannot be NULL.
     *                       Returns the node corresponding to the comment created.
     *                       Node type will be set to AXIS2_OM_ELEMENT
     * @return a pointer to the newly created element struct
@@ -207,10 +205,10 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
 
   /**
     * Creates an OM element with given qname
-    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
-    * @param parent parent of the element node to be created. Optional, can be NULL.
-    * @param qname qname of the elment. Mandatory, cannot be NULL.
-    * @param node This is an out parameter. Mandatory, cannot be NULL.
+    * @param env Environment. MUST NOT be NULL.
+    * @param parent parent of the element node to be created. can be NULL.
+    * @param qname qname of the elment.cannot be NULL.
+    * @param node This is an out parameter. cannot be NULL.
     *                       Returns the node corresponding to the comment created.
     *                       Node type will be set to AXIS2_OM_ELEMENT
     * @return a pointer to the newly created element struct
@@ -241,9 +239,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
 #define AXIS2_OM_ELEMENT_GET_ATTRIBUTE(om_element, env, qname) \
         ((om_element)->ops->get_attribute(om_element, env, qname))
         
-/*#define axis2_om_element_find_declared_namespace(environment,element,uri,prefix) ((element)->ops->axis2_om_element_find_declared_namespace(environment,element,uri,prefix))*/
-/** frees given element */
-
+/** free an om element */
 #define AXIS2_OM_ELEMENT_FREE(om_element, env) \
         ((om_element)->ops->free(om_element, env))
         
@@ -254,16 +250,16 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
 /** serialize the end part of given element */
 #define AXIS2_OM_ELEMENT_SERIALIZE_END_PART(om_element, env, om_output) \
         ((om_element)->ops->serialize_end_part(om_element, env, om_output))
-
+/** get localname */
 #define AXIS2_OM_ELEMENT_GET_LOCALNAME(om_element, env)\
         ((om_element)->ops->get_localname(om_element,env))
-        
+/** get namespace of this element */        
 #define AXIS2_OM_ELEMENT_GET_NAMESPACE(om_element, env) \
         ((om_element)->ops->get_namespace(om_element, env))
-        
+/** set localname */        
 #define AXIS2_OM_ELEMENT_SET_LOCALNAME(om_element, env, localname) \
         ((om_element)->ops->set_localname(om_element, env))
-        
+/** set namespace */        
 #define AXIS2_OM_ELEMENT_SET_NAMESPACE(om_element, env, ns , node) \
         ((om_element)->ops->set_namespace(om_element, env, ns, node))
         
@@ -275,6 +271,3 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
 #endif
 
 #endif                          /* AXIS2_OM_ELEMENT_H */
-
-
-

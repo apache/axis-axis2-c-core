@@ -23,6 +23,7 @@
  */
 
 #include <axis2_om_node.h>
+#include <axis2_om_output.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -47,19 +48,32 @@ extern "C"
     {
       /**
         * Free a axis2_comment struct
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
         * @param comment pointer to axis2_commnet struct to be freed
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        * @param environment Environment. MUST NOT be NULL.
+        * @return satus of the operation. 
+        *                AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *free) (struct axis2_om_comment *om_comment,
                                            axis2_env_t **env);
-
+       /**
+        * get the comment data 
+        *
+        */
+               
         axis2_char_t* (AXIS2_CALL *get_value)(struct axis2_om_comment *om_comment,
-                                               axis2_env_t **env);
-
+                                              axis2_env_t **env);
+       /**
+        * set comment data
+        */
         axis2_status_t (AXIS2_CALL *set_value)(struct axis2_om_comment *om_comment,
                                               axis2_env_t **env,
                                               const axis2_char_t* value);
+        /**
+         *  serialize function
+         */
+        axis2_status_t (AXIS2_CALL *serialize)(struct axis2_om_comment *om_comment,
+                                               axis2_env_t **env,
+                                               axis2_om_output_t *om_output);
                                                                                             
                                               
     } axis2_om_comment_ops_t;
@@ -77,28 +91,32 @@ extern "C"
 
   /**
     * Creates a comment struct
-    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param environment Environment. MUST NOT be NULL,
+    * @param parent This is the parent node of the comment is any can be null.
     * @param value comment text
-    * @param comment_node This is an out parameter. Mandatory, cannot be NULL.
-    *                       Returns the node corresponding to the comment created.
-    *                       Node type will be set to AXIS2_OM_COMMENT
+    * @param node This is an out parameter.cannot be NULL.
+    *        Returns the node corresponding to the comment created.
+    *        Node type will be set to AXIS2_OM_COMMENT
     * @return a pointer to the newly created comment struct
     */
     AXIS2_DECLARE(axis2_om_comment_t *) 
     axis2_om_comment_create (axis2_env_t **env,
+                             axis2_om_node_t *parent,
                              const axis2_char_t *value,
-                             axis2_om_node_t **comment_node);
+                             axis2_om_node_t **node);
 
 /** free given comment */
 #define AXIS2_OM_COMMENT_FREE(om_comment, env) \
         ((om_comment)->ops->free(om_comment, env))
-
+/** get comment value */
 #define AXIS2_OM_COMMENT_GET_VALUE(om_comment, env) \
         ((om_comment)->ops->get_value(om_comment, env))
-        
+/** set comment value */        
 #define AXIS2_OM_COMMENT_SET_VALUE(om_comment, env, value) \
         ((om_comment)->ops->set_value(om_comment, env, value))
-                        
+
+#define AXIS2_OM_COMMENT_SERIALIZE(om_comment, env, om_output) \
+        ((om_comment)->ops->serialize(om_comment, env, om_output))
 
 /** @} */
 

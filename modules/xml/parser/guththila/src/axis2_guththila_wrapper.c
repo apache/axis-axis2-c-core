@@ -97,6 +97,14 @@ axis2_char_t* AXIS2_CALL
 axis2_guththila_wrapper_get_pi_data(axis2_pull_parser_t *parser,
                                      axis2_env_t **env);
 
+axis2_char_t* AXIS2_CALL
+axis2_guththila_wrapper_get_dtd(axis2_pull_parser_t *parser,
+                                     axis2_env_t **env);                                     
+
+axis2_status_t AXIS2_CALL
+axis2_guththila_wrapper_xml_free(axis2_pull_parser_t *parser,
+                                 axis2_env_t **env,
+                                 void *data);
 
 
 /*********** axis2_guththila_wrapper_impl_t wrapper struct   *******************/
@@ -139,21 +147,26 @@ static axis2_status_t axis2_guththila_wrapper_init_map(
 /********************************************************************************/
 
 AXIS2_DECLARE(axis2_pull_parser_t *)
-axis2_pull_parser_create(axis2_env_t **env,void* stream)
+axis2_pull_parser_create_for_file(axis2_env_t **env,char* filename)
 {
+    axis2_guththila_wrapper_impl_t *guththila_impl = NULL;
+    guththila_allocator_t *allocator = NULL;
+    guththila_environment_t *guththila_env = NULL;
+    guththila_reader_t *reader = NULL;
+    guththila_xml_pull_parser_t *guththila = NULL;
+    
     AXIS2_ENV_CHECK(env, NULL);
     
-    axis2_guththila_wrapper_impl_t *guththila_impl = 
-        AXIS2_MALLOC((*env)->allocator, sizeof(axis2_guththila_wrapper_impl_t));
+    guththila_impl = AXIS2_MALLOC((*env)->allocator,
+                             sizeof(axis2_guththila_wrapper_impl_t));
     
     if(!guththila_impl)
           AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     
-    guththila_allocator_t *allocator  = guththila_allocator_init(NULL);
-    guththila_environment_t *guththila_env = guththila_environment_create(
-                                              allocator,NULL, NULL, NULL, NULL);
+    allocator = guththila_allocator_init(NULL);
+    guththila_env  = guththila_environment_create(allocator,NULL, NULL);
     
-    guththila_reader_t *reader = guththila_reader_create(guththila_env,stream);
+    reader = guththila_reader_create_for_file(guththila_env, filename);
     
     if(!reader)
     {
@@ -161,8 +174,7 @@ axis2_pull_parser_create(axis2_env_t **env,void* stream)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }    
     
-    guththila_xml_pull_parser_t *guththila = guththila_xml_pull_parser_create(
-                                                guththila_env,reader);
+    guththila = guththila_xml_pull_parser_create(guththila_env,reader);
     if(!guththila)
     {
         AXIS2_FREE((*env)->allocator,guththila_impl);
@@ -215,10 +227,107 @@ axis2_pull_parser_create(axis2_env_t **env,void* stream)
     guththila_impl->parser.ops->get_namespace_prefix_by_number =
         axis2_guththila_wrapper_get_namespace_prefix_by_number;
 
+    guththila_impl->parser.ops->get_dtd=
+        axis2_guththila_wrapper_get_dtd;
+
+    guththila_impl->parser.ops->xml_free = axis2_guththila_wrapper_xml_free;        
+
     return &(guththila_impl->parser);
 }
 
+/****** pull parser for memory create function ***************************/
 
+
+AXIS2_DECLARE(axis2_pull_parser_t *)
+axis2_pull_parser_create_for_memory(axis2_env_t **env,
+                                    int (*read_input_callback)(char *buffer,int size),
+                                    void (*close_input_callback)(void))
+{
+    axis2_guththila_wrapper_impl_t *guththila_impl = NULL;
+    guththila_allocator_t *allocator = NULL;
+    guththila_environment_t *guththila_env = NULL;
+    guththila_reader_t *reader = NULL;
+    guththila_xml_pull_parser_t *guththila = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    guththila_impl = AXIS2_MALLOC((*env)->allocator,
+                             sizeof(axis2_guththila_wrapper_impl_t));
+    
+    if(!guththila_impl)
+          AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    
+    allocator = guththila_allocator_init(NULL);
+    guththila_env  = guththila_environment_create(allocator,NULL, NULL);
+    
+    /*-------difference of two create function is here--------*/
+    reader = guththila_reader_create_for_memory(guththila_env,
+                     read_input_callback, close_input_callback); 
+                                                   
+    if(!reader)
+    {
+        AXIS2_FREE((*env)->allocator,guththila_impl);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    }    
+    
+    guththila = guththila_xml_pull_parser_create(guththila_env,reader);
+    if(!guththila)
+    {
+        AXIS2_FREE((*env)->allocator,guththila_impl);
+        AXIS2_FREE((*env)->allocator,reader);
+        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_NO_MEMORY, NULL);
+    }
+    
+    
+    guththila_impl->guththila_parser = guththila;
+    guththila_impl->guththila_env = guththila_env;
+    guththila_impl->parser.ops = NULL;
+    guththila_impl->parser.ops = (axis2_pull_parser_ops_t*)AXIS2_MALLOC(
+                                      (*env)->allocator,
+                                       sizeof(axis2_pull_parser_ops_t));
+    if(!(guththila_impl->parser.ops))
+    {   guththila_xml_pull_parser_free( guththila_env, guththila);
+        AXIS2_FREE((*env)->allocator,guththila_impl);
+        AXIS2_FREE((*env)->allocator,reader);
+        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_NO_MEMORY, NULL);
+    }
+    
+    
+    axis2_guththila_wrapper_init_map(guththila_impl);
+    
+    
+/************** operations *****/    
+    guththila_impl->parser.ops->next = axis2_guththila_wrapper_next;
+    
+    guththila_impl->parser.ops->free = axis2_guththila_wrapper_free;
+    
+    guththila_impl->parser.ops->get_attribute_count =
+        axis2_guththila_wrapper_get_attribute_count;
+    guththila_impl->parser.ops->get_attribute_name_by_number =
+        axis2_guththila_wrapper_get_attribute_name_by_number;
+    guththila_impl->parser.ops->get_attribute_value_by_number =
+        axis2_guththila_wrapper_get_attribute_value_by_number;
+    guththila_impl->parser.ops->get_attribute_prefix_by_number =
+        axis2_guththila_wrapper_get_attribute_prefix_by_number;
+    guththila_impl->parser.ops->get_attribute_namespace_by_number =
+        axis2_guththila_wrapper_get_attribute_namespace_by_number;
+    
+    guththila_impl->parser.ops->get_value = axis2_guththila_wrapper_get_value;
+    guththila_impl->parser.ops->get_name  = axis2_guththila_wrapper_get_name;
+    guththila_impl->parser.ops->get_prefix = axis2_guththila_wrapper_get_prefix;
+    
+    guththila_impl->parser.ops->get_namespace_count =
+        axis2_guththila_wrapper_get_namespace_count;
+    guththila_impl->parser.ops->get_namespace_uri_by_number =
+        axis2_guththila_wrapper_get_namespace_uri_by_number;
+    guththila_impl->parser.ops->get_namespace_prefix_by_number =
+        axis2_guththila_wrapper_get_namespace_prefix_by_number;
+    guththila_impl->parser.ops->get_dtd=
+        axis2_guththila_wrapper_get_dtd;
+        
+    guththila_impl->parser.ops->xml_free = axis2_guththila_wrapper_xml_free;
+    return &(guththila_impl->parser);
+}
 int AXIS2_CALL 
 axis2_guththila_wrapper_next(axis2_pull_parser_t *parser,
                              axis2_env_t **env)
@@ -406,3 +515,22 @@ axis2_guththila_wrapper_get_pi_data(axis2_pull_parser_t *parser,
     /* guththila_dose not support yet */
     return NULL;
  }
+
+ axis2_char_t* AXIS2_CALL
+axis2_guththila_wrapper_get_dtd(axis2_pull_parser_t *parser,
+                                     axis2_env_t **env)
+{
+    printf("not implemented in guththila");
+}
+ 
+axis2_status_t AXIS2_CALL
+axis2_guththila_wrapper_xml_free(axis2_pull_parser_t *parser,
+                                 axis2_env_t **env,
+                                 void *data)
+{
+    AXIS2_FUNC_PARAM_CHECK(parser, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, data, AXIS2_FAILURE);
+    GUTHTHILA_FREE(AXIS2_INTF_TO_IMPL(parser)->guththila_env->allocator,
+                   data);
+    return AXIS2_SUCCESS;
+}

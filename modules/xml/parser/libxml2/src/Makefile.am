@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = libaxis2_libxml2.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_libxml2_la_SOURCES = libxml2.c
+libaxis2_libxml2_la_SOURCES = axis2_libxml2_wrapper.c
 
 libaxis2_libxml2_la_LIBADD = -L${LIBXML2_LIB} -lxml2 $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include \

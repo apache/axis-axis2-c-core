@@ -74,12 +74,12 @@ typedef struct axis2_om_attribute_impl
 
 }axis2_om_attribute_impl_t;
 
-/***************************************** macro ***********************************/
+/***************************************** macro *******************************/
 
 #define AXIS2_INTF_TO_IMPL(om_attr) ((axis2_om_attribute_impl_t*)om_attr)
 
 
-/*************************************** *******************************************/
+/*************************************** ***************************************/
 
 AXIS2_DECLARE(axis2_om_attribute_t*)
 axis2_om_attribute_create (axis2_env_t **env,
@@ -92,7 +92,8 @@ axis2_om_attribute_create (axis2_env_t **env,
     AXIS2_ENV_CHECK(env, NULL);
     if (!localname)
     {   /* localname is mandatory */
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error,
+                    AXIS2_ERROR_INVALID_NULL_PARAM);
         AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
         return NULL;
     }
@@ -189,14 +190,14 @@ axis2_om_attribute_get_qname (axis2_om_attribute_t *om_attribute,
         axis2_om_namespace_t *ns = NULL;
         ns = AXIS2_INTF_TO_IMPL(om_attribute)->ns;
         
-        qname =
-            axis2_qname_create (env, AXIS2_INTF_TO_IMPL(om_attribute)->localname,
-                                AXIS2_OM_NAMESPACE_GET_URI(ns, env),AXIS2_OM_NAMESPACE_GET_PREFIX(ns, env));
+        qname = axis2_qname_create (env,
+                    AXIS2_INTF_TO_IMPL(om_attribute)->localname,
+                    AXIS2_OM_NAMESPACE_GET_URI(ns, env),
+                    AXIS2_OM_NAMESPACE_GET_PREFIX(ns, env));
     }                                
     else
-        qname =
-            axis2_qname_create (env,AXIS2_INTF_TO_IMPL(om_attribute)->localname, NULL,
-                                NULL);
+        qname = axis2_qname_create (env,AXIS2_INTF_TO_IMPL(om_attribute)->localname,
+                                    NULL,  NULL);
 
     return qname;
 }

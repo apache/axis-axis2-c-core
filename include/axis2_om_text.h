@@ -48,7 +48,7 @@ extern "C"
     {
       /**
         * Free an axis2_om_text struct
-        * @param environment environment. Mandatory, MUST NOT be NULL, if NULL behaviour is undefined.
+        * @param environment environment.  MUST NOT be NULL, .
         * @param om_text pointer to om text struct to be freed
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
@@ -57,7 +57,7 @@ extern "C"
 
       /**
         * Serialize operation
-        * @param environment environment. Mandatory, MUST NOT be NULL, if NULL behaviour is undefined.
+        * @param environment environment.  MUST NOT be NULL, .
         * @param om_text pointer to om text struct to be serialized
         * @param om_output OM output handler to be used in serializing
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
@@ -90,11 +90,11 @@ extern "C"
 
   /**
     * Creates a new text struct
-    * @param environment Environment. MUST  NOT be NULL, if NULL behaviour is undefined.
+    * @param environment Environment. MUST  NOT be NULL, .
     * @param parent parent of the new node. Optinal, can be NULL. 
     *          The parent element must be of type AXIS2_OM_ELEMENT
     * @param value Text value. Optinal, can be NULL.
-    * @param comment_node This is an out parameter. Mandatory, cannot be NULL.
+    * @param comment_node This is an out parameter.  cannot be NULL.
     *                       Returns the node corresponding to the text struct created.
     *                       Node type will be set to AXIS2_OM_TEXT    
     * @return pointer to newly created text struct 

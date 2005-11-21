@@ -12,7 +12,7 @@ axis2_env_t *environment = NULL;
 
 
 int
-test_om_build (char *file_name)
+test_om_build (char *filename)
 {
     axis2_om_element_t *ele1 = NULL, *ele2 = NULL, *ele3 = NULL, *ele4 = NULL;
     axis2_om_stax_builder_t *builder = NULL;
@@ -22,12 +22,11 @@ test_om_build (char *file_name)
     FILE *fp = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_om_namespace_t* ns = NULL;
-    axis2_xml_writer_t *xml_writer = NULL;
 
-    fp = fopen (file_name, "r");
+
   
    
-    builder = axis2_om_stax_builder_create (&environment,fp);
+    builder = axis2_om_stax_builder_create_for_file (&environment, filename);
            
     document = axis2_om_document_create (&environment, NULL, builder);
     node1 = AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT (document,&environment);
@@ -84,11 +83,15 @@ test_om_build (char *file_name)
     printf ("Serialize pulled document\n");
     
     om_output = axis2_om_output_create (&environment, NULL);
-    AXIS2_OM_NODE_SERIALIZE (node1, &environment , om_output);
+    AXIS2_OM_NODE_SERIALIZE (AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(document, &environment), &environment , om_output);
+    AXIS2_OM_DOCUMENT_FREE(document, &environment); 
+    axis2_om_output_free(om_output, &environment);
+    AXIS2_OM_STAX_BUILDER_FREE(builder, &environment); 
     
-    AXIS2_FREE (environment->allocator, om_output);
+
     
     printf ("\ndone\n");
+    return ;
 }
 
 
@@ -96,7 +99,7 @@ test_om_build (char *file_name)
 int
 test_om_serialize ()
 {
-    printf ("START: build document\n");
+
     /*
        <book xmlns:axiomc="http://ws.apache.org/axis2/c/om" xmlns:isbn="urn:ISBN:0-395-74341-6">
        <title>Axis2/C OM HOWTO</title>
@@ -109,6 +112,7 @@ test_om_serialize ()
        </notes>
        </book>
     */
+    int status;
     axis2_om_element_t *ele1 = NULL, *ele2 = NULL, *ele3 = NULL, *ele4 =
         NULL, *ele5 = NULL;
     axis2_om_node_t *node1 = NULL, *node2 = NULL, *node3 = NULL, *node4 =
@@ -154,7 +158,7 @@ test_om_serialize ()
     om_output = axis2_om_output_create (&environment, NULL);
 
     printf ("Serialize built document\n");
-    int status = AXIS2_OM_NODE_SERIALIZE (node1,&environment ,om_output);
+    status = AXIS2_OM_NODE_SERIALIZE (node1,&environment ,om_output);
     if (status != AXIS2_SUCCESS)
     {
         printf ("\naxis2_om_node_serialize failed\n");
@@ -165,7 +169,7 @@ test_om_serialize ()
     /* end serializing stuff */
 
      AXIS2_OM_NODE_FREE_TREE(node1,&environment);
-     AXIS2_FREE(environment->allocator,om_output);
+     axis2_om_output_free(om_output, &environment);
      printf ("\nDONE\n");
 
     return 0;
@@ -181,7 +185,7 @@ main (int argc, char *argv[])
     environment = axis2_env_create (allocator);
 
     test_om_build (file_name);
-    test_om_serialize ();    
-    
-    
-}
+    test_om_serialize ();  
+
+    axis2_env_free(environment);    
+ }

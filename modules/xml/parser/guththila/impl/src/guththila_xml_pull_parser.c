@@ -18,6 +18,7 @@
  */
 
 #include "guththila_xml_pull_parser.h"
+#include "guththila_string.h"
 
 static int
 guththila_is_space (int c)
@@ -31,10 +32,9 @@ guththila_xml_pull_parser_create (guththila_environment_t * environment,
                                   guththila_reader_t * r)
 {
     guththila_xml_pull_parser_t *parser =
-        (guththila_xml_pull_parser_t *) guththila_malloc (environment->
-                                                          allocator,
-                                                          sizeof
-                                                          (guththila_xml_pull_parser_t));
+        (guththila_xml_pull_parser_t *) GUTHTHILA_MALLOC (
+                environment->allocator, sizeof (guththila_xml_pull_parser_t));
+                
     parser->buffer = guththila_buffer_create (environment, 1024);
     parser->stack = guththila_stack_create (environment);
     parser->attrib = guththila_stack_create (environment);
@@ -61,7 +61,7 @@ guththila_xml_pull_parser_free (guththila_environment_t * environment,
     if (parser->buffer)
         guththila_buffer_free (environment, (void *) parser->buffer);
     if (parser->reader)
-        guththila_free (environment->allocator, parser->reader);
+        GUTHTHILA_FREE (environment->allocator, parser->reader);
     if (parser->stack)
         guththila_stack_free (environment, parser->stack);
     if (parser->attrib)
@@ -70,7 +70,7 @@ guththila_xml_pull_parser_free (guththila_environment_t * environment,
         guththila_stack_free (environment, parser->namesp);
     if (parser->dep)
         guththila_stack_free (environment, parser->dep);
-    guththila_free (environment->allocator, (void *) parser);
+    GUTHTHILA_FREE (environment->allocator, (void *) parser);
 }
 
 
@@ -89,12 +89,12 @@ guththila_xml_pull_parser_exception (guththila_char_t * file, int line)
 
 
 void
-guththila_xml_pull_parser_relocate_tokens (guththila_environment_t *
-                                           environment,
-                                           guththila_xml_pull_parser_t *
-                                           parser, int offset)
+guththila_xml_pull_parser_relocate_tokens 
+                        (guththila_environment_t *environment,
+                         guththila_xml_pull_parser_t *parser,
+                         int offset)
 {
-    guththila_element_t *el;
+    guththila_element_t *el = NULL;
     int isize;
     isize = guththila_stack_size (environment, parser->stack);
     el = guththila_stack_last (environment, parser->stack);
@@ -133,14 +133,12 @@ guththila_xml_pull_parser_read (guththila_environment_t * environment,
         }
         else
         {
-            guththila_buffer_t *b;
+            guththila_buffer_t *b = NULL;
             b = parser->buffer;
             parser->buffer =
                 guththila_buffer_grow (environment, parser->buffer);
-            guththila_xml_pull_parser_relocate_tokens (environment, parser,
-                                                       (b->size -
-                                                        parser->buffer->
-                                                        size));
+            guththila_xml_pull_parser_relocate_tokens (
+                environment, parser,  (b->size - parser->buffer->size));
         }
     }
     c = guththila_reader_read (environment, (parser->buffer->buff),
@@ -238,7 +236,7 @@ guththila_xml_pull_parser_open_token (guththila_environment_t * environment,
                                       guththila_xml_pull_parser_t * parser)
 {
     guththila_token_t *t =
-        (guththila_token_t *) guththila_malloc (environment->allocator,
+        (guththila_token_t *) GUTHTHILA_MALLOC (environment->allocator,
                                                 sizeof (guththila_token_t));
     t->type = Unknown;
     t->start = guththila_xml_pull_parser_last_char (environment, parser);
@@ -987,7 +985,7 @@ guththila_xml_pull_parser_open_element (guththila_environment_t * environment,
 {
     int ii;
     guththila_depth_t *m =
-        (guththila_depth_t *) guththila_malloc (environment->allocator,
+        (guththila_depth_t *) GUTHTHILA_MALLOC (environment->allocator,
                                                 sizeof (guththila_depth_t));
     guththila_depth_t *l = NULL;
     guththila_element_t *e;
@@ -1053,7 +1051,7 @@ guththila_xml_pull_parser_add_attribute (guththila_environment_t *
 {
     guththila_attribute_t *att;
     att =
-        (guththila_attribute_t *) guththila_malloc (environment->allocator,
+        (guththila_attribute_t *) GUTHTHILA_MALLOC (environment->allocator,
                                                     sizeof
                                                     (guththila_attribute_t));
     att->name = name;
@@ -1076,7 +1074,7 @@ guththila_xml_pull_parser_add_attribute_with_prefix (guththila_environment_t *
 {
     guththila_attribute_t *att;
     att =
-        (guththila_attribute_t *) guththila_malloc (environment->allocator,
+        (guththila_attribute_t *) GUTHTHILA_MALLOC (environment->allocator,
                                                     sizeof
                                                     (guththila_attribute_t));
     att->name = name;
@@ -1095,15 +1093,15 @@ guththila_xml_pull_parser_add_namespace (guththila_environment_t *
                                          guththila_token_t * uri)
 {
     guththila_namespace_t *ns;
-    ns = (guththila_namespace_t *) guththila_malloc (environment->allocator,
+    ns = (guththila_namespace_t *) GUTHTHILA_MALLOC (environment->allocator,
                                                      sizeof
                                                      (guththila_namespace_t));
     ns->name =
         guththila_token_to_string (environment, name, parser->unicode_state);
-    ns->length = guththila_strlen (environment->string, ns->name);
+    ns->length = GUTHTHILA_STRLEN ( ns->name);
     ns->uri =
         guththila_token_to_string (environment, uri, parser->unicode_state);
-    ns->lengthuri = guththila_strlen (environment->string, ns->uri);
+    ns->lengthuri = GUTHTHILA_STRLEN ( ns->uri);
     guththila_stack_push_namespace (environment, parser->namesp, ns);
 }
 
@@ -1323,7 +1321,7 @@ guththila_xml_pull_parser_get_namespace_prefix (guththila_environment_t *
                                                 guththila_namespace_t * ns)
 {
     if (ns)
-        return guththila_strdup (environment->string, ns->name);
+        return GUTHTHILA_STRDUP (environment , ns->name);
     else
         return NULL;
 }
@@ -1337,7 +1335,7 @@ guththila_xml_pull_parser_get_namespace_uri (guththila_environment_t *
                                              guththila_namespace_t * ns)
 {
     if (ns)
-        return guththila_strdup (environment->string, ns->uri);
+        return GUTHTHILA_STRDUP (environment, ns->uri);
     else
         return NULL;
 }
@@ -1358,7 +1356,7 @@ guththila_xml_pull_parser_get_namespace_prefix_by_number
         if (e->namespace)
             ns = e->namespace;
     }
-    return guththila_strdup (environment->string, ns->name);
+    return GUTHTHILA_STRDUP (environment, ns->name);
 }
 
 
@@ -1379,7 +1377,7 @@ guththila_xml_pull_parser_get_namespace_uri_by_number (guththila_environment_t
         if (e->namespace)
             ns = e->namespace;
     }
-    return guththila_strdup (environment->string, ns->uri);
+    return GUTHTHILA_STRDUP (environment , ns->uri);
 }
 
 
@@ -1405,9 +1403,9 @@ guththila_xml_pull_parser_get_attribute_namespace_by_number
             {
                 ns = e->namespace;
                 if (!
-                    (guththila_strcmp
-                     (environment->string, ns->name, att_prefix)))
-                    return guththila_strdup (environment->string, ns->uri);
+                    (GUTHTHILA_STRCMP
+                     ( ns->name, att_prefix)))
+                    return GUTHTHILA_STRDUP (environment , ns->uri);
             }
         }
     }

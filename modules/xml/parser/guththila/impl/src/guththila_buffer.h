@@ -34,8 +34,10 @@ typedef struct guththila_buffer_s
     guththila_char_t *buff;
 } guththila_buffer_t;
 
+
 GUTHTHILA_DECLARE (guththila_buffer_t *)
 guththila_buffer_create (guththila_environment_t * environment, int size);
+
 GUTHTHILA_DECLARE (void)
 guththila_buffer_free (guththila_environment_t * environment,
                        guththila_buffer_t * name);

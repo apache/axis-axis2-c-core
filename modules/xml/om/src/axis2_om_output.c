@@ -16,7 +16,6 @@
 
 #include <axis2_om_output.h>
 #include <stdarg.h>
-#include <guththila_xml_stream_writer.h>
 #include <axis2_xml_writer.h>
 
 #define   DEFAULT_CHAR_SET_ENCODING  "utf-8"
@@ -132,6 +131,7 @@ axis2_om_output_write (axis2_om_output_t * om_output,
                                                       args_list[1],
                                                       args_list[2],
                                                       args_list[3]);
+        
          break;
 
         }
@@ -146,6 +146,29 @@ axis2_om_output_write (axis2_om_output_t * om_output,
         status = AXIS2_XML_WRITER_WRITE_CHARACTERS(om_output->xml_writer, env,
                                                   args_list[0]);
         break;
+    case AXIS2_OM_COMMENT:
+        status = AXIS2_XML_WRITER_WRITE_COMMENT(om_output->xml_writer, env,
+                                                args_list[0]);
+        break;
+    case AXIS2_OM_PROCESSING_INSTRUCTION:
+        switch(no_of_args)
+        {
+         case 1:
+            
+            status = AXIS2_XML_WRITER_WRITE_PROCESSING_INSTRUCTION(
+                        om_output->xml_writer, env, args_list[0]);
+            break;
+         case 2:
+             
+            status = AXIS2_XML_WRITER_WRITE_PROCESSING_INSTRUCTION_DATA(
+                        om_output->xml_writer, env, args_list[0], args_list[1]);        
+            break;
+        }
+         break;
+    case AXIS2_OM_DOCTYPE:
+        status = AXIS2_XML_WRITER_WRITE_DTD(om_output->xml_writer, 
+                                            env, args_list[0]);
+        break;
     
     default:
         break;
@@ -157,4 +180,18 @@ axis2_om_output_write (axis2_om_output_t * om_output,
     }
     else
         return AXIS2_FAILURE;
+}
+
+
+ AXIS2_DECLARE(axis2_status_t)
+ axis2_om_output_free(axis2_om_output_t *om_output,
+                         axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
+    if(om_output->xml_version)
+        AXIS2_FREE((*env)->allocator, om_output->xml_version);
+    if(om_output->char_set_encoding)
+        AXIS2_FREE((*env)->allocator, om_output->char_set_encoding);
+    AXIS2_FREE ((*env)->allocator, om_output);
+    return AXIS2_SUCCESS;
 }

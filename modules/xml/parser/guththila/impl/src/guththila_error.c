@@ -15,12 +15,25 @@
  */
 
 #include <guththila_error.h>
+#include <guththila_defines.h>
+#include <stdlib.h>
 
 guththila_char_t *GUTHTHILA_CALL
 guththila_error_ops_get_message ()
 {
     return "This is the default error code";
 }
+
+int GUTHTHILA_CALL
+guththila_error_free(guththila_error_t *error)
+{
+    if(!error) return 0;
+    if(error->ops)
+        free(error->ops);
+    free(error);
+    return 1;
+}
+
 
 GUTHTHILA_DECLARE (guththila_error_t *)
 guththila_error_create (guththila_allocator_t * allocator)
@@ -30,24 +43,24 @@ guththila_error_create (guththila_allocator_t * allocator)
         return NULL;
 
     error =
-        (guththila_error_t *) guththila_malloc (allocator,
-                                                sizeof (guththila_error_t));
+        (guththila_error_t *) GUTHTHILA_MALLOC (allocator,
+                                sizeof (guththila_error_t));
 
     if (!error)
         return NULL;
 
     error->ops =
-        (guththila_error_ops_t *) guththila_malloc (allocator,
-                                                    sizeof
-                                                    (guththila_error_ops_t));
+        (guththila_error_ops_t *) GUTHTHILA_MALLOC (allocator,
+                                sizeof(guththila_error_ops_t));
 
     if (!error->ops)
     {
-        guththila_free (allocator, error);
+        GUTHTHILA_FREE (allocator, error);
         return NULL;
     }
 
     error->ops->get_message = guththila_error_ops_get_message;
-
+    error->ops->free = guththila_error_free;
+    
     return error;
 }

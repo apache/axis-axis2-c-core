@@ -19,7 +19,8 @@
 
 /**
  * @file axis2_om_namespace.h
- * @brief defines axis2_om_namespace data structure, used for representing XML namespaces in OM
+ * @brief defines axis2_om_namespace data structure,
+ *        used for representing XML namespaces in OM
  */
 
 #include <axis2_defines.h>
@@ -48,8 +49,8 @@ extern "C"
     {
       /**
         * Frees given OM namespcae
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
         * @param om_namespace namespace to be freed.
+        * @param env Environment. MUST NOT be NULL.
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *free) (struct axis2_om_namespace *om_namespace,
@@ -57,43 +58,53 @@ extern "C"
 
       /**
         * Compares two namepsaces
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
         * @param om_namespace1 first namespase to be compared
+        * @param env Environment. MUST NOT be NULL.
         * @param om_namespace2 second namespace to be compared
-        * @return true if the two namespaces are equal, false otherwise	
+        * @return AXIS2_TRUE if the two namespaces are equal,AXIS2_FALSE otherwise
         */
-        axis2_bool_t (AXIS2_CALL *equals) (struct axis2_om_namespace *om_namespace,
-                                           axis2_env_t **env,
-                                           struct axis2_om_namespace *om_namespace1);
+        axis2_bool_t (AXIS2_CALL *equals)(struct axis2_om_namespace *om_namespace,
+                                          axis2_env_t **env,
+                                          struct axis2_om_namespace *om_namespace1);
 
       /**
         * Serializes given namespace 
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
         * @param om_namespace namespace to be serialized.
+        * @param env Environment. MUST NOT be NULL.
         * @param om_output OM output handler to be used in serializing
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *serialize)(struct axis2_om_namespace *om_namespace,
                                                axis2_env_t **env,
                                                axis2_om_output_t * om_output);
-                                                       
-                                                       
+       /**   
+        *@param om_namespace
+        *@param env
+        */
         axis2_char_t* (AXIS2_CALL *get_uri)(struct axis2_om_namespace *om_namespace,
                                             axis2_env_t **env);
-
+       /**   
+        *@param om_namespace
+        *@param env
+        */
         axis2_char_t* (AXIS2_CALL *get_prefix)(struct axis2_om_namespace *om_namespace,
                                                axis2_env_t **env);
-        
+        /**   
+        *@param om_namespace
+        *@param env
+        *@param uri 
+        */
         axis2_status_t (AXIS2_CALL *set_uri)(struct axis2_om_namespace *om_namespace,
                                             axis2_env_t **env,
                                             const axis2_char_t *uri);
-        
+        /**   
+        *@param om_namespace
+        *@param env
+        *@param prefix 
+        */
         axis2_status_t (AXIS2_CALL *set_prefix)(struct axis2_om_namespace *om_namespace,
                                                 axis2_env_t **env,
                                                 const axis2_char_t *prefix);
-                                                                                   
-                                                  
-                                                  
 
     } axis2_om_namespace_ops_t;
 
@@ -130,16 +141,16 @@ extern "C"
 /** serializes given namespace */
 #define AXIS2_OM_NAMESPACE_SERIALIZE(om_namespace,env, om_output) \
         ((om_namespace)->ops->serialize(om_namespace, env,om_output))
-        
+/** get prefix */        
 #define AXIS2_OM_NAMESPACE_GET_PREFIX(om_namespace, env) \
         ((om_namespace)->ops->get_prefix(om_namespace, env))
-
+/** get namespace uri */
 #define AXIS2_OM_NAMESPACE_GET_URI(om_namespace, env) \
         ((om_namespace)->ops->get_uri(om_namespace, env))
-
+/** set uri           */
 #define AXIS2_OM_NAMESPACE_SET_URI(om_namespace, env, uri) \
         ((om_namespace)->ops->set_uri(om_namespace, env, uri))
-
+/** set prefix        */
 #define AXIS2_OM_NAMESPACE_SET_PREFIX(om_namespace, env, prefix) \
         ((om_namespace)->ops->set_prefix(om_namesapce, env, prefix))
 
@@ -150,5 +161,3 @@ extern "C"
 #endif
 
 #endif                          /* AXIS2_OM_NAMESPACE */
-
-

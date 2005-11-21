@@ -15,22 +15,19 @@
  */
 
 #include <guththila_environment.h>
+#include <stdlib.h>
 
 GUTHTHILA_DECLARE (guththila_environment_t *)
 guththila_environment_create (guththila_allocator_t * allocator,
                               guththila_error_t * error,
-                              guththila_stream_t * stream,
-                              guththila_log_t * log,
-                              guththila_string_t * string)
+                              guththila_log_t * log)
 {
     guththila_environment_t *environment;
     if (!allocator)
         return NULL;
 
-    environment =
-        (guththila_environment_t *) guththila_malloc (allocator,
-                                                      sizeof
-                                                      (guththila_environment_t));
+    environment = (guththila_environment_t *) GUTHTHILA_MALLOC (allocator,
+                                          sizeof(guththila_environment_t));
 
     if (!environment)
         return NULL;
@@ -42,20 +39,23 @@ guththila_environment_create (guththila_allocator_t * allocator,
     else
         environment->error = error;
 
-    if (!stream)
-        environment->stream = guththila_stream_create (allocator, NULL);
-    else
-        environment->stream = stream;
-
     if (!log)
         environment->log = guththila_log_create (allocator, NULL);
     else
         environment->log = log;
+   return environment;
+}
 
-    if (!string)
-        environment->string = guththila_string_create (allocator, NULL);
-    else
-        environment->string = string;
-
-    return environment;
+GUTHTHILA_DECLARE(guththila_status_t)
+guththila_environment_free(guththila_environment_t *environment)
+{
+    if(!environment) return GUTHTHILA_FAILURE;
+    if(environment->allocator)
+        free(environment->allocator);
+    if(environment->error)
+        GUTHTHILA_ERROR_FREE(environment->error);
+    if(environment->log)
+        GUTHTHILA_LOG_FREE(environment->log);
+    free(environment);    
+    return GUTHTHILA_SUCCESS;
 }

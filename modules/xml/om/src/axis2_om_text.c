@@ -177,6 +177,8 @@ axis2_om_text_set_value(axis2_om_text_t *om_text,
 {
     AXIS2_FUNC_PARAM_CHECK(om_text, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error , om_text, AXIS2_FAILURE);
+    if(AXIS2_INTF_TO_IMPL(om_text)->value)
+        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(om_text)->value);
     AXIS2_INTF_TO_IMPL(om_text)->value = (axis2_char_t*)AXIS2_STRDUP(value,env);
     return AXIS2_SUCCESS;
 }

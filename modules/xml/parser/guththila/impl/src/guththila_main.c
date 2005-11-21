@@ -25,18 +25,14 @@ int
 main (int argc, char *argv[])
 {
     int c;
-    FILE *fp;
     guththila_allocator_t *allocator;
     guththila_reader_t *red;
     guththila_environment_t *environment;
     guththila_xml_pull_parser_t *parser;
-
-
-    fp = fopen ("response.xml", "r");
     allocator = guththila_allocator_init (NULL);
     environment =
-        guththila_environment_create (allocator, NULL, NULL, NULL, NULL);
-    red = guththila_reader_create (environment, fp);
+        guththila_environment_create (allocator, NULL, NULL);
+    red = guththila_reader_create_for_file (environment, "response.xml");
     parser = guththila_xml_pull_parser_create (environment, red);
     guththila_xml_pull_parser_read (environment, parser);
 
@@ -60,11 +56,11 @@ main (int argc, char *argv[])
                     p = guththila_xml_pull_parser_get_attribute_name
                         (environment, parser, a);
                     printf ("%s=\"", p);
-                    free (p);
+                    GUTHTHILA_FREE (allocator, p);
                     p = guththila_xml_pull_parser_get_attribute_value
                         (environment, parser, a);
                     printf ("%s\" ", p);
-                    free (p);
+                    GUTHTHILA_FREE (allocator, p);
                 }
                 printf ("?>");
             }
@@ -83,11 +79,11 @@ main (int argc, char *argv[])
                 if (p)
                 {
                     printf ("%s:", p);
-                    free (p);
+                    GUTHTHILA_FREE (allocator, p);
                 }
                 p = guththila_xml_pull_parser_get_name (environment, parser);
                 printf ("%s", p);
-                free (p);
+                GUTHTHILA_FREE (allocator, p);
 
                 ia = guththila_xml_pull_parser_get_attribute_count
                     (environment, parser);
@@ -99,22 +95,22 @@ main (int argc, char *argv[])
                     if (p)
                     {
                         printf (" %s:", p);
-                        free (p);
+                        GUTHTHILA_FREE (allocator, p);
                         p = guththila_xml_pull_parser_get_attribute_name_by_number (environment, parser, ia);
                         printf ("%s=\"", p);
-                        free (p);
+                        GUTHTHILA_FREE (allocator, p);
                         p = guththila_xml_pull_parser_get_attribute_value_by_number (environment, parser, ia);
                         printf ("%s\"", p);
-                        free (p);
+                        GUTHTHILA_FREE (allocator, p);
                     }
                     else
                     {
                         p = guththila_xml_pull_parser_get_attribute_name_by_number (environment, parser, ia);
                         printf (" %s=\"", p);
-                        free (p);
+                        GUTHTHILA_FREE (allocator, p);
                         p = guththila_xml_pull_parser_get_attribute_value_by_number (environment, parser, ia);
                         printf ("%s\"", p);
-                        free (p);
+                        GUTHTHILA_FREE (allocator, p);
                     }
                 }
                 e = guththila_stack_last (environment, parser->dep);
@@ -126,11 +122,11 @@ main (int argc, char *argv[])
                     if (strncmp (p, "xmlns", 5))
                         printf (" xmlns:");
                     printf ("%s=\"", p);
-                    free (p);
+                    GUTHTHILA_FREE (allocator, p);
                     p = guththila_xml_pull_parser_get_namespace_uri_by_number
                         (environment, parser, d);
                     printf ("%s\" ", p);
-                    free (p);
+                    GUTHTHILA_FREE (allocator, p);
                 }
                 if (guththila_event == GUTHTHILA_START_ELEMENT)
                     printf (">");
@@ -152,7 +148,7 @@ main (int argc, char *argv[])
                 }
                 p = guththila_xml_pull_parser_get_name (environment, parser);
                 printf ("%s", p);
-                free (p);
+                GUTHTHILA_FREE (allocator, p);
                 printf (">");
             }
             break;
@@ -161,7 +157,7 @@ main (int argc, char *argv[])
                 char *p;
                 p = guththila_xml_pull_parser_get_value (environment, parser);
                 printf (p);
-                free (p);
+                GUTHTHILA_FREE (allocator, p);
             }
             break;
         case GUTHTHILA_COMMENT:

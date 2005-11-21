@@ -105,8 +105,6 @@ AC_CONFIG_FILES([Makefile \
     modules/core/handlers/Makefile \
     modules/core/handlers/src/Makefile \
     modules/xml/Makefile \
-    modules/xml/guththila/Makefile \
-    modules/xml/guththila/src/Makefile \
     modules/xml/parser/Makefile \
     modules/xml/parser/guththila/Makefile \
     modules/xml/parser/guththila/impl/Makefile \

@@ -200,7 +200,7 @@ axis2_linked_list_create(axis2_env_t **env)
     linked_list_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_linked_list_impl_t) );
     if (!linked_list_impl)
     { 
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;        
     }
     
@@ -210,7 +210,7 @@ axis2_linked_list_create(axis2_env_t **env)
         sizeof(axis2_linked_list_ops_t) );
     if (!linked_list_impl->linked_list.ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         axis2_linked_list_free(&(linked_list_impl->linked_list), env);
         return NULL;        
     }
@@ -507,6 +507,7 @@ void * AXIS2_CALL
 axis2_linked_list_remove_first(axis2_linked_list_t *linked_list,
                                 axis2_env_t **env)
 {
+    void *r;
     AXIS2_FUNC_PARAM_CHECK(linked_list, env, NULL);
     
     if (AXIS2_INTF_TO_IMPL(linked_list)->size == 0)
@@ -514,7 +515,7 @@ axis2_linked_list_remove_first(axis2_linked_list_t *linked_list,
     
     AXIS2_INTF_TO_IMPL(linked_list)->mod_count++;
     AXIS2_INTF_TO_IMPL(linked_list)->size--;
-    void *r = AXIS2_INTF_TO_IMPL(linked_list)->first->data;
+    r = AXIS2_INTF_TO_IMPL(linked_list)->first->data;
     
     if (AXIS2_INTF_TO_IMPL(linked_list)->first->next != NULL)
         AXIS2_INTF_TO_IMPL(linked_list)->first->next->previous = NULL;
@@ -567,10 +568,11 @@ axis2_linked_list_add_first(axis2_linked_list_t *linked_list,
                             axis2_env_t **env,
                             void *o)
 {
+    entry_t *e ;
     AXIS2_FUNC_PARAM_CHECK(linked_list, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, o, AXIS2_FAILURE);
     
-    entry_t *e = create_entry(env, o);
+    e = create_entry(env, o);
     
     AXIS2_INTF_TO_IMPL(linked_list)->mod_count++;
     if (AXIS2_INTF_TO_IMPL(linked_list)->size == 0)
@@ -596,11 +598,12 @@ axis2_status_t AXIS2_CALL
 axis2_linked_list_add_last(axis2_linked_list_t *linked_list,
                             axis2_env_t **env,
                             void *o)
-{
+{   
+    entry_t *e;
     AXIS2_FUNC_PARAM_CHECK(linked_list, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, o, AXIS2_FAILURE);
     
-    entry_t *e = create_entry(env, o);
+    e = create_entry(env, o);
     return add_last_entry(linked_list, env, e);
 }
 
@@ -616,10 +619,11 @@ axis2_linked_list_contains(axis2_linked_list_t *linked_list,
                             axis2_env_t **env,
                             void *o)
 {
+    entry_t *e;
     AXIS2_FUNC_PARAM_CHECK(linked_list, env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, o, AXIS2_FALSE);
     
-    entry_t *e = AXIS2_INTF_TO_IMPL(linked_list)->first;
+    e = AXIS2_INTF_TO_IMPL(linked_list)->first;
     while (e != NULL)
     {
         if (o == e->data)
@@ -652,10 +656,11 @@ axis2_bool_t AXIS2_CALL
 axis2_linked_list_add(axis2_linked_list_t *linked_list, 
                         axis2_env_t **env,
                         void *o)
-{
+{   
+    entry_t *e;
     AXIS2_FUNC_PARAM_CHECK(linked_list, env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, o, AXIS2_FALSE);
-    entry_t *e = create_entry(env, o);
+    e = create_entry(env, o);
     return add_last_entry(linked_list, env, e);
 }
 
@@ -671,10 +676,11 @@ axis2_linked_list_remove(axis2_linked_list_t *linked_list,
                             axis2_env_t **env,
                             void *o)
 {
+    entry_t *e;
     AXIS2_FUNC_PARAM_CHECK(linked_list, env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, o, AXIS2_FALSE);
     
-    entry_t *e = AXIS2_INTF_TO_IMPL(linked_list)->first;
+    e = AXIS2_INTF_TO_IMPL(linked_list)->first;
     while (e != NULL)
     {
         if(o == e->data)
@@ -735,11 +741,13 @@ axis2_linked_list_set(axis2_linked_list_t *linked_list,
                         axis2_env_t **env,
                         int index, void *o)
 {
+    entry_t *e;
+    void *old;
     AXIS2_FUNC_PARAM_CHECK(linked_list, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, o, NULL);
     axis2_linked_list_check_bounds_exclusive(linked_list, env, index);
-    entry_t *e = axis2_linked_list_get_entry(linked_list, env, index);
-    void *old = e->data;
+    e = axis2_linked_list_get_entry(linked_list, env, index);
+    old = e->data;
     e->data = o;
     return old;
 }
@@ -757,11 +765,12 @@ axis2_linked_list_add_at_index(axis2_linked_list_t *linked_list,
                                 void *o)
 {
     entry_t *after = NULL;
+    entry_t *e;
     AXIS2_FUNC_PARAM_CHECK(linked_list, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, o, AXIS2_FAILURE);
     
     axis2_linked_list_check_bounds_inclusive(linked_list, env, index);
-    entry_t *e = create_entry(env, o);
+    e = create_entry(env, o);
     
     if (index < AXIS2_INTF_TO_IMPL(linked_list)->size)
     {
@@ -794,9 +803,10 @@ axis2_linked_list_remove_at_index(axis2_linked_list_t *linked_list,
                                     axis2_env_t **env,
                                     int index)
 {
+    entry_t *e;
     AXIS2_FUNC_PARAM_CHECK(linked_list, env, NULL);
     axis2_linked_list_check_bounds_exclusive(linked_list, env, index);
-    entry_t *e = axis2_linked_list_get_entry(linked_list, env, index);
+    e = axis2_linked_list_get_entry(linked_list, env, index);
     axis2_linked_list_remove_entry(linked_list, env, e);
     return e->data;
 }
@@ -812,10 +822,12 @@ axis2_linked_list_index_of(axis2_linked_list_t *linked_list,
                             axis2_env_t **env,
                             void *o)
 {
+    int index = 0;
+    entry_t *e;
     AXIS2_FUNC_PARAM_CHECK(linked_list, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, o, AXIS2_FAILURE);
-    int index = 0;
-    entry_t *e = AXIS2_INTF_TO_IMPL(linked_list)->first;
+    
+    e = AXIS2_INTF_TO_IMPL(linked_list)->first;
     while (e != NULL)
     {
     if (o == e->data)
@@ -837,11 +849,13 @@ axis2_linked_list_last_index_of(axis2_linked_list_t *linked_list,
                                 axis2_env_t **env,
                                 void *o)
 {
+    int index;
+    entry_t *e;
     AXIS2_FUNC_PARAM_CHECK(linked_list, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, o, AXIS2_FAILURE);
     
-    int index = AXIS2_INTF_TO_IMPL(linked_list)->size - 1;
-    entry_t *e = AXIS2_INTF_TO_IMPL(linked_list)->last;
+    index = AXIS2_INTF_TO_IMPL(linked_list)->size - 1;
+    e = AXIS2_INTF_TO_IMPL(linked_list)->last;
     while (e != NULL)
     {
         if (o == e->data)
@@ -862,10 +876,12 @@ axis2_linked_list_to_array(axis2_linked_list_t *linked_list,
                             axis2_env_t **env)
 {
     int i = 0;
+    void **array;
+    entry_t *e;
     AXIS2_FUNC_PARAM_CHECK(linked_list, env, NULL);
-    void **array = (void **) AXIS2_MALLOC((*env)->allocator, 
+    array = (void **) AXIS2_MALLOC((*env)->allocator, 
         AXIS2_INTF_TO_IMPL(linked_list)->size * sizeof(void *));
-    entry_t *e = AXIS2_INTF_TO_IMPL(linked_list)->first;
+    e = AXIS2_INTF_TO_IMPL(linked_list)->first;
     for (i = 0; i < AXIS2_INTF_TO_IMPL(linked_list)->size; i++)
     {
         array[i] = e->data;

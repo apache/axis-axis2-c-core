@@ -36,6 +36,12 @@ axis2_om_processing_instruction_get_value(axis2_om_processing_instruction_t *om_
 axis2_char_t*  AXIS2_CALL
 axis2_om_processing_instruction_get_target(axis2_om_processing_instruction_t *om_pi,
                                            axis2_env_t **env);
+                                           
+axis2_status_t AXIS2_CALL
+axis2_om_processing_instruction_serialize
+                                (axis2_om_processing_instruction_t *om_pi,
+                                 axis2_env_t **env,
+                                 axis2_om_output_t *om_output);                                 
 
 /*********************** axis2_om_processing_instruction_impl_t struct ********/
 typedef struct axis2_om_processing_instruction_impl
@@ -199,4 +205,29 @@ axis2_om_processing_instruction_get_target(axis2_om_processing_instruction_t *om
 {
     AXIS2_FUNC_PARAM_CHECK(om_pi, env, NULL);
     return AXIS2_INTF_TO_IMPL(om_pi)->target;
+}
+
+
+axis2_status_t AXIS2_CALL
+axis2_om_processing_instruction_serialize
+                                (axis2_om_processing_instruction_t *om_pi,
+                                 axis2_env_t **env,
+                                 axis2_om_output_t *om_output)
+{
+    axis2_om_processing_instruction_impl_t *om_pi_impl;
+    AXIS2_FUNC_PARAM_CHECK(om_pi, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
+        
+    om_pi_impl = AXIS2_INTF_TO_IMPL(om_pi);
+    
+    if(om_pi_impl->target && om_pi_impl->value)
+        return axis2_om_output_write(om_output, env, 
+                                     AXIS2_OM_PROCESSING_INSTRUCTION,
+                                     2, om_pi_impl->target, om_pi_impl->value); 
+    
+    else if(om_pi_impl->target)
+        return axis2_om_output_write(om_output, env, 
+                                     AXIS2_OM_PROCESSING_INSTRUCTION,
+                                     2, om_pi_impl->target, om_pi_impl->value);
+    return AXIS2_FAILURE;
 }

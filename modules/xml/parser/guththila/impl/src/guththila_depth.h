@@ -26,6 +26,7 @@ typedef struct guththila_depth_s
     int total;
     int count;
     int first;
+    
 } guththila_depth_t;
 
 

@@ -54,8 +54,8 @@ extern "C"
 
       /** 
         * Frees document struct
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.        
         * @param document pointer to document struct to be freed
+        * @param env Environment. MUST NOT be NULL    
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *free) (struct axis2_om_document *document,
@@ -63,8 +63,8 @@ extern "C"
 
       /**
         * Builds the next node if the builder is not finished with input xml stream
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.        
-        * @param document document whose next node is to be built. Mandatory, cannot be NULL
+        * @param document document whose next node is to be built. cannot be NULL
+        * @param env Environment. MUST NOT be NULL.        
         * @return pointer to the next node. NULL on error.
         */
         axis2_om_node_t* (AXIS2_CALL *build_next) (struct axis2_om_document *document,
@@ -72,9 +72,9 @@ extern "C"
 
       /**
         * adds the child node to the document. To the back of the children list.
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.        
-        * @param document document to add the child. Mandatory, cannot be NULL.
-        * @param child child node to be added. Mandatory, cannot be NULL.
+        * @param document document to add the child. cannot be NULL.
+        * @param envi Environment. MUST NOT be NULL.        
+        * @param child child node to be added. cannot be NULL.
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *add_child)(struct axis2_om_document * document,
@@ -83,22 +83,32 @@ extern "C"
 
       /**
         * Gets the root element of the document.
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.        
         * @param document document to return the root of
-        * @return returns a pointer to the root node. If no root present, this method tries to 
-        *             build the root. Returns NULL on error. 
+        * @param env Environment. MUST NOT be NULL.        
+        * @return returns a pointer to the root node. If no root present,
+        *            this method tries to build the root. Returns NULL on error. 
         */
         axis2_om_node_t* (AXIS2_CALL *get_root_element)(struct axis2_om_document *document,
                                                         axis2_env_t **env);
+
+      /**
+        * set the root element of the document.
+        * @param document document to return the root of
+        * @param env Environment. MUST NOT be NULL.        
+        * @return returns status code 
+        *         Returns AXIS2_FAILURE on error. 
+        */        
                                                         
         axis2_status_t (AXIS2_CALL *set_root_element)(struct axis2_om_document *document,
                                                        axis2_env_t **env,
                                                        axis2_om_node_t *om_node);
-        
+       /**
+        * builds till the complete document is built
+        *@param document document struct 
+        *@param env environment cannot be null.
+        */
         axis2_om_node_t* (AXIS2_CALL *build_all)(struct axis2_om_document *document,
                                                 axis2_env_t **env);            
-
-
     } axis2_om_document_ops_t;
 
   /**
@@ -114,7 +124,7 @@ extern "C"
 
   /**
     * creates a document
-    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param env Environment. MUST NOT be NULL.
     * @param root pointer to document's root node. Optional, can be NULL
     * @param builder pointer to xml builder 
     * @return pointer to the newly created document.
@@ -139,10 +149,10 @@ extern "C"
 /** gets the root eleemnt of given document */
 #define AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(document,env) \
         ((document)->ops->get_root_element(document,env))
-
+/** sets the root node */
 #define AXIS2_OM_DOCUMENT_SET_ROOT_ELEMENT(document,env,om_node) \
         ((document)->ops->set_root_element(document,env,om_node))       
-
+/** build till the root node is complete */
 #define AXIS2_OM_DOCUMENT_BUILD_ALL(document,env) \
         ((document)->ops->build_all(document,env))
 

@@ -18,8 +18,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <axis2.h>
+#include <axis2_defines.h>
 
-void* AXIS2_CALL
+AXIS2_DECLARE(void*)
 axis2_strdup (const void *ptr, axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(ptr, env, NULL);
@@ -41,7 +42,7 @@ axis2_strdup (const void *ptr, axis2_env_t **env)
     }
 }
 
-int AXIS2_CALL
+AXIS2_DECLARE(int)
 axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
 {
     if (s1 && s2)

@@ -23,6 +23,7 @@
  */
 
 #include <axis2_om_node.h>
+#include <axis2_om_output.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -48,29 +49,55 @@ extern "C"
     {
         /**
          * Frees an instance of axis2_om_processing_instruction
-         * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
          * @param om_pi processing instruction to be freed.
+         * @param env Environment. MUST NOT be NULL, .
          * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
          */
-        axis2_status_t 
-        (AXIS2_CALL *free)(struct axis2_om_processing_instruction * om_pi,
-                           axis2_env_t **env);
-        axis2_status_t 
-        (AXIS2_CALL *set_value)(struct axis2_om_processing_instruction *om_pi,
+        axis2_status_t (AXIS2_CALL *free)
+                            (struct axis2_om_processing_instruction * om_pi,
+                             axis2_env_t **env);
+        /**
+         * set processing instruction data
+         *@param om_pi
+         *@param env        
+         *@param value 
+         */
+         
+        axis2_status_t (AXIS2_CALL *set_value)
+                                (struct axis2_om_processing_instruction *om_pi,
                                 axis2_env_t **env,
                                 const axis2_char_t* value);
-        axis2_status_t 
-        (AXIS2_CALL *set_target)(struct axis2_om_processing_instruction *om_pi,
+        /**
+         * set processing instruction target
+         *@param om_pi
+         *@param env        
+         *@param target
+         */
+        
+        axis2_status_t (AXIS2_CALL *set_target)
+                                (struct axis2_om_processing_instruction *om_pi,
                                 axis2_env_t **env,
                                 const axis2_char_t* target);
-        axis2_char_t*
-        (AXIS2_CALL *get_target)(struct axis2_om_processing_instruction *om_pi,
+        /**
+         * get PI target
+         */
+        axis2_char_t* (AXIS2_CALL *get_target)
+                                (struct axis2_om_processing_instruction *om_pi,
                                  axis2_env_t **env);
-        axis2_char_t*
-        (AXIS2_CALL *get_value)(struct axis2_om_processing_instruction *om_pi,
-                                axis2_env_t **env);                                                                                                                           
+        /**
+         *  get PI value 
+         */
+        axis2_char_t* (AXIS2_CALL *get_value)
+                                (struct axis2_om_processing_instruction *om_pi,
+                                 axis2_env_t **env);                                                                                                                           
                            
-                                          
+        /**
+         *  serialize function 
+         */
+        axis2_status_t (AXIS2_CALL *serialize)
+                                (struct axis2_om_processing_instruction *om_pi,
+                                 axis2_env_t **env, axis2_om_output_t *om_output);
+                                    
                                           
     } axis2_om_processing_instruction_ops_t;
 
@@ -87,7 +114,7 @@ extern "C"
 
   /**
     * Creates a processing instruction 
-    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
+    * @param environment Environment. MUST NOT be NULL, .
     * @param parent parent of the element node to be created. Optional, can be NULL.
     * @param target target of the processing instruction. Mandatory, cannot be NULL.
     * @param value value of the processing instruction. Mandatory, cannot be NULL.
@@ -104,18 +131,24 @@ extern "C"
                                                 axis2_om_node_t ** node);
 
 /** frees given processing instruction */
-#define AXIS2_OM_PROCESSING_INSTRUCTION_FREE(pi,env) \
+#define AXIS2_OM_PROCESSING_INSTRUCTION_FREE(pi, env) \
         ((pi)->ops->free(pi, env))
-#define AXIS2_OM_PROCESSING_INSTRUCION_SET_VALUE(pi,env,value) \
+        
+#define AXIS2_OM_PROCESSING_INSTRUCION_SET_VALUE(pi, env, value) \
         ((pi)->ops->set_value(pi,env,value))
-#define AXIS2_OM_PROCESSING_INSTRUCTION_GET_VALUE(pi,env) \
-        ((pi)->ops->get_value(pi,env))        
-#define AXIS2_OM_PROCESSING_INSTRUCION_SET_TARGET(pi,env,value) \
-        ((pi)->ops->set_target(pi,env,value))
-#define AXIS2_OM_PROCESSING_INSTRUCTION_GET_TARGET(pi,env) \
-        ((pi)->ops->get_target(pi,env))
+        
+#define AXIS2_OM_PROCESSING_INSTRUCTION_GET_VALUE(pi, env) \
+        ((pi)->ops->get_value(pi, env))        
+        
+#define AXIS2_OM_PROCESSING_INSTRUCION_SET_TARGET(pi, env, value) \
+        ((pi)->ops->set_target(pi, env, value))
+        
+#define AXIS2_OM_PROCESSING_INSTRUCTION_GET_TARGET(pi, env) \
+        ((pi)->ops->get_target(pi, env))
 
-#define AXIS2        
+
+#define AXIS2_OM_PROCESSING_INSTRUCTION_SERIALIZE(pi, env, om_output) \
+        ((pi)->ops->serialize(pi, env, om_output))
 
 /** @} */
 #ifdef __cplusplus
@@ -123,6 +156,3 @@ extern "C"
 #endif
 
 #endif                          /* AXIS2_OM_PI_H */
-
-
-

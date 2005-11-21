@@ -81,65 +81,168 @@ AXIS2_DECLARE_DATA struct axis2_pull_parser_ops
         
         axis2_status_t (AXIS2_CALL *free)(axis2_pull_parser_t *parser,
                                           axis2_env_t **env);
-           
+        /**
+         * Get the Number of attributes in the current element 
+         * @param parser axis2_pull_parser struct 
+         * @param env    axis2_environment struct 
+         * @returns Number of attributes , AXIS2_FAILURE on error 
+         */  
         
         int (AXIS2_CALL *get_attribute_count)(axis2_pull_parser_t *parser,
                                               axis2_env_t **env);
-        /* iterations start with 1 and not zero based
-         * 
-         *
+       /** This is used to get an attribute's localname using an index relative to 
+         * current element The iterations are not zero based. 
+         * To access the first attribute use 1 for parameter i
+         * @param parser parser struct 
+         * @param env environment struct
+         * @param i attribute index
+         * @returns the attribute localname 
+         *          caller must free the value using AXIS2_PULL_PARSER_XML_FREE macro         
          */
         axis2_char_t* (AXIS2_CALL *get_attribute_name_by_number)
                                                     (axis2_pull_parser_t *parser,
                                                      axis2_env_t **env,
                                                      int i);
+                                                     
+       /** This is used to get an attribute's prefix using an index relative to 
+         * current element. The iterations are not zero based. 
+         * To access the first attribute use 1 for parameter i
+         * @param parser parser struct 
+         * @param env environment struct
+         * @param i attribute index
+         * @returns the attribute prefix, returns NULL on error  
+         *          caller must free the value using AXIS2_PULL_PARSER_XML_FREE macro         
+         */                                                     
         
         axis2_char_t* (AXIS2_CALL *get_attribute_prefix_by_number)
                                                     (axis2_pull_parser_t *parser,
                                                      axis2_env_t **env,
                                                      int i);
-                                                     
+        /** This is used to get an attribute's value using an index relative to 
+         * current element. The iterations are not zero based. 
+         * To access the first attribute use 1 for parameter i
+         * @param parser parser struct 
+         * @param env environment struct
+         * @param i attribute index
+         * @returns the attribute value, returns NULL on error
+         *          caller must free the value using AXIS2_PULL_PARSER_XML_FREE macro         
+         */                                            
         axis2_char_t* (AXIS2_CALL *get_attribute_value_by_number)
                                                     (axis2_pull_parser_t *parser,
                                                      axis2_env_t **env,
                                                      int i);
-        
+        /** This is used to get an attribute's namespace uri using an index relative to 
+         * current element. The iterations are not zero based. 
+         * To access the first attribute use 1 for parameter i
+         * @param parser parser struct 
+         * @param env environment struct
+         * @param i attribute index
+         * @returns the attribute value, returns NULL on error  
+         *          caller must free the value using AXIS2_PULL_PARSER_XML_FREE macro        
+         */ 
         
         axis2_char_t* (AXIS2_CALL *get_attribute_namespace_by_number)
                                                     (axis2_pull_parser_t *parser,
                                                      axis2_env_t **env,
                                                      int i);
-
+       /** returns the text value of current element
+         * @param parser 
+         * @param env
+         * @returns Text Value, NULL on error 
+         *          caller must free the value using AXIS2_PULL_PARSER_XML_FREE macro 
+         */
                                 
         axis2_char_t* (AXIS2_CALL *get_value)(axis2_pull_parser_t *parser,
                                               axis2_env_t **env);
-                                                      
+        
+        /**
+         * Returns the namespace count of current element 
+         *@param parser parser struct 
+         *@param env environment
+         *@returns namespace count , caller must free the value using 
+         *                           AXIS2_PULL_PARSER_XML_FREE macro
+         */
         int (AXIS2_CALL *get_namespace_count)(axis2_pull_parser_t *parser,
                                               axis2_env_t **env);
-
+        /**
+         * access the namespace uri of the namespaces declared in current element 
+         * using an index 
+         * @param parser parser struct 
+         * @param env environment 
+         * @param i index
+         * @returns namespace uri of corresponding namespace 
+         *          caller must free the value using AXIS2_PULL_PARSER_XML_FREE macro         
+         */
         axis2_char_t* (AXIS2_CALL *get_namespace_uri_by_number)
                                               (axis2_pull_parser_t *parser,
                                                axis2_env_t **env,
                                                int i);
-                                               
+        /**
+         * access the namespace prefix of the namespaces declared in current element 
+         * using an index 
+         * @param parser parser struct 
+         * @param env environment 
+         * @param i index
+         * @returns namespace prefix of corresponding namespace 
+         *          caller must free the value using AXIS2_PULL_PARSER_XML_FREE macro         
+         */                                               
         axis2_char_t* (AXIS2_CALL *get_namespace_prefix_by_number)
                                                (axis2_pull_parser_t *parser,
                                                 axis2_env_t **env,
                                                 int i); 
-                                                
+        /**
+         *  Used to obtain the current element prefix
+         * @param parser parser struct 
+         * @param env environment struct
+         * @returns prefix , NULL on error 
+         *          caller must free the value using AXIS2_PULL_PARSER_XML_FREE macro
+         */         
+        
         axis2_char_t* (AXIS2_CALL *get_prefix)(axis2_pull_parser_t *parser,
                                                axis2_env_t **env);   
-        
+        /**
+         *  Used to obtain the current element localname
+         * @param parser parser struct 
+         * @param env environment struct
+         * @returns localname , NULL on error 
+         *          caller must free the value using AXIS2_PULL_PARSER_XML_FREE macro
+         */         
         axis2_char_t* (AXIS2_CALL *get_name)(axis2_pull_parser_t *parser,
                                              axis2_env_t **env); 
-
+        /**
+         * Used to get the processingInstruction target
+         *@param parser parser struct
+         *@param env environment
+         *@returns target value of processingInstruction
+         *          caller must free the value using AXIS2_PULL_PARSER_XML_FREE macro
+         */        
         axis2_char_t* (AXIS2_CALL *get_pi_target)(axis2_pull_parser_t *parser,
                                                   axis2_env_t **env);
+        /**
+         * Used to get the processingInstruction data
+         *@param parser parser struct
+         *@param env environment
+         *@returns data of processingInstruction
+         *          caller must free the value using AXIS2_PULL_PARSER_XML_FREE macro
+         */        
+
 
         axis2_char_t* (AXIS2_CALL *get_pi_data)(axis2_pull_parser_t *parser,
                                                 axis2_env_t **env);
-                                                
-        
+        /**
+         *  used to get the DTD 
+         *
+         */         
+        axis2_char_t* (AXIS2_CALL *get_dtd)(axis2_pull_parser_t *parser,
+                                            axis2_env_t **env);                                                
+        /**
+         *  Free function , this function wraps the underlying parser's 
+         *  free function
+         * @param data data values to be destroyed         
+         */         
+        axis2_status_t (AXIS2_CALL *xml_free)(axis2_pull_parser_t *parser,
+                                   axis2_env_t **env,
+                                   void *data);                                                
     };
      
 /** 
@@ -153,13 +256,23 @@ struct axis2_pull_parser
 
 /**
  * create pull parser struct
- *
+ * @param env environment struct , must not be null
+ * @param filename filename of an xml document
+ * @returns a pointer to xml_pull_parser_t struct
+ *          NULL on error with error code set in the environment's error 
  */
 
 AXIS2_DECLARE(axis2_pull_parser_t *)
-axis2_pull_parser_create(axis2_env_t **env,void *stream);
+axis2_pull_parser_create_for_file(axis2_env_t **env,char *filename);
 
+AXIS2_DECLARE(axis2_pull_parser_t *)
+axis2_pull_parser_create_for_memory(axis2_env_t **env,
+                                    int (*read_input_callback)(char *buffer,int size),
+                                    void (*close_input_callback)(void));
+                                    
 /********************************* Macros *************************************/
+
+/** Macros corresponding to above declared function pointers */
 
 #define AXIS2_PULL_PARSER_NEXT(parser, env) \
         ((parser)->ops->next(parser, env))
@@ -206,6 +319,12 @@ axis2_pull_parser_create(axis2_env_t **env,void *stream);
 #define AXIS2_PULL_PARSER_GET_PI_TARGET(parser, env) \
         ((parser)->ops->get_pi_target(parser, env))
         
+#define AXIS2_PULL_PARSER_GET_DTD(parser, env) \
+        ((parser)->ops->get_dtd(parser, env))
+        
+#define AXIS2_PULL_PARSER_XML_FREE(parser, env, data) \
+        ((parser)->ops->xml_free(parser, env, data))
+
 
 /******************************* End Macros ***********************************/
 /** @} */

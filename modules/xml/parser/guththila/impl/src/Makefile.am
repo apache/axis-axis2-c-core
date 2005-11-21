@@ -11,7 +11,6 @@ libguththila_la_SOURCES = guththila_token.c \
                             guththila_allocator.c \
                             guththila_array.c \
                             guththila_string.c \
-                            guththila_stream.c \
                             guththila_environment.c \
                             guththila_log.c \
                             guththila_error.c \

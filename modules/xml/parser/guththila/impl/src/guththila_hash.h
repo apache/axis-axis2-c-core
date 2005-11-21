@@ -156,8 +156,8 @@ extern "C"
  * </PRE>
  */
       GUTHTHILA_DECLARE (guththila_hash_index_t *)
-        guththila_hash_first (guththila_environment_t * environment,
-                              guththila_hash_t * ht);
+      guththila_hash_first (guththila_environment_t * environment,
+                            guththila_hash_t * ht);
 
 /**
  * Continue iterating over the entries in a hash table.
@@ -166,7 +166,7 @@ extern "C"
  *         entries.
  */
       GUTHTHILA_DECLARE (guththila_hash_index_t *)
-        guththila_hash_next (guththila_hash_index_t * hi);
+      guththila_hash_next (guththila_hash_index_t * hi);
 
 /**
  * Get the current entry's details from the iteration state.
@@ -199,7 +199,7 @@ extern "C"
  * @return A new hash table containing all of the data from the two passed in
  */
       GUTHTHILA_DECLARE (guththila_hash_t *)
-        guththila_hash_overlay (guththila_environment_t * environment,
+      guththila_hash_overlay (guththila_environment_t * environment,
                                 const guththila_hash_t * overlay,
                                 const guththila_hash_t * base);
 
@@ -218,7 +218,7 @@ extern "C"
  * @return A new hash table containing all of the data from the two passed in
  */
       GUTHTHILA_DECLARE (guththila_hash_t *)
-        guththila_hash_merge (guththila_environment_t * environment,
+      guththila_hash_merge (guththila_environment_t * environment,
                               const guththila_hash_t * h1,
                               const guththila_hash_t * h2,
                               void *(*merger) (guththila_environment_t *
@@ -232,7 +232,12 @@ extern "C"
 /**
  * Get a pointer to the environment which the hash table was created in
  */
-/*GUTHTHILA_POOL_DECLARE_ACCESSOR(hash);*/
+
+
+
+GUTHTHILA_DECLARE(guththila_status_t) guththila_hash_free(
+                            guththila_environment_t *environment,
+                            guththila_hash_t *ht);
 
 /** @} */
 

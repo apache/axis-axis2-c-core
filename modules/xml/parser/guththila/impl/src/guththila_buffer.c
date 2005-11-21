@@ -23,18 +23,16 @@
 GUTHTHILA_DECLARE (guththila_buffer_t *)
 guththila_buffer_create (guththila_environment_t * environment, int size)
 {
-    guththila_buffer_t *name =
-        guththila_malloc (environment->allocator,
-                          sizeof (guththila_buffer_t));
+    guththila_buffer_t *name = GUTHTHILA_MALLOC (environment->allocator,
+                                            sizeof (guththila_buffer_t));
     name->size = size;
     name->offset = 0;
     name->last = 0;
     name->next = 0;
     name->buff = NULL;
     if (size != 0)
-        name->buff =
-            (guththila_char_t *) guththila_malloc (environment->allocator,
-                                                   size);
+        name->buff = (guththila_char_t *) GUTHTHILA_MALLOC (
+                                environment->allocator, size);
     return name;
 }
 
@@ -47,9 +45,9 @@ guththila_buffer_free (guththila_environment_t * environment,
     {
         if (name->buff)
         {
-            guththila_free (environment->allocator, name->buff);
+            GUTHTHILA_FREE (environment->allocator, name->buff);
         }
-        free (name);
+        GUTHTHILA_FREE (environment->allocator, name);
     }
 }
 
@@ -58,9 +56,10 @@ GUTHTHILA_DECLARE (guththila_buffer_t *)
 guththila_buffer_grow (guththila_environment_t * environment,
                        guththila_buffer_t * name)
 {
-    guththila_buffer_t *x;
+
+    guththila_buffer_t *x = NULL;
     name->size <<= 1;
-    x = (guththila_buffer_t *) guththila_realloc (environment->allocator,
+    x = (guththila_buffer_t *) GUTHTHILA_REALLOC (environment->allocator,
                                                   name, name->size);
     if (x)
         name = x;

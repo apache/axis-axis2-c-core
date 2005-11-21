@@ -25,12 +25,13 @@ extern "C"
 #endif
 
 
-    GUTHTHILA_DECLARE_DATA typedef struct guththila_allocator
+  typedef struct guththila_allocator
     {
-        void *(*guththila_allocator_malloc) (size_t size);
-        void *(*guththila_allocator_realloc) (void *ptr, size_t size);
-        void (*guththila_allocator_free) (void *ptr);
-        void *(*guththila_allocator_calloc) (size_t nelem, size_t elsize);
+        void *(*malloc)(size_t size);
+        void *(*realloc)(void *ptr, size_t size);
+        void (*free)(void *ptr);
+        void *(*calloc)(size_t nelem, size_t elsize);
+        
     } guththila_allocator_t;
 
 /**
@@ -41,12 +42,21 @@ extern "C"
 */
 
       GUTHTHILA_DECLARE (guththila_allocator_t *)
-        guththila_allocator_init (guththila_allocator_t * allocator);
+      guththila_allocator_init (guththila_allocator_t * allocator);
 
-#define guththila_malloc(allocator, size) ((allocator)->guththila_allocator_malloc(size))
-#define guththila_realloc(allocator, ptr, size) ((allocator)->guththila_allocator_realloc(ptr, size))
-#define guththila_free(allocator, ptr) ((allocator)->guththila_allocator_free(ptr))
-#define guththila_calloc(allocator,size1,size2) ((allocator)->guththila_allocator_calloc((size1),(size2)));
+#define GUTHTHILA_MALLOC(allocator, size) \
+        ((allocator)->malloc(size))
+        
+#define GUTHTHILA_REALLOC(allocator, ptr, size) \
+        ((allocator)->realloc(ptr, size))
+        
+#define GUTHTHILA_FREE(allocator, ptr) \
+        ((allocator)->free(ptr))
+        
+#define GUTHTHILA_CALLOC(allocator, size1, size2) \
+        ((allocator)->calloc(size1,size2));
+
+
 #ifdef __cplusplus
 }
 #endif

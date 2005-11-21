@@ -27,20 +27,34 @@
 #include "guththila_environment.h"
 #include "guththila_defines.h"
 
+typedef enum guththila_reader_types
+{
+    GUTHTHILA_FILE_READER = 1,
+    GUTHTHILA_IN_MEMORY_READER
+};
+
 typedef struct guththila_reader_s
 {
-    FILE *fp;
+    int guththila_reader_type;
+    
 } guththila_reader_t;
 
+
 GUTHTHILA_DECLARE (guththila_reader_t *)
-guththila_reader_create (guththila_environment_t * environment, FILE * fp);
+guththila_reader_create_for_file (guththila_environment_t * environment,
+                                  char* filename);
+
+GUTHTHILA_DECLARE(guththila_reader_t *)
+guththila_reader_create_for_memory(guththila_environment_t *environment,
+                                   int (*input_read_callback)
+                                       (char *buffer,int size),
+                                   void (*input_close_callback)(void));
+                                   
 GUTHTHILA_DECLARE (int)
 guththila_reader_read (guththila_environment_t * environment,
                        guththila_char_t * buffer, int offset, int length,
                        guththila_reader_t * r);
-GUTHTHILA_DECLARE (int)
-guththila_reader_set_input_stream (guththila_environment_t * environment,
-                                   guththila_reader_t * r, FILE * fp);
+                       
 GUTHTHILA_DECLARE (void)
 guththila_reader_free (guththila_environment_t * environment,
                        guththila_reader_t * r);

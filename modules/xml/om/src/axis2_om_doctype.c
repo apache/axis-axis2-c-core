@@ -28,7 +28,12 @@ axis2_om_doctype_set_value(axis2_om_doctype_t *om_doctype,
 
 axis2_char_t* AXIS2_CALL
 axis2_om_doctype_get_value(axis2_om_doctype_t *om_doctype,
-                           axis2_env_t **env);                                                  
+                           axis2_env_t **env);      
+
+axis2_status_t AXIS2_CALL
+axis2_om_doctype_serialize(axis2_om_doctype_t *om_doctype,
+                           axis2_env_t **env,
+                           axis2_om_output_t *om_output);
                        
 /************************ axis2_om_doctype struct *********************/
 
@@ -147,4 +152,21 @@ axis2_om_doctype_get_value(axis2_om_doctype_t *om_doctype,
 {
     AXIS2_FUNC_PARAM_CHECK(om_doctype, env, NULL);
     return AXIS2_INTF_TO_IMPL(om_doctype)->value;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_om_doctype_serialize(axis2_om_doctype_t *om_doctype,
+                           axis2_env_t **env,
+                           axis2_om_output_t *om_output)
+{
+    axis2_om_doctype_impl_t *doctype_impl;
+    AXIS2_FUNC_PARAM_CHECK(om_doctype, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
+    
+    doctype_impl = AXIS2_INTF_TO_IMPL(om_doctype);
+    if(doctype_impl->value)
+        return  axis2_om_output_write(om_output, env,
+                    AXIS2_OM_DOCTYPE, 1, doctype_impl->value);
+    
+    return AXIS2_FAILURE;
 }

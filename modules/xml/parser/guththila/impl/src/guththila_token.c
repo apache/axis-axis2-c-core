@@ -20,15 +20,15 @@
 
 #include "guththila_token.h"
 #include "guththila_unicode.h"
+#include "guththila_string.h"
 
 GUTHTHILA_DECLARE (guththila_token_t *)
-guththila_token_create_token_buffer (guththila_environment_t * environment,
+guththila_token_create_token_buffer (guththila_environment_t *environment,
                                      int size)
 {
     guththila_token_t *tok =
-        (guththila_token_t *) guththila_malloc (environment->allocator,
-                                                sizeof (guththila_token_t) *
-                                                size);
+        (guththila_token_t *) GUTHTHILA_MALLOC (environment->allocator,
+                                          sizeof (guththila_token_t) * size);
     tok->size = size;
     return tok;
 }
@@ -39,7 +39,7 @@ guththila_token_free_token_buffer (guththila_environment_t * environment,
                                    guththila_token_t * tok)
 {
     if (tok)
-        guththila_free (environment->allocator, tok);
+        GUTHTHILA_FREE (environment->allocator, tok);
 }
 
 
@@ -71,10 +71,9 @@ guththila_token_grow (guththila_environment_t * environment,
                       guththila_token_t * tok)
 {
     tok->size <<= 1;
-    tok =
-        (guththila_token_t *) guththila_realloc (environment->allocator, tok,
-                                                 sizeof (guththila_token_t) *
-                                                 tok->size);
+    tok = (guththila_token_t *) GUTHTHILA_REALLOC (environment->allocator,
+                                 tok, sizeof (guththila_token_t) * tok->size);
+
     return tok;
 }
 
@@ -113,11 +112,13 @@ guththila_token_char_ref (guththila_environment_t * environment,
     int len;
     int ii;
     int ix;
-    guththila_char_t *ref_buffer;
-    len = guththila_strlen (environment->string, buffer);
-    ref_buffer =
-        (guththila_char_t *) guththila_malloc (environment->allocator,
-                                               len + 1);
+    guththila_char_t *ref_buffer = NULL;
+    
+    len = GUTHTHILA_STRLEN ( buffer);
+    ref_buffer =  (guththila_char_t *) GUTHTHILA_MALLOC (
+                            environment->allocator, len + 1);
+                            
+                            
     for (ii = 0, ix = 0; ii < len; ii++, ix++)
     {
         if (buffer[ii] == '&')
@@ -176,11 +177,10 @@ guththila_token_to_string (guththila_environment_t * environment,
         if (unicode == None)
         {
             int length;
-            guththila_char_t *buffer;
+            guththila_char_t *buffer = NULL;
             length = guththila_token_length (environment, tok);
-            buffer =
-                (guththila_char_t *) guththila_malloc (environment->allocator,
-                                                       length + 1);
+            buffer = (guththila_char_t *) GUTHTHILA_MALLOC (environment->allocator,
+                                                      length + 1);
             memcpy (buffer, tok->start, length);
             buffer[length] = 0;
             if (tok->ref)
@@ -191,11 +191,12 @@ guththila_token_to_string (guththila_environment_t * environment,
         else
         {
             int length;
-            guththila_char_t *buffer;
+            guththila_char_t *buffer = NULL;
             length = guththila_token_length (environment, tok);
-            buffer =
-                (guththila_char_t *) guththila_malloc (environment->allocator,
-                                                       length + 1);
+            
+            buffer = (guththila_char_t *) GUTHTHILA_MALLOC (
+                                environment->allocator, length + 1);
+                                
             memcpy (buffer, tok->start, length);
             buffer[length] = 0;
             return guththila_token_convert_utf16_to_utf8 (environment, buffer,
@@ -225,7 +226,7 @@ guththila_token_compare (guththila_environment_t * environment,
         return strncmp (tok->start, s, n);
     else
     {
-        guththila_char_t *buffer;
+        guththila_char_t *buffer = NULL;
         buffer = guththila_token_to_string (environment, tok, unicode_state);
         return strncmp (buffer, s, n);
     }
@@ -262,7 +263,7 @@ guththila_token_build_utf8 (guththila_environment_t * environment,
     guththila_UTF8_char mask = 0;
     int ii = 0;
     guththila_char_t *buffer =
-        (guththila_char_t *) guththila_calloc (environment->allocator,
+        (guththila_char_t *) GUTHTHILA_CALLOC (environment->allocator,
                                                length + 1, 1);
     if (length == 1)
         buffer[0] = utf16_ch;
@@ -313,7 +314,7 @@ guththila_token_convert_utf16_to_utf8 (guththila_environment_t * environment,
     guththila_char_t *output_char = 0;
     int ii = 0;
     guththila_char_t *output_buffer =
-        (guththila_char_t *) guththila_calloc (environment->allocator, 1, 1);
+        (guththila_char_t *) GUTHTHILA_CALLOC (environment->allocator, 1, 1);
     for (ii = 0; length > ii;)
     {
         utf16_char = *((guththila_UTF16_char *) & input_buffer[ii]);

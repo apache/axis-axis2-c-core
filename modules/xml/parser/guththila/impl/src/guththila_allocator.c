@@ -30,10 +30,10 @@ guththila_allocator_init (guththila_allocator_t * allocator)
             (guththila_allocator_t *) malloc (sizeof (guththila_allocator_t));
         if (allocator)
         {
-            allocator->guththila_allocator_malloc = malloc;
-            allocator->guththila_allocator_realloc = realloc;
-            allocator->guththila_allocator_free = free;
-            allocator->guththila_allocator_calloc = calloc;
+            allocator->malloc = malloc;
+            allocator->realloc = realloc;
+            allocator->free = free;
+            allocator->calloc = calloc;
             return allocator;
         }
     }

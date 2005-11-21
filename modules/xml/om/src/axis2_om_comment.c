@@ -28,6 +28,11 @@ axis2_status_t AXIS2_CALL
 axis2_om_comment_set_value(axis2_om_comment_t *om_comment,
                            axis2_env_t **env,
                            const axis2_char_t *value);
+
+axis2_status_t AXIS2_CALL
+axis2_om_comment_serialize(axis2_om_comment_t *om_comment,
+                           axis2_env_t **env,
+                           axis2_om_output_t *om_output);
                                                                              
 /***************************** axis2_om_comment_struct ******************/
 
@@ -47,6 +52,7 @@ typedef struct axis2_om_comment_impl_t
 
 AXIS2_DECLARE(axis2_om_comment_t*)
 axis2_om_comment_create(axis2_env_t **env,
+                        axis2_om_node_t *parent,
                         const axis2_char_t * value,
                         axis2_om_node_t ** node)
 {
@@ -85,6 +91,12 @@ axis2_om_comment_create(axis2_env_t **env,
 
     AXIS2_OM_NODE_SET_DATA_ELEMENT((*node), env, comment);
     AXIS2_OM_NODE_SET_NODE_TYPE((*node), env, AXIS2_OM_COMMENT);
+    
+    if (parent)
+    {
+        AXIS2_OM_NODE_SET_PARENT((*node), env, parent);
+        AXIS2_OM_NODE_ADD_CHILD((*node), env, parent); 
+    }
 
     /* operations */
     comment->om_comment.ops = NULL;
@@ -140,4 +152,21 @@ axis2_om_comment_set_value(axis2_om_comment_t *om_comment,
     AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(om_comment)->value = (axis2_char_t*)AXIS2_STRDUP(value,env);
     return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_om_comment_serialize(axis2_om_comment_t *om_comment,
+                           axis2_env_t **env,
+                           axis2_om_output_t *om_output)
+{
+    axis2_om_comment_impl_t *comment_impl;
+    
+    AXIS2_FUNC_PARAM_CHECK(om_comment, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);    
+    
+    comment_impl = AXIS2_INTF_TO_IMPL(om_comment);
+    if(comment_impl->value)
+        return  axis2_om_output_write(om_output, env,
+                    AXIS2_OM_COMMENT , 1 , comment_impl->value);
+    return AXIS2_FAILURE;
 }

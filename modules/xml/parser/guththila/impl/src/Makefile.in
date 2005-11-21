@@ -67,8 +67,8 @@ am_libguththila_la_OBJECTS = guththila_token.lo \
 	guththila_xml_stream_writer.lo guththila_stack.lo \
 	guththila_unicode.lo guththila_main.lo guththila_reader.lo \
 	guththila_allocator.lo guththila_array.lo guththila_string.lo \
-	guththila_stream.lo guththila_environment.lo guththila_log.lo \
-	guththila_error.lo guththila_hash.lo
+	guththila_environment.lo guththila_log.lo guththila_error.lo \
+	guththila_hash.lo
 libguththila_la_OBJECTS = $(am_libguththila_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -206,7 +206,6 @@ libguththila_la_SOURCES = guththila_token.c \
                             guththila_allocator.c \
                             guththila_array.c \
                             guththila_string.c \
-                            guththila_stream.c \
                             guththila_environment.c \
                             guththila_log.c \
                             guththila_error.c \
@@ -293,7 +292,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/guththila_main.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/guththila_reader.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/guththila_stack.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/guththila_stream.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/guththila_string.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/guththila_token.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/guththila_unicode.Plo@am__quote@

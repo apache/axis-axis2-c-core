@@ -19,40 +19,32 @@
 
 #include <guththila_allocator.h>
 #include <guththila_error.h>
-#include <guththila_stream.h>
 #include <guththila_log.h>
 #include "guththila_defines.h"
-#include <guththila_string.h>
+
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-    struct guththila_environment;
-    struct guththila_environment_ops;
-
-    typedef struct guththila_environment_ops
+  
+  
+    typedef struct guththila_environment_t
     {
-        int test;
-    } guththila_environment_ops_t;
-
-    typedef struct guththila_environment
-    {
-        struct guththila_environment_ops *ops;
         guththila_allocator_t *allocator;   /* memory allocation routines */
         guththila_error_t *error;   /* error handling */
-        guththila_stream_t *stream; /* IO routines */
         guththila_log_t *log;   /* logging routines */
-        guththila_string_t *string; /* string routines */
     } guththila_environment_t;
+    
 
-      GUTHTHILA_DECLARE (guththila_environment_t *)
-        guththila_environment_create (guththila_allocator_t * allocator,
-                                      guththila_error_t * error,
-                                      guththila_stream_t * stream,
-                                      guththila_log_t * log,
-                                      guththila_string_t * string);
+    GUTHTHILA_DECLARE (guththila_environment_t *)
+    guththila_environment_create (guththila_allocator_t * allocator,
+                                  guththila_error_t * error,
+                                  guththila_log_t * log);
+    
+    GUTHTHILA_DECLARE(guththila_status_t)
+    guththila_environment_free(guththila_environment_t *environment);
 
 #ifdef __cplusplus
 }

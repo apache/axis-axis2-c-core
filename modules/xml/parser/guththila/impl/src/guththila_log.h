@@ -33,27 +33,35 @@ extern "C"
         GUTHTHILA_LOG_CRITICAL
     } guththila_log_levels_t;
 
-    struct guththila_log;
+    typedef struct guththila_log guththila_log_t;
     struct guththila_log_ops;
 
     GUTHTHILA_DECLARE_DATA typedef struct guththila_log_ops
     {
-        int (GUTHTHILA_CALL * guththila_log_ops_write) (const void *buffer,
-                                                        size_t count);
+        int (GUTHTHILA_CALL * write) (const void *buffer, size_t count);
+        int (GUTHTHILA_CALL* free)(guththila_log_t *log);
+        
     } guththila_log_ops_t;
 
-    typedef struct guththila_log
+    struct guththila_log
     {
         struct guththila_log_ops *ops;
         guththila_log_levels_t level;
         int enabled;            /*boolean */
-    } guththila_log_t;
+    };
+    
+    
 
-      GUTHTHILA_DECLARE (guththila_log_t *)
-        guththila_log_create (guththila_allocator_t * allocator,
-                              guththila_log_ops_t * operations);
+GUTHTHILA_DECLARE (guththila_log_t *)
+guththila_log_create (guththila_allocator_t * allocator,
+                      guththila_log_ops_t * operations);
 
-#define guththila_log_write(log, buffer, count) ((log)->ops->guththila_log_ops_write(buffer, count))
+
+
+#define GUTHTHILA_LOG_WRITE( log, buffer, count) ((log)->ops->write(buffer, count))
+
+#define GUTHTHILA_LOG_FREE(log) ((log)->ops->free(log))
+
 
 #ifdef __cplusplus
 }

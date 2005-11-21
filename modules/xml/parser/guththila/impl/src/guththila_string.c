@@ -18,18 +18,30 @@
 #include <stdlib.h>
 #include <string.h>
 
-void *GUTHTHILA_CALL
-guththila_string_ops_strdup (const void *ptr)
+
+GUTHTHILA_DECLARE(void*) 
+guththila_strdup (guththila_environment_t *environment,
+                  const void *ptr)
 {
     if (ptr)
-        return (void *) strdup ((const char *) ptr);
+    {
+        int len = strlen(ptr);
+        char* str = (char*) GUTHTHILA_MALLOC(environment->allocator,
+                                             sizeof(char) * (len + 1 ));
+        if (!str)
+            return NULL;
+        memcpy(str, ptr, len + 1);
+        return (void *) str;
+    }
     else
+    {
         return NULL;
+    }
 }
 
-int GUTHTHILA_CALL
-guththila_string_ops_strcmp (const guththila_char_t * s1,
-                             const guththila_char_t * s2)
+GUTHTHILA_DECLARE(int) 
+guththila_strcmp (const guththila_char_t * s1,
+                  const guththila_char_t * s2)
 {
     if (s1 && s2)
         return strcmp (s1, s2);
@@ -39,26 +51,26 @@ guththila_string_ops_strcmp (const guththila_char_t * s1,
 
 
 
-int GUTHTHILA_CALL
-guththila_string_ops_strlen (const guththila_char_t * s)
+GUTHTHILA_DECLARE(int)
+guththila_strlen (const guththila_char_t * s)
 {
     if (s)
     {
-
 #ifdef __UNICODE__FUNCTIONS__
 
         return guththila_strlen_unicode (x);
 #else
         return strlen (s);
 #endif
-
     }
     else
         return -1;
 }
 
-guththila_char_t *GUTHTHILA_CALL
-guththila_string_ops_strndup (const guththila_char_t * s1, size_t len)
+GUTHTHILA_DECLARE(guththila_char_t *)
+guththila_strndup (guththila_environment_t *environment,
+                   const guththila_char_t * s1,
+                   int len)
 {
     if (s1)
     {
@@ -70,10 +82,10 @@ guththila_string_ops_strndup (const guththila_char_t * s1, size_t len)
         register size_t n;
         register guththila_char_t *dst;
 
-        n = guththila_string_ops_strlen (s1);
+        n = guththila_strlen (s1);
         if (len < n)
             n = len;
-        dst = (guththila_char_t *) malloc (n + 1);
+        dst = (guththila_char_t *) GUTHTHILA_MALLOC(environment->allocator ,(n + 1));
         if (dst)
         {
             memcpy (dst, s1, n);
@@ -84,34 +96,4 @@ guththila_string_ops_strndup (const guththila_char_t * s1, size_t len)
     }
     else
         return NULL;
-}
-
-
-
-GUTHTHILA_DECLARE (guththila_string_t *)
-guththila_string_create (guththila_allocator_t * allocator,
-                         guththila_string_t * string)
-{
-    if (string)
-        return string;
-
-    if (!allocator)
-        return NULL;
-
-    else
-    {
-        string =
-            (guththila_string_t *) guththila_malloc (allocator,
-                                                     sizeof
-                                                     (guththila_string_t));
-        if (string)
-        {
-            string->guththila_string_strdup = guththila_string_ops_strdup;
-            string->guththila_string_strcmp = guththila_string_ops_strcmp;
-            string->guththila_string_strndup = guththila_string_ops_strndup;
-            string->guththila_string_strlen = guththila_string_ops_strlen;
-            return string;
-        }
-    }
-    return NULL;
 }

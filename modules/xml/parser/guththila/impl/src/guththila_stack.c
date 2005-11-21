@@ -24,7 +24,7 @@ GUTHTHILA_DECLARE (guththila_stack_t *)
 guththila_stack_create (guththila_environment_t * environment)
 {
     guththila_stack_t *st =
-        (guththila_stack_t *) guththila_malloc (environment->allocator,
+        (guththila_stack_t *) GUTHTHILA_MALLOC (environment->allocator,
                                                 sizeof (guththila_stack_t));
     if (st)
     {
@@ -46,10 +46,10 @@ guththila_stack_push (guththila_environment_t * environment,
 {
     if (stack)
     {
-        guththila_element_t *e =
-            (guththila_element_t *) guththila_malloc (environment->allocator,
-                                                      sizeof
-                                                      (guththila_element_t));
+        guththila_element_t *e = 
+                (guththila_element_t *) GUTHTHILA_MALLOC (environment->allocator,
+                                                     sizeof (guththila_element_t));
+                                                                  
         e->token = tok;
         e->attribute = attr;
         if (stack->pointer == 0)
@@ -94,8 +94,8 @@ guththila_stack_free (guththila_environment_t * environment,
     {
         guththila_element_t *ele = stack->tail;
         guththila_stack_free_rec (environment, stack, ele);
-        guththila_free (environment->allocator, ele);
-        guththila_free (environment->allocator, stack);
+        GUTHTHILA_FREE (environment->allocator, ele);
+        GUTHTHILA_FREE (environment->allocator, stack);
     }
 }
 
@@ -107,13 +107,13 @@ guththila_stack_free_rec (guththila_environment_t * environment,
 {
     if (elem->prev == NULL)
     {
-        guththila_free (environment->allocator, elem);
+        GUTHTHILA_FREE (environment->allocator, elem);
     }
     else
     {
         elem = elem->prev;
         guththila_stack_free_rec (environment, stack, elem);
-        guththila_free (environment->allocator, elem);
+        GUTHTHILA_FREE (environment->allocator, elem);
     }
 }
 
@@ -133,7 +133,7 @@ GUTHTHILA_DECLARE (guththila_element_t *)
 guththila_stack_pull (guththila_environment_t * environment,
                       guththila_stack_t * stack)
 {
-    guththila_element_t *e;
+    guththila_element_t *e = NULL;
     if (stack)
     {
         e = stack->tail;
@@ -170,9 +170,8 @@ guththila_stack_push_namespace (guththila_environment_t * environment,
     if (stack)
     {
         guththila_element_t *e =
-            (guththila_element_t *) guththila_malloc (environment->allocator,
-                                                      sizeof
-                                                      (guththila_element_t));
+            (guththila_element_t *) GUTHTHILA_MALLOC (environment->allocator,
+                                               sizeof(guththila_element_t));
         e->namespace = ns;
         e->attribute = NULL;
         e->token = NULL;
@@ -203,7 +202,7 @@ GUTHTHILA_DECLARE (guththila_element_t *)
 guththila_stack_pull_current (guththila_environment_t * environment,
                               guththila_stack_t * stack)
 {
-    guththila_element_t *e;
+    guththila_element_t *e = NULL;
     e = stack->current;
     if (stack->current_pos != 0)
     {
@@ -229,9 +228,8 @@ guththila_stack_push_depth (guththila_environment_t * environment,
     if (stack)
     {
         guththila_element_t *e =
-            (guththila_element_t *) guththila_malloc (environment->allocator,
-                                                      sizeof
-                                                      (guththila_element_t));
+            (guththila_element_t *) GUTHTHILA_MALLOC (environment->allocator,
+                                            sizeof (guththila_element_t));
         e->namespace = NULL;
         e->attribute = NULL;
         e->token = NULL;
@@ -263,7 +261,7 @@ GUTHTHILA_DECLARE (void)
 guththila_stack_clear (guththila_environment_t * environment,
                        guththila_stack_t * stack)
 {
-    guththila_element_t *e;
+    guththila_element_t *e = NULL;
     e = stack->tail;
     if (e)
     {
@@ -284,7 +282,7 @@ guththila_stack_get (guththila_environment_t * environment,
             return stack->tail;
         else
         {
-            guththila_element_t *e;
+            guththila_element_t *e = NULL;
             int ix = stack->pointer;
             e = stack->tail;
             for (; ix > ((stack->pointer + 1) - i); ix--)

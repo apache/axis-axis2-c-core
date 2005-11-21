@@ -15,10 +15,22 @@
  */
 
 #include <guththila_log.h>
+#include <guththila_defines.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int GUTHTHILA_CALL guththila_log_impl_write (const void *buffer,
                                              size_t count);
+                                             
+int GUTHTHILA_CALL
+guththila_log_free(guththila_log_t *log)
+{
+    if(!log) return 0;
+    if(log->ops)
+        free(log->ops);
+    free(log);
+    return 1;    
+}                                             
 
 GUTHTHILA_DECLARE (guththila_log_t *)
 guththila_log_create (guththila_allocator_t * allocator,
@@ -29,7 +41,7 @@ guththila_log_create (guththila_allocator_t * allocator,
         return NULL;
 
     log =
-        (guththila_log_t *) guththila_malloc (allocator,
+        (guththila_log_t *) GUTHTHILA_MALLOC (allocator,
                                               sizeof (guththila_log_t));
 
     if (!log)
@@ -40,18 +52,18 @@ guththila_log_create (guththila_allocator_t * allocator,
     else
     {
         log->ops =
-            (guththila_log_ops_t *) guththila_malloc (allocator,
-                                                      sizeof
-                                                      (guththila_log_ops_t));
+            (guththila_log_ops_t *) GUTHTHILA_MALLOC (allocator,
+                                            sizeof(guththila_log_ops_t));
 
         if (!log->ops)
         {
-            guththila_free (allocator, log);
+            GUTHTHILA_FREE (allocator, log);
             return NULL;
         }
 
-        log->ops->guththila_log_ops_write = guththila_log_impl_write;
+        log->ops->write = guththila_log_impl_write;
     }
+    log->ops->free = guththila_log_free;
 
     return log;
 }

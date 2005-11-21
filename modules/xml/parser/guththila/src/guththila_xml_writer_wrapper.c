@@ -230,7 +230,7 @@ axis2_xml_writer_create(axis2_env_t **env,
     
     
     allocator = guththila_allocator_init(NULL);
-    writer_impl->guththila_env = guththila_environment_create(allocator, NULL,  NULL, NULL, NULL);
+    writer_impl->guththila_env = guththila_environment_create(allocator, NULL,  NULL);
     writer_impl->guththila_writer = guththila_create_xml_stream_writer(
                                                     writer_impl->guththila_env,
                                                     stream, encoding , 
@@ -323,9 +323,11 @@ guththila_xml_writer_wrapper_free(axis2_xml_writer_t *writer,
 {
     AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
     if(AXIS2_INTF_TO_IMPL(writer)->guththila_writer)
-    {     /* should be implemented */}
+        guththila_xml_stream_writer_free(
+            AXIS2_INTF_TO_IMPL(writer)->guththila_env, writer);
+            
     if(AXIS2_INTF_TO_IMPL(writer)->guththila_env)
-    {    /* should be implemented */ }
+        guththila_environment_free(AXIS2_INTF_TO_IMPL(writer)->guththila_env);
     if(writer->ops)
         AXIS2_FREE((*env)->allocator, writer->ops);
     AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(writer));
@@ -711,8 +713,8 @@ guththila_xml_writer_wrapper_get_prefix(  axis2_xml_writer_t *writer,
                                          axis2_env_t **env,
                                          axis2_char_t *uri)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, uri, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(writer, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, uri, NULL);
     return guththila_xml_stream_writer_get_prefix(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
                     AXIS2_INTF_TO_IMPL(writer)->guththila_writer, uri);

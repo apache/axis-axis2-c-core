@@ -23,6 +23,7 @@
  */
 
 #include <axis2_defines.h>
+#include <axis2.h>
 #include <axis2_env.h>
 #include <axis2_om_node.h>
 #include <axis2_xml_writer.h>
@@ -64,21 +65,19 @@ extern "C"
     
   /**
     * creates OM output struct 
-    * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
-    * @param xml_writer XML writer. Optional, can be NULL. If NULL default xml writer
-    *           (guththila writer ) will be created with stdout as the output stream
-	* @param writer_env writer envioronment. Optional, can be NULL.
+    * @param env Environment. MUST NOT be NULL, .
+    * @param xml_writer XML writer. 
     * @return a pointer to newly created output struct.
     */
 
     AXIS2_DECLARE(axis2_om_output_t*) 
-    axis2_om_output_create (axis2_env_t **environment, axis2_xml_writer_t *xml_writer);
+    axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer);
 
   /**
     *  Performs xml writing.
     *  Accepts variable number of args depending on the on OM type to be serialized
-    *  @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
     *  @param om_output Output struct to be used 
+    *  @param env Environment. MUST NOT be NULL, 
     *  @param type one of the OM types
     *  @param no_of_args number of arguments passed in the variable parameter list
     *  @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
@@ -88,6 +87,17 @@ extern "C"
     axis2_om_output_write (axis2_om_output_t * om_output, axis2_env_t **env,
                            axis2_om_types_t type,
                            int no_of_args, ...);
+   /**
+    * free om_output 
+    *@param om_output om_output struct
+    *@param env environment
+    *@return status code AXIS2_SUCCESS on success, AXIS2_FAILURE otherwise 
+    */
+    
+                
+    AXIS2_DECLARE(axis2_status_t)
+    axis2_om_output_free(axis2_om_output_t *om_output,
+                         axis2_env_t **env);    
 
 /** @} */
 

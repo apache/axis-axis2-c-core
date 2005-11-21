@@ -2,7 +2,6 @@
 #define OM_TEST_H
 
 #include <CuTest.h>
-/*#include "om_error_test.h"*/
 
 CuSuite* axis2_omGetSuite();
 

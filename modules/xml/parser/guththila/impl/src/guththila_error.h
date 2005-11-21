@@ -25,25 +25,6 @@ extern "C"
 {
 #endif
 
-    struct guththila_error;
-    struct guththila_error_ops;
-
-    GUTHTHILA_DECLARE_DATA typedef struct guththila_error_ops
-    {
-        guththila_char_t *(GUTHTHILA_CALL * get_message) ();
-    } guththila_error_ops_t;
-
-    typedef struct guththila_error
-    {
-        struct guththila_error_ops *ops;
-        int errorno;
-    } guththila_error_t;
-
-      GUTHTHILA_DECLARE (guththila_error_t *)
-        guththila_error_create (guththila_allocator_t * allocator);
-
-#define guththila_error_get_message(error) ((error)->ops->get_message())
-
     typedef enum guththila_status_codes
     {
         GUTHTHILA_FAILURE = 0,
@@ -79,6 +60,34 @@ extern "C"
         GUTHTHILA_STREAM_WRITER_ERROR_OUT_OF_MEMORY,
         GUTHTHILA_STREAM_READER_ERROR_OUT_OF_MEMORY
     } guththila_error_codes_t;
+
+
+
+    typedef struct guththila_error guththila_error_t;
+    struct guththila_error_ops;
+
+
+GUTHTHILA_DECLARE_DATA typedef struct guththila_error_ops
+{
+    guththila_char_t *(GUTHTHILA_CALL * get_message) ();
+    int (GUTHTHILA_CALL *free)(guththila_error_t *error);
+} guththila_error_ops_t;
+
+struct guththila_error
+{
+    struct guththila_error_ops *ops;
+    int errorno;
+} ;
+
+
+GUTHTHILA_DECLARE (guththila_error_t *)
+guththila_error_create (guththila_allocator_t * allocator);
+
+
+#define GUTHTHILA_ERROR_GET_MESSAGE(error) ((error)->ops->get_message())
+
+#define GUTHTHILA_ERROR_FREE(error) ((error)->ops->free(error))
+
 
 #ifdef __cplusplus
 }

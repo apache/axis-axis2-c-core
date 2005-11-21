@@ -1,15 +1,15 @@
-prgbindir=$(prefix)/bin/unit_test
-prglibdir=$(prefix)/lib/unit_test
-prglib_LTLIBRARIES = libtest_libxml2.la
-AM_CPPFLAGS = $(CPPFLAGS) -g
-libtest_libxml2_la_SOURCES = libxml2_test.c
-include_HEADERS=$(top_builddir)/modules/xml/parser/libxml2/test/*.h
+prgbindir=$(prefix)/bin/system_test            
+prgbin_PROGRAMS = libxml_test
+SUBDIRS = 
+AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
 
-libtest_libxml2_la_LIBADD = $(LDFLAGS) $(top_builddir)/modules/libxml2/src/libaxis2_libxml2.la
-INCLUDES = -I$(top_builddir)/include \
-            -I${CUTEST_HOME}/include
+libxml_test_SOURCES = libxml_test.c
 
-prgbin_PROGRAMS = libxml2_test
-libxml2_test_SOURCES = main.c
-libxml2_test_LDADD   =  $(LDFLAGS) libtest_libxml2.la  $(top_builddir)/modules/libxml2/src/libaxis2_libxml2.la
+libxml_test_LDADD   =  $(LDFLAGS)  -L$(top_builddir)/modules/xml/parser/libxml2/src/.libs -laxis2_libxml2 \
+                       -L${LIBXML2_LIB} -lxml2 \
+                       -L$(top_builddir)/modules/util/src/.libs -laxis2_util
+                       
+INCLUDES =  -I$(top_builddir)/modules/xml/parser/ \
+            -I$(top_builddir)/modules/util/src \
+            -I$(top_builddir)/include 
 

@@ -14,11 +14,11 @@
  * limitations under the License.
  */  
     
-#ifndef GUTHTHILA_TABLES_H
-#define GUTHTHILA_TABLES_H
+#ifndef GUTHTHILA_ARRAY_H
+#define GUTHTHILA_ARRAY_H
     
 /**
- * @file guththila_tables.h
+ * @file guththila_array.h
  * @brief GUTHTHILA  array and table 
  */ 
     
@@ -35,7 +35,7 @@ extern "C"
 #endif  /* __cplusplus */
     
 /**
- * @defgroup guththila_array (stack)  and table functions
+ * @defgroup guththila_array (stack) functions
  * @ingroup GUTHTHILA 
  * Tables are used to store entirely opaque structures 
  * for applications, while Arrays are usually used to
@@ -72,9 +72,8 @@ extern "C"
  * @return True if empty, False otherwise
  */ 
      
-        GUTHTHILA_DECLARE (int) guththila_is_empty_array (const
-                                                          guththila_array_header_t
-                                                          * a);
+        GUTHTHILA_DECLARE (int) 
+        guththila_is_empty_array (const guththila_array_header_t * a);
      
 /**
  * Create an array
@@ -86,7 +85,7 @@ extern "C"
      
         GUTHTHILA_DECLARE (guththila_array_header_t *)
         guththila_array_make (guththila_environment_t * environment,
-                              int nelts, int elt_size);
+                              int nelts, int elt_size);
      
 /**
  * Add a new element to an array (as a first-in, last-out stack)
@@ -116,11 +115,9 @@ extern "C"
  * @param src The source array to add to the destination array
  */ 
      
-        GUTHTHILA_DECLARE (void) guththila_array_cat (guththila_array_header_t
-                                                      * dst,
-                                                      const
-                                                      guththila_array_header_t
-                                                      * src);
+        GUTHTHILA_DECLARE (void) 
+        guththila_array_cat (guththila_array_header_t *dst,
+                             const guththila_array_header_t * src);
      
 /**
  * Copy the entire array
@@ -134,7 +131,7 @@ extern "C"
      
         GUTHTHILA_DECLARE (guththila_array_header_t *)
         guththila_array_copy (guththila_environment_t * environment,
-                              const guththila_array_header_t * arr);
+                              const guththila_array_header_t * arr);
      
 /**
  * Copy the headers of the array, and arrange for the elements to be copied if
@@ -147,7 +144,7 @@ extern "C"
      
         GUTHTHILA_DECLARE (guththila_array_header_t *)
         guththila_array_copy_hdr (guththila_environment_t * environment,
-                                  const guththila_array_header_t * arr);
+                                  const guththila_array_header_t * arr);
      
 /**
  * Append one array to the end of another, creating a new array in the process.
@@ -156,11 +153,11 @@ extern "C"
  * @param second The array to put second in the new array.
  * @return A new array containing the data from the two arrays passed in.
 */ 
-     
+             
         GUTHTHILA_DECLARE (guththila_array_header_t *)
         guththila_array_append (guththila_environment_t * environment,
-                                const guththila_array_header_t * first,
-                                const guththila_array_header_t * second);
+                                const guththila_array_header_t * first,
+                                const guththila_array_header_t * second);
      
 /**
  * Generates a new string containing the concatenated 
@@ -176,11 +173,11 @@ extern "C"
      
         GUTHTHILA_DECLARE (guththila_char_t *)
         guththila_array_pstrcat (guththila_environment_t * p,
-                                 const guththila_array_header_t * arr,
-                                 const guththila_char_t sep);
-     GUTHTHILA_DECLARE (guththila_status_t)
+                                 const guththila_array_header_t * arr,
+                                 const guththila_char_t sep);
+                                             GUTHTHILA_DECLARE (guththila_status_t)
         guththila_array_free (guththila_environment_t * environment,
-                              guththila_array_header_t * header);
+                              guththila_array_header_t * header);
      
 /** @} */ 
      

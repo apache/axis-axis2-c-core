@@ -17,6 +17,10 @@
 #include <axis2_om_node.h>
 #include <axis2_om_element.h>
 #include <axis2_om_text.h>
+#include <axis2_om_comment.h>
+#include <axis2_om_processing_instruction.h>
+#include <axis2_om_doctype.h>
+
 
 /*************************** function prototypes ******************************************/
 
@@ -253,7 +257,9 @@ axis2_status_t AXIS2_CALL axis2_om_node_free_tree(axis2_om_node_t *om_node,
         {
             
             child_node = AXIS2_OM_NODE_DETACH (AXIS2_INTF_TO_IMPL(om_node)->first_child, env);
-            AXIS2_OM_NODE_FREE_TREE ( child_node , env);
+            
+            AXIS2_OM_NODE_FREE_TREE ( child_node , env); 
+            
         }
     }
     
@@ -464,7 +470,8 @@ axis2_om_node_insert_sibling_before (axis2_om_node_t *om_node,
     else
     {
         axis2_om_node_t *prev_sibling = AXIS2_INTF_TO_IMPL(om_node)->prev_sibling;
-        AXIS2_INTF_TO_IMPL(prev_sibling)->next_sibling = node_to_insert;
+        if(prev_sibling)
+            AXIS2_INTF_TO_IMPL(prev_sibling)->next_sibling = node_to_insert;
     }
     AXIS2_INTF_TO_IMPL(om_node)->prev_sibling = node_to_insert;
     return AXIS2_SUCCESS;
@@ -495,11 +502,35 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
     case AXIS2_OM_TEXT:
         status = AXIS2_OM_TEXT_SERIALIZE (
                 (axis2_om_text_t*)(AXIS2_INTF_TO_IMPL(om_node)->data_element),
-                env,
-                om_output);
-        return status;
+                env, om_output);
+        if(status != AXIS2_SUCCESS)
+            return status;
         break;
+    case AXIS2_OM_COMMENT:
+        status = AXIS2_OM_COMMENT_SERIALIZE(
+                (axis2_om_comment_t*)(AXIS2_INTF_TO_IMPL(om_node)->data_element),
+                env, om_output);
+        if( status != AXIS2_SUCCESS)
+            return status;
+        
+        break;    
     
+    case AXIS2_OM_DOCTYPE:
+        status = AXIS2_OM_DOCTYPE_SERIALIZE(        
+                (axis2_om_doctype_t*)(AXIS2_INTF_TO_IMPL(om_node)->data_element),
+                 env, om_output);
+        if( status != AXIS2_SUCCESS)
+            return status;
+        break;
+        
+    case AXIS2_OM_PROCESSING_INSTRUCTION:
+        status = AXIS2_OM_PROCESSING_INSTRUCTION_SERIALIZE(
+                (axis2_om_processing_instruction_t*)
+                    (AXIS2_INTF_TO_IMPL(om_node)->data_element), env, om_output);
+        if( status != AXIS2_SUCCESS)
+            return status;
+        break;
+        
     default:
         break;
     }
@@ -512,7 +543,7 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
     {
     case AXIS2_OM_ELEMENT:
         status = AXIS2_OM_ELEMENT_SERIALIZE_END_PART ((axis2_om_element_t *)
-                                    (AXIS2_INTF_TO_IMPL(om_node)->data_element),
+                                   (AXIS2_INTF_TO_IMPL(om_node)->data_element),
                                     env, om_output);
         if (status != AXIS2_SUCCESS)
             return status;
