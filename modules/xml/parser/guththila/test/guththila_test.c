@@ -35,14 +35,14 @@ int main(int argc,char *argv[])
     char *p =0;
     int token = 0;
     char *filename = "test.xml";
-    f= fopen("test.xml","r");
+
     if(argc > 1)
         filename = argv[1];
-
+    
+    f =fopen(filename,"r");
     allocator = guththila_allocator_init(NULL);
     env       = guththila_environment_create(allocator,NULL,NULL);
   
-    reader    = guththila_reader_create_for_file(env,filename);
     reader_mem = guththila_reader_create_for_memory(env, read_input, close_input);
     parser = guththila_xml_pull_parser_create(env,reader_mem);
     guththila_xml_pull_parser_read(env,parser);
@@ -174,7 +174,7 @@ guththila_xml_pull_parser_free(env,parser);
 
 
 printf("\n\n\n\n");
-writer = guththila_create_xml_stream_writer(env,stdout,NULL,1);
+writer = guththila_create_xml_stream_writer(env,NULL ,NULL,1);
 guththila_xml_stream_writer_write_start_document_with_version(env,writer,"1.0");
 guththila_xml_stream_writer_write_start_element(env,writer,"test");
 guththila_xml_stream_writer_write_attribute(env,writer,"test","axis2c");
