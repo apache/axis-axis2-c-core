@@ -9,7 +9,6 @@ FILE *f;
 
 int read_input(char *buffer,int size)
 {
-  
    return fread(buffer,sizeof(char), size, f);
 }
 
@@ -36,6 +35,7 @@ int main(int argc,char *argv[])
     char *p =0;
     int token = 0;
     char *filename = "test.xml";
+    f= fopen("test.xml","r");
     if(argc > 1)
         filename = argv[1];
 
@@ -43,7 +43,8 @@ int main(int argc,char *argv[])
     env       = guththila_environment_create(allocator,NULL,NULL);
   
     reader    = guththila_reader_create_for_file(env,filename);
-    parser = guththila_xml_pull_parser_create(env,reader);
+    reader_mem = guththila_reader_create_for_memory(env, read_input, close_input);
+    parser = guththila_xml_pull_parser_create(env,reader_mem);
     guththila_xml_pull_parser_read(env,parser);
 
     printf("running test");
