@@ -195,8 +195,8 @@ axis2_pull_parser_create_for_file(axis2_env_t **env,char *filename)
     if(!(wrapper_impl->reader))
     {
         AXIS2_FREE((*env)->allocator, wrapper_impl);
-      /*  AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CREATING_LIBXML_READER, NULL);
-        */
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CREATING_XML_STREAM_READER, NULL);
+        
     }
 	
     

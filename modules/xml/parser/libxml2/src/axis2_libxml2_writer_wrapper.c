@@ -244,7 +244,7 @@ axis2_xml_writer_create(axis2_env_t **env,
     if(!(writer_impl->xml_writer))
     {
         AXIS2_ERROR_SET((*env)->error,
-                    AXIS2_ERROR_OPENING_FILE_IN_STREAM_WRITER, NULL);
+                   AXIS2_ERROR_CREATING_XML_STREAM_WRITER, NULL);
         AXIS2_FREE((*env)->allocator, writer_impl);
                 
     }
