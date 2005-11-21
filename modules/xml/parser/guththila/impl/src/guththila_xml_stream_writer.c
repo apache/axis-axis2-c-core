@@ -42,13 +42,11 @@ guththila_create_xml_stream_writer (guththila_environment_t * environment,
     /*   guththila_status_t status; */
     guththila_xml_stream_writer_t *stream_writer;
     FILE *fp = NULL;
-    if (!writer)
-        return 0;
 
     stream_writer =
         (guththila_xml_stream_writer_t *) GUTHTHILA_MALLOC (environment->allocator,
                                           sizeof(guththila_xml_stream_writer_t));
-    if(writer)
+    if(writer != NULL)
     {
         fp = fopen(writer, "w");
         if(!fp)
@@ -56,7 +54,7 @@ guththila_create_xml_stream_writer (guththila_environment_t * environment,
         stream_writer->writer = fp;
     }
     else{
-    stream_writer->writer = stdout;
+      stream_writer->writer = stdout;
     }
     stream_writer->encoding = NULL;
     if (encoding)

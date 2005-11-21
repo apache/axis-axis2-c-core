@@ -215,7 +215,9 @@ typedef struct guththila_xml_writer_wrapper_impl
 AXIS2_DECLARE(axis2_xml_writer_t *)
 axis2_xml_writer_create(axis2_env_t **env,
                         void *stream,
-                        axis2_char_t *encoding, int is_prefix_default)
+                        axis2_char_t *encoding,
+                        int is_prefix_default,
+                        int compression)
 {
     guththila_xml_writer_wrapper_impl_t *writer_impl;
     guththila_allocator_t *allocator;
@@ -231,6 +233,7 @@ axis2_xml_writer_create(axis2_env_t **env,
     
     allocator = guththila_allocator_init(NULL);
     writer_impl->guththila_env = guththila_environment_create(allocator, NULL,  NULL);
+    
     writer_impl->guththila_writer = guththila_create_xml_stream_writer(
                                                     writer_impl->guththila_env,
                                                     stream, encoding , 

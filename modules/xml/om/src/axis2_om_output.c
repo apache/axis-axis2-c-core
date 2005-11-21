@@ -40,9 +40,12 @@ axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
     }
     else
     {
-        om_output->xml_writer = axis2_xml_writer_create(env,stdout,
+        om_output->xml_writer = axis2_xml_writer_create(env, NULL,
                                                         DEFAULT_CHAR_SET_ENCODING,
-                                                        AXIS2_TRUE);
+                                                        AXIS2_TRUE,
+                                                        0);
+        if(!(om_output->xml_writer)) 
+            printf(" writer null");
     }
     om_output->do_optimize = AXIS2_FALSE;
     om_output->mime_boundary = 0;

@@ -462,7 +462,7 @@ axis2_om_node_insert_sibling_before (axis2_om_node_t *om_node,
         AXIS2_INTF_TO_IMPL(om_node)->prev_sibling;
     AXIS2_INTF_TO_IMPL(node_to_insert)->next_sibling = om_node;
     prev_sibling = AXIS2_INTF_TO_IMPL(om_node)->prev_sibling;
-    if (prev_sibling)
+    if (!prev_sibling)
     {
         axis2_om_node_t *parent = AXIS2_INTF_TO_IMPL(om_node)->parent;
         AXIS2_INTF_TO_IMPL(parent)->first_child = node_to_insert;

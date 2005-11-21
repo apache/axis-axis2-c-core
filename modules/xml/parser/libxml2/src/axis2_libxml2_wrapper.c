@@ -21,7 +21,10 @@
  #include <axis2.h>
  #include <string.h>
  
- /*************************** Function Prototypes ******************************/
+/*************************** Function Prototypes ******************************/
+
+#define AXIS2_ATTR_NS_MAX   20
+
  
 int AXIS2_CALL
 axis2_libxml2_wrapper_next(axis2_pull_parser_t *parser,
@@ -111,8 +114,8 @@ typedef struct axis2_libxml2_wrapper_impl_t
 	int event_map[18];
     /* assuming that max ns and attri will be 20 */
     
-    int namespace_map[20];
-    int attribute_map[20];
+    int namespace_map[AXIS2_ATTR_NS_MAX];
+    int attribute_map[AXIS2_ATTR_NS_MAX];
 }axis2_libxml2_wrapper_impl_t;
 
 /****************** End struct , Macro *****************************************/
@@ -664,7 +667,7 @@ void axis2_libxml2_wrapper_fill_maps(axis2_pull_parser_t *parser,
     if(libxml2_attribute_count == 0)
         return;
     
-    for(i = 0;i<20;i++)
+    for(i = 0;i < AXIS2_ATTR_NS_MAX ;i++)
     {
         parser_impl->namespace_map[i] = -1;
         parser_impl->attribute_map[i] = -1;        
