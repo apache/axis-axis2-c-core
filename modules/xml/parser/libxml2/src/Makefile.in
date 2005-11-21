@@ -62,7 +62,8 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libaxis2_libxml2_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libaxis2_libxml2_la_OBJECTS = axis2_libxml2_wrapper.lo
+am_libaxis2_libxml2_la_OBJECTS = axis2_libxml2_wrapper.lo \
+	axis2_libxml2_writer_wrapper.lo
 libaxis2_libxml2_la_OBJECTS = $(am_libaxis2_libxml2_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -189,7 +190,9 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 lib_LTLIBRARIES = libaxis2_libxml2.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_libxml2_la_SOURCES = axis2_libxml2_wrapper.c
+libaxis2_libxml2_la_SOURCES = axis2_libxml2_wrapper.c \
+                              axis2_libxml2_writer_wrapper.c
+
 libaxis2_libxml2_la_LIBADD = -L${LIBXML2_LIB} -lxml2 $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util/src \
@@ -266,6 +269,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_libxml2_wrapper.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_libxml2_writer_wrapper.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
