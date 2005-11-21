@@ -196,7 +196,11 @@ extern "C"
         /** Invalid message context state  */
         AXIS2_ERROR_INVALID_STATE_MSG_CTX,
         /** Service not yet found */
-        AXIS2_ERROR_SERVICE_NOT_YET_FOUND
+        AXIS2_ERROR_SERVICE_NOT_YET_FOUND,
+        /** error occured creating xml stream writer */
+        AXIS2_ERROR_CREATING_XML_STREAM_WRITER,
+        /** error occured creating xml stream writer */
+        AXIS2_ERROR_CREATING_XML_STREAM_READER
     };
 
 /** @} */
