@@ -79,6 +79,9 @@ axis2_ctx_t* AXIS2_CALL axis2_ctx_create(axis2_env_t **env)
         return NULL;        
     }
 
+    ctx_impl->ctx.ops->get_property = axis2_ctx_get_property;
+    ctx_impl->ctx.ops->get_non_persistent_map = axis2_ctx_get_non_persistent_map;
+    ctx_impl->ctx.ops->get_persistent_map = axis2_ctx_get_persistent_map;
     ctx_impl->ctx.ops->free = axis2_ctx_free;
 
     return &(ctx_impl->ctx);
