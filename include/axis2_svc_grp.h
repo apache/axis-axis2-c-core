@@ -37,14 +37,14 @@ extern "C"
   */
 
 struct axis2_svc_s;
-typedef struct axis2_svc_grp_ops_s axis2_svc_grp_ops_t;    
-typedef struct axis2_svc_grp_s axis2_svc_grp_t;
+typedef struct axis2_svc_grp_ops axis2_svc_grp_ops_t;    
+typedef struct axis2_svc_grp axis2_svc_grp_t;
     
 /** 
  * @brief Service group operations struct
  * Encapsulator struct for operations of axis2_svc_grp
  */   
-struct axis2_svc_grp_ops_s
+struct axis2_svc_grp_ops
 {
 	/** 
      * Deallocate memory
@@ -109,7 +109,7 @@ struct axis2_svc_grp_ops_s
  * @brief Service group struct
   *	Axis2 Service group  
  */
-struct axis2_svc_grp_s
+struct axis2_svc_grp
 {
 	axis2_svc_grp_ops_t *ops;   
 

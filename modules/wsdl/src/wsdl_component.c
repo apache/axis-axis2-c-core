@@ -1,17 +1,15 @@
 #include <axis2_wsdl_component.h>
 #include <string.h>
 
-typedef struct  axis2_wsdl_component_impl_s axis2_wsdl_component_impl_t;
-
 /** 
  * @brief Wsdl Component struct impl
  *	Axis2 Wsdl Component impl  
  */
-struct axis2_wsdl_component_impl_s
+typedef struct axis2_wsdl_component_impl
 {
 	axis2_wsdl_component_t wsdl_component;
 	axis2_hash_t *component_properties;
-};
+} axis2_wsdl_component_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(wsdl_component) \
         ((axis2_wsdl_component_impl_t *)(wsdl_component))

@@ -20,50 +20,60 @@
  * @brief Wsdl Binding Fault struct impl
  *	Wsdl Binding Fault  
  */ 
-typedef struct axis2_binding_fault_impl_s
+typedef struct axis2_wsdl_binding_fault_impl
 {
-	axis2_binding_fault_t binding_fault;
+	axis2_wsdl_binding_fault_t binding_fault;
+    
     /**
      * Field ref
      */
     axis2_qname_t *ref;
     
-} axis2_binding_fault_impl_t;
+} axis2_wsdl_binding_fault_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(binding_fault) \
-		((axis2_binding_fault_impl_t *)binding_fault)
+		((axis2_wsdl_binding_fault_impl_t *)binding_fault)
 
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-	axis2_binding_fault_free (axis2_binding_fault_t *binding_fault,
+	axis2_binding_fault_free (axis2_wsdl_binding_fault_t *binding_fault,
 									axis2_env_t **env);
 axis2_qname_t *AXIS2_CALL
-axis2_binding_fault_get_ref(axis2_binding_fault_t *binding_fault,
+axis2_binding_fault_get_ref(axis2_wsdl_binding_fault_t *binding_fault,
                             axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_binding_fault_set_ref(axis2_binding_fault_t *binding_fault,
+axis2_binding_fault_set_ref(axis2_wsdl_binding_fault_t *binding_fault,
                             axis2_env_t **env,
                             axis2_qname_t *ref);
                                 
 /************************** End of function prototypes ************************/
 
-axis2_binding_fault_t * AXIS2_CALL 
+axis2_wsdl_binding_fault_t * AXIS2_CALL 
 axis2_binding_fault_create (axis2_env_t **env)
 {
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	axis2_binding_fault_impl_t *binding_fault_impl = 
-		(axis2_binding_fault_impl_t *) AXIS2_MALLOC((*env)->allocator,
-			sizeof(axis2_binding_fault_impl_t));
+	axis2_wsdl_binding_fault_impl_t *binding_fault_impl = 
+		(axis2_wsdl_binding_fault_impl_t *) AXIS2_MALLOC((*env)->allocator,
+			sizeof(axis2_wsdl_binding_fault_impl_t));
 	
 	
 	if(NULL == binding_fault_impl)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
 	
+    binding_fault_impl->binding_fault.extensible_component = 
+        axis2_wsdl_extensible_component_create(env);
+ 
+    if(NULL == binding_fault_impl->binding_fault.extensible_component)
+    {
+        AXIS2_FREE((*env)->allocator, binding_fault_impl);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    }
+    
 	binding_fault_impl->binding_fault.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_binding_fault_ops_t));
+		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_binding_fault_ops_t));
 	if(NULL == binding_fault_impl->binding_fault.ops)
     {
         AXIS2_FREE((*env)->allocator, binding_fault_impl);
@@ -86,7 +96,7 @@ axis2_binding_fault_create (axis2_env_t **env)
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_binding_fault_free (axis2_binding_fault_t *binding_fault, 
+axis2_binding_fault_free (axis2_wsdl_binding_fault_t *binding_fault, 
                             axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(binding_fault, env, AXIS2_FAILURE);
@@ -97,6 +107,10 @@ axis2_binding_fault_free (axis2_binding_fault_t *binding_fault,
     {
         AXIS2_QNAME_FREE(AXIS2_INTF_TO_IMPL(binding_fault)->ref, env);
     }
+    
+    if(NULL != binding_fault->extensible_component)
+        AXIS2_WSDL_EXTENSIBLE_COMPONENT_FREE(binding_fault->
+            extensible_component, env);
     
     AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(binding_fault));
     
@@ -110,7 +124,7 @@ axis2_binding_fault_free (axis2_binding_fault_t *binding_fault,
  * @return
  */
 axis2_qname_t *AXIS2_CALL
-axis2_binding_fault_get_ref(axis2_binding_fault_t *binding_fault,
+axis2_binding_fault_get_ref(axis2_wsdl_binding_fault_t *binding_fault,
                             axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(binding_fault, env, NULL);
@@ -123,7 +137,7 @@ axis2_binding_fault_get_ref(axis2_binding_fault_t *binding_fault,
  * @param ref
  */
 axis2_status_t AXIS2_CALL
-axis2_binding_fault_set_ref(axis2_binding_fault_t *binding_fault,
+axis2_binding_fault_set_ref(axis2_wsdl_binding_fault_t *binding_fault,
                             axis2_env_t **env,
                             axis2_qname_t *ref) 
 {

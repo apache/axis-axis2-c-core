@@ -25,9 +25,20 @@ typedef struct axis2_wsdl_svc_impl_s axis2_wsdl_svc_impl_t;
 struct axis2_wsdl_svc_impl_s
 {
 	axis2_wsdl_svc_t wsdl_svc;
-    axis2_wsdl_component_t * wsdl_component;
+    
+    /**
+     * The QName that identifies the Service. This namespace of the QName
+     * should be the target namespace defined in the Definitions component.
+     */
     axis2_qname_t *qname;
-	
+	/**
+     * The Interface that this Service is an instance of.
+     */
+    struct axis2_wsdl_interface *svc_interface;
+    /**
+     *
+     */
+    axis2_hash_t *endpoints;
 };
 
 #define AXIS2_INTF_TO_IMPL(wsdl_svc) ((axis2_wsdl_svc_impl_t *)(wsdl_svc))
@@ -47,25 +58,37 @@ axis2_svc_set_name(axis2_wsdl_svc_t *wsdl_svc,
                     axis2_env_t **env, 
                     axis2_qname_t *qname);
 
-axis2_hash_t * AXIS2_CALL
-axis2_wsdl_svc_get_component_properties(axis2_wsdl_svc_t *wsdl_svc,
-                                        axis2_env_t **env);
+axis2_hash_t *AXIS2_CALL
+axis2_wsdl_svc_get_endpoints(axis2_wsdl_svc_t *wsdl_svc,
+                                    axis2_env_t **env);
 
-axis2_status_t AXIS2_CALL
-axis2_wsdl_svc_set_component_properties(axis2_wsdl_svc_t *wsdl_svc,
-                                        axis2_env_t **env,
-                                        axis2_hash_t *properties);
+axis2_status_t AXIS2_CALL 
+axis2_wsdl_svc_set_endpoints(axis2_wsdl_svc_t *wsdl_svc,
+                                axis2_env_t **env,
+                                axis2_hash_t *endpoints);
 
-axis2_wsdl_component_t * AXIS2_CALL
-axis2_wsdl_svc_get_component_property(axis2_wsdl_svc_t *wsdl_svc,
-                                        axis2_env_t **env,
-                                        const axis2_char_t *key);
+axis2_status_t AXIS2_CALL 
+axis2_wsdl_svc_set_endpoint(axis2_wsdl_svc_t *wsdl_svc,
+                                axis2_env_t **env,
+                                axis2_wsdl_endpoint_t *endpoint);
 
-axis2_status_t AXIS2_CALL
-axis2_wsdl_svc_set_component_property (axis2_wsdl_svc_t *wsdl_svc,
-                                        axis2_env_t **env,
-                                        const void *key,
-                                        void *value);
+axis2_wsdl_endpoint_t * AXIS2_CALL
+axis2_wsdl_svc_get_endpoint(axis2_wsdl_svc_t *wsdl_svc,
+                                axis2_env_t **env,
+                                axis2_qname_t *qname);
+
+axis2_char_t *AXIS2_CALL
+axis2_wsdl_svc_get_namespace(axis2_wsdl_svc_t *wsdl_svc,
+                                axis2_env_t **env);
+
+struct axis2_wsdl_interface * AXIS2_CALL
+axis2_wsdl_svc_get_svc_interface(axis2_wsdl_svc_t *wsdl_svc,
+                                    axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL 
+axis2_wsdl_svc_set_svc_interface(axis2_wsdl_svc_t *wsdl_svc,
+                                    axis2_env_t **env,
+                                    struct axis2_wsdl_interface *svc_interface);
 
 /***************************** End of function headers ************************/
 
@@ -81,9 +104,17 @@ axis2_wsdl_svc_create (axis2_env_t **env)
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
     
-    wsdl_svc_impl->wsdl_component = axis2_wsdl_component_create(env);
-    if(NULL == wsdl_svc_impl->wsdl_component)
+    wsdl_svc_impl->wsdl_svc.wsdl_component = axis2_wsdl_component_create(env);
+    if(NULL == wsdl_svc_impl->wsdl_svc.wsdl_component)
 	{
+        AXIS2_FREE((*env)->allocator, wsdl_svc_impl);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    }
+    
+    wsdl_svc_impl->endpoints = axis2_hash_make(env);
+    if(NULL == wsdl_svc_impl->endpoints)
+    {
+        AXIS2_WSDL_COMPONENT_FREE(wsdl_svc_impl->wsdl_svc.wsdl_component, env);
         AXIS2_FREE((*env)->allocator, wsdl_svc_impl);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
@@ -93,7 +124,8 @@ axis2_wsdl_svc_create (axis2_env_t **env)
     
 	if(NULL == wsdl_svc_impl->wsdl_svc.ops)
 	{
-        AXIS2_WSDL_COMPONENT_FREE(wsdl_svc_impl->wsdl_component, env);
+        axis2_hash_free(wsdl_svc_impl->endpoints, env);
+        AXIS2_WSDL_COMPONENT_FREE(wsdl_svc_impl->wsdl_svc.wsdl_component, env);
 		AXIS2_FREE((*env)->allocator, wsdl_svc_impl);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);	
 	}
@@ -101,7 +133,16 @@ axis2_wsdl_svc_create (axis2_env_t **env)
 	wsdl_svc_impl->wsdl_svc.ops->free = axis2_wsdl_svc_free;
     wsdl_svc_impl->wsdl_svc.ops->get_name = axis2_svc_get_name;
     wsdl_svc_impl->wsdl_svc.ops->set_name = axis2_svc_set_name;
-	
+    wsdl_svc_impl->wsdl_svc.ops->get_endpoints = axis2_wsdl_svc_get_endpoints; 
+    wsdl_svc_impl->wsdl_svc.ops->set_endpoints = axis2_wsdl_svc_set_endpoints;
+    wsdl_svc_impl->wsdl_svc.ops->set_endpoint = axis2_wsdl_svc_set_endpoint;
+    wsdl_svc_impl->wsdl_svc.ops->get_endpoint = axis2_wsdl_svc_get_endpoint;
+    wsdl_svc_impl->wsdl_svc.ops->get_namespace = axis2_wsdl_svc_get_namespace;
+    wsdl_svc_impl->wsdl_svc.ops->get_svc_interface = axis2_wsdl_svc_get_svc_interface;
+    wsdl_svc_impl->wsdl_svc.ops->set_svc_interface = axis2_wsdl_svc_set_svc_interface;
+    
+    wsdl_svc_impl->svc_interface = NULL;
+    
 	return &(wsdl_svc_impl->wsdl_svc);
 }
 
@@ -113,9 +154,15 @@ axis2_wsdl_svc_free (axis2_wsdl_svc_t *wsdl_svc,
 {
 	AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
     
-    if(NULL != AXIS2_INTF_TO_IMPL(wsdl_svc)->wsdl_component)
-        AXIS2_WSDL_COMPONENT_FREE(AXIS2_INTF_TO_IMPL(wsdl_svc)->wsdl_component, 
+    if(NULL != wsdl_svc->wsdl_component)
+        AXIS2_WSDL_COMPONENT_FREE(wsdl_svc->wsdl_component, 
             env);
+    
+    if(NULL != AXIS2_INTF_TO_IMPL(wsdl_svc)->endpoints)
+        axis2_hash_free(AXIS2_INTF_TO_IMPL(wsdl_svc)->endpoints, env);
+    
+    if(NULL != AXIS2_INTF_TO_IMPL(wsdl_svc)->svc_interface)
+        AXIS2_WSDL_INTERFACE_FREE(wsdl_svc, env);
     
     if(NULL != wsdl_svc->ops)
         AXIS2_FREE((*env)->allocator, wsdl_svc->ops);
@@ -129,7 +176,7 @@ axis2_qname_t * AXIS2_CALL
 axis2_svc_get_name(axis2_wsdl_svc_t *wsdl_svc, 
                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, NULL);
     return AXIS2_INTF_TO_IMPL(wsdl_svc)->qname; 
 }
 
@@ -145,48 +192,79 @@ axis2_svc_set_name(axis2_wsdl_svc_t *wsdl_svc,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t * AXIS2_CALL
-axis2_wsdl_svc_get_component_properties(axis2_wsdl_svc_t *wsdl_svc,
-                                        axis2_env_t **env)
+axis2_hash_t *AXIS2_CALL
+axis2_wsdl_svc_get_endpoints(axis2_wsdl_svc_t *wsdl_svc,
+                                    axis2_env_t **env) 
+{
+    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, NULL);
+    return AXIS2_INTF_TO_IMPL(wsdl_svc)->endpoints;
+}
+
+axis2_status_t AXIS2_CALL 
+axis2_wsdl_svc_set_endpoints(axis2_wsdl_svc_t *wsdl_svc,
+                                axis2_env_t **env,
+                                axis2_hash_t *endpoints) 
+{
+    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, endpoints, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(wsdl_svc)->endpoints = endpoints;
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL 
+axis2_wsdl_svc_set_endpoint(axis2_wsdl_svc_t *wsdl_svc,
+                                axis2_env_t **env,
+                                axis2_wsdl_endpoint_t *endpoint) 
+{
+    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, endpoint, AXIS2_FAILURE);
+    
+    axis2_hash_set(AXIS2_INTF_TO_IMPL(wsdl_svc)->endpoints, 
+        AXIS2_WSDL_ENDPOINT_GET_NAME(endpoint, env), sizeof(axis2_qname_t), endpoint);
+    
+    return AXIS2_SUCCESS;
+}
+
+axis2_wsdl_endpoint_t * AXIS2_CALL
+axis2_wsdl_svc_get_endpoint(axis2_wsdl_svc_t *wsdl_svc,
+                                axis2_env_t **env,
+                                axis2_qname_t *qname) 
+{
+    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, NULL);
+    return (axis2_wsdl_endpoint_t *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
+        wsdl_svc)->endpoints, qname, sizeof(axis2_qname_t));
+}
+
+axis2_char_t *AXIS2_CALL
+axis2_wsdl_svc_get_namespace(axis2_wsdl_svc_t *wsdl_svc,
+                                axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, NULL);
     
-    return AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTIES (
-		AXIS2_INTF_TO_IMPL(wsdl_svc)->wsdl_component, env);
-}
-
-axis2_status_t AXIS2_CALL
-axis2_wsdl_svc_set_component_properties(axis2_wsdl_svc_t *wsdl_svc,
-                                        axis2_env_t **env,
-                                        axis2_hash_t *properties)
-{
-    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
+    if (NULL == AXIS2_INTF_TO_IMPL(wsdl_svc)->qname) 
+    {
+        /* Target Namespace not set and the Service Name is null */
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_WSDL_SVC, NULL);
+    }
     
-    return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTIES(
-		AXIS2_INTF_TO_IMPL(wsdl_svc)->wsdl_component, env, properties);
+    return AXIS2_QNAME_GET_URI(AXIS2_INTF_TO_IMPL(wsdl_svc)->qname, env);
 }
 
-axis2_wsdl_component_t * AXIS2_CALL
-axis2_wsdl_svc_get_component_property(axis2_wsdl_svc_t *wsdl_svc,
-                                        axis2_env_t **env,
-                                        const axis2_char_t *key)
+struct axis2_wsdl_interface * AXIS2_CALL
+axis2_wsdl_svc_get_svc_interface(axis2_wsdl_svc_t *wsdl_svc,
+                                    axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, key, NULL);
-    
-    return AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY (
-		AXIS2_INTF_TO_IMPL(wsdl_svc)->wsdl_component, env, key);
+    return AXIS2_INTF_TO_IMPL(wsdl_svc)->svc_interface;
 }
 
-axis2_status_t AXIS2_CALL
-axis2_wsdl_svc_set_component_property (axis2_wsdl_svc_t *wsdl_svc,
-                                        axis2_env_t **env,
-                                        const void *key,
-                                        void *value)
+axis2_status_t AXIS2_CALL 
+axis2_wsdl_svc_set_svc_interface(axis2_wsdl_svc_t *wsdl_svc,
+                                    axis2_env_t **env,
+                                    struct axis2_wsdl_interface *svc_interface) 
 {
     AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, key, AXIS2_FAILURE);
-    
-    return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY (
-        AXIS2_INTF_TO_IMPL(wsdl_svc)->wsdl_component, env, key, value);
+    AXIS2_PARAM_CHECK((*env)->error, svc_interface, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(wsdl_svc)->svc_interface = svc_interface;
+    return AXIS2_SUCCESS;
 }

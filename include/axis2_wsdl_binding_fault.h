@@ -28,14 +28,15 @@
 #include <axis2_env.h>
 #include <axis2_allocator.h>
 #include <axis2_qname.h>
+#include <axis2_wsdl_extensible_component.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_binding_fault_s axis2_binding_fault_t;
-typedef struct axis2_binding_fault_ops_s axis2_binding_fault_ops_t;
+typedef struct axis2_wsdl_binding_fault axis2_wsdl_binding_fault_t;
+typedef struct axis2_wsdl_binding_fault_ops axis2_wsdl_binding_fault_ops_t;
 
 /** @defgroup axis2_binding_fault Wsdl Binding Fault
  * @ingroup axis2_wsdl
@@ -46,13 +47,13 @@ typedef struct axis2_binding_fault_ops_s axis2_binding_fault_ops_t;
  * @brief Wsdl Binding Fault operations struct
  * Encapsulator struct for operations of axis2_binding_fault
  */
-AXIS2_DECLARE_DATA struct axis2_binding_fault_ops_s
+AXIS2_DECLARE_DATA struct axis2_wsdl_binding_fault_ops
 {
 	/** De-allocate memory
   	 * @return status code
   	 */
 	axis2_status_t (AXIS2_CALL *
-    free)(axis2_binding_fault_t *binding_fault,
+    free)(axis2_wsdl_binding_fault_t *binding_fault,
 		    axis2_env_t **env);
 
     /**
@@ -61,7 +62,7 @@ AXIS2_DECLARE_DATA struct axis2_binding_fault_ops_s
      * @return
      */
     axis2_qname_t *(AXIS2_CALL *
-    get_ref) (axis2_binding_fault_t *binding_fault,
+    get_ref) (axis2_wsdl_binding_fault_t *binding_fault,
                                 axis2_env_t **env);
     
     /**
@@ -70,7 +71,7 @@ AXIS2_DECLARE_DATA struct axis2_binding_fault_ops_s
      * @param ref
      */
     axis2_status_t (AXIS2_CALL *
-    set_ref)(axis2_binding_fault_t *binding_fault,
+    set_ref)(axis2_wsdl_binding_fault_t *binding_fault,
                                 axis2_env_t **env,
                                 axis2_qname_t *ref);
 };
@@ -78,27 +79,28 @@ AXIS2_DECLARE_DATA struct axis2_binding_fault_ops_s
 /** 
  * @brief Wsdl binding fault struct  
  */  
-AXIS2_DECLARE_DATA struct axis2_binding_fault_s
+AXIS2_DECLARE_DATA struct axis2_wsdl_binding_fault
 {
-	axis2_binding_fault_ops_t *ops;
+	axis2_wsdl_binding_fault_ops_t *ops;
+    axis2_wsdl_extensible_component_t *extensible_component;
 };
 
 /**
  * Creates wsdl binding fault struct
  * @return pointer to newly created wsdl binding fault
  */
-AXIS2_DECLARE(axis2_binding_fault_t *) 
+AXIS2_DECLARE(axis2_wsdl_binding_fault_t *) 
 axis2_binding_fault_create (axis2_env_t **env);
 
 /*************************** Function macros **********************************/
 
-#define AXIS2_BINDING_FAULT_FREE(binding_fault, env) \
+#define AXIS2_WSDL_BINDING_FAULT_FREE(binding_fault, env) \
 		((binding_fault->ops)->free (binding_fault, env))
 
-#define AXIS2_BINDING_FAULT_GET_REF(binding_fault, env) \
+#define AXIS2_WSDL_BINDING_FAULT_GET_REF(binding_fault, env) \
 		((binding_fault->ops)->get_ref (binding_fault, env))
 
-#define AXIS2_BINDING_FAULT_SET_REF(binding_fault, env, ref) \
+#define AXIS2_WSDL_BINDING_FAULT_SET_REF(binding_fault, env, ref) \
 		((binding_fault->ops)->set_ref (binding_fault, env, ref))       
 
 /*************************** End of function macros ***************************/

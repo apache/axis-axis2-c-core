@@ -20,9 +20,10 @@
  * @brief Wsdl extensible component struct impl
  *	Wsdl extensible component
  */ 
-typedef struct axis2_wsdl_extensible_component_impl_s
+typedef struct axis2_wsdl_extensible_component_impl
 {
 	axis2_wsdl_extensible_component_t extensible_component;
+    
     /**
      * Field features
      */
@@ -118,6 +119,17 @@ axis2_wsdl_extensible_component_create (axis2_env_t **env)
         AXIS2_FREE((*env)->allocator, extensible_component_impl);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
+    
+    extensible_component_impl->extensible_component.wsdl_component = axis2_wsdl_component_create(env);
+    if(NULL == extensible_component_impl->extensible_component.wsdl_component)
+    {
+        AXIS2_LINKED_LIST_FREE(extensible_component_impl->properties, env);
+        AXIS2_LINKED_LIST_FREE(extensible_component_impl->features, env);
+        AXIS2_FREE((*env)->allocator, extensible_component_impl->
+            extensible_component.ops);
+        AXIS2_FREE((*env)->allocator, extensible_component_impl);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    }    
 	
 	return &(extensible_component_impl->extensible_component);
 }
@@ -143,6 +155,11 @@ axis2_wsdl_extensible_component_free (
     {
         AXIS2_LINKED_LIST_FREE(AXIS2_INTF_TO_IMPL(extensible_component)->
             properties, env);
+    }
+    
+    if(NULL != extensible_component->wsdl_component)
+    {
+        AXIS2_WSDL_COMPONENT_FREE(extensible_component->wsdl_component, env);
     }
     
     AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(extensible_component));

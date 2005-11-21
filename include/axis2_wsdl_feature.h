@@ -27,14 +27,15 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_allocator.h>
+#include <axis2_wsdl_component.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_wsdl_feature_s axis2_wsdl_feature_t;
-typedef struct axis2_wsdl_feature_ops_s axis2_wsdl_feature_ops_t;
+typedef struct axis2_wsdl_feature axis2_wsdl_feature_t;
+typedef struct axis2_wsdl_feature_ops axis2_wsdl_feature_ops_t;
 
 /** @defgroup axis2_wsdl_feature Wsdl Feature
  * @ingroup axis2_wsdl
@@ -45,7 +46,7 @@ typedef struct axis2_wsdl_feature_ops_s axis2_wsdl_feature_ops_t;
  * @brief Wsdl Feature operations struct
  * Encapsulator struct for operations of axis2_wsdl_feature
  */
-AXIS2_DECLARE_DATA struct axis2_wsdl_feature_ops_s
+AXIS2_DECLARE_DATA struct axis2_wsdl_feature_ops
 {
 	/** De-allocate memory
   	 * @return status code
@@ -99,9 +100,10 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_feature_ops_s
  * @brief Wsdl container struct
  *	Property for params  
  */  
-AXIS2_DECLARE_DATA struct axis2_wsdl_feature_s
+AXIS2_DECLARE_DATA struct axis2_wsdl_feature
 {
 	axis2_wsdl_feature_ops_t *ops;
+    axis2_wsdl_component_t *wsdl_component;
 };
 
 /**

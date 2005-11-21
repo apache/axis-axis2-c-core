@@ -111,7 +111,7 @@ axis2_engine_config_create(axis2_env_t **env);
 /************************* Start of function macros	***************************/
 	
 #define AXIS2_ENGINE_CONFIG_FREE(engine_config, env) \
-		(engine_config->ops->free(engine_config, env)
+		(engine_config->ops->free(engine_config, env))
 	
 #define AXIS2_ENGINE_CONFIG_ADD_SVC_GRP(engine_config, env, svc_grp) \
         (engine_config->ops->add_svc_grp (engine_config, env, svc_grp))
@@ -138,7 +138,7 @@ axis2_engine_config_create(axis2_env_t **env);
         (engine_config->ops->get_params(engine_config , env))
 		
 #define AXIS2_ENGINE_CONFIG_IS_PARAM_LOCKED(engine_config, env, param_name) \
-        (engine_config->ops->is_parameter_locked(engine_config, env, param_name))
+        (engine_config->ops->is_param_locked(engine_config, env, param_name))
 
 /************************* End of function macros *****************************/
 

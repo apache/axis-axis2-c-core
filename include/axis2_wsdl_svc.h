@@ -30,27 +30,33 @@
 #include <axis2_string.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-
+#include <axis2_wsdl_interface.h>
 #include <axis2_wsdl_component.h>
+#include <axis2_wsdl_endpoint.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-typedef struct axis2_wsdl_svc_ops_s axis2_wsdl_svc_ops_t;
-typedef struct axis2_wsdl_svc_s axis2_wsdl_svc_t;
 	
 /** @defgroup axis2_wsdl_svc Wsdl Service
   * @ingroup axis2_wsdl
   * @{
   */
 
+struct axis2_wsdl_endpoint; 
+struct axis2_wsdl_interface;    
+typedef struct axis2_wsdl_svc_ops axis2_wsdl_svc_ops_t;
+typedef struct axis2_wsdl_svc axis2_wsdl_svc_t;
+
+#define STYLE_RPC  "rpc"
+#define STYLE_DOC  "doc"
+#define STYLE_MSG  "msg"
 /** 
  * @brief Wsdl Service operations struct
  * Encapsulator struct for operations of axis2_wsdl_service
  */
-struct axis2_wsdl_svc_ops_s
+struct axis2_wsdl_svc_ops
 {
     /** Deallocate memory
      * @return status code
@@ -73,25 +79,74 @@ struct axis2_wsdl_svc_ops_s
                                             axis2_env_t **env,
                                             axis2_qname_t *qname);
     
-    axis2_hash_t * (AXIS2_CALL *get_component_properties) (
-                                                    axis2_wsdl_svc_t *wsdl_svc,
-                                                    axis2_env_t **env);
+    /**
+     * Method getEndpoints
+     *
+     * @return
+     */
+    axis2_hash_t *(AXIS2_CALL *
+    get_endpoints) (axis2_wsdl_svc_t *wsdl_svc,
+                                        axis2_env_t **env);
+    
+    /**
+     * Method setEndpoints
+     *
+     * @param endpoints
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_endpoints) (axis2_wsdl_svc_t *wsdl_svc,
+                                    axis2_env_t **env,
+                                    axis2_hash_t *endpoints);
+    
+    /**
+     * Will add a WSDLEndpoint object to the WOM keyed with qname;
+     *
+     * @param endpoint
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_endpoint) (axis2_wsdl_svc_t *wsdl_svc,
+                                    axis2_env_t **env,
+                                    struct axis2_wsdl_endpoint *endpoint);
+    
+    /**
+     * Endpoint will be retrived by its qname.
+     *
+     * @param qName qname of the Service
+     * @return <code>WSDLEndpoint</code> Object.
+     */
+    struct axis2_wsdl_endpoint * (AXIS2_CALL *
+    get_endpoint) (axis2_wsdl_svc_t *wsdl_svc,
+                                    axis2_env_t **env,
+                                    axis2_qname_t *qname);
 
-    axis2_status_t (AXIS2_CALL *set_component_properties) (
-                                                    axis2_wsdl_svc_t *wsdl_svc,
-                                                    axis2_env_t **env,
-                                                    axis2_hash_t *properties);
+    /**
+     * If the Name of the <code>WSDLService</code> is not set a
+     * <code>WSDLProcessingException</code> will be thrown.
+     *
+     * @return Target Namespace as a <code>String</code>
+     */
+    axis2_char_t *(AXIS2_CALL *
+    get_namespace) (axis2_wsdl_svc_t *wsdl_svc,
+                                    axis2_env_t **env);
 
-    axis2_wsdl_component_t * (AXIS2_CALL *get_component_property) (
-                                                    axis2_wsdl_svc_t *wsdl_svc,
-                                                    axis2_env_t **env,
-                                                    const axis2_char_t *key);
-
-    axis2_status_t (AXIS2_CALL *set_component_property) (
-                                                    axis2_wsdl_svc_t *wsdl_svc,
-                                                    axis2_env_t **env,
-                                                    const void *key,
-                                                    void *value);
+    /**
+     * Method getServiceInterface
+     *
+     * @return
+     */
+    struct axis2_wsdl_interface * (AXIS2_CALL *
+    get_svc_interface) (axis2_wsdl_svc_t *wsdl_svc,
+                                        axis2_env_t **env);
+    
+    /**
+     * Method setServiceInterface
+     *
+     * @param svc_interface
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_svc_interface) (axis2_wsdl_svc_t *wsdl_svc,
+                                        axis2_env_t **env,
+                                        struct axis2_wsdl_interface *svc_interface);
 
 };
 
@@ -99,10 +154,10 @@ struct axis2_wsdl_svc_ops_s
  * @brief Wsdl Service struct
  * Axis2 Wsdl Service
  */
-struct axis2_wsdl_svc_s
+struct axis2_wsdl_svc
 {
 	axis2_wsdl_svc_ops_t *ops;
-    
+    axis2_wsdl_component_t * wsdl_component;
 };
 
 /** create Wsdl Service struct
@@ -122,19 +177,27 @@ axis2_wsdl_svc_create (axis2_env_t **env);
 #define AXIS2_WSDL_SVC_SET_NAME(wsdl_svc, env, qname) \
         ((wsdl_svc->ops)->set_name (wsdl_svc, env, qname))
 
-#define AXIS2_WSDL_SVC_GET_COMPONENT_PROPERTIES(wsdl_svc, env) \
-        ((wsdl_svc->ops)->get_component_properties(wsdl_svc, env))
+#define AXIS2_WSDL_SVC_GET_ENDPOINTS(wsdl_svc, env) \
+        ((wsdl_svc->ops)->get_endpoints(wsdl_svc, env))
 
-#define AXIS2_WSDL_SVC_SET_COMPONENT_PROPERTIES(wsdl_svc, env, properties) \
-        ((wsdl_svc->ops)->set_component_properties(wsdl_svc, env, properties))
+#define AXIS2_WSDL_SVC_SET_ENDPOINTS(wsdl_svc, env, endpoints) \
+        ((wsdl_svc->ops)->set_endpoints(wsdl_svc, env, endpoints))
 
-#define AXIS2_WSDL_SVC_GET_COMPONENT_PROPERTY(wsdl_svc, env, key) \
-        ((wsdl_svc->ops)->get_component_property(wsdl_svc, env, key))
+#define AXIS2_WSDL_SVC_SET_ENDPOINT(wsdl_svc, env, endpoint) \
+        ((wsdl_svc->ops)->set_endpoint(wsdl_svc, env, endpoint))
 
-#define AXIS2_WSDL_SVC_SET_COMPONENT_PROPERTY(wsdl_svc, env, key, value) \
-        ((wsdl_svc->ops)->set_component_property(wsdl_svc, env, key, value))
+#define AXIS2_WSDL_SVC_GET_ENDPOINT(wsdl_svc, env) \
+        ((wsdl_svc->ops)->get_endpoint(wsdl_svc, env))
 
+#define AXIS2_WSDL_SVC_GET_NAMESPACE(wsdl_svc, env) \
+        ((wsdl_svc->ops)->get_namespace(wsdl_svc, env))
+        
+#define AXIS2_WSDL_SVC_GET_SVC_INTERFACE(wsdl_svc, env) \
+        ((wsdl_svc->ops)->get_svc_interface(wsdl_svc, env))        
 
+#define AXIS2_WSDL_SVC_SET_SVC_INTERFACE(wsdl_svc, env, svc_interface) \
+        ((wsdl_svc->ops)->set_svc_interface(wsdl_svc, env, svc_interface))
+        
 /**************************** End of function macros **************************/
 /** @} */
 #ifdef __cplusplus

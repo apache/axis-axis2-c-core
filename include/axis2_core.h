@@ -35,30 +35,7 @@
 #ifdef __cplusplus
 extern "C" 
 {
-#endif
-
-/************************ Message exchange patterns ***************************/
-	
-/* Default message excange pattern	*/
-#define MEP_URI_IN_OUT "http://www.w3.org/2004/08/wsdl/in-out"
-	
-#define MEP_URI_IN_OPTIONAL_OUT "http://www.w3.org/2004/08/wsdl/in-opt-out"
-
-#define MEP_URI_IN_ONLY "http://www.w3.org/2004/08/wsdl/in-only"
-
-#define MEP_URI_ROBUST_IN_ONLY "http://www.w3.org/2004/08/wsdl/robust-in-only"
-
-#define MEP_URI_IN_OPTIONAL_OUT "http://www.w3.org/2004/08/wsdl/in-opt-out"
-	
-#define MEP_URI_OUT_ONLY "http://www.w3.org/2004/08/wsdl/out-only"
-	
-#define MEP_URI_ROBUST_OUT_ONLY "http://www.w3.org/2004/08/wsdl/robust-out-only"
-
-#define MEP_URI_OUT_IN "http://www.w3.org/2004/08/wsdl/out-in"	
-	
-#define MEP_URI_OUT_OPTIONAL_IN "http://www.w3.org/2004/08/wsdl/out-opt-in"	
-	
-/************************ End of message exchange patters *********************/	
+#endif	
 	
 #define SERVICE_NAME_SPLIT_CHAR ":"
 	

@@ -65,7 +65,9 @@ libaxis2_wsdl_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libaxis2_wsdl_la_OBJECTS = wsdl_operation.lo wsdl_svc.lo \
 	wsdl_component.lo wsdl_feature.lo wsdl_property.lo \
 	wsdl_extensible_component.lo wsdl_interface.lo \
-	wsdl_binding_fault.lo
+	wsdl_binding_fault.lo wsdl_binding_msg_ref.lo \
+	wsdl_binding_operation.lo wsdl_binding.lo wsdl_msg_ref.lo \
+	wsdl_endpoint.lo wsdl_fault_ref.lo
 libaxis2_wsdl_la_OBJECTS = $(am_libaxis2_wsdl_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -199,12 +201,19 @@ libaxis2_wsdl_la_SOURCES = wsdl_operation.c \
                         wsdl_property.c \
                         wsdl_extensible_component.c \
                         wsdl_interface.c \
-                        wsdl_binding_fault.c
+                        wsdl_binding_fault.c \
+                        wsdl_binding_msg_ref.c \
+                        wsdl_binding_operation.c \
+                        wsdl_binding.c \
+                        wsdl_msg_ref.c \
+                        wsdl_endpoint.c \
+                        wsdl_fault_ref.c
 
 libaxis2_wsdl_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
-            -I$(top_builddir)/modules/util/src
+            -I$(top_builddir)/modules/util/src \
+            -I$(top_builddir)/modules/core/description/src
 
 all: all-am
 
@@ -275,11 +284,17 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_binding.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_binding_fault.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_binding_msg_ref.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_binding_operation.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_component.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_endpoint.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_extensible_component.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_fault_ref.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_feature.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_interface.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_msg_ref.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_operation.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_property.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wsdl_svc.Plo@am__quote@

@@ -29,15 +29,20 @@
 #include <axis2_allocator.h>
 #include <axis2_hash.h>
 #include <axis2_wsdl_operation.h>
+#include <axis2_operation.h>
 #include <axis2_linked_list.h>
+#include <axis2_wsdl_extensible_component.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_wsdl_interface_s axis2_wsdl_interface_t;
-typedef struct axis2_wsdl_interface_ops_s axis2_wsdl_interface_ops_t;
+struct axis2_wsdl_operation;
+struct axis2_operation;    
+struct axis2_wsdl_extensible_component;    
+typedef struct axis2_wsdl_interface axis2_wsdl_interface_t;
+typedef struct axis2_wsdl_interface_ops axis2_wsdl_interface_ops_t;
 
 /** @defgroup axis2_wsdl_interface Wsdl Interface
  * @ingroup axis2_wsdl
@@ -48,7 +53,7 @@ typedef struct axis2_wsdl_interface_ops_s axis2_wsdl_interface_ops_t;
  * @brief Wsdl Interface operations struct
  * Encapsulator struct for operations of axis2_wsdl_interface
  */
-AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops_s
+AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
 {
 	/** De-allocate memory
   	 * @return status code
@@ -93,7 +98,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops_s
      * @param nCName
      * @return
      */
-    axis2_wsdl_operation_t *(AXIS2_CALL *
+    struct axis2_operation *(AXIS2_CALL *
     get_operation) (axis2_wsdl_interface_t *wsdl_interface,
                                     axis2_env_t **env,
                                     axis2_char_t *nc_name);
@@ -160,7 +165,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops_s
     axis2_status_t (AXIS2_CALL *
     set_operation) (axis2_wsdl_interface_t *wsdl_interface,
                                         axis2_env_t **env,
-                                        axis2_wsdl_operation_t *operation);
+                                        struct axis2_operation *operation);
     
     /**
      * @param list
@@ -207,9 +212,10 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops_s
  * @brief Wsdl container struct
  *	Property for params  
  */  
-AXIS2_DECLARE_DATA struct axis2_wsdl_interface_s
+AXIS2_DECLARE_DATA struct axis2_wsdl_interface
 {
 	axis2_wsdl_interface_ops_t *ops;
+    struct axis2_wsdl_extensible_component *extensible_component;
 };
 
 /**

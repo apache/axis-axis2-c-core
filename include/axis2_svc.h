@@ -24,6 +24,7 @@
 
 #include <axis2_core.h>
 #include <axis2_param_container.h>
+#include <axis2_flow_container.h>
 #include <axis2_wsdl_svc.h>
 #include <axis2_operation.h>
 #include <axis2_svc_grp.h>
@@ -42,7 +43,11 @@ extern "C"
   */
 
 struct axis2_svc_grp;
-struct axis2_operation;    
+struct axis2_operation;
+struct axis2_flow_container;
+struct axis2_param_container;
+struct axis2_wsdl_svc;
+struct axis2_wsdl_interface;    
 typedef struct axis2_svc_ops axis2_svc_ops_t;   
 typedef struct axis2_svc axis2_svc_t;
     
@@ -99,26 +104,12 @@ struct axis2_svc_ops
 	axis2_bool_t (AXIS2_CALL *is_param_locked) (axis2_svc_t *svc, 
                                                 axis2_env_t **env,
 		                                        const axis2_char_t *param_name);
+                                                
+    axis2_status_t (AXIS2_CALL *
+    set_svc_interface) (axis2_svc_t *svc,
+                                axis2_env_t **env,
+                                struct axis2_wsdl_interface *svc_interface);                                                
 
-    axis2_hash_t * (AXIS2_CALL *get_component_properties) (
-                                                    axis2_svc_t *svc,
-                                                    axis2_env_t **env);
-
-    axis2_status_t (AXIS2_CALL *set_component_properties) (
-                                                    axis2_svc_t *svc,
-                                                    axis2_env_t **env,
-                                                    axis2_hash_t *properties);
-
-    axis2_wsdl_component_t * (AXIS2_CALL *get_component_property) (
-                                                    axis2_svc_t *svc,
-                                                    axis2_env_t **env,
-                                                    const axis2_char_t *key);
-
-    axis2_status_t (AXIS2_CALL *set_component_property) (
-                                                    axis2_svc_t *svc,
-                                                    axis2_env_t **env,
-                                                    const void *key,
-                                                    void *value);
 };
 
 /** 
@@ -127,7 +118,10 @@ struct axis2_svc_ops
  */
 struct axis2_svc
 {
-	axis2_svc_ops_t *ops;   
+	axis2_svc_ops_t *ops; 
+    struct axis2_param_container *param_container;
+    struct axis2_flow_container *flow_container;
+    struct axis2_wsdl_svc *wsdl_svc;    
 
 };
 
@@ -154,7 +148,7 @@ axis2_svc_create_with_qname (axis2_env_t **env,
  */
 axis2_svc_t * AXIS2_CALL
 axis2_svc_create_with_wsdl_svc (axis2_env_t **env, 
-                                axis2_wsdl_svc_t *wsdl_svc);
+                                struct axis2_wsdl_svc *wsdl_svc);
 
 /**************************** Start of function macros ************************/
 
@@ -188,18 +182,9 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
 		
 #define AXIS2_SVC_IS_PARAM_LOCKED(svc, env, param_name) \
         (svc->ops->is_param_locked(svc, env, param_name))
-				
-#define AXIS2_SVC_GET_COMPONENT_PROPERTIES(svc, env) \
-        ((svc->ops)->get_component_properties(svc, env))
 
-#define AXIS2_SVC_SET_COMPONENT_PROPERTIES(svc, env, properties) \
-        ((svc->ops)->set_component_properties(svc, env, properties))
-
-#define AXIS2_SVC_GET_COMPONENT_PROPERTY(svc, env, key) \
-        ((svc->ops)->get_component_property(svc, env, key))
-
-#define AXIS2_SVC_SET_COMPONENT_PROPERTY(svc, env, key, value) \
-        ((svc->ops)->set_component_property(svc, env, key, value))
+#define AXIS2_SVC_SET_SVC_INTERFACE(svc, env, svc_interface) \
+        (svc->ops->set_svc_interface(svc, env, svc_interface))
         
 /**************************** End of function macros **************************/
 

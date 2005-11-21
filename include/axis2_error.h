@@ -163,6 +163,8 @@ extern "C"
         AXIS2_ERROR_INVALID_STATE_OPERATION,
         /** Service accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_SVC,
+        /** Wsdl Service accessed has invalid state */
+        AXIS2_ERROR_INVALID_STATE_WSDL_SVC,
         /** Service group accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_SVC_GRP,
         /** Wsdl operation accessed has invalid state */
@@ -186,7 +188,11 @@ extern "C"
         /** Invalid handler state */
         AXIS2_ERROR_INVALID_HANDLER_STATE,
         /** No such element */
-        AXIS2_ERROR_NO_SUCH_ELEMENT
+        AXIS2_ERROR_NO_SUCH_ELEMENT,
+        /** Could not Map the MEP URI to a axis MEP constant value */
+        AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT,
+        /** module has alredy engaged to the operation operation terminated !!! */
+        AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OPERATION
     };
 
 /** @} */

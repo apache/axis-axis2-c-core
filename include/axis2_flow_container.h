@@ -37,8 +37,8 @@ extern "C"
 {
 #endif
 	
-typedef struct axis2_flow_container_ops_s axis2_flow_container_ops_t;
-typedef struct axis2_flow_container_s axis2_flow_container_t;	
+typedef struct axis2_flow_container_ops axis2_flow_container_ops_t;
+typedef struct axis2_flow_container axis2_flow_container_t;	
 	
 
 /** @defgroup axis2_flow_container Flow Container
@@ -50,7 +50,7 @@ typedef struct axis2_flow_container_s axis2_flow_container_t;
  * @brief Flow Container operations struct
  * Encapsulator struct for operations of axis2_flow_container
  */
-struct axis2_flow_container_ops_s
+struct axis2_flow_container_ops
 {
 	/** Deallocate memory
      * @return status code
@@ -129,7 +129,7 @@ struct axis2_flow_container_ops_s
  * @brief Flow container struct
  *	Container for flows  
  */ 
-struct axis2_flow_container_s
+struct axis2_flow_container
 {
 	axis2_flow_container_ops_t *ops;
 };

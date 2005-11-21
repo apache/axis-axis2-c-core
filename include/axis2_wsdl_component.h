@@ -18,8 +18,8 @@ extern "C"
 {
 #endif
 	
-typedef struct axis2_wsdl_component_ops_s axis2_wsdl_component_ops_t;
-typedef struct axis2_wsdl_component_s axis2_wsdl_component_t;
+typedef struct axis2_wsdl_component_ops axis2_wsdl_component_ops_t;
+typedef struct axis2_wsdl_component axis2_wsdl_component_t;
 	
 /** @defgroup axis2_wsdl_component Wsdl Component
   * @ingroup axis2_wsdl
@@ -30,7 +30,7 @@ typedef struct axis2_wsdl_component_s axis2_wsdl_component_t;
  * @brief Wsdl Component operations struct
  * Encapsulator struct for operations of axis2_wsdl_component
  */
-struct axis2_wsdl_component_ops_s
+struct axis2_wsdl_component_ops
 {
 	/** Deallocate memory
      * @return status code
@@ -85,7 +85,7 @@ struct axis2_wsdl_component_ops_s
  * Axis2 Wsdl Component
  * Component is used to hold component properties
  */
-struct axis2_wsdl_component_s
+struct axis2_wsdl_component
 {
 	axis2_wsdl_component_ops_t *ops;
 };

@@ -36,14 +36,14 @@ extern "C"
   */
 
 struct axis2_msg_ctx_s;
-typedef struct axis2_msg_recv_s axis2_msg_recv_t;
-typedef struct axis2_msg_recv_ops_s axis2_msg_recv_ops_t;
+typedef struct axis2_msg_recv axis2_msg_recv_t;
+typedef struct axis2_msg_recv_ops axis2_msg_recv_ops_t;
 
 /** 
  * @brief Message Receiver operations struct
  * Encapsulator struct for operations of axis2_msg_recv
  */     
-struct axis2_msg_recv_ops_s
+struct axis2_msg_recv_ops
 {
     /** 
      * Deallocate memory
@@ -61,7 +61,7 @@ struct axis2_msg_recv_ops_s
  * @brief Message Receiver struct
   *	Axis2 Message Receiver
  */
-struct axis2_msg_recv_s
+struct axis2_msg_recv
 {
     axis2_msg_recv_ops_t *ops;    
 };

@@ -20,9 +20,10 @@
  * @brief Wsdl feature struct impl
  *	Wsdl features  
  */ 
-typedef struct axis2_wsdl_feature_impl_s
+typedef struct axis2_wsdl_feature_impl
 {
 	axis2_wsdl_feature_t wsdl_feature;
+    
     axis2_char_t *name;
     axis2_bool_t required;	
 } axis2_wsdl_feature_impl_t;
@@ -69,10 +70,18 @@ axis2_wsdl_feature_create (axis2_env_t **env)
 	if(NULL == wsdl_feature_impl)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
 	
+    wsdl_feature_impl->wsdl_feature.wsdl_component = axis2_wsdl_component_create(env);
+    if(NULL == wsdl_feature_impl->wsdl_feature.wsdl_component)
+    {
+        AXIS2_FREE((*env)->allocator, wsdl_feature_impl);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    }    
+    
 	wsdl_feature_impl->wsdl_feature.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_feature_ops_t));
 	if(NULL == wsdl_feature_impl->wsdl_feature.ops)
     {
+        AXIS2_WSDL_FEATURE_FREE(wsdl_feature_impl->wsdl_feature.wsdl_component, env);
         AXIS2_FREE((*env)->allocator, wsdl_feature_impl);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
@@ -106,6 +115,11 @@ axis2_wsdl_feature_free (axis2_wsdl_feature_t *wsdl_feature,
     if(NULL != AXIS2_INTF_TO_IMPL(wsdl_feature)->name)
     {
         AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(wsdl_feature)->name);
+    }
+    
+    if(NULL != wsdl_feature->wsdl_component)
+    {
+        AXIS2_WSDL_COMPONENT_FREE(wsdl_feature->wsdl_component, env);
     }
     
     AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(wsdl_feature));

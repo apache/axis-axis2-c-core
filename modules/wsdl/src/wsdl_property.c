@@ -20,9 +20,10 @@
  * @brief Wsdl property struct impl
  *	Wsdl properties  
  */ 
-typedef struct axis2_wsdl_property_impl_s
+typedef struct axis2_wsdl_property_impl
 {
 	axis2_wsdl_property_t wsdl_property;
+    
     axis2_char_t *name;
     void *constraint;
     void *value;	
@@ -79,6 +80,14 @@ axis2_wsdl_property_create (axis2_env_t **env)
 	if(NULL == wsdl_property_impl)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
 	
+    wsdl_property_impl->wsdl_property.wsdl_component = axis2_wsdl_component_create(env);
+    
+    if(NULL == wsdl_property_impl->wsdl_property.wsdl_component)
+    {
+        AXIS2_FREE((*env)->allocator, wsdl_property_impl);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    }
+    
 	wsdl_property_impl->wsdl_property.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_property_ops_t));
 	if(NULL == wsdl_property_impl->wsdl_property.ops)
@@ -132,6 +141,9 @@ axis2_wsdl_property_free (axis2_wsdl_property_t *wsdl_property,
     {
         AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(wsdl_property)->value);
     }
+    
+    if(NULL != wsdl_property->wsdl_component)
+        AXIS2_WSDL_COMPONENT_FREE(wsdl_property->wsdl_component, env);
     
     AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(wsdl_property));
     

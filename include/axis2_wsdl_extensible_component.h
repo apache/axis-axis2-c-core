@@ -30,14 +30,15 @@
 #include <axis2_linked_list.h>
 #include <axis2_wsdl_feature.h>
 #include <axis2_wsdl_property.h>
+#include <axis2_wsdl_component.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_wsdl_extensible_component_s axis2_wsdl_extensible_component_t;
-typedef struct axis2_wsdl_extensible_component_ops_s axis2_wsdl_extensible_component_ops_t;
+typedef struct axis2_wsdl_extensible_component axis2_wsdl_extensible_component_t;
+typedef struct axis2_wsdl_extensible_component_ops axis2_wsdl_extensible_component_ops_t;
 
 /** @defgroup axis2_wsdl_extensible_component Wsdl Extensible Component
  * @ingroup axis2_wsdl
@@ -48,7 +49,7 @@ typedef struct axis2_wsdl_extensible_component_ops_s axis2_wsdl_extensible_compo
  * @brief Wsdl Extensible Component operations struct
  * Encapsulator struct for operations of axis2_wsdl_extensible_component
  */
-AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops_s
+AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops
 {
 	/** De-allocate memory
   	 * @return status code
@@ -104,9 +105,10 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops_s
  * @brief Wsdl container struct
  *	Property for params  
  */  
-AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_s
+AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component
 {
 	axis2_wsdl_extensible_component_ops_t *ops;
+    axis2_wsdl_component_t *wsdl_component;
 };
 
 /**
