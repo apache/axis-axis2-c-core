@@ -192,7 +192,11 @@ extern "C"
         /** Could not Map the MEP URI to a axis MEP constant value */
         AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT,
         /** module has alredy engaged to the operation operation terminated !!! */
-        AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OPERATION
+        AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OPERATION,
+        /** Invalid message context state  */
+        AXIS2_ERROR_INVALID_STATE_MSG_CTX,
+        /** Service not yet found */
+        AXIS2_ERROR_SERVICE_NOT_YET_FOUND
     };
 
 /** @} */
