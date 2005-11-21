@@ -26,7 +26,7 @@ typedef struct axis2_ctx_impl
     axis2_hash_t *non_persistent_map;
     /** persistent map */
     axis2_hash_t *persistent_map;
-    /*axis2_ctx_t *parent; This will be not required as the responsibility of 
+    /*axis2_ctx_t *parent; This will not be required as the responsibility of 
     knwong the parent is  deligated to impl structs */
 } axis2_ctx_impl_t;
 
@@ -97,11 +97,13 @@ axis2_status_t AXIS2_CALL axis2_ctx_set_property(struct axis2_ctx *ctx, axis2_en
 
     if (persistent) 
     {
-        axis2_hash_set(ctx_impl->persistent_map, key, AXIS2_HASH_KEY_STRING, value);
+        if (ctx_impl->persistent_map)
+            axis2_hash_set(ctx_impl->persistent_map, key, AXIS2_HASH_KEY_STRING, value);
     } 
     else 
     {
-        axis2_hash_set(ctx_impl->non_persistent_map, key, AXIS2_HASH_KEY_STRING, value);
+        if (ctx_impl->non_persistent_map)
+            axis2_hash_set(ctx_impl->non_persistent_map, key, AXIS2_HASH_KEY_STRING, value);
     }
     return AXIS2_SUCCESS;
 }
@@ -117,12 +119,14 @@ axis2_char_t* AXIS2_CALL axis2_ctx_get_property(struct axis2_ctx *ctx, axis2_env
     
     if (persistent) 
     {
-        ret = axis2_hash_get(ctx_impl->persistent_map, key, AXIS2_HASH_KEY_STRING);
+        if (ctx_impl->persistent_map)
+            ret = axis2_hash_get(ctx_impl->persistent_map, key, AXIS2_HASH_KEY_STRING);
     }
     
     if (!ret) 
     {
-        ret = axis2_hash_get(ctx_impl->non_persistent_map, key, AXIS2_HASH_KEY_STRING);
+        if (ctx_impl->non_persistent_map)
+            ret = axis2_hash_get(ctx_impl->non_persistent_map, key, AXIS2_HASH_KEY_STRING);
     }
     /** it is the responsibility of the caller to lookup parent if key is not found here 
         Note that in C implementation it is the responsibility of the deriving struct to 
