@@ -111,7 +111,6 @@ module.include.files=\
 	modules/util/src/axis2_hash.h\
 	modules/util/src/axis2_string.h\
 	include/axis2_handler.h\
-	include/axis2_module.h\
 	include/axis2_operation.h\
 	include/axis2_wsdl_component.h\
 	include/axis2_engine_config.h\
@@ -127,7 +126,26 @@ module.include.files=\
 	include/axis2_flow_container.h\
 	modules/util/src/axis2_array_list.h\
 	modules/util/test/util_array_list_test.h\
-	include/axis2_handler_desc.h
+	include/axis2_handler_desc.h\
+	include/axis2_module_desc.h\
+	modules/core/description/src/description.h\
+	include/axis2_wsdl_binding.h\
+	include/axis2_wsdl_endpoint.h\
+	modules/util/src/axis2_linked_list.h\
+	modules/util/test/util_linked_list_test.h\
+	include/axis2_wsdl_extensible_component.h\
+	include/axis2_wsdl_feature.h\
+	include/axis2_wsdl_property.h\
+	include/axis2_wsdl_interface.h\
+	include/axis2_wsdl_binding_fault.h\
+	include/axis2_wsdl_binding_msg_ref.h\
+	include/axis2_wsdl_binding_operation.h\
+	include/axis2_wsdl_msg_ref.h\
+	include/axis2_wsdl_fault_ref.h\
+	include/axis2_transport_in_desc.h\
+	include/axis2_transport_out_desc.h\
+	include/axis2_phase_rule.h\
+	modules/wsdl/src/wsdl.h
 
 module.source.name=.
 module.source.type=
@@ -186,7 +204,24 @@ module.source.files=\
 	modules/util/src/array_list.c\
 	modules/util/test/util_array_list_test.c\
 	modules/core/description/src/handler_desc.c\
-	modules/core/engine/src/handler.c
+	modules/core/engine/src/handler.c\
+	modules/wsdl/src/wsdl_binding.c\
+	modules/wsdl/src/wsdl_endpoint.c\
+	modules/wsdl/src/wsdl_interface.c\
+	modules/util/src/linked_list.c\
+	modules/util/test/util_linked_list_test.c\
+	modules/wsdl/src/wsdl_extensible_component.c\
+	modules/wsdl/src/wsdl_feature.c\
+	modules/wsdl/src/wsdl_property.c\
+	modules/wsdl/src/wsdl_binding_fault.c\
+	modules/wsdl/src/wsdl_binding_msg_ref.c\
+	modules/wsdl/src/wsdl_binding_operation.c\
+	modules/wsdl/src/wsdl_msg_ref.c\
+	modules/wsdl/src/wsdl_fault_ref.c\
+	modules/core/description/src/module_desc.c\
+	modules/core/description/src/transport_in_desc.c\
+	modules/core/description/src/transport_out_desc.c\
+	modules/core/description/src/phase_rule.c
 
 module.pixmap.name=.
 module.pixmap.type=
