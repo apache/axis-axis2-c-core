@@ -81,7 +81,6 @@ extern "C"
         * Frees an om node and all of its children
         * @param om_node node to be freed.
         * @param env Environment. MUST NOT be NULL, .
-
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *free) (struct axis2_om_node *om_node,
@@ -90,7 +89,7 @@ extern "C"
         * Adds given node as child to parent
         * @param om_node child node. cannot be NULL.
         * @param env Environment. MUST NOT be NULL, .
-        * @param child child node. , cannot be NULL.
+        * @param child child node.
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *add_child) (struct axis2_om_node *om_node,
@@ -99,15 +98,16 @@ extern "C"
 
       /**
         * Detaches given node from the parent and reset the links
-        * @param om_node node to be detached. , cannot be NULL.
+        * @param om_node node to be detached, cannot be NULL.
         * @param env Environment. MUST NOT be NULL, .
-        * @return a pointer to detached node, NULL on error.
+        * @return a pointer to detached node,returns NULL on error with error
+        *           code set to environment's error struct
         */
         struct axis2_om_node *(AXIS2_CALL *detach) (struct axis2_om_node *om_node,
                                                     axis2_env_t **env);
 
       /**
-        * Inserts a sibling node after the given current node
+        * Inserts a sibling node after the given node
         * @param om_node node to whom the sibling to be inserted. , cannot be NULL.
         * @param env Environment. MUST NOT be NULL, .
         * @param node_to_insert the node to be inserted. , cannot be NULL.
@@ -131,7 +131,8 @@ extern "C"
                                           struct axis2_om_node * node_to_insert);
 
       /**
-        * Sets a parent node to a given node
+        * Sets a parent node to a given node, if a parent already exist for this node
+        * then it is detached before seting the parent
         * @param om_node child node to whom a parent to be added. , cannot be NULL.
         * @param env Environment. MUST NOT be NULL, .
         * @param parent_node the node that will be set as parent. , cannot be NULL.
@@ -143,8 +144,8 @@ extern "C"
 
        
        /**
-        * Serializes the given node. This operation makes the node go through its children and 
-        * serialize them in order.
+        * Serializes the given node. This operation makes the node go
+        * through its children and  serialize them in order.
         * @param om_node node to be serialized.  cannot be NULL.
         * @param env Environment .MUST NOT be NULL.    
         * @param om_output OM output handler to be used in serializing
@@ -152,27 +153,69 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *serialize) (struct axis2_om_node * om_node, axis2_env_t **env,
                                     struct axis2_om_output *om_output);
-        /** getter setter methods *************************************/                                                
+       /** get parent of om_node
+        *@om_node node 
+        *@param env environment
+        *@return pointer to parent node of om_node, return NULL if no parent exists or
+        *        when an error occured.
+        */                                    
+
         struct axis2_om_node* (AXIS2_CALL *get_parent)
                                             (struct axis2_om_node *om_node,
                                              axis2_env_t **env);
 
+       /**
+        * get the first child of om_node
+        * @param om_node node
+        * @param env environment must not be null.
+        * @returns pointer to first child node , NULL is returned on error with 
+        *                     error code set in environments error
+        */
+
         struct axis2_om_node* (AXIS2_CALL *get_first_child)
                                                     (struct axis2_om_node *om_node,
                                                     axis2_env_t **env);
+       /**
+        * get the last child
+        * @param om_node node
+        * @param env environment, MUST NOT be NULL
+        * @return pointer to last child of this node , return NULL on error.
+        */                                                   
                     
         struct axis2_om_node* (AXIS2_CALL *get_last_child)
                                             (struct axis2_om_node *om_node,
                                              axis2_env_t **env);
+       /**
+        * get the previous sibling 
+        * @param om_node om_node struct 
+        * @param env environment , must node be null
+        * @returns a pointer to previous sibling , NULL if a previous sibling does not exits
+        *                (happens when this node is the first child of a node )
+        */                                                            
 
         struct axis2_om_node* (AXIS2_CALL *get_previous_sibling)
                                             (struct axis2_om_node *om_node,
                                             axis2_env_t **env);
-
+       /**
+        * get next sibling
+        * @param om_node om_node struct
+        * @param env environment, MUST NOT be NULL.
+        * @return next sibling of this node.
+        */ 
+        
+        
         struct axis2_om_node* (AXIS2_CALL *get_next_sibling)
                                             (struct axis2_om_node *om_node,
                                              axis2_env_t **env);
-
+       /**
+        * get the node type of this element
+        * Node type can be one of AXIS2_OM_ELEMENT, AXIS2_OM_COMMENT, AXIS2_OM_TEXT
+        *      AXIS2_OM_DOCTYPE, AXIS2_OM_PROCESSING_INSTRUCTION
+        * @param om_node  node of which node type is required
+        * @param env environment
+        * @return node type
+        */
+        
         axis2_om_types_t (AXIS2_CALL *get_node_type)
                                             (struct axis2_om_node *om_node,
                                              axis2_env_t **env);

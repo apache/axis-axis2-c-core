@@ -58,9 +58,9 @@ extern "C"
 
       /**
         * Compares two namepsaces
-        * @param om_namespace1 first namespase to be compared
+        * @param om_namespace first namespase to be compared
         * @param env Environment. MUST NOT be NULL.
-        * @param om_namespace2 second namespace to be compared
+        * @param om_namespace1 second namespace to be compared
         * @return AXIS2_TRUE if the two namespaces are equal,AXIS2_FALSE otherwise
         */
         axis2_bool_t (AXIS2_CALL *equals)(struct axis2_om_namespace *om_namespace,
@@ -78,29 +78,34 @@ extern "C"
                                                axis2_env_t **env,
                                                axis2_om_output_t * om_output);
        /**   
-        *@param om_namespace
-        *@param env
+        *@param om_namespace pointer to om_namespace struct
+        *@param env environment , MUST NOT be NULL.
+        *@returns namespace uri , NULL on error
         */
         axis2_char_t* (AXIS2_CALL *get_uri)(struct axis2_om_namespace *om_namespace,
                                             axis2_env_t **env);
        /**   
-        *@param om_namespace
-        *@param env
+        *@param om_namespace pointer to om namespace struct
+        *@param env  environment, MUST NOT be NULL
+        *@return prefix , NULL on error
         */
         axis2_char_t* (AXIS2_CALL *get_prefix)(struct axis2_om_namespace *om_namespace,
                                                axis2_env_t **env);
         /**   
-        *@param om_namespace
-        *@param env
-        *@param uri 
+        *@param om_namespace pointer to om namespace struct
+        *@param env environment, MUST NOT be NULL.
+        *@param uri namespace uri to be set 
+        *@returns status of the operation AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *set_uri)(struct axis2_om_namespace *om_namespace,
                                             axis2_env_t **env,
                                             const axis2_char_t *uri);
         /**   
-        *@param om_namespace
-        *@param env
-        *@param prefix 
+        *@param om_namespace pointer to om_namespace struct
+        *@param env environment struct
+        *@param prefix prefix to be set
+        *@returns status code of the operation AXIS2_SUCCESS on success,
+        *                       AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *set_prefix)(struct axis2_om_namespace *om_namespace,
                                                 axis2_env_t **env,
