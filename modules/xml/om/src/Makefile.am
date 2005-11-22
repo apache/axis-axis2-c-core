@@ -15,7 +15,6 @@ libaxis2_om_la_SOURCES = axis2_om_attribute.c \
 
 libaxis2_om_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/xml/guththila/src \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util/src \
             -I$(top_builddir)/modules/xml/parser
