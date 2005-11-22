@@ -60,9 +60,9 @@ extern "C"
 
       /** 
         * Creates and returns a qname struct for this attribute
-        * @param env Environment. MUST NOT be NULL
         * @param om_attribute pointer to attribute struct 
         *        for which the qname is to be returned
+        * @param env Environment. MUST NOT be NULL
         * @return returns qname for given attribute.NULL on error 
         */
 
@@ -75,24 +75,25 @@ extern "C"
         * @param om_attribute pointer to attribute struct to be serialized
         * @param env Environment. MUST NOT be NULL,
         * @param om_output OM output handler to be used in serializing
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
 
         int (AXIS2_CALL *serialize)(struct axis2_om_attribute *om_attribute,
                                     axis2_env_t **env,
                                     axis2_om_output_t *om_output);
+       
        /**  returns the localname of this attribute
-        *@param om_attribute this attribute
-        *@param env environment must not be null
-        *@return localname
+        *@param om_attribute pointer to attribute struct 
+        *@param env environment. MUST NOT not be NULL.
+        *@return localname returns NULL on error.
         */
         axis2_char_t* (AXIS2_CALL *get_localname)(
                                     struct axis2_om_attribute *om_attribute,
                                     axis2_env_t **env);
        /**
         * returns value of this attribute 
-        *@param om_attribute
-        *@param env environment must not be null
+        *@param om_attribute pointer to om_attribute struct 
+        *@param env environment N not be null
         *@return value , null on error
         */
         axis2_char_t* (AXIS2_CALL *get_value)
@@ -101,38 +102,42 @@ extern "C"
        /**
         * returns namespace of this attribute 
         *@param om_attribute
-        *@param env environment must not be null
-        *@return value , null on error
+        *@param env environment MUST NOT be NULL
+        *@return a pointer to om_namespace struct , returns NULL on error.
         */
         axis2_om_namespace_t* (AXIS2_CALL *get_namespace)
                                    (struct axis2_om_attribute *om_attribute,
                                     axis2_env_t **env);
-       /**
-        *@param om_attribute 
-        *@param env environment
-        *@param localname localname for this attribute 
-        *@return status code 
+       
+       /** sets the localname of the attribute
+        *@param om_attribute pointer to om attribute struct. 
+        *@param env environment, MUST NOT be null.
+        *@param localname localname that should be set for this attribute 
+        *@return status code AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *set_localname)
                                     (struct axis2_om_attribute *om_attribute,
                                     axis2_env_t **env,
                                     const axis2_char_t *localname);
-       /**
-        *@param om_attribute 
-        *@param env environment
-        *@param localname localname for this attribute 
-        *@return status code 
+       
+       /** set the attribute value
+        *@param om_attribute a pointer to om_attribute struct.
+        *@param env environment, MUST NOT be NULL.
+        *@param value value that should be set for this attribute 
+        *@return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
         */
         
         axis2_status_t (AXIS2_CALL *set_value)
                                 (struct axis2_om_attribute *om_attribute,
                                 axis2_env_t **env,
                                 const axis2_char_t *value);
-        /**
-        *@param om_attribute 
-        *@param env environment
-        *@param om_namespace namespace for this attribute 
-        *@return status code on error returns AXIS2_FAILURE ,AXIS2_SUCCESS otherwise
+       
+       /** set namespace of the attribute
+        *@param om_attribute a pointer to om_attribute struct  
+        *@param env environment, MUST NOT be NULL.
+        *@param om_namespace a pointer to om_namespace struct that should be set 
+        *                    for this attribute 
+        *@return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *set_namespace)
                                     (struct axis2_om_attribute *om_attribute,
@@ -155,12 +160,13 @@ extern "C"
     } axis2_om_attribute_t;
 
   /**
-    * creates an om_attribute structure instance
+    * creates an om_attribute struct 
     * @param env Environment. MUST NOT be NULL
-    * @param localname localname of the attribute, cannot be a null value
+    * @param localname localname of the attribute, should not be a null value.
     * @param value normalized attribute value. cannot be NULL
     * @param ns namespace, if any, of the attribute. Optional, can be NULL
-    * @return a pointer to newly created attribute struct 
+    * @return a pointer to newly created attribute struct, returns NULL on error with 
+    *           error code set in environment's error. 
     */
     AXIS2_DECLARE(axis2_om_attribute_t *)
     axis2_om_attribute_create (axis2_env_t **env,

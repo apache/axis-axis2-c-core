@@ -532,9 +532,10 @@ axis2_om_element_free (axis2_om_element_t *om_element,
         }
         if (AXIS2_INTF_TO_IMPL(om_element)->attributes)
         {
+            /*
             axis2_hash_index_t *hi;
             void *val = NULL;
-            /*
+            
             for (hi = axis2_hash_first (AXIS2_INTF_TO_IMPL(om_element)->attributes, env); hi;
                  hi = axis2_hash_next ( env, hi))
             {
@@ -554,9 +555,10 @@ axis2_om_element_free (axis2_om_element_t *om_element,
         }
         if (AXIS2_INTF_TO_IMPL(om_element)->namespaces)
         {
+            /*
             axis2_hash_index_t *hi;
             void *val = NULL;
-            /*
+            
             for (hi = axis2_hash_first (AXIS2_INTF_TO_IMPL(om_element)->namespaces, env); hi;
                  hi = axis2_hash_next ( env, hi))
             {
