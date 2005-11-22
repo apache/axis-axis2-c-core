@@ -35,7 +35,6 @@ typedef struct guththila_memory_reader_impl_t
 
     int (*input_read_callback)(char *buffer,int size);
 
-    void (*input_close_callback)(void);
     
 }guththila_memory_reader_impl_t;
 
@@ -69,8 +68,7 @@ guththila_reader_create_for_file (guththila_environment_t * environment,
 GUTHTHILA_DECLARE(guththila_reader_t *)
 guththila_reader_create_for_memory(
                 guththila_environment_t *environment,
-                int (*input_read_callback)(char *buffer,int size),
-                void (*input_close_callback)(void))
+                int (*input_read_callback)(char *buffer,int size))
 {
     guththila_memory_reader_impl_t *memory_reader = 
         (guththila_memory_reader_impl_t *) GUTHTHILA_MALLOC (environment->allocator,
@@ -81,7 +79,6 @@ guththila_reader_create_for_memory(
     }
     
     memory_reader->input_read_callback  = input_read_callback;
-    memory_reader->input_close_callback = input_close_callback;
     memory_reader->reader.guththila_reader_type = GUTHTHILA_IN_MEMORY_READER;
     
     return &(memory_reader->reader);
@@ -98,7 +95,6 @@ guththila_reader_free (guththila_environment_t * environment,
         
     if(r->guththila_reader_type == GUTHTHILA_IN_MEMORY_READER);
     {
-        ((guththila_memory_reader_impl_t*)r)->input_close_callback();
         GUTHTHILA_FREE(environment->allocator,(guththila_memory_reader_impl_t*)r);
     }
     if(r->guththila_reader_type == GUTHTHILA_FILE_READER)

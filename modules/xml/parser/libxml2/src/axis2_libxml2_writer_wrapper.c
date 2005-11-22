@@ -225,7 +225,7 @@ typedef struct axis2_libxml2_writer_wrapper_impl
 
 AXIS2_DECLARE(axis2_xml_writer_t *)
 axis2_xml_writer_create(axis2_env_t **env,
-                        void *filename,
+                        axis2_char_t *filename,
                         axis2_char_t *encoding,
                         int is_prefix_default,
                         int compression)

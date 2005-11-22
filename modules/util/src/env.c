@@ -25,7 +25,7 @@ AXIS2_DECLARE(axis2_status_t)  axis2_env_free (axis2_env_t *env)
     if(NULL != env && NULL != env->allocator)
         free (env->allocator);
 
-    if(NULL != env && NULL != env->stream)
+    if(env != NULL && env->stream != NULL && (env->stream->ops) != NULL)
 		AXIS2_STREAM_FREE(env->stream);
 
     if(NULL != env && NULL != env->log)

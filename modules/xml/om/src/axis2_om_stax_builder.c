@@ -91,10 +91,12 @@ typedef struct axis2_om_stax_builder_impl_t
 
 													
 AXIS2_DECLARE(axis2_om_stax_builder_t *)
-axis2_om_stax_builder_create_for_file (axis2_env_t **env,char* filename)
+axis2_om_stax_builder_create (axis2_env_t **env,
+                                       axis2_pull_parser_t *parser)
 {
     axis2_om_stax_builder_impl_t *builder = NULL;
     AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, parser, NULL);
     
     builder = (axis2_om_stax_builder_impl_t *)AXIS2_MALLOC (
                 (*env)->allocator, sizeof(axis2_om_stax_builder_impl_t));
@@ -110,12 +112,8 @@ axis2_om_stax_builder_create_for_file (axis2_env_t **env,char* filename)
     builder->lastnode = NULL;
     builder->document = NULL;
 
-    builder->parser = axis2_pull_parser_create_for_file(env,filename);
-    if(!builder->parser)
-    {
-        AXIS2_FREE((*env)->allocator, builder);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
-    }
+    builder->parser = parser;
+   
     
     
     /* operations */
@@ -141,66 +139,6 @@ axis2_om_stax_builder_create_for_file (axis2_env_t **env,char* filename)
 	
     return &(builder->om_stax_builder);
 }
-
-/*********************** for memory ******************************************/
-
-AXIS2_DECLARE(axis2_om_stax_builder_t *)
-axis2_om_stax_builder_create_for_memory (axis2_env_t **env,
-                                        int (*read_input_callback)(char *buffer,int size),
-                                        void (*close_input_callback)(void))
-
-
-{
-    axis2_om_stax_builder_impl_t *builder = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-    
-    builder = (axis2_om_stax_builder_impl_t *)AXIS2_MALLOC (
-                (*env)->allocator, sizeof(axis2_om_stax_builder_impl_t));
-
-    if (!builder)
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
-    
-    
-   
-    builder->cache = AXIS2_TRUE;
-    builder->parser_accessed = AXIS2_FALSE;
-    builder->done = AXIS2_FALSE;
-    builder->lastnode = NULL;
-    builder->document = NULL;
-
-    builder->parser = axis2_pull_parser_create_for_memory(env,
-                             read_input_callback, close_input_callback );
-    if(!builder->parser)
-    {
-        AXIS2_FREE((*env)->allocator, builder);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
-    }
-    
-    
-    /* operations */
-    builder->om_stax_builder.ops = NULL;
-    builder->om_stax_builder.ops = (axis2_om_stax_builder_ops_t *) AXIS2_MALLOC(
-                                    (*env)->allocator, sizeof(axis2_om_stax_builder_ops_t));
-
-    if (!builder->om_stax_builder.ops)
-    {
-        AXIS2_PULL_PARSER_FREE (builder->parser, env);
-        AXIS2_FREE ((*env)->allocator, builder);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
-    }
-
-    builder->om_stax_builder.ops->next = axis2_om_stax_builder_next;
-    builder->om_stax_builder.ops->discard_current_element = 
-        axis2_om_stax_builder_discard_current_element;
-        
-	builder->om_stax_builder.ops->free = axis2_om_stax_builder_free;
-	builder->om_stax_builder.ops->set_document = axis2_om_stax_builder_set_document;
-	builder->om_stax_builder.ops->set_lastnode = axis2_om_stax_builder_set_lastnode;
-	builder->om_stax_builder.ops->get_lastnode = axis2_om_stax_builder_get_lastnode;
-	
-    return &(builder->om_stax_builder);
-}
-
 
 
 axis2_status_t

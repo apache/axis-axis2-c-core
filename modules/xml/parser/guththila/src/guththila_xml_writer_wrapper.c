@@ -214,7 +214,7 @@ typedef struct guththila_xml_writer_wrapper_impl
 
 AXIS2_DECLARE(axis2_xml_writer_t *)
 axis2_xml_writer_create(axis2_env_t **env,
-                        void *stream,
+                        axis2_char_t *filename,
                         axis2_char_t *encoding,
                         int is_prefix_default,
                         int compression)
@@ -236,7 +236,7 @@ axis2_xml_writer_create(axis2_env_t **env,
     
     writer_impl->guththila_writer = guththila_create_xml_stream_writer(
                                                     writer_impl->guththila_env,
-                                                    stream, encoding , 
+                                                    filename , encoding , 
                                                     is_prefix_default);
                 
     if(!(writer_impl->guththila_writer))
@@ -327,7 +327,8 @@ guththila_xml_writer_wrapper_free(axis2_xml_writer_t *writer,
     AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
     if(AXIS2_INTF_TO_IMPL(writer)->guththila_writer)
         guththila_xml_stream_writer_free(
-            AXIS2_INTF_TO_IMPL(writer)->guththila_env, writer);
+            AXIS2_INTF_TO_IMPL(writer)->guththila_env,
+            AXIS2_INTF_TO_IMPL(writer)->guththila_writer);
             
     if(AXIS2_INTF_TO_IMPL(writer)->guththila_env)
         guththila_environment_free(AXIS2_INTF_TO_IMPL(writer)->guththila_env);

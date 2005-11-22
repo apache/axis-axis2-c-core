@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     
     allocator = axis2_allocator_init(NULL);
     env       = axis2_env_create(allocator);
-    parser = axis2_pull_parser_create_for_file(&env,filename);
+    parser = axis2_pull_parser_create_for_file(&env,filename,NULL);
     
     printf("running test\n\n\n");
         

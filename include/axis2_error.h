@@ -200,7 +200,8 @@ extern "C"
         /** error occured creating xml stream writer */
         AXIS2_ERROR_CREATING_XML_STREAM_WRITER,
         /** error occured creating xml stream writer */
-        AXIS2_ERROR_CREATING_XML_STREAM_READER
+        AXIS2_ERROR_CREATING_XML_STREAM_READER,
+        
     };
 
 /** @} */

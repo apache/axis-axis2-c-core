@@ -71,8 +71,7 @@ axis2_stream_create (axis2_allocator_t *allocator
 				return NULL;
 			}
             
-            if(!stream->ops->free)
-                (stream->ops)->free = axis2_stream_impl_free;
+            stream->ops->free = axis2_stream_impl_free;
 			stream->ops->read = axis2_stream_impl_read;
 			stream->ops->write = axis2_stream_impl_write;
 			stream->ops->file_open = axis2_stream_impl_file_open;
@@ -106,6 +105,8 @@ axis2_stream_create (axis2_allocator_t *allocator
             AXIS2_FREE (allocator, stream);
             return NULL;
         }
+        
+        stream->ops->free = axis2_stream_impl_free;
 		stream->ops->read = axis2_stream_impl_read;
         stream->ops->write = axis2_stream_impl_write;
 		stream->ops->file_open = axis2_stream_impl_file_open;

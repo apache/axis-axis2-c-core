@@ -23,6 +23,7 @@
  */
 
 #include <axis2_om_node.h>
+#include <axis2_pull_parser.h>
 #include <axis2_om_document.h>
 #include <axis2_env.h>
 
@@ -106,17 +107,9 @@ extern "C"
     * @return a pointer to the newly created builder struct. 
     */
     AXIS2_DECLARE(axis2_om_stax_builder_t *)
-    axis2_om_stax_builder_create_for_file (axis2_env_t **env,char* filename);
+    axis2_om_stax_builder_create(axis2_env_t **env,
+                                           axis2_pull_parser_t *parser);
 
-    /**
-    * creates an stax builder
-    * @param environment Environment. MUST NOT be NULL, .
-    * @return a pointer to the newly created builder struct. 
-    */
-    AXIS2_DECLARE(axis2_om_stax_builder_t *)
-    axis2_om_stax_builder_create_for_memory (axis2_env_t **env,
-                                             int (*read_input_callback)(char *buffer,int size),
-                                             void (*close_input_callback)(void));
 
 /** builds next node */
 #define AXIS2_OM_STAX_BUILDER_NEXT(builder,env) \

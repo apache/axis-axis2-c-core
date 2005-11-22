@@ -147,7 +147,9 @@ static axis2_status_t axis2_guththila_wrapper_init_map(
 /********************************************************************************/
 
 AXIS2_DECLARE(axis2_pull_parser_t *)
-axis2_pull_parser_create_for_file(axis2_env_t **env,char* filename)
+axis2_pull_parser_create_for_file(axis2_env_t **env,
+                                  char* filename,
+                                  const char *encoding)
 {
     axis2_guththila_wrapper_impl_t *guththila_impl = NULL;
     guththila_allocator_t *allocator = NULL;
@@ -241,7 +243,7 @@ axis2_pull_parser_create_for_file(axis2_env_t **env,char* filename)
 AXIS2_DECLARE(axis2_pull_parser_t *)
 axis2_pull_parser_create_for_memory(axis2_env_t **env,
                                     int (*read_input_callback)(char *buffer,int size),
-                                    void (*close_input_callback)(void))
+                                    const char *encoding)
 {
     axis2_guththila_wrapper_impl_t *guththila_impl = NULL;
     guththila_allocator_t *allocator = NULL;
@@ -262,7 +264,7 @@ axis2_pull_parser_create_for_memory(axis2_env_t **env,
     
     /*-------difference of two create function is here--------*/
     reader = guththila_reader_create_for_memory(guththila_env,
-                     read_input_callback, close_input_callback); 
+                     read_input_callback); 
                                                    
     if(!reader)
     {
@@ -347,10 +349,11 @@ axis2_guththila_wrapper_free(axis2_pull_parser_t *parser,
 {
     AXIS2_FUNC_PARAM_CHECK(parser,env,AXIS2_FAILURE);
     if(AXIS2_INTF_TO_IMPL(parser)->guththila_parser)
-        guththila_xml_pull_parser_free(
+      /*  guththila_xml_pull_parser_free(
                     AXIS2_INTF_TO_IMPL(parser)->guththila_env,
                     AXIS2_INTF_TO_IMPL(parser)->guththila_parser);
-    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(parser)->guththila_env);
+        */            
+   // guththila_environment_free((*env)->allocator, AXIS2_INTF_TO_IMPL(parser)->guththila_env);
     
     if(parser->ops)
         AXIS2_FREE((*env)->allocator, parser->ops);
@@ -516,11 +519,12 @@ axis2_guththila_wrapper_get_pi_data(axis2_pull_parser_t *parser,
     return NULL;
  }
 
- axis2_char_t* AXIS2_CALL
+axis2_char_t* AXIS2_CALL
 axis2_guththila_wrapper_get_dtd(axis2_pull_parser_t *parser,
                                      axis2_env_t **env)
 {
     printf("not implemented in guththila");
+    return NULL;
 }
  
 axis2_status_t AXIS2_CALL

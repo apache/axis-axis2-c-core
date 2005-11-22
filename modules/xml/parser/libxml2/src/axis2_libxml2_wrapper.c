@@ -180,7 +180,9 @@ static axis2_status_t axis2_libxml2_wrapper_init_map(
 
 /*******************************************************************************/
 AXIS2_DECLARE(axis2_pull_parser_t *)
-axis2_pull_parser_create_for_file(axis2_env_t **env,char *filename)
+axis2_pull_parser_create_for_file(axis2_env_t **env,
+                                  char *filename,
+                                  const axis2_char_t *encoding)
 {
     
 	axis2_libxml2_wrapper_impl_t *wrapper_impl = NULL;

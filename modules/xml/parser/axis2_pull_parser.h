@@ -263,12 +263,14 @@ struct axis2_pull_parser
  */
 
 AXIS2_DECLARE(axis2_pull_parser_t *)
-axis2_pull_parser_create_for_file(axis2_env_t **env,char *filename);
+axis2_pull_parser_create_for_file(axis2_env_t **env,
+                                  char *filename,
+                                  const axis2_char_t *encoding);
 
 AXIS2_DECLARE(axis2_pull_parser_t *)
 axis2_pull_parser_create_for_memory(axis2_env_t **env,
                                     int (*read_input_callback)(char *buffer,int size),
-                                    void (*close_input_callback)(void));
+                                    const axis2_char_t *encoding);
                                     
 /********************************* Macros *************************************/
 

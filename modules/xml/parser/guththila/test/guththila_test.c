@@ -12,6 +12,8 @@ int read_input(char *buffer,int size)
    return fread(buffer,sizeof(char), size, f);
 }
 
+
+
 void close_input(void)
 {
     fclose(f);
@@ -184,4 +186,5 @@ guththila_xml_stream_writer_free(env, writer);
 
 guththila_environment_free(env);
 
+getchar();
 }

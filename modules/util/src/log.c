@@ -58,7 +58,7 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * operations)
             AXIS2_FREE (allocator, log);
             return NULL;
         }
-
+        log->ops->free = axis2_log_impl_free;
         log->ops->write = axis2_log_impl_write;
     }
 

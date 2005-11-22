@@ -1,15 +1,27 @@
-    #include <axis2_om_stax_builder.h>
+#include <axis2_om_stax_builder.h>
 #include <axis2_om_document.h>
 #include <axis2_om_node.h>
 #include <axis2_om_element.h>
 #include <axis2_om_text.h>
+#include <axis2_stream_default.h>
+#include <axis2_log_default.h>
+#include <axis2_error_default.h>
 
 #include <stdio.h>
 #include <axis2_xml_writer.h>
 
+/** 
+   Define the environment related variables globaly so that they are available 
+   for both functions 
+*/
+
 axis2_allocator_t *allocator = NULL;
 axis2_env_t *environment = NULL;
+axis2_stream_t *stream = NULL;
+axis2_error_t *error = NULL;
+axis2_log_t *log     = NULL;
 
+/** a method that demonstrate creating a om model using an xml file */
 
 int
 test_om_build (char *filename)
@@ -22,16 +34,40 @@ test_om_build (char *filename)
     FILE *fp = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_om_namespace_t* ns = NULL;
-
-
-  
-   
-    builder = axis2_om_stax_builder_create_for_file (&environment, filename);
+    axis2_pull_parser_t *pull_parser = NULL;
+    
+    /** create pull parser */
+    pull_parser = axis2_pull_parser_create_for_file(&environment, filename , NULL);
+    
+    if(!pull_parser)
+    {
+        printf("ERROR CREATING PULLPARSER");
+        return ;
+    }
+    /** create axis2_om_stax_builder by parsing pull_parser struct */
+    
+    builder = axis2_om_stax_builder_create (&environment,pull_parser);
+    
+    if(!builder)
+    {
+        printf("ERROR CREATING PULL PARSER");
+        return ;
+    }
+    /** 
+        create an om document
+        document is the container of om model created using builder 
+    */
            
     document = axis2_om_document_create (&environment, NULL, builder);
+    /**
+        get root element , building starts hear 
+     */
+    
     node1 = AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT (document,&environment);
     if(node1)
     {
+        /** print root node information */
+        
         printf ("NODE TYPE %d\n",AXIS2_OM_NODE_GET_NODE_TYPE(node1,&environment));
         
         ele1 =AXIS2_OM_NODE_GET_DATA_ELEMENT(node1,&environment);
@@ -48,6 +84,8 @@ test_om_build (char *filename)
 
         }
     }
+    /** build the document continuously untill all the xml file is built in to a om model */
+    
     
     node2 = AXIS2_OM_DOCUMENT_BUILD_NEXT( document , &environment);
     do
@@ -81,6 +119,7 @@ test_om_build (char *filename)
     printf ("END: pull document\n");
 
     printf ("Serialize pulled document\n");
+    
     
     om_output = axis2_om_output_create (&environment, NULL);
     AXIS2_OM_NODE_SERIALIZE (AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(document, &environment), &environment , om_output);
@@ -182,10 +221,16 @@ main (int argc, char *argv[])
     if (argc > 1)
         file_name = argv[1];
     allocator = axis2_allocator_init (NULL);
-    environment = axis2_env_create (allocator);
+    log = axis2_log_create(allocator, NULL);
+    error = axis2_error_create(allocator);
+    
+    stream = axis2_stream_create(allocator, NULL);
+    
+    environment = axis2_env_create_with_error_stream_log(allocator, error, stream, log);
 
     test_om_build (file_name);
     test_om_serialize ();  
 
-    axis2_env_free(environment);    
+    axis2_env_free(environment);
+    getchar();    
  }
