@@ -51,15 +51,18 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
     {
        /**
         * Free xml writer
-        * @param writer pointer to xml_writer struct
-        * @returns status code 
+        * @param writer pointer to xml_writer struct to be freed
+        * @param env environment, MUST NOT be NULL.
+        * @returns status of the operation. 
         *       AXIS2_SUCCESS on success and AXIS2_FAILURE on error
         */
         
         axis2_status_t (AXIS2_CALL *free)(axis2_xml_writer_t *writer,
                                           axis2_env_t **env);
        /**
-        *   Write start part of xml element
+        *  Write the localname of an xml element
+        * 
+        *   
         */
         axis2_status_t (AXIS2_CALL *write_start_element)(
                                     axis2_xml_writer_t *writer,

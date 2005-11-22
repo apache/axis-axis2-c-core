@@ -63,8 +63,8 @@ enum axis2_pull_parser_event_types
 AXIS2_DECLARE_DATA struct axis2_pull_parser_ops
     {
         /**
-         * moves the position of the parser to next 
-         * xml node in the stream
+         * causes the reader to read the next parse event. 
+         * returns the event just read
          * @param parser axis2_pull_parser struct 
          * @param env    axis2_environment, MUST NOT be NULL
          * @returns one of the events defined in 
@@ -304,7 +304,8 @@ axis2_pull_parser_create_for_memory(axis2_env_t **env,
 
 /** Macros corresponding to above declared function pointers */
 
-/** pull parser next */
+/** causes the reader to read the next parse event.
+ returns an integer which identifies the type of event just read. */
 #define AXIS2_PULL_PARSER_NEXT(parser, env) \
         ((parser)->ops->next(parser, env))
 /** Free pull parser struct */
