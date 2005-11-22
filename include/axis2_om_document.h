@@ -153,7 +153,8 @@ extern "C"
         ((document)->ops->get_root_element(document,env))
 /** sets the root node */
 #define AXIS2_OM_DOCUMENT_SET_ROOT_ELEMENT(document,env,om_node) \
-        ((document)->ops->set_root_element(document,env,om_node))       
+        ((document)->ops->set_root_element(document,env,om_node))
+               
 /** build till the root node is complete */
 #define AXIS2_OM_DOCUMENT_BUILD_ALL(document,env) \
         ((document)->ops->build_all(document,env))

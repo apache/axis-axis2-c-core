@@ -48,12 +48,14 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
        /*
         * Find a namespace in the scope of the document.
         * Start to find from the given node and go up the hierarchy.
-        * @param node node containing an instance of an OM element,cannot be NULL.
+        * @param om_element pointer to om_element_struct contained in
+        *        node , 
         * @param env Environment. MUST NOT be NULL.
+        * @param node node containing an instance of an OM element,cannot be NULL.
         * @param uri namespace uri..
         * @param prefix namespace prefix. can be NULL.
         * @return pointer to the namespace, if found, else NULL. On error, returns 
-        *           NULL and sets the errorno in environment.
+        *           NULL and sets error code in environment,s error
         */
         axis2_om_namespace_t* (AXIS2_CALL *find_namespace)
                                         (struct axis2_om_element *om_element,
@@ -64,8 +66,9 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
       /**
         * Declare a namespace in current element (in the scope of this element ).
         * It checks to see if it is already declared.
-        * @param node node containing an instance of an OM element.
+        * @param om_element contained in the om node struct
         * @param env Environment. MUST NOT be NULL.
+        * @param node node containing an instance of an OM element.
         * @param ns pointer to the namespace struct to be declared
         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
@@ -82,7 +85,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * @param node node containing an instance of an OM element, cannot be NULL.                                        
         * @param qname qname of the namespace to be found. cannot be NULL.
         * @return pointer to the namespace, if found, else NULL. On error, returns 
-        *           NULL and sets the errorno in environment.
+        *           NULL and sets the error code in environment's error struct.
         */
          axis2_om_namespace_t *(AXIS2_CALL *find_namespace_with_qname)
                                             (struct axis2_om_element *om_element,
@@ -103,11 +106,11 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
 
       /**
         * Gets (finds) the attribute with the given qname
-        * @param element element whose attribute is to be found. Mandatory, cannot be NULL.
-        * @param environment Environment. MUST NOT be NULL, if NULL behaviour is undefined.
-        * @qname qname qname of the attribute to be found. Mandatory, cannot be NULL.
+        * @param element element whose attribute is to be found. 
+        * @param env Environment. MUST NOT be NULL.
+        * @qname qname qname of the attribute to be found. should not be NULL.
         * @return a pointer to the attribute with given qname if found, else NULL.
-        *           On error, returns NULL and sets the error.
+        *           On error, returns NULL and sets the error code in environment's error struct.
         */
          axis2_om_attribute_t *(AXIS2_CALL *get_attribute) (struct axis2_om_element *om_element,
                                                             axis2_env_t **env,
@@ -117,7 +120,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * Frees given element 
         * @param element OM element to be freed.
         * @param env Environment. MUST NOT be NULL.
-         * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+         * @return satus of the operation. AXIS2_SUCCESS on success ,AXIS2_FAILURE on error.
         */
          axis2_status_t (AXIS2_CALL *free) (struct axis2_om_element *element,
                                             axis2_env_t **env);
@@ -149,23 +152,41 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
                                                         
        /**
         *   returns the localname of this element
+        * @param om_element om_element struct
+        * @param env environment struct
+        * @returns localname of element, returns NULL on error.
         */        
         axis2_char_t* (AXIS2_CALL *get_localname)(struct axis2_om_element *om_element,
                                                   axis2_env_t **env);
        /**
-        *   set the localname of this element
+        * set the localname of this element
+        * @param om_element om_element_struct to with localname is set
+        * @param env environment struct
+        * @localname text value to be set as localname 
+        * @returns status code of operation, AXIS2_SUCCESS on success,
+        *                   AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *set_localname)(struct axis2_om_element *om_element,
                                                   axis2_env_t **env,
                                                   const axis2_char_t *localname);
         /**
-         * returns the namespace of om_element 
+         * get the namespace  of om_element 
+         * @param om_element om_element struct
+         * @param env environemt, MUST NOT be NULL.
+         * @returns pointer to axis2_om_namespace_t struct 
+         *          NULL if there is no namespace associated with the element,
+         *          NULL on error with error code set to environment's error
          */
         axis2_om_namespace_t *(AXIS2_CALL *get_namespace)
                                                 (struct axis2_om_element *om_element,
                                                  axis2_env_t **env);
-        /**
-        * returns the namespace of om_element 
+       /**
+        * set the namespace of the element
+        * @param om_element Om_element struct
+        * @param env environment must not be null
+        * @param ns pointer to namespace
+        * @returns status code of the operation , NULL on error with error code 
+        *                  set to environment's error
         */                                         
         axis2_status_t (AXIS2_CALL *set_namespace)(struct axis2_om_element *om_element,
                                                    axis2_env_t **env,
