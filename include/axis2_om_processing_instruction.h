@@ -131,7 +131,7 @@ extern "C"
     * @param parent parent of the element node to be created. Optional, can be NULL.
     * @param target target of the processing instruction.cannot be NULL.
     * @param value value of the processing instruction.cannot be NULL.
-    * @param node This is an out parameter. Mandatory, cannot be NULL.
+    * @param node This is an out parameter. cannot be NULL.
     *                       Returns the node corresponding to the comment created.
     *                       Node type will be set to AXIS2_OM_PROCESSING_INSTRUCTION
     * @return a pointer tonewly created processing instruction struct 

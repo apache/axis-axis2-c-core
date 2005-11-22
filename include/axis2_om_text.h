@@ -48,28 +48,42 @@ extern "C"
     {
       /**
         * Free an axis2_om_text struct
-        * @param environment environment.  MUST NOT be NULL, .
-        * @param om_text pointer to om text struct to be freed
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        * @param env environment.  MUST NOT be NULL.
+        * @param om_text pointer to om text struct to be freed.
+        * @return satus of the operation. AXIS2_SUCCESS on success
+        *         AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *free) (struct axis2_om_text *om_text,
                                            axis2_env_t **env);
 
       /**
         * Serialize operation
-        * @param environment environment.  MUST NOT be NULL, .
-        * @param om_text pointer to om text struct to be serialized
-        * @param om_output OM output handler to be used in serializing
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        * @param env environment.  MUST NOT be NULL.
+        * @param om_text pointer to om text struct to be serialized.
+        * @param om_output OM output handler to be used in serializing.
+        * @return satus of the operation. AXIS2_SUCCESS on success,
+        *            AXIS2_FAILURE on error
         */
         axis2_status_t (AXIS2_CALL *serialize) (struct axis2_om_text *om_text,
                                                 axis2_env_t **env,
                                                 axis2_om_output_t *om_output);
-                                                
+       /**
+        *  set the text value
+        * @param om_text om_text struct
+        * @param env environment , MUST NOT be NULL.
+        * @param value text 
+        * @return status of the operation. AXIS2_SUCCESS on success,
+        *           AXIS2_FAILURE on error.                                                
+        */                                                
         axis2_status_t (AXIS2_CALL *set_value)(struct axis2_om_text *om_text,
                                                axis2_env_t **env,
                                                const axis2_char_t *value);
-
+       /**
+        *  get text value 
+        * @param om_text om_text struct
+        * @param env environment, MUST NOT be NULL.
+        * @return text value , NULL is returned if there is no text value.
+        */                                                
         axis2_char_t* (AXIS2_CALL *get_value)(struct axis2_om_text *om_text,
                                               axis2_env_t **env);                                               
                                                
@@ -90,7 +104,7 @@ extern "C"
 
   /**
     * Creates a new text struct
-    * @param environment Environment. MUST  NOT be NULL, .
+    * @param env Environment. MUST  NOT be NULL, .
     * @param parent parent of the new node. Optinal, can be NULL. 
     *          The parent element must be of type AXIS2_OM_ELEMENT
     * @param value Text value. Optinal, can be NULL.
@@ -112,10 +126,10 @@ extern "C"
 /** serializes given text */
 #define AXIS2_OM_TEXT_SERIALIZE(om_text, env, om_output) \
         ((om_text)->ops->serialize(om_text, env, om_output))
-        
+/** get the text value */        
 #define AXIS2_OM_TEXT_GET_VALUE(om_text, env) \
         ((om_text)->ops->get_value(om_text, env))
-
+/** set text value */
 #define AXIS2_OM_TEXT_SET_VALUE(om_text, env, value) \
         ((om_text)->ops->set_value(om_text, env, value))
               

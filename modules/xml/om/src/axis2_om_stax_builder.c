@@ -42,18 +42,11 @@ axis2_status_t AXIS2_CALL
 axis2_om_stax_builder_free(axis2_om_stax_builder_t *builder,
                            axis2_env_t **env);
 
-axis2_om_node_t* AXIS2_CALL
-axis2_om_stax_builder_get_lastnode (axis2_om_stax_builder_t *builder,
-                                   axis2_env_t **env);
                                             
 axis2_om_document_t* AXIS2_CALL
 axis2_om_stax_builder_get_document (axis2_om_stax_builder_t *builder,
                                     axis2_env_t **env);
                                             
-axis2_status_t AXIS2_CALL
-axis2_om_stax_builder_set_lastnode(axis2_om_stax_builder_t *builder,
-                                    axis2_env_t **env,
-                                    axis2_om_node_t *om_node);
                                             
 axis2_status_t  AXIS2_CALL
 axis2_om_stax_builder_set_document(axis2_om_stax_builder_t *builder,
@@ -134,8 +127,6 @@ axis2_om_stax_builder_create (axis2_env_t **env,
         
 	builder->om_stax_builder.ops->free = axis2_om_stax_builder_free;
 	builder->om_stax_builder.ops->set_document = axis2_om_stax_builder_set_document;
-	builder->om_stax_builder.ops->set_lastnode = axis2_om_stax_builder_set_lastnode;
-	builder->om_stax_builder.ops->get_lastnode = axis2_om_stax_builder_get_lastnode;
 	
     return &(builder->om_stax_builder);
 }
@@ -721,14 +712,6 @@ AXIS2_CALL axis2_om_stax_builder_free(axis2_om_stax_builder_t *builder,
 	return AXIS2_SUCCESS;	
 	
 }
-
-axis2_om_node_t* AXIS2_CALL
-axis2_om_stax_builder_get_lastnode (axis2_om_stax_builder_t *builder,
-                                   axis2_env_t **env)
-{
-    AXIS2_FUNC_PARAM_CHECK(builder, env, NULL);
-    return AXIS2_INTF_TO_IMPL(builder)->lastnode;
-}                                   
                                             
 axis2_om_document_t* AXIS2_CALL
 axis2_om_stax_builder_get_document (axis2_om_stax_builder_t *builder,
@@ -739,16 +722,6 @@ axis2_om_stax_builder_get_document (axis2_om_stax_builder_t *builder,
 }
                                     
                                             
-axis2_status_t AXIS2_CALL
-axis2_om_stax_builder_set_lastnode(axis2_om_stax_builder_t *builder,
-                                    axis2_env_t **env,
-                                    axis2_om_node_t *om_node)
-{
-    AXIS2_FUNC_PARAM_CHECK(builder,env,AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, om_node, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(builder)->lastnode = om_node ;
-    return AXIS2_SUCCESS;
-}                                    
                                             
 axis2_status_t  AXIS2_CALL
 axis2_om_stax_builder_set_document(axis2_om_stax_builder_t *builder,
