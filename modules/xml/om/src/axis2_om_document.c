@@ -89,8 +89,8 @@ axis2_om_document_create (axis2_env_t **env,
     
     document->builder = builder;
     document->root_element = root;
-    document->first_child = NULL;
-    document->last_child = NULL;
+    document->first_child = root;
+    document->last_child = root;
    
    
     document->char_set_encoding = NULL;
@@ -171,19 +171,23 @@ axis2_om_document_add_child (axis2_om_document_t *document,
                              axis2_env_t **env,
                              axis2_om_node_t * child)
 {
+    axis2_om_document_impl_t *document_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(document, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error,child, AXIS2_FAILURE);
 
-    if (!(AXIS2_INTF_TO_IMPL(document)->root_element) && child)
+    document_impl = AXIS2_INTF_TO_IMPL(document);
+    
+    if (!(document_impl->root_element) && child)
     {
-        AXIS2_INTF_TO_IMPL(document)->root_element = child;
+        document_impl->root_element = child;
         return AXIS2_SUCCESS;
     }
 
-    if (AXIS2_INTF_TO_IMPL(document)->root_element && child)
+    if (document_impl->root_element && child)
     {
-        return AXIS2_OM_NODE_ADD_CHILD (AXIS2_INTF_TO_IMPL(document)->root_element,
-                                         env, child);
+        
+        return AXIS2_OM_NODE_ADD_CHILD (child, env,
+                                        document_impl->last_child);
     }
     return AXIS2_FAILURE;
 }
@@ -193,7 +197,7 @@ axis2_om_document_build_next (axis2_om_document_t *om_document,
                                    axis2_env_t **env)
 {
     axis2_om_document_impl_t *document = NULL;
-      
+    axis2_om_node_t  *last_child = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(om_document, env, NULL);
   
@@ -201,12 +205,21 @@ axis2_om_document_build_next (axis2_om_document_t *om_document,
     
     if (!(document->root_element))
     {
-        return AXIS2_OM_STAX_BUILDER_NEXT (document->builder, env);
+        last_child = AXIS2_OM_STAX_BUILDER_NEXT (document->builder, env);
+        if(!last_child)
+        {
+            document->last_child = last_child;
+            document->root_element = last_child;
+        }
+        return last_child;
     }
     else if (AXIS2_OM_NODE_GET_BUILD_STATUS(document->root_element, env))
         return NULL;            /* Nothing wrong but done with pulling */
-
-    return AXIS2_OM_STAX_BUILDER_NEXT (document->builder, env);
+    
+    last_child = AXIS2_OM_STAX_BUILDER_NEXT (document->builder, env);
+    if(!last_child)
+        document->last_child = last_child;
+    return last_child;
 }
 
 
@@ -219,8 +232,6 @@ axis2_om_document_get_root_element (axis2_om_document_t * document,
     
     if (AXIS2_INTF_TO_IMPL(document)->root_element)
     {
-        
-        
         return AXIS2_INTF_TO_IMPL(document)->root_element;
     }
     else
@@ -234,7 +245,6 @@ axis2_om_document_get_root_element (axis2_om_document_t * document,
         }
         else
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL, NULL);
-            
         
     }
 }
@@ -244,10 +254,28 @@ axis2_om_document_set_root_element(axis2_om_document_t *document,
                                    axis2_env_t **env,
                                    axis2_om_node_t *node)
 {
+    int status = AXIS2_SUCCESS;
+    axis2_om_document_impl_t *document_impl = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(document, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(document)->root_element = node;
+    
+    document_impl = AXIS2_INTF_TO_IMPL(document);
+    
+    if(document_impl->root_element)
+    {
+        status = AXIS2_OM_NODE_FREE_TREE(document_impl->root_element, env);
+        if(status = AXIS2_SUCCESS)
+        {
+            document_impl->root_element = node;
+            return AXIS2_SUCCESS;
+         }
+         return AXIS2_FAILURE;
+    }
+    else
+    {
+        document_impl->root_element = node;
+    }
     return AXIS2_SUCCESS;
 }
 
