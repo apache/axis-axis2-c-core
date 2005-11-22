@@ -47,29 +47,38 @@ extern "C"
  AXIS2_DECLARE_DATA  typedef struct axis2_om_comment_ops
     {
       /**
-        * Free a axis2_comment struct
-        * @param comment pointer to axis2_commnet struct to be freed
-        * @param environment Environment. MUST NOT be NULL.
+        * Free a axis2_comment_t struct
+        * @param om_comment pointer to axis2_commnet_t struct to be freed
+        * @param env Environment. MUST NOT be NULL.
         * @return satus of the operation. 
-        *                AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        *                AXIS2_SUCCESS on success ,AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *free) (struct axis2_om_comment *om_comment,
                                            axis2_env_t **env);
-       /**
-        * get the comment data 
-        *
+       /** get the comments data
+        * @param om_comment a pointer to axis2_om_comment_t struct
+        * @param env environment, MUST NOT be NULL 
+        * @returns comment text
         */
                
         axis2_char_t* (AXIS2_CALL *get_value)(struct axis2_om_comment *om_comment,
                                               axis2_env_t **env);
        /**
         * set comment data
+        * @param om_comment pointer to axis2_om_comment_t struct
+        * @param env environment, MUST NOT be NULL.
+        * @param value comment text
+        * @returns AXIS2_SUCCESS on success , AXIS2_FAILURE on error
         */
         axis2_status_t (AXIS2_CALL *set_value)(struct axis2_om_comment *om_comment,
                                               axis2_env_t **env,
                                               const axis2_char_t* value);
         /**
-         *  serialize function
+         *  serialize function 
+         *  @param om_comment pointer to axis2_om_comment_t struct
+         *  @param env environment, MUST NOT be NULL.
+         *  @param om_output pointer to om_output_t struct
+         *  @return AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *serialize)(struct axis2_om_comment *om_comment,
                                                axis2_env_t **env,
@@ -91,8 +100,8 @@ extern "C"
 
   /**
     * Creates a comment struct
-    * @param environment Environment. MUST NOT be NULL,
-    * @param parent This is the parent node of the comment is any can be null.
+    * @param env Environment. MUST NOT be NULL,
+    * @param parent This is the parent node of the comment is any, can be NULL.
     * @param value comment text
     * @param node This is an out parameter.cannot be NULL.
     *        Returns the node corresponding to the comment created.
@@ -105,16 +114,17 @@ extern "C"
                              const axis2_char_t *value,
                              axis2_om_node_t **node);
 
+
 /** free given comment */
 #define AXIS2_OM_COMMENT_FREE(om_comment, env) \
         ((om_comment)->ops->free(om_comment, env))
-/** get comment value */
+/** get comment text */
 #define AXIS2_OM_COMMENT_GET_VALUE(om_comment, env) \
         ((om_comment)->ops->get_value(om_comment, env))
-/** set comment value */        
+/** set comment text */        
 #define AXIS2_OM_COMMENT_SET_VALUE(om_comment, env, value) \
         ((om_comment)->ops->set_value(om_comment, env, value))
-
+/** serialize */
 #define AXIS2_OM_COMMENT_SERIALIZE(om_comment, env, om_output) \
         ((om_comment)->ops->serialize(om_comment, env, om_output))
 
