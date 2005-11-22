@@ -48,7 +48,8 @@ extern "C"
     */
     typedef struct axis2_om_output
     {
-        /** xml stream writer. Should implement the Guththila pull parser interface */
+        /** axis2_xml_writer. any xml writer which 
+           implemet axis2_xml_writer.h interface  */
         axis2_xml_writer_t *xml_writer;
 
         /* following fields are not used currently but will be used in the future */
@@ -93,8 +94,6 @@ extern "C"
     *@param env environment
     *@return status code AXIS2_SUCCESS on success, AXIS2_FAILURE otherwise 
     */
-    
-                
     AXIS2_DECLARE(axis2_status_t)
     axis2_om_output_free(axis2_om_output_t *om_output,
                          axis2_env_t **env);    
