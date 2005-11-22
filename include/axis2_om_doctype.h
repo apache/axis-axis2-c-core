@@ -47,26 +47,41 @@ extern "C"
     {
       /**
         * free doctype struct
-        * @param om_doctype pointer to doctype struct to be freed
+        * @param om_doctype pointer to axis2_om_doctype_t struct to be freed
         * @param env Environment. MUST NOT be NULL,
         * @return satus of the operation. AXIS2_SUCCESS on success
-        *        else AXIS2_FAILURE
+        *         AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *free)(struct axis2_om_doctype *om_doctype,
                                           axis2_env_t **env);
        /**
-        * @param om_doctype pointer to a om_doctype struct
+        * @param om_doctype pointer to a axis2_om_doctype_t struct
         * @param env environment must not be null       
-        * @return value 
+        * @return DTD text 
         */
         axis2_char_t* (AXIS2_CALL *get_value)
                                     (struct axis2_om_doctype *om_doctype,
                                      axis2_env_t **env);
+       /**
+        * @param om_doctype pointer to axis2_om doctype_t struct
+        * @param env environment , MUST NOT be NULL.
+        * @param value doctype text value
+        * @return status of the operation,
+        *         AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
+        */
 
         axis2_status_t (AXIS2_CALL *set_value)
                                     (struct axis2_om_doctype *om_doctype,
                                      axis2_env_t **env,
                                      const axis2_char_t *value);
+       /**
+        * serialize operation 
+        * @param om_doctype pointer to axis2_om_doctype_t struct
+        * @param env environment , MUST NOT be NULL
+        * @param om_output pointer to axis2_om_output_t struct
+        * @returns status of the operation,
+        *          AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
+        */                                   
         
         axis2_status_t (AXIS2_CALL *serialize)
                                     (struct axis2_om_doctype *om_doctype,
@@ -87,10 +102,10 @@ extern "C"
     } axis2_om_doctype_t;
 
   /**
-    * Creates a doctype struct
+    * Creates a axis2_om_doctype_t struct
     * @param env Environment. MUST  NOT be NULL,
     * @param parent parent of the new node. Optinal, can be NULL. 
-    * @param value doctype value 
+    * @param value doctype text
     * @param node This is an out parameter.cannot be NULL.
     *               Returns the node corresponding to the doctype created.
     *               Node type will be set to AXIS2_OM_DOCTYPE
@@ -111,7 +126,7 @@ extern "C"
 /** set the doctype value */
 #define AXIS2_OM_DOCTYPE_SET_VALUE(doctype, env, value) \
         ((doctype)->ops->set_value(doctype, env, value))
-        
+/** serialize operation */       
 #define AXIS2_OM_DOCTYPE_SERIALIZE(doctype, env, om_output) \
         ((doctype)->ops->serialize(doctype, env, om_output))
 
