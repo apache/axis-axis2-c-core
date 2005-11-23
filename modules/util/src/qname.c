@@ -108,7 +108,7 @@ axis2_qname_create (axis2_env_t **env,
     }
 
     qn = (axis2_qname_impl_t *) AXIS2_MALLOC ((*env)->allocator,
-                                             sizeof (axis2_qname_t));
+                                             sizeof (axis2_qname_impl_t));
     if (!qn)
     {
         AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
