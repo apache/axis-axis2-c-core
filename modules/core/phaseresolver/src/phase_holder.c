@@ -1,0 +1,286 @@
+/*
+ * Copyright 2004,2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
+#include <axis2_phase_holder.h>
+    
+/** 
+ * @brief Wsdl phase holder struct impl
+ * Phase Holder
+ * This class hold all the phases found in the services.xml and server.xml
+ */ 
+typedef struct axis2_phase_holder_impl
+{
+	axis2_phase_holder_t phase_holder;
+    axis2_array_list_t *phase_list;
+    
+} axis2_phase_holder_impl_t;
+
+#define AXIS2_INTF_TO_IMPL(phase_holder) ((axis2_phase_holder_impl_t *)phase_holder)
+
+/************************* Function prototypes ********************************/
+
+axis2_status_t AXIS2_CALL
+	axis2_phase_holder_free (
+                axis2_phase_holder_t *phase_holder,
+				axis2_env_t **env);
+
+axis2_bool_t AXIS2_CALL
+axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder, 
+                            axis2_env_t **env,
+                            axis2_char_t *phase_name);
+
+axis2_status_t AXIS2_CALL
+axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder, 
+                                axis2_env_t **env,
+                                struct axis2_handler_desc *handler);
+                                    
+struct axis2_phase * AXIS2_CALL
+axis2_phase_holder_get_phase(axis2_phase_holder_t *phase_holder, 
+                                axis2_env_t **env,
+                                axis2_char_t *phase_name);
+
+axis2_status_t AXIS2_CALL
+axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_holder, 
+                                                    axis2_env_t **env,
+                                                    struct axis2_phase *phase,
+                                                    axis2_array_list_t *handlers);
+
+/************************** End of function prototypes ************************/
+
+axis2_phase_holder_t * AXIS2_CALL 
+axis2_phase_holder_create (axis2_env_t **env)
+{
+	AXIS2_ENV_CHECK(env, NULL);
+	
+	axis2_phase_holder_impl_t *phase_holder_impl = 
+		(axis2_phase_holder_impl_t *) AXIS2_MALLOC((*env)->allocator,
+			sizeof(axis2_phase_holder_impl_t));
+	
+	
+	if(NULL == phase_holder_impl)
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+    
+    phase_holder_impl->phase_list = axis2_array_list_create(env, 0);
+    if(NULL == phase_holder_impl->phase_list)
+    {
+        axis2_phase_holder_free(&(phase_holder_impl->phase_holder), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    }
+    
+	phase_holder_impl->phase_holder.ops = 
+		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_phase_holder_ops_t));
+	if(NULL == phase_holder_impl->phase_holder.ops)
+    {
+        axis2_phase_holder_free(&(phase_holder_impl->
+            phase_holder), env);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    }
+    
+    phase_holder_impl->phase_holder.ops->free =  
+        axis2_phase_holder_free;
+    
+	phase_holder_impl->phase_holder.ops->is_phase_exist =  
+        axis2_phase_holder_is_phase_exist;
+	phase_holder_impl->phase_holder.ops->add_handler =  
+        axis2_phase_holder_add_handler;
+	phase_holder_impl->phase_holder.ops->get_phase =  
+        axis2_phase_holder_get_phase;
+	phase_holder_impl->phase_holder.ops->build_transport_handler_chain = 
+        axis2_phase_holder_build_transport_handler_chain;
+	
+	return &(phase_holder_impl->phase_holder);
+}
+
+axis2_phase_holder_t * AXIS2_CALL 
+axis2_phase_holder_create_with_phases (axis2_env_t **env, axis2_array_list_t *phases)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, phases, NULL);
+    
+    axis2_phase_holder_impl_t *phase_holder_impl = (axis2_phase_holder_impl_t *)
+        axis2_phase_holder_create(env);
+    AXIS2_ARRAY_LIST_FREE(phase_holder_impl->phase_list, env);
+    phase_holder_impl->phase_list = phases;
+    return &(phase_holder_impl->phase_holder);
+}
+
+/***************************Function implementation****************************/
+
+axis2_status_t AXIS2_CALL 
+axis2_phase_holder_free (axis2_phase_holder_t *phase_holder, 
+                            axis2_env_t **env)
+{
+    axis2_phase_holder_impl_t *phase_holder_impl = 
+        AXIS2_INTF_TO_IMPL(phase_holder);
+    
+    AXIS2_FUNC_PARAM_CHECK(phase_holder, env, AXIS2_FAILURE);
+    
+	if(NULL != phase_holder->ops)
+        AXIS2_FREE((*env)->allocator, phase_holder->ops);
+    
+    if(NULL != phase_holder_impl->phase_list)
+    {
+        AXIS2_ARRAY_LIST_FREE(phase_holder_impl->phase_list, env);
+    }
+    
+    AXIS2_FREE((*env)->allocator, phase_holder_impl);
+    
+	return AXIS2_SUCCESS;
+}
+
+/**
+ * Method isPhaseExist
+ *
+ * @param phaseName
+ * @return
+ */
+axis2_bool_t AXIS2_CALL
+axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder, 
+                            axis2_env_t **env,
+                            axis2_char_t *phase_name) 
+{
+    int size = 0;
+    int i = 0;
+    struct axis2_phase *phase = NULL;
+    AXIS2_FUNC_PARAM_CHECK(phase_holder, env, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK((*env)->error, phase_name, AXIS2_FALSE);
+    
+    axis2_phase_holder_impl_t *phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
+    
+    size = AXIS2_ARRAY_LIST_SIZE(phase_holder_impl->phase_list, env);
+    
+    for (i = 0; i < size; i++) 
+    {
+        phase = (struct axis2_phase *) AXIS2_ARRAY_LIST_GET(phase_holder_impl->
+            phase_list, env, i);
+        if (0 == AXIS2_STRCMP(AXIS2_PHASE_GET_NAME(phase, env), phase_name))
+        {
+            return AXIS2_TRUE;
+        }
+    }
+    return AXIS2_FALSE;
+}
+
+/**
+ * Method addHandler
+ *
+ * @param handler
+ * @throws PhaseException
+ */
+axis2_status_t AXIS2_CALL
+axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder, 
+                                axis2_env_t **env,
+                                struct axis2_handler_desc *handler) 
+{
+    axis2_char_t *phase_name = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    AXIS2_FUNC_PARAM_CHECK(phase_holder, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, handler, AXIS2_FAILURE);
+    
+    phase_name = AXIS2_PHASE_RULE_GET_NAME(
+        AXIS2_HANDLER_DESC_GET_RULES(handler, env), env);
+    
+    if (axis2_phase_holder_is_phase_exist(phase_holder, env, phase_name)) 
+    {
+        status = AXIS2_PHASE_ADD_HANDLER_DESC(axis2_phase_holder_get_phase(phase_holder, 
+            env, phase_name), env, handler);
+    } else 
+    {
+        AXIS2_ERROR_SET((*env)->error, INVALID_PHASE, AXIS2_FAILURE);
+        
+    }
+    return status;
+}
+
+/**
+ * this method is used to get the actual phase object given in the phase array list
+ *
+ * @param phaseName
+ * @return
+ */
+struct axis2_phase * AXIS2_CALL
+axis2_phase_holder_get_phase(axis2_phase_holder_t *phase_holder, 
+                                axis2_env_t **env,
+                                axis2_char_t *phase_name) 
+{
+    int size = 0;
+    int i = 0;
+    axis2_phase_holder_impl_t *phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
+    struct axis2_phase *phase = NULL;
+        
+    AXIS2_FUNC_PARAM_CHECK(phase_holder, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, phase_name, NULL);
+    
+    size = AXIS2_ARRAY_LIST_SIZE(phase_holder_impl->phase_list, env);
+    
+    for (i = 0; i < size; i++) {
+        phase = (struct axis2_phase *) AXIS2_ARRAY_LIST_GET(phase_holder_impl->
+            phase_list, env, i);
+        if(0 == AXIS2_STRCMP(AXIS2_PHASE_GET_NAME(phase, env), phase_name))
+        {
+            return phase;
+        }
+    }
+    
+    return NULL;
+}
+
+/**
+ * This method is to build the transport phase , here load the corresponding handlers and added them
+ * in to correct phase
+ *
+ * @param phase
+ * @param handlers
+ * @throws PhaseException
+ */
+axis2_status_t AXIS2_CALL
+axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_holder, 
+                                                    axis2_env_t **env,
+                                                    struct axis2_phase *phase,
+                                                    axis2_array_list_t *handlers) 
+{
+    struct axis2_handler *handler = NULL;
+    int size = 0;
+    int status = AXIS2_FAILURE;
+    int i = 0;
+    struct axis2_handler_desc *handler_desc = NULL;
+        
+    AXIS2_FUNC_PARAM_CHECK(phase_holder, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, phase, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, handlers, AXIS2_FAILURE);
+    
+    size = AXIS2_ARRAY_LIST_SIZE(handlers, env);
+       
+    for (i = 0; i < size; i++) 
+    {
+        handler_desc = (struct axis2_handler_desc *) AXIS2_ARRAY_LIST_GET(
+            handlers, env, i);
+        /* Write the handler loading logic here */
+        /*handlerClass =
+                Class.forName(description.getClassName(),
+                        true,
+                        Thread.currentThread().getContextClassLoader());
+        handler =
+                (Handler) handlerClass.newInstance();*/
+        status = AXIS2_HANDLER_INIT(handler, env, handler_desc);
+        if(AXIS2_SUCCESS == status)
+            status = AXIS2_HANDLER_DESC_SET_HANDLER(handler_desc, env, handler);
+        
+        if(AXIS2_SUCCESS == status)
+            status = AXIS2_PHASE_ADD_HANDLER(phase, env, handler);
+    }
+    return status;
+}

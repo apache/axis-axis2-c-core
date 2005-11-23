@@ -141,6 +141,28 @@ extern "C"
 #define WSDL_USE_LITERAL "literal"
 #define WSDL_USE_ENCODED "encoded"
 
+/********************wsdl extensible constants*********************************/
+/**
+ * The Type name for the SOAP Address defined in the Port/Endpoint
+ */
+#define SOAP_11_ADDRESS "http://schemas.xmlsoap.org/wsdl/soap/"
+#define SOAP_12_ADDRESS "http://schemas.xmlsoap.org/wsdl/soap12/"
+
+
+#define SOAP_11_OPERATION "http://schemas.xmlsoap.org/wsdl/soap/"
+ #define SOAP_12_OPERATION "http://schemas.xmlsoap.org/wsdl/soap12/"
+
+#define SCHEMA "http://www.w3.org/2001/XMLSchema"
+
+#define SOAP_11_BODY "http://schemas.xmlsoap.org/wsdl/soap/"
+#define SOAP_12_BODY "http://schemas.xmlsoap.org/wsdl/soap12/"
+
+#define SOAP_11_HEADER "http://schemas.xmlsoap.org/wsdl/soap/"
+#define SOAP_12_HEADER "http://schemas.xmlsoap.org/wsdl/soap12/"
+
+#define SOAP_11_BINDING "http://schemas.xmlsoap.org/wsdl/soap/"
+#define SOAP_12_BINDING "http://schemas.xmlsoap.org/wsdl/soap12/"
+
 /*********************************** Constants*********************************/	
 	
 	

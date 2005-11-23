@@ -13,7 +13,9 @@ libaxis2_wsdl_la_SOURCES = wsdl_operation.c \
                         wsdl_binding.c \
                         wsdl_msg_ref.c \
                         wsdl_endpoint.c \
-                        wsdl_fault_ref.c
+                        wsdl_fault_ref.c \
+                        wsdl_extensible_element.c \
+                        wsdl_soap_operation.c
 
 libaxis2_wsdl_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include \

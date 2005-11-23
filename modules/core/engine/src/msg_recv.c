@@ -16,15 +16,14 @@
  
 #include <axis2_msg_recv.h>
 
-typedef struct axis2_msg_recv_impl_s axis2_msg_recv_impl_t;
 /** 
  * @brief Message Receiver struct impl
  * Axis2 Message Receiver impl  
  */ 
-struct axis2_msg_recv_impl_s
+typedef struct axis2_msg_recv_impl
 {
 	axis2_msg_recv_t msg_recv;
-};
+} axis2_msg_recv_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(msg_recv) ((axis2_msg_recv_impl_t *) msg_recv)
 	

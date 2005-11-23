@@ -1,1 +1,1 @@
-SUBDIRS = description context engine handlers
+SUBDIRS = description context engine handlers phaseresolver
