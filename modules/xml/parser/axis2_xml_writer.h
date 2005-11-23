@@ -60,28 +60,53 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
         axis2_status_t (AXIS2_CALL *free)(axis2_xml_writer_t *writer,
                                           axis2_env_t **env);
        /**
-        *  Write the localname of an xml element
-        * 
-        *   
+        *  Write a start tag to output stream with localname.
+        *  Internally the writer keeps track of the opened tags 
+        *  @param writer pointer to xml writer struct
+        *  @param env environment. MUST NOT be NULL.
+        *  @param localname localname of the tag, May not be NULL.
+        *  @return the status of the operation, AXIS2_SUCCESS on success
+                    AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *write_start_element)(
                                     axis2_xml_writer_t *writer,
                                     axis2_env_t **env, axis2_char_t *localname);
        /**
-        *        writer end part of start element
+        *  write an end tag to the output relying on the internal
+        *  state of writer to determine the prefix and localname of
+        *  the element
+        *  @param writer xml_writer struct
+        *  @param env environment, MUST NOT be NULL.
+        *  @return status of the operation. AXIS2_SUCCESS on success.
+        *           AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *end_start_element)(axis2_xml_writer_t *writer,
                                                        axis2_env_t **env);
         /**
-         * Write element with namespace uri
+         * Write an element tag with localname and namespace uri 
+         * @param writer pointer to xml writer struct
+         * @param env environment struct
+         * @param localname localname of the tag, May not be null.
+         * @param namespace_uri the namespace URI of the the pefix
+         *        to use.may not be null.
+         * @returns status of the operation, AXIS2_SUCCESS on success.
+         *          AXIS2_FAILURE on error
          */
         axis2_status_t (AXIS2_CALL *write_start_element_with_namespace)(
                                         axis2_xml_writer_t *writer,
                                         axis2_env_t **env,
                                         axis2_char_t *localname,
                                         axis2_char_t *namespace_uri);
+       
         /**
-         * Write element with namespace uri and prefix
+         * write a start tag to output
+         * @param writer pointer to xml_writer struct
+         * @param environment, MUST NOT be NULL.
+         * @param localname localname of the tag, May not be null.
+         * @param namespace_uri namespace to bind the prefix to
+         * @param prefix the prefix to the tag.May not be NULL.
+         * @return status of the operation 
+                   AXIS2_SUCCESS on success. AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_start_element_with_namespace_prefix)(
                                         axis2_xml_writer_t *writer,

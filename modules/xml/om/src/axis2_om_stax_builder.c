@@ -85,7 +85,7 @@ typedef struct axis2_om_stax_builder_impl_t
 													
 AXIS2_DECLARE(axis2_om_stax_builder_t *)
 axis2_om_stax_builder_create (axis2_env_t **env,
-                                       axis2_pull_parser_t *parser)
+                              axis2_pull_parser_t *parser)
 {
     axis2_om_stax_builder_impl_t *builder = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -702,10 +702,6 @@ AXIS2_CALL axis2_om_stax_builder_free(axis2_om_stax_builder_t *builder,
                                       axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(builder, env, AXIS2_FAILURE);
- 	if(AXIS2_INTF_TO_IMPL(builder)->parser)
-    {
-		AXIS2_PULL_PARSER_FREE(AXIS2_INTF_TO_IMPL(builder)->parser, env);
-    }   
 	if(builder->ops)
 		AXIS2_FREE ((*env)->allocator,builder->ops);
 	AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(builder));

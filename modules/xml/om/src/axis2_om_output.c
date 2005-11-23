@@ -36,7 +36,7 @@ axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
     om_output->xml_writer = NULL;
     if(xml_writer)
     {
-    om_output->xml_writer = xml_writer;
+        om_output->xml_writer = xml_writer;
     }
     else
     {
@@ -44,8 +44,11 @@ axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
                                                         DEFAULT_CHAR_SET_ENCODING,
                                                         AXIS2_TRUE,
                                                         0);
-        if(!(om_output->xml_writer)) 
-            printf(" writer null");
+        if(!(om_output->xml_writer))
+        {
+            AXIS2_FREE((*env)->allocator, om_output);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        }
     }
     om_output->do_optimize = AXIS2_FALSE;
     om_output->mime_boundary = 0;

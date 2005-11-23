@@ -124,8 +124,10 @@ test_om_build (char *filename)
     om_output = axis2_om_output_create (&environment, NULL);
     AXIS2_OM_NODE_SERIALIZE (AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(document, &environment), &environment , om_output);
     AXIS2_OM_DOCUMENT_FREE(document, &environment); 
-    axis2_om_output_free(om_output, &environment);
-    AXIS2_OM_STAX_BUILDER_FREE(builder, &environment); 
+    axis2_om_output_free(om_output, &environment);  
+    AXIS2_OM_STAX_BUILDER_FREE(builder, &environment);
+  
+    AXIS2_PULL_PARSER_FREE(pull_parser, &environment);    
     
 
     
@@ -227,10 +229,9 @@ main (int argc, char *argv[])
     stream = axis2_stream_create(allocator, NULL);
     
     environment = axis2_env_create_with_error_stream_log(allocator, error, stream, log);
-
     test_om_build (file_name);
-    test_om_serialize ();  
+    test_om_serialize (); 
 
-    axis2_env_free(environment);
+    axis2_env_free(environment); 
     getchar();    
  }

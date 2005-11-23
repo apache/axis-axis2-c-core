@@ -1,6 +1,9 @@
 #include <axis2_pull_parser.h>
 #include <axis2_env.h>
 #include <axis2_defines.h>
+#include <axis2_stream_default.h>
+#include <axis2_log_default.h>
+#include <axis2_error_default.h>
 #include <axis2.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,6 +13,9 @@ int main(int argc, char *argv[])
     axis2_env_t *env = NULL;
     axis2_allocator_t *allocator = NULL;
     axis2_pull_parser_t *parser = NULL;
+    axis2_stream_t *stream = NULL;
+    axis2_error_t *error = NULL;
+    axis2_log_t *log     = NULL;
     int token = 0;
     char *p = NULL;
     int attr_count =0;
@@ -20,7 +26,10 @@ int main(int argc, char *argv[])
         filename = argv[1];
     
     allocator = axis2_allocator_init(NULL);
-    env       = axis2_env_create(allocator);
+    log = axis2_log_create(allocator, NULL);
+    error = axis2_error_create(allocator);
+    stream = axis2_stream_create(allocator, NULL);
+    env       = axis2_env_create_with_error_stream_log(allocator, error, stream, log);
     parser = axis2_pull_parser_create_for_file(&env,filename,NULL);
     
     printf("running test\n\n\n");
@@ -184,5 +193,6 @@ int main(int argc, char *argv[])
     AXIS2_PULL_PARSER_FREE(parser, &env);
     axis2_env_free(env);
     printf("\n\n");
+    getchar();
     return 0;
 }

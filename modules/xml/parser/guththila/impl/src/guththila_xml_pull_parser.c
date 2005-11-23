@@ -60,8 +60,6 @@ guththila_xml_pull_parser_free (guththila_environment_t * environment,
 {
     if (parser->buffer)
         guththila_buffer_free (environment, (void *) parser->buffer);
-    if (parser->reader)
-        GUTHTHILA_FREE (environment->allocator, parser->reader);
     if (parser->stack)
         guththila_stack_free (environment, parser->stack);
     if (parser->attrib)

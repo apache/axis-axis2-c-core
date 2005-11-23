@@ -95,14 +95,15 @@ guththila_reader_free (guththila_environment_t * environment,
         
     if(r->guththila_reader_type == GUTHTHILA_IN_MEMORY_READER);
     {
-        GUTHTHILA_FREE(environment->allocator,(guththila_memory_reader_impl_t*)r);
+        GUTHTHILA_FREE(environment->allocator,(guththila_memory_reader_impl_t*)r); 
     }
     if(r->guththila_reader_type == GUTHTHILA_FILE_READER)
-    {
+    {   
         if(((guththila_file_reader_impl_t*)r)->fp)
             fclose(((guththila_file_reader_impl_t*)r)->fp);
-        GUTHTHILA_FREE(environment->allocator, (guththila_file_reader_impl_t*)r);
+        GUTHTHILA_FREE(environment->allocator, (guththila_file_reader_impl_t*)r); 
     }
+    
     return;    
 }
 
