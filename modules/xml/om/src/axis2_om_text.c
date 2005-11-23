@@ -141,7 +141,7 @@ axis2_om_text_free (axis2_om_text_t * om_text,
         AXIS2_FREE ((*env)->allocator, om_text->ops);
 
     if (om_text)
-        AXIS2_FREE ((*env)->allocator, om_text);
+        AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_text));
 
     return AXIS2_SUCCESS;
 }
