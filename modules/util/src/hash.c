@@ -503,24 +503,24 @@ axis2_hash_merge (const axis2_hash_t *overlay, axis2_env_t **environment
     return res;
 }
 
-static void
+static axis2_status_t
 axis2_hash_entry_free (axis2_env_t **environment, axis2_hash_entry_t *hash_entry)
 {
-    AXIS2_ENV_CHECK(environment, NULL);
+    AXIS2_ENV_CHECK(environment, AXIS2_FAILURE);
     if (!hash_entry)
-        return;
+        return AXIS2_FAILURE;
     if (hash_entry->next)
     {
         axis2_hash_entry_free (environment, hash_entry->next);
     }
     AXIS2_FREE ((*environment)->allocator, hash_entry);
-    return;
+    return AXIS2_SUCCESS;
 }
 
 AXIS2_DECLARE(axis2_status_t)
 axis2_hash_free (axis2_hash_t *ht, axis2_env_t** environment)
 {
-    AXIS2_ENV_CHECK(environment, NULL);
+    AXIS2_ENV_CHECK(environment, AXIS2_FAILURE);
     if (ht)
     {
         if (ht->free)
