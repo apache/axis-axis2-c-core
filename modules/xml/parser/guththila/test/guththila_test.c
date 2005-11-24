@@ -184,6 +184,9 @@ guththila_xml_stream_writer_write_start_document_with_version(env,writer,"1.0");
 guththila_xml_stream_writer_write_start_element(env,writer,"test");
 guththila_xml_stream_writer_write_attribute(env,writer,"test","axis2c");
 guththila_xml_stream_writer_write_comment(env,writer,"Hello");
+
+guththila_xml_stream_writer_write_empty_element_with_namespace(env,writer,"empty_element","t");
+
 printf("\n\n\n\n");
 guththila_xml_stream_writer_free(env, writer);
 

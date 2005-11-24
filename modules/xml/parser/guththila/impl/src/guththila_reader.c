@@ -22,21 +22,14 @@
 #include "guththila_defines.h"
 
 
-typedef struct guththila_file_reader_impl_t
+typedef struct guththila_reader_impl_t
 {
     guththila_reader_t reader;
     FILE *fp;
-}guththila_file_reader_impl_t;
-
-
-typedef struct guththila_memory_reader_impl_t
-{
-    guththila_reader_t reader;
-
     int (*input_read_callback)(char *buffer,int size);
+}guththila_reader_impl_t;
 
-    
-}guththila_memory_reader_impl_t;
+
 
 
 
@@ -44,10 +37,11 @@ GUTHTHILA_DECLARE (guththila_reader_t *)
 guththila_reader_create_for_file (guththila_environment_t * environment,
                                   char *filename)
 {
-   
-    guththila_file_reader_impl_t *file_reader = 
-            (guththila_file_reader_impl_t *) GUTHTHILA_MALLOC ( environment->allocator,
-                                                 sizeof (guththila_file_reader_impl_t));
+    if(!filename)
+        return NULL;
+    guththila_reader_impl_t *file_reader = 
+            (guththila_reader_impl_t *) GUTHTHILA_MALLOC ( environment->allocator,
+                                                 sizeof (guththila_reader_impl_t));
     if(!file_reader)
         return NULL;
     
@@ -70,9 +64,9 @@ guththila_reader_create_for_memory(
                 guththila_environment_t *environment,
                 int (*input_read_callback)(char *buffer,int size))
 {
-    guththila_memory_reader_impl_t *memory_reader = 
-        (guththila_memory_reader_impl_t *) GUTHTHILA_MALLOC (environment->allocator,
-                                            sizeof (guththila_memory_reader_impl_t));
+    guththila_reader_impl_t *memory_reader = 
+        (guththila_reader_impl_t *) GUTHTHILA_MALLOC (environment->allocator,
+                                            sizeof (guththila_reader_impl_t));
     if(!memory_reader)
     {
         return NULL;
@@ -92,19 +86,14 @@ guththila_reader_free (guththila_environment_t * environment,
 
     if (!r)
         return;
-        
-    if(r->guththila_reader_type == GUTHTHILA_IN_MEMORY_READER);
-    {
-        GUTHTHILA_FREE(environment->allocator,(guththila_memory_reader_impl_t*)r); 
-    }
+    
     if(r->guththila_reader_type == GUTHTHILA_FILE_READER)
     {   
-        if(((guththila_file_reader_impl_t*)r)->fp)
-            fclose(((guththila_file_reader_impl_t*)r)->fp);
-        GUTHTHILA_FREE(environment->allocator, (guththila_file_reader_impl_t*)r); 
+        if(((guththila_reader_impl_t*)r)->fp)
+            fclose(((guththila_reader_impl_t*)r)->fp);
     }
-    
-    return;    
+    GUTHTHILA_FREE(environment->allocator, (guththila_reader_impl_t*)r); 
+   return;    
 }
 
         
@@ -118,10 +107,10 @@ guththila_reader_read (guththila_environment_t * environment,
     
     if(r->guththila_reader_type == GUTHTHILA_FILE_READER)
     {
-       return (int)fread (buffer + offset, 1, length,((guththila_file_reader_impl_t*)r)->fp);
+       return (int)fread (buffer + offset, 1, length,((guththila_reader_impl_t*)r)->fp);
     }
     else if(r->guththila_reader_type == GUTHTHILA_IN_MEMORY_READER)
-        return ((guththila_memory_reader_impl_t*)r)->input_read_callback((buffer + offset), length);
+        return ((guththila_reader_impl_t*)r)->input_read_callback((buffer + offset), length);
  
     return GUTHTHILA_FAILURE;       
 }

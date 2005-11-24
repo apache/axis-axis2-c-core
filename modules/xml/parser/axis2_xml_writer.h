@@ -115,14 +115,25 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
                                         axis2_char_t *namespace_uri,
                                         axis2_char_t *prefix);       
         /**
-         * write empty_element 
+         * write an element tag with localname 
+         * @param writer xml_writer
+         * @param env environment
+         * @param localname localname 
+         * @return status of the operation AXIS2_SUCCESS on success,
+         *                AXIS2_FAILURE on error.
          */         
         axis2_status_t (AXIS2_CALL *write_empty_element)(
                                         axis2_xml_writer_t *writer,
                                         axis2_env_t **env,
                                         axis2_char_t *localname);
         /**
-         * write empty_element with namespace uri
+         * write empty_element with localname and namespace uri.
+         * @param writer xml writer
+         * @param env environment
+         * @param localname localname 
+         * @param namespace uri
+         * @return status of the operation, AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
          */
         
         axis2_status_t (AXIS2_CALL *write_empty_element_with_namespace)(
@@ -132,6 +143,13 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
                                         axis2_char_t *namespace_uri);
         /**
          * write empty element with namespace uri and prefix 
+         * @param writer xml_writer
+         * @param env environment
+         * @param localname localname
+         * @param namespace_uri namespace uri 
+         * @param prefix prefix
+         * @return status of the operation, AXIS2_SUCCESS on success,
+         *                    AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_empty_element_with_namespace_prefix)(
                                         axis2_xml_writer_t *writer,
@@ -140,30 +158,59 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
                                         axis2_char_t *namespace_uri,
                                         axis2_char_t *prefix);
         /**
-         * write end element 
+         * write end tag with correct localname prefix resolved internally 
+         * @param writer xml writer
+         * @param env environment
+         * @return status of the operation, AXIS2_SUCCESS on success,
+         *            AXIS2_FAILURE on failure 
          */
         axis2_status_t (AXIS2_CALL *write_end_element)(axis2_xml_writer_t *writer,
                                                        axis2_env_t **env);
         /**
          * write end document
+         * @param writer xml writer
+         * @param env environment
+         * @return status of the operation AXIS2_SUCCESS on success,
+         *              AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_end_document)(axis2_xml_writer_t *writer,
                                                        axis2_env_t **env);
         /**
-         * write attribute 
+         * write attribute with localname and value
+         * @param writer writer
+         * @param env environment
+         * @param localname localname 
+         * @param value text value of attribute
+         * @return status of the operation AXIS2_SUCCESS on success,
+         *                 AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_attribute)(axis2_xml_writer_t *writer,
                                                      axis2_env_t **env,
                                                      axis2_char_t *localname,
                                                      axis2_char_t *value);
-         
+        /**
+         *  @param writer
+         *  @param env environment
+         *  @param localname
+         *  @param value text value of attribute
+         *  @param namespace uri namespace uri
+         *  @return status code of the operation AXIS2_SUCCESS on success,
+         *                    AXIS2_FAILURE on error.
+         */
         axis2_status_t (AXIS2_CALL *write_attribute_with_namespace)(
                                                   axis2_xml_writer_t *writer,
                                                   axis2_env_t **env,
                                                   axis2_char_t *localname,
                                                   axis2_char_t *value,
                                                   axis2_char_t *namespace_uri);
-
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param localname localname
+         * @param value text value of attribute
+         * @param namespace uri namespaceuri
+         * @param prefix prefix 
+         */         
         axis2_status_t (AXIS2_CALL *write_attribute_with_namespace_prefix)(
                                                   axis2_xml_writer_t *writer,
                                                   axis2_env_t **env,
@@ -171,79 +218,201 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
                                                   axis2_char_t *value,
                                                   axis2_char_t *namespace_uri,
                                                   axis2_char_t *prefix);
-                                                  
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param prefix prefix 
+         * @param namespace uri namespaceuri
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */
+        
         axis2_status_t (AXIS2_CALL *write_namespace)(axis2_xml_writer_t *writer,
                                                      axis2_env_t **env,
                                                      axis2_char_t *prefix,
                                                      axis2_char_t *namespace_uri);   
-
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param namespace uri namespaceuri
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */
 
         axis2_status_t (AXIS2_CALL *write_default_namespace)
                                                     (axis2_xml_writer_t *writer,
                                                      axis2_env_t **env,
-                                                     axis2_char_t *namespace_uri);  
+                                                    axis2_char_t *namespace_uri);  
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param value value
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */
+                                                    
 
         axis2_status_t (AXIS2_CALL *write_comment)(axis2_xml_writer_t *writer,
                                                    axis2_env_t **env,
                                                    axis2_char_t *value);
-                                                   
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param target pi target 
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */
+
+
         axis2_status_t (AXIS2_CALL *write_processing_instruction)(
                                                    axis2_xml_writer_t *writer,
                                                    axis2_env_t **env,
                                                    axis2_char_t *target);
-                                                   
+                                   
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param target pi target
+         * @param data  pi data
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */
+                                   
         axis2_status_t (AXIS2_CALL *write_processing_instruction_data)(
                                                    axis2_xml_writer_t *writer,
                                                    axis2_env_t **env,
                                                    axis2_char_t *target,
                                                    axis2_char_t *data);
-                                                   
+         
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param data  cdata
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */                                           
         axis2_status_t (AXIS2_CALL *write_cdata)(axis2_xml_writer_t *writer,
                                                  axis2_env_t **env,
                                                  axis2_char_t *data);
         
+         
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param dtd  dtd
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */
         axis2_status_t (AXIS2_CALL *write_dtd)(axis2_xml_writer_t *writer,
                                                  axis2_env_t **env,
                                                  axis2_char_t *dtd); 
         
+         
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param name name
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */
         axis2_status_t (AXIS2_CALL *write_entity_ref)(
                                                  axis2_xml_writer_t *writer,
                                                  axis2_env_t **env,
                                                  axis2_char_t *name); 
-
+         
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */
         axis2_status_t (AXIS2_CALL *write_start_document)(
                                                  axis2_xml_writer_t *writer,
                                                  axis2_env_t **env);  
-      
+        
+         
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param version version 
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */
         axis2_status_t (AXIS2_CALL *write_start_document_with_version)(
                                                  axis2_xml_writer_t *writer,
                                                  axis2_env_t **env,
                                                  axis2_char_t *version);   
-
+         
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param version version
+         * @param encoding encoding
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */
         axis2_status_t (AXIS2_CALL *write_start_document_with_version_encoding)(
                                                  axis2_xml_writer_t *writer,
                                                  axis2_env_t **env,
                                                  axis2_char_t *encoding,
                                                  axis2_char_t *version);
-                                                 
+         
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param text text 
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */                                         
         axis2_status_t (AXIS2_CALL *write_characters)(
                                                  axis2_xml_writer_t *writer,
                                                  axis2_env_t **env,
                                                  axis2_char_t *text);   
-
+         
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param uri uri
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */
        axis2_char_t* (AXIS2_CALL *get_prefix)(  axis2_xml_writer_t *writer,
                                                  axis2_env_t **env,
                                                  axis2_char_t *uri);
-
+         
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param prefix prefix
+         * @param uri uri
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */
        axis2_status_t (AXIS2_CALL *set_prefix)(  axis2_xml_writer_t *writer,
                                                  axis2_env_t **env,
                                                  axis2_char_t *prefix,
                                                  axis2_char_t *uri);
+         
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param uri uri
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */                                                 
        axis2_status_t (AXIS2_CALL *set_default_prefix)(
                                                  axis2_xml_writer_t *writer,
                                                  axis2_env_t **env,
                                                  axis2_char_t *uri);                                                 
-  
+         
+        /**
+         * @param writer xml_writer
+         * @param env environment
+         * @param text text
+         * @param in_attr 
+         * @return status of operation AXIS2_SUCCESS on success,
+         *               AXIS2_FAILURE on error.
+         */
         axis2_status_t (AXIS2_CALL *write_encoded)(
                                                  axis2_xml_writer_t *writer,
                                                  axis2_env_t **env,

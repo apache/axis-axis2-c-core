@@ -20,8 +20,14 @@ axis2_env_t *environment = NULL;
 axis2_stream_t *stream = NULL;
 axis2_error_t *error = NULL;
 axis2_log_t *log     = NULL;
-
+FILE *f = NULL;
 /** a method that demonstrate creating a om model using an xml file */
+
+
+void read_input(char *buffer,int size)
+{
+   fread(buffer, sizeof(char),size,f);
+}
 
 int
 test_om_build (char *filename)
@@ -31,13 +37,16 @@ test_om_build (char *filename)
     axis2_om_text_t *text = NULL;
     axis2_om_document_t *document = NULL;
     axis2_om_node_t *node1 = NULL, *node2 = NULL, *node3 = NULL;
-    FILE *fp = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_om_namespace_t* ns = NULL;
     axis2_pull_parser_t *pull_parser = NULL;
     
+    f =fopen(filename, "r");
+    if(!f)
+        return;
+      
     /** create pull parser */
-    pull_parser = axis2_pull_parser_create_for_file(&environment, filename , NULL);
+    pull_parser = axis2_pull_parser_create_for_memory(&environment, read_input, NULL);
     
     if(!pull_parser)
     {
@@ -231,7 +240,8 @@ main (int argc, char *argv[])
     environment = axis2_env_create_with_error_stream_log(allocator, error, stream, log);
     test_om_build (file_name);
     test_om_serialize (); 
-
+    test_om_build (file_name);
+    test_om_serialize (); 
     axis2_env_free(environment); 
     getchar();    
  }

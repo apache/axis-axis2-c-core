@@ -244,7 +244,7 @@ AXIS2_DECLARE_DATA struct axis2_pull_parser_ops
                                             axis2_env_t **env);                                                
         /**
          *  Free function , this function wraps the underlying parser's 
-         *  xml free function. For freing values obatined by calling
+         *  xml free function. For freeing values obatined by calling
          *  pull parser api methods, This function must be used.
          * @param parser pointer to axis2_pull_parser
          * @param env environment, MUST NOT be NULL.
@@ -282,10 +282,10 @@ axis2_pull_parser_create_for_file(axis2_env_t **env,
 /**
  * This create an instance of axis2_pull_parser to 
  * parse a xml document in a buffer. It takes a callback 
- * function that takes a buffer and a size of the buffer
+ * function that takes a buffer and the size of the buffer
  * The user must implement a function that takes in buffer
  * and size and fill the buffer with specified size
- * witj xml stream, parser will call this function to fill the 
+ * with xml stream, parser will call this function to fill the 
  * buffer on the fly while parsing.
  * @param env environment MUST NOT be NULL.
  * @param read_input_callback() callback function that fills
