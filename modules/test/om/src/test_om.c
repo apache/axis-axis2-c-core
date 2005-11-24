@@ -19,31 +19,31 @@ axis2_allocator_t *allocator = NULL;
 axis2_env_t *environment = NULL;
 axis2_stream_t *stream = NULL;
 axis2_error_t *error = NULL;
-axis2_log_t *log     = NULL;
+axis2_log_t *axis_log     = NULL;
 FILE *f = NULL;
 /** a method that demonstrate creating a om model using an xml file */
 
 
-void read_input(char *buffer,int size)
+int read_input(char *buffer,int size)
 {
-   fread(buffer, sizeof(char),size,f);
+   return fread(buffer, sizeof(char),size,f);
 }
 
 int
 test_om_build (char *filename)
 {
-    axis2_om_element_t *ele1 = NULL, *ele2 = NULL, *ele3 = NULL, *ele4 = NULL;
+    axis2_om_element_t *ele1 = NULL, *ele2 = NULL;
     axis2_om_stax_builder_t *builder = NULL;
     axis2_om_text_t *text = NULL;
     axis2_om_document_t *document = NULL;
-    axis2_om_node_t *node1 = NULL, *node2 = NULL, *node3 = NULL;
+    axis2_om_node_t *node1 = NULL, *node2 = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_om_namespace_t* ns = NULL;
     axis2_pull_parser_t *pull_parser = NULL;
     
     f =fopen(filename, "r");
     if(!f)
-        return;
+        return -1;
       
     /** create pull parser */
     pull_parser = axis2_pull_parser_create_for_memory(&environment, read_input, NULL);
@@ -51,7 +51,7 @@ test_om_build (char *filename)
     if(!pull_parser)
     {
         printf("ERROR CREATING PULLPARSER");
-        return ;
+        return -1;
     }
     /** create axis2_om_stax_builder by parsing pull_parser struct */
     
@@ -60,7 +60,7 @@ test_om_build (char *filename)
     if(!builder)
     {
         printf("ERROR CREATING PULL PARSER");
-        return ;
+        return -1;
     }
     /** 
         create an om document
@@ -141,7 +141,7 @@ test_om_build (char *filename)
 
     
     printf ("\ndone\n");
-    return ;
+    return 0;
 }
 
 
@@ -164,12 +164,12 @@ test_om_serialize ()
     */
     int status;
     axis2_om_element_t *ele1 = NULL, *ele2 = NULL, *ele3 = NULL, *ele4 =
-        NULL, *ele5 = NULL;
+        NULL;
     axis2_om_node_t *node1 = NULL, *node2 = NULL, *node3 = NULL, *node4 =
-        NULL, *node5 = NULL, *node6 = NULL, *node7 = NULL;
+        NULL, *node5 = NULL, *node6 = NULL;
     axis2_om_attribute_t *attr1 = NULL, *attr2 = NULL;
     axis2_om_namespace_t *ns1 = NULL, *ns2 = NULL, *ns3 = NULL;
-    axis2_om_text_t *text1 = NULL, *text2 = NULL, *text3 = NULL;
+    axis2_om_text_t *text1 = NULL;
     axis2_om_output_t *om_output = NULL;
 
     ns1 =
@@ -232,16 +232,16 @@ main (int argc, char *argv[])
     if (argc > 1)
         file_name = argv[1];
     allocator = axis2_allocator_init (NULL);
-    log = axis2_log_create(allocator, NULL);
+    axis_log = axis2_log_create(allocator, NULL);
     error = axis2_error_create(allocator);
     
     stream = axis2_stream_create(allocator, NULL);
     
-    environment = axis2_env_create_with_error_stream_log(allocator, error, stream, log);
+    environment = axis2_env_create_with_error_stream_log(allocator, error, stream, axis_log);
     test_om_build (file_name);
     test_om_serialize (); 
     test_om_build (file_name);
     test_om_serialize (); 
     axis2_env_free(environment); 
-    getchar();    
+    return 0;
  }
