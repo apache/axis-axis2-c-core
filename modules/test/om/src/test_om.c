@@ -77,8 +77,7 @@ test_om_build (char *filename)
     {
         /** print root node information */
         
-        printf ("NODE TYPE %d\n",AXIS2_OM_NODE_GET_NODE_TYPE(node1,&environment));
-        
+       
         ele1 =AXIS2_OM_NODE_GET_DATA_ELEMENT(node1,&environment);
         if(ele1)
              
