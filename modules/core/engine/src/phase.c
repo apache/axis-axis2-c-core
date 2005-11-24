@@ -82,7 +82,7 @@ axis2_status_t AXIS2_CALL axis2_phase_free (struct axis2_phase *phase,
                                                axis2_env_t **env);
 
 
-axis2_phase_t* AXIS2_CALL axis2_phase_create(axis2_env_t **env, axis2_char_t *phase_name) 
+axis2_phase_t* AXIS2_CALL axis2_phase_create(axis2_env_t **env, const axis2_char_t *phase_name) 
 {
     axis2_phase_impl_t *phase_impl = NULL;
     

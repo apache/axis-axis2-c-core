@@ -39,22 +39,22 @@ extern "C"
      static const int AXIS2_FAULT_IN_FLOW = 3;
      static const int AXIS2_FAULT_OUT_FLOW = 4;
 
-    //INFLOW
-     static const axhs2_char_t *AXIS2_PHASE_TRANSPORTIN = "TransportIn";
-     static const axhs2_char_t *AXIS2_PHASE_PRE_DISPATCH = "PreDispatch";
-     static const axhs2_char_t *AXIS2_PHASE_DISPATCH = "Dispatch";
-     static const axhs2_char_t *AXIS2_PHASE_POST_DISPATCH = "PostDispatch";
-     static const axhs2_char_t *AXIS2_PHASE_POLICY_DETERMINATION = "PolicyDetermination";
-     static const axhs2_char_t *AXIS2_PHASE_MESSAGE_PROCESSING = "MessageProcessing";
+    /* INFLOW */
+     static const axis2_char_t *AXIS2_PHASE_TRANSPORTIN = "TransportIn";
+     static const axis2_char_t *AXIS2_PHASE_PRE_DISPATCH = "PreDispatch";
+     static const axis2_char_t *AXIS2_PHASE_DISPATCH = "Dispatch";
+     static const axis2_char_t *AXIS2_PHASE_POST_DISPATCH = "PostDispatch";
+     static const axis2_char_t *AXIS2_PHASE_POLICY_DETERMINATION = "PolicyDetermination";
+     static const axis2_char_t *AXIS2_PHASE_MESSAGE_PROCESSING = "MessageProcessing";
 
-    //OUTFLOW
-     static const axhs2_char_t *AXIS2_PHASE_MESSAGE_OUT = "MessageOut";
-     static const axhs2_char_t *AXIS2_PHASE_TRANSPORT_OUT = "MessageOut";
+    /* OUTFLOW */
+     static const axis2_char_t *AXIS2_PHASE_MESSAGE_OUT = "MessageOut";
+     static const axis2_char_t *AXIS2_PHASE_TRANSPORT_OUT = "MessageOut";
     /**
      * All the handlers inside transport_sender and tranport_recievre in axis2.xml gose
      * to this phase
      */
-     static const axhs2_char_t *AXIS2_TRANSPORT_PHASE = "TRANSPORT";
+     static const axis2_char_t *AXIS2_TRANSPORT_PHASE = "TRANSPORT";
 
 
 /** @} */

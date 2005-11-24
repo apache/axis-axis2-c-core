@@ -126,16 +126,16 @@ AXIS2_DECLARE_DATA struct axis2_phase_holder
 };
 
 /**
- * Creates wsdl property struct
- * @return pointer to newly created wsdl property
+ * Creates phase holder struct
+ * @return pointer to newly created phase holder
  */
 AXIS2_DECLARE(axis2_phase_holder_t *) 
 axis2_phase_holder_create (axis2_env_t **env);
 
 /**
- * Creates wsdl property struct
+ * Creates phase holder struct
  * @param phases
- * @return pointer to newly created wsdl property
+ * @return pointer to newly created phase holder
  */
 AXIS2_DECLARE(axis2_phase_holder_t *) 
 axis2_phase_holder_create_with_phases (axis2_env_t **env, axis2_array_list_t *phases);

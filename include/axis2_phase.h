@@ -167,7 +167,7 @@ extern "C"
 /**
  * creates phase struct
  */
-AXIS2_DECLARE(axis2_phase_t*) axis2_phase_create(axis2_env_t **env, axis2_char_t *phase_name);
+AXIS2_DECLARE(axis2_phase_t*) axis2_phase_create(axis2_env_t **env, const axis2_char_t *phase_name);
 
 #define AXIS2_PHASE_ADD_HANDLER_AT(phase, env, handler) ((phase)->ops->add_handler_at(phase, env, handler))
 #define AXIS2_PHASE_ADD_HANDLER(phase, env, handler) ((phase)->ops->add_handler(phase, env, handler))
