@@ -265,7 +265,7 @@ axis2_om_document_set_root_element(axis2_om_document_t *document,
     if(document_impl->root_element)
     {
         status = AXIS2_OM_NODE_FREE_TREE(document_impl->root_element, env);
-        if(status = AXIS2_SUCCESS)
+        if(status == AXIS2_SUCCESS)
         {
             document_impl->root_element = node;
             return AXIS2_SUCCESS;

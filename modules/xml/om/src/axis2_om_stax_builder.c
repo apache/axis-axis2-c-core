@@ -618,7 +618,6 @@ axis2_om_stax_builder_next (axis2_om_stax_builder_t *om_stax_builder,
     int token = 0;
     axis2_om_stax_builder_impl_t *builder = NULL;
     axis2_om_node_t *node = NULL;
-    axis2_om_node_t *root = NULL;   
     AXIS2_FUNC_PARAM_CHECK(om_stax_builder, env, NULL);
 
     builder = AXIS2_INTF_TO_IMPL(om_stax_builder);
