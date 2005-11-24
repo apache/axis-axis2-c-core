@@ -25,7 +25,6 @@ int main(int argc,char *argv[])
 {
     guththila_allocator_t *allocator = NULL;
     guththila_environment_t *env = NULL;
-    guththila_reader_t *reader = NULL;
     guththila_reader_t *reader_mem = NULL;
     guththila_xml_pull_parser_t *parser = NULL;
     guththila_attribute_t *a = NULL;
@@ -43,7 +42,7 @@ int main(int argc,char *argv[])
     
     f =fopen(filename,"r");
     if(!f)
-        return;
+        return -1;
     
     allocator = guththila_allocator_init(NULL);
     env       = guththila_environment_create(allocator,NULL,NULL);
@@ -192,5 +191,5 @@ guththila_xml_stream_writer_free(env, writer);
 
 guththila_environment_free(env);
 
-getchar();
+return 0;
 }
