@@ -37,10 +37,11 @@ GUTHTHILA_DECLARE (guththila_reader_t *)
 guththila_reader_create_for_file (guththila_environment_t * environment,
                                   char *filename)
 {
+    guththila_reader_impl_t *file_reader = NULL;
     if(!filename)
         return NULL;
-    guththila_reader_impl_t *file_reader = 
-            (guththila_reader_impl_t *) GUTHTHILA_MALLOC ( environment->allocator,
+    
+       file_reader = (guththila_reader_impl_t *) GUTHTHILA_MALLOC ( environment->allocator,
                                                  sizeof (guththila_reader_impl_t));
     if(!file_reader)
         return NULL;
