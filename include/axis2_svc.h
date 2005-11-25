@@ -66,7 +66,7 @@ struct axis2_svc_ops
 	struct axis2_operation *(AXIS2_CALL *get_operation_with_qname) (
                                                   axis2_svc_t *svc, 
                                                   axis2_env_t **env,
-	 	                                          axis2_qname_t *operation_name);
+	 	                                          axis2_qname_t *operation_qname);
 
 	struct axis2_operation *(AXIS2_CALL *get_operation_with_name) (
                                             axis2_svc_t *svc, 
@@ -157,11 +157,11 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
 #define AXIS2_SVC_ADD_OPERATION(svc, env, operation) \
 		(svc->ops->add_operation (svc, env, operation))
 
-#define AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env) \
-		(svc->ops->get_operation_with_qname (svc, env))
+#define AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env, operation_qname) \
+		(svc->ops->get_operation_with_qname (svc, env, operation_qname))
 
-#define AXIS2_SVC_GET_OPERATION_WITH_NAME(svc, env) \
-		(svc->ops->get_operation_with_name (svc, env))
+#define AXIS2_SVC_GET_OPERATION_WITH_NAME(svc, env, operation_name) \
+		(svc->ops->get_operation_with_name (svc, env, operation_name))
 
 #define AXIS2_SVC_GET_OPERATIONS(svc, env) (svc->ops->get_operations (svc, env))
 
