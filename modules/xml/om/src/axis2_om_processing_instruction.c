@@ -144,7 +144,9 @@ axis2_om_processing_instruction_create (axis2_env_t **env,
     processing_instruction->om_pi.ops->get_value =
             axis2_om_processing_instruction_get_value;
     processing_instruction->om_pi.ops->set_value = 
-            axis2_om_processing_instruction_set_value;                     
+            axis2_om_processing_instruction_set_value; 
+    processing_instruction->om_pi.ops->serialize =
+            axis2_om_processing_instruction_serialize;                                
     
     return &(processing_instruction->om_pi);
 }

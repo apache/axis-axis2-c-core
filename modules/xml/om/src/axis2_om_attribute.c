@@ -70,8 +70,6 @@ typedef struct axis2_om_attribute_impl
     /** attribute namespace */
     axis2_om_namespace_t *ns;
 
-
-
 }axis2_om_attribute_impl_t;
 
 /***************************************** macro *******************************/

@@ -486,7 +486,7 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
     int status = AXIS2_SUCCESS;
     AXIS2_FUNC_PARAM_CHECK(om_node, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error,om_output,AXIS2_FAILURE);
-
+    
 
     switch (AXIS2_INTF_TO_IMPL(om_node)->node_type)
     {
@@ -555,6 +555,7 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
     /* serialize next sibling */  
     if(AXIS2_INTF_TO_IMPL(om_node)->next_sibling)    
         status = axis2_om_node_serialize(AXIS2_INTF_TO_IMPL(om_node)->next_sibling, env, om_output);
+    
     
     return status;
  

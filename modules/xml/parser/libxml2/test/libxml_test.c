@@ -31,7 +31,10 @@ int main(int argc, char *argv[])
     stream = axis2_stream_create(allocator, NULL);
     env       = axis2_env_create_with_error_stream_log(allocator, error, stream, log);
     parser = axis2_pull_parser_create_for_file(&env,filename,NULL);
-    
+    if(!parser)
+    {   printf("error creatin parser ");
+        return;
+    }
     printf("running test\n\n\n");
         
     do{

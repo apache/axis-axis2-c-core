@@ -444,7 +444,7 @@ axis2_xml_writer_create(axis2_env_t **env,
 
 AXIS2_DECLARE(axis2_xml_writer_t *)
 axis2_xml_writer_create_for_memory(axis2_env_t **env,
-                                   void *buffer,
+                                   char **buffer,
                                    axis2_char_t *encoding,
                                    int is_prefix_default,
                                    int compression);
@@ -477,11 +477,11 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
         
 #define AXIS2_XML_WRITER_WRITE_EMPTY_ELEMENT_WITH_NAMESPACE(\
         writer, env,localname,namespace_uri) \
-        ((writer)->ops->write_empty_element(writer,env,localname,namespace_uri))       
+        ((writer)->ops->write_empty_element_with_namespace(writer,env,localname,namespace_uri))       
 
-#define AXIS2_XML_WRITER_WRITE_EMPTY_ELEMENT_WITH_NAMESPACE_WITH_PREFIX(\
+#define AXIS2_XML_WRITER_WRITE_EMPTY_ELEMENT_WITH_NAMESPACE_PREFIX(\
         writer, env, localname, namespace_uri, prefix) \
-        ((writer)->ops->write_empty_element(\
+        ((writer)->ops->write_empty_element_with_namespace_prefix(\
         writer,env,localname,namespace_uri, prefix))
 
 #define AXIS2_XML_WRITER_WRITE_END_ELEMENT(writer, env) \

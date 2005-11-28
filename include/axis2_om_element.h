@@ -149,6 +149,13 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
                                                     (struct axis2_om_element *om_element,
                                                      axis2_env_t **env,
                                                      axis2_om_output_t * om_output);
+        
+        axis2_om_namespace_t* (AXIS2_CALL *find_declared_namespace)
+                                        (struct axis2_om_element *om_element,
+                                         axis2_env_t **env,
+                                         const axis2_char_t *uri,
+                                         const axis2_char_t *prefix);
+                                                             
                                                         
        /**
         *   returns the localname of this element
@@ -283,6 +290,9 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
 /** set namespace */        
 #define AXIS2_OM_ELEMENT_SET_NAMESPACE(om_element, env, ns , node) \
         ((om_element)->ops->set_namespace(om_element, env, ns, node))
+
+#define AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(om_element, env, uri, prefix) \
+        ((om_element)->ops->find_declared_namespace(om_element, env, uri, prefix))        
         
 /** @} */
 

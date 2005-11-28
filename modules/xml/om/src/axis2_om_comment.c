@@ -113,6 +113,7 @@ axis2_om_comment_create(axis2_env_t **env,
     comment->om_comment.ops->free = axis2_om_comment_free;
     comment->om_comment.ops->set_value = axis2_om_comment_set_value;
     comment->om_comment.ops->get_value = axis2_om_comment_get_value;
+    comment->om_comment.ops->serialize = axis2_om_comment_serialize;
     return &(comment->om_comment);
 }
 

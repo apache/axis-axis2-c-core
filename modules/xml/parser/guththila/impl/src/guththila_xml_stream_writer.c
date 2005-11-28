@@ -157,7 +157,7 @@ guththila_xml_stream_writer_write_start_element_with_namespace
                                 guththila_char_t * local_name,
                                 guththila_char_t * namespace_uri)
 {
-    int is_declared;
+    int is_declared = 0;
     guththila_char_t ***new_element;
     guththila_char_t *prefix;
     if (!stream_writer)
@@ -173,7 +173,6 @@ guththila_xml_stream_writer_write_start_element_with_namespace
     prefix =
         guththila_xml_stream_writer_get_prefix (environment, stream_writer,
                                                 namespace_uri);
-
     is_declared = (prefix != 0);
 
     if (!is_declared)
@@ -194,14 +193,24 @@ guththila_xml_stream_writer_write_start_element_with_namespace
     }
 
     fputs (local_name, stream_writer->writer);
+    
+    stream_writer->in_start_element = 1;
 
     if (stream_writer->prefix_defaulting && !is_declared)
-    {
-        if (prefix)
+    {   
+        if (prefix && GUTHTHILA_STRLEN ( prefix) != 0)
+        {
             guththila_xml_stream_writer_write_namespace (environment,
                                                          stream_writer,
                                                          prefix,
                                                          namespace_uri);
+        }                                                         
+        else 
+        {
+            guththila_xml_stream_writer_write_default_namespace (environment,
+                                                         stream_writer,
+                                                         namespace_uri);                                                         
+        }
     }
     /*push element to stack */
     /*guththila_char_t** new_element = (guththila_char_t**)apr_array_push(stream_writer->element_stack); */
@@ -542,10 +551,9 @@ guththila_xml_stream_writer_write_namespace
                              guththila_char_t * prefix,
                              guththila_char_t * namespace_uri)
 {
-    guththila_char_t *declared_prefix;
+    guththila_char_t *declared_prefix = NULL;
     if (!stream_writer->in_start_element)
         return GUTHTHILA_STREAM_WRITER_ERROR_ILLEGAL_STATE;
-
     if (!prefix)
         prefix = GUTHTHILA_DEFAULT_NS_PREFIX;
 

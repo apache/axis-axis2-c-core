@@ -25,7 +25,7 @@ AXIS2_DECLARE(axis2_om_output_t *)
 axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
 {
     axis2_om_output_t *om_output = NULL;
-    AXIS2_ENV_CHECK(env , NULL);
+    AXIS2_FUNC_PARAM_CHECK(xml_writer, env, NULL);
     
     om_output = (axis2_om_output_t *) AXIS2_MALLOC ((*env)->allocator,
                                                     sizeof (axis2_om_output_t));
@@ -34,22 +34,8 @@ axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 
     om_output->xml_writer = NULL;
-    if(xml_writer)
-    {
-        om_output->xml_writer = xml_writer;
-    }
-    else
-    {
-        om_output->xml_writer = axis2_xml_writer_create(env, NULL,
-                                                        DEFAULT_CHAR_SET_ENCODING,
-                                                        AXIS2_TRUE,
-                                                        0);
-        if(!(om_output->xml_writer))
-        {
-            AXIS2_FREE((*env)->allocator, om_output);
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
-        }
-    }
+    om_output->xml_writer = xml_writer;
+   
     om_output->do_optimize = AXIS2_FALSE;
     om_output->mime_boundary = 0;
     om_output->root_content_id = 0;
@@ -198,6 +184,8 @@ axis2_om_output_write (axis2_om_output_t * om_output,
         AXIS2_FREE((*env)->allocator, om_output->xml_version);
     if(om_output->char_set_encoding)
         AXIS2_FREE((*env)->allocator, om_output->char_set_encoding);
+    if(om_output->xml_writer)
+        AXIS2_XML_WRITER_FREE(om_output->xml_writer, env);
     AXIS2_FREE ((*env)->allocator, om_output);
     return AXIS2_SUCCESS;
 }
