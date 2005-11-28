@@ -183,9 +183,6 @@ static axis2_status_t axis2_libxml2_wrapper_init_map(
     return AXIS2_FAILURE;
 }
 
-
-
-
 /*******************************************************************************/
 AXIS2_DECLARE(axis2_pull_parser_t *)
 axis2_pull_parser_create_for_file(axis2_env_t **env,
@@ -269,9 +266,6 @@ axis2_pull_parser_create_for_file(axis2_env_t **env,
 
 /************** create function for io callback function **********************/
 
-
-
-
 AXIS2_DECLARE(axis2_pull_parser_t *)
 axis2_pull_parser_create_for_memory(axis2_env_t **env,
                                     int (*read_input_callback)(char *buffer,int size),
@@ -339,7 +333,6 @@ axis2_pull_parser_create_for_memory(axis2_env_t **env,
         axis2_libxml2_wrapper_get_prefix;
     wrapper_impl->parser.ops->get_name =
         axis2_libxml2_wrapper_get_name;
-        
         
     wrapper_impl->parser.ops->get_namespace_count =
         axis2_libxml2_wrapper_get_namespace_count;
@@ -410,7 +403,6 @@ axis2_libxml2_wrapper_free(axis2_pull_parser_t *parser,
                            axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(parser,env, AXIS2_FAILURE);
-    
     if(AXIS2_INTF_TO_IMPL(parser)->reader)
         xmlFreeTextReader(AXIS2_INTF_TO_IMPL(parser)->reader);
     if(parser->ops)
@@ -531,17 +523,9 @@ axis2_libxml2_wrapper_get_value(axis2_pull_parser_t *parser,
                                 axis2_env_t **env)
 {
     axis2_libxml2_wrapper_impl_t *parser_impl = NULL;
-    int ret;
+    
     AXIS2_FUNC_PARAM_CHECK(parser, env, NULL);
     parser_impl = AXIS2_INTF_TO_IMPL(parser);
- /*   if(!(parser_impl->current_event == AXIS2_PULL_PARSER_CHARACTER))
-    {    ret = xmlTextReaderMoveToElement(parser_impl->reader); 
-        if(ret == 1)
-            return (axis2_char_t*)xmlTextReaderValue(parser_impl->reader);
-    else
-        return NULL;        
-    }
-  */
     return (axis2_char_t*)xmlTextReaderValue(parser_impl->reader);
    
 }
@@ -598,16 +582,12 @@ axis2_libxml2_wrapper_get_namespace_prefix_by_number(axis2_pull_parser_t *parser
     {   
         int ret = xmlTextReaderMoveToAttributeNo(parser_impl->reader,
                                                  parser_impl->namespace_map[i]);
-        
         if(ret == 1)
             return (axis2_char_t*)xmlTextReaderLocalName(parser_impl->reader);
         else
             return NULL;
     } 
     return NULL; 
-
-    
-    
 }
                                                 
 axis2_char_t* AXIS2_CALL
@@ -738,7 +718,6 @@ axis2_status_t axis2_libxml2_wrapper_fill_maps(axis2_pull_parser_t *parser,
     }
     return AXIS2_SUCCESS;
 }
-
 
 static int axis2_libxml2_wrapper_read_input_callback(void *ctx,char *buffer,int size)
 {

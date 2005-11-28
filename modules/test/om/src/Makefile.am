@@ -5,8 +5,7 @@ AM_CPPFLAGS = $(CPPFLAGS) -g -O2 -pthread
 test_om_SOURCES = test_om.c
 
 test_om_LDADD   =  $(LDFLAGS) -L$(top_builddir)/modules/xml/om/src/.libs -laxis2_om \
-                    -L$(top_builddir)/modules/xml/parser/guththila/src/.libs -laxis2_guththila \
-                    -L$(top_builddir)/modules/xml/parser/guththila/impl/src/.libs -lguththila \
+                    -L$(top_builddir)/modules/xml/parser/libxml2/src/.libs -laxis2_libxml2 \
                     -L$(top_builddir)/modules/util/src/.libs -laxis2_util
                     
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
