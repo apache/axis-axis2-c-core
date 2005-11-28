@@ -168,7 +168,7 @@ axis2_status_t AXIS2_CALL axis2_svc_ctx_free (struct axis2_svc_ctx *svc_ctx,
 /**
  * The method is used to do the intialization of the EngineContext
  */
-axis2_status_t AXIS2_CALL init(struct axis2_svc_ctx *svc_ctx, 
+axis2_status_t AXIS2_CALL axis2_svc_ctx_init(struct axis2_svc_ctx *svc_ctx, 
                                             axis2_env_t **env,
                     axis2_engine_config_t *engine_config) 
 {
@@ -190,7 +190,7 @@ axis2_status_t AXIS2_CALL init(struct axis2_svc_ctx *svc_ctx,
 /**
  * @return Returns the svc_id.
  */
-axis2_char_t* AXIS2_CALL get_svc_id(struct axis2_svc_ctx *svc_ctx, 
+axis2_char_t* AXIS2_CALL axis2_svc_ctx_get_svc_id(struct axis2_svc_ctx *svc_ctx, 
                                             axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(svc_ctx, env, NULL);
@@ -198,21 +198,21 @@ axis2_char_t* AXIS2_CALL get_svc_id(struct axis2_svc_ctx *svc_ctx,
 }
 
 
-axis2_svc_t* AXIS2_CALL get_svc(struct axis2_svc_ctx *svc_ctx, 
+axis2_svc_t* AXIS2_CALL axis2_svc_ctx_get_svc(struct axis2_svc_ctx *svc_ctx, 
                                             axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(svc_ctx, env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_ctx)->svc;
 }
 
-struct axis2_conf_ctx* AXIS2_CALL get_conf_ctx(struct axis2_svc_ctx *svc_ctx, 
+struct axis2_conf_ctx* AXIS2_CALL axis2_svc_ctx_get_conf_ctx(struct axis2_svc_ctx *svc_ctx, 
                                             axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(svc_ctx, env, NULL);
     return NULL; /*(struct axis2_conf_ctx *) AXIS2_SVC_GRP_CTX_GET_PARENT(AXIS2_INTF_TO_IMPL(svc_ctx)->parent, env);*/
 }
 
-axis2_operation_ctx_t* AXIS2_CALL create_operation_ctx(struct axis2_svc_ctx *svc_ctx, 
+axis2_operation_ctx_t* AXIS2_CALL axis2_svc_ctx_create_operation_ctx(struct axis2_svc_ctx *svc_ctx, 
                                             axis2_env_t **env, axis2_qname_t *qname) 
 {
     axis2_svc_ctx_impl_t *svc_ctx_impl = NULL;
