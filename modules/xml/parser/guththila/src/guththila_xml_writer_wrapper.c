@@ -312,13 +312,19 @@ axis2_xml_writer_create(axis2_env_t **env,
             guththila_xml_writer_wrapper_set_default_prefix;
     writer_impl->writer.ops->write_encoded = 
             guththila_xml_writer_wrapper_write_encoded;    
-    
-    
-    
-    
-    
     return &(writer_impl->writer);
 }
+
+AXIS2_DECLARE(axis2_xml_writer_t *)
+axis2_xml_writer_create_for_memory(axis2_env_t **env,
+                                   char **buffer,
+                                   axis2_char_t *encoding,
+                                   int is_prefix_default,
+                                   int compression)
+{
+    printf(" not implemented yet");
+    return NULL;
+}                                   
 
 axis2_status_t AXIS2_CALL 
 guththila_xml_writer_wrapper_free(axis2_xml_writer_t *writer,

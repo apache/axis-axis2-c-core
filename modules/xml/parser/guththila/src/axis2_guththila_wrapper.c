@@ -328,6 +328,11 @@ axis2_pull_parser_create_for_memory(axis2_env_t **env,
     guththila_impl->parser.ops->xml_free = axis2_guththila_wrapper_xml_free;
     return &(guththila_impl->parser);
 }
+
+                               
+
+
+
 int AXIS2_CALL 
 axis2_guththila_wrapper_next(axis2_pull_parser_t *parser,
                              axis2_env_t **env)
