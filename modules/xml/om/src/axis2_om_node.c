@@ -245,42 +245,39 @@ axis2_om_node_create (axis2_env_t **env)
 axis2_status_t AXIS2_CALL axis2_om_node_free_tree(axis2_om_node_t *om_node,
                                                   axis2_env_t **env)
 {
-    
+    axis2_om_node_impl_t *node_impl = NULL;   
     axis2_om_node_t *child_node = NULL;
-      
     AXIS2_FUNC_PARAM_CHECK(om_node,env,AXIS2_FAILURE);
     
-    if (AXIS2_INTF_TO_IMPL(om_node)->first_child)
-    {   
+    node_impl = AXIS2_INTF_TO_IMPL(om_node);
         
-        while (AXIS2_INTF_TO_IMPL(om_node)->first_child)
+    if (node_impl->first_child)
+    {   
+        while (node_impl->first_child)
         {
-            
-            child_node = AXIS2_OM_NODE_DETACH (AXIS2_INTF_TO_IMPL(om_node)->first_child, env);
-            
+            child_node = AXIS2_OM_NODE_DETACH (node_impl->first_child, env);
             AXIS2_OM_NODE_FREE_TREE ( child_node , env); 
-            
         }
     }
     
-    switch (AXIS2_INTF_TO_IMPL(om_node)->node_type)
+    switch (node_impl->node_type)
     {
     case AXIS2_OM_ELEMENT:
         
-        AXIS2_OM_ELEMENT_FREE((axis2_om_element_t*)(AXIS2_INTF_TO_IMPL(om_node)->data_element), env);
+        AXIS2_OM_ELEMENT_FREE((axis2_om_element_t*)(node_impl->data_element), env);
         break;
 
     case AXIS2_OM_COMMENT:
-        /* axis2_om_comment_free(env,(axis2_om_comment_t*)node->data_element) */
+        AXIS2_OM_COMMENT_FREE((axis2_om_comment_t*)(node_impl->data_element), env);
         break;
     case AXIS2_OM_DOCTYPE:
-        /* axis2_om_doctype_free(env,(axis2_om_doctype_t*)node->data_element) */
+        /*AXIS2_OM_DOCTYPE_FREE((axis2_om_doctype_t*)(node_impl->data_element), env);*/
         break;
     case AXIS2_OM_PROCESSING_INSTRUCTION:
-        /* axis2_om_prcessing_instruction_free(env,(axis2_om_processing_instruction)node->data_element)*/
+         AXIS2_OM_PROCESSING_INSTRUCTION_FREE((axis2_om_processing_instruction_t*)(node_impl->data_element), env);
         break;
     case AXIS2_OM_TEXT:
-        AXIS2_OM_TEXT_FREE((axis2_om_text_t*)(AXIS2_INTF_TO_IMPL(om_node)->data_element),env);
+        AXIS2_OM_TEXT_FREE((axis2_om_text_t*)(node_impl->data_element),env);
         break;
 
     default:

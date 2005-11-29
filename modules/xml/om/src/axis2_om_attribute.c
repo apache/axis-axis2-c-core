@@ -69,6 +69,8 @@ typedef struct axis2_om_attribute_impl
     axis2_char_t *value;
     /** attribute namespace */
     axis2_om_namespace_t *ns;
+    /** store qname here */
+    axis2_qname_t *qname;
 
 }axis2_om_attribute_impl_t;
 
@@ -125,7 +127,7 @@ axis2_om_attribute_create (axis2_env_t **env,
     attribute->ns = ns;
 
     /** operations */
-
+    attribute->qname = NULL;
     attribute->om_attribute.ops = (axis2_om_attribute_ops_t*)AXIS2_MALLOC ((*env)->allocator,
                       sizeof (axis2_om_attribute_ops_t));
     if (!(attribute->om_attribute.ops))
@@ -157,47 +159,56 @@ axis2_status_t AXIS2_CALL
 axis2_om_attribute_free (axis2_om_attribute_t *om_attribute,
                               axis2_env_t **env)
 {   
+    axis2_om_attribute_impl_t *attribute_impl = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(om_attribute, env, AXIS2_FAILURE);
-    if (AXIS2_INTF_TO_IMPL(om_attribute))
+    attribute_impl = AXIS2_INTF_TO_IMPL(om_attribute);
+
+    if (attribute_impl->localname)
     {
-        if (AXIS2_INTF_TO_IMPL(om_attribute)->localname)
-        {
-            AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_attribute)->localname);
-        }
-        if (AXIS2_INTF_TO_IMPL(om_attribute)->value)
-        {
-            AXIS2_FREE  ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_attribute)->value);
-        }
-        AXIS2_FREE  ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_attribute));
-        return AXIS2_SUCCESS;
+        AXIS2_FREE ((*env)->allocator, attribute_impl->localname);
+        attribute_impl->localname = NULL;
     }
-    return AXIS2_FAILURE;
+    if (attribute_impl->value)
+    {
+        AXIS2_FREE  ((*env)->allocator, attribute_impl->value);
+        attribute_impl->value = NULL;
+    }
+    if(attribute_impl->qname)
+    {
+        AXIS2_QNAME_FREE(attribute_impl->qname, env);
+        attribute_impl->qname = NULL;
+    }
+    AXIS2_FREE((*env)->allocator, om_attribute->ops);
+    AXIS2_FREE  ((*env)->allocator,attribute_impl);
+    return AXIS2_SUCCESS;
 }
-
-
 
 axis2_qname_t * AXIS2_CALL 
 axis2_om_attribute_get_qname (axis2_om_attribute_t *om_attribute,
                                    axis2_env_t **env)
 {
     axis2_qname_t *qname = NULL;
+    axis2_om_attribute_impl_t *attribute_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(om_attribute, env, NULL);
-
-    if (AXIS2_INTF_TO_IMPL(om_attribute)->ns)
+    attribute_impl = AXIS2_INTF_TO_IMPL(om_attribute);
+    if(!(attribute_impl->qname))
     {
-        axis2_om_namespace_t *ns = NULL;
-        ns = AXIS2_INTF_TO_IMPL(om_attribute)->ns;
-        
-        qname = axis2_qname_create (env,
-                    AXIS2_INTF_TO_IMPL(om_attribute)->localname,
-                    AXIS2_OM_NAMESPACE_GET_URI(ns, env),
-                    AXIS2_OM_NAMESPACE_GET_PREFIX(ns, env));
-    }                                
-    else
-        qname = axis2_qname_create (env,AXIS2_INTF_TO_IMPL(om_attribute)->localname,
+        if (attribute_impl->ns)
+        {
+            qname = axis2_qname_create (env,
+                    attribute_impl->localname,
+                    AXIS2_OM_NAMESPACE_GET_URI(attribute_impl->ns, env),
+                    AXIS2_OM_NAMESPACE_GET_PREFIX(attribute_impl->ns, env));
+        }                                
+        else
+        {    qname = axis2_qname_create (env,attribute_impl->localname,
                                     NULL,  NULL);
-
-    return qname;
+        }
+        attribute_impl->qname = qname;
+        return qname;                                        
+    }
+    return attribute_impl->qname;
 }
 
 

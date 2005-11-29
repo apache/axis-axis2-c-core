@@ -129,10 +129,10 @@ extern "C"
         AXIS2_ERROR_INVALID_ITERATOR_STATE,
         /** Node type is different from what is expected */
         AXIS2_ERROR_INVALID_NODE_TYPE,
-        /** Pull parser returned NULL element */
-        AXIS2_ERROR_PULL_PARSER_ELEMENT_NULL,
-        /** Pull parser returned NULL value */
-        AXIS2_ERROR_PULL_PARSER_VALUE_NULL,
+        /** axis2_xml_reader returned NULL element */
+        AXIS2_ERROR_XML_READER_ELEMENT_NULL,
+        /** axis2_xml_reader returned NULL value */
+        AXIS2_ERROR_XML_READER_VALUE_NULL,
         /** Builder done with pulling. Cannot pull any more */
         AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL,
         /** Bulder's last node is NULL when it is not supposed to be NULL */

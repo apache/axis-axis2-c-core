@@ -39,7 +39,7 @@ test_om_build (char *filename)
     axis2_om_node_t *node1 = NULL, *node2 = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_om_namespace_t* ns = NULL;
-    axis2_pull_parser_t *pull_parser = NULL;
+    axis2_xml_reader_t *reader = NULL;
     axis2_xml_writer_t *writer = NULL;
     axis2_char_t *buf = NULL;
     
@@ -49,16 +49,16 @@ test_om_build (char *filename)
         return -1;
       
     /** create pull parser */
-    pull_parser = axis2_pull_parser_create_for_memory(&environment, read_input, NULL);
+    reader = axis2_xml_reader_create_for_memory(&environment, read_input, NULL);
     
-    if(!pull_parser)
+    if(!reader)
     {
         printf("ERROR CREATING PULLPARSER");
         return -1;
     }
     /** create axis2_om_stax_builder by parsing pull_parser struct */
     
-    builder = axis2_om_stax_builder_create (&environment,pull_parser);
+    builder = axis2_om_stax_builder_create (&environment,reader);
     
     if(!builder)
     {
@@ -237,7 +237,7 @@ test_om_serialize ()
         printf ("\naxis2_om_node_serialize success\n");
     /* end serializing stuff */
 
-     AXIS2_OM_NODE_FREE_TREE(node1,&environment);
+    // AXIS2_OM_NODE_FREE_TREE(node1,&environment);
      axis2_om_output_free(om_output, &environment);
      printf ("\nDONE\n");
 
@@ -258,7 +258,7 @@ main (int argc, char *argv[])
 
     environment = axis2_env_create_with_error_stream_log(allocator, error, stream, axis_log);
     test_om_build (file_name); 
-
+    test_om_serialize();
     axis2_env_free(environment); 
     getchar();
     return 0;

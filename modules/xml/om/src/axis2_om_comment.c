@@ -122,18 +122,19 @@ axis2_status_t AXIS2_CALL
 axis2_om_comment_free (axis2_om_comment_t *om_comment,
                        axis2_env_t **env)
 {
+    axis2_om_comment_impl_t *comment_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(om_comment, env, AXIS2_FAILURE);
-    if (om_comment)
+    comment_impl = AXIS2_INTF_TO_IMPL(om_comment);
+    
+    if (comment_impl->value)
     {
-        if (AXIS2_INTF_TO_IMPL(om_comment)->value)
-        {
-            AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_comment)->value);
-        }
-        AXIS2_FREE((*env)->allocator,AXIS2_INTF_TO_IMPL(om_comment));
-        return AXIS2_SUCCESS;
+        AXIS2_FREE ((*env)->allocator, comment_impl->value);
     }
-    return AXIS2_FAILURE;
+    AXIS2_FREE((*env)->allocator, om_comment->ops);
+    AXIS2_FREE((*env)->allocator,AXIS2_INTF_TO_IMPL(om_comment));
+    return AXIS2_SUCCESS;
 }
+
 
 axis2_char_t* AXIS2_CALL
 axis2_om_comment_get_value(axis2_om_comment_t *om_comment,

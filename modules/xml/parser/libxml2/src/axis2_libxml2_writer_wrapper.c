@@ -24,10 +24,14 @@
 
 /*******************************************************************************/
 
+/** TODO namespace validation in element scope */
+/******************************************************************************/
 #define ENCODING "ISO-8859-1"
 
 #define AXIS2_LIBXML2_WRITER_MEMORY 1
 #define AXIS2_LIBXML2_WRITER_FILE   2
+
+
 
 
 /*********************** function prototypes ***********************************/
@@ -248,6 +252,7 @@ typedef struct axis2_libxml2_writer_wrapper_impl
 #define AXIS2_INTF_TO_IMPL(p) ((axis2_libxml2_writer_wrapper_impl_t*)p)
 
 /****************************** End macro **************************************/
+
 
 AXIS2_DECLARE(axis2_xml_writer_t *)
 axis2_xml_writer_create(axis2_env_t **env,
@@ -631,6 +636,15 @@ axis2_libxml2_writer_wrapper_write_start_element_with_namespace_prefix(
     
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
     axis2_libxml2_writer_wrapper_reset(writer, env);
+
+    /**
+        we intentionally write a null namespace_uri 
+        to avoid namespace duplication since wrapper does not
+        do namespace validation
+    */
+
+   /* axis2_libxml2_writer_wrapper_validate_namespace(writer, env, namespace_uri, prefix);
+    */
     status = xmlTextWriterStartElementNS(writer_impl->xml_writer,
                                         BAD_CAST prefix,
                                         BAD_CAST localname, 
@@ -727,12 +741,15 @@ axis2_libxml2_writer_wrapper_write_empty_element_with_namespace_prefix(
     
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
     axis2_libxml2_writer_wrapper_reset(writer, env);
+    /**
+        we intentionally write a null namespace uri to avoid namespace
+        duplication 
     axis2_libxml2_writer_wrapper_validate_namespace(writer, env, namespace_uri, prefix);
-    
+    */
     status = xmlTextWriterStartElementNS(writer_impl->xml_writer,
                                         BAD_CAST prefix,
                                         BAD_CAST localname, 
-                                        BAD_CAST namespace_uri);
+                                        BAD_CAST NULL);
                                         
     if(status < 0)
     {
@@ -875,6 +892,8 @@ axis2_libxml2_writer_wrapper_write_attribute_with_namespace_prefix(
     AXIS2_PARAM_CHECK((*env)->error, prefix, AXIS2_FAILURE);
         
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
+    /*
+    we intentionally write null namespace uri to avoid namespace duplication
     
     exists = axis2_libxml2_writer_wrapper_validate_namespace(writer, env, namespace_uri, prefix);
     if(exists == AXIS2_TRUE)
@@ -885,7 +904,11 @@ axis2_libxml2_writer_wrapper_write_attribute_with_namespace_prefix(
         status = xmlTextWriterWriteAttributeNS(writer_impl->xml_writer,
                     BAD_CAST prefix , BAD_CAST localname, 
                         BAD_CAST namespace_uri , BAD_CAST value);
-                    
+     */
+    status = xmlTextWriterWriteAttributeNS(writer_impl->xml_writer,
+                    BAD_CAST prefix , BAD_CAST localname, 
+                        BAD_CAST NULL , BAD_CAST value);
+                  
     if(status < 0)
     {
         AXIS2_ERROR_SET((*env)->error,

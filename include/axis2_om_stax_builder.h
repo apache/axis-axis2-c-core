@@ -23,7 +23,7 @@
  */
 
 #include <axis2_om_node.h>
-#include <axis2_pull_parser.h>
+#include <axis2_xml_reader.h>
 #include <axis2_om_document.h>
 #include <axis2_env.h>
 
@@ -122,7 +122,7 @@ extern "C"
     */
     AXIS2_DECLARE(axis2_om_stax_builder_t *)
     axis2_om_stax_builder_create(axis2_env_t **env,
-                                           axis2_pull_parser_t *parser);
+                                           axis2_xml_reader_t *parser);
 
 
 /** builds next node */

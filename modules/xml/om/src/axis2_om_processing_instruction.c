@@ -155,18 +155,25 @@ axis2_status_t AXIS2_CALL
 axis2_om_processing_instruction_free (axis2_om_processing_instruction_t *om_pi,
                                       axis2_env_t **env)
 {
+        axis2_om_processing_instruction_impl_t *pi_impl = NULL;
         AXIS2_FUNC_PARAM_CHECK(om_pi, env, AXIS2_FAILURE);
-        if (AXIS2_INTF_TO_IMPL(om_pi)->value)
+        
+        pi_impl = AXIS2_INTF_TO_IMPL(om_pi);
+        
+        if (pi_impl->value)
         {
-            AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_pi)->value);
+            AXIS2_FREE ((*env)->allocator,pi_impl->value);
+            pi_impl->value = NULL;
         }
 
-        if (AXIS2_INTF_TO_IMPL(om_pi)->target)
+        if (pi_impl->target)
         {
-            AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_pi)->target);
+            AXIS2_FREE ((*env)->allocator, pi_impl->target);
+            pi_impl->target = NULL;
         }
-
-        AXIS2_FREE ((*env)->allocator,om_pi);
+        
+        AXIS2_FREE((*env)->allocator, om_pi->ops);
+        AXIS2_FREE ((*env)->allocator, pi_impl);
         return AXIS2_SUCCESS;
 }
 
