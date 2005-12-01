@@ -143,18 +143,18 @@ test_om_build (char *filename)
     printf ("END: pull document\n");
 
     printf ("Serialize pulled document\n\n\n\n");
-   /* 
-    writer = axis2_xml_writer_create_for_memory(&environment, &buf, NULL, AXIS2_TRUE, 0);
-   */
-    writer = axis2_xml_writer_create(&environment, "finaltest.xml", NULL, AXIS2_TRUE, 0);
     
+    writer = axis2_xml_writer_create_for_memory(&environment, &buf, NULL, AXIS2_TRUE, 0);
+    /*
+    writer = axis2_xml_writer_create(&environment, "finaltest.xml", NULL, AXIS2_TRUE, 0);
+    */
     om_output = axis2_om_output_create (&environment, writer);
     AXIS2_OM_NODE_SERIALIZE (AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(document, &environment), &environment , om_output);
     AXIS2_OM_DOCUMENT_FREE(document, &environment); 
     axis2_om_output_free(om_output, &environment);  
     AXIS2_OM_STAX_BUILDER_FREE(builder, &environment);
   
-        
+    printf("%s",buf);    
     AXIS2_FREE(environment->allocator, buf);
     printf ("\ndone\n");
     return 0;
