@@ -146,7 +146,8 @@ test_om_build (char *filename)
     
     writer = axis2_xml_writer_create_for_memory(&environment, &buf, NULL, AXIS2_TRUE, 0);
     /*
-    writer = axis2_xml_writer_create(&environment, "finaltest.xml", NULL, AXIS2_TRUE, 0);
+    for guththila use following 
+    writer = axis2_xml_writer_create(&environment, NULL , NULL, AXIS2_TRUE, 0);
     */
     om_output = axis2_om_output_create (&environment, writer);
     AXIS2_OM_NODE_SERIALIZE (AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(document, &environment), &environment , om_output);
