@@ -101,7 +101,7 @@ AXIS2_DECLARE(axis2_svc_grp_ctx_t*) axis2_svc_grp_ctx_create(axis2_env_t **env,
 #define AXIS2_SVC_GRP_CTX_INIT(svc_grp_ctx, env, engine_config) ((svc_grp_ctx)->ops->init(svc_grp_ctx, env, engine_config))
 #define AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env) ((svc_grp_ctx)->ops->get_id(svc_grp_ctx, env))
 #define AXIS2_SVC_GRP_CTX_SET_ID(svc_grp_ctx, env, id) ((svc_grp_ctx)->ops->set_id(svc_grp_ctx, env, id))
-#define AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, svc_name) ((svc_grp_ctx)->ops->get_svc(svc_grp_ctx, env, svc_name))
+#define AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, svc_name) ((svc_grp_ctx)->ops->get_svc_ctx(svc_grp_ctx, env, svc_name))
 #define AXIS2_SVC_GRP_CTX_FILL_SVC_CTX_MAP(svc_grp_ctx, env) ((svc_grp_ctx)->ops->fill_svc_ctx_map(svc_grp_ctx, env))
 #define AXIS2_SVC_GRP_GET_SVC_GRP(svc_grp_ctx, env) ((svc_grp_ctx)->ops->get_svc_grp(svc_grp_ctx, env))
 #define AXIS2_SVC_GRP_GET_SVC_CTX_MAP(svc_grp_ctx, env) ((svc_grp_ctx)->ops->get_svc_ctx_map(svc_grp_ctx, env))

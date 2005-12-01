@@ -159,7 +159,7 @@ axis2_operation_ctx_t* AXIS2_CALL axis2_operation_ctx_create(axis2_env_t **env,
 #define AXIS2_OPERATION_CTX_GET_IS_COMPLETE(operation_ctx, env) ((operation_ctx)->ops->get_is_complete(operation_ctx, env))
 #define AXIS2_OPERATION_CTX_SET_IS_COMPLETE(operation_ctx, env, is_complete) ((operation_ctx)->ops->set_is_complete(operation_ctx, env, is_complete))
 #define AXIS2_OPERATION_CTX_CLEANUP(operation_ctx, env) ((operation_ctx)->ops->cleanup(operation_ctx, env))
-#define AXIS2_OPERATION_CTX_SET_PARENT(operation_ctx, env, svc_ctx) ((operation_ctx)->ops->set_is_complete(operation_ctx, env, svc_ctx))
+#define AXIS2_OPERATION_CTX_SET_PARENT(operation_ctx, env, svc_ctx) ((operation_ctx)->ops->set_parent(operation_ctx, env, svc_ctx))
 #define AXIS2_OPERATION_CTX_GET_MSG_CTX_MAP(operation_ctx, env) ((operation_ctx)->ops->get_msg_ctx_map(operation_ctx, env))    
 
 /************************** End of function macros ****************************/    
