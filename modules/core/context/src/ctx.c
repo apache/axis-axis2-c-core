@@ -136,7 +136,8 @@ axis2_char_t* AXIS2_CALL axis2_ctx_get_property(struct axis2_ctx *ctx, axis2_env
     return ret;
 }
 
-axis2_hash_t* AXIS2_CALL axis2_ctx_get_non_persistent_map(struct axis2_ctx *ctx, axis2_env_t **env) 
+axis2_hash_t* AXIS2_CALL 
+axis2_ctx_get_non_persistent_map(struct axis2_ctx *ctx, axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(ctx, env, NULL);
     return AXIS2_INTF_TO_IMPL(ctx)->non_persistent_map;
