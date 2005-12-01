@@ -63,7 +63,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libaxis2_guththila_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libaxis2_guththila_la_OBJECTS = guththila_xml_writer_wrapper.lo \
-	axis2_guththila_wrapper.lo
+	guththila_xml_reader_wrapper.lo
 libaxis2_guththila_la_OBJECTS = $(am_libaxis2_guththila_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -191,7 +191,7 @@ target_vendor = @target_vendor@
 lib_LTLIBRARIES = libaxis2_guththila.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_guththila_la_SOURCES = guththila_xml_writer_wrapper.c \
-                                axis2_guththila_wrapper.c 
+                                guththila_xml_reader_wrapper.c 
 
 libaxis2_guththila_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include \
@@ -268,7 +268,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/axis2_guththila_wrapper.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/guththila_xml_reader_wrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/guththila_xml_writer_wrapper.Plo@am__quote@
 
 .c.o:
