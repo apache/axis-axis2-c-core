@@ -204,12 +204,12 @@ axis2_qname_free ( axis2_qname_t * qname,
         AXIS2_FREE ((*env)->allocator, qname_impl->localpart);
         qname_impl->localpart = NULL;
     }
-    if (AXIS2_INTF_TO_IMPL(qname)->namespace_uri)
+    if (qname_impl->namespace_uri)
     {
         AXIS2_FREE ((*env)->allocator, qname_impl->namespace_uri);
         qname_impl->namespace_uri = NULL;
     }
-    if (AXIS2_INTF_TO_IMPL(qname)->prefix)
+    if (qname_impl->prefix)
     {
         AXIS2_FREE ((*env)->allocator, qname_impl->prefix);
         qname_impl->prefix = NULL;
