@@ -520,12 +520,18 @@ axis2_hash_entry_free (axis2_env_t **environment, axis2_hash_entry_t *hash_entry
 AXIS2_DECLARE(axis2_status_t)
 axis2_hash_free (axis2_hash_t *ht, axis2_env_t** environment)
 {
+    int i =0;
     AXIS2_ENV_CHECK(environment, AXIS2_FAILURE);
     if (ht)
     {
-        if (ht->free)
-            axis2_hash_entry_free (environment, ht->free);
-        AXIS2_FREE((*environment)->allocator, ht->array);
+        for(i = 0;i <ht->max; i++)
+        {
+            if(ht->array[i])
+            {
+                AXIS2_FREE((*environment)->allocator, ht->array[i]);
+            }
+        }
+        AXIS2_FREE((*environment)->allocator, (ht->array));
         AXIS2_FREE ((*environment)->allocator, ht);
         return AXIS2_SUCCESS;
     }

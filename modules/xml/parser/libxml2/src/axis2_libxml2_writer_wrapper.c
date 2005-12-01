@@ -267,7 +267,6 @@ axis2_xml_writer_create(axis2_env_t **env,
                    sizeof(axis2_libxml2_writer_wrapper_impl_t));
     if(!writer_impl)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
-     
     writer_impl->xml_writer = xmlNewTextWriterFilename(filename, compression);
     
     if(!(writer_impl->xml_writer))
@@ -384,7 +383,6 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
 {
     axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    
     writer_impl = (axis2_libxml2_writer_wrapper_impl_t *)AXIS2_MALLOC((*env)->allocator,
                    sizeof(axis2_libxml2_writer_wrapper_impl_t));
     if(!writer_impl)

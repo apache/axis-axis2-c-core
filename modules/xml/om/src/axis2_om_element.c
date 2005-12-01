@@ -388,9 +388,10 @@ axis2_om_element_declare_namespace (axis2_om_element_t *ele,
     }
 
     if (AXIS2_OM_NAMESPACE_GET_PREFIX(ns,env))
-        axis2_hash_set (AXIS2_INTF_TO_IMPL(element)->namespaces,
+    {   axis2_hash_set (AXIS2_INTF_TO_IMPL(element)->namespaces,
                         AXIS2_OM_NAMESPACE_GET_PREFIX(ns,env),
                         AXIS2_HASH_KEY_STRING, ns);
+    }
     else
     {
         axis2_hash_set (AXIS2_INTF_TO_IMPL(element)->namespaces,

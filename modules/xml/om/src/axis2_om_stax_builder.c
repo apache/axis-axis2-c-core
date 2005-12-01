@@ -318,33 +318,43 @@ axis2_om_stax_builder_process_namespaces (axis2_om_stax_builder_t *om_stax_build
         if(AXIS2_STRCMP(temp_ns_prefix,"xmlns") == 0 || !temp_ns_prefix)
         {
              axis2_om_element_t *om_ele = NULL;
+             om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
+            
              om_ns = axis2_om_namespace_create ( env,
                          temp_ns_uri, NULL );
-             om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
              status = AXIS2_OM_ELEMENT_DECLARE_NAMESPACE( om_ele, env, node, om_ns);
             
              temp_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(om_ele, env, temp_ns_uri, NULL);
              if(temp_ns)
-               AXIS2_OM_ELEMENT_SET_NAMESPACE (om_ele, env, om_ns, node);                        
-                                                 
+             {
+                AXIS2_OM_ELEMENT_SET_NAMESPACE (om_ele, env, om_ns, node); 
+             }                 
+             else
+             {
+                AXIS2_OM_NAMESPACE_FREE(om_ns, env);
+                om_ns = NULL;
+             }
+                       
         }
         else
-        {                                            
-           om_ns = axis2_om_namespace_create ( env,
+        {       
+            axis2_om_element_t *om_ele = NULL;
+            om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
+            
+            om_ns = axis2_om_namespace_create ( env,
                          temp_ns_uri, temp_ns_prefix );
-           status = AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(
-                        (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env),
-                        env, node, om_ns);
-                                     
+            status = AXIS2_OM_ELEMENT_DECLARE_NAMESPACE( om_ele, env, node, om_ns);
+                    
+            temp_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(om_ele, env, temp_ns_uri,temp_ns_prefix);
+           
         }        
         AXIS2_XML_READER_XML_FREE(builder->parser, env, temp_ns_prefix);
         AXIS2_XML_READER_XML_FREE(builder->parser, env, temp_ns_uri);
-                                
         if (!om_ns)
         {
             /* something went wrong */
             return AXIS2_FAILURE;
-        }
+        }                   
     }
     /* set own namespace */
     temp_prefix = AXIS2_XML_READER_GET_PREFIX ( builder->parser, env);

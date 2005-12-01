@@ -131,7 +131,7 @@ axis2_om_comment_free (axis2_om_comment_t *om_comment,
         AXIS2_FREE ((*env)->allocator, comment_impl->value);
     }
     AXIS2_FREE((*env)->allocator, om_comment->ops);
-    AXIS2_FREE((*env)->allocator,AXIS2_INTF_TO_IMPL(om_comment));
+    AXIS2_FREE((*env)->allocator,comment_impl);
     return AXIS2_SUCCESS;
 }
 
