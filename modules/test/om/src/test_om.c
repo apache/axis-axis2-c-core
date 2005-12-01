@@ -188,7 +188,7 @@ test_om_serialize ()
     axis2_om_namespace_t *ns1 = NULL, *ns2 = NULL, *ns3 = NULL;
     axis2_om_text_t *text1 = NULL;
     axis2_om_output_t *om_output = NULL;
-
+    char *buffer = NULL;
     ns1 =
         axis2_om_namespace_create (&environment,
                                    "http://ws.apache.org/axis2/c/om",
@@ -219,7 +219,12 @@ test_om_serialize ()
     attr2 = axis2_om_attribute_create (&environment, "name", "Axitoc Oman", ns1);
     
     AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(ele4,&environment, attr2);
-    writer = axis2_xml_writer_create(&environment, "write_text.xml", NULL, AXIS2_TRUE, 0);
+    
+    writer = axis2_xml_writer_create_for_memory(&environment, &buffer, NULL, AXIS2_TRUE, 0);
+    /* for guththila use following */
+    /*
+    writer = axis2_xml_writer_create(&environment,NULL, NULL, AXIS2_TRUE, 0);
+    */
    
     /* serializing stuff */
     om_output = axis2_om_output_create (&environment,writer);
@@ -239,6 +244,9 @@ test_om_serialize ()
 
      AXIS2_OM_NODE_FREE_TREE(node1,&environment);
      axis2_om_output_free(om_output, &environment);
+             
+     printf("%s", buffer); 
+    
      printf ("\nDONE\n");
 
     return 0;
@@ -260,6 +268,6 @@ main (int argc, char *argv[])
     test_om_build (file_name); 
     test_om_serialize();
     axis2_env_free(environment); 
-    getchar();
+    
     return 0;
  }
