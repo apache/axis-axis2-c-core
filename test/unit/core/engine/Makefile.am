@@ -13,6 +13,7 @@ prgbin_PROGRAMS = engine_test
 engine_test_SOURCES = main.c
 engine_test_LDADD   =  $(LDFLAGS) libtest_engine.la  \
                     -L$(top_builddir)/install/lib \
+                    -laxis2_util \
                     -laxis2_context \
                     -laxis2_description \
                     -laxis2_engine \

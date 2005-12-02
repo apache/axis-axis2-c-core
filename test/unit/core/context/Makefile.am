@@ -14,6 +14,7 @@ prgbin_PROGRAMS = context_test
 context_test_SOURCES = main.c
 context_test_LDADD   =  $(LDFLAGS) libtest_context.la  \
                     -L$(top_builddir)/install/lib \
+                    -laxis2_util \
                     -laxis2_context \
                     -laxis2_description \
                     -laxis2_engine \

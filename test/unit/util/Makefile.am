@@ -20,6 +20,7 @@ prgbin_PROGRAMS = util_test
 util_test_SOURCES = main.c
 util_test_LDADD   =  $(LDFLAGS) libtest_util.la \
                     -L$(top_builddir)/install/lib \
+                    -laxis2_util \
                     -laxis2_context \
                     -laxis2_description \
                     -laxis2_engine \
