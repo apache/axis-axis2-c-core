@@ -19,7 +19,7 @@
 
 /**
  * @file axis2_relates_to.h
- * @brief Axis2 Dispatcher interface
+ * @brief Axis2 core addressing interface
  */
 
 #include <axis2_defines.h>
@@ -35,8 +35,8 @@ extern "C"
     struct axis2_relates_to_ops;
     
 /**
- * @defgroup axis2_relates_to Dispatcher
- * @ingroup axis2_engine
+ * @defgroup axis2_relates_to Addressing relates to header
+ * @ingroup axis2_addr
  * @{
  */
 
