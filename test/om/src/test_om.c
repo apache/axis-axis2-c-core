@@ -146,7 +146,8 @@ test_om_build (char *filename)
     
     writer = axis2_xml_writer_create_for_memory(&environment, &buf, NULL, AXIS2_TRUE, 0);
     /*
-    writer = axis2_xml_writer_create(&environment, "finaltest.xml", NULL, AXIS2_TRUE, 0);
+    for guththila use following 
+    writer = axis2_xml_writer_create(&environment, NULL , NULL, AXIS2_TRUE, 0);
     */
     om_output = axis2_om_output_create (&environment, writer);
     AXIS2_OM_NODE_SERIALIZE (AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(document, &environment), &environment , om_output);
@@ -196,6 +197,8 @@ test_om_serialize ()
     ns2 =
         axis2_om_namespace_create (&environment, "urn:ISBN:0-395-74341-6",
                                    "isbn");
+    ns3 =
+        axis2_om_namespace_create (&environment, "urn:w3-org-ns:HTML", "NULL");
 
     ele1 = axis2_om_element_create (&environment, NULL, "book", ns1, &node1);
     AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(ele1,&environment,node1,ns2);
@@ -244,7 +247,7 @@ test_om_serialize ()
      axis2_om_output_free(om_output, &environment);
              
      printf("%s", buffer); 
-     AXIS2_FREE(environment->allocator, buffer); 
+    
      printf ("\nDONE\n");
 
     return 0;
@@ -269,3 +272,4 @@ main (int argc, char *argv[])
     
     return 0;
  }
+
