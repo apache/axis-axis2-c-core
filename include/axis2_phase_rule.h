@@ -56,7 +56,7 @@ extern "C"
         axis2_char_t* (AXIS2_CALL *get_name) (struct axis2_phase_rule * phase_rule, 
                                                axis2_env_t **env);
         axis2_status_t (AXIS2_CALL *set_name) (struct axis2_phase_rule * phase_rule, 
-                                               axis2_env_t **env, axis2_char_t *name);
+                                               axis2_env_t **env, const axis2_char_t *name);
         axis2_bool_t (AXIS2_CALL *is_phase_first) (struct axis2_phase_rule * phase_rule, 
                                                axis2_env_t **env);
         axis2_status_t (AXIS2_CALL *set_phase_first) (struct axis2_phase_rule * phase_rule, 

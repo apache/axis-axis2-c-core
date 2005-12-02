@@ -234,3 +234,17 @@ configuration-related scripts to be executed by `/bin/bash'.
 `configure' also accepts some other, not widely useful, options.  Run
 `configure --help' for more details.
 
+Axis2 specific installation instructions
+=======================================
+
+User can select the parser between Guththila and
+libxml2. This can be done using a configure option
+
+configure --with-pull-parser=PARSER      build the pull parser wrapper library. PARSER=libxml2/guththila
+
+For example if user want to build the wrapper for libxml2
+
+configure --with-pull-parser=libxml2
+
+Currently only compile time parser abstraction is supported. ie. User need to decide which parser to
+use at compile time. Dynamic parser change will be supported with the next release

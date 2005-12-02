@@ -60,74 +60,87 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops
     /** De-allocate memory
   	 * @return status code
   	 */
-	axis2_status_t (AXIS2_CALL *free) (axis2_operation_t *operation, 
-                                        axis2_env_t **env);
+	axis2_status_t (AXIS2_CALL *
+    free) (axis2_operation_t *operation, 
+           axis2_env_t **env);
 
     /**
      * Method addParameter
      *
      * @param param Parameter that will be added
      */
-	axis2_status_t (AXIS2_CALL *add_param)(axis2_operation_t *operation, 
-                                            axis2_env_t **env, 
-                                            axis2_param_t *param);
+	axis2_status_t (AXIS2_CALL *
+    add_param)(axis2_operation_t *operation, 
+                axis2_env_t **env, 
+                axis2_param_t *param);
     
     /**
      * Method getParameter
      *
      * @param name Name of the parameter
      */
-	axis2_param_t *(AXIS2_CALL *get_param)(axis2_operation_t *operation, 
-                                            axis2_env_t **env,
-                                            const axis2_char_t *name);
+	axis2_param_t *(AXIS2_CALL *
+    get_param)(axis2_operation_t *operation, 
+                axis2_env_t **env,
+                const axis2_char_t *name);
 
 
-	axis2_array_list_t *(AXIS2_CALL *get_params) (axis2_operation_t *operation, 
-                                                axis2_env_t **env);
+	axis2_array_list_t *(AXIS2_CALL *
+    get_params) (axis2_operation_t *operation, 
+                    axis2_env_t **env);
 
     /**
      * To check whether a given paramter is locked
      */
-	axis2_bool_t (AXIS2_CALL *is_param_locked) (axis2_operation_t *operation, 
-                                                axis2_env_t **env,
-		                                        const axis2_char_t *param_name);
+	axis2_bool_t (AXIS2_CALL *
+    is_param_locked) (axis2_operation_t *operation, 
+                        axis2_env_t **env,
+                        const axis2_char_t *param_name);
 	
-	axis2_status_t (AXIS2_CALL *set_parent) (axis2_operation_t *operation, 
+	axis2_status_t (AXIS2_CALL *
+    set_parent) (axis2_operation_t *operation, 
                                      axis2_env_t **env,
                                      struct axis2_svc *service_desc);
 
-	struct axis2_svc *(AXIS2_CALL *get_parent) (axis2_operation_t *operation, 
-                                            axis2_env_t **env);
+	struct axis2_svc *(AXIS2_CALL *
+    get_parent) (axis2_operation_t *operation, 
+                 axis2_env_t **env);
 
-    axis2_status_t (AXIS2_CALL *set_name) (axis2_operation_t *operation, 
-                                            axis2_env_t **env,
-                                            axis2_qname_t *qname);
+    axis2_status_t (AXIS2_CALL *
+    set_name) (axis2_operation_t *operation, 
+                axis2_env_t **env,
+                axis2_qname_t *qname);
     
-	axis2_qname_t *(AXIS2_CALL *get_name) (axis2_operation_t *operation, 
-                                            axis2_env_t **env);
+	axis2_qname_t *(AXIS2_CALL *
+    get_name) (axis2_operation_t *operation, 
+                axis2_env_t **env);
 
-	axis2_status_t (AXIS2_CALL *set_msg_exchange_pattern) 
-                                                (axis2_operation_t *operation, 
-                                                axis2_env_t **env,
-                                                const axis2_char_t *pattern);
+	axis2_status_t (AXIS2_CALL *
+    set_msg_exchange_pattern) (axis2_operation_t *operation, 
+                                axis2_env_t **env,
+                                const axis2_char_t *pattern);
 
-	axis2_char_t *(AXIS2_CALL *get_msg_exchange_pattern)
-                                                (axis2_operation_t *operation, 
-                                                axis2_env_t **env);
+	axis2_char_t *(AXIS2_CALL *
+    get_msg_exchange_pattern) (axis2_operation_t *operation, 
+                                axis2_env_t **env);
 
-	axis2_status_t (AXIS2_CALL *set_msg_recv) (axis2_operation_t *operation, 
-                                        axis2_env_t **env,
-                                        struct axis2_msg_recv *msg_recv);
+	axis2_status_t (AXIS2_CALL *
+    set_msg_recv) (axis2_operation_t *operation, 
+                    axis2_env_t **env,
+                    struct axis2_msg_recv *msg_recv);
 
-	struct axis2_msg_recv *(AXIS2_CALL *get_msg_recv) (axis2_operation_t *operation, 
-                                                    axis2_env_t **env);
+	struct axis2_msg_recv *(AXIS2_CALL *
+        get_msg_recv) (axis2_operation_t *operation, 
+                       axis2_env_t **env);
                                         
-    axis2_char_t *(AXIS2_CALL *get_style) (axis2_operation_t *operation,
-                                            axis2_env_t **env);
+    axis2_char_t *(AXIS2_CALL *
+    get_style) (axis2_operation_t *operation,
+                axis2_env_t **env);
 
-    axis2_status_t  (AXIS2_CALL *set_style) (axis2_operation_t *operation,
-                                                axis2_env_t **env,
-                                                axis2_char_t *style);
+    axis2_status_t  (AXIS2_CALL *
+    set_style) (axis2_operation_t *operation,
+                axis2_env_t **env,
+                axis2_char_t *style);
                                                 
     /**
      * To ebgage a module it is reuired to use this method
@@ -137,19 +150,13 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops
      */
     axis2_status_t (AXIS2_CALL *
     engage_module) (axis2_operation_t *operation,
-                                    axis2_env_t **env,
-                                    axis2_module_desc_t *moduleref);
+                        axis2_env_t **env,
+                        struct axis2_module_desc *moduleref);
     
     axis2_status_t (AXIS2_CALL *
     add_to_engage_module_list) (axis2_operation_t *operation,
-                                                axis2_env_t **env,
-                                                axis2_module_desc_t *module_name);
-    
-    /*
-    * (non-Javadoc)
-    *
-    * @see org.apache.axis2.description.AxisService#getEngadgedModules()
-    */
+                                axis2_env_t **env,
+                                struct axis2_module_desc *module_name);
     
     /**
      * Method getEngadgedModules
@@ -180,12 +187,12 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops
     
     
     axis2_array_list_t * (AXIS2_CALL *
-    get_phases_out_flow) (axis2_operation_t *operation,
+    get_phases_outflow) (axis2_operation_t *operation,
                                             axis2_env_t **env);
     
     
     axis2_array_list_t *(AXIS2_CALL *
-    get_remaining_phases_in_flow) (axis2_operation_t *operation,
+    get_remaining_phases_inflow) (axis2_operation_t *operation,
                                                     axis2_env_t **env);
     
     /**
@@ -208,7 +215,7 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops
      * @param list
      */
     axis2_status_t (AXIS2_CALL *
-    set_phases_out_flow) (axis2_operation_t *operation,
+    set_phases_outflow) (axis2_operation_t *operation,
                                             axis2_env_t **env,
                                             axis2_array_list_t *list);
     
@@ -216,7 +223,7 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops
      * @param list
      */
     axis2_status_t (AXIS2_CALL *
-    set_remaining_phases_in_flow) (axis2_operation_t *operation,
+    set_remaining_phases_inflow) (axis2_operation_t *operation,
                                                     axis2_env_t **env,
                                                     axis2_array_list_t *list);
                                                     
@@ -415,11 +422,23 @@ axis2_operation_create_with_wsdl_operation (axis2_env_t **env,
 #define AXIS2_OPERATION_GET_PHASES_OUT_FAULT_FLOW(operation, env) \
 		((operation->ops)->get_phases_out_fault_flow (operation, env))
 
-#define AXIS2_OPERATION_GET_PHASES_OUT_FLOW(operation, env) \
-		((operation->ops)->get_phases_out_flow (operation, env))
+#define AXIS2_OPERATION_GET_PHASES_OUTFLOW(operation, env) \
+		((operation->ops)->get_phases_outflow (operation, env))
+ 
+#define AXIS2_OPERATION_GET_REMAINING_PHASES_INFLOW(operation, env) \
+		((operation->ops)->get_remaining_phases_inflow (operation, env))    
+
+#define AXIS2_OPERATION_SET_PHASES_IN_FAULT_FLOW(operation, env, list) \
+		((operation->ops)->set_phases_in_fault_flow (operation, env, list))    
+
+#define AXIS2_OPERATION_SET_PHASES_OUT_FAULT_FLOW(operation, env, list) \
+		((operation->ops)->set_phases_out_fault_flow (operation, env, list))   
+
+#define AXIS2_OPERATION_SET_PHASES_OUTFLOW(operation, env, list) \
+		((operation->ops)->set_phases_outflow (operation, env, list)) 
         
-        #define AXIS2_OPERATION_SET_REMAINING_PHASES(operation, env) \
-		((operation->ops)->set_remaining_phases_in_flow (operation, env))
+#define AXIS2_OPERATION_SET_REMAINING_PHASES_INFLOW(operation, env, list) \
+		((operation->ops)->set_remaining_phases_inflow (operation, env, list))
         
 #define AXIS2_OPERATION_ADD_MODULE(operation, env, module_name) \
 		((operation->ops)->add_module (operation, env, module_name))

@@ -33,7 +33,7 @@
 #include <axis2_phase_meta.h>
 #include <axis2_phase.h>
 #include <axis2_flow.h>
-#include <wsdl.h>
+#include <axis2_wsdl.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -153,14 +153,14 @@ axis2_transport_in_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qna
 #define AXIS2_TRANSPORT_IN_DESC_FREE(transport_in_desc, env) \
 		((transport_in_desc->ops)->free (transport_in_desc, env))
 
-#define AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport_in_desc, env, phase_name) \
-		((transport_in_desc->ops)->get_qname (transport_in_desc, env, phase_name))
+#define AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport_in_desc, env) \
+		((transport_in_desc->ops)->get_qname (transport_in_desc, env))
 
-#define AXIS2_TRANSPORT_IN_DESC_SET_QNAME(transport_in_desc, env, handler, qname) \
-		((transport_in_desc->ops)->set_qname (transport_in_desc, env, handler, qname))
+#define AXIS2_TRANSPORT_IN_DESC_SET_QNAME(transport_in_desc, env, qname) \
+		((transport_in_desc->ops)->set_qname (transport_in_desc, env, qname))
 
-#define AXIS2_TRANSPORT_IN_DESC_GET_INFLOW(transport_in_desc, env, phase_name) \
-		((transport_in_desc->ops)->get_inflow (transport_in_desc, env, phase_name))
+#define AXIS2_TRANSPORT_IN_DESC_GET_INFLOW(transport_in_desc, env) \
+		((transport_in_desc->ops)->get_inflow (transport_in_desc, env))
 
 #define AXIS2_TRANSPORT_IN_DESC_SET_INFLOW(transport_in_desc, env, inflow) \
 		((transport_in_desc->ops)->set_inflow (transport_in_desc, env, inflow))       

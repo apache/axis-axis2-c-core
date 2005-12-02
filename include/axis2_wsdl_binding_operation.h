@@ -71,7 +71,7 @@ struct axis2_wsdl_binding_operation_ops
      *
      * @return operation
      */
-    struct axis2_wsdl_operation *(AXIS2_CALL *
+    void *(AXIS2_CALL *
     get_operation) (axis2_wsdl_binding_operation_t *binding_operation,
                                         axis2_env_t **env);
     
@@ -83,7 +83,7 @@ struct axis2_wsdl_binding_operation_ops
     axis2_status_t (AXIS2_CALL *
     set_operation)(axis2_wsdl_binding_operation_t *binding_operation,
                                                 axis2_env_t **env,
-                                                struct axis2_wsdl_operation *operation);
+                                                void *operation);
     
     /**
      * Method getOutput

@@ -193,6 +193,8 @@ extern "C"
         AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT,
         /** module has alredy engaged to the operation operation terminated !!! */
         AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OPERATION,
+        /** module has alredy been engaged on the service.Operation terminated !!! */
+        AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC,
         /** Invalid message context state  */
         AXIS2_ERROR_INVALID_STATE_MSG_CTX,
         /** Service not yet found */
@@ -201,9 +203,17 @@ extern "C"
         AXIS2_ERROR_CREATING_XML_STREAM_WRITER,
         /** error occured creating xml stream writer */
         AXIS2_ERROR_CREATING_XML_STREAM_READER,
-        INVALID_PHASE,
-        AXIS2_ERROR_WRITING_START_ELEMENT,
         
+        INVALID_MODULE_REF,
+        
+        PHASE_IS_NOT_SPECIFED,
+        
+        SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE,
+        
+        INVALID_PHASE,
+        
+        AXIS2_ERROR_WRITING_START_ELEMENT,
+    
         AXIS2_ERROR_WRITING_START_DOCUMENT,
         
         AXIS2_ERROR_WRITING_END_ELEMENT,

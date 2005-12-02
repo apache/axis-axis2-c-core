@@ -64,7 +64,8 @@ am__DEPENDENCIES_1 =
 libaxis2_description_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libaxis2_description_la_OBJECTS = param_container.lo operation.lo \
 	svc.lo module.lo param.lo svc_grp.lo phase_rule.lo \
-	handler_desc.lo flow.lo flow_container.lo
+	handler_desc.lo flow.lo flow_container.lo transport_in_desc.lo \
+	transport_out_desc.lo
 libaxis2_description_la_OBJECTS =  \
 	$(am_libaxis2_description_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
@@ -201,14 +202,17 @@ libaxis2_description_la_SOURCES = param_container.c \
                             phase_rule.c \
                             handler_desc.c \
                             flow.c \
-                            flow_container.c
+                            flow_container.c \
+                            transport_in_desc.c \
+                            transport_out_desc.c
 
 libaxis2_description_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
             -I$(top_builddir)/modules/xml/guththila/src \
             -I$(top_builddir)/modules/util/src \
             -I$(top_builddir)/modules/wsdl/src \
-            -I$(top_builddir)/modules/core/transport
+            -I$(top_builddir)/modules/core/transport \
+            -I$(top_builddir)/modules/core/description
 
 all: all-am
 
@@ -289,6 +293,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/phase_rule.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/svc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/svc_grp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/transport_in_desc.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/transport_out_desc.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

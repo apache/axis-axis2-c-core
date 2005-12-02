@@ -31,6 +31,11 @@
 #include <axis2_qname.h>
 #include <axis2_error.h>
 #include <axis2_array_list.h>
+#include <axis2.h>
+#include <axis2_phase_resolver.h>
+#include <axis2_module_desc.h>
+#include <axis2_engine_config.h>
+#include <axis2_wsdl_soap_operation.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -47,7 +52,10 @@ struct axis2_operation;
 struct axis2_flow_container;
 struct axis2_param_container;
 struct axis2_wsdl_svc;
-struct axis2_wsdl_interface;    
+struct axis2_wsdl_interface; 
+struct axis2_module_desc; 
+struct axis2_engine_config;
+struct axis2_wsdl_soap_operation;    
 typedef struct axis2_svc_ops axis2_svc_ops_t;   
 typedef struct axis2_svc axis2_svc_t;
     
@@ -57,59 +65,333 @@ typedef struct axis2_svc axis2_svc_t;
  */    
 struct axis2_svc_ops
 {
-	axis2_status_t (AXIS2_CALL *free) (axis2_svc_t *svc, axis2_env_t **env);
+	axis2_status_t (AXIS2_CALL *
+    free) (axis2_svc_t *svc, 
+            axis2_env_t **env);
 
-	axis2_status_t (AXIS2_CALL *add_operation) (axis2_svc_t *svc, 
-                                                axis2_env_t **env,
-	 	                                        struct axis2_operation *operation);
+	axis2_status_t (AXIS2_CALL *
+    add_operation) (axis2_svc_t *svc, 
+                    axis2_env_t **env,
+                    struct axis2_operation *operation);
 
-	struct axis2_operation *(AXIS2_CALL *get_operation_with_qname) (
-                                                  axis2_svc_t *svc, 
-                                                  axis2_env_t **env,
-	 	                                          axis2_qname_t *operation_qname);
+	struct axis2_operation *(AXIS2_CALL *
+    get_operation_with_qname) (axis2_svc_t *svc, 
+                                  axis2_env_t **env,
+                                  axis2_qname_t *operation_qname);
 
-	struct axis2_operation *(AXIS2_CALL *get_operation_with_name) (
-                                            axis2_svc_t *svc, 
-                                            axis2_env_t **env,
-	 	                                    const axis2_char_t * operation_name);
+	struct axis2_operation *(AXIS2_CALL *
+    get_operation_with_name) (axis2_svc_t *svc, 
+                                axis2_env_t **env,
+                                const axis2_char_t * operation_name);
 
-	axis2_hash_t *(AXIS2_CALL *get_operations) (axis2_svc_t *svc, 
-                                                    axis2_env_t **env);
+	axis2_hash_t *(AXIS2_CALL *
+    get_operations) (axis2_svc_t *svc, 
+                     axis2_env_t **env);
 
-	axis2_status_t (AXIS2_CALL *set_parent) (axis2_svc_t *svc, 
-                                                axis2_env_t **env,
-	 	                                        struct axis2_svc_grp *svc_grp);
+	axis2_status_t (AXIS2_CALL *
+    set_parent) (axis2_svc_t *svc, 
+                    axis2_env_t **env,
+                    struct axis2_svc_grp *svc_grp);
 
-	struct axis2_svc_grp *(AXIS2_CALL *get_parent) (axis2_svc_t *svc, 
-                                                axis2_env_t **env);
+	struct axis2_svc_grp *(AXIS2_CALL *
+    get_parent) (axis2_svc_t *svc, 
+                 axis2_env_t **env);
 	
-    axis2_status_t (AXIS2_CALL *set_name) (axis2_svc_t *svc, 
-                                            axis2_env_t **env,
-                                            axis2_qname_t *qname);
+    axis2_status_t (AXIS2_CALL *
+    set_name) (axis2_svc_t *svc, 
+                axis2_env_t **env,
+                axis2_qname_t *qname);
     
-	axis2_qname_t *(AXIS2_CALL *get_name) (const axis2_svc_t *svc, 
-                                            axis2_env_t **env);
+	axis2_qname_t *(AXIS2_CALL *
+    get_name) (const axis2_svc_t *svc, 
+               axis2_env_t **env);
 
-	axis2_status_t (AXIS2_CALL *add_param) (axis2_svc_t *svc, 
-                                                axis2_env_t **env,
-		                                        axis2_param_t *param);
+	axis2_status_t (AXIS2_CALL *
+    add_param) (axis2_svc_t *svc, 
+                axis2_env_t **env,
+                axis2_param_t *param);
 
-	axis2_param_t *(AXIS2_CALL *get_param) (axis2_svc_t *svc, 
-                                                axis2_env_t **env,
-		                                        const axis2_char_t *name);
+	axis2_param_t *(AXIS2_CALL *
+    get_param) (axis2_svc_t *svc, 
+                axis2_env_t **env,
+                const axis2_char_t *name);
 
-	axis2_hash_t *(AXIS2_CALL *get_params) (axis2_svc_t *svc, 
-                                                axis2_env_t **env);
+	axis2_array_list_t *(AXIS2_CALL *
+    get_params) (axis2_svc_t *svc, 
+                    axis2_env_t **env);
 	
-	axis2_bool_t (AXIS2_CALL *is_param_locked) (axis2_svc_t *svc, 
-                                                axis2_env_t **env,
-		                                        const axis2_char_t *param_name);
+	axis2_bool_t (AXIS2_CALL *
+    is_param_locked) (axis2_svc_t *svc, 
+                        axis2_env_t **env,
+                        const axis2_char_t *param_name);
                                                 
     axis2_status_t (AXIS2_CALL *
     set_svc_interface) (axis2_svc_t *svc,
-                                axis2_env_t **env,
-                                struct axis2_wsdl_interface *svc_interface);                                                
+                            axis2_env_t **env,
+                            struct axis2_wsdl_interface *svc_interface);
+                                
+    struct axis2_wsdl_interface * (AXIS2_CALL *
+    get_svc_interface) (axis2_svc_t *svc,
+                                axis2_env_t **env);                               
 
+                                
+    /**
+     * To ebgage a module it is reuired to use this method
+     *
+     * @param moduleref
+     * @throws AxisFault
+     */
+    axis2_status_t (AXIS2_CALL *
+    engage_module) (axis2_svc_t *svc,
+                    axis2_env_t **env,
+                    struct axis2_module_desc * moduleref,
+                    struct axis2_engine_config * axis2_config);
+    
+    /**
+     * To add a opeartion to a service if a module requird to do so
+     *
+     * @param module
+     */
+    axis2_status_t (AXIS2_CALL *
+    add_module_operations) (axis2_svc_t *svc,
+                                axis2_env_t **env,
+                                struct axis2_module_desc * module_desc,
+                                struct axis2_engine_config * axis2_config); 
+                                    
+    axis2_status_t (AXIS2_CALL *
+    add_to_engaged_module_list) (axis2_svc_t *svc,
+                                    axis2_env_t **env,
+                                    struct axis2_module_desc *module_name);  
+                                        
+    /**
+     * Method getEngadgedModules
+     *
+     * @return Collection
+     */
+    axis2_array_list_t * (AXIS2_CALL *
+    get_engaged_modules) (axis2_svc_t *svc,
+                          axis2_env_t **env);
+    
+    /**
+     * To get the WSDL opeartion element in servic einterface
+     * @param operationName  <code>QName</cde>
+     * @return  WSDLOperation <code>WSDLOperation</code>
+     */
+    void * (AXIS2_CALL *
+    get_wsdl_operation) (axis2_svc_t *svc,
+                                    axis2_env_t **env,
+                                    axis2_qname_t *operation_name);
+    
+       /**
+     * Method setContextPath
+     *
+     * @param contextPath
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_context_path) (axis2_svc_t *svc,
+                        axis2_env_t **env,
+                        axis2_char_t *context_path);
+    
+    /**
+     * Method getContextPath
+     *
+     * @return  context path
+     */
+    axis2_char_t * (AXIS2_CALL *
+    get_context_path) (axis2_svc_t *svc,
+                       axis2_env_t **env);
+    
+    /**
+     * Method setStyle
+     *
+     * @param style
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_style) (axis2_svc_t *svc,
+                axis2_env_t **env,
+                axis2_char_t * style);
+    
+    /**
+     * Method getStyle
+     *
+     * @return axis2_char_t *
+     */
+    axis2_char_t * (AXIS2_CALL *
+    get_style) (axis2_svc_t *svc,
+                axis2_env_t **env);
+    
+    /**
+     * Method getInFlow
+     *
+     * @return struct axis2_flow *
+     */
+    struct axis2_flow * (AXIS2_CALL *
+    get_inflow) (axis2_svc_t *svc,
+                 axis2_env_t **env);
+    
+    /**
+     * Method setInFlow
+     *
+     * @param inFlow
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_inflow) (axis2_svc_t *svc,
+                    axis2_env_t **env,
+                    struct axis2_flow *inflow);
+    
+    /**
+     * Method getOutFlow
+     *
+     * @return struct axis2_flow *
+     */
+    struct axis2_flow * (AXIS2_CALL *
+    get_outflow) (axis2_svc_t *svc,
+                                axis2_env_t **env);
+    
+    /**
+     * Method setOutFlow
+     *
+     * @param outFlow
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_outflow) (axis2_svc_t *svc,
+                                axis2_env_t **env,
+                                struct axis2_flow *outflow);
+    
+    /**
+     * Method getFaultInFlow
+     *
+     * @return struct axis2_flow *
+     */
+    struct axis2_flow *(AXIS2_CALL *
+    get_fault_inflow) (axis2_svc_t *svc,
+                                axis2_env_t **env);
+    
+    /**
+     * Method setFaultInFlow
+     *
+     * @param fault_flow
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_fault_inflow) (axis2_svc_t *svc,
+                                axis2_env_t **env,
+                                struct axis2_flow *fault_flow);
+    
+    struct axis2_flow * (AXIS2_CALL *
+    get_fault_outflow) (axis2_svc_t *svc,
+                                axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_fault_outflow) (axis2_svc_t *svc,
+                        axis2_env_t **env,
+                        struct axis2_flow *fault_flow);
+    
+    /**
+     * This method will return the operation given particular SOAP Action.
+     * This method should only be called if there is only one Endpoint is defined
+     * for this Service. If more than one Endpoint exists one of them will be picked.
+     * If more than one Operation is found with the given
+     * SOAP Action; null will be ruturned. If no particular Operation is found with
+     * the given SOAP Action; null will be returned.
+     *
+     * @param soapAction SOAP Action defined for the particular Operation
+     * @return A struct axis2_operation * if a unque Operation can be found with the given SOAP Action
+     *         otherwise will return null.
+     */
+    struct axis2_operation * (AXIS2_CALL *
+    get_operation_by_soap_action) (axis2_svc_t *svc,
+                                    axis2_env_t **env,
+                                    axis2_char_t *soap_action);
+    
+    /**
+     * This method will return the operation given the particular endpoing and the
+     * particular SOAP Action. If more than one Operation is found with the given
+     * SOAP Action; null will be ruturned. If no particular Operation is found with
+     * the given SOAP Action; null will be returned
+     *
+     * @param endpoint   Particular Enpoint in which the bining is defined with the particular SOAP
+     *                   Action.
+     * @param soapAction SOAP Action defined for the particular Operation
+     * @return A struct axis2_operation * if a unque Operation can be found with the given SOAP Action
+     *         otherwise will return null.
+     */
+    struct axis2_operation * (AXIS2_CALL *
+    get_operation_by_soap_action_and_endpoint) (axis2_svc_t *svc,
+                                    axis2_env_t **env,
+                                    axis2_char_t *soap_action,
+                                    axis2_qname_t * endpoint);       
+    
+     /**
+     * To get the description about the service
+     *                                                                  
+     * @return axis2_char_t *
+     */
+    axis2_char_t * (AXIS2_CALL *
+    get_axis2_svc_name) (axis2_svc_t *svc,
+                                axis2_env_t **env);
+    
+    /**
+     * Set the description about the service
+     *
+     * @param axissvcname
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_axis2_svc_name) (axis2_svc_t *svc,
+                                axis2_env_t **env,
+                                axis2_char_t *axis2_svc_name);
+    
+    /**
+     * This method will set the current time as last update time of the service
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_last_update) (axis2_svc_t *svc,
+                                axis2_env_t **env);
+    
+    long (AXIS2_CALL *
+    get_last_update) (axis2_svc_t *svc,
+                                axis2_env_t **env);
+    
+    axis2_char_t * (AXIS2_CALL *
+    get_filename) (axis2_svc_t *svc,
+                                axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_filename) (axis2_svc_t *svc,
+                                axis2_env_t **env,
+                                axis2_char_t *filename);
+    
+    axis2_hash_t * (AXIS2_CALL *
+    get_endpoints) (axis2_svc_t *svc,
+                                axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_endpoints) (axis2_svc_t *svc,
+                    axis2_env_t **env,
+                    axis2_hash_t * endpoints);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_endpoint)(axis2_svc_t *svc,
+                    axis2_env_t **env,
+                    struct axis2_wsdl_endpoint * endpoint);
+    
+    struct axis2_wsdl_endpoint * (AXIS2_CALL *
+    get_endpoint) (axis2_svc_t *svc,
+                    axis2_env_t **env,
+                    axis2_qname_t * qname);
+    
+    axis2_char_t * (AXIS2_CALL *
+    get_namespace) (axis2_svc_t *svc,
+                  axis2_env_t **env);
+    
+    /**
+     * To add the was action paramater into has map so that was action based dispatch can support
+     */
+    axis2_status_t (AXIS2_CALL *
+    add_mapping) (axis2_svc_t *svc,
+                axis2_env_t **env,
+                axis2_char_t * mapping_key , 
+                struct axis2_operation * axis2_operation);
+                                
 };
 
 /** 
@@ -185,7 +467,104 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
 
 #define AXIS2_SVC_SET_SVC_INTERFACE(svc, env, svc_interface) \
         (svc->ops->set_svc_interface(svc, env, svc_interface))
-        
+
+#define AXIS2_SVC_GET_SVC_INTERFACE(svc, env) \
+        (svc->ops->get_svc_interface(svc, env))       
+
+#define AXIS2_SVC_ENGAGE_MODULE(svc, env, moduleref, axis2_config) \
+        (svc->ops->engage_module(svc, env, moduleref, axis2_config))
+
+#define AXIS2_SVC_ADD_MODULE_OPERATIONS(svc, env, module_desc, axis2_config) \
+        (svc->ops->add_module_operations(svc, env, module_desc, axis2_config))
+
+#define AXIS2_SVC_ADD_TO_ENGAGED_MODULE_LIST(svc, env, module_name) \
+        (svc->ops->add_to_engaged_module_list(svc, env, module_name))
+
+#define AXIS2_SVC_GET_ENGAGED_MODULES(svc, env) \
+        (svc->ops->get_engaged_modules(svc, env))
+
+#define AXIS2_SVC_GET_WSDL_OPERATION(svc, env, operation_name) \
+        (svc->ops->get_wsdl_operation(svc, env, operation_name))
+
+#define AXIS2_SVC_SET_CONTEXT_PATH(svc, env, context_path) \
+        (svc->ops->set_context_path(svc, env, context_path))
+
+#define AXIS2_SVC_GET_CONTEXT_PATH(svc, env) \
+        (svc->ops->get_context_path(svc, env))
+
+#define AXIS2_SVC_SET_STYLE(svc, env, style) \
+        (svc->ops->set_style(svc, env, style))
+
+#define AXIS2_SVC_GET_STYLE(svc, env) \
+        (svc->ops->get_style(svc, env))
+
+#define AXIS2_SVC_GET_INFLOW(svc, env) \
+        (svc->ops->get_inflow(svc, env))
+
+#define AXIS2_SVC_SET_INFLOW(svc, env, inflow) \
+        (svc->ops->set_inflow(svc, env, inflow))
+
+#define AXIS2_SVC_GET_OUTFLOW(svc, env) \
+        (svc->ops->get_outflow(svc, env))
+
+#define AXIS2_SVC_SET_OUTFLOW(svc, env, outflow) \
+        (svc->ops->set_outflow(svc, env, outflow))
+
+#define AXIS2_SVC_GET_FAULT_INFLOW(svc, env) \
+        (svc->ops->get_fault_inflow(svc, env))
+
+#define AXIS2_SVC_SET_FAULT_INFLOW(svc, env, fault_inflow) \
+        (svc->ops->set_fault_inflow(svc, env, fault_inflow))
+
+#define AXIS2_SVC_GET_FAULT_OUTFLOW(svc, env) \
+        (svc->ops->get_fault_outflow(svc, env))
+
+#define AXIS2_SVC_SET_FAULT_OUTFLOW(svc, env, fault_outflow) \
+        (svc->ops->set_fault_outflow(svc, env, fault_outflow))
+
+#define AXIS2_SVC_GET_OPERATION_BY_SOAP_ACTION(svc, env, soap_action) \
+        (svc->ops->get_operation_by_soap_action(svc, env, soap_action))
+
+#define AXIS2_SVC_GET_OPERATION_BY_SOAP_ACTION_AND_ENDPOINT(svc, env, soap_action, endpoint) \
+        (svc->ops->get_operation_by_soap_action_and_endpoint(svc, env, soap_action, endpoint))
+
+#define AXIS2_SVC_GET_AXIS2_SVC_NAME(svc, env) \
+        (svc->ops->get_axis2_svc_name(svc, env))
+
+#define AXIS2_SVC_SET_AXIS2_SVC_NAME(svc, env, axis2_svc_name) \
+        (svc->ops->set_axis2_svc_name(svc, env, axis2_svc_name))
+
+#define AXIS2_SVC_SET_LAST_UPDATE(svc, env) \
+        (svc->ops->set_last_update(svc, env))
+
+#define AXIS2_SVC_GET_LAST_UPDATE(svc, env) \
+        (svc->ops->get_last_update(svc, env))
+
+#define AXIS2_SVC_GET_FILENAME(svc, env) \
+        (svc->ops->get_filename(svc, env))
+
+#define AXIS2_SVC_SET_FILENAME(svc, env, filename) \
+        (svc->ops->set_filename(svc, env, filename))
+
+#define AXIS2_SVC_GET_ENDPOINTS(svc, env) \
+        (svc->ops->get_endpoints(svc, env))
+
+#define AXIS2_SVC_SET_ENDPOINTS(svc, env, endpoints) \
+        (svc->ops->set_endpoints(svc, env, endpoints))
+
+#define AXIS2_SVC_SET_ENDPOINT(svc, env, endpoint) \
+        (svc->ops->set_endpoint(svc, env, endpoint))
+
+#define AXIS2_SVC_GET_ENDPOINT(svc, env, qname) \
+        (svc->ops->get_endpoint(svc, env, qname))
+
+#define AXIS2_SVC_GET_NAMESPACE(svc, env) \
+        (svc->ops->get_namespace(svc, env))
+
+#define AXIS2_SVC_ADD_MAPPING(svc, env, mapping_key, axis2_opt) \
+        (svc->ops->add_mapping(svc, env, mapping_key, axis2_opt))
+
+
 /**************************** End of function macros **************************/
 
 /** @} */

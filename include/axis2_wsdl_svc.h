@@ -186,8 +186,8 @@ axis2_wsdl_svc_create (axis2_env_t **env);
 #define AXIS2_WSDL_SVC_SET_ENDPOINT(wsdl_svc, env, endpoint) \
         ((wsdl_svc->ops)->set_endpoint(wsdl_svc, env, endpoint))
 
-#define AXIS2_WSDL_SVC_GET_ENDPOINT(wsdl_svc, env) \
-        ((wsdl_svc->ops)->get_endpoint(wsdl_svc, env))
+#define AXIS2_WSDL_SVC_GET_ENDPOINT(wsdl_svc, env, qname) \
+        ((wsdl_svc->ops)->get_endpoint(wsdl_svc, env, qname))
 
 #define AXIS2_WSDL_SVC_GET_NAMESPACE(wsdl_svc, env) \
         ((wsdl_svc->ops)->get_namespace(wsdl_svc, env))

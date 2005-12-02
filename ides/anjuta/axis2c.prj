@@ -100,7 +100,6 @@ module.include.files=\
 	modules/xml/guththila/src/guththila_stack.h\
 	modules/xml/guththila/src/guththila_token.h\
 	modules/xml/guththila/src/guththila_unicode.h\
-	modules/xml/guththila/src/guththila_xml_stream_writer.h\
 	modules/xml/guththila/src/guththila_xml_pull_parser.h\
 	include/axis2_core.h\
 	include/axis2_wsdl_operation.h\
@@ -145,7 +144,17 @@ module.include.files=\
 	include/axis2_transport_in_desc.h\
 	include/axis2_transport_out_desc.h\
 	include/axis2_phase_rule.h\
-	modules/wsdl/src/wsdl.h
+	modules/wsdl/src/wsdl.h\
+	include/axis2_wsdl_extensible_element.h\
+	include/axis2_wsdl_soap_operation.h\
+	include/axis2_phase_holder.h\
+	include/axis2_phase_resolver.h\
+	include/axis2_phase.h\
+	include/axis2_phase_meta.h\
+	include/axis2_ctx.h\
+	modules/xml/parser/axis2_pull_parser.h\
+	modules/core/transport/axis2_transport_listener.h\
+	modules/core/transport/axis2_transport_sender.h
 
 module.source.name=.
 module.source.type=
@@ -221,7 +230,14 @@ module.source.files=\
 	modules/core/description/src/module_desc.c\
 	modules/core/description/src/transport_in_desc.c\
 	modules/core/description/src/transport_out_desc.c\
-	modules/core/description/src/phase_rule.c
+	modules/core/description/src/phase_rule.c\
+	modules/wsdl/src/wsdl_extensible_element.c\
+	modules/wsdl/src/wsdl_soap_operation.c\
+	modules/core/phaseresolver/src/phase_holder.c\
+	modules/core/phaseresolver/src/phase_resolver.c\
+	modules/core/context/src/ctx.c\
+	modules/xml/parser/guththila/impl/src/guththila_xml_stream_writer.c\
+	modules/core/engine/src/phase.c
 
 module.pixmap.name=.
 module.pixmap.type=

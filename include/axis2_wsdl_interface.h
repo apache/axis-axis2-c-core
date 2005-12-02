@@ -98,7 +98,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
      * @param nCName
      * @return
      */
-    struct axis2_operation *(AXIS2_CALL *
+    void *(AXIS2_CALL *
     get_operation) (axis2_wsdl_interface_t *wsdl_interface,
                                     axis2_env_t **env,
                                     axis2_char_t *nc_name);
@@ -165,7 +165,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
     axis2_status_t (AXIS2_CALL *
     set_operation) (axis2_wsdl_interface_t *wsdl_interface,
                                         axis2_env_t **env,
-                                        struct axis2_operation *operation);
+                                        void *operation);
     
     /**
      * @param list
@@ -238,8 +238,11 @@ AXIS2_DECLARE(axis2_wsdl_interface_t *) axis2_wsdl_interface_create (axis2_env_t
 #define AXIS2_WSDL_INTERFACE_GET_NAME(wsdl_interface, env) \
 		((wsdl_interface->ops)->get_name (wsdl_interface, env))
 
-#define AXIS2_WSDL_INTERFACE_GET_OPERATIONS(wsdl_interface, env, name) \
-		((wsdl_interface->ops)->get_operations (wsdl_interface, env, name))
+#define AXIS2_WSDL_INTERFACE_GET_OPERATIONS(wsdl_interface, env) \
+		((wsdl_interface->ops)->get_operations (wsdl_interface, env))
+
+#define AXIS2_WSDL_INTERFACE_GET_OPERATION(wsdl_interface, env, nc_name) \
+		((wsdl_interface->ops)->get_operation (wsdl_interface, env, nc_name))
         
 #define AXIS2_WSDL_INTERFACE_GET_SUPER_INTERFACES(wsdl_interface, env) \
 		((wsdl_interface->ops)->get_super_interfaces (wsdl_interface, env))

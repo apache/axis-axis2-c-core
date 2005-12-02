@@ -18,7 +18,7 @@
 #define AXIS2_WSDL_H
 
 /**
- * @file axis2_description.h
+ * @file axis2_axis2_description.h
  * @brief axis2 DESCRIPTION
  */
  

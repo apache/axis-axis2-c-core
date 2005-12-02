@@ -26,6 +26,10 @@
 #include <axis2_core.h>
 #include <axis2_param_container.h>
 #include <axis2_svc_grp.h>
+#include <axis2_transport_in_desc.h>
+#include <axis2_transport_out_desc.h>
+#include <axis2_qname.h>
+#include <axis2_hash.h>
 
 #ifdef __cplusplus
 extern "C" 
@@ -35,58 +39,157 @@ extern "C"
   * @ingroup axis2_core_engine
   * @{
   */
-
-typedef struct axis2_engine_config_ops_s axis2_engine_config_ops_t;
-typedef struct axis2_engine_config_s axis2_engine_config_t;
     
-struct axis2_svc_grp_s;
-struct axis2_svc_s;
-struct axis2_operation_s;    
+struct axis2_transport_in_desc *transports_in;
+struct axis2_transport_out_desc *transports_out;
+typedef struct axis2_engine_config_ops axis2_engine_config_ops_t;
+typedef struct axis2_engine_config axis2_engine_config_t;
+    
+struct axis2_svc_grp;
+struct axis2_svc;
+struct axis2_operation;    
     
 /** 
  * @brief Engine Configuration operations struct
  * Encapsulator struct for operations of axis2_config
  */
-struct axis2_engine_config_ops_s
+struct axis2_engine_config_ops
 {
-	axis2_status_t (AXIS2_CALL *free) (axis2_engine_config_t *engine_config, 
-                                        axis2_env_t **env);
+	axis2_status_t (AXIS2_CALL *
+    free) (axis2_engine_config_t *engine_config, 
+           axis2_env_t **env);
     
-	axis2_status_t (AXIS2_CALL *add_svc_grp) (axis2_engine_config_t *engine_config, 
-                                                axis2_env_t **env, 
-                                                struct axis2_svc_grp_s *svc_grp);
+	axis2_status_t (AXIS2_CALL *
+    add_svc_grp) (axis2_engine_config_t *engine_config, 
+                    axis2_env_t **env, 
+                    struct axis2_svc_grp *svc_grp);
     
-	struct axis2_svc_grp_s *(AXIS2_CALL *get_svc_grp) (
-                                            axis2_engine_config_t *engine_config, 
-                                            axis2_env_t **env, 
-                                            const axis2_char_t *svc_grp_name);
+	struct axis2_svc_grp *(AXIS2_CALL *
+    get_svc_grp) (  axis2_engine_config_t *engine_config, 
+                    axis2_env_t **env, 
+                    const axis2_char_t *svc_grp_name);
+ 
+    axis2_hash_t * (AXIS2_CALL *
+    get_svc_grps) (axis2_engine_config_t *engine_config, 
+                   axis2_env_t **env);
     
-	axis2_status_t (AXIS2_CALL *add_svc) (axis2_engine_config_t *engine_config, 
-                                            axis2_env_t **env, 
-                                            struct axis2_svc_s* svc);
+	axis2_status_t (AXIS2_CALL *
+    add_svc) (axis2_engine_config_t *engine_config, 
+                axis2_env_t **env, 
+                struct axis2_svc* svc);
     
-	struct axis2_svc_s *(AXIS2_CALL *get_svc) (axis2_engine_config_t *engine_config, 
-                                        axis2_env_t **env, 
-                                        const axis2_char_t* svc_name);
+	struct axis2_svc *(AXIS2_CALL *
+    get_svc) (axis2_engine_config_t *engine_config, 
+                axis2_env_t **env, 
+                const axis2_char_t* svc_name);
     
-	axis2_status_t (AXIS2_CALL *remove_svc) (axis2_engine_config_t *engine_config, 
-                                                axis2_env_t **env, 
-                                                const axis2_char_t *name);
+	axis2_status_t (AXIS2_CALL *
+    remove_svc) (axis2_engine_config_t *engine_config, 
+                    axis2_env_t **env, 
+                    const axis2_char_t *name);
     
-    axis2_status_t (AXIS2_CALL *add_param) (axis2_engine_config_t *engine_config, 
-                                                axis2_env_t **env,
-		                                        axis2_param_t *param);
+    axis2_status_t (AXIS2_CALL *
+    add_param) (axis2_engine_config_t *engine_config, 
+                    axis2_env_t **env,
+                    axis2_param_t *param);
 
-	axis2_param_t *(AXIS2_CALL *get_param) (axis2_engine_config_t *engine_config, 
-                                                axis2_env_t **env,
-		                                        const axis2_char_t *name);
+	axis2_param_t *(AXIS2_CALL *
+    get_param) (axis2_engine_config_t *engine_config, 
+                axis2_env_t **env,
+                const axis2_char_t *name);
 
-	axis2_array_list_t *(AXIS2_CALL *get_params) (axis2_engine_config_t *engine_config, 
-                                                axis2_env_t **env);
+	axis2_array_list_t *(AXIS2_CALL *
+    get_params) (axis2_engine_config_t *engine_config, 
+                 axis2_env_t **env);
 	
-	axis2_bool_t (AXIS2_CALL *is_param_locked) (axis2_engine_config_t *engine_config, 
-                                                axis2_env_t **env,
-		                                        const axis2_char_t *param_name);
+	axis2_bool_t (AXIS2_CALL *
+    is_param_locked) (axis2_engine_config_t *engine_config, 
+                        axis2_env_t **env,
+                        const axis2_char_t *param_name);
+                                                
+    struct axis2_transport_in_desc * (AXIS2_CALL *
+    get_transport_in)(axis2_engine_config_t *engine_config,
+                                            axis2_env_t **env,
+                                            axis2_qname_t *qname);
+    
+    /**
+     * Method addTransport
+     *
+     * @param transport
+     * @throws AxisFault
+     */
+    axis2_status_t (AXIS2_CALL *
+    add_transport_in) (axis2_engine_config_t *engine_config,
+                        axis2_env_t **env,
+                        struct axis2_transport_in_desc *transport);
+    
+    struct axis2_transport_out_desc * (AXIS2_CALL *
+    get_transport_out) (axis2_engine_config_t *engine_config,
+                        axis2_env_t **env,
+                        axis2_qname_t *qname);
+    
+    /**
+     * Method addTransport
+     *
+     * @param transport
+     * @throws AxisFault
+     */
+    axis2_status_t (AXIS2_CALL *
+    add_transport_out) (axis2_engine_config_t *engine_config,
+                                            axis2_env_t **env,
+                                            struct axis2_transport_out_desc *transport);
+    
+    axis2_hash_t * (AXIS2_CALL *
+    get_transports_in) (axis2_engine_config_t *engine_config,
+                                            axis2_env_t **env);
+    
+    axis2_hash_t * (AXIS2_CALL *
+    get_transports_out) (axis2_engine_config_t *engine_config,
+                                            axis2_env_t **env);
+    /**
+     * Method getModule
+     *
+     * @param name
+     * @return ModuleDescription
+     */
+    struct axis2_module_desc *(AXIS2_CALL *
+    get_module) (axis2_engine_config_t *engine_config,
+                                            axis2_env_t **env,
+                                            axis2_qname_t *qname);
+    
+    /**
+     * Method getEngadgedModules
+     *
+     * @return  Collection
+     */
+    axis2_array_list_t * (AXIS2_CALL *
+    get_engaged_modules) (axis2_engine_config_t *engine_config,
+                                            axis2_env_t **env);
+    
+    axis2_array_list_t * (AXIS2_CALL *
+    get_in_phases_upto_and_including_post_dispatch) (
+                                                axis2_engine_config_t *engine_config,
+                                                axis2_env_t **env);
+    
+    axis2_array_list_t * (AXIS2_CALL *
+    get_outflow) (axis2_engine_config_t *engine_config,
+                                            axis2_env_t **env);
+    
+    
+    /**
+     * @return ArrayList
+     */
+    axis2_array_list_t * (AXIS2_CALL *
+    get_in_fault_flow) (axis2_engine_config_t *engine_config,
+                                            axis2_env_t **env);
+    
+    /**
+     * @return ArrayList
+     */
+    axis2_array_list_t * (AXIS2_CALL *
+    get_out_fault_flow) (axis2_engine_config_t *engine_config,
+                                            axis2_env_t **env);                                        
+                                                
 };
 
 /**
@@ -97,9 +200,10 @@ struct axis2_engine_config_ops_s
  * Service states kept in the <code>MessageContext</code>. Other runtime
  * artifacts does not keep states forward from the execution.
  */
-struct axis2_engine_config_s
+struct axis2_engine_config
 {
 	axis2_engine_config_ops_t *ops;
+    axis2_param_container_t *param_container;
 };
 
 /** create Engine configuration struct
@@ -118,6 +222,9 @@ axis2_engine_config_create(axis2_env_t **env);
 
 #define AXIS2_ENGINE_CONFIG_GET_SVC_GRP(engine_config, env, svc_grp_name) \
         (engine_config->ops->get_svc_grp (engine_config, env, svc_grp_name))
+
+#define AXIS2_ENGINE_CONFIG_GET_SVC_GRPS(engine_config, env) \
+        (engine_config->ops->get_svc_grps (engine_config, env))
 
 #define AXIS2_ENGINE_CONFIG_ADD_SVC(engine_config, env, svc) \
 		(engine_config->ops->get_svc (engine_config, env, svc))
@@ -140,6 +247,43 @@ axis2_engine_config_create(axis2_env_t **env);
 #define AXIS2_ENGINE_CONFIG_IS_PARAM_LOCKED(engine_config, env, param_name) \
         (engine_config->ops->is_param_locked(engine_config, env, param_name))
 
+#define AXIS2_ENGINE_CONFIG_GET_TRANSPORT_IN(engine_config, env, qname) \
+        (engine_config->ops->get_transport_in(engine_config , env, qname))
+
+#define AXIS2_ENGINE_CONFIG_ADD_TRANSPORT_IN(engine_config, env, transport) \
+        (engine_config->ops->add_transport_in(engine_config , env, transport))
+
+#define AXIS2_ENGINE_CONFIG_GET_TRANSPORT_OUT(engine_config, env, qname) \
+        (engine_config->ops->get_transport_out(engine_config , env, qname))
+
+#define AXIS2_ENGINE_CONFIG_ADD_TRANSPORT_OUT(engine_config, env, transport) \
+        (engine_config->ops->add_transport_out(engine_config , env, transport))
+ 
+#define AXIS2_ENGINE_CONFIG_GET_TRANSPORTS_IN(engine_config, env) \
+        (engine_config->ops->get_transports_in(engine_config , env)) 
+ 
+#define AXIS2_ENGINE_CONFIG_GET_TRANSPORTS_OUT(engine_config, env) \
+        (engine_config->ops->get_transports_out(engine_config , env)) 
+ 
+#define AXIS2_ENGINE_CONFIG_GET_MODULE(engine_config, env, qname) \
+        (engine_config->ops->get_module(engine_config , env, qname)) 
+
+#define AXIS2_ENGINE_CONFIG_GET_ENGAGED_MODULES(engine_config, env) \
+        (engine_config->ops->get_engaged_modules(engine_config , env)) 
+        
+#define AXIS2_ENGINE_CONFIG_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(engine_config, env) \
+        (engine_config->ops->get_in_phases_upto_and_including_post_dispatch(engine_config , env)) 
+
+#define AXIS2_ENGINE_CONFIG_GET_OUTFLOW(engine_config, env) \
+        (engine_config->ops->get_outflow(engine_config , env)) 
+        
+#define AXIS2_ENGINE_CONFIG_GET_IN_FAULT_FLOW(engine_config, env) \
+        (engine_config->ops->get_in_fault_flow(engine_config , env)) 
+
+#define AXIS2_ENGINE_CONFIG_GET_OUT_FAULT_FLOW(engine_config, env) \
+        (engine_config->ops->get_out_fault_flow(engine_config , env)) 
+
+        
 /************************* End of function macros *****************************/
 
 /** @} */

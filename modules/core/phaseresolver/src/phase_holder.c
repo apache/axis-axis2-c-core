@@ -73,12 +73,7 @@ axis2_phase_holder_create (axis2_env_t **env)
 	if(NULL == phase_holder_impl)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
     
-    phase_holder_impl->phase_list = axis2_array_list_create(env, 0);
-    if(NULL == phase_holder_impl->phase_list)
-    {
-        axis2_phase_holder_free(&(phase_holder_impl->phase_holder), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
-    }
+    phase_holder_impl->phase_list = NULL;
     
 	phase_holder_impl->phase_holder.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_phase_holder_ops_t));
@@ -155,6 +150,7 @@ axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
     int size = 0;
     int i = 0;
     struct axis2_phase *phase = NULL;
+        
     AXIS2_FUNC_PARAM_CHECK(phase_holder, env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, phase_name, AXIS2_FALSE);
     
@@ -187,6 +183,7 @@ axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
 {
     axis2_char_t *phase_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    
     AXIS2_FUNC_PARAM_CHECK(phase_holder, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, handler, AXIS2_FAILURE);
     
@@ -200,7 +197,7 @@ axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
     } else 
     {
         AXIS2_ERROR_SET((*env)->error, INVALID_PHASE, AXIS2_FAILURE);
-        
+        return AXIS2_FAILURE;
     }
     return status;
 }
@@ -218,11 +215,13 @@ axis2_phase_holder_get_phase(axis2_phase_holder_t *phase_holder,
 {
     int size = 0;
     int i = 0;
-    axis2_phase_holder_impl_t *phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
+    axis2_phase_holder_impl_t *phase_holder_impl = NULL;
     struct axis2_phase *phase = NULL;
         
     AXIS2_FUNC_PARAM_CHECK(phase_holder, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, phase_name, NULL);
+    
+    phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
     
     size = AXIS2_ARRAY_LIST_SIZE(phase_holder_impl->phase_list, env);
     
@@ -276,11 +275,14 @@ axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_hol
         handler =
                 (Handler) handlerClass.newInstance();*/
         status = AXIS2_HANDLER_INIT(handler, env, handler_desc);
-        if(AXIS2_SUCCESS == status)
-            status = AXIS2_HANDLER_DESC_SET_HANDLER(handler_desc, env, handler);
+        if(AXIS2_FAILURE == status)
+            return status;
         
-        if(AXIS2_SUCCESS == status)
-            status = AXIS2_PHASE_ADD_HANDLER(phase, env, handler);
+        status = AXIS2_HANDLER_DESC_SET_HANDLER(handler_desc, env, handler);
+        if(AXIS2_FAILURE == status)
+            return status;
+        
+        status = AXIS2_PHASE_ADD_HANDLER(phase, env, handler);
     }
     return status;
 }

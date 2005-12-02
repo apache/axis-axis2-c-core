@@ -43,21 +43,21 @@ extern "C"
  */
 
     /** axis2 transport headers */
-    static const axis2_char_t *AXIS2_TRANSPORT_HEADERS = "AXIS2_TRANSPORT_HEADERS";
+    /*static const axis2_char_t *AXIS2_TRANSPORT_HEADERS = "AXIS2_TRANSPORT_HEADERS";*/
     /** axis2 transport in */
-    static const axis2_char_t *AXIS2_TRANSPORT_OUT = "AXIS2_TRANSPORT_OUT";
+    /*static const axis2_char_t *AXIS2_TRANSPORT_OUT = "AXIS2_TRANSPORT_OUT";*/
     /** axis2 transport out */
-    static const axis2_char_t *AXIS2_TRANSPORT_IN = "AXIS2_TRANSPORT_IN";
+    /*static const axis2_char_t *AXIS2_TRANSPORT_IN = "AXIS2_TRANSPORT_IN";*/
     /** axis2 character set encoding */
-    static const axis2_char_t *AXIS2_CHARACTER_SET_ENCODING = "AXIS2_CHARACTER_SET_ENCODING";
+    /*static const axis2_char_t *AXIS2_CHARACTER_SET_ENCODING = "AXIS2_CHARACTER_SET_ENCODING";*/
     /** axis2 UTF_8; This is the 'utf-8' value for AXIS2_CHARACTER_SET_ENCODING property  */
-    static const axis2_char_t *AXIS2_UTF_8 = "UTF-8";
+    /*static const axis2_char_t *AXIS2_UTF_8 = "UTF-8";*/
     /** axis2 UTF_16; This is the 'utf-16' value for AXIS2_CHARACTER_SET_ENCODING property  */
-    static const axis2_char_t *AXIS2_UTF_16 = "utf-16";
+    /*static const axis2_char_t *AXIS2_UTF_16 = "utf-16";*/
     /** axis2 default char set encoding; This is the default value for AXIS2_CHARACTER_SET_ENCODING property */
-    static const axis2_char_t *AXIS2_DEFAULT_CHAR_SET_ENCODING = "UTF_8";
+    /*static const axis2_char_t *AXIS2_DEFAULT_CHAR_SET_ENCODING = "UTF_8";*/
     /** axis2 transport succeeded */
-    static const axis2_char_t *AXIS2_TRANSPORT_SUCCEED = "AXIS2_TRANSPORT_SUCCEED";
+    /*static const axis2_char_t *AXIS2_TRANSPORT_SUCCEED = "AXIS2_TRANSPORT_SUCCEED";*/
     
 typedef struct axis2_msg_ctx_ops axis2_msg_ctx_ops_t;
 typedef struct axis2_msg_ctx axis2_msg_ctx_t; 

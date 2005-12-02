@@ -49,7 +49,8 @@ extern "C"
 {
 #endif
 
-struct axis2_operation;	
+struct axis2_operation;
+struct axis2_engine_config;	
 typedef struct axis2_module_desc_ops axis2_module_desc_ops_t;
 typedef struct axis2_module_desc axis2_module_desc_t;	
 	
@@ -74,68 +75,68 @@ struct axis2_module_desc_ops
      * @return in flow
      */
     axis2_flow_t *(AXIS2_CALL *
-    get_in_flow) (axis2_module_desc_t *module_desc,
+    get_inflow) (axis2_module_desc_t *module_desc,
                                         axis2_env_t **env);
     
     /**
      * Set in flow
-     * @param in_flow in flow
+     * @param inflow in flow
      */
     axis2_status_t (AXIS2_CALL *
-    set_in_flow) (axis2_module_desc_t *module_desc,
+    set_inflow) (axis2_module_desc_t *module_desc,
                                         axis2_env_t **env,
-                                        axis2_flow_t *in_flow);
+                                        axis2_flow_t *inflow);
     
     /**
      * Get out flow
      * @return out flow
      */
     axis2_flow_t *(AXIS2_CALL *
-    get_out_flow) (axis2_module_desc_t *module_desc,
+    get_outflow) (axis2_module_desc_t *module_desc,
                                         axis2_env_t **env);
     
     /**
      * Set out flow
-     * @param out_flow out flow
+     * @param outflow out flow
      */
     axis2_status_t (AXIS2_CALL *
-    set_out_flow) (axis2_module_desc_t *module_desc,
+    set_outflow) (axis2_module_desc_t *module_desc,
                                         axis2_env_t **env,
-                                        axis2_flow_t *out_flow);
+                                        axis2_flow_t *outflow);
     
     /**
      * Get fault in flow
      * @return fault in flow
      */
     axis2_flow_t * (AXIS2_CALL *
-    get_fault_in_flow) (axis2_module_desc_t *module_desc,
+    get_fault_inflow) (axis2_module_desc_t *module_desc,
                                             axis2_env_t **env);
     
     /**
      * set fault in flow
-     * @param falut_in_flow falut in flow
+     * @param falut_inflow falut in flow
      */
     axis2_status_t (AXIS2_CALL *
-    set_fault_in_flow) (axis2_module_desc_t *module_desc,
+    set_fault_inflow) (axis2_module_desc_t *module_desc,
                                             axis2_env_t **env,
-                                            axis2_flow_t *falut_in_flow);
+                                            axis2_flow_t *falut_inflow);
     
     /**
      * Get fault out flow
      * @return fault out flow
      */
     axis2_flow_t *(AXIS2_CALL *
-    get_fault_out_flow) (axis2_module_desc_t *module_desc,
+    get_fault_outflow) (axis2_module_desc_t *module_desc,
                                                 axis2_env_t **env);
     
     /**
      * Set fault out flow
-     * @param fault_out_flow fault out flow
+     * @param fault_outflow fault out flow
      */
     axis2_status_t (AXIS2_CALL *
-    set_fault_out_flow) (axis2_module_desc_t *module_desc,
+    set_fault_outflow) (axis2_module_desc_t *module_desc,
                                                 axis2_env_t **env,
-                                                axis2_flow_t *fault_out_flow);
+                                                axis2_flow_t *fault_outflow);
     
     /**
      * @return
@@ -161,14 +162,14 @@ struct axis2_module_desc_ops
     get_operations ) (axis2_module_desc_t *module_desc,
                                         axis2_env_t **env);
     
-    axis2_engine_config_t * (AXIS2_CALL *
+    struct axis2_engine_config * (AXIS2_CALL *
     get_parent ) (axis2_module_desc_t *module_desc,
                                     axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
     set_parent ) (axis2_module_desc_t *module_desc,
                                     axis2_env_t **env,
-                                    axis2_engine_config_t *parent);
+                                    struct axis2_engine_config *parent);
     
     /**
      * Add parameter
@@ -245,56 +246,56 @@ axis2_module_desc_create_with_qname (axis2_env_t **env,
 #define AXIS2_MODULE_DESC_FREE(module_desc, env) \
 		(module_desc->ops->free(module_desc, env))
 	
-#define AXIS2_MODULE_DESC_GET_IN_FLOW(module_desc, env, svc_grp) \
-        (module_desc->ops->get_in_flow (module_desc, env, svc_grp))
+#define AXIS2_MODULE_DESC_GET_INFLOW(module_desc, env) \
+        (module_desc->ops->get_inflow (module_desc, env))
 
-#define AXIS2_MODULE_DESC_SET_IN_FLOW(module_desc, env, svc_grp_name) \
-        (module_desc->ops->set_in_flow (module_desc, env, svc_grp_name))
+#define AXIS2_MODULE_DESC_SET_INFLOW(module_desc, env, inflow) \
+        (module_desc->ops->set_inflow (module_desc, env, inflow))
 
-#define AXIS2_MODULE_DESC_GET_OUT_FLOW(module_desc, env, svc) \
-		(module_desc->ops->get_out_flow (module_desc, env, svc))
+#define AXIS2_MODULE_DESC_GET_OUTFLOW(module_desc, env) \
+		(module_desc->ops->get_outflow (module_desc, env))
 		
-#define AXIS2_MODULE_DESC_SET_OUT_FLOW(module_desc, env, svc_name) \
-		(module_desc->ops->set_out_flow (module_desc, env, svc_name))
+#define AXIS2_MODULE_DESC_SET_OUTFLOW(module_desc, env, outflow) \
+		(module_desc->ops->set_outflow (module_desc, env, outflow))
 
-#define AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_desc, env, svc_name) \
-		(module_desc->ops->get_fault_in_flow (module_desc, env, svc_name))
+#define AXIS2_MODULE_DESC_GET_FAULT_INFLOW(module_desc, env) \
+		(module_desc->ops->get_fault_inflow (module_desc, env))
         
-#define AXIS2_MODULE_DESC_SET_FAULT_IN_FLOW(module_desc, env, param) \
-        (module_desc->ops->set_fault_in_flow(module_desc , env, param))
+#define AXIS2_MODULE_DESC_SET_FAULT_INFLOW(module_desc, env, falut_inflow) \
+        (module_desc->ops->set_fault_inflow(module_desc , env, falut_inflow))
 		
-#define AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_desc, env, name) \
-        (module_desc->ops->get_fault_out_flow(module_desc , env, name))
+#define AXIS2_MODULE_DESC_GET_FAULT_OUTFLOW(module_desc, env) \
+        (module_desc->ops->get_fault_outflow(module_desc , env))
 		
-#define AXIS2_MODULE_DESC_SET_FAULT_OUT_FLOW(module_desc, env) \
-        (module_desc->ops->set_fault_out_flow(module_desc , env))
+#define AXIS2_MODULE_DESC_SET_FAULT_OUTFLOW(module_desc, env, falut_outflow) \
+        (module_desc->ops->set_fault_outflow(module_desc , env, falut_outflow))
 		
 #define AXIS2_MODULE_DESC_GET_NAME(module_desc, env) \
         (module_desc->ops->get_name(module_desc, env))
 
-#define AXIS2_MODULE_DESC_SET_NAME(module_desc, env, param_name) \
-        (module_desc->ops->set_name(module_desc, env, param_name))
+#define AXIS2_MODULE_DESC_SET_NAME(module_desc, env, qname) \
+        (module_desc->ops->set_name(module_desc, env, qname))
 
-#define AXIS2_MODULE_DESC_ADD_OPERATION(module_desc, env, param_name) \
-        (module_desc->ops->add_operation(module_desc, env, param_name))
+#define AXIS2_MODULE_DESC_ADD_OPERATION(module_desc, env, operation) \
+        (module_desc->ops->add_operation(module_desc, env, operation))
         
-#define AXIS2_MODULE_DESC_GET_OPERATIONS(module_desc, env, param_name) \
-        (module_desc->ops->get_operations(module_desc, env, param_name))
+#define AXIS2_MODULE_DESC_GET_OPERATIONS(module_desc, env) \
+        (module_desc->ops->get_operations(module_desc, env))
 
-#define AXIS2_MODULE_DESC_GET_PARENT(module_desc, env, param_name) \
-        (module_desc->ops->get_parent(module_desc, env, param_name))
+#define AXIS2_MODULE_DESC_GET_PARENT(module_desc, env) \
+        (module_desc->ops->get_parent(module_desc, env))
         
-#define AXIS2_MODULE_DESC_SET_PARENT(module_desc, env, param_name) \
-        (module_desc->ops->set_parent(module_desc, env, param_name))
+#define AXIS2_MODULE_DESC_SET_PARENT(module_desc, env, parent) \
+        (module_desc->ops->set_parent(module_desc, env, parent))
 
-#define AXIS2_MODULE_DESC_ADD_PARAM(module_desc, env, param_name) \
-        (module_desc->ops->add_param(module_desc, env, param_name))
+#define AXIS2_MODULE_DESC_ADD_PARAM(module_desc, env, param) \
+        (module_desc->ops->add_param(module_desc, env, param))
         
-#define AXIS2_MODULE_DESC_GET_PARAM(module_desc, env, param_name) \
-        (module_desc->ops->get_param(module_desc, env, param_name))
+#define AXIS2_MODULE_DESC_GET_PARAM(module_desc, env, name) \
+        (module_desc->ops->get_param(module_desc, env, name))
 
-#define AXIS2_MODULE_DESC_GET_PARAMS(module_desc, env, param_name) \
-        (module_desc->ops->get_params(module_desc, env, param_name))
+#define AXIS2_MODULE_DESC_GET_PARAMS(module_desc, env) \
+        (module_desc->ops->get_params(module_desc, env))
         
 #define AXIS2_MODULE_DESC_IS_PARAM_LOCKED(module_desc, env, param_name) \
         (module_desc->ops->is_param_locked(module_desc, env, param_name))        

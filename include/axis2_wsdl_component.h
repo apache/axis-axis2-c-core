@@ -12,12 +12,15 @@
 #include <axis2_allocator.h>
 #include <axis2_string.h>
 #include <axis2_hash.h>
+#include <axis2_linked_list.h>
+#include <axis2_wsdl_extensible_element.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-	
+
+struct axis2_wsdl_extensible_element;	
 typedef struct axis2_wsdl_component_ops axis2_wsdl_component_ops_t;
 typedef struct axis2_wsdl_component axis2_wsdl_component_t;
 	
@@ -77,7 +80,28 @@ struct axis2_wsdl_component_ops
                                         (axis2_wsdl_component_t *wsdl_component, 
                                             axis2_env_t **env,
                                             const void *key);
-    
+ 
+
+
+/**
+ * Adds the <code>Element</code> to this Component.
+ *
+ * @param element
+ */
+axis2_status_t (AXIS2_CALL *
+add_extensibility_element) (axis2_wsdl_component_t *wsdl_component,
+                            axis2_env_t **env,
+                            void *element);
+                                                    
+/**
+ * Returns the Extensibility Elements of this component;
+ *
+ * @return List of <code>Element</code> s
+ */
+axis2_linked_list_t *(AXIS2_CALL *
+get_extensibility_elements) (axis2_wsdl_component_t *wsdl_component,
+                                                axis2_env_t **env);
+                                                
 };
 
 /**
@@ -116,7 +140,14 @@ axis2_wsdl_component_create (axis2_env_t **env);
 		
 #define AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(wsdl_component, env, key) \
 		((wsdl_component->ops)->get_component_property(wsdl_component, env, key))
-		
+
+
+#define AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_component, env, element) \
+		((wsdl_component->ops)->add_extensibility_element(wsdl_component, env, element))
+ 
+#define AXIS2_WSDL_COMPONENT_GET_EXTENSIBILITY_ELEMENTS(wsdl_component, env) \
+		((wsdl_component->ops)->get_extensibility_elements(wsdl_component, env))
+        
 /**************************** End of function macros **************************/
 
 /** @} */

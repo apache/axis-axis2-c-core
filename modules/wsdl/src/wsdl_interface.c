@@ -75,8 +75,8 @@ axis2_hash_t *AXIS2_CALL
 axis2_wsdl_interface_get_operations(axis2_wsdl_interface_t *wsdl_interface,
                                     axis2_env_t **env);
 
-struct axis2_operation *AXIS2_CALL
-axis2_interface_get_operation(axis2_wsdl_interface_t *wsdl_interface,
+void *AXIS2_CALL
+axis2_wsdl_interface_get_operation(axis2_wsdl_interface_t *wsdl_interface,
                                 axis2_env_t **env,
                                 axis2_char_t *nc_name);
 
@@ -111,7 +111,7 @@ axis2_wsdl_interface_set_operations(axis2_wsdl_interface_t *wsdl_interface,
 axis2_status_t AXIS2_CALL
 axis2_wsdl_interface_set_operation(axis2_wsdl_interface_t *wsdl_interface,
                                     axis2_env_t **env,
-                                    struct axis2_operation *operation);
+                                    void *operation);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_interface_set_super_interfaces(axis2_wsdl_interface_t *wsdl_interface,
@@ -207,6 +207,9 @@ axis2_wsdl_interface_create (axis2_env_t **env)
     
 	wsdl_interface_impl->wsdl_interface.ops->get_operations = 
         axis2_wsdl_interface_get_operations;
+    
+    wsdl_interface_impl->wsdl_interface.ops->get_operation =
+        axis2_wsdl_interface_get_operation;
     
 	wsdl_interface_impl->wsdl_interface.ops->get_super_interfaces = 
         axis2_wsdl_interface_get_super_interfaces;
@@ -325,8 +328,8 @@ axis2_wsdl_interface_get_operations(axis2_wsdl_interface_t *wsdl_interface,
     return AXIS2_INTF_TO_IMPL(wsdl_interface)->operations;
 }
 
-struct axis2_operation *AXIS2_CALL
-axis2_interface_get_operation(axis2_wsdl_interface_t *wsdl_interface,
+void *AXIS2_CALL
+axis2_wsdl_interface_get_operation(axis2_wsdl_interface_t *wsdl_interface,
                                 axis2_env_t **env,
                                 axis2_char_t *nc_name) 
 {
@@ -387,17 +390,19 @@ axis2_wsdl_interface_set_operations(axis2_wsdl_interface_t *wsdl_interface,
 axis2_status_t AXIS2_CALL
 axis2_wsdl_interface_set_operation(axis2_wsdl_interface_t *wsdl_interface,
                                     axis2_env_t **env,
-                                    struct axis2_operation *operation) 
+                                    void *operation) 
 {
-    
-    if (NULL == AXIS2_WSDL_OPERATION_GET_NAME(operation->wsdl_operation, env)) 
+    struct axis2_operation *operation_l = NULL;
+    operation_l = (struct axis2_operation *) operation;
+    if (NULL == AXIS2_WSDL_OPERATION_GET_NAME(operation_l->wsdl_operation, env)) 
     {
         /* The Operation name cannot be null (required) */
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_WSDL_OPERATION, 
             AXIS2_FAILURE);
+        return AXIS2_FAILURE;
     }
     axis2_char_t *op_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_WSDL_OPERATION_GET_NAME(
-        operation->wsdl_operation, env), env);
+        operation_l->wsdl_operation, env), env);
     axis2_hash_set(AXIS2_INTF_TO_IMPL(wsdl_interface)->operations, op_name,  
         AXIS2_HASH_KEY_STRING, operation);
     

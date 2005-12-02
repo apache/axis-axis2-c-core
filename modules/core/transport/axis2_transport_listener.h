@@ -28,9 +28,9 @@
 #include <axis2_env.h>
 #include <axis2_allocator.h>
 /*#include <axis2_endpoint_ref.h>*/
-#include <axis2_engine_config.h>
+#include <axis2_ctx.h>
 
-#include <wsdl.h>
+#include <axis2_wsdl.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -38,6 +38,7 @@ extern "C"
 #endif
 
 struct axis2_transport_listener;
+struct axis2_ctx;    
 typedef struct axis2_transport_listener axis2_transport_listener_t;
 typedef struct axis2_transport_listener_ops axis2_transport_listener_ops_t;
 

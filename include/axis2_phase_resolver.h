@@ -29,11 +29,16 @@
 #include <axis2_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_array_list.h>
+#include <axis2_hash.h>
 #include <axis2_handler_desc.h>
 #include <axis2_phase.h>
 #include <axis2_phase_rule.h>
 #include <axis2_handler.h>
-#include <wsdl.h>
+#include <axis2_handler_desc.h>
+#include <axis2_flow.h>
+#include <axis2_module_desc.h>
+#include <axis2_phase_holder.h>
+#include <axis2_wsdl.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -64,7 +69,70 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver_ops
 	axis2_status_t (AXIS2_CALL *free)(
                     axis2_phase_resolver_t *phase_resolver,
 			        axis2_env_t **env);
+
+    /**
+     * Method buildchains
+     *
+     * @throws PhaseException
+     * @throws AxisFault
+     */
+    axis2_status_t (AXIS2_CALL *
+    build_chains) (axis2_phase_resolver_t *phase_resolver,
+                   axis2_env_t **env);
     
+    /**
+     * To build the opration for the opeartion which the module going to be added
+     *
+     * @param operation <code>AxisOperation</code>
+     * @throws AxisFault
+     */
+    axis2_status_t (AXIS2_CALL *
+    build_module_operation) (axis2_phase_resolver_t *phase_resolver,
+                                axis2_env_t **env,
+                                struct axis2_operation *operation);
+    
+    
+    
+    
+    /**
+     * Method buildTranspotsChains
+     *
+     * @throws PhaseException
+     */
+    axis2_status_t (AXIS2_CALL *
+    build_transport_chains) (axis2_phase_resolver_t *phase_resolver,
+                             axis2_env_t **env);
+    
+    
+    axis2_status_t (AXIS2_CALL *
+    engage_module_globally) (axis2_phase_resolver_t *phase_resolver,
+                                axis2_env_t **env,
+                                struct axis2_module_desc *module);
+    
+    /**
+     * To engage modules come form global
+     *
+     * @param service
+     * @param module
+     * @throws PhaseException
+     */
+    axis2_status_t (AXIS2_CALL *
+    engage_module_to_svc_from_global) (axis2_phase_resolver_t *phase_resolver,
+                                        axis2_env_t **env,
+                                        struct axis2_svc *svc,
+                                        struct axis2_module_desc *module_desc);
+    
+    axis2_status_t (AXIS2_CALL *
+    engage_module_to_svc) (axis2_phase_resolver_t *phase_resolver,
+                            axis2_env_t **env,
+                            struct axis2_svc *svc,
+                            struct axis2_module_desc *module_desc);
+                                                        
+    axis2_status_t (AXIS2_CALL *
+    engage_module_to_operation) (axis2_phase_resolver_t *phase_resolver,
+                                    axis2_env_t **env,
+                                    struct axis2_operation *axis_operation,
+                                    struct axis2_module_desc *module_desc);    
 
 
 };
@@ -85,30 +153,52 @@ AXIS2_DECLARE(axis2_phase_resolver_t *)
 axis2_phase_resolver_create (axis2_env_t **env);
 
 /**
- * Creates phase resolver struct
- * @param phases
- * @return pointer to newly created phase resolver
+ * default constructor , to obuild chains for GlobalDescription
+ *
+ * @param engineConfig
  */
 AXIS2_DECLARE(axis2_phase_resolver_t *) 
-axis2_phase_resolver_create_with_phases (axis2_env_t **env, axis2_array_list_t *phases);
+axis2_phase_resolver_create_with_config (axis2_env_t **env, 
+                                         struct axis2_engine_config *axis2_config);
+
+/**
+ * Constructor PhaseResolver
+ *
+ * @param axisConfig
+ * @param serviceContext
+ */
+AXIS2_DECLARE(axis2_phase_resolver_t *)
+axis2_phase_resolver_create_with_config_and_svc (axis2_env_t **env, 
+                                                struct axis2_engine_config *axis2_config,
+                                                struct axis2_svc *svc);
 
 /*************************** Function macros **********************************/
 
 #define AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env) \
 		((phase_resolver->ops)->free (phase_resolver, env))
 
-#define AXIS2_PHASE_RESOLVER_IS_PHASE_EXIST(phase_resolver, env, phase_name) \
-		((phase_resolver->ops)->is_phase_exist (phase_resolver, env, phase_name))
+#define AXIS2_PHASE_RESOLVER_BUILD_CHAINS(phase_resolver, env) \
+		((phase_resolver->ops)->build_chains (phase_resolver, env))
 
-#define AXIS2_PHASE_RESOLVER_ADD_HANDLER(phase_resolver, env, handler) \
-		((phase_resolver->ops)->add_handler (phase_resolver, env, handler))
+#define AXIS2_PHASE_RESOLVER_BUILD_MODULE_OPERATION(phase_resolver, env, operation) \
+		((phase_resolver->ops)->build_module_operation (phase_resolver, env, operation))
 
-#define AXIS2_PHASE_RESOLVER_GET_PHASE(phase_resolver, env, phase_name) \
-		((phase_resolver->ops)->get_phase (phase_resolver, env, phase_name))
+#define AXIS2_PHASE_RESOLVER_BUILD_TRANSPORT_CHAINS(phase_resolver, env) \
+		((phase_resolver->ops)->build_transport_chains (phase_resolver, env))
 
-#define AXIS2_PHASE_RESOLVER_BUILD_TRANSPORT_HANDLER_CHAIN(phase_resolver, env, phase, handlers) \
-		((phase_resolver->ops)->build_transport_handler_chain (phase_resolver, env, phase, handlers))       
+#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_GLOBALLY(phase_resolver, env, module) \
+		((phase_resolver->ops)->engage_module_globally (phase_resolver, env, module))       
 
+#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_SVC_FROM_GLOBAL(phase_resolver, env, svc, module_desc) \
+		((phase_resolver->ops)->engage_module_to_svc_from_global (phase_resolver, env, svc, module_desc))
+
+#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_SVC(phase_resolver, env, svc, module_desc) \
+		((phase_resolver->ops)->engage_module_to_svc (phase_resolver, env, svc, module_desc))
+
+#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OPERATION(phase_resolver, env, axis_operation) \
+		((phase_resolver->ops)->engage_module_to_operation (phase_resolver, env, axis_operation))
+
+        
 /*************************** End of function macros ***************************/
 
 /** @} */
