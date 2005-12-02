@@ -14,7 +14,7 @@ INCLUDES = -I$(top_builddir)/include \
 prgbin_PROGRAMS = om_test
 om_test_SOURCES = main.c
 om_test_LDADD   =  $(LDFLAGS) libtest_om.la  \
-                    -L$(top_builddir)/lib \
+                    -L$(top_builddir)/install/lib \
                     -laxis2_context \
                     -laxis2_description \
                     -laxis2_engine \

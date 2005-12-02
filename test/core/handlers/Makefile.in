@@ -22,7 +22,7 @@ VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-top_builddir = ../../../..
+top_builddir = ../../..
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 INSTALL = @INSTALL@
 install_sh_DATA = $(install_sh) -c -m 644
@@ -40,7 +40,7 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 prgbin_PROGRAMS = test_handler$(EXEEXT)
-subdir = modules/test/core/handlers
+subdir = test/core/handlers
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
@@ -193,7 +193,7 @@ prgbindir = $(prefix)/bin/system_test
 SUBDIRS = 
 AM_CPPFLAGS = $(CPPFLAGS) -g -O2 -pthread
 test_handler_SOURCES = test_handler.c
-test_handler_LDADD = $(LDFLAGS) -L$(top_builddir)/lib -laxis2_util
+test_handler_LDADD = $(LDFLAGS) -L$(top_builddir)/install/lib -laxis2_util
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util/src
 
@@ -210,9 +210,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  modules/test/core/handlers/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  test/core/handlers/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  modules/test/core/handlers/Makefile
+	  $(AUTOMAKE) --gnu  test/core/handlers/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \

@@ -24,7 +24,7 @@ VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-top_builddir = ../../../..
+top_builddir = ../../..
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 INSTALL = @INSTALL@
 install_sh_DATA = $(install_sh) -c -m 644
@@ -42,7 +42,7 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 prgbin_PROGRAMS = util_test$(EXEEXT)
-subdir = modules/test/unit/util
+subdir = test/unit/util
 DIST_COMMON = $(include_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -220,7 +220,7 @@ INCLUDES = -I$(top_builddir)/include \
 
 util_test_SOURCES = main.c
 util_test_LDADD = $(LDFLAGS) libtest_util.la \
-                    -L$(top_builddir)/lib \
+                    -L$(top_builddir)/install/lib \
                     -laxis2_context \
                     -laxis2_description \
                     -laxis2_engine \
@@ -243,9 +243,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  modules/test/unit/util/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  test/unit/util/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  modules/test/unit/util/Makefile
+	  $(AUTOMAKE) --gnu  test/unit/util/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \

@@ -22469,7 +22469,7 @@ fi
 PULL_PARSER=$want_parser
 
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ac_config_files="$ac_config_files Makefile modules/Makefile modules/core/Makefile modules/core/context/Makefile modules/core/context/src/Makefile modules/core/context/test/Makefile modules/core/description/Makefile modules/core/description/src/Makefile modules/core/description/test/Makefile modules/core/engine/Makefile modules/core/engine/src/Makefile modules/core/engine/test/Makefile modules/core/handlers/Makefile modules/core/handlers/src/Makefile modules/core/addr/Makefile modules/core/addr/src/Makefile modules/core/phaseresolver/Makefile modules/core/phaseresolver/src/Makefile modules/core/transport/Makefile modules/xml/Makefile modules/xml/parser/Makefile modules/xml/parser/guththila/Makefile modules/xml/parser/guththila/impl/Makefile modules/xml/parser/guththila/impl/src/Makefile modules/xml/parser/guththila/src/Makefile modules/xml/parser/guththila/test/Makefile modules/xml/parser/libxml2/Makefile modules/xml/parser/libxml2/src/Makefile modules/xml/parser/libxml2/test/Makefile modules/xml/soap/Makefile modules/xml/soap/src/Makefile modules/xml/om/Makefile modules/xml/om/src/Makefile modules/xml/om/test/Makefile modules/common/Makefile modules/common/src/Makefile modules/common/test/Makefile modules/util/Makefile modules/util/src/Makefile modules/util/test/Makefile modules/wsdl/Makefile modules/wsdl/src/Makefile modules/wsdl/test/Makefile modules/test/Makefile modules/test/om/Makefile modules/test/om/src/Makefile modules/test/common/Makefile modules/test/core/Makefile modules/test/core/handlers/Makefile modules/test/util/Makefile modules/test/unit/Makefile"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ac_config_files="$ac_config_files Makefile modules/Makefile modules/core/Makefile modules/core/context/Makefile modules/core/context/src/Makefile modules/core/description/Makefile modules/core/description/src/Makefile modules/core/engine/Makefile modules/core/engine/src/Makefile modules/core/handlers/Makefile modules/core/handlers/src/Makefile modules/core/addr/Makefile modules/core/addr/src/Makefile modules/core/phaseresolver/Makefile modules/core/phaseresolver/src/Makefile modules/core/transport/Makefile modules/xml/Makefile modules/xml/parser/Makefile modules/xml/parser/guththila/Makefile modules/xml/parser/guththila/impl/Makefile modules/xml/parser/guththila/impl/src/Makefile modules/xml/parser/guththila/src/Makefile modules/xml/parser/libxml2/Makefile modules/xml/parser/libxml2/src/Makefile modules/xml/soap/Makefile modules/xml/soap/src/Makefile modules/xml/om/Makefile modules/xml/om/src/Makefile modules/common/Makefile modules/common/src/Makefile modules/util/Makefile modules/util/src/Makefile modules/wsdl/Makefile modules/wsdl/src/Makefile test/Makefile test/xml/Makefile test/xml/om/Makefile test/common/Makefile test/core/Makefile test/core/handlers/Makefile test/util/Makefile test/unit/Makefile test/unit/core/Makefile test/unit/core/description/Makefile test/unit/core/engine/Makefile test/unit/core/context/Makefile test/unit/core/phaseresolver/Makefile test/unit/util/Makefile test/unit/xml/Makefile test/unit/xml/om/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -23068,13 +23068,10 @@ do
   "modules/core/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/Makefile" ;;
   "modules/core/context/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/context/Makefile" ;;
   "modules/core/context/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/context/src/Makefile" ;;
-  "modules/core/context/test/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/context/test/Makefile" ;;
   "modules/core/description/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/description/Makefile" ;;
   "modules/core/description/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/description/src/Makefile" ;;
-  "modules/core/description/test/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/description/test/Makefile" ;;
   "modules/core/engine/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/engine/Makefile" ;;
   "modules/core/engine/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/engine/src/Makefile" ;;
-  "modules/core/engine/test/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/engine/test/Makefile" ;;
   "modules/core/handlers/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/handlers/Makefile" ;;
   "modules/core/handlers/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/handlers/src/Makefile" ;;
   "modules/core/addr/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/core/addr/Makefile" ;;
@@ -23088,32 +23085,34 @@ do
   "modules/xml/parser/guththila/impl/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/parser/guththila/impl/Makefile" ;;
   "modules/xml/parser/guththila/impl/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/parser/guththila/impl/src/Makefile" ;;
   "modules/xml/parser/guththila/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/parser/guththila/src/Makefile" ;;
-  "modules/xml/parser/guththila/test/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/parser/guththila/test/Makefile" ;;
   "modules/xml/parser/libxml2/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/parser/libxml2/Makefile" ;;
   "modules/xml/parser/libxml2/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/parser/libxml2/src/Makefile" ;;
-  "modules/xml/parser/libxml2/test/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/parser/libxml2/test/Makefile" ;;
   "modules/xml/soap/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/soap/Makefile" ;;
   "modules/xml/soap/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/soap/src/Makefile" ;;
   "modules/xml/om/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/om/Makefile" ;;
   "modules/xml/om/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/om/src/Makefile" ;;
-  "modules/xml/om/test/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/xml/om/test/Makefile" ;;
   "modules/common/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/common/Makefile" ;;
   "modules/common/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/common/src/Makefile" ;;
-  "modules/common/test/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/common/test/Makefile" ;;
   "modules/util/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/util/Makefile" ;;
   "modules/util/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/util/src/Makefile" ;;
-  "modules/util/test/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/util/test/Makefile" ;;
   "modules/wsdl/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/wsdl/Makefile" ;;
   "modules/wsdl/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/wsdl/src/Makefile" ;;
-  "modules/wsdl/test/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/wsdl/test/Makefile" ;;
-  "modules/test/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/test/Makefile" ;;
-  "modules/test/om/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/test/om/Makefile" ;;
-  "modules/test/om/src/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/test/om/src/Makefile" ;;
-  "modules/test/common/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/test/common/Makefile" ;;
-  "modules/test/core/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/test/core/Makefile" ;;
-  "modules/test/core/handlers/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/test/core/handlers/Makefile" ;;
-  "modules/test/util/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/test/util/Makefile" ;;
-  "modules/test/unit/Makefile" ) CONFIG_FILES="$CONFIG_FILES modules/test/unit/Makefile" ;;
+  "test/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/Makefile" ;;
+  "test/xml/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/xml/Makefile" ;;
+  "test/xml/om/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/xml/om/Makefile" ;;
+  "test/common/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/common/Makefile" ;;
+  "test/core/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/core/Makefile" ;;
+  "test/core/handlers/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/core/handlers/Makefile" ;;
+  "test/util/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/util/Makefile" ;;
+  "test/unit/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/unit/Makefile" ;;
+  "test/unit/core/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/unit/core/Makefile" ;;
+  "test/unit/core/description/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/unit/core/description/Makefile" ;;
+  "test/unit/core/engine/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/unit/core/engine/Makefile" ;;
+  "test/unit/core/context/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/unit/core/context/Makefile" ;;
+  "test/unit/core/phaseresolver/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/unit/core/phaseresolver/Makefile" ;;
+  "test/unit/util/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/unit/util/Makefile" ;;
+  "test/unit/xml/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/unit/xml/Makefile" ;;
+  "test/unit/xml/om/Makefile" ) CONFIG_FILES="$CONFIG_FILES test/unit/xml/om/Makefile" ;;
   "depfiles" ) CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
   "axis2_config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS axis2_config.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5

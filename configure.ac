@@ -95,13 +95,10 @@ AC_CONFIG_FILES([Makefile \
     modules/core/Makefile \
     modules/core/context/Makefile \
     modules/core/context/src/Makefile \
-    modules/core/context/test/Makefile \
     modules/core/description/Makefile \
     modules/core/description/src/Makefile \
-    modules/core/description/test/Makefile \
     modules/core/engine/Makefile \
     modules/core/engine/src/Makefile \
-    modules/core/engine/test/Makefile \
     modules/core/handlers/Makefile \
     modules/core/handlers/src/Makefile \
     modules/core/addr/Makefile \
@@ -115,31 +112,34 @@ AC_CONFIG_FILES([Makefile \
     modules/xml/parser/guththila/impl/Makefile \
     modules/xml/parser/guththila/impl/src/Makefile \
     modules/xml/parser/guththila/src/Makefile \
-    modules/xml/parser/guththila/test/Makefile \
     modules/xml/parser/libxml2/Makefile \
     modules/xml/parser/libxml2/src/Makefile \
-    modules/xml/parser/libxml2/test/Makefile \
     modules/xml/soap/Makefile \
     modules/xml/soap/src/Makefile \
     modules/xml/om/Makefile \
     modules/xml/om/src/Makefile \
-    modules/xml/om/test/Makefile \
     modules/common/Makefile \
     modules/common/src/Makefile \
-    modules/common/test/Makefile \
     modules/util/Makefile \
     modules/util/src/Makefile \
-    modules/util/test/Makefile \
     modules/wsdl/Makefile \
     modules/wsdl/src/Makefile \
-    modules/wsdl/test/Makefile \
-    modules/test/Makefile \
-    modules/test/om/Makefile \
-    modules/test/om/src/Makefile \
-    modules/test/common/Makefile \
-    modules/test/core/Makefile \
-    modules/test/core/handlers/Makefile \
-    modules/test/util/Makefile \
-    modules/test/unit/Makefile])
+    test/Makefile \
+    test/xml/Makefile \
+    test/xml/om/Makefile \
+    test/common/Makefile \
+    test/core/Makefile \
+    test/core/handlers/Makefile \
+    test/util/Makefile \
+    test/unit/Makefile \
+    test/unit/core/Makefile \
+    test/unit/core/description/Makefile \
+    test/unit/core/engine/Makefile \
+    test/unit/core/context/Makefile \
+    test/unit/core/phaseresolver/Makefile \
+    test/unit/util/Makefile \
+    test/unit/xml/Makefile \
+    test/unit/xml/om/Makefile
+    ])
     
 AC_OUTPUT

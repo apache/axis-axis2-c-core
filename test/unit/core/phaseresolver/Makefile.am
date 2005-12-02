@@ -12,7 +12,7 @@ INCLUDES = -I$(top_builddir)/include \
 prgbin_PROGRAMS = phaseresolver_test
 phaseresolver_test_SOURCES = main.c
 phaseresolver_test_LDADD   =  $(LDFLAGS) libtest_phaseresolver.la  \
-                    -L$(top_builddir)/lib \
+                    -L$(top_builddir)/install/lib \
                     -laxis2_context \
                     -laxis2_description \
                     -laxis2_engine \
