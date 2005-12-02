@@ -1,1 +1,1 @@
-SUBDIRS = impl src test
+SUBDIRS = impl src
