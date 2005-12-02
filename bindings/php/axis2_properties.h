@@ -1,0 +1,4 @@
+#ifndef AXIS2_PROPERTIES_H
+#define AXIS2_PROPERTIES_H
+
+#endif /* AXIS2_PROPERTIES_H */
