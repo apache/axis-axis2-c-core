@@ -100,7 +100,7 @@ extern "C"
  * @param value
  * @param relationship_type
  */
-AXIS2_DECLARE(axis2_relates_to_t*) AXIS2_CALL axis2_relates_to_create(axis2_env_t **env, axis2_char_t *value, axis2_char_t *relationship_type);
+AXIS2_DECLARE(axis2_relates_to_t*) axis2_relates_to_create(axis2_env_t **env, axis2_char_t *value, axis2_char_t *relationship_type);
     
 #define AXIS2_RELATES_TO_GET_VALUE(relates_to, env) ((relates_to)->ops->get_value(relates_to, env))
 #define AXIS2_RELATES_TO_SET_VALUE(relates_to, env, vlaue) ((relates_to)->ops->set_value(relates_to, env, vlaue))
