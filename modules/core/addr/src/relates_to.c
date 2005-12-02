@@ -86,6 +86,10 @@ axis2_relates_to_t* AXIS2_CALL axis2_relates_to_create(axis2_env_t **env, axis2_
         return NULL;        
     }
 
+    relates_to_impl->relates_to.ops->get_value = axis2_relates_to_get_value;
+    relates_to_impl->relates_to.ops->set_value = axis2_relates_to_set_value;
+    relates_to_impl->relates_to.ops->get_relationship_type = axis2_relates_to_get_relationship_type;
+    relates_to_impl->relates_to.ops->set_relationship_type = axis2_relates_to_set_relationship_type;
     relates_to_impl->relates_to.ops->free = axis2_relates_to_free;
 
     return &(relates_to_impl->relates_to);

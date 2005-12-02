@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = libaxis2_addr.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_addr_la_SOURCES = relates_to.c svc_name.c
+libaxis2_addr_la_SOURCES = relates_to.c svc_name.c any_content_type.c
 
 libaxis2_addr_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I${CUTEST_HOME}/include \
