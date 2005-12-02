@@ -1,1 +1,1 @@
-SUBDIRS = util common om unit core
+SUBDIRS = util common xml unit core
