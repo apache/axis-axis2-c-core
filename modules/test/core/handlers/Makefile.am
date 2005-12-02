@@ -4,7 +4,7 @@ SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -O2 -pthread
 test_handler_SOURCES = test_handler.c
 
-test_handler_LDADD   =  $(LDFLAGS) -L$(top_builddir)/modules/util/src/.libs -laxis2_util
+test_handler_LDADD   =  $(LDFLAGS) -L$(top_builddir)/lib -laxis2_util
                     
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util/src

@@ -7,7 +7,6 @@ libtest_om_la_SOURCES = om_test.c om_node_test.c
                         
 include_HEADERS=$(top_builddir)/modules/xml/om/test/*.h
 
-libtest_om_la_LIBADD = $(LDFLAGS) -L$(top_builddir)/modules/xml/om/src/.libs -laxis2_om
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util/src
@@ -15,8 +14,12 @@ INCLUDES = -I$(top_builddir)/include \
 prgbin_PROGRAMS = om_test
 om_test_SOURCES = main.c
 om_test_LDADD   =  $(LDFLAGS) libtest_om.la  \
-                   -L$(top_builddir)/modules/xml/om/src/.libs -laxis2_om \
-                   -L$(top_builddir)/modules/util/src/.libs -laxis2_util \
-                   -L$(top_builddir)/modules/xml/parser/guththila/src/.libs -laxis2_guththila \
-                   -L$(top_builddir)/modules/xml/parser/guththila/impl/src/.libs -lguththila
-
+                    -L$(top_builddir)/lib \
+                    -laxis2_context \
+                    -laxis2_description \
+                    -laxis2_engine \
+                    -laxis2_wsdl \
+                    -laxis2_phaseresolver \
+                    -laxis2_om \
+                    -laxis2_guththila \
+                    -lguththila

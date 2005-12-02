@@ -24,7 +24,7 @@ VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-top_builddir = ../../..
+top_builddir = ../../../..
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 INSTALL = @INSTALL@
 install_sh_DATA = $(install_sh) -c -m 644
@@ -42,7 +42,7 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 prgbin_PROGRAMS = util_test$(EXEEXT)
-subdir = modules/util/test
+subdir = modules/test/unit/util
 DIST_COMMON = $(include_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -65,9 +65,7 @@ am__installdirs = "$(DESTDIR)$(prglibdir)" "$(DESTDIR)$(prgbindir)" \
 	"$(DESTDIR)$(includedir)"
 prglibLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(prglib_LTLIBRARIES)
-am__DEPENDENCIES_1 =
-libtest_util_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/modules/util/src/libaxis2_util.la
+libtest_util_la_LIBADD =
 am_libtest_util_la_OBJECTS = util_hash_test.lo util_stream_test.lo \
 	util_log_test.lo util_error_test.lo util_test.lo \
 	util_array_list_test.lo util_linked_list_test.lo
@@ -76,8 +74,8 @@ prgbinPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(prgbin_PROGRAMS)
 am_util_test_OBJECTS = main.$(OBJEXT)
 util_test_OBJECTS = $(am_util_test_OBJECTS)
-util_test_DEPENDENCIES = $(am__DEPENDENCIES_1) libtest_util.la \
-	$(top_builddir)/modules/util/src/libaxis2_util.la
+am__DEPENDENCIES_1 =
+util_test_DEPENDENCIES = $(am__DEPENDENCIES_1) libtest_util.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -216,13 +214,22 @@ libtest_util_la_SOURCES = util_hash_test.c \
                             util_linked_list_test.c
 
 include_HEADERS = $(top_builddir)/modules/util/test/*.h
-libtest_util_la_LIBADD = $(LDFLAGS) $(top_builddir)/modules/util/src/libaxis2_util.la
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util/src
 
 util_test_SOURCES = main.c
-util_test_LDADD = $(LDFLAGS) libtest_util.la  $(top_builddir)/modules/util/src/libaxis2_util.la
+util_test_LDADD = $(LDFLAGS) libtest_util.la \
+                    -L$(top_builddir)/lib \
+                    -laxis2_context \
+                    -laxis2_description \
+                    -laxis2_engine \
+                    -laxis2_wsdl \
+                    -laxis2_phaseresolver \
+                    -laxis2_om \
+                    -laxis2_guththila \
+                    -lguththila
+
 all: all-am
 
 .SUFFIXES:
@@ -236,9 +243,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  modules/util/test/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  modules/test/unit/util/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  modules/util/test/Makefile
+	  $(AUTOMAKE) --gnu  modules/test/unit/util/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \

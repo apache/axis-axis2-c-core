@@ -24,7 +24,7 @@ VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-top_builddir = ../../../..
+top_builddir = ../../../../..
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 INSTALL = @INSTALL@
 install_sh_DATA = $(install_sh) -c -m 644
@@ -42,7 +42,7 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 prgbin_PROGRAMS = om_test$(EXEEXT)
-subdir = modules/xml/om/test
+subdir = modules/test/unit/xml/om
 DIST_COMMON = $(include_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -65,14 +65,14 @@ am__installdirs = "$(DESTDIR)$(prglibdir)" "$(DESTDIR)$(prgbindir)" \
 	"$(DESTDIR)$(includedir)"
 prglibLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(prglib_LTLIBRARIES)
-am__DEPENDENCIES_1 =
-libtest_om_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
+libtest_om_la_LIBADD =
 am_libtest_om_la_OBJECTS = om_test.lo om_node_test.lo
 libtest_om_la_OBJECTS = $(am_libtest_om_la_OBJECTS)
 prgbinPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(prgbin_PROGRAMS)
 am_om_test_OBJECTS = main.$(OBJEXT)
 om_test_OBJECTS = $(am_om_test_OBJECTS)
+am__DEPENDENCIES_1 =
 om_test_DEPENDENCIES = $(am__DEPENDENCIES_1) libtest_om.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
@@ -205,17 +205,21 @@ prglib_LTLIBRARIES = libtest_om.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libtest_om_la_SOURCES = om_test.c om_node_test.c
 include_HEADERS = $(top_builddir)/modules/xml/om/test/*.h
-libtest_om_la_LIBADD = $(LDFLAGS) -L$(top_builddir)/modules/xml/om/src/.libs -laxis2_om
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util/src
 
 om_test_SOURCES = main.c
 om_test_LDADD = $(LDFLAGS) libtest_om.la  \
-                   -L$(top_builddir)/modules/xml/om/src/.libs -laxis2_om \
-                   -L$(top_builddir)/modules/util/src/.libs -laxis2_util \
-                   -L$(top_builddir)/modules/xml/parser/guththila/src/.libs -laxis2_guththila \
-                   -L$(top_builddir)/modules/xml/parser/guththila/impl/src/.libs -lguththila
+                    -L$(top_builddir)/lib \
+                    -laxis2_context \
+                    -laxis2_description \
+                    -laxis2_engine \
+                    -laxis2_wsdl \
+                    -laxis2_phaseresolver \
+                    -laxis2_om \
+                    -laxis2_guththila \
+                    -lguththila
 
 all: all-am
 
@@ -230,9 +234,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  modules/xml/om/test/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  modules/test/unit/xml/om/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  modules/xml/om/test/Makefile
+	  $(AUTOMAKE) --gnu  modules/test/unit/xml/om/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
