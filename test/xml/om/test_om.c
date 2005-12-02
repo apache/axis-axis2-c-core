@@ -39,23 +39,26 @@ test_om_build (char *filename)
     axis2_om_node_t *node1 = NULL, *node2 = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_om_namespace_t* ns = NULL;
-    axis2_pull_parser_t *pull_parser = NULL;
+    axis2_xml_reader_t *reader = NULL;
+    axis2_xml_writer_t *writer = NULL;
+    axis2_char_t *buf = NULL;
+    
     
     f =fopen(filename, "r");
     if(!f)
         return -1;
       
     /** create pull parser */
-    pull_parser = axis2_pull_parser_create_for_memory(&environment, read_input, NULL);
+    reader = axis2_xml_reader_create_for_memory(&environment, read_input, NULL);
     
-    if(!pull_parser)
+    if(!reader)
     {
         printf("ERROR CREATING PULLPARSER");
         return -1;
     }
     /** create axis2_om_stax_builder by parsing pull_parser struct */
     
-    builder = axis2_om_stax_builder_create (&environment,pull_parser);
+    builder = axis2_om_stax_builder_create (&environment,reader);
     
     if(!builder)
     {
@@ -77,7 +80,8 @@ test_om_build (char *filename)
     {
         /** print root node information */
         
-       
+       if(AXIS2_OM_NODE_GET_NODE_TYPE(node1, &environment) == AXIS2_OM_ELEMENT)
+       {
         ele1 =AXIS2_OM_NODE_GET_DATA_ELEMENT(node1,&environment);
         if(ele1)
              
@@ -88,9 +92,10 @@ test_om_build (char *filename)
         if (ns)
         {
             printf ("root ns prefix %s\n", AXIS2_OM_NAMESPACE_GET_PREFIX(ns,&environment));
-            printf ("root ns uri %s\n", AXIS2_OM_NAMESPACE_GET_PREFIX(ns,&environment));
-
+            printf ("root ns uri %s\n", AXIS2_OM_NAMESPACE_GET_URI(ns,&environment));
+            ns = NULL;
         }
+       }
     }
     /** build the document continuously untill all the xml file is built in to a om model */
     
@@ -106,9 +111,20 @@ test_om_build (char *filename)
         {
         case AXIS2_OM_ELEMENT:
             ele2 =(axis2_om_element_t*) AXIS2_OM_NODE_GET_DATA_ELEMENT(node2, &environment);
-            if(ele2 && AXIS2_OM_ELEMENT_GET_LOCALNAME(ele2,&environment))
-                printf("\n localname %s\n" , AXIS2_OM_ELEMENT_GET_LOCALNAME(ele2,&environment)); 
-                        
+        if(ele2 && AXIS2_OM_ELEMENT_GET_LOCALNAME(ele2,&environment))
+        { 
+               printf("\n localname %s\n" , AXIS2_OM_ELEMENT_GET_LOCALNAME(ele2,&environment)); 
+            
+               ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(ele2,&environment);
+    
+            if (ns)
+            {
+                printf ("prefix %s\n", AXIS2_OM_NAMESPACE_GET_PREFIX(ns,&environment));
+                printf ("ns uri %s\n", AXIS2_OM_NAMESPACE_GET_URI(ns,&environment));
+            }
+            
+                ns = NULL;
+            }            
             break;
         case AXIS2_OM_TEXT:
             
@@ -126,19 +142,21 @@ test_om_build (char *filename)
     while (node2);
     printf ("END: pull document\n");
 
-    printf ("Serialize pulled document\n");
+    printf ("Serialize pulled document\n\n\n\n");
     
-    
-    om_output = axis2_om_output_create (&environment, NULL);
+    writer = axis2_xml_writer_create_for_memory(&environment, &buf, NULL, AXIS2_TRUE, 0);
+    /*
+    for guththila use following 
+    writer = axis2_xml_writer_create(&environment, NULL , NULL, AXIS2_TRUE, 0);
+    */
+    om_output = axis2_om_output_create (&environment, writer);
     AXIS2_OM_NODE_SERIALIZE (AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(document, &environment), &environment , om_output);
     AXIS2_OM_DOCUMENT_FREE(document, &environment); 
     axis2_om_output_free(om_output, &environment);  
     AXIS2_OM_STAX_BUILDER_FREE(builder, &environment);
   
-    AXIS2_PULL_PARSER_FREE(pull_parser, &environment);    
-    
-
-    
+    printf("%s",buf);    
+    AXIS2_FREE(environment->allocator, buf);
     printf ("\ndone\n");
     return 0;
 }
@@ -162,6 +180,7 @@ test_om_serialize ()
        </book>
     */
     int status;
+    axis2_xml_writer_t *writer = NULL;
     axis2_om_element_t *ele1 = NULL, *ele2 = NULL, *ele3 = NULL, *ele4 =
         NULL;
     axis2_om_node_t *node1 = NULL, *node2 = NULL, *node3 = NULL, *node4 =
@@ -170,7 +189,7 @@ test_om_serialize ()
     axis2_om_namespace_t *ns1 = NULL, *ns2 = NULL, *ns3 = NULL;
     axis2_om_text_t *text1 = NULL;
     axis2_om_output_t *om_output = NULL;
-
+    char *buffer = NULL;
     ns1 =
         axis2_om_namespace_create (&environment,
                                    "http://ws.apache.org/axis2/c/om",
@@ -202,12 +221,19 @@ test_om_serialize ()
     
     AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(ele4,&environment, attr2);
     
+    writer = axis2_xml_writer_create_for_memory(&environment, &buffer, NULL, AXIS2_TRUE, 0);
+    /* for guththila use following */
+    /*
+    writer = axis2_xml_writer_create(&environment,NULL, NULL, AXIS2_TRUE, 0);
+    */
    
     /* serializing stuff */
-    om_output = axis2_om_output_create (&environment, NULL);
+    om_output = axis2_om_output_create (&environment,writer);
 
     printf ("Serialize built document\n");
+    AXIS2_XML_WRITER_WRITE_START_DOCUMENT(om_output->xml_writer , &environment);
     status = AXIS2_OM_NODE_SERIALIZE (node1,&environment ,om_output);
+    AXIS2_XML_WRITER_WRITE_END_DOCUMENT(om_output->xml_writer, &environment);
     if (status != AXIS2_SUCCESS)
     {
         printf ("\naxis2_om_node_serialize failed\n");
@@ -219,6 +245,9 @@ test_om_serialize ()
 
      AXIS2_OM_NODE_FREE_TREE(node1,&environment);
      axis2_om_output_free(om_output, &environment);
+             
+     printf("%s", buffer); 
+    
      printf ("\nDONE\n");
 
     return 0;
@@ -227,21 +256,20 @@ test_om_serialize ()
 int
 main (int argc, char *argv[])
 {
-    char *file_name = "test.xml";
+    char *file_name = "contents.xml";
     if (argc > 1)
         file_name = argv[1];
     allocator = axis2_allocator_init (NULL);
     axis_log = axis2_log_create(allocator, NULL);
     error = axis2_error_create(allocator);
-    
+
     stream = axis2_stream_create(allocator, NULL);
-    
+
     environment = axis2_env_create_with_error_stream_log(allocator, error, stream, axis_log);
-    test_om_build (file_name);
-    test_om_serialize (); 
-    test_om_build (file_name);
-    test_om_serialize (); 
+    test_om_build (file_name); 
+    test_om_serialize();
     axis2_env_free(environment); 
+    
     return 0;
  }
 
