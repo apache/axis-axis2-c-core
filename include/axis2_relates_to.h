@@ -23,6 +23,8 @@
  */
 
 #include <axis2_defines.h>
+#include <axis2_env.h>
+#include <axis2.h>
 
 #ifdef __cplusplus
 extern "C"
