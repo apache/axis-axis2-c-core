@@ -279,7 +279,7 @@ extern "C"
 /* static const axis2_char_t * VALUE_FALSE = "false"; */
 /* static const axis2_char_t * CONTAINER_MANAGED = "ContainerManaged"; */
 /* static const axis2_char_t * RESPONSE_WRITTEN = "CONTENT_WRITTEN"; */
- static const axis2_char_t * WSA_ACTION = "wsamapping";
+#define WSA_ACTION "wsamapping"
 
 
 /* static const axis2_char_t * TESTING_PATH = "target/test-resources/"; */

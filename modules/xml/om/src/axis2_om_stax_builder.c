@@ -574,7 +574,6 @@ axis2_om_stax_builder_end_element (axis2_om_stax_builder_t *om_stax_builder,
 {
     axis2_om_node_t *parent;
     axis2_om_stax_builder_impl_t *builder = NULL;
-    axis2_om_node_t *root_node = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(om_stax_builder, env, AXIS2_FAILURE );
     
