@@ -103,7 +103,8 @@ PHP_FUNCTION(axis2_om_pi_get_value)
     {
         om_pi = (axis2_om_processing_instruction_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, &env);
         value = AXIS2_OM_PROCESSING_INSTRUCTION_GET_VALUE(om_pi, &env);
-        RETURN_STRING(value, 1);
+        if(value)
+            RETURN_STRING(value, 1);
     }
     RETURN_NULL();
 }
@@ -130,7 +131,8 @@ PHP_FUNCTION(axis2_om_pi_getTarget)
     {
         om_pi = (axis2_om_processing_instruction_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, &env);
         target = AXIS2_OM_PROCESSING_INSTRUCTION_GET_TARGET(om_pi, &env);
-        RETURN_STRING(target , 1);
+        if(target)
+            RETURN_STRING(target , 1);
     }
     RETURN_NULL();
 }

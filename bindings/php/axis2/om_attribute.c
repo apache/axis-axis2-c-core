@@ -121,7 +121,8 @@ PHP_FUNCTION(axis2_om_attribute_get_value)
     if(attr)
     {
        value = AXIS2_OM_ATTRIBUTE_GET_VALUE(attr, &env);
-       RETURN_STRING(value, 1);     
+       if(value)
+            RETURN_STRING(value, 1);     
     }
     RETURN_NULL();
 }
