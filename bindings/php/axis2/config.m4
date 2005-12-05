@@ -26,5 +26,5 @@ if test "$PHP_AXIS2" != "no"; then
 
   PHP_NEW_EXTENSION(axis2, [axis2.c om_doctype.c om_namespace.c om_processing_instruction.c qname.c \
                             om_attribute.c om_document.c om_node.c om_stax_builder.c xml_reader.c \
-                            om_comment.c om_element.c om_output.c om_text.c], $ext_shared)
+                            om_comment.c om_element.c om_output.c om_text.c xml_writer.c], $ext_shared)
 fi

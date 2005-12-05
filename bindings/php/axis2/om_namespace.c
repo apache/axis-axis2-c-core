@@ -59,7 +59,7 @@ PHP_METHOD(om_namespace, __construct)
     om_namespace = axis2_om_namespace_create (&env, ns_uri, prefix);
     if(!om_namespace)
     {
-        php_error_docref(NULL TSRMLS_CC, E_OUTOFMEMORY, " namespace create failure ");
+        /*php_error_docref(NULL TSRMLS_CC, E_OUTOFMEMORY, " namespace create failure ");*/
     }
     
     om_obj->ptr = om_namespace;

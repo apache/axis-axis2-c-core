@@ -89,7 +89,7 @@ PHP_METHOD(axis2_xml_writer, __construct)
     
     if(!writer)
     {
-        php_error_docref(NULL TSRMLS_CC, E_OUTOFMEMORY, " writer create failure ");
+        /*php_error_docref(NULL TSRMLS_CC, E_OUTOFMEMORY, " writer create failure ");*/
     }
     
     om_obj->ptr = writer;
