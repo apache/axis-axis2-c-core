@@ -95,7 +95,8 @@ PHP_FUNCTION(axis2_om_attribute_get_localname)
     if(attr)
     {
        lname = AXIS2_OM_ATTRIBUTE_GET_LOCALNAME(attr, &env);
-       RETURN_STRING(lname, 1);     
+       if(lname)
+            RETURN_STRING(lname, 1);     
     }
     RETURN_NULL();
 }

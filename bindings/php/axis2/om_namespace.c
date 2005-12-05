@@ -132,7 +132,8 @@ PHP_FUNCTION(axis2_om_namespace_get_uri)
     if(ns)
     {
        uri = AXIS2_OM_NAMESPACE_GET_URI(ns, &env);
-       RETURN_STRING(uri, 1);     
+       if(uri)
+            RETURN_STRING(uri, 1);     
     }
     RETURN_NULL();
 }
@@ -145,7 +146,7 @@ PHP_FUNCTION(axis2_om_namespace_get_prefix)
     om_object_ptr om_obj = NULL;
     axis2_env_t *env = NULL;
     axis2_om_namespace_t *ns = NULL;
-    char *prefix;
+    char *prefix = NULL;
     
     env = php_axis2_get_env();
     AXIS2_GET_THIS(object);
@@ -157,7 +158,8 @@ PHP_FUNCTION(axis2_om_namespace_get_prefix)
     if(ns)
     {
        prefix = AXIS2_OM_NAMESPACE_GET_PREFIX(ns, &env);
-       RETURN_STRING(prefix, 1);     
+       if(prefix)
+            RETURN_STRING(prefix, 1);     
     }
     RETURN_NULL();
 }

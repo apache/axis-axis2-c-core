@@ -171,7 +171,7 @@ PHP_FUNCTION(axis2_om_document_get_root_element)
 
 PHP_FUNCTION(axis2_om_document_set_root_element)
 {
-    php_printf("not implemented yet");
+    
 }
 PHP_FUNCTION(axis2_om_document_build_all)
 {

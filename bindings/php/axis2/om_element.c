@@ -307,16 +307,16 @@ PHP_FUNCTION(axis2_om_element_set_localname)
 
 
 PHP_FUNCTION(axis2_om_element_serialize)
-{
-
-}
+{}
 
 
 PHP_FUNCTION(axis2_om_element_find_namespace)
 {}
+
 PHP_FUNCTION(axis2_om_element_declare_namespace)
 {}
 
 PHP_FUNCTION(axis2_om_element_find_namespace_with_qname)
 {}
+
 PHP_FUNCTION(axis2_om_element_find_declared_namespace){}

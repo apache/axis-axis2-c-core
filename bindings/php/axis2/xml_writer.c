@@ -197,8 +197,6 @@ PHP_FUNCTION(axis2_xml_writer_get_prefix){}
 PHP_FUNCTION(axis2_xml_writer_set_prefix){}
 PHP_FUNCTION(axis2_xml_writer_set_default_prefix){}
 PHP_FUNCTION(axis2_xml_writer_write_encoded){}
-
-
 PHP_FUNCTION(axis2_xml_writer_write_empty_element){}
 PHP_FUNCTION(axis2_xml_writer_write_empty_element_with_namespace){}
 PHP_FUNCTION(axis2_xml_writer_write_empty_element_with_namespace_prefix){}
