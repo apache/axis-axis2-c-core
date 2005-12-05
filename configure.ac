@@ -27,7 +27,7 @@ AM_PROG_LIBTOOL
 CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -g3 -O2"
 #CFLAGS="$CFLAGS -Wall -ansi -Wshadow -DLINUX=2 -D_REENTRANT -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -g -O2 -pthread"
 LDFLAGS="$LDFLAGS -L${CUTEST_HOME}/lib/"
-LIBS="-lcutest -ldl"
+LIBS="-ldl"
 
 # Checks for header files.
 AC_HEADER_STDC
