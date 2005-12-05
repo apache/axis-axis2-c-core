@@ -33,4 +33,5 @@ $writer = new Axis2XMLWriter(NULL,1,0);
 $output = new Axis2OMOutput($writer);
 $ele1->serialize($output);
 echo $writer->getXML();
+echo "\n";
 ?>
