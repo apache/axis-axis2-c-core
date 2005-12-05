@@ -273,7 +273,6 @@ main (int argc, char *argv[])
     test_om_build (file_name);
     test_om_serialize();
     axis2_env_free(environment); 
-    getchar();
     return 0;
  }
  
