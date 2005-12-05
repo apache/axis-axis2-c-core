@@ -151,7 +151,9 @@ test_om_build (char *filename)
     AXIS2_OM_NODE_SERIALIZE (node1, &environment , om_output);
     
     buffer = AXIS2_XML_WRITER_GET_XML(writer, &environment);
+    
     axis2_om_output_free(om_output, &environment);  
+    
     printf("%s",buffer);
     
     AXIS2_OM_DOCUMENT_FREE(document, &environment); 
@@ -245,6 +247,7 @@ test_om_serialize ()
 
      AXIS2_OM_NODE_FREE_TREE(node1,&environment);
      output_buffer = AXIS2_XML_WRITER_GET_XML(writer, &environment);
+     
      axis2_om_output_free(om_output, &environment);
      
      printf("%s",output_buffer);
