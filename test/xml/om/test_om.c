@@ -160,7 +160,7 @@ test_om_build (char *filename)
   
     AXIS2_OM_STAX_BUILDER_FREE(builder, &environment);
   
-  
+    AXIS2_FREE(environment->allocator, buffer); 
     
 
     
@@ -205,9 +205,6 @@ test_om_serialize ()
     ns2 =
         axis2_om_namespace_create (&environment, "urn:ISBN:0-395-74341-6",
                                    "isbn");
-    ns3 =
-        axis2_om_namespace_create (&environment, "urn:w3-org-ns:HTML", "NULL");
-
     ele1 = axis2_om_element_create (&environment, NULL, "book", ns1, &node1);
     AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(ele1,&environment,node1,ns2);
     
@@ -252,6 +249,7 @@ test_om_serialize ()
      
      printf("%s",output_buffer);
      
+     AXIS2_FREE(environment->allocator, output_buffer); 
      printf ("\nDONE\n");
 
     return 0;
