@@ -106,6 +106,8 @@ AC_CONFIG_FILES([Makefile \
     modules/core/phaseresolver/Makefile \
     modules/core/phaseresolver/src/Makefile \
     modules/core/transport/Makefile \
+    modules/core/deployment/Makefile \
+    modules/core/deployment/src/Makefile \
     modules/xml/Makefile \
     modules/xml/parser/Makefile \
     modules/xml/parser/guththila/Makefile \

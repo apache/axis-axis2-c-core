@@ -60,7 +60,7 @@ struct axis2_svc_grp_ops
      * @return status_code
      */
     axis2_status_t (AXIS2_CALL *
-    set_name) (axis2_svc_grp_t *svc_grp, 
+    set_svc_grp_name) (axis2_svc_grp_t *svc_grp, 
                 axis2_env_t **env, 
                 axis2_char_t *svc_grp_name);
 	/** 
@@ -68,7 +68,7 @@ struct axis2_svc_grp_ops
      * @return service group name
      */
     axis2_char_t *(AXIS2_CALL *
-    get_name) (axis2_svc_grp_t *svc_grp, 
+    get_svc_grp_name) (axis2_svc_grp_t *svc_grp, 
                axis2_env_t **env) ;
     /** 
      * Add a service to the serivce group
@@ -131,6 +131,34 @@ struct axis2_svc_grp_ops
     set_parent) (axis2_svc_grp_t *svc_grp,
                     axis2_env_t **env,
                     struct axis2_engine_config *parent);
+                        
+    axis2_status_t (AXIS2_CALL *
+    engage_module_to_grp) (axis2_svc_grp_t *svc_grp,
+                                        axis2_env_t **env,
+                                        axis2_qname_t *module_name);
+    
+    axis2_array_list_t *(AXIS2_CALL *
+    get_svc_grp_modules) (axis2_svc_grp_t *svc_grp,
+                                        axis2_env_t **env);
+    
+    struct axis2_engine_config *(AXIS2_CALL *
+    get_axis_desc) (axis2_svc_grp_t *svc_grp,
+                                axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_axis_desc) (axis2_svc_grp_t *svc_grp,
+                                axis2_env_t **env,
+                                struct axis2_engine_config *axis2_desc);
+    
+    axis2_status_t (AXIS2_CALL *
+    add_moduleref) (axis2_svc_grp_t *svc_grp,
+                                axis2_env_t **env,
+                                axis2_qname_t *moduleref);
+    
+    axis2_array_list_t *(AXIS2_CALL *
+    get_modules) (axis2_svc_grp_t *svc_grp,
+                                axis2_env_t **env); 
+                                
 };
 
 /** 
@@ -165,10 +193,10 @@ axis2_svc_grp_create_with_engine_config (axis2_env_t **env,
 #define AXIS2_SVC_GRP_FREE(svc_grp, env) (svc_grp->ops->free (svc_grp , env))
 	
 #define AXIS2_SVC_GRP_SET_NAME(svc_grp, env , svc_grp_name) \
-        (svc_grp->ops->set_name (svc_grp, env, svc_grp_name))
+        (svc_grp->ops->set_svc_grp_name (svc_grp, env, svc_grp_name))
 		
 #define AXIS2_SVC_GRP_GET_NAME(svc_grp, env) \
-        (svc_grp->ops->get_name(svc_grp, env))
+        (svc_grp->ops->get_svc_grp_name(svc_grp, env))
 
 #define AXIS2_SVC_GRP_ADD_SVC(svc_grp, env , svc) \
         (svc_grp->ops->add_svc (svc_grp, env, svc))
@@ -201,7 +229,27 @@ axis2_svc_grp_create_with_engine_config (axis2_env_t **env,
         (svc_grp->ops->get_parent(svc_grp, env))
         
 #define AXIS2_SVC_GRP_SET_PARENT(svc_grp, env , parent) \
-        (svc_grp->ops->set_parent(svc_grp, env, parent))        
+        (svc_grp->ops->set_parent(svc_grp, env, parent)) 
+
+#define AXIS2_SVC_GRP_ENGAGE_MODULE_TO_GRP(svc_grp, env, module_name) \
+        (svc_grp->ops->engage_module_to_grp(svc_grp, env, module_name))
+        
+#define AXIS2_SVC_GRP_GET_SVC_GRP_MODULES(svc_grp, env) \
+        (svc_grp->ops->get_svc_grp_modules(svc_grp, env))
+
+#define AXIS2_SVC_GRP_GET_AXIS_DESC(svc_grp, env) \
+        (svc_grp->ops->get_axis_desc(svc_grp, env))
+        
+#define AXIS2_SVC_GRP_SET_AXIS_DESC(svc_grp, env, axis2_desc) \
+        (svc_grp->ops->set_axis_desc(svc_grp, env, axis2_desc))
+
+#define AXIS2_SVC_GRP_ADD_MODULEREF(svc_grp, env, moduleref) \
+        (svc_grp->ops->add_moduleref(svc_grp, env, moduleref))
+        
+#define AXIS2_SVC_GRP_GET_MODULES(svc_grp, env) \
+        (svc_grp->ops->get_modules(svc_grp, env)) 
+        
+                            
 /**************************** End of function macros **************************/        
 
 /** @} */

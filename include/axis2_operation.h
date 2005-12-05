@@ -31,6 +31,7 @@
 #include <axis2_module_desc.h>
 #include <axis2_wsdl_msg_ref.h>
 #include <axis2_description.h>
+#include <axis2_phase_meta.h>
 
 
 #ifdef __cplusplus

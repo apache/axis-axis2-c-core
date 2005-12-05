@@ -30,6 +30,7 @@
 #include <axis2_transport_out_desc.h>
 #include <axis2_qname.h>
 #include <axis2_hash.h>
+#include <axis2_phases_info.h>
 
 #ifdef __cplusplus
 extern "C" 
@@ -39,7 +40,8 @@ extern "C"
   * @ingroup axis2_core_engine
   * @{
   */
-    
+
+struct axis2_phases_info;    
 struct axis2_transport_in_desc *transports_in;
 struct axis2_transport_out_desc *transports_out;
 typedef struct axis2_engine_config_ops axis2_engine_config_ops_t;
@@ -67,7 +69,7 @@ struct axis2_engine_config_ops
 	struct axis2_svc_grp *(AXIS2_CALL *
     get_svc_grp) (  axis2_engine_config_t *engine_config, 
                     axis2_env_t **env, 
-                    const axis2_char_t *svc_grp_name);
+                    axis2_char_t *svc_grp_name);
  
     axis2_hash_t * (AXIS2_CALL *
     get_svc_grps) (axis2_engine_config_t *engine_config, 
@@ -81,7 +83,7 @@ struct axis2_engine_config_ops
 	struct axis2_svc *(AXIS2_CALL *
     get_svc) (axis2_engine_config_t *engine_config, 
                 axis2_env_t **env, 
-                const axis2_char_t* svc_name);
+                axis2_char_t* svc_name);
     
 	axis2_status_t (AXIS2_CALL *
     remove_svc) (axis2_engine_config_t *engine_config, 
@@ -105,7 +107,7 @@ struct axis2_engine_config_ops
 	axis2_bool_t (AXIS2_CALL *
     is_param_locked) (axis2_engine_config_t *engine_config, 
                         axis2_env_t **env,
-                        const axis2_char_t *param_name);
+                        axis2_char_t *param_name);
                                                 
     struct axis2_transport_in_desc * (AXIS2_CALL *
     get_transport_in)(axis2_engine_config_t *engine_config,
@@ -167,7 +169,7 @@ struct axis2_engine_config_ops
                                             axis2_env_t **env);
     
     axis2_array_list_t * (AXIS2_CALL *
-    get_in_phases_upto_and_including_post_dispatch) (
+    get_inphases_upto_and_including_post_dispatch) (
                                                 axis2_engine_config_t *engine_config,
                                                 axis2_env_t **env);
     
@@ -180,15 +182,90 @@ struct axis2_engine_config_ops
      * @return ArrayList
      */
     axis2_array_list_t * (AXIS2_CALL *
-    get_in_fault_flow) (axis2_engine_config_t *engine_config,
+    get_in_faultflow) (axis2_engine_config_t *engine_config,
                                             axis2_env_t **env);
     
     /**
      * @return ArrayList
      */
     axis2_array_list_t * (AXIS2_CALL *
-    get_out_fault_flow) (axis2_engine_config_t *engine_config,
-                                            axis2_env_t **env);                                        
+    get_out_faultflow) (axis2_engine_config_t *engine_config,
+                                            axis2_env_t **env);
+
+        axis2_hash_t *(AXIS2_CALL *
+    get_faulty_svcs) (axis2_engine_config_t *engine_config,
+                                        axis2_env_t **env);
+    
+    axis2_hash_t *(AXIS2_CALL *
+    get_faulty_modules) (axis2_engine_config_t *engine_config,
+                                        axis2_env_t **env);
+        
+    /*to get all the services in the system */
+    axis2_hash_t *(AXIS2_CALL *
+    get_svcs) (axis2_engine_config_t *engine_config,
+                                    axis2_env_t **env);
+    
+    axis2_bool_t (AXIS2_CALL *
+    is_engaged) (axis2_engine_config_t *engine_config,
+                                    axis2_env_t **env,
+                                    axis2_qname_t *module_name);
+    
+    struct axis2_phases_info *(AXIS2_CALL *
+    get_phases_info) (axis2_engine_config_t *engine_config,
+                                        axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_phases_info) (axis2_engine_config_t *engine_config,
+                                        axis2_env_t **env,
+                                        struct axis2_phases_info *phases_info);
+    axis2_status_t (AXIS2_CALL *
+    add_msg_recv) (axis2_engine_config_t *engine_config,
+                                        axis2_env_t **env,
+                                        axis2_char_t *key,
+                                        struct axis2_msg_recv *msg_recv);
+    
+    struct axis2_msg_recv *(AXIS2_CALL *
+    get_msg_recv) (axis2_engine_config_t *engine_config,
+                                        axis2_env_t **env,
+                                        axis2_char_t *key);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_outphases) (axis2_engine_config_t *engine_config,
+                                        axis2_env_t **env,
+                                        axis2_array_list_t *outphases);
+    
+        /**
+     * @param list
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_in_faultphases) (axis2_engine_config_t *engine_config,
+                                            axis2_env_t **env,
+                                            axis2_array_list_t *list);
+    
+    /**
+     * @param list
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_out_faultphases) (axis2_engine_config_t *engine_config,
+                                            axis2_env_t **env,
+                                            axis2_array_list_t *list);
+        
+    /**
+     * @return HashMap
+     */
+    axis2_hash_t *(AXIS2_CALL *
+    get_modules) (axis2_engine_config_t *engine_config,
+                                    axis2_env_t **env); 
+    
+    /**
+     * Method addMdoule
+     *
+     * @param module
+     */
+    axis2_status_t (AXIS2_CALL *
+    add_module) (axis2_engine_config_t *engine_config,
+                                    axis2_env_t **env,
+                                    struct axis2_module_desc *module);
                                                 
 };
 
@@ -272,17 +349,56 @@ axis2_engine_config_create(axis2_env_t **env);
         (engine_config->ops->get_engaged_modules(engine_config , env)) 
         
 #define AXIS2_ENGINE_CONFIG_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(engine_config, env) \
-        (engine_config->ops->get_in_phases_upto_and_including_post_dispatch(engine_config , env)) 
+        (engine_config->ops->get_inphases_upto_and_including_post_dispatch(engine_config , env)) 
 
 #define AXIS2_ENGINE_CONFIG_GET_OUTFLOW(engine_config, env) \
         (engine_config->ops->get_outflow(engine_config , env)) 
         
 #define AXIS2_ENGINE_CONFIG_GET_IN_FAULT_FLOW(engine_config, env) \
-        (engine_config->ops->get_in_fault_flow(engine_config , env)) 
+        (engine_config->ops->get_in_faultflow(engine_config , env)) 
 
 #define AXIS2_ENGINE_CONFIG_GET_OUT_FAULT_FLOW(engine_config, env) \
-        (engine_config->ops->get_out_fault_flow(engine_config , env)) 
+        (engine_config->ops->get_out_faultflow(engine_config , env)) 
 
+
+#define AXIS2_ENGINE_CONFIG_GET_FAULTY_SVCS(engine_config, env) \
+        (engine_config->ops->get_faulty_svcs(engine_config , env)) 
+
+#define AXIS2_ENGINE_CONFIG_GET_FAULTY_MODULES(engine_config, env) \
+        (engine_config->ops->get_faulty_modules(engine_config , env)) 
+
+#define AXIS2_ENGINE_CONFIG_GET_SVCS(engine_config, env) \
+        (engine_config->ops->get_svcs(engine_config , env)) 
+
+#define AXIS2_ENGINE_CONFIG_IS_ENGAGED(engine_config, env, module_name) \
+        (engine_config->ops->is_engaged(engine_config , env, module_name)) 
+
+#define AXIS2_ENGINE_CONFIG_GET_PHASESINFO(engine_config, env) \
+        (engine_config->ops->get_phases_info(engine_config , env)) 
+
+#define AXIS2_ENGINE_CONFIG_SET_PHASESINFO(engine_config, env, phases_info) \
+        (engine_config->ops->set_phases_info(engine_config , env, phases_info)) 
+
+#define AXIS2_ENGINE_CONFIG_ADD_MSG_RECV(engine_config, env, key, msg_recv) \
+        (engine_config->ops->add_msg_recv(engine_config , env, key, msg_recv)) 
+
+#define AXIS2_ENGINE_CONFIG_GET_MSG_RECV(engine_config, env, key) \
+        (engine_config->ops->get_msg_recv(engine_config , env, key)) 
+
+#define AXIS2_ENGINE_CONFIG_SET_OUTPHASES(engine_config, env, outphases) \
+        (engine_config->ops->set_outphases(engine_config , env, outphases)) 
+
+#define AXIS2_ENGINE_CONFIG_SET_IN_FAULTPHASES(engine_config, env, list) \
+        (engine_config->ops->set_in_faultphases(engine_config , env, list)) 
+
+#define AXIS2_ENGINE_CONFIG_SET_OUT_FAULTPHASES(engine_config, env, list) \
+        (engine_config->ops->set_out_faultphases(engine_config , env, list)) 
+
+#define AXIS2_ENGINE_CONFIG_GET_MODULES(engine_config, env) \
+        (engine_config->ops->get_modules(engine_config , env)) 
+
+#define AXIS2_ENGINE_CONFIG_ADD_MODULE(engine_config, env, module) \
+        (engine_config->ops->add_module(engine_config , env, module)) 
         
 /************************* End of function macros *****************************/
 

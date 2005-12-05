@@ -195,6 +195,8 @@ extern "C"
         AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OPERATION,
         /** module has alredy been engaged on the service.Operation terminated !!! */
         AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC,
+        /** module has alredy been engaged on the service. Group Operation terminated !!! */
+        AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC_GRP,
         /** Invalid message context state  */
         AXIS2_ERROR_INVALID_STATE_MSG_CTX,
         /** Service not yet found */
@@ -244,7 +246,11 @@ extern "C"
         
         AXIS2_ERROR_WRITING_DTD,
         
-        AXIS2_ERROR_WRITING_DEFAULT_NAMESPACE
+        AXIS2_ERROR_WRITING_DEFAULT_NAMESPACE,
+        /**Two service can not have same name, a service with same name alredy 
+          * exist in the system
+          */
+        AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME
         
         
         
