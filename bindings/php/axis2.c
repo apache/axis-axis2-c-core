@@ -32,7 +32,7 @@
 #include "axis2_log_default.h"
 
 
-zend_object_value axis2_objects_new(zend_class_entry *class_type TSRMLS_DC );
+static zend_object_value axis2_objects_new(zend_class_entry *class_type TSRMLS_DC );
 
 
 
@@ -132,8 +132,26 @@ PHP_MINIT_FUNCTION(axis2)
 	
 	REGISTER_AXIS2_CLASS(ce,"Axis2XMLReader",NULL, php_axis2_xml_reader_class_functions, axis2_xml_reader_class_entry);
     
+    REGISTER_AXIS2_CLASS(ce,"Axis2XMLWriter",NULL, php_axis2_xml_writer_class_functions, axis2_xml_writer_class_entry);
+    
+    REGISTER_AXIS2_CLASS(ce,"Axis2OMBuilder",NULL, php_axis2_om_stax_builder_class_functions, axis2_om_stax_builder_class_entry);
+    
+    REGISTER_AXIS2_CLASS(ce,"Axis2OMDocument",NULL, php_axis2_om_document_class_functions, axis2_om_document_class_entry);
+    
+    REGISTER_AXIS2_CLASS(ce,"Axis2OMOutput",NULL, php_axis2_om_output_class_functions, axis2_om_output_class_entry);
     
     
+    REGISTER_AXIS2_CLASS(ce, "Axis2OMNamespace", NULL, php_axis2_om_namespace_class_functions, axis2_om_namespace_class_entry);
+    
+    REGISTER_AXIS2_CLASS(ce, "Axis2OMAttribute", NULL, php_axis2_om_attribute_class_functions, axis2_om_attribute_class_entry);
+    
+    REGISTER_AXIS2_CLASS(ce, "Axis2Qname", NULL, php_axis2_qname_class_functions, axis2_qname_class_entry);
+   
+    REGISTER_AXIS2_CLASS(ce, "Axis2OMNode", NULL, php_axis2_om_node_class_functions, axis2_om_node_class_entry);
+    
+    REGISTER_AXIS2_CLASS(ce, "Axis2OMElement", axis2_om_node_class_entry , php_axis2_om_element_class_functions , axis2_om_element_class_entry);
+    
+    REGISTER_AXIS2_CLASS(ce, "Axis2OMText", axis2_om_node_class_entry , php_axis2_om_text_class_functions , axis2_om_text_class_entry);
     
     
     REGISTER_LONG_CONSTANT("AXIS2_XML_READER_START_DOCUMENT",	AXIS2_XML_READER_START_DOCUMENT,		CONST_CS | CONST_PERSISTENT);
@@ -174,13 +192,7 @@ void php_axis2_objects_free_storage(void *object TSRMLS_DC)
     zend_hash_destroy(intern->std.properties);
     FREE_HASHTABLE(intern->std.properties);
     
-    if(intern->node_list)
-    {
-        zend_hash_destroy(intern->node_list);
-        FREE_HASHTABLE(intern->node_list);
-    
-    }
-    /*TODO individaul objects must be freed */
+    /*TODO individual objects must be freed */
     if(intern->ptr)
     {
     
@@ -199,8 +211,7 @@ static zend_object_value axis2_objects_new(zend_class_entry *class_type TSRMLS_D
     
     intern = emalloc(sizeof(axis2_object));
     intern->std.ce = class_type;
-    intern->std.in_get = 0;
-    intern->std.in_set = 0;
+   
     
     intern->ptr = NULL;
     intern->prop_handler = NULL;
@@ -215,17 +226,6 @@ static zend_object_value axis2_objects_new(zend_class_entry *class_type TSRMLS_D
     retval.handlers = &axis2_object_handlers;            
     return retval;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* Remove if there's nothing to do at request start */
@@ -287,6 +287,115 @@ axis2_env_t *php_axis2_get_env()
     TSRMLS_FETCH();
     return AXIS2_G(env);
 }
+
+/* {{{ create_axis2_om_object */
+zval *php_axis2_create_om_object(void *obj, int obj_type, zend_class_entry *class_type TSRMLS_DC)
+{
+    zval *wrapper = NULL;
+    zend_class_entry *ce = NULL;
+    axis2_object *intern = NULL;
+    om_object *om_obj = NULL;
+    
+    if(!obj)
+    {
+        return NULL;
+    }
+    ce = class_type;
+   
+    ALLOC_ZVAL(wrapper);
+    /* ZVAL_NULL(wrapper); */
+    object_init_ex(wrapper,ce);
+    intern = (axis2_object_ptr)zend_objects_get_address(wrapper TSRMLS_CC);
+    ZVAL_ADDREF(wrapper);
+    
+    om_obj = (om_object_ptr)emalloc(sizeof(om_object));
+    om_obj->ptr = obj;
+    om_obj->obj_type = obj_type;
+    intern->ptr = om_obj;
+    intern->obj_type = OM_OBJ;
+    return (wrapper);   
+}
+
+/* }}} end create object */
+
+/* {{{ create om_node object */
+
+zval *php_axis2_create_om_node_object(void *obj, int node_type, zend_class_entry *class_type  TSRMLS_DC)
+{
+    zval *wrapper = NULL;
+    zend_class_entry *ce = NULL;
+    axis2_object *intern = NULL;
+    om_node_t *node_obj = NULL;
+    if(!obj)
+    {
+        return NULL;
+    }
+    ce = class_type;
+    ALLOC_ZVAL(wrapper);
+    /* ZVAL_NULL(wrapper); */
+    object_init_ex(wrapper, ce);
+    intern = (axis2_object_ptr)zend_objects_get_address(wrapper TSRMLS_CC);
+    ZVAL_ADDREF(wrapper);
+    
+    node_obj = (om_node_ptr)emalloc(sizeof(om_node_t));
+    node_obj->ptr = obj;
+    node_obj->node_type = node_type;
+    node_obj->builder = NULL;
+    node_obj->doc = NULL;
+    intern->ptr = node_obj;
+    intern->obj_type = OM_NODE_OBJ;
+    return (wrapper);
+}
+/* }}} end om_node_create obj */
+
+/* {{{ set Object */
+void php_axis2_set_object(void *obj,int obj_type, zval *wrapper_in TSRMLS_DC)
+{
+    axis2_object_ptr axis2_obj = NULL;
+   
+    axis2_obj = (axis2_object_ptr)zend_object_store_get_object(wrapper_in TSRMLS_CC);
+    axis2_obj->obj_type = obj_type;
+    axis2_obj->ptr = obj;
+}
+/* }}} end set object */
+
+/* {{{ stream to buffer */
+char* php_axis2_stream_to_buffer(php_stream *stream TSRMLS_DC)
+{
+    char *buffer = NULL;
+    int size = 0;
+    char *temp_buffer = NULL;
+    size = php_stream_copy_to_mem(stream,&temp_buffer,PHP_STREAM_COPY_ALL, 0);
+    buffer = estrdup(temp_buffer);
+    pefree(temp_buffer, 0);
+    return buffer;
+}
+
+zend_class_entry* php_axis2_get_class_type(int node_type)
+{
+    zend_class_entry *ce = NULL;
+    switch(node_type)
+    {
+        case OM_ELEMENT:
+            ce = axis2_om_element_class_entry;
+            break;
+        case OM_TEXT: 
+            ce = axis2_om_text_class_entry;
+            break;
+        case OM_PI:
+            ce = axis2_om_pi_class_entry;
+            break;
+        case OM_COMMENT:
+            ce = axis2_om_comment_class_entry;            
+            break;
+        default:
+            ce = NULL;
+            break;    
+    }
+    return ce;
+}
+/* }}} end stream to buffer */
+
 
 /*
  * Local variables:

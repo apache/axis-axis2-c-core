@@ -210,6 +210,10 @@ axis2_libxml2_writer_wrapper_write_encoded(
                                          axis2_char_t *text,
                                          int in_attr);
 
+axis2_char_t* AXIS2_CALL
+axis2_libxml2_writer_wrapper_get_xml(axis2_xml_writer_t *writer,
+                                     axis2_env_t **env);
+
 static axis2_bool_t 
 axis2_libxml2_writer_wrapper_validate_namespace(axis2_xml_writer_t *writer,
                                          axis2_env_t **env,
@@ -218,6 +222,8 @@ axis2_libxml2_writer_wrapper_validate_namespace(axis2_xml_writer_t *writer,
 static axis2_status_t 
 axis2_libxml2_writer_wrapper_reset(axis2_xml_writer_t *writer,
                                    axis2_env_t **env);
+
+                                   
                                                                             
 
 
@@ -237,7 +243,6 @@ typedef struct axis2_libxml2_writer_wrapper_impl
     axis2_xml_writer_t writer;
     xmlTextWriterPtr xml_writer;
     xmlBufferPtr buffer;
-    axis2_char_t **output_buffer;
     int writer_type;
     axis2_char_t *encoding;
     int is_prefix_defaulting;
@@ -276,6 +281,9 @@ axis2_xml_writer_create(axis2_env_t **env,
         AXIS2_FREE((*env)->allocator, writer_impl);
                 
     }
+    writer_impl->buffer = NULL;
+    writer_impl->encoding = NULL;
+    
     
     if(encoding)
         writer_impl->encoding = AXIS2_STRDUP(encoding , env);
@@ -369,6 +377,8 @@ axis2_xml_writer_create(axis2_env_t **env,
             axis2_libxml2_writer_wrapper_set_default_prefix;
     writer_impl->writer.ops->write_encoded = 
             axis2_libxml2_writer_wrapper_write_encoded;    
+    writer_impl->writer.ops->get_xml =
+            axis2_libxml2_writer_wrapper_get_xml;            
     return &(writer_impl->writer);
 }
 
@@ -376,7 +386,6 @@ axis2_xml_writer_create(axis2_env_t **env,
 
 AXIS2_DECLARE(axis2_xml_writer_t *)
 axis2_xml_writer_create_for_memory(axis2_env_t **env,
-                                   char **buffer,
                                    axis2_char_t *encoding, 
                                    int is_prefix_default,
                                    int compression)
@@ -394,7 +403,6 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
     writer_impl->qname_array.prefix = NULL;
     writer_impl->qname_array.uri = NULL;
     writer_impl->writer_type = AXIS2_LIBXML2_WRITER_MEMORY;
-    writer_impl->output_buffer = buffer;
     
     
     writer_impl->buffer = xmlBufferCreate();
@@ -503,7 +511,9 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
     writer_impl->writer.ops->set_default_prefix = 
             axis2_libxml2_writer_wrapper_set_default_prefix;
     writer_impl->writer.ops->write_encoded = 
-            axis2_libxml2_writer_wrapper_write_encoded;    
+            axis2_libxml2_writer_wrapper_write_encoded;
+    writer_impl->writer.ops->get_xml =
+            axis2_libxml2_writer_wrapper_get_xml;                 
     return &(writer_impl->writer);
 }
 
@@ -516,20 +526,8 @@ axis2_libxml2_writer_wrapper_free(axis2_xml_writer_t *writer,
     AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
 
-    if(writer_impl->xml_writer)
-    {
-        xmlFreeTextWriter(writer_impl->xml_writer);
-        writer_impl->xml_writer = NULL;
-    }
    
-    if(writer_impl->writer_type == AXIS2_LIBXML2_WRITER_MEMORY)
-    {
-      *(writer_impl->output_buffer) = AXIS2_MALLOC((*env)->allocator,     
-            sizeof(axis2_char_t)*(strlen((const axis2_char_t*)writer_impl->buffer->content)+1));
-        sprintf(*(writer_impl->output_buffer),(const axis2_char_t*)writer_impl->buffer->content);
-        xmlBufferFree(writer_impl->buffer);
-        writer_impl->buffer = NULL;
-    }
+ 
            
     if(writer_impl->encoding)
     {
@@ -1367,4 +1365,36 @@ axis2_libxml2_writer_wrapper_reset(axis2_xml_writer_t *writer,
         
         writer_impl->qname_array.current_no = 0;    
     return AXIS2_SUCCESS;
+}
+
+
+axis2_char_t* AXIS2_CALL
+axis2_libxml2_writer_wrapper_get_xml(axis2_xml_writer_t *writer,
+                                     axis2_env_t **env)
+{
+    axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
+    axis2_char_t *output = NULL;
+    writer_impl = AXIS2_INTF_TO_IMPL(writer);
+    if(writer_impl->xml_writer)
+    {
+        xmlFreeTextWriter(writer_impl->xml_writer);
+        writer_impl->xml_writer = NULL;
+    }
+    if(writer_impl->writer_type == AXIS2_LIBXML2_WRITER_MEMORY)
+    {
+
+        if(writer_impl->buffer != NULL)
+        {
+           output = AXIS2_MALLOC((*env)->allocator,     
+                    sizeof(axis2_char_t)*(
+                        strlen((const axis2_char_t*)(writer_impl->buffer->content))+1));
+            sprintf(output, 
+                    ((const axis2_char_t*)(writer_impl->buffer->content)));
+        }
+    }
+    else if(writer_impl->writer_type == AXIS2_LIBXML2_WRITER_FILE)
+    {
+        printf(" This is not supported for this type of writer");
+    }
+    return output;   
 }

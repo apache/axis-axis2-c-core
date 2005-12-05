@@ -69,7 +69,11 @@ typedef axis2_object *axis2_object_ptr;
 void php_axis2_objects_free_storage(void *object TSRMLS_DC);
 void php_axis2_destroy_env();
 axis2_env_t *php_axis2_get_env();
-
+zval *php_axis2_create_om_object(void* obj, int obj_type, zend_class_entry *class_type TSRMLS_DC);
+zval *php_axis2_create_om_node_object(void* obj,int node_type, zend_class_entry *class_type  TSRMLS_DC);
+void php_axis2_set_object(void *obj,int obj_type, zval *wrapper_in TSRMLS_DC); 
+char* php_axis2_stream_to_buffer(php_stream *stream TSRMLS_DC);
+zend_class_entry* php_axis2_get_class_type(int node_type);
 /* 
   	Declare any global variables you may need between the BEGIN
 	and END macros here:     */

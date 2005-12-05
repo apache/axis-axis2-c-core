@@ -24,12 +24,13 @@
 #include <axis2_om_document.h>
 #include <axis2_om_stax_builder.h>
 
-typedef struct _axis2_om_node {
-    axis2_om_node_t *node;
+typedef struct _om_node {
+    void *ptr;
     axis2_om_document_t *doc;
     axis2_om_stax_builder_t *builder;
+    int node_type;
     int ref_count;
-}axis2_om_node;
+}om_node_t;
 
 typedef struct _om_object{
     void *ptr;
@@ -37,9 +38,7 @@ typedef struct _om_object{
     int ref_count;
 }om_object;
 
-
-
-typedef axis2_om_node* axis2_om_node_ptr;
+typedef om_node_t* om_node_ptr;
 typedef om_object* om_object_ptr;
 
 
@@ -48,6 +47,20 @@ INIT_CLASS_ENTRY(ce, name, funcs); \
 ce.create_object = axis2_objects_new; \
 entry = zend_register_internal_class_ex(&ce, parent_ce, NULL TSRMLS_CC);
 
-
+#define AXIS2_GET_THIS(zval) \
+        if(NULL == (zval = getThis())) \
+        { \
+            php_error_docref(NULL TSRMLS_CC, E_WARNING, "object missing ");  \
+            RETURN_FALSE; \
+        } 
+        
+#define AXIS2_GET_OBJ(__ptr, __id, __ptr_type, __intern) \
+        { \
+            __intern = (axis2_object *)zend_object_store_get_object(__id TSRMLS_CC); \
+            if((__intern->ptr)) \
+            { \
+                __ptr = (__ptr_type)(__intern->ptr); \
+            } \
+        }
 
 #endif /* AXIS2_COMMON_H */

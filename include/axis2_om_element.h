@@ -286,7 +286,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         ((om_element)->ops->get_namespace(om_element, env))
 /** set localname */        
 #define AXIS2_OM_ELEMENT_SET_LOCALNAME(om_element, env, localname) \
-        ((om_element)->ops->set_localname(om_element, env))
+        ((om_element)->ops->set_localname(om_element, env, localname))
 /** set namespace */        
 #define AXIS2_OM_ELEMENT_SET_NAMESPACE(om_element, env, ns , node) \
         ((om_element)->ops->set_namespace(om_element, env, ns, node))

@@ -418,6 +418,9 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
                                                  axis2_env_t **env,
                                                  axis2_char_t *text,
                                                  int in_attr);
+                                                 
+        axis2_char_t* (AXIS2_CALL *get_xml)(axis2_xml_writer_t *,
+                                             axis2_env_t **env);                                                 
 
     };
 
@@ -444,7 +447,6 @@ axis2_xml_writer_create(axis2_env_t **env,
 
 AXIS2_DECLARE(axis2_xml_writer_t *)
 axis2_xml_writer_create_for_memory(axis2_env_t **env,
-                                   char **buffer,
                                    axis2_char_t *encoding,
                                    int is_prefix_default,
                                    int compression);
@@ -553,6 +555,9 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
 
 #define AXIS2_XML_WRITER_WRITE_ENCODED(writer, env, text, in_attr) \
         ((writer)->ops->write_encoded(writer, env, text, in_attr))
+        
+#define AXIS2_XML_WRITER_GET_XML(writer, env) \
+        ((writer)->ops->get_xml(writer, env))        
 /** @} */
 
 
