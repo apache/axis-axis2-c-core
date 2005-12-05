@@ -62,7 +62,8 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libaxis2_phaseresolver_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libaxis2_phaseresolver_la_OBJECTS = phase_holder.lo
+am_libaxis2_phaseresolver_la_OBJECTS = phase_holder.lo \
+	phase_resolver.lo
 libaxis2_phaseresolver_la_OBJECTS =  \
 	$(am_libaxis2_phaseresolver_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
@@ -190,7 +191,9 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 lib_LTLIBRARIES = libaxis2_phaseresolver.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_phaseresolver_la_SOURCES = phase_holder.c
+libaxis2_phaseresolver_la_SOURCES = phase_holder.c \
+                                    phase_resolver.c
+
 libaxis2_phaseresolver_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
             -I$(top_builddir)/modules/xml/guththila/src \
@@ -269,6 +272,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/phase_holder.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/phase_resolver.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

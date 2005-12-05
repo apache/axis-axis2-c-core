@@ -338,7 +338,7 @@ axis2_transport_out_desc_set_sender(struct axis2_transport_out_desc *transport_o
 }
 
 struct axis2_phase * AXIS2_CALL
-axis2_transport_desc_get_outphase(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_get_outphase(struct axis2_transport_out_desc *transport_out,
                                         axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(transport_out, env, NULL);

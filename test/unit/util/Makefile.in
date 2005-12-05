@@ -75,7 +75,8 @@ PROGRAMS = $(prgbin_PROGRAMS)
 am_util_test_OBJECTS = main.$(OBJEXT)
 util_test_OBJECTS = $(am_util_test_OBJECTS)
 am__DEPENDENCIES_1 =
-util_test_DEPENDENCIES = $(am__DEPENDENCIES_1) libtest_util.la
+util_test_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(top_builddir)/test/unit/util/libtest_util.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/conftools/depcomp
 am__depfiles_maybe = depfiles
@@ -219,7 +220,10 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util/src
 
 util_test_SOURCES = main.c
-util_test_LDADD = $(LDFLAGS) libtest_util.la \
+util_test_LDADD = $(LDFLAGS) \
+                     -L$(CUTEST_HOME)/lib \
+                     -lcutest \
+                     $(top_builddir)/test/unit/util/libtest_util.la \
                     -L$(top_builddir)/install/lib \
                     -laxis2_util \
                     -laxis2_context \

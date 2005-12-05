@@ -402,6 +402,10 @@ axis2_msg_ctx_set_svc_grp_ctx_id(struct axis2_msg_ctx *msg_ctx,
                                     axis2_env_t **env,
                                     axis2_char_t *svc_grp_ctx_id);
 
+axis2_bool_t AXIS2_CALL
+axis2_msg_ctx_is_paused(axis2_msg_ctx_t *msg_ctx,
+                        axis2_env_t **env);
+
 /************************* End of function headers ****************************/	
 
 axis2_msg_ctx_t * AXIS2_CALL
@@ -611,6 +615,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->msg_ctx.ops->set_svc_grp = axis2_msg_ctx_set_svc_grp;
     msg_ctx_impl->msg_ctx.ops->get_svc_grp_ctx_id = axis2_msg_ctx_get_svc_grp_ctx_id;
     msg_ctx_impl->msg_ctx.ops->set_svc_grp_ctx_id = axis2_msg_ctx_set_svc_grp_ctx_id;
+    msg_ctx_impl->msg_ctx.ops->is_paused = axis2_msg_ctx_is_paused;
     
     return &(msg_ctx_impl->msg_ctx);
 }
@@ -1866,6 +1871,14 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_svc_grp_ctx_id(struct axis2_msg_ctx 
         }
     }
     return AXIS2_SUCCESS;
+}
+
+axis2_bool_t AXIS2_CALL
+axis2_msg_ctx_is_paused(axis2_msg_ctx_t *msg_ctx,
+                        axis2_env_t **env) 
+{
+    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FALSE);
+    return AXIS2_INTF_TO_IMPL(msg_ctx)->paused;
 }
 
 /** TODO: there are many block to be uncommented once external depandancies are resoled,

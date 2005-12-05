@@ -18,7 +18,10 @@ INCLUDES = -I$(top_builddir)/include \
 
 prgbin_PROGRAMS = util_test
 util_test_SOURCES = main.c
-util_test_LDADD   =  $(LDFLAGS) libtest_util.la \
+util_test_LDADD   =  $(LDFLAGS) \
+                     -L$(CUTEST_HOME)/lib \
+                     -lcutest \
+                     $(top_builddir)/test/unit/util/libtest_util.la \
                     -L$(top_builddir)/install/lib \
                     -laxis2_util \
                     -laxis2_context \

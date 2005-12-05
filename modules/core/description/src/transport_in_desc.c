@@ -338,7 +338,7 @@ axis2_transport_in_desc_set_recv(struct axis2_transport_in_desc *transport_in,
 }
 
 struct axis2_phase * AXIS2_CALL
-axis2_transport_desc_get_inphase(struct axis2_transport_in_desc *transport_in,
+axis2_transport_in_desc_get_inphase(struct axis2_transport_in_desc *transport_in,
                                         axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(transport_in, env, NULL);
