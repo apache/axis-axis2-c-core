@@ -562,7 +562,7 @@ struct axis2_msg_ctx_ops
      */
     axis2_bool_t (AXIS2_CALL *
     is_paused) (axis2_msg_ctx_t *msg_ctx,
-                            axis2_env_t **env) 
+                            axis2_env_t **env);
 };
 
 /** 

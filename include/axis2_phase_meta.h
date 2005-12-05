@@ -40,22 +40,22 @@ extern "C"
      #define  AXIS2_FAULT_OUTFLOW 4
 
     /* INFLOW */
-     static const axis2_char_t *AXIS2_PHASE_TRANSPORTIN = "TransportIn";
-     static const axis2_char_t *AXIS2_PHASE_PRE_DISPATCH = "PreDispatch";
-     static const axis2_char_t *AXIS2_PHASE_DISPATCH = "Dispatch";
-     static const axis2_char_t *AXIS2_PHASE_POST_DISPATCH = "PostDispatch";
-     static const axis2_char_t *AXIS2_PHASE_POLICY_DETERMINATION = "PolicyDetermination";
-     /*static const axis2_char_t *AXIS2_PHASE_MESSAGE_PROCESSING = "MessageProcessing";
-*/
+     #define AXIS2_PHASE_TRANSPORTIN "TransportIn"
+     #define AXIS2_PHASE_PRE_DISPATCH "PreDispatch"
+     #define AXIS2_PHASE_DISPATCH "Dispatch"
+     #define AXIS2_PHASE_POST_DISPATCH "PostDispatch"
+     #define AXIS2_PHASE_POLICY_DETERMINATION "PolicyDetermination"
+     #define AXIS2_PHASE_MESSAGE_PROCESSING "MessageProcessing"
+
     /* OUTFLOW */
-     static const axis2_char_t *AXIS2_PHASE_MESSAGE_OUT = "MessageOut";
-     static const axis2_char_t *AXIS2_PHASE_TRANSPORT_OUT = "MessageOut";
+     #define AXIS2_PHASE_MESSAGE_OUT "MessageOut"
+     #define AXIS2_PHASE_TRANSPORT_OUT "MessageOut"
      
     /**
      * All the handlers inside transport_sender and tranport_recievre in axis2.xml gose
      * to this phase
      */
-     static const axis2_char_t *AXIS2_TRANSPORT_PHASE = "TRANSPORT";
+     #define AXIS2_TRANSPORT_PHASE "TRANSPORT"
 
 
 /** @} */

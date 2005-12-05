@@ -1021,7 +1021,6 @@ axis2_svc_get_operation_by_soap_action_and_endpoint(axis2_svc_t *svc,
 {
     axis2_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *binding_operations = NULL;
-    struct axis2_operation * axis2_opt = NULL;
     int count = 0;
     int j = 0;
     axis2_hash_index_t *index_i = NULL;
