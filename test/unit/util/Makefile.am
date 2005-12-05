@@ -10,7 +10,7 @@ libtest_util_la_SOURCES = util_hash_test.c \
                             util_array_list_test.c\
                             util_linked_list_test.c
 
-include_HEADERS=$(top_builddir)/modules/util/test/*.h
+include_HEADERS=$(top_builddir)/test/unit/util/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
