@@ -32,3 +32,4 @@ zend_class_entry *axis2_om_namespace_class_entry;
 zend_class_entry *axis2_om_node_class_entry;
 zend_class_entry *axis2_om_output_class_entry;
 #endif /* AXIS2_CE_H */
+

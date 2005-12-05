@@ -62,3 +62,4 @@ entry = zend_register_internal_class_ex(&ce, parent_ce, NULL TSRMLS_CC);
         }
 
 #endif /* AXIS2_COMMON_H */
+
