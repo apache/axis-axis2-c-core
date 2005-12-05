@@ -48,21 +48,17 @@ PHP_METHOD(xml_reader , __construct)
     int length;
     axis2_env_t *env;
     
-  
-    
     if(zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Os", &object, axis2_xml_reader_class_entry, &path, &length) == FAILURE)
     {
         php_std_error_handling();
         return;
     }
     env = php_axis2_get_env();
-     
     om_obj = emalloc(sizeof(om_object));
     om_obj->ptr = NULL;
     om_obj->obj_type = AXIS2_XML_READER;
     om_obj->ptr = axis2_xml_reader_create_for_file(&env, path, NULL);
     om_obj->ref_count = 1;
-    
     axis2_obj = (axis2_object_ptr)zend_object_store_get_object(object TSRMLS_CC);   
     axis2_obj->ptr = om_obj;
    

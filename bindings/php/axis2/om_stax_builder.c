@@ -20,6 +20,7 @@
 #include "axis2_om_node.h"
 #include "axis2_om_stax_builder.h"
 
+
 zend_function_entry php_axis2_om_stax_builder_class_functions[] =
 {
     PHP_FALIAS(next , axis2_om_stax_builder_next, NULL)
@@ -52,16 +53,18 @@ PHP_METHOD(om_stax_builder, __construct)
     }
     
     env = php_axis2_get_env();
-    AXIS2_GET_OBJ(om_obj_reader, object_reader, om_object_ptr, intern_reader);
-    
     intern = (axis2_object_ptr)zend_object_store_get_object(object TSRMLS_CC);
+
+    AXIS2_GET_OBJ(om_obj_reader, object_reader, om_object_ptr, intern_reader);
+    reader  = (axis2_xml_reader_t *)(om_obj_reader->ptr);
     
     om_obj = (om_object_ptr)emalloc(sizeof(om_object));
     om_obj->obj_type = OM_STAX_BUILDER;
     om_obj->ptr = NULL;
-    reader  = (axis2_xml_reader_t *)(om_obj_reader->ptr);
     builder = axis2_om_stax_builder_create(&env, reader);
+   
     om_obj->ptr = builder;
+    
     intern->ptr = om_obj; 
 }
 
@@ -92,10 +95,10 @@ PHP_FUNCTION(axis2_om_stax_builder_next)
     builder = (axis2_om_stax_builder_t *)(om_obj->ptr);
     
     
+    
     if(builder)
     {
         node = AXIS2_OM_STAX_BUILDER_NEXT(builder, &env);
-        /*
         if(node)
         {
             node_type = AXIS2_OM_NODE_GET_NODE_TYPE(node, &env);
@@ -103,11 +106,7 @@ PHP_FUNCTION(axis2_om_stax_builder_next)
             object_node = php_axis2_create_om_node_object(node, node_type, ce_node TSRMLS_CC);
             RETURN_ZVAL(object_node, NULL, NULL);        
         }
-                */     
-
     }
-    
-      
     RETURN_NULL();    
 }
 

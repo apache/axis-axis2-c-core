@@ -172,6 +172,8 @@ PHP_MINIT_FUNCTION(axis2)
     
     REGISTER_AXIS2_CLASS(ce, "Axis2OMComment", axis2_om_node_class_entry , php_axis2_om_comment_class_functions , axis2_om_comment_class_entry);
 
+    REGISTER_AXIS2_CLASS(ce, "Axis2OMPI", axis2_om_node_class_entry , php_axis2_om_pi_class_functions , axis2_om_pi_class_entry);
+
     
     REGISTER_LONG_CONSTANT("AXIS2_XML_READER_START_DOCUMENT",	AXIS2_XML_READER_START_DOCUMENT,		CONST_CS | CONST_PERSISTENT);
     REGISTER_LONG_CONSTANT("AXIS2_XML_READER_START_ELEMENT",	AXIS2_XML_READER_START_ELEMENT ,		CONST_CS | CONST_PERSISTENT);

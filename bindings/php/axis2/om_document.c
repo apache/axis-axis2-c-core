@@ -61,24 +61,27 @@ PHP_METHOD(om_document, __construct)
         php_std_error_handling();
         return;
     }
-    
+       
     env = php_axis2_get_env();
-    
+   
     AXIS2_GET_OBJ(om_obj_builder, object_builder, om_object_ptr, intern_builder);
     
+    /*   
     AXIS2_GET_OBJ(node_obj_root, object_root, om_node_ptr, intern_root);
-    
+     root    = (axis2_om_node_t *)(node_obj_root->ptr);
+   */
     intern = (axis2_object_ptr)zend_object_store_get_object(object TSRMLS_CC);
     om_obj = (om_object_ptr)emalloc(sizeof(om_object));
     om_obj->obj_type = OM_DOCUMENT;
     om_obj->ptr = NULL;
     
     builder = (axis2_om_stax_builder_t *)(om_obj_builder->ptr);
-    root    = (axis2_om_node_t *)(node_obj_root->ptr);
     
-    document = axis2_om_document_create(&env, root, builder);
+    document = axis2_om_document_create(&env, NULL, builder);
     om_obj->ptr = document;
     intern->ptr = om_obj; 
+    
+    
 }
 
 PHP_FUNCTION(axis2_om_document_build_next)
@@ -172,5 +175,20 @@ PHP_FUNCTION(axis2_om_document_set_root_element)
 }
 PHP_FUNCTION(axis2_om_document_build_all)
 {
- php_printf("not implemented yet");
+    axis2_object_ptr intern = NULL;
+    om_object_ptr om_obj = NULL;
+    zval *object = NULL;
+
+    axis2_om_document_t *document = NULL;
+    axis2_env_t *env = NULL; 
+
+    AXIS2_GET_THIS(object);
+    AXIS2_GET_OBJ(om_obj, object, om_object_ptr, intern);
+    env = php_axis2_get_env();
+    document = (axis2_om_document_t *)(om_obj->ptr);
+    
+    if(document)
+    {
+        AXIS2_OM_DOCUMENT_BUILD_ALL(document, &env);
+    }    
 }

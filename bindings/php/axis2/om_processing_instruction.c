@@ -19,7 +19,7 @@
 #include "axis2_om_node.h"
 #include "axis2_om_processing_instruction.h"
 
-zend_function_entry axis2_om_pi_class_functions[] =
+zend_function_entry php_axis2_om_pi_class_functions[] =
 {
     PHP_FALIAS(setValue , axis2_om_pi_set_value, NULL)
     PHP_FALIAS(setTarget , axis2_om_pi_set_target, NULL)
@@ -165,6 +165,36 @@ PHP_FUNCTION(axis2_om_pi_set_value)
         AXIS2_OM_PROCESSING_INSTRUCION_SET_VALUE(om_pi, &env, value);
     }
 }
-PHP_FUNCTION(axis2_om_pi_set_target){}
+PHP_FUNCTION(axis2_om_pi_set_target)
+{
+    axis2_object_ptr intern = NULL;
+    om_node_ptr node_obj = NULL;
+    
+    zval *object = NULL;
+    axis2_env_t *env = NULL;
+    char *target = NULL;
+    int target_len = 0;
+
+    axis2_om_processing_instruction_t *om_pi = NULL;
+    axis2_om_node_t *node = NULL;
+    
+    if(zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
+             getThis(), "Os",&object, axis2_om_pi_class_entry, &target, &target_len) == FAILURE)
+    {
+        php_std_error_handling();
+        return;
+    }
+    env = php_axis2_get_env();
+    
+    AXIS2_GET_OBJ(node_obj, object, om_node_ptr, intern);
+    
+    node = (axis2_om_node_t *)(node_obj->ptr);
+    if(node)
+    {
+        om_pi = (axis2_om_processing_instruction_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, &env);     
+        AXIS2_OM_PROCESSING_INSTRUCION_SET_TARGET(om_pi, &env, target);
+    }
+}
+
 PHP_FUNCTION(axis2_om_pi_serialize){}
 
