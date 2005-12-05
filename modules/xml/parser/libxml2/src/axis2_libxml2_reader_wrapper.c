@@ -705,7 +705,7 @@ axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser
     for(i = 0; i < libxml2_attribute_count ; i++)
     {
         xmlTextReaderMoveToAttributeNo(parser_impl->reader,i);
-        q_name = xmlTextReaderName(parser_impl->reader);
+        q_name = (char *) xmlTextReaderName(parser_impl->reader);
         if(q_name != NULL)
         {    
            if((strcmp(q_name, "xmlns") == 0) || (strncmp(q_name, "xmlns:",6) == 0))

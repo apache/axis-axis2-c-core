@@ -1,13 +1,14 @@
 #!/bin/bash
+  
+for i in libtoolize aclocal autoconf autoheader
+do
+    echo -n "Running $i..."
+    $i || exit 1
+    echo 'done.'
+done
+  
+echo -n 'Running automake...'
+automake --add-missing
+echo 'done.'
+exit 0
 
-echo "run libtoolize."          && 
-libtoolize                      && 
-echo "run aclocal."             && 
-aclocal                         && 
-echo "run autoconf."            && 
-autoconf                        && 
-echo "run autoheader."          && 
-autoheader                      && 
-echo "run automake."            && 
-#automake --add-missing --gnu
-automake
