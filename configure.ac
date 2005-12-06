@@ -8,7 +8,6 @@ AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADER(axis2_config.h)
 AC_PROG_LIBTOOL
-sinclude(conftools/ac_c_bigendian_cross.m4)
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
@@ -16,7 +15,6 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-AC_PROG_RANLIB
 
 # Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
@@ -41,27 +39,6 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
-#Following two lines are temporary and will be removed
-want_xml=yes
-want_core=yes
-
-AC_MSG_CHECKING(whether to build tests)
-AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    want_test=no
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    want_test=yes
-    
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-  want_test=yes
-)
-
 AC_MSG_CHECKING(give the xml pull parser you wish to use. eg:libxml2)
 AC_ARG_WITH(pull-parser,
 [  --with-pull-parser[=PARSER]      build the pull parser wrapper library. PARSER=libxml2/guththila],
@@ -81,11 +58,6 @@ AC_ARG_WITH(pull-parser,
   AC_MSG_RESULT(no)
   want_parser="guththila"
 )
-
-#Following two lines are temporary and will be removed
-AM_CONDITIONAL([COND_XML], [test "$want_xml" = yes])
-AM_CONDITIONAL([COND_CORE], [test "$want_core" = yes])
-AM_CONDITIONAL([COND_TEST], [test "$want_test" = yes])
 
 PULL_PARSER=$want_parser
 AC_SUBST(PULL_PARSER)
