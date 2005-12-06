@@ -18,7 +18,6 @@ if test "$PHP_AXIS2" != "no"; then
 
   dnl # --with-axis2 -> check for lib and symbol presence
 
-  PHP_ADD_LIBRARY_WITH_PATH(axis2_util, $AXIS2C_HOME/install/lib, AXIS2_SHARED_LIBADD)
   PHP_ADD_LIBRARY_WITH_PATH(axis2_libxml2, $AXIS2C_HOME/install/lib, AXIS2_SHARED_LIBADD)
   PHP_ADD_LIBRARY_WITH_PATH(axis2_om, $AXIS2C_HOME/install/lib, AXIS2_SHARED_LIBADD)
 
