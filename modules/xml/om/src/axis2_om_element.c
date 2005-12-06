@@ -318,6 +318,7 @@ axis2_om_element_find_namespace (axis2_om_element_t *ele,
                     (axis2_om_namespace_t *) (ns), env),uri) == 0)
             {
               
+		AXIS2_FREE ((*env)->allocator, hashindex);
                 return (axis2_om_namespace_t *) (ns);
             }
         }
@@ -428,6 +429,7 @@ axis2_om_element_find_declared_namespace (axis2_om_element_t *om_element,
             if (AXIS2_STRCMP(AXIS2_OM_NAMESPACE_GET_URI(
                     (axis2_om_namespace_t *)(ns), env), uri) == 0)
             {
+		AXIS2_FREE ((*env)->allocator, hash_index);
                 return (axis2_om_namespace_t *) (ns);
             }
         }
