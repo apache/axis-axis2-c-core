@@ -13,7 +13,7 @@ libaxis2_om_la_SOURCES = axis2_om_attribute.c \
                         axis2_om_stax_builder.c 
                         
 
-libaxis2_om_la_LIBADD = $(LDFLAGS)
+libaxis2_om_la_LIBADD = $(LDFLAGS) ../../../util/src/libaxis2_util.la 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util/src \

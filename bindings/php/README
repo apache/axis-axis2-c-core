@@ -11,7 +11,7 @@ PHP_HOME=where/your/php/code/is/located
 
 1. Set AXIS2C_HOME env variable to point to where the Axis2C source is
 2. Build Axis2C source by running $AXIS2C_HOME/build.sh
-   NOTE: you need autoconf 2.59 and automake 1.9.5 on your PATH to build Axis2C source
+   NOTE: you need versions later than autoconf  2.59 and automake 1.9.5 on your PATH to build Axis2C source
 3. Copy the AXIS2C_HOME/bindings/php/axis2 to PHP_HOME/ext
 4. cd to PHP_HOME and execute the following sequence of commands
    NOTE: you need autoconf 2.13 and automake 1.5 on your PATH to build PHP source
