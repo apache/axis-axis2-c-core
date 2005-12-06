@@ -21,7 +21,6 @@
 #include <axis2_error_default.h>
 #include <axis2_stream_default.h>
 #include <axis2_array_list.h>
-#include <string.h>
 
 typedef struct a
 {
@@ -97,10 +96,8 @@ int test_hash_get (axis2_env_t *env)
   */
 int test_file_diff(axis2_env_t *env)
 {
-	/*axis2_char_t *expected_file_name = AXIS2_STRDUP("expected", &env);
-    axis2_char_t *actual_file_name = AXIS2_STRDUP("actual", &env);	*/
-	axis2_char_t *expected_file_name = strdup("expected");
-    axis2_char_t *actual_file_name = strdup("actual");	
+	axis2_char_t *expected_file_name = AXIS2_STRDUP("expected", &env);
+    axis2_char_t *actual_file_name = AXIS2_STRDUP("actual", &env);	
     axis2_file_diff(env, expected_file_name, actual_file_name);
 	return 0;
 }
@@ -109,22 +106,17 @@ char* test_funct_for_test_env_null(axis2_env_t **env)
 {
 	if(NULL == *env)
 	{
-        puts("came3\n");
 		axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 		axis2_error_t *error = axis2_error_create (allocator);
-        puts("came4\n");
 		axis2_stream_t *stream = axis2_stream_create (allocator, NULL);
         *env = axis2_env_create_with_error_stream (allocator, error, stream);
-        puts("came5\n");
 		AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
-        puts("came6\n");
 		AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_ENVIRONMENT_IS_NULL);	
-        puts("came7\n");        
-		return NULL;
+		return AXIS2_STRDUP("env is null!!!", env);
 	}
     
     AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_SUCCESS);
-	return "env not null, so be happy";	
+	return AXIS2_STRDUP("env not null, so be happy", env);	
 }
 
 int test_env_null()
@@ -136,15 +128,14 @@ int test_env_null()
 	/*Now we call an axis2 mock function called
 	 * test_funct_for_test_env_null
 	 */
-    puts("came1\n");
-	char *msg = strdup(test_funct_for_test_env_null(&env));
-    puts("came2\n");
+	char *msg = test_funct_for_test_env_null(&env);
 	int status = axis2_env_check_status(&env);
-    printf("status:%d\n", status);
 	if(AXIS2_SUCCESS == status)
 		printf("%s\n", msg);
 	else
 		printf("status code is:%d\n", status);
+
+    AXIS2_FREE((env)->allocator, msg);
 	return 0;
 }
 
