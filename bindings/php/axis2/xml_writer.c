@@ -31,34 +31,6 @@ zend_function_entry php_axis2_xml_writer_class_functions[]=
     {NULL, NULL, NULL}
 };
 
-
-/**
-   PHP_FALIAS(writeEmptyElement, axis2_xml_writer_write_empty_element, NULL)
-    PHP_FALIAS(writeEmptyElementWithNamespace, axis2_xml_writer_write_empty_element_with_namespace, NULL)
-    PHP_FALIAS(writeEmptyElementWithNamespacePrefix, axis2_xml_writer_write_empty_element_with_namespace_prefix, NULL)
-    
-    PHP_FALIAS(writeEndDocument, axis2_xml_writer_write_end_document, NULL)
-    PHP_FALIAS(writeAttribute, axis2_xml_writer_write_attribute, NULL)
-    PHP_FALIAS(writeAttributeWithNamespace, axis2_xml_writer_write_attribute_with_namespace, NULL)
-    PHP_FALIAS(writeAttributeWithNamespacePrefix, axis2_xml_writer_write_attribute_with_namespace_prefix, NULL)
-    PHP_FALIAS(writeNamespace, axis2_xml_writer_write_namespace, NULL)
-    PHP_FALIAS(writeComment, axis2_xml_writer_write_comment, NULL)
-    PHP_FALIAS(writeProcessingInstruction, axis2_xml_writer_write_processing_instruction, NULL)
-    PHP_FALIAS(writeProcessingInstructionData, axis2_xml_writer_write_processing_instruction_data, NULL)
-    PHP_FALIAS(writeStartDocument, axis2_xml_writer_write_start_document, NULL)
-    PHP_FALIAS(writeStartDocumentWithVersion, axis2_xml_writer_write_start_document_with_version, NULL)
-    PHP_FALIAS(writeStartDocumentWithVersionEncoding, axis2_xml_writer_write_start_document_with_version_encoding, NULL)
-    
-    
-    PHP_FALIAS(writeCharacters, axis2_xml_writer_write_characters, NULL)
-    
-    
-    
-    PHP_FALIAS(writeStartElementNSPrefix, axis2_xml_writer_write_start_element_with_namespace_prefix, NULL)
-
-*/
-
-
 PHP_METHOD(axis2_xml_writer, __construct)
 {
     axis2_object_ptr intern = NULL;
@@ -175,31 +147,6 @@ PHP_FUNCTION(axis2_xml_writer_write_start_element_with_namespace)
     AXIS2_XML_WRITER_WRITE_START_ELEMENT_WITH_NAMESPACE(writer, &env, lname, uri);
 
 }
-PHP_FUNCTION(axis2_xml_writer_write_start_element_with_namespace_prefix){}
-
-PHP_FUNCTION(axis2_xml_writer_write_end_document){}
-PHP_FUNCTION(axis2_xml_writer_write_attribute){}
-PHP_FUNCTION(axis2_xml_writer_write_attribute_with_namespace){}
-PHP_FUNCTION(axis2_xml_writer_write_attribute_with_namespace_prefix){}
-PHP_FUNCTION(axis2_xml_writer_write_namespace){}
-PHP_FUNCTION(axis2_xml_writer_write_default_namespace){}
-PHP_FUNCTION(axis2_xml_writer_write_comment){}
-PHP_FUNCTION(axis2_xml_writer_write_processing_instruction){}
-PHP_FUNCTION(axis2_xml_writer_write_processing_instruction_data){}
-PHP_FUNCTION(axis2_xml_writer_write_cdata){}
-PHP_FUNCTION(axis2_xml_writer_write_dtd){}
-PHP_FUNCTION(axis2_xml_writer_write_entity_ref){}
-PHP_FUNCTION(axis2_xml_writer_write_start_document){}
-PHP_FUNCTION(axis2_xml_writer_write_start_document_with_version){}
-PHP_FUNCTION(axis2_xml_writer_write_start_document_with_version_encoding){}
-PHP_FUNCTION(axis2_xml_writer_write_characters){}
-PHP_FUNCTION(axis2_xml_writer_get_prefix){}
-PHP_FUNCTION(axis2_xml_writer_set_prefix){}
-PHP_FUNCTION(axis2_xml_writer_set_default_prefix){}
-PHP_FUNCTION(axis2_xml_writer_write_encoded){}
-PHP_FUNCTION(axis2_xml_writer_write_empty_element){}
-PHP_FUNCTION(axis2_xml_writer_write_empty_element_with_namespace){}
-PHP_FUNCTION(axis2_xml_writer_write_empty_element_with_namespace_prefix){}
 
 PHP_FUNCTION(axis2_xml_writer_get_xml)
 {
