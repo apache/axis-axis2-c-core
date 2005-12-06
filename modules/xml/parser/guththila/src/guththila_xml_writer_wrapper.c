@@ -207,7 +207,7 @@ typedef struct guththila_xml_writer_wrapper_impl
     axis2_xml_writer_t writer;
     guththila_xml_stream_writer_t *guththila_writer;
     guththila_environment_t *guththila_env;
-    
+     
 }guththila_xml_writer_wrapper_impl_t;
 
 
@@ -329,8 +329,8 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
                                    int is_prefix_default,
                                    int compression)
 {
-    printf(" not implemented yet");
-    return NULL;
+    
+    return axis2_xml_writer_create(env, NULL, encoding, is_prefix_default, compression);
 }                                   
 
 axis2_status_t AXIS2_CALL 
@@ -785,6 +785,6 @@ axis2_char_t* AXIS2_CALL
 guththila_xml_writer_wrapper_get_xml(axis2_xml_writer_t *writer,
                                      axis2_env_t **env)
 {
-    printf(" not implemented yet ");
+    return NULL;
 }                                     
                                      
