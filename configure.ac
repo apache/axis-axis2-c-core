@@ -6,7 +6,7 @@ AC_CONFIG_SRCDIR([modules/common/src/axis2.c])
 AC_CONFIG_AUX_DIR(conftools)
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE
-AC_CONFIG_HEADER(axis2_config.h)
+AC_CONFIG_HEADER(config.h)
 AC_PROG_LIBTOOL
 # Checks for programs.
 AC_PROG_CXX
