@@ -153,14 +153,14 @@ test_om_build (char *filename)
     buffer = AXIS2_XML_WRITER_GET_XML(writer, &environment);
     
     axis2_om_output_free(om_output, &environment);  
-    
-    printf("%s",buffer);
+    if(buffer)
+        printf("%s",buffer);
     
     AXIS2_OM_DOCUMENT_FREE(document, &environment); 
   
     AXIS2_OM_STAX_BUILDER_FREE(builder, &environment);
-  
-    AXIS2_FREE(environment->allocator, buffer); 
+    if(buffer)
+        AXIS2_FREE(environment->allocator, buffer); 
     
 
     
@@ -246,10 +246,11 @@ test_om_serialize ()
      output_buffer = AXIS2_XML_WRITER_GET_XML(writer, &environment);
      
      axis2_om_output_free(om_output, &environment);
-     
-     printf("%s",output_buffer);
-     
-     AXIS2_FREE(environment->allocator, output_buffer); 
+     if(output_buffer)
+     {
+        printf("%s",output_buffer);
+        AXIS2_FREE(environment->allocator, output_buffer); 
+     }        
      printf ("\nDONE\n");
 
     return 0;
@@ -271,6 +272,7 @@ main (int argc, char *argv[])
     test_om_build (file_name);
     test_om_serialize();
     axis2_env_free(environment); 
+    getchar();
     return 0;
  }
  
