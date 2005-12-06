@@ -880,7 +880,6 @@ axis2_libxml2_writer_wrapper_write_attribute_with_namespace_prefix(
 {
     axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
     int status = 0;
-    int exists = AXIS2_FALSE;
     
     AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, localname,  AXIS2_FAILURE);
@@ -1116,7 +1115,6 @@ axis2_libxml2_writer_wrapper_write_entity_ref(
                                          axis2_env_t **env,
                                          axis2_char_t *name)
 {
-    axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
     printf("not implemented ");
@@ -1234,7 +1232,6 @@ axis2_libxml2_writer_wrapper_set_prefix( axis2_xml_writer_t *writer,
                                          axis2_char_t *uri)
 {   
     axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
-    int status = 0;
     AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, prefix, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, uri, AXIS2_FAILURE);
@@ -1249,8 +1246,6 @@ axis2_libxml2_writer_wrapper_set_default_prefix(
                                          axis2_env_t **env,
                                          axis2_char_t *uri)
 {
-    axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
-    int status = 0;
     AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, uri, AXIS2_FAILURE);
     
@@ -1266,7 +1261,6 @@ axis2_libxml2_writer_wrapper_write_encoded(
                                          int in_attr)
 {
     axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
-    int status = 0;
     AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, text, AXIS2_FAILURE);
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
