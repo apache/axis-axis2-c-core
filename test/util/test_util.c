@@ -20,6 +20,8 @@
 #include <axis2_file_diff.h>
 #include <axis2_error_default.h>
 #include <axis2_stream_default.h>
+#include <axis2_array_list.h>
+#include <string.h>
 
 typedef struct a
 {
@@ -107,28 +109,38 @@ char* test_funct_for_test_env_null(axis2_env_t **env)
 {
 	if(NULL == *env)
 	{
+        puts("came3\n");
 		axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 		axis2_error_t *error = axis2_error_create (allocator);
+        puts("came4\n");
 		axis2_stream_t *stream = axis2_stream_create (allocator, NULL);
         *env = axis2_env_create_with_error_stream (allocator, error, stream);
+        puts("came5\n");
 		AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
-		AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_ENVIRONMENT_IS_NULL);		
+        puts("came6\n");
+		AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_ENVIRONMENT_IS_NULL);	
+        puts("came7\n");        
 		return NULL;
 	}
+    
+    AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_SUCCESS);
 	return "env not null, so be happy";	
 }
 
 int test_env_null()
 {
-	axis2_env_t *env;
+	axis2_env_t *env = NULL;
 	/* Suppose we did properly initialized env here */
 	/* But here we mistakenly make env to null */
 	env = NULL;
 	/*Now we call an axis2 mock function called
 	 * test_funct_for_test_env_null
 	 */
-	char *msg = test_funct_for_test_env_null(&env);
+    puts("came1\n");
+	char *msg = strdup(test_funct_for_test_env_null(&env));
+    puts("came2\n");
 	int status = axis2_env_check_status(&env);
+    printf("status:%d\n", status);
 	if(AXIS2_SUCCESS == status)
 		printf("%s\n", msg);
 	else
@@ -136,12 +148,52 @@ int test_env_null()
 	return 0;
 }
 
+void test_array_list(axis2_env_t *env)
+{
+    axis2_array_list_t *al;
+    a *entry = NULL;
+    
+    
+    al = axis2_array_list_create (&env, 10);
+    
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    entry->value = AXIS2_STRDUP("value1", &env);
+    AXIS2_ARRAY_LIST_ADD (al, &env, (void*)entry);
+    
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    entry->value = AXIS2_STRDUP("value2", &env);
+    AXIS2_ARRAY_LIST_ADD (al, &env, (void*)entry);
+    
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    entry->value = AXIS2_STRDUP("value3", &env);
+    AXIS2_ARRAY_LIST_ADD (al, &env, (void*)entry);
+    
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    entry->value = AXIS2_STRDUP("value4", &env);
+    AXIS2_ARRAY_LIST_ADD (al, &env, (void*)entry);
+    
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    entry->value = AXIS2_STRDUP("value5", &env);
+    AXIS2_ARRAY_LIST_SET (al, &env, 3, (void*)entry);
+    AXIS2_ARRAY_LIST_REMOVE (al, &env, 2);
+    
+    entry = (a *) AXIS2_ARRAY_LIST_GET (al, &env, 0);
+    printf("entry->value:%s\n", entry->value);
+    
+    entry = (a *) AXIS2_ARRAY_LIST_GET (al, &env, 2);
+    printf("entry->value:%s\n", entry->value);
+    
+}
+
+
+
 int main(void)
 {
 	axis2_env_t *env = test_init();
 	test_file_diff(env);
 	test_hash_get(env);
-	test_env_null();
+	test_env_null(); 
+    test_array_list(env);
 
 	return 0;	
 }
