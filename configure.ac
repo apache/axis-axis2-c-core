@@ -60,7 +60,9 @@ AC_ARG_WITH(pull-parser,
 )
 
 PULL_PARSER=$want_parser
+PULL_PARSER_WRAPPER="axis2_$want_parser"
 AC_SUBST(PULL_PARSER)
+AC_SUBST(PULL_PARSER_WRAPPER)
 
 AC_CONFIG_FILES([Makefile \
     modules/Makefile \

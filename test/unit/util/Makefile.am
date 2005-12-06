@@ -23,13 +23,5 @@ util_test_LDADD   =  $(LDFLAGS) \
                      -lcutest \
                      $(top_builddir)/test/unit/util/libtest_util.la \
                     -L$(top_builddir)/install/lib \
-                    -laxis2_util \
-                    -laxis2_context \
-                    -laxis2_description \
-                    -laxis2_engine \
-                    -laxis2_wsdl \
-                    -laxis2_phaseresolver \
-                    -laxis2_om \
-                    -laxis2_guththila \
-                    -lguththila
+                    -laxis2_util
 

@@ -18,11 +18,4 @@ om_test_LDADD   =  $(LDFLAGS) libtest_om.la  \
                      -lcutest \
                     -L$(top_builddir)/install/lib \
                     -laxis2_util \
-                    -laxis2_context \
-                    -laxis2_description \
-                    -laxis2_engine \
-                    -laxis2_wsdl \
-                    -laxis2_phaseresolver \
-                    -laxis2_om \
-                    -laxis2_guththila \
-                    -lguththila
+                    -l$(PULL_PARSER_WRAPPER)

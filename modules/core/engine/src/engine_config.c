@@ -524,6 +524,8 @@ axis2_engine_config_free (axis2_engine_config_t *engine_config,
                             axis2_env_t **env)
 {
     axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    
 	AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
     config_impl = AXIS2_INTF_TO_IMPL(engine_config);
     
@@ -541,6 +543,24 @@ axis2_engine_config_free (axis2_engine_config_t *engine_config,
     
     if(config_impl->svc_grps)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+        for (hi = axis2_hash_first (config_impl->svc_grps, env); hi;
+                 hi = axis2_hash_next ( env, hi))
+        {
+            struct axis2_svc_grp *svc_grp = NULL;
+            axis2_hash_this (hi, NULL, NULL, &val);
+            svc_grp = (struct axis2_svc_grp *) val;
+            if (val)
+               status = AXIS2_SVC_GRP_FREE (svc_grp, env);
+            else
+            {
+               status = AXIS2_FAILURE;
+            }
+            val = NULL;
+            svc_grp = NULL;
+               
+        }
         axis2_hash_free(config_impl->svc_grps, env);
         config_impl->svc_grps = NULL;
     }
