@@ -1,68 +1,78 @@
-# run autogen.sh to generate the configure script.
+dnl run autogen.sh to generate the configure script.
 
 AC_PREREQ(2.59)
+
 AC_INIT(axis2, 1.0.0)
-AC_CONFIG_SRCDIR([modules/common/src/axis2.c])
-AC_CONFIG_AUX_DIR(conftools)
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE
-AC_CONFIG_HEADER(config.h)
-AC_PROG_LIBTOOL
-# Checks for programs.
-AC_PROG_CXX
+AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
+
+AC_CONFIG_SRCDIR([modules/common/src/axis2.c])
+
+dnl Checks for programs.
 AC_PROG_CC
+AC_PROG_CXX
 AC_PROG_CPP
+AM_PROG_LIBTOOL
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
-# Checks for libraries.
+dnl Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
-
-#using libtool
-AM_PROG_LIBTOOL
+AC_CHECK_LIB(cutest, CuTestInit)
 
 CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -g3 -O2"
 #CFLAGS="$CFLAGS -Wall -ansi -Wshadow -DLINUX=2 -D_REENTRANT -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -g -O2 -pthread"
-LDFLAGS="$LDFLAGS -L${CUTEST_HOME}/lib/"
-LIBS="-ldl"
 
-# Checks for header files.
+dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([stdio.h stdlib.h string.h])
 
-# Checks for typedefs, structures, and compiler characteristics.
+dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 
-# Checks for library functions.
+dnl Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
-AC_MSG_CHECKING(give the xml pull parser you wish to use. eg:libxml2)
-AC_ARG_WITH(pull-parser,
-[  --with-pull-parser[=PARSER]      build the pull parser wrapper library. PARSER=libxml2/guththila],
-[ case "$withval" in
+AC_MSG_CHECKING(whether to build guththila xml parser library)
+AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=no],
+[ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
-    want_parser=no
+    GUTHTHILA=""
     ;;
   *)
     AC_MSG_RESULT(yes)
+    GUTHTHILA="guththila"
 
-    dnl pull parser to use
-    want_parser="$withval"
-  
-  ;;
+    ;;
   esac ],
   AC_MSG_RESULT(no)
-  want_parser="guththila"
+  GUTHTHILA=""
 )
 
-PULL_PARSER=$want_parser
-PULL_PARSER_WRAPPER="axis2_$want_parser"
-AC_SUBST(PULL_PARSER)
-AC_SUBST(PULL_PARSER_WRAPPER)
+AC_MSG_CHECKING(whether to build libxml2 xml parser library)
+AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=yes],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    LIBXML2=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    LIBXML2="libxml2"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  LIBXML2="libxml2"
+)
+
+AC_SUBST(LIBXML2)
+AC_SUBST(GUTHTHILA)
 
 AC_CONFIG_FILES([Makefile \
     modules/Makefile \
