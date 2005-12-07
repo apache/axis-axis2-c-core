@@ -31,6 +31,7 @@
 #include <axis2_param.h>
 #include <axis2_handler_desc.h>
 #include <axis2_qname.h>
+#include <axis2_msg_info_headers.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -104,14 +105,14 @@ struct axis2_msg_ctx_ops
     /**
      * @return
      */
-    /*EndpointReference (AXIS2_CALL *get_fault_to)(struct axis2_msg_ctx *msg_ctx, 
+    /*axis2_endpoint_ref_t *(AXIS2_CALL *get_fault_to)(struct axis2_msg_ctx *msg_ctx, 
                                                     axis2_env_t **env);
     */
     
     /**
      * @return
      */
-    /*EndpointReference (AXIS2_CALL *get_from)(struct axis2_msg_ctx *msg_ctx, 
+    /*axis2_endpoint_ref_t *(AXIS2_CALL *get_from)(struct axis2_msg_ctx *msg_ctx, 
                                                 axis2_env_t **env);
     */
     
@@ -150,7 +151,7 @@ struct axis2_msg_ctx_ops
     /**
      * @return
      */
-    /*EndpointReference (AXIS2_CALL *get_reply_to)(struct axis2_msg_ctx *msg_ctx, 
+    /*axis2_endpoint_ref_t *(AXIS2_CALL *get_reply_to)(struct axis2_msg_ctx *msg_ctx, 
                                                     axis2_env_t **env);
     */
     
@@ -175,15 +176,14 @@ struct axis2_msg_ctx_ops
     /**
      * @return
      */
-    /*EndpointReference (AXIS2_CALL *get_to)(struct axis2_msg_ctx *msg_ctx, 
+    axis2_endpoint_ref_t* (AXIS2_CALL *get_to)(struct axis2_msg_ctx *msg_ctx, 
                                                 axis2_env_t **env);
-    */
     
     /**
      * @param reference
      */
     /*axis2_status_t (AXIS2_CALL *set_fault_to)(struct axis2_msg_ctx *msg_ctx, 
-                                                axis2_env_t **env, EndpointReference reference);
+                                                axis2_env_t **env, axis2_endpoint_ref_t *reference);
     */
     
     /**
@@ -191,7 +191,7 @@ struct axis2_msg_ctx_ops
      */
     /*
     axis2_status_t (AXIS2_CALL *set_from)(struct axis2_msg_ctx *msg_ctx, 
-                                                axis2_env_t **env, EndpointReference reference);
+                                                axis2_env_t **env, axis2_endpoint_ref_t *reference);
     */
     
     /**
@@ -234,7 +234,7 @@ struct axis2_msg_ctx_ops
      */
     /*axis2_status_t (AXIS2_CALL *set_reply_to)(struct axis2_msg_ctx *msg_ctx, 
                                                 axis2_env_t **env, 
-                                                EndpointReference referance);
+                                                axis2_endpoint_ref_t *referance);
     */
     
     /**
@@ -256,7 +256,7 @@ struct axis2_msg_ctx_ops
      */
     /*axis2_status_t (AXIS2_CALL *set_to)(struct axis2_msg_ctx *msg_ctx, 
                                             axis2_env_t **env, 
-                                            EndpointReference referance);
+                                            axis2_endpoint_ref_t *referance);
     */
     
     /**
@@ -275,13 +275,13 @@ struct axis2_msg_ctx_ops
     /**
      * Method AXIS2_CALL getExecutionChain
      */
-    /*axis2_status_t (AXIS2_CALL *set_wsa_action)(struct axis2_msg_ctx *msg_ctx, 
+    axis2_status_t (AXIS2_CALL *set_wsa_action)(struct axis2_msg_ctx *msg_ctx, 
                                                     axis2_env_t **env, 
                                                     axis2_char_t *action_uri);
     
     axis2_char_t* (AXIS2_CALL *get_wsa_action)(struct axis2_msg_ctx *msg_ctx, 
                                                 axis2_env_t **env);
-    
+    /*
     axis2_status_t (AXIS2_CALL *set_wsa_message_id)(struct axis2_msg_ctx *msg_ctx, 
                                                     axis2_env_t **env, 
                                                     axis2_char_t *message_id);
@@ -612,9 +612,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_GET_RESPONSE_WRITTEN(msg_ctx, env) ((msg_ctx)->ops->get_response_written(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env) ((msg_ctx)->ops->get_server_side(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_SESSION_CTX(msg_ctx, env) ((msg_ctx)->ops->get_session_ctx(msg_ctx, env))
-/*
 #define AXIS2_MSG_CTX_GET_TO(msg_ctx, env) ((msg_ctx)->ops->get_to(msg_ctx, env))
-*/
 /*
 #define AXIS2_MSG_CTX_SET_FAULT_TO(msg_ctx, env, reference) ((msg_ctx)->ops->set_fault_to(msg_ctx, env, reference))
 */
@@ -640,10 +638,11 @@ axis2_msg_ctx_create (axis2_env_t **env,
 */
 #define AXIS2_MSG_CTX_GET_NEW_THREAD_REQUIRED(msg_ctx, env) ((msg_ctx)->ops->set_response_written(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_NEW_THREAD_REQUIRED(msg_ctx, env, new_thread_required) ((msg_ctx)->ops->set_response_written(msg_ctx, env, new_thread_required))
-/*
+
 #define AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env, action_uri) ((msg_ctx)->ops->set_wsa_action(msg_ctx, env, action_uri))
 #define AXIS2_MSG_CTX_GET_WSA_ACTION(msg_ctx, env) ((msg_ctx)->ops->get_wsa_action(msg_ctx, env))
-#define AXIS2_MSG_CTX_SET_WSA_MESSAGE_ID(msg_ctx, env, message_id) ((msg_ctx)->ops->set_wsa_message_id(msg_ctx, env, message_id))
+
+/*#define AXIS2_MSG_CTX_SET_WSA_MESSAGE_ID(msg_ctx, env, message_id) ((msg_ctx)->ops->set_wsa_message_id(msg_ctx, env, message_id))
 #define AXIS2_MSG_CTX_GET_WSA_MESSAGE_ID(msg_ctx, env) ((msg_ctx)->ops->get_wsa_message_id(msg_ctx, env))
 */
 #define AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env) ((msg_ctx)->ops->get_msg_info_headers(msg_ctx, env))
@@ -681,7 +680,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_GET_SVC_GRP_CTX(msg_ctx, env) ((msg_ctx)->ops->get_svc_grp_ctx(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_SVC_GRP_CTX(msg_ctx, env, svc_grp_ctx) ((msg_ctx)->ops->set_svc_grp_ctx(msg_ctx, env, svc_grp_ctx))
 #define AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env) ((msg_ctx)->ops->get_operation(msg_ctx, env))
-#define AXIS2_MSG_CTX_SET_OPERATION(msg_ctx, env, operation) ((msg_ctx)->ops->get_operation(msg_ctx, env, operation))
+#define AXIS2_MSG_CTX_SET_OPERATION(msg_ctx, env, operation) ((msg_ctx)->ops->set_operation(msg_ctx, env, operation))
 #define AXIS2_MSG_CTX_GET_SVC(msg_ctx, env) ((msg_ctx)->ops->get_svc(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_SVC(msg_ctx, env, svc) ((msg_ctx)->ops->set_svc(msg_ctx, env, svc))
 #define AXIS2_MSG_CTX_GET_SVC_GRP(msg_ctx, env) ((msg_ctx)->ops->get_svc_grp(msg_ctx, env))
