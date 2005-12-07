@@ -34,14 +34,9 @@ axis2_status_t AXIS2_CALL axis2_handler_free (struct axis2_handler * handler,
                                               axis2_env_t **env);
 axis2_qname_t* AXIS2_CALL axis2_handler_get_name(struct axis2_handler * handler, 
                                                  axis2_env_t **env) ;
-axis2_status_t AXIS2_CALL axis2_handler_invoke (struct axis2_handler * handler, 
+axis2_status_t AXIS2_CALL axis2_handler_invoke (struct axis2_handler * handler,
                                                 axis2_env_t **env,
                                                 struct axis2_msg_ctx *msg_ctx);
-axis2_status_t AXIS2_CALL axis2_handler_set_invoke (struct axis2_handler * handler, 
-                                                axis2_env_t **env,
-                                                axis2_status_t AXIS2_CALL invoke_func_ptr (struct axis2_handler * handler, 
-                                                axis2_env_t **env,
-                                                struct axis2_msg_ctx *msg_ctx));
 axis2_param_t* AXIS2_CALL axis2_handler_get_param (struct axis2_handler * handler, 
                                                            axis2_env_t **env, 
                                                            axis2_char_t *name);
@@ -87,7 +82,6 @@ axis2_handler_t* AXIS2_CALL axis2_handler_create(axis2_env_t **env)
     handler_impl->handler.ops->free = axis2_handler_free;
     handler_impl->handler.ops->init = axis2_handler_init;
     handler_impl->handler.ops->invoke = axis2_handler_invoke;
-    handler_impl->handler.ops->set_invoke = axis2_handler_set_invoke;
     handler_impl->handler.ops->get_name = axis2_handler_get_name;
     handler_impl->handler.ops->get_param = axis2_handler_get_param;
     handler_impl->handler.ops->get_handler_desc = axis2_handler_get_handler_desc;
@@ -128,31 +122,13 @@ axis2_handler_get_name(struct axis2_handler * handler,
     return AXIS2_HANDLER_DESC_GET_QNAME(AXIS2_INTF_TO_IMPL(handler)->handler_desc, env);
 }
 
-axis2_status_t AXIS2_CALL axis2_handler_invoke (struct axis2_handler * handler, 
+axis2_status_t AXIS2_CALL axis2_handler_invoke (struct axis2_handler * handler,
                                                 axis2_env_t **env,
                                                 struct axis2_msg_ctx *msg_ctx)
 {
     /**TODO invoke has to be implemented by an implementing handler */
     return AXIS2_SUCCESS;
 }
-
-axis2_status_t AXIS2_CALL axis2_handler_set_invoke (struct axis2_handler * handler, 
-                                                axis2_env_t **env,
-                                                axis2_status_t AXIS2_CALL invoke_func_ptr (struct axis2_handler * handler, 
-                                                axis2_env_t **env,
-                                                struct axis2_msg_ctx *msg_ctx))
-{
-    axis2_handler_impl_t *handler_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(handler, env, AXIS2_FAILURE);
-    handler_impl = AXIS2_INTF_TO_IMPL(handler);
-    if (handler_impl->handler.ops)
-    {
-        handler_impl->handler.ops->invoke = invoke_func_ptr;
-    }
-    /**TODO invoke has to be implemented by an implementing handler */
-    return AXIS2_SUCCESS;
-}
-
 
 axis2_param_t* AXIS2_CALL axis2_handler_get_param (struct axis2_handler * handler, 
                                                 axis2_env_t **env, 
