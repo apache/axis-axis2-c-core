@@ -75,22 +75,9 @@ extern "C"
         * @param msgContext the <code>axis2_context_message</code> to process with this
         *                   <code>Handler</code>.
         */
-        axis2_status_t (AXIS2_CALL *invoke) (struct axis2_handler * handler, 
+        axis2_status_t (AXIS2_CALL *invoke) (struct axis2_handler * handler,
                                              axis2_env_t **env,
                                              struct axis2_msg_ctx *msg_ctx);
-      /**
-        * set invoke can be used to set the invoke method to be called in a 
-        * handler invokation. The deriving struct should implement the 
-        * invoke method and use this method to set the function pointer
-        *
-        * @param 
-        */
-        axis2_status_t (AXIS2_CALL *set_invoke) (struct axis2_handler * handler, 
-                                             axis2_env_t **env,
-                                             axis2_status_t (AXIS2_CALL *invoke_func_ptr) (struct axis2_handler*, 
-                                             axis2_env_t**,
-                                             struct axis2_msg_ctx*));
-
 
       /**
         * Method getName
