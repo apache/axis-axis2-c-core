@@ -33,7 +33,11 @@ Note:
 
     LIBXML2_INCLUDE
     LIBXML2_LIB
-
+    
+    If you use guththila create two environment variables
+    GUTHTHILA_INCLUDE
+    GUTHTHILA_LIB
+    
 2) Before you build tests make sure that all the axis2c libraries are installed in (or copied to)
    AXIS2C_HOME/install/lib
    
