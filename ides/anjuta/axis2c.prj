@@ -86,11 +86,6 @@ module.include.files=\
 	include/axis2_stream.h\
 	include/axis2_om_output.h\
 	modules/xml/guththila/src/guththila_xml_pull_parser.h\
-	modules/util/test/util_error_test.h\
-	modules/util/test/util_hash_test.h\
-	modules/util/test/util_log_test.h\
-	modules/util/test/util_stream_test.h\
-	modules/util/test/util_test.h\
 	modules/xml/guththila/src/guththila_attribute.h\
 	modules/xml/guththila/src/guththila_buffer.h\
 	modules/xml/guththila/src/guththila_depth.h\
@@ -124,14 +119,12 @@ module.include.files=\
 	include/axis2_flow.h\
 	include/axis2_flow_container.h\
 	modules/util/src/axis2_array_list.h\
-	modules/util/test/util_array_list_test.h\
 	include/axis2_handler_desc.h\
 	include/axis2_module_desc.h\
 	modules/core/description/src/description.h\
 	include/axis2_wsdl_binding.h\
 	include/axis2_wsdl_endpoint.h\
 	modules/util/src/axis2_linked_list.h\
-	modules/util/test/util_linked_list_test.h\
 	include/axis2_wsdl_extensible_component.h\
 	include/axis2_wsdl_feature.h\
 	include/axis2_wsdl_property.h\
@@ -154,7 +147,15 @@ module.include.files=\
 	include/axis2_ctx.h\
 	modules/xml/parser/axis2_pull_parser.h\
 	modules/core/transport/axis2_transport_listener.h\
-	modules/core/transport/axis2_transport_sender.h
+	modules/core/transport/axis2_transport_sender.h\
+	include/axis2_phases_info.h\
+	test/unit/util/util_array_list_test.h\
+	test/unit/util/util_error_test.h\
+	test/unit/util/util_hash_test.h\
+	test/unit/util/util_linked_list_test.h\
+	test/unit/util/util_log_test.h\
+	test/unit/util/util_stream_test.h\
+	test/unit/util/util_test.h
 
 module.source.name=.
 module.source.type=
@@ -175,12 +176,6 @@ module.source.files=\
 	modules/xml/om/src/axis2_om_text.c\
 	modules/xml/om/src/axis2_om_stax_builder.c\
 	modules/xml/om/src/axis2_om_node.c\
-	modules/util/test/main.c\
-	modules/util/test/util_error_test.c\
-	modules/util/test/util_hash_test.c\
-	modules/util/test/util_log_test.c\
-	modules/util/test/util_stream_test.c\
-	modules/util/test/util_test.c\
 	modules/test/unit/main.c\
 	modules/test/util/test_util.c\
 	modules/test/common/test_common.c\
@@ -188,7 +183,6 @@ module.source.files=\
 	modules/xml/om/src/axis2_om_output.c\
 	modules/core/description/src/module.c\
 	modules/core/description/src/operation.c\
-	modules/core/handlers/src/axis2_handler.c\
 	modules/wsdl/src/wsdl_component.c\
 	modules/wsdl/src/wsdl_operation.c\
 	modules/util/src/allocator.c\
@@ -211,14 +205,12 @@ module.source.files=\
 	modules/core/description/src/flow.c\
 	modules/core/description/src/flow_container.c\
 	modules/util/src/array_list.c\
-	modules/util/test/util_array_list_test.c\
 	modules/core/description/src/handler_desc.c\
 	modules/core/engine/src/handler.c\
 	modules/wsdl/src/wsdl_binding.c\
 	modules/wsdl/src/wsdl_endpoint.c\
 	modules/wsdl/src/wsdl_interface.c\
 	modules/util/src/linked_list.c\
-	modules/util/test/util_linked_list_test.c\
 	modules/wsdl/src/wsdl_extensible_component.c\
 	modules/wsdl/src/wsdl_feature.c\
 	modules/wsdl/src/wsdl_property.c\
@@ -237,7 +229,22 @@ module.source.files=\
 	modules/core/phaseresolver/src/phase_resolver.c\
 	modules/core/context/src/ctx.c\
 	modules/xml/parser/guththila/impl/src/guththila_xml_stream_writer.c\
-	modules/core/engine/src/phase.c
+	modules/core/engine/src/phase.c\
+	modules/core/transport/src/transport_listener.c\
+	modules/core/transport/src/transport_sender.c\
+	modules/core/deployment/src/phases_info.c\
+	modules/xml/parser/libxml2/src/axis2_libxml2_reader_wrapper.c\
+	modules/xml/parser/libxml2/src/axis2_libxml2_writer_wrapper.c\
+	test/unit/util/main.c\
+	test/unit/util/util_array_list_test.c\
+	test/unit/util/util_error_test.c\
+	test/unit/util/util_hash_test.c\
+	test/unit/util/util_linked_list_test.c\
+	test/unit/util/util_log_test.c\
+	test/unit/util/util_stream_test.c\
+	test/unit/util/util_stream_test.h\
+	test/unit/util/util_test.c\
+	test/util/test_util.c
 
 module.pixmap.name=.
 module.pixmap.type=
