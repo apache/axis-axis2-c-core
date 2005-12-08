@@ -46,6 +46,14 @@ axis2_status_t AXIS2_CALL axis2_disp_set_qname(struct axis2_disp *disp,
                                        axis2_env_t **env, axis2_qname_t *qname);
 axis2_status_t AXIS2_CALL axis2_disp_free (struct axis2_disp * disp, 
                                             axis2_env_t **env);
+axis2_svc_t* AXIS2_CALL axis2_disp_find_svc(struct axis2_disp *disp, 
+                    axis2_env_t **env,
+                    axis2_msg_ctx_t *msg_ctx);
+axis2_operation* AXIS2_CALL axis2_disp_find_operation(struct axis2_disp *disp, 
+                                axis2_env_t **env,
+                                axis2_svc_t *svc, 
+                                axis2_msg_ctx_t * msg_ctx);
+
 
 axis2_disp_t* AXIS2_CALL axis2_disp_create(axis2_env_t **env, axis2_qname_t *qname) 
 {
@@ -122,6 +130,8 @@ axis2_disp_t* AXIS2_CALL axis2_disp_create(axis2_env_t **env, axis2_qname_t *qna
     disp_impl->disp.ops->get_qname = axis2_disp_get_qname;
     disp_impl->disp.ops->set_qname = axis2_disp_set_qname;
     disp_impl->disp.ops->free = axis2_disp_free;
+    disp_impl->disp.ops->find_svc = axis2_disp_find_svc;
+    disp_impl->disp.ops->find_operation = axis2_disp_find_operation;
 
     return &(disp_impl->disp);
 }
@@ -257,26 +267,37 @@ axis2_disp_free (struct axis2_disp * disp,
     return AXIS2_SUCCESS;    
 }
     
-/** The following two interface methods found in AbstractDispatcher of Java
-    implementation has been moved to msg_ctx in C implementation as that seemed 
-    a more appropriate home for those. The struct that inherits from this struct
-    should implement those methods and assing the respective function pointers.
+/** The struct that inherits from this struct
+    should implement the find_service and find_operation methods and assing the 
+    respective function pointers in the base struct.
+    Here we have only the dummy implementation to gauard against erros due to 
+    the failure to provide an impl version by mistake.
  */
+    
 /**
- * Give the diaptacher turn to find the Service
+ * finds the service
  *
  * @param messageContext
  * @return
  */
-/*axis2_svc_t* findService(
-        axis2_msg_ctx_t *msg_ctx) */
+axis2_svc_t* AXIS2_CALL axis2_disp_find_svc(struct axis2_disp *disp, 
+                    axis2_env_t **env,
+                    axis2_msg_ctx_t *msg_ctx) 
+{
+    return NULL;
+}
 
 /**
- * Give the diaptacher turn to find the Operation
+ * finds the operation
  *
  * @param service
  * @param msg_ctx
  * @return
  */
-/*axis2_operation* find_operation(
-        axis2_svc_t *service, axis2_msg_ctx_t * msg_ctx)*/
+axis2_operation* AXIS2_CALL axis2_disp_find_operation(struct axis2_disp *disp, 
+                                axis2_env_t **env,
+                                axis2_svc_t *svc, 
+                                axis2_msg_ctx_t * msg_ctx)
+{
+    return NULL;
+}
