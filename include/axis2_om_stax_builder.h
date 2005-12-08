@@ -129,7 +129,7 @@ extern "C"
 #define AXIS2_OM_STAX_BUILDER_NEXT(builder,env) \
         ((builder)->ops->next(builder, env))
 /** discards current node */
-#define AXIS2_OM_STAX_BUILDER_DISCARD(builder,env) \
+#define AXIS2_OM_STAX_BUILDER_DISCARD_CURRENT_ELEMENT(builder,env) \
         ((builder)->ops->discard_current_element(builder, env))
 /** free operation of the builder */
 #define AXIS2_OM_STAX_BUILDER_FREE(builder,env) \
