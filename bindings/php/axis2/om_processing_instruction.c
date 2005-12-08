@@ -25,7 +25,6 @@ zend_function_entry php_axis2_om_pi_class_functions[] =
     PHP_FALIAS(setTarget , axis2_om_pi_set_target, NULL)
     PHP_FALIAS(getValue , axis2_om_pi_get_value, NULL)
     PHP_FALIAS(getTarget , axis2_om_pi_getTarget, NULL)
-  /*  PHP_FALIAS(serialize , axis2_om_pi_serialize, NULL) */
     PHP_ME(om_pi, __construct, NULL, ZEND_ACC_PUBLIC)
     { NULL, NULL, NULL}
 };
@@ -197,6 +196,4 @@ PHP_FUNCTION(axis2_om_pi_set_target)
         AXIS2_OM_PROCESSING_INSTRUCION_SET_TARGET(om_pi, &env, target);
     }
 }
-
-PHP_FUNCTION(axis2_om_pi_serialize){}
 

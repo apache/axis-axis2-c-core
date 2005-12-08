@@ -17,8 +17,10 @@
 
 #include "php.h"
 #include "php_axis2.h"
-#include "axis2_om_node.h"
-#include "axis2_om_element.h"
+#include <axis2_om_node.h>
+#include <axis2_om_element.h>
+#include <axis2_allocator.h>
+#include <axis2_env.h>
 
 zend_function_entry php_axis2_om_element_class_functions[]=
 {
@@ -27,14 +29,13 @@ zend_function_entry php_axis2_om_element_class_functions[]=
     PHP_FALIAS(findNamespaceWithQname , axis2_om_element_find_namespace_with_qname, NULL)
     PHP_FALIAS(addAttribute , axis2_om_element_add_attribute, NULL)
     PHP_FALIAS(getAttribute , axis2_om_element_get_attribute, NULL)
- /*   PHP_FALIAS(serialize , axis2_om_element_serialize, NULL) */
     PHP_FALIAS(findDeclaredNamespace , axis2_om_element_find_declared_namespace, NULL)
     PHP_FALIAS(getLocalname , axis2_om_element_get_localname, NULL)
     PHP_FALIAS(getNamespace , axis2_om_element_get_namespace, NULL)
     PHP_FALIAS(setNamespace , axis2_om_element_set_namespace, NULL)
     PHP_FALIAS(setLocalname , axis2_om_element_set_localname, NULL)
     PHP_ME(om_element, __construct, NULL, ZEND_ACC_PUBLIC)
-{NULL, NULL, NULL}
+    {NULL, NULL, NULL}
 };
 
 PHP_METHOD(om_element, __construct)
@@ -123,8 +124,9 @@ PHP_FUNCTION(axis2_om_element_get_localname)
         RETURN_STRING(localname, 1);
     }
     RETURN_NULL();
-   
 }
+
+
 PHP_FUNCTION(axis2_om_element_get_namespace)
 {
     axis2_object_ptr intern = NULL;
@@ -152,7 +154,6 @@ PHP_FUNCTION(axis2_om_element_get_namespace)
     }
     RETURN_NULL();
 }
-
 
 PHP_FUNCTION(axis2_om_element_get_attribute)
 {
@@ -196,6 +197,7 @@ PHP_FUNCTION(axis2_om_element_get_attribute)
     }
     RETURN_NULL();
 }
+
 
 PHP_FUNCTION(axis2_om_element_add_attribute)
 {
@@ -305,18 +307,7 @@ PHP_FUNCTION(axis2_om_element_set_localname)
     }
 }
 
-
-PHP_FUNCTION(axis2_om_element_serialize)
-{}
-
-
-PHP_FUNCTION(axis2_om_element_find_namespace)
-{}
-
-PHP_FUNCTION(axis2_om_element_declare_namespace)
-{}
-
-PHP_FUNCTION(axis2_om_element_find_namespace_with_qname)
-{}
-
+PHP_FUNCTION(axis2_om_element_find_namespace){}
+PHP_FUNCTION(axis2_om_element_declare_namespace){}
+PHP_FUNCTION(axis2_om_element_find_namespace_with_qname){}
 PHP_FUNCTION(axis2_om_element_find_declared_namespace){}

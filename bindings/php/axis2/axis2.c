@@ -47,6 +47,7 @@
 #include "axis2_error_default.h"
 #include "axis2_stream_default.h"
 #include "axis2_log_default.h"
+#include "axis2_om_element.h"
 
 
 static zend_object_value axis2_objects_new(zend_class_entry *class_type TSRMLS_DC );
@@ -117,7 +118,8 @@ static void php_axis2_init_globals(zend_axis2_globals *axis2_globals)
     axis2_log_t *log = NULL;
     axis2_stream_t *stream = NULL;
     axis2_env_t *environment = NULL;
-    allocator = axis2_allocator_init (NULL);
+
+    allocator = axis2_allocator_init(NULL);    
     log = axis2_log_create(allocator, NULL);
     stream = axis2_stream_create(allocator, NULL);
     err = axis2_error_create(allocator);
@@ -215,20 +217,28 @@ PHP_MSHUTDOWN_FUNCTION(axis2)
 
 void php_axis2_objects_free_storage(void *object TSRMLS_DC)
 {
+    om_object_ptr om_obj = NULL;
+    om_node_ptr node_obj = NULL;
+    axis2_env_t *env = NULL;
+    axis2_om_element_t *om_ele = NULL;
+    axis2_om_node_t *node = NULL;
+    axis2_object_ptr intern_temp = NULL;
     axis2_object *intern = (axis2_object_ptr)object;
     zend_hash_destroy(intern->std.properties);
     FREE_HASHTABLE(intern->std.properties);
     
+    
+    env = php_axis2_get_env();
     /*TODO individual objects must be freed */
-    if(intern->ptr)
+    if(intern->obj_type == OM_NODE_OBJ)
+    {
+     /* */    
+    }
+    else if(intern->obj_type == OM_OBJ)
     {
     
-    
     }
-    
-
 }
-
 
 static zend_object_value axis2_objects_new(zend_class_entry *class_type TSRMLS_DC )
 {

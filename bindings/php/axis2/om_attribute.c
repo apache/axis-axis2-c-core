@@ -23,7 +23,6 @@
 zend_function_entry php_axis2_om_attribute_class_functions[]=
 {
     PHP_FALIAS(getQname , axis2_om_attribute_get_qname, NULL)
-    PHP_FALIAS(serialize, axis2_om_attribute_serialize, NULL)
     PHP_FALIAS(getLocalname , axis2_om_attribute_get_localname, NULL)
     PHP_FALIAS(getValue , axis2_om_attribute_get_value, NULL)
     PHP_FALIAS(setLocalname , axis2_om_attribute_set_localname, NULL)
@@ -265,8 +264,4 @@ PHP_FUNCTION(axis2_om_attribute_set_namespace)
         AXIS2_OM_ATTRIBUTE_SET_NAMESPACE(attr, &env, ns);   
     }
     RETURN_NULL();
-}
-
-PHP_FUNCTION(axis2_om_attribute_serialize)
-{
 }

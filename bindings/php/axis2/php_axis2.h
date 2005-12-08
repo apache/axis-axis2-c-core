@@ -86,6 +86,7 @@ zval *php_axis2_create_om_node_object(void* obj,int node_type, zend_class_entry 
 void php_axis2_set_object(void *obj,int obj_type, zval *wrapper_in TSRMLS_DC); 
 char* php_axis2_stream_to_buffer(php_stream *stream TSRMLS_DC);
 zend_class_entry* php_axis2_get_class_type(int node_type);
+void php_axis2_om_element_free(zval *obj TSRMLS_DC);
 /* 
   	Declare any global variables you may need between the BEGIN
 	and END macros here:     */
@@ -125,5 +126,6 @@ ZEND_END_MODULE_GLOBALS(axis2)
  * vim600: noet sw=4 ts=4 fdm=marker
  * vim<600: noet sw=4 ts=4
  */
-
-
+ 
+ 
+ 

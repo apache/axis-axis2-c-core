@@ -23,7 +23,6 @@
 zend_function_entry php_axis2_om_namespace_class_functions[]=
 {
     PHP_FALIAS(equals , axis2_om_namespace_equals, NULL)
-    PHP_FALIAS(serialize , axis2_om_namespace_serialize, NULL)
     PHP_FALIAS(getUri , axis2_om_namespace_get_uri, NULL)
     PHP_FALIAS(getPrefix , axis2_om_namespace_get_prefix, NULL)
     PHP_ME(om_namespace, __construct, NULL, ZEND_ACC_PUBLIC)
@@ -163,5 +162,3 @@ PHP_FUNCTION(axis2_om_namespace_get_prefix)
     }
     RETURN_NULL();
 }
-
-PHP_FUNCTION(axis2_om_namespace_serialize){}

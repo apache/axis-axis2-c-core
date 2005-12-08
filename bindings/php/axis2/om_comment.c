@@ -21,7 +21,6 @@
 
 zend_function_entry php_axis2_om_comment_class_functions[]=
 {
-  /*  PHP_FALIAS(serialize , axis2_om_comment_serialize, NULL) */
     PHP_FALIAS(getValue , axis2_om_comment_get_value, NULL)
     PHP_FALIAS(setValue , axis2_om_comment_set_value, NULL)
     PHP_ME(om_comment, __construct, NULL, ZEND_ACC_PUBLIC)
@@ -76,8 +75,6 @@ PHP_METHOD(om_comment, __construct)
 }
 
 
-PHP_FUNCTION(axis2_om_comment_serialize){}
-
 PHP_FUNCTION(axis2_om_comment_get_value)
 {
     axis2_object_ptr intern = NULL;
@@ -104,6 +101,8 @@ PHP_FUNCTION(axis2_om_comment_get_value)
     }
     RETURN_NULL();
 }
+
+
 PHP_FUNCTION(axis2_om_comment_set_value)
 {
     axis2_object_ptr intern = NULL;
@@ -132,3 +131,4 @@ PHP_FUNCTION(axis2_om_comment_set_value)
     om_comment = (axis2_om_comment_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, &env);     
     AXIS2_OM_COMMENT_SET_VALUE(om_comment, &env, value);
 }
+

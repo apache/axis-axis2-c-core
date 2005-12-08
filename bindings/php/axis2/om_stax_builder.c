@@ -68,6 +68,7 @@ PHP_METHOD(om_stax_builder, __construct)
     intern->ptr = om_obj; 
 }
 
+
 PHP_FUNCTION(axis2_om_stax_builder_next)
 {
     axis2_object_ptr intern = NULL;
@@ -110,7 +111,23 @@ PHP_FUNCTION(axis2_om_stax_builder_next)
     RETURN_NULL();    
 }
 
+
 PHP_FUNCTION(axis2_om_stax_builder_discard_current_element)
 {
-     php_printf("not implemented yet");
+     axis2_object_ptr   intern = NULL;
+     om_object_ptr      om_obj = NULL;
+     zval               *object= NULL;
+     axis2_env_t *env = NULL;
+     axis2_om_stax_builder_t *builder = NULL;
+     
+     env = php_axis2_get_env();
+    
+     AXIS2_GET_THIS(object);
+     AXIS2_GET_OBJ(om_obj, object, om_object_ptr, intern);
+     if(om_obj)
+     {
+        builder = (axis2_om_stax_builder_t *)(om_obj->ptr);
+        AXIS2_OM_STAX_BUILDER_DISCARD_CURRENT_ELEMENT(builder, &env);
+     }   
 }
+

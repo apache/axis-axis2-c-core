@@ -94,7 +94,6 @@ PHP_METHOD(axis2_qname, __construct);
 /******** axis2_om_attribute functions *********/
 
 PHP_FUNCTION(axis2_om_attribute_get_qname);
-PHP_FUNCTION(axis2_om_attribute_serialize);
 PHP_FUNCTION(axis2_om_attribute_get_localname);
 PHP_FUNCTION(axis2_om_attribute_get_value);
 PHP_FUNCTION(axis2_om_attribute_set_localname);
@@ -105,7 +104,6 @@ PHP_METHOD(om_attribute, __construct);
 
 /******* om_namespace functions ******************/
 PHP_FUNCTION(axis2_om_namespace_equals);
-PHP_FUNCTION(axis2_om_namespace_serialize);
 PHP_FUNCTION(axis2_om_namespace_get_uri);
 PHP_FUNCTION(axis2_om_namespace_get_prefix);
 PHP_METHOD(om_namespace, __construct);
@@ -116,7 +114,6 @@ PHP_FUNCTION(axis2_om_element_declare_namespace);
 PHP_FUNCTION(axis2_om_element_find_namespace_with_qname);
 PHP_FUNCTION(axis2_om_element_add_attribute);
 PHP_FUNCTION(axis2_om_element_get_attribute);
-PHP_FUNCTION(axis2_om_element_serialize);
 PHP_FUNCTION(axis2_om_element_find_declared_namespace);
 PHP_FUNCTION(axis2_om_element_get_localname);
 PHP_FUNCTION(axis2_om_element_get_namespace);
@@ -159,7 +156,6 @@ PHP_FUNCTION(axis2_om_node_get_build_status);
 PHP_METHOD(om_node, __construct);
 
 /****** om_text functions ************************/
-PHP_FUNCTION(axis2_om_text_serialize);
 PHP_FUNCTION(axis2_om_text_set_value);
 PHP_FUNCTION(axis2_om_text_get_value);
 PHP_METHOD(om_text, __construct);
@@ -176,7 +172,6 @@ PHP_FUNCTION(axis2_om_pi_set_value);
 PHP_FUNCTION(axis2_om_pi_set_target);
 PHP_FUNCTION(axis2_om_pi_get_value);
 PHP_FUNCTION(axis2_om_pi_getTarget);
-PHP_FUNCTION(axis2_om_pi_serialize);
 PHP_METHOD(om_pi, __construct);
 
 /******** om_output *****************************/

@@ -86,7 +86,8 @@ PHP_FUNCTION(axis2_qname_get_uri)
     if(qname)
     {
        uri = AXIS2_QNAME_GET_URI(qname, &env);
-       RETURN_STRING(uri, 1);     
+       if(uri)
+            RETURN_STRING(uri, 1);     
     }
     RETURN_NULL();
 }
@@ -113,7 +114,8 @@ PHP_FUNCTION(axis2_qname_get_prefix)
     if(qname)
     {
        prefix = AXIS2_QNAME_GET_PREFIX(qname, &env);
-       RETURN_STRING(prefix, 1);     
+       if(prefix)
+            RETURN_STRING(prefix, 1);     
     }
     RETURN_NULL();  
 }
