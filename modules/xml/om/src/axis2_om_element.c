@@ -86,8 +86,15 @@ axis2_status_t AXIS2_CALL
 axis2_om_element_set_namespace(axis2_om_element_t *om_element,
                                axis2_env_t **env,
                                axis2_om_namespace_t *ns,
-                               axis2_om_node_t *node);                                                                                                                                                              
-                                                                                                                  
+                               axis2_om_node_t *node); 
+
+axis2_hash_t * AXIS2_CALL
+axis2_om_element_get_all_attributes(axis2_om_element_t *om_element,
+                                    axis2_env_t **env);
+                                                                                                                                                                                                                               
+axis2_hash_t* AXIS2_CALL 
+axis2_om_element_get_all_namespaces(axis2_om_element_t *om_element,
+                                    axis2_env_t **env);                                                                                                                  
                                      
                                      
                                           
@@ -228,7 +235,11 @@ axis2_om_element_create (axis2_env_t **env,
     element->om_element.ops->get_namespace =
         axis2_om_element_get_namespace;
     element->om_element.ops->find_declared_namespace =
-        axis2_om_element_find_declared_namespace;        
+        axis2_om_element_find_declared_namespace;  
+    element->om_element.ops->get_all_attributes =
+        axis2_om_element_get_all_attributes;   
+    element->om_element.ops->get_all_namespaces =
+        axis2_om_element_get_all_namespaces;                   
     
     return &(element->om_element);
 
@@ -752,3 +763,22 @@ axis2_om_element_set_namespace(axis2_om_element_t *om_element,
     
     return AXIS2_SUCCESS;                                
 }
+
+
+axis2_hash_t * AXIS2_CALL
+axis2_om_element_get_all_attributes(axis2_om_element_t *om_element,
+                                    axis2_env_t **env)
+{
+
+    AXIS2_FUNC_PARAM_CHECK(om_element,env, NULL);
+    return AXIS2_INTF_TO_IMPL(om_element)->attributes;
+} 
+
+axis2_hash_t* AXIS2_CALL
+axis2_om_element_get_all_namespaces
+                                (axis2_om_element_t *om_element,
+                                 axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(om_element,env, NULL);
+    return AXIS2_INTF_TO_IMPL(om_element)->namespaces;
+}                                                                    

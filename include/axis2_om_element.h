@@ -198,7 +198,29 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         axis2_status_t (AXIS2_CALL *set_namespace)(struct axis2_om_element *om_element,
                                                    axis2_env_t **env,
                                                    axis2_om_namespace_t *ns,
-                                                   axis2_om_node_t *node);                                                                                                                                                              
+                                                   axis2_om_node_t *node);
+        /**
+         * get  the attribute list of the element 
+         * @param om_element om element
+         * @param env environment must not be null
+         * @returns axis2_hash poiner to attributes hash
+         * This hash table is read only 
+         */
+        axis2_hash_t* (AXIS2_CALL *get_all_attributes)
+                                            (struct axis2_om_element *om_element,
+                                             axis2_env_t **env);
+        /**
+         * get the namespace list of the element
+         * @param om_element om element
+         * @param env environment
+         * @returns axis2_hash pointer to namespaces hash
+         * this hash table is read only
+         */                                             
+        axis2_hash_t* (AXIS2_CALL *get_all_namespaces)
+                                            (struct axis2_om_element *om_element,
+                                             axis2_env_t **env);
+                                                                                                                                                         
+                                                                                                                                                                                                                     
     } axis2_om_element_ops_t;
 
     
