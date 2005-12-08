@@ -199,6 +199,8 @@ extern "C"
         AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC_GRP,
         /** Invalid message context state  */
         AXIS2_ERROR_INVALID_STATE_MSG_CTX,
+        /** Invalid engine config state */
+        AXIS2_ERROR_INVALID_STATE_ENGINE_CONFIG,
         /** Service not yet found */
         AXIS2_ERROR_SERVICE_NOT_YET_FOUND,
         /** error occured creating xml stream writer */

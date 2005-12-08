@@ -586,11 +586,7 @@ axis2_om_element_free (axis2_om_element_t *om_element,
                axis2_hash_this (hi, NULL, NULL, &val);
 
                 if (val)
-                status = AXIS2_OM_NAMESPACE_FREE ((axis2_om_namespace_t *)val, env);
-                else
-                {
-                status = AXIS2_FAILURE;
-                }
+                AXIS2_OM_NAMESPACE_FREE ((axis2_om_namespace_t *)val, env);
                 val = NULL;
                    
             }
