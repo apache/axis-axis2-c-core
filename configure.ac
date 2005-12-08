@@ -43,15 +43,18 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser lib
   no)
     AC_MSG_RESULT(no)
     GUTHTHILA=""
+    GUTHTHILA_LIBNAME=""
     ;;
   *)
     AC_MSG_RESULT(yes)
     GUTHTHILA="guththila"
+    GUTHTHILA_LIBNAME="-lguththila"
 
     ;;
   esac ],
   AC_MSG_RESULT(no)
   GUTHTHILA=""
+  GUTHTHILA_LIBNAME=""
 )
 
 AC_MSG_CHECKING(whether to build libxml2 xml parser library)
@@ -60,19 +63,24 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library w
   no)
     AC_MSG_RESULT(no)
     LIBXML2=""
+    LIBXML2_LIBNAME=""
     ;;
   *)
     AC_MSG_RESULT(yes)
     LIBXML2="libxml2"
+    LIBXML2_LIBNAME="-lxml2"
 
     ;;
   esac ],
   AC_MSG_RESULT(yes)
   LIBXML2="libxml2"
+  LIBXML2_LIBNAME="-lxml2"
 )
 
 AC_SUBST(LIBXML2)
 AC_SUBST(GUTHTHILA)
+AC_SUBST(LIBXML2_LIBNAME)
+AC_SUBST(GUTHTHILA_LIBNAME)
 
 AC_CONFIG_FILES([Makefile \
     modules/Makefile \

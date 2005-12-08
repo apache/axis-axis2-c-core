@@ -14,15 +14,16 @@ main_unit_test_suite_LDADD   =  $(LDFLAGS) \
                     -L$(top_builddir)/test/unit/util/.libs -ltest_util \
                     -L$(top_builddir)/test/unit/xml/om/.libs -ltest_om \
                     -L$(top_builddir)/install/lib \
-                    -laxis2_guththila \
-                    -lguththila \
                     -laxis2_util \
                     -laxis2_om \
                     -laxis2_description \
                     -laxis2_engine \
                     -laxis2_context \
                     -laxis2_phaseresolver \
-                    -laxis2_wsdl
+                    -laxis2_wsdl \
+                    -laxis2_parser \
+                    -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
+                    -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
                     
 
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
