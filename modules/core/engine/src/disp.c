@@ -38,9 +38,6 @@ typedef struct axis2_disp_impl
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(disp) ((axis2_disp_impl_t *)disp)
 
-axis2_status_t AXIS2_CALL axis2_disp_invoke (struct axis2_handler * handler, 
-                                                axis2_env_t **env,
-                                                struct axis2_msg_ctx *msg_ctx);
 axis2_handler_t* AXIS2_CALL axis2_disp_get_base(struct axis2_disp *disp, 
                                                axis2_env_t **env);
 axis2_qname_t* AXIS2_CALL axis2_disp_get_qname(struct axis2_disp *disp, 

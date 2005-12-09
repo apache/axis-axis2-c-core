@@ -97,6 +97,10 @@ AXIS2_DECLARE(axis2_disp_t*) axis2_disp_create(axis2_env_t **env, axis2_qname_t 
 #define AXIS2_DISP_FIND_SVC(msg_ctx, env) ((msg_ctx)->ops->find_svc(msg_ctx, env))
 #define AXIS2_DISP_FIND_OPERATION(msg_ctx, env, svc) ((msg_ctx)->ops->find_operation(msg_ctx, env, svc))
 
+axis2_status_t AXIS2_CALL axis2_disp_invoke(struct axis2_handler * handler, 
+                                                axis2_env_t **env,
+                                                struct axis2_msg_ctx *msg_ctx);
+
 /** @} */
     
 #ifdef __cplusplus
