@@ -556,7 +556,26 @@ struct axis2_msg_ctx_ops
     axis2_status_t (AXIS2_CALL *set_svc_grp_ctx_id)(struct axis2_msg_ctx *msg_ctx, 
                                                     axis2_env_t **env,
                                                     axis2_char_t *svc_grp_ctx_id);
-    
+
+    /**
+    * finds the service
+    *
+    * @param messageContext
+    * @return
+    */
+    struct axis2_svc* (AXIS2_CALL *find_svc)(axis2_msg_ctx_t *msg_ctx, 
+                    axis2_env_t **env);
+    /**
+    * finds the operation
+    *
+    * @param service
+    * @param msg_ctx
+    * @return
+    */
+    struct axis2_operation* (AXIS2_CALL *find_operation)(axis2_msg_ctx_t *msg_ctx,
+                                axis2_env_t **env,
+                                struct axis2_svc *svc);
+
     /**
      * @return
      */
@@ -688,6 +707,8 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID(msg_ctx, env) ((msg_ctx)->ops->get_svc_grp_ctx_id(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id) ((msg_ctx)->ops->set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id))
 #define AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env) ((msg_ctx)->ops->is_paused(msg_ctx, env))
+#define AXIS2_MSG_CTX_FIND_SVC(msg_ctx, env) ((msg_ctx)->ops->find_svc(msg_ctx, env))
+#define AXIS2_MSG_CTX_FIND_OPERATION(msg_ctx, env, svc) ((msg_ctx)->ops->find_operation(msg_ctx, env, svc))
 
 /************************** End of function macros ****************************/    
 

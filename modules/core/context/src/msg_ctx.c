@@ -406,6 +406,13 @@ axis2_bool_t AXIS2_CALL
 axis2_msg_ctx_is_paused(axis2_msg_ctx_t *msg_ctx,
                         axis2_env_t **env);
 
+axis2_svc_t* AXIS2_CALL axis2_msg_ctx_find_svc(axis2_msg_ctx_t *msg_ctx, 
+                axis2_env_t **env);
+axis2_operation_t* AXIS2_CALL axis2_msg_ctx_find_operation(axis2_msg_ctx_t *msg_ctx,
+                            axis2_env_t **env,
+                            axis2_svc_t *svc);
+
+
 /************************* End of function headers ****************************/	
 
 axis2_msg_ctx_t * AXIS2_CALL
@@ -614,6 +621,8 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->msg_ctx.ops->get_svc_grp_ctx_id = axis2_msg_ctx_get_svc_grp_ctx_id;
     msg_ctx_impl->msg_ctx.ops->set_svc_grp_ctx_id = axis2_msg_ctx_set_svc_grp_ctx_id;
     msg_ctx_impl->msg_ctx.ops->is_paused = axis2_msg_ctx_is_paused;
+    msg_ctx_impl->msg_ctx.ops->find_svc = axis2_msg_ctx_find_svc;
+    msg_ctx_impl->msg_ctx.ops->find_operation = axis2_msg_ctx_find_operation;
     
     return &(msg_ctx_impl->msg_ctx);
 }
@@ -1916,3 +1925,20 @@ axis2_msg_ctx_is_paused(axis2_msg_ctx_t *msg_ctx,
 
 /** TODO: there are many block to be uncommented once external depandancies are resoled,
     that is when thos structs are implemented */
+
+/** find_svc and find_operation methods has to implemented by the dispatchers and
+    the function pointers assigined to the ops of message context.
+    The following are just dummy implemntations.
+*/
+axis2_svc_t* AXIS2_CALL axis2_msg_ctx_find_svc(axis2_msg_ctx_t *msg_ctx, 
+                axis2_env_t **env)
+{
+    return NULL;
+}
+
+axis2_operation_t* AXIS2_CALL axis2_msg_ctx_find_operation(axis2_msg_ctx_t *msg_ctx,
+                            axis2_env_t **env,
+                            axis2_svc_t *svc)
+{
+    return NULL;
+}

@@ -44,9 +44,9 @@ extern "C"
     #define EPR_SERVICE_NAME "ServiceName"
 
     /* ====================== Addressing Submission Version Constants ========*/
-    #define AXIS2_WSA_NAMESPACE "http://schemas.xmlsoap.org/ws/2004/08/addressing"
-    #define AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE "wsa:Reply"
-    #define AXIS2_WSA_ANONYMOUS_URL "http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous"
+    #define AXIS2_WSA_NAMESPACE_SUBMISSION "http://schemas.xmlsoap.org/ws/2004/08/addressing"
+    #define AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE_SUBMISSION "wsa:Reply"
+    #define AXIS2_WSA_ANONYMOUS_URL_SUBMISSION "http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous"
 
     #define EPR_REFERENCE_PROPERTIES "ReferenceProperties"
     #define EPR_PORT_TYPE "PortType"

@@ -59,9 +59,8 @@ extern "C"
         * @param messageContext
         * @return
         */
-        axis2_svc_t* (AXIS2_CALL *find_svc)(struct axis2_disp *disp, 
-                        axis2_env_t **env,
-                        axis2_msg_ctx_t *msg_ctx);
+        axis2_svc_t* (AXIS2_CALL *find_svc)(axis2_msg_ctx_t *msg_ctx, 
+                        axis2_env_t **env);
         /**
         * finds the operation
         *
@@ -69,10 +68,9 @@ extern "C"
         * @param msg_ctx
         * @return
         */
-        axis2_operation_t* (AXIS2_CALL *find_operation)(struct axis2_disp *disp, 
+        axis2_operation_t* (AXIS2_CALL *find_operation)(axis2_msg_ctx_t *msg_ctx,
                                     axis2_env_t **env,
-                                    axis2_svc_t *svc, 
-                                    axis2_msg_ctx_t * msg_ctx);
+                                    axis2_svc_t *svc);
         
     } axis2_disp_ops_t;
 	
@@ -96,8 +94,8 @@ AXIS2_DECLARE(axis2_disp_t*) axis2_disp_create(axis2_env_t **env, axis2_qname_t 
 #define AXIS2_DISP_GET_QNAME(disp, env) ((disp)->ops->get_qname(disp, env))
 #define AXIS2_DISP_SET_QNAME(disp, env, name) ((disp)->ops->set_qname(disp, env, name))
 #define AXIS2_DISP_FREE(disp, env) ((disp)->ops->free(disp, env))
-#define AXIS2_DISP_FIND_SVC(disp, env, msg_ctx) ((disp)->ops->find_svc(disp, env, msg_ctx))
-#define AXIS2_DISP_FIND_OPERATION(disp, env, svc, msg_ctx) ((disp)->ops->find_operation(disp, env, svc, msg_ctx))
+#define AXIS2_DISP_FIND_SVC(msg_ctx, env) ((msg_ctx)->ops->find_svc(msg_ctx, env))
+#define AXIS2_DISP_FIND_OPERATION(msg_ctx, env, svc) ((msg_ctx)->ops->find_operation(msg_ctx, env, svc))
 
 /** @} */
     
