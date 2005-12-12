@@ -81,7 +81,7 @@ axis2_disp_t* AXIS2_CALL axis2_addr_disp_create(axis2_env_t **env)
  * @param messageContext
  * @return
  */
-axis2_svc_t* AXIS2_CALL axis2_disp_find_svc(axis2_msg_ctx_t *msg_ctx, 
+axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx, 
                     axis2_env_t **env) 
 {    
     axis2_endpoint_ref_t *endpoint_ref = NULL;
