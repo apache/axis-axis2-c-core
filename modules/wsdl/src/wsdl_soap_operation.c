@@ -64,15 +64,28 @@ axis2_wsdl_soap_operation_set_soap_action(axis2_wsdl_soap_operation_t *soap_oper
 axis2_wsdl_soap_operation_t * AXIS2_CALL 
 axis2_wsdl_soap_operation_create (axis2_env_t **env)
 {
+    axis2_wsdl_soap_operation_impl_t *soap_operation_impl = NULL;
+    
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	axis2_wsdl_soap_operation_impl_t *soap_operation_impl = 
-		(axis2_wsdl_soap_operation_impl_t *) AXIS2_MALLOC((*env)->allocator,
-			sizeof(axis2_wsdl_soap_operation_impl_t));
-	
+	soap_operation_impl = (axis2_wsdl_soap_operation_impl_t *) 
+        AXIS2_MALLOC((*env)->allocator, sizeof(axis2_wsdl_soap_operation_impl_t));
 	
 	if(NULL == soap_operation_impl)
+    {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+        return NULL;
+    }
+    
+    soap_operation_impl->style = NULL;
+    soap_operation_impl->soap_action = NULL;
+    soap_operation_impl->soap_operation.ops = NULL;
+    axis2_qname_t *type_l = NULL;
+    
+    type_l = axis2_qname_create(env, "operation", SOAP_11_OPERATION, NULL);
+    
+    AXIS2_WSDL_EXTENSIBLE_ELEMENT_SET_TYPE(soap_operation_impl->soap_operation.
+        extensible_element, env, type_l);
     
 	soap_operation_impl->soap_operation.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_soap_operation_ops_t));
@@ -81,6 +94,7 @@ axis2_wsdl_soap_operation_create (axis2_env_t **env)
         axis2_wsdl_soap_operation_free(&(soap_operation_impl->
             soap_operation), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        return NULL;
     }
     
     soap_operation_impl->soap_operation.ops->free =  
@@ -94,15 +108,6 @@ axis2_wsdl_soap_operation_create (axis2_env_t **env)
         axis2_wsdl_soap_operation_get_soap_action;
 	soap_operation_impl->soap_operation.ops->set_soap_action = 
         axis2_wsdl_soap_operation_set_soap_action;
-	
-    soap_operation_impl->style = NULL;
-    soap_operation_impl->soap_action = NULL;
-    
-    axis2_qname_t *type_l = axis2_qname_create(env, "operation", 
-        SOAP_11_OPERATION, NULL);
-    
-    AXIS2_WSDL_EXTENSIBLE_ELEMENT_SET_TYPE(soap_operation_impl->soap_operation.
-        extensible_element, env, type_l);
     
 	return &(soap_operation_impl->soap_operation);
 }
@@ -110,14 +115,21 @@ axis2_wsdl_soap_operation_create (axis2_env_t **env)
 axis2_wsdl_soap_operation_t * AXIS2_CALL 
 axis2_wsdl_soap_operation_create_with_type (axis2_env_t **env, axis2_qname_t *type)
 {
+    axis2_wsdl_soap_operation_t *soap_operation = NULL;
+    
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, type, NULL);
-    axis2_wsdl_soap_operation_t *soap_operation =
-        axis2_wsdl_soap_operation_create(env);
     
-    AXIS2_WSDL_EXTENSIBLE_ELEMENT_SET_TYPE(soap_operation->extensible_element, env, type);
+    soap_operation = axis2_wsdl_soap_operation_create(env);
     
+    if(AXIS2_FAILURE == AXIS2_WSDL_EXTENSIBLE_ELEMENT_SET_TYPE(soap_operation->
+        extensible_element, env, type))
+    {
+        axis2_wsdl_soap_operation_free(soap_operation, env);
+        soap_operation = NULL;
+    }
     return soap_operation;
+    
 }
 
 /***************************Function implementation****************************/
@@ -127,23 +139,33 @@ axis2_wsdl_soap_operation_free (
                         axis2_wsdl_soap_operation_t *soap_operation, 
                         axis2_env_t **env)
 {
-    axis2_wsdl_soap_operation_impl_t *soap_operation_impl = 
-        AXIS2_INTF_TO_IMPL(soap_operation);
+    axis2_wsdl_soap_operation_impl_t *soap_operation_impl = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(soap_operation, env, AXIS2_FAILURE);
+    
+    soap_operation_impl = AXIS2_INTF_TO_IMPL(soap_operation);
+    
 	if(NULL != soap_operation->ops)
+    {
         AXIS2_FREE((*env)->allocator, soap_operation->ops);
+        soap_operation->ops = NULL;
+    }
     
     if(NULL != soap_operation_impl->style)
     {
         AXIS2_FREE((*env)->allocator, soap_operation_impl->style);
+        soap_operation_impl->style = NULL;
     }
     
     if(NULL != soap_operation_impl->soap_action)
     {
         AXIS2_FREE((*env)->allocator, soap_operation_impl->soap_action);
+        soap_operation_impl->soap_action = NULL;
     }
     
-    AXIS2_FREE((*env)->allocator, soap_operation_impl);
+    if(soap_operation_impl)
+        AXIS2_FREE((*env)->allocator, soap_operation_impl);
+    soap_operation_impl = NULL;
     
 	return AXIS2_SUCCESS;
 }
@@ -169,7 +191,10 @@ axis2_wsdl_soap_operation_set_style(axis2_wsdl_soap_operation_t *soap_operation,
     AXIS2_PARAM_CHECK((*env)->error, style, AXIS2_FAILURE);
     
     if(soap_operation_impl->style)
+    {
         AXIS2_FREE((*env)->allocator, style);
+        soap_operation_impl->style = NULL;
+    }
     
     soap_operation_impl->style = style;
     return AXIS2_SUCCESS;
@@ -196,7 +221,10 @@ axis2_wsdl_soap_operation_set_soap_action(axis2_wsdl_soap_operation_t *soap_oper
     AXIS2_PARAM_CHECK((*env)->error, soap_action, AXIS2_FAILURE);
     
     if(soap_operation_impl->soap_action)
+    {
         AXIS2_FREE((*env)->allocator, soap_action);
+        soap_operation_impl->soap_action = NULL;
+    }
     
     soap_operation_impl->soap_action = soap_action;
     return AXIS2_SUCCESS;

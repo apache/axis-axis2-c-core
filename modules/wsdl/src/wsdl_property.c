@@ -70,30 +70,39 @@ axis2_wsdl_property_set_value(axis2_wsdl_property_t *wsdl_property,
 axis2_wsdl_property_t * AXIS2_CALL 
 axis2_wsdl_property_create (axis2_env_t **env)
 {
+    axis2_wsdl_property_impl_t *wsdl_property_impl = NULL;
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	axis2_wsdl_property_impl_t *wsdl_property_impl = 
-		(axis2_wsdl_property_impl_t *) AXIS2_MALLOC((*env)->allocator,
-			sizeof(axis2_wsdl_property_impl_t));
+	wsdl_property_impl = (axis2_wsdl_property_impl_t *) AXIS2_MALLOC((*env)->
+        allocator, sizeof(axis2_wsdl_property_impl_t));
 	
 	
 	if(NULL == wsdl_property_impl)
+    {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+        return NULL;
+    }
 	
-    wsdl_property_impl->wsdl_property.wsdl_component = axis2_wsdl_component_create(env);
+    wsdl_property_impl->name = NULL;
+    wsdl_property_impl->constraint = NULL;
+    wsdl_property_impl->value = NULL;
+    wsdl_property_impl->wsdl_property.wsdl_component = NULL;
     
+    wsdl_property_impl->wsdl_property.wsdl_component = axis2_wsdl_component_create(env);
     if(NULL == wsdl_property_impl->wsdl_property.wsdl_component)
     {
-        AXIS2_FREE((*env)->allocator, wsdl_property_impl);
+        axis2_wsdl_property_free(&(wsdl_property_impl->wsdl_property), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        return NULL;
     }
     
-	wsdl_property_impl->wsdl_property.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_property_ops_t));
+	wsdl_property_impl->wsdl_property.ops = AXIS2_MALLOC ((*env)->allocator, 
+            sizeof(axis2_wsdl_property_ops_t));
 	if(NULL == wsdl_property_impl->wsdl_property.ops)
     {
-        AXIS2_FREE((*env)->allocator, wsdl_property_impl);
+        axis2_wsdl_property_free(&(wsdl_property_impl->wsdl_property), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        return NULL;
     }
     
 	wsdl_property_impl->wsdl_property.ops->free =  axis2_wsdl_property_free;
@@ -110,10 +119,6 @@ axis2_wsdl_property_create (axis2_env_t **env)
     wsdl_property_impl->wsdl_property.ops->set_value = 
         axis2_wsdl_property_set_value;
 	
-	wsdl_property_impl->name = NULL;
-    wsdl_property_impl->constraint = NULL;
-    wsdl_property_impl->value = NULL;
-	
 	return &(wsdl_property_impl->wsdl_property);
 }
 
@@ -123,29 +128,31 @@ axis2_status_t AXIS2_CALL
 axis2_wsdl_property_free (axis2_wsdl_property_t *wsdl_property, 
                             axis2_env_t **env)
 {
+    axis2_wsdl_property_impl_t *property_impl = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(wsdl_property, env, AXIS2_FAILURE);
 	if(NULL != wsdl_property->ops)
         AXIS2_FREE((*env)->allocator, wsdl_property->ops);
     
-    if(NULL != AXIS2_INTF_TO_IMPL(wsdl_property)->name)
+    property_impl = AXIS2_INTF_TO_IMPL(wsdl_property);
+    
+    if(NULL != property_impl->name)
     {
-        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(wsdl_property)->name);
+        AXIS2_FREE((*env)->allocator, property_impl->name);
+        property_impl->name = NULL;
     }
     
-    if(NULL != AXIS2_INTF_TO_IMPL(wsdl_property)->constraint)
-    {
-        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(wsdl_property)->constraint);
-    }
+    property_impl->constraint = NULL;
     
-    if(NULL != AXIS2_INTF_TO_IMPL(wsdl_property)->value)
-    {
-        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(wsdl_property)->value);
-    }
+    property_impl->value = NULL;
     
     if(NULL != wsdl_property->wsdl_component)
+    {
         AXIS2_WSDL_COMPONENT_FREE(wsdl_property->wsdl_component, env);
+        wsdl_property->wsdl_component = NULL;
+    }
     
-    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(wsdl_property));
+    AXIS2_FREE((*env)->allocator, property_impl);
     
 	return AXIS2_SUCCESS;
 }
@@ -165,6 +172,7 @@ axis2_wsdl_property_set_constraint(axis2_wsdl_property_t *wsdl_property,
 {
     AXIS2_FUNC_PARAM_CHECK(wsdl_property, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, constraint, AXIS2_FAILURE);
+    
     AXIS2_INTF_TO_IMPL(wsdl_property)->constraint = constraint;
     return AXIS2_SUCCESS;
 }
@@ -182,9 +190,19 @@ axis2_wsdl_property_set_name(axis2_wsdl_property_t *wsdl_property,
                                 axis2_env_t **env,
                                 axis2_char_t *name) 
 {
+    axis2_wsdl_property_impl_t *property_impl = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(wsdl_property, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(wsdl_property)->name = name;
+    
+    property_impl = AXIS2_INTF_TO_IMPL(wsdl_property);
+    
+    if(property_impl->name)
+    {
+        AXIS2_FREE((*env)->allocator, property_impl->name);
+        property_impl->name = NULL;
+    }
+    property_impl->name = name;
     return AXIS2_SUCCESS;
 }
 
@@ -201,8 +219,14 @@ axis2_wsdl_property_set_value(axis2_wsdl_property_t *wsdl_property,
                                 axis2_env_t **env,
                                 void *value) 
 {
+    axis2_wsdl_property_impl_t *property_impl = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(wsdl_property, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(wsdl_property)->value = value;
+    
+    property_impl = AXIS2_INTF_TO_IMPL(wsdl_property);
+    
+    property_impl->value = value;
+    
     return AXIS2_SUCCESS;
 }

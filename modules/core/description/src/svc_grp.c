@@ -607,15 +607,20 @@ axis2_svc_grp_engage_module_to_grp(axis2_svc_grp_t *svc_grp,
     axis2_hash_t *svc = NULL;
     struct axis2_phase_resolver *phase_resolver = NULL;
     struct axis2_module_desc *module = NULL;
-    axis2_hash_index_t *index = NULL;
-    void *v;
+    
     struct axis2_svc *axis_svc = NULL;
+    int size = 0;
     
     AXIS2_FUNC_PARAM_CHECK(svc_grp, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FAILURE);
     
     svc_grp_impl = AXIS2_INTF_TO_IMPL(svc_grp);
-    for(i = 0; AXIS2_ARRAY_LIST_SIZE(svc_grp_impl->modules, env); i++)
+    size = AXIS2_ARRAY_LIST_SIZE(svc_grp_impl->modules, env);
+    if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
+    {
+        return AXIS2_FAILURE;
+    }
+    for(i = 0; size; i++)
     {
         modu = AXIS2_ARRAY_LIST_GET(svc_grp_impl->modules, env, i);
         modu_local = AXIS2_QNAME_GET_LOCALPART(modu, env);
@@ -639,8 +644,11 @@ axis2_svc_grp_engage_module_to_grp(axis2_svc_grp_t *svc_grp,
     module = AXIS2_ENGINE_CONFIG_GET_MODULE(svc_grp_impl->parent, env, module_name);
     if(NULL != module)
     {
-        do
+        axis2_hash_index_t *index = NULL;
+        index = axis2_hash_first (svc, env);
+        while(NULL != index);  
         {
+            void *v = NULL;
             /* engage in per each service */
             axis2_hash_this (index, NULL, NULL, &v);
             axis_svc = (struct axis2_svc *) v;
@@ -648,12 +656,15 @@ axis2_svc_grp_engage_module_to_grp(axis2_svc_grp_t *svc_grp,
                 env, axis_svc, module);
             if(AXIS2_FAILURE == status)
             {
-                AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env);
+                if(phase_resolver)
+                    AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env);
                 return status;
             }
             index = axis2_hash_next (env, index);
-        }while(NULL != index);            
+        }          
     }
+    if(phase_resolver)
+        AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env);
     
     return axis2_svc_grp_add_module(svc_grp, env, module_name);
 }
@@ -706,6 +717,12 @@ axis2_svc_grp_add_moduleref(axis2_svc_grp_t *svc_grp,
     AXIS2_PARAM_CHECK((*env)->error, moduleref, AXIS2_FAILURE);
     
     svc_grp_impl = AXIS2_INTF_TO_IMPL(svc_grp);
+    if(!svc_grp_impl->module_list)
+    {
+        svc_grp_impl->module_list = axis2_array_list_create(env, 0);
+        if(!svc_grp_impl->module_list)
+            return AXIS2_FAILURE;
+    }
     return AXIS2_ARRAY_LIST_ADD(svc_grp_impl->module_list, env, moduleref);
 }
 

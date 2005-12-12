@@ -67,15 +67,22 @@ axis2_wsdl_extensible_element_set_type(
 axis2_wsdl_extensible_element_t * AXIS2_CALL 
 axis2_wsdl_extensible_element_create (axis2_env_t **env)
 {
+    axis2_wsdl_extensible_element_impl_t *extensible_element_impl = NULL;
+    
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	axis2_wsdl_extensible_element_impl_t *extensible_element_impl = 
-		(axis2_wsdl_extensible_element_impl_t *) AXIS2_MALLOC((*env)->allocator,
-			sizeof(axis2_wsdl_extensible_element_impl_t));
+	extensible_element_impl = (axis2_wsdl_extensible_element_impl_t *) 
+        AXIS2_MALLOC((*env)->allocator, sizeof(axis2_wsdl_extensible_element_impl_t));
 	
 	
 	if(NULL == extensible_element_impl)
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        return NULL;        
+    }
+    
+    extensible_element_impl->type = NULL;
+    extensible_element_impl->extensible_element.ops = NULL;
     
 	extensible_element_impl->extensible_element.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_extensible_element_ops_t));
@@ -84,6 +91,7 @@ axis2_wsdl_extensible_element_create (axis2_env_t **env)
         axis2_wsdl_extensible_element_free(&(extensible_element_impl->
             extensible_element), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        return NULL;
     }
     
     extensible_element_impl->extensible_element.ops->free =  
@@ -98,7 +106,6 @@ axis2_wsdl_extensible_element_create (axis2_env_t **env)
 	extensible_element_impl->extensible_element.ops->set_type = 
         axis2_wsdl_extensible_element_set_type;
 	
-    extensible_element_impl->type = NULL;
     
 	return &(extensible_element_impl->extensible_element);
 }
@@ -118,6 +125,8 @@ axis2_wsdl_extensible_element_free (
     {
         AXIS2_QNAME_FREE(AXIS2_INTF_TO_IMPL(extensible_element)->
             type, env);
+        AXIS2_INTF_TO_IMPL(extensible_element)->type = NULL;
+        
     }
     
     AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(extensible_element));
@@ -168,7 +177,10 @@ axis2_wsdl_extensible_element_set_type(
     AXIS2_PARAM_CHECK((*env)->error, type, AXIS2_FAILURE);
     
     if(extensible_element_impl->type)
+    {
         AXIS2_QNAME_FREE(extensible_element_impl->type, env);
+        extensible_element_impl->type = NULL;
+    }
     
     extensible_element_impl->type = type;
     return AXIS2_SUCCESS;
