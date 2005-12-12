@@ -162,10 +162,14 @@ axis2_operation_t* AXIS2_CALL axis2_req_uri_disp_find_operation(axis2_msg_ctx_t 
             {                
                 if (url_tokens[1])
                 {
+                    axis2_qname_t *operation_qname = NULL;
+                    axis2_operation_t *op = NULL;
                     AXIS2_LOG(env, "Checking for Operation using target endpoint uri fragment : ");
                     AXIS2_LOG(env, url_tokens[1]);
-                    axis2_qname_t *operation_qname = axis2_qname_create(env, url_tokens[1], NULL, NULL);
-                    return AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env, operation_qname);
+                    operation_qname = axis2_qname_create(env, url_tokens[1], NULL, NULL);
+                    op = AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env, operation_qname);
+                    AXIS2_QNAME_FREE(operation_qname, env);
+                    return op;
                 }
             }
         }
