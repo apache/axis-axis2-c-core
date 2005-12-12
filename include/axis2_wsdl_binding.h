@@ -39,7 +39,9 @@ extern "C"
 #endif
 
 struct axis2_wsdl_interface;
-struct axis2_wsdl_binding_operation;    
+struct axis2_wsdl_binding_operation;
+struct axis2_wsdl_binding_fault;
+struct axis2_wsdl_extensible_component;    
 typedef struct axis2_wsdl_binding axis2_wsdl_binding_t;
 typedef struct axis2_wsdl_binding_ops axis2_wsdl_binding_ops_t;
 
@@ -176,7 +178,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_ops
     axis2_status_t (AXIS2_CALL *
     add_binding_fault) (axis2_wsdl_binding_t *binding,
                                             axis2_env_t **env,
-                                            axis2_wsdl_binding_fault_t *binding_fault);
+                                            struct axis2_wsdl_binding_fault *binding_fault);
     
     /**
      * Method getBindingFault
@@ -184,7 +186,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_ops
      * @param ref
      * @return WSDLBindingFault
      */
-    axis2_wsdl_binding_fault_t * (AXIS2_CALL *
+    struct axis2_wsdl_binding_fault * (AXIS2_CALL *
     get_binding_fault) (axis2_wsdl_binding_t *binding,
                                             axis2_env_t **env,
                                             axis2_qname_t *ref);
@@ -197,7 +199,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_ops
 AXIS2_DECLARE_DATA struct axis2_wsdl_binding
 {
 	axis2_wsdl_binding_ops_t *ops;
-    axis2_wsdl_extensible_component_t *extensible_component;
+    struct axis2_wsdl_extensible_component *extensible_component;
 };
 
 /**

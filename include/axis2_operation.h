@@ -49,7 +49,10 @@ struct axis2_svc;
 struct axis2_msg_recv;
 struct axis2_param_container;
 struct axis2_module_desc; 
-struct axis2_operation;    
+struct axis2_operation;
+struct axis2_wsdl_feature;
+struct axis2_wsdl_property; 
+struct axis2_wsdl_fault_ref;    
 typedef struct axis2_operation_ops axis2_operation_ops_t;    
 typedef struct axis2_operation axis2_operation_t;    
     
@@ -84,7 +87,7 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops
 	axis2_param_t *(AXIS2_CALL *
     get_param)(axis2_operation_t *operation, 
                 axis2_env_t **env,
-                const axis2_char_t *name);
+                axis2_char_t *name);
 
 
 	axis2_array_list_t *(AXIS2_CALL *
@@ -97,7 +100,7 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops
 	axis2_bool_t (AXIS2_CALL *
     is_param_locked) (axis2_operation_t *operation, 
                         axis2_env_t **env,
-                        const axis2_char_t *param_name);
+                        axis2_char_t *param_name);
 	
 	axis2_status_t (AXIS2_CALL *
     set_parent) (axis2_operation_t *operation, 
@@ -290,17 +293,17 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops
     axis2_status_t (AXIS2_CALL *
     add_infault) (axis2_operation_t *operation,
                                     axis2_env_t **env,
-                                    axis2_wsdl_fault_ref_t *infault);
+                                    struct axis2_wsdl_fault_ref *infault);
     
     axis2_status_t (AXIS2_CALL *
     add_outfault) (axis2_operation_t *operation,
                                     axis2_env_t **env,
-                                    axis2_wsdl_fault_ref_t *outfault);
+                                    struct axis2_wsdl_fault_ref *outfault);
     
     axis2_status_t (AXIS2_CALL *
     add_feature) (axis2_operation_t *operation,
                                     axis2_env_t **env,
-                                    axis2_wsdl_feature_t *feature);
+                                    struct axis2_wsdl_feature *feature);
     
     axis2_linked_list_t *(AXIS2_CALL *
     get_features) (axis2_operation_t *operation,
@@ -309,7 +312,7 @@ AXIS2_DECLARE_DATA struct axis2_operation_ops
     axis2_status_t (AXIS2_CALL *
     add_property) (axis2_operation_t *operation,
                                     axis2_env_t **env,
-                                    axis2_wsdl_property_t *wsdl_property);
+                                    struct axis2_wsdl_property *wsdl_property);
     
     axis2_linked_list_t *(AXIS2_CALL *
     get_Properties) (axis2_operation_t *operation,

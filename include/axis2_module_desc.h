@@ -187,7 +187,7 @@ struct axis2_module_desc_ops
     axis2_param_t * (AXIS2_CALL *
     get_param) (axis2_module_desc_t *module_desc,
                                         axis2_env_t **env,
-                                        const axis2_char_t *name);
+                                        axis2_char_t *name);
     
     axis2_array_list_t * (AXIS2_CALL *
     get_params) (axis2_module_desc_t *module_desc,
@@ -201,7 +201,7 @@ struct axis2_module_desc_ops
     axis2_bool_t (AXIS2_CALL *
     is_param_locked ) (axis2_module_desc_t *module_desc,
                                         axis2_env_t **env,
-                                        const axis2_char_t *param_name);
+                                        axis2_char_t *param_name);
 
 };
 

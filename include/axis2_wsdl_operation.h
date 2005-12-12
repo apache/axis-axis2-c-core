@@ -41,7 +41,8 @@
 extern "C"
 {
 #endif
-	
+struct axis2_wsdl_extensible_component;	
+struct axis2_wsdl_fault_ref;    
 typedef struct axis2_wsdl_operation_ops axis2_wsdl_operation_ops_t;
 typedef struct axis2_wsdl_operation axis2_wsdl_operation_t;	
 	
@@ -68,7 +69,7 @@ struct axis2_wsdl_operation_ops
     axis2_status_t (AXIS2_CALL *
     set_msg_exchange_pattern) (axis2_wsdl_operation_t *wsdl_operation, 
                                 axis2_env_t **env, 
-                                const axis2_char_t *msg_exchange_pattern);
+                                axis2_char_t *msg_exchange_pattern);
   
     /**
      * get the message exchange pattern
@@ -122,7 +123,7 @@ struct axis2_wsdl_operation_ops
      */
     axis2_linked_list_t * (AXIS2_CALL *
     get_infaults) (axis2_wsdl_operation_t *wsdl_operation,
-                                        axis2_env_t **env);
+                   axis2_env_t **env);
     
     /**
      * Method setInfaults
@@ -131,15 +132,15 @@ struct axis2_wsdl_operation_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_infaults) (axis2_wsdl_operation_t *wsdl_operation,
-                                        axis2_env_t **env,
-                                        axis2_linked_list_t *infaults);
+                    axis2_env_t **env,
+                    axis2_linked_list_t *infaults);
     
     /**
      * Method getInputMessage
      *
      * @return
      */
-    axis2_wsdl_msg_ref_t *(AXIS2_CALL *
+    struct axis2_wsdl_msg_ref *(AXIS2_CALL *
     get_input_msg) (axis2_wsdl_operation_t *wsdl_operation,
                                         axis2_env_t **env);
     
@@ -150,8 +151,8 @@ struct axis2_wsdl_operation_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_input_msg) (axis2_wsdl_operation_t *wsdl_operation,
-                                        axis2_env_t **env,
-                                        axis2_wsdl_msg_ref_t *input_msg);
+                    axis2_env_t **env,
+                    struct axis2_wsdl_msg_ref *input_msg);
     
     /**
      * Method getOutfaults
@@ -177,7 +178,7 @@ struct axis2_wsdl_operation_ops
      *
      * @return
      */
-    axis2_wsdl_msg_ref_t *(AXIS2_CALL *
+    struct axis2_wsdl_msg_ref *(AXIS2_CALL *
     get_output_msg) (axis2_wsdl_operation_t *wsdl_operation,
                                         axis2_env_t **env);
     
@@ -189,7 +190,7 @@ struct axis2_wsdl_operation_ops
     axis2_status_t (AXIS2_CALL *
     set_output_msg) (axis2_wsdl_operation_t *wsdl_operation,
                         axis2_env_t **env,
-                        axis2_wsdl_msg_ref_t *output_msg);
+                        struct axis2_wsdl_msg_ref *output_msg);
     
     /**
      * Method isSafe
@@ -227,7 +228,7 @@ struct axis2_wsdl_operation_ops
     axis2_status_t (AXIS2_CALL *
     add_infault) (axis2_wsdl_operation_t *wsdl_operation,
                     axis2_env_t **env,
-                    axis2_wsdl_fault_ref_t *infault);
+                    struct axis2_wsdl_fault_ref *infault);
     
     /**
      * Add the OutFault to the Component OutFaults
@@ -237,13 +238,13 @@ struct axis2_wsdl_operation_ops
     axis2_status_t (AXIS2_CALL *
     add_outfault) (axis2_wsdl_operation_t *wsdl_operation,
                     axis2_env_t **env,
-                    axis2_wsdl_fault_ref_t *outfault);
+                    struct axis2_wsdl_fault_ref *outfault);
 };
 
 struct axis2_wsdl_operation
 {
 	axis2_wsdl_operation_ops_t *ops;
-    axis2_wsdl_extensible_component_t *extensible_component;
+    struct axis2_wsdl_extensible_component *extensible_component;
 };
 
 AXIS2_DECLARE(axis2_wsdl_operation_t *) axis2_wsdl_operation_create (

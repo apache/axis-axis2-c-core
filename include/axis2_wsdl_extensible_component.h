@@ -37,6 +37,9 @@ extern "C"
 {
 #endif
 
+struct axis2_wsdl_component;
+struct axis2_wsdl_feature; 
+struct axis2_wsdl_property;    
 typedef struct axis2_wsdl_extensible_component axis2_wsdl_extensible_component_t;
 typedef struct axis2_wsdl_extensible_component_ops axis2_wsdl_extensible_component_ops_t;
 
@@ -68,7 +71,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops
     axis2_status_t (AXIS2_CALL *
     add_feature) (axis2_wsdl_extensible_component_t *extensible_component,
                 axis2_env_t **env,
-                axis2_wsdl_feature_t *wsdl_feature);
+                struct axis2_wsdl_feature *wsdl_feature);
         
     /**
      * Will return the <code>WSDLFeature</code>s. If there aren't
@@ -89,7 +92,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops
     axis2_status_t (AXIS2_CALL *
     add_property) (axis2_wsdl_extensible_component_t *extensible_component,
                    axis2_env_t **env,
-                   axis2_wsdl_property_t *wsdl_property);
+                   struct axis2_wsdl_property *wsdl_property);
         
     /**
      * Returns the Component Properties. If none exist an empty list will be returned.
@@ -108,7 +111,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops
 AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component
 {
 	axis2_wsdl_extensible_component_ops_t *ops;
-    axis2_wsdl_component_t *wsdl_component;
+    struct axis2_wsdl_component *wsdl_component;
 };
 
 /**

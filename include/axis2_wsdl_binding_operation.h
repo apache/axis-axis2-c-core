@@ -24,7 +24,9 @@ extern "C"
 {
 #endif
 
-struct axis2_wsdl_binding_msg_ref;	
+struct axis2_wsdl_binding_msg_ref;
+struct axis2_wsdl_binding_fault;
+struct axis2_wsdl_extensible_component;	
 typedef struct axis2_wsdl_binding_operation_ops axis2_wsdl_binding_operation_ops_t;
 typedef struct axis2_wsdl_binding_operation axis2_wsdl_binding_operation_t;
 	
@@ -131,7 +133,7 @@ struct axis2_wsdl_binding_operation_ops
     axis2_status_t (AXIS2_CALL *
     add_infault) (axis2_wsdl_binding_operation_t *binding_operation,
                                                 axis2_env_t **env,
-                                                axis2_wsdl_binding_fault_t *infault);
+                                                struct axis2_wsdl_binding_fault *infault);
     
     /**
      * Add the OutFault to the Component OutFaults
@@ -141,7 +143,7 @@ struct axis2_wsdl_binding_operation_ops
     axis2_status_t (AXIS2_CALL *
     add_outfault) (axis2_wsdl_binding_operation_t *binding_operation,
                                                 axis2_env_t **env,
-                                                axis2_wsdl_binding_fault_t *outfault);
+                                                struct axis2_wsdl_binding_fault *outfault);
     
     axis2_linked_list_t * (AXIS2_CALL *
     get_infaults) (axis2_wsdl_binding_operation_t *binding_operation,
@@ -170,7 +172,7 @@ struct axis2_wsdl_binding_operation_ops
 struct axis2_wsdl_binding_operation
 {
 	axis2_wsdl_binding_operation_ops_t *ops;
-    axis2_wsdl_extensible_component_t *extensible_component;
+    struct axis2_wsdl_extensible_component *extensible_component;
 };
 
 /** create Wsdl Binding Operation struct

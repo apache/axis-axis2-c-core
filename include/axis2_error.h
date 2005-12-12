@@ -169,6 +169,8 @@ extern "C"
         AXIS2_ERROR_INVALID_STATE_SVC_GRP,
         /** Wsdl operation accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_WSDL_OPERATION,
+        /** Module description accessed has invalid state */
+        AXIS2_ERROR_INVALID_STATE_MODULE_DESC,
         /** Array list index out of bounds */
         AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
         /** Both before and after handlers cannot be the same */

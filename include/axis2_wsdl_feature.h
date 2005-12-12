@@ -34,6 +34,7 @@ extern "C"
 {
 #endif
 
+struct axis2_wsdl_component;    
 typedef struct axis2_wsdl_feature axis2_wsdl_feature_t;
 typedef struct axis2_wsdl_feature_ops axis2_wsdl_feature_ops_t;
 
@@ -51,8 +52,9 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_feature_ops
 	/** De-allocate memory
   	 * @return status code
   	 */
-	axis2_status_t (AXIS2_CALL *free)(axis2_wsdl_feature_t *wsdl_feature,
-										axis2_env_t **env);
+	axis2_status_t (AXIS2_CALL *
+    free)(axis2_wsdl_feature_t *wsdl_feature,
+	        axis2_env_t **env);
                                
     /**
      * Method getName
@@ -103,7 +105,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_feature_ops
 AXIS2_DECLARE_DATA struct axis2_wsdl_feature
 {
 	axis2_wsdl_feature_ops_t *ops;
-    axis2_wsdl_component_t *wsdl_component;
+    struct axis2_wsdl_component *wsdl_component;
 };
 
 /**

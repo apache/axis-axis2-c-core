@@ -34,6 +34,7 @@ extern "C"
 {
 #endif
 
+struct axis2_wsdl_component;    
 typedef struct axis2_wsdl_property axis2_wsdl_property_t;
 typedef struct axis2_wsdl_property_ops axis2_wsdl_property_ops_t;
 
@@ -123,7 +124,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_property_ops
 AXIS2_DECLARE_DATA struct axis2_wsdl_property
 {
 	axis2_wsdl_property_ops_t *ops;
-    axis2_wsdl_component_t *wsdl_component;
+    struct axis2_wsdl_component *wsdl_component;
 };
 
 /**

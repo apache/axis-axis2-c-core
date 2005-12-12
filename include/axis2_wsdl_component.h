@@ -13,14 +13,21 @@
 #include <axis2_string.h>
 #include <axis2_hash.h>
 #include <axis2_linked_list.h>
+#include <axis2_array_list.h>
 #include <axis2_wsdl_extensible_element.h>
+#include <axis2_param_container.h>
+#include <axis2_description.h>
+#include <axis2_module_desc.h>
+
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-struct axis2_wsdl_extensible_element;	
+struct axis2_wsdl_extensible_element;
+struct axis2_param_container;	
+struct axis2_module_desc;
 typedef struct axis2_wsdl_component_ops axis2_wsdl_component_ops_t;
 typedef struct axis2_wsdl_component axis2_wsdl_component_t;
 	
@@ -38,26 +45,27 @@ struct axis2_wsdl_component_ops
 	/** Deallocate memory
      * @return status code
      */
-    axis2_status_t (AXIS2_CALL *free) (axis2_wsdl_component_t *wsdl_component, 
-                                        axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+    free) (axis2_wsdl_component_t *wsdl_component, 
+           axis2_env_t **env);
     
 	/**
      * Sets the properties of the Component if any
      * @param axis2_hash_t properties
      * @return status code
      */
-    axis2_status_t (AXIS2_CALL *set_component_properties) 
-                                        (axis2_wsdl_component_t *wsdl_component, 
-                                            axis2_env_t **env, 
-                                            axis2_hash_t *properties);
+    axis2_status_t (AXIS2_CALL *
+    set_component_properties) (axis2_wsdl_component_t *wsdl_component, 
+                                axis2_env_t **env, 
+                                axis2_hash_t *properties);
     
     /**
      * Returns the properties that are specific to this WSDL Component
      * @return axis2_hash_t component properties
      */
-    axis2_hash_t *(AXIS2_CALL *get_component_properties)
-                                        (axis2_wsdl_component_t *wsdl_component, 
-                                        axis2_env_t **env);
+    axis2_hash_t *(AXIS2_CALL *
+    get_component_properties) (axis2_wsdl_component_t *wsdl_component, 
+                               axis2_env_t **env);
     
     /**
      * Will set the property keyed with the relavent key
@@ -65,42 +73,42 @@ struct axis2_wsdl_component_ops
      * @param void value to be put
      * @return status code
      */
-    axis2_status_t (AXIS2_CALL *set_component_property) (
-                                        axis2_wsdl_component_t *wsdl_component,
-	                                    axis2_env_t **env, 
-	                                    const void *key, 
-                                        void *value);
+    axis2_status_t (AXIS2_CALL *
+    set_component_property) (axis2_wsdl_component_t *wsdl_component,
+                                axis2_env_t **env, 
+                                void *key, 
+                                void *value);
     
     /**
      * Gets the component property
      * @param void key for the map search.
      * @return void value for the key
      */
-    void *(AXIS2_CALL *get_component_property) 
-                                        (axis2_wsdl_component_t *wsdl_component, 
-                                            axis2_env_t **env,
-                                            const void *key);
+    void *(AXIS2_CALL *
+    get_component_property) (axis2_wsdl_component_t *wsdl_component, 
+                                axis2_env_t **env,
+                                void *key);
  
 
 
-/**
- * Adds the <code>Element</code> to this Component.
- *
- * @param element
- */
-axis2_status_t (AXIS2_CALL *
-add_extensibility_element) (axis2_wsdl_component_t *wsdl_component,
-                            axis2_env_t **env,
-                            void *element);
-                                                    
-/**
- * Returns the Extensibility Elements of this component;
- *
- * @return List of <code>Element</code> s
- */
-axis2_linked_list_t *(AXIS2_CALL *
-get_extensibility_elements) (axis2_wsdl_component_t *wsdl_component,
-                                                axis2_env_t **env);
+    /**
+     * Adds the <code>Element</code> to this Component.
+     *
+     * @param element
+     */
+    axis2_status_t (AXIS2_CALL *
+    add_extensibility_element) (axis2_wsdl_component_t *wsdl_component,
+                                axis2_env_t **env,
+                                void *element);
+                                                        
+    /**
+     * Returns the Extensibility Elements of this component;
+     *
+     * @return List of <code>Element</code> s
+     */
+    axis2_linked_list_t *(AXIS2_CALL *
+    get_extensibility_elements) (axis2_wsdl_component_t *wsdl_component,
+                                                    axis2_env_t **env);
                                                 
 };
 

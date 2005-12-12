@@ -47,8 +47,13 @@ extern "C"
 
 struct axis2_phase;
 struct axis2_handler_desc;
+struct axis2_module_desc;    
 struct axis2_handler;
 struct axis2_phase_rule;
+struct axis2_svc;
+struct axis2_engine_config;
+struct axis2_operation; 
+struct axis2_phase_holder;    
 typedef struct axis2_phase_resolver axis2_phase_resolver_t;
 typedef struct axis2_phase_resolver_ops axis2_phase_resolver_ops_t;
 
@@ -195,8 +200,8 @@ axis2_phase_resolver_create_with_config_and_svc (axis2_env_t **env,
 #define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_SVC(phase_resolver, env, svc, module_desc) \
 		((phase_resolver->ops)->engage_module_to_svc (phase_resolver, env, svc, module_desc))
 
-#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OPERATION(phase_resolver, env, axis_operation) \
-		((phase_resolver->ops)->engage_module_to_operation (phase_resolver, env, axis_operation))
+#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OPERATION(phase_resolver, env, axis_operation, module_desc) \
+		((phase_resolver->ops)->engage_module_to_operation (phase_resolver, env, axis_operation, module_desc))
 
         
 /*************************** End of function macros ***************************/

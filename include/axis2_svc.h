@@ -36,6 +36,8 @@
 #include <axis2_module_desc.h>
 #include <axis2_engine_config.h>
 #include <axis2_wsdl_soap_operation.h>
+#include <axis2_string.h>
+#include <axis2_wsdl_endpoint.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -47,6 +49,7 @@ extern "C"
   * @{
   */
 
+struct axis2_wsdl_endpoint;
 struct axis2_svc_grp;
 struct axis2_operation;
 struct axis2_flow_container;
@@ -123,7 +126,7 @@ struct axis2_svc_ops
 	axis2_bool_t (AXIS2_CALL *
     is_param_locked) (axis2_svc_t *svc, 
                         axis2_env_t **env,
-                        const axis2_char_t *param_name);
+                        axis2_char_t *param_name);
                                                 
     axis2_status_t (AXIS2_CALL *
     set_svc_interface) (axis2_svc_t *svc,
@@ -391,7 +394,15 @@ struct axis2_svc_ops
                 axis2_env_t **env,
                 axis2_char_t * mapping_key , 
                 struct axis2_operation * axis2_operation);
-                                
+ 
+    axis2_status_t (AXIS2_CALL *
+    add_module_ref) (axis2_svc_t *svc,
+                                axis2_env_t **env,
+                                axis2_qname_t *moduleref);
+    
+    axis2_array_list_t *(AXIS2_CALL *
+    get_modules) (axis2_svc_t *svc,
+                            axis2_env_t **env);                
 };
 
 /** 
@@ -564,6 +575,11 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
 #define AXIS2_SVC_ADD_MAPPING(svc, env, mapping_key, axis2_opt) \
         (svc->ops->add_mapping(svc, env, mapping_key, axis2_opt))
 
+#define AXIS2_SVC_ADD_MODULE_REF(svc, env, moduleref) \
+        (svc->ops->add_module_ref(svc, env, moduleref))
+        
+#define AXIS2_SVC_GET_MODULES(svc, env) \
+        (svc->ops->get_modules(svc, env))
 
 /**************************** End of function macros **************************/
 

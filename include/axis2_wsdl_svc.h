@@ -45,7 +45,8 @@ extern "C"
   */
 
 struct axis2_wsdl_endpoint; 
-struct axis2_wsdl_interface;    
+struct axis2_wsdl_interface; 
+struct axis2_wsdl_component;    
 typedef struct axis2_wsdl_svc_ops axis2_wsdl_svc_ops_t;
 typedef struct axis2_wsdl_svc axis2_wsdl_svc_t;
 
@@ -157,7 +158,7 @@ struct axis2_wsdl_svc_ops
 struct axis2_wsdl_svc
 {
 	axis2_wsdl_svc_ops_t *ops;
-    axis2_wsdl_component_t * wsdl_component;
+    struct axis2_wsdl_component *wsdl_component;
 };
 
 /** create Wsdl Service struct

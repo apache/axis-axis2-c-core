@@ -95,6 +95,24 @@ extern "C"
   *  @{
  */
 
+typedef enum axis2_operation_type
+{
+    /** axis2_wsdl_operation */
+    AXIS2_WSDL_OPERATION = 0,
+    /** axis2_operation */
+    AXIS2_OPERATION
+    
+}axis2_operation_type_t;
+
+typedef enum axis2_svc_type
+{
+    /** axis2_wsdl_svc */
+    AXIS2_WSDL_SVC = 0,
+    /** axis2_svc */
+    AXIS2_SVC
+    
+}axis2_svc_type_t;
+
 /******************************************************************************/
 /********************Axis2 specific constants**********************************/
 /******************************************************************************/

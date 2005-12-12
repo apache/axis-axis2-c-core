@@ -37,7 +37,7 @@
 extern "C"
 {
 #endif
-
+    
 struct axis2_wsdl_operation;
 struct axis2_operation;    
 struct axis2_wsdl_extensible_component;    
@@ -48,6 +48,7 @@ typedef struct axis2_wsdl_interface_ops axis2_wsdl_interface_ops_t;
  * @ingroup axis2_wsdl
  * @{
  */
+
 
 /** 
  * @brief Wsdl Interface operations struct
@@ -165,7 +166,8 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
     axis2_status_t (AXIS2_CALL *
     set_operation) (axis2_wsdl_interface_t *wsdl_interface,
                                         axis2_env_t **env,
-                                        void *operation);
+                                        void *operation,
+                                        axis2_operation_type_t opt_type);
     
     /**
      * @param list
@@ -216,6 +218,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface
 {
 	axis2_wsdl_interface_ops_t *ops;
     struct axis2_wsdl_extensible_component *extensible_component;
+    axis2_operation_type_t optr_type; /*0-wsdl_operation, 1-axis2_operation */
 };
 
 /**
@@ -262,8 +265,8 @@ AXIS2_DECLARE(axis2_wsdl_interface_t *) axis2_wsdl_interface_create (axis2_env_t
 #define AXIS2_WSDL_INTERFACE_SET_OPERATIONS(wsdl_interface, env, list) \
 		((wsdl_interface->ops)->set_operations (wsdl_interface, env, list))
 
-#define AXIS2_WSDL_INTERFACE_SET_OPERATION(wsdl_interface, env, operation) \
-		((wsdl_interface->ops)->set_operation (wsdl_interface, env, operation))
+#define AXIS2_WSDL_INTERFACE_SET_OPERATION(wsdl_interface, env, operation, optr_type) \
+		((wsdl_interface->ops)->set_operation (wsdl_interface, env, operation, optr_type))
 
 #define AXIS2_WSDL_INTERFACE_SET_SUPER_INTERFACES(wsdl_interface, env, list) \
 		((wsdl_interface->ops)->set_super_interfaces (wsdl_interface, env, list))

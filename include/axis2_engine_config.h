@@ -31,6 +31,7 @@
 #include <axis2_qname.h>
 #include <axis2_hash.h>
 #include <axis2_phases_info.h>
+#include <axis2_msg_recv.h>
 
 #ifdef __cplusplus
 extern "C" 
@@ -41,6 +42,7 @@ extern "C"
   * @{
   */
 
+struct axis2_msg_recv;
 struct axis2_phases_info;    
 struct axis2_transport_in_desc *transports_in;
 struct axis2_transport_out_desc *transports_out;
