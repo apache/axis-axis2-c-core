@@ -177,7 +177,6 @@ axis2_status_t AXIS2_CALL axis2_disp_invoke(struct axis2_handler *handler,
                                                 axis2_env_t **env,
                                                 struct axis2_msg_ctx *msg_ctx)
 {
-    axis2_relates_to_t *relates_to = NULL;
     axis2_svc_t *axis_service = NULL;
     axis2_operation_t *operation = NULL;
     

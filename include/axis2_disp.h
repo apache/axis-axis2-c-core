@@ -25,6 +25,7 @@
 #include <axis2_defines.h>
 #include <axis2_qname.h>
 #include <axis2_handler.h>
+#include <axis2_svc.h>
 
 #ifdef __cplusplus
 extern "C"
