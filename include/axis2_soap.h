@@ -28,82 +28,125 @@ extern "C"
 
 /** soap 11 constants */
 
-#define SOAP11_SOAP_ENVELOPE_NAMESPACE_URI "http://schemas.xmlsoap.org/soap/envelope/"
+#define AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI "http://schemas.xmlsoap.org/soap/envelope/"
 
-#define SOAP11_ATTR_ACTOR "actor"
+#define AXIS2_SOAP11_ATTR_ACTOR "actor"
 
-#define SOAP11_SOAP_FAULT_CODE_LOCAL_NAME "faultcode"
+#define AXIS2_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME "faultcode"
 
-#define SOAP11_SOAP_FAULT_STRING_LOCAL_NAME "faultstring"
+#define AXIS2_SOAP11_SOAP_FAULT_STRING_LOCAL_NAME "faultstring"
 
-#define SOAP11_SOAP_FAULT_ACTOR_LOCAL_NAME "faultactor"
+#define AXIS2_SOAP11_SOAP_FAULT_ACTOR_LOCAL_NAME "faultactor"
 
-#define SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME "detail"
+#define AXIS2_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME "detail"
 
-#define SOAP_11_CONTENT_TYPE "text/xml"
+#define AXIS2_SOAP_11_CONTENT_TYPE "text/xml"
 
-#define SOAP11_FAULT_CODE_SENDER "Client"
+#define AXIS2_SOAP11_FAULT_CODE_SENDER "Client"
 
-#define SOAP11_FAULT_CODE_RECEIVER "Server"
+#define AXIS2_SOAP11_FAULT_CODE_RECEIVER "Server"
 
-#define SOAP11_SOAP_ACTOR_NEXT "http://schemas.xmlsoap.org/soap/actor/next"
+#define AXIS2_SOAP11_SOAP_ACTOR_NEXT "http://schemas.xmlsoap.org/soap/actor/next"
 
 
 /** soap12 constants */
 
-#define SOAP12_SOAP_ENVELOPE_NAMESPACE_URI "http://www.w3.org/2003/05/soap-envelope"
+#define AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI "http://www.w3.org/2003/05/soap-envelope"
 
-#define SOAP12_SOAP_ROLE "role"
+#define AXIS2_SOAP12_SOAP_ROLE "role"
 
-#define SOAP12_SOAP_RELAY "relay"
+#define AXIS2_SOAP12_SOAP_RELAY "relay"
 
-#define SOAP12_SOAP_FAULT_CODE_LOCAL_NAME "Code"
+#define AXIS2_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME "Code"
 
-#define SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME "Subcode"
+#define AXIS2_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME "Subcode"
 
-#define SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME "Value"
+#define AXIS2_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME "Value"
 
-#define SOAP12_SOAP_FAULT_VALUE_VERSION_MISMATCH "VersionMismatch"
+#define AXIS2_SOAP12_SOAP_FAULT_VALUE_VERSION_MISMATCH "VersionMismatch"
 
-#define SOAP12_SOAP_FAULT_VALUE_MUST_UNDERSTAND "MustUnderstant"
+#define AXIS2_SOAP12_SOAP_FAULT_VALUE_MUST_UNDERSTAND "MustUnderstant"
 
-#define SOAP12_SOAP_FAULT_VALUE_DATA_ENCODING_UKNOWN "DataEncodingUnknown"
+#define AXIS2_SOAP12_SOAP_FAULT_VALUE_DATA_ENCODING_UKNOWN "DataEncodingUnknown"
 
-#define SOAP12_SOAP_FAULT_VALUE_SENDER "Sender"
+#define AXIS2_SOAP12_SOAP_FAULT_VALUE_SENDER "Sender"
 
-#define SOAP12_SOAP_FAULT_VALUE_RECEIVER "Receiver"
+#define AXIS2_SOAP12_SOAP_FAULT_VALUE_RECEIVER "Receiver"
 
 /** SOAP Fault Reason */
 
-#define SOAP12_SOAP_FAULT_REASON_LOCAL_NAME "Reason"
+#define AXIS2_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME "Reason"
 
-#define SOAP12_SOAP_FAULT_TEXT_LOCAL_NAME "Text"
+#define AXIS2_SOAP12_SOAP_FAULT_TEXT_LOCAL_NAME "Text"
 
-#define SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME "lang"
+#define AXIS2_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME "lang"
 
-#define SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_URI "http://www.w3.org/XML/1998/namespace"
+#define AXIS2_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_URI "http://www.w3.org/XML/1998/namespace"
 
-#define SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX "xml"
+#define AXIS2_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX "xml"
 
-#define SOAP12_SOAP_FAULT_NODE_LOCAL_NAME "Node"
+#define AXIS2_SOAP12_SOAP_FAULT_NODE_LOCAL_NAME "Node"
 
-#define SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME "Detail"
+#define AXIS2_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME "Detail"
 
-#define SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME "Role"
+#define AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME "Role"
 
-#define SOAP_12_CONTENT_TYPE "application/soap+xml"
+#define AXIS2_SOAP_12_CONTENT_TYPE "application/soap+xml"
 
 /** soap fault codes */
 
-#define SOAP12_FAULT_CODE_SENDER "Sender"
+#define AXIS2_SOAP12_FAULT_CODE_SENDER "Sender"
 
-#define SOAP12_FAULT_CODE_RECEIVER "Receiver"
+#define AXIS2_SOAP12_FAULT_CODE_RECEIVER "Receiver"
 
-#define SOAP12_SOAP_ROLE_NEXT "http://www.w3.org/2003/05/soap-envelope/role/next"
+#define AXIS2_SOAP12_SOAP_ROLE_NEXT "http://www.w3.org/2003/05/soap-envelope/role/next"
 
-#define SOAP12_SOAP_ROLE_NONE "http://www.w3.org/2003/05/soap-envelope/role/none"
+#define AXIS2_SOAP12_SOAP_ROLE_NONE "http://www.w3.org/2003/05/soap-envelope/role/none"
 
 #define SOAP12_SOAP_ROLE_ULTIMATE_RECEIVER "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver"
+
+#define AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX "soapenv"
+
+#define AXIS2_SOAP_ENVELOPE_LOCAL_NAME "Envelope"
+
+#define AXIS2_SOAP_HEADER_LOCAL_NAME "Header"
+
+#define AXIS2_SOAP_BODY_LOCAL_NAME "Body"
+
+#define AXIS2_SOAP_BODY_NAMESPACE_PREFIX AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX
+
+#define AXIS2_SOAP_BODY_FAULT_LOCAL_NAME "Fault"
+
+/** attribute must understand */
+
+#define AXIS2_SOAP_ATTR_MUST_UNDERSTAND "mustUnderstand"
+
+#define AXIS2_SOAP_ATTR_MUST_UNDERSTAND_TRUE "true"
+
+#define AXIS2_SOAP_ATTR_MUST_UNDERSTAND_FALSE "false"
+
+#define AXIS2_SOAP_ATTR_MUST_UNDERSTAND_0 "0"
+
+#define AXIS2_SOAP_ATTR_MUST_UNDERSTAND_1 "1"
+
+#define AXIS2_SOAP_FAULT_LOCAL_NAME "Fault"
+
+#define AXIS2_SOAP_FAULT_DETAIL_LOCAL_NAME "detail"
+
+#define AXIS2_SOAP_FAULT_NAMESPACE_PREFIX AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX
+
+#define AXIS2_SOAP_FAULT_DETAIL_EXCEPTION_ENTRY "Exception"
+
+#define AXIS2_SOAP_FAULT_CODE_VERSION_MISMATCH "env:VersionMismatch"
+
+#define AXIS2_SOAP_FAULT_CODE_MUST_UNDERSTAND "env:MustUnderstand"
+
+#define AXIS2_SOAP_FAULT_CODE_DATA_ENCODING_UNKNOWN "env:DataEncodingUnknown"
+
+#define AXIS2_SOAP_FAULT_CODE_SENDER ""
+
+#define AXIS2_SOAP_FAULT_CODE_RECEIVER ""
+
 
 #ifdef __cplusplus
 }
