@@ -104,7 +104,8 @@ axis2_operation_t* AXIS2_CALL axis2_soap_action_disp_find_operation(axis2_msg_ct
 {
     axis2_char_t *action = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);    
+    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);  
+    AXIS2_PARAM_CHECK((*env)->error, svc, NULL);    
     
     action = AXIS2_MSG_CTX_GET_SOAP_ACTION(msg_ctx, env);
     

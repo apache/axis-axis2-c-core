@@ -144,6 +144,7 @@ axis2_operation_t* AXIS2_CALL axis2_req_uri_disp_find_operation(axis2_msg_ctx_t 
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);    
+    AXIS2_PARAM_CHECK((*env)->error, svc, NULL);
     
     endpoint_ref = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
     

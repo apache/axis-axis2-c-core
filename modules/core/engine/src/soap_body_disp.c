@@ -123,7 +123,8 @@ axis2_operation_t* AXIS2_CALL axis2_soap_body_disp_find_operation(axis2_msg_ctx_
                                 axis2_svc_t *svc)
 {
         
-    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);    
+    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL); 
+    AXIS2_PARAM_CHECK((*env)->error, svc, NULL);
 /*
     OMElement bodyFirstChild = messageContext.getEnvelope().getBody()
                 .getFirstElement();
