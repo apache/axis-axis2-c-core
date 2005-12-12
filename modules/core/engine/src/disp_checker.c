@@ -86,7 +86,7 @@ axis2_disp_checker_t* AXIS2_CALL axis2_disp_checker_create(axis2_env_t **env, ax
     }
     
     /* handler desc of base handler */
-    handler_desc = axis2_handler_desc_create(env, disp_checker_impl->qname);
+    handler_desc = axis2_handler_desc_create_with_qname(env, disp_checker_impl->qname);
     if (!handler_desc)
     {
         axis2_disp_checker_free(&(disp_checker_impl->disp_checker), env);

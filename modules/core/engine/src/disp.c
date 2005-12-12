@@ -101,7 +101,7 @@ axis2_disp_t* AXIS2_CALL axis2_disp_create(axis2_env_t **env, axis2_qname_t *qna
     }
     
     /* handler desc of base handler */
-    handler_desc = axis2_handler_desc_create(env, disp_impl->qname);
+    handler_desc = axis2_handler_desc_create_with_qname(env, disp_impl->qname);
     if (!handler_desc)
     {
         axis2_disp_free(&(disp_impl->disp), env);
