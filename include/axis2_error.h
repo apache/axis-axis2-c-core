@@ -258,7 +258,9 @@ extern "C"
         /** Message context processing a fault already */
         AXIS2_ERROR_INVALID_STATE_PROCESSING_FAULT_ALREADY,
         /** fault to field not specified in message context */
-        AXIS2_ERROR_NOWHERE_TO_SEND_FAULT
+        AXIS2_ERROR_NOWHERE_TO_SEND_FAULT,
+        /* Invalid status line or invalid request line */
+        AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE 
         
     };
 
