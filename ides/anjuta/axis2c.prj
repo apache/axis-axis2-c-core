@@ -97,7 +97,6 @@ module.include.files=\
 	modules/xml/guththila/src/guththila_unicode.h\
 	modules/xml/guththila/src/guththila_xml_pull_parser.h\
 	include/axis2_core.h\
-	include/axis2_wsdl_operation.h\
 	modules/util/src/axis2_error_default.h\
 	modules/util/src/axis2_log_default.h\
 	modules/util/src/axis2_stream_default.h\
@@ -105,9 +104,7 @@ module.include.files=\
 	modules/util/src/axis2_hash.h\
 	modules/util/src/axis2_string.h\
 	include/axis2_handler.h\
-	include/axis2_operation.h\
 	include/axis2_wsdl_component.h\
-	include/axis2_engine_config.h\
 	include/axis2_env.h\
 	include/axis2_msg_ctx.h\
 	include/axis2_msg_recv.h\
@@ -130,14 +127,12 @@ module.include.files=\
 	include/axis2_wsdl_interface.h\
 	include/axis2_wsdl_binding_fault.h\
 	include/axis2_wsdl_binding_msg_ref.h\
-	include/axis2_wsdl_binding_operation.h\
 	include/axis2_wsdl_msg_ref.h\
 	include/axis2_wsdl_fault_ref.h\
 	include/axis2_transport_in_desc.h\
 	include/axis2_transport_out_desc.h\
 	include/axis2_phase_rule.h\
 	include/axis2_wsdl_extensible_element.h\
-	include/axis2_wsdl_soap_operation.h\
 	include/axis2_phase_holder.h\
 	include/axis2_phase_resolver.h\
 	include/axis2_phase.h\
@@ -175,11 +170,16 @@ module.include.files=\
 	include/axis2_http_worker.h\
 	include/axis2_msg_info_headers.h\
 	include/axis2_om_children_iterator.h\
-	include/axis2_operation_ctx.h\
 	include/axis2_relates_to.h\
 	include/axis2_simple_http_svr_conn.h\
 	modules/xml/parser/axis2_xml_reader.h\
-	modules/xml/parser/axis2_xml_writer.h
+	modules/xml/parser/axis2_xml_writer.h\
+	include/axis2_conf.h\
+	include/axis2_op.h\
+	include/axis2_op_ctx.h\
+	include/axis2_wsdl_binding_op.h\
+	include/axis2_wsdl_op.h\
+	include/axis2_wsdl_soap_op.h
 
 module.source.name=.
 module.source.type=
@@ -206,7 +206,6 @@ module.source.files=\
 	modules/test/om/src/test_om.c\
 	modules/xml/om/src/axis2_om_output.c\
 	modules/core/description/src/module.c\
-	modules/core/description/src/operation.c\
 	modules/wsdl/src/wsdl_component.c\
 	modules/wsdl/src/wsdl_operation.c\
 	modules/util/src/allocator.c\
@@ -222,7 +221,6 @@ module.source.files=\
 	modules/util/src/env.c\
 	modules/core/description/src/svc.c\
 	modules/core/description/src/svc_grp.c\
-	modules/core/engine/src/engine_config.c\
 	modules/core/engine/src/msg_recv.c\
 	modules/core/context/src/msg_ctx.c\
 	modules/wsdl/src/wsdl_svc.c\
@@ -240,7 +238,6 @@ module.source.files=\
 	modules/wsdl/src/wsdl_property.c\
 	modules/wsdl/src/wsdl_binding_fault.c\
 	modules/wsdl/src/wsdl_binding_msg_ref.c\
-	modules/wsdl/src/wsdl_binding_operation.c\
 	modules/wsdl/src/wsdl_msg_ref.c\
 	modules/wsdl/src/wsdl_fault_ref.c\
 	modules/core/description/src/module_desc.c\
@@ -248,7 +245,6 @@ module.source.files=\
 	modules/core/description/src/transport_out_desc.c\
 	modules/core/description/src/phase_rule.c\
 	modules/wsdl/src/wsdl_extensible_element.c\
-	modules/wsdl/src/wsdl_soap_operation.c\
 	modules/core/phaseresolver/src/phase_holder.c\
 	modules/core/phaseresolver/src/phase_resolver.c\
 	modules/core/context/src/ctx.c\
@@ -272,7 +268,6 @@ module.source.files=\
 	test/unit/core/phaseresolver/test_resolver.c\
 	modules/core/engine/src/disp.c\
 	modules/core/context/src/conf_ctx.c\
-	modules/core/context/src/operation_ctx.c\
 	modules/core/context/src/svc_ctx.c\
 	modules/core/context/src/svc_grp_ctx.c\
 	modules/core/addr/src/any_content_type.c\
@@ -297,7 +292,15 @@ module.source.files=\
 	modules/core/transport/http/src/axis2_simple_http_svr_conn.c\
 	modules/xml/om/src/axis2_om_children_iterator.c\
 	modules/xml/parser/guththila/src/guththila_xml_reader_wrapper.c\
-	modules/xml/parser/guththila/src/guththila_xml_writer_wrapper.c
+	modules/xml/parser/guththila/src/guththila_xml_writer_wrapper.c\
+	test/unit/core/description/description_test.c\
+	test/unit/core/description/test_optr.c\
+	modules/core/description/src/op.c\
+	modules/core/engine/src/conf.c\
+	modules/core/context/src/op_ctx.c\
+	modules/wsdl/src/wsdl_binding_op.c\
+	modules/wsdl/src/wsdl_op.c\
+	modules/wsdl/src/wsdl_soap_op.c
 
 module.pixmap.name=.
 module.pixmap.type=
