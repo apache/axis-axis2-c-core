@@ -49,8 +49,8 @@ typedef struct axis2_wsdl_extensible_component_ops axis2_wsdl_extensible_compone
  */
 
 /** 
- * @brief Wsdl Extensible Component operations struct
- * Encapsulator struct for operations of axis2_wsdl_extensible_component
+ * @brief Wsdl Extensible Component ops struct
+ * Encapsulator struct for ops of axis2_wsdl_extensible_component
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops
 {

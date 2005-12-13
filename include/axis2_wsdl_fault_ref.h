@@ -45,8 +45,8 @@ typedef struct axis2_wsdl_fault_ref_ops axis2_wsdl_fault_ref_ops_t;
  */
 
 /** 
- * @brief Wsdl Binding Message Reference operations struct
- * Encapsulator struct for operations of axis2_wsdl_fault_ref
+ * @brief Wsdl Binding Message Reference ops struct
+ * Encapsulator struct for ops of axis2_wsdl_fault_ref
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_fault_ref_ops
 {

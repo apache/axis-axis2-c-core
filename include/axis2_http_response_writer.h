@@ -43,8 +43,8 @@ extern "C"
 
     
 /** 
- * @brief HTTP Response Writer operations struct
- * Encapsulator struct for operations of axis2_http_response_writer
+ * @brief HTTP Response Writer ops struct
+ * Encapsulator struct for ops of axis2_http_response_writer
  */  
 AXIS2_DECLARE_DATA struct axis2_http_response_writer_ops
 {

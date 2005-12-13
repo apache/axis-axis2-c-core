@@ -48,7 +48,7 @@ axis2_status_t AXIS2_CALL axis2_disp_free (struct axis2_disp * disp,
                                             axis2_env_t **env);
 axis2_svc_t* AXIS2_CALL axis2_disp_find_svc(axis2_msg_ctx_t * msg_ctx,
                     axis2_env_t **env);
-struct axis2_operation* AXIS2_CALL axis2_disp_find_operation(axis2_msg_ctx_t * msg_ctx,
+struct axis2_op* AXIS2_CALL axis2_disp_find_op(axis2_msg_ctx_t * msg_ctx,
                                 axis2_env_t **env,
                                 struct axis2_svc *svc);
 
@@ -110,11 +110,11 @@ axis2_disp_t* AXIS2_CALL axis2_disp_create(axis2_env_t **env, axis2_qname_t *qna
     
     AXIS2_HANDLER_INIT(disp_impl->base, env, handler_desc);
     
-    /* set the base struct's invoke operation */
+    /* set the base struct's invoke op */
     if (disp_impl->base->ops) 
         disp_impl->base->ops->invoke = axis2_disp_invoke;
 
-    /* initialize operations */
+    /* initialize ops */
     disp_impl->disp.ops = NULL;
     disp_impl->disp.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_disp_ops_t) );
     if (!disp_impl->disp.ops)
@@ -129,7 +129,7 @@ axis2_disp_t* AXIS2_CALL axis2_disp_create(axis2_env_t **env, axis2_qname_t *qna
     disp_impl->disp.ops->set_qname = axis2_disp_set_qname;
     disp_impl->disp.ops->free = axis2_disp_free;
     disp_impl->disp.ops->find_svc = axis2_disp_find_svc;
-    disp_impl->disp.ops->find_operation = axis2_disp_find_operation;
+    disp_impl->disp.ops->find_op = axis2_disp_find_op;
 
     return &(disp_impl->disp);
 }
@@ -178,7 +178,7 @@ axis2_status_t AXIS2_CALL axis2_disp_invoke(struct axis2_handler *handler,
                                                 struct axis2_msg_ctx *msg_ctx)
 {
     axis2_svc_t *axis_service = NULL;
-    axis2_operation_t *operation = NULL;
+    axis2_op_t *op = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(handler, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -198,10 +198,10 @@ axis2_status_t AXIS2_CALL axis2_disp_invoke(struct axis2_handler *handler,
     axis_service = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
     if (axis_service)
     {
-        operation = AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env);
-        if (operation)
+        op = AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env);
+        if (op)
         {
-            AXIS2_MSG_CTX_SET_OPERATION(msg_ctx, env, operation);
+            AXIS2_MSG_CTX_SET_OPERATION(msg_ctx, env, op);
         }
     }
     
@@ -242,7 +242,7 @@ axis2_disp_free (struct axis2_disp * disp,
 }
     
 /** The struct that inherits from this struct
-    should implement the find_service and find_operation methods and assing the 
+    should implement the find_service and find_op methods and assing the 
     respective function pointers in the base struct.
     Here we have only the dummy implementation to gauard against erros due to 
     the failure to provide an impl version by mistake.
@@ -261,13 +261,13 @@ axis2_svc_t* AXIS2_CALL axis2_disp_find_svc(axis2_msg_ctx_t * msg_ctx,
 }
 
 /**
- * finds the operation
+ * finds the op
  *
  * @param service
  * @param msg_ctx
  * @return
  */
-struct axis2_operation* AXIS2_CALL axis2_disp_find_operation(axis2_msg_ctx_t * msg_ctx,
+struct axis2_op* AXIS2_CALL axis2_disp_find_op(axis2_msg_ctx_t * msg_ctx,
                                 axis2_env_t **env,
                                 struct axis2_svc *svc)
 {

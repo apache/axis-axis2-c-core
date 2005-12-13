@@ -99,7 +99,7 @@ axis2_om_doctype_create (axis2_env_t **env,
         AXIS2_OM_NODE_ADD_CHILD((*node), env, parent);
     }
 
-    /* operations */
+    /* ops */
     doctype->om_doctype.ops = NULL;
     doctype->om_doctype.ops = (axis2_om_doctype_ops_t *) AXIS2_MALLOC (
                                 (*env)->allocator,sizeof(axis2_om_doctype_ops_t));

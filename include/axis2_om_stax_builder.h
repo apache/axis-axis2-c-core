@@ -43,8 +43,8 @@ extern "C"
  */
 
   /** 
-    * @brief OM stax builder operations struct
-    * Encapsulator struct for operations of axis2_om_stax_builder
+    * @brief OM stax builder ops struct
+    * Encapsulator struct for ops of axis2_om_stax_builder
     */
  AXIS2_DECLARE_DATA    typedef struct axis2_om_stax_builder_ops
     {
@@ -62,16 +62,16 @@ extern "C"
         * Discards the element that is being built currently.
         * @param environment Environment. MUST NOT be NULL, .
         * @param builder pointer to stax builder struct to be used
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *discard_current_element)
                                     (struct axis2_om_stax_builder *builder,
                                      axis2_env_t **env);
         /**
-         * Free operation
+         * Free op
          * @param builder pointer to builder struct
          * @param env environment, MUST NOT be NULL
-         * @return status of the operation AXIS2_SUCCESS on success,
+         * @return status of the op AXIS2_SUCCESS on success,
          *         AXIS2_FAILURE on error.
          */
 			 
@@ -94,7 +94,7 @@ extern "C"
          * @param env environment , MUST NOT be NULL.
          * @param document pointer to document struct that needs to be associated 
          *                  with builder
-         * @return status of the operation. AXIS2_SUCCESS on success and AXIS2_FAILURE 
+         * @return status of the op. AXIS2_SUCCESS on success and AXIS2_FAILURE 
          *                  on error.
          */                                          
 
@@ -110,7 +110,7 @@ extern "C"
     */
     typedef struct axis2_om_stax_builder
     {
-        /** operations struct */
+        /** ops struct */
         axis2_om_stax_builder_ops_t *ops;
        
     }axis2_om_stax_builder_t;
@@ -131,7 +131,7 @@ extern "C"
 /** discards current node */
 #define AXIS2_OM_STAX_BUILDER_DISCARD_CURRENT_ELEMENT(builder,env) \
         ((builder)->ops->discard_current_element(builder, env))
-/** free operation of the builder */
+/** free op of the builder */
 #define AXIS2_OM_STAX_BUILDER_FREE(builder,env) \
         ((builder)->ops->free(builder,env))
 /** associate a document with a builder */       

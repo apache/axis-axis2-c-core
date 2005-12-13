@@ -42,8 +42,8 @@ typedef struct axis2_om_children_iterator axis2_om_children_iterator_t;
  */
  
    /**
-    * \brief axis2_om_children_iterator operations
-    * Encapsulator struct for operations of axis2_om_iterator
+    * \brief axis2_om_children_iterator ops
+    * Encapsulator struct for ops of axis2_om_iterator
     */
     AXIS2_DECLARE_DATA struct axis2_om_children_iterator_ops
     {
@@ -53,7 +53,7 @@ typedef struct axis2_om_children_iterator axis2_om_children_iterator_t;
                              
         /**
         * Removes from the underlying collection the last element returned by the
-        * iterator (optional operation).  This method can be called only once per
+        * iterator (optional op).  This method can be called only once per
         * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
         * the underlying collection is modified while the iteration is in
         * progress in any way other than by calling this method.

@@ -41,8 +41,8 @@ typedef struct axis2_svc_grp_ops axis2_svc_grp_ops_t;
 typedef struct axis2_svc_grp axis2_svc_grp_t;
     
 /** 
- * @brief Service group operations struct
- * Encapsulator struct for operations of axis2_svc_grp
+ * @brief Service group ops struct
+ * Encapsulator struct for ops of axis2_svc_grp
  */   
 struct axis2_svc_grp_ops
 {

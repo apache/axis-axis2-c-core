@@ -44,8 +44,8 @@ typedef struct axis2_wsdl_feature_ops axis2_wsdl_feature_ops_t;
  */
 
 /** 
- * @brief Wsdl Feature operations struct
- * Encapsulator struct for operations of axis2_wsdl_feature
+ * @brief Wsdl Feature ops struct
+ * Encapsulator struct for ops of axis2_wsdl_feature
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_feature_ops
 {

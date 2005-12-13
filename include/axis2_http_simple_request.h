@@ -46,8 +46,8 @@ extern "C"
     typedef struct axis2_http_simple_request axis2_http_simple_request_t; 
     
 /** 
- * @brief HTTP Simple Request operations struct
- * Encapsulator struct for operations of axis2_http_simple_request
+ * @brief HTTP Simple Request ops struct
+ * Encapsulator struct for ops of axis2_http_simple_request
  */  
 AXIS2_DECLARE_DATA struct axis2_http_simple_request_ops
 {

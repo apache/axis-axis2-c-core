@@ -15,7 +15,7 @@
  */
  
 #include <axis2_msg_ctx.h>
-#include <axis2_operation.h>
+#include <axis2_op.h>
 #include <axis2_svc.h>
 #include <axis2_svc_grp.h>
 #include <axis2_engine_config.h>
@@ -32,8 +32,8 @@ struct axis2_msg_ctx_impl
 	axis2_msg_ctx_t msg_ctx;
     /** base context struct */
     axis2_ctx_t *base;
-    /** parent of message context is an operation context instance */
-    struct axis2_operation_ctx *parent;
+    /** parent of message context is an op context instance */
+    struct axis2_op_ctx *parent;
     /** process fault enabled? */    
     axis2_bool_t process_fault;
     /**
@@ -44,15 +44,15 @@ struct axis2_msg_ctx_impl
      */
     axis2_msg_info_headers_t *msg_info_headers;
 
-    struct axis2_operation_ctx *operation_ctx;
+    struct axis2_op_ctx *op_ctx;
     struct axis2_svc_ctx *svc_ctx;
     struct axis2_svc_grp_ctx *svc_grp_ctx;
     struct axis2_conf_ctx *conf_ctx;
     /** session context */
     struct axis2_session_ctx *session_ctx;
     
-    /** operation */
-    axis2_operation_t *operation;
+    /** op */
+    axis2_op_t *op;
     /** service */
     axis2_svc_t *svc;
     /** service group */
@@ -104,8 +104,8 @@ struct axis2_msg_ctx_impl
     axis2_char_t *svc_grp_id;
     /** service description qname */
     axis2_qname_t *svc_qname;
-    /** operation qname */
-    axis2_qname_t *operation_qname;
+    /** op qname */
+    axis2_qname_t *op_qname;
 };
 
 #define AXIS2_INTF_TO_IMPL(msg_ctx) ((axis2_msg_ctx_impl_t *) msg_ctx)
@@ -115,13 +115,13 @@ struct axis2_msg_ctx_impl
 struct axis2_ctx* AXIS2_CALL
 axis2_msg_ctx_get_base(struct axis2_msg_ctx *msg_ctx, 
                         axis2_env_t **env);
-struct axis2_operation_ctx* AXIS2_CALL
+struct axis2_op_ctx* AXIS2_CALL
 axis2_msg_ctx_get_parent(struct axis2_msg_ctx *msg_ctx, 
                             axis2_env_t **env);
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_parent(struct axis2_msg_ctx *msg_ctx, 
                             axis2_env_t **env, 
-                            struct axis2_operation_ctx *parent);
+                            struct axis2_op_ctx *parent);
 
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_free (axis2_msg_ctx_t *msg_ctx,
@@ -270,14 +270,14 @@ axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_transport_out_desc(struct axis2_msg_ctx *msg_ctx, 
                                         axis2_env_t **env, 
                                         struct axis2_transport_out_desc *transport_out_desc); 
-struct axis2_operation_ctx* AXIS2_CALL
-axis2_msg_ctx_get_operation_ctx(struct axis2_msg_ctx *msg_ctx, 
+struct axis2_op_ctx* AXIS2_CALL
+axis2_msg_ctx_get_op_ctx(struct axis2_msg_ctx *msg_ctx, 
                                     axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_msg_ctx_set_operation_ctx(struct axis2_msg_ctx *msg_ctx, 
+axis2_msg_ctx_set_op_ctx(struct axis2_msg_ctx *msg_ctx, 
                                 axis2_env_t **env, 
-                                struct axis2_operation_ctx * operation_ctx);
+                                struct axis2_op_ctx * op_ctx);
 axis2_bool_t AXIS2_CALL
 axis2_msg_ctx_get_output_written(struct axis2_msg_ctx *msg_ctx, 
                                     axis2_env_t **env);
@@ -370,13 +370,13 @@ axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_svc_grp_ctx(struct axis2_msg_ctx *msg_ctx, 
                                 axis2_env_t **env, 
                                 struct axis2_svc_grp_ctx *svc_grp_ctx);
-axis2_operation_t* AXIS2_CALL
-axis2_msg_ctx_get_operation(struct axis2_msg_ctx *msg_ctx, 
+axis2_op_t* AXIS2_CALL
+axis2_msg_ctx_get_op(struct axis2_msg_ctx *msg_ctx, 
                                 axis2_env_t **env);
 axis2_status_t AXIS2_CALL
-axis2_msg_ctx_set_operation(struct axis2_msg_ctx *msg_ctx, 
+axis2_msg_ctx_set_op(struct axis2_msg_ctx *msg_ctx, 
                             axis2_env_t **env, 
-                            axis2_operation_t *operation);
+                            axis2_op_t *op);
 axis2_svc_t* AXIS2_CALL
 axis2_msg_ctx_get_svc(struct axis2_msg_ctx *msg_ctx, 
                         axis2_env_t **env);
@@ -405,7 +405,7 @@ axis2_msg_ctx_is_paused(axis2_msg_ctx_t *msg_ctx,
 
 axis2_svc_t* AXIS2_CALL axis2_msg_ctx_find_svc(axis2_msg_ctx_t *msg_ctx, 
                 axis2_env_t **env);
-axis2_operation_t* AXIS2_CALL axis2_msg_ctx_find_operation(axis2_msg_ctx_t *msg_ctx,
+axis2_op_t* AXIS2_CALL axis2_msg_ctx_find_op(axis2_msg_ctx_t *msg_ctx,
                             axis2_env_t **env,
                             axis2_svc_t *svc);
 
@@ -434,12 +434,12 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->base = NULL;
     msg_ctx_impl->process_fault = AXIS2_FALSE;
     /*msg_ctx_impl->msg_info_headers = NULL;*/
-    msg_ctx_impl->operation_ctx = NULL;
+    msg_ctx_impl->op_ctx = NULL;
     msg_ctx_impl->svc_ctx = NULL;
     msg_ctx_impl->svc_grp_ctx = NULL;
     msg_ctx_impl->conf_ctx = NULL;
     msg_ctx_impl->session_ctx = NULL;
-    msg_ctx_impl->operation = NULL;
+    msg_ctx_impl->op = NULL;
     msg_ctx_impl->svc = NULL;
     msg_ctx_impl->svc_grp = NULL;    
     /*msg_ctx_impl->transport_in_desc = NULL;
@@ -465,7 +465,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->transport_out_desc_qname = NULL;
     msg_ctx_impl->svc_grp_id = NULL;
     msg_ctx_impl->svc_qname = NULL;
-    msg_ctx_impl->operation_qname = NULL;
+    msg_ctx_impl->op_qname = NULL;
     
     msg_ctx_impl->base = axis2_ctx_create(env);
     if (!(msg_ctx_impl->base))
@@ -507,7 +507,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
         return NULL;
     }*/
     
-    /* initialize operations */
+    /* initialize ops */
     msg_ctx_impl->msg_ctx.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_msg_ctx_ops_t) );
     if (!msg_ctx_impl->msg_ctx.ops)
     {
@@ -577,8 +577,8 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->msg_ctx.ops->get_transport_out_desc = axis2_msg_ctx_get_transport_out_desc;
     msg_ctx_impl->msg_ctx.ops->set_transport_in_desc = axis2_msg_ctx_set_transport_in_desc;
     msg_ctx_impl->msg_ctx.ops->set_transport_out_desc = axis2_msg_ctx_set_transport_out_desc;
-    msg_ctx_impl->msg_ctx.ops->get_operation_ctx = axis2_msg_ctx_get_operation_ctx;
-    msg_ctx_impl->msg_ctx.ops->set_operation_ctx = axis2_msg_ctx_set_operation_ctx;
+    msg_ctx_impl->msg_ctx.ops->get_op_ctx = axis2_msg_ctx_get_op_ctx;
+    msg_ctx_impl->msg_ctx.ops->set_op_ctx = axis2_msg_ctx_set_op_ctx;
     msg_ctx_impl->msg_ctx.ops->get_output_written = axis2_msg_ctx_get_output_written;
     msg_ctx_impl->msg_ctx.ops->set_output_written = axis2_msg_ctx_set_output_written;
     msg_ctx_impl->msg_ctx.ops->get_svc_ctx_id = axis2_msg_ctx_get_svc_ctx_id;
@@ -605,8 +605,8 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->msg_ctx.ops->get_is_soap_11 = axis2_msg_ctx_get_is_soap_11;
     msg_ctx_impl->msg_ctx.ops->get_svc_grp_ctx = axis2_msg_ctx_get_svc_grp_ctx;
     msg_ctx_impl->msg_ctx.ops->set_svc_grp_ctx = axis2_msg_ctx_set_svc_grp_ctx;
-    msg_ctx_impl->msg_ctx.ops->get_operation = axis2_msg_ctx_get_operation;
-    msg_ctx_impl->msg_ctx.ops->set_operation = axis2_msg_ctx_set_operation;
+    msg_ctx_impl->msg_ctx.ops->get_op = axis2_msg_ctx_get_op;
+    msg_ctx_impl->msg_ctx.ops->set_op = axis2_msg_ctx_set_op;
     msg_ctx_impl->msg_ctx.ops->get_svc = axis2_msg_ctx_get_svc;
     msg_ctx_impl->msg_ctx.ops->set_svc = axis2_msg_ctx_set_svc;
     msg_ctx_impl->msg_ctx.ops->get_svc_grp = axis2_msg_ctx_get_svc_grp;
@@ -615,7 +615,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->msg_ctx.ops->set_svc_grp_ctx_id = axis2_msg_ctx_set_svc_grp_ctx_id;
     msg_ctx_impl->msg_ctx.ops->is_paused = axis2_msg_ctx_is_paused;
     msg_ctx_impl->msg_ctx.ops->find_svc = axis2_msg_ctx_find_svc;
-    msg_ctx_impl->msg_ctx.ops->find_operation = axis2_msg_ctx_find_operation;
+    msg_ctx_impl->msg_ctx.ops->find_op = axis2_msg_ctx_find_op;
     
     return &(msg_ctx_impl->msg_ctx);
 }
@@ -629,7 +629,7 @@ struct axis2_ctx* AXIS2_CALL axis2_msg_ctx_get_base(struct axis2_msg_ctx *msg_ct
 }
 
 
-struct axis2_operation_ctx * AXIS2_CALL axis2_msg_ctx_get_parent(struct axis2_msg_ctx *msg_ctx, 
+struct axis2_op_ctx * AXIS2_CALL axis2_msg_ctx_get_parent(struct axis2_msg_ctx *msg_ctx, 
                                             axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);
@@ -640,7 +640,7 @@ struct axis2_operation_ctx * AXIS2_CALL axis2_msg_ctx_get_parent(struct axis2_ms
  * @param context
  */
 axis2_status_t AXIS2_CALL axis2_msg_ctx_set_parent(struct axis2_msg_ctx *msg_ctx, 
-                                            axis2_env_t **env, struct axis2_operation_ctx *parent) 
+                                            axis2_env_t **env, struct axis2_op_ctx *parent) 
 {
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);
     
@@ -756,10 +756,10 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_init(struct axis2_msg_ctx *msg_ctx,
         /*msg_ctx_impl->svc = AXIS2_ENGINE_CONFIG_GET_SVC(engine_config, env, AXIS2_QNAME_GET_LOCALPART(msg_ctx_impl->svc_qname, env));*/
     }
     
-    if (msg_ctx_impl->operation_qname)
+    if (msg_ctx_impl->op_qname)
     {
         /*if (msg_ctx_impl->svc)
-            msg_ctx_impl->operation = AXIS2_SVC_GET_OPERATION_WITH_QNAME(msg_ctx_impl->svc, env, msg_ctx_impl->operation_qname);*/
+            msg_ctx_impl->op = AXIS2_SVC_GET_OPERATION_WITH_QNAME(msg_ctx_impl->svc, env, msg_ctx_impl->op_qname);*/
     }
     
     return AXIS2_SUCCESS;
@@ -1232,18 +1232,18 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_transport_out_desc(struct axis2_msg_
     return AXIS2_SUCCESS;
 }
 
-struct axis2_operation_ctx * AXIS2_CALL axis2_msg_ctx_get_operation_ctx(struct axis2_msg_ctx *msg_ctx, 
+struct axis2_op_ctx * AXIS2_CALL axis2_msg_ctx_get_op_ctx(struct axis2_msg_ctx *msg_ctx, 
                                             axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);
-    return AXIS2_INTF_TO_IMPL(msg_ctx)->operation_ctx;
+    return AXIS2_INTF_TO_IMPL(msg_ctx)->op_ctx;
 }
 
 /**
  * @param context
  */
-axis2_status_t AXIS2_CALL axis2_msg_ctx_set_operation_ctx(struct axis2_msg_ctx *msg_ctx, 
-                                            axis2_env_t **env, struct axis2_operation_ctx * operation_ctx) 
+axis2_status_t AXIS2_CALL axis2_msg_ctx_set_op_ctx(struct axis2_msg_ctx *msg_ctx, 
+                                            axis2_env_t **env, struct axis2_op_ctx * op_ctx) 
 {
     axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
     
@@ -1251,19 +1251,19 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_operation_ctx(struct axis2_msg_ctx *
     
     msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
     
-    if (operation_ctx)
+    if (op_ctx)
     {
-        msg_ctx_impl->operation_ctx = operation_ctx;
+        msg_ctx_impl->op_ctx = op_ctx;
         
         if (msg_ctx_impl->svc_ctx)
         {
-            /*if (!(AXIS2_OPERATION_CTX_GET_PARENT(msg_ctx_impl->operation_ctx, env)))
+            /*if (!(AXIS2_OPERATION_CTX_GET_PARENT(msg_ctx_impl->op_ctx, env)))
             {
-                AXIS2_OPERATION_CTX_SET_PARENT(msg_ctx_impl->operation_ctx, env, msg_ctx_impl->svc_ctx);
+                AXIS2_OPERATION_CTX_SET_PARENT(msg_ctx_impl->op_ctx, env, msg_ctx_impl->svc_ctx);
             }*/
         }
-        axis2_msg_ctx_set_parent(msg_ctx, env, operation_ctx);
-        /*axis2_msg_ctx_set_operation(msg_ctx, env, AXIS2_OPERATION_CTX_GET_OPRATION(operation_ctx, env));    */
+        axis2_msg_ctx_set_parent(msg_ctx, env, op_ctx);
+        /*axis2_msg_ctx_set_op(msg_ctx, env, AXIS2_OPERATION_CTX_GET_OPRATION(op_ctx, env));    */
     }
     return AXIS2_SUCCESS;
 }
@@ -1382,10 +1382,10 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_svc_ctx(struct axis2_msg_ctx *msg_ct
     {
         msg_ctx_impl->svc_ctx = svc_ctx;
         
-        if(msg_ctx_impl->operation_ctx)
+        if(msg_ctx_impl->op_ctx)
         {
-            /*if (!AXIS2_OPERATION_CTX_GET_PARENT(msg_ctx_impl->operation_ctx, env))
-                AXIS2_OPERATION_CTX_SET_PARENT(msg_ctx_impl->operation_ctx, env, svc_ctx);*/
+            /*if (!AXIS2_OPERATION_CTX_GET_PARENT(msg_ctx_impl->op_ctx, env))
+                AXIS2_OPERATION_CTX_SET_PARENT(msg_ctx_impl->op_ctx, env, svc_ctx);*/
         }
         /*set_svc(msg_ctx, env, AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);*/
     }
@@ -1414,8 +1414,8 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_svc_ctx(struct axis2_msg_ctx *msg_ct
 /**
  * To retrive configuration descriptor parameters , it is posible to AXIS2_CALL axis2_msg_ctx_get paramater specify at
  * any levle via this method , and the preferance is as follows,
- * 1. Search in operation description if its there
- * 2. if the paramter not found or operation_ctx is null will search in
+ * 1. Search in op description if its there
+ * 2. if the paramter not found or op_ctx is null will search in
  * _svc
  * 3. If the svc is null or , the paramter does not found will serach in
  * AxisConfiguration
@@ -1433,9 +1433,9 @@ axis2_param_t *AXIS2_CALL axis2_msg_ctx_get_parameter(struct axis2_msg_ctx *msg_
     
     msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
     
-    if (msg_ctx_impl->operation) 
+    if (msg_ctx_impl->op) 
     {
-        /*param = AXIS2_OPERATION_GET_PARAM(msg_ctx_impl->operation, env, key);*/
+        /*param = AXIS2_OPERATION_GET_PARAM(msg_ctx_impl->op, env, key);*/
         if (param)
         {
             return param;
@@ -1473,8 +1473,8 @@ axis2_param_t *AXIS2_CALL axis2_msg_ctx_get_parameter(struct axis2_msg_ctx *msg_
 /**
  * This method is to retrive both module configuration parameters and othere paramerts
  * The searching procedure is as follows;
- * 1. Search in module configurations inside corresponding operation descripton if its three
- * 2. Search in corresponding operation if its there
+ * 1. Search in module configurations inside corresponding op descripton if its three
+ * 2. Search in corresponding op if its there
  * 3. Search in module configurations inside corresponding service description if its there
  * 4. Next search in Corresponding Service description if its there
  * 5. Next sercah in module configurations inside engine_config
@@ -1511,9 +1511,9 @@ axis2_param_t * AXIS2_CALL axis2_msg_ctx_get_module_parameter(struct axis2_msg_c
     
     qname = axis2_qname_create(env, module_name, NULL, NULL);
     
-    if (msg_ctx_impl->operation)
+    if (msg_ctx_impl->op)
     {
-        /*module_config = AXIS2_OPERATION_GET_MODULE_CONFIG(msg_ctx_impl->operation, env, qname);*/
+        /*module_config = AXIS2_OPERATION_GET_MODULE_CONFIG(msg_ctx_impl->op, env, qname);*/
         AXIS2_QNAME_FREE(qname, env);
         /*if (module_config) 
         {
@@ -1524,7 +1524,7 @@ axis2_param_t * AXIS2_CALL axis2_msg_ctx_get_module_parameter(struct axis2_msg_c
             } 
             else 
             {
-                param = AXIS2_OPERATION_GET_PARAM(msg_ctx_impl->operation, env, key);
+                param = AXIS2_OPERATION_GET_PARAM(msg_ctx_impl->op, env, key);
                 if (param)
                 {
                     return param;
@@ -1627,7 +1627,7 @@ axis2_param_t * AXIS2_CALL axis2_msg_ctx_get_module_parameter(struct axis2_msg_c
 
 /**
  * To acess any property AXIS2_CALL axis2_msg_ctx_set at the run time , a handler can add property to wherever he wants
- * to MesageContext , to struct axis2_operation_ctx * , to struct axis2_svc_ctx *and to ConfigurationContext.
+ * to MesageContext , to struct axis2_op_ctx * , to struct axis2_svc_ctx *and to ConfigurationContext.
  * This method is to retrive those properties NOT paramters
  *
  * @param key        : property Name
@@ -1646,8 +1646,8 @@ void* AXIS2_CALL axis2_msg_ctx_get_property(struct axis2_msg_ctx *msg_ctx,
     //The context hirachy might not have constructed fully, the check should
     //look for the disconnected grandparents
     // Search in Operation Context
-    if (operation_ctx != null ) {
-        obj = operation_ctxgetProperty(key, persistent);
+    if (op_ctx != null ) {
+        obj = op_ctxgetProperty(key, persistent);
         if(obj !=null){
             return obj;
         }
@@ -1853,22 +1853,22 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_svc_grp_ctx(struct axis2_msg_ctx *ms
     return AXIS2_SUCCESS;
 }
 
-axis2_operation_t *AXIS2_CALL axis2_msg_ctx_get_operation(struct axis2_msg_ctx *msg_ctx, 
+axis2_op_t *AXIS2_CALL axis2_msg_ctx_get_op(struct axis2_msg_ctx *msg_ctx, 
                                             axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);
-    return AXIS2_INTF_TO_IMPL(msg_ctx)->operation;
+    return AXIS2_INTF_TO_IMPL(msg_ctx)->op;
 }
 
-axis2_status_t AXIS2_CALL axis2_msg_ctx_set_operation(struct axis2_msg_ctx *msg_ctx, 
-                                            axis2_env_t **env, axis2_operation_t *operation) 
+axis2_status_t AXIS2_CALL axis2_msg_ctx_set_op(struct axis2_msg_ctx *msg_ctx, 
+                                            axis2_env_t **env, axis2_op_t *op) 
 {
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);
     
-    if (operation)
+    if (op)
     {
-        AXIS2_INTF_TO_IMPL(msg_ctx)->operation = operation;
-        AXIS2_INTF_TO_IMPL(msg_ctx)->operation_qname = AXIS2_OPERATION_GET_NAME(operation, env);
+        AXIS2_INTF_TO_IMPL(msg_ctx)->op = op;
+        AXIS2_INTF_TO_IMPL(msg_ctx)->op_qname = AXIS2_OPERATION_GET_NAME(op, env);
     }
     
     return AXIS2_SUCCESS;
@@ -1962,7 +1962,7 @@ axis2_msg_ctx_is_paused(axis2_msg_ctx_t *msg_ctx,
 /** TODO: there are many block to be uncommented once external depandancies are resoled,
     that is when thos structs are implemented */
 
-/** find_svc and find_operation methods has to implemented by the dispatchers and
+/** find_svc and find_op methods has to implemented by the dispatchers and
     the function pointers assigined to the ops of message context.
     The following are just dummy implemntations.
 */
@@ -1972,7 +1972,7 @@ axis2_svc_t* AXIS2_CALL axis2_msg_ctx_find_svc(axis2_msg_ctx_t *msg_ctx,
     return NULL;
 }
 
-axis2_operation_t* AXIS2_CALL axis2_msg_ctx_find_operation(axis2_msg_ctx_t *msg_ctx,
+axis2_op_t* AXIS2_CALL axis2_msg_ctx_find_op(axis2_msg_ctx_t *msg_ctx,
                             axis2_env_t **env,
                             axis2_svc_t *svc)
 {

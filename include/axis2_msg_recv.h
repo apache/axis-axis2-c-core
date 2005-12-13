@@ -40,8 +40,8 @@ typedef struct axis2_msg_recv axis2_msg_recv_t;
 typedef struct axis2_msg_recv_ops axis2_msg_recv_ops_t;
 
 /** 
- * @brief Message Receiver operations struct
- * Encapsulator struct for operations of axis2_msg_recv
+ * @brief Message Receiver ops struct
+ * Encapsulator struct for ops of axis2_msg_recv
  */     
 struct axis2_msg_recv_ops
 {

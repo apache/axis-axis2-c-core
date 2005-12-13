@@ -56,7 +56,7 @@ AXIS2_DECLARE_DATA typedef struct entry_s
 } entry_t; /* struct entry */
 
 /**
-*   \brief Linked List operations struct
+*   \brief Linked List ops struct
 */
 AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
 {
@@ -309,7 +309,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
  
 struct axis2_linked_list_s
 {
-    /** Linked List related operations */
+    /** Linked List related ops */
     axis2_linked_list_ops_t *ops;
 };
 

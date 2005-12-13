@@ -32,7 +32,7 @@ typedef struct axis2_module_desc_impl
      * To store module opeartions , which are suppose to be added to a service 
      * if it is engaged to a service
      */
-    axis2_hash_t *operations;
+    axis2_hash_t *ops;
 
 } axis2_module_desc_impl_t;
 
@@ -90,12 +90,12 @@ axis2_module_desc_set_name (axis2_module_desc_t *module_desc,
                                 axis2_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_add_operation (axis2_module_desc_t *module_desc,
+axis2_module_desc_add_op (axis2_module_desc_t *module_desc,
                                     axis2_env_t **env,
-                                    axis2_operation_t *operation);
+                                    axis2_op_t *op);
 
 axis2_hash_t * AXIS2_CALL
-axis2_module_desc_get_operations (axis2_module_desc_t *module_desc,
+axis2_module_desc_get_ops (axis2_module_desc_t *module_desc,
                                     axis2_env_t **env);
 
 axis2_engine_config_t * AXIS2_CALL
@@ -148,7 +148,7 @@ axis2_module_desc_create (axis2_env_t **env)
     module_desc_impl->parent = NULL;	
     module_desc_impl->module_desc.params = NULL;
     module_desc_impl->module_desc.flow_container = NULL;
-    module_desc_impl->operations = NULL;
+    module_desc_impl->ops = NULL;
     
     module_desc_impl->module_desc.params = axis2_param_container_create(env);
     if(NULL == module_desc_impl->module_desc.params)
@@ -166,8 +166,8 @@ axis2_module_desc_create (axis2_env_t **env)
         return NULL;
     }
     
-    module_desc_impl->operations = axis2_hash_make(env);
-    if(NULL == module_desc_impl->operations)
+    module_desc_impl->ops = axis2_hash_make(env);
+    if(NULL == module_desc_impl->ops)
     {
         axis2_module_desc_free(&(module_desc_impl->module_desc), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
@@ -204,11 +204,11 @@ axis2_module_desc_create (axis2_env_t **env)
     module_desc_impl->module_desc.ops->get_name = axis2_module_desc_get_name;
     module_desc_impl->module_desc.ops->set_name = axis2_module_desc_set_name;
     
-    module_desc_impl->module_desc.ops->add_operation = 
-            axis2_module_desc_add_operation;
+    module_desc_impl->module_desc.ops->add_op = 
+            axis2_module_desc_add_op;
     
-    module_desc_impl->module_desc.ops->get_operations = 
-            axis2_module_desc_get_operations;
+    module_desc_impl->module_desc.ops->get_ops = 
+            axis2_module_desc_get_ops;
     
     module_desc_impl->module_desc.ops->get_parent = axis2_module_desc_get_parent;
     module_desc_impl->module_desc.ops->set_parent = axis2_module_desc_set_parent;
@@ -239,7 +239,7 @@ axis2_module_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qname)
 }
 
 
-/*************************** Start of operation impls *************************/
+/*************************** Start of op impls *************************/
 
 axis2_status_t AXIS2_CALL
 axis2_module_desc_free(axis2_module_desc_t *module_desc,
@@ -274,25 +274,25 @@ axis2_module_desc_free(axis2_module_desc_t *module_desc,
         module_desc_impl->qname = NULL;
     }
     
-    if(NULL != module_desc_impl->operations)
+    if(NULL != module_desc_impl->ops)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first (module_desc_impl->operations, env); hi;
+        for (hi = axis2_hash_first (module_desc_impl->ops, env); hi;
                  hi = axis2_hash_next ( env, hi))
         {
-            struct axis2_operation *operation = NULL;
+            struct axis2_op *op = NULL;
             axis2_hash_this (hi, NULL, NULL, &val);
-            operation = (struct axis2_operation *) val;
-            if (operation)
-                AXIS2_OPERATION_FREE (operation, env);
+            op = (struct axis2_op *) val;
+            if (op)
+                AXIS2_OPERATION_FREE (op, env);
             
             val = NULL;
-            operation = NULL;
+            op = NULL;
                
         }
-        axis2_hash_free(module_desc_impl->operations, env);
-        module_desc_impl->operations = NULL;
+        axis2_hash_free(module_desc_impl->ops, env);
+        module_desc_impl->ops = NULL;
     }
     
     if(module_desc_impl)
@@ -417,40 +417,40 @@ axis2_module_desc_set_name (axis2_module_desc_t *module_desc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_add_operation (axis2_module_desc_t *module_desc,
+axis2_module_desc_add_op (axis2_module_desc_t *module_desc,
                                     axis2_env_t **env,
-                                    axis2_operation_t *operation)
+                                    axis2_op_t *op)
 {
     axis2_module_desc_impl_t *module_desc_impl = NULL;
     axis2_qname_t *optr_name = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(module_desc, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, operation, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
     
     module_desc_impl = AXIS2_INTF_TO_IMPL(module_desc);
-    if (NULL == (module_desc_impl->operations))
+    if (NULL == (module_desc_impl->ops))
 	{                    
-		module_desc_impl->operations = axis2_hash_make (env);
+		module_desc_impl->ops = axis2_hash_make (env);
 	}	
     
-    optr_name = AXIS2_OPERATION_GET_NAME(operation, env);
+    optr_name = AXIS2_OPERATION_GET_NAME(op, env);
     if(NULL == optr_name)
     {
         return AXIS2_FAILURE;
     }
     
-    axis2_hash_set(module_desc_impl->operations, optr_name, sizeof(axis2_qname_t), 
-        operation);
+    axis2_hash_set(module_desc_impl->ops, optr_name, sizeof(axis2_qname_t), 
+        op);
     
     return AXIS2_SUCCESS;
 }
 
 axis2_hash_t * AXIS2_CALL
-axis2_module_desc_get_operations (axis2_module_desc_t *module_desc,
+axis2_module_desc_get_ops (axis2_module_desc_t *module_desc,
                                     axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(module_desc, env, NULL);
-    return AXIS2_INTF_TO_IMPL(module_desc)->operations;
+    return AXIS2_INTF_TO_IMPL(module_desc)->ops;
 }
 
 axis2_engine_config_t * AXIS2_CALL

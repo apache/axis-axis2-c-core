@@ -521,7 +521,7 @@ axis2_engine_config_create (axis2_env_t **env)
 	return &(config_impl->engine_config);	
 }	
 
-/**********************Start of operation impls********************************/
+/**********************Start of op impls********************************/
 
 axis2_status_t AXIS2_CALL 
 axis2_engine_config_free (axis2_engine_config_t *engine_config, 

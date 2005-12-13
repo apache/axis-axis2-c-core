@@ -20,7 +20,7 @@
 
 /**
  * There is only one engine for the Server and the Client. the send() and receive()
- * Methods are the basic operations the Sync, Async messageing are build on top.
+ * Methods are the basic ops the Sync, Async messageing are build on top.
  */
 
 
@@ -75,7 +75,7 @@ axis2_engine_t* AXIS2_CALL axis2_engine_create(axis2_env_t **env, axis2_conf_ctx
         engine_impl->conf_ctx =  conf_ctx;
     }
     
-    /* initialize operations */
+    /* initialize ops */
     engine_impl->engine.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_engine_ops_t) );
     if (!engine_impl->engine.ops)
     {
@@ -138,7 +138,7 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
 {
     axis2_engine_impl_t *engine_impl = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
-    axis2_operation_ctx_t *operation_ctx = NULL;
+    axis2_op_ctx_t *op_ctx = NULL;
     axis2_array_list_t *phases = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(engine, env, AXIS2_FAILURE);
@@ -151,10 +151,10 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
         return status;
 
     /* find and invoke the phases */
-    operation_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);    
-    if (operation_ctx)
+    op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);    
+    if (op_ctx)
     {
-        axis2_operation_t *op = AXIS2_OPERATION_CTX_GET_OPERATION(operation_ctx, env);
+        axis2_op_t *op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);
         if (op)
         {
             phases = AXIS2_OPERATION_GET_PHASES_OUTFLOW(op, env);
@@ -230,10 +230,10 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
     axis2_engine_impl_t *engine_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_engine_config_t *engine_config = NULL;
-    axis2_operation_ctx_t *operation_ctx = NULL;
-    axis2_operation_t *operation = NULL;
+    axis2_op_ctx_t *op_ctx = NULL;
+    axis2_op_t *op = NULL;
     axis2_array_list_t *pre_calculated_phases = NULL;
-    axis2_array_list_t *operation_specific_phases = NULL;
+    axis2_array_list_t *op_specific_phases = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(engine, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -258,13 +258,13 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
         }
         
         axis2_engine_verify_ctx_built(engine, env, msg_ctx);
-        /* resume operation specific phases */
-        operation_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
-        if (operation_ctx)
+        /* resume op specific phases */
+        op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
+        if (op_ctx)
         {
-            operation = AXIS2_OPERATION_CTX_GET_OPERATION(operation_ctx, env);
-            operation_specific_phases = AXIS2_OPERATION_GET_REMAINING_PHASES_INFLOW(operation, env);
-            axis2_engine_resume_invocation_phases(engine, env, operation_specific_phases, msg_ctx);
+            op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);
+            op_specific_phases = AXIS2_OPERATION_GET_REMAINING_PHASES_INFLOW(op, env);
+            axis2_engine_resume_invocation_phases(engine, env, op_specific_phases, msg_ctx);
             if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
             {
                 return AXIS2_SUCCESS;
@@ -280,12 +280,12 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
         }
 
         axis2_engine_verify_ctx_built(engine, env, msg_ctx);   /* TODO : Chinthaka remove me. I'm redundant */
-        operation_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
-        if (operation_ctx)
+        op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
+        if (op_ctx)
         {
-            operation = AXIS2_OPERATION_CTX_GET_OPERATION(operation_ctx, env);
-            operation_specific_phases = AXIS2_OPERATION_GET_REMAINING_PHASES_INFLOW(operation, env);
-            axis2_engine_invoke_phases(engine, env, operation_specific_phases, msg_ctx);
+            op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);
+            op_specific_phases = AXIS2_OPERATION_GET_REMAINING_PHASES_INFLOW(op, env);
+            axis2_engine_invoke_phases(engine, env, op_specific_phases, msg_ctx);
             if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
             {
                 return AXIS2_SUCCESS;
@@ -296,7 +296,7 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
     if ( (AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env)) && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))) 
     {
         /* invoke the Message Receivers */
-        axis2_msg_recv_t *receiver = AXIS2_OPERATION_GET_MSG_RECEIVER(operation, env);
+        axis2_msg_recv_t *receiver = AXIS2_OPERATION_GET_MSG_RECEIVER(op, env);
         AXIS2_MSG_RECV_RECEIVE(receiver, env, msg_ctx);        
     }
     return AXIS2_SUCCESS;
@@ -310,18 +310,18 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
  */
 axis2_status_t AXIS2_CALL axis2_engine_send_fault(struct axis2_engine *engine, axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
 {
-    axis2_operation_ctx_t *operation_ctx = NULL;
+    axis2_op_ctx_t *op_ctx = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(engine, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 
-    operation_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
+    op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
     
     /* find and execute the Fault Out Flow Handlers */
-    if (operation_ctx) 
+    if (op_ctx) 
     {
-        axis2_operation_t *operation = AXIS2_OPERATION_CTX_GET_OPERATION(operation_ctx, env);        
-        axis2_array_list_t *phases = AXIS2_OPERATION_GET_PHASES_OUTFLOW(operation, env);
+        axis2_op_t *op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);        
+        axis2_array_list_t *phases = AXIS2_OPERATION_GET_PHASES_OUTFLOW(op, env);
         
         if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
         {
@@ -332,7 +332,7 @@ axis2_status_t AXIS2_CALL axis2_engine_send_fault(struct axis2_engine *engine, a
             axis2_engine_invoke_phases(engine, env, phases, msg_ctx);
         }
     }
-    /* it is possible that operation context is NULL as the error occered before the
+    /* it is possible that op context is NULL as the error occered before the
     dispatcher. We do not run Handlers in that case */
 
     if (!(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))) 
@@ -354,16 +354,16 @@ axis2_status_t AXIS2_CALL axis2_engine_send_fault(struct axis2_engine *engine, a
  */
 axis2_status_t AXIS2_CALL axis2_engine_receive_fault(struct axis2_engine *engine, axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
 {
-    axis2_operation_ctx_t *operation_ctx = NULL;
+    axis2_op_ctx_t *op_ctx = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(engine, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
     
-    operation_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
+    op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
     
-    if (!operation_ctx) 
+    if (!op_ctx) 
     {
-        /* if we do not have an operation context that means this may be an incoming
+        /* if we do not have an op context that means this may be an incoming
            dual channel response. So try to dispatch the service */
         axis2_conf_ctx_t *conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
@@ -388,12 +388,12 @@ axis2_status_t AXIS2_CALL axis2_engine_receive_fault(struct axis2_engine *engine
         }
     }
     
-    operation_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
+    op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
     /* find and execute the fault in flow handlers */
-    if (operation_ctx) 
+    if (op_ctx) 
     {
-        axis2_operation_t *operation = AXIS2_OPERATION_CTX_GET_OPERATION(operation_ctx, env);
-        axis2_array_list_t *phases = AXIS2_OPERATION_GET_PHASES_IN_FAULT_FLOW(operation, env);
+        axis2_op_t *op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);
+        axis2_array_list_t *phases = AXIS2_OPERATION_GET_PHASES_IN_FAULT_FLOW(op, env);
         if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)) 
         {
             axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);

@@ -54,8 +54,8 @@ typedef struct axis2_wsdl_svc axis2_wsdl_svc_t;
 #define STYLE_DOC  "doc"
 #define STYLE_MSG  "msg"
 /** 
- * @brief Wsdl Service operations struct
- * Encapsulator struct for operations of axis2_wsdl_service
+ * @brief Wsdl Service ops struct
+ * Encapsulator struct for ops of axis2_wsdl_service
  */
 struct axis2_wsdl_svc_ops
 {

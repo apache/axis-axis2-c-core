@@ -106,7 +106,7 @@ axis2_endpoint_ref_t* AXIS2_CALL axis2_endpoint_ref_create(axis2_env_t **env, ax
         }
     }
     
-    /* initialize operations */
+    /* initialize ops */
     endpoint_ref_impl->endpoint_ref.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_endpoint_ref_ops_t) );
     if (!endpoint_ref_impl->endpoint_ref.ops)
     {

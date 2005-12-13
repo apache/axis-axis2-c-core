@@ -108,7 +108,7 @@ axis2_param_create(axis2_env_t **env,
     param_impl->type = AXIS2_TEXT_PARAM;
     param_impl->param_element = NULL;
     
-    /* initialize operations */
+    /* initialize ops */
     param_impl->param.ops->get_name = axis2_param_get_name;
     param_impl->param.ops->get_value = axis2_param_get_value;
     param_impl->param.ops->set_name = axis2_param_set_name; 

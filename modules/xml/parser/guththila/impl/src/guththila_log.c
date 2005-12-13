@@ -34,7 +34,7 @@ guththila_log_free(guththila_log_t *log)
 
 GUTHTHILA_DECLARE (guththila_log_t *)
 guththila_log_create (guththila_allocator_t * allocator,
-                      guththila_log_ops_t * operations)
+                      guththila_log_ops_t * ops)
 {
     guththila_log_t *log;
     if (!allocator)
@@ -47,8 +47,8 @@ guththila_log_create (guththila_allocator_t * allocator,
     if (!log)
         return NULL;
 
-    if (operations)
-        log->ops = operations;
+    if (ops)
+        log->ops = ops;
     else
     {
         log->ops =

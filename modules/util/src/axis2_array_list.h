@@ -42,7 +42,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
  */
 
    /**
-    *   \brief Array List operations struct
+    *   \brief Array List ops struct
     */
     AXIS2_DECLARE_DATA typedef struct axis2_array_list_ops
     {
@@ -177,7 +177,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
      
     typedef struct axis2_array_list
     {
-        /** Handler Description related operations */
+        /** Handler Description related ops */
         axis2_array_list_ops_t *ops;
     } axis2_array_list_t;
 

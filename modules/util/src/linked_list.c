@@ -40,7 +40,7 @@ typedef struct axis2_linked_list_impl
     * are ones which change the list size or affect how iterations would
     * behave. This field is available for use by Iterator and ListIterator,
     * in order to throw a {@link ConcurrentModificationException} in response
-    * to the next operation on the iterator. This <i>fail-fast</i> behavior
+    * to the next op on the iterator. This <i>fail-fast</i> behavior
     * saves the user from many subtle bugs otherwise possible from concurrent
     * modification during iteration.
     * <p>
@@ -204,7 +204,7 @@ axis2_linked_list_create(axis2_env_t **env)
         return NULL;        
     }
     
-    /* initialize operations */
+    /* initialize ops */
     linked_list_impl->linked_list.ops = NULL;
     linked_list_impl->linked_list.ops  = AXIS2_MALLOC( (*env)->allocator, 
         sizeof(axis2_linked_list_ops_t) );

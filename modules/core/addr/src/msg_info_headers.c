@@ -125,7 +125,7 @@ axis2_msg_info_headers_t* AXIS2_CALL axis2_msg_info_headers_create(axis2_env_t *
         }
     }
     
-    /* initialize operations */
+    /* initialize ops */
     msg_info_headers_impl->msg_info_headers.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_msg_info_headers_ops_t) );
     if (!msg_info_headers_impl->msg_info_headers.ops)
     {

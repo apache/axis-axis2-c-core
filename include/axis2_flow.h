@@ -47,8 +47,8 @@ typedef struct axis2_flow axis2_flow_t;
   */
 
 /** 
- * @brief Flow operations struct
- * Encapsulator struct for operations of axis2_flow
+ * @brief Flow ops struct
+ * Encapsulator struct for ops of axis2_flow
  */
 struct axis2_flow_ops
 {

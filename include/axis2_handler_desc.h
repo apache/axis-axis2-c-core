@@ -44,7 +44,7 @@ extern "C"
  */
 
 /**
- *   \brief Handler Description operations struct
+ *   \brief Handler Description ops struct
  */
  AXIS2_DECLARE_DATA   typedef struct axis2_handler_desc_ops
     { 
@@ -91,7 +91,7 @@ extern "C"
     */
     typedef struct axis2_handler_desc
     {
-        /** Handler Description related operations */
+        /** Handler Description related ops */
         axis2_handler_desc_ops_t *ops;
     } axis2_handler_desc_t;
 

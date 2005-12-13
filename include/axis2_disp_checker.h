@@ -41,7 +41,7 @@ extern "C"
  */
 
 /**
- *   \brief Dispatcher operations struct
+ *   \brief Dispatcher ops struct
  */
  AXIS2_DECLARE_DATA   typedef struct axis2_disp_checker_ops
     { 
@@ -61,7 +61,7 @@ extern "C"
     */
     typedef struct axis2_disp_checker
     {
-        /** Dispatcher related operations */
+        /** Dispatcher related ops */
         axis2_disp_checker_ops_t *ops;
     } axis2_disp_checker_t;
 

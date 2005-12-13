@@ -47,8 +47,8 @@ typedef struct axis2_wsdl_endpoint_ops axis2_wsdl_endpoint_ops_t;
  */
 
 /** 
- * @brief Wsdl End point operations struct
- * Encapsulator struct for operations of axis2_wsdl_endpoint
+ * @brief Wsdl End point ops struct
+ * Encapsulator struct for ops of axis2_wsdl_endpoint
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_endpoint_ops
 {

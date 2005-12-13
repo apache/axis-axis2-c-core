@@ -40,7 +40,7 @@ extern "C"
     * @return pointer to the newly created log struct 
     */
     AXIS2_DECLARE(axis2_log_t *) axis2_log_create (axis2_allocator_t * allocator,
-                                   axis2_log_ops_t * operations);
+                                   axis2_log_ops_t * ops);
 
 /** @} */
     

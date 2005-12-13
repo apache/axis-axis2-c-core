@@ -95,14 +95,14 @@ extern "C"
   *  @{
  */
 
-typedef enum axis2_operation_type
+typedef enum axis2_op_type
 {
-    /** axis2_wsdl_operation */
+    /** axis2_wsdl_op */
     AXIS2_WSDL_OPERATION = 0,
-    /** axis2_operation */
+    /** axis2_op */
     AXIS2_OPERATION
     
-}axis2_operation_type_t;
+}axis2_op_type_t;
 
 typedef enum axis2_svc_type
 {
@@ -191,7 +191,7 @@ typedef enum axis2_svc_type
 
 /* static const axis2_char_t * LISTSERVICES = "listServices"; */
 
-/* static const axis2_char_t * LIST_SERVICE_FOR_MODULE_ENGAMNET = "listoperation"; */
+/* static const axis2_char_t * LIST_SERVICE_FOR_MODULE_ENGAMNET = "listop"; */
 
 
 /**
@@ -232,7 +232,7 @@ typedef enum axis2_svc_type
 
 /* static const axis2_char_t * SERVICE = "service"; */
 
-/* static const axis2_char_t * OPEARTION_MAP = "operationmap"; */
+/* static const axis2_char_t * OPEARTION_MAP = "opmap"; */
 /**
  * Field Available modules
  */
@@ -307,7 +307,7 @@ typedef enum axis2_svc_type
 
 /*************************** REST_WITH_GET ************************************/
 
-/* static const axis2_char_t * GET_PARAMETER_OPERATION = "operation"; */
+/* static const axis2_char_t * GET_PARAMETER_OPERATION = "op"; */
 /* static const axis2_char_t * GET_PARAMETER_URL = "http://ws.apache.org/goGetWithREST"; */
 
 /******************************************************************************/

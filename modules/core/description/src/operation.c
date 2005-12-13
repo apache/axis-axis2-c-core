@@ -14,15 +14,15 @@
  * limitations under the License.
  */
  
-#include <axis2_operation.h>
+#include <axis2_op.h>
 
 /** 
  * @brief Operaton struct impl
  *	Axis2 Operations  
  */ 
-typedef struct axis2_operation_impl
+typedef struct axis2_op_impl
 {
-	axis2_operation_t operation;
+	axis2_op_t op;
     
 	struct axis2_svc *parent;
 	struct axis2_msg_recv *msg_recv;
@@ -35,486 +35,486 @@ typedef struct axis2_operation_impl
     /*To store deploytime module refs */
     axis2_array_list_t *modulerefs;
     
-} axis2_operation_impl_t;
+} axis2_op_impl_t;
 
-#define AXIS2_INTF_TO_IMPL(operation) ((axis2_operation_impl_t *)operation)
+#define AXIS2_INTF_TO_IMPL(op) ((axis2_op_impl_t *)op)
 	
 /*************************** Function headers *********************************/
 
 axis2_status_t AXIS2_CALL
-axis2_operation_free (axis2_operation_t *operation, 
+axis2_op_free (axis2_op_t *op, 
                         axis2_env_t **env);	
 
 axis2_status_t AXIS2_CALL 
-axis2_operation_add_param (axis2_operation_t *operation, 
+axis2_op_add_param (axis2_op_t *op, 
                             axis2_env_t **env,
                             axis2_param_t *param);
 
 axis2_param_t * AXIS2_CALL
-axis2_operation_get_param (axis2_operation_t *operation, 
+axis2_op_get_param (axis2_op_t *op, 
                             axis2_env_t **env,
                             axis2_char_t *name);
 
 axis2_array_list_t * AXIS2_CALL
-axis2_operation_get_params (axis2_operation_t *operation, 
+axis2_op_get_params (axis2_op_t *op, 
                                 axis2_env_t **env);
 
 axis2_bool_t AXIS2_CALL
-axis2_operation_is_param_locked(axis2_operation_t *operation, 
+axis2_op_is_param_locked(axis2_op_t *op, 
                                     axis2_env_t **env
     ,                               axis2_char_t *param_name);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_parent (axis2_operation_t *operation, 
+axis2_op_set_parent (axis2_op_t *op, 
                                 axis2_env_t **env,
                                 axis2_svc_t *svc);
 
 axis2_svc_t * AXIS2_CALL
-axis2_operation_get_parent (axis2_operation_t *operation, 
+axis2_op_get_parent (axis2_op_t *op, 
                                 axis2_env_t **env);
 		
 axis2_status_t AXIS2_CALL
-axis2_operation_set_msg_recv (axis2_operation_t *operation, 
+axis2_op_set_msg_recv (axis2_op_t *op, 
                                 axis2_env_t **env,
                                 struct axis2_msg_recv *msg_recv);
 
 struct axis2_msg_recv * AXIS2_CALL
-axis2_operation_get_msg_recv (axis2_operation_t *operation, 
+axis2_op_get_msg_recv (axis2_op_t *op, 
                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_name (axis2_operation_t *operation, 
+axis2_op_set_name (axis2_op_t *op, 
                             axis2_env_t **env,
                             axis2_qname_t *qname);
                             
 axis2_qname_t * AXIS2_CALL
-axis2_operation_get_name (axis2_operation_t *operation, 
+axis2_op_get_name (axis2_op_t *op, 
                             axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_msg_exchange_pattern (axis2_operation_t *operation, 
+axis2_op_set_msg_exchange_pattern (axis2_op_t *op, 
                                             axis2_env_t **env,
                                             const axis2_char_t *pattern);
 		
 axis2_char_t * AXIS2_CALL
-axis2_operation_get_msg_exchange_pattern (axis2_operation_t *operation, 
+axis2_op_get_msg_exchange_pattern (axis2_op_t *op, 
                                             axis2_env_t **env);
 
 axis2_char_t * AXIS2_CALL
-axis2_operation_get_style (axis2_operation_t *operation,
+axis2_op_get_style (axis2_op_t *op,
                             axis2_env_t **env);
 
 axis2_status_t  AXIS2_CALL
-axis2_operation_set_style (axis2_operation_t *operation,
+axis2_op_set_style (axis2_op_t *op,
                             axis2_env_t **env,
                             axis2_char_t *style);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_engage_module(axis2_operation_t *operation,
+axis2_op_engage_module(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_module_desc_t *moduleref);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_add_to_engage_module_list(axis2_operation_t *operation,
+axis2_op_add_to_engage_module_list(axis2_op_t *op,
                                             axis2_env_t **env,
                                             axis2_module_desc_t *module_name);
 
 axis2_array_list_t *AXIS2_CALL
-axis2_operation_get_modules(axis2_operation_t *operation,
+axis2_op_get_modules(axis2_op_t *op,
                                 axis2_env_t **env);
 
 int AXIS2_CALL
-axis2_operation_get_axis_specific_MEP_constant(axis2_operation_t *operation,
+axis2_op_get_axis_specific_MEP_constant(axis2_op_t *op,
                                                 axis2_env_t **env);
 
 axis2_array_list_t *AXIS2_CALL
-axis2_operation_get_phases_in_fault_flow(axis2_operation_t *operation,
+axis2_op_get_phases_in_fault_flow(axis2_op_t *op,
                                             axis2_env_t **env);
 
 
 axis2_array_list_t *AXIS2_CALL
-axis2_operation_get_phases_out_fault_flow(axis2_operation_t *operation,
+axis2_op_get_phases_out_fault_flow(axis2_op_t *op,
                                             axis2_env_t **env);
 
 axis2_array_list_t * AXIS2_CALL
-axis2_operation_get_phases_outflow(axis2_operation_t *operation,
+axis2_op_get_phases_outflow(axis2_op_t *op,
                                         axis2_env_t **env);
 
 
 axis2_array_list_t *AXIS2_CALL
-axis2_operation_get_remaining_phases_inflow(axis2_operation_t *operation,
+axis2_op_get_remaining_phases_inflow(axis2_op_t *op,
                                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_phases_in_fault_flow(axis2_operation_t *operation,
+axis2_op_set_phases_in_fault_flow(axis2_op_t *op,
                                             axis2_env_t **env,
                                             axis2_array_list_t *list);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_phases_out_fault_flow(axis2_operation_t *operation,
+axis2_op_set_phases_out_fault_flow(axis2_op_t *op,
                                             axis2_env_t **env,
                                             axis2_array_list_t *list);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_phases_outflow(axis2_operation_t *operation,
+axis2_op_set_phases_outflow(axis2_op_t *op,
                                         axis2_env_t **env,
                                         axis2_array_list_t *list);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_remaining_phases_inflow(axis2_operation_t *operation,
+axis2_op_set_remaining_phases_inflow(axis2_op_t *op,
                                                 axis2_env_t **env,
                                                 axis2_array_list_t *list);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_add_module(axis2_operation_t *operation,
+axis2_op_add_module(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_qname_t *module_name);
 
 axis2_array_list_t *AXIS2_CALL
-axis2_operation_get_module_refs(axis2_operation_t *operation,
+axis2_op_get_module_refs(axis2_op_t *op,
                                     axis2_env_t **env);
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_operation_get_infaults(axis2_operation_t *operation,
+axis2_op_get_infaults(axis2_op_t *op,
                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_infaults(axis2_operation_t *operation,
+axis2_op_set_infaults(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_linked_list_t *infaults);
 
 struct axis2_wsdl_msg_ref *AXIS2_CALL
-axis2_operation_get_input_msg(axis2_operation_t *operation,
+axis2_op_get_input_msg(axis2_op_t *op,
                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_input_msg(axis2_operation_t *operation,
+axis2_op_set_input_msg(axis2_op_t *op,
                                 axis2_env_t **env,
                                 struct axis2_wsdl_msg_ref *input_msg); 
 
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_operation_get_outfaults(axis2_operation_t *operation,
+axis2_op_get_outfaults(axis2_op_t *op,
                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_outfaults(axis2_operation_t *operation,
+axis2_op_set_outfaults(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_linked_list_t *outfaults);
 
 struct axis2_wsdl_msg_ref *AXIS2_CALL
-axis2_operation_get_output_msg(axis2_operation_t *operation,
+axis2_op_get_output_msg(axis2_op_t *op,
                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_output_msg(axis2_operation_t *operation,
+axis2_op_set_output_msg(axis2_op_t *op,
                                 axis2_env_t **env,
                                 struct axis2_wsdl_msg_ref *output_msg); 
 
 
 axis2_bool_t AXIS2_CALL
-axis2_operation_is_safe(axis2_operation_t *operation,
+axis2_op_is_safe(axis2_op_t *op,
                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_safety(axis2_operation_t *operation,
+axis2_op_set_safety(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_bool_t safe);
 
 axis2_char_t *AXIS2_CALL
-axis2_operation_get_target_namespace(axis2_operation_t *operation,
+axis2_op_get_target_namespace(axis2_op_t *op,
                                         axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_add_infault(axis2_operation_t *operation,
+axis2_op_add_infault(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_wsdl_fault_ref_t *infault);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_add_outfault(axis2_operation_t *operation,
+axis2_op_add_outfault(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_wsdl_fault_ref_t *outfault);
 
 axis2_status_t AXIS2_CALL
-axis2_operation_add_feature(axis2_operation_t *operation,
+axis2_op_add_feature(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_wsdl_feature_t *feature);
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_operation_get_features(axis2_operation_t *operation,
+axis2_op_get_features(axis2_op_t *op,
                                 axis2_env_t **env); 
 
 
 axis2_status_t AXIS2_CALL
-axis2_operation_add_property(axis2_operation_t *operation,
+axis2_op_add_property(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_wsdl_property_t *wsdl_property);
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_operation_get_Properties(axis2_operation_t *operation,
+axis2_op_get_Properties(axis2_op_t *op,
                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
-axis2_operation_set_wsdl_opeartion(axis2_operation_t *operation,
+axis2_op_set_wsdl_opeartion(axis2_op_t *op,
                                 axis2_env_t **env,
-                                axis2_wsdl_operation_t *wsdl_operation);
+                                axis2_wsdl_op_t *wsdl_op);
 
 /************************* End of function headers ****************************/	
 
-axis2_operation_t * AXIS2_CALL
-axis2_operation_create (axis2_env_t **env)
+axis2_op_t * AXIS2_CALL
+axis2_op_create (axis2_env_t **env)
 {
     struct axis2_param_container *param_container_l = NULL;
     axis2_array_list_t *array_list_l = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-	axis2_operation_impl_t *operation_impl = 
-		(axis2_operation_impl_t *) AXIS2_MALLOC ((*env)->allocator,
-		sizeof (axis2_operation_impl_t));
+	axis2_op_impl_t *op_impl = 
+		(axis2_op_impl_t *) AXIS2_MALLOC ((*env)->allocator,
+		sizeof (axis2_op_impl_t));
      
-	if(NULL == operation_impl)
+	if(NULL == op_impl)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	}
     
-    operation_impl->parent = NULL;
-	operation_impl->msg_recv = NULL;
-    operation_impl->mep = MEP_CONSTANT_INVALID;
-    operation_impl->operation.param_container = NULL;
-    operation_impl->operation.wsdl_operation = NULL;
-    operation_impl->remaining_phases_inflow = NULL;
-    operation_impl->phases_outflow = NULL;
-    operation_impl->phases_in_fault_flow = NULL;
-    operation_impl->phases_out_fault_flow = NULL;
-    operation_impl->modulerefs = NULL;
-    operation_impl->operation.ops = NULL;
+    op_impl->parent = NULL;
+	op_impl->msg_recv = NULL;
+    op_impl->mep = MEP_CONSTANT_INVALID;
+    op_impl->op.param_container = NULL;
+    op_impl->op.wsdl_op = NULL;
+    op_impl->remaining_phases_inflow = NULL;
+    op_impl->phases_outflow = NULL;
+    op_impl->phases_in_fault_flow = NULL;
+    op_impl->phases_out_fault_flow = NULL;
+    op_impl->modulerefs = NULL;
+    op_impl->op.ops = NULL;
     
-    operation_impl->operation.param_container = (axis2_param_container_t *)
+    op_impl->op.param_container = (axis2_param_container_t *)
 		axis2_param_container_create(env);		
-	if(NULL == operation_impl->operation.param_container)
+	if(NULL == op_impl->op.param_container)
 	{
-        axis2_operation_free(&(operation_impl->operation), env);
+        axis2_op_free(&(op_impl->op), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);	
         return NULL;        
 	}
 
-	operation_impl->operation.wsdl_operation = (axis2_wsdl_operation_t *)
-		axis2_wsdl_operation_create(env);		
-	if(NULL == operation_impl->operation.wsdl_operation)
+	op_impl->op.wsdl_op = (axis2_wsdl_op_t *)
+		axis2_wsdl_op_create(env);		
+	if(NULL == op_impl->op.wsdl_op)
 	{
-        axis2_operation_free(&(operation_impl->operation), env);
+        axis2_op_free(&(op_impl->op), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;		
 	}
 
-    operation_impl->remaining_phases_inflow = axis2_array_list_create(env, 0);
-    if(NULL == operation_impl->remaining_phases_inflow)
+    op_impl->remaining_phases_inflow = axis2_array_list_create(env, 0);
+    if(NULL == op_impl->remaining_phases_inflow)
     {
-        axis2_operation_free(&(operation_impl->operation), env);
+        axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
     
-    operation_impl->phases_outflow = axis2_array_list_create(env, 0);
-    if(NULL == operation_impl->phases_outflow)
+    op_impl->phases_outflow = axis2_array_list_create(env, 0);
+    if(NULL == op_impl->phases_outflow)
     {
-        axis2_operation_free(&(operation_impl->operation), env);
+        axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
     
-    operation_impl->phases_in_fault_flow = axis2_array_list_create(env, 0);
-    if(NULL == operation_impl->phases_in_fault_flow)
+    op_impl->phases_in_fault_flow = axis2_array_list_create(env, 0);
+    if(NULL == op_impl->phases_in_fault_flow)
     {
-        axis2_operation_free(&(operation_impl->operation), env);
+        axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
     
-    operation_impl->modulerefs = axis2_array_list_create(env, 0);
-    if(NULL == operation_impl->modulerefs)
+    op_impl->modulerefs = axis2_array_list_create(env, 0);
+    if(NULL == op_impl->modulerefs)
     {
-        axis2_operation_free(&(operation_impl->operation), env);
+        axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
     
-    operation_impl->phases_out_fault_flow = axis2_array_list_create(env, 0);
-    if(NULL == operation_impl->phases_out_fault_flow)
+    op_impl->phases_out_fault_flow = axis2_array_list_create(env, 0);
+    if(NULL == op_impl->phases_out_fault_flow)
     {
-        axis2_operation_free(&(operation_impl->operation), env);
+        axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
     
-    axis2_operation_set_msg_exchange_pattern(&(operation_impl->operation), env, 
+    axis2_op_set_msg_exchange_pattern(&(op_impl->op), env, 
         (axis2_char_t *) MEP_URI_IN_OUT);
     
     param_container_l = axis2_param_container_create(env);
     if(NULL == param_container_l)
         return NULL;
-    AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(operation_impl->operation.wsdl_operation->
+    AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(op_impl->op.wsdl_op->
         extensible_component->wsdl_component, env, PARAMETER_KEY, param_container_l);
     
     array_list_l = axis2_array_list_create(env, 0);
     if(NULL == array_list_l) return NULL;
-    AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(operation_impl->operation.wsdl_operation->
+    AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(op_impl->op.wsdl_op->
         extensible_component->wsdl_component, env, MODULEREF_KEY, array_list_l);
     
-    operation_impl->operation.ops = AXIS2_MALLOC((*env)->allocator, 
-        sizeof(axis2_operation_ops_t));
-	if(NULL == operation_impl->operation.ops)
+    op_impl->op.ops = AXIS2_MALLOC((*env)->allocator, 
+        sizeof(axis2_op_ops_t));
+	if(NULL == op_impl->op.ops)
 	{
-        axis2_operation_free(&(operation_impl->operation), env);
+        axis2_op_free(&(op_impl->op), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
 	}
 	
-	operation_impl->operation.ops->free = axis2_operation_free;
-	operation_impl->operation.ops->add_param = axis2_operation_add_param;
-	operation_impl->operation.ops->get_param = axis2_operation_get_param;
-	operation_impl->operation.ops->get_params = axis2_operation_get_params;
-	operation_impl->operation.ops->set_parent = axis2_operation_set_parent;
-	operation_impl->operation.ops->get_parent = axis2_operation_get_parent;
-	operation_impl->operation.ops->set_msg_recv = axis2_operation_set_msg_recv;
-	operation_impl->operation.ops->get_msg_recv = axis2_operation_get_msg_recv;
-    operation_impl->operation.ops->set_name = axis2_operation_set_name;
-	operation_impl->operation.ops->get_name = axis2_operation_get_name;
+	op_impl->op.ops->free = axis2_op_free;
+	op_impl->op.ops->add_param = axis2_op_add_param;
+	op_impl->op.ops->get_param = axis2_op_get_param;
+	op_impl->op.ops->get_params = axis2_op_get_params;
+	op_impl->op.ops->set_parent = axis2_op_set_parent;
+	op_impl->op.ops->get_parent = axis2_op_get_parent;
+	op_impl->op.ops->set_msg_recv = axis2_op_set_msg_recv;
+	op_impl->op.ops->get_msg_recv = axis2_op_get_msg_recv;
+    op_impl->op.ops->set_name = axis2_op_set_name;
+	op_impl->op.ops->get_name = axis2_op_get_name;
     
-	operation_impl->operation.ops->set_msg_exchange_pattern 
-		= axis2_operation_set_msg_exchange_pattern;
+	op_impl->op.ops->set_msg_exchange_pattern 
+		= axis2_op_set_msg_exchange_pattern;
     
-	operation_impl->operation.ops->get_msg_exchange_pattern
-		= axis2_operation_get_msg_exchange_pattern;
+	op_impl->op.ops->get_msg_exchange_pattern
+		= axis2_op_get_msg_exchange_pattern;
         
-    operation_impl->operation.ops->set_style = axis2_operation_set_style;
+    op_impl->op.ops->set_style = axis2_op_set_style;
     
-	operation_impl->operation.ops->get_style = axis2_operation_get_style; 
+	op_impl->op.ops->get_style = axis2_op_get_style; 
 
-    operation_impl->operation.ops->engage_module = axis2_operation_engage_module;
-    operation_impl->operation.ops->add_to_engage_module_list = axis2_operation_add_to_engage_module_list;
-    operation_impl->operation.ops->get_modules = axis2_operation_get_modules;
-    operation_impl->operation.ops->get_axis_specific_MEP_constant = axis2_operation_get_axis_specific_MEP_constant;
-    operation_impl->operation.ops->get_phases_in_fault_flow = axis2_operation_get_phases_in_fault_flow;
-    operation_impl->operation.ops->get_phases_out_fault_flow = axis2_operation_get_phases_out_fault_flow;
-    operation_impl->operation.ops->get_phases_outflow = axis2_operation_get_phases_outflow;
-    operation_impl->operation.ops->get_remaining_phases_inflow = axis2_operation_get_remaining_phases_inflow;
-    operation_impl->operation.ops->set_phases_in_fault_flow = axis2_operation_set_phases_in_fault_flow;
-    operation_impl->operation.ops->set_phases_out_fault_flow = axis2_operation_set_phases_out_fault_flow;
-    operation_impl->operation.ops->set_phases_outflow = axis2_operation_set_phases_outflow;
-    operation_impl->operation.ops->set_remaining_phases_inflow = axis2_operation_set_remaining_phases_inflow;
-    operation_impl->operation.ops->add_module = axis2_operation_add_module;
-    operation_impl->operation.ops->get_module_refs = axis2_operation_get_module_refs;
-    operation_impl->operation.ops->get_infaults = axis2_operation_get_infaults;
-    operation_impl->operation.ops->set_infaults = axis2_operation_set_infaults;
-    operation_impl->operation.ops->get_input_msg = axis2_operation_get_input_msg;
-    operation_impl->operation.ops->set_input_msg = axis2_operation_set_input_msg;
-    operation_impl->operation.ops->get_outfaults = axis2_operation_get_outfaults;
-    operation_impl->operation.ops->set_outfaults = axis2_operation_set_outfaults;
-    operation_impl->operation.ops->get_output_msg = axis2_operation_get_output_msg;
-    operation_impl->operation.ops->set_output_msg = axis2_operation_set_output_msg;
-    operation_impl->operation.ops->is_safe = axis2_operation_is_safe;
-    operation_impl->operation.ops->set_safety = axis2_operation_set_safety;
-    operation_impl->operation.ops->get_target_namespace = axis2_operation_get_target_namespace;
-    operation_impl->operation.ops->add_infault = axis2_operation_add_infault;
-    operation_impl->operation.ops->add_outfault = axis2_operation_add_outfault;
-    operation_impl->operation.ops->add_feature = axis2_operation_add_feature;
-    operation_impl->operation.ops->get_features = axis2_operation_get_features;
-    operation_impl->operation.ops->add_property = axis2_operation_add_property;
-    operation_impl->operation.ops->get_Properties = axis2_operation_get_Properties;
-    operation_impl->operation.ops->set_wsdl_opeartion = axis2_operation_set_wsdl_opeartion;
+    op_impl->op.ops->engage_module = axis2_op_engage_module;
+    op_impl->op.ops->add_to_engage_module_list = axis2_op_add_to_engage_module_list;
+    op_impl->op.ops->get_modules = axis2_op_get_modules;
+    op_impl->op.ops->get_axis_specific_MEP_constant = axis2_op_get_axis_specific_MEP_constant;
+    op_impl->op.ops->get_phases_in_fault_flow = axis2_op_get_phases_in_fault_flow;
+    op_impl->op.ops->get_phases_out_fault_flow = axis2_op_get_phases_out_fault_flow;
+    op_impl->op.ops->get_phases_outflow = axis2_op_get_phases_outflow;
+    op_impl->op.ops->get_remaining_phases_inflow = axis2_op_get_remaining_phases_inflow;
+    op_impl->op.ops->set_phases_in_fault_flow = axis2_op_set_phases_in_fault_flow;
+    op_impl->op.ops->set_phases_out_fault_flow = axis2_op_set_phases_out_fault_flow;
+    op_impl->op.ops->set_phases_outflow = axis2_op_set_phases_outflow;
+    op_impl->op.ops->set_remaining_phases_inflow = axis2_op_set_remaining_phases_inflow;
+    op_impl->op.ops->add_module = axis2_op_add_module;
+    op_impl->op.ops->get_module_refs = axis2_op_get_module_refs;
+    op_impl->op.ops->get_infaults = axis2_op_get_infaults;
+    op_impl->op.ops->set_infaults = axis2_op_set_infaults;
+    op_impl->op.ops->get_input_msg = axis2_op_get_input_msg;
+    op_impl->op.ops->set_input_msg = axis2_op_set_input_msg;
+    op_impl->op.ops->get_outfaults = axis2_op_get_outfaults;
+    op_impl->op.ops->set_outfaults = axis2_op_set_outfaults;
+    op_impl->op.ops->get_output_msg = axis2_op_get_output_msg;
+    op_impl->op.ops->set_output_msg = axis2_op_set_output_msg;
+    op_impl->op.ops->is_safe = axis2_op_is_safe;
+    op_impl->op.ops->set_safety = axis2_op_set_safety;
+    op_impl->op.ops->get_target_namespace = axis2_op_get_target_namespace;
+    op_impl->op.ops->add_infault = axis2_op_add_infault;
+    op_impl->op.ops->add_outfault = axis2_op_add_outfault;
+    op_impl->op.ops->add_feature = axis2_op_add_feature;
+    op_impl->op.ops->get_features = axis2_op_get_features;
+    op_impl->op.ops->add_property = axis2_op_add_property;
+    op_impl->op.ops->get_Properties = axis2_op_get_Properties;
+    op_impl->op.ops->set_wsdl_opeartion = axis2_op_set_wsdl_opeartion;
 						
-	return &(operation_impl->operation);
+	return &(op_impl->op);
 }
 
-axis2_operation_t * AXIS2_CALL
-axis2_operation_create_with_name (axis2_env_t **env, axis2_qname_t *qname)
+axis2_op_t * AXIS2_CALL
+axis2_op_create_with_name (axis2_env_t **env, axis2_qname_t *qname)
 {
-	axis2_operation_impl_t *operation_impl = NULL;
+	axis2_op_impl_t *op_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);	
     
-    operation_impl = AXIS2_INTF_TO_IMPL(axis2_operation_create(env));
+    op_impl = AXIS2_INTF_TO_IMPL(axis2_op_create(env));
     
-	if(NULL == operation_impl)
+	if(NULL == op_impl)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
 	}
     
     
-	status = axis2_operation_set_name(&(operation_impl->operation), env, qname);
+	status = axis2_op_set_name(&(op_impl->op), env, qname);
     if(AXIS2_FAILURE == status)
     {
-        axis2_operation_free(&(operation_impl->operation), env);
+        axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
-	return &(operation_impl->operation);	
+	return &(op_impl->op);	
 }
 
-axis2_operation_t * AXIS2_CALL
-axis2_operation_create_with_wsdl_operation (axis2_env_t **env, 
-                                            axis2_wsdl_operation_t *wsdl_operation)
+axis2_op_t * AXIS2_CALL
+axis2_op_create_with_wsdl_op (axis2_env_t **env, 
+                                            axis2_wsdl_op_t *wsdl_op)
 {
-	axis2_operation_impl_t *operation_impl = NULL;
+	axis2_op_impl_t *op_impl = NULL;
     
-    AXIS2_PARAM_CHECK((*env)->error, wsdl_operation, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, wsdl_op, NULL);
     
-    operation_impl = AXIS2_INTF_TO_IMPL(axis2_operation_create(env));
+    op_impl = AXIS2_INTF_TO_IMPL(axis2_op_create(env));
     
-	if(NULL == operation_impl)
+	if(NULL == op_impl)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
 	}
    
-	if(NULL != operation_impl->operation.wsdl_operation)
+	if(NULL != op_impl->op.wsdl_op)
     {
-        AXIS2_WSDL_OPERATION_FREE(operation_impl->operation.wsdl_operation, env);
+        AXIS2_WSDL_OPERATION_FREE(op_impl->op.wsdl_op, env);
     }
-    operation_impl->operation.wsdl_operation = wsdl_operation;
+    op_impl->op.wsdl_op = wsdl_op;
        
-	return &(operation_impl->operation);	
+	return &(op_impl->op);	
 }
 
-/*************************** Start of operation impls *************************/
+/*************************** Start of op impls *************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_operation_free (axis2_operation_t *operation, axis2_env_t **env)
+axis2_op_free (axis2_op_t *op, axis2_env_t **env)
 { 
-    axis2_operation_impl_t *operation_impl = NULL;
+    axis2_op_impl_t *op_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     
-    operation_impl = AXIS2_INTF_TO_IMPL(operation);
+    op_impl = AXIS2_INTF_TO_IMPL(op);
     
-	if(NULL != operation->ops)
+	if(NULL != op->ops)
     {
-		AXIS2_FREE((*env)->allocator, operation->ops);
-        operation->ops = NULL;
+		AXIS2_FREE((*env)->allocator, op->ops);
+        op->ops = NULL;
     }
     
-    if(NULL != operation->param_container)
+    if(NULL != op->param_container)
     {
-	    AXIS2_PARAM_CONTAINER_FREE(operation->param_container, env);
-        operation->param_container = NULL;
+	    AXIS2_PARAM_CONTAINER_FREE(op->param_container, env);
+        op->param_container = NULL;
     }
     
-    if(NULL != operation->wsdl_operation)
+    if(NULL != op->wsdl_op)
     {
-	    AXIS2_WSDL_OPERATION_FREE(operation->wsdl_operation, env);
-        operation->wsdl_operation = NULL;
+	    AXIS2_WSDL_OPERATION_FREE(op->wsdl_op, env);
+        op->wsdl_op = NULL;
     }
     
-    operation_impl->parent = NULL;
+    op_impl->parent = NULL;
     
-    operation_impl->msg_recv = NULL;
+    op_impl->msg_recv = NULL;
     
-    if(NULL != operation_impl->remaining_phases_inflow)
+    if(NULL != op_impl->remaining_phases_inflow)
     {
         void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(operation_impl->remaining_phases_inflow, env); i++)
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->remaining_phases_inflow, env); i++)
         {
             struct axis2_phase *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(operation_impl->remaining_phases_inflow, env, i);
+            phase = AXIS2_ARRAY_LIST_GET(op_impl->remaining_phases_inflow, env, i);
             
             phase = (struct axis2_phase *) val;
             if (phase)
@@ -524,18 +524,18 @@ axis2_operation_free (axis2_operation_t *operation, axis2_env_t **env)
             phase = NULL;
                
         }
-        AXIS2_ARRAY_LIST_FREE(operation_impl->remaining_phases_inflow, env);
-        operation_impl->remaining_phases_inflow = NULL;
+        AXIS2_ARRAY_LIST_FREE(op_impl->remaining_phases_inflow, env);
+        op_impl->remaining_phases_inflow = NULL;
     }
     
-    if(NULL != operation_impl->phases_outflow)
+    if(NULL != op_impl->phases_outflow)
     {
         void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(operation_impl->phases_outflow, env); i++)
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->phases_outflow, env); i++)
         {
             struct axis2_phase *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(operation_impl->phases_outflow, env, i);
+            phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_outflow, env, i);
             
             phase = (struct axis2_phase *) val;
             if (phase)
@@ -545,18 +545,18 @@ axis2_operation_free (axis2_operation_t *operation, axis2_env_t **env)
             phase = NULL;
                
         }
-        AXIS2_ARRAY_LIST_FREE(operation_impl->phases_outflow, env);
-        operation_impl->phases_outflow = NULL;
+        AXIS2_ARRAY_LIST_FREE(op_impl->phases_outflow, env);
+        op_impl->phases_outflow = NULL;
     }
     
-    if(NULL != operation_impl->phases_in_fault_flow)
+    if(NULL != op_impl->phases_in_fault_flow)
     {
         void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(operation_impl->phases_in_fault_flow, env); i++)
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->phases_in_fault_flow, env); i++)
         {
             struct axis2_phase *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(operation_impl->phases_in_fault_flow, env, i);
+            phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_in_fault_flow, env, i);
             
             phase = (struct axis2_phase *) val;
             if (phase)
@@ -566,18 +566,18 @@ axis2_operation_free (axis2_operation_t *operation, axis2_env_t **env)
             phase = NULL;
                
         }
-        AXIS2_ARRAY_LIST_FREE(operation_impl->phases_in_fault_flow, env);
-        operation_impl->phases_in_fault_flow = NULL;
+        AXIS2_ARRAY_LIST_FREE(op_impl->phases_in_fault_flow, env);
+        op_impl->phases_in_fault_flow = NULL;
     }
     
-    if(NULL != operation_impl->phases_out_fault_flow)
+    if(NULL != op_impl->phases_out_fault_flow)
     {
         void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(operation_impl->phases_out_fault_flow, env); i++)
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->phases_out_fault_flow, env); i++)
         {
             struct axis2_phase *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(operation_impl->phases_out_fault_flow, env, i);
+            phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_out_fault_flow, env, i);
             
             phase = (struct axis2_phase *) val;
             if (phase)
@@ -587,19 +587,19 @@ axis2_operation_free (axis2_operation_t *operation, axis2_env_t **env)
             phase = NULL;
                
         }
-        AXIS2_ARRAY_LIST_FREE(operation_impl->phases_out_fault_flow,
+        AXIS2_ARRAY_LIST_FREE(op_impl->phases_out_fault_flow,
             env);
-        operation_impl->phases_out_fault_flow = NULL;
+        op_impl->phases_out_fault_flow = NULL;
     }
     
-    if(NULL != operation_impl->modulerefs)
+    if(NULL != op_impl->modulerefs)
     {
         void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(operation_impl->modulerefs, env); i++)
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->modulerefs, env); i++)
         {
             axis2_qname_t *module_ref = NULL;
-            module_ref = AXIS2_ARRAY_LIST_GET(operation_impl->modulerefs, env, i);
+            module_ref = AXIS2_ARRAY_LIST_GET(op_impl->modulerefs, env, i);
             
             module_ref = (axis2_qname_t *) val;
             if (module_ref)
@@ -609,29 +609,29 @@ axis2_operation_free (axis2_operation_t *operation, axis2_env_t **env)
             module_ref = NULL;
                
         }
-        AXIS2_ARRAY_LIST_FREE(operation_impl->modulerefs, env);
-        operation_impl->modulerefs = NULL;
+        AXIS2_ARRAY_LIST_FREE(op_impl->modulerefs, env);
+        op_impl->modulerefs = NULL;
     }
     
-    if(operation_impl)    
+    if(op_impl)    
     {
-        AXIS2_FREE((*env)->allocator, operation_impl);
-        operation_impl = NULL;
+        AXIS2_FREE((*env)->allocator, op_impl);
+        op_impl = NULL;
     }
     
     return AXIS2_SUCCESS;
 }	
 	
 axis2_status_t AXIS2_CALL 
-axis2_operation_add_param (axis2_operation_t *operation, 
+axis2_op_add_param (axis2_op_t *op, 
                                 axis2_env_t **env,       
 		                        axis2_param_t *param)
 {
     axis2_param_container_t *param_container_l = NULL;
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FALSE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, param, AXIS2_FALSE);
 	
-    if(AXIS2_TRUE == axis2_operation_is_param_locked(operation, env, 
+    if(AXIS2_TRUE == axis2_op_is_param_locked(op, env, 
             AXIS2_PARAM_GET_NAME(param, env)))
     {
         AXIS2_ERROR_SET((*env)->error, 
@@ -642,7 +642,7 @@ axis2_operation_add_param (axis2_operation_t *operation,
     {
         param_container_l = (axis2_param_container_t *) 
             AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
-                operation->wsdl_operation->extensible_component->wsdl_component, env, 
+                op->wsdl_op->extensible_component->wsdl_component, env, 
                 (axis2_char_t *) PARAMETER_KEY);
         return AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container_l, env, param);
     }
@@ -651,38 +651,38 @@ axis2_operation_add_param (axis2_operation_t *operation,
 }
 
 axis2_param_t * AXIS2_CALL
-axis2_operation_get_param (axis2_operation_t *operation, 
+axis2_op_get_param (axis2_op_t *op, 
                                 axis2_env_t **env,
 		                        axis2_char_t *param_name)
 {
     axis2_param_container_t *param_container_l = NULL;
-	AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FALSE);
+	AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FALSE);
 	AXIS2_PARAM_CHECK((*env)->error, param_name, NULL);
 	
     param_container_l = (axis2_param_container_t *) 
-        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(operation->wsdl_operation->
+        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op->wsdl_op->
             extensible_component->wsdl_component, env, (axis2_char_t *) PARAMETER_KEY);
 	
 	return AXIS2_PARAM_CONTAINER_GET_PARAM(param_container_l, env, param_name);
 }
 
 axis2_array_list_t * AXIS2_CALL
-axis2_operation_get_params(axis2_operation_t *operation, 
+axis2_op_get_params(axis2_op_t *op, 
                                 axis2_env_t **env)
 {
     axis2_param_container_t *param_container_l = NULL;
-	AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FALSE);
-    AXIS2_PARAM_CHECK((*env)->error, operation->param_container, 
+	AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK((*env)->error, op->param_container, 
         AXIS2_FALSE);
 	
     param_container_l = (axis2_param_container_t *) 
-        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(operation->wsdl_operation->
+        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op->wsdl_op->
             extensible_component->wsdl_component, env, (axis2_char_t *) PARAMETER_KEY);
 	return AXIS2_PARAM_CONTAINER_GET_PARAMS(param_container_l, env);
 }
 
 axis2_bool_t AXIS2_CALL 
-axis2_operation_is_param_locked(axis2_operation_t *operation, 
+axis2_op_is_param_locked(axis2_op_t *op, 
                                     axis2_env_t **env,
 		                            axis2_char_t *param_name)
 {
@@ -690,11 +690,11 @@ axis2_operation_is_param_locked(axis2_operation_t *operation,
     axis2_param_t *param_l = NULL;
     axis2_bool_t locked = AXIS2_FALSE;
     
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FALSE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, param_name, AXIS2_FALSE);
     
     /* checking the locked value of parent*/
-    parent_l = axis2_operation_get_parent(operation, env);
+    parent_l = axis2_op_get_parent(op, env);
     if(NULL != parent_l)
     {
         locked = AXIS2_SVC_IS_PARAM_LOCKED(parent_l, env, param_name);
@@ -705,134 +705,134 @@ axis2_operation_is_param_locked(axis2_operation_t *operation,
     }        
     else
     {
-        param_l = axis2_operation_get_param(operation, env, param_name);   
+        param_l = axis2_op_get_param(op, env, param_name);   
     }
 	return AXIS2_PARAM_IS_LOCKED(param_l, env);
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_operation_set_parent (axis2_operation_t *operation, 
+axis2_op_set_parent (axis2_op_t *op, 
                                 axis2_env_t **env,
 		                        axis2_svc_t *svc)
 {
-    axis2_operation_impl_t *operation_impl = NULL;
+    axis2_op_impl_t *op_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc, AXIS2_FAILURE);
     
-    operation_impl = AXIS2_INTF_TO_IMPL(operation);
+    op_impl = AXIS2_INTF_TO_IMPL(op);
     
-    if(operation_impl->parent)
+    if(op_impl->parent)
     {
-        operation_impl->parent = NULL;
+        op_impl->parent = NULL;
     }
-    operation_impl->parent = svc;
+    op_impl->parent = svc;
 	return AXIS2_SUCCESS;
 }
 
 axis2_svc_t * AXIS2_CALL
-axis2_operation_get_parent (axis2_operation_t *operation, 
+axis2_op_get_parent (axis2_op_t *op, 
                                 axis2_env_t **env)
 {           
-	AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
+	AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
     
-	return AXIS2_INTF_TO_IMPL(operation)->parent;
+	return AXIS2_INTF_TO_IMPL(op)->parent;
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_operation_set_msg_recv (axis2_operation_t *operation, 
+axis2_op_set_msg_recv (axis2_op_t *op, 
                                 axis2_env_t **env,
 		                        struct axis2_msg_recv *msg_recv)
 {
-    axis2_operation_impl_t *operation_impl = NULL;
+    axis2_op_impl_t *op_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_recv, AXIS2_FAILURE);
     
-    operation_impl = AXIS2_INTF_TO_IMPL(operation);
+    op_impl = AXIS2_INTF_TO_IMPL(op);
     
-    if(operation_impl->msg_recv)
+    if(op_impl->msg_recv)
     {
-        operation_impl->msg_recv = NULL;
+        op_impl->msg_recv = NULL;
     }
     
-	operation_impl->msg_recv = msg_recv;
+	op_impl->msg_recv = msg_recv;
 	
 	return AXIS2_SUCCESS;
 }
 
 struct axis2_msg_recv * AXIS2_CALL
-axis2_operation_get_msg_recv (axis2_operation_t *operation, 
+axis2_op_get_msg_recv (axis2_op_t *op, 
                                 axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
-    return AXIS2_INTF_TO_IMPL(operation)->msg_recv;
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    return AXIS2_INTF_TO_IMPL(op)->msg_recv;
 }
  
 axis2_status_t AXIS2_CALL
-axis2_operation_set_name (axis2_operation_t *operation, 
+axis2_op_set_name (axis2_op_t *op, 
                             axis2_env_t **env,
                             axis2_qname_t *qname)
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
 	
-    return AXIS2_WSDL_OPERATION_SET_NAME(operation->wsdl_operation, env, qname);
+    return AXIS2_WSDL_OPERATION_SET_NAME(op->wsdl_op, env, qname);
 }
     
 axis2_qname_t * AXIS2_CALL
-axis2_operation_get_name (axis2_operation_t *operation, 
+axis2_op_get_name (axis2_op_t *op, 
                             axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
 	
-    return AXIS2_WSDL_OPERATION_GET_NAME(operation->wsdl_operation,
+    return AXIS2_WSDL_OPERATION_GET_NAME(op->wsdl_op,
         env);
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_operation_set_msg_exchange_pattern (axis2_operation_t *operation, 
+axis2_op_set_msg_exchange_pattern (axis2_op_t *op, 
                                             axis2_env_t **env,
 		                                    const axis2_char_t *pattern)
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, pattern, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_OPERATION_SET_MSG_EXCHANGE_PATTERN(operation->
-        wsdl_operation, env, pattern);
+    return AXIS2_WSDL_OPERATION_SET_MSG_EXCHANGE_PATTERN(op->
+        wsdl_op, env, pattern);
 }
 
 axis2_char_t * AXIS2_CALL
-axis2_operation_get_msg_exchange_pattern (axis2_operation_t *operation, 
+axis2_op_get_msg_exchange_pattern (axis2_op_t *op, 
                                             axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
     
     return AXIS2_WSDL_OPERATION_GET_MSG_EXCHANGE_PATTERN
-        (operation->wsdl_operation, env);
+        (op->wsdl_op, env);
 }
 
 axis2_char_t * AXIS2_CALL
-axis2_operation_get_style (axis2_operation_t *operation,
+axis2_op_get_style (axis2_op_t *op,
                             axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
     
-    return AXIS2_WSDL_OPERATION_GET_STYLE(operation->wsdl_operation, env);
+    return AXIS2_WSDL_OPERATION_GET_STYLE(op->wsdl_op, env);
 }
 
 axis2_status_t  AXIS2_CALL
-axis2_operation_set_style (axis2_operation_t *operation,
+axis2_op_set_style (axis2_op_t *op,
                             axis2_env_t **env,
                             axis2_char_t *style)
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, style, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_OPERATION_SET_STYLE(operation->wsdl_operation, env, style);
+    return AXIS2_WSDL_OPERATION_SET_STYLE(op->wsdl_op, env, style);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_engage_module(axis2_operation_t *operation,
+axis2_op_engage_module(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_module_desc_t *moduleref) 
 {
@@ -843,11 +843,11 @@ axis2_operation_engage_module(axis2_operation_t *operation,
     struct axis2_module_desc *module_desc = NULL;
     struct axis2_phase_resolver *pr = NULL;
         
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, moduleref, AXIS2_FAILURE);
     
     collection_module = (axis2_array_list_t *) 
-        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(operation->wsdl_operation->
+        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op->wsdl_op->
         extensible_component->wsdl_component, env, MODULEREF_KEY);
     
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
@@ -876,7 +876,7 @@ axis2_operation_engage_module(axis2_operation_t *operation,
     if(pr)
     {
         status = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OPERATION(pr, env, 
-            operation, moduleref);
+            op, moduleref);
         if(AXIS2_FAILURE == status)
         {
             AXIS2_PHASE_RESOLVER_FREE(pr, env);
@@ -894,7 +894,7 @@ axis2_operation_engage_module(axis2_operation_t *operation,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_add_to_engage_module_list(axis2_operation_t *operation,
+axis2_op_add_to_engage_module_list(axis2_op_t *op,
                                             axis2_env_t **env,
                                             axis2_module_desc_t *module_name) 
 {
@@ -903,11 +903,11 @@ axis2_operation_add_to_engage_module_list(axis2_operation_t *operation,
     int size = 0;
     int index = 0;
     
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FAILURE);
     
     collection_module = (axis2_array_list_t *) 
-        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(operation->wsdl_operation->
+        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op->wsdl_op->
             extensible_component->wsdl_component, env, MODULEREF_KEY);
     
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
@@ -933,70 +933,70 @@ axis2_operation_add_to_engage_module_list(axis2_operation_t *operation,
 }
 
 axis2_array_list_t *AXIS2_CALL
-axis2_operation_get_modules(axis2_operation_t *operation,
+axis2_op_get_modules(axis2_op_t *op,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
     return (axis2_array_list_t *) AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
-        operation->wsdl_operation->extensible_component->wsdl_component, env, 
+        op->wsdl_op->extensible_component->wsdl_component, env, 
             MODULEREF_KEY);
 }
 
 int AXIS2_CALL
-axis2_operation_get_axis_specific_MEP_constant(axis2_operation_t *operation,
+axis2_op_get_axis_specific_MEP_constant(axis2_op_t *op,
                                                 axis2_env_t **env) 
 {
-    axis2_operation_impl_t *operation_impl = NULL;
+    axis2_op_impl_t *op_impl = NULL;
     int temp = 0;
     
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     
-    operation_impl = AXIS2_INTF_TO_IMPL(operation);
+    op_impl = AXIS2_INTF_TO_IMPL(op);
     
-    if (operation_impl->mep != MEP_CONSTANT_INVALID) 
+    if (op_impl->mep != MEP_CONSTANT_INVALID) 
     {
-        return operation_impl->mep;
+        return op_impl->mep;
     }
 
     temp = MEP_CONSTANT_INVALID;
 
     if (AXIS2_STRCMP(MEP_URI_IN_OUT, 
-            axis2_operation_get_msg_exchange_pattern(operation, env))) 
+            axis2_op_get_msg_exchange_pattern(op, env))) 
     {
         temp = MEP_CONSTANT_IN_OUT;
     } 
     else if (AXIS2_STRCMP(MEP_URI_IN_ONLY, 
-            axis2_operation_get_msg_exchange_pattern(operation, env))) 
+            axis2_op_get_msg_exchange_pattern(op, env))) 
     {
         temp = MEP_CONSTANT_IN_ONLY;
     } 
     else if (AXIS2_STRCMP(MEP_URI_IN_OPTIONAL_OUT, 
-            axis2_operation_get_msg_exchange_pattern(operation, env))) 
+            axis2_op_get_msg_exchange_pattern(op, env))) 
     {
         temp = MEP_CONSTANT_IN_OPTIONAL_OUT;
     } 
     else if (AXIS2_STRCMP(MEP_URI_OUT_IN, 
-            axis2_operation_get_msg_exchange_pattern(operation, env))) 
+            axis2_op_get_msg_exchange_pattern(op, env))) 
     {
         temp = MEP_CONSTANT_OUT_IN;
     } 
     else if (AXIS2_STRCMP(MEP_URI_OUT_ONLY, 
-            axis2_operation_get_msg_exchange_pattern(operation, env))) 
+            axis2_op_get_msg_exchange_pattern(op, env))) 
     {
         temp = MEP_CONSTANT_OUT_ONLY;
     } 
     else if (AXIS2_STRCMP(MEP_URI_OUT_OPTIONAL_IN, 
-            axis2_operation_get_msg_exchange_pattern(operation, env))) 
+            axis2_op_get_msg_exchange_pattern(op, env))) 
     {
         temp = MEP_CONSTANT_OUT_OPTIONAL_IN;
     } 
     else if (AXIS2_STRCMP(MEP_URI_ROBUST_IN_ONLY, 
-            axis2_operation_get_msg_exchange_pattern(operation, env))) 
+            axis2_op_get_msg_exchange_pattern(op, env))) 
     {
         temp = MEP_CONSTANT_ROBUST_IN_ONLY;
     } 
     else if (AXIS2_STRCMP(MEP_URI_ROBUST_OUT_ONLY, 
-            axis2_operation_get_msg_exchange_pattern(operation, env))) 
+            axis2_op_get_msg_exchange_pattern(op, env))) 
     {
         temp = MEP_CONSTANT_ROBUST_OUT_ONLY;
     }
@@ -1007,67 +1007,67 @@ axis2_operation_get_axis_specific_MEP_constant(axis2_operation_t *operation,
             AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    operation_impl->mep = temp;
-    return operation_impl->mep;
+    op_impl->mep = temp;
+    return op_impl->mep;
 
 }
 
 axis2_array_list_t *AXIS2_CALL
-axis2_operation_get_phases_in_fault_flow(axis2_operation_t *operation,
+axis2_op_get_phases_in_fault_flow(axis2_op_t *op,
                                             axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
-    return AXIS2_INTF_TO_IMPL(operation)->phases_in_fault_flow;
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    return AXIS2_INTF_TO_IMPL(op)->phases_in_fault_flow;
 }
 
 
 axis2_array_list_t *AXIS2_CALL
-axis2_operation_get_phases_out_fault_flow(axis2_operation_t *operation,
+axis2_op_get_phases_out_fault_flow(axis2_op_t *op,
                                             axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
-    return AXIS2_INTF_TO_IMPL(operation)->phases_out_fault_flow;
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    return AXIS2_INTF_TO_IMPL(op)->phases_out_fault_flow;
 }
 
 
 axis2_array_list_t * AXIS2_CALL
-axis2_operation_get_phases_outflow(axis2_operation_t *operation,
+axis2_op_get_phases_outflow(axis2_op_t *op,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
-    return AXIS2_INTF_TO_IMPL(operation)->phases_outflow;
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    return AXIS2_INTF_TO_IMPL(op)->phases_outflow;
 }
 
 
 axis2_array_list_t *AXIS2_CALL
-axis2_operation_get_remaining_phases_inflow(axis2_operation_t *operation,
+axis2_op_get_remaining_phases_inflow(axis2_op_t *op,
                                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
  
-    return AXIS2_INTF_TO_IMPL(operation)->remaining_phases_inflow;
+    return AXIS2_INTF_TO_IMPL(op)->remaining_phases_inflow;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_phases_in_fault_flow(axis2_operation_t *operation,
+axis2_op_set_phases_in_fault_flow(axis2_op_t *op,
                                             axis2_env_t **env,
                                             axis2_array_list_t *list) 
 {
-    axis2_operation_impl_t *operation_impl = NULL;
+    axis2_op_impl_t *op_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
     
-    operation_impl = AXIS2_INTF_TO_IMPL(operation);
+    op_impl = AXIS2_INTF_TO_IMPL(op);
     
-    if(operation_impl->phases_in_fault_flow)
+    if(op_impl->phases_in_fault_flow)
     {
         void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(operation_impl->phases_in_fault_flow, env); i++)
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->phases_in_fault_flow, env); i++)
         {
             struct axis2_phase *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(operation_impl->phases_in_fault_flow, env, i);
+            phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_in_fault_flow, env, i);
             
             phase = (struct axis2_phase *) val;
             if (phase)
@@ -1077,30 +1077,30 @@ axis2_operation_set_phases_in_fault_flow(axis2_operation_t *operation,
             phase = NULL;
                
         }
-        AXIS2_WSDL_OPERATION_FREE(operation_impl->phases_in_fault_flow, env);
-        operation_impl->phases_in_fault_flow = NULL;
+        AXIS2_WSDL_OPERATION_FREE(op_impl->phases_in_fault_flow, env);
+        op_impl->phases_in_fault_flow = NULL;
     }
     
-    operation_impl->phases_in_fault_flow = list;
+    op_impl->phases_in_fault_flow = list;
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_phases_out_fault_flow(axis2_operation_t *operation,
+axis2_op_set_phases_out_fault_flow(axis2_op_t *op,
                                             axis2_env_t **env,
                                             axis2_array_list_t *list) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
-    axis2_operation_impl_t *operation_impl = AXIS2_INTF_TO_IMPL(operation);
-    if(operation_impl->phases_out_fault_flow)
+    axis2_op_impl_t *op_impl = AXIS2_INTF_TO_IMPL(op);
+    if(op_impl->phases_out_fault_flow)
     {
         void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(operation_impl->phases_out_fault_flow, env); i++)
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->phases_out_fault_flow, env); i++)
         {
             struct axis2_phase *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(operation_impl->phases_out_fault_flow, env, i);
+            phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_out_fault_flow, env, i);
             
             phase = (struct axis2_phase *) val;
             if (phase)
@@ -1110,30 +1110,30 @@ axis2_operation_set_phases_out_fault_flow(axis2_operation_t *operation,
             phase = NULL;
                
         }
-        AXIS2_WSDL_OPERATION_FREE(operation_impl->phases_out_fault_flow, env);
-        operation_impl->phases_out_fault_flow = NULL;
+        AXIS2_WSDL_OPERATION_FREE(op_impl->phases_out_fault_flow, env);
+        op_impl->phases_out_fault_flow = NULL;
     }
     
-    operation_impl->phases_out_fault_flow = list;
+    op_impl->phases_out_fault_flow = list;
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_phases_outflow(axis2_operation_t *operation,
+axis2_op_set_phases_outflow(axis2_op_t *op,
                                         axis2_env_t **env,
                                         axis2_array_list_t *list) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
-    axis2_operation_impl_t *operation_impl = AXIS2_INTF_TO_IMPL(operation);
-    if(operation_impl->phases_outflow)
+    axis2_op_impl_t *op_impl = AXIS2_INTF_TO_IMPL(op);
+    if(op_impl->phases_outflow)
     {
         void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(operation_impl->phases_outflow, env); i++)
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->phases_outflow, env); i++)
         {
             struct axis2_phase *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(operation_impl->phases_outflow, env, i);
+            phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_outflow, env, i);
             
             phase = (struct axis2_phase *) val;
             if (phase)
@@ -1143,31 +1143,31 @@ axis2_operation_set_phases_outflow(axis2_operation_t *operation,
             phase = NULL;
                
         }
-        AXIS2_WSDL_OPERATION_FREE(operation_impl->phases_outflow, env);
-        operation_impl->phases_outflow = NULL;
+        AXIS2_WSDL_OPERATION_FREE(op_impl->phases_outflow, env);
+        op_impl->phases_outflow = NULL;
     }
     
-    operation_impl->phases_outflow = list;
+    op_impl->phases_outflow = list;
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_remaining_phases_inflow(axis2_operation_t *operation,
+axis2_op_set_remaining_phases_inflow(axis2_op_t *op,
                                                 axis2_env_t **env,
                                                 axis2_array_list_t *list) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
     
-    axis2_operation_impl_t *operation_impl = AXIS2_INTF_TO_IMPL(operation);
-    if(operation_impl->remaining_phases_inflow)
+    axis2_op_impl_t *op_impl = AXIS2_INTF_TO_IMPL(op);
+    if(op_impl->remaining_phases_inflow)
     {
         void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(operation_impl->remaining_phases_inflow, env); i++)
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->remaining_phases_inflow, env); i++)
         {
             struct axis2_phase *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(operation_impl->remaining_phases_inflow, env, i);
+            phase = AXIS2_ARRAY_LIST_GET(op_impl->remaining_phases_inflow, env, i);
             
             phase = (struct axis2_phase *) val;
             if (phase)
@@ -1177,217 +1177,217 @@ axis2_operation_set_remaining_phases_inflow(axis2_operation_t *operation,
             phase = NULL;
                
         }
-        AXIS2_ARRAY_LIST_FREE(operation_impl->remaining_phases_inflow, env);
-        operation_impl->remaining_phases_inflow = NULL;
+        AXIS2_ARRAY_LIST_FREE(op_impl->remaining_phases_inflow, env);
+        op_impl->remaining_phases_inflow = NULL;
     }
-    operation_impl->remaining_phases_inflow = list;
+    op_impl->remaining_phases_inflow = list;
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_add_module(axis2_operation_t *operation,
+axis2_op_add_module(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_qname_t *module_name) 
 {
-    axis2_operation_impl_t *operation_impl = NULL;
+    axis2_op_impl_t *op_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FAILURE);
     
-    operation_impl = AXIS2_INTF_TO_IMPL(operation);
+    op_impl = AXIS2_INTF_TO_IMPL(op);
     
-    return AXIS2_ARRAY_LIST_ADD(operation_impl->modulerefs, env, module_name);
+    return AXIS2_ARRAY_LIST_ADD(op_impl->modulerefs, env, module_name);
 }
 
 axis2_array_list_t *AXIS2_CALL
-axis2_operation_get_module_refs(axis2_operation_t *operation,
+axis2_op_get_module_refs(axis2_op_t *op,
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
-    return AXIS2_INTF_TO_IMPL(operation)->modulerefs;
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    return AXIS2_INTF_TO_IMPL(op)->modulerefs;
 }
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_operation_get_infaults(axis2_operation_t *operation,
+axis2_op_get_infaults(axis2_op_t *op,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
-    return AXIS2_WSDL_OPERATION_GET_INFAULTS(operation->wsdl_operation, env);
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    return AXIS2_WSDL_OPERATION_GET_INFAULTS(op->wsdl_op, env);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_infaults(axis2_operation_t *operation,
+axis2_op_set_infaults(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_linked_list_t *infaults) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, infaults, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_OPERATION_SET_INFAULTS(operation->wsdl_operation, env, infaults);
+    return AXIS2_WSDL_OPERATION_SET_INFAULTS(op->wsdl_op, env, infaults);
 }
 
 struct axis2_wsdl_msg_ref *AXIS2_CALL
-axis2_operation_get_input_msg(axis2_operation_t *operation,
+axis2_op_get_input_msg(axis2_op_t *op,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
-    return AXIS2_WSDL_OPERATION_GET_INPUT_MSG(operation->wsdl_operation, env);
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    return AXIS2_WSDL_OPERATION_GET_INPUT_MSG(op->wsdl_op, env);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_input_msg(axis2_operation_t *operation,
+axis2_op_set_input_msg(axis2_op_t *op,
                                 axis2_env_t **env,
                                 struct axis2_wsdl_msg_ref *input_msg) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, input_msg, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_OPERATION_SET_INPUT_MSG(operation->wsdl_operation, env, input_msg);
+    return AXIS2_WSDL_OPERATION_SET_INPUT_MSG(op->wsdl_op, env, input_msg);
 }
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_operation_get_outfaults(axis2_operation_t *operation,
+axis2_op_get_outfaults(axis2_op_t *op,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
-    return AXIS2_WSDL_OPERATION_GET_OUTFAULTS(operation->wsdl_operation, env);
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    return AXIS2_WSDL_OPERATION_GET_OUTFAULTS(op->wsdl_op, env);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_outfaults(axis2_operation_t *operation,
+axis2_op_set_outfaults(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_linked_list_t *outfaults) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, outfaults, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_OPERATION_SET_OUTFAULTS(operation->wsdl_operation, env, outfaults);
+    return AXIS2_WSDL_OPERATION_SET_OUTFAULTS(op->wsdl_op, env, outfaults);
 }
 
 struct axis2_wsdl_msg_ref *AXIS2_CALL
-axis2_operation_get_output_msg(axis2_operation_t *operation,
+axis2_op_get_output_msg(axis2_op_t *op,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
-    return AXIS2_WSDL_OPERATION_GET_OUTPUT_MSG(operation->wsdl_operation, env);
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    return AXIS2_WSDL_OPERATION_GET_OUTPUT_MSG(op->wsdl_op, env);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_output_msg(axis2_operation_t *operation,
+axis2_op_set_output_msg(axis2_op_t *op,
                                 axis2_env_t **env,
                                 struct axis2_wsdl_msg_ref *output_msg) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, output_msg, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_OPERATION_SET_OUTPUT_MSG(operation->wsdl_operation, env, output_msg);
+    return AXIS2_WSDL_OPERATION_SET_OUTPUT_MSG(op->wsdl_op, env, output_msg);
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_operation_is_safe(axis2_operation_t *operation,
+axis2_op_is_safe(axis2_op_t *op,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FALSE);
-    return AXIS2_WSDL_OPERATION_IS_SAFE(operation->wsdl_operation, env);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FALSE);
+    return AXIS2_WSDL_OPERATION_IS_SAFE(op->wsdl_op, env);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_set_safety(axis2_operation_t *operation,
+axis2_op_set_safety(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_bool_t safe) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
-    return AXIS2_WSDL_OPERATION_SET_SAFETY(operation->wsdl_operation, env, safe);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
+    return AXIS2_WSDL_OPERATION_SET_SAFETY(op->wsdl_op, env, safe);
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_operation_get_target_namespace(axis2_operation_t *operation,
+axis2_op_get_target_namespace(axis2_op_t *op,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
-    return AXIS2_WSDL_OPERATION_GET_TARGET_NAMESPACE(operation->wsdl_operation,
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    return AXIS2_WSDL_OPERATION_GET_TARGET_NAMESPACE(op->wsdl_op,
         env);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_add_infault(axis2_operation_t *operation,
+axis2_op_add_infault(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_wsdl_fault_ref_t *infault) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, infault, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_OPERATION_ADD_INFAULT(operation->wsdl_operation, env, infault);
+    return AXIS2_WSDL_OPERATION_ADD_INFAULT(op->wsdl_op, env, infault);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_add_outfault(axis2_operation_t *operation,
+axis2_op_add_outfault(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_wsdl_fault_ref_t *outfault) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, outfault, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_OPERATION_ADD_OUTFAULT(operation->wsdl_operation, env, outfault);
+    return AXIS2_WSDL_OPERATION_ADD_OUTFAULT(op->wsdl_op, env, outfault);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_add_feature(axis2_operation_t *operation,
+axis2_op_add_feature(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_wsdl_feature_t *feature) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, feature, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_EXTENSIBLE_COMPONENT_ADD_FEATURE(operation->wsdl_operation->
+    return AXIS2_WSDL_EXTENSIBLE_COMPONENT_ADD_FEATURE(op->wsdl_op->
         extensible_component, env, feature);
 }
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_operation_get_features(axis2_operation_t *operation,
+axis2_op_get_features(axis2_op_t *op,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
-    return AXIS2_WSDL_EXTENSIBLE_COMPONENT_GET_FEATURES(operation->
-        wsdl_operation->extensible_component, env);
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    return AXIS2_WSDL_EXTENSIBLE_COMPONENT_GET_FEATURES(op->
+        wsdl_op->extensible_component, env);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_operation_add_property(axis2_operation_t *operation,
+axis2_op_add_property(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_wsdl_property_t *wsdl_property) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, wsdl_property, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_EXTENSIBLE_COMPONENT_ADD_PROPERTY(operation->wsdl_operation->
+    return AXIS2_WSDL_EXTENSIBLE_COMPONENT_ADD_PROPERTY(op->wsdl_op->
         extensible_component, env, wsdl_property);
 }
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_operation_get_Properties(axis2_operation_t *operation,
+axis2_op_get_Properties(axis2_op_t *op,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
-    return AXIS2_WSDL_EXTENSIBLE_COMPONENT_GET_PROPERTIES(operation->
-        wsdl_operation->extensible_component, env);
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    return AXIS2_WSDL_EXTENSIBLE_COMPONENT_GET_PROPERTIES(op->
+        wsdl_op->extensible_component, env);
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_operation_set_wsdl_opeartion(axis2_operation_t *operation,
+axis2_op_set_wsdl_opeartion(axis2_op_t *op,
                                 axis2_env_t **env,
-                                axis2_wsdl_operation_t *wsdl_operation) 
+                                axis2_wsdl_op_t *wsdl_op) 
 {
-    AXIS2_FUNC_PARAM_CHECK(operation, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, wsdl_operation, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, wsdl_op, AXIS2_FAILURE);
     
-    if(operation->wsdl_operation)
+    if(op->wsdl_op)
     {
-        AXIS2_WSDL_OPERATION_FREE(operation->wsdl_operation, env);
-        operation->wsdl_operation = NULL;
+        AXIS2_WSDL_OPERATION_FREE(op->wsdl_op, env);
+        op->wsdl_op = NULL;
     }
     
-    operation->wsdl_operation = wsdl_operation;
+    op->wsdl_op = wsdl_op;
     return AXIS2_SUCCESS;
 }
 
@@ -1405,7 +1405,7 @@ axis2_operation_set_wsdl_opeartion(axis2_operation_t *operation,
  * for two reasons. First reason is the wide usage and the second being that
  * the need for the MEPContext to be saved for further incomming messages.
  * <p/>
- * In the event that MEP of this operation is different from the two MEPs
+ * In the event that MEP of this op is different from the two MEPs
  * deafulted above the decession of creating a new or this message relates
  * to a MEP which already in business is decided by looking at the WSA
  * Relates TO of the incomming message.
@@ -1413,57 +1413,57 @@ axis2_operation_set_wsdl_opeartion(axis2_operation_t *operation,
  * @param msgContext
  */
 /*OperationContext findOperationContext(MessageContext msgContext, ServiceContext serviceContext) throws AxisFault {
-    OperationContext operationContext ;
+    OperationContext opContext ;
 
     if (null == msgContext.get_RelatesTo()) {
         //Its a new incomming message so get_ the factory to create a new
         // one
-       operationContext =  new OperationContext(this,serviceContext);
+       opContext =  new OperationContext(this,serviceContext);
     } else {
         // So this message is part of an ongoing MEP
-        //			operationContext =
+        //			opContext =
         ConfigurationContext configContext = msgContext.get_SystemContext();
-        operationContext =
+        opContext =
                 configContext.get_OperationContext( msgContext.get_RelatesTo().get_Value());
 
-        if (null == operationContext) {
+        if (null == opContext) {
             throw new AxisFault(Messages.get_Message("cannotCorrelateMsg",
                     this.get_Name().toString(),msgContext.get_RelatesTo().get_Value()));
         }
 
     }
 
-    registerOperationContext(msgContext, operationContext);
+    registerOperationContext(msgContext, opContext);
 
-    return operationContext;
+    return opContext;
 
 }
 */
 
 /**
- * This will not create a new operation context if there is no one already.
+ * This will not create a new op context if there is no one already.
  * @param msgContext
  * @return
  * @throws AxisFault
  */
-/*axis2_operation_ctx_t *AXIS2_CALL
+/*axis2_op_ctx_t *AXIS2_CALL
 OperationContext 
 findForExistingOperationContext(MessageContext msgContext) throws AxisFault {
-    OperationContext operationContext = null;
+    OperationContext opContext = null;
 
-    if((operationContext = msgContext.get_OperationContext()) != null) {
-        return operationContext;
+    if((opContext = msgContext.get_OperationContext()) != null) {
+        return opContext;
     }
 
     if (null == msgContext.get_RelatesTo()) {
         return null;
     } else {
         // So this message is part of an ongoing MEP
-        //			operationContext =
+        //			opContext =
         ConfigurationContext configContext = msgContext.get_SystemContext();
-        operationContext = configContext.get_OperationContext(msgContext.get_RelatesTo().get_Value());
+        opContext = configContext.get_OperationContext(msgContext.get_RelatesTo().get_Value());
 
-        if (null == operationContext) {
+        if (null == opContext) {
             throw new AxisFault(Messages.get_Message("cannotCorrealteMsg",
                     this.get_Name().toString(),msgContext.get_RelatesTo().get_Value()));
         }
@@ -1471,19 +1471,19 @@ findForExistingOperationContext(MessageContext msgContext) throws AxisFault {
     }
 
 
-    return operationContext;
+    return opContext;
 
 }
 */
 /*
 axis2_status_t AXIS2_CALL
-registerOperationContext(MessageContext msgContext, OperationContext operationContext) throws AxisFault {
+registerOperationContext(MessageContext msgContext, OperationContext opContext) throws AxisFault {
     msgContext.get_SystemContext().registerOperationContext(
-            msgContext.get_MessageID(), operationContext);
-    operationContext.addMessageContext(msgContext);
-    msgContext.setOperationContext(operationContext);
-    if (operationContext.isComplete()) {
-        operationContext.cleanup();
+            msgContext.get_MessageID(), opContext);
+    opContext.addMessageContext(msgContext);
+    msgContext.setOperationContext(opContext);
+    if (opContext.isComplete()) {
+        opContext.cleanup();
     }
 }
 */

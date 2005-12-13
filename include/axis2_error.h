@@ -37,9 +37,9 @@ extern "C"
  */
 
   /** 
-    * \brief Axis2 error operations struct
+    * \brief Axis2 error ops struct
     *
-    * Encapsulator struct for operations of axis2_error
+    * Encapsulator struct for ops of axis2_error
     */
    AXIS2_DECLARE_DATA typedef struct axis2_error_ops
     {
@@ -75,7 +75,7 @@ extern "C"
     */
     typedef struct axis2_error
     {
-        /** error related operations */
+        /** error related ops */
         struct axis2_error_ops *ops;
         /** last error number */
         int error_number;
@@ -167,7 +167,7 @@ extern "C"
         AXIS2_ERROR_INVALID_STATE_WSDL_SVC,
         /** Service group accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_SVC_GRP,
-        /** Wsdl operation accessed has invalid state */
+        /** Wsdl op accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_WSDL_OPERATION,
         /** Module description accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_MODULE_DESC,
@@ -193,7 +193,7 @@ extern "C"
         AXIS2_ERROR_NO_SUCH_ELEMENT,
         /** Could not Map the MEP URI to a axis MEP constant value */
         AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT,
-        /** module has alredy engaged to the operation operation terminated !!! */
+        /** module has alredy engaged to the op op terminated !!! */
         AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OPERATION,
         /** module has alredy been engaged on the service.Operation terminated !!! */
         AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC,

@@ -42,8 +42,8 @@ extern "C"
  */
 
   /** 
-    * \brief OM Namespace operations struct
-    * Encapsulator struct for operations of axis2_om_namespace
+    * \brief OM Namespace ops struct
+    * Encapsulator struct for ops of axis2_om_namespace
     */
  AXIS2_DECLARE_DATA   typedef struct axis2_om_namespace_ops
     {
@@ -51,7 +51,7 @@ extern "C"
         * Frees given OM namespcae
         * @param om_namespace namespace to be freed.
         * @param env Environment. MUST NOT be NULL.
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *free) (struct axis2_om_namespace *om_namespace,
                                            axis2_env_t **env);
@@ -72,7 +72,7 @@ extern "C"
         * @param om_namespace namespace to be serialized.
         * @param env Environment. MUST NOT be NULL.
         * @param om_output OM output handler to be used in serializing
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *serialize)(struct axis2_om_namespace *om_namespace,
                                                axis2_env_t **env,
@@ -95,7 +95,7 @@ extern "C"
         *@param om_namespace pointer to om namespace struct
         *@param env environment, MUST NOT be NULL.
         *@param uri namespace uri to be set 
-        *@returns status of the operation AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
+        *@returns status of the op AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *set_uri)(struct axis2_om_namespace *om_namespace,
                                             axis2_env_t **env,
@@ -104,7 +104,7 @@ extern "C"
         *@param om_namespace pointer to om_namespace struct
         *@param env environment struct
         *@param prefix prefix to be set
-        *@returns status code of the operation AXIS2_SUCCESS on success,
+        *@returns status code of the op AXIS2_SUCCESS on success,
         *                       AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *set_prefix)(struct axis2_om_namespace *om_namespace,
@@ -119,7 +119,7 @@ extern "C"
     */
     typedef struct axis2_om_namespace
     {
-        /** OM namespace related operations */
+        /** OM namespace related ops */
         axis2_om_namespace_ops_t *ops;
         
     } axis2_om_namespace_t;

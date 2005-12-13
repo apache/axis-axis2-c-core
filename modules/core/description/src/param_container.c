@@ -101,7 +101,7 @@ axis2_param_container_create (axis2_env_t **env)
 	return &(param_container_impl->param_container);
 }
 
-/*************************** Start of operation impls *************************/
+/*************************** Start of op impls *************************/
 
 axis2_status_t AXIS2_CALL 
 axis2_param_container_free (axis2_param_container_t *param_container,

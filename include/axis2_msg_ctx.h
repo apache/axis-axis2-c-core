@@ -63,26 +63,26 @@ extern "C"
 typedef struct axis2_msg_ctx_ops axis2_msg_ctx_ops_t;
 typedef struct axis2_msg_ctx axis2_msg_ctx_t; 
 struct axis2_svc;    
-struct axis2_operation;
+struct axis2_op;
     
 struct axis2_conf_ctx;
 struct axis2_svc_grp_ctx;
 struct axis2_svc_ctx;
-struct axis2_operation_ctx;
+struct axis2_op_ctx;
 struct axis2_session_ctx;
 struct axis2_engine_config;
 struct axis2_soap_envelope;
     
 /** 
- * @brief Message Context operations struct
- * Encapsulator struct for operations of axis2_msg_ctx
+ * @brief Message Context ops struct
+ * Encapsulator struct for ops of axis2_msg_ctx
  */  
 struct axis2_msg_ctx_ops
 {
     struct axis2_ctx* (AXIS2_CALL *get_base)(struct axis2_msg_ctx *msg_ctx, 
                                                 axis2_env_t **env);
     
-    struct axis2_operation_ctx* (AXIS2_CALL *get_parent)(struct axis2_msg_ctx *msg_ctx, 
+    struct axis2_op_ctx* (AXIS2_CALL *get_parent)(struct axis2_msg_ctx *msg_ctx, 
                                                             axis2_env_t **env);
     
     /**
@@ -90,7 +90,7 @@ struct axis2_msg_ctx_ops
      */
     axis2_status_t (AXIS2_CALL *set_parent)(struct axis2_msg_ctx *msg_ctx, 
                                             axis2_env_t **env, 
-                                            struct axis2_operation_ctx *parent);
+                                            struct axis2_op_ctx *parent);
     
     axis2_status_t (AXIS2_CALL *free)(axis2_msg_ctx_t *msg_ctx,
                                                     axis2_env_t **env);
@@ -327,15 +327,15 @@ struct axis2_msg_ctx_ops
                                                         axis2_env_t **env, 
                                                         struct axis2_transport_out_desc *transport_out_desc); 
     
-    struct axis2_operation_ctx* (AXIS2_CALL *get_operation_ctx)(struct axis2_msg_ctx *msg_ctx, 
+    struct axis2_op_ctx* (AXIS2_CALL *get_op_ctx)(struct axis2_msg_ctx *msg_ctx, 
                                                                 axis2_env_t **env);
     
     /**
      * @param context
      */
-    axis2_status_t (AXIS2_CALL *set_operation_ctx)(struct axis2_msg_ctx *msg_ctx, 
+    axis2_status_t (AXIS2_CALL *set_op_ctx)(struct axis2_msg_ctx *msg_ctx, 
                                                     axis2_env_t **env, 
-                                                    struct axis2_operation_ctx * operation_ctx);
+                                                    struct axis2_op_ctx * op_ctx);
     
     /**
      * @return
@@ -397,8 +397,8 @@ struct axis2_msg_ctx_ops
     /**
      * To retrive configuration descriptor parameters , it is posible to AXIS2_CALL get paramater specify at
      * any levle via this method , and the preferance is as follows,
-     * 1. Search in operation description if its there
-     * 2. if the paramter not found or operation_ctx is null will search in
+     * 1. Search in op description if its there
+     * 2. if the paramter not found or op_ctx is null will search in
      * _svc
      * 3. If the svc is null or , the paramter does not found will serach in
      * AxisConfiguration
@@ -412,8 +412,8 @@ struct axis2_msg_ctx_ops
     /**
      * This method is to retrive both module configuration parameters and othere paramerts
      * The searching procedure is as follows;
-     * 1. Search in module configurations inside corresponding operation descripton if its three
-     * 2. Search in corresponding operation if its there
+     * 1. Search in module configurations inside corresponding op descripton if its three
+     * 2. Search in corresponding op if its there
      * 3. Search in module configurations inside corresponding service description if its there
      * 4. Next search in Corresponding Service description if its there
      * 5. Next sercah in module configurations inside engine_config
@@ -439,7 +439,7 @@ struct axis2_msg_ctx_ops
     
     /**
      * To acess any property AXIS2_CALL set at the run time , a handler can add property to wherever he wants
-     * to MesageContext , to struct axis2_operation_ctx * , to struct axis2_svc_ctx *and to ConfigurationContext.
+     * to MesageContext , to struct axis2_op_ctx * , to struct axis2_svc_ctx *and to ConfigurationContext.
      * This method is to retrive those properties NOT paramters
      *
      * @param key        : property Name
@@ -526,12 +526,12 @@ struct axis2_msg_ctx_ops
                                                 struct axis2_svc_grp_ctx *svc_grp_ctx);
     
     
-    struct axis2_operation* (AXIS2_CALL *get_operation)(struct axis2_msg_ctx *msg_ctx, 
+    struct axis2_op* (AXIS2_CALL *get_op)(struct axis2_msg_ctx *msg_ctx, 
                                                             axis2_env_t **env);
     
-    axis2_status_t (AXIS2_CALL *set_operation)(struct axis2_msg_ctx *msg_ctx, 
+    axis2_status_t (AXIS2_CALL *set_op)(struct axis2_msg_ctx *msg_ctx, 
                                                 axis2_env_t **env, 
-                                                struct axis2_operation *operation);
+                                                struct axis2_op *op);
     
     struct axis2_svc* (AXIS2_CALL *get_svc)(struct axis2_msg_ctx *msg_ctx, 
                                                 axis2_env_t **env);
@@ -562,13 +562,13 @@ struct axis2_msg_ctx_ops
     struct axis2_svc* (AXIS2_CALL *find_svc)(axis2_msg_ctx_t *msg_ctx, 
                     axis2_env_t **env);
     /**
-    * finds the operation
+    * finds the op
     *
     * @param service
     * @param msg_ctx
     * @return
     */
-    struct axis2_operation* (AXIS2_CALL *find_operation)(axis2_msg_ctx_t *msg_ctx,
+    struct axis2_op* (AXIS2_CALL *find_op)(axis2_msg_ctx_t *msg_ctx,
                                 axis2_env_t **env,
                                 struct axis2_svc *svc);
 
@@ -661,8 +661,8 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env) ((msg_ctx)->ops->get_transport_out_desc(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_TRANSPORT_IN_DESC(msg_ctx, env, transport_in_desc) ((msg_ctx)->ops->set_transport_in_desc(msg_ctx, env, transport_in_desc))
 #define AXIS2_MSG_CTX_SET_TRANSPORT_OUT_DESC(msg_ctx, env, transport_out_desc) ((msg_ctx)->ops->set_transport_out_desc(msg_ctx, env, transport_out_desc))
-#define AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env) ((msg_ctx)->ops->get_operation_ctx(msg_ctx, env))
-#define AXIS2_MSG_CTX_SET_OPERATION_CTX(msg_ctx, env, operation_ctx) ((msg_ctx)->ops->set_operation_ctx(msg_ctx, env, operation_ctx))
+#define AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env) ((msg_ctx)->ops->get_op_ctx(msg_ctx, env))
+#define AXIS2_MSG_CTX_SET_OPERATION_CTX(msg_ctx, env, op_ctx) ((msg_ctx)->ops->set_op_ctx(msg_ctx, env, op_ctx))
 #define AXIS2_MSG_CTX_GET_OUTPUT_WRITTEN(msg_ctx, env) ((msg_ctx)->ops->get_output_written(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_OUTPUT_WRITTEN(msg_ctx, env, output_written) ((msg_ctx)->ops->set_output_written(msg_ctx, env, output_written))
 #define AXIS2_MSG_CTX_GET_SVC_CTX_ID(msg_ctx, env) ((msg_ctx)->ops->get_svc_ctx_id(msg_ctx, env))
@@ -688,8 +688,8 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) ((msg_ctx)->ops->get_is_soap_11(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_SVC_GRP_CTX(msg_ctx, env) ((msg_ctx)->ops->get_svc_grp_ctx(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_SVC_GRP_CTX(msg_ctx, env, svc_grp_ctx) ((msg_ctx)->ops->set_svc_grp_ctx(msg_ctx, env, svc_grp_ctx))
-#define AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env) ((msg_ctx)->ops->get_operation(msg_ctx, env))
-#define AXIS2_MSG_CTX_SET_OPERATION(msg_ctx, env, operation) ((msg_ctx)->ops->set_operation(msg_ctx, env, operation))
+#define AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env) ((msg_ctx)->ops->get_op(msg_ctx, env))
+#define AXIS2_MSG_CTX_SET_OPERATION(msg_ctx, env, op) ((msg_ctx)->ops->set_op(msg_ctx, env, op))
 #define AXIS2_MSG_CTX_GET_SVC(msg_ctx, env) ((msg_ctx)->ops->get_svc(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_SVC(msg_ctx, env, svc) ((msg_ctx)->ops->set_svc(msg_ctx, env, svc))
 #define AXIS2_MSG_CTX_GET_SVC_GRP(msg_ctx, env) ((msg_ctx)->ops->get_svc_grp(msg_ctx, env))
@@ -698,7 +698,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id) ((msg_ctx)->ops->set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id))
 #define AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env) ((msg_ctx)->ops->is_paused(msg_ctx, env))
 #define AXIS2_MSG_CTX_FIND_SVC(msg_ctx, env) ((msg_ctx)->ops->find_svc(msg_ctx, env))
-#define AXIS2_MSG_CTX_FIND_OPERATION(msg_ctx, env, svc) ((msg_ctx)->ops->find_operation(msg_ctx, env, svc))
+#define AXIS2_MSG_CTX_FIND_OPERATION(msg_ctx, env, svc) ((msg_ctx)->ops->find_op(msg_ctx, env, svc))
 
 /************************** End of function macros ****************************/    
 

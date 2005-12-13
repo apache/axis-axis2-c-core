@@ -34,9 +34,9 @@ extern "C"
  */
 
   /** 
-    * \brief Axis2 stream operations struct
+    * \brief Axis2 stream ops struct
     *
-    * Encapsulator struct for operations of axis2_stream
+    * Encapsulator struct for ops of axis2_stream
     */
   AXIS2_DECLARE_DATA  typedef struct axis2_stream_ops
     {
@@ -52,7 +52,7 @@ extern "C"
         * reads from stream
         * @param buffer buffer into which the content is to be read
         * @param size size of the buffer
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *read) (void *buffer
 			, size_t count);
@@ -60,7 +60,7 @@ extern "C"
         * writes into stream
         * @param buffer buffer to be written
         * @param size size of the buffer
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *write) 
 			(const void *buffer, size_t count);
@@ -103,11 +103,11 @@ extern "C"
   /** 
     * \brief Axis2 Stream struct
     *
-    * Stream is the encapsulating struct for all stream related operations
+    * Stream is the encapsulating struct for all stream related ops
     */
     typedef struct axis2_stream
     {
-        /** Stream related operations */
+        /** Stream related ops */
         struct axis2_stream_ops *ops;
 		int axis2_eof;
     } axis2_stream_t;

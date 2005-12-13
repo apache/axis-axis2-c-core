@@ -120,7 +120,7 @@ axis2_om_processing_instruction_create (axis2_env_t **env,
         AXIS2_OM_NODE_ADD_CHILD((*node), env, parent); 
     }
 
-    /* operations */
+    /* ops */
     processing_instruction->om_pi.ops = NULL;
     processing_instruction->om_pi.ops =
         (axis2_om_processing_instruction_ops_t *) AXIS2_MALLOC (

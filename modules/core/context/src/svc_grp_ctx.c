@@ -114,7 +114,7 @@ axis2_svc_grp_ctx_t* AXIS2_CALL axis2_svc_grp_ctx_create(axis2_env_t **env,
     
     axis2_svc_grp_ctx_fill_svc_ctx_map((&(svc_grp_ctx_impl->svc_grp_ctx)), env);
     
-    /* initialize operations */
+    /* initialize ops */
     
     svc_grp_ctx_impl->svc_grp_ctx.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_svc_grp_ctx_ops_t) );
     if (!svc_grp_ctx_impl->svc_grp_ctx.ops)

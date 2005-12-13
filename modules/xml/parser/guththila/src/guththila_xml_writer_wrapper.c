@@ -261,7 +261,7 @@ axis2_xml_writer_create(axis2_env_t **env,
         
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
-    /* operations */
+    /* ops */
     writer_impl->writer.ops->free = guththila_xml_writer_wrapper_free;
     writer_impl->writer.ops->write_start_element = guththila_xml_writer_wrapper_write_start_element;
     writer_impl->writer.ops->write_start_element_with_namespace =

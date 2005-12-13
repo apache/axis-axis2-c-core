@@ -29,7 +29,7 @@ axis2_status_t AXIS2_CALL axis2_soap_body_disp_invoke (struct axis2_handler * ha
                                                 struct axis2_msg_ctx *msg_ctx);
 axis2_svc_t* AXIS2_CALL axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                     axis2_env_t **env);
-axis2_operation_t* AXIS2_CALL axis2_soap_body_disp_find_operation(axis2_msg_ctx_t *msg_ctx, 
+axis2_op_t* AXIS2_CALL axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
                                 axis2_env_t **env,
                                 axis2_svc_t *svc);
 
@@ -69,7 +69,7 @@ axis2_disp_t* AXIS2_CALL axis2_soap_body_disp_create(axis2_env_t **env)
 
     
 /** The struct that inherits from this struct
-    should implement the find_service and find_operation methods and assing the 
+    should implement the find_service and find_op methods and assing the 
     respective function pointers in the base struct.
     Here we have only the dummy implementation to gauard against erros due to 
     the failure to provide an impl version by mistake.
@@ -97,7 +97,7 @@ axis2_svc_t* AXIS2_CALL axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                 String[] values = Utils.parseRequestURLForServiceAndOperation(
                         filePart);
                 if (values[1] != null) {
-                    operationName = new QName(values[1]);
+                    opName = new QName(values[1]);
                 }
                 if (values[0] != null) {
                     serviceName = values[0];
@@ -112,13 +112,13 @@ axis2_svc_t* AXIS2_CALL axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
 }
 
 /**
- * finds the operation
+ * finds the op
  *
  * @param service
  * @param msg_ctx
  * @return
  */
-axis2_operation_t* AXIS2_CALL axis2_soap_body_disp_find_operation(axis2_msg_ctx_t *msg_ctx, 
+axis2_op_t* AXIS2_CALL axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
                                 axis2_env_t **env,
                                 axis2_svc_t *svc)
 {
@@ -132,10 +132,10 @@ axis2_operation_t* AXIS2_CALL axis2_soap_body_disp_find_operation(axis2_msg_ctx_
             return null;
         } else {
             log.debug("Checking for Operation using SOAP message body's first child's local name : " + bodyFirstChild.getLocalName());
-            operationName = new QName(bodyFirstChild.getLocalName());
+            opName = new QName(bodyFirstChild.getLocalName());
         }
 
-        return service.getOperation(operationName);
+        return service.getOperation(opName);
 */    
     return NULL;
 }
@@ -147,7 +147,7 @@ axis2_status_t AXIS2_CALL axis2_soap_body_disp_invoke(struct axis2_handler * han
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);    
     
     msg_ctx->ops->find_svc = axis2_soap_body_disp_find_svc;
-    msg_ctx->ops->find_operation = axis2_soap_body_disp_find_operation;
+    msg_ctx->ops->find_op = axis2_soap_body_disp_find_op;
     
     return axis2_disp_invoke(handler, env, msg_ctx);
 }

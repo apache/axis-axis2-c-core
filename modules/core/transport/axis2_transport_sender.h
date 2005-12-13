@@ -52,8 +52,8 @@ typedef struct axis2_transport_sender_ops axis2_transport_sender_ops_t;
  */
 
 /** 
- * @brief Description Transport Sender operations struct
- * Encapsulator struct for operations of axis2_transport_sender
+ * @brief Description Transport Sender ops struct
+ * Encapsulator struct for ops of axis2_transport_sender
  */
 AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
 {

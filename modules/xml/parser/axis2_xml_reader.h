@@ -56,8 +56,8 @@ enum axis2_xml_reader_event_types
 };
 
   /**
-    * \brief AXIS2_XML_READER operations
-    * Encapsulator struct for operations of axis2_xml_reader
+    * \brief AXIS2_XML_READER ops
+    * Encapsulator struct for ops of axis2_xml_reader
     */
 
 AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
@@ -249,7 +249,7 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * @param parser pointer to axis2_xml_reader
          * @param env environment, MUST NOT be NULL.
          * @param data data values to be destroyed
-         * @return status of the operation, AXIS2_SUCCESS on success,
+         * @return status of the op, AXIS2_SUCCESS on success,
          *                  AXIS2_FAILURE on error.
          */         
         axis2_status_t (AXIS2_CALL *xml_free)(axis2_xml_reader_t *parser,

@@ -18,8 +18,8 @@
 #define AXIS2_WSDL_SOAP_OPERATION_H
 
 /**
- * @file axis2_wsdl_soap_operation.h
- * @brief Axis2 Wsdl soap operation interface
+ * @file axis2_wsdl_soap_op.h
+ * @brief Axis2 Wsdl soap op interface
  */
 
 #include <axis2.h>
@@ -36,42 +36,42 @@ extern "C"
 {
 #endif
 
-typedef struct axis2_wsdl_soap_operation axis2_wsdl_soap_operation_t;
-typedef struct axis2_wsdl_soap_operation_ops axis2_wsdl_soap_operation_ops_t;
+typedef struct axis2_wsdl_soap_op axis2_wsdl_soap_op_t;
+typedef struct axis2_wsdl_soap_op_ops axis2_wsdl_soap_op_ops_t;
 
-/** @defgroup axis2_wsdl_soap_operation Wsdl Extensible Element
+/** @defgroup axis2_wsdl_soap_op Wsdl Extensible Element
  * @ingroup axis2_wsdl
  * @{
  */
 
 /** 
- * @brief Wsdl Extensible Element operations struct
- * Encapsulator struct for operations of axis2_wsdl_soap_operation
+ * @brief Wsdl Extensible Element ops struct
+ * Encapsulator struct for ops of axis2_wsdl_soap_op
  */
-AXIS2_DECLARE_DATA struct axis2_wsdl_soap_operation_ops
+AXIS2_DECLARE_DATA struct axis2_wsdl_soap_op_ops
 {
 	/** De-allocate memory
   	 * @return status code
   	 */
 	axis2_status_t (AXIS2_CALL *free)(
-                    axis2_wsdl_soap_operation_t *wsdl_soap_operation,
+                    axis2_wsdl_soap_op_t *wsdl_soap_op,
 			        axis2_env_t **env);
 
     axis2_char_t *(AXIS2_CALL *
-    get_style) (axis2_wsdl_soap_operation_t *soap_operation,
+    get_style) (axis2_wsdl_soap_op_t *soap_op,
                                         axis2_env_t **env);
         
     axis2_status_t (AXIS2_CALL *
-    set_style) (axis2_wsdl_soap_operation_t *soap_operation,
+    set_style) (axis2_wsdl_soap_op_t *soap_op,
                                         axis2_env_t **env,
                                         axis2_char_t *style);
     
     axis2_char_t * (AXIS2_CALL *
-    get_soap_action) (axis2_wsdl_soap_operation_t *soap_operation,
+    get_soap_action) (axis2_wsdl_soap_op_t *soap_op,
                                         axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
-    set_soap_action) (axis2_wsdl_soap_operation_t *soap_operation,
+    set_soap_action) (axis2_wsdl_soap_op_t *soap_op,
                                         axis2_env_t **env,
                                         axis2_char_t *soap_action);
 };
@@ -80,9 +80,9 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_soap_operation_ops
  * @brief Wsdl container struct
  *	Property for params  
  */  
-AXIS2_DECLARE_DATA struct axis2_wsdl_soap_operation
+AXIS2_DECLARE_DATA struct axis2_wsdl_soap_op
 {
-	axis2_wsdl_soap_operation_ops_t *ops;
+	axis2_wsdl_soap_op_ops_t *ops;
     axis2_wsdl_extensible_element_t *extensible_element;
 };
 
@@ -90,16 +90,16 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_soap_operation
  * Creates wsdl property struct
  * @return pointer to newly created wsdl property
  */
-AXIS2_DECLARE(axis2_wsdl_soap_operation_t *) 
-axis2_wsdl_soap_operation_create (axis2_env_t **env);
+AXIS2_DECLARE(axis2_wsdl_soap_op_t *) 
+axis2_wsdl_soap_op_create (axis2_env_t **env);
 
 /**
  * Creates wsdl property struct
  * @param type 
  * @return pointer to newly created wsdl property
  */
-AXIS2_DECLARE(axis2_wsdl_soap_operation_t *) 
-axis2_wsdl_soap_operation_create_with_type (axis2_env_t **env, axis2_qname_t *type);
+AXIS2_DECLARE(axis2_wsdl_soap_op_t *) 
+axis2_wsdl_soap_op_create_with_type (axis2_env_t **env, axis2_qname_t *type);
 
 /*************************** Function macros **********************************/
 

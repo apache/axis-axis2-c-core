@@ -54,7 +54,7 @@ extern "C"
 
 GUTHTHILA_DECLARE (guththila_log_t *)
 guththila_log_create (guththila_allocator_t * allocator,
-                      guththila_log_ops_t * operations);
+                      guththila_log_ops_t * ops);
 
 
 

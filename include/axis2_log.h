@@ -51,9 +51,9 @@ extern "C"
     } axis2_log_levels_t;
 
   /** 
-    * \brief Axis2 log operations struct
+    * \brief Axis2 log ops struct
     *
-    * Encapsulator struct for operations of axis2_log
+    * Encapsulator struct for ops of axis2_log
     */
     typedef struct axis2_log_ops
     {
@@ -69,7 +69,7 @@ extern "C"
         * writes to the log
         * @param buffer buffer to be written to log
         * @param size size of the buffer to be written to log
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *write) (const void *buffer, size_t count);
     } axis2_log_ops_t;
@@ -77,11 +77,11 @@ extern "C"
   /** 
     * \brief Axis2 Log struct
     *
-    * Log is the encapsulating struct for all log related data and operations
+    * Log is the encapsulating struct for all log related data and ops
     */
     typedef struct axis2_log
     {
-        /** Log related operations */
+        /** Log related ops */
         struct axis2_log_ops *ops;
         /** Log level */
         axis2_log_levels_t level;

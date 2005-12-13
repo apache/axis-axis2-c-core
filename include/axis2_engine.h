@@ -45,8 +45,8 @@ struct axis2_soap_fault;
 
     
 /** 
- * @brief Message Context operations struct
- * Encapsulator struct for operations of axis2_engine
+ * @brief Message Context ops struct
+ * Encapsulator struct for ops of axis2_engine
  */  
 struct axis2_engine_ops
 {

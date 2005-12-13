@@ -44,8 +44,8 @@ typedef struct axis2_conf_ctx axis2_conf_ctx_t;
 struct axis2_engine_config;
     
 /** 
- * @brief Message Context operations struct
- * Encapsulator struct for operations of axis2_conf_ctx
+ * @brief Message Context ops struct
+ * Encapsulator struct for ops of axis2_conf_ctx
  */  
 struct axis2_conf_ctx_ops
 {
@@ -63,29 +63,29 @@ struct axis2_conf_ctx_ops
      */
     struct axis2_engine_config* (AXIS2_CALL *get_engine_config)(struct axis2_conf_ctx *conf_ctx, 
         axis2_env_t **env);
-    axis2_hash_t* (AXIS2_CALL *get_operation_ctx_map)(struct axis2_conf_ctx *conf_ctx, 
+    axis2_hash_t* (AXIS2_CALL *get_op_ctx_map)(struct axis2_conf_ctx *conf_ctx, 
         axis2_env_t **env);
     axis2_hash_t* (AXIS2_CALL *get_svc_ctx_map)(struct axis2_conf_ctx *conf_ctx, 
         axis2_env_t **env);
     axis2_hash_t* (AXIS2_CALL *get_svc_grp_ctx_map)(struct axis2_conf_ctx *conf_ctx, 
                                                                 axis2_env_t **env);
     /**
-     * Register a struct axis2_operation_ctx against a given Message ID.
+     * Register a struct axis2_op_ctx against a given Message ID.
      *
      * @param messageID
      * @param mepContext
      */
-    axis2_status_t (AXIS2_CALL *register_operation_ctx)(struct axis2_conf_ctx *conf_ctx, 
+    axis2_status_t (AXIS2_CALL *register_op_ctx)(struct axis2_conf_ctx *conf_ctx, 
                                                                     axis2_env_t **env,
                                                                     axis2_char_t *message_id,
-                                                                    axis2_operation_ctx_t *operation_ctx);
+                                                                    axis2_op_ctx_t *op_ctx);
     /**
-     * get axis2_operation_ctx struct given a Message ID
+     * get axis2_op_ctx struct given a Message ID
      *
      * @param message_id
-     * @return struct axis2_operation_ctx * <code>struct axis2_operation_ctx *<code>
+     * @return struct axis2_op_ctx * <code>struct axis2_op_ctx *<code>
      */
-    axis2_operation_ctx_t* (AXIS2_CALL *get_operation_ctx)(struct axis2_conf_ctx *conf_ctx, 
+    axis2_op_ctx_t* (AXIS2_CALL *get_op_ctx)(struct axis2_conf_ctx *conf_ctx, 
                                                                             axis2_env_t **env,
                                                                             axis2_char_t *message_id);
     /**
@@ -178,11 +178,11 @@ AXIS2_DECLARE(axis2_conf_ctx_t*) AXIS2_CALL create(axis2_env_t **env, struct axi
 #define AXIS2_CONF_CTX_SET_ENGINE_CONFIG(conf_ctx, env, engine_config) ((conf_ctx)->ops->set_engine_config(conf_ctx, env, engine_config))
 #define AXIS2_CONF_CTX_GET_BASE(conf_ctx, env) ((conf_ctx)->ops->get_base(conf_ctx, env))
 #define AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env) ((conf_ctx)->ops->get_engine_config(conf_ctx, env))
-#define AXIS2_CONF_CTX_GET_OPERATION_CTX_MAP(conf_ctx, env) ((conf_ctx)->ops->get_operation_ctx_map(conf_ctx, env))
+#define AXIS2_CONF_CTX_GET_OPERATION_CTX_MAP(conf_ctx, env) ((conf_ctx)->ops->get_op_ctx_map(conf_ctx, env))
 #define AXIS2_CONF_CTX_GET_SVC_CTX_MAP(conf_ctx, env) ((conf_ctx)->ops->get_svc_ctx_map(conf_ctx, env))
 #define AXIS2_CONF_CTX_GET_SVC_GRP_CTX_MAP(conf_ctx, env) ((conf_ctx)->ops->get_svc_grp_ctx_map(conf_ctx, env))
-#define AXIS2_CONF_CTX_REGISTER_OPERATION_CTX(conf_ctx, env, message_id, operation_ctx) ((conf_ctx)->ops->register_operation_ctx(conf_ctx, env, message_id, operation_ctx))
-#define AXIS2_CONF_CTX_GET_OPERATION_CTX(conf_ctx, env, message_id) ((conf_ctx)->ops->get_operation_ctx(conf_ctx, env, message_id))
+#define AXIS2_CONF_CTX_REGISTER_OPERATION_CTX(conf_ctx, env, message_id, op_ctx) ((conf_ctx)->ops->register_op_ctx(conf_ctx, env, message_id, op_ctx))
+#define AXIS2_CONF_CTX_GET_OPERATION_CTX(conf_ctx, env, message_id) ((conf_ctx)->ops->get_op_ctx(conf_ctx, env, message_id))
 #define AXIS2_CONF_CTX_REGISTER_SVC_CTX(conf_ctx, env, svc_id, svc_ctx) ((conf_ctx)->ops->register_svc_ctx(conf_ctx, env, svc_id, svc_ctx))
 #define AXIS2_CONF_CTX_GET_SVC_CTX(conf_ctx, env, svc_id) ((conf_ctx)->ops->get_svc_ctx(conf_ctx, env, svc_id))
 #define AXIS2_CONF_CTX_REGISTER_SVC_GRP_CTX(conf_ctx, env, svc_grp_id, svc_grp_ctx) ((conf_ctx)->ops->register_svc_grp_ctx(conf_ctx, env, svc_grp_id, svc_grp_ctx))

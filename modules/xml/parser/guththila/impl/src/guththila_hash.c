@@ -224,8 +224,8 @@ guththila_hashfunc_default (const guththila_char_t * char_key,
      * number 33 and a few other equally good numbers like 17, 31, 63,
      * 127 and 129 have nevertheless a great advantage to the remaining
      * numbers in the large set of possible multipliers: their multiply
-     * operation can be replaced by a faster operation based on just one
-     * shift plus either a single addition or subtraction operation. And
+     * op can be replaced by a faster op based on just one
+     * shift plus either a single addition or subtraction op. And
      * because a hash function has to both distribute good _and_ has to
      * be very fast to compute, those few numbers should be preferred.
      *

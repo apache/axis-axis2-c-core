@@ -43,8 +43,8 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
 
 
   /**
-    * \brief axis2_xml_writer operations
-    * Encapsulator struct for operations of axis2_xml_writer
+    * \brief axis2_xml_writer ops
+    * Encapsulator struct for ops of axis2_xml_writer
     */
 
     AXIS2_DECLARE_DATA struct axis2_xml_writer_ops 
@@ -53,7 +53,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
         * Free xml writer
         * @param writer pointer to xml_writer struct to be freed
         * @param env environment, MUST NOT be NULL.
-        * @returns status of the operation. 
+        * @returns status of the op. 
         *       AXIS2_SUCCESS on success and AXIS2_FAILURE on error
         */
         
@@ -65,7 +65,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
         *  @param writer pointer to xml writer struct
         *  @param env environment. MUST NOT be NULL.
         *  @param localname localname of the tag, May not be NULL.
-        *  @return the status of the operation, AXIS2_SUCCESS on success
+        *  @return the status of the op, AXIS2_SUCCESS on success
                     AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *write_start_element)(
@@ -77,7 +77,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
         *  the element
         *  @param writer xml_writer struct
         *  @param env environment, MUST NOT be NULL.
-        *  @return status of the operation. AXIS2_SUCCESS on success.
+        *  @return status of the op. AXIS2_SUCCESS on success.
         *           AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *end_start_element)(axis2_xml_writer_t *writer,
@@ -89,7 +89,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param localname localname of the tag, May not be null.
          * @param namespace_uri the namespace URI of the the pefix
          *        to use.may not be null.
-         * @returns status of the operation, AXIS2_SUCCESS on success.
+         * @returns status of the op, AXIS2_SUCCESS on success.
          *          AXIS2_FAILURE on error
          */
         axis2_status_t (AXIS2_CALL *write_start_element_with_namespace)(
@@ -105,7 +105,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param localname localname of the tag, May not be null.
          * @param namespace_uri namespace to bind the prefix to
          * @param prefix the prefix to the tag.May not be NULL.
-         * @return status of the operation 
+         * @return status of the op 
                    AXIS2_SUCCESS on success. AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_start_element_with_namespace_prefix)(
@@ -119,7 +119,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param writer xml_writer
          * @param env environment
          * @param localname localname 
-         * @return status of the operation AXIS2_SUCCESS on success,
+         * @return status of the op AXIS2_SUCCESS on success,
          *                AXIS2_FAILURE on error.
          */         
         axis2_status_t (AXIS2_CALL *write_empty_element)(
@@ -132,7 +132,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param env environment
          * @param localname localname 
          * @param namespace uri
-         * @return status of the operation, AXIS2_SUCCESS on success,
+         * @return status of the op, AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
         
@@ -148,7 +148,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param localname localname
          * @param namespace_uri namespace uri 
          * @param prefix prefix
-         * @return status of the operation, AXIS2_SUCCESS on success,
+         * @return status of the op, AXIS2_SUCCESS on success,
          *                    AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_empty_element_with_namespace_prefix)(
@@ -161,7 +161,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * write end tag with correct localname prefix resolved internally 
          * @param writer xml writer
          * @param env environment
-         * @return status of the operation, AXIS2_SUCCESS on success,
+         * @return status of the op, AXIS2_SUCCESS on success,
          *            AXIS2_FAILURE on failure 
          */
         axis2_status_t (AXIS2_CALL *write_end_element)(axis2_xml_writer_t *writer,
@@ -170,7 +170,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * write end document
          * @param writer xml writer
          * @param env environment
-         * @return status of the operation AXIS2_SUCCESS on success,
+         * @return status of the op AXIS2_SUCCESS on success,
          *              AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_end_document)(axis2_xml_writer_t *writer,
@@ -181,7 +181,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param env environment
          * @param localname localname 
          * @param value text value of attribute
-         * @return status of the operation AXIS2_SUCCESS on success,
+         * @return status of the op AXIS2_SUCCESS on success,
          *                 AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_attribute)(axis2_xml_writer_t *writer,
@@ -194,7 +194,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          *  @param localname
          *  @param value text value of attribute
          *  @param namespace uri namespace uri
-         *  @return status code of the operation AXIS2_SUCCESS on success,
+         *  @return status code of the op AXIS2_SUCCESS on success,
          *                    AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_attribute_with_namespace)(
@@ -223,7 +223,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param env environment
          * @param prefix prefix 
          * @param namespace uri namespaceuri
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
         
@@ -235,7 +235,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param writer xml_writer
          * @param env environment
          * @param namespace uri namespaceuri
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
 
@@ -247,7 +247,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param writer xml_writer
          * @param env environment
          * @param value value
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
                                                     
@@ -259,7 +259,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param writer xml_writer
          * @param env environment
          * @param target pi target 
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
 
@@ -274,7 +274,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param env environment
          * @param target pi target
          * @param data  pi data
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
                                    
@@ -288,7 +288,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param writer xml_writer
          * @param env environment
          * @param data  cdata
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */                                           
         axis2_status_t (AXIS2_CALL *write_cdata)(axis2_xml_writer_t *writer,
@@ -300,7 +300,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param writer xml_writer
          * @param env environment
          * @param dtd  dtd
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_dtd)(axis2_xml_writer_t *writer,
@@ -312,7 +312,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param writer xml_writer
          * @param env environment
          * @param name name
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_entity_ref)(
@@ -323,7 +323,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
         /**
          * @param writer xml_writer
          * @param env environment
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_start_document)(
@@ -335,7 +335,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param writer xml_writer
          * @param env environment
          * @param version version 
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_start_document_with_version)(
@@ -348,7 +348,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param env environment
          * @param version version
          * @param encoding encoding
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_start_document_with_version_encoding)(
@@ -361,7 +361,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param writer xml_writer
          * @param env environment
          * @param text text 
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */                                         
         axis2_status_t (AXIS2_CALL *write_characters)(
@@ -373,7 +373,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param writer xml_writer
          * @param env environment
          * @param uri uri
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
        axis2_char_t* (AXIS2_CALL *get_prefix)(  axis2_xml_writer_t *writer,
@@ -385,7 +385,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param env environment
          * @param prefix prefix
          * @param uri uri
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
        axis2_status_t (AXIS2_CALL *set_prefix)(  axis2_xml_writer_t *writer,
@@ -397,7 +397,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param writer xml_writer
          * @param env environment
          * @param uri uri
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */                                                 
        axis2_status_t (AXIS2_CALL *set_default_prefix)(
@@ -410,7 +410,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param env environment
          * @param text text
          * @param in_attr 
-         * @return status of operation AXIS2_SUCCESS on success,
+         * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *write_encoded)(

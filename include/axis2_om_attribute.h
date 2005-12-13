@@ -41,8 +41,8 @@ extern "C"
  */
 
 /**
- *   \brief OM attribute operations struct
- *   operations Encapsulator struct for axis2_om_attribute
+ *   \brief OM attribute ops struct
+ *   ops Encapsulator struct for axis2_om_attribute
  */
  AXIS2_DECLARE_DATA   typedef struct axis2_om_attribute_ops
     {
@@ -50,7 +50,7 @@ extern "C"
         * Free an axis2_om_attribute struct
         * @param  om_attribute pointer to attribute struct to be freed
         * @param  env Environment. MUST NOT be NULL
-        * @return satus of the operation. AXIS2_SUCCESS on success 
+        * @return satus of the op. AXIS2_SUCCESS on success 
         *         else AXIS2_FAILURE
         */
 
@@ -71,11 +71,11 @@ extern "C"
                                 axis2_env_t **env);
 
       /**
-        * Serialize operation
+        * Serialize op
         * @param om_attribute pointer to attribute struct to be serialized
         * @param env Environment. MUST NOT be NULL,
         * @param om_output OM output handler to be used in serializing
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
 
         int (AXIS2_CALL *serialize)(struct axis2_om_attribute *om_attribute,
@@ -154,7 +154,7 @@ extern "C"
     */
     typedef struct axis2_om_attribute
     {
-        /** operations of attribute struct */
+        /** ops of attribute struct */
         axis2_om_attribute_ops_t *ops;
        
     } axis2_om_attribute_t;

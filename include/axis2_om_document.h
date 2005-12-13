@@ -46,8 +46,8 @@ extern "C"
  */
 
   /** 
-    * @brief OM document operations struct
-    * Encapsulator struct for operations of axis2_om_document_t
+    * @brief OM document ops struct
+    * Encapsulator struct for ops of axis2_om_document_t
     */
  AXIS2_DECLARE_DATA   typedef struct axis2_om_document_ops
     {
@@ -56,7 +56,7 @@ extern "C"
         * Free document struct
         * @param document pointer to axis2_om_document_t struct to be freed
         * @param env Environment. MUST NOT be NULL    
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *free) (struct axis2_om_document *document,
                                            axis2_env_t **env);
@@ -76,7 +76,7 @@ extern "C"
         * @param document document to add the child. cannot be NULL.
         * @param envi Environment. MUST NOT be NULL.        
         * @param child child node to be added. cannot be NULL.
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *add_child)(struct axis2_om_document * document,
                                                axis2_env_t **env,
@@ -119,7 +119,7 @@ extern "C"
     */
     typedef struct axis2_om_document
     {
-        /** operations of document struct */
+        /** ops of document struct */
         axis2_om_document_ops_t *ops;
       
     } axis2_om_document_t;

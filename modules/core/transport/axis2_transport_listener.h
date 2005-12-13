@@ -48,8 +48,8 @@ typedef struct axis2_transport_listener_ops axis2_transport_listener_ops_t;
  */
 
 /** 
- * @brief Description Transport Listener operations struct
- * Encapsulator struct for operations of axis2_transport_listener
+ * @brief Description Transport Listener ops struct
+ * Encapsulator struct for ops of axis2_transport_listener
  */
 AXIS2_DECLARE_DATA struct axis2_transport_listener_ops
 {

@@ -29,7 +29,7 @@ axis2_status_t AXIS2_CALL axis2_addr_disp_invoke (struct axis2_handler * handler
                                                 struct axis2_msg_ctx *msg_ctx);
 axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                     axis2_env_t **env);
-axis2_operation_t* AXIS2_CALL axis2_addr_disp_find_operation(axis2_msg_ctx_t *msg_ctx, 
+axis2_op_t* AXIS2_CALL axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
                                 axis2_env_t **env,
                                 axis2_svc_t *svc);
 
@@ -69,7 +69,7 @@ axis2_disp_t* AXIS2_CALL axis2_addr_disp_create(axis2_env_t **env)
 
     
 /** The struct that inherits from this struct
-    should implement the find_service and find_operation methods and assing the 
+    should implement the find_service and find_op methods and assing the 
     respective function pointers in the base struct.
     Here we have only the dummy implementation to gauard against erros due to 
     the failure to provide an impl version by mistake.
@@ -108,7 +108,7 @@ axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                 return NULL;
             }
             
-            url_tokens = axis2_parse_request_url_for_svc_and_operation(env, address);
+            url_tokens = axis2_parse_request_url_for_svc_and_op(env, address);
             
             if (url_tokens)
             {                
@@ -140,13 +140,13 @@ axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
 }
 
 /**
- * finds the operation
+ * finds the op
  *
  * @param service
  * @param msg_ctx
  * @return
  */
-axis2_operation_t* AXIS2_CALL axis2_addr_disp_find_operation(axis2_msg_ctx_t *msg_ctx, 
+axis2_op_t* AXIS2_CALL axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
                                 axis2_env_t **env,
                                 axis2_svc_t *svc)
 {
@@ -193,21 +193,21 @@ axis2_status_t AXIS2_CALL axis2_addr_disp_invoke(struct axis2_handler * handler,
             conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
             if (conf_ctx)
             {
-                axis2_operation_ctx_t *operation_ctx = NULL;
+                axis2_op_ctx_t *op_ctx = NULL;
                 axis2_char_t *msg_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
-                operation_ctx = AXIS2_CONF_CTX_GET_OPERATION_CTX(conf_ctx, env, msg_id);
-                if (operation_ctx)
+                op_ctx = AXIS2_CONF_CTX_GET_OPERATION_CTX(conf_ctx, env, msg_id);
+                if (op_ctx)
                 {
-                    axis2_operation_t *operation = NULL;
-                    operation = AXIS2_OPERATION_CTX_GET_OPERATION(operation_ctx, env);
-                    if (operation)
+                    axis2_op_t *op = NULL;
+                    op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);
+                    if (op)
                     {
                         axis2_svc_ctx_t *svc_ctx = NULL;
-                        AXIS2_MSG_CTX_SET_OPERATION_CTX(msg_ctx, env, operation_ctx);
-                        AXIS2_MSG_CTX_SET_OPERATION(msg_ctx, env, operation);
-                        /*TODO : AXIS2_OPERATION_REGISTER_OPERATION_CTX(operation, env, operation_ctx);*/
+                        AXIS2_MSG_CTX_SET_OPERATION_CTX(msg_ctx, env, op_ctx);
+                        AXIS2_MSG_CTX_SET_OPERATION(msg_ctx, env, op);
+                        /*TODO : AXIS2_OPERATION_REGISTER_OPERATION_CTX(op, env, op_ctx);*/
                         
-                        svc_ctx = AXIS2_OPERATION_CTX_GET_PARENT(operation_ctx, env);
+                        svc_ctx = AXIS2_OPERATION_CTX_GET_PARENT(op_ctx, env);
                         if (svc_ctx)
                         {
                             axis2_svc_t *svc = NULL;
@@ -233,7 +233,7 @@ axis2_status_t AXIS2_CALL axis2_addr_disp_invoke(struct axis2_handler * handler,
     }
     
     msg_ctx->ops->find_svc = axis2_addr_disp_find_svc;
-    msg_ctx->ops->find_operation = axis2_addr_disp_find_operation;
+    msg_ctx->ops->find_op = axis2_addr_disp_find_op;
     
     return axis2_disp_invoke(handler, env, msg_ctx);
 }

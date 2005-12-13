@@ -2,8 +2,8 @@
 #define AXIS2_WSDL_BINDING_OPERATION_H
 
 /**
- * @file axis2_wsdl_binding_operation.h
- * @brief axis2 wsdl binding_operation interface. 
+ * @file axis2_wsdl_binding_op.h
+ * @brief axis2 wsdl binding_op interface. 
  */
 #include <axis2.h>
 #include <axis2_error.h>
@@ -16,7 +16,7 @@
 #include <axis2_qname.h>
 #include <axis2_wsdl_extensible_component.h>
 #include <axis2_wsdl_binding_msg_ref.h>
-#include <axis2_wsdl_operation.h>
+#include <axis2_wsdl_op.h>
 #include <axis2_wsdl_binding_fault.h>
 
 #ifdef __cplusplus
@@ -27,25 +27,25 @@ extern "C"
 struct axis2_wsdl_binding_msg_ref;
 struct axis2_wsdl_binding_fault;
 struct axis2_wsdl_extensible_component;	
-typedef struct axis2_wsdl_binding_operation_ops axis2_wsdl_binding_operation_ops_t;
-typedef struct axis2_wsdl_binding_operation axis2_wsdl_binding_operation_t;
+typedef struct axis2_wsdl_binding_op_ops axis2_wsdl_binding_op_ops_t;
+typedef struct axis2_wsdl_binding_op axis2_wsdl_binding_op_t;
 	
-/** @defgroup axis2_wsdl_binding_operation Wsdl Binding Operation
+/** @defgroup axis2_wsdl_binding_op Wsdl Binding Operation
   * @ingroup axis2_wsdl
   * @{
   */
 
 /** 
- * @brief Wsdl Binding Operation operations struct
- * Encapsulator struct for operations of axis2_wsdl_binding_operation
+ * @brief Wsdl Binding Operation ops struct
+ * Encapsulator struct for ops of axis2_wsdl_binding_op
  */
-struct axis2_wsdl_binding_operation_ops
+struct axis2_wsdl_binding_op_ops
 {
 	/** Deallocate memory
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (axis2_wsdl_binding_operation_t *wsdl_binding_operation, 
+    free) (axis2_wsdl_binding_op_t *wsdl_binding_op, 
                                         axis2_env_t **env);
     
     /**
@@ -54,7 +54,7 @@ struct axis2_wsdl_binding_operation_ops
      * @return message reference
      */
     struct axis2_wsdl_binding_msg_ref * (AXIS2_CALL *
-    get_input) (axis2_wsdl_binding_operation_t *binding_operation,
+    get_input) (axis2_wsdl_binding_op_t *binding_op,
                                             axis2_env_t **env);
     
     
@@ -64,28 +64,28 @@ struct axis2_wsdl_binding_operation_ops
      * @param input
      */
     axis2_status_t (AXIS2_CALL *
-    set_input) (axis2_wsdl_binding_operation_t *binding_operation,
+    set_input) (axis2_wsdl_binding_op_t *binding_op,
                                             axis2_env_t **env,
                                             struct axis2_wsdl_binding_msg_ref *input);
     
     /**
      * Method getOperation
      *
-     * @return operation
+     * @return op
      */
     void *(AXIS2_CALL *
-    get_operation) (axis2_wsdl_binding_operation_t *binding_operation,
+    get_op) (axis2_wsdl_binding_op_t *binding_op,
                                         axis2_env_t **env);
     
     /**
      * Method setOperation
      *
-     * @param operation
+     * @param op
      */
     axis2_status_t (AXIS2_CALL *
-    set_operation)(axis2_wsdl_binding_operation_t *binding_operation,
+    set_op)(axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env,
-                                                void *operation);
+                                                void *op);
     
     /**
      * Method getOutput
@@ -93,7 +93,7 @@ struct axis2_wsdl_binding_operation_ops
      * @return message reference
      */
     struct axis2_wsdl_binding_msg_ref * (AXIS2_CALL *
-    get_output)(axis2_wsdl_binding_operation_t *binding_operation,
+    get_output)(axis2_wsdl_binding_op_t *binding_op,
                                             axis2_env_t **env);
     
     /**
@@ -102,7 +102,7 @@ struct axis2_wsdl_binding_operation_ops
      * @param output
      */
     axis2_status_t (AXIS2_CALL *
-    set_output) (axis2_wsdl_binding_operation_t *binding_operation,
+    set_output) (axis2_wsdl_binding_op_t *binding_op,
                                             axis2_env_t **env,
                                             struct axis2_wsdl_binding_msg_ref *output);
     
@@ -112,7 +112,7 @@ struct axis2_wsdl_binding_operation_ops
      * @return QName
      */
     axis2_qname_t *(AXIS2_CALL *
-    get_qname) (axis2_wsdl_binding_operation_t *binding_operation,
+    get_qname) (axis2_wsdl_binding_op_t *binding_op,
                                         axis2_env_t **env);
     
     /**
@@ -121,7 +121,7 @@ struct axis2_wsdl_binding_operation_ops
      * @param name
      */
     axis2_status_t (AXIS2_CALL *
-    set_qname) (axis2_wsdl_binding_operation_t *binding_operation,
+    set_qname) (axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env,
                                                 axis2_qname_t *qname);
     
@@ -131,7 +131,7 @@ struct axis2_wsdl_binding_operation_ops
      * @param inFault
      */
     axis2_status_t (AXIS2_CALL *
-    add_infault) (axis2_wsdl_binding_operation_t *binding_operation,
+    add_infault) (axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env,
                                                 struct axis2_wsdl_binding_fault *infault);
     
@@ -141,25 +141,25 @@ struct axis2_wsdl_binding_operation_ops
      * @param outFault
      */
     axis2_status_t (AXIS2_CALL *
-    add_outfault) (axis2_wsdl_binding_operation_t *binding_operation,
+    add_outfault) (axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env,
                                                 struct axis2_wsdl_binding_fault *outfault);
     
     axis2_linked_list_t * (AXIS2_CALL *
-    get_infaults) (axis2_wsdl_binding_operation_t *binding_operation,
+    get_infaults) (axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
-    set_infaults) (axis2_wsdl_binding_operation_t *binding_operation,
+    set_infaults) (axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env,
                                                 axis2_linked_list_t *infaults);
     
     axis2_linked_list_t * (AXIS2_CALL *
-    get_outfaults) (axis2_wsdl_binding_operation_t *binding_operation,
+    get_outfaults) (axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
-    set_outfaults) (axis2_wsdl_binding_operation_t *binding_operation,
+    set_outfaults) (axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env,
                                                 axis2_linked_list_t *outfaults);
 };
@@ -167,67 +167,67 @@ struct axis2_wsdl_binding_operation_ops
 /**
  * @brief Wsdl Binding Operation struct
  * Axis2 Wsdl Binding Operation
- * Binding Operation is used to hold wsdl_binding_operation properties
+ * Binding Operation is used to hold wsdl_binding_op properties
  */
-struct axis2_wsdl_binding_operation
+struct axis2_wsdl_binding_op
 {
-	axis2_wsdl_binding_operation_ops_t *ops;
+	axis2_wsdl_binding_op_ops_t *ops;
     struct axis2_wsdl_extensible_component *extensible_component;
 };
 
 /** create Wsdl Binding Operation struct
- * @return pointer to newly created wsdl wsdl_binding_operation
+ * @return pointer to newly created wsdl wsdl_binding_op
  */
-AXIS2_DECLARE(axis2_wsdl_binding_operation_t *) 
-axis2_wsdl_binding_operation_create (axis2_env_t **env);
+AXIS2_DECLARE(axis2_wsdl_binding_op_t *) 
+axis2_wsdl_binding_op_create (axis2_env_t **env);
 
 /**************************** Start of function macros ************************/
 
-#define AXIS2_WSDL_BINDING_OPERATION_FREE(wsdl_binding_operation, env) \
-		((wsdl_binding_operation->ops)->free (wsdl_binding_operation, env))
+#define AXIS2_WSDL_BINDING_OPERATION_FREE(wsdl_binding_op, env) \
+		((wsdl_binding_op->ops)->free (wsdl_binding_op, env))
 
-#define AXIS2_WSDL_BINDING_OPERATION_SET_INPUT(wsdl_binding_operation, env, \
+#define AXIS2_WSDL_BINDING_OPERATION_SET_INPUT(wsdl_binding_op, env, \
 		inut) \
-		((wsdl_binding_operation->ops)->set_input(wsdl_binding_operation , env, \
+		((wsdl_binding_op->ops)->set_input(wsdl_binding_op , env, \
             input)
 	
-#define AXIS2_WSDL_BINDING_OPERATION_GET_OPERATION(wsdl_binding_operation, env) \
-		((wsdl_binding_operation->ops)->get_operation(wsdl_binding_operation, env))
+#define AXIS2_WSDL_BINDING_OPERATION_GET_OPERATION(wsdl_binding_op, env) \
+		((wsdl_binding_op->ops)->get_op(wsdl_binding_op, env))
 
-#define AXIS2_WSDL_BINDING_OPERATION_SET_OPERATION(wsdl_binding_operation, env, \
-		key, operation) \
-		((wsdl_binding_operation->ops)->set_operation(wsdl_binding_operation, env,\
-            key, operation))
+#define AXIS2_WSDL_BINDING_OPERATION_SET_OPERATION(wsdl_binding_op, env, \
+		key, op) \
+		((wsdl_binding_op->ops)->set_op(wsdl_binding_op, env,\
+            key, op))
 		
-#define AXIS2_WSDL_BINDING_OPERATION_GET_OUTPUT(wsdl_binding_operation, env) \
-		((wsdl_binding_operation->ops)->get_output(wsdl_binding_operation, env))
+#define AXIS2_WSDL_BINDING_OPERATION_GET_OUTPUT(wsdl_binding_op, env) \
+		((wsdl_binding_op->ops)->get_output(wsdl_binding_op, env))
         
-#define AXIS2_WSDL_BINDING_OPERATION_SET_OUTPUT(wsdl_binding_operation, env, output) \
-		((wsdl_binding_operation->ops)->set_output(wsdl_binding_operation, env, output))
+#define AXIS2_WSDL_BINDING_OPERATION_SET_OUTPUT(wsdl_binding_op, env, output) \
+		((wsdl_binding_op->ops)->set_output(wsdl_binding_op, env, output))
 
-#define AXIS2_WSDL_BINDING_OPERATION_GET_QNAME(wsdl_binding_operation, env) \
-		((wsdl_binding_operation->ops)->get_qname(wsdl_binding_operation, env))
+#define AXIS2_WSDL_BINDING_OPERATION_GET_QNAME(wsdl_binding_op, env) \
+		((wsdl_binding_op->ops)->get_qname(wsdl_binding_op, env))
         
-#define AXIS2_WSDL_BINDING_OPERATION_SET_QNAME(wsdl_binding_operation, env, qname) \
-		((wsdl_binding_operation->ops)->set_qname(wsdl_binding_operation, env, qname))
+#define AXIS2_WSDL_BINDING_OPERATION_SET_QNAME(wsdl_binding_op, env, qname) \
+		((wsdl_binding_op->ops)->set_qname(wsdl_binding_op, env, qname))
 
-#define AXIS2_WSDL_BINDING_OPERATION_ADD_INFAULT(wsdl_binding_operation, env, infault) \
-		((wsdl_binding_operation->ops)->add_infault(wsdl_binding_operation, env, infault))
+#define AXIS2_WSDL_BINDING_OPERATION_ADD_INFAULT(wsdl_binding_op, env, infault) \
+		((wsdl_binding_op->ops)->add_infault(wsdl_binding_op, env, infault))
         
-#define AXIS2_WSDL_BINDING_OPERATION_ADD_OUTFAULT(wsdl_binding_operation, env, outfault) \
-		((wsdl_binding_operation->ops)->add_outfault(wsdl_binding_operation, env, outfault))
+#define AXIS2_WSDL_BINDING_OPERATION_ADD_OUTFAULT(wsdl_binding_op, env, outfault) \
+		((wsdl_binding_op->ops)->add_outfault(wsdl_binding_op, env, outfault))
 
-#define AXIS2_WSDL_BINDING_OPERATION_GET_INFAULTS(wsdl_binding_operation, env) \
-		((wsdl_binding_operation->ops)->get_infaults(wsdl_binding_operation, env))
+#define AXIS2_WSDL_BINDING_OPERATION_GET_INFAULTS(wsdl_binding_op, env) \
+		((wsdl_binding_op->ops)->get_infaults(wsdl_binding_op, env))
         
-#define AXIS2_WSDL_BINDING_OPERATION_SET_INFAULTS(wsdl_binding_operation, env, infaults) \
-		((wsdl_binding_operation->ops)->set_infaults(wsdl_binding_operation, env, infaults))        
+#define AXIS2_WSDL_BINDING_OPERATION_SET_INFAULTS(wsdl_binding_op, env, infaults) \
+		((wsdl_binding_op->ops)->set_infaults(wsdl_binding_op, env, infaults))        
 
-#define AXIS2_WSDL_BINDING_OPERATION_GET_OUTFAULTS(wsdl_binding_operation, env) \
-		((wsdl_binding_operation->ops)->get_outfaults(wsdl_binding_operation, env))
+#define AXIS2_WSDL_BINDING_OPERATION_GET_OUTFAULTS(wsdl_binding_op, env) \
+		((wsdl_binding_op->ops)->get_outfaults(wsdl_binding_op, env))
         
-#define AXIS2_WSDL_BINDING_OPERATION_SET_OUTFAULTS(wsdl_binding_operation, env, outfaults) \
-		((wsdl_binding_operation->ops)->set_outfaults(wsdl_binding_operation, env, outfaults))
+#define AXIS2_WSDL_BINDING_OPERATION_SET_OUTFAULTS(wsdl_binding_op, env, outfaults) \
+		((wsdl_binding_op->ops)->set_outfaults(wsdl_binding_op, env, outfaults))
      
 /**************************** End of function macros **************************/
 

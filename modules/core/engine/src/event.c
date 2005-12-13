@@ -57,7 +57,7 @@ axis2_event_t* AXIS2_CALL axis2_event_create(axis2_env_t **env, axis2_svc_t *svc
         event_impl->svc = svc;
     }
 	
-    /* initialize operations */
+    /* initialize ops */
     event_impl->event.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_event_ops_t) );
     if (!event_impl->event.ops)
     {

@@ -81,7 +81,7 @@ axis2_svc_name_t* AXIS2_CALL axis2_svc_name_create(axis2_env_t **env, axis2_qnam
         }
     }
 
-    /* initialize operations */
+    /* initialize ops */
     svc_name_impl->svc_name.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_svc_name_ops_t) );
     if (!svc_name_impl->svc_name.ops)
     {

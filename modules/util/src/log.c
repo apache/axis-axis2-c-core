@@ -34,7 +34,7 @@ axis2_log_impl_free (axis2_log_t *log)
 axis2_status_t AXIS2_CALL axis2_log_impl_write (const void *buffer, size_t count);
 
 AXIS2_DECLARE(axis2_log_t *)
-axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * operations)
+axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops)
 {
     axis2_log_t *log;
     if (!allocator)
@@ -45,8 +45,8 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * operations)
     if (!log)
         return NULL;
 
-    if (operations)
-        log->ops = operations;
+    if (ops)
+        log->ops = ops;
     else
     {
         log->ops =

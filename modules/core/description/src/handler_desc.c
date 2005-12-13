@@ -114,7 +114,7 @@ axis2_handler_desc_t* AXIS2_CALL axis2_handler_desc_create_with_qname(axis2_env_
         handler_desc_impl->qname = qname; /* shallow copy */
     }
 
-    /* initialize operations */
+    /* initialize ops */
     handler_desc_impl->handler_desc.ops = NULL;
     handler_desc_impl->handler_desc.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_handler_desc_ops_t) );
     if (!handler_desc_impl->handler_desc.ops)

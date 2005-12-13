@@ -46,8 +46,8 @@ extern "C"
     typedef struct axis2_http_worker axis2_http_worker_t; 
     
 /** 
- * @brief HTTP Worker operations struct
- * Encapsulator struct for operations of axis2_http_worker
+ * @brief HTTP Worker ops struct
+ * Encapsulator struct for ops of axis2_http_worker
  */  
 AXIS2_DECLARE_DATA struct axis2_http_worker_ops
 {

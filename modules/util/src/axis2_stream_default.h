@@ -37,7 +37,7 @@ extern "C"
   /**
     * Creates a stream struct
     * @param allocator allocator to be used. Mandatory, cannot be NULL
-    * @param operations operations struct. Optional, can be NULL. If null default operations would be assigned.
+    * @param ops ops struct. Optional, can be NULL. If null default ops would be assigned.
     * @return pointer to the newly created log struct 
     */
     AXIS2_DECLARE(axis2_stream_t *) axis2_stream_create (axis2_allocator_t * allocator,

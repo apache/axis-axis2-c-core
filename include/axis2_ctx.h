@@ -42,8 +42,8 @@ typedef struct axis2_ctx axis2_ctx_t;
 
     
 /** 
- * @brief Message Context operations struct
- * Encapsulator struct for operations of axis2_ctx
+ * @brief Message Context ops struct
+ * Encapsulator struct for ops of axis2_ctx
  */  
 struct axis2_ctx_ops
 {

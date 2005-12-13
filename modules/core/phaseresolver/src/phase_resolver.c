@@ -55,9 +55,9 @@ axis2_phase_resolver_build_chains(axis2_phase_resolver_t *phase_resolver,
                                     axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_phase_resolver_build_module_operation(axis2_phase_resolver_t *phase_resolver,
+axis2_phase_resolver_build_module_op(axis2_phase_resolver_t *phase_resolver,
                                     axis2_env_t **env,
-                                    struct axis2_operation *operation);
+                                    struct axis2_op *op);
 
 /**
  * this opeartion is used to build all the three cahins ,
@@ -72,7 +72,7 @@ static axis2_status_t AXIS2_CALL
 axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolver,
                                     axis2_env_t **env,
                                     int type,
-                                    struct axis2_operation *operation);
+                                    struct axis2_op *op);
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_build_transport_chains(axis2_phase_resolver_t *phase_resolver,
@@ -121,9 +121,9 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
                                                 struct axis2_module_desc *module_desc);
                                                     
 axis2_status_t AXIS2_CALL
-axis2_phase_resolver_engage_module_to_operation(axis2_phase_resolver_t *phase_resolver,
+axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
                                                 axis2_env_t **env,
-                                                struct axis2_operation *axis_operation,
+                                                struct axis2_op *axis_op,
                                                 struct axis2_module_desc *module_desc);
 
 /************************** End of function prototypes ************************/
@@ -166,8 +166,8 @@ axis2_phase_resolver_create (axis2_env_t **env)
     phase_resolver_impl->phase_resolver.ops->build_chains = 
         axis2_phase_resolver_build_chains;
     
-    phase_resolver_impl->phase_resolver.ops->build_module_operation = 
-        axis2_phase_resolver_build_module_operation;
+    phase_resolver_impl->phase_resolver.ops->build_module_op = 
+        axis2_phase_resolver_build_module_op;
     
     phase_resolver_impl->phase_resolver.ops->build_transport_chains =     
         axis2_phase_resolver_build_transport_chains;
@@ -181,8 +181,8 @@ axis2_phase_resolver_create (axis2_env_t **env)
     phase_resolver_impl->phase_resolver.ops->engage_module_to_svc = 
         axis2_phase_resolver_engage_module_to_svc;
         
-    phase_resolver_impl->phase_resolver.ops->engage_module_to_operation = 
-        axis2_phase_resolver_engage_module_to_operation;
+    phase_resolver_impl->phase_resolver.ops->engage_module_to_op = 
+        axis2_phase_resolver_engage_module_to_op;
     
   
 	return &(phase_resolver_impl->phase_resolver);
@@ -273,24 +273,24 @@ axis2_phase_resolver_build_chains(axis2_phase_resolver_t *phase_resolver,
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
     axis2_hash_index_t *index_i = 0;
     axis2_status_t status = AXIS2_FAILURE;
-    struct axis2_operation *operation = NULL;
-    axis2_hash_t *operations = NULL;
+    struct axis2_op *op = NULL;
+    axis2_hash_t *ops = NULL;
     
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
     
-    operations = AXIS2_SVC_GET_OPERATIONS(resolver_impl->svc, env);
+    ops = AXIS2_SVC_GET_OPERATIONS(resolver_impl->svc, env);
     
-    for (index_i = axis2_hash_first (operations, env); index_i; index_i = 
+    for (index_i = axis2_hash_first (ops, env); index_i; index_i = 
             axis2_hash_next (env, index_i))
     {
         void * v = NULL;
         int j = 0;
         axis2_hash_this (index_i, NULL, NULL, &v);
-        operation = (struct axis2_operation *)v;
+        op = (struct axis2_op *)v;
         for(j = 1; j < 5; j++)
         {
             status = axis2_phase_resolver_build_execution_chains(phase_resolver,
-                env, j, operation );
+                env, j, op );
             
         }
     }
@@ -299,18 +299,18 @@ axis2_phase_resolver_build_chains(axis2_phase_resolver_t *phase_resolver,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_phase_resolver_build_module_operation(axis2_phase_resolver_t *phase_resolver,
+axis2_phase_resolver_build_module_op(axis2_phase_resolver_t *phase_resolver,
                                     axis2_env_t **env,
-                                    struct axis2_operation *operation)
+                                    struct axis2_op *op)
 {
     AXIS2_FUNC_PARAM_CHECK(phase_resolver, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, operation, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
     for (i = 1; i < 5; i++) 
     {
         status = axis2_phase_resolver_build_execution_chains(phase_resolver, env, 
-                    i, operation);
+                    i, op);
     }
     return status;
 }
@@ -319,7 +319,7 @@ static axis2_status_t AXIS2_CALL
 axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolver,
                                     axis2_env_t **env,
                                     int type,
-                                    struct axis2_operation *operation)
+                                    struct axis2_op *op)
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
     axis2_array_list_t *all_handlers = NULL;
@@ -380,7 +380,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             {
                 return status;
             }
-            status = AXIS2_OPERATION_ADD_TO_ENGAGE_MODULE_LIST(operation, env, module_desc);
+            status = AXIS2_OPERATION_ADD_TO_ENGAGE_MODULE_LIST(op, env, module_desc);
             if(AXIS2_FAILURE == status) 
             {
                 return status;
@@ -550,25 +550,25 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
         case AXIS2_INFLOW:
         {
             resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env, 
-                AXIS2_OPERATION_GET_REMAINING_PHASES_INFLOW(operation, env));
+                AXIS2_OPERATION_GET_REMAINING_PHASES_INFLOW(op, env));
             break;
         }
         case AXIS2_OUTFLOW:
         {
             resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env, 
-                AXIS2_OPERATION_GET_PHASES_OUTFLOW(operation, env));
+                AXIS2_OPERATION_GET_PHASES_OUTFLOW(op, env));
             break;
         }
         case AXIS2_FAULT_INFLOW:
         {
             resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env,
-                AXIS2_OPERATION_GET_PHASES_IN_FAULT_FLOW(operation, env));
+                AXIS2_OPERATION_GET_PHASES_IN_FAULT_FLOW(op, env));
             break;
         }
         case AXIS2_FAULT_OUTFLOW:
         {
             resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env,
-                AXIS2_OPERATION_GET_PHASES_OUT_FAULT_FLOW(operation, env));
+                AXIS2_OPERATION_GET_PHASES_OUT_FAULT_FLOW(op, env));
             break;
         }
     }
@@ -889,7 +889,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
                                                 struct axis2_module_desc *module_desc)
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
-    axis2_hash_t *operations = NULL;
+    axis2_hash_t *ops = NULL;
     axis2_bool_t engaged = AXIS2_FALSE;
     axis2_hash_index_t *index_i = NULL;
     int type = 0;
@@ -897,16 +897,16 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
     
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
     
-    operations = AXIS2_SVC_GET_OPERATIONS(svc, env);
-    for (index_i = axis2_hash_first (operations, env); index_i; index_i = axis2_hash_next (env, index_i))
+    ops = AXIS2_SVC_GET_OPERATIONS(svc, env);
+    for (index_i = axis2_hash_first (ops, env); index_i; index_i = axis2_hash_next (env, index_i))
     {
         void *v = NULL;
-        struct axis2_operation *op_desc = NULL;
+        struct axis2_op *op_desc = NULL;
         axis2_array_list_t *modules = NULL;
         struct axis2_flow *flow = NULL;
 
         axis2_hash_this (index_i, NULL, NULL, &v);
-        op_desc = (struct axis2_operation *) v;
+        op_desc = (struct axis2_op *) v;
         modules = AXIS2_OPERATION_GET_MODULES(op_desc, env);
         int j = 0;
         for(j = 0; j < AXIS2_ARRAY_LIST_SIZE(modules, env); j++)
@@ -1106,7 +1106,7 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
                 } else 
                 {
                     /**
-                     * These handlers will go to operation's handler chains , since the module
+                     * These handlers will go to op's handler chains , since the module
                      * try to add handlres to both sytem predefined phases and user defined phase
                      * so global module can do that. here the global module are the module which are
                      * reffred by axis2.xml
@@ -1127,7 +1127,7 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
                                                 struct axis2_module_desc *module_desc)
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
-    axis2_hash_t *operations = NULL;
+    axis2_hash_t *ops = NULL;
     axis2_bool_t engaged = AXIS2_FALSE;
     axis2_hash_index_t *index_i = NULL;
     void *v = NULL;
@@ -1136,8 +1136,8 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
         
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
     
-    operations = AXIS2_SVC_GET_OPERATIONS(resolver_impl->svc, env);
-    if(!operations)
+    ops = AXIS2_SVC_GET_OPERATIONS(resolver_impl->svc, env);
+    if(!ops)
     {
         return AXIS2_FAILURE;
     }
@@ -1148,14 +1148,14 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
     {
         return AXIS2_FAILURE;
     }
-    for (index_i = axis2_hash_first (operations, env); index_i; index_i = 
+    for (index_i = axis2_hash_first (ops, env); index_i; index_i = 
             axis2_hash_next (env, index_i))
     {
         axis2_array_list_t *modules = NULL;
-        struct axis2_operation *op_desc = NULL;
+        struct axis2_op *op_desc = NULL;
 
         axis2_hash_this (index_i, NULL, NULL, &v);
-        op_desc = (struct axis2_operation *) v;
+        op_desc = (struct axis2_op *) v;
         modules = AXIS2_OPERATION_GET_MODULES(op_desc, env);
         for(j = 0; j < AXIS2_ARRAY_LIST_SIZE(modules, env); j++)
         {
@@ -1170,7 +1170,7 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
             }
             if(AXIS2_FALSE == engaged)
             {
-                status = axis2_phase_resolver_engage_module_to_operation(
+                status = axis2_phase_resolver_engage_module_to_op(
                     phase_resolver, env, op_desc, module_desc);
                 if(AXIS2_FAILURE == status)
                     return status;
@@ -1186,9 +1186,9 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
 
 
 axis2_status_t AXIS2_CALL
-axis2_phase_resolver_engage_module_to_operation(axis2_phase_resolver_t *phase_resolver,
+axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
                                                 axis2_env_t **env,
-                                                struct axis2_operation *axis_operation,
+                                                struct axis2_op *axis_op,
                                                 struct axis2_module_desc *module_desc)
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
@@ -1205,7 +1205,7 @@ axis2_phase_resolver_engage_module_to_operation(axis2_phase_resolver_t *phase_re
         switch (type) {
             case AXIS2_INFLOW:
             {
-                phases = AXIS2_OPERATION_GET_REMAINING_PHASES_INFLOW(axis_operation, env);
+                phases = AXIS2_OPERATION_GET_REMAINING_PHASES_INFLOW(axis_op, env);
              
                 resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env, 
                     phases);
@@ -1215,19 +1215,19 @@ axis2_phase_resolver_engage_module_to_operation(axis2_phase_resolver_t *phase_re
             case AXIS2_OUTFLOW:
             {
                 resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env,
-                    AXIS2_OPERATION_GET_PHASES_OUTFLOW(axis_operation, env));
+                    AXIS2_OPERATION_GET_PHASES_OUTFLOW(axis_op, env));
                 break;
             }
             case AXIS2_FAULT_INFLOW:
             {
                 resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env,
-                    AXIS2_OPERATION_GET_PHASES_IN_FAULT_FLOW(axis_operation, env));
+                    AXIS2_OPERATION_GET_PHASES_IN_FAULT_FLOW(axis_op, env));
                 break;
             }
             case AXIS2_FAULT_OUTFLOW:
             {
                 resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env,
-                    AXIS2_OPERATION_GET_PHASES_OUT_FAULT_FLOW(axis_operation, env));
+                    AXIS2_OPERATION_GET_PHASES_OUT_FAULT_FLOW(axis_op, env));
                 break;
             }
         }

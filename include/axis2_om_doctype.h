@@ -40,8 +40,8 @@ extern "C"
  */
 
   /**
-    * \brief OM doctype operations struct
-    * Encapsulator struct for operations of axis2_om_doctype
+    * \brief OM doctype ops struct
+    * Encapsulator struct for ops of axis2_om_doctype
     */
  AXIS2_DECLARE_DATA   typedef struct axis2_om_doctype_ops
     {
@@ -49,7 +49,7 @@ extern "C"
         * free doctype struct
         * @param om_doctype pointer to axis2_om_doctype_t struct to be freed
         * @param env Environment. MUST NOT be NULL,
-        * @return satus of the operation. AXIS2_SUCCESS on success
+        * @return satus of the op. AXIS2_SUCCESS on success
         *         AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *free)(struct axis2_om_doctype *om_doctype,
@@ -66,7 +66,7 @@ extern "C"
         * @param om_doctype pointer to axis2_om doctype_t struct
         * @param env environment , MUST NOT be NULL.
         * @param value doctype text value
-        * @return status of the operation,
+        * @return status of the op,
         *         AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
         */
 
@@ -75,11 +75,11 @@ extern "C"
                                      axis2_env_t **env,
                                      const axis2_char_t *value);
        /**
-        * serialize operation 
+        * serialize op 
         * @param om_doctype pointer to axis2_om_doctype_t struct
         * @param env environment , MUST NOT be NULL
         * @param om_output pointer to axis2_om_output_t struct
-        * @returns status of the operation,
+        * @returns status of the op,
         *          AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
         */                                   
         
@@ -96,7 +96,7 @@ extern "C"
     */
     typedef struct axis2_om_doctype
     {
-        /** Doctype related operations */
+        /** Doctype related ops */
         axis2_om_doctype_ops_t *ops;
 
     } axis2_om_doctype_t;
@@ -126,7 +126,7 @@ extern "C"
 /** set the doctype value */
 #define AXIS2_OM_DOCTYPE_SET_VALUE(doctype, env, value) \
         ((doctype)->ops->set_value(doctype, env, value))
-/** serialize operation */       
+/** serialize op */       
 #define AXIS2_OM_DOCTYPE_SERIALIZE(doctype, env, om_output) \
         ((doctype)->ops->serialize(doctype, env, om_output))
 

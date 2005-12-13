@@ -60,25 +60,25 @@ axis2_phases_info_get_out_faultphases(axis2_phases_info_t *phases_info,
                                         axis2_env_t **env);
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_phases_info_get_operation_inphases(axis2_phases_info_t *phases_info,
+axis2_phases_info_get_op_inphases(axis2_phases_info_t *phases_info,
                                         axis2_env_t **env);
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_phases_info_get_operation_outphases(axis2_phases_info_t *phases_info,
+axis2_phases_info_get_op_outphases(axis2_phases_info_t *phases_info,
                                             axis2_env_t **env);
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_phases_info_get_operation_in_faultphases(axis2_phases_info_t *phases_info,
+axis2_phases_info_get_op_in_faultphases(axis2_phases_info_t *phases_info,
                                                 axis2_env_t **env);
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_phases_info_get_operation_out_faultphases(axis2_phases_info_t *phases_info,
+axis2_phases_info_get_op_out_faultphases(axis2_phases_info_t *phases_info,
                                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
-axis2_phases_info_set_operation_phases(axis2_phases_info_t *phases_info,
+axis2_phases_info_set_op_phases(axis2_phases_info_t *phases_info,
                                         axis2_env_t **env,
-                                        struct axis2_operation *axis2_opt);
+                                        struct axis2_op *axis2_opt);
                                     
 /***************************** End of function headers ************************/
 
@@ -137,20 +137,20 @@ axis2_phases_info_create (axis2_env_t **env)
     phases_info_impl->phases_info.ops->get_out_faultphases = 
             axis2_phases_info_get_out_faultphases;
 
-    phases_info_impl->phases_info.ops->get_operation_inphases = 
-            axis2_phases_info_get_operation_inphases;
+    phases_info_impl->phases_info.ops->get_op_inphases = 
+            axis2_phases_info_get_op_inphases;
                                         
-    phases_info_impl->phases_info.ops->get_operation_outphases = 
-            axis2_phases_info_get_operation_outphases;                                   
+    phases_info_impl->phases_info.ops->get_op_outphases = 
+            axis2_phases_info_get_op_outphases;                                   
                                         
-    phases_info_impl->phases_info.ops->get_operation_in_faultphases = 
-            axis2_phases_info_get_operation_in_faultphases;                                    
+    phases_info_impl->phases_info.ops->get_op_in_faultphases = 
+            axis2_phases_info_get_op_in_faultphases;                                    
     
-    phases_info_impl->phases_info.ops->get_operation_out_faultphases = 
-            axis2_phases_info_get_operation_out_faultphases;
+    phases_info_impl->phases_info.ops->get_op_out_faultphases = 
+            axis2_phases_info_get_op_out_faultphases;
 
-    phases_info_impl->phases_info.ops->set_operation_phases = 
-            axis2_phases_info_set_operation_phases;                                      
+    phases_info_impl->phases_info.ops->set_op_phases = 
+            axis2_phases_info_set_op_phases;                                      
     
 	return &(phases_info_impl->phases_info);
 }
@@ -287,29 +287,29 @@ axis2_phases_info_get_out_faultphases(axis2_phases_info_t *phases_info,
 }
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_phases_info_get_operation_inphases(axis2_phases_info_t *phases_info,
+axis2_phases_info_get_op_inphases(axis2_phases_info_t *phases_info,
                                         axis2_env_t **env) 
 {
     axis2_phases_info_impl_t *info_impl = NULL;
     struct axis2_phase *phase = NULL;
     int i = 0; 
     axis2_char_t *phase_name = NULL;
-    axis2_array_list_t * operation_inphases = NULL; 
+    axis2_array_list_t * op_inphases = NULL; 
     axis2_status_t status = AXIS2_FAILURE;    
     
     AXIS2_FUNC_PARAM_CHECK(phases_info, env, NULL);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
-    operation_inphases = axis2_array_list_create(env, 0);
+    op_inphases = axis2_array_list_create(env, 0);
     phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
     
-    status = AXIS2_ARRAY_LIST_ADD(operation_inphases, env, phase);
+    status = AXIS2_ARRAY_LIST_ADD(op_inphases, env, phase);
     if(AXIS2_FAILURE == status)
     {
         AXIS2_PHASE_FREE(phase, env);
         phase = NULL;
-        AXIS2_ARRAY_LIST_FREE(operation_inphases, env);
-        operation_inphases = NULL;
+        AXIS2_ARRAY_LIST_FREE(op_inphases, env);
+        op_inphases = NULL;
         return NULL;
     }
     for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(info_impl->inphases, env); i++) 
@@ -324,35 +324,35 @@ axis2_phases_info_get_operation_inphases(axis2_phases_info_t *phases_info,
         } else 
         {
             phase = axis2_phase_create(env, phase_name);
-            status = AXIS2_ARRAY_LIST_ADD(operation_inphases, env, phase);
+            status = AXIS2_ARRAY_LIST_ADD(op_inphases, env, phase);
             if(AXIS2_FAILURE == status)
             {
                 AXIS2_PHASE_FREE(phase, env);
                 phase = NULL;
-                AXIS2_ARRAY_LIST_FREE(operation_inphases, env);
-                operation_inphases = NULL;
+                AXIS2_ARRAY_LIST_FREE(op_inphases, env);
+                op_inphases = NULL;
                 return NULL;
             }
         }
     }
-    return operation_inphases;
+    return op_inphases;
 }
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_phases_info_get_operation_outphases(axis2_phases_info_t *phases_info,
+axis2_phases_info_get_op_outphases(axis2_phases_info_t *phases_info,
                                             axis2_env_t **env) 
 {
     axis2_phases_info_impl_t *info_impl = NULL;
     struct axis2_phase *phase = NULL;
     int i = 0; 
     axis2_char_t *phase_name = NULL;
-    axis2_array_list_t * operation_outphases = NULL;
+    axis2_array_list_t * op_outphases = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_FUNC_PARAM_CHECK(phases_info, env, NULL);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
-    operation_outphases = axis2_array_list_create(env, 0);
+    op_outphases = axis2_array_list_create(env, 0);
     for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(info_impl->outphases, env); i++) 
     {
         phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(info_impl->outphases, env, i);
@@ -362,119 +362,119 @@ axis2_phases_info_get_operation_outphases(axis2_phases_info_t *phases_info,
         } else 
         {
             phase = axis2_phase_create(env, phase_name);
-            status = AXIS2_ARRAY_LIST_ADD(operation_outphases, env, phase);
+            status = AXIS2_ARRAY_LIST_ADD(op_outphases, env, phase);
             if(AXIS2_FAILURE == status)
             {
                 AXIS2_PHASE_FREE(phase, env);
                 phase = NULL;
-                AXIS2_ARRAY_LIST_FREE(operation_outphases, env);
-                operation_outphases = NULL;
+                AXIS2_ARRAY_LIST_FREE(op_outphases, env);
+                op_outphases = NULL;
                 return NULL;
             }
         }
     }
     phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
-    status = AXIS2_ARRAY_LIST_ADD(operation_outphases, env, phase);
+    status = AXIS2_ARRAY_LIST_ADD(op_outphases, env, phase);
     if(AXIS2_FAILURE == status)
     {
         AXIS2_PHASE_FREE(phase, env);
         phase = NULL;
-        AXIS2_ARRAY_LIST_FREE(operation_outphases, env);
-        operation_outphases = NULL;
+        AXIS2_ARRAY_LIST_FREE(op_outphases, env);
+        op_outphases = NULL;
         return NULL;
     }
     phase = axis2_phase_create(env, AXIS2_PHASE_MESSAGE_OUT);
-    status = AXIS2_ARRAY_LIST_ADD(operation_outphases, env, phase);
+    status = AXIS2_ARRAY_LIST_ADD(op_outphases, env, phase);
     if(AXIS2_FAILURE == status)
     {
         AXIS2_PHASE_FREE(phase, env);
         phase = NULL;
-        AXIS2_ARRAY_LIST_FREE(operation_outphases, env);
-        operation_outphases = NULL;
+        AXIS2_ARRAY_LIST_FREE(op_outphases, env);
+        op_outphases = NULL;
         return NULL;
         
     }
-    return operation_outphases;
+    return op_outphases;
 }
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_phases_info_get_operation_in_faultphases(axis2_phases_info_t *phases_info,
+axis2_phases_info_get_op_in_faultphases(axis2_phases_info_t *phases_info,
                                                 axis2_env_t **env) 
 {
     axis2_phases_info_impl_t *info_impl = NULL;
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *phase_name = NULL;
-    axis2_array_list_t * operation_in_faultphases = NULL;
+    axis2_array_list_t * op_in_faultphases = NULL;
     struct axis2_phase *phase = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(phases_info, env, NULL);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
-    operation_in_faultphases = axis2_array_list_create(env, 0);
+    op_in_faultphases = axis2_array_list_create(env, 0);
     
     for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(info_impl->in_faultphases, env); i++) 
     {
         phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(info_impl->in_faultphases, env, i);
         phase = axis2_phase_create(env, phase_name);
-        status = AXIS2_ARRAY_LIST_ADD(operation_in_faultphases, env, phase);
+        status = AXIS2_ARRAY_LIST_ADD(op_in_faultphases, env, phase);
         if(AXIS2_FAILURE == status)
         {
             AXIS2_PHASE_FREE(phase, env);
             phase = NULL;
-            AXIS2_ARRAY_LIST_FREE(operation_in_faultphases, env);
-            operation_in_faultphases = NULL;
+            AXIS2_ARRAY_LIST_FREE(op_in_faultphases, env);
+            op_in_faultphases = NULL;
             return NULL;
             
         }
     }
-    return operation_in_faultphases;
+    return op_in_faultphases;
 }
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_phases_info_get_operation_out_faultphases(axis2_phases_info_t *phases_info,
+axis2_phases_info_get_op_out_faultphases(axis2_phases_info_t *phases_info,
                                                 axis2_env_t **env) 
 {
     axis2_phases_info_impl_t *info_impl = NULL;
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *phase_name = NULL;
-    axis2_array_list_t * operation_out_faultphases = NULL;
+    axis2_array_list_t * op_out_faultphases = NULL;
     struct axis2_phase *phase = NULL;
         
     AXIS2_FUNC_PARAM_CHECK(phases_info, env, NULL);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
-    operation_out_faultphases = axis2_array_list_create(env, 0);
+    op_out_faultphases = axis2_array_list_create(env, 0);
     
     for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(info_impl->out_faultphases, env); i++) 
     {
         phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(info_impl->out_faultphases, env, i);
         phase = axis2_phase_create(env, phase_name);
-        status = AXIS2_ARRAY_LIST_ADD(operation_out_faultphases, env, phase);
+        status = AXIS2_ARRAY_LIST_ADD(op_out_faultphases, env, phase);
         if(AXIS2_FAILURE == status)
         {
             AXIS2_PHASE_FREE(phase, env);
             phase = NULL;
-            AXIS2_ARRAY_LIST_FREE(operation_out_faultphases, env);
-            operation_out_faultphases = NULL;
+            AXIS2_ARRAY_LIST_FREE(op_out_faultphases, env);
+            op_out_faultphases = NULL;
             return NULL;
             
         }
     }
-    return operation_out_faultphases;
+    return op_out_faultphases;
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_phases_info_set_operation_phases(axis2_phases_info_t *phases_info,
+axis2_phases_info_set_op_phases(axis2_phases_info_t *phases_info,
                                         axis2_env_t **env,
-                                        struct axis2_operation *axis2_opt) 
+                                        struct axis2_op *axis2_opt) 
 {
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_array_list_t *operation_inphases = NULL;
-    axis2_array_list_t *operation_outphases = NULL;
-    axis2_array_list_t *operation_in_faultphases = NULL;
-    axis2_array_list_t *operation_out_faultphases = NULL;
+    axis2_array_list_t *op_inphases = NULL;
+    axis2_array_list_t *op_outphases = NULL;
+    axis2_array_list_t *op_in_faultphases = NULL;
+    axis2_array_list_t *op_out_faultphases = NULL;
     
     axis2_phases_info_impl_t *info_impl = NULL;
     
@@ -483,32 +483,32 @@ axis2_phases_info_set_operation_phases(axis2_phases_info_t *phases_info,
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
     
-    operation_inphases = axis2_phases_info_get_operation_inphases(phases_info, env);
-    if(NULL == operation_inphases)
+    op_inphases = axis2_phases_info_get_op_inphases(phases_info, env);
+    if(NULL == op_inphases)
         return AXIS2_FAILURE;
     
-    operation_outphases = axis2_phases_info_get_operation_outphases(phases_info, env);
-    if(NULL == operation_outphases)
+    op_outphases = axis2_phases_info_get_op_outphases(phases_info, env);
+    if(NULL == op_outphases)
         return AXIS2_FAILURE;
     
-    operation_in_faultphases = axis2_phases_info_get_operation_in_faultphases(phases_info, env);
-    if(NULL == operation_in_faultphases)
+    op_in_faultphases = axis2_phases_info_get_op_in_faultphases(phases_info, env);
+    if(NULL == op_in_faultphases)
         return AXIS2_FAILURE;
     
-    operation_out_faultphases = axis2_phases_info_get_operation_out_faultphases(phases_info, env);
-    if(NULL == operation_out_faultphases)
+    op_out_faultphases = axis2_phases_info_get_op_out_faultphases(phases_info, env);
+    if(NULL == op_out_faultphases)
         return AXIS2_FAILURE;
     
-    status = AXIS2_OPERATION_SET_REMAINING_PHASES_INFLOW(axis2_opt, env, operation_inphases);
+    status = AXIS2_OPERATION_SET_REMAINING_PHASES_INFLOW(axis2_opt, env, op_inphases);
     if(AXIS2_FAILURE == status)
         return status;
-    status = AXIS2_OPERATION_SET_PHASES_OUTFLOW(axis2_opt, env, operation_outphases);
+    status = AXIS2_OPERATION_SET_PHASES_OUTFLOW(axis2_opt, env, op_outphases);
     if(AXIS2_FAILURE == status)
         return status;
-    status = AXIS2_OPERATION_SET_PHASES_IN_FAULT_FLOW(axis2_opt, env, operation_in_faultphases);
+    status = AXIS2_OPERATION_SET_PHASES_IN_FAULT_FLOW(axis2_opt, env, op_in_faultphases);
     if(AXIS2_FAILURE == status)
         return status;
-    status = AXIS2_OPERATION_SET_PHASES_OUT_FAULT_FLOW(axis2_opt, env, operation_out_faultphases);
+    status = AXIS2_OPERATION_SET_PHASES_OUT_FAULT_FLOW(axis2_opt, env, op_out_faultphases);
     
     return status;
     

@@ -19,7 +19,7 @@
 
 /**
  * @file axis2_phase_resolver.h
- * @brief Axis2 Wsdl soap operation interface
+ * @brief Axis2 Wsdl soap op interface
  */
 
 #include <axis2.h>
@@ -52,7 +52,7 @@ struct axis2_handler;
 struct axis2_phase_rule;
 struct axis2_svc;
 struct axis2_engine_config;
-struct axis2_operation; 
+struct axis2_op; 
 struct axis2_phase_holder;    
 typedef struct axis2_phase_resolver axis2_phase_resolver_t;
 typedef struct axis2_phase_resolver_ops axis2_phase_resolver_ops_t;
@@ -63,8 +63,8 @@ typedef struct axis2_phase_resolver_ops axis2_phase_resolver_ops_t;
  */
 
 /** 
- * @brief Wsdl Phase Resolver operations struct
- * Encapsulator struct for operations of axis2_phase_resolver
+ * @brief Wsdl Phase Resolver ops struct
+ * Encapsulator struct for ops of axis2_phase_resolver
  */
 AXIS2_DECLARE_DATA struct axis2_phase_resolver_ops
 {
@@ -88,13 +88,13 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver_ops
     /**
      * To build the opration for the opeartion which the module going to be added
      *
-     * @param operation <code>AxisOperation</code>
+     * @param op <code>AxisOperation</code>
      * @throws AxisFault
      */
     axis2_status_t (AXIS2_CALL *
-    build_module_operation) (axis2_phase_resolver_t *phase_resolver,
+    build_module_op) (axis2_phase_resolver_t *phase_resolver,
                                 axis2_env_t **env,
-                                struct axis2_operation *operation);
+                                struct axis2_op *op);
     
     
     
@@ -134,9 +134,9 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver_ops
                             struct axis2_module_desc *module_desc);
                                                         
     axis2_status_t (AXIS2_CALL *
-    engage_module_to_operation) (axis2_phase_resolver_t *phase_resolver,
+    engage_module_to_op) (axis2_phase_resolver_t *phase_resolver,
                                     axis2_env_t **env,
-                                    struct axis2_operation *axis_operation,
+                                    struct axis2_op *axis_op,
                                     struct axis2_module_desc *module_desc);    
 
 
@@ -185,8 +185,8 @@ axis2_phase_resolver_create_with_config_and_svc (axis2_env_t **env,
 #define AXIS2_PHASE_RESOLVER_BUILD_CHAINS(phase_resolver, env) \
 		((phase_resolver->ops)->build_chains (phase_resolver, env))
 
-#define AXIS2_PHASE_RESOLVER_BUILD_MODULE_OPERATION(phase_resolver, env, operation) \
-		((phase_resolver->ops)->build_module_operation (phase_resolver, env, operation))
+#define AXIS2_PHASE_RESOLVER_BUILD_MODULE_OPERATION(phase_resolver, env, op) \
+		((phase_resolver->ops)->build_module_op (phase_resolver, env, op))
 
 #define AXIS2_PHASE_RESOLVER_BUILD_TRANSPORT_CHAINS(phase_resolver, env) \
 		((phase_resolver->ops)->build_transport_chains (phase_resolver, env))
@@ -200,8 +200,8 @@ axis2_phase_resolver_create_with_config_and_svc (axis2_env_t **env,
 #define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_SVC(phase_resolver, env, svc, module_desc) \
 		((phase_resolver->ops)->engage_module_to_svc (phase_resolver, env, svc, module_desc))
 
-#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OPERATION(phase_resolver, env, axis_operation, module_desc) \
-		((phase_resolver->ops)->engage_module_to_operation (phase_resolver, env, axis_operation, module_desc))
+#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OPERATION(phase_resolver, env, axis_op, module_desc) \
+		((phase_resolver->ops)->engage_module_to_op (phase_resolver, env, axis_op, module_desc))
 
         
 /*************************** End of function macros ***************************/

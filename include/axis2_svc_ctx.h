@@ -25,7 +25,7 @@
 
 #include <axis2_defines.h>
 #include <axis2_env.h>
-#include <axis2_operation_ctx.h>
+#include <axis2_op_ctx.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -42,8 +42,8 @@ typedef struct axis2_svc_ctx axis2_svc_ctx_t;
 
     
 /** 
- * @brief Message Context operations struct
- * Encapsulator struct for operations of axis2_svc_ctx
+ * @brief Message Context ops struct
+ * Encapsulator struct for ops of axis2_svc_ctx
  */  
 struct axis2_svc_ctx_ops
 {
@@ -68,7 +68,7 @@ struct axis2_svc_ctx_ops
                                                 axis2_env_t **env);
     struct axis2_conf_ctx* (AXIS2_CALL *get_conf_ctx)(struct axis2_svc_ctx *svc_ctx, 
                                                 axis2_env_t **env);
-    axis2_operation_ctx_t* (AXIS2_CALL *create_operation_ctx)(struct axis2_svc_ctx *svc_ctx, 
+    axis2_op_ctx_t* (AXIS2_CALL *create_op_ctx)(struct axis2_svc_ctx *svc_ctx, 
                                                 axis2_env_t **env, axis2_qname_t *qname);
 };
 
@@ -94,7 +94,7 @@ AXIS2_DECLARE(axis2_svc_ctx_t*) axis2_svc_ctx_create(axis2_env_t **env,
 #define AXIS2_SVC_CTX_GET_SVC_ID(svc_ctx, env) ((svc_ctx)->ops->get_svc_id(svc_ctx, env))
 #define AXIS2_SVC_CTX_GET_SVC(svc_ctx, env) ((svc_ctx)->ops->get_svc(svc_ctx, env))
 #define AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env) ((svc_ctx)->ops->get_conf_ctx(svc_ctx, env))
-#define AXIS2_SVC_CTX_CREATE_OPERATION_CTX(svc_ctx, env, qname) ((svc_ctx)->ops->create_operation_ctx(svc_ctx, env, qname))
+#define AXIS2_SVC_CTX_CREATE_OPERATION_CTX(svc_ctx, env, qname) ((svc_ctx)->ops->create_op_ctx(svc_ctx, env, qname))
     
 /************************** End of function macros ****************************/    
 

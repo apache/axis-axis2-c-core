@@ -41,7 +41,7 @@ extern "C"
  */
 
 /**
- *   \brief Phase Rule operations struct
+ *   \brief Phase Rule ops struct
  */
  AXIS2_DECLARE_DATA   typedef struct axis2_phase_rule_ops
     {        
@@ -77,7 +77,7 @@ extern "C"
     */
     typedef struct axis2_phase_rule
     {
-        /** Phase Rule related operations */
+        /** Phase Rule related ops */
         axis2_phase_rule_ops_t *ops;
     } axis2_phase_rule_t;
 

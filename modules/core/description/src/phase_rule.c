@@ -20,7 +20,7 @@
 
 typedef struct axis2_phase_rule_impl
 {
-	/** Phase Rule related operations */
+	/** Phase Rule related ops */
 	axis2_phase_rule_t phase_rule;
 	/** name of phase or handler before */
 	axis2_char_t *before;
@@ -88,7 +88,7 @@ axis2_phase_rule_t* AXIS2_CALL axis2_phase_rule_create(axis2_env_t **env, axis2_
 		phase_rule_impl->name = AXIS2_STRDUP(name, env);
 	}
     
-    /* initialize operations */
+    /* initialize ops */
     phase_rule_impl->phase_rule.ops = NULL;
     phase_rule_impl->phase_rule.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_phase_rule_ops_t) );
     if (!phase_rule_impl->phase_rule.ops)

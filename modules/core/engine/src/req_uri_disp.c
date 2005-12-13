@@ -29,7 +29,7 @@ axis2_status_t AXIS2_CALL axis2_req_uri_disp_invoke (struct axis2_handler * hand
                                                 struct axis2_msg_ctx *msg_ctx);
 axis2_svc_t* AXIS2_CALL axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                     axis2_env_t **env);
-axis2_operation_t* AXIS2_CALL axis2_req_uri_disp_find_operation(axis2_msg_ctx_t *msg_ctx, 
+axis2_op_t* AXIS2_CALL axis2_req_uri_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
                                 axis2_env_t **env,
                                 axis2_svc_t *svc);
 
@@ -69,7 +69,7 @@ axis2_disp_t* AXIS2_CALL axis2_req_uri_disp_create(axis2_env_t **env)
 
     
 /** The struct that inherits from this struct
-    should implement the find_service and find_operation methods and assing the 
+    should implement the find_service and find_op methods and assing the 
     respective function pointers in the base struct.
     Here we have only the dummy implementation to gauard against erros due to 
     the failure to provide an impl version by mistake.
@@ -102,7 +102,7 @@ axis2_svc_t* AXIS2_CALL axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
             AXIS2_LOG(env, "Checking for Service using target endpoint address :");
             AXIS2_LOG(env, address);
             
-            url_tokens = axis2_parse_request_url_for_svc_and_operation(env, address);
+            url_tokens = axis2_parse_request_url_for_svc_and_op(env, address);
             
             if (url_tokens)
             {                
@@ -131,13 +131,13 @@ axis2_svc_t* AXIS2_CALL axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
 }
 
 /**
- * finds the operation
+ * finds the op
  *
  * @param service
  * @param msg_ctx
  * @return
  */
-axis2_operation_t* AXIS2_CALL axis2_req_uri_disp_find_operation(axis2_msg_ctx_t *msg_ctx, 
+axis2_op_t* AXIS2_CALL axis2_req_uri_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
                                 axis2_env_t **env,
                                 axis2_svc_t *svc)
 {
@@ -157,19 +157,19 @@ axis2_operation_t* AXIS2_CALL axis2_req_uri_disp_find_operation(axis2_msg_ctx_t 
         {
             axis2_char_t **url_tokens = NULL;
             
-            url_tokens = axis2_parse_request_url_for_svc_and_operation(env, address);
+            url_tokens = axis2_parse_request_url_for_svc_and_op(env, address);
             
             if (url_tokens)
             {                
                 if (url_tokens[1])
                 {
-                    axis2_qname_t *operation_qname = NULL;
-                    axis2_operation_t *op = NULL;
+                    axis2_qname_t *op_qname = NULL;
+                    axis2_op_t *op = NULL;
                     AXIS2_LOG(env, "Checking for Operation using target endpoint uri fragment : ");
                     AXIS2_LOG(env, url_tokens[1]);
-                    operation_qname = axis2_qname_create(env, url_tokens[1], NULL, NULL);
-                    op = AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env, operation_qname);
-                    AXIS2_QNAME_FREE(operation_qname, env);
+                    op_qname = axis2_qname_create(env, url_tokens[1], NULL, NULL);
+                    op = AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env, op_qname);
+                    AXIS2_QNAME_FREE(op_qname, env);
                     return op;
                 }
             }
@@ -185,7 +185,7 @@ axis2_status_t AXIS2_CALL axis2_req_uri_disp_invoke(struct axis2_handler * handl
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);    
     
     msg_ctx->ops->find_svc = axis2_req_uri_disp_find_svc;
-    msg_ctx->ops->find_operation = axis2_req_uri_disp_find_operation;
+    msg_ctx->ops->find_op = axis2_req_uri_disp_find_op;
     
     return axis2_disp_invoke(handler, env, msg_ctx);
 }

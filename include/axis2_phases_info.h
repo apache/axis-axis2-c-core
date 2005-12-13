@@ -12,7 +12,7 @@
 #include <axis2_allocator.h>
 #include <axis2_string.h>
 #include <axis2_array_list.h>
-#include <axis2_operation.h>
+#include <axis2_op.h>
 #include <axis2_phase.h>
 
 #ifdef __cplusplus
@@ -30,8 +30,8 @@ typedef struct axis2_phases_info axis2_phases_info_t;
   */
 
 /** 
- * @brief Phases Info operations struct
- * Encapsulator struct for operations of axis2_phases_info
+ * @brief Phases Info ops struct
+ * Encapsulator struct for ops of axis2_phases_info
  */
 struct axis2_phases_info_ops
 {
@@ -78,25 +78,25 @@ struct axis2_phases_info_ops
                                             axis2_env_t **env);
     
     axis2_array_list_t *(AXIS2_CALL *
-    get_operation_inphases) (axis2_phases_info_t *phases_info,
+    get_op_inphases) (axis2_phases_info_t *phases_info,
                                             axis2_env_t **env);
     
     axis2_array_list_t *(AXIS2_CALL *
-    get_operation_outphases) (axis2_phases_info_t *phases_info,
+    get_op_outphases) (axis2_phases_info_t *phases_info,
                                                 axis2_env_t **env);
     
     axis2_array_list_t *(AXIS2_CALL *
-    get_operation_in_faultphases) (axis2_phases_info_t *phases_info,
+    get_op_in_faultphases) (axis2_phases_info_t *phases_info,
                                                     axis2_env_t **env);
     
     axis2_array_list_t *(AXIS2_CALL *
-    get_operation_out_faultphases) (axis2_phases_info_t *phases_info,
+    get_op_out_faultphases) (axis2_phases_info_t *phases_info,
                                                     axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
-    set_operation_phases) (axis2_phases_info_t *phases_info,
+    set_op_phases) (axis2_phases_info_t *phases_info,
                                             axis2_env_t **env,
-                                            struct axis2_operation *axis2_opt);
+                                            struct axis2_op *axis2_opt);
     
                                                 
 };
@@ -146,19 +146,19 @@ axis2_phases_info_create (axis2_env_t **env);
 		((phases_info->ops)->get_out_faultphases(phases_info, env)) 
         
 #define AXIS2_PHASES_INFO_GET_OPERATION_INPHASES(phases_info, env) \
-		((phases_info->ops)->get_operation_inphases(phases_info, env)) 
+		((phases_info->ops)->get_op_inphases(phases_info, env)) 
 
 #define AXIS2_PHASES_INFO_GET_OPERATION_OUTPHASES(phases_info, env) \
-		((phases_info->ops)->get_operation_outphases(phases_info, env)) 
+		((phases_info->ops)->get_op_outphases(phases_info, env)) 
                                         
 #define AXIS2_PHASES_INFO_GET_OPERATION_IN_FAULTPHASES(phases_info, env) \
-		((phases_info->ops)->get_operation_in_faultphases(phases_info, env))                                         
+		((phases_info->ops)->get_op_in_faultphases(phases_info, env))                                         
                                         
 #define AXIS2_PHASES_INFO_GET_OPERATION_OUT_FAULTPHASES(phases_info, env) \
-		((phases_info->ops)->get_operation_out_faultphases(phases_info, env))                                         
+		((phases_info->ops)->get_op_out_faultphases(phases_info, env))                                         
                                         
 #define AXIS2_PHASES_INFO_SET_OPERATION_PHASES(phases_info, env, axis2_opt) \
-		((phases_info->ops)->set_operation_phases(phases_info, env, axis2_opt))                                         
+		((phases_info->ops)->set_op_phases(phases_info, env, axis2_opt))                                         
                                            
 /**************************** End of function macros **************************/
 

@@ -225,7 +225,7 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
         AXIS2_FREE((*env)->allocator, wrapper_impl);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
-	/* operations */
+	/* ops */
 	
 	wrapper_impl->parser.ops->free = axis2_libxml2_reader_wrapper_free;
     wrapper_impl->parser.ops->next = axis2_libxml2_reader_wrapper_next;

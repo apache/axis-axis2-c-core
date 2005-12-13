@@ -51,8 +51,8 @@ typedef struct axis2_transport_out_desc_ops axis2_transport_out_desc_ops_t;
  */
 
 /** 
- * @brief Description Transport Out operations struct
- * Encapsulator struct for operations of axis2_transport_out_desc
+ * @brief Description Transport Out ops struct
+ * Encapsulator struct for ops of axis2_transport_out_desc
  */
 AXIS2_DECLARE_DATA struct axis2_transport_out_desc_ops
 {

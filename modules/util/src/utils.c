@@ -20,7 +20,7 @@
 #include <string.h>
 
 AXIS2_DECLARE(axis2_char_t**)
-axis2_parse_request_url_for_svc_and_operation(axis2_env_t **env, 
+axis2_parse_request_url_for_svc_and_op(axis2_env_t **env, 
                                                 axis2_char_t *request)
 
 {
@@ -58,7 +58,7 @@ axis2_parse_request_url_for_svc_and_operation(axis2_env_t **env,
                 strncpy(ret[0], service_str,i);
                 ret[0][i] = '\0';
 
-                /* Now search for the operation */
+                /* Now search for the op */
                 service_str = tmp;
                 if('\0' != *service_str)
                 {

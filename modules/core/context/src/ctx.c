@@ -69,7 +69,7 @@ axis2_ctx_t* AXIS2_CALL axis2_ctx_create(axis2_env_t **env)
         return NULL;
     }
 	
-    /* initialize operations */
+    /* initialize ops */
     ctx_impl->ctx.ops = NULL;
     ctx_impl->ctx.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_ctx_ops_t) );
     if (!ctx_impl->ctx.ops)

@@ -43,8 +43,8 @@ typedef struct axis2_wsdl_extensible_element_ops axis2_wsdl_extensible_element_o
  */
 
 /** 
- * @brief Wsdl Extensible Element operations struct
- * Encapsulator struct for operations of axis2_wsdl_extensible_element
+ * @brief Wsdl Extensible Element ops struct
+ * Encapsulator struct for ops of axis2_wsdl_extensible_element
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_element_ops
 {

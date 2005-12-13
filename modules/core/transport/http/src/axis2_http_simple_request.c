@@ -337,7 +337,7 @@ axis2_http_simple_request_remove_headers
                         header_group;
     if(NULL == header_group)
     {
-        /* Even though we couldn't complete the operation, we are sure that the 
+        /* Even though we couldn't complete the op, we are sure that the 
          * requred header is no more in the request. So we can proceed without a
          * problem.
          */

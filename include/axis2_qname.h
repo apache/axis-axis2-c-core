@@ -40,9 +40,9 @@ static const axis2_char_t XML_NAMESPACE_URI[] =
  */
 
 /**
- * \brief Axis2 qname operations struct
+ * \brief Axis2 qname ops struct
  *
- * Encapsulator struct for operations of axis2_qname
+ * Encapsulator struct for ops of axis2_qname
  */
                       
 AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
@@ -100,7 +100,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
 
 typedef struct axis2_qname
 {
-    /** operations related to qname */
+    /** ops related to qname */
     axis2_qname_ops_t *ops;
 } axis2_qname_t;
 

@@ -41,8 +41,8 @@ extern "C"
  */
 
   /** 
-    * @brief OM text operations struct
-    * Encapsulator struct for operations of axis2_om_text
+    * @brief OM text ops struct
+    * Encapsulator struct for ops of axis2_om_text
     */
  AXIS2_DECLARE_DATA   typedef struct axis2_om_text_ops
     {
@@ -50,18 +50,18 @@ extern "C"
         * Free an axis2_om_text struct
         * @param env environment.  MUST NOT be NULL.
         * @param om_text pointer to om text struct to be freed.
-        * @return satus of the operation. AXIS2_SUCCESS on success
+        * @return satus of the op. AXIS2_SUCCESS on success
         *         AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *free) (struct axis2_om_text *om_text,
                                            axis2_env_t **env);
 
       /**
-        * Serialize operation
+        * Serialize op
         * @param env environment.  MUST NOT be NULL.
         * @param om_text pointer to om text struct to be serialized.
         * @param om_output OM output handler to be used in serializing.
-        * @return satus of the operation. AXIS2_SUCCESS on success,
+        * @return satus of the op. AXIS2_SUCCESS on success,
         *            AXIS2_FAILURE on error
         */
         axis2_status_t (AXIS2_CALL *serialize) (struct axis2_om_text *om_text,
@@ -72,7 +72,7 @@ extern "C"
         * @param om_text om_text struct
         * @param env environment , MUST NOT be NULL.
         * @param value text 
-        * @return status of the operation. AXIS2_SUCCESS on success,
+        * @return status of the op. AXIS2_SUCCESS on success,
         *           AXIS2_FAILURE on error.                                                
         */                                                
         axis2_status_t (AXIS2_CALL *set_value)(struct axis2_om_text *om_text,
@@ -96,7 +96,7 @@ extern "C"
     */
     typedef struct axis2_om_text
     {
-        /** OM text related operations */
+        /** OM text related ops */
         axis2_om_text_ops_t *ops;
 
     } axis2_om_text_t;

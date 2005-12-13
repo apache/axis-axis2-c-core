@@ -81,7 +81,7 @@ extern "C"
     *  @param env Environment. MUST NOT be NULL, 
     *  @param type one of the OM types
     *  @param no_of_args number of arguments passed in the variable parameter list
-    *  @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+    *  @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
     */
 
     AXIS2_DECLARE(axis2_status_t)

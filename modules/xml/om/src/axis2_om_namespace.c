@@ -117,7 +117,7 @@ axis2_om_namespace_create (axis2_env_t **env,
         }
     }
 
-    /* operations */
+    /* ops */
     ns->om_namespace.ops = NULL;
     ns->om_namespace.ops = (axis2_om_namespace_ops_t *) AXIS2_MALLOC (
                             (*env)->allocator, sizeof(axis2_om_namespace_ops_t));

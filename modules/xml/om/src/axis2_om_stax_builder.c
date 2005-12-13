@@ -107,7 +107,7 @@ axis2_om_stax_builder_create (axis2_env_t **env,
    
     
     
-    /* operations */
+    /* ops */
     builder->om_stax_builder.ops = NULL;
     builder->om_stax_builder.ops = (axis2_om_stax_builder_ops_t *) AXIS2_MALLOC(
                                     (*env)->allocator, sizeof(axis2_om_stax_builder_ops_t));

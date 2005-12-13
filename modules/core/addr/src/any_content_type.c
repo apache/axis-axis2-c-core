@@ -61,7 +61,7 @@ axis2_any_content_type_t* AXIS2_CALL axis2_any_content_type_create(axis2_env_t *
         return NULL;        
     }
     
-    /* initialize operations */
+    /* initialize ops */
     any_content_type_impl->any_content_type.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_any_content_type_ops_t) );
     if (!any_content_type_impl->any_content_type.ops)
     {

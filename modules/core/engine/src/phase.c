@@ -122,7 +122,7 @@ axis2_phase_t* AXIS2_CALL axis2_phase_create(axis2_env_t **env, const axis2_char
         }
     }
 
-    /* initialize operations */
+    /* initialize ops */
     phase_impl->phase.ops = NULL;
     phase_impl->phase.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_phase_ops_t) );
     if (!phase_impl->phase.ops)

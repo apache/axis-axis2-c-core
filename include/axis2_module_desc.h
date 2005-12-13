@@ -40,7 +40,7 @@
 #include <axis2_param_container.h>
 #include <axis2_flow_container.h>
 #include <axis2_param.h>
-#include <axis2_operation.h>
+#include <axis2_op.h>
 #include <axis2_engine_config.h>
 
 
@@ -49,7 +49,7 @@ extern "C"
 {
 #endif
 
-struct axis2_operation;
+struct axis2_op;
 struct axis2_engine_config;	
 typedef struct axis2_module_desc_ops axis2_module_desc_ops_t;
 typedef struct axis2_module_desc axis2_module_desc_t;	
@@ -61,8 +61,8 @@ typedef struct axis2_module_desc axis2_module_desc_t;
   */
 
 /** 
- * @brief Module Description operations struct
- * Encapsulator struct for operations of axis2_module_desc
+ * @brief Module Description ops struct
+ * Encapsulator struct for ops of axis2_module_desc
  */
 struct axis2_module_desc_ops
 {
@@ -154,12 +154,12 @@ struct axis2_module_desc_ops
                                     axis2_qname_t *qname);
     
     axis2_status_t (AXIS2_CALL *
-    add_operation ) (axis2_module_desc_t *module_desc,
+    add_op ) (axis2_module_desc_t *module_desc,
                                         axis2_env_t **env,
-                                        struct axis2_operation *operation);
+                                        struct axis2_op *op);
     
     axis2_hash_t * (AXIS2_CALL *
-    get_operations ) (axis2_module_desc_t *module_desc,
+    get_ops ) (axis2_module_desc_t *module_desc,
                                         axis2_env_t **env);
     
     struct axis2_engine_config * (AXIS2_CALL *
@@ -276,11 +276,11 @@ axis2_module_desc_create_with_qname (axis2_env_t **env,
 #define AXIS2_MODULE_DESC_SET_NAME(module_desc, env, qname) \
         (module_desc->ops->set_name(module_desc, env, qname))
 
-#define AXIS2_MODULE_DESC_ADD_OPERATION(module_desc, env, operation) \
-        (module_desc->ops->add_operation(module_desc, env, operation))
+#define AXIS2_MODULE_DESC_ADD_OPERATION(module_desc, env, op) \
+        (module_desc->ops->add_op(module_desc, env, op))
         
 #define AXIS2_MODULE_DESC_GET_OPERATIONS(module_desc, env) \
-        (module_desc->ops->get_operations(module_desc, env))
+        (module_desc->ops->get_ops(module_desc, env))
 
 #define AXIS2_MODULE_DESC_GET_PARENT(module_desc, env) \
         (module_desc->ops->get_parent(module_desc, env))

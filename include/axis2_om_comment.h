@@ -41,8 +41,8 @@ extern "C"
 
 
   /** 
-    *   @brief OM comment operations struct
-    *   Encapsulator struct for operations of axis2_om_comment_t
+    *   @brief OM comment ops struct
+    *   Encapsulator struct for ops of axis2_om_comment_t
     */
  AXIS2_DECLARE_DATA  typedef struct axis2_om_comment_ops
     {
@@ -50,7 +50,7 @@ extern "C"
         * Free a axis2_comment_t struct
         * @param om_comment pointer to axis2_commnet_t struct to be freed
         * @param env Environment. MUST NOT be NULL.
-        * @return satus of the operation. 
+        * @return satus of the op. 
         *                AXIS2_SUCCESS on success ,AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *free) (struct axis2_om_comment *om_comment,
@@ -93,7 +93,7 @@ extern "C"
     */
     typedef struct axis2_om_comment
     {
-        /** operations struct */
+        /** ops struct */
         axis2_om_comment_ops_t *ops;
 
     } axis2_om_comment_t;

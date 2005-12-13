@@ -44,7 +44,7 @@ extern "C"
  */
 
 /**
- *   \brief Simple HTTP Server Connection operations struct
+ *   \brief Simple HTTP Server Connection ops struct
  */
 AXIS2_DECLARE_DATA struct axis2_simple_http_svr_conn_ops
 {        
@@ -95,7 +95,7 @@ AXIS2_DECLARE_DATA struct axis2_simple_http_svr_conn_ops
 */
 AXIS2_DECLARE_DATA struct axis2_simple_http_svr_conn
 {
-    /** Simple HTTP Server Connection related operations */
+    /** Simple HTTP Server Connection related ops */
     axis2_simple_http_svr_conn_ops_t *ops;
 };
 

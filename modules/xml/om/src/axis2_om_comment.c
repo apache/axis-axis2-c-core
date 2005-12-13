@@ -98,7 +98,7 @@ axis2_om_comment_create(axis2_env_t **env,
         AXIS2_OM_NODE_ADD_CHILD((*node), env, parent); 
     }
 
-    /* operations */
+    /* ops */
     comment->om_comment.ops = NULL;
     comment->om_comment.ops = (axis2_om_comment_ops_t *)AXIS2_MALLOC(
                               (*env)->allocator,sizeof(axis2_om_comment_ops_t));

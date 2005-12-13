@@ -42,8 +42,8 @@ typedef struct axis2_svc_grp_ctx axis2_svc_grp_ctx_t;
 
     
 /** 
- * @brief Message Context operations struct
- * Encapsulator struct for operations of axis2_svc_grp_ctx
+ * @brief Message Context ops struct
+ * Encapsulator struct for ops of axis2_svc_grp_ctx
  */  
 struct axis2_svc_grp_ctx_ops
 {

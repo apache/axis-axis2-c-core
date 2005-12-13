@@ -51,11 +51,11 @@ typedef struct axis2_engine_config axis2_engine_config_t;
     
 struct axis2_svc_grp;
 struct axis2_svc;
-struct axis2_operation;    
+struct axis2_op;    
     
 /** 
- * @brief Engine Configuration operations struct
- * Encapsulator struct for operations of axis2_config
+ * @brief Engine Configuration ops struct
+ * Encapsulator struct for ops of axis2_config
  */
 struct axis2_engine_config_ops
 {

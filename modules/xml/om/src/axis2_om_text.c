@@ -18,7 +18,7 @@
 #include <axis2_om_output.h>
 #include <axis2_string.h>
 
-/* operations */
+/* ops */
 axis2_status_t AXIS2_CALL
 axis2_om_text_free (axis2_om_text_t * om_text,
                     axis2_env_t **env);
@@ -106,7 +106,7 @@ axis2_om_text_create (axis2_env_t **env,
         AXIS2_OM_NODE_ADD_CHILD ( *node, env, parent);
     }
 
-    /* operations */
+    /* ops */
     om_text->om_text.ops = NULL;
     om_text->om_text.ops = (axis2_om_text_ops_t *) AXIS2_MALLOC((*env)->allocator,
                                               sizeof (axis2_om_text_ops_t));

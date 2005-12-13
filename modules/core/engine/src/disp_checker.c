@@ -21,7 +21,7 @@
 #include <axis2_svc.h>
 #include <axis2.h>
 #include <axis2_msg_ctx.h>
-#include <axis2_operation_ctx.h>
+#include <axis2_op_ctx.h>
 #include <axis2_svc_ctx.h>
 #include <axis2_endpoint_ref.h>
 
@@ -95,11 +95,11 @@ axis2_disp_checker_t* AXIS2_CALL axis2_disp_checker_create(axis2_env_t **env, ax
     
     AXIS2_HANDLER_INIT(disp_checker_impl->base, env, handler_desc);
     
-    /* set the base struct's invoke operation */
+    /* set the base struct's invoke op */
     if (disp_checker_impl->base->ops) 
         disp_checker_impl->base->ops->invoke = axis2_disp_checker_invoke;
 
-    /* initialize operations */    
+    /* initialize ops */    
     disp_checker_impl->disp_checker.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_disp_checker_ops_t) );
     if (!disp_checker_impl->disp_checker.ops)
     {
@@ -197,8 +197,8 @@ axis2_disp_checker_free(struct axis2_disp_checker * disp_checker,
  */
 axis2_status_t AXIS2_CALL axis2_disp_checker_invoke(axis2_handler_t* handler, axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
 {
-    axis2_operation_t *operation = NULL;
-    axis2_operation_ctx_t *operation_ctx = NULL;
+    axis2_op_t *op = NULL;
+    axis2_op_ctx_t *op_ctx = NULL;
     axis2_svc_t *svc = NULL;
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_endpoint_ref_t *endpoint_ref = NULL;
@@ -207,14 +207,14 @@ axis2_status_t AXIS2_CALL axis2_disp_checker_invoke(axis2_handler_t* handler, ax
     
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 
-    operation = AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env);
+    op = AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env);
     
-    if (!operation)
+    if (!op)
     {
-        operation_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
-        if (operation_ctx)
+        op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
+        if (op_ctx)
         {
-            axis2_operation_t *op = AXIS2_OPERATION_CTX_GET_OPERATION(operation_ctx, env);
+            axis2_op_t *op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);
             if (op)
                 AXIS2_MSG_CTX_SET_OPERATION(msg_ctx, env, op);
         }
@@ -247,8 +247,8 @@ axis2_status_t AXIS2_CALL axis2_disp_checker_invoke(axis2_handler_t* handler, ax
         return AXIS2_FAILURE;
     }
     
-    operation = AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env);
-    if (!operation)
+    op = AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env);
+    if (!op)
     {
         AXIS2_LOG(env, "Operation Not found. Endpoint reference is ");
         if (endpoint_ref)

@@ -31,7 +31,7 @@
 extern "C"
 {
 #endif
-    struct axis2_operation;
+    struct axis2_op;
     struct axis2_svc;
     struct axis2_disp;
     struct axis2_disp_ops;
@@ -43,7 +43,7 @@ extern "C"
  */
 
 /**
- *   \brief Dispatcher operations struct
+ *   \brief Dispatcher ops struct
  */
  AXIS2_DECLARE_DATA   typedef struct axis2_disp_ops
     { 
@@ -64,13 +64,13 @@ extern "C"
         axis2_svc_t* (AXIS2_CALL *find_svc)(axis2_msg_ctx_t *msg_ctx, 
                         axis2_env_t **env);
         /**
-        * finds the operation
+        * finds the op
         *
         * @param service
         * @param msg_ctx
         * @return
         */
-        struct axis2_operation *(AXIS2_CALL *find_operation)(axis2_msg_ctx_t *msg_ctx,
+        struct axis2_op *(AXIS2_CALL *find_op)(axis2_msg_ctx_t *msg_ctx,
                                     axis2_env_t **env,
                                     struct axis2_svc *svc);
         
@@ -81,7 +81,7 @@ extern "C"
     */
     typedef struct axis2_disp
     {
-        /** Dispatcher related operations */
+        /** Dispatcher related ops */
         axis2_disp_ops_t *ops;
     } axis2_disp_t;
 
@@ -97,7 +97,7 @@ AXIS2_DECLARE(axis2_disp_t*) axis2_disp_create(axis2_env_t **env, axis2_qname_t 
 #define AXIS2_DISP_SET_QNAME(disp, env, name) ((disp)->ops->set_qname(disp, env, name))
 #define AXIS2_DISP_FREE(disp, env) ((disp)->ops->free(disp, env))
 #define AXIS2_DISP_FIND_SVC(msg_ctx, env) ((msg_ctx)->ops->find_svc(msg_ctx, env))
-#define AXIS2_DISP_FIND_OPERATION(msg_ctx, env, svc) ((msg_ctx)->ops->find_operation(msg_ctx, env, svc))
+#define AXIS2_DISP_FIND_OPERATION(msg_ctx, env, svc) ((msg_ctx)->ops->find_op(msg_ctx, env, svc))
 
 axis2_status_t AXIS2_CALL axis2_disp_invoke(struct axis2_handler * handler, 
                                                 axis2_env_t **env,

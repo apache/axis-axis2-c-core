@@ -40,8 +40,8 @@ extern "C"
 
 
     /** 
-    * @brief OM element operations struct
-    * Encapsulator struct for operations of axis2_om_element
+    * @brief OM element ops struct
+    * Encapsulator struct for ops of axis2_om_element
     */
 AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
     {
@@ -70,7 +70,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * @param env Environment. MUST NOT be NULL.
         * @param node node containing an instance of an OM element.
         * @param ns pointer to the namespace struct to be declared
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *declare_namespace)
                                         (struct axis2_om_element *om_element,
@@ -98,7 +98,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * @param om_element element to which the attribute is to be added.cannot be NULL.
         * @param env Environment. MUST NOT be NULL.
         * @param attribute attribute to be added.
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
          axis2_status_t (AXIS2_CALL *add_attribute)(struct axis2_om_element *om_element,
                                                     axis2_env_t **env,
@@ -120,7 +120,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * Frees given element 
         * @param element OM element to be freed.
         * @param env Environment. MUST NOT be NULL.
-         * @return satus of the operation. AXIS2_SUCCESS on success ,AXIS2_FAILURE on error.
+         * @return satus of the op. AXIS2_SUCCESS on success ,AXIS2_FAILURE on error.
         */
          axis2_status_t (AXIS2_CALL *free) (struct axis2_om_element *element,
                                             axis2_env_t **env);
@@ -130,7 +130,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * @param element element to be serialized.
         * @param env Environment. MUST NOT be NULL.
         * @param om_output OM output handler to be used in serializing
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *serialize_start_part)
                                                 (struct axis2_om_element *om_element,
@@ -143,7 +143,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * @param om_element element to be serialized.
         * @param env Environment must not be null.
         * @param om_output OM output handler to be used in serializing
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *serialize_end_part)
                                                     (struct axis2_om_element *om_element,
@@ -170,7 +170,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * @param om_element om_element_struct to with localname is set
         * @param env environment struct
         * @localname text value to be set as localname 
-        * @returns status code of operation, AXIS2_SUCCESS on success,
+        * @returns status code of op, AXIS2_SUCCESS on success,
         *                   AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *set_localname)(struct axis2_om_element *om_element,
@@ -192,7 +192,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
         * @param om_element Om_element struct
         * @param env environment must not be null
         * @param ns pointer to namespace
-        * @returns status code of the operation , NULL on error with error code 
+        * @returns status code of the op , NULL on error with error code 
         *                  set to environment's error
         */                                         
         axis2_status_t (AXIS2_CALL *set_namespace)(struct axis2_om_element *om_element,
@@ -230,7 +230,7 @@ AXIS2_DECLARE_DATA    typedef struct axis2_om_element_ops
     */
     typedef struct axis2_om_element
     {
-        /** operations of attribute struct */
+        /** ops of attribute struct */
         axis2_om_element_ops_t *ops;
 
     } axis2_om_element_t;

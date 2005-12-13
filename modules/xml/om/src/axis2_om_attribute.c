@@ -126,7 +126,7 @@ axis2_om_attribute_create (axis2_env_t **env,
     }
     attribute->ns = ns;
 
-    /** operations */
+    /** ops */
     attribute->qname = NULL;
     attribute->om_attribute.ops = (axis2_om_attribute_ops_t*)AXIS2_MALLOC ((*env)->allocator,
                       sizeof (axis2_om_attribute_ops_t));

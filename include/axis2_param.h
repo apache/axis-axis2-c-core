@@ -52,7 +52,7 @@ struct axis2_param_ops;
   static const int AXIS2_DOM_PARAM = 1;
        
 /**
- *   \brief param operations struct
+ *   \brief param ops struct
  */
 AXIS2_DECLARE_DATA typedef struct axis2_param_ops
     {
@@ -148,7 +148,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
  */
 typedef struct axis2_param
 {
-	/** Parameter related operations */
+	/** Parameter related ops */
 	axis2_param_ops_t *ops;
 }axis2_param_t;
 

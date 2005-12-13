@@ -321,7 +321,7 @@ axis2_xml_writer_create(axis2_env_t **env,
         AXIS2_FREE((*env)->allocator,writer_impl);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
-    /* operations */
+    /* ops */
     writer_impl->writer.ops->free = axis2_libxml2_writer_wrapper_free;
     writer_impl->writer.ops->write_start_element = axis2_libxml2_writer_wrapper_write_start_element;
     writer_impl->writer.ops->write_start_element_with_namespace =
@@ -454,7 +454,7 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
     }
     
-    /* operations */
+    /* ops */
     writer_impl->writer.ops->free = axis2_libxml2_writer_wrapper_free;
     writer_impl->writer.ops->write_start_element = 
             axis2_libxml2_writer_wrapper_write_start_element;

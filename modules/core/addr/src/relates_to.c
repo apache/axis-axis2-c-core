@@ -77,7 +77,7 @@ axis2_relates_to_t* AXIS2_CALL axis2_relates_to_create(axis2_env_t **env, axis2_
         }
     }
 
-    /* initialize operations */
+    /* initialize ops */
     relates_to_impl->relates_to.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_relates_to_ops_t) );
     if (!relates_to_impl->relates_to.ops)
     {

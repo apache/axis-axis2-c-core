@@ -26,7 +26,7 @@
 #include <axis2_param_container.h>
 #include <axis2_flow_container.h>
 #include <axis2_wsdl_svc.h>
-#include <axis2_operation.h>
+#include <axis2_op.h>
 #include <axis2_svc_grp.h>
 #include <axis2_qname.h>
 #include <axis2_error.h>
@@ -35,7 +35,7 @@
 #include <axis2_phase_resolver.h>
 #include <axis2_module_desc.h>
 #include <axis2_engine_config.h>
-#include <axis2_wsdl_soap_operation.h>
+#include <axis2_wsdl_soap_op.h>
 #include <axis2_string.h>
 #include <axis2_wsdl_endpoint.h>
 
@@ -51,20 +51,20 @@ extern "C"
 
 struct axis2_wsdl_endpoint;
 struct axis2_svc_grp;
-struct axis2_operation;
+struct axis2_op;
 struct axis2_flow_container;
 struct axis2_param_container;
 struct axis2_wsdl_svc;
 struct axis2_wsdl_interface; 
 struct axis2_module_desc; 
 struct axis2_engine_config;
-struct axis2_wsdl_soap_operation;    
+struct axis2_wsdl_soap_op;    
 typedef struct axis2_svc_ops axis2_svc_ops_t;   
 typedef struct axis2_svc axis2_svc_t;
     
 /** 
- * @brief Service operations struct
- * Encapsulator struct for operations of axis2_svc
+ * @brief Service ops struct
+ * Encapsulator struct for ops of axis2_svc
  */    
 struct axis2_svc_ops
 {
@@ -73,22 +73,22 @@ struct axis2_svc_ops
             axis2_env_t **env);
 
 	axis2_status_t (AXIS2_CALL *
-    add_operation) (axis2_svc_t *svc, 
+    add_op) (axis2_svc_t *svc, 
                     axis2_env_t **env,
-                    struct axis2_operation *operation);
+                    struct axis2_op *op);
 
-	struct axis2_operation *(AXIS2_CALL *
-    get_operation_with_qname) (axis2_svc_t *svc, 
+	struct axis2_op *(AXIS2_CALL *
+    get_op_with_qname) (axis2_svc_t *svc, 
                                   axis2_env_t **env,
-                                  axis2_qname_t *operation_qname);
+                                  axis2_qname_t *op_qname);
 
-	struct axis2_operation *(AXIS2_CALL *
-    get_operation_with_name) (axis2_svc_t *svc, 
+	struct axis2_op *(AXIS2_CALL *
+    get_op_with_name) (axis2_svc_t *svc, 
                                 axis2_env_t **env,
-                                const axis2_char_t * operation_name);
+                                const axis2_char_t * op_name);
 
 	axis2_hash_t *(AXIS2_CALL *
-    get_operations) (axis2_svc_t *svc, 
+    get_ops) (axis2_svc_t *svc, 
                      axis2_env_t **env);
 
 	axis2_status_t (AXIS2_CALL *
@@ -156,7 +156,7 @@ struct axis2_svc_ops
      * @param module
      */
     axis2_status_t (AXIS2_CALL *
-    add_module_operations) (axis2_svc_t *svc,
+    add_module_ops) (axis2_svc_t *svc,
                                 axis2_env_t **env,
                                 struct axis2_module_desc * module_desc,
                                 struct axis2_engine_config * axis2_config); 
@@ -177,13 +177,13 @@ struct axis2_svc_ops
     
     /**
      * To get the WSDL opeartion element in servic einterface
-     * @param operationName  <code>QName</cde>
+     * @param opName  <code>QName</cde>
      * @return  WSDLOperation <code>WSDLOperation</code>
      */
     void * (AXIS2_CALL *
-    get_wsdl_operation) (axis2_svc_t *svc,
+    get_wsdl_op) (axis2_svc_t *svc,
                                     axis2_env_t **env,
-                                    axis2_qname_t *operation_name);
+                                    axis2_qname_t *op_name);
     
        /**
      * Method setContextPath
@@ -290,7 +290,7 @@ struct axis2_svc_ops
                         struct axis2_flow *fault_flow);
     
     /**
-     * This method will return the operation given particular SOAP Action.
+     * This method will return the op given particular SOAP Action.
      * This method should only be called if there is only one Endpoint is defined
      * for this Service. If more than one Endpoint exists one of them will be picked.
      * If more than one Operation is found with the given
@@ -298,16 +298,16 @@ struct axis2_svc_ops
      * the given SOAP Action; null will be returned.
      *
      * @param soapAction SOAP Action defined for the particular Operation
-     * @return A struct axis2_operation * if a unque Operation can be found with the given SOAP Action
+     * @return A struct axis2_op * if a unque Operation can be found with the given SOAP Action
      *         otherwise will return null.
      */
-    struct axis2_operation * (AXIS2_CALL *
-    get_operation_by_soap_action) (axis2_svc_t *svc,
+    struct axis2_op * (AXIS2_CALL *
+    get_op_by_soap_action) (axis2_svc_t *svc,
                                     axis2_env_t **env,
                                     axis2_char_t *soap_action);
     
     /**
-     * This method will return the operation given the particular endpoing and the
+     * This method will return the op given the particular endpoing and the
      * particular SOAP Action. If more than one Operation is found with the given
      * SOAP Action; null will be ruturned. If no particular Operation is found with
      * the given SOAP Action; null will be returned
@@ -315,11 +315,11 @@ struct axis2_svc_ops
      * @param endpoint   Particular Enpoint in which the bining is defined with the particular SOAP
      *                   Action.
      * @param soapAction SOAP Action defined for the particular Operation
-     * @return A struct axis2_operation * if a unque Operation can be found with the given SOAP Action
+     * @return A struct axis2_op * if a unque Operation can be found with the given SOAP Action
      *         otherwise will return null.
      */
-    struct axis2_operation * (AXIS2_CALL *
-    get_operation_by_soap_action_and_endpoint) (axis2_svc_t *svc,
+    struct axis2_op * (AXIS2_CALL *
+    get_op_by_soap_action_and_endpoint) (axis2_svc_t *svc,
                                     axis2_env_t **env,
                                     axis2_char_t *soap_action,
                                     axis2_qname_t * endpoint);       
@@ -393,7 +393,7 @@ struct axis2_svc_ops
     add_mapping) (axis2_svc_t *svc,
                 axis2_env_t **env,
                 axis2_char_t * mapping_key , 
-                struct axis2_operation * axis2_operation);
+                struct axis2_op * axis2_op);
  
     axis2_status_t (AXIS2_CALL *
     add_module_ref) (axis2_svc_t *svc,
@@ -447,16 +447,16 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
 
 #define AXIS2_SVC_FREE(svc, env) (svc->ops->free (svc, env))
 
-#define AXIS2_SVC_ADD_OPERATION(svc, env, operation) \
-		(svc->ops->add_operation (svc, env, operation))
+#define AXIS2_SVC_ADD_OPERATION(svc, env, op) \
+		(svc->ops->add_op (svc, env, op))
 
-#define AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env, operation_qname) \
-		(svc->ops->get_operation_with_qname (svc, env, operation_qname))
+#define AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env, op_qname) \
+		(svc->ops->get_op_with_qname (svc, env, op_qname))
 
-#define AXIS2_SVC_GET_OPERATION_WITH_NAME(svc, env, operation_name) \
-		(svc->ops->get_operation_with_name (svc, env, operation_name))
+#define AXIS2_SVC_GET_OPERATION_WITH_NAME(svc, env, op_name) \
+		(svc->ops->get_op_with_name (svc, env, op_name))
 
-#define AXIS2_SVC_GET_OPERATIONS(svc, env) (svc->ops->get_operations (svc, env))
+#define AXIS2_SVC_GET_OPERATIONS(svc, env) (svc->ops->get_ops (svc, env))
 
 #define AXIS2_SVC_SET_PARENT(svc, env , svc_grp) (svc->ops->set_parent \
         (svc, env, svc_grp))
@@ -486,7 +486,7 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
         (svc->ops->engage_module(svc, env, moduleref, axis2_config))
 
 #define AXIS2_SVC_ADD_MODULE_OPERATIONS(svc, env, module_desc, axis2_config) \
-        (svc->ops->add_module_operations(svc, env, module_desc, axis2_config))
+        (svc->ops->add_module_ops(svc, env, module_desc, axis2_config))
 
 #define AXIS2_SVC_ADD_TO_ENGAGED_MODULE_LIST(svc, env, module_name) \
         (svc->ops->add_to_engaged_module_list(svc, env, module_name))
@@ -494,8 +494,8 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
 #define AXIS2_SVC_GET_ENGAGED_MODULES(svc, env) \
         (svc->ops->get_engaged_modules(svc, env))
 
-#define AXIS2_SVC_GET_WSDL_OPERATION(svc, env, operation_name) \
-        (svc->ops->get_wsdl_operation(svc, env, operation_name))
+#define AXIS2_SVC_GET_WSDL_OPERATION(svc, env, op_name) \
+        (svc->ops->get_wsdl_op(svc, env, op_name))
 
 #define AXIS2_SVC_SET_CONTEXT_PATH(svc, env, context_path) \
         (svc->ops->set_context_path(svc, env, context_path))
@@ -534,10 +534,10 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
         (svc->ops->set_fault_outflow(svc, env, fault_outflow))
 
 #define AXIS2_SVC_GET_OPERATION_BY_SOAP_ACTION(svc, env, soap_action) \
-        (svc->ops->get_operation_by_soap_action(svc, env, soap_action))
+        (svc->ops->get_op_by_soap_action(svc, env, soap_action))
 
 #define AXIS2_SVC_GET_OPERATION_BY_SOAP_ACTION_AND_ENDPOINT(svc, env, soap_action, endpoint) \
-        (svc->ops->get_operation_by_soap_action_and_endpoint(svc, env, soap_action, endpoint))
+        (svc->ops->get_op_by_soap_action_and_endpoint(svc, env, soap_action, endpoint))
 
 #define AXIS2_SVC_GET_AXIS2_SVC_NAME(svc, env) \
         (svc->ops->get_axis2_svc_name(svc, env))

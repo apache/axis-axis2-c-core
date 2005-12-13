@@ -87,7 +87,7 @@ axis2_flow_create (axis2_env_t **env)
 	return &(flow_impl->flow);
 }
 
-/*************************** Start of operation impls *************************/
+/*************************** Start of op impls *************************/
 
 axis2_status_t AXIS2_CALL
 axis2_flow_free (axis2_flow_t *flow, axis2_env_t **env)

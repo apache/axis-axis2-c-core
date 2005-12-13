@@ -43,7 +43,7 @@ extern "C"
  */
 
 /**
- *   \brief Handler operations struct
+ *   \brief Handler ops struct
  */
  AXIS2_DECLARE_DATA   typedef struct axis2_handler_ops
     {
@@ -51,7 +51,7 @@ extern "C"
         * Free an axis2_handler struct
         * @param env Environment. MUST NOT be NULL, if NULL behaviour is undefined.
         * @param axis2_handler pointer to axis2_handler struct to be freed
-        * @return satus of the operation. AXIS2_SUCCESS on success else AXIS2_FAILURE
+        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *free) (struct axis2_handler * handler, 
                                            axis2_env_t **env);
@@ -124,7 +124,7 @@ extern "C"
     */
     typedef struct axis2_handler
     {
-        /** Handler related operations */
+        /** Handler related ops */
         axis2_handler_ops_t *ops;
     } axis2_handler_t;
 

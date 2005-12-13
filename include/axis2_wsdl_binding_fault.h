@@ -45,8 +45,8 @@ typedef struct axis2_wsdl_binding_fault_ops axis2_wsdl_binding_fault_ops_t;
  */
 
 /** 
- * @brief Wsdl Binding Fault operations struct
- * Encapsulator struct for operations of axis2_binding_fault
+ * @brief Wsdl Binding Fault ops struct
+ * Encapsulator struct for ops of axis2_binding_fault
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_binding_fault_ops
 {

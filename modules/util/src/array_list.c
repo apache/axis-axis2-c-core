@@ -104,7 +104,7 @@ struct axis2_array_list* AXIS2_CALL axis2_array_list_create(axis2_env_t **env, i
     }
     array_list_impl->capacity = capacity;    
     
-    /* initialize operations */
+    /* initialize ops */
     array_list_impl->array_list.ops = NULL;
     array_list_impl->array_list.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_array_list_ops_t) );
     if (!array_list_impl->array_list.ops)

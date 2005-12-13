@@ -37,8 +37,8 @@ typedef struct axis2_wsdl_component axis2_wsdl_component_t;
   */
 
 /** 
- * @brief Wsdl Component operations struct
- * Encapsulator struct for operations of axis2_wsdl_component
+ * @brief Wsdl Component ops struct
+ * Encapsulator struct for ops of axis2_wsdl_component
  */
 struct axis2_wsdl_component_ops
 {

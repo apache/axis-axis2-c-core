@@ -145,7 +145,7 @@ axis2_flow_container_create (axis2_env_t **env)
 	return &(flow_container_impl->flow_container);
 }
 
-/*************************** Start of operation impls *************************/
+/*************************** Start of op impls *************************/
 
 axis2_status_t AXIS2_CALL
 axis2_flow_container_free(axis2_flow_container_t *flow_container,

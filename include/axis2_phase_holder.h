@@ -19,7 +19,7 @@
 
 /**
  * @file axis2_phase_holder.h
- * @brief Axis2 Wsdl soap operation interface
+ * @brief Axis2 Wsdl soap op interface
  */
 
 #include <axis2.h>
@@ -53,8 +53,8 @@ typedef struct axis2_phase_holder_ops axis2_phase_holder_ops_t;
  */
 
 /** 
- * @brief Wsdl Phase Holder operations struct
- * Encapsulator struct for operations of axis2_phase_holder
+ * @brief Wsdl Phase Holder ops struct
+ * Encapsulator struct for ops of axis2_phase_holder
  */
 AXIS2_DECLARE_DATA struct axis2_phase_holder_ops
 {

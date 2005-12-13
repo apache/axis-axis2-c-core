@@ -44,8 +44,8 @@ typedef struct axis2_wsdl_property_ops axis2_wsdl_property_ops_t;
  */
 
 /** 
- * @brief Wsdl Property operations struct
- * Encapsulator struct for operations of axis2_wsdl_property
+ * @brief Wsdl Property ops struct
+ * Encapsulator struct for ops of axis2_wsdl_property
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_property_ops
 {

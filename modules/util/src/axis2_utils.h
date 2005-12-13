@@ -34,7 +34,7 @@ extern "C"
  */
 #define AXIS2_REQUEST_URL_PREFIX "/services"
     /**
-     * This function allows users to reolve the service and operation from the 
+     * This function allows users to reolve the service and op from the 
      * url. It returns an array of 2 elements of axis2_char_t arrays (strings).
      * The caller is responsible to free the memory allocated by the function
      * for the return value.
@@ -43,7 +43,7 @@ extern "C"
      * @return axis2_char_t ** <code>axis2_char_t **<code>
      */
     AXIS2_DECLARE(axis2_char_t**)
-    axis2_parse_request_url_for_svc_and_operation(axis2_env_t **env, axis2_char_t *request);
+    axis2_parse_request_url_for_svc_and_op(axis2_env_t **env, axis2_char_t *request);
 
 /** @} */
     

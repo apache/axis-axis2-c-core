@@ -202,7 +202,7 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
     guththila_xml_reader_wrapper_init_map(guththila_impl);
     
     
-/************** operations *****/    
+/************** ops *****/    
     guththila_impl->parser.ops->next = guththila_xml_reader_wrapper_next;
     
     guththila_impl->parser.ops->free = guththila_xml_reader_wrapper_free;
@@ -296,7 +296,7 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
     guththila_xml_reader_wrapper_init_map(guththila_impl);
     
     
-/************** operations *****/    
+/************** ops *****/    
     guththila_impl->parser.ops->next = guththila_xml_reader_wrapper_next;
     
     guththila_impl->parser.ops->free = guththila_xml_reader_wrapper_free;

@@ -49,8 +49,8 @@ struct axis2_param_container_ops;
  */
 
 /** 
- * @brief Param Container operations struct
- * Encapsulator struct for operations of axis2_param_container
+ * @brief Param Container ops struct
+ * Encapsulator struct for ops of axis2_param_container
  */
 AXIS2_DECLARE_DATA typedef struct axis2_param_container_ops
 {

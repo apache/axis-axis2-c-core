@@ -68,7 +68,7 @@ axis2_handler_t* AXIS2_CALL axis2_handler_create(axis2_env_t **env)
     /*handler_impl->derived = NULL;*/
     handler_impl->handler_desc = NULL;
     
-    /* initialize operations */
+    /* initialize ops */
     handler_impl->handler.ops = NULL;
     handler_impl->handler.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_handler_ops_t) );
     if (!handler_impl->handler.ops)

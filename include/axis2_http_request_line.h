@@ -41,8 +41,8 @@ typedef struct axis2_http_request_line axis2_http_request_line_t;
     
     
 /** 
- * @brief HTTP Request Line operations struct
- * Encapsulator struct for operations of axis2_http_request_line
+ * @brief HTTP Request Line ops struct
+ * Encapsulator struct for ops of axis2_http_request_line
  */
 AXIS2_DECLARE_DATA struct axis2_http_request_line_ops
 {
