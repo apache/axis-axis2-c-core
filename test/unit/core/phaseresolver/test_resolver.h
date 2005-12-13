@@ -15,9 +15,11 @@
 
 struct axis2_flow;
 struct axis2_operation;
+struct axis2_svc;
 struct axis2_module_desc;
 
 
+void axis2_phase_resolver_engage_module_to_svc(CuTest *tc);
 void Testaxis2_phase_resolver_engage_module_to_operation(CuTest *tc);
 
 #endif /* TEST_RESOLVER_H*/

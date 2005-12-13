@@ -3,6 +3,10 @@
 void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env);
 axis2_array_list_t *get_operation_inphases(axis2_env_t **env);
 
+void axis2_phase_resolver_engage_module_to_svc(CuTest *tc)
+{
+}
+
 void Testaxis2_phase_resolver_engage_module_to_operation(CuTest *tc)
 {
     struct axis2_phase_resolver *resolver = NULL;

@@ -1083,7 +1083,7 @@ axis2_engine_config_add_transport_out(axis2_engine_config_t *engine_config,
     
     config_impl = AXIS2_INTF_TO_IMPL(engine_config);
     
-    if(!config_impl->transports_in)
+    if(!config_impl->transports_out)
     {
         config_impl->transports_out = axis2_hash_make(env);
         if(!transports_out)
