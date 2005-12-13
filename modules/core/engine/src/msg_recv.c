@@ -43,22 +43,29 @@ axis2_msg_recv_receive (axis2_msg_recv_t *msg_recv,
 axis2_msg_recv_t * AXIS2_CALL
 axis2_msg_recv_create (axis2_env_t **env)
 {
+    axis2_msg_recv_impl_t *msg_recv_impl = NULL;
+    
     AXIS2_ENV_CHECK(env, NULL);
     
-	axis2_msg_recv_impl_t *msg_recv_impl = 
-        (axis2_msg_recv_impl_t *) AXIS2_MALLOC ((*env)->allocator
+	msg_recv_impl = (axis2_msg_recv_impl_t *) AXIS2_MALLOC ((*env)->allocator
 		    , sizeof (axis2_msg_recv_impl_t));
     
 	if(NULL == msg_recv_impl)
+    {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        return NULL;
+    }
+    
+    msg_recv_impl->msg_recv.ops = NULL;
     
     msg_recv_impl->msg_recv.ops = (axis2_msg_recv_ops_t *) AXIS2_MALLOC(
         (*env)->allocator, sizeof(axis2_msg_recv_ops_t));
     
 	if(NULL == msg_recv_impl->msg_recv.ops)
 	{
-        AXIS2_FREE((*env)->allocator, msg_recv_impl);
+        axis2_msg_recv_free(&(msg_recv_impl->msg_recv), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        return NULL;
 	}
     
 	msg_recv_impl->msg_recv.ops->free = axis2_msg_recv_free;

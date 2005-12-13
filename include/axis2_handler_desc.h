@@ -60,7 +60,7 @@ extern "C"
                                                axis2_env_t **env, axis2_char_t *name);
         axis2_status_t (AXIS2_CALL *add_param) (struct axis2_handler_desc *handler_desc, 
                                                axis2_env_t **env, axis2_param_t * param);
-        axis2_hash_t* (AXIS2_CALL *get_params) (struct axis2_handler_desc *handler_desc, 
+        axis2_array_list_t* (AXIS2_CALL *get_params) (struct axis2_handler_desc *handler_desc, 
                                                axis2_env_t **env);
 
         /**
@@ -100,7 +100,7 @@ extern "C"
  * creates handler_desc struct
  * @param qname qname, can be NULL
  */
-AXIS2_DECLARE(axis2_handler_desc_t*) axis2_handler_desc_create(axis2_env_t **env, axis2_qname_t *qname);
+AXIS2_DECLARE(axis2_handler_desc_t*) axis2_handler_desc_create_with_qname(axis2_env_t **env, axis2_qname_t *qname);
 
 #define AXIS2_HANDLER_DESC_GET_HANDLER(handler_desc, env) ((handler_desc)->ops->get_handler(handler_desc, env))
 #define AXIS2_HANDLER_DESC_SET_HANDLER(handler_desc, env, handler) ((handler_desc)->ops->set_handler(handler_desc, env, handler))

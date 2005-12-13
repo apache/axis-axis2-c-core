@@ -131,6 +131,7 @@ AC_CONFIG_FILES([Makefile \
     test/unit/core/engine/Makefile \
     test/unit/core/context/Makefile \
     test/unit/core/phaseresolver/Makefile \
+    test/unit/core/deployment/Makefile \
     test/unit/util/Makefile \
     test/unit/xml/Makefile \
     test/unit/xml/om/Makefile

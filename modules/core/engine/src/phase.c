@@ -475,7 +475,8 @@ axis2_status_t AXIS2_CALL axis2_phase_add_handler_desc(struct axis2_phase *phase
             {
                 AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
-            }    
+            } 
+                        
             return axis2_phase_insert_handler_desc(phase, env, handler_desc);
         }
     }

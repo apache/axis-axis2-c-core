@@ -1,1 +1,1 @@
-SUBDIRS = context description engine phaseresolver
+SUBDIRS = context description engine phaseresolver deployment

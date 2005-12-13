@@ -38,8 +38,12 @@ extern "C"
     AXIS2_DECLARE(int)
     axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2);
 
+    AXIS2_DECLARE(int)
+    axis2_strlen(const axis2_char_t *s);
+
 #define AXIS2_STRDUP(pts, env) axis2_strdup(pts, env)
 #define AXIS2_STRCMP(s1, s2) axis2_strcmp(s1, s2)
+#define AXIS2_STRLEN(s) axis2_strlen(s)
 
 /** @} */
     

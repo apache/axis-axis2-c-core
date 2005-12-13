@@ -1044,6 +1044,7 @@ axis2_operation_get_remaining_phases_inflow(axis2_operation_t *operation,
                                                 axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(operation, env, NULL);
+ 
     return AXIS2_INTF_TO_IMPL(operation)->remaining_phases_inflow;
 }
 

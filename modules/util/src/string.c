@@ -51,3 +51,11 @@ axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
         return -1;
 }
 
+AXIS2_DECLARE(int)
+axis2_strlen(const axis2_char_t *s)
+{
+    if(s)
+        return strlen(s);
+    else
+        return -1;
+}

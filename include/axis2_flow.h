@@ -103,7 +103,7 @@ axis2_flow_create (axis2_env_t **env);
 
 #define AXIS2_FLOW_FREE(flow, env) ((flow->ops)->free (flow, env))
 
-#define AXIS2_FLOW_ADD_HANDLER(flow, env, param) \
+#define AXIS2_FLOW_ADD_HANDLER(flow, env, handler) \
 		((flow->ops)->add_handler (flow, env, handler))
 
 #define AXIS2_FLOW_GET_HANDLER(flow, env, index) \

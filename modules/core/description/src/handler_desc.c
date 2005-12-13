@@ -52,7 +52,7 @@ axis2_param_t* AXIS2_CALL axis2_handler_desc_get_param(struct axis2_handler_desc
                                                axis2_env_t **env, axis2_char_t *name);
 axis2_status_t AXIS2_CALL axis2_handler_desc_add_param(struct axis2_handler_desc *handler_desc, 
                                                axis2_env_t **env, axis2_param_t * param);
-axis2_hash_t* AXIS2_CALL axis2_handler_desc_get_params(struct axis2_handler_desc *handler_desc, 
+axis2_array_list_t* AXIS2_CALL axis2_handler_desc_get_params(struct axis2_handler_desc *handler_desc, 
                                                axis2_env_t **env);
 axis2_bool_t AXIS2_CALL axis2_handler_desc_is_param_locked(struct axis2_handler_desc *handler_desc, 
                                                axis2_env_t **env, axis2_char_t * param_name);
@@ -72,7 +72,7 @@ axis2_status_t AXIS2_CALL axis2_handler_desc_set_parent(struct axis2_handler_des
 axis2_status_t AXIS2_CALL axis2_handler_desc_free (struct axis2_handler_desc *handler_desc, 
                                                axis2_env_t **env);
 
-axis2_handler_desc_t* AXIS2_CALL axis2_handler_desc_create(axis2_env_t **env, axis2_qname_t *qname)
+axis2_handler_desc_t* AXIS2_CALL axis2_handler_desc_create_with_qname(axis2_env_t **env, axis2_qname_t *qname)
 {
     axis2_handler_desc_impl_t *handler_desc_impl = NULL;
     
@@ -224,7 +224,7 @@ axis2_status_t AXIS2_CALL axis2_handler_desc_add_param(struct axis2_handler_desc
     return AXIS2_PARAM_CONTAINER_ADD_PARAM(handler_desc_impl->param_container, env, param);
 }
 
-axis2_hash_t* AXIS2_CALL axis2_handler_desc_get_params(struct axis2_handler_desc *handler_desc, 
+axis2_array_list_t* AXIS2_CALL axis2_handler_desc_get_params(struct axis2_handler_desc *handler_desc, 
                                                axis2_env_t **env)
 {
     axis2_handler_desc_impl_t *handler_desc_impl = NULL;

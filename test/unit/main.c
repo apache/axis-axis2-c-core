@@ -7,8 +7,8 @@ void RunAllTests(void) {
     CuSuite* suite = CuSuiteNew();
 
     CuSuiteAddSuite(suite, axis2_utilGetSuite());
-    /*CuSuiteAddSuite(suite, axis2_commonGetSuite());*/
     CuSuiteAddSuite(suite, axis2_omGetSuite());
+    CuSuiteAddSuite(suite, axis2_phaseresolverGetSuite());
 
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);

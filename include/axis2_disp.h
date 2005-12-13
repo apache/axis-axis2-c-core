@@ -31,7 +31,8 @@
 extern "C"
 {
 #endif
-
+    struct axis2_operation;
+    struct axis2_svc;
     struct axis2_disp;
     struct axis2_disp_ops;
     
@@ -69,9 +70,9 @@ extern "C"
         * @param msg_ctx
         * @return
         */
-        axis2_operation_t* (AXIS2_CALL *find_operation)(axis2_msg_ctx_t *msg_ctx,
+        struct axis2_operation *(AXIS2_CALL *find_operation)(axis2_msg_ctx_t *msg_ctx,
                                     axis2_env_t **env,
-                                    axis2_svc_t *svc);
+                                    struct axis2_svc *svc);
         
     } axis2_disp_ops_t;
 	

@@ -1193,20 +1193,23 @@ axis2_phase_resolver_engage_module_to_operation(axis2_phase_resolver_t *phase_re
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
     int type = 0;
-    int j = 0;
     axis2_status_t status = AXIS2_FALSE;
     
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
-    
+       
     for (type = 1; type < 5; type++) 
     {
         struct axis2_flow *flow = NULL;
+        axis2_array_list_t *phases = NULL;
 
         switch (type) {
             case AXIS2_INFLOW:
             {
+                phases = AXIS2_OPERATION_GET_REMAINING_PHASES_INFLOW(axis_operation, env);
+             
                 resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env, 
-                    AXIS2_OPERATION_GET_REMAINING_PHASES_INFLOW(axis_operation, env));
+                    phases);
+                
                 break;
             }
             case AXIS2_OUTFLOW:
@@ -1229,7 +1232,8 @@ axis2_phase_resolver_engage_module_to_operation(axis2_phase_resolver_t *phase_re
             }
         }
 
-        switch (type) {
+        switch (type) 
+        {
             case AXIS2_INFLOW:
             {
                 flow = AXIS2_MODULE_DESC_GET_INFLOW(module_desc, env);
@@ -1251,7 +1255,10 @@ axis2_phase_resolver_engage_module_to_operation(axis2_phase_resolver_t *phase_re
                 break;
             }
         }
-        if (NULL != flow) {
+        if (NULL != flow) 
+        {
+            int j = 0;
+            
             for (j = 0; j < AXIS2_FLOW_GET_HANDLER_COUNT(flow, env); j++) 
             {
                 struct axis2_handler_desc *metadata = NULL;
@@ -1260,6 +1267,7 @@ axis2_phase_resolver_engage_module_to_operation(axis2_phase_resolver_t *phase_re
                 metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
                 phase_name = AXIS2_PHASE_RULE_GET_NAME(
                         AXIS2_HANDLER_DESC_GET_RULES(metadata, env), env);
+             
                 if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) &&
                     (0 != AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) &&
                     (0 != AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
@@ -1272,6 +1280,7 @@ axis2_phase_resolver_engage_module_to_operation(axis2_phase_resolver_t *phase_re
                 {
                     AXIS2_ERROR_SET((*env)->error, 
                         SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE, AXIS2_FAILURE);
+                    return NULL;
                     
                 }
             }

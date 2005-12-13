@@ -48,9 +48,9 @@ axis2_status_t AXIS2_CALL axis2_disp_free (struct axis2_disp * disp,
                                             axis2_env_t **env);
 axis2_svc_t* AXIS2_CALL axis2_disp_find_svc(axis2_msg_ctx_t * msg_ctx,
                     axis2_env_t **env);
-axis2_operation* AXIS2_CALL axis2_disp_find_operation(axis2_msg_ctx_t * msg_ctx,
+struct axis2_operation* AXIS2_CALL axis2_disp_find_operation(axis2_msg_ctx_t * msg_ctx,
                                 axis2_env_t **env,
-                                axis2_svc_t *svc);
+                                struct axis2_svc *svc);
 
 
 axis2_disp_t* AXIS2_CALL axis2_disp_create(axis2_env_t **env, axis2_qname_t *qname) 
@@ -198,7 +198,7 @@ axis2_status_t AXIS2_CALL axis2_disp_invoke(struct axis2_handler *handler,
     axis_service = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
     if (axis_service)
     {
-        operation = AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env, axis_service);
+        operation = AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env);
         if (operation)
         {
             AXIS2_MSG_CTX_SET_OPERATION(msg_ctx, env, operation);
@@ -267,9 +267,9 @@ axis2_svc_t* AXIS2_CALL axis2_disp_find_svc(axis2_msg_ctx_t * msg_ctx,
  * @param msg_ctx
  * @return
  */
-axis2_operation* AXIS2_CALL axis2_disp_find_operation(axis2_msg_ctx_t * msg_ctx,
+struct axis2_operation* AXIS2_CALL axis2_disp_find_operation(axis2_msg_ctx_t * msg_ctx,
                                 axis2_env_t **env,
-                                axis2_svc_t *svc)
+                                struct axis2_svc *svc)
 {
     return NULL;
 }

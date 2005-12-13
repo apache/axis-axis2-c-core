@@ -2,6 +2,7 @@
 #define PHASERESOLVER_TEST_H
 
 #include <CuTest.h>
+#include "test_resolver.h"
 
 CuSuite* axis2_phaseresolverGetSuite();
 
