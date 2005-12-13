@@ -210,13 +210,13 @@ extern "C"
         /** error occured creating xml stream writer */
         AXIS2_ERROR_CREATING_XML_STREAM_READER,
         
-        INVALID_MODULE_REF,
+        AXIS2_ERROR_INVALID_MODULE_REF,
         
-        PHASE_IS_NOT_SPECIFED,
+        AXIS2_ERROR_PHASE_IS_NOT_SPECIFED,
         
-        SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE,
+        AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE,
         
-        INVALID_PHASE,
+        AXIS2_ERROR_INVALID_PHASE,
         
         AXIS2_ERROR_WRITING_START_ELEMENT,
     
@@ -254,9 +254,11 @@ extern "C"
         /**Two service can not have same name, a service with same name alredy 
           * exist in the system
           */
-        AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME
-        
-        
+        AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME,
+        /** Message context processing a fault already */
+        AXIS2_ERROR_INVALID_STATE_PROCESSING_FAULT_ALREADY,
+        /** fault to field not specified in message context */
+        AXIS2_ERROR_NOWHERE_TO_SEND_FAULT
         
     };
 
