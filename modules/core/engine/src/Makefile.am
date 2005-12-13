@@ -11,7 +11,8 @@ libaxis2_engine_la_SOURCES = handler.c \
                                 req_uri_disp.c \
                                 disp.c \
                                 soap_action_disp.c \
-                                soap_body_disp.c
+                                soap_body_disp.c \
+                                engine.c
 
 libaxis2_engine_la_LIBADD = $(LDFLAGS)
 INCLUDES = -I${CUTEST_HOME}/include \

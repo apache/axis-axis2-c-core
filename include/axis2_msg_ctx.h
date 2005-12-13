@@ -105,9 +105,8 @@ struct axis2_msg_ctx_ops
     /**
      * @return
      */
-    /*axis2_endpoint_ref_t *(AXIS2_CALL *get_fault_to)(struct axis2_msg_ctx *msg_ctx, 
+    axis2_endpoint_ref_t *(AXIS2_CALL *get_fault_to)(struct axis2_msg_ctx *msg_ctx, 
                                                     axis2_env_t **env);
-    */
     
     /**
      * @return
@@ -180,9 +179,8 @@ struct axis2_msg_ctx_ops
     /**
      * @param reference
      */
-    /*axis2_status_t (AXIS2_CALL *set_fault_to)(struct axis2_msg_ctx *msg_ctx, 
+    axis2_status_t (AXIS2_CALL *set_fault_to)(struct axis2_msg_ctx *msg_ctx, 
                                                 axis2_env_t **env, axis2_endpoint_ref_t *reference);
-    */
     
     /**
      * @param reference
@@ -608,9 +606,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_FREE(msg_ctx, env) ((msg_ctx)->ops->free(msg_ctx, env))
 #define AXIS2_MSG_CTX_INIT(msg_ctx, env, engine_config) ((msg_ctx)->ops->init(msg_ctx, env, engine_config))
 
-/*
 #define AXIS2_MSG_CTX_GET_FAULT_TO(msg_ctx, env) ((msg_ctx)->ops->get_fault_to(msg_ctx, env))
-*/
 /*
 #define AXIS2_MSG_CTX_GET_FROM(msg_ctx, env) ((msg_ctx)->ops->get_from(msg_ctx, env))
 */
@@ -628,9 +624,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env) ((msg_ctx)->ops->get_server_side(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_SESSION_CTX(msg_ctx, env) ((msg_ctx)->ops->get_session_ctx(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_TO(msg_ctx, env) ((msg_ctx)->ops->get_to(msg_ctx, env))
-/*
 #define AXIS2_MSG_CTX_SET_FAULT_TO(msg_ctx, env, reference) ((msg_ctx)->ops->set_fault_to(msg_ctx, env, reference))
-*/
 /*
 #define AXIS2_MSG_CTX_SET_FROM(msg_ctx, env, reference) ((msg_ctx)->ops->set_from(msg_ctx, env, reference))
 */

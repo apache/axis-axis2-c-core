@@ -130,10 +130,9 @@ axis2_status_t AXIS2_CALL
 axis2_msg_ctx_init(struct axis2_msg_ctx *msg_ctx, 
                     axis2_env_t **env, 
                     struct axis2_engine_config *engine_config);
-/*axis2_endpoint_ref_t *AXIS2_CALL 
+axis2_endpoint_ref_t *AXIS2_CALL 
 axis2_msg_ctx_get_fault_to(struct axis2_msg_ctx *msg_ctx, 
                             axis2_env_t **env);
-*/
 /*axis2_endpoint_ref_t *AXIS2_CALL
 axis2_msg_ctx_get_from(struct axis2_msg_ctx *msg_ctx, 
                         axis2_env_t **env);
@@ -171,11 +170,10 @@ axis2_endpoint_ref_t *AXIS2_CALL
 axis2_msg_ctx_get_to(struct axis2_msg_ctx *msg_ctx, 
                         axis2_env_t **env);
 
-/*axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_fault_to(struct axis2_msg_ctx *msg_ctx, 
                             axis2_env_t **env, 
                             axis2_endpoint_ref_t *reference);
-*/
 /*
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_from(struct axis2_msg_ctx *msg_ctx, 
@@ -523,8 +521,8 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->msg_ctx.ops->set_parent = axis2_msg_ctx_set_parent;
     msg_ctx_impl->msg_ctx.ops->free = axis2_msg_ctx_free;
     msg_ctx_impl->msg_ctx.ops->init = axis2_msg_ctx_init;
-/*
     msg_ctx_impl->msg_ctx.ops->get_fault_to = axis2_msg_ctx_get_fault_to;
+/*
     msg_ctx_impl->msg_ctx.ops->get_from = axis2_msg_ctx_get_from;
 */
     msg_ctx_impl->msg_ctx.ops->get_in_fault_flow = axis2_msg_ctx_get_in_fault_flow;
@@ -542,9 +540,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->msg_ctx.ops->get_server_side = axis2_msg_ctx_get_server_side;
     msg_ctx_impl->msg_ctx.ops->get_session_ctx = axis2_msg_ctx_get_session_ctx;
     msg_ctx_impl->msg_ctx.ops->get_to = axis2_msg_ctx_get_to;
-/*
     msg_ctx_impl->msg_ctx.ops->set_fault_to = axis2_msg_ctx_set_fault_to;
-*/
 /*
     msg_ctx_impl->msg_ctx.ops->set_from = axis2_msg_ctx_set_from;
 */
@@ -772,11 +768,23 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_init(struct axis2_msg_ctx *msg_ctx,
 /**
  * @return
  */
-/*axis2_endpoint_ref_t *AXIS2_CALL axis2_msg_ctx_get_fault_to(struct axis2_msg_ctx *msg_ctx, 
-                                            axis2_env_t **env) {
-    return msg_info_headersgetFaultTo();
+axis2_endpoint_ref_t *AXIS2_CALL axis2_msg_ctx_get_fault_to(struct axis2_msg_ctx *msg_ctx, 
+                                            axis2_env_t **env) 
+{
+    axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
+
+    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);
+
+    msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
+
+    if (msg_ctx_impl->msg_info_headers)
+    {
+        return AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(msg_ctx_impl->msg_info_headers, env);
+    }
+
+    return NULL;
 }
-*/
+
 
 /**
  * @return
@@ -922,11 +930,22 @@ axis2_endpoint_ref_t *AXIS2_CALL axis2_msg_ctx_get_to(struct axis2_msg_ctx *msg_
 /**
  * @param reference
  */
-/*axis2_status_t AXIS2_CALL axis2_msg_ctx_set_fault_to(struct axis2_msg_ctx *msg_ctx, 
-                                            axis2_env_t **env, axis2_endpoint_ref_t *reference) {
-    msg_info_headers.setFaultTo(reference);
+axis2_status_t AXIS2_CALL axis2_msg_ctx_set_fault_to(struct axis2_msg_ctx *msg_ctx, 
+                                            axis2_env_t **env, axis2_endpoint_ref_t *reference) 
+{
+    axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
+
+    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FALIURE);
+
+    msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
+
+    if (msg_ctx_impl->msg_info_headers)
+    {
+        return AXIS2_MSG_INFO_HEADERS_SET_TO(msg_ctx_impl->msg_info_headers, env, reference);
+    }
+
+    return AXIS2_SUCCESS;
 }
-*/
 
 /**
  * @param reference

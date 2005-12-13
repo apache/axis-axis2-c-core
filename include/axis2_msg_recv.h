@@ -35,7 +35,7 @@ extern "C"
   * @{
   */
 
-struct axis2_msg_ctx_s;
+struct axis2_msg_ctx;
 typedef struct axis2_msg_recv axis2_msg_recv_t;
 typedef struct axis2_msg_recv_ops axis2_msg_recv_ops_t;
 
@@ -54,7 +54,7 @@ struct axis2_msg_recv_ops
 
     axis2_status_t (AXIS2_CALL *receive) (axis2_msg_recv_t *msg_recv,
                                             axis2_env_t **env,
-                                            struct axis2_msg_ctx_s *msg_ctx);
+                                            struct axis2_msg_ctx *msg_ctx);
 };
 
 /** 
