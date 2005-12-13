@@ -908,7 +908,7 @@ axis2_svc_add_module_operations(axis2_svc_t *svc,
         params = AXIS2_OPERATION_GET_PARAMS(axis2_opt, env);
         /* Adding wsa-maping into service */
         size = AXIS2_ARRAY_LIST_SIZE(params, env);
-        if(AXIS2_TRUE != size)
+        if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
         {
             if(pr)
                 AXIS2_PHASE_RESOLVER_FREE(pr, env);
