@@ -1,7 +1,7 @@
 lib_LTLIBRARIES = libaxis2_description.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_description_la_SOURCES = param_container.c \
-                            operation.c \
+                            op.c \
                             svc.c \
                             module.c \
                             module_desc.c \
