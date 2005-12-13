@@ -149,8 +149,8 @@ extern "C"
 #define SOAP_12_ADDRESS "http://schemas.xmlsoap.org/wsdl/soap12/"
 
 
-#define SOAP_11_OPERATION "http://schemas.xmlsoap.org/wsdl/soap/"
- #define SOAP_12_OPERATION "http://schemas.xmlsoap.org/wsdl/soap12/"
+#define SOAP_11_OP "http://schemas.xmlsoap.org/wsdl/soap/"
+ #define SOAP_12_OP "http://schemas.xmlsoap.org/wsdl/soap12/"
 
 #define SCHEMA "http://www.w3.org/2001/XMLSchema"
 

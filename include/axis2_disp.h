@@ -97,7 +97,7 @@ AXIS2_DECLARE(axis2_disp_t*) axis2_disp_create(axis2_env_t **env, axis2_qname_t 
 #define AXIS2_DISP_SET_QNAME(disp, env, name) ((disp)->ops->set_qname(disp, env, name))
 #define AXIS2_DISP_FREE(disp, env) ((disp)->ops->free(disp, env))
 #define AXIS2_DISP_FIND_SVC(msg_ctx, env) ((msg_ctx)->ops->find_svc(msg_ctx, env))
-#define AXIS2_DISP_FIND_OPERATION(msg_ctx, env, svc) ((msg_ctx)->ops->find_op(msg_ctx, env, svc))
+#define AXIS2_DISP_FIND_OP(msg_ctx, env, svc) ((msg_ctx)->ops->find_op(msg_ctx, env, svc))
 
 axis2_status_t AXIS2_CALL axis2_disp_invoke(struct axis2_handler * handler, 
                                                 axis2_env_t **env,

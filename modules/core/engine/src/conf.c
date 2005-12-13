@@ -839,7 +839,7 @@ axis2_conf_get_svc_grp (axis2_conf_t *conf,
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     if(!config_impl->svc_grps)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_ENGINE_CONFIG, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_CONF, NULL);
         return NULL;
     }
 	return (struct axis2_svc_grp *) (axis2_hash_get (config_impl->svc_grps, 

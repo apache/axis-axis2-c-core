@@ -207,16 +207,16 @@ axis2_status_t AXIS2_CALL axis2_disp_checker_invoke(axis2_handler_t* handler, ax
     
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 
-    op = AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env);
+    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
     
     if (!op)
     {
-        op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
+        op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
         if (op_ctx)
         {
-            axis2_op_t *op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);
+            axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
             if (op)
-                AXIS2_MSG_CTX_SET_OPERATION(msg_ctx, env, op);
+                AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op);
         }
     }
     
@@ -247,7 +247,7 @@ axis2_status_t AXIS2_CALL axis2_disp_checker_invoke(axis2_handler_t* handler, ax
         return AXIS2_FAILURE;
     }
     
-    op = AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env);
+    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
     if (!op)
     {
         AXIS2_LOG(env, "Operation Not found. Endpoint reference is ");

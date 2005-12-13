@@ -128,8 +128,8 @@ axis2_op_ctx_t* AXIS2_CALL axis2_op_ctx_create(axis2_env_t **env,
     
     if (op_ctx_impl->op)
     {
-        /*op_ctx_impl->op_qname = AXIS2_OPERATION_GET_QNAME(op_ctx_impl->op, env);
-        op_ctx_impl->op_mep = AXIS2_OPERATION_GET_MEP_CONST(op_ctx_impl->op, env);*/
+        /*op_ctx_impl->op_qname = AXIS2_OP_GET_QNAME(op_ctx_impl->op, env);
+        op_ctx_impl->op_mep = AXIS2_OP_GET_MEP_CONST(op_ctx_impl->op, env);*/
     }
     
     axis2_op_ctx_set_parent(&(op_ctx_impl->op_ctx), env, svc_ctx);
@@ -222,11 +222,11 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_init(struct axis2_op_ctx *op_ctx, axis2_e
         
         if (svc_name)
         {
-            svc = AXIS2_ENGINE_CONFIG_GET_SVC(conf, env, svc_name);
+            svc = AXIS2_CONF_GET_SVC(conf, env, svc_name);
             
             if (svc)
             {
-               /* op_ctx_impl->op = AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env, op_ctx_impl->op_qname);*/
+               /* op_ctx_impl->op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_ctx_impl->op_qname);*/
             }
         }
     }
@@ -287,7 +287,7 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_add_msg_ctx(struct axis2_op_ctx *op_ctx, 
         
     if(op_ctx_impl->op)
     {
-        /*return AXIS2_OPERATION_ADD_MSG_CTX(op_ctx_impl->op, env, msg_ctx, op_ctx);*/
+        /*return AXIS2_OP_ADD_MSG_CTX(op_ctx_impl->op, env, msg_ctx, op_ctx);*/
     }
     
     return AXIS2_SUCCESS;
@@ -401,7 +401,7 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_set_parent(struct axis2_op_ctx *op_ctx, a
         conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(op_ctx_impl->parent, env);
         if (conf_ctx)
         {
-            op_ctx_impl->op_ctx_map = AXIS2_CONF_CTX_GET_OPERATION_CTX_MAP(conf_ctx, env);
+            op_ctx_impl->op_ctx_map = AXIS2_CONF_CTX_GET_OP_CTX_MAP(conf_ctx, env);
         }
         op_ctx_impl->svc_qname = AXIS2_SVC_GET_QNAME(op_ctx_impl->parent, env);*/
     }

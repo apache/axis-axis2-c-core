@@ -94,7 +94,7 @@ AXIS2_DECLARE(axis2_svc_ctx_t*) axis2_svc_ctx_create(axis2_env_t **env,
 #define AXIS2_SVC_CTX_GET_SVC_ID(svc_ctx, env) ((svc_ctx)->ops->get_svc_id(svc_ctx, env))
 #define AXIS2_SVC_CTX_GET_SVC(svc_ctx, env) ((svc_ctx)->ops->get_svc(svc_ctx, env))
 #define AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env) ((svc_ctx)->ops->get_conf_ctx(svc_ctx, env))
-#define AXIS2_SVC_CTX_CREATE_OPERATION_CTX(svc_ctx, env, qname) ((svc_ctx)->ops->create_op_ctx(svc_ctx, env, qname))
+#define AXIS2_SVC_CTX_CREATE_OP_CTX(svc_ctx, env, qname) ((svc_ctx)->ops->create_op_ctx(svc_ctx, env, qname))
     
 /************************** End of function macros ****************************/    
 

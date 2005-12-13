@@ -177,10 +177,10 @@ axis2_transport_out_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qn
 #define AXIS2_TRANSPORT_OUT_DESC_SET_SENDER(transport_out_desc, env, sender) \
 		((transport_out_desc->ops)->set_sender (transport_out_desc, env, sender)) 
 
-#define AXIS2_TRANSPORT_OUT_DESC_GET_OUTPHASE(transport_out_desc, env) \
+#define AXIS2_TRANSPORT_OUT_DESC_GET_OUT_PHASE(transport_out_desc, env) \
 		((transport_out_desc->ops)->get_out_phase (transport_out_desc, env)) 
         
-#define AXIS2_TRANSPORT_OUT_DESC_SET_OUTPHASE(transport_out_desc, env, out_phase) \
+#define AXIS2_TRANSPORT_OUT_DESC_SET_OUT_PHASE(transport_out_desc, env, out_phase) \
 		((transport_out_desc->ops)->set_out_phase (transport_out_desc, env, out_phase)) 
 
 #define AXIS2_TRANSPORT_OUT_DESC_GET_FAULTPHASE(transport_out_desc, env) \

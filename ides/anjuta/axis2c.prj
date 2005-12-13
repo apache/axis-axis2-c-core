@@ -300,7 +300,11 @@ module.source.files=\
 	modules/core/context/src/op_ctx.c\
 	modules/wsdl/src/wsdl_binding_op.c\
 	modules/wsdl/src/wsdl_op.c\
-	modules/wsdl/src/wsdl_soap_op.c
+	modules/wsdl/src/wsdl_soap_op.c\
+	test/unit/core/description/test_op.c\
+	test/unit/core/description/test_op.h\
+	test/unit/core/description/test_svc.c\
+	test/unit/core/description/test_svc.h
 
 module.pixmap.name=.
 module.pixmap.type=

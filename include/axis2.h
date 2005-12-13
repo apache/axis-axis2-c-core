@@ -98,9 +98,9 @@ extern "C"
 typedef enum axis2_op_type
 {
     /** axis2_wsdl_op */
-    AXIS2_WSDL_OPERATION = 0,
+    AXIS2_WSDL_OP = 0,
     /** axis2_op */
-    AXIS2_OPERATION
+    AXIS2_OP
     
 }axis2_op_type_t;
 
@@ -245,7 +245,7 @@ typedef enum axis2_svc_type
 
 /* static const axis2_char_t * PHASE_LIST = "phaseList"; */
 
-/* static const axis2_char_t * LIST_OPERATIONS_FOR_THE_SERVICE = "listOperations"; */
+/* static const axis2_char_t * LIST_OPS_FOR_THE_SERVICE = "listOperations"; */
 
 /* static const axis2_char_t * REMOVE_SERVICE = "removeService"; */
 
@@ -307,7 +307,7 @@ typedef enum axis2_svc_type
 
 /*************************** REST_WITH_GET ************************************/
 
-/* static const axis2_char_t * GET_PARAMETER_OPERATION = "op"; */
+/* static const axis2_char_t * GET_PARAMETER_OP = "op"; */
 /* static const axis2_char_t * GET_PARAMETER_URL = "http://ws.apache.org/goGetWithREST"; */
 
 /******************************************************************************/

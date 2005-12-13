@@ -160,7 +160,7 @@ extern "C"
         /** Parameter not set */
         AXIS2_ERROR_INVALID_STATE_PARAM,
         /** Operation accessed has invalid state */
-        AXIS2_ERROR_INVALID_STATE_OPERATION,
+        AXIS2_ERROR_INVALID_STATE_OP,
         /** Service accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_SVC,
         /** Wsdl Service accessed has invalid state */
@@ -168,7 +168,7 @@ extern "C"
         /** Service group accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_SVC_GRP,
         /** Wsdl op accessed has invalid state */
-        AXIS2_ERROR_INVALID_STATE_WSDL_OPERATION,
+        AXIS2_ERROR_INVALID_STATE_WSDL_OP,
         /** Module description accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_MODULE_DESC,
         /** Array list index out of bounds */
@@ -194,7 +194,7 @@ extern "C"
         /** Could not Map the MEP URI to a axis MEP constant value */
         AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT,
         /** module has alredy engaged to the op op terminated !!! */
-        AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OPERATION,
+        AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP,
         /** module has alredy been engaged on the service.Operation terminated !!! */
         AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC,
         /** module has alredy been engaged on the service. Group Operation terminated !!! */
@@ -202,7 +202,7 @@ extern "C"
         /** Invalid message context state  */
         AXIS2_ERROR_INVALID_STATE_MSG_CTX,
         /** Invalid engine config state */
-        AXIS2_ERROR_INVALID_STATE_ENGINE_CONFIG,
+        AXIS2_ERROR_INVALID_STATE_CONF,
         /** Service not yet found */
         AXIS2_ERROR_SERVICE_NOT_YET_FOUND,
         /** error occured creating xml stream writer */

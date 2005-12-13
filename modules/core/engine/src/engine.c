@@ -151,13 +151,13 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
         return status;
 
     /* find and invoke the phases */
-    op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);    
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);    
     if (op_ctx)
     {
-        axis2_op_t *op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);
+        axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
         if (op)
         {
-            phases = AXIS2_OPERATION_GET_PHASES_OUTFLOW(op, env);
+            phases = AXIS2_OP_GET_PHASES_OUTFLOW(op, env);
         }
     }
     
@@ -180,10 +180,10 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
-            conf = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
+            conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
             if (conf)
             {
-                /*TODO global_out_phase = AXIS2_ENGINE_CONFIG_GET_GLOBAL_OUT_PASES(conf, env);
+                /*TODO global_out_phase = AXIS2_CONF_GET_GLOBAL_OUT_PASES(conf, env);
                 axis2_engine_invoke_phases(engine, env, global_out_phase, msg_ctx); */
             }
         }
@@ -195,10 +195,10 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
-            conf = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
+            conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
             if (conf)
             {
-                /*global_out_phase = AXIS2_ENGINE_CONFIG_GET_GLOBAL_OUT_PHASES(conf, env);
+                /*global_out_phase = AXIS2_CONF_GET_GLOBAL_OUT_PHASES(conf, env);
                 axis2_engine_invoke_phases(engine, env, global_out_phase, msg_ctx);*/
             }
         }
@@ -242,9 +242,9 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
     
     conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
     
-    conf = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
+    conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
     
-    pre_calculated_phases = AXIS2_ENGINE_CONFIG_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
+    pre_calculated_phases = AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
     
     if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
     {
@@ -259,11 +259,11 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
         
         axis2_engine_verify_ctx_built(engine, env, msg_ctx);
         /* resume op specific phases */
-        op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
+        op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
         if (op_ctx)
         {
-            op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);
-            op_specific_phases = AXIS2_OPERATION_GET_REMAINING_PHASES_INFLOW(op, env);
+            op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+            op_specific_phases = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(op, env);
             axis2_engine_resume_invocation_phases(engine, env, op_specific_phases, msg_ctx);
             if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
             {
@@ -280,11 +280,11 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
         }
 
         axis2_engine_verify_ctx_built(engine, env, msg_ctx);   /* TODO : Chinthaka remove me. I'm redundant */
-        op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
+        op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
         if (op_ctx)
         {
-            op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);
-            op_specific_phases = AXIS2_OPERATION_GET_REMAINING_PHASES_INFLOW(op, env);
+            op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+            op_specific_phases = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(op, env);
             axis2_engine_invoke_phases(engine, env, op_specific_phases, msg_ctx);
             if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
             {
@@ -296,7 +296,7 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
     if ( (AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env)) && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))) 
     {
         /* invoke the Message Receivers */
-        axis2_msg_recv_t *receiver = AXIS2_OPERATION_GET_MSG_RECEIVER(op, env);
+        axis2_msg_recv_t *receiver = AXIS2_OP_GET_MSG_RECEIVER(op, env);
         AXIS2_MSG_RECV_RECEIVE(receiver, env, msg_ctx);        
     }
     return AXIS2_SUCCESS;
@@ -315,13 +315,13 @@ axis2_status_t AXIS2_CALL axis2_engine_send_fault(struct axis2_engine *engine, a
     AXIS2_FUNC_PARAM_CHECK(engine, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 
-    op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     
     /* find and execute the Fault Out Flow Handlers */
     if (op_ctx) 
     {
-        axis2_op_t *op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);        
-        axis2_array_list_t *phases = AXIS2_OPERATION_GET_PHASES_OUTFLOW(op, env);
+        axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);        
+        axis2_array_list_t *phases = AXIS2_OP_GET_PHASES_OUTFLOW(op, env);
         
         if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
         {
@@ -359,7 +359,7 @@ axis2_status_t AXIS2_CALL axis2_engine_receive_fault(struct axis2_engine *engine
     AXIS2_FUNC_PARAM_CHECK(engine, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
     
-    op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     
     if (!op_ctx) 
     {
@@ -368,10 +368,10 @@ axis2_status_t AXIS2_CALL axis2_engine_receive_fault(struct axis2_engine *engine
         axis2_conf_ctx_t *conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
-            axis2_conf_t *conf = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
+            axis2_conf_t *conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
             if (conf)
             {
-                axis2_array_list_t *phases = AXIS2_ENGINE_CONFIG_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
+                axis2_array_list_t *phases = AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
                 if (phases)
                 {
                     if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)) 
@@ -388,12 +388,12 @@ axis2_status_t AXIS2_CALL axis2_engine_receive_fault(struct axis2_engine *engine
         }
     }
     
-    op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     /* find and execute the fault in flow handlers */
     if (op_ctx) 
     {
-        axis2_op_t *op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);
-        axis2_array_list_t *phases = AXIS2_OPERATION_GET_PHASES_IN_FAULT_FLOW(op, env);
+        axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+        axis2_array_list_t *phases = AXIS2_OP_GET_PHASES_IN_FAULT_FLOW(op, env);
         if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)) 
         {
             axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
@@ -459,7 +459,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_engine_create_fault_msg_ctx(struct axis2_engin
         }*/
     }
 
-    AXIS2_MSG_CTX_SET_OPERATION_CTX(fault_ctx, env, AXIS2_MSG_CTX_GET_OPERATION_CTX(processing_context, env));
+    AXIS2_MSG_CTX_SET_OP_CTX(fault_ctx, env, AXIS2_MSG_CTX_GET_OP_CTX(processing_context, env));
     AXIS2_MSG_CTX_SET_PROCESS_FAULT(fault_ctx, env, AXIS2_TRUE);
     AXIS2_MSG_CTX_SET_SERVER_SIDE(fault_ctx, env, AXIS2_TRUE);
     /*AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, 
@@ -614,7 +614,7 @@ axis2_status_t AXIS2_CALL axis2_engine_verify_ctx_built(struct axis2_engine *eng
     {
         return AXIS2_FAILURE;
     }
-    if (AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env))
+    if (AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env))
     {
         return AXIS2_FAILURE;
     }

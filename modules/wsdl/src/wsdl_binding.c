@@ -279,7 +279,7 @@ axis2_wsdl_binding_free (axis2_wsdl_binding_t *wsdl_binding,
             binding_optr = (struct axis2_wsdl_binding_op *) val;
             if (binding_optr)
             {
-                AXIS2_WSDL_BINDING_OPERATION_FREE (binding_optr, env);
+                AXIS2_WSDL_BINDING_OP_FREE (binding_optr, env);
             }
             
             val = NULL;
@@ -446,7 +446,7 @@ axis2_wsdl_binding_set_binding_ops(axis2_wsdl_binding_t *wsdl_binding,
             binding_optr = (struct axis2_wsdl_binding_op *) val;
             if (binding_optr)
             {
-                AXIS2_WSDL_BINDING_OPERATION_FREE (binding_optr, env);
+                AXIS2_WSDL_BINDING_OP_FREE (binding_optr, env);
             }
             
             val = NULL;
@@ -473,7 +473,7 @@ axis2_wsdl_binding_add_binding_op(axis2_wsdl_binding_t *wsdl_binding,
     
     binding_impl = AXIS2_INTF_TO_IMPL(wsdl_binding);
     
-    qname = AXIS2_WSDL_BINDING_OPERATION_GET_QNAME(binding_op, env);
+    qname = AXIS2_WSDL_BINDING_OP_GET_QNAME(binding_op, env);
     if(NULL == qname)
     {
         return AXIS2_FAILURE;

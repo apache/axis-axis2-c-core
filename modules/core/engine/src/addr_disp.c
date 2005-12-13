@@ -120,12 +120,12 @@ axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                     if (conf_ctx)
                     {
                         axis2_conf_t *conf = NULL;
-                        conf = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
+                        conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
                         if (conf)
                         {
                             axis2_svc_t *svc = NULL;
                             axis2_qname_t *qname = axis2_qname_create(env, url_tokens[0], NULL, NULL);
-                            svc = AXIS2_ENGINE_CONFIG_GET_SVC(conf, env, AXIS2_QNAME_GET_LOCALPART(qname, env));
+                            svc = AXIS2_CONF_GET_SVC(conf, env, AXIS2_QNAME_GET_LOCALPART(qname, env));
                             
                             AXIS2_QNAME_FREE(qname, env);
                             return svc;
@@ -164,7 +164,7 @@ axis2_op_t* AXIS2_CALL axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx,
         AXIS2_LOG(env, action );
         
         qname = axis2_qname_create(env, action, NULL, NULL);
-        return AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env, qname);
+        return AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, qname);
     }
     
     return NULL;
@@ -195,19 +195,19 @@ axis2_status_t AXIS2_CALL axis2_addr_disp_invoke(struct axis2_handler * handler,
             {
                 axis2_op_ctx_t *op_ctx = NULL;
                 axis2_char_t *msg_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
-                op_ctx = AXIS2_CONF_CTX_GET_OPERATION_CTX(conf_ctx, env, msg_id);
+                op_ctx = AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, msg_id);
                 if (op_ctx)
                 {
                     axis2_op_t *op = NULL;
-                    op = AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env);
+                    op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
                     if (op)
                     {
                         axis2_svc_ctx_t *svc_ctx = NULL;
-                        AXIS2_MSG_CTX_SET_OPERATION_CTX(msg_ctx, env, op_ctx);
-                        AXIS2_MSG_CTX_SET_OPERATION(msg_ctx, env, op);
-                        /*TODO : AXIS2_OPERATION_REGISTER_OPERATION_CTX(op, env, op_ctx);*/
+                        AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, op_ctx);
+                        AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op);
+                        /*TODO : AXIS2_OP_REGISTER_OP_CTX(op, env, op_ctx);*/
                         
-                        svc_ctx = AXIS2_OPERATION_CTX_GET_PARENT(op_ctx, env);
+                        svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
                         if (svc_ctx)
                         {
                             axis2_svc_t *svc = NULL;

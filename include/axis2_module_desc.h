@@ -276,10 +276,10 @@ axis2_module_desc_create_with_qname (axis2_env_t **env,
 #define AXIS2_MODULE_DESC_SET_NAME(module_desc, env, qname) \
         (module_desc->ops->set_name(module_desc, env, qname))
 
-#define AXIS2_MODULE_DESC_ADD_OPERATION(module_desc, env, op) \
+#define AXIS2_MODULE_DESC_ADD_OP(module_desc, env, op) \
         (module_desc->ops->add_op(module_desc, env, op))
         
-#define AXIS2_MODULE_DESC_GET_OPERATIONS(module_desc, env) \
+#define AXIS2_MODULE_DESC_GET_OPS(module_desc, env) \
         (module_desc->ops->get_ops(module_desc, env))
 
 #define AXIS2_MODULE_DESC_GET_PARENT(module_desc, env) \

@@ -1,5 +1,5 @@
-#ifndef TEST_OPERATION_H
-#define TEST_OPERATION_H
+#ifndef TEST_OP_H
+#define TEST_OP_H
 
 #include <string.h>
 #include <stdio.h>
@@ -18,4 +18,4 @@ struct axis2_op;
 
 void Testaxis2_op_set_remaining_phases_inflow(CuTest *tc);
 
-#endif /* TEST_OPERATION_H*/
+#endif /* TEST_OP_H*/

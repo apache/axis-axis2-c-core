@@ -543,7 +543,7 @@ axis2_svc_free (axis2_svc_t *svc,
             axis2_hash_this (hi, NULL, NULL, &val);
             opt = (struct axis2_op *) val;
             if (opt)
-               AXIS2_OPERATION_FREE (opt, env);
+               AXIS2_OP_FREE (opt, env);
             
             val = NULL;
             opt = NULL;
@@ -593,11 +593,11 @@ axis2_svc_add_op (axis2_svc_t *svc,
     AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, axis2_opt, AXIS2_FALSE);
     
-    status = AXIS2_OPERATION_SET_PARENT(axis2_opt, env, svc);
+    status = AXIS2_OP_SET_PARENT(axis2_opt, env, svc);
     if(AXIS2_TRUE ==status)
     {
-        status = AXIS2_WSDL_INTERFACE_SET_OPERATION(axis2_svc_get_svc_interface(svc, env),
-            env, axis2_opt, AXIS2_OPERATION);
+        status = AXIS2_WSDL_INTERFACE_SET_OP(axis2_svc_get_svc_interface(svc, env),
+            env, axis2_opt, AXIS2_OP);
     }
     return status;
 }
@@ -615,8 +615,8 @@ axis2_svc_get_op_with_qname (axis2_svc_t *svc,
     AXIS2_PARAM_CHECK((*env)->error, op_name, NULL);
     
     op_str = AXIS2_QNAME_GET_LOCALPART(op_name, env);
-    /* commented until AXIS2_WSDL_INTERFACE_GET_ALL_OPERATIONS is implemented
-    all_ops = AXIS2_WSDL_INTERFACE_GET_ALL_OPERATIONS(
+    /* commented until AXIS2_WSDL_INTERFACE_GET_ALL_OPS is implemented
+    all_ops = AXIS2_WSDL_INTERFACE_GET_ALL_OPS(
         axis2_svc_get_svc_interface(svc, env), env);
     opeartion_l = (struct axis2_op) (axis2_hash_get (all_ops, 
         op_str, AXIS2_HASH_KEY_STRING));
@@ -639,7 +639,7 @@ axis2_svc_get_op_with_name (axis2_svc_t *svc,
     AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, nc_name, NULL);
     
-    return (axis2_op_t *) axis2_hash_get(AXIS2_WSDL_INTERFACE_GET_OPERATIONS(
+    return (axis2_op_t *) axis2_hash_get(AXIS2_WSDL_INTERFACE_GET_OPS(
         axis2_svc_get_svc_interface(svc, env), env), nc_name, AXIS2_HASH_KEY_STRING);
 }
 
@@ -649,7 +649,7 @@ axis2_svc_get_ops (axis2_svc_t *svc,
 {
     AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
     
-    return AXIS2_WSDL_INTERFACE_GET_OPERATIONS(axis2_svc_get_svc_interface(svc,
+    return AXIS2_WSDL_INTERFACE_GET_OPS(axis2_svc_get_svc_interface(svc,
         env), env);
 }
 	
@@ -779,7 +779,7 @@ axis2_svc_is_param_locked (axis2_svc_t *svc,
     {
         return AXIS2_FALSE;
     }
-    locked =  AXIS2_ENGINE_CONFIG_IS_PARAM_LOCKED(conf_l, env, param_name);
+    locked =  AXIS2_CONF_IS_PARAM_LOCKED(conf_l, env, param_name);
     
     if(AXIS2_TRUE == locked)
     {
@@ -890,7 +890,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
     AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, axis2_config, AXIS2_FAILURE);
     
-    map = AXIS2_MODULE_DESC_GET_OPERATIONS(module_desc, env);
+    map = AXIS2_MODULE_DESC_GET_OPS(module_desc, env);
     pr = axis2_phase_resolver_create_with_config_and_svc(env, axis2_config, svc);
     if(!pr)
     {
@@ -905,7 +905,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
         void *v = NULL;
         axis2_hash_this (index, NULL, NULL, &v);
         axis2_opt = (struct axis2_op *) v;
-        params = AXIS2_OPERATION_GET_PARAMS(axis2_opt, env);
+        params = AXIS2_OP_GET_PARAMS(axis2_opt, env);
         /* Adding wsa-maping into service */
         size = AXIS2_ARRAY_LIST_SIZE(params, env);
         if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
@@ -930,7 +930,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
             }
                 
         }
-        status = AXIS2_PHASE_RESOLVER_BUILD_MODULE_OPERATION(pr, env, axis2_opt);
+        status = AXIS2_PHASE_RESOLVER_BUILD_MODULE_OP(pr, env, axis2_opt);
         if(AXIS2_FAILURE == status)
         {
             if(pr)
@@ -1006,7 +1006,7 @@ axis2_svc_get_wsdl_op(axis2_svc_t *svc,
     svc_interface = axis2_svc_get_svc_interface(svc, env);
     if(svc_interface)
     {
-        return AXIS2_WSDL_INTERFACE_GET_OPERATION(svc_interface, env, op_str) ;
+        return AXIS2_WSDL_INTERFACE_GET_OP(svc_interface, env, op_str) ;
     }
     else
         return NULL;
@@ -1208,8 +1208,8 @@ axis2_svc_get_op_by_soap_action_and_endpoint(axis2_svc_t *svc,
         
     svc_impl = AXIS2_INTF_TO_IMPL(svc);
     
-    type_1 = axis2_qname_create(env, "op", SOAP_11_OPERATION, NULL);
-    binding_ops = AXIS2_WSDL_BINDING_GET_BINDING_OPERATIONS(
+    type_1 = axis2_qname_create(env, "op", SOAP_11_OP, NULL);
+    binding_ops = AXIS2_WSDL_BINDING_GET_BINDING_OPS(
         AXIS2_WSDL_ENDPOINT_GET_BINDING(axis2_svc_get_endpoint(svc, env, endpoint),
             env), env);
     if(NULL == binding_ops)
@@ -1239,11 +1239,11 @@ axis2_svc_get_op_by_soap_action_and_endpoint(axis2_svc_t *svc,
             type_2 = AXIS2_WSDL_EXTENSIBLE_ELEMENT_GET_TYPE(element->extensible_element, env);
             if(AXIS2_QNAME_EQUALS(type_2, env, type_1))
             {
-                if(0 == AXIS2_STRCMP(AXIS2_WSDL_SOAP_OPERATION_GET_SOAP_ACTION(
+                if(0 == AXIS2_STRCMP(AXIS2_WSDL_SOAP_OP_GET_SOAP_ACTION(
                     element, env), soap_action))
                 {
                     op = (struct axis2_op *) 
-                        AXIS2_WSDL_BINDING_OPERATION_GET_OPERATION(binding_op,
+                        AXIS2_WSDL_BINDING_OP_GET_OP(binding_op,
                             env);
                     count++;    
                 }

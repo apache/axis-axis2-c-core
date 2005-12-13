@@ -314,7 +314,7 @@ axis2_svc_grp_free (axis2_svc_grp_t *svc_grp,
     
     if(NULL != svc_grp_impl->parent)
     {
-        AXIS2_ENGINE_CONFIG_FREE(svc_grp_impl->parent, env);
+        AXIS2_CONF_FREE(svc_grp_impl->parent, env);
         svc_grp_impl->parent = NULL;
     }
     
@@ -537,7 +537,7 @@ axis2_svc_grp_is_param_locked(axis2_svc_grp_t *svc_grp,
     /* checking the locked value of parent */
     if (NULL != parent) 
     {
-        locked =  AXIS2_ENGINE_CONFIG_IS_PARAM_LOCKED(parent, env, param_name);
+        locked =  AXIS2_CONF_IS_PARAM_LOCKED(parent, env, param_name);
     }
     if(locked)
     {
@@ -588,7 +588,7 @@ axis2_svc_grp_set_parent(axis2_svc_grp_t *svc_grp,
     
     svc_grp_impl = AXIS2_INTF_TO_IMPL(svc_grp);
     if(svc_grp_impl->parent)
-        AXIS2_ENGINE_CONFIG_FREE(svc_grp_impl->parent, env);
+        AXIS2_CONF_FREE(svc_grp_impl->parent, env);
     svc_grp_impl->parent = parent;
     return AXIS2_SUCCESS;
 }
@@ -641,7 +641,7 @@ axis2_svc_grp_engage_module_to_grp(axis2_svc_grp_t *svc_grp,
     
     if(NULL == phase_resolver) return AXIS2_FAILURE;
         
-    module = AXIS2_ENGINE_CONFIG_GET_MODULE(svc_grp_impl->parent, env, module_name);
+    module = AXIS2_CONF_GET_MODULE(svc_grp_impl->parent, env, module_name);
     if(NULL != module)
     {
         axis2_hash_index_t *index = NULL;
@@ -700,7 +700,7 @@ axis2_svc_grp_set_axis_desc(axis2_svc_grp_t *svc_grp,
     svc_grp_impl = AXIS2_INTF_TO_IMPL(svc_grp);
     
     if(NULL != svc_grp_impl->parent)
-        AXIS2_ENGINE_CONFIG_FREE(svc_grp_impl->parent, env);
+        AXIS2_CONF_FREE(svc_grp_impl->parent, env);
     svc_grp_impl->parent = axis2_desc;
     
     return AXIS2_SUCCESS;

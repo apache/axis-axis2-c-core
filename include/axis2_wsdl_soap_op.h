@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WSDL_SOAP_OPERATION_H
-#define AXIS2_WSDL_SOAP_OPERATION_H
+#ifndef AXIS2_WSDL_SOAP_OP_H
+#define AXIS2_WSDL_SOAP_OP_H
 
 /**
  * @file axis2_wsdl_soap_op.h
@@ -103,19 +103,19 @@ axis2_wsdl_soap_op_create_with_type (axis2_env_t **env, axis2_qname_t *type);
 
 /*************************** Function macros **********************************/
 
-#define AXIS2_WSDL_SOAP_OPERATION_FREE(extensible_element, env) \
+#define AXIS2_WSDL_SOAP_OP_FREE(extensible_element, env) \
 		((extensible_element->ops)->free (extensible_element, env))
 
-#define AXIS2_WSDL_SOAP_OPERATION_GET_STYLE(extensible_element, env) \
+#define AXIS2_WSDL_SOAP_OP_GET_STYLE(extensible_element, env) \
 		((extensible_element->ops)->get_style (extensible_element, env))
 
-#define AXIS2_WSDL_SOAP_OPERATION_SET_STYLE(extensible_element, env, style) \
+#define AXIS2_WSDL_SOAP_OP_SET_STYLE(extensible_element, env, style) \
 		((extensible_element->ops)->set_style (extensible_element, env, style))
 
-#define AXIS2_WSDL_SOAP_OPERATION_GET_SOAP_ACTION(extensible_element, env) \
+#define AXIS2_WSDL_SOAP_OP_GET_SOAP_ACTION(extensible_element, env) \
 		((extensible_element->ops)->get_soap_action (extensible_element, env))
 
-#define AXIS2_WSDL_SOAP_OPERATION_SET_SOAP_ACTION(extensible_element, env, soap_action) \
+#define AXIS2_WSDL_SOAP_OP_SET_SOAP_ACTION(extensible_element, env, soap_action) \
 		((extensible_element->ops)->set_soap_action (extensible_element, env, soap_action))       
 
 /*************************** End of function macros ***************************/
@@ -125,4 +125,4 @@ axis2_wsdl_soap_op_create_with_type (axis2_env_t **env, axis2_qname_t *type);
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_WSDL_SOAP_OPERATION_H */
+#endif  /* AXIS2_WSDL_SOAP_OP_H */

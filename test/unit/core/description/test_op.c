@@ -14,7 +14,7 @@ void Testaxis2_op_set_remaining_phases_inflow(CuTest *tc)
 
     struct axis2_op *op = axis2_op_create(&env);
     op_in_phases = get_op_in_phases(&env);  
-    actual = AXIS2_OPERATION_SET_REMAINING_PHASES_INFLOW(op, &env, op_in_phases);
+    actual = AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op, &env, op_in_phases);
     
     CuAssertIntEquals(tc, expected, actual);
 }

@@ -661,8 +661,8 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env) ((msg_ctx)->ops->get_transport_out_desc(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_TRANSPORT_IN_DESC(msg_ctx, env, transport_in_desc) ((msg_ctx)->ops->set_transport_in_desc(msg_ctx, env, transport_in_desc))
 #define AXIS2_MSG_CTX_SET_TRANSPORT_OUT_DESC(msg_ctx, env, transport_out_desc) ((msg_ctx)->ops->set_transport_out_desc(msg_ctx, env, transport_out_desc))
-#define AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env) ((msg_ctx)->ops->get_op_ctx(msg_ctx, env))
-#define AXIS2_MSG_CTX_SET_OPERATION_CTX(msg_ctx, env, op_ctx) ((msg_ctx)->ops->set_op_ctx(msg_ctx, env, op_ctx))
+#define AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env) ((msg_ctx)->ops->get_op_ctx(msg_ctx, env))
+#define AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, op_ctx) ((msg_ctx)->ops->set_op_ctx(msg_ctx, env, op_ctx))
 #define AXIS2_MSG_CTX_GET_OUTPUT_WRITTEN(msg_ctx, env) ((msg_ctx)->ops->get_output_written(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_OUTPUT_WRITTEN(msg_ctx, env, output_written) ((msg_ctx)->ops->set_output_written(msg_ctx, env, output_written))
 #define AXIS2_MSG_CTX_GET_SVC_CTX_ID(msg_ctx, env) ((msg_ctx)->ops->get_svc_ctx_id(msg_ctx, env))
@@ -688,8 +688,8 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) ((msg_ctx)->ops->get_is_soap_11(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_SVC_GRP_CTX(msg_ctx, env) ((msg_ctx)->ops->get_svc_grp_ctx(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_SVC_GRP_CTX(msg_ctx, env, svc_grp_ctx) ((msg_ctx)->ops->set_svc_grp_ctx(msg_ctx, env, svc_grp_ctx))
-#define AXIS2_MSG_CTX_GET_OPERATION(msg_ctx, env) ((msg_ctx)->ops->get_op(msg_ctx, env))
-#define AXIS2_MSG_CTX_SET_OPERATION(msg_ctx, env, op) ((msg_ctx)->ops->set_op(msg_ctx, env, op))
+#define AXIS2_MSG_CTX_GET_OP(msg_ctx, env) ((msg_ctx)->ops->get_op(msg_ctx, env))
+#define AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op) ((msg_ctx)->ops->set_op(msg_ctx, env, op))
 #define AXIS2_MSG_CTX_GET_SVC(msg_ctx, env) ((msg_ctx)->ops->get_svc(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_SVC(msg_ctx, env, svc) ((msg_ctx)->ops->set_svc(msg_ctx, env, svc))
 #define AXIS2_MSG_CTX_GET_SVC_GRP(msg_ctx, env) ((msg_ctx)->ops->get_svc_grp(msg_ctx, env))
@@ -698,7 +698,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id) ((msg_ctx)->ops->set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id))
 #define AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env) ((msg_ctx)->ops->is_paused(msg_ctx, env))
 #define AXIS2_MSG_CTX_FIND_SVC(msg_ctx, env) ((msg_ctx)->ops->find_svc(msg_ctx, env))
-#define AXIS2_MSG_CTX_FIND_OPERATION(msg_ctx, env, svc) ((msg_ctx)->ops->find_op(msg_ctx, env, svc))
+#define AXIS2_MSG_CTX_FIND_OP(msg_ctx, env, svc) ((msg_ctx)->ops->find_op(msg_ctx, env, svc))
 
 /************************** End of function macros ****************************/    
 

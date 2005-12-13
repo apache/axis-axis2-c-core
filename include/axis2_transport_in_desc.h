@@ -177,10 +177,10 @@ axis2_transport_in_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qna
 #define AXIS2_TRANSPORT_IN_DESC_SET_RECV(transport_in_desc, env, recv) \
 		((transport_in_desc->ops)->set_recv (transport_in_desc, env, recv)) 
 
-#define AXIS2_TRANSPORT_IN_DESC_GET_INPHASE(transport_in_desc, env) \
+#define AXIS2_TRANSPORT_IN_DESC_GET_IN_PHASE(transport_in_desc, env) \
 		((transport_in_desc->ops)->get_in_phase (transport_in_desc, env)) 
         
-#define AXIS2_TRANSPORT_IN_DESC_SET_INPHASE(transport_in_desc, env, in_phase) \
+#define AXIS2_TRANSPORT_IN_DESC_SET_IN_PHASE(transport_in_desc, env, in_phase) \
 		((transport_in_desc->ops)->set_in_phase (transport_in_desc, env, in_phase)) 
 
 #define AXIS2_TRANSPORT_IN_DESC_GET_FAULTPHASE(transport_in_desc, env) \

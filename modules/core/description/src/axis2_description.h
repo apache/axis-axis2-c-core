@@ -58,9 +58,9 @@ extern "C"
 #define MODULEREF_KEY  "MODULEREF_KEY"
 
 /**
- * Field OPERATION_KEY
+ * Field OP_KEY
  */
-#define OPERATION_KEY  "OPERATION_KEY"
+#define OP_KEY  "OP_KEY"
 
 /**
  * Field CLASSLOADER_KEY

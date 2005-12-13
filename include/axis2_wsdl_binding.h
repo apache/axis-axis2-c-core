@@ -234,16 +234,16 @@ AXIS2_DECLARE(axis2_wsdl_binding_t *) axis2_wsdl_binding_create (axis2_env_t **e
 #define AXIS2_WSDL_BINDING_SET_BINDING_FAULTS(wsdl_binding, env, faults) \
 		((wsdl_binding->ops)->set_binding_faults (wsdl_binding, env, faults))
 
-#define AXIS2_WSDL_BINDING_GET_BINDING_OPERATIONS(wsdl_binding, env) \
+#define AXIS2_WSDL_BINDING_GET_BINDING_OPS(wsdl_binding, env) \
 		((wsdl_binding->ops)->get_binding_ops (wsdl_binding, env))
 
-#define AXIS2_WSDL_BINDING_SET_BINDING_OPERATIONS(wsdl_binding, env, ops) \
+#define AXIS2_WSDL_BINDING_SET_BINDING_OPS(wsdl_binding, env, ops) \
 		((wsdl_binding->ops)->set_binding_ops (wsdl_binding, env, ops)) 
         
-#define AXIS2_WSDL_BINDING_ADD_BINDING_OPERATION(wsdl_binding, env, op) \
+#define AXIS2_WSDL_BINDING_ADD_BINDING_OP(wsdl_binding, env, op) \
 		((wsdl_binding->ops)->add_binding_op (wsdl_binding, env, op))
 
-#define AXIS2_WSDL_BINDING_GET_BINDING_OPERATION(wsdl_binding, env) \
+#define AXIS2_WSDL_BINDING_GET_BINDING_OP(wsdl_binding, env) \
 		((wsdl_binding->ops)->get_binding_op (wsdl_binding, env)) 
 
 #define AXIS2_WSDL_BINDING_ADD_BINDING_FAULT(wsdl_binding, env, op) \

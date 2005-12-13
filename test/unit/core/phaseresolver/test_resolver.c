@@ -21,14 +21,14 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
 
     struct axis2_op *optr = axis2_op_create(&env);
     op_in_phases = get_op_in_phases(&env);  
-    AXIS2_OPERATION_SET_REMAINING_PHASES_INFLOW(optr, &env, op_in_phases);
+    AXIS2_OP_SET_REMAINING_PHASES_INFLOW(optr, &env, op_in_phases);
     
     flow = axis2_flow_create(&env); 
     add_handlers_to_flow(flow, &env);
     module_desc = axis2_module_desc_create(&env);
     AXIS2_MODULE_DESC_SET_INFLOW(module_desc, &env, flow);
     resolver = axis2_phase_resolver_create(&env);
-    actual = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OPERATION(resolver, &env, optr,
+    actual = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OP(resolver, &env, optr,
         module_desc);
     
     CuAssertIntEquals(tc, expected, actual);

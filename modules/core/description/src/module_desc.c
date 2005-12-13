@@ -285,7 +285,7 @@ axis2_module_desc_free(axis2_module_desc_t *module_desc,
             axis2_hash_this (hi, NULL, NULL, &val);
             op = (struct axis2_op *) val;
             if (op)
-                AXIS2_OPERATION_FREE (op, env);
+                AXIS2_OP_FREE (op, env);
             
             val = NULL;
             op = NULL;
@@ -433,7 +433,7 @@ axis2_module_desc_add_op (axis2_module_desc_t *module_desc,
 		module_desc_impl->ops = axis2_hash_make (env);
 	}	
     
-    optr_name = AXIS2_OPERATION_GET_NAME(op, env);
+    optr_name = AXIS2_OP_GET_NAME(op, env);
     if(NULL == optr_name)
     {
         return AXIS2_FAILURE;
@@ -543,7 +543,7 @@ axis2_module_desc_is_param_locked (axis2_module_desc_t *module_desc,
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_MODULE_DESC, AXIS2_FALSE);
         return AXIS2_FALSE;
     }
-    locked = AXIS2_ENGINE_CONFIG_IS_PARAM_LOCKED(module_desc_impl->parent, env, param_name);
+    locked = AXIS2_CONF_IS_PARAM_LOCKED(module_desc_impl->parent, env, param_name);
     
     if(AXIS2_TRUE == locked)
     {

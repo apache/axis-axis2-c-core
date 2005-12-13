@@ -283,15 +283,15 @@ axis2_wsdl_interface_free (
             struct axis2_wsdl_op *wsdl_optr = NULL;
             struct axis2_op *optr = NULL;
             axis2_hash_this (hi, NULL, NULL, &val);
-            if(AXIS2_OPERATION == wsdl_interface->optr_type)
+            if(AXIS2_OP == wsdl_interface->optr_type)
             {
                 optr = (struct axis2_op *) val;
-                AXIS2_OPERATION_FREE (optr, env);
+                AXIS2_OP_FREE (optr, env);
             }
-            if(AXIS2_WSDL_OPERATION == wsdl_interface->optr_type)
+            if(AXIS2_WSDL_OP == wsdl_interface->optr_type)
             {
                 wsdl_optr = (struct axis2_wsdl_op *) val;
-                AXIS2_WSDL_OPERATION_FREE(wsdl_optr, env);
+                AXIS2_WSDL_OP_FREE(wsdl_optr, env);
             }
             
             val = NULL;
@@ -428,11 +428,11 @@ axis2_wsdl_interface_set_op(axis2_wsdl_interface_t *wsdl_interface,
     AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
     
     op_l = (struct axis2_op *) op;
-    wsdl_opt_name = AXIS2_WSDL_OPERATION_GET_NAME(op_l->wsdl_op, env);    
+    wsdl_opt_name = AXIS2_WSDL_OP_GET_NAME(op_l->wsdl_op, env);    
     if (!wsdl_opt_name) 
     {
         /* The Operation name cannot be null (required) */
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_WSDL_OPERATION, 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_WSDL_OP, 
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }

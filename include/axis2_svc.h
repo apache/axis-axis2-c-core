@@ -447,16 +447,16 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
 
 #define AXIS2_SVC_FREE(svc, env) (svc->ops->free (svc, env))
 
-#define AXIS2_SVC_ADD_OPERATION(svc, env, op) \
+#define AXIS2_SVC_ADD_OP(svc, env, op) \
 		(svc->ops->add_op (svc, env, op))
 
-#define AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env, op_qname) \
+#define AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname) \
 		(svc->ops->get_op_with_qname (svc, env, op_qname))
 
-#define AXIS2_SVC_GET_OPERATION_WITH_NAME(svc, env, op_name) \
+#define AXIS2_SVC_GET_OP_WITH_NAME(svc, env, op_name) \
 		(svc->ops->get_op_with_name (svc, env, op_name))
 
-#define AXIS2_SVC_GET_OPERATIONS(svc, env) (svc->ops->get_ops (svc, env))
+#define AXIS2_SVC_GET_OPS(svc, env) (svc->ops->get_ops (svc, env))
 
 #define AXIS2_SVC_SET_PARENT(svc, env , svc_grp) (svc->ops->set_parent \
         (svc, env, svc_grp))
@@ -485,7 +485,7 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
 #define AXIS2_SVC_ENGAGE_MODULE(svc, env, moduleref, axis2_config) \
         (svc->ops->engage_module(svc, env, moduleref, axis2_config))
 
-#define AXIS2_SVC_ADD_MODULE_OPERATIONS(svc, env, module_desc, axis2_config) \
+#define AXIS2_SVC_ADD_MODULE_OPS(svc, env, module_desc, axis2_config) \
         (svc->ops->add_module_ops(svc, env, module_desc, axis2_config))
 
 #define AXIS2_SVC_ADD_TO_ENGAGED_MODULE_LIST(svc, env, module_name) \
@@ -494,7 +494,7 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
 #define AXIS2_SVC_GET_ENGAGED_MODULES(svc, env) \
         (svc->ops->get_engaged_modules(svc, env))
 
-#define AXIS2_SVC_GET_WSDL_OPERATION(svc, env, op_name) \
+#define AXIS2_SVC_GET_WSDL_OP(svc, env, op_name) \
         (svc->ops->get_wsdl_op(svc, env, op_name))
 
 #define AXIS2_SVC_SET_CONTEXT_PATH(svc, env, context_path) \
@@ -533,10 +533,10 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
 #define AXIS2_SVC_SET_FAULT_OUTFLOW(svc, env, fault_outflow) \
         (svc->ops->set_fault_outflow(svc, env, fault_outflow))
 
-#define AXIS2_SVC_GET_OPERATION_BY_SOAP_ACTION(svc, env, soap_action) \
+#define AXIS2_SVC_GET_OP_BY_SOAP_ACTION(svc, env, soap_action) \
         (svc->ops->get_op_by_soap_action(svc, env, soap_action))
 
-#define AXIS2_SVC_GET_OPERATION_BY_SOAP_ACTION_AND_ENDPOINT(svc, env, soap_action, endpoint) \
+#define AXIS2_SVC_GET_OP_BY_SOAP_ACTION_AND_ENDPOINT(svc, env, soap_action, endpoint) \
         (svc->ops->get_op_by_soap_action_and_endpoint(svc, env, soap_action, endpoint))
 
 #define AXIS2_SVC_GET_AXIS2_SVC_NAME(svc, env) \

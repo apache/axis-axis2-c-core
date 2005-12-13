@@ -113,11 +113,11 @@ axis2_op_t* AXIS2_CALL axis2_soap_action_disp_find_op(axis2_msg_ctx_t *msg_ctx,
     {
         axis2_op_t *op = NULL;        
 
-        op = AXIS2_SVC_GET_OPERATION_BY_SOAP_ACTION(svc, env, action);
+        op = AXIS2_SVC_GET_OP_BY_SOAP_ACTION(svc, env, action);
         if (!op)
         {
             axis2_qname_t *op_qname = axis2_qname_create(env, action, NULL, NULL);
-            op = AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env, op_qname);
+            op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname);
             AXIS2_QNAME_FREE(op_qname, env);
         }
 

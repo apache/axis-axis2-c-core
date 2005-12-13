@@ -181,7 +181,7 @@ axis2_status_t AXIS2_CALL axis2_svc_ctx_init(struct axis2_svc_ctx *svc_ctx,
     if (svc_ctx_impl->svc_qname)
     {
         axis2_char_t *svc_name = AXIS2_QNAME_GET_LOCALPART(svc_ctx_impl->svc_qname, env);
-        svc_ctx_impl->svc = AXIS2_ENGINE_CONFIG_GET_SVC(conf, env, svc_name);
+        svc_ctx_impl->svc = AXIS2_CONF_GET_SVC(conf, env, svc_name);
     }
     
     return AXIS2_SUCCESS;
@@ -224,7 +224,7 @@ axis2_op_ctx_t* AXIS2_CALL axis2_svc_ctx_create_op_ctx(struct axis2_svc_ctx *svc
     
     if (svc_ctx_impl->svc)
     {
-        /*op = AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc_ctx_impl->svc, env, qname);
+        /*op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_ctx_impl->svc, env, qname);
         return axis2_op_ctx_create(env, op, svc_ctx);*/
     }
     

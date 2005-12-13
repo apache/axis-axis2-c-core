@@ -114,11 +114,11 @@ axis2_svc_t* AXIS2_CALL axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                     if (conf_ctx)
                     {
                         axis2_conf_t *conf = NULL;
-                        conf = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
+                        conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
                         if (conf)
                         {
                             axis2_svc_t *svc = NULL;
-                            svc = AXIS2_ENGINE_CONFIG_GET_SVC(conf, env, url_tokens[0]);
+                            svc = AXIS2_CONF_GET_SVC(conf, env, url_tokens[0]);
                             return svc;
                         }
                     }                    
@@ -168,7 +168,7 @@ axis2_op_t* AXIS2_CALL axis2_req_uri_disp_find_op(axis2_msg_ctx_t *msg_ctx,
                     AXIS2_LOG(env, "Checking for Operation using target endpoint uri fragment : ");
                     AXIS2_LOG(env, url_tokens[1]);
                     op_qname = axis2_qname_create(env, url_tokens[1], NULL, NULL);
-                    op = AXIS2_SVC_GET_OPERATION_WITH_QNAME(svc, env, op_qname);
+                    op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname);
                     AXIS2_QNAME_FREE(op_qname, env);
                     return op;
                 }

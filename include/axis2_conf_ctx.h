@@ -175,14 +175,14 @@ AXIS2_DECLARE(axis2_conf_ctx_t*) AXIS2_CALL create(axis2_env_t **env, struct axi
     
 /************************** Start of function macros **************************/
 
-#define AXIS2_CONF_CTX_SET_ENGINE_CONFIG(conf_ctx, env, conf) ((conf_ctx)->ops->set_conf(conf_ctx, env, conf))
+#define AXIS2_CONF_CTX_SET_CONF(conf_ctx, env, conf) ((conf_ctx)->ops->set_conf(conf_ctx, env, conf))
 #define AXIS2_CONF_CTX_GET_BASE(conf_ctx, env) ((conf_ctx)->ops->get_base(conf_ctx, env))
-#define AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env) ((conf_ctx)->ops->get_conf(conf_ctx, env))
-#define AXIS2_CONF_CTX_GET_OPERATION_CTX_MAP(conf_ctx, env) ((conf_ctx)->ops->get_op_ctx_map(conf_ctx, env))
+#define AXIS2_CONF_CTX_GET_CONF(conf_ctx, env) ((conf_ctx)->ops->get_conf(conf_ctx, env))
+#define AXIS2_CONF_CTX_GET_OP_CTX_MAP(conf_ctx, env) ((conf_ctx)->ops->get_op_ctx_map(conf_ctx, env))
 #define AXIS2_CONF_CTX_GET_SVC_CTX_MAP(conf_ctx, env) ((conf_ctx)->ops->get_svc_ctx_map(conf_ctx, env))
 #define AXIS2_CONF_CTX_GET_SVC_GRP_CTX_MAP(conf_ctx, env) ((conf_ctx)->ops->get_svc_grp_ctx_map(conf_ctx, env))
-#define AXIS2_CONF_CTX_REGISTER_OPERATION_CTX(conf_ctx, env, message_id, op_ctx) ((conf_ctx)->ops->register_op_ctx(conf_ctx, env, message_id, op_ctx))
-#define AXIS2_CONF_CTX_GET_OPERATION_CTX(conf_ctx, env, message_id) ((conf_ctx)->ops->get_op_ctx(conf_ctx, env, message_id))
+#define AXIS2_CONF_CTX_REGISTER_OP_CTX(conf_ctx, env, message_id, op_ctx) ((conf_ctx)->ops->register_op_ctx(conf_ctx, env, message_id, op_ctx))
+#define AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, message_id) ((conf_ctx)->ops->get_op_ctx(conf_ctx, env, message_id))
 #define AXIS2_CONF_CTX_REGISTER_SVC_CTX(conf_ctx, env, svc_id, svc_ctx) ((conf_ctx)->ops->register_svc_ctx(conf_ctx, env, svc_id, svc_ctx))
 #define AXIS2_CONF_CTX_GET_SVC_CTX(conf_ctx, env, svc_id) ((conf_ctx)->ops->get_svc_ctx(conf_ctx, env, svc_id))
 #define AXIS2_CONF_CTX_REGISTER_SVC_GRP_CTX(conf_ctx, env, svc_grp_id, svc_grp_ctx) ((conf_ctx)->ops->register_svc_grp_ctx(conf_ctx, env, svc_grp_id, svc_grp_ctx))

@@ -232,7 +232,7 @@ AXIS2_DECLARE(axis2_wsdl_interface_t *) axis2_wsdl_interface_create (axis2_env_t
 #define AXIS2_WSDL_INTERFACE_FREE(wsdl_interface, env) \
 		((wsdl_interface->ops)->free (wsdl_interface, env))
 
-#define AXIS2_WSDL_INTERFACE_GET_DEFINED_OPERATIONS(wsdl_interface, env) \
+#define AXIS2_WSDL_INTERFACE_GET_DEFINED_OPS(wsdl_interface, env) \
 		((wsdl_interface->ops)->get_defined_ops (wsdl_interface, env))
 
 #define AXIS2_WSDL_INTERFACE_GET_FAULTS(wsdl_interface, env) \
@@ -241,10 +241,10 @@ AXIS2_DECLARE(axis2_wsdl_interface_t *) axis2_wsdl_interface_create (axis2_env_t
 #define AXIS2_WSDL_INTERFACE_GET_NAME(wsdl_interface, env) \
 		((wsdl_interface->ops)->get_name (wsdl_interface, env))
 
-#define AXIS2_WSDL_INTERFACE_GET_OPERATIONS(wsdl_interface, env) \
+#define AXIS2_WSDL_INTERFACE_GET_OPS(wsdl_interface, env) \
 		((wsdl_interface->ops)->get_ops (wsdl_interface, env))
 
-#define AXIS2_WSDL_INTERFACE_GET_OPERATION(wsdl_interface, env, nc_name) \
+#define AXIS2_WSDL_INTERFACE_GET_OP(wsdl_interface, env, nc_name) \
 		((wsdl_interface->ops)->get_op (wsdl_interface, env, nc_name))
         
 #define AXIS2_WSDL_INTERFACE_GET_SUPER_INTERFACES(wsdl_interface, env) \
@@ -262,10 +262,10 @@ AXIS2_DECLARE(axis2_wsdl_interface_t *) axis2_wsdl_interface_create (axis2_env_t
 #define AXIS2_WSDL_INTERFACE_SET_NAME(wsdl_interface, env, name) \
 		((wsdl_interface->ops)->set_name (wsdl_interface, env, name))
         
-#define AXIS2_WSDL_INTERFACE_SET_OPERATIONS(wsdl_interface, env, list) \
+#define AXIS2_WSDL_INTERFACE_SET_OPS(wsdl_interface, env, list) \
 		((wsdl_interface->ops)->set_ops (wsdl_interface, env, list))
 
-#define AXIS2_WSDL_INTERFACE_SET_OPERATION(wsdl_interface, env, op, optr_type) \
+#define AXIS2_WSDL_INTERFACE_SET_OP(wsdl_interface, env, op, optr_type) \
 		((wsdl_interface->ops)->set_op (wsdl_interface, env, op, optr_type))
 
 #define AXIS2_WSDL_INTERFACE_SET_SUPER_INTERFACES(wsdl_interface, env, list) \

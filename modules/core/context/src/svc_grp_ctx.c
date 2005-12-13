@@ -204,7 +204,7 @@ axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_init(struct axis2_svc_grp_ctx *svc_g
 
     if (svc_grp_ctx_impl->svc_grp_name)
     {        
-        svc_grp_ctx_impl->svc_grp = AXIS2_ENGINE_CONFIG_GET_SVC_GRP(conf, env, svc_grp_ctx_impl->svc_grp_name);
+        svc_grp_ctx_impl->svc_grp = AXIS2_CONF_GET_SVC_GRP(conf, env, svc_grp_ctx_impl->svc_grp_name);
     }
     
     return AXIS2_SUCCESS;

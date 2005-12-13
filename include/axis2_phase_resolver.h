@@ -185,7 +185,7 @@ axis2_phase_resolver_create_with_config_and_svc (axis2_env_t **env,
 #define AXIS2_PHASE_RESOLVER_BUILD_CHAINS(phase_resolver, env) \
 		((phase_resolver->ops)->build_chains (phase_resolver, env))
 
-#define AXIS2_PHASE_RESOLVER_BUILD_MODULE_OPERATION(phase_resolver, env, op) \
+#define AXIS2_PHASE_RESOLVER_BUILD_MODULE_OP(phase_resolver, env, op) \
 		((phase_resolver->ops)->build_module_op (phase_resolver, env, op))
 
 #define AXIS2_PHASE_RESOLVER_BUILD_TRANSPORT_CHAINS(phase_resolver, env) \
@@ -200,7 +200,7 @@ axis2_phase_resolver_create_with_config_and_svc (axis2_env_t **env,
 #define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_SVC(phase_resolver, env, svc, module_desc) \
 		((phase_resolver->ops)->engage_module_to_svc (phase_resolver, env, svc, module_desc))
 
-#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OPERATION(phase_resolver, env, axis_op, module_desc) \
+#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OP(phase_resolver, env, axis_op, module_desc) \
 		((phase_resolver->ops)->engage_module_to_op (phase_resolver, env, axis_op, module_desc))
 
         

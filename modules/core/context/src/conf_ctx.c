@@ -430,7 +430,7 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_init(struct axis2_conf_ctx *conf_ctx,
         if (ctx)
         {
             axis2_op_ctx_t *op_ctx = (axis2_op_ctx_t*) ctx;
-            AXIS2_OPERATION_CTX_INIT(op_ctx, env, conf);
+            AXIS2_OP_CTX_INIT(op_ctx, env, conf);
         }
     }
 
@@ -595,14 +595,14 @@ axis2_svc_grp_ctx_t* AXIS2_CALL axis2_conf_ctx_fill_ctxs(struct axis2_conf_ctx *
     }
     
     /* when you come here op context MUST already been assigned to the message context */
-    op_ctx = AXIS2_MSG_CTX_GET_OPERATION_CTX(msg_ctx, env);
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     if (!op_ctx)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_MSG_CTX, AXIS2_FAILURE);
         return NULL;
     }
     
-    AXIS2_OPERATION_CTX_SET_PARENT(op_ctx, env, svc_ctx);
+    AXIS2_OP_CTX_SET_PARENT(op_ctx, env, svc_ctx);
     AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, svc_ctx);
     AXIS2_MSG_CTX_SET_SVC_GRP_CTX(msg_ctx, env, svc_grp_ctx);
     return svc_grp_ctx;

@@ -358,7 +358,7 @@ axis2_wsdl_binding_op_set_op(axis2_wsdl_binding_op_t *binding_op,
     if(NULL != binding_op_impl->op)
     {
         optr = binding_op_impl->op;
-        AXIS2_OPERATION_FREE(optr , env);
+        AXIS2_OP_FREE(optr , env);
         binding_op_impl->op = NULL;
     }
     binding_op_impl->op = op;
