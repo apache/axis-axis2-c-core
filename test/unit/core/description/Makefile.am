@@ -2,12 +2,16 @@ prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_description.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libtest_description_la_SOURCES = description_test.c
-include_HEADERS=$(top_builddir)/test/unit/core/description/*.h
+libtest_description_la_SOURCES = description_test.c \
+                                    test_optr.c
 
+include_HEADERS=$(top_builddir)/test/unit/core/description/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util/src \
+            -I$(top_builddir)/modules/core/description/src \
+            -I$(top_builddir)/modules/core/transport \
+            -I$(top_builddir)/modules/wsdl/src \
             -I${CUTEST_HOME}/include
 
 prgbin_PROGRAMS = description_test

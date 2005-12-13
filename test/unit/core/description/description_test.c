@@ -6,7 +6,7 @@
 
 CuSuite* axis2_descriptionGetSuite() {
     CuSuite* suite = CuSuiteNew();
-    /*SUITE_ADD_TEST(suite, Testaxis2_stream_ops_read);*/
+    SUITE_ADD_TEST(suite, Testaxis2_operation_set_remaining_phases_inflow);
     return suite;
 }
 
