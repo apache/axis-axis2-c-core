@@ -121,7 +121,6 @@ module.include.files=\
 	modules/util/src/axis2_array_list.h\
 	include/axis2_handler_desc.h\
 	include/axis2_module_desc.h\
-	modules/core/description/src/description.h\
 	include/axis2_wsdl_binding.h\
 	include/axis2_wsdl_endpoint.h\
 	modules/util/src/axis2_linked_list.h\
@@ -137,7 +136,6 @@ module.include.files=\
 	include/axis2_transport_in_desc.h\
 	include/axis2_transport_out_desc.h\
 	include/axis2_phase_rule.h\
-	modules/wsdl/src/wsdl.h\
 	include/axis2_wsdl_extensible_element.h\
 	include/axis2_wsdl_soap_operation.h\
 	include/axis2_phase_holder.h\
@@ -155,7 +153,33 @@ module.include.files=\
 	test/unit/util/util_linked_list_test.h\
 	test/unit/util/util_log_test.h\
 	test/unit/util/util_stream_test.h\
-	test/unit/util/util_test.h
+	test/unit/util/util_test.h\
+	modules/wsdl/src/axis2_wsdl.h\
+	modules/core/description/src/axis2_description.h\
+	test/unit/core/phaseresolver/test_resolver.h\
+	include/axis2_disp.h\
+	include/axis2_conf_ctx.h\
+	include/axis2_disp_checker.h\
+	include/axis2_svc_ctx.h\
+	include/axis2_svc_grp_ctx.h\
+	include/axis2_addr.h\
+	include/axis2_endpoint_ref.h\
+	include/axis2_http_header.h\
+	include/axis2_http_request_line.h\
+	include/axis2_http_response_writer.h\
+	include/axis2_http_simple_request.h\
+	include/axis2_http_simple_response.h\
+	include/axis2_http_status_line.h\
+	include/axis2_http_transport.h\
+	include/axis2_http_transport_utils.h\
+	include/axis2_http_worker.h\
+	include/axis2_msg_info_headers.h\
+	include/axis2_om_children_iterator.h\
+	include/axis2_operation_ctx.h\
+	include/axis2_relates_to.h\
+	include/axis2_simple_http_svr_conn.h\
+	modules/xml/parser/axis2_xml_reader.h\
+	modules/xml/parser/axis2_xml_writer.h
 
 module.source.name=.
 module.source.type=
@@ -244,7 +268,36 @@ module.source.files=\
 	test/unit/util/util_stream_test.c\
 	test/unit/util/util_stream_test.h\
 	test/unit/util/util_test.c\
-	test/util/test_util.c
+	test/util/test_util.c\
+	test/unit/core/phaseresolver/test_resolver.c\
+	modules/core/engine/src/disp.c\
+	modules/core/context/src/conf_ctx.c\
+	modules/core/context/src/operation_ctx.c\
+	modules/core/context/src/svc_ctx.c\
+	modules/core/context/src/svc_grp_ctx.c\
+	modules/core/addr/src/any_content_type.c\
+	modules/core/addr/src/endpoint_ref.c\
+	modules/core/addr/src/msg_info_headers.c\
+	modules/core/addr/src/relates_to.c\
+	modules/core/addr/src/svc_name.c\
+	modules/core/engine/src/addr_disp.c\
+	modules/core/engine/src/disp_checker.c\
+	modules/core/engine/src/event.c\
+	modules/core/engine/src/req_uri_disp.c\
+	modules/core/engine/src/soap_action_disp.c\
+	modules/core/engine/src/soap_body_disp.c\
+	modules/core/transport/http/src/axis2_http_header.c\
+	modules/core/transport/http/src/axis2_http_request_line.c\
+	modules/core/transport/http/src/axis2_http_response_writer.c\
+	modules/core/transport/http/src/axis2_http_simple_request.c\
+	modules/core/transport/http/src/axis2_http_simple_response.c\
+	modules/core/transport/http/src/axis2_http_status_line.c\
+	modules/core/transport/http/src/axis2_http_transport_utils.c\
+	modules/core/transport/http/src/axis2_http_worker.c\
+	modules/core/transport/http/src/axis2_simple_http_svr_conn.c\
+	modules/xml/om/src/axis2_om_children_iterator.c\
+	modules/xml/parser/guththila/src/guththila_xml_reader_wrapper.c\
+	modules/xml/parser/guththila/src/guththila_xml_writer_wrapper.c
 
 module.pixmap.name=.
 module.pixmap.type=
