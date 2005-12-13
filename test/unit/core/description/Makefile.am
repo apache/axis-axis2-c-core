@@ -3,7 +3,8 @@ prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_description.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libtest_description_la_SOURCES = description_test.c \
-                                    test_op.c
+                                    test_op.c \
+                                    test_svc.c
 
 include_HEADERS=$(top_builddir)/test/unit/core/description/*.h
 
