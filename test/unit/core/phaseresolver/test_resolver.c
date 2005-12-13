@@ -1,7 +1,7 @@
 #include "test_resolver.h"
 
 void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env);
-axis2_array_list_t *get_op_inphases(axis2_env_t **env);
+axis2_array_list_t *get_op_in_phases(axis2_env_t **env);
 
 void axis2_phase_resolver_engage_module_to_svc(CuTest *tc)
 {
@@ -10,7 +10,7 @@ void axis2_phase_resolver_engage_module_to_svc(CuTest *tc)
 void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
 {
     struct axis2_phase_resolver *resolver = NULL;
-    axis2_array_list_t *op_inphases = NULL;
+    axis2_array_list_t *op_in_phases = NULL;
     struct axis2_module_desc *module_desc = NULL;
     struct axis2_flow *flow = NULL;
     axis2_status_t expected = AXIS2_SUCCESS;
@@ -20,8 +20,8 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
     axis2_env_t *env = axis2_env_create (allocator);
 
     struct axis2_op *optr = axis2_op_create(&env);
-    op_inphases = get_op_inphases(&env);  
-    AXIS2_OPERATION_SET_REMAINING_PHASES_INFLOW(optr, &env, op_inphases);
+    op_in_phases = get_op_in_phases(&env);  
+    AXIS2_OPERATION_SET_REMAINING_PHASES_INFLOW(optr, &env, op_in_phases);
     
     flow = axis2_flow_create(&env); 
     add_handlers_to_flow(flow, &env);
@@ -76,30 +76,30 @@ void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env)
 }    
            
 /** helper method. This is the requirement method from phases_info's 
-  * axis2_get_op_inphases method
+  * axis2_get_op_in_phases method
   */
-axis2_array_list_t *get_op_inphases(axis2_env_t **env)
+axis2_array_list_t *get_op_in_phases(axis2_env_t **env)
 {
     struct axis2_phase *phase = NULL; 
-    axis2_array_list_t *op_inphases = NULL; 
+    axis2_array_list_t *op_in_phases = NULL; 
     
-    op_inphases = axis2_array_list_create(env, 0);
+    op_in_phases = axis2_array_list_create(env, 0);
     
     phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
-    AXIS2_ARRAY_LIST_ADD(op_inphases, env, phase);
+    AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);
     
     phase = axis2_phase_create(env, AXIS2_PHASE_TRANSPORTIN);   
-    AXIS2_ARRAY_LIST_ADD(op_inphases, env, phase);
+    AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);
     
     phase = axis2_phase_create(env, AXIS2_PHASE_PRE_DISPATCH);   
-    AXIS2_ARRAY_LIST_ADD(op_inphases, env, phase);
+    AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);
     
     phase = axis2_phase_create(env, AXIS2_PHASE_DISPATCH);  
-    AXIS2_ARRAY_LIST_ADD(op_inphases, env, phase);
+    AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);
     
     phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);   
-    AXIS2_ARRAY_LIST_ADD(op_inphases, env, phase);
+    AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);
     
-    return op_inphases;
+    return op_in_phases;
 
 }

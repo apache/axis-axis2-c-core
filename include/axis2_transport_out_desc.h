@@ -112,13 +112,13 @@ AXIS2_DECLARE_DATA struct axis2_transport_out_desc_ops
                                             struct axis2_transport_sender *sender);
     
     struct axis2_phase * (AXIS2_CALL *
-    get_outphase) (struct axis2_transport_out_desc *transport_out,
+    get_out_phase) (struct axis2_transport_out_desc *transport_out,
                                             axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
-    set_outphase) (struct axis2_transport_out_desc *transport_out,
+    set_out_phase) (struct axis2_transport_out_desc *transport_out,
                                             axis2_env_t **env,
-                                            struct axis2_phase *outphase);
+                                            struct axis2_phase *out_phase);
     
     struct axis2_phase *(AXIS2_CALL *
     get_faultphase) (struct axis2_transport_out_desc *transport_out,
@@ -178,10 +178,10 @@ axis2_transport_out_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qn
 		((transport_out_desc->ops)->set_sender (transport_out_desc, env, sender)) 
 
 #define AXIS2_TRANSPORT_OUT_DESC_GET_OUTPHASE(transport_out_desc, env) \
-		((transport_out_desc->ops)->get_outphase (transport_out_desc, env)) 
+		((transport_out_desc->ops)->get_out_phase (transport_out_desc, env)) 
         
-#define AXIS2_TRANSPORT_OUT_DESC_SET_OUTPHASE(transport_out_desc, env, outphase) \
-		((transport_out_desc->ops)->set_outphase (transport_out_desc, env, outphase)) 
+#define AXIS2_TRANSPORT_OUT_DESC_SET_OUTPHASE(transport_out_desc, env, out_phase) \
+		((transport_out_desc->ops)->set_out_phase (transport_out_desc, env, out_phase)) 
 
 #define AXIS2_TRANSPORT_OUT_DESC_GET_FAULTPHASE(transport_out_desc, env) \
 		((transport_out_desc->ops)->get_faultphase (transport_out_desc, env)) 

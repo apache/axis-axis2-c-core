@@ -122,18 +122,18 @@ struct axis2_wsdl_op_ops
      * @return
      */
     axis2_linked_list_t * (AXIS2_CALL *
-    get_infaults) (axis2_wsdl_op_t *wsdl_op,
+    get_in_faults) (axis2_wsdl_op_t *wsdl_op,
                    axis2_env_t **env);
     
     /**
      * Method setInfaults
      *
-     * @param infaults
+     * @param in_faults
      */
     axis2_status_t (AXIS2_CALL *
-    set_infaults) (axis2_wsdl_op_t *wsdl_op,
+    set_in_faults) (axis2_wsdl_op_t *wsdl_op,
                     axis2_env_t **env,
-                    axis2_linked_list_t *infaults);
+                    axis2_linked_list_t *in_faults);
     
     /**
      * Method getInputMessage
@@ -160,18 +160,18 @@ struct axis2_wsdl_op_ops
      * @return
      */
     axis2_linked_list_t *(AXIS2_CALL *
-    get_outfaults)(axis2_wsdl_op_t *wsdl_op,
+    get_out_faults)(axis2_wsdl_op_t *wsdl_op,
                                         axis2_env_t **env);
     
     /**
      * Method setOutfaults
      *
-     * @param outfaults
+     * @param out_faults
      */
     axis2_status_t (AXIS2_CALL *
-    set_outfaults) (axis2_wsdl_op_t *wsdl_op,
+    set_out_faults) (axis2_wsdl_op_t *wsdl_op,
                                         axis2_env_t **env,
-                                        axis2_linked_list_t *outfaults);
+                                        axis2_linked_list_t *out_faults);
     
     /**
      * Method getOutputMessage
@@ -226,9 +226,9 @@ struct axis2_wsdl_op_ops
      * @param inFault
      */
     axis2_status_t (AXIS2_CALL *
-    add_infault) (axis2_wsdl_op_t *wsdl_op,
+    add_in_fault) (axis2_wsdl_op_t *wsdl_op,
                     axis2_env_t **env,
-                    struct axis2_wsdl_fault_ref *infault);
+                    struct axis2_wsdl_fault_ref *in_fault);
     
     /**
      * Add the OutFault to the Component OutFaults
@@ -236,9 +236,9 @@ struct axis2_wsdl_op_ops
      * @param outFault
      */
     axis2_status_t (AXIS2_CALL *
-    add_outfault) (axis2_wsdl_op_t *wsdl_op,
+    add_out_fault) (axis2_wsdl_op_t *wsdl_op,
                     axis2_env_t **env,
-                    struct axis2_wsdl_fault_ref *outfault);
+                    struct axis2_wsdl_fault_ref *out_fault);
 };
 
 struct axis2_wsdl_op
@@ -274,10 +274,10 @@ AXIS2_DECLARE(axis2_wsdl_op_t *) axis2_wsdl_op_create (
 		((wsdl_op->ops)->get_style(wsdl_op, env))
 		
 #define AXIS2_WSDL_OPERATION_GET_INFAULTS(wsdl_op, env) \
-		((wsdl_op->ops)->get_infaults(wsdl_op, env))
+		((wsdl_op->ops)->get_in_faults(wsdl_op, env))
 		
-#define AXIS2_WSDL_OPERATION_SET_INFAULTS(wsdl_op, env, infaults) \
-		((wsdl_op->ops)->set_infaults(wsdl_op, env, infaults))
+#define AXIS2_WSDL_OPERATION_SET_INFAULTS(wsdl_op, env, in_faults) \
+		((wsdl_op->ops)->set_in_faults(wsdl_op, env, in_faults))
 
 #define AXIS2_WSDL_OPERATION_GET_INPUT_MSG(wsdl_op, env) \
 		((wsdl_op->ops)->get_input_msg(wsdl_op, env))
@@ -286,10 +286,10 @@ AXIS2_DECLARE(axis2_wsdl_op_t *) axis2_wsdl_op_create (
 		((wsdl_op->ops)->set_input_msg(wsdl_op, env, input_msg))		
 
 #define AXIS2_WSDL_OPERATION_GET_OUTFAULTS(wsdl_op, env) \
-		((wsdl_op->ops)->get_outfaults(wsdl_op, env))
+		((wsdl_op->ops)->get_out_faults(wsdl_op, env))
 		
-#define AXIS2_WSDL_OPERATION_SET_OUTFAULTS(wsdl_op, env, outfaults) \
-		((wsdl_op->ops)->set_outfaults(wsdl_op, env, outfaults))
+#define AXIS2_WSDL_OPERATION_SET_OUTFAULTS(wsdl_op, env, out_faults) \
+		((wsdl_op->ops)->set_out_faults(wsdl_op, env, out_faults))
 
 #define AXIS2_WSDL_OPERATION_GET_OUTPUT_MSG(wsdl_op, env) \
 		((wsdl_op->ops)->get_output_msg(wsdl_op, env))
@@ -306,11 +306,11 @@ AXIS2_DECLARE(axis2_wsdl_op_t *) axis2_wsdl_op_create (
 #define AXIS2_WSDL_OPERATION_GET_TARGET_NAMESPACE(wsdl_op, env) \
 		((wsdl_op->ops)->get_target_namespace(wsdl_op, env))        
 
-#define AXIS2_WSDL_OPERATION_ADD_INFAULT(wsdl_op, env, infault) \
-		((wsdl_op->ops)->add_infault(wsdl_op, env, infault))
+#define AXIS2_WSDL_OPERATION_ADD_INFAULT(wsdl_op, env, in_fault) \
+		((wsdl_op->ops)->add_in_fault(wsdl_op, env, in_fault))
 		
-#define AXIS2_WSDL_OPERATION_ADD_OUTFAULT(wsdl_op, env, outfault) \
-		((wsdl_op->ops)->add_outfault(wsdl_op, env, outfault))
+#define AXIS2_WSDL_OPERATION_ADD_OUTFAULT(wsdl_op, env, out_fault) \
+		((wsdl_op->ops)->add_out_fault(wsdl_op, env, out_fault))
 
 /**************************** End of function macros **************************/
 

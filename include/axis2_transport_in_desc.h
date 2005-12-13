@@ -112,13 +112,13 @@ AXIS2_DECLARE_DATA struct axis2_transport_in_desc_ops
                                             struct axis2_transport_listener *recv);
     
     struct axis2_phase * (AXIS2_CALL *
-    get_inphase) (struct axis2_transport_in_desc *transport_in,
+    get_in_phase) (struct axis2_transport_in_desc *transport_in,
                                             axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
-    set_inphase) (struct axis2_transport_in_desc *transport_in,
+    set_in_phase) (struct axis2_transport_in_desc *transport_in,
                                             axis2_env_t **env,
-                                            struct axis2_phase *inphase);
+                                            struct axis2_phase *in_phase);
     
     struct axis2_phase *(AXIS2_CALL *
     get_faultphase) (struct axis2_transport_in_desc *transport_in,
@@ -178,10 +178,10 @@ axis2_transport_in_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qna
 		((transport_in_desc->ops)->set_recv (transport_in_desc, env, recv)) 
 
 #define AXIS2_TRANSPORT_IN_DESC_GET_INPHASE(transport_in_desc, env) \
-		((transport_in_desc->ops)->get_inphase (transport_in_desc, env)) 
+		((transport_in_desc->ops)->get_in_phase (transport_in_desc, env)) 
         
-#define AXIS2_TRANSPORT_IN_DESC_SET_INPHASE(transport_in_desc, env, inphase) \
-		((transport_in_desc->ops)->set_inphase (transport_in_desc, env, inphase)) 
+#define AXIS2_TRANSPORT_IN_DESC_SET_INPHASE(transport_in_desc, env, in_phase) \
+		((transport_in_desc->ops)->set_in_phase (transport_in_desc, env, in_phase)) 
 
 #define AXIS2_TRANSPORT_IN_DESC_GET_FAULTPHASE(transport_in_desc, env) \
 		((transport_in_desc->ops)->get_faultphase (transport_in_desc, env)) 

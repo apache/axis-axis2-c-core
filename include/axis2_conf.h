@@ -171,7 +171,7 @@ struct axis2_conf_ops
                                             axis2_env_t **env);
     
     axis2_array_list_t * (AXIS2_CALL *
-    get_inphases_upto_and_including_post_dispatch) (
+    get_in_phases_upto_and_including_post_dispatch) (
                                                 axis2_conf_t *conf,
                                                 axis2_env_t **env);
     
@@ -232,9 +232,9 @@ struct axis2_conf_ops
                                         axis2_char_t *key);
     
     axis2_status_t (AXIS2_CALL *
-    set_outphases) (axis2_conf_t *conf,
+    set_out_phases) (axis2_conf_t *conf,
                                         axis2_env_t **env,
-                                        axis2_array_list_t *outphases);
+                                        axis2_array_list_t *out_phases);
     
         /**
      * @param list
@@ -351,7 +351,7 @@ axis2_conf_create(axis2_env_t **env);
         (conf->ops->get_engaged_modules(conf , env)) 
         
 #define AXIS2_ENGINE_CONFIG_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env) \
-        (conf->ops->get_inphases_upto_and_including_post_dispatch(conf , env)) 
+        (conf->ops->get_in_phases_upto_and_including_post_dispatch(conf , env)) 
 
 #define AXIS2_ENGINE_CONFIG_GET_OUTFLOW(conf, env) \
         (conf->ops->get_outflow(conf , env)) 
@@ -387,8 +387,8 @@ axis2_conf_create(axis2_env_t **env);
 #define AXIS2_ENGINE_CONFIG_GET_MSG_RECV(conf, env, key) \
         (conf->ops->get_msg_recv(conf , env, key)) 
 
-#define AXIS2_ENGINE_CONFIG_SET_OUTPHASES(conf, env, outphases) \
-        (conf->ops->set_outphases(conf , env, outphases)) 
+#define AXIS2_ENGINE_CONFIG_SET_OUTPHASES(conf, env, out_phases) \
+        (conf->ops->set_out_phases(conf , env, out_phases)) 
 
 #define AXIS2_ENGINE_CONFIG_SET_IN_FAULTPHASES(conf, env, list) \
         (conf->ops->set_in_faultphases(conf , env, list)) 

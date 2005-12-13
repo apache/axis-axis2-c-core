@@ -39,11 +39,11 @@ struct axis2_conf_impl
      */
     axis2_hash_t *modules;
     /** private ArrayList inPhases; */
-    axis2_array_list_t *outphases;
+    axis2_array_list_t *out_phases;
     axis2_array_list_t *in_faultphases;
     axis2_array_list_t *out_faultphases;
 
-    axis2_array_list_t *inphases_upto_and_including_post_dispatch;
+    axis2_array_list_t *in_phases_upto_and_including_post_dispatch;
     struct axis2_phases_info *phases_info;
     axis2_hash_t *all_svcs;
     axis2_hash_t *msg_recvs;
@@ -161,7 +161,7 @@ axis2_conf_get_engaged_modules(axis2_conf_t *conf,
                                         axis2_env_t **env);
 
 axis2_array_list_t * AXIS2_CALL
-axis2_conf_get_inphases_upto_and_including_post_dispatch(
+axis2_conf_get_in_phases_upto_and_including_post_dispatch(
                                             axis2_conf_t *conf,
                                             axis2_env_t **env);
 
@@ -215,9 +215,9 @@ axis2_conf_get_msg_recv(axis2_conf_t *conf,
                                     axis2_char_t *key);
 
 axis2_status_t AXIS2_CALL
-axis2_conf_set_outphases(axis2_conf_t *conf,
+axis2_conf_set_out_phases(axis2_conf_t *conf,
                                     axis2_env_t **env,
-                                    axis2_array_list_t *outphases);
+                                    axis2_array_list_t *out_phases);
 
     /**
  * @param list
@@ -270,9 +270,9 @@ axis2_conf_create (axis2_env_t **env)
     config_impl->svc_grps = NULL;
     config_impl->modules = NULL;
     config_impl->engaged_modules = NULL;
-    config_impl->inphases_upto_and_including_post_dispatch = NULL;
+    config_impl->in_phases_upto_and_including_post_dispatch = NULL;
     struct axis2_phase *phase = NULL;
-    config_impl->outphases = NULL;
+    config_impl->out_phases = NULL;
     config_impl->in_faultphases = NULL;
     config_impl->out_faultphases = NULL;
     config_impl->phases_info = NULL;
@@ -324,9 +324,9 @@ axis2_conf_create (axis2_env_t **env)
         return NULL;
 	}
     
-    config_impl->inphases_upto_and_including_post_dispatch = 
+    config_impl->in_phases_upto_and_including_post_dispatch = 
         axis2_array_list_create(env, 0);		
-	if(NULL == config_impl->inphases_upto_and_including_post_dispatch)
+	if(NULL == config_impl->in_phases_upto_and_including_post_dispatch)
 	{
         axis2_conf_free(&(config_impl->conf), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
@@ -341,7 +341,7 @@ axis2_conf_create (axis2_env_t **env)
             return NULL;
         }
         status = AXIS2_ARRAY_LIST_ADD(config_impl->
-            inphases_upto_and_including_post_dispatch, env, phase);
+            in_phases_upto_and_including_post_dispatch, env, phase);
         if(AXIS2_FAILURE == status)
         {
             axis2_conf_free(&(config_impl->conf), env);
@@ -355,7 +355,7 @@ axis2_conf_create (axis2_env_t **env)
             return NULL;
         }
         status = AXIS2_ARRAY_LIST_ADD(config_impl->
-            inphases_upto_and_including_post_dispatch, env, phase);
+            in_phases_upto_and_including_post_dispatch, env, phase);
         if(AXIS2_FAILURE == status)
         {
             axis2_conf_free(&(config_impl->conf), env);
@@ -363,8 +363,8 @@ axis2_conf_create (axis2_env_t **env)
         }
     }
     
-    config_impl->outphases = axis2_array_list_create(env, 0);		
-	if(NULL == config_impl->outphases)
+    config_impl->out_phases = axis2_array_list_create(env, 0);		
+	if(NULL == config_impl->out_phases)
 	{
         axis2_conf_free(&(config_impl->conf), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
@@ -467,8 +467,8 @@ axis2_conf_create (axis2_env_t **env)
     config_impl->conf.ops->get_engaged_modules =
             axis2_conf_get_engaged_modules;
     
-    config_impl->conf.ops->get_inphases_upto_and_including_post_dispatch =
-            axis2_conf_get_inphases_upto_and_including_post_dispatch;
+    config_impl->conf.ops->get_in_phases_upto_and_including_post_dispatch =
+            axis2_conf_get_in_phases_upto_and_including_post_dispatch;
     
     config_impl->conf.ops->get_outflow =
             axis2_conf_get_outflow;
@@ -503,8 +503,8 @@ axis2_conf_create (axis2_env_t **env)
     config_impl->conf.ops->get_msg_recv =
             axis2_conf_get_msg_recv;
     
-    config_impl->conf.ops->set_outphases =
-            axis2_conf_set_outphases;
+    config_impl->conf.ops->set_out_phases =
+            axis2_conf_set_out_phases;
     
     config_impl->conf.ops->set_in_faultphases =
             axis2_conf_set_in_faultphases;
@@ -620,14 +620,14 @@ axis2_conf_free (axis2_conf_t *conf,
         config_impl->engaged_modules = NULL;
     }
     
-    if(config_impl->outphases)
+    if(config_impl->out_phases)
     {
         void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->outphases, env); i++)
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->out_phases, env); i++)
         {
             struct axis2_phase *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(config_impl->outphases, env, i);
+            phase = AXIS2_ARRAY_LIST_GET(config_impl->out_phases, env, i);
             
             phase = (struct axis2_phase *) val;
             if (phase)
@@ -637,8 +637,8 @@ axis2_conf_free (axis2_conf_t *conf,
             phase = NULL;
                
         }
-        AXIS2_ARRAY_LIST_FREE(config_impl->outphases, env);
-        config_impl->outphases = NULL;
+        AXIS2_ARRAY_LIST_FREE(config_impl->out_phases, env);
+        config_impl->out_phases = NULL;
     }
     
     if(config_impl->in_faultphases)
@@ -683,16 +683,16 @@ axis2_conf_free (axis2_conf_t *conf,
         config_impl->out_faultphases = NULL;
     }
     
-    if(config_impl->inphases_upto_and_including_post_dispatch)
+    if(config_impl->in_phases_upto_and_including_post_dispatch)
     {
         void *val = NULL;
         int i = 0;
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->
-                inphases_upto_and_including_post_dispatch, env); i++)
+                in_phases_upto_and_including_post_dispatch, env); i++)
         {
             struct axis2_phase *phase = NULL;
             phase = AXIS2_ARRAY_LIST_GET(config_impl->
-                inphases_upto_and_including_post_dispatch, env, i);
+                in_phases_upto_and_including_post_dispatch, env, i);
             
             phase = (struct axis2_phase *) val;
             if (phase)
@@ -703,8 +703,8 @@ axis2_conf_free (axis2_conf_t *conf,
                
         }
         AXIS2_ARRAY_LIST_FREE(config_impl->
-            inphases_upto_and_including_post_dispatch, env);
-        config_impl->inphases_upto_and_including_post_dispatch = NULL;
+            in_phases_upto_and_including_post_dispatch, env);
+        config_impl->in_phases_upto_and_including_post_dispatch = NULL;
     }
     
     if(config_impl->all_svcs)
@@ -1137,13 +1137,13 @@ axis2_conf_get_engaged_modules(axis2_conf_t *conf,
 }
 
 axis2_array_list_t * AXIS2_CALL
-axis2_conf_get_inphases_upto_and_including_post_dispatch(
+axis2_conf_get_in_phases_upto_and_including_post_dispatch(
                                             axis2_conf_t *conf,
                                             axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     return AXIS2_INTF_TO_IMPL(conf)->
-        inphases_upto_and_including_post_dispatch;
+        in_phases_upto_and_including_post_dispatch;
 }
 
 axis2_array_list_t * AXIS2_CALL
@@ -1151,7 +1151,7 @@ axis2_conf_get_outflow(axis2_conf_t *conf,
                                         axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
-    return AXIS2_INTF_TO_IMPL(conf)->outphases;
+    return AXIS2_INTF_TO_IMPL(conf)->out_phases;
 }
 
 
@@ -1347,22 +1347,22 @@ axis2_conf_get_msg_recv(axis2_conf_t *conf,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_conf_set_outphases(axis2_conf_t *conf,
+axis2_conf_set_out_phases(axis2_conf_t *conf,
                                     axis2_env_t **env,
-                                    axis2_array_list_t *outphases) 
+                                    axis2_array_list_t *out_phases) 
 {
     axis2_conf_impl_t *config_impl = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, outphases, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, out_phases, AXIS2_FAILURE);
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
-    if(config_impl->outphases)
+    if(config_impl->out_phases)
     {
-        AXIS2_ARRAY_LIST_FREE(config_impl->outphases, env);
-        config_impl->outphases = NULL;
+        AXIS2_ARRAY_LIST_FREE(config_impl->out_phases, env);
+        config_impl->out_phases = NULL;
     }
-    config_impl->outphases = outphases;
+    config_impl->out_phases = out_phases;
     return AXIS2_SUCCESS;
 }
 

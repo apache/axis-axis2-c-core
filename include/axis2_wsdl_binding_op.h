@@ -131,9 +131,9 @@ struct axis2_wsdl_binding_op_ops
      * @param inFault
      */
     axis2_status_t (AXIS2_CALL *
-    add_infault) (axis2_wsdl_binding_op_t *binding_op,
+    add_in_fault) (axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env,
-                                                struct axis2_wsdl_binding_fault *infault);
+                                                struct axis2_wsdl_binding_fault *in_fault);
     
     /**
      * Add the OutFault to the Component OutFaults
@@ -141,27 +141,27 @@ struct axis2_wsdl_binding_op_ops
      * @param outFault
      */
     axis2_status_t (AXIS2_CALL *
-    add_outfault) (axis2_wsdl_binding_op_t *binding_op,
+    add_out_fault) (axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env,
-                                                struct axis2_wsdl_binding_fault *outfault);
+                                                struct axis2_wsdl_binding_fault *out_fault);
     
     axis2_linked_list_t * (AXIS2_CALL *
-    get_infaults) (axis2_wsdl_binding_op_t *binding_op,
+    get_in_faults) (axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
-    set_infaults) (axis2_wsdl_binding_op_t *binding_op,
+    set_in_faults) (axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env,
-                                                axis2_linked_list_t *infaults);
+                                                axis2_linked_list_t *in_faults);
     
     axis2_linked_list_t * (AXIS2_CALL *
-    get_outfaults) (axis2_wsdl_binding_op_t *binding_op,
+    get_out_faults) (axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
-    set_outfaults) (axis2_wsdl_binding_op_t *binding_op,
+    set_out_faults) (axis2_wsdl_binding_op_t *binding_op,
                                                 axis2_env_t **env,
-                                                axis2_linked_list_t *outfaults);
+                                                axis2_linked_list_t *out_faults);
 };
 
 /**
@@ -211,23 +211,23 @@ axis2_wsdl_binding_op_create (axis2_env_t **env);
 #define AXIS2_WSDL_BINDING_OPERATION_SET_QNAME(wsdl_binding_op, env, qname) \
 		((wsdl_binding_op->ops)->set_qname(wsdl_binding_op, env, qname))
 
-#define AXIS2_WSDL_BINDING_OPERATION_ADD_INFAULT(wsdl_binding_op, env, infault) \
-		((wsdl_binding_op->ops)->add_infault(wsdl_binding_op, env, infault))
+#define AXIS2_WSDL_BINDING_OPERATION_ADD_INFAULT(wsdl_binding_op, env, in_fault) \
+		((wsdl_binding_op->ops)->add_in_fault(wsdl_binding_op, env, in_fault))
         
-#define AXIS2_WSDL_BINDING_OPERATION_ADD_OUTFAULT(wsdl_binding_op, env, outfault) \
-		((wsdl_binding_op->ops)->add_outfault(wsdl_binding_op, env, outfault))
+#define AXIS2_WSDL_BINDING_OPERATION_ADD_OUTFAULT(wsdl_binding_op, env, out_fault) \
+		((wsdl_binding_op->ops)->add_out_fault(wsdl_binding_op, env, out_fault))
 
 #define AXIS2_WSDL_BINDING_OPERATION_GET_INFAULTS(wsdl_binding_op, env) \
-		((wsdl_binding_op->ops)->get_infaults(wsdl_binding_op, env))
+		((wsdl_binding_op->ops)->get_in_faults(wsdl_binding_op, env))
         
-#define AXIS2_WSDL_BINDING_OPERATION_SET_INFAULTS(wsdl_binding_op, env, infaults) \
-		((wsdl_binding_op->ops)->set_infaults(wsdl_binding_op, env, infaults))        
+#define AXIS2_WSDL_BINDING_OPERATION_SET_INFAULTS(wsdl_binding_op, env, in_faults) \
+		((wsdl_binding_op->ops)->set_in_faults(wsdl_binding_op, env, in_faults))        
 
 #define AXIS2_WSDL_BINDING_OPERATION_GET_OUTFAULTS(wsdl_binding_op, env) \
-		((wsdl_binding_op->ops)->get_outfaults(wsdl_binding_op, env))
+		((wsdl_binding_op->ops)->get_out_faults(wsdl_binding_op, env))
         
-#define AXIS2_WSDL_BINDING_OPERATION_SET_OUTFAULTS(wsdl_binding_op, env, outfaults) \
-		((wsdl_binding_op->ops)->set_outfaults(wsdl_binding_op, env, outfaults))
+#define AXIS2_WSDL_BINDING_OPERATION_SET_OUTFAULTS(wsdl_binding_op, env, out_faults) \
+		((wsdl_binding_op->ops)->set_out_faults(wsdl_binding_op, env, out_faults))
      
 /**************************** End of function macros **************************/
 

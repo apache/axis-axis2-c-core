@@ -42,14 +42,14 @@ struct axis2_phases_info_ops
                                         axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL *
-    set_inphases) (axis2_phases_info_t *phases_info,
+    set_in_phases) (axis2_phases_info_t *phases_info,
                                     axis2_env_t **env,
-                                    axis2_array_list_t *inphases);
+                                    axis2_array_list_t *in_phases);
     
     axis2_status_t (AXIS2_CALL *
-    set_outphases) (axis2_phases_info_t *phases_info,
+    set_out_phases) (axis2_phases_info_t *phases_info,
                                     axis2_env_t **env,
-                                    axis2_array_list_t *outphases);
+                                    axis2_array_list_t *out_phases);
     
     axis2_status_t (AXIS2_CALL *
     set_in_faultphases) (axis2_phases_info_t *phases_info,
@@ -62,11 +62,11 @@ struct axis2_phases_info_ops
                                             axis2_array_list_t * out_faultphases);
     
     axis2_array_list_t *(AXIS2_CALL *
-    get_inphases) (axis2_phases_info_t *phases_info,
+    get_in_phases) (axis2_phases_info_t *phases_info,
                                     axis2_env_t **env);
     
     axis2_array_list_t *(AXIS2_CALL *
-    get_outphases) (axis2_phases_info_t *phases_info,
+    get_out_phases) (axis2_phases_info_t *phases_info,
                                     axis2_env_t **env);
     
     axis2_array_list_t *(AXIS2_CALL *
@@ -78,11 +78,11 @@ struct axis2_phases_info_ops
                                             axis2_env_t **env);
     
     axis2_array_list_t *(AXIS2_CALL *
-    get_op_inphases) (axis2_phases_info_t *phases_info,
+    get_op_in_phases) (axis2_phases_info_t *phases_info,
                                             axis2_env_t **env);
     
     axis2_array_list_t *(AXIS2_CALL *
-    get_op_outphases) (axis2_phases_info_t *phases_info,
+    get_op_out_phases) (axis2_phases_info_t *phases_info,
                                                 axis2_env_t **env);
     
     axis2_array_list_t *(AXIS2_CALL *
@@ -121,11 +121,11 @@ axis2_phases_info_create (axis2_env_t **env);
 #define AXIS2_PHASES_INFO_FREE(phases_info, env) \
 		((phases_info->ops)->free (phases_info, env))
 
-#define AXIS2_PHASES_INFO_SET_INPHASES(phases_info, env, inphases) \
-		((phases_info->ops)->set_inphases(phases_info, env, inphases))
+#define AXIS2_PHASES_INFO_SET_INPHASES(phases_info, env, in_phases) \
+		((phases_info->ops)->set_in_phases(phases_info, env, in_phases))
 		
-#define AXIS2_PHASES_INFO_SET_OUTPHASES(phases_info, env, outphases) \
-		((phases_info->ops)->set_outphases(phases_info, env, outphases))
+#define AXIS2_PHASES_INFO_SET_OUTPHASES(phases_info, env, out_phases) \
+		((phases_info->ops)->set_out_phases(phases_info, env, out_phases))
 
 #define AXIS2_PHASES_INFO_SET_IN_FAULTPHASES(phases_info, env, in_faultphases) \
 		((phases_info->ops)->set_in_faultphases(phases_info, env, in_faultphases))
@@ -134,10 +134,10 @@ axis2_phases_info_create (axis2_env_t **env);
 		((phases_info->ops)->set_out_faultphases(phases_info, env, out_faultphases)) 
 
 #define AXIS2_PHASES_INFO_GET_INPHASES(phases_info, env) \
-		((phases_info->ops)->get_inphases(phases_info, env)) 
+		((phases_info->ops)->get_in_phases(phases_info, env)) 
 
 #define AXIS2_PHASES_INFO_GET_OUTPHASES(phases_info, env) \
-		((phases_info->ops)->get_outphases(phases_info, env)) 
+		((phases_info->ops)->get_out_phases(phases_info, env)) 
         
 #define AXIS2_PHASES_INFO_GET_IN_FAULTPHASES(phases_info, env) \
 		((phases_info->ops)->get_in_faultphases(phases_info, env)) 
@@ -146,10 +146,10 @@ axis2_phases_info_create (axis2_env_t **env);
 		((phases_info->ops)->get_out_faultphases(phases_info, env)) 
         
 #define AXIS2_PHASES_INFO_GET_OPERATION_INPHASES(phases_info, env) \
-		((phases_info->ops)->get_op_inphases(phases_info, env)) 
+		((phases_info->ops)->get_op_in_phases(phases_info, env)) 
 
 #define AXIS2_PHASES_INFO_GET_OPERATION_OUTPHASES(phases_info, env) \
-		((phases_info->ops)->get_op_outphases(phases_info, env)) 
+		((phases_info->ops)->get_op_out_phases(phases_info, env)) 
                                         
 #define AXIS2_PHASES_INFO_GET_OPERATION_IN_FAULTPHASES(phases_info, env) \
 		((phases_info->ops)->get_op_in_faultphases(phases_info, env))                                         

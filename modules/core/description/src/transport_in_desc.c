@@ -52,7 +52,7 @@ typedef struct axis2_transport_in_desc_impl
     struct axis2_transport_listener *recv;
     
     /** to store handler in inFlow */
-    struct axis2_phase *inphase;
+    struct axis2_phase *in_phase;
         
     /** to store handler Fault in inFlow */
     struct axis2_phase *faultphase;
@@ -106,13 +106,13 @@ axis2_transport_in_desc_set_recv(struct axis2_transport_in_desc *transport_in,
                                         struct axis2_transport_listener *recv);
 
 struct axis2_phase * AXIS2_CALL
-axis2_transport_in_desc_get_inphase(struct axis2_transport_in_desc *transport_in,
+axis2_transport_in_desc_get_in_phase(struct axis2_transport_in_desc *transport_in,
                                         axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_transport_in_desc_set_inphase(struct axis2_transport_in_desc *transport_in,
+axis2_transport_in_desc_set_in_phase(struct axis2_transport_in_desc *transport_in,
                                         axis2_env_t **env,
-                                        struct axis2_phase *inphase);
+                                        struct axis2_phase *in_phase);
                                             
 struct axis2_phase *AXIS2_CALL
 axis2_transport_in_desc_get_faultphase(struct axis2_transport_in_desc *transport_in,
@@ -132,7 +132,7 @@ axis2_transport_in_create_with_qname (axis2_env_t **env, axis2_qname_t *qname)
     axis2_transport_in_desc_impl_t *transport_in_impl = NULL;
     transport_in_impl->param_container = NULL;
     transport_in_impl->qname = NULL;
-    transport_in_impl->inphase = NULL;
+    transport_in_impl->in_phase = NULL;
     transport_in_impl->faultphase = NULL;
     transport_in_impl->inflow = NULL;
     transport_in_impl->faultflow = NULL;
@@ -158,7 +158,7 @@ axis2_transport_in_create_with_qname (axis2_env_t **env, axis2_qname_t *qname)
     
     transport_in_impl->qname = qname;
     
-    transport_in_impl->inphase = axis2_phase_create(env, AXIS2_TRANSPORT_PHASE);
+    transport_in_impl->in_phase = axis2_phase_create(env, AXIS2_TRANSPORT_PHASE);
     
     transport_in_impl->faultphase = axis2_phase_create(env, AXIS2_TRANSPORT_PHASE);
     
@@ -188,10 +188,10 @@ axis2_transport_in_create_with_qname (axis2_env_t **env, axis2_qname_t *qname)
         axis2_transport_in_desc_get_recv;
     transport_in_impl->transport_in.ops->set_recv = 
         axis2_transport_in_desc_set_recv;
-    transport_in_impl->transport_in.ops->get_inphase = 
-        axis2_transport_in_desc_get_inphase;
-    transport_in_impl->transport_in.ops->set_inphase = 
-        axis2_transport_in_desc_set_inphase;
+    transport_in_impl->transport_in.ops->get_in_phase = 
+        axis2_transport_in_desc_get_in_phase;
+    transport_in_impl->transport_in.ops->set_in_phase = 
+        axis2_transport_in_desc_set_in_phase;
     transport_in_impl->transport_in.ops->get_faultphase = 
         axis2_transport_in_desc_get_faultphase;
     transport_in_impl->transport_in.ops->set_faultphase = 
@@ -219,9 +219,9 @@ axis2_transport_in_desc_free (axis2_transport_in_desc_t *transport_in,
         AXIS2_PARAM_CONTAINER_FREE(transport_in_impl->param_container, env);
     }
     
-    if(NULL != transport_in_impl->inphase)
+    if(NULL != transport_in_impl->in_phase)
     {
-        AXIS2_PHASE_FREE(transport_in_impl->inphase, env);
+        AXIS2_PHASE_FREE(transport_in_impl->in_phase, env);
     }
     
     if(NULL != transport_in_impl->faultphase)
@@ -338,31 +338,31 @@ axis2_transport_in_desc_set_recv(struct axis2_transport_in_desc *transport_in,
 }
 
 struct axis2_phase * AXIS2_CALL
-axis2_transport_in_desc_get_inphase(struct axis2_transport_in_desc *transport_in,
+axis2_transport_in_desc_get_in_phase(struct axis2_transport_in_desc *transport_in,
                                         axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(transport_in, env, NULL);
     
-    return AXIS2_INTF_TO_IMPL(transport_in)->inphase;
+    return AXIS2_INTF_TO_IMPL(transport_in)->in_phase;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_transport_in_desc_set_inphase(struct axis2_transport_in_desc *transport_in,
+axis2_transport_in_desc_set_in_phase(struct axis2_transport_in_desc *transport_in,
                                         axis2_env_t **env,
-                                        struct axis2_phase *inphase) 
+                                        struct axis2_phase *in_phase) 
 {
     axis2_transport_in_desc_impl_t *transport_in_impl = AXIS2_INTF_TO_IMPL(transport_in);
     
     AXIS2_FUNC_PARAM_CHECK(transport_in, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, inphase, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, in_phase, AXIS2_FAILURE);
     
-    if(transport_in_impl->inphase)
+    if(transport_in_impl->in_phase)
     {
-        AXIS2_PHASE_FREE(transport_in_impl->inphase, env);
-        transport_in_impl->inphase = NULL;
+        AXIS2_PHASE_FREE(transport_in_impl->in_phase, env);
+        transport_in_impl->in_phase = NULL;
     }
     
-    transport_in_impl->inphase = inphase;
+    transport_in_impl->in_phase = in_phase;
     return AXIS2_SUCCESS;
 }
 
