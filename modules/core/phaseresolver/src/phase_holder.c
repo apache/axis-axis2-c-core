@@ -212,7 +212,7 @@ axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
             env, phase_name), env, handler);
     } else 
     {
-        AXIS2_ERROR_SET((*env)->error, INVALID_PHASE, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_PHASE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     return status;

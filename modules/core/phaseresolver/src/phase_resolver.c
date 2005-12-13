@@ -389,7 +389,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
         } else 
         {
                 
-            AXIS2_ERROR_SET((*env)->error, INVALID_MODULE_REF, AXIS2_FAILURE);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MODULE_REF, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
 
@@ -511,7 +511,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             /* TODO change this in properway */
             if(0 == AXIS2_STRCMP(phase_name, ""))
             {
-                AXIS2_ERROR_SET((*env)->error, PHASE_IS_NOT_SPECIFED, AXIS2_FAILURE);
+                AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_PHASE_IS_NOT_SPECIFED, AXIS2_FAILURE);
                 
             } else if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) &&
                     (0 != AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) &&
@@ -524,7 +524,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
                     all_handlers = NULL;                        
                 }
                 AXIS2_ERROR_SET((*env)->error, 
-                    SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE, AXIS2_FAILURE);
+                    AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
                 
             } else 
@@ -1279,7 +1279,7 @@ axis2_phase_resolver_engage_module_to_operation(axis2_phase_resolver_t *phase_re
                 } else 
                 {
                     AXIS2_ERROR_SET((*env)->error, 
-                        SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE, AXIS2_FAILURE);
+                        AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE, AXIS2_FAILURE);
                     return NULL;
                     
                 }
