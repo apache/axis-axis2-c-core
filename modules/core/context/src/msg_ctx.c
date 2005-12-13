@@ -935,7 +935,7 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_fault_to(struct axis2_msg_ctx *msg_c
 {
     axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
 
-    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FALIURE);
+    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);
 
     msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
 
