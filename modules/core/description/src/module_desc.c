@@ -26,7 +26,7 @@ typedef struct axis2_module_desc_impl
     
     axis2_qname_t *qname;
     
-    axis2_engine_config_t *parent;
+    axis2_conf_t *parent;
     
     /** 
      * To store module opeartions , which are suppose to be added to a service 
@@ -98,14 +98,14 @@ axis2_hash_t * AXIS2_CALL
 axis2_module_desc_get_ops (axis2_module_desc_t *module_desc,
                                     axis2_env_t **env);
 
-axis2_engine_config_t * AXIS2_CALL
+axis2_conf_t * AXIS2_CALL
 axis2_module_desc_get_parent (axis2_module_desc_t *module_desc,
                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_module_desc_set_parent (axis2_module_desc_t *module_desc,
                                 axis2_env_t **env,
-                                axis2_engine_config_t *parent);
+                                axis2_conf_t *parent);
 
 axis2_status_t AXIS2_CALL
 axis2_module_desc_add_param(axis2_module_desc_t *module_desc,
@@ -453,7 +453,7 @@ axis2_module_desc_get_ops (axis2_module_desc_t *module_desc,
     return AXIS2_INTF_TO_IMPL(module_desc)->ops;
 }
 
-axis2_engine_config_t * AXIS2_CALL
+axis2_conf_t * AXIS2_CALL
 axis2_module_desc_get_parent (axis2_module_desc_t *module_desc,
                                 axis2_env_t **env)
 {
@@ -464,7 +464,7 @@ axis2_module_desc_get_parent (axis2_module_desc_t *module_desc,
 axis2_status_t AXIS2_CALL
 axis2_module_desc_set_parent (axis2_module_desc_t *module_desc,
                                 axis2_env_t **env,
-                                axis2_engine_config_t *parent)
+                                axis2_conf_t *parent)
 {
     AXIS2_FUNC_PARAM_CHECK(module_desc, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, parent, AXIS2_FAILURE);

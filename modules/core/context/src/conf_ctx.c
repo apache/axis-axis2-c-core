@@ -24,7 +24,7 @@ typedef struct axis2_conf_ctx_impl
     /** base context struct */
     axis2_ctx_t *base;
     /** engine configuration */
-    axis2_engine_config_t *engine_config;
+    axis2_conf_t *conf;
     /** root dir */
     /* should be handled as a URL string ? */
     axis2_char_t *root_dir;
@@ -42,12 +42,12 @@ typedef struct axis2_conf_ctx_impl
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(conf_ctx) ((axis2_conf_ctx_impl_t *)conf_ctx)
 
-axis2_status_t AXIS2_CALL axis2_conf_ctx_set_engine_config(struct axis2_conf_ctx *conf_ctx, 
+axis2_status_t AXIS2_CALL axis2_conf_ctx_set_conf(struct axis2_conf_ctx *conf_ctx, 
     axis2_env_t **env, 
-    axis2_engine_config_t *engine_config);
+    axis2_conf_t *conf);
 axis2_ctx_t* AXIS2_CALL axis2_conf_ctx_get_base(struct axis2_conf_ctx *conf_ctx, 
     axis2_env_t **env);
-axis2_engine_config_t* AXIS2_CALL axis2_conf_ctx_get_engine_config(struct axis2_conf_ctx *conf_ctx, 
+axis2_conf_t* AXIS2_CALL axis2_conf_ctx_get_conf(struct axis2_conf_ctx *conf_ctx, 
     axis2_env_t **env);
 axis2_hash_t* AXIS2_CALL axis2_conf_ctx_get_op_ctx_map(struct axis2_conf_ctx *conf_ctx, 
     axis2_env_t **env);
@@ -83,7 +83,7 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_set_root_dir(struct axis2_conf_ctx *con
                                                         axis2_char_t *path);
 axis2_status_t AXIS2_CALL axis2_conf_ctx_init(struct axis2_conf_ctx *conf_ctx, 
                                                         axis2_env_t **env,
-                                                        axis2_engine_config_t *engine_config);
+                                                        axis2_conf_t *conf);
 axis2_status_t AXIS2_CALL axis2_conf_ctx_free(struct axis2_conf_ctx *conf_ctx, 
                                    axis2_env_t **env);
 axis2_svc_grp_ctx_t* AXIS2_CALL axis2_conf_ctx_fill_ctxs(struct axis2_conf_ctx *conf_ctx, 
@@ -91,7 +91,7 @@ axis2_svc_grp_ctx_t* AXIS2_CALL axis2_conf_ctx_fill_ctxs(struct axis2_conf_ctx *
                                                axis2_msg_ctx_t *msg_ctx);
 
 
-axis2_conf_ctx_t* AXIS2_CALL axis2_conf_ctx_create(axis2_env_t **env, axis2_engine_config_t *engine_config) 
+axis2_conf_ctx_t* AXIS2_CALL axis2_conf_ctx_create(axis2_env_t **env, axis2_conf_t *conf) 
 {
     axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
     
@@ -106,14 +106,14 @@ axis2_conf_ctx_t* AXIS2_CALL axis2_conf_ctx_create(axis2_env_t **env, axis2_engi
     
     conf_ctx_impl->conf_ctx.ops = NULL;
     conf_ctx_impl->base = NULL;
-    conf_ctx_impl->engine_config = NULL;
+    conf_ctx_impl->conf = NULL;
     conf_ctx_impl->root_dir = NULL;
     conf_ctx_impl->op_ctx_map = NULL;
     conf_ctx_impl->svc_ctx_map = NULL;
     conf_ctx_impl->svc_grp_ctx_map = NULL;
     
-    if (engine_config)
-        conf_ctx_impl->engine_config = engine_config;
+    if (conf)
+        conf_ctx_impl->conf = conf;
     
     conf_ctx_impl->base = axis2_ctx_create(env);
     if (!(conf_ctx_impl->base))
@@ -154,9 +154,9 @@ axis2_conf_ctx_t* AXIS2_CALL axis2_conf_ctx_create(axis2_env_t **env, axis2_engi
 
     conf_ctx_impl->conf_ctx.ops->free = axis2_conf_ctx_free;
 
-    conf_ctx_impl->conf_ctx.ops->set_engine_config = axis2_conf_ctx_set_engine_config;
+    conf_ctx_impl->conf_ctx.ops->set_conf = axis2_conf_ctx_set_conf;
     conf_ctx_impl->conf_ctx.ops->get_base = axis2_conf_ctx_get_base;
-    conf_ctx_impl->conf_ctx.ops->get_engine_config = axis2_conf_ctx_get_engine_config;
+    conf_ctx_impl->conf_ctx.ops->get_conf = axis2_conf_ctx_get_conf;
     conf_ctx_impl->conf_ctx.ops->get_op_ctx_map = axis2_conf_ctx_get_op_ctx_map;
     conf_ctx_impl->conf_ctx.ops->get_svc_ctx_map = axis2_conf_ctx_get_svc_ctx_map;
     conf_ctx_impl->conf_ctx.ops->get_svc_grp_ctx_map = axis2_conf_ctx_get_svc_grp_ctx_map;
@@ -178,10 +178,10 @@ axis2_conf_ctx_t* AXIS2_CALL axis2_conf_ctx_create(axis2_env_t **env, axis2_engi
 /**
  * @param configuration
  */
-axis2_status_t AXIS2_CALL axis2_conf_ctx_set_engine_config(struct axis2_conf_ctx *conf_ctx, axis2_env_t **env, axis2_engine_config_t *engine_config) 
+axis2_status_t AXIS2_CALL axis2_conf_ctx_set_conf(struct axis2_conf_ctx *conf_ctx, axis2_env_t **env, axis2_conf_t *conf) 
 {
     AXIS2_FUNC_PARAM_CHECK(conf_ctx, env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(conf_ctx)->engine_config = engine_config; /* we just maitain a shalow copy here */
+    AXIS2_INTF_TO_IMPL(conf_ctx)->conf = conf; /* we just maitain a shalow copy here */
     return AXIS2_SUCCESS;
 }
 
@@ -195,10 +195,10 @@ axis2_ctx_t* AXIS2_CALL axis2_conf_ctx_get_base(struct axis2_conf_ctx *conf_ctx,
 
 /**
  */
-axis2_engine_config_t* AXIS2_CALL axis2_conf_ctx_get_engine_config(struct axis2_conf_ctx *conf_ctx, axis2_env_t **env)
+axis2_conf_t* AXIS2_CALL axis2_conf_ctx_get_conf(struct axis2_conf_ctx *conf_ctx, axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(conf_ctx, env, NULL);
-    return AXIS2_INTF_TO_IMPL(conf_ctx)->engine_config;
+    return AXIS2_INTF_TO_IMPL(conf_ctx)->conf;
 }
 
 axis2_hash_t* AXIS2_CALL axis2_conf_ctx_get_op_ctx_map(struct axis2_conf_ctx *conf_ctx, axis2_env_t **env)
@@ -411,7 +411,7 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_set_root_dir(struct axis2_conf_ctx *con
 
 axis2_status_t AXIS2_CALL axis2_conf_ctx_init(struct axis2_conf_ctx *conf_ctx, 
                                                         axis2_env_t **env,
-                                                        axis2_engine_config_t *engine_config)
+                                                        axis2_conf_t *conf)
 {
     axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
     axis2_hash_index_t *hi = NULL;
@@ -421,7 +421,7 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_init(struct axis2_conf_ctx *conf_ctx,
     
     conf_ctx_impl = AXIS2_INTF_TO_IMPL(conf_ctx);
 
-    conf_ctx_impl->engine_config = engine_config;
+    conf_ctx_impl->conf = conf;
     
     for (hi = axis2_hash_first (conf_ctx_impl->op_ctx_map, env);
              hi; hi = axis2_hash_next (env, hi))
@@ -430,7 +430,7 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_init(struct axis2_conf_ctx *conf_ctx,
         if (ctx)
         {
             axis2_op_ctx_t *op_ctx = (axis2_op_ctx_t*) ctx;
-            AXIS2_OPERATION_CTX_INIT(op_ctx, env, engine_config);
+            AXIS2_OPERATION_CTX_INIT(op_ctx, env, conf);
         }
     }
 
@@ -441,7 +441,7 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_init(struct axis2_conf_ctx *conf_ctx,
         if (ctx)
         {
             axis2_svc_ctx_t *svc_ctx = (axis2_svc_ctx_t*) ctx;
-            AXIS2_SVC_CTX_INIT(svc_ctx, env, engine_config);
+            AXIS2_SVC_CTX_INIT(svc_ctx, env, conf);
         }
     }
     
@@ -452,7 +452,7 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_init(struct axis2_conf_ctx *conf_ctx,
         if (ctx)
         {
             axis2_svc_grp_ctx_t *svc_grp_ctx = (axis2_svc_grp_ctx_t*) ctx;
-            AXIS2_SVC_GRP_CTX_INIT(svc_grp_ctx, env, engine_config);
+            AXIS2_SVC_GRP_CTX_INIT(svc_grp_ctx, env, conf);
         }
     }
     

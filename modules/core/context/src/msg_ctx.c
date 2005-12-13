@@ -18,7 +18,7 @@
 #include <axis2_op.h>
 #include <axis2_svc.h>
 #include <axis2_svc_grp.h>
-#include <axis2_engine_config.h>
+#include <axis2_conf.h>
 
 typedef struct axis2_msg_ctx_impl axis2_msg_ctx_impl_t;
 
@@ -129,7 +129,7 @@ axis2_msg_ctx_free (axis2_msg_ctx_t *msg_ctx,
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_init(struct axis2_msg_ctx *msg_ctx, 
                     axis2_env_t **env, 
-                    struct axis2_engine_config *engine_config);
+                    struct axis2_conf *conf);
 axis2_endpoint_ref_t *AXIS2_CALL 
 axis2_msg_ctx_get_fault_to(struct axis2_msg_ctx *msg_ctx, 
                             axis2_env_t **env);
@@ -727,33 +727,33 @@ axis2_msg_ctx_free (axis2_msg_ctx_t *msg_ctx,
  */
 axis2_status_t AXIS2_CALL axis2_msg_ctx_init(struct axis2_msg_ctx *msg_ctx, 
                     axis2_env_t **env, 
-                    struct axis2_engine_config *engine_config)
+                    struct axis2_conf *conf)
 {
     axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, engine_config, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, conf, AXIS2_FAILURE);
     
     msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
     
     /*if (msg_ctx_impl->transport_in_desc_qname)
     {
-        msg_ctx_impl->transport_in_desc = AXIS2_ENGINE_CONFIG_GET_TRANSPORT_IN(engine_config, env, msg_ctx_impl->transport_in_desc_qname);
+        msg_ctx_impl->transport_in_desc = AXIS2_ENGINE_CONFIG_GET_TRANSPORT_IN(conf, env, msg_ctx_impl->transport_in_desc_qname);
     }*/
     
     /*if (msg_ctx_impl->transport_out_desc_qname)
     {
-        msg_ctx_impl->transport_out_desc = AXIS2_ENGINE_CONFIG_GET_TRANSPORT_IN(engine_config, env, msg_ctx_impl->transport_out_desc_qname);
+        msg_ctx_impl->transport_out_desc = AXIS2_ENGINE_CONFIG_GET_TRANSPORT_IN(conf, env, msg_ctx_impl->transport_out_desc_qname);
     }*/
     
     if (msg_ctx_impl->svc_grp_id)
     {
-        /*msg_ctx_impl->svc_grp = AXIS2_ENGINE_CONFIG_GET_SVC_GRP(engine_config, env, msg_ctx_impl->svc_grp_id);*/
+        /*msg_ctx_impl->svc_grp = AXIS2_ENGINE_CONFIG_GET_SVC_GRP(conf, env, msg_ctx_impl->svc_grp_id);*/
     }
     
     if (msg_ctx_impl->svc_qname)
     {
-        /*msg_ctx_impl->svc = AXIS2_ENGINE_CONFIG_GET_SVC(engine_config, env, AXIS2_QNAME_GET_LOCALPART(msg_ctx_impl->svc_qname, env));*/
+        /*msg_ctx_impl->svc = AXIS2_ENGINE_CONFIG_GET_SVC(conf, env, AXIS2_QNAME_GET_LOCALPART(msg_ctx_impl->svc_qname, env));*/
     }
     
     if (msg_ctx_impl->op_qname)
@@ -1462,8 +1462,8 @@ axis2_param_t *AXIS2_CALL axis2_msg_ctx_get_parameter(struct axis2_msg_ctx *msg_
     
     if (msg_ctx_impl->conf_ctx) 
     {
-        /*axis2_engine_config_t *engine_config = AXIS2_CONFIG_CTX_GET_CONFIG(msg_ctx_impl->conf_ctx, env);
-        param = AXIS2_ENGINE_CONFIG_GET_PARAM(engine_config, env, key);*/
+        /*axis2_conf_t *conf = AXIS2_CONFIG_CTX_GET_CONFIG(msg_ctx_impl->conf_ctx, env);
+        param = AXIS2_ENGINE_CONFIG_GET_PARAM(conf, env, key);*/
     }
     
     return param;
@@ -1477,8 +1477,8 @@ axis2_param_t *AXIS2_CALL axis2_msg_ctx_get_parameter(struct axis2_msg_ctx *msg_
  * 2. Search in corresponding op if its there
  * 3. Search in module configurations inside corresponding service description if its there
  * 4. Next search in Corresponding Service description if its there
- * 5. Next sercah in module configurations inside engine_config
- * 6. Search in axis2_engine_config_t *for paramters
+ * 5. Next sercah in module configurations inside conf
+ * 6. Search in axis2_conf_t *for paramters
  * 7. Next AXIS2_CALL axis2_msg_ctx_get the corresponding module and search for the paramters
  * 8. Search in axis2_handler_desc_t *for the paramter
  * <p/>
@@ -1502,7 +1502,7 @@ axis2_param_t * AXIS2_CALL axis2_msg_ctx_get_module_parameter(struct axis2_msg_c
     /*axis2_module_config_t *module_config = NULL;*/
     /*axis2_module_t *module = NULL;*/
     axis2_qname_t *qname = NULL;
-    axis2_engine_config_t *engine_config = NULL;
+    axis2_conf_t *conf = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FAILURE);
@@ -1577,10 +1577,10 @@ axis2_param_t * AXIS2_CALL axis2_msg_ctx_get_module_parameter(struct axis2_msg_c
         }*/
     }
     
-    /*engine_config = AXIS2_CONFIG_CTX_GET_CONFIG(msg_ctx_impl->conf_ctx, env);*/
-    if (engine_config)
+    /*conf = AXIS2_CONFIG_CTX_GET_CONFIG(msg_ctx_impl->conf_ctx, env);*/
+    if (conf)
     {
-        /*module_config = AXIS2_ENGINE_CONFIG_GET_MODULE_CONFIG(engine_config, env, qname);*/
+        /*module_config = AXIS2_ENGINE_CONFIG_GET_MODULE_CONFIG(conf, env, qname);*/
         AXIS2_QNAME_FREE(qname, env);
     }    
     
@@ -1593,7 +1593,7 @@ axis2_param_t * AXIS2_CALL axis2_msg_ctx_get_module_parameter(struct axis2_msg_c
         } 
         else 
         {
-            param = AXIS2_ENGINE_CONFIG_GET_PARAM(engine_config, env, key);
+            param = AXIS2_ENGINE_CONFIG_GET_PARAM(conf, env, key);
             if (param)
             {
                 return param;
@@ -1601,9 +1601,9 @@ axis2_param_t * AXIS2_CALL axis2_msg_ctx_get_module_parameter(struct axis2_msg_c
         }
     }*/
     
-    if (engine_config)
+    if (conf)
     {
-        /*module = AXIS2_ENGINE_CONFIG_GET_MODULE(engine_config, env, qname);*/
+        /*module = AXIS2_ENGINE_CONFIG_GET_MODULE(conf, env, qname);*/
         AXIS2_QNAME_FREE(qname, env);
     }
     

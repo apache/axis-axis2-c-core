@@ -41,7 +41,7 @@ extern "C"
     
 typedef struct axis2_conf_ctx_ops axis2_conf_ctx_ops_t;
 typedef struct axis2_conf_ctx axis2_conf_ctx_t; 
-struct axis2_engine_config;
+struct axis2_conf;
     
 /** 
  * @brief Message Context ops struct
@@ -52,16 +52,16 @@ struct axis2_conf_ctx_ops
     /**
      * @param configuration
      */
-    axis2_status_t (AXIS2_CALL *set_engine_config)(struct axis2_conf_ctx *conf_ctx, 
+    axis2_status_t (AXIS2_CALL *set_conf)(struct axis2_conf_ctx *conf_ctx, 
         axis2_env_t **env, 
-        struct axis2_engine_config *engine_config);
+        struct axis2_conf *conf);
     /**
      */
     axis2_ctx_t* (AXIS2_CALL *get_base)(struct axis2_conf_ctx *conf_ctx, 
         axis2_env_t **env);
     /**
      */
-    struct axis2_engine_config* (AXIS2_CALL *get_engine_config)(struct axis2_conf_ctx *conf_ctx, 
+    struct axis2_conf* (AXIS2_CALL *get_conf)(struct axis2_conf_ctx *conf_ctx, 
         axis2_env_t **env);
     axis2_hash_t* (AXIS2_CALL *get_op_ctx_map)(struct axis2_conf_ctx *conf_ctx, 
         axis2_env_t **env);
@@ -142,7 +142,7 @@ struct axis2_conf_ctx_ops
                                                             axis2_char_t *path);
     axis2_status_t (AXIS2_CALL *init)(struct axis2_conf_ctx *conf_ctx, 
                                                             axis2_env_t **env,
-                                                            struct axis2_engine_config *engine_config);
+                                                            struct axis2_conf *conf);
     axis2_status_t (AXIS2_CALL *free)(struct axis2_conf_ctx *conf_ctx, 
                                        axis2_env_t **env);
     /**
@@ -171,13 +171,13 @@ struct axis2_conf_ctx
     axis2_conf_ctx_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_conf_ctx_t*) AXIS2_CALL create(axis2_env_t **env, struct axis2_engine_config *engine_config);
+AXIS2_DECLARE(axis2_conf_ctx_t*) AXIS2_CALL create(axis2_env_t **env, struct axis2_conf *conf);
     
 /************************** Start of function macros **************************/
 
-#define AXIS2_CONF_CTX_SET_ENGINE_CONFIG(conf_ctx, env, engine_config) ((conf_ctx)->ops->set_engine_config(conf_ctx, env, engine_config))
+#define AXIS2_CONF_CTX_SET_ENGINE_CONFIG(conf_ctx, env, conf) ((conf_ctx)->ops->set_conf(conf_ctx, env, conf))
 #define AXIS2_CONF_CTX_GET_BASE(conf_ctx, env) ((conf_ctx)->ops->get_base(conf_ctx, env))
-#define AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env) ((conf_ctx)->ops->get_engine_config(conf_ctx, env))
+#define AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env) ((conf_ctx)->ops->get_conf(conf_ctx, env))
 #define AXIS2_CONF_CTX_GET_OPERATION_CTX_MAP(conf_ctx, env) ((conf_ctx)->ops->get_op_ctx_map(conf_ctx, env))
 #define AXIS2_CONF_CTX_GET_SVC_CTX_MAP(conf_ctx, env) ((conf_ctx)->ops->get_svc_ctx_map(conf_ctx, env))
 #define AXIS2_CONF_CTX_GET_SVC_GRP_CTX_MAP(conf_ctx, env) ((conf_ctx)->ops->get_svc_grp_ctx_map(conf_ctx, env))
@@ -189,7 +189,7 @@ AXIS2_DECLARE(axis2_conf_ctx_t*) AXIS2_CALL create(axis2_env_t **env, struct axi
 #define AXIS2_CONF_CTX_GET_SVC_GRP_CTX(conf_ctx, env, svc_grp_id) ((conf_ctx)->ops->get_svc_grp_ctx(conf_ctx, env, svc_grp_id))
 #define AXIS2_CONF_CTX_GET_ROOT_DIR(conf_ctx, env) ((conf_ctx)->ops->get_root_dir(conf_ctx, env))
 #define AXIS2_CONF_CTX_SET_ROOT_DIR(conf_ctx, env, path) ((conf_ctx)->ops->set_root_dir(conf_ctx, env, path))
-#define AXIS2_CONF_CTX_INIT(conf_ctx, env, engine_config) ((conf_ctx)->ops->init(conf_ctx, env, engine_config))
+#define AXIS2_CONF_CTX_INIT(conf_ctx, env, conf) ((conf_ctx)->ops->init(conf_ctx, env, conf))
 #define AXIS2_CONF_CTX_FREE(conf_ctx, env) ((conf_ctx)->ops->free(conf_ctx, env))
 #define AXIS2_CONF_CTX_FILL_CXTS(conf_ctx, env, msg_ctx) ((conf_ctx)->ops->fill_ctxs(conf_ctx, env, msg_ctx))
 

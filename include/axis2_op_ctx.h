@@ -70,7 +70,7 @@ struct axis2_op_ctx_ops
     /**
      * The method is used to do the intialization of the axis2_op_ctx
      */
-    axis2_status_t (AXIS2_CALL *init)(struct axis2_op_ctx *op_ctx, axis2_env_t **env, struct axis2_engine_config *engine_config);
+    axis2_status_t (AXIS2_CALL *init)(struct axis2_op_ctx *op_ctx, axis2_env_t **env, struct axis2_conf *conf);
     
     /**
      * @return Returns the op.
@@ -151,7 +151,7 @@ axis2_op_ctx_t* AXIS2_CALL axis2_op_ctx_create(axis2_env_t **env,
 /************************** Start of function macros **************************/
 #define OPERATION_CTX_GET_BASE(op_ctx, env) ((op_ctx)->ops->get_base(op_ctx, env))
 #define AXIS2_OPERATION_CTX_FREE(op_ctx, env) ((op_ctx)->ops->free(op_ctx, env))
-#define AXIS2_OPERATION_CTX_INIT(op_ctx, env, engine_config) ((op_ctx)->ops->init(op_ctx, env, engine_config))
+#define AXIS2_OPERATION_CTX_INIT(op_ctx, env, conf) ((op_ctx)->ops->init(op_ctx, env, conf))
 #define AXIS2_OPERATION_CTX_GET_OPERATION(op_ctx, env) ((op_ctx)->ops->get_op(op_ctx, env))
 #define AXIS2_OPERATION_CTX_GET_PARENT(op_ctx, env) ((op_ctx)->ops->get_parent(op_ctx, env))
 #define AXIS2_OPERATION_CTX_ADD_MSG_CTX(op_ctx, env, msg_ctx) ((op_ctx)->ops->add_msg_ctx(op_ctx, env, msg_ctx))

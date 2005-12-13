@@ -70,7 +70,7 @@ struct axis2_svc_grp_ctx;
 struct axis2_svc_ctx;
 struct axis2_op_ctx;
 struct axis2_session_ctx;
-struct axis2_engine_config;
+struct axis2_conf;
 struct axis2_soap_envelope;
     
 /** 
@@ -100,7 +100,7 @@ struct axis2_msg_ctx_ops
      */
     axis2_status_t (AXIS2_CALL *init)(struct axis2_msg_ctx *msg_ctx, 
                                         axis2_env_t **env, 
-                                        struct axis2_engine_config *engine_config);
+                                        struct axis2_conf *conf);
     
     /**
      * @return
@@ -416,8 +416,8 @@ struct axis2_msg_ctx_ops
      * 2. Search in corresponding op if its there
      * 3. Search in module configurations inside corresponding service description if its there
      * 4. Next search in Corresponding Service description if its there
-     * 5. Next sercah in module configurations inside engine_config
-     * 6. Search in axis2_engine_config_t *for paramters
+     * 5. Next sercah in module configurations inside conf
+     * 6. Search in axis2_conf_t *for paramters
      * 7. Next AXIS2_CALL get the corresponding module and search for the paramters
      * 8. Search in axis2_handler_desc_t *for the paramter
      * <p/>
@@ -604,7 +604,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_GET_PARENT(msg_ctx, env) ((msg_ctx)->ops->get_parent(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_PARENT(msg_ctx, env, parent) ((msg_ctx)->ops->get_parent(msg_ctx, env, parent))
 #define AXIS2_MSG_CTX_FREE(msg_ctx, env) ((msg_ctx)->ops->free(msg_ctx, env))
-#define AXIS2_MSG_CTX_INIT(msg_ctx, env, engine_config) ((msg_ctx)->ops->init(msg_ctx, env, engine_config))
+#define AXIS2_MSG_CTX_INIT(msg_ctx, env, conf) ((msg_ctx)->ops->init(msg_ctx, env, conf))
 
 #define AXIS2_MSG_CTX_GET_FAULT_TO(msg_ctx, env) ((msg_ctx)->ops->get_fault_to(msg_ctx, env))
 /*

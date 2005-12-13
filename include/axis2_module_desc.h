@@ -41,7 +41,7 @@
 #include <axis2_flow_container.h>
 #include <axis2_param.h>
 #include <axis2_op.h>
-#include <axis2_engine_config.h>
+#include <axis2_conf.h>
 
 
 #ifdef __cplusplus
@@ -50,7 +50,7 @@ extern "C"
 #endif
 
 struct axis2_op;
-struct axis2_engine_config;	
+struct axis2_conf;	
 typedef struct axis2_module_desc_ops axis2_module_desc_ops_t;
 typedef struct axis2_module_desc axis2_module_desc_t;	
 	
@@ -162,14 +162,14 @@ struct axis2_module_desc_ops
     get_ops ) (axis2_module_desc_t *module_desc,
                                         axis2_env_t **env);
     
-    struct axis2_engine_config * (AXIS2_CALL *
+    struct axis2_conf * (AXIS2_CALL *
     get_parent ) (axis2_module_desc_t *module_desc,
                                     axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
     set_parent ) (axis2_module_desc_t *module_desc,
                                     axis2_env_t **env,
-                                    struct axis2_engine_config *parent);
+                                    struct axis2_conf *parent);
     
     /**
      * Add parameter

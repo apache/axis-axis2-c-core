@@ -16,17 +16,17 @@
 
 #include <string.h>
 
-#include <axis2_engine_config.h>
+#include <axis2_conf.h>
 
-typedef struct axis2_engine_config_impl axis2_engine_config_impl_t;
+typedef struct axis2_conf_impl axis2_conf_impl_t;
 
 /** 
  * @brief Engine configuration struct impl
  * Axis2 Engine Configuration impl  
  */  
-struct axis2_engine_config_impl
+struct axis2_conf_impl
 {
-	axis2_engine_config_t engine_config;
+	axis2_conf_t conf;
     axis2_hash_t *svc_grps;
     axis2_hash_t *transports_in;
     axis2_hash_t *transports_out;
@@ -52,60 +52,60 @@ struct axis2_engine_config_impl
 
 };
 
-#define AXIS2_INTF_TO_IMPL(engine_config) \
-        ((axis2_engine_config_impl_t *)engine_config)
+#define AXIS2_INTF_TO_IMPL(conf) \
+        ((axis2_conf_impl_t *)conf)
 
 /***************************** Function prototypes ****************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_config_free (axis2_engine_config_t *engine_config, 
+axis2_conf_free (axis2_conf_t *conf, 
                             axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_config_add_svc_grp (axis2_engine_config_t *engine_config, 
+axis2_conf_add_svc_grp (axis2_conf_t *conf, 
                                     axis2_env_t **env,
     	                            struct axis2_svc_grp *svc_grp);
 
 struct axis2_svc_grp * AXIS2_CALL 
-axis2_engine_config_get_svc_grp (axis2_engine_config_t *engine_config, 
+axis2_conf_get_svc_grp (axis2_conf_t *conf, 
                                     axis2_env_t **env,
 		                            axis2_char_t *svc_grp_name);
 
 axis2_hash_t * AXIS2_CALL
-axis2_engine_config_get_svc_grps(axis2_engine_config_t *engine_config, 
+axis2_conf_get_svc_grps(axis2_conf_t *conf, 
                                     axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_config_add_svc (axis2_engine_config_t *engine_config, 
+axis2_conf_add_svc (axis2_conf_t *conf, 
                                 axis2_env_t **env,
 		                        struct axis2_svc *svc);
 
 struct axis2_svc * AXIS2_CALL 
-axis2_engine_config_get_svc (axis2_engine_config_t *engine_config, 
+axis2_conf_get_svc (axis2_conf_t *conf, 
                                 axis2_env_t **env,
                                 axis2_char_t* svc_name);
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_config_remove_svc (axis2_engine_config_t *engine_config, 
+axis2_conf_remove_svc (axis2_conf_t *conf, 
                                     axis2_env_t **env,
 		                            const axis2_char_t *name);
 
 axis2_status_t AXIS2_CALL
-axis2_engine_config_add_param (axis2_engine_config_t *engine_config, 
+axis2_conf_add_param (axis2_conf_t *conf, 
                                 axis2_env_t **env, 
                                 axis2_param_t *param);
 
 axis2_param_t * AXIS2_CALL
-axis2_engine_config_get_param (axis2_engine_config_t *engine_config, 
+axis2_conf_get_param (axis2_conf_t *conf, 
                                 axis2_env_t **env,
 		                        const axis2_char_t *name);
 
 axis2_array_list_t * AXIS2_CALL
-axis2_engine_config_get_params (axis2_engine_config_t *engine_config, 
+axis2_conf_get_params (axis2_conf_t *conf, 
                                 axis2_env_t **env);
 
 axis2_bool_t AXIS2_CALL
-axis2_engine_config_is_param_locked (axis2_engine_config_t *engine_config, 
+axis2_conf_is_param_locked (axis2_conf_t *conf, 
                                         axis2_env_t **env,
 		                                axis2_char_t *param_name);
                             
@@ -124,98 +124,98 @@ split_svc_name(axis2_env_t **env,
                 axis2_char_t **svc_name_st);
 		
 struct axis2_transport_in_desc * AXIS2_CALL
-axis2_engine_config_get_transport_in(axis2_engine_config_t *engine_config,
+axis2_conf_get_transport_in(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
-axis2_engine_config_add_transport_in(axis2_engine_config_t *engine_config,
+axis2_conf_add_transport_in(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         struct axis2_transport_in_desc *transport);
 
 struct axis2_transport_out_desc * AXIS2_CALL
-axis2_engine_config_get_transport_out(axis2_engine_config_t *engine_config,
+axis2_conf_get_transport_out(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
-axis2_engine_config_add_transport_out(axis2_engine_config_t *engine_config,
+axis2_conf_add_transport_out(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         struct axis2_transport_out_desc *transport);
 
 axis2_hash_t * AXIS2_CALL
-axis2_engine_config_get_transports_in(axis2_engine_config_t *engine_config,
+axis2_conf_get_transports_in(axis2_conf_t *conf,
                                         axis2_env_t **env);
 
 axis2_hash_t * AXIS2_CALL
-axis2_engine_config_get_transports_out(axis2_engine_config_t *engine_config,
+axis2_conf_get_transports_out(axis2_conf_t *conf,
                                         axis2_env_t **env);	
                                         
 struct axis2_module_desc *AXIS2_CALL
-axis2_engine_config_get_module(axis2_engine_config_t *engine_config,
+axis2_conf_get_module(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname);
 
 axis2_array_list_t * AXIS2_CALL
-axis2_engine_config_get_engaged_modules(axis2_engine_config_t *engine_config,
+axis2_conf_get_engaged_modules(axis2_conf_t *conf,
                                         axis2_env_t **env);
 
 axis2_array_list_t * AXIS2_CALL
-axis2_engine_config_get_inphases_upto_and_including_post_dispatch(
-                                            axis2_engine_config_t *engine_config,
+axis2_conf_get_inphases_upto_and_including_post_dispatch(
+                                            axis2_conf_t *conf,
                                             axis2_env_t **env);
 
 axis2_array_list_t * AXIS2_CALL
-axis2_engine_config_get_outflow(axis2_engine_config_t *engine_config,
+axis2_conf_get_outflow(axis2_conf_t *conf,
                                         axis2_env_t **env);
 
 axis2_array_list_t * AXIS2_CALL
-axis2_engine_config_get_in_faultflow(axis2_engine_config_t *engine_config,
+axis2_conf_get_in_faultflow(axis2_conf_t *conf,
                                         axis2_env_t **env);
 
 axis2_array_list_t * AXIS2_CALL
-axis2_engine_config_get_out_faultflow(axis2_engine_config_t *engine_config,
+axis2_conf_get_out_faultflow(axis2_conf_t *conf,
                                         axis2_env_t **env);                                        
  
 axis2_hash_t *AXIS2_CALL
-axis2_engine_config_get_faulty_svcs(axis2_engine_config_t *engine_config,
+axis2_conf_get_faulty_svcs(axis2_conf_t *conf,
                                     axis2_env_t **env);
 
 axis2_hash_t *AXIS2_CALL 
-axis2_engine_config_get_faulty_modules(axis2_engine_config_t *engine_config,
+axis2_conf_get_faulty_modules(axis2_conf_t *conf,
                                     axis2_env_t **env);
     
 /*to get all the services in the system */
 axis2_hash_t *AXIS2_CALL
-axis2_engine_config_get_svcs(axis2_engine_config_t *engine_config,
+axis2_conf_get_svcs(axis2_conf_t *conf,
                                 axis2_env_t **env);
 
 axis2_bool_t AXIS2_CALL
-axis2_engine_config_is_engaged(axis2_engine_config_t *engine_config,
+axis2_conf_is_engaged(axis2_conf_t *conf,
                                 axis2_env_t **env,
                                 axis2_qname_t *module_name);
 
 struct axis2_phases_info *AXIS2_CALL
-axis2_engine_config_get_phases_info(axis2_engine_config_t *engine_config,
+axis2_conf_get_phases_info(axis2_conf_t *conf,
                                     axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_engine_config_set_phases_info(axis2_engine_config_t *engine_config,
+axis2_conf_set_phases_info(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     struct axis2_phases_info *phases_info);
 axis2_status_t AXIS2_CALL
-axis2_engine_config_add_msg_recv(axis2_engine_config_t *engine_config,
+axis2_conf_add_msg_recv(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     axis2_char_t *key,
                                     struct axis2_msg_recv *msg_recv);
 
 struct axis2_msg_recv *AXIS2_CALL
-axis2_engine_config_get_msg_recv(axis2_engine_config_t *engine_config,
+axis2_conf_get_msg_recv(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     axis2_char_t *key);
 
 axis2_status_t AXIS2_CALL
-axis2_engine_config_set_outphases(axis2_engine_config_t *engine_config,
+axis2_conf_set_outphases(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     axis2_array_list_t *outphases);
 
@@ -223,7 +223,7 @@ axis2_engine_config_set_outphases(axis2_engine_config_t *engine_config,
  * @param list
  */
 axis2_status_t AXIS2_CALL
-axis2_engine_config_set_in_faultphases(axis2_engine_config_t *engine_config,
+axis2_conf_set_in_faultphases(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_array_list_t *list);
 
@@ -231,7 +231,7 @@ axis2_engine_config_set_in_faultphases(axis2_engine_config_t *engine_config,
  * @param list
  */
 axis2_status_t AXIS2_CALL
-axis2_engine_config_set_out_faultphases(axis2_engine_config_t *engine_config,
+axis2_conf_set_out_faultphases(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_array_list_t *list);
     
@@ -239,7 +239,7 @@ axis2_engine_config_set_out_faultphases(axis2_engine_config_t *engine_config,
  * @return HashMap
  */
 axis2_hash_t *AXIS2_CALL
-axis2_engine_config_get_modules(axis2_engine_config_t *engine_config,
+axis2_conf_get_modules(axis2_conf_t *conf,
                                 axis2_env_t **env); 
 
 /**
@@ -248,25 +248,25 @@ axis2_engine_config_get_modules(axis2_engine_config_t *engine_config,
  * @param module
  */
 axis2_status_t AXIS2_CALL
-axis2_engine_config_add_module(axis2_engine_config_t *engine_config,
+axis2_conf_add_module(axis2_conf_t *conf,
                                 axis2_env_t **env,
                                 struct axis2_module_desc *module);
  
 /************************** End of function prototypes ************************/
 
-axis2_engine_config_t * AXIS2_CALL 
-axis2_engine_config_create (axis2_env_t **env)
+axis2_conf_t * AXIS2_CALL 
+axis2_conf_create (axis2_env_t **env)
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_conf_impl_t *config_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 	config_impl
-		= (axis2_engine_config_impl_t *) AXIS2_MALLOC ((*env)->allocator
-		, sizeof(axis2_engine_config_impl_t));
+		= (axis2_conf_impl_t *) AXIS2_MALLOC ((*env)->allocator
+		, sizeof(axis2_conf_impl_t));
 	
 	if(NULL == config_impl)
 	    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
 	
-    config_impl->engine_config.param_container = NULL;
+    config_impl->conf.param_container = NULL;
     config_impl->svc_grps = NULL;
     config_impl->modules = NULL;
     config_impl->engaged_modules = NULL;
@@ -280,14 +280,14 @@ axis2_engine_config_create (axis2_env_t **env)
     config_impl->msg_recvs = NULL;
     config_impl->faulty_svcs = NULL;
     config_impl->faulty_modules = NULL;
-    config_impl->engine_config.ops = NULL;
+    config_impl->conf.ops = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    config_impl->engine_config.param_container = (axis2_param_container_t *) 
+    config_impl->conf.param_container = (axis2_param_container_t *) 
         axis2_param_container_create(env);		
-	if(NULL == config_impl->engine_config.param_container)
+	if(NULL == config_impl->conf.param_container)
 	{
-        axis2_engine_config_free(&(config_impl->engine_config), env);
+        axis2_conf_free(&(config_impl->conf), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
 	}
@@ -295,7 +295,7 @@ axis2_engine_config_create (axis2_env_t **env)
     config_impl->transports_in = axis2_hash_make(env);		
 	if(NULL == config_impl->transports_in)
 	{
-        axis2_engine_config_free(&(config_impl->engine_config), env);
+        axis2_conf_free(&(config_impl->conf), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
 	}
@@ -303,7 +303,7 @@ axis2_engine_config_create (axis2_env_t **env)
 	config_impl->transports_out = axis2_hash_make(env);		
 	if(NULL == config_impl->transports_out)
 	{
-        axis2_engine_config_free(&(config_impl->engine_config), env);
+        axis2_conf_free(&(config_impl->conf), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
 	}
@@ -311,7 +311,7 @@ axis2_engine_config_create (axis2_env_t **env)
     config_impl->modules = axis2_hash_make(env);		
 	if(NULL == config_impl->modules)
 	{
-        axis2_engine_config_free(&(config_impl->engine_config), env);
+        axis2_conf_free(&(config_impl->conf), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
 	}
@@ -319,7 +319,7 @@ axis2_engine_config_create (axis2_env_t **env)
     config_impl->engaged_modules = axis2_array_list_create(env, 0);		
 	if(NULL == config_impl->engaged_modules)
 	{
-        axis2_engine_config_free(&(config_impl->engine_config), env);
+        axis2_conf_free(&(config_impl->conf), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
 	}
@@ -328,7 +328,7 @@ axis2_engine_config_create (axis2_env_t **env)
         axis2_array_list_create(env, 0);		
 	if(NULL == config_impl->inphases_upto_and_including_post_dispatch)
 	{
-        axis2_engine_config_free(&(config_impl->engine_config), env);
+        axis2_conf_free(&(config_impl->conf), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
 	}
@@ -337,28 +337,28 @@ axis2_engine_config_create (axis2_env_t **env)
         phase = axis2_phase_create(env, AXIS2_PHASE_TRANSPORTIN);
         if(NULL == phase)
         {
-            axis2_engine_config_free(&(config_impl->engine_config), env);
+            axis2_conf_free(&(config_impl->conf), env);
             return NULL;
         }
         status = AXIS2_ARRAY_LIST_ADD(config_impl->
             inphases_upto_and_including_post_dispatch, env, phase);
         if(AXIS2_FAILURE == status)
         {
-            axis2_engine_config_free(&(config_impl->engine_config), env);
+            axis2_conf_free(&(config_impl->conf), env);
             return NULL;
             
         }
         phase = axis2_phase_create(env, AXIS2_PHASE_PRE_DISPATCH);
         if(NULL == phase)
         {
-            axis2_engine_config_free(&(config_impl->engine_config), env);
+            axis2_conf_free(&(config_impl->conf), env);
             return NULL;
         }
         status = AXIS2_ARRAY_LIST_ADD(config_impl->
             inphases_upto_and_including_post_dispatch, env, phase);
         if(AXIS2_FAILURE == status)
         {
-            axis2_engine_config_free(&(config_impl->engine_config), env);
+            axis2_conf_free(&(config_impl->conf), env);
             return NULL;   
         }
     }
@@ -366,7 +366,7 @@ axis2_engine_config_create (axis2_env_t **env)
     config_impl->outphases = axis2_array_list_create(env, 0);		
 	if(NULL == config_impl->outphases)
 	{
-        axis2_engine_config_free(&(config_impl->engine_config), env);
+        axis2_conf_free(&(config_impl->conf), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
 	}
@@ -374,7 +374,7 @@ axis2_engine_config_create (axis2_env_t **env)
     config_impl->in_faultphases = axis2_array_list_create(env, 0);		
 	if(NULL == config_impl->in_faultphases)
 	{
-        axis2_engine_config_free(&(config_impl->engine_config), env);
+        axis2_conf_free(&(config_impl->conf), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
 	}
@@ -382,7 +382,7 @@ axis2_engine_config_create (axis2_env_t **env)
     config_impl->out_faultphases = axis2_array_list_create(env, 0);		
 	if(NULL == config_impl->out_faultphases)
 	{
-        axis2_engine_config_free(&(config_impl->engine_config), env);
+        axis2_conf_free(&(config_impl->conf), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
 	}
@@ -390,7 +390,7 @@ axis2_engine_config_create (axis2_env_t **env)
     config_impl->msg_recvs = axis2_hash_make(env);
     if(NULL == config_impl->msg_recvs)
     {
-        axis2_engine_config_free(&(config_impl->engine_config), env);
+        axis2_conf_free(&(config_impl->conf), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     } 
@@ -398,7 +398,7 @@ axis2_engine_config_create (axis2_env_t **env)
     config_impl->faulty_svcs = axis2_hash_make(env);
     if(NULL == config_impl->faulty_svcs)
     {
-        axis2_engine_config_free(&(config_impl->engine_config), env);
+        axis2_conf_free(&(config_impl->conf), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     } 
@@ -406,143 +406,143 @@ axis2_engine_config_create (axis2_env_t **env)
     config_impl->faulty_modules = axis2_hash_make(env);
     if(NULL == config_impl->faulty_modules)
     {
-        axis2_engine_config_free(&(config_impl->engine_config), env);
+        axis2_conf_free(&(config_impl->conf), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     } 
     
-    config_impl->engine_config.ops = AXIS2_MALLOC((*env)->allocator,
-        sizeof(axis2_engine_config_ops_t));
-    if(NULL == config_impl->engine_config.ops)
+    config_impl->conf.ops = AXIS2_MALLOC((*env)->allocator,
+        sizeof(axis2_conf_ops_t));
+    if(NULL == config_impl->conf.ops)
     {
-        axis2_engine_config_free(&(config_impl->engine_config), env);
+        axis2_conf_free(&(config_impl->conf), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	config_impl->engine_config.ops->free = axis2_engine_config_free;
-	config_impl->engine_config.ops->add_svc_grp = 
-        axis2_engine_config_add_svc_grp;
+	config_impl->conf.ops->free = axis2_conf_free;
+	config_impl->conf.ops->add_svc_grp = 
+        axis2_conf_add_svc_grp;
     
-	config_impl->engine_config.ops->get_svc_grp = 
-        axis2_engine_config_get_svc_grp;
+	config_impl->conf.ops->get_svc_grp = 
+        axis2_conf_get_svc_grp;
     
-    config_impl->engine_config.ops->get_svc_grps = 
-        axis2_engine_config_get_svc_grps;
+    config_impl->conf.ops->get_svc_grps = 
+        axis2_conf_get_svc_grps;
     
-	config_impl->engine_config.ops->add_svc = axis2_engine_config_add_svc;
-	config_impl->engine_config.ops->get_svc = axis2_engine_config_get_svc;
-	config_impl->engine_config.ops->remove_svc = 
-        axis2_engine_config_remove_svc;
-    config_impl->engine_config.ops->add_param = 
-        axis2_engine_config_add_param;
-	config_impl->engine_config.ops->get_param = 
-        axis2_engine_config_get_param;
-	config_impl->engine_config.ops->get_params = 
-        axis2_engine_config_get_params;
-    config_impl->engine_config.ops->is_param_locked = 
-            axis2_engine_config_is_param_locked;
+	config_impl->conf.ops->add_svc = axis2_conf_add_svc;
+	config_impl->conf.ops->get_svc = axis2_conf_get_svc;
+	config_impl->conf.ops->remove_svc = 
+        axis2_conf_remove_svc;
+    config_impl->conf.ops->add_param = 
+        axis2_conf_add_param;
+	config_impl->conf.ops->get_param = 
+        axis2_conf_get_param;
+	config_impl->conf.ops->get_params = 
+        axis2_conf_get_params;
+    config_impl->conf.ops->is_param_locked = 
+            axis2_conf_is_param_locked;
     
-    config_impl->engine_config.ops->get_transport_in = 
-            axis2_engine_config_get_transport_in;
+    config_impl->conf.ops->get_transport_in = 
+            axis2_conf_get_transport_in;
       
-    config_impl->engine_config.ops->add_transport_in = 
-            axis2_engine_config_add_transport_in;    
+    config_impl->conf.ops->add_transport_in = 
+            axis2_conf_add_transport_in;    
      
-    config_impl->engine_config.ops->get_transport_out = 
-            axis2_engine_config_get_transport_out;
+    config_impl->conf.ops->get_transport_out = 
+            axis2_conf_get_transport_out;
             
-    config_impl->engine_config.ops->add_transport_out = 
-            axis2_engine_config_add_transport_out;
+    config_impl->conf.ops->add_transport_out = 
+            axis2_conf_add_transport_out;
 
-    config_impl->engine_config.ops->get_transports_in = 
-            axis2_engine_config_get_transports_in;
+    config_impl->conf.ops->get_transports_in = 
+            axis2_conf_get_transports_in;
             
-    config_impl->engine_config.ops->get_transports_out = 
-            axis2_engine_config_get_transports_out;
+    config_impl->conf.ops->get_transports_out = 
+            axis2_conf_get_transports_out;
 	
-    config_impl->engine_config.ops->get_module = 
-            axis2_engine_config_get_module;
+    config_impl->conf.ops->get_module = 
+            axis2_conf_get_module;
     
-    config_impl->engine_config.ops->get_engaged_modules =
-            axis2_engine_config_get_engaged_modules;
+    config_impl->conf.ops->get_engaged_modules =
+            axis2_conf_get_engaged_modules;
     
-    config_impl->engine_config.ops->get_inphases_upto_and_including_post_dispatch =
-            axis2_engine_config_get_inphases_upto_and_including_post_dispatch;
+    config_impl->conf.ops->get_inphases_upto_and_including_post_dispatch =
+            axis2_conf_get_inphases_upto_and_including_post_dispatch;
     
-    config_impl->engine_config.ops->get_outflow =
-            axis2_engine_config_get_outflow;
+    config_impl->conf.ops->get_outflow =
+            axis2_conf_get_outflow;
     
-    config_impl->engine_config.ops->get_in_faultflow =
-            axis2_engine_config_get_in_faultflow;
+    config_impl->conf.ops->get_in_faultflow =
+            axis2_conf_get_in_faultflow;
     
-    config_impl->engine_config.ops->get_out_faultflow =
-            axis2_engine_config_get_out_faultflow;
+    config_impl->conf.ops->get_out_faultflow =
+            axis2_conf_get_out_faultflow;
 
-    config_impl->engine_config.ops->get_faulty_svcs =
-            axis2_engine_config_get_faulty_svcs;
+    config_impl->conf.ops->get_faulty_svcs =
+            axis2_conf_get_faulty_svcs;
     
-    config_impl->engine_config.ops->get_faulty_modules =
-            axis2_engine_config_get_faulty_modules;
+    config_impl->conf.ops->get_faulty_modules =
+            axis2_conf_get_faulty_modules;
     
-    config_impl->engine_config.ops->get_svcs =
-            axis2_engine_config_get_svcs;
+    config_impl->conf.ops->get_svcs =
+            axis2_conf_get_svcs;
     
-    config_impl->engine_config.ops->is_engaged =
-            axis2_engine_config_is_engaged;
+    config_impl->conf.ops->is_engaged =
+            axis2_conf_is_engaged;
     
-    config_impl->engine_config.ops->get_phases_info =
-            axis2_engine_config_get_phases_info;
+    config_impl->conf.ops->get_phases_info =
+            axis2_conf_get_phases_info;
     
-    config_impl->engine_config.ops->set_phases_info =
-            axis2_engine_config_set_phases_info;
+    config_impl->conf.ops->set_phases_info =
+            axis2_conf_set_phases_info;
     
-    config_impl->engine_config.ops->add_msg_recv =
-            axis2_engine_config_add_msg_recv;
+    config_impl->conf.ops->add_msg_recv =
+            axis2_conf_add_msg_recv;
     
-    config_impl->engine_config.ops->get_msg_recv =
-            axis2_engine_config_get_msg_recv;
+    config_impl->conf.ops->get_msg_recv =
+            axis2_conf_get_msg_recv;
     
-    config_impl->engine_config.ops->set_outphases =
-            axis2_engine_config_set_outphases;
+    config_impl->conf.ops->set_outphases =
+            axis2_conf_set_outphases;
     
-    config_impl->engine_config.ops->set_in_faultphases =
-            axis2_engine_config_set_in_faultphases;
+    config_impl->conf.ops->set_in_faultphases =
+            axis2_conf_set_in_faultphases;
     
-    config_impl->engine_config.ops->set_out_faultphases =
-            axis2_engine_config_set_out_faultphases;
+    config_impl->conf.ops->set_out_faultphases =
+            axis2_conf_set_out_faultphases;
     
-    config_impl->engine_config.ops->get_modules =
-            axis2_engine_config_get_modules;
+    config_impl->conf.ops->get_modules =
+            axis2_conf_get_modules;
     
-    config_impl->engine_config.ops->add_module =
-            axis2_engine_config_add_module;
+    config_impl->conf.ops->add_module =
+            axis2_conf_add_module;
     
-	return &(config_impl->engine_config);	
+	return &(config_impl->conf);	
 }	
 
 /**********************Start of op impls********************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_config_free (axis2_engine_config_t *engine_config, 
+axis2_conf_free (axis2_conf_t *conf, 
                             axis2_env_t **env)
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_conf_impl_t *config_impl = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
     
-	AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
-    config_impl = AXIS2_INTF_TO_IMPL(engine_config);
+	AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
     
-    if(NULL != engine_config->ops)
+    if(NULL != conf->ops)
     {
-		AXIS2_FREE((*env)->allocator, engine_config->ops);
-        engine_config->ops = NULL;
+		AXIS2_FREE((*env)->allocator, conf->ops);
+        conf->ops = NULL;
     }
     
-	if(NULL != engine_config->param_container)
+	if(NULL != conf->param_container)
     {
-        AXIS2_PARAM_CONTAINER_FREE(engine_config->param_container, env);
-        engine_config->param_container = NULL;
+        AXIS2_PARAM_CONTAINER_FREE(conf->param_container, env);
+        conf->param_container = NULL;
     }
     
     if(config_impl->svc_grps)
@@ -737,11 +737,11 @@ axis2_engine_config_free (axis2_engine_config_t *engine_config,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_config_add_svc_grp (axis2_engine_config_t *engine_config, 
+axis2_conf_add_svc_grp (axis2_conf_t *conf, 
                                     axis2_env_t **env,
     	                            struct axis2_svc_grp *svc_grp)
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_conf_impl_t *config_impl = NULL;
     axis2_hash_t *svcs = NULL;
     struct axis2_svc *desc = NULL;
     axis2_hash_index_t *index_i = NULL;
@@ -753,10 +753,10 @@ axis2_engine_config_add_svc_grp (axis2_engine_config_t *engine_config,
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
     
-    config_impl = AXIS2_INTF_TO_IMPL(engine_config);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
     svcs = AXIS2_SVC_GRP_GET_SVCS(svc_grp, env);
     if(!config_impl->all_svcs)
     {
@@ -828,15 +828,15 @@ axis2_engine_config_add_svc_grp (axis2_engine_config_t *engine_config,
 }
 
 struct axis2_svc_grp * AXIS2_CALL 
-axis2_engine_config_get_svc_grp (axis2_engine_config_t *engine_config, 
+axis2_conf_get_svc_grp (axis2_conf_t *conf, 
                                     axis2_env_t **env,
 		                            axis2_char_t *svc_grp_name)
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
-	AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
+    axis2_conf_impl_t *config_impl = NULL;
+	AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
 	AXIS2_PARAM_CHECK((*env)->error, svc_grp_name, NULL);
     
-    config_impl = AXIS2_INTF_TO_IMPL(engine_config);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
     if(!config_impl->svc_grps)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_ENGINE_CONFIG, NULL);
@@ -847,15 +847,15 @@ axis2_engine_config_get_svc_grp (axis2_engine_config_t *engine_config,
 }
 
 axis2_hash_t * AXIS2_CALL
-axis2_engine_config_get_svc_grps(axis2_engine_config_t *engine_config, 
+axis2_conf_get_svc_grps(axis2_conf_t *conf, 
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
-    return AXIS2_INTF_TO_IMPL(engine_config)->svc_grps;
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    return AXIS2_INTF_TO_IMPL(conf)->svc_grps;
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_config_add_svc (axis2_engine_config_t *engine_config, 
+axis2_conf_add_svc (axis2_conf_t *conf, 
                                 axis2_env_t **env, 
                                 struct axis2_svc *svc)
 {
@@ -864,7 +864,7 @@ axis2_engine_config_add_svc (axis2_engine_config_t *engine_config,
     axis2_char_t *svc_grp_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
         
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc, AXIS2_FAILURE);
 	
 	svc_grp = axis2_svc_grp_create(env);
@@ -894,7 +894,7 @@ axis2_engine_config_add_svc (axis2_engine_config_t *engine_config,
     {
         return status;
     }
-	status = AXIS2_SVC_GRP_SET_PARENT(svc_grp, env, engine_config);
+	status = AXIS2_SVC_GRP_SET_PARENT(svc_grp, env, conf);
     if(AXIS2_FAILURE == status)
     {
         return status;
@@ -904,31 +904,31 @@ axis2_engine_config_add_svc (axis2_engine_config_t *engine_config,
     {
         return status;
     }
-    status = axis2_engine_config_add_svc_grp(engine_config, env, svc_grp);
+    status = axis2_conf_add_svc_grp(conf, env, svc_grp);
 	
 	return status;
 }
 
 struct axis2_svc * AXIS2_CALL 
-axis2_engine_config_get_svc (axis2_engine_config_t *engine_config, 
+axis2_conf_get_svc (axis2_conf_t *conf, 
                                 axis2_env_t **env,
 		                        axis2_char_t* svc_name)
 {   
-	AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
+	AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, svc_name, NULL);
 	
-    return axis2_hash_get(AXIS2_INTF_TO_IMPL(engine_config)->all_svcs, svc_name,
+    return axis2_hash_get(AXIS2_INTF_TO_IMPL(conf)->all_svcs, svc_name,
         AXIS2_HASH_KEY_STRING);
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_config_remove_svc (axis2_engine_config_t *engine_config, 
+axis2_conf_remove_svc (axis2_conf_t *conf, 
                                 axis2_env_t **env,
 		                        const axis2_char_t *svc_name)
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_conf_impl_t *config_impl = NULL;
         
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_name, AXIS2_FAILURE);
     
     axis2_hash_set(config_impl->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
@@ -937,16 +937,16 @@ axis2_engine_config_remove_svc (axis2_engine_config_t *engine_config,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_engine_config_add_param (axis2_engine_config_t *engine_config, 
+axis2_conf_add_param (axis2_conf_t *conf, 
                         axis2_env_t **env,
 		                axis2_param_t *param)
 {
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, param, AXIS2_FAILURE);
     
-	if(AXIS2_TRUE == axis2_engine_config_is_param_locked(engine_config, env, 
+	if(AXIS2_TRUE == axis2_conf_is_param_locked(conf, env, 
         AXIS2_PARAM_GET_NAME(param, env)))
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
@@ -955,64 +955,64 @@ axis2_engine_config_add_param (axis2_engine_config_t *engine_config,
     }
 	else
     {
-        status = AXIS2_PARAM_CONTAINER_ADD_PARAM(engine_config->param_container, env, param);
+        status = AXIS2_PARAM_CONTAINER_ADD_PARAM(conf->param_container, env, param);
     }
     return status;
 }
 
 axis2_param_t * AXIS2_CALL
-axis2_engine_config_get_param (axis2_engine_config_t *engine_config, 
+axis2_conf_get_param (axis2_conf_t *conf, 
                         axis2_env_t **env,
 		                const axis2_char_t *name)
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, name, NULL);
     
-	if(NULL == engine_config->param_container)
+	if(NULL == conf->param_container)
 	{
 		AXIS2_ERROR_SET((*env)->error, 
             AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, NULL);
         return NULL;
 	}
 		
-	return AXIS2_PARAM_CONTAINER_GET_PARAM(engine_config->param_container, env,
+	return AXIS2_PARAM_CONTAINER_GET_PARAM(conf->param_container, env,
         name);
 	
 }
 
 axis2_array_list_t * AXIS2_CALL
-axis2_engine_config_get_params (axis2_engine_config_t *engine_config, 
+axis2_conf_get_params (axis2_conf_t *conf, 
                         axis2_env_t **env)
 {
-	AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
-	return AXIS2_PARAM_CONTAINER_GET_PARAMS(engine_config->param_container, env);
+	AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+	return AXIS2_PARAM_CONTAINER_GET_PARAMS(conf->param_container, env);
 	
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_engine_config_is_param_locked (axis2_engine_config_t *engine_config, 
+axis2_conf_is_param_locked (axis2_conf_t *conf, 
                             axis2_env_t **env,
 		                    axis2_char_t *param_name)
 {
     struct axis2_param *param = NULL;
         
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FALSE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, param_name, AXIS2_FALSE);
     
-    param = axis2_engine_config_get_param(engine_config, env, param_name);
+    param = axis2_conf_get_param(conf, env, param_name);
     return (NULL != param  && AXIS2_PARAM_IS_LOCKED(param, env));
 }
 
 struct axis2_transport_in_desc * AXIS2_CALL
-axis2_engine_config_get_transport_in(axis2_engine_config_t *engine_config,
+axis2_conf_get_transport_in(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname)
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
+    axis2_conf_impl_t *config_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
     
-    config_impl = AXIS2_INTF_TO_IMPL(engine_config);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
     
     return (struct axis2_transport_in_desc *) axis2_hash_get(config_impl->transports_in,
             qname, sizeof(axis2_qname_t));
@@ -1025,16 +1025,16 @@ axis2_engine_config_get_transport_in(axis2_engine_config_t *engine_config,
  * @throws AxisFault
  */
 axis2_status_t AXIS2_CALL
-axis2_engine_config_add_transport_in(axis2_engine_config_t *engine_config,
+axis2_conf_add_transport_in(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         struct axis2_transport_in_desc *transport)
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_conf_impl_t *config_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, transport, AXIS2_FAILURE);
     
-    config_impl = AXIS2_INTF_TO_IMPL(engine_config);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
     
     if(!config_impl->transports_in)
     {
@@ -1051,15 +1051,15 @@ axis2_engine_config_add_transport_in(axis2_engine_config_t *engine_config,
 }
 
 struct axis2_transport_out_desc * AXIS2_CALL
-axis2_engine_config_get_transport_out(axis2_engine_config_t *engine_config,
+axis2_conf_get_transport_out(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname)
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
+    axis2_conf_impl_t *config_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
     
-    config_impl = AXIS2_INTF_TO_IMPL(engine_config);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
     
     return (struct axis2_transport_out_desc *) axis2_hash_get(config_impl->transports_out,
             qname, sizeof(axis2_qname_t));
@@ -1072,16 +1072,16 @@ axis2_engine_config_get_transport_out(axis2_engine_config_t *engine_config,
  * @throws AxisFault
  */
 axis2_status_t AXIS2_CALL
-axis2_engine_config_add_transport_out(axis2_engine_config_t *engine_config,
+axis2_conf_add_transport_out(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         struct axis2_transport_out_desc *transport)
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_conf_impl_t *config_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, transport, AXIS2_FAILURE);
     
-    config_impl = AXIS2_INTF_TO_IMPL(engine_config);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
     
     if(!config_impl->transports_out)
     {
@@ -1098,11 +1098,11 @@ axis2_engine_config_add_transport_out(axis2_engine_config_t *engine_config,
 }
 
 axis2_hash_t * AXIS2_CALL
-axis2_engine_config_get_transports_in(axis2_engine_config_t *engine_config,
+axis2_conf_get_transports_in(axis2_conf_t *conf,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
-    return AXIS2_INTF_TO_IMPL(engine_config)->transports_in;
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    return AXIS2_INTF_TO_IMPL(conf)->transports_in;
 }
 
 /**
@@ -1112,15 +1112,15 @@ axis2_engine_config_get_transports_in(axis2_engine_config_t *engine_config,
  * @return ModuleDescription
  */
 struct axis2_module_desc *AXIS2_CALL
-axis2_engine_config_get_module(axis2_engine_config_t *engine_config,
+axis2_conf_get_module(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
     
     return (struct axis2_module_desc *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
-        engine_config)->modules, qname, sizeof(axis2_qname_t));
+        conf)->modules, qname, sizeof(axis2_qname_t));
 }
 
 /**
@@ -1129,29 +1129,29 @@ axis2_engine_config_get_module(axis2_engine_config_t *engine_config,
  * @return  Collection
  */
 axis2_array_list_t * AXIS2_CALL
-axis2_engine_config_get_engaged_modules(axis2_engine_config_t *engine_config,
+axis2_conf_get_engaged_modules(axis2_conf_t *conf,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
-    return AXIS2_INTF_TO_IMPL(engine_config)->engaged_modules;
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    return AXIS2_INTF_TO_IMPL(conf)->engaged_modules;
 }
 
 axis2_array_list_t * AXIS2_CALL
-axis2_engine_config_get_inphases_upto_and_including_post_dispatch(
-                                            axis2_engine_config_t *engine_config,
+axis2_conf_get_inphases_upto_and_including_post_dispatch(
+                                            axis2_conf_t *conf,
                                             axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
-    return AXIS2_INTF_TO_IMPL(engine_config)->
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    return AXIS2_INTF_TO_IMPL(conf)->
         inphases_upto_and_including_post_dispatch;
 }
 
 axis2_array_list_t * AXIS2_CALL
-axis2_engine_config_get_outflow(axis2_engine_config_t *engine_config,
+axis2_conf_get_outflow(axis2_conf_t *conf,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
-    return AXIS2_INTF_TO_IMPL(engine_config)->outphases;
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    return AXIS2_INTF_TO_IMPL(conf)->outphases;
 }
 
 
@@ -1159,30 +1159,30 @@ axis2_engine_config_get_outflow(axis2_engine_config_t *engine_config,
  * @return ArrayList
  */
 axis2_array_list_t * AXIS2_CALL
-axis2_engine_config_get_in_faultflow(axis2_engine_config_t *engine_config,
+axis2_conf_get_in_faultflow(axis2_conf_t *conf,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
-    return AXIS2_INTF_TO_IMPL(engine_config)->in_faultphases;
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    return AXIS2_INTF_TO_IMPL(conf)->in_faultphases;
 }
 
 /**
  * @return ArrayList
  */
 axis2_array_list_t * AXIS2_CALL
-axis2_engine_config_get_out_faultflow(axis2_engine_config_t *engine_config,
+axis2_conf_get_out_faultflow(axis2_conf_t *conf,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
-    return AXIS2_INTF_TO_IMPL(engine_config)->out_faultphases;
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    return AXIS2_INTF_TO_IMPL(conf)->out_faultphases;
 }
 
 axis2_hash_t * AXIS2_CALL
-axis2_engine_config_get_transports_out(axis2_engine_config_t *engine_config,
+axis2_conf_get_transports_out(axis2_conf_t *conf,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
-    return AXIS2_INTF_TO_IMPL(engine_config)->transports_out;
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    return AXIS2_INTF_TO_IMPL(conf)->transports_out;
 }	
 
 /*axis2_status_t 
@@ -1212,28 +1212,28 @@ split_svc_name (axis2_env_t **env,
 */
 
 axis2_hash_t *AXIS2_CALL
-axis2_engine_config_get_faulty_svcs(axis2_engine_config_t *engine_config,
+axis2_conf_get_faulty_svcs(axis2_conf_t *conf,
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     
-    return AXIS2_INTF_TO_IMPL(engine_config)->faulty_svcs;
+    return AXIS2_INTF_TO_IMPL(conf)->faulty_svcs;
 }
 
 axis2_hash_t *AXIS2_CALL 
-axis2_engine_config_get_faulty_modules(axis2_engine_config_t *engine_config,
+axis2_conf_get_faulty_modules(axis2_conf_t *conf,
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
-    return AXIS2_INTF_TO_IMPL(engine_config)->faulty_modules;
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    return AXIS2_INTF_TO_IMPL(conf)->faulty_modules;
 }
     
 /*to get all the services in the system */
 axis2_hash_t *AXIS2_CALL
-axis2_engine_config_get_svcs(axis2_engine_config_t *engine_config,
+axis2_conf_get_svcs(axis2_conf_t *conf,
                                 axis2_env_t **env) 
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_conf_impl_t *config_impl = NULL;
     axis2_hash_t *sgs = NULL;
     axis2_hash_index_t *index_i = NULL;
     axis2_hash_index_t *index_j = NULL;
@@ -1244,10 +1244,10 @@ axis2_engine_config_get_svcs(axis2_engine_config_t *engine_config,
     struct axis2_svc *svc =NULL;
     axis2_char_t *svc_name = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     
-    config_impl = AXIS2_INTF_TO_IMPL(engine_config);
-    sgs = axis2_engine_config_get_svc_grps(engine_config, env);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
+    sgs = axis2_conf_get_svc_grps(conf, env);
     index_i = axis2_hash_first(sgs, env);
     while(NULL != index_i)
     {
@@ -1272,34 +1272,34 @@ axis2_engine_config_get_svcs(axis2_engine_config_t *engine_config,
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_engine_config_is_engaged(axis2_engine_config_t *engine_config,
+axis2_conf_is_engaged(axis2_conf_t *conf,
                                 axis2_env_t **env,
                                 axis2_qname_t *module_name) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FALSE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FALSE);
     
-    return AXIS2_ARRAY_LIST_CONTAINS(AXIS2_INTF_TO_IMPL(engine_config)->
+    return AXIS2_ARRAY_LIST_CONTAINS(AXIS2_INTF_TO_IMPL(conf)->
         engaged_modules, env, module_name);
 }
 
 struct axis2_phases_info *AXIS2_CALL
-axis2_engine_config_get_phases_info(axis2_engine_config_t *engine_config,
+axis2_conf_get_phases_info(axis2_conf_t *conf,
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     
-    return AXIS2_INTF_TO_IMPL(engine_config)->phases_info;
+    return AXIS2_INTF_TO_IMPL(conf)->phases_info;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_engine_config_set_phases_info(axis2_engine_config_t *engine_config,
+axis2_conf_set_phases_info(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     struct axis2_phases_info *phases_info) 
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_conf_impl_t *config_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, phases_info, AXIS2_FAILURE);
     
     if(config_impl->phases_info)
@@ -1312,18 +1312,18 @@ axis2_engine_config_set_phases_info(axis2_engine_config_t *engine_config,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_engine_config_add_msg_recv(axis2_engine_config_t *engine_config,
+axis2_conf_add_msg_recv(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     axis2_char_t *key,
                                     struct axis2_msg_recv *msg_recv) 
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_conf_impl_t *config_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, key, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_recv, AXIS2_FAILURE);
     
-    config_impl = AXIS2_INTF_TO_IMPL(engine_config);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
     
     if(!config_impl->msg_recvs)
     {
@@ -1336,27 +1336,27 @@ axis2_engine_config_add_msg_recv(axis2_engine_config_t *engine_config,
 }
 
 struct axis2_msg_recv *AXIS2_CALL
-axis2_engine_config_get_msg_recv(axis2_engine_config_t *engine_config,
+axis2_conf_get_msg_recv(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     axis2_char_t *key) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     
     return (struct axis2_msg_recv *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
-        engine_config)->msg_recvs, key, AXIS2_HASH_KEY_STRING);
+        conf)->msg_recvs, key, AXIS2_HASH_KEY_STRING);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_engine_config_set_outphases(axis2_engine_config_t *engine_config,
+axis2_conf_set_outphases(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     axis2_array_list_t *outphases) 
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_conf_impl_t *config_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, outphases, AXIS2_FAILURE);
     
-    config_impl = AXIS2_INTF_TO_IMPL(engine_config);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
     if(config_impl->outphases)
     {
         AXIS2_ARRAY_LIST_FREE(config_impl->outphases, env);
@@ -1370,16 +1370,16 @@ axis2_engine_config_set_outphases(axis2_engine_config_t *engine_config,
  * @param list
  */
 axis2_status_t AXIS2_CALL
-axis2_engine_config_set_in_faultphases(axis2_engine_config_t *engine_config,
+axis2_conf_set_in_faultphases(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_array_list_t *list) 
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_conf_impl_t *config_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
     
-    config_impl = AXIS2_INTF_TO_IMPL(engine_config);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
     if(config_impl->in_faultphases)
     {
         AXIS2_ARRAY_LIST_FREE(config_impl->in_faultphases, env);
@@ -1393,16 +1393,16 @@ axis2_engine_config_set_in_faultphases(axis2_engine_config_t *engine_config,
  * @param list
  */
 axis2_status_t AXIS2_CALL
-axis2_engine_config_set_out_faultphases(axis2_engine_config_t *engine_config,
+axis2_conf_set_out_faultphases(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_array_list_t *list) 
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_conf_impl_t *config_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
     
-    config_impl = AXIS2_INTF_TO_IMPL(engine_config);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
     if(config_impl->out_faultphases)
     {
         AXIS2_ARRAY_LIST_FREE(config_impl->out_faultphases, env);
@@ -1416,12 +1416,12 @@ axis2_engine_config_set_out_faultphases(axis2_engine_config_t *engine_config,
  * @return HashMap
  */
 axis2_hash_t *AXIS2_CALL
-axis2_engine_config_get_modules(axis2_engine_config_t *engine_config,
+axis2_conf_get_modules(axis2_conf_t *conf,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     
-    return AXIS2_INTF_TO_IMPL(engine_config)->modules;
+    return AXIS2_INTF_TO_IMPL(conf)->modules;
 }  
 
 /**
@@ -1430,19 +1430,19 @@ axis2_engine_config_get_modules(axis2_engine_config_t *engine_config,
  * @param module
  */
 axis2_status_t AXIS2_CALL
-axis2_engine_config_add_module(axis2_engine_config_t *engine_config,
+axis2_conf_add_module(axis2_conf_t *conf,
                                 axis2_env_t **env,
                                 struct axis2_module_desc *module) 
 {
-    axis2_engine_config_impl_t *config_impl = NULL;
+    axis2_conf_impl_t *config_impl = NULL;
     
     axis2_status_t status = AXIS2_FAILURE;
-    AXIS2_FUNC_PARAM_CHECK(engine_config, env, AXIS2_FAILURE);
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module, AXIS2_FAILURE);
     
-    config_impl = AXIS2_INTF_TO_IMPL(engine_config);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
     
-    status = AXIS2_MODULE_DESC_SET_PARENT(module, env, engine_config);
+    status = AXIS2_MODULE_DESC_SET_PARENT(module, env, conf);
     if(AXIS2_FAILURE == status)
     {
         return status;

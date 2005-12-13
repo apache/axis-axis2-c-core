@@ -58,7 +58,7 @@ struct axis2_svc_grp_ctx_ops
      */
     axis2_status_t (AXIS2_CALL *init)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                                         axis2_env_t **env,
-                                        axis2_engine_config_t *engine_config);
+                                        axis2_conf_t *conf);
     axis2_char_t* (AXIS2_CALL *get_id)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                             axis2_env_t **env);
     axis2_status_t (AXIS2_CALL *set_id)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
@@ -98,7 +98,7 @@ AXIS2_DECLARE(axis2_svc_grp_ctx_t*) axis2_svc_grp_ctx_create(axis2_env_t **env,
 #define AXIS2_SVC_GRP_CTX_GET_BASE(svc_grp_ctx, env) ((svc_grp_ctx)->ops->get_base(svc_grp_ctx, env))
 #define AXIS2_SVC_GRP_CTX_GET_PARENT(svc_grp_ctx, env) ((svc_grp_ctx)->ops->get_parent(svc_grp_ctx, env))
 #define AXIS2_SVC_GRP_CTX_FREE(svc_grp_ctx, env) ((svc_grp_ctx)->ops->free(svc_grp_ctx, env))
-#define AXIS2_SVC_GRP_CTX_INIT(svc_grp_ctx, env, engine_config) ((svc_grp_ctx)->ops->init(svc_grp_ctx, env, engine_config))
+#define AXIS2_SVC_GRP_CTX_INIT(svc_grp_ctx, env, conf) ((svc_grp_ctx)->ops->init(svc_grp_ctx, env, conf))
 #define AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env) ((svc_grp_ctx)->ops->get_id(svc_grp_ctx, env))
 #define AXIS2_SVC_GRP_CTX_SET_ID(svc_grp_ctx, env, id) ((svc_grp_ctx)->ops->set_id(svc_grp_ctx, env, id))
 #define AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, svc_name) ((svc_grp_ctx)->ops->get_svc_ctx(svc_grp_ctx, env, svc_name))

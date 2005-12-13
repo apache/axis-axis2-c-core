@@ -91,13 +91,13 @@ axis2_status_t AXIS2_CALL
 axis2_svc_engage_module(axis2_svc_t *svc,
                             axis2_env_t **env,
                             struct axis2_module_desc * moduleref,
-                            struct axis2_engine_config * axis2_config);
+                            struct axis2_conf * axis2_config);
 
 axis2_status_t AXIS2_CALL
 axis2_svc_add_module_ops(axis2_svc_t *svc,
                             axis2_env_t **env,
                             struct axis2_module_desc * module,
-                            struct axis2_engine_config * axis2_config);
+                            struct axis2_conf * axis2_config);
                                 
 axis2_status_t AXIS2_CALL
 axis2_svc_add_to_engaged_module_list(axis2_svc_t *svc,
@@ -759,7 +759,7 @@ axis2_svc_is_param_locked (axis2_svc_t *svc,
 {
     axis2_bool_t locked = AXIS2_FALSE;
     axis2_param_t *param_l = NULL;
-    struct axis2_engine_config *engine_config_l = NULL;
+    struct axis2_conf *conf_l = NULL;
     struct axis2_svc_grp *parent = NULL;
     axis2_bool_t ret = AXIS2_FALSE;
     
@@ -774,12 +774,12 @@ axis2_svc_is_param_locked (axis2_svc_t *svc,
         return AXIS2_FALSE;
     }
     
-    engine_config_l = AXIS2_SVC_GRP_GET_AXIS_DESC(parent, env);
-    if(NULL == engine_config_l)
+    conf_l = AXIS2_SVC_GRP_GET_AXIS_DESC(parent, env);
+    if(NULL == conf_l)
     {
         return AXIS2_FALSE;
     }
-    locked =  AXIS2_ENGINE_CONFIG_IS_PARAM_LOCKED(engine_config_l, env, param_name);
+    locked =  AXIS2_ENGINE_CONFIG_IS_PARAM_LOCKED(conf_l, env, param_name);
     
     if(AXIS2_TRUE == locked)
     {
@@ -820,7 +820,7 @@ axis2_status_t AXIS2_CALL
 axis2_svc_engage_module(axis2_svc_t *svc,
                             axis2_env_t **env,
                             struct axis2_module_desc * moduleref,
-                            struct axis2_engine_config * axis2_config)
+                            struct axis2_conf * axis2_config)
 {
     struct axis2_module_desc * modu = NULL;
     axis2_array_list_t *collection_module = NULL;
@@ -876,7 +876,7 @@ axis2_status_t AXIS2_CALL
 axis2_svc_add_module_ops(axis2_svc_t *svc,
                             axis2_env_t **env,
                             struct axis2_module_desc * module_desc,
-                            struct axis2_engine_config * axis2_config) 
+                            struct axis2_conf * axis2_config) 
 {
     axis2_hash_t * map = NULL;
     axis2_hash_index_t *index = NULL;

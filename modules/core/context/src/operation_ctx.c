@@ -55,7 +55,7 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_free (struct axis2_op_ctx *op_ctx,
                                    axis2_env_t **env);
 axis2_status_t AXIS2_CALL axis2_op_ctx_init(struct axis2_op_ctx *op_ctx, 
     axis2_env_t **env, 
-    struct axis2_engine_config *engine_config);
+    struct axis2_conf *conf);
 axis2_op_t* AXIS2_CALL axis2_op_ctx_getAxisOperation(struct axis2_op_ctx *op_ctx, 
     axis2_env_t **env);
 struct axis2_svc_ctx * AXIS2_CALL axis2_op_ctx_get_parent(struct axis2_op_ctx *op_ctx, 
@@ -203,7 +203,7 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_free (struct axis2_op_ctx *op_ctx,
 /**
  * The method is used to do the intialization of the axis2_op_ctx
  */
-axis2_status_t AXIS2_CALL axis2_op_ctx_init(struct axis2_op_ctx *op_ctx, axis2_env_t **env, struct axis2_engine_config *engine_config)
+axis2_status_t AXIS2_CALL axis2_op_ctx_init(struct axis2_op_ctx *op_ctx, axis2_env_t **env, struct axis2_conf *conf)
 {
     axis2_op_ctx_impl_t *op_ctx_impl = NULL;
     axis2_hash_index_t *hi = NULL;
@@ -222,7 +222,7 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_init(struct axis2_op_ctx *op_ctx, axis2_e
         
         if (svc_name)
         {
-            svc = AXIS2_ENGINE_CONFIG_GET_SVC(engine_config, env, svc_name);
+            svc = AXIS2_ENGINE_CONFIG_GET_SVC(conf, env, svc_name);
             
             if (svc)
             {
@@ -241,7 +241,7 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_init(struct axis2_op_ctx *op_ctx, axis2_e
         if (ctx)
         {
             axis2_msg_ctx_t *msg_ctx = (axis2_msg_ctx_t*)ctx;
-            AXIS2_MSG_CTX_INIT(msg_ctx, env, engine_config);
+            AXIS2_MSG_CTX_INIT(msg_ctx, env, conf);
         }
     }
     

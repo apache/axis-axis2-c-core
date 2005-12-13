@@ -47,7 +47,7 @@ axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_free(struct axis2_svc_grp_ctx *svc_g
                                    axis2_env_t **env);
 axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_init(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                                             axis2_env_t **env,
-                                            axis2_engine_config_t *engine_config);
+                                            axis2_conf_t *conf);
 axis2_char_t* AXIS2_CALL axis2_svc_grp_ctx_get_id(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                         axis2_env_t **env);
 axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_set_id(struct axis2_svc_grp_ctx *svc_grp_ctx, 
@@ -194,7 +194,7 @@ axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_free (struct axis2_svc_grp_ctx *svc_
  */
 axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_init(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                                             axis2_env_t **env,
-                    axis2_engine_config_t *engine_config) 
+                    axis2_conf_t *conf) 
 {
     axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
     
@@ -204,7 +204,7 @@ axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_init(struct axis2_svc_grp_ctx *svc_g
 
     if (svc_grp_ctx_impl->svc_grp_name)
     {        
-        svc_grp_ctx_impl->svc_grp = AXIS2_ENGINE_CONFIG_GET_SVC_GRP(engine_config, env, svc_grp_ctx_impl->svc_grp_name);
+        svc_grp_ctx_impl->svc_grp = AXIS2_ENGINE_CONFIG_GET_SVC_GRP(conf, env, svc_grp_ctx_impl->svc_grp_name);
     }
     
     return AXIS2_SUCCESS;

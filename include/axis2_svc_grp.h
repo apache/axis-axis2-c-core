@@ -123,14 +123,14 @@ struct axis2_svc_grp_ops
                     axis2_env_t **env,
                     axis2_qname_t *module_qname);
 
-    struct axis2_engine_config * (AXIS2_CALL *
+    struct axis2_conf * (AXIS2_CALL *
     get_parent) (axis2_svc_grp_t *svc_grp,
                     axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
     set_parent) (axis2_svc_grp_t *svc_grp,
                     axis2_env_t **env,
-                    struct axis2_engine_config *parent);
+                    struct axis2_conf *parent);
                         
     axis2_status_t (AXIS2_CALL *
     engage_module_to_grp) (axis2_svc_grp_t *svc_grp,
@@ -141,14 +141,14 @@ struct axis2_svc_grp_ops
     get_svc_grp_modules) (axis2_svc_grp_t *svc_grp,
                                         axis2_env_t **env);
     
-    struct axis2_engine_config *(AXIS2_CALL *
+    struct axis2_conf *(AXIS2_CALL *
     get_axis_desc) (axis2_svc_grp_t *svc_grp,
                                 axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
     set_axis_desc) (axis2_svc_grp_t *svc_grp,
                                 axis2_env_t **env,
-                                struct axis2_engine_config *axis2_desc);
+                                struct axis2_conf *axis2_desc);
     
     axis2_status_t (AXIS2_CALL *
     add_moduleref) (axis2_svc_grp_t *svc_grp,
@@ -181,12 +181,12 @@ axis2_svc_grp_create (axis2_env_t **env);
 
 /** 
  * Creates service group struct
- * @param engine_config
+ * @param conf
  * @return pointer to newly created service group
  */
 axis2_svc_grp_t * AXIS2_CALL 
-axis2_svc_grp_create_with_engine_config (axis2_env_t **env,
-                                         struct axis2_engine_config *engine_config);
+axis2_svc_grp_create_with_conf (axis2_env_t **env,
+                                         struct axis2_conf *conf);
 
 /**************************** Start of function macros ************************/
 

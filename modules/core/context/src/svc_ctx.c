@@ -45,7 +45,7 @@ axis2_status_t AXIS2_CALL axis2_svc_ctx_free(struct axis2_svc_ctx *svc_ctx,
                                             axis2_env_t **env);
 axis2_status_t AXIS2_CALL axis2_svc_ctx_init(struct axis2_svc_ctx *svc_ctx, 
                                             axis2_env_t **env,
-                                            axis2_engine_config_t *engine_config);
+                                            axis2_conf_t *conf);
 axis2_char_t* AXIS2_CALL axis2_svc_ctx_get_svc_id(struct axis2_svc_ctx *svc_ctx, 
                                             axis2_env_t **env);
 axis2_svc_t* AXIS2_CALL axis2_svc_ctx_get_svc(struct axis2_svc_ctx *svc_ctx, 
@@ -170,7 +170,7 @@ axis2_status_t AXIS2_CALL axis2_svc_ctx_free (struct axis2_svc_ctx *svc_ctx,
  */
 axis2_status_t AXIS2_CALL axis2_svc_ctx_init(struct axis2_svc_ctx *svc_ctx, 
                                             axis2_env_t **env,
-                    axis2_engine_config_t *engine_config) 
+                    axis2_conf_t *conf) 
 {
     axis2_svc_ctx_impl_t *svc_ctx_impl = NULL;
     
@@ -181,7 +181,7 @@ axis2_status_t AXIS2_CALL axis2_svc_ctx_init(struct axis2_svc_ctx *svc_ctx,
     if (svc_ctx_impl->svc_qname)
     {
         axis2_char_t *svc_name = AXIS2_QNAME_GET_LOCALPART(svc_ctx_impl->svc_qname, env);
-        svc_ctx_impl->svc = AXIS2_ENGINE_CONFIG_GET_SVC(engine_config, env, svc_name);
+        svc_ctx_impl->svc = AXIS2_ENGINE_CONFIG_GET_SVC(conf, env, svc_name);
     }
     
     return AXIS2_SUCCESS;

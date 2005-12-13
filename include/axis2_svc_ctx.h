@@ -58,7 +58,7 @@ struct axis2_svc_ctx_ops
      */
     axis2_status_t (AXIS2_CALL *init)(struct axis2_svc_ctx *svc_ctx, 
                                                 axis2_env_t **env,
-                                                axis2_engine_config_t *engine_config);
+                                                axis2_conf_t *conf);
     /**
      * @return Returns the svc_id.
      */
@@ -90,7 +90,7 @@ AXIS2_DECLARE(axis2_svc_ctx_t*) axis2_svc_ctx_create(axis2_env_t **env,
 #define AXIS2_SVC_CTX_GET_BASE(svc_ctx, env) ((svc_ctx)->ops->get_base(svc_ctx, env))
 #define AXIS2_SVC_CTX_GET_PARENT(svc_ctx, env) ((svc_ctx)->ops->get_parent(svc_ctx, env))
 #define AXIS2_SVC_CTX_FREE(svc_ctx, env) ((svc_ctx)->ops->free(svc_ctx, env))
-#define AXIS2_SVC_CTX_INIT(svc_ctx, env, engine_config) ((svc_ctx)->ops->init(svc_ctx, env, engine_config))
+#define AXIS2_SVC_CTX_INIT(svc_ctx, env, conf) ((svc_ctx)->ops->init(svc_ctx, env, conf))
 #define AXIS2_SVC_CTX_GET_SVC_ID(svc_ctx, env) ((svc_ctx)->ops->get_svc_id(svc_ctx, env))
 #define AXIS2_SVC_CTX_GET_SVC(svc_ctx, env) ((svc_ctx)->ops->get_svc(svc_ctx, env))
 #define AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env) ((svc_ctx)->ops->get_conf_ctx(svc_ctx, env))

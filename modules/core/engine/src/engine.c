@@ -162,7 +162,7 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
     }
     
     axis2_conf_ctx_t *conf_ctx = NULL;
-    axis2_engine_config_t *engine_config = NULL;
+    axis2_conf_t *conf = NULL;
     /*axis2_array_list_t *global_out_phase = NULL;*/
 
     if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
@@ -180,10 +180,10 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
-            engine_config = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
-            if (engine_config)
+            conf = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
+            if (conf)
             {
-                /*TODO global_out_phase = AXIS2_ENGINE_CONFIG_GET_GLOBAL_OUT_PASES(engine_config, env);
+                /*TODO global_out_phase = AXIS2_ENGINE_CONFIG_GET_GLOBAL_OUT_PASES(conf, env);
                 axis2_engine_invoke_phases(engine, env, global_out_phase, msg_ctx); */
             }
         }
@@ -195,10 +195,10 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
-            engine_config = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
-            if (engine_config)
+            conf = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
+            if (conf)
             {
-                /*global_out_phase = AXIS2_ENGINE_CONFIG_GET_GLOBAL_OUT_PHASES(engine_config, env);
+                /*global_out_phase = AXIS2_ENGINE_CONFIG_GET_GLOBAL_OUT_PHASES(conf, env);
                 axis2_engine_invoke_phases(engine, env, global_out_phase, msg_ctx);*/
             }
         }
@@ -229,7 +229,7 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
 {
     axis2_engine_impl_t *engine_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
-    axis2_engine_config_t *engine_config = NULL;
+    axis2_conf_t *conf = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_op_t *op = NULL;
     axis2_array_list_t *pre_calculated_phases = NULL;
@@ -242,9 +242,9 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
     
     conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
     
-    engine_config = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
+    conf = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
     
-    pre_calculated_phases = AXIS2_ENGINE_CONFIG_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(engine_config, env);
+    pre_calculated_phases = AXIS2_ENGINE_CONFIG_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
     
     if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
     {
@@ -368,10 +368,10 @@ axis2_status_t AXIS2_CALL axis2_engine_receive_fault(struct axis2_engine *engine
         axis2_conf_ctx_t *conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
-            axis2_engine_config_t *engine_config = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
-            if (engine_config)
+            axis2_conf_t *conf = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
+            if (conf)
             {
-                axis2_array_list_t *phases = AXIS2_ENGINE_CONFIG_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(engine_config, env);
+                axis2_array_list_t *phases = AXIS2_ENGINE_CONFIG_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
                 if (phases)
                 {
                     if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)) 

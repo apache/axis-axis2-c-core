@@ -28,7 +28,7 @@ typedef struct axis2_svc_grp_impl
     /** to store service Group modules name */
     axis2_array_list_t *modules;
     /** to store module ref at deploy time parsing */
-    struct axis2_engine_config *parent; 
+    struct axis2_conf *parent; 
     axis2_array_list_t *module_list;
     
 	
@@ -95,14 +95,14 @@ axis2_svc_grp_add_module(axis2_svc_grp_t *svc_grp,
                                 axis2_env_t **env,
                                 axis2_qname_t *module_qname);                                
 
-struct axis2_engine_config * AXIS2_CALL
+struct axis2_conf * AXIS2_CALL
 axis2_svc_grp_get_parent(axis2_svc_grp_t *svc_grp,
                             axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_svc_grp_set_parent(axis2_svc_grp_t *svc_grp,
                             axis2_env_t **env,
-                            struct axis2_engine_config *parent);
+                            struct axis2_conf *parent);
 
 axis2_status_t AXIS2_CALL
 axis2_svc_grp_engage_module_to_grp(axis2_svc_grp_t *svc_grp,
@@ -113,14 +113,14 @@ axis2_array_list_t *AXIS2_CALL
 axis2_svc_grp_get_svc_grp_modules(axis2_svc_grp_t *svc_grp,
                                     axis2_env_t **env);
 
-struct axis2_engine_config *AXIS2_CALL
+struct axis2_conf *AXIS2_CALL
 axis2_svc_grp_get_axis_desc(axis2_svc_grp_t *svc_grp,
                             axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_svc_grp_set_axis_desc(axis2_svc_grp_t *svc_grp,
                             axis2_env_t **env,
-                            struct axis2_engine_config *axis2_desc);
+                            struct axis2_conf *axis2_desc);
 
 axis2_status_t AXIS2_CALL
 axis2_svc_grp_add_moduleref(axis2_svc_grp_t *svc_grp,
@@ -218,17 +218,17 @@ axis2_svc_grp_create (axis2_env_t **env)
 }
 
 axis2_svc_grp_t * AXIS2_CALL 
-axis2_svc_grp_create_with_engine_config (axis2_env_t **env,
-                                         struct axis2_engine_config *engine_config)
+axis2_svc_grp_create_with_conf (axis2_env_t **env,
+                                         struct axis2_conf *conf)
 {
     axis2_svc_grp_impl_t *svc_grp_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, engine_config, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, conf, NULL);
     
     svc_grp_impl = (axis2_svc_grp_impl_t *) axis2_svc_grp_create(env);
     if(NULL != svc_grp_impl)
-        svc_grp_impl->parent = engine_config;
+        svc_grp_impl->parent = conf;
     
     return &(svc_grp_impl->svc_grp);
         
@@ -526,7 +526,7 @@ axis2_svc_grp_is_param_locked(axis2_svc_grp_t *svc_grp,
                                 axis2_char_t *param_name) 
 {
     axis2_bool_t locked = AXIS2_FALSE;
-    struct axis2_engine_config *parent = NULL;
+    struct axis2_conf *parent = NULL;
     axis2_param_t *param = NULL;
     axis2_bool_t ret = AXIS2_FALSE;
     
@@ -567,7 +567,7 @@ axis2_svc_grp_add_module(axis2_svc_grp_t *svc_grp,
         module_qname);
 }
 
-struct axis2_engine_config * AXIS2_CALL
+struct axis2_conf * AXIS2_CALL
 axis2_svc_grp_get_parent(axis2_svc_grp_t *svc_grp,
                             axis2_env_t **env) 
 {
@@ -579,7 +579,7 @@ axis2_svc_grp_get_parent(axis2_svc_grp_t *svc_grp,
 axis2_status_t AXIS2_CALL
 axis2_svc_grp_set_parent(axis2_svc_grp_t *svc_grp,
                             axis2_env_t **env,
-                            struct axis2_engine_config *parent) 
+                            struct axis2_conf *parent) 
 {
     axis2_svc_grp_impl_t *svc_grp_impl = NULL;
     
@@ -678,7 +678,7 @@ axis2_svc_grp_get_svc_grp_modules(axis2_svc_grp_t *svc_grp,
     return AXIS2_INTF_TO_IMPL(svc_grp)->modules;
 }
 
-struct axis2_engine_config *AXIS2_CALL
+struct axis2_conf *AXIS2_CALL
 axis2_svc_grp_get_axis_desc(axis2_svc_grp_t *svc_grp,
                             axis2_env_t **env) 
 {
@@ -690,7 +690,7 @@ axis2_svc_grp_get_axis_desc(axis2_svc_grp_t *svc_grp,
 axis2_status_t AXIS2_CALL
 axis2_svc_grp_set_axis_desc(axis2_svc_grp_t *svc_grp,
                             axis2_env_t **env,
-                            struct axis2_engine_config *axis2_desc) 
+                            struct axis2_conf *axis2_desc) 
 {
     axis2_svc_grp_impl_t *svc_grp_impl = NULL;
     

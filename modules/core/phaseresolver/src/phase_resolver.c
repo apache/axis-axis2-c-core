@@ -27,7 +27,7 @@ typedef struct axis2_phase_resolver_impl
     /**
      * Field axisConfig
      */
-    struct axis2_engine_config *axis2_config;
+    struct axis2_conf *axis2_config;
 
     /**
      * Field axisService
@@ -190,7 +190,7 @@ axis2_phase_resolver_create (axis2_env_t **env)
 
 axis2_phase_resolver_t * AXIS2_CALL 
 axis2_phase_resolver_create_with_config (axis2_env_t **env, 
-                                         struct axis2_engine_config *axis2_config)
+                                         struct axis2_conf *axis2_config)
 {
     axis2_phase_resolver_impl_t *phase_resolver_impl = NULL;
     
@@ -207,7 +207,7 @@ axis2_phase_resolver_create_with_config (axis2_env_t **env,
 
 axis2_phase_resolver_t * AXIS2_CALL 
 axis2_phase_resolver_create_with_config_and_svc (axis2_env_t **env, 
-                                                struct axis2_engine_config *axis2_config,
+                                                struct axis2_conf *axis2_config,
                                                 struct axis2_svc *svc)
 {
     axis2_phase_resolver_impl_t *phase_resolver_impl = NULL;

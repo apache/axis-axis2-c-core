@@ -34,7 +34,7 @@
 #include <axis2.h>
 #include <axis2_phase_resolver.h>
 #include <axis2_module_desc.h>
-#include <axis2_engine_config.h>
+#include <axis2_conf.h>
 #include <axis2_wsdl_soap_op.h>
 #include <axis2_string.h>
 #include <axis2_wsdl_endpoint.h>
@@ -57,7 +57,7 @@ struct axis2_param_container;
 struct axis2_wsdl_svc;
 struct axis2_wsdl_interface; 
 struct axis2_module_desc; 
-struct axis2_engine_config;
+struct axis2_conf;
 struct axis2_wsdl_soap_op;    
 typedef struct axis2_svc_ops axis2_svc_ops_t;   
 typedef struct axis2_svc axis2_svc_t;
@@ -148,7 +148,7 @@ struct axis2_svc_ops
     engage_module) (axis2_svc_t *svc,
                     axis2_env_t **env,
                     struct axis2_module_desc * moduleref,
-                    struct axis2_engine_config * axis2_config);
+                    struct axis2_conf * axis2_config);
     
     /**
      * To add a opeartion to a service if a module requird to do so
@@ -159,7 +159,7 @@ struct axis2_svc_ops
     add_module_ops) (axis2_svc_t *svc,
                                 axis2_env_t **env,
                                 struct axis2_module_desc * module_desc,
-                                struct axis2_engine_config * axis2_config); 
+                                struct axis2_conf * axis2_config); 
                                     
     axis2_status_t (AXIS2_CALL *
     add_to_engaged_module_list) (axis2_svc_t *svc,

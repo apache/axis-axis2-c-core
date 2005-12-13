@@ -51,7 +51,7 @@ struct axis2_module_desc;
 struct axis2_handler;
 struct axis2_phase_rule;
 struct axis2_svc;
-struct axis2_engine_config;
+struct axis2_conf;
 struct axis2_op; 
 struct axis2_phase_holder;    
 typedef struct axis2_phase_resolver axis2_phase_resolver_t;
@@ -164,7 +164,7 @@ axis2_phase_resolver_create (axis2_env_t **env);
  */
 AXIS2_DECLARE(axis2_phase_resolver_t *) 
 axis2_phase_resolver_create_with_config (axis2_env_t **env, 
-                                         struct axis2_engine_config *axis2_config);
+                                         struct axis2_conf *axis2_config);
 
 /**
  * Constructor PhaseResolver
@@ -174,7 +174,7 @@ axis2_phase_resolver_create_with_config (axis2_env_t **env,
  */
 AXIS2_DECLARE(axis2_phase_resolver_t *)
 axis2_phase_resolver_create_with_config_and_svc (axis2_env_t **env, 
-                                                struct axis2_engine_config *axis2_config,
+                                                struct axis2_conf *axis2_config,
                                                 struct axis2_svc *svc);
 
 /*************************** Function macros **********************************/

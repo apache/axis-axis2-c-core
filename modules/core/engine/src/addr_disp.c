@@ -119,13 +119,13 @@ axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                     conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
                     if (conf_ctx)
                     {
-                        axis2_engine_config_t *engine_config = NULL;
-                        engine_config = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
-                        if (engine_config)
+                        axis2_conf_t *conf = NULL;
+                        conf = AXIS2_CONF_CTX_GET_ENGINE_CONFIG(conf_ctx, env);
+                        if (conf)
                         {
                             axis2_svc_t *svc = NULL;
                             axis2_qname_t *qname = axis2_qname_create(env, url_tokens[0], NULL, NULL);
-                            svc = AXIS2_ENGINE_CONFIG_GET_SVC(engine_config, env, AXIS2_QNAME_GET_LOCALPART(qname, env));
+                            svc = AXIS2_ENGINE_CONFIG_GET_SVC(conf, env, AXIS2_QNAME_GET_LOCALPART(qname, env));
                             
                             AXIS2_QNAME_FREE(qname, env);
                             return svc;
