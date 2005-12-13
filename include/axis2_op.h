@@ -463,10 +463,10 @@ axis2_op_create_with_wsdl_op (axis2_env_t **env,
 #define AXIS2_OP_SET_INPUT_MSG(op, env) \
 		((op->ops)->set_input_msg (op, env, input_msg))
         
-#define AXIS2_OP_GET_OUTFAULTS(op, env) \
+#define AXIS2_OP_GET_OUT_FAULTS(op, env) \
 		((op->ops)->get_out_faults (op, env))
 
-#define AXIS2_OP_SET_OUTFAULTS(op, env) \
+#define AXIS2_OP_SET_OUT_FAULTS(op, env) \
 		((op->ops)->set_out_faults (op, env, out_faults))
         
 #define AXIS2_OP_GET_OUTPUT_MSG(op, env) \
@@ -487,7 +487,7 @@ axis2_op_create_with_wsdl_op (axis2_env_t **env,
 #define AXIS2_OP_ADD_IN_FAULT(op, env, in_fault) \
 		((op->ops)->add_in_fault (op, env, in_fault))
         
-#define AXIS2_OP_ADD_OUTFAULT(op, env, out_fault) \
+#define AXIS2_OP_ADD_OUT_FAULT(op, env, out_fault) \
 		((op->ops)->add_out_fault (op, env, out_fault))
 
 #define AXIS2_OP_ADD_FEATURE(op, env, feature) \

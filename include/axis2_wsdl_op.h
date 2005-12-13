@@ -285,10 +285,10 @@ AXIS2_DECLARE(axis2_wsdl_op_t *) axis2_wsdl_op_create (
 #define AXIS2_WSDL_OP_SET_INPUT_MSG(wsdl_op, env, input_msg) \
 		((wsdl_op->ops)->set_input_msg(wsdl_op, env, input_msg))		
 
-#define AXIS2_WSDL_OP_GET_OUTFAULTS(wsdl_op, env) \
+#define AXIS2_WSDL_OP_GET_OUT_FAULTS(wsdl_op, env) \
 		((wsdl_op->ops)->get_out_faults(wsdl_op, env))
 		
-#define AXIS2_WSDL_OP_SET_OUTFAULTS(wsdl_op, env, out_faults) \
+#define AXIS2_WSDL_OP_SET_OUT_FAULTS(wsdl_op, env, out_faults) \
 		((wsdl_op->ops)->set_out_faults(wsdl_op, env, out_faults))
 
 #define AXIS2_WSDL_OP_GET_OUTPUT_MSG(wsdl_op, env) \
@@ -309,7 +309,7 @@ AXIS2_DECLARE(axis2_wsdl_op_t *) axis2_wsdl_op_create (
 #define AXIS2_WSDL_OP_ADD_IN_FAULT(wsdl_op, env, in_fault) \
 		((wsdl_op->ops)->add_in_fault(wsdl_op, env, in_fault))
 		
-#define AXIS2_WSDL_OP_ADD_OUTFAULT(wsdl_op, env, out_fault) \
+#define AXIS2_WSDL_OP_ADD_OUT_FAULT(wsdl_op, env, out_fault) \
 		((wsdl_op->ops)->add_out_fault(wsdl_op, env, out_fault))
 
 /**************************** End of function macros **************************/
