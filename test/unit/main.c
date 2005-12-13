@@ -1,6 +1,7 @@
 #include <CuTest.h>
-#include "../../util/test/util_test.h"
-#include "../../common/test/common_test.h"
+#include "util/util_test.h"
+#include "xml/om/om_test.h"
+#include "core/phaseresolver/phaseresolver_test.h"
 
 void RunAllTests(void) {
     CuString *output = CuStringNew();
