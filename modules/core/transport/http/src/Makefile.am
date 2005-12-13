@@ -1,0 +1,19 @@
+lib_LTLIBRARIES = libaxis2_http_transport.la
+AM_CPPFLAGS = $(CPPFLAGS)
+libaxis2_http_transport_la_SOURCES = axis2_http_worker.c \
+                              	     axis2_simple_http_svr_conn.c\
+                				     axis2_http_simple_request.c\
+                				     axis2_http_simple_response.c\
+				                     axis2_http_response_writer.c\
+				                     axis2_http_request_line.c\
+				                     axis2_http_status_line.c\
+				                     axis2_http_header.c
+
+INCLUDES = -I$(top_builddir)/include \
+	       -I${CUTEST_HOME}/include \
+           -I$(top_builddir)/modules/util/src \
+           -I$(top_builddir)/modules/xml/parser\
+	       -I$(top_builddir)/modules/wsdl/src\
+	       -I$(top_builddir)/modules/core/transport\
+	       -I$(top_builddir)/modules/core/transport/http/src\
+           -I$(top_builddir)/modules/core/description/src
