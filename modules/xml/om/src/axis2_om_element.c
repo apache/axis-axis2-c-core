@@ -491,26 +491,25 @@ axis2_om_element_add_attribute (axis2_om_element_t *om_element,
 {
     
     axis2_qname_t *qname = NULL;
+    axis2_om_element_impl_t *om_element_impl = NULL;
+    axis2_om_namespace_t *om_namespace = NULL;
+    axis2_om_namespace_t *temp_ns = NULL;
     AXIS2_FUNC_PARAM_CHECK(om_element, env, AXIS2_FAILURE);
-    if (!attribute)
-    {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, 
-                                     AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
-        return AXIS2_FAILURE;
-    }
+    AXIS2_PARAM_CHECK((*env)->error, attribute, AXIS2_FAILURE);
 
-    if (!(AXIS2_INTF_TO_IMPL(om_element)->attributes))
+    om_element_impl = AXIS2_INTF_TO_IMPL(om_element);    
+    om_namespace = AXIS2_OM_ATTRIBUTE_GET_NAMESPACE(attribute, env);
+   
+    if(!(om_element_impl->attributes))
     {
-        
-        AXIS2_INTF_TO_IMPL(om_element)->attributes = axis2_hash_make (env);
-        if (!(AXIS2_INTF_TO_IMPL(om_element)->attributes))
+        om_element_impl->attributes = axis2_hash_make (env);
+        if (!(om_element_impl->attributes))
             return AXIS2_FAILURE;
     }
 
     qname = AXIS2_OM_ATTRIBUTE_GET_QNAME(attribute, env);
     if (qname)
-        axis2_hash_set (AXIS2_INTF_TO_IMPL(om_element)->attributes, 
+        axis2_hash_set (om_element_impl->attributes, 
                         qname, sizeof (axis2_qname_t),
                         attribute);
 
