@@ -2,7 +2,7 @@
 #define DESCRIPTION_TEST_H
 
 #include <CuTest.h>
-#include "test_optr.h"
+#include "test_op.h"
 
 CuSuite* axis2_descriptionGetSuite();
 
