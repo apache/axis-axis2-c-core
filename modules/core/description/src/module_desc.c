@@ -429,11 +429,14 @@ axis2_module_desc_add_op (axis2_module_desc_t *module_desc,
     
     module_desc_impl = AXIS2_INTF_TO_IMPL(module_desc);
     if (NULL == (module_desc_impl->ops))
-	{                    
+	{  
 		module_desc_impl->ops = axis2_hash_make (env);
+        if(!module_desc_impl->ops)
+            return AXIS2_FAILURE;
 	}	
     
     optr_name = AXIS2_OP_GET_NAME(op, env);
+    
     if(NULL == optr_name)
     {
         return AXIS2_FAILURE;

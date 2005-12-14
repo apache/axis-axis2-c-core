@@ -25,6 +25,7 @@
 #include <axis2_core.h>
 #include <axis2_param_container.h>
 #include <axis2_svc.h>
+#include <axis2_svc_grp_ctx.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -37,6 +38,7 @@ extern "C"
   */
 
 struct axis2_svc;
+struct axis2_svc_grp_ctx;    
 typedef struct axis2_svc_grp_ops axis2_svc_grp_ops_t;    
 typedef struct axis2_svc_grp axis2_svc_grp_t;
     
@@ -159,6 +161,11 @@ struct axis2_svc_grp_ops
     get_modules) (axis2_svc_grp_t *svc_grp,
                                 axis2_env_t **env); 
                                 
+    struct axis2_svc_grp_ctx *(AXIS2_CALL *
+    get_svc_grp_ctx) (axis2_svc_grp_t *svc_grp,
+                                axis2_env_t **env,
+                                struct axis2_conf_ctx *parent);                                
+                                
 };
 
 /** 
@@ -248,6 +255,10 @@ axis2_svc_grp_create_with_conf (axis2_env_t **env,
         
 #define AXIS2_SVC_GRP_GET_MODULES(svc_grp, env) \
         (svc_grp->ops->get_modules(svc_grp, env)) 
+ 
+#define AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env) \
+        (svc_grp->ops->get_svc_grp_ctx(svc_grp, env))  
+        
         
                             
 /**************************** End of function macros **************************/        

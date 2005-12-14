@@ -255,7 +255,7 @@ axis2_op_get_Properties(axis2_op_t *op,
                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
-axis2_op_set_wsdl_opeartion(axis2_op_t *op,
+axis2_op_set_wsdl_op(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_wsdl_op_t *wsdl_op);
 
@@ -417,7 +417,7 @@ axis2_op_create (axis2_env_t **env)
     op_impl->op.ops->get_features = axis2_op_get_features;
     op_impl->op.ops->add_property = axis2_op_add_property;
     op_impl->op.ops->get_Properties = axis2_op_get_Properties;
-    op_impl->op.ops->set_wsdl_opeartion = axis2_op_set_wsdl_opeartion;
+    op_impl->op.ops->set_wsdl_op = axis2_op_set_wsdl_op;
 						
 	return &(op_impl->op);
 }
@@ -439,6 +439,16 @@ axis2_op_create_with_name (axis2_env_t **env, axis2_qname_t *qname)
         return NULL;
 	}
     
+    if(!op_impl->op.wsdl_op)
+    {
+        op_impl->op.wsdl_op = (axis2_wsdl_op_t *) axis2_wsdl_op_create(env);		
+        if(NULL == op_impl->op.wsdl_op)
+        {
+            axis2_op_free(&(op_impl->op), env);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+            return NULL;		
+        }
+    }
     
 	status = axis2_op_set_name(&(op_impl->op), env, qname);
     if(AXIS2_FAILURE == status)
@@ -446,6 +456,7 @@ axis2_op_create_with_name (axis2_env_t **env, axis2_qname_t *qname)
         axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
+    printf("status:%d\n", status);
 	return &(op_impl->op);	
 }
 
@@ -1374,7 +1385,7 @@ axis2_op_get_Properties(axis2_op_t *op,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_op_set_wsdl_opeartion(axis2_op_t *op,
+axis2_op_set_wsdl_op(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_wsdl_op_t *wsdl_op) 
 {

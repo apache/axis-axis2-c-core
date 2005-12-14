@@ -130,6 +130,11 @@ axis2_svc_grp_add_moduleref(axis2_svc_grp_t *svc_grp,
 axis2_array_list_t *AXIS2_CALL
 axis2_svc_grp_get_modules(axis2_svc_grp_t *svc_grp,
                             axis2_env_t **env);
+                            
+struct axis2_svc_grp_ctx *AXIS2_CALL
+axis2_svc_grp_get_svc_grp_ctx(axis2_svc_grp_t *svc_grp,
+                                axis2_env_t **env,
+                                struct axis2_conf_ctx *parent);                            
                           
 /***************************** End of function headers ************************/
 
@@ -212,7 +217,8 @@ axis2_svc_grp_create (axis2_env_t **env)
     svc_grp_impl->svc_grp.ops->get_axis_desc = axis2_svc_grp_get_axis_desc;                            
     svc_grp_impl->svc_grp.ops->set_axis_desc = axis2_svc_grp_set_axis_desc;                            
     svc_grp_impl->svc_grp.ops->add_moduleref = axis2_svc_grp_add_moduleref;                            
-    svc_grp_impl->svc_grp.ops->get_modules = axis2_svc_grp_get_modules;  	
+    svc_grp_impl->svc_grp.ops->get_modules = axis2_svc_grp_get_modules;
+    svc_grp_impl->svc_grp.ops->get_svc_grp_ctx = axis2_svc_grp_get_svc_grp_ctx;  	
 
 	return &(svc_grp_impl->svc_grp);	
 }
@@ -734,8 +740,21 @@ axis2_svc_grp_get_modules(axis2_svc_grp_t *svc_grp,
     
     return AXIS2_INTF_TO_IMPL(svc_grp)->module_list;
 }
-/*public ServiceGroupContext getServiceGroupContext(ConfigurationContext parent){
-    ServiceGroupContext serviceGroupContext = new ServiceGroupContext(parent,this) ;
-    return serviceGroupContext;
+
+struct axis2_svc_grp_ctx *AXIS2_CALL
+axis2_svc_grp_get_svc_grp_ctx(axis2_svc_grp_t *svc_grp,
+                                axis2_env_t **env,
+                                struct axis2_conf_ctx *parent)
+{
+    struct axis2_svc_grp_ctx *svc_grp_ctx = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(svc_grp, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, parent, NULL);
+    
+    svc_grp_ctx = axis2_svc_grp_ctx_create(env, svc_grp, parent);
+    if(!svc_grp_ctx)
+    {
+        return NULL;
+    }
+    return svc_grp_ctx;
 }
-*/

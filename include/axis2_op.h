@@ -319,7 +319,7 @@ AXIS2_DECLARE_DATA struct axis2_op_ops
                                     axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL * 
-    set_wsdl_opeartion) (axis2_op_t *op,
+    set_wsdl_op) (axis2_op_t *op,
                                     axis2_env_t **env,
                                     struct axis2_wsdl_op *wsdl_op);                                           
 };
@@ -502,8 +502,8 @@ axis2_op_create_with_wsdl_op (axis2_env_t **env,
 #define AXIS2_OP_GET_PROPERTIES(op, env) \
 		((op->ops)->get_properties (op, env, properties))
 
-#define AXIS2_OP_SET_WSDL_OP(op, env) \
-		((op->ops)->set_wsdl_opeartion (op, env))
+#define AXIS2_OP_SET_WSDL_OP(op, env, wsdl_op) \
+		((op->ops)->set_wsdl_op (op, env, wsdl_op))
 
 /************************** End of function macros ****************************/
 

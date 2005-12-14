@@ -52,8 +52,7 @@ struct axis2_conf_impl
 
 };
 
-#define AXIS2_INTF_TO_IMPL(conf) \
-        ((axis2_conf_impl_t *)conf)
+#define AXIS2_INTF_TO_IMPL(conf) ((axis2_conf_impl_t *)conf)
 
 /***************************** Function prototypes ****************************/
 
@@ -259,12 +258,15 @@ axis2_conf_create (axis2_env_t **env)
 {
     axis2_conf_impl_t *config_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-	config_impl
-		= (axis2_conf_impl_t *) AXIS2_MALLOC ((*env)->allocator
+    
+	config_impl = (axis2_conf_impl_t *) AXIS2_MALLOC ((*env)->allocator
 		, sizeof(axis2_conf_impl_t));
 	
 	if(NULL == config_impl)
+    {
 	    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        return NULL;
+    }
 	
     config_impl->conf.param_container = NULL;
     config_impl->svc_grps = NULL;
@@ -299,7 +301,7 @@ axis2_conf_create (axis2_env_t **env)
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
 	}
-
+    
 	config_impl->transports_out = axis2_hash_make(env);		
 	if(NULL == config_impl->transports_out)
 	{

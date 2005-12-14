@@ -256,11 +256,13 @@ axis2_svc_create (axis2_env_t **env)
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, NULL);
+    
 	svc_impl = (axis2_svc_impl_t *)
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_svc_impl_t));
     if(NULL == svc_impl)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        return NULL;
 	}
     
     svc_impl->parent = NULL;
@@ -272,8 +274,7 @@ axis2_svc_create (axis2_env_t **env)
     svc_impl->wasaction_opeartionmap = NULL;
     svc_impl->module_list = NULL;
     
-    svc_impl->svc.param_container = (struct axis2_param_container *)
-		axis2_param_container_create(env);		
+    svc_impl->svc.param_container = axis2_param_container_create(env);		
 	if(NULL == svc_impl->svc.param_container)
 	{
         axis2_svc_free(&(svc_impl->svc), env);
@@ -281,8 +282,7 @@ axis2_svc_create (axis2_env_t **env)
         return NULL;		
 	}
     
-    svc_impl->svc.flow_container = (struct axis2_flow_container *)
-		axis2_flow_container_create(env);		
+    svc_impl->svc.flow_container = axis2_flow_container_create(env);		
 	if(NULL == svc_impl->svc.flow_container)
 	{
         axis2_svc_free(&(svc_impl->svc), env);
@@ -290,8 +290,7 @@ axis2_svc_create (axis2_env_t **env)
         return NULL;
 	}
     
-    
-    svc_impl->svc.wsdl_svc = (axis2_wsdl_svc_t *)axis2_wsdl_svc_create(env);		
+    svc_impl->svc.wsdl_svc = axis2_wsdl_svc_create(env);		
 	if(NULL == svc_impl->svc.wsdl_svc)
 	{
         axis2_svc_free(&(svc_impl->svc), env);
@@ -324,13 +323,14 @@ axis2_svc_create (axis2_env_t **env)
         return NULL;
 	}
 
-
     wsdl_interface_l = axis2_wsdl_interface_create(env);
     if(NULL == wsdl_interface_l)
     {
+        axis2_svc_free(&(svc_impl->svc), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
     }
+    
     status = axis2_svc_set_svc_interface(&(svc_impl->svc), env, wsdl_interface_l); 
     if(AXIS2_FAILURE == status)
     {
@@ -341,6 +341,7 @@ axis2_svc_create (axis2_env_t **env)
     param_container_l = axis2_param_container_create(env);
     if(NULL == param_container_l)
     {
+        axis2_svc_free(&(svc_impl->svc), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
     }
@@ -356,6 +357,7 @@ axis2_svc_create (axis2_env_t **env)
     array_list_l = axis2_array_list_create(env, 0);
     if(NULL == array_list_l)
     {
+        axis2_svc_free(&(svc_impl->svc), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
         return NULL;
     }
@@ -451,7 +453,7 @@ axis2_svc_create (axis2_env_t **env)
     svc_impl->svc.ops->add_module_ref = axis2_svc_add_module_ref;
     
     svc_impl->svc.ops->get_modules = axis2_svc_get_modules;
-
+    
 	return &(svc_impl->svc);	
 }
 
@@ -875,23 +877,24 @@ axis2_svc_engage_module(axis2_svc_t *svc,
 axis2_status_t AXIS2_CALL
 axis2_svc_add_module_ops(axis2_svc_t *svc,
                             axis2_env_t **env,
-                            struct axis2_module_desc * module_desc,
-                            struct axis2_conf * axis2_config) 
+                            struct axis2_module_desc *module_desc,
+                            struct axis2_conf *axis2_config) 
 {
-    axis2_hash_t * map = NULL;
+    axis2_hash_t *map = NULL;
     axis2_hash_index_t *index = NULL;
-    struct axis2_phase_resolver * pr = NULL;
-    struct axis2_op * axis2_opt = NULL;
+    struct axis2_phase_resolver *pr = NULL;
+    struct axis2_op *axis2_opt = NULL;
     axis2_array_list_t *params = NULL;
     struct axis2_param *param = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    
+   
     AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, axis2_config, AXIS2_FAILURE);
     
     map = AXIS2_MODULE_DESC_GET_OPS(module_desc, env);
     pr = axis2_phase_resolver_create_with_config_and_svc(env, axis2_config, svc);
+    printf("came1\n");
     if(!pr)
     {
         return AXIS2_FAILURE;
@@ -900,6 +903,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
     for (index = axis2_hash_first (map, env); index; index = 
         axis2_hash_next (env, index))
     {
+        printf("came2\n");
         int size = 0;
         int j = 0;
         void *v = NULL;
@@ -908,6 +912,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
         params = AXIS2_OP_GET_PARAMS(axis2_opt, env);
         /* Adding wsa-maping into service */
         size = AXIS2_ARRAY_LIST_SIZE(params, env);
+        printf("size:%d\n", size);
         if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
         {
             if(pr)
@@ -930,7 +935,9 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
             }
                 
         }
+        printf("came3\n");
         status = AXIS2_PHASE_RESOLVER_BUILD_MODULE_OP(pr, env, axis2_opt);
+        printf("came4\n");
         if(AXIS2_FAILURE == status)
         {
             if(pr)
@@ -941,6 +948,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
         status = axis2_svc_add_op(svc, env, axis2_opt);
  
     }
+    printf("came5\n");
     if(pr)
         AXIS2_PHASE_RESOLVER_FREE(pr, env); 
     return status;

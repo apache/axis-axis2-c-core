@@ -20,9 +20,9 @@
  * @brief Wsdl Service struct impl
  *	Axis2 Wsdl Service impl  
  */
-typedef struct axis2_wsdl_svc_impl_s axis2_wsdl_svc_impl_t;  
+typedef struct axis2_wsdl_svc_impl axis2_wsdl_svc_impl_t;  
   
-struct axis2_wsdl_svc_impl_s
+struct axis2_wsdl_svc_impl
 {
 	axis2_wsdl_svc_t wsdl_svc;
     
@@ -92,14 +92,15 @@ axis2_wsdl_svc_set_svc_interface(axis2_wsdl_svc_t *wsdl_svc,
 
 /***************************** End of function headers ************************/
 
-axis2_wsdl_svc_t * AXIS2_CALL 
+axis2_wsdl_svc_t *AXIS2_CALL 
 axis2_wsdl_svc_create (axis2_env_t **env)
 {
     axis2_wsdl_svc_impl_t *wsdl_svc_impl = NULL;
+    
     AXIS2_ENV_CHECK(env, NULL);
     
 	wsdl_svc_impl = (axis2_wsdl_svc_impl_t *) AXIS2_MALLOC ((*env)->allocator, 
-            sizeof(axis2_wsdl_svc_t));
+            sizeof(axis2_wsdl_svc_impl_t));
 	if(NULL == wsdl_svc_impl)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);

@@ -18,7 +18,8 @@ struct axis2_svc;
 struct axis2_op;
 struct axis2_module_desc;
 struct axis2_wsdl_op;
-
+struct axis2_conf;
+struct axis2_flow;
 
 void Testaxis2_svc_add_module_ops(CuTest *tc);
 

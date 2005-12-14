@@ -3,6 +3,7 @@
 
 #include <CuTest.h>
 #include "test_op.h"
+#include "test_svc.h"
 
 CuSuite* axis2_descriptionGetSuite();
 

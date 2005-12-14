@@ -328,7 +328,9 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
     int size = 0;
     int status = AXIS2_FAILURE;
     struct axis2_flow *flow = NULL;    
-        
+    
+    resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
+    
     /**************************************************************************/
     /********************* Handlers from   axis2.xml from modules *************/
     /**************************************************************************/
@@ -339,6 +341,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
     size = AXIS2_ARRAY_LIST_SIZE(moduleqnames, env);
     if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
     {
+        printf("came30\n");
         return AXIS2_FAILURE;
     }
     
@@ -454,6 +457,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
         }
 
     }
+    printf("came31\n");
     /**************************************************************************/
     /************************** SERVICE HANDLERS ******************************/
     /**************************************************************************/
@@ -463,6 +467,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             
         case AXIS2_INFLOW:
         {
+            printf("came32\n");
             flow = AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
                 svc->wsdl_svc->wsdl_component, env, INFLOW_KEY);
             break;
@@ -486,6 +491,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             break;
         }
     }
+    printf("came33\n");
     if (NULL != flow) 
     {
         int j = 0;
@@ -542,11 +548,14 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             }
         }
     }
+    printf("came34\n");
     if(resolver_impl->phase_holder)
     {
         AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
     }
-    switch (type) {
+    switch (type) 
+    {
+        printf("came35\n");
         case AXIS2_INFLOW:
         {
             resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env, 
@@ -572,7 +581,19 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             break;
         }
     }
-    for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(all_handlers, env); i++) 
+    if(!all_handlers)
+    {
+        printf("came36\n");
+        return AXIS2_FAILURE;
+    }
+    
+    size = AXIS2_ARRAY_LIST_SIZE(all_handlers, env);
+    if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
+    {
+        return AXIS2_FAILURE;
+    }
+    
+    for (i = 0; i < size; i++) 
     {
         struct axis2_handler_desc *metadata = NULL;
             
@@ -581,7 +602,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
         status = AXIS2_PHASE_HOLDER_ADD_HANDLER(resolver_impl->phase_holder, env, metadata);
         
     }
-
+    printf("came37\n");
     /* Free the locally created all_handlers list */
     if(all_handlers)
         AXIS2_ARRAY_LIST_FREE(all_handlers, env);

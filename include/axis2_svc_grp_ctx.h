@@ -26,6 +26,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_svc_ctx.h>
+#include <axis2_svc_grp.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -36,7 +37,8 @@ extern "C"
  * @ingroup axis2_core_context
  * @{
  */
-    
+
+struct axis2_svc_grp;    
 typedef struct axis2_svc_grp_ctx_ops axis2_svc_grp_ctx_ops_t;
 typedef struct axis2_svc_grp_ctx axis2_svc_grp_ctx_t; 
 
@@ -74,7 +76,7 @@ struct axis2_svc_grp_ctx_ops
      */
     axis2_status_t (AXIS2_CALL *fill_svc_ctx_map)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                             axis2_env_t **env);
-    axis2_svc_grp_t* (AXIS2_CALL *get_svc_grp)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+    struct axis2_svc_grp* (AXIS2_CALL *get_svc_grp)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                             axis2_env_t **env);
     axis2_hash_t* (AXIS2_CALL *get_svc_ctx_map)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                             axis2_env_t **env);
@@ -90,7 +92,7 @@ struct axis2_svc_grp_ctx
 };
 
 AXIS2_DECLARE(axis2_svc_grp_ctx_t*) axis2_svc_grp_ctx_create(axis2_env_t **env, 
-    axis2_svc_grp_t *svc_grp, 
+    struct axis2_svc_grp *svc_grp, 
     struct axis2_conf_ctx *conf_ctx);
 
 /****************** Start of function macros **************************/

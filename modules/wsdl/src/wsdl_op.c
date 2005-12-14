@@ -183,11 +183,13 @@ axis2_wsdl_op_create (axis2_env_t **env)
     wsdl_op_impl->out_faults = NULL;
     wsdl_op_impl->wsdl_op.extensible_component = NULL;
     wsdl_op_impl->msg_exchange_pattern = NULL;
-	wsdl_op_impl->style = STYLE_DOC;
+	wsdl_op_impl->style = NULL;
 	wsdl_op_impl->name = NULL;
     wsdl_op_impl->input_msg = NULL;
     wsdl_op_impl->output_msg = NULL;
     wsdl_op_impl->safety = AXIS2_FALSE;
+    
+    wsdl_op_impl->style = AXIS2_STRDUP(STYLE_DOC, env);
     
     wsdl_op_impl->in_faults = axis2_linked_list_create(env);
     if(NULL == wsdl_op_impl->in_faults)
@@ -306,6 +308,7 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
     if(NULL != wsdl_op->extensible_component)
     {
         AXIS2_WSDL_EXTENSIBLE_COMPONENT_FREE(wsdl_op->extensible_component, env);
+        
         wsdl_op->extensible_component = NULL;
     }
     
@@ -334,7 +337,10 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
     {
         void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_LINKED_LIST_SIZE(wsdl_op_impl->out_faults, env); i++)
+        int size = 0;
+        size = AXIS2_LINKED_LIST_SIZE(wsdl_op_impl->out_faults, env);
+        
+        for (i = 0; i < size; i++)
         {
             struct axis2_wsdl_fault_ref *fault = NULL;
             fault = AXIS2_LINKED_LIST_GET(wsdl_op_impl->out_faults, env, i);
@@ -362,11 +368,13 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
         AXIS2_FREE((*env)->allocator, wsdl_op_impl->style);
         wsdl_op_impl->style = NULL;
     }
+    
     if(wsdl_op_impl)
     {
         AXIS2_FREE((*env)->allocator, wsdl_op_impl);
         wsdl_op_impl = NULL;
     }
+    
 	return AXIS2_SUCCESS;
 }
 
@@ -415,7 +423,7 @@ axis2_wsdl_op_set_name (axis2_wsdl_op_t *wsdl_op,
         AXIS2_FREE((*env)->allocator, wsdl_op_impl->name);
         wsdl_op_impl->name = NULL;
     }
-	wsdl_op_impl->name = AXIS2_STRDUP(name, env);
+	wsdl_op_impl->name = AXIS2_QNAME_CLONE(name, env);
     if(!wsdl_op_impl->name)
     {
         return AXIS2_FAILURE;
