@@ -58,17 +58,17 @@ struct axis2_svc_ctx_ops
      */
     axis2_status_t (AXIS2_CALL *init)(struct axis2_svc_ctx *svc_ctx, 
                                                 axis2_env_t **env,
-                                                axis2_conf_t *conf);
+                                                struct axis2_conf *conf);
     /**
      * @return Returns the svc_id.
      */
     axis2_char_t* (AXIS2_CALL *get_svc_id)(struct axis2_svc_ctx *svc_ctx, 
                                                 axis2_env_t **env);
-    axis2_svc_t* (AXIS2_CALL *get_svc)(struct axis2_svc_ctx *svc_ctx, 
+    struct axis2_svc* (AXIS2_CALL *get_svc)(struct axis2_svc_ctx *svc_ctx, 
                                                 axis2_env_t **env);
     struct axis2_conf_ctx* (AXIS2_CALL *get_conf_ctx)(struct axis2_svc_ctx *svc_ctx, 
                                                 axis2_env_t **env);
-    axis2_op_ctx_t* (AXIS2_CALL *create_op_ctx)(struct axis2_svc_ctx *svc_ctx, 
+    struct axis2_op_ctx* (AXIS2_CALL *create_op_ctx)(struct axis2_svc_ctx *svc_ctx, 
                                                 axis2_env_t **env, axis2_qname_t *qname);
 };
 
@@ -82,7 +82,7 @@ struct axis2_svc_ctx
 };
 
 AXIS2_DECLARE(axis2_svc_ctx_t*) axis2_svc_ctx_create(axis2_env_t **env, 
-    axis2_svc_t *svc,
+    struct axis2_svc *svc,
     struct axis2_svc_grp_ctx *svc_grp_ctx);
     
 /************************** Start of function macros **************************/

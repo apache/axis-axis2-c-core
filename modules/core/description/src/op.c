@@ -94,7 +94,7 @@ axis2_op_get_qname (axis2_op_t *op,
 axis2_status_t AXIS2_CALL
 axis2_op_set_msg_exchange_pattern (axis2_op_t *op, 
                                             axis2_env_t **env,
-                                            const axis2_char_t *pattern);
+                                            axis2_char_t *pattern);
 		
 axis2_char_t * AXIS2_CALL
 axis2_op_get_msg_exchange_pattern (axis2_op_t *op, 
@@ -259,6 +259,50 @@ axis2_op_set_wsdl_op(axis2_op_t *op,
                                 axis2_env_t **env,
                                 axis2_wsdl_op_t *wsdl_op);
 
+/**
+ * This method is responsible for finding a MEPContext for an incomming
+ * messages. An incomming message can be of two states.
+ * <p/>
+ * 1)This is a new incomming message of a given MEP. 2)This message is a
+ * part of an MEP which has already begun.
+ * <p/>
+ * The method is special cased for the two MEPs
+ * <p/>
+ * #IN_ONLY #IN_OUT
+ * <p/>
+ * for two reasons. First reason is the wide usage and the second being that
+ * the need for the MEPContext to be saved for further incomming messages.
+ * <p/>
+ * In the event that MEP of this op is different from the two MEPs
+ * deafulted above the decession of creating a new or this message relates
+ * to a MEP which already in business is decided by looking at the WSA
+ * Relates TO of the incomming message.
+ *
+ * @param msgContext
+ */
+struct axis2_op_ctx *AXIS2_CALL
+axis2_op_find_op_ctx(axis2_op_t *op,
+                        axis2_env_t **env,
+                        struct axis2_msg_ctx *msg_ctx, 
+                        struct axis2_svc_ctx *svc_ctx);
+
+/**
+ * This will not create a new op context if there is no one already.
+ * @param msgContext
+ * @return
+ * @throws AxisFault
+ */
+axis2_op_ctx_t *AXIS2_CALL
+axis2_op_find_for_existing_op_ctx(axis2_op_t *op,
+                                    axis2_env_t **env,
+                                    struct axis2_msg_ctx *msg_ctx);
+                                        
+axis2_status_t AXIS2_CALL
+axis2_op_register_op_ctx(axis2_op_t *op,
+                            axis2_env_t **env,
+                            struct axis2_msg_ctx *msg_ctx,
+                            struct axis2_op_ctx *op_ctx);
+                                
 /************************* End of function headers ****************************/	
 
 axis2_op_t * AXIS2_CALL
@@ -418,7 +462,10 @@ axis2_op_create (axis2_env_t **env)
     op_impl->op.ops->add_property = axis2_op_add_property;
     op_impl->op.ops->get_Properties = axis2_op_get_Properties;
     op_impl->op.ops->set_wsdl_op = axis2_op_set_wsdl_op;
-						
+	op_impl->op.ops->find_op_ctx = axis2_op_find_op_ctx;	
+    op_impl->op.ops->find_for_existing_op_ctx = axis2_op_find_for_existing_op_ctx;
+    op_impl->op.ops->register_op_ctx = axis2_op_register_op_ctx;
+    
 	return &(op_impl->op);
 }
 
@@ -803,13 +850,12 @@ axis2_op_get_qname (axis2_op_t *op,
 axis2_status_t AXIS2_CALL 
 axis2_op_set_msg_exchange_pattern (axis2_op_t *op, 
                                             axis2_env_t **env,
-		                                    const axis2_char_t *pattern)
+		                                    axis2_char_t *pattern)
 {
     AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, pattern, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_OP_SET_MSG_EXCHANGE_PATTERN(op->
-        wsdl_op, env, pattern);
+    return AXIS2_WSDL_OP_SET_MSG_EXCHANGE_PATTERN(op->wsdl_op, env, pattern);
 }
 
 axis2_char_t * AXIS2_CALL
@@ -1402,99 +1448,142 @@ axis2_op_set_wsdl_op(axis2_op_t *op,
     return AXIS2_SUCCESS;
 }
 
-/**
- * This method is responsible for finding a MEPContext for an incomming
- * messages. An incomming message can be of two states.
- * <p/>
- * 1)This is a new incomming message of a given MEP. 2)This message is a
- * part of an MEP which has already begun.
- * <p/>
- * The method is special cased for the two MEPs
- * <p/>
- * #IN_ONLY #IN_OUT
- * <p/>
- * for two reasons. First reason is the wide usage and the second being that
- * the need for the MEPContext to be saved for further incomming messages.
- * <p/>
- * In the event that MEP of this op is different from the two MEPs
- * deafulted above the decession of creating a new or this message relates
- * to a MEP which already in business is decided by looking at the WSA
- * Relates TO of the incomming message.
- *
- * @param msgContext
- */
-/*OperationContext findOperationContext(MessageContext msgContext, ServiceContext serviceContext) throws AxisFault {
-    OperationContext opContext ;
+struct axis2_op_ctx *AXIS2_CALL
+axis2_op_find_op_ctx(axis2_op_t *op,
+                        axis2_env_t **env,
+                        struct axis2_msg_ctx *msg_ctx, 
+                        struct axis2_svc_ctx *svc_ctx)
+{
+    axis2_op_impl_t *op_impl = NULL;
+    struct axis2_op_ctx *op_ctx = NULL;
+    struct axis2_relates_to *relates_to = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+        
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, svc_ctx, NULL);
 
-    if (null == msgContext.get_RelatesTo()) {
-        //Its a new incomming message so get_ the factory to create a new
-        // one
-       opContext =  new OperationContext(this,serviceContext);
-    } else {
-        // So this message is part of an ongoing MEP
-        //			opContext =
-        ConfigurationContext configContext = msgContext.get_SystemContext();
-        opContext =
-                configContext.get_OperationContext( msgContext.get_RelatesTo().get_Value());
-
-        if (null == opContext) {
-            throw new AxisFault(Messages.get_Message("cannotCorrelateMsg",
-                    this.get_Name().toString(),msgContext.get_RelatesTo().get_Value()));
+    op_impl = AXIS2_INTF_TO_IMPL(op);
+    relates_to = AXIS2_MSG_CTX_GET_RELATES_TO(msg_ctx, env);
+    if(NULL == relates_to)
+    {
+        /* Its a new incomming message so get_ the factory to create a new
+            one */
+        op_ctx = axis2_op_ctx_create(env, op, svc_ctx);
+        if(!op_ctx)
+        {
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+            return NULL;
         }
+    }
+    else
+    {
+        struct axis2_conf_ctx *conf_ctx = NULL;
+        axis2_char_t *value = NULL;
+            
+        /* So this message is part of an ongoing MEP
+        			opContext = */
+        conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+        value = AXIS2_RELATES_TO_GET_VALUE(relates_to, env);
+        op_ctx = AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, value);
+        if(NULL == op_ctx)
+        {
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG, NULL);
+            return NULL;
+        }
+    }
+    
+    status = axis2_op_register_op_ctx(op, env, msg_ctx, op_ctx);
+    if(AXIS2_FAILURE == status)
+    {
+        AXIS2_OP_CTX_FREE(op_ctx, env);
+        return NULL;
+    }
+    else
+        return op_ctx;
+}
 
+axis2_op_ctx_t *AXIS2_CALL
+axis2_op_find_for_existing_op_ctx(axis2_op_t *op,
+                                    axis2_env_t **env,
+                                    struct axis2_msg_ctx *msg_ctx)
+{
+    struct axis2_op_ctx *op_ctx = NULL;
+    struct axis2_relates_to *relates_to = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
+    
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    if(NULL != op_ctx) 
+    {
+        return op_ctx;
     }
 
-    registerOperationContext(msgContext, opContext);
+    relates_to = AXIS2_MSG_CTX_GET_RELATES_TO(msg_ctx, env);
+    if (NULL == relates_to) 
+    {
+        return NULL;
+    } 
+    else 
+    {
+        struct axis2_conf_ctx *conf_ctx = NULL;
+        axis2_char_t *value = NULL;
+        /* So this message is part of an ongoing MEP
+        			opContext = */
+        conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+        op_ctx = AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, value);
 
-    return opContext;
+        if (NULL == op_ctx) 
+        {
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG, NULL);
+            return NULL;
+        }
+    }
+
+    return op_ctx;
 
 }
-*/
 
-/**
- * This will not create a new op context if there is no one already.
- * @param msgContext
- * @return
- * @throws AxisFault
- */
-/*axis2_op_ctx_t *AXIS2_CALL
-OperationContext 
-findForExistingOperationContext(MessageContext msgContext) throws AxisFault {
-    OperationContext opContext = null;
-
-    if((opContext = msgContext.get_OperationContext()) != null) {
-        return opContext;
-    }
-
-    if (null == msgContext.get_RelatesTo()) {
-        return null;
-    } else {
-        // So this message is part of an ongoing MEP
-        //			opContext =
-        ConfigurationContext configContext = msgContext.get_SystemContext();
-        opContext = configContext.get_OperationContext(msgContext.get_RelatesTo().get_Value());
-
-        if (null == opContext) {
-            throw new AxisFault(Messages.get_Message("cannotCorrealteMsg",
-                    this.get_Name().toString(),msgContext.get_RelatesTo().get_Value()));
-        }
-
-    }
-
-
-    return opContext;
-
-}
-*/
-/*
 axis2_status_t AXIS2_CALL
-registerOperationContext(MessageContext msgContext, OperationContext opContext) throws AxisFault {
-    msgContext.get_SystemContext().registerOperationContext(
-            msgContext.get_MessageID(), opContext);
-    opContext.addMessageContext(msgContext);
-    msgContext.setOperationContext(opContext);
-    if (opContext.isComplete()) {
-        opContext.cleanup();
+axis2_op_register_op_ctx(axis2_op_t *op,
+                            axis2_env_t **env,
+                            struct axis2_msg_ctx *msg_ctx,
+                            struct axis2_op_ctx *op_ctx)
+{
+    struct axis2_conf_ctx *conf_ctx = NULL;
+    axis2_char_t *msg_id = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, op_ctx, AXIS2_FAILURE);
+    
+    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+    if(!conf_ctx)
+    {
+        return AXIS2_FAILURE;
     }
+    msg_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
+    if(!msg_id)
+    {
+        return AXIS2_FAILURE;
+    }
+    status = AXIS2_CONF_CTX_REGISTER_OP_CTX(conf_ctx, env, msg_id, op_ctx);
+    if(AXIS2_FAILURE == status)
+    {
+        return AXIS2_FAILURE;
+    }
+    status = AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, op_ctx);
+    if(AXIS2_FAILURE == status)
+    {
+        axis2_hash_t *op_ctx_map = NULL;
+        op_ctx_map = (axis2_hash_t *) AXIS2_CONF_CTX_GET_OP_CTX_MAP(conf_ctx, env);
+        axis2_hash_set(op_ctx_map, msg_id, AXIS2_HASH_KEY_STRING, NULL); 
+    }
+    if(AXIS2_TRUE == AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env))
+    {
+        AXIS2_OP_CTX_CLEANUP(op_ctx, env);
+    }
+    return AXIS2_SUCCESS;
 }
-*/

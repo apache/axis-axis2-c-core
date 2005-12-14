@@ -60,13 +60,13 @@ struct axis2_svc_grp_ctx_ops
      */
     axis2_status_t (AXIS2_CALL *init)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                                         axis2_env_t **env,
-                                        axis2_conf_t *conf);
+                                        struct axis2_conf *conf);
     axis2_char_t* (AXIS2_CALL *get_id)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                             axis2_env_t **env);
     axis2_status_t (AXIS2_CALL *set_id)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                             axis2_env_t **env, axis2_char_t *id);
     /** if the servic name is foo:bar , you should pass only bar */
-    axis2_svc_ctx_t* (AXIS2_CALL *get_svc_ctx)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+    struct axis2_svc_ctx* (AXIS2_CALL *get_svc_ctx)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                             axis2_env_t **env,
                             axis2_char_t *svc_name);
     /**

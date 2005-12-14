@@ -78,14 +78,14 @@ struct axis2_conf_ctx_ops
     axis2_status_t (AXIS2_CALL *register_op_ctx)(struct axis2_conf_ctx *conf_ctx, 
                                                                     axis2_env_t **env,
                                                                     axis2_char_t *message_id,
-                                                                    axis2_op_ctx_t *op_ctx);
+                                                                    struct axis2_op_ctx *op_ctx);
     /**
      * get axis2_op_ctx struct given a Message ID
      *
      * @param message_id
      * @return struct axis2_op_ctx * <code>struct axis2_op_ctx *<code>
      */
-    axis2_op_ctx_t* (AXIS2_CALL *get_op_ctx)(struct axis2_conf_ctx *conf_ctx, 
+    struct axis2_op_ctx* (AXIS2_CALL *get_op_ctx)(struct axis2_conf_ctx *conf_ctx, 
                                                                             axis2_env_t **env,
                                                                             axis2_char_t *message_id);
     /**
@@ -97,14 +97,14 @@ struct axis2_conf_ctx_ops
     axis2_status_t (AXIS2_CALL *register_svc_ctx)(struct axis2_conf_ctx *conf_ctx, 
                                                                     axis2_env_t **env,
                                                                     axis2_char_t *svc_id,
-                                                                    axis2_svc_ctx_t *svc_ctx);
+                                                                    struct axis2_svc_ctx *svc_ctx);
     /**
      * get axis2_svc_ctx struct given a Message ID
      *
      * @param svc_id
      * @return struct axis2_svc_ctx * <code>struct axis2_svc_ctx *<code>
      */
-    axis2_svc_ctx_t* (AXIS2_CALL *get_svc_ctx)(struct axis2_conf_ctx *conf_ctx, 
+    struct axis2_svc_ctx* (AXIS2_CALL *get_svc_ctx)(struct axis2_conf_ctx *conf_ctx, 
                                                                             axis2_env_t **env,
                                                                             axis2_char_t *svc_id);
     /**
@@ -116,14 +116,14 @@ struct axis2_conf_ctx_ops
     axis2_status_t (AXIS2_CALL *register_svc_grp_ctx)(struct axis2_conf_ctx *conf_ctx, 
                                                                     axis2_env_t **env,
                                                                     axis2_char_t *svc_grp_id,
-                                                                    axis2_svc_grp_ctx_t *svc_grp_ctx);
+                                                                    struct axis2_svc_grp_ctx *svc_grp_ctx);
     /**
      * get axis2_svc_grp_ctx struct given a service group ID
      *
      * @param svc_grp_id
      * @return struct axis2_svc_grp_ctx * <code>struct axis2_svc_grp_ctx *<code>
      */
-    axis2_svc_grp_ctx_t* (AXIS2_CALL *get_svc_grp_ctx)(struct axis2_conf_ctx *conf_ctx, 
+    struct axis2_svc_grp_ctx* (AXIS2_CALL *get_svc_grp_ctx)(struct axis2_conf_ctx *conf_ctx, 
                                                                             axis2_env_t **env,
                                                                             axis2_char_t *svc_grp_id);
     /**
@@ -157,7 +157,7 @@ struct axis2_conf_ctx_ops
      *
      * @param messageContext
      */
-    axis2_svc_grp_ctx_t* (AXIS2_CALL *fill_ctxs)(struct axis2_conf_ctx *conf_ctx, 
+    struct axis2_svc_grp_ctx* (AXIS2_CALL *fill_ctxs)(struct axis2_conf_ctx *conf_ctx, 
                                                    axis2_env_t **env,
                                                    axis2_msg_ctx_t *msg_ctx);
 };

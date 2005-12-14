@@ -32,7 +32,11 @@
 #include <axis2_wsdl_msg_ref.h>
 #include <axis2_description.h>
 #include <axis2_phase_meta.h>
-
+#include <axis2_relates_to.h>
+#include <axis2_msg_ctx.h>
+#include <axis2_op_ctx.h>
+#include <axis2_svc_ctx.h>
+#include <axis2_conf_ctx.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -52,7 +56,12 @@ struct axis2_module_desc;
 struct axis2_op;
 struct axis2_wsdl_feature;
 struct axis2_wsdl_property; 
-struct axis2_wsdl_fault_ref;    
+struct axis2_wsdl_fault_ref;  
+struct axis2_relates_to;
+struct axis2_op_ctx;
+struct axis2_svc_ctx;    
+struct axis2_msg_ctx; 
+struct axis2_conf_ctx;    
 typedef struct axis2_op_ops axis2_op_ops_t;    
 typedef struct axis2_op axis2_op_t;    
     
@@ -123,7 +132,7 @@ AXIS2_DECLARE_DATA struct axis2_op_ops
 	axis2_status_t (AXIS2_CALL *
     set_msg_exchange_pattern) (axis2_op_t *op, 
                                 axis2_env_t **env,
-                                const axis2_char_t *pattern);
+                                axis2_char_t *pattern);
 
 	axis2_char_t *(AXIS2_CALL *
     get_msg_exchange_pattern) (axis2_op_t *op, 
@@ -321,7 +330,51 @@ AXIS2_DECLARE_DATA struct axis2_op_ops
     axis2_status_t (AXIS2_CALL * 
     set_wsdl_op) (axis2_op_t *op,
                                     axis2_env_t **env,
-                                    struct axis2_wsdl_op *wsdl_op);                                           
+                                    struct axis2_wsdl_op *wsdl_op);
+
+    /**
+     * This method is responsible for finding a MEPContext for an incomming
+     * messages. An incomming message can be of two states.
+     * <p/>
+     * 1)This is a new incomming message of a given MEP. 2)This message is a
+     * part of an MEP which has already begun.
+     * <p/>
+     * The method is special cased for the two MEPs
+     * <p/>
+     * #IN_ONLY #IN_OUT
+     * <p/>
+     * for two reasons. First reason is the wide usage and the second being that
+     * the need for the MEPContext to be saved for further incomming messages.
+     * <p/>
+     * In the event that MEP of this op is different from the two MEPs
+     * deafulted above the decession of creating a new or this message relates
+     * to a MEP which already in business is decided by looking at the WSA
+     * Relates TO of the incomming message.
+     *
+     * @param msgContext
+     */
+    struct axis2_op_ctx *(AXIS2_CALL *
+    find_op_ctx) (axis2_op_t *op,
+                            axis2_env_t **env,
+                            struct axis2_msg_ctx *msg_ctx, 
+                            struct axis2_svc_ctx *svc_ctx);
+
+    /**
+     * This will not create a new op context if there is no one already.
+     * @param msgContext
+     * @return
+     * @throws AxisFault
+     */
+    struct axis2_op_ctx *(AXIS2_CALL *
+    find_for_existing_op_ctx) (axis2_op_t *op,
+                                        axis2_env_t **env,
+                                        struct axis2_msg_ctx *msg_ctx);
+                                            
+    axis2_status_t (AXIS2_CALL *
+    register_op_ctx) (axis2_op_t *op,
+                                axis2_env_t **env,
+                                struct axis2_msg_ctx *msg_ctx,
+                                struct axis2_op_ctx *op_ctx);                                    
 };
 
 /** 
@@ -504,6 +557,17 @@ axis2_op_create_with_wsdl_op (axis2_env_t **env,
 
 #define AXIS2_OP_SET_WSDL_OP(op, env, wsdl_op) \
 		((op->ops)->set_wsdl_op (op, env, wsdl_op))
+  
+
+#define AXIS2_OP_FIND_OP_CTX(op, env, wsdl_op) \
+		((op->ops)->find_op_ctx (op, env, wsdl_op))
+        
+#define AXIS2_OP_FIND_FOR_EXISTING_OP_CTX(op, env, wsdl_op) \
+		((op->ops)->find_for_existing_op_ctx (op, env, wsdl_op))
+
+#define AXIS2_OP_REGISTER_OP_CTX(op, env, wsdl_op) \
+		((op->ops)->register_op_ctx (op, env, wsdl_op))
+   
 
 /************************** End of function macros ****************************/
 

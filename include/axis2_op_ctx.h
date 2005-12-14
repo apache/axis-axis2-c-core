@@ -75,7 +75,7 @@ struct axis2_op_ctx_ops
     /**
      * @return Returns the op.
      */
-    axis2_op_t* (AXIS2_CALL *get_op)(struct axis2_op_ctx *op_ctx, axis2_env_t **env);
+    struct axis2_op* (AXIS2_CALL *get_op)(struct axis2_op_ctx *op_ctx, axis2_env_t **env);
     
     /**
      * Return the struct axis2_svc_ctx * in which this op_ctx lives.
@@ -145,7 +145,7 @@ struct axis2_op_ctx
 };
 
 axis2_op_ctx_t* AXIS2_CALL axis2_op_ctx_create(axis2_env_t **env, 
-    axis2_op_t *op,
+    struct axis2_op *op,
     struct axis2_svc_ctx * svc_ctx);
     
 /************************** Start of function macros **************************/
