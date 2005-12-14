@@ -182,7 +182,7 @@ axis2_om_stax_builder_process_attributes (axis2_om_stax_builder_t *om_builder,
                             
         status = AXIS2_OM_ELEMENT_ADD_ATTRIBUTE (
                     (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(element_node,env),
-                        env, attribute);
+                        env, attribute, element_node);
         if(uri)
            AXIS2_XML_READER_XML_FREE(builder_impl->parser, env, uri);
         if(prefix)

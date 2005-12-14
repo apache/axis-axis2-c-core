@@ -145,7 +145,7 @@ test_om_build (char *filename)
 
     printf ("Serialize pulled document\n");
     
-    writer = axis2_xml_writer_create_for_memory(&environment,NULL, AXIS2_TRUE, 0);
+    writer = axis2_xml_writer_create_for_memory(&environment, NULL, AXIS2_TRUE, 0);
     om_output = axis2_om_output_create (&environment, writer);
 
     AXIS2_OM_NODE_SERIALIZE (node1, &environment , om_output);
@@ -220,11 +220,11 @@ test_om_serialize ()
     
     attr1 = axis2_om_attribute_create (&environment, "title", "Mr", ns1);
     
-    AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(ele4, &environment,attr1);
+    AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(ele4, &environment,attr1, node6);
     
     attr2 = axis2_om_attribute_create (&environment, "name", "Axitoc Oman", ns1);
     
-    AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(ele4,&environment, attr2);
+    AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(ele4,&environment, attr2, node6);
     
    
     /* serializing stuff */

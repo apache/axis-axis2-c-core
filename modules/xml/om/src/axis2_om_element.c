@@ -48,7 +48,8 @@ axis2_om_element_find_declared_namespace (axis2_om_element_t *om_element,
 axis2_status_t AXIS2_CALL
 axis2_om_element_add_attribute (axis2_om_element_t *element,
                                 axis2_env_t **env,
-                                axis2_om_attribute_t *attribute);
+                                axis2_om_attribute_t *attribute,
+                                axis2_om_node_t *element_node);
 
 axis2_om_attribute_t *AXIS2_CALL
 axis2_om_element_get_attribute(axis2_om_element_t *element,
@@ -372,23 +373,23 @@ axis2_om_element_find_namespace (axis2_om_element_t *ele,
     }
 
     if (AXIS2_INTF_TO_IMPL(element)->namespaces && prefix)
-        ns = axis2_hash_get (AXIS2_INTF_TO_IMPL(element)->namespaces, prefix,
+    {    ns = axis2_hash_get (AXIS2_INTF_TO_IMPL(element)->namespaces, prefix,
                              AXIS2_HASH_KEY_STRING);
-    
+        if (ns)
+        {
+            return (axis2_om_namespace_t*)ns;
+        }                             
+    }
     parent = AXIS2_OM_NODE_GET_PARENT(node, env);                       
 
-    if (ns)
-    {
-        return (axis2_om_namespace_t*)ns;
-    }
-    else if ((parent != NULL) &&
+    
+     if ((parent != NULL) &&
              (AXIS2_OM_NODE_GET_NODE_TYPE(parent, env) == AXIS2_OM_ELEMENT))
     {
         return axis2_om_element_find_namespace (
                 (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env),
                     env, parent, uri, prefix);
     }
-
     return NULL;
 }
 
@@ -522,7 +523,8 @@ axis2_om_element_find_namespace_with_qname (axis2_om_element_t *element,
 axis2_status_t AXIS2_CALL
 axis2_om_element_add_attribute (axis2_om_element_t *om_element,
                                 axis2_env_t **env,
-                                axis2_om_attribute_t *attribute)
+                                axis2_om_attribute_t *attribute,
+                                axis2_om_node_t *element_node)
 {
     
     axis2_qname_t *qname = NULL;
@@ -534,6 +536,21 @@ axis2_om_element_add_attribute (axis2_om_element_t *om_element,
 
     om_element_impl = AXIS2_INTF_TO_IMPL(om_element);    
     om_namespace = AXIS2_OM_ATTRIBUTE_GET_NAMESPACE(attribute, env);
+    
+    if(om_namespace)
+    {
+        temp_ns = AXIS2_OM_ELEMENT_FIND_NAMESPACE
+                        (om_element, env, 
+                         element_node,
+                         AXIS2_OM_NAMESPACE_GET_URI(om_namespace, env),
+                         AXIS2_OM_NAMESPACE_GET_PREFIX(om_namespace, env));
+        if(!temp_ns)
+        {
+            AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(om_element, env, 
+                                               element_node, om_namespace); 
+        }
+    } 
+    
    
     if(!(om_element_impl->attributes))
     {

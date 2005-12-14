@@ -232,7 +232,7 @@ PHP_FUNCTION(axis2_om_element_add_attribute)
     attr = (axis2_om_attribute_t *)(attr_obj->ptr);
     if(attr)
     {
-        AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(om_element, &env, attr);
+        AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(om_element, &env, attr, node);
     }
 }
 

@@ -100,11 +100,13 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         * @param om_element element to which the attribute is to be added.cannot be NULL.
         * @param env Environment. MUST NOT be NULL.
         * @param attribute attribute to be added.
+        * @param node axis2_om_node_t node that om_element is contained in
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
          axis2_status_t (AXIS2_CALL *add_attribute)(axis2_om_element_t *om_element,
                                                     axis2_env_t **env,
-                                                    axis2_om_attribute_t *attribute);
+                                                    axis2_om_attribute_t *attribute,
+                                                    axis2_om_node_t *node);
 
       /**
         * Gets (finds) the attribute with the given qname
@@ -331,8 +333,8 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         ((om_element)->ops->find_namespace_with_qname (om_element, environment, node, qname))
         
 /** adds given attribute to given element */
-#define AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(om_element, env, attribute) \
-        ((om_element)->ops->add_attribute(om_element , env, attribute))
+#define AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(om_element, env, attribute, element_node) \
+        ((om_element)->ops->add_attribute(om_element , env, attribute, element_node))
         
 /** gets (finds) given attribute in given element */
 #define AXIS2_OM_ELEMENT_GET_ATTRIBUTE(om_element, env, qname) \
