@@ -88,7 +88,7 @@ axis2_op_set_name (axis2_op_t *op,
                             axis2_qname_t *qname);
                             
 axis2_qname_t * AXIS2_CALL
-axis2_op_get_name (axis2_op_t *op, 
+axis2_op_get_qname (axis2_op_t *op, 
                             axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
@@ -124,7 +124,7 @@ axis2_op_get_modules(axis2_op_t *op,
                                 axis2_env_t **env);
 
 int AXIS2_CALL
-axis2_op_get_axis_specific_MEP_constant(axis2_op_t *op,
+axis2_op_get_axis_specific_mep_const(axis2_op_t *op,
                                                 axis2_env_t **env);
 
 axis2_array_list_t *AXIS2_CALL
@@ -374,7 +374,7 @@ axis2_op_create (axis2_env_t **env)
 	op_impl->op.ops->set_msg_recv = axis2_op_set_msg_recv;
 	op_impl->op.ops->get_msg_recv = axis2_op_get_msg_recv;
     op_impl->op.ops->set_name = axis2_op_set_name;
-	op_impl->op.ops->get_name = axis2_op_get_name;
+	op_impl->op.ops->get_qname = axis2_op_get_qname;
     
 	op_impl->op.ops->set_msg_exchange_pattern 
 		= axis2_op_set_msg_exchange_pattern;
@@ -389,7 +389,7 @@ axis2_op_create (axis2_env_t **env)
     op_impl->op.ops->engage_module = axis2_op_engage_module;
     op_impl->op.ops->add_to_engage_module_list = axis2_op_add_to_engage_module_list;
     op_impl->op.ops->get_modules = axis2_op_get_modules;
-    op_impl->op.ops->get_axis_specific_MEP_constant = axis2_op_get_axis_specific_MEP_constant;
+    op_impl->op.ops->get_axis_specific_mep_const = axis2_op_get_axis_specific_mep_const;
     op_impl->op.ops->get_phases_in_fault_flow = axis2_op_get_phases_in_fault_flow;
     op_impl->op.ops->get_phases_out_fault_flow = axis2_op_get_phases_out_fault_flow;
     op_impl->op.ops->get_phases_outflow = axis2_op_get_phases_outflow;
@@ -780,7 +780,7 @@ axis2_op_set_name (axis2_op_t *op,
 }
     
 axis2_qname_t * AXIS2_CALL
-axis2_op_get_name (axis2_op_t *op, 
+axis2_op_get_qname (axis2_op_t *op, 
                             axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
@@ -943,7 +943,7 @@ axis2_op_get_modules(axis2_op_t *op,
 }
 
 int AXIS2_CALL
-axis2_op_get_axis_specific_MEP_constant(axis2_op_t *op,
+axis2_op_get_axis_specific_mep_const(axis2_op_t *op,
                                                 axis2_env_t **env) 
 {
     axis2_op_impl_t *op_impl = NULL;

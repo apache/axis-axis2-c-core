@@ -15,6 +15,8 @@
  */
 
 #include <axis2_op_ctx.h>
+#include <axis2_conf_ctx.h>
+#include <axis2_op.h>
 #include <axis2.h>
 #include <axis2_hash.h>
 
@@ -128,8 +130,8 @@ axis2_op_ctx_t* AXIS2_CALL axis2_op_ctx_create(axis2_env_t **env,
     
     if (op_ctx_impl->op)
     {
-        /*op_ctx_impl->op_qname = AXIS2_OP_GET_QNAME(op_ctx_impl->op, env);
-        op_ctx_impl->op_mep = AXIS2_OP_GET_MEP_CONST(op_ctx_impl->op, env);*/
+        op_ctx_impl->op_qname = AXIS2_OP_GET_QNAME(op_ctx_impl->op, env);
+        op_ctx_impl->op_mep = AXIS2_OP_GET_AXIS_SPECIFIC_MEP_CONST(op_ctx_impl->op, env);
     }
     
     axis2_op_ctx_set_parent(&(op_ctx_impl->op_ctx), env, svc_ctx);
@@ -226,7 +228,7 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_init(struct axis2_op_ctx *op_ctx, axis2_e
             
             if (svc)
             {
-               /* op_ctx_impl->op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_ctx_impl->op_qname);*/
+                op_ctx_impl->op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_ctx_impl->op_qname);
             }
         }
     }
@@ -287,7 +289,7 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_add_msg_ctx(struct axis2_op_ctx *op_ctx, 
         
     if(op_ctx_impl->op)
     {
-        /*return AXIS2_OP_ADD_MSG_CTX(op_ctx_impl->op, env, msg_ctx, op_ctx);*/
+        /* TODO return AXIS2_OP_ADD_MSG_CTX(op_ctx_impl->op, env, msg_ctx, op_ctx); */
     }
     
     return AXIS2_SUCCESS;
@@ -368,12 +370,12 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_cleanup(struct axis2_op_ctx *op_ctx,
         if (ctx)
         {
             axis2_msg_ctx_t *msg_ctx = (axis2_msg_ctx_t*)ctx;
-            /*axis2_char_t *message_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);*/
-            /*if (message_id)
+            axis2_char_t *message_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
+            if (message_id)
             {
-                AXIS2_HASH_SET(op_ctx_impl->msg_ctx_map, env, message_id, AXIS2_HASH_KEY_STRING, NULL);
+                axis2_hash_set(op_ctx_impl->msg_ctx_map, message_id, AXIS2_HASH_KEY_STRING, NULL);
                 return AXIS2_MSG_CTX_FREE(msg_ctx, env);
-            }*/
+            }
         }
     }
     
@@ -397,13 +399,13 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_set_parent(struct axis2_op_ctx *op_ctx, a
     
     if (op_ctx_impl->parent) /* that is if there is a service context associated */
     {
-        /*axis2_conf_ctx_t *conf_ctx = NULL;
+        axis2_conf_ctx_t *conf_ctx = NULL;
         conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(op_ctx_impl->parent, env);
         if (conf_ctx)
         {
             op_ctx_impl->op_ctx_map = AXIS2_CONF_CTX_GET_OP_CTX_MAP(conf_ctx, env);
         }
-        op_ctx_impl->svc_qname = AXIS2_SVC_GET_QNAME(op_ctx_impl->parent, env);*/
+        op_ctx_impl->svc_qname = AXIS2_SVC_GET_QNAME(op_ctx_impl->parent, env);
     }
     
     return AXIS2_SUCCESS;

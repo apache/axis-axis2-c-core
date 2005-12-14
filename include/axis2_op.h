@@ -117,7 +117,7 @@ AXIS2_DECLARE_DATA struct axis2_op_ops
                 axis2_qname_t *qname);
     
 	axis2_qname_t *(AXIS2_CALL *
-    get_name) (axis2_op_t *op, 
+    get_qname) (axis2_op_t *op, 
                 axis2_env_t **env);
 
 	axis2_status_t (AXIS2_CALL *
@@ -178,7 +178,7 @@ AXIS2_DECLARE_DATA struct axis2_op_ops
      *
      */
     int (AXIS2_CALL *
-    get_axis_specific_MEP_constant) (axis2_op_t *op,
+    get_axis_specific_mep_const) (axis2_op_t *op,
                                                     axis2_env_t **env);
     
     axis2_array_list_t *(AXIS2_CALL *
@@ -368,8 +368,8 @@ axis2_op_create_with_wsdl_op (axis2_env_t **env,
 #define AXIS2_OP_ADD_PARAM(op, env, param) \
 		((op->ops)->add_param (op, env, param))
 
-#define AXIS2_OP_GET_PARAM(op, env) \
-		((op->ops)->get_param (op, env))
+#define AXIS2_OP_GET_PARAM(op, env, key) \
+		((op->ops)->get_param (op, env, key))
 
 #define AXIS2_OP_GET_PARAMS(op, env) \
 		((op->ops)->get_params (op, env))
@@ -392,8 +392,8 @@ axis2_op_create_with_wsdl_op (axis2_env_t **env,
 #define AXIS2_OP_SET_NAME(op, env, qname) \
 		((op->ops)->set_name (op, env, qname))
         
-#define AXIS2_OP_GET_NAME(op, env) \
-		((op->ops)->get_name (op, env))
+#define AXIS2_OP_GET_QNAME(op, env) \
+		((op->ops)->get_qname (op, env))
 
 #define AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op , env, \
         msg_exchange_pattern) \
@@ -418,8 +418,8 @@ axis2_op_create_with_wsdl_op (axis2_env_t **env,
 #define AXIS2_OP_GET_MODULES(op, env) \
 		((op->ops)->get_modules (op, env))
         
-#define AXIS2_OP_GET_AXIS_SPECIFIC_MEP_CONSTANT(op, env) \
-		((op->ops)->get_axis_specific_MEP_constant (op, env))
+#define AXIS2_OP_GET_AXIS_SPECIFIC_MEP_CONST(op, env) \
+		((op->ops)->get_axis_specific_mep_const (op, env))
 
 #define AXIS2_OP_GET_PHASES_IN_FAULT_FLOW(op, env) \
 		((op->ops)->get_phases_in_fault_flow (op, env))
