@@ -305,6 +305,10 @@ void* AXIS2_CALL
 axis2_msg_ctx_get_property(struct axis2_msg_ctx *msg_ctx, 
                             axis2_env_t **env, 
                             axis2_char_t *key, axis2_bool_t persistent);
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_property(struct axis2_msg_ctx *msg_ctx, 
+                            axis2_env_t **env, 
+                            axis2_char_t *key, void *value, axis2_bool_t persistent);
 axis2_qname_t* AXIS2_CALL
 axis2_msg_ctx_get_paused_handler_name(struct axis2_msg_ctx *msg_ctx, 
                                         axis2_env_t **env);
@@ -535,6 +539,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->msg_ctx.ops->get_parameter = axis2_msg_ctx_get_parameter;
     msg_ctx_impl->msg_ctx.ops->get_module_parameter = axis2_msg_ctx_get_module_parameter;
     msg_ctx_impl->msg_ctx.ops->get_property = axis2_msg_ctx_get_property;
+    msg_ctx_impl->msg_ctx.ops->set_property = axis2_msg_ctx_set_property;
     msg_ctx_impl->msg_ctx.ops->get_paused_handler_name = axis2_msg_ctx_get_paused_handler_name;
     msg_ctx_impl->msg_ctx.ops->get_paused_phase_name = axis2_msg_ctx_get_paused_phase_name;
     msg_ctx_impl->msg_ctx.ops->set_paused_phase_name = axis2_msg_ctx_set_paused_phase_name;
@@ -1547,6 +1552,12 @@ void* AXIS2_CALL axis2_msg_ctx_get_property(struct axis2_msg_ctx *msg_ctx,
     return NULL;
 }
 
+axis2_status_t AXIS2_CALL axis2_msg_ctx_set_property(struct axis2_msg_ctx *msg_ctx, 
+                                axis2_env_t **env, 
+                                axis2_char_t *key, void *value, axis2_bool_t persistent)
+{
+    return AXIS2_SUCCESS;
+}
 axis2_qname_t *AXIS2_CALL axis2_msg_ctx_get_paused_handler_name(struct axis2_msg_ctx *msg_ctx, 
                                             axis2_env_t **env)
 {
