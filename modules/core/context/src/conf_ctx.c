@@ -474,7 +474,7 @@ axis2_svc_grp_ctx_t* AXIS2_CALL axis2_conf_ctx_fill_ctxs(struct axis2_conf_ctx *
         return NULL;
     }
     
-    qname = AXIS2_SVC_GET_NAME(svc, env);
+    qname = AXIS2_SVC_GET_QNAME(svc, env);
     if (!qname)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_SVC, AXIS2_FAILURE);

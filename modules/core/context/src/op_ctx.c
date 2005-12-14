@@ -405,7 +405,7 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_set_parent(struct axis2_op_ctx *op_ctx, a
         {
             op_ctx_impl->op_ctx_map = AXIS2_CONF_CTX_GET_OP_CTX_MAP(conf_ctx, env);
         }
-        op_ctx_impl->svc_qname = AXIS2_SVC_GET_QNAME(op_ctx_impl->parent, env);
+        op_ctx_impl->svc_qname = AXIS2_SVC_GET_QNAME(AXIS2_SVC_CTX_GET_SVC(op_ctx_impl->parent, env), env);
     }
     
     return AXIS2_SUCCESS;

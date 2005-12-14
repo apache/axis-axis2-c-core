@@ -288,7 +288,7 @@ axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_fill_svc_ctx_map(struct axis2_svc_gr
                     axis2_char_t *svc_name = NULL; 
                     svc = (axis2_svc_t*) next_svc;
                     svc_ctx = axis2_svc_ctx_create(env, svc, svc_grp_ctx);
-                    svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_NAME(svc, env), env);
+                    svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(svc, env), env);
                     if (svc_name)
                         axis2_hash_set(svc_grp_ctx_impl->svc_ctx_map, svc_name, AXIS2_HASH_KEY_STRING, svc_ctx);
                 }

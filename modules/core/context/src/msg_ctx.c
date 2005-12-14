@@ -1743,7 +1743,7 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_svc(struct axis2_msg_ctx *msg_ctx,
     if (svc)
     {
         AXIS2_INTF_TO_IMPL(msg_ctx)->svc = svc;
-        AXIS2_INTF_TO_IMPL(msg_ctx)->svc_qname = AXIS2_SVC_GET_NAME(svc, env);
+        AXIS2_INTF_TO_IMPL(msg_ctx)->svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
     }
     
     return AXIS2_SUCCESS;
