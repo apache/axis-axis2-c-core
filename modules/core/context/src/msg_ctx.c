@@ -1407,14 +1407,15 @@ axis2_param_t * AXIS2_CALL axis2_msg_ctx_get_module_parameter(struct axis2_msg_c
                                             axis2_char_t *key, axis2_char_t *module_name, 
                                             axis2_handler_desc_t *handler_desc) 
 {
-    axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
+/** NOTE: This method is not used in anywhere, hence can be removed*/
+    /*axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
     axis2_param_t *param = NULL;
     axis2_module_desc_t *module_desc = NULL;
     axis2_qname_t *qname = NULL;
-    axis2_conf_t *conf = NULL;
+    axis2_conf_t *conf = NULL;*/
     
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FAILURE);
+    /*AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FAILURE);
     
     msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
     
@@ -1528,6 +1529,8 @@ axis2_param_t * AXIS2_CALL axis2_msg_ctx_get_module_parameter(struct axis2_msg_c
     param = AXIS2_HANDLER_DESC_GET_PARAM(handler_desc, env, key);
     
     return param;
+    */
+    return NULL;
 }
 
 void* AXIS2_CALL axis2_msg_ctx_get_property(struct axis2_msg_ctx *msg_ctx, 
