@@ -51,8 +51,6 @@ struct axis2_msg_ctx_impl
     struct axis2_svc_ctx *svc_ctx;
     struct axis2_svc_grp_ctx *svc_grp_ctx;
     struct axis2_conf_ctx *conf_ctx;
-    /** session context */
-    struct axis2_session_ctx *session_ctx;
     
     /** op */
     axis2_op_t *op;
@@ -161,9 +159,6 @@ axis2_msg_ctx_get_response_written(struct axis2_msg_ctx *msg_ctx,
                                     axis2_env_t **env);
 axis2_bool_t AXIS2_CALL
 axis2_msg_ctx_get_server_side(struct axis2_msg_ctx *msg_ctx, 
-                                axis2_env_t **env);
-struct axis2_session_ctx* AXIS2_CALL
-axis2_msg_ctx_get_session_ctx(struct axis2_msg_ctx *msg_ctx, 
                                 axis2_env_t **env);
 axis2_endpoint_ref_t *AXIS2_CALL
 axis2_msg_ctx_get_to(struct axis2_msg_ctx *msg_ctx, 
@@ -402,8 +397,7 @@ axis2_msg_ctx_t * AXIS2_CALL
 axis2_msg_ctx_create (axis2_env_t **env,
                         struct axis2_conf_ctx *conf_ctx,
                         struct axis2_transport_in_desc *transport_in_desc,
-                        struct axis2_transport_out_desc *transport_out_desc,
-                        struct axis2_session_ctx *session_ctx)
+                        struct axis2_transport_out_desc *transport_out_desc)
 {
     axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
     
@@ -424,7 +418,6 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->svc_ctx = NULL;
     msg_ctx_impl->svc_grp_ctx = NULL;
     msg_ctx_impl->conf_ctx = NULL;
-    msg_ctx_impl->session_ctx = NULL;
     msg_ctx_impl->op = NULL;
     msg_ctx_impl->svc = NULL;
     msg_ctx_impl->svc_grp = NULL;    
@@ -472,20 +465,6 @@ axis2_msg_ctx_create (axis2_env_t **env,
     if (msg_ctx_impl->transport_out_desc)
         msg_ctx_impl->transport_out_desc_qname = AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport_out_desc, env);
     
-    if (session_ctx) 
-    {
-        msg_ctx_impl->session_ctx = session_ctx;
-    } 
-    else 
-    {
-        /*msg_ctx_impl->session_ctx = axis2_session_ctx_create(env);
-        if (!(msg_ctx_impl->session_ctx))
-        {
-            axis2_msg_ctx_free(&(msg_ctx_impl->msg_ctx), env);
-            return NULL;
-        }*/
-    }
-    
     msg_ctx_impl->msg_info_headers = axis2_msg_info_headers_create(env, NULL, NULL);
     if (!(msg_ctx_impl->msg_info_headers))
     {
@@ -517,7 +496,6 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->msg_ctx.ops->get_reply_to = axis2_msg_ctx_get_reply_to;
     msg_ctx_impl->msg_ctx.ops->get_response_written = axis2_msg_ctx_get_response_written;
     msg_ctx_impl->msg_ctx.ops->get_server_side = axis2_msg_ctx_get_server_side;
-    msg_ctx_impl->msg_ctx.ops->get_session_ctx = axis2_msg_ctx_get_session_ctx;
     msg_ctx_impl->msg_ctx.ops->get_to = axis2_msg_ctx_get_to;
     msg_ctx_impl->msg_ctx.ops->set_fault_to = axis2_msg_ctx_set_fault_to;
     msg_ctx_impl->msg_ctx.ops->set_from = axis2_msg_ctx_set_from;
@@ -851,13 +829,6 @@ axis2_bool_t AXIS2_CALL axis2_msg_ctx_get_server_side(struct axis2_msg_ctx *msg_
 {
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(msg_ctx)->server_side;
-}
-
-struct axis2_session_ctx * AXIS2_CALL axis2_msg_ctx_get_session_ctx(struct axis2_msg_ctx *msg_ctx, 
-                                            axis2_env_t **env)
-{
-    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);
-    return AXIS2_INTF_TO_IMPL(msg_ctx)->session_ctx;
 }
 
 axis2_endpoint_ref_t *AXIS2_CALL axis2_msg_ctx_get_to(struct axis2_msg_ctx *msg_ctx, 

@@ -69,7 +69,6 @@ struct axis2_conf_ctx;
 struct axis2_svc_grp_ctx;
 struct axis2_svc_ctx;
 struct axis2_op_ctx;
-struct axis2_session_ctx;
 struct axis2_conf;
 struct axis2_soap_envelope;
     
@@ -163,12 +162,6 @@ struct axis2_msg_ctx_ops
      */
     axis2_bool_t (AXIS2_CALL *get_server_side)(struct axis2_msg_ctx *msg_ctx, 
                                                 axis2_env_t **env);
-    
-    /**
-     * @return
-     */
-    struct axis2_session_ctx* (AXIS2_CALL *get_session_ctx)(struct axis2_msg_ctx *msg_ctx, 
-                                                            axis2_env_t **env);
     
     /**
      * @return
@@ -584,8 +577,7 @@ AXIS2_DECLARE(axis2_msg_ctx_t *) AXIS2_CALL
 axis2_msg_ctx_create (axis2_env_t **env,
                         struct axis2_conf_ctx *conf_ctx,
                         struct axis2_transport_in_desc *transport_in_desc,
-                        struct axis2_transport_out_desc *transport_out_desc,
-                        struct axis2_session_ctx *session_ctx);
+                        struct axis2_transport_out_desc *transport_out_des);
     
 /************************** Start of function macros **************************/
 
@@ -606,7 +598,6 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_GET_REPLY_TO(msg_ctx, env) ((msg_ctx)->ops->get_reply_to(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_RESPONSE_WRITTEN(msg_ctx, env) ((msg_ctx)->ops->get_response_written(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env) ((msg_ctx)->ops->get_server_side(msg_ctx, env))
-#define AXIS2_MSG_CTX_GET_SESSION_CTX(msg_ctx, env) ((msg_ctx)->ops->get_session_ctx(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_TO(msg_ctx, env) ((msg_ctx)->ops->get_to(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_FAULT_TO(msg_ctx, env, reference) ((msg_ctx)->ops->set_fault_to(msg_ctx, env, reference))
 #define AXIS2_MSG_CTX_SET_FROM(msg_ctx, env, reference) ((msg_ctx)->ops->set_from(msg_ctx, env, reference))

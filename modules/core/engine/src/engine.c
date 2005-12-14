@@ -435,8 +435,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_engine_create_fault_msg_ctx(struct axis2_engin
 
     fault_ctx = axis2_msg_ctx_create(env, engine_impl->conf_ctx,
                     AXIS2_MSG_CTX_GET_TRANSPORT_IN_DESC(processing_context, env),
-                    AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(processing_context, env),
-                    AXIS2_MSG_CTX_GET_SESSION_CTX(processing_context, env));
+                    AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(processing_context, env));
 
     AXIS2_MSG_CTX_SET_PROCESS_FAULT(fault_ctx, env, AXIS2_TRUE);
     
