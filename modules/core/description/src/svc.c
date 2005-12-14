@@ -379,8 +379,8 @@ axis2_svc_create (axis2_env_t **env)
 	svc_impl->svc.ops->get_ops = axis2_svc_get_ops;
 	svc_impl->svc.ops->set_parent = axis2_svc_set_parent;
 	svc_impl->svc.ops->get_parent = axis2_svc_get_parent;
-    svc_impl->svc.ops->set_name = axis2_svc_set_name;
-	svc_impl->svc.ops->get_name = axis2_svc_get_name;
+    svc_impl->svc.ops->set_qname = axis2_svc_set_qname;
+	svc_impl->svc.ops->get_qname = axis2_svc_get_qname;
 	svc_impl->svc.ops->add_param = axis2_svc_add_param;
 	svc_impl->svc.ops->get_param = axis2_svc_get_param;
 	svc_impl->svc.ops->get_params = axis2_svc_get_params;
@@ -473,7 +473,7 @@ axis2_svc_create_with_qname (axis2_env_t **env,
         return NULL;
 	}
     
-	status = axis2_svc_set_name(&(svc_impl->svc), env, qname);
+	status = axis2_svc_set_qname(&(svc_impl->svc), env, qname);
     if(AXIS2_FAILURE == status)
     {
         axis2_svc_free(&(svc_impl->svc), env);
