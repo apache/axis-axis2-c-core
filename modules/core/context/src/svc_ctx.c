@@ -15,6 +15,7 @@
  */
 
 #include <axis2_svc_ctx.h>
+#include <axis2_conf_ctx.h>
 #include <axis2.h>
 #include <axis2_hash.h>
 
@@ -209,7 +210,7 @@ struct axis2_conf_ctx* AXIS2_CALL axis2_svc_ctx_get_conf_ctx(struct axis2_svc_ct
                                             axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(svc_ctx, env, NULL);
-    return NULL; /*(struct axis2_conf_ctx *) AXIS2_SVC_GRP_CTX_GET_PARENT(AXIS2_INTF_TO_IMPL(svc_ctx)->parent, env);*/
+    return AXIS2_SVC_GRP_CTX_GET_PARENT(AXIS2_INTF_TO_IMPL(svc_ctx)->parent, env);
 }
 
 axis2_op_ctx_t* AXIS2_CALL axis2_svc_ctx_create_op_ctx(struct axis2_svc_ctx *svc_ctx, 
@@ -224,8 +225,8 @@ axis2_op_ctx_t* AXIS2_CALL axis2_svc_ctx_create_op_ctx(struct axis2_svc_ctx *svc
     
     if (svc_ctx_impl->svc)
     {
-        /*op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_ctx_impl->svc, env, qname);
-        return axis2_op_ctx_create(env, op, svc_ctx);*/
+        op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_ctx_impl->svc, env, qname);
+        return axis2_op_ctx_create(env, op, svc_ctx);
     }
     
     return NULL;
