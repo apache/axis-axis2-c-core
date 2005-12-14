@@ -76,7 +76,8 @@ axis2_om_children_iterator_create(axis2_env_t **env,
     iterator_impl->remove_called = AXIS2_FALSE;
     
     iterator_impl->iterator.ops = NULL;
-    iterator_impl->iterator.ops = (axis2_om_children_iterator_ops_t*)AXIS2_MALLOC((*env)->allocator,
+    iterator_impl->iterator.ops = 
+            (axis2_om_children_iterator_ops_t*)AXIS2_MALLOC((*env)->allocator,
                                     sizeof(axis2_om_children_iterator_ops_t));
     
     if(!(iterator_impl->iterator.ops))
@@ -156,4 +157,4 @@ axis2_om_children_iterator_next(axis2_om_children_iterator_t *iterator,
         return iterator_impl->last_child;                                            
     }
     return NULL;
-}                                                                                                                                                           
+}

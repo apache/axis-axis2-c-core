@@ -100,7 +100,7 @@ axis2_qname_create (axis2_env_t **env,
     axis2_qname_impl_t *qn = NULL;
     AXIS2_ENV_CHECK(env, NULL);
    
-    /* localpart or prefix can't be null */
+    /* localpart can't be null */
     if (!localpart)
     {
         AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
@@ -126,7 +126,7 @@ axis2_qname_create (axis2_env_t **env,
         AXIS2_FREE ((*env)->allocator, qn);
         return NULL;
     }
-
+    /** if prefix is null it is set to "" */
     if (!prefix)
     {
         qn->prefix = (axis2_char_t*)AXIS2_STRDUP("", env);
@@ -143,6 +143,7 @@ axis2_qname_create (axis2_env_t **env,
         AXIS2_FREE ((*env)->allocator, qn);
         return NULL;
     }
+    /** if uri is null it is set to ""*/
     if (!namespace_uri)
     {
         qn->namespace_uri = (axis2_char_t*)AXIS2_STRDUP ("", env);

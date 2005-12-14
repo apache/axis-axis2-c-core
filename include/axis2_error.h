@@ -137,6 +137,8 @@ extern "C"
         AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL,
         /** Bulder's last node is NULL when it is not supposed to be NULL */
         AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL,
+        /** A document not associated with builder */
+        AXIS2_ERROR_BUILDER_NOT_ASSOCIATED_WITH_DOCUMENT,
         /** Discard faile because the builder state is invalid */
         AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD,
         /** Document root is NULL, when it is not supposed to be NULL */

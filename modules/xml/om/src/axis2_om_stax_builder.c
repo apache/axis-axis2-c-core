@@ -407,8 +407,15 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
         if (AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(builder_impl->document, env))
              AXIS2_OM_NODE_FREE_TREE(
                 AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(builder_impl->document, env),env);*/
-                
-        AXIS2_OM_DOCUMENT_SET_ROOT_ELEMENT(builder_impl->document, env, element_node);
+        if(builder_impl->document)        
+        {
+            AXIS2_OM_DOCUMENT_SET_ROOT_ELEMENT(builder_impl->document, env, element_node);
+        }
+        else
+        {
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_BUILDER_NOT_ASSOCIATED_WITH_DOCUMENT, NULL);
+            return  NULL;            
+        }            
         
     }
     else if (AXIS2_OM_NODE_GET_BUILD_STATUS(builder_impl->lastnode, env))
