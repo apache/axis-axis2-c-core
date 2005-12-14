@@ -101,12 +101,12 @@ struct axis2_svc_ops
                  axis2_env_t **env);
 	
     axis2_status_t (AXIS2_CALL *
-    set_name) (axis2_svc_t *svc, 
+    set_qname) (axis2_svc_t *svc, 
                 axis2_env_t **env,
                 axis2_qname_t *qname);
     
 	axis2_qname_t *(AXIS2_CALL *
-    get_name) (const axis2_svc_t *svc, 
+    get_qname) (const axis2_svc_t *svc, 
                axis2_env_t **env);
 
 	axis2_status_t (AXIS2_CALL *
@@ -463,9 +463,9 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
 
 #define AXIS2_SVC_GET_PARENT(svc, env) (svc->ops->get_parent (svc, env))
 
-#define AXIS2_SVC_SET_NAME(svc, env, qname) (svc->ops->set_name(svc , env, qname))
+#define AXIS2_SVC_SET_QNAME(svc, env, qname) (svc->ops->set_qname(svc , env, qname))
 
-#define AXIS2_SVC_GET_NAME(svc, env) (svc->ops->get_name(svc , env))
+#define AXIS2_SVC_GET_QNAME(svc, env) (svc->ops->get_qname(svc , env))
 		
 #define AXIS2_SVC_ADD_PARAM(svc, env, param) (svc->ops->add_param(svc , env, param))
 		

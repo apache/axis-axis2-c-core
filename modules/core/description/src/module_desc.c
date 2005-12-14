@@ -435,7 +435,7 @@ axis2_module_desc_add_op (axis2_module_desc_t *module_desc,
             return AXIS2_FAILURE;
 	}	
     
-    optr_name = AXIS2_OP_GET_NAME(op, env);
+    optr_name = AXIS2_OP_GET_QNAME(op, env);
     
     if(NULL == optr_name)
     {

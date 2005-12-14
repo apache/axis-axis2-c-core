@@ -51,12 +51,12 @@ axis2_svc_grp_t * AXIS2_CALL
 axis2_svc_get_parent (axis2_svc_t *svc, axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_svc_set_name (axis2_svc_t *svc, 
+axis2_svc_set_qname (axis2_svc_t *svc, 
                     axis2_env_t **env,
                     axis2_qname_t *qname);
 
 axis2_qname_t * AXIS2_CALL
-axis2_svc_get_name (const axis2_svc_t *svc, 
+axis2_svc_get_qname (const axis2_svc_t *svc, 
                     axis2_env_t **env);	
 
 axis2_status_t AXIS2_CALL
@@ -682,7 +682,7 @@ axis2_svc_get_parent (axis2_svc_t *svc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_svc_set_name (axis2_svc_t *svc, 
+axis2_svc_set_qname (axis2_svc_t *svc, 
                     axis2_env_t **env,
                     axis2_qname_t *qname)
 {
@@ -693,7 +693,7 @@ axis2_svc_set_name (axis2_svc_t *svc,
 }
 
 axis2_qname_t * AXIS2_CALL
-axis2_svc_get_name (const axis2_svc_t *svc, 
+axis2_svc_get_qname (const axis2_svc_t *svc, 
                     axis2_env_t **env)
 {
 	AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
