@@ -271,7 +271,27 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         axis2_status_t (AXIS2_CALL *remove_attribute)
                             (axis2_om_element_t *om_element,
                              axis2_env_t **env,
-                             axis2_om_attribute_t *om_attribute);                             
+                             axis2_om_attribute_t *om_attribute); 
+        /**
+         * Sets the text of the given element.
+         *caution - This method will wipe out all the text elements (and hence any
+         * moxed content) before setting the text
+         */
+        axis2_status_t (AXIS2_CALL *set_text)(axis2_om_element_t *om_element,
+                                              axis2_env_t **env,
+                                              axis2_char_t *text,
+                                              axis2_om_node_t *element_node); 
+        /**
+         * select all the text children and concat them to a single string
+         */                                              
+        axis2_char_t* (AXIS2_CALL *get_text)(axis2_om_element_t *om_element,
+                                             axis2_env_t **env,
+                                             axis2_om_node_t *element_node);
+
+        axis2_om_element_t* (AXIS2_CALL *get_first_element)
+                                (axis2_om_element_t *om_element,
+                                 axis2_env_t **env,
+                                 axis2_om_node_t *element_node);        
     };
 
     
@@ -391,7 +411,18 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
 
 #define AXIS2_OM_ELEMENT_REMOVE_ATTRIBUTE(om_element, env, om_attribute) \
         ((om_element)->ops->remove_attribute(om_element, env, om_attribute))
+
+#define AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(om_element, env, element_node) \
+        ((om_element)->ops->get_first_element(om_element, env, element_node))
+
+#define AXIS2_OM_ELEMENT_GET_TEXT(om_element, env, element_node) \
+        ((om_element)->ops->get_text(om_element, env, element_node))
+
+#define AXIS2_OM_ELEMENT_SET_TEXT(om_element, env, text, element_node) \
+        ((om_element)->ops->set_text(om_element, env, text, element_node))
         
+                
+                
 /** @} */
 
 

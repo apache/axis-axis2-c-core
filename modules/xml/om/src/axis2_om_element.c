@@ -17,6 +17,7 @@
 #include <axis2_om_element.h>
 #include <axis2_om_attribute.h>
 #include <axis2_om_namespace.h>
+#include <string.h>
 
 
 axis2_om_namespace_t *AXIS2_CALL
@@ -123,6 +124,22 @@ axis2_status_t AXIS2_CALL
 axis2_om_element_remove_attribute(axis2_om_element_t *om_element, 
                                   axis2_env_t **env,
                                   axis2_om_attribute_t *om_attribute);
+
+axis2_om_element_t* AXIS2_CALL
+axis2_om_element_get_first_element(axis2_om_element_t *om_element,
+                                    axis2_env_t **env,
+                                    axis2_om_node_t *element_node);
+axis2_char_t* AXIS2_CALL
+axis2_om_element_get_text(axis2_om_element_t *om_element,
+                          axis2_env_t **env,
+                          axis2_om_node_t *element_node);
+
+axis2_status_t AXIS2_CALL
+axis2_om_element_set_text(axis2_om_element_t *om_element,
+                          axis2_env_t **env,
+                          axis2_char_t *text,
+                          axis2_om_node_t *element_node);                                                              
+                                                                      
                                          
                                          
 /************************** end function prototypes **********************/
@@ -277,8 +294,13 @@ axis2_om_element_create (axis2_env_t **env,
     element->om_element.ops->remove_attribute =
         axis2_om_element_remove_attribute;
     
+    element->om_element.ops->set_text =
+        axis2_om_element_set_text;
+    element->om_element.ops->get_text =
+        axis2_om_element_get_text;
+    element->om_element.ops->get_first_element =
+        axis2_om_element_get_first_element;                   
     return &(element->om_element);
-
 }
 
 AXIS2_DECLARE(axis2_om_element_t *)
@@ -960,3 +982,86 @@ axis2_om_element_remove_attribute(axis2_om_element_t *om_element,
     }
     return AXIS2_FAILURE;
 }
+
+axis2_om_element_t* AXIS2_CALL
+axis2_om_element_get_first_element(axis2_om_element_t *om_element,
+                                    axis2_env_t **env,
+                                    axis2_om_node_t *element_node)
+{
+    axis2_om_node_t *temp_node = NULL;
+    AXIS2_FUNC_PARAM_CHECK(om_element, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
+   
+    temp_node = AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env);
+    while(temp_node != NULL)
+    {
+        if(AXIS2_OM_NODE_GET_NODE_TYPE(temp_node, env) == AXIS2_OM_ELEMENT)
+        {
+            return (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(temp_node, env);
+        }
+        else
+        {
+            temp_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(temp_node, env);
+        }
+    }     
+    return NULL;
+}                                    
+axis2_char_t* AXIS2_CALL
+axis2_om_element_get_text(axis2_om_element_t *om_element,
+                          axis2_env_t **env,
+                          axis2_om_node_t *element_node)
+{
+    axis2_char_t* dest = NULL;
+    axis2_char_t* temp_text = NULL;
+    axis2_om_text_t* text_node = NULL;
+    axis2_om_node_t* temp_node = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(om_element, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
+    
+    temp_node = AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env);
+    while(temp_node != NULL)
+    {
+        if(AXIS2_OM_NODE_GET_NODE_TYPE(temp_node, env) == AXIS2_OM_TEXT)
+        {
+            text_node = (axis2_om_text_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(temp_node, env); 
+            temp_text = AXIS2_OM_TEXT_GET_VALUE(text_node, env);
+            
+            if(temp_text && AXIS2_STRCMP(temp_text, "") != 0)
+                dest = strcat(dest, temp_text);
+            
+        }
+        temp_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(temp_node, env);
+    }   
+    return dest;
+}                          
+
+axis2_status_t AXIS2_CALL
+axis2_om_element_set_text(axis2_om_element_t *om_element,
+                          axis2_env_t **env,
+                          axis2_char_t *text,
+                          axis2_om_node_t *element_node)
+{
+    axis2_om_node_t* temp_node = NULL;
+    axis2_om_text_t* om_text = NULL;
+    AXIS2_FUNC_PARAM_CHECK(om_element, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, text, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, element_node, AXIS2_FAILURE);
+    
+    temp_node = AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env);
+    while( temp_node != NULL)
+    {
+        if(AXIS2_OM_NODE_GET_NODE_TYPE(temp_node, env) == AXIS2_OM_TEXT)
+        {
+            AXIS2_OM_NODE_DETACH(temp_node, env);
+        }
+        temp_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(temp_node, env);    
+    } 
+    temp_node = NULL;
+       
+    om_text = axis2_om_text_create(env, NULL, text, &temp_node);
+    AXIS2_OM_NODE_ADD_CHILD(temp_node, env, element_node);
+    return AXIS2_SUCCESS;
+}                
+
+
