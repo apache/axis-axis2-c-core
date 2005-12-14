@@ -771,7 +771,7 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
     {
         axis2_hash_this (index_i, NULL, NULL, &value);
         desc = (struct axis2_svc *) value;
-        svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_NAME(desc, env), env);
+        svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(desc, env), env);
         
         svc_name2 = axis2_hash_get(config_impl->all_svcs, svc_name, 
                 AXIS2_HASH_KEY_STRING);
@@ -796,7 +796,7 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
     {
         axis2_hash_this (index_i, NULL, NULL, &value);
         desc = (struct axis2_svc *) value;
-        svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_NAME(desc, env), env);
+        svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(desc, env), env);
         axis2_hash_set(config_impl->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
             desc);
         /* notifyObservers(AxisEvent.SERVICE_DEPLOY ,description); */
@@ -878,7 +878,7 @@ axis2_conf_add_svc (axis2_conf_t *conf,
     }
 		
 	
-	svc_grp_qname = AXIS2_SVC_GET_NAME(svc, env);
+	svc_grp_qname = AXIS2_SVC_GET_QNAME(svc, env);
     if(NULL == svc_grp_qname)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_SVC, 
@@ -1261,7 +1261,7 @@ axis2_conf_get_svcs(axis2_conf_t *conf,
         {
             axis2_hash_this(index_j, NULL, NULL, &value2);
             svc = (struct axis2_svc *) value2;
-            svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_NAME(svc, env), env);
+            svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(svc, env), env);
             axis2_hash_set(config_impl->all_svcs, svc_name,
                 AXIS2_HASH_KEY_STRING, svc);    
                             

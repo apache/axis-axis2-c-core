@@ -226,7 +226,7 @@ axis2_svc_get_endpoint(axis2_svc_t *svc,
                             axis2_qname_t * qname);
 
 axis2_char_t * AXIS2_CALL
-axis2_svc_get_namespace(axis2_svc_t *svc,
+axis2_svc_get_qnamespace(axis2_svc_t *svc,
                             axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
@@ -446,7 +446,7 @@ axis2_svc_create (axis2_env_t **env)
     
     svc_impl->svc.ops->get_endpoint = axis2_svc_get_endpoint;
     
-    svc_impl->svc.ops->get_namespace = axis2_svc_get_namespace;
+    svc_impl->svc.ops->get_namespace = axis2_svc_get_qnamespace;
     
     svc_impl->svc.ops->add_mapping = axis2_svc_add_mapping;
     
@@ -1372,7 +1372,7 @@ axis2_svc_get_endpoint(axis2_svc_t *svc,
 }
 
 axis2_char_t * AXIS2_CALL
-axis2_svc_get_namespace(axis2_svc_t *svc,
+axis2_svc_get_qnamespace(axis2_svc_t *svc,
                             axis2_env_t **env) 
 {
     return AXIS2_WSDL_SVC_GET_NAMESPACE(svc->wsdl_svc, env);

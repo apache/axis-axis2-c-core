@@ -569,7 +569,7 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
 #define AXIS2_SVC_GET_ENDPOINT(svc, env, qname) \
         (svc->ops->get_endpoint(svc, env, qname))
 
-#define AXIS2_SVC_GET_NAMESPACE(svc, env) \
+#define AXIS2_SVC_GET_QNAMESPACE(svc, env) \
         (svc->ops->get_namespace(svc, env))
 
 #define AXIS2_SVC_ADD_MAPPING(svc, env, mapping_key, axis2_opt) \

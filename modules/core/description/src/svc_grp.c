@@ -387,7 +387,7 @@ axis2_svc_grp_add_svc (axis2_svc_grp_t *svc_grp,
         if(!svc_grp_impl->svcs)
             return AXIS2_FAILURE;
     }
-	axis2_hash_set (svc_grp_impl->svcs, AXIS2_SVC_GET_NAME(svc, env), 
+	axis2_hash_set (svc_grp_impl->svcs, AXIS2_SVC_GET_QNAME(svc, env), 
         sizeof(axis2_qname_t), svc);
     
     handler_resolver = axis2_phase_resolver_create_with_config_and_svc(env,
@@ -396,7 +396,7 @@ axis2_svc_grp_add_svc (axis2_svc_grp_t *svc_grp,
     if(NULL == handler_resolver)
     {
         /* Remove the previously added service */
-        axis2_hash_set(svc_grp_impl->svcs, AXIS2_SVC_GET_NAME(svc, env), sizeof(
+        axis2_hash_set(svc_grp_impl->svcs, AXIS2_SVC_GET_QNAME(svc, env), sizeof(
             axis2_qname_t), NULL);
         
         return AXIS2_FAILURE;
@@ -406,7 +406,7 @@ axis2_svc_grp_add_svc (axis2_svc_grp_t *svc_grp,
     if(AXIS2_FAILURE == status)
     {
         /* Remove the previously added service */
-        axis2_hash_set(svc_grp_impl->svcs, AXIS2_SVC_GET_NAME(svc, env), sizeof(
+        axis2_hash_set(svc_grp_impl->svcs, AXIS2_SVC_GET_QNAME(svc, env), sizeof(
             axis2_qname_t), NULL);
         AXIS2_PHASE_RESOLVER_FREE(handler_resolver, env);
         return AXIS2_FAILURE;
@@ -416,7 +416,7 @@ axis2_svc_grp_add_svc (axis2_svc_grp_t *svc_grp,
     if(AXIS2_FAILURE == status)
     {
         /* Remove the previously added service */
-        axis2_hash_set(svc_grp_impl->svcs, AXIS2_SVC_GET_NAME(svc, env), sizeof(
+        axis2_hash_set(svc_grp_impl->svcs, AXIS2_SVC_GET_QNAME(svc, env), sizeof(
             axis2_qname_t), NULL);
         AXIS2_PHASE_RESOLVER_FREE(handler_resolver, env);
         return status;
@@ -426,7 +426,7 @@ axis2_svc_grp_add_svc (axis2_svc_grp_t *svc_grp,
     if(AXIS2_FAILURE == status)
     {
         /* Remove the previously added service */
-        axis2_hash_set(svc_grp_impl->svcs, AXIS2_SVC_GET_NAME(svc, env), sizeof(
+        axis2_hash_set(svc_grp_impl->svcs, AXIS2_SVC_GET_QNAME(svc, env), sizeof(
             axis2_qname_t), NULL);
         AXIS2_PHASE_RESOLVER_FREE(handler_resolver, env);
         return status;

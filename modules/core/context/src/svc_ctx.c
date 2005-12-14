@@ -88,7 +88,7 @@ axis2_svc_ctx_t* AXIS2_CALL axis2_svc_ctx_create(axis2_env_t **env,
     if (svc)
     {
         svc_ctx_impl->svc = svc;
-        svc_ctx_impl->svc_qname = AXIS2_SVC_GET_NAME(svc, env);
+        svc_ctx_impl->svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
         if (svc_ctx_impl->svc_qname)
         {
             svc_ctx_impl->svc_id = AXIS2_QNAME_GET_LOCALPART(svc_ctx_impl->svc_qname, env);
