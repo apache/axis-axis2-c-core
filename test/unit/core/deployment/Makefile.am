@@ -25,6 +25,7 @@ deployment_test_LDADD   =  $(LDFLAGS) libtest_deployment.la  \
                     -laxis2_phaseresolver \
                     -laxis2_om \
                     -laxis2_parser \
+                    -laxis2_addr \
                     -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
                     -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
 
