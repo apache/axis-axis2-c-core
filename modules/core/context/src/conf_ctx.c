@@ -15,6 +15,7 @@
  */
 
 #include <axis2_conf_ctx.h>
+#include <axis2_svc_grp.h>
 #include <axis2.h>
 
 typedef struct axis2_conf_ctx_impl
@@ -175,9 +176,6 @@ axis2_conf_ctx_t* AXIS2_CALL axis2_conf_ctx_create(axis2_env_t **env, axis2_conf
     return &(conf_ctx_impl->conf_ctx);
 }
 
-/**
- * @param configuration
- */
 axis2_status_t AXIS2_CALL axis2_conf_ctx_set_conf(struct axis2_conf_ctx *conf_ctx, axis2_env_t **env, axis2_conf_t *conf) 
 {
     AXIS2_FUNC_PARAM_CHECK(conf_ctx, env, AXIS2_FAILURE);
@@ -185,16 +183,12 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_set_conf(struct axis2_conf_ctx *conf_ct
     return AXIS2_SUCCESS;
 }
 
-/**
- */
 axis2_ctx_t* AXIS2_CALL axis2_conf_ctx_get_base(struct axis2_conf_ctx *conf_ctx, axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(conf_ctx, env, NULL);
     return AXIS2_INTF_TO_IMPL(conf_ctx)->base;
 }
 
-/**
- */
 axis2_conf_t* AXIS2_CALL axis2_conf_ctx_get_conf(struct axis2_conf_ctx *conf_ctx, axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(conf_ctx, env, NULL);
@@ -220,12 +214,6 @@ axis2_hash_t* AXIS2_CALL axis2_conf_ctx_get_svc_grp_ctx_map(struct axis2_conf_ct
     return AXIS2_INTF_TO_IMPL(conf_ctx)->svc_grp_ctx_map;
 }
 
-/**
- * Register a struct axis2_op_ctx against a given Message ID.
- *
- * @param messageID
- * @param mepContext
- */
 axis2_status_t AXIS2_CALL axis2_conf_ctx_register_op_ctx(struct axis2_conf_ctx *conf_ctx, 
                                                                 axis2_env_t **env,
                                                                 axis2_char_t *message_id,
@@ -245,12 +233,6 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_register_op_ctx(struct axis2_conf_ctx *
     return AXIS2_SUCCESS;
 }
 
-/**
- * get axis2_op_ctx struct given a Message ID
- *
- * @param message_id
- * @return struct axis2_op_ctx * <code>struct axis2_op_ctx *<code>
- */
 axis2_op_ctx_t* AXIS2_CALL axis2_conf_ctx_get_op_ctx(struct axis2_conf_ctx *conf_ctx, 
                                                                         axis2_env_t **env,
                                                                         axis2_char_t *message_id) 
@@ -268,12 +250,6 @@ axis2_op_ctx_t* AXIS2_CALL axis2_conf_ctx_get_op_ctx(struct axis2_conf_ctx *conf
     return NULL;
 }
 
-/**
- * Register a struct axis2_svc_ctx against a given Message ID.
- *
- * @param svc_id
- * @param mepContext
- */
 axis2_status_t AXIS2_CALL axis2_conf_ctx_register_svc_ctx(struct axis2_conf_ctx *conf_ctx, 
                                                                 axis2_env_t **env,
                                                                 axis2_char_t *svc_id,
@@ -293,12 +269,6 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_register_svc_ctx(struct axis2_conf_ctx 
     return AXIS2_SUCCESS;
 }
 
-/**
- * get axis2_svc_ctx struct given a Message ID
- *
- * @param svc_id
- * @return struct axis2_svc_ctx * <code>struct axis2_svc_ctx *<code>
- */
 axis2_svc_ctx_t* AXIS2_CALL axis2_conf_ctx_get_svc_ctx(struct axis2_conf_ctx *conf_ctx, 
                                                                         axis2_env_t **env,
                                                                         axis2_char_t *svc_id) 
@@ -316,12 +286,6 @@ axis2_svc_ctx_t* AXIS2_CALL axis2_conf_ctx_get_svc_ctx(struct axis2_conf_ctx *co
     return NULL;
 }
 
-/**
- * Register a struct axis2_svc_grp_ctx against a given Message ID.
- *
- * @param svc_grp_id
- * @param mepContext
- */
 axis2_status_t AXIS2_CALL axis2_conf_ctx_register_svc_grp_ctx(struct axis2_conf_ctx *conf_ctx, 
                                                                 axis2_env_t **env,
                                                                 axis2_char_t *svc_grp_id,
@@ -341,12 +305,6 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_register_svc_grp_ctx(struct axis2_conf_
     return AXIS2_SUCCESS;
 }
 
-/**
- * get axis2_svc_grp_ctx struct given a service group ID
- *
- * @param svc_grp_id
- * @return struct axis2_svc_grp_ctx * <code>struct axis2_svc_grp_ctx *<code>
- */
 axis2_svc_grp_ctx_t* AXIS2_CALL axis2_conf_ctx_get_svc_grp_ctx(struct axis2_conf_ctx *conf_ctx, 
                                                                         axis2_env_t **env,
                                                                         axis2_char_t *svc_grp_id) 
@@ -364,12 +322,6 @@ axis2_svc_grp_ctx_t* AXIS2_CALL axis2_conf_ctx_get_svc_grp_ctx(struct axis2_conf
     return NULL;
 }
 
-/**
- * This method allows users to reolve the paths relative to the
- * root diretory
- *
- * @param path
- */
 axis2_char_t* AXIS2_CALL axis2_conf_ctx_get_root_dir(struct axis2_conf_ctx *conf_ctx, 
                                                         axis2_env_t **env) 
 {
@@ -377,9 +329,6 @@ axis2_char_t* AXIS2_CALL axis2_conf_ctx_get_root_dir(struct axis2_conf_ctx *conf
     return AXIS2_INTF_TO_IMPL(conf_ctx)->root_dir;
 }
 
-/**
- * @param file
- */
 axis2_status_t AXIS2_CALL axis2_conf_ctx_set_root_dir(struct axis2_conf_ctx *conf_ctx, 
                                                         axis2_env_t **env,
                                                         axis2_char_t *path) 
@@ -498,18 +447,6 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_free (struct axis2_conf_ctx *conf_ctx,
     return AXIS2_SUCCESS;
 }
 
-/**
- * This method should search for a service group context in the map with given id as the key.
- * If(key != null && found)
- * check for a service context for the intended service.
- * if (!found)
- * create one and hook up to service group context
- * else
- * create new service group context with the given key or if key is null with a new key
- * create a new service context for the service
- *
- * @param messageContext
- */
 axis2_svc_grp_ctx_t* AXIS2_CALL axis2_conf_ctx_fill_ctxs(struct axis2_conf_ctx *conf_ctx, 
                                                axis2_env_t **env,
                                                axis2_msg_ctx_t *msg_ctx)
@@ -583,8 +520,8 @@ axis2_svc_grp_ctx_t* AXIS2_CALL axis2_conf_ctx_fill_ctxs(struct axis2_conf_ctx *
     {
         axis2_svc_grp_t *svc_grp = NULL;
         svc_grp = AXIS2_SVC_GET_PARENT(svc, env);
-        /*svc_grp_ctx = AXIS2_SVC_GRP_GET_SVC_CTX(svc_grp, env);
-        svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, svc_id);*/        
+        /*TODO svc_grp_ctx = AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env);*/
+        svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, svc_id);
         if (!svc_ctx)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_SVC_GRP, AXIS2_FAILURE);
