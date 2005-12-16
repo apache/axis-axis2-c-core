@@ -41,10 +41,26 @@ extern "C"
     AXIS2_DECLARE(int)
     axis2_strlen(const axis2_char_t *s);
 
+    AXIS2_DECLARE(int)
+    axis2_strcasecmp(const axis2_char_t *s1, axis2_char_t *s2);
+
+    AXIS2_DECLARE(int)
+    axis2_strncasecmp(const axis2_char_t *s1, axis2_char_t *s2, int n);
+    
+    /* much similar to the strcat behaviour. But the difference is
+     * this allocates new memory to put the conatenated string rather than
+     * modifying the first argument. The user should free the allocated
+     * memory for the return value
+     */
+    AXIS2_DECLARE(axis2_char_t*)
+    axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, axis2_env_t **env); 
+
 #define AXIS2_STRDUP(pts, env) axis2_strdup(pts, env)
 #define AXIS2_STRCMP(s1, s2) axis2_strcmp(s1, s2)
 #define AXIS2_STRLEN(s) axis2_strlen(s)
-
+#define AXIS2_STRCASECMP(s1,s2) axis2_strcasecmp(s1,s2)
+#define AXIS2_STRNCASECMP(s1,s2,n) axis2_strncasecmp(s1,s2,n)
+#define AXIS2_STRACAT(s1, s2, env) axis2_stracat(s1, s2, env)
 /** @} */
     
 #ifdef __cplusplus

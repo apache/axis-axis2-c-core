@@ -42,6 +42,34 @@ axis2_strdup (const void *ptr, axis2_env_t **env)
     }
 }
 
+AXIS2_DECLARE(axis2_char_t*)
+axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, axis2_env_t **env)
+{
+    axis2_char_t *ret = NULL;
+    int alloc_len = -1;
+
+    if(NULL == s1 && NULL == s2)
+    {
+        return NULL;
+    }
+    if(NULL == s1)
+    {
+        return (axis2_char_t*)AXIS2_STRDUP(s2, env);
+    }
+    if(NULL == s2)
+    {
+        return (axis2_char_t)AXIS2_STRDUP(s1, env);
+    }
+    alloc_len = axis2_strlen(s1) + axis2_strlen(s2) + 1;
+    ret = (axis2_char_t*)AXIS2_MALLOC((*env)->allocator,
+                    alloc_len*sizeof(axis2_char_t));
+    memcpy(ret, s1, axis2_strlen(s1)*sizeof(axis2_char_t));
+    memcpy((ret + axis2_strlen(s1)*sizeof(axis2_char_t)), s2,
+                    axis2_strlen(s2)*sizeof(axis2_char_t));
+    ret[alloc_len*sizeof(axis2_char_t)] = '\0';
+    return ret;
+}
+
 AXIS2_DECLARE(int)
 axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
 {
