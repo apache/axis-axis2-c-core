@@ -1060,32 +1060,30 @@ axis2_om_element_get_text(axis2_om_element_t *om_element,
         
         if(AXIS2_OM_NODE_GET_NODE_TYPE(temp_node, env) == AXIS2_OM_TEXT)
         {
+            int dest_len = 0;
+            int curr_len = 0;
+            axis2_char_t *temp_dest = NULL;
             
             text_node = (axis2_om_text_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(temp_node, env); 
             temp_text = AXIS2_OM_TEXT_GET_VALUE(text_node, env);
-            /*
-            
-            int dst_len = strlen(dst);
-            int cur_len = dst_len + strlen(temp_text);
-            axis2_char_t *tmp_dst = AXIS2_MALLOC((*env)->allocator, (cur_len +1)*sizeof(axis2_char));
-            memcpy(tmp_dst, dst, dst_len*sizeof(axis2_char_t));
-            memcpy((tmp_dst + dst_len * sizeof(axis2_char_t)), temp_text, cur_len - dst_len);
-            tmp_dst[cur_len] = '\0';
-            
-            
-            if(!dest && temp_text && (AXIS2_STRCMP(temp_text, "") != 0))
+            if(dest && temp_text && AXIS2_STRCMP(temp_text, "") != 0)
             {
-                 dest = AXIS2_STRDUP("", env);
-                 strcat(dest, temp_text);   
-                 
-            }
-            else if(dest && temp_text && (AXIS2_STRCMP(temp_text, "") != 0))
-            {
+                dest_len = AXIS2_STRLEN(dest);
+                curr_len = dest_len + AXIS2_STRLEN(temp_text);
+                temp_dest = AXIS2_MALLOC((*env)->allocator, (curr_len +1 )*sizeof(axis2_char_t));
+                memcpy(temp_dest, dest, dest_len*sizeof(axis2_char_t));
+                memcpy((temp_dest + dest_len * sizeof(axis2_char_t)), temp_text, curr_len - dest_len);
+                temp_dest[curr_len] = '\0';
                 
-                this should be fixed 
-                strcat(dest, temp_text); 
-            }                            
-            */           
+                AXIS2_FREE((*env)->allocator, dest);
+                dest = NULL;
+                dest = temp_dest;
+            }
+            else if(!dest && temp_text && AXIS2_STRCMP(temp_text, "") != 0)
+            {
+                dest = AXIS2_STRDUP(temp_text, env);
+            }
+
         }
         temp_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(temp_node, env);
     }  
