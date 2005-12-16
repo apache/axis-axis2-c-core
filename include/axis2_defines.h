@@ -55,7 +55,11 @@ extern "C"
   *	Calling Conventions
   */
 #if defined(__GNUC__)
+#if defined(__i386)
 #define AXIS2_CALL __attribute__((cdecl))
+#else
+#define AXIS2_CALL
+#endif
 #else
 #if defined(__unix)
 #define AXIS2_CALL
@@ -63,8 +67,8 @@ extern "C"
 #define AXIS2_CALL __stdcall
 #endif
 #endif
-
 #ifdef DOXYGEN
+
 /* define these just so doxygen documents them */
 
 /**
