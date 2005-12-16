@@ -199,14 +199,17 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
     wrapper_impl = (axis2_libxml2_reader_wrapper_impl_t*)AXIS2_MALLOC((*env)->allocator,
          sizeof(axis2_libxml2_reader_wrapper_impl_t));
     if(!wrapper_impl)
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     
     wrapper_impl->reader =  xmlNewTextReaderFilename(filename);
     if(!(wrapper_impl->reader))
     {
         AXIS2_FREE((*env)->allocator, wrapper_impl);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CREATING_XML_STREAM_READER, NULL);
-        
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CREATING_XML_STREAM_READER, AXIS2_FAILURE);
+        return NULL;
     }
 	
     
@@ -223,7 +226,8 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
     {
         xmlFreeTextReader(wrapper_impl->reader);
         AXIS2_FREE((*env)->allocator, wrapper_impl);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
 	/* ops */
 	
@@ -285,7 +289,7 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
          sizeof(axis2_libxml2_reader_wrapper_impl_t));
     if(!wrapper_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;   
     }
     
@@ -297,7 +301,8 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
     if(!(wrapper_impl->reader))
     {
         AXIS2_FREE((*env)->allocator, wrapper_impl);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CREATING_XML_STREAM_READER, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CREATING_XML_STREAM_READER, AXIS2_FAILURE);
+        return NULL;
     }
 	
     
@@ -314,7 +319,8 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
     {
         xmlFreeTextReader(wrapper_impl->reader);
         AXIS2_FREE((*env)->allocator, wrapper_impl);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
 
 	

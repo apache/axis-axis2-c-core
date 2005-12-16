@@ -18,11 +18,9 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
     
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
-
     struct axis2_op *optr = axis2_op_create(&env);
     op_in_phases = get_op_in_phases(&env);  
     AXIS2_OP_SET_REMAINING_PHASES_INFLOW(optr, &env, op_in_phases);
-    
     flow = axis2_flow_create(&env); 
     add_handlers_to_flow(flow, &env);
     module_desc = axis2_module_desc_create(&env);

@@ -89,7 +89,8 @@ axis2_simple_http_svr_conn_create (axis2_env_t **env, int sockfd)
     
     if(NULL == svr_conn_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     svr_conn_impl->socket = sockfd;
     svr_conn_impl->stream = NULL;
@@ -101,7 +102,8 @@ axis2_simple_http_svr_conn_create (axis2_env_t **env, int sockfd)
     {
         axis2_simple_http_svr_conn_free((axis2_simple_http_svr_conn_t *)
                                         svr_conn_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     svr_conn_impl->svr_conn.ops->close = axis2_simple_http_svr_conn_close;
     svr_conn_impl->svr_conn.ops->is_open = axis2_simple_http_svr_conn_is_open;

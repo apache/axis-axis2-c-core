@@ -318,7 +318,8 @@ axis2_op_create (axis2_env_t **env)
      
 	if(NULL == op_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     
     op_impl->parent = NULL;
@@ -338,7 +339,7 @@ axis2_op_create (axis2_env_t **env)
 	if(NULL == op_impl->op.param_container)
 	{
         axis2_op_free(&(op_impl->op), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);	
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);	
         return NULL;        
 	}
 
@@ -347,7 +348,7 @@ axis2_op_create (axis2_env_t **env)
 	if(NULL == op_impl->op.wsdl_op)
 	{
         axis2_op_free(&(op_impl->op), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;		
 	}
 
@@ -405,7 +406,7 @@ axis2_op_create (axis2_env_t **env)
 	if(NULL == op_impl->op.ops)
 	{
         axis2_op_free(&(op_impl->op), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
 	
@@ -482,7 +483,7 @@ axis2_op_create_with_name (axis2_env_t **env, axis2_qname_t *qname)
     
 	if(NULL == op_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -492,7 +493,7 @@ axis2_op_create_with_name (axis2_env_t **env, axis2_qname_t *qname)
         if(NULL == op_impl->op.wsdl_op)
         {
             axis2_op_free(&(op_impl->op), env);
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;		
         }
     }
@@ -503,7 +504,7 @@ axis2_op_create_with_name (axis2_env_t **env, axis2_qname_t *qname)
         axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
-    printf("status:%d\n", status);
+    
 	return &(op_impl->op);	
 }
 
@@ -519,7 +520,7 @@ axis2_op_create_with_wsdl_op (axis2_env_t **env,
     
 	if(NULL == op_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
    
@@ -1472,7 +1473,7 @@ axis2_op_find_op_ctx(axis2_op_t *op,
         op_ctx = axis2_op_ctx_create(env, op, svc_ctx);
         if(!op_ctx)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
     }
@@ -1488,7 +1489,8 @@ axis2_op_find_op_ctx(axis2_op_t *op,
         op_ctx = AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, value);
         if(NULL == op_ctx)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG, NULL);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG, 
+                AXIS2_FAILURE);
             return NULL;
         }
     }
@@ -1536,7 +1538,8 @@ axis2_op_find_for_existing_op_ctx(axis2_op_t *op,
 
         if (NULL == op_ctx) 
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG, NULL);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG, 
+                AXIS2_FAILURE);
             return NULL;
         }
     }

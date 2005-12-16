@@ -92,7 +92,10 @@ axis2_wsdl_msg_ref_create (axis2_env_t **env)
 	
 	
 	if(NULL == msg_ref_impl)
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        return NULL;
+    }
     	
     msg_ref_impl->msg_ref.extensible_component = 
         axis2_wsdl_extensible_component_create(env);
@@ -100,7 +103,8 @@ axis2_wsdl_msg_ref_create (axis2_env_t **env)
     if(NULL == msg_ref_impl->msg_ref.extensible_component)
     {
         AXIS2_FREE((*env)->allocator, msg_ref_impl);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     
 	msg_ref_impl->msg_ref.ops = 
@@ -110,7 +114,8 @@ axis2_wsdl_msg_ref_create (axis2_env_t **env)
         AXIS2_WSDL_EXTENSIBLE_COMPONENT_FREE(msg_ref_impl->msg_ref.
             extensible_component, env);
         AXIS2_FREE((*env)->allocator, msg_ref_impl);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     
 	msg_ref_impl->msg_ref.ops->free =  axis2_wsdl_msg_ref_free;

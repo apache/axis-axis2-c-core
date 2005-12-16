@@ -82,7 +82,8 @@ axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
 	
     if(NULL == status_line_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     status_line_impl->line = (axis2_char_t *)AXIS2_STRDUP(str, env);
     status_line_impl->http_version = NULL;
@@ -96,7 +97,8 @@ axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
                          status_line_impl, env);
         AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
-                        NULL);
+                        AXIS2_FAILURE);
+        return NULL;
     }
     i = tmp - str;
     tmp_status_line = AXIS2_MALLOC((*env)->allocator, 
@@ -105,7 +107,8 @@ axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
     {
         axis2_http_status_line_free((axis2_http_status_line_t*)
                          status_line_impl, env);
-       AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+       AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+       return NULL;
     }
     memcpy(tmp_status_line, str, i * sizeof(axis2_char_t));
     tmp_status_line[i] = '\0';
@@ -120,7 +123,8 @@ axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
                          status_line_impl, env);
         AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
-                        NULL);
+                        AXIS2_FAILURE);
+        return NULL;
     }
     *tmp++ = '\0';
     status_code = tmp;
@@ -132,7 +136,8 @@ axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
                          status_line_impl, env);
         AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
-                        NULL);
+                        AXIS2_FAILURE);
+        return NULL;
     }
     *tmp++ = '\0';
     reason_phrase = tmp;
@@ -149,7 +154,8 @@ axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
         AXIS2_FREE((*env)->allocator, tmp_status_line);
         axis2_http_status_line_free((axis2_http_status_line_t*)
                          status_line_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     AXIS2_FREE((*env)->allocator, tmp_status_line);
     
@@ -159,7 +165,8 @@ axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
 	{
 		axis2_http_status_line_free((axis2_http_status_line_t*)
                          status_line_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     
     status_line_impl->status_line.ops->get_status_code =

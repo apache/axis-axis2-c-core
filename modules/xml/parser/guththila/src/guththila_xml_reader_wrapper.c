@@ -163,7 +163,10 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
                              sizeof(guththila_xml_reader_wrapper_impl_t));
     
     if(!guththila_impl)
-          AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     
     allocator = guththila_allocator_init(NULL);
     guththila_env  = guththila_environment_create(allocator,NULL, NULL);
@@ -174,7 +177,8 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
     if(!(guththila_impl->reader))
     {
         AXIS2_FREE((*env)->allocator,guththila_impl);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }    
     
     guththila = guththila_xml_pull_parser_create(guththila_env,
@@ -182,7 +186,8 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
     if(!guththila)
     {
         AXIS2_FREE((*env)->allocator,guththila_impl);
-        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     
     
@@ -195,7 +200,8 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
     if(!(guththila_impl->parser.ops))
     {   guththila_xml_pull_parser_free( guththila_env, guththila);
         AXIS2_FREE((*env)->allocator,guththila_impl);
-        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     
     
@@ -256,7 +262,10 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
                              sizeof(guththila_xml_reader_wrapper_impl_t));
     
     if(!guththila_impl)
-          AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     
     allocator = guththila_allocator_init(NULL);
     guththila_env  = guththila_environment_create(allocator,NULL, NULL);
@@ -268,7 +277,8 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
     if(!(guththila_impl->reader))
     {
         AXIS2_FREE((*env)->allocator,guththila_impl);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }    
     
     guththila = guththila_xml_pull_parser_create(guththila_env,
@@ -276,7 +286,8 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
     if(!guththila)
     {
         AXIS2_FREE((*env)->allocator,guththila_impl);
-        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     
     
@@ -289,7 +300,8 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
     if(!(guththila_impl->parser.ops))
     {   guththila_xml_pull_parser_free( guththila_env, guththila);
         AXIS2_FREE((*env)->allocator,guththila_impl);
-        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     
     

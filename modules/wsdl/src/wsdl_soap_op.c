@@ -73,7 +73,7 @@ axis2_wsdl_soap_op_create (axis2_env_t **env)
 	
 	if(NULL == soap_op_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -93,7 +93,7 @@ axis2_wsdl_soap_op_create (axis2_env_t **env)
     {
         axis2_wsdl_soap_op_free(&(soap_op_impl->
             soap_op), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     

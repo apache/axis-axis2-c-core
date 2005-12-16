@@ -99,8 +99,9 @@ struct axis2_array_list* AXIS2_CALL axis2_array_list_create(axis2_env_t **env, i
     array_list_impl->data = AXIS2_MALLOC((*env)->allocator, sizeof(void*) * capacity );
     if (!array_list_impl->data)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_array_list_free(&(array_list_impl->array_list), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     array_list_impl->capacity = capacity;    
     

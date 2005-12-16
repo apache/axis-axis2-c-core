@@ -81,8 +81,7 @@ axis2_handler_desc_t* AXIS2_CALL axis2_handler_desc_create_with_qname(axis2_env_
     handler_desc_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_handler_desc_impl_t) );
     if (!handler_desc_impl)
     { 
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
 
@@ -119,9 +118,8 @@ axis2_handler_desc_t* AXIS2_CALL axis2_handler_desc_create_with_qname(axis2_env_
     handler_desc_impl->handler_desc.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_handler_desc_ops_t) );
     if (!handler_desc_impl->handler_desc.ops)
     {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
         axis2_handler_desc_free(&(handler_desc_impl->handler_desc), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
 
@@ -216,8 +214,7 @@ axis2_status_t AXIS2_CALL axis2_handler_desc_add_param(struct axis2_handler_desc
     
     if (AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(handler_desc_impl->parent_param_container, env, AXIS2_PARAM_GET_NAME(param, env)) )
     {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE , AXIS2_FAILURE);
         return AXIS2_FAILURE;        
     }
     
@@ -308,8 +305,7 @@ axis2_status_t AXIS2_CALL axis2_handler_desc_set_class_name(struct axis2_handler
         handler_desc_impl->class_name = AXIS2_STRDUP(class_name, env);
         if (!handler_desc_impl->class_name)
         {
-            AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-            AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }

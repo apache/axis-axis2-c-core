@@ -77,7 +77,7 @@ axis2_wsdl_endpoint_create (axis2_env_t **env)
 	
     if(NULL == wsdl_endpoint_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -90,7 +90,7 @@ axis2_wsdl_endpoint_create (axis2_env_t **env)
     if(NULL == wsdl_endpoint_impl->wsdl_endpoint.wsdl_component)
     {
         axis2_wsdl_endpoint_free(&(wsdl_endpoint_impl->wsdl_endpoint), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }    
     
@@ -99,7 +99,7 @@ axis2_wsdl_endpoint_create (axis2_env_t **env)
 	if(NULL == wsdl_endpoint_impl->wsdl_endpoint.ops)
     {
         axis2_wsdl_endpoint_free(&(wsdl_endpoint_impl->wsdl_endpoint), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     

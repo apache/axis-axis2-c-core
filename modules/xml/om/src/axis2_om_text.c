@@ -76,7 +76,10 @@ axis2_om_text_create (axis2_env_t **env,
     *node = axis2_om_node_create (env);
 
     if (!(*node))
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     
     
     om_text = (axis2_om_text_impl_t *) AXIS2_MALLOC ((*env)->allocator,
@@ -85,7 +88,8 @@ axis2_om_text_create (axis2_env_t **env,
     if (!om_text)
     {
         AXIS2_FREE ((*env)->allocator, *node);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
 
     om_text->value = NULL;
@@ -116,7 +120,8 @@ axis2_om_text_create (axis2_env_t **env,
         AXIS2_FREE ((*env)->allocator, om_text->value);
         AXIS2_FREE ((*env)->allocator, om_text);
         AXIS2_FREE ((*env)->allocator, *node);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
 
     om_text->om_text.ops->free = axis2_om_text_free;
@@ -182,4 +187,3 @@ axis2_om_text_set_value(axis2_om_text_t *om_text,
     AXIS2_INTF_TO_IMPL(om_text)->value = (axis2_char_t*)AXIS2_STRDUP(value,env);
     return AXIS2_SUCCESS;
 }
-

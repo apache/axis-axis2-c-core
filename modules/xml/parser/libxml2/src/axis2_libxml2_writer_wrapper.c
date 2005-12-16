@@ -271,14 +271,18 @@ axis2_xml_writer_create(axis2_env_t **env,
     writer_impl = (axis2_libxml2_writer_wrapper_impl_t *)AXIS2_MALLOC((*env)->allocator,
                    sizeof(axis2_libxml2_writer_wrapper_impl_t));
     if(!writer_impl)
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     writer_impl->xml_writer = xmlNewTextWriterFilename(filename, compression);
     
     if(!(writer_impl->xml_writer))
     {
-        AXIS2_ERROR_SET((*env)->error,
-                   AXIS2_ERROR_CREATING_XML_STREAM_WRITER, NULL);
         AXIS2_FREE((*env)->allocator, writer_impl);
+        AXIS2_ERROR_SET((*env)->error,
+                   AXIS2_ERROR_CREATING_XML_STREAM_WRITER, AXIS2_FAILURE);
+        return NULL;
                 
     }
     writer_impl->buffer = NULL;
@@ -299,7 +303,7 @@ axis2_xml_writer_create(axis2_env_t **env,
     {
         axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
     
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }                                       
     
@@ -319,7 +323,8 @@ axis2_xml_writer_create(axis2_env_t **env,
     if(!(writer_impl->writer.ops))
     {
         AXIS2_FREE((*env)->allocator,writer_impl);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     /* ops */
     writer_impl->writer.ops->free = axis2_libxml2_writer_wrapper_free;
@@ -395,7 +400,10 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
     writer_impl = (axis2_libxml2_writer_wrapper_impl_t *)AXIS2_MALLOC((*env)->allocator,
                    sizeof(axis2_libxml2_writer_wrapper_impl_t));
     if(!writer_impl)
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     
     writer_impl->writer.ops = NULL;
     writer_impl->encoding = NULL;
@@ -409,7 +417,7 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
     if(writer_impl->buffer == NULL)
     {
         axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -417,7 +425,7 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
     if(writer_impl->xml_writer == NULL)
     {
         axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CREATING_XML_STREAM_WRITER , NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CREATING_XML_STREAM_WRITER , AXIS2_FAILURE);
         return NULL;
     }
 
@@ -435,7 +443,7 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
     {
         axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
     
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }                                       
     
@@ -451,7 +459,8 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
     if(!(writer_impl->writer.ops))
     {
         axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     
     /* ops */
@@ -780,7 +789,7 @@ axis2_libxml2_writer_wrapper_write_end_element(axis2_xml_writer_t *writer,
         AXIS2_ERROR_SET((*env)->error,
                      AXIS2_ERROR_WRITING_END_ELEMENT,
                      AXIS2_FAILURE);
-    return AXIS2_FAILURE;
+        return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;    
 }

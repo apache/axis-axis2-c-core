@@ -110,7 +110,8 @@ axis2_http_response_writer_create_with_encoding(axis2_env_t **env,
 	
     if(NULL == response_writer_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     response_writer_impl->stream = stream;
     response_writer_impl->encoding = (axis2_char_t *)AXIS2_STRDUP(encoding, env);
@@ -121,7 +122,8 @@ axis2_http_response_writer_create_with_encoding(axis2_env_t **env,
 	{
 		axis2_http_response_writer_free((axis2_http_response_writer_t*)
                                         response_writer_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     
     response_writer_impl->response_writer.ops->get_encoding = 

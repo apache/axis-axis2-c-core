@@ -103,7 +103,7 @@ axis2_wsdl_svc_create (axis2_env_t **env)
             sizeof(axis2_wsdl_svc_impl_t));
 	if(NULL == wsdl_svc_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -116,7 +116,7 @@ axis2_wsdl_svc_create (axis2_env_t **env)
     if(NULL == wsdl_svc_impl->wsdl_svc.wsdl_component)
 	{
         axis2_wsdl_svc_free(&(wsdl_svc_impl->wsdl_svc), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY,AXIS2_FAILURE);
         return NULL;
     }
     
@@ -124,7 +124,7 @@ axis2_wsdl_svc_create (axis2_env_t **env)
     if(NULL == wsdl_svc_impl->endpoints)
     {
         axis2_wsdl_svc_free(&(wsdl_svc_impl->wsdl_svc), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -134,7 +134,7 @@ axis2_wsdl_svc_create (axis2_env_t **env)
 	if(NULL == wsdl_svc_impl->wsdl_svc.ops)
 	{
         axis2_wsdl_svc_free(&(wsdl_svc_impl->wsdl_svc), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
 	}
     
@@ -290,7 +290,9 @@ axis2_wsdl_svc_get_namespace(axis2_wsdl_svc_t *wsdl_svc,
     if (NULL == AXIS2_INTF_TO_IMPL(wsdl_svc)->qname) 
     {
         /* Target Namespace not set and the Service Name is null */
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_WSDL_SVC, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_WSDL_SVC, 
+            AXIS2_FAILURE);
+        return AXIS2_FAILURE;
     }
     
     return AXIS2_QNAME_GET_URI(AXIS2_INTF_TO_IMPL(wsdl_svc)->qname, env);

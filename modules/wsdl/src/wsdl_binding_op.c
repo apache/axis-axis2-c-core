@@ -130,7 +130,7 @@ axis2_wsdl_binding_op_create (axis2_env_t **env)
     
 	if(NULL == binding_op_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -149,7 +149,7 @@ axis2_wsdl_binding_op_create (axis2_env_t **env)
 	{
 		axis2_wsdl_binding_op_free(&(binding_op_impl->binding_op),
             env);
-		AXIS2_ERROR_SET ((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET ((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
 	}
     
@@ -159,7 +159,7 @@ axis2_wsdl_binding_op_create (axis2_env_t **env)
 	{
         axis2_wsdl_binding_op_free(&(binding_op_impl->binding_op),
             env);
-		AXIS2_ERROR_SET ((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);	
+		AXIS2_ERROR_SET ((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);	
         return NULL;
 	}
     
@@ -170,7 +170,7 @@ axis2_wsdl_binding_op_create (axis2_env_t **env)
 	{
         axis2_wsdl_binding_op_free(&(binding_op_impl->binding_op),
             env);
-		AXIS2_ERROR_SET ((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET ((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
 	}
     
@@ -181,7 +181,7 @@ axis2_wsdl_binding_op_create (axis2_env_t **env)
 	{
         axis2_wsdl_binding_op_free(&(binding_op_impl->binding_op),
             env);
-		AXIS2_ERROR_SET ((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET ((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
 	}
     

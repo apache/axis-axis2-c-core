@@ -36,7 +36,7 @@ axis2_msg_recv_free (axis2_msg_recv_t *msg_recv,
 axis2_status_t AXIS2_CALL
 axis2_msg_recv_receive (axis2_msg_recv_t *msg_recv,
                                 axis2_env_t **env,
-		                        struct axis2_msg_ctx_s *msg_ctx);
+		                        struct axis2_msg_ctx *msg_ctx);
 		
 /************************* End of function headers ****************************/	
 
@@ -52,7 +52,7 @@ axis2_msg_recv_create (axis2_env_t **env)
     
 	if(NULL == msg_recv_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -64,7 +64,7 @@ axis2_msg_recv_create (axis2_env_t **env)
 	if(NULL == msg_recv_impl->msg_recv.ops)
 	{
         axis2_msg_recv_free(&(msg_recv_impl->msg_recv), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -91,7 +91,7 @@ axis2_msg_recv_free (axis2_msg_recv_t *msg_recv,
 axis2_status_t AXIS2_CALL
 axis2_msg_receive (axis2_msg_recv_t *msg_recv,
                     axis2_env_t **env,
-		            struct axis2_msg_ctx_s *msg_ctx)
+		            struct axis2_msg_ctx *msg_ctx)
 {
 	return AXIS2_SUCCESS;
 }

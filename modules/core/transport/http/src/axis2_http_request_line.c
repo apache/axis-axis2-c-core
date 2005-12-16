@@ -83,7 +83,8 @@ axis2_http_request_line_create(axis2_env_t **env, axis2_char_t *method,
 	
     if(NULL == request_line_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     request_line_impl->method = (axis2_char_t *)AXIS2_STRDUP(method, env);
     request_line_impl->uri = (axis2_char_t *)AXIS2_STRDUP(uri, env);
@@ -96,7 +97,8 @@ axis2_http_request_line_create(axis2_env_t **env, axis2_char_t *method,
 	{
 		axis2_http_request_line_free((axis2_http_request_line_t*)
                          request_line_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     
     request_line_impl->request_line.ops->get_method =
@@ -158,13 +160,15 @@ axis2_http_request_line_parse_line(axis2_env_t **env, const axis2_char_t *str)
     {
         AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
-                        NULL);
+                        AXIS2_FAILURE);
+        return NULL;
     }
     i = tmp - str;
     req_line = AXIS2_MALLOC((*env)->allocator, i * sizeof(axis2_char_t) +1);
     if(NULL == req_line)
     {
-       AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+       AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;        
     }
     memcpy(req_line, str, i * sizeof(axis2_char_t));
     req_line[i] = '\0';
@@ -177,7 +181,8 @@ axis2_http_request_line_parse_line(axis2_env_t **env, const axis2_char_t *str)
         AXIS2_FREE((*env)->allocator, req_line);
         AXIS2_ERROR_SET((*env)->error, 
                     AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
-                    NULL);
+                    AXIS2_FAILURE);
+        return NULL;
     }
     *tmp++ = '\0';
     uri = tmp;
@@ -187,7 +192,8 @@ axis2_http_request_line_parse_line(axis2_env_t **env, const axis2_char_t *str)
         AXIS2_FREE((*env)->allocator, req_line);
         AXIS2_ERROR_SET((*env)->error, 
                     AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
-                    NULL);
+                    AXIS2_FAILURE);
+        return NULL;
     }
     *tmp++ = '\0';
     http_version = tmp;
@@ -243,7 +249,8 @@ axis2_http_request_line_to_string(axis2_http_request_line_t *request_line,
                     alloc_len * sizeof(axis2_char_t));
     if(NULL == ret)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        return NULL;
     }
     sprintf(ret, "%s %s %s %s", req_line_impl->method, req_line_impl->uri, 
                     req_line_impl->http_version, AXIS2_HTTP_CRLF);

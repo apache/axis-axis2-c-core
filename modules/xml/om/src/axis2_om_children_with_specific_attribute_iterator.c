@@ -80,7 +80,7 @@ axis2_om_children_with_specific_attribute_iterator_create(
 
     if(!iterator_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;    
     }
     
@@ -104,7 +104,8 @@ axis2_om_children_with_specific_attribute_iterator_create(
     if(!(iterator_impl->iterator.ops))
     {
         AXIS2_OM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_FREE(&(iterator_impl->iterator), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
 
     iterator_impl->current_child = current_child;

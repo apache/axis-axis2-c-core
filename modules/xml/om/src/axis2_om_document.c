@@ -94,7 +94,10 @@ axis2_om_document_create (axis2_env_t **env,
                 (*env)->allocator, sizeof (axis2_om_document_impl_t));
     
     if (!document)
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY,NULL); 
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        return NULL;
+    }
     
     document->builder = builder;
     document->root_element = root;
@@ -108,7 +111,8 @@ axis2_om_document_create (axis2_env_t **env,
     if (!document->char_set_encoding)
     {
         AXIS2_FREE((*env)->allocator, document);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;        
     }
     
     document->xml_version = NULL;
@@ -118,7 +122,8 @@ axis2_om_document_create (axis2_env_t **env,
         
         AXIS2_FREE((*env)->allocator, document->char_set_encoding);
         AXIS2_FREE((*env)->allocator, document);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     
     document->done = AXIS2_FALSE;
@@ -135,7 +140,8 @@ axis2_om_document_create (axis2_env_t **env,
         AXIS2_FREE((*env)->allocator, document->char_set_encoding);
         AXIS2_FREE((*env)->allocator, document->xml_version);
         AXIS2_FREE((*env)->allocator, document);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
   
     document->om_document.ops->free = axis2_om_document_free;
@@ -255,7 +261,10 @@ axis2_om_document_get_root_element (axis2_om_document_t * document,
             return AXIS2_INTF_TO_IMPL(document)->root_element;
         }
         else
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL, NULL);
+        {
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL, AXIS2_FAILURE);
+            return NULL;
+        }
         
     }
 }

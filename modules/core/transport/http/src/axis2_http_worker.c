@@ -70,7 +70,8 @@ axis2_http_worker_create (axis2_env_t **env, axis2_conf_ctx_t *conf_ctx)
 	
     if(NULL == http_worker_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     http_worker_impl->conf_ctx = conf_ctx;
     
@@ -79,7 +80,8 @@ axis2_http_worker_create (axis2_env_t **env, axis2_conf_ctx_t *conf_ctx)
     if(NULL == http_worker_impl->http_worker.ops)
 	{
 		axis2_http_worker_free((axis2_http_worker_t*)http_worker_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     
     http_worker_impl->http_worker.ops->process_request = 

@@ -27,6 +27,7 @@ typedef struct axis2_flow_impl
      * Field list
      */
     axis2_array_list_t *list;
+    
 } axis2_flow_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(flow) ((axis2_flow_impl_t *)(flow))
@@ -60,30 +61,37 @@ axis2_flow_create (axis2_env_t **env)
         allocator, sizeof(axis2_flow_impl_t));
 		
 	if(NULL == flow_impl)
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        return NULL;
+    }
 	
+    flow_impl->list = NULL;
+    flow_impl->flow.ops = NULL;
+    
+    /*Create the list with the default size of 16 */
+	flow_impl->list = axis2_array_list_create (env, 0);
+    if(NULL == flow_impl->list)
+    {
+        axis2_flow_free(&(flow_impl->flow), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }       
+    
 	flow_impl->flow.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_flow_ops_t));
 	if(NULL == flow_impl->flow.ops)
     {
-        AXIS2_FREE((*env)->allocator, flow_impl);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        axis2_flow_free(&(flow_impl->flow), env);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     
 	flow_impl->flow.ops->free =  axis2_flow_free;
     flow_impl->flow.ops->add_handler =  axis2_flow_add_handler;
     flow_impl->flow.ops->get_handler =  axis2_flow_get_handler;
     flow_impl->flow.ops->get_handler_count =  axis2_flow_get_handler_count;
-    
-    /*Create the list with the default size of 16 */
-	flow_impl->list = axis2_array_list_create (env, 0);
-    if(NULL == flow_impl->list)
-    {
-        AXIS2_FREE((*env)->allocator, flow_impl->flow.ops);
-        AXIS2_FREE((*env)->allocator, flow_impl);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
-    }        
-		
+    	
 	return &(flow_impl->flow);
 }
 
@@ -110,9 +118,23 @@ axis2_flow_add_handler (axis2_flow_t *flow,
                         axis2_env_t **env,
                         axis2_handler_desc_t *handler)
 {
+    axis2_flow_impl_t *flow_impl = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(flow, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, handler, AXIS2_FAILURE);
+  
+    flow_impl = AXIS2_INTF_TO_IMPL(flow);
     
+    if(!flow_impl->list)
+    {
+        flow_impl->list = axis2_array_list_create (env, 0);
+        if(NULL == flow_impl->list)
+        {
+            axis2_flow_free(&(flow_impl->flow), env);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        } 
+    }
     return AXIS2_ARRAY_LIST_ADD(AXIS2_INTF_TO_IMPL(flow)->list, env, handler);
 }
 

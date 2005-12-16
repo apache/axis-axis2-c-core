@@ -65,7 +65,8 @@ axis2_om_doctype_create (axis2_env_t **env,
     *node = axis2_om_node_create (env);
     if (!*node)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY,NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
 
     doctype = (axis2_om_doctype_impl_t *) AXIS2_MALLOC ((*env)->allocator,
@@ -74,7 +75,8 @@ axis2_om_doctype_create (axis2_env_t **env,
     if (!doctype)
     {
         AXIS2_FREE ((*env)->allocator, (*node));
-        AXIS2_ERROR_SET((*env)->error , AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
 
     doctype->value = NULL;
@@ -86,7 +88,8 @@ axis2_om_doctype_create (axis2_env_t **env,
         {
             AXIS2_FREE ((*env)->allocator, doctype);
             AXIS2_FREE ((*env)->allocator, (*node));
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return NULL;
         }
     }
 
@@ -109,7 +112,8 @@ axis2_om_doctype_create (axis2_env_t **env,
         AXIS2_FREE((*env)->allocator, doctype);
         AXIS2_FREE ((*env)->allocator, doctype->value);
         AXIS2_FREE ((*env)->allocator, *node);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
 
     doctype->om_doctype.ops->free = axis2_om_doctype_free;

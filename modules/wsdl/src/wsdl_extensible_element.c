@@ -77,7 +77,7 @@ axis2_wsdl_extensible_element_create (axis2_env_t **env)
 	
 	if(NULL == extensible_element_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
     
@@ -90,7 +90,7 @@ axis2_wsdl_extensible_element_create (axis2_env_t **env)
     {
         axis2_wsdl_extensible_element_free(&(extensible_element_impl->
             extensible_element), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     

@@ -63,7 +63,7 @@ axis2_binding_fault_create (axis2_env_t **env)
 	
 	if(NULL == binding_fault_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
 	
@@ -77,7 +77,7 @@ axis2_binding_fault_create (axis2_env_t **env)
     if(NULL == binding_fault_impl->binding_fault.extensible_component)
     {
         axis2_binding_fault_free(&(binding_fault_impl->binding_fault), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -86,7 +86,7 @@ axis2_binding_fault_create (axis2_env_t **env)
 	if(NULL == binding_fault_impl->binding_fault.ops)
     {
         axis2_binding_fault_free(&(binding_fault_impl->binding_fault), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     

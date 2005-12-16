@@ -12,7 +12,9 @@ libaxis2_om_la_SOURCES = axis2_om_attribute.c \
                         axis2_om_processing_instruction.c \
                         axis2_om_stax_builder.c \ 
                         axis2_om_children_iterator.c \
-                        axis2_om_children_qname_iterator.c
+                        axis2_om_children_qname_iterator.c \
+                        axis2_om_child_element_iterator.c \
+                        axis2_om_children_with_specific_attribute_iterator.c
 
 libaxis2_om_la_LIBADD = $(LDFLAGS) ../../../util/src/libaxis2_util.la 
 INCLUDES = -I$(top_builddir)/include \

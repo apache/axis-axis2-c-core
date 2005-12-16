@@ -65,7 +65,8 @@ axis2_http_header_create (axis2_env_t **env, axis2_char_t *name,
 	
     if(NULL == http_header_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     http_header_impl->name = (axis2_char_t *)AXIS2_STRDUP(name, env);
     http_header_impl->value = (axis2_char_t *)AXIS2_STRDUP(value, env);
@@ -76,7 +77,8 @@ axis2_http_header_create (axis2_env_t **env, axis2_char_t *name,
 	{
 		axis2_http_header_free((axis2_http_header_t*)
                          http_header_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     
     http_header_impl->http_header.ops->to_external_form = 

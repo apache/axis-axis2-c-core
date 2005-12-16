@@ -74,6 +74,7 @@ axis2_wsdl_extensible_component_t * AXIS2_CALL
 axis2_wsdl_extensible_component_create (axis2_env_t **env)
 {
     axis2_wsdl_extensible_component_impl_t *extensible_component_impl = NULL;
+    
 	AXIS2_ENV_CHECK(env, NULL);
 	
 	extensible_component_impl = (axis2_wsdl_extensible_component_impl_t *) 
@@ -82,7 +83,7 @@ axis2_wsdl_extensible_component_create (axis2_env_t **env)
 	
 	if(NULL == extensible_component_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;        
     }
 	
@@ -96,7 +97,7 @@ axis2_wsdl_extensible_component_create (axis2_env_t **env)
     {
         axis2_wsdl_extensible_component_free(&(extensible_component_impl->
             extensible_component), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -105,7 +106,7 @@ axis2_wsdl_extensible_component_create (axis2_env_t **env)
     {
         axis2_wsdl_extensible_component_free(&(extensible_component_impl->
             extensible_component), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -115,7 +116,7 @@ axis2_wsdl_extensible_component_create (axis2_env_t **env)
     {
         axis2_wsdl_extensible_component_free(&(extensible_component_impl->
             extensible_component), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -124,8 +125,10 @@ axis2_wsdl_extensible_component_create (axis2_env_t **env)
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_extensible_component_ops_t));
 	if(NULL == extensible_component_impl->extensible_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, extensible_component_impl);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        axis2_wsdl_extensible_component_free(&(extensible_component_impl->
+            extensible_component), env);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     
 	extensible_component_impl->extensible_component.ops->free =  

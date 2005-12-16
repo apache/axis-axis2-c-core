@@ -71,12 +71,18 @@ axis2_om_processing_instruction_create (axis2_env_t **env,
     AXIS2_ENV_CHECK(env,NULL);
     
     if (!node || !target || !value)
-        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_INVALID_NULL_PARAM,NULL);
+    {
+        AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        return NULL;
+    }
 
     *node = axis2_om_node_create (env);
     
     if (!*node)
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
 
     processing_instruction = (axis2_om_processing_instruction_impl_t *) AXIS2_MALLOC (
                               (*env)->allocator,sizeof(axis2_om_processing_instruction_impl_t));
@@ -84,7 +90,8 @@ axis2_om_processing_instruction_create (axis2_env_t **env,
     if (!processing_instruction)
     {
         AXIS2_FREE ((*env)->allocator,(*node));
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
     processing_instruction->value = NULL;
 
@@ -95,7 +102,8 @@ axis2_om_processing_instruction_create (axis2_env_t **env,
         {
             AXIS2_FREE ((*env)->allocator, processing_instruction);
             AXIS2_FREE ((*env)->allocator , *node);
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return NULL;
         }
     }
 
@@ -109,7 +117,8 @@ axis2_om_processing_instruction_create (axis2_env_t **env,
             AXIS2_FREE ((*env)->allocator, processing_instruction->value);
             AXIS2_FREE ((*env)->allocator, processing_instruction);
             AXIS2_FREE ((*env)->allocator, *node);
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return NULL;
         }
     }
     AXIS2_OM_NODE_SET_DATA_ELEMENT(*node, env, processing_instruction);
@@ -132,7 +141,8 @@ axis2_om_processing_instruction_create (axis2_env_t **env,
         AXIS2_FREE ((*env)->allocator,  processing_instruction->target);
         AXIS2_FREE ((*env)->allocator,  processing_instruction);
         AXIS2_FREE ((*env)->allocator,  *node);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
 
     processing_instruction->om_pi.ops->free = 

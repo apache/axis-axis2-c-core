@@ -50,7 +50,10 @@ axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
                                                     sizeof (axis2_om_output_t));
 
     if (!om_output)
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
 
     om_output->xml_writer = NULL;
     om_output->xml_writer = xml_writer;

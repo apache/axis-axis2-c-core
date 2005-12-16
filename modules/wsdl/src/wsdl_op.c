@@ -76,14 +76,12 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
                             axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
-axis2_wsdl_op_set_msg_exchange_pattern (
-		                                axis2_wsdl_op_t *wsdl_op,
+axis2_wsdl_op_set_msg_exchange_pattern (axis2_wsdl_op_t *wsdl_op,
                                         axis2_env_t **env,
                                         axis2_char_t *msg_exchange_pattern);
 
 axis2_char_t * AXIS2_CALL 
-axis2_wsdl_op_get_msg_exchange_pattern 
-		                                (axis2_wsdl_op_t *wsdl_op, 
+axis2_wsdl_op_get_msg_exchange_pattern (axis2_wsdl_op_t *wsdl_op, 
                                             axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
@@ -176,7 +174,8 @@ axis2_wsdl_op_create (axis2_env_t **env)
     
 	if(!wsdl_op_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     
     wsdl_op_impl->in_faults = NULL;
@@ -195,7 +194,7 @@ axis2_wsdl_op_create (axis2_env_t **env)
     if(NULL == wsdl_op_impl->in_faults)
     {
         axis2_wsdl_op_free(&(wsdl_op_impl->wsdl_op), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -203,7 +202,7 @@ axis2_wsdl_op_create (axis2_env_t **env)
     if(NULL == wsdl_op_impl->out_faults)
     {
         axis2_wsdl_op_free(&(wsdl_op_impl->wsdl_op), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -211,7 +210,7 @@ axis2_wsdl_op_create (axis2_env_t **env)
     if(NULL == wsdl_op_impl->wsdl_op.extensible_component)
     {
         axis2_wsdl_op_free(&(wsdl_op_impl->wsdl_op), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -221,7 +220,7 @@ axis2_wsdl_op_create (axis2_env_t **env)
 	if(NULL == wsdl_op_impl->wsdl_op.ops)
 	{
         axis2_wsdl_op_free(&(wsdl_op_impl->wsdl_op), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -233,56 +232,26 @@ axis2_wsdl_op_create (axis2_env_t **env)
     wsdl_op_impl->wsdl_op.ops->get_msg_exchange_pattern =
         axis2_wsdl_op_get_msg_exchange_pattern;
     
-    wsdl_op_impl->wsdl_op.ops->set_name =
-        axis2_wsdl_op_set_name;
-    
-    wsdl_op_impl->wsdl_op.ops->get_name =
-        axis2_wsdl_op_get_name;
-    
-    wsdl_op_impl->wsdl_op.ops->set_style =
-        axis2_wsdl_op_set_style;
-    
-    wsdl_op_impl->wsdl_op.ops->get_style =
-        axis2_wsdl_op_get_style;
-    
-    wsdl_op_impl->wsdl_op.ops->get_in_faults =
-        axis2_wsdl_op_get_in_faults;
-        
-    wsdl_op_impl->wsdl_op.ops->set_in_faults =
-        axis2_wsdl_op_set_in_faults;
- 
-    wsdl_op_impl->wsdl_op.ops->get_input_msg =
-        axis2_wsdl_op_get_input_msg;
-    
-    wsdl_op_impl->wsdl_op.ops->set_input_msg = 
-        axis2_wsdl_op_set_input_msg;
-    
-    wsdl_op_impl->wsdl_op.ops->get_out_faults =
-        axis2_wsdl_op_get_out_faults;
-        
-    wsdl_op_impl->wsdl_op.ops->set_out_faults =
-        axis2_wsdl_op_set_out_faults;
-        
-    wsdl_op_impl->wsdl_op.ops->get_output_msg =
-        axis2_wsdl_op_get_output_msg;
-    
-    wsdl_op_impl->wsdl_op.ops->set_output_msg = 
-        axis2_wsdl_op_set_output_msg;
-        
-    wsdl_op_impl->wsdl_op.ops->is_safe =
-        axis2_wsdl_op_is_safe;
-    
-    wsdl_op_impl->wsdl_op.ops->set_safety = 
-        axis2_wsdl_op_set_safety; 
+    wsdl_op_impl->wsdl_op.ops->set_name = axis2_wsdl_op_set_name;
+    wsdl_op_impl->wsdl_op.ops->get_name = axis2_wsdl_op_get_name;
+    wsdl_op_impl->wsdl_op.ops->set_style = axis2_wsdl_op_set_style;
+    wsdl_op_impl->wsdl_op.ops->get_style = axis2_wsdl_op_get_style;   
+    wsdl_op_impl->wsdl_op.ops->get_in_faults = axis2_wsdl_op_get_in_faults;       
+    wsdl_op_impl->wsdl_op.ops->set_in_faults = axis2_wsdl_op_set_in_faults;
+    wsdl_op_impl->wsdl_op.ops->get_input_msg = axis2_wsdl_op_get_input_msg; 
+    wsdl_op_impl->wsdl_op.ops->set_input_msg = axis2_wsdl_op_set_input_msg;
+    wsdl_op_impl->wsdl_op.ops->get_out_faults = axis2_wsdl_op_get_out_faults;    
+    wsdl_op_impl->wsdl_op.ops->set_out_faults = axis2_wsdl_op_set_out_faults;    
+    wsdl_op_impl->wsdl_op.ops->get_output_msg = axis2_wsdl_op_get_output_msg;
+    wsdl_op_impl->wsdl_op.ops->set_output_msg = axis2_wsdl_op_set_output_msg;   
+    wsdl_op_impl->wsdl_op.ops->is_safe = axis2_wsdl_op_is_safe;
+    wsdl_op_impl->wsdl_op.ops->set_safety = axis2_wsdl_op_set_safety; 
         
     wsdl_op_impl->wsdl_op.ops->get_target_namespace = 
         axis2_wsdl_op_get_target_namespace;
         
-    wsdl_op_impl->wsdl_op.ops->add_in_fault = 
-        axis2_wsdl_op_add_in_fault;
-        
-    wsdl_op_impl->wsdl_op.ops->add_out_fault = 
-        axis2_wsdl_op_add_out_fault;
+    wsdl_op_impl->wsdl_op.ops->add_in_fault = axis2_wsdl_op_add_in_fault;    
+    wsdl_op_impl->wsdl_op.ops->add_out_fault = axis2_wsdl_op_add_out_fault;
 	
 	return &(wsdl_op_impl->wsdl_op);	
 }
@@ -379,26 +348,35 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_wsdl_op_set_msg_exchange_pattern (
-		                                axis2_wsdl_op_t *wsdl_op, 
+axis2_wsdl_op_set_msg_exchange_pattern (axis2_wsdl_op_t *wsdl_op, 
                                         axis2_env_t **env, 
 		                                axis2_char_t *msg_exchange_pattern)
 {
+    axis2_wsdl_op_impl_t *wsdl_op_impl = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(wsdl_op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_exchange_pattern, AXIS2_FAILURE);
 	
-    axis2_char_t *pattern_l = AXIS2_STRDUP(msg_exchange_pattern, env);
-    if(NULL == pattern_l)
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+    wsdl_op_impl = AXIS2_INTF_TO_IMPL(wsdl_op);
     
-	AXIS2_INTF_TO_IMPL(wsdl_op)->msg_exchange_pattern = pattern_l;
+    if(wsdl_op_impl->msg_exchange_pattern)
+    {
+        AXIS2_FREE((*env)->allocator, wsdl_op_impl->msg_exchange_pattern);
+        wsdl_op_impl->msg_exchange_pattern = NULL;
+    }
+	wsdl_op_impl->msg_exchange_pattern = AXIS2_STRDUP(msg_exchange_pattern, env);
+    
+    if(NULL == wsdl_op_impl->msg_exchange_pattern)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
 	
 	return AXIS2_SUCCESS;
 }
 
 axis2_char_t * AXIS2_CALL 
-axis2_wsdl_op_get_msg_exchange_pattern (
-                                        axis2_wsdl_op_t *wsdl_op, 
+axis2_wsdl_op_get_msg_exchange_pattern (axis2_wsdl_op_t *wsdl_op, 
                                         axis2_env_t **env)
 {
 	AXIS2_FUNC_PARAM_CHECK(wsdl_op, env, NULL);
@@ -459,7 +437,12 @@ axis2_wsdl_op_set_style (axis2_wsdl_op_t *wsdl_op,
         AXIS2_FREE((*env)->allocator, wsdl_op_impl->style);
         wsdl_op_impl->style = NULL;
     }
-	wsdl_op_impl->style = style;
+	wsdl_op_impl->style = AXIS2_STRDUP(style, env);
+    if(!wsdl_op_impl->style)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
 	
 	return AXIS2_SUCCESS;		
 }

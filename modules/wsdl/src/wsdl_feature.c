@@ -70,7 +70,7 @@ axis2_wsdl_feature_create (axis2_env_t **env)
 	
 	if(NULL == wsdl_feature_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -83,7 +83,7 @@ axis2_wsdl_feature_create (axis2_env_t **env)
     if(NULL == wsdl_feature_impl->wsdl_feature.wsdl_component)
     {
         axis2_wsdl_feature_free(&(wsdl_feature_impl->wsdl_feature), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }    
     
@@ -92,7 +92,7 @@ axis2_wsdl_feature_create (axis2_env_t **env)
 	if(NULL == wsdl_feature_impl->wsdl_feature.ops)
     {
         axis2_wsdl_feature_free(&(wsdl_feature_impl->wsdl_feature), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     

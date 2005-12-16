@@ -264,7 +264,7 @@ axis2_conf_create (axis2_env_t **env)
 	
 	if(NULL == config_impl)
     {
-	    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+	    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 	
@@ -290,7 +290,7 @@ axis2_conf_create (axis2_env_t **env)
 	if(NULL == config_impl->conf.param_container)
 	{
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -298,7 +298,7 @@ axis2_conf_create (axis2_env_t **env)
 	if(NULL == config_impl->transports_in)
 	{
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -306,7 +306,7 @@ axis2_conf_create (axis2_env_t **env)
 	if(NULL == config_impl->transports_out)
 	{
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -314,7 +314,7 @@ axis2_conf_create (axis2_env_t **env)
 	if(NULL == config_impl->modules)
 	{
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -322,7 +322,7 @@ axis2_conf_create (axis2_env_t **env)
 	if(NULL == config_impl->engaged_modules)
 	{
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -331,7 +331,7 @@ axis2_conf_create (axis2_env_t **env)
 	if(NULL == config_impl->in_phases_upto_and_including_post_dispatch)
 	{
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     else
@@ -369,7 +369,7 @@ axis2_conf_create (axis2_env_t **env)
 	if(NULL == config_impl->out_phases)
 	{
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -377,7 +377,7 @@ axis2_conf_create (axis2_env_t **env)
 	if(NULL == config_impl->in_faultphases)
 	{
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -385,7 +385,7 @@ axis2_conf_create (axis2_env_t **env)
 	if(NULL == config_impl->out_faultphases)
 	{
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
 	
@@ -841,7 +841,8 @@ axis2_conf_get_svc_grp (axis2_conf_t *conf,
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     if(!config_impl->svc_grps)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_CONF, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_CONF, 
+            AXIS2_FAILURE);
         return NULL;
     }
 	return (struct axis2_svc_grp *) (axis2_hash_get (config_impl->svc_grps, 
@@ -951,13 +952,14 @@ axis2_conf_add_param (axis2_conf_t *conf,
 	if(AXIS2_TRUE == axis2_conf_is_param_locked(conf, env, 
         AXIS2_PARAM_GET_NAME(param, env)))
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
-            AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 	else
     {
-        status = AXIS2_PARAM_CONTAINER_ADD_PARAM(conf->param_container, env, param);
+        status = AXIS2_PARAM_CONTAINER_ADD_PARAM(conf->param_container, env, 
+            param);
     }
     return status;
 }
@@ -973,7 +975,7 @@ axis2_conf_get_param (axis2_conf_t *conf,
 	if(NULL == conf->param_container)
 	{
 		AXIS2_ERROR_SET((*env)->error, 
-            AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, NULL);
+            AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, AXIS2_FAILURE);
         return NULL;
 	}
 		
@@ -1016,8 +1018,8 @@ axis2_conf_get_transport_in(axis2_conf_t *conf,
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     
-    return (struct axis2_transport_in_desc *) axis2_hash_get(config_impl->transports_in,
-            qname, sizeof(axis2_qname_t));
+    return (struct axis2_transport_in_desc *) axis2_hash_get(config_impl->
+            transports_in, qname, sizeof(axis2_qname_t));
 }
 
 /**
@@ -1063,8 +1065,8 @@ axis2_conf_get_transport_out(axis2_conf_t *conf,
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     
-    return (struct axis2_transport_out_desc *) axis2_hash_get(config_impl->transports_out,
-            qname, sizeof(axis2_qname_t));
+    return (struct axis2_transport_out_desc *) axis2_hash_get(config_impl->
+            transports_out, qname, sizeof(axis2_qname_t));
 }
 
 /**

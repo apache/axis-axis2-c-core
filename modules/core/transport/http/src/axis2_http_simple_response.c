@@ -151,7 +151,8 @@ axis2_http_simple_response_create (axis2_env_t **env,
                         AXIS2_INTF_TO_IMPL(ret);
     if(NULL == simple_response_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     simple_response_impl->status_line = status_line;
     if(http_hdr_count > 0 && NULL != http_headers)
@@ -187,7 +188,8 @@ axis2_http_simple_response_create_default(axis2_env_t **env)
 	{
 		axis2_http_simple_response_free((axis2_http_simple_response_t*)
                                         simple_response_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     simple_response_impl->simple_response.ops->set_status_line = 
                         axis2_http_simple_response_set_status_line;

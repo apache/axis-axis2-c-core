@@ -123,7 +123,8 @@ axis2_http_simple_request_create
 	
     if(NULL == simple_request_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     simple_request_impl->request_line = request_line;
     simple_request_impl->stream = content;
@@ -148,7 +149,8 @@ axis2_http_simple_request_create
 	{
 		axis2_http_simple_request_free((axis2_http_simple_request_t*)
                         simple_request_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     
     simple_request_impl->simple_request.ops->get_request_line = 

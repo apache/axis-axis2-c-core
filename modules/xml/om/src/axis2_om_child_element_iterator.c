@@ -70,7 +70,7 @@ axis2_om_child_element_iterator_create(axis2_env_t **env,
 
     if(!iterator_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;    
     }
     
@@ -88,7 +88,8 @@ axis2_om_child_element_iterator_create(axis2_env_t **env,
     if(!(iterator_impl->iterator.ops))
     {
         AXIS2_OM_CHILD_ELEMENT_ITERATOR_FREE(&(iterator_impl->iterator), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
 
     iterator_impl->current_child = current_child;

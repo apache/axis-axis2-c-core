@@ -147,7 +147,10 @@ axis2_svc_grp_create (axis2_env_t **env)
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_svc_grp_impl_t));
     
 	if(NULL == svc_grp_impl)
-	    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+    {
+	    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
 	
     svc_grp_impl->svc_grp.param_container = NULL;
     svc_grp_impl->modules = NULL;
@@ -161,7 +164,7 @@ axis2_svc_grp_create (axis2_env_t **env)
     if(NULL == svc_grp_impl->svc_grp.param_container)
     {
         axis2_svc_grp_free(&(svc_grp_impl->svc_grp), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -169,7 +172,7 @@ axis2_svc_grp_create (axis2_env_t **env)
     if(NULL == svc_grp_impl->modules)
     {
         axis2_svc_grp_free(&(svc_grp_impl->svc_grp), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -177,7 +180,7 @@ axis2_svc_grp_create (axis2_env_t **env)
     if(NULL == svc_grp_impl->module_list)
     {
         axis2_svc_grp_free(&(svc_grp_impl->svc_grp), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -185,7 +188,7 @@ axis2_svc_grp_create (axis2_env_t **env)
 	if(NULL == svc_grp_impl->svcs)
     {
         axis2_svc_grp_free(&(svc_grp_impl->svc_grp), env);
-	    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+	    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -194,7 +197,7 @@ axis2_svc_grp_create (axis2_env_t **env)
 	if(NULL == svc_grp_impl->svc_grp.ops)
 	{
         AXIS2_FREE((*env)->allocator, svc_grp_impl);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -509,7 +512,8 @@ axis2_svc_grp_get_param (axis2_svc_grp_t *svc_grp,
     AXIS2_PARAM_CHECK((*env)->error, name, NULL);
 	if(NULL == svc_grp->param_container)
     {
-	    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, NULL);
+	    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER,
+            AXIS2_FAILURE);
         return NULL;
     }
 	

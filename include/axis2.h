@@ -78,11 +78,10 @@
  * @return If function return a status code return AXIS2_SUCCESS. Else if
  *         function return a type pointer return NULL
  */    
-#define AXIS2_ERROR_SET(error, error_number, error_return) \
+#define AXIS2_ERROR_SET(error, error_number, status_code) \
     { \
         AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number); \
-        AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_FAILURE); \
-        return error_return; \
+        AXIS2_ERROR_SET_STATUS_CODE(error, status_code); \
     }      
 
 #ifdef __cplusplus

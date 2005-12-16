@@ -140,7 +140,7 @@ axis2_phase_resolver_create (axis2_env_t **env)
     
     if(NULL == phase_resolver_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
 	
@@ -156,7 +156,7 @@ axis2_phase_resolver_create (axis2_env_t **env)
 	if(NULL == phase_resolver_impl->phase_resolver.ops)
     {
         axis2_phase_resolver_free(&(phase_resolver_impl->phase_resolver), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -341,7 +341,6 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
     size = AXIS2_ARRAY_LIST_SIZE(moduleqnames, env);
     if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
     {
-        printf("came30\n");
         return AXIS2_FAILURE;
     }
     
@@ -406,7 +405,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
                 return AXIS2_FAILURE;
             }
            
-            all_handlers = axis2_array_list_create(env, 0);
+            
             if(!all_handlers)
             {
                 return AXIS2_FAILURE;
@@ -423,11 +422,6 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
                 phase_name = AXIS2_PHASE_RULE_GET_NAME(phase_rule, env);
                 if(NULL != phase_name)
                 {
-                    if(all_handlers)
-                    {  
-                        AXIS2_ARRAY_LIST_FREE(all_handlers, env);
-                        all_handlers = NULL;                        
-                    }
                     return AXIS2_FAILURE;
                 }
                 if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) &&
@@ -435,6 +429,12 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
                     (0 != AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
                     (0 != AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 { 
+                    if(!all_handlers)
+                    {
+                        all_handlers = axis2_array_list_create(env, 0);
+                        if(!all_handlers)
+                            return AXIS2_FAILURE;
+                    }
                     status = AXIS2_ARRAY_LIST_ADD(all_handlers, env, metadata);
                     if(AXIS2_FAILURE == status)
                     {   
@@ -457,7 +457,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
         }
 
     }
-    printf("came31\n");
+    
     /**************************************************************************/
     /************************** SERVICE HANDLERS ******************************/
     /**************************************************************************/
@@ -467,7 +467,6 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             
         case AXIS2_INFLOW:
         {
-            printf("came32\n");
             flow = AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
                 svc->wsdl_svc->wsdl_component, env, INFLOW_KEY);
             break;
@@ -491,12 +490,13 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             break;
         }
     }
-    printf("came33\n");
+    
     if (NULL != flow) 
     {
         int j = 0;
         int count = 0;
         count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
+        
         if(AXIS2_FAILURE == AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
         {
             if(all_handlers)
@@ -514,15 +514,18 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
             phase_name = AXIS2_PHASE_RULE_GET_NAME(AXIS2_HANDLER_DESC_GET_RULES(metadata, 
                 env), env);
+            
             /* TODO change this in properway */
             if(0 == AXIS2_STRCMP(phase_name, ""))
             {
-                AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_PHASE_IS_NOT_SPECIFED, AXIS2_FAILURE);
+                AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_PHASE_IS_NOT_SPECIFED,
+                    AXIS2_FAILURE);
+                return AXIS2_FAILURE;
                 
-            } else if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) &&
-                    (0 != AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) &&
-                    (0 != AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
-                    (0 != AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+            } else if ((0 == AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) ||
+                    (0 == AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) ||
+                    (0 == AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
+                    (0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
             {
                 if(all_handlers)
                 {  
@@ -535,7 +538,15 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
                 
             } else 
             {
+                if(!all_handlers)
+                {
+                    all_handlers = axis2_array_list_create(env, 0);
+                    if(!all_handlers)
+                        return AXIS2_FAILURE;
+                }
+
                 status = AXIS2_ARRAY_LIST_ADD(all_handlers, env, metadata);
+                
                 if(AXIS2_FAILURE == status) 
                 {
                     if(all_handlers)
@@ -548,14 +559,14 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             }
         }
     }
-    printf("came34\n");
+    
     if(resolver_impl->phase_holder)
     {
         AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
     }
+    
     switch (type) 
     {
-        printf("came35\n");
         case AXIS2_INFLOW:
         {
             resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env, 
@@ -583,7 +594,6 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
     }
     if(!all_handlers)
     {
-        printf("came36\n");
         return AXIS2_FAILURE;
     }
     
@@ -600,9 +610,8 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
         metadata = (struct axis2_handler_desc *)
             AXIS2_ARRAY_LIST_GET(all_handlers, env, i);
         status = AXIS2_PHASE_HOLDER_ADD_HANDLER(resolver_impl->phase_holder, env, metadata);
-        
     }
-    printf("came37\n");
+    
     /* Free the locally created all_handlers list */
     if(all_handlers)
         AXIS2_ARRAY_LIST_FREE(all_handlers, env);
@@ -1301,7 +1310,7 @@ axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
                 {
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE, AXIS2_FAILURE);
-                    return NULL;
+                    return AXIS2_FAILURE;
                     
                 }
             }

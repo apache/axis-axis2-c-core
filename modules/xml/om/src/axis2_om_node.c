@@ -392,6 +392,15 @@ axis2_om_node_set_parent (axis2_om_node_t *om_node,
     AXIS2_FUNC_PARAM_CHECK(om_node,env,AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, parent, AXIS2_FAILURE);
     
+    if(!parent)
+    {
+
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
+            AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+
+    
     if (parent == AXIS2_INTF_TO_IMPL(om_node)->parent)
     {   /* same parent already exist */
         return AXIS2_SUCCESS;
@@ -422,7 +431,7 @@ axis2_om_node_insert_sibling_after (axis2_om_node_t * om_node,
     axis2_om_node_t *next_sib = NULL;
     AXIS2_FUNC_PARAM_CHECK(om_node, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, node_to_insert, AXIS2_FAILURE);
-    
+ 
     AXIS2_INTF_TO_IMPL(node_to_insert)->parent = 
         AXIS2_INTF_TO_IMPL(om_node)->parent;
     AXIS2_INTF_TO_IMPL(node_to_insert)->prev_sibling = om_node;
@@ -449,7 +458,7 @@ axis2_om_node_insert_sibling_before (axis2_om_node_t *om_node,
    
     AXIS2_FUNC_PARAM_CHECK(om_node, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, node_to_insert, AXIS2_FAILURE);
-    
+
     AXIS2_INTF_TO_IMPL(node_to_insert)->parent = 
         AXIS2_INTF_TO_IMPL(om_node)->parent ;
             
@@ -644,6 +653,7 @@ axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,
    
     AXIS2_FUNC_PARAM_CHECK(om_node, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, prev_sibling, AXIS2_FAILURE);
+    
     AXIS2_INTF_TO_IMPL(om_node)->prev_sibling = prev_sibling;
     return AXIS2_SUCCESS;
 } 
@@ -733,5 +743,3 @@ axis2_om_node_build_next(axis2_om_node_t *om_node,
         return NULL;
     return AXIS2_OM_DOCUMENT_BUILD_NEXT(om_doc, env);
 }
-
-

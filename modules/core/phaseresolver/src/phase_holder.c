@@ -72,7 +72,7 @@ axis2_phase_holder_create (axis2_env_t **env)
 	
 	if(NULL == phase_holder_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL); 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -84,7 +84,7 @@ axis2_phase_holder_create (axis2_env_t **env)
 	if(NULL == phase_holder_impl->phase_holder.ops)
     {
         axis2_phase_holder_free(&(phase_holder_impl->phase_holder), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -206,7 +206,8 @@ axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
     phase_name = AXIS2_PHASE_RULE_GET_NAME(
         AXIS2_HANDLER_DESC_GET_RULES(handler, env), env);
     
-    if (axis2_phase_holder_is_phase_exist(phase_holder, env, phase_name)) 
+    if (AXIS2_TRUE == axis2_phase_holder_is_phase_exist(phase_holder, env, 
+            phase_name)) 
     {
         status = AXIS2_PHASE_ADD_HANDLER_DESC(axis2_phase_holder_get_phase(phase_holder, 
             env, phase_name), env, handler);
