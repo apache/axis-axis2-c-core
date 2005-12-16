@@ -17,9 +17,10 @@
 #include <axis2_om_element.h>
 #include <axis2_om_attribute.h>
 #include <axis2_om_namespace.h>
+#include <axis2_xml_writer.h>
 #include <string.h>
 
-
+                                 
 axis2_om_namespace_t *AXIS2_CALL
 axis2_om_element_find_namespace(axis2_om_element_t *om_element,
                                 axis2_env_t **env,
@@ -118,7 +119,8 @@ axis2_om_element_t* AXIS2_CALL
 axis2_om_element_get_first_child_with_qname(axis2_om_element_t *om_element,
                                             axis2_env_t **env,
                                             axis2_qname_t *element_qname,
-                                            axis2_om_node_t *element_node);
+                                            axis2_om_node_t *element_node,
+                                            axis2_om_node_t **child_node);
 
 axis2_status_t AXIS2_CALL
 axis2_om_element_remove_attribute(axis2_om_element_t *om_element, 
@@ -128,7 +130,8 @@ axis2_om_element_remove_attribute(axis2_om_element_t *om_element,
 axis2_om_element_t* AXIS2_CALL
 axis2_om_element_get_first_element(axis2_om_element_t *om_element,
                                     axis2_env_t **env,
-                                    axis2_om_node_t *element_node);
+                                    axis2_om_node_t *element_node,
+                                    axis2_om_node_t **first_ele_node);
 axis2_char_t* AXIS2_CALL
 axis2_om_element_get_text(axis2_om_element_t *om_element,
                           axis2_env_t **env,
@@ -138,7 +141,17 @@ axis2_status_t AXIS2_CALL
 axis2_om_element_set_text(axis2_om_element_t *om_element,
                           axis2_env_t **env,
                           axis2_char_t *text,
-                          axis2_om_node_t *element_node);                                                              
+                          axis2_om_node_t *element_node);  
+
+axis2_char_t* AXIS2_CALL
+axis2_om_element_to_string(axis2_om_element_t *om_element,
+                           axis2_env_t **env,
+                           axis2_om_node_t *element_node); 
+
+axis2_om_child_element_iterator_t * AXIS2_CALL
+axis2_om_element_get_child_elements(axis2_om_element_t *om_element,
+                                    axis2_env_t **env,
+                                    axis2_om_node_t *element_node);                                                                                                                
                                                                       
                                          
                                          
@@ -234,14 +247,16 @@ axis2_om_element_create (axis2_env_t **env,
                                              AXIS2_OM_NAMESPACE_GET_PREFIX(ns, env));
         if (!(element->ns))
         {
-            if (axis2_om_element_declare_namespace(&(element->om_element), env, *node, ns) == AXIS2_SUCCESS)
+            if (axis2_om_element_declare_namespace(&(element->om_element), 
+                    env, *node, ns) == AXIS2_SUCCESS)
                 element->ns = ns;
         }
     }
 
     element->om_element.ops = NULL;
-    element->om_element.ops = (axis2_om_element_ops_t *) AXIS2_MALLOC ((*env)->allocator,
-                                                       sizeof(axis2_om_element_ops_t));
+    element->om_element.ops = (axis2_om_element_ops_t *)AXIS2_MALLOC(
+                                        (*env)->allocator,
+                                         sizeof(axis2_om_element_ops_t));
 
     if (!element->om_element.ops)
     {
@@ -289,8 +304,16 @@ axis2_om_element_create (axis2_env_t **env,
         axis2_om_element_get_all_namespaces;
     element->om_element.ops->get_qname =
         axis2_om_element_get_qname; 
+        
+    element->om_element.ops->get_children =
+        axis2_om_element_get_children;
+        
+    element->om_element.ops->get_children_with_qname =
+        axis2_om_element_get_children_with_qname;
+                        
     element->om_element.ops->get_first_child_with_qname =
         axis2_om_element_get_first_child_with_qname; 
+        
     element->om_element.ops->remove_attribute =
         axis2_om_element_remove_attribute;
     
@@ -299,7 +322,13 @@ axis2_om_element_create (axis2_env_t **env,
     element->om_element.ops->get_text =
         axis2_om_element_get_text;
     element->om_element.ops->get_first_element =
-        axis2_om_element_get_first_element;                   
+        axis2_om_element_get_first_element;
+
+    element->om_element.ops->to_string =
+        axis2_om_element_to_string;
+    element->om_element.ops->get_child_elements =
+        axis2_om_element_get_child_elements;        
+                                   
     return &(element->om_element);
 }
 
@@ -387,7 +416,7 @@ axis2_om_element_find_namespace (axis2_om_element_t *ele,
                     (axis2_om_namespace_t *) (ns), env),uri) == 0)
             {
               
-		AXIS2_FREE ((*env)->allocator, hashindex);
+		        AXIS2_FREE ((*env)->allocator, hashindex);
                 return (axis2_om_namespace_t *) (ns);
             }
         }
@@ -403,9 +432,8 @@ axis2_om_element_find_namespace (axis2_om_element_t *ele,
         }                             
     }
     parent = AXIS2_OM_NODE_GET_PARENT(node, env);                       
-
     
-     if ((parent != NULL) &&
+    if ((parent != NULL) &&
              (AXIS2_OM_NODE_GET_NODE_TYPE(parent, env) == AXIS2_OM_ELEMENT))
     {
         return axis2_om_element_find_namespace (
@@ -932,7 +960,8 @@ axis2_om_element_t* AXIS2_CALL
 axis2_om_element_get_first_child_with_qname(axis2_om_element_t *om_element,
                                             axis2_env_t **env,
                                             axis2_qname_t *element_qname,
-                                            axis2_om_node_t *element_node)
+                                            axis2_om_node_t *element_node,
+                                            axis2_om_node_t **child_node)
 {
     axis2_om_node_t *om_node = NULL;
     axis2_om_children_qname_iterator_t *children_iterator = NULL;
@@ -940,9 +969,10 @@ axis2_om_element_get_first_child_with_qname(axis2_om_element_t *om_element,
     AXIS2_PARAM_CHECK((*env)->error, element_qname, NULL);
     AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
     
-    children_iterator = axis2_om_children_qname_iterator_create(env, 
-                                        element_node, element_qname);
-    
+    children_iterator = axis2_om_children_qname_iterator_create(env,
+                        AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env),
+                        element_qname);
+     
     if(AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(children_iterator, env))
     {
         om_node =   AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(children_iterator, env); 
@@ -951,6 +981,8 @@ axis2_om_element_get_first_child_with_qname(axis2_om_element_t *om_element,
     if(om_node && (AXIS2_OM_NODE_GET_NODE_TYPE(om_node, env) == AXIS2_OM_ELEMENT))
     {
         AXIS2_OM_CHILDREN_QNAME_ITERATOR_FREE(children_iterator, env);
+        
+        if(child_node){ *child_node = om_node; }
         return (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);
     }
     else
@@ -986,7 +1018,8 @@ axis2_om_element_remove_attribute(axis2_om_element_t *om_element,
 axis2_om_element_t* AXIS2_CALL
 axis2_om_element_get_first_element(axis2_om_element_t *om_element,
                                     axis2_env_t **env,
-                                    axis2_om_node_t *element_node)
+                                    axis2_om_node_t *element_node,
+                                    axis2_om_node_t **first_ele_node)
 {
     axis2_om_node_t *temp_node = NULL;
     AXIS2_FUNC_PARAM_CHECK(om_element, env, NULL);
@@ -997,6 +1030,7 @@ axis2_om_element_get_first_element(axis2_om_element_t *om_element,
     {
         if(AXIS2_OM_NODE_GET_NODE_TYPE(temp_node, env) == AXIS2_OM_ELEMENT)
         {
+            if(first_ele_node){            *first_ele_node = temp_node;}
             return (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(temp_node, env);
         }
         else
@@ -1020,19 +1054,41 @@ axis2_om_element_get_text(axis2_om_element_t *om_element,
     AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
     
     temp_node = AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env);
-    while(temp_node != NULL)
+    
+    while(temp_node)
     {
+        
         if(AXIS2_OM_NODE_GET_NODE_TYPE(temp_node, env) == AXIS2_OM_TEXT)
         {
+            
             text_node = (axis2_om_text_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(temp_node, env); 
             temp_text = AXIS2_OM_TEXT_GET_VALUE(text_node, env);
+            /*
             
-            if(temp_text && AXIS2_STRCMP(temp_text, "") != 0)
-                dest = strcat(dest, temp_text);
+            int dst_len = strlen(dst);
+            int cur_len = dst_len + strlen(temp_text);
+            axis2_char_t *tmp_dst = AXIS2_MALLOC((*env)->allocator, (cur_len +1)*sizeof(axis2_char));
+            memcpy(tmp_dst, dst, dst_len*sizeof(axis2_char_t));
+            memcpy((tmp_dst + dst_len * sizeof(axis2_char_t)), temp_text, cur_len - dst_len);
+            tmp_dst[cur_len] = '\0';
             
+            
+            if(!dest && temp_text && (AXIS2_STRCMP(temp_text, "") != 0))
+            {
+                 dest = AXIS2_STRDUP("", env);
+                 strcat(dest, temp_text);   
+                 
+            }
+            else if(dest && temp_text && (AXIS2_STRCMP(temp_text, "") != 0))
+            {
+                
+                this should be fixed 
+                strcat(dest, temp_text); 
+            }                            
+            */           
         }
         temp_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(temp_node, env);
-    }   
+    }  
     return dest;
 }                          
 
@@ -1044,6 +1100,7 @@ axis2_om_element_set_text(axis2_om_element_t *om_element,
 {
     axis2_om_node_t* temp_node = NULL;
     axis2_om_text_t* om_text = NULL;
+    axis2_om_node_t* node_to_free = NULL;
     AXIS2_FUNC_PARAM_CHECK(om_element, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, text, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, element_node, AXIS2_FAILURE);
@@ -1053,7 +1110,8 @@ axis2_om_element_set_text(axis2_om_element_t *om_element,
     {
         if(AXIS2_OM_NODE_GET_NODE_TYPE(temp_node, env) == AXIS2_OM_TEXT)
         {
-            AXIS2_OM_NODE_DETACH(temp_node, env);
+            node_to_free = AXIS2_OM_NODE_DETACH(temp_node, env);
+            AXIS2_OM_NODE_FREE_TREE(node_to_free, env);
         }
         temp_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(temp_node, env);    
     } 
@@ -1062,6 +1120,44 @@ axis2_om_element_set_text(axis2_om_element_t *om_element,
     om_text = axis2_om_text_create(env, NULL, text, &temp_node);
     AXIS2_OM_NODE_ADD_CHILD(temp_node, env, element_node);
     return AXIS2_SUCCESS;
-}                
+}
 
+axis2_char_t* AXIS2_CALL
+axis2_om_element_to_string(axis2_om_element_t *om_element,
+                           axis2_env_t **env,
+                           axis2_om_node_t *element_node)
+{
+    int status = AXIS2_SUCCESS;
+    axis2_om_output_t *om_output = NULL;
+    axis2_xml_writer_t *xml_writer = NULL;
+    axis2_char_t *xml = NULL;
+    AXIS2_FUNC_PARAM_CHECK(om_element, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);    
+    
+    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
+    om_output = axis2_om_output_create(env, xml_writer);
+    status = AXIS2_OM_NODE_SERIALIZE(element_node, env, om_output);
+    if(status = AXIS2_SUCCESS)
+    {
+        xml = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+    }
+    axis2_om_output_free(om_output, env);
+    return xml;                
+}
 
+axis2_om_child_element_iterator_t * AXIS2_CALL
+axis2_om_element_get_child_elements(axis2_om_element_t *om_element,
+                                    axis2_env_t **env,
+                                    axis2_om_node_t *element_node)
+{
+   axis2_om_node_t *first_node = NULL;
+   axis2_om_element_t *ele = NULL;
+   AXIS2_FUNC_PARAM_CHECK(om_element, env, NULL);
+   AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
+   ele = AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(om_element, env, element_node, &first_node);
+   if(ele && first_node)
+   {
+        return axis2_om_child_element_iterator_create(env, first_node);
+   }
+   else return NULL;
+}                                    

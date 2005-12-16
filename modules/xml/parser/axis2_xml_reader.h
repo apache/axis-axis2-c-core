@@ -40,7 +40,7 @@ typedef struct axis2_xml_reader axis2_xml_reader_t;
  * @{
  */
 
-enum axis2_xml_reader_event_types
+typedef enum axis2_xml_reader_event_types
 {
     AXIS2_XML_READER_START_DOCUMENT = 0,
     AXIS2_XML_READER_START_ELEMENT,
@@ -53,7 +53,7 @@ enum axis2_xml_reader_event_types
     AXIS2_XML_READER_PROCESSING_INSTRUCTION,
     AXIS2_XML_READER_CDATA,
     AXIS2_XML_READER_DOCUMENT_TYPE
-};
+}axis2_xml_reader_event_types;
 
   /**
     * \brief AXIS2_XML_READER ops
@@ -188,18 +188,18 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * @param env environment 
          * @param i index
          * @returns namespace prefix of corresponding namespace 
-         *          caller must free the value using AXIS2_XML_READER_XML_FREE macro         
+         * caller must free the value using AXIS2_XML_READER_XML_FREE macro         
          */                                               
         axis2_char_t* (AXIS2_CALL *get_namespace_prefix_by_number)
                                                (axis2_xml_reader_t *parser,
                                                 axis2_env_t **env,
                                                 int i); 
         /**
-         *  Used to obtain the current element prefix
+         * Used to obtain the current element prefix
          * @param parser parser struct 
          * @param env environment struct
          * @returns prefix , NULL on error 
-         *          caller must free the value using AXIS2_XML_READER_XML_FREE macro
+         * caller must free the value using AXIS2_XML_READER_XML_FREE macro
          */         
         
         axis2_char_t* (AXIS2_CALL *get_prefix)(axis2_xml_reader_t *parser,

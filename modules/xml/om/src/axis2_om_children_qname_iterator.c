@@ -154,12 +154,12 @@ axis2_om_children_qname_iterator_remove(axis2_om_children_qname_iterator_t *iter
 axis2_bool_t AXIS2_CALL 
 axis2_om_children_qname_iterator_has_next(axis2_om_children_qname_iterator_t *iterator,
                                      axis2_env_t **env)
-{
+{   
     axis2_om_children_qname_iterator_impl_t *iterator_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(iterator, env, AXIS2_FALSE);
 
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
-
+    
     while(iterator_impl->need_to_move_forward)
     {
         if(iterator_impl->current_child)
@@ -170,6 +170,7 @@ axis2_om_children_qname_iterator_has_next(axis2_om_children_qname_iterator_t *it
                 om_element = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
                                     iterator_impl->current_child, env);    
             }
+            
             if(om_element && axis2_om_children_qname_iterator_qname_matches(env,
                     AXIS2_OM_ELEMENT_GET_QNAME(om_element, env), iterator_impl->given_qname))
             {
@@ -198,6 +199,7 @@ axis2_om_children_qname_iterator_has_next(axis2_om_children_qname_iterator_t *it
         }            
      }
     return iterator_impl->matching_node_found;     
+    
 }
 
 axis2_om_node_t* AXIS2_CALL 
@@ -224,26 +226,33 @@ axis2_om_children_qname_iterator_qname_matches(axis2_env_t **env,
                                                axis2_qname_t *element_qname,
                                                axis2_qname_t *qname_to_match)
 {
-    int localparts_match =  0;
-    int namespace_uris_match = 0;
+    int lparts_match =  0;
+    int uris_match = 0;
+    axis2_char_t *ele_lpart = NULL;
+    axis2_char_t *match_lpart = NULL;
+    axis2_char_t *ele_nsuri = NULL;
+    axis2_char_t *match_nsuri = NULL;
     
     if(!(qname_to_match))
-        return AXIS2_TRUE;        
-    if(!element_qname)
+        return AXIS2_TRUE;    
+    if(qname_to_match)
     {
-        localparts_match = AXIS2_STRCMP(AXIS2_QNAME_GET_LOCALPART(element_qname, env),
-                            AXIS2_QNAME_GET_LOCALPART(qname_to_match, env)) == 0 ;
-    }    
-    if(qname_to_match && element_qname)
-    {
-        namespace_uris_match = AXIS2_STRCMP(AXIS2_QNAME_GET_URI(element_qname, env),
-                                    AXIS2_QNAME_GET_URI(qname_to_match, env)) == 0;        
-        
+        match_lpart = AXIS2_QNAME_GET_LOCALPART(qname_to_match, env);
+        match_nsuri = AXIS2_QNAME_GET_URI(qname_to_match, env);
     }
-    else if(qname_to_match)
+    if(element_qname)
     {
-        namespace_uris_match = AXIS2_STRCMP(AXIS2_QNAME_GET_URI(qname_to_match, env), "") == 0;
+        ele_lpart = AXIS2_QNAME_GET_LOCALPART(element_qname, env);
+        ele_nsuri = AXIS2_QNAME_GET_URI(element_qname, env);
     }
-    return namespace_uris_match && localparts_match;
     
+    lparts_match = !match_lpart || 
+                    (AXIS2_STRCMP(match_lpart,"") == 0) ||
+                    element_qname && (AXIS2_STRCMP(ele_lpart, match_lpart) == 0) ;
+
+    
+    uris_match = !match_nsuri || (AXIS2_STRCMP(match_nsuri,"") == 0) ||
+                       element_qname && (AXIS2_STRCMP(ele_nsuri, match_nsuri) == 0);
+    
+    return lparts_match && uris_match;   
 }

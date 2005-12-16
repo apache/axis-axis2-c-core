@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  
- #ifndef AXIS2_OM_CONSTANTS_H
- #define AXIS2_OM_CONSTANTS_H
+ #ifndef AXIS2_OM_H
+ #define AXIS2_OM_H
  
  /**
 * @file axis2_constants.h
@@ -40,4 +40,4 @@
 
 #define AXIS2_OM_XMLNS_PREFIX "xml"
 
-#endif AXIS2_OM_CONSTANTS_H
+#endif /* AXIS2_OM_H */

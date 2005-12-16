@@ -21,6 +21,25 @@
 #define   DEFAULT_CHAR_SET_ENCODING  "utf-8"
 #define MAX_ARGS  4
 
+struct axis2_om_output
+{
+    /** axis2_xml_writer. any xml writer which 
+        implemet axis2_xml_writer.h interface  */
+    axis2_xml_writer_t *xml_writer;
+
+    /* following fields are not used currently but will be used in the future */
+    axis2_bool_t do_optimize;
+    axis2_char_t *mime_boundary;
+    axis2_char_t *root_content_id;
+    int next_id;
+    axis2_bool_t is_soap_11;
+    axis2_char_t *char_set_encoding;
+    /* xml version */
+    axis2_char_t *xml_version;
+    axis2_bool_t ignore_xml_declaration;
+};
+
+
 AXIS2_DECLARE(axis2_om_output_t *)
 axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
 {
@@ -48,7 +67,7 @@ axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
     return om_output;
 }
 
-int
+AXIS2_DECLARE(int)
 axis2_om_output_write (axis2_om_output_t * om_output,
                        axis2_env_t **env,
                        axis2_om_types_t type,

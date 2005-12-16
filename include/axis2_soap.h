@@ -14,17 +14,23 @@
  * limitations under the License.
  */
  
- #ifndef AXIS2_SOAP_CONSTANTS_H
- #define AXIS2_SOAP_CONSTANTS_H
+ #ifndef AXIS2_SOAP_H
+ #define AXIS2_SOAP_H
  
  /**
- * @file axis2_soap_constants.h
+ * @file axis2_soap.h
  * @brief defines SOAP constants
  */
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+/**
+ * @defgroup axis2 soap constants
+ * @ingroup axis2_soap 
+ * @{
+ */
 
 /** soap 11 constants */
 
@@ -147,6 +153,7 @@ extern "C"
 
 #define AXIS2_SOAP_FAULT_CODE_RECEIVER ""
 
+/** @} */
 
 #ifdef __cplusplus
 }

@@ -39,30 +39,12 @@ extern "C"
  * @{
  */
 
- /*  static  const char *DEFAULT_CHAR_SET_ENCODING = "utf-8"; */
-
-
   /** 
     * \brief OM Output struct
     * The XML writer interface struct of om
     */
-    typedef struct axis2_om_output
-    {
-        /** axis2_xml_writer. any xml writer which 
-           implemet axis2_xml_writer.h interface  */
-        axis2_xml_writer_t *xml_writer;
+    typedef struct axis2_om_output axis2_om_output_t;
 
-        /* following fields are not used currently but will be used in the future */
-        axis2_bool_t do_optimize;
-        axis2_char_t *mime_boundary;
-        axis2_char_t *root_content_id;
-        int next_id;
-        axis2_bool_t is_soap_11;
-        axis2_char_t *char_set_encoding;
-        /* xml version */
-        axis2_char_t *xml_version;
-        axis2_bool_t ignore_xml_declaration;
-    } axis2_om_output_t;
     
   /**
     * creates OM output struct 
@@ -72,7 +54,8 @@ extern "C"
     */
 
     AXIS2_DECLARE(axis2_om_output_t*) 
-    axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer);
+    axis2_om_output_create (axis2_env_t **env,
+                            axis2_xml_writer_t *xml_writer);
 
   /**
     *  Performs xml writing.
@@ -85,7 +68,8 @@ extern "C"
     */
 
     AXIS2_DECLARE(axis2_status_t)
-    axis2_om_output_write (axis2_om_output_t * om_output, axis2_env_t **env,
+    axis2_om_output_write (axis2_om_output_t * om_output, 
+                           axis2_env_t **env,
                            axis2_om_types_t type,
                            int no_of_args, ...);
    /**

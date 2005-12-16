@@ -20,6 +20,7 @@
 #include <axis2_env.h>
 #include <axis2_om_node.h>
 #include <axis2_defines.h>
+#include <axis2_om_output.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -35,7 +36,7 @@ extern "C"
 #define CHAR_SET_ENCODING "UTF-8"
 #define XML_VERSION	"1.0"
 
-    struct axis2_om_document;
+    struct axis2_om_document; 
     struct axis2_om_document_ops;
     struct axis2_om_stax_builder;
 
@@ -110,7 +111,23 @@ extern "C"
         *@param env environment MUST NOT be NULL.
         */
         axis2_om_node_t* (AXIS2_CALL *build_all)(struct axis2_om_document *document,
-                                                axis2_env_t **env);            
+                                                axis2_env_t **env); 
+        /**
+         * get builder
+         * @return builder , returns NULL if a builder is not associated with 
+         *                   document
+         */
+        struct axis2_om_stax_builder* (AXIS2_CALL *get_builder)
+                                                 (struct axis2_om_document *document,
+                                                  axis2_env_t **env);                                                         
+        /**
+         * @param om_document
+         * @return status code AXIS2_SUCCESS on success , otherwise AXIS2_FAILURE
+         */                                                  
+        axis2_status_t (AXIS2_CALL *serialize)(struct axis2_om_document *document,
+                                               axis2_env_t **env,
+                                               axis2_om_output_t *om_output);
+                                                           
     } axis2_om_document_ops_t;
 
   /**
@@ -158,6 +175,14 @@ extern "C"
 /** build till the root node is complete */
 #define AXIS2_OM_DOCUMENT_BUILD_ALL(document,env) \
         ((document)->ops->build_all(document,env))
+        
+/** returns the builder */
+#define AXIS2_OM_DOCUMENT_GET_BUILDER(document, env) \
+        ((document)->ops->get_builder(document, env))
+        
+/** serialize opertation */
+#define AXIS2_OM_DOCUMENT_SERIALIZE(document, env, om_output) \
+        ((document)->ops->serialize(document, env, om_output))                
 
 /** @} */
 
@@ -165,4 +190,4 @@ extern "C"
 }
 #endif
 
-#endif                          /* AXIS2_OM_DOCUMENT_H */
+#endif /* AXIS2_OM_DOCUMENT_H */

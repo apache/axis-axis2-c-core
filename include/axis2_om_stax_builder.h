@@ -100,7 +100,15 @@ extern "C"
 
         axis2_status_t  (AXIS2_CALL *set_document)(struct axis2_om_stax_builder *builder,
                                                    axis2_env_t **env,
-                                                   axis2_om_document_t *document);                                                    
+                                                   axis2_om_document_t *document); 
+        /**
+         *  get the builder's current event
+         *  @return returns one of axis2_xml_reader_event_types
+         *  returns -1 of the next method on builder has not been called yet
+         *
+         */
+        int (AXIS2_CALL *get_current_event)(struct axis2_om_stax_builder *builder,
+                                            axis2_env_t **env);                                                                                                      
                                                            
     } axis2_om_stax_builder_ops_t;
 
@@ -140,6 +148,9 @@ extern "C"
 /** get the document associated with the builder */  
 #define AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(builder,env) \
         ((builder)->ops->get_document(builder,env))
+/** returns the xml readers current event */
+#define AXIS2_OM_STAX_BUILDER_GET_CURRENT_EVENT(builder, env) \
+        ((builder)->ops->get_current_event(builder, env))        
 	
 /** @} */
 
