@@ -262,7 +262,7 @@ extern "C"
         /** fault to field not specified in message context */
         AXIS2_ERROR_NOWHERE_TO_SEND_FAULT,
         /* Invalid status line or invalid request line */
-        AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE,
+        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
         /* Cannot correlate message*/
         AXIS2_ERROR_CANNOT_CORRELATE_MSG,
         /* Operation cannot be NULL in MEP client */
@@ -274,8 +274,13 @@ extern "C"
         /** cannot infer transport from URL */
         AXIS2_ERROR_CANNOT_INFER_TRANSPORT,
         /** Invalid SOAP version */
-        AXIS2_ERROR_INVALID_SOAP_VERSION
-        
+        AXIS2_ERROR_INVALID_SOAP_VERSION,
+        /* HTTP version cannot be null in the status/request line */ 
+        AXIS2_ERROR_NULL_HTTP_VERSION,
+        /* A valid conf_ctx is reqd for the http worker */
+        AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
+        /* We need transport_info in msg_ctx*/
+        AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL
     };
 
 /** @} */
