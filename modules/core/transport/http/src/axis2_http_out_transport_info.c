@@ -69,7 +69,8 @@ axis2_http_out_transport_info_create(axis2_env_t **env,
 	
     if(NULL == info_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
 	}
     info_impl->response = response;
   	info_impl->encoding = NULL;  
@@ -80,7 +81,7 @@ axis2_http_out_transport_info_create(axis2_env_t **env,
 	{
 		axis2_http_out_transport_info_free((axis2_http_out_transport_info_t*)
                          info_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 		return NULL;
 	}
 
