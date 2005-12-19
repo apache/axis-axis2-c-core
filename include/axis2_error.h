@@ -264,7 +264,17 @@ extern "C"
         /* Invalid status line or invalid request line */
         AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE,
         /* Cannot correlate message*/
-        AXIS2_ERROR_CANNOT_CORRELATE_MSG
+        AXIS2_ERROR_CANNOT_CORRELATE_MSG,
+        /* Operation cannot be NULL in MEP client */
+        AXIS2_ERROR_OPERATION_CANNOT_BE_NULL_IN_MEP_CLIENT,
+        /* MEP cannot be NULL in MEP client */
+        AXIS2_ERROR_MEP_CANNOT_BE_NULL_IN_MEP_CLIENT,
+        /* MEP Mismatch */
+        AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT,
+        /** cannot infer transport from URL */
+        AXIS2_ERROR_CANNOT_INFER_TRANSPORTransport,
+        /** Invalid SOAP version */
+        AXIS2_ERROR_INVALID_SOAP_VERSION
         
     };
 
