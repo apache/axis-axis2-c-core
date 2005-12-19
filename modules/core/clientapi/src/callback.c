@@ -70,52 +70,22 @@ axis2_callback_t* AXIS2_CALL axis2_callback_create(axis2_env_t **env)
     return &(callback_impl->callback);
 }
 
-/**
- * This Method is called by Axis2 once the Async Operation is sucessfully completed and the result returns
- *
- * @param result
- */
 axis2_status_t AXIS2_CALL axis2_callback_invoke_on_complete(struct axis2_callback *callback, axis2_env_t **env, axis2_async_result_t *result)
 {
     return AXIS2_SUCCESS;
 }
 
-/**
- * This Method is called by Axis2 once the Async Operation fails and the result returns
- *
- * @param e
- */
 axis2_status_t AXIS2_CALL axis2_callback_report_error(struct axis2_callback *callback, axis2_env_t **env, int exception)
 {
     return AXIS2_SUCCESS;
 }
 
-/**
- * This says has the Async Operation is completed or not. this could be useful for poleing 
- * with a special callback written for poleing (checking repeatedly time to time).
- * e.g.
- * <code>
- *      <pre>
- *          while(!callback.isComplete()){
- *             Thread.sleep(1000);
- *          }
- *          do whatever u need to do
- *      </pre>
- * </code>
- *
- * @return
- */
 axis2_bool_t AXIS2_CALL axis2_callback_get_complete(struct axis2_callback *callback, axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(callback)->complete;
 }
 
-/**
- * Method setComplete
- *
- * @param complete
- */
 axis2_status_t AXIS2_CALL axis2_callback_set_complete(struct axis2_callback *callback, axis2_env_t **env, axis2_bool_t complete) 
 {
     AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
