@@ -272,7 +272,7 @@ extern "C"
         /* MEP Mismatch */
         AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT,
         /** cannot infer transport from URL */
-        AXIS2_ERROR_CANNOT_INFER_TRANSPORTransport,
+        AXIS2_ERROR_CANNOT_INFER_TRANSPORT,
         /** Invalid SOAP version */
         AXIS2_ERROR_INVALID_SOAP_VERSION
         
