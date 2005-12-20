@@ -24,6 +24,10 @@ typedef struct axis2_callback_impl
     axis2_callback_t callback;
     /** callback complete? */
     axis2_bool_t complete;
+    /** envelope corresponding to the result */
+    /* TODO axis2_soap_envelope_t *envelope; */
+    /** error code */
+    int error;
 } axis2_callback_impl_t;
 
 /** Interface to implementation conversion macro */
@@ -33,6 +37,15 @@ axis2_status_t AXIS2_CALL axis2_callback_invoke_on_complete(struct axis2_callbac
 axis2_status_t AXIS2_CALL axis2_callback_report_error(struct axis2_callback *callback, axis2_env_t **env, int exception);
 axis2_bool_t AXIS2_CALL axis2_callback_get_complete(struct axis2_callback *callback, axis2_env_t **env);
 axis2_status_t AXIS2_CALL axis2_callback_set_complete(struct axis2_callback *callback, axis2_env_t **env, axis2_bool_t complete) ;
+/* TODO axis2_soap_envelope_t* AXIS2_CALL axis2_callback_get_envelope(struct axis2_callback *callback, 
+        axis2_env_t **env);
+axis2_status_t AXIS2_CALL axis2_callback_set_envelope(struct axis2_callback *callback, 
+        axis2_env_t **env, axis2_soap_envelope_t *envelope);*/
+int AXIS2_CALL axis2_callback_get_error(struct axis2_callback *callback, 
+        axis2_env_t **env);
+axis2_status_t AXIS2_CALL axis2_callback_set_error(struct axis2_callback *callback, 
+        axis2_env_t **env, 
+        int error);
 axis2_status_t AXIS2_CALL axis2_callback_free (struct axis2_callback *callback, 
                                    axis2_env_t **env);
 
@@ -51,6 +64,8 @@ axis2_callback_t* AXIS2_CALL axis2_callback_create(axis2_env_t **env)
 
     callback_impl->callback.ops = NULL;
     callback_impl->complete = AXIS2_FALSE;
+    /* TODO callback_impl->envelope = NULL;*/
+    callback_impl->error = AXIS2_ERROR_NONE;
     
     /* initialize ops */    
     callback_impl->callback.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_callback_ops_t) );
@@ -65,6 +80,10 @@ axis2_callback_t* AXIS2_CALL axis2_callback_create(axis2_env_t **env)
     callback_impl->callback.ops->report_error = axis2_callback_report_error;
     callback_impl->callback.ops->get_complete = axis2_callback_get_complete;
     callback_impl->callback.ops->set_complete = axis2_callback_set_complete;    
+    /* TODO callback_impl->callback.ops->get_envelope = axis2_callback_get_envelope;
+    callback_impl->callback.ops->set_envelope = axis2_callback_set_envelope; */
+    callback_impl->callback.ops->get_error = axis2_callback_get_error;
+    callback_impl->callback.ops->set_error = axis2_callback_set_error;
     callback_impl->callback.ops->free = axis2_callback_free;
 
     return &(callback_impl->callback);
@@ -90,6 +109,36 @@ axis2_status_t AXIS2_CALL axis2_callback_set_complete(struct axis2_callback *cal
 {
     AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(callback)->complete = complete;
+    return AXIS2_SUCCESS;
+}
+
+/* TODO axis2_soap_envelope_t* AXIS2_CALL axis2_callback_get_envelope(struct axis2_callback *callback, 
+        axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(callback)->envelope;
+}
+
+axis2_status_t AXIS2_CALL axis2_callback_set_envelope(struct axis2_callback *callback, 
+        axis2_env_t **env, axis2_soap_envelope_t *envelope)
+{
+    AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(callback)->envelope = envelope;
+    return AXIS2_SUCCESS;
+}*/
+
+int AXIS2_CALL axis2_callback_get_error(struct axis2_callback *callback, 
+        axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(callback)->error;
+}
+axis2_status_t AXIS2_CALL axis2_callback_set_error(struct axis2_callback *callback, 
+        axis2_env_t **env, 
+        int error)
+{
+    AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(callback)->error = error;
     return AXIS2_SUCCESS;
 }
 

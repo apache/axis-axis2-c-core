@@ -49,12 +49,16 @@ typedef struct axis2_mep_client axis2_mep_client_t;
  */  
 struct axis2_mep_client_ops
 {
-    axis2_char_t* (AXIS2_CALL *get_soap_action)(struct axis2_mep_client *mep_client, axis2_env_t **env);
+    axis2_char_t* (AXIS2_CALL *get_soap_action)(struct axis2_mep_client *mep_client, 
+        axis2_env_t **env);
     /**
      * prepare the message context for invocation, here the properties kept in the
      * MEPClient copied to the axis2_msg_ctx_t *
      */
-    axis2_status_t (AXIS2_CALL *prepare_invocation)(struct axis2_mep_client *mep_client, axis2_env_t **env, axis2_op_t *op, axis2_msg_ctx_t *msg_ctx);
+    axis2_status_t (AXIS2_CALL *prepare_invocation)(struct axis2_mep_client *mep_client, 
+        axis2_env_t **env, 
+        axis2_op_t *op, 
+        axis2_msg_ctx_t *msg_ctx);
     /**
      * This class prepare the SOAP Envelope using the payload
      *
