@@ -91,12 +91,13 @@ axis2_callback_t* AXIS2_CALL axis2_callback_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL axis2_callback_invoke_on_complete(struct axis2_callback *callback, axis2_env_t **env, axis2_async_result_t *result)
 {
+    /*TODO return axis2_callback_set_envelope(callback, env, AXIS2_ASYNC_RESULT_GET_ENVELOPE(async_result, env));*/
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL axis2_callback_report_error(struct axis2_callback *callback, axis2_env_t **env, int exception)
 {
-    return AXIS2_SUCCESS;
+    return axis2_callback_set_error(callback, env, exception);
 }
 
 axis2_bool_t AXIS2_CALL axis2_callback_get_complete(struct axis2_callback *callback, axis2_env_t **env)
