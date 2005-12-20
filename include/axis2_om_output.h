@@ -103,8 +103,11 @@ AXIS2_DECLARE_DATA struct axis2_om_output_ops
         axis2_xml_writer_t* (AXIS2_CALL *get_xml_writer)
                                   (axis2_om_output_t *om_output,
                                    axis2_env_t **env);                                                                                                                                                                             
-                                                                     
-};
+                                                       
+        axis2_char_t* (AXIS2_CALL *get_content_type)                                                                     
+                                  (axis2_om_output_t *om_output,
+                                   axis2_env_t **env);
+};  
     
 
 struct axis2_om_output
@@ -173,7 +176,10 @@ axis2_om_output_write(axis2_om_output_t * om_output,
         ((output)->ops->set_do_optimize(output, env, optimize))  
         
 #define AXIS2_OM_OUTPUT_GET_XML_WRITER(output, env) \
-        ((output)->ops->get_xml_writer(output, env))              
+        ((output)->ops->get_xml_writer(output, env))
+        
+#define AXIS2_OM_OUTPUT_GET_CONTENT_TYPE(output, env) \
+        ((output)->ops->get_content_type(output, env))                      
    
 /** @} */
 
