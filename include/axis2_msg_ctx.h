@@ -596,7 +596,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_GET_FAULT_TO(msg_ctx, env) ((msg_ctx)->ops->get_fault_to(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_FROM(msg_ctx, env) ((msg_ctx)->ops->get_from(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_IN_FAULT_FLOW(msg_ctx, env) ((msg_ctx)->ops->get_in_fault_flow(msg_ctx, env))
-#define AXIS2_MSG_CTX_GET_IN_GET_SOAP_ENVELOPE(msg_ctx, env) ((msg_ctx)->ops->get_soap_envelope(msg_ctx, env))
+#define AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env) ((msg_ctx)->ops->get_soap_envelope(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env) ((msg_ctx)->ops->get_msg_id(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_PROCESS_FAULT(msg_ctx, env) ((msg_ctx)->ops->get_process_fault(msg_ctx, env))
 #define AXIS2_MSG_CTX_GET_RELATES_TO(msg_ctx, env) ((msg_ctx)->ops->get_relates_to(msg_ctx, env))
