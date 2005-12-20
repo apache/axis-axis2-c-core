@@ -13,3 +13,84 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
+ #ifndef AXIS2_SOAP_MESSAGE_H
+ #define AXIS2_SOAP_MESSAGE_H
+ 
+ /**
+ * @file axis2_soap_message.h
+ * @brief axis2_soap_message struct
+ *        corresponds to root element of soap message
+ */
+#include <axis2_env.h>
+#include <axis2_om_node.h>
+#include <axis2_om_element.h>
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+    typedef struct axis2_soap_message        axis2_soap_message_t;
+    typedef struct axis2_soap_message_ops    axis2_soap_message_ops_t;
+    
+    
+/**
+ * @defgroup axis2_soap_message
+ * @ingroup axis2_soap
+ * @{
+ */
+
+/**
+ *   \brief soap_message operations struct
+ *   ops Encapsulator struct of axis2_soap body
+ */
+ AXIS2_DECLARE_DATA   struct axis2_soap_message_ops
+    {
+      /**
+        * Free an axis2_soap_message
+        * @param  body pointer to soap_message struct
+        * @param  env Environment. MUST NOT be NULL
+        * @return satus of the op. AXIS2_SUCCESS on success 
+        *         else AXIS2_FAILURE
+        */
+
+        axis2_status_t (AXIS2_CALL *free_fn)(axis2_soap_message_t *message,
+                                             axis2_env_t **env);
+
+    };
+
+  /**
+    * \brief soap_message struct
+    * represent a soap_message
+    */
+    struct axis2_soap_message
+    {
+        /** operation of axis2_soap_message struct */
+        axis2_soap_message_ops_t *ops;
+       
+    };
+
+  /**
+    * creates a soap message struct 
+    * @param env Environment. MUST NOT be NULL
+    */
+    AXIS2_DECLARE(axis2_soap_message_t *)
+    axis2_soap_message_create (axis2_env_t **env);
+
+/******************** Macros **************************************************/
+    
+    
+/** free soap_message */
+#define AXIS2_SOAP_MESSAGE_FREE(message , env) \
+        ((message)->ops->free_fn(message, env))
+
+/** @} */
+
+#ifdef __cplusplus
+}
+#endif
+ 
+ 
+ 
+ #endif /* AXIS2_SOAP_MESSAGE_H */

@@ -280,7 +280,10 @@ extern "C"
         /* A valid conf_ctx is reqd for the http worker */
         AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
         /* We need transport_info in msg_ctx*/
-        AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL
+        AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL,
+
+        AXIS2_ERROR_INVALID_BASE_TYPE
+        
     };
 
 /** @} */

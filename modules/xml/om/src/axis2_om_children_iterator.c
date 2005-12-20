@@ -47,7 +47,8 @@ typedef struct axis2_om_children_iterator_impl_t
 
 /***************** end impl struct ****************************************/
 
-#define AXIS2_INTF_TO_IMPL(iterator) ((axis2_om_children_iterator_impl_t *)iterator)
+#define AXIS2_INTF_TO_IMPL(iterator) \
+        ((axis2_om_children_iterator_impl_t *)iterator)
 
 /**************** end macro ***********************************************/
 
@@ -60,7 +61,8 @@ axis2_om_children_iterator_create(axis2_env_t **env,
     axis2_om_children_iterator_impl_t *iterator_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(current_child, env, NULL);
     
-    iterator_impl = (axis2_om_children_iterator_impl_t *)AXIS2_MALLOC((*env)->allocator,
+    iterator_impl = (axis2_om_children_iterator_impl_t *)AXIS2_MALLOC(
+                        (*env)->allocator,
                         sizeof(axis2_om_children_iterator_impl_t));
 
     if(!iterator_impl)

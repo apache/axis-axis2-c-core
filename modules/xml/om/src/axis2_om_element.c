@@ -1139,7 +1139,7 @@ axis2_om_element_to_string(axis2_om_element_t *om_element,
     {
         xml = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
     }
-    axis2_om_output_free(om_output, env);
+    AXIS2_OM_OUTPUT_FREE(om_output, env);
     return xml;                
 }
 

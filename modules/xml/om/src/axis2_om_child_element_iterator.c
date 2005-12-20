@@ -51,7 +51,8 @@ typedef struct axis2_om_child_element_iterator_impl_t
 
 /***************** end impl struct ****************************************/
 
-#define AXIS2_INTF_TO_IMPL(iterator) ((axis2_om_child_element_iterator_impl_t *)iterator)
+#define AXIS2_INTF_TO_IMPL(iterator) \
+        ((axis2_om_child_element_iterator_impl_t *)iterator)
 
 /**************** end macro ***********************************************/
 

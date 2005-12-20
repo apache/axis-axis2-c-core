@@ -20,25 +20,30 @@
  /************** function prototypes *************************************/
  
 axis2_status_t AXIS2_CALL 
-axis2_om_children_qname_iterator_free(axis2_om_children_qname_iterator_t *iterator,
-                                axis2_env_t **env);
+axis2_om_children_qname_iterator_free
+                (axis2_om_children_qname_iterator_t *iterator,
+                 axis2_env_t **env);
                                 
 axis2_status_t AXIS2_CALL
-axis2_om_children_qname_iterator_remove(axis2_om_children_qname_iterator_t *iterator,
-                                  axis2_env_t **env);  
+axis2_om_children_qname_iterator_remove
+                (axis2_om_children_qname_iterator_t *iterator,
+                 axis2_env_t **env);  
 
 axis2_bool_t AXIS2_CALL 
-axis2_om_children_qname_iterator_has_next(axis2_om_children_qname_iterator_t *iterator,
-                                     axis2_env_t **env); 
+axis2_om_children_qname_iterator_has_next
+                (axis2_om_children_qname_iterator_t *iterator,
+                 axis2_env_t **env); 
 
 axis2_om_node_t* AXIS2_CALL 
-axis2_om_children_qname_iterator_next(axis2_om_children_qname_iterator_t *iterator,
-                                axis2_env_t **env); 
+axis2_om_children_qname_iterator_next
+                (axis2_om_children_qname_iterator_t *iterator,
+                 axis2_env_t **env); 
 
 static axis2_bool_t AXIS2_CALL
-axis2_om_children_qname_iterator_qname_matches(axis2_env_t **env,
-                                               axis2_qname_t *element_qname,
-                                               axis2_qname_t *qname_to_match);
+axis2_om_children_qname_iterator_qname_matches
+                (axis2_env_t **env,
+                 axis2_qname_t *element_qname,
+                 axis2_qname_t *qname_to_match);
                                 
 /****************** impl struct ***********************************************/
 
@@ -57,7 +62,8 @@ typedef struct axis2_om_children_qname_iterator_impl_t
 
 /*************************** Macro *********************************************/
 
-#define AXIS2_INTF_TO_IMPL(iterator) ((axis2_om_children_qname_iterator_impl_t*)iterator)
+#define AXIS2_INTF_TO_IMPL(iterator) \
+        ((axis2_om_children_qname_iterator_impl_t*)iterator)
 
 /*******************************************************************************/
 
@@ -72,7 +78,8 @@ axis2_om_children_qname_iterator_create(axis2_env_t **env,
     AXIS2_PARAM_CHECK((*env)->error, current_child, NULL);
     AXIS2_PARAM_CHECK((*env)->error, given_qname, NULL);
     
-    iterator_impl = (axis2_om_children_qname_iterator_impl_t*)AXIS2_MALLOC((*env)->allocator,
+    iterator_impl = (axis2_om_children_qname_iterator_impl_t*)AXIS2_MALLOC(
+                        (*env)->allocator,
                         sizeof(axis2_om_children_qname_iterator_impl_t));
     
     if(!iterator_impl)
@@ -152,8 +159,9 @@ axis2_om_children_qname_iterator_remove(axis2_om_children_qname_iterator_t *iter
 }    
 
 axis2_bool_t AXIS2_CALL 
-axis2_om_children_qname_iterator_has_next(axis2_om_children_qname_iterator_t *iterator,
-                                     axis2_env_t **env)
+axis2_om_children_qname_iterator_has_next
+            (axis2_om_children_qname_iterator_t *iterator,
+             axis2_env_t **env)
 {   
     axis2_om_children_qname_iterator_impl_t *iterator_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(iterator, env, AXIS2_FALSE);
