@@ -52,6 +52,7 @@ axis2_status_t AXIS2_CALL axis2_mep_client_set_soap_version_uri(struct axis2_mep
 axis2_status_t AXIS2_CALL axis2_mep_client_set_soap_action(struct axis2_mep_client *mep_client, axis2_env_t **env, axis2_char_t *soap_action);
 axis2_status_t AXIS2_CALL axis2_mep_client_set_wsa_action(struct axis2_mep_client *mep_client, axis2_env_t **env, axis2_char_t *wsa_action);
 axis2_char_t* AXIS2_CALL axis2_get_transport_from_url(axis2_char_t *url, axis2_env_t **env);
+axis2_svc_ctx_t* AXIS2_CALL axis2_mep_client_get_svc_ctx(struct axis2_mep_client *mep_client, axis2_env_t **env);
 axis2_status_t AXIS2_CALL axis2_mep_client_free (struct axis2_mep_client *mep_client, 
                                    axis2_env_t **env);
 
@@ -117,6 +118,7 @@ axis2_mep_client_t* AXIS2_CALL axis2_mep_client_create(axis2_env_t **env, axis2_
     mep_client_impl->mep_client.ops->set_soap_version_uri = axis2_mep_client_set_soap_version_uri;
     mep_client_impl->mep_client.ops->set_soap_action = axis2_mep_client_set_soap_action;
     mep_client_impl->mep_client.ops->set_wsa_action = axis2_mep_client_set_wsa_action;
+    mep_client_impl->mep_client.ops->get_svc_ctx = axis2_mep_client_get_svc_ctx;
     mep_client_impl->mep_client.ops->free = axis2_mep_client_free;
 
     return &(mep_client_impl->mep_client);
@@ -428,6 +430,12 @@ axis2_char_t* AXIS2_CALL axis2_get_transport_from_url(axis2_char_t *url, axis2_e
     }
     
     return transport;    
+}
+
+axis2_svc_ctx_t* AXIS2_CALL axis2_mep_client_get_svc_ctx(struct axis2_mep_client *mep_client, axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(mep_client, env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(mep_client)->svc_ctx;
 }
 
 axis2_status_t AXIS2_CALL axis2_mep_client_free (struct axis2_mep_client *mep_client, 

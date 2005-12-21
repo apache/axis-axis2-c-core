@@ -109,6 +109,7 @@ struct axis2_mep_client_ops
      * @param string
      */
     axis2_status_t (AXIS2_CALL *set_wsa_action)(struct axis2_mep_client *mep_client, axis2_env_t **env, axis2_char_t *wsa_action);
+    axis2_svc_ctx_t* (AXIS2_CALL *get_svc_ctx)(struct axis2_mep_client *mep_client, axis2_env_t **env);
     axis2_status_t (AXIS2_CALL *free)(struct axis2_mep_client *mep_client, 
                                        axis2_env_t **env);
 };
@@ -125,6 +126,8 @@ struct axis2_mep_client
 AXIS2_DECLARE(axis2_mep_client_t*) axis2_mep_client_create(axis2_env_t **env, 
     axis2_svc_ctx_t *svc_ctx, 
     axis2_char_t *mep);
+
+axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_t *msg_ctx);
     
 /************************** Start of function macros **************************/
 
@@ -137,6 +140,7 @@ AXIS2_DECLARE(axis2_mep_client_t*) axis2_mep_client_create(axis2_env_t **env,
 #define AXIS2_MEP_CLIENT_SET_SOAP_VERSION_URI(mep_client, env, soap_version_uri) ((mep_client)->ops->set_soap_version_uri(mep_client, env, soap_version_uri))
 #define AXIS2_MEP_CLIENT_SET_SOAP_ACTION(mep_client, env, soap_action) ((mep_client)->ops->set_soap_action(mep_client, env, soap_action))
 #define AXIS2_MEP_CLIENT_SET_WSA_ACTION(mep_client, env, wsa_action) ((mep_client)->ops->set_wsa_action(mep_client, env, wsa_action))
+#define AXIS2_MEP_CLIENT_GET_SVC_CTX(mep_client, env) ((mep_client)->ops->get_svc_ctx(mep_client, env))
 #define AXIS2_MEP_CLIENT_FREE(mep_client, env) ((mep_client)->ops->free (mep_client, env))
 
 /************************** End of function macros ****************************/    
