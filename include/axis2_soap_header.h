@@ -103,11 +103,11 @@ extern "C"
         * This is only intended to be used by the builder,
         * do not use this function in other places
         */
-        axis2_status_t (AXIS2_CALL *set_base)(axis2_soap_header_t *header,
+        axis2_status_t (AXIS2_CALL *set_base_node)(axis2_soap_header_t *header,
                                               axis2_env_t **env,
                                               axis2_om_node_t *node);
                                               
-        axis2_om_node_t* (AXIS2_CALL *get_base)(axis2_soap_header_t *header,
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)(axis2_soap_header_t *header,
                                                 axis2_env_t **env);                                                                                                                                                          
                                          
     };
@@ -154,11 +154,11 @@ axis2_soap_header_create(axis2_env_t **env);
 #define AXIS2_SOAP_HEADER_EXTRACT_HEADER_BLOCKS(header, env) \
         ((header)->ops->extract_header_blocks(header, env))                        
 
-#define AXIS2_SOAP_HEADER_SET_BASE(header, env, node) \
-        ((header)->ops->set_base(header, env, node))
+#define AXIS2_SOAP_HEADER_SET_BASE_NODE(header, env, node) \
+        ((header)->ops->set_base_node(header, env, node))
         
-#define AXIS2_SOAP_HEADER_GET_BASE(header, env) \
-        ((header)->ops->get_base(header, env))                       
+#define AXIS2_SOAP_HEADER_GET_BASE_NODE(header, env) \
+        ((header)->ops->get_base_node(header, env))                       
 
 /** @} */
 

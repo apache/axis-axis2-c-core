@@ -31,6 +31,16 @@ extern "C"
  * @ingroup axis2_soap 
  * @{
  */
+typedef enum soap_version
+{
+    AXIS2_SOAP_VERSION_NOT_SET = 0,
+    
+    AXIS2_SOAP11,
+    
+    AXIS2_SOAP12    
+}axis2_soap_version;
+
+
 
 /** soap 11 constants */
 

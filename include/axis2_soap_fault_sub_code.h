@@ -53,8 +53,8 @@ extern "C"
         */
 
         axis2_status_t (AXIS2_CALL *free_fn)
-                            (axis2_soap_fault_sub_code_t *fault_sub_code,
-                             axis2_env_t **env);
+                             (axis2_soap_fault_sub_code_t *fault_sub_code,
+                              axis2_env_t **env);
                                      
         axis2_status_t (AXIS2_CALL *set_value)
                              (axis2_soap_fault_sub_code_t *fault_sub_code,
@@ -62,26 +62,35 @@ extern "C"
                               axis2_soap_fault_value_t *fault_sub_code_val);
 
         axis2_status_t (AXIS2_CALL *set_sub_code)
-                            (axis2_soap_fault_sub_code_t *fault_sub_code,
-                             axis2_env_t **env,
-                             axis2_soap_fault_sub_code_t *fault_subcode);                                                                         
+                             (axis2_soap_fault_sub_code_t *fault_sub_code,
+                              axis2_env_t **env,
+                              axis2_soap_fault_sub_code_t *fault_subcode);                                                                         
 
         axis2_soap_fault_sub_code_t* (AXIS2_CALL *get_sub_code)                                         
-                            (axis2_soap_fault_sub_code_t *fault_sub_code,
-                             axis2_env_t **env);
+                             (axis2_soap_fault_sub_code_t *fault_sub_code,
+                              axis2_env_t **env);
                                      
         axis2_soap_fault_value_t* (AXIS2_CALL *get_value)                                         
-                            (axis2_soap_fault_sub_code_t *fault_sub_code,
-                             axis2_env_t **env);
+                             (axis2_soap_fault_sub_code_t *fault_sub_code,
+                              axis2_env_t **env);
                                      
-        axis2_status_t (AXIS2_CALL *set_base)
+        axis2_status_t (AXIS2_CALL *set_base_node)
                              (axis2_soap_fault_sub_code_t *fault_sub_code,
                               axis2_env_t **env,
                               axis2_om_node_t *node);
     
-        axis2_om_node_t* (AXIS2_CALL *get_base)
-                                (axis2_soap_fault_sub_code_t *fault_sub_code,
-                                 axis2_env_t **env);
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)
+                             (axis2_soap_fault_sub_code_t *fault_sub_code,
+                              axis2_env_t **env);
+                                 
+        int (AXIS2_CALL *get_soap_version)
+                             (axis2_soap_fault_sub_code_t *fault_sub_code,
+                              axis2_env_t **env); 
+                              
+        int (AXIS2_CALL *set_soap_version)
+                        (axis2_soap_fault_sub_code_t *fault_sub_code,
+                         axis2_env_t **env,
+                         int soap_version);                                                                                           
                                                                                                                 
     };      
 
@@ -108,6 +117,8 @@ axis2_soap_fault_sub_code_create_with_parent(axis2_env_t **env,
 AXIS2_DECLARE(axis2_soap_fault_sub_code_t *)
 axis2_soap_fault_sub_code_create(axis2_env_t **env);
 
+                                                                   
+
 /******************** Macros **************************************************/
     
     
@@ -128,16 +139,22 @@ axis2_soap_fault_sub_code_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_SUB_CODE_GET_SUB_CODE(fault_sub_code , env) \
         ((fault_sub_code)->ops->get_subcode(fault_sub_code, env))        
         
-#define AXIS2_SOAP_FAULT_SUB_CODE_GET_BASE(fault_sub_code, env) \
-        ((fault_sub_code)->ops->get_base(fault_sub_code, env))         
+#define AXIS2_SOAP_FAULT_SUB_CODE_GET_BASE_NODE(fault_sub_code, env) \
+        ((fault_sub_code)->ops->get_base_node(fault_sub_code, env))         
 
-#define AXIS2_SOAP_FAULT_SUB_CODE_SET_BASE(fault_sub_code, env, node) \
-        ((fault_sub_code)->ops->set_base(fault_sub_code, env, node))  
+#define AXIS2_SOAP_FAULT_SUB_CODE_SET_BASE_NODE(fault_sub_code, env, node) \
+        ((fault_sub_code)->ops->set_base_node(fault_sub_code, env, node))
+        
+#define AXIS2_SOAP_FAULT_SUB_CODE_GET_SOAP_VRESION(fault_sub_code, env) \
+        ((fault_sub_code)->ops->get_soap_version(fault_sub_code, env))
+
+#define AXIS2_SOAP_FAULT_SUB_CODE_SET_SOAP_VRESION(fault_sub_code, env) \
+        ((fault_sub_code)->ops->set_soap_version(fault_sub_code, env))        
+      
 /** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
- 
- #endif /* AXIS2_SOAP_FAULT_SUB_CODE_H */
+#endif /* AXIS2_SOAP_FAULT_SUB_CODE_H */

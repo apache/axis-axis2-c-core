@@ -64,12 +64,12 @@ extern "C"
                                     (axis2_soap_fault_node_t *fault_node,
                                      axis2_env_t **env);
                                      
-        axis2_status_t (AXIS2_CALL *set_base)
+        axis2_status_t (AXIS2_CALL *set_base_node)
                                     (axis2_soap_fault_node_t *fault_node,
                                      axis2_env_t **env,
                                      axis2_om_node_t *node);
     
-        axis2_om_node_t* (AXIS2_CALL *get_base)
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)
                                 (axis2_soap_fault_node_t *fault_node,
                                  axis2_env_t **env);
                                                                                                                 
@@ -112,11 +112,11 @@ axis2_soap_fault_node_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_NODE_GET_VALUE(fault_node , env) \
         ((fault_node)->ops->get_node(fault_node, env)) 
         
-#define AXIS2_SOAP_FAULT_NODE_GET_BASE(fault_node, env) \
-        ((fault_node)->ops->get_base(fault_node, env))         
+#define AXIS2_SOAP_FAULT_NODE_GET_BASE_NODE(fault_node, env) \
+        ((fault_node)->ops->get_base_node(fault_node, env))         
 
 #define AXIS2_SOAP_FAULT_NODE_SET_BASE(fault_node, env, node) \
-        ((fault_node)->ops->set_base(fault_node, env, node))  
+        ((fault_node)->ops->set_base_node(fault_node, env, node))  
 /** @} */
 
 #ifdef __cplusplus

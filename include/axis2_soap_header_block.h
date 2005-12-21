@@ -54,46 +54,55 @@ extern "C"
         * @return satus of the op. AXIS2_SUCCESS on success 
         *         else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *free_fn)(axis2_soap_header_block_t *header_block,
-                                             axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *free_fn)
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env);
                                              
-        axis2_status_t (AXIS2_CALL *set_role)(axis2_soap_header_block_t *header_block,
-                                             axis2_env_t **env,
-                                             axis2_char_t *uri);  
+        axis2_status_t (AXIS2_CALL *set_role)
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env,
+                             axis2_char_t *uri);  
         
         axis2_status_t (AXIS2_CALL *set_must_understand_with_bool)
-                                            (axis2_soap_header_block_t *header_block,
-                                             axis2_env_t **env,
-                                             axis2_bool_t *must_understand);
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env,
+                             axis2_bool_t *must_understand);
+                             
         axis2_status_t (AXIS2_CALL *set_must_understand_with_string)
-                                            (axis2_soap_header_block_t *header_block,
-                                             axis2_env_t **env,
-                                             axis2_char_t *must_understand);
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env,
+                             axis2_char_t *must_understand);
                                              
         axis2_bool_t (AXIS2_CALL *get_must_understand)
-                                            (axis2_soap_header_block_t *header_block,
-                                             axis2_env_t **env);
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env);
+                             
+                             
         axis2_bool_t (AXIS2_CALL *is_processed)
-                                            (axis2_soap_header_block_t *header_block,
-                                             axis2_env_t **env);
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env);
+                             
         axis2_bool_t (AXIS2_CALL *set_processed)
-                                            (axis2_soap_header_block_t *header_block,
-                                             axis2_env_t **env);                                                                                                                                                                                    
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env);                                                                                                                                                                                    
                                                                                                                                     
                                    
-        axis2_char_t* (AXIS2_CALL *get_role)(axis2_soap_header_block_t *header_block,
-                                             axis2_env_t **env);
+        axis2_char_t* (AXIS2_CALL *get_role)
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env);
                                                                                           
        /**
         * This is only intended to be used by the builder,
         * do not use this function in other places
         */
-        axis2_status_t (AXIS2_CALL *set_base)(axis2_soap_header_block_t *header_block,
-                                              axis2_env_t **env,
-                                              axis2_om_node_t *node);
+        axis2_status_t (AXIS2_CALL *set_base_node)
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env,
+                             axis2_om_node_t *node);
                                               
-        axis2_om_node_t* (AXIS2_CALL *get_base)(axis2_soap_header_block_t *header_block,
-                                                axis2_env_t **env);                                                                                                                                                          
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env);                                                                                                                                                          
                                          
     };
 
@@ -149,11 +158,11 @@ axis2_soap_header_block_create(axis2_env_t **env);
         ((header_block)->ops->get_must_understand_with_string(header_block, \
              env, must_understand))                    
 
-#define AXIS2_SOAP_HEADER_BLOCK_SET_BASE(header_block, env, node) \
-        ((header_block)->ops->set_base(header_block, env, node))
+#define AXIS2_SOAP_HEADER_BLOCK_SET_BASE_NODE(header_block, env, node) \
+        ((header_block)->ops->set_base_node(header_block, env, node))
         
-#define AXIS2_SOAP_HEADER_BLOCK_GET_BASE(header_block, env) \
-        ((header_block)->ops->get_base(header_block, env))                       
+#define AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block, env) \
+        ((header_block)->ops->get_base_node(header_block, env))                       
 
 /** @} */
 

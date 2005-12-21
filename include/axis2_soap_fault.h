@@ -126,12 +126,12 @@ typedef struct axis2_soap_fault_ops axis2_soap_fault_ops_t;
         * This is only intended to be used by the builder,
         * do not use this function in other places
         */
-        axis2_status_t (AXIS2_CALL *set_base)(axis2_soap_fault_t *fault,
-                                              axis2_env_t **env,
-                                              axis2_om_node_t *node);
+        axis2_status_t (AXIS2_CALL *set_base_node)(axis2_soap_fault_t *fault,
+                                                   axis2_env_t **env,
+                                                   axis2_om_node_t *node);
                                               
-        axis2_om_node_t* (AXIS2_CALL *get_base)(axis2_soap_fault_t *fault,
-                                                axis2_env_t **env);                                                                                                                                                          
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)(axis2_soap_fault_t *fault,
+                                                     axis2_env_t **env);                                                                                                                                                          
                                          
     };
 
@@ -185,8 +185,8 @@ typedef struct axis2_soap_fault_ops axis2_soap_fault_ops_t;
 #define AXIS2_SOAP_FAULT_SET_NODE(fault , env, node) \
         ((fault)->ops->set_node(fault, env, node)) 
         
-#define AXIS2_SOAP_FAULT_SET_BASE(fault, env, node) \
-        ((fault)->ops->set_base(fault, env, node))
+#define AXIS2_SOAP_FAULT_SET_BASE_NODE(fault, env, node) \
+        ((fault)->ops->set_base_node(fault, env, node))
         
 #define AXIS2_SOAP_FAULT_GET_CODE(fault , env) \
         ((fault)->ops->get_code(fault, env))
@@ -203,8 +203,8 @@ typedef struct axis2_soap_fault_ops axis2_soap_fault_ops_t;
 #define AXIS2_SOAP_FAULT_GET_NODE(fault , env) \
         ((fault)->ops->get_node(fault, env)) 
         
-#define AXIS2_SOAP_FAULT_GET_BASE(fault, env) \
-        ((fault)->ops->get_base(fault, env))                       
+#define AXIS2_SOAP_FAULT_GET_BASE_NODE(fault, env) \
+        ((fault)->ops->get_base_node(fault, env))                       
 
 /** @} */
 

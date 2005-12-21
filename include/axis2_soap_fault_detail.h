@@ -67,12 +67,12 @@ extern "C"
                                 (axis2_soap_fault_detail_t *fault_detail,
                                  axis2_env_t **env); 
 
-        axis2_status_t (AXIS2_CALL *set_base)
+        axis2_status_t (AXIS2_CALL *set_base_node)
                                 (axis2_soap_fault_code_t *fault_code,
                                  axis2_env_t **env,
                                  axis2_om_node_t *node);
     
-        axis2_om_node_t* (AXIS2_CALL *get_base)
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)
                                 (axis2_soap_fault_code_t *fault_code,
                                  axis2_env_t **env);
                                                                                                                 
@@ -120,11 +120,11 @@ axis2_soap_fault_detail_create_with_parent_extract
 #define AXIS2_SOAP_FAULT_DETAIL_GET_ALL_DETAIL_ENTRIES(fault_detail, env) \
         ((fault_detail)->ops->get_all_detail_entries(fault_detail, env))                 
         
-#define AXIS2_SOAP_FAULT_DETAIL_GET_BASE(fault_detail, env) \
-        ((fault_detail)->ops->get_base(fault_detail, env))         
+#define AXIS2_SOAP_FAULT_DETAIL_GET_BASE_NODE(fault_detail, env) \
+        ((fault_detail)->ops->get_base_node(fault_detail, env))         
 
 #define AXIS2_SOAP_FAULT_DETAIL_SET_BASE(fault_detail, env, node) \
-        ((fault_detail)->ops->set_base(fault_detail, env, node))  
+        ((fault_detail)->ops->set_base_node(fault_detail, env, node))  
 /** @} */
 
 #ifdef __cplusplus

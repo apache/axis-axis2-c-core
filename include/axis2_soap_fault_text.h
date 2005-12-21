@@ -64,14 +64,23 @@ extern "C"
                                     (axis2_soap_fault_text_t *fault_text,
                                      axis2_env_t **env);
                                      
-        axis2_status_t (AXIS2_CALL *set_base)
+        axis2_status_t (AXIS2_CALL *set_base_node)
                                     (axis2_soap_fault_text_t *fault_text,
                                      axis2_env_t **env,
                                      axis2_om_node_t *node);
     
-        axis2_om_node_t* (AXIS2_CALL *get_base)
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)
                                 (axis2_soap_fault_text_t *fault_text,
                                  axis2_env_t **env);
+                                 
+        int (AXIS2_CALL *get_soap_version)
+                                       (axis2_soap_fault_text_t *fault_text,
+                                        axis2_env_t **env);
+                                        
+        axis2_status_t (AXIS2_CALL *set_soap_version)
+                                       (axis2_soap_fault_text_t *fault_text,
+                                        axis2_env_t **env,
+                                        int soap_version);                                  
                                                                                                                 
     };      
 
@@ -98,6 +107,8 @@ axis2_soap_fault_text_create_with_parent(axis2_env_t **env,
 AXIS2_DECLARE(axis2_soap_fault_text_t *)
 axis2_soap_fault_text_create(axis2_env_t **env);
 
+                                     
+
 /******************** Macros **************************************************/
     
     
@@ -111,11 +122,17 @@ axis2_soap_fault_text_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_TEXT_GET_LANG(fault_text , env) \
         ((fault_text)->ops->get_lang(fault_text, env)) 
         
-#define AXIS2_SOAP_FAULT_TEXT_GET_BASE(fault_text, env) \
-        ((fault_text)->ops->get_base(fault_text, env))         
+#define AXIS2_SOAP_FAULT_TEXT_GET_BASE_NODE(fault_text, env) \
+        ((fault_text)->ops->get_base_node(fault_text, env))         
 
 #define AXIS2_SOAP_FAULT_TEXT_SET_BASE(fault_text, env, node) \
-        ((fault_text)->ops->set_base(fault_text, env, node))  
+        ((fault_text)->ops->set_base_node(fault_text, env, node))
+        
+#define AXIS2_SOAP_FAULT_TEXT_GET_SOAP_VERSION(fault_text, env) \
+        ((fault_text)->ops->get_soap_version(fault_text, env))
+        
+#define AXIS2_SOAP_FAULT_TEXT_SET_SOAP_VERSION(fault_text, env, version) \
+        ((fault_text)->ops->set_soap_version(fault_text, env, version))
 /** @} */
 
 #ifdef __cplusplus

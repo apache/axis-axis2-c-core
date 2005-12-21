@@ -23,8 +23,7 @@
  *        corresponds to root element of soap message
  */
 #include <axis2_env.h>
-#include <axis2_om_node.h>
-#include <axis2_om_element.h>
+#include <axis2_soap_envelope.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -57,7 +56,15 @@ extern "C"
 
         axis2_status_t (AXIS2_CALL *free_fn)(axis2_soap_message_t *message,
                                              axis2_env_t **env);
-
+                                             
+        axis2_soap_envelope_t* (AXIS2_CALL *get_soap_envelope)
+                                            (axis2_soap_message_t *message,
+                                             axis2_env_t **env);
+                                             
+        axis2_status_t (AXIS2_CALL *set_soap_envelope)
+                                            (axis2_soap_message_t *message,
+                                             axis2_env_t **env,
+                                             axis2_soap_envelope_t *envelope);
     };
 
   /**
@@ -84,7 +91,13 @@ extern "C"
 /** free soap_message */
 #define AXIS2_SOAP_MESSAGE_FREE(message , env) \
         ((message)->ops->free_fn(message, env))
-
+        
+#define AXIS2_SOAP_MESSAGE_GET_SOAP_ENVELOPE(message, env) \
+        ((message)->ops->get_envelope(message, env))
+        
+#define AXIS2_SOAP_MESSAGE_SET_SOAP_ENVELOPE(message, env, envelope) \
+        ((message)->ops->get_envelope(message, env, envelope)) 
+        
 /** @} */
 
 #ifdef __cplusplus

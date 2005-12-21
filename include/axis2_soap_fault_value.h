@@ -52,17 +52,26 @@ typedef struct axis2_soap_fault_value_ops axis2_soap_fault_value_ops_t;
         */
 
         axis2_status_t (AXIS2_CALL *free_fn)
-                                    (axis2_soap_fault_value_t *fault_value,
-                                     axis2_env_t **env);
+                            (axis2_soap_fault_value_t *fault_value,
+                             axis2_env_t **env);
 
-        axis2_status_t (AXIS2_CALL *set_base)
-                                    (axis2_soap_fault_value_t *fault_value,
-                                     axis2_env_t **env,
-                                     axis2_om_node_t *node);
+        axis2_status_t (AXIS2_CALL *set_base_node)
+                             (axis2_soap_fault_value_t *fault_value,
+                              axis2_env_t **env,
+                              axis2_om_node_t *node);
     
-        axis2_om_node_t* (AXIS2_CALL *get_base)
-                                (axis2_soap_fault_value_t *fault_value,
-                                 axis2_env_t **env);
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)
+                             (axis2_soap_fault_value_t *fault_value,
+                              axis2_env_t **env);
+                              
+        int (AXIS2_CALL *get_soap_version)
+                             (axis2_soap_fault_value_t *fault_value,
+                              axis2_env_t **env);
+                              
+        axis2_status_t (AXIS2_CALL *set_soap_version)
+                             (axis2_soap_fault_value_t *fault_value,
+                              axis2_env_t **env,
+                              int soap_version);                                                              
                                                                                                                 
     };      
 
@@ -92,6 +101,8 @@ axis2_soap_fault_value_create_with_code(axis2_env_t **env,
 AXIS2_DECLARE(axis2_soap_fault_value_t *)
 axis2_soap_fault_value_create(axis2_env_t **env);
 
+                             
+
 /******************** Macros **************************************************/
     
     
@@ -99,11 +110,17 @@ axis2_soap_fault_value_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_VALUE_FREE(fault_value , env) \
         ((fault_value)->ops->free_fn(fault_value, env))
         
-#define AXIS2_SOAP_FAULT_VALUE_GET_BASE(fault_value, env) \
-        ((fault_value)->ops->get_base(fault_value, env))         
+#define AXIS2_SOAP_FAULT_VALUE_GET_BASE_NODE(fault_value, env) \
+        ((fault_value)->ops->get_base_node(fault_value, env))         
 
-#define AXIS2_SOAP_FAULT_VALUE_SET_BASE(fault_value, env, node) \
-        ((fault_value)->ops->set_base(fault_value, env, node))  
+#define AXIS2_SOAP_FAULT_VALUE_SET_BASE_NODE(fault_value, env, node) \
+        ((fault_value)->ops->set_base_node(fault_value, env, node)) 
+        
+#define AXIS2_SOAP_FAULT_VALUE_GET_SOAP_VERSION(fault_value, env) \
+        ((fault_value)->ops->get_soap_version(fault_value, env)) 
+        
+#define AXIS2_SOAP_FAULT_VALUE_SET_SOAP_VERSION(fault_value, env, version) \
+        ((fault_value)->ops->set_soap_version(fault_value, env, version))                
 /** @} */
 
 #ifdef __cplusplus

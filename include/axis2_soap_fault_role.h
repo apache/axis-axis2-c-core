@@ -65,14 +65,23 @@ extern "C"
                                     (axis2_soap_fault_role_t *fault_role,
                                      axis2_env_t **env);
                                      
-        axis2_status_t (AXIS2_CALL *set_base)
+        axis2_status_t (AXIS2_CALL *set_base_node)
                                     (axis2_soap_fault_role_t *fault_role,
                                      axis2_env_t **env,
                                      axis2_om_node_t *node);
     
-        axis2_om_node_t* (AXIS2_CALL *get_base)
-                                (axis2_soap_fault_role_t *fault_role,
-                                 axis2_env_t **env);
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)
+                                    (axis2_soap_fault_role_t *fault_role,
+                                     axis2_env_t **env);
+                                 
+        int (AXIS2_CALL *get_soap_version)
+                                    (axis2_soap_fault_role_t *fault_role,
+                                     axis2_env_t **env);
+                                     
+        int (AXIS2_CALL *set_soap_version)
+                                    (axis2_soap_fault_role_t *fault_role,
+                                     axis2_env_t **env,
+                                     int soap_version);                                                                      
                                                                                                                 
     };      
 
@@ -93,7 +102,8 @@ extern "C"
     */
 AXIS2_DECLARE(axis2_soap_fault_role_t *)
 axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
-                            axis2_soap_fault_t *fault);
+                            axis2_soap_fault_t *fault,
+                            axis2_bool_t extract_ns_form_parent);
                             
 
 AXIS2_DECLARE(axis2_soap_fault_role_t *)
@@ -112,11 +122,18 @@ axis2_soap_fault_role_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_ROLE_GET_VALUE(fault_role , env) \
         ((fault_role)->ops->get_role_value(fault_role, env)) 
         
-#define AXIS2_SOAP_FAULT_ROLE_GET_BASE(fault_role, env) \
-        ((fault_role)->ops->get_base(fault_role, env))         
+#define AXIS2_SOAP_FAULT_ROLE_GET_BASE_NODE(fault_role, env) \
+        ((fault_role)->ops->get_base_node(fault_role, env))         
 
 #define AXIS2_SOAP_FAULT_ROLE_SET_BASE(fault_role, env, node) \
-        ((fault_role)->ops->set_base(fault_role, env, node))  
+        ((fault_role)->ops->set_base_node(fault_role, env, node)) 
+
+#define AXIS2_SOAP_FAULT_ROLE_GET_SOAP_VRESION(fault_role, env) \
+        ((fault_role)->ops->get_soap_version(fault_role, env)) 
+
+#define AXIS2_SOAP_FAULT_ROLE_SET_SOAP_VRESION(fault_role, env, version) \
+        ((fault_role)->ops->set_soap_version(fault_role, env, version))        
+                
 /** @} */
 
 #ifdef __cplusplus

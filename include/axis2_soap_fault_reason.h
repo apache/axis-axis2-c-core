@@ -64,12 +64,12 @@ typedef struct axis2_soap_fault_reason_ops axis2_soap_fault_reason_ops_t;
                                     (axis2_soap_fault_reason_t *fault_reason,
                                      axis2_env_t **env);
                                      
-        axis2_status_t (AXIS2_CALL *set_base)
+        axis2_status_t (AXIS2_CALL *set_base_node)
                                     (axis2_soap_fault_reason_t *fault_reason,
                                      axis2_env_t **env,
                                      axis2_om_node_t *node);
     
-        axis2_om_node_t* (AXIS2_CALL *get_base)
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env);
                                                                                                                 
@@ -111,11 +111,11 @@ axis2_soap_fault_reason_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_REASON_GET_SOAP_TEXT(fault_reason , env) \
         ((fault_reason)->ops->get_soap_text(fault_reason, env)) 
         
-#define AXIS2_SOAP_FAULT_REASON_GET_BASE(fault_reason, env) \
-        ((fault_reason)->ops->get_base(fault_reason, env))         
+#define AXIS2_SOAP_FAULT_REASON_GET_BASE_NODE(fault_reason, env) \
+        ((fault_reason)->ops->get_base_node(fault_reason, env))         
 
 #define AXIS2_SOAP_FAULT_REASON_SET_BASE(fault_reason, env, node) \
-        ((fault_reason)->ops->set_base(fault_reason, env, node))  
+        ((fault_reason)->ops->set_base_node(fault_reason, env, node))  
 /** @} */
 
 #ifdef __cplusplus

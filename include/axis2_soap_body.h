@@ -60,19 +60,32 @@ typedef struct axis2_soap_body_ops axis2_soap_body_ops_t;
         axis2_status_t (AXIS2_CALL *free_fn)(axis2_soap_body_t *body,
                                              axis2_env_t **env);
         
-        axis2_soap_fault_t* (AXIS2_CALL *add_fault_with_error)(axis2_soap_body_t *body,
-                                                    axis2_env_t **env,
-                                                    axis2_char_t *error);
+        axis2_soap_fault_t* (AXIS2_CALL *add_fault_with_error)
+                                            (axis2_soap_body_t *body,
+                                             axis2_env_t **env,
+                                             axis2_char_t *error);
         
         axis2_bool_t (AXIS2_CALL *has_fault)(axis2_soap_body_t *body,
-                                              axis2_env_t **env);
+                                             axis2_env_t **env);
                                               
-        axis2_soap_fault_t* (AXIS2_CALL *get_fault)(axis2_soap_body_t *body,
-                                                    axis2_env_t **env);
+        axis2_soap_fault_t* (AXIS2_CALL *get_fault)
+                                            (axis2_soap_body_t *body,
+                                             axis2_env_t **env);
                                                       
-        axis2_status_t (AXIS2_CALL *add_fault_with_soap_fault)(axis2_soap_body_t *body,
-                                               axis2_env_t **env,
-                                               axis2_soap_fault_t *fault);
+        axis2_status_t (AXIS2_CALL *add_fault_with_soap_fault)
+                                            (axis2_soap_body_t *body,
+                                             axis2_env_t **env,
+                                             axis2_soap_fault_t *fault);
+                                             
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)
+                                            (axis2_soap_body_t *body,
+                                             axis2_env_t **env);
+                                             
+        axis2_om_node_t* (AXIS2_CALL *set_base_node)
+                                            (axis2_soap_body_t *body,
+                                             axis2_env_t **env,
+                                             axis2_om_node_t *node);
+                                                                                          
                                                        
     };                                                      
 
@@ -100,7 +113,25 @@ typedef struct axis2_soap_body_ops axis2_soap_body_ops_t;
 /** free soap_body */
 #define AXIS2_SOAP_BODY_FREE(body , env) \
         ((body)->ops->free_fn(body, env))
-
+        
+#define AXIS2_SOAP_BODY_ADD_FAULT_WITH_ERROR(boby, env, error) \
+        ((body)->ops->add_fault_with_error(body, env, error))
+        
+#define AXIS2_SOAP_BODY_HAS_FAULT(body, env) \
+        ((body)->ops->has_fault(body, env))
+        
+#define AXIS2_SOAP_BODY_GET_FAULT(body, env) \
+        ((body)->ops->get_fault(body, env))
+        
+#define AXIS2_SOAP_BODY_ADD_SOAP_FAULT_WITH_SOAP_FAULT(body, env, fault) \
+        ((body)->ops->add_fault_with_soap_fault(body, env, fault))
+        
+#define AXIS2_SOAP_BODY_GET_BASE_NODE(body, env) \
+        ((body)->ops->get_base_node(body, env))
+        
+#define AXIS2_SOAP_BODY_SET_BASE_NODE(body, env, node) \
+        ((body)->ops->set_base_node(body, env, node))
+                
 /** @} */
 
 #ifdef __cplusplus
