@@ -286,7 +286,9 @@ extern "C"
         /** Response timed out */
         AXIS2_ERROR_RESPONSE_TIMED_OUT,
         /** Blocking invocation expects response */
-        AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE
+        AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE,
+        /** Client side support only one configuration context */
+        AXIS2_ERROR_CLIENT_SIDE_SUPPORT_ONLY_ONE_CONF_CTX
         
     };
 
