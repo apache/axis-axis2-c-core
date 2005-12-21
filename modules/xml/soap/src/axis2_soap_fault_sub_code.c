@@ -328,7 +328,7 @@ axis2_soap_fault_sub_code_get_sub_code(
     AXIS2_FUNC_PARAM_CHECK(fault_sub_code, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, fault_sub_code, NULL);
     fault_subcode_impl = AXIS2_INTF_TO_IMPL(fault_sub_code);
-    this_node = AXIS2_SOAP_FAULT_SUB_CODE_GET_BASE_NODE(fault_sub_code, env);
+    this_node = fault_subcode_impl->om_ele_node;
     
     
     if(!(fault_subcode_impl->subcode))
@@ -355,7 +355,7 @@ axis2_soap_fault_sub_code_set_base_node
    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
    fault_subcode_impl = AXIS2_INTF_TO_IMPL(fault_sub_code);
    
-   if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_FAILURE)
+   if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
    {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;

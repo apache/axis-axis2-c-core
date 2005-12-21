@@ -138,7 +138,7 @@ axis2_soap_fault_role_create(axis2_env_t **env)
 AXIS2_DECLARE(axis2_soap_fault_role_t *)
 axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
                             axis2_soap_fault_t *fault,
-                            axis2_bool_t extract_ns_form_parent)
+                            axis2_bool_t extract_ns_from_parent)
 {
     axis2_soap_fault_role_impl_t *fault_role_impl = NULL;
     axis2_soap_fault_role_t *fault_role = NULL;
@@ -164,7 +164,7 @@ axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
     parent_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
                         fault_role_impl->om_ele_node, env);
     
-    if(extract_ns_form_parent)
+    if(extract_ns_from_parent)
     {
         parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env);
     }
@@ -243,7 +243,7 @@ axis2_soap_fault_role_set_base_node
    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
    fault_role_impl = AXIS2_INTF_TO_IMPL(fault_role);
    
-   if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_FAILURE)
+   if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
    {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;

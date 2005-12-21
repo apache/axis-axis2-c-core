@@ -125,7 +125,7 @@ axis2_soap_fault_text_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_TEXT_GET_BASE_NODE(fault_text, env) \
         ((fault_text)->ops->get_base_node(fault_text, env))         
 
-#define AXIS2_SOAP_FAULT_TEXT_SET_BASE(fault_text, env, node) \
+#define AXIS2_SOAP_FAULT_TEXT_SET_BASE_NODE(fault_text, env, node) \
         ((fault_text)->ops->set_base_node(fault_text, env, node))
         
 #define AXIS2_SOAP_FAULT_TEXT_GET_SOAP_VERSION(fault_text, env) \
