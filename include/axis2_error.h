@@ -282,7 +282,11 @@ extern "C"
         /* We need transport_info in msg_ctx*/
         AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL,
 
-        AXIS2_ERROR_INVALID_BASE_TYPE
+        AXIS2_ERROR_INVALID_BASE_TYPE,
+        /** Response timed out */
+        AXIS2_ERROR_RESPONSE_TIMED_OUT,
+        /** Blocking invocation expects response */
+        AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE
         
     };
 

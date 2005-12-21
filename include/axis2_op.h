@@ -565,8 +565,8 @@ axis2_op_create_with_wsdl_op (axis2_env_t **env,
 #define AXIS2_OP_FIND_FOR_EXISTING_OP_CTX(op, env, wsdl_op) \
 		((op->ops)->find_for_existing_op_ctx (op, env, wsdl_op))
 
-#define AXIS2_OP_REGISTER_OP_CTX(op, env, wsdl_op) \
-		((op->ops)->register_op_ctx (op, env, wsdl_op))
+#define AXIS2_OP_REGISTER_OP_CTX(op, env, msg_ctx, wsdl_op) \
+		((op->ops)->register_op_ctx (op, env, msg_ctx, wsdl_op))
    
 
 /************************** End of function macros ****************************/

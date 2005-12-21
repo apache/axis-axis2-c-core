@@ -17,6 +17,7 @@
 #include <axis2_mep_client.h>
 #include <axis2.h>
 #include <axis2_hash.h>
+#include <axis2_engine.h>
 
 typedef struct axis2_mep_client_impl
 {
@@ -472,4 +473,67 @@ axis2_status_t AXIS2_CALL axis2_mep_client_free (struct axis2_mep_client *mep_cl
     mep_client_impl = NULL;
     
     return AXIS2_SUCCESS;
+}
+
+axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
+{
+    axis2_engine_t *engine = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+    axis2_msg_ctx_t *response = NULL;
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_op_t *op = NULL;
+    /* TODO axis2_envelope_t *response_envelope = NULL;*/
+    
+    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);
+
+    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+    engine = axis2_engine_create(env, conf_ctx);
+    if (!engine)
+        return NULL;
+    
+    status = AXIS2_ENGINE_SEND(engine, env, msg_ctx);
+    if (status != AXIS2_SUCCESS)
+        return NULL;
+    
+    /* create the response */
+    response = axis2_msg_ctx_create(env, conf_ctx, 
+                                    AXIS2_MSG_CTX_GET_TRANSPORT_IN_DESC(msg_ctx, env),
+                                    AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env));
+    if (!response)
+        return NULL;
+    
+    AXIS2_MSG_CTX_SET_PROPERTY(response, env, AXIS2_TRANSPORT_IN,
+                                AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, AXIS2_TRUE),
+                                AXIS2_TRUE);
+    
+    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+    if (op)
+    {
+        AXIS2_OP_REGISTER_OP_CTX(op, env, response, AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env));
+    }
+    AXIS2_MSG_CTX_SET_SERVER_SIDE(response, env, AXIS2_FALSE);
+    AXIS2_MSG_CTX_SET_CONF_CTX(response, env, AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env));
+    AXIS2_MSG_CTX_SET_SVC_GRP_CTX(response, env, AXIS2_MSG_CTX_GET_SVC_GRP_CTX(msg_ctx, env));
+
+    /* If request is REST we assume the response is REST, so set the variable*/
+    AXIS2_MSG_CTX_SET_DOING_REST(response, env, AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env));
+
+    /* TODO response_envelope = TransportUtils.createSOAPMessage(response, msg_ctx.getEnvelope().getNamespace().getName());*/
+
+    /*TODO if (response_envelope != null) 
+    {
+        AXIS2_MSG_CTX_SET_ENVELOPE(response, env, response_envelope);
+        engine = axis2_engine_create(env, conf_ctx);
+        status = AXIS2_ENGINE_RECEIVE(engine, ENV, response);
+        if (status != AXIS2_SUCCESS)
+            return NULL;
+        
+    } 
+    else 
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, AXIS2_FAILURE);
+        return NULL;
+    }*/
+    
+    return response;
 }
