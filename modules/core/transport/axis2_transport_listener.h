@@ -60,6 +60,16 @@ AXIS2_DECLARE_DATA struct axis2_transport_listener_ops
                     axis2_transport_listener_t *transport_listener,
 			        axis2_env_t **env);
     
+	axis2_status_t (AXIS2_CALL *start)(
+                    axis2_transport_listener_t *transport_listener,
+			        axis2_env_t **env);
+	axis2_status_t (AXIS2_CALL *stop)(
+                    axis2_transport_listener_t *transport_listener,
+			        axis2_env_t **env);
+	axis2_status_t (AXIS2_CALL *reply_to_epr)(
+                    axis2_transport_listener_t *transport_listener,
+			        axis2_env_t **env,
+                    axis2_char_t *svc_name);
 
 };
 
@@ -86,11 +96,11 @@ axis2_transport_listener_create (axis2_env_t **env);
 #define AXIS2_TRANSPORT_LISTENER_INIT(transport_listener, env, axisconf, transport_in) \
 		((transport_listener->ops)->init (transport_listener, env, axisconf, transport_in))
 
-#define AXIS2_TRANSPORT_LISTENER_START(transport_listener, env, handler) \
-		((transport_listener->ops)->start (transport_listener, env, handler))
+#define AXIS2_TRANSPORT_LISTENER_START(transport_listener, env) \
+		((transport_listener->ops)->start (transport_listener, env))
 
-#define AXIS2_TRANSPORT_LISTENER_STOP(transport_listener, env, phase_name) \
-		((transport_listener->ops)->stop (transport_listener, env, phase_name))
+#define AXIS2_TRANSPORT_LISTENER_STOP(transport_listener, env) \
+		((transport_listener->ops)->stop (transport_listener, env))
 
 #define AXIS2_TRANSPORT_LISTENER_REPLY_TO_EPR(transport_listener, env, svc_name) \
 		((transport_listener->ops)->reply_to_epr (transport_listener, env, svc_name))       
