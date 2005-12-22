@@ -28,7 +28,6 @@
 #include <axis2_msg_ctx.h>
 #include <axis2_op_ctx.h>
 #include <axis2.h>
-#include <axis2_class_loader.h>
 
 #ifdef __cplusplus
 extern "C"
