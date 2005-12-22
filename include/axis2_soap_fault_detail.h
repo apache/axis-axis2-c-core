@@ -61,7 +61,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *add_detail_entry)
                                 (axis2_soap_fault_detail_t *fault_detail,
                                  axis2_env_t **env,
-                                 axis2_om_node_t *detail_node);
+                                 axis2_om_node_t *ele_node);
                                  
         axis2_om_children_iterator_t* (AXIS2_CALL *get_all_detail_entries)
                                 (axis2_soap_fault_detail_t *fault_detail,
@@ -105,7 +105,7 @@ AXIS2_DECLARE(axis2_soap_fault_detail_t *)
 axis2_soap_fault_detail_create_with_parent_extract
                 (axis2_env_t **env,
                  axis2_soap_fault_t *fault,
-                 axis2_bool_t *extract_namespace_from_parent);
+                 axis2_bool_t *extract_ns_from_parent);
 
 /******************** Macros **************************************************/
     
@@ -114,8 +114,8 @@ axis2_soap_fault_detail_create_with_parent_extract
 #define AXIS2_SOAP_FAULT_DETAIL_FREE(fault_detail , env) \
         ((fault_detail)->ops->free_fn(fault_detail, env))
 
-#define AXIS2_SOAP_FAULT_DETAIL_ADD_DETAIL_ENTRY(fault_detail, env, detail) \
-        ((fault_detail)->ops->add_detail_entry(fault_detail, env, detail))
+#define AXIS2_SOAP_FAULT_DETAIL_ADD_DETAIL_ENTRY(fault_detail, env, ele_node) \
+        ((fault_detail)->ops->add_detail_entry(fault_detail, env, ele_node))
 
 #define AXIS2_SOAP_FAULT_DETAIL_GET_ALL_DETAIL_ENTRIES(fault_detail, env) \
         ((fault_detail)->ops->get_all_detail_entries(fault_detail, env))                 

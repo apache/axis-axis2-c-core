@@ -52,26 +52,35 @@ extern "C"
         */
 
         axis2_status_t (AXIS2_CALL *free_fn)
-                                    (axis2_soap_fault_node_t *fault_node,
-                                     axis2_env_t **env);
+                                   (axis2_soap_fault_node_t *fault_node,
+                                    axis2_env_t **env);
 
         axis2_status_t (AXIS2_CALL *set_value)
-                                    (axis2_soap_fault_node_t *fault_node,
-                                     axis2_env_t **env,
-                                     axis2_soap_fault_value_t *fault_val);
+                                   (axis2_soap_fault_node_t *fault_node,
+                                    axis2_env_t **env,
+                                    axis2_char_t *fault_val);
                                      
-        axis2_soap_fault_value_t* (AXIS2_CALL *get_value)                                         
-                                    (axis2_soap_fault_node_t *fault_node,
-                                     axis2_env_t **env);
+        axis2_char_t* (AXIS2_CALL *get_value)                                         
+                                   (axis2_soap_fault_node_t *fault_node,
+                                    axis2_env_t **env);
                                      
         axis2_status_t (AXIS2_CALL *set_base_node)
-                                    (axis2_soap_fault_node_t *fault_node,
-                                     axis2_env_t **env,
-                                     axis2_om_node_t *node);
+                                   (axis2_soap_fault_node_t *fault_node,
+                                    axis2_env_t **env,
+                                    axis2_om_node_t *node);
     
         axis2_om_node_t* (AXIS2_CALL *get_base_node)
-                                (axis2_soap_fault_node_t *fault_node,
-                                 axis2_env_t **env);
+                                   (axis2_soap_fault_node_t *fault_node,
+                                    axis2_env_t **env);
+                                    
+        int (AXIS2_CALL *get_soap_version)
+                                   (axis2_soap_fault_node_t *fault_node,
+                                    axis2_env_t **env);
+                                 
+        axis2_status_t (AXIS2_CALL *set_soap_version)
+                                   (axis2_soap_fault_node_t *fault_node,
+                                    axis2_env_t **env,
+                                    int soap_version);                                     
                                                                                                                 
     };      
 
@@ -92,7 +101,7 @@ extern "C"
     */
 AXIS2_DECLARE(axis2_soap_fault_node_t *)
 axis2_soap_fault_node_create_with_parent(axis2_env_t **env,
-                            axis2_soap_fault_t *fault);
+                                         axis2_soap_fault_t *fault);
                             
 
 AXIS2_DECLARE(axis2_soap_fault_node_t *)
@@ -105,8 +114,8 @@ axis2_soap_fault_node_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_NODE_FREE(fault_node , env) \
         ((fault_node)->ops->free_fn(fault_node, env))
 
-#define AXIS2_SOAP_FAULT_NODE_SET_VALUE(fault_node , env, value) \
-        ((fault_node)->ops->set_value(fault_node, env, value))
+#define AXIS2_SOAP_FAULT_NODE_SET_VALUE(fault_node , env, uri) \
+        ((fault_node)->ops->set_value(fault_node, env, uri))
 
         
 #define AXIS2_SOAP_FAULT_NODE_GET_VALUE(fault_node , env) \
@@ -116,12 +125,18 @@ axis2_soap_fault_node_create(axis2_env_t **env);
         ((fault_node)->ops->get_base_node(fault_node, env))         
 
 #define AXIS2_SOAP_FAULT_NODE_SET_BASE(fault_node, env, node) \
-        ((fault_node)->ops->set_base_node(fault_node, env, node))  
+        ((fault_node)->ops->set_base_node(fault_node, env, node))
+        
+#define AXIS2_SOAP_FAULT_NODE_SET_SOAP_VERSION(fault_node, env, soap_version) \
+        ((fault_node)->ops->set_soap_version(fault_node, env, soap_version))
+        
+#define AXIS2_SOAP_FAULT_NODE_GET_SOAP_VERSION(fault_node, env) \
+        ((fault_node)->ops->get_soap_version(fault_node, env))
+                        
 /** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
- 
- #endif /* AXIS2_SOAP_FAULT_NODE_H */
+#endif /* AXIS2_SOAP_FAULT_NODE_H */

@@ -176,7 +176,7 @@ axis2_soap_fault_reason_create_with_parent(axis2_env_t **env,
     
     this_ele = axis2_om_element_create(env, 
                                        parent_node,                             
-                                       AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME,
+                                       AXIS2_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME,
                                        parent_ns,
                                        &this_node);
     fault_reason_impl->om_ele = this_ele;
