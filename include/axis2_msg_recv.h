@@ -24,6 +24,11 @@
   */
 
 #include <axis2_core.h>
+#include <axis2_param.h>
+#include <axis2_msg_ctx.h>
+#include <axis2_op_ctx.h>
+#include <axis2.h>
+#include <axis2_class_loader.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -38,6 +43,9 @@ extern "C"
   * @{
   */
 
+#define AXIS2_SVC_CLASS  "svc_class"
+#define AXIS2_SCOPE  "scope"
+    
 struct axis2_msg_ctx;
 typedef struct axis2_msg_recv axis2_msg_recv_t;
 typedef struct axis2_msg_recv_ops axis2_msg_recv_ops_t;

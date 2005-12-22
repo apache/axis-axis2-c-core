@@ -95,3 +95,125 @@ axis2_msg_receive (axis2_msg_recv_t *msg_recv,
 {
 	return AXIS2_SUCCESS;
 }
+
+/**
+ * Method makeNewServiceObject
+ *
+ * @param msgContext
+ * @return
+ */
+axis2_svc_skeleton_t * AXIS2_CALL
+axis2_msg_recv_make_new_svc_obj(void *msg_recv,
+                                    axis2_env_t **env,
+                                    struct axis2_msg_ctx *msg_ctx)
+{
+    struct axis2_svc *svc = NULL;
+    struct axis2_op_ctx *op_ctx = NULL;
+    struct axis2_svc_ctx *svc_ctx = NULL;
+    axis2_param_t *impl_info_param = NULL;
+    void *impl_class = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(msg_recv, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
+    
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
+    svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
+    if(NULL == svc)
+    {
+        return NULL;
+    }
+    
+    impl_info_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SVC_CLASS);
+    if(!impl_info_param)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_SVC, 
+            AXIS2_FAILURE);
+        return NULL;
+    }
+    
+    axis2_class_loader_init(env);
+    
+    impl_class = axis2_class_loader_create_dll(env, impl_info_param);
+    
+    return impl_class;
+}
+
+/**
+ * Method getTheImplementationObject
+ *
+ * @param msgContext
+ * @return
+ */
+axis2_svc_skeleton_t * AXIS2_CALL
+axis2_msg_recv_get_impl_obj(void *msg_recv,
+                            axis2_env_t **env,
+                            struct axis2_msg_ctx *msg_ctx)
+{
+    struct axis2_svc *svc = NULL;
+    struct axis2_op_ctx *op_ctx = NULL;
+    struct axis2_svc_ctx *svc_ctx = NULL;
+    struct axis2_param *scope_param = NULL;
+    axis2_qname_t *svc_qname = NULL;
+    axis2_char_t *param_value = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(msg_recv, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
+    
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
+    svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
+    if(NULL == svc)
+    {
+        return NULL;
+    }
+    scope_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SCOPE);
+    svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
+    param_value = AXIS2_PARAM_GET_VALUE(scope_param, env);
+    /* TODO
+     * This part is left until session_ctx is implemented or this will before
+     * totally removed???
+     */
+    /*
+    if(NULL != scope_param && (0 == AXIS2_STRCMP(AXIS2_SESSION_SCOPE, 
+        param_value)))
+    {
+        SessionContext sessionContext = msgContext.getSessionContext();
+        synchronized (sessionContext) {
+            Object obj =
+                sessionContext.getProperty(serviceName.getLocalPart());
+            if (obj == null) {
+                obj = makeNewServiceObject(msgContext);
+                sessionContext.setProperty(serviceName.getLocalPart(), obj);
+            }
+            return obj;
+        }
+    }
+    else if
+    */ 
+    if(NULL != scope_param && (0 == AXIS2_STRCMP(AXIS2_APPLICATION_SCOPE, 
+        param_value)))
+    {      
+        struct axis2_conf_ctx *global_ctx = NULL;
+        void *obj = NULL;
+        axis2_char_t *local_part = NULL;
+        struct axis2_ctx *ctx = NULL;
+        
+        global_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+        local_part = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
+        ctx = AXIS2_CONF_CTX_GET_BASE(global_ctx, env);
+        obj = AXIS2_CTX_GET_PROPERTY(ctx, env, local_part, AXIS2_FALSE);
+        if(NULL == obj)
+        {
+            obj = axis2_msg_recv_make_new_svc_obj(msg_recv, env, msg_ctx);
+            AXIS2_CTX_SET_PROPERTY(ctx, env, local_part, obj, AXIS2_FALSE);
+        }
+        return obj;
+    } 
+    else
+    {
+        return axis2_msg_recv_make_new_svc_obj(msg_recv, env, msg_ctx);
+    }
+
+    return NULL;
+}
