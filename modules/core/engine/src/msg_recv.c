@@ -15,6 +15,7 @@
  */
  
 #include <axis2_msg_recv.h>
+#include <axis2_class_loader.h>
 
 /** 
  * @brief Message Receiver struct impl
