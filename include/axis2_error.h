@@ -265,6 +265,14 @@ extern "C"
         AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
         /* Cannot correlate message*/
         AXIS2_ERROR_CANNOT_CORRELATE_MSG,
+        AXIS2_ERROR_INVALID_STATE_DESC_BUILDER,
+        AXIS2_ERROR_CONF_NOT_FOUND,
+        AXIS2_ERROR_MODULE_NOT_FOUND,
+        AXIS2_ERROR_DLL_CREATE_FAILED,
+        AXIS2_ERROR_DLL_LOADING_FAILED,
+        AXIS2_ERROR_SVC_SKELETON_CREATION_FAILED,
+        AXIS2_ERROR_HANDLER_CREATION_FAILED,
+        AXIS2_ERROR_MSG_RECV_CREATION_FAILED,
         /* Operation cannot be NULL in MEP client */
         AXIS2_ERROR_OPERATION_CANNOT_BE_NULL_IN_MEP_CLIENT,
         /* MEP cannot be NULL in MEP client */
@@ -288,7 +296,8 @@ extern "C"
         /** Blocking invocation expects response */
         AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE,
         /** Client side support only one configuration context */
-        AXIS2_ERROR_CLIENT_SIDE_SUPPORT_ONLY_ONE_CONF_CTX
+        AXIS2_ERROR_CLIENT_SIDE_SUPPORT_ONLY_ONE_CONF_CTX,
+        AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE
         
     };
 
