@@ -65,7 +65,8 @@ struct axis2_msg_recv_ops
 
     axis2_status_t (AXIS2_CALL *receive) (axis2_msg_recv_t *msg_recv,
                                             axis2_env_t **env,
-                                            struct axis2_msg_ctx *msg_ctx);
+                                            struct axis2_msg_ctx *msg_ctx,
+                                            void* derived);
     axis2_status_t (AXIS2_CALL *invoke_in_business_logic) (axis2_msg_recv_t *msg_recv,
                                             axis2_env_t **env,
                                             struct axis2_msg_ctx *in_msg_ctx);
@@ -93,8 +94,8 @@ axis2_msg_recv_create (axis2_env_t **env);
 /************************** Start of function macros **************************/
 
 #define AXIS2_MSG_RECV_FREE(msg_recv, env) (msg_recv->ops->free (msg_recv, env))
-#define AXIS2_MSG_RECV_RECEIVE(msg_recv, env, msg_ctx) \
-		(msg_recv->ops->receive (msg_recv, env, msg_ctx))
+#define AXIS2_MSG_RECV_RECEIVE(msg_recv, env, msg_ctx, derived) \
+		(msg_recv->ops->receive (msg_recv, env, msg_ctx, derived))
 #define AXIS2_MSG_RECV_SET_IN_ONLY(msg_recv, env, in_only) \
 		(msg_recv->ops->set_in_only(msg_recv, env, in_only))
 

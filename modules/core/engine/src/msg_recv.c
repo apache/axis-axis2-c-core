@@ -36,7 +36,8 @@ axis2_msg_recv_free (axis2_msg_recv_t *msg_recv,
 axis2_status_t AXIS2_CALL
 axis2_msg_recv_receive (axis2_msg_recv_t *msg_recv,
                                 axis2_env_t **env,
-		                        struct axis2_msg_ctx *msg_ctx);
+		                        struct axis2_msg_ctx *msg_ctx,
+                                void *derived);
 		
 /************************* End of function headers ****************************/	
 
@@ -89,9 +90,10 @@ axis2_msg_recv_free (axis2_msg_recv_t *msg_recv,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_msg_receive (axis2_msg_recv_t *msg_recv,
+axis2_msg_recv_receive (axis2_msg_recv_t *msg_recv,
                     axis2_env_t **env,
-		            struct axis2_msg_ctx *msg_ctx)
+		            struct axis2_msg_ctx *msg_ctx,
+                    void *derived)
 {
 	return AXIS2_SUCCESS;
 }
