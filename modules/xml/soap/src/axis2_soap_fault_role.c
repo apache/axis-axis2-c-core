@@ -252,8 +252,6 @@ axis2_soap_fault_role_set_base_node
    fault_role_impl->om_ele = (axis2_om_element_t *)
             AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
    return AXIS2_SUCCESS;
-
-
 }
 
 axis2_om_node_t* AXIS2_CALL

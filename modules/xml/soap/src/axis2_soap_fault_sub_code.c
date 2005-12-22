@@ -326,7 +326,6 @@ axis2_soap_fault_sub_code_get_sub_code(
     axis2_soap_fault_sub_code_t* subcode = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(fault_sub_code, env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, fault_sub_code, NULL);
     fault_subcode_impl = AXIS2_INTF_TO_IMPL(fault_sub_code);
     this_node = fault_subcode_impl->om_ele_node;
     

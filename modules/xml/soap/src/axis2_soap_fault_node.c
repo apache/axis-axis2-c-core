@@ -161,7 +161,7 @@ axis2_soap_fault_node_create_with_parent(axis2_env_t **env,
     parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env);
     this_ele = axis2_om_element_create(env, 
                                        parent_node,                             
-                                       AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME,
+                                       AXIS2_SOAP12_SOAP_FAULT_NODE_LOCAL_NAME,
                                        parent_ns,
                                        &this_node);
     fault_node_impl->om_ele = this_ele;

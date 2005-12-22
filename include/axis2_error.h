@@ -289,7 +289,7 @@ extern "C"
         AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
         /* We need transport_info in msg_ctx*/
         AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL,
-
+        /** invalid type passed */
         AXIS2_ERROR_INVALID_BASE_TYPE,
         /** Response timed out */
         AXIS2_ERROR_RESPONSE_TIMED_OUT,
@@ -297,6 +297,9 @@ extern "C"
         AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE,
         /** Client side support only one configuration context */
         AXIS2_ERROR_CLIENT_SIDE_SUPPORT_ONLY_ONE_CONF_CTX,
+        /** om element is expected */
+        AXIS2_ERROR_OM_ELEMENT_EXPECTED,
+
         AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE
         
     };

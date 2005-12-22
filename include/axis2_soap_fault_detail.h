@@ -68,13 +68,22 @@ extern "C"
                                  axis2_env_t **env); 
 
         axis2_status_t (AXIS2_CALL *set_base_node)
-                                (axis2_soap_fault_code_t *fault_code,
+                                (axis2_soap_fault_detail_t *fault_detail,
                                  axis2_env_t **env,
                                  axis2_om_node_t *node);
     
         axis2_om_node_t* (AXIS2_CALL *get_base_node)
-                                (axis2_soap_fault_code_t *fault_code,
+                                (axis2_soap_fault_detail_t *fault_code,
                                  axis2_env_t **env);
+        
+        int (AXIS2_CALL *get_soap_version)
+                                (axis2_soap_fault_detail_t *fault_node,
+                                 axis2_env_t **env);
+                                 
+        axis2_status_t (AXIS2_CALL *set_soap_version)
+                                (axis2_soap_fault_detail_t *fault_node,
+                                 axis2_env_t **env,
+                                 int soap_version);                                  
                                                                                                                 
     };      
 
@@ -93,19 +102,15 @@ extern "C"
     * creates a soap struct 
     * @param env Environment. MUST NOT be NULL
     */
-AXIS2_DECLARE(axis2_soap_fault_detail_t *)
-axis2_soap_fault_detail_create_with_parent(axis2_env_t **env,
-                                             axis2_soap_fault_t *fault);
-                            
 
 AXIS2_DECLARE(axis2_soap_fault_detail_t *)
 axis2_soap_fault_detail_create(axis2_env_t **env);
 
 AXIS2_DECLARE(axis2_soap_fault_detail_t *)
-axis2_soap_fault_detail_create_with_parent_extract
-                (axis2_env_t **env,
-                 axis2_soap_fault_t *fault,
-                 axis2_bool_t *extract_ns_from_parent);
+axis2_soap_fault_detail_create_with_parent
+                        (axis2_env_t **env,
+                         axis2_soap_fault_t *fault,
+                         axis2_bool_t *extract_ns_from_parent);
 
 /******************** Macros **************************************************/
     
@@ -124,7 +129,13 @@ axis2_soap_fault_detail_create_with_parent_extract
         ((fault_detail)->ops->get_base_node(fault_detail, env))         
 
 #define AXIS2_SOAP_FAULT_DETAIL_SET_BASE(fault_detail, env, node) \
-        ((fault_detail)->ops->set_base_node(fault_detail, env, node))  
+        ((fault_detail)->ops->set_base_node(fault_detail, env, node))
+        
+#define AXIS2_SOAP_FAULT_DETAIL_GET_SOAP_VERSION(fault_detail, env) \
+        ((fault_detail)->ops->get_soap_version(fault_detail, env))
+        
+#define AXIS2_SOAP_FAULT_DETAIL_SET_SOAP_VERSION(fault_detail, env, version) \
+        ((fault_detail)->ops->set_soap_version(fault_detail, env, version))                  
 /** @} */
 
 #ifdef __cplusplus
