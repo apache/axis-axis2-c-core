@@ -29,6 +29,7 @@
 #include <axis2_array_list.h>
 #include <axis2_http_status_line.h>
 #include <axis2_http_header.h>
+#include <axis2_stream.h>
 
 
 #ifdef __cplusplus
@@ -153,10 +154,10 @@ axis2_http_simple_response_create_default(axis2_env_t **env);
 /************************** Start of function macros **************************/
 
 
-#define AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE\
-                    (simple_response, env, status_line)\
-                    ((simple_response)->ops->get_status_line_line\
-                    (simple_response, env, status_line))
+#define AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE(\
+					simple_response, env, http_version, status_code, phrase)\
+                    ((simple_response)->ops->set_status_line\
+                    (simple_response, env, http_version, status_code, phrase))
 #define AXIS2_HTTP_SIMPLE_RESPONSE_GET_PHRASE\
                     (simple_response, env) ((simple_response)->ops->get_phrase\
                     (simple_response, env))
@@ -172,9 +173,9 @@ axis2_http_simple_response_create_default(axis2_env_t **env);
 #define AXIS2_HTTP_SIMPLE_RESPONSE_CONTAINS_HEADER(simple_response, env, name)\
                     ((simple_response)->ops->contains_header\
                     (simple_response, env, name))
-#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_HEADERS(simple_response, env, headers) \
+#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_HEADERS(simple_response, env) \
                     ((simple_response)->ops->get_headers\
-                    (simple_response, env, headers))
+                    (simple_response, env))
 #define AXIS2_HTTP_SIMPLE_RESPONSE_GET_FIRST_HEADER(simple_request, env) \
                     ((simple_request)->ops->get_first_header\
                     (simple_request, env))

@@ -34,7 +34,7 @@ extern "C"
     * \brief HTTP protocol and message context constants.
     *
     */
-    
+    #define AXIS2_HTTP_OUT_TRANSPORT_INFO "HTTPOutTransportInfo" 
     /**
      * CARRIAGE RETURN AND LINE FEED
      */
@@ -62,8 +62,13 @@ extern "C"
     /**
      * RESPONSE_ACK_CODE_VAL
      */
-    #define AXIS2_HTTP_RESPONSE_ACK_CODE_VAL "202"
-    
+    #define AXIS2_HTTP_RESPONSE_ACK_CODE_VAL 202
+
+    /*
+     * RESPONSE_OK_CODE_VAL
+     */
+    #define AXIS2_HTTP_RESPONSE_OK_CODE_VAL 200
+
     /**
      * SOCKET
      */
@@ -332,6 +337,16 @@ extern "C"
      * Default charset in content
      */
     #define AXIS2_HTTP_DEFAULT_CONTENT_CHARSET "ISO-8859-1"
+	
+	/**
+     * Field TRANSPORT_HTTP
+     */
+    #define AXIS2_TRANSPORT_HTTP "http"
+	
+	/**
+	 * Msg context response written key
+	 */
+	#define AXIS2_RESPONSE_WRITTEN "CONTENT_WRITTEN"
     
 /** @} */
     

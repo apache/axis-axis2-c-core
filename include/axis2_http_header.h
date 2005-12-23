@@ -37,12 +37,12 @@ extern "C"
  * @{
  */
 
-    typedef struct axis2_http_header_ops axis2_http_header_ops_t;
-    typedef struct axis2_http_header axis2_http_header_t;
+typedef struct axis2_http_header_ops axis2_http_header_ops_t;
+typedef struct axis2_http_header axis2_http_header_t;
 
     
 /** 
- * @brief HTTP Response Writer ops struct
+ * @brief HTTP Header ops struct
  * Encapsulator struct for ops of axis2_http_header
  */  
 AXIS2_DECLARE_DATA struct axis2_http_header_ops

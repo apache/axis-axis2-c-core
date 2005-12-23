@@ -80,7 +80,7 @@ axis2_http_out_transport_info_create(axis2_env_t **env,
 					env, content_type) ((out_transport_info)->ops->\
 					set_content_type (out_transport_info, env, content_type))
 #define AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CHAR_ENCODING(out_transport_info,\
-					env) ((out_transport_info)->ops->set_char_encoding \
+					env, encoding) ((out_transport_info)->ops->set_char_encoding \
 					(out_transport_info, env, encoding))
 #define AXIS2_HTTP_OUT_TRANSPORT_INFO_FREE(out_transport_info, env)\
                     ((out_transport_info)->ops->free(out_transport_info, env))
