@@ -28,14 +28,19 @@
 #include <axis2_om_children_qname_iterator.h>
 #include <axis2_om_children_with_specific_attribute_iterator.h>
 #include <axis2_hash.h>
+#include <axis2_soap_envelope.h>
+#include <axis2_soap_body.h>
+
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-    typedef struct axis2_soap_header_ops axis2_soap_header_ops_t;
     
+typedef struct axis2_soap_header_block  axis2_soap_header_block_t;
+
+typedef struct axis2_soap_header_ops    axis2_soap_header_ops_t;
+
     
 /**
  * @defgroup axis2_soap_header
@@ -88,7 +93,7 @@ extern "C"
                                      axis2_env_t **env,
                                      axis2_char_t* param_role);
     
-        axis2_om_children_qname_iterator_t* (AXIS2_CALL examine_all_header_blocks)
+        axis2_om_children_qname_iterator_t* (AXIS2_CALL *examine_all_header_blocks)
                                     (axis2_soap_header_t* header,
                                      axis2_env_t **env);
         
@@ -148,7 +153,7 @@ axis2_soap_header_create(axis2_env_t **env);
 #define AXIS2_SOAP_HEADER_EXAMINE_HEADER_BLOCKS(header, env, param_role) \
         ((header)->ops->examine_header_blocks(header, env, param_role))
 
-#define AXIS2_SOAP_HEADER_EXAMINE_ALL_HEADER_BLOCKS(header, env)
+#define AXIS2_SOAP_HEADER_EXAMINE_ALL_HEADER_BLOCKS(header, env) \
         ((header)->ops->examine_all_header_blocks(header, env))
         
 #define AXIS2_SOAP_HEADER_EXTRACT_HEADER_BLOCKS(header, env) \

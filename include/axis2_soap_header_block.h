@@ -26,6 +26,7 @@
 #include <axis2_om_node.h>
 #include <axis2_om_element.h>
 #include <axis2_array_list.h>
+#include <axis2_soap_header.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -82,7 +83,7 @@ extern "C"
                             (axis2_soap_header_block_t *header_block,
                              axis2_env_t **env);
                              
-        axis2_bool_t (AXIS2_CALL *set_processed)
+        axis2_status_t (AXIS2_CALL *set_processed)
                             (axis2_soap_header_block_t *header_block,
                              axis2_env_t **env);                                                                                                                                                                                    
                                                                                                                                     
@@ -90,10 +91,23 @@ extern "C"
         axis2_char_t* (AXIS2_CALL *get_role)
                             (axis2_soap_header_block_t *header_block,
                              axis2_env_t **env);
+          
+        axis2_status_t (AXIS2_CALL *set_attribute)
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env,
+                             axis2_char_t *attr_name,
+                             axis2_char_t *attr_value,
+                             axis2_char_t *soap_envelope_namespace_uri);
+                             
+        axis2_char_t* (AXIS2_CALL *get_attribute)
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env,
+                             axis2_char_t *attr_name,
+                             axis2_char_t *soap_envelope_namespace_uri);                            
+                                       
                                                                                           
        /**
         * This is only intended to be used by the builder,
-        * do not use this function in other places
         */
         axis2_status_t (AXIS2_CALL *set_base_node)
                             (axis2_soap_header_block_t *header_block,
@@ -128,16 +142,17 @@ extern "C"
     * creates a soap struct 
     * @param env Environment. MUST NOT be NULL
     */
-AXIS2_DECLARE(axis2_soap_header_block_t *)
-axis2_soap_header_block_create_with_parent(axis2_env_t **env,
-                                       axis2_soap_envelope_t *envelope);
-                            
 
 AXIS2_DECLARE(axis2_soap_header_block_t *)
 axis2_soap_header_block_create(axis2_env_t **env);
 
+AXIS2_DECLARE(axis2_soap_header_block_t *)
+axis2_soap_header_block_create_with_parent(axis2_env_t **env,
+                                           axis2_char_t *localname,
+                                           axis2_om_namespace_t *ns,
+                                           axis2_soap_header_t *parent);
+                            
 /******************** Macros **************************************************/
-    
     
 /** free soap_header_block */
 #define AXIS2_SOAP_HEADER_BLOCK_FREE(header_block , env) \
@@ -176,6 +191,16 @@ axis2_soap_header_block_create(axis2_env_t **env);
         
 #define AXIS2_SOAP_HEADER_BLOCK_GET_SOAP_VERSION(header_block, env) \
         ((header_block)->ops->get_soap_version(header_block, env))
+        
+#define AXIS2_SOAP_HEADER_BLOCK_GET_ATTRIBUTE(header_block, env,\
+            attr_name, soap_envelope_namespace_uri)  \
+        ((header_block)->ops->get_attribute(header_block, env, \
+            attr_name, soap_envelope_namespace_uri))
+            
+#define AXIS2_SOAP_HEADER_BLOCK_SET_ATTRIBUTE(header_block, env,\
+            attr_name, soap_envelope_namespace_uri)  \
+        ((header_block)->ops->set_attribute(header_block, env, \
+            attr_name, soap_envelope_namespace_uri))            
 /** @} */
 
 #ifdef __cplusplus

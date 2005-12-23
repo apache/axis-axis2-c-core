@@ -22,11 +22,13 @@
     * @file axis2_soap_body.h
     * @brief axis2_soap_body struct
     */
-#include <axis2_soap_envelope.h>    
 #include <axis2_env.h>
 #include <axis2_om_node.h>
 #include <axis2_om_element.h>
-#include <axis2_om_namespace.h>
+#include <axis2_om_namespace.h>    
+#include <axis2_soap_envelope.h>    
+
+
 
 #ifdef __cplusplus
 extern "C"

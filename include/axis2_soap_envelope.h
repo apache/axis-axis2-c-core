@@ -22,26 +22,21 @@
  * @brief axis2_soap_envelope struct
  *        corresponds to root element of soap message
  */
- #include <axis2_soap_fault.h>
 #include <axis2_env.h>
 #include <axis2_om_node.h>
 #include <axis2_om_element.h>
 #include <axis2_om_namespace.h>
-
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-    typedef struct axis2_soap_body        axis2_soap_body_t;
-    typedef struct axis2_soap_header      axis2_soap_header_t;
-    typedef struct axis2_soap_header_block_t axis2_soap_header_block_t;
-    
-
     typedef struct axis2_soap_envelope        axis2_soap_envelope_t;
     typedef struct axis2_soap_envelope_ops    axis2_soap_envelope_ops_t;
     
+    typedef struct axis2_soap_body            axis2_soap_body_t;
+    typedef struct axis2_soap_header          axis2_soap_header_t;
     
 /**
  * @defgroup axis2_soap_envelope
