@@ -526,4 +526,33 @@ axis2_soap_header_block_set_soap_version
     AXIS2_INTF_TO_IMPL(header_block)->soap_version = soap_version;
     return AXIS2_SUCCESS;
 }
-
+/******************** soap11 **************************************************/
+AXIS2_DECLARE(axis2_soap_header_block_t *)
+axis2_soap11_header_block_create_with_parent(axis2_env_t **env,
+                                           axis2_char_t *localname,
+                                           axis2_om_namespace_t *ns,
+                                           axis2_soap_header_t *header)
+{
+    axis2_soap_header_block_t *header_block = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    header_block = axis2_soap_header_block_create_with_parent(env, localname, ns, header);
+    if(!header_block)
+        return NULL;
+    axis2_soap_header_block_set_soap_version(header_block, env, AXIS2_SOAP11);
+    return header_block;
+}                                           
+/******************** soap12 **************************************************/                                           
+AXIS2_DECLARE(axis2_soap_header_block_t *)
+axis2_soap12_header_block_create_with_parent(axis2_env_t **env,
+                                           axis2_char_t *localname,
+                                           axis2_om_namespace_t *ns,
+                                           axis2_soap_header_t *header)
+{
+    axis2_soap_header_block_t *header_block = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    header_block = axis2_soap_header_block_create_with_parent(env, localname, ns, header);
+    if(!header_block)
+        return NULL;
+    axis2_soap_header_block_set_soap_version(header_block, env, AXIS2_SOAP12);
+    return header_block;
+}                                           

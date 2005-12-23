@@ -152,6 +152,16 @@ axis2_soap_header_block_create_with_parent(axis2_env_t **env,
                                            axis2_om_namespace_t *ns,
                                            axis2_soap_header_t *parent);
                             
+AXIS2_DECLARE(axis2_soap_header_block_t *)
+axis2_soap11_header_block_create_with_parent(axis2_env_t **env,
+                                           axis2_char_t *localname,
+                                           axis2_om_namespace_t *ns,
+                                           axis2_soap_header_t *parent);
+AXIS2_DECLARE(axis2_soap_header_block_t *)
+axis2_soap12_header_block_create_with_parent(axis2_env_t **env,
+                                           axis2_char_t *localname,
+                                           axis2_om_namespace_t *ns,
+                                           axis2_soap_header_t *parent);                                                                        
 /******************** Macros **************************************************/
     
 /** free soap_header_block */
