@@ -286,7 +286,32 @@ axis2_soap_header_block_set_must_understand_with_bool
                          axis2_env_t **env,
                          axis2_bool_t *must_understand)
 {
-
+    axis2_soap_header_block_impl_t *header_block_impl = NULL;
+    axis2_char_t *attr_nsuri     = NULL;
+    axis2_char_t* attr_value = NULL;
+    AXIS2_FUNC_PARAM_CHECK(header_block, env, AXIS2_FAILURE);
+    header_block_impl = AXIS2_INTF_TO_IMPL(header_block);
+    if(header_block_impl->soap_version == AXIS2_SOAP_VERSION_NOT_SET)
+        return AXIS2_FAILURE;
+    if(header_block_impl->soap_version == AXIS2_SOAP11)
+    {
+        attr_nsuri     = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
+    }
+    if(header_block_impl->soap_version == AXIS2_SOAP12)
+    {
+        attr_nsuri     = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    }
+    if(must_understand)
+    {
+         attr_value = "1";
+    }
+    else
+    {
+        attr_value = "0";
+    }
+    return axis2_soap_header_block_set_attribute(header_block, env, 
+                AXIS2_SOAP_ATTR_MUST_UNDERSTAND, attr_value, attr_nsuri);
+            
 }
                         
 axis2_status_t AXIS2_CALL
@@ -295,7 +320,37 @@ axis2_soap_header_block_set_must_understand_with_string
                          axis2_env_t **env,
                          axis2_char_t *must_understand)
 {
+    axis2_soap_header_block_impl_t *header_block_impl = NULL;
+    axis2_char_t *attr_nsuri     = NULL;
+    AXIS2_FUNC_PARAM_CHECK(header_block, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, must_understand, AXIS2_FAILURE);
+    header_block_impl = AXIS2_INTF_TO_IMPL(header_block);
+    if(header_block_impl->soap_version == AXIS2_SOAP_VERSION_NOT_SET)
+        return AXIS2_FAILURE;
+    if(header_block_impl->soap_version == AXIS2_SOAP11)
+    {
+        attr_nsuri     = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
+    }
+    if(header_block_impl->soap_version == AXIS2_SOAP12)
+    {
+        attr_nsuri     = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    }
+    if(AXIS2_STRCMP(AXIS2_SOAP_ATTR_MUST_UNDERSTAND_TRUE, must_understand) == 0 ||
+       AXIS2_STRCMP(AXIS2_SOAP_ATTR_MUST_UNDERSTAND_FALSE, must_understand) == 0 ||
+       AXIS2_STRCMP(AXIS2_SOAP_ATTR_MUST_UNDERSTAND_0, must_understand) == 0 ||
+       AXIS2_STRCMP(AXIS2_SOAP_ATTR_MUST_UNDERSTAND_1, must_understand) == 0)
+    {        
 
+        axis2_soap_header_block_set_attribute(header_block, env, 
+                AXIS2_SOAP_ATTR_MUST_UNDERSTAND, must_understand, attr_nsuri);
+        return AXIS2_SUCCESS;                
+    }
+    else
+    {
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_MUST_UNDERSTAND_SHOULD_BE_1_0_TRUE_FALSE, AXIS2_FAILURE);
+        return AXIS2_FAILURE;            
+    }
 }
                                         
 axis2_bool_t AXIS2_CALL 
@@ -303,10 +358,39 @@ axis2_soap_header_block_get_must_understand
                         (axis2_soap_header_block_t *header_block,
                          axis2_env_t **env)
 {
+    axis2_char_t *must_understand = NULL;
+    axis2_soap_header_block_impl_t *header_block_impl = NULL;
+    axis2_char_t *attr_nsuri     = NULL;
+    AXIS2_FUNC_PARAM_CHECK(header_block, env, AXIS2_FAILURE);
 
+    header_block_impl = AXIS2_INTF_TO_IMPL(header_block);
+    if(header_block_impl->soap_version == AXIS2_SOAP_VERSION_NOT_SET)
+        return AXIS2_FAILURE;
+    if(header_block_impl->soap_version == AXIS2_SOAP11)
+    {
+        attr_nsuri     = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
+    }
+    if(header_block_impl->soap_version == AXIS2_SOAP12)
+    {
+        attr_nsuri     = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    }
+    must_understand = axis2_soap_header_block_get_attribute(header_block,
+            env, AXIS2_SOAP_ATTR_MUST_UNDERSTAND, attr_nsuri);
+    if(AXIS2_STRCMP(must_understand, AXIS2_SOAP_ATTR_MUST_UNDERSTAND_1) == 0 ||            
+       AXIS2_STRCMP(must_understand, AXIS2_SOAP_ATTR_MUST_UNDERSTAND_TRUE) == 0)
+    {
+        return AXIS2_TRUE;
+    }       
+    else if(AXIS2_STRCMP(must_understand, AXIS2_SOAP_ATTR_MUST_UNDERSTAND_0) == 0 ||            
+       AXIS2_STRCMP(must_understand, AXIS2_SOAP_ATTR_MUST_UNDERSTAND_FALSE) == 0)
+    {
+        return AXIS2_FALSE;
+    }
+    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND,
+        AXIS2_FAILURE);
+    return AXIS2_FALSE;        
 }
                         
-
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_block_set_attribute
                        (axis2_soap_header_block_t *header_block,
@@ -443,4 +527,3 @@ axis2_soap_header_block_set_soap_version
     return AXIS2_SUCCESS;
 }
 
- 
