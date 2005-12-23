@@ -326,19 +326,19 @@ int AXIS2_CALL _axis2_phase_get_before_after(axis2_handler_t *handler, axis2_env
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
-        return AXIS2_BOTH_BEFORE_AFTER;
+        return AXIS2_PHASE_BOTH_BEFORE_AFTER;
     }
     else if (before) 
     {
-        return AXIS2_BEFORE;
+        return AXIS2_PHASE_BEFORE;
     } 
     else if (after) 
     {
-        return AXIS2_AFTER;
+        return AXIS2_PHASE_AFTER;
     } 
     else 
     {
-        return AXIS2_ANYWHERE;
+        return AXIS2_PHASE_ANYWHERE;
     }
 }
 
@@ -358,7 +358,7 @@ axis2_status_t AXIS2_CALL axis2_phase_set_first_handler(struct axis2_phase *phas
     }
     else
     {
-        if (_axis2_phase_get_before_after(handler, env) != AXIS2_ANYWHERE)
+        if (_axis2_phase_get_before_after(handler, env) != AXIS2_PHASE_ANYWHERE)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_PHASE_FIRST_HANDLER, AXIS2_FAILURE);
             return AXIS2_FAILURE;            
@@ -386,7 +386,7 @@ axis2_status_t AXIS2_CALL axis2_phase_set_last_handler(struct axis2_phase *phase
     }
     else
     {
-        if (_axis2_phase_get_before_after(handler, env) != AXIS2_ANYWHERE)
+        if (_axis2_phase_get_before_after(handler, env) != AXIS2_PHASE_ANYWHERE)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_PHASE_LAST_HANDLER, AXIS2_FAILURE);
             return AXIS2_FAILURE;            

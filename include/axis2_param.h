@@ -170,7 +170,7 @@ axis2_param_create(axis2_env_t **env,
     ((param->ops)->get_name (param, env))
 
 #define AXIS2_PARAM_SET_VALUE(param, env, value) \
-    (((param->ops)->set_value (param , env, value))
+    ((param->ops)->set_value (param , env, value))
 
 #define AXIS2_PARAM_GET_VALUE(param, env) \
     ((param->ops)->get_value (param, env))
@@ -181,8 +181,14 @@ axis2_param_create(axis2_env_t **env,
 #define AXIS2_PARAM_SET_LOCKED(param, env, locked) \
     ((param->ops)->set_locked (param, env, locked))
 
+#define AXIS2_PARAM_SET_PARAM_TYPE(param, env, type) \
+    ((param->ops)->set_param_type (param, env, type))
+ 
+#define AXIS2_PARAM_GET_PARAM_TYPE(param, env) \
+    ((param->ops)->get_param_type (param, env))
+    
 #define AXIS2_PARAM_SET_ELEMENT(param, env, element) \
-    (((param->ops)->set_param_element (param , env, element))
+    ((param->ops)->set_param_element (param , env, element))
 
 #define AXIS2_PARAM_GET_ELEMENT(param, env) \
     ((param->ops)->get_param_element (param, env))

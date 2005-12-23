@@ -10,7 +10,7 @@ libaxis2_om_la_SOURCES = axis2_om_attribute.c \
                         axis2_om_doctype.c \
                         axis2_om_namespace.c \
                         axis2_om_processing_instruction.c \
-                        axis2_om_stax_builder.c \ 
+                        axis2_om_stax_builder.c \
                         axis2_om_children_iterator.c \
                         axis2_om_children_qname_iterator.c \
                         axis2_om_child_element_iterator.c \

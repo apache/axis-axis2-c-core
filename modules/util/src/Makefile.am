@@ -14,5 +14,10 @@ libaxis2_util_la_SOURCES = hash.c \
                         utils.c
 
 libaxis2_util_la_LIBADD = $(LDFLAGS)
-INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include \
-            -I$(top_builddir)/modules/util/src
+INCLUDES = -I$(top_builddir)/include \
+            -I${CUTEST_HOME}/include \
+            -I$(top_builddir)/modules/util/src \
+            -I$(top_builddir)/modules/core/transport \
+            -I$(top_builddir)/modules/core/description/src \
+            -I$(top_builddir)/modules/wsdl/src \
+            -I$(top_builddir)/modules/platforms

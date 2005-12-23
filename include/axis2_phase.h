@@ -34,13 +34,13 @@ extern "C"
 {
 #endif
     /** Both Before and After */
-    static const int AXIS2_BOTH_BEFORE_AFTER = 0;    
+    #define AXIS2_PHASE_BOTH_BEFORE_AFTER  0    
     /** Before */
-    static const int AXIS2_BEFORE = 1;    
+    #define AXIS2_PHASE_BEFORE  1    
     /** After */
-    static const int AXIS2_AFTER = 2;    
+    #define AXIS2_PHASE_AFTER  2    
     /** Anywhere */
-    static const int AXIS2_ANYWHERE = 3;
+    #define AXIS2_PHASE_ANYWHERE  3
     
     struct axis2_phase_ops;
     struct axis2_phase;

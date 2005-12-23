@@ -921,7 +921,8 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
         for(j = 0; j < size; j++)
         {
             param = (struct axis2_param *) AXIS2_ARRAY_LIST_GET(params, env, j);
-            if(0 == AXIS2_STRCMP( AXIS2_PARAM_GET_NAME(param, env), WSA_ACTION))
+            if(0 == AXIS2_STRCMP( AXIS2_PARAM_GET_NAME(param, env), 
+                    AXIS2_WSA_ACTION))
             {
                 status = axis2_svc_add_mapping(svc, env,
                     (axis2_char_t *) AXIS2_PARAM_GET_VALUE(param, env), axis2_opt);

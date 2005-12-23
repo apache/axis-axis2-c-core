@@ -191,7 +191,7 @@ AXIS2_DECLARE(axis2_conf_ctx_t*) AXIS2_CALL create(axis2_env_t **env, struct axi
 #define AXIS2_CONF_CTX_SET_ROOT_DIR(conf_ctx, env, path) ((conf_ctx)->ops->set_root_dir(conf_ctx, env, path))
 #define AXIS2_CONF_CTX_INIT(conf_ctx, env, conf) ((conf_ctx)->ops->init(conf_ctx, env, conf))
 #define AXIS2_CONF_CTX_FREE(conf_ctx, env) ((conf_ctx)->ops->free(conf_ctx, env))
-#define AXIS2_CONF_CTX_FILL_CXTS(conf_ctx, env, msg_ctx) ((conf_ctx)->ops->fill_ctxs(conf_ctx, env, msg_ctx))
+#define AXIS2_CONF_CTX_FILL_CTXS(conf_ctx, env, msg_ctx) ((conf_ctx)->ops->fill_ctxs(conf_ctx, env, msg_ctx))
 
 /************************** End of function macros ****************************/    
 

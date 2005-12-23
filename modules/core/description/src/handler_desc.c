@@ -23,8 +23,7 @@ typedef struct axis2_handler_desc_impl
 {
 	/** handler description */
 	axis2_handler_desc_t handler_desc;
-    /** param container */
-    axis2_param_container_t *param_container;
+    
     /** name */
     axis2_qname_t *qname;
     /** phase rules */
@@ -34,7 +33,8 @@ typedef struct axis2_handler_desc_impl
     /** class qname */
     axis2_char_t *class_name;
 	/** parent param container */
-    axis2_param_container_t *parent_param_container;
+    axis2_param_container_t *parent;
+    
 } axis2_handler_desc_impl_t;
 
 /** Interface to implementation conversion macro */
@@ -68,7 +68,7 @@ axis2_param_container_t* AXIS2_CALL axis2_handler_desc_get_parent(struct axis2_h
                                                axis2_env_t **env);
 axis2_status_t AXIS2_CALL axis2_handler_desc_set_parent(struct axis2_handler_desc *handler_desc, 
                                                axis2_env_t **env,
-                                                axis2_param_container_t * parent_param_container);
+                                                axis2_param_container_t * parent);
 axis2_status_t AXIS2_CALL axis2_handler_desc_free (struct axis2_handler_desc *handler_desc, 
                                                axis2_env_t **env);
 
@@ -85,15 +85,15 @@ axis2_handler_desc_t* AXIS2_CALL axis2_handler_desc_create_with_qname(axis2_env_
         return NULL;        
     }
 
-    handler_desc_impl->param_container = NULL;
+    handler_desc_impl->handler_desc.param_container = NULL;
     handler_desc_impl->qname = NULL;
     handler_desc_impl->rules = NULL;
     handler_desc_impl->handler = NULL;
     handler_desc_impl->class_name = NULL;
-	handler_desc_impl->parent_param_container = NULL;
+	handler_desc_impl->parent = NULL;
 	
-	handler_desc_impl->param_container  = axis2_param_container_create(env);
-    if (!handler_desc_impl->param_container)
+	handler_desc_impl->handler_desc.param_container  = axis2_param_container_create(env);
+    if (!handler_desc_impl->handler_desc.param_container)
     {
         /** error is already set by last param container create */
         axis2_handler_desc_free(&(handler_desc_impl->handler_desc), env);
@@ -200,7 +200,7 @@ axis2_param_t* AXIS2_CALL axis2_handler_desc_get_param(struct axis2_handler_desc
     
     handler_desc_impl = AXIS2_INTF_TO_IMPL(handler_desc);
     
-    return AXIS2_PARAM_CONTAINER_GET_PARAM(handler_desc_impl->param_container, env, name);
+    return AXIS2_PARAM_CONTAINER_GET_PARAM(handler_desc->param_container, env, name);
 }
 
 axis2_status_t AXIS2_CALL axis2_handler_desc_add_param(struct axis2_handler_desc *handler_desc, 
@@ -212,13 +212,13 @@ axis2_status_t AXIS2_CALL axis2_handler_desc_add_param(struct axis2_handler_desc
     
     handler_desc_impl = AXIS2_INTF_TO_IMPL(handler_desc);
     
-    if (AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(handler_desc_impl->parent_param_container, env, AXIS2_PARAM_GET_NAME(param, env)) )
+    if (AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(handler_desc_impl->parent, env, AXIS2_PARAM_GET_NAME(param, env)) )
     {
         AXIS2_ERROR_SET((*env)->error,AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE , AXIS2_FAILURE);
         return AXIS2_FAILURE;        
     }
     
-    return AXIS2_PARAM_CONTAINER_ADD_PARAM(handler_desc_impl->param_container, env, param);
+    return AXIS2_PARAM_CONTAINER_ADD_PARAM(handler_desc->param_container, env, param);
 }
 
 axis2_array_list_t* AXIS2_CALL axis2_handler_desc_get_params(struct axis2_handler_desc *handler_desc, 
@@ -230,7 +230,7 @@ axis2_array_list_t* AXIS2_CALL axis2_handler_desc_get_params(struct axis2_handle
     
     handler_desc_impl = AXIS2_INTF_TO_IMPL(handler_desc);
     
-    return AXIS2_PARAM_CONTAINER_GET_PARAMS(handler_desc_impl->param_container, env);
+    return AXIS2_PARAM_CONTAINER_GET_PARAMS(handler_desc->param_container, env);
 }
 
 axis2_bool_t AXIS2_CALL axis2_handler_desc_is_param_locked(struct axis2_handler_desc *handler_desc, 
@@ -242,11 +242,11 @@ axis2_bool_t AXIS2_CALL axis2_handler_desc_is_param_locked(struct axis2_handler_
     
     handler_desc_impl = AXIS2_INTF_TO_IMPL(handler_desc);
     
-    /* see if it is locked in parent_param_container */
-    if( AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(handler_desc_impl->parent_param_container, env, param_name) )
+    /* see if it is locked in parent */
+    if( AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(handler_desc_impl->parent, env, param_name) )
         return AXIS2_TRUE;
     
-    return AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(handler_desc_impl->param_container, env, param_name);    
+    return AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(handler_desc->param_container, env, param_name);    
 }
 
 axis2_handler_t* AXIS2_CALL axis2_handler_desc_get_handler(struct axis2_handler_desc *handler_desc, 
@@ -317,15 +317,15 @@ axis2_param_container_t* AXIS2_CALL axis2_handler_desc_get_parent(struct axis2_h
                                                axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(handler_desc, env, NULL);
-    return AXIS2_INTF_TO_IMPL(handler_desc)->parent_param_container;
+    return AXIS2_INTF_TO_IMPL(handler_desc)->parent;
 }
 
 axis2_status_t AXIS2_CALL axis2_handler_desc_set_parent(struct axis2_handler_desc *handler_desc, 
                                                axis2_env_t **env,
-                                                axis2_param_container_t * parent_param_container)
+                                                axis2_param_container_t * parent)
 {
     AXIS2_FUNC_PARAM_CHECK(handler_desc, env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(handler_desc)->parent_param_container = parent_param_container; /* shallow copy, because the parent_param_container lives somewhere else*/
+    AXIS2_INTF_TO_IMPL(handler_desc)->parent = parent; /* shallow copy, because the parent lives somewhere else*/
     return AXIS2_SUCCESS;
 }
 
@@ -344,10 +344,11 @@ axis2_status_t AXIS2_CALL axis2_handler_desc_free (struct axis2_handler_desc *ha
         handler_desc_impl->handler_desc.ops = NULL;
     }
     
-    if (handler_desc_impl->param_container)
+    if (handler_desc_impl->handler_desc.param_container)
     {
-        AXIS2_PARAM_CONTAINER_FREE(handler_desc_impl->param_container, env);
-        handler_desc_impl->param_container = NULL;
+        AXIS2_PARAM_CONTAINER_FREE(handler_desc_impl->handler_desc.
+            param_container, env);
+        handler_desc_impl->handler_desc.param_container = NULL;
     }    
     
     /** the following block should be uncomented when clone is used in the code 

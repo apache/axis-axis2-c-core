@@ -2,7 +2,6 @@ lib_LTLIBRARIES = libaxis2_engine.la
 AM_CPPFLAGS = $(CPPFLAGS)
 
 libaxis2_engine_la_SOURCES = handler.c \
-                                msg_recv.c \
                                 conf.c \
                                 phase.c \
                                 disp_checker.c \
