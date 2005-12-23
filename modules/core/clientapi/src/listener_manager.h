@@ -88,9 +88,9 @@ AXIS2_DECLARE(axis2_listener_manager_t*) axis2_listener_manager_create(axis2_env
     
 /************************** Start of function macros **************************/
 
-#define AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(listener_manager, env, transport, conf_ctx) ((listener_manager)->ops->axis2_listener_manager_make_sure_started(listener_manager, env, transport, conf_ctx))
-#define AXIS2_LISTNER_MANAGER_STOP(listener_manager, env, transport) ((listener_manager)->ops->axis2_listener_manager_stop(listener_manager, env, transport))
-#define AXIS2_LISTNER_MANAGER_REPLY_TO_EPR(listener_manager, env, svc_name, transport) ((listener_manager)->ops->axis2_listener_manager_reply_to_epr(listener_manager, env, svc_name, transport))
+#define AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(listener_manager, env, transport, conf_ctx) ((listener_manager)->ops->make_sure_started(listener_manager, env, transport, conf_ctx))
+#define AXIS2_LISTNER_MANAGER_STOP(listener_manager, env, transport) ((listener_manager)->ops->stop(listener_manager, env, transport))
+#define AXIS2_LISTNER_MANAGER_REPLY_TO_EPR(listener_manager, env, svc_name, transport) ((listener_manager)->ops->reply_to_epr(listener_manager, env, svc_name, transport))
 #define AXIS2_LISTNER_MANAGER_FREE(listener_manager, env) ((listener_manager)->ops->free(listener_manager, env))
 
 /************************** End of function macros ****************************/    
