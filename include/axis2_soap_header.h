@@ -89,18 +89,18 @@ typedef struct axis2_soap_header_ops    axis2_soap_header_ops_t;
         * destination.
         */
         axis2_hash_t* (AXIS2_CALL *examine_header_blocks)
-                                    (axis2_soap_header_t* header,
-                                     axis2_env_t **env,
-                                     axis2_char_t* param_role);
+                                        (axis2_soap_header_t* header,
+                                         axis2_env_t **env,
+                                         axis2_char_t* param_role);
     
         axis2_om_children_qname_iterator_t* (AXIS2_CALL *examine_all_header_blocks)
-                                    (axis2_soap_header_t* header,
-                                     axis2_env_t **env);
+                                        (axis2_soap_header_t* header,
+                                         axis2_env_t **env);
         
         axis2_om_children_with_specific_attribute_iterator_t *
-                (AXIS2_CALL *extract_header_blocks)(axis2_soap_header_t *header,
-                 axis2_env_t **env,
-                 axis2_char_t *role);
+            (AXIS2_CALL *extract_header_blocks)(axis2_soap_header_t *header,
+                                                axis2_env_t **env,
+                                                axis2_char_t *role);
                                              
                                             
                                          
@@ -108,12 +108,23 @@ typedef struct axis2_soap_header_ops    axis2_soap_header_ops_t;
         * This is only intended to be used by the builder,
         * do not use this function in other places
         */
-        axis2_status_t (AXIS2_CALL *set_base_node)(axis2_soap_header_t *header,
-                                              axis2_env_t **env,
-                                              axis2_om_node_t *node);
+        axis2_status_t (AXIS2_CALL *set_base_node)
+                                            (axis2_soap_header_t *header,
+                                             axis2_env_t **env,
+                                             axis2_om_node_t *node);
                                               
-        axis2_om_node_t* (AXIS2_CALL *get_base_node)(axis2_soap_header_t *header,
-                                                axis2_env_t **env);                                                                                                                                                          
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)
+                                            (axis2_soap_header_t *header,
+                                             axis2_env_t **env);
+                                             
+        axis2_status_t (AXIS2_CALL *get_soap_version)
+                                            (axis2_soap_header_t *header,
+                                             axis2_env_t **env);
+                                             
+        axis2_status_t (AXIS2_CALL *set_soap_version)
+                                            (axis2_soap_header_t *header,
+                                             axis2_env_t **env,
+                                             int soap_version);                                                                                                                                                                                                       
                                          
     };
 
@@ -133,13 +144,13 @@ typedef struct axis2_soap_header_ops    axis2_soap_header_ops_t;
     * @param env Environment. MUST NOT be NULL
     */
 AXIS2_DECLARE(axis2_soap_header_t *)
-axis2_soap_header_create_with_parent(axis2_env_t **env,
-                                       axis2_soap_envelope_t *envelope);
-                            
-
-AXIS2_DECLARE(axis2_soap_header_t *)
 axis2_soap_header_create(axis2_env_t **env);
 
+    
+AXIS2_DECLARE(axis2_soap_header_t *)
+axis2_soap_header_create_with_parent(axis2_env_t **env,
+                                     axis2_soap_envelope_t *envelope);
+                            
 /******************** Macros **************************************************/
     
     
@@ -163,7 +174,13 @@ axis2_soap_header_create(axis2_env_t **env);
         ((header)->ops->set_base_node(header, env, node))
         
 #define AXIS2_SOAP_HEADER_GET_BASE_NODE(header, env) \
-        ((header)->ops->get_base_node(header, env))                       
+        ((header)->ops->get_base_node(header, env)) 
+        
+#define AXIS2_SOAP_HEADER_SET_SOAP_VERSION(header, env, version) \
+        ((header)->ops->set_soap_version(header, env, version))
+        
+#define AXIS2_SOAP_HEADER_GET_SOAP_VERSION(header, env) \
+        ((header)->ops->get_soap_version(header, env))
 
 /** @} */
 

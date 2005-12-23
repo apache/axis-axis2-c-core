@@ -128,7 +128,7 @@ axis2_soap_envelope_create_with_namespace(axis2_env_t **env,
         ((envelope)->ops->get_body(envelope, env))
 
 #define AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(envelope , env) \
-        ((envelope)->ops->GET_BASE_NODE(envelope, env))
+        ((envelope)->ops->get_base_node(envelope, env))
 
 #define AXIS2_SOAP_ENVELOPE_SET_BASE_NODE(envelope , env) \
         ((envelope)->ops->set_base_node(envelope, env))                                
