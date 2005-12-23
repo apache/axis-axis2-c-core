@@ -96,7 +96,7 @@ AXIS2_DECLARE_DATA struct axis2_soap_over_http_sender
 };
 
 
-axis2_soap_over_http_sender_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_soap_over_http_sender_t *) 
 axis2_soap_over_http_sender_create(axis2_env_t **env);
 
 /********************* Start of function macros	***************************/

@@ -79,7 +79,7 @@ AXIS2_DECLARE_DATA struct axis2_http_transport_sender
 };
 
 
-AXIS2_DECLARE(axis2_http_transport_sender_t *) AXIS2_CALL
+AXIS2_DECLARE(axis2_http_transport_sender_t *) 
 axis2_http_transport_sender_create (axis2_env_t **env);
 
 /************************** Start of function macros **************************/
