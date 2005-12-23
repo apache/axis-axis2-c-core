@@ -12,7 +12,7 @@ INCLUDES = -I$(top_builddir)/include \
 
 prgbin_PROGRAMS = deployment_test
 deployment_test_SOURCES = main.c
-deployment_test_LDADD   =  $(LDFLAGS) libtest_deployment.la  \
+deployment_test_LDADD   =   libtest_deployment.la  \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                     -L$(top_builddir)/install/lib \

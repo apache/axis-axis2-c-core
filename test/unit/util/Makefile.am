@@ -18,7 +18,7 @@ INCLUDES = -I$(top_builddir)/include \
 
 prgbin_PROGRAMS = util_test
 util_test_SOURCES = main.c
-util_test_LDADD   =  $(LDFLAGS) \
+util_test_LDADD   =   \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                      $(top_builddir)/test/unit/util/libtest_util.la \

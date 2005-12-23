@@ -16,7 +16,7 @@ INCLUDES = -I$(top_builddir)/include \
 
 prgbin_PROGRAMS = phaseresolver_test
 phaseresolver_test_SOURCES = main.c
-phaseresolver_test_LDADD   =  $(LDFLAGS) libtest_phaseresolver.la  \
+phaseresolver_test_LDADD   =   libtest_phaseresolver.la  \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                     -L$(top_builddir)/install/lib \

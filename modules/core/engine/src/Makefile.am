@@ -13,7 +13,7 @@ libaxis2_engine_la_SOURCES = handler.c \
                                 soap_body_disp.c \
                                 engine.c
 
-libaxis2_engine_la_LIBADD = $(LDFLAGS)
+libaxis2_engine_la_LIBADD = 
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/xml/guththila/src \
             -I$(top_builddir)/include \

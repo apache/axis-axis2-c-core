@@ -17,7 +17,7 @@ INCLUDES = -I$(top_builddir)/include \
 
 prgbin_PROGRAMS = description_test
 description_test_SOURCES = main.c
-description_test_LDADD   =  $(LDFLAGS) libtest_description.la  \
+description_test_LDADD   =   libtest_description.la  \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                     -L$(top_builddir)/install/lib \

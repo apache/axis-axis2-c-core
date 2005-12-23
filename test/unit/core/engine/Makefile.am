@@ -11,7 +11,7 @@ INCLUDES = -I$(top_builddir)/include \
 
 prgbin_PROGRAMS = engine_test
 engine_test_SOURCES = main.c
-engine_test_LDADD   =  $(LDFLAGS) libtest_engine.la  \
+engine_test_LDADD   =   libtest_engine.la  \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                     -L$(top_builddir)/install/lib \

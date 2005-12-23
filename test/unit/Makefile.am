@@ -4,7 +4,7 @@ SUBDIRS = util core xml
 AM_CPPFLAGS = $(CPPFLAGS)
 main_unit_test_suite_SOURCES = main.c
 
-main_unit_test_suite_LDADD   =  $(LDFLAGS) \
+main_unit_test_suite_LDADD   =   \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                     -L$(top_builddir)/test/unit/core/description/.libs -ltest_description \

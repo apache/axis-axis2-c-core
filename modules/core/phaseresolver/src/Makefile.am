@@ -3,7 +3,7 @@ AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_phaseresolver_la_SOURCES = phase_holder.c \
                                     phase_resolver.c
 
-libaxis2_phaseresolver_la_LIBADD = $(LDFLAGS)
+libaxis2_phaseresolver_la_LIBADD = 
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
             -I$(top_builddir)/modules/xml/guththila/src \
             -I$(top_builddir)/modules/util/src \

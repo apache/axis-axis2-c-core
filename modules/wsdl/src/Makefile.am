@@ -17,7 +17,7 @@ libaxis2_wsdl_la_SOURCES = wsdl_op.c \
                         wsdl_extensible_element.c \
                         wsdl_soap_op.c
 
-libaxis2_wsdl_la_LIBADD = $(LDFLAGS)
+libaxis2_wsdl_la_LIBADD = 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util/src \

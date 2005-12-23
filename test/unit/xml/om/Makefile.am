@@ -13,7 +13,7 @@ INCLUDES = -I$(top_builddir)/include \
 
 prgbin_PROGRAMS = om_test
 om_test_SOURCES = main.c
-om_test_LDADD   =  $(LDFLAGS) libtest_om.la  \
+om_test_LDADD   =   libtest_om.la  \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                     -L$(top_builddir)/install/lib \

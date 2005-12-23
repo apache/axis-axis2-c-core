@@ -13,7 +13,7 @@ libaxis2_util_la_SOURCES = hash.c \
                         linked_list.c \
                         utils.c
 
-libaxis2_util_la_LIBADD = $(LDFLAGS)
+libaxis2_util_la_LIBADD = 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util/src \

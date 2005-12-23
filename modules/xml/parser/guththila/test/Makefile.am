@@ -5,6 +5,6 @@ AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
 
 guththila_test_SOURCES = guththila_test.c
 
-guththila_test_LDADD   =  $(LDFLAGS)  -L$(top_builddir)/modules/xml/parser/guththila/impl/src -lguththila 
+guththila_test_LDADD   =    -L$(top_builddir)/modules/xml/parser/guththila/impl/src -lguththila 
 
 INCLUDES =  -I$(top_builddir)/modules/xml/parser/guththila/impl/src

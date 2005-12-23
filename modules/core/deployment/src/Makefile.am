@@ -4,7 +4,7 @@ libaxis2_deployment_la_SOURCES = phases_info.c \
                                     desc_builder.c \
                                     dep_engine.c
 
-libaxis2_deployment_la_LIBADD = $(LDFLAGS)
+libaxis2_deployment_la_LIBADD = 
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
             -I$(top_builddir)/modules/xml/guththila/src \
             -I$(top_builddir)/modules/util/src \

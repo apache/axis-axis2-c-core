@@ -7,7 +7,7 @@ libaxis2_context_la_SOURCES = ctx.c \
                                 svc_grp_ctx.c \
                                 conf_ctx.c
 
-libaxis2_context_la_LIBADD = $(LDFLAGS)
+libaxis2_context_la_LIBADD = 
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/xml/guththila/src \
             -I$(top_builddir)/include \

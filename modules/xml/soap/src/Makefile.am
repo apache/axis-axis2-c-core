@@ -2,5 +2,5 @@ noinst_LTLIBRARIES = libaxis2_soap.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_soap_la_SOURCES =
 
-libaxis2_soap_la_LIBADD = $(LDFLAGS)
+libaxis2_soap_la_LIBADD = 
 INCLUDES = -I$(top_builddir)/include -I${CUTEST_HOME}/include

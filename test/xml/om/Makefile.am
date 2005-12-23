@@ -4,7 +4,7 @@ SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -O2 -pthread
 test_om_SOURCES = test_om.c
 
-test_om_LDADD   =  $(LDFLAGS) \
+test_om_LDADD   =   \
                     -L$(top_builddir)/install/lib \
                     -laxis2_om \
                     -laxis2_util \

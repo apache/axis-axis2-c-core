@@ -12,12 +12,12 @@ libtest_util_la_SOURCES = util_hash_test.c \
 
 include_HEADERS=$(top_builddir)/modules/util/test/*.h
 
-libtest_util_la_LIBADD = $(LDFLAGS) $(top_builddir)/modules/util/src/libaxis2_util.la
+libtest_util_la_LIBADD =  $(top_builddir)/modules/util/src/libaxis2_util.la
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util/src
 
 prgbin_PROGRAMS = util_test
 util_test_SOURCES = main.c
-util_test_LDADD   =  $(LDFLAGS) libtest_util.la  $(top_builddir)/modules/util/src/libaxis2_util.la
+util_test_LDADD   =   libtest_util.la  $(top_builddir)/modules/util/src/libaxis2_util.la
 

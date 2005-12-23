@@ -4,5 +4,5 @@ SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS)
 test_common_SOURCES = test_common.c
 
-test_common_LDADD   =  $(LDFLAGS) -L$(top_builddir)/install/lib -laxis2_common
+test_common_LDADD   =   -L$(top_builddir)/install/lib -laxis2_common
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include
