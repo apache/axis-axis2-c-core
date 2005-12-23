@@ -297,10 +297,17 @@ extern "C"
         AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE,
         /** Client side support only one configuration context */
         AXIS2_ERROR_CLIENT_SIDE_SUPPORT_ONLY_ONE_CONF_CTX,
+        /** Unknown Transport */
+        AXIS2_ERROR_UNKNOWN_TRANSPORT,
+        /** Two way channel needs addressing module to be engaged */
+        AXIS2_ERROR_TWO_WAY_CHANNEL_NEEDS_ADDRESSING,
         /** om element is expected */
         AXIS2_ERROR_OM_ELEMENT_EXPECTED,
 
-        AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE
+        AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE,
+        /** SOAP envelope or SOAP body NULL */
+        AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL
+
         
     };
 
