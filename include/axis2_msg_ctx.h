@@ -614,7 +614,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_SET_REPLY_TO(msg_ctx, env, reference) ((msg_ctx)->ops->set_reply_to(msg_ctx, env, reference))
 #define AXIS2_MSG_CTX_SET_RESPONSE_WRITTEN(msg_ctx, env, response_written) ((msg_ctx)->ops->set_response_written(msg_ctx, env, response_written))
 #define AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, server_side) ((msg_ctx)->ops->set_server_side(msg_ctx, env, server_side))
-#define AXIS2_MSG_CTX_SET_TO(msg_ctx, env, reference) ((msg_ctx)->ops->set_response_written(msg_ctx, env, reference))
+#define AXIS2_MSG_CTX_SET_TO(msg_ctx, env, reference) ((msg_ctx)->ops->set_to(msg_ctx, env, reference))
 #define AXIS2_MSG_CTX_GET_NEW_THREAD_REQUIRED(msg_ctx, env) ((msg_ctx)->ops->set_response_written(msg_ctx, env))
 #define AXIS2_MSG_CTX_SET_NEW_THREAD_REQUIRED(msg_ctx, env, new_thread_required) ((msg_ctx)->ops->set_response_written(msg_ctx, env, new_thread_required))
 #define AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env, action_uri) ((msg_ctx)->ops->set_wsa_action(msg_ctx, env, action_uri))
