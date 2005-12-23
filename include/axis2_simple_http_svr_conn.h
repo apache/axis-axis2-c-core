@@ -103,7 +103,7 @@ AXIS2_DECLARE_DATA struct axis2_simple_http_svr_conn
 /**
  * creates axis2_simple_http_svr_conn struct
  */
-AXIS2_DECLARE(axis2_simple_http_svr_conn_t*) AXIS2_CALL
+AXIS2_DECLARE(axis2_simple_http_svr_conn_t*) 
 axis2_simple_http_svr_conn_create(axis2_env_t **env, int sockfd);
   
 #define AXIS2_SIMPLE_HTTP_SVR_CONN_CLOSE(svr_conn, env) \

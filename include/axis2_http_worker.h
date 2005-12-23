@@ -86,7 +86,7 @@ AXIS2_DECLARE_DATA struct axis2_http_worker
 };
 
 
-AXIS2_DECLARE(axis2_http_worker_t *) AXIS2_CALL
+AXIS2_DECLARE(axis2_http_worker_t *) 
 axis2_http_worker_create (axis2_env_t **env, axis2_conf_ctx_t *conf_ctx);
     
 /************************** Start of function macros **************************/

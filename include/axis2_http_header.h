@@ -70,7 +70,7 @@ AXIS2_DECLARE_DATA struct axis2_http_header
 };
 
 
-AXIS2_DECLARE(axis2_http_header_t *) AXIS2_CALL
+AXIS2_DECLARE(axis2_http_header_t *) 
 axis2_http_header_create (axis2_env_t **env, axis2_char_t *name, 
                             axis2_char_t *value);
 
