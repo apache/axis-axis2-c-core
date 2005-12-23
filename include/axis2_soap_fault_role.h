@@ -101,13 +101,21 @@ extern "C"
     * @param env Environment. MUST NOT be NULL
     */
 AXIS2_DECLARE(axis2_soap_fault_role_t *)
+axis2_soap_fault_role_create(axis2_env_t **env);
+    
+AXIS2_DECLARE(axis2_soap_fault_role_t *)
 axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
                             axis2_soap_fault_t *fault,
                             axis2_bool_t extract_ns_from_parent);
                             
 
 AXIS2_DECLARE(axis2_soap_fault_role_t *)
-axis2_soap_fault_role_create(axis2_env_t **env);
+axis2_soap11_fault_role_create_with_parent(axis2_env_t **env,
+                            axis2_soap_fault_t *fault);
+
+AXIS2_DECLARE(axis2_soap_fault_role_t *)
+axis2_soap12_fault_role_create_with_parent(axis2_env_t **env,
+                            axis2_soap_fault_t *fault);
 
 /******************** Macros **************************************************/
     
@@ -125,7 +133,7 @@ axis2_soap_fault_role_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_ROLE_GET_BASE_NODE(fault_role, env) \
         ((fault_role)->ops->get_base_node(fault_role, env))         
 
-#define AXIS2_SOAP_FAULT_ROLE_SET_BASE(fault_role, env, node) \
+#define AXIS2_SOAP_FAULT_ROLE_SET_BASE_NODE(fault_role, env, node) \
         ((fault_role)->ops->set_base_node(fault_role, env, node)) 
 
 #define AXIS2_SOAP_FAULT_ROLE_GET_SOAP_VRESION(fault_role, env) \

@@ -180,7 +180,7 @@ axis2_soap_fault_sub_code_create_with_parent(axis2_env_t **env,
     fault_sub_code_impl->parent = fault_code;
     parent_node = AXIS2_SOAP_FAULT_CODE_GET_BASE_NODE(fault_code, env);
     parent_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
-                        fault_sub_code_impl->om_ele_node, env);
+                        parent_node, env);
                         
     this_ele = axis2_om_element_create(env, 
                                     parent_node,

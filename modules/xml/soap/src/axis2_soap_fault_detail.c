@@ -141,7 +141,7 @@ AXIS2_DECLARE(axis2_soap_fault_detail_t *)
 axis2_soap_fault_detail_create_with_parent
                         (axis2_env_t **env,
                          axis2_soap_fault_t *fault,
-                         axis2_bool_t *extract_ns_from_parent)
+                         axis2_bool_t extract_ns_from_parent)
 {
     axis2_soap_fault_detail_impl_t *fault_detail_impl = NULL;
     axis2_soap_fault_detail_t *fault_detail = NULL;
@@ -165,7 +165,7 @@ axis2_soap_fault_detail_create_with_parent
     parent_node = AXIS2_SOAP_FAULT_GET_BASE_NODE(fault, env);
     
     parent_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
-                        fault_detail_impl->om_ele_node, env);
+                        parent_node, env);
     
     if(extract_ns_from_parent)
     {
@@ -284,3 +284,24 @@ axis2_soap_fault_detail_set_soap_version
      AXIS2_INTF_TO_IMPL(fault_detail)->soap_version = soap_version;
      return AXIS2_SUCCESS;
 }                                              
+/********************** soap11 ************************************************/
+
+AXIS2_DECLARE(axis2_soap_fault_detail_t *)
+axis2_soap11_fault_detail_create(axis2_env_t **env,
+                               axis2_soap_fault_t *fault)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, fault, NULL);
+    return axis2_soap_fault_detail_create_with_parent(env, fault, AXIS2_FALSE);
+}                               
+/************************* soap12 *********************************************/
+
+AXIS2_DECLARE(axis2_soap_fault_detail_t *)
+axis2_soap12_fault_detail_create(axis2_env_t **env,
+                               axis2_soap_fault_t *fault)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, fault, NULL);
+    return axis2_soap_fault_detail_create_with_parent(env, fault, AXIS2_TRUE);
+
+}                               

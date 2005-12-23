@@ -102,8 +102,15 @@ extern "C"
                                               
         axis2_om_node_t* (AXIS2_CALL *get_base_node)
                             (axis2_soap_header_block_t *header_block,
-                             axis2_env_t **env);                                                                                                                                                          
-                                         
+                             axis2_env_t **env);
+                                                                                                                                                                                       
+        int (AXIS2_CALL *get_soap_version)  
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env);
+        int (AXIS2_CALL *set_soap_version)  
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env,
+                             int soap_version);                                                                     
     };
 
   /**
@@ -162,8 +169,13 @@ axis2_soap_header_block_create(axis2_env_t **env);
         ((header_block)->ops->set_base_node(header_block, env, node))
         
 #define AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block, env) \
-        ((header_block)->ops->get_base_node(header_block, env))                       
-
+        ((header_block)->ops->get_base_node(header_block, env))   
+        
+#define AXIS2_SOAP_HEADER_BLOCK_SET_SOAP_VERSION(header_block, env, version) \
+        ((header_block)->ops->set_soap_version(header_block, env, version))
+        
+#define AXIS2_SOAP_HEADER_BLOCK_GET_SOAP_VERSION(header_block, env) \
+        ((header_block)->ops->get_soap_version(header_block, env))
 /** @} */
 
 #ifdef __cplusplus

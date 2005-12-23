@@ -172,7 +172,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
                                                              
                                                         
        /**
-        *   returns the localname of this element
+        * returns the localname of this element
         * @param om_element om_element struct
         * @param env environment struct
         * @returns localname of element, returns NULL on error.
@@ -285,7 +285,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         /**
          * Sets the text of the given element.
          *caution - This method will wipe out all the text elements (and hence any
-         * moxed content) before setting the text
+         * mixed content) before setting the text
          */
         axis2_status_t (AXIS2_CALL *set_text)(axis2_om_element_t *om_element,
                                               axis2_env_t **env,

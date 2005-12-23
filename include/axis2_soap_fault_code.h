@@ -108,6 +108,10 @@ extern "C"
     * creates a soap struct 
     * @param env Environment. MUST NOT be NULL
     */
+
+AXIS2_DECLARE(axis2_soap_fault_code_t *)
+axis2_soap_fault_code_create(axis2_env_t **env);    
+    
 AXIS2_DECLARE(axis2_soap_fault_code_t *)
 axis2_soap_fault_code_create_with_parent(axis2_env_t **env,
                             axis2_soap_fault_t *fault,
@@ -115,7 +119,12 @@ axis2_soap_fault_code_create_with_parent(axis2_env_t **env,
                             
 
 AXIS2_DECLARE(axis2_soap_fault_code_t *)
-axis2_soap_fault_code_create(axis2_env_t **env);
+axis2_soap11_fault_code_create(axis2_env_t **env,
+                             axis2_soap_fault_t *fault);
+
+AXIS2_DECLARE(axis2_soap_fault_code_t *)
+axis2_soap12_fault_code_create(axis2_env_t **env,
+                             axis2_soap_fault_t *fault);
 
 /******************** Macros **************************************************/
     

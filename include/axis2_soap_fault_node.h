@@ -124,7 +124,7 @@ axis2_soap_fault_node_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_NODE_GET_BASE_NODE(fault_node, env) \
         ((fault_node)->ops->get_base_node(fault_node, env))         
 
-#define AXIS2_SOAP_FAULT_NODE_SET_BASE(fault_node, env, node) \
+#define AXIS2_SOAP_FAULT_NODE_SET_BASE_NODE(fault_node, env, node) \
         ((fault_node)->ops->set_base_node(fault_node, env, node))
         
 #define AXIS2_SOAP_FAULT_NODE_SET_SOAP_VERSION(fault_node, env, soap_version) \

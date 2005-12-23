@@ -176,7 +176,7 @@ axis2_soap_fault_code_create_with_parent(axis2_env_t **env,
     parent_node = AXIS2_SOAP_FAULT_GET_BASE_NODE(fault, env);
     
     parent_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
-                        fault_code_impl->om_ele_node, env);
+                        parent_node, env);
     
     if(extract_ns_from_parent)
     {
@@ -235,6 +235,7 @@ axis2_soap_fault_code_set_value(axis2_soap_fault_code_t *fault_code,
     AXIS2_PARAM_CHECK((*env)->error, fault_val, AXIS2_FAILURE);
     
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
+   /* axis2_soap_fault_code_get_value(fault_code, env); */
     if(fault_code_impl->value)
     {
         my_node = AXIS2_SOAP_FAULT_VALUE_GET_BASE_NODE(
@@ -269,6 +270,7 @@ axis2_soap_fault_code_set_sub_code(axis2_soap_fault_code_t *fault_code,
     AXIS2_PARAM_CHECK((*env)->error, fault_subcode, AXIS2_FAILURE);
     
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
+   /* axis2_soap_fault_code_get_sub_code(fault_code, env); */
     if(fault_code_impl->subcode)
     {
         my_node = AXIS2_SOAP_FAULT_SUB_CODE_GET_BASE_NODE(
@@ -299,7 +301,6 @@ axis2_soap_fault_code_get_sub_code(axis2_soap_fault_code_t *fault_code,
     axis2_soap_fault_sub_code_t* subcode = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(fault_code, env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, fault_code, NULL);
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
     this_node = fault_code_impl->om_ele_node;
     
@@ -395,3 +396,26 @@ axis2_soap_fault_code_get_soap_version(axis2_soap_fault_code_t *fault_code,
      AXIS2_FUNC_PARAM_CHECK(fault_code, env, AXIS2_FAILURE);
      return AXIS2_INTF_TO_IMPL(fault_code)->soap_version;
 }                            
+/*********************** soap11 create function *******************************/
+
+AXIS2_DECLARE(axis2_soap_fault_code_t *)
+axis2_soap11_fault_code_create(axis2_env_t **env,
+                             axis2_soap_fault_t *fault)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, fault, NULL);
+    return axis2_soap_fault_code_create_with_parent(env, fault, AXIS2_FALSE);
+
+}                             
+
+/********************** soap12 create function ********************************/
+AXIS2_DECLARE(axis2_soap_fault_code_t *)
+axis2_soap12_fault_code_create(axis2_env_t **env,
+                             axis2_soap_fault_t *fault)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, fault, NULL);
+    return axis2_soap_fault_code_create_with_parent(env, fault, AXIS2_TRUE);
+
+}                             
+

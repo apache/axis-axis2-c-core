@@ -87,51 +87,72 @@ typedef struct axis2_soap_fault_ops axis2_soap_fault_ops_t;
                                               axis2_soap_fault_code_t *code);
                                               
         axis2_soap_fault_code_t * (AXIS2_CALL *get_code)
-                                            (axis2_soap_fault_t *fault,
-                                             axis2_env_t **env);
+                                             (axis2_soap_fault_t *fault,
+                                              axis2_env_t **env);
                                          
-        axis2_status_t (AXIS2_CALL *set_reason)(axis2_soap_fault_t *fault,
-                                                axis2_env_t **env,
-                                                axis2_soap_fault_reason_t *reason);
+        axis2_status_t (AXIS2_CALL *set_reason)
+                                             (axis2_soap_fault_t *fault,
+                                              axis2_env_t **env,
+                                              axis2_soap_fault_reason_t *reason);
                                               
         axis2_soap_fault_reason_t* (AXIS2_CALL *get_reason)
-                                            (axis2_soap_fault_t *fault,
-                                             axis2_env_t **env);
+                                             (axis2_soap_fault_t *fault,
+                                              axis2_env_t **env);
                                              
         axis2_status_t (AXIS2_CALL *set_node)(axis2_soap_fault_t *fault,
                                               axis2_env_t **env,
                                               axis2_soap_fault_node_t *node);
                                               
         axis2_soap_fault_node_t* (AXIS2_CALL *get_node)
-                                            (axis2_soap_fault_t *fault,
-                                             axis2_env_t **env);
+                                             (axis2_soap_fault_t *fault,
+                                              axis2_env_t **env);
                                              
         axis2_status_t (AXIS2_CALL *set_role)(axis2_soap_fault_t *fault,
                                               axis2_env_t **env,
                                               axis2_soap_fault_role_t *role);
                                               
         axis2_soap_fault_role_t* (AXIS2_CALL *get_role)
-                                            (axis2_soap_fault_t *fault,
-                                             axis2_env_t **env);
+                                             (axis2_soap_fault_t *fault,
+                                              axis2_env_t **env);
 
-        axis2_status_t (AXIS2_CALL *set_detail)(axis2_soap_fault_t *fault,
+        axis2_status_t (AXIS2_CALL *set_detail)
+                                             (axis2_soap_fault_t *fault,
                                               axis2_env_t **env,
                                               axis2_soap_fault_detail_t *detail);
                                         
         axis2_soap_fault_detail_t* (AXIS2_CALL *get_detail)
-                                            (axis2_soap_fault_t *fault,
-                                             axis2_env_t **env);   
+                                             (axis2_soap_fault_t *fault,
+                                              axis2_env_t **env);  
+                                              
+        axis2_char_t * (AXIS2_CALL *get_exception)
+                                             (axis2_soap_fault_t *fault,
+                                              axis2_env_t **env);
+                                              
+        axis2_status_t (AXIS2_CALL *set_exception)
+                                             (axis2_soap_fault_t *fault,
+                                              axis2_env_t **env,
+                                              axis2_char_t *exception);                                                                                             
         
        /**
         * This is only intended to be used by the builder,
         * do not use this function in other places
         */
-        axis2_status_t (AXIS2_CALL *set_base_node)(axis2_soap_fault_t *fault,
-                                                   axis2_env_t **env,
-                                                   axis2_om_node_t *node);
+        axis2_status_t (AXIS2_CALL *set_base_node)
+                                             (axis2_soap_fault_t *fault,
+                                              axis2_env_t **env,
+                                              axis2_om_node_t *node);
                                               
-        axis2_om_node_t* (AXIS2_CALL *get_base_node)(axis2_soap_fault_t *fault,
-                                                     axis2_env_t **env);                                                                                                                                                          
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)
+                                             (axis2_soap_fault_t *fault,
+                                              axis2_env_t **env);  
+                                                     
+        axis2_status_t (AXIS2_CALL *set_soap_version)
+                                             (axis2_soap_fault_t *fault,
+                                              axis2_env_t **env,
+                                              int soap_version);
+                                           
+        int (AXIS2_CALL *get_soap_version)(axis2_soap_fault_t *fault,
+                                           axis2_env_t **env);                                                                                                                                                                                                                                                           
                                          
     };
 
@@ -150,19 +171,17 @@ typedef struct axis2_soap_fault_ops axis2_soap_fault_ops_t;
     * creates a soap struct 
     * @param env Environment. MUST NOT be NULL
     */
-    AXIS2_DECLARE(axis2_soap_fault_t *)
-    axis2_soap_fault_create_with_parent(axis2_env_t **env,
-                                        axis2_soap_body_t *parent);
-                               
-    
-    AXIS2_DECLARE(axis2_soap_fault_t *)
-    axis2_soap_fault_create(axis2_env_t **env);
-    
-    
-    AXIS2_DECLARE(axis2_soap_fault_t *)
-    axis2_soap_fault_create_with_error(axis2_env_t **env,
-                                         axis2_soap_body_t *parent,  
-                                         void* exception);
+AXIS2_DECLARE(axis2_soap_fault_t *)
+axis2_soap_fault_create(axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_soap_fault_t *)
+axis2_soap_fault_create_with_parent(axis2_env_t **env,
+                                    axis2_soap_body_t *parent);
+
+AXIS2_DECLARE(axis2_soap_fault_t *)
+axis2_soap_fault_create_with_exception(axis2_env_t **env,
+                                        axis2_soap_body_t *parent,  
+                                        axis2_char_t* exception);
 /******************** Macros **************************************************/
     
     
@@ -204,10 +223,21 @@ typedef struct axis2_soap_fault_ops axis2_soap_fault_ops_t;
         ((fault)->ops->get_node(fault, env)) 
         
 #define AXIS2_SOAP_FAULT_GET_BASE_NODE(fault, env) \
-        ((fault)->ops->get_base_node(fault, env))                       
-
+        ((fault)->ops->get_base_node(fault, env)) 
+        
+#define AXIS2_SOAP_FAULT_GET_SOAP_VERSION(fault, env) \
+        ((fault)->ops->get_soap_version(fault, env))
+        
+#define AXIS2_SOAP_FAULT_SET_SOAP_VERSION(fault, env) \
+        ((fault)->ops->set_soap_version(fault, env))
+        
+#define AXIS2_SOAP_FAULT_GET_EXCEPTION(fault, env) \
+        ((fault)->ops->get_exception(fault, env))
+        
+#define AXIS2_SOAP_FAULT_SET_EXCEPTION(fault, env, exception) \
+        ((fault)->ops->set_exception(fault, env, exception))        
+                                              
 /** @} */
-
 #ifdef __cplusplus
 }
 #endif

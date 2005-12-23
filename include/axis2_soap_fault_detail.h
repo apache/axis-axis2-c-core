@@ -110,7 +110,15 @@ AXIS2_DECLARE(axis2_soap_fault_detail_t *)
 axis2_soap_fault_detail_create_with_parent
                         (axis2_env_t **env,
                          axis2_soap_fault_t *fault,
-                         axis2_bool_t *extract_ns_from_parent);
+                         axis2_bool_t extract_ns_from_parent);
+                         
+AXIS2_DECLARE(axis2_soap_fault_detail_t *)
+axis2_soap11_fault_detail_create(axis2_env_t **env,
+                               axis2_soap_fault_t *fault); 
+
+AXIS2_DECLARE(axis2_soap_fault_detail_t *)
+axis2_soap12_fault_detail_create(axis2_env_t **env,
+                               axis2_soap_fault_t *fault);                                                       
 
 /******************** Macros **************************************************/
     
@@ -128,7 +136,7 @@ axis2_soap_fault_detail_create_with_parent
 #define AXIS2_SOAP_FAULT_DETAIL_GET_BASE_NODE(fault_detail, env) \
         ((fault_detail)->ops->get_base_node(fault_detail, env))         
 
-#define AXIS2_SOAP_FAULT_DETAIL_SET_BASE(fault_detail, env, node) \
+#define AXIS2_SOAP_FAULT_DETAIL_SET_BASE_NODE(fault_detail, env, node) \
         ((fault_detail)->ops->set_base_node(fault_detail, env, node))
         
 #define AXIS2_SOAP_FAULT_DETAIL_GET_SOAP_VERSION(fault_detail, env) \

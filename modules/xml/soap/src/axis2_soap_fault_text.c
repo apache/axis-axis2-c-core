@@ -109,8 +109,8 @@ axis2_soap_fault_text_create(axis2_env_t **env)
     fault_text_impl->soap_version = AXIS2_SOAP_VERSION_NOT_SET;
     
     fault_text_impl->lang_namespace = axis2_om_namespace_create(env,
-                                        AXIS2_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
-                                        AXIS2_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
+                        AXIS2_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+                        AXIS2_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
                                         
     if(!(fault_text_impl->lang_namespace))
             return NULL;

@@ -100,13 +100,20 @@ typedef struct axis2_soap_fault_reason_ops axis2_soap_fault_reason_ops_t;
     * @param env Environment. MUST NOT be NULL
     */
 AXIS2_DECLARE(axis2_soap_fault_reason_t *)
+axis2_soap_fault_reason_create(axis2_env_t **env);    
+    
+AXIS2_DECLARE(axis2_soap_fault_reason_t *)
 axis2_soap_fault_reason_create_with_parent(axis2_env_t **env,
                             axis2_soap_fault_t *fault,
                             axis2_bool_t extact_ns_from_parent);
                             
+AXIS2_DECLARE(axis2_soap_fault_reason_t *)
+axis2_soap11_fault_reason_create_with_parent(axis2_env_t **env,
+                            axis2_soap_fault_t *fault);
 
 AXIS2_DECLARE(axis2_soap_fault_reason_t *)
-axis2_soap_fault_reason_create(axis2_env_t **env);
+axis2_soap12_fault_reason_create_with_parent(axis2_env_t **env,
+                            axis2_soap_fault_t *fault);
 
 /******************** Macros **************************************************/
     
@@ -124,7 +131,7 @@ axis2_soap_fault_reason_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_REASON_GET_BASE_NODE(fault_reason, env) \
         ((fault_reason)->ops->get_base_node(fault_reason, env))         
 
-#define AXIS2_SOAP_FAULT_REASON_SET_BASE(fault_reason, env, node) \
+#define AXIS2_SOAP_FAULT_REASON_SET_BASE_NODE(fault_reason, env, node) \
         ((fault_reason)->ops->set_base_node(fault_reason, env, node))  
         
 #define AXIS2_SOAP_FAULT_REASON_GET_SOAP_VERSION(fault_reason, env) \
