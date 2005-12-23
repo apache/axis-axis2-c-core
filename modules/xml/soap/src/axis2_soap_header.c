@@ -157,29 +157,82 @@ axis2_soap_header_create_with_parent(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL
 axis2_soap_header_free(axis2_soap_header_t *header,
-                       axis2_env_t **env){}
+                       axis2_env_t **env)
+{
+    axis2_soap_header_impl_t *header_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(header, env, AXIS2_FAILURE);
+    header_impl = AXIS2_INTF_TO_IMPL(header);
+    if(header_impl->header_blocks)
+    {
+        
+    }
+    if(header->ops)
+    {
+        AXIS2_FREE((*env)->allocator, header->ops);
+        header->ops = NULL;
+    }
+    AXIS2_FREE((*env)->allocator, header_impl);
+    header_impl = NULL;
+    return AXIS2_SUCCESS;
+}
                                              
 axis2_soap_header_block_t* AXIS2_CALL 
 axis2_soap_header_add_header_block(axis2_soap_header_t* header,
                                    axis2_env_t **env,
                                    axis2_char_t *localname,
-                                   axis2_om_namespace_t *ns){} 
+                                   axis2_om_namespace_t *ns)
+{} 
 axis2_hash_t* AXIS2_CALL 
 axis2_soap_header_examine_header_blocks
                                 (axis2_soap_header_t* header,
                                  axis2_env_t **env,
-                                 axis2_char_t* param_role){}
+                                 axis2_char_t* param_role)
+{}
     
 axis2_om_children_qname_iterator_t* AXIS2_CALL 
 axis2_soap_header_examine_all_header_blocks
                                 (axis2_soap_header_t* header,
-                                 axis2_env_t **env){}
+                                 axis2_env_t **env)
+{}
         
 axis2_om_children_with_specific_attribute_iterator_t *
 AXIS2_CALL axis2_soap_header_extract_header_blocks
                                 (axis2_soap_header_t *header,
                                  axis2_env_t **env,
-                                 axis2_char_t *role){}
+                                 axis2_char_t *role)
+{
+    axis2_soap_header_impl_t *header_impl = NULL;
+    axis2_char_t *localname = NULL;
+    axis2_char_t *nsuri     = NULL;
+    axis2_om_node_t *first_node = NULL;
+    axis2_om_element_t *first_ele =  NULL;
+    axis2_qname_t *qn = NULL;
+    axis2_om_children_with_specific_attribute_iterator_t* iter = NULL;
+    AXIS2_FUNC_PARAM_CHECK(header, env, NULL);
+    header_impl = AXIS2_INTF_TO_IMPL(header);
+
+    if(header_impl->soap_version == AXIS2_SOAP_VERSION_NOT_SET)
+        return AXIS2_FAILURE;
+    if(header_impl->soap_version == AXIS2_SOAP11)
+    {
+        localname = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
+        nsuri     = AXIS2_SOAP11_ATTR_ACTOR;
+    }
+    if(header_impl->soap_version == AXIS2_SOAP12)
+    {
+        localname = AXIS2_SOAP12_SOAP_ROLE;
+        nsuri     = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    }
+    
+    qn = axis2_qname_create(env, localname, nsuri, NULL);
+    first_ele = AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(header_impl->om_ele, env,
+                header_impl->om_ele_node, &first_node);
+    iter = axis2_om_children_with_specific_attribute_iterator_create(env, 
+                first_node, qn, role,   AXIS2_TRUE);
+    AXIS2_QNAME_FREE(qn, env);
+    return iter;        
+            
+}
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_set_base_node(axis2_soap_header_t *header,
