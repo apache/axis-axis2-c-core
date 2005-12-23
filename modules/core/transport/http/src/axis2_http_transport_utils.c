@@ -15,6 +15,11 @@
  */
  
 #include <axis2_http_transport_utils.h>
+#include <string.h>
+#include <ctype.h>
+#include <axis2_conf.h>
+#include <axis2_op.h>
+#include <axis2_qname.h>
 
 /***************************** Function headers *******************************/
 
@@ -33,10 +38,10 @@ axis2_http_transport_utils_process_http_get_request
                         axis2_char_t *request_uri, axis2_conf_ctx_t *conf_ctx, 
                         axis2_hash_t *request_params);
     
-axis2_soap_envelope_t* AXIS2_CALL 
+/*axis2_soap_envelope_t* AXIS2_CALL 
 axis2_http_transport_utils_create_envelope_from_get_request
                         (axis2_env_t **env, axis2_char_t *request_uri,
-                        axis2_hash_t *request_params);
+                        axis2_hash_t *request_params);*/
     
 axis2_om_stax_builder_t* AXIS2_CALL 
 axis2_http_transport_utils_select_builder_for_mime
@@ -59,6 +64,17 @@ axis2_http_transport_utils_is_doing_rest(axis2_env_t **env,
 axis2_bool_t AXIS2_CALL 
 axis2_http_transport_utils_is_doing_rest_through_post
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx);
+						
+axis2_status_t AXIS2_CALL
+axis2_http_transport_utils_strdecode(axis2_env_t **env, axis2_char_t *dest, 
+						axis2_char_t *src);
+						
+int AXIS2_CALL
+axis2_http_transport_utils_hexit(axis2_char_t c);
+
+axis2_char_t* AXIS2_CALL
+axis2_http_transport_utils_get_services_html(axis2_env_t **env, 
+							axis2_conf_ctx_t *conf_ctx);
                                 
 /***************************** End of function headers ************************/
 
@@ -88,13 +104,13 @@ axis2_http_transport_utils_process_http_get_request
 }
 
 
-axis2_soap_envelope_t* AXIS2_CALL 
+/*axis2_soap_envelope_t* AXIS2_CALL 
 axis2_http_transport_utils_create_envelope_from_get_request
                         (axis2_env_t **env, axis2_char_t *request_uri,
                         axis2_hash_t *request_params)
 {
     return NULL;
-}
+}*/
 
 
 axis2_om_stax_builder_t* AXIS2_CALL 
@@ -145,4 +161,214 @@ axis2_http_transport_utils_is_doing_rest_through_post
         TODO implement when REST support is added
     */
     return AXIS2_FALSE;
+}
+
+axis2_hash_t *AXIS2_CALL
+axis2_http_transport_utils_get_request_params(axis2_env_t **env, 
+						axis2_char_t *request_uri)
+{
+	
+	
+	axis2_char_t *query_str = NULL;
+	axis2_char_t *tmp = strchr(request_uri, '?');
+	axis2_char_t *tmp2 = NULL;
+	axis2_char_t *tmp_name = NULL;
+	axis2_char_t *tmp_value = NULL;
+	axis2_hash_t *ret = NULL;
+	
+	AXIS2_PARAM_CHECK((*env)->error, request_uri, AXIS2_FAILURE);
+	
+	if(NULL == tmp || '\0' == *(tmp +1))
+	{
+		return NULL;
+	}
+	query_str = AXIS2_STRDUP(tmp+1, env);
+		
+	for(tmp2 = tmp = query_str; *tmp != '\0'; ++tmp)
+	{
+		if('=' == *tmp)
+		{
+			*tmp = '\0';
+			tmp_name = AXIS2_STRDUP(tmp2, env);
+			axis2_http_transport_utils_strdecode(env, tmp_name, tmp_name);
+			tmp2 = tmp +1;			
+		}
+		if('&' == *tmp)
+		{
+			*tmp = '\0';
+			tmp_value = AXIS2_STRDUP(tmp2, env);
+			axis2_http_transport_utils_strdecode(env, tmp_value, tmp_value);
+			tmp2 = tmp +1;
+		}
+		if(NULL != tmp_name && NULL != tmp_value)
+		{
+			if(NULL == ret)
+			{
+				ret = axis2_hash_make(env);
+			}
+			axis2_hash_set(ret, tmp_name, AXIS2_HASH_KEY_STRING, tmp_value);
+			tmp_name = NULL;
+			tmp_value = NULL;
+		}
+	}
+	if(NULL != tmp_name && '\0' != *tmp2)
+	{
+		if(NULL == ret)
+		{
+			ret = axis2_hash_make(env);
+		}
+		tmp_value = AXIS2_STRDUP(tmp2, env);
+		axis2_http_transport_utils_strdecode(env, tmp_value, tmp_value);
+		axis2_hash_set(ret, tmp_name, AXIS2_HASH_KEY_STRING, tmp_value);
+	}
+	
+	return ret;
+}
+
+
+axis2_status_t AXIS2_CALL
+axis2_http_transport_utils_strdecode(axis2_env_t **env, axis2_char_t *dest, 
+						axis2_char_t *src)
+{
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, dest, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, src, AXIS2_FAILURE);
+
+    for ( ; *src != '\0'; ++dest, ++src )
+    {
+		if ( src[0] == '%' && isxdigit( src[1] ) && isxdigit( src[2] ) )
+		{
+			*dest = axis2_http_transport_utils_hexit( src[1] ) * 16 + 
+							axis2_http_transport_utils_hexit( src[2] );
+			src += 2;
+		}
+		else
+		{
+			*dest = *src;
+		}
+    }
+    *dest = '\0';
+	
+	return AXIS2_SUCCESS;
+}
+
+
+int AXIS2_CALL
+axis2_http_transport_utils_hexit(axis2_char_t c)
+{
+	if ( c >= '0' && c <= '9' )
+	{
+		return c - '0';
+	}
+	if ( c >= 'a' && c <= 'f' )
+	{
+		return c - 'a' + 10;
+	}
+	if ( c >= 'A' && c <= 'F' )
+	{
+		return c - 'A' + 10;
+	}
+	return 0;           /* shouldn't happen, we're guarded by isxdigit() */
+}
+
+axis2_char_t* AXIS2_CALL
+axis2_http_transport_utils_get_services_html(axis2_env_t **env, 
+							axis2_conf_ctx_t *conf_ctx)
+{
+	axis2_hash_t *services_map = NULL;
+	axis2_hash_t *errorneous_svc_map = NULL;
+	axis2_char_t *tmp = NULL;
+	axis2_char_t *tmp2 = "<h2>Deployed Services</h2>";
+	axis2_hash_index_t *hi = NULL;
+	axis2_bool_t svcs_exists = AXIS2_FALSE;
+	
+	AXIS2_ENV_CHECK(env, NULL);
+	AXIS2_PARAM_CHECK((*env)->error, conf_ctx, NULL);
+	
+	services_map = AXIS2_CONF_GET_SVCS(AXIS2_CONF_CTX_GET_CONF(conf_ctx,env),
+							env);
+	errorneous_svc_map = AXIS2_CONF_GET_FAULTY_SVCS(AXIS2_CONF_CTX_GET_CONF(
+							conf_ctx,env), env);
+	if(NULL != services_map && 0 != axis2_hash_count(services_map))
+	{
+		void *service = NULL;
+		axis2_char_t *sname = NULL;
+		axis2_hash_t *ops = NULL;
+		svcs_exists = AXIS2_TRUE;
+		
+		for (hi = axis2_hash_first (services_map, env);
+             				NULL != hi; hi = axis2_hash_next (env, hi))
+		{
+			axis2_hash_this(hi, NULL, NULL, &service);
+			sname= AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(
+							((axis2_svc_t *)service), env), env);
+			tmp = AXIS2_STRACAT(tmp2, "<h3>", env);
+			tmp2 = AXIS2_STRACAT(tmp, sname, env);
+			AXIS2_FREE((*env)->allocator, tmp);
+			tmp  = AXIS2_STRACAT(tmp2, "</h3>", env);
+			AXIS2_FREE((*env)->allocator, tmp2);
+			ops = AXIS2_SVC_GET_OPS(((axis2_svc_t *)service), env);
+			if(NULL != ops && 0 != axis2_hash_count(ops))
+			{
+				axis2_hash_index_t *hi2 = NULL;
+				void *op = NULL;
+				axis2_char_t *oname = NULL;
+				
+				tmp2 = AXIS2_STRACAT(tmp, "Available Operations <ul>", env);
+				AXIS2_FREE((*env)->allocator, tmp);
+				for(hi2 = axis2_hash_first(ops, env); NULL != hi2;
+							axis2_hash_next(env, hi2))
+				{
+					axis2_hash_this(hi2, NULL, NULL, &op);
+					oname = AXIS2_QNAME_GET_LOCALPART(AXIS2_OP_GET_QNAME(
+							((axis2_op_t *)op), env), env);
+					tmp = AXIS2_STRACAT(tmp2, "<li>", env);
+					AXIS2_FREE((*env)->allocator, tmp2);
+					tmp2 = AXIS2_STRACAT(tmp, oname, env);
+					AXIS2_FREE((*env)->allocator, tmp);
+					tmp = AXIS2_STRACAT(tmp2, "</li>", env);
+					AXIS2_FREE((*env)->allocator, tmp2);
+					tmp2 = tmp;
+				}
+				tmp2 = AXIS2_STRACAT(tmp, "</ul>", env);
+				AXIS2_FREE((*env)->allocator, tmp);
+			}
+			else
+			{
+				tmp2 = AXIS2_STRACAT(tmp, "No operations Available", env);
+				AXIS2_FREE((*env)->allocator, tmp);
+			}			
+		}
+	}
+	if(NULL != errorneous_svc_map && 0 != axis2_hash_count(errorneous_svc_map))
+	{
+		void *fsname = NULL;
+		svcs_exists = AXIS2_TRUE;
+		tmp = AXIS2_STRACAT(tmp2, "<hr><h2><font color=\"blue\">Faulty Services</font></h2>"
+							, env);
+		AXIS2_FREE((*env)->allocator, tmp2);
+		
+		for(hi = axis2_hash_first(errorneous_svc_map, env); NULL != hi;
+							axis2_hash_next(env, hi))
+		{
+			axis2_hash_this(hi, (const void **)&fsname, NULL, NULL);
+			tmp2 = AXIS2_STRACAT(tmp, "<h3><font color=\"blue\">", env);
+			AXIS2_FREE((*env)->allocator, tmp);
+			tmp = AXIS2_STRACAT(tmp2, (axis2_char_t*)fsname, env);
+			AXIS2_FREE((*env)->allocator, tmp2);
+			tmp2 = AXIS2_STRACAT(tmp, "</font></h3>", env);
+			AXIS2_FREE((*env)->allocator, tmp);
+		}
+	}
+	if(AXIS2_FALSE == svcs_exists)
+	{
+		tmp2 = AXIS2_STRDUP("<h2>There are no services deployed</h2>", env);
+	}
+	tmp = AXIS2_STRACAT("<html><head><title>Axis2:Services</title></head><body>"
+							, tmp2, env);
+	AXIS2_FREE((*env)->allocator, tmp2);
+	tmp2 = AXIS2_STRACAT(tmp, "</body></html>", env);
+	AXIS2_FREE((*env)->allocator, tmp);
+	
+	return tmp2;
 }

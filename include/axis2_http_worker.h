@@ -57,20 +57,6 @@ AXIS2_DECLARE_DATA struct axis2_http_worker_ops
                     axis2_simple_http_svr_conn_t *svr_conn, 
                     axis2_http_simple_request_t *simple_request);
     
-    axis2_status_t (AXIS2_CALL *set_response_headers)
-                    (axis2_http_worker_t *http_worker, 
-                    axis2_env_t **env, 
-                    axis2_simple_http_svr_conn_t *svr_conn, 
-                    axis2_http_simple_request_t *simple_request,
-                    axis2_http_simple_response_t *simple_response,    
-                    axis2_ssize_t content_length);
-
-    axis2_status_t (AXIS2_CALL *set_trasnport_out_config)
-                    (axis2_http_worker_t *http_worker, 
-                    axis2_env_t **env, 
-                    axis2_conf_ctx_t *conf_ctx, 
-                    axis2_http_simple_response_t *simple_response);
-    
     axis2_status_t (AXIS2_CALL *free)
                     (axis2_http_worker_t *http_worker, 
                     axis2_env_t **env);
@@ -96,14 +82,6 @@ axis2_http_worker_create (axis2_env_t **env, axis2_conf_ctx_t *conf_ctx);
                 (http_worker, env, svr_conn, simple_request) \
                 ((http_worker)->ops->process_request(http_worker, env, svr_conn\
                 ,simple_request))
-#define AXIS2_HTTP_WORKER_SET_RESPONSE_HEADERS\
-                (http_worker, env, svr_conn, simple_request, content_length)\
-                ((http_worker)->ops->set_response_headers(http_worker, env, \
-                svr_conn, simple_request, content_length))
-#define AXIS2_HTTP_WORKER_SET_TRANSPORT_OUT_CONFIG\
-                (http_worker, env, conf_ctx, simple_response)\
-                ((http_worker)->ops->set_trasnport_out_config(http_worker, env,\
-                conf_ctx, simple_response)))
 #define AXIS2_HTTP_WORKER_FREE\
                 (http_worker, env) \
                 ((http_worker)->ops->free(http_worker, env))

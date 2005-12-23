@@ -29,6 +29,9 @@
 #include <axis2_om_stax_builder.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_conf_ctx.h>
+#include <axis2_hash.h>
+#include <axis2_om_element.h>
+#include <axis2_stream.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -39,8 +42,55 @@ extern "C"
  * @ingroup axis2_core_transport_http
  * @{
  */
-  
+axis2_status_t AXIS2_CALL
+axis2_http_transport_utils_process_http_post_request
+                        (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
+                        axis2_stream_t *stream, axis2_char_t *content_type, 
+                        axis2_char_t *soap_action_header,
+                        axis2_char_t *request_uri);
+    
+axis2_bool_t AXIS2_CALL 
+axis2_http_transport_utils_process_http_get_request
+                        (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
+                        axis2_stream_t *stream, axis2_char_t *content_type,
+                        axis2_char_t *soap_action_header, 
+                        axis2_char_t *request_uri, axis2_conf_ctx_t *conf_ctx, 
+                        axis2_hash_t *request_params);
+    
+/*axis2_soap_envelope_t* AXIS2_CALL 
+axis2_http_transport_utils_create_envelope_from_get_request
+                        (axis2_env_t **env, axis2_char_t *request_uri,
+                        axis2_hash_t *request_params);*/
+    
+axis2_om_stax_builder_t* AXIS2_CALL 
+axis2_http_transport_utils_select_builder_for_mime
+                        (axis2_env_t **env, axis2_char_t *request_uri,
+                        axis2_msg_ctx_t *msg_ctx, axis2_stream_t *in_stream,
+                        axis2_char_t *content_type);
+   
+axis2_bool_t AXIS2_CALL 
+axis2_http_transport_utils_do_write_mtom(axis2_env_t **env, 
+                                        axis2_msg_ctx_t *msg_ctx);
+                                                
+axis2_bool_t AXIS2_CALL 
+axis2_http_transport_utils_is_doing_rest(axis2_env_t **env, 
+                                        axis2_msg_ctx_t *msg_ctx);
+                                                
+axis2_bool_t AXIS2_CALL 
+axis2_http_transport_utils_is_doing_rest_through_post
+                        (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx);
+						
+axis2_hash_t *AXIS2_CALL
+axis2_http_transport_utils_get_request_params(axis2_env_t **env, 
+						axis2_char_t *request_uri);
+						
+axis2_char_t* AXIS2_CALL
+axis2_http_transport_utils_get_services_html(axis2_env_t **env, 
+							axis2_conf_ctx_t *conf_ctx);
 
+axis2_hash_t *AXIS2_CALL
+axis2_http_transport_utils_get_request_params(axis2_env_t **env, 
+						axis2_char_t *request_uri);
 
 /** @} */
 #ifdef __cplusplus
