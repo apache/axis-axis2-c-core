@@ -245,4 +245,5 @@ axis2_soap_fault_create_with_exception(axis2_env_t **env,
 #endif
 
  
- #endif /* AXIS2_SOAP_FAULT_H */
+#endif /* AXIS2_SOAP_FAULT_H */
+
