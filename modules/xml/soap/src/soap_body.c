@@ -65,7 +65,7 @@ axis2_soap_body_set_soap_version(axis2_soap_body_t *body,
 /*************** function implementations *************************************/
 
 axis2_soap_body_t* AXIS2_CALL
-axis2_soap_body_create(axis2_env_t **env, struct axis2_soap_envelope *envelope)
+axis2_soap_body_create(axis2_env_t **env, struct axis2_soap_envelope *envelope, axis2_om_namespace_t *ns)
 {
     axis2_soap_body_impl_t *body_impl = NULL;
     axis2_om_element_t *ele = NULL;
@@ -91,7 +91,7 @@ axis2_soap_body_create(axis2_env_t **env, struct axis2_soap_envelope *envelope)
         parent = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(envelope, env);
     }
     
-    ele = axis2_om_element_create(env, parent, AXIS2_SOAP_BODY_LOCAL_NAME, NULL, &(body_impl->base));
+    ele = axis2_om_element_create(env, parent, AXIS2_SOAP_BODY_LOCAL_NAME, ns, &(body_impl->base));
     if (!ele)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

@@ -117,7 +117,8 @@ struct axis2_soap_envelope;
     * @param env Environment. MUST NOT be NULL
     */
 AXIS2_DECLARE(axis2_soap_body_t *)
-axis2_soap_body_create(axis2_env_t **env, struct axis2_soap_envelope *envelope);
+axis2_soap_body_create(axis2_env_t **env, struct axis2_soap_envelope *envelope, 
+    axis2_om_namespace_t *ns);
     
 /******************** Macros **************************************************/
     
