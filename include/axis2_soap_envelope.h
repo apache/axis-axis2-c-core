@@ -35,8 +35,8 @@ extern "C"
     typedef struct axis2_soap_envelope        axis2_soap_envelope_t;
     typedef struct axis2_soap_envelope_ops    axis2_soap_envelope_ops_t;
     
-    typedef struct axis2_soap_body            axis2_soap_body_t;
-    typedef struct axis2_soap_header          axis2_soap_header_t;
+    struct axis2_soap_body;
+    struct axis2_soap_header;
     
 /**
  * @defgroup axis2_soap_envelope
@@ -66,17 +66,17 @@ extern "C"
         * SOAPEnvelope</CODE> object. <P> This SOAPHeader will just be a container
         * for all the headers in the <CODE>OMMessage</CODE> </P> 
         */
-        axis2_soap_header_t* (AXIS2_CALL *get_header)
+        struct axis2_soap_header* (AXIS2_CALL *get_header)
                                             (axis2_soap_envelope_t *envelope,
                                              axis2_env_t **env);
                                              
-        axis2_soap_header_t* (AXIS2_CALL *add_header_block)
+        struct axis2_soap_header* (AXIS2_CALL *add_header_block)
                                             (axis2_soap_envelope_t *envelope,
                                              axis2_env_t **env,
                                              axis2_char_t *localname,
                                              axis2_om_namespace_t* ns);
                                              
-        axis2_soap_body_t* (AXIS2_CALL *get_body)
+        struct axis2_soap_body* (AXIS2_CALL *get_body)
                                             (axis2_soap_envelope_t *envelope,
                                              axis2_env_t **env);
                                              

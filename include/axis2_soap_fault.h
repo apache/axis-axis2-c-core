@@ -22,8 +22,6 @@
     * @file axis2_soap_fault.h
     * @brief axis2_soap_fault struct
     */
-#include <axis2_soap_envelope.h>
-#include <axis2_soap_body.h>
 #include <axis2_soap.h> 
 #include <axis2_env.h>
 #include <axis2_om_node.h>
@@ -35,6 +33,9 @@ extern "C"
 {
 #endif
 
+typedef struct axis2_soap_fault axis2_soap_fault_t;
+typedef struct axis2_soap_fault_ops axis2_soap_fault_ops_t;
+    
 typedef struct axis2_soap_fault_reason    axis2_soap_fault_reason_t;
 typedef struct axis2_soap_fault_detail    axis2_soap_fault_detail_t;
 typedef struct axis2_soap_fault_sub_code  axis2_soap_fault_sub_code_t;
@@ -43,9 +44,8 @@ typedef struct axis2_soap_fault_node      axis2_soap_fault_node_t;
 typedef struct axis2_soap_fault_role      axis2_soap_fault_role_t;
 typedef struct axis2_soap_fault_text      axis2_soap_fault_text_t;
 typedef struct axis2_soap_fault_value     axis2_soap_fault_value_t;
-
-
-typedef struct axis2_soap_fault_ops axis2_soap_fault_ops_t;
+    
+struct axis2_soap_body;
     
     typedef enum axis2_soap_fault_types
     {
@@ -58,7 +58,7 @@ typedef struct axis2_soap_fault_ops axis2_soap_fault_ops_t;
         AXIS2_SOAP_FAULT_ROLE,
         AXIS2_SOAP_FAULT_TEXT,
         AXIS2_SOAP_FAULT_VALUE
-    };
+    }axis2_soap_fault_types_t;
     
     
 /**
@@ -178,11 +178,11 @@ axis2_soap_fault_create(axis2_env_t **env);
 
 AXIS2_DECLARE(axis2_soap_fault_t *)
 axis2_soap_fault_create_with_parent(axis2_env_t **env,
-                                    axis2_soap_body_t *parent);
+                                    struct axis2_soap_body *parent);
 
 AXIS2_DECLARE(axis2_soap_fault_t *)
 axis2_soap_fault_create_with_exception(axis2_env_t **env,
-                                        axis2_soap_body_t *parent,  
+                                        struct axis2_soap_body *parent,  
                                         axis2_char_t* exception);
 /******************** Macros **************************************************/
     
@@ -246,4 +246,3 @@ axis2_soap_fault_create_with_exception(axis2_env_t **env,
 
  
 #endif /* AXIS2_SOAP_FAULT_H */
-

@@ -28,8 +28,7 @@
 #include <axis2_om_children_qname_iterator.h>
 #include <axis2_om_children_with_specific_attribute_iterator.h>
 #include <axis2_hash.h>
-#include <axis2_soap_envelope.h>
-#include <axis2_soap_body.h>
+#include <axis2_soap_header_block.h>
 
 
 #ifdef __cplusplus
@@ -37,9 +36,10 @@ extern "C"
 {
 #endif
     
-typedef struct axis2_soap_header_block  axis2_soap_header_block_t;
-
+typedef struct axis2_soap_header  axis2_soap_header_t;
 typedef struct axis2_soap_header_ops    axis2_soap_header_ops_t;
+    
+struct axis2_soap_envelope;
 
     
 /**
@@ -149,7 +149,7 @@ axis2_soap_header_create(axis2_env_t **env);
     
 AXIS2_DECLARE(axis2_soap_header_t *)
 axis2_soap_header_create_with_parent(axis2_env_t **env,
-                                     axis2_soap_envelope_t *envelope);
+                                     struct axis2_soap_envelope *envelope);
                             
 /******************** Macros **************************************************/
     
@@ -189,4 +189,4 @@ axis2_soap_header_create_with_parent(axis2_env_t **env,
 #endif
 
  
- #endif /* AXIS2_SOAP_HEADER_H */
+#endif /* AXIS2_SOAP_HEADER_H */

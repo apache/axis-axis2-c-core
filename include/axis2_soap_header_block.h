@@ -26,15 +26,15 @@
 #include <axis2_om_node.h>
 #include <axis2_om_element.h>
 #include <axis2_array_list.h>
-#include <axis2_soap_header.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+    typedef struct axis2_soap_header_block axis2_soap_header_block_t;
     typedef struct axis2_soap_header_block_ops axis2_soap_header_block_ops_t;
-    
+    struct axis2_soap_header;
     
 /**
  * @defgroup axis2_soap_header_block
@@ -150,18 +150,18 @@ AXIS2_DECLARE(axis2_soap_header_block_t *)
 axis2_soap_header_block_create_with_parent(axis2_env_t **env,
                                            axis2_char_t *localname,
                                            axis2_om_namespace_t *ns,
-                                           axis2_soap_header_t *parent);
+                                           struct axis2_soap_header *parent);
                             
 AXIS2_DECLARE(axis2_soap_header_block_t *)
 axis2_soap11_header_block_create_with_parent(axis2_env_t **env,
                                            axis2_char_t *localname,
                                            axis2_om_namespace_t *ns,
-                                           axis2_soap_header_t *parent);
+                                           struct axis2_soap_header *parent);
 AXIS2_DECLARE(axis2_soap_header_block_t *)
 axis2_soap12_header_block_create_with_parent(axis2_env_t **env,
                                            axis2_char_t *localname,
                                            axis2_om_namespace_t *ns,
-                                           axis2_soap_header_t *parent);                                                                        
+                                           struct axis2_soap_header *parent);                                                                        
 /******************** Macros **************************************************/
     
 /** free soap_header_block */

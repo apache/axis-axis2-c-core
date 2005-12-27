@@ -310,8 +310,9 @@ extern "C"
         
         AXIS2_ERROR_MUST_UNDERSTAND_SHOULD_BE_1_0_TRUE_FALSE,
         
-        AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND
-        
+        AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND,
+        /** only one SOAP fault allowed in SOAP body */
+        AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY
     };
 
 /** @} */
