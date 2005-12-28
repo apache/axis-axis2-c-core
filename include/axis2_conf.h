@@ -235,6 +235,8 @@ struct axis2_conf_ops
     set_out_phases) (axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_array_list_t *out_phases);
+    axis2_array_list_t* (AXIS2_CALL *
+    get_out_phases) (axis2_conf_t *conf, axis2_env_t **env);
     
         /**
      * @param list
@@ -389,6 +391,9 @@ axis2_conf_create(axis2_env_t **env);
 
 #define AXIS2_CONF_SET_OUT_PHASES(conf, env, out_phases) \
         (conf->ops->set_out_phases(conf , env, out_phases)) 
+
+#define AXIS2_CONF_GET_OUT_PHASES(conf, env) \
+        (conf->ops->get_out_phases(conf , env)) 
 
 #define AXIS2_CONF_SET_IN_FAULTPHASES(conf, env, list) \
         (conf->ops->set_in_faultphases(conf , env, list)) 

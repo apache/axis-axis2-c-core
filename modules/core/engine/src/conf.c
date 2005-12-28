@@ -218,6 +218,9 @@ axis2_conf_set_out_phases(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     axis2_array_list_t *out_phases);
 
+axis2_array_list_t* AXIS2_CALL
+axis2_conf_get_out_phases(axis2_conf_t *conf,
+                                    axis2_env_t **env);
     /**
  * @param list
  */
@@ -508,6 +511,9 @@ axis2_conf_create (axis2_env_t **env)
     config_impl->conf.ops->set_out_phases =
             axis2_conf_set_out_phases;
     
+    config_impl->conf.ops->get_out_phases =
+            axis2_conf_get_out_phases;
+            
     config_impl->conf.ops->set_in_faultphases =
             axis2_conf_set_in_faultphases;
     
@@ -1370,6 +1376,14 @@ axis2_conf_set_out_phases(axis2_conf_t *conf,
     return AXIS2_SUCCESS;
 }
 
+axis2_array_list_t* AXIS2_CALL
+axis2_conf_get_out_phases(axis2_conf_t *conf,
+                                    axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    return AXIS2_INTF_TO_IMPL(conf)->out_phases;
+}
+    
     /**
  * @param list
  */
