@@ -22,8 +22,7 @@
  * @brief Axis2c specific global declarations
  */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <axis2_platform_auto_sense.h>
 #include <axis2_env.h>
 
 /** This macro is called to check whether structure on which function is called

@@ -16,4 +16,5 @@ INCLUDES = -I$(top_builddir)/include \
 	       -I$(top_builddir)/modules/wsdl/src\
 	       -I$(top_builddir)/modules/core/transport\
 	       -I$(top_builddir)/modules/core/transport/http/src\
-           -I$(top_builddir)/modules/core/description/src
+           -I$(top_builddir)/modules/core/description/src \
+            -I$(top_builddir)/modules/platforms

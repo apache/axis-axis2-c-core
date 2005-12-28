@@ -94,6 +94,15 @@ extern "C"
 #include <sys/timeb.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sys/dir.h>
+#include <sys/param.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
 #define AXIS2_PLATFORM_SLEEP(x) sleep(0);
 
 /**
@@ -139,6 +148,10 @@ extern "C"
 #define AXIS2_PRINTF_UNSIGNED_LONGLONG_FORMAT_SPECIFIER "%llu"
 #define AXIS2_PRINTF_UNSIGNED_LONGLONG_FORMAT_SPECIFIER_CHARS "llu"
 
+/**
+ * Platform specific path separator char
+ */
+#define AXIS2_PATH_SEP_CHAR "/"
 
 /** @} */
 #ifdef __cplusplus

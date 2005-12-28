@@ -20,4 +20,5 @@ libaxis2_om_la_LIBADD =  ../../../util/src/libaxis2_util.la
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util/src \
-            -I$(top_builddir)/modules/xml/parser
+            -I$(top_builddir)/modules/xml/parser \
+            -I$(top_builddir)/modules/platforms

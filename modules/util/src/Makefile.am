@@ -11,7 +11,8 @@ libaxis2_util_la_SOURCES = hash.c \
                         qname.c \
                         array_list.c \
                         linked_list.c \
-                        utils.c
+                        utils.c \
+                        dir_handler.c
 
 libaxis2_util_la_LIBADD = 
 INCLUDES = -I$(top_builddir)/include \

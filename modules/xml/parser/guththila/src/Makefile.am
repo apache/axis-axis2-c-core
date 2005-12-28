@@ -8,5 +8,6 @@ libaxis2_guththila_la_LIBADD =
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util/src \
             -I$(top_builddir)/modules/xml/parser \
-            -I${GUTHTHILA_INCLUDE}
+            -I${GUTHTHILA_INCLUDE} \
+            -I$(top_builddir)/modules/platforms
            

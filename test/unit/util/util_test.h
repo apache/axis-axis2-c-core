@@ -8,6 +8,7 @@
 #include "util_array_list_test.h"
 #include "util_linked_list_test.h"
 #include "util_error_test.h"
+#include "util_dir_handler_test.h"
 
 CuSuite* axis2_utilGetSuite();
 
