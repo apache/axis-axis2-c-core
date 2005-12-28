@@ -29,7 +29,7 @@ typedef struct axis2_async_result_impl
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(async_result) ((axis2_async_result_impl_t *)async_result)
 
-/* TODO axis2_soap_envelope_t* AXIS2_CALL axis2_async_result_get_envelope(struct axis2_async_result *async_result, axis2_env_t **env);*/
+axis2_soap_envelope_t* AXIS2_CALL axis2_async_result_get_envelope(struct axis2_async_result *async_result, axis2_env_t **env);
 axis2_msg_ctx_t* AXIS2_CALL axis2_async_result_get_result(struct axis2_async_result *async_result, axis2_env_t **env);
 axis2_status_t AXIS2_CALL axis2_async_result_free (struct axis2_async_result *async_result, 
                                    axis2_env_t **env);
@@ -64,14 +64,13 @@ axis2_async_result_t* AXIS2_CALL axis2_async_result_create(axis2_env_t **env, ax
         return NULL;        
     }
 
-    /* TODO async_result_impl->async_result.ops->get_envelope = axis2_async_result_get_envelope;*/
+    async_result_impl->async_result.ops->get_envelope = axis2_async_result_get_envelope;
     async_result_impl->async_result.ops->get_result = axis2_async_result_get_result;
     async_result_impl->async_result.ops->free = axis2_async_result_free;
 
     return &(async_result_impl->async_result);
 }
 
-/* TODO
 axis2_soap_envelope_t* AXIS2_CALL axis2_async_result_get_envelope(struct axis2_async_result *async_result, axis2_env_t **env)
 {
     axis2_async_result_impl_t *async_result_impl = NULL;
@@ -82,12 +81,11 @@ axis2_soap_envelope_t* AXIS2_CALL axis2_async_result_get_envelope(struct axis2_a
     
     if (async_result_impl->result) 
     {
-        return AXIS2_MSG_CTX_GET_ENVELOPE(async_result_impl->result, env);
+        return AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(async_result_impl->result, env);
     } 
     
     return NULL;
 }
-*/
 
 axis2_msg_ctx_t* AXIS2_CALL axis2_async_result_get_result(struct axis2_async_result *async_result, axis2_env_t **env)
 {
