@@ -502,7 +502,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
     axis2_msg_ctx_t *response = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_op_t *op = NULL;
-    /* TODO axis2_envelope_t *response_envelope = NULL;*/
+    axis2_soap_envelope_t *response_envelope = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);
 
@@ -540,20 +540,24 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
 
     /* TODO response_envelope = TransportUtils.createSOAPMessage(response, msg_ctx.getEnvelope().getNamespace().getName());*/
 
-    /*TODO if (response_envelope != null) 
+    if (response_envelope) 
     {
-        AXIS2_MSG_CTX_SET_ENVELOPE(response, env, response_envelope);
+        AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
         engine = axis2_engine_create(env, conf_ctx);
-        status = AXIS2_ENGINE_RECEIVE(engine, ENV, response);
-        if (status != AXIS2_SUCCESS)
-            return NULL;
+        if (engine)
+        {
+            status = AXIS2_ENGINE_RECEIVE(engine, env, response);
+            if (status != AXIS2_SUCCESS)
+                return NULL;
+        }
         
     } 
     else 
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, AXIS2_FAILURE);
         return NULL;
-    }*/
+    }
     
     return response;
 }
+
