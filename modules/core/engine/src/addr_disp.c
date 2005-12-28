@@ -205,7 +205,7 @@ axis2_status_t AXIS2_CALL axis2_addr_disp_invoke(struct axis2_handler * handler,
                         axis2_svc_ctx_t *svc_ctx = NULL;
                         AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, op_ctx);
                         AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op);
-                        /*TODO : AXIS2_OP_REGISTER_OP_CTX(op, env, op_ctx);*/
+                        AXIS2_OP_REGISTER_OP_CTX(op, env, msg_ctx, op_ctx);
                         
                         svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
                         if (svc_ctx)

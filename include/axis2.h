@@ -302,8 +302,6 @@ typedef enum axis2_svc_type
 #define AXIS2_VALUE_FALSE "false"
 #define AXIS2_CONTAINER_MANAGED "ContainerManaged"
 #define AXIS2_RESPONSE_WRITTEN "CONTENT_WRITTEN"
-#define AXIS2_WSA_ACTION "wsamapping"
-
 
 #define AXIS2_TESTING_PATH "target/test-resources/"
 
