@@ -909,7 +909,7 @@ axis2_op_engage_module(axis2_op_t *op,
         extensible_component->wsdl_component, env, MODULEREF_KEY);
     
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
-    if(AXIS2_TRUE != size)
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(*env->error))
     {
         return AXIS2_FAILURE;
     }
