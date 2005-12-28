@@ -153,6 +153,7 @@ axis2_soap_fault_value_create_with_subcode(axis2_env_t **env,
                     &this_node);
     fault_val_impl->om_ele_node = this_node;
     fault_val_impl->om_ele = this_ele;
+    AXIS2_SOAP_FAULT_SUB_CODE_SET_VALUE(parent, env, fault_value);
     return &(fault_val_impl->fault_value);
 }                            
 
@@ -191,6 +192,7 @@ axis2_soap_fault_value_create_with_code(axis2_env_t **env,
                     &this_node);
     fault_val_impl->om_ele_node = this_node;
     fault_val_impl->om_ele = this_ele;
+    AXIS2_SOAP_FAULT_SUB_CODE_SET_VALUE(parent, env, fault_value);
     return &(fault_val_impl->fault_value);
 }                                                        
 

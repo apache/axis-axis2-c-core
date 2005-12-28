@@ -189,6 +189,7 @@ axis2_soap_fault_sub_code_create_with_parent(axis2_env_t **env,
                                     &this_node);
     fault_sub_code_impl->om_ele = this_ele;
     fault_sub_code_impl->om_ele_node = this_node;
+    AXIS2_SOAP_FAULT_CODE_SET_SUB_CODE(fault_code, env, fault_sub_code);
  return &(fault_sub_code_impl->fault_sub_code);
 }
 

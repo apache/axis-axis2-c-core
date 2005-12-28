@@ -165,7 +165,9 @@ axis2_soap_fault_node_create_with_parent(axis2_env_t **env,
                                        parent_ns,
                                        &this_node);
     fault_node_impl->om_ele = this_ele;
-    fault_node_impl->om_ele_node = this_node;                                       
+    fault_node_impl->om_ele_node = this_node;       
+    AXIS2_SOAP_FAULT_SET_NODE(fault, env, fault_node);
+                                    
     return  &(fault_node_impl->fault_node);  
 }
 

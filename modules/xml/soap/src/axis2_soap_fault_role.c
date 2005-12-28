@@ -175,7 +175,8 @@ axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
                                        parent_ns,
                                        &this_node);
     fault_role_impl->om_ele = this_ele;
-    fault_role_impl->om_ele_node = this_node;                                       
+    fault_role_impl->om_ele_node = this_node;  
+    AXIS2_SOAP_FAULT_SET_ROLE(fault, env, fault_role);                                     
     return  &(fault_role_impl->fault_role);            
 }
 
