@@ -28,6 +28,7 @@
 #include <axis2_error.h>
 #include <axis2_op.h>
 #include <axis2_om_node.h>
+#include <axis2_soap_envelope.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -86,8 +87,8 @@ struct axis2_mep_client_ops
      * @return
      * @
      */
-    /* TODO axis2_soap_envelope_t* (AXIS2_CALL *create_default_soap_envelope)(struct axis2_mep_client *mep_client, 
-        axis2_env_t **env);*/
+    axis2_soap_envelope_t* (AXIS2_CALL *create_default_soap_envelope)(struct axis2_mep_client *mep_client, 
+        axis2_env_t **env);
     /**
      * Engage a given Module to the current invocation. But to call this method the
      * Module *MUST* be enable (picked up by the deployment and known to Axis2) else

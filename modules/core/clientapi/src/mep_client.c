@@ -18,6 +18,8 @@
 #include <axis2.h>
 #include <axis2_hash.h>
 #include <axis2_engine.h>
+#include <axis2_soap.h>
+#include <axis2_soap_body.h>
 
 typedef struct axis2_mep_client_impl
 {
@@ -45,8 +47,8 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_
     axis2_om_node_t *to_send);
 axis2_transport_out_desc_t* AXIS2_CALL axis2_mep_client_infer_transport(struct axis2_mep_client *mep_client, axis2_env_t **env, 
             axis2_endpoint_ref_t *epr);
-/* TODO axis2_soap_envelope_t* AXIS2_CALL axis2_mep_client_create_default_soap_envelope(struct axis2_mep_client *mep_client, 
-    axis2_env_t **env);*/
+axis2_soap_envelope_t* AXIS2_CALL axis2_mep_client_create_default_soap_envelope(struct axis2_mep_client *mep_client, 
+    axis2_env_t **env);
 axis2_status_t AXIS2_CALL axis2_mep_client_engage_module(struct axis2_mep_client *mep_client, axis2_env_t **env, axis2_qname_t *qname);
 axis2_status_t AXIS2_CALL axis2_mep_client_set_soap_version_uri(struct axis2_mep_client *mep_client, axis2_env_t **env, axis2_char_t *soap_version_uri);
 axis2_status_t AXIS2_CALL axis2_mep_client_set_soap_action(struct axis2_mep_client *mep_client, axis2_env_t **env, axis2_char_t *soap_action);
@@ -81,13 +83,13 @@ axis2_mep_client_t* AXIS2_CALL axis2_mep_client_create(axis2_env_t **env, axis2_
         mep_client_impl->svc_ctx = svc_ctx;
     }
     
-    /* TODO mep_client_impl->soap_version_uri = AXIS2_STRDUP((*env)->allocator, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
+    mep_client_impl->soap_version_uri = AXIS2_STRDUP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, env);
     if (!(mep_client_impl->soap_version_uri))
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_mep_client_free(&(mep_client_impl->mep_client), env);
         return NULL;        
-    }    */
+    }
     
     if (mep)
     {
@@ -113,7 +115,7 @@ axis2_mep_client_t* AXIS2_CALL axis2_mep_client_create(axis2_env_t **env, axis2_
     mep_client_impl->mep_client.ops->prepare_invocation = axis2_mep_client_prepare_invocation;
     mep_client_impl->mep_client.ops->prepare_soap_envelope = axis2_mep_client_prepare_soap_envelope;
     mep_client_impl->mep_client.ops->infer_transport = axis2_mep_client_infer_transport;
-    /* TODO mep_client_impl->mep_client.ops->create_default_soap_envelope = axis2_mep_client_create_default_soap_envelope;*/
+    mep_client_impl->mep_client.ops->create_default_soap_envelope = axis2_mep_client_create_default_soap_envelope;
     mep_client_impl->mep_client.ops->engage_module = axis2_mep_client_engage_module;
     mep_client_impl->mep_client.ops->set_soap_version_uri = axis2_mep_client_set_soap_version_uri;
     mep_client_impl->mep_client.ops->set_soap_action = axis2_mep_client_set_soap_action;
@@ -188,7 +190,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
-    /* TODO axis2_soap_envelope_t *envelope = NULL;*/
+    axis2_soap_envelope_t *envelope = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(mep_client, env, NULL);
     
@@ -200,24 +202,28 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_
         return NULL;
     }
     
-    /* TODO envelope = axis2_soap_envelope_create(env);
+    envelope = axis2_soap_envelope_create(env, NULL);
     if (!envelope)
     {
         return NULL;
-    }*/
+    }
     
     if (to_send) 
     {
-        /* TODO axis2_soap_body_t *soap_body = NULL;
+        axis2_soap_body_t *soap_body = NULL;
         soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
         if (soap_body)
         {
-            AXIS2_SOAP_BODY_ADD_CHILD(soap_body, env, to_send);
+            axis2_om_node_t *node = NULL;
+            node = AXIS2_SOAP_BODY_GET_BASE(soap_body, env);
+            if (node)
+            {
+                AXIS2_OM_NODE_ADD_CHILD(node, env, to_send);
+            }
         }       
-        */
     }
     
-    /* TODO AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, envelope);*/
+    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, envelope);
    
     return msg_ctx;
 }
@@ -269,28 +275,34 @@ axis2_transport_out_desc_t* AXIS2_CALL axis2_mep_client_infer_transport(struct a
     return NULL;
 }
 
-/* TODO axis2_soap_envelope_t* AXIS2_CALL axis2_mep_client_create_default_soap_envelope(struct axis2_mep_client *mep_client, 
+axis2_soap_envelope_t* AXIS2_CALL axis2_mep_client_create_default_soap_envelope(struct axis2_mep_client *mep_client, 
     axis2_env_t **env)  
 {
-    axis2_soap_factory fac = NULL;
+    axis2_soap_envelope_t *envelope = NULL;
+    axis2_mep_client_impl_t *mep_client_impl = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(mep_client, env, NULL);
+    mep_client_impl = AXIS2_INTF_TO_IMPL(mep_client);
     
-    if (AXIS2_STRCMP(SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, soap_version_uri) == 0) 
+    if (AXIS2_STRCMP(AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, mep_client_impl->soap_version_uri) == 0) 
     {
-        /*fac = OMAbstractFactory.getSOAP12Factory();*/
-    /*} 
-    else if (AXIS2_STRCMP(SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, soap_version_uri) == 0) 
-    {
-        /*fac = OMAbstractFactory.getSOAP11Factory();*/
-    /*} else 
-    {
-        AXIS2_ERROR_SET( (*env)->error, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
-        return NULL;
+        envelope = axis2_soap_envelope_create(env, NULL);
+        if (envelope)
+        {
+            AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(envelope, env, AXIS2_SOAP12);
+        }
     }
     
-    return AXIS2_SOAP_FACTORY_GET_DEFAULT_ENVELOPE(fac, env);
-}*/
+    if (AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, mep_client_impl->soap_version_uri) == 0) 
+    {
+        envelope = axis2_soap_envelope_create(env, NULL);
+        if (envelope)
+        {
+            AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(envelope, env, AXIS2_SOAP11);
+        }
+    }
+    return envelope;
+}
 
 axis2_status_t AXIS2_CALL axis2_mep_client_engage_module(struct axis2_mep_client *mep_client, axis2_env_t **env, axis2_qname_t *qname)  
 {
@@ -313,7 +325,7 @@ axis2_status_t AXIS2_CALL axis2_mep_client_engage_module(struct axis2_mep_client
                 /*if it is already engeged do not engege it again*/
                 if (!(AXIS2_CONF_IS_ENGAGED(conf, env, qname))) 
                 {
-                    /* TODO return AXIS2_CONF_ENGAGE_MODULE(conf, env, qname);*/
+                    return AXIS2_CONF_ENGAGE_MODULE(conf, env, qname);
                 }
             }
         }

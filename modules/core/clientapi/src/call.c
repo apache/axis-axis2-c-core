@@ -322,7 +322,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
                     axis2_msg_ctx_create(env, AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env), NULL, NULL);
             if (!response_msg_ctx)
                 return NULL;
-            AXIS2_MSG_CTX_SET_ENVELOPE(response_msg_ctx, env, AXIS2_CALLBACK_GET_ENVELOPE(callback, env));
+            AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response_msg_ctx, env, AXIS2_CALLBACK_GET_ENVELOPE(callback, env));
             return response_msg_ctx;
         } 
         else 
@@ -859,7 +859,7 @@ axis2_soap_envelope_t* AXIS2_CALL axis2_call_invoke_blocking_with_soap(struct ax
         msg_ctx = axis2_msg_ctx_create(env, conf_ctx, NULL, NULL);
         if (msg_ctx)
         {
-            AXIS2_MSG_CTX_SET_ENVELOPE(msg_ctx, env, envelope);
+            AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, envelope);
             call_impl->last_res_msg_ctx = axis2_call_invoke_blocking(call, env, op, msg_ctx);
             return AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(call_impl->last_res_msg_ctx, env);
         }
@@ -983,7 +983,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking_with_soap(struct axis2_
         msg_ctx = axis2_msg_ctx_create(env, conf_ctx, NULL, NULL);
         if (msg_ctx)
         {
-            AXIS2_MSG_CTX_SET_ENVELOPE(msg_ctx, env, envelope);
+            AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, envelope);
             return axis2_call_invoke_non_blocking(call, env, op, msg_ctx, callback);
         }
 
