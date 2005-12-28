@@ -286,10 +286,13 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_add_msg_ctx(struct axis2_op_ctx *op_ctx, 
     
     op_ctx_impl = AXIS2_INTF_TO_IMPL(op_ctx);
     
-        
-    if(op_ctx_impl->op)
+    if (op_ctx_impl->msg_ctx_map)
     {
-        /* TODO return AXIS2_OP_ADD_MSG_CTX(op_ctx_impl->op, env, msg_ctx, op_ctx); */
+        axis2_char_t *message_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
+        if (message_id)
+        {
+            axis2_hash_set(op_ctx_impl->msg_ctx_map, message_id, AXIS2_HASH_KEY_STRING, msg_ctx); 
+        }
     }
     
     return AXIS2_SUCCESS;
@@ -385,8 +388,6 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_cleanup(struct axis2_op_ctx *op_ctx,
 axis2_status_t AXIS2_CALL axis2_op_ctx_set_parent(struct axis2_op_ctx *op_ctx, axis2_env_t **env, struct axis2_svc_ctx* svc_ctx) 
 {
     axis2_op_ctx_impl_t *op_ctx_impl = NULL;
-    axis2_hash_index_t *hi = NULL;
-    axis2_msg_ctx_t *ctx = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(op_ctx, env, AXIS2_FAILURE);
     
