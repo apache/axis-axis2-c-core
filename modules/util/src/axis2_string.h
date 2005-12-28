@@ -38,8 +38,8 @@ extern "C"
     AXIS2_DECLARE(int)
     axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2);
 
-    AXIS2_DECLARE(int)
-    axis2_strlen(const axis2_char_t *s);
+    AXIS2_DECLARE(axis2_ssize_t)
+    axis2_strlen(const axis2_char_t * s);
 
     AXIS2_DECLARE(int)
     axis2_strcasecmp(const axis2_char_t *s1, axis2_char_t *s2);
@@ -53,7 +53,8 @@ extern "C"
      * memory for the return value
      */
     AXIS2_DECLARE(axis2_char_t*)
-    axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, axis2_env_t **env); 
+    axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, axis2_env_t **env);
+
 
 #define AXIS2_STRDUP(pts, env) axis2_strdup(pts, env)
 #define AXIS2_STRCMP(s1, s2) axis2_strcmp(s1, s2)
@@ -61,6 +62,7 @@ extern "C"
 #define AXIS2_STRCASECMP(s1,s2) axis2_strcasecmp(s1,s2)
 #define AXIS2_STRNCASECMP(s1,s2,n) axis2_strncasecmp(s1,s2,n)
 #define AXIS2_STRACAT(s1, s2, env) axis2_stracat(s1, s2, env)
+
 /** @} */
     
 #ifdef __cplusplus

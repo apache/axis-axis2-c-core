@@ -19,6 +19,7 @@
 #include <string.h>
 #include <axis2.h>
 #include <axis2_defines.h>
+#include <ctype.h>
 
 AXIS2_DECLARE(void*)
 axis2_strdup (const void *ptr, axis2_env_t **env)
@@ -58,7 +59,7 @@ axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, axis2_env_t **env)
     }
     if(NULL == s2)
     {
-        return (axis2_char_t *)AXIS2_STRDUP(s1, env);
+        return (axis2_char_t)AXIS2_STRDUP(s1, env);
     }
     alloc_len = axis2_strlen(s1) + axis2_strlen(s2) + 1;
     ret = (axis2_char_t*)AXIS2_MALLOC((*env)->allocator,
@@ -79,11 +80,29 @@ axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
         return -1;
 }
 
-AXIS2_DECLARE(int)
-axis2_strlen(const axis2_char_t *s)
+
+AXIS2_DECLARE(axis2_ssize_t)
+axis2_strlen (const axis2_char_t * s)
 {
-    if(s)
-        return strlen(s);
-    else
-        return -1;
+	return strlen(s);
+}
+
+
+AXIS2_DECLARE(int)
+axis2_strcasecmp(const axis2_char_t *s1, axis2_char_t *s2)
+{
+    while (toupper(*s1) == toupper(*s2++))
+	if (*s1++ == '\0')
+	    return(0);
+    return(toupper(*s1) - toupper(*--s2));
+}
+
+
+AXIS2_DECLARE(int)
+axis2_strncasecmp(const axis2_char_t *s1, axis2_char_t *s2, int n)
+{
+    while (--n >= 0 && toupper(*s1) == toupper(*s2++))
+	if (toupper(*s1++) == '\0')
+	    return(0);
+    return(n < 0 ? 0 : toupper(*s1) - toupper(*--s2));
 }
