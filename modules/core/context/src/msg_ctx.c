@@ -1521,42 +1521,73 @@ void* AXIS2_CALL axis2_msg_ctx_get_property(struct axis2_msg_ctx *msg_ctx,
                                 axis2_env_t **env, 
                                 axis2_char_t *key, axis2_bool_t persistent) 
 {
-/*    // search in MC
-    void* obj = supergetProperty(key, persistent);
-    if(obj !=null){
+    axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
+    void *obj = NULL;
+    axis2_ctx_t *ctx = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);
+    
+    msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
+    
+    /* search in message context */
+    obj = AXIS2_CTX_GET_PROPERTY(msg_ctx_impl->base, env, key, persistent);
+    if(obj)
+    {
         return obj;
     }
-    //The context hirachy might not have constructed fully, the check should
-    //look for the disconnected grandparents
-    // Search in Operation Context
-    if (op_ctx != null ) {
-        obj = op_ctxgetProperty(key, persistent);
-        if(obj !=null){
-            return obj;
+    
+    if (msg_ctx_impl->op_ctx)
+    {
+        ctx = AXIS2_OP_CTX_GET_BASE(msg_ctx_impl->op_ctx, env);
+        if (ctx)
+        {
+            obj = AXIS2_CTX_GET_PROPERTY(ctx, env, key, persistent);
+            if (obj)
+            {
+                return obj;
+            }
         }
     }
-    //Search in ServiceContext
-    if (svc_ctx != null ) {
-        obj = svc_ctxgetProperty(key, persistent);
-        if(obj !=null){
-            return obj;
+    
+    if (msg_ctx_impl->svc_ctx)
+    {
+        ctx = AXIS2_SVC_CTX_GET_BASE(msg_ctx_impl->svc_ctx, env);
+        if (ctx)
+        {
+            obj = AXIS2_CTX_GET_PROPERTY(ctx, env, key, persistent);
+            if (obj)
+            {
+                return obj;
+            }
         }
     }
-    if (svc_grp_ctx != null ) {
-        obj = svc_grp_ctxgetProperty(key, persistent);
-        if(obj !=null){
-            return obj;
+    
+    if (msg_ctx_impl->svc_grp_ctx)
+    {
+        ctx = AXIS2_SVC_GRP_CTX_GET_BASE(msg_ctx_impl->svc_grp_ctx, env);
+        if (ctx)
+        {
+            obj = AXIS2_CTX_GET_PROPERTY(ctx, env, key, persistent);
+            if (obj)
+            {
+                return obj;
+            }
         }
     }
-    if (conf_ctx != null ) {
-        // search in Configuration Context
-        obj = conf_ctxgetProperty(key, persistent);
-        if(obj !=null){
-            return obj;
+    
+    if (msg_ctx_impl->conf_ctx)
+    {
+        ctx = AXIS2_CONF_CTX_GET_BASE(msg_ctx_impl->conf_ctx, env);
+        if (ctx)
+        {
+            obj = AXIS2_CTX_GET_PROPERTY(ctx, env, key, persistent);
+            if (obj)
+            {
+                return obj;
+            }
         }
     }
-    return obj;
-    */
+    
     return NULL;
 }
 
@@ -1564,8 +1595,15 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_property(struct axis2_msg_ctx *msg_c
                                 axis2_env_t **env, 
                                 axis2_char_t *key, void *value, axis2_bool_t persistent)
 {
-    return AXIS2_SUCCESS;
+    axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);
+    
+    msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
+    
+    return AXIS2_CTX_SET_PROPERTY(msg_ctx_impl->base, env, key, value, persistent);
 }
+
 axis2_qname_t *AXIS2_CALL axis2_msg_ctx_get_paused_handler_name(struct axis2_msg_ctx *msg_ctx, 
                                             axis2_env_t **env)
 {
