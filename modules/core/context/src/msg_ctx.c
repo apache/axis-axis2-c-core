@@ -22,6 +22,8 @@
 #include <axis2_conf.h>
 #include <axis2_transport_in_desc.h>
 #include <axis2_transport_out_desc.h>
+#include <axis2_soap_envelope.h>
+#include <axis2_soap.h>
 
 typedef struct axis2_msg_ctx_impl axis2_msg_ctx_impl_t;
 
@@ -63,7 +65,7 @@ struct axis2_msg_ctx_impl
     axis2_transport_out_desc_t *transport_out_desc;
 
     /** SOAP envelope */
-    struct axis2_soap_envelope *soap_envelope;
+    axis2_soap_envelope_t *soap_envelope;
     /** response written? */
     axis2_bool_t response_written;
     /** in fault flow? */
@@ -139,7 +141,7 @@ axis2_msg_ctx_get_from(struct axis2_msg_ctx *msg_ctx,
 axis2_bool_t AXIS2_CALL
 axis2_msg_ctx_get_in_fault_flow(struct axis2_msg_ctx *msg_ctx, 
                                 axis2_env_t **env);
-struct axis2_soap_envelope* AXIS2_CALL
+axis2_soap_envelope_t* AXIS2_CALL
 axis2_msg_ctx_get_soap_envelope(struct axis2_msg_ctx *msg_ctx, 
                                 axis2_env_t **env);
 axis2_char_t* AXIS2_CALL
@@ -179,7 +181,7 @@ axis2_msg_ctx_set_in_fault_flow(struct axis2_msg_ctx *msg_ctx,
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_envelope(struct axis2_msg_ctx *msg_ctx, 
                             axis2_env_t **env, 
-                            struct axis2_soap_envelope *soap_envelope);
+                            axis2_soap_envelope_t *soap_envelope);
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_message_id(struct axis2_msg_ctx *msg_ctx, 
                                 axis2_env_t **env, 
@@ -756,7 +758,7 @@ axis2_bool_t AXIS2_CALL axis2_msg_ctx_get_in_fault_flow(struct axis2_msg_ctx *ms
     return AXIS2_INTF_TO_IMPL(msg_ctx)->in_fault_flow;
 }
 
-struct axis2_soap_envelope *AXIS2_CALL axis2_msg_ctx_get_soap_envelope(struct axis2_msg_ctx *msg_ctx, 
+axis2_soap_envelope_t* AXIS2_CALL axis2_msg_ctx_get_soap_envelope(struct axis2_msg_ctx *msg_ctx, 
                                             axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);
@@ -899,31 +901,37 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_in_fault_flow(struct axis2_msg_ctx *
 }
 
 axis2_status_t AXIS2_CALL axis2_msg_ctx_set_envelope(struct axis2_msg_ctx *msg_ctx, 
-                                            axis2_env_t **env, struct axis2_soap_envelope *soap_envelope) 
+                                            axis2_env_t **env, axis2_soap_envelope_t *soap_envelope) 
 {
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);
     
     if (soap_envelope)
     {
+        axis2_om_namespace_t *ns = NULL;
+        axis2_char_t *soap_ns = NULL;
+        
         AXIS2_INTF_TO_IMPL(msg_ctx)->soap_envelope  = soap_envelope ;
-        /*
-        axis2_char_t *soapNamespaceURI = soap_envelopegetNamespace()getName();
-        if (SOAP12Constants
-                .SOAP_ENVELOPE_NAMESPACE_URI
-                .equals(soapNamespaceURI)) 
+        ns = AXIS2_SOAP_ENVELOPE_GET_NAMESPACE(soap_envelope, env);
+        if (ns)
         {
-            is_soap_11 = AXIS2_FALSE;
-        } 
-        else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                        soapNamespaceURI)) 
-        {
-            is_soap_11 = AXIS2_TRUE;
-        } 
-        else 
-        {
-            // set error 
+            soap_ns = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+            if (soap_ns)
+            {
+                if (AXIS2_STRCASECMP(soap_ns, AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+                    AXIS2_INTF_TO_IMPL(msg_ctx)->is_soap_11 = AXIS2_FALSE;
+                else if (AXIS2_STRCASECMP(soap_ns, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+                    AXIS2_INTF_TO_IMPL(msg_ctx)->is_soap_11 = AXIS2_TRUE;
+                else
+                {
+                    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
+                    return AXIS2_FAILURE;
+                }
+                return AXIS2_SUCCESS;
+            }
         }
-        */
+        
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_ENVELOPE_STATE, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
     }
     
     return AXIS2_SUCCESS;

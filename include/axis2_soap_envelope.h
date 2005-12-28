@@ -107,6 +107,8 @@ extern "C"
             axis2_env_t **env, struct axis2_soap_body *body);
         axis2_status_t (AXIS2_CALL *set_header)(axis2_soap_envelope_t *envelope,
             axis2_env_t **env, struct axis2_soap_header *header);
+        axis2_om_namespace_t* (AXIS2_CALL *get_namespace)(axis2_soap_envelope_t *envelope,
+            axis2_env_t **env);
 
     };
 
@@ -140,6 +142,7 @@ axis2_soap_envelope_create(axis2_env_t **env, axis2_om_namespace_t *ns);
 #define AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(envelope, env, soap_version) ((envelope)->ops->set_soap_version(envelope, env, soap_version))
 #define AXIS2_SOAP_ENVELOPE_SET_BODY(envelope, env, body) ((envelope)->ops->set_body(envelope, env, body))
 #define AXIS2_SOAP_ENVELOPE_SET_HEADER(envelope, env, header) ((envelope)->ops->set_header(envelope, env, header))
+#define AXIS2_SOAP_ENVELOPE_GET_NAMESPACE(envelope, env) ((envelope)->ops->get_namespace(envelope, env))
 
 /** @} */
 
