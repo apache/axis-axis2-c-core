@@ -37,6 +37,7 @@ extern "C"
     
     struct axis2_soap_body;
     struct axis2_soap_header;
+    struct axis2_soap_header_block;
     
 /**
  * @defgroup axis2_soap_envelope
@@ -50,43 +51,63 @@ extern "C"
  */
  AXIS2_DECLARE_DATA   struct axis2_soap_envelope_ops
     {
-      /**
-        * Free an axis2_soap_envelope
-        * @param  body pointer to soap_envelope struct
-        * @param  env Environment. MUST NOT be NULL
-        * @return satus of the op. AXIS2_SUCCESS on success 
-        *         else AXIS2_FAILURE
-        */
+        /**
+         * Returns the <CODE>SOAPHeader</CODE> object for this <CODE>
+         * SOAPEnvelope</CODE> object. <P> This SOAPHeader will just be a container
+         * for all the headers in the <CODE>OMMessage</CODE> </P>
+         *
+         * @return the <CODE>SOAPHeader</CODE> object or <CODE> null</CODE> if there
+         *         is none
+         * @throws org.apache.axis2.om.OMException
+         *                     if there is a problem obtaining
+         *                     the <CODE>SOAPHeader</CODE>
+         *                     object
+         * @throws OMException
+         */
+        struct axis2_soap_header* (AXIS2_CALL *get_header)(axis2_soap_envelope_t *envelope,
+            axis2_env_t **env);
+        /**
+         * Convenience method to add a SOAP header to this envelope
+         *
+         * @param namespaceURI
+         * @param name
+         */
+        struct axis2_soap_header_block* (AXIS2_CALL *add_header)(axis2_soap_envelope_t *envelope,
+            axis2_env_t **env,
+            axis2_char_t *namespace_uri, 
+            axis2_char_t *name);
+        /**
+         * Returns the <CODE>SOAPBody</CODE> object associated with this
+         * <CODE>SOAPEnvelope</CODE> object. <P> This SOAPBody will just be a
+         * container for all the BodyElements in the <CODE>OMMessage</CODE> </P>
+         *
+         * @return the <CODE>SOAPBody</CODE> object for this <CODE>
+         *         SOAPEnvelope</CODE> object or <CODE>null</CODE> if there is none
+         * @throws org.apache.axis2.om.OMException
+         *                     if there is a problem obtaining
+         *                     the <CODE>SOAPBody</CODE> object
+         * @throws OMException
+         */
+        struct axis2_soap_body* (AXIS2_CALL *get_body)(axis2_soap_envelope_t *envelope,
+            axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *serialize)(axis2_soap_envelope_t *envelope,
+            axis2_env_t **env,
+            axis2_om_output_t *om_output, 
+            axis2_bool_t cache);
+        axis2_status_t (AXIS2_CALL *free)(axis2_soap_envelope_t *envelope,
+                               axis2_env_t **env);
+        axis2_om_node_t* (AXIS2_CALL *get_base)(axis2_soap_envelope_t *envelope,
+                                        axis2_env_t **env);
+        int (AXIS2_CALL *get_soap_version)(axis2_soap_envelope_t *envelope,
+                                           axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *set_soap_version)(axis2_soap_envelope_t *envelope,
+                                           axis2_env_t **env,
+                                           int soap_version);
+        axis2_status_t (AXIS2_CALL *set_body)(axis2_soap_envelope_t *envelope,
+            axis2_env_t **env, struct axis2_soap_body *body);
+        axis2_status_t (AXIS2_CALL *set_header)(axis2_soap_envelope_t *envelope,
+            axis2_env_t **env, struct axis2_soap_header *header);
 
-        axis2_status_t (AXIS2_CALL *free_fn)(axis2_soap_envelope_t *envelope,
-                                             axis2_env_t **env);
-       /**
-        *
-        * Returns the <CODE>SOAPHeader</CODE> object for this <CODE>
-        * SOAPEnvelope</CODE> object. <P> This SOAPHeader will just be a container
-        * for all the headers in the <CODE>OMMessage</CODE> </P> 
-        */
-        struct axis2_soap_header* (AXIS2_CALL *get_header)
-                                            (axis2_soap_envelope_t *envelope,
-                                             axis2_env_t **env);
-                                             
-        struct axis2_soap_header* (AXIS2_CALL *add_header_block)
-                                            (axis2_soap_envelope_t *envelope,
-                                             axis2_env_t **env,
-                                             axis2_char_t *localname,
-                                             axis2_om_namespace_t* ns);
-                                             
-        struct axis2_soap_body* (AXIS2_CALL *get_body)
-                                            (axis2_soap_envelope_t *envelope,
-                                             axis2_env_t **env);
-                                             
-        axis2_om_node_t* (AXIS2_CALL *get_base_node)
-                                            (axis2_soap_envelope_t *envelope,
-                                             axis2_env_t **env);
-        
-        axis2_status_t (AXIS2_CALL *set_base_node)
-                                            (axis2_soap_envelope_t *envelope,
-                                             axis2_env_t **env);
     };
 
   /**
@@ -104,34 +125,21 @@ extern "C"
     * creates a soap body struct 
     * @param env Environment. MUST NOT be NULL
     */
-AXIS2_DECLARE(axis2_soap_envelope_t *)
-axis2_soap_envelope_create (axis2_env_t **env);
-
-AXIS2_DECLARE(axis2_soap_envelope_t *)
-axis2_soap_envelope_create_with_namespace(axis2_env_t **env,
-                           axis2_om_namespace_t* ns);
+AXIS2_DECLARE(axis2_soap_envelope_t*)
+axis2_soap_envelope_create(axis2_env_t **env, axis2_om_namespace_t *ns);
                            
 /******************** Macros **************************************************/
-    
-    
-/** free soap_envelope */
-#define AXIS2_SOAP_ENVELOPE_FREE(envelope , env) \
-        ((envelope)->ops->free_fn(envelope, env))
 
-#define AXIS2_SOAP_ENVELOPE_GET_HEADDER(envelope , env) \
-        ((envelope)->ops->get_headder(envelope, env))
-
-#define AXIS2_SOAP_ENVELOPE_ADD_HEADDER_BLOCK(envelope , env, localname, ns) \
-        ((envelope)->ops->add_headder_block(envelope, env, localname, ns))
-
-#define AXIS2_SOAP_ENVELOPE_GET_BOBY(envelope , env) \
-        ((envelope)->ops->get_body(envelope, env))
-
-#define AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(envelope , env) \
-        ((envelope)->ops->get_base_node(envelope, env))
-
-#define AXIS2_SOAP_ENVELOPE_SET_BASE_NODE(envelope , env) \
-        ((envelope)->ops->set_base_node(envelope, env))                                
+#define AXIS2_SOAP_ENVELOPE_GET_HEADDER(envelope, env) ((envelope)->ops->get_header(envelope, env))
+#define AXIS2_SOAP_ENVELOPE_ADD_HEADER(envelope, env, namespace_uri, name) ((envelope)->ops->add_header(envelope, env, namespace_uri, name))
+#define AXIS2_SOAP_ENVELOPE_GET_BOBY(envelope, env) ((envelope)->ops->get_body(envelope, env))
+#define AXIS2_SOAP_ENVELOPE_SERIALIZE(envelope, env, om_output, cache) ((envelope)->ops->serialize(envelope, env, om_output, cache))
+#define AXIS2_SOAP_ENVELOPE_FREE(envelope, env) ((envelope)->ops->free(envelope, env))
+#define AXIS2_SOAP_ENVELOPE_GET_BASE(envelope, env) ((envelope)->ops->get_base(envelope, env))
+#define AXIS2_SOAP_ENVELOPE_GET_SOAP_VERSION(envelope, env) ((envelope)->ops->get_soap_version(envelope, env))
+#define AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(envelope, env, soap_version) ((envelope)->ops->set_soap_version(envelope, env, soap_version))
+#define AXIS2_SOAP_ENVELOPE_SET_BODY(envelope, env, body) ((envelope)->ops->set_body(envelope, env, body))
+#define AXIS2_SOAP_ENVELOPE_SET_HEADER(envelope, env, header) ((envelope)->ops->set_header(envelope, env, header))
 
 /** @} */
 
