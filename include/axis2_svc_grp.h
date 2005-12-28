@@ -256,8 +256,8 @@ axis2_svc_grp_create_with_conf (axis2_env_t **env,
 #define AXIS2_SVC_GRP_GET_MODULES(svc_grp, env) \
         (svc_grp->ops->get_modules(svc_grp, env)) 
  
-#define AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env) \
-        (svc_grp->ops->get_svc_grp_ctx(svc_grp, env))  
+#define AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env, parent) \
+        (svc_grp->ops->get_svc_grp_ctx(svc_grp, env, parent))  
         
         
                             

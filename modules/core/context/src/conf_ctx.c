@@ -520,7 +520,7 @@ axis2_svc_grp_ctx_t* AXIS2_CALL axis2_conf_ctx_fill_ctxs(struct axis2_conf_ctx *
     {
         axis2_svc_grp_t *svc_grp = NULL;
         svc_grp = AXIS2_SVC_GET_PARENT(svc, env);
-        /*TODO svc_grp_ctx = AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env);*/
+        svc_grp_ctx = AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env, conf_ctx);
         svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, svc_id);
         if (!svc_ctx)
         {
