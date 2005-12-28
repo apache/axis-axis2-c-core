@@ -58,15 +58,13 @@ AXIS2_DECLARE_DATA struct axis2_svc_skeleton_ops
                 axis2_env_t **env,
                 axis2_om_node_t *node);
     
-    struct axis2_array_list *(AXIS2_CALL* 
-    get_function_list)(axis2_svc_skeleton_t *svc_skeli,
-                        axis2_env_t **env);
 
 } ;
 
 AXIS2_DECLARE_DATA struct axis2_svc_skeleton 
 {
     axis2_svc_skeleton_ops_t *ops; 
+    axis2_array_list_t *func_array;
 };
 
 /**
@@ -89,9 +87,6 @@ axis2_svc_skeleton_create (axis2_env_t **env);
 
 #define AXIS2_SVC_SKELETON_ON_FAULT(svc_skeleton, env, node) \
 		((svc_skeleton->ops)->on_fault (svc_skeleton, env, node))
-
-#define AXIS2_SVC_SKELETON_GET_FUNCTION_LIST(svc_skeleton, env) \
-		((svc_skeleton->ops)->get_function_list (svc_skeleton, env))     
 
 
 /** @} */

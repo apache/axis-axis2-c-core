@@ -1,72 +1,68 @@
+/*
+ * Copyright 2004,2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #include "axis2_svc_skeleton.h"
-
-typedef struct axis2_svc_skeleton_impl
-{
-    axis2_svc_skeleton_t svc_skeleton;
-    axis2_array_list_t *func_array;
-
-} axis2_svc_skeleton_impl_t;
-
-#define AXIS2_INTF_TO_IMPL(axis2_svc_skeleton) \
-    ((axis2_svc_skeleton_impl_t *) axis2_svc_skeleton)
 
 axis2_svc_skeleton *
 axis2_svc_skeleton_create(axis2_env_t **env)
 {
-    axis2_svc_skeleton_impl_t *skeleton_impl = NULL;
-    skeleton_impl = AXIS2_MALLOC((*env)->allocator, 
-        sizeof(axis2_svc_skeleton_impl_t));
+    axis2_svc_skeleton_t *skeleton = NULL;
+    skeleton = AXIS2_MALLOC((*env)->allocator, 
+        sizeof(axis2_svc_skeleton_t));
 
     
-    skeleton_impl->svc_skeleton.ops = AXIS2_MALLOC(
+    svc_skeleton->ops = AXIS2_MALLOC(
         (*env)->allocator, sizeof(axis2_skeleton_ops_t));
 
-    skeleton_impl->svc_skeleton.ops->free = calc_free;
-    skeleton_impl->svc_skeleton.ops->invoke = calc_invoke;
-    skeleton_impl->svc_skeleton.ops->on_fault = calc_on_fault;
-    skeleton_impl->svc_skeleton.ops->get_function_liste = calc_get_function_list;
+    svc_skeleton->ops->free = calc_free;
+    svc_skeleton->ops->invoke = calc_invoke;
+    svc_skeleton->ops->on_fault = calc_on_fault;
 
-    return (&(skeleton_impl->svc_skeleton));
+    return svc_skeleton;
 }
 
 int axis2_svc_skeleton_init(axis2_svc_skeleton_t *svc_skeleton,
                         axis2_env_t **env)
 {
-    axis2_svc_skeleton_impl_t *skeleton_impl = NULL;
-
-    skeleton_impl = AXIS2_INTF_TO_IMPL(svc_skeleton);
-    
-    skeleton_impl->func_array = axis2_array_create(env, 0);
-    AXIS2_ARRAY_ADD(skeleton_impl->func_array, env, "add");
-    AXIS2_ARRAY_ADD(skeleton_impl->func_array, env, "multiply");
+    svc_skeleton->func_array = axis2_array_create(env, 0);
+    AXIS2_ARRAY_ADD(svc_skeleton->func_array, env, "add");
+    AXIS2_ARRAY_ADD(svc_skeleton->func_array, env, "multiply");
 
     /* Any initialization stuff of calculator goes here */
-    return AXIS2_FAILURE;
+    return AXIS2_SUCCESS;
 }
 
 int 
 calc_free(axis2_svc_skeleton_t *svc_skeleton)
 {
-    axis2_svc_skeleton_impl_t *skeleton_impl = NULL;
-
-    skeleton_impl = AXIS2_INTF_TO_IMPL(svc_skeleton);
-    
     if(svc_skeleton->ops)
     {
         AXIS2_FREE((*env)->allocator, svc_skeleton->ops);
         svc_skeleton->ops = NULL;
     }
 
-    if(skeleton_impl->func_array)
+    if(svc_skeleton->func_array)
     {
-        AXIS2_ARRAY_LIST_FREE(skeleton_impl->func_array, env);
-        skeleton_impl->func_array = NULL;
+        AXIS2_ARRAY_LIST_FREE(svc_skeleton->func_array, env);
+        svc_skeleton->func_array = NULL;
     }
     
-    if(skeleton_impl)
+    if(svc_skeleton)
     {
-        AXIS2_FREE((*env)->allocator, skeleton_impl);
-        skeleton_impl = NULL;
+        AXIS2_FREE((*env)->allocator, svc_skeleton);
+        svc_skeleton = NULL;
     }
     
 }
@@ -92,8 +88,32 @@ axis2_om_node_t *calc_on_fault(axis2_svc_skeleton_t *svc_skeleton,
 {
 }
 
-axis2_array_list_t *calc_get_function_list(axis2_svc_skeleton_t *svc_skeleton,
-                                        axis2_env_t **env)
+/**
+ * Following block distinguish the exposed part of the dll.
+ */
+extern "C" {
+
+int axis2_get_instance(struct axis2_svc_skeleton **inst)
 {
-    return AXIS2_INTF_TO_IMPL(svc_skeleton)->func_array;
+    axis2_status_t status = AXIS2_FAILURE;
+    
+	*inst = axis2_svc_skeleton_create();
+    if(NULL != *inst)
+    {
+        status = *inst->init();
+    }
+
+    return status;
+}
+
+int axis2_remove_instance(axis2_svc_skeleton *inst)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+	if (inst)
+	{
+        status = AXIS2_SVC_SKELETON_FREE(inst);
+    }
+    return status;
+}
+
 }
