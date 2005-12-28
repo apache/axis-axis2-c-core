@@ -27,7 +27,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_allocator.h>
-/*#include <axis2_endpoint_ref.h>*/
+#include <axis2_endpoint_ref.h>
 #include <axis2_ctx.h>
 
 #include <axis2_wsdl.h>
@@ -66,7 +66,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_listener_ops
 	axis2_status_t (AXIS2_CALL *stop)(
                     axis2_transport_listener_t *transport_listener,
 			        axis2_env_t **env);
-	axis2_status_t (AXIS2_CALL *reply_to_epr)(
+	axis2_endpoint_ref_t* (AXIS2_CALL *reply_to_epr)(
                     axis2_transport_listener_t *transport_listener,
 			        axis2_env_t **env,
                     axis2_char_t *svc_name);

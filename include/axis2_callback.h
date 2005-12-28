@@ -26,6 +26,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_async_result.h>
+#include <axis2_soap_envelope.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -88,10 +89,10 @@ struct axis2_callback_ops
     axis2_status_t (AXIS2_CALL *set_complete)(struct axis2_callback *callback, 
         axis2_env_t **env, 
         axis2_bool_t complete);
-    /* TODO axis2_soap_envelope_t* (AXIS2_CALL *get_envelope)(struct axis2_callback *callback, 
+    axis2_soap_envelope_t* (AXIS2_CALL *get_envelope)(struct axis2_callback *callback, 
         axis2_env_t **env);
     axis2_status_t (AXIS2_CALL *set_envelope)(struct axis2_callback *callback, 
-        axis2_env_t **env, axis2_soap_envelope_t *envelope);*/
+        axis2_env_t **env, axis2_soap_envelope_t *envelope);
     int (AXIS2_CALL *get_error)(struct axis2_callback *callback, 
         axis2_env_t **env);
     axis2_status_t (AXIS2_CALL *set_error)(struct axis2_callback *callback, 

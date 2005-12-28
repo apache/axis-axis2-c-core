@@ -134,7 +134,7 @@ axis2_soap_envelope_create(axis2_env_t **env, axis2_om_namespace_t *ns);
 
 #define AXIS2_SOAP_ENVELOPE_GET_HEADDER(envelope, env) ((envelope)->ops->get_header(envelope, env))
 #define AXIS2_SOAP_ENVELOPE_ADD_HEADER(envelope, env, namespace_uri, name) ((envelope)->ops->add_header(envelope, env, namespace_uri, name))
-#define AXIS2_SOAP_ENVELOPE_GET_BOBY(envelope, env) ((envelope)->ops->get_body(envelope, env))
+#define AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env) ((envelope)->ops->get_body(envelope, env))
 #define AXIS2_SOAP_ENVELOPE_SERIALIZE(envelope, env, om_output, cache) ((envelope)->ops->serialize(envelope, env, om_output, cache))
 #define AXIS2_SOAP_ENVELOPE_FREE(envelope, env) ((envelope)->ops->free(envelope, env))
 #define AXIS2_SOAP_ENVELOPE_GET_BASE(envelope, env) ((envelope)->ops->get_base(envelope, env))
