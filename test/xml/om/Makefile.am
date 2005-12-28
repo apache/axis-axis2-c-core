@@ -14,4 +14,5 @@ test_om_LDADD   =   \
                     
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
             -I$(top_builddir)/modules/xml/parser \
-            -I$(top_builddir)/modules/util/src 
+            -I$(top_builddir)/modules/util/src \
+            -I$(top_builddir)/modules/platforms

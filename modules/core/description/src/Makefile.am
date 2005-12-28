@@ -12,7 +12,8 @@ libaxis2_description_la_SOURCES = param_container.c \
                             flow.c \
                             flow_container.c \
                             transport_in_desc.c \
-                            transport_out_desc.c
+                            transport_out_desc.c \
+                            dll_desc.c
 
 libaxis2_description_la_LIBADD =
 

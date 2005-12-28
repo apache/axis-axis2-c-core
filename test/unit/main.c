@@ -10,9 +10,10 @@ void RunAllTests(void) {
 
     CuSuiteAddSuite(suite, axis2_utilGetSuite());
     CuSuiteAddSuite(suite, axis2_omGetSuite());
+    
     CuSuiteAddSuite(suite, axis2_phaseresolverGetSuite());
     CuSuiteAddSuite(suite, axis2_descriptionGetSuite());
-
+    
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);
     CuSuiteDetails(suite, output);

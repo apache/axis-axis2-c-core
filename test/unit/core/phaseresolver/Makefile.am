@@ -12,7 +12,8 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/description/src \
             -I$(top_builddir)/modules/core/transport \
             -I$(top_builddir)/modules/wsdl/src \
-            -I${CUTEST_HOME}/include
+            -I${CUTEST_HOME}/include \
+            -I$(top_builddir)/modules/platforms
 
 prgbin_PROGRAMS = phaseresolver_test
 phaseresolver_test_SOURCES = main.c

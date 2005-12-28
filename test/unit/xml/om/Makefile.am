@@ -9,7 +9,8 @@ include_HEADERS=$(top_builddir)/test/unit/xml/om/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
-            -I$(top_builddir)/modules/util/src
+            -I$(top_builddir)/modules/util/src \
+            -I$(top_builddir)/modules/platforms
 
 prgbin_PROGRAMS = om_test
 om_test_SOURCES = main.c
