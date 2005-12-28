@@ -3,7 +3,6 @@ AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_deployment_la_SOURCES = phases_info.c \
                                     desc_builder.c \
                                     dep_engine.c \
-                                    ws_info.c \
                                     ws_info_list.c \
                                     arch_reader.c \
                                     arch_file_data.c
