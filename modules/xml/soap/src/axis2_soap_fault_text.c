@@ -204,7 +204,7 @@ axis2_soap_fault_text_free(axis2_soap_fault_text_t *fault_text,
         AXIS2_FREE((*env)->allocator, fault_text->ops);
         fault_text->ops = NULL; 
     }    
-    if(fault_text_impl->lang_ns_used = AXIS2_FALSE && fault_text_impl->lang_namespace)
+    if(fault_text_impl->lang_ns_used == AXIS2_FALSE && fault_text_impl->lang_namespace)
     {
         AXIS2_OM_NAMESPACE_FREE(fault_text_impl->lang_namespace, env);
         fault_text_impl->lang_namespace = NULL;

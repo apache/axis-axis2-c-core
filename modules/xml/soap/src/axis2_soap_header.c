@@ -232,7 +232,7 @@ axis2_soap_header_examine_header_blocks
                                  axis2_env_t **env,
                                  axis2_char_t* param_role)
 {
-    AXIS3_FUNC_PARAM_CHECK(header, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(header, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, param_role, NULL);
     return AXIS2_INTF_TO_IMPL(header)->header_blocks;
 
