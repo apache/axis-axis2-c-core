@@ -117,6 +117,14 @@ axis2_desc_builder_create_with_file_and_dep_engine (
         return NULL;
     }
     
+    desc_builder_impl->file_name = AXIS2_STRDUP(file_name, env);
+    if(!desc_builder_impl->file_name)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    desc_builder_impl->engine = engine;
+    
     desc_builder_impl->desc_builder.ops = NULL;
     
 	desc_builder_impl->desc_builder.ops = 
@@ -156,17 +164,24 @@ axis2_status_t AXIS2_CALL
 axis2_desc_builder_free (axis2_desc_builder_t *desc_builder, 
                             axis2_env_t **env)
 {
-    axis2_desc_builder_impl_t *feature_impl = NULL;
+    axis2_desc_builder_impl_t *desc_builder_impl = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(desc_builder, env, AXIS2_FAILURE);
     
-    feature_impl = AXIS2_INTF_TO_IMPL(desc_builder);
+    desc_builder_impl = AXIS2_INTF_TO_IMPL(desc_builder);
+    
+    if(!desc_builder_impl->file_name)
+    {
+        AXIS2_FREE((*env)->allocator, desc_builder_impl->file_name);
+        desc_builder_impl->file_name = NULL;
+    }
+    desc_builder_impl->engine = NULL;
     
 	if(NULL != desc_builder->ops)
         AXIS2_FREE((*env)->allocator, desc_builder->ops);
     
-    AXIS2_FREE((*env)->allocator, feature_impl);
-    feature_impl = NULL;
+    AXIS2_FREE((*env)->allocator, desc_builder_impl);
+    desc_builder_impl = NULL;
     
 	return AXIS2_SUCCESS;
 }

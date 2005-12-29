@@ -51,7 +51,7 @@ extern "C"
     typedef struct axis2_arch_file
     {
         axis2_char_t *name;
-        time_t time_stamp;
+        AXIS2_TIME_T time_stamp;
         
     } axis2_arch_file_t;
 

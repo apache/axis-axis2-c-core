@@ -153,6 +153,20 @@ extern "C"
  */
 #define AXIS2_PATH_SEP_CHAR "/"
 
+/**
+ * Platform specific time
+ */
+#define AXIS2_TIME_T time_t
+
+/**
+ * Platform specific file handling
+ */
+#define AXIS2_R_OK R_OK /* test for read permission */
+#define AXIS2_W_OK W_OK /* test for write permission */
+#define AXIS2_X_OK X_OK /* test for execute or search permission */
+#define AXIS2_F_OK F_OK /* test whether the directories leading to the file can be 
+                      searched and the file exists */
+
 /** @} */
 #ifdef __cplusplus
 }

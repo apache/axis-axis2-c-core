@@ -22,14 +22,6 @@ axis2_array_list_t *AXIS2_CALL
 axis2_dir_handler_list_dir(axis2_env_t **env,
                             axis2_char_t *pathname);
 
-/*int main(void)
-{
-	char *pathname = NULL;
-	pathname = strdup("/home/damitha/projects/c/install/lib");
-    list_dir(pathname);
-}
-*/
-
 /**
  * List the .zip or tar.gz files in the given path
  * @param pathname path to the directory where your modules or services are
