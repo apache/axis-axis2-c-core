@@ -85,24 +85,24 @@ module.include.files=\
 	include/axis2_log.h\
 	include/axis2_stream.h\
 	include/axis2_om_output.h\
-	modules/xml/guththila/src/guththila_xml_pull_parser.h\
-	modules/xml/guththila/src/guththila_attribute.h\
-	modules/xml/guththila/src/guththila_buffer.h\
-	modules/xml/guththila/src/guththila_depth.h\
-	modules/xml/guththila/src/guththila_errno.h\
-	modules/xml/guththila/src/guththila_namespace.h\
-	modules/xml/guththila/src/guththila_reader.h\
-	modules/xml/guththila/src/guththila_stack.h\
-	modules/xml/guththila/src/guththila_token.h\
-	modules/xml/guththila/src/guththila_unicode.h\
-	modules/xml/guththila/src/guththila_xml_pull_parser.h\
+	modules/xml/guththila/guththila_xml_pull_parser.h\
+	modules/xml/guththila/guththila_attribute.h\
+	modules/xml/guththila/guththila_buffer.h\
+	modules/xml/guththila/guththila_depth.h\
+	modules/xml/guththila/guththila_errno.h\
+	modules/xml/guththila/guththila_namespace.h\
+	modules/xml/guththila/guththila_reader.h\
+	modules/xml/guththila/guththila_stack.h\
+	modules/xml/guththila/guththila_token.h\
+	modules/xml/guththila/guththila_unicode.h\
+	modules/xml/guththila/guththila_xml_pull_parser.h\
 	include/axis2_core.h\
-	modules/util/src/axis2_error_default.h\
-	modules/util/src/axis2_log_default.h\
-	modules/util/src/axis2_stream_default.h\
-	modules/util/src/axis2_file_diff.h\
-	modules/util/src/axis2_hash.h\
-	modules/util/src/axis2_string.h\
+	modules/util/axis2_error_default.h\
+	modules/util/axis2_log_default.h\
+	modules/util/axis2_stream_default.h\
+	modules/util/axis2_file_diff.h\
+	modules/util/axis2_hash.h\
+	modules/util/axis2_string.h\
 	include/axis2_handler.h\
 	include/axis2_wsdl_component.h\
 	include/axis2_env.h\
@@ -115,12 +115,12 @@ module.include.files=\
 	include/axis2_wsdl_svc.h\
 	include/axis2_flow.h\
 	include/axis2_flow_container.h\
-	modules/util/src/axis2_array_list.h\
+	modules/util/axis2_array_list.h\
 	include/axis2_handler_desc.h\
 	include/axis2_module_desc.h\
 	include/axis2_wsdl_binding.h\
 	include/axis2_wsdl_endpoint.h\
-	modules/util/src/axis2_linked_list.h\
+	modules/util/axis2_linked_list.h\
 	include/axis2_wsdl_extensible_component.h\
 	include/axis2_wsdl_feature.h\
 	include/axis2_wsdl_property.h\
@@ -149,8 +149,8 @@ module.include.files=\
 	test/unit/util/util_log_test.h\
 	test/unit/util/util_stream_test.h\
 	test/unit/util/util_test.h\
-	modules/wsdl/src/axis2_wsdl.h\
-	modules/core/description/src/axis2_description.h\
+	modules/wsdl/axis2_wsdl.h\
+	modules/core/description/axis2_description.h\
 	test/unit/core/phaseresolver/test_resolver.h\
 	include/axis2_disp.h\
 	include/axis2_conf_ctx.h\
@@ -179,82 +179,95 @@ module.include.files=\
 	include/axis2_op_ctx.h\
 	include/axis2_wsdl_binding_op.h\
 	include/axis2_wsdl_op.h\
-	include/axis2_wsdl_soap_op.h
+	include/axis2_wsdl_soap_op.h\
+	include/axis2_desc_builder.h\
+	modules/core/deployment/axis2_deployment.h\
+	include/axis2_om_child_element_iterator.h\
+	include/axis2_om_children_qname_iterator.h\
+	include/axis2_om_children_with_specific_attribute_iterator.h\
+	include/axis2_class_loader.h\
+	include/platforms/axis2_platform_auto_sense.h\
+	include/platforms/unix/axis2_unix.h\
+	include/axis2_dll_desc.h\
+	include/axis2_svc_skeleton.h\
+	include/axis2_dep_engine.h\
+	include/axis2_arch_file_data.h\
+	include/axis2_arch_reader.h\
+	include/axis2_ws_info.h\
+	include/axis2_ws_info_list.h\
+	modules/util/axis2_dir_handler.h\
+	test/unit/util/util_dir_handler_test.h
 
 module.source.name=.
 module.source.type=
 module.source.files=\
-	modules/common/src/axis2.c\
+	modules/common/axis2.c\
 	modules/core/description/test/description_test.c\
 	modules/common/test/common_test.c\
 	modules/core/engine/test/engine_test.c\
-	modules/xml/guththila/src/guththila_xml_stream_writer.c\
-	modules/xml/guththila/src/guththila_xml_pull_parser.c\
-	modules/xml/om/src/axis2_om_attribute.c\
-	modules/xml/om/src/axis2_om_comment.c\
-	modules/xml/om/src/axis2_om_doctype.c\
-	modules/xml/om/src/axis2_om_document.c\
-	modules/xml/om/src/axis2_om_element.c\
-	modules/xml/om/src/axis2_om_namespace.c\
-	modules/xml/om/src/axis2_om_processing_instruction.c\
-	modules/xml/om/src/axis2_om_text.c\
-	modules/xml/om/src/axis2_om_stax_builder.c\
-	modules/xml/om/src/axis2_om_node.c\
+	modules/xml/om/axis2_om_attribute.c\
+	modules/xml/om/axis2_om_comment.c\
+	modules/xml/om/axis2_om_doctype.c\
+	modules/xml/om/axis2_om_document.c\
+	modules/xml/om/axis2_om_element.c\
+	modules/xml/om/axis2_om_namespace.c\
+	modules/xml/om/axis2_om_processing_instruction.c\
+	modules/xml/om/axis2_om_text.c\
+	modules/xml/om/axis2_om_stax_builder.c\
+	modules/xml/om/axis2_om_node.c\
 	modules/test/unit/main.c\
 	modules/test/util/test_util.c\
 	modules/test/common/test_common.c\
-	modules/test/om/src/test_om.c\
-	modules/xml/om/src/axis2_om_output.c\
-	modules/core/description/src/module.c\
-	modules/wsdl/src/wsdl_component.c\
-	modules/wsdl/src/wsdl_operation.c\
-	modules/util/src/allocator.c\
-	modules/util/src/error.c\
-	modules/util/src/file_diff.c\
-	modules/util/src/hash.c\
-	modules/util/src/log.c\
-	modules/util/src/qname.c\
-	modules/util/src/stream.c\
-	modules/util/src/string.c\
-	modules/core/description/src/param_container.c\
-	modules/core/description/src/param.c\
-	modules/util/src/env.c\
-	modules/core/description/src/svc.c\
-	modules/core/description/src/svc_grp.c\
-	modules/core/engine/src/msg_recv.c\
-	modules/core/context/src/msg_ctx.c\
-	modules/wsdl/src/wsdl_svc.c\
-	modules/core/description/src/flow.c\
-	modules/core/description/src/flow_container.c\
-	modules/util/src/array_list.c\
-	modules/core/description/src/handler_desc.c\
-	modules/core/engine/src/handler.c\
-	modules/wsdl/src/wsdl_binding.c\
-	modules/wsdl/src/wsdl_endpoint.c\
-	modules/wsdl/src/wsdl_interface.c\
-	modules/util/src/linked_list.c\
-	modules/wsdl/src/wsdl_extensible_component.c\
-	modules/wsdl/src/wsdl_feature.c\
-	modules/wsdl/src/wsdl_property.c\
-	modules/wsdl/src/wsdl_binding_fault.c\
-	modules/wsdl/src/wsdl_binding_msg_ref.c\
-	modules/wsdl/src/wsdl_msg_ref.c\
-	modules/wsdl/src/wsdl_fault_ref.c\
-	modules/core/description/src/module_desc.c\
-	modules/core/description/src/transport_in_desc.c\
-	modules/core/description/src/transport_out_desc.c\
-	modules/core/description/src/phase_rule.c\
-	modules/wsdl/src/wsdl_extensible_element.c\
-	modules/core/phaseresolver/src/phase_holder.c\
-	modules/core/phaseresolver/src/phase_resolver.c\
-	modules/core/context/src/ctx.c\
-	modules/xml/parser/guththila/impl/src/guththila_xml_stream_writer.c\
-	modules/core/engine/src/phase.c\
-	modules/core/transport/src/transport_listener.c\
-	modules/core/transport/src/transport_sender.c\
-	modules/core/deployment/src/phases_info.c\
-	modules/xml/parser/libxml2/src/axis2_libxml2_reader_wrapper.c\
-	modules/xml/parser/libxml2/src/axis2_libxml2_writer_wrapper.c\
+	modules/test/om/test_om.c\
+	modules/xml/om/axis2_om_output.c\
+	modules/core/description/module.c\
+	modules/wsdl/wsdl_component.c\
+	modules/util/allocator.c\
+	modules/util/error.c\
+	modules/util/file_diff.c\
+	modules/util/hash.c\
+	modules/util/log.c\
+	modules/util/qname.c\
+	modules/util/stream.c\
+	modules/util/string.c\
+	modules/core/description/param_container.c\
+	modules/core/description/param.c\
+	modules/util/env.c\
+	modules/core/description/svc.c\
+	modules/core/description/svc_grp.c\
+	modules/core/context/msg_ctx.c\
+	modules/wsdl/wsdl_svc.c\
+	modules/core/description/flow.c\
+	modules/core/description/flow_container.c\
+	modules/util/array_list.c\
+	modules/core/description/handler_desc.c\
+	modules/core/engine/handler.c\
+	modules/wsdl/wsdl_binding.c\
+	modules/wsdl/wsdl_endpoint.c\
+	modules/wsdl/wsdl_interface.c\
+	modules/util/linked_list.c\
+	modules/wsdl/wsdl_extensible_component.c\
+	modules/wsdl/wsdl_feature.c\
+	modules/wsdl/wsdl_property.c\
+	modules/wsdl/wsdl_binding_fault.c\
+	modules/wsdl/wsdl_binding_msg_ref.c\
+	modules/wsdl/wsdl_msg_ref.c\
+	modules/wsdl/wsdl_fault_ref.c\
+	modules/core/description/module_desc.c\
+	modules/core/description/transport_in_desc.c\
+	modules/core/description/transport_out_desc.c\
+	modules/core/description/phase_rule.c\
+	modules/wsdl/wsdl_extensible_element.c\
+	modules/core/phaseresolver/phase_holder.c\
+	modules/core/phaseresolver/phase_resolver.c\
+	modules/core/context/ctx.c\
+	modules/xml/parser/guththila/impl/guththila_xml_stream_writer.c\
+	modules/core/engine/phase.c\
+	modules/core/transport/transport_listener.c\
+	modules/core/transport/transport_sender.c\
+	modules/core/deployment/phases_info.c\
+	modules/xml/parser/libxml2/axis2_libxml2_reader_wrapper.c\
+	modules/xml/parser/libxml2/axis2_libxml2_writer_wrapper.c\
 	test/unit/util/main.c\
 	test/unit/util/util_array_list_test.c\
 	test/unit/util/util_error_test.c\
@@ -262,49 +275,64 @@ module.source.files=\
 	test/unit/util/util_linked_list_test.c\
 	test/unit/util/util_log_test.c\
 	test/unit/util/util_stream_test.c\
-	test/unit/util/util_stream_test.h\
 	test/unit/util/util_test.c\
 	test/util/test_util.c\
 	test/unit/core/phaseresolver/test_resolver.c\
-	modules/core/engine/src/disp.c\
-	modules/core/context/src/conf_ctx.c\
-	modules/core/context/src/svc_ctx.c\
-	modules/core/context/src/svc_grp_ctx.c\
-	modules/core/addr/src/any_content_type.c\
-	modules/core/addr/src/endpoint_ref.c\
-	modules/core/addr/src/msg_info_headers.c\
-	modules/core/addr/src/relates_to.c\
-	modules/core/addr/src/svc_name.c\
-	modules/core/engine/src/addr_disp.c\
-	modules/core/engine/src/disp_checker.c\
-	modules/core/engine/src/event.c\
-	modules/core/engine/src/req_uri_disp.c\
-	modules/core/engine/src/soap_action_disp.c\
-	modules/core/engine/src/soap_body_disp.c\
-	modules/core/transport/http/src/axis2_http_header.c\
-	modules/core/transport/http/src/axis2_http_request_line.c\
-	modules/core/transport/http/src/axis2_http_response_writer.c\
-	modules/core/transport/http/src/axis2_http_simple_request.c\
-	modules/core/transport/http/src/axis2_http_simple_response.c\
-	modules/core/transport/http/src/axis2_http_status_line.c\
-	modules/core/transport/http/src/axis2_http_transport_utils.c\
-	modules/core/transport/http/src/axis2_http_worker.c\
-	modules/core/transport/http/src/axis2_simple_http_svr_conn.c\
-	modules/xml/om/src/axis2_om_children_iterator.c\
-	modules/xml/parser/guththila/src/guththila_xml_reader_wrapper.c\
-	modules/xml/parser/guththila/src/guththila_xml_writer_wrapper.c\
+	modules/core/engine/disp.c\
+	modules/core/context/conf_ctx.c\
+	modules/core/context/svc_ctx.c\
+	modules/core/context/svc_grp_ctx.c\
+	modules/core/addr/any_content_type.c\
+	modules/core/addr/endpoint_ref.c\
+	modules/core/addr/msg_info_headers.c\
+	modules/core/addr/relates_to.c\
+	modules/core/addr/svc_name.c\
+	modules/core/engine/addr_disp.c\
+	modules/core/engine/disp_checker.c\
+	modules/core/engine/event.c\
+	modules/core/engine/req_uri_disp.c\
+	modules/core/engine/soap_action_disp.c\
+	modules/core/engine/soap_body_disp.c\
+	modules/core/transport/http/axis2_http_header.c\
+	modules/core/transport/http/axis2_http_request_line.c\
+	modules/core/transport/http/axis2_http_response_writer.c\
+	modules/core/transport/http/axis2_http_simple_request.c\
+	modules/core/transport/http/axis2_http_simple_response.c\
+	modules/core/transport/http/axis2_http_status_line.c\
+	modules/core/transport/http/axis2_http_transport_utils.c\
+	modules/core/transport/http/axis2_http_worker.c\
+	modules/core/transport/http/axis2_simple_http_svr_conn.c\
+	modules/xml/om/axis2_om_children_iterator.c\
+	modules/xml/parser/guththila/guththila_xml_reader_wrapper.c\
+	modules/xml/parser/guththila/guththila_xml_writer_wrapper.c\
 	test/unit/core/description/description_test.c\
 	test/unit/core/description/test_optr.c\
-	modules/core/description/src/op.c\
-	modules/core/engine/src/conf.c\
-	modules/core/context/src/op_ctx.c\
-	modules/wsdl/src/wsdl_binding_op.c\
-	modules/wsdl/src/wsdl_op.c\
-	modules/wsdl/src/wsdl_soap_op.c\
+	modules/core/description/op.c\
+	modules/core/engine/conf.c\
+	modules/core/context/op_ctx.c\
+	modules/wsdl/wsdl_binding_op.c\
+	modules/wsdl/wsdl_op.c\
+	modules/wsdl/wsdl_soap_op.c\
 	test/unit/core/description/test_op.c\
-	test/unit/core/description/test_op.h\
 	test/unit/core/description/test_svc.c\
-	test/unit/core/description/test_svc.h
+	modules/xml/om/axis2_om_children_qname_iterator.c\
+	modules/xml/om/axis2_om_child_element_iterator.c\
+	modules/xml/om/axis2_om_children_with_specific_attribute_iterator.c\
+	modules/core/deployment/desc_builder.c\
+	modules/core/deployment/repos_listener.c\
+	test/xml/om/test_om.c\
+	modules/core/description/dll_desc.c\
+	modules/util/class_loader.c\
+	modules/core/engine/engine.c\
+	modules/core/receivers/msg_recv.c\
+	modules/core/transport/http/axis2_http_out_transport_info.c\
+	modules/core/deployment/dep_engine.c\
+	modules/core/deployment/arch_file_data.c\
+	modules/core/deployment/arch_reader.c\
+	modules/core/deployment/ws_info.c\
+	modules/core/deployment/ws_info_list.c\
+	modules/util/dir_handler.c\
+	test/unit/util/util_dir_handler_test.c
 
 module.pixmap.name=.
 module.pixmap.type=
