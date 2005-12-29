@@ -151,7 +151,7 @@ axis2_wsdl_component_free (axis2_wsdl_component_t *wsdl_component,
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
-        void *key = NULL;
+        const void *key = NULL;
         for (hi = axis2_hash_first (component_impl->component_properties, env); hi;
                  hi = axis2_hash_next ( env, hi))
         {
@@ -238,7 +238,7 @@ axis2_wsdl_component_set_component_properties(
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
-        void *key = NULL;
+        const void *key = NULL;
         for (hi = axis2_hash_first (component_impl->component_properties, env); hi;
                  hi = axis2_hash_next ( env, hi))
         {

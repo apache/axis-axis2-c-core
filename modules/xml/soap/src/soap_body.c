@@ -88,7 +88,7 @@ axis2_soap_body_create(axis2_env_t **env, struct axis2_soap_envelope *envelope, 
     /*get parent node from SOAP envelope */
     if (envelope)
     {
-        parent = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(envelope, env);
+        parent = AXIS2_SOAP_ENVELOPE_GET_BASE(envelope, env);
     }
     
     ele = axis2_om_element_create(env, parent, AXIS2_SOAP_BODY_LOCAL_NAME, ns, &(body_impl->base));
