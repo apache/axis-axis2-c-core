@@ -9,10 +9,10 @@ libtest_description_la_SOURCES = description_test.c \
 include_HEADERS=$(top_builddir)/test/unit/core/description/*.h
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util/src \
-            -I$(top_builddir)/modules/core/description/src \
+            -I$(top_builddir)/modules/util \
+            -I$(top_builddir)/modules/core/description \
             -I$(top_builddir)/modules/core/transport \
-            -I$(top_builddir)/modules/wsdl/src \
+            -I$(top_builddir)/modules/wsdl \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/platforms
 

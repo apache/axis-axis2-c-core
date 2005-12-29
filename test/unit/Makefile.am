@@ -29,8 +29,8 @@ main_unit_test_suite_LDADD   =   \
 
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util/src \
+            -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/core/transport \
-            -I$(top_builddir)/modules/core/description/src \
-            -I$(top_builddir)/modules/wsdl/src \
+            -I$(top_builddir)/modules/core/description \
+            -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/platforms

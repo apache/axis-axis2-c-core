@@ -15,7 +15,7 @@ include_HEADERS=$(top_builddir)/test/unit/util/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
-            -I$(top_builddir)/modules/util/src \
+            -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/platforms
 
 prgbin_PROGRAMS = util_test

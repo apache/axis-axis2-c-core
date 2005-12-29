@@ -7,7 +7,7 @@ include_HEADERS=$(top_builddir)/test/unit/core/context/*.h
 
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util/src \
+            -I$(top_builddir)/modules/util \
             -I${CUTEST_HOME}/include
 
 prgbin_PROGRAMS = context_test

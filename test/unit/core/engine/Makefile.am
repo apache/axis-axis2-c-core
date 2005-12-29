@@ -6,7 +6,7 @@ libtest_engine_la_SOURCES = engine_test.c
 include_HEADERS=$(top_builddir)/test/unit/core/engine/*.h
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util/src \
+            -I$(top_builddir)/modules/util \
             -I${CUTEST_HOME}/include
 
 prgbin_PROGRAMS = engine_test

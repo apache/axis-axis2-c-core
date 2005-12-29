@@ -12,7 +12,7 @@ test_om_LDADD   =   \
                     -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \
                     -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME)
                     
-INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
+INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/xml/parser \
-            -I$(top_builddir)/modules/util/src \
+            -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/platforms
