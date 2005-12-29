@@ -19,7 +19,6 @@ libaxis2_wsdl_la_SOURCES = wsdl_op.c \
 
 libaxis2_wsdl_la_LIBADD = 
 INCLUDES = -I$(top_builddir)/include \
-            -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/core/description \
             -I$(top_builddir)/modules/core/transport \

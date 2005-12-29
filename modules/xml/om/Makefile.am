@@ -18,7 +18,6 @@ libaxis2_om_la_SOURCES = axis2_om_attribute.c \
 
 libaxis2_om_la_LIBADD =  ../../util/libaxis2_util.la 
 INCLUDES = -I$(top_builddir)/include \
-            -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/xml/parser \
             -I$(top_builddir)/modules/platforms

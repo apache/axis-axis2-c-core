@@ -17,7 +17,7 @@ libaxis2_description_la_SOURCES = param_container.c \
 
 libaxis2_description_la_LIBADD =
 
-INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
+INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/xml/parser \
             -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/wsdl \

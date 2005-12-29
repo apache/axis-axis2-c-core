@@ -8,8 +8,7 @@ libaxis2_context_la_SOURCES = ctx.c \
                                 conf_ctx.c
 
 libaxis2_context_la_LIBADD = 
-INCLUDES = -I${CUTEST_HOME}/include \
-            -I$(top_builddir)/modules/xml/parser \
+INCLUDES = -I$(top_builddir)/modules/xml/parser \
             -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/wsdl \

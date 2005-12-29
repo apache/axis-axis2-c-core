@@ -5,7 +5,7 @@ libaxis2_transport_la_SOURCES = transport_listener.c \
                             transport_sender.c
 
 libaxis2_transport_la_LIBADD = 
-INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
+INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/core/transport \
             -I$(top_builddir)/modules/platforms

@@ -4,9 +4,7 @@ AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_receivers_la_SOURCES = msg_recv.c
 
 libaxis2_receivers_la_LIBADD = 
-INCLUDES = -I${CUTEST_HOME}/include \
-            -I$(top_builddir)/modules/xml/guththila \
-            -I$(top_builddir)/include \
+INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/core/description \
             -I$(top_builddir)/modules/wsdl \
