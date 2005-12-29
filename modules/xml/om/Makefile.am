@@ -16,7 +16,7 @@ libaxis2_om_la_SOURCES = axis2_om_attribute.c \
                         axis2_om_child_element_iterator.c \
                         axis2_om_children_with_specific_attribute_iterator.c
 
-libaxis2_om_la_LIBADD =  ../../../util/src/libaxis2_util.la 
+libaxis2_om_la_LIBADD =  ../../util/libaxis2_util.la 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util \

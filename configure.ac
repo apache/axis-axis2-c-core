@@ -7,7 +7,7 @@ AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 
-AC_CONFIG_SRCDIR([modules/common/src/axis2.c])
+#AC_CONFIG_SRCDIR([modules/common/src/axis2.c])
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -102,9 +102,7 @@ AC_CONFIG_FILES([Makefile \
     modules/xml/parser/guththila/Makefile \
     modules/xml/parser/guththila/impl/Makefile \
     modules/xml/parser/guththila/impl/src/Makefile \
-    modules/xml/parser/guththila/src/Makefile \
     modules/xml/parser/libxml2/Makefile \
-    modules/xml/parser/libxml2/src/Makefile \
     modules/xml/soap/Makefile \
     modules/xml/om/Makefile \
     modules/util/Makefile \
