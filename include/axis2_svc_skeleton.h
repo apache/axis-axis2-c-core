@@ -18,6 +18,7 @@
 #define AXIS2_SVC_SKELETON_H
 
 #include <axis2_om_node.h>
+#include <axis2_array_list.h>
 
 #ifdef __cplusplus
 extern "C"
