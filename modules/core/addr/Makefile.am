@@ -5,5 +5,5 @@ libaxis2_addr_la_SOURCES = relates_to.c svc_name.c any_content_type.c endpoint_r
 libaxis2_addr_la_LIBADD = 
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util/src \
+            -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/platforms
