@@ -150,4 +150,6 @@ axis2_soap12_fault_detail_create(axis2_env_t **env,
 }
 #endif
  
- #endif /* AXIS2_SOAP_FAULT_DETAIL_H */
+#endif /* AXIS2_SOAP_FAULT_DETAIL_H */
+
+

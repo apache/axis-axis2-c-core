@@ -322,7 +322,6 @@ axis2_soap_fault_set_code(axis2_soap_fault_t *fault,
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
     axis2_om_node_t *code_node = NULL;
-    axis2_om_node_t *this_node = NULL;
     axis2_om_node_t *my_node = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(fault, env, AXIS2_FAILURE);
@@ -383,7 +382,6 @@ axis2_soap_fault_set_reason(axis2_soap_fault_t *fault,
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
     axis2_om_node_t *reason_node = NULL;
-    axis2_om_node_t *this_node = NULL;
     axis2_om_node_t *my_node = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(fault, env, AXIS2_FAILURE);
@@ -445,7 +443,6 @@ axis2_soap_fault_set_node(axis2_soap_fault_t *fault,
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
     axis2_om_node_t *node_node = NULL;
-    axis2_om_node_t *this_node = NULL;
     axis2_om_node_t *my_node = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(fault, env, AXIS2_FAILURE);
@@ -508,7 +505,6 @@ axis2_soap_fault_set_role(axis2_soap_fault_t *fault,
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
     axis2_om_node_t *role_node = NULL;
-    axis2_om_node_t *this_node = NULL;
     axis2_om_node_t *my_node = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(fault, env, AXIS2_FAILURE);
@@ -570,7 +566,6 @@ axis2_soap_fault_set_detail(axis2_soap_fault_t *fault,
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
     axis2_om_node_t *detail_node = NULL;
-    axis2_om_node_t *this_node = NULL;
     axis2_om_node_t *my_node = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(fault, env, AXIS2_FAILURE);

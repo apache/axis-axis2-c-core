@@ -332,4 +332,5 @@ axis2_om_document_serialize(axis2_om_document_t *document,
         return AXIS2_FAILURE;
     }
     return AXIS2_OM_NODE_SERIALIZE(document_impl->root_element, env, om_output);
-}                            
+}
+

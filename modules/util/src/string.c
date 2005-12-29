@@ -59,7 +59,7 @@ axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, axis2_env_t **env)
     }
     if(NULL == s2)
     {
-        return (axis2_char_t)AXIS2_STRDUP(s1, env);
+        return (axis2_char_t*)AXIS2_STRDUP(s1, env);
     }
     alloc_len = axis2_strlen(s1) + axis2_strlen(s2) + 1;
     ret = (axis2_char_t*)AXIS2_MALLOC((*env)->allocator,

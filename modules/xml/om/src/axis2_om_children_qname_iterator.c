@@ -254,13 +254,14 @@ axis2_om_children_qname_iterator_qname_matches(axis2_env_t **env,
         ele_nsuri = AXIS2_QNAME_GET_URI(element_qname, env);
     }
     
-    lparts_match = !match_lpart || 
-                    (AXIS2_STRCMP(match_lpart,"") == 0) ||
-                    element_qname && (AXIS2_STRCMP(ele_lpart, match_lpart) == 0) ;
+    lparts_match = ( !match_lpart || 
+                     (AXIS2_STRCMP(match_lpart,"") == 0) ||
+                     (element_qname && (AXIS2_STRCMP(ele_lpart, match_lpart) == 0)));
 
     
-    uris_match = !match_nsuri || (AXIS2_STRCMP(match_nsuri,"") == 0) ||
-                       element_qname && (AXIS2_STRCMP(ele_nsuri, match_nsuri) == 0);
+    uris_match = ( !match_nsuri || (AXIS2_STRCMP(match_nsuri,"") == 0) ||
+                       (element_qname && (AXIS2_STRCMP(ele_nsuri, match_nsuri) == 0)));
     
     return lparts_match && uris_match;   
 }
+

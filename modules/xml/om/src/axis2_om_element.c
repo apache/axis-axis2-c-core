@@ -1135,7 +1135,7 @@ axis2_om_element_to_string(axis2_om_element_t *om_element,
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
     om_output = axis2_om_output_create(env, xml_writer);
     status = AXIS2_OM_NODE_SERIALIZE(element_node, env, om_output);
-    if(status = AXIS2_SUCCESS)
+    if(status == AXIS2_SUCCESS)
     {
         xml = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
     }
@@ -1158,4 +1158,6 @@ axis2_om_element_get_child_elements(axis2_om_element_t *om_element,
         return axis2_om_child_element_iterator_create(env, first_node);
    }
    else return NULL;
-}                                    
+}
+
+
