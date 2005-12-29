@@ -1223,7 +1223,7 @@ axis2_svc_get_op_by_soap_action_and_endpoint(axis2_svc_t *svc,
     axis2_hash_t *binding_ops = NULL;
     int count = 0;
     axis2_hash_index_t *index_i = NULL;
-    void *k = NULL;
+    const void *k = NULL;
     struct axis2_wsdl_binding_op *binding_op = NULL;
     struct axis2_wsdl_soap_op *element = NULL;
     struct axis2_op *op = NULL;
