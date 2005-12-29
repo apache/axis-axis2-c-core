@@ -87,26 +87,16 @@ AC_CONFIG_FILES([Makefile \
     modules/Makefile \
     modules/core/Makefile \
     modules/core/context/Makefile \
-    modules/core/context/src/Makefile \
     modules/core/description/Makefile \
-    modules/core/description/src/Makefile \
     modules/core/engine/Makefile \
-    modules/core/engine/src/Makefile \
     modules/core/handlers/Makefile \
-    modules/core/handlers/src/Makefile \
     modules/core/addr/Makefile \
-    modules/core/addr/src/Makefile \
     modules/core/phaseresolver/Makefile \
-    modules/core/phaseresolver/src/Makefile \
     modules/core/transport/Makefile \
     modules/core/transport/http/Makefile \
-    modules/core/transport/http/src/Makefile \
     modules/core/deployment/Makefile \
-    modules/core/deployment/src/Makefile \
     modules/core/clientapi/Makefile \
-    modules/core/clientapi/src/Makefile \
     modules/core/receivers/Makefile \
-    modules/core/receivers/src/Makefile \
     modules/xml/Makefile \
     modules/xml/parser/Makefile \
     modules/xml/parser/guththila/Makefile \
@@ -116,15 +106,10 @@ AC_CONFIG_FILES([Makefile \
     modules/xml/parser/libxml2/Makefile \
     modules/xml/parser/libxml2/src/Makefile \
     modules/xml/soap/Makefile \
-    modules/xml/soap/src/Makefile \
     modules/xml/om/Makefile \
-    modules/xml/om/src/Makefile \
     modules/common/Makefile \
-    modules/common/src/Makefile \
     modules/util/Makefile \
-    modules/util/src/Makefile \
     modules/wsdl/Makefile \
-    modules/wsdl/src/Makefile \
     test/Makefile \
     test/xml/Makefile \
     test/xml/om/Makefile \
