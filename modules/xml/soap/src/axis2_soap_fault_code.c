@@ -229,7 +229,6 @@ axis2_soap_fault_code_set_value(axis2_soap_fault_code_t *fault_code,
 {
     axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
     axis2_om_node_t *value_node = NULL;
-    axis2_om_node_t *this_node = NULL;
     axis2_om_node_t *my_node = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(fault_code, env, AXIS2_FAILURE);
@@ -264,7 +263,6 @@ axis2_soap_fault_code_set_sub_code(axis2_soap_fault_code_t *fault_code,
 {
     axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
     axis2_om_node_t *subcode_node = NULL;
-    axis2_om_node_t *this_node = NULL;
     axis2_om_node_t *my_node = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(fault_code, env, AXIS2_FAILURE);

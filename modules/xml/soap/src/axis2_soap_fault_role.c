@@ -185,7 +185,6 @@ axis2_status_t AXIS2_CALL
 axis2_soap_fault_role_free(axis2_soap_fault_role_t *fault_role,
                               axis2_env_t **env)
 {
-    axis2_soap_fault_role_impl_t *fault_role_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(fault_role, env, AXIS2_FAILURE);
     if(fault_role->ops)
         AXIS2_FREE((*env)->allocator, fault_role->ops);

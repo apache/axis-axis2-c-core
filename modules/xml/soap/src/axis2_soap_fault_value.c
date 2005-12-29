@@ -267,4 +267,6 @@ axis2_soap_fault_value_set_soap_version(axis2_soap_fault_value_t *fault_value,
     fault_val_impl = AXIS2_INTF_TO_IMPL(fault_value);
      fault_val_impl->soap_version = soap_version; 
     return AXIS2_SUCCESS;
-}                                    
+}
+
+

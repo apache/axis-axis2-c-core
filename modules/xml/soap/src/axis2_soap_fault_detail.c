@@ -304,4 +304,6 @@ axis2_soap12_fault_detail_create(axis2_env_t **env,
     AXIS2_PARAM_CHECK((*env)->error, fault, NULL);
     return axis2_soap_fault_detail_create_with_parent(env, fault, AXIS2_TRUE);
 
-}                               
+}
+
+

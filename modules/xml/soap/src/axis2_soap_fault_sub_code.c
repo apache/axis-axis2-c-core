@@ -229,7 +229,6 @@ axis2_soap_fault_sub_code_set_sub_code(
 {
     axis2_soap_fault_sub_code_impl_t *fault_subcode_impl = NULL;
     axis2_om_node_t *subcode_node = NULL;
-    axis2_om_node_t *this_node = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(fault_sub_code, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, sub_code, AXIS2_FAILURE);
@@ -289,7 +288,6 @@ axis2_soap_fault_sub_code_set_value
 {
     axis2_soap_fault_sub_code_impl_t *fault_subcode_impl = NULL;
     axis2_om_node_t *value_node = NULL;
-    axis2_om_node_t *this_node = NULL;
     axis2_om_node_t *my_node = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(fault_sub_code, env, AXIS2_FAILURE);
@@ -395,3 +393,5 @@ axis2_soap_fault_sub_code_set_soap_version
      AXIS2_INTF_TO_IMPL(fault_sub_code)->soap_version = soap_version;
      return AXIS2_SUCCESS;
 }
+
+

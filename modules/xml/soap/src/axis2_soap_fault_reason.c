@@ -218,7 +218,6 @@ axis2_soap_fault_reason_set_soap_text
 {
     axis2_soap_fault_reason_impl_t *fault_reason_impl = NULL;
     axis2_om_node_t *text_node = NULL;
-    axis2_om_node_t *this_node = NULL;
     axis2_om_node_t *my_node = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(fault_reason, env, AXIS2_FAILURE);
