@@ -107,13 +107,11 @@ AC_CONFIG_FILES([Makefile \
     modules/xml/parser/libxml2/src/Makefile \
     modules/xml/soap/Makefile \
     modules/xml/om/Makefile \
-    modules/common/Makefile \
     modules/util/Makefile \
     modules/wsdl/Makefile \
     test/Makefile \
     test/xml/Makefile \
     test/xml/om/Makefile \
-    test/common/Makefile \
     test/core/Makefile \
     test/core/handlers/Makefile \
     test/util/Makefile \
