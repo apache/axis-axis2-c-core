@@ -98,7 +98,7 @@ axis2_desc_builder_get_value(axis2_desc_builder_t *desc_builder,
 /************************** End of function prototypes ************************/
 
 axis2_desc_builder_t * AXIS2_CALL 
-axis2_desc_builder_create_with_input_stream_and_dep_engine (
+axis2_desc_builder_create_with_file_and_dep_engine (
                                         axis2_env_t **env, 
                                         axis2_char_t *file_name, 
                                         struct axis2_dep_engine *engine)

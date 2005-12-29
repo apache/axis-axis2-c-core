@@ -179,7 +179,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder
  * @return pointer to newly created description builder
  */
 AXIS2_DECLARE(axis2_desc_builder_t *) 
-axis2_desc_builder_create_with_input_stream_and_dep_engine (
+axis2_desc_builder_create_with_file_and_dep_engine (
                                         axis2_env_t **env, 
                                         axis2_char_t *file_name, 
                                         struct axis2_dep_engine *engine);

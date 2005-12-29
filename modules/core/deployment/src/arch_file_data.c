@@ -20,11 +20,25 @@
 
 /** 
  * @brief
- */ 
+ * ArchiveFileData = Hot Deployment File Item.
+ * To store infromation of the 
+ * module or service item to be deployed
+ */
 typedef struct axis2_arch_file_data_impl
 {
 	axis2_arch_file_data_t arch_file_data;
-    
+    axis2_char_t *file_name;
+    int type;
+    axis2_char_t *msg_recv;
+    axis2_char_t *module_dll_name;
+    axis2_char_t *name;
+    /*
+     * To store services in a serviceGroup. If there are wsdl for those 
+     * servics ,so wsdl service will be created for each wsdl an those will be 
+     * temporarily store in this table
+     */
+    axis2_hash_t *svc_map;
+    axis2_array_list_t *deployable_svcs;
     	
 } axis2_arch_file_data_impl_t;
 
@@ -37,7 +51,61 @@ axis2_status_t AXIS2_CALL
 axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data, 
                             axis2_env_t **env);
 
+axis2_char_t *AXIS2_CALL
+axis2_arch_file_data_get_msg_recv(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env);
 
+axis2_status_t AXIS2_CALL
+axis2_arch_file_data_set_msg_recv(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env,
+                                    axis2_char_t *msg_recv);
+
+axis2_char_t *AXIS2_CALL
+axis2_arch_file_data_get_name(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env);
+
+axis2_char_t *AXIS2_CALL
+axis2_arch_file_data_get_svc_name(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env);
+
+int AXIS2_CALL
+axis2_arch_file_data_get_type(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env);
+
+axis2_char_t *AXIS2_CALL
+axis2_arch_file_data_get_file_name(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env);
+
+axis2_char_t *AXIS2_CALL
+axis2_arch_file_data_get_module_dll_name(axis2_arch_file_data_t *file_data,
+                                            axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_arch_file_data_set_module_dll_name(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env,
+                                    axis2_char_t *module_dll_name);
+axis2_status_t AXIS2_CALL
+axis2_arch_file_data_add_svc(axis2_arch_file_data_t *file_data,
+                                axis2_env_t **env,
+                                struct axis2_svc *svc_desc);
+
+struct axis2_svc *AXIS2_CALL
+axis2_arch_file_data_get_svc(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env,
+                                    axis2_char_t *svc_name);
+
+axis2_hash_t *AXIS2_CALL
+axis2_arch_file_data_get_svc_map(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env);
+
+axis2_array_list_t *AXIS2_CALL
+axis2_arch_file_data_get_deployable_svcs(axis2_arch_file_data_t *file_data,
+                                            axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_arch_file_data_set_deployable_svcs(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env,
+                                    axis2_array_list_t *deployable_svcs);
 
                                 
 /************************** End of function prototypes ************************/
@@ -59,6 +127,13 @@ axis2_arch_file_data_create(axis2_env_t **env)
         return NULL;
     }
     
+    arch_file_data_impl->file_name = NULL;
+    arch_file_data_impl->type = 0;
+    arch_file_data_impl->msg_recv = NULL;
+    arch_file_data_impl->module_dll_name = NULL;
+    arch_file_data_impl->name = NULL;
+    arch_file_data_impl->svc_map = NULL;
+    arch_file_data_impl->deployable_svcs = NULL;
     arch_file_data_impl->arch_file_data.ops = NULL;
     
 	arch_file_data_impl->arch_file_data.ops = 
@@ -71,8 +146,68 @@ axis2_arch_file_data_create(axis2_env_t **env)
     }
     
 	arch_file_data_impl->arch_file_data.ops->free =  axis2_arch_file_data_free;
+    arch_file_data_impl->arch_file_data.ops->get_msg_recv = 
+        axis2_arch_file_data_get_msg_recv;
+    arch_file_data_impl->arch_file_data.ops->set_msg_recv = 
+        axis2_arch_file_data_set_msg_recv;
+    arch_file_data_impl->arch_file_data.ops->get_name = 
+        axis2_arch_file_data_get_name;
+    arch_file_data_impl->arch_file_data.ops->get_svc_name = 
+        axis2_arch_file_data_get_svc_name;
+    arch_file_data_impl->arch_file_data.ops->get_type = 
+        axis2_arch_file_data_get_type;
+    arch_file_data_impl->arch_file_data.ops->get_file_name = 
+        axis2_arch_file_data_get_file_name;
+    arch_file_data_impl->arch_file_data.ops->get_module_dll_name = 
+        axis2_arch_file_data_get_module_dll_name;
+    arch_file_data_impl->arch_file_data.ops->set_module_dll_name =
+        axis2_arch_file_data_set_module_dll_name;
+    arch_file_data_impl->arch_file_data.ops->add_svc = 
+        axis2_arch_file_data_add_svc;
+    arch_file_data_impl->arch_file_data.ops->get_svc =
+        axis2_arch_file_data_get_svc;    
+    arch_file_data_impl->arch_file_data.ops->get_svc_map = 
+        axis2_arch_file_data_get_svc_map;
+    arch_file_data_impl->arch_file_data.ops->get_deployable_svcs = 
+        axis2_arch_file_data_get_deployable_svcs;
+    arch_file_data_impl->arch_file_data.ops->set_deployable_svcs =
+        axis2_arch_file_data_set_deployable_svcs;    
 	
 	return &(arch_file_data_impl->arch_file_data);
+}
+
+axis2_arch_file_data_t * AXIS2_CALL 
+axis2_arch_file_data_create_with_type_and_file_name(axis2_env_t **env,
+                                                    int type,
+                                                    axis2_char_t *file_name)
+{
+    axis2_arch_file_data_impl_t *file_data_impl = NULL;
+    file_data_impl = (axis2_arch_file_data_impl_t *) 
+        axis2_arch_file_data_create(env);
+    if(NULL == file_data_impl)
+    {
+        return NULL;
+    }
+    file_data_impl->type = type;
+    file_data_impl->file_name = AXIS2_STRDUP(file_name, env);
+    return &(file_data_impl->arch_file_data);    
+}
+
+axis2_arch_file_data_t * AXIS2_CALL 
+axis2_arch_file_data_create_with_type_and_name(axis2_env_t **env,
+                                                    int type,
+                                                    axis2_char_t *name)
+{
+    axis2_arch_file_data_impl_t *file_data_impl = NULL;
+    file_data_impl = (axis2_arch_file_data_impl_t *)
+        axis2_arch_file_data_create(env);
+    if(NULL == file_data_impl)
+    {
+        return NULL;
+    }
+    file_data_impl->type = type;
+    file_data_impl->name = AXIS2_STRDUP(name, env);
+    return &(file_data_impl->arch_file_data);    
 }
 
 /***************************Function implementation****************************/
@@ -81,197 +216,226 @@ axis2_status_t AXIS2_CALL
 axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data, 
                             axis2_env_t **env)
 {
-    axis2_arch_file_data_impl_t *feature_impl = NULL;
+    axis2_arch_file_data_impl_t *file_data_impl = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(arch_file_data, env, AXIS2_FAILURE);
     
-    feature_impl = AXIS2_INTF_TO_IMPL(arch_file_data);
+    file_data_impl = AXIS2_INTF_TO_IMPL(arch_file_data);
+    
+    if(file_data_impl->file_name)
+    {
+        AXIS2_FREE((*env)->allocator, file_data_impl->file_name);
+        file_data_impl->file_name = NULL;        
+    }
+    if(file_data_impl->msg_recv)
+    {
+        AXIS2_FREE((*env)->allocator, file_data_impl->msg_recv);
+        file_data_impl->msg_recv = NULL;        
+    }
+    if(file_data_impl->module_dll_name)
+    {
+        AXIS2_FREE((*env)->allocator, file_data_impl->module_dll_name);
+        file_data_impl->module_dll_name = NULL;        
+    }
+    if(file_data_impl->name)
+    {
+        AXIS2_FREE((*env)->allocator, file_data_impl->name);
+        file_data_impl->name = NULL;        
+    }
+    
+    if(file_data_impl->svc_map)
+    {
+        axis2_hash_free(file_data_impl->svc_map, env);
+        file_data_impl->svc_map = NULL;        
+    }
+    if(file_data_impl->deployable_svcs)
+    {
+        AXIS2_ARRAY_LIST_FREE(file_data_impl->deployable_svcs, env);
+        file_data_impl->deployable_svcs = NULL;        
+    }
+    
+    file_data_impl->arch_file_data.ops = NULL;
     
 	if(NULL != arch_file_data->ops)
+    {
         AXIS2_FREE((*env)->allocator, arch_file_data->ops);
+        arch_file_data->ops = NULL;
+    }
     
-    AXIS2_FREE((*env)->allocator, feature_impl);
-    feature_impl = NULL;
+    if(file_data_impl)
+    {
+        AXIS2_FREE((*env)->allocator, file_data_impl);
+        file_data_impl = NULL;
+    }
     
 	return AXIS2_SUCCESS;
 }
 
-/**
- * ArchiveFileData = Hot Deployment File Item , to store infromation of the 
- * module or servise item to be deploy
- */
-public class ArchiveFileData {
+axis2_char_t *AXIS2_CALL
+axis2_arch_file_data_get_msg_recv(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    return AXIS2_INTF_TO_IMPL(file_data)->msg_recv;
+}
 
-    private ClassLoader classLoader;
-    private File file = null;
-    private int type;
-    private String messgeReceiver;
-    private String moduleClass;
-    private String name;
-
-
-    //To store services in a serviceGroup , if there are wsdl for those servics ,
-    //so wsdl service will be created for each wsdl an those will be temeororaly store
-    //in this table
-    private HashMap service = new HashMap();
-
-    private ArrayList deploybleServices = new ArrayList();
-
-    public ArchiveFileData(int type, String name) {
-        this.type = type;
-        this.name = name;
+axis2_status_t AXIS2_CALL
+axis2_arch_file_data_set_msg_recv(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env,
+                                    axis2_char_t *msg_recv)
+{
+    axis2_arch_file_data_impl_t *file_data_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_recv, AXIS2_FAILURE);
+    
+    file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
+    if(file_data_impl->msg_recv)
+    {
+        AXIS2_FREE((*env)->allocator, file_data_impl->msg_recv);
+        file_data_impl->msg_recv = NULL;
     }
+    file_data_impl->msg_recv = AXIS2_STRDUP(msg_recv, env);
+    return AXIS2_SUCCESS;
+}
 
-    public String getMessgeReceiver() {
-        return messgeReceiver;
+axis2_char_t *AXIS2_CALL
+axis2_arch_file_data_get_name(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env) 
+{
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    return AXIS2_INTF_TO_IMPL(file_data)->file_name;
+}
+
+axis2_char_t *AXIS2_CALL
+axis2_arch_file_data_get_svc_name(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env)
+{
+    axis2_arch_file_data_impl_t *file_data_impl = NULL;
+    axis2_char_t *svc_name = NULL;
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
+    if(NULL != file_data_impl->file_name)
+    {
+        svc_name = file_data_impl->file_name;
     }
-
-    public void setMessgeReceiver(String messgeReceiver) {
-        this.messgeReceiver = messgeReceiver;
+    else
+    {
+        svc_name = file_data_impl->name;
     }
+    return svc_name;
+}
 
-    public ArchiveFileData(File file, int type) {
-        this.file = file;
-        this.type = type;
+int AXIS2_CALL
+axis2_arch_file_data_get_type(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env) 
+{
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(file_data)->type;
+}
+
+axis2_char_t *AXIS2_CALL
+axis2_arch_file_data_get_file_name(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env) 
+{
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    return AXIS2_INTF_TO_IMPL(file_data)->file_name;
+}
+
+axis2_char_t *AXIS2_CALL
+axis2_arch_file_data_get_module_dll_name(axis2_arch_file_data_t *file_data,
+                                            axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    return AXIS2_INTF_TO_IMPL(file_data)->module_dll_name;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_arch_file_data_set_module_dll_name(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env,
+                                    axis2_char_t *module_dll_name) 
+{
+    axis2_arch_file_data_impl_t *file_data_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, module_dll_name, AXIS2_FAILURE);
+    
+    file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
+    if(file_data_impl->module_dll_name)
+    {
+        AXIS2_FREE((*env)->allocator, file_data_impl->module_dll_name);
+        file_data_impl->module_dll_name = NULL;
     }
+    file_data_impl->module_dll_name = module_dll_name;
+    return AXIS2_SUCCESS;
+}
 
-    public String getName() {
-        return file.getName();
+axis2_status_t AXIS2_CALL
+axis2_arch_file_data_add_svc(axis2_arch_file_data_t *file_data,
+                                axis2_env_t **env,
+                                struct axis2_svc *svc_desc)
+{
+    axis2_arch_file_data_impl_t *file_data_impl = NULL;
+    axis2_qname_t *svc_qname = NULL;
+    axis2_char_t *svc_name = NULL;
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, svc_desc, AXIS2_FAILURE);
+    
+    file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
+    
+    svc_qname = AXIS2_SVC_GET_QNAME(svc_desc, env);
+    svc_name = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
+    
+    axis2_hash_set(file_data_impl->svc_map, svc_name, AXIS2_HASH_KEY_STRING,
+        svc_desc);
+    return AXIS2_SUCCESS;
+}
+
+struct axis2_svc *AXIS2_CALL
+axis2_arch_file_data_get_svc(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env,
+                                    axis2_char_t *svc_name)
+{
+    axis2_arch_file_data_impl_t *file_data_impl = NULL;
+    struct axis2_svc *svc = NULL;
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, svc_name, AXIS2_FAILURE);
+    
+    file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
+    svc = (struct axis2_svc *) axis2_hash_get(file_data_impl->svc_map, svc_name, 
+        AXIS2_HASH_KEY_STRING);
+    return svc;
+}
+
+axis2_hash_t *AXIS2_CALL
+axis2_arch_file_data_get_svc_map(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    return AXIS2_INTF_TO_IMPL(file_data)->svc_map;
+}
+
+axis2_array_list_t *AXIS2_CALL
+axis2_arch_file_data_get_deployable_svcs(axis2_arch_file_data_t *file_data,
+                                            axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    return AXIS2_INTF_TO_IMPL(file_data)->deployable_svcs;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_arch_file_data_set_deployable_svcs(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env,
+                                    axis2_array_list_t *deployable_svcs) 
+{
+    axis2_arch_file_data_impl_t *file_data_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, deployable_svcs, AXIS2_FAILURE);
+    
+    file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
+    if(file_data_impl->deployable_svcs)
+    {
+        AXIS2_FREE((*env)->allocator, file_data_impl->deployable_svcs);
+        file_data_impl->deployable_svcs = NULL;
     }
-
-    public String getServiceName() {
-        if (file != null) {
-            return file.getName();
-        } else
-            return name;
-    }
-
-    public String getAbsolutePath() {
-        return file.getAbsolutePath();
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public ClassLoader getClassLoader() {
-        return classLoader;
-    }
-
-    public void setClassLoader(ClassLoader classLoader) {
-        this.classLoader = classLoader;
-    }
-
-    public String getModuleClass() {
-        return moduleClass;
-    }
-
-    public void setModuleClass(String moduleClass) {
-        this.moduleClass = moduleClass;
-    }
-
-    public void setClassLoader(boolean extarctArichive) throws AxisFault {
-        ClassLoader parent = Thread.currentThread().getContextClassLoader();
-        if (! extarctArichive) {
-            // has to be craeted taking that file to the account
-            if (file != null) {
-                URL[] urlsToLoadFrom;
-                try {
-                    if (!file.exists()) {
-                        throw new AxisFault(Messages.getMessage(DeploymentErrorMsgs.FNF));
-                    }
-                    urlsToLoadFrom = new URL[]{file.toURL()};
-                    classLoader =
-                            new DeploymentClassLoader(urlsToLoadFrom, parent);
-                    //                classLoader = new URLClassLoader(urlsToLoadFrom, parent);
-                } catch (Exception e) {
-                    throw new AxisFault(e);
-                }
-            }
-        } else {
-            if (file != null) {
-                try {
-                    ArrayList urls = new ArrayList();
-                    urls.add(file.toURL());
-
-                    //if lib is simple
-                    File libfiles = new File(file, "lib");
-                    if(libfiles.exists()){
-                        urls.add(libfiles.toURL());
-                        File jarfiles [] = libfiles.listFiles();
-                        for (int i = 0; i < jarfiles.length; i++) {
-                            File jarfile = jarfiles[i];
-                            if(jarfile.getName().endsWith(".jar")){
-                                urls.add(jarfile.toURL());
-                            }
-                        }
-                    }
-
-                    //if lib is capital
-                    libfiles = new File(file, "Lib");
-                    if(libfiles.exists()){
-                        urls.add(libfiles.toURL());
-                        File jarfiles [] = libfiles.listFiles();
-                        for (int i = 0; i < jarfiles.length; i++) {
-                            File jarfile = jarfiles[i];
-                            if(jarfile.getName().endsWith(".jar")){
-                                urls.add(jarfile.toURL());
-                            }
-                        }
-                    }
-
-                    URL urllist [] = new URL[urls.size()];
-                    for (int i = 0; i < urls.size(); i++) {
-                        urllist[i] = (URL) urls.get(i);
-                    }
-                    classLoader = new URLClassLoader(urllist,parent);
-
-
-                } catch (MalformedURLException e) {
-                    throw new AxisFault(e);
-                }
-
-            }
-        }
-
-    }
-
-    /**
-     * to check whthere a given file is  a  jar file
-     *
-     * @param filename
-     * @return boolean
-     */
-    public static  boolean isServiceArchiveFile(String filename) {
-        return ((filename.endsWith(".jar")) | (filename.endsWith(".aar")));
-    }
-
-    public static  boolean isModuleArchiveFile(String filename) {
-        return ((filename.endsWith(".jar")) || (filename.endsWith(".mar")));
-    }
-
-
-    public void addService(AxisService servicedesc){
-        service.put(servicedesc.getName().getLocalPart(),servicedesc);
-    }
-
-    public AxisService getService(String serviceName){
-        return (AxisService)service.get(serviceName);
-    }
-
-    public HashMap getService() {
-        return service;
-    }
-
-    public ArrayList getDeploybleServices() {
-        return deploybleServices;
-    }
-
-    public void setDeploybleServices(ArrayList deploybleServices) {
-        this.deploybleServices = deploybleServices;
-    }
+    file_data_impl->deployable_svcs = deployable_svcs;
+    return AXIS2_SUCCESS;
 }
