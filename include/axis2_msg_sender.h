@@ -94,7 +94,7 @@ struct axis2_msg_sender_ops
 	 * Get the message information header object. All the sets to 
 	 * msg_info_headers should be done via get_msg_info and a set
 	 */					
-	axis2_status_t (AXIS2_CALL *get_msg_info_headers)(
+	axis2_msg_info_headers_t* (AXIS2_CALL *get_msg_info_headers)(
 						axis2_msg_sender_t *msg_sender, axis2_env_t **env);
 						
     axis2_status_t (AXIS2_CALL *free)(struct axis2_msg_sender *msg_sender, 

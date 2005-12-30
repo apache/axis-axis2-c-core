@@ -56,7 +56,7 @@ axis2_msg_sender_send_with_soap(axis2_msg_sender_t *msg_sender,
 						axis2_env_t **env,
 						axis2_char_t *op_name, 
 						axis2_soap_envelope_t *envelope);
-axis2_status_t AXIS2_CALL 
+axis2_msg_info_headers_t* AXIS2_CALL 
 axis2_msg_sender_get_msg_info_headers(axis2_msg_sender_t *msg_sender, 
 						axis2_env_t **env);
 					
@@ -327,7 +327,7 @@ axis2_msg_sender_send_with_soap(axis2_msg_sender_t *msg_sender,
    	return status;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_msg_info_headers_t* AXIS2_CALL 
 axis2_msg_sender_get_msg_info_headers(axis2_msg_sender_t *msg_sender, 
 						axis2_env_t **env)
 {
