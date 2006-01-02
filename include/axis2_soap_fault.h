@@ -36,15 +36,14 @@ extern "C"
 typedef struct axis2_soap_fault axis2_soap_fault_t;
 typedef struct axis2_soap_fault_ops axis2_soap_fault_ops_t;
     
-typedef struct axis2_soap_fault_reason    axis2_soap_fault_reason_t;
-typedef struct axis2_soap_fault_detail    axis2_soap_fault_detail_t;
-typedef struct axis2_soap_fault_sub_code  axis2_soap_fault_sub_code_t;
-typedef struct axis2_soap_fault_code      axis2_soap_fault_code_t;
-typedef struct axis2_soap_fault_node      axis2_soap_fault_node_t;
-typedef struct axis2_soap_fault_role      axis2_soap_fault_role_t;
-typedef struct axis2_soap_fault_text      axis2_soap_fault_text_t;
-typedef struct axis2_soap_fault_value     axis2_soap_fault_value_t;
-    
+struct axis2_soap_fault_reason;
+struct axis2_soap_fault_detail;
+struct axis2_soap_fault_sub_code;
+struct axis2_soap_fault_code;
+struct axis2_soap_fault_node;
+struct axis2_soap_fault_role;
+struct axis2_soap_fault_text;
+struct axis2_soap_fault_value;
 struct axis2_soap_body;
     
     typedef enum axis2_soap_fault_types
@@ -86,43 +85,43 @@ struct axis2_soap_body;
         
         axis2_status_t (AXIS2_CALL *set_code)(axis2_soap_fault_t *fault,
                                               axis2_env_t **env,
-                                              axis2_soap_fault_code_t *code);
+                                              struct axis2_soap_fault_code *code);
                                               
-        axis2_soap_fault_code_t * (AXIS2_CALL *get_code)
+        struct axis2_soap_fault_code * (AXIS2_CALL *get_code)
                                              (axis2_soap_fault_t *fault,
                                               axis2_env_t **env);
                                          
         axis2_status_t (AXIS2_CALL *set_reason)
                                              (axis2_soap_fault_t *fault,
                                               axis2_env_t **env,
-                                              axis2_soap_fault_reason_t *reason);
+                                              struct axis2_soap_fault_reason *reason);
                                               
-        axis2_soap_fault_reason_t* (AXIS2_CALL *get_reason)
+        struct axis2_soap_fault_reason *(AXIS2_CALL *get_reason)
                                              (axis2_soap_fault_t *fault,
                                               axis2_env_t **env);
                                              
         axis2_status_t (AXIS2_CALL *set_node)(axis2_soap_fault_t *fault,
                                               axis2_env_t **env,
-                                              axis2_soap_fault_node_t *node);
+                                              struct axis2_soap_fault_node *node);
                                               
-        axis2_soap_fault_node_t* (AXIS2_CALL *get_node)
+        struct axis2_soap_fault_node* (AXIS2_CALL *get_node)
                                              (axis2_soap_fault_t *fault,
                                               axis2_env_t **env);
                                              
         axis2_status_t (AXIS2_CALL *set_role)(axis2_soap_fault_t *fault,
                                               axis2_env_t **env,
-                                              axis2_soap_fault_role_t *role);
+                                              struct axis2_soap_fault_role *role);
                                               
-        axis2_soap_fault_role_t* (AXIS2_CALL *get_role)
+        struct axis2_soap_fault_role* (AXIS2_CALL *get_role)
                                              (axis2_soap_fault_t *fault,
                                               axis2_env_t **env);
 
         axis2_status_t (AXIS2_CALL *set_detail)
                                              (axis2_soap_fault_t *fault,
                                               axis2_env_t **env,
-                                              axis2_soap_fault_detail_t *detail);
+                                              struct axis2_soap_fault_detail *detail);
                                         
-        axis2_soap_fault_detail_t* (AXIS2_CALL *get_detail)
+        struct axis2_soap_fault_detail* (AXIS2_CALL *get_detail)
                                              (axis2_soap_fault_t *fault,
                                               axis2_env_t **env);  
                                               

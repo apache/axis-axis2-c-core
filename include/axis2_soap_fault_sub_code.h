@@ -23,7 +23,7 @@
     * @brief axis2_soap_fault_sub_code struct
     */
 #include <axis2_env.h>
-#include <axis2_soap_fault.h>
+#include <axis2_soap_fault_code.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -31,7 +31,8 @@ extern "C"
 #endif
 
     typedef struct axis2_soap_fault_sub_code_ops axis2_soap_fault_sub_code_ops_t;
-
+    typedef struct axis2_soap_fault_sub_code axis2_soap_fault_sub_code_t;
+    struct axis2_soap_fault_value;
 /**
  * @defgroup axis2_soap_fault_sub_code
  * @ingroup axis2_soap
@@ -59,7 +60,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *set_value)
                              (axis2_soap_fault_sub_code_t *fault_sub_code,
                               axis2_env_t **env,
-                              axis2_soap_fault_value_t *fault_sub_code_val);
+                              struct axis2_soap_fault_value *fault_sub_code_val);
 
         axis2_status_t (AXIS2_CALL *set_sub_code)
                              (axis2_soap_fault_sub_code_t *fault_sub_code,
@@ -70,7 +71,7 @@ extern "C"
                              (axis2_soap_fault_sub_code_t *fault_sub_code,
                               axis2_env_t **env);
                                      
-        axis2_soap_fault_value_t* (AXIS2_CALL *get_value)                                         
+        struct axis2_soap_fault_value* (AXIS2_CALL *get_value)                                         
                              (axis2_soap_fault_sub_code_t *fault_sub_code,
                               axis2_env_t **env);
                                      

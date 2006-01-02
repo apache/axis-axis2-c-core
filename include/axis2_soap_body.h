@@ -14,9 +14,8 @@
  * limitations under the License.
  */
  
- 
- #ifndef AXIS2_SOAP_BODY_H
- #define AXIS2_SOAP_BODY_H
+#ifndef AXIS2_SOAP_BODY_H
+#define AXIS2_SOAP_BODY_H
  
     /**
     * @file axis2_soap_body.h
@@ -26,7 +25,8 @@
 #include <axis2_om_node.h>
 #include <axis2_om_element.h>
 #include <axis2_om_namespace.h>
-#include <axis2_soap_fault.h>    
+#include <axis2_soap_fault.h>
+#include <axis2_soap_envelope.h>    
 
 
 #ifdef __cplusplus
@@ -37,7 +37,6 @@ extern "C"
 
 typedef struct axis2_soap_body axis2_soap_body_t;
 typedef struct axis2_soap_body_ops axis2_soap_body_ops_t;
-struct axis2_soap_envelope;
     
 /**
  * @defgroup axis2_soap_body
@@ -63,7 +62,7 @@ struct axis2_soap_envelope;
  AXIS2_DECLARE_DATA   struct axis2_soap_body_ops
     {
         axis2_status_t (AXIS2_CALL *free)(axis2_soap_body_t *body,
-                               axis2_env_t **env);
+                                          axis2_env_t **env);
         /**
          * Indicates whether a <code>SOAPFault</code> object exists in
          * this <code>SOAPBody</code> object.
@@ -72,8 +71,8 @@ struct axis2_soap_envelope;
          *         this <code>SOAPBody</code> object; <code>false</code>
          *         otherwise
          */
-        axis2_bool_t (AXIS2_CALL *get_has_fault)(axis2_soap_body_t *body,
-            axis2_env_t **env);
+        axis2_bool_t (AXIS2_CALL *has_fault)(axis2_soap_body_t *body,
+                                                 axis2_env_t **env);
         /**
          * Returns the <code>SOAPFault</code> object in this <code>SOAPBody</code>
          * object.
@@ -82,7 +81,7 @@ struct axis2_soap_envelope;
          *         object
          */
         axis2_soap_fault_t* (AXIS2_CALL *get_fault)(axis2_soap_body_t *body,
-            axis2_env_t **env);
+                                                    axis2_env_t **env);
         /**
          * @param soapFault
          * @throws org.apache.axis2.om.OMException
@@ -90,15 +89,22 @@ struct axis2_soap_envelope;
          * @throws OMException
          */
         axis2_status_t (AXIS2_CALL *add_fault)(axis2_soap_body_t *body,
-            axis2_env_t **env,
-            axis2_soap_fault_t *soap_fault);
-        axis2_om_node_t* (AXIS2_CALL *get_base)(axis2_soap_body_t *body,
-                                        axis2_env_t **env);
+                                               axis2_env_t **env,
+                                               axis2_soap_fault_t *soap_fault);
+                                                
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)(axis2_soap_body_t *body,
+                                                     axis2_env_t **env);
+                                                     
+        axis2_status_t* (AXIS2_CALL *set_base_node)(axis2_soap_body_t *body,
+                                                    axis2_env_t **env,
+                                                    axis2_om_node_t *om_node);
+        
         int (AXIS2_CALL *get_soap_version)(axis2_soap_body_t *body,
                                            axis2_env_t **env);
+         
         axis2_status_t (AXIS2_CALL *set_soap_version)(axis2_soap_body_t *body,
-                                           axis2_env_t **env,
-                                           int soap_version);
+                                                      axis2_env_t **env,
+                                                      int soap_version);
 };                                                      
 
   /**
@@ -117,24 +123,39 @@ struct axis2_soap_envelope;
     * @param env Environment. MUST NOT be NULL
     */
 AXIS2_DECLARE(axis2_soap_body_t *)
-axis2_soap_body_create(axis2_env_t **env, struct axis2_soap_envelope *envelope, 
-    axis2_om_namespace_t *ns);
+axis2_soap_body_create(axis2_env_t **env);    
+    
+    
+AXIS2_DECLARE(axis2_soap_body_t *)
+axis2_soap_body_create_with_parent(axis2_env_t **env, 
+                                   struct axis2_soap_envelope *envelope,
+                                   axis2_om_namespace_t *ns);
     
 /******************** Macros **************************************************/
-    
     
 /** free soap_body */
 #define AXIS2_SOAP_BODY_FREE(body , env) \
         ((body)->ops->free(body, env))
-#define AXIS2_SOAP_BODY_GET_HAS_FAULT(body, env) ((body)->ops->get_has_fault(body, env))
-#define AXIS2_SOAP_BODY_GET_FAULT(body, env) ((body)->ops->get_fault(body, env))
-#define AXIS2_SOAP_BODY_ADD_FAULT(body, env, soap_fault) ((body)->ops->add_fault(body, env, soap_fault))
-#define AXIS2_SOAP_BODY_GET_BASE(body, env) ((body)->ops->get_base(body, env))
-#define AXIS2_SOAP_BODY_GET_SOAP_VERSION(body, env) ((body)->ops->get_soap_version(body, env))
-#define AXIS2_SOAP_BODY_SET_SOAP_VERSION(body, env, soap_version) ((body)->ops->set_soap_version(body, env, soap_version))        
+        
+#define AXIS2_SOAP_BODY_HAS_FAULT(body, env) \
+        ((body)->ops->has_fault(body, env))
+        
+#define AXIS2_SOAP_BODY_GET_FAULT(body, env) \
+        ((body)->ops->get_fault(body, env))
+        
+#define AXIS2_SOAP_BODY_ADD_FAULT(body, env, soap_fault) \
+        ((body)->ops->add_fault(body, env, soap_fault))
+        
+#define AXIS2_SOAP_BODY_GET_BASE_NODE(body, env) \
+        ((body)->ops->get_base(body, env))
+        
+#define AXIS2_SOAP_BODY_GET_SOAP_VERSION(body, env) \
+        ((body)->ops->get_soap_version(body, env))
+        
+#define AXIS2_SOAP_BODY_SET_SOAP_VERSION(body, env, soap_version) \
+        ((body)->ops->set_soap_version(body, env, soap_version))        
 
 /** @} */
-
 #ifdef __cplusplus
 }
 #endif

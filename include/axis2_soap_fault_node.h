@@ -30,7 +30,7 @@ extern "C"
 #endif
 
     typedef struct axis2_soap_fault_node_ops axis2_soap_fault_node_ops_t;
-
+    typedef struct axis2_soap_fault_node axis2_soap_fault_node_t;
 /**
  * @defgroup axis2_soap_fault_node
  * @ingroup axis2_soap

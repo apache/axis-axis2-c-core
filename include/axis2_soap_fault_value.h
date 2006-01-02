@@ -23,6 +23,7 @@
     */
 #include <axis2_env.h>
 #include <axis2_soap_fault.h>
+#include <axis2_soap_fault_sub_code.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -30,7 +31,7 @@ extern "C"
 #endif
 
 typedef struct axis2_soap_fault_value_ops axis2_soap_fault_value_ops_t;
-
+typedef struct axis2_soap_fault_value axis2_soap_fault_value_t;
 /**
  * @defgroup axis2_soap_fault_value
  * @ingroup axis2_soap_fault_

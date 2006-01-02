@@ -19,6 +19,7 @@
  #include <axis2_soap_header_block.h>
  #include <axis2_hash.h>
  #include <axis2_soap.h>
+ #include <stdio.h>
  
  /******************* impl struct *********************************************/
  
@@ -147,7 +148,7 @@ axis2_soap_header_create_with_parent(axis2_env_t **env,
         return NULL;
     header_impl = AXIS2_INTF_TO_IMPL(header);        
         
-    parent_node = AXIS2_SOAP_ENVELOPE_GET_BASE(envelope, env);
+    parent_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(envelope, env);
     parent_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(parent_node, env);
     parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env);
     

@@ -31,7 +31,10 @@ extern "C"
 #endif
 
     typedef struct axis2_soap_fault_code_ops axis2_soap_fault_code_ops_t;
-
+    typedef struct axis2_soap_fault_code axis2_soap_fault_code_t;
+    
+    struct axis2_soap_fault_value;
+    struct axis2_soap_fault_sub_code;
 /**
  * @defgroup axis2_soap_fault_code
  * @ingroup axis2_soap
@@ -58,18 +61,18 @@ extern "C"
         axis2_status_t (AXIS2_CALL *set_value)
                                     (axis2_soap_fault_code_t *fault_code,
                                      axis2_env_t **env,
-                                     axis2_soap_fault_value_t *fault_val);
+                                     struct axis2_soap_fault_value *fault_val);
 
         axis2_status_t (AXIS2_CALL *set_sub_code)
                                     (axis2_soap_fault_code_t *fault_code,
                                      axis2_env_t **env,
-                                     axis2_soap_fault_sub_code_t *fault_subcode);                                                                         
+                                     struct axis2_soap_fault_sub_code *fault_subcode);                                                                         
         
-        axis2_soap_fault_sub_code_t* (AXIS2_CALL *get_sub_code)                                         
+        struct axis2_soap_fault_sub_code* (AXIS2_CALL *get_sub_code)                                         
                                     (axis2_soap_fault_code_t *fault_code,
                                      axis2_env_t **env);
                                      
-        axis2_soap_fault_value_t* (AXIS2_CALL *get_value)                                         
+        struct axis2_soap_fault_value* (AXIS2_CALL *get_value)                                         
                                     (axis2_soap_fault_code_t *fault_code,
                                      axis2_env_t **env);
                                      

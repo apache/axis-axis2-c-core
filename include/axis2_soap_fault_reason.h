@@ -30,7 +30,8 @@ extern "C"
 #endif
 
 typedef struct axis2_soap_fault_reason_ops axis2_soap_fault_reason_ops_t;
-
+typedef struct axis2_soap_fault_reason axis2_soap_fault_reason_t;
+struct axis2_soap_fault_text;
 /**
  * @defgroup axis2_soap_fault_reason
  * @ingroup axis2_soap
@@ -58,9 +59,9 @@ typedef struct axis2_soap_fault_reason_ops axis2_soap_fault_reason_ops_t;
         axis2_status_t (AXIS2_CALL *set_soap_text)
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env,
-                                 axis2_soap_fault_text_t *soap_text);
+                                 struct axis2_soap_fault_text *soap_text);
                                      
-        axis2_soap_fault_text_t* (AXIS2_CALL *get_soap_text)                                         
+        struct axis2_soap_fault_text* (AXIS2_CALL *get_soap_text)                                         
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env);
                                      
@@ -107,16 +108,7 @@ axis2_soap_fault_reason_create_with_parent(axis2_env_t **env,
                             axis2_soap_fault_t *fault,
                             axis2_bool_t extact_ns_from_parent);
                             
-AXIS2_DECLARE(axis2_soap_fault_reason_t *)
-axis2_soap11_fault_reason_create_with_parent(axis2_env_t **env,
-                            axis2_soap_fault_t *fault);
-
-AXIS2_DECLARE(axis2_soap_fault_reason_t *)
-axis2_soap12_fault_reason_create_with_parent(axis2_env_t **env,
-                            axis2_soap_fault_t *fault);
-
 /******************** Macros **************************************************/
-    
     
 /** free soap_fault_reason */
 #define AXIS2_SOAP_FAULT_REASON_FREE(fault_reason , env) \

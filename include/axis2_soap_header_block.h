@@ -26,6 +26,7 @@
 #include <axis2_om_node.h>
 #include <axis2_om_element.h>
 #include <axis2_array_list.h>
+#include <axis2_soap_header.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -34,7 +35,6 @@ extern "C"
 
     typedef struct axis2_soap_header_block axis2_soap_header_block_t;
     typedef struct axis2_soap_header_block_ops axis2_soap_header_block_ops_t;
-    struct axis2_soap_header;
     
 /**
  * @defgroup axis2_soap_header_block

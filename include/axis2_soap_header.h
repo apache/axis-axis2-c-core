@@ -28,8 +28,7 @@
 #include <axis2_om_children_qname_iterator.h>
 #include <axis2_om_children_with_specific_attribute_iterator.h>
 #include <axis2_hash.h>
-#include <axis2_soap_header_block.h>
-
+#include <axis2_soap_envelope.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -38,8 +37,8 @@ extern "C"
     
 typedef struct axis2_soap_header  axis2_soap_header_t;
 typedef struct axis2_soap_header_ops    axis2_soap_header_ops_t;
-    
-struct axis2_soap_envelope;
+
+struct axis2_soap_header_block;    
 
     
 /**
@@ -73,7 +72,7 @@ struct axis2_soap_envelope;
         * @return the new <CODE>SOAPHeaderBlock</CODE> object that was inserted
         *         into this <CODE>SOAPHeader</CODE> object
         */
-        axis2_soap_header_block_t* (AXIS2_CALL *add_header_block)
+        struct axis2_soap_header_block* (AXIS2_CALL *add_header_block)
                                         (axis2_soap_header_t* header,
                                          axis2_env_t **env,
                                          axis2_char_t *localname,

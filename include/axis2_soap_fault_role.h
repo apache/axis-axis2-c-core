@@ -31,7 +31,7 @@ extern "C"
 #endif
 
     typedef struct axis2_soap_fault_role_ops axis2_soap_fault_role_ops_t;
-
+    typedef struct axis2_soap_fault_role axis2_soap_fault_role_t;
 /**
  * @defgroup axis2_soap_fault_role
  * @ingroup axis2_soap

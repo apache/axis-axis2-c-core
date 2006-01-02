@@ -31,8 +31,8 @@ extern "C"
 {
 #endif
 
-    typedef struct axis2_soap_fault_detail_ops 
-                        axis2_soap_fault_detail_ops_t;
+    typedef struct axis2_soap_fault_detail_ops axis2_soap_fault_detail_ops_t;
+    typedef struct axis2_soap_fault_detail axis2_soap_fault_detail_t;
 
 /**
  * @defgroup axis2_soap_fault_detail
@@ -77,11 +77,11 @@ extern "C"
                                  axis2_env_t **env);
         
         int (AXIS2_CALL *get_soap_version)
-                                (axis2_soap_fault_detail_t *fault_node,
+                                (axis2_soap_fault_detail_t *fault_detail,
                                  axis2_env_t **env);
                                  
         axis2_status_t (AXIS2_CALL *set_soap_version)
-                                (axis2_soap_fault_detail_t *fault_node,
+                                (axis2_soap_fault_detail_t *fault_detail,
                                  axis2_env_t **env,
                                  int soap_version);                                  
                                                                                                                 
