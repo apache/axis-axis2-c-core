@@ -82,7 +82,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
      *
      * @return OMElement <code>OMElement</code>
      */
-    struct axis2_om_node *(AXIS2_CALL *
+    axis2_om_node_t *(AXIS2_CALL *
     build_OM) (axis2_desc_builder_t *desc_builder,
                     axis2_env_t **env);
     
@@ -92,7 +92,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
      * @param flow_element       <code>axis2_om_element_t</code>
      * @return flow
      */
-    struct axis2_flow *(AXIS2_CALL *
+    axis2_flow_t *(AXIS2_CALL *
     process_flow) (axis2_desc_builder_t *desc_builder,
                                     axis2_env_t **env,
                                     axis2_om_element_t *flow_element,
@@ -104,7 +104,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
      * @param handler_element    <code>OMElement</code>
      * @return
      */
-    struct axis2_handler_desc *(AXIS2_CALL *
+    axis2_handler_desc_t *(AXIS2_CALL *
     process_handler) (axis2_desc_builder_t *desc_builder,
                                         axis2_env_t **env,
                                         axis2_om_node_t *handler_element,
