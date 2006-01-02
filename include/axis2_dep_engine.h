@@ -29,6 +29,8 @@
 #include <axis2_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_conf.h>
+#include <axis2_arch_file_data.h>
+#include <axis2_ws_info.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -36,7 +38,7 @@ extern "C"
 #endif
 
 struct axis2_conf;
-    
+struct axis2_arch_file_data;    
 typedef struct axis2_dep_engine axis2_dep_engine_t;
 typedef struct axis2_dep_engine_ops axis2_dep_engine_ops_t;
 
@@ -58,11 +60,42 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     free)(axis2_dep_engine_t *dep_engine,
 	        axis2_env_t **env);
     
-    struct axis2_module_desc *(AXIS2_CALL *
+    axis2_module_desc_t *(AXIS2_CALL *
     get_module) (axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
-                                axis2_qname_t *module_name); 
-                               
+                                axis2_qname_t *module_name);
+
+    struct axis2_arch_file_data *(AXIS2_CALL *
+    get_current_file_item)(axis2_dep_engine_t *dep_engine,
+                                            axis2_env_t **env);
+    
+    /**
+     * @param file
+     */
+    axis2_status_t (AXIS2_CALL *
+    add_ws_to_deploy) (axis2_dep_engine_t *dep_engine,
+                                        axis2_env_t **env,
+                                        axis2_arch_file_data_t *file);
+    
+    /**
+     * @param file
+     */
+    axis2_status_t (AXIS2_CALL *
+    add_ws_to_undeploy) (axis2_dep_engine_t *dep_engine,
+                                        axis2_env_t **env,
+                                        axis2_ws_info_t *file);
+    
+    axis2_status_t (AXIS2_CALL *
+    do_deploy) (axis2_dep_engine_t *dep_engine,
+                                axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    undeploy) (axis2_dep_engine_t *dep_engine,
+                                axis2_env_t **env);
+    
+    axis2_phases_info_t *(AXIS2_CALL *
+    get_phases_info) (axis2_dep_engine_t *dep_engine,
+                                    axis2_env_t **env);                          
  
 
 };
@@ -104,6 +137,26 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml (
 
 #define AXIS2_DEP_ENGINE_GET_MODULE(dep_engine, env, module_name) \
 		((dep_engine->ops)->get_module (dep_engine, env, module_name))
+        
+#define AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env) \
+		((dep_engine->ops)->get_current_file_item (dep_engine, env))        
+ 
+#define AXIS2_DEP_ENGINE_ADD_WS_TO_DEPLOY(dep_engine, env, file) \
+		((dep_engine->ops)->add_ws_to_deploy (dep_engine, env, file))  
+
+
+#define AXIS2_DEP_ENGINE_ADD_WS_TO_UNDEPLOY(dep_engine, env, file) \
+		((dep_engine->ops)->add_ws_to_undeploy (dep_engine, env, file)) 
+
+#define AXIS2_DEP_ENGINE_DO_DEPLOY(dep_engine, env) \
+		((dep_engine->ops)->do_deploy (dep_engine, env)) 
+
+#define AXIS2_DEP_ENGINE_UNDEPLOY(dep_engine, env) \
+		((dep_engine->ops)->undeploy (dep_engine, env)) 
+
+#define AXIS2_DEP_ENGINE_GET_PHASES_INFO(dep_engine, env) \
+		((dep_engine->ops)->get_phases_info (dep_engine, env)) 
+        
 
 /*************************** End of function macros ***************************/
 

@@ -402,7 +402,7 @@ axis2_op_create (axis2_env_t **env);
  */
 AXIS2_DECLARE(axis2_op_t *)
 axis2_op_create_with_name (axis2_env_t **env, 
-                                                axis2_qname_t *name);
+                            axis2_qname_t *name);
 
 /** 
  * Creates op struct with wsdl op

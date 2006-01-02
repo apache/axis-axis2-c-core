@@ -44,9 +44,20 @@ axis2_file_handler_close(void *file_ptr)
 	return (axis2_status_t) fclose(file_ptr);
 }
 
-int AXIS2_CALL 
+axis2_status_t AXIS2_CALL 
 axis2_file_handler_access(axis2_char_t *path, 
                             int mode)
 {
-    return access(path, mode);
+    int i = 0;
+    axis2_status_t status = AXIS2_FAILURE;
+    i = access(path, mode);
+    if(0 == i)
+    {
+        status = AXIS2_SUCCESS;
+    }
+    else if (-1 == i)
+    {
+        status = AXIS2_FAILURE;
+    }
+    return status;    
 }

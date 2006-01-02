@@ -27,7 +27,6 @@ typedef struct axis2_desc_builder_impl
 	axis2_desc_builder_t desc_builder;
     
     axis2_char_t *file_name;
-    struct axis2_dep_engine *engine;
     	
 } axis2_desc_builder_impl_t;
 
@@ -98,10 +97,7 @@ axis2_desc_builder_get_value(axis2_desc_builder_t *desc_builder,
 /************************** End of function prototypes ************************/
 
 axis2_desc_builder_t * AXIS2_CALL 
-axis2_desc_builder_create_with_file_and_dep_engine (
-                                        axis2_env_t **env, 
-                                        axis2_char_t *file_name, 
-                                        struct axis2_dep_engine *engine)
+axis2_desc_builder_create (axis2_env_t **env)
 {
     axis2_desc_builder_impl_t *desc_builder_impl = NULL;
     
@@ -116,14 +112,8 @@ axis2_desc_builder_create_with_file_and_dep_engine (
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-    
-    desc_builder_impl->file_name = AXIS2_STRDUP(file_name, env);
-    if(!desc_builder_impl->file_name)
-    {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    desc_builder_impl->engine = engine;
+    desc_builder_impl->file_name = NULL;
+    desc_builder_impl->desc_builder.engine = NULL;
     
     desc_builder_impl->desc_builder.ops = NULL;
     
@@ -158,6 +148,60 @@ axis2_desc_builder_create_with_file_and_dep_engine (
 	return &(desc_builder_impl->desc_builder);
 }
 
+axis2_desc_builder_t * AXIS2_CALL 
+axis2_desc_builder_create_with_file_and_dep_engine (
+                                        axis2_env_t **env, 
+                                        axis2_char_t *file_name, 
+                                        struct axis2_dep_engine *engine)
+{
+    axis2_desc_builder_impl_t *desc_builder_impl = NULL;
+    
+	AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, file_name, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, engine, NULL);
+	
+	desc_builder_impl = (axis2_desc_builder_impl_t *) 
+        axis2_desc_builder_create(env);
+	if(NULL == desc_builder_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        return NULL;
+    }
+    
+    desc_builder_impl->file_name = AXIS2_STRDUP(file_name, env);
+    if(!desc_builder_impl->file_name)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    desc_builder_impl->desc_builder.engine = engine;
+    
+	return &(desc_builder_impl->desc_builder);
+}
+
+axis2_desc_builder_t * AXIS2_CALL 
+axis2_desc_builder_create_with_dep_engine (
+                                        axis2_env_t **env,
+                                        struct axis2_dep_engine *engine)
+{
+    axis2_desc_builder_impl_t *desc_builder_impl = NULL;
+    
+	AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, engine, NULL);
+	
+	desc_builder_impl = (axis2_desc_builder_impl_t *)
+        axis2_desc_builder_create(env);
+	if(NULL == desc_builder_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        return NULL;
+    }
+    
+    desc_builder_impl->desc_builder.engine = engine;
+    
+	return &(desc_builder_impl->desc_builder);
+}
+
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL 
@@ -175,7 +219,7 @@ axis2_desc_builder_free (axis2_desc_builder_t *desc_builder,
         AXIS2_FREE((*env)->allocator, desc_builder_impl->file_name);
         desc_builder_impl->file_name = NULL;
     }
-    desc_builder_impl->engine = NULL;
+    desc_builder->engine = NULL;
     
 	if(NULL != desc_builder->ops)
         AXIS2_FREE((*env)->allocator, desc_builder->ops);
@@ -186,7 +230,7 @@ axis2_desc_builder_free (axis2_desc_builder_t *desc_builder,
 	return AXIS2_SUCCESS;
 }
 
-struct axis2_om_node *AXIS2_CALL
+axis2_om_node_t *AXIS2_CALL
 axis2_build_OM(axis2_desc_builder_t *desc_builder,
                 axis2_env_t **env) 
 {
@@ -702,7 +746,7 @@ axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
             
             ref_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_ref_attrib, env);
             ref_qname = axis2_qname_create(env, ref_name, NULL, NULL);
-            if( NULL == AXIS2_DEP_ENGINE_GET_MODULE(desc_builder_impl->engine, env,
+            if( NULL == AXIS2_DEP_ENGINE_GET_MODULE(desc_builder->engine, env,
                 ref_qname))
             {
                 AXIS2_QNAME_FREE(ref_qname, env);

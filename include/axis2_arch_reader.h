@@ -29,6 +29,12 @@
 #include <axis2_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_conf.h>
+#include <axis2_deployment.h>
+#include <axis2_arch_file_data.h>
+#include <axis2_dep_engine.h>
+#include <axis2_file_handler.h>
+#include <axis2_om_element.h>
+#include <axis2_desc_builder.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -36,7 +42,8 @@ extern "C"
 #endif
 
 struct axis2_conf;
-    
+struct axis2_arch_file_data; 
+struct axis2_dep_engine;    
 typedef struct axis2_arch_reader axis2_arch_reader_t;
 typedef struct axis2_arch_reader_ops axis2_arch_reader_ops_t;
 

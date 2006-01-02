@@ -30,6 +30,7 @@
 #include <axis2_qname.h>
 #include <axis2_conf.h>
 #include <axis2_array_list.h>
+#include <axis2_dir_handler.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -80,8 +81,8 @@ AXIS2_DECLARE_DATA struct axis2_arch_file_data_ops
     get_type)(axis2_arch_file_data_t *file_data,
                                         axis2_env_t **env);
     
-    axis2_char_t *(AXIS2_CALL *
-    get_file_name)(axis2_arch_file_data_t *file_data,
+    axis2_file_t *(AXIS2_CALL *
+    get_file)(axis2_arch_file_data_t *file_data,
                                         axis2_env_t **env);
     
     axis2_char_t *(AXIS2_CALL *
@@ -132,9 +133,14 @@ AXIS2_DECLARE_DATA struct axis2_arch_file_data
  * @return pointer to newly created arch file data
  */
 AXIS2_DECLARE(axis2_arch_file_data_t *) 
-axis2_arch_file_data_create_with_repos_name (
-                                        axis2_env_t **env, 
-                                        axis2_char_t *repos_path);
+axis2_arch_file_data_create_with_type_and_file(axis2_env_t **env,
+                                                    int type,
+                                                    axis2_file_t *file);
+
+AXIS2_DECLARE(axis2_arch_file_data_t *)
+axis2_arch_file_data_create_with_type_and_name(axis2_env_t **env,
+                                                    int type,
+                                                    axis2_char_t *name);
 
 /*************************** Function macros **********************************/
 
@@ -156,8 +162,8 @@ axis2_arch_file_data_create_with_repos_name (
 #define AXIS2_ARCH_FILE_DATA_GET_TYPE(arch_file_data, env) \
 		((arch_file_data->ops)->get_type (arch_file_data, env)) 
         
-#define AXIS2_ARCH_FILE_DATA_GET_FILE_NAME(arch_file_data, env) \
-		((arch_file_data->ops)->get_file_name (arch_file_data, env)) 
+#define AXIS2_ARCH_FILE_DATA_GET_FILE(arch_file_data, env) \
+		((arch_file_data->ops)->get_file (arch_file_data, env)) 
 
 #define AXIS2_ARCH_FILE_DATA_GET_MODULE_DLL_NAME(arch_file_data, env) \
 		((arch_file_data->ops)->get_module_dll_name (arch_file_data, env)) 

@@ -66,9 +66,9 @@ axis2_file_handler_close (void *file_ptr);
  *  AXIS2_F_OK
  *   - test whether the directories leading to the file can be searched and the 
  *     file exists
- * @return returns: 0 on success, -1 on failure 
+ * @return status
  */
-AXIS2_DECLARE(int) 
+AXIS2_DECLARE(axis2_status_t) 
 axis2_file_handler_access(axis2_char_t *path, 
                             int mode);
 

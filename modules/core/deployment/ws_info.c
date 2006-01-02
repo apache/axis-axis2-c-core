@@ -43,6 +43,27 @@ axis2_status_t AXIS2_CALL
 axis2_ws_info_free (axis2_ws_info_t *ws_info, 
                             axis2_env_t **env);
 
+axis2_char_t *AXIS2_CALL
+axis2_ws_info_get_file_name(axis2_ws_info_t *ws_info,
+                                axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_ws_info_set_file_name(axis2_ws_info_t *ws_info,
+                                axis2_env_t **env,
+                                axis2_char_t *file_name);
+
+long AXIS2_CALL
+axis2_ws_info_get_last_modified_date(axis2_ws_info_t *ws_info,
+                                        axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_ws_info_set_last_modified_date(axis2_ws_info_t *ws_info,
+                                        axis2_env_t **env,
+                                        long last_modified_date);
+
+int AXIS2_CALL
+axis2_ws_info_get_type(axis2_ws_info_t *ws_info,
+                        axis2_env_t **env);
 
 
                                 
@@ -93,6 +114,13 @@ axis2_ws_info_create_with_file_name_and_last_modified_date (axis2_env_t **env,
     }
     
 	ws_info_impl->ws_info.ops->free =  axis2_ws_info_free;
+    ws_info_impl->ws_info.ops->get_file_name = axis2_ws_info_get_file_name;
+    ws_info_impl->ws_info.ops->set_file_name = axis2_ws_info_set_file_name;
+    ws_info_impl->ws_info.ops->get_last_modified_date = 
+        axis2_ws_info_get_last_modified_date;
+    ws_info_impl->ws_info.ops->set_last_modified_date = 
+        axis2_ws_info_set_last_modified_date;
+    ws_info_impl->ws_info.ops->get_type = axis2_ws_info_get_type;
 	
 	return &(ws_info_impl->ws_info);
 }

@@ -314,7 +314,13 @@ extern "C"
         /** only one SOAP fault allowed in SOAP body */
         AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY,
         /** Invalid SOAP envelope state */
-        AXIS2_ERROR_INVALID_SOAP_ENVELOPE_STATE
+        AXIS2_ERROR_INVALID_SOAP_ENVELOPE_STATE,
+        /** Service xml file is not found in the given path */
+        AXIS2_ERROR_SERVICE_XML_NOT_FOUND,
+        /** Module xml file is not found in the given path */
+        AXIS2_ERROR_MODULE_XML_NOT_FOUND_FOR_THE_MODULE,
+        AXIS2_ERROR_OPERATION_NAME_MISSING,
+        AXIS2_ERROR_SVC_NAME_ERROR
     };
 
 /** @} */

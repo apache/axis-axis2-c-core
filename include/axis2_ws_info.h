@@ -58,10 +58,27 @@ AXIS2_DECLARE_DATA struct axis2_ws_info_ops
     free)(axis2_ws_info_t *ws_info,
 	        axis2_env_t **env);
     
-    struct axis2_module_desc *(AXIS2_CALL *
-    get_module) (axis2_ws_info_t *ws_info,
-                                axis2_env_t **env,
-                                axis2_qname_t *module_name); 
+    axis2_char_t *(AXIS2_CALL *
+    get_file_name) (axis2_ws_info_t *ws_info,
+                    axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_file_name) (axis2_ws_info_t *ws_info,
+                                    axis2_env_t **env,
+                                    axis2_char_t *file_name);
+    
+    long (AXIS2_CALL *
+    get_last_modified_date) (axis2_ws_info_t *ws_info,
+                                            axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_last_modified_date) (axis2_ws_info_t *ws_info,
+                                            axis2_env_t **env,
+                                            long last_modified_date);
+    
+    int (AXIS2_CALL *
+    get_type) (axis2_ws_info_t *ws_info,
+                            axis2_env_t **env);
                                
  
 
@@ -81,15 +98,40 @@ AXIS2_DECLARE_DATA struct axis2_ws_info
  * @return pointer to newly created ws info
  */
 AXIS2_DECLARE(axis2_ws_info_t *) 
-axis2_ws_info_create(axis2_env_t **env);
+axis2_ws_info_create_with_file_name_and_last_modified_date (axis2_env_t **env,
+                                        axis2_char_t *file_name,
+                                        long last_modified_date);
+
+AXIS2_DECLARE(axis2_ws_info_t *) 
+axis2_ws_info_create_with_file_name_and_last_modified_date_and_type (
+                                        axis2_env_t **env,
+                                        axis2_char_t *file_name,
+                                        long last_modified_date,
+                                        int type);
 
 /*************************** Function macros **********************************/
 
 #define AXIS2_WS_INFO_FREE(ws_info, env) \
 		((ws_info->ops)->free (ws_info, env))  
 
-#define AXIS2_WS_INFO_GET_MODULE(ws_info, env, module_name) \
-		((ws_info->ops)->get_module (ws_info, env, module_name))
+#define AXIS2_WS_INFO_GET_FILE_NAME(ws_info, env) \
+		((ws_info->ops)->get_file_name (ws_info, env))
+
+#define AXIS2_WS_INFO_SET_FILE_NAME(ws_info, env, file_name) \
+		((ws_info->ops)->set_file_name (ws_info, env, file_name))
+
+
+#define AXIS2_WS_INFO_GET_LAST_MODIFIED_DATE(ws_info, env) \
+		((ws_info->ops)->get_last_modified_date (ws_info, env))
+
+
+#define AXIS2_WS_INFO_SET_LAST_MODIFIED_DATE(ws_info, env, last_modified_date) \
+		((ws_info->ops)->set_last_modified_date (ws_info, env, last_modified_date))
+
+
+#define AXIS2_WS_INFO_GET_TYPE(ws_info, env) \
+		((ws_info->ops)->get_type (ws_info, env))
+
 
 /*************************** End of function macros ***************************/
 

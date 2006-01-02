@@ -616,7 +616,7 @@ axis2_svc_add_op (axis2_svc_t *svc,
     if(AXIS2_TRUE ==status)
     {
         status = AXIS2_WSDL_INTERFACE_SET_OP(axis2_svc_get_svc_interface(svc, env),
-            env, axis2_opt, AXIS2_OP);
+            env, axis2_opt, AXIS2_OP_T);
     }
     return status;
 }

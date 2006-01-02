@@ -48,12 +48,12 @@ extern "C"
      * @brief
      * To store filename and timestamp of each module or service archive file
      */ 
-    typedef struct axis2_arch_file
+    typedef struct axis2_file
     {
         axis2_char_t *name;
         AXIS2_TIME_T time_stamp;
         
-    } axis2_arch_file_t;
+    } axis2_file_t;
 
 #define AXIS2_LIST_DIR(env, pathname) axis2_list_dir(env, pathname)
 

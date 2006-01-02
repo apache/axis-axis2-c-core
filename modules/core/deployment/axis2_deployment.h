@@ -48,7 +48,7 @@ extern "C"
 #define AXIS2_SVC_XML "META-INF/services.xml"
 #define AXIS2_SVC_WSDL_NAME "service.wsdl"
 #define AXIS2_SVC_WSDL_WITH_FOLDER "META-INF/service.wsdl"
-#define AXIS2_MODULEXML "META-INF/module.xml"
+#define AXIS2_MODULE_XML "META-INF/module.xml"
 #define AXIS2_PARAMETERST "parameter" /* paramater start tag */
 #define AXIS2_LISTENERST "listener" /* paramater start tag */
 #define AXIS2_HANDLERST "handler"
@@ -117,7 +117,7 @@ extern "C"
 
 /* element in a services.xml */
 #define AXIS2_SVC_ELEMENT "service"
-#define AXIS2_SVC_GROUP_ELEMENT "serviceGroup"
+#define AXIS2_SVC_GRP_ELEMENT "serviceGroup"
 	
 /*********************************** Constants*********************************/	
 	

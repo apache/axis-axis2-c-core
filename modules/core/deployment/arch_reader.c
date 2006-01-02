@@ -38,6 +38,13 @@ axis2_status_t AXIS2_CALL
 axis2_arch_reader_free (axis2_arch_reader_t *arch_reader, 
                             axis2_env_t **env);
 
+axis2_status_t AXIS2_CALL
+axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
+                                axis2_env_t **env,
+                                axis2_char_t *file_path,
+                                struct axis2_dep_engine *dep_engine,
+                                struct axis2_svc_grp *svc_grp);
+
 
 
                                 
@@ -110,7 +117,6 @@ axis2_arch_reader_create_svc(axis2_arch_reader_t *arch_reader,
                                 struct axis2_arch_file_data *file) 
 {
     struct axis2_svc *svc = NULL;
-    axis2_bool_t found_svc = AXIS2_FALSE;
     
     /* TODO comment this until WOM implementation is done */
     /*InputStream in = file.getClassLoader().getResourceAsStream(
@@ -269,169 +275,150 @@ public void processWSDLs(ArchiveFileData file , DeploymentEngine depengine) thro
 axis2_status_t AXIS2_CALL
 axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
                                     axis2_env_t **env,
-                                    axis2_char_t *file_path
-                                    struct axis2_dep_engine *engine,
-                                    struct axis2_svc_grp *svc_grp)
+                                    axis2_char_t *file_path,
+                                    struct axis2_dep_engine *dep_engine,
+                                    axis2_svc_grp_t *svc_grp)
 {
     axis2_char_t *file_name = NULL;
-    int len = 0;
+    axis2_status_t status = AXIS2_FAILURE;
+    
+    AXIS2_FUNC_PARAM_CHECK(arch_reader, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, file_path, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
+    
     file_name = AXIS2_STRACAT(file_path, AXIS2_SVC_XML, env);
-    if(NULL != file_name)
+    if(!file_name)
     {
-        InputStream in ;
-            in = new FileInputStream(file);
-            buildServiceGroup(in,engine,axisServiceGroup);
-            axisServiceGroup.setServiceGroupName(engine.getCurrentFileItem().getName());
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    status = axis2_file_handler_access(file_name, AXIS2_F_OK);
+    if(AXIS2_SUCCESS == status)
+    {
+        struct axis2_arch_file_data *arch_file_data = NULL;
+        axis2_char_t *svc_name = NULL;    
         
+        status = axis2_arch_reader_build_svc_grp(arch_reader, env, file_name, 
+            dep_engine, svc_grp);
+        if(AXIS2_FAILURE == status)
+        {
+            return AXIS2_FAILURE;
         }
+        arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
+        svc_name = AXIS2_ARCH_FILE_DATA_GET_SVC_NAME(arch_file_data, env);
+        AXIS2_SVC_GRP_SET_NAME(svc_grp, env, svc_name);
     } else 
     {
-        AXIS2_ERROR_SET((*env)->error, 
-        throw new DeploymentException(
-                Messages.getMessage(DeploymentErrorMsgs.SERVICE_XML_NOT_FOUND));
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SERVICE_XML_NOT_FOUND, 
+            AXIS2_FAILURE);
+        status = AXIS2_FAILURE;
     }
+    return status;
 }
 
-private void buildServiceGroup(InputStream zin, DeploymentEngine engine,
-                               AxisServiceGroup axisServiceGroup)
-        throws XMLStreamException, DeploymentException {
-    DescriptionBuilder builder;
-    String rootelementName;
-    builder = new DescriptionBuilder(zin, engine);
-    OMElement services = builder.buildOM();
-    rootelementName = services.getLocalName();
-    if(SERVICE_ELEMENT.equals(rootelementName)){
-        AxisService axisService = engine.getCurrentFileItem().
-                getService(DescriptionBuilder.getShortFileName(
-                        engine.getCurrentFileItem().getName()));
-        if(axisService == null){
-            axisService = new AxisService(
-                    new QName(DescriptionBuilder.getShortFileName(
-                            engine.getCurrentFileItem().getName())));
-            engine.getCurrentFileItem().addService(axisService);
+axis2_status_t AXIS2_CALL
+axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
+                                axis2_env_t **env,
+                                axis2_char_t *file_path,
+                                struct axis2_dep_engine *dep_engine,
+                                struct axis2_svc_grp *svc_grp)
+{                       
+    struct axis2_desc_builder *desc_builder = NULL;
+    axis2_char_t *root_element_name = NULL;
+    axis2_om_node_t *svcs = NULL;
+    axis2_om_element_t *svcs_element = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    
+    AXIS2_FUNC_PARAM_CHECK(arch_reader, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, file_path, AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
+    
+    desc_builder = axis2_desc_builder_create_with_file_and_dep_engine(env, 
+        file_path, dep_engine);
+    if(!desc_builder)
+    {
+        return AXIS2_FAILURE;
+    }
+    svcs = AXIS2_DESC_BUILDER_BUILD_OM(desc_builder, env);
+    svcs_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(svcs, env);
+    root_element_name = AXIS2_OM_ELEMENT_GET_LOCALNAME(svcs_element, env);
+    if(0 == AXIS2_STRCMP(AXIS2_SVC_ELEMENT, root_element_name))
+    {
+        axis2_svc_t *svc = NULL;
+        struct axis2_arch_file_data *file_data = NULL;
+        axis2_char_t *name = NULL;
+        axis2_char_t *short_file_name = NULL;
+        
+        file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
+        name = AXIS2_ARCH_FILE_DATA_GET_NAME(file_data, env);
+        short_file_name = AXIS2_DESC_BUILDER_GET_SHORT_FILE_NAME(desc_builder, 
+            env, name);
+        svc = AXIS2_ARCH_FILE_DATA_GET_SVC(file_data, env, short_file_name);
+        if(NULL == svc)
+        {
+            axis2_qname_t *svc_qname = NULL;
+            
+            svc_qname = axis2_qname_create(env, short_file_name, NULL, NULL);
+            svc = axis2_svc_create_with_qname(env, svc_qname);
+            status = AXIS2_ARCH_FILE_DATA_ADD_SVC(file_data, env, svc);
+            if(AXIS2_FAILURE == status)
+            {
+                AXIS2_QNAME_FREE(svc_qname, env);
+                svc_qname = NULL;
+                return AXIS2_FAILURE;
+            }
         }
-        axisService.setParent(axisServiceGroup);
-        axisService.setClassLoader(engine.getCurrentFileItem().getClassLoader());
+        AXIS2_SVC_SET_PARENT(svc, env, svc_grp);
+        /*axisService.setClassLoader(engine.getCurrentFileItem().getClassLoader());
         ServiceBuilder serviceBuilder = new ServiceBuilder(engine,axisService);
         serviceBuilder.populateService(services);
         engine.getCurrentFileItem().getDeploybleServices().add(axisService);
-    } else if(SERVICE_GROUP_ELEMENT.equals(rootelementName)){
-        ServiceGroupBuilder groupBuilder = new ServiceGroupBuilder(services,engine);
-        groupBuilder.populateServiceGroup(axisServiceGroup);
+        */
     }
+    else if(0 == AXIS2_STRCMP(AXIS2_SVC_GRP_ELEMENT, root_element_name))
+    {
+        /*ServiceGroupBuilder groupBuilder = new ServiceGroupBuilder(services,engine);
+        groupBuilder.populateServiceGroup(axisServiceGroup);*/
+    }
+    return status;
 }
 
-public void readModuleArchive(String filename,
-                              DeploymentEngine engine,
-                              ModuleDescription module , boolean explodedDir)
-        throws DeploymentException {
-    // get attribute values
-    boolean foundmoduleXML = false;
-    if (!explodedDir) {
-        ZipInputStream zin;
-        try {
-            zin = new ZipInputStream(new FileInputStream(filename));
-            ZipEntry entry;
-            while ((entry = zin.getNextEntry()) != null) {
-                if (entry.getName().equals(MODULEXML)) {
-                    foundmoduleXML = true;
-                    ModuleBuilder builder = new ModuleBuilder(zin, engine, module);
-                    builder.populateModule();
-                    break;
-                }
-            }
-            zin.close();
-            if (!foundmoduleXML) {
-                throw new DeploymentException(Messages.getMessage(
-                        DeploymentErrorMsgs.MODULEXML_NOT_FOUND_FOR_THE_MODULE, filename));
-            }
-        } catch (Exception e) {
-            throw new DeploymentException(e);
-        }
-    } else {
-        File file = new File(filename, MODULEXML);
-        if (file.exists()) {
-            InputStream in;
-            try {
-                in = new FileInputStream(file);
-                ModuleBuilder builder = new ModuleBuilder(in, engine, module);
-                builder.populateModule();
-            } catch (FileNotFoundException e) {
-                throw new DeploymentException(Messages.getMessage(DeploymentErrorMsgs.FNF_WITH_E
-                        ,e.getMessage()));
-            }
-        } else {
-            throw new DeploymentException(Messages.getMessage(
-                    DeploymentErrorMsgs.MODULEXML_NOT_FOUND_FOR_THE_MODULE, filename));
-        }
-
+axis2_status_t AXIS2_CALL
+axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
+                                    axis2_env_t **env,
+                                    axis2_char_t *file_path,
+                                    struct axis2_dep_engine *dep_engine,
+                                    axis2_module_desc_t *module)
+{
+    axis2_char_t *file_name = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    
+    AXIS2_FUNC_PARAM_CHECK(arch_reader, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, file_path, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, module, AXIS2_FAILURE);
+    
+    file_name = AXIS2_STRACAT(file_path, AXIS2_MODULE_XML, env);
+    if(!file_name)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
     }
-}
-
-
-/**
- * This method first check whether the given module is there in the user home dirctory if so return
- * that , else try to read the given module form classpath (from resources ) if found first get the module.mar
- * file from the resourceStream and write that into user home/axis2home/nodule directory
- *
- * @param moduleName
- * @return
- * @throws DeploymentException
- */
-public File creatModuleArchivefromResource(String moduleName,
-                                           String axis2repository) throws DeploymentException {
-    File modulearchiveFile;
-    File modules;
-    try {
-        int BUFFER = 2048;
-        if (axis2repository == null) {
-            String userHome = System.getProperty("user.home");
-            File userHomedir = new File(userHome);
-            File repository = new File(userHomedir, ".axis2home");
-            modules = new File(repository, "modules");
-        } else {
-            modules = new File(axis2repository, "modules");
-        }
-        String modulearchiveName = moduleName + ".mar";
-        modulearchiveFile = new File(modules, modulearchiveName);
-        if (modulearchiveFile.exists()) {
-            return modulearchiveFile;
-        }
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        InputStream in = cl.getResourceAsStream("modules/" + moduleName + ".mar");
-        if (in == null) {
-            in = cl.getResourceAsStream("modules/" + moduleName + ".jar");
-        }
-        if (in == null) {
-            throw new DeploymentException(Messages.getMessage(
-                        DeploymentErrorMsgs.MODULEXML_NOT_FOUND_FOR_THE_MODULE, moduleName));
-        } else {
-            if(!modules.exists()) {
-                modules.mkdirs();
-            }
-            modulearchiveFile.createNewFile();
-            FileOutputStream dest = new
-                    FileOutputStream(modulearchiveFile);
-            ZipOutputStream out = new ZipOutputStream(new
-                    BufferedOutputStream(dest));
-            byte data[] = new byte[BUFFER];
-            ZipInputStream zin;
-            zin = new ZipInputStream(in);
-            ZipEntry entry;
-            while ((entry = zin.getNextEntry()) != null) {
-                ZipEntry zip = new ZipEntry(entry);
-                out.putNextEntry(zip);
-                int count;
-                while ((count = zin.read(data, 0, BUFFER)) != -1) {
-                    out.write(data, 0, count);
-                }
-            }
-            out.close();
-            zin.close();
-        }
-
-    } catch (Exception e) {
-        throw new DeploymentException(e);
+    status = axis2_file_handler_access(file_name, AXIS2_F_OK);
+    if(AXIS2_SUCCESS == status)
+    {
+        /*
+            ModuleBuilder builder = new ModuleBuilder(in, engine, module);
+            builder.populateModule();
+        */
     }
-    return modulearchiveFile;
+    else
+    {
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_MODULE_XML_NOT_FOUND_FOR_THE_MODULE, AXIS2_FAILURE);
+        status = AXIS2_FAILURE;
+    }
+    return status;
 }

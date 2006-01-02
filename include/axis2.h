@@ -95,19 +95,19 @@ extern "C"
 
 typedef enum axis2_op_type
 {
-    /** axis2_wsdl_op */
-    AXIS2_WSDL_OP = 0,
-    /** axis2_op */
-    AXIS2_OP
+    /** axis2_wsdl_op_t */
+    AXIS2_WSDL_OP_T = 0,
+    /** axis2_op_t */
+    AXIS2_OP_T
     
 }axis2_op_type_t;
 
 typedef enum axis2_svc_type
 {
-    /** axis2_wsdl_svc */
-    AXIS2_WSDL_SVC = 0,
-    /** axis2_svc */
-    AXIS2_SVC
+    /** axis2_wsdl_svc_t */
+    AXIS2_WSDL_SVC_T = 0,
+    /** axis2_svc_t */
+    AXIS2_SVC_T
     
 }axis2_svc_type_t;
 

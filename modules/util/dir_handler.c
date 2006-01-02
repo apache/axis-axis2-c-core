@@ -50,18 +50,17 @@ axis2_dir_handler_list_dir(axis2_env_t **env,
 		printf("No files in this directory:%s\n", pathname);
 		exit(0);
 	}
-    file_size = sizeof(axis2_arch_file_t);
+    file_size = sizeof(axis2_file_t);
     
 	for (i=1; i < count + 1 ; ++i)
     {
         int len = 0;
         axis2_char_t *fname = NULL;
-        axis2_char_t *path_set_char = NULL;
-        axis2_arch_file_t *arch_file = NULL;
+        axis2_file_t *arch_file = NULL;
         axis2_char_t *path = NULL;
        
         fname = files[i-1]->d_name;
-        arch_file = (axis2_arch_file_t *) AXIS2_MALLOC((*env)->allocator, file_size);
+        arch_file = (axis2_file_t *) AXIS2_MALLOC((*env)->allocator, file_size);
         if(!arch_file)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

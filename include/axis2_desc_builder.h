@@ -95,7 +95,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
     struct axis2_flow *(AXIS2_CALL *
     process_flow) (axis2_desc_builder_t *desc_builder,
                                     axis2_env_t **env,
-                                    struct axis2_om_element *flow_element,
+                                    axis2_om_element_t *flow_element,
                                     axis2_param_container_t *parent,
                                     axis2_om_node_t *node);
     
@@ -128,14 +128,14 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
     process_op_module_refs) (axis2_desc_builder_t *desc_builder,
                               axis2_env_t **env,
                               axis2_om_children_qname_iterator_t *module_refs, 
-                              struct axis2_op *op);
+                              axis2_op_t *op);
                                   
-    struct axis2_msg_recv *(AXIS2_CALL *
+    axis2_msg_recv_t *(AXIS2_CALL *
     load_msg_recv) (axis2_desc_builder_t *desc_builder,
                                         axis2_env_t **env,
                                         axis2_om_element_t *recv_element);
     
-    struct axis2_msg_recv *(AXIS2_CALL *
+    axis2_msg_recv_t *(AXIS2_CALL *
     load_default_msg_recv) (axis2_desc_builder_t *desc_builder,
                                                 axis2_env_t **env);
     
@@ -172,10 +172,29 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
 AXIS2_DECLARE_DATA struct axis2_desc_builder
 {
 	axis2_desc_builder_ops_t *ops;
+    axis2_dep_engine_t *engine;
 };
 
 /**
  * Creates description builder struct
+ * @return pointer to newly created description builder
+ */
+AXIS2_DECLARE(axis2_desc_builder_t *)
+axis2_desc_builder_create (axis2_env_t **env);
+
+/**
+ * Creates description builder struct
+ * @param engine
+ * @return pointer to newly created description builder
+ */
+AXIS2_DECLARE(axis2_desc_builder_t *)
+axis2_desc_builder_create_with_dep_engine (
+                                        axis2_env_t **env,
+                                        struct axis2_dep_engine *engine);
+/**
+ * Creates description builder struct
+ * @param file_name
+ * @param engine                                        
  * @return pointer to newly created description builder
  */
 AXIS2_DECLARE(axis2_desc_builder_t *) 
