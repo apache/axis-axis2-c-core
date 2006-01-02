@@ -71,6 +71,12 @@ axis2_soap_envelope_free(axis2_soap_envelope_t *envelope,
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_envelope_get_base_node(axis2_soap_envelope_t *envelope,
                              axis2_env_t **env);
+                             
+axis2_status_t AXIS2_CALL
+axis2_soap_envelope_set_base_node(axis2_soap_envelope_t *envelope,
+                                  axis2_env_t **env,
+                                  axis2_om_node_t *om_node);
+                                  
 int AXIS2_CALL 
 axis2_soap_envelope_get_soap_version(axis2_soap_envelope_t *envelope,
                                    axis2_env_t **env);

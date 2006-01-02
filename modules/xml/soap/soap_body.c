@@ -70,6 +70,8 @@ axis2_soap_body_set_base_node(axis2_soap_body_t *body,
 int AXIS2_CALL 
 axis2_soap_body_get_soap_version(axis2_soap_body_t *body,
                                  axis2_env_t **env);
+                                 
+                                 
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_set_soap_version(axis2_soap_body_t *body,
                                  axis2_env_t **env,
@@ -112,6 +114,7 @@ axis2_soap_body_create(axis2_env_t **env)
     body_impl->soap_body.ops->get_fault = axis2_soap_body_get_fault;
     body_impl->soap_body.ops->add_fault = axis2_soap_body_add_fault;
     body_impl->soap_body.ops->get_base_node = axis2_soap_body_get_base_node;
+    body_impl->soap_body.ops->set_base_node = axis2_soap_body_set_base_node;
     body_impl->soap_body.ops->get_soap_version = axis2_soap_body_get_soap_version;
     body_impl->soap_body.ops->set_soap_version = axis2_soap_body_set_soap_version;
     
@@ -122,36 +125,45 @@ return NULL;
 
 
 axis2_soap_body_t* AXIS2_CALL
-axis2_soap_body_create_with_parent(axis2_env_t **env, axis2_soap_envelope_t *envelope, axis2_om_namespace_t *ns)
+axis2_soap_body_create_with_parent(axis2_env_t **env, 
+                                   axis2_soap_envelope_t *envelope)
 {
     axis2_soap_body_impl_t *body_impl = NULL;
+    axis2_soap_body_t *body = NULL;
     axis2_om_element_t *ele = NULL;
     axis2_om_node_t *parent = NULL;
+    axis2_om_element_t *parent_ele =  NULL;
+    axis2_om_namespace_t *om_ns = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
+    
+    body = axis2_soap_body_create(env);
+    if(!body)
+    {
+        return NULL;   
+    }
+    body_impl = AXIS2_INTF_TO_IMPL(body);
+   
     
     /*get parent node from SOAP envelope */
     if (envelope)
     {
         parent = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(envelope, env);
+        if(parent)
+        {
+            parent_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
+                        parent, env);
+        }            
     }
-    
-    ele = axis2_om_element_create(env, parent, AXIS2_SOAP_BODY_LOCAL_NAME, ns, &(body_impl->om_ele_node));
+    ele = axis2_om_element_create(env, parent, 
+                                  AXIS2_SOAP_BODY_LOCAL_NAME, om_ns, 
+                                  &(body_impl->om_ele_node));
     if (!ele)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_soap_body_free(&(body_impl->soap_body), env);
         return NULL;
     }
-    
-    body_impl->soap_body.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_soap_body_ops_t) );
-    if (!body_impl->soap_body.ops)
-    {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_soap_body_free(&(body_impl->soap_body), env);
-        return NULL;        
-    }
-    
     return &(body_impl->soap_body);           
 }
 
@@ -232,8 +244,30 @@ axis2_soap_fault_t* AXIS2_CALL axis2_soap_body_get_fault(axis2_soap_body_t *body
     axis2_soap_body_impl_t *body_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(body, env, NULL);
     body_impl = AXIS2_INTF_TO_IMPL(body);
-    
-    return body_impl->soap_fault;
+    if(body_impl->has_fault)
+    {
+        return body_impl->soap_fault;
+    }
+    /*
+    else
+    {
+        axis2_om_node_t *first_node = NULL;
+        axis2_om_element_t *first_ele = NULL;
+        axis2_om_namespace_t *om_ns = NULL;
+        axis2_char_t *ns_uri = NULL;
+        
+        first_node = AXIS2_OM_NODE_GET_FIRST_CHILD(body_impl->om_ele_node, env);
+        if(first_node)
+        {
+                
+            first_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(first_node, env);
+            om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(first_ele, env);
+            ns_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
+            
+        }
+        
+    } 
+    */
     /*
     OMElement element = getFirstElement();
     if (has_fault) {

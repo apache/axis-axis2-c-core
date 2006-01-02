@@ -35,8 +35,8 @@ extern "C"
 #endif
 
 
-typedef struct axis2_soap_body axis2_soap_body_t;
-typedef struct axis2_soap_body_ops axis2_soap_body_ops_t;
+typedef struct axis2_soap_body      axis2_soap_body_t;
+typedef struct axis2_soap_body_ops  axis2_soap_body_ops_t;
     
 /**
  * @defgroup axis2_soap_body
@@ -72,7 +72,7 @@ typedef struct axis2_soap_body_ops axis2_soap_body_ops_t;
          *         otherwise
          */
         axis2_bool_t (AXIS2_CALL *has_fault)(axis2_soap_body_t *body,
-                                                 axis2_env_t **env);
+                                             axis2_env_t **env);
         /**
          * Returns the <code>SOAPFault</code> object in this <code>SOAPBody</code>
          * object.
@@ -128,8 +128,7 @@ axis2_soap_body_create(axis2_env_t **env);
     
 AXIS2_DECLARE(axis2_soap_body_t *)
 axis2_soap_body_create_with_parent(axis2_env_t **env, 
-                                   struct axis2_soap_envelope *envelope,
-                                   axis2_om_namespace_t *ns);
+                                   struct axis2_soap_envelope *envelope);
     
 /******************** Macros **************************************************/
     
@@ -147,7 +146,10 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
         ((body)->ops->add_fault(body, env, soap_fault))
         
 #define AXIS2_SOAP_BODY_GET_BASE_NODE(body, env) \
-        ((body)->ops->get_base(body, env))
+        ((body)->ops->get_base_node(body, env))
+                                   
+#define AXIS2_SOAP_BODY_SET_BASE_NODE(body, env, om_node) \
+        ((body)->ops->set_base_node(body, env, om_node))c
         
 #define AXIS2_SOAP_BODY_GET_SOAP_VERSION(body, env) \
         ((body)->ops->get_soap_version(body, env))
