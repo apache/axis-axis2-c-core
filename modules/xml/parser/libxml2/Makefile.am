@@ -8,5 +8,5 @@ libaxis2_libxml2_la_LIBADD =
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/xml/parser \
-            -I${LIBXML2_INCLUDE} \
-            -I$(top_builddir)/modules/platforms
+            -I$(top_builddir)/modules/platforms \
+            -I${LIBXML2_INCLUDE}
