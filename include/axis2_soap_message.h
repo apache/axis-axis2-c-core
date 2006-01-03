@@ -24,6 +24,7 @@
  */
 #include <axis2_env.h>
 #include <axis2_soap_envelope.h>
+#include <axis2_om_document.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -65,6 +66,11 @@ extern "C"
                                             (axis2_soap_message_t *message,
                                              axis2_env_t **env,
                                              axis2_soap_envelope_t *envelope);
+                                             
+        axis2_status_t (AXIS2_CALL *serialize)(axis2_soap_message_t *message,
+                                               axis2_env_t **env);
+                                                       
+                                                                                            
     };
 
   /**
@@ -82,8 +88,9 @@ extern "C"
     * creates a soap message struct 
     * @param env Environment. MUST NOT be NULL
     */
-    AXIS2_DECLARE(axis2_soap_message_t *)
-    axis2_soap_message_create (axis2_env_t **env);
+AXIS2_DECLARE(axis2_soap_message_t *)
+axis2_soap_message_create(axis2_env_t **env,
+                          axis2_om_document_t *om_document);
 
 /******************** Macros **************************************************/
     
@@ -96,8 +103,10 @@ extern "C"
         ((message)->ops->get_envelope(message, env))
         
 #define AXIS2_SOAP_MESSAGE_SET_SOAP_ENVELOPE(message, env, envelope) \
-        ((message)->ops->get_envelope(message, env, envelope)) 
+        ((message)->ops->set_envelope(message, env, envelope)) 
         
+#define AXIS2_SOAP_MESSAGE_SERIALIZE(message, env) \
+        ((message)->ops->serialize(message, env))
 /** @} */
 
 #ifdef __cplusplus

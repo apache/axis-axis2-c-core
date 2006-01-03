@@ -102,7 +102,49 @@ axis2_soap_envelope_get_namespace(axis2_soap_envelope_t *envelope,
                                    
 /*************** function implementations *************************************/
 
-axis2_soap_envelope_t* AXIS2_CALL
+AXIS2_DECLARE(axis2_soap_envelope_t*)
+axis2_soap_envelope_create_null(axis2_env_t **env)
+{
+    axis2_soap_envelope_impl_t *envelope_impl = NULL;
+    axis2_om_element_t *ele = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    envelope_impl = (axis2_soap_envelope_impl_t*)AXIS2_MALLOC(
+                    (*env)->allocator,
+                    sizeof(axis2_soap_envelope_impl_t));
+    if(!envelope_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    envelope_impl->soap_envelope.ops = NULL;
+    envelope_impl->om_ele_node = NULL;
+    envelope_impl->soap_version = AXIS2_SOAP12;    
+    envelope_impl->header = NULL;
+    envelope_impl->body = NULL;
+    
+    envelope_impl->soap_envelope.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_soap_envelope_ops_t) );
+    if (!envelope_impl->soap_envelope.ops)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        axis2_soap_envelope_free(&(envelope_impl->soap_envelope), env);
+        return NULL;        
+    }
+    
+    envelope_impl->soap_envelope.ops->get_header = axis2_soap_envelope_get_header;
+    envelope_impl->soap_envelope.ops->add_header = axis2_soap_envelope_add_header;
+    envelope_impl->soap_envelope.ops->get_body = axis2_soap_envelope_get_body;
+    envelope_impl->soap_envelope.ops->serialize = axis2_soap_envelope_serialize;    
+    envelope_impl->soap_envelope.ops->free = axis2_soap_envelope_free;
+    envelope_impl->soap_envelope.ops->get_base_node = axis2_soap_envelope_get_base_node;
+    envelope_impl->soap_envelope.ops->get_soap_version = axis2_soap_envelope_get_soap_version;
+    envelope_impl->soap_envelope.ops->set_soap_version = axis2_soap_envelope_set_soap_version;
+    envelope_impl->soap_envelope.ops->get_namespace = axis2_soap_envelope_get_namespace;
+    
+    return &(envelope_impl->soap_envelope);        
+}
+
+
+AXIS2_DECLARE(axis2_soap_envelope_t*)
 axis2_soap_envelope_create(axis2_env_t **env, axis2_om_namespace_t *ns)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
@@ -239,17 +281,57 @@ axis2_soap_header_t* AXIS2_CALL axis2_soap_envelope_get_header(axis2_soap_envelo
     axis2_env_t **env)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
+    axis2_qname_t *header_qn = NULL;
+    axis2_om_node_t *header_node = NULL;
+    axis2_om_element_t *header_ele = NULL;
+    axis2_om_element_t *envelope_ele = NULL;
+    
+    
     AXIS2_FUNC_PARAM_CHECK(envelope, env, NULL);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     
-    /* TODO axis2_soap_header_t *header =
-            (SOAPHeader)getFirstChildWithName(
-                    new QName(SOAPConstants.HEADER_LOCAL_NAME));
-    if (builder == null && header == null) {
-        header = factory.createSOAPHeader(this);
-        addChild(header);
+    if(envelope_impl->header)
+    {
+        return envelope_impl->header;
+    }        
+    else
+    {
+        envelope_impl->header = axis2_soap_header_create(env);
+        envelope_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
+                            envelope_impl->om_ele_node, env);
+        header_qn = axis2_qname_create(env, AXIS2_SOAP_HEADER_LOCAL_NAME, NULL, NULL);
+        if(!header_qn)
+        {
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return NULL;
+        }                            
+        header_ele = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(envelope_ele,
+                         env, header_qn, envelope_impl->om_ele_node, &header_node); 
+                         
+        AXIS2_SOAP_HEADER_SET_BASE_NODE(envelope_impl->header, env, header_node);
+        if(envelope_impl->soap_version == AXIS2_SOAP11)
+        {
+            AXIS2_SOAP_HEADER_SET_SOAP_VERSION(envelope_impl->header, env, AXIS2_SOAP11);
+        }
+        else if(envelope_impl->soap_version == AXIS2_SOAP12)
+        {
+            AXIS2_SOAP_HEADER_SET_SOAP_VERSION(envelope_impl->header, env, AXIS2_SOAP11);
+        }
+        if(envelope_impl->header)
+            return envelope_impl->header;                         
+    }            
+    if(!(envelope_impl->header))
+    {
+        envelope_impl->header = axis2_soap_header_create_with_parent(env, envelope);
+        if(envelope_impl->soap_version == AXIS2_SOAP12)
+        {
+            AXIS2_SOAP_HEADER_SET_SOAP_VERSION(envelope_impl->header, env, AXIS2_SOAP12);
+        }
+        else if(envelope_impl->soap_version == AXIS2_SOAP11)
+        {
+            AXIS2_SOAP_HEADER_SET_SOAP_VERSION(envelope_impl->header, env, AXIS2_SOAP12);
+        }
     }
-    */
     return envelope_impl->header;
 }
 
