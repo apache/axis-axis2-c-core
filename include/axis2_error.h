@@ -319,13 +319,23 @@ extern "C"
         AXIS2_ERROR_SERVICE_XML_NOT_FOUND,
         /** Module xml file is not found in the given path */
         AXIS2_ERROR_MODULE_XML_NOT_FOUND_FOR_THE_MODULE,
+        
         AXIS2_ERROR_OPERATION_NAME_MISSING,
+        
         AXIS2_ERROR_SVC_NAME_ERROR,
+        
         AXIS2_ERROR_OP_NAME_MISSING,
+        
         AXIS2_ERROR_OUTFLOW_NOT_ALLOWED_IN_TRS_IN,
+        
         AXIS2_ERROR_INFLOW_NOT_ALLOWED_IN_TRS_OUT,
+        
         AXIS2_ERROR_NO_DISPATCHER_FOUND,
-        AXIS2_ERROR_TRANSPORT_SENDER_ERROR
+        
+        AXIS2_ERROR_TRANSPORT_SENDER_ERROR,
+        
+        AXIS2_ERROR_SOAP_ENVELOPE_MUST_HAVE_BODY_ELEMENT
+
     };
 
 /** @} */

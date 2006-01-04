@@ -204,31 +204,38 @@ axis2_bool_t AXIS2_CALL axis2_soap_body_has_fault(axis2_soap_body_t *body,
     axis2_env_t **env) 
 {
     axis2_soap_body_impl_t *body_impl = NULL;
+    axis2_om_node_t *fault_node = NULL;
+    axis2_om_element_t *fault_ele = NULL;
+    axis2_om_element_t *soap_body_ele = NULL;
     AXIS2_FUNC_PARAM_CHECK(body, env, AXIS2_FAILURE);
     body_impl = AXIS2_INTF_TO_IMPL(body);
-    
-    return body_impl->has_fault;
-    
-    /*if (has_fault) {
-        return true;
-    } else {
-        OMElement element = getFirstElement();
-        if (element != null
-                &&
-                SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(
-                        element.getLocalName())
-                &&
-                (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                        element.getNamespace().getName())
-                ||
-                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                        element.getNamespace().getName()))) {  //added this line
-            has_fault = true;
-            return true;
-        } else {
-            return false;
+    if(body_impl->has_fault)
+        return body_impl->has_fault;
+    else
+    {
+        soap_body_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(body_impl->om_ele_node, env);
+        if(soap_body_ele)
+        {
+            axis2_char_t* localname = NULL;
+            axis2_om_namespace_t *om_ns = NULL;
+            axis2_char_t* namespace_uri = NULL;
+            fault_ele = AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT( soap_body_ele, env, body_impl->om_ele_node, &fault_node);
+            localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(fault_ele, env);
+            om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(fault_ele, env);
+            namespace_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
+            
+            if(fault_ele && AXIS2_STRCMP(AXIS2_SOAP_FAULT_LOCAL_NAME, localname) == 0 &&
+            (AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, namespace_uri) == 0 ||   
+             AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, namespace_uri) == 0))
+             {
+                body_impl->has_fault = AXIS2_TRUE;
+                return body_impl->has_fault;
+                    
+             }   
         }
-    }*/
+       
+    }
+    return AXIS2_FALSE;
 }
 
 /**
@@ -248,7 +255,6 @@ axis2_soap_fault_t* AXIS2_CALL axis2_soap_body_get_fault(axis2_soap_body_t *body
     {
         return body_impl->soap_fault;
     }
-    /*
     else
     {
         axis2_om_node_t *first_node = NULL;
@@ -267,7 +273,6 @@ axis2_soap_fault_t* AXIS2_CALL axis2_soap_body_get_fault(axis2_soap_body_t *body
         }
         
     } 
-    */
     /*
     OMElement element = getFirstElement();
     if (has_fault) {

@@ -377,29 +377,60 @@ axis2_soap_body_t* AXIS2_CALL axis2_soap_envelope_get_body(axis2_soap_envelope_t
     axis2_env_t **env)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
+    axis2_om_element_t *envelope_ele = NULL;
+    axis2_om_node_t *first_node = NULL;
+    axis2_om_element_t *first_ele = NULL;
+    
+    axis2_om_node_t *next_node = NULL;
+    axis2_om_element_t *next_ele = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(envelope, env, NULL);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
+    if(envelope_impl->body)
+    {
+        return envelope_impl->body;
+    }
+    envelope_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
+                        envelope_impl->om_ele_node, env);
+                            
     
-    /* TODO //check for the first element
-    OMElement element = getFirstElement();
-    if (element != null) {
-        if (SOAPConstants.BODY_LOCAL_NAME.equals(element.getLocalName())) {
-            return (SOAPBody) element;
-        } else {      // if not second element SHOULD be the envelope
-            OMNode node = element.getNextOMSibling();
-            while (node != null && node.getType() != OMNode.ELEMENT_NODE) {
-                node = node.getNextOMSibling();
-            }
-            element = (OMElement) node;
-
-            if (node != null &&
-                    SOAPConstants.BODY_LOCAL_NAME.equals(element.getLocalName())) {
-                return (SOAPBody) element;
-            } else {
-                throw new OMException("SOAPEnvelope must contain a envelope element which is either first or second child element of the SOAPEnvelope.");
-            }
+    first_ele = AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(envelope_ele, 
+                        env, envelope_impl->om_ele_node, &first_node);
+    if(first_ele)
+    {
+        if(AXIS2_STRCMP(AXIS2_SOAP_BODY_LOCAL_NAME, 
+                AXIS2_OM_ELEMENT_GET_LOCALNAME(first_ele, env)) == 0)
+        {
+            envelope_impl->body = axis2_soap_body_create(env);
+            AXIS2_SOAP_BODY_SET_BASE_NODE(envelope_impl->body, env, first_node);
+            AXIS2_SOAP_BODY_SET_SOAP_VERSION(envelope_impl->body, env, envelope_impl->soap_version);
+            return envelope_impl->body;
+        
         }
-    }*/
+        else
+        {
+            next_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(envelope_impl->om_ele_node, env);
+            while(next_node  && AXIS2_OM_NODE_GET_NODE_TYPE(envelope_impl->om_ele_node, env) != AXIS2_OM_ELEMENT)
+            {
+                next_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(envelope_impl->om_ele_node, env);
+            }
+            next_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(next_node, env);
+            if(next_ele && AXIS2_STRCMP(AXIS2_SOAP_BODY_LOCAL_NAME, 
+                    AXIS2_OM_ELEMENT_GET_LOCALNAME(next_ele, env)) == 0)
+            {
+                envelope_impl->body = axis2_soap_body_create(env);
+                AXIS2_SOAP_BODY_SET_BASE_NODE(envelope_impl->body, env, next_node);
+                AXIS2_SOAP_BODY_SET_SOAP_VERSION(envelope_impl->body, env, envelope_impl->soap_version);
+                return envelope_impl->body;
+            }                    
+            else
+            {
+                AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOAP_ENVELOPE_MUST_HAVE_BODY_ELEMENT, AXIS2_FAILURE);
+                return NULL;            
+            }
+        }               
+    
+    }
     return envelope_impl->body;
 }
 

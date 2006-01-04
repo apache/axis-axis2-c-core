@@ -24,14 +24,16 @@ axis2_parse_request_url_for_svc_and_op(axis2_env_t **env,
                                                 axis2_char_t *request)
 
 {
+    axis2_char_t **ret = NULL;
+    axis2_char_t *service_str = NULL;
+    axis2_char_t *tmp = NULL;
+    int i = 0;
     AXIS2_FUNC_PARAM_CHECK(request, env, NULL);
-    axis2_char_t **ret  = AXIS2_MALLOC((*env)->allocator, 
+    ret  = AXIS2_MALLOC((*env)->allocator, 
                                         2*(sizeof(axis2_char_t *)));
     memset(ret, 0, 2*sizeof(axis2_char_t*)); 
+    tmp = request;
 
-    axis2_char_t *service_str = NULL;
-    axis2_char_t *tmp = request;
-    int i = 0;
     
     while(1)
     {

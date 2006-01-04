@@ -95,7 +95,7 @@ typedef struct axis2_soap_body_ops  axis2_soap_body_ops_t;
         axis2_om_node_t* (AXIS2_CALL *get_base_node)(axis2_soap_body_t *body,
                                                      axis2_env_t **env);
                                                      
-        axis2_status_t* (AXIS2_CALL *set_base_node)(axis2_soap_body_t *body,
+        axis2_status_t (AXIS2_CALL *set_base_node)(axis2_soap_body_t *body,
                                                     axis2_env_t **env,
                                                     axis2_om_node_t *om_node);
         
@@ -149,7 +149,7 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
         ((body)->ops->get_base_node(body, env))
                                    
 #define AXIS2_SOAP_BODY_SET_BASE_NODE(body, env, om_node) \
-        ((body)->ops->set_base_node(body, env, om_node))c
+        ((body)->ops->set_base_node(body, env, om_node))
         
 #define AXIS2_SOAP_BODY_GET_SOAP_VERSION(body, env) \
         ((body)->ops->get_soap_version(body, env))

@@ -83,19 +83,9 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
     axis2_char_t* (AXIS2_CALL *get_localpart)(struct axis2_qname *qname,
                                               axis2_env_t **env);
                                               
-    axis2_status_t (AXIS2_CALL *set_uri)(struct axis2_qname *qname,
-                                          axis2_env_t **env,
-                                          const axis2_char_t *uri);
-    
-    axis2_status_t (AXIS2_CALL *set_prefix)(struct axis2_qname *qname,
-                                             axis2_env_t **env,
-                                             const axis2_char_t *prefix);
-
-    axis2_status_t (AXIS2_CALL *set_localpart)(struct axis2_qname *qname,                                                                                                                                                                                
-                                                axis2_env_t **env,
-                                                const axis2_char_t *localpart);
-                                                
-    
+    axis2_char_t* (AXIS2_CALL *to_string)(struct axis2_qname *qname,
+                                          axis2_env_t **env);                                                      
+                                              
 } axis2_qname_ops_t;
 
 typedef struct axis2_qname
@@ -140,15 +130,8 @@ axis2_qname_create (axis2_env_t **env,
 #define AXIS2_QNAME_GET_LOCALPART(qname, env) \
         ((qname)->ops->get_localpart(qname, env))
         
-#define AXIS2_QNAME_SET_PREFIX(qname, env, prefix) \
-        ((qname)->ops->set_prefix(qname, env, prefix)) 
-               
-#define AXIS2_QNAME_SET_URI(qname, env, prefix) \
-        ((qname)->ops->set_uri(qname, env, uri))
-        
-#define AXIS2_QNAME_SET_LOCALPART(qname, env,localpart) \
-        ((qname)->ops->set_localpart(qname, env, localpart))                                         
-
+#define AXIS2_QNAME_TO_STRING(qname, env) \
+        ((qname)->ops->to_string(qname, env))        
 /** @} */
 
 
