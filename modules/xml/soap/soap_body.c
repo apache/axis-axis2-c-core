@@ -261,38 +261,29 @@ axis2_soap_fault_t* AXIS2_CALL axis2_soap_body_get_fault(axis2_soap_body_t *body
         axis2_om_element_t *first_ele = NULL;
         axis2_om_namespace_t *om_ns = NULL;
         axis2_char_t *ns_uri = NULL;
-        
+        axis2_char_t *localname = NULL;        
         first_node = AXIS2_OM_NODE_GET_FIRST_CHILD(body_impl->om_ele_node, env);
         if(first_node)
         {
                 
             first_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(first_node, env);
+            localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(first_ele, env);
             om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(first_ele, env);
             ns_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
-            
+            if(first_ele && AXIS2_STRCMP(AXIS2_SOAP_FAULT_LOCAL_NAME, localname) == 0 &&
+                (AXIS2_STRCMP(ns_uri, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0 ||
+                 AXIS2_STRCMP(ns_uri, AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) == 0))
+            {
+                body_impl->has_fault = AXIS2_TRUE;
+                body_impl->soap_fault = axis2_soap_fault_create(env);
+                AXIS2_SOAP_FAULT_SET_SOAP_VERSION(body_impl->soap_fault, 
+                        env, body_impl->soap_version);
+                AXIS2_SOAP_FAULT_SET_BASE_NODE(body_impl->soap_fault, env, first_node);
+                return body_impl->soap_fault;                            
+            }                 
         }
-        
     } 
-    /*
-    OMElement element = getFirstElement();
-    if (has_fault) {
-        return (SOAPFault) element;
-    } else if (element != null
-            &&
-            SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(
-                    element.getLocalName())
-            &&
-            (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                    element.getNamespace().getName())
-            ||
-            SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                    element.getNamespace().getName()))) {     //added this line
-        has_fault = true;
-        return (SOAPFault) element;
-    } else {
-        return null;
-    }*/
-
+    return NULL;
 }
 
 /**
