@@ -229,8 +229,8 @@ axis2_soap_fault_create_with_exception(axis2_env_t **env,
 #define AXIS2_SOAP_FAULT_GET_SOAP_VERSION(fault, env) \
         ((fault)->ops->get_soap_version(fault, env))
         
-#define AXIS2_SOAP_FAULT_SET_SOAP_VERSION(fault, env) \
-        ((fault)->ops->set_soap_version(fault, env))
+#define AXIS2_SOAP_FAULT_SET_SOAP_VERSION(fault, env, soap_version) \
+        ((fault)->ops->set_soap_version(fault, env, soap_version))
         
 #define AXIS2_SOAP_FAULT_GET_EXCEPTION(fault, env) \
         ((fault)->ops->get_exception(fault, env))
