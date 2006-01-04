@@ -230,10 +230,8 @@ axis2_bool_t AXIS2_CALL axis2_soap_body_has_fault(axis2_soap_body_t *body,
              {
                 body_impl->has_fault = AXIS2_TRUE;
                 return body_impl->has_fault;
-                    
              }   
         }
-       
     }
     return AXIS2_FALSE;
 }
@@ -305,14 +303,12 @@ axis2_status_t AXIS2_CALL axis2_soap_body_add_fault(axis2_soap_body_t *body,
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-        
     if (soap_fault)
     {
         body_impl->soap_fault = soap_fault;
         AXIS2_OM_NODE_ADD_CHILD(body_impl->om_ele_node, env, AXIS2_SOAP_FAULT_GET_BASE_NODE(soap_fault, env));
         body_impl->has_fault = AXIS2_TRUE;
     }
-    
     return AXIS2_SUCCESS;
 }
 
@@ -333,7 +329,6 @@ axis2_soap_body_set_base_node(axis2_soap_body_t *body,
    AXIS2_FUNC_PARAM_CHECK( body_impl, env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
    body_impl = AXIS2_INTF_TO_IMPL(body);
-   
    if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
    {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
