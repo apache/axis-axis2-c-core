@@ -63,6 +63,8 @@ typedef struct axis2_om_stax_builder_impl_t
     axis2_xml_reader_t *parser;
     /** last node the builder found */
     axis2_om_node_t *lastnode;
+    
+    axis2_om_node_t *root_node;
     /** document associated with the builder */
     axis2_om_document_t *document;
     /** done building the document? */
@@ -107,6 +109,7 @@ axis2_om_stax_builder_create (axis2_env_t **env,
     builder->document = NULL;
     builder->parser = parser;
     builder->current_event = -1;
+    builder->root_node = NULL;
    
     /* ops */
     builder->om_stax_builder.ops = NULL;
@@ -427,8 +430,11 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
         }
         else
         {
+            /*
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_BUILDER_NOT_ASSOCIATED_WITH_DOCUMENT, AXIS2_FAILURE);
             return  NULL;            
+            */
+            builder_impl->root_node = element_node;
         }            
         
     }

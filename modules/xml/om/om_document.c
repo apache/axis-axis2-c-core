@@ -245,27 +245,29 @@ axis2_om_document_get_root_element (axis2_om_document_t * document,
                                     axis2_env_t **env)
 {
     axis2_om_node_t *node = NULL;
+    axis2_om_document_impl_t *doc_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(document, env, NULL);
+    doc_impl = AXIS2_INTF_TO_IMPL(document);
     
-    if (AXIS2_INTF_TO_IMPL(document)->root_element)
+    if (doc_impl->root_element)
     {
-        return AXIS2_INTF_TO_IMPL(document)->root_element;
+        return doc_impl->root_element;
     }
     else
     {  
         node = axis2_om_document_build_next(document, env);
             
-        if (AXIS2_INTF_TO_IMPL(document)->root_element)
+        if (doc_impl->root_element)
         {
             
-            return AXIS2_INTF_TO_IMPL(document)->root_element;
+            return doc_impl->root_element;
         }
         else
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL, AXIS2_FAILURE);
+            AXIS2_ERROR_SET((*env)->error, 
+                AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL, AXIS2_FAILURE);
             return NULL;
         }
-        
     }
 }
 
@@ -316,8 +318,7 @@ axis2_om_document_get_builder(axis2_om_document_t *document,
 {
     AXIS2_FUNC_PARAM_CHECK(document, env, NULL);
     return AXIS2_INTF_TO_IMPL(document)->builder;
-}                              
-
+}
 
 axis2_status_t AXIS2_CALL
 axis2_om_document_serialize(axis2_om_document_t *document,
@@ -333,4 +334,3 @@ axis2_om_document_serialize(axis2_om_document_t *document,
     }
     return AXIS2_OM_NODE_SERIALIZE(document_impl->root_element, env, om_output);
 }
-
