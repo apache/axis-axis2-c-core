@@ -46,7 +46,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
                                 axis2_om_node_t *svc_node);
 
 axis2_array_list_t *
-process_ops(axis2_svc_builder_t *svc_builder,
+axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
                     axis2_env_t **env,
                     axis2_om_children_qname_iterator_t *op_itr);
 
@@ -427,7 +427,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
 }
 
 axis2_array_list_t *
-process_ops(axis2_svc_builder_t *svc_builder,
+axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
                     axis2_env_t **env,
                     axis2_om_children_qname_iterator_t *op_itr)
 {

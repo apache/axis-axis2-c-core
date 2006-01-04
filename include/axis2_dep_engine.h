@@ -60,10 +60,21 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     free)(axis2_dep_engine_t *dep_engine,
 	        axis2_env_t **env);
     
+    /**
+     * while parsing the axis2.xml the module refferences have to be stored some 
+     * where , since at that time none of module availble (they load after parsing 
+     * the document)
+     * @param module_qname <code>QName</code>
+     */
+    axis2_status_t (AXIS2_CALL *
+    add_module) (axis2_dep_engine_t *dep_engine,
+                                    axis2_env_t **env,
+                                    axis2_qname_t *module_qname);
+    
     axis2_module_desc_t *(AXIS2_CALL *
     get_module) (axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
-                                axis2_qname_t *module_name);
+                                axis2_qname_t *module_qname);
 
     struct axis2_arch_file_data *(AXIS2_CALL *
     get_current_file_item)(axis2_dep_engine_t *dep_engine,
@@ -135,8 +146,11 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml (
 #define AXIS2_DEP_ENGINE_FREE(dep_engine, env) \
 		((dep_engine->ops)->free (dep_engine, env))  
 
-#define AXIS2_DEP_ENGINE_GET_MODULE(dep_engine, env, module_name) \
-		((dep_engine->ops)->get_module (dep_engine, env, module_name))
+#define AXIS2_DEP_ENGINE_ADD_MODULE(dep_engine, env, module_qname) \
+		((dep_engine->ops)->add_module (dep_engine, env, module_qname))
+        
+#define AXIS2_DEP_ENGINE_GET_MODULE(dep_engine, env, module_qname) \
+		((dep_engine->ops)->get_module (dep_engine, env, module_qname))
         
 #define AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env) \
 		((dep_engine->ops)->get_current_file_item (dep_engine, env))        

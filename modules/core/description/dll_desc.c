@@ -116,7 +116,11 @@ axis2_dll_desc_create (axis2_env_t **env)
     }
     
     dll_desc_impl->dll_name = NULL;
+    dll_desc_impl->dll_type = 0;
+    dll_desc_impl->load_options = 0;
     dll_desc_impl->dl_handler = NULL;
+    dll_desc_impl->create_funct = NULL;
+    dll_desc_impl->delete_funct = NULL;
     dll_desc_impl->dll_desc.ops = NULL;
     
     dll_desc_impl->dll_desc.ops = (axis2_dll_desc_ops_t *) AXIS2_MALLOC(

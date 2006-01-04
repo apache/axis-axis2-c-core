@@ -32,6 +32,8 @@
 #include <axis2_hash.h>
 #include <axis2_phases_info.h>
 #include <axis2_msg_recv.h>
+#include <axis2_disp.h>
+#include <axis2_disp_checker.h>
 
 #ifdef __cplusplus
 extern "C" 
@@ -270,6 +272,22 @@ struct axis2_conf_ops
     add_module) (axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     struct axis2_module_desc *module);
+                                        
+    /**
+     * setting the default dispatching order
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_default_dispatchers) (axis2_conf_t *conf,
+                                        axis2_env_t **env); 
+    
+    /**
+     * Setting the custom dispatching order
+     * @param dispatch
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_dispatch_phase) (axis2_conf_t *conf,
+                                    axis2_env_t **env,
+                                    axis2_phase_t *dispatch);                                      
                                                 
 };
 
@@ -406,6 +424,13 @@ axis2_conf_create(axis2_env_t **env);
 
 #define AXIS2_CONF_ADD_MODULE(conf, env, module) \
         (conf->ops->add_module(conf , env, module)) 
+ 
+#define AXIS2_CONF_SET_DEFAULT_DISPATCHERS(conf, env) \
+        (conf->ops->set_default_dispatchers(conf , env)) 
+ 
+#define AXIS2_CONF_SET_DISPATCH_PHASE(conf, env, dispatch) \
+        (conf->ops->set_dispatch_phase(conf , env, dispatch)) 
+
         
 /************************* End of function macros *****************************/
 

@@ -61,7 +61,7 @@ extern "C"
         * @param messageContext
         * @return
         */
-        axis2_svc_t* (AXIS2_CALL *find_svc)(axis2_msg_ctx_t *msg_ctx, 
+        struct axis2_svc* (AXIS2_CALL *find_svc)(axis2_msg_ctx_t *msg_ctx, 
                         axis2_env_t **env);
         /**
         * finds the op

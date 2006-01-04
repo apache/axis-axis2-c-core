@@ -41,6 +41,11 @@ typedef struct axis2_dep_engine_impl
     axis2_array_list_t *ws_to_undeploy;
     
     axis2_phases_info_t *phases_info;
+    /**
+     * To store the module specified in the server.xml at the document parsing 
+     * time
+     */
+    axis2_array_list_t *module_list;
     
 } axis2_dep_engine_impl_t;
 
@@ -51,6 +56,11 @@ typedef struct axis2_dep_engine_impl
 axis2_status_t AXIS2_CALL
 axis2_dep_engine_free (axis2_dep_engine_t *dep_engine,
                             axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
+                                axis2_env_t **env,
+                                axis2_qname_t *module_qname);
 
 struct axis2_module_desc *AXIS2_CALL
 axis2_dep_engine_get_module(axis2_dep_engine_t *dep_engine,
@@ -114,6 +124,7 @@ axis2_dep_engine_create_with_repos_name (
     dep_engine_impl->ws_to_deploy = NULL;
     dep_engine_impl->ws_to_undeploy = NULL;
     dep_engine_impl->phases_info = NULL;
+    dep_engine_impl->module_list = NULL;
     
     dep_engine_impl->dep_engine.ops = NULL;
     
@@ -127,6 +138,7 @@ axis2_dep_engine_create_with_repos_name (
 	}
     
 	dep_engine_impl->dep_engine.ops->free = axis2_dep_engine_free;
+    dep_engine_impl->dep_engine.ops->add_module = axis2_dep_engine_add_module;
     dep_engine_impl->dep_engine.ops->get_module = axis2_dep_engine_get_module;
     dep_engine_impl->dep_engine.ops->get_current_file_item = 
         axis2_dep_engine_get_current_file_item; 
@@ -169,6 +181,11 @@ axis2_dep_engine_free (axis2_dep_engine_t *dep_engine,
         AXIS2_ARRAY_LIST_FREE(dep_engine_impl->ws_to_undeploy, env);
         dep_engine_impl->ws_to_undeploy = NULL;
     }
+    if(dep_engine_impl->module_list)
+    {
+        AXIS2_ARRAY_LIST_FREE(dep_engine_impl->module_list, env);
+        dep_engine_impl->module_list = NULL;
+    }
     
 	if(NULL != dep_engine->ops)
     {
@@ -180,6 +197,18 @@ axis2_dep_engine_free (axis2_dep_engine_t *dep_engine,
 	return AXIS2_SUCCESS;
 }
 
+axis2_status_t AXIS2_CALL
+axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
+                                axis2_env_t **env,
+                                axis2_qname_t *module_qname) 
+{
+    AXIS2_FUNC_PARAM_CHECK(dep_engine, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, module_qname, AXIS2_FAILURE);
+    
+    return AXIS2_ARRAY_LIST_ADD(AXIS2_INTF_TO_IMPL(dep_engine)->module_list,
+        env, module_qname);
+}
+    
 struct axis2_module_desc *AXIS2_CALL
 axis2_dep_engine_get_module(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,

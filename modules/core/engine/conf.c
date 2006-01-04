@@ -253,6 +253,15 @@ axis2_status_t AXIS2_CALL
 axis2_conf_add_module(axis2_conf_t *conf,
                                 axis2_env_t **env,
                                 struct axis2_module_desc *module);
+
+axis2_status_t AXIS2_CALL
+axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
+                                    axis2_env_t **env); 
+
+axis2_status_t AXIS2_CALL
+axis2_conf_set_dispatch_phase(axis2_conf_t *conf,
+                                axis2_env_t **env,
+                                axis2_phase_t *dispatch);                                
  
 /************************** End of function prototypes ************************/
 
@@ -525,6 +534,9 @@ axis2_conf_create (axis2_env_t **env)
     
     config_impl->conf.ops->add_module =
             axis2_conf_add_module;
+    config_impl->conf.ops->set_default_dispatchers = 
+        axis2_conf_set_default_dispatchers;
+    config_impl->conf.ops->set_dispatch_phase = axis2_conf_set_dispatch_phase;      
     
 	return &(config_impl->conf);	
 }	
@@ -1474,5 +1486,152 @@ axis2_conf_add_module(axis2_conf_t *conf,
     axis2_hash_set(config_impl->modules, AXIS2_MODULE_DESC_GET_NAME(module, env), 
         sizeof(axis2_qname_t), module);
     
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
+                                    axis2_env_t **env)
+{
+    axis2_conf_impl_t *config_impl = NULL;
+    axis2_phase_t *dispatch = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    axis2_disp_t *add_dispatch = NULL;
+    axis2_disp_t *uri_dispatch = NULL;
+    axis2_disp_t *soap_action_based_dispatch = NULL;
+    axis2_disp_t *soap_msg_body_based_dispatch = NULL;
+    axis2_handler_t *handler = NULL;
+    axis2_phase_t *post_dispatch = NULL;
+    axis2_disp_checker_t *disp_checker = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
+
+    dispatch = axis2_phase_create(env, AXIS2_PHASE_DISPATCH);
+    if(!dispatch)
+    {
+        return AXIS2_FAILURE;
+    }
+    add_dispatch = axis2_addr_disp_create(env);
+    if(!add_dispatch)
+    {
+        return AXIS2_FAILURE;
+    }
+    handler = AXIS2_DISP_GET_BASE(add_dispatch, env);
+    AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 0, handler);
+    
+    uri_dispatch = axis2_addr_disp_create(env);
+    if(!uri_dispatch)
+    {
+        return AXIS2_FAILURE;
+    }
+    handler = AXIS2_DISP_GET_BASE(uri_dispatch, env);
+    AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 1, handler);
+    
+    soap_action_based_dispatch = axis2_addr_disp_create(env);
+    if(!soap_action_based_dispatch)
+    {
+        return AXIS2_FAILURE;
+    }
+    handler = AXIS2_DISP_GET_BASE(soap_action_based_dispatch, env);
+    AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 2, handler);
+
+    soap_msg_body_based_dispatch = axis2_addr_disp_create(env);
+    if(!soap_msg_body_based_dispatch)
+    {
+        return AXIS2_FAILURE;
+    }
+    handler = AXIS2_DISP_GET_BASE(soap_msg_body_based_dispatch, env);
+    AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 3, handler);
+
+    status = AXIS2_ARRAY_LIST_ADD(config_impl->
+            in_phases_upto_and_including_post_dispatch, env, dispatch);
+    if(AXIS2_FAILURE == status)
+    {
+        AXIS2_PHASE_FREE(dispatch, env);
+        return AXIS2_FAILURE;   
+    }
+    
+    post_dispatch = axis2_phase_create(env, AXIS2_PHASE_POST_DISPATCH);
+    if(NULL == post_dispatch)
+    {
+        AXIS2_PHASE_FREE(dispatch, env);
+        return AXIS2_FAILURE;
+    }
+    
+    disp_checker = axis2_disp_checker_create(env, NULL);
+    
+    /* TODO uncomment this when instant dispatcher is available */
+    /*
+    InstanceDispatcher instanceDispatcher = new InstanceDispatcher();
+    instanceDispatcher.getHandlerDesc().setParent(this);
+    */
+    
+    handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
+    AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
+ 
+    /*postDispatch.addHandler(instanceDispatcher,1); */
+    status = AXIS2_ARRAY_LIST_ADD(config_impl->
+            in_phases_upto_and_including_post_dispatch, env, post_dispatch);
+    if(AXIS2_FAILURE == status)
+    {
+        AXIS2_PHASE_FREE(dispatch, env);
+        AXIS2_PHASE_FREE(post_dispatch, env);
+        AXIS2_DISP_CHECKER_FREE(disp_checker, env);
+        return AXIS2_FAILURE;   
+    }
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_conf_set_dispatch_phase(axis2_conf_t *conf,
+                                axis2_env_t **env,
+                                axis2_phase_t *dispatch)
+{
+    axis2_conf_impl_t *config_impl = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    axis2_handler_t *handler = NULL;
+    axis2_phase_t *post_dispatch = NULL;
+    axis2_disp_checker_t *disp_checker = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, dispatch, AXIS2_FAILURE);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
+    
+    status = AXIS2_ARRAY_LIST_ADD(config_impl->
+            in_phases_upto_and_including_post_dispatch, env, dispatch);
+    if(AXIS2_FAILURE == status)
+    {
+        return AXIS2_FAILURE;   
+    }
+    
+    post_dispatch = axis2_phase_create(env, AXIS2_PHASE_POST_DISPATCH);
+    if(NULL == post_dispatch)
+    {
+        AXIS2_PHASE_FREE(dispatch, env);
+        return AXIS2_FAILURE;
+    }
+    
+    disp_checker = axis2_disp_checker_create(env, NULL);
+    
+    /* TODO uncomment this when instant dispatcher is available */
+    /*
+    InstanceDispatcher instanceDispatcher = new InstanceDispatcher();
+    instanceDispatcher.getHandlerDesc().setParent(this);
+    */
+    
+    handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
+    AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
+ 
+    /*postDispatch.addHandler(instanceDispatcher,1); */
+    status = AXIS2_ARRAY_LIST_ADD(config_impl->
+            in_phases_upto_and_including_post_dispatch, env, post_dispatch);
+    if(AXIS2_FAILURE == status)
+    {
+        AXIS2_PHASE_FREE(dispatch, env);
+        AXIS2_PHASE_FREE(post_dispatch, env);
+        AXIS2_DISP_CHECKER_FREE(disp_checker, env);
+        return AXIS2_FAILURE;   
+    }
     return AXIS2_SUCCESS;
 }
