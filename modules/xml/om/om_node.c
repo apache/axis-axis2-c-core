@@ -21,6 +21,7 @@
 #include <axis2_om_processing_instruction.h>
 #include <axis2_om_doctype.h>
 #include <axis2_om_document.h>
+#include <axis2_om_stax_builder.h>
 
 
 /*************************** function prototypes ******************************************/
@@ -145,6 +146,11 @@ axis2_om_node_set_document(axis2_om_node_t *om_node,
                            axis2_env_t **env,
                            struct axis2_om_document *om_doc);
 
+axis2_status_t AXIS2_CALL
+axis2_om_node_set_builder(axis2_om_node_t *om_node,
+                          axis2_env_t **env,
+                          struct axis2_om_stax_builder *om_builder);
+                           
 struct axis2_om_document* AXIS2_CALL
 axis2_om_node_get_document(axis2_om_node_t *om_node,
                            axis2_env_t **env);
@@ -162,6 +168,8 @@ typedef struct axis2_om_node_impl
     
      /** document only availble if build through builder */   
      struct axis2_om_document *om_doc;
+     
+     struct axis2_om_stax_builder *builder;
      /** parent node */
      axis2_om_node_t *parent;
      /** previous sibling */
@@ -222,6 +230,8 @@ axis2_om_node_create (axis2_env_t **env)
     node->node_type = AXIS2_OM_INVALID;
     node->done = AXIS2_FALSE;
     node->data_element = NULL;
+    node->om_doc = NULL;
+    node->builder = NULL;
 
     /* assign fucn pointers */
     node->om_node.ops->add_child = axis2_om_node_add_child;
@@ -733,13 +743,25 @@ axis2_om_node_t* AXIS2_CALL
 axis2_om_node_build_next(axis2_om_node_t *om_node,
                          axis2_env_t **env)
 {
-    struct axis2_om_document *om_doc = NULL;
+    axis2_om_stax_builder_t *builder = NULL;
     axis2_om_node_impl_t *om_node_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(om_node, env, NULL);
 
     om_node_impl = AXIS2_INTF_TO_IMPL(om_node);
-    om_doc = om_node_impl->om_doc;
-    if(!om_doc)
+    builder = om_node_impl->builder;
+    if(!builder)
         return NULL;
-    return AXIS2_OM_DOCUMENT_BUILD_NEXT(om_doc, env);
+    return AXIS2_OM_STAX_BUILDER_NEXT(builder, env);
 }
+
+axis2_status_t AXIS2_CALL
+axis2_om_node_set_builder(axis2_om_node_t *om_node,
+                           axis2_env_t **env,
+                           axis2_om_stax_builder_t *om_builder)
+{
+    AXIS2_FUNC_PARAM_CHECK(om_node, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_builder, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(om_node)->builder = om_builder;
+    return AXIS2_SUCCESS;
+
+}                           
