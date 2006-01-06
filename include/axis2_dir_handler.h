@@ -53,9 +53,10 @@ extern "C"
         axis2_char_t *name;
         AXIS2_TIME_T time_stamp;
         
+        
     } axis2_file_t;
 
-#define AXIS2_LIST_DIR(env, pathname) axis2_list_dir(env, pathname)
+#define AXIS2_DIR_HANDLER_LIST_DIR(env, pathname) axis2_list_dir(env, pathname)
 
 /** @} */
     

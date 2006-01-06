@@ -89,7 +89,7 @@ axis2_svc_grp_builder_create (axis2_env_t **env)
     
 	return &(svc_grp_builder_impl->svc_grp_builder);
 }
-
+/*
 axis2_svc_grp_builder_t * AXIS2_CALL 
 axis2_svc_grp_builder_create_with_svc_and_dep_engine (axis2_env_t **env,
                                                 axis2_om_node_t *svc,
@@ -109,7 +109,7 @@ axis2_svc_grp_builder_create_with_svc_and_dep_engine (axis2_env_t **env,
     
     return &(grp_builder_impl->svc_grp_builder);
 }
-
+*/
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL 

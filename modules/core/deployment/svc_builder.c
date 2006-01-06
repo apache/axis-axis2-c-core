@@ -110,9 +110,9 @@ axis2_svc_builder_create (axis2_env_t **env)
 }
 
 axis2_svc_builder_t * AXIS2_CALL 
-axis2_svc_builder_create_with_file_and_dep_engine_svc (axis2_env_t **env,
+axis2_svc_builder_create_with_file_and_dep_engine_and_svc (axis2_env_t **env,
                                                 axis2_char_t *file_name,
-                                                axis2_dep_engine_t *dep_engine,
+                                                struct axis2_dep_engine *dep_engine,
                                                 axis2_svc_t *svc)
 {
     axis2_svc_builder_impl_t *builder_impl = NULL;

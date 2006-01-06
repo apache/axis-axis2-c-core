@@ -45,7 +45,7 @@ axis2_class_loader_init(axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_class_loader_delete_dll (axis2_env_t **env,
-                                    axis2_dll_desc_t *dll_desc);
+                                    struct axis2_dll_desc *dll_desc);
 
 void *AXIS2_CALL
 axis2_class_loader_create_dll (axis2_env_t **env,

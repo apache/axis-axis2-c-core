@@ -38,7 +38,7 @@ extern "C"
 
 typedef struct axis2_svc_skeleton_ops axis2_svc_skeleton_ops_t;   
 typedef struct axis2_svc_skeleton axis2_svc_skeleton_t;
-    
+  
 AXIS2_DECLARE_DATA struct axis2_svc_skeleton_ops
 {
     int (AXIS2_CALL *

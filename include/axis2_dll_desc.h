@@ -43,7 +43,7 @@ extern "C"
     
 typedef struct axis2_dll_desc axis2_dll_desc_t;
 typedef struct axis2_dll_desc_ops axis2_dll_desc_ops_t;
-     
+   
     
 typedef int (*CREATE_FUNCT) (void **inst);
 
@@ -56,7 +56,9 @@ typedef enum axis2_dll_type
     /** handler dll */
     AXIS2_HANDLER_DLL,
     /** message receiver dll */
-    AXIS2_MSG_RECV_DLL
+    AXIS2_MSG_RECV_DLL,
+    /** module dll */
+    AXIS2_MODULE_DLL
        
 }axis2_dll_type_t;
 
@@ -66,7 +68,7 @@ typedef enum axis2_dll_type
 AXIS2_DECLARE_DATA struct axis2_dll_desc_ops
 { 
     axis2_status_t (AXIS2_CALL *
-    free) (struct axis2_dll_desc *dll_desc, 
+    free) (axis2_dll_desc_t *dll_desc, 
             axis2_env_t **env);
         
     axis2_status_t (AXIS2_CALL *

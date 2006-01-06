@@ -38,6 +38,18 @@ axis2_status_t AXIS2_CALL
 axis2_arch_reader_free (axis2_arch_reader_t *arch_reader, 
                             axis2_env_t **env);
 
+struct axis2_svc *AXIS2_CALL
+axis2_arch_reader_create_svc(axis2_arch_reader_t *arch_reader,
+                                axis2_env_t **env,
+                                struct axis2_arch_file_data *file);
+
+axis2_status_t AXIS2_CALL
+axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
+                                    axis2_env_t **env,
+                                    axis2_char_t *file_path,
+                                    struct axis2_dep_engine *dep_engine,
+                                    axis2_svc_grp_t *svc_grp);
+
 axis2_status_t AXIS2_CALL
 axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
                                 axis2_env_t **env,
@@ -45,13 +57,17 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
                                 struct axis2_dep_engine *dep_engine,
                                 struct axis2_svc_grp *svc_grp);
 
-
-
+axis2_status_t AXIS2_CALL
+axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
+                                    axis2_env_t **env,
+                                    axis2_char_t *file_path,
+                                    struct axis2_dep_engine *dep_engine,
+                                    axis2_module_desc_t *module);
                                 
 /************************** End of function prototypes ************************/
 
 axis2_arch_reader_t * AXIS2_CALL 
-axis2_arch_reader_create_with_input_stream_and_dep_engine (axis2_env_t **env)
+axis2_arch_reader_create (axis2_env_t **env)
 {
     axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     
@@ -78,7 +94,14 @@ axis2_arch_reader_create_with_input_stream_and_dep_engine (axis2_env_t **env)
         return NULL;
     }
     
-	arch_reader_impl->arch_reader.ops->free =  axis2_arch_reader_free;
+	arch_reader_impl->arch_reader.ops->free = axis2_arch_reader_free;
+    arch_reader_impl->arch_reader.ops->create_svc = axis2_arch_reader_create_svc;
+    arch_reader_impl->arch_reader.ops->process_svc_grp = 
+            axis2_arch_reader_process_svc_grp;
+    arch_reader_impl->arch_reader.ops->build_svc_grp = 
+            axis2_arch_reader_build_svc_grp;
+    arch_reader_impl->arch_reader.ops->read_module_arch = 
+            axis2_arch_reader_read_module_arch;
 	
 	return &(arch_reader_impl->arch_reader);
 }
@@ -104,13 +127,6 @@ axis2_arch_reader_free (axis2_arch_reader_t *arch_reader,
 	return AXIS2_SUCCESS;
 }
 
-/**
- * To create a ServiceDescrption <code>AxisService</code>   using given wsdl.
- * If the service.wsdl is there in the arcive file AxisService will be creted 
- * using that, else default AxisService will be created
- * @param file
- * @return
- */
 struct axis2_svc *AXIS2_CALL
 axis2_arch_reader_create_svc(axis2_arch_reader_t *arch_reader,
                                 axis2_env_t **env,
@@ -266,12 +282,7 @@ public void processWSDLs(ArchiveFileData file , DeploymentEngine depengine) thro
 
 }
 */
-/**
- * it take two arguments filename and refereance to DeployEngine
- *
- * @param filename
- * @param engine
- */
+
 axis2_status_t AXIS2_CALL
 axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
                                     axis2_env_t **env,

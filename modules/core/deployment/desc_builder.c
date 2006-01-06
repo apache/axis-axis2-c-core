@@ -39,7 +39,7 @@ axis2_status_t AXIS2_CALL
 axis2_desc_builder_free (axis2_desc_builder_t *desc_builder, 
                             axis2_env_t **env);
 
-struct axis2_om_node *AXIS2_CALL
+axis2_om_node_t *AXIS2_CALL
 axis2_build_OM(axis2_desc_builder_t *desc_builder,
                 axis2_env_t **env);
 

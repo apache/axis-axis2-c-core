@@ -31,7 +31,7 @@
 #include <axis2_conf.h>
 #include <axis2_deployment.h>
 #include <axis2_arch_file_data.h>
-#include <axis2_dep_engine.h>
+/*#include <axis2_dep_engine.h>*/
 #include <axis2_file_handler.h>
 #include <axis2_om_element.h>
 #include <axis2_desc_builder.h>
@@ -65,9 +65,45 @@ AXIS2_DECLARE_DATA struct axis2_arch_reader_ops
     free)(axis2_arch_reader_t *arch_reader,
 	        axis2_env_t **env);
     
- 
-                               
- 
+    
+    /**
+     * To create a ServiceDescrption <code>AxisService</code>   using given wsdl.
+     * If the service.wsdl is there in the arcive file AxisService will be creted 
+     * using that, else default AxisService will be created
+     * @param file
+     * @return
+     */
+    struct axis2_svc *(AXIS2_CALL *
+    create_svc) (axis2_arch_reader_t *arch_reader,
+                                    axis2_env_t **env,
+                                    struct axis2_arch_file_data *file);
+    
+    /**
+     * it take two arguments filename and refereance to DeployEngine
+     *
+     * @param filename
+     * @param engine
+     */
+    axis2_status_t (AXIS2_CALL *
+    process_svc_grp) (axis2_arch_reader_t *arch_reader,
+                                        axis2_env_t **env,
+                                        axis2_char_t *file_path,
+                                        struct axis2_dep_engine *dep_engine,
+                                        axis2_svc_grp_t *svc_grp);
+    
+    axis2_status_t (AXIS2_CALL *
+    build_svc_grp) (axis2_arch_reader_t *arch_reader,
+                                    axis2_env_t **env,
+                                    axis2_char_t *file_path,
+                                    struct axis2_dep_engine *dep_engine,
+                                    struct axis2_svc_grp *svc_grp);
+    
+    axis2_status_t (AXIS2_CALL *
+    read_module_arch) (axis2_arch_reader_t *arch_reader,
+                                        axis2_env_t **env,
+                                        axis2_char_t *file_path,
+                                        struct axis2_dep_engine *dep_engine,
+                                        axis2_module_desc_t *module);
 
 };
 
@@ -93,7 +129,17 @@ axis2_arch_reader_create (axis2_env_t **env);
 #define AXIS2_ARCH_READER_FREE(arch_reader, env) \
 		((arch_reader->ops)->free (arch_reader, env))  
 
+#define AXIS2_ARCH_READER_CREATE_SVC(arch_reader, env, file) \
+		((arch_reader->ops)->create_svc (arch_reader, env, file))
 
+#define AXIS2_ARCH_READER_PROCESS_SVC_GRP(arch_reader, env, file_path, dep_engine, svc_grp) \
+		((arch_reader->ops)->process_svc_grp (arch_reader, env, file_path, dep_engine, svc_grp))
+
+#define AXIS2_ARCH_READER_BUILD_SVC_GRP(arch_reader, env, file_path, dep_engine, svc_grp) \
+		((arch_reader->ops)->build_svc_grp (arch_reader, env, file_path, dep_engine, svc_grp))
+        
+#define AXIS2_ARCH_READER_READ_MODULE_ARCH(arch_reader, env, file_path, dep_engine, module) \
+		((arch_reader->ops)->read_module_arch (arch_reader, env, file_path, dep_engine, module))
 
 /*************************** End of function macros ***************************/
 

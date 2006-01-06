@@ -103,6 +103,8 @@ extern "C"
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#define AXIS2_STRRCHR(x, y) (strrchr(x, y))
+
 #define AXIS2_PLATFORM_SLEEP(x) sleep(0);
 
 /**
@@ -151,7 +153,9 @@ extern "C"
 /**
  * Platform specific path separator char
  */
-#define AXIS2_PATH_SEP_CHAR "/"
+#define AXIS2_PATH_SEP_CHAR '/'
+#define AXIS2_PATH_SEP_STR "/"
+
 
 /**
  * Platform specific time

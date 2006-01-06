@@ -17,6 +17,9 @@
 #include <string.h>
 
 #include <axis2_conf.h>
+#include <axis2_dir_handler.h>
+#include <axis2_dep_engine.h>
+
 
 typedef struct axis2_conf_impl axis2_conf_impl_t;
 
@@ -49,6 +52,7 @@ struct axis2_conf_impl
     axis2_hash_t *msg_recvs;
     axis2_hash_t *faulty_svcs;
     axis2_hash_t *faulty_modules;
+    axis2_char_t *axis2_repos;
 
 };
 
@@ -261,8 +265,18 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL
 axis2_conf_set_dispatch_phase(axis2_conf_t *conf,
                                 axis2_env_t **env,
-                                axis2_phase_t *dispatch);                                
- 
+                                axis2_phase_t *dispatch);
+
+axis2_status_t AXIS2_CALL
+axis2_conf_set_repos(axis2_conf_t *conf,
+                        axis2_env_t **env,
+                        axis2_char_t *axis2_repos);                                
+
+axis2_status_t AXIS2_CALL
+axis2_conf_engage_module(axis2_conf_t *conf,
+                        axis2_env_t **env,
+                        axis2_qname_t *module_ref);
+                                
 /************************** End of function prototypes ************************/
 
 axis2_conf_t * AXIS2_CALL 
@@ -294,6 +308,7 @@ axis2_conf_create (axis2_env_t **env)
     config_impl->msg_recvs = NULL;
     config_impl->faulty_svcs = NULL;
     config_impl->faulty_modules = NULL;
+    config_impl->axis2_repos = NULL;
     config_impl->conf.ops = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
@@ -536,7 +551,8 @@ axis2_conf_create (axis2_env_t **env)
             axis2_conf_add_module;
     config_impl->conf.ops->set_default_dispatchers = 
         axis2_conf_set_default_dispatchers;
-    config_impl->conf.ops->set_dispatch_phase = axis2_conf_set_dispatch_phase;      
+    config_impl->conf.ops->set_dispatch_phase = axis2_conf_set_dispatch_phase;
+    config_impl->conf.ops->set_repos = axis2_conf_set_repos;
     
 	return &(config_impl->conf);	
 }	
@@ -1632,6 +1648,80 @@ axis2_conf_set_dispatch_phase(axis2_conf_t *conf,
         AXIS2_PHASE_FREE(post_dispatch, env);
         AXIS2_DISP_CHECKER_FREE(disp_checker, env);
         return AXIS2_FAILURE;   
+    }
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_conf_set_repos(axis2_conf_t *conf,
+                        axis2_env_t **env,
+                        axis2_char_t *axis2_repos)
+{
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(conf)->axis2_repos = axis2_repos;
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_conf_engage_module(axis2_conf_t *conf,
+                        axis2_env_t **env,
+                        axis2_qname_t *module_ref) 
+{
+    axis2_conf_impl_t *config_impl = NULL;
+    axis2_module_desc_t *module_desc = NULL;
+    axis2_bool_t is_new_module = AXIS2_FAILURE;
+    axis2_bool_t to_be_engaged = AXIS2_TRUE;
+    struct axis2_dep_engine *dep_engine = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, module_ref, AXIS2_FAILURE);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
+    
+    module_desc = axis2_conf_get_module(conf, env, module_ref);
+    if(NULL == module_desc)
+    {
+        axis2_file_t *file = NULL;
+        file->name = AXIS2_QNAME_GET_LOCALPART(module_ref, env);
+        dep_engine = axis2_dep_engine_create(env);
+        module_desc = AXIS2_DEP_ENGINE_BUILD_MODULE(dep_engine, env, file, conf);
+        is_new_module = AXIS2_TRUE;
+    }
+    if(NULL != module_desc)
+    {
+        int size = 0;
+        int i = 0;
+        
+        size = AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules, env);
+        for(i = 0; i < size; i++)
+        {
+            axis2_qname_t *qname = NULL;
+            
+            qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(config_impl->
+                engaged_modules, env, i);
+            if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_ref, env, qname))
+            {
+                to_be_engaged = AXIS2_FALSE;
+                /* Instead of throwing the error, we can just log this problem */
+                /*log.info("Attempt to engage an already engaged module "+ qName);*/
+            }
+        }
+    } 
+    else 
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MODULE, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    if (to_be_engaged) 
+    {
+        axis2_phase_resolver_t *phase_resolver = NULL;
+        phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
+        AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_GLOBALLY(phase_resolver, env, 
+            module_desc);
+        AXIS2_ARRAY_LIST_ADD(config_impl->engaged_modules, env, module_ref);
+    }
+    if (is_new_module) 
+    {
+        axis2_conf_add_module(conf, env, module_desc);
     }
     return AXIS2_SUCCESS;
 }

@@ -15,6 +15,7 @@
  */
  
 #include <axis2_module_builder.h>
+#include <axis2_arch_file_data.h>
  
 /**
  * This is to convert OM->ServiceDescrption , where it first create OM from 
@@ -82,7 +83,7 @@ axis2_module_builder_create (axis2_env_t **env)
     
 	return &(module_builder_impl->module_builder);
 }
-
+/*
 axis2_module_builder_t * AXIS2_CALL 
 axis2_svc_builder_create_with_file_and_dep_engine_module (axis2_env_t **env,
                                                 axis2_char_t *file_name,
@@ -110,7 +111,7 @@ axis2_svc_builder_create_with_file_and_dep_engine_module (axis2_env_t **env,
     builder_impl->module= module;
     return &(builder_impl->module_builder);   
 }
-
+*/
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL 

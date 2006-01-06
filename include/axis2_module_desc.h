@@ -42,6 +42,7 @@
 #include <axis2_param.h>
 #include <axis2_op.h>
 #include <axis2_conf.h>
+#include <axis2_module.h>
 
 
 #ifdef __cplusplus
@@ -202,6 +203,21 @@ struct axis2_module_desc_ops
     is_param_locked ) (axis2_module_desc_t *module_desc,
                                         axis2_env_t **env,
                                         axis2_char_t *param_name);
+                                        
+    /**
+     * @return
+     */
+    axis2_module_t *(AXIS2_CALL *
+    get_module) (axis2_module_desc_t *module_desc,
+                                        axis2_env_t **env);
+    
+    /**
+     * @param module
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_module) (axis2_module_desc_t *module_desc,
+                                    axis2_env_t **env,
+                                    axis2_module_t *module);                                        
 
 };
 
@@ -298,7 +314,13 @@ axis2_module_desc_create_with_qname (axis2_env_t **env,
         (module_desc->ops->get_params(module_desc, env))
         
 #define AXIS2_MODULE_DESC_IS_PARAM_LOCKED(module_desc, env, param_name) \
-        (module_desc->ops->is_param_locked(module_desc, env, param_name))        
+        (module_desc->ops->is_param_locked(module_desc, env, param_name))
+
+#define AXIS2_MODULE_DESC_GET_MODULE(module_desc, env) \
+        (module_desc->ops->get_module(module_desc, env))
+        
+#define AXIS2_MODULE_DESC_SET_MODULE(module_desc, env, module) \
+        (module_desc->ops->set_module(module_desc, env, module))        
         
 /************************* End of function macros *****************************/
 /** @} */

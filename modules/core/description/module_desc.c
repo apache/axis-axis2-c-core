@@ -24,6 +24,8 @@ typedef struct axis2_module_desc_impl
 {
 	axis2_module_desc_t module_desc;
     
+    axis2_module_t *module;
+    
     axis2_qname_t *qname;
     
     axis2_conf_t *parent;
@@ -125,6 +127,15 @@ axis2_bool_t AXIS2_CALL
 axis2_module_desc_is_param_locked (axis2_module_desc_t *module_desc,
                                     axis2_env_t **env,
                                     axis2_char_t *param_name);
+                                    
+axis2_module_t *AXIS2_CALL
+axis2_module_desc_get_module(axis2_module_desc_t *module_desc,
+                                    axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_module_desc_set_module(axis2_module_desc_t *module_desc,
+                                axis2_env_t **env,
+                                axis2_module_t *module);                                     
 
 /************************** End of function prototypes ************************/
 
@@ -145,6 +156,7 @@ axis2_module_desc_create (axis2_env_t **env)
     }
     
     module_desc_impl->qname = NULL;
+    module_desc_impl->module = NULL;
     module_desc_impl->parent = NULL;	
     module_desc_impl->module_desc.params = NULL;
     module_desc_impl->module_desc.flow_container = NULL;
@@ -188,6 +200,8 @@ axis2_module_desc_create (axis2_env_t **env)
     module_desc_impl->module_desc.ops->set_inflow = axis2_module_desc_set_inflow;
     module_desc_impl->module_desc.ops->get_outflow = axis2_module_desc_get_outflow;
     module_desc_impl->module_desc.ops->set_outflow = axis2_module_desc_set_outflow;
+    module_desc_impl->module_desc.ops->get_module = axis2_module_desc_get_module;
+    module_desc_impl->module_desc.ops->set_module = axis2_module_desc_set_module;
     
     module_desc_impl->module_desc.ops->get_fault_inflow = 
             axis2_module_desc_get_fault_inflow;
@@ -566,4 +580,23 @@ axis2_module_desc_is_param_locked (axis2_module_desc_t *module_desc,
         
     }  
     return ret_state;    
+}
+
+axis2_module_t *AXIS2_CALL
+axis2_module_desc_get_module(axis2_module_desc_t *module_desc,
+                                    axis2_env_t **env) 
+{
+    AXIS2_FUNC_PARAM_CHECK(module_desc, env, NULL);
+    return AXIS2_INTF_TO_IMPL(module_desc)->module;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_module_desc_set_module(axis2_module_desc_t *module_desc,
+                                axis2_env_t **env,
+                                axis2_module_t *module) 
+{
+    AXIS2_FUNC_PARAM_CHECK(module_desc, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, module, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(module_desc)->module = module;
+    return AXIS2_SUCCESS;
 }

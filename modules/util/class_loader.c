@@ -49,6 +49,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
     void *svc_skeli = NULL; /* axis2_svc_skeleton */
     void *msg_recv = NULL; /* axis2_msg_recv */
     void *handler = NULL; /* axis2_handler */
+    void *module = NULL; /* axis2_module */
     CREATE_FUNCT create_funct = NULL;
     axis2_dll_desc_t *dll_desc = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -124,6 +125,17 @@ axis2_class_loader_create_dll (axis2_env_t **env,
             return NULL;
         }
         return handler;
+    }
+    if(AXIS2_MODULE_DLL == dll_type)
+    {
+        create_funct(&module);
+        if(NULL == module)
+        {
+            AXIS2_ERROR_SET((*env)->error, 
+                AXIS2_ERROR_MODULE_CREATION_FAILED,AXIS2_FAILURE);
+            return NULL;
+        }
+        return module;
     }
     if(AXIS2_MSG_RECV_DLL == dll_type)
     {

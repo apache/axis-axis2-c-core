@@ -29,7 +29,7 @@
 #include <axis2_allocator.h>
 
 #include <axis2_deployment.h>
-#include <axis2_dep_engine.h>
+/* #include <axis2_dep_engine.h> */
 #include <axis2_flow.h>
 #include <axis2_om_stax_builder.h>
 #include <axis2_om_document.h>
@@ -172,7 +172,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
 AXIS2_DECLARE_DATA struct axis2_desc_builder
 {
 	axis2_desc_builder_ops_t *ops;
-    axis2_dep_engine_t *engine;
+    struct axis2_dep_engine *engine;
 };
 
 /**

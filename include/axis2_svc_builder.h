@@ -30,12 +30,14 @@
 #include <axis2_qname.h>
 #include <axis2_desc_builder.h>
 #include <axis2_addr.h>
+#include <axis2_dep_engine.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    
+ 
+struct axis2_dep_engine;    
 typedef struct axis2_svc_builder axis2_svc_builder_t;
 typedef struct axis2_svc_builder_ops axis2_svc_builder_ops_t;
 
@@ -80,8 +82,8 @@ AXIS2_DECLARE_DATA struct axis2_svc_builder_ops
      */
     axis2_status_t (AXIS2_CALL *
     process_module_refs) (axis2_svc_builder_t *svc_builder,
-                                        axis2_env_t **env,
-                                        axis2_om_children_qname_iterator_t *module_refs);
+                            axis2_env_t **env,
+                            axis2_om_children_qname_iterator_t *module_refs);
  
 
 };
@@ -92,16 +94,38 @@ AXIS2_DECLARE_DATA struct axis2_svc_builder_ops
 AXIS2_DECLARE_DATA struct axis2_svc_builder
 {
 	axis2_svc_builder_ops_t *ops;
-    axis2_desc_builder_t *desc_builder;
+    struct axis2_desc_builder *desc_builder;
 };
 
 /**
  * Creates svc builder struct
  * @return pointer to newly created service builder
  */
+AXIS2_DECLARE(axis2_svc_builder_t *)
+axis2_svc_builder_create (axis2_env_t **env);
+
+/**
+ * Creates svc builder struct
+ * @param file_name,
+ * @param dep_engine,
+ * @param svc
+ * @return pointer to newly created service builder
+ */
+AXIS2_DECLARE(axis2_svc_builder_t *)
+axis2_svc_builder_create_with_file_and_dep_engine_and_svc (axis2_env_t **env,
+                                                axis2_char_t *file_name,
+                                                struct axis2_dep_engine *dep_engine,
+                                                axis2_svc_t *svc);
+
+/**
+ * Creates svc builder struct
+ * @param dep_engine
+ * @param svc
+ * @return pointer to newly created service builder
+ */
 AXIS2_DECLARE(axis2_svc_builder_t *) 
 axis2_svc_builder_create_with_dep_engine_and_svc (axis2_env_t **env,
-                                                axis2_dep_engine_t *dep_engine,
+                                                struct axis2_dep_engine *dep_engine,
                                                 axis2_svc_t *svc);
 
 /*************************** Function macros **********************************/
