@@ -41,6 +41,7 @@ extern "C"
     struct axis2_om_node_ops;
     struct axis2_om_output;
     struct axis2_om_document;
+    struct axis2_om_stax_builder;
 /**
  * @defgroup axis2_om_node  OM Node
  * @ingroup axis2_om 
@@ -354,6 +355,10 @@ struct axis2_om_document* (AXIS2_CALL *get_document)
     */
     axis2_om_node_t* (AXIS2_CALL *build_next)(axis2_om_node_t *om_node,
                                               axis2_env_t **env);
+                                              
+    axis2_status_t (AXIS2_CALL *set_builder)(axis2_om_node_t *om_node,
+                                             axis2_env_t **env,
+                                             struct axis2_om_stax_builder *builder);                                              
     
                                                                         
 } axis2_om_node_ops_t;
@@ -454,7 +459,10 @@ AXIS2_DECLARE(axis2_om_node_t *) axis2_om_node_create (axis2_env_t **env);
         ((om_node)->ops->get_document(om_node, env))
 /** built next */
 #define AXIS2_OM_NODE_BUILD_NEXT(om_node, env) \
-        ((om_node)->ops->build_next(om_node, env))        
+        ((om_node)->ops->build_next(om_node, env)) 
+        
+#define AXIS2_OM_NODE_SET_BUILDER(om_node, env) \
+        ((om_node)->ops->set_builder(om_node, env))               
 
 /** @} */
 
