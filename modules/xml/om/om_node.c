@@ -149,7 +149,8 @@ axis2_om_node_set_document(axis2_om_node_t *om_node,
 axis2_status_t AXIS2_CALL
 axis2_om_node_set_builder(axis2_om_node_t *om_node,
                           axis2_env_t **env,
-                          struct axis2_om_stax_builder *om_builder);
+                          void *builder,
+                          int builder_type);
                            
 struct axis2_om_document* AXIS2_CALL
 axis2_om_node_get_document(axis2_om_node_t *om_node,
@@ -169,7 +170,7 @@ typedef struct axis2_om_node_impl
      /** document only availble if build through builder */   
      struct axis2_om_document *om_doc;
      
-     struct axis2_om_stax_builder *builder;
+     void *builder;
      /** parent node */
      axis2_om_node_t *parent;
      /** previous sibling */
@@ -184,6 +185,8 @@ typedef struct axis2_om_node_impl
      axis2_om_types_t node_type;
      /** done true means that this node is completely built , false otherwise */
      int done;
+     
+     int builder_type;
      /** instances of an om struct, whose type is defined by node type */
      void *data_element;
      
@@ -751,17 +754,20 @@ axis2_om_node_build_next(axis2_om_node_t *om_node,
     builder = om_node_impl->builder;
     if(!builder)
         return NULL;
-    return AXIS2_OM_STAX_BUILDER_NEXT(builder, env);
+    if(om_node_impl->builder_type = AXIS2_OM_STAX_BUILDER)        
+        return AXIS2_OM_STAX_BUILDER_NEXT((axis2_om_stax_builder_t*)builder, env);
 }
 
 axis2_status_t AXIS2_CALL
 axis2_om_node_set_builder(axis2_om_node_t *om_node,
                            axis2_env_t **env,
-                           axis2_om_stax_builder_t *om_builder)
+                           void* builder,
+                           int builder_type)
 {
     AXIS2_FUNC_PARAM_CHECK(om_node, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, om_builder, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(om_node)->builder = om_builder;
+    AXIS2_PARAM_CHECK((*env)->error, builder, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(om_node)->builder = builder;
+    AXIS2_INTF_TO_IMPL(om_node)->builder_type = builder_type;
     return AXIS2_SUCCESS;
 
 }                           

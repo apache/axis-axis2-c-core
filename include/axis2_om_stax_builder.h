@@ -36,6 +36,11 @@ extern "C"
     struct axis2_om_stax_builder;
     struct axis2_om_stax_builder_ops;
 
+    typedef enum builder_types
+    {
+        AXIS2_OM_STAX_BUILDER = 0,
+        AXIS2_SOAP_MODEL_BUILDER
+    };
 /**
  * @defgroup axis2_om_stax_builder OM Stax Builder
  * @ingroup axis2_om 
