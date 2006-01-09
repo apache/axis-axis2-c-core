@@ -40,7 +40,6 @@ axis2_dir_handler_list_dir(axis2_env_t **env,
     int file_size = 0;
     
     AXIS2_ENV_CHECK(env, NULL);
-    
     file_list = axis2_array_list_create(env, 100);
 	count = scandir(pathname, &files, file_select, alphasort);
 
@@ -75,7 +74,7 @@ axis2_dir_handler_list_dir(axis2_env_t **env,
             return NULL;
         }
         strcpy(path, pathname);
-        strcat(path, AXIS2_PATH_SEP_CHAR);
+        strcat(path, AXIS2_PATH_SEP_STR);
         strcat(path, fname);
         buf = AXIS2_MALLOC((*env)->allocator, sizeof(struct stat));
         if(!buf)

@@ -127,7 +127,7 @@ axis2_transport_in_desc_set_faultphase(struct axis2_transport_in_desc *transport
 /************************** End of function prototypes ************************/
 
 axis2_transport_in_desc_t * AXIS2_CALL 
-axis2_transport_in_create_with_qname (axis2_env_t **env, axis2_qname_t *qname)
+axis2_transport_in_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qname)
 {
     axis2_transport_in_desc_impl_t *transport_in_impl = NULL;
     

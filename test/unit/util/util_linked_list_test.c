@@ -7,7 +7,7 @@ typedef struct a
 
 void Testaxis2_linked_list_get(CuTest *tc)
 {
-    puts("axis2_linked_list_test\n");
+    puts("testing axis2_linked_list_get\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create(allocator);

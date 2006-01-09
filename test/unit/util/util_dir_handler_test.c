@@ -3,7 +3,7 @@
 
 void Testaxis2_dir_handler_list_dir(CuTest *tc)
 {
-    puts("axis2_dir_handler_list_test\n");
+    puts("testing axis2_dir_handler_list_dir\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create(allocator);
@@ -14,7 +14,6 @@ void Testaxis2_dir_handler_list_dir(CuTest *tc)
     axis2_char_t *expected = NULL;
     axis2_char_t *actual = NULL;
     int i = 0;
-    
     expected = AXIS2_STRDUP("libaxis2_util.so", &env);
 	pathname = AXIS2_STRDUP(
         "/home/damitha/projects/c/test/unit/infiles/dir_handler", &env);
@@ -23,8 +22,8 @@ void Testaxis2_dir_handler_list_dir(CuTest *tc)
     
     for (i = 0; i < size; i++) 
     {
-        axis2_arch_file_t *arch_file = NULL;
-        arch_file = (axis2_arch_file_t *) AXIS2_ARRAY_LIST_GET(file_list, &env, i);
+        axis2_file_t *arch_file = NULL;
+        arch_file = (axis2_file_t *) AXIS2_ARRAY_LIST_GET(file_list, &env, i);
         if(0 == AXIS2_STRCMP(arch_file->name, expected))
         {
             actual = arch_file->name;

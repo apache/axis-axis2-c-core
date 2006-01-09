@@ -7,6 +7,7 @@ typedef struct a
 
 void Testaxis2_hash_get(CuTest *tc)
 {
+    printf("testing axis2_hash_get\n"); 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *environment =
         axis2_env_create (allocator);

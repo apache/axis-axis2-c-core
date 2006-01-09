@@ -25,6 +25,7 @@ description_test_LDADD   =   libtest_description.la  \
                     -laxis2_util \
                     -laxis2_context \
                     -laxis2_description \
+                    -laxis2_deployment \
                     -laxis2_engine \
                     -laxis2_wsdl \
                     -laxis2_phaseresolver \
