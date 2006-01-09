@@ -128,8 +128,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	axis2_conf_ctx_t *conf_ctx = http_worker_impl->conf_ctx;
 	axis2_msg_ctx_t *msg_ctx = NULL;
 	axis2_stream_t *request_body = NULL;
-	axis2_stream_t *out_stream = axis2_stream_create(env, (*env)->allocator, 
-						NULL);
+	axis2_stream_t *out_stream = axis2_stream_create_basic(env);
 	axis2_http_simple_response_t *response = NULL;
 	axis2_transport_out_desc_t *out_desc = NULL;
 	axis2_transport_in_desc_t *in_desc = NULL;
@@ -232,7 +231,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 						simple_request, env), env), AXIS2_HTTP_HEADER_POST))
 	{
 		processed = axis2_http_transport_utils_process_http_post_request
-                        (env, msg_ctx, request_body, 
+                        (env, msg_ctx, request_body, out_stream,
 						AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_TYPE(
 						simple_request, env) ,soap_action,
 						AXIS2_HTTP_REQUEST_LINE_GET_URI
@@ -257,7 +256,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	}
 	AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STREAM(response, env, out_stream);
 	axis2_http_worker_set_response_headers(http_worker, env, svr_conn, 
-						simple_request, response, AXIS2_STREAM_GET_LEN(
+						simple_request, response, AXIS2_STREAM_BASIC_GET_LEN(
 						out_stream, env));
 	
     /*

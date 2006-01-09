@@ -63,7 +63,7 @@ axis2_status_t AXIS2_CALL
 axis2_soap_over_http_sender_send 
 						(axis2_soap_over_http_sender_t *sender, 
 						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
-						axis2_om_node_t *output, axis2_char_t *url, 
+						axis2_om_node_t *output, axis2_char_t *str_url, 
 						axis2_char_t *soap_action);
 
 axis2_status_t AXIS2_CALL 
@@ -157,18 +157,39 @@ axis2_status_t AXIS2_CALL
 axis2_soap_over_http_sender_send 
 						(axis2_soap_over_http_sender_t *sender, 
 						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
-						axis2_om_node_t *output, axis2_char_t *url, 
+						axis2_om_node_t *output, axis2_char_t *str_url, 
 						axis2_char_t *soap_action)
 {
+	axis2_http_client_t *client = NULL;
+	axis2_http_simple_request_t *request = NULL;
+	axis2_http_request_line_t *requst_line = NULL;
+	axis2_url_t *url = NULL;
+	axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
+	
     AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, output, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, url, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, soap_action, AXIS2_FAILURE);
 	
+	url = axis2_url_parse_string(env, str_url);
+	sender_impl = AXIS2_INTF_TO_IMPL(sender);
+	if(NULL == url)
+	{
+		reuturn AXIS2_FAILURE;
+	}
+	client = axis2_http_client_create(env, url);
+	if(NULL == client)
+	{
+		return AXIS2_FAILURE;
+	}
+	axis2_soap_over_http_sender_get_timeout_values(sender, env, msg_ctx);
+	AXIS2_HTTP_CLIENT_SET_TIMEOUT(client, env, sender_impl->so_timeout);
+	
 	/*
 	 * TODO create the http client and send 
-	 */	
+	 */
+		
 	return AXIS2_SUCCESS;
     
 }

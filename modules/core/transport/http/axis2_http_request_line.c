@@ -252,7 +252,7 @@ axis2_http_request_line_to_string(axis2_http_request_line_t *request_line,
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-    sprintf(ret, "%s %s %s %s", req_line_impl->method, req_line_impl->uri, 
+    sprintf(ret, "%s %s %s%s", req_line_impl->method, req_line_impl->uri, 
                     req_line_impl->http_version, AXIS2_HTTP_CRLF);
     return ret;
 }

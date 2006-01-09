@@ -20,13 +20,15 @@
 #include <axis2_conf.h>
 #include <axis2_op.h>
 #include <axis2_qname.h>
+#include <axis2_http_transport.h>
 
 /***************************** Function headers *******************************/
 
-axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL 
 axis2_http_transport_utils_process_http_post_request
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
-                        axis2_stream_t *stream, axis2_char_t *content_type, 
+                        axis2_stream_t *in_stream, axis2_stream_t *out_stream,
+						axis2_char_t *content_type, 
                         axis2_char_t *soap_action_header,
                         axis2_char_t *request_uri);
     
@@ -81,11 +83,39 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_utils_process_http_post_request
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
-                        axis2_stream_t *stream, axis2_char_t *content_type, 
+                        axis2_stream_t *in_stream, axis2_stream_t *out_stream,
+						axis2_char_t *content_type, 
                         axis2_char_t *soap_action_header,
                         axis2_char_t *request_uri)
 {
-    /*
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, in_stream, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, out_stream, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, content_type, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, request_uri, AXIS2_FAILURE);
+	if(NULL != soap_action_header)	
+	{
+		/* remove leading and trailing " s */
+		if('"' == soap_action_header[0])
+		{
+			memmove(soap_action_header, soap_action_header+sizeof(axis2_char_t),
+						strlen(soap_action_header) + sizeof(axis2_char_t));
+		}
+		if('"' == soap_action_header[strlen(soap_action_header) -1])
+		{
+			soap_action_header[strlen(soap_action_header) -1] = '\0';
+		}
+		AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env, soap_action_header);
+		AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env, soap_action_header);
+		AXIS2_MSG_CTX_SET_TO(msg_ctx, env, axis2_endpoint_ref_create(env, 
+						request_uri));
+		AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, 
+						AXIS2_TRANSPORT_OUT, out_stream, AXIS2_FALSE);
+		AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
+		
+		
+	}
+	/*
         TODO code
     */
     return AXIS2_SUCCESS;
@@ -371,4 +401,26 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 	AXIS2_FREE((*env)->allocator, tmp);
 	
 	return tmp2;
+}
+
+axis2_char_t* AXIS2_CALL
+axis2_http_transport_utils_get_charset_enc(axis2_env_t **env, 
+						axis2_char_t *content_type)
+{
+	axis2_char_t *tmp = NULL;
+		
+	AXIS2_ENV_CHECK(env, NULL);
+	AXIS2_PARAM_CHECK((*env)->error, content_type, NULL);
+	
+	tmp = strstr(content_type, AXIS2_HTTP_CHAR_SET_ENCODING);
+	if(NULL == tmp)
+	{
+		return AXIS2_STRDUP(AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING, env);
+	}
+	tmp = strchr(tmp, '=');
+	if(NULL == tmp)
+	{
+		return AXIS2_STRDUP(AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING, env);
+	}
+	return AXIS2_STRDUP(tmp, env);
 }

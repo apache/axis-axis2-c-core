@@ -123,7 +123,7 @@ axis2_http_simple_response_get_body
 axis2_ssize_t AXIS2_CALL 
 axis2_http_simple_response_get_body_bytes 
                     (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env, axis2_char_t *buf);
+                    axis2_env_t **env, axis2_char_t **buf);
 
 axis2_status_t AXIS2_CALL 
 axis2_http_simple_response_free (axis2_http_simple_response_t *simple_response, 
@@ -191,6 +191,10 @@ axis2_http_simple_response_create_default(axis2_env_t **env)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
+	simple_response_impl->status_line = NULL;
+	simple_response_impl->header_group = NULL;
+	simple_response_impl->stream = NULL;
+	
     simple_response_impl->simple_response.ops->set_status_line = 
                         axis2_http_simple_response_set_status_line;
     simple_response_impl->simple_response.ops->get_phrase =
@@ -250,9 +254,12 @@ axis2_http_simple_response_free (axis2_http_simple_response_t *simple_response,
         for(i = 0; i< AXIS2_ARRAY_LIST_SIZE(simple_response_impl->header_group, 
                         env); i++)
         {
-            tmp = (axis2_http_header_t *)AXIS2_ARRAY_LIST_REMOVE(
+            tmp = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(
                             simple_response_impl->header_group, env, i);
-            AXIS2_HTTP_HEADER_FREE(tmp, env);        
+			if(NULL != tmp)
+			{
+            	AXIS2_HTTP_HEADER_FREE(tmp, env);        
+			}
         }
         AXIS2_ARRAY_LIST_FREE(simple_response_impl->header_group, env);
         simple_response_impl->header_group = NULL;
@@ -262,7 +269,7 @@ axis2_http_simple_response_free (axis2_http_simple_response_t *simple_response,
     
 	AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(simple_response));
     /* Stream is not freed
-     * Assumption : stream doesn't belong to the reaponse
+     * Assumption : stream doesn't belong to the response
      */
 	return AXIS2_SUCCESS;
 }
@@ -456,6 +463,12 @@ axis2_http_simple_response_set_header
                     (axis2_http_simple_response_t *simple_response, 
                     axis2_env_t **env, axis2_http_header_t* header)
 {
+	int i = 0;
+	int count = 0;
+    axis2_http_header_t *tmp_header = NULL;
+    axis2_char_t *tmp_name = NULL;
+	axis2_array_list_t *header_group = NULL;
+	
     AXIS2_FUNC_PARAM_CHECK(simple_response, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, header, AXIS2_FAILURE);
     
@@ -464,7 +477,7 @@ axis2_http_simple_response_set_header
     
     if(NULL == simple_response_impl->header_group)
     {
-        simple_response_impl->header_group = axis2_array_list_create(env, 1);
+        simple_response_impl->header_group = axis2_array_list_create(env, 10);
         AXIS2_ARRAY_LIST_ADD(simple_response_impl->header_group, env, header);
         return AXIS2_SUCCESS;
     }
@@ -472,12 +485,9 @@ axis2_http_simple_response_set_header
     /* If a header with the same name exists
      * search and remove the old header
      */
-    axis2_array_list_t *header_group = AXIS2_INTF_TO_IMPL(simple_response)->
-                        header_group;
-    int i = 0;
-    axis2_http_header_t *tmp_header = NULL;
-    axis2_char_t *tmp_name = NULL;
-    int count = AXIS2_ARRAY_LIST_SIZE(header_group, env);
+    header_group = AXIS2_INTF_TO_IMPL(simple_response)->header_group;
+    
+    count = AXIS2_ARRAY_LIST_SIZE(header_group, env);
     for(i = 0; i < count; i++)
     {
         tmp_header = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(header_group, 
@@ -491,7 +501,8 @@ axis2_http_simple_response_set_header
             break;
         }
     }
-    AXIS2_ARRAY_LIST_ADD(simple_response_impl->header_group, env, header);
+	AXIS2_ARRAY_LIST_ADD(simple_response_impl->header_group, env, 
+						(void*)header);
     return AXIS2_SUCCESS;
 }
 
@@ -558,12 +569,21 @@ axis2_http_simple_response_set_body_string
                     (axis2_http_simple_response_t *simple_response, 
                     axis2_env_t **env, axis2_char_t *str)
 {
+	axis2_stream_t *body_stream = NULL;
     AXIS2_FUNC_PARAM_CHECK(simple_response, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, str, AXIS2_FAILURE);
-    /*
-        TODO stream dependent
-    */
     
+	body_stream = AXIS2_INTF_TO_IMPL(simple_response)->stream;
+	if(NULL == body_stream)
+	{
+		body_stream = axis2_stream_create_basic(env);
+		if(NULL == body_stream)
+		{
+			return AXIS2_FAILURE;
+		}
+		AXIS2_INTF_TO_IMPL(simple_response)->stream = body_stream;
+	}
+	AXIS2_STREAM_WRITE(body_stream, env, str, AXIS2_STRLEN(str));
     return AXIS2_SUCCESS;
 }
     
@@ -573,7 +593,6 @@ axis2_http_simple_response_set_body_stream
                     axis2_env_t **env, axis2_stream_t *stream)
 {
     AXIS2_FUNC_PARAM_CHECK(simple_response, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, stream, AXIS2_FAILURE);
     /*
      * TODO do we have to free the existing stream
      * Problem in freeing is most of the time the stream doesn't belong
@@ -598,11 +617,81 @@ axis2_http_simple_response_get_body
 axis2_ssize_t AXIS2_CALL 
 axis2_http_simple_response_get_body_bytes
                         (axis2_http_simple_response_t *simple_response, 
-                        axis2_env_t **env, axis2_char_t *buf)
+                        axis2_env_t **env, axis2_char_t **buffer)
 {
-    AXIS2_FUNC_PARAM_CHECK(simple_response, env, AXIS2_FAILURE);
-    /*
-        TODO stream dependent
-    */
-    return -1;    
+	axis2_http_simple_response_impl_t *response_impl = NULL;
+	axis2_stream_t *tmp_stream = NULL;
+	AXIS2_FUNC_PARAM_CHECK(simple_response, env, AXIS2_FAILURE);
+	int return_size = -1;
+	
+	response_impl = AXIS2_INTF_TO_IMPL(simple_response);
+    if(NULL == response_impl->stream)
+	{
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_BODY, AXIS2_FAILURE);
+		return -1;
+	}
+	tmp_stream = axis2_stream_create_basic(env);
+	while(1)
+	{
+		int read = 0;
+		int write = 0;
+		int READ_SIZE = 32;
+		char buf[READ_SIZE];
+		read = AXIS2_STREAM_READ(response_impl->stream, env, buf, READ_SIZE);
+		if(read < 0)
+		{
+			break;
+		}
+		write = AXIS2_STREAM_WRITE(tmp_stream, env, buf, read);
+		if(read < READ_SIZE)
+		{
+			break;
+		}
+	}
+	return_size = AXIS2_STREAM_BASIC_GET_LEN(tmp_stream, env);
+	
+	if(return_size > 0)
+	{
+		*buffer = (char *)AXIS2_MALLOC((*env)->allocator, sizeof(char)*
+						(return_size +1));
+		return_size = AXIS2_STREAM_READ(tmp_stream, env, *buffer, 
+						return_size + 1);
+	}
+	AXIS2_STREAM_FREE(tmp_stream, env);
+    return return_size;    
+}
+
+axis2_bool_t AXIS2_CALL 
+axis2_http_simple_response_contains_header 
+                    (axis2_http_simple_response_t *simple_response, 
+                    axis2_env_t **env, axis2_char_t *name)
+{
+    axis2_char_t *header_name = NULL;
+	axis2_http_simple_response_impl_t *simple_response_impl = NULL;
+	int count = 0;
+	int i = 0;
+	
+	AXIS2_FUNC_PARAM_CHECK(simple_response, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
+    simple_response_impl = AXIS2_INTF_TO_IMPL(
+                        simple_response);                 
+    if(NULL == simple_response_impl->header_group)
+    {
+        return AXIS2_FALSE;
+    }
+    count = AXIS2_ARRAY_LIST_SIZE(simple_response_impl->header_group, env);
+    if(0 == count)
+    {
+        return AXIS2_FALSE;
+    }
+        
+    for(i = 0; i < count; i++)
+    {
+        header_name = AXIS2_HTTP_HEADER_GET_NAME((axis2_http_header_t *)
+                        AXIS2_ARRAY_LIST_GET(simple_response_impl->header_group,
+                        env, i), env);
+        if(0 == AXIS2_STRCASECMP(name,header_name))
+            return AXIS2_TRUE;            
+    }
+    return AXIS2_FALSE;
 }

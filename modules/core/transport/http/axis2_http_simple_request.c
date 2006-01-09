@@ -97,7 +97,7 @@ axis2_http_simple_request_get_body(axis2_http_simple_request_t *simple_request,
 axis2_ssize_t AXIS2_CALL 
 axis2_http_simple_request_get_body_bytes
                         (axis2_http_simple_request_t *simple_request, 
-                        axis2_env_t **env, axis2_char_t *buf);
+                        axis2_env_t **env, char **buf);
 
 axis2_status_t AXIS2_CALL 
 axis2_http_simple_request_free(axis2_http_simple_request_t *simple_request, 
@@ -452,11 +452,50 @@ axis2_http_simple_request_get_body(axis2_http_simple_request_t *simple_request,
 axis2_ssize_t AXIS2_CALL 
 axis2_http_simple_request_get_body_bytes
                         (axis2_http_simple_request_t *simple_request, 
-                        axis2_env_t **env, axis2_char_t *buf)
+                        axis2_env_t **env, char **buf)
 {
+	axis2_stream_t *body = NULL;
+	char *tmp_buf = NULL;
+	char *tmp_buf2 = NULL;
+	char *tmp_buf3 = NULL;
+	int length = 0;
+	int read_len = 0;
+	
     AXIS2_FUNC_PARAM_CHECK(simple_request, env, AXIS2_FAILURE);
+	
+	body = AXIS2_INTF_TO_IMPL(simple_request)->stream;
+	if(NULL == body)
+	{
+		*buf = (char*)AXIS2_MALLOC((*env)->allocator, 1);
+		*buf[0] = '\0';
+		return 0;
+	}
+	length = AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_LENGTH(simple_request, env);
+	if(length > 0)
+	{
+		*buf = (char*)AXIS2_MALLOC((*env)->allocator, length);
+		read_len = AXIS2_STREAM_READ(body, env, buf, length);
+		return read_len;
+	}
+	tmp_buf2 = AXIS2_MALLOC((*env)->allocator, 128 * sizeof(char));
+	while(AXIS2_STREAM_READ(body, env, tmp_buf2, 128) > 0)
+	{
+		tmp_buf3 = AXIS2_STRACAT(tmp_buf, tmp_buf2, env);
+		if(NULL != tmp_buf)
+		{
+			AXIS2_FREE((*env)->allocator, tmp_buf);
+			tmp_buf = NULL;
+		}
+		tmp_buf = tmp_buf3;
+		
+	}
     /*
-        TODO stream dependent
+        TODO :STREAM_READ => STREAM_READ_BYTES
     */
+	if(NULL != tmp_buf)
+	{
+		*buf = tmp_buf;
+		return AXIS2_STRLEN(tmp_buf);
+	}
     return -1;    
 }
