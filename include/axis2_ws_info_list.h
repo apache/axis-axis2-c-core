@@ -42,7 +42,7 @@ extern "C"
 #endif
     
 struct axis2_ws_info;
-struct dep_engine;
+struct axis2_dep_engine;
 typedef struct axis2_ws_info_list axis2_ws_info_list_t;
 typedef struct axis2_ws_info_list_ops axis2_ws_info_list_ops_t;
 
