@@ -88,6 +88,7 @@ AC_CONFIG_FILES([Makefile \
     modules/core/Makefile \
     modules/core/context/Makefile \
     modules/core/description/Makefile \
+    modules/core/engine/Makefile \
     modules/core/handlers/Makefile \
     modules/core/addr/Makefile \
     modules/core/phaseresolver/Makefile \
