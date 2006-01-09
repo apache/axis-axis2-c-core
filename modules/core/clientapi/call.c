@@ -364,7 +364,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
             axis2_soap_body_t *soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(response_envelope, env);
             if (soap_body)
             {
-                if (AXIS2_SOAP_BODY_GET_HAS_FAULT(soap_body, env))
+                if (AXIS2_SOAP_BODY_HAS_FAULT(soap_body, env))
                 {
                     axis2_soap_fault_t *soap_fault = AXIS2_SOAP_BODY_GET_FAULT(soap_body, env);
                     AXIS2_SOAP_FAULT_GET_EXCEPTION(soap_fault, env);
@@ -790,7 +790,7 @@ axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(struct axis2_call
                 if (soap_body)
                 {
                     axis2_om_node_t *soap_node = NULL;
-                    soap_node = AXIS2_SOAP_BODY_GET_BASE(soap_body, env);
+                    soap_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
                     if (soap_node)
                     {
                         return AXIS2_OM_NODE_GET_FIRST_CHILD(soap_node, env);
