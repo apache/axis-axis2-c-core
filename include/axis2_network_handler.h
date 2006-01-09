@@ -1,0 +1,82 @@
+/*
+ * Copyright 2004,2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain count copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#ifndef AXIS2_NETWORK_HANDLER_H
+#define AXIS2_NETWORK_HANDLER_H
+
+#include <axis2.h>
+#include <axis2_defines.h>
+#include <axis2_env.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+
+
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
+/**
+ * @defgroup axis2_network_handler Network Handler
+ * @ingroup axis2_util 
+ * @{
+ */
+
+/**
+ * open a socket for a given server
+ * @param server ip address or the fqn of the server
+ * @param port port of the service
+ * @return opened socket
+ */ 
+AXIS2_DECLARE(int) 
+axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port);
+
+/**
+ * creates a server socket for a given port
+ * @param port port of the socket to be bound
+ * @return creates server socket
+ */ 
+AXIS2_DECLARE(int) 
+axis2_network_handler_create_server_socket(axis2_env_t **env, int port);
+
+/**
+ * closes a socket
+ * @param opened socket that need to be closed
+ * @return status code
+ */
+AXIS2_DECLARE(axis2_status_t) 
+axis2_network_handler_close_socket (axis2_env_t **env, int socket);
+
+/**
+ * used to set up socket options such as timeouts, non-blocking ..etc
+ * @param socket valid socket (obtained by socket() or similar callo
+ * @param option the name of the option
+ * @param value Value to be set
+ * @return status of the operations as axis2_status_t
+ */
+AXIS2_DECLARE(axis2_status_t)
+axis2_network_handler_set_sock_option(axis2_env_t **env, int socket, 
+						int option, int value);
+						
+/** @} */
+    
+#ifdef __cplusplus
+}
+#endif
+
+#endif                          /* AXIS2_NETWORK_HANDLER_H */
