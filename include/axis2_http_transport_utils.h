@@ -42,10 +42,11 @@ extern "C"
  * @ingroup axis2_core_transport_http
  * @{
  */
-axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL 
 axis2_http_transport_utils_process_http_post_request
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
-                        axis2_stream_t *stream, axis2_char_t *content_type, 
+                        axis2_stream_t *in_stream, axis2_stream_t *out_stream,
+						axis2_char_t *content_type, 
                         axis2_char_t *soap_action_header,
                         axis2_char_t *request_uri);
     

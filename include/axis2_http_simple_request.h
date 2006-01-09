@@ -54,7 +54,7 @@ AXIS2_DECLARE_DATA struct axis2_http_simple_request_ops
     axis2_http_request_line_t* (AXIS2_CALL *get_request_line)
                             (axis2_http_simple_request_t *simple_request, 
                             axis2_env_t **env);
-    
+	    
     axis2_status_t (AXIS2_CALL *set_request_line)
                             (axis2_http_simple_request_t *simple_request, 
                             axis2_env_t **env, 
@@ -98,7 +98,7 @@ AXIS2_DECLARE_DATA struct axis2_http_simple_request_ops
 
     axis2_ssize_t (AXIS2_CALL *get_body_bytes)
                             (axis2_http_simple_request_t *simple_request, 
-                            axis2_env_t **env, axis2_char_t *buf);
+                            axis2_env_t **env, char **buf);
 
     axis2_status_t (AXIS2_CALL *free)
                             (axis2_http_simple_request_t *simple_request, 
@@ -136,8 +136,8 @@ axis2_http_simple_request_create (axis2_env_t **env,
 #define AXIS2_HTTP_SIMPLE_REQUEST_CONTAINS_HEADER(simple_request, env, name)\
                             ((simple_request)->ops->contains_header\
                             (simple_request, env, name))
-#define AXIS2_HTTP_SIMPLE_REQUEST_GET_HEADERS(simple_request, env, headers)\
-                            ((simple_request)->ops->get_headers(simple_request, env, headers))
+#define AXIS2_HTTP_SIMPLE_REQUEST_GET_HEADERS(simple_request, env)\
+                            ((simple_request)->ops->get_headers(simple_request, env))
 #define AXIS2_HTTP_SIMPLE_REQUEST_GET_FIRST_HEADER(simple_request, env, str) \
                             ((simple_request)->ops->get_first_header\
                             (simple_request, env, str))

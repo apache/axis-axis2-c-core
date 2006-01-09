@@ -123,7 +123,7 @@ AXIS2_DECLARE_DATA struct axis2_http_simple_response_ops
 
     axis2_ssize_t (AXIS2_CALL *get_body_bytes)
                     (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env, axis2_char_t *buf);
+                    axis2_env_t **env, axis2_char_t **buf);
 
     axis2_status_t (AXIS2_CALL *free)
                     (axis2_http_simple_response_t *simple_response, 
