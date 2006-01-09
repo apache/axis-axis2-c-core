@@ -22,9 +22,6 @@
 
 AXIS2_DECLARE(axis2_status_t)  axis2_env_free (axis2_env_t *env)
 {
-    if(env != NULL && env->stream != NULL && (env->stream->ops) != NULL)
-		AXIS2_STREAM_FREE(env->stream);
-
     if(NULL != env && NULL != env->log)
         AXIS2_LOG_FREE(env->log);
 	
@@ -62,16 +59,16 @@ axis2_env_create (axis2_allocator_t *allocator)
 }
 
 AXIS2_DECLARE(axis2_env_t*)
-axis2_env_create_with_error_stream (axis2_allocator_t *allocator
-                          , axis2_error_t *error, axis2_stream_t *stream)
+axis2_env_create_with_error (axis2_allocator_t *allocator
+                          , axis2_error_t *error)
 {
-	return axis2_env_create_with_error_stream_log(allocator, error
-		, stream, NULL);    
+	return axis2_env_create_with_error_log(allocator, error
+		, NULL);    
 }
 
 AXIS2_DECLARE(axis2_env_t *)
-axis2_env_create_with_error_stream_log (axis2_allocator_t *allocator
-                          , axis2_error_t *error, axis2_stream_t *stream
+axis2_env_create_with_error_log (axis2_allocator_t *allocator
+                          , axis2_error_t *error
                           , axis2_log_t *log)
 {
     axis2_env_t *environment;
@@ -91,9 +88,6 @@ axis2_env_create_with_error_stream_log (axis2_allocator_t *allocator
         return NULL;
     environment->error = error;
 
-	if(NULL == stream)
-		return NULL;
-    environment->stream = stream;    
 
     if (NULL == log)
         environment->log_enabled = AXIS2_FALSE;

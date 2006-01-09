@@ -25,7 +25,6 @@
 
 #include <axis2_allocator.h>
 #include <axis2_error.h>
-#include <axis2_stream.h>
 #include <axis2_log.h>
 
 #ifdef __cplusplus
@@ -61,8 +60,6 @@ extern "C"
         axis2_allocator_t *allocator;
         /** Error handling */
         axis2_error_t *error;
-        /** IO routines */
-        axis2_stream_t *stream;
         /** Logging routines */
         axis2_log_t *log;
 		/** This flag indicate whether logging is enabled or not */
@@ -87,10 +84,9 @@ extern "C"
     * it would be taken as a flag for no logging.    
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_env_t *) axis2_env_create_with_error_stream 
+    AXIS2_DECLARE(axis2_env_t *) axis2_env_create_with_error 
 													(axis2_allocator_t *allocator
-                                                   , axis2_error_t *error
-                                                   , axis2_stream_t *stream);
+                                                   , axis2_error_t *error);
 	
 	/**
     * Creates an environment struct
@@ -101,10 +97,9 @@ extern "C"
     * it would be taken as a flag for no logging.    
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_env_t *) axis2_env_create_with_error_stream_log 
+    AXIS2_DECLARE(axis2_env_t *) axis2_env_create_with_error_log 
 													(axis2_allocator_t *allocator
                                                    , axis2_error_t *error
-                                                   , axis2_stream_t *stream
                                                    , axis2_log_t *log);
 
   /**
