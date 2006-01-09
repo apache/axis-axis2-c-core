@@ -67,7 +67,7 @@ axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, axis2_env_t **env)
     memcpy(ret, s1, axis2_strlen(s1)*sizeof(axis2_char_t));
     memcpy((ret + axis2_strlen(s1)*sizeof(axis2_char_t)), s2,
                     axis2_strlen(s2)*sizeof(axis2_char_t));
-    ret[alloc_len*sizeof(axis2_char_t)] = '\0';
+    ret[alloc_len*sizeof(axis2_char_t) - sizeof(axis2_char_t)] = '\0';
     return ret;
 }
 
