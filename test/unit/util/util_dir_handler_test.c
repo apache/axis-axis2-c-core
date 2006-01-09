@@ -16,7 +16,7 @@ void Testaxis2_dir_handler_list_dir(CuTest *tc)
     int i = 0;
     expected = AXIS2_STRDUP("libaxis2_util.so", &env);
 	pathname = AXIS2_STRDUP(
-        "/home/damitha/projects/c/test/unit/infiles/dir_handler", &env);
+        "../infiles/dir_handler", &env);
     file_list = axis2_dir_handler_list_dir(&env, pathname);
     size = AXIS2_ARRAY_LIST_SIZE(file_list, &env);
     
