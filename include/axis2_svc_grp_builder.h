@@ -90,6 +90,17 @@ AXIS2_DECLARE_DATA struct axis2_svc_grp_builder
 AXIS2_DECLARE(axis2_svc_grp_builder_t *) 
 axis2_svc_grp_builder_create (axis2_env_t **env);
 
+/**
+ * Creates svc_grp builder struct
+ * @param svc
+ * @param dep_engine
+ * @return pointer to newly created service group builder
+ */
+AXIS2_DECLARE(axis2_svc_grp_builder_t *) 
+axis2_svc_grp_builder_create_with_svc_and_dep_engine (axis2_env_t **env,
+                                                axis2_om_node_t *svc,
+                                                axis2_dep_engine_t *dep_engine);
+
 /*************************** Function macros **********************************/
 
 #define AXIS2_SVC_GRP_BUILDER_FREE(svc_grp_builder, env) \

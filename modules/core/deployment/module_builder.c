@@ -83,9 +83,9 @@ axis2_module_builder_create (axis2_env_t **env)
     
 	return &(module_builder_impl->module_builder);
 }
-/*
+
 axis2_module_builder_t * AXIS2_CALL 
-axis2_svc_builder_create_with_file_and_dep_engine_module (axis2_env_t **env,
+axis2_module_builder_create_with_file_and_dep_engine_module (axis2_env_t **env,
                                                 axis2_char_t *file_name,
                                                 axis2_dep_engine_t *dep_engine,
                                                 axis2_module_desc_t *module)
@@ -111,7 +111,7 @@ axis2_svc_builder_create_with_file_and_dep_engine_module (axis2_env_t **env,
     builder_impl->module= module;
     return &(builder_impl->module_builder);   
 }
-*/
+
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL 
@@ -379,12 +379,12 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         if(NULL == mep_url)
         {
             /* assuming in-out mep */
-            /* op_descrip = new InOnlyAxisOperation(); */
+            /* TODO op_descrip = new InOnlyAxisOperation(); */
             op_desc = axis2_op_create(env); 
         }
         else
         {
-            /* op_descrip = AxisOperationFactory.getOperetionDescription(mepURL); */
+            /* TODO op_descrip = AxisOperationFactory.getOperetionDescription(mepURL); */
             op_desc = axis2_op_create(env);
         }
         

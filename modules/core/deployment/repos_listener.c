@@ -15,6 +15,8 @@
  */
  
 #include <axis2_repos_listener.h>
+#include <axis2_ws_info_list.h>
+#include <axis2_dir_handler.h>
 
 /** 
  * @brief DLL Description struct impl
@@ -141,7 +143,7 @@ axis2_repos_listener_create(axis2_env_t **env)
  * @param folderName    path to parent directory that the listener should listent
  * @param deploy_engine refearnce to engine registry  inorder to inform the updates
  */
-/*
+
 axis2_repos_listener_t *AXIS2_CALL
 axis2_repos_listener_create_with_folder_name_and_dep_engine(axis2_env_t **env,
                                                 axis2_char_t *folder_name,
@@ -151,29 +153,28 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(axis2_env_t **env,
     
     AXIS2_ENV_CHECK(env, NULL);
     
-    listener_impl = axis2_repos_listener_create(env);
+    listener_impl = (axis2_repos_listener_impl_t *) axis2_repos_listener_create(env);
     
 	if(NULL == listener_impl)
     {
         return NULL;
     } 
-    listener_impl->folder_name = AXIS2_STRDUP((*env)->allocator, 
-            folder_name);
+    listener_impl->folder_name = AXIS2_STRDUP(folder_name, env);
     if(!listener_impl->folder_name)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    listener_impl->ws_info_list = axis2_ws_info_list_create_with_dep_engine(
+    listener_impl->info_list = axis2_ws_info_list_create_with_dep_engine(
         env, dep_engine);
-    if(!listener_impl->ws_info_list)
+    if(!listener_impl->info_list)
     {
         return NULL;
     }
     axis2_repos_listener_init(&(listener_impl->repos_listener), env);
     return &(listener_impl->repos_listener);
 }
-*/
+
 /******************************************************************************/
 
 axis2_status_t AXIS2_CALL

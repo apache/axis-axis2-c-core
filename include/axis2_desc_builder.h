@@ -29,7 +29,7 @@
 #include <axis2_allocator.h>
 
 #include <axis2_deployment.h>
-/* #include <axis2_dep_engine.h> */
+#include <axis2_dep_engine.h>
 #include <axis2_flow.h>
 #include <axis2_om_stax_builder.h>
 #include <axis2_om_document.h>

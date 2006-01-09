@@ -67,14 +67,14 @@ AXIS2_DECLARE_DATA struct axis2_svc_builder_ops
                                     axis2_env_t **env,
                                     axis2_om_node_t *svc_node);
     
-    /*
+    
     axis2_status_t (AXIS2_CALL *
     process_svc_module_conf) (axis2_svc_builder_t *svc_builder,
                                     axis2_env_t **env,
                                     axis2_om_children_qname_iterator_t *module_confs,
                                     axis2_param_container_t *parent, 
                                     axis2_svc_t *svc);
-    */
+    
     
     /**
      * To get the list og modules that is requird to be engage globally

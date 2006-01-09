@@ -29,7 +29,7 @@
 #include <axis2_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_module_desc.h>
-/* #include <axis2_dep_engine.h> */
+#include <axis2_dep_engine.h>
 #include <axis2_desc_builder.h>
 
 #ifdef __cplusplus
@@ -88,7 +88,7 @@ axis2_module_builder_create (axis2_env_t **env);
  * @return pointer to newly created module builder
  */
 AXIS2_DECLARE(axis2_module_builder_t *)
-axis2_svc_builder_create_with_file_and_dep_engine_module (axis2_env_t **env,
+axis2_module_builder_create_with_file_and_dep_engine_module (axis2_env_t **env,
                                                 axis2_char_t *file_name,
                                                 struct axis2_dep_engine *dep_engine,
                                                 axis2_module_desc_t *module);

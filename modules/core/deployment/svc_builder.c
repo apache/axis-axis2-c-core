@@ -50,14 +50,14 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
                     axis2_env_t **env,
                     axis2_om_children_qname_iterator_t *op_itr);
 
-/*
+
 axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
                                 axis2_env_t **env,
                                 axis2_om_children_qname_iterator_t *module_confs,
                                 axis2_param_container_t *parent, 
                                 axis2_svc_t *svc);
-*/
+
 
 /**
  * To get the list og modules that is requird to be engage globally
@@ -285,14 +285,17 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
                 return AXIS2_FAILURE;
             }
             svc_name = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
-            AXIS2_WSDL_SVC_SET_NAME(builder_impl->svc->wsdl_svc, env, svc_name);
+            AXIS2_SVC_SET_AXIS2_SVC_NAME(builder_impl->svc, env, 
+                svc_name);
             AXIS2_OM_OUTPUT_FREE(om_output, env);
         }
         else
         {
             axis2_char_t *svc_name = NULL;
+            
             svc_name = AXIS2_OM_ELEMENT_GET_TEXT(desc_element, env, desc_node);
-            AXIS2_WSDL_SVC_SET_NAME(builder_impl->svc->wsdl_svc, env, svc_name);
+            AXIS2_SVC_SET_AXIS2_SVC_NAME(builder_impl->svc, env, 
+                svc_name);
         }
     }
 
@@ -377,7 +380,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     operation_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env,
         qopst, svc_node);
     
-    ops = process_ops(svc_builder, env, operation_itr);
+    ops = axis2_svc_builder_process_ops(svc_builder, env, operation_itr);
     size = AXIS2_ARRAY_LIST_SIZE(ops, env);
     for(i = 0; i < size; i++)
     {
@@ -582,7 +585,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
     return ops;
 }
 
-/*
+
 axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
                                 axis2_env_t **env,
@@ -612,7 +615,7 @@ axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
     }
     return AXIS2_SUCCESS;
 }
-*/
+
 
 axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,

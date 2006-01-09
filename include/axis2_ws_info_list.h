@@ -34,6 +34,7 @@
 #include <axis2_dir_handler.h>
 #include <axis2_ws_info.h>
 #include <axis2_arch_file_data.h>
+#include <axis2_dep_engine.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -41,6 +42,7 @@ extern "C"
 #endif
     
 struct axis2_ws_info;
+struct dep_engine;
 typedef struct axis2_ws_info_list axis2_ws_info_list_t;
 typedef struct axis2_ws_info_list_ops axis2_ws_info_list_ops_t;
 
@@ -158,9 +160,8 @@ AXIS2_DECLARE_DATA struct axis2_ws_info_list
  * @return pointer to newly created ws info list
  */
 AXIS2_DECLARE(axis2_ws_info_list_t *) 
-axis2_ws_info_list_create_with_repos_name (
-                                        axis2_env_t **env, 
-                                        axis2_char_t *repos_path);
+axis2_ws_info_list_create_with_dep_engine (axis2_env_t **env,
+                                            struct axis2_dep_engine *dep_engine);
 
 
 /*************************** Function macros **********************************/

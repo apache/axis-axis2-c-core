@@ -129,6 +129,13 @@ AXIS2_DECLARE_DATA struct axis2_arch_file_data
 
 /**
  * Creates arch file data struct
+ * @return pointer to newly created arch file data
+ */
+AXIS2_DECLARE(axis2_arch_file_data_t *)
+axis2_arch_file_data_create(axis2_env_t **env);
+
+/**
+ * Creates arch file data struct
  * @param repos_path
  * @return pointer to newly created arch file data
  */

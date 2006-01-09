@@ -56,7 +56,8 @@ extern "C"
         
     } axis2_file_t;
 
-#define AXIS2_DIR_HANDLER_LIST_DIR(env, pathname) axis2_list_dir(env, pathname)
+#define AXIS2_DIR_HANDLER_LIST_DIR(env, pathname) \
+        (axis2_dir_handler_list_dir(env, pathname))
 
 /** @} */
     

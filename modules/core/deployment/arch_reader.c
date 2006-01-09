@@ -17,6 +17,8 @@
 #include <axis2_arch_reader.h>
 #include <string.h>
 #include <axis2_class_loader.h>
+#include <axis2_svc_builder.h>
+#include <axis2_module_builder.h>
 
 /** 
  * @brief
@@ -358,9 +360,11 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
     if(0 == AXIS2_STRCMP(AXIS2_SVC_ELEMENT, root_element_name))
     {
         axis2_svc_t *svc = NULL;
-        struct axis2_arch_file_data *file_data = NULL;
         axis2_char_t *name = NULL;
         axis2_char_t *short_file_name = NULL;
+        axis2_svc_builder_t *svc_builder = NULL;
+        axis2_arch_file_data_t *file_data = NULL;
+        axis2_array_list_t *dep_svcs = NULL;
         
         file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
         name = AXIS2_ARCH_FILE_DATA_GET_NAME(file_data, env);
@@ -382,16 +386,26 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
             }
         }
         AXIS2_SVC_SET_PARENT(svc, env, svc_grp);
-        /*axisService.setClassLoader(engine.getCurrentFileItem().getClassLoader());
-        ServiceBuilder serviceBuilder = new ServiceBuilder(engine,axisService);
-        serviceBuilder.populateService(services);
-        engine.getCurrentFileItem().getDeploybleServices().add(axisService);
-        */
+        /*axisService.setClassLoader(engine.getCurrentFileItem().getClassLoader());*/
+        
+        svc_builder = axis2_svc_builder_create_with_dep_engine_and_svc(env,
+            dep_engine, svc);
+        status = AXIS2_SVC_BUILDER_POPULATE_SVC(svc_builder, env, svcs);
+        if(AXIS2_SUCCESS != status)
+        {
+            return AXIS2_FAILURE;
+        }
+        file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
+        
+        dep_svcs = AXIS2_ARCH_FILE_DATA_GET_DEPLOYABLE_SVCS(file_data, env);
+        AXIS2_ARRAY_LIST_ADD(dep_svcs, env, svc);
     }
     else if(0 == AXIS2_STRCMP(AXIS2_SVC_GRP_ELEMENT, root_element_name))
     {
-        /*ServiceGroupBuilder groupBuilder = new ServiceGroupBuilder(services,engine);
-        groupBuilder.populateServiceGroup(axisServiceGroup);*/
+        axis2_svc_grp_builder_t *grp_builder = NULL;
+        grp_builder = axis2_svc_grp_builder_create_with_svc_and_dep_engine(env, 
+            svcs, dep_engine);
+        AXIS2_SVC_GRP_BUILDER_POPULATE_SVC_GRP(grp_builder, env, svc_grp);
     }
     return status;
 }
@@ -420,10 +434,16 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     status = axis2_file_handler_access(file_name, AXIS2_F_OK);
     if(AXIS2_SUCCESS == status)
     {
-        /*
-            ModuleBuilder builder = new ModuleBuilder(in, engine, module);
-            builder.populateModule();
-        */
+        axis2_module_builder_t *module_builder = NULL;
+        
+        module_builder = 
+            axis2_module_builder_create_with_file_and_dep_engine_module(env,
+                file_name, dep_engine, module);
+        status = AXIS2_MODULE_BUILDER_POPULATE_MODULE(module_builder, env);
+        if(AXIS2_FAILURE == status)
+        {
+            return AXIS2_FAILURE;
+        }
     }
     else
     {

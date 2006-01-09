@@ -1334,7 +1334,7 @@ axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
                 svc_name = axis2_dep_engine_get_axis_svc_name(dep_engine, env,
                     file_name);
                 
-                /* todo fix me deepal */
+                /* todo  */
                 /*   axisConfig.removeService(new QName(serviceName)); */
                 /*log.info(Messages.getMessage(DeploymentErrorMsgs.SERVICE_REMOVED,
                         wsInfo.getFilename()));*/
