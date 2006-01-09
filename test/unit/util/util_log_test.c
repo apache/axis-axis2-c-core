@@ -12,6 +12,7 @@ void Testaxis2_log_write(CuTest *tc)
     axis2_stream_t *stream = axis2_stream_create_basic(&env);
 
     char *expected = strdup("aaaaaaaaa");
+    AXIS2_STREAM_WRITE(stream, &env, "aaaaaaaaa", 10);
     AXIS2_STREAM_READ(stream, &env,  actual, 10);
     AXIS2_LOG_WRITE(env->log, actual, 10);
     CuAssertStrEquals(tc, expected, actual);

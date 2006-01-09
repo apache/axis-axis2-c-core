@@ -9,7 +9,6 @@
 #include <axis2_error_default.h>
 #include <axis2_stream.h>
 
-void Testaxis2_stream_read(CuTest *tc);
 
 void Testaxis2_stream_write(CuTest *tc);
 
