@@ -215,7 +215,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_
         if (soap_body)
         {
             axis2_om_node_t *node = NULL;
-            node = AXIS2_SOAP_BODY_GET_BASE(soap_body, env);
+            node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
             if (node)
             {
                 AXIS2_OM_NODE_ADD_CHILD(node, env, to_send);
