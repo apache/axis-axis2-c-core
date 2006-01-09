@@ -112,6 +112,7 @@ AC_CONFIG_FILES([Makefile \
     test/xml/om/Makefile \
     test/core/Makefile \
     test/core/handlers/Makefile \
+    test/core/description/Makefile \
     test/util/Makefile \
     test/unit/Makefile \
     test/unit/core/Makefile \
