@@ -1,1 +1,1 @@
-SUBDIRS = handlers
+SUBDIRS = handlers description
