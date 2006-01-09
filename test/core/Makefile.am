@@ -1,1 +1,1 @@
-SUBDIRS = handlers description
+SUBDIRS = handlers description context
