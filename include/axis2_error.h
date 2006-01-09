@@ -313,6 +313,26 @@ extern "C"
         AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND,
         /** only one SOAP fault allowed in SOAP body */
         AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY,
+		/** Error in creating the stream for the socket */
+		AXIS2_ERROR_SOCKET_STREAM_CREATION,
+		/** Trying to do operation on closed/not opened socket */
+		AXIS2_ERROR_INVALID_SOCKET,
+		/** Trying to do operation on invalid file descriptor */
+		AXIS2_ERROR_INVALID_FD,
+		/** Error creating a socket. Most probably error returned by OS */
+		AXIS2_ERROR_SOCKET_ERROR,
+		/** Invalid IP or hostname */
+		AXIS2_ERROR_INVALID_ADDRESS,
+		/** Socket bind failed. Another process may be already using this port*/
+		AXIS2_ERROR_SOCKET_BIND_FAILED,
+		/** URL NULL in http client */
+		AXIS2_ERROR_NULL_URL,
+        /** A read attempt(HTTP) for the reply without sending the request */
+        AXIS2_ERROR_HTTP_REQUEST_NOT_SENT,
+        /** Invalid string passed as a http header */
+        AXIS2_ERROR_INVALID_HEADER,
+        /** No body present in the request or the response */
+        AXIS2_ERROR_NULL_BODY,
         /** Invalid SOAP envelope state */
         AXIS2_ERROR_INVALID_SOAP_ENVELOPE_STATE,
         /** Service xml file is not found in the given path */
@@ -344,7 +364,6 @@ extern "C"
         AXIS2_ERROR_INVALID_MODULE,
         AXIS2_ERROR_MODULE_CREATION_FAILED,
         AXIS2_ERROR_SOAP_ENVELOPE_MUST_HAVE_BODY_ELEMENT
-
     };
 
 /** @} */
