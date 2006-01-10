@@ -70,7 +70,7 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
 	 * reads from stream
 	 * @param buffer buffer into which the content is to be read
 	 * @param count size of the buffer
-	 * @return so: of bytes read
+	 * @return no: of bytes read
 	 */
    
 	int (AXIS2_CALL *read) (axis2_stream_t *stream, axis2_env_t **env, 

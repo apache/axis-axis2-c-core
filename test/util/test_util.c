@@ -32,8 +32,7 @@ axis2_env_t *test_init()
 {
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_error_t *error = axis2_error_create (allocator);
-	axis2_stream_t *stream = axis2_stream_create (allocator, NULL);
-    axis2_env_t *env = axis2_env_create_with_error_stream (allocator, error, stream);
+    axis2_env_t *env = axis2_env_create_with_error(allocator, error);
 	return env;
 }
 
@@ -109,8 +108,7 @@ char* test_funct_for_test_env_null(axis2_env_t **env)
 	{
 		axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 		axis2_error_t *error = axis2_error_create (allocator);
-		axis2_stream_t *stream = axis2_stream_create (allocator, NULL);
-        *env = axis2_env_create_with_error_stream (allocator, error, stream);
+        *env = axis2_env_create_with_error(allocator, error);
 		AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
 		AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_ENVIRONMENT_IS_NULL);	
 		return AXIS2_STRDUP("env is null!!!", env);
@@ -146,7 +144,7 @@ void test_array_list(axis2_env_t *env)
     a *entry = NULL;
     
     
-    al = axis2_array_list_create (&env, 10);
+    al = axis2_array_list_create (&env, 1);
     
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
     entry->value = AXIS2_STRDUP("value1", &env);
@@ -166,6 +164,14 @@ void test_array_list(axis2_env_t *env)
     
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
     entry->value = AXIS2_STRDUP("value5", &env);
+    AXIS2_ARRAY_LIST_ADD (al, &env, (void*)entry);
+
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    entry->value = AXIS2_STRDUP("value6", &env);
+    AXIS2_ARRAY_LIST_ADD (al, &env, (void*)entry);
+
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    entry->value = AXIS2_STRDUP("value7", &env);
     AXIS2_ARRAY_LIST_SET (al, &env, 3, (void*)entry);
     AXIS2_ARRAY_LIST_REMOVE (al, &env, 2);
     

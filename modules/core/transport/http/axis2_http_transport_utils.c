@@ -21,6 +21,8 @@
 #include <axis2_op.h>
 #include <axis2_qname.h>
 #include <axis2_http_transport.h>
+#include <axis2_soap_envelope.h>
+#include <axis2_soap_model_builder.h>
 
 /***************************** Function headers *******************************/
 
@@ -40,10 +42,10 @@ axis2_http_transport_utils_process_http_get_request
                         axis2_char_t *request_uri, axis2_conf_ctx_t *conf_ctx, 
                         axis2_hash_t *request_params);
     
-/*axis2_soap_envelope_t* AXIS2_CALL 
+axis2_soap_envelope_t* AXIS2_CALL 
 axis2_http_transport_utils_create_envelope_from_get_request
                         (axis2_env_t **env, axis2_char_t *request_uri,
-                        axis2_hash_t *request_params);*/
+                        axis2_hash_t *request_params);
     
 axis2_om_stax_builder_t* AXIS2_CALL 
 axis2_http_transport_utils_select_builder_for_mime
@@ -88,6 +90,14 @@ axis2_http_transport_utils_process_http_post_request
                         axis2_char_t *soap_action_header,
                         axis2_char_t *request_uri)
 {
+	axis2_soap_envelope_t *soap_envelope = NULL;
+	axis2_soap_model_builder_t *soap_builder = NULL;
+	axis2_om_stax_builder_t *om_builder = NULL;
+	axis2_bool_t is_soap11 = AXIS2_FALSE;
+	axis2_xml_reader_t *xml_reader = NULL;
+	axis2_char_t *char_set = NULL;
+	axis2_char_t *xml_char_set = NULL;
+	
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, in_stream, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, out_stream, AXIS2_FAILURE);
@@ -105,20 +115,60 @@ axis2_http_transport_utils_process_http_post_request
 		{
 			soap_action_header[strlen(soap_action_header) -1] = '\0';
 		}
-		AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env, soap_action_header);
-		AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env, soap_action_header);
-		AXIS2_MSG_CTX_SET_TO(msg_ctx, env, axis2_endpoint_ref_create(env, 
-						request_uri));
-		AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, 
-						AXIS2_TRANSPORT_OUT, out_stream, AXIS2_FALSE);
-		AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
-		
-		
 	}
+	AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env, soap_action_header);
+	AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env, soap_action_header);
+	AXIS2_MSG_CTX_SET_TO(msg_ctx, env, axis2_endpoint_ref_create(env, 
+					request_uri));
+	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, 
+					AXIS2_TRANSPORT_OUT, out_stream, AXIS2_FALSE);
+	AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
+	
+	/* xml_reader = axis2_xml_reader_create_for_memory(env, );*/
+	char_set = axis2_http_transport_utils_get_charset_enc(env,content_type);
+	/* TODO set the charset of the stream before (at least default)
+	 *	we read them
+	 */
+	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
+					char_set, AXIS2_TRUE);
+	om_builder = axis2_om_stax_builder_create(env, xml_reader);
+	if(NULL != strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP))
+	{
+		is_soap11 = AXIS2_FALSE;
+		soap_builder = axis2_soap_model_builder_create(env, om_builder);
+		/* TODO set the soap12 namespace URI */
+		envelope = AXIS2_SOAP_MODEL_BUILDER_GET_SOAP_ENVELOPE(soap_builder,
+					env);
+	}
+	else if(NULL != strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML))
+	{
+		is_soap11 = AXIS2_TRUE;
+		if(NULL != soap_action_header && AXIS2_STRLEN(soap_action_header)
+					> 0))
+		{
+			soap_builder = axis2_soap_model_builder_create(env, om_builder);
+			/* TODO set the soap11 namespace URI */
+			envelope = AXIS2_SOAP_MODEL_BUILDER_GET_DOCUMENT_ELEMENT(
+					soap_builder, env);
+		}
+		/* REST support
+		 * else
+		 * {
+		 *		envelope = AXIS2_SOAP_ENVELOPE_GET_DEFAULT_SOAP_ENVELOPE(
+		 *			env);
+		 *		AXIS2_SOAP_BODY_ADD_CHILD(AXIS2_SOAP_ENVELOPE_GET_BODY(
+		 *			envelope, env), AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(
+		 *			om_builder, env));
+		 */			
+	}
+	xml_char_set = AXIS2_OM_DOCUAXIS2_OM_STAX_BUILDER_GET_DOCUMENT(env om_builder)
+	
+	
+	
 	/*
-        TODO code
-    */
-    return AXIS2_SUCCESS;
+		TODO code
+	*/
+	return AXIS2_SUCCESS;
 }
 
 
@@ -134,13 +184,13 @@ axis2_http_transport_utils_process_http_get_request
 }
 
 
-/*axis2_soap_envelope_t* AXIS2_CALL 
+axis2_soap_envelope_t* AXIS2_CALL 
 axis2_http_transport_utils_create_envelope_from_get_request
                         (axis2_env_t **env, axis2_char_t *request_uri,
                         axis2_hash_t *request_params)
 {
     return NULL;
-}*/
+}
 
 
 axis2_om_stax_builder_t* AXIS2_CALL 

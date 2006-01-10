@@ -125,7 +125,7 @@ AC_CONFIG_FILES([Makefile \
     test/unit/core/deployment/Makefile \
     test/unit/util/Makefile \
     test/unit/xml/Makefile \
-    test/unit/xml/om/Makefile
+    test/unit/xml/om/Makefile\
     test/core/transport/Makefile\
     test/core/transport/http/Makefile
     ])

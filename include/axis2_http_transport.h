@@ -238,6 +238,11 @@ extern "C"
     #define AXIS2_HTTP_HEADER_ACCEPT_TEXT_PLAIN "text/plain"
     
     /**
+     * HEADER_ACCEPT_TEXT_XML
+     */
+    #define AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML "text/xml"
+
+    /**
      * HEADER_ACCEPT_APPL_SOAP
      */
     #define AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP "application/soap+xml"
