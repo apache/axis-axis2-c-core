@@ -63,8 +63,7 @@ AXIS2_DECLARE_DATA   struct axis2_soap_body_ops
                                              
         axis2_om_node_t* (AXIS2_CALL *get_document_element)
                                             (axis2_soap_model_builder_t *builder,
-                                             axis2_env_t **env);                                                                                               
-                                                                                            
+                                             axis2_env_t **env); 
 };
                                                       
 
@@ -104,6 +103,9 @@ axis2_soap_model_builder_create(axis2_env_t **env,
         
 #define AXIS2_SOAP_MODEL_BUILDER_GET_DOCUMENT(builder, env) \
         ((builder)->ops->get_document(builder, env))
+        
+#define AXIS2_SOAP_MODEL_BUILDER_NEXT(builder, env) \
+        ((builder)->ops->next(builder, env))       
 
 /** @} */
 #ifdef __cplusplus
