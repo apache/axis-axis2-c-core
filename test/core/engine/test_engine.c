@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <axis2_env.h>
 #include <axis2_engine.h>
+#include <axis2_conf_ctx.h>
 
 int	axis2_test_engine_send()
 {

@@ -19,11 +19,11 @@ int test_op_engage_module()
 
     status = axis2_op_engage_module(op, &env, moduleref);
 
-	printf("%d\n", AXIS2_ERROR_GET_STATUS_CODE((env)->error));
+	/*printf("%d\n", AXIS2_ERROR_GET_STATUS_CODE((env)->error));*/
 
 	if(status != AXIS2_SUCCESS )
 	{
-		printf("ERROR\n");
+		printf("ERROR %d\n", status);
 	    return -1;
 	}
 
