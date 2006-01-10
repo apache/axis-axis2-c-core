@@ -21,6 +21,7 @@
 #include <axis2_defines.h>
 #include <axis2_error.h>
 #include <axis2_env.h>
+#include <axis2_msg_ctx.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -44,6 +45,10 @@ extern "C"
      */
     AXIS2_DECLARE(axis2_char_t**)
     axis2_parse_request_url_for_svc_and_op(axis2_env_t **env, axis2_char_t *request);
+    
+    AXIS2_DECLARE(axis2_msg_ctx_t *)
+    axis2_utils_create_out_msg_ctx(axis2_env_t **env,
+                                axis2_msg_ctx_t *in_msg_ctx);
 
 /** @} */
     

@@ -82,7 +82,7 @@ axis2_wsdl_soap_op_create (axis2_env_t **env)
     soap_op_impl->soap_op.ops = NULL;
     axis2_qname_t *type_l = NULL;
     
-    type_l = axis2_qname_create(env, "op", SOAP_11_OP, NULL);
+    type_l = axis2_qname_create(env, "op", AXIS2_SOAP_11_OP, NULL);
     
     AXIS2_WSDL_EXTENSIBLE_ELEMENT_SET_TYPE(soap_op_impl->soap_op.
         extensible_element, env, type_l);

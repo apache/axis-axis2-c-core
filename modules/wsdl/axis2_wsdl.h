@@ -33,24 +33,24 @@ extern "C"
 /**
  * Field WSDL2_0_NAMESPACE
  */
-#define WSDL2_0_NAMESPACE "http://www.w3.org/2004/03/wsdl"
+#define AXIS2_WSDL2_0_NAMESPACE "http://www.w3.org/2004/03/wsdl"
 
 /**
  * Field WSDL1_1_NAMESPACE
  */
-#define WSDL1_1_NAMESPACE "http://schemas.xmlsoap.org/wsdl/"
+#define AXIS2_WSDL1_1_NAMESPACE "http://schemas.xmlsoap.org/wsdl/"
 
 
 /**
  * Field WSDL_MESSAGE_DIRECTION_IN
  */
-#define WSDL_MESSAGE_DIRECTION_IN "in"
+#define AXIS2_WSDL_MESSAGE_DIRECTION_IN "in"
 
 
 /**
  * Field WSDL_MESSAGE_DIRECTION_OUT
  */
-#define WSDL_MESSAGE_DIRECTION_OUT "out"
+#define AXIS2_WSDL_MESSAGE_DIRECTION_OUT "out"
 
 
 /*********************Message Exchange Pattern Constants***********************/
@@ -59,61 +59,61 @@ extern "C"
 /**
  * Field MEP_URI_IN_ONLY
  */
-#define MEP_URI_IN_ONLY "http://www.w3.org/2004/08/wsdl/in-only"
+#define AXIS2_MEP_URI_IN_ONLY "http://www.w3.org/2004/08/wsdl/in-only"
 
-#define MEP_CONSTANT_IN_ONLY 10
+#define AXIS2_MEP_CONSTANT_IN_ONLY 10
 
 /**
  * Field MEP_URI_ROBUST_IN_ONLY
  */
-#define MEP_URI_ROBUST_IN_ONLY "http://www.w3.org/2004/08/wsdl/robust-in-only"
+#define AXIS2_MEP_URI_ROBUST_IN_ONLY "http://www.w3.org/2004/08/wsdl/robust-in-only"
 
-#define MEP_CONSTANT_ROBUST_IN_ONLY 11
+#define AXIS2_MEP_CONSTANT_ROBUST_IN_ONLY 11
 
 /**
  * Field MEP_URI_IN_OUT
  */
-#define MEP_URI_IN_OUT "http://www.w3.org/2004/08/wsdl/in-out"
+#define AXIS2_MEP_URI_IN_OUT "http://www.w3.org/2004/08/wsdl/in-out"
 
-#define MEP_CONSTANT_IN_OUT 12
+#define AXIS2_MEP_CONSTANT_IN_OUT 12
 
 /**
  * Field MEP_URI_IN_OPTIONAL_OUT
  */
-#define MEP_URI_IN_OPTIONAL_OUT "http://www.w3.org/2004/08/wsdl/in-opt-out"
+#define AXIS2_MEP_URI_IN_OPTIONAL_OUT "http://www.w3.org/2004/08/wsdl/in-opt-out"
 
-#define MEP_CONSTANT_IN_OPTIONAL_OUT 13
+#define AXIS2_MEP_CONSTANT_IN_OPTIONAL_OUT 13
 
 /**
  * Field MEP_URI_OUT_ONLY
  */
-#define MEP_URI_OUT_ONLY "http://www.w3.org/2004/08/wsdl/out-only"
+#define AXIS2_MEP_URI_OUT_ONLY "http://www.w3.org/2004/08/wsdl/out-only"
 
-#define MEP_CONSTANT_OUT_ONLY 14
+#define AXIS2_MEP_CONSTANT_OUT_ONLY 14
 
 /**
  * Field MEP_URI_ROBUST_OUT_ONLY
  */
-#define MEP_URI_ROBUST_OUT_ONLY "http://www.w3.org/2004/08/wsdl/robust-out-only"
+#define AXIS2_MEP_URI_ROBUST_OUT_ONLY "http://www.w3.org/2004/08/wsdl/robust-out-only"
 
-#define MEP_CONSTANT_ROBUST_OUT_ONLY 15
+#define AXIS2_MEP_CONSTANT_ROBUST_OUT_ONLY 15
 
 /**
  * Field MEP_URI_OUT_IN
  */
-#define MEP_URI_OUT_IN "http://www.w3.org/2004/08/wsdl/out-in"
+#define AXIS2_MEP_URI_OUT_IN "http://www.w3.org/2004/08/wsdl/out-in"
 
-#define MEP_CONSTANT_OUT_IN 16
+#define AXIS2_MEP_CONSTANT_OUT_IN 16
 
 /**
  * Field MEP_URI_OUT_OPTIONL_IN
  */
-#define MEP_URI_OUT_OPTIONAL_IN "http://www.w3.org/2004/08/wsdl/out-opt-in"
+#define AXIS2_MEP_URI_OUT_OPTIONAL_IN "http://www.w3.org/2004/08/wsdl/out-opt-in"
 
-#define MEP_CONSTANT_OUT_OPTIONAL_IN 17
+#define AXIS2_MEP_CONSTANT_OUT_OPTIONAL_IN 17
 
 
-#define MEP_CONSTANT_INVALID -1
+#define AXIS2_MEP_CONSTANT_INVALID -1
 
 /******************************Message Labels**********************************/
 
@@ -122,46 +122,46 @@ extern "C"
  * following WSDL 2.0 defined MEPs: In-Only, Robust In-Only, In-Out,
  * In-Optional-Out, Out-In, Out-Optional-In.
  */
-#define MESSAGE_LABEL_IN 0
+#define AXIS2_MESSAGE_LABEL_IN 0
 
-#define MESSAGE_LABEL_IN_VALUE "In"
+#define AXIS2_MESSAGE_LABEL_IN_VALUE "In"
 
 /**
  * Constant to represent the message label "Out" which is used by the
  * following WSDL 2.0 defined MEPs: In-Out, In-Optional-Out, Out-Only,
  * Robust Out-Only, Out-In, Out-Optional-In.
  */
-#define MESSAGE_LABEL_OUT 1
+#define AXIS2_MESSAGE_LABEL_OUT 1
 
-#define MESSAGE_LABEL_OUT_VALUE "Out"
+#define AXIS2_MESSAGE_LABEL_OUT_VALUE "Out"
 
 /**
  *
  */
-#define WSDL_USE_LITERAL "literal"
-#define WSDL_USE_ENCODED "encoded"
+#define AXIS2_WSDL_USE_LITERAL "literal"
+#define AXIS2_WSDL_USE_ENCODED "encoded"
 
 /********************wsdl extensible constants*********************************/
 /**
  * The Type name for the SOAP Address defined in the Port/Endpoint
  */
-#define SOAP_11_ADDRESS "http://schemas.xmlsoap.org/wsdl/soap/"
-#define SOAP_12_ADDRESS "http://schemas.xmlsoap.org/wsdl/soap12/"
+#define AXIS2_SOAP_11_ADDRESS "http://schemas.xmlsoap.org/wsdl/soap/"
+#define AXIS2_SOAP_12_ADDRESS "http://schemas.xmlsoap.org/wsdl/soap12/"
 
 
-#define SOAP_11_OP "http://schemas.xmlsoap.org/wsdl/soap/"
- #define SOAP_12_OP "http://schemas.xmlsoap.org/wsdl/soap12/"
+#define AXIS2_SOAP_11_OP "http://schemas.xmlsoap.org/wsdl/soap/"
+ #define AXIS2_SOAP_12_OP "http://schemas.xmlsoap.org/wsdl/soap12/"
 
-#define SCHEMA "http://www.w3.org/2001/XMLSchema"
+#define AXIS2_SCHEMA "http://www.w3.org/2001/XMLSchema"
 
-#define SOAP_11_BODY "http://schemas.xmlsoap.org/wsdl/soap/"
-#define SOAP_12_BODY "http://schemas.xmlsoap.org/wsdl/soap12/"
+#define AXIS2_SOAP_11_BODY "http://schemas.xmlsoap.org/wsdl/soap/"
+#define AXIS2_SOAP_12_BODY "http://schemas.xmlsoap.org/wsdl/soap12/"
 
-#define SOAP_11_HEADER "http://schemas.xmlsoap.org/wsdl/soap/"
-#define SOAP_12_HEADER "http://schemas.xmlsoap.org/wsdl/soap12/"
+#define AXIS2_SOAP_11_HEADER "http://schemas.xmlsoap.org/wsdl/soap/"
+#define AXIS2_SOAP_12_HEADER "http://schemas.xmlsoap.org/wsdl/soap12/"
 
-#define SOAP_11_BINDING "http://schemas.xmlsoap.org/wsdl/soap/"
-#define SOAP_12_BINDING "http://schemas.xmlsoap.org/wsdl/soap12/"
+#define AXIS2_SOAP_11_BINDING "http://schemas.xmlsoap.org/wsdl/soap/"
+#define AXIS2_SOAP_12_BINDING "http://schemas.xmlsoap.org/wsdl/soap12/"
 
 /*********************************** Constants*********************************/	
 	

@@ -302,6 +302,30 @@ axis2_op_register_op_ctx(axis2_op_t *op,
                             axis2_env_t **env,
                             struct axis2_msg_ctx *msg_ctx,
                             struct axis2_op_ctx *op_ctx);
+
+axis2_status_t AXIS2_CALL
+axis2_op_add_msg_ctx_in_only(axis2_op_t *op,
+                                axis2_env_t **env,
+                                axis2_msg_ctx_t *msg_ctx,
+                                axis2_op_ctx_t *op_ctx);
+
+axis2_status_t AXIS2_CALL
+axis2_op_add_msg_ctx_out_only(axis2_op_t *op,
+                                axis2_env_t **env,
+                                axis2_msg_ctx_t *msg_ctx,
+                                axis2_op_ctx_t *op_ctx);
+
+axis2_status_t AXIS2_CALL
+axis2_op_add_msg_ctx_in_out(axis2_op_t *op,
+                                axis2_env_t **env,
+                                axis2_msg_ctx_t *msg_ctx,
+                                axis2_op_ctx_t *op_ctx);
+    
+axis2_status_t AXIS2_CALL
+axis2_op_add_msg_ctx_out_in(axis2_op_t *op,
+                                axis2_env_t **env,
+                                axis2_msg_ctx_t *msg_ctx,
+                                axis2_op_ctx_t *op_ctx);                            
                                 
 /************************* End of function headers ****************************/	
 
@@ -324,7 +348,7 @@ axis2_op_create (axis2_env_t **env)
     
     op_impl->parent = NULL;
 	op_impl->msg_recv = NULL;
-    op_impl->mep = MEP_CONSTANT_INVALID;
+    op_impl->mep = AXIS2_MEP_CONSTANT_INVALID;
     op_impl->op.param_container = NULL;
     op_impl->op.wsdl_op = NULL;
     op_impl->remaining_phases_inflow = NULL;
@@ -388,7 +412,7 @@ axis2_op_create (axis2_env_t **env)
     }
     
     axis2_op_set_msg_exchange_pattern(&(op_impl->op), env, 
-        (axis2_char_t *) MEP_URI_IN_OUT);
+        (axis2_char_t *) AXIS2_MEP_URI_IN_OUT);
     
     param_container_l = axis2_param_container_create(env);
     if(NULL == param_container_l)
@@ -1011,55 +1035,55 @@ axis2_op_get_axis_specific_mep_const(axis2_op_t *op,
     
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
-    if (op_impl->mep != MEP_CONSTANT_INVALID) 
+    if (op_impl->mep != AXIS2_MEP_CONSTANT_INVALID) 
     {
         return op_impl->mep;
     }
 
-    temp = MEP_CONSTANT_INVALID;
+    temp = AXIS2_MEP_CONSTANT_INVALID;
 
-    if (AXIS2_STRCMP(MEP_URI_IN_OUT, 
+    if (AXIS2_STRCMP(AXIS2_MEP_URI_IN_OUT, 
             axis2_op_get_msg_exchange_pattern(op, env))) 
     {
-        temp = MEP_CONSTANT_IN_OUT;
+        temp = AXIS2_MEP_CONSTANT_IN_OUT;
     } 
-    else if (AXIS2_STRCMP(MEP_URI_IN_ONLY, 
+    else if (AXIS2_STRCMP(AXIS2_MEP_URI_IN_ONLY, 
             axis2_op_get_msg_exchange_pattern(op, env))) 
     {
-        temp = MEP_CONSTANT_IN_ONLY;
+        temp = AXIS2_MEP_CONSTANT_IN_ONLY;
     } 
-    else if (AXIS2_STRCMP(MEP_URI_IN_OPTIONAL_OUT, 
+    else if (AXIS2_STRCMP(AXIS2_MEP_URI_IN_OPTIONAL_OUT, 
             axis2_op_get_msg_exchange_pattern(op, env))) 
     {
-        temp = MEP_CONSTANT_IN_OPTIONAL_OUT;
+        temp = AXIS2_MEP_CONSTANT_IN_OPTIONAL_OUT;
     } 
-    else if (AXIS2_STRCMP(MEP_URI_OUT_IN, 
+    else if (AXIS2_STRCMP(AXIS2_MEP_URI_OUT_IN, 
             axis2_op_get_msg_exchange_pattern(op, env))) 
     {
-        temp = MEP_CONSTANT_OUT_IN;
+        temp = AXIS2_MEP_CONSTANT_OUT_IN;
     } 
-    else if (AXIS2_STRCMP(MEP_URI_OUT_ONLY, 
+    else if (AXIS2_STRCMP(AXIS2_MEP_URI_OUT_ONLY, 
             axis2_op_get_msg_exchange_pattern(op, env))) 
     {
-        temp = MEP_CONSTANT_OUT_ONLY;
+        temp = AXIS2_MEP_CONSTANT_OUT_ONLY;
     } 
-    else if (AXIS2_STRCMP(MEP_URI_OUT_OPTIONAL_IN, 
+    else if (AXIS2_STRCMP(AXIS2_MEP_URI_OUT_OPTIONAL_IN, 
             axis2_op_get_msg_exchange_pattern(op, env))) 
     {
-        temp = MEP_CONSTANT_OUT_OPTIONAL_IN;
+        temp = AXIS2_MEP_CONSTANT_OUT_OPTIONAL_IN;
     } 
-    else if (AXIS2_STRCMP(MEP_URI_ROBUST_IN_ONLY, 
+    else if (AXIS2_STRCMP(AXIS2_MEP_URI_ROBUST_IN_ONLY, 
             axis2_op_get_msg_exchange_pattern(op, env))) 
     {
-        temp = MEP_CONSTANT_ROBUST_IN_ONLY;
+        temp = AXIS2_MEP_CONSTANT_ROBUST_IN_ONLY;
     } 
-    else if (AXIS2_STRCMP(MEP_URI_ROBUST_OUT_ONLY, 
+    else if (AXIS2_STRCMP(AXIS2_MEP_URI_ROBUST_OUT_ONLY, 
             axis2_op_get_msg_exchange_pattern(op, env))) 
     {
-        temp = MEP_CONSTANT_ROBUST_OUT_ONLY;
+        temp = AXIS2_MEP_CONSTANT_ROBUST_OUT_ONLY;
     }
 
-    if (temp == MEP_CONSTANT_INVALID) 
+    if (temp == AXIS2_MEP_CONSTANT_INVALID) 
     {
         AXIS2_ERROR_SET((*env)->error, 
             AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT, AXIS2_FAILURE);
@@ -1587,6 +1611,142 @@ axis2_op_register_op_ctx(axis2_op_t *op,
     if(AXIS2_TRUE == AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env))
     {
         AXIS2_OP_CTX_CLEANUP(op_ctx, env);
+    }
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_op_add_msg_ctx_in_only(axis2_op_t *op,
+                                axis2_env_t **env,
+                                axis2_msg_ctx_t *msg_ctx,
+                                axis2_op_ctx_t *op_ctx)
+{
+    axis2_op_impl_t *op_impl = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, op_ctx, AXIS2_FAILURE);
+    op_impl = AXIS2_INTF_TO_IMPL(op);
+    if(AXIS2_TRUE != AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env))
+    {
+        axis2_hash_t *msg_ctxs = NULL;
+        msg_ctxs = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
+        axis2_hash_set(msg_ctxs, AXIS2_MESSAGE_LABEL_IN_VALUE,
+            AXIS2_HASH_KEY_STRING, msg_ctx);
+        AXIS2_OP_CTX_SET_IS_COMPLETE(op_ctx, env, AXIS2_TRUE);
+    }
+    else
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
+            AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_op_add_msg_ctx_out_only(axis2_op_t *op,
+                                axis2_env_t **env,
+                                axis2_msg_ctx_t *msg_ctx,
+                                axis2_op_ctx_t *op_ctx)
+{
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, op_ctx, AXIS2_FAILURE);
+    
+    if(AXIS2_TRUE != AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env))
+    {
+        axis2_hash_t *msg_ctxs = NULL;
+        msg_ctxs = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
+        axis2_hash_set(msg_ctxs, AXIS2_MESSAGE_LABEL_OUT_VALUE,
+            AXIS2_HASH_KEY_STRING, msg_ctx);
+        AXIS2_OP_CTX_SET_IS_COMPLETE(op_ctx, env, AXIS2_TRUE);
+    }
+    else
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
+            AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_op_add_msg_ctx_in_out(axis2_op_t *op,
+                                axis2_env_t **env,
+                                axis2_msg_ctx_t *msg_ctx,
+                                axis2_op_ctx_t *op_ctx)
+{
+    axis2_hash_t *mep = NULL;
+    axis2_msg_ctx_t *in_msg_ctx = NULL;
+    axis2_msg_ctx_t *out_msg_ctx = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, op_ctx, AXIS2_FAILURE);
+    
+    mep = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
+    in_msg_ctx = (axis2_msg_ctx_t *) axis2_hash_get(mep, 
+        AXIS2_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING);
+    out_msg_ctx = (axis2_msg_ctx_t *) axis2_hash_get(mep, 
+        AXIS2_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING);
+    if(NULL != in_msg_ctx && NULL != out_msg_ctx)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
+            AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    if(NULL == in_msg_ctx)
+    {
+        axis2_hash_set(mep, AXIS2_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING,
+            msg_ctx);        
+    }
+    else
+    {
+        axis2_hash_set(mep, AXIS2_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING,
+            msg_ctx);
+        AXIS2_OP_CTX_SET_IS_COMPLETE(op_ctx, env, AXIS2_TRUE);        
+    }
+    return AXIS2_SUCCESS;
+}
+    
+axis2_status_t AXIS2_CALL
+axis2_op_add_msg_ctx_out_in(axis2_op_t *op,
+                                axis2_env_t **env,
+                                axis2_msg_ctx_t *msg_ctx,
+                                axis2_op_ctx_t *op_ctx)
+{
+    axis2_hash_t *mep = NULL;
+    axis2_msg_ctx_t *in_msg_ctx = NULL;
+    axis2_msg_ctx_t *out_msg_ctx = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, op_ctx, AXIS2_FAILURE);
+    
+    mep = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
+    in_msg_ctx = (axis2_msg_ctx_t *) axis2_hash_get(mep, 
+        AXIS2_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING);
+    out_msg_ctx = (axis2_msg_ctx_t *) axis2_hash_get(mep, 
+        AXIS2_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING);
+    if(NULL != in_msg_ctx && NULL != out_msg_ctx)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
+            AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    if(NULL == out_msg_ctx)
+    {
+        axis2_hash_set(mep, AXIS2_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING,
+            msg_ctx);        
+    }
+    else
+    {
+        axis2_hash_set(mep, AXIS2_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING,
+            msg_ctx);
+        AXIS2_OP_CTX_SET_IS_COMPLETE(op_ctx, env, AXIS2_TRUE);        
     }
     return AXIS2_SUCCESS;
 }

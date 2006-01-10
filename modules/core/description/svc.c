@@ -32,7 +32,7 @@ struct axis2_svc_impl
     /** to keep the time that last update time of the service */
     long last_update;
     axis2_char_t *filename;
-    struct axis2_wsdl_svc *service_impl;
+    /* struct axis2_wsdl_svc *service_impl; */
     /** to store module ref at deploy time parsing */
     axis2_array_list_t *module_list;    
 
@@ -1233,7 +1233,7 @@ axis2_svc_get_op_by_soap_action_and_endpoint(axis2_svc_t *svc,
         
     svc_impl = AXIS2_INTF_TO_IMPL(svc);
     
-    type_1 = axis2_qname_create(env, "op", SOAP_11_OP, NULL);
+    type_1 = axis2_qname_create(env, "op", AXIS2_SOAP_11_OP, NULL);
     binding_ops = AXIS2_WSDL_BINDING_GET_BINDING_OPS(
         AXIS2_WSDL_ENDPOINT_GET_BINDING(axis2_svc_get_endpoint(svc, env, endpoint),
             env), env);

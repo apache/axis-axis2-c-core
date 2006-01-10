@@ -143,7 +143,7 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env, axis2_svc_ctx_t *s
     if (svc_ctx)
         call_impl->svc_ctx = svc_ctx;
     
-    call_impl->base = axis2_mep_client_create(env, svc_ctx, MEP_URI_OUT_IN);
+    call_impl->base = axis2_mep_client_create(env, svc_ctx, AXIS2_MEP_URI_OUT_IN);
     if (!(call_impl->base))
     {
         axis2_call_free(&(call_impl->call), env);
