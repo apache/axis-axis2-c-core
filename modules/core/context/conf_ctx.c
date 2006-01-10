@@ -422,6 +422,12 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_free (struct axis2_conf_ctx *conf_ctx,
         AXIS2_FREE((*env)->allocator, conf_ctx_impl->conf_ctx.ops);
         conf_ctx_impl->conf_ctx.ops = NULL;
     }
+
+    if (conf_ctx_impl->base)
+    {
+        AXIS2_CTX_FREE(conf_ctx_impl->base, env);
+        conf_ctx_impl->base = NULL;
+    }                            
     
     if (conf_ctx_impl->op_ctx_map)
     {
