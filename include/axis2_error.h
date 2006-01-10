@@ -364,7 +364,9 @@ extern "C"
         AXIS2_ERROR_INVALID_MODULE,
         AXIS2_ERROR_MODULE_CREATION_FAILED,
         AXIS2_ERROR_SOAP_ENVELOPE_MUST_HAVE_BODY_ELEMENT,
-        AXIS2_ERROR_INVALID_MODULE_CONF
+        AXIS2_ERROR_INVALID_MODULE_CONF,
+        /* Invalid messge addition , operation context completed */
+        AXIS2_ERROR_INVALID_MESSAGE_ADDITION
     };
 
 /** @} */

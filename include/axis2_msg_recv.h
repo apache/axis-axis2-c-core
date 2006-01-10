@@ -28,6 +28,7 @@
 #include <axis2_msg_ctx.h>
 #include <axis2_op_ctx.h>
 #include <axis2.h>
+#include <axis2_svc_skeleton.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -64,8 +65,7 @@ struct axis2_msg_recv_ops
 
     axis2_status_t (AXIS2_CALL *receive) (axis2_msg_recv_t *msg_recv,
                                             axis2_env_t **env,
-                                            struct axis2_msg_ctx *msg_ctx,
-                                            void* derived);
+                                            struct axis2_msg_ctx *msg_ctx);
     axis2_status_t (AXIS2_CALL *invoke_in_business_logic) (axis2_msg_recv_t *msg_recv,
                                             axis2_env_t **env,
                                             struct axis2_msg_ctx *in_msg_ctx);
@@ -76,6 +76,37 @@ struct axis2_msg_recv_ops
     axis2_status_t (AXIS2_CALL *set_in_only)(axis2_msg_recv_t *msg_recv,
                                                 axis2_env_t **env,
                                                 axis2_bool_t in_only);
+                                            
+    /**
+     * Method makeNewServiceObject
+     *
+     * @param msgContext
+     * @return
+     */
+    axis2_svc_skeleton_t * (AXIS2_CALL *
+    make_new_svc_obj) (void *msg_recv,
+                        axis2_env_t **env,
+                        struct axis2_msg_ctx *msg_ctx);
+    
+    /**
+     * Method getTheImplementationObject
+     *
+     * @param msgContext
+     * @return
+     */
+    axis2_svc_skeleton_t * (AXIS2_CALL *
+    get_impl_obj) (void *msg_recv,
+                    axis2_env_t **env,
+                    struct axis2_msg_ctx *msg_ctx); 
+
+    axis2_status_t (AXIS2_CALL *
+    set_scope) (axis2_msg_recv_t *msg_recv,
+                                axis2_env_t **env,
+                                axis2_char_t *scope);
+    
+    axis2_char_t * (AXIS2_CALL *
+    get_scope) (axis2_msg_recv_t *msg_recv,
+                                axis2_env_t **env);                                      
 };
 
 /** 
@@ -93,10 +124,31 @@ axis2_msg_recv_create (axis2_env_t **env);
 /************************** Start of function macros **************************/
 
 #define AXIS2_MSG_RECV_FREE(msg_recv, env) (msg_recv->ops->free (msg_recv, env))
+
 #define AXIS2_MSG_RECV_RECEIVE(msg_recv, env, msg_ctx, derived) \
 		(msg_recv->ops->receive (msg_recv, env, msg_ctx, derived))
+
 #define AXIS2_MSG_RECV_SET_IN_ONLY(msg_recv, env, in_only) \
 		(msg_recv->ops->set_in_only(msg_recv, env, in_only))
+
+#define AXIS2_MSG_RECV_INVOKE_IN_BUSINESS_LOGIC(msg_recv, env, in_msg_ctx) \
+		(msg_recv->ops->invoke_in_business_logic(msg_recv, env, in_msg_ctx))
+
+#define AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC(msg_recv, env, in_msg_ctx, \
+        out_msg_ctx) (msg_recv->ops->invoke_in_out_business_logic(msg_recv, \
+            env, in_msg_ctx, out_msg_ctx))
+
+#define AXIS2_MSG_RECV_MAKE_NEW_SVC_OBJ(msg_recv, env, msg_ctx) \
+		(msg_recv->ops->make_new_svc_obj(msg_recv, env, msg_ctx))
+
+#define AXIS2_MSG_RECV_GET_IMPL_OBJ(msg_recv, env, msg_ctx) \
+		(msg_recv->ops->get_impl_obj(msg_recv, env, msg_ctx))
+        
+#define AXIS2_MSG_RECV_SET_SCOPE(msg_recv, env, scope) \
+		(msg_recv->ops->set_scope(msg_recv, env, scope))
+
+#define AXIS2_MSG_RECV_GET_SCOPE(msg_recv, env) \
+		(msg_recv->ops->get_scope(msg_recv, env))
 
 
 /************************** End of function macros ****************************/

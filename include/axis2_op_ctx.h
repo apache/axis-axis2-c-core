@@ -160,7 +160,7 @@ axis2_op_ctx_t* AXIS2_CALL axis2_op_ctx_create(axis2_env_t **env,
 #define AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, msg_ctx) ((op_ctx)->ops->add_msg_ctx(op_ctx, env, msg_ctx))
 #define AXIS2_OP_CTX_GET_MSG_CTX(op_ctx, env, message_id) ((op_ctx)->ops->get_msg_ctx(op_ctx, env, message_id))
 #define AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env) ((op_ctx)->ops->get_is_complete(op_ctx, env))
-#define AXIS2_OP_CTX_SET_IS_COMPLETE(op_ctx, env, is_complete) ((op_ctx)->ops->set_is_complete(op_ctx, env, is_complete))
+#define AXIS2_OP_CTX_SET_IS_COMPLETE(op_ctx, env, is_complete) ((op_ctx)->ops->set_complete(op_ctx, env, is_complete))
 #define AXIS2_OP_CTX_CLEANUP(op_ctx, env) ((op_ctx)->ops->cleanup(op_ctx, env))
 #define AXIS2_OP_CTX_SET_PARENT(op_ctx, env, svc_ctx) ((op_ctx)->ops->set_parent(op_ctx, env, svc_ctx))
 #define AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env) ((op_ctx)->ops->get_msg_ctx_map(op_ctx, env))    
