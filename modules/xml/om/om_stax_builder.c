@@ -50,6 +50,10 @@ axis2_status_t  AXIS2_CALL
 axis2_om_stax_builder_set_document(axis2_om_stax_builder_t *builder,
                                     axis2_env_t **env,
                                     axis2_om_document_t *document);                           
+   
+axis2_om_node_t*  AXIS2_CALL
+axis2_om_stax_builder_get_lastnode(axis2_om_stax_builder_t *builder,
+                                   axis2_env_t **env);
                            											
 int AXIS2_CALL
 axis2_om_stax_builder_get_current_event(axis2_om_stax_builder_t *builder,
@@ -136,6 +140,8 @@ axis2_om_stax_builder_create (axis2_env_t **env,
 	        axis2_om_stax_builder_set_document;
 	builder->om_stax_builder.ops->get_current_event =
 	        axis2_om_stax_builder_get_current_event;
+    builder->om_stax_builder.ops->get_last_node = 
+            axis2_om_stax_builder_get_lastnode;	        
 	
     return &(builder->om_stax_builder);
 }
@@ -420,6 +426,7 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
     {
         axis2_om_element_create (env , NULL, temp_localname, NULL, &element_node);
         AXIS2_OM_NODE_SET_DOCUMENT(element_node, env, builder_impl->document);        
+        
         /*
         if (AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(builder_impl->document, env))
              AXIS2_OM_NODE_FREE_TREE(
@@ -781,4 +788,13 @@ axis2_om_stax_builder_get_current_event(axis2_om_stax_builder_t *builder,
 {
     AXIS2_FUNC_PARAM_CHECK(builder, env, -1);
     return AXIS2_INTF_TO_IMPL(builder)->current_event;
-}                                        
+} 
+
+
+axis2_om_node_t*  AXIS2_CALL
+axis2_om_stax_builder_get_lastnode(axis2_om_stax_builder_t *builder,
+                                    axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(builder, env, NULL);
+    return AXIS2_INTF_TO_IMPL(builder)->lastnode;   
+}                                                                           

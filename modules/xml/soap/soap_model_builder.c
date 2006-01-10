@@ -47,6 +47,10 @@
     
     axis2_bool_t processing_mandatory_fault_elements;
     
+    void *builder_helper;
+    
+    int soap_version;
+    
 }axis2_soap_model_builder_impl_t;
 
 /***************** Macro ******************************************************/
@@ -83,3 +87,47 @@ static void identify_soap_version(axis2_char_t* soap_version_uri_from_transport)
 
 static void parse_headers();
 
+/***************** function implementations ***********************************/
+
+AXIS2_DECLARE(axis2_soap_model_builder_t *)
+axis2_soap_model_builder_create(axis2_env_t **env,
+                                axis2_om_stax_builder_t *builder)
+{
+    axis2_soap_model_builder_impl_t *builder_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, builder, NULL);
+    
+    builder_impl = (axis2_soap_model_builder_impl_t*)AXIS2_MALLOC((*env)->allocator, 
+            sizeof(axis2_soap_model_builder_impl_t));
+    if(builder_impl == NULL)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
+    builder_impl->body_present = AXIS2_FALSE;
+    builder_impl->builder_helper = NULL;
+    builder_impl->element_level= 0;
+    builder_impl->header_present = AXIS2_FALSE;
+    builder_impl->om_builder = NULL;
+    builder_impl->processing_detail_elements = AXIS2_FALSE;
+    builder_impl->processing_fault = AXIS2_FALSE;
+    builder_impl->processing_mandatory_fault_elements = AXIS2_FALSE;
+    builder_impl->receiver_fault_code = NULL;
+    builder_impl->sender_fault_code = NULL;
+    builder_impl->soap_builder.ops = NULL;
+    
+    builder_impl->soap_builder.ops = (axis2_soap_model_builder_ops_t*)
+            AXIS2_MALLOC((*env)->allocator, sizeof(axis2_soap_model_builder_ops_t));
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}                                

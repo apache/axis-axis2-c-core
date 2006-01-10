@@ -110,9 +110,10 @@ axis2_stream_unget_char_socket (axis2_stream_t *stream, axis2_env_t **env,
 AXIS2_DECLARE(axis2_stream_t *)
 axis2_stream_create_internal (axis2_env_t **env)
 {
+    axis2_stream_impl_t *stream_impl = NULL;
 	AXIS2_ENV_CHECK(env, NULL);
     	
-	axis2_stream_impl_t *stream_impl = (axis2_stream_impl_t *)AXIS2_MALLOC(
+	stream_impl = (axis2_stream_impl_t *)AXIS2_MALLOC(
 						(*env)->allocator, sizeof(axis2_stream_impl_t));
 	
 	if(NULL == stream_impl)

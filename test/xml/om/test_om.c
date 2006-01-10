@@ -152,7 +152,7 @@ test_om_build (char *filename)
     
     buffer = AXIS2_XML_WRITER_GET_XML(writer, &environment);
     
-    axis2_om_output_free(om_output, &environment);  
+    AXIS2_OM_OUTPUT_FREE(om_output, &environment);  
     if(buffer)
         printf("%s",buffer);
     
@@ -245,7 +245,7 @@ test_om_serialize ()
      AXIS2_OM_NODE_FREE_TREE(node1,&environment);
      output_buffer = AXIS2_XML_WRITER_GET_XML(writer, &environment);
      
-     axis2_om_output_free(om_output, &environment);
+     AXIS2_OM_OUTPUT_FREE(om_output, &environment);
      if(output_buffer)
      {
         printf("%s",output_buffer);
@@ -255,6 +255,7 @@ test_om_serialize ()
 
     return 0;
 }
+
 
 int
 main (int argc, char *argv[])
@@ -266,13 +267,11 @@ main (int argc, char *argv[])
     axis_log = axis2_log_create(allocator, NULL);
     error = axis2_error_create(allocator);
     
-    stream = axis2_stream_create(allocator, NULL);
-    
-    environment = axis2_env_create_with_error_stream_log(allocator, error, stream, axis_log);
+    environment = axis2_env_create_with_error_log(allocator, error,  axis_log);
     test_om_build (file_name);
     test_om_serialize();
     axis2_env_free(environment); 
     return 0;
- }
- 
- 
+}
+
+

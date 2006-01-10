@@ -45,7 +45,7 @@ typedef struct axis2_soap_model_builder_ops  axis2_soap_model_builder_ops_t;
  *   ops Encapsulator struct of axis2_soap_operations 
  */
 
-AXIS2_DECLARE_DATA   struct axis2_soap_body_ops
+AXIS2_DECLARE_DATA   struct axis2_soap_model_builder_ops
 {
         axis2_status_t (AXIS2_CALL *free)(axis2_soap_model_builder_t *builder,
                                           axis2_env_t **env);

@@ -755,7 +755,8 @@ axis2_om_node_build_next(axis2_om_node_t *om_node,
     if(!builder)
         return NULL;
     if(om_node_impl->builder_type = AXIS2_OM_STAX_BUILDER)        
-        return AXIS2_OM_STAX_BUILDER_NEXT((axis2_om_stax_builder_t*)builder, env);
+        return AXIS2_OM_DOCUMENT_BUILD_NEXT(om_node_impl->om_doc, env);
+    return NULL;        
 }
 
 axis2_status_t AXIS2_CALL
