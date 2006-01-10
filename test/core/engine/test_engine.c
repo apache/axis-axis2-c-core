@@ -5,7 +5,7 @@
 
 int	axis2_test_engine_send()
 {
-	axis2_status_t *status = NULL;
+	axis2_status_t status = AXIS2_FAILURE;
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 	axis2_env_t *env = axis2_env_create (allocator);
 	struct axis2_msg *msg = NULL;
@@ -22,17 +22,20 @@ int	axis2_test_engine_send()
 
 	axis2_engine_t *engine = axis2_engine_create(&env, conf_ctx);
 
-    axis2_engine_send(engine, &env, msg_ctx);
+    status = AXIS2_ENGINE_SEND(engine, &env, msg_ctx);
 	if(status != AXIS2_SUCCESS )
 	{
-	    printf("ERROR\n");
+	    printf("ERROR %d\n", status);
 	    return -1;
 	}
+    else
+        printf("SUCCESS\n");
+    return 0;
 }
 
 int	axis2_test_engine_receive()
 {
-	axis2_status_t *status = NULL;
+	axis2_status_t status = AXIS2_FAILURE;
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 	axis2_env_t *env = axis2_env_create (allocator);
 	struct axis2_msg *msg = NULL;
@@ -49,12 +52,15 @@ int	axis2_test_engine_receive()
 
 	axis2_engine_t *engine = axis2_engine_create(&env, conf_ctx);
 
-    axis2_engine_receive(engine, &env, msg_ctx);
+    status = AXIS2_ENGINE_RECEIVE(engine, &env, msg_ctx);
 	if(status != AXIS2_SUCCESS )
 	{
-	    printf("ERROR\n");
+	    printf("ERROR %d\n", status);
 	    return -1;
 	}
+    else
+        printf("SUCCESS\n");
+    return 0;
 }
 int main()
 {
