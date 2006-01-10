@@ -73,13 +73,16 @@ void test_http_header(axis2_env_t *env)
     char *header_name = "Content-Type";
     char *header_value = "text/xml";
     axis2_http_header_t *http_header;
+    axis2_char_t *external_form = NULL;
 
     printf("Starting http_header tests\n");
     http_header = axis2_http_header_create(&env, header_name, header_value);
+    external_form = AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(http_header, &env);
     printf("Heder Name :%s|Header Value:%s|External Form:%s\n",
             AXIS2_HTTP_HEADER_GET_NAME(http_header, &env),
             AXIS2_HTTP_HEADER_GET_VALUE(http_header, &env),
-            AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(http_header, &env));
+            external_form);
+    AXIS2_FREE(env->allocator, external_form);
     AXIS2_HTTP_HEADER_FREE(http_header, &env);
     printf("Finished http_header tests ..........\n\n");
 }
@@ -98,6 +101,7 @@ void test_url(axis2_env_t *env)
                         AXIS2_URL_GET_PROTOCOL(url, &env), AXIS2_URL_GET_SERVER(url, &env),
                         AXIS2_URL_GET_PORT(url, &env), AXIS2_URL_GET_PATH(url, &env));
     printf("End of URL Test ... \n");
+    AXIS2_URL_FREE(url, &env);
 }
 
 void test_http_client(axis2_env_t *env)
