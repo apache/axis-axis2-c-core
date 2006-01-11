@@ -115,6 +115,8 @@ typedef struct axis2_libxml2_reader_wrapper_impl_t
 	int current_attribute_count;
     int current_namespace_count;
 	int event_map[18];
+	
+	void* ctx;
     /* assuming that max ns and attri will be 20 */
     
     int namespace_map[AXIS2_ATTR_NS_MAX];
@@ -278,7 +280,8 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
 
 AXIS2_DECLARE(axis2_xml_reader_t *)
 axis2_xml_reader_create_for_memory(axis2_env_t **env,
-                                    int (*read_input_callback)(char *buffer,int size),
+                                    int (*read_input_callback)(char *buffer,int size,void *ctx),
+                                    void* ctx,
                                     const axis2_char_t *encoding)
 {
     
@@ -294,7 +297,7 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
     }
     
     wrapper_impl->read_input_callback = read_input_callback;
-    
+    wrapper_impl->ctx = ctx;
     wrapper_impl->reader =  xmlReaderForIO(axis2_libxml2_reader_wrapper_read_input_callback,
              NULL, wrapper_impl, NULL, encoding, XML_PARSE_RECOVER);
     
@@ -740,5 +743,6 @@ axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser
 
 static int axis2_libxml2_reader_wrapper_read_input_callback(void *ctx,char *buffer,int size)
 {
- return  ((axis2_libxml2_reader_wrapper_impl_t*)ctx)->read_input_callback(buffer, size);
+ return  ((axis2_libxml2_reader_wrapper_impl_t*)ctx)->read_input_callback(
+        buffer, size,((axis2_libxml2_reader_wrapper_impl_t*)ctx)->ctx);
 }

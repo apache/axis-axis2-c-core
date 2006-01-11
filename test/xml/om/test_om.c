@@ -40,7 +40,7 @@ FILE *f = NULL;
 /** a method that demonstrate creating a om model using an xml file */
 
 
-int read_input(char *buffer,int size)
+int read_input(char *buffer,int size,void* ctx)
 {
    return fread(buffer, sizeof(char),size,f);
 }
@@ -63,7 +63,7 @@ test_om_build (char *filename)
         return -1;
       
     /** create pull parser */
-     reader = axis2_xml_reader_create_for_memory(&environment, read_input, NULL);
+     reader = axis2_xml_reader_create_for_memory(&environment, read_input, NULL, NULL);
     
     if(!reader)
     {

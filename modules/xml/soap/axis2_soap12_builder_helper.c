@@ -52,7 +52,7 @@ typedef struct axis2_soap12_builder_helper_impl_t
 
 /******************** Macro ***************************************************/
 
-#define AXIS2_INFT_TO_IMPL(builder_helper) ((axis2_soap12_builder_helper_impl_t*)builder_helper)
+#define AXIS2_INTF_TO_IMPL(builder_helper) ((axis2_soap12_builder_helper_impl_t*)builder_helper)
 
 /******************** function prototypes *************************************/
 
@@ -119,7 +119,7 @@ axis2_soap12_builder_helper_free(axis2_soap12_builder_helper_t *builder_helper,
 {
     axis2_soap12_builder_helper_impl_t *builder_helper_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(builder_helper, env, AXIS2_FAILURE);
-    builder_helper_impl = AXIS2_INFT_TO_IMPL(builder_helper);
+    builder_helper_impl = AXIS2_INTF_TO_IMPL(builder_helper);
 
     if(builder_helper_impl->detail_element_names)
     {
@@ -145,7 +145,7 @@ axis2_soap12_builder_helper_handle_event(axis2_soap12_builder_helper_t *builder_
 {
     axis2_soap12_builder_helper_impl_t *builder_helper_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(builder_helper, env, NULL);
-    builder_helper_impl = AXIS2_INFT_TO_IMPL(builder_helper);
+    builder_helper_impl = AXIS2_INTF_TO_IMPL(builder_helper);
 
 
     return NULL;

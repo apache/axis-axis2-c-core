@@ -149,6 +149,14 @@ axis2_soap_header_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_soap_header_t *)
 axis2_soap_header_create_with_parent(axis2_env_t **env,
                                      struct axis2_soap_envelope *envelope);
+                                     
+AXIS2_DECLARE(axis2_soap_header_t *)
+axis2_soap11_header_create_with_parent(axis2_env_t **env,
+                                     axis2_soap_envelope_t *envelope);
+                                     
+AXIS2_DECLARE(axis2_soap_header_t *)
+axis2_soap12_header_create_with_parent(axis2_env_t **env,
+                                     axis2_soap_envelope_t *envelope);                                                                          
                             
 /******************** Macros **************************************************/
     

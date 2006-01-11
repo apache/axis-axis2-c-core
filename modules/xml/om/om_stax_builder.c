@@ -23,9 +23,6 @@
 #include <axis2_xml_writer.h>
 #include <axis2_om_doctype.h>
 
-
-
-
 /**************************** function prototypes *****************************/
 
 axis2_om_node_t * AXIS2_CALL 

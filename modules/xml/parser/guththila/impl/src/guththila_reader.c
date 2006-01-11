@@ -63,7 +63,7 @@ guththila_reader_create_for_file (guththila_environment_t * environment,
 GUTHTHILA_DECLARE(guththila_reader_t *)
 guththila_reader_create_for_memory(
                 guththila_environment_t *environment,
-                int (*input_read_callback)(char *buffer,int size))
+                int (*input_read_callback)(char *buffer,int size,void* ctx),void* ctx)
 {
     guththila_reader_impl_t *memory_reader = 
         (guththila_reader_impl_t *) GUTHTHILA_MALLOC (environment->allocator,

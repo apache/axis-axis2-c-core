@@ -37,7 +37,7 @@
  
  /********************* Macro *************************************************/
 
-#define AXIS2_INFT_TO_IMPL(builder_helper) \
+#define AXIS2_INTF_TO_IMPL(builder_helper) \
         ((axis2_soap11_builder_helper_impl_t*)builder_helper)
 
 /********************* function implementations *******************************/
@@ -98,7 +98,7 @@ axis2_soap11_builder_helper_free(axis2_soap11_builder_helper_t *builder_helper,
 {
     axis2_soap11_builder_helper_impl_t *builder_helper_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(builder_helper, env, AXIS2_FAILURE);
-    builder_helper_impl = AXIS2_INFT_TO_IMPL(builder_helper);
+    builder_helper_impl = AXIS2_INTF_TO_IMPL(builder_helper);
 
    
     if(builder_helper_impl->builder_helper.ops)
@@ -122,7 +122,7 @@ axis2_soap11_builder_helper_handle_event(axis2_soap11_builder_helper_t *builder_
     AXIS2_FUNC_PARAM_CHECK(builder_helper, env, NULL);\
     AXIS2_PARAM_CHECK((*env)->error, om_builder, NULL);
     AXIS2_PARAM_CHECK((*env)->error, element_level, NULL);
-    builder_helper_impl = AXIS2_INFT_TO_IMPL(builder_helper);
+    builder_helper_impl = AXIS2_INTF_TO_IMPL(builder_helper);
     
     
     

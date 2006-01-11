@@ -248,7 +248,8 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
 
 AXIS2_DECLARE(axis2_xml_reader_t *)
 axis2_xml_reader_create_for_memory(axis2_env_t **env,
-                                    int (*read_input_callback)(char *buffer,int size),
+                                    int (*read_input_callback)(char *buffer,int size,void* ctx),
+                                    void *ctx,
                                     const char *encoding)
 {
     guththila_xml_reader_wrapper_impl_t *guththila_impl = NULL;
@@ -272,7 +273,7 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
     
     /*-------difference of two create function is here--------*/
     guththila_impl->reader = 
-        guththila_reader_create_for_memory(guththila_env,read_input_callback); 
+        guththila_reader_create_for_memory(guththila_env,read_input_callback,ctx); 
                                                    
     if(!(guththila_impl->reader))
     {

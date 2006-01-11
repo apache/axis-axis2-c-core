@@ -47,7 +47,7 @@ guththila_reader_create_for_file (guththila_environment_t * environment,
 GUTHTHILA_DECLARE(guththila_reader_t *)
 guththila_reader_create_for_memory(guththila_environment_t *environment,
                                    int (*input_read_callback)
-                                       (char *buffer,int size));
+                                       (char *buffer,int size,void* ctx),void *ctx);
                                    
 GUTHTHILA_DECLARE (int)
 guththila_reader_read (guththila_environment_t * environment,
