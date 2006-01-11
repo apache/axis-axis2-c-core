@@ -186,8 +186,6 @@ module.include.files=\
 	include/axis2_om_children_qname_iterator.h\
 	include/axis2_om_children_with_specific_attribute_iterator.h\
 	include/axis2_class_loader.h\
-	include/platforms/axis2_platform_auto_sense.h\
-	include/platforms/unix/axis2_unix.h\
 	include/axis2_dll_desc.h\
 	include/axis2_svc_skeleton.h\
 	include/axis2_dep_engine.h\
@@ -195,8 +193,48 @@ module.include.files=\
 	include/axis2_arch_reader.h\
 	include/axis2_ws_info.h\
 	include/axis2_ws_info_list.h\
-	modules/util/axis2_dir_handler.h\
-	test/unit/util/util_dir_handler_test.h
+	test/unit/util/util_dir_handler_test.h\
+	include/axis2_dir_handler.h\
+	include/axis2_file_handler.h\
+	modules/platforms/unix/axis2_unix.h\
+	modules/platforms/axis2_platform_auto_sense.h\
+	include/axis2_conf_builder.h\
+	include/axis2_module_builder.h\
+	include/axis2_svc_builder.h\
+	include/axis2_svc_grp_builder.h\
+	include/axis2_repos_listener.h\
+	include/axis2_async_result.h\
+	include/axis2_call.h\
+	include/axis2_callback.h\
+	include/axis2_http_client.h\
+	include/axis2_http_out_transport_info.h\
+	include/axis2_http_transport_sender.h\
+	include/axis2_mep_client.h\
+	include/axis2_module.h\
+	include/axis2_msg_sender.h\
+	include/axis2_network_handler.h\
+	include/axis2_soap.h\
+	include/axis2_soap_body.h\
+	include/axis2_soap_envelope.h\
+	include/axis2_soap_fault.h\
+	include/axis2_soap_fault_code.h\
+	include/axis2_soap_fault_detail.h\
+	include/axis2_soap_fault_node.h\
+	include/axis2_soap_fault_reason.h\
+	include/axis2_soap_fault_role.h\
+	include/axis2_soap_fault_sub_code.h\
+	include/axis2_soap_fault_text.h\
+	include/axis2_soap_fault_value.h\
+	include/axis2_soap_header.h\
+	include/axis2_soap_header_block.h\
+	include/axis2_soap_message.h\
+	include/axis2_soap_model_builder.h\
+	include/axis2_soap_over_http_sender.h\
+	include/axis2_soap_utils.h\
+	include/axis2_url.h\
+	include/axis2_raw_xml_in_out_msg_recv.h\
+	modules/util/axis2_utils.h\
+	include/axis2_engine.h
 
 module.source.name=.
 module.source.type=
@@ -332,7 +370,23 @@ module.source.files=\
 	modules/core/deployment/ws_info.c\
 	modules/core/deployment/ws_info_list.c\
 	modules/util/dir_handler.c\
-	test/unit/util/util_dir_handler_test.c
+	test/unit/util/util_dir_handler_test.c\
+	modules/util/file_handler.c\
+	modules/core/deployment/conf_builder.c\
+	modules/core/deployment/module_builder.c\
+	modules/core/deployment/svc_builder.c\
+	modules/core/deployment/svc_grp_builder.c\
+	modules/core/clientapi/async_result.c\
+	modules/core/clientapi/call.c\
+	modules/core/clientapi/callback.c\
+	modules/core/clientapi/callback_recv.c\
+	modules/core/clientapi/callback_recv.h\
+	modules/core/clientapi/listener_manager.c\
+	modules/core/clientapi/listener_manager.h\
+	modules/core/clientapi/mep_client.c\
+	modules/core/clientapi/msg_sender.c\
+	modules/core/receivers/axis2_raw_xml_in_out_msg_recv.c\
+	modules/util/utils.c
 
 module.pixmap.name=.
 module.pixmap.type=
