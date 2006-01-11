@@ -145,6 +145,7 @@ void test_array_list(axis2_env_t *env)
     
     
     al = axis2_array_list_create (&env, 1);
+    printf("list size %d\n", AXIS2_ARRAY_LIST_SIZE (al, &env));
     
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
     entry->value = AXIS2_STRDUP("value1", &env);
@@ -180,6 +181,8 @@ void test_array_list(axis2_env_t *env)
     
     entry = (a *) AXIS2_ARRAY_LIST_GET (al, &env, 2);
     printf("entry->value:%s\n", entry->value);
+    int size = AXIS2_ARRAY_LIST_SIZE (al, &env);
+    printf("list size %d\n", AXIS2_ARRAY_LIST_SIZE (al, &env));
     
 }
 

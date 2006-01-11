@@ -153,6 +153,7 @@ axis2_status_t AXIS2_CALL axis2_array_list_ensure_capacity(struct axis2_array_li
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
+        array_list_impl->capacity = new_capacity;
     }
     return AXIS2_SUCCESS;
 }

@@ -16,6 +16,8 @@ void axis2_test_conf_ctx_init()
 	struct axis2_op_ctx *op_ctx = NULL;
 	struct axis2_op *op = NULL;
 	struct axis2_hash_t *op_ctx_map = NULL;
+	axis2_hash_t *svc_ctx_map = NULL;
+	axis2_hash_t *svc_grp_ctx_map = NULL;
 
 	axis2_status_t status = AXIS2_FAILURE;
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
@@ -23,8 +25,6 @@ void axis2_test_conf_ctx_init()
 
 	conf = axis2_conf_create(&env);
 
-/*	axis2_hash_t *svc_ctx_map;
-	axis2_hash_t *svc_grp_ctx_map;*/
 	
 	op = axis2_op_create(&env);
 
@@ -40,6 +40,12 @@ void axis2_test_conf_ctx_init()
 	op = axis2_op_create(&env);
 	op_ctx = axis2_op_ctx_create(&env, op, svc_ctx);
 	op_ctx_map = AXIS2_CONF_CTX_GET_OP_CTX_MAP(conf_ctx, &env);
+
+    if (op_ctx_map)
+    {
+        axis2_hash_set(op_ctx_map, "op_ctx1", AXIS2_HASH_KEY_STRING, op_ctx);
+        axis2_hash_set(op_ctx_map, "op_ctx2", AXIS2_HASH_KEY_STRING, op_ctx);
+    }
 	/*op_ctx_map  = AXIS2_CONF_CTX_GET_OP_CTX_MAP(conf_ctx, &env);
 	svc_ctx_map = AXIS2_CONF_CTX_GET_SVC_CTX_MAP(conf_ctx, &env);
 	svc_grp_ctx_map = AXIS2_CONF_CTX_GET_SVC_GRP_CTX_MAP(conf_ctx, &env);*/
