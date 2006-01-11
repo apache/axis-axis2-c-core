@@ -12,6 +12,7 @@ void Testaxis2_svc_add_module_ops(CuTest *tc)
     axis2_status_t expected = AXIS2_FAILURE;
     axis2_status_t actual = AXIS2_FAILURE;
     struct axis2_flow *inflow = NULL;
+    axis2_qname_t *svc_qname = NULL;
          
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);    
@@ -21,7 +22,8 @@ void Testaxis2_svc_add_module_ops(CuTest *tc)
       
     inflow = axis2_flow_create(&env);
     add_handlers_to_flow(inflow, &env);
-    svc = axis2_svc_create(&env);
+    svc_qname = axis2_qname_create(&env, "service name", NULL, NULL);
+    svc = axis2_svc_create_with_qname(&env, svc_qname);
     AXIS2_SVC_SET_INFLOW(svc, &env, inflow);
     actual = AXIS2_SVC_ADD_MODULE_OPS(svc, &env, module_desc, conf);
     
@@ -118,4 +120,29 @@ axis2_array_list_t *get_svc_op_in_phases(axis2_env_t **env)
     AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);
     
     return op_in_phases;
+}
+
+    
+void Testaxis2_svc_create_with_qname(CuTest *tc)
+{
+    axis2_qname_t *qname = NULL;
+    axis2_qname_t *qactual = NULL;
+    axis2_svc_t *svc = NULL;
+    axis2_char_t *expected = NULL;
+    axis2_char_t *actual = NULL;
+    
+    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+    axis2_env_t *env = axis2_env_create (allocator);
+    
+    expected = AXIS2_STRDUP("service name", &env);
+    qname = axis2_qname_create(&env, "service name", NULL, NULL);
+    svc = axis2_svc_create_with_qname(&env, qname);
+    qactual = AXIS2_SVC_GET_QNAME(svc, &env);
+    actual = AXIS2_QNAME_GET_LOCALPART(qactual, &env);
+    
+    CuAssertStrEquals(tc, expected, actual);
+    
+    AXIS2_FREE((env)->allocator, expected);
+    AXIS2_QNAME_FREE(qname, &env);
+    AXIS2_SVC_FREE(svc, &env);
 }

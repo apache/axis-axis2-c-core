@@ -25,5 +25,6 @@ struct axis2_flow;
 struct axis2_phase;
 
 void Testaxis2_svc_add_module_ops(CuTest *tc);
+void Testaxis2_svc_create_with_qname(CuTest *tc);
 
 #endif /* TEST_SVC_H*/
