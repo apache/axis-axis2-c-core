@@ -284,9 +284,6 @@ axis2_http_client_recieve_header(axis2_http_client_t *client, axis2_env_t **env)
 		if(0 != strstr(str_status_line, AXIS2_HTTP_CRLF))
 		{
 			end_of_line = AXIS2_TRUE;
-		}
-		if(AXIS2_TRUE == end_of_line)
-		{
 			break;
 		}
 	}
@@ -319,9 +316,6 @@ axis2_http_client_recieve_header(axis2_http_client_t *client, axis2_env_t **env)
 			if(0 != strstr(str_header, AXIS2_HTTP_CRLF))
 			{
 				end_of_line = AXIS2_TRUE;
-			}
-			if(AXIS2_TRUE == end_of_line)
-			{
 				break;
 			}
 		}
