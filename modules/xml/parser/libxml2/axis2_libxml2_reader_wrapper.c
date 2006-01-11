@@ -97,6 +97,10 @@ axis2_status_t AXIS2_CALL
 axis2_libxml2_reader_wrapper_xml_free(axis2_xml_reader_t *parser,
                                axis2_env_t **env,
                                void *data);
+                               
+axis2_char_t* AXIS2_CALL
+axis2_libxml2_reader_get_char_set_encoding(axis2_xml_reader_t *parser,
+                                           axis2_env_t **env);                               
 
 axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser,
                                             axis2_env_t **env);
@@ -269,7 +273,9 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
         axis2_libxml2_reader_wrapper_get_pi_data;
         
     wrapper_impl->parser.ops->get_dtd =
-        axis2_libxml2_reader_wrapper_get_dtd;    
+        axis2_libxml2_reader_wrapper_get_dtd;
+    wrapper_impl->parser.ops->get_char_set_encoding =
+        axis2_libxml2_reader_get_char_set_encoding;            
 	return &(wrapper_impl->parser);
 }
 
@@ -363,7 +369,10 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
         axis2_libxml2_reader_wrapper_get_pi_data;
         
     wrapper_impl->parser.ops->get_dtd =
-        axis2_libxml2_reader_wrapper_get_dtd;    
+        axis2_libxml2_reader_wrapper_get_dtd;
+        
+    wrapper_impl->parser.ops->get_char_set_encoding =
+        axis2_libxml2_reader_get_char_set_encoding;            
 	return &(wrapper_impl->parser);
 }
 
@@ -687,6 +696,15 @@ axis2_libxml2_reader_wrapper_xml_free(axis2_xml_reader_t *parser,
     return AXIS2_SUCCESS;
  }
 
+axis2_char_t* AXIS2_CALL
+axis2_libxml2_reader_get_char_set_encoding(axis2_xml_reader_t *parser,
+                                           axis2_env_t **env)
+{
+    axis2_libxml2_reader_wrapper_impl_t *reader_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(parser, env, NULL);
+    reader_impl = AXIS2_INTF_TO_IMPL(parser);
+    return xmlTextReaderConstEncoding(reader_impl->reader);
+}                                           
 
 axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser,
                                             axis2_env_t **env)

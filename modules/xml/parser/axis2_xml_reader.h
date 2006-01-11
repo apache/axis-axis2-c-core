@@ -254,7 +254,11 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          */         
         axis2_status_t (AXIS2_CALL *xml_free)(axis2_xml_reader_t *parser,
                                    axis2_env_t **env,
-                                   void *data);                                                
+                                   void *data);
+                                   
+        axis2_char_t* (AXIS2_CALL *get_char_set_encoding)
+                                             (axis2_xml_reader_t *parser,
+                                              axis2_env_t **env);                                                                                   
     };
      
 /** 

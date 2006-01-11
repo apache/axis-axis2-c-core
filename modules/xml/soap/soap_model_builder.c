@@ -296,7 +296,7 @@ axis2_soap_model_builder_create_om_element
     builder_impl->element_level++;
     if(builder_impl->last_node_status == AXIS2_BUILDER_LAST_NODE_NULL)
     {
-        axis2_soap_model_builder_construct_node(builder, env, NULL, current_node, TRUE);
+        axis2_soap_model_builder_construct_node(builder, env, NULL, current_node, AXIS2_TRUE);
          
     }else if(builder_impl->last_node_status == AXIS2_BUILDER_LAST_NODE_DONE_TRUE)
     {
@@ -419,7 +419,7 @@ axis2_soap_model_builder_construct_node(axis2_soap_model_builder_t *builder,
             AXIS2_SOAP_FAULT_SET_SOAP_VERSION(soap_fault, env, builder_impl->soap_version);
             AXIS2_SOAP_BODY_ADD_FAULT(soap_body, env, soap_fault);                    
                                 
-            builder_impl->processing_fault = TRUE;
+            builder_impl->processing_fault = AXIS2_TRUE;
             builder_impl->processing_mandatory_fault_elements = AXIS2_TRUE; 
             
             if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, 
