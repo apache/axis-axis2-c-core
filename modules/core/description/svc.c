@@ -706,7 +706,7 @@ axis2_svc_set_qname (axis2_svc_t *svc,
 	AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_SVC_SET_NAME(svc->wsdl_svc, env, qname);
+    return AXIS2_WSDL_SVC_SET_QNAME(svc->wsdl_svc, env, qname);
 }
 
 axis2_qname_t * AXIS2_CALL
@@ -714,7 +714,7 @@ axis2_svc_get_qname (const axis2_svc_t *svc,
                     axis2_env_t **env)
 {
 	AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
-    return AXIS2_WSDL_SVC_GET_NAME(svc->wsdl_svc, env);
+    return AXIS2_WSDL_SVC_GET_QNAME(svc->wsdl_svc, env);
 }
 
 axis2_status_t AXIS2_CALL

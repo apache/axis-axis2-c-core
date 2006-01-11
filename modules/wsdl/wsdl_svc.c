@@ -50,11 +50,11 @@ axis2_wsdl_svc_free(axis2_wsdl_svc_t *wsdl_svc,
                     axis2_env_t **env);
 
 axis2_qname_t * AXIS2_CALL 
-axis2_wsdl_svc_get_name(axis2_wsdl_svc_t *wsdl_svc, 
+axis2_wsdl_svc_get_qname(axis2_wsdl_svc_t *wsdl_svc, 
                     axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_wsdl_svc_set_name(axis2_wsdl_svc_t *wsdl_svc, 
+axis2_wsdl_svc_set_qname(axis2_wsdl_svc_t *wsdl_svc, 
                     axis2_env_t **env, 
                     axis2_qname_t *qname);
 
@@ -140,8 +140,8 @@ axis2_wsdl_svc_create (axis2_env_t **env)
 	}
     
 	wsdl_svc_impl->wsdl_svc.ops->free = axis2_wsdl_svc_free;
-    wsdl_svc_impl->wsdl_svc.ops->get_name = axis2_wsdl_svc_get_name;
-    wsdl_svc_impl->wsdl_svc.ops->set_name = axis2_wsdl_svc_set_name;
+    wsdl_svc_impl->wsdl_svc.ops->get_qname = axis2_wsdl_svc_get_qname;
+    wsdl_svc_impl->wsdl_svc.ops->set_qname = axis2_wsdl_svc_set_qname;
     wsdl_svc_impl->wsdl_svc.ops->get_endpoints = axis2_wsdl_svc_get_endpoints; 
     wsdl_svc_impl->wsdl_svc.ops->set_endpoints = axis2_wsdl_svc_set_endpoints;
     wsdl_svc_impl->wsdl_svc.ops->set_endpoint = axis2_wsdl_svc_set_endpoint;
@@ -211,7 +211,7 @@ axis2_wsdl_svc_free (axis2_wsdl_svc_t *wsdl_svc,
 }
 
 axis2_qname_t * AXIS2_CALL 
-axis2_wsdl_svc_get_name(axis2_wsdl_svc_t *wsdl_svc, 
+axis2_wsdl_svc_get_qname(axis2_wsdl_svc_t *wsdl_svc, 
                     axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, NULL);
@@ -219,7 +219,7 @@ axis2_wsdl_svc_get_name(axis2_wsdl_svc_t *wsdl_svc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_wsdl_svc_set_name(axis2_wsdl_svc_t *wsdl_svc, 
+axis2_wsdl_svc_set_qname(axis2_wsdl_svc_t *wsdl_svc, 
                     axis2_env_t **env, 
                     axis2_qname_t *qname) 
 {

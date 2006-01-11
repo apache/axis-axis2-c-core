@@ -69,14 +69,14 @@ struct axis2_wsdl_svc_ops
      * Get wsdl service name
      * @return wsdl service name
      */
-    axis2_qname_t * (AXIS2_CALL *get_name)(axis2_wsdl_svc_t *wsdl_svc,
+    axis2_qname_t * (AXIS2_CALL *get_qname)(axis2_wsdl_svc_t *wsdl_svc,
                                             axis2_env_t **env);
 
     /**
      * Set wsdl serivce name
      * @param set wsdl service name
      */
-    axis2_status_t (AXIS2_CALL *set_name) (axis2_wsdl_svc_t *wsdl_svc,
+    axis2_status_t (AXIS2_CALL *set_qname) (axis2_wsdl_svc_t *wsdl_svc,
                                             axis2_env_t **env,
                                             axis2_qname_t *qname);
     
@@ -172,11 +172,11 @@ axis2_wsdl_svc_create (axis2_env_t **env);
 #define AXIS2_WSDL_SVC_FREE(wsdl_svc, env) ((wsdl_svc)->ops->free (wsdl_svc, \
 		env))
 
-#define AXIS2_WSDL_SVC_GET_NAME(wsdl_svc, env) \
-        ((wsdl_svc)->ops->get_name (wsdl_svc, env))
+#define AXIS2_WSDL_SVC_GET_QNAME(wsdl_svc, env) \
+        ((wsdl_svc)->ops->get_qname (wsdl_svc, env))
 
-#define AXIS2_WSDL_SVC_SET_NAME(wsdl_svc, env, qname) \
-        ((wsdl_svc)->ops->set_name (wsdl_svc, env, qname))
+#define AXIS2_WSDL_SVC_SET_QNAME(wsdl_svc, env, qname) \
+        ((wsdl_svc)->ops->set_qname (wsdl_svc, env, qname))
 
 #define AXIS2_WSDL_SVC_GET_ENDPOINTS(wsdl_svc, env) \
         ((wsdl_svc)->ops->get_endpoints(wsdl_svc, env))
