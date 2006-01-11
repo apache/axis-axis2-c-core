@@ -44,11 +44,21 @@ int	axis2_test_engine_send()
     status = AXIS2_ENGINE_SEND(engine, &env, msg_ctx);
 	if(status != AXIS2_SUCCESS )
 	{
-	    printf("ERROR %d\n", status);
-	    return -1;
+	    printf("axis2_test_engine_send ERROR %d\n", status);
 	}
     else
-        printf("SUCCESS\n");
+        printf("axis2_test_engine_send SUCCESS\n");
+
+    AXIS2_CONF_CTX_FREE(conf_ctx, &env);
+    AXIS2_CONF_FREE(conf, &env);
+    AXIS2_MSG_CTX_FREE(msg_ctx, &env);
+    AXIS2_QNAME_FREE(qname, &env);
+    AXIS2_SVC_GRP_CTX_FREE(svc_grp_ctx, &env);
+    AXIS2_SVC_CTX_FREE(svc_ctx, &env);
+    AXIS2_SVC_FREE(svc, &env);
+    AXIS2_OP_CTX_FREE(op_ctx, &env);
+    AXIS2_OP_FREE(op, &env);
+    AXIS2_ENGINE_FREE(engine, &env);
     return 0;
 }
 
@@ -71,11 +81,14 @@ int	axis2_test_engine_receive()
     status = AXIS2_ENGINE_RECEIVE(engine, &env, msg_ctx);
 	if(status != AXIS2_SUCCESS )
 	{
-	    printf("ERROR %d\n", status);
-	    return -1;
+	    printf("axis2_test_engine_receive ERROR %d\n", status);
 	}
     else
-        printf("SUCCESS\n");
+        printf("axis2_test_engine_receive SUCCESS\n");
+    AXIS2_CONF_CTX_FREE(conf_ctx, &env);
+    AXIS2_CONF_FREE(conf, &env);
+    AXIS2_MSG_CTX_FREE(msg_ctx, &env);
+    AXIS2_ENGINE_FREE(engine, &env);
     return 0;
 }
 int main()
