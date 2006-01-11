@@ -14,8 +14,6 @@
  * limitations under the License.
  */
  
- /** <wsa:RelatesTo RelationshipType="..."?>xs:anyURI</wsa:RelatesTo> */
-
 #include <axis2_any_content_type.h>
 #include <axis2_string.h>
 
