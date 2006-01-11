@@ -9,13 +9,13 @@ struct axis2_module_desc *create_module_desc(axis2_env_t **env);
 
 int axis2_test_op_engage_module()
 {
-	struct axis2_op *op = axis2_op_create(&env);
     struct axis2_module_desc *moduleref= NULL;
 
 	axis2_status_t status = AXIS2_FAILURE;
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 	axis2_env_t *env = axis2_env_create (allocator);
 
+	struct axis2_op *op = axis2_op_create(&env);
     moduleref = axis2_module_desc_create(&env);
 
     status = AXIS2_OP_ENGAGE_MODULE(op, &env, moduleref);
