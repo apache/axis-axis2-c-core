@@ -73,11 +73,13 @@ extern "C"
          * @param namespaceURI
          * @param name
          */
-        struct axis2_soap_header_block* (AXIS2_CALL *add_header)
+         /*
+        struct axis2* (AXIS2_CALL *add_header)
                                             (axis2_soap_envelope_t *envelope,
                                              axis2_env_t **env,
                                              axis2_char_t *namespace_uri, 
                                              axis2_char_t *name);
+        */                                             
         /**
          * Returns the <CODE>SOAPBody</CODE> object associated with this
          * <CODE>SOAPEnvelope</CODE> object. <P> This SOAPBody will just be a
@@ -157,12 +159,12 @@ axis2_soap_envelope_create_null(axis2_env_t **env);
                            
 /******************** Macros **************************************************/
 
-#define AXIS2_SOAP_ENVELOPE_GET_HEADDER(envelope, env) \
+#define AXIS2_SOAP_ENVELOPE_GET_HEADER(envelope, env) \
         ((envelope)->ops->get_header(envelope, env))
-        
+/*        
 #define AXIS2_SOAP_ENVELOPE_ADD_HEADER(envelope, env, namespace_uri, name) \
         ((envelope)->ops->add_header(envelope, env, namespace_uri, name))
-        
+*/        
 #define AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env) \
         ((envelope)->ops->get_body(envelope, env))
         

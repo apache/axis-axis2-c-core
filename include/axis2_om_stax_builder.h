@@ -118,6 +118,10 @@ extern "C"
         axis2_om_node_t* (AXIS2_CALL *get_last_node)
                                             (struct axis2_om_stax_builder* builder,
                                              axis2_env_t **env);
+                                             
+        axis2_bool_t (AXIS2_CALL *is_complete)(struct axis2_om_stax_builder* builder,
+                                               axis2_env_t **env);
+                                                                                            
                                                                                                                                                           
                                                            
     } axis2_om_stax_builder_ops_t;
@@ -163,7 +167,10 @@ extern "C"
         ((builder)->ops->get_current_event(builder, env))
         
 #define AXIS2_OM_STAX_BUILDER_GET_LAST_NODE(builder, env) \
-        ((builder)->ops->get_last_node(builder, env))                
+        ((builder)->ops->get_last_node(builder, env)) 
+        
+#define AXIS2_OM_STAX_BUILDER_IS_COMPLETE(builder, env) \
+        ((builder)->ops->is_complete(builder, env))                       
 	
 /** @} */
 

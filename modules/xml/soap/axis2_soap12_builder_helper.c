@@ -64,7 +64,8 @@ axis2_om_node_t* AXIS2_CALL
 axis2_soap12_builder_helper_handle_event
                             (axis2_soap12_builder_helper_t *builder_helper,
                              axis2_env_t **env,
-                             axis2_om_stax_builder_t *om_builder,
+                             axis2_soap_model_builder_t *soap_builder,
+                             axis2_om_node_t *om_element_node,
                              int element_level);
                              
 /******************** function implementations ********************************/
@@ -138,10 +139,11 @@ axis2_soap12_builder_helper_free(axis2_soap12_builder_helper_t *builder_helper,
 }                                 
 
 axis2_om_node_t* AXIS2_CALL 
-axis2_soap12_builder_helper_handle_event(axis2_soap12_builder_helper_t *builder_helper,
-                                         axis2_env_t **env,
-                                         axis2_om_stax_builder_t *om_builder,
-                                         int element_level)
+axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder_helper,
+                             axis2_env_t **env,
+                             axis2_soap_model_builder_t *soap_builder,
+                             axis2_om_node_t *om_element_node,
+                             int element_level)
 {
     axis2_soap12_builder_helper_impl_t *builder_helper_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(builder_helper, env, NULL);

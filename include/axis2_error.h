@@ -378,7 +378,9 @@ extern "C"
         AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY,
 
         /* Invalid messge addition , operation context completed */
-        AXIS2_ERROR_INVALID_MESSAGE_ADDITION
+        AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
+        
+        AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI
     };
 
 /** @} */

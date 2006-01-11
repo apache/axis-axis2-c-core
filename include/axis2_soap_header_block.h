@@ -124,7 +124,9 @@ extern "C"
         int (AXIS2_CALL *set_soap_version)  
                             (axis2_soap_header_block_t *header_block,
                              axis2_env_t **env,
-                             int soap_version);                                                                     
+                             int soap_version);
+                             
+                                                                                                         
     };
 
   /**

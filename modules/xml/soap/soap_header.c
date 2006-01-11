@@ -89,6 +89,10 @@ axis2_soap_header_set_soap_version(axis2_soap_header_t *header,
                                    axis2_env_t **env,
                                    int soap_version);                                                                                                                                                                                                       
 
+axis2_status_t AXIS2_CALL 
+axis2_soap_header_set_header_block(axis2_soap_header_t *header,
+                                   axis2_env_t **env,
+                                   struct axis2_soap_header_block *header_block); 
 /*************** function implementations *************************************/
 
 AXIS2_DECLARE(axis2_soap_header_t *)
@@ -126,6 +130,9 @@ axis2_soap_header_create(axis2_env_t **env)
         axis2_soap_header_set_soap_version;
     header_impl->soap_header.ops->get_soap_version =
         axis2_soap_header_get_soap_version;
+    header_impl->soap_header.ops->set_header_block = 
+        axis2_soap_header_set_header_block;
+            
     return &(header_impl->soap_header);        
 }
 
@@ -370,4 +377,28 @@ axis2_soap12_header_create_with_parent(axis2_env_t **env,
     return header;
 }
 
-
+axis2_status_t AXIS2_CALL 
+axis2_soap_header_set_header_block(axis2_soap_header_t *header,
+                                   axis2_env_t **env,
+                                   struct axis2_soap_header_block *header_block)
+{
+    axis2_char_t key[10];
+    axis2_soap_header_impl_t *header_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(header, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, header_block, AXIS2_FAILURE);
+    header_impl = AXIS2_INTF_TO_IMPL(header);
+    sprintf(key,"%d", header_impl->hbnumber++);
+    if(header_impl->header_blocks)
+    {
+        axis2_hash_set(header_impl->header_blocks,
+             key , AXIS2_HASH_KEY_STRING, header_block);
+    }
+    else
+    {
+            header_impl->header_blocks = axis2_hash_make(env);
+            axis2_hash_set(header_impl->header_blocks,
+                key , AXIS2_HASH_KEY_STRING, header_block);
+    }
+    return AXIS2_SUCCESS;
+        
+}                                   
