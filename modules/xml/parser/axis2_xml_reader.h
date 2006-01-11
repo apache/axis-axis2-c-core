@@ -361,6 +361,8 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
 /** macro to free values returned by pull parser */        
 #define AXIS2_XML_READER_XML_FREE(parser, env, data) \
         ((parser)->ops->xml_free(parser, env, data))
+#define AXIS2_XML_READER_GET_CHAR_SET_ENCODING(parser, env) \
+        ((parser)->ops->get_char_set_encoding(parser, env))        
 
 
 /******************************* End Macros ***********************************/
