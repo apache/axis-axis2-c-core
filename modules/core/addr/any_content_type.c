@@ -78,12 +78,6 @@ axis2_any_content_type_t* AXIS2_CALL axis2_any_content_type_create(axis2_env_t *
     return &(any_content_type_impl->any_content_type);
 }
 
-/**
- * Method addReferenceValue
- *
- * @param name
- * @param value
- */
 axis2_status_t AXIS2_CALL axis2_any_content_type_add_value(struct axis2_any_content_type *any_content_type, axis2_env_t **env, axis2_qname_t *qname, axis2_char_t *value) 
 {
     axis2_any_content_type_impl_t *any_content_type_impl = NULL;
@@ -99,12 +93,6 @@ axis2_status_t AXIS2_CALL axis2_any_content_type_add_value(struct axis2_any_cont
     return AXIS2_SUCCESS;
 }
 
-/**
- * Method getReferenceValue
- *
- * @param qname
- * @return
- */
 axis2_char_t* AXIS2_CALL axis2_any_content_type_get_value(struct axis2_any_content_type *any_content_type, axis2_env_t **env, axis2_qname_t *qname) 
 {
     axis2_any_content_type_impl_t *any_content_type_impl = NULL;
