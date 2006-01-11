@@ -482,7 +482,7 @@ axis2_wsdl_interface_set_op(axis2_wsdl_interface_t *wsdl_interface,
     
     op_l = (struct axis2_op *) op;
         
-    wsdl_op_name = AXIS2_WSDL_OP_GET_NAME(op_l->wsdl_op, env);    
+    wsdl_op_name = AXIS2_WSDL_OP_GET_QNAME(op_l->wsdl_op, env);    
     if (!wsdl_op_name) 
     {
         /* The Operation name cannot be null (required) */

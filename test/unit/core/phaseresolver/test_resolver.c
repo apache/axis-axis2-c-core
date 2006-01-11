@@ -30,7 +30,7 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
         module_desc);
     
     CuAssertIntEquals(tc, expected, actual);
-    AXIS2_FLOW_FREE(flow, env);
+    /*AXIS2_FLOW_FREE(flow, env); */
     /*AXIS2_OP_FREE(optr, env); */
     /*AXIS2_MODULE_DESC_FREE(module_desc, env);*/
     /*AXIS2_PHASE_RESOLVER_FREE(resolver, env); */

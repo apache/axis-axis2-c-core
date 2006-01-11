@@ -121,7 +121,7 @@ AXIS2_DECLARE_DATA struct axis2_op_ops
                  axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL *
-    set_name) (axis2_op_t *op, 
+    set_qname) (axis2_op_t *op, 
                 axis2_env_t **env,
                 axis2_qname_t *qname);
     
@@ -442,8 +442,8 @@ axis2_op_create_with_wsdl_op (axis2_env_t **env,
 #define AXIS2_OP_GET_MSG_RECEIVER(op, env) \
 		((op)->ops->get_msg_recv (op, env))
 
-#define AXIS2_OP_SET_NAME(op, env, qname) \
-		((op)->ops->set_name (op, env, qname))
+#define AXIS2_OP_SET_QNAME(op, env, qname) \
+		((op)->ops->set_qname (op, env, qname))
         
 #define AXIS2_OP_GET_QNAME(op, env) \
 		((op)->ops->get_qname (op, env))

@@ -85,12 +85,12 @@ axis2_wsdl_op_get_msg_exchange_pattern (axis2_wsdl_op_t *wsdl_op,
                                             axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
-axis2_wsdl_op_set_name (axis2_wsdl_op_t *wsdl_op, 
+axis2_wsdl_op_set_qname (axis2_wsdl_op_t *wsdl_op, 
                                 axis2_env_t **env,
 		                        axis2_qname_t *name);
 
 axis2_qname_t * AXIS2_CALL 
-axis2_wsdl_op_get_name (axis2_wsdl_op_t *wsdl_op,
+axis2_wsdl_op_get_qname (axis2_wsdl_op_t *wsdl_op,
                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
@@ -232,8 +232,8 @@ axis2_wsdl_op_create (axis2_env_t **env)
     wsdl_op_impl->wsdl_op.ops->get_msg_exchange_pattern =
         axis2_wsdl_op_get_msg_exchange_pattern;
     
-    wsdl_op_impl->wsdl_op.ops->set_name = axis2_wsdl_op_set_name;
-    wsdl_op_impl->wsdl_op.ops->get_name = axis2_wsdl_op_get_name;
+    wsdl_op_impl->wsdl_op.ops->set_qname = axis2_wsdl_op_set_qname;
+    wsdl_op_impl->wsdl_op.ops->get_qname = axis2_wsdl_op_get_qname;
     wsdl_op_impl->wsdl_op.ops->set_style = axis2_wsdl_op_set_style;
     wsdl_op_impl->wsdl_op.ops->get_style = axis2_wsdl_op_get_style;   
     wsdl_op_impl->wsdl_op.ops->get_in_faults = axis2_wsdl_op_get_in_faults;       
@@ -385,7 +385,7 @@ axis2_wsdl_op_get_msg_exchange_pattern (axis2_wsdl_op_t *wsdl_op,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_wsdl_op_set_name (axis2_wsdl_op_t *wsdl_op, 
+axis2_wsdl_op_set_qname (axis2_wsdl_op_t *wsdl_op, 
                                 axis2_env_t **env,
 		                        axis2_qname_t *name)
 {
@@ -412,7 +412,7 @@ axis2_wsdl_op_set_name (axis2_wsdl_op_t *wsdl_op,
 
 
 axis2_qname_t * AXIS2_CALL 
-axis2_wsdl_op_get_name (axis2_wsdl_op_t *wsdl_op, 
+axis2_wsdl_op_get_qname (axis2_wsdl_op_t *wsdl_op, 
                                 axis2_env_t **env)
 {
 	AXIS2_FUNC_PARAM_CHECK(wsdl_op, env, NULL);

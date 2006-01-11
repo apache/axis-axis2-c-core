@@ -390,7 +390,7 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         
         op_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(op_name_att, env);
         qopname = axis2_qname_create(env, op_name, NULL, NULL);
-        AXIS2_OP_SET_NAME(op_desc, env, qopname);
+        AXIS2_OP_SET_QNAME(op_desc, env, qopname);
         /* Operation parameters */
         qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
         params = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env, 

@@ -84,7 +84,7 @@ struct axis2_wsdl_op_ops
      * @param axis2_qname_t* op name
      */
     axis2_status_t (AXIS2_CALL *
-    set_name) (axis2_wsdl_op_t *wsdl_op, 
+    set_qname) (axis2_wsdl_op_t *wsdl_op, 
                 axis2_env_t **env,
                 axis2_qname_t *name);
                                         
@@ -93,7 +93,7 @@ struct axis2_wsdl_op_ops
      * @return axis2_qname_t wsdl op name
      */
     axis2_qname_t *(AXIS2_CALL *
-    get_name) (axis2_wsdl_op_t *wsdl_op,
+    get_qname) (axis2_wsdl_op_t *wsdl_op,
                 axis2_env_t **env);
     
 
@@ -261,11 +261,11 @@ AXIS2_DECLARE(axis2_wsdl_op_t *) axis2_wsdl_op_create (
 #define AXIS2_WSDL_OP_SET_MSG_EXCHANGE_PATTERN(wsdl_op, env, pattern) \
 		((wsdl_op)->ops->set_msg_exchange_pattern(wsdl_op, env, pattern))
 		
-#define AXIS2_WSDL_OP_GET_NAME(wsdl_op, env) \
-		((wsdl_op)->ops->get_name(wsdl_op, env))
+#define AXIS2_WSDL_OP_GET_QNAME(wsdl_op, env) \
+		((wsdl_op)->ops->get_qname(wsdl_op, env))
 		
-#define AXIS2_WSDL_OP_SET_NAME(wsdl_op, env, name) \
-		((wsdl_op)->ops->set_name(wsdl_op, env, name))
+#define AXIS2_WSDL_OP_SET_QNAME(wsdl_op, env, name) \
+		((wsdl_op)->ops->set_qname(wsdl_op, env, name))
 		
 #define AXIS2_WSDL_OP_SET_STYLE(wsdl_op, env, style) \
 		((wsdl_op)->ops->set_style(wsdl_op, env, style))

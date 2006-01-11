@@ -505,7 +505,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
                /*op_desc = axis2_op_create(env, mep_url); */
                 op_desc = axis2_op_create(env);
             }
-            AXIS2_OP_SET_NAME(op_desc, env, qopname);
+            AXIS2_OP_SET_QNAME(op_desc, env, qopname);
         }
         else
         {
