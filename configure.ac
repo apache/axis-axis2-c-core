@@ -115,6 +115,7 @@ AC_CONFIG_FILES([Makefile \
     test/core/handlers/Makefile \
     test/core/description/Makefile \
     test/core/context/Makefile \
+    test/core/clientapi/Makefile \
     test/core/engine/Makefile \
     test/util/Makefile \
     test/unit/Makefile \

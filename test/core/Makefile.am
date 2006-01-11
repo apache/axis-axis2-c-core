@@ -1,1 +1,1 @@
-SUBDIRS = handlers description context engine
+SUBDIRS = handlers description context engine clientapi
