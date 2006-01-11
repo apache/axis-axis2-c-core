@@ -200,7 +200,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 						simple_request, env), env), AXIS2_HTTP_HEADER_GET))
 	{
 		processed = axis2_http_transport_utils_process_http_get_request
-                        (env, msg_ctx, request_body, 
+                        (env, msg_ctx, request_body, out_stream,
 						AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_TYPE(
 						simple_request, env) ,soap_action,
 						AXIS2_HTTP_REQUEST_LINE_GET_URI(

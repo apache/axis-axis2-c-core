@@ -32,6 +32,7 @@
 #include <axis2_hash.h>
 #include <axis2_om_element.h>
 #include <axis2_stream.h>
+#include <axis2_soap_envelope.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -42,6 +43,17 @@ extern "C"
  * @ingroup axis2_core_transport_http
  * @{
  */
+
+/* 
+ * struct to hold the callback information
+ */	
+struct axis2_callback_info
+{
+	axis2_env_t *env;
+	axis2_stream_t *in_stream;
+};
+typedef struct axis2_callback_info axis2_callback_info_t;
+
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_utils_process_http_post_request
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
@@ -53,15 +65,16 @@ axis2_http_transport_utils_process_http_post_request
 axis2_bool_t AXIS2_CALL 
 axis2_http_transport_utils_process_http_get_request
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
-                        axis2_stream_t *stream, axis2_char_t *content_type,
+                        axis2_stream_t *in_stream, axis2_stream_t *out_stream,
+						axis2_char_t *content_type,
                         axis2_char_t *soap_action_header, 
                         axis2_char_t *request_uri, axis2_conf_ctx_t *conf_ctx, 
                         axis2_hash_t *request_params);
     
-/*axis2_soap_envelope_t* AXIS2_CALL 
+axis2_soap_envelope_t* AXIS2_CALL 
 axis2_http_transport_utils_create_envelope_from_get_request
                         (axis2_env_t **env, axis2_char_t *request_uri,
-                        axis2_hash_t *request_params);*/
+                        axis2_hash_t *request_params);
     
 axis2_om_stax_builder_t* AXIS2_CALL 
 axis2_http_transport_utils_select_builder_for_mime
