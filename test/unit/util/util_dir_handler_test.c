@@ -14,9 +14,11 @@ void Testaxis2_dir_handler_list_dir(CuTest *tc)
     axis2_char_t *expected = NULL;
     axis2_char_t *actual = NULL;
     int i = 0;
+    axis2_char_t *axis2c_home = NULL;
+    
     expected = AXIS2_STRDUP("libaxis2_util.so", &env);
-	pathname = AXIS2_STRDUP(
-        "../infiles/dir_handler", &env);
+    axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
+    pathname = AXIS2_STRACAT (axis2c_home, "/test/unit/infiles/dir_handler", &env);
     file_list = axis2_dir_handler_list_dir(&env, pathname);
     size = AXIS2_ARRAY_LIST_SIZE(file_list, &env);
     
@@ -33,4 +35,5 @@ void Testaxis2_dir_handler_list_dir(CuTest *tc)
     CuAssertStrEquals(tc, expected, actual);
     AXIS2_FREE(env->allocator, expected);
     AXIS2_FREE(env->allocator, pathname);
+    AXIS2_FREE(env->allocator, axis2c_home);
 }

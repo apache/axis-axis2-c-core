@@ -170,6 +170,11 @@ extern "C"
 #define AXIS2_X_OK X_OK /* test for execute or search permission */
 #define AXIS2_F_OK F_OK /* test whether the directories leading to the file can be 
                       searched and the file exists */
+                      
+/**
+ * Platform specific environment variable access method
+ */
+#define AXIS2_GETENV(_env_var_name) getenv(_env_var_name)
 
 /** @} */
 #ifdef __cplusplus

@@ -418,12 +418,13 @@ axis2_op_create (axis2_env_t **env)
     if(NULL == param_container_l)
         return NULL;
     AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(op_impl->op.wsdl_op->
-        extensible_component->wsdl_component, env, PARAMETER_KEY, param_container_l);
+        extensible_component->wsdl_component, env, AXIS2_PARAMETER_KEY, 
+            param_container_l);
     
     array_list_l = axis2_array_list_create(env, 0);
     if(NULL == array_list_l) return NULL;
     AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(op_impl->op.wsdl_op->
-        extensible_component->wsdl_component, env, MODULEREF_KEY, array_list_l);
+        extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY, array_list_l);
     
     op_impl->op.ops = AXIS2_MALLOC((*env)->allocator, 
         sizeof(axis2_op_ops_t));
@@ -563,25 +564,28 @@ axis2_status_t AXIS2_CALL
 axis2_op_free (axis2_op_t *op, axis2_env_t **env)
 { 
     axis2_op_impl_t *op_impl = NULL;
-    
+    printf("came10\n");
     AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
 	if(NULL != op->ops)
     {
+        printf("came11\n");
 		AXIS2_FREE((*env)->allocator, op->ops);
         op->ops = NULL;
     }
     
     if(NULL != op->param_container)
     {
+        printf("came12\n");
 	    AXIS2_PARAM_CONTAINER_FREE(op->param_container, env);
         op->param_container = NULL;
     }
     
     if(NULL != op->wsdl_op)
     {
+        printf("came13\n");
 	    AXIS2_WSDL_OP_FREE(op->wsdl_op, env);
         op->wsdl_op = NULL;
     }
@@ -592,6 +596,7 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     
     if(NULL != op_impl->remaining_phases_inflow)
     {
+        printf("came14\n");
         void *val = NULL;
         int i = 0;
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->remaining_phases_inflow, env); i++)
@@ -613,6 +618,7 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     
     if(NULL != op_impl->phases_outflow)
     {
+        printf("came15\n");
         void *val = NULL;
         int i = 0;
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->phases_outflow, env); i++)
@@ -634,9 +640,13 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     
     if(NULL != op_impl->phases_in_fault_flow)
     {
+        printf("came16\n");
         void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->phases_in_fault_flow, env); i++)
+        int size = 0;
+        size = AXIS2_ARRAY_LIST_SIZE(op_impl->phases_in_fault_flow, env);
+        printf("size:%d\n", size);
+        for (i = 0; i < size; i++)
         {
             struct axis2_phase *phase = NULL;
             phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_in_fault_flow, env, i);
@@ -657,7 +667,11 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     {
         void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->phases_out_fault_flow, env); i++)
+        int size = 0;
+        printf("came17\n");
+        size = AXIS2_ARRAY_LIST_SIZE(op_impl->phases_out_fault_flow, env);
+        printf("size:%d\n", size);
+        for (i = 0; i < size; i++)
         {
             struct axis2_phase *phase = NULL;
             phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_out_fault_flow, env, i);
@@ -726,7 +740,7 @@ axis2_op_add_param (axis2_op_t *op,
         param_container_l = (axis2_param_container_t *) 
             AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
                 op->wsdl_op->extensible_component->wsdl_component, env, 
-                (axis2_char_t *) PARAMETER_KEY);
+                (axis2_char_t *) AXIS2_PARAMETER_KEY);
         return AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container_l, env, param);
     }
     
@@ -744,7 +758,8 @@ axis2_op_get_param (axis2_op_t *op,
 	
     param_container_l = (axis2_param_container_t *) 
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op->wsdl_op->
-            extensible_component->wsdl_component, env, (axis2_char_t *) PARAMETER_KEY);
+            extensible_component->wsdl_component, env, (axis2_char_t *) 
+                AXIS2_PARAMETER_KEY);
 	
 	return AXIS2_PARAM_CONTAINER_GET_PARAM(param_container_l, env, param_name);
 }
@@ -760,7 +775,8 @@ axis2_op_get_params(axis2_op_t *op,
 	
     param_container_l = (axis2_param_container_t *) 
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op->wsdl_op->
-            extensible_component->wsdl_component, env, (axis2_char_t *) PARAMETER_KEY);
+            extensible_component->wsdl_component, env, (axis2_char_t *) 
+                AXIS2_PARAMETER_KEY);
 	return AXIS2_PARAM_CONTAINER_GET_PARAMS(param_container_l, env);
 }
 
@@ -927,16 +943,18 @@ axis2_op_engage_module(axis2_op_t *op,
         
     AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, moduleref, AXIS2_FAILURE);
-    
+    printf("came20\n");
     collection_module = (axis2_array_list_t *) 
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op->wsdl_op->
-        extensible_component->wsdl_component, env, MODULEREF_KEY);
-    
+        extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY);
+    printf("came21\n");
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
+    printf("collection_module size:%d\n", size);
     if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
     {
         return AXIS2_FAILURE;
     }
+    
     for(index = 0; index < size; index++)
     {
         module_desc = (axis2_module_desc_t *) AXIS2_ARRAY_LIST_GET(
@@ -955,13 +973,17 @@ axis2_op_engage_module(axis2_op_t *op,
 
     }
     pr = axis2_phase_resolver_create(env);
+    printf("came1\n");
     if(pr)
     {
         status = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OP(pr, env, 
             op, moduleref);
+        printf("came2\n");
         if(AXIS2_FAILURE == status)
         {
+            printf("came3\n");
             AXIS2_PHASE_RESOLVER_FREE(pr, env);
+            printf("came4\n");
             pr = NULL;
             return AXIS2_FAILURE;
         }
@@ -990,7 +1012,7 @@ axis2_op_add_to_engage_module_list(axis2_op_t *op,
     
     collection_module = (axis2_array_list_t *) 
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op->wsdl_op->
-            extensible_component->wsdl_component, env, MODULEREF_KEY);
+            extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY);
     
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
     if(AXIS2_TRUE != size)
@@ -1021,7 +1043,7 @@ axis2_op_get_modules(axis2_op_t *op,
     AXIS2_FUNC_PARAM_CHECK(op, env, NULL);
     return (axis2_array_list_t *) AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
         op->wsdl_op->extensible_component->wsdl_component, env, 
-            MODULEREF_KEY);
+            AXIS2_MODULEREF_KEY);
 }
 
 int AXIS2_CALL

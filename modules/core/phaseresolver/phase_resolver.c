@@ -468,25 +468,25 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
         case AXIS2_INFLOW:
         {
             flow = AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
-                svc->wsdl_svc->wsdl_component, env, INFLOW_KEY);
+                svc->wsdl_svc->wsdl_component, env, AXIS2_INFLOW_KEY);
             break;
         }
         case AXIS2_OUTFLOW:
         {
             flow = AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
-                svc->wsdl_svc->wsdl_component, env, OUTFLOW_KEY);
+                svc->wsdl_svc->wsdl_component, env, AXIS2_OUTFLOW_KEY);
             break;
         }
         case AXIS2_FAULT_INFLOW:
         {
             flow = AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
-                svc->wsdl_svc->wsdl_component, env, IN_FAULTFLOW_KEY);
+                svc->wsdl_svc->wsdl_component, env, AXIS2_IN_FAULTFLOW_KEY);
             break;
         }
         case AXIS2_FAULT_OUTFLOW:
         {
             flow = AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
-                svc->wsdl_svc->wsdl_component, env, OUT_FAULTFLOW_KEY);
+                svc->wsdl_svc->wsdl_component, env, AXIS2_OUT_FAULTFLOW_KEY);
             break;
         }
     }

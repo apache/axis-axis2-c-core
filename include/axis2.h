@@ -135,6 +135,8 @@ typedef enum axis2_svc_type
  */
 #define AXIS2_SOAP_STYLE_DOC_LITERAL_WRAPPED 1002
 
+#define AXIS2_SCOPE "scope"
+
 /**
  * Field APPLICATION_SCOPE
  */

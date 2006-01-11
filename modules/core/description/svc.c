@@ -364,7 +364,7 @@ axis2_svc_create (axis2_env_t **env)
     }
     
     status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc_impl->svc.wsdl_svc->
-        wsdl_component, env, PARAMETER_KEY, param_container_l);
+        wsdl_component, env, AXIS2_PARAMETER_KEY, param_container_l);
     if(AXIS2_FAILURE == status)
     {
         axis2_svc_free(&(svc_impl->svc), env);
@@ -380,7 +380,7 @@ axis2_svc_create (axis2_env_t **env)
     }
     
     status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc_impl->svc.wsdl_svc->
-        wsdl_component, env, MODULEREF_KEY, array_list_l);
+        wsdl_component, env, AXIS2_MODULEREF_KEY, array_list_l);
     if(AXIS2_FAILURE == status)
     {
         axis2_svc_free(&(svc_impl->svc), env);
@@ -737,7 +737,7 @@ axis2_svc_add_param (axis2_svc_t *svc,
     {
         param_container_l = (struct axis2_param_container *)
             AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(svc->wsdl_svc->
-                wsdl_component, env, PARAMETER_KEY);
+                wsdl_component, env, AXIS2_PARAMETER_KEY);
         return AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container_l, env, param);
     }
     return AXIS2_FAILURE;
@@ -753,7 +753,7 @@ axis2_svc_get_param (axis2_svc_t *svc,
     
     param_container_l = (struct axis2_param_container *)
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(svc->wsdl_svc->
-            wsdl_component, env, PARAMETER_KEY);
+            wsdl_component, env, AXIS2_PARAMETER_KEY);
     return AXIS2_PARAM_CONTAINER_GET_PARAM(param_container_l, env, name);
 }
 
@@ -766,7 +766,7 @@ axis2_svc_get_params (axis2_svc_t *svc,
 	
     param_container_l = (struct axis2_param_container *)
     AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(svc->wsdl_svc->
-        wsdl_component, env, PARAMETER_KEY);
+        wsdl_component, env, AXIS2_PARAMETER_KEY);
     
     return AXIS2_PARAM_CONTAINER_GET_PARAMS(param_container_l, env);
 }
@@ -855,7 +855,7 @@ axis2_svc_engage_module(axis2_svc_t *svc,
     
     collection_module = (axis2_array_list_t *) 
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(svc->wsdl_svc->wsdl_component,
-            env, MODULEREF_KEY);
+            env, AXIS2_MODULEREF_KEY);
     
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
     if(AXIS2_TRUE != size)
@@ -986,7 +986,7 @@ axis2_svc_add_to_engaged_module_list(axis2_svc_t *svc,
     
     collection_module = (axis2_array_list_t *) 
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(svc->wsdl_svc->wsdl_component, 
-            env, MODULEREF_KEY);
+            env, AXIS2_MODULEREF_KEY);
     
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
     if(AXIS2_TRUE != size)
@@ -1013,7 +1013,7 @@ axis2_svc_get_engaged_modules(axis2_svc_t *svc,
     AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
     
     return (axis2_array_list_t *) AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
-        svc->wsdl_svc->wsdl_component, env, MODULEREF_KEY);
+        svc->wsdl_svc->wsdl_component, env, AXIS2_MODULEREF_KEY);
 }
 
 void * AXIS2_CALL
@@ -1050,8 +1050,8 @@ axis2_svc_set_context_path(axis2_svc_t *svc,
     context_path_l = AXIS2_STRDUP(context_path, env);
     if(context_path_l)
     {
-        return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->wsdl_component,
-            env, CONTEXTPATH_KEY, context_path);
+        return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
+            wsdl_component, env, AXIS2_CONTEXTPATH_KEY, context_path);
     }
     else
         return AXIS2_FAILURE;
@@ -1063,7 +1063,7 @@ axis2_svc_get_context_path(axis2_svc_t *svc,
 {
     AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
     return (axis2_char_t *) AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
-        svc->wsdl_svc->wsdl_component, env, CONTEXTPATH_KEY);
+        svc->wsdl_svc->wsdl_component, env, AXIS2_CONTEXTPATH_KEY);
 }
 
 axis2_status_t AXIS2_CALL
@@ -1078,8 +1078,8 @@ axis2_svc_set_style(axis2_svc_t *svc,
     
     style_l = AXIS2_STRDUP(style, env);
     if(style_l)
-        return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->wsdl_component,
-            env, STYLE_KEY, style);
+        return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
+            wsdl_component, env, AXIS2_STYLE_KEY, style);
     else
         return AXIS2_FAILURE;
 }
@@ -1090,7 +1090,7 @@ axis2_svc_get_style(axis2_svc_t *svc,
 {
     AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
     return (axis2_char_t *) AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
-        svc->wsdl_svc->wsdl_component, env, STYLE_KEY);
+        svc->wsdl_svc->wsdl_component, env, AXIS2_STYLE_KEY);
 }
 
 struct axis2_flow * AXIS2_CALL
@@ -1099,7 +1099,7 @@ axis2_svc_get_inflow(axis2_svc_t *svc,
 {
     AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
     return (struct axis2_flow *) AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
-        svc->wsdl_svc->wsdl_component, env, INFLOW_KEY);
+        svc->wsdl_svc->wsdl_component, env, AXIS2_INFLOW_KEY);
 }
 
 axis2_status_t AXIS2_CALL
@@ -1110,8 +1110,8 @@ axis2_svc_set_inflow(axis2_svc_t *svc,
     AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, inflow, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->wsdl_component,
-        env, INFLOW_KEY, inflow);
+    return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
+        wsdl_component, env, AXIS2_INFLOW_KEY, inflow);
 }
 
 struct axis2_flow * AXIS2_CALL
@@ -1120,7 +1120,7 @@ axis2_svc_get_outflow(axis2_svc_t *svc,
 {
     AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
     return (struct axis2_flow *) AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
-        svc->wsdl_svc->wsdl_component, env, OUTFLOW_KEY);
+        svc->wsdl_svc->wsdl_component, env, AXIS2_OUTFLOW_KEY);
 }
 
 axis2_status_t AXIS2_CALL
@@ -1132,7 +1132,7 @@ axis2_svc_set_outflow(axis2_svc_t *svc,
     AXIS2_PARAM_CHECK((*env)->error, outflow, AXIS2_FAILURE);
     
     return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
-        wsdl_component, env, OUTFLOW_KEY, outflow);
+        wsdl_component, env, AXIS2_OUTFLOW_KEY, outflow);
 }
 
 struct axis2_flow *AXIS2_CALL
@@ -1142,7 +1142,7 @@ axis2_svc_get_fault_inflow(axis2_svc_t *svc,
     AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
     
     return (struct axis2_flow *) AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
-        svc->wsdl_svc->wsdl_component, env, IN_FAULTFLOW_KEY);
+        svc->wsdl_svc->wsdl_component, env, AXIS2_IN_FAULTFLOW_KEY);
 }
 
 axis2_status_t AXIS2_CALL
@@ -1152,8 +1152,8 @@ axis2_svc_set_fault_inflow(axis2_svc_t *svc,
 {
     AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, fault_flow, AXIS2_FAILURE);
-    return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->wsdl_component,
-        env, IN_FAULTFLOW_KEY, fault_flow);
+    return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
+        wsdl_component, env, AXIS2_IN_FAULTFLOW_KEY, fault_flow);
 }
 
 struct axis2_flow * AXIS2_CALL
@@ -1163,7 +1163,7 @@ axis2_svc_get_fault_outflow(axis2_svc_t *svc,
     AXIS2_FUNC_PARAM_CHECK(svc, env, NULL);
     
     return (struct axis2_flow *) AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
-        svc->wsdl_svc->wsdl_component, env, OUT_FAULTFLOW_KEY);
+        svc->wsdl_svc->wsdl_component, env, AXIS2_OUT_FAULTFLOW_KEY);
 }
 
 axis2_status_t AXIS2_CALL
@@ -1174,8 +1174,8 @@ axis2_svc_set_fault_outflow(axis2_svc_t *svc,
     AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, fault_flow, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->wsdl_component, env,
-        OUT_FAULTFLOW_KEY, fault_flow);
+    return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
+        wsdl_component, env, AXIS2_OUT_FAULTFLOW_KEY, fault_flow);
 }
 
 struct axis2_op * AXIS2_CALL

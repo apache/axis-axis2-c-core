@@ -34,17 +34,11 @@
 extern "C"
 {
 #endif
-
-#define AXIS2_SERVICE_CLASS "ServiceClass"
-#define AXIS2_SCOPE "scope"
     
 /** @defgroup axis2_msg_recv Message Receiver
   * @ingroup axis2_core_engine
   * @{
   */
-
-#define AXIS2_SVC_CLASS  "svc_class"
-#define AXIS2_SCOPE  "scope"
     
 struct axis2_msg_ctx;
 typedef struct axis2_msg_recv axis2_msg_recv_t;

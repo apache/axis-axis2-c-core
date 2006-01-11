@@ -160,14 +160,14 @@ axis2_wsdl_component_free (axis2_wsdl_component_t *wsdl_component,
              
             axis2_hash_this (hi, &key, NULL, &val);
             
-            if(0 == AXIS2_STRCMP(PARAMETER_KEY, (axis2_char_t *)key))
+            if(0 == AXIS2_STRCMP(AXIS2_PARAMETER_KEY, (axis2_char_t *)key))
             {
                 param_container = (axis2_param_container_t *) val;
                 AXIS2_PARAM_CONTAINER_FREE(param_container, env);
                 param_container = NULL;
             }
             
-            if(0 == AXIS2_STRCMP(MODULEREF_KEY, (axis2_char_t *)key))
+            if(0 == AXIS2_STRCMP(AXIS2_MODULEREF_KEY, (axis2_char_t *)key))
             {
                 void *val = NULL;
                 int i = 0;
@@ -247,14 +247,14 @@ axis2_wsdl_component_set_component_properties(
              
             axis2_hash_this (hi, &key, NULL, &val);
             
-            if(0 == AXIS2_STRCMP(PARAMETER_KEY, (axis2_char_t *)key))
+            if(0 == AXIS2_STRCMP(AXIS2_PARAMETER_KEY, (axis2_char_t *)key))
             {
                 param_container = (axis2_param_container_t *) val;
                 AXIS2_PARAM_CONTAINER_FREE(param_container, env);
                 param_container = NULL;
             }
             
-            if(0 == AXIS2_STRCMP(MODULEREF_KEY, (axis2_char_t *)key))
+            if(0 == AXIS2_STRCMP(AXIS2_MODULEREF_KEY, (axis2_char_t *)key))
             {
                 void *val = NULL;
                 int i = 0;

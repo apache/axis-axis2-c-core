@@ -179,7 +179,7 @@ axis2_msg_recv_make_new_svc_obj(void *msg_recv,
         return NULL;
     }
     
-    impl_info_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SVC_CLASS);
+    impl_info_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SERVICE_CLASS);
     if(!impl_info_param)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_SVC, 
