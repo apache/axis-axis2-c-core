@@ -380,7 +380,9 @@ extern "C"
         /* Invalid messge addition , operation context completed */
         AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
         
-        AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI
+        AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI,
+        /* Error in writing the response in response writer */
+        AXIS2_ERROR_WRITING_RESPONSE
     };
 
 /** @} */

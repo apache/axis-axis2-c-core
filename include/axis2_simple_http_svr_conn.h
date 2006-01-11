@@ -72,7 +72,7 @@ AXIS2_DECLARE_DATA struct axis2_simple_http_svr_conn_ops
         axis2_status_t (AXIS2_CALL *write_response)
                         (axis2_simple_http_svr_conn_t *svr_conn, 
                         axis2_env_t **env, 
-                        const axis2_http_simple_response_t *response);
+                        axis2_http_simple_response_t *response);
         int (AXIS2_CALL *get_snd_timeout) 
                         (axis2_simple_http_svr_conn_t *svr_conn, 
                         axis2_env_t **env);

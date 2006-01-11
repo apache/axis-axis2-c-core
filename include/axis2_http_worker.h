@@ -30,6 +30,7 @@
 #include <axis2_http_simple_response.h>
 #include <axis2_http_simple_request.h>
 #include <axis2_conf_ctx.h>
+#include <axis2_http_worker.h>
 
 
 #ifdef __cplusplus
