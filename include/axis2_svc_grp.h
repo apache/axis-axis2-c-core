@@ -197,67 +197,67 @@ axis2_svc_grp_create_with_conf (axis2_env_t **env,
 
 /**************************** Start of function macros ************************/
 
-#define AXIS2_SVC_GRP_FREE(svc_grp, env) (svc_grp->ops->free (svc_grp , env))
+#define AXIS2_SVC_GRP_FREE(svc_grp, env) ((svc_grp)->ops->free (svc_grp , env))
 	
 #define AXIS2_SVC_GRP_SET_NAME(svc_grp, env , svc_grp_name) \
-        (svc_grp->ops->set_svc_grp_name (svc_grp, env, svc_grp_name))
+        ((svc_grp)->ops->set_svc_grp_name (svc_grp, env, svc_grp_name))
 		
 #define AXIS2_SVC_GRP_GET_NAME(svc_grp, env) \
-        (svc_grp->ops->get_svc_grp_name(svc_grp, env))
+        ((svc_grp)->ops->get_svc_grp_name(svc_grp, env))
 
 #define AXIS2_SVC_GRP_ADD_SVC(svc_grp, env , svc) \
-        (svc_grp->ops->add_svc (svc_grp, env, svc))
+        ((svc_grp)->ops->add_svc (svc_grp, env, svc))
 
 #define AXIS2_SVC_GRP_GET_SVC(svc_grp, env , svc) \
-        (svc_grp->ops->get_svc(svc_grp, env, svc))
+        ((svc_grp)->ops->get_svc(svc_grp, env, svc))
 
 #define AXIS2_SVC_GRP_GET_SVCS(svc_grp, env) \
-        (svc_grp->ops->get_svcs(svc_grp, env))
+        ((svc_grp)->ops->get_svcs(svc_grp, env))
         
 #define AXIS2_SVC_GRP_REMOVE_SVC(svc_grp, env, srvc_name) \
-		(svc_grp->ops->remove_svc(svc_grp, env, srvc_name))		
+		((svc_grp)->ops->remove_svc(svc_grp, env, srvc_name))		
 
 #define AXIS2_SVC_GRP_ADD_PARAM(svc_grp, env, param) \
-		(svc_grp->ops->add_param(svc_grp, env, param))
+		((svc_grp)->ops->add_param(svc_grp, env, param))
 		
 #define AXIS2_SVC_GRP_GET_PARAM(svc_grp, env, name) \
-		(svc_grp->ops->get_param(svc_grp, env, name))
+		((svc_grp)->ops->get_param(svc_grp, env, name))
 		
 #define AXIS2_SVC_GRP_GET_PARAMS(svc_grp, env) \
-        (svc_grp->ops->get_params(svc_grp, env))
+        ((svc_grp)->ops->get_params(svc_grp, env))
 				
 #define AXIS2_SVC_GRP_IS_PARAM_LOCKED(svc_grp, env , param_name) \
-        (svc_grp->ops->is_param_locked(svc_grp, env, param_name))
+        ((svc_grp)->ops->is_param_locked(svc_grp, env, param_name))
 
 #define AXIS2_SVC_GRP_ADD_MODULE(svc_grp, env , module_qname) \
-        (svc_grp->ops->add_module(svc_grp, env, module_qname))
+        ((svc_grp)->ops->add_module(svc_grp, env, module_qname))
 
 #define AXIS2_SVC_GRP_GET_PARENT(svc_grp, env) \
-        (svc_grp->ops->get_parent(svc_grp, env))
+        ((svc_grp)->ops->get_parent(svc_grp, env))
         
 #define AXIS2_SVC_GRP_SET_PARENT(svc_grp, env , parent) \
-        (svc_grp->ops->set_parent(svc_grp, env, parent)) 
+        ((svc_grp)->ops->set_parent(svc_grp, env, parent)) 
 
 #define AXIS2_SVC_GRP_ENGAGE_MODULE_TO_GRP(svc_grp, env, module_name) \
-        (svc_grp->ops->engage_module_to_grp(svc_grp, env, module_name))
+        ((svc_grp)->ops->engage_module_to_grp(svc_grp, env, module_name))
         
 #define AXIS2_SVC_GRP_GET_SVC_GRP_MODULES(svc_grp, env) \
-        (svc_grp->ops->get_svc_grp_modules(svc_grp, env))
+        ((svc_grp)->ops->get_svc_grp_modules(svc_grp, env))
 
 #define AXIS2_SVC_GRP_GET_AXIS_DESC(svc_grp, env) \
-        (svc_grp->ops->get_axis_desc(svc_grp, env))
+        ((svc_grp)->ops->get_axis_desc(svc_grp, env))
         
 #define AXIS2_SVC_GRP_SET_AXIS_DESC(svc_grp, env, axis2_desc) \
-        (svc_grp->ops->set_axis_desc(svc_grp, env, axis2_desc))
+        ((svc_grp)->ops->set_axis_desc(svc_grp, env, axis2_desc))
 
 #define AXIS2_SVC_GRP_ADD_MODULEREF(svc_grp, env, moduleref) \
-        (svc_grp->ops->add_moduleref(svc_grp, env, moduleref))
+        ((svc_grp)->ops->add_moduleref(svc_grp, env, moduleref))
         
 #define AXIS2_SVC_GRP_GET_MODULES(svc_grp, env) \
-        (svc_grp->ops->get_modules(svc_grp, env)) 
+        ((svc_grp)->ops->get_modules(svc_grp, env)) 
  
 #define AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env, parent) \
-        (svc_grp->ops->get_svc_grp_ctx(svc_grp, env, parent))  
+        ((svc_grp)->ops->get_svc_grp_ctx(svc_grp, env, parent))  
         
         
                             

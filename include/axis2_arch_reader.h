@@ -128,19 +128,19 @@ axis2_arch_reader_create (axis2_env_t **env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_ARCH_READER_FREE(arch_reader, env) \
-		((arch_reader->ops)->free (arch_reader, env))  
+		((arch_reader)->ops->free (arch_reader, env))  
 
 #define AXIS2_ARCH_READER_CREATE_SVC(arch_reader, env, file) \
-		((arch_reader->ops)->create_svc (arch_reader, env, file))
+		((arch_reader)->ops->create_svc (arch_reader, env, file))
 
 #define AXIS2_ARCH_READER_PROCESS_SVC_GRP(arch_reader, env, file_path, dep_engine, svc_grp) \
-		((arch_reader->ops)->process_svc_grp (arch_reader, env, file_path, dep_engine, svc_grp))
+		((arch_reader)->ops->process_svc_grp (arch_reader, env, file_path, dep_engine, svc_grp))
 
 #define AXIS2_ARCH_READER_BUILD_SVC_GRP(arch_reader, env, file_path, dep_engine, svc_grp) \
-		((arch_reader->ops)->build_svc_grp (arch_reader, env, file_path, dep_engine, svc_grp))
+		((arch_reader)->ops->build_svc_grp (arch_reader, env, file_path, dep_engine, svc_grp))
         
 #define AXIS2_ARCH_READER_READ_MODULE_ARCH(arch_reader, env, file_path, dep_engine, module) \
-		((arch_reader->ops)->read_module_arch (arch_reader, env, file_path, dep_engine, module))
+		((arch_reader)->ops->read_module_arch (arch_reader, env, file_path, dep_engine, module))
 
 /*************************** End of function macros ***************************/
 

@@ -324,128 +324,128 @@ axis2_conf_create(axis2_env_t **env);
 /************************* Start of function macros	***************************/
 	
 #define AXIS2_CONF_FREE(conf, env) \
-		(conf->ops->free(conf, env))
+		((conf)->ops->free(conf, env))
 	
 #define AXIS2_CONF_ADD_SVC_GRP(conf, env, svc_grp) \
-        (conf->ops->add_svc_grp (conf, env, svc_grp))
+        ((conf)->ops->add_svc_grp (conf, env, svc_grp))
 
 #define AXIS2_CONF_GET_SVC_GRP(conf, env, svc_grp_name) \
-        (conf->ops->get_svc_grp (conf, env, svc_grp_name))
+        ((conf)->ops->get_svc_grp (conf, env, svc_grp_name))
 
 #define AXIS2_CONF_GET_SVC_GRPS(conf, env) \
-        (conf->ops->get_svc_grps (conf, env))
+        ((conf)->ops->get_svc_grps (conf, env))
 
 #define AXIS2_CONF_ADD_SVC(conf, env, svc) \
-		(conf->ops->get_svc (conf, env, svc))
+		((conf)->ops->get_svc (conf, env, svc))
 		
 #define AXIS2_CONF_GET_SVC(conf, env, svc_name) \
-		(conf->ops->get_svc (conf, env, svc_name))
+		((conf)->ops->get_svc (conf, env, svc_name))
 
 #define AXIS2_CONF_REMOVE_SVC(conf, env, svc_name) \
-		(conf->ops->remove_svc (conf, env, svc_name))
+		((conf)->ops->remove_svc (conf, env, svc_name))
         
 #define AXIS2_CONF_ADD_PARAM(conf, env, param) \
-        (conf->ops->add_param(conf , env, param))
+        ((conf)->ops->add_param(conf , env, param))
 		
 #define AXIS2_CONF_GET_PARAM(conf, env, name) \
-        (conf->ops->get_param(conf , env, name))
+        ((conf)->ops->get_param(conf , env, name))
 		
 #define AXIS2_CONF_GET_PARAMS(conf, env) \
-        (conf->ops->get_params(conf , env))
+        ((conf)->ops->get_params(conf , env))
 		
 #define AXIS2_CONF_IS_PARAM_LOCKED(conf, env, param_name) \
-        (conf->ops->is_param_locked(conf, env, param_name))
+        ((conf)->ops->is_param_locked(conf, env, param_name))
 
 #define AXIS2_CONF_GET_TRANSPORT_IN(conf, env, qname) \
-        (conf->ops->get_transport_in(conf , env, qname))
+        ((conf)->ops->get_transport_in(conf , env, qname))
 
 #define AXIS2_CONF_ADD_TRANSPORT_IN(conf, env, transport) \
-        (conf->ops->add_transport_in(conf , env, transport))
+        ((conf)->ops->add_transport_in(conf , env, transport))
 
 #define AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, qname) \
-        (conf->ops->get_transport_out(conf , env, qname))
+        ((conf)->ops->get_transport_out(conf , env, qname))
 
 #define AXIS2_CONF_ADD_TRANSPORT_OUT(conf, env, transport) \
-        (conf->ops->add_transport_out(conf , env, transport))
+        ((conf)->ops->add_transport_out(conf , env, transport))
  
 #define AXIS2_CONF_GET_TRANSPORTS_IN(conf, env) \
-        (conf->ops->get_transports_in(conf , env)) 
+        ((conf)->ops->get_transports_in(conf , env)) 
  
 #define AXIS2_CONF_GET_TRANSPORTS_OUT(conf, env) \
-        (conf->ops->get_transports_out(conf , env)) 
+        ((conf)->ops->get_transports_out(conf , env)) 
  
 #define AXIS2_CONF_GET_MODULE(conf, env, qname) \
-        (conf->ops->get_module(conf , env, qname)) 
+        ((conf)->ops->get_module(conf , env, qname)) 
 
 #define AXIS2_CONF_GET_ENGAGED_MODULES(conf, env) \
-        (conf->ops->get_engaged_modules(conf , env)) 
+        ((conf)->ops->get_engaged_modules(conf , env)) 
         
 #define AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env) \
-        (conf->ops->get_in_phases_upto_and_including_post_dispatch(conf , env)) 
+        ((conf)->ops->get_in_phases_upto_and_including_post_dispatch(conf , env)) 
 
 #define AXIS2_CONF_GET_OUTFLOW(conf, env) \
-        (conf->ops->get_outflow(conf , env)) 
+        ((conf)->ops->get_outflow(conf , env)) 
         
 #define AXIS2_CONF_GET_IN_FAULT_FLOW(conf, env) \
-        (conf->ops->get_in_faultflow(conf , env)) 
+        ((conf)->ops->get_in_faultflow(conf , env)) 
 
 #define AXIS2_CONF_GET_OUT_FAULT_FLOW(conf, env) \
-        (conf->ops->get_out_faultflow(conf , env)) 
+        ((conf)->ops->get_out_faultflow(conf , env)) 
 
 
 #define AXIS2_CONF_GET_FAULTY_SVCS(conf, env) \
-        (conf->ops->get_faulty_svcs(conf , env)) 
+        ((conf)->ops->get_faulty_svcs(conf , env)) 
 
 #define AXIS2_CONF_GET_FAULTY_MODULES(conf, env) \
-        (conf->ops->get_faulty_modules(conf , env)) 
+        ((conf)->ops->get_faulty_modules(conf , env)) 
 
 #define AXIS2_CONF_GET_SVCS(conf, env) \
-        (conf->ops->get_svcs(conf , env)) 
+        ((conf)->ops->get_svcs(conf , env)) 
 
 #define AXIS2_CONF_IS_ENGAGED(conf, env, module_name) \
-        (conf->ops->is_engaged(conf , env, module_name)) 
+        ((conf)->ops->is_engaged(conf , env, module_name)) 
 
 #define AXIS2_CONF_GET_PHASESINFO(conf, env) \
-        (conf->ops->get_phases_info(conf , env)) 
+        ((conf)->ops->get_phases_info(conf , env)) 
 
 #define AXIS2_CONF_SET_PHASESINFO(conf, env, phases_info) \
-        (conf->ops->set_phases_info(conf , env, phases_info)) 
+        ((conf)->ops->set_phases_info(conf , env, phases_info)) 
 
 #define AXIS2_CONF_ADD_MSG_RECV(conf, env, key, msg_recv) \
-        (conf->ops->add_msg_recv(conf , env, key, msg_recv)) 
+        ((conf)->ops->add_msg_recv(conf , env, key, msg_recv)) 
 
 #define AXIS2_CONF_GET_MSG_RECV(conf, env, key) \
-        (conf->ops->get_msg_recv(conf , env, key)) 
+        ((conf)->ops->get_msg_recv(conf , env, key)) 
 
 #define AXIS2_CONF_SET_OUT_PHASES(conf, env, out_phases) \
-        (conf->ops->set_out_phases(conf , env, out_phases)) 
+        ((conf)->ops->set_out_phases(conf , env, out_phases)) 
 
 #define AXIS2_CONF_GET_OUT_PHASES(conf, env) \
-        (conf->ops->get_out_phases(conf , env)) 
+        ((conf)->ops->get_out_phases(conf , env)) 
 
 #define AXIS2_CONF_SET_IN_FAULTPHASES(conf, env, list) \
-        (conf->ops->set_in_faultphases(conf , env, list)) 
+        ((conf)->ops->set_in_faultphases(conf , env, list)) 
 
 #define AXIS2_CONF_SET_OUT_FAULTPHASES(conf, env, list) \
-        (conf->ops->set_out_faultphases(conf , env, list)) 
+        ((conf)->ops->set_out_faultphases(conf , env, list)) 
 
 #define AXIS2_CONF_GET_MODULES(conf, env) \
-        (conf->ops->get_modules(conf , env)) 
+        ((conf)->ops->get_modules(conf , env)) 
 
 #define AXIS2_CONF_ADD_MODULE(conf, env, module) \
-        (conf->ops->add_module(conf , env, module)) 
+        ((conf)->ops->add_module(conf , env, module)) 
  
 #define AXIS2_CONF_SET_DEFAULT_DISPATCHERS(conf, env) \
-        (conf->ops->set_default_dispatchers(conf , env)) 
+        ((conf)->ops->set_default_dispatchers(conf , env)) 
  
 #define AXIS2_CONF_SET_DISPATCH_PHASE(conf, env, dispatch) \
-        (conf->ops->set_dispatch_phase(conf , env, dispatch)) 
+        ((conf)->ops->set_dispatch_phase(conf , env, dispatch)) 
 
 #define AXIS2_CONF_SET_REPOS(conf, env, axis2_repos) \
-        (conf->ops->set_repos(conf , env, axis2_repos))
+        ((conf)->ops->set_repos(conf , env, axis2_repos))
         
 #define AXIS2_CONF_ENGAGE_MODULE(conf, env, module_ref) \
-        (conf->ops->engage_module(conf , env, module_ref))        
+        ((conf)->ops->engage_module(conf , env, module_ref))        
     
 
 /************************* End of function macros *****************************/

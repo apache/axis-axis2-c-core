@@ -89,10 +89,10 @@ axis2_module_create (axis2_env_t **env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_MODULE_INIT(module, env) \
-		((module->ops)->init (module, env))
+		((module)->ops->init (module, env))
 
 #define AXIS2_MODULE_SHUTDOWN(module, env) \
-		((module->ops)->free (module, env))
+		((module)->ops->free (module, env))
 
 
 /** @} */

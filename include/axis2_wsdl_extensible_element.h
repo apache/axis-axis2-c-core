@@ -93,19 +93,19 @@ axis2_wsdl_extensible_element_create (axis2_env_t **env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_EXTENSIBLE_ELEMENT_FREE(extensible_element, env) \
-		((extensible_element->ops)->free (extensible_element, env))
+		((extensible_element)->ops->free (extensible_element, env))
 
 #define AXIS2_WSDL_EXTENSIBLE_ELEMENT_IS_REQUIRED(extensible_element, env) \
-		((extensible_element->ops)->is_required (extensible_element, env))
+		((extensible_element)->ops->is_required (extensible_element, env))
 
 #define AXIS2_WSDL_EXTENSIBLE_ELEMENT_SET_REQUIRED(extensible_element, env, required) \
-		((extensible_element->ops)->set_required (extensible_element, env, required))
+		((extensible_element)->ops->set_required (extensible_element, env, required))
 
 #define AXIS2_WSDL_EXTENSIBLE_ELEMENT_GET_TYPE(extensible_element, env) \
 		(extensible_element->ops->get_type (extensible_element, env))
 
 #define AXIS2_WSDL_EXTENSIBLE_ELEMENT_SET_TYPE(extensible_element, env, type) \
-		((extensible_element->ops)->set_type (extensible_element, env, type))       
+		((extensible_element)->ops->set_type (extensible_element, env, type))       
 
 /*************************** End of function macros ***************************/
 

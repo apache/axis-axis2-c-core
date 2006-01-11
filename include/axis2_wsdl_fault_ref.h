@@ -134,25 +134,25 @@ axis2_wsdl_fault_ref_create (axis2_env_t **env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_FAULT_REF_FREE(wsdl_fault_ref, env) \
-		((wsdl_fault_ref->ops)->free (wsdl_fault_ref, env))
+		((wsdl_fault_ref)->ops->free (wsdl_fault_ref, env))
 
 #define AXIS2_WSDL_FAULT_REF_GET_DIRECTION(wsdl_fault_ref, env) \
-		((wsdl_fault_ref->ops)->get_direction (wsdl_fault_ref, env))
+		((wsdl_fault_ref)->ops->get_direction (wsdl_fault_ref, env))
 
 #define AXIS2_WSDL_FAULT_REF_SET_DIRECTION(wsdl_fault_ref, env, direction) \
-		((wsdl_fault_ref->ops)->set_direction (wsdl_fault_ref, env, direction))       
+		((wsdl_fault_ref)->ops->set_direction (wsdl_fault_ref, env, direction))       
 
 #define AXIS2_WSDL_FAULT_REF_GET_MSG_LABEL(wsdl_fault_ref, env) \
-		((wsdl_fault_ref->ops)->get_msg_label (wsdl_fault_ref, env))
+		((wsdl_fault_ref)->ops->get_msg_label (wsdl_fault_ref, env))
 
 #define AXIS2_WSDL_FAULT_REF_SET_MSG_LABEL(wsdl_fault_ref, env, msg_label) \
-		((wsdl_fault_ref->ops)->set_msg_label (wsdl_fault_ref, env, msg_label))
+		((wsdl_fault_ref)->ops->set_msg_label (wsdl_fault_ref, env, msg_label))
         
 #define AXIS2_WSDL_FAULT_REF_GET_REF(wsdl_fault_ref, env) \
-		((wsdl_fault_ref->ops)->get_ref (wsdl_fault_ref, env))
+		((wsdl_fault_ref)->ops->get_ref (wsdl_fault_ref, env))
 
 #define AXIS2_WSDL_FAULT_REF_SET_REF(wsdl_fault_ref, env, ref) \
-		((wsdl_fault_ref->ops)->set_ref (wsdl_fault_ref, env, ref))        
+		((wsdl_fault_ref)->ops->set_ref (wsdl_fault_ref, env, ref))        
         
 /*************************** End of function macros ***************************/
 

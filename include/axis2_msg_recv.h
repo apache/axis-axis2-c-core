@@ -123,32 +123,32 @@ axis2_msg_recv_create (axis2_env_t **env);
 
 /************************** Start of function macros **************************/
 
-#define AXIS2_MSG_RECV_FREE(msg_recv, env) (msg_recv->ops->free (msg_recv, env))
+#define AXIS2_MSG_RECV_FREE(msg_recv, env) ((msg_recv)->ops->free (msg_recv, env))
 
 #define AXIS2_MSG_RECV_RECEIVE(msg_recv, env, msg_ctx) \
-		(msg_recv->ops->receive (msg_recv, env, msg_ctx))
+		((msg_recv)->ops->receive (msg_recv, env, msg_ctx))
 
 #define AXIS2_MSG_RECV_SET_IN_ONLY(msg_recv, env, in_only) \
-		(msg_recv->ops->set_in_only(msg_recv, env, in_only))
+		((msg_recv)->ops->set_in_only(msg_recv, env, in_only))
 
 #define AXIS2_MSG_RECV_INVOKE_IN_BUSINESS_LOGIC(msg_recv, env, in_msg_ctx) \
-		(msg_recv->ops->invoke_in_business_logic(msg_recv, env, in_msg_ctx))
+		((msg_recv)->ops->invoke_in_business_logic(msg_recv, env, in_msg_ctx))
 
 #define AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC(msg_recv, env, in_msg_ctx, \
-        out_msg_ctx) (msg_recv->ops->invoke_in_out_business_logic(msg_recv, \
+        out_msg_ctx) ((msg_recv)->ops->invoke_in_out_business_logic(msg_recv, \
             env, in_msg_ctx, out_msg_ctx))
 
 #define AXIS2_MSG_RECV_MAKE_NEW_SVC_OBJ(msg_recv, env, msg_ctx) \
-		(msg_recv->ops->make_new_svc_obj(msg_recv, env, msg_ctx))
+		((msg_recv)->ops->make_new_svc_obj(msg_recv, env, msg_ctx))
 
 #define AXIS2_MSG_RECV_GET_IMPL_OBJ(msg_recv, env, msg_ctx) \
-		(msg_recv->ops->get_impl_obj(msg_recv, env, msg_ctx))
+		((msg_recv)->ops->get_impl_obj(msg_recv, env, msg_ctx))
         
 #define AXIS2_MSG_RECV_SET_SCOPE(msg_recv, env, scope) \
-		(msg_recv->ops->set_scope(msg_recv, env, scope))
+		((msg_recv)->ops->set_scope(msg_recv, env, scope))
 
 #define AXIS2_MSG_RECV_GET_SCOPE(msg_recv, env) \
-		(msg_recv->ops->get_scope(msg_recv, env))
+		((msg_recv)->ops->get_scope(msg_recv, env))
 
 
 /************************** End of function macros ****************************/

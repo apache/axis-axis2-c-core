@@ -119,19 +119,19 @@ axis2_wsdl_endpoint_create (axis2_env_t **env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_ENDPOINT_FREE(wsdl_endpoint, env) \
-		((wsdl_endpoint->ops)->free (wsdl_endpoint, env))
+		((wsdl_endpoint)->ops->free (wsdl_endpoint, env))
 
 #define AXIS2_WSDL_ENDPOINT_GET_NAME(wsdl_endpoint, env) \
-		((wsdl_endpoint->ops)->get_name (wsdl_endpoint, env))
+		((wsdl_endpoint)->ops->get_name (wsdl_endpoint, env))
 
 #define AXIS2_WSDL_ENDPOINT_SET_NAME(wsdl_endpoint, env, qname) \
-		((wsdl_endpoint->ops)->set_name (wsdl_endpoint, env, qname))
+		((wsdl_endpoint)->ops->set_name (wsdl_endpoint, env, qname))
         
 #define AXIS2_WSDL_ENDPOINT_GET_BINDING(wsdl_endpoint, env) \
-		((wsdl_endpoint->ops)->get_binding (wsdl_endpoint, env))
+		((wsdl_endpoint)->ops->get_binding (wsdl_endpoint, env))
 
 #define AXIS2_WSDL_ENDPOINT_SET_BINDING(wsdl_endpoint, env, wsdl_binding) \
-		((wsdl_endpoint->ops)->set_binding (wsdl_endpoint, env, wsdl_binding))        
+		((wsdl_endpoint)->ops->set_binding (wsdl_endpoint, env, wsdl_binding))        
 
 /*************************** End of function macros ***************************/
 

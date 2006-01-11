@@ -416,157 +416,157 @@ axis2_op_create_with_wsdl_op (axis2_env_t **env,
 /************************** Start of function macros **************************/
 
 #define AXIS2_OP_FREE(op, env) \
-        ((op->ops)->free (op, env))
+        ((op)->ops->free (op, env))
 
 #define AXIS2_OP_ADD_PARAM(op, env, param) \
-		((op->ops)->add_param (op, env, param))
+		((op)->ops->add_param (op, env, param))
 
 #define AXIS2_OP_GET_PARAM(op, env, key) \
-		((op->ops)->get_param (op, env, key))
+		((op)->ops->get_param (op, env, key))
 
 #define AXIS2_OP_GET_PARAMS(op, env) \
-		((op->ops)->get_params (op, env))
+		((op)->ops->get_params (op, env))
 
 #define AXIS2_OP_IS_PARAM_LOCKED(op, env, param_name) \
-        ((op->ops)->is_param_locked(op, env, param_name))
+        ((op)->ops->is_param_locked(op, env, param_name))
 
 #define AXIS2_OP_SET_PARENT(op, env, service_desc) \
-        ((op->ops)->set_parent (op, env, service_desc))
+        ((op)->ops->set_parent (op, env, service_desc))
 
 #define AXIS2_OP_GET_PARENT(op, env) \
-		((op->ops)->get_parent (op, env))
+		((op)->ops->get_parent (op, env))
 
 #define AXIS2_OP_SET_MSG_RECEIVER(op, env, msg_recv) \
-        ((op->ops)->set_msg_recv (op, env, msg_recv))
+        ((op)->ops->set_msg_recv (op, env, msg_recv))
 
 #define AXIS2_OP_GET_MSG_RECEIVER(op, env) \
-		((op->ops)->get_msg_recv (op, env))
+		((op)->ops->get_msg_recv (op, env))
 
 #define AXIS2_OP_SET_NAME(op, env, qname) \
-		((op->ops)->set_name (op, env, qname))
+		((op)->ops->set_name (op, env, qname))
         
 #define AXIS2_OP_GET_QNAME(op, env) \
-		((op->ops)->get_qname (op, env))
+		((op)->ops->get_qname (op, env))
 
 #define AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op , env, \
         msg_exchange_pattern) \
-		((op->ops)->set_msg_exchange_pattern (op, env, \
+		((op)->ops->set_msg_exchange_pattern (op, env, \
         msg_exchange_pattern))
 
 #define AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env) \
-		((op->ops)->get_msg_exchange_pattern (op, env))
+		((op)->ops->get_msg_exchange_pattern (op, env))
         
 #define AXIS2_OP_GET_STYLE(op, env) \
-		((op->ops)->get_style (op, env))
+		((op)->ops->get_style (op, env))
         
 #define AXIS2_OP_SET_STYLE(op, env, style) \
-		((op->ops)->set_style (op, env, style))   
+		((op)->ops->set_style (op, env, style))   
 
 #define AXIS2_OP_ENGAGE_MODULE(op, env, moduleref) \
-		((op->ops)->engage_module (op, env, moduleref))
+		((op)->ops->engage_module (op, env, moduleref))
         
 #define AXIS2_OP_ADD_TO_ENGAGE_MODULE_LIST(op, env, module_name) \
-		((op->ops)->add_to_engage_module_list (op, env, module_name))
+		((op)->ops->add_to_engage_module_list (op, env, module_name))
 
 #define AXIS2_OP_GET_MODULES(op, env) \
-		((op->ops)->get_modules (op, env))
+		((op)->ops->get_modules (op, env))
         
 #define AXIS2_OP_GET_AXIS_SPECIFIC_MEP_CONST(op, env) \
-		((op->ops)->get_axis_specific_mep_const (op, env))
+		((op)->ops->get_axis_specific_mep_const (op, env))
 
 #define AXIS2_OP_GET_PHASES_IN_FAULT_FLOW(op, env) \
-		((op->ops)->get_phases_in_fault_flow (op, env))
+		((op)->ops->get_phases_in_fault_flow (op, env))
         
 #define AXIS2_OP_GET_PHASES_OUT_FAULT_FLOW(op, env) \
-		((op->ops)->get_phases_out_fault_flow (op, env))
+		((op)->ops->get_phases_out_fault_flow (op, env))
 
 #define AXIS2_OP_GET_PHASES_OUTFLOW(op, env) \
-		((op->ops)->get_phases_outflow (op, env))
+		((op)->ops->get_phases_outflow (op, env))
  
 #define AXIS2_OP_GET_REMAINING_PHASES_INFLOW(op, env) \
-		((op->ops)->get_remaining_phases_inflow (op, env))    
+		((op)->ops->get_remaining_phases_inflow (op, env))    
 
 #define AXIS2_OP_SET_PHASES_IN_FAULT_FLOW(op, env, list) \
-		((op->ops)->set_phases_in_fault_flow (op, env, list))    
+		((op)->ops->set_phases_in_fault_flow (op, env, list))    
 
 #define AXIS2_OP_SET_PHASES_OUT_FAULT_FLOW(op, env, list) \
-		((op->ops)->set_phases_out_fault_flow (op, env, list))   
+		((op)->ops->set_phases_out_fault_flow (op, env, list))   
 
 #define AXIS2_OP_SET_PHASES_OUTFLOW(op, env, list) \
-		((op->ops)->set_phases_outflow (op, env, list)) 
+		((op)->ops->set_phases_outflow (op, env, list)) 
         
 #define AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op, env, list) \
-		((op->ops)->set_remaining_phases_inflow (op, env, list))
+		((op)->ops->set_remaining_phases_inflow (op, env, list))
         
 #define AXIS2_OP_ADD_MODULE(op, env, module_name) \
-		((op->ops)->add_module (op, env, module_name))
+		((op)->ops->add_module (op, env, module_name))
 
 #define AXIS2_OP_GET_MODULE_REFS(op, env) \
-		((op->ops)->get_module_refs (op, env))
+		((op)->ops->get_module_refs (op, env))
         
 #define AXIS2_OP_GET_IN_FAULTS(op, env) \
-		((op->ops)->get_in_faults (op, env))
+		((op)->ops->get_in_faults (op, env))
 
 #define AXIS2_OP_SET_IN_FAULTS(op, env) \
-		((op->ops)->set_in_faults (op, env, in_faults))
+		((op)->ops->set_in_faults (op, env, in_faults))
         
 #define AXIS2_OP_GET_INPUT_MSG(op, env) \
-		((op->ops)->get_input_msg (op, env))
+		((op)->ops->get_input_msg (op, env))
 
 #define AXIS2_OP_SET_INPUT_MSG(op, env) \
-		((op->ops)->set_input_msg (op, env, input_msg))
+		((op)->ops->set_input_msg (op, env, input_msg))
         
 #define AXIS2_OP_GET_OUT_FAULTS(op, env) \
-		((op->ops)->get_out_faults (op, env))
+		((op)->ops->get_out_faults (op, env))
 
 #define AXIS2_OP_SET_OUT_FAULTS(op, env) \
-		((op->ops)->set_out_faults (op, env, out_faults))
+		((op)->ops->set_out_faults (op, env, out_faults))
         
 #define AXIS2_OP_GET_OUTPUT_MSG(op, env) \
-		((op->ops)->get_output_msg (op, env))
+		((op)->ops->get_output_msg (op, env))
 
 #define AXIS2_OP_SET_OUTPUT_MSG(op, env) \
-		((op->ops)->set_output_msg (op, env, output_msg))
+		((op)->ops->set_output_msg (op, env, output_msg))
         
 #define AXIS2_OP_IS_SAFE(op, env) \
-		((op->ops)->is_safe (op, env))
+		((op)->ops->is_safe (op, env))
 
 #define AXIS2_OP_SET_SAFETY(op, env, safe) \
-		((op->ops)->set_safety (op, env, safe))
+		((op)->ops->set_safety (op, env, safe))
         
 #define AXIS2_OP_GET_TARGET_NAMESPACE(op, env) \
-		((op->ops)->get_target_namespace (op, env))
+		((op)->ops->get_target_namespace (op, env))
 
 #define AXIS2_OP_ADD_IN_FAULT(op, env, in_fault) \
-		((op->ops)->add_in_fault (op, env, in_fault))
+		((op)->ops->add_in_fault (op, env, in_fault))
         
 #define AXIS2_OP_ADD_OUT_FAULT(op, env, out_fault) \
-		((op->ops)->add_out_fault (op, env, out_fault))
+		((op)->ops->add_out_fault (op, env, out_fault))
 
 #define AXIS2_OP_ADD_FEATURE(op, env, feature) \
-		((op->ops)->add_feature (op, env, feature))
+		((op)->ops->add_feature (op, env, feature))
         
 #define AXIS2_OP_GET_FEATURES(op, env) \
-		((op->ops)->get_features(op, env))
+		((op)->ops->get_features(op, env))
 
 #define AXIS2_OP_ADD_PROPERTY(op, env, wsdl_property) \
-		((op->ops)->add_property (op, env, wsdl_property))
+		((op)->ops->add_property (op, env, wsdl_property))
         
 #define AXIS2_OP_GET_PROPERTIES(op, env) \
-		((op->ops)->get_properties (op, env, properties))
+		((op)->ops->get_properties (op, env, properties))
 
 #define AXIS2_OP_SET_WSDL_OP(op, env, wsdl_op) \
-		((op->ops)->set_wsdl_op (op, env, wsdl_op))
+		((op)->ops->set_wsdl_op (op, env, wsdl_op))
   
 
 #define AXIS2_OP_FIND_OP_CTX(op, env, msg_ctx, svc_ctx) \
-		((op->ops)->find_op_ctx (op, env, msg_ctx, svc_ctx))
+		((op)->ops->find_op_ctx (op, env, msg_ctx, svc_ctx))
         
 #define AXIS2_OP_FIND_FOR_EXISTING_OP_CTX(op, env, wsdl_op) \
-		((op->ops)->find_for_existing_op_ctx (op, env, wsdl_op))
+		((op)->ops->find_for_existing_op_ctx (op, env, wsdl_op))
 
 #define AXIS2_OP_REGISTER_OP_CTX(op, env, msg_ctx, wsdl_op) \
-		((op->ops)->register_op_ctx (op, env, msg_ctx, wsdl_op))
+		((op)->ops->register_op_ctx (op, env, msg_ctx, wsdl_op))
    
 
 /************************** End of function macros ****************************/

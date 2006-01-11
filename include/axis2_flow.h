@@ -101,16 +101,16 @@ axis2_flow_create (axis2_env_t **env);
 
 /*************************** Function macros **********************************/
 
-#define AXIS2_FLOW_FREE(flow, env) ((flow->ops)->free (flow, env))
+#define AXIS2_FLOW_FREE(flow, env) ((flow)->ops->free (flow, env))
 
 #define AXIS2_FLOW_ADD_HANDLER(flow, env, handler) \
-		((flow->ops)->add_handler (flow, env, handler))
+		((flow)->ops->add_handler (flow, env, handler))
 
 #define AXIS2_FLOW_GET_HANDLER(flow, env, index) \
-		((flow->ops)->get_handler (flow, env, index))
+		((flow)->ops->get_handler (flow, env, index))
 
 #define AXIS2_FLOW_GET_HANDLER_COUNT(flow, env) \
-		((flow->ops)->get_handler_count (flow, env))
+		((flow)->ops->get_handler_count (flow, env))
 
 /*************************** End of function macros ***************************/
 

@@ -184,50 +184,50 @@ axis2_wsdl_binding_op_create (axis2_env_t **env);
 /**************************** Start of function macros ************************/
 
 #define AXIS2_WSDL_BINDING_OP_FREE(wsdl_binding_op, env) \
-		((wsdl_binding_op->ops)->free (wsdl_binding_op, env))
+		((wsdl_binding_op)->ops->free (wsdl_binding_op, env))
 
 #define AXIS2_WSDL_BINDING_OP_SET_INPUT(wsdl_binding_op, env, \
 		inut) \
-		((wsdl_binding_op->ops)->set_input(wsdl_binding_op , env, \
+		((wsdl_binding_op)->ops->set_input(wsdl_binding_op , env, \
             input)
 	
 #define AXIS2_WSDL_BINDING_OP_GET_OP(wsdl_binding_op, env) \
-		((wsdl_binding_op->ops)->get_op(wsdl_binding_op, env))
+		((wsdl_binding_op)->ops->get_op(wsdl_binding_op, env))
 
 #define AXIS2_WSDL_BINDING_OP_SET_OP(wsdl_binding_op, env, \
 		key, op) \
-		((wsdl_binding_op->ops)->set_op(wsdl_binding_op, env,\
+		((wsdl_binding_op)->ops->set_op(wsdl_binding_op, env,\
             key, op))
 		
 #define AXIS2_WSDL_BINDING_OP_GET_OUTPUT(wsdl_binding_op, env) \
-		((wsdl_binding_op->ops)->get_output(wsdl_binding_op, env))
+		((wsdl_binding_op)->ops->get_output(wsdl_binding_op, env))
         
 #define AXIS2_WSDL_BINDING_OP_SET_OUTPUT(wsdl_binding_op, env, output) \
-		((wsdl_binding_op->ops)->set_output(wsdl_binding_op, env, output))
+		((wsdl_binding_op)->ops->set_output(wsdl_binding_op, env, output))
 
 #define AXIS2_WSDL_BINDING_OP_GET_QNAME(wsdl_binding_op, env) \
-		((wsdl_binding_op->ops)->get_qname(wsdl_binding_op, env))
+		((wsdl_binding_op)->ops->get_qname(wsdl_binding_op, env))
         
 #define AXIS2_WSDL_BINDING_OP_SET_QNAME(wsdl_binding_op, env, qname) \
-		((wsdl_binding_op->ops)->set_qname(wsdl_binding_op, env, qname))
+		((wsdl_binding_op)->ops->set_qname(wsdl_binding_op, env, qname))
 
 #define AXIS2_WSDL_BINDING_OP_ADD_IN_FAULT(wsdl_binding_op, env, in_fault) \
-		((wsdl_binding_op->ops)->add_in_fault(wsdl_binding_op, env, in_fault))
+		((wsdl_binding_op)->ops->add_in_fault(wsdl_binding_op, env, in_fault))
         
 #define AXIS2_WSDL_BINDING_OP_ADD_OUT_FAULT(wsdl_binding_op, env, out_fault) \
-		((wsdl_binding_op->ops)->add_out_fault(wsdl_binding_op, env, out_fault))
+		((wsdl_binding_op)->ops->add_out_fault(wsdl_binding_op, env, out_fault))
 
 #define AXIS2_WSDL_BINDING_OP_GET_IN_FAULTS(wsdl_binding_op, env) \
-		((wsdl_binding_op->ops)->get_in_faults(wsdl_binding_op, env))
+		((wsdl_binding_op)->ops->get_in_faults(wsdl_binding_op, env))
         
 #define AXIS2_WSDL_BINDING_OP_SET_IN_FAULTS(wsdl_binding_op, env, in_faults) \
-		((wsdl_binding_op->ops)->set_in_faults(wsdl_binding_op, env, in_faults))        
+		((wsdl_binding_op)->ops->set_in_faults(wsdl_binding_op, env, in_faults))        
 
 #define AXIS2_WSDL_BINDING_OP_GET_OUT_FAULTS(wsdl_binding_op, env) \
-		((wsdl_binding_op->ops)->get_out_faults(wsdl_binding_op, env))
+		((wsdl_binding_op)->ops->get_out_faults(wsdl_binding_op, env))
         
 #define AXIS2_WSDL_BINDING_OP_SET_OUT_FAULTS(wsdl_binding_op, env, out_faults) \
-		((wsdl_binding_op->ops)->set_out_faults(wsdl_binding_op, env, out_faults))
+		((wsdl_binding_op)->ops->set_out_faults(wsdl_binding_op, env, out_faults))
      
 /**************************** End of function macros **************************/
 

@@ -136,25 +136,25 @@ AXIS2_DECLARE(axis2_wsdl_property_t *) axis2_wsdl_property_create (axis2_env_t *
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_PROPERTY_FREE(wsdl_property, env) \
-		((wsdl_property->ops)->free (wsdl_property, env))
+		((wsdl_property)->ops->free (wsdl_property, env))
 
 #define AXIS2_WSDL_PROPERTY_GET_CONSTRAINT(wsdl_property, env) \
-		((wsdl_property->ops)->set_constraint (wsdl_property, env))
+		((wsdl_property)->ops->set_constraint (wsdl_property, env))
 
 #define AXIS2_WSDL_PROPERTY_SET_CONSTRAINT(wsdl_property, env, constraint) \
-		((wsdl_property->ops)->get_constraint (wsdl_property, env, constraint))
+		((wsdl_property)->ops->get_constraint (wsdl_property, env, constraint))
 
 #define AXIS2_WSDL_PROPERTY_GET_NAME(wsdl_property, env) \
-		((wsdl_property->ops)->get_name (wsdl_property, env))
+		((wsdl_property)->ops->get_name (wsdl_property, env))
 
 #define AXIS2_WSDL_PROPERTY_SET_NAME(wsdl_property, env, name) \
-		((wsdl_property->ops)->set_name (wsdl_property, env, name))
+		((wsdl_property)->ops->set_name (wsdl_property, env, name))
         
 #define AXIS2_WSDL_PROPERTY_GET_VALUE(wsdl_property, env) \
-		((wsdl_property->ops)->get_value (wsdl_property, env))
+		((wsdl_property)->ops->get_value (wsdl_property, env))
 
 #define AXIS2_WSDL_PROPERTY_SET_VALUE(wsdl_property, env, value) \
-		((wsdl_property->ops)->set_value (wsdl_property, env, value))        
+		((wsdl_property)->ops->set_value (wsdl_property, env, value))        
 
 /*************************** End of function macros ***************************/
 

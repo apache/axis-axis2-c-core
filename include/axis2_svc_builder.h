@@ -131,13 +131,13 @@ axis2_svc_builder_create_with_dep_engine_and_svc (axis2_env_t **env,
 /*************************** Function macros **********************************/
 
 #define AXIS2_SVC_BUILDER_FREE(svc_builder, env) \
-		((svc_builder->ops)->free (svc_builder, env))
+		((svc_builder)->ops->free (svc_builder, env))
 
 #define AXIS2_SVC_BUILDER_POPULATE_SVC(svc_builder, env, svc_node) \
-		((svc_builder->ops)->populate_svc (svc_builder, env, svc_node))
+		((svc_builder)->ops->populate_svc (svc_builder, env, svc_node))
 
 #define AXIS2_SVC_BUILDER_PROCESS_MODULE_REFS(svc_builder, env, module_refs) \
-		((svc_builder->ops)->process_module_refs (svc_builder, env, module_refs))
+		((svc_builder)->ops->process_module_refs (svc_builder, env, module_refs))
 
 
 /*************************** End of function macros ***************************/

@@ -96,10 +96,10 @@ axis2_module_builder_create_with_file_and_dep_engine_module (axis2_env_t **env,
 /*************************** Function macros **********************************/
 
 #define AXIS2_MODULE_BUILDER_FREE(module_builder, env) \
-		((module_builder->ops)->free (module_builder, env))
+		((module_builder)->ops->free (module_builder, env))
 
 #define AXIS2_MODULE_BUILDER_POPULATE_MODULE(module_builder, env) \
-		((module_builder->ops)->populate_module (module_builder, env))
+		((module_builder)->ops->populate_module (module_builder, env))
 
 /*************************** End of function macros ***************************/
 

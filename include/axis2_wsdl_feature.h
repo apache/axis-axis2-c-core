@@ -117,19 +117,19 @@ AXIS2_DECLARE(axis2_wsdl_feature_t *) axis2_wsdl_feature_create (axis2_env_t **e
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_FEATURE_FREE(wsdl_feature, env) \
-		((wsdl_feature->ops)->free (wsdl_feature, env))
+		((wsdl_feature)->ops->free (wsdl_feature, env))
 
 #define AXIS2_WSDL_FEATURE_GET_NAME(wsdl_feature, env) \
-		((wsdl_feature->ops)->get_name (wsdl_feature, env))
+		((wsdl_feature)->ops->get_name (wsdl_feature, env))
 
 #define AXIS2_WSDL_FEATURE_SET_NAME(wsdl_feature, env, name) \
-		((wsdl_feature->ops)->set_name (wsdl_feature, env, name))
+		((wsdl_feature)->ops->set_name (wsdl_feature, env, name))
         
 #define AXIS2_WSDL_FEATURE_IS_REQUIRED(wsdl_feature, env) \
-		((wsdl_feature->ops)->is_required (wsdl_feature, env))
+		((wsdl_feature)->ops->is_required (wsdl_feature, env))
 
 #define AXIS2_WSDL_FEATURE_SET_REQUIRED(wsdl_feature, env, required) \
-		((wsdl_feature->ops)->set_required (wsdl_feature, env, required))        
+		((wsdl_feature)->ops->set_required (wsdl_feature, env, required))        
 
 /*************************** End of function macros ***************************/
 

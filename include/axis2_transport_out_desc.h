@@ -151,43 +151,43 @@ axis2_transport_out_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qn
 /*************************** Function macros **********************************/
 
 #define AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out_desc, env) \
-		((transport_out_desc->ops)->free (transport_out_desc, env))
+		((transport_out_desc)->ops->free (transport_out_desc, env))
 
 #define AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport_out_desc, env) \
-		((transport_out_desc->ops)->get_qname (transport_out_desc, env))
+		((transport_out_desc)->ops->get_qname (transport_out_desc, env))
 
 #define AXIS2_TRANSPORT_OUT_DESC_SET_QNAME(transport_out_desc, env, qname) \
-		((transport_out_desc->ops)->set_qname (transport_out_desc, env, qname))
+		((transport_out_desc)->ops->set_qname (transport_out_desc, env, qname))
 
 #define AXIS2_TRANSPORT_OUT_DESC_GET_OUTFLOW(transport_out_desc, env) \
-		((transport_out_desc->ops)->get_outflow (transport_out_desc, env))
+		((transport_out_desc)->ops->get_outflow (transport_out_desc, env))
 
 #define AXIS2_TRANSPORT_OUT_DESC_SET_OUTFLOW(transport_out_desc, env, outflow) \
-		((transport_out_desc->ops)->set_outflow (transport_out_desc, env, outflow))       
+		((transport_out_desc)->ops->set_outflow (transport_out_desc, env, outflow))       
 
 #define AXIS2_TRANSPORT_OUT_DESC_GET_FAULTFLOW(transport_out_desc, env) \
-		((transport_out_desc->ops)->get_faultflow (transport_out_desc, env)) 
+		((transport_out_desc)->ops->get_faultflow (transport_out_desc, env)) 
         
 #define AXIS2_TRANSPORT_OUT_DESC_SET_FAULTFLOW(transport_out_desc, env, faultflow) \
-		((transport_out_desc->ops)->set_faultflow (transport_out_desc, env, faultflow)) 
+		((transport_out_desc)->ops->set_faultflow (transport_out_desc, env, faultflow)) 
 
 #define AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out_desc, env) \
-		((transport_out_desc->ops)->get_sender (transport_out_desc, env)) 
+		((transport_out_desc)->ops->get_sender (transport_out_desc, env)) 
         
 #define AXIS2_TRANSPORT_OUT_DESC_SET_SENDER(transport_out_desc, env, sender) \
-		((transport_out_desc->ops)->set_sender (transport_out_desc, env, sender)) 
+		((transport_out_desc)->ops->set_sender (transport_out_desc, env, sender)) 
 
 #define AXIS2_TRANSPORT_OUT_DESC_GET_OUT_PHASE(transport_out_desc, env) \
-		((transport_out_desc->ops)->get_out_phase (transport_out_desc, env)) 
+		((transport_out_desc)->ops->get_out_phase (transport_out_desc, env)) 
         
 #define AXIS2_TRANSPORT_OUT_DESC_SET_OUT_PHASE(transport_out_desc, env, out_phase) \
-		((transport_out_desc->ops)->set_out_phase (transport_out_desc, env, out_phase)) 
+		((transport_out_desc)->ops->set_out_phase (transport_out_desc, env, out_phase)) 
 
 #define AXIS2_TRANSPORT_OUT_DESC_GET_FAULTPHASE(transport_out_desc, env) \
-		((transport_out_desc->ops)->get_faultphase (transport_out_desc, env)) 
+		((transport_out_desc)->ops->get_faultphase (transport_out_desc, env)) 
         
 #define AXIS2_TRANSPORT_OUT_DESC_SET_FAULTPHASE(transport_out_desc, env, faultphase) \
-		((transport_out_desc->ops)->set_faultphase (transport_out_desc, env, faultphase))
+		((transport_out_desc)->ops->set_faultphase (transport_out_desc, env, faultphase))
 
 /*************************** End of function macros ***************************/
 

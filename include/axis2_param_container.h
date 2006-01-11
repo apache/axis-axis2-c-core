@@ -115,19 +115,19 @@ AXIS2_DECLARE(axis2_param_container_t *) axis2_param_container_create (axis2_env
 /*************************** Function macros **********************************/
 
 #define AXIS2_PARAM_CONTAINER_FREE(param_container, env) \
-		((param_container->ops)->free (param_container, env))
+		((param_container)->ops->free (param_container, env))
 
 #define AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container, env, param) \
-		((param_container->ops)->add_param (param_container, env, param))
+		((param_container)->ops->add_param (param_container, env, param))
 
 #define AXIS2_PARAM_CONTAINER_GET_PARAM(param_container, env, name) \
-		((param_container->ops)->get_param (param_container, env, name))
+		((param_container)->ops->get_param (param_container, env, name))
 
 #define AXIS2_PARAM_CONTAINER_GET_PARAMS(param_container, env) \
-		((param_container->ops)->get_params (param_container, env))
+		((param_container)->ops->get_params (param_container, env))
 
 #define AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(param_container, env, param_name) \
-		((param_container->ops)->is_param_locked (param_container, env, \
+		((param_container)->ops->is_param_locked (param_container, env, \
 		param_name))
 
 /*************************** End of function macros ***************************/

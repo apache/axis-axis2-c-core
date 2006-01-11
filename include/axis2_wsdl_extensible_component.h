@@ -124,19 +124,19 @@ axis2_wsdl_extensible_component_create (axis2_env_t **env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_EXTENSIBLE_COMPONENT_FREE(extensible_component, env) \
-		((extensible_component->ops)->free (extensible_component, env))
+		((extensible_component)->ops->free (extensible_component, env))
 
 #define AXIS2_WSDL_EXTENSIBLE_COMPONENT_ADD_FEATURE(extensible_component, env, feature) \
-		((extensible_component->ops)->add_feature (extensible_component, env, feature))
+		((extensible_component)->ops->add_feature (extensible_component, env, feature))
 
 #define AXIS2_WSDL_EXTENSIBLE_COMPONENT_GET_FEATURES(extensible_component, env) \
-		((extensible_component->ops)->get_features (extensible_component, env))
+		((extensible_component)->ops->get_features (extensible_component, env))
 
 #define AXIS2_WSDL_EXTENSIBLE_COMPONENT_ADD_PROPERTY(extensible_component, env, property) \
-		((extensible_component->ops)->add_property (extensible_component, env, property))
+		((extensible_component)->ops->add_property (extensible_component, env, property))
 
 #define AXIS2_WSDL_EXTENSIBLE_COMPONENT_GET_PROPERTIES(extensible_component, env) \
-		((extensible_component->ops)->get_properties (extensible_component, env))       
+		((extensible_component)->ops->get_properties (extensible_component, env))       
 
 /*************************** End of function macros ***************************/
 

@@ -169,35 +169,35 @@ axis2_wsdl_svc_create (axis2_env_t **env);
 
 /**************************** Start of function macros ************************/
 
-#define AXIS2_WSDL_SVC_FREE(wsdl_svc, env) ((wsdl_svc->ops)->free (wsdl_svc, \
+#define AXIS2_WSDL_SVC_FREE(wsdl_svc, env) ((wsdl_svc)->ops->free (wsdl_svc, \
 		env))
 
 #define AXIS2_WSDL_SVC_GET_NAME(wsdl_svc, env) \
-        ((wsdl_svc->ops)->get_name (wsdl_svc, env))
+        ((wsdl_svc)->ops->get_name (wsdl_svc, env))
 
 #define AXIS2_WSDL_SVC_SET_NAME(wsdl_svc, env, qname) \
-        ((wsdl_svc->ops)->set_name (wsdl_svc, env, qname))
+        ((wsdl_svc)->ops->set_name (wsdl_svc, env, qname))
 
 #define AXIS2_WSDL_SVC_GET_ENDPOINTS(wsdl_svc, env) \
-        ((wsdl_svc->ops)->get_endpoints(wsdl_svc, env))
+        ((wsdl_svc)->ops->get_endpoints(wsdl_svc, env))
 
 #define AXIS2_WSDL_SVC_SET_ENDPOINTS(wsdl_svc, env, endpoints) \
-        ((wsdl_svc->ops)->set_endpoints(wsdl_svc, env, endpoints))
+        ((wsdl_svc)->ops->set_endpoints(wsdl_svc, env, endpoints))
 
 #define AXIS2_WSDL_SVC_SET_ENDPOINT(wsdl_svc, env, endpoint) \
-        ((wsdl_svc->ops)->set_endpoint(wsdl_svc, env, endpoint))
+        ((wsdl_svc)->ops->set_endpoint(wsdl_svc, env, endpoint))
 
 #define AXIS2_WSDL_SVC_GET_ENDPOINT(wsdl_svc, env, qname) \
-        ((wsdl_svc->ops)->get_endpoint(wsdl_svc, env, qname))
+        ((wsdl_svc)->ops->get_endpoint(wsdl_svc, env, qname))
 
 #define AXIS2_WSDL_SVC_GET_NAMESPACE(wsdl_svc, env) \
-        ((wsdl_svc->ops)->get_namespace(wsdl_svc, env))
+        ((wsdl_svc)->ops->get_namespace(wsdl_svc, env))
         
 #define AXIS2_WSDL_SVC_GET_SVC_INTERFACE(wsdl_svc, env) \
-        ((wsdl_svc->ops)->get_svc_interface(wsdl_svc, env))        
+        ((wsdl_svc)->ops->get_svc_interface(wsdl_svc, env))        
 
 #define AXIS2_WSDL_SVC_SET_SVC_INTERFACE(wsdl_svc, env, svc_interface) \
-        ((wsdl_svc->ops)->set_svc_interface(wsdl_svc, env, svc_interface))
+        ((wsdl_svc)->ops->set_svc_interface(wsdl_svc, env, svc_interface))
         
 /**************************** End of function macros **************************/
 /** @} */

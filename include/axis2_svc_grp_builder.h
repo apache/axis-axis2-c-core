@@ -104,14 +104,14 @@ axis2_svc_grp_builder_create_with_svc_and_dep_engine (axis2_env_t **env,
 /*************************** Function macros **********************************/
 
 #define AXIS2_SVC_GRP_BUILDER_FREE(svc_grp_builder, env) \
-		((svc_grp_builder->ops)->free (svc_grp_builder, env))
+		((svc_grp_builder)->ops->free (svc_grp_builder, env))
 
 #define AXIS2_SVC_GRP_BUILDER_POPULATE_SVC_GRP(svc_grp_builder, env, svc_grp) \
-		((svc_grp_builder->ops)->populate_svc_grp (svc_grp_builder, env, svc_grp))
+		((svc_grp_builder)->ops->populate_svc_grp (svc_grp_builder, env, svc_grp))
 
 #define AXIS2_SVC_GRP_BUILDER_PROCESS_MODULE_REFS(svc_grp_builder, env, \
         module_refs, svc_grp) \
-		((svc_grp_builder->ops)->process_module_refs (svc_grp_builder, env, \
+		((svc_grp_builder)->ops->process_module_refs (svc_grp_builder, env, \
             module_refs, svc_grp))
 
 /*************************** End of function macros ***************************/

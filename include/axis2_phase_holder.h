@@ -143,19 +143,19 @@ axis2_phase_holder_create_with_phases (axis2_env_t **env, axis2_array_list_t *ph
 /*************************** Function macros **********************************/
 
 #define AXIS2_PHASE_HOLDER_FREE(phase_holder, env) \
-		((phase_holder->ops)->free (phase_holder, env))
+		((phase_holder)->ops->free (phase_holder, env))
 
 #define AXIS2_PHASE_HOLDER_IS_PHASE_EXIST(phase_holder, env, phase_name) \
-		((phase_holder->ops)->is_phase_exist (phase_holder, env, phase_name))
+		((phase_holder)->ops->is_phase_exist (phase_holder, env, phase_name))
 
 #define AXIS2_PHASE_HOLDER_ADD_HANDLER(phase_holder, env, handler) \
-		((phase_holder->ops)->add_handler (phase_holder, env, handler))
+		((phase_holder)->ops->add_handler (phase_holder, env, handler))
 
 #define AXIS2_PHASE_HOLDER_GET_PHASE(phase_holder, env, phase_name) \
-		((phase_holder->ops)->get_phase (phase_holder, env, phase_name))
+		((phase_holder)->ops->get_phase (phase_holder, env, phase_name))
 
 #define AXIS2_PHASE_HOLDER_BUILD_TRANSPORT_HANDLER_CHAIN(phase_holder, env, phase, handlers) \
-		((phase_holder->ops)->build_transport_handler_chain (phase_holder, env, phase, handlers))       
+		((phase_holder)->ops->build_transport_handler_chain (phase_holder, env, phase, handlers))       
 
 /*************************** End of function macros ***************************/
 

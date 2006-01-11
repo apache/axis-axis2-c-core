@@ -438,141 +438,141 @@ axis2_svc_create_with_wsdl_svc (axis2_env_t **env,
 
 /**************************** Start of function macros ************************/
 
-#define AXIS2_SVC_FREE(svc, env) (svc->ops->free (svc, env))
+#define AXIS2_SVC_FREE(svc, env) ((svc)->ops->free (svc, env))
 
 #define AXIS2_SVC_ADD_OP(svc, env, op) \
-		(svc->ops->add_op (svc, env, op))
+		((svc)->ops->add_op (svc, env, op))
 
 #define AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname) \
-		(svc->ops->get_op_with_qname (svc, env, op_qname))
+		((svc)->ops->get_op_with_qname (svc, env, op_qname))
 
 #define AXIS2_SVC_GET_OP_WITH_NAME(svc, env, op_name) \
-		(svc->ops->get_op_with_name (svc, env, op_name))
+		((svc)->ops->get_op_with_name (svc, env, op_name))
 
-#define AXIS2_SVC_GET_OPS(svc, env) (svc->ops->get_ops (svc, env))
+#define AXIS2_SVC_GET_OPS(svc, env) ((svc)->ops->get_ops (svc, env))
 
-#define AXIS2_SVC_SET_PARENT(svc, env , svc_grp) (svc->ops->set_parent \
+#define AXIS2_SVC_SET_PARENT(svc, env , svc_grp) ((svc)->ops->set_parent \
         (svc, env, svc_grp))
 
-#define AXIS2_SVC_GET_PARENT(svc, env) (svc->ops->get_parent (svc, env))
+#define AXIS2_SVC_GET_PARENT(svc, env) ((svc)->ops->get_parent (svc, env))
 
-#define AXIS2_SVC_SET_QNAME(svc, env, qname) (svc->ops->set_qname(svc , env, qname))
+#define AXIS2_SVC_SET_QNAME(svc, env, qname) ((svc)->ops->set_qname(svc , env, qname))
 
-#define AXIS2_SVC_GET_QNAME(svc, env) (svc->ops->get_qname(svc , env))
+#define AXIS2_SVC_GET_QNAME(svc, env) ((svc)->ops->get_qname(svc , env))
 		
-#define AXIS2_SVC_ADD_PARAM(svc, env, param) (svc->ops->add_param(svc , env, param))
+#define AXIS2_SVC_ADD_PARAM(svc, env, param) ((svc)->ops->add_param(svc , env, param))
 		
-#define AXIS2_SVC_GET_PARAM(svc, env, name) (svc->ops->get_param(svc , env, name))
+#define AXIS2_SVC_GET_PARAM(svc, env, name) ((svc)->ops->get_param(svc , env, name))
 		
-#define AXIS2_SVC_GET_PARAMS(svc, env) (svc->ops->get_params(svc , env))
+#define AXIS2_SVC_GET_PARAMS(svc, env) ((svc)->ops->get_params(svc , env))
 		
 #define AXIS2_SVC_IS_PARAM_LOCKED(svc, env, param_name) \
-        (svc->ops->is_param_locked(svc, env, param_name))
+        ((svc)->ops->is_param_locked(svc, env, param_name))
 
 #define AXIS2_SVC_SET_SVC_INTERFACE(svc, env, svc_interface) \
-        (svc->ops->set_svc_interface(svc, env, svc_interface))
+        ((svc)->ops->set_svc_interface(svc, env, svc_interface))
 
 #define AXIS2_SVC_GET_SVC_INTERFACE(svc, env) \
-        (svc->ops->get_svc_interface(svc, env))       
+        ((svc)->ops->get_svc_interface(svc, env))       
 
 #define AXIS2_SVC_ENGAGE_MODULE(svc, env, moduleref, axis2_config) \
-        (svc->ops->engage_module(svc, env, moduleref, axis2_config))
+        ((svc)->ops->engage_module(svc, env, moduleref, axis2_config))
 
 #define AXIS2_SVC_ADD_MODULE_OPS(svc, env, module_desc, axis2_config) \
-        (svc->ops->add_module_ops(svc, env, module_desc, axis2_config))
+        ((svc)->ops->add_module_ops(svc, env, module_desc, axis2_config))
 
 #define AXIS2_SVC_ADD_TO_ENGAGED_MODULE_LIST(svc, env, module_name) \
-        (svc->ops->add_to_engaged_module_list(svc, env, module_name))
+        ((svc)->ops->add_to_engaged_module_list(svc, env, module_name))
 
 #define AXIS2_SVC_GET_ENGAGED_MODULES(svc, env) \
-        (svc->ops->get_engaged_modules(svc, env))
+        ((svc)->ops->get_engaged_modules(svc, env))
 
 #define AXIS2_SVC_GET_WSDL_OP(svc, env, op_name) \
-        (svc->ops->get_wsdl_op(svc, env, op_name))
+        ((svc)->ops->get_wsdl_op(svc, env, op_name))
 
 #define AXIS2_SVC_SET_CONTEXT_PATH(svc, env, context_path) \
-        (svc->ops->set_context_path(svc, env, context_path))
+        ((svc)->ops->set_context_path(svc, env, context_path))
 
 #define AXIS2_SVC_GET_CONTEXT_PATH(svc, env) \
-        (svc->ops->get_context_path(svc, env))
+        ((svc)->ops->get_context_path(svc, env))
 
 #define AXIS2_SVC_SET_STYLE(svc, env, style) \
-        (svc->ops->set_style(svc, env, style))
+        ((svc)->ops->set_style(svc, env, style))
 
 #define AXIS2_SVC_GET_STYLE(svc, env) \
-        (svc->ops->get_style(svc, env))
+        ((svc)->ops->get_style(svc, env))
 
 #define AXIS2_SVC_GET_INFLOW(svc, env) \
-        (svc->ops->get_inflow(svc, env))
+        ((svc)->ops->get_inflow(svc, env))
 
 #define AXIS2_SVC_SET_INFLOW(svc, env, inflow) \
-        (svc->ops->set_inflow(svc, env, inflow))
+        ((svc)->ops->set_inflow(svc, env, inflow))
 
 #define AXIS2_SVC_GET_OUTFLOW(svc, env) \
-        (svc->ops->get_outflow(svc, env))
+        ((svc)->ops->get_outflow(svc, env))
 
 #define AXIS2_SVC_SET_OUTFLOW(svc, env, outflow) \
-        (svc->ops->set_outflow(svc, env, outflow))
+        ((svc)->ops->set_outflow(svc, env, outflow))
 
 #define AXIS2_SVC_GET_FAULT_INFLOW(svc, env) \
-        (svc->ops->get_fault_inflow(svc, env))
+        ((svc)->ops->get_fault_inflow(svc, env))
 
 #define AXIS2_SVC_SET_FAULT_INFLOW(svc, env, fault_inflow) \
-        (svc->ops->set_fault_inflow(svc, env, fault_inflow))
+        ((svc)->ops->set_fault_inflow(svc, env, fault_inflow))
 
 #define AXIS2_SVC_GET_FAULT_OUTFLOW(svc, env) \
-        (svc->ops->get_fault_outflow(svc, env))
+        ((svc)->ops->get_fault_outflow(svc, env))
 
 #define AXIS2_SVC_SET_FAULT_OUTFLOW(svc, env, fault_outflow) \
-        (svc->ops->set_fault_outflow(svc, env, fault_outflow))
+        ((svc)->ops->set_fault_outflow(svc, env, fault_outflow))
 
 #define AXIS2_SVC_GET_OP_BY_SOAP_ACTION(svc, env, soap_action) \
-        (svc->ops->get_op_by_soap_action(svc, env, soap_action))
+        ((svc)->ops->get_op_by_soap_action(svc, env, soap_action))
 
 #define AXIS2_SVC_GET_OP_BY_SOAP_ACTION_AND_ENDPOINT(svc, env, soap_action, endpoint) \
-        (svc->ops->get_op_by_soap_action_and_endpoint(svc, env, soap_action, endpoint))
+        ((svc)->ops->get_op_by_soap_action_and_endpoint(svc, env, soap_action, endpoint))
 
 #define AXIS2_SVC_GET_AXIS2_SVC_NAME(svc, env) \
-        (svc->ops->get_axis2_svc_name(svc, env))
+        ((svc)->ops->get_axis2_svc_name(svc, env))
 
 #define AXIS2_SVC_SET_AXIS2_SVC_NAME(svc, env, axis2_svc_name) \
-        (svc->ops->set_axis2_svc_name(svc, env, axis2_svc_name))
+        ((svc)->ops->set_axis2_svc_name(svc, env, axis2_svc_name))
 
 #define AXIS2_SVC_SET_LAST_UPDATE(svc, env) \
-        (svc->ops->set_last_update(svc, env))
+        ((svc)->ops->set_last_update(svc, env))
 
 #define AXIS2_SVC_GET_LAST_UPDATE(svc, env) \
-        (svc->ops->get_last_update(svc, env))
+        ((svc)->ops->get_last_update(svc, env))
 
 #define AXIS2_SVC_GET_FILENAME(svc, env) \
-        (svc->ops->get_filename(svc, env))
+        ((svc)->ops->get_filename(svc, env))
 
 #define AXIS2_SVC_SET_FILENAME(svc, env, filename) \
-        (svc->ops->set_filename(svc, env, filename))
+        ((svc)->ops->set_filename(svc, env, filename))
 
 #define AXIS2_SVC_GET_ENDPOINTS(svc, env) \
-        (svc->ops->get_endpoints(svc, env))
+        ((svc)->ops->get_endpoints(svc, env))
 
 #define AXIS2_SVC_SET_ENDPOINTS(svc, env, endpoints) \
-        (svc->ops->set_endpoints(svc, env, endpoints))
+        ((svc)->ops->set_endpoints(svc, env, endpoints))
 
 #define AXIS2_SVC_SET_ENDPOINT(svc, env, endpoint) \
-        (svc->ops->set_endpoint(svc, env, endpoint))
+        ((svc)->ops->set_endpoint(svc, env, endpoint))
 
 #define AXIS2_SVC_GET_ENDPOINT(svc, env, qname) \
-        (svc->ops->get_endpoint(svc, env, qname))
+        ((svc)->ops->get_endpoint(svc, env, qname))
 
 #define AXIS2_SVC_GET_QNAMESPACE(svc, env) \
-        (svc->ops->get_namespace(svc, env))
+        ((svc)->ops->get_namespace(svc, env))
 
 #define AXIS2_SVC_ADD_MAPPING(svc, env, mapping_key, axis2_opt) \
-        (svc->ops->add_mapping(svc, env, mapping_key, axis2_opt))
+        ((svc)->ops->add_mapping(svc, env, mapping_key, axis2_opt))
 
 #define AXIS2_SVC_ADD_MODULE_REF(svc, env, moduleref) \
-        (svc->ops->add_module_ref(svc, env, moduleref))
+        ((svc)->ops->add_module_ref(svc, env, moduleref))
         
 #define AXIS2_SVC_GET_MODULES(svc, env) \
-        (svc->ops->get_modules(svc, env))
+        ((svc)->ops->get_modules(svc, env))
 
 /**************************** End of function macros **************************/
 

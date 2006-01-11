@@ -103,20 +103,20 @@ axis2_wsdl_soap_op_create_with_type (axis2_env_t **env, axis2_qname_t *type);
 
 /*************************** Function macros **********************************/
 
-#define AXIS2_WSDL_SOAP_OP_FREE(extensible_element, env) \
-		((extensible_element->ops)->free (extensible_element, env))
+#define AXIS2_WSDL_SOAP_OP_FREE(soap_op, env) \
+		((soap_op)->ops->free (soap_op, env))
 
-#define AXIS2_WSDL_SOAP_OP_GET_STYLE(extensible_element, env) \
-		((extensible_element->ops)->get_style (extensible_element, env))
+#define AXIS2_WSDL_SOAP_OP_GET_STYLE(soap_op, env) \
+		((soap_op)->ops->get_style (soap_op, env))
 
-#define AXIS2_WSDL_SOAP_OP_SET_STYLE(extensible_element, env, style) \
-		((extensible_element->ops)->set_style (extensible_element, env, style))
+#define AXIS2_WSDL_SOAP_OP_SET_STYLE(soap_op, env, style) \
+		((soap_op)->ops->set_style (soap_op, env, style))
 
-#define AXIS2_WSDL_SOAP_OP_GET_SOAP_ACTION(extensible_element, env) \
-		((extensible_element->ops)->get_soap_action (extensible_element, env))
+#define AXIS2_WSDL_SOAP_OP_GET_SOAP_ACTION(soap_op, env) \
+		((soap_op)->ops->get_soap_action (soap_op, env))
 
-#define AXIS2_WSDL_SOAP_OP_SET_SOAP_ACTION(extensible_element, env, soap_action) \
-		((extensible_element->ops)->set_soap_action (extensible_element, env, soap_action))       
+#define AXIS2_WSDL_SOAP_OP_SET_SOAP_ACTION(soap_op, env, soap_action) \
+		((soap_op)->ops->set_soap_action (soap_op, env, soap_action))       
 
 /*************************** End of function macros ***************************/
 

@@ -144,31 +144,31 @@ axis2_flow_container_create (axis2_env_t **env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_FLOW_CONTAINER_FREE(flow_container, env) \
-        ((flow_container->ops)->free (flow_container, env))
+        ((flow_container)->ops->free (flow_container, env))
 
 #define AXIS2_FLOW_CONTAINER_GET_INFLOW(flow_container, env) \
-        ((flow_container->ops)->get_inflow (flow_container, env))
+        ((flow_container)->ops->get_inflow (flow_container, env))
 
 #define AXIS2_FLOW_CONTAINER_SET_INFLOW(flow_container, env, inflow) \
-        ((flow_container->ops)->set_inflow (flow_container, env, inflow))
+        ((flow_container)->ops->set_inflow (flow_container, env, inflow))
 
 #define AXIS2_FLOW_CONTAINER_GET_OUTFLOW(flow_container, env) \
-        ((flow_container->ops)->get_outflow (flow_container, env))
+        ((flow_container)->ops->get_outflow (flow_container, env))
         
 #define AXIS2_FLOW_CONTAINER_SET_OUTFLOW(flow_container, env, outflow) \
-        ((flow_container->ops)->set_outflow (flow_container, env, outflow))
+        ((flow_container)->ops->set_outflow (flow_container, env, outflow))
 
 #define AXIS2_FLOW_CONTAINER_GET_FAULT_INFLOW(flow_container, env) \
-        ((flow_container->ops)->get_fault_inflow (flow_container, env))
+        ((flow_container)->ops->get_fault_inflow (flow_container, env))
         
 #define AXIS2_FLOW_CONTAINER_SET_FAULT_INFLOW(flow_container, env, fault_inflow) \
-        ((flow_container->ops)->set_fault_inflow (flow_container, env, fault_inflow))
+        ((flow_container)->ops->set_fault_inflow (flow_container, env, fault_inflow))
 
 #define AXIS2_FLOW_CONTAINER_GET_FAULT_OUTFLOW(flow_container, env) \
-        ((flow_container->ops)->get_fault_outflow (flow_container, env))
+        ((flow_container)->ops->get_fault_outflow (flow_container, env))
         
 #define AXIS2_FLOW_CONTAINER_SET_FAULT_OUTFLOW(flow_container, env, fault_outflow) \
-        ((flow_container->ops)->set_fault_outflow (flow_container, env, fault_outflow))        
+        ((flow_container)->ops->set_fault_outflow (flow_container, env, fault_outflow))        
 
 /*************************** End of function macros ***************************/
 

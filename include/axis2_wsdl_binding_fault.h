@@ -96,13 +96,13 @@ axis2_binding_fault_create (axis2_env_t **env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_BINDING_FAULT_FREE(binding_fault, env) \
-		((binding_fault->ops)->free (binding_fault, env))
+		((binding_fault)->ops->free (binding_fault, env))
 
 #define AXIS2_WSDL_BINDING_FAULT_GET_REF(binding_fault, env) \
-		((binding_fault->ops)->get_ref (binding_fault, env))
+		((binding_fault)->ops->get_ref (binding_fault, env))
 
 #define AXIS2_WSDL_BINDING_FAULT_SET_REF(binding_fault, env, ref) \
-		((binding_fault->ops)->set_ref (binding_fault, env, ref))       
+		((binding_fault)->ops->set_ref (binding_fault, env, ref))       
 
 /*************************** End of function macros ***************************/
 
