@@ -6,7 +6,7 @@
 
 struct axis2_module_desc *create_module_desc(axis2_env_t **env);
 
-int test_op_engage_module()
+int axis2_test_op_engage_module()
 {
 	axis2_status_t status = AXIS2_FAILURE;
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
@@ -31,6 +31,6 @@ int test_op_engage_module()
 
 int main()
 {
-		test_op_engage_module();
+		axis2_test_op_engage_module();
 		return 0;
 }
