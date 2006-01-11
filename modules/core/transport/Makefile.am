@@ -1,8 +1,7 @@
 lib_LTLIBRARIES = libaxis2_transport.la
 SUBDIRS = http
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_transport_la_SOURCES = transport_listener.c \
-                            transport_sender.c
+libaxis2_transport_la_SOURCES = 
 
 libaxis2_transport_la_LIBADD = 
 INCLUDES = -I$(top_builddir)/include \
