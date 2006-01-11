@@ -401,7 +401,7 @@ axis2_op_create (axis2_env_t **env);
  * @return pointer to newly created op
  */
 AXIS2_DECLARE(axis2_op_t *)
-axis2_op_create_with_name (axis2_env_t **env, 
+axis2_op_create_with_qname (axis2_env_t **env, 
                             axis2_qname_t *name);
 
 /** 

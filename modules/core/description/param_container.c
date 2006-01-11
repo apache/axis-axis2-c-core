@@ -189,7 +189,7 @@ axis2_param_container_get_params (axis2_param_container_t *param_container,
     axis2_hash_index_t *index_i = 0;
     axis2_status_t status = AXIS2_FAILURE;
     /* create an array list with the initial default capacity */
-    axis2_array_list_t *array_list_l = axis2_array_list_create(env, 0);
+    axis2_array_list_t *array_list_l = axis2_array_list_create(env, 20);
     void *value = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(param_container, env, NULL);

@@ -100,15 +100,27 @@ axis2_flow_create (axis2_env_t **env)
 axis2_status_t AXIS2_CALL
 axis2_flow_free (axis2_flow_t *flow, axis2_env_t **env)
 {
+    axis2_flow_impl_t *flow_impl = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(flow, env, AXIS2_FAILURE);
     
     if(NULL != flow->ops)
+    {
         AXIS2_FREE((*env)->allocator, flow->ops);
+        flow->ops = NULL;
+    }
     
-    if(NULL != AXIS2_INTF_TO_IMPL(flow)->list)
-        AXIS2_ARRAY_LIST_FREE(AXIS2_INTF_TO_IMPL(flow)->list, env);
+    if(NULL != flow_impl->list)
+    {
+        AXIS2_ARRAY_LIST_FREE(flow_impl->list, env);
+        flow_impl->list = NULL;
+    }
     
-    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(flow));
+    if(flow_impl)
+    {
+        AXIS2_FREE((*env)->allocator, flow_impl);
+        flow_impl = NULL;
+    }
     
     return AXIS2_SUCCESS;
 }

@@ -12,6 +12,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
  
 #include <axis2_phase_resolver.h>
@@ -431,7 +440,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
                 { 
                     if(!all_handlers)
                     {
-                        all_handlers = axis2_array_list_create(env, 0);
+                        all_handlers = axis2_array_list_create(env, 20);
                         if(!all_handlers)
                             return AXIS2_FAILURE;
                     }
@@ -540,7 +549,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             {
                 if(!all_handlers)
                 {
-                    all_handlers = axis2_array_list_create(env, 0);
+                    all_handlers = axis2_array_list_create(env, 20);
                     if(!all_handlers)
                         return AXIS2_FAILURE;
                 }
@@ -701,7 +710,7 @@ axis2_phase_resolver_build_in_transport_chains(axis2_phase_resolver_t *phase_res
         {
             struct axis2_phase_holder *phase_holder = NULL;
 
-            handlers = axis2_array_list_create(env, 0);
+            handlers = axis2_array_list_create(env, 20);
             for (j = 0; j < AXIS2_FLOW_GET_HANDLER_COUNT(flow, env); j++) 
             {
                 struct axis2_handler_desc *metadata = NULL;
@@ -785,7 +794,7 @@ axis2_phase_resolver_build_out_transport_chains(axis2_phase_resolver_t *phase_re
             {
                 return AXIS2_FAILURE;
             }
-            handlers = axis2_array_list_create(env, 0);
+            handlers = axis2_array_list_create(env, 20);
             int j = 0;
             for (j = 0; j < hndlr_count; j++) 
             {
@@ -1225,14 +1234,18 @@ axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
     int type = 0;
     axis2_status_t status = AXIS2_FALSE;
     
+    AXIS2_FUNC_PARAM_CHECK(phase_resolver, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, axis_op, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
        
     for (type = 1; type < 5; type++) 
     {
-        struct axis2_flow *flow = NULL;
+        axis2_flow_t *flow = NULL;
         axis2_array_list_t *phases = NULL;
 
-        switch (type) {
+        switch (type) 
+        {
             case AXIS2_INFLOW:
             {
                 phases = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(axis_op, env);
@@ -1244,20 +1257,23 @@ axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
             }
             case AXIS2_OUTFLOW:
             {
-                resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env,
-                    AXIS2_OP_GET_PHASES_OUTFLOW(axis_op, env));
+                phases = AXIS2_OP_GET_PHASES_OUTFLOW(axis_op, env);
+                resolver_impl->phase_holder = 
+                    axis2_phase_holder_create_with_phases(env, phases);
                 break;
             }
             case AXIS2_FAULT_INFLOW:
             {
-                resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env,
-                    AXIS2_OP_GET_PHASES_IN_FAULT_FLOW(axis_op, env));
+                phases = AXIS2_OP_GET_PHASES_IN_FAULT_FLOW(axis_op, env);
+                resolver_impl->phase_holder = 
+                    axis2_phase_holder_create_with_phases(env, phases);
                 break;
             }
             case AXIS2_FAULT_OUTFLOW:
             {
-                resolver_impl->phase_holder = axis2_phase_holder_create_with_phases(env,
-                    AXIS2_OP_GET_PHASES_OUT_FAULT_FLOW(axis_op, env));
+                phases = AXIS2_OP_GET_PHASES_OUT_FAULT_FLOW(axis_op, env);
+                resolver_impl->phase_holder = 
+                    axis2_phase_holder_create_with_phases(env, phases);
                 break;
             }
         }
@@ -1291,30 +1307,33 @@ axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
             
             for (j = 0; j < AXIS2_FLOW_GET_HANDLER_COUNT(flow, env); j++) 
             {
-                struct axis2_handler_desc *metadata = NULL;
+                axis2_handler_desc_t *metadata = NULL;
                 axis2_char_t *phase_name = NULL;
+                axis2_phase_rule_t *phase_rule = NULL;
 
                 metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
-                phase_name = AXIS2_PHASE_RULE_GET_NAME(
-                        AXIS2_HANDLER_DESC_GET_RULES(metadata, env), env);
-             
+                phase_rule = AXIS2_HANDLER_DESC_GET_RULES(metadata, env);
+                phase_name = AXIS2_PHASE_RULE_GET_NAME(phase_rule, env);
+                printf("phase_name:%s\n", phase_name);
                 if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) &&
                     (0 != AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) &&
                     (0 != AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
                     (0 != AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
-                    status = AXIS2_PHASE_HOLDER_ADD_HANDLER(resolver_impl->phase_holder,
-                        env, metadata);
+                    AXIS2_PHASE_HOLDER_ADD_HANDLER(resolver_impl->
+                        phase_holder, env, metadata);
            
-                } else 
+                } 
+                else 
                 {
                     AXIS2_ERROR_SET((*env)->error, 
-                        AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE, AXIS2_FAILURE);
+                        AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE, 
+                            AXIS2_FAILURE);
                     return AXIS2_FAILURE;
                     
                 }
             }
         }
     }
-    return status;
+    return AXIS2_SUCCESS;
 }

@@ -27,7 +27,7 @@ axis2_array_list_t *get_op_op_in_phases(axis2_env_t **env)
     struct axis2_phase *phase = NULL; 
     axis2_array_list_t *op_in_phases = NULL; 
     
-    op_in_phases = axis2_array_list_create(env, 0);
+    op_in_phases = axis2_array_list_create(env, 20);
     
     phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
     AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);

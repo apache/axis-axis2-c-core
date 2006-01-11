@@ -168,7 +168,7 @@ axis2_svc_grp_create (axis2_env_t **env)
         return NULL;
     }
     
-    svc_grp_impl->modules = axis2_array_list_create(env, 0);
+    svc_grp_impl->modules = axis2_array_list_create(env, 20);
     if(NULL == svc_grp_impl->modules)
     {
         axis2_svc_grp_free(&(svc_grp_impl->svc_grp), env);
@@ -176,7 +176,7 @@ axis2_svc_grp_create (axis2_env_t **env)
         return NULL;
     }
     
-    svc_grp_impl->module_list = axis2_array_list_create(env, 0);
+    svc_grp_impl->module_list = axis2_array_list_create(env, 20);
     if(NULL == svc_grp_impl->module_list)
     {
         axis2_svc_grp_free(&(svc_grp_impl->svc_grp), env);
@@ -729,7 +729,7 @@ axis2_svc_grp_add_moduleref(axis2_svc_grp_t *svc_grp,
     svc_grp_impl = AXIS2_INTF_TO_IMPL(svc_grp);
     if(!svc_grp_impl->module_list)
     {
-        svc_grp_impl->module_list = axis2_array_list_create(env, 0);
+        svc_grp_impl->module_list = axis2_array_list_create(env, 20);
         if(!svc_grp_impl->module_list)
             return AXIS2_FAILURE;
     }

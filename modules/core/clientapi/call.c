@@ -1017,7 +1017,7 @@ axis2_op_t* AXIS2_CALL axis2_call_create_op_fill_flow(struct axis2_call *call,
     {
         axis2_svc_t *svc = NULL;
         
-        op = axis2_op_create_with_name(env, op_qname);
+        op = axis2_op_create_with_qname(env, op_qname);
         AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op, env, 
             AXIS2_OP_GET_REMAINING_PHASES_INFLOW(call_impl->op_template, env));
         AXIS2_OP_SET_PHASES_OUTFLOW(op, env, 

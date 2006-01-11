@@ -18,7 +18,7 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
     
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
-    struct axis2_op *optr = axis2_op_create(&env);
+    axis2_op_t *optr = axis2_op_create(&env);
     op_in_phases = get_op_in_phases(&env);  
     AXIS2_OP_SET_REMAINING_PHASES_INFLOW(optr, &env, op_in_phases);
     flow = axis2_flow_create(&env); 
@@ -30,6 +30,10 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
         module_desc);
     
     CuAssertIntEquals(tc, expected, actual);
+    AXIS2_FLOW_FREE(flow, env);
+    /*AXIS2_OP_FREE(optr, env); */
+    /*AXIS2_MODULE_DESC_FREE(module_desc, env);*/
+    /*AXIS2_PHASE_RESOLVER_FREE(resolver, env); */
 }
 
 void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env)
@@ -81,7 +85,7 @@ axis2_array_list_t *get_op_in_phases(axis2_env_t **env)
     struct axis2_phase *phase = NULL; 
     axis2_array_list_t *op_in_phases = NULL; 
     
-    op_in_phases = axis2_array_list_create(env, 0);
+    op_in_phases = axis2_array_list_create(env, 10);
     
     phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
     AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);
@@ -93,9 +97,6 @@ axis2_array_list_t *get_op_in_phases(axis2_env_t **env)
     AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);
     
     phase = axis2_phase_create(env, AXIS2_PHASE_DISPATCH);  
-    AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);
-    
-    phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);   
     AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);
     
     return op_in_phases;

@@ -41,13 +41,13 @@ struct axis2_module_desc *create_module_desc(axis2_env_t **env)
     module_desc = axis2_module_desc_create(env);
     
     op_qname = axis2_qname_create(env, "op_name1", NULL, NULL);
-    op = axis2_op_create_with_name(env, op_qname);
+    op = axis2_op_create_with_qname(env, op_qname);
     op_in_phases = get_svc_op_in_phases(env);  
     AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op, env, op_in_phases);
     AXIS2_MODULE_DESC_ADD_OP(module_desc, env, op);
     
     op_qname = axis2_qname_create(env, "op_name2", NULL, NULL);
-    op = axis2_op_create_with_name(env, op_qname);
+    op = axis2_op_create_with_qname(env, op_qname);
     op_in_phases = get_svc_op_in_phases(env);  
     AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op, env, op_in_phases);
     AXIS2_MODULE_DESC_ADD_OP(module_desc, env, op);
@@ -105,7 +105,7 @@ axis2_array_list_t *get_svc_op_in_phases(axis2_env_t **env)
     struct axis2_phase *phase = NULL; 
     axis2_array_list_t *op_in_phases = NULL; 
     
-    op_in_phases = axis2_array_list_create(env, 0);
+    op_in_phases = axis2_array_list_create(env, 20);
     
     phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
     AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);

@@ -145,8 +145,10 @@ axis2_phase_holder_free (axis2_phase_holder_t *phase_holder,
     }
     
     if(phase_holder_impl)
+    {
         AXIS2_FREE((*env)->allocator, phase_holder_impl);
-    phase_holder_impl = NULL;
+        phase_holder_impl = NULL;
+    }
     
 	return AXIS2_SUCCESS;
 }
@@ -164,21 +166,23 @@ axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
 {
     int size = 0;
     int i = 0;
-    struct axis2_phase *phase = NULL;
+    axis2_phase_t *phase = NULL;
+    axis2_phase_holder_impl_t *phase_holder_impl = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(phase_holder, env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, phase_name, AXIS2_FALSE);
-    
-    axis2_phase_holder_impl_t *phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
+    phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
     
     size = AXIS2_ARRAY_LIST_SIZE(phase_holder_impl->phase_list, env);
     
     for (i = 0; i < size; i++) 
     {
-        phase = (struct axis2_phase *) AXIS2_ARRAY_LIST_GET(phase_holder_impl->
-            phase_list, env, i);
+        axis2_char_t *phase_name_l = NULL;
         
-        if (0 == AXIS2_STRCMP(AXIS2_PHASE_GET_NAME(phase, env), phase_name))
+        phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phase_holder_impl->
+            phase_list, env, i);
+        phase_name_l = AXIS2_PHASE_GET_NAME(phase, env);
+        if (0 == AXIS2_STRCMP(phase_name_l, phase_name))
         {
             return AXIS2_TRUE;
         }
@@ -195,7 +199,7 @@ axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
 axis2_status_t AXIS2_CALL
 axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder, 
                                 axis2_env_t **env,
-                                struct axis2_handler_desc *handler) 
+                                axis2_handler_desc_t *handler) 
 {
     axis2_char_t *phase_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -205,13 +209,15 @@ axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
     
     phase_name = AXIS2_PHASE_RULE_GET_NAME(
         AXIS2_HANDLER_DESC_GET_RULES(handler, env), env);
-    
     if (AXIS2_TRUE == axis2_phase_holder_is_phase_exist(phase_holder, env, 
             phase_name)) 
     {
-        status = AXIS2_PHASE_ADD_HANDLER_DESC(axis2_phase_holder_get_phase(phase_holder, 
-            env, phase_name), env, handler);
-    } else 
+        axis2_phase_t *phase = NULL;
+        
+        phase = axis2_phase_holder_get_phase(phase_holder, env, phase_name);
+        status = AXIS2_PHASE_ADD_HANDLER_DESC(phase, env, handler);
+    } 
+    else 
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_PHASE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -244,9 +250,11 @@ axis2_phase_holder_get_phase(axis2_phase_holder_t *phase_holder,
     
     for (i = 0; i < size; i++) 
     {
-        phase = (struct axis2_phase *) AXIS2_ARRAY_LIST_GET(phase_holder_impl->
+        axis2_char_t *phase_name_l = NULL;
+        phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phase_holder_impl->
             phase_list, env, i);
-        if(0 == AXIS2_STRCMP(AXIS2_PHASE_GET_NAME(phase, env), phase_name))
+        phase_name_l = AXIS2_PHASE_GET_NAME(phase, env);
+        if(0 == AXIS2_STRCMP(phase_name_l, phase_name))
         {
             return phase;
         }

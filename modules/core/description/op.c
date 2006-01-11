@@ -376,35 +376,35 @@ axis2_op_create (axis2_env_t **env)
         return NULL;		
 	}
 
-    op_impl->remaining_phases_inflow = axis2_array_list_create(env, 0);
+    op_impl->remaining_phases_inflow = axis2_array_list_create(env, 20);
     if(NULL == op_impl->remaining_phases_inflow)
     {
         axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
     
-    op_impl->phases_outflow = axis2_array_list_create(env, 0);
+    op_impl->phases_outflow = axis2_array_list_create(env, 20);
     if(NULL == op_impl->phases_outflow)
     {
         axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
     
-    op_impl->phases_in_fault_flow = axis2_array_list_create(env, 0);
+    op_impl->phases_in_fault_flow = axis2_array_list_create(env, 20);
     if(NULL == op_impl->phases_in_fault_flow)
     {
         axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
     
-    op_impl->modulerefs = axis2_array_list_create(env, 0);
+    op_impl->modulerefs = axis2_array_list_create(env, 20);
     if(NULL == op_impl->modulerefs)
     {
         axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
     
-    op_impl->phases_out_fault_flow = axis2_array_list_create(env, 0);
+    op_impl->phases_out_fault_flow = axis2_array_list_create(env, 20);
     if(NULL == op_impl->phases_out_fault_flow)
     {
         axis2_op_free(&(op_impl->op), env);
@@ -416,18 +416,19 @@ axis2_op_create (axis2_env_t **env)
     
     param_container_l = axis2_param_container_create(env);
     if(NULL == param_container_l)
+    {
         return NULL;
+    }
     AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(op_impl->op.wsdl_op->
         extensible_component->wsdl_component, env, AXIS2_PARAMETER_KEY, 
             param_container_l);
     
-    array_list_l = axis2_array_list_create(env, 0);
+    array_list_l = axis2_array_list_create(env, 20);
     if(NULL == array_list_l) return NULL;
     AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(op_impl->op.wsdl_op->
         extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY, array_list_l);
     
-    op_impl->op.ops = AXIS2_MALLOC((*env)->allocator, 
-        sizeof(axis2_op_ops_t));
+    op_impl->op.ops = AXIS2_MALLOC((*env)->allocator, sizeof(axis2_op_ops_t));
 	if(NULL == op_impl->op.ops)
 	{
         axis2_op_free(&(op_impl->op), env);
@@ -496,7 +497,7 @@ axis2_op_create (axis2_env_t **env)
 }
 
 axis2_op_t * AXIS2_CALL
-axis2_op_create_with_name (axis2_env_t **env, axis2_qname_t *qname)
+axis2_op_create_with_qname (axis2_env_t **env, axis2_qname_t *qname)
 {
 	axis2_op_impl_t *op_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -597,20 +598,20 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     if(NULL != op_impl->remaining_phases_inflow)
     {
         printf("came14\n");
-        void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->remaining_phases_inflow, env); i++)
+        int size = 0;
+        size = AXIS2_ARRAY_LIST_SIZE(op_impl->remaining_phases_inflow, env);
+        for (i = 0; i < size; i++)
         {
-            struct axis2_phase *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(op_impl->remaining_phases_inflow, env, i);
-            
-            phase = (struct axis2_phase *) val;
+            axis2_phase_t *phase = NULL;
+            phase = AXIS2_ARRAY_LIST_GET(op_impl->remaining_phases_inflow, env, 
+                i);
             if (phase)
-               AXIS2_PHASE_FREE (phase, env);
-            
-            val = NULL;
-            phase = NULL;
-               
+            {
+                AXIS2_PHASE_FREE (phase, env);
+                phase = NULL;
+            }
+      
         }
         AXIS2_ARRAY_LIST_FREE(op_impl->remaining_phases_inflow, env);
         op_impl->remaining_phases_inflow = NULL;
@@ -619,19 +620,18 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     if(NULL != op_impl->phases_outflow)
     {
         printf("came15\n");
-        void *val = NULL;
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->phases_outflow, env); i++)
+        int size = 0;
+        size = AXIS2_ARRAY_LIST_SIZE(op_impl->phases_outflow, env);
+        for (i = 0; i < size; i++)
         {
-            struct axis2_phase *phase = NULL;
+            axis2_phase_t *phase = NULL;
             phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_outflow, env, i);
-            
-            phase = (struct axis2_phase *) val;
             if (phase)
-               AXIS2_PHASE_FREE (phase, env);
-            
-            val = NULL;
-            phase = NULL;
+            {
+                AXIS2_PHASE_FREE (phase, env);
+                phase = NULL;
+            }
                
         }
         AXIS2_ARRAY_LIST_FREE(op_impl->phases_outflow, env);
@@ -641,22 +641,19 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     if(NULL != op_impl->phases_in_fault_flow)
     {
         printf("came16\n");
-        void *val = NULL;
         int i = 0;
         int size = 0;
         size = AXIS2_ARRAY_LIST_SIZE(op_impl->phases_in_fault_flow, env);
         printf("size:%d\n", size);
         for (i = 0; i < size; i++)
         {
-            struct axis2_phase *phase = NULL;
+            axis2_phase_t *phase = NULL;
             phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_in_fault_flow, env, i);
-            
-            phase = (struct axis2_phase *) val;
             if (phase)
-               AXIS2_PHASE_FREE (phase, env);
-            
-            val = NULL;
-            phase = NULL;
+            {
+                AXIS2_PHASE_FREE (phase, env);
+                phase = NULL;
+            }
                
         }
         AXIS2_ARRAY_LIST_FREE(op_impl->phases_in_fault_flow, env);
@@ -665,7 +662,6 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     
     if(NULL != op_impl->phases_out_fault_flow)
     {
-        void *val = NULL;
         int i = 0;
         int size = 0;
         printf("came17\n");
@@ -673,38 +669,32 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
         printf("size:%d\n", size);
         for (i = 0; i < size; i++)
         {
-            struct axis2_phase *phase = NULL;
+            axis2_phase_t *phase = NULL;
             phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_out_fault_flow, env, i);
-            
-            phase = (struct axis2_phase *) val;
             if (phase)
-               AXIS2_PHASE_FREE (phase, env);
-            
-            val = NULL;
-            phase = NULL;
-               
+            {
+                AXIS2_PHASE_FREE (phase, env);
+                phase = NULL;
+            }
+              
         }
-        AXIS2_ARRAY_LIST_FREE(op_impl->phases_out_fault_flow,
-            env);
+        AXIS2_ARRAY_LIST_FREE(op_impl->phases_out_fault_flow, env);
         op_impl->phases_out_fault_flow = NULL;
     }
     
     if(NULL != op_impl->modulerefs)
     {
-        void *val = NULL;
         int i = 0;
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->modulerefs, env); i++)
         {
             axis2_qname_t *module_ref = NULL;
             module_ref = AXIS2_ARRAY_LIST_GET(op_impl->modulerefs, env, i);
             
-            module_ref = (axis2_qname_t *) val;
             if (module_ref)
-               AXIS2_QNAME_FREE (module_ref, env);
-            
-            val = NULL;
-            module_ref = NULL;
-               
+            {
+                AXIS2_QNAME_FREE (module_ref, env);
+                module_ref = NULL;
+            }       
         }
         AXIS2_ARRAY_LIST_FREE(op_impl->modulerefs, env);
         op_impl->modulerefs = NULL;
@@ -943,11 +933,9 @@ axis2_op_engage_module(axis2_op_t *op,
         
     AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, moduleref, AXIS2_FAILURE);
-    printf("came20\n");
     collection_module = (axis2_array_list_t *) 
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op->wsdl_op->
         extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY);
-    printf("came21\n");
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
     printf("collection_module size:%d\n", size);
     if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
@@ -1260,10 +1248,12 @@ axis2_op_set_remaining_phases_inflow(axis2_op_t *op,
                                                 axis2_env_t **env,
                                                 axis2_array_list_t *list) 
 {
+    axis2_op_impl_t *op_impl = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
+    op_impl = AXIS2_INTF_TO_IMPL(op);
     
-    axis2_op_impl_t *op_impl = AXIS2_INTF_TO_IMPL(op);
     if(op_impl->remaining_phases_inflow)
     {
         void *val = NULL;

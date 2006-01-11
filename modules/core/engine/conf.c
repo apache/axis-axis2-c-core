@@ -345,7 +345,7 @@ axis2_conf_create (axis2_env_t **env)
         return NULL;
 	}
     
-    config_impl->engaged_modules = axis2_array_list_create(env, 0);		
+    config_impl->engaged_modules = axis2_array_list_create(env, 20);		
 	if(NULL == config_impl->engaged_modules)
 	{
         axis2_conf_free(&(config_impl->conf), env);
@@ -354,7 +354,7 @@ axis2_conf_create (axis2_env_t **env)
 	}
     
     config_impl->in_phases_upto_and_including_post_dispatch = 
-        axis2_array_list_create(env, 0);		
+        axis2_array_list_create(env, 20);		
 	if(NULL == config_impl->in_phases_upto_and_including_post_dispatch)
 	{
         axis2_conf_free(&(config_impl->conf), env);
@@ -392,7 +392,7 @@ axis2_conf_create (axis2_env_t **env)
         }
     }
     
-    config_impl->out_phases = axis2_array_list_create(env, 0);		
+    config_impl->out_phases = axis2_array_list_create(env, 20);		
 	if(NULL == config_impl->out_phases)
 	{
         axis2_conf_free(&(config_impl->conf), env);
@@ -400,7 +400,7 @@ axis2_conf_create (axis2_env_t **env)
         return NULL;
 	}
     
-    config_impl->in_faultphases = axis2_array_list_create(env, 0);		
+    config_impl->in_faultphases = axis2_array_list_create(env, 20);		
 	if(NULL == config_impl->in_faultphases)
 	{
         axis2_conf_free(&(config_impl->conf), env);
@@ -408,7 +408,7 @@ axis2_conf_create (axis2_env_t **env)
         return NULL;
 	}
     
-    config_impl->out_faultphases = axis2_array_list_create(env, 0);		
+    config_impl->out_faultphases = axis2_array_list_create(env, 20);		
 	if(NULL == config_impl->out_faultphases)
 	{
         axis2_conf_free(&(config_impl->conf), env);

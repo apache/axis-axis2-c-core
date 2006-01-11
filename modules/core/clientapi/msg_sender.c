@@ -297,7 +297,7 @@ axis2_msg_sender_send_with_soap(axis2_msg_sender_t *msg_sender,
 	op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname); 
 	if(NULL == op)
 	{
-		op = axis2_op_create_with_name(env, op_qname);
+		op = axis2_op_create_with_qname(env, op_qname);
 		if(NULL == op)
 		{
 			return AXIS2_FAILURE;
