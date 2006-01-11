@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_UTILS_H
-#define AXIS2_UTILS_H
+#ifndef AXIS2_CORE_UTILS_H
+#define AXIS2_CORE_UTILS_H
 
 #include <axis2.h>
 #include <axis2_defines.h>
 #include <axis2_error.h>
 #include <axis2_env.h>
+#include <axis2_msg_ctx.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -28,23 +29,13 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_utils Utils
- * @ingroup axis2_utils
+ * @defgroup axis2_core_utils Core Utils
+ * @ingroup axis2_core_utils
  * @{
  */
-#define AXIS2_REQUEST_URL_PREFIX "/services"
-    /**
-     * This function allows users to reolve the service and op from the 
-     * url. It returns an array of 2 elements of axis2_char_t arrays (strings).
-     * The caller is responsible to free the memory allocated by the function
-     * for the return value.
-     *
-     * @param request url
-     * @return axis2_char_t ** <code>axis2_char_t **<code>
-     */
-    AXIS2_DECLARE(axis2_char_t**)
-    axis2_parse_request_url_for_svc_and_op(axis2_env_t **env, axis2_char_t *request);
-    
+    AXIS2_DECLARE(axis2_msg_ctx_t *)
+    axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
+                                axis2_msg_ctx_t *in_msg_ctx);
 
 /** @} */
     
@@ -52,4 +43,4 @@ extern "C"
 }
 #endif
 
-#endif                          /* AXIS2_UTILS_H */
+#endif /* AXIS2_CORE_UTILS_H */

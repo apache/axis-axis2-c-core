@@ -97,6 +97,7 @@ AC_CONFIG_FILES([Makefile \
     modules/core/deployment/Makefile \
     modules/core/clientapi/Makefile \
     modules/core/receivers/Makefile \
+    modules/core/util/Makefile \
     modules/xml/Makefile \
     modules/xml/parser/Makefile \
     modules/xml/parser/guththila/Makefile \
