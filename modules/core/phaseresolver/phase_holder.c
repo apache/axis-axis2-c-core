@@ -137,13 +137,11 @@ axis2_phase_holder_free (axis2_phase_holder_t *phase_holder,
         AXIS2_FREE((*env)->allocator, phase_holder->ops);
         phase_holder->ops = NULL;
     }
-    
     if(NULL != phase_holder_impl->phase_list)
     {
         AXIS2_ARRAY_LIST_FREE(phase_holder_impl->phase_list, env);
         phase_holder_impl->phase_list = NULL;
     }
-    
     if(phase_holder_impl)
     {
         AXIS2_FREE((*env)->allocator, phase_holder_impl);

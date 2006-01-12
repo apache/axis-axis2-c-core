@@ -7,6 +7,9 @@
 CuSuite* axis2_phaseresolverGetSuite() 
 {
     CuSuite* suite = CuSuiteNew();
+    
+    SUITE_ADD_TEST(suite, Testaxis2_phase_resolver_free);
+    SUITE_ADD_TEST(suite, Testaxis2_phase_holder_free);
     SUITE_ADD_TEST(suite, Testaxis2_phase_resolver_engage_module_to_op);
     return suite;
 }

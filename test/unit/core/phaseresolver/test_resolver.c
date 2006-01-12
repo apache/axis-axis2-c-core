@@ -1,10 +1,30 @@
 #include "test_resolver.h"
+#include <axis2_phase_resolver.h>
+#include <axis2_module_desc.h>
+#include <axis2_op.h>
+#include <axis2_flow.h>
 
 void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env);
 axis2_array_list_t *get_op_in_phases(axis2_env_t **env);
 
 void axis2_phase_resolver_engage_module_to_svc(CuTest *tc)
 {
+}
+
+void Testaxis2_phase_resolver_free(CuTest *tc)
+{
+    axis2_status_t actual = AXIS2_FAILURE;
+    axis2_status_t expected = AXIS2_TRUE;
+    axis2_phase_resolver_t *resolver = NULL;
+
+    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+    axis2_env_t *env = axis2_env_create (allocator);
+
+    resolver = axis2_phase_resolver_create(&env); 
+    actual = axis2_phase_resolver_free(resolver,  &env);
+    
+    CuAssertIntEquals(tc, expected, actual);
+
 }
 
 void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
@@ -19,6 +39,7 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
     axis2_op_t *optr = axis2_op_create(&env);
+
     op_in_phases = get_op_in_phases(&env);  
     AXIS2_OP_SET_REMAINING_PHASES_INFLOW(optr, &env, op_in_phases);
     flow = axis2_flow_create(&env); 
@@ -28,12 +49,13 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
     resolver = axis2_phase_resolver_create(&env);
     actual = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OP(resolver, &env, optr,
         module_desc);
-    
+
+    AXIS2_FLOW_FREE(flow, &env);
+    AXIS2_OP_FREE(optr, &env);
+    AXIS2_MODULE_DESC_FREE(module_desc, &env);
+    AXIS2_PHASE_RESOLVER_FREE(resolver, &env);
     CuAssertIntEquals(tc, expected, actual);
-    /*AXIS2_FLOW_FREE(flow, env); */
-    /*AXIS2_OP_FREE(optr, env); */
-    /*AXIS2_MODULE_DESC_FREE(module_desc, env);*/
-    /*AXIS2_PHASE_RESOLVER_FREE(resolver, env); */
+    
 }
 
 void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env)
@@ -44,8 +66,8 @@ void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env)
     struct axis2_phase_rule *rule = NULL;
         
     rule = axis2_phase_rule_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
-    axis2_phase_rule_set_before(rule, env, "before");
-    axis2_phase_rule_set_after(rule, env, "after");
+    AXIS2_PHASE_RULE_SET_BEFORE(rule, env, "before");
+    AXIS2_PHASE_RULE_SET_AFTER(rule, env, "after");
     qname = axis2_qname_create(env, "handler1", NULL, NULL);
     handler_desc = axis2_handler_desc_create_with_qname(env, qname);
     AXIS2_HANDLER_DESC_SET_RULES(handler_desc, env, rule);

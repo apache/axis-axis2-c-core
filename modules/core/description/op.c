@@ -376,7 +376,7 @@ axis2_op_create (axis2_env_t **env)
         return NULL;		
 	}
 
-    op_impl->remaining_phases_inflow = axis2_array_list_create(env, 20);
+    /*op_impl->remaining_phases_inflow = axis2_array_list_create(env, 20);
     if(NULL == op_impl->remaining_phases_inflow)
     {
         axis2_op_free(&(op_impl->op), env);
@@ -409,7 +409,7 @@ axis2_op_create (axis2_env_t **env)
     {
         axis2_op_free(&(op_impl->op), env);
         return NULL;
-    }
+    }*/
     
     axis2_op_set_msg_exchange_pattern(&(op_impl->op), env, 
         (axis2_char_t *) AXIS2_MEP_URI_IN_OUT);
@@ -566,28 +566,23 @@ axis2_status_t AXIS2_CALL
 axis2_op_free (axis2_op_t *op, axis2_env_t **env)
 { 
     axis2_op_impl_t *op_impl = NULL;
-    printf("came10\n");
     AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
-    
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
 	if(NULL != op->ops)
     {
-        printf("came11\n");
 		AXIS2_FREE((*env)->allocator, op->ops);
         op->ops = NULL;
     }
     
     if(NULL != op->param_container)
     {
-        printf("came12\n");
 	    AXIS2_PARAM_CONTAINER_FREE(op->param_container, env);
         op->param_container = NULL;
     }
     
     if(NULL != op->wsdl_op)
     {
-        printf("came13\n");
 	    AXIS2_WSDL_OP_FREE(op->wsdl_op, env);
         op->wsdl_op = NULL;
     }
@@ -598,7 +593,6 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     
     if(NULL != op_impl->remaining_phases_inflow)
     {
-        printf("came14\n");
         int i = 0;
         int size = 0;
         size = AXIS2_ARRAY_LIST_SIZE(op_impl->remaining_phases_inflow, env);
@@ -620,7 +614,6 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     
     if(NULL != op_impl->phases_outflow)
     {
-        printf("came15\n");
         int i = 0;
         int size = 0;
         size = AXIS2_ARRAY_LIST_SIZE(op_impl->phases_outflow, env);
@@ -641,11 +634,9 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     
     if(NULL != op_impl->phases_in_fault_flow)
     {
-        printf("came16\n");
         int i = 0;
         int size = 0;
         size = AXIS2_ARRAY_LIST_SIZE(op_impl->phases_in_fault_flow, env);
-        printf("size:%d\n", size);
         for (i = 0; i < size; i++)
         {
             axis2_phase_t *phase = NULL;
@@ -665,9 +656,7 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     {
         int i = 0;
         int size = 0;
-        printf("came17\n");
         size = AXIS2_ARRAY_LIST_SIZE(op_impl->phases_out_fault_flow, env);
-        printf("size:%d\n", size);
         for (i = 0; i < size; i++)
         {
             axis2_phase_t *phase = NULL;
@@ -938,7 +927,6 @@ axis2_op_engage_module(axis2_op_t *op,
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op->wsdl_op->
         extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY);
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
-    printf("collection_module size:%d\n", size);
     if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
     {
         return AXIS2_FAILURE;
@@ -962,17 +950,13 @@ axis2_op_engage_module(axis2_op_t *op,
 
     }
     pr = axis2_phase_resolver_create(env);
-    printf("came1\n");
     if(pr)
     {
         status = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OP(pr, env, 
             op, moduleref);
-        printf("came2\n");
         if(AXIS2_FAILURE == status)
         {
-            printf("came3\n");
             AXIS2_PHASE_RESOLVER_FREE(pr, env);
-            printf("came4\n");
             pr = NULL;
             return AXIS2_FAILURE;
         }
@@ -1257,7 +1241,6 @@ axis2_op_set_remaining_phases_inflow(axis2_op_t *op,
     AXIS2_FUNC_PARAM_CHECK(op, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
-    
     if(op_impl->remaining_phases_inflow)
     {
         int i = 0;

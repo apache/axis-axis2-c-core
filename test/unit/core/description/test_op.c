@@ -8,13 +8,15 @@ void Testaxis2_op_set_remaining_phases_inflow(CuTest *tc)
     axis2_array_list_t *op_in_phases = NULL;
     axis2_status_t expected = AXIS2_SUCCESS;
     axis2_status_t actual = AXIS2_FAILURE;
+    axis2_op_t *op = NULL;
     
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
 
-    struct axis2_op *op = axis2_op_create(&env);
+    op = axis2_op_create(&env);
     op_in_phases = get_op_op_in_phases(&env);  
     actual = AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op, &env, op_in_phases);
+    AXIS2_OP_FREE(op, &env);
     
     CuAssertIntEquals(tc, expected, actual);
 }

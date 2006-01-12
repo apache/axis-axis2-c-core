@@ -4,6 +4,8 @@
 #include <CuTest.h>
 #include "test_op.h"
 #include "test_svc.h"
+#include "test_flow.h"
+#include "test_handler_desc.h"
 
 CuSuite* axis2_descriptionGetSuite();
 

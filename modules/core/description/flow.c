@@ -55,10 +55,11 @@ axis2_flow_get_handler_count(axis2_flow_t *flow,
 axis2_flow_t * AXIS2_CALL 
 axis2_flow_create (axis2_env_t **env)
 {
+    axis2_flow_impl_t *flow_impl = NULL;
+    
 	AXIS2_ENV_CHECK(env, NULL);
-	
-	axis2_flow_impl_t *flow_impl = (axis2_flow_impl_t *) AXIS2_MALLOC((*env)->
-        allocator, sizeof(axis2_flow_impl_t));
+	flow_impl = (axis2_flow_impl_t *) AXIS2_MALLOC((*env)->allocator, 
+        sizeof(axis2_flow_impl_t));
 		
 	if(NULL == flow_impl)
     {
@@ -70,7 +71,7 @@ axis2_flow_create (axis2_env_t **env)
     flow_impl->flow.ops = NULL;
     
     /*Create the list with the default size of 16 */
-	flow_impl->list = axis2_array_list_create (env, 0);
+	flow_impl->list = axis2_array_list_create (env, 20);
     if(NULL == flow_impl->list)
     {
         axis2_flow_free(&(flow_impl->flow), env);
@@ -78,8 +79,8 @@ axis2_flow_create (axis2_env_t **env)
         return NULL;
     }       
     
-	flow_impl->flow.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_flow_ops_t));
+	flow_impl->flow.ops = AXIS2_MALLOC ((*env)->allocator, 
+        sizeof(axis2_flow_ops_t));
 	if(NULL == flow_impl->flow.ops)
     {
         axis2_flow_free(&(flow_impl->flow), env);
@@ -103,6 +104,7 @@ axis2_flow_free (axis2_flow_t *flow, axis2_env_t **env)
     axis2_flow_impl_t *flow_impl = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(flow, env, AXIS2_FAILURE);
+    flow_impl = AXIS2_INTF_TO_IMPL(flow);
     
     if(NULL != flow->ops)
     {
