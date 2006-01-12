@@ -119,10 +119,6 @@ extern "C"
 #define AXIS2_SVC_ELEMENT "service"
 #define AXIS2_SVC_GRP_ELEMENT "serviceGroup"
 
-/**
- * Resource that contains the configuration
- */
-#define AXIS2_CONFIGURATION_RESOURCE "org/apache/axis2/deployment/axis2.xml"
 #define AXIS2_SERVER_XML_FILE "axis2.xml"
 	
 /*********************************** Constants*********************************/	

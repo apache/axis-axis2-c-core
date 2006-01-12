@@ -1,5 +1,5 @@
-#ifndef TEST_DEPLOYMENT_H
-#define TEST_DEPLOYMENT_H
+#ifndef TEST_PHASES_INFO_H
+#define TEST_PHASES_INFO_H
 
 #include <string.h>
 #include <stdio.h>
@@ -10,6 +10,6 @@
 #include <axis2_string.h>
 #include <axis2_phases_info.h>
 
-void Testaxis2_phases_info_get_op_in_phases(CuTest *tc)
+void Testaxis2_phases_info_get_op_in_phases(CuTest *tc);
 
-#endif /* TEST_DEPLOYMENT_H*/
+#endif /* TEST_PHASES_INFO_H*/

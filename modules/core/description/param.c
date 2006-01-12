@@ -108,6 +108,14 @@ axis2_param_create(axis2_env_t **env,
     param_impl->type = AXIS2_TEXT_PARAM;
     param_impl->param_element = NULL;
     
+    param_impl->param.ops = 
+		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_param_ops_t));
+	if(NULL == param_impl->param.ops)
+    {
+        axis2_param_free(&(param_impl->param), env);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     /* initialize ops */
     param_impl->param.ops->get_name = axis2_param_get_name;
     param_impl->param.ops->get_value = axis2_param_get_value;

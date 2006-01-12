@@ -2,12 +2,21 @@ prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_deployment.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libtest_deployment_la_SOURCES = deployment_test.c
+libtest_deployment_la_SOURCES = deployment_test.c \
+                                test_phases_info.c \
+                                test_dep_engine.c
+
 include_HEADERS=$(top_builddir)/test/unit/core/deployment/*.h
 
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
+            -I$(top_builddir)/modules/core/deployment \
+            -I$(top_builddir)/modules/core/transport \
+            -I$(top_builddir)/modules/platforms \
+            -I$(top_builddir)/modules/wsdl \
+            -I$(top_builddir)/modules/core/description \
+            -I$(top_builddir)/modules/xml/parser \
             -I${CUTEST_HOME}/include
 
 prgbin_PROGRAMS = deployment_test

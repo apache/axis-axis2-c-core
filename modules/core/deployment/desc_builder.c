@@ -26,6 +26,9 @@ typedef struct axis2_desc_builder_impl
 {
 	axis2_desc_builder_t desc_builder;
     
+    /**
+     * Store the full path to configuration file.
+     */
     axis2_char_t *file_name;
     	
 } axis2_desc_builder_impl_t;
@@ -250,7 +253,7 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
             AXIS2_FAILURE);
         return NULL;
     }
-    /** create pull parser */
+    /** create pull parser using the file path to configuration file */
     reader = axis2_xml_reader_create_for_file(env, builder_impl->file_name,
         NULL);
 
@@ -275,6 +278,11 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
         document is the container of om model created using builder
     */
     document = axis2_om_document_create (env, NULL, builder);
+    /** 
+     * In description building we don't want defferred building. So build
+     * the whole tree at once
+     */
+    AXIS2_OM_DOCUMENT_BUILD_ALL(document, env);
     /**
         get root element , building starts hear 
      */
@@ -598,13 +606,15 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
         axis2_om_attribute_t *para_name = NULL;
         axis2_om_attribute_t *para_locked = NULL;  
         axis2_qname_t *att_locked = NULL;
-        axis2_qname_t *att_qname = NULL;        
+        axis2_qname_t *att_qname = NULL;
+        axis2_char_t *pname = NULL;
         
         /* this is to check whether some one has locked the parmter at the top 
          * level
          */
         param_node = (axis2_om_node_t *)
             AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(params, env);
+        param_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(param_node, env);
         param = axis2_param_create(env, NULL, NULL);
         /* setting param_element */
         status = AXIS2_PARAM_SET_ELEMENT(param, env, param_node);
@@ -620,16 +630,19 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
         AXIS2_QNAME_FREE(att_qname, env);
         if(!para_name)
         {
+            printf("para_name is null\n");
             AXIS2_PARAM_FREE(param, env);
             return AXIS2_FAILURE;
         }
-        status = AXIS2_PARAM_SET_NAME(param, env, AXIS2_OM_ATTRIBUTE_GET_VALUE(
-            para_name, env));
+        pname = AXIS2_OM_ATTRIBUTE_GET_VALUE(para_name, env);
+        printf("pname:%s\n", pname);
+        status = AXIS2_PARAM_SET_NAME(param, env, pname);
         if(AXIS2_FAILURE == status)
         {
             AXIS2_PARAM_FREE(param, env);
             return AXIS2_FAILURE;
         }
+        
         /* setting paramter Value (the chiled elemnt of the paramter) */
         para_value = AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(param_element, env,
             param_node, &para_node);

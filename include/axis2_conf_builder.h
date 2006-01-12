@@ -96,7 +96,7 @@ axis2_conf_builder_create (axis2_env_t **env);
 
 /**
  * Creates conf builder struct
- * @param file
+ * @param file This is the full path to the server xml file
  * @param dep_engine
  * @param conf
  * @return pointer to newly created conf builder

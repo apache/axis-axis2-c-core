@@ -58,6 +58,9 @@ typedef struct axis2_dep_engine_impl
      */
     axis2_char_t *folder_name;
 
+    /**
+     * Full path to the server xml file(axis2.xml)
+     */
     axis2_char_t *conf_name;
 
     /**
@@ -619,7 +622,6 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     axis2_conf_builder_t *builder = NULL;
     axis2_repos_listener_t *repos_listener = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    
     AXIS2_FUNC_PARAM_CHECK(dep_engine, env, NULL);
     engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
@@ -631,10 +633,12 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     }
     
     engine_impl->conf = axis2_conf_create(env);
+    
     if(!engine_impl->conf)
     {
         return NULL;
     }
+    
     builder = axis2_conf_builder_create_with_file_and_dep_engine_and_conf(env,
         engine_impl->conf_name, dep_engine, engine_impl->conf);
     if(!builder)
@@ -642,7 +646,9 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
         AXIS2_CONF_FREE(engine_impl->conf, env);
         engine_impl->conf = NULL;
     }
+    printf("came20\n");
     status = AXIS2_CONF_BUILDER_POPULATE_CONF(builder, env);
+    printf("came21\n");
     if(AXIS2_SUCCESS != status)
     {
         AXIS2_CONF_FREE(engine_impl->conf, env);

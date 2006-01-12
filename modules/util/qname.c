@@ -310,7 +310,3 @@ axis2_qname_to_string(axis2_qname_t *qname,
     else 
         return AXIS2_STRACAT( qname_impl->namespace_uri, qname_impl->localpart, env);
 }
-
-                   
-                                            
-

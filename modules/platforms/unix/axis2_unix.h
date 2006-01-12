@@ -49,6 +49,10 @@ extern "C"
 #define AXIS2_PLATFORM_CLIENTLOG_PATH      "/usr/local/axis2/log/axis2_client_log"
 #define AXIS2_PLATFORM_CONFIG_PATH         "/etc/axiscpp.conf"
 #define AXIS2_PLATFORM_SECUREINFO			 ""
+/**
+ * Resource that contains the configuration
+ */
+#define AXIS2_CONFIGURATION_RESOURCE "/home/damitha/programs/axis2c/axis2.xml"
 
 /*****************************************************************
  * Library loading and procedure resolution
