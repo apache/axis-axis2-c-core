@@ -14,7 +14,7 @@ libaxis2_soap_la_SOURCES = soap_fault.c \
                            soap_utils.c \
                            soap_body.c \
                            soap_envelope.c \
-                           soap_model_builder.c \
+                           soap_builder.c \
                            soap11_builder_helper.c \
                            soap12_builder_helper.c
 
