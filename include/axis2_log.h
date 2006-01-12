@@ -71,7 +71,7 @@ extern "C"
         * @param size size of the buffer to be written to log
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *write) (axis2_char_t *buffer, axis2_log_levels_t level);
+        axis2_status_t (AXIS2_CALL *write) (const axis2_char_t *buffer, axis2_log_levels_t level);
     } axis2_log_ops_t;
 
   /** 
