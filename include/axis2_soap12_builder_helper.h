@@ -89,5 +89,5 @@ axis2_soap12_builder_helper_create(axis2_env_t **env,
 #endif
 
  
- #endif AXIS2_SOAP11_BUILDER_HELPER_H
+#endif /*AXIS2_SOAP11_BUILDER_HELPER_H*/
  
