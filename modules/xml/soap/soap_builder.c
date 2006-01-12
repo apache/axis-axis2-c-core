@@ -163,6 +163,7 @@ axis2_soap_builder_create(axis2_env_t **env,
     builder_impl->processing_mandatory_fault_elements = AXIS2_FALSE;
     builder_impl->receiver_fault_code = NULL;
     builder_impl->sender_fault_code = NULL;
+    builder_impl->soap_version = AXIS2_SOAP12;
     builder_impl->soap_builder.ops = NULL;
     builder_impl->last_node_status = -1;
     builder_impl->envelope_ns = NULL;
@@ -558,5 +559,4 @@ parse_headers(axis2_soap_builder_t *builder,
             axis2_soap_builder_next(builder, env);
         }
     }
-
 }                                                                                                                  

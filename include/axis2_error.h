@@ -387,7 +387,15 @@ extern "C"
         AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP,
         
         /* Error in writing the response in response writer */
-        AXIS2_ERROR_WRITING_RESPONSE
+        AXIS2_ERROR_WRITING_RESPONSE,
+        
+        AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED,
+        
+        AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED,
+        
+        AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED
+        
+        
     };
 
 /** @} */

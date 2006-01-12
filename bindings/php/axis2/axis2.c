@@ -121,10 +121,9 @@ static void php_axis2_init_globals(zend_axis2_globals *axis2_globals)
 
     allocator = axis2_allocator_init(NULL);    
     log = axis2_log_create(allocator, NULL);
-    stream = axis2_stream_create(allocator, NULL);
     err = axis2_error_create(allocator);
     
-    environment= axis2_env_create_with_error_stream_log(allocator, err,stream, log);
+    environment= axis2_env_create_with_error_log(allocator, err, log);
     
 	axis2_globals->global_value = 0;
 	axis2_globals->global_string = NULL;
