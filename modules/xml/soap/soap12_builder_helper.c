@@ -23,7 +23,7 @@
  #include <axis2_soap_fault_code.h>
  #include <axis2_soap_fault_node.h>
  #include <axis2_soap_fault_detail.h>
- #include <axis2_Soap_fault_reason.h>
+ #include <axis2_soap_fault_reason.h>
 
 /********************* impl struct ********************************************/
  
@@ -270,7 +270,6 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FALSE);
                     return NULL;                
                 }
-                
             }
         }        
     }
