@@ -11,7 +11,8 @@ libaxis2_deployment_la_SOURCES = phases_info.c \
                                     svc_grp_builder.c \
                                     module_builder.c \
                                     conf_builder.c \
-                                    repos_listener.c
+                                    repos_listener.c \
+                                    conf_init.c
 
 libaxis2_deployment_la_LIBADD = 
 INCLUDES = -I$(top_builddir)/include \

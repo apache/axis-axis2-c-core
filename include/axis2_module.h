@@ -60,16 +60,16 @@ AXIS2_DECLARE_DATA struct axis2_module_ops
 {
     /* initialize the module */
     axis2_status_t (AXIS2_CALL *
-    init) (struct axis2_conf *axis2_system,
-            axis2_env_t **env);
+    init) (struct axis2_module *module, 
+            axis2_env_t **env, struct axis2_conf *axis2_system);
 
     /* TODO figure out how to get the engage() concept done */
     /* public void engage(ExecutionChain exeChain) throws AxisFault; */
     
     /* shutdown the module */
     axis2_status_t (AXIS2_CALL * 
-    shutdown)(struct axis2_conf *axis2_system,
-            axis2_env_t **env);
+    shutdown)(struct axis2_module *module,
+                axis2_env_t **env, struct axis2_conf *axis2_system);
     
 
 } ;
@@ -88,11 +88,11 @@ axis2_module_create (axis2_env_t **env);
 
 /*************************** Function macros **********************************/
 
-#define AXIS2_MODULE_INIT(module, env) \
-		((module)->ops->init (module, env))
+#define AXIS2_MODULE_INIT(module, env, conf) \
+		((module)->ops->init (module, env, conf))
 
-#define AXIS2_MODULE_SHUTDOWN(module, env) \
-		((module)->ops->free (module, env))
+#define AXIS2_MODULE_SHUTDOWN(module, env, conf) \
+		((module)->ops->free (module, env, conf))
 
 
 /** @} */
