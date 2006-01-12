@@ -21,13 +21,14 @@
 #include <axis2_op.h>
 #include <axis2_qname.h>
 #include <axis2_http_transport.h>
-#include <axis2_soap_model_builder.h>
+#include <axis2_soap_builder.h>
 #include <axis2_engine.h>
 #include <axis2_soap_body.h>
 #include <axis2_utils.h>
 #include <axis2_om_namespace.h>
 #include <axis2_om_node.h>
 #include <axis2_hash.h>
+#include <axis2_soap.h>
 
 /***************************** Function headers *******************************/
 
@@ -101,7 +102,7 @@ axis2_http_transport_utils_process_http_post_request
                         axis2_char_t *request_uri)
 {
 	axis2_soap_envelope_t *soap_envelope = NULL;
-	axis2_soap_model_builder_t *soap_builder = NULL;
+	axis2_soap_builder_t *soap_builder = NULL;
 	axis2_om_stax_builder_t *om_builder = NULL;
 	axis2_bool_t is_soap11 = AXIS2_FALSE;
 	axis2_xml_reader_t *xml_reader = NULL;
@@ -155,9 +156,9 @@ axis2_http_transport_utils_process_http_post_request
 	if(NULL != strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP))
 	{
 		is_soap11 = AXIS2_FALSE;
-		soap_builder = axis2_soap_model_builder_create(env, om_builder);
-		/* TODO set the soap12 namespace URI */
-		soap_envelope = AXIS2_SOAP_MODEL_BUILDER_GET_SOAP_ENVELOPE(soap_builder,
+		soap_builder = axis2_soap_builder_create(env, om_builder, 
+                    AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+		soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder,
 					env);
 	}
 	else if(NULL != strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML))
@@ -166,9 +167,9 @@ axis2_http_transport_utils_process_http_post_request
 		if(NULL != soap_action_header && AXIS2_STRLEN(soap_action_header)
 					> 0)
 		{
-			soap_builder = axis2_soap_model_builder_create(env, om_builder);
-			/* TODO set the soap11 namespace URI */
-			soap_envelope = AXIS2_SOAP_MODEL_BUILDER_GET_SOAP_ENVELOPE(
+			soap_builder = axis2_soap_builder_create(env, om_builder, 
+						AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
+			soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(
 					soap_builder, env);
 		}
 		/* REST support
@@ -197,7 +198,7 @@ axis2_http_transport_utils_process_http_post_request
 	 *	om_builder = NULL;
 	 *	if(NULL != soap_builder)
 	 *	{
-	 *	 	AXIS2_SOAP_MODEL_BUILDER_FREE(soap_builder, env);
+	 *	 	AXIS2_SOAP_BUILDER_FREE(soap_builder, env);
 	 *	 	soap_builder = NULL;
 	 *	}
 	 *	return AXIS2_FAILURE;
