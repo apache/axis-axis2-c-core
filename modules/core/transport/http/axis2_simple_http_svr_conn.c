@@ -339,7 +339,7 @@ axis2_simple_http_svr_conn_write_response
 	axis2_array_list_t *headers = NULL;
 	axis2_stream_t *response_stream = NULL;
 	axis2_char_t *response_body = NULL;
-	int body_size = NULL;
+	int body_size = 0;
 	int i = 0;
 	
     AXIS2_FUNC_PARAM_CHECK(svr_conn, env, AXIS2_FAILURE);

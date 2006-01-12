@@ -106,7 +106,7 @@ axis2_http_transport_utils_process_http_post_request
 	axis2_bool_t is_soap11 = AXIS2_FALSE;
 	axis2_xml_reader_t *xml_reader = NULL;
 	axis2_char_t *char_set = NULL;
-	axis2_char_t *xml_char_set = NULL;
+	/*axis2_char_t *xml_char_set = NULL;*/
 	axis2_conf_ctx_t *conf_ctx = NULL;
 	axis2_callback_info_t callback_ctx;
 	
@@ -334,14 +334,14 @@ axis2_http_transport_utils_create_envelope_from_get_request
 	for(hi = axis2_hash_first(request_params, env); NULL != hi; 
 						axis2_hash_next(env, hi))
 	{
-		axis2_char_t *name = NULL;
-		axis2_char_t *value = NULL;
+		void *name = NULL;
+		void *value = NULL;
 		axis2_om_element_t *tmp_ele = NULL;
 		axis2_om_node_t *tmp_node = NULL;
 		axis2_hash_this(hi, (const void **)&name, NULL, (void**)&value);
-		tmp_ele = axis2_om_element_create(env, op_node, name, def_om_ns, 
+		tmp_ele = axis2_om_element_create(env, op_node, (axis2_char_t*)name, def_om_ns, 
 						&tmp_node);
-		AXIS2_OM_ELEMENT_SET_TEXT(tmp_ele, env, value, tmp_node);
+		AXIS2_OM_ELEMENT_SET_TEXT(tmp_ele, env, (axis2_char_t*)value, tmp_node);
 	}
     return envelope;
 }
