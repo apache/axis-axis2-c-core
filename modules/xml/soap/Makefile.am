@@ -13,7 +13,10 @@ libaxis2_soap_la_SOURCES = soap_fault.c \
                            soap_header.c \
                            soap_utils.c \
                            soap_body.c \
-                           soap_envelope.c
+                           soap_envelope.c \
+                           soap_model_builder.c \
+                           soap11_builder_helper.c \
+                           soap12_builder_helper.c
 
 libaxis2_soap_la_LIBADD = 
 INCLUDES = -I$(top_builddir)/include \
