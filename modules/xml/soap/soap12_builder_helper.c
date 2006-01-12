@@ -271,6 +271,61 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     return NULL;                
                 }
             }
+            else
+            {
+                    AXIS2_ERROR_SET((*env)->error, 
+                        AXIS2_ERROR_REASON_ELEMENT_SHOULD_HAVE_A_TEXT, AXIS2_FALSE);
+                    return NULL;                        
+            }
+            
+        }
+        else if(AXIS2_STRCMP(ele_localname, AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME) == 0)
+        {
+            if(!(builder_helper_impl->reason_processing))
+            {
+                if(builder_helper_impl->reason_present && !(builder_helper_impl->detail_present))
+                {
+                    if(builder_helper_impl->role_present)
+                    {
+                        AXIS2_ERROR_SET((*env)->error, 
+                            AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
+                                            
+                        return NULL;
+                    }
+                    else
+                    {
+                        axis2_soap_fault_role_t *soap_fault_role = NULL;
+                        soap_fault_role = axis2_soap_fault_role_create(env);
+                        AXIS2_SOAP_FAULT_ROLE_SET_BASE_NODE(soap_fault_role, env, om_ele_node);
+                        AXIS2_SOAP_FAULT_ROLE_SET_SOAP_VRESION(soap_fault_role, env, AXIS2_SOAP12);
+                        AXIS2_SOAP_FAULT_SET_ROLE(soap_fault, env, soap_fault_role);
+                        builder_helper_impl->role_present = AXIS2_TRUE;                    
+                    }
+                }
+                else
+                {
+                    AXIS2_ERROR_SET((*env)->error, 
+                        AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FAILURE);
+                    return NULL;                        
+                }
+            }
+            else
+            {
+                AXIS2_ERROR_SET((*env)->error. AXIS2_ERROR_S
+            
+            
+            
+            
+            
+            
+            
+            }
+                            
+            
+            
+            
+            
+            }        
         }        
     }
     return NULL;
