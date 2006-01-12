@@ -116,7 +116,7 @@ axis2_soap_model_builder_end_element(axis2_soap_model_builder_t *builder,
                                      axis2_env_t **env);
                                                                       
                                  
-static void 
+static axis2_status_t
 identify_soap_version(axis2_soap_model_builder_t *builder,
                       axis2_env_t **env,
                       axis2_char_t* soap_version_uri_from_transport);
@@ -129,15 +129,19 @@ axis2_soap_model_builder_construct_node(axis2_soap_model_builder_t *builder,
                                 axis2_bool_t is_soap_envelope);                      
 
 
-static void parse_headers();
+static axis2_status_t 
+parse_headers(axis2_soap_model_builder_t *builder,
+              axis2_env_t **env); 
 
 /***************** function implementations ***********************************/
 
 AXIS2_DECLARE(axis2_soap_model_builder_t *)
 axis2_soap_model_builder_create(axis2_env_t **env,
-                                axis2_om_stax_builder_t *builder)
+                                axis2_om_stax_builder_t *builder,
+                                axis2_char_t *soap_version)
 {
     axis2_soap_model_builder_impl_t *builder_impl = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, builder, NULL);
     
@@ -181,7 +185,12 @@ axis2_soap_model_builder_create(axis2_env_t **env,
             axis2_soap_model_builder_get_soap_envelope;
     builder_impl->soap_builder.ops->get_document =
             axis2_soap_model_builder_get_document;                                   
-
+    status = identify_soap_version(&(builder_impl->soap_builder), env, soap_version);
+    if(status == AXIS2_FAILURE)
+    {
+        axis2_soap_model_builder_free(&(builder_impl->soap_builder), env);
+        return NULL;
+    }
     return &(builder_impl->soap_builder);    
 } 
 
@@ -192,6 +201,17 @@ axis2_soap_model_builder_free(axis2_soap_model_builder_t *builder,
     axis2_soap_model_builder_impl_t *builder_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(builder, env, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    if(builder_impl->builder_helper)
+    {
+        if(builder_impl->soap_version == AXIS2_SOAP11)
+        {
+            AXIS2_SOAP11_BUILDER_HELPER_FREE((axis2_soap11_builder_helper_t *)(builder_impl->builder_helper), env);
+        }
+        else if(builder_impl->soap_version == AXIS2_SOAP12)
+        {
+            AXIS2_SOAP12_BUILDER_HELPER_FREE((axis2_soap12_builder_helper_t *)(builder_impl->builder_helper), env);
+        }
+    }
     if(builder->ops)
     {
         AXIS2_FREE((*env)->allocator, builder->ops);
@@ -479,7 +499,64 @@ axis2_soap_model_builder_process_namespace_data
         }
     }    
     return AXIS2_SUCCESS;
+}
+
+static axis2_status_t 
+identify_soap_version(axis2_soap_model_builder_t *builder,
+                      axis2_env_t **env,
+                      axis2_char_t* soap_version_uri_from_transport)
+{
+    axis2_soap_model_builder_impl_t *builder_impl = NULL;
+    axis2_om_namespace_t *om_ns = NULL;
+    axis2_om_node_t *envelope_node = NULL;
+    axis2_om_element_t *om_ele = NULL;
+    axis2_char_t *ns_uri = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(builder, env, AXIS2_FAILURE);
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    builder_impl->soap_envelope = 
+        axis2_soap_model_builder_get_soap_envelope(builder, env);
+    if(builder_impl->soap_envelope == NULL)
+    {
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    envelope_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(builder_impl->soap_envelope, env);
+    om_ele = (axis2_om_element_t *) AXIS2_OM_NODE_GET_DATA_ELEMENT(envelope_node, env);
+    om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env);
+    
+    ns_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
+        
+    if(soap_version_uri_from_transport && AXIS2_STRCMP(soap_version_uri_from_transport, ns_uri) != 0)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }            
+    if(AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
+        builder_impl->soap_version = AXIS2_SOAP11;        
+    else if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
+        builder_impl->soap_version = AXIS2_SOAP12;          
+    return AXIS2_SUCCESS;
+} 
+
+static axis2_status_t 
+parse_headers(axis2_soap_model_builder_t *builder,
+              axis2_env_t **env)
+{
+    axis2_soap_model_builder_impl_t *builder_impl = NULL;
+    axis2_om_node_t *om_node = NULL;
+    axis2_soap_header_t *soap_header = NULL;
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(builder_impl->soap_envelope, env);
+    om_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
+    
+    if(soap_header)
+    {
+        while(!AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env))
+        {
+            axis2_soap_model_builder_next(builder, env);
+        }
+    }
+
 }                                                                                                                  
-
-
-

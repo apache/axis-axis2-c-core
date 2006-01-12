@@ -77,7 +77,7 @@ axis2_soap11_builder_helper_create(axis2_env_t **env,
     
 /** free soap_body */
 #define AXIS2_SOAP11_BUILDER_HELPER_FREE(builder_helper, env) \
-        ((builder_helper)->ops->free(builder_helper, env))
+        ((builder_helper)->ops->free_fn(builder_helper, env))
         
 #define AXIS2_SOAP11_BUILDER_HELPER_HANDLE_EVENT(builder_helper, \
             env, soap_builder, om_element_node, element_level) \

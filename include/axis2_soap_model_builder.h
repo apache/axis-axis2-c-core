@@ -85,7 +85,8 @@ struct axis2_soap_model_builder
 
 AXIS2_DECLARE(axis2_soap_model_builder_t *)
 axis2_soap_model_builder_create(axis2_env_t **env,
-                                axis2_om_stax_builder_t *builder);
+                                axis2_om_stax_builder_t *builder,
+                                axis2_char_t *soap_version);
 
 /******************** Macros **************************************************/
     
@@ -115,5 +116,3 @@ axis2_soap_model_builder_create(axis2_env_t **env,
 
 
 #endif /* AXIS2_SOAP_MODEL_BUILDER_H */
-
-

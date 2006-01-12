@@ -381,6 +381,11 @@ extern "C"
         AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
         
         AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI,
+        
+        AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE,
+        
+        AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP,
+        
         /* Error in writing the response in response writer */
         AXIS2_ERROR_WRITING_RESPONSE
     };
