@@ -47,7 +47,7 @@ int axis2_test_svc_add_module_ops()
 	svc = axis2_svc_create_with_qname(&env, qname);
 	module_desc = axis2_module_desc_create(&env);
 	axis2_config = axis2_conf_create(&env);
-	status = axis2_svc_add_module_ops(svc, &env, module_desc, axis2_config);
+	status = AXIS2_SVC_ADD_MODULE_OPS(svc, &env, module_desc, axis2_config);
 	if(status != AXIS2_SUCCESS)
 	{
 	    printf("axis2_test_description_add_module_ops ERROR %d\n", status);
@@ -80,7 +80,7 @@ int axis2_test_svc_engage_module()
 	moduleref = axis2_module_desc_create(&env);
 	axis2_config = axis2_conf_create(&env);
 	
-	status = axis2_svc_engage_module(svc, &env, moduleref, axis2_config); 
+	status = AXIS2_SVC_ENGAGE_MODULE(svc, &env, moduleref, axis2_config); 
 
 	if(status != AXIS2_SUCCESS)
 	{
