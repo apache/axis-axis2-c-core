@@ -37,6 +37,8 @@ typedef struct axis2_soap12_builder_helper_impl_t
     
     axis2_bool_t reason_present;
     
+    axis2_bool_t node_present;
+    
     axis2_bool_t role_present;
     
     axis2_bool_t detail_present;
@@ -104,6 +106,7 @@ axis2_soap12_builder_helper_create(axis2_env_t **env,
     builder_helper_impl->sub_code_processing = AXIS2_FALSE;
     builder_helper_impl->detail_element_names = NULL;
     builder_helper_impl->builder_helper.ops = NULL; 
+    builder_helper_impl->node_present = AXIS2_FALSE;
     builder_helper_impl->soap_builder = soap_builder;  
     
     builder_helper_impl->builder_helper.ops = (axis2_soap12_builder_helper_ops_t*) AXIS2_MALLOC(
@@ -190,7 +193,8 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 builder_helper_impl->code_present = AXIS2_TRUE;
                 builder_helper_impl->code_processing = AXIS2_TRUE;
             }
-        }else if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME, ele_localname) == 0)
+        }
+        else if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME, ele_localname) == 0)
         {
             if(!(builder_helper_impl->code_processing) && !(builder_helper_impl->sub_code_processing))
             {
@@ -219,27 +223,56 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FAILURE);
                     return NULL;                        
                 }
-            
-            
-            
-            
             }
-        
-        
-        
-        
-        
-        
-        
-        
-        
+            else 
+            {
+                if(builder_helper_impl->code_processing)
+                {
+                    AXIS2_ERROR_SET((*env)->error, 
+                        AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE, AXIS2_FAILURE);
+                    return NULL;                            
+                }
+                else
+                {
+                    AXIS2_ERROR_SET((*env)->error, 
+                        AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE, AXIS2_FAILURE);
+                    return NULL;                
+                }
+            }
         }
-    
+        else if(AXIS2_STRCMP(ele_localname, AXIS2_SOAP12_SOAP_FAULT_NODE_LOCAL_NAME) == 0)
+        {
+            if(!(builder_helper_impl->reason_processing))
+            {
+                if(builder_helper_impl->reason_present && 
+                    !(builder_helper_impl->role_present) && 
+                    !(builder_helper_impl->detail_present))
+                {
+                    if(builder_helper_impl->node_present)
+                    {
+                        AXIS2_ERROR_SET((*env)->error, 
+                            AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
+                        return NULL;
+                    }
+                    else
+                    {
+                        axis2_soap_fault_node_t *soap_fault_node = NULL;
+                        soap_fault_node = axis2_soap_fault_node_create(env);
+                        AXIS2_SOAP_FAULT_NODE_SET_BASE_NODE(soap_fault_node, env, om_ele_node);
+                        AXIS2_SOAP_FAULT_NODE_SET_SOAP_VERSION(soap_fault_node, env, AXIS2_SOAP12);
+                        AXIS2_SOAP_FAULT_SET_NODE(soap_fault, env, soap_fault_node);                    
+                                        
+                        builder_helper_impl->node_present = AXIS2_TRUE;                    
+                    }
+                }else
+                {
+                    AXIS2_ERROR_SET((*env)->error, 
+                        AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FALSE);
+                    return NULL;                
+                }
+                
+            }
+        }        
     }
-    
     return NULL;
 }                                                                                                                    
-                               
-                             
-                             
-
