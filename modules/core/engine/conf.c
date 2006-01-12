@@ -416,6 +416,14 @@ axis2_conf_create (axis2_env_t **env)
         return NULL;
 	}
 	
+    config_impl->all_svcs = axis2_hash_make(env);
+    if(NULL == config_impl->all_svcs)
+    {
+        axis2_conf_free(&(config_impl->conf), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    } 
+    
     config_impl->msg_recvs = axis2_hash_make(env);
     if(NULL == config_impl->msg_recvs)
     {
