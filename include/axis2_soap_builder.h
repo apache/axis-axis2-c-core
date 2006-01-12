@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  
- #ifndef AXIS2_SOAP_MODEL_BUILDER_H
- #define AXIS2_SOAP_MODEL_BUILDER_H
+ #ifndef AXIS2_SOAP_BUILDER_H
+ #define AXIS2_SOAP_BUILDER_H
  
  #include <axis2_om_stax_builder.h>
  #include <axis2_soap_envelope.h>
@@ -90,22 +90,22 @@ axis2_soap_builder_create(axis2_env_t **env,
 
 /******************** Macros **************************************************/
     
-#define AXIS2_SOAP_MODEL_BUILDER_FREE(builder, env) \
+#define AXIS2_SOAP_BUILDER_FREE(builder, env) \
         ((builder)->ops->free(builder, env))
 
-#define AXIS2_SOAP_MODEL_BUILDER_GET_SOAP_ENVELOPE(builder, env) \
+#define AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(builder, env) \
         ((builder)->ops->get_soap_envelope(builder, env))
         
-#define AXIS2_SOAP_MODEL_BUILDER_GET_DOCUMENT_ELEMENT(builder, env) \
+#define AXIS2_SOAP_BUILDER_GET_DOCUMENT_ELEMENT(builder, env) \
         ((builder)->ops->get_document_element(builder, env))
         
-#define AXIS2_SOAP_MODEL_BUILDER_NEXT(builder, env) \
+#define AXIS2_SOAP_BUILDER_NEXT(builder, env) \
         ((builder)->ops->next(builder, env))
         
-#define AXIS2_SOAP_MODEL_BUILDER_GET_DOCUMENT(builder, env) \
+#define AXIS2_SOAP_BUILDER_GET_DOCUMENT(builder, env) \
         ((builder)->ops->get_document(builder, env))
         
-#define AXIS2_SOAP_MODEL_BUILDER_NEXT(builder, env) \
+#define AXIS2_SOAP_BUILDER_NEXT(builder, env) \
         ((builder)->ops->next(builder, env))       
 
 /** @} */
@@ -115,4 +115,4 @@ axis2_soap_builder_create(axis2_env_t **env,
  
 
 
-#endif /* AXIS2_SOAP_MODEL_BUILDER_H */
+#endif /* AXIS2_SOAP_BUILDER_H */
