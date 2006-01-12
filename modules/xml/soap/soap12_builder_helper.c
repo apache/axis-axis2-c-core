@@ -23,7 +23,7 @@ typedef struct axis2_soap12_builder_helper_impl_t
 {
     axis2_soap12_builder_helper_t builder_helper;
     
-    axis2_soap_model_builder_t *soap_model_builder;
+    axis2_soap_builder_t *soap_model_builder;
     
     axis2_bool_t code_present;
     
@@ -64,7 +64,7 @@ axis2_om_node_t* AXIS2_CALL
 axis2_soap12_builder_helper_handle_event
                             (axis2_soap12_builder_helper_t *builder_helper,
                              axis2_env_t **env,
-                             axis2_soap_model_builder_t *soap_builder,
+                             axis2_soap_builder_t *soap_builder,
                              axis2_om_node_t *om_element_node,
                              int element_level);
                              
@@ -72,7 +72,7 @@ axis2_soap12_builder_helper_handle_event
 
  AXIS2_DECLARE(axis2_soap12_builder_helper_t*)
 axis2_soap12_builder_helper_create(axis2_env_t **env, 
-                                   axis2_soap_model_builder_t *soap_builder)
+                                   axis2_soap_builder_t *soap_builder)
 {
     axis2_soap12_builder_helper_impl_t *builder_helper_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -141,7 +141,7 @@ axis2_soap12_builder_helper_free(axis2_soap12_builder_helper_t *builder_helper,
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder_helper,
                              axis2_env_t **env,
-                             axis2_soap_model_builder_t *soap_builder,
+                             axis2_soap_builder_t *soap_builder,
                              axis2_om_node_t *om_element_node,
                              int element_level)
 {

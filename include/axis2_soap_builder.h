@@ -21,8 +21,8 @@
  #include <axis2_soap_envelope.h>
  
 /**
- * @file axis2_soap_model_builder.h
- * @brief axis2_soap_model_builder struct 
+ * @file axis2_soap_builder.h
+ * @brief axis2_soap_builder struct 
  */
 
 #ifdef __cplusplus
@@ -31,11 +31,11 @@ extern "C"
 #endif
 
 
-typedef struct axis2_soap_model_builder axis2_soap_model_builder_t;
-typedef struct axis2_soap_model_builder_ops  axis2_soap_model_builder_ops_t;
+typedef struct axis2_soap_builder axis2_soap_builder_t;
+typedef struct axis2_soap_builder_ops  axis2_soap_builder_ops_t;
     
 /**
- * @defgroup axis2_soap_model_builder
+ * @defgroup axis2_soap_builder
  * @ingroup axis2_soap_model builder
  * @{
  */
@@ -45,24 +45,24 @@ typedef struct axis2_soap_model_builder_ops  axis2_soap_model_builder_ops_t;
  *   ops Encapsulator struct of axis2_soap_operations 
  */
 
-AXIS2_DECLARE_DATA   struct axis2_soap_model_builder_ops
+AXIS2_DECLARE_DATA   struct axis2_soap_builder_ops
 {
-        axis2_status_t (AXIS2_CALL *free)(axis2_soap_model_builder_t *builder,
+        axis2_status_t (AXIS2_CALL *free)(axis2_soap_builder_t *builder,
                                           axis2_env_t **env);
 
         axis2_soap_envelope_t* (AXIS2_CALL *get_soap_envelope)
-                                         (axis2_soap_model_builder_t *builder,
+                                         (axis2_soap_builder_t *builder,
                                           axis2_env_t **env);
                                           
         axis2_om_document_t* (AXIS2_CALL *get_document)
-                                         (axis2_soap_model_builder_t *builder,
+                                         (axis2_soap_builder_t *builder,
                                           axis2_env_t **env);
                                           
-        axis2_om_node_t * (AXIS2_CALL *next)(axis2_soap_model_builder_t *builder,
+        axis2_om_node_t * (AXIS2_CALL *next)(axis2_soap_builder_t *builder,
                                              axis2_env_t **env);
                                              
         axis2_om_node_t* (AXIS2_CALL *get_document_element)
-                                            (axis2_soap_model_builder_t *builder,
+                                            (axis2_soap_builder_t *builder,
                                              axis2_env_t **env); 
 };
                                                       
@@ -72,19 +72,19 @@ AXIS2_DECLARE_DATA   struct axis2_soap_model_builder_ops
  * represent a soap_body
  */
  
-struct axis2_soap_model_builder
+struct axis2_soap_builder
 {
     /** operation of axis2_soap_body struct */
-    axis2_soap_model_builder_ops_t *ops;
+    axis2_soap_builder_ops_t *ops;
 };
 
 /**
- * creates a axis2_soap_model_builder struct
+ * creates a axis2_soap_builder struct
  * @param env Environment. MUST NOT be NULL
  */
 
-AXIS2_DECLARE(axis2_soap_model_builder_t *)
-axis2_soap_model_builder_create(axis2_env_t **env,
+AXIS2_DECLARE(axis2_soap_builder_t *)
+axis2_soap_builder_create(axis2_env_t **env,
                                 axis2_om_stax_builder_t *builder,
                                 axis2_char_t *soap_version);
 

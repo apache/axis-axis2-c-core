@@ -39,7 +39,7 @@ extern "C"
     typedef enum builder_types
     {
         AXIS2_OM_STAX_BUILDER = 0,
-        AXIS2_SOAP_MODEL_BUILDER
+        AXIS2_SOAP_BUILDER
     } builder_types_t;
 /**
  * @defgroup axis2_om_stax_builder OM Stax Builder

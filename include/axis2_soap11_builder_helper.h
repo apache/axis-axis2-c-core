@@ -22,7 +22,7 @@
  * @file axis2_soap_11_builder_helper.h
  * @brief axis2_soap11_builder_helper
  */
-#include <axis2_soap_model_builder.h> 
+#include <axis2_soap_builder.h> 
 
 #ifdef __cplusplus
 extern "C"
@@ -52,7 +52,7 @@ typedef struct axis2_soap11_builder_helper_ops axis2_soap11_builder_helper_ops_t
         axis2_om_node_t* (AXIS2_CALL *handle_event)
                     (axis2_soap11_builder_helper_t *builder_helper,
                      axis2_env_t **env,
-                     axis2_soap_model_builder_t *soap_builder,
+                     axis2_soap_builder_t *soap_builder,
                      axis2_om_node_t *om_element_node,
                      int element_level);
     };                                                      
@@ -71,7 +71,7 @@ struct axis2_soap11_builder_helper
     */
 AXIS2_DECLARE(axis2_soap11_builder_helper_t*)
 axis2_soap11_builder_helper_create(axis2_env_t **env, 
-                                   axis2_soap_model_builder_t *soap_builder);
+                                   axis2_soap_builder_t *soap_builder);
     
 /******************** Macros **************************************************/
     

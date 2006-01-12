@@ -56,7 +56,7 @@ axis2_soap_message_serialize(axis2_soap_message_t *message,
 
 AXIS2_DECLARE(axis2_soap_message_t*)
 axis2_soap_message_create(axis2_env_t **env,
-                          axis2_soap_model_builder_t *builder,
+                          axis2_soap_builder_t *builder,
                           axis2_om_document_t *om_doc)
 {
     axis2_soap_message_impl_t *soap_message_impl = NULL;
