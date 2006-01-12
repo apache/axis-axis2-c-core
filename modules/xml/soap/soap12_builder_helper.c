@@ -281,7 +281,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
         }
         else if(AXIS2_STRCMP(ele_localname, AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME) == 0)
         {
-            if(!(builder_helper_impl->reason_processing))
+           /* if(!(builder_helper_impl->reason_processing))
             {
                 if(builder_helper_impl->reason_present && !(builder_helper_impl->detail_present))
                 {
@@ -324,8 +324,8 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             
             
             
-            
             }        
+            */
         }        
     }
     return NULL;
