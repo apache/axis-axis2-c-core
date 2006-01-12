@@ -31,7 +31,7 @@ axis2_log_impl_free (axis2_log_t *log)
     return 0;
 }
 
-axis2_status_t AXIS2_CALL axis2_log_impl_write (const void *buffer, size_t count);
+axis2_status_t AXIS2_CALL axis2_log_impl_write (axis2_char_t *buffer, axis2_log_levels_t level);
 
 AXIS2_DECLARE(axis2_log_t *)
 axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops)
@@ -66,15 +66,13 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops)
 }
 
 axis2_status_t AXIS2_CALL
-axis2_log_impl_write (const void *buffer, size_t count)
+axis2_log_impl_write (axis2_char_t *buffer, axis2_log_levels_t level)
 {
-    int i;
     if (!buffer)
         return -1;
 
-    i = 0;
-    for (i = 0; i < count; i++)
-        fprintf (stderr, "%c", ((axis2_char_t *) buffer)[i]);
+    fprintf (stderr, "%s", buffer);
     printf ("\n");
     return 0;
 }
+
