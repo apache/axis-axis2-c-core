@@ -106,7 +106,6 @@ AXIS2_DECLARE(axis2_soap_envelope_t*)
 axis2_soap_envelope_create_null(axis2_env_t **env)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
-    axis2_om_element_t *ele = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     envelope_impl = (axis2_soap_envelope_impl_t*)AXIS2_MALLOC(
                     (*env)->allocator,
