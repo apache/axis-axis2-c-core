@@ -1,5 +1,6 @@
 lib_LTLIBRARIES = libaxis2_http_transport.la
 AM_CPPFLAGS = $(CPPFLAGS)
+SUBDIRS = server
 libaxis2_http_transport_la_SOURCES = axis2_http_worker.c \
                                      axis2_http_transport_utils.c\
                               	     axis2_simple_http_svr_conn.c\
