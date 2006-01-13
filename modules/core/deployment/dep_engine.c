@@ -292,6 +292,12 @@ axis2_dep_engine_create(axis2_env_t **env)
     engine_impl->folder_name = NULL;
     engine_impl->conf_name = NULL; 
     engine_impl->dep_engine.ops = NULL;
+
+    engine_impl->ws_to_deploy = axis2_array_list_create(env, 10);
+    if (!(engine_impl->ws_to_deploy))
+    {
+        return NULL;
+    }
     
     engine_impl->dep_engine.ops = (axis2_dep_engine_ops_t *) AXIS2_MALLOC(
         (*env)->allocator, sizeof(axis2_dep_engine_ops_t));
@@ -299,6 +305,7 @@ axis2_dep_engine_create(axis2_env_t **env)
 	if(NULL == engine_impl->dep_engine.ops)
 	{
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        axis2_dep_engine_free(&(engine_impl->dep_engine), env);
         return NULL;
 	}
     

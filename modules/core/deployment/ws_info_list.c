@@ -124,6 +124,14 @@ axis2_ws_info_list_create_with_dep_engine (axis2_env_t **env,
         return NULL;
     }
     
+    ws_info_list_impl->current_info_lists = axis2_array_list_create(env, 10);
+    if (!(ws_info_list_impl->current_info_lists))
+    {
+        axis2_ws_info_list_free(&(ws_info_list_impl->ws_info_list), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
 	ws_info_list_impl->ws_info_list.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_ws_info_list_ops_t));
 	if(NULL == ws_info_list_impl->ws_info_list.ops)
