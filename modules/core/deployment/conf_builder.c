@@ -312,13 +312,18 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
         module_ref_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(module_ref_element, env,
             qref);
         
-        ref_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_ref_att, env);
-        qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
-        AXIS2_DEP_ENGINE_ADD_MODULE(conf_builder->desc_builder->engine, env,
-            qrefname);
+        if (module_ref_att)
+        {
+            ref_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_ref_att, env);
+            qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
+            AXIS2_DEP_ENGINE_ADD_MODULE(conf_builder->desc_builder->engine, env,
+                qrefname);
+        }
         
-        AXIS2_QNAME_FREE(qref, env);
-        AXIS2_QNAME_FREE(qrefname, env);
+        if (qref)
+            AXIS2_QNAME_FREE(qref, env);
+        if (qrefname)
+            AXIS2_QNAME_FREE(qrefname, env);
     }
     return AXIS2_SUCCESS;
 }
@@ -507,7 +512,9 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
         qtype = axis2_qname_create(env, AXIS2_TYPE, NULL, NULL);
         phase_orders_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(phase_orders_element, 
             env, qtype);
-        flow_type = AXIS2_OM_ATTRIBUTE_GET_VALUE(phase_orders_att, env);
+
+        if (phase_orders_att)
+            flow_type = AXIS2_OM_ATTRIBUTE_GET_VALUE(phase_orders_att, env);
         
         phase_list = axis2_conf_builder_get_phase_list(conf_builder, env,
             phase_orders_node);
@@ -565,9 +572,14 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
         
         phase_node = (axis2_om_node_t *) AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(
             phases, env);
+        if (phase_node)
+            phase_element = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(phase_node, env);
+
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-        phase_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(phase_element, env, qattname);
-        att_value = AXIS2_OM_ATTRIBUTE_GET_VALUE(phase_att, env);
+        if (phase_element)
+            phase_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(phase_element, env, qattname);
+        if (phase_att)
+            att_value = AXIS2_OM_ATTRIBUTE_GET_VALUE(phase_att, env);
         AXIS2_ARRAY_LIST_ADD(phase_list, env, att_value);
         
         AXIS2_QNAME_FREE(qattname, env);
@@ -599,11 +611,15 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
         
         transport_node = (axis2_om_node_t *) 
             AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(trs_senders, env);
+
+        if (transport_node)
+            transport_element = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(transport_node, env);
         
         /* getting trsnport Name */
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-        trs_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(transport_element, env, 
-            qattname);
+        if (transport_element)
+            trs_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(transport_element, env, 
+                qattname);
         if(NULL != trs_name)
         {
             axis2_char_t *name = NULL;
