@@ -19,7 +19,7 @@ int axis2_test_dep_engine_load()
 	axis2_env_t *env = axis2_env_create (allocator);
 
     dep_engine = axis2_dep_engine_create_with_repos_name(&env, 
-        "/home/samisa/axis2");
+        ".");
     if(!dep_engine)
     {
         printf("dep engine is not created \n");
