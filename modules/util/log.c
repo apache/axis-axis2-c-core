@@ -72,7 +72,6 @@ axis2_log_impl_write (const axis2_char_t *buffer, axis2_log_levels_t level)
         return -1;
 
     fprintf (stderr, "%s", buffer);
-    printf ("\n");
     return 0;
 }
 

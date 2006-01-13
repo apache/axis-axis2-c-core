@@ -30,6 +30,7 @@ axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port)
 	int sock = -1;
 	struct sockaddr_in sock_addr;
 	
+	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, server, AXIS2_CRTICAL_FAILURE);
 	
 	if((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -77,6 +78,8 @@ axis2_network_handler_create_server_socket(axis2_env_t **env, int port)
 	int sock = -1;
 	unsigned int i = 0;
 	struct sockaddr_in sock_addr;
+		
+	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if(sock < 0)
 	{
@@ -109,6 +112,7 @@ axis2_network_handler_create_server_socket(axis2_env_t **env, int port)
 axis2_status_t AXIS2_CALL
 axis2_network_handler_close_socket (axis2_env_t **env, int socket)
 {
+	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	if(socket < 0)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOCKET,
@@ -136,4 +140,18 @@ axis2_network_handler_set_sock_option(axis2_env_t **env, int socket,
 		return AXIS2_SUCCESS;
 	}
 	return AXIS2_FAILURE;    
+}
+
+AXIS2_DECLARE(int)						
+axis2_network_handler_svr_socket_accept(axis2_env_t **env, int svr_socket)
+{
+	int cli_socket = -1;
+	struct sockaddr_in cli_addr;
+	int cli_len = 0;
+	
+	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+	
+	cli_len = sizeof(cli_addr);
+	cli_socket = accept(svr_socket, (struct sockaddr_in *)&cli_addr, &cli_len);
+	return cli_socket;
 }
