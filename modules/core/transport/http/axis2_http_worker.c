@@ -136,6 +136,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	axis2_char_t *soap_action = NULL;
 	axis2_bool_t processed = AXIS2_FALSE;
 	axis2_char_t *ctx_written = NULL;
+	axis2_status_t status = AXIS2_FAILURE;
 	
 	AXIS2_FUNC_PARAM_CHECK(http_worker, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svr_conn, AXIS2_FAILURE);
@@ -259,10 +260,13 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 						simple_request, response, AXIS2_STREAM_BASIC_GET_LEN(
 						out_stream, env));
 	
-    /*
-        TODO write to the client and handle errors
-    */
-    return AXIS2_TRUE;
+	status = AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, response);
+	AXIS2_MSG_CTX_FREE(msg_ctx, env);
+	msg_ctx = NULL;
+	AXIS2_HTTP_SIMPLE_RESPONSE_FREE(response, env);
+	response = NULL;
+	
+    return status;
 }
 
 
@@ -361,8 +365,7 @@ axis2_http_worker_set_transport_out_config(axis2_http_worker_t *http_worker,
     AXIS2_PARAM_CHECK((*env)->error, simple_response, AXIS2_FAILURE);
 	
 	config = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
-    tranport_outs = AXIS2_CONF_GET_TRANSPORTS_OUT(
-                        config, env);
+    tranport_outs = AXIS2_CONF_GET_TRANSPORTS_OUT(config, env);
 	
 
     /*
@@ -375,5 +378,6 @@ axis2_hash_t* AXIS2_CALL
 axis2_http_worker_get_headers(axis2_http_worker_t *http_worker, 
 						axis2_env_t **env, axis2_http_simple_request_t *request)
 {
+	/* TODO implement */
 	return NULL;
 }

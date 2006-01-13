@@ -21,6 +21,8 @@
 #include <axis2_om_output.h>
 #include <axis2_op_ctx.h>
 #include <axis2_ctx.h>
+#include <axis2_http_client.h>
+#include <axis2_xml_writer.h>
 
 /** 
  * @brief SOAP over HTTP sender struct impl
@@ -37,6 +39,7 @@ struct axis2_soap_over_http_sender_impl
 	int so_timeout;
 	int connection_timeout;
 	axis2_om_output_t *om_output;
+	axis2_http_client_t *client;
 };
 
 #define AXIS2_INTF_TO_IMPL(sender) \
@@ -46,7 +49,8 @@ struct axis2_soap_over_http_sender_impl
 axis2_status_t AXIS2_CALL 
 axis2_soap_over_http_sender_get_header_info 
 						(axis2_soap_over_http_sender_t *sender, 
-						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx);
+						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
+						axis2_http_simple_response_t *response);
 
 axis2_status_t AXIS2_CALL
 axis2_soap_over_http_sender_process_response 
@@ -98,7 +102,7 @@ axis2_soap_over_http_sender_create(axis2_env_t **env)
         return NULL;
 	}
 	
-    sender_impl->http_version = NULL;
+    sender_impl->http_version = AXIS2_HTTP_HEADER_PROTOCOL_11;
     sender_impl->so_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
     sender_impl->connection_timeout = AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
 	/* unlike the java impl we don't have a default om output
@@ -106,6 +110,7 @@ axis2_soap_over_http_sender_create(axis2_env_t **env)
 	 */
 	sender_impl->om_output = NULL;
 	sender_impl->chunked = AXIS2_FALSE;
+	sender_impl->client = NULL;
     
     sender_impl->sender.ops = AXIS2_MALLOC((*env)->allocator,
                         sizeof(axis2_soap_over_http_sender_ops_t));
@@ -160,11 +165,16 @@ axis2_soap_over_http_sender_send
 						axis2_om_node_t *output, axis2_char_t *str_url, 
 						axis2_char_t *soap_action)
 {
-	axis2_http_client_t *client = NULL;
 	axis2_http_simple_request_t *request = NULL;
-	axis2_http_request_line_t *requst_line = NULL;
+	axis2_http_request_line_t *request_line = NULL;
 	axis2_url_t *url = NULL;
 	axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
+	axis2_xml_writer_t *xml_writer = NULL;
+	axis2_char_t *buffer = NULL;
+	axis2_char_t *char_set_enc = NULL;
+	int status_code = -1;
+	axis2_http_header_t *http_header = NULL;
+	axis2_http_simple_response_t *response = NULL;
 	
     AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -176,22 +186,64 @@ axis2_soap_over_http_sender_send
 	sender_impl = AXIS2_INTF_TO_IMPL(sender);
 	if(NULL == url)
 	{
-		reuturn AXIS2_FAILURE;
+		return AXIS2_FAILURE;
 	}
-	client = axis2_http_client_create(env, url);
-	if(NULL == client)
+	sender_impl->client = axis2_http_client_create(env, url);
+	if(NULL == sender_impl->client)
 	{
 		return AXIS2_FAILURE;
 	}
-	axis2_soap_over_http_sender_get_timeout_values(sender, env, msg_ctx);
-	AXIS2_HTTP_CLIENT_SET_TIMEOUT(client, env, sender_impl->so_timeout);
+	if(NULL == sender_impl->om_output)
+	{
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_OM_OUTPUT, 
+						AXIS2_FAILURE);
+		return AXIS2_FAILURE;
+	}
+	xml_writer = AXIS2_OM_OUTPUT_GET_XML_WRITER(sender_impl->om_output, env);
 	
-	/*
-	 * TODO create the http client and send 
+	char_set_enc = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
+							AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
+	if(NULL == char_set_enc)
+	{
+		char_set_enc = AXIS2_DEFAULT_CHAR_SET_ENCODING;
+	}
+	/* AXIS2_OM_OUTPUT_SET_DO_OPTIMIZE(om_output, env, 
+	 *				AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
 	 */
-		
-	return AXIS2_SUCCESS;
-    
+	AXIS2_OM_NODE_SERIALIZE (output, env, sender_impl->om_output);
+	buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+	
+	request_line = axis2_http_request_line_create(env, "POST", 
+						AXIS2_URL_GET_PATH(url, env), 
+						sender_impl->http_version);
+	request = axis2_http_simple_request_create(env, request_line, NULL, 0, 
+						NULL);
+	
+	http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_USER_AGENT, 
+						"Axis2/C");
+	AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
+	http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_SOAP_ACTION, 
+						soap_action);
+	AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
+	AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(request, env, buffer);
+	
+	axis2_soap_over_http_sender_get_timeout_values(sender, env, msg_ctx);
+	AXIS2_HTTP_CLIENT_SET_TIMEOUT(sender_impl->client, env, 
+						sender_impl->so_timeout);
+	
+	status_code = AXIS2_HTTP_CLIENT_SEND(sender_impl->client, env, request);
+	
+	AXIS2_HTTP_SIMPLE_REQUEST_FREE(request, env);
+	request = NULL;
+	
+	status_code = AXIS2_HTTP_CLIENT_RECIEVE_HEADER(sender_impl->client, env);
+	if(status_code < 0)
+	{
+		return AXIS2_FAILURE;
+	}
+	response = AXIS2_HTTP_CLIENT_GET_RESPONSE(sender_impl->client, env);
+	return axis2_soap_over_http_sender_process_response(sender, env, msg_ctx,
+						response);    
 }
 
 
@@ -220,17 +272,21 @@ axis2_soap_over_http_sender_set_om_output
 axis2_status_t AXIS2_CALL 
 axis2_soap_over_http_sender_get_header_info 
 						(axis2_soap_over_http_sender_t *sender, 
-						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
+						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
+						axis2_http_simple_response_t *response)
 {
-    axis2_http_simple_response_t *response = NULL;
 	axis2_array_list_t *headers = NULL;
 	axis2_char_t *charset = NULL;
+	axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
 	int i = 0;
 	
 	AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, response, AXIS2_FAILURE);
+	
+	sender_impl = AXIS2_INTF_TO_IMPL(sender);
+	
 	/*
-	 * TODO MUST add the http client and client->get_response;
 	 * TODO MTOM support (MIME header)
 	 */
 	headers = AXIS2_HTTP_SIMPLE_RESPONSE_GET_HEADERS(response, env);
@@ -255,8 +311,13 @@ axis2_soap_over_http_sender_get_header_info
 	}
 	if(NULL != charset)
 	{
-		AXIS2_CTX_SET_PROPERTY(AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env), env), env, AXIS2_CHARACTER_SET_ENCODING, 
-						charset, AXIS2_FALSE);
+		axis2_ctx_t *axis_ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(
+						msg_ctx, env), env);
+		if(NULL != axis_ctx)
+		{
+			AXIS2_CTX_SET_PROPERTY(axis_ctx, env, AXIS2_CHARACTER_SET_ENCODING, 
+						(void*)charset, AXIS2_FALSE);
+		}
 	}
 	return AXIS2_SUCCESS;
 }
@@ -268,6 +329,7 @@ axis2_soap_over_http_sender_process_response
 								axis2_http_simple_response_t *response)
 {
     axis2_stream_t *in_stream = NULL;
+	axis2_ctx_t *axis_ctx = NULL;
 	
 	AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -276,15 +338,16 @@ axis2_soap_over_http_sender_process_response
 	in_stream = AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY(response, env);
 	if(NULL == in_stream)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_IN_STREAM_IN_RESPONSE, 
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY, 
 								AXIS2_FAILURE);
 		return AXIS2_FAILURE;
 	}
 	
-	axis2_soap_over_http_sender_get_header_info(sender, env, msg_ctx);
-	AXIS2_CTX_SET_PROPERTY(AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX
-								(msg_ctx, env), env), env, AXIS2_TRANSPORT_IN, 
-								in_stream, AXIS2_FALSE);
+	axis2_soap_over_http_sender_get_header_info(sender, env, msg_ctx, response);
+	axis_ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env), 
+						env);
+	AXIS2_CTX_SET_PROPERTY(axis_ctx, env, AXIS2_TRANSPORT_IN, (void *)in_stream, 
+						AXIS2_FALSE);
 	return AXIS2_SUCCESS;
 }
 

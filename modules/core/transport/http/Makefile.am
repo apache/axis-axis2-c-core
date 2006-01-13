@@ -11,6 +11,8 @@ libaxis2_http_transport_la_SOURCES = axis2_http_worker.c \
 				                     axis2_http_header.c\
                                      axis2_url.c\
                                      axis2_http_out_transport_info.c\
+                                     axis2_http_transport_sender.c\
+                                     axis2_soap_over_http_sender.c\
                                      axis2_http_client.c
 
 INCLUDES = -I$(top_builddir)/include \

@@ -64,6 +64,12 @@ axis2_http_transport_sender_init
 							(axis2_http_transport_sender_t *transport_sender, 
                     		axis2_env_t **env, axis2_conf_ctx_t *conf_ctx, 
 							axis2_transport_out_desc_t *out_desc);
+axis2_status_t AXIS2_CALL
+axis2_http_transport_sender_write_message
+							(axis2_http_transport_sender_t *transport_sender, 
+                    		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
+							axis2_endpoint_ref_t *epr, axis2_om_node_t *out, 
+							axis2_om_output_t *om_output);
     
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_free 
@@ -145,6 +151,7 @@ axis2_http_transport_sender_invoke
 	axis2_xml_writer_t *xml_writer = NULL;
 	axis2_om_output_t *om_output = NULL;
 	axis2_char_t *buffer = NULL;
+	axis2_soap_envelope_t *soap_data_out = NULL;
 	
 	AXIS2_FUNC_PARAM_CHECK(transport_sender, env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -205,7 +212,11 @@ axis2_http_transport_sender_invoke
 	 * else
 	 */
 	{
-		data_out = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+		soap_data_out = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+		if(NULL != soap_data_out)
+		{
+			data_out = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_data_out, env);
+		}
 	}
 	if(NULL != epr)
 	{
@@ -230,8 +241,8 @@ axis2_http_transport_sender_invoke
 							AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL, AXIS2_FAILURE);
 				return AXIS2_FAILURE;
 			}
-			/* is_soap_11 = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env);
-			 * AXIS2_OM_OUTPUT_SET_SOAP11(om_output, env, is_soap_11);
+			is_soap11 = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env);
+			/* AXIS2_OM_OUTPUT_SET_SOAP11(om_output, env, is_soap_11);
 			 */
 			AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CHAR_ENCODING(out_info, env, 
 							char_set_enc);

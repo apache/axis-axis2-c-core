@@ -182,9 +182,6 @@ axis2_http_response_writer_close(axis2_http_response_writer_t *response_writer,
                 axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(response_writer, env, AXIS2_FAILURE);
-    /*
-        TODO stream dependent
-    */
     return AXIS2_SUCCESS;
 }
 
@@ -195,7 +192,7 @@ axis2_http_response_writer_flush(axis2_http_response_writer_t *response_writer,
 {
     AXIS2_FUNC_PARAM_CHECK(response_writer, env, AXIS2_FAILURE);
     /*
-        TODO stream dependent
+        TODO if bufferring is added flush the buffer
     */
     return AXIS2_FALSE;
 }
@@ -206,10 +203,20 @@ axis2_http_response_writer_write_char
                 (axis2_http_response_writer_t *response_writer, 
                 axis2_env_t **env, char c)
 {
+	axis2_http_response_writer_impl_t *writer_impl = NULL;
+	int write = -1;
     AXIS2_FUNC_PARAM_CHECK(response_writer, env, AXIS2_FAILURE);
-    /*
-        TODO stream dependent
-    */
+	
+	writer_impl = AXIS2_INTF_TO_IMPL(response_writer);
+	if(NULL == writer_impl->stream)
+	{
+		return AXIS2_FAILURE;
+	}
+    write = AXIS2_STREAM_WRITE(writer_impl->stream, env, &c, 1);
+	if(write < 0)
+	{
+		return AXIS2_FAILURE;
+	}
     return AXIS2_SUCCESS;
 }
 
@@ -220,10 +227,23 @@ axis2_http_response_writer_write_buf
                 axis2_env_t **env, char *buf, int offset, 
                 axis2_ssize_t len)
 {
+	axis2_http_response_writer_impl_t *writer_impl = NULL;
+	int write = -1;
     AXIS2_FUNC_PARAM_CHECK(response_writer, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, buf, AXIS2_FAILURE);
-    /*
-        TODO stream dependent
+	
+    writer_impl = AXIS2_INTF_TO_IMPL(response_writer);
+	if(NULL == writer_impl->stream)
+	{
+		return AXIS2_FAILURE;
+	}
+    write = AXIS2_STREAM_WRITE(writer_impl->stream, env, buf, len);
+	if(write < 0)
+	{
+		return AXIS2_FAILURE;
+	}
+	/*
+        TODO handle offset
     */
     return AXIS2_SUCCESS;
 }
@@ -234,12 +254,25 @@ axis2_http_response_writer_print_str
                 (axis2_http_response_writer_t *response_writer, 
                 axis2_env_t **env, char *str)
 {
+	axis2_http_response_writer_impl_t *writer_impl = NULL;
+	int write = -1;
+	int len = -1;
+	
     AXIS2_FUNC_PARAM_CHECK(response_writer, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, str, AXIS2_FAILURE);
-    /*
-        TODO stream dependent
-    */
-    return AXIS2_SUCCESS;    
+    writer_impl = AXIS2_INTF_TO_IMPL(response_writer);
+	
+	len = AXIS2_STRLEN(str);
+	if(NULL == writer_impl->stream)
+	{
+		return AXIS2_FAILURE;
+	}
+    write = AXIS2_STREAM_WRITE(writer_impl->stream, env, str, len);
+	if(write < 0)
+	{
+		return AXIS2_FAILURE;
+	}
+    return AXIS2_SUCCESS;   
 }
 
 

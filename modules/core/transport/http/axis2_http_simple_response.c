@@ -594,7 +594,7 @@ axis2_http_simple_response_set_body_stream
 {
     AXIS2_FUNC_PARAM_CHECK(simple_response, env, AXIS2_FAILURE);
     /*
-     * TODO do we have to free the existing stream
+     * We don't free the stream
      * Problem in freeing is most of the time the stream doesn't belong
      * to the http_simple_response
      */
