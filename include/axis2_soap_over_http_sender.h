@@ -73,7 +73,8 @@ AXIS2_DECLARE_DATA struct axis2_soap_over_http_sender_ops
 axis2_status_t AXIS2_CALL 
 axis2_soap_over_http_sender_get_header_info 
 								(axis2_soap_over_http_sender_t *sender, 
-                                axis2_env_t **env, axis2_msg_ctx_t *msg_ctx);
+                                axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
+								axis2_http_simple_response_t *response);
 
 axis2_status_t AXIS2_CALL
 axis2_soap_over_http_sender_process_response 

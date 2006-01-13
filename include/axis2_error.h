@@ -405,7 +405,12 @@ extern "C"
         
         AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED,
         
-        AXIS2_ERROR_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT
+        AXIS2_ERROR_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT,
+    
+        /* OM output is NULL */
+        AXIS2_ERROR_NULL_OM_OUTPUT,
+        /* We got a NULL strem in the response body */
+        AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY
     };
 
 /** @} */

@@ -99,6 +99,10 @@ AXIS2_DECLARE_DATA struct axis2_http_simple_request_ops
     axis2_ssize_t (AXIS2_CALL *get_body_bytes)
                             (axis2_http_simple_request_t *simple_request, 
                             axis2_env_t **env, char **buf);
+							
+	axis2_status_t (AXIS2_CALL *set_body_string)
+                    		(axis2_http_simple_request_t *simple_request, 
+                    		axis2_env_t **env, axis2_char_t *str);
 
     axis2_status_t (AXIS2_CALL *free)
                             (axis2_http_simple_request_t *simple_request, 
@@ -162,6 +166,9 @@ axis2_http_simple_request_create (axis2_env_t **env,
 #define AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY_BYTES(simple_request, env, buf)\
                             ((simple_request)->ops->get_body_bytes\
                             (simple_request, env, buf))
+#define AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(simple_request, env, str)\
+                            ((simple_request)->ops->set_body_string\
+                            (simple_request, env, str))
 #define AXIS2_HTTP_SIMPLE_REQUEST_FREE(simple_request, env) \
                             ((simple_request)->ops->free(simple_request, env))
 

@@ -99,8 +99,8 @@ axis2_http_client_create (axis2_env_t **env, axis2_url_t *url);
                                 ((client)->ops->set_url(client, env, url))
 #define AXIS2_HTTP_CLIENT_GET_URL(client, env) \
                                 ((client)->ops->get_url(client, env))
-#define AXIS2_HTTP_CLIENT_SET_TIMEOUT(client, env, url, timeout) \
-                                ((client)->ops->set_url(client, env, url, \
+#define AXIS2_HTTP_CLIENT_SET_TIMEOUT(client, env, timeout) \
+                                ((client)->ops->set_timeout(client, env,\
 								timeout))
 #define AXIS2_HTTP_CLIENT_GET_TIMEOUT(client, env) \
                                 ((client)->ops->get_url(client, env))

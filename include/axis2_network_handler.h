@@ -64,15 +64,22 @@ axis2_network_handler_close_socket (axis2_env_t **env, int socket);
 
 /**
  * used to set up socket options such as timeouts, non-blocking ..etc
- * @param socket valid socket (obtained by socket() or similar callo
+ * @param socket valid socket (obtained by socket() or similar call)
  * @param option the name of the option
  * @param value Value to be set
  * @return status of the operations as axis2_status_t
  */
 AXIS2_DECLARE(axis2_status_t)
-axis2_network_handler_set_sock_option(axis2_env_t **env, int socket, 
-						int option, int value);
-						
+axis2_network_handler_set_sock_option(axis2_env_t **env, int socket, int option,
+						int value);
+/**
+ * Accepts remote connections for a server socket
+ * @param socket valid server socket (obtained by socket() or similar call)
+ * @return created socket to handle the incoming client connection
+ */						
+AXIS2_DECLARE(int)						
+axis2_network_handler_svr_socket_accept(axis2_env_t **env, int socket);
+
 /** @} */
     
 #ifdef __cplusplus

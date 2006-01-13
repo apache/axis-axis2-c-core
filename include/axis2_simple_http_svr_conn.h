@@ -119,7 +119,7 @@ axis2_simple_http_svr_conn_create(axis2_env_t **env, int sockfd);
 #define AXIS2_SIMPLE_HTTP_SVR_CONN_SET_WRITER(svr_conn, env, writer) \
                     ((svr_conn)->ops->set_writer(svr_conn, env, writer))
 #define AXIS2_SIMPLE_HTTP_SVR_CONN_READ_REQUEST(svr_conn, env) \
-                    ((svr_conn)->ops->is_open(svr_conn, env))
+                    ((svr_conn)->ops->read_request(svr_conn, env))
 #define AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, response) \
                     ((svr_conn)->ops->write_response(svr_conn, env, response))
 #define AXIS2_SIMPLE_HTTP_SVR_CONN_GET_SND_TIMEOUT(svr_conn, env)\

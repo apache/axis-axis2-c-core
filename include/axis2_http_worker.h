@@ -79,12 +79,10 @@ axis2_http_worker_create (axis2_env_t **env, axis2_conf_ctx_t *conf_ctx);
 /************************** Start of function macros **************************/
 
 
-#define AXIS2_HTTP_WORKER_PROCESS_REQUEST\
-                (http_worker, env, svr_conn, simple_request) \
-                ((http_worker)->ops->process_request(http_worker, env, svr_conn\
-                ,simple_request))
-#define AXIS2_HTTP_WORKER_FREE\
-                (http_worker, env) \
+#define AXIS2_HTTP_WORKER_PROCESS_REQUEST(http_worker, env, svr_conn,\
+				simple_request) ((http_worker)->ops->process_request(\
+				http_worker, env, svr_conn, simple_request))
+#define AXIS2_HTTP_WORKER_FREE(http_worker, env) \
                 ((http_worker)->ops->free(http_worker, env))
 
 /************************** End of function macros ****************************/    
