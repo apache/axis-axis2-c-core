@@ -1,6 +1,5 @@
 lib_LTLIBRARIES = libaxis2_http_transport.la
 AM_CPPFLAGS = $(CPPFLAGS)
-SUBDIRS = server
 libaxis2_http_transport_la_SOURCES = axis2_http_worker.c \
                                      axis2_http_transport_utils.c\
                               	     axis2_simple_http_svr_conn.c\
@@ -24,3 +23,5 @@ INCLUDES = -I$(top_builddir)/include \
 	       -I$(top_builddir)/modules/core/transport/http \
            -I$(top_builddir)/modules/core/description \
             -I$(top_builddir)/modules/platforms
+
+SUBDIRS = server
