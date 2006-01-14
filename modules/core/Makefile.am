@@ -1,1 +1,1 @@
-SUBDIRS = context engine phaseresolver transport description deployment addr receivers clientapi util
+SUBDIRS = context engine phaseresolver description deployment addr receivers clientapi util transport 
