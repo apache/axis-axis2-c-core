@@ -55,8 +55,7 @@ extern "C"
         * get error message for the last error
         * @return error message for the last error. NULL on error.
         */
-         axis2_char_t * (AXIS2_CALL *get_message) (struct axis2_error *error
-				, axis2_error_codes_t error_number);
+         axis2_char_t * (AXIS2_CALL *get_message) (struct axis2_error *error);
 		
 		 axis2_status_t  (AXIS2_CALL *set_error_number) (struct axis2_error *error
 				,  axis2_error_codes_t error_number);
@@ -83,11 +82,12 @@ extern "C"
         int status_code;
     } axis2_error_t;
 
+AXIS2_DECLARE(axis2_status_t) axis2_error_init();
 
 #define AXIS2_ERROR_FREE(error) ((error->ops)->free(error))
 
-#define AXIS2_ERROR_GET_MESSAGE(error, status_code) ((error)->ops->get_message \
-        (error, status_code))
+#define AXIS2_ERROR_GET_MESSAGE(error) \
+    ((error)->ops->get_message(error))
 
 #define AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number) \
         ((error)->ops->set_error_number(error, error_number))

@@ -62,14 +62,19 @@ int main(int argc, char *argv[])
 	{
 	    repo = argv[2];
 	}
+    
 	allocator = axis2_allocator_init(NULL);
+    
 	if(NULL == allocator)
 	{
 		printf("[Axis2]Startup FAILED due to memory allocation failure\n");
 		system_exit(NULL, NULL, -1);
 	}
-	env = init_syetem_env(allocator);
 	
+    env = init_syetem_env(allocator);
+	
+    axis2_error_init();
+    
 	printf("[Axis2]Starting Axis2 HTTP server....\n");
 	AXIS2_LOG_WRITE(env->log, "[Axis2]Starting Axis2 HTTP server....\n", 
 						AXIS2_LOG_INFO);
@@ -86,6 +91,7 @@ int main(int argc, char *argv[])
 		sprintf(tmp_str, "[Axis2]Server creation failed: Error code: %d\n", 
 						env->error->error_number);
 		printf(tmp_str);
+        printf("%s \n", AXIS2_ERROR_GET_MESSAGE(env->error));
 		AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_INFO);
 		system_exit(allocator, env, -1);
 		
