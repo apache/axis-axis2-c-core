@@ -15,7 +15,6 @@ axis2_http_server_LDADD   =  $(LDFLAGS)  -laxis2_util -laxis2_http_transport -la
 -L$(top_builddir)/modules/core/addr/.libs\
 -L$(top_builddir)/modules/core/engine/.libs\
 -L$(top_builddir)/modules/core/phaseresolver/.libs\
--L$(top_builddir)/modules/core/transport/.libs\
 -L$(top_builddir)/modules/core/transport/http/.libs\
 -L$(top_builddir)/modules/xml/om/.libs\
 -L$(top_builddir)/modules/xml/parser/libxml2/.libs\
