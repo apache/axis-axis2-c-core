@@ -119,7 +119,15 @@ extern "C"
     */
     enum axis2_error_codes
     {
-        /** No error */
+        /** No error. 
+            This must be the first error all the time and the assigned value of 0 
+            must not be changed as it is assumed in the error message array that 
+            the error list starts with a value of 0.
+            Further, none of the error codes in this enum should not be initialized 
+            to an arbitrary value as it is assumed in the implementation when mapping 
+            error codes to error messages that the error codes are contiguous and 
+            the last error value is always AXIS2_ERROR_LAST.
+          */
         AXIS2_ERROR_NONE = 0,
         /** Out of memory */
         AXIS2_ERROR_NO_MEMORY,
@@ -383,7 +391,7 @@ extern "C"
         AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI,
         
         AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE,
-        
+       
         AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP,
         
         /* Error in writing the response in response writer */
@@ -410,7 +418,14 @@ extern "C"
         /* OM output is NULL */
         AXIS2_ERROR_NULL_OM_OUTPUT,
         /* We got a NULL strem in the response body */
-        AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY
+        AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY,
+
+        /** The following has to be the last error value all the time.
+            All other error codes should appear above this.
+            AXIS2_ERROR_LAST is used to track the number of error codes present
+            for the purpose of sizing the error message array.
+          */
+       AXIS2_ERROR_LAST
     };
 
 /** @} */

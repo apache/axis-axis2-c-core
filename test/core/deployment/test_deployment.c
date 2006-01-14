@@ -27,6 +27,11 @@ int axis2_test_dep_engine_load()
     }
     printf("came1\n");
     conf = AXIS2_DEP_ENGINE_LOAD(dep_engine, &env);
+    if (!conf)
+    {
+        printf("conf is NULL\n)");
+        return -1;
+    }
     printf("came2\n");
     in_phases = 
         AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(

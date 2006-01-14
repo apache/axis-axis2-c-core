@@ -296,6 +296,14 @@ axis2_dep_engine_create(axis2_env_t **env)
     engine_impl->ws_to_deploy = axis2_array_list_create(env, 10);
     if (!(engine_impl->ws_to_deploy))
     {
+        axis2_dep_engine_free(&(engine_impl->dep_engine), env);
+        return NULL;
+    }
+    
+    engine_impl->phases_info = axis2_phases_info_create(env);
+    if (!(engine_impl->phases_info))
+    {
+        axis2_dep_engine_free(&(engine_impl->dep_engine), env);
         return NULL;
     }
     
@@ -877,6 +885,9 @@ axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engin
     engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
     in_phases = AXIS2_PHASES_INFO_GET_IN_PHASES(engine_impl->phases_info, env);
+
+    if (!in_phases)
+        return AXIS2_FAILURE;
     
     /* TODO condition checking should be otherway since null value can occur */
     phase0 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 0);

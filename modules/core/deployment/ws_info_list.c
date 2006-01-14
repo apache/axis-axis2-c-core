@@ -363,6 +363,11 @@ axis2_ws_info_list_check_for_undeploy(axis2_ws_info_list_t *info_list,
     
     AXIS2_FUNC_PARAM_CHECK(info_list, env, AXIS2_FAILURE);
     info_list_impl = AXIS2_INTF_TO_IMPL(info_list);
+
+    /* create temp list*/
+    temp_list = axis2_array_list_create(env, 5);
+    if (!temp_list)
+        return AXIS2_FAILURE;
     
     for(i = 0; i < list_size; i++)
     {
