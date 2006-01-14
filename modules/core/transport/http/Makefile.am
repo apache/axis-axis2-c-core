@@ -23,5 +23,3 @@ INCLUDES = -I$(top_builddir)/include \
 	       -I$(top_builddir)/modules/core/transport/http \
            -I$(top_builddir)/modules/core/description \
             -I$(top_builddir)/modules/platforms
-
-SUBDIRS = server

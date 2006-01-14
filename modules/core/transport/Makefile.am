@@ -1,5 +1,5 @@
 lib_LTLIBRARIES = libaxis2_transport.la
-SUBDIRS = http
+SUBDIRS = http http/server
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_transport_la_SOURCES = 
 
