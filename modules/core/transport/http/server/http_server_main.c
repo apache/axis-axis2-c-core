@@ -51,14 +51,17 @@ int main(int argc, char *argv[])
 	axis2_env_t *env = NULL;
 	axis2_http_server_t *server = NULL;
 	char tmp_str[512];
-	int port = -1;
+	int port = 9090;
+    axis2_char_t *repo = "../../../../../../";
 	
-	if(argc != 3)
+	if(argc > 1)
 	{
-		printf("%s <port> <repo location>\n", argv[0]);
-		exit(0);
+	    port = atoi(argv[1]);
 	}
-	port = atoi(argv[1]);
+	if(argc > 2)
+	{
+	    repo = argv[2];
+	}
 	allocator = axis2_allocator_init(NULL);
 	if(NULL == allocator)
 	{
@@ -73,11 +76,11 @@ int main(int argc, char *argv[])
 	sprintf(tmp_str, "[Axis2]Server port : %d\n", port);
 	printf(tmp_str);
 	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_INFO);
-	sprintf(tmp_str, "[Axis2]Repo location : %s\n", argv[2]);
+	sprintf(tmp_str, "[Axis2]Repo location : %s\n", repo);
 	printf(tmp_str);
 	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_INFO);
 	
-	server = axis2_http_server_create(&env, argv[2], port);
+	server = axis2_http_server_create(&env, repo, port);
 	if(NULL == server)
 	{
 		sprintf(tmp_str, "[Axis2]Server creation failed: Error code: %d\n", 
