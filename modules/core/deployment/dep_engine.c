@@ -695,8 +695,11 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
         engine_impl->conf = NULL;
         return NULL;
     }
-    axis2_dep_engine_set_dep_features(dep_engine, env);
-    
+    status = axis2_dep_engine_set_dep_features(dep_engine, env);
+    if(AXIS2_SUCCESS != status)
+    {
+        return NULL;
+    }
     /*
     if (hotDeployment) {
         startSearch(this);
@@ -713,6 +716,7 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     }
     AXIS2_CONF_SET_REPOS(engine_impl->conf, env, engine_impl->axis2_repos);
     status = axis2_dep_engine_validate_system_predefined_phases(dep_engine, env);
+    printf("status:%d\n", status);
     if(AXIS2_FAILURE == status)
     {
         AXIS2_REPOS_LISTENER_FREE(repos_listener, env);
@@ -909,21 +913,21 @@ axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engin
     engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
     in_phases = AXIS2_PHASES_INFO_GET_IN_PHASES(engine_impl->phases_info, env);
-
     if (!in_phases)
+    {
         return AXIS2_FAILURE;
-    
+    }
     /* TODO condition checking should be otherway since null value can occur */
     phase0 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 0);
     phase1 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 1);
     phase2 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 2);
     phase3 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 3);
-    if(0 == AXIS2_STRCMP(phase0, AXIS2_PHASE_TRANSPORTIN) && 
-        0 == AXIS2_STRCMP(phase1, AXIS2_PHASE_PRE_DISPATCH) &&
-        0 == AXIS2_STRCMP(phase2, AXIS2_PHASE_DISPATCH) && 
-        0 == AXIS2_STRCMP(phase3, AXIS2_PHASE_POST_DISPATCH))
+    if(0 != AXIS2_STRCMP(phase0, AXIS2_PHASE_TRANSPORTIN) || 
+        0 != AXIS2_STRCMP(phase1, AXIS2_PHASE_PRE_DISPATCH) ||
+        0 != AXIS2_STRCMP(phase2, AXIS2_PHASE_DISPATCH) ||
+        0 != AXIS2_STRCMP(phase3, AXIS2_PHASE_POST_DISPATCH))
     {
-        AXIS2_ERROR_SET((*env)->error, AXI2_ERROR_IN_VALID_PHASE, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXI2_ERROR_INVALID_PHASE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     /*  ArrayList outPhaes = tempdata.getOutphases(); */
