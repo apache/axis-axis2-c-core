@@ -1,7 +1,7 @@
 prgbindir=$(prefix)/bin/system_test
 prgbin_PROGRAMS = test_context
 SUBDIRS =
-AM_CPPFLAGS = $(CPPFLAGS) -g -O2 -pthread
+AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
 test_context_SOURCES = test_context.c
 
 

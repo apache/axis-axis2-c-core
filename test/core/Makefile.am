@@ -1,1 +1,1 @@
-SUBDIRS = description context engine clientapi transport deployment
+SUBDIRS = description context engine clientapi transport deployment addr
