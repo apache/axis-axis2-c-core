@@ -8,8 +8,7 @@ libtest_description_la_SOURCES = description_test.c \
                                     test_flow.c \
                                     test_handler_desc.c
 
-include_HEADERS=$(top_builddir)/test/unit/core/description/*.h
-include_HEADERS=$(top_builddir)/test/unit/core/phaseresolver/*.h
+include_HEADERS=$(top_builddir)/test/unit/core/description/*.h $(top_builddir)/test/unit/core/phaseresolver/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
