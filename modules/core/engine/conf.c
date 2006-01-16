@@ -1342,7 +1342,7 @@ axis2_conf_get_phases_info(axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL
 axis2_conf_set_phases_info(axis2_conf_t *conf,
                                     axis2_env_t **env,
-                                    struct axis2_phases_info *phases_info) 
+                                    axis2_phases_info_t *phases_info) 
 {
     axis2_conf_impl_t *config_impl = NULL;
     
@@ -1690,6 +1690,7 @@ axis2_conf_engage_module(axis2_conf_t *conf,
     module_desc = axis2_conf_get_module(conf, env, module_ref);
     if(NULL == module_desc)
     {
+        printf("came30\n");
         axis2_file_t *file = NULL;
         file->name = AXIS2_QNAME_GET_LOCALPART(module_ref, env);
         dep_engine = axis2_dep_engine_create(env);
@@ -1698,6 +1699,7 @@ axis2_conf_engage_module(axis2_conf_t *conf,
     }
     if(NULL != module_desc)
     {
+        printf("came31\n");
         int size = 0;
         int i = 0;
         
