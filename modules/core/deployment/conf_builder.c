@@ -518,12 +518,15 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
             env, qtype);
 
         if (phase_orders_att)
+        {
             flow_type = AXIS2_OM_ATTRIBUTE_GET_VALUE(phase_orders_att, env);
+            printf("flow_type:%s\n", flow_type);
+        }
         
         phase_list = axis2_conf_builder_get_phase_list(conf_builder, env,
             phase_orders_node);
         if(0 == AXIS2_STRCMP(AXIS2_INFLOWST, flow_type))
-        { 
+        {            
             AXIS2_PHASES_INFO_SET_IN_PHASES(info, env, phase_list);
         }  
         else if(0 == AXIS2_STRCMP(AXIS2_IN_FAILTFLOW, flow_type))
@@ -577,13 +580,22 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
         phase_node = (axis2_om_node_t *) AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(
             phases, env);
         if (phase_node)
-            phase_element = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(phase_node, env);
+        {
+            phase_element = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(
+                phase_node, env);
+        }
 
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         if (phase_element)
-            phase_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(phase_element, env, qattname);
+        {
+            phase_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(phase_element, env, 
+                qattname);
+        }
         if (phase_att)
+        {
             att_value = AXIS2_OM_ATTRIBUTE_GET_VALUE(phase_att, env);
+            printf("att_value:%s\n", att_value);
+        }
         AXIS2_ARRAY_LIST_ADD(phase_list, env, att_value);
         
         AXIS2_QNAME_FREE(qattname, env);
@@ -817,7 +829,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 axis2_transport_listener_t *recv = NULL;
                 
                 dll_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(trs_dll_name, env);
-                
+                printf("dll_name:%s\n", dll_name);
                 dll_desc = axis2_dll_desc_create(env);
                 AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
                 AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_HANDLER_DLL);
@@ -827,7 +839,8 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc); 
                 recv = (axis2_transport_listener_t *) 
                     axis2_class_loader_create_dll(env, impl_info_param);
-                AXIS2_TRANSPORT_IN_DESC_SET_RECV(transport_in, env, recv); 
+                int stat = AXIS2_TRANSPORT_IN_DESC_SET_RECV(transport_in, env, recv);
+                printf("stat:%d\n", stat);                
             }
             
             /* process Parameters */

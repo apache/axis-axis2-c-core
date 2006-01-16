@@ -14,18 +14,19 @@ int axis2_test_dep_engine_load()
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_conf_t *conf = NULL;
     axis2_array_list_t *in_phases = NULL;
+    axis2_char_t *axis2c_home = NULL;
 
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 	axis2_env_t *env = axis2_env_create (allocator);
 
+    axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     dep_engine = axis2_dep_engine_create_with_repos_name(&env, 
-        "/home/damitha/programs/axis2c");
+        axis2c_home);
     if(!dep_engine)
     {
         printf("dep engine is not created \n");
         return -1;
     }
-    printf("came1\n");
     conf = AXIS2_DEP_ENGINE_LOAD(dep_engine, &env);
     if (!conf)
     {
@@ -85,7 +86,7 @@ int axis2_test_engine_conf_builder_populate_conf()
 
 int main()
 {
-    /*axis2_test_dep_engine_load(); */
+    axis2_test_dep_engine_load();
     axis2_test_engine_conf_builder_populate_conf();
 	return 0;
 }
