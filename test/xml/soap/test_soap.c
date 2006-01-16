@@ -82,8 +82,16 @@ int build_soap(axis2_env_t **env, char *filename)
     printnode(om_node, env);
     
     soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
-    om_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_body, env);
-    printnode(om_node, env);
+    if (soap_body)
+    {
+        om_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_body, env);
+        printnode(om_node, env);
+    }
+    else
+    {
+        printf ("\n\n ERROR soap_body NULL.\n\n");
+        return AXIS2_FAILURE;
+    }
     
     
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
@@ -138,8 +146,8 @@ int main(int argc, char *argv[])
     error = axis2_error_create(allocator);
     
     env = axis2_env_create_with_error_log(allocator, error,  log);
-    /*i = build_soap(&env, filename); */
     build_soap_programatically(&env);
+    build_soap(&env, filename); 
     return 0;        
 }
 
