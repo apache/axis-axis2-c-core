@@ -111,6 +111,7 @@ AC_CONFIG_FILES([Makefile \
     test/Makefile \
     test/xml/Makefile \
     test/xml/om/Makefile \
+    test/xml/soap/Makefile \
     test/core/Makefile \
     test/core/description/Makefile \
     test/core/deployment/Makefile \

@@ -2,7 +2,7 @@ prgbindir=$(prefix)/bin/system_test
 prgbin_PROGRAMS = test_soap
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -O2 -pthread
-test_soap_SOURCES = soap_test.c
+test_soap_SOURCES = test_soap.c
 
 test_soap_LDADD   =   \
                     -L$(AXIS2C_HOME)/lib \

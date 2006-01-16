@@ -165,7 +165,6 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
 {
     axis2_soap12_builder_helper_impl_t *builder_helper_impl = NULL;
     axis2_char_t* ele_localname = NULL;
-    axis2_om_node_t *om_node = NULL;
     axis2_om_element_t *om_ele = NULL;
     axis2_soap_body_t *soap_body = NULL;
     axis2_soap_fault_t *soap_fault = NULL;
