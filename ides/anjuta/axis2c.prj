@@ -234,7 +234,10 @@ module.include.files=\
 	include/axis2_url.h\
 	include/axis2_raw_xml_in_out_msg_recv.h\
 	modules/util/axis2_utils.h\
-	include/axis2_engine.h
+	include/axis2_engine.h\
+	test/unit/core/description/description_test.h\
+	test/unit/core/description/test_op.h\
+	test/unit/core/description/test_svc.h
 
 module.source.name=.
 module.source.type=
@@ -243,21 +246,10 @@ module.source.files=\
 	modules/core/description/test/description_test.c\
 	modules/common/test/common_test.c\
 	modules/core/engine/test/engine_test.c\
-	modules/xml/om/axis2_om_attribute.c\
-	modules/xml/om/axis2_om_comment.c\
-	modules/xml/om/axis2_om_doctype.c\
-	modules/xml/om/axis2_om_document.c\
-	modules/xml/om/axis2_om_element.c\
-	modules/xml/om/axis2_om_namespace.c\
-	modules/xml/om/axis2_om_processing_instruction.c\
-	modules/xml/om/axis2_om_text.c\
-	modules/xml/om/axis2_om_stax_builder.c\
-	modules/xml/om/axis2_om_node.c\
 	modules/test/unit/main.c\
 	modules/test/util/test_util.c\
 	modules/test/common/test_common.c\
 	modules/test/om/test_om.c\
-	modules/xml/om/axis2_om_output.c\
 	modules/core/description/module.c\
 	modules/wsdl/wsdl_component.c\
 	modules/util/allocator.c\
@@ -340,7 +332,6 @@ module.source.files=\
 	modules/core/transport/http/axis2_http_transport_utils.c\
 	modules/core/transport/http/axis2_http_worker.c\
 	modules/core/transport/http/axis2_simple_http_svr_conn.c\
-	modules/xml/om/axis2_om_children_iterator.c\
 	modules/xml/parser/guththila/guththila_xml_reader_wrapper.c\
 	modules/xml/parser/guththila/guththila_xml_writer_wrapper.c\
 	test/unit/core/description/description_test.c\
@@ -353,9 +344,6 @@ module.source.files=\
 	modules/wsdl/wsdl_soap_op.c\
 	test/unit/core/description/test_op.c\
 	test/unit/core/description/test_svc.c\
-	modules/xml/om/axis2_om_children_qname_iterator.c\
-	modules/xml/om/axis2_om_child_element_iterator.c\
-	modules/xml/om/axis2_om_children_with_specific_attribute_iterator.c\
 	modules/core/deployment/desc_builder.c\
 	modules/core/deployment/repos_listener.c\
 	test/xml/om/test_om.c\
@@ -385,8 +373,28 @@ module.source.files=\
 	modules/core/clientapi/listener_manager.h\
 	modules/core/clientapi/mep_client.c\
 	modules/core/clientapi/msg_sender.c\
-	modules/core/receivers/axis2_raw_xml_in_out_msg_recv.c\
-	modules/util/utils.c
+	modules/util/utils.c\
+	test/core/description/test_description.c\
+	test/unit/core/deployment/deployment_test.c\
+	test/unit/core/deployment/test_dep_engine.c\
+	test/unit/core/deployment/test_phases_info.c\
+	modules/xml/om/om_attribute.c\
+	modules/xml/om/om_child_element_iterator.c\
+	modules/xml/om/om_children_iterator.c\
+	modules/xml/om/om_children_qname_iterator.c\
+	modules/xml/om/om_children_with_specific_attribute_iterator.c\
+	modules/xml/om/om_comment.c\
+	modules/xml/om/om_doctype.c\
+	modules/xml/om/om_document.c\
+	modules/xml/om/om_element.c\
+	modules/xml/om/om_namespace.c\
+	modules/xml/om/om_node.c\
+	modules/xml/om/om_output.c\
+	modules/xml/om/om_processing_instruction.c\
+	modules/xml/om/om_stax_builder.c\
+	modules/xml/om/om_text.c\
+	modules/core/receivers/raw_xml_in_out_msg_recv.c\
+	test/unit/util/util_class_loader_test.c
 
 module.pixmap.name=.
 module.pixmap.type=
