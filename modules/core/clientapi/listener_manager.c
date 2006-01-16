@@ -34,7 +34,7 @@ typedef struct axis2_listener_manager_impl
 typedef struct axis2_transport_listener_state 
 {
     int waiting_calls;
-    axis2_transport_listener_t *listener;
+    axis2_transport_receiver_t *listener;
 } axis2_transport_listener_state_t;
 
 
@@ -131,7 +131,7 @@ axis2_status_t AXIS2_CALL axis2_listener_manager_make_sure_started(struct axis2_
         axis2_transport_in_desc_t *transport_in = NULL;
         axis2_qname_t *qname = NULL;
         axis2_conf_t *conf = NULL;
-        axis2_transport_listener_t *listener = NULL;
+        axis2_transport_receiver_t *listener = NULL;
         
         qname = axis2_qname_create(env, transport, NULL, NULL);
         if (qname)

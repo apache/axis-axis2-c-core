@@ -16,7 +16,7 @@
 
 #include <axis2_call.h>
 #include <axis2.h>
-#include <axis2_transport_listener.h>
+#include <axis2_transport_receiver.h>
 #include <axis2_transport_in_desc.h>
 #include <axis2_transport_out_desc.h>
 #include <listener_manager.h>
@@ -35,7 +35,7 @@ typedef struct axis2_call_impl
     /** timeout in milli seconds */
     long timeout_ms;
     /** transport listener */
-    axis2_transport_listener_t *transport_listener;
+    axis2_transport_receiver_t *transport_listener;
     /** transport that should be used for sending messages */
     axis2_transport_out_desc_t *sender_transport;
     /** transport that should be used for reciving messages */
