@@ -81,7 +81,7 @@ AXIS2_DECLARE_DATA struct axis2_http_server
 };
 
 
-AXIS2_DECLARE(axis2_http_server_t *) 
+AXIS2_DECLARE(axis2_transport_receiver_t*) 
 axis2_http_server_create (axis2_env_t **env, axis2_char_t *repo, int port);
 
 /************************** Start of function macros **************************/
