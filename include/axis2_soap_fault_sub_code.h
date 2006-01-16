@@ -128,7 +128,7 @@ axis2_soap_fault_sub_code_create(axis2_env_t **env);
         ((fault_sub_code)->ops->free_fn(fault_sub_code, env))
 
 #define AXIS2_SOAP_FAULT_SUB_CODE_SET_SUB_CODE(fault_sub_code , env, subcode) \
-        ((fault_sub_code)->ops->set_subcode(fault_sub_code, env, subcode))
+        ((fault_sub_code)->ops->set_sub_code(fault_sub_code, env, subcode))
 
 #define AXIS2_SOAP_FAULT_SUB_CODE_SET_VALUE(fault_sub_code , env, value) \
         ((fault_sub_code)->ops->set_value(fault_sub_code, env, value))
@@ -149,8 +149,8 @@ axis2_soap_fault_sub_code_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_SUB_CODE_GET_SOAP_VRESION(fault_sub_code, env) \
         ((fault_sub_code)->ops->get_soap_version(fault_sub_code, env))
 
-#define AXIS2_SOAP_FAULT_SUB_CODE_SET_SOAP_VRESION(fault_sub_code, env) \
-        ((fault_sub_code)->ops->set_soap_version(fault_sub_code, env))        
+#define AXIS2_SOAP_FAULT_SUB_CODE_SET_SOAP_VRESION(fault_sub_code, env, version) \
+        ((fault_sub_code)->ops->set_soap_version(fault_sub_code, env, version))        
       
 /** @} */
 

@@ -62,6 +62,7 @@ axis2_soap_message_create(axis2_env_t **env,
     axis2_soap_message_impl_t *soap_message_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, om_doc, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, builder, NULL);
     
     soap_message_impl = (axis2_soap_message_impl_t *)AXIS2_MALLOC((*env)->allocator, 
                             sizeof(axis2_soap_message_impl_t));
@@ -162,6 +163,8 @@ axis2_status_t AXIS2_CALL
 axis2_soap_message_serialize(axis2_soap_message_t *message,
                              axis2_env_t **env)
 {
-    return NULL;
+    axis2_soap_message_impl_t *soap_message_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(message, env, AXIS2_FAILURE);
+    soap_message_impl = AXIS2_INTF_TO_IMPL(message);
 }                             
                                      

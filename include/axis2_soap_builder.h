@@ -64,6 +64,25 @@ AXIS2_DECLARE_DATA   struct axis2_soap_builder_ops
         axis2_om_node_t* (AXIS2_CALL *get_document_element)
                                             (axis2_soap_builder_t *builder,
                                              axis2_env_t **env); 
+                                             
+        axis2_status_t (AXIS2_CALL *set_bool_processing_mandatory_fault_elements)
+                                            (axis2_soap_builder_t *builder,
+                                             axis2_env_t **env,
+                                             axis2_bool_t value);
+        
+        axis2_status_t (AXIS2_CALL *set_processing_detail_elements)
+                                    (axis2_soap_builder_t *builder,
+                                     axis2_env_t **env,
+                                     axis2_bool_t value);
+                                     
+        axis2_bool_t (AXIS2_CALL *is_processing_detail_elements)
+                                    (axis2_soap_builder_t *builder, 
+                                     axis2_env_t **env);
+                                     
+                                     
+        int (AXIS2_CALL *get_soap_version)(axis2_soap_builder_t *builder,
+                                           axis2_env_t **env);
+                                                                                                                                                                                                        
 };
                                                       
 
@@ -106,8 +125,20 @@ axis2_soap_builder_create(axis2_env_t **env,
         ((builder)->ops->get_document(builder, env))
         
 #define AXIS2_SOAP_BUILDER_NEXT(builder, env) \
-        ((builder)->ops->next(builder, env))       
+        ((builder)->ops->next(builder, env)) 
+        
+#define AXIS2_SOAP_BUILDER_SET_BOOL_PROCESSING_MANDATORY_FAULT_ELEMENTS(builder, env, value) \
+        ((builder)->ops->set_bool_processing_mandatory_fault_elements(builder, env, value))
+ 
+#define AXIS2_SOAP_BUILDER_SET_PROCESSING_DETAIL_ELEMENTS(builder, env, value) \
+        ((builder)->ops->set_processing_detail_elements(builder, env, value))
+        
+#define AXIS2_SOAP_BUILDER_IS_PROCESSING_DETAIL_ELEMENTS(builder, env) \
+        ((builder)->ops->is_processing_detail_elements(builder, env))                         
 
+
+#define AXIS2_SOAP_BUILDER_GET_SOAP_VERSION(builder, env) \
+        ((builder)->ops->get_soap_version(builder, env))
 /** @} */
 #ifdef __cplusplus
 }

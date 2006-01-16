@@ -330,7 +330,7 @@ axis2_om_document_serialize(axis2_om_document_t *document,
     document_impl = AXIS2_INTF_TO_IMPL(document);
     if(!(document_impl->root_element))
     {
-        return AXIS2_FAILURE;
+        axis2_om_document_get_root_element(document, env);        
     }
     return AXIS2_OM_NODE_SERIALIZE(document_impl->root_element, env, om_output);
 }

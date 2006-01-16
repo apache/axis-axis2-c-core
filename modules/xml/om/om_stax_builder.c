@@ -414,6 +414,7 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
     axis2_om_node_t *element_node;
     axis2_om_stax_builder_impl_t *builder_impl = NULL;
     axis2_char_t *temp_localname = NULL;
+    axis2_om_node_t *parent_node = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(om_stax_builder, env, NULL);
     builder_impl = AXIS2_INTF_TO_IMPL(om_stax_builder);
@@ -437,6 +438,7 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
         if(builder_impl->document)        
         {
             AXIS2_OM_DOCUMENT_SET_ROOT_ELEMENT(builder_impl->document, env, element_node);
+            builder_impl->root_node = element_node;
         }
         else
         {
@@ -445,8 +447,8 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
             return  NULL;            
             */
             builder_impl->root_node = element_node;
-        }            
-        
+        }   
+        AXIS2_OM_NODE_SET_BUILDER(element_node, env, om_stax_builder);        
     }
     else if (AXIS2_OM_NODE_GET_BUILD_STATUS(builder_impl->lastnode, env))
     {
@@ -456,6 +458,7 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
         AXIS2_OM_NODE_SET_NEXT_SIBLING(builder_impl->lastnode, env, element_node);                                 
         AXIS2_OM_NODE_SET_PREVIOUS_SIBLING(element_node , env, builder_impl->lastnode);
         AXIS2_OM_NODE_SET_DOCUMENT(element_node, env, builder_impl->document); 
+         AXIS2_OM_NODE_SET_BUILDER(element_node, env, om_stax_builder);
     }
     else
     {
@@ -465,6 +468,7 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
         AXIS2_OM_NODE_SET_FIRST_CHILD(builder_impl->lastnode , env, element_node);                     
         AXIS2_OM_NODE_SET_PARENT(element_node , env, builder_impl->lastnode);
         AXIS2_OM_NODE_SET_DOCUMENT(element_node, env, builder_impl->document); 
+         AXIS2_OM_NODE_SET_BUILDER(element_node, env, om_stax_builder);
     }
     
     AXIS2_XML_READER_XML_FREE(builder_impl->parser , env, temp_localname);
@@ -614,7 +618,6 @@ axis2_om_stax_builder_end_element (axis2_om_stax_builder_t *om_stax_builder,
                                    axis2_env_t **env)
 {
     axis2_om_node_t *parent = NULL;
-    axis2_om_node_t *root_node = NULL;
     axis2_om_stax_builder_impl_t *builder = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(om_stax_builder, env, AXIS2_FAILURE );
@@ -637,8 +640,7 @@ axis2_om_stax_builder_end_element (axis2_om_stax_builder_t *om_stax_builder,
             AXIS2_OM_NODE_SET_BUILD_STATUS((builder->lastnode), env, AXIS2_TRUE);
         }
     }
-    root_node = AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(builder->document, env);
-    if(AXIS2_OM_NODE_GET_BUILD_STATUS(root_node, env))
+    if(AXIS2_OM_NODE_GET_BUILD_STATUS(builder->root_node , env))
         builder->done = AXIS2_TRUE;
    
     return AXIS2_SUCCESS;

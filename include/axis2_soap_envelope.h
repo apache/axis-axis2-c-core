@@ -38,6 +38,7 @@ extern "C"
     struct axis2_soap_body;
     struct axis2_soap_header;
     struct axis2_soap_header_block;
+    struct axis2_soap_builder;
     
 /**
  * @defgroup axis2_soap_envelope
@@ -134,6 +135,9 @@ extern "C"
                                                 (axis2_soap_envelope_t *envelope,
                                                  axis2_env_t **env);
 
+        axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_envelope_t *envelope,
+                                                 axis2_env_t **env,
+                                                 struct axis2_soap_builder *builder);
     };
 
   /**
@@ -195,6 +199,8 @@ axis2_soap_envelope_create_null(axis2_env_t **env);
 #define AXIS2_SOAP_ENVELOPE_GET_NAMESPACE(envelope, env) \
         ((envelope)->ops->get_namespace(envelope, env))
 
+#define AXIS2_SOAP_ENVELOPE_SET_BUILDER(envelope, env, builder) \
+        ((envelope)->ops->set_builder(envelope, env, builder))
 /** @} */
 
 #ifdef __cplusplus

@@ -115,7 +115,7 @@ axis2_soap_fault_reason_create_with_parent(axis2_env_t **env,
         ((fault_reason)->ops->free_fn(fault_reason, env))
 
 #define AXIS2_SOAP_FAULT_REASON_SET_SOAP_TEXT(fault_reason , env, soap_text) \
-        ((fault_reason)->ops->set_value(fault_reason, env, soap_text))
+        ((fault_reason)->ops->set_soap_text(fault_reason, env, soap_text))
         
 #define AXIS2_SOAP_FAULT_REASON_GET_SOAP_TEXT(fault_reason , env) \
         ((fault_reason)->ops->get_soap_text(fault_reason, env)) 

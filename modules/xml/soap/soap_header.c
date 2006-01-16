@@ -112,6 +112,17 @@ axis2_soap_header_create(axis2_env_t **env)
     header_impl->om_ele          = NULL;
     header_impl->om_ele_node     = NULL;
     header_impl->hbnumber = 0;
+    
+    header_impl->soap_header.ops = NULL;
+    header_impl->soap_header.ops = (axis2_soap_header_ops_t*)AXIS2_MALLOC((*env)->allocator,
+                                    sizeof(axis2_soap_header_ops_t));
+    if(!(header_impl->soap_header.ops))
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE((*env)->allocator, header_impl);
+        return NULL;
+    }
+    
     header_impl->soap_header.ops->free_fn =
         axis2_soap_header_free;
     header_impl->soap_header.ops->add_header_block =

@@ -617,7 +617,6 @@ axis2_om_element_add_attribute (axis2_om_element_t *om_element,
                         name, AXIS2_HASH_KEY_STRING,
                         attribute);
     }
-
     return ((qname) ? AXIS2_SUCCESS : AXIS2_FAILURE);
 }
 
@@ -628,7 +627,6 @@ axis2_om_element_get_attribute (axis2_om_element_t *om_element,
 {
     axis2_char_t *name = NULL;
     axis2_om_attribute_t *attr = NULL;
-    
     AXIS2_FUNC_PARAM_CHECK(om_element, env, NULL);
     
     if (!qname)

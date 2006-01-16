@@ -32,51 +32,80 @@ typedef struct axis2_array_list_impl
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(array_list) ((axis2_array_list_impl_t *)array_list)
 
-axis2_status_t AXIS2_CALL axis2_array_list_ensure_capacity(struct axis2_array_list *array_list, 
-                                                axis2_env_t **env, 
-                                                int min_capacity);
-int AXIS2_CALL axis2_array_list_size(struct axis2_array_list *array_list, 
+axis2_status_t AXIS2_CALL 
+axis2_array_list_ensure_capacity(struct axis2_array_list *array_list, 
+                                 axis2_env_t **env, 
+                                 int min_capacity);
+                                 
+int AXIS2_CALL 
+axis2_array_list_size(struct axis2_array_list *array_list, 
+                      axis2_env_t **env);
+                      
+axis2_bool_t AXIS2_CALL 
+axis2_array_list_is_empty(struct axis2_array_list *array_list, 
                           axis2_env_t **env);
-axis2_bool_t AXIS2_CALL axis2_array_list_is_empty(struct axis2_array_list *array_list, 
-                                       axis2_env_t **env);
-axis2_bool_t AXIS2_CALL axis2_array_list_contains(struct axis2_array_list *array_list, 
-                                       axis2_env_t **env, 
-                                       void *e);
-int AXIS2_CALL axis2_array_list_index_of(struct axis2_array_list *array_list, 
-                              axis2_env_t **env, 
-                              void *e);
-int AXIS2_CALL axis2_array_list_last_index_of(struct axis2_array_list *array_list, 
-                                   axis2_env_t **env, 
-                                   void *e);
-void** AXIS2_CALL axis2_array_list_to_array(struct axis2_array_list *array_list, 
-                                  axis2_env_t **env);
-void* AXIS2_CALL axis2_array_list_get(struct axis2_array_list *array_list, 
-                           axis2_env_t **env, 
-                           int index);
-void* AXIS2_CALL axis2_array_list_set(struct axis2_array_list *array_list, 
-                           axis2_env_t **env, 
-                           int index, 
-                           void* e);
-axis2_status_t AXIS2_CALL axis2_array_list_add(struct axis2_array_list *array_list, 
-                                    axis2_env_t **env, 
-                                    void* e);
-axis2_status_t AXIS2_CALL axis2_array_list_add_at(struct axis2_array_list *array_list, 
-                                       axis2_env_t **env, 
-                                       int index, 
-                                       void* e);    
-void* AXIS2_CALL axis2_array_list_remove(struct axis2_array_list *array_list, 
-                              axis2_env_t **env, 
-                              int index);
-axis2_bool_t AXIS2_CALL axis2_array_list_check_bound_inclusive(struct axis2_array_list *array_list, 
-                                                    axis2_env_t **env, 
-                                                    int index);
-axis2_bool_t AXIS2_CALL axis2_array_list_check_bound_exclusive(struct axis2_array_list *array_list, 
-                                                    axis2_env_t **env, 
-                                                    int index);
-axis2_status_t AXIS2_CALL axis2_array_list_free(struct axis2_array_list *array_list, 
-                                     axis2_env_t **env);
+                          
+axis2_bool_t AXIS2_CALL 
+axis2_array_list_contains(struct axis2_array_list *array_list, 
+                          axis2_env_t **env, 
+                          void *e);
+                          
+int AXIS2_CALL 
+axis2_array_list_index_of(struct axis2_array_list *array_list, 
+                          axis2_env_t **env, 
+                          void *e);
+int AXIS2_CALL 
+axis2_array_list_last_index_of(struct axis2_array_list *array_list, 
+                                axis2_env_t **env, 
+                                void *e);
+                                
+void** AXIS2_CALL 
+axis2_array_list_to_array(struct axis2_array_list *array_list, 
+                          axis2_env_t **env);
+                          
+void* AXIS2_CALL 
+axis2_array_list_get(struct axis2_array_list *array_list, 
+                     axis2_env_t **env, 
+                    int index);
+                    
+void* AXIS2_CALL 
+axis2_array_list_set(struct axis2_array_list *array_list, 
+                     axis2_env_t **env, 
+                     int index, 
+                     void* e);
+                     
+axis2_status_t AXIS2_CALL 
+axis2_array_list_add(struct axis2_array_list *array_list, 
+                     axis2_env_t **env, 
+                     void* e);
+                     
+axis2_status_t AXIS2_CALL 
+axis2_array_list_add_at(struct axis2_array_list *array_list, 
+                        axis2_env_t **env, 
+                        int index, 
+                        void* e);    
+                        
+void* AXIS2_CALL 
+axis2_array_list_remove(struct axis2_array_list *array_list, 
+                        axis2_env_t **env, 
+                        int index);
 
-struct axis2_array_list* AXIS2_CALL axis2_array_list_create(axis2_env_t **env, int capacity)
+axis2_bool_t AXIS2_CALL 
+axis2_array_list_check_bound_inclusive(struct axis2_array_list *array_list, 
+                                       axis2_env_t **env, 
+                                       int index);
+                                       
+axis2_bool_t AXIS2_CALL 
+axis2_array_list_check_bound_exclusive(struct axis2_array_list *array_list, 
+                                       axis2_env_t **env, 
+                                      int index);
+                                      
+axis2_status_t AXIS2_CALL 
+axis2_array_list_free(struct axis2_array_list *array_list, 
+                      axis2_env_t **env);
+
+struct axis2_array_list* 
+AXIS2_CALL axis2_array_list_create(axis2_env_t **env, int capacity)
 {
     axis2_array_list_impl_t *array_list_impl = NULL;
     
