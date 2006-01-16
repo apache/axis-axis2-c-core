@@ -4,8 +4,10 @@
 #include <axis2_allocator.h>
 #include <axis2_env.h>
 
-CuSuite* axis2_utilGetSuite() {
+CuSuite* axis2_utilGetSuite() 
+{
     CuSuite* suite = CuSuiteNew();
+    SUITE_ADD_TEST(suite, Testaxis2_class_loader_create_dll);
     SUITE_ADD_TEST(suite, Testaxis2_stream_write);
     SUITE_ADD_TEST(suite, Testaxis2_log_write);
     SUITE_ADD_TEST(suite, Testaxis2_hash_get);

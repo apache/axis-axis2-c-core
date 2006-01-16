@@ -18,7 +18,7 @@ void Testaxis2_dir_handler_list_dir(CuTest *tc)
     
     expected = AXIS2_STRDUP("libaxis2_util.so", &env);
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-    pathname = AXIS2_STRACAT (axis2c_home, "/test/unit/infiles/dir_handler", &env);
+    pathname = AXIS2_STRACAT (axis2c_home, "/lib", &env);
     file_list = axis2_dir_handler_list_dir(&env, pathname);
     size = AXIS2_ARRAY_LIST_SIZE(file_list, &env);
     
