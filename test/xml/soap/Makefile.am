@@ -7,6 +7,7 @@ test_soap_SOURCES = test_soap.c
 test_soap_LDADD   =   \
                     -L$(AXIS2C_HOME)/lib \
                     -laxis2_om \
+                    -laxis2_soap \
                     -laxis2_util \
                     -laxis2_parser \
                     -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \

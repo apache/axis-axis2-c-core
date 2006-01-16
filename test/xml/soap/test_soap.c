@@ -36,6 +36,8 @@ int printnode(axis2_om_node_t *om_node, axis2_env_t **env)
         localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env);
         printf("\n %s \n", localname);
     }
+
+    return 0;
 }
 
 int build_soap(axis2_env_t **env, char *filename)
@@ -44,11 +46,8 @@ int build_soap(axis2_env_t **env, char *filename)
     axis2_om_stax_builder_t *om_builder = NULL;
     axis2_xml_reader_t *xml_reader = NULL;
     axis2_soap_builder_t *soap_builder = NULL;
-    axis2_soap_message_t *soap_message = NULL;
     axis2_soap_envelope_t *soap_envelope = NULL;
     axis2_om_node_t *om_node = NULL;
-    axis2_om_element_t *om_ele = NULL;
-    axis2_char_t *localname = NULL;
     axis2_char_t *buffer = NULL;
     axis2_xml_writer_t *xml_writer = NULL;
     axis2_om_output_t *om_output = NULL;
@@ -56,7 +55,6 @@ int build_soap(axis2_env_t **env, char *filename)
     axis2_soap_header_t *soap_header = NULL;
     
     
-    int status = AXIS2_FALSE;
     
     if(!filename)
         return -1;
@@ -92,8 +90,8 @@ int build_soap(axis2_env_t **env, char *filename)
     om_output = axis2_om_output_create( env, xml_writer);  
     AXIS2_SOAP_ENVELOPE_SERIALIZE(soap_envelope, env, om_output, AXIS2_FALSE);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
-    printf("%s",  buffer);
-return AXIS2_SUCCESS;
+    printf("%s \n",  buffer);
+    return AXIS2_SUCCESS;
 }
 
 
@@ -102,7 +100,6 @@ int build_soap_programatically(axis2_env_t **env)
     axis2_soap_envelope_t *soap_envelope = NULL;
     axis2_soap_body_t *soap_body = NULL;
     axis2_soap_header_t *soap_header = NULL;
-    axis2_soap_header_block_t *header_block = NULL;
     axis2_soap_fault_t *soap_fault = NULL;
     axis2_om_namespace_t *env_ns = NULL;
     axis2_xml_writer_t *xml_writer = NULL;
@@ -122,7 +119,7 @@ int build_soap_programatically(axis2_env_t **env)
     
     AXIS2_SOAP_ENVELOPE_SERIALIZE(soap_envelope, env, om_output, AXIS2_FALSE);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
-    printf("%s",  buffer);    
+    printf("%s \n",  buffer);    
     return AXIS2_SUCCESS;
 }
 
@@ -133,7 +130,6 @@ int main(int argc, char *argv[])
     axis2_allocator_t *allocator = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
-    int i = 10;
     char *filename = "test.xml";
     if(argc > 1)
         filename = argv[1];
@@ -144,7 +140,6 @@ int main(int argc, char *argv[])
     env = axis2_env_create_with_error_log(allocator, error,  log);
     /*i = build_soap(&env, filename); */
     build_soap_programatically(&env);
-    getchar();
     return 0;        
 }
 
