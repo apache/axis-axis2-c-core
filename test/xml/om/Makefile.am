@@ -5,7 +5,7 @@ AM_CPPFLAGS = $(CPPFLAGS) -g -O2 -pthread
 test_om_SOURCES = test_om.c
 
 test_om_LDADD   =   \
-                    -L$(top_builddir)/install/lib \
+                    -L$(AXIS2C_HOME)/lib \
                     -laxis2_om \
                     -laxis2_util \
                     -laxis2_parser \

@@ -13,7 +13,7 @@ main_unit_test_suite_LDADD   =   \
                     -L$(top_builddir)/test/unit/core/phaseresolver/.libs -ltest_phaseresolver \
                     -L$(top_builddir)/test/unit/util/.libs -ltest_util \
                     -L$(top_builddir)/test/unit/xml/om/.libs -ltest_om \
-                    -L$(top_builddir)/install/lib \
+                    -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
                     -laxis2_om \
                     -laxis2_description \

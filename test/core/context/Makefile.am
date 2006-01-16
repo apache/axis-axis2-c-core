@@ -5,7 +5,7 @@ AM_CPPFLAGS = $(CPPFLAGS) -g -O2 -pthread
 test_context_SOURCES = test_context.c
 
 
-test_context_LDADD   =  -L$(top_builddir)/install/lib \
+test_context_LDADD   =  -L$(AXIS2C_HOME)/lib \
 			        -laxis2_description \
 			        -laxis2_context \
                     -laxis2_util \

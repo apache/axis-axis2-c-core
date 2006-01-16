@@ -15,7 +15,7 @@ context_test_SOURCES = main.c
 context_test_LDADD   =   libtest_context.la  \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
-                    -L$(top_builddir)/install/lib \
+                    -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
                     -laxis2_context \
                     -laxis2_description \

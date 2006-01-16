@@ -24,7 +24,7 @@ deployment_test_SOURCES = main.c
 deployment_test_LDADD   =   libtest_deployment.la  \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
-                    -L$(top_builddir)/install/lib \
+                    -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
                     -laxis2_context \
                     -laxis2_deployment \
