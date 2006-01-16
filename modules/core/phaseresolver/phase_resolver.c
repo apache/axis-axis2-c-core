@@ -1057,7 +1057,6 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
     int type = 0;
-    axis2_status_t status = AXIS2_FAILURE;
     
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
     

@@ -268,8 +268,6 @@ axis2_soap_builder_get_soap_envelope
     if(!(builder_impl->om_builder))
         return NULL;
     
- //   value = axis2_soap_builder_next(builder, env);        
-
     while(!(builder_impl->soap_envelope) || 
         AXIS2_OM_STAX_BUILDER_IS_COMPLETE(builder_impl->om_builder, env))
     {
@@ -658,4 +656,6 @@ axis2_soap_builder_get_soap_version (axis2_soap_builder_t *builder,
     AXIS2_FUNC_PARAM_CHECK(builder, env, AXIS2_FALSE);
      builder_impl = AXIS2_INTF_TO_IMPL(builder);
     return builder_impl->soap_version ;
-}                                                                                     
+}
+
+

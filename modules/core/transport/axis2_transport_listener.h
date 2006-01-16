@@ -41,6 +41,8 @@ struct axis2_transport_listener;
 struct axis2_ctx;    
 typedef struct axis2_transport_listener axis2_transport_listener_t;
 typedef struct axis2_transport_listener_ops axis2_transport_listener_ops_t;
+struct axis2_conf_ctx;
+struct axis2_transport_in_desc;
 
 /** @defgroup axis2_transport_listener Transport Listener
  * @ingroup axis2_description
@@ -74,7 +76,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_listener_ops
     axis2_status_t (AXIS2_CALL * 
     init) (axis2_transport_listener_t *transport_listener,
                                 axis2_env_t **env,
-                                struct axis2_ctx *conf_ctx,
+                                struct axis2_conf_ctx *conf_ctx,
                                 struct axis2_transport_in_desc *transport_in);
 };
 

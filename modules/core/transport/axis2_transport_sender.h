@@ -72,7 +72,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
     axis2_status_t (AXIS2_CALL * 
     init) (axis2_transport_sender_t *transport_sender,
                                 axis2_env_t **env,
-                                struct axis2_ctx *conf_ctx,
+                                struct axis2_conf_ctx *conf_ctx,
                                 struct axis2_transport_out_desc *transport_out);
     /**
      * Clean up
