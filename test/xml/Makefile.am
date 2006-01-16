@@ -1,1 +1,1 @@
-SUBDIRS = om
+SUBDIRS = om soap
