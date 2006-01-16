@@ -716,8 +716,8 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     }
     AXIS2_CONF_SET_REPOS(engine_impl->conf, env, engine_impl->axis2_repos);
     status = axis2_dep_engine_validate_system_predefined_phases(dep_engine, env);
-    printf("status:%d\n", status);
-    if(AXIS2_FAILURE == status)
+    
+    if(AXIS2_SUCCESS != status)
     {
         AXIS2_REPOS_LISTENER_FREE(repos_listener, env);
         AXIS2_CONF_FREE(engine_impl->conf, env);
@@ -728,6 +728,7 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     }
     AXIS2_CONF_SET_PHASESINFO(engine_impl->conf, env, engine_impl->phases_info);
     status = axis2_dep_engine_engage_modules(dep_engine, env);
+    printf("status:%d\n", status);
     if(AXIS2_FAILURE == status)
     {
         AXIS2_REPOS_LISTENER_FREE(repos_listener, env);

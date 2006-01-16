@@ -288,8 +288,8 @@ axis2_error_init()
         "AXIS2_PATH_TO_CONFIG_CAN_NOT_BE_NULL";
     axis2_error_messages[AXIS2_ERROR_MODULE_VAL_FAILED] = 
         "AXIS2_ERROR_MODULE_VAL_FAILED";
-    axis2_error_messages[AXI2_ERROR_IN_VALID_PHASE] = 
-        "AXI2_ERROR_IN_VALID_PHASE";
+    axis2_error_messages[AXI2_ERROR_INVALID_PHASE] = 
+        "AXI2_ERROR_INVALID_PHASE";
     axis2_error_messages[AXIS2_ERROR_INVALID_MODUELE_REF] = 
         "AXIS2_ERROR_INVALID_MODUELE_REF";
     axis2_error_messages[AXIS2_ERROR_INVALID_MODUELE_REF_BY_OP] = 
