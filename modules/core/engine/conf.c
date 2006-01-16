@@ -561,6 +561,7 @@ axis2_conf_create (axis2_env_t **env)
         axis2_conf_set_default_dispatchers;
     config_impl->conf.ops->set_dispatch_phase = axis2_conf_set_dispatch_phase;
     config_impl->conf.ops->set_repos = axis2_conf_set_repos;
+    config_impl->conf.ops->engage_module = axis2_conf_engage_module;
     
 	return &(config_impl->conf);	
 }	
@@ -1347,6 +1348,7 @@ axis2_conf_set_phases_info(axis2_conf_t *conf,
     
     AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, phases_info, AXIS2_FAILURE);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
     
     if(config_impl->phases_info)
     {

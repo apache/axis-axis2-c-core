@@ -889,7 +889,8 @@ axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
     {
         axis2_qname_t *qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(
             engine_impl->module_list, env, i);
-        AXIS2_CONF_ENGAGE_MODULE(engine_impl->conf, env, qname);
+        if (qname && engine_impl->conf)
+            AXIS2_CONF_ENGAGE_MODULE(engine_impl->conf, env, qname);
     }
     return AXIS2_SUCCESS;
 }
