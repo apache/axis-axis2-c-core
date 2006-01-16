@@ -716,10 +716,8 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     }
     AXIS2_CONF_SET_REPOS(engine_impl->conf, env, engine_impl->axis2_repos);
     status = axis2_dep_engine_validate_system_predefined_phases(dep_engine, env);
-    printf("came20\n");
     if(AXIS2_SUCCESS != status)
     {
-        printf("came21\n");
         AXIS2_REPOS_LISTENER_FREE(repos_listener, env);
         AXIS2_CONF_FREE(engine_impl->conf, env);
         AXIS2_CONF_BUILDER_FREE(builder, env);
@@ -727,15 +725,9 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
             AXIS2_FAILURE);
         return NULL;
     }
-    printf("came22\n");
-    if(engine_impl->conf)
-    {
-        printf("came23\n");
-    }
+    
     AXIS2_CONF_SET_PHASESINFO(engine_impl->conf, env, engine_impl->phases_info);
-    printf("came24\n");
     status = axis2_dep_engine_engage_modules(dep_engine, env);
-    printf("status:%d\n", status);
     if(AXIS2_FAILURE == status)
     {
         AXIS2_REPOS_LISTENER_FREE(repos_listener, env);
@@ -893,7 +885,6 @@ axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
     /* ArrayList modules = DeploymentData.getInstance().getModules(); */
     /* PhaseResolver resolver = new PhaseResolver(axisConfig); */
     size = AXIS2_ARRAY_LIST_SIZE(engine_impl->module_list, env);
-    printf("size:%d\n", size);
     for(i = 0; i < size; i++)
     {
         axis2_qname_t *qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(
