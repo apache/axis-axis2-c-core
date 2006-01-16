@@ -36,7 +36,6 @@ int printnode(axis2_om_node_t *om_node, axis2_env_t **env)
         localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env);
         printf("\n %s \n", localname);
     }
-
     return 0;
 }
 
@@ -85,6 +84,8 @@ int build_soap(axis2_env_t **env, char *filename)
     if (soap_body)
     {
         om_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_body, env);
+        if(!om_node)
+            printf("om_node null");
         printnode(om_node, env);
     }
     else
@@ -98,7 +99,7 @@ int build_soap(axis2_env_t **env, char *filename)
     om_output = axis2_om_output_create( env, xml_writer);  
     AXIS2_SOAP_ENVELOPE_SERIALIZE(soap_envelope, env, om_output, AXIS2_FALSE);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
-    printf("%s \n",  buffer);
+/*    printf("%s \n",  buffer); */
     return AXIS2_SUCCESS;
 }
 
