@@ -150,6 +150,7 @@ axis2_param_container_add_param (axis2_param_container_t *param_container,
 					axis2_param_t *param)
 {
     axis2_param_container_impl_t *param_container_impl = NULL;
+    axis2_char_t *param_name = NULL;
     
 	AXIS2_FUNC_PARAM_CHECK(param_container, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, param, AXIS2_FAILURE);
@@ -160,11 +161,13 @@ axis2_param_container_add_param (axis2_param_container_t *param_container,
 	{                    
 		param_container_impl->params = axis2_hash_make (env);
         if(!param_container_impl->params)
+        {
             return AXIS2_FAILURE;
-	}	
+        }
+	}
+    param_name = AXIS2_PARAM_GET_NAME(param, env);
 	axis2_hash_set (AXIS2_INTF_TO_IMPL(param_container)->params	
-		, AXIS2_PARAM_GET_NAME(param, env)
-		, AXIS2_HASH_KEY_STRING, param);
+		, param_name, AXIS2_HASH_KEY_STRING, param);
 	
 	return AXIS2_SUCCESS;
 
@@ -188,7 +191,9 @@ axis2_param_container_get_params (axis2_param_container_t *param_container,
     axis2_param_container_impl_t *param_container_impl = NULL;
     axis2_hash_index_t *index_i = 0;
     axis2_status_t status = AXIS2_FAILURE;
-    /* create an array list with the initial default capacity */
+    /* create an array list with the initial default capacity 
+     * Caller of this method should free this array list
+     */
     axis2_array_list_t *array_list_l = axis2_array_list_create(env, 20);
     void *value = NULL;
     
@@ -216,11 +221,16 @@ axis2_param_container_is_param_locked (axis2_param_container_t *param_container,
 						axis2_env_t **env, 
 						const axis2_char_t *param_name)
 {
+    axis2_param_t *param = NULL;
+    
 	AXIS2_FUNC_PARAM_CHECK(param_container, env, AXIS2_FAILURE);
-	
-	axis2_param_t *param = (axis2_param_t *)
-		(axis2_hash_get (AXIS2_INTF_TO_IMPL(param_container)->params
-			, param_name, AXIS2_HASH_KEY_STRING));
-	
+    
+	param = (axis2_param_t *)(axis2_hash_get (AXIS2_INTF_TO_IMPL(
+        param_container)->params, param_name, AXIS2_HASH_KEY_STRING));
+    if(!param)
+    {
+        /* In this case we consider param is not locked */
+        return AXIS2_FALSE;
+	}
 	return AXIS2_PARAM_IS_LOCKED(param, env);
 }

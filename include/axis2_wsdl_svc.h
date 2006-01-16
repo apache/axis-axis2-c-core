@@ -50,9 +50,9 @@ struct axis2_wsdl_component;
 typedef struct axis2_wsdl_svc_ops axis2_wsdl_svc_ops_t;
 typedef struct axis2_wsdl_svc axis2_wsdl_svc_t;
 
-#define STYLE_RPC  "rpc"
-#define STYLE_DOC  "doc"
-#define STYLE_MSG  "msg"
+#define AXIS2_STYLE_RPC  "rpc"
+#define AXIS2_STYLE_DOC  "doc"
+#define AXIS2_STYLE_MSG  "msg"
 /** 
  * @brief Wsdl Service ops struct
  * Encapsulator struct for ops of axis2_wsdl_service

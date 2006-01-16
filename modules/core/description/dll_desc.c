@@ -206,7 +206,11 @@ axis2_dll_desc_set_name(axis2_dll_desc_t *dll_desc,
         AXIS2_FREE((*env)->allocator, dll_desc_impl->dll_name);
         dll_desc_impl->dll_name = NULL;
     }
-    dll_desc_impl->dll_name = name;
+    dll_desc_impl->dll_name = AXIS2_STRDUP(name, env);
+    if(!dll_desc_impl->dll_name)
+    {
+        return AXIS2_FAILURE;
+    }
     return AXIS2_SUCCESS;
 }
 

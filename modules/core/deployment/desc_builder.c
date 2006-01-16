@@ -630,7 +630,6 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
         AXIS2_QNAME_FREE(att_qname, env);
         if(!para_name)
         {
-            printf("para_name is null\n");
             AXIS2_PARAM_FREE(param, env);
             return AXIS2_FAILURE;
         }
@@ -676,12 +675,10 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
         {
             parent_para = AXIS2_PARAM_CONTAINER_GET_PARAM(parent, env, 
                 AXIS2_PARAM_GET_NAME(param, env));
-            
         }
         if(NULL != para_locked)
         {
             axis2_char_t *locked_value = NULL;
-            
             locked_value = AXIS2_OM_ATTRIBUTE_GET_VALUE(para_locked, env);
             if(0 == AXIS2_STRCMP("true", locked_value))
             {
@@ -707,11 +704,14 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
                 AXIS2_PARAM_SET_LOCKED(param, env, AXIS2_FALSE);
             }
         }
+        
         if(NULL != parent)
         {
-            if(NULL != parent_para || AXIS2_FALSE == 
-                    AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(parent, env, 
-                        AXIS2_PARAM_GET_NAME(param, env)))
+            axis2_char_t *name = NULL;
+            axis2_bool_t bvalue = AXIS2_FALSE;
+            name = AXIS2_PARAM_GET_NAME(param, env);
+            bvalue = AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(parent, env, name);
+            if(NULL != parent_para || AXIS2_FALSE == bvalue)
             {
                 status = AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container, env, 
                     param);
@@ -720,7 +720,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
         else
         {
             status = AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container, env, 
-                param);   
+                param);            
         }   
     }
     return AXIS2_SUCCESS;
@@ -790,26 +790,41 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
                                     axis2_env_t **env,
                                     struct axis2_om_element *recv_element)
 {
-    struct axis2_om_attribute *recv_name = NULL;
+    axis2_om_attribute_t *recv_name = NULL;
     axis2_char_t *class_name = NULL;
     axis2_msg_recv_t *msg_recv = NULL;
     axis2_qname_t *class_qname = NULL;
     axis2_param_t *impl_info_param = NULL;
     struct axis2_dll_desc *dll_desc = NULL;
-     
+    axis2_char_t *repos_name = NULL;
+    axis2_char_t *dll_name = NULL;
+    axis2_char_t *temp_path = NULL;
+    axis2_char_t *temp_path2 = NULL;
+    axis2_char_t *temp_path3 = NULL;
+        
+    AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, recv_element, NULL);
     class_qname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
     recv_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(recv_element, env, class_qname);
     class_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(recv_name, env);
     dll_desc = axis2_dll_desc_create(env);
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, class_name);
+    repos_name = AXIS2_DEP_ENGINE_GET_REPOS_PATH(desc_builder->engine, env);
+    printf("repos_name:%s\n", repos_name);
+    temp_path = AXIS2_STRACAT(repos_name, AXIS2_PATH_SEP_STR, env);
+    temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_LIB_FOLDER, env);
+    temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
+    dll_name = AXIS2_STRACAT(temp_path3, class_name, env);
+    AXIS2_FREE((*env)->allocator, temp_path);
+    AXIS2_FREE((*env)->allocator, temp_path2);
+    AXIS2_FREE((*env)->allocator, temp_path3);
+    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
+    AXIS2_FREE((*env)->allocator, dll_name);
     AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_MSG_RECV_DLL);
     axis2_class_loader_init(env);
     impl_info_param = axis2_param_create(env, NULL, NULL);
-    
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc); 
+    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
     msg_recv = (axis2_msg_recv_t *) axis2_class_loader_create_dll(env, 
         impl_info_param);
-    
     return msg_recv;
 }
 

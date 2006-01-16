@@ -264,6 +264,10 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
                                 axis2_file_t *module_archive,
                                 axis2_conf_t *conf);  
+                                
+axis2_char_t *AXIS2_CALL
+axis2_dep_engine_get_repos_path(axis2_dep_engine_t *dep_engine,
+                                axis2_env_t **env);                                
   
 /************************* End of function headers ****************************/	
 
@@ -341,6 +345,7 @@ axis2_dep_engine_create(axis2_env_t **env)
         axis2_dep_engine_set_phases_info;
     engine_impl->dep_engine.ops->build_svc = axis2_dep_engine_build_svc;
     engine_impl->dep_engine.ops->build_module = axis2_dep_engine_build_module;
+    engine_impl->dep_engine.ops->get_repos_path = axis2_dep_engine_get_repos_path;
     
     return &(engine_impl->dep_engine);
 }
@@ -470,6 +475,17 @@ axis2_dep_engine_free (axis2_dep_engine_t *dep_engine,
     }
     if(engine_impl->module_list)
     {
+        int size = 0;
+        int i = 0;
+        
+        size = AXIS2_ARRAY_LIST_SIZE(engine_impl->module_list, env);
+        for(i = 0; i < size; i++)
+        {
+            axis2_qname_t *qname = NULL;
+            qname = AXIS2_ARRAY_LIST_GET(engine_impl->module_list, env, i);
+            AXIS2_QNAME_FREE(qname, env);
+            qname = NULL;
+        }
         AXIS2_ARRAY_LIST_FREE(engine_impl->module_list, env);
         engine_impl->module_list = NULL;
     }
@@ -505,11 +521,21 @@ axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
                                 axis2_qname_t *module_qname) 
 {
+    axis2_qname_t *qname = NULL;
+    axis2_dep_engine_impl_t *engine_impl = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(dep_engine, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_qname, AXIS2_FAILURE);
+    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    return AXIS2_ARRAY_LIST_ADD(AXIS2_INTF_TO_IMPL(dep_engine)->module_list,
-        env, module_qname);
+    qname = AXIS2_QNAME_CLONE(module_qname, env);
+    if(!engine_impl->module_list)
+    {
+        engine_impl->module_list = axis2_array_list_create(env, 20);
+        if(!engine_impl->module_list)
+            return AXIS2_FAILURE;
+    }
+    return AXIS2_ARRAY_LIST_ADD(engine_impl->module_list, env, qname);
 }
     
 struct axis2_module_desc *AXIS2_CALL
@@ -1527,6 +1553,12 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
     return module;
 }
 
+axis2_char_t *AXIS2_CALL
+axis2_dep_engine_get_repos_path(axis2_dep_engine_t *dep_engine,
+                                axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(dep_engine)->folder_name;
+}
 /* public AxisService deployService(ClassLoader classLoder, InputStream serviceStream, String servieName) throws DeploymentException {
 AxisService service = null;
 try {

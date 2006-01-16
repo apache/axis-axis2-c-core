@@ -4,7 +4,7 @@ SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -O2 -pthread
 test_deployment_SOURCES = test_deployment.c
 
-test_deployment_LDADD   =  -L$(top_builddir)/install/lib \
+test_deployment_LDADD   =  -L$(AXIS2C_INSTALL)/lib \
 					-laxis2_util \
                     -laxis2_context \
                     -laxis2_description \

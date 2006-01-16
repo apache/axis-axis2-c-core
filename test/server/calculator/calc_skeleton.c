@@ -44,6 +44,11 @@ int axis2_svc_skeleton_init(axis2_svc_skeleton_t *svc_skeleton,
     return AXIS2_SUCCESS;
 }
 
+axis2_array_list_t *
+axis2_svc_skeleton_get_function_array()
+{
+}
+
 int 
 calc_free(axis2_svc_skeleton_t *svc_skeleton)
 {
@@ -82,36 +87,36 @@ axis2_om_node_t *calc_invoke(axis2_svc_skeleton_t *svc_skeleton,
     return node;
 }
 
-axis2_om_node_t *calc_on_fault(axis2_svc_skeleton_t *svc_skeleton,
-                       axis2_env_t **env,
-                       axis2_om_node_t *node)
-{
-}
-
 /**
  * Following block distinguish the exposed part of the dll.
  */
 extern "C" {
 
-int axis2_get_instance(struct axis2_svc_skeleton **inst)
+int axis2_get_instance(struct axis2_svc_skeleton **inst,
+                        axis2_env_t **env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     
-	*inst = axis2_svc_skeleton_create();
+	/**inst = axis2_svc_skeleton_create(env);
     if(NULL != *inst)
     {
         status = *inst->init();
+    }*/
+    if(!(*inst))
+    {
+        return AXIS2_FAILURE;
     }
 
-    return status;
+    return AXIS2_SUCCESS;
 }
 
-int axis2_remove_instance(axis2_svc_skeleton *inst)
+int axis2_remove_instance(axis2_svc_skeleton_t *inst,
+                            axis2_env_t **env)
 {
     axis2_status_t status = AXIS2_FAILURE;
 	if (inst)
 	{
-        status = AXIS2_SVC_SKELETON_FREE(inst);
+        status = AXIS2_SVC_SKELETON_FREE(inst, env);
     }
     return status;
 }

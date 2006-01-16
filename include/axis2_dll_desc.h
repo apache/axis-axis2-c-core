@@ -45,9 +45,9 @@ typedef struct axis2_dll_desc axis2_dll_desc_t;
 typedef struct axis2_dll_desc_ops axis2_dll_desc_ops_t;
    
     
-typedef int (*CREATE_FUNCT) (void **inst);
+typedef int (*CREATE_FUNCT) (void **inst, axis2_env_t **env);
 
-typedef int (*DELETE_FUNCT) (void *inst);
+typedef int (*DELETE_FUNCT) (void *inst, axis2_env_t **env);
 
 typedef enum axis2_dll_type
 {

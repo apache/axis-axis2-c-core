@@ -70,7 +70,6 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         AXIS2_DLHANDLER dl_handler = NULL;
         
         dl_handler = AXIS2_DLL_DESC_GET_DL_HANDLER(dll_desc, env);
-        
         create_funct = (CREATE_FUNCT) AXIS2_PLATFORM_GETPROCADDR(dl_handler,
             AXIS2_CREATE_FUNCTION);
         status = AXIS2_DLL_DESC_SET_CREATE_FUNCT(dll_desc, env, create_funct); 
@@ -85,7 +84,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         delete_funct = (DELETE_FUNCT) AXIS2_PLATFORM_GETPROCADDR(dl_handler,
             AXIS2_DELETE_FUNCTION);
 
-        status = AXIS2_DLL_DESC_SET_CREATE_FUNCT(dll_desc, env, create_funct); 
+        status = AXIS2_DLL_DESC_SET_DELETE_FUNCT(dll_desc, env, delete_funct);
         if(AXIS2_FAILURE == status)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
@@ -106,7 +105,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
     dll_type = AXIS2_DLL_DESC_GET_TYPE(dll_desc, env);
     if(AXIS2_SVC_DLL == dll_type)
     {
-        create_funct(&svc_skeli);
+        create_funct(&svc_skeli, env);
         if(NULL == svc_skeli)
         {
             AXIS2_ERROR_SET((*env)->error, 
@@ -117,7 +116,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
     }
     if(AXIS2_HANDLER_DLL == dll_type)
     {
-        create_funct(&handler);
+        create_funct(&handler, env);
         if(NULL == handler)
         {
             AXIS2_ERROR_SET((*env)->error, 
@@ -128,7 +127,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
     }
     if(AXIS2_MODULE_DLL == dll_type)
     {
-        create_funct(&module);
+        create_funct(&module, env);
         if(NULL == module)
         {
             AXIS2_ERROR_SET((*env)->error, 
@@ -139,9 +138,11 @@ axis2_class_loader_create_dll (axis2_env_t **env,
     }
     if(AXIS2_MSG_RECV_DLL == dll_type)
     {
-        create_funct(&msg_recv);
+        create_funct(&msg_recv, env);
+        printf("message receiver loaded successfully\n");
         if(NULL == msg_recv)
         {
+            printf("msg_recv is null\n");
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_MSG_RECV_CREATION_FAILED,AXIS2_FAILURE);
             return NULL;
@@ -161,6 +162,7 @@ axis2_class_loader_load_lib (axis2_env_t **env,
     axis2_status_t status = AXIS2_FAILURE;
     
     dll_name = AXIS2_DLL_DESC_GET_NAME(dll_desc, env);
+    printf("dll_name:%s\n", dll_name);
     dl_handler = AXIS2_PLATFORM_LOADLIB(dll_name);
     if(NULL == dl_handler)
     {

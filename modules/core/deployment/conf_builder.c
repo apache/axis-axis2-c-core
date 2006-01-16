@@ -183,6 +183,7 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     axis2_om_node_t *conf_node = NULL;
     axis2_om_element_t *disp_order_element = NULL;
     axis2_om_node_t *disp_order_node = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_FUNC_PARAM_CHECK(conf_builder, env, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
@@ -194,14 +195,14 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
     itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, env, qparamst,
         conf_node);
-    printf("came32\n");
+    AXIS2_QNAME_FREE(qparamst, env);
     AXIS2_DESC_BUILDER_PROCESS_PARAMS(conf_builder->desc_builder, env, itr,
         builder_impl->conf->param_container, builder_impl->conf->param_container);
-    printf("came33\n");
     /* process MessageReciver */
     qmsgrecv = axis2_qname_create(env, AXIS2_MESSAGERECEIVER, NULL, NULL);
     msg_recvs = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, env,
         qmsgrecv, conf_node);
+    AXIS2_QNAME_FREE(qmsgrecv, env);
     while(AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(msg_recvs, env))
     {
         axis2_om_node_t *msg_recv_node = NULL;
@@ -213,12 +214,19 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
         
         msg_recv_node = (axis2_om_node_t *) 
             AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(msg_recvs, env);
+        msg_recv_element = (axis2_om_element_t *) 
+            AXIS2_OM_NODE_GET_DATA_ELEMENT(msg_recv_node, env);
         msg_recv = AXIS2_DESC_BUILDER_LOAD_MSG_RECV(conf_builder->desc_builder,
             env, msg_recv_element);
+        if(!msg_recv)
+        {
+            return AXIS2_FAILURE;
+        }
+        qmep = axis2_qname_create(env, AXIS2_MEP, NULL, NULL);
         mep_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(msg_recv_element, env, qmep);
         att_value = AXIS2_OM_ATTRIBUTE_GET_VALUE(mep_att, env);
+        printf("att_value:%s\n", att_value);
         AXIS2_CONF_ADD_MSG_RECV(builder_impl->conf, env, att_value, msg_recv);
-        
         AXIS2_QNAME_FREE(qmep, env);
     }
 
@@ -226,33 +234,38 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     qdisporder = axis2_qname_create(env, AXIS2_DISPATCH_ORDER, NULL, NULL);
     disp_order_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
         conf_element, env, qdisporder, conf_node, &disp_order_node);
-    if(NULL != disp_order_node && NULL != disp_order_element)
+    AXIS2_QNAME_FREE(qdisporder, env);
+    if(NULL != disp_order_element)
     {
-        axis2_conf_builder_process_disp_order(conf_builder, env,
-            disp_order_node);
+        axis2_conf_builder_process_disp_order(conf_builder, env, disp_order_node);
         /*log.info("found the custom disptaching order and continue with that order");*/
     } else 
     {
-        AXIS2_CONF_SET_DEFAULT_DISPATCHERS(builder_impl->conf, env);
+        status = AXIS2_CONF_SET_DEFAULT_DISPATCHERS(builder_impl->conf, env);
+        if(AXIS2_SUCCESS != status)
+        {
+            return AXIS2_FAILURE;
+        }
         /*log.info("no custom diaptching order found continue with default dispatcing order");*/
     }
-    
     /* Process Module refs */
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
     module_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, env,
         qmodulest, conf_node);
+    AXIS2_QNAME_FREE(qmodulest, env);
     axis2_conf_builder_process_module_refs(conf_builder, env, module_itr);
-
     /* Proccessing Transport Sennders */
     qtransportsender = axis2_qname_create(env, AXIS2_TRANSPORTSENDER, NULL, NULL);
     trs_senders = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, env,
         qtransportsender, conf_node);
+    AXIS2_QNAME_FREE(qtransportsender, env);
     axis2_conf_builder_process_transport_senders(conf_builder, env, trs_senders);
 
     /* Proccessing Transport Recivers */
     qtransportrecv = axis2_qname_create(env, AXIS2_TRANSPORTRECEIVER, NULL, NULL);
     trs_recvs = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, env,
         qtransportrecv, conf_node);
+    AXIS2_QNAME_FREE(qtransportrecv, env);
     axis2_conf_builder_process_transport_recvs(conf_builder, env, trs_recvs);
 
     /* Process Observers */
@@ -263,6 +276,7 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     qphaseorder = axis2_qname_create(env, AXIS2_PHASE_ORDER, NULL, NULL);
     phase_orders = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, env,
         qphaseorder, conf_node);
+    AXIS2_QNAME_FREE(qphaseorder, env);
     axis2_conf_builder_process_phase_orders(conf_builder, env, phase_orders);
 
     /* processing Axis Storages */
@@ -273,14 +287,6 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     Iterator moduleConfigs = config_element.getChildrenWithName(new QName(AXIS2_MODULECONFIG));
     processModuleConfig(moduleConfigs,axisConfiguration,axisConfiguration);
     */
-    
-    AXIS2_QNAME_FREE(qparamst, env);
-    AXIS2_QNAME_FREE(qmsgrecv, env);
-    AXIS2_QNAME_FREE(qdisporder, env);
-    AXIS2_QNAME_FREE(qmodulest, env);
-    AXIS2_QNAME_FREE(qtransportsender, env);
-    AXIS2_QNAME_FREE(qtransportrecv, env);
-    AXIS2_QNAME_FREE(qphaseorder, env);
     return AXIS2_SUCCESS;
 }
 
@@ -304,26 +310,24 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
         axis2_qname_t *qrefname = NULL;
         axis2_char_t *ref_name = NULL;
         axis2_om_attribute_t *module_ref_att = NULL;
-        
         module_ref_node = (axis2_om_node_t *)
             AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(module_refs, env);
         module_ref_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(module_ref_node, env);
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
         module_ref_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(module_ref_element, env,
             qref);
-        
+        if (qref)
+            AXIS2_QNAME_FREE(qref, env);
         if (module_ref_att)
         {
             ref_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_ref_att, env);
+            printf("ref_name:%s\n", ref_name);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
             AXIS2_DEP_ENGINE_ADD_MODULE(conf_builder->desc_builder->engine, env,
                 qrefname);
+            if (qrefname)
+                AXIS2_QNAME_FREE(qrefname, env);
         }
-        
-        if (qref)
-            AXIS2_QNAME_FREE(qref, env);
-        if (qrefname)
-            AXIS2_QNAME_FREE(qrefname, env);
     }
     return AXIS2_SUCCESS;
 }

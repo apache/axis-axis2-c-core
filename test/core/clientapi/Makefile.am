@@ -5,10 +5,11 @@ AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
 test_clientapi_SOURCES = test_clientapi.c
 
 
-test_clientapi_LDADD   =  -L$(top_builddir)/install/lib \
+test_clientapi_LDADD   =  -L$(AXIS2C_HOME)/lib \
                     -laxis2_description \
 	                -laxis2_context \
 	                -laxis2_util \
+	                -laxis2_core_util \
 	                -laxis2_deployment \
 	                -laxis2_om \
 	                -laxis2_engine \

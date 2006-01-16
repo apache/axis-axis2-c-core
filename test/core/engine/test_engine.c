@@ -93,47 +93,10 @@ int	axis2_test_engine_receive()
     return 0;
 }
 
-int axis2_test_engine_conf_builder_populate_conf()
-{
-	axis2_status_t status = AXIS2_FAILURE;
-    axis2_conf_t *conf = NULL;
-    axis2_conf_builder_t *builder = NULL;
-    axis2_char_t *conf_name = NULL;
-    axis2_dep_engine_t *dep_engine = NULL;
-    
-    printf("testing conf_builder_populate_conf method \n");
-
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-	axis2_env_t *env = axis2_env_create (allocator);
-	conf = axis2_conf_create(&env);
-    dep_engine = axis2_dep_engine_create_with_repos_name(&env, 
-        "/home/damitha/programs/axis2c");
-
-    conf_name = AXIS2_STRDUP("/home/damitha/programs/axis2c/axis2.xml", &env);
-
-    builder = axis2_conf_builder_create_with_file_and_dep_engine_and_conf(&env,
-            conf_name, dep_engine, conf);
-    if(!builder)
-    {
-        printf("conf builder is not created \n");
-        return -1;
-    }
-    status = AXIS2_CONF_BUILDER_POPULATE_CONF(builder, &env);   
-    if(AXIS2_SUCCESS != status)
-    {
-        printf("Populate conf is not successfule. Test failed \n");
-    }
-    else
-    {
-        printf("conf is populated. Test is a success \n");
-    }
-    return 0; 
-}
 
 int main()
 {
 	axis2_test_engine_send();
 	axis2_test_engine_receive();
-    axis2_test_engine_conf_builder_populate_conf();
 	return 0;
 }

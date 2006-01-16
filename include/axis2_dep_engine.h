@@ -176,7 +176,11 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     build_module) (axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_file_t *module_archive,
-                                    axis2_conf_t *conf);  
+                                    axis2_conf_t *conf); 
+
+    axis2_char_t *(AXIS2_CALL *
+    get_repos_path) (axis2_dep_engine_t *dep_engine,
+                        axis2_env_t **env);
                                        
 };
     
@@ -282,7 +286,9 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
 
 #define AXIS2_DEP_ENGINE_BUILD_MODULE(dep_engine, env, module_archive, conf) \
 		((dep_engine)->ops->build_module (dep_engine, env, module_archive, conf))
-        
+
+#define AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env) \
+		((dep_engine)->ops->get_repos_path (dep_engine, env))
         
 /*************************** End of function macros ***************************/
 

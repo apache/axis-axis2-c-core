@@ -41,7 +41,7 @@
     <!-- Message Receivers -->
     <!-- ================================================= -->
     <!-- This is the Deafult Message Receiver for the Request Response style Operations -->
-    <!--messageReceiver mep="INOUT" class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver"/-->
+    <messageReceiver mep="INOUT" class="axis2_raw_xml_in_out_msg_recv">
 
     <!-- ================================================= -->
     <!-- Transport Ins -->

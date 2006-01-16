@@ -188,7 +188,7 @@ axis2_wsdl_op_create (axis2_env_t **env)
     wsdl_op_impl->output_msg = NULL;
     wsdl_op_impl->safety = AXIS2_FALSE;
     
-    wsdl_op_impl->style = AXIS2_STRDUP(STYLE_DOC, env);
+    wsdl_op_impl->style = AXIS2_STRDUP(AXIS2_STYLE_DOC, env);
     
     wsdl_op_impl->in_faults = axis2_linked_list_create(env);
     if(NULL == wsdl_op_impl->in_faults)

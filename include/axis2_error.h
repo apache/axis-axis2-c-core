@@ -419,6 +419,10 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_NULL_OM_OUTPUT,
         /* We got a NULL strem in the response body */
         AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY,
+        AXIS2_ERROR_OM_ELEMENT_MISMATCH,
+        AXIS2_ERROR_OM_ELEMENT_INVALID_STATE,
+        AXIS2_ERROR_RPC_NEED_MATCHING_CHILD,
+        AXIS2_ERROR_UNKNOWN_STYLE,
 
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.

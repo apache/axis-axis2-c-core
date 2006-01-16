@@ -611,9 +611,12 @@ axis2_om_element_add_attribute (axis2_om_element_t *om_element,
 
     qname = AXIS2_OM_ATTRIBUTE_GET_QNAME(attribute, env);
     if (qname)
+    {
+        axis2_char_t *name = AXIS2_QNAME_TO_STRING(qname, env);
         axis2_hash_set (om_element_impl->attributes, 
-                        qname, sizeof (axis2_qname_t),
+                        name, AXIS2_HASH_KEY_STRING,
                         attribute);
+    }
 
     return ((qname) ? AXIS2_SUCCESS : AXIS2_FAILURE);
 }
@@ -623,6 +626,9 @@ axis2_om_element_get_attribute (axis2_om_element_t *om_element,
                                 axis2_env_t **env,
                                 axis2_qname_t *qname)
 {
+    axis2_char_t *name = NULL;
+    axis2_om_attribute_t *attr = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(om_element, env, NULL);
     
     if (!qname)
@@ -632,10 +638,11 @@ axis2_om_element_get_attribute (axis2_om_element_t *om_element,
         AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
         return NULL;
     }
-
-    return (axis2_om_attribute_t*)
-                (axis2_hash_get(AXIS2_INTF_TO_IMPL(om_element)->attributes, qname,
-                                sizeof (axis2_qname_t)));
+    name = AXIS2_QNAME_TO_STRING(qname, env);
+    attr = (axis2_om_attribute_t*) (axis2_hash_get(AXIS2_INTF_TO_IMPL(
+        om_element)->attributes, name, AXIS2_HASH_KEY_STRING));
+    AXIS2_FREE((*env)->allocator, name);
+    return attr;
 }
 
 axis2_status_t AXIS2_CALL
@@ -950,6 +957,7 @@ axis2_om_element_get_children_with_qname(axis2_om_element_t *om_element,
     AXIS2_FUNC_PARAM_CHECK(om_element, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
     AXIS2_PARAM_CHECK((*env)->error, element_qname, NULL);
+    
     return axis2_om_children_qname_iterator_create(env,
                 AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env),
                 element_qname);
@@ -972,7 +980,6 @@ axis2_om_element_get_first_child_with_qname(axis2_om_element_t *om_element,
     children_iterator = axis2_om_children_qname_iterator_create(env,
                         AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env),
                         element_qname);
-     
     if(AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(children_iterator, env))
     {
         om_node =   AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(children_iterator, env); 
@@ -1159,5 +1166,3 @@ axis2_om_element_get_child_elements(axis2_om_element_t *om_element,
    }
    else return NULL;
 }
-
-
