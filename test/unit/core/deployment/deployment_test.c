@@ -1,5 +1,5 @@
 #include "deployment_test.h"
-#include "dep_engine_test.h"
+#include "test_dep_engine.h"
 #include <axis2_allocator.h>
 #include <axis2_env.h>
 
