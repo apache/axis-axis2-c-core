@@ -101,6 +101,9 @@ axis2_class_loader_create_dll (axis2_env_t **env,
     }
     
     create_funct = AXIS2_DLL_DESC_GET_CREATE_FUNCT(dll_desc, env);
+
+    if (!create_funct)
+        return NULL;
     
     dll_type = AXIS2_DLL_DESC_GET_TYPE(dll_desc, env);
     if(AXIS2_SVC_DLL == dll_type)
