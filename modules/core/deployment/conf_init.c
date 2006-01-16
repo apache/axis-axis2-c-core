@@ -161,10 +161,10 @@ axis2_status_t AXIS2_CALL axis2_init_transports(axis2_env_t **env,
                 if (transport)
                 {
                     axis2_transport_in_desc_t *transport_in = (axis2_transport_in_desc_t*)transport;
-                    axis2_transport_listener_t *listener = AXIS2_TRANSPORT_IN_DESC_GET_RECV(transport_in, env);
+                    axis2_transport_receiver_t *listener = AXIS2_TRANSPORT_IN_DESC_GET_RECV(transport_in, env);
                     if (listener)
                     {
-                        status = AXIS2_TRANSPORT_LISTENER_INIT(listener, env, conf_ctx, transport_in);
+                        status = AXIS2_TRANSPORT_RECEIVER_INIT(listener, env, conf_ctx, transport_in);
                     }
                     
                 }

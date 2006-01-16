@@ -826,7 +826,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 axis2_char_t *dll_name = NULL;
                 axis2_dll_desc_t *dll_desc = NULL;
                 axis2_param_t *impl_info_param = NULL;
-                axis2_transport_listener_t *recv = NULL;
+                axis2_transport_receiver_t *recv = NULL;
                 
                 dll_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(trs_dll_name, env);
                 printf("dll_name:%s\n", dll_name);
@@ -837,7 +837,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 impl_info_param = axis2_param_create(env, NULL, NULL);
             
                 AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc); 
-                recv = (axis2_transport_listener_t *) 
+                recv = (axis2_transport_receiver_t *) 
                     axis2_class_loader_create_dll(env, impl_info_param);
                 int stat = AXIS2_TRANSPORT_IN_DESC_SET_RECV(transport_in, env, recv);
                 printf("stat:%d\n", stat);                
