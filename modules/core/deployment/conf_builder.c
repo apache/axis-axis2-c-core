@@ -225,7 +225,6 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
         qmep = axis2_qname_create(env, AXIS2_MEP, NULL, NULL);
         mep_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(msg_recv_element, env, qmep);
         att_value = AXIS2_OM_ATTRIBUTE_GET_VALUE(mep_att, env);
-        printf("att_value:%s\n", att_value);
         AXIS2_CONF_ADD_MSG_RECV(builder_impl->conf, env, att_value, msg_recv);
         AXIS2_QNAME_FREE(qmep, env);
     }
@@ -321,7 +320,6 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
         if (module_ref_att)
         {
             ref_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_ref_att, env);
-            printf("ref_name:%s\n", ref_name);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
             AXIS2_DEP_ENGINE_ADD_MODULE(conf_builder->desc_builder->engine, env,
                 qrefname);
@@ -520,7 +518,6 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
         if (phase_orders_att)
         {
             flow_type = AXIS2_OM_ATTRIBUTE_GET_VALUE(phase_orders_att, env);
-            printf("flow_type:%s\n", flow_type);
         }
         
         phase_list = axis2_conf_builder_get_phase_list(conf_builder, env,
@@ -594,7 +591,6 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
         if (phase_att)
         {
             att_value = AXIS2_OM_ATTRIBUTE_GET_VALUE(phase_att, env);
-            printf("att_value:%s\n", att_value);
         }
         AXIS2_ARRAY_LIST_ADD(phase_list, env, att_value);
         
@@ -829,7 +825,6 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 axis2_transport_receiver_t *recv = NULL;
                 
                 dll_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(trs_dll_name, env);
-                printf("dll_name:%s\n", dll_name);
                 dll_desc = axis2_dll_desc_create(env);
                 AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
                 AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_HANDLER_DLL);

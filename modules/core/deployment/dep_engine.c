@@ -687,9 +687,7 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
         AXIS2_CONF_FREE(engine_impl->conf, env);
         engine_impl->conf = NULL;
     }
-    printf("came20\n");
     status = AXIS2_CONF_BUILDER_POPULATE_CONF(builder, env);
-    printf("came21\n");
     if(AXIS2_SUCCESS != status)
     {
         AXIS2_CONF_FREE(engine_impl->conf, env);

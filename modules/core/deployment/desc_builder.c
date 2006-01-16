@@ -634,7 +634,6 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
             return AXIS2_FAILURE;
         }
         pname = AXIS2_OM_ATTRIBUTE_GET_VALUE(para_name, env);
-        printf("pname:%s\n", pname);
         status = AXIS2_PARAM_SET_NAME(param, env, pname);
         if(AXIS2_FAILURE == status)
         {
@@ -809,7 +808,6 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
     class_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(recv_name, env);
     dll_desc = axis2_dll_desc_create(env);
     repos_name = AXIS2_DEP_ENGINE_GET_REPOS_PATH(desc_builder->engine, env);
-    printf("repos_name:%s\n", repos_name);
     temp_path = AXIS2_STRACAT(repos_name, AXIS2_PATH_SEP_STR, env);
     temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_LIB_FOLDER, env);
     temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
