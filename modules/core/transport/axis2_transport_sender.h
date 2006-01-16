@@ -79,7 +79,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
      * @param msgContext
      * @throws org.apache.axis2.AxisFault
      */
-    axis2_status_t (AXIS2_CALL *                                
+    axis2_status_t (AXIS2_CALL *                          
     cleanup) (axis2_transport_sender_t *transport_sender,
                                 axis2_env_t **env,
                                 struct axis2_msg_ctx *msg_ctx);

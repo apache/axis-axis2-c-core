@@ -29,16 +29,18 @@
 #include <axis2_allocator.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_ctx.h>
-
 #include <axis2_wsdl.h>
+#include <axis2_conf_ctx.h>
+
+
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-struct axis2_transport_receiver;
-struct axis2_ctx;    
+struct axis2_conf_ctx;
+struct axis2_transport_in_desc;
 typedef struct axis2_transport_receiver axis2_transport_receiver_t;
 typedef struct axis2_transport_receiver_ops axis2_transport_receiver_ops_t;
 
@@ -66,16 +68,16 @@ AXIS2_DECLARE_DATA struct axis2_transport_receiver_ops
 	axis2_status_t (AXIS2_CALL *stop)(
                     axis2_transport_receiver_t *transport_receiver,
 			        axis2_env_t **env);
-	axis2_endpoint_ref_t* (AXIS2_CALL *reply_to_epr)(
+	axis2_endpoint_ref_t* (AXIS2_CALL *get_reply_to_epr)(
                     axis2_transport_receiver_t *transport_receiver,
 			        axis2_env_t **env,
                     axis2_char_t *svc_name);
 
-    axis2_status_t (AXIS2_CALL * 
-    init) (axis2_transport_receiver_t *transport_receiver,
-                                axis2_env_t **env,
-                                struct axis2_ctx *conf_ctx,
-                                struct axis2_transport_in_desc *transport_in);
+    axis2_status_t (AXIS2_CALL *init) 
+					(axis2_transport_receiver_t *transport_receiver,
+					axis2_env_t **env,
+					struct axis2_conf_ctx *conf_ctx,
+					struct axis2_transport_in_desc *transport_in);
 };
 
 /** 
@@ -86,12 +88,6 @@ AXIS2_DECLARE_DATA struct axis2_transport_receiver
 	axis2_transport_receiver_ops_t *ops;
 };
 
-/**
- * Creates transport receiver struct
- * @return pointer to newly created transport receiver
- */
-AXIS2_DECLARE(axis2_transport_receiver_t *) 
-axis2_transport_receiver_create (axis2_env_t **env);
 
 /*************************** Function macros **********************************/
 
