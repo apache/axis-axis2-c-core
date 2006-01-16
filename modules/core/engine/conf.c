@@ -1690,8 +1690,11 @@ axis2_conf_engage_module(axis2_conf_t *conf,
     module_desc = axis2_conf_get_module(conf, env, module_ref);
     if(NULL == module_desc)
     {
-        printf("came30\n");
         axis2_file_t *file = NULL;
+        int file_size = 0;
+        
+        file_size = sizeof(axis2_file_t);
+        file = (axis2_file_t *) AXIS2_MALLOC((*env)->allocator, file_size);
         file->name = AXIS2_QNAME_GET_LOCALPART(module_ref, env);
         dep_engine = axis2_dep_engine_create(env);
         module_desc = AXIS2_DEP_ENGINE_BUILD_MODULE(dep_engine, env, file, conf);
@@ -1699,7 +1702,6 @@ axis2_conf_engage_module(axis2_conf_t *conf,
     }
     if(NULL != module_desc)
     {
-        printf("came31\n");
         int size = 0;
         int i = 0;
         
