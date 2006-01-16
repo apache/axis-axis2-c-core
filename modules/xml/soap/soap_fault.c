@@ -236,7 +236,7 @@ axis2_soap_fault_create_with_parent(axis2_env_t **env,
     
     fault_impl->parent = body;
     
-    parent_node = AXIS2_SOAP_FAULT_GET_BASE_NODE(fault, env);
+    parent_node = AXIS2_SOAP_BODY_GET_BASE_NODE(body, env);
     
     parent_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
                         parent_node, env);

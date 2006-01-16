@@ -191,6 +191,7 @@ axis2_soap_envelope_create(axis2_env_t **env, axis2_om_namespace_t *ns)
     envelope_impl->soap_version = AXIS2_SOAP12;    
     envelope_impl->header = NULL;
     envelope_impl->body = NULL;
+    envelope_impl->soap_builder =  NULL;
     
     ele = axis2_om_element_create(env, NULL, AXIS2_SOAP_ENVELOPE_LOCAL_NAME, ns, &(envelope_impl->om_ele_node));
     if (!ele)
@@ -427,10 +428,14 @@ axis2_soap_envelope_get_body(axis2_soap_envelope_t *envelope,
     
     AXIS2_FUNC_PARAM_CHECK(envelope, env, NULL);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
+    
+    
     if(envelope_impl->body)
     {
         return envelope_impl->body;
     }
+    
+    
     envelope_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
                         envelope_impl->om_ele_node, env);
                             
@@ -446,14 +451,14 @@ axis2_soap_envelope_get_body(axis2_soap_envelope_t *envelope,
             AXIS2_SOAP_BODY_SET_BASE_NODE(envelope_impl->body, env, first_node);
             AXIS2_SOAP_BODY_SET_SOAP_VERSION(envelope_impl->body, env, envelope_impl->soap_version);
             return envelope_impl->body;
-        
         }
         else
         {
             next_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(envelope_impl->om_ele_node, env);
-            while(next_node  && AXIS2_OM_NODE_GET_NODE_TYPE(envelope_impl->om_ele_node, env) != AXIS2_OM_ELEMENT)
+         
+            while(next_node && AXIS2_OM_NODE_GET_NODE_TYPE(next_node , env) != AXIS2_OM_ELEMENT)
             {
-                next_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(envelope_impl->om_ele_node, env);
+                next_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(next_node , env);
             }
             next_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(next_node, env);
             if(next_ele && AXIS2_STRCMP(AXIS2_SOAP_BODY_LOCAL_NAME, 

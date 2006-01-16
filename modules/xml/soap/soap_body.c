@@ -155,6 +155,10 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
                         parent, env);
         }            
     }
+    if(parent_ele)
+        om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env);
+    
+    
     ele = axis2_om_element_create(env, parent, 
                                   AXIS2_SOAP_BODY_LOCAL_NAME, om_ns, 
                                   &(body_impl->om_ele_node));
