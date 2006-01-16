@@ -147,11 +147,11 @@ axis2_network_handler_svr_socket_accept(axis2_env_t **env, int svr_socket)
 {
 	int cli_socket = -1;
 	struct sockaddr_in cli_addr;
-	int cli_len = 0;
+	socklen_t cli_len = 0;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	
 	cli_len = sizeof(cli_addr);
-	cli_socket = accept(svr_socket, (struct sockaddr_in *)&cli_addr, &cli_len);
+	cli_socket = accept(svr_socket, (struct sockaddr *)&cli_addr, &cli_len);
 	return cli_socket;
 }

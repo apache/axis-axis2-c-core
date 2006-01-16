@@ -348,6 +348,8 @@ axis2_error_init()
         "OM output is NULL";
     axis2_error_messages[AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY] = 
         "We got a NULL strem in the response body";
+
+    return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
