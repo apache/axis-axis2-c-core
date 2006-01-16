@@ -103,8 +103,8 @@ AXIS2_DECLARE_DATA struct axis2_transport_receiver
 #define AXIS2_TRANSPORT_RECEIVER_STOP(transport_receiver, env) \
 		((transport_receiver->ops)->stop (transport_receiver, env))
 
-#define AXIS2_TRANSPORT_RECEIVER_REPLY_TO_EPR(transport_receiver, env, svc_name) \
-		((transport_receiver->ops)->reply_to_epr (transport_receiver, env, svc_name))       
+#define AXIS2_TRANSPORT_RECEIVER_GET_REPLY_TO_EPR(transport_receiver, env, svc_name) \
+		((transport_receiver->ops)->get_reply_to_epr (transport_receiver, env, svc_name))       
 
 /*************************** End of function macros ***************************/
 
