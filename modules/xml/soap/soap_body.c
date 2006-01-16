@@ -330,7 +330,7 @@ axis2_soap_body_set_base_node(axis2_soap_body_t *body,
                               axis2_om_node_t *node)
 {
    axis2_soap_body_impl_t *body_impl = NULL;
-   AXIS2_FUNC_PARAM_CHECK( body_impl, env, AXIS2_FAILURE);
+   AXIS2_FUNC_PARAM_CHECK( body, env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
    body_impl = AXIS2_INTF_TO_IMPL(body);
    if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)

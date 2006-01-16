@@ -454,13 +454,14 @@ axis2_soap_envelope_get_body(axis2_soap_envelope_t *envelope,
         }
         else
         {
-            next_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(envelope_impl->om_ele_node, env);
+            next_node = AXIS2_OM_NODE_GET_NEXT_SIBLING( first_node, env);
          
             while(next_node && AXIS2_OM_NODE_GET_NODE_TYPE(next_node , env) != AXIS2_OM_ELEMENT)
             {
                 next_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(next_node , env);
             }
             next_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(next_node, env);
+           
             if(next_ele && AXIS2_STRCMP(AXIS2_SOAP_BODY_LOCAL_NAME, 
                     AXIS2_OM_ELEMENT_GET_LOCALNAME(next_ele, env)) == 0)
             {
@@ -569,4 +570,4 @@ axis2_soap_envelope_set_builder(axis2_soap_envelope_t *envelope,
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     envelope_impl->soap_builder = soap_builder;
     return AXIS2_SUCCESS;
-}                                
+}
