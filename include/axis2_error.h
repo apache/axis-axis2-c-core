@@ -441,7 +441,9 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_OM_ELEMENT_INVALID_STATE,
         AXIS2_ERROR_RPC_NEED_MATCHING_CHILD,
         AXIS2_ERROR_UNKNOWN_STYLE,
-
+        
+        /* Listen failed for the server socket */
+        AXIS2_ERROR_SOCKET_LISTEN_FAILED,
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
             AXIS2_ERROR_LAST is used to track the number of error codes present
