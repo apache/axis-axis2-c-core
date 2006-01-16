@@ -145,7 +145,7 @@ axis2_status_t AXIS2_CALL axis2_listener_manager_make_sure_started(struct axis2_
                     listener = AXIS2_TRANSPORT_IN_DESC_GET_RECV(transport_in, env);
                     if (listener)
                     {
-                        AXIS2_TRANSPORT_LISTENER_START(listener, env);
+                        AXIS2_TRANSPORT_RECEIVER_START(listener, env);
                         
                         tl_state  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_transport_listener_state_t) );
                         if (!tl_state)
@@ -191,7 +191,7 @@ axis2_status_t AXIS2_CALL axis2_listener_manager_stop(struct axis2_listener_mana
         tl_state->waiting_calls--;
         if (tl_state->waiting_calls == 0) 
         {
-            status = AXIS2_TRANSPORT_LISTENER_STOP(tl_state->listener, env);
+            status = AXIS2_TRANSPORT_RECEIVER_STOP(tl_state->listener, env);
             if (status != AXIS2_SUCCESS)
                 return status;
             
@@ -218,7 +218,7 @@ axis2_endpoint_ref_t* AXIS2_CALL axis2_listener_manager_reply_to_epr(struct axis
                     transport, AXIS2_HASH_KEY_STRING);
     if (tl_state) 
     {
-        return AXIS2_TRANSPORT_LISTENER_REPLY_TO_EPR(tl_state->listener, env, svc_name);
+        return AXIS2_TRANSPORT_RECEIVER_REPLY_TO_EPR(tl_state->listener, env, svc_name);
     } 
     return NULL;
 }
