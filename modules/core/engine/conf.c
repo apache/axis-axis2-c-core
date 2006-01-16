@@ -1491,6 +1491,7 @@ axis2_conf_add_module(axis2_conf_t *conf,
                                 struct axis2_module_desc *module) 
 {
     axis2_conf_impl_t *config_impl = NULL;
+    axis2_qname_t *module_qname = NULL;
     
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
@@ -1509,8 +1510,11 @@ axis2_conf_add_module(axis2_conf_t *conf,
         if(!config_impl->modules)
             return AXIS2_FAILURE;
     }
-    axis2_hash_set(config_impl->modules, AXIS2_MODULE_DESC_GET_NAME(module, env), 
-        sizeof(axis2_qname_t), module);
+
+    module_qname = AXIS2_MODULE_DESC_GET_NAME(module, env);
+    if (module_qname)
+        axis2_hash_set(config_impl->modules, AXIS2_QNAME_TO_STRING(module_qname, env), 
+            AXIS2_HASH_KEY_STRING, module);
     
     return AXIS2_SUCCESS;
 }

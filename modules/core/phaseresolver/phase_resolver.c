@@ -285,7 +285,10 @@ axis2_phase_resolver_build_chains(axis2_phase_resolver_t *phase_resolver,
     axis2_hash_t *ops = NULL;
     
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
-    
+   
+    if (!(resolver_impl->svc))
+        return AXIS2_FAILURE;
+
     ops = AXIS2_SVC_GET_OPS(resolver_impl->svc, env);
     
     for (index_i = axis2_hash_first (ops, env); index_i; index_i = 
