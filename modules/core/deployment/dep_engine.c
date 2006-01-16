@@ -1528,9 +1528,11 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
     axis2_flow_t *out_fault_flow = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(dep_engine, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, module_archive, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, conf, NULL);
     engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    phases_info = AXIS2_CONF_GET_PHASESINFO(engine_impl->conf, env);
+    phases_info = AXIS2_CONF_GET_PHASESINFO(conf, env);
     axis2_dep_engine_set_phases_info(dep_engine, env, phases_info);
     engine_impl->curr_file = axis2_arch_file_data_create_with_type_and_file(
         env, AXIS2_MODULE, module_archive);

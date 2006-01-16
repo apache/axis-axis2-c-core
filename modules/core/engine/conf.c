@@ -1336,7 +1336,7 @@ axis2_conf_get_phases_info(axis2_conf_t *conf,
 {
     AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     
-    return AXIS2_INTF_TO_IMPL(conf)->phases_info;
+    return (AXIS2_INTF_TO_IMPL(conf))->phases_info;
 }
 
 axis2_status_t AXIS2_CALL
