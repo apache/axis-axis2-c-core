@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 	axis2_http_server_t *server = NULL;
 	char tmp_str[512];
 	int port = 9090;
-    axis2_char_t *repo = "../../../../../../";
+    axis2_char_t *repo = "../../../../../deploy";
 	
 	if(argc > 1)
 	{

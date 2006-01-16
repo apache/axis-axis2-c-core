@@ -980,6 +980,9 @@ axis2_om_element_get_first_child_with_qname(axis2_om_element_t *om_element,
     children_iterator = axis2_om_children_qname_iterator_create(env,
                         AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env),
                         element_qname);
+    if (!children_iterator)
+        return NULL;
+
     if(AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(children_iterator, env))
     {
         om_node =   AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(children_iterator, env); 
