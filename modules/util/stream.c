@@ -45,6 +45,9 @@ struct axis2_stream_impl
 axis2_status_t AXIS2_CALL 
 axis2_stream_free (axis2_stream_t *stream, axis2_env_t **env);
 
+axis2_stream_type_t AXIS2_CALL 
+axis2_stream_get_type (axis2_stream_t *stream, axis2_env_t **env);
+
 /** basic stream operatons **/
 int AXIS2_CALL
 axis2_stream_write_basic(axis2_stream_t *stream, axis2_env_t **env, 
@@ -184,6 +187,13 @@ axis2_stream_free (axis2_stream_t *stream, axis2_env_t **env)
    	AXIS2_FREE((*env)->allocator, stream_impl);
 	
     return AXIS2_SUCCESS;
+}
+
+axis2_stream_type_t AXIS2_CALL 
+axis2_stream_get_type (axis2_stream_t *stream, axis2_env_t **env)
+{
+	AXIS2_FUNC_PARAM_CHECK(stream, env, AXIS2_CRTICAL_FAILURE);
+	return AXIS2_INTF_TO_IMPL(stream)->stream_type;
 }
 
 /************************ Basic Stream Operations *****************************/

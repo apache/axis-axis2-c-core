@@ -88,9 +88,9 @@ axis2_network_handler_create_server_socket(axis2_env_t **env, int port)
 	}
 	/** Address re-use */
 	i = 1;
-	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR ,&i, sizeof(int));
+	/*setsockopt(sock, SOL_SOCKET, SO_REUSEADDR ,&i, sizeof(int));*/
 	/** Exec behaviour */
-	fcntl(sock, F_SETFD, FD_CLOEXEC);
+	/*fcntl(sock, F_SETFD, FD_CLOEXEC);*/
 	
 	
     memset(&sock_addr,0,sizeof(sock_addr));
@@ -106,6 +106,12 @@ axis2_network_handler_create_server_socket(axis2_env_t **env, int port)
 						AXIS2_FAILURE);
 		return -1;
 	}
+    if(listen(sock, 50) < 0)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOCKET_LISTEN_FAILED,
+                        AXIS2_FAILURE);
+        return -1;
+    }
 	return sock;
 }
 
@@ -146,13 +152,14 @@ AXIS2_DECLARE(int)
 axis2_network_handler_svr_socket_accept(axis2_env_t **env, int svr_socket)
 {
 	int cli_socket = -1;
-	struct sockaddr_in cli_addr;
+	struct sockaddr cli_addr;
 	socklen_t cli_len = 0;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	
 	cli_len = sizeof(cli_addr);
 	cli_socket = accept(svr_socket, (struct sockaddr *)&cli_addr, &cli_len);
+    perror("My Message");
 	return cli_socket;
 }
 
