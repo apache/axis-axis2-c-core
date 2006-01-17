@@ -144,18 +144,9 @@ axis2_simple_http_svr_conn_free(axis2_simple_http_svr_conn_t *svr_conn,
     AXIS2_FUNC_PARAM_CHECK(svr_conn, env, AXIS2_FAILURE);
     axis2_simple_http_svr_conn_impl_t *svr_conn_impl = 
                                     AXIS2_INTF_TO_IMPL(svr_conn);
-    if(NULL != svr_conn_impl->stream)
-    {
-        /* TODO free the stream*/
-        AXIS2_FREE((*env)->allocator, svr_conn_impl->stream);
-        svr_conn_impl->stream = NULL;
-    }
-    if(-1 != svr_conn_impl->socket)
-    {
-        close(svr_conn_impl->socket);
-        svr_conn_impl->socket = -1;
-    }
-    if(NULL != svr_conn->ops)
+    
+    axis2_simple_http_svr_conn_close(svr_conn, env);
+	if(NULL != svr_conn->ops)
     {
         AXIS2_FREE((*env)->allocator, svr_conn->ops);
         svr_conn->ops = NULL;
@@ -175,14 +166,13 @@ axis2_simple_http_svr_conn_close(axis2_simple_http_svr_conn_t *svr_conn,
     AXIS2_FUNC_PARAM_CHECK(svr_conn, env, AXIS2_FAILURE);
     axis2_simple_http_svr_conn_impl_t *svr_conn_impl = 
                                     AXIS2_INTF_TO_IMPL(svr_conn);
+	
+	AXIS2_STREAM_FREE(svr_conn_impl->stream, env);
     if(-1 != svr_conn_impl->socket)
     {
         close(svr_conn_impl->socket);
         svr_conn_impl->socket = -1;
     }
-    /*
-        TODO close the stream
-    */
     return AXIS2_SUCCESS;
 }
 
@@ -353,24 +343,24 @@ axis2_simple_http_svr_conn_write_response
 		return AXIS2_FAILURE;
 	}
 	
-	AXIS2_HTTP_RESPONSE_WRITER_PRINTLN_STR(response_writer, env, 
+	AXIS2_HTTP_RESPONSE_WRITER_PRINT_STR(response_writer, env, 
 						AXIS2_HTTP_SIMPLE_RESPONSE_GET_STAUTUS_LINE(response, 
 						env));
 	headers = AXIS2_HTTP_SIMPLE_RESPONSE_GET_HEADERS(response, env);
 	
-	if (headers)
-    {
-	
-    	for(i = 0; i < AXIS2_ARRAY_LIST_SIZE(headers, env); i++)
-	    {
-		    axis2_http_header_t *header = NULL;
-    		header = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(headers, env, i);
-	    	if(NULL != header)
-		    {
-			    AXIS2_HTTP_RESPONSE_WRITER_PRINTLN_STR(response_writer, env, 
-						AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(
-						(axis2_http_header_t*)header, env));
-    		}
+	if(NULL != headers)
+	{
+		for(i = 0; i < AXIS2_ARRAY_LIST_SIZE(headers, env); i++)
+		{
+			axis2_http_header_t *header = NULL;
+			header = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(headers, env, 
+							i);
+			if(NULL != header)
+			{
+				AXIS2_HTTP_RESPONSE_WRITER_PRINT_STR(response_writer, env, 
+							AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(
+							(axis2_http_header_t*)header, env));
+			}
 	    }
     	AXIS2_HTTP_RESPONSE_WRITER_PRINTLN(response_writer, env);
     }
@@ -380,10 +370,10 @@ axis2_simple_http_svr_conn_write_response
 						&response_body);
 	if(body_size > 0)
 	{
-		int write_size = 0;
-        write_size = AXIS2_HTTP_RESPONSE_WRITER_PRINTLN_STR(response_writer, 
-                                env, response_body);
-		if(write_size < 0)
+		axis2_status_t write_stat = AXIS2_FAILURE;
+		write_stat = AXIS2_HTTP_RESPONSE_WRITER_PRINTLN_STR(response_writer, 
+						env, response_body);
+		if(AXIS2_SUCCESS != write_stat)
 		{
 			AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WRITING_RESPONSE, 
 						AXIS2_FAILURE);
