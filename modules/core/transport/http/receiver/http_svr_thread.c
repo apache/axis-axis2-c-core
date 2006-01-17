@@ -165,7 +165,7 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 		}
 		svr_conn = axis2_simple_http_svr_conn_create(env, socket);
 		request = AXIS2_SIMPLE_HTTP_SVR_CONN_READ_REQUEST(svr_conn, env);
-		axis2_http_worker_t *tmp = NULL;
+		axis2_http_worker_t *tmp = svr_thread_impl->worker;        
 		AXIS2_HTTP_WORKER_PROCESS_REQUEST(tmp, env, svr_conn, request);
 		/* TODO log */
 	}

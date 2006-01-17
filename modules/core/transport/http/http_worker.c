@@ -125,7 +125,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 						axis2_http_simple_request_t *simple_request)
 {
     axis2_http_worker_impl_t *http_worker_impl = NULL;
-	axis2_conf_ctx_t *conf_ctx = http_worker_impl->conf_ctx;
+	axis2_conf_ctx_t *conf_ctx = NULL;
 	axis2_msg_ctx_t *msg_ctx = NULL;
 	axis2_stream_t *request_body = NULL;
 	axis2_stream_t *out_stream = axis2_stream_create_basic(env);
@@ -144,6 +144,8 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	
 	http_worker_impl = AXIS2_INTF_TO_IMPL(http_worker);
 	
+	conf_ctx = http_worker_impl->conf_ctx;
+    
 	if(NULL != conf_ctx)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
