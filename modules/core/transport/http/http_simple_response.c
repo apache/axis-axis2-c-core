@@ -643,7 +643,7 @@ axis2_http_simple_response_get_body_bytes
 			break;
 		}
 		write = AXIS2_STREAM_WRITE(tmp_stream, env, buf, read);
-		if(read < READ_SIZE)
+		if(read < (READ_SIZE -1))
 		{
 			break;
 		}
