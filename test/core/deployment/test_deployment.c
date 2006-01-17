@@ -7,10 +7,10 @@
 #include <axis2_dep_engine.h>
 #include <axis2_env.h>
 #include <axis2_allocator.h>
+#include <axis2_class_loader.h>
 
 int axis2_test_dep_engine_load()
 {
-    axis2_status_t status = AXIS2_FAILURE;
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_conf_t *conf = NULL;
     axis2_array_list_t *in_phases = NULL;
@@ -44,6 +44,11 @@ int axis2_test_dep_engine_load()
     {
         printf("dep engine load is successfull\n");
     }
+    return 0;
+}
+
+int axis2_test_dep_engine_do_deploy()
+{
     return 0;
 }
 
@@ -87,9 +92,45 @@ int axis2_test_engine_conf_builder_populate_conf()
     return 0; 
 }
 
+axis2_test_transport_receiver_load()
+{
+    axis2_dll_desc_t *dll_desc = NULL;
+    axis2_char_t *dll_name = NULL;
+    axis2_transport_receiver_t *transport_recv = NULL;
+    axis2_param_t *impl_info_param = NULL;
+    axis2_bool_t *is_running = NULL;
+    axis2_char_t *expected = NULL;
+    axis2_char_t *axis2c_home = NULL;
+
+    expected = "application";
+    printf("testing axis2_transport_recv load\n"); 
+    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+    axis2_env_t *env = axis2_env_create (allocator);
+    
+    dll_desc = axis2_dll_desc_create(&env);
+    
+    axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
+    dll_name = AXIS2_STRACAT (axis2c_home, "/lib/libaxis2_http_receiver.so", &env);
+    printf("transport receiver name:%s\n", dll_name);
+    AXIS2_DLL_DESC_SET_NAME(dll_desc, &env, dll_name);
+    AXIS2_DLL_DESC_SET_TYPE(dll_desc, &env, AXIS2_TRANSPORT_RECV_DLL);
+    axis2_class_loader_init(&env);
+    impl_info_param = axis2_param_create(&env, NULL, NULL);
+    AXIS2_PARAM_SET_VALUE(impl_info_param, &env, dll_desc);
+    transport_recv = (axis2_transport_receiver_t *) axis2_class_loader_create_dll(&env, 
+        impl_info_param);
+    is_running = AXIS2_TRANSPORT_RECEIVER_IS_RUNNING(transport_recv, &env);
+    printf("is_running:%s\n", is_running);
+    AXIS2_FREE(env->allocator, dll_name);
+    return 0;
+}
+
 int main()
 {
-    axis2_test_engine_conf_builder_populate_conf();
+    /*axis2_test_dep_engine_do_deploy();*/
+    /*axis2_test_engine_conf_builder_populate_conf();*/
     axis2_test_dep_engine_load();
+    /*axis2_test_transport_receiver_load();*/
+    
 	return 0;
 }

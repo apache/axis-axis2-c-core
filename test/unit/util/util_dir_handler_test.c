@@ -1,4 +1,5 @@
 #include <util_dir_handler_test.h>
+#include <axis2_file.h>
 #include <axis2_string.h>
 
 void Testaxis2_dir_handler_list_dir(CuTest *tc)

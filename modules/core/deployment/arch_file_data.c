@@ -189,7 +189,7 @@ axis2_arch_file_data_create_with_type_and_file(axis2_env_t **env,
         return NULL;
     }
     file_data_impl->type = type;
-    file_data_impl->file = file;
+    file_data_impl->file = axis2_file_clone(file, env);
     return &(file_data_impl->arch_file_data);    
 }
 
@@ -224,7 +224,7 @@ axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data,
     
     if(file_data_impl->file)
     {
-        AXIS2_FREE((*env)->allocator, file_data_impl->file);
+        axis2_file_free(file_data_impl->file, env);
         file_data_impl->file = NULL;        
     }
     if(file_data_impl->msg_recv)

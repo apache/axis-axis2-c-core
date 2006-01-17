@@ -441,6 +441,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_OM_ELEMENT_INVALID_STATE,
         AXIS2_ERROR_RPC_NEED_MATCHING_CHILD,
         AXIS2_ERROR_UNKNOWN_STYLE,
+        AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED,
         
         /* Listen failed for the server socket */
         AXIS2_ERROR_SOCKET_LISTEN_FAILED,

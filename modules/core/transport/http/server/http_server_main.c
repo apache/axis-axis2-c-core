@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 {
 	axis2_allocator_t *allocator = NULL;
 	axis2_env_t *env = NULL;
-	axis2_http_server_t *server = NULL;
+	axis2_transport_receiver_t *server = NULL;
 	char tmp_str[512];
 	int port = 9090;
     axis2_char_t *repo = "../../../../../deploy";
@@ -96,6 +96,6 @@ int main(int argc, char *argv[])
 		system_exit(allocator, env, -1);
 		
 	}
-	AXIS2_HTTP_SERVER_START(server, &env);
+	AXIS2_TRANSPORT_RECEIVER_START(server, &env);
 	return 0;
 }

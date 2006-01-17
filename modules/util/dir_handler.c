@@ -15,6 +15,7 @@
  */
  
 #include <axis2_dir_handler.h>
+#include <axis2_file.h>
 
 extern  int alphasort();
  
@@ -37,19 +38,16 @@ axis2_dir_handler_list_dir(axis2_env_t **env,
 	struct direct **files = NULL;
 	int file_select();
     axis2_status_t status = AXIS2_FAILURE;
-    int file_size = 0;
     
     AXIS2_ENV_CHECK(env, NULL);
     file_list = axis2_array_list_create(env, 100);
 	count = scandir(pathname, &files, file_select, alphasort);
-
 	/* If no files found, make a non-selectable menu item */
 	if (count <= 0)
 	{		 
 		printf("No files in this directory:%s\n", pathname);
-		exit(0);
+		return NULL;
 	}
-    file_size = sizeof(axis2_file_t);
     
 	for (i=1; i < count + 1 ; ++i)
     {
@@ -59,7 +57,7 @@ axis2_dir_handler_list_dir(axis2_env_t **env,
         axis2_char_t *path = NULL;
        
         fname = files[i-1]->d_name;
-        arch_file = (axis2_file_t *) AXIS2_MALLOC((*env)->allocator, file_size);
+        arch_file = (axis2_file_t *) axis2_file_create(env);
         if(!arch_file)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -113,7 +111,9 @@ axis2_bool_t file_select(struct direct *entry)
 	if ((ptr != NULL) &&
 		((strcmp(ptr, ".so") == 0)
 		|| (strcmp(ptr, ".zip") == 0) ))
+    {
 		return (AXIS2_TRUE);
+    }
 	else
 		return(AXIS2_FALSE);
 }

@@ -15,6 +15,7 @@
  */
  
 #include <axis2_http_server.h>
+
 #include <axis2_http_transport.h>
 #include <axis2_http_svr_thread.h>
 #include <axis2_transport_in_desc.h>
@@ -255,4 +256,30 @@ axis2_http_server_is_running (axis2_transport_receiver_t *server,
 		return AXIS2_HTTP_SVR_THREAD_IS_RUNNING(server_impl->svr_thread, env);
 	}
 	return AXIS2_FALSE;
+}
+
+/**
+ * Following block distinguish the exposed part of the dll.
+ */
+int axis2_get_instance(struct axis2_transport_receiver **inst,
+                        axis2_env_t **env)
+{
+    *inst = axis2_http_server_create(env, NULL, 0);
+    if(!(*inst))
+    {
+        return AXIS2_FAILURE;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+int axis2_remove_instance(axis2_svc_skeleton_t *inst,
+                            axis2_env_t **env)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+    if (inst)
+    {
+        status = AXIS2_MSG_RECV_FREE(inst, env);
+    }
+    return status;
 }

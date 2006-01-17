@@ -58,26 +58,39 @@ AXIS2_DECLARE_DATA struct axis2_transport_receiver_ops
 	/** De-allocate memory
   	 * @return status code
   	 */
-	axis2_status_t (AXIS2_CALL *free)(
-                    axis2_transport_receiver_t *transport_receiver,
-			        axis2_env_t **env);
+	axis2_status_t (AXIS2_CALL *
+    free)(axis2_transport_receiver_t *transport_receiver,
+        axis2_env_t **env);
     
-	axis2_status_t (AXIS2_CALL *start)(
-                    axis2_transport_receiver_t *transport_receiver,
-			        axis2_env_t **env);
-	axis2_status_t (AXIS2_CALL *stop)(
-                    axis2_transport_receiver_t *transport_receiver,
-			        axis2_env_t **env);
-	axis2_endpoint_ref_t* (AXIS2_CALL *get_reply_to_epr)(
-                    axis2_transport_receiver_t *transport_receiver,
-			        axis2_env_t **env,
-                    axis2_char_t *svc_name);
+	axis2_status_t (AXIS2_CALL *
+    start)(axis2_transport_receiver_t *transport_receiver,
+	        axis2_env_t **env);
+                    
+	axis2_status_t (AXIS2_CALL *
+    stop)(axis2_transport_receiver_t *transport_receiver,
+	        axis2_env_t **env);
+                    
+	axis2_endpoint_ref_t* (AXIS2_CALL *
+    get_reply_to_epr)(axis2_transport_receiver_t *transport_receiver,
+			            axis2_env_t **env,
+                        axis2_char_t *svc_name);
 
-    axis2_status_t (AXIS2_CALL *init) 
-					(axis2_transport_receiver_t *transport_receiver,
-					axis2_env_t **env,
-					struct axis2_conf_ctx *conf_ctx,
-					struct axis2_transport_in_desc *transport_in);
+    axis2_status_t (AXIS2_CALL *
+    init) (axis2_transport_receiver_t *transport_receiver,
+		    axis2_env_t **env,
+			struct axis2_conf_ctx *conf_ctx,
+			struct axis2_transport_in_desc *transport_in);
+
+
+    struct axis2_conf_ctx* (AXIS2_CALL *
+    get_conf_ctx) (axis2_transport_receiver_t *server, 
+                    	axis2_env_t **env);
+	
+	
+    axis2_bool_t (AXIS2_CALL *
+    is_running) (axis2_transport_receiver_t *server, 
+                    	axis2_env_t **env);
+
 };
 
 /** 
@@ -104,7 +117,13 @@ AXIS2_DECLARE_DATA struct axis2_transport_receiver
 		((transport_receiver->ops)->stop (transport_receiver, env))
 
 #define AXIS2_TRANSPORT_RECEIVER_GET_REPLY_TO_EPR(transport_receiver, env, svc_name) \
-		((transport_receiver->ops)->get_reply_to_epr (transport_receiver, env, svc_name))       
+		((transport_receiver->ops)->get_reply_to_epr (transport_receiver, env, svc_name))
+
+#define AXIS2_TRANSPORT_RECEIVER_GET_CONF_CTX(transport_receiver, env) \
+                        ((transport_receiver)->ops->get_conf_ctx(transport_receiver, env))
+                        
+#define AXIS2_TRANSPORT_RECEIVER_IS_RUNNING(transport_receiver, env) \
+                                ((transport_receiver)->ops->is_running(transport_receiver, env))
 
 /*************************** End of function macros ***************************/
 

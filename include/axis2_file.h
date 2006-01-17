@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_DIR_HANDLER_H
-#define AXIS2_DIR_HANDLER_H
+#ifndef AXIS2_FILE_H
+#define AXIS2_FILE_H
 
 #include <axis2_defines.h>
 #include <axis2_error.h>
 #include <axis2_env.h>
-#include <axis2_string.h>
-#include <axis2_array_list.h>
 #include <axis2.h>
 
 
@@ -29,23 +27,45 @@
 extern "C"
 {
 #endif
-
+    
+typedef struct axis2_file axis2_file_t;
+    
 /**
- * @defgroup axis2_dir_handler Dir Handler
+ * @defgroup axis2_file File
  * @ingroup axis2_util 
  * @{
  */
+    
     /**
-     * List the .zip or tar.gz files in the given path
-     * @param pathname path to the directory where your modules or services are
-     * @return array list of .zip or tar.gz file names
+     * create new file
+     * @return file newly created file
      */
-    AXIS2_DECLARE(axis2_array_list_t *)
-    axis2_dir_handler_list_dir(axis2_env_t **env,
-                                axis2_char_t *pathname); 
+    AXIS2_DECLARE(axis2_file_t *)
+    axis2_file_create(axis2_env_t **env);
 
-#define AXIS2_DIR_HANDLER_LIST_DIR(env, pathname) \
-        (axis2_dir_handler_list_dir(env, pathname))
+    AXIS2_DECLARE(axis2_status_t)
+    axis2_file_free (axis2_file_t *file, 
+                        axis2_env_t **env); 
+
+    /**
+     * create a newly allocated clone of the argument file
+     */
+    axis2_file_t *AXIS2_CALL
+    axis2_file_clone(axis2_file_t *file,
+                      axis2_env_t **env);
+    
+    /** 
+     * @brief
+     * To store filename and timestamp of each module or service archive file
+     */ 
+    struct axis2_file
+    {
+        axis2_char_t *name;
+        AXIS2_TIME_T time_stamp;
+        
+        
+    };
+
 
 /** @} */
     
@@ -53,4 +73,4 @@ extern "C"
 }
 #endif
 
-#endif                          /* AXIS2_DIR_HANDLER_H */
+#endif  /* AXIS2_FILE_H */

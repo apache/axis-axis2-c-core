@@ -1277,7 +1277,7 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
     engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
     size = AXIS2_ARRAY_LIST_SIZE(engine_impl->ws_to_deploy, env);
-    
+    printf("dep_engine:size:%d\n", size);
     if (size > 0) 
     {
         int i = 0;
@@ -1293,7 +1293,7 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                 AXIS2_ARRAY_LIST_GET(engine_impl->ws_to_deploy, env, i);
             
             type = AXIS2_ARCH_FILE_DATA_GET_TYPE(engine_impl->curr_file, env);
-            
+            printf("type:%d\n", type);
             switch (type) 
             {
                 case AXIS2_SVC:
@@ -1305,6 +1305,7 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                         engine_impl->conf);
                     file_name = AXIS2_ARCH_FILE_DATA_GET_NAME(engine_impl->
                         curr_file, env);
+                    printf("file_name:%s\n", file_name);
                     status = AXIS2_ARCH_READER_PROCESS_SVC_GRP(arch_reader, env,
                         file_name, dep_engine, svc_grp);
                     if(AXIS2_SUCCESS != status)

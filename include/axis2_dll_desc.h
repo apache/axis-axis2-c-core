@@ -58,7 +58,9 @@ typedef enum axis2_dll_type
     /** message receiver dll */
     AXIS2_MSG_RECV_DLL,
     /** module dll */
-    AXIS2_MODULE_DLL
+    AXIS2_MODULE_DLL,
+    /** transport receiver dll */
+    AXIS2_TRANSPORT_RECV_DLL
        
 }axis2_dll_type_t;
 

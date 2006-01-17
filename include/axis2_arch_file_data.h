@@ -31,6 +31,7 @@
 #include <axis2_conf.h>
 #include <axis2_array_list.h>
 #include <axis2_dir_handler.h>
+#include <axis2_file.h>
 
 #ifdef __cplusplus
 extern "C"

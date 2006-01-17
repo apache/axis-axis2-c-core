@@ -228,6 +228,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
 {
     axis2_ws_info_list_impl_t *info_list_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_char_t *info_list_name = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(info_list, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, file, AXIS2_FAILURE);
@@ -284,7 +285,12 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
             break;
         }
     }
-    axis2_char_t *info_list_name = file->name;
+    
+    info_list_name = AXIS2_STRDUP(file->name, env);
+    if(!info_list_name)
+    {
+        return AXIS2_FAILURE;
+    }
     status = AXIS2_ARRAY_LIST_ADD(info_list_impl->current_info_lists, env,
         info_list_name);
     return status;
@@ -432,13 +438,17 @@ axis2_ws_info_list_update(axis2_ws_info_list_t *info_list,
     AXIS2_FUNC_PARAM_CHECK(info_list, env, AXIS2_FAILURE);
     info_list_impl = AXIS2_INTF_TO_IMPL(info_list);
     
-    axis2_ws_info_list_check_for_undeploy(info_list, env);
+    status = axis2_ws_info_list_check_for_undeploy(info_list, env);
+    if(AXIS2_TRUE != status)
+    {
+        return AXIS2_FAILURE;
+    }
     /* TODO uncomment when hot deployment supported */
     /*
     if (deployer.isHotUpdate()) {
         deployer.unDeploy();
     }
     */
-    status = AXIS2_DEP_ENGINE_DO_DEPLOY(info_list_impl->deployer, env);
-    return status;
+    
+    return AXIS2_DEP_ENGINE_DO_DEPLOY(info_list_impl->deployer, env);
 }
