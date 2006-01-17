@@ -381,8 +381,8 @@ axis2_simple_http_svr_conn_write_response
 	if(body_size > 0)
 	{
 		int write_size = 0;
-		write_size = AXIS2_STREAM_WRITE(response_stream, env, response_body, 
-						body_size);
+        write_size = AXIS2_HTTP_RESPONSE_WRITER_PRINTLN_STR(response_writer, 
+                                env, response_body);
 		if(write_size < 0)
 		{
 			AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WRITING_RESPONSE, 
