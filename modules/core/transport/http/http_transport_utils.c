@@ -208,8 +208,12 @@ axis2_http_transport_utils_process_http_post_request
 	AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
 	axis2_engine_t *engine = NULL;
 	engine = axis2_engine_create(env, conf_ctx);
-	if(AXIS2_TRUE == AXIS2_SOAP_BODY_HAS_FAULT(AXIS2_SOAP_ENVELOPE_GET_BODY(
-						soap_envelope, env), env))
+    axis2_soap_body_t *soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+    
+    if (!soap_body)
+        return AXIS2_FAILURE;
+    
+	if(AXIS2_TRUE == AXIS2_SOAP_BODY_HAS_FAULT(soap_body, env))
 	{
 		AXIS2_ENGINE_RECEIVE_FAULT(engine, env, msg_ctx);
 	}
@@ -608,7 +612,7 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 	tmp = AXIS2_STRACAT("<html><head><title>Axis2:Services</title></head><body>"
 							, tmp2, env);
 	AXIS2_FREE((*env)->allocator, tmp2);
-	tmp2 = AXIS2_STRACAT(tmp, "</body></html>", env);
+	tmp2 = AXIS2_STRACAT(tmp, "</body></html>\r\n", env);
 	AXIS2_FREE((*env)->allocator, tmp);
 	
 	return tmp2;

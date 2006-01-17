@@ -300,6 +300,8 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
     if ( (AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env)) && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))) 
     {
         /* invoke the Message Receivers */
+        if (!op)
+            return AXIS2_FAILURE;
         axis2_msg_recv_t *receiver = AXIS2_OP_GET_MSG_RECEIVER(op, env);
         AXIS2_MSG_RECV_RECEIVE(receiver, env, msg_ctx);        
     }

@@ -425,7 +425,8 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module, AXIS2_FAILURE);
     
-    file_name = AXIS2_STRACAT(file_path, AXIS2_MODULE_XML, env);
+    /*file_name = AXIS2_STRACAT(file_path, AXIS2_MODULE_XML, env);*/
+    file_name = file_path;
     if(!file_name)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

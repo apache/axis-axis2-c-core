@@ -45,11 +45,11 @@ axis2_status_t AXIS2_CALL
 axis2_file_free (axis2_file_t *file, 
                     axis2_env_t **env)
 {
-    if(file->name)
+    /*if(file->name)
     {
         AXIS2_FREE((*env)->allocator, file->name);
         file->name = NULL;
-    }
+    }*/
     
     if(file)
     {
