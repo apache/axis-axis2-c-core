@@ -159,7 +159,10 @@ axis2_network_handler_svr_socket_accept(axis2_env_t **env, int svr_socket)
 	
 	cli_len = sizeof(cli_addr);
 	cli_socket = accept(svr_socket, (struct sockaddr *)&cli_addr, &cli_len);
-    perror("My Message");
+    if (cli_socket < 0)
+        perror("Accept Failed ");
+    else
+        printf("cli_socket = %d\n", cli_socket);
 	return cli_socket;
 }
 

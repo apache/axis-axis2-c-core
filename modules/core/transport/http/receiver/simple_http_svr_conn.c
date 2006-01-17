@@ -358,20 +358,22 @@ axis2_simple_http_svr_conn_write_response
 						env));
 	headers = AXIS2_HTTP_SIMPLE_RESPONSE_GET_HEADERS(response, env);
 	
+	if (headers)
+    {
 	
-	
-	for(i = 0; i < AXIS2_ARRAY_LIST_SIZE(headers, env); i++)
-	{
-		axis2_http_header_t *header = NULL;
-		header = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(headers, env, i);
-		if(NULL != header)
-		{
-			AXIS2_HTTP_RESPONSE_WRITER_PRINTLN_STR(response_writer, env, 
+    	for(i = 0; i < AXIS2_ARRAY_LIST_SIZE(headers, env); i++)
+	    {
+		    axis2_http_header_t *header = NULL;
+    		header = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(headers, env, i);
+	    	if(NULL != header)
+		    {
+			    AXIS2_HTTP_RESPONSE_WRITER_PRINTLN_STR(response_writer, env, 
 						AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(
 						(axis2_http_header_t*)header, env));
-		}
-	}
-	AXIS2_HTTP_RESPONSE_WRITER_PRINTLN(response_writer, env);
+    		}
+	    }
+    	AXIS2_HTTP_RESPONSE_WRITER_PRINTLN(response_writer, env);
+    }
 	
 	response_stream = AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY(response, env);
 	body_size = AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY_BYTES(response, env, 
