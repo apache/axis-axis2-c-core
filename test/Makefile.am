@@ -1,1 +1,1 @@
-SUBDIRS = util xml unit core
+SUBDIRS = util xml unit core server

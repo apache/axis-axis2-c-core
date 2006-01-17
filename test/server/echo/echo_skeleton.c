@@ -14,38 +14,56 @@
  * limitations under the License.
  */
 #include "axis2_svc_skeleton.h"
+#include "echo.h"
+#include <axis2_array_list.h>
 
-axis2_svc_skeleton *
-axis2_svc_skeleton_create(axis2_env_t **env)
+int 
+echo_free(axis2_svc_skeleton_t *svc_skeleton,
+            axis2_env_t **env);
+
+/*
+ * This method invokes the right service method 
+ */
+axis2_om_node_t *echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
+                                    axis2_env_t **env,
+                                    axis2_om_node_t *node);
+
+int echo_init(axis2_svc_skeleton_t *svc_skeleton,
+                        axis2_env_t **env);
+
+
+axis2_svc_skeleton_t *
+axis2_echo_create(axis2_env_t **env)
 {
-    axis2_svc_skeleton_t *skeleton = NULL;
-    skeleton = AXIS2_MALLOC((*env)->allocator, 
+    axis2_svc_skeleton_t *svc_skeleton = NULL;
+    svc_skeleton = AXIS2_MALLOC((*env)->allocator, 
         sizeof(axis2_svc_skeleton_t));
 
     
     svc_skeleton->ops = AXIS2_MALLOC(
-        (*env)->allocator, sizeof(axis2_skeleton_ops_t));
+        (*env)->allocator, sizeof(axis2_svc_skeleton_ops_t));
 
-    svc_skeleton->ops->free = calc_free;
-    svc_skeleton->ops->invoke = calc_invoke;
-    svc_skeleton->ops->on_fault = calc_on_fault;
+    svc_skeleton->ops->free = echo_free;
+    svc_skeleton->ops->init = echo_init;
+    svc_skeleton->ops->invoke = echo_invoke;
+    /*svc_skeleton->ops->on_fault = echo_on_fault;*/
 
     return svc_skeleton;
 }
 
-int axis2_svc_skeleton_init(axis2_svc_skeleton_t *svc_skeleton,
+int echo_init(axis2_svc_skeleton_t *svc_skeleton,
                         axis2_env_t **env)
 {
-    svc_skeleton->func_array = axis2_array_create(env, 0);
-    AXIS2_ARRAY_ADD(svc_skeleton->func_array, env, "add");
-    AXIS2_ARRAY_ADD(svc_skeleton->func_array, env, "multiply");
+    svc_skeleton->func_array = axis2_array_list_create(env, 0);
+    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echo");
 
-    /* Any initialization stuff of calculator goes here */
+    /* Any initialization stuff of echo goes here */
     return AXIS2_SUCCESS;
 }
 
 int 
-calc_free(axis2_svc_skeleton_t *svc_skeleton)
+echo_free(axis2_svc_skeleton_t *svc_skeleton,
+            axis2_env_t **env)
 {
     if(svc_skeleton->ops)
     {
@@ -70,30 +88,28 @@ calc_free(axis2_svc_skeleton_t *svc_skeleton)
 /*
  * This method invokes the right service method 
  */
-axis2_om_node_t *calc_invoke(axis2_svc_skeleton_t *svc_skeleton,
+axis2_om_node_t *echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
                                     axis2_env_t **env,
-                                    axis2_om_node_t *node,
-                                    axis2_char_t *function_name)
+                                    axis2_om_node_t *node)
 {
     /* Depending on the function name invoke the
-     *  corresponding calculator method
+     *  corresponding echo method
      */
-    
-    return node;
+        
+    return echo(node);
 }
 
 /**
  * Following block distinguish the exposed part of the dll.
  */
-extern "C" {
 
 int axis2_get_instance(struct axis2_svc_skeleton **inst,
                         axis2_env_t **env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     
-	/**inst = axis2_svc_skeleton_create(env);
-    if(NULL != *inst)
+	*inst = axis2_echo_create(env);
+    /*if(NULL != *inst)
     {
         status = *inst->init();
     }*/
@@ -116,4 +132,3 @@ int axis2_remove_instance(axis2_svc_skeleton_t *inst,
     return status;
 }
 
-}
