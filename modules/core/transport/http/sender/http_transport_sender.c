@@ -36,7 +36,7 @@ typedef struct axis2_http_transport_sender_impl
   
 struct axis2_http_transport_sender_impl
 {
-	axis2_http_transport_sender_t transport_sender;
+	axis2_transport_sender_t transport_sender;
 	axis2_char_t *http_version;
 	axis2_bool_t chunked;
 	int connection_timeout;
@@ -51,33 +51,33 @@ struct axis2_http_transport_sender_impl
 /***************************** Function headers *******************************/
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_invoke
-							(axis2_http_transport_sender_t *transport_sender, 
+							(axis2_transport_sender_t *transport_sender, 
                     		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx);
     
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_clean_up
-							(axis2_http_transport_sender_t *transport_sender, 
+							(axis2_transport_sender_t *transport_sender, 
                     		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx);
     
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_init
-							(axis2_http_transport_sender_t *transport_sender, 
+							(axis2_transport_sender_t *transport_sender, 
                     		axis2_env_t **env, axis2_conf_ctx_t *conf_ctx, 
 							axis2_transport_out_desc_t *out_desc);
 axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_write_message
-							(axis2_http_transport_sender_t *transport_sender, 
+							(axis2_transport_sender_t *transport_sender, 
                     		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
 							axis2_endpoint_ref_t *epr, axis2_om_node_t *out, 
 							axis2_om_output_t *om_output);
     
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_free 
-							(axis2_http_transport_sender_t *transport_sender, 
+							(axis2_transport_sender_t *transport_sender, 
                     		axis2_env_t **env);
 /***************************** End of function headers ************************/
 
-axis2_http_transport_sender_t* AXIS2_CALL
+axis2_transport_sender_t* AXIS2_CALL
 axis2_http_transport_sender_create(axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -100,10 +100,10 @@ axis2_http_transport_sender_create(axis2_env_t **env)
 						AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
 	transport_sender_impl->so_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
     transport_sender_impl->transport_sender.ops = AXIS2_MALLOC((*env)->allocator
-						,sizeof(axis2_http_transport_sender_ops_t));
+						,sizeof(axis2_transport_sender_ops_t));
     if(NULL == transport_sender_impl->transport_sender.ops)
 	{
-		axis2_http_transport_sender_free((axis2_http_transport_sender_t*)
+		axis2_http_transport_sender_free((axis2_transport_sender_t*)
 						transport_sender_impl, env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 		return NULL;
@@ -111,7 +111,7 @@ axis2_http_transport_sender_create(axis2_env_t **env)
     
     transport_sender_impl->transport_sender.ops->invoke = 
                         axis2_http_transport_sender_invoke;
-    transport_sender_impl->transport_sender.ops->clean_up = 
+    transport_sender_impl->transport_sender.ops->cleanup = 
 						axis2_http_transport_sender_clean_up;
     transport_sender_impl->transport_sender.ops->init = 
 						axis2_http_transport_sender_init;
@@ -124,7 +124,7 @@ axis2_http_transport_sender_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_free 
-						(axis2_http_transport_sender_t *transport_sender, 
+						(axis2_transport_sender_t *transport_sender, 
 						axis2_env_t **env)
 {
 	AXIS2_FUNC_PARAM_CHECK(transport_sender, env, AXIS2_FAILURE);
@@ -141,7 +141,7 @@ axis2_http_transport_sender_free
 
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_invoke
-							(axis2_http_transport_sender_t *transport_sender, 
+							(axis2_transport_sender_t *transport_sender, 
                     		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
 {
     axis2_char_t *char_set_enc = NULL;
@@ -269,7 +269,7 @@ axis2_http_transport_sender_invoke
 
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_clean_up
-							(axis2_http_transport_sender_t *transport_sender, 
+							(axis2_transport_sender_t *transport_sender, 
                     		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
 {
     AXIS2_FUNC_PARAM_CHECK(transport_sender, env, AXIS2_FAILURE);
@@ -284,7 +284,7 @@ axis2_http_transport_sender_clean_up
 
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_init
-							(axis2_http_transport_sender_t *transport_sender, 
+							(axis2_transport_sender_t *transport_sender, 
                     		axis2_env_t **env, axis2_conf_ctx_t *conf_ctx, 
 							axis2_transport_out_desc_t *out_desc)
 {
@@ -359,7 +359,7 @@ axis2_http_transport_sender_init
 
 axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_write_message
-							(axis2_http_transport_sender_t *transport_sender, 
+							(axis2_transport_sender_t *transport_sender, 
                     		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
 							axis2_endpoint_ref_t *epr, axis2_om_node_t *out, 
 							axis2_om_output_t *om_output)
