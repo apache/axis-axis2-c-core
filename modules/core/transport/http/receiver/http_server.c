@@ -95,12 +95,15 @@ axis2_http_server_create (axis2_env_t **env, axis2_char_t *repo, int port)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
-    server_impl->conf_ctx = build_conf_ctx(env, repo);
-	if(NULL == server_impl->conf_ctx)
-	{
-		axis2_http_server_free((axis2_transport_receiver_t*) server_impl, env);
-        return NULL;		
-	}
+    if(repo)
+    {
+        server_impl->conf_ctx = build_conf_ctx(env, repo);
+	    if(NULL == server_impl->conf_ctx)
+	    {
+		    axis2_http_server_free((axis2_transport_receiver_t*) server_impl, env);
+            return NULL;		
+    	}
+    }
     server_impl->http_server.ops->init = axis2_http_server_init;                        
     server_impl->http_server.ops->start = axis2_http_server_start;
     server_impl->http_server.ops->stop = axis2_http_server_stop;
@@ -110,7 +113,6 @@ axis2_http_server_create (axis2_env_t **env, axis2_char_t *repo, int port)
                         
 	return &(server_impl->http_server);
 }
-
 
 axis2_status_t AXIS2_CALL 
 axis2_http_server_free (axis2_transport_receiver_t *server, axis2_env_t **env)
@@ -264,7 +266,7 @@ axis2_http_server_is_running (axis2_transport_receiver_t *server,
 int axis2_get_instance(struct axis2_transport_receiver **inst,
                         axis2_env_t **env)
 {
-    *inst = axis2_http_server_create(env, NULL, 0);
+    *inst = axis2_http_server_create(env, NULL, -1);
     if(!(*inst))
     {
         return AXIS2_FAILURE;
