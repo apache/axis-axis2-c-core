@@ -143,7 +143,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
     AXIS2_PARAM_CHECK((*env)->error, simple_request, AXIS2_FAILURE);
 	
 	http_worker_impl = AXIS2_INTF_TO_IMPL(http_worker);
-	
+	conf_ctx = http_worker_impl->conf_ctx;
 	conf_ctx = http_worker_impl->conf_ctx;
     
 	if(NULL != conf_ctx)
@@ -216,11 +216,24 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 						simple_request, env), env)));
 		if(AXIS2_FALSE == processed)
 		{
+			axis2_http_header_t *cont_len = NULL;
+			axis2_char_t *body_string = NULL;
 			AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE(response, env,
 						http_version, AXIS2_HTTP_RESPONSE_OK_CODE_VAL, "OK");
-			AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STRING(response, env, 
-						axis2_http_transport_utils_get_services_html(env, 
-						conf_ctx));
+			body_string = axis2_http_transport_utils_get_services_html(env, 
+						conf_ctx);
+			if(NULL != body_string)
+			{
+				axis2_char_t str_len[10];
+				AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STRING(response, env, 
+						body_string);
+				sprintf(str_len, "%d", AXIS2_STRLEN(body_string));
+				cont_len = axis2_http_header_create(env, 
+						AXIS2_HTTP_HEADER_CONTENT_LENGTH, 
+						str_len);
+				AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(response, env, cont_len);
+			}					
+			
 			axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
 						simple_request, response, 0);
 			AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, response);
