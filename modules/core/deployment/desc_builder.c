@@ -859,6 +859,7 @@ axis2_desc_builder_get_short_file_name(axis2_desc_builder_t *desc_builder,
     axis2_char_t *separator = NULL;
     axis2_char_t *value = NULL;
     axis2_char_t *file_name_l = NULL;
+    axis2_char_t *short_name = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, file_name, NULL);
@@ -869,14 +870,14 @@ axis2_desc_builder_get_short_file_name(axis2_desc_builder_t *desc_builder,
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    while(NULL == value)
-    {
-        value = strpbrk(file_name_l, separator);
-    }
-    value[0] = AXIS2_EOLN;
-    value = file_name_l;
+    separator = ".";
     
-    return value;
+    value = strstr(file_name_l, separator);
+    
+    value[0] = AXIS2_EOLN;
+    short_name = file_name_l;
+    
+    return short_name;
 }
 
 axis2_char_t *AXIS2_CALL

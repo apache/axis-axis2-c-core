@@ -239,48 +239,48 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
         case AXIS2_SVC:
         {
             /* check whether the file is already deployed */
-            status = axis2_file_handler_access(file->name, AXIS2_F_OK);
+            /*status = axis2_file_handler_access(file->name, AXIS2_F_OK);
             if(AXIS2_SUCCESS != status)
-            {
-                axis2_ws_info_t *ws_info = NULL;
-                long last_modified_date = 0;
-                axis2_arch_file_data_t *file_data = NULL;
+            {*/
+            axis2_ws_info_t *ws_info = NULL;
+            long last_modified_date = 0;
+            axis2_arch_file_data_t *file_data = NULL;
+            
+            last_modified_date = file->time_stamp;
+            ws_info = 
+        axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
+            env, file->name, last_modified_date, AXIS2_SVC);
+            AXIS2_ARRAY_LIST_ADD(info_list_impl->info_list, env, ws_info);
+            file_data = axis2_arch_file_data_create_with_type_and_file(env,
+                AXIS2_SVC, file);
+            /* to inform that new web service is deployed */
+            AXIS2_DEP_ENGINE_ADD_WS_TO_DEPLOY(info_list_impl->deployer, 
+                env, file_data);            
                 
-                last_modified_date = file->time_stamp;
-                ws_info = 
-            axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
-                env, file->name, last_modified_date, AXIS2_SVC);
-                AXIS2_ARRAY_LIST_ADD(info_list_impl->info_list, env, ws_info);
-                file_data = axis2_arch_file_data_create_with_type_and_file(env,
-                    AXIS2_SVC, file);
-                /* to inform that new web service is deployed */
-                AXIS2_DEP_ENGINE_ADD_WS_TO_DEPLOY(info_list_impl->deployer, 
-                    env, file_data);            
-                
-            }
+            /*}*/
             
             break;
         }
         case AXIS2_MODULE:
         {
             /* check whether the file is already deployed */
-            status = axis2_file_handler_access(file->name, AXIS2_F_OK);
+            /*status = axis2_file_handler_access(file->name, AXIS2_F_OK);
             if(AXIS2_SUCCESS != status)
-            {
-                axis2_ws_info_t *ws_info = NULL;
-                long last_modified_date = 0;
-                axis2_arch_file_data_t *file_data = NULL;
-                
-                last_modified_date = file->time_stamp;
-                ws_info = 
-            axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
-                env, file->name, last_modified_date, AXIS2_MODULE);
-                AXIS2_ARRAY_LIST_ADD(info_list_impl->info_list, env, ws_info);
-                file_data = axis2_arch_file_data_create_with_type_and_file(env,
-                    AXIS2_MODULE, file);
-                /* to inform that new web service is deployed */
-                AXIS2_DEP_ENGINE_ADD_WS_TO_DEPLOY(info_list_impl->deployer, env, file_data);
-            }    
+            {*/
+            axis2_ws_info_t *ws_info = NULL;
+            long last_modified_date = 0;
+            axis2_arch_file_data_t *file_data = NULL;
+            
+            last_modified_date = file->time_stamp;
+            ws_info = 
+        axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
+            env, file->name, last_modified_date, AXIS2_MODULE);
+            AXIS2_ARRAY_LIST_ADD(info_list_impl->info_list, env, ws_info);
+            file_data = axis2_arch_file_data_create_with_type_and_file(env,
+                AXIS2_MODULE, file);
+            /* to inform that new web service is deployed */
+            AXIS2_DEP_ENGINE_ADD_WS_TO_DEPLOY(info_list_impl->deployer, env, file_data);
+            /*}*/
                 
             break;
         }

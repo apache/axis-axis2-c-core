@@ -420,6 +420,13 @@ struct axis2_svc
 
 /** 
  * Creates service struct with qname
+ * @return pointer to newly created service
+ */
+AXIS2_DECLARE(axis2_svc_t *)
+axis2_svc_create (axis2_env_t **env);
+
+/** 
+ * Creates service struct with qname
  * @param qname ualified name
  * @return pointer to newly created service
  */

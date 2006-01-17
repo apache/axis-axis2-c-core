@@ -70,10 +70,15 @@ AXIS2_DECLARE_DATA struct axis2_arch_file_data_ops
                                         axis2_env_t **env,
                                         axis2_char_t *msg_recv);
     
+    /**
+     * return the dll name
+     */
     axis2_char_t *(AXIS2_CALL *
     get_name)(axis2_arch_file_data_t *file_data,
                                         axis2_env_t **env);
-    
+    /**
+     * return the service dll name
+     */
     axis2_char_t *(AXIS2_CALL *
     get_svc_name)(axis2_arch_file_data_t *file_data,
                                         axis2_env_t **env);

@@ -88,7 +88,7 @@ AXIS2_DECLARE_DATA struct axis2_arch_reader_ops
     axis2_status_t (AXIS2_CALL *
     process_svc_grp) (axis2_arch_reader_t *arch_reader,
                                         axis2_env_t **env,
-                                        axis2_char_t *file_path,
+                                        axis2_char_t *file_name,
                                         struct axis2_dep_engine *dep_engine,
                                         axis2_svc_grp_t *svc_grp);
     
@@ -136,8 +136,8 @@ axis2_arch_reader_create (axis2_env_t **env);
 #define AXIS2_ARCH_READER_PROCESS_SVC_GRP(arch_reader, env, file_path, dep_engine, svc_grp) \
 		((arch_reader)->ops->process_svc_grp (arch_reader, env, file_path, dep_engine, svc_grp))
 
-#define AXIS2_ARCH_READER_BUILD_SVC_GRP(arch_reader, env, file_path, dep_engine, svc_grp) \
-		((arch_reader)->ops->build_svc_grp (arch_reader, env, file_path, dep_engine, svc_grp))
+#define AXIS2_ARCH_READER_BUILD_SVC_GRP(arch_reader, env, file_name, dep_engine, svc_grp) \
+		((arch_reader)->ops->build_svc_grp (arch_reader, env, file_name, dep_engine, svc_grp))
         
 #define AXIS2_ARCH_READER_READ_MODULE_ARCH(arch_reader, env, file_path, dep_engine, module) \
 		((arch_reader)->ops->read_module_arch (arch_reader, env, file_path, dep_engine, module))

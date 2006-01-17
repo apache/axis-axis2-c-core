@@ -19,6 +19,7 @@
 #include <axis2_class_loader.h>
 #include <axis2_svc_builder.h>
 #include <axis2_module_builder.h>
+#include <axis2_svc.h>
 
 /** 
  * @brief
@@ -288,31 +289,37 @@ public void processWSDLs(ArchiveFileData file , DeploymentEngine depengine) thro
 axis2_status_t AXIS2_CALL
 axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
                                     axis2_env_t **env,
-                                    axis2_char_t *file_path,
+                                    axis2_char_t *file_name,
                                     struct axis2_dep_engine *dep_engine,
                                     axis2_svc_grp_t *svc_grp)
 {
-    axis2_char_t *file_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_char_t *svcs_xml = NULL;
+    axis2_char_t *repos_path = NULL;
+    axis2_char_t *temp_path = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(arch_reader, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, file_path, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, file_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
     
-    file_name = AXIS2_STRACAT(file_path, AXIS2_SVC_XML, env);
-    if(!file_name)
+    repos_path = AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env);
+    temp_path = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
+    svcs_xml = AXIS2_STRACAT(temp_path, AXIS2_SVC_XML, env);
+    AXIS2_FREE((*env)->allocator, temp_path);
+    printf("svcs_xml:%s\n", svcs_xml);
+    if(!svcs_xml)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    status = axis2_file_handler_access(file_name, AXIS2_F_OK);
+    status = axis2_file_handler_access(svcs_xml, AXIS2_F_OK);
     if(AXIS2_SUCCESS == status)
     {
         struct axis2_arch_file_data *arch_file_data = NULL;
         axis2_char_t *svc_name = NULL;    
         
-        status = axis2_arch_reader_build_svc_grp(arch_reader, env, file_name, 
+        status = axis2_arch_reader_build_svc_grp(arch_reader, env, svcs_xml, 
             dep_engine, svc_grp);
         if(AXIS2_FAILURE == status)
         {
@@ -333,7 +340,7 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
 axis2_status_t AXIS2_CALL
 axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
                                 axis2_env_t **env,
-                                axis2_char_t *file_path,
+                                axis2_char_t *svc_xml,
                                 struct axis2_dep_engine *dep_engine,
                                 struct axis2_svc_grp *svc_grp)
 {                       
@@ -344,12 +351,12 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_FUNC_PARAM_CHECK(arch_reader, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, file_path, AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK((*env)->error, svc_xml, AXIS2_FAILURE);    
     AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
     
     desc_builder = axis2_desc_builder_create_with_file_and_dep_engine(env, 
-        file_path, dep_engine);
+        svc_xml, dep_engine);
     if(!desc_builder)
     {
         return AXIS2_FAILURE;
@@ -357,6 +364,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
     svcs = AXIS2_DESC_BUILDER_BUILD_OM(desc_builder, env);
     svcs_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(svcs, env);
     root_element_name = AXIS2_OM_ELEMENT_GET_LOCALNAME(svcs_element, env);
+    printf("root_element_name:%s\n", root_element_name);
     if(0 == AXIS2_STRCMP(AXIS2_SVC_ELEMENT, root_element_name))
     {
         axis2_svc_t *svc = NULL;
@@ -368,8 +376,10 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         
         file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
         name = AXIS2_ARCH_FILE_DATA_GET_NAME(file_data, env);
+        printf("name:%s\n", name);
         short_file_name = AXIS2_DESC_BUILDER_GET_SHORT_FILE_NAME(desc_builder, 
             env, name);
+        printf("short_file_name:%s\n", short_file_name);
         svc = AXIS2_ARCH_FILE_DATA_GET_SVC(file_data, env, short_file_name);
         if(NULL == svc)
         {
@@ -393,6 +403,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         status = AXIS2_SVC_BUILDER_POPULATE_SVC(svc_builder, env, svcs);
         if(AXIS2_SUCCESS != status)
         {
+            printf("populate svc is not successful\n");
             return AXIS2_FAILURE;
         }
         file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
@@ -425,8 +436,7 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module, AXIS2_FAILURE);
     
-    /*file_name = AXIS2_STRACAT(file_path, AXIS2_MODULE_XML, env);*/
-    file_name = file_path;
+    file_name = AXIS2_STRACAT(file_path, AXIS2_MODULE_XML, env);
     if(!file_name)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

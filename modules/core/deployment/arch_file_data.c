@@ -383,7 +383,15 @@ axis2_arch_file_data_add_svc(axis2_arch_file_data_t *file_data,
     
     svc_qname = AXIS2_SVC_GET_QNAME(svc_desc, env);
     svc_name = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
-    
+    if(!file_data_impl->svc_map)
+    {
+        file_data_impl->svc_map = axis2_hash_make(env);
+        if(!file_data_impl->svc_map)
+        {
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+    }
     axis2_hash_set(file_data_impl->svc_map, svc_name, AXIS2_HASH_KEY_STRING,
         svc_desc);
     return AXIS2_SUCCESS;
@@ -395,13 +403,21 @@ axis2_arch_file_data_get_svc(axis2_arch_file_data_t *file_data,
                                     axis2_char_t *svc_name)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
-    struct axis2_svc *svc = NULL;
+    axis2_svc_t *svc = NULL;
+        
     AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_name, AXIS2_FAILURE);
-    
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
-    svc = (struct axis2_svc *) axis2_hash_get(file_data_impl->svc_map, svc_name, 
-        AXIS2_HASH_KEY_STRING);
+    
+    if(file_data_impl->svc_map)
+    {
+        svc = (axis2_svc_t *) axis2_hash_get(file_data_impl->svc_map, svc_name, 
+            AXIS2_HASH_KEY_STRING);
+    }
+    else
+    {
+        return NULL;
+    }
     return svc;
 }
 
