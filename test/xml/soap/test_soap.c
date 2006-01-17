@@ -68,14 +68,16 @@ int build_soap(axis2_env_t **env, char *filename)
     om_doc = axis2_om_document_create(env, NULL, om_builder);
     
     soap_builder = axis2_soap_builder_create(env, om_builder, AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+   /* 
     if(soap_builder)    
         printf("soap version %d", AXIS2_SOAP_BUILDER_GET_SOAP_VERSION(soap_builder, env) );
+    */
     soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
           
     om_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
-    
+    /*    
     printnode(om_node, env);
-    /*
+    
     soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
     om_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
     printnode(om_node, env);
@@ -94,15 +96,18 @@ int build_soap(axis2_env_t **env, char *filename)
         return AXIS2_FAILURE;
     }
     */
-   /* while(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env) != AXIS2_TRUE)
+     while(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env) != AXIS2_TRUE)
     {
         AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
     }
+   /* 
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
     */
-    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
-    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
-    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
-    
+   
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     om_output = axis2_om_output_create( env, xml_writer);  
     AXIS2_SOAP_ENVELOPE_SERIALIZE(soap_envelope, env, om_output, AXIS2_FALSE);
@@ -155,11 +160,13 @@ int main(int argc, char *argv[])
     error = axis2_error_create(allocator);
     
     env = axis2_env_create_with_error_log(allocator, error,  log);
+    /*
     build_soap_programatically(&env);
     
+    
     printf("\nbuild soap\n");
+    */
     build_soap(&env, filename);
-    getchar(); 
     return 0;        
 }
 
