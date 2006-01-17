@@ -217,6 +217,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axis2_qname_t *qin_faultflowst = NULL;
     axis2_qname_t *qout_faultflowst = NULL;
     axis2_qname_t *qopst = NULL;
+    axis2_qname_t *qattname = NULL;
     /*axis2_qname_t *qmodule_config = NULL; */
     axis2_status_t status = AXIS2_FAILURE;
     axis2_svc_grp_t *parent = NULL;
@@ -231,7 +232,9 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axis2_om_element_t *in_faultflow_element = NULL;
     axis2_om_node_t *out_faultflow_node = NULL;
     axis2_om_element_t *out_faultflow_element = NULL;
+    axis2_om_attribute_t *name_attr = NULL;
     axis2_array_list_t *ops = NULL;
+    axis2_char_t *svc_name = NULL;
     int i = 0;
     int size = 0;
     
@@ -260,7 +263,11 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     }
 
     /* process service description */
-    qdesc = axis2_qname_create(env, AXIS2_DESCRIPTION, NULL, NULL);
+    /* TODO this code is changed in new version of axis2 java. Until that logic
+     * is incorporated I comment out this part and add my own logic to set svc
+     * name
+     */
+    /*qdesc = axis2_qname_create(env, AXIS2_DESCRIPTION, NULL, NULL);
     desc_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element, env,
         qdesc, svc_node, &desc_node);
     if(NULL != desc_element)
@@ -298,7 +305,13 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
                 svc_name);
         }
     }
-
+    */
+    /* my logic to get set service name */
+    qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
+    name_attr = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(svc_element, env, qattname);
+    svc_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(name_attr, env);
+    AXIS2_SVC_SET_AXIS2_SVC_NAME(builder_impl->svc, env, svc_name);
+    /* end of my logic */
     /* processing service wide modules which required to engage globally */
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
     module_refs = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env,
