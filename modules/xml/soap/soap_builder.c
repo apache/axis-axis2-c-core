@@ -294,6 +294,7 @@ axis2_soap_builder_next(axis2_soap_builder_t *builder,
 {
     axis2_soap_builder_impl_t *builder_impl = NULL;
     axis2_om_node_t *lastnode = NULL;
+    int current_event = -1;
     axis2_om_node_t *current_node =  NULL;
     int status = AXIS2_SUCCESS;
     AXIS2_FUNC_PARAM_CHECK(builder, env, NULL);
@@ -311,8 +312,9 @@ axis2_soap_builder_next(axis2_soap_builder_t *builder,
     }
     
     current_node = AXIS2_OM_STAX_BUILDER_NEXT(builder_impl->om_builder, env);
-    if(AXIS2_OM_STAX_BUILDER_GET_CURRENT_EVENT(builder_impl->om_builder, env) == 
-            AXIS2_XML_READER_EMPTY_ELEMENT || AXIS2_XML_READER_START_ELEMENT)
+    current_event = AXIS2_OM_STAX_BUILDER_GET_CURRENT_EVENT(builder_impl->om_builder, env);
+    if(current_event == AXIS2_XML_READER_EMPTY_ELEMENT ||
+        current_event ==  AXIS2_XML_READER_START_ELEMENT)
     {
         axis2_soap_builder_create_om_element(builder, env, current_node);
         axis2_soap_builder_end_element(builder, env);
@@ -657,5 +659,3 @@ axis2_soap_builder_get_soap_version (axis2_soap_builder_t *builder,
      builder_impl = AXIS2_INTF_TO_IMPL(builder);
     return builder_impl->soap_version ;
 }
-
-
