@@ -98,7 +98,7 @@ axis2_test_transport_receiver_load()
     axis2_char_t *dll_name = NULL;
     axis2_transport_receiver_t *transport_recv = NULL;
     axis2_param_t *impl_info_param = NULL;
-    axis2_bool_t *is_running = NULL;
+    axis2_bool_t *is_running = AXIS2_FALSE;
     axis2_char_t *expected = NULL;
     axis2_char_t *axis2c_home = NULL;
 
@@ -120,17 +120,18 @@ axis2_test_transport_receiver_load()
     transport_recv = (axis2_transport_receiver_t *) axis2_class_loader_create_dll(&env, 
         impl_info_param);
     is_running = AXIS2_TRANSPORT_RECEIVER_IS_RUNNING(transport_recv, &env);
-    printf("is_running:%s\n", is_running);
+    printf("is_running:%d\n", is_running);
     AXIS2_FREE(env->allocator, dll_name);
+    printf("transport receiver load test successful\n");
     return 0;
 }
 
 int main()
 {
-    /*axis2_test_dep_engine_do_deploy();*/
-    /*axis2_test_engine_conf_builder_populate_conf();*/
+    axis2_test_dep_engine_do_deploy();
+    axis2_test_engine_conf_builder_populate_conf();
     axis2_test_dep_engine_load();
-    /*axis2_test_transport_receiver_load();*/
+    axis2_test_transport_receiver_load();
     
 	return 0;
 }

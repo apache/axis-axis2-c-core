@@ -109,6 +109,8 @@ axis2_http_server_create (axis2_env_t **env, axis2_char_t *repo, int port)
     server_impl->http_server.ops->stop = axis2_http_server_stop;
 	server_impl->http_server.ops->get_reply_to_epr = 
 						axis2_http_server_get_reply_to_epr;
+    server_impl->http_server.ops->get_conf_ctx = axis2_http_server_get_conf_ctx;
+    server_impl->http_server.ops->is_running = axis2_http_server_is_running;
 	server_impl->http_server.ops->free = axis2_http_server_free;
                         
 	return &(server_impl->http_server);
@@ -247,7 +249,6 @@ axis2_http_server_is_running (axis2_transport_receiver_t *server,
 {
 	axis2_http_server_impl_t *server_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(server, env, AXIS2_FAILURE);
-    
 	server_impl = AXIS2_INTF_TO_IMPL(server);
 	if(NULL == server_impl->svr_thread)
 	{
@@ -269,9 +270,10 @@ int axis2_get_instance(struct axis2_transport_receiver **inst,
     *inst = axis2_http_server_create(env, NULL, -1);
     if(!(*inst))
     {
+        printf("transport receiver load not success\n");
         return AXIS2_FAILURE;
     }
-
+    
     return AXIS2_SUCCESS;
 }
 
