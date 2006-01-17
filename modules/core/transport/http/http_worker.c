@@ -24,6 +24,7 @@
 #include <axis2_http_out_transport_info.h>
 #include <axis2_http_transport_utils.h>
 #include <axis2_op_ctx.h>
+#include <axis2_engine.h>
 
 /** 
  * @brief HTTP Worker struct impl
@@ -144,12 +145,12 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	
 	http_worker_impl = AXIS2_INTF_TO_IMPL(http_worker);
 	conf_ctx = http_worker_impl->conf_ctx;
-	conf_ctx = http_worker_impl->conf_ctx;
-    
-	if(NULL != conf_ctx)
+	    
+	if(NULL == conf_ctx)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
 						AXIS2_FAILURE);
+		return AXIS2_FALSE;
 	}
 	request_body = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY(simple_request, env);
 	response = axis2_http_simple_response_create_default(env);
@@ -246,13 +247,52 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 						AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
 						simple_request, env), env), AXIS2_HTTP_HEADER_POST))
 	{
-		processed = axis2_http_transport_utils_process_http_post_request
+		status = axis2_http_transport_utils_process_http_post_request
                         (env, msg_ctx, request_body, out_stream,
 						AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_TYPE(
 						simple_request, env) ,soap_action,
 						AXIS2_HTTP_REQUEST_LINE_GET_URI
 						(AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
 						simple_request, env), env));
+		if(status == AXIS2_FAILURE)
+		{
+			axis2_msg_ctx_t *fault_ctx = NULL;
+			axis2_engine_t *engine = axis2_engine_create(env, conf_ctx);
+			axis2_http_request_line_t *req_line = NULL;
+			axis2_http_status_line_t *tmp_stat_line = NULL;
+			axis2_char_t status_line_str[100];
+			if(NULL == engine)
+			{
+				return AXIS2_FALSE;
+			}
+			fault_ctx = AXIS2_ENGINE_CREATE_FAULT_MSG_CTX(engine, env, msg_ctx);
+			req_line = AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(simple_request
+						, env);
+			if(NULL != req_line)
+			{
+				sprintf(status_line_str, "%s 500 Internal Server Error\r\n", 
+						AXIS2_HTTP_REQUEST_LINE_GET_HTTP_VERSION(req_line, 
+						env));
+			}
+			else
+			{
+				sprintf(status_line_str, "HTTP/1.1 500 Internal Server Error\
+						\r\n");
+			}
+			tmp_stat_line = axis2_http_status_line_create(env, 
+						status_line_str);
+			AXIS2_ENGINE_SEND_FAULT(engine, env, fault_ctx);
+			AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STREAM(response, env, 
+						out_stream);
+			axis2_http_worker_set_response_headers(http_worker, env, svr_conn, 
+						simple_request, response, AXIS2_STREAM_BASIC_GET_LEN(
+						out_stream, env));
+			
+			status = AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, 
+						response);
+			return status;			
+			
+		}
 	}
 	axis2_op_ctx_t *op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
 	if(NULL != op_ctx)
