@@ -121,7 +121,11 @@ extern "C"
                                              
         axis2_bool_t (AXIS2_CALL *is_complete)(struct axis2_om_stax_builder* builder,
                                                axis2_env_t **env);
-                                                                                            
+                                                                   
+        axis2_om_node_t* (AXIS2_CALL *set_last_node)
+                                              (struct axis2_om_stax_builder* builder,
+                                               axis2_env_t **env,
+                                               axis2_om_node_t *om_node);                                                                                            
                                                                                                                                                           
                                                            
     } axis2_om_stax_builder_ops_t;
@@ -172,6 +176,9 @@ extern "C"
 #define AXIS2_OM_STAX_BUILDER_IS_COMPLETE(builder, env) \
         ((builder)->ops->is_complete(builder, env))                       
 	
+#define AXIS2_OM_STAX_BUILDER_SET_LAST_NODE(builder, env, node) \
+        ((builder)->ops->set_last_node(builder, env, node))
+
 /** @} */
 
 

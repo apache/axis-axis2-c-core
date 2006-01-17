@@ -79,7 +79,6 @@ axis2_om_node_t* AXIS2_CALL
 axis2_soap12_builder_helper_handle_event
                             (axis2_soap12_builder_helper_t *builder_helper,
                              axis2_env_t **env,
-                             axis2_soap_builder_t *soap_builder,
                              axis2_om_node_t *om_element_node,
                              int element_level);
                              
@@ -114,7 +113,6 @@ axis2_soap12_builder_helper_create(axis2_env_t **env,
     builder_helper_impl->node_present = AXIS2_FALSE;
     builder_helper_impl->soap_builder = soap_builder;
     builder_helper_impl->sub_sub_code_present = AXIS2_FALSE;  
-    
     builder_helper_impl->builder_helper.ops = (axis2_soap12_builder_helper_ops_t*) AXIS2_MALLOC(
                                                 (*env)->allocator, sizeof(axis2_soap12_builder_helper_ops_t));
     if(!(builder_helper_impl->builder_helper.ops))
@@ -159,7 +157,6 @@ axis2_soap12_builder_helper_free(axis2_soap12_builder_helper_t *builder_helper,
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder_helper,
                              axis2_env_t **env,
-                             axis2_soap_builder_t *soap_builder,
                              axis2_om_node_t *om_ele_node,
                              int element_level)
 {

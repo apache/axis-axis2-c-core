@@ -16,6 +16,7 @@
  
  #include <axis2_soap_message.h>
  #include <axis2_om_document.h>
+ #include <axis2_om_output.h>
 
 /*************************** impl struct **************************************/
 
@@ -50,7 +51,8 @@ axis2_soap_message_set_soap_envelope(axis2_soap_message_t *message,
                                         
 axis2_status_t AXIS2_CALL
 axis2_soap_message_serialize(axis2_soap_message_t *message,
-                             axis2_env_t **env);
+                             axis2_env_t **env,
+                             axis2_om_output_t *om_output);
                              
 /************************** function implementations **************************/
 
@@ -161,10 +163,12 @@ axis2_soap_message_set_soap_envelope(axis2_soap_message_t *message,
 
 axis2_status_t AXIS2_CALL
 axis2_soap_message_serialize(axis2_soap_message_t *message,
-                             axis2_env_t **env)
+                             axis2_env_t **env,
+                             axis2_om_output_t *om_output)
 {
     axis2_soap_message_impl_t *soap_message_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(message, env, AXIS2_FAILURE);
     soap_message_impl = AXIS2_INTF_TO_IMPL(message);
+    return AXIS2_OM_DOCUMENT_SERIALIZE(soap_message_impl->om_doc, env, om_output);
 }                             
                                      

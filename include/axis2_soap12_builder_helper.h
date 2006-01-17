@@ -51,7 +51,6 @@ typedef struct axis2_soap12_builder_helper_ops  axis2_soap12_builder_helper_ops_
         axis2_om_node_t* (AXIS2_CALL *handle_event)
                     (axis2_soap12_builder_helper_t *builder_helper,
                      axis2_env_t **env,
-                     axis2_soap_builder_t *soap_builder,
                      axis2_om_node_t *om_element_node,
                      int element_level);
     };                                                      
@@ -79,9 +78,9 @@ axis2_soap12_builder_helper_create(axis2_env_t **env,
         ((builder_helper)->ops->free_fn(builder_helper, env))
         
 #define AXIS2_SOAP12_BUILDER_HELPER_HANDLE_EVENT(builder_helper, \
-            env, soap_builder, om_element_node,  element_level) \
+            env,  om_element_node,  element_level) \
         ((builder_helper)->ops->handle_event(builder_helper, \
-            env, soap_builder, om_element_node,  element_level))
+            env,  om_element_node,  element_level))
         
 /** @} */
 #ifdef __cplusplus
