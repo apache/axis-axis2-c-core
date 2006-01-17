@@ -403,3 +403,30 @@ axis2_http_transport_sender_write_message
 	 */
 	return AXIS2_SUCCESS;
 }
+
+/**
+ * Following block distinguish the exposed part of the dll.
+ */
+int axis2_get_instance(struct axis2_transport_sender **inst,
+                        axis2_env_t **env)
+{
+    *inst = axis2_http_transport_sender_create(env);
+    if(!(*inst))
+    {
+        printf("transport sender load not success\n");
+        return AXIS2_FAILURE;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+int axis2_remove_instance(axis2_transport_sender_t *inst,
+                            axis2_env_t **env)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+    if (inst)
+    {
+        status = AXIS2_TRANSPORT_SENDER_FREE(inst, env);
+    }
+    return status;
+}
