@@ -88,9 +88,9 @@ axis2_network_handler_create_server_socket(axis2_env_t **env, int port)
 	}
 	/** Address re-use */
 	i = 1;
-	/*setsockopt(sock, SOL_SOCKET, SO_REUSEADDR ,&i, sizeof(int));*/
+	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR ,&i, sizeof(int));
 	/** Exec behaviour */
-	/*fcntl(sock, F_SETFD, FD_CLOEXEC);*/
+	fcntl(sock, F_SETFD, FD_CLOEXEC);
 	
 	
     memset(&sock_addr,0,sizeof(sock_addr));

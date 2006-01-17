@@ -239,7 +239,6 @@ int AXIS2_CALL
 axis2_stream_read_basic (axis2_stream_t *stream, axis2_env_t **env, 
 						void *buffer, size_t count)
 {
-    int i = 0;
 	int len = 0;
 	char *buf = NULL;
 	
@@ -267,8 +266,8 @@ axis2_stream_read_basic (axis2_stream_t *stream, axis2_env_t **env,
 	 * Finally we need to remove the read bytes from the stream
 	 * adjust the length of the stream.
 	 */
-	AXIS2_INTF_TO_IMPL(stream)->len -= i;
-	memmove(buf, buf + i * sizeof(axis2_char_t), 
+	AXIS2_INTF_TO_IMPL(stream)->len -= len;
+	memmove(buf, buf + len * sizeof(axis2_char_t), 
 						AXIS2_INTF_TO_IMPL(stream)->len * sizeof(axis2_char_t));
 	((axis2_char_t *) buffer)[len] = '\0';
     return len;
