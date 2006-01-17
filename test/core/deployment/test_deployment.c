@@ -126,12 +126,48 @@ axis2_test_transport_receiver_load()
     return 0;
 }
 
+axis2_test_transport_sender_load()
+{
+    axis2_dll_desc_t *dll_desc = NULL;
+    axis2_char_t *dll_name = NULL;
+    axis2_transport_sender_t *transport_sender = NULL;
+    axis2_param_t *impl_info_param = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    axis2_char_t *axis2c_home = NULL;
+    axis2_msg_ctx_t *msg_ctx = NULL;
+
+    printf("testing axis2_transport_sender load\n"); 
+    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+    axis2_env_t *env = axis2_env_create (allocator);
+    
+    msg_ctx = (axis2_msg_ctx_t *) AXIS2_MALLOC(env->allocator, 5);
+    dll_desc = axis2_dll_desc_create(&env);
+    
+    axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
+    dll_name = AXIS2_STRACAT (axis2c_home, "/lib/libaxis2_http_sender.so", &env);
+    printf("transport sender name:%s\n", dll_name);
+    AXIS2_DLL_DESC_SET_NAME(dll_desc, &env, dll_name);
+    AXIS2_DLL_DESC_SET_TYPE(dll_desc, &env, AXIS2_TRANSPORT_SENDER_DLL);
+    axis2_class_loader_init(&env);
+    impl_info_param = axis2_param_create(&env, NULL, NULL);
+    AXIS2_PARAM_SET_VALUE(impl_info_param, &env, dll_desc);
+    transport_sender = (axis2_transport_sender_t *) axis2_class_loader_create_dll(&env, 
+        impl_info_param);
+    
+    status = AXIS2_TRANSPORT_SENDER_CLEANUP(transport_sender, &env, msg_ctx);
+    printf("clean status:%d\n", status);
+    AXIS2_FREE(env->allocator, dll_name);
+    printf("transport sender load test successful\n");
+    return 0;
+}
+
 int main()
 {
     /*axis2_test_dep_engine_do_deploy();
     axis2_test_engine_conf_builder_populate_conf();*/
-    axis2_test_dep_engine_load();
+    /*axis2_test_dep_engine_load();*/
     /*axis2_test_transport_receiver_load();*/
+    axis2_test_transport_sender_load();
     
 	return 0;
 }

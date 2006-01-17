@@ -120,10 +120,10 @@ axis2_transport_sender_create (axis2_env_t **env);
 #define AXIS2_TRANSPORT_SENDER_INIT(transport_sender, env, conf_context, transport_out) \
 		((transport_sender->ops)->init (transport_sender, env, conf_context, transport_out))
 
-#define AXIS2_TRANSPORT_INVOKE(transport_sender, env, msg_ctx) \
+#define AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx) \
 		((transport_sender->ops)->invoke (transport_sender, env, msg_ctx))      
 
-#define AXIS2_TRANSPORT_CLEANUP(transport_sender, env, msg_ctx) \
+#define AXIS2_TRANSPORT_SENDER_CLEANUP(transport_sender, env, msg_ctx) \
 		((transport_sender->ops)->cleanup (transport_sender, env, msg_ctx))      
 
 /*************************** End of function macros ***************************/

@@ -51,6 +51,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
     void *handler = NULL; /* axis2_handler */
     void *module = NULL; /* axis2_module */
     void *transport_recv = NULL; /* axis2_transport_receiver */
+    void *transport_sender = NULL; /* axis2_transport_sender */
     CREATE_FUNCT create_funct = NULL;
     axis2_dll_desc_t *dll_desc = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -166,6 +167,20 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         }
         return transport_recv;
     }
+    if(AXIS2_TRANSPORT_SENDER_DLL == dll_type)
+    {
+        create_funct(&transport_sender, env);
+        printf("transport sender loaded successfully\n");
+        if(NULL == transport_sender)
+        {
+            printf("transport_sender is null\n");
+            AXIS2_ERROR_SET((*env)->error, 
+                AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED,AXIS2_FAILURE);
+            return NULL;
+        }
+        return transport_sender;
+    }
+
 
     return NULL;    
 }

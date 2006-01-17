@@ -446,6 +446,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE,
 
         AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED,
+        AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED,
         
         /* Listen failed for the server socket */
         AXIS2_ERROR_SOCKET_LISTEN_FAILED,
