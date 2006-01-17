@@ -131,7 +131,7 @@ axis2_simple_http_svr_conn_create(axis2_env_t **env, int sockfd);
 #define AXIS2_SIMPLE_HTTP_SVR_CONN_SET_RCV_TIMEOUT(svr_conn, env, timeout) \
                     ((svr_conn)->ops->set_rcv_timeout(svr_conn, env, timeout))
 #define AXIS2_SIMPLE_HTTP_SVR_CONN_FREE(svr_conn, env) \
-                    ((svr_conn)->ops->is_open(svr_conn, env))
+                    ((svr_conn)->ops->free(svr_conn, env))
     
 /** @} */
     
