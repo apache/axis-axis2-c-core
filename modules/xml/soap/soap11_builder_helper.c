@@ -57,7 +57,7 @@ axis2_status_t AXIS2_CALL
 axis2_soap11_builder_helper_free(axis2_soap11_builder_helper_t *builder_helper,
                                  axis2_env_t **env);
 
-axis2_om_node_t* AXIS2_CALL 
+axis2_status_t AXIS2_CALL 
 axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder_helper,
                              axis2_env_t **env,
                              axis2_om_node_t *om_element_node,
@@ -132,7 +132,7 @@ axis2_soap11_builder_helper_free(axis2_soap11_builder_helper_t *builder_helper,
     return AXIS2_SUCCESS;
 }                                 
 
-axis2_om_node_t* AXIS2_CALL 
+axis2_status_t AXIS2_CALL 
 axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder_helper,
                              axis2_env_t **env,
                              axis2_om_node_t *om_element_node,
@@ -145,8 +145,8 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
     axis2_soap_body_t *soap_body = NULL;
     axis2_soap_fault_t *soap_fault = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(builder_helper, env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, element_level, NULL);
+    AXIS2_FUNC_PARAM_CHECK(builder_helper, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, element_level, AXIS2_FAILURE);
     builder_helper_impl = AXIS2_INTF_TO_IMPL(builder_helper);
     
     om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(om_element_node, env);
@@ -310,7 +310,7 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
     
     
     */
-    return NULL;
+    return AXIS2_SUCCESS;
 }                                                                                                                    
                                          
 static axis2_status_t  
@@ -333,4 +333,4 @@ axis2_soap11_builder_helper_process_text(axis2_soap11_builder_helper_t *builder_
         AXIS2_OM_STAX_BUILDER_NEXT(builder_helper_impl->om_builder, env);
     }
     return AXIS2_SUCCESS;                
-}                                    
+}

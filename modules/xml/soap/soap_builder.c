@@ -119,7 +119,7 @@ identify_soap_version(axis2_soap_builder_t *builder,
                       axis2_env_t **env,
                       axis2_char_t* soap_version_uri_from_transport);
                       
-static axis2_om_node_t* 
+static axis2_status_t
 axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
                                 axis2_env_t **env,
                                 axis2_om_node_t *parent,
@@ -297,26 +297,32 @@ axis2_soap_builder_next(axis2_soap_builder_t *builder,
     AXIS2_FUNC_PARAM_CHECK(builder, env, NULL);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     lastnode = AXIS2_OM_STAX_BUILDER_GET_LAST_NODE(builder_impl->om_builder, env);
+    
     if(!lastnode)
     {
         builder_impl->last_node_status = AXIS2_BUILDER_LAST_NODE_NULL;
-    }else if(AXIS2_OM_NODE_GET_BUILD_STATUS(lastnode, env))
+    }/*else if(AXIS2_OM_NODE_GET_BUILD_STATUS(lastnode, env))
     {
         builder_impl->last_node_status = AXIS2_BUILDER_LAST_NODE_DONE_TRUE;
-    }else
+    }*/
+    else
     {
         builder_impl->last_node_status = AXIS2_BUILDER_LAST_NODE_DONE_FALSE;
     }
     
     current_node = AXIS2_OM_STAX_BUILDER_NEXT(builder_impl->om_builder, env);
+    
+    printf("\n  element level %d -- status  %d\n", AXIS2_OM_STAX_BUILDER_GET_ELEMENT_LEVEL( builder_impl->om_builder, env), status);
+    
     current_event = AXIS2_OM_STAX_BUILDER_GET_CURRENT_EVENT(builder_impl->om_builder, env);
     if(current_event == AXIS2_XML_READER_EMPTY_ELEMENT ||
         current_event ==  AXIS2_XML_READER_START_ELEMENT)
     {
-        axis2_soap_builder_create_om_element(builder, env, current_node);
+      status = axis2_soap_builder_create_om_element(builder, env, current_node);
     }
    
-    printf("\n  element level %d ", AXIS2_OM_STAX_BUILDER_GET_ELEMENT_LEVEL( builder_impl->om_builder, env));
+    if(status == AXIS2_FAILURE)
+            return NULL;
     return current_node;
 }
                                     
@@ -340,7 +346,7 @@ axis2_soap_builder_create_om_element
                                  axis2_om_node_t *current_node)
 {
     axis2_soap_builder_impl_t *builder_impl = NULL;
-    void *ret_val = NULL;
+    int ret_val = AXIS2_SUCCESS;
     AXIS2_FUNC_PARAM_CHECK( builder, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, current_node, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
@@ -349,21 +355,21 @@ axis2_soap_builder_create_om_element
        
        ret_val =  axis2_soap_builder_construct_node(builder, env, NULL, current_node, AXIS2_TRUE);
          
-    }else if(builder_impl->last_node_status == AXIS2_BUILDER_LAST_NODE_DONE_TRUE)
+    }/*else if(builder_impl->last_node_status == AXIS2_BUILDER_LAST_NODE_DONE_TRUE)
     {
       ret_val =  axis2_soap_builder_construct_node(builder, env, 
             AXIS2_OM_NODE_GET_PARENT(current_node, env), current_node, AXIS2_FALSE);
     
-    }
+    }*/
     else
     {
        ret_val = axis2_soap_builder_construct_node(builder, env, 
             AXIS2_OM_NODE_GET_PARENT(current_node, env), current_node, AXIS2_FALSE);
     }
-    return ret_val ? AXIS2_SUCCESS : AXIS2_FAILURE;
+    return ret_val;
 }   
 
-static axis2_om_node_t* 
+static axis2_status_t
 axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
                                 axis2_env_t **env,
                                 axis2_om_node_t *parent,
@@ -375,9 +381,10 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
     axis2_char_t *parent_localname = NULL;
     axis2_char_t *element_name = NULL;
     int element_level = 0;
+    int status = AXIS2_SUCCESS;
     axis2_om_element_t *om_element = NULL;
-    AXIS2_FUNC_PARAM_CHECK(builder, env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, om_element_node, NULL);
+    AXIS2_FUNC_PARAM_CHECK(builder, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_element_node, AXIS2_FAILURE);
     
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
@@ -401,7 +408,7 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
         if(AXIS2_STRCASECMP(element_name, AXIS2_SOAP_ENVELOPE_LOCAL_NAME) != 0)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME, AXIS2_FAILURE);
-            return NULL;   
+            return AXIS2_FAILURE;   
         }
         printf("\n soap envelope \n");
         builder_impl->soap_envelope = axis2_soap_envelope_create_null(env);
@@ -421,13 +428,13 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             {
                 AXIS2_ERROR_SET((*env)->error, 
                     AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED, AXIS2_FAILURE);
-                    return NULL;
+                    return AXIS2_FAILURE;
             }
             if(builder_impl->body_present)
             {
                 AXIS2_ERROR_SET((*env)->error,
                     AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER, AXIS2_FAILURE);
-                return  NULL;                                              
+                return  AXIS2_FAILURE;                                              
             }
             builder_impl->header_present = AXIS2_TRUE;
             soap_header = axis2_soap_header_create(env);
@@ -444,7 +451,7 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             {
                 AXIS2_ERROR_SET((*env)->error, 
                     AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
-                return NULL;                   
+                return AXIS2_FAILURE;                   
             
             }
             builder_impl->body_present = AXIS2_TRUE;                
@@ -458,7 +465,7 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
         {
             AXIS2_ERROR_SET((*env)->error,
                     AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY, AXIS2_FAILURE);
-            return NULL;                                            
+            return AXIS2_FAILURE;                                            
         }
     }
     else if((element_level == 3) && AXIS2_STRCASECMP(parent_localname, 
@@ -524,18 +531,20 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
     {
         if(builder_impl->soap_version == AXIS2_SOAP11)
         {
-             AXIS2_SOAP11_BUILDER_HELPER_HANDLE_EVENT(((axis2_soap11_builder_helper_t*)(builder_impl->builder_helper)), 
+             status = AXIS2_SOAP11_BUILDER_HELPER_HANDLE_EVENT(((axis2_soap11_builder_helper_t*)(builder_impl->builder_helper)), 
                 env,  om_element_node , element_level);
         
         }
         if(builder_impl->soap_version == AXIS2_SOAP12)
         {
             printf(" handel event 12");
-            AXIS2_SOAP12_BUILDER_HELPER_HANDLE_EVENT(((axis2_soap12_builder_helper_t *)(builder_impl->builder_helper)), 
+            status = AXIS2_SOAP12_BUILDER_HELPER_HANDLE_EVENT(((axis2_soap12_builder_helper_t *)(builder_impl->builder_helper)), 
                 env,  om_element_node , element_level);
+            if(status == AXIS2_FAILURE)
+                    printf("failure occured");
         }
     }
-    return om_element_node;
+    return status;
 }
 
 axis2_status_t 

@@ -241,7 +241,7 @@ axis2_soap_fault_code_set_value(axis2_soap_fault_code_t *fault_code,
     {
         my_node = AXIS2_SOAP_FAULT_VALUE_GET_BASE_NODE(
                             fault_code_impl->value, env);
-        AXIS2_SOAP_FAULT_SUB_CODE_FREE(fault_code_impl->value, env);
+        AXIS2_SOAP_FAULT_VALUE_FREE(fault_code_impl->value, env);
         fault_code_impl->value = NULL;
     }
     
@@ -417,5 +417,4 @@ axis2_soap12_fault_code_create(axis2_env_t **env,
     AXIS2_PARAM_CHECK((*env)->error, fault, NULL);
     return axis2_soap_fault_code_create_with_parent(env, fault, AXIS2_TRUE);
 
-}                             
-
+}

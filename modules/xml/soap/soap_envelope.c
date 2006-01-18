@@ -611,4 +611,5 @@ axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
     }
     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
     return NULL;
-}                                                 
+}
+

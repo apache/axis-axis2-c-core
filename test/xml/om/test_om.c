@@ -25,7 +25,7 @@
 #include <axis2_xml_reader.h>
 #include <stdio.h>
 #include <axis2_xml_writer.h>
-
+#include <axis2_env.h>
 /** 
    Define the environment related variables globaly so that they are available 
    for both functions 

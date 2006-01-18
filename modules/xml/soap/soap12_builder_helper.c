@@ -75,7 +75,7 @@ axis2_status_t AXIS2_CALL
 axis2_soap12_builder_helper_free(axis2_soap12_builder_helper_t *builder_helper,
                                  axis2_env_t **env);
 
-axis2_om_node_t* AXIS2_CALL 
+axis2_status_t AXIS2_CALL 
 axis2_soap12_builder_helper_handle_event
                             (axis2_soap12_builder_helper_t *builder_helper,
                              axis2_env_t **env,
@@ -100,6 +100,7 @@ axis2_soap12_builder_helper_create(axis2_env_t **env,
         return NULL;
     }
     printf("builder helper 12");
+    
     builder_helper_impl->code_present = AXIS2_FALSE;
     builder_helper_impl->detail_present = AXIS2_FALSE;
     builder_helper_impl->reason_present = AXIS2_FALSE;
@@ -109,10 +110,11 @@ axis2_soap12_builder_helper_create(axis2_env_t **env,
     builder_helper_impl->code_processing = AXIS2_FALSE;
     builder_helper_impl->sub_code_processing = AXIS2_FALSE;
     builder_helper_impl->detail_element_names = NULL;
-    builder_helper_impl->builder_helper.ops = NULL; 
     builder_helper_impl->node_present = AXIS2_FALSE;
     builder_helper_impl->soap_builder = soap_builder;
     builder_helper_impl->sub_sub_code_present = AXIS2_FALSE; 
+    builder_helper_impl->value_present = AXIS2_FALSE;
+    builder_helper_impl->subcode_value_present = AXIS2_FALSE;
     builder_helper_impl->builder_helper.ops = NULL; 
     builder_helper_impl->builder_helper.ops = (axis2_soap12_builder_helper_ops_t*) AXIS2_MALLOC(
                                                 (*env)->allocator, sizeof(axis2_soap12_builder_helper_ops_t));
@@ -155,7 +157,7 @@ axis2_soap12_builder_helper_free(axis2_soap12_builder_helper_t *builder_helper,
     return AXIS2_SUCCESS;
 }                                 
 
-axis2_om_node_t* AXIS2_CALL 
+axis2_status_t AXIS2_CALL 
 axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder_helper,
                              axis2_env_t **env,
                              axis2_om_node_t *om_ele_node,
@@ -168,12 +170,13 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
     axis2_soap_fault_t *soap_fault = NULL;
     axis2_soap_envelope_t *soap_envelope = NULL;    
     
-    
-    AXIS2_FUNC_PARAM_CHECK(builder_helper, env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(builder_helper, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_ele_node, AXIS2_FAILURE);
+
     builder_helper_impl = AXIS2_INTF_TO_IMPL(builder_helper);
     om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(om_ele_node, env);
     ele_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env);
-    
+    printf(" \n element localname %s \n",ele_localname);
     soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(builder_helper_impl->soap_builder, env);
     soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
     soap_fault = AXIS2_SOAP_BODY_GET_FAULT(soap_body, env);   
@@ -186,7 +189,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             if(builder_helper_impl->code_present)
             {
                 AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
-                return NULL;
+                return AXIS2_FAILURE;
             }else
             {
                 axis2_soap_fault_code_t* soap_fault_code = NULL;
@@ -196,7 +199,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 AXIS2_SOAP_FAULT_SET_CODE(soap_fault, env, soap_fault_code);
                 builder_helper_impl->code_present = AXIS2_TRUE;
                 builder_helper_impl->code_processing = AXIS2_TRUE;
-                 
+                printf("\nsoap fault code \n");    
             }
         }
         else if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME, ele_localname) == 0)
@@ -209,7 +212,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     {
                         AXIS2_ERROR_SET((*env)->error, 
                             AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
-                        return NULL;
+                        return AXIS2_FAILURE;
                     }
                     else
                     {
@@ -220,13 +223,14 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         AXIS2_SOAP_FAULT_SET_REASON(soap_fault, env, fault_reason);
                         builder_helper_impl->reason_present = AXIS2_TRUE;
                         builder_helper_impl->reason_processing = AXIS2_TRUE;
+                        printf(" fault reason ");
                     }                
                 }
                 else
                 {
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FAILURE);
-                    return NULL;                        
+                    return AXIS2_FAILURE;                        
                 }
             }
             else 
@@ -235,13 +239,13 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 {
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE, AXIS2_FAILURE);
-                    return NULL;                            
+                    return AXIS2_FAILURE;                            
                 }
                 else
                 {
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE, AXIS2_FAILURE);
-                    return NULL;                
+                    return AXIS2_FAILURE;                
                 }
             }
         }
@@ -257,7 +261,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     {
                         AXIS2_ERROR_SET((*env)->error, 
                             AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
-                        return NULL;
+                        return AXIS2_FAILURE;
                     }
                     else
                     {
@@ -273,14 +277,14 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 {
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FALSE);
-                    return NULL;                
+                    return AXIS2_FAILURE;                
                 }
             }
             else
             {
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT, AXIS2_FALSE);
-                    return NULL;                        
+                    return AXIS2_FAILURE;                        
             }
             
         }
@@ -295,7 +299,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         AXIS2_ERROR_SET((*env)->error, 
                             AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
                                             
-                        return NULL;
+                        return AXIS2_FAILURE;
                     }
                     else
                     {
@@ -311,7 +315,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 {
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FAILURE);
-                    return NULL;                        
+                    return AXIS2_FAILURE;                        
                 }
             }
             else
@@ -329,7 +333,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     {
                         AXIS2_ERROR_SET((*env)->error, 
                             AXIS2_ERROR_MULTIPLE_DETAIL_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
-                        return NULL;                                            
+                        return AXIS2_FAILURE;                                            
                     }
                     else
                     {
@@ -344,14 +348,14 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 else
                 {
                     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FAILURE);
-                    return NULL;
+                    return AXIS2_FAILURE;
                 }
             }
             else
             {
                 AXIS2_ERROR_SET((*env)->error, 
                     AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT, AXIS2_FAILURE);
-                return NULL;                    
+                return AXIS2_FAILURE;                    
             }
             
         }
@@ -359,7 +363,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
         {
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_UNSUPPORTED_ELEMENT_IN_SOAP_FAULT_ELEMENT, AXIS2_FAILURE);
-                return NULL;
+                return AXIS2_FAILURE;
         }
     }
     else if(element_level == 5)
@@ -382,22 +386,22 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     soap_fault_value = axis2_soap_fault_value_create(env);
                     AXIS2_SOAP_FAULT_VALUE_SET_BASE_NODE(soap_fault_value, env, om_ele_node);
                     AXIS2_SOAP_FAULT_VALUE_SET_SOAP_VERSION(soap_fault_value, env, AXIS2_SOAP12);                    
-                    
-                    
                     parent_fcode = AXIS2_SOAP_FAULT_GET_CODE(soap_fault, env);
                     AXIS2_SOAP_FAULT_CODE_SET_VALUE(parent_fcode, env, soap_fault_value);
                     builder_helper_impl->value_present = AXIS2_TRUE;
+                    printf("soap fault value  ");
                 }
                 else
                 {
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_MULTIPLE_VALUE_ENCOUNTERED_IN_CODE_ELEMENT, AXIS2_FAILURE);
-                    return NULL;                        
+                    return AXIS2_FAILURE;                        
                 }            
             }
             else if(AXIS2_STRCMP(ele_localname, 
                 AXIS2_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
             {
+                printf(" fault subcode first ");
                 if(!(builder_helper_impl->sub_code_present))
                 {
                     if(builder_helper_impl->value_present)
@@ -416,20 +420,20 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     {
                         AXIS2_ERROR_SET((*env)->error,
                             AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE, AXIS2_FAILURE);
-                        return NULL;                                                            
+                        return AXIS2_FAILURE;                                                            
                     }
                 }
                 else 
                 {
                     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED, AXIS2_FAILURE);
-                    return NULL;                    
+                    return AXIS2_FAILURE;                    
                 }            
             }
             else
             {
                 AXIS2_ERROR_SET((*env)->error, 
                     AXIS2_ERROR_THIS_LOCALNAME_NOT_SUPPORTED_INSIDE_THE_CODE_ELEMENT, AXIS2_FAILURE);
-                return NULL;                    
+                return AXIS2_FAILURE;                    
             }
         }
         else if(AXIS2_STRCMP(parent_localname, AXIS2_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME) == 0)
@@ -453,7 +457,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             else
             {
                 AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_REASON_ELEMENT, AXIS2_FAILURE);   
-                return NULL;
+                return AXIS2_FAILURE;
             }
             
         }else if(AXIS2_STRCMP(parent_localname, AXIS2_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME) == 0)
@@ -474,7 +478,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         " should not have child element");
             */                        
 
-            return NULL;
+            return AXIS2_FAILURE;
         }
                 
     }else if(element_level > 5)
@@ -488,12 +492,14 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
         
         if(AXIS2_STRCMP(parent_localname, AXIS2_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
         {
+            printf("parent is a subcode  element  %s  %s", ele_localname, AXIS2_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME);
             if(AXIS2_STRCMP(ele_localname, AXIS2_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME) == 0)
             {
+                printf(" sub code value");
                 if(builder_helper_impl->subcode_value_present)
                 {
                     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED, AXIS2_FAILURE);
-                    return NULL;
+                    return AXIS2_FAILURE;
                 }
                 else
                 {
@@ -513,8 +519,9 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                                     
                 }
             }
-            else if(AXIS2_STRCMP(ele_localname, AXIS2_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
+            if(AXIS2_STRCMP(ele_localname, AXIS2_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
             {
+                printf("\n parent subcode child subcode ");
                 if(builder_helper_impl->subcode_value_present)
                 {
                     if(!(builder_helper_impl->sub_sub_code_present))
@@ -536,24 +543,25 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     else
                     {
                         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED, AXIS2_FAILURE);
-                        return NULL;                                                        
+                        return AXIS2_FAILURE;                                                        
                     }
                 }
                 else
                 {
                     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE, AXIS2_FAILURE);
-                    return NULL;
+                    return AXIS2_FAILURE;
                 
                 }
             }
             else
             {
                 AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT, AXIS2_FAILURE);
-                return NULL;
+                return AXIS2_FAILURE;
             } 
         }
         else if(AXIS2_SOAP_BUILDER_IS_PROCESSING_DETAIL_ELEMENTS(builder_helper_impl->soap_builder, env))
         {
+            
             int detail_element_level = 0;
             axis2_bool_t local_name_exists = AXIS2_FALSE;
             int i = 0;
@@ -578,9 +586,9 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         " should not have child at element level " +
                         elementLevel);
                 */
-                return NULL;
+                return AXIS2_FAILURE;
             }
         }
     }        
-    return NULL;
-}                                                                                                                    
+    return AXIS2_SUCCESS;
+}

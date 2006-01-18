@@ -52,7 +52,7 @@ int build_soap(axis2_env_t **env, char *filename)
     axis2_om_output_t *om_output = NULL;
     axis2_soap_body_t *soap_body = NULL;
     axis2_soap_header_t *soap_header = NULL;
-    
+    void *ret_value = NULL;
     
     
     if(!filename)
@@ -67,7 +67,7 @@ int build_soap(axis2_env_t **env, char *filename)
     
     om_doc = axis2_om_document_create(env, NULL, om_builder);
     
-    soap_builder = axis2_soap_builder_create(env, om_builder, AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+    soap_builder = axis2_soap_builder_create(env, om_builder, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
    /* 
     if(soap_builder)    
         printf("soap version %d", AXIS2_SOAP_BUILDER_GET_SOAP_VERSION(soap_builder, env) );
@@ -96,11 +96,14 @@ int build_soap(axis2_env_t **env, char *filename)
         return AXIS2_FAILURE;
     }
     */
-     while(!(AXIS2_OM_STAX_BUILDER_IS_COMPLETE(om_builder, env)) && !(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env)))
+    /*
+    while(!(AXIS2_OM_STAX_BUILDER_IS_COMPLETE(om_builder, env)) && !(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env)))
     {
-        AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+        ret_value = AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+        if(!ret_value)
+               printf("%s" ,AXIS2_ERROR_GET_MESSAGE((*env)->error));
     }
-    /*    
+    */    
     AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
     AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
     AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
@@ -111,8 +114,14 @@ int build_soap(axis2_env_t **env, char *filename)
     AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
     AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
     AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
-   */
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+
+xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     om_output = axis2_om_output_create( env, xml_writer);  
     AXIS2_SOAP_ENVELOPE_SERIALIZE(soap_envelope, env, om_output, AXIS2_FALSE);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
@@ -161,9 +170,7 @@ int main(int argc, char *argv[])
         filename = argv[1];
     allocator = axis2_allocator_init (NULL);
     log = axis2_log_create(allocator, NULL);
-    axis2_error_init();
     error = axis2_error_create(allocator);
-    
     env = axis2_env_create_with_error_log(allocator, error,  log);
     
     /*build_soap_programatically(&env);*/
@@ -172,12 +179,5 @@ int main(int argc, char *argv[])
     printf("\nbuild soap\n");
     */
     build_soap(&env, filename);
-    getchar();
     return 0;        
 }
-
-
-
-
-
-
