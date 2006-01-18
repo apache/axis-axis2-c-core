@@ -99,7 +99,7 @@ axis2_soap12_builder_helper_create(axis2_env_t **env,
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    
+    printf("builder helper 12");
     builder_helper_impl->code_present = AXIS2_FALSE;
     builder_helper_impl->detail_present = AXIS2_FALSE;
     builder_helper_impl->reason_present = AXIS2_FALSE;
@@ -112,13 +112,14 @@ axis2_soap12_builder_helper_create(axis2_env_t **env,
     builder_helper_impl->builder_helper.ops = NULL; 
     builder_helper_impl->node_present = AXIS2_FALSE;
     builder_helper_impl->soap_builder = soap_builder;
-    builder_helper_impl->sub_sub_code_present = AXIS2_FALSE;  
+    builder_helper_impl->sub_sub_code_present = AXIS2_FALSE; 
+    builder_helper_impl->builder_helper.ops = NULL; 
     builder_helper_impl->builder_helper.ops = (axis2_soap12_builder_helper_ops_t*) AXIS2_MALLOC(
                                                 (*env)->allocator, sizeof(axis2_soap12_builder_helper_ops_t));
     if(!(builder_helper_impl->builder_helper.ops))
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_FREE((*env)->allocator, builder_helper_impl->builder_helper.ops);
+        AXIS2_FREE((*env)->allocator, builder_helper_impl);
         return NULL;
     }
     
@@ -181,6 +182,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
     {
         if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME, ele_localname) == 0)
         {
+           
             if(builder_helper_impl->code_present)
             {
                 AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
@@ -194,6 +196,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 AXIS2_SOAP_FAULT_SET_CODE(soap_fault, env, soap_fault_code);
                 builder_helper_impl->code_present = AXIS2_TRUE;
                 builder_helper_impl->code_processing = AXIS2_TRUE;
+                 
             }
         }
         else if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME, ele_localname) == 0)

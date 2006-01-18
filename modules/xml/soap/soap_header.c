@@ -112,6 +112,8 @@ axis2_soap_header_create(axis2_env_t **env)
     header_impl->om_ele          = NULL;
     header_impl->om_ele_node     = NULL;
     header_impl->hbnumber = 0;
+    header_impl->header_blocks = NULL;
+    
     
     header_impl->soap_header.ops = NULL;
     header_impl->soap_header.ops = (axis2_soap_header_ops_t*)AXIS2_MALLOC((*env)->allocator,

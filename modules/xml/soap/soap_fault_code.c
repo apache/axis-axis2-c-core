@@ -104,7 +104,8 @@ axis2_soap_fault_code_create(axis2_env_t **env)
     fault_code_impl->fault_code.ops = NULL;
     fault_code_impl->om_ele = NULL;
     fault_code_impl->om_ele_node = NULL;
-    
+    fault_code_impl->subcode = NULL;
+    fault_code_impl->value = NULL;
     fault_code_impl->soap_version = AXIS2_SOAP_VERSION_NOT_SET;
     fault_code_impl->parent = NULL;
     

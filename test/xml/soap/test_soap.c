@@ -96,18 +96,22 @@ int build_soap(axis2_env_t **env, char *filename)
         return AXIS2_FAILURE;
     }
     */
-     while(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env) != AXIS2_TRUE)
+     while(!(AXIS2_OM_STAX_BUILDER_IS_COMPLETE(om_builder, env)) && !(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env)))
     {
         AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
     }
-   /* 
+    /*    
     AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
     AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
     AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
     AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
     AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
-    */
-   
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+    AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
+   */
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     om_output = axis2_om_output_create( env, xml_writer);  
     AXIS2_SOAP_ENVELOPE_SERIALIZE(soap_envelope, env, om_output, AXIS2_FALSE);
@@ -157,16 +161,18 @@ int main(int argc, char *argv[])
         filename = argv[1];
     allocator = axis2_allocator_init (NULL);
     log = axis2_log_create(allocator, NULL);
+    axis2_error_init();
     error = axis2_error_create(allocator);
     
     env = axis2_env_create_with_error_log(allocator, error,  log);
-    /*
-    build_soap_programatically(&env);
     
+    /*build_soap_programatically(&env);*/
+    /*
     
     printf("\nbuild soap\n");
     */
     build_soap(&env, filename);
+    getchar();
     return 0;        
 }
 

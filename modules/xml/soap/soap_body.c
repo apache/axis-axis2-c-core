@@ -294,26 +294,32 @@ axis2_soap_fault_t* AXIS2_CALL axis2_soap_body_get_fault(axis2_soap_body_t *body
  *
  * @throws OMException
  */
-axis2_status_t AXIS2_CALL axis2_soap_body_add_fault(axis2_soap_body_t *body,
-    axis2_env_t **env,
-    axis2_soap_fault_t *soap_fault)
+axis2_status_t AXIS2_CALL 
+axis2_soap_body_add_fault(axis2_soap_body_t *body,
+                          axis2_env_t **env,
+                          axis2_soap_fault_t *soap_fault)
 {
     axis2_soap_body_impl_t *body_impl = NULL;
+    axis2_om_node_t *fault_node = NULL;
     AXIS2_FUNC_PARAM_CHECK(body, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, soap_fault, AXIS2_FAILURE);
     body_impl = AXIS2_INTF_TO_IMPL(body);
     
     if (body_impl->has_fault) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    if (soap_fault)
+    fault_node = AXIS2_SOAP_FAULT_GET_BASE_NODE(soap_fault, env);
+    if(fault_node)
     {
         body_impl->soap_fault = soap_fault;
-        AXIS2_OM_NODE_ADD_CHILD(body_impl->om_ele_node, env, AXIS2_SOAP_FAULT_GET_BASE_NODE(soap_fault, env));
+        /*AXIS2_OM_NODE_ADD_CHILD(fault_node , env, (body_impl->om_ele_node));*/
         body_impl->has_fault = AXIS2_TRUE;
+        return AXIS2_SUCCESS;
     }
-    return AXIS2_SUCCESS;
+    return AXIS2_FAILURE;            
 }
 
 axis2_om_node_t* AXIS2_CALL 

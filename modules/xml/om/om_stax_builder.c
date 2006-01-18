@@ -63,7 +63,16 @@ axis2_om_stax_builder_get_current_event(axis2_om_stax_builder_t *builder,
 axis2_status_t AXIS2_CALL
 axis2_om_stax_builder_set_last_node(axis2_om_stax_builder_t *builder,
                                     axis2_env_t **env,
-                                    axis2_om_node_t *om_node);                                                                   											
+                                    axis2_om_node_t *om_node);
+                                    
+int AXIS2_CALL 
+axis2_om_stax_builder_get_element_level(axis2_om_stax_builder_t* builder,
+                                        axis2_env_t **env); 
+                                            
+axis2_status_t AXIS2_CALL 
+axis2_om_stax_builder_set_element_level(axis2_om_stax_builder_t* builder,
+                                        axis2_env_t **env,
+                                        int element_level);                                                                                                       											
 													
 /********************************* axis2_om_stax_builder_impl_t struct ********/
 typedef struct axis2_om_stax_builder_impl_t
@@ -85,6 +94,8 @@ typedef struct axis2_om_stax_builder_impl_t
     axis2_bool_t cache;
     /** current event */
     int current_event;
+    
+    int element_level;
         
 }axis2_om_stax_builder_impl_t;
 
@@ -120,6 +131,7 @@ axis2_om_stax_builder_create (axis2_env_t **env,
     builder->parser = parser;
     builder->current_event = -1;
     builder->root_node = NULL;
+    builder->element_level = 0;
    
     /* ops */
     builder->om_stax_builder.ops = NULL;
@@ -149,7 +161,11 @@ axis2_om_stax_builder_create (axis2_env_t **env,
     builder->om_stax_builder.ops->get_last_node = 
             axis2_om_stax_builder_get_lastnode;	
     builder->om_stax_builder.ops->is_complete =
-            axis2_om_stax_builder_is_complete;                    
+            axis2_om_stax_builder_is_complete;
+    builder->om_stax_builder.ops->set_element_level =
+            axis2_om_stax_builder_set_element_level;
+    builder->om_stax_builder.ops->get_element_level =
+            axis2_om_stax_builder_get_element_level;                                            
 	
     return &(builder->om_stax_builder);
 }
@@ -431,6 +447,8 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
         return NULL;
     }
     
+    builder_impl->element_level++;
+    
     if (!(builder_impl->lastnode))
     {
         axis2_om_element_create (env , NULL, temp_localname, NULL, &element_node);
@@ -628,7 +646,7 @@ axis2_om_stax_builder_end_element (axis2_om_stax_builder_t *om_stax_builder,
     AXIS2_FUNC_PARAM_CHECK(om_stax_builder, env, AXIS2_FAILURE );
     
     builder = AXIS2_INTF_TO_IMPL(om_stax_builder);
-    
+    builder->element_level--;
     if (builder->lastnode)
     {
         if (AXIS2_OM_NODE_GET_BUILD_STATUS((builder->lastnode), env))
@@ -831,4 +849,24 @@ axis2_om_stax_builder_set_last_node(axis2_om_stax_builder_t *builder,
     builder_impl->lastnode = om_node;
     return AXIS2_SUCCESS;    
 }                                    
-                                    
+
+int AXIS2_CALL 
+axis2_om_stax_builder_get_element_level(axis2_om_stax_builder_t* builder,
+                                        axis2_env_t **env)
+{
+    axis2_om_stax_builder_impl_t *builder_impl = NULL;
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    return builder_impl->element_level;    
+
+}                                         
+                                            
+axis2_status_t AXIS2_CALL 
+axis2_om_stax_builder_set_element_level(axis2_om_stax_builder_t* builder,
+                                        axis2_env_t **env,
+                                        int element_level)
+{
+    axis2_om_stax_builder_impl_t *builder_impl = NULL;
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    builder_impl->element_level = element_level;    
+    return AXIS2_SUCCESS;
+}                                        

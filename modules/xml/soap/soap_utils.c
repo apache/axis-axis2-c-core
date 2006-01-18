@@ -68,7 +68,8 @@ axis2_soap_utils_set_new_node(axis2_env_t **env,
     {
         AXIS2_OM_NODE_FREE_TREE(*my_node, env);
     }
-    AXIS2_OM_NODE_ADD_CHILD(new_node, env, parent);
+    if(parent && new_node)
+        AXIS2_OM_NODE_ADD_CHILD(new_node, env, parent);
     *my_node = new_node;
     return AXIS2_SUCCESS;
 }

@@ -194,7 +194,7 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             
             AXIS2_OM_NODE_SET_BUILD_STATUS(om_element_node, env, AXIS2_TRUE); 
             
-            AXIS2_SOAP_BUILDER_SET_ELEMENT_LEVEL(builder_helper_impl->soap_builder, 
+            AXIS2_OM_STAX_BUILDER_SET_ELEMENT_LEVEL(builder_helper_impl->om_builder, 
                     env, (element_level-1));
             builder_helper_impl->fault_code_present = AXIS2_TRUE;                        
         }
@@ -227,7 +227,7 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             
             AXIS2_OM_NODE_SET_BUILD_STATUS(om_element_node, env, AXIS2_TRUE);
             
-            AXIS2_SOAP_BUILDER_SET_ELEMENT_LEVEL(builder_helper_impl->soap_builder, 
+            AXIS2_OM_STAX_BUILDER_SET_ELEMENT_LEVEL(builder_helper_impl->om_builder, 
                 env , (element_level -1));
          
             builder_helper_impl->fault_string_present = AXIS2_TRUE;   
