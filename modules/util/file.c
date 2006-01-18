@@ -150,7 +150,6 @@ axis2_file_get_name(axis2_file_t *file,
 {
     axis2_file_impl_t *file_impl = NULL;
     axis2_char_t *name = NULL;
-    
     AXIS2_FUNC_PARAM_CHECK(file, env, NULL);
     file_impl = AXIS2_INTF_TO_IMPL(file);
     

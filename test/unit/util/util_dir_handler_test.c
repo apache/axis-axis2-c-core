@@ -22,14 +22,18 @@ void Testaxis2_dir_handler_list_dir(CuTest *tc)
     pathname = AXIS2_STRACAT (axis2c_home, "/lib", &env);
     file_list = axis2_dir_handler_list_dir(&env, pathname);
     size = AXIS2_ARRAY_LIST_SIZE(file_list, &env);
-    
     for (i = 0; i < size; i++) 
     {
         axis2_file_t *arch_file = NULL;
         arch_file = (axis2_file_t *) AXIS2_ARRAY_LIST_GET(file_list, &env, i);
-        if(0 == AXIS2_STRCMP(arch_file->name, expected))
+        if(!arch_file)
         {
-            actual = arch_file->name;
+            printf("arch file is null\n");
+            continue;
+        }
+        if(0 == AXIS2_STRCMP(AXIS2_FILE_GET_NAME(arch_file, &env), expected))
+        {
+            actual = AXIS2_FILE_GET_NAME(arch_file, &env);
         }   
     }
     
