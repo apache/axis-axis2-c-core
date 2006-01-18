@@ -224,7 +224,7 @@ axis2_soap_fault_reason_set_soap_text
     AXIS2_PARAM_CHECK((*env)->error, soap_text, AXIS2_FAILURE);
     
     fault_reason_impl = AXIS2_INTF_TO_IMPL(fault_reason);
-    
+    /*
     if(fault_reason_impl->text)
     {
         my_node = AXIS2_SOAP_FAULT_TEXT_GET_BASE_NODE(
@@ -240,7 +240,7 @@ axis2_soap_fault_reason_set_soap_text
                     fault_reason_impl->om_ele_node,
                     &my_node, 
                     text_node);
-                    
+    */                
     fault_reason_impl->text = soap_text;
     return AXIS2_SUCCESS;
 }

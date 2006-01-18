@@ -229,27 +229,25 @@ axis2_soap_fault_sub_code_set_sub_code(
 {
     axis2_soap_fault_sub_code_impl_t *fault_subcode_impl = NULL;
     axis2_om_node_t *subcode_node = NULL;
-    
+    axis2_om_node_t *my_node = NULL;
     AXIS2_FUNC_PARAM_CHECK(fault_sub_code, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, sub_code, AXIS2_FAILURE);
     
     fault_subcode_impl = AXIS2_INTF_TO_IMPL(fault_sub_code);
+    subcode_node = AXIS2_SOAP_FAULT_SUB_CODE_GET_BASE_NODE(sub_code, env);
+    /*
     if(fault_subcode_impl->subcode)
     {
-        subcode_node = AXIS2_SOAP_FAULT_SUB_CODE_GET_BASE_NODE(
+        my_node = AXIS2_SOAP_FAULT_SUB_CODE_GET_BASE_NODE(
                             fault_subcode_impl->subcode, env);
         AXIS2_SOAP_FAULT_SUB_CODE_FREE(fault_subcode_impl->subcode, env);
-        AXIS2_OM_NODE_FREE_TREE(subcode_node, env);                            
-        subcode_node = NULL;
         fault_subcode_impl->subcode = NULL;
     }
     
+    axis2_soap_utils_set_new_node(env, fault_subcode_impl->om_ele_node, &my_node,
+                                    subcode_node);
+    */                                    
     fault_subcode_impl->subcode = sub_code;
-    subcode_node = AXIS2_SOAP_FAULT_SUB_CODE_GET_BASE_NODE(
-                        sub_code, env);
-                        
-    AXIS2_OM_NODE_ADD_CHILD(subcode_node, env, fault_subcode_impl->om_ele_node);
-    
     return AXIS2_SUCCESS;            
 }
                               
@@ -294,6 +292,7 @@ axis2_soap_fault_sub_code_set_value
     AXIS2_PARAM_CHECK((*env)->error, fault_sub_code_val, AXIS2_FAILURE);
     
     fault_subcode_impl = AXIS2_INTF_TO_IMPL(fault_sub_code);
+    /*
     if(fault_subcode_impl->value)
     {
         my_node = AXIS2_SOAP_FAULT_VALUE_GET_BASE_NODE(
@@ -309,7 +308,7 @@ axis2_soap_fault_sub_code_set_value
                     fault_subcode_impl->om_ele_node,
                     &my_node, 
                     value_node);
-                    
+    */                
     fault_subcode_impl->value = fault_sub_code_val;
     return AXIS2_SUCCESS;    
 }

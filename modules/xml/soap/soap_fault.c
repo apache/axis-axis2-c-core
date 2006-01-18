@@ -328,7 +328,7 @@ axis2_soap_fault_set_code(axis2_soap_fault_t *fault,
     AXIS2_PARAM_CHECK((*env)->error, code, AXIS2_FAILURE);
     
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
-   /* axis2_soap_fault_get_code(fault_code, env); */
+   /* axis2_soap_fault_get_code(fault_code, env); 
     if(fault_impl->fcode)
     {
         my_node = AXIS2_SOAP_FAULT_CODE_GET_BASE_NODE(
@@ -344,7 +344,7 @@ axis2_soap_fault_set_code(axis2_soap_fault_t *fault,
                     fault_impl->om_ele_node,
                     &my_node, 
                     code_node);
-                    
+    */                    
     fault_impl->fcode = code;
     return AXIS2_SUCCESS;  
 }
@@ -388,7 +388,7 @@ axis2_soap_fault_set_reason(axis2_soap_fault_t *fault,
     AXIS2_PARAM_CHECK((*env)->error, reason, AXIS2_FAILURE);
     
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
-   /* axis2_soap_fault_get_reason(fault_reason, env); */
+   /* axis2_soap_fault_get_reason(fault_reason, env); 
     if(fault_impl->freason)
     {
         my_node = AXIS2_SOAP_FAULT_REASON_GET_BASE_NODE(
@@ -404,7 +404,7 @@ axis2_soap_fault_set_reason(axis2_soap_fault_t *fault,
                     fault_impl->om_ele_node,
                     &my_node, 
                     reason_node);
-                    
+    */                    
     fault_impl->freason = reason;
     return AXIS2_SUCCESS;  
 
@@ -449,7 +449,7 @@ axis2_soap_fault_set_node(axis2_soap_fault_t *fault,
     AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
     
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
-   /* axis2_soap_fault_get_node(fault_node, env); */
+   /* axis2_soap_fault_get_node(fault_node, env); 
     if(fault_impl->fnode)
     {
         my_node = AXIS2_SOAP_FAULT_NODE_GET_BASE_NODE(
@@ -465,7 +465,7 @@ axis2_soap_fault_set_node(axis2_soap_fault_t *fault,
                     fault_impl->om_ele_node,
                     &my_node, 
                     node_node);
-                    
+    */                    
     fault_impl->fnode = node;
     return AXIS2_SUCCESS;
 
@@ -511,7 +511,7 @@ axis2_soap_fault_set_role(axis2_soap_fault_t *fault,
     AXIS2_PARAM_CHECK((*env)->error, role, AXIS2_FAILURE);
     
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
-   /* axis2_soap_fault_get_role(fault_role, env); */
+   /* axis2_soap_fault_get_role(fault_role, env); 
     if(fault_impl->frole)
     {
         my_node = AXIS2_SOAP_FAULT_ROLE_GET_BASE_NODE(
@@ -527,7 +527,7 @@ axis2_soap_fault_set_role(axis2_soap_fault_t *fault,
                     fault_impl->om_ele_node,
                     &my_node, 
                     role_node);
-                    
+    */                    
     fault_impl->frole = role;
     return AXIS2_SUCCESS;  
 
@@ -572,7 +572,7 @@ axis2_soap_fault_set_detail(axis2_soap_fault_t *fault,
     AXIS2_PARAM_CHECK((*env)->error, detail, AXIS2_FAILURE);
     
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
-   /* axis2_soap_fault_get_detail(fault_detail, env); */
+   /* axis2_soap_fault_get_detail(fault_detail, env); 
     if(fault_impl->fdetail)
     {
         my_node = AXIS2_SOAP_FAULT_DETAIL_GET_BASE_NODE(
@@ -588,7 +588,7 @@ axis2_soap_fault_set_detail(axis2_soap_fault_t *fault,
                     fault_impl->om_ele_node,
                     &my_node, 
                     detail_node);
-                    
+    */                    
     fault_impl->fdetail = detail;
     return AXIS2_SUCCESS;  
 
