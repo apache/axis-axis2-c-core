@@ -373,19 +373,22 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         axis2_svc_builder_t *svc_builder = NULL;
         axis2_arch_file_data_t *file_data = NULL;
         axis2_array_list_t *dep_svcs = NULL;
+        axis2_char_t *svc_name = NULL;
         
         file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
         name = AXIS2_ARCH_FILE_DATA_GET_NAME(file_data, env);
-        printf("name:%s\n", name);
+        printf("name*:%s\n", name);
         short_file_name = AXIS2_DESC_BUILDER_GET_SHORT_FILE_NAME(desc_builder, 
             env, name);
-        printf("short_file_name:%s\n", short_file_name);
-        svc = AXIS2_ARCH_FILE_DATA_GET_SVC(file_data, env, short_file_name);
+        svc_name = AXIS2_DESC_BUILDER_GET_FILE_NAME_WITHOUT_PREFIX(desc_builder,
+            env, short_file_name);
+        printf("svc_name:%s\n", svc_name);
+        svc = AXIS2_ARCH_FILE_DATA_GET_SVC(file_data, env, svc_name);
         if(NULL == svc)
         {
             axis2_qname_t *svc_qname = NULL;
             
-            svc_qname = axis2_qname_create(env, short_file_name, NULL, NULL);
+            svc_qname = axis2_qname_create(env, svc_name, NULL, NULL);
             svc = axis2_svc_create_with_qname(env, svc_qname);
             status = AXIS2_ARCH_FILE_DATA_ADD_SVC(file_data, env, svc);
             if(AXIS2_FAILURE == status)

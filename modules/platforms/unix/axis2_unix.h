@@ -159,6 +159,8 @@ extern "C"
  */
 #define AXIS2_PATH_SEP_CHAR '/'
 #define AXIS2_PATH_SEP_STR "/"
+#define AXIS2_LIB_PREFIX "lib"
+#define AXIS2_LIB_SUFFIX ".so"
 
 
 /**

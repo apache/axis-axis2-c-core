@@ -165,9 +165,9 @@ int main()
 {
     /*axis2_test_dep_engine_do_deploy();
     axis2_test_engine_conf_builder_populate_conf();*/
-    /*axis2_test_dep_engine_load();*/
+    axis2_test_dep_engine_load();
     /*axis2_test_transport_receiver_load();*/
-    axis2_test_transport_sender_load();
+    /*axis2_test_transport_sender_load();*/
     
 	return 0;
 }

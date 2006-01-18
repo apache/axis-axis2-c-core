@@ -15,7 +15,7 @@
  */
  
 #include <axis2_desc_builder.h>
-#include <string.h>
+#include <axis2_string.h>
 #include <axis2_class_loader.h>
 
 /** 
@@ -90,6 +90,10 @@ axis2_desc_builder_get_short_file_name(axis2_desc_builder_t *desc_builder,
                                         axis2_env_t **env,
                                         axis2_char_t *file_name);
 
+axis2_char_t *AXIS2_CALL
+axis2_desc_builder_get_file_name_without_prefix(axis2_desc_builder_t *desc_builder,
+                                axis2_env_t **env,
+                                axis2_char_t *short_file_name);
 
 axis2_char_t *AXIS2_CALL
 axis2_desc_builder_get_value(axis2_desc_builder_t *desc_builder,
@@ -145,6 +149,8 @@ axis2_desc_builder_create (axis2_env_t **env)
             axis2_desc_builder_load_default_msg_recv;
     desc_builder_impl->desc_builder.ops->get_short_file_name = 
             axis2_desc_builder_get_short_file_name;
+    desc_builder_impl->desc_builder.ops->get_file_name_without_prefix =
+            axis2_desc_builder_get_file_name_without_prefix;
     desc_builder_impl->desc_builder.ops->get_value = 
             axis2_desc_builder_get_value;  
 	
@@ -872,12 +878,36 @@ axis2_desc_builder_get_short_file_name(axis2_desc_builder_t *desc_builder,
     }
     separator = ".";
     
-    value = strstr(file_name_l, separator);
+    value = AXIS2_STRSTR(file_name_l, separator);
     
     value[0] = AXIS2_EOLN;
     short_name = file_name_l;
     
     return short_name;
+}
+
+axis2_char_t *AXIS2_CALL
+axis2_desc_builder_get_file_name_without_prefix(axis2_desc_builder_t *desc_builder,
+                                axis2_env_t **env,
+                                axis2_char_t *short_file_name)
+{
+    axis2_char_t *file_name_l = NULL;
+    axis2_char_t *short_name = NULL;
+    int len = 0;
+    printf("short_file_name*:%s\n", short_file_name);
+    AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, short_file_name, NULL);
+    file_name_l = AXIS2_STRDUP(short_file_name, env);
+    if(!file_name_l)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    len = AXIS2_STRLEN(AXIS2_LIB_PREFIX);
+    short_name = &file_name_l[len];
+    printf("short_name:%s\n", short_name);
+    return short_name;
+
 }
 
 axis2_char_t *AXIS2_CALL
@@ -898,7 +928,7 @@ axis2_desc_builder_get_value(axis2_desc_builder_t *desc_builder,
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    value = strpbrk(in_l, separator);
+    value = AXIS2_STRSTR(in_l, separator);
     value = value + 1;
     
     return value;

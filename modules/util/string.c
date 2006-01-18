@@ -106,3 +106,10 @@ axis2_strncasecmp(const axis2_char_t *s1, axis2_char_t *s2, int n)
 	    return(0);
     return(n < 0 ? 0 : toupper(*s1) - toupper(*--s2));
 }
+
+AXIS2_DECLARE(axis2_char_t *)
+axis2_strstr (const axis2_char_t *heystack,
+                const axis2_char_t *needle)
+{
+	return strstr(heystack, needle);
+}

@@ -54,6 +54,10 @@ extern "C"
      */
     AXIS2_DECLARE(axis2_char_t*)
     axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, axis2_env_t **env);
+    
+    AXIS2_DECLARE(axis2_char_t *)
+    axis2_strstr (const axis2_char_t *heystack,
+                    const axis2_char_t *needle);
 
 
 #define AXIS2_STRDUP(pts, env) axis2_strdup(pts, env)
@@ -62,6 +66,7 @@ extern "C"
 #define AXIS2_STRCASECMP(s1,s2) axis2_strcasecmp(s1,s2)
 #define AXIS2_STRNCASECMP(s1,s2,n) axis2_strncasecmp(s1,s2,n)
 #define AXIS2_STRACAT(s1, s2, env) axis2_stracat(s1, s2, env)
+#define AXIS2_STRSTR(s1, s2) axis2_strstr(s1, s2)
 
 /** @} */
     

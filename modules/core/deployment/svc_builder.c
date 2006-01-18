@@ -311,6 +311,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     name_attr = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(svc_element, env, qattname);
     svc_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(name_attr, env);
     AXIS2_SVC_SET_AXIS2_SVC_NAME(builder_impl->svc, env, svc_name);
+    AXIS2_QNAME_FREE(qattname, env);
     /* end of my logic */
     /* processing service wide modules which required to engage globally */
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
@@ -431,7 +432,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         module_configs_itr, builder_impl->svc->param_container, builder_impl->svc);
     */
     AXIS2_QNAME_FREE(qparamst, env);
-    AXIS2_QNAME_FREE(qdesc, env) ;
+    /*AXIS2_QNAME_FREE(qdesc, env) ;*/
     AXIS2_QNAME_FREE(qmodulest, env) ;
     AXIS2_QNAME_FREE(qinflowst, env) ;
     AXIS2_QNAME_FREE(qoutflowst, env) ;
@@ -592,7 +593,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         AXIS2_QNAME_FREE(qparamst, env);
         AXIS2_QNAME_FREE(qmsgrecv, env);
         AXIS2_QNAME_FREE(qmodulest, env);
-        AXIS2_QNAME_FREE(qmodule_config, env);
+        /*AXIS2_QNAME_FREE(qmodule_config, env);*/
         AXIS2_QNAME_FREE(qattname, env);
     }
     return ops;

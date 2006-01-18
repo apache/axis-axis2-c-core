@@ -136,6 +136,14 @@ axis2_arch_file_data_create(axis2_env_t **env)
     arch_file_data_impl->deployable_svcs = NULL;
     arch_file_data_impl->arch_file_data.ops = NULL;
     
+    arch_file_data_impl->deployable_svcs = axis2_array_list_create(env, 20);
+    if(!arch_file_data_impl->deployable_svcs)
+    {
+        axis2_arch_file_data_free(&(arch_file_data_impl->arch_file_data), env);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
 	arch_file_data_impl->arch_file_data.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_arch_file_data_ops_t));
 	if(NULL == arch_file_data_impl->arch_file_data.ops)

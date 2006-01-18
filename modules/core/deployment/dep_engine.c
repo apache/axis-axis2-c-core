@@ -1051,7 +1051,10 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             op_desc = (axis2_op_t *)v;
         
             modules = AXIS2_OP_GET_MODULE_REFS(op_desc, env);
-            size = AXIS2_ARRAY_LIST_SIZE(modules, env);
+            if(modules)
+            {
+                size = AXIS2_ARRAY_LIST_SIZE(modules, env);
+            }
             for (i = 0; i < size; i++) 
             {
                 axis2_qname_t *module_qname = NULL;
@@ -1308,7 +1311,6 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                     printf("file_name:%s\n", file_name);
                     status = AXIS2_ARCH_READER_PROCESS_SVC_GRP(arch_reader, env,
                         file_name, dep_engine, svc_grp);
-                    printf("came40\n");
                     if(AXIS2_SUCCESS != status)
                     {
                         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SVC, 

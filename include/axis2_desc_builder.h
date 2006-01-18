@@ -151,8 +151,12 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
                                             axis2_env_t **env,
                                             axis2_char_t *file_name);
     
-    
-    /**
+    axis2_char_t *(AXIS2_CALL *
+    get_file_name_without_prefix) (axis2_desc_builder_t *desc_builder,
+                                    axis2_env_t **env,
+                                    axis2_char_t *short_file_name);    
+ 
+ /**
      * this method is to get the value of attribue
      * eg xsd:anyVal --> anyVal
      *
@@ -162,6 +166,8 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
     get_value) (axis2_desc_builder_t *desc_builder,
                                     axis2_env_t **env,
                                     axis2_char_t *in);
+                                    
+                                        
 
 
 };
@@ -235,6 +241,9 @@ axis2_desc_builder_create_with_file_and_dep_engine (
 
 #define AXIS2_DESC_BUILDER_GET_SHORT_FILE_NAME(desc_builder, env, file_name) \
 		((desc_builder)->ops->get_short_file_name (desc_builder, env, file_name))  
+
+#define AXIS2_DESC_BUILDER_GET_FILE_NAME_WITHOUT_PREFIX(desc_builder, env, file_name) \
+		((desc_builder)->ops->get_file_name_without_prefix (desc_builder, env, file_name))  
 
 #define AXIS2_DESC_BUILDER_GET_VALUE(desc_builder, env, in) \
 		((desc_builder)->ops->get_value (desc_builder, env, in))  

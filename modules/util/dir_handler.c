@@ -109,8 +109,7 @@ axis2_bool_t file_select(struct direct *entry)
 	/* Check for filename extensions */
 	ptr = rindex(entry->d_name, '.');
 	if ((ptr != NULL) &&
-		((strcmp(ptr, ".so") == 0)
-		|| (strcmp(ptr, ".zip") == 0) ))
+		((strcmp(ptr, AXIS2_LIB_SUFFIX) == 0) ))
     {
 		return (AXIS2_TRUE);
     }

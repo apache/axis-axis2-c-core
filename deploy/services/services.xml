@@ -6,7 +6,7 @@
    </description>
 
     <operation name="echo">
-            <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+            <messageReceiver class="libaxis2_receivers.so" />
     </operation>
 
 </service>

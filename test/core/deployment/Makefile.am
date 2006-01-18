@@ -1,7 +1,7 @@
 prgbindir=$(prefix)/bin/system_test
 prgbin_PROGRAMS = test_deployment
 SUBDIRS =
-AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
+AM_CFLAGS = $(CFLAGS) -g -pthread
 test_deployment_SOURCES = test_deployment.c
 
 test_deployment_LDADD   =  -L$(AXIS2C_HOME)/lib \
