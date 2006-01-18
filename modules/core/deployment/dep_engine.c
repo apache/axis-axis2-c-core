@@ -884,6 +884,11 @@ axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
     engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     /* ArrayList modules = DeploymentData.getInstance().getModules(); */
     /* PhaseResolver resolver = new PhaseResolver(axisConfig); */
+    if(!engine_impl->module_list)
+    {
+        /* there are no modules */
+        return AXIS2_SUCCESS;
+    }
     size = AXIS2_ARRAY_LIST_SIZE(engine_impl->module_list, env);
     for(i = 0; i < size; i++)
     {

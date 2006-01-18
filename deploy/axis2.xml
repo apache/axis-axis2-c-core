@@ -2,7 +2,7 @@
     <!-- ================================================= -->
     <!-- Parameters -->
     <!-- ================================================= -->
-    <parameter name="hotdeployment" locked="false">true</parameter>
+    <parameter name="hotdeployment" locked="false">false</parameter>
     <parameter name="hotupdate" locked="false">false</parameter>
     <parameter name="enableMTOM" locked="false">true</parameter>
     <!-- Uncomment this to enable REST support -->
@@ -87,7 +87,7 @@
     <!-- Global Modules  -->
     <!-- ================================================= -->
     <!-- Comment this to disable Addressing -->
-    <module ref="addressing"/>
+    <!--<module ref="addressing"/>-->
 
 
     <!--Configuring module , providing paramters for modules whether they refer or not-->

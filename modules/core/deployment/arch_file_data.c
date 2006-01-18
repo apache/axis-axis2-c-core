@@ -107,7 +107,17 @@ axis2_arch_file_data_set_deployable_svcs(axis2_arch_file_data_t *file_data,
                                     axis2_env_t **env,
                                     axis2_array_list_t *deployable_svcs);
 
-                                
+axis2_char_t *
+axis2_arch_file_data_get_short_file_name(axis2_arch_file_data_t *file_data,
+                                                axis2_env_t **env,
+                                                axis2_char_t *file_name);
+                                                
+axis2_char_t *
+axis2_arch_file_data_get_file_name_without_prefix(axis2_arch_file_data_t *file_data,
+                                                axis2_env_t **env,
+                                                axis2_char_t *short_file_name);
+
+                               
 /************************** End of function prototypes ************************/
 
 axis2_arch_file_data_t * AXIS2_CALL 
@@ -323,17 +333,21 @@ axis2_arch_file_data_get_svc_name(axis2_arch_file_data_t *file_data,
                                     axis2_env_t **env)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
+    axis2_char_t *file_name = NULL;
+    axis2_char_t *name = NULL;
     axis2_char_t *svc_name = NULL;
     AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
     if(NULL != file_data_impl->file)
     {
-        svc_name = AXIS2_FILE_GET_NAME(file_data_impl->file, env);
+        file_name = AXIS2_FILE_GET_NAME(file_data_impl->file, env);
     }
     else
     {
-        svc_name = file_data_impl->name;
+        file_name = file_data_impl->name;
     }
+    name = axis2_arch_file_data_get_short_file_name(file_data, env, file_name);
+    svc_name = axis2_arch_file_data_get_file_name_without_prefix(file_data, env, name);
     return svc_name;
 }
 
@@ -466,4 +480,55 @@ axis2_arch_file_data_set_deployable_svcs(axis2_arch_file_data_t *file_data,
     }
     file_data_impl->deployable_svcs = deployable_svcs;
     return AXIS2_SUCCESS;
+}
+
+axis2_char_t *
+axis2_arch_file_data_get_file_name_without_prefix(axis2_arch_file_data_t *file_data,
+                                                axis2_env_t **env,
+                                                axis2_char_t *short_file_name)
+{
+    axis2_char_t *file_name_l = NULL;
+    axis2_char_t *short_name = NULL;
+    int len = 0;
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, short_file_name, NULL);
+    file_name_l = AXIS2_STRDUP(short_file_name, env);
+    if(!file_name_l)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    len = AXIS2_STRLEN(AXIS2_LIB_PREFIX);
+    short_name = &file_name_l[len];
+    return short_name;
+
+}
+
+axis2_char_t *
+axis2_arch_file_data_get_short_file_name(axis2_arch_file_data_t *file_data,
+                                                axis2_env_t **env,
+                                                axis2_char_t *file_name) 
+{
+    axis2_char_t *separator = NULL;
+    axis2_char_t *value = NULL;
+    axis2_char_t *file_name_l = NULL;
+    axis2_char_t *short_name = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, file_name, NULL);
+    
+    file_name_l = AXIS2_STRDUP(file_name, env);
+    if(!file_name_l)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    separator = ".";
+    
+    value = AXIS2_STRSTR(file_name_l, separator);
+    
+    value[0] = AXIS2_EOLN;
+    short_name = file_name_l;
+    
+    return short_name;
 }

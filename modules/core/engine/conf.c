@@ -804,6 +804,7 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
     axis2_qname_t *module_desc = NULL;
     axis2_char_t *svc_grp_name = NULL;
     int i = 0;
+    int size = 0;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
@@ -834,13 +835,8 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
         }
         index_i = axis2_hash_next(env, index_i);
     }
-    
-    if(svcs)
-    {
-        axis2_hash_free(svcs, env);
-        svcs = NULL;
-    }
-    
+   
+    svcs = NULL;
     svcs = AXIS2_SVC_GRP_GET_SVCS(svc_grp, env);
     index_i = axis2_hash_first (svcs, env);
     while(NULL != index_i)
@@ -853,8 +849,8 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
         /* notifyObservers(AxisEvent.SERVICE_DEPLOY ,description); */
         index_i = axis2_hash_next(env, index_i);
     }
-   
-    while(i < AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules, env))
+    size = AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules, env);
+    while(i < size)
     {
         
         module_desc = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(config_impl->
@@ -868,6 +864,7 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
     }
 
     svc_grp_name = AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
+    printf("svc_grp_name:%s\n", svc_grp_name);
     if(!config_impl->svc_grps)
     {
         config_impl->svc_grps = axis2_hash_make(env);

@@ -350,7 +350,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
         resolver_impl->axis2_config, env);
     
     size = AXIS2_ARRAY_LIST_SIZE(moduleqnames, env);
-    if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
     {
         return AXIS2_FAILURE;
     }
@@ -570,6 +570,11 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             }
         }
     }
+    else
+    {
+        /* no flows configured */
+        return AXIS2_SUCCESS;
+    }
     
     if(resolver_impl->phase_holder)
     {
@@ -603,10 +608,13 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             break;
         }
     }
+    /* TODO There is no point of having this code. If no flows, it should
+     * not come here. It should have returned when flows are null
     if(!all_handlers)
     {
-        return AXIS2_FAILURE;
+        return AXIS2_SUCCESS;
     }
+    */
     
     size = AXIS2_ARRAY_LIST_SIZE(all_handlers, env);
     if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
