@@ -13,6 +13,7 @@ int axis2_test_dep_engine_load()
 {
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_conf_t *conf = NULL;
+    axis2_hash_t *svc_map = NULL;
     axis2_array_list_t *in_phases = NULL;
     axis2_char_t *axis2c_home = NULL;
 
@@ -33,6 +34,13 @@ int axis2_test_dep_engine_load()
         printf("conf is NULL\n)");
         return -1;
     }
+    
+    svc_map = AXIS2_CONF_GET_SVCS(conf, &env);
+    if (svc_map)
+        printf("svc_map count = %d\n", axis2_hash_count(svc_map));
+    else
+        printf("svc_map count = zero\n");
+    
     in_phases = 
         AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(
             conf, &env);
@@ -44,6 +52,7 @@ int axis2_test_dep_engine_load()
     {
         printf("dep engine load is successfull\n");
     }
+
     return 0;
 }
 
