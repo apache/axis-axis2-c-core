@@ -208,6 +208,10 @@ axis2_http_transport_utils_process_http_post_request
 	AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
 	axis2_engine_t *engine = NULL;
 	engine = axis2_engine_create(env, conf_ctx);
+    
+    if (!soap_envelope)
+        return AXIS2_FAILURE;
+    
     axis2_soap_body_t *soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
     
     if (!soap_body)

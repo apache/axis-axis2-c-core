@@ -343,11 +343,14 @@ axis2_status_t AXIS2_CALL axis2_engine_send_fault(struct axis2_engine *engine, a
 
     if (!(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))) 
     {
-        /* actually send the SOAP Fault*/
+        /* send the SOAP Fault*/
+        axis2_transport_sender_t *transport_sender = NULL;
         axis2_transport_out_desc_t *transport_out = AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env);
-        axis2_transport_sender_t *transport_sender = AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out, env);
+        if (transport_out)
+            transport_sender = AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out, env);
         /*TODO:Uncomment this once the implementation done*/
-        /*AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);*/
+        if (transport_sender)
+            AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);
     }
     return AXIS2_SUCCESS;
 }
