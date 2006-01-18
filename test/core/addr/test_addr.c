@@ -10,7 +10,7 @@ int axis2_test_msg_info_headers()
 	axis2_endpoint_ref_t *reply_to= NULL;
 	axis2_endpoint_ref_t *fault_to= NULL;
 	axis2_endpoint_ref_t *axis2_endpoint_ref = NULL;
-	axis2_status_t *status = AXIS2_FAILURE;
+	axis2_status_t status = AXIS2_FAILURE;
 	axis2_msg_info_headers_t *axis2_msg_info_headers = NULL;
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 	axis2_env_t *env = axis2_env_create (allocator);
