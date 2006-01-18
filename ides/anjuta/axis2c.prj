@@ -237,7 +237,8 @@ module.include.files=\
 	include/axis2_engine.h\
 	test/unit/core/description/description_test.h\
 	test/unit/core/description/test_op.h\
-	test/unit/core/description/test_svc.h
+	test/unit/core/description/test_svc.h\
+	include/axis2_file.h
 
 module.source.name=.
 module.source.type=
@@ -323,15 +324,6 @@ module.source.files=\
 	modules/core/engine/req_uri_disp.c\
 	modules/core/engine/soap_action_disp.c\
 	modules/core/engine/soap_body_disp.c\
-	modules/core/transport/http/axis2_http_header.c\
-	modules/core/transport/http/axis2_http_request_line.c\
-	modules/core/transport/http/axis2_http_response_writer.c\
-	modules/core/transport/http/axis2_http_simple_request.c\
-	modules/core/transport/http/axis2_http_simple_response.c\
-	modules/core/transport/http/axis2_http_status_line.c\
-	modules/core/transport/http/axis2_http_transport_utils.c\
-	modules/core/transport/http/axis2_http_worker.c\
-	modules/core/transport/http/axis2_simple_http_svr_conn.c\
 	modules/xml/parser/guththila/guththila_xml_reader_wrapper.c\
 	modules/xml/parser/guththila/guththila_xml_writer_wrapper.c\
 	test/unit/core/description/description_test.c\
@@ -351,7 +343,6 @@ module.source.files=\
 	modules/util/class_loader.c\
 	modules/core/engine/engine.c\
 	modules/core/receivers/msg_recv.c\
-	modules/core/transport/http/axis2_http_out_transport_info.c\
 	modules/core/deployment/dep_engine.c\
 	modules/core/deployment/arch_file_data.c\
 	modules/core/deployment/arch_reader.c\
@@ -394,7 +385,25 @@ module.source.files=\
 	modules/xml/om/om_stax_builder.c\
 	modules/xml/om/om_text.c\
 	modules/core/receivers/raw_xml_in_out_msg_recv.c\
-	test/unit/util/util_class_loader_test.c
+	test/unit/util/util_class_loader_test.c\
+	modules/core/transport/http/receiver/http_response_writer.c\
+	modules/core/transport/http/receiver/http_server.c\
+	modules/core/transport/http/receiver/http_svr_thread.c\
+	modules/core/transport/http/receiver/simple_http_svr_conn.c\
+	modules/core/transport/http/http_header.c\
+	modules/core/transport/http/http_out_transport_info.c\
+	modules/core/transport/http/http_request_line.c\
+	modules/core/transport/http/http_simple_request.c\
+	modules/core/transport/http/http_simple_response.c\
+	modules/core/transport/http/http_status_line.c\
+	modules/core/transport/http/http_transport_utils.c\
+	modules/core/transport/http/http_worker.c\
+	modules/core/transport/http/url.c\
+	modules/core/transport/http/server/http_server_main.c\
+	modules/core/transport/http/sender/http_client.c\
+	modules/core/transport/http/sender/http_transport_sender.c\
+	modules/core/transport/http/sender/soap_over_http_sender.c\
+	modules/util/file.c
 
 module.pixmap.name=.
 module.pixmap.type=
