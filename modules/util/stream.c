@@ -593,7 +593,8 @@ axis2_stream_read_socket (axis2_stream_t *stream, axis2_env_t **env,
 	{
         return -1;
 	}
-	return fread(buffer, sizeof(axis2_char_t), count, fp);	
+	/*return fread(buffer, sizeof(axis2_char_t), count, fp);	*/
+    return read(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count);
 }
 
 int AXIS2_CALL

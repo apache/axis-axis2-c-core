@@ -371,7 +371,8 @@ axis2_http_worker_set_response_headers(axis2_http_worker_t *http_worker,
         }
         else
         {
-            if(AXIS2_STRCASECMP(AXIS2_HTTP_SIMPLE_RESPONSE_GET_HTTP_VERSION(
+            if(AXIS2_HTTP_SIMPLE_RESPONSE_GET_HTTP_VERSION(simple_response, env) &&
+                    AXIS2_STRCASECMP(AXIS2_HTTP_SIMPLE_RESPONSE_GET_HTTP_VERSION(
                     simple_response, env), AXIS2_HTTP_HEADER_PROTOCOL_11))
             {
                 AXIS2_SIMPLE_HTTP_SVR_CONN_SET_KEEP_ALIVE(svr_conn, env, 
