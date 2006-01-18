@@ -981,11 +981,13 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
         int i = 0;
         axis2_hash_t *ops = NULL;
         axis2_hash_index_t *index_i = NULL;
+        axis2_char_t *file_name = NULL;
         
         svc = (axis2_svc_t *) AXIS2_ARRAY_LIST_GET(svcs, env, i);
         axis2_dep_engine_load_svc_props(dep_engine, env, svc);
         file = AXIS2_ARCH_FILE_DATA_GET_FILE(engine_impl->curr_file, env);
-        AXIS2_SVC_SET_FILENAME(svc, env, file->name);
+        file_name = AXIS2_FILE_GET_NAME(file, env);
+        AXIS2_SVC_SET_FILENAME(svc, env, file_name);
 
         /* module form serviceGroup */
         grp_modules = AXIS2_SVC_GRP_GET_MODULES(svc_metadata, env);
@@ -1521,6 +1523,7 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
     axis2_flow_t *out_flow = NULL;
     axis2_flow_t *in_fault_flow = NULL;
     axis2_flow_t *out_fault_flow = NULL;
+    axis2_char_t *file_name = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(dep_engine, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, module_archive, NULL);
@@ -1533,8 +1536,9 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
         env, AXIS2_MODULE, module_archive);
     module = axis2_module_desc_create(env);
     arch_reader = axis2_arch_reader_create(env);
-    AXIS2_ARCH_READER_READ_MODULE_ARCH(arch_reader, env, module_archive->name,
-        dep_engine, module);    
+    file_name = AXIS2_FILE_GET_NAME(module_archive, env);
+    AXIS2_ARCH_READER_READ_MODULE_ARCH(arch_reader, env, file_name, dep_engine, 
+        module);    
 
     in_flow = AXIS2_MODULE_DESC_GET_INFLOW(module, env);
     if(NULL != in_flow)

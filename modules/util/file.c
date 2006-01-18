@@ -17,26 +17,83 @@
 #include <axis2_file.h>
 #include <axis2_string.h>
 
+typedef struct axis2_file_impl
+{
+    axis2_file_t file;
+    axis2_char_t *name;
+    AXIS2_TIME_T timestamp;
+    
+    
+}axis2_file_impl_t;
+
+#define AXIS2_INTF_TO_IMPL(file) \
+    ((axis2_file_impl_t *) file)
+
+
+
+axis2_status_t AXIS2_CALL
+axis2_file_free (axis2_file_t *file, 
+                    axis2_env_t **env); 
+
+axis2_status_t AXIS2_CALL
+axis2_file_set_name(axis2_file_t *file,
+                        axis2_env_t **env,
+                        axis2_char_t *name);
+
+axis2_char_t *AXIS2_CALL
+axis2_file_get_name(axis2_file_t *file,
+                    axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_file_set_timestamp(axis2_file_t *file,
+                        axis2_env_t **env,
+                        AXIS2_TIME_T timestamp);
+
+AXIS2_TIME_T AXIS2_CALL
+axis2_file_get_timestamp(axis2_file_t *file,
+                            axis2_env_t **env);
+
+axis2_file_t *AXIS2_CALL
+axis2_file_clone(axis2_file_t *file,
+                  axis2_env_t **env);
+
 /************************** End of function prototypes ************************/
 
-axis2_file_t * AXIS2_CALL 
+axis2_file_t *AXIS2_CALL 
 axis2_file_create(axis2_env_t **env)
 {
-    axis2_file_t *file = NULL;
+    axis2_file_impl_t *file_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	file = (axis2_file_t *) AXIS2_MALLOC((*env)->allocator, sizeof(axis2_file_t));
+	file_impl = (axis2_file_impl_t *) AXIS2_MALLOC((*env)->allocator, 
+        sizeof(axis2_file_impl_t));
 	
-	if(NULL == file)
+	if(NULL == file_impl)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-    file->name = NULL;
-    file->time_stamp = 0;
+    file_impl->name = NULL;
+    file_impl->timestamp = 0;
+    
+    file_impl->file.ops = 
+		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_file_ops_t));
+	if(NULL == file_impl->file.ops)
+    {
+        axis2_file_free(&(file_impl->file), env);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
+    file_impl->file.ops->free =  axis2_file_free;
+    file_impl->file.ops->set_name = axis2_file_set_name;
+    file_impl->file.ops->get_name = axis2_file_get_name;
+    file_impl->file.ops->set_timestamp = axis2_file_set_timestamp;
+    file_impl->file.ops->get_timestamp = axis2_file_get_timestamp;
+    file_impl->file.ops->clone = axis2_file_clone;
 	
-	return file;
+	return &(file_impl->file);
 }
 
 /***************************Function implementation****************************/
@@ -45,33 +102,114 @@ axis2_status_t AXIS2_CALL
 axis2_file_free (axis2_file_t *file, 
                     axis2_env_t **env)
 {
-    /*if(file->name)
-    {
-        AXIS2_FREE((*env)->allocator, file->name);
-        file->name = NULL;
-    }*/
+    axis2_file_impl_t *file_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    file_impl = AXIS2_INTF_TO_IMPL(file);
     
-    if(file)
+    if(file_impl->name)
     {
-        AXIS2_FREE((*env)->allocator, file);
-        file = NULL;
+        AXIS2_FREE((*env)->allocator, file_impl->name);
+        file_impl->name = NULL;
+    }
+    
+    if(file_impl)
+    {
+        AXIS2_FREE((*env)->allocator, file_impl);
+        file_impl = NULL;
     }
     return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_file_set_name(axis2_file_t *file,
+                    axis2_env_t **env,
+                    axis2_char_t *name)
+{
+    axis2_file_impl_t *file_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
+    file_impl = AXIS2_INTF_TO_IMPL(file);
+    
+    if(file_impl->name)
+    {
+        AXIS2_FREE((*env)->allocator, file_impl->name);
+        file_impl->name = NULL;
+    }
+    file_impl->name = AXIS2_STRDUP(name, env);
+    if(!file_impl->name)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
+}
+
+axis2_char_t *AXIS2_CALL
+axis2_file_get_name(axis2_file_t *file,
+                    axis2_env_t **env)
+{
+    axis2_file_impl_t *file_impl = NULL;
+    axis2_char_t *name = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(file, env, NULL);
+    file_impl = AXIS2_INTF_TO_IMPL(file);
+    
+    if(!file_impl->name)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_FILE_NAME_NOT_SET, AXIS2_FAILURE);   
+        return NULL;
+    }
+    name = AXIS2_STRDUP(file_impl->name, env);
+    if(!name)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    return name;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_file_set_timestamp(axis2_file_t *file,
+                    axis2_env_t **env,
+                    AXIS2_TIME_T timestamp)
+{
+    axis2_file_impl_t *file_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    file_impl = AXIS2_INTF_TO_IMPL(file);
+    
+    file_impl->timestamp = timestamp;
+    
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_TIME_T AXIS2_CALL
+axis2_file_get_timestamp(axis2_file_t *file,
+                    axis2_env_t **env)
+{
+    axis2_file_impl_t *file_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    file_impl = AXIS2_INTF_TO_IMPL(file);
+    return file_impl->timestamp;
 }
 
 axis2_file_t *AXIS2_CALL
 axis2_file_clone(axis2_file_t *file,
                   axis2_env_t **env)
 {
+    axis2_file_impl_t *file_impl = NULL;
     axis2_file_t *new_file = NULL;
-    AXIS2_FUNC_PARAM_CHECK(file, env, NULL);
+    axis2_status_t status = AXIS2_FAILURE;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    file_impl = AXIS2_INTF_TO_IMPL(file);
+    
     new_file = axis2_file_create(env);
-    new_file->name = AXIS2_STRDUP(file->name, env);
-    if(!new_file->name)
+    status = AXIS2_FILE_SET_NAME(new_file, env, file_impl->name);
+    if(AXIS2_SUCCESS != status)
     {
-        axis2_file_free(new_file, env);
-        new_file = NULL;
+        return NULL;
     }
-    new_file->time_stamp = file->time_stamp;
+    AXIS2_FILE_SET_TIMESTAMP(new_file, env, file_impl->timestamp);
     return new_file;
 }

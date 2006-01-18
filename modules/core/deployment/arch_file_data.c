@@ -197,7 +197,7 @@ axis2_arch_file_data_create_with_type_and_file(axis2_env_t **env,
         return NULL;
     }
     file_data_impl->type = type;
-    file_data_impl->file = axis2_file_clone(file, env);
+    file_data_impl->file = AXIS2_FILE_CLONE(file, env);
     return &(file_data_impl->arch_file_data);    
 }
 
@@ -232,7 +232,7 @@ axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data,
     
     if(file_data_impl->file)
     {
-        axis2_file_free(file_data_impl->file, env);
+        AXIS2_FILE_FREE(file_data_impl->file, env);
         file_data_impl->file = NULL;        
     }
     if(file_data_impl->msg_recv)
@@ -310,8 +310,12 @@ axis2_char_t *AXIS2_CALL
 axis2_arch_file_data_get_name(axis2_arch_file_data_t *file_data,
                                     axis2_env_t **env) 
 {
+    axis2_arch_file_data_impl_t *file_data_impl = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
-    return AXIS2_INTF_TO_IMPL(file_data)->file->name;
+    file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
+    
+    return AXIS2_FILE_GET_NAME(file_data_impl->file, env);
 }
 
 axis2_char_t *AXIS2_CALL
@@ -324,7 +328,7 @@ axis2_arch_file_data_get_svc_name(axis2_arch_file_data_t *file_data,
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
     if(NULL != file_data_impl->file)
     {
-        svc_name = file_data_impl->file->name;
+        svc_name = AXIS2_FILE_GET_NAME(file_data_impl->file, env);
     }
     else
     {

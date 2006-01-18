@@ -34,7 +34,8 @@ axis2_dir_handler_list_dir(axis2_env_t **env,
 { 
     axis2_array_list_t *file_list = NULL;
     struct stat *buf = NULL;
-	int count,i;
+	int count = 1;
+    int i = 0;
 	struct direct **files = NULL;
 	int file_select();
     axis2_status_t status = AXIS2_FAILURE;
@@ -49,7 +50,7 @@ axis2_dir_handler_list_dir(axis2_env_t **env,
 		return NULL;
 	}
     
-	for (i=1; i < count + 1 ; ++i)
+	for (i = 1; i < (count + 1) ; ++i )
     {
         int len = 0;
         axis2_char_t *fname = NULL;
@@ -57,13 +58,14 @@ axis2_dir_handler_list_dir(axis2_env_t **env,
         axis2_char_t *path = NULL;
        
         fname = files[i-1]->d_name;
+        printf("fname:%s\n", fname);
         arch_file = (axis2_file_t *) axis2_file_create(env);
         if(!arch_file)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
-        arch_file->name = fname;
+        AXIS2_FILE_SET_NAME(arch_file, env, fname);
         len = strlen(pathname) + strlen(fname) + 3;
         path = AXIS2_MALLOC((*env)->allocator, len);
         if(!path)
@@ -81,7 +83,7 @@ axis2_dir_handler_list_dir(axis2_env_t **env,
             return NULL;
         }
         stat(path, buf);
-        arch_file->time_stamp = (time_t) buf->st_ctime;
+        AXIS2_FILE_SET_TIMESTAMP(arch_file, env, (time_t) buf->st_ctime);
         status = AXIS2_ARRAY_LIST_ADD(file_list, env, arch_file);
         if(path)
         {

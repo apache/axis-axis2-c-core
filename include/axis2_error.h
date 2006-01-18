@@ -450,6 +450,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         
         /* Listen failed for the server socket */
         AXIS2_ERROR_SOCKET_LISTEN_FAILED,
+        AXIS2_ERROR_FILE_NAME_NOT_SET,
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
             AXIS2_ERROR_LAST is used to track the number of error codes present

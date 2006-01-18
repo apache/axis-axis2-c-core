@@ -246,10 +246,10 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
             long last_modified_date = 0;
             axis2_arch_file_data_t *file_data = NULL;
             
-            last_modified_date = file->time_stamp;
+            last_modified_date = AXIS2_FILE_GET_TIMESTAMP(file, env);
             ws_info = 
         axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
-            env, file->name, last_modified_date, AXIS2_SVC);
+            env, AXIS2_FILE_GET_NAME(file, env), last_modified_date, AXIS2_SVC);
             AXIS2_ARRAY_LIST_ADD(info_list_impl->info_list, env, ws_info);
             file_data = axis2_arch_file_data_create_with_type_and_file(env,
                 AXIS2_SVC, file);
@@ -271,10 +271,10 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
             long last_modified_date = 0;
             axis2_arch_file_data_t *file_data = NULL;
             
-            last_modified_date = file->time_stamp;
+            last_modified_date = AXIS2_FILE_GET_TIMESTAMP(file, env);
             ws_info = 
         axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
-            env, file->name, last_modified_date, AXIS2_MODULE);
+            env, AXIS2_FILE_GET_NAME(file, env), last_modified_date, AXIS2_MODULE);
             AXIS2_ARRAY_LIST_ADD(info_list_impl->info_list, env, ws_info);
             file_data = axis2_arch_file_data_create_with_type_and_file(env,
                 AXIS2_MODULE, file);
@@ -286,7 +286,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
         }
     }
     
-    info_list_name = AXIS2_STRDUP(file->name, env);
+    info_list_name = AXIS2_FILE_GET_NAME(file, env);
     if(!info_list_name)
     {
         return AXIS2_FAILURE;
@@ -338,7 +338,7 @@ axis2_ws_info_list_is_modified(axis2_ws_info_list_t *info_list,
     AXIS2_PARAM_CHECK((*env)->error, ws_info, AXIS2_FAILURE);
     
     last_modified_date = AXIS2_WS_INFO_GET_LAST_MODIFIED_DATE(ws_info, env);
-    return (last_modified_date != file->time_stamp);
+    return (last_modified_date != AXIS2_FILE_GET_TIMESTAMP(file, env));
 }
 
 axis2_bool_t AXIS2_CALL

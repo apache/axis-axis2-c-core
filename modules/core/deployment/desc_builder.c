@@ -894,7 +894,6 @@ axis2_desc_builder_get_file_name_without_prefix(axis2_desc_builder_t *desc_build
     axis2_char_t *file_name_l = NULL;
     axis2_char_t *short_name = NULL;
     int len = 0;
-    printf("short_file_name*:%s\n", short_file_name);
     AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, short_file_name, NULL);
     file_name_l = AXIS2_STRDUP(short_file_name, env);
@@ -905,7 +904,6 @@ axis2_desc_builder_get_file_name_without_prefix(axis2_desc_builder_t *desc_build
     }
     len = AXIS2_STRLEN(AXIS2_LIB_PREFIX);
     short_name = &file_name_l[len];
-    printf("short_name:%s\n", short_name);
     return short_name;
 
 }

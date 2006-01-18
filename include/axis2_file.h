@@ -29,42 +29,92 @@ extern "C"
 #endif
     
 typedef struct axis2_file axis2_file_t;
+typedef struct axis2_file_ops axis2_file_ops_t;
     
 /**
  * @defgroup axis2_file File
  * @ingroup axis2_util 
  * @{
  */
-    
-    /**
-     * create new file
-     * @return file newly created file
-     */
-    AXIS2_DECLARE(axis2_file_t *)
-    axis2_file_create(axis2_env_t **env);
 
-    AXIS2_DECLARE(axis2_status_t)
-    axis2_file_free (axis2_file_t *file, 
-                        axis2_env_t **env); 
+/** 
+ * @brief Description Builder ops struct
+ * Encapsulator struct for ops of axis2_desc_builder
+ */
+AXIS2_DECLARE_DATA struct axis2_file_ops
+{
+
+    axis2_status_t (AXIS2_CALL *
+    free) (axis2_file_t *file, 
+            axis2_env_t **env);
+
+    axis2_status_t (AXIS2_CALL *
+    set_name)(axis2_file_t *file,
+                axis2_env_t **env,
+                axis2_char_t *name);
+    
+    axis2_char_t *(AXIS2_CALL *
+    get_name)(axis2_file_t *file,
+                axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_timestamp)(axis2_file_t *file,
+                    axis2_env_t **env,
+                    AXIS2_TIME_T timestamp);
+    
+    AXIS2_TIME_T (AXIS2_CALL *
+    get_timestamp)(axis2_file_t *file,
+                    axis2_env_t **env);    
 
     /**
      * create a newly allocated clone of the argument file
      */
-    axis2_file_t *AXIS2_CALL
-    axis2_file_clone(axis2_file_t *file,
+    axis2_file_t *(AXIS2_CALL *
+    clone)(axis2_file_t *file,
                       axis2_env_t **env);
+};
     
-    /** 
+     
+/** 
      * @brief
      * To store filename and timestamp of each module or service archive file
      */ 
-    struct axis2_file
-    {
-        axis2_char_t *name;
-        AXIS2_TIME_T time_stamp;
-        
-        
-    };
+AXIS2_DECLARE_DATA struct axis2_file
+{
+	axis2_file_ops_t *ops;
+};
+
+/**
+ * create new file
+ * @return file newly created file
+ */
+AXIS2_DECLARE(axis2_file_t *)
+axis2_file_create(axis2_env_t **env);
+
+/*************************** Function macros **********************************/
+
+#define AXIS2_FILE_FREE(file, env) \
+		((file)->ops->free (file, env))
+
+#define AXIS2_FILE_GET_NAME(file, env) \
+		((file)->ops->get_name (file, env))  
+
+#define AXIS2_FILE_SET_NAME(file, env, name) \
+		((file)->ops->set_name (file, env, name)) 
+
+#define AXIS2_FILE_GET_TIMESTAMP(file, env) \
+		((file)->ops->get_timestamp (file, env))  
+
+#define AXIS2_FILE_SET_TIMESTAMP(file, env, timestamp) \
+		((file)->ops->set_timestamp (file, env, timestamp)) 
+
+#define AXIS2_FILE_CLONE(file, env) \
+		((file)->ops->clone (file, env))
+
+
+                                        
+/*************************** End of function macros ***************************/
+
 
 
 /** @} */
