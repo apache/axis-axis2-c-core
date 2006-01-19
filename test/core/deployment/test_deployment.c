@@ -40,7 +40,48 @@ int axis2_test_dep_engine_load()
         printf("svc_map count = %d\n", axis2_hash_count(svc_map));
     else
         printf("svc_map count = zero\n");
-    
+
+    if (svc_map)
+    {
+        axis2_hash_index_t *hi = NULL;
+        void *service = NULL;
+        for (hi = axis2_hash_first (svc_map, &env);
+             NULL != hi; hi = axis2_hash_next (&env, hi))
+        {
+             axis2_hash_t *ops= NULL;
+             
+             axis2_hash_this(hi, NULL, NULL, &service);
+             
+             ops = AXIS2_SVC_GET_OPS(((axis2_svc_t *)service), &env);
+             if(ops)
+             {
+                printf("ops count = %d\n", axis2_hash_count(ops));
+
+                axis2_hash_index_t *hi2 = NULL;
+                void *op = NULL;
+                axis2_char_t *oname = NULL;
+                int count = 0;
+
+                for(hi2 = axis2_hash_first(ops, &env); hi2; axis2_hash_next(&env, hi2))
+                {
+                    printf ("count = %d \n", count++);
+                    if (!hi2)
+                        break;
+                    axis2_hash_this(hi2, NULL, NULL, &op);
+                    if (op)
+                    {
+                        axis2_qname_t *qname = NULL;
+                        qname = AXIS2_OP_GET_QNAME((axis2_op_t *)op, &env);
+					    oname = AXIS2_QNAME_GET_LOCALPART(qname, &env);
+                        printf("op name = %s\n", oname);
+                    }
+                }    
+             }
+             else
+                printf("ops count = zero\n");
+        }
+    }
+   
     in_phases = 
         AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(
             conf, &env);
