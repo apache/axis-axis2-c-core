@@ -522,7 +522,8 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             }
             else if(AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, 
                 AXIS2_OM_NAMESPACE_GET_URI(env_ns , env)) == 0)
-            {
+            {   
+                printf("\nsoap11 builder create\n");
                 builder_impl->builder_helper = axis2_soap11_builder_helper_create(env, builder, builder_impl->om_builder);            
             }
              
@@ -530,7 +531,8 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
     else if(element_level > 3 && builder_impl->processing_fault)
     {
         if(builder_impl->soap_version == AXIS2_SOAP11)
-        {
+        {   
+            printf("\nSoap11  handel event\n");
              status = AXIS2_SOAP11_BUILDER_HELPER_HANDLE_EVENT(((axis2_soap11_builder_helper_t*)(builder_impl->builder_helper)), 
                 env,  om_element_node , element_level);
         

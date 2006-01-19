@@ -72,7 +72,11 @@ axis2_om_stax_builder_get_element_level(axis2_om_stax_builder_t* builder,
 axis2_status_t AXIS2_CALL 
 axis2_om_stax_builder_set_element_level(axis2_om_stax_builder_t* builder,
                                         axis2_env_t **env,
-                                        int element_level);                                                                                                       											
+                                        int element_level);   
+                                        
+int AXIS2_CALL 
+axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
+                                          axis2_env_t **env);                                                                                                                                            											
 													
 /********************************* axis2_om_stax_builder_impl_t struct ********/
 typedef struct axis2_om_stax_builder_impl_t
@@ -160,6 +164,12 @@ axis2_om_stax_builder_create (axis2_env_t **env,
 	        axis2_om_stax_builder_get_current_event;
     builder->om_stax_builder.ops->get_last_node = 
             axis2_om_stax_builder_get_lastnode;	
+    builder->om_stax_builder.ops->set_last_node =
+            axis2_om_stax_builder_set_last_node; 
+            
+    builder->om_stax_builder.ops->next_with_token =
+            axis2_om_stax_builder_next_with_token;                       
+            
     builder->om_stax_builder.ops->is_complete =
             axis2_om_stax_builder_is_complete;
     builder->om_stax_builder.ops->set_element_level =
@@ -869,4 +879,91 @@ axis2_om_stax_builder_set_element_level(axis2_om_stax_builder_t* builder,
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     builder_impl->element_level = element_level;    
     return AXIS2_SUCCESS;
-}                                        
+} 
+
+int AXIS2_CALL 
+axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
+                                          axis2_env_t **env)
+{
+
+    int token = 0;
+    axis2_om_stax_builder_impl_t *builder_impl = NULL;
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    
+    if (builder_impl->done)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL, AXIS2_FAILURE);
+            return -1;
+    }
+
+        token = AXIS2_XML_READER_NEXT (builder_impl->parser, env);
+
+        if(token == -1)
+            return -1;
+
+                
+        if (!(builder_impl->cache))
+        {
+            return -1;
+        }
+
+        
+        switch (token)
+        {
+        case AXIS2_XML_READER_START_DOCUMENT:
+            /*Do nothing */
+            break;
+        
+        case AXIS2_XML_READER_START_ELEMENT:
+            axis2_om_stax_builder_create_om_element (
+                        builder, env); 
+            break;
+        
+        case AXIS2_XML_READER_EMPTY_ELEMENT:
+             axis2_om_stax_builder_create_om_element (
+                        builder, env);
+        
+        case AXIS2_XML_READER_END_ELEMENT:
+            axis2_om_stax_builder_end_element (builder, env);
+            break;
+        
+        
+        case AXIS2_XML_READER_SPACE:
+            /* Do nothing */
+            break;
+        
+        case AXIS2_XML_READER_CHARACTER:
+            axis2_om_stax_builder_create_om_text(builder, env);
+            break;
+                
+        case AXIS2_XML_READER_ENTITY_REFERANCE:
+            break;
+        
+        case AXIS2_XML_READER_COMMENT:
+            
+               axis2_om_stax_builder_create_om_comment(builder, env);
+                axis2_om_stax_builder_end_element (builder, env);
+        
+            break;
+        
+        case AXIS2_XML_READER_PROCESSING_INSTRUCTION:
+            
+             axis2_om_stax_builder_create_om_processing_instruction(
+                                        builder , env );
+            axis2_om_stax_builder_end_element (builder, env);
+          
+            break;
+        
+        case AXIS2_XML_READER_CDATA:
+            break;
+        
+        case AXIS2_XML_READER_DOCUMENT_TYPE:
+        /* node = axis2_om_stax_builder_create_om_doctype(om_stax_builder, env);
+        */          
+        break;
+        
+        default:
+            break;
+        }
+   return token;
+}                                                                                

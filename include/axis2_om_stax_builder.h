@@ -133,7 +133,10 @@ extern "C"
         axis2_status_t (AXIS2_CALL *set_element_level)
                                             (struct axis2_om_stax_builder* builder,
                                              axis2_env_t **env,
-                                             int element_level);                                                                                                                                                                                                     
+                                             int element_level); 
+                                             
+        int (AXIS2_CALL *next_with_token)(struct axis2_om_stax_builder *builder,
+                                          axis2_env_t **env);                                                                                                                                                                                                                                                 
                                                            
     } axis2_om_stax_builder_ops_t;
 
@@ -190,7 +193,10 @@ extern "C"
         ((builder)->ops->get_element_level(builder, env))
         
 #define AXIS2_OM_STAX_BUILDER_SET_ELEMENT_LEVEL(builder, env, element_level) \
-        ((builder)->ops->set_element_level(builder, env, element_level))             
+        ((builder)->ops->set_element_level(builder, env, element_level)) 
+        
+#define AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(builder, env) \
+        ((builder)->ops->next_with_token(builder, env))                    
 
 /** @} */
 

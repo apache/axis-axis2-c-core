@@ -85,7 +85,7 @@ axis2_soap_fault_node_create(axis2_env_t **env)
     
     fault_node_impl = (axis2_soap_fault_node_impl_t*)AXIS2_MALLOC(
                             (*env)->allocator,
-                            sizeof(axis2_soap_fault_node_impl_t*));
+                            sizeof(axis2_soap_fault_node_impl_t));
     if(!fault_node_impl)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -220,17 +220,16 @@ axis2_soap_fault_node_set_base_node
                            axis2_om_node_t *node)
 {
     axis2_soap_fault_node_impl_t* fault_node_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_node, env, AXIS2_FAILURE);
     fault_node_impl = AXIS2_INTF_TO_IMPL(fault_node); 
+    
+    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
     if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
     {
         AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    
-    fault_node_impl = AXIS2_INTF_TO_IMPL(fault_node);
-    fault_node_impl->om_ele_node = node;
+    fault_node_impl->om_ele_node = node;  
     fault_node_impl->om_ele = (axis2_om_element_t *) 
                             AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
     return AXIS2_SUCCESS;

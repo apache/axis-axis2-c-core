@@ -179,7 +179,7 @@ axis2_soap_fault_value_create_with_code(axis2_env_t **env,
     fault_val_impl = AXIS2_INTF_TO_IMPL(fault_value);
     
     fault_val_impl->parent = parent;
-    fault_val_impl->parent_type = AXIS2_SOAP_FAULT_SUB_CODE;
+    fault_val_impl->parent_type = AXIS2_SOAP_FAULT_CODE;
     
     parent_node = AXIS2_SOAP_FAULT_CODE_GET_BASE_NODE(parent, env);
     parent_ele  = (axis2_om_element_t*)
@@ -192,7 +192,7 @@ axis2_soap_fault_value_create_with_code(axis2_env_t **env,
                     &this_node);
     fault_val_impl->om_ele_node = this_node;
     fault_val_impl->om_ele = this_ele;
-    AXIS2_SOAP_FAULT_SUB_CODE_SET_VALUE(parent, env, fault_value);
+    AXIS2_SOAP_FAULT_CODE_SET_VALUE(parent, env, fault_value);
     return &(fault_val_impl->fault_value);
 }                                                        
 
@@ -239,7 +239,6 @@ axis2_soap_fault_value_get_base_node(axis2_soap_fault_value_t *fault_value,
                                   axis2_env_t **env)
 {
     axis2_soap_fault_value_impl_t *fault_val_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_val_impl, env, NULL);
     fault_val_impl = AXIS2_INTF_TO_IMPL(fault_value);
     return fault_val_impl->om_ele_node;
 }                                  
@@ -249,7 +248,6 @@ axis2_soap_fault_value_get_soap_version(axis2_soap_fault_value_t *fault_value,
                                      axis2_env_t **env)
 {
     axis2_soap_fault_value_impl_t *fault_val_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_val_impl, env, AXIS2_FAILURE);
     fault_val_impl = AXIS2_INTF_TO_IMPL(fault_value);
     return fault_val_impl->soap_version;
 
@@ -262,7 +260,6 @@ axis2_soap_fault_value_set_soap_version(axis2_soap_fault_value_t *fault_value,
                                         int soap_version)
 {
     axis2_soap_fault_value_impl_t *fault_val_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_val_impl, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_version, AXIS2_FAILURE);
     fault_val_impl = AXIS2_INTF_TO_IMPL(fault_value);
      fault_val_impl->soap_version = soap_version; 
