@@ -16,6 +16,7 @@ int axis2_test_op_engage_module()
 	axis2_env_t *env = axis2_env_create (allocator);
 
 	struct axis2_op *op = axis2_op_create(&env);
+
     moduleref = axis2_module_desc_create(&env);
 
     status = AXIS2_OP_ENGAGE_MODULE(op, &env, moduleref);
@@ -31,6 +32,7 @@ int axis2_test_op_engage_module()
 	axis2_env_free(env);
     return 0;
 }
+
 int axis2_test_svc_add_module_ops()
 {
 	struct axis2_svc *svc = NULL;
@@ -97,11 +99,69 @@ int axis2_test_svc_engage_module()
 	return 0;
 }
 
+int axis2_test_svc_get_op()
+{
+	struct axis2_svc *svc = NULL;
+	struct axis2_qname *qname = NULL;
+	struct axis2_hash_t *ops = NULL;
+	struct axis2_op *op = NULL;
+	axis2_status_t status = NULL;
+
+    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+	axis2_env_t *env = axis2_env_create (allocator);
+
+	qname = axis2_qname_create(&env, "op1", NULL, NULL);	
+	op = axis2_op_create_with_qname(&env, qname);	
+	qname = axis2_qname_create(&env, "svc1", NULL, NULL);	
+	svc = axis2_svc_create_with_qname(&env, qname);
+
+	status = AXIS2_SVC_ADD_OP(svc, &env, op);
+	ops = AXIS2_SVC_GET_OPS(svc, &env);
+
+	if (ops)
+		printf("SUCCESS AXIS2_SVC_GET_OPS\n");
+	else
+	{
+		printf("ERROR AXIS2_SVC_GET_OPS\n");
+		return -1;
+	}
+
+             if(ops)
+             {
+                printf("ops count = %d\n", axis2_hash_count(ops));
+
+                axis2_hash_index_t *hi2 = NULL;
+                void *op2 = NULL;
+                axis2_char_t *oname = NULL;
+                int count = 0;
+
+                for(hi2 = axis2_hash_first(ops, &env); hi2; axis2_hash_next(&env, hi2))
+                {
+                    printf ("count = %d \n", count++);
+                    if (!hi2)
+                        break;
+                    axis2_hash_this(hi2, NULL, NULL, &op2);
+                    if (op2)
+                    {
+                        axis2_qname_t *qname = NULL;
+                        qname = AXIS2_OP_GET_QNAME((axis2_op_t *)op2, &env);
+					    oname = AXIS2_QNAME_GET_LOCALPART(qname, &env);
+                        printf("op name = %s\n", oname);
+                    }
+                }    
+             }
+             else
+                printf("ops count = zero\n");
+	
+
+	return 0;
+}
 
 int main()
 {
 		axis2_test_op_engage_module();
 		axis2_test_svc_add_module_ops();
 		axis2_test_svc_engage_module();
+		axis2_test_svc_get_op();
 		return 0;
 }
