@@ -537,7 +537,6 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
         }
         if(builder_impl->soap_version == AXIS2_SOAP12)
         {
-           // printf(" handel event 12");
             status = AXIS2_SOAP12_BUILDER_HELPER_HANDLE_EVENT(((axis2_soap12_builder_helper_t *)(builder_impl->builder_helper)), 
                 env,  om_element_node , element_level);
             if(status == AXIS2_FAILURE)
