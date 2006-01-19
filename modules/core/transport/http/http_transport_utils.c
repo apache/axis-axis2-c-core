@@ -526,7 +526,7 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 {
 	axis2_hash_t *services_map = NULL;
 	axis2_hash_t *errorneous_svc_map = NULL;
-	axis2_char_t *tmp = NULL;
+	axis2_char_t *ret = NULL;
 	axis2_char_t *tmp2 = "<h2>Deployed Services</h2>";
 	axis2_hash_index_t *hi = NULL;
 	axis2_bool_t svcs_exists = AXIS2_FALSE;
@@ -551,11 +551,14 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 			axis2_hash_this(hi, NULL, NULL, &service);
 			sname= AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(
 							((axis2_svc_t *)service), env), env);
-			tmp = AXIS2_STRACAT(tmp2, "<h3>", env);
-			tmp2 = AXIS2_STRACAT(tmp, sname, env);
-			AXIS2_FREE((*env)->allocator, tmp);
-			tmp  = AXIS2_STRACAT(tmp2, "</h3>", env);
+			ret = AXIS2_STRACAT(tmp2, "<h3>", env);
+            tmp2 = ret;
+			ret = AXIS2_STRACAT(tmp2, sname, env);
 			AXIS2_FREE((*env)->allocator, tmp2);
+            tmp2 = ret;
+			ret  = AXIS2_STRACAT(tmp2, "</h3>", env);
+			AXIS2_FREE((*env)->allocator, tmp2);
+            tmp2 = ret;
 			ops = AXIS2_SVC_GET_OPS(((axis2_svc_t *)service), env);
 			if(NULL != ops && 0 != axis2_hash_count(ops))
 			{
@@ -563,29 +566,35 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 				void *op = NULL;
 				axis2_char_t *oname = NULL;
 				
-				tmp2 = AXIS2_STRACAT(tmp, "Available Operations <ul>", env);
-				AXIS2_FREE((*env)->allocator, tmp);
+				/*ret = AXIS2_STRACAT(tmp2, "Available Operations <ul>", env);
+				AXIS2_FREE((*env)->allocator, tmp2);
+                tmp2 = ret;
 				for(hi2 = axis2_hash_first(ops, env); NULL != hi2;
 							axis2_hash_next(env, hi2))
 				{
 					axis2_hash_this(hi2, NULL, NULL, &op);
 					oname = AXIS2_QNAME_GET_LOCALPART(AXIS2_OP_GET_QNAME(
 							((axis2_op_t *)op), env), env);
-					tmp = AXIS2_STRACAT(tmp2, "<li>", env);
+					ret = AXIS2_STRACAT(tmp2, "<li>", env);
 					AXIS2_FREE((*env)->allocator, tmp2);
-					tmp2 = AXIS2_STRACAT(tmp, oname, env);
-					AXIS2_FREE((*env)->allocator, tmp);
-					tmp = AXIS2_STRACAT(tmp2, "</li>", env);
+                    tmp2 = ret;
+
+					ret = AXIS2_STRACAT(tmp2, oname, env);
 					AXIS2_FREE((*env)->allocator, tmp2);
-					tmp2 = tmp;
+                    tmp2 = ret;
+					ret = AXIS2_STRACAT(tmp2, "</li>", env);
+					AXIS2_FREE((*env)->allocator, tmp2);                    
+					tmp2 = ret;
 				}
-				tmp2 = AXIS2_STRACAT(tmp, "</ul>", env);
-				AXIS2_FREE((*env)->allocator, tmp);
+				ret = AXIS2_STRACAT(tmp2, "</ul>", env);
+				AXIS2_FREE((*env)->allocator, tmp2);
+                tmp = ret;*/
 			}
 			else
 			{
-				tmp2 = AXIS2_STRACAT(tmp, "No operations Available", env);
-				AXIS2_FREE((*env)->allocator, tmp);
+				ret = AXIS2_STRACAT(tmp2, "No operations Available", env);
+				/*AXIS2_FREE((*env)->allocator, tmp);*/
+                tmp2 = ret;
 			}			
 		}
 	}
@@ -593,33 +602,38 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 	{
 		void *fsname = NULL;
 		svcs_exists = AXIS2_TRUE;
-		tmp = AXIS2_STRACAT(tmp2, "<hr><h2><font color=\"blue\">Faulty Services</font></h2>"
+		ret = AXIS2_STRACAT(tmp2, "<hr><h2><font color=\"blue\">Faulty Services</font></h2>"
 							, env);
 		AXIS2_FREE((*env)->allocator, tmp2);
+        tmp2 = ret;
 		
 		for(hi = axis2_hash_first(errorneous_svc_map, env); NULL != hi;
 							axis2_hash_next(env, hi))
 		{
 			axis2_hash_this(hi, (const void **)&fsname, NULL, NULL);
-			tmp2 = AXIS2_STRACAT(tmp, "<h3><font color=\"blue\">", env);
-			AXIS2_FREE((*env)->allocator, tmp);
-			tmp = AXIS2_STRACAT(tmp2, (axis2_char_t*)fsname, env);
+			ret = AXIS2_STRACAT(tmp2, "<h3><font color=\"blue\">", env);
 			AXIS2_FREE((*env)->allocator, tmp2);
-			tmp2 = AXIS2_STRACAT(tmp, "</font></h3>", env);
-			AXIS2_FREE((*env)->allocator, tmp);
+            tmp2 = ret;
+			ret = AXIS2_STRACAT(tmp2, (axis2_char_t*)fsname, env);
+			AXIS2_FREE((*env)->allocator, tmp2);
+            tmp2 = ret;
+			ret = AXIS2_STRACAT(tmp2, "</font></h3>", env);
+			AXIS2_FREE((*env)->allocator, tmp2);
+            tmp2 = ret;
 		}
 	}
 	if(AXIS2_FALSE == svcs_exists)
 	{
-		tmp2 = AXIS2_STRDUP("<h2>There are no services deployed</h2>", env);
+		ret = AXIS2_STRDUP("<h2>There are no services deployed</h2>", env);
 	}
-	tmp = AXIS2_STRACAT("<html><head><title>Axis2:Services</title></head><body>"
+	ret = AXIS2_STRACAT("<html><head><title>Axis2:Services</title></head><body>"
 							, tmp2, env);
-	AXIS2_FREE((*env)->allocator, tmp2);
-	tmp2 = AXIS2_STRACAT(tmp, "</body></html>\r\n", env);
-	AXIS2_FREE((*env)->allocator, tmp);
+	/*AXIS2_FREE((*env)->allocator, tmp2);*/
+    tmp2 = ret;
+	ret = AXIS2_STRACAT(tmp2, "</body></html>\r\n", env);
+	/*AXIS2_FREE((*env)->allocator, tmp);*/
 	
-	return tmp2;
+	return ret;
 }
 
 axis2_char_t* AXIS2_CALL
