@@ -86,7 +86,7 @@ axis2_svc_t* AXIS2_CALL axis2_soap_action_disp_find_svc(axis2_msg_ctx_t *msg_ctx
 {    
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);    
 
-    AXIS2_LOG(env, "Checking for Service using SOAPAction is a TODO item");
+    AXIS2_LOG(env, "Checking for Service using SOAPAction is a TODO item\n", AXIS2_LOG_INFO);
 
     return NULL;
 }

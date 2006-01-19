@@ -126,8 +126,8 @@ extern "C"
     /**
       * Writes given message to the log
       */
-    AXIS2_DECLARE(axis2_status_t) axis2_env_write_log (axis2_env_t **env, const char* message);
-    #define AXIS2_LOG(env, message) axis2_env_write_log (env,message)
+    AXIS2_DECLARE(axis2_status_t) axis2_env_write_log (axis2_env_t **env, const char* message, axis2_log_levels_t level);
+    #define AXIS2_LOG(env, message, level) axis2_env_write_log (env,message, level)
 
     #define AXIS2_ENV_CHECK(env, error_return) \
     if(!env || !(*env))  \

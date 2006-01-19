@@ -115,7 +115,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_env_enable_log (axis2_env_t **env, axis2_boo
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_status_t)  axis2_env_write_log (axis2_env_t **env, const char* message)
+AXIS2_DECLARE(axis2_status_t)  axis2_env_write_log (axis2_env_t **env, const char* message, axis2_log_levels_t level)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 
@@ -124,7 +124,7 @@ AXIS2_DECLARE(axis2_status_t)  axis2_env_write_log (axis2_env_t **env, const cha
  
     if (message && (*env)->log)
     {
-        AXIS2_LOG_WRITE((*env)->log, message, strlen(message) );
+        AXIS2_LOG_WRITE((*env)->log, message, level);
     }
     return AXIS2_SUCCESS;
 }

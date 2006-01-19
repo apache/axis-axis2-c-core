@@ -31,7 +31,7 @@ axis2_log_impl_free (axis2_log_t *log)
     return 0;
 }
 
-axis2_status_t AXIS2_CALL axis2_log_impl_write (const axis2_char_t *buffer, axis2_log_levels_t level);
+axis2_status_t AXIS2_CALL axis2_log_impl_write (struct axis2_log *log, const axis2_char_t *buffer, axis2_log_levels_t level);
 
 AXIS2_DECLARE(axis2_log_t *)
 axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops)
@@ -66,12 +66,12 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops)
 }
 
 axis2_status_t AXIS2_CALL
-axis2_log_impl_write (const axis2_char_t *buffer, axis2_log_levels_t level)
+axis2_log_impl_write (struct axis2_log *log, const axis2_char_t *buffer, axis2_log_levels_t level)
 {
-    if (!buffer)
+    if (!log || !buffer)
         return -1;
-
-    fprintf (stderr, "%s", buffer);
+    if (level <= log->level)
+        fprintf (stderr, "%s", buffer);
     return 0;
 }
 

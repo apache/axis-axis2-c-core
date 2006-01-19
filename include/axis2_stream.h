@@ -42,7 +42,7 @@ typedef enum axis2_stream_type axis2_stream_type_t;
 * \brief Axis2 stream types
 *
 * This is used to create a stream to correspond to 
-* perticular i/o mtd
+* particular i/o mtd
 */
 enum axis2_stream_type 
 {

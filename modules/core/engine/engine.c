@@ -100,7 +100,7 @@ axis2_engine_t* AXIS2_CALL axis2_engine_create(axis2_env_t **env, axis2_conf_ctx
     engine_impl->engine.ops->get_receiver_fault_code = axis2_engine_get_receiver_fault_code;
     engine_impl->engine.ops->free = axis2_engine_free;
 
-    AXIS2_LOG(env, "Axis2 Engine Started");
+    AXIS2_LOG(env, "Axis2 Engine Started\n", AXIS2_LOG_INFO);
     
     return &(engine_impl->engine);
 }

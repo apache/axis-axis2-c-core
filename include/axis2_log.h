@@ -38,16 +38,16 @@ extern "C"
   */
     typedef enum axis2_log_levels
     {
-        /** Debug level, logs everything */
-        AXIS2_LOG_DEBUG = 0,
-        /** Info level, logs information */
-        AXIS2_LOG_INFO,
-        /** Warning level, logs only warnings */
-        AXIS2_LOG_WARNING,
+        /** Critical level, logs only critical errors */
+        AXIS2_LOG_CRITICAL = 0,
         /** Error level, logs only errors */
         AXIS2_LOG_ERROR,
-        /** Critical level, logs only critical errors */
-        AXIS2_LOG_CRITICAL
+        /** Warning level, logs only warnings */
+        AXIS2_LOG_WARNING,
+        /** Info level, logs information */
+        AXIS2_LOG_INFO,
+        /** Debug level, logs everything */
+        AXIS2_LOG_DEBUG
     } axis2_log_levels_t;
 
   /** 
@@ -71,7 +71,7 @@ extern "C"
         * @param size size of the buffer to be written to log
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *write) (const axis2_char_t *buffer, axis2_log_levels_t level);
+        axis2_status_t (AXIS2_CALL *write) (struct axis2_log *log, const axis2_char_t *buffer, axis2_log_levels_t level);
     } axis2_log_ops_t;
 
   /** 
@@ -91,7 +91,7 @@ extern "C"
  
 
 #define AXIS2_LOG_FREE(log) ((log->ops)->free(log))
-#define AXIS2_LOG_WRITE(log, buffer, level) ((log)->ops->write(buffer, level))
+#define AXIS2_LOG_WRITE(log, buffer, level) ((log)->ops->write(log, buffer, level))
 
 /** @} */
     

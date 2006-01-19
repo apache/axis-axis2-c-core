@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
 	}
 	
     env = init_syetem_env(allocator);
+    env->log->level = AXIS2_LOG_DEBUG;
 	
     axis2_error_init();
     
