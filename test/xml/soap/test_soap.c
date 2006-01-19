@@ -134,7 +134,6 @@ int build_soap(axis2_env_t **env, char *filename)
     
     AXIS2_SOAP_ENVELOPE_SERIALIZE(soap_envelope, env, om_output, AXIS2_FALSE);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
-   // fwrite(buffer, sizeof(char), strlen(buffer)+1, fopen("result.xml","w"));
     printf("%s", buffer);
     return AXIS2_SUCCESS;
     
