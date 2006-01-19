@@ -45,6 +45,7 @@ struct axis2_soap_fault_role;
 struct axis2_soap_fault_text;
 struct axis2_soap_fault_value;
 struct axis2_soap_body;
+struct axis2_soap_builder;
     
     typedef enum axis2_soap_fault_types
     {
@@ -153,7 +154,11 @@ struct axis2_soap_body;
                                               int soap_version);
                                            
         int (AXIS2_CALL *get_soap_version)(axis2_soap_fault_t *fault,
-                                           axis2_env_t **env);                                                                                                                                                                                                                                                           
+                                           axis2_env_t **env); 
+                                           
+        axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_fault_t *fault,
+                                            axis2_env_t **env,
+                                            struct axis2_soap_builder *builder);                                                                                                                                                                                                                                                                                                     
                                          
     };
 
@@ -236,7 +241,10 @@ axis2_soap_fault_create_with_exception(axis2_env_t **env,
         ((fault)->ops->get_exception(fault, env))
         
 #define AXIS2_SOAP_FAULT_SET_EXCEPTION(fault, env, exception) \
-        ((fault)->ops->set_exception(fault, env, exception))        
+        ((fault)->ops->set_exception(fault, env, exception)) 
+        
+#define AXIS2_SOAP_FAULT_SET_BUILDER(fault, env, builder) \
+        ((fault)->ops->set_builder(fault, env, builder))               
                                               
 /** @} */
 #ifdef __cplusplus

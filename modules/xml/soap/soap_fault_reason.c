@@ -19,6 +19,7 @@
 #include <axis2_om_element.h>
 #include <axis2_soap_fault_text.h>
 #include <axis2_soap_utils.h>
+#include <axis2_soap_builder.h>
 
 /*************************** impl struct **************************************/
 
@@ -33,6 +34,8 @@ typedef struct axis2_soap_fault_reason_impl_t
     axis2_soap_fault_t *parent;
     
     axis2_soap_fault_text_t *text;
+    
+    axis2_soap_builder_t *soap_builder;
     
     int soap_version;
     

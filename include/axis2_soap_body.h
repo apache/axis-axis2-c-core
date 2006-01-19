@@ -38,6 +38,7 @@ extern "C"
 
 typedef struct axis2_soap_body      axis2_soap_body_t;
 typedef struct axis2_soap_body_ops  axis2_soap_body_ops_t;
+struct axis2_soap_builder;
     
 /**
  * @defgroup axis2_soap_body
@@ -106,6 +107,11 @@ typedef struct axis2_soap_body_ops  axis2_soap_body_ops_t;
         axis2_status_t (AXIS2_CALL *set_soap_version)(axis2_soap_body_t *body,
                                                       axis2_env_t **env,
                                                       int soap_version);
+                                                      
+        axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_body_t *body,
+                                                 axis2_env_t **env,
+                                                 struct axis2_soap_builder *builder);
+                                                              
 };                                                      
 
   /**
@@ -156,7 +162,10 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
         ((body)->ops->get_soap_version(body, env))
         
 #define AXIS2_SOAP_BODY_SET_SOAP_VERSION(body, env, soap_version) \
-        ((body)->ops->set_soap_version(body, env, soap_version))        
+        ((body)->ops->set_soap_version(body, env, soap_version)) 
+        
+#define AXIS2_SOAP_BODY_SET_BUILDER(body, env, builder) \
+        ((body)->ops->set_builder(body, env, builder))               
 
 /** @} */
 #ifdef __cplusplus

@@ -18,6 +18,7 @@
  #include <axis2_soap_fault_sub_code.h>
  #include <axis2_soap_fault_value.h>
  #include <axis2_soap_utils.h>
+ #include <axis2_soap_builder.h>
  
  /***************** impl struct ***********************************************/
  
@@ -36,6 +37,8 @@
     axis2_soap_fault_value_t *value;
     
     axis2_soap_fault_t *parent;
+    
+    axis2_soap_builder_t *soap_builder;
  
  }axis2_soap_fault_code_impl_t;
  
@@ -84,6 +87,11 @@ axis2_soap_fault_code_set_soap_version(axis2_soap_fault_code_t *fault_code,
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_code_get_soap_version(axis2_soap_fault_code_t *fault_code,
                                   axis2_env_t **env);
+                                  
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_code_set_builder(axis2_soap_fault_code_t *fault_code,
+                                  axis2_env_t **env,
+                                  axis2_soap_builder_t *soap_builder);
                                   
 /********************* function implementation ********************************/
 
@@ -145,7 +153,9 @@ axis2_soap_fault_code_create(axis2_env_t **env)
         axis2_soap_fault_code_get_soap_version; 
         
     fault_code_impl->fault_code.ops->set_soap_version =
-        axis2_soap_fault_code_set_soap_version;                    
+        axis2_soap_fault_code_set_soap_version;   
+    fault_code_impl->fault_code.ops->set_builder =
+        axis2_soap_fault_code_set_builder;                         
                                 
   return  &(fault_code_impl->fault_code);  
 }
@@ -400,7 +410,19 @@ axis2_soap_fault_code_get_soap_version(axis2_soap_fault_code_t *fault_code,
 {
      AXIS2_FUNC_PARAM_CHECK(fault_code, env, AXIS2_FAILURE);
      return AXIS2_INTF_TO_IMPL(fault_code)->soap_version;
-}                            
+} 
+
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_code_set_builder(axis2_soap_fault_code_t *fault_code,
+                                  axis2_env_t **env,
+                                  axis2_soap_builder_t *soap_builder)
+{
+    axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(fault_code, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, soap_builder, AXIS2_FAILURE);
+    fault_code_impl->soap_builder = soap_builder;
+    return AXIS2_SUCCESS;
+}                                                             
 /*********************** soap11 create function *******************************/
 
 AXIS2_DECLARE(axis2_soap_fault_code_t *)
@@ -423,3 +445,5 @@ axis2_soap12_fault_code_create(axis2_env_t **env,
     return axis2_soap_fault_code_create_with_parent(env, fault, AXIS2_TRUE);
 
 }
+
+

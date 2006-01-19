@@ -24,6 +24,7 @@
  #include <axis2_soap_fault_role.h>
  #include <axis2_soap_fault_node.h>
  #include <axis2_soap_utils.h>
+ #include <axis2_soap_builder.h>
  
 /**************** impl struct ************************************************/
 
@@ -50,6 +51,8 @@ typedef struct axis2_soap_fault_impl_t
     axis2_char_t *exception;
     
     int soap_version;
+    
+    axis2_soap_builder_t *soap_builder;
     
 }axis2_soap_fault_impl_t;
 
@@ -136,6 +139,11 @@ axis2_soap_fault_set_exception(axis2_soap_fault_t *fault,
                                axis2_env_t **env,
                                axis2_char_t *exception);                                                                                                                                                                                                                                                                                         
 
+axis2_status_t AXIS2_CALL 
+axis2_soap_fault_set_builder(axis2_soap_fault_t *fault,
+                               axis2_env_t **env,
+                              axis2_soap_builder_t *builder);
+                              
 /***************** function implementations ***********************************/
 
 AXIS2_DECLARE(axis2_soap_fault_t *)
@@ -207,7 +215,9 @@ axis2_soap_fault_create(axis2_env_t **env)
     fault_impl->soap_fault.ops->get_exception =
         axis2_soap_fault_get_exception;
     fault_impl->soap_fault.ops->set_exception =
-        axis2_soap_fault_set_exception;                    
+        axis2_soap_fault_set_exception;
+    fault_impl->soap_fault.ops->set_builder =
+        axis2_soap_fault_set_builder;                            
                                                                                                
     return &(fault_impl->soap_fault);
 }
@@ -738,3 +748,13 @@ axis2_soap_fault_set_exception(axis2_soap_fault_t *fault,
     return AXIS2_SUCCESS;
 }                                                                                                                                                                                                                                                                                        
                                   
+axis2_status_t AXIS2_CALL 
+axis2_soap_fault_set_builder(axis2_soap_fault_t *fault,
+                               axis2_env_t **env,
+                              axis2_soap_builder_t *builder)
+{
+    axis2_soap_fault_impl_t *fault_impl = NULL;
+    AXIS2_PARAM_CHECK((*env)->error, builder, AXIS2_FAILURE);
+    fault_impl->soap_builder = builder;
+    return AXIS2_SUCCESS;
+}                              

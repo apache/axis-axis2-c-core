@@ -38,7 +38,8 @@ extern "C"
 typedef struct axis2_soap_header  axis2_soap_header_t;
 typedef struct axis2_soap_header_ops    axis2_soap_header_ops_t;
 
-struct axis2_soap_header_block;    
+struct axis2_soap_header_block;   
+struct axis2_soap_builder; 
 
     
 /**
@@ -129,6 +130,10 @@ struct axis2_soap_header_block;
                                             (axis2_soap_header_t *header,
                                              axis2_env_t **env,
                                              struct axis2_soap_header_block* header_block);                                                                                                                                                                                                                                                   
+        
+        axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_header_t *header,
+                                                axis2_env_t **env,
+                                                struct axis2_soap_builder* builder);
                                          
     };
 
@@ -195,7 +200,10 @@ axis2_soap12_header_create_with_parent(axis2_env_t **env,
         ((header)->ops->get_soap_version(header, env))
         
 #define AXIS2_SOAP_HEADER_SET_HEADER_BLOCK(header, env, header_block) \
-        ((header)->ops->set_header_block(header, env, header_block))        
+        ((header)->ops->set_header_block(header, env, header_block))   
+
+#define AXIS2_SOAP_HEADER_SET_BUILDER(header, env, builder) \
+        ((header)->ops->set_builder(header, env, builder))             
 
 /** @} */
 

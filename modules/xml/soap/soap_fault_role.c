@@ -16,6 +16,7 @@
  
  #include <axis2_soap_fault_role.h>
  #include <axis2_soap_fault.h>
+ #include <axis2_soap_builder.h>
  
  /***************************** impl struct **********************************/
  
@@ -30,6 +31,8 @@
     axis2_om_node_t *om_ele_node;
     
     axis2_om_element_t *om_ele;
+    
+    axis2_soap_builder_t *soap_builder;
         
 }axis2_soap_fault_role_impl_t;
 

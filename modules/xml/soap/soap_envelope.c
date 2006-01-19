@@ -159,7 +159,9 @@ axis2_soap_envelope_create_null(axis2_env_t **env)
     envelope_impl->soap_envelope.ops->set_header = 
             axis2_soap_envelope_set_header;
     envelope_impl->soap_envelope.ops->get_namespace = 
-            axis2_soap_envelope_get_namespace;      
+            axis2_soap_envelope_get_namespace;
+    envelope_impl->soap_envelope.ops->set_builder =
+            axis2_soap_envelope_set_builder;                  
               
     envelope_impl->soap_envelope.ops->serialize = 
             axis2_soap_envelope_serialize;    
@@ -613,3 +615,4 @@ axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
     return NULL;
 }
 
+                                

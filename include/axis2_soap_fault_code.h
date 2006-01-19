@@ -35,6 +35,7 @@ extern "C"
     
     struct axis2_soap_fault_value;
     struct axis2_soap_fault_sub_code;
+    struct axis2_soap_builder;
 /**
  * @defgroup axis2_soap_fault_code
  * @ingroup axis2_soap
@@ -93,6 +94,11 @@ extern "C"
                                     (axis2_soap_fault_code_t *fault_code,
                                      axis2_env_t **env,
                                      int soap_version); 
+                                     
+        axis2_status_t (AXIS2_CALL *set_builder)
+                                    (axis2_soap_fault_code_t *fault_code,
+                                     axis2_env_t **env,
+                                     struct axis2_soap_builder *builder);
     
     };      
 
@@ -160,6 +166,9 @@ axis2_soap12_fault_code_create(axis2_env_t **env,
 #define AXIS2_SOAP_FAULT_CODE_GET_SOAP_VERSION(fault_code, env) \
         ((fault_code)->ops->get_soap_version(fault_code, env))        
         
+#define AXIS2_SOAP_FAULT_CODE_SET_BUILDER(fault_code, env, builder) \
+        ((fault_code)->ops->set_builder(fault_code, env, builder))
+                
 /** @} */
 
 #ifdef __cplusplus

@@ -32,6 +32,8 @@
     int soap_version;
  
     axis2_soap_fault_t *parent; 
+    
+   
  
  }axis2_soap_fault_detail_impl_t;
 
@@ -64,19 +66,21 @@ axis2_soap_fault_detail_set_base_node
 
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_fault_detail_get_base_node
-                        (axis2_soap_fault_detail_t *fault_code,
+                        (axis2_soap_fault_detail_t *fault_detail,
                          axis2_env_t **env);
 
 int AXIS2_CALL 
 axis2_soap_fault_detail_get_soap_version
-                        (axis2_soap_fault_detail_t *fault_node,
+                        (axis2_soap_fault_detail_t *fault_detail,
                          axis2_env_t **env);
                             
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_detail_set_soap_version
-                        (axis2_soap_fault_detail_t *fault_node,
+                        (axis2_soap_fault_detail_t *fault_detail,
                          axis2_env_t **env,
                          int soap_version);
+                         
+
                          
 /******************** function implementations ********************************/
 
@@ -283,7 +287,10 @@ axis2_soap_fault_detail_set_soap_version
      AXIS2_PARAM_CHECK((*env)->error, soap_version, AXIS2_FAILURE);
      AXIS2_INTF_TO_IMPL(fault_detail)->soap_version = soap_version;
      return AXIS2_SUCCESS;
-}                                              
+}
+
+                                  
+                                              
 /********************** soap11 ************************************************/
 
 AXIS2_DECLARE(axis2_soap_fault_detail_t *)

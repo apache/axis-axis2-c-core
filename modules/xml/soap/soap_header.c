@@ -19,6 +19,7 @@
  #include <axis2_soap_header_block.h>
  #include <axis2_hash.h>
  #include <axis2_soap.h>
+ #include <axis2_soap_builder.h>
  #include <stdio.h>
  
  /******************* impl struct *********************************************/
@@ -36,6 +37,8 @@
     axis2_hash_t *header_blocks;
     
     int hbnumber;
+    
+    axis2_soap_builder_t *soap_builder;
     
  }axis2_soap_header_impl_t;
  
@@ -92,7 +95,13 @@ axis2_soap_header_set_soap_version(axis2_soap_header_t *header,
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_set_header_block(axis2_soap_header_t *header,
                                    axis2_env_t **env,
-                                   struct axis2_soap_header_block *header_block); 
+                                   struct axis2_soap_header_block *header_block);
+                                   
+axis2_status_t AXIS2_CALL 
+axis2_soap_header_set_builder(axis2_soap_header_t *header,
+                              axis2_env_t **env,
+                              struct axis2_soap_builder *builder);                                   
+                                   
 /*************** function implementations *************************************/
 
 AXIS2_DECLARE(axis2_soap_header_t *)
@@ -145,6 +154,8 @@ axis2_soap_header_create(axis2_env_t **env)
         axis2_soap_header_get_soap_version;
     header_impl->soap_header.ops->set_header_block = 
         axis2_soap_header_set_header_block;
+    header_impl->soap_header.ops->set_builder =
+        axis2_soap_header_set_builder;        
             
     return &(header_impl->soap_header);        
 }
@@ -414,4 +425,16 @@ axis2_soap_header_set_header_block(axis2_soap_header_t *header,
     }
     return AXIS2_SUCCESS;
         
-}                                   
+}         
+axis2_status_t AXIS2_CALL 
+axis2_soap_header_set_builder(axis2_soap_header_t *header,
+                              axis2_env_t **env,
+                              struct axis2_soap_builder *builder)
+{
+    axis2_soap_header_impl_t *header_impl = NULL;
+    AXIS2_PARAM_CHECK((*env)->error, builder, AXIS2_FAILURE);
+    header_impl = AXIS2_INTF_TO_IMPL(header);
+    header_impl->soap_builder = builder;
+    return AXIS2_SUCCESS;
+}                              
+                                                             

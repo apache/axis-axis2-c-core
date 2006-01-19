@@ -31,7 +31,7 @@
     axis2_soap_fault_t *parent;
     
     int soap_version;
- 
+    
  }axis2_soap_fault_node_impl_t;
  
  /******************* Macro ***************************************************/
