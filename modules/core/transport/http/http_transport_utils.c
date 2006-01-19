@@ -566,11 +566,11 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 				void *op = NULL;
 				axis2_char_t *oname = NULL;
 				
-				/*ret = AXIS2_STRACAT(tmp2, "Available Operations <ul>", env);
+				ret = AXIS2_STRACAT(tmp2, "Available Operations <ul>", env);
 				AXIS2_FREE((*env)->allocator, tmp2);
                 tmp2 = ret;
 				for(hi2 = axis2_hash_first(ops, env); NULL != hi2;
-							axis2_hash_next(env, hi2))
+							hi2 = axis2_hash_next(env, hi2))
 				{
 					axis2_hash_this(hi2, NULL, NULL, &op);
 					oname = AXIS2_QNAME_GET_LOCALPART(AXIS2_OP_GET_QNAME(
@@ -588,7 +588,7 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 				}
 				ret = AXIS2_STRACAT(tmp2, "</ul>", env);
 				AXIS2_FREE((*env)->allocator, tmp2);
-                tmp = ret;*/
+                tmp2 = ret;
 			}
 			else
 			{
@@ -626,7 +626,7 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 	{
 		ret = AXIS2_STRDUP("<h2>There are no services deployed</h2>", env);
 	}
-	ret = AXIS2_STRACAT("<html><head><title>Axis2:Services</title></head><body>"
+	ret = AXIS2_STRACAT("<html><head><title>Axis2C :: Services</title></head><body>"
 							, tmp2, env);
 	/*AXIS2_FREE((*env)->allocator, tmp2);*/
     tmp2 = ret;
