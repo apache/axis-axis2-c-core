@@ -112,8 +112,6 @@ axis2_soap_builder_process_namespace_data
                                  axis2_om_node_t *om_node,
                                  int is_soap_element);
 
-                                                                      
-                                 
 static axis2_status_t
 identify_soap_version(axis2_soap_builder_t *builder,
                       axis2_env_t **env,
@@ -312,7 +310,6 @@ axis2_soap_builder_next(axis2_soap_builder_t *builder,
     
     current_node = AXIS2_OM_STAX_BUILDER_NEXT(builder_impl->om_builder, env);
     
-    printf("\n  element level %d -- status  %d\n", AXIS2_OM_STAX_BUILDER_GET_ELEMENT_LEVEL( builder_impl->om_builder, env), status);
     
     current_event = AXIS2_OM_STAX_BUILDER_GET_CURRENT_EVENT(builder_impl->om_builder, env);
     if(current_event == AXIS2_XML_READER_EMPTY_ELEMENT ||
@@ -410,7 +407,6 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME, AXIS2_FAILURE);
             return AXIS2_FAILURE;   
         }
-        printf("\n soap envelope \n");
         builder_impl->soap_envelope = axis2_soap_envelope_create_null(env);
        
         status = AXIS2_SOAP_ENVELOPE_SET_BASE_NODE(builder_impl->soap_envelope, env, om_element_node);
@@ -423,7 +419,6 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
         axis2_soap_header_t *soap_header = NULL;
         if(AXIS2_STRCMP(element_name, AXIS2_SOAP_HEADER_LOCAL_NAME) == 0)
         {
-             printf("\n soap header \n");
             if(builder_impl->header_present)
             {
                 AXIS2_ERROR_SET((*env)->error, 
@@ -446,7 +441,6 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
         else if(AXIS2_STRCMP(element_name, AXIS2_SOAP_BODY_LOCAL_NAME))
         {
             axis2_soap_body_t *soap_body = NULL;
-             printf("\n soap body \n");
             if(builder_impl->body_present)
             {
                 AXIS2_ERROR_SET((*env)->error, 
@@ -473,8 +467,6 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
     {
             axis2_soap_header_block_t *header_block = NULL;
             axis2_soap_header_t *soap_header = NULL;
-            
-             printf("\n soap header block \n");
             header_block = axis2_soap_header_block_create(env);
             AXIS2_SOAP_HEADER_BLOCK_SET_BASE_NODE(header_block, env, om_element_node);
             AXIS2_SOAP_HEADER_BLOCK_SET_SOAP_VERSION(header_block, env, builder_impl->soap_version);
@@ -491,8 +483,6 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             axis2_om_node_t *envelope_node = NULL;
             axis2_om_element_t *envelope_ele = NULL;
             axis2_om_namespace_t *env_ns = NULL;
-            printf("\n soap body \n");            
-            printf("%s", element_name);
             envelope_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(
                 builder_impl->soap_envelope, env);
             envelope_ele = (axis2_om_element_t *)
@@ -523,7 +513,6 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             else if(AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, 
                 AXIS2_OM_NAMESPACE_GET_URI(env_ns , env)) == 0)
             {   
-                printf("\nsoap11 builder create\n");
                 builder_impl->builder_helper = axis2_soap11_builder_helper_create(env, builder, builder_impl->om_builder);            
             }
              
@@ -532,19 +521,14 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
     {
         if(builder_impl->soap_version == AXIS2_SOAP11)
         {   
-            printf("\nSoap11  handel event\n");
              status = AXIS2_SOAP11_BUILDER_HELPER_HANDLE_EVENT(((axis2_soap11_builder_helper_t*)(builder_impl->builder_helper)), 
                 env,  om_element_node , element_level);
         
         }
         if(builder_impl->soap_version == AXIS2_SOAP12)
         {
-            status = AXIS2_SOAP12_BUILDER_HELPER_HANDLE_EVENT(((axis2_soap12_builder_helper_t *)(builder_impl->builder_helper)), 
-                env,  om_element_node , element_level);
-            if(status == AXIS2_FAILURE)
-            {
-                printf("\nfailure occured %s \n\n", AXIS2_ERROR_GET_MESSAGE((*env)->error));
-            }                        
+            status = AXIS2_SOAP12_BUILDER_HELPER_HANDLE_EVENT(((axis2_soap12_builder_helper_t *)
+            (builder_impl->builder_helper)), env,  om_element_node , element_level);
         }
     }
     return status;

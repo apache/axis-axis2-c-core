@@ -150,7 +150,6 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
       
     om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(om_element_node, env);
     ele_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env);
-    printf("\nelement localname %s\n", ele_localname);
     
     soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(builder_helper_impl->soap_builder, env);
     if(soap_envelope)
@@ -170,7 +169,7 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
 
 
         if(AXIS2_STRCMP(ele_localname, AXIS2_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME) == 0)
-        {   printf("\n fault code found %s\n", AXIS2_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME);
+        {   
             if(builder_helper_impl->fault_string_present)
             {
                 AXIS2_SOAP_BUILDER_SET_BOOL_PROCESSING_MANDATORY_FAULT_ELEMENTS(

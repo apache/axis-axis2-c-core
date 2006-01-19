@@ -181,7 +181,6 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
     
     if(element_level == 4)
     {
-        printf("\nlocalname  %s \n",ele_localname);
         if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME, ele_localname) == 0)
         {
            
@@ -198,18 +197,16 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 AXIS2_SOAP_FAULT_SET_CODE(soap_fault, env, soap_fault_code);
                 builder_helper_impl->code_present = AXIS2_TRUE;
                 builder_helper_impl->code_processing = AXIS2_TRUE;
-                printf("\nsoap fault code \n");    
             }
         }
         else if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME, ele_localname) == 0)
-        {   printf(" code processing %d  subcode processing %d ", builder_helper_impl->code_processing, builder_helper_impl->sub_code_processing);
+        {   
             if(!(builder_helper_impl->code_processing) && !(builder_helper_impl->sub_code_processing))
             {
                 if(builder_helper_impl->code_present)
                 {
                     if(builder_helper_impl->reason_present)
                     {
-                        printf("\nAXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED\n");
                         AXIS2_ERROR_SET((*env)->error, 
                             AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
                         return AXIS2_FAILURE;
@@ -223,12 +220,10 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         AXIS2_SOAP_FAULT_SET_REASON(soap_fault, env, fault_reason);
                         builder_helper_impl->reason_present = AXIS2_TRUE;
                         builder_helper_impl->reason_processing = AXIS2_TRUE;
-                        printf(" fault reason ");
                     }                
                 }
                 else
                 {
-                    printf("\nAXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED\n");
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FAILURE);
                     return AXIS2_FAILURE;                        
@@ -238,14 +233,12 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             {
                 if(builder_helper_impl->code_processing)
                 {
-                    printf("\nAXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE\n");
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE, AXIS2_FAILURE);
                     return AXIS2_FAILURE;                            
                 }
                 else
                 {
-                    printf("\nAXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE\n");
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE, AXIS2_FAILURE);
                     return AXIS2_FAILURE;                
@@ -281,14 +274,13 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     }
                 }else
                 {
-                    printf("AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED");
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FALSE);
                     return AXIS2_FAILURE;                
                 }
             }
             else
-            {       printf("AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT");
+            {       
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT, AXIS2_FALSE);
                     return AXIS2_FAILURE;                        
@@ -338,7 +330,6 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 {
                     if(builder_helper_impl->detail_present)
                     {
-                        printf("\n AXIS2_ERROR_MULTIPLE_DETAIL_ELEMENTS_ENCOUNTERED\n");
                         AXIS2_ERROR_SET((*env)->error, 
                             AXIS2_ERROR_MULTIPLE_DETAIL_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
                         return AXIS2_FAILURE;                                            
@@ -352,12 +343,10 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         AXIS2_SOAP_FAULT_SET_SOAP_VERSION(soap_fault_detail, env, AXIS2_SOAP12);
                         AXIS2_SOAP_FAULT_SET_DETAIL(soap_fault, env, soap_fault_detail);
                         builder_helper_impl->detail_present = AXIS2_TRUE;
-                        printf("\n detail create\n");
                     }                        
                 }
                 else
                 {
-                    printf("\nAXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED\n");
                     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FAILURE);
                     return AXIS2_FAILURE;
                     
@@ -365,7 +354,6 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             }
             else
             {
-                printf("\n AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT\n");
                 AXIS2_ERROR_SET((*env)->error, 
                     AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT, AXIS2_FAILURE);
                 return AXIS2_FAILURE;                    
@@ -405,11 +393,9 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     builder_helper_impl->value_present = AXIS2_TRUE;
                     builder_helper_impl->code_processing = AXIS2_FALSE;
                     
-                    printf("soap fault value  ");
                 }
                 else
                 {
-                    printf("\n multiple values\n");
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_MULTIPLE_VALUE_ENCOUNTERED_IN_CODE_ELEMENT, AXIS2_FAILURE);
                     return AXIS2_FAILURE;                        
@@ -418,7 +404,6 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             else if(AXIS2_STRCMP(ele_localname, 
                 AXIS2_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
             {
-                printf(" fault subcode first ");
                 if(!(builder_helper_impl->sub_code_present))
                 {
                     if(builder_helper_impl->value_present)
@@ -426,7 +411,6 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         
                         axis2_soap_fault_sub_code_t *fault_subcode = NULL;
                         axis2_soap_fault_code_t *fault_code = NULL;
-                        printf("\n fault code create\n");
                         fault_subcode = axis2_soap_fault_sub_code_create(env);
                         AXIS2_SOAP_FAULT_SUB_CODE_SET_BASE_NODE(fault_subcode, env, om_ele_node);
                         AXIS2_SOAP_FAULT_SUB_CODE_SET_SOAP_VRESION(fault_subcode, env, AXIS2_SOAP12);
@@ -511,13 +495,10 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
         
         if(AXIS2_STRCMP(parent_localname, AXIS2_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
         {
-            printf("\nparent is a subcode  element (element localname %s ) -\n\n", ele_localname);
             if(AXIS2_STRCMP(ele_localname, AXIS2_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME) == 0)
             {
-                printf(" sub code value");
                 if(builder_helper_impl->subcode_value_present)
                 {
-                    printf("\nAXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED\n");
                     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED, AXIS2_FAILURE);
                     return AXIS2_FAILURE;
                 }
@@ -537,12 +518,10 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     builder_helper_impl->subcode_value_present = AXIS2_TRUE;
                     builder_helper_impl->sub_sub_code_present = AXIS2_FALSE;
                     builder_helper_impl->sub_code_processing = AXIS2_FALSE;
-                    printf("\ncreate subcode value \n");                    
                 }
             }
             else if(AXIS2_STRCMP(ele_localname, AXIS2_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
             {
-                printf("\n parent subcode child subcode ");
                 if(builder_helper_impl->subcode_value_present)
                 {
                     if(!(builder_helper_impl->sub_sub_code_present))
@@ -559,18 +538,15 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         builder_helper_impl->subcode_value_present = AXIS2_FALSE;
                         builder_helper_impl->sub_sub_code_present = AXIS2_TRUE;
                         builder_helper_impl->sub_code_processing = AXIS2_TRUE;                        
-                        printf(" sub code sub code created ");
                     }
                     else
                     {
-                        printf("\nAXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED\n");
                         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED, AXIS2_FAILURE);
                         return AXIS2_FAILURE;                                                        
                     }
                 }
                 else
                 {
-                     printf("\nAXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE\n");
                     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE, AXIS2_FAILURE);
                     return AXIS2_FAILURE;
                 
@@ -578,7 +554,6 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             }
             else
             {
-                 printf("\nAXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT\n");
                 AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             } 

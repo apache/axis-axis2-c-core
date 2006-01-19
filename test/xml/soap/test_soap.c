@@ -39,7 +39,7 @@ int printnode(axis2_om_node_t *om_node, axis2_env_t **env)
     return 0;
 }
 
-int build_soap(axis2_env_t **env, char *filename)
+int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
 {
     axis2_om_document_t *om_doc = NULL;
     axis2_om_stax_builder_t *om_builder = NULL;
@@ -67,7 +67,7 @@ int build_soap(axis2_env_t **env, char *filename)
     
     om_doc = axis2_om_document_create(env, NULL, om_builder);
     
-    soap_builder = axis2_soap_builder_create(env, om_builder, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
+    soap_builder = axis2_soap_builder_create(env, om_builder, uri);
    /* 
     if(soap_builder)    
         printf("soap version %d", AXIS2_SOAP_BUILDER_GET_SOAP_VERSION(soap_builder, env) );
@@ -175,9 +175,17 @@ int main(int argc, char *argv[])
     axis2_allocator_t *allocator = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
+    axis2_char_t *uri = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     char *filename = "test.xml";
     if(argc > 1)
         filename = argv[1];
+    if(argc > 2)
+    {
+        if(AXIS2_STRCMP(argv[2],"0") == 0)
+            uri = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
+        else if(AXIS2_STRCMP(argv[2],"1") == 0)
+            uri = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    }
     allocator = axis2_allocator_init (NULL);
     log = axis2_log_create(allocator, NULL);
     error = axis2_error_create(allocator);
@@ -188,7 +196,7 @@ int main(int argc, char *argv[])
     
     printf("\nbuild soap\n");
     */
-    build_soap(&env, filename);
-    getchar();
+    build_soap(&env, filename,uri);
+    printf("\n");
     return 0;        
 }
