@@ -62,7 +62,7 @@ int axis2_test_dep_engine_load()
                 axis2_char_t *oname = NULL;
                 int count = 0;
 
-                for(hi2 = axis2_hash_first(ops, &env); hi2; axis2_hash_next(&env, hi2))
+                /*for(hi2 = axis2_hash_first(ops, &env); hi2; axis2_hash_next(&env, hi2))
                 {
                     printf ("count = %d \n", count++);
                     if (!hi2)
@@ -75,7 +75,7 @@ int axis2_test_dep_engine_load()
 					    oname = AXIS2_QNAME_GET_LOCALPART(qname, &env);
                         printf("op name = %s\n", oname);
                     }
-                }    
+                } */   
              }
              else
                 printf("ops count = zero\n");
