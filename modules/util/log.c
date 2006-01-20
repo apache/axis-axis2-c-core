@@ -71,7 +71,30 @@ axis2_log_impl_write (struct axis2_log *log, const axis2_char_t *buffer, axis2_l
     if (!log || !buffer)
         return -1;
     if (level <= log->level)
-        fprintf (stderr, "%s", buffer);
+    {
+        char *level_str = "";
+        switch (level)
+        {
+            case AXIS2_LOG_CRITICAL:
+                level_str = "[critical] ";
+                break;
+            case AXIS2_LOG_ERROR:
+                level_str = "[error] ";
+                break;
+            case AXIS2_LOG_WARNING:
+                level_str = "[warning] ";
+                break;
+            case AXIS2_LOG_INFO:
+                level_str = "[info] ";
+                break;
+            case AXIS2_LOG_DEBUG:
+                level_str = "[debug] ";
+                break;
+        }
+        fprintf (stderr, "%s", level_str);
+        fprintf (stderr, "%s\n", buffer);
+    }
+    
     return 0;
 }
 
