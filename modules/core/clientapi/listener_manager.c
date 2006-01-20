@@ -218,7 +218,7 @@ axis2_endpoint_ref_t* AXIS2_CALL axis2_listener_manager_reply_to_epr(struct axis
                     transport, AXIS2_HASH_KEY_STRING);
     if (tl_state) 
     {
-        return AXIS2_TRANSPORT_RECEIVER_REPLY_TO_EPR(tl_state->listener, env, svc_name);
+        return AXIS2_TRANSPORT_RECEIVER_GET_REPLY_TO_EPR(tl_state->listener, env, svc_name);
     } 
     return NULL;
 }
