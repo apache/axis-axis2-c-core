@@ -269,7 +269,6 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         AXIS2_SOAP_FAULT_NODE_SET_SOAP_VERSION(soap_fault_node, env, AXIS2_SOAP12);
                         AXIS2_SOAP_FAULT_SET_NODE(soap_fault, env, soap_fault_node);                    
                         */
-                        printf("node create");                           
                         builder_helper_impl->node_present = AXIS2_TRUE;                    
                     }
                 }else

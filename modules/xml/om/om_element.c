@@ -954,7 +954,6 @@ axis2_om_element_get_children_with_qname(axis2_om_element_t *om_element,
 {
     AXIS2_FUNC_PARAM_CHECK(om_element, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, element_qname, NULL);
     
     return axis2_om_children_qname_iterator_create(env,
                 AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env),

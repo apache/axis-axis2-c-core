@@ -18,6 +18,7 @@
 #include <axis2_soap_header_block.h>
 #include <axis2_soap_header.h>
 #include <axis2_soap_envelope.h>
+#include <axis2_soap_builder.h>
 
 /******************* impl struct **********************************************/
 
@@ -34,6 +35,7 @@ typedef struct axis2_soap_header_block_impl_t
     axis2_soap_header_t *parent;
 
     axis2_bool_t processed;
+    
     
 }axis2_soap_header_block_impl_t;
 
@@ -119,7 +121,8 @@ axis2_soap_header_block_get_attribute
                        (axis2_soap_header_block_t *header_block,
                         axis2_env_t **env,
                         axis2_char_t *attr_name,
-                        axis2_char_t *soap_envelope_namespace_uri);                             
+                        axis2_char_t *soap_envelope_namespace_uri);  
+                        
                          
 /*************** function implementations *************************************/                                                                                             
 

@@ -17,7 +17,8 @@
  #include <axis2_soap_fault_sub_code.h>
  #include <axis2_soap_fault_code.h>
  #include <axis2_soap_fault_value.h>
- #include <axis2_soap_utils.h> 
+ #include <axis2_soap_utils.h>
+ #include <axis2_soap_builder.h> 
  /********************** impl struct ******************************************/
  
  typedef struct axis2_soap_fault_sub_code_impl_t
@@ -34,7 +35,9 @@
     
     axis2_soap_fault_code_t *parent;
     
-    int soap_version;    
+    int soap_version; 
+    
+    axis2_soap_builder_t *builder;   
  
 }axis2_soap_fault_sub_code_impl_t;
 
@@ -89,7 +92,12 @@ axis2_status_t AXIS2_CALL
 axis2_soap_fault_sub_code_set_soap_version
                              (axis2_soap_fault_sub_code_t *fault_sub_code,
                               axis2_env_t **env,
-                              int soap_version);                              
+                              int soap_version); 
+
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_sub_code_set_builder(axis2_soap_fault_sub_code_t *fault_sub_code,
+                                     axis2_env_t **env,
+                                     axis2_soap_builder_t *builder);                                                           
                                 
 
 /********************** function implementations ******************************/
@@ -116,6 +124,7 @@ axis2_soap_fault_sub_code_create(axis2_env_t **env)
     fault_subcode_impl->value = NULL;
     fault_subcode_impl->subcode = NULL;
     fault_subcode_impl->parent = NULL;
+    fault_subcode_impl->builder = NULL;
     
     fault_subcode_impl->fault_sub_code.ops = 
             (axis2_soap_fault_sub_code_ops_t*)AXIS2_MALLOC((*env)->allocator,
@@ -153,7 +162,10 @@ axis2_soap_fault_sub_code_create(axis2_env_t **env)
         axis2_soap_fault_sub_code_get_soap_version;
         
     fault_subcode_impl->fault_sub_code.ops->set_soap_version =
-        axis2_soap_fault_sub_code_set_soap_version;                    
+        axis2_soap_fault_sub_code_set_soap_version;
+        
+    fault_subcode_impl->fault_sub_code.ops->set_builder =
+        axis2_soap_fault_sub_code_set_builder;                            
                                 
   return  &(fault_subcode_impl->fault_sub_code);        
 }
@@ -393,4 +405,15 @@ axis2_soap_fault_sub_code_set_soap_version
      return AXIS2_SUCCESS;
 }
 
-
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_sub_code_set_builder(axis2_soap_fault_sub_code_t *fault_sub_code,
+                                     axis2_env_t **env,
+                                     axis2_soap_builder_t *builder)
+{
+    axis2_soap_fault_sub_code_impl_t *subcode_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(fault_sub_code, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, builder, AXIS2_FAILURE);
+    subcode_impl = AXIS2_INTF_TO_IMPL(fault_sub_code);    
+    subcode_impl->builder = builder;
+    return AXIS2_SUCCESS;
+}                                     

@@ -598,7 +598,7 @@ axis2_om_node_get_first_child(axis2_om_node_t *om_node,
     while(!(om_node_impl->first_child) && !(om_node_impl->done) 
         && om_node_impl->builder)
     {
-        AXIS2_OM_STAX_BUILDER_NEXT(om_node_impl->builder, env);
+        AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node_impl->builder, env);
     }
     /**********************************************************/
     return om_node_impl->first_child;
@@ -632,7 +632,7 @@ axis2_om_node_get_next_sibling(axis2_om_node_t *om_node,
     while(!(om_node_impl->next_sibling) && om_node_impl->parent &&
     om_node_impl->builder && !(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node_impl->parent, env)))
     {
-        AXIS2_OM_STAX_BUILDER_NEXT(om_node_impl->builder, env);
+        AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node_impl->builder, env);
     }
     /*******************************************************/
     return om_node_impl->next_sibling;

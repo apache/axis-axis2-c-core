@@ -76,7 +76,6 @@ axis2_om_children_qname_iterator_create(axis2_env_t **env,
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, current_child, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, given_qname, NULL);
     
     iterator_impl = (axis2_om_children_qname_iterator_impl_t*)AXIS2_MALLOC(
                         (*env)->allocator,
@@ -95,6 +94,7 @@ axis2_om_children_qname_iterator_create(axis2_env_t **env,
     iterator_impl->matching_node_found = AXIS2_FALSE;
     iterator_impl->next_called = AXIS2_FALSE;
     iterator_impl->remove_called = AXIS2_FALSE;
+    iterator_impl->given_qname = NULL;
     
     
     iterator_impl->iterator.ops = 
@@ -109,8 +109,10 @@ axis2_om_children_qname_iterator_create(axis2_env_t **env,
     }
                                     
     iterator_impl->current_child = current_child;
-    iterator_impl->given_qname = AXIS2_QNAME_CLONE(given_qname, env);  
-    
+    if(given_qname)
+    {
+        iterator_impl->given_qname = AXIS2_QNAME_CLONE(given_qname, env);  
+    }
     iterator_impl->iterator.ops->free_fn = 
             axis2_om_children_qname_iterator_free;
     iterator_impl->iterator.ops->remove = 

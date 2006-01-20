@@ -58,9 +58,10 @@ AXIS2_DECLARE_DATA   struct axis2_soap_builder_ops
                                          (axis2_soap_builder_t *builder,
                                           axis2_env_t **env);
                                           
-        axis2_om_node_t * (AXIS2_CALL *next)(axis2_soap_builder_t *builder,
-                                             axis2_env_t **env);
-                                             
+        axis2_status_t (AXIS2_CALL *next)(axis2_soap_builder_t *builder,
+                                axis2_env_t **env);
+                                
+                                                     
         axis2_om_node_t* (AXIS2_CALL *get_document_element)
                                             (axis2_soap_builder_t *builder,
                                              axis2_env_t **env); 
@@ -145,7 +146,8 @@ axis2_soap_builder_create(axis2_env_t **env,
         ((builder)->ops->get_soap_version(builder, env))
         
 #define AXIS2_SOAP_BUILDER_SET_ELEMENT_LEVEL(builder, env, ele_level) \
-        ((builder)->ops->set_element_level(builder, env, ele_level))        
+        ((builder)->ops->set_element_level(builder, env, ele_level))
+                
 /** @} */
 #ifdef __cplusplus
 }
