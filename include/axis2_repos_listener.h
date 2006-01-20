@@ -117,7 +117,7 @@ AXIS2_DECLARE(axis2_repos_listener_t *)
 axis2_repos_listener_create (axis2_env_t **env);
 
 /**
- * @param folder_name
+ * @param folder_name this is the axis2 deployment root directory(repository path)
  * @param dep_engine
  * @return pointer to newly created deployment engine
  */

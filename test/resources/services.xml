@@ -1,45 +1,22 @@
 <serviceGroup>
 
-  <service name="AddService">
+  <service name="add_service">
 
-    <parameter name="ServiceClass" locked="xsd:false">sample.sgccalculator.AddService</parameter>
+    <parameter name="ServiceClass" locked="xsd:false">add.so</parameter>
 
     <operation name="add" > 
-          <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+          <messageReceiver class="libaxis2_receivers.so" />
     </operation>
-    
-    <operation name="addPrevious" > 
-          <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
-    </operation>
-    
   </service>
   
-  <service name="MultiplyService">
+  <service name="multiply_service">
   
-    <parameter name="ServiceClass" locked="xsd:false">sample.sgccalculator.MultiplyService</parameter>
+    <parameter name="ServiceClass" locked="xsd:false">multiply.so</parameter>
 
     <operation name="multiply" > 
-          <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+          <messageReceiver class="libaxis2_receivers.so" />
     </operation>
     
-    <operation name="multiplyPrevious" >
-          <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
-    </operation>
-     
   </service>
  
-   <service name="SubstractService">
-   
-   <parameter name="ServiceClass" locked="xsd:false">sample.sgccalculator.SubstractService</parameter>
-
-    <operation name="substract" >
-          <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
-    </operation>
-     
-    <operation name="substractPrevious" > 
-          <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
-    </operation>
-    
-  </service> 
-  
 </serviceGroup>

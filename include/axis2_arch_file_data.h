@@ -71,13 +71,14 @@ AXIS2_DECLARE_DATA struct axis2_arch_file_data_ops
                                         axis2_char_t *msg_recv);
     
     /**
-     * return the dll name
+     * @return the name of the contained file.
      */
     axis2_char_t *(AXIS2_CALL *
     get_name)(axis2_arch_file_data_t *file_data,
                                         axis2_env_t **env);
     /**
-     * return the service dll name
+     * @return the service name. if contained file is not null this is the
+     * file name. else this is the name property
      */
     axis2_char_t *(AXIS2_CALL *
     get_svc_name)(axis2_arch_file_data_t *file_data,
@@ -142,7 +143,8 @@ axis2_arch_file_data_create(axis2_env_t **env);
 
 /**
  * Creates arch file data struct
- * @param repos_path
+ * @param type 
+ * @param file folder name of service or module
  * @return pointer to newly created arch file data
  */
 AXIS2_DECLARE(axis2_arch_file_data_t *) 
@@ -150,6 +152,12 @@ axis2_arch_file_data_create_with_type_and_file(axis2_env_t **env,
                                                     int type,
                                                     axis2_file_t *file);
 
+/**
+ * Creates arch file data struct
+ * @param type 
+ * @param name 
+ * @return pointer to newly created arch file data
+ */
 AXIS2_DECLARE(axis2_arch_file_data_t *)
 axis2_arch_file_data_create_with_type_and_name(axis2_env_t **env,
                                                     int type,

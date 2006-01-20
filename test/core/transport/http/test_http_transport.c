@@ -119,11 +119,11 @@ void test_http_client(axis2_env_t *env)
 
     printf("Starting http_client tests\n");
     request_line = axis2_http_request_line_create(&env, "GET", 
-                        "/", "HTTP/1.0");
+                        "/axis2/services", "HTTP/1.0");
     request_body = axis2_stream_create_basic(&env);
     request = axis2_http_simple_request_create(&env, request_line,
                         NULL, 0, NULL);
-    url = axis2_url_create(&env, "http", "www.google.com", 80,
+    url = axis2_url_create(&env, "http", "localhost", 9090,
                         NULL);
     header = axis2_http_header_create(&env,"Host", AXIS2_URL_GET_SERVER(url, &env));
     AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, &env, header);

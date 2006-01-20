@@ -297,6 +297,10 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
     axis2_char_t *svcs_xml = NULL;
     axis2_char_t *repos_path = NULL;
     axis2_char_t *temp_path = NULL;
+    axis2_char_t *temp_path2 = NULL;
+    axis2_char_t *temp_path3 = NULL;
+    axis2_char_t *svc_container_path = NULL;
+    axis2_char_t *svc_folder = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(arch_reader, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, file_name, AXIS2_FAILURE);
@@ -305,8 +309,15 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
     
     repos_path = AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env);
     temp_path = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
-    svcs_xml = AXIS2_STRACAT(temp_path, AXIS2_SVC_XML, env);
+    temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_SERVICE_FOLDER, env);
+    temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
+    svc_container_path = AXIS2_STRACAT(temp_path3, file_name, env);
+    svc_folder = AXIS2_STRACAT(svc_container_path, AXIS2_PATH_SEP_STR, env);
+    svcs_xml = AXIS2_STRACAT(svc_folder, AXIS2_SVC_XML, env);
     AXIS2_FREE((*env)->allocator, temp_path);
+    AXIS2_FREE((*env)->allocator, temp_path2);
+    AXIS2_FREE((*env)->allocator, temp_path3);
+    AXIS2_FREE((*env)->allocator, svc_container_path);
     printf("svcs_xml:%s\n", svcs_xml);
     if(!svcs_xml)
     {
@@ -369,20 +380,13 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
     if(0 == AXIS2_STRCMP(AXIS2_SVC_ELEMENT, root_element_name))
     {
         axis2_svc_t *svc = NULL;
-        axis2_char_t *name = NULL;
-        axis2_char_t *short_file_name = NULL;
         axis2_svc_builder_t *svc_builder = NULL;
         axis2_arch_file_data_t *file_data = NULL;
         axis2_array_list_t *dep_svcs = NULL;
         axis2_char_t *svc_name = NULL;
         
         file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
-        name = AXIS2_ARCH_FILE_DATA_GET_NAME(file_data, env);
-        printf("name*:%s\n", name);
-        short_file_name = AXIS2_DESC_BUILDER_GET_SHORT_FILE_NAME(desc_builder, 
-            env, name);
-        svc_name = AXIS2_DESC_BUILDER_GET_FILE_NAME_WITHOUT_PREFIX(desc_builder,
-            env, short_file_name);
+        svc_name = AXIS2_ARCH_FILE_DATA_GET_NAME(file_data, env);
         printf("svc_name:%s\n", svc_name);
         svc = AXIS2_ARCH_FILE_DATA_GET_SVC(file_data, env, svc_name);
         if(NULL == svc)

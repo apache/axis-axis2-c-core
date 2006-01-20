@@ -214,7 +214,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
                                             axis2_char_t *repos_path);
     /**
      * Creates deployment engine struct
-     * @param repos_path
+     * @param repos_path is the path to which Repositary Listner should listen.
      * @param svr_xml_file
      * @return pointer to newly created deployment engine
      */

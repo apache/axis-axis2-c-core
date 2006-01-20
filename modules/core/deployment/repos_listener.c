@@ -79,7 +79,7 @@ axis2_repos_listener_start_listen(axis2_repos_listener_t *listener,
  * and added them to a list wich is in the WSInfolist class
  */
 axis2_status_t
-axis2_repos_listener_search_WS(axis2_repos_listener_t *listener,
+axis2_repos_listener_search(axis2_repos_listener_t *listener,
                                 axis2_env_t **env,
                                 axis2_char_t *folder_name,
                                 int type);
@@ -135,7 +135,7 @@ axis2_repos_listener_create(axis2_env_t **env)
  * Fisrt it initilize the syetm , by loading all the modules in the /modules directory
  * and also create a WSInfoList to keep infor about available modules and services
  *
- * @param folderName    path to parent directory that the listener should listent
+ * @param folderName    path to parent directory that the listener should listen
  * @param deploy_engine refearnce to engine registry  inorder to inform the updates
  */
 
@@ -168,7 +168,13 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(axis2_env_t **env,
         return NULL;
     }
     status = axis2_repos_listener_init(&(listener_impl->repos_listener), env);
-    printf("respos listner init status:%d\n", status);
+    if(AXIS2_SUCCESS != status)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_REPOS_LISTENER_INIT_FAILED,
+            AXIS2_FAILURE);
+        return NULL;        
+    }
+    
     return &(listener_impl->repos_listener);
 }
 
@@ -212,7 +218,7 @@ axis2_repos_listener_check_modules(axis2_repos_listener_t *listener,
     
     module_path = AXIS2_STRACAT(listener_impl->folder_name, AXIS2_MODULE_PATH,
         env);
-    return axis2_repos_listener_search_WS(listener, env, module_path, AXIS2_MODULE);
+    return axis2_repos_listener_search(listener, env, module_path, AXIS2_MODULE);
 }
 
 axis2_status_t AXIS2_CALL
@@ -225,7 +231,7 @@ axis2_repos_listener_check_svcs(axis2_repos_listener_t *listener,
     AXIS2_FUNC_PARAM_CHECK(listener, env, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
     svc_path = AXIS2_STRACAT(listener_impl->folder_name, AXIS2_SVC_PATH, env);
-    return axis2_repos_listener_search_WS(listener, env, svc_path, AXIS2_SVC);
+    return axis2_repos_listener_search(listener, env, svc_path, AXIS2_SVC);
 }
 
 axis2_status_t AXIS2_CALL
@@ -286,7 +292,7 @@ axis2_repos_listener_start_listen(axis2_repos_listener_t *listener,
 }
 
 axis2_status_t
-axis2_repos_listener_search_WS(axis2_repos_listener_t *listener,
+axis2_repos_listener_search(axis2_repos_listener_t *listener,
                                 axis2_env_t **env,
                                 axis2_char_t *folder_name,
                                 int type) 
@@ -299,7 +305,8 @@ axis2_repos_listener_search_WS(axis2_repos_listener_t *listener,
     AXIS2_FUNC_PARAM_CHECK(listener, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, folder_name, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
-    current_info_list = AXIS2_DIR_HANDLER_LIST_DIR(env, folder_name);
+    current_info_list = AXIS2_DIR_HANDLER_LIST_SERVICE_OR_MODULE_DIRS(env, 
+        folder_name);
     if(!current_info_list)
     {
         return AXIS2_FAILURE;
@@ -311,7 +318,7 @@ axis2_repos_listener_search_WS(axis2_repos_listener_t *listener,
         file = AXIS2_ARRAY_LIST_GET(current_info_list, env, i);
         AXIS2_WS_INFO_LIST_ADD_WS_INFO_ITEM(listener_impl->info_list, env,
             file, type);
-        axis2_file_free(file, env);
+        AXIS2_FILE_FREE(file, env);
         
     }
     return AXIS2_SUCCESS;

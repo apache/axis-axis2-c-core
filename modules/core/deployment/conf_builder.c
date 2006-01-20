@@ -228,25 +228,7 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
         AXIS2_CONF_ADD_MSG_RECV(builder_impl->conf, env, att_value, msg_recv);
         AXIS2_QNAME_FREE(qmep, env);
     }
-
-    /* processing Dispatching Order */
-    qdisporder = axis2_qname_create(env, AXIS2_DISPATCH_ORDER, NULL, NULL);
-    disp_order_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
-        conf_element, env, qdisporder, conf_node, &disp_order_node);
-    AXIS2_QNAME_FREE(qdisporder, env);
-    if(NULL != disp_order_element)
-    {
-        axis2_conf_builder_process_disp_order(conf_builder, env, disp_order_node);
-        /*log.info("found the custom disptaching order and continue with that order");*/
-    } else 
-    {
-        status = AXIS2_CONF_SET_DEFAULT_DISPATCHERS(builder_impl->conf, env);
-        if(AXIS2_SUCCESS != status)
-        {
-            return AXIS2_FAILURE;
-        }
-        /*log.info("no custom diaptching order found continue with default dispatcing order");*/
-    }
+    
     /* Process Module refs */
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
     module_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, env,
@@ -601,11 +583,10 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
     return phase_list;
 }
 
-
 axis2_status_t
 axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
-                                    axis2_env_t **env,
-                                    axis2_om_children_qname_iterator_t *trs_senders)
+                                axis2_env_t **env,
+                                axis2_om_children_qname_iterator_t *trs_senders)
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     
@@ -626,7 +607,8 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(trs_senders, env);
 
         if (transport_node)
-            transport_element = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(transport_node, env);
+            transport_element = (axis2_om_element_t*)
+                AXIS2_OM_NODE_GET_DATA_ELEMENT(transport_node, env);
         
         /* getting trsnport Name */
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
@@ -679,7 +661,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             dll_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(trs_dll_att, env);
             dll_desc = axis2_dll_desc_create(env);
             AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
-            AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_HANDLER_DLL);
+            AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
             axis2_class_loader_init(env);
             impl_info_param = axis2_param_create(env, NULL, NULL);
         
@@ -828,7 +810,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 dll_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(trs_dll_name, env);
                 dll_desc = axis2_dll_desc_create(env);
                 AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
-                AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_HANDLER_DLL);
+                AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
                 axis2_class_loader_init(env);
                 impl_info_param = axis2_param_create(env, NULL, NULL);
             
