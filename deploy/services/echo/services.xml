@@ -1,0 +1,12 @@
+<service name="echo">
+    <parameter name="ServiceClass" locked="xsd:false">echo.so</parameter>
+
+   <description>
+        This is a testing service , to test the system is working or not
+   </description>
+
+    <operation name="echo">
+            <messageReceiver class="libaxis2_receivers.so" />
+    </operation>
+
+</service>
