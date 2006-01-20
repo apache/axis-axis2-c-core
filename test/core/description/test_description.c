@@ -12,9 +12,13 @@ int axis2_test_op_engage_module()
     struct axis2_module_desc *moduleref= NULL;
 
 	axis2_status_t status = AXIS2_FAILURE;
+
+    printf("******************************************\n");
+    printf("testing axis2_op_engage_module\n");
+    printf("******************************************\n");
+
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 	axis2_env_t *env = axis2_env_create (allocator);
-
 	struct axis2_op *op = axis2_op_create(&env);
 
     moduleref = axis2_module_desc_create(&env);
@@ -42,9 +46,13 @@ int axis2_test_svc_add_module_ops()
 
 	axis2_status_t status = AXIS2_FAILURE;
 
+    
+	printf("******************************************\n");
+    printf("testing axis2_svc_add_module_ops\n");
+    printf("******************************************\n");
+
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 	axis2_env_t *env = axis2_env_create (allocator);
-	
 	qname = axis2_qname_create(&env, "name1", NULL, NULL);
 	svc = axis2_svc_create_with_qname(&env, qname);
 	module_desc = axis2_module_desc_create(&env);
@@ -70,13 +78,16 @@ int axis2_test_svc_engage_module()
 	struct axis2_svc *svc = NULL;
 	struct axis2_qname *qname = NULL;
 	struct axis2_module_desc *moduleref = NULL;
-	struct axis2_conf *axis2_config = NULL;
-	
+	struct axis2_conf *axis2_config = NULL;	
 	axis2_status_t status = AXIS2_FAILURE;
+
+    
+    printf("******************************************\n");
+    printf("testing axis2_svc_engage_module\n");
+    printf("******************************************\n");
 
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 	axis2_env_t *env = axis2_env_create (allocator);
-
 	qname = axis2_qname_create(&env, "name1", NULL, NULL);
 	svc = axis2_svc_create_with_qname(&env, qname);
 	moduleref = axis2_module_desc_create(&env);
@@ -107,9 +118,13 @@ int axis2_test_svc_get_op()
 	struct axis2_op *op = NULL;
 	axis2_status_t status = NULL;
 
+
+    printf("******************************************\n");
+    printf("testing axis2_svc_get_op\n");
+    printf("******************************************\n");
+
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 	axis2_env_t *env = axis2_env_create (allocator);
-
 	qname = axis2_qname_create(&env, "op1", NULL, NULL);	
 	op = axis2_op_create_with_qname(&env, qname);	
 	qname = axis2_qname_create(&env, "svc1", NULL, NULL);	

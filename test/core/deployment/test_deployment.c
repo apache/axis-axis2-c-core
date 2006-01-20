@@ -17,9 +17,13 @@ int axis2_test_dep_engine_load()
     axis2_array_list_t *in_phases = NULL;
     axis2_char_t *axis2c_home = NULL;
 
+    printf("******************************************\n");
+    printf("testing dep_engine_load method \n");
+    printf("******************************************\n");
+    
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 	axis2_env_t *env = axis2_env_create (allocator);
-
+    
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     dep_engine = axis2_dep_engine_create_with_repos_name(&env, 
         axis2c_home);
@@ -62,9 +66,8 @@ int axis2_test_dep_engine_load()
                 axis2_char_t *oname = NULL;
                 int count = 0;
 
-                /*for(hi2 = axis2_hash_first(ops, &env); hi2; axis2_hash_next(&env, hi2))
+                for(hi2 = axis2_hash_first(ops, &env); hi2; hi2 = axis2_hash_next(&env, hi2))
                 {
-                    printf ("count = %d \n", count++);
                     if (!hi2)
                         break;
                     axis2_hash_this(hi2, NULL, NULL, &op);
@@ -75,7 +78,7 @@ int axis2_test_dep_engine_load()
 					    oname = AXIS2_QNAME_GET_LOCALPART(qname, &env);
                         printf("op name = %s\n", oname);
                     }
-                } */   
+                }
              }
              else
                 printf("ops count = zero\n");
@@ -111,7 +114,9 @@ int axis2_test_engine_conf_builder_populate_conf()
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_char_t *axis2c_home = NULL;
 
+    printf("******************************************\n");
     printf("testing conf_builder_populate_conf method \n");
+    printf("******************************************\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 	axis2_env_t *env = axis2_env_create (allocator);
@@ -149,11 +154,12 @@ axis2_test_transport_receiver_load()
     axis2_transport_receiver_t *transport_recv = NULL;
     axis2_param_t *impl_info_param = NULL;
     axis2_bool_t *is_running = AXIS2_FALSE;
-    axis2_char_t *expected = NULL;
     axis2_char_t *axis2c_home = NULL;
 
-    expected = "application";
+    printf("******************************************\n");
     printf("testing axis2_transport_recv load\n"); 
+    printf("******************************************\n");
+
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
     
@@ -186,7 +192,10 @@ axis2_test_transport_sender_load()
     axis2_char_t *axis2c_home = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
 
+    printf("******************************************\n");
     printf("testing axis2_transport_sender load\n"); 
+    printf("******************************************\n");
+
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
     
@@ -213,11 +222,11 @@ axis2_test_transport_sender_load()
 
 int main()
 {
-    /*axis2_test_dep_engine_do_deploy();
-    axis2_test_engine_conf_builder_populate_conf();*/
+    axis2_test_dep_engine_do_deploy();
+    axis2_test_engine_conf_builder_populate_conf();
     axis2_test_dep_engine_load();
-    /*axis2_test_transport_receiver_load();*/
-    /*axis2_test_transport_sender_load();*/
+    axis2_test_transport_receiver_load();
+    axis2_test_transport_sender_load();
     
 	return 0;
 }
