@@ -25,9 +25,6 @@ typedef struct axis2_transport_out_desc_impl
 {
 	axis2_transport_out_desc_t transport_out;
     
-    /** Field paramInclude */
-    struct axis2_param_container *param_container;
-    
     /** 
      * Field flowInclude 
      * This will have a shallow copy and will not be freed by the descructor
@@ -143,7 +140,6 @@ axis2_transport_out_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qn
         return NULL;
     }
     
-    transport_out_impl->param_container = NULL;
     transport_out_impl->qname = NULL;
     transport_out_impl->out_phase = NULL;
     transport_out_impl->faultphase = NULL;
@@ -151,9 +147,10 @@ axis2_transport_out_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qn
     transport_out_impl->faultflow = NULL;
     transport_out_impl->sender = NULL;
     transport_out_impl->transport_out.ops = NULL;
+    transport_out_impl->transport_out.param_container = NULL;
     
-    transport_out_impl->param_container = axis2_param_container_create(env);
-    if(NULL == transport_out_impl->param_container)
+    transport_out_impl->transport_out.param_container = axis2_param_container_create(env);
+    if(NULL == transport_out_impl->transport_out.param_container)
     {
         axis2_transport_out_desc_free(&(transport_out_impl->transport_out), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -219,10 +216,10 @@ axis2_transport_out_desc_free (axis2_transport_out_desc_t *transport_out,
         transport_out->ops = NULL;
     }
     
-    if(NULL != transport_out_impl->param_container)
+    if(NULL != transport_out_impl->transport_out.param_container)
     {
-        AXIS2_PARAM_CONTAINER_FREE(transport_out_impl->param_container, env);
-        transport_out_impl->param_container = NULL;
+        AXIS2_PARAM_CONTAINER_FREE(transport_out_impl->transport_out.param_container, env);
+        transport_out_impl->transport_out.param_container = NULL;
     }
     
     if(NULL != transport_out_impl->qname)

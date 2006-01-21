@@ -320,12 +320,13 @@ axis2_svc_grp_free (axis2_svc_grp_t *svc_grp,
         AXIS2_ARRAY_LIST_FREE(svc_grp_impl->module_list, env);
         svc_grp_impl->module_list = NULL;
     }
-    
+   
+    /* Samisa: parenet should not be freed here. 
     if(NULL != svc_grp_impl->parent)
     {
         AXIS2_CONF_FREE(svc_grp_impl->parent, env);
         svc_grp_impl->parent = NULL;
-    }
+    }*/
     
     if(NULL != svc_grp_impl) 
     {
