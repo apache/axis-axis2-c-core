@@ -556,7 +556,8 @@ axis2_stream_create_socket (axis2_env_t **env, int socket)
 	
 	stream_impl->stream_type = AXIS2_STREAM_SOCKET;
 	stream_impl->socket = socket;
-	stream_impl->fp = fdopen(socket, "w+");
+	stream_impl->fp = NULL;
+	/*stream_impl->fp = fdopen(socket, "w+");*/
 	if(NULL == stream_impl->fp)
 	{
 		axis2_stream_free(def_stream, env);
@@ -574,7 +575,7 @@ axis2_stream_read_socket (axis2_stream_t *stream, axis2_env_t **env,
 						void *buffer, size_t count)
 {
 	FILE *fp = NULL;
-	
+	int len = 0;
 	AXIS2_FUNC_PARAM_CHECK(stream, env, AXIS2_CRTICAL_FAILURE);
 	
 	if(-1 == AXIS2_INTF_TO_IMPL(stream)->socket)
@@ -593,8 +594,24 @@ axis2_stream_read_socket (axis2_stream_t *stream, axis2_env_t **env,
 	{
         return -1;
 	}
-	/*return fread(buffer, sizeof(axis2_char_t), count, fp);	*/
-    return read(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count);
+    /*--- set timeout ---*/
+    fd_set          set;
+    struct timeval  timeout;
+
+    FD_ZERO( &set); /* initialize the file descriptor set.*/
+    FD_SET( AXIS2_INTF_TO_IMPL(stream)->socket, &set);
+
+    timeout.tv_sec = 5; /* initialize the timeout data structure. */
+    timeout.tv_usec = 0;
+
+    
+    int ret = select( FD_SETSIZE, &set, NULL, NULL, &timeout); /* select returns 0 if timeout, 
+                                                                    1 if input available, -1 if error. */    
+    /*--- end set timeout ---*/
+    
+    if (ret > 0) /* read socket only if data available */
+        len = read(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count);
+    return len;
 }
 
 int AXIS2_CALL
