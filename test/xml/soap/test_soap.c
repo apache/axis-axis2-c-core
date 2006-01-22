@@ -80,10 +80,11 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
     om_doc = axis2_om_document_create(env, NULL, om_builder);
     
     soap_builder = axis2_soap_builder_create(env, om_builder, uri);
-   /* 
-    if(soap_builder)    
-        printf("soap version %d", AXIS2_SOAP_BUILDER_GET_SOAP_VERSION(soap_builder, env) );
-    */
+    if(!soap_builder)
+    {
+        printf("%s \n", AXIS2_ERROR_GET_MESSAGE((*env)->error));
+        return -1;
+    }
     soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
           
     om_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
@@ -196,6 +197,7 @@ int main(int argc, char *argv[])
     error = axis2_error_create(allocator);
     env = axis2_env_create_with_error_log(allocator, error,  log);
     
+    axis2_error_init();
     /*build_soap_programatically(&env);*/
     /*
     
@@ -203,6 +205,5 @@ int main(int argc, char *argv[])
     */
     build_soap(&env, filename,uri);
     printf("\n");
-    getchar();
     return 0;        
 }
