@@ -557,7 +557,7 @@ axis2_stream_create_socket (axis2_env_t **env, int socket)
 	stream_impl->stream_type = AXIS2_STREAM_SOCKET;
 	stream_impl->socket = socket;
 	stream_impl->fp = NULL;
-	/*stream_impl->fp = fdopen(socket, "w+");*/
+	stream_impl->fp = fdopen(socket, "w+");
 	if(NULL == stream_impl->fp)
 	{
 		axis2_stream_free(def_stream, env);
