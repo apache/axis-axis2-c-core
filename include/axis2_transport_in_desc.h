@@ -41,7 +41,7 @@ extern "C"
 #endif
 
 struct axis2_phase;
-struct axis2_transport_listener;    
+struct axis2_transport_receiver;    
 typedef struct axis2_transport_in_desc axis2_transport_in_desc_t;
 typedef struct axis2_transport_in_desc_ops axis2_transport_in_desc_ops_t;
 
@@ -109,7 +109,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_in_desc_ops
     axis2_status_t (AXIS2_CALL *
     set_recv) (struct axis2_transport_in_desc *transport_in,
                                             axis2_env_t **env,
-                                            struct axis2_transport_listener *recv);
+                                            struct axis2_transport_receiver *recv);
     
     struct axis2_phase * (AXIS2_CALL *
     get_in_phase) (struct axis2_transport_in_desc *transport_in,

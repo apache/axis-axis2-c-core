@@ -802,6 +802,7 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
     axis2_qname_t *module_desc = NULL;
     axis2_char_t *svc_grp_name = NULL;
     int i = 0;
+    int k = 0;
     int size = 0;
     axis2_status_t status = AXIS2_FAILURE;
     
@@ -816,7 +817,7 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
         if(!config_impl->all_svcs)
             return AXIS2_FAILURE;
     }
-    int k = axis2_hash_count(svcs);
+    k = axis2_hash_count(svcs);
     index_i = axis2_hash_first (svcs, env);
     while(index_i)
     {
@@ -1558,6 +1559,7 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     }
     handler = AXIS2_DISP_GET_BASE(add_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 0, handler);
+    handler = NULL;
     
     uri_dispatch = axis2_addr_disp_create(env);
     if(!uri_dispatch)
@@ -1566,6 +1568,7 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     }
     handler = AXIS2_DISP_GET_BASE(uri_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 1, handler);
+    handler = NULL;
     
     soap_action_based_dispatch = axis2_addr_disp_create(env);
     if(!soap_action_based_dispatch)
@@ -1574,7 +1577,8 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     }
     handler = AXIS2_DISP_GET_BASE(soap_action_based_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 2, handler);
-
+    handler = NULL;
+    
     soap_msg_body_based_dispatch = axis2_addr_disp_create(env);
     if(!soap_msg_body_based_dispatch)
     {
@@ -1582,7 +1586,8 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     }
     handler = AXIS2_DISP_GET_BASE(soap_msg_body_based_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 3, handler);
-
+    handler = NULL;
+    
     status = AXIS2_ARRAY_LIST_ADD(config_impl->
             in_phases_upto_and_including_post_dispatch, env, dispatch);
     if(AXIS2_FAILURE == status)
@@ -1608,7 +1613,8 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     
     handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
- 
+    handler = NULL;
+    
     /*postDispatch.addHandler(instanceDispatcher,1); */
     status = AXIS2_ARRAY_LIST_ADD(config_impl->
             in_phases_upto_and_including_post_dispatch, env, post_dispatch);

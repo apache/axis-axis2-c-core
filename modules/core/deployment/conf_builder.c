@@ -184,7 +184,7 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     axis2_om_element_t *disp_order_element = NULL;
     axis2_om_node_t *disp_order_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    
+   
     AXIS2_FUNC_PARAM_CHECK(conf_builder, env, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
     
@@ -229,6 +229,25 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
         AXIS2_QNAME_FREE(qmep, env);
     }
     
+    /* processing Dispatching Order */
+    qdisporder = axis2_qname_create(env, AXIS2_DISPATCH_ORDER, NULL, NULL);
+    disp_order_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
+        conf_element, env, qdisporder, conf_node, &disp_order_node);
+    AXIS2_QNAME_FREE(qdisporder, env);
+    if(NULL != disp_order_element)
+    {
+        axis2_conf_builder_process_disp_order(conf_builder, env, disp_order_node);
+        /*log.info("found the custom disptaching order and continue with that order");*/
+    } else 
+    {
+        status = AXIS2_CONF_SET_DEFAULT_DISPATCHERS(builder_impl->conf, env);
+        if(AXIS2_SUCCESS != status)
+        {
+            return AXIS2_FAILURE;
+        }
+        /*log.info("no custom diaptching order found continue with default dispatcing order");*/
+    }
+
     /* Process Module refs */
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
     module_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, env,
@@ -378,7 +397,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
         AXIS2_QNAME_FREE(qdllname, env);
     }
 
-    if(AXIS2_FALSE == found_disp)
+    if(AXIS2_TRUE != found_disp)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_DISPATCHER_FOUND, 
             AXIS2_FAILURE);
@@ -805,6 +824,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 axis2_dll_desc_t *dll_desc = NULL;
                 axis2_param_t *impl_info_param = NULL;
                 axis2_transport_receiver_t *recv = NULL;
+                axis2_status_t stat = AXIS2_FAILURE;
                 
                 dll_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(trs_dll_name, env);
                 dll_desc = axis2_dll_desc_create(env);
@@ -816,8 +836,8 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc); 
                 recv = (axis2_transport_receiver_t *) 
                     axis2_class_loader_create_dll(env, impl_info_param);
-                int stat = AXIS2_TRANSPORT_IN_DESC_SET_RECV(transport_in, env, recv);
-                printf("stat:%d\n", stat);                
+                stat = AXIS2_TRANSPORT_IN_DESC_SET_RECV(transport_in, env, 
+                    recv);            
             }
             
             /* process Parameters */

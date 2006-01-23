@@ -110,6 +110,7 @@ extern "C"
 #define AXIS2_HOTDEPLOYMENT "hotdeployment"
 #define AXIS2_HOTUPDATE "hotupdate"
 #define AXIS2_EXTRACTSVCARCHIVE "extractServiceArchive"
+#define AXIS2_DISPATCH_ORDER "dispatchOrder"
 #define AXIS2_DISPATCHER "dispatcher"
 
 #define AXIS2_STORAGE "axisStorage"
