@@ -502,7 +502,6 @@ axis2_soap_envelope_get_body(axis2_soap_envelope_t *envelope,
                 return NULL;            
             }
         }               
-    
     }
     */
     return envelope_impl->body;

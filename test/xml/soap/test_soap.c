@@ -91,7 +91,7 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
           
     om_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
     printnode(om_node, env);
-    /*
+
     soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
     if(soap_header)
     {
@@ -127,7 +127,6 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
         return AXIS2_FAILURE;
     }
     
-    */
 
     while(!(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env)) && !(AXIS2_OM_STAX_BUILDER_IS_COMPLETE(om_builder, env)))
     {

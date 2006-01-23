@@ -900,7 +900,7 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
 
         if(token == -1)
         {
-            builder_impl->done = AXIS2_TRUE;
+          /*  builder_impl->done = AXIS2_TRUE; */
             return -1;
         }
                 
