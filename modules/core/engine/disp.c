@@ -199,9 +199,14 @@ axis2_status_t AXIS2_CALL axis2_disp_invoke(struct axis2_handler *handler,
     if (axis_service)
     {
         op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
-        if (op)
+        if (!op)
         {
-            AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op);
+            op = AXIS2_MSG_CTX_FIND_OP(msg_ctx, env, axis_service);
+            
+            if (op)
+            {
+                AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op);
+            }
         }
     }
     
