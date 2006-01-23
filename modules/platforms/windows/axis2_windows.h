@@ -119,6 +119,11 @@ HMODULE callLoadLib(LPCTSTR lib);
  * Platform specific time
  */
 #define AXIS2_TIME_T time_t
+/**
+ * Platform specific method to obtain current time in milli seconds
+ */
+#define AXIS2_PLATFORM_GET_TIME_IN_MILLIS _ftime
+#define AXIS2_PLATFORM_TIMEB timeb
 
 /**
  * Platform specific file handling

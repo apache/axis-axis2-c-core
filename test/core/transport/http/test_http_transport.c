@@ -72,6 +72,7 @@ void test_http_header(axis2_env_t *env)
 {
     char *header_name = "Content-Type";
     char *header_value = "text/xml";
+    char *str_header = "Content-Type: text/xml; charset=UTF-8\r\n";
     axis2_http_header_t *http_header;
     axis2_char_t *external_form = NULL;
 
@@ -84,6 +85,8 @@ void test_http_header(axis2_env_t *env)
             external_form);
     AXIS2_FREE(env->allocator, external_form);
     AXIS2_HTTP_HEADER_FREE(http_header, &env);
+    
+    http_header = axis2_http_header_create_by_str(&env, str_header); 
     printf("Finished http_header tests ..........\n\n");
 }
 
@@ -132,13 +135,13 @@ void test_http_client(axis2_env_t *env)
     status = AXIS2_HTTP_CLIENT_SEND(client, &env, request);
     if(status < 0)
     {
-        printf("Test FAILED ......... \n");
+        printf("Test FAILED .........Can't send the request. Status :%d\n", status);
         return;
     }
     status = AXIS2_HTTP_CLIENT_RECIEVE_HEADER(client, &env);
     if(status < 0)
     {
-        printf("Test FAILED ......... \n");
+        printf("Test FAILED ......... Can't recieve. Status: %d\n", status);
         return;
     }
     response = AXIS2_HTTP_CLIENT_GET_RESPONSE(client, &env);

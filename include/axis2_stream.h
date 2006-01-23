@@ -114,6 +114,13 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
 	 */
 	int (AXIS2_CALL *get_len) (axis2_stream_t *stream, axis2_env_t **env);
 	
+	/**
+	 * Returns the type of the stream as axis2_stream_type_t
+	 * @return Type of the stream
+	 */
+	axis2_stream_type_t (AXIS2_CALL *get_type) (axis2_stream_t *stream, 
+						axis2_env_t **env); 
+	
 };
 
 /** 
