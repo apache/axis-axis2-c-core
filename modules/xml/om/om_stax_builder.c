@@ -899,8 +899,10 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
         token = AXIS2_XML_READER_NEXT (builder_impl->parser, env);
 
         if(token == -1)
+        {
+            builder_impl->done = AXIS2_TRUE;
             return -1;
-
+        }
                 
         if (!(builder_impl->cache))
         {

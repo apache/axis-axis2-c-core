@@ -179,6 +179,9 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             AXIS2_SOAP_FAULT_CODE_SET_BASE_NODE(fault_code, env, om_element_node);
             AXIS2_SOAP_FAULT_CODE_SET_SOAP_VERSION(fault_code, env, AXIS2_SOAP11);
             AXIS2_SOAP_FAULT_SET_CODE(soap_fault, env, fault_code);
+            
+            AXIS2_SOAP_FAULT_CODE_SET_BUILDER(fault_code, env, builder_helper_impl->soap_builder);
+            
             AXIS2_OM_ELEMENT_SET_LOCALNAME(om_ele, env, AXIS2_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME);
                         
             fault_value = axis2_soap_fault_value_create_with_code(env, fault_code);
