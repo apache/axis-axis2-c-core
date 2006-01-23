@@ -1,6 +1,6 @@
 prgbindir=$(prefix)/bin/unit_test
 prgbin_PROGRAMS = main_unit_test_suite
-SUBDIRS = util core xml
+SUBDIRS = util core xml wsdl
 AM_CPPFLAGS = $(CPPFLAGS)
 main_unit_test_suite_SOURCES = main.c
 
@@ -12,6 +12,7 @@ main_unit_test_suite_LDADD   =   \
                     -L$(top_builddir)/test/unit/core/context/.libs -ltest_context \
                     -L$(top_builddir)/test/unit/core/phaseresolver/.libs -ltest_phaseresolver \
                     -L$(top_builddir)/test/unit/util/.libs -ltest_util \
+                    -L$(top_builddir)/test/unit/wsdl/.libs -ltest_wsdl \
                     -L$(top_builddir)/test/unit/xml/om/.libs -ltest_om \
                     -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \

@@ -76,7 +76,7 @@ struct axis2_wsdl_component_ops
     axis2_status_t (AXIS2_CALL *
     set_component_property) (axis2_wsdl_component_t *wsdl_component,
                                 axis2_env_t **env, 
-                                void *key, 
+                                axis2_char_t *key, 
                                 void *value);
     
     /**
@@ -87,7 +87,7 @@ struct axis2_wsdl_component_ops
     void *(AXIS2_CALL *
     get_component_property) (axis2_wsdl_component_t *wsdl_component, 
                                 axis2_env_t **env,
-                                void *key);
+                                axis2_char_t *key);
  
 
 
