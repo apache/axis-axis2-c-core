@@ -52,7 +52,7 @@ axis2_parse_request_url_for_svc_and_op(axis2_env_t **env,
         if('\0' != *service_str)
         {
             service_str++; /*to remove the leading '/' */
-            tmp = strchr(service_str, '/');
+            tmp = strchr(service_str, '?');
             if(NULL != tmp)
             {
                 i = tmp - service_str;
