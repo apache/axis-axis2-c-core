@@ -38,7 +38,7 @@ struct axis2_url_impl
 
 #define AXIS2_INTF_TO_IMPL(url) ((axis2_url_impl_t *)(url))
 
-/***************************** Function urls *******************************/
+/***************************** Function headers *******************************/
 axis2_char_t* AXIS2_CALL 
 axis2_url_to_external_form (axis2_url_t *url, axis2_env_t **env);
 axis2_status_t AXIS2_CALL 
@@ -64,7 +64,7 @@ axis2_status_t AXIS2_CALL
 axis2_url_open (axis2_url_t *url, axis2_env_t **env);
 axis2_status_t AXIS2_CALL
 axis2_url_close (axis2_url_t *url, axis2_env_t **env);
-/***************************** End of function urls ************************/
+/***************************** End of function headers ************************/
 
 AXIS2_DECLARE(axis2_url_t *) 
 axis2_url_create (axis2_env_t **env, axis2_char_t *protocol, 

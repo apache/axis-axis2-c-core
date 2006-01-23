@@ -36,7 +36,7 @@ axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_process_http_post_request
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
                         axis2_stream_t *in_stream, axis2_stream_t *out_stream,
-						axis2_char_t *content_type, 
+						axis2_char_t *content_type, int content_length,
                         axis2_char_t *soap_action_header,
                         axis2_char_t *request_uri);
     
@@ -97,7 +97,7 @@ axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_process_http_post_request
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
                         axis2_stream_t *in_stream, axis2_stream_t *out_stream,
-						axis2_char_t *content_type, 
+						axis2_char_t *content_type, int content_length, 
                         axis2_char_t *soap_action_header,
                         axis2_char_t *request_uri)
 {
@@ -121,6 +121,9 @@ axis2_http_transport_utils_process_http_post_request
 	
 	callback_ctx.in_stream = in_stream;
 	callback_ctx.env = *env;
+	callback_ctx.content_length = content_length;
+	callback_ctx.unread_len = content_length;
+	
 	
 	if(NULL != soap_action_header)	
 	{
@@ -212,7 +215,8 @@ axis2_http_transport_utils_process_http_post_request
     if (!soap_envelope)
         return AXIS2_FAILURE;
     
-    axis2_soap_body_t *soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+    axis2_soap_body_t *soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, 
+						env);
     
     if (!soap_body)
         return AXIS2_FAILURE;
@@ -348,8 +352,8 @@ axis2_http_transport_utils_create_envelope_from_get_request
 		axis2_om_element_t *tmp_ele = NULL;
 		axis2_om_node_t *tmp_node = NULL;
 		axis2_hash_this(hi, (const void **)&name, NULL, (void**)&value);
-		tmp_ele = axis2_om_element_create(env, op_node, (axis2_char_t*)name, def_om_ns, 
-						&tmp_node);
+		tmp_ele = axis2_om_element_create(env, op_node, (axis2_char_t*)name,
+						def_om_ns, &tmp_node);
 		AXIS2_OM_ELEMENT_SET_TEXT(tmp_ele, env, (axis2_char_t*)value, tmp_node);
 	}
     return envelope;
@@ -602,7 +606,8 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 	{
 		void *fsname = NULL;
 		svcs_exists = AXIS2_TRUE;
-		ret = AXIS2_STRACAT(tmp2, "<hr><h2><font color=\"blue\">Faulty Services</font></h2>"
+		ret = AXIS2_STRACAT(tmp2, "<hr><h2><font color=\"blue\">Faulty \
+						Services</font></h2>"
 							, env);
 		AXIS2_FREE((*env)->allocator, tmp2);
         tmp2 = ret;
@@ -626,8 +631,8 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 	{
 		ret = AXIS2_STRDUP("<h2>There are no services deployed</h2>", env);
 	}
-	ret = AXIS2_STRACAT("<html><head><title>Axis2C :: Services</title></head><body>"
-							, tmp2, env);
+	ret = AXIS2_STRACAT("<html><head><title>Axis2C :: Services</title></head>\
+						<body>" , tmp2, env);
 	/*AXIS2_FREE((*env)->allocator, tmp2);*/
     tmp2 = ret;
 	ret = AXIS2_STRACAT(tmp2, "</body></html>\r\n", env);
@@ -663,11 +668,21 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
 {
 	axis2_stream_t *in_stream = NULL;
 	axis2_env_t **env = NULL;
+	int len = -1;
 	if(NULL == buffer || NULL == ctx)
 	{
 		return 0;
 	}
+	if(((axis2_callback_info_t*)ctx)->unread_len <= 0)
+	{
+		return -1;
+	}
 	in_stream = ((axis2_callback_info_t*)ctx)->in_stream;
 	env = &((axis2_callback_info_t*)ctx)->env;
-	return AXIS2_STREAM_READ(in_stream, env, buffer, size);
+	len = AXIS2_STREAM_READ(in_stream, env, buffer, size);
+	if(len > 0)
+	{
+		((axis2_callback_info_t*)ctx)->unread_len -= len;
+	}
+	return len;
 }

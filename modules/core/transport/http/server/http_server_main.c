@@ -21,10 +21,11 @@
 #include <axis2_error_default.h>
 #include <axis2_log_default.h>
 
-/***************************** Function servers *******************************/
+
+/***************************** Function headers *******************************/
 axis2_env_t* init_syetem_env(axis2_allocator_t *allocator);
 void system_exit(axis2_allocator_t *allocator, axis2_env_t *env, int status);
-/***************************** End of function servers ************************/
+/***************************** End of function headers ************************/
 axis2_env_t* init_syetem_env(axis2_allocator_t *allocator)
 {
 	axis2_error_t *error = axis2_error_create(allocator);

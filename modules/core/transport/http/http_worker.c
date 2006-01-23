@@ -138,6 +138,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	axis2_bool_t processed = AXIS2_FALSE;
 	axis2_char_t *ctx_written = NULL;
 	axis2_status_t status = AXIS2_FAILURE;
+	int content_length = -1;
 	
 	AXIS2_FUNC_PARAM_CHECK(http_worker, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svr_conn, AXIS2_FAILURE);
@@ -152,8 +153,37 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 						AXIS2_FAILURE);
 		return AXIS2_FALSE;
 	}
-	request_body = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY(simple_request, env);
+	
+	content_length = AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_LENGTH(simple_request
+						, env);
+	http_version = AXIS2_HTTP_REQUEST_LINE_GET_HTTP_VERSION
+						(AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE
+						(simple_request, env), env);
+	if(NULL == http_version)
+	{
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_HTTP_VERSION, 
+						AXIS2_FAILURE);
+		return AXIS2_FAILURE;
+	}
 	response = axis2_http_simple_response_create_default(env);
+	if(content_length < 0)
+	{
+		if(0 == AXIS2_STRCASECMP(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(
+						AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
+						simple_request, env), env), AXIS2_HTTP_HEADER_POST))
+		{
+			AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE(response, env, 
+						http_version, 411, "Length Required");
+			status = AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, 
+						response);
+			AXIS2_HTTP_SIMPLE_RESPONSE_FREE(response, env);
+			response = NULL;
+			return status;
+		}
+		
+	}
+	request_body = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY(simple_request, env);
+	
 	out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(AXIS2_CONF_CTX_GET_CONF
 						(http_worker_impl->conf_ctx, env), env, 
 						axis2_qname_create(env, AXIS2_TRANSPORT_HTTP, NULL, 
@@ -165,15 +195,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
 	AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
 	
-	http_version = AXIS2_HTTP_REQUEST_LINE_GET_HTTP_VERSION
-						(AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE
-						(simple_request, env), env);
 	
-	if(NULL == http_version)
-	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_HTTP_VERSION, 
-						AXIS2_FAILURE);
-	}
 	if(0 == AXIS2_STRCASECMP(http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
 	{
 		axis2_http_worker_set_transport_out_config(http_worker, env, conf_ctx,
@@ -250,7 +272,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 		status = axis2_http_transport_utils_process_http_post_request
                         (env, msg_ctx, request_body, out_stream,
 						AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_TYPE(
-						simple_request, env) ,soap_action,
+						simple_request, env) , content_length, soap_action,
 						AXIS2_HTTP_REQUEST_LINE_GET_URI
 						(AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
 						simple_request, env), env));
@@ -319,8 +341,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	AXIS2_MSG_CTX_FREE(msg_ctx, env);
 	msg_ctx = NULL;
 	AXIS2_HTTP_SIMPLE_RESPONSE_FREE(response, env);
-	response = NULL;
-	
+	response = NULL;	
     return status;
 }
 

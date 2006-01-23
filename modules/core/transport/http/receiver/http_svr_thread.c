@@ -41,7 +41,7 @@ struct axis2_http_svr_thread_impl
 #define AXIS2_INTF_TO_IMPL(http_svr_thread) \
                 ((axis2_http_svr_thread_impl_t *)(http_svr_thread))
 
-/***************************** Function svr_threads *******************************/
+/***************************** Function headers *******************************/
 axis2_status_t AXIS2_CALL 
 axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread, 
 						axis2_env_t **env);
@@ -62,7 +62,7 @@ axis2_status_t AXIS2_CALL
 axis2_http_svr_thread_free (axis2_http_svr_thread_t *svr_thread, 
 						axis2_env_t **env);					
 
-/***************************** End of function svr_threads ************************/
+/***************************** End of function headers ************************/
 
 axis2_http_svr_thread_t* AXIS2_CALL
 axis2_http_svr_thread_create (axis2_env_t **env, int port)

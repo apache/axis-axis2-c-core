@@ -44,7 +44,7 @@ struct axis2_http_client_impl
 #define AXIS2_INTF_TO_IMPL(http_client) \
                 ((axis2_http_client_impl_t *)(http_client))
 
-/***************************** Function clients *******************************/
+/***************************** Function headers *******************************/
 axis2_status_t AXIS2_CALL 
 axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
 						axis2_http_simple_request_t *request);
@@ -67,7 +67,7 @@ axis2_http_client_get_timeout (axis2_http_client_t *client, axis2_env_t **env);
 axis2_status_t AXIS2_CALL 
 axis2_http_client_free (axis2_http_client_t *client, axis2_env_t **env);							
 
-/***************************** End of function clients ************************/
+/***************************** End of function headers ************************/
 
 AXIS2_DECLARE(axis2_http_client_t *) 
 axis2_http_client_create (axis2_env_t **env, axis2_url_t *url)

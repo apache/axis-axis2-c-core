@@ -40,7 +40,7 @@ struct axis2_http_server_impl
 #define AXIS2_INTF_TO_IMPL(http_server) \
                 ((axis2_http_server_impl_t *)(http_server))
 
-/***************************** Function servers *******************************/
+/***************************** Function headers *******************************/
 axis2_status_t AXIS2_CALL 
 axis2_http_server_init(axis2_transport_receiver_t *server, axis2_env_t **env,
 						axis2_conf_ctx_t *conf_ctx, 
@@ -66,7 +66,7 @@ axis2_http_server_is_running (axis2_transport_receiver_t *server,
 axis2_status_t AXIS2_CALL 
 axis2_http_server_free (axis2_transport_receiver_t *server, axis2_env_t **env);
 
-/***************************** End of function servers ************************/
+/***************************** End of function headers ************************/
 
 AXIS2_DECLARE(axis2_transport_receiver_t *) 
 axis2_http_server_create (axis2_env_t **env, axis2_char_t *repo, int port)
