@@ -594,23 +594,8 @@ axis2_stream_read_socket (axis2_stream_t *stream, axis2_env_t **env,
 	{
         return -1;
 	}
-    /*--- set timeout ---*/
-    fd_set          set;
-    struct timeval  timeout;
-
-    FD_ZERO( &set); /* initialize the file descriptor set.*/
-    FD_SET( AXIS2_INTF_TO_IMPL(stream)->socket, &set);
-
-    timeout.tv_sec = 5; /* initialize the timeout data structure. */
-    timeout.tv_usec = 0;
-
-    
-    int ret = select( FD_SETSIZE, &set, NULL, NULL, &timeout); /* select returns 0 if timeout, 
-                                                                    1 if input available, -1 if error. */    
-    /*--- end set timeout ---*/
-    
-    if (ret > 0) /* read socket only if data available */
-        len = read(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count);
+        
+    len = read(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count);
     return len;
 }
 
