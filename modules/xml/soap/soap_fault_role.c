@@ -26,14 +26,10 @@
     
     int soap_version;
     
-    axis2_soap_fault_t *parent;
-    
     axis2_om_node_t *om_ele_node;
     
     axis2_om_element_t *om_ele;
     
-    axis2_soap_builder_t *soap_builder;
-        
 }axis2_soap_fault_role_impl_t;
 
 /**************************** Macro *******************************************/
@@ -101,8 +97,6 @@ axis2_soap_fault_role_create(axis2_env_t **env)
     fault_role_impl->om_ele_node = NULL;
     
     fault_role_impl->soap_version = AXIS2_SOAP_VERSION_NOT_SET;
-    fault_role_impl->parent = NULL;
-    
     fault_role_impl->fault_role.ops = 
             (axis2_soap_fault_role_ops_t*)AXIS2_MALLOC((*env)->allocator,
                 sizeof(axis2_soap_fault_role_ops_t));
@@ -159,8 +153,6 @@ axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
         return NULL;
         
     fault_role_impl = AXIS2_INTF_TO_IMPL(fault_role);
-    
-    fault_role_impl->parent = fault;
     
     parent_node = AXIS2_SOAP_FAULT_GET_BASE_NODE(fault, env);
     

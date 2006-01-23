@@ -28,8 +28,6 @@
     
     axis2_om_node_t *om_ele_node;
     
-    axis2_soap_fault_t *parent;
-    
     int soap_version;
     
  }axis2_soap_fault_node_impl_t;
@@ -94,7 +92,6 @@ axis2_soap_fault_node_create(axis2_env_t **env)
     fault_node_impl->fault_node.ops = NULL;
     fault_node_impl->om_ele = NULL;
     fault_node_impl->om_ele_node = NULL;
-    fault_node_impl->parent = NULL;
     
     fault_node_impl->fault_node.ops = (axis2_soap_fault_node_ops_t*)AXIS2_MALLOC(
                     (*env)->allocator, sizeof(axis2_soap_fault_node_ops_t));
@@ -150,8 +147,6 @@ axis2_soap_fault_node_create_with_parent(axis2_env_t **env,
         return NULL;
         
     fault_node_impl = AXIS2_INTF_TO_IMPL(fault_node);
-    
-    fault_node_impl->parent = fault;
     
     parent_node = AXIS2_SOAP_FAULT_GET_BASE_NODE(fault, env);
     

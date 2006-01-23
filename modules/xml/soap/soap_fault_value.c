@@ -31,10 +31,6 @@ typedef struct axis2_soap_fault_value_impl_t
     axis2_om_element_t *om_ele;
     
     /** pointer to parent */
-    void* parent;
-    /** parent type */
-    int parent_type;
-    
     int soap_version;
 }axis2_soap_fault_value_impl_t;
 
@@ -86,8 +82,6 @@ axis2_soap_fault_value_create(axis2_env_t **env)
     
     fault_val_impl->om_ele_node = NULL;
     fault_val_impl->om_ele = NULL;
-    fault_val_impl->parent = NULL;
-    fault_val_impl->parent_type = -1;
     fault_val_impl->soap_version = AXIS2_SOAP_VERSION_NOT_SET;
     
     fault_val_impl->fault_value.ops = NULL;
@@ -139,8 +133,6 @@ axis2_soap_fault_value_create_with_subcode(axis2_env_t **env,
     
     fault_val_impl = AXIS2_INTF_TO_IMPL(fault_value);
     
-    fault_val_impl->parent = parent;
-    fault_val_impl->parent_type = AXIS2_SOAP_FAULT_SUB_CODE;
     
     parent_node = AXIS2_SOAP_FAULT_SUB_CODE_GET_BASE_NODE(parent, env);
     parent_ele  = (axis2_om_element_t*)
@@ -177,9 +169,6 @@ axis2_soap_fault_value_create_with_code(axis2_env_t **env,
     }
     
     fault_val_impl = AXIS2_INTF_TO_IMPL(fault_value);
-    
-    fault_val_impl->parent = parent;
-    fault_val_impl->parent_type = AXIS2_SOAP_FAULT_CODE;
     
     parent_node = AXIS2_SOAP_FAULT_CODE_GET_BASE_NODE(parent, env);
     parent_ele  = (axis2_om_element_t*)

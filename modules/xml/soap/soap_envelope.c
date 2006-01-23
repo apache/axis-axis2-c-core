@@ -21,7 +21,7 @@
  #include <axis2_hash.h>
  #include <axis2_soap.h>
  #include <axis2_soap_builder.h>
- 
+ #include <axis2_soap_fault_code.h>
  /******************* impl struct *********************************************/
  
  typedef struct axis2_soap_envelope_impl_t
@@ -525,11 +525,48 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                 OMConstants.DEFAULT_CHAR_SET_ENCODING : charSetEncoding,
                 xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION : xmlVersion);
     }*/
+    /*
+    if(envelope_impl->soap_version == AXIS2_SOAP11)
+    {
+    axis2_om_node_t *fault_node = NULL;
+    axis2_om_element_t *fault_ele =  NULL;
+    axis2_soap_fault_t *soap_fault = NULL;
+    axis2_soap_body_t *soap_body = NULL;
+    axis2_soap_fault_code_t *fault_code = NULL;
+    axis2_om_node_t *om_node = NULL;
+    axis2_om_element_t *om_ele = NULL;
+    
+    axis2_om_node_t *om_node1 = NULL;
+    axis2_om_element_t *om_ele1 = NULL;
+    soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
+        if(soap_body)
+        {
+            if(AXIS2_SOAP_BODY_HAS_FAULT(soap_body, env))
+            {
+                soap_fault = AXIS2_SOAP_BODY_GET_FAULT(soap_body, env);
+                fault_code = AXIS2_SOAP_FAULT_GET_CODE(soap_fault, env);
+                if(fault_code)
+                {
+                    om_node = AXIS2_SOAP_FAULT_CODE_GET_BASE_NODE(fault_code, env);
+                    om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);
+                    AXIS2_OM_ELEMENT_SET_LOCALNAME(om_ele, env, AXIS2_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME); 
+                    
+                                       
+                    
+                    
+                    
+                }  
+            }
+        }
+    }
+    */
     return AXIS2_OM_NODE_SERIALIZE(envelope_impl->om_ele_node, env, om_output);
 }
 
-axis2_status_t AXIS2_CALL axis2_soap_envelope_set_body(axis2_soap_envelope_t *envelope,
-    axis2_env_t **env, axis2_soap_body_t *body)
+axis2_status_t AXIS2_CALL 
+axis2_soap_envelope_set_body(axis2_soap_envelope_t *envelope,
+                            axis2_env_t **env, 
+                            axis2_soap_body_t *body)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(envelope, env, AXIS2_FAILURE);

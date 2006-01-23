@@ -33,8 +33,6 @@
  
     axis2_soap_fault_t *parent; 
     
-   
- 
  }axis2_soap_fault_detail_impl_t;
 
 /***************** Macro *****************************************************/

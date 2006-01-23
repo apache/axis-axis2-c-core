@@ -221,6 +221,9 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         AXIS2_SOAP_FAULT_REASON_SET_BASE_NODE(fault_reason, env, om_ele_node);
                         AXIS2_SOAP_FAULT_SET_SOAP_VERSION(fault_reason, env, AXIS2_SOAP12);
                         AXIS2_SOAP_FAULT_SET_REASON(soap_fault, env, fault_reason);
+                        AXIS2_SOAP_FAULT_REASON_SET_BUILDER(soap_fault, env, 
+                                builder_helper_impl->soap_builder); 
+                                
                         builder_helper_impl->reason_present = AXIS2_TRUE;
                         builder_helper_impl->reason_processing = AXIS2_TRUE;
                     }                

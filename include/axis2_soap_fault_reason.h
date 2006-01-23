@@ -32,6 +32,7 @@ extern "C"
 typedef struct axis2_soap_fault_reason_ops axis2_soap_fault_reason_ops_t;
 typedef struct axis2_soap_fault_reason axis2_soap_fault_reason_t;
 struct axis2_soap_fault_text;
+struct axis2_soap_builder;
 /**
  * @defgroup axis2_soap_fault_reason
  * @ingroup axis2_soap
@@ -82,7 +83,11 @@ struct axis2_soap_fault_text;
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env,
                                  int soap_version);                                                                        
-                                                                                                                
+                                                       
+        axis2_status_t (AXIS2_CALL *set_builder)
+                                (axis2_soap_fault_reason_t *fault_reason,
+                                 axis2_env_t **env,
+                                 struct axis2_soap_builder *builder);                                                                                                                
     };      
 
   /**
@@ -132,6 +137,9 @@ axis2_soap_fault_reason_create_with_parent(axis2_env_t **env,
 #define AXIS2_SOAP_FAULT_REASON_SET_SOAP_VERSION(fault_reason, env) \
         ((fault_reason)->ops->set_soap_version(fault_reason, env))
         
+
+#define AXIS2_SOAP_FAULT_REASON_SET_BUILDER(fault_reason, env, builder) \
+        ((fault_reason)->ops->set_builder(fault_reason, env, builder))
 /** @} */
 
 #ifdef __cplusplus

@@ -755,6 +755,7 @@ axis2_soap_fault_set_builder(axis2_soap_fault_t *fault,
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
     AXIS2_PARAM_CHECK((*env)->error, builder, AXIS2_FAILURE);
+    fault_impl = AXIS2_INTF_TO_IMPL(fault);
     fault_impl->soap_builder = builder;
     return AXIS2_SUCCESS;
 }                              
