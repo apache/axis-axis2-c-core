@@ -1555,13 +1555,14 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     add_dispatch = axis2_addr_disp_create(env);
     if(!add_dispatch)
     {
+        AXIS2_PHASE_FREE(dispatch, env);
         return AXIS2_FAILURE;
     }
     handler = AXIS2_DISP_GET_BASE(add_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 0, handler);
     handler = NULL;
     
-    uri_dispatch = axis2_addr_disp_create(env);
+    uri_dispatch = axis2_req_uri_disp_create(env);
     if(!uri_dispatch)
     {
         return AXIS2_FAILURE;
@@ -1570,7 +1571,7 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 1, handler);
     handler = NULL;
     
-    soap_action_based_dispatch = axis2_addr_disp_create(env);
+    soap_action_based_dispatch = axis2_soap_action_disp_create(env);
     if(!soap_action_based_dispatch)
     {
         return AXIS2_FAILURE;
@@ -1579,7 +1580,7 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 2, handler);
     handler = NULL;
     
-    soap_msg_body_based_dispatch = axis2_addr_disp_create(env);
+    soap_msg_body_based_dispatch = axis2_soap_body_disp_create(env);
     if(!soap_msg_body_based_dispatch)
     {
         return AXIS2_FAILURE;
