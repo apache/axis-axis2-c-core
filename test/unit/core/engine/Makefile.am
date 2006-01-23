@@ -2,12 +2,17 @@ prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_engine.la
 AM_CPPFLAGS = $(CPPFLAGS)
-libtest_engine_la_SOURCES = engine_test.c
+libtest_engine_la_SOURCES = engine_test.c test_conf.c
 include_HEADERS=$(top_builddir)/test/unit/core/engine/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
-            -I${CUTEST_HOME}/include
+            -I$(top_builddir)/modules/core/description \
+            -I$(top_builddir)/modules/core/phaseresolver \
+            -I$(top_builddir)/modules/core/transport \
+            -I$(top_builddir)/modules/wsdl \
+            -I${CUTEST_HOME}/include \
+            -I$(top_builddir)/modules/platforms
 
 prgbin_PROGRAMS = engine_test
 engine_test_SOURCES = main.c
