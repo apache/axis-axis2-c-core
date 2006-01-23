@@ -54,7 +54,6 @@ axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
         axis2_char_t *path = NULL;
        
         fname = files[i-1]->d_name;
-        printf("fname:%s\n", fname);
         arch_file = (axis2_file_t *) axis2_file_create(env);
         if(!arch_file)
         {
@@ -130,7 +129,6 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
         axis2_char_t *path = NULL;
        
         fname = files[i-1]->d_name;
-        printf("fname:%s\n", fname);
         arch_file = (axis2_file_t *) axis2_file_create(env);
         if(!arch_file)
         {

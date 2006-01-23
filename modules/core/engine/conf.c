@@ -791,14 +791,12 @@ axis2_conf_free (axis2_conf_t *conf,
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_add_svc_grp (axis2_conf_t *conf, 
-                                    axis2_env_t **env,
-    	                            struct axis2_svc_grp *svc_grp)
+                        axis2_env_t **env,
+                        axis2_svc_grp_t *svc_grp)
 {
     axis2_conf_impl_t *config_impl = NULL;
     axis2_hash_t *svcs = NULL;
-    struct axis2_svc *desc = NULL;
     axis2_hash_index_t *index_i = NULL;
-    void *value = NULL;
     axis2_char_t *svc_name = NULL;
     axis2_char_t *svc_name2 = NULL;
     axis2_qname_t *module_desc = NULL;
@@ -818,15 +816,20 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
         if(!config_impl->all_svcs)
             return AXIS2_FAILURE;
     }
+    int k = axis2_hash_count(svcs);
     index_i = axis2_hash_first (svcs, env);
     while(index_i)
     {
+        void *value = NULL;
+        axis2_svc_t *desc = NULL;
+        
         axis2_hash_this (index_i, NULL, NULL, &value);
-        desc = (struct axis2_svc *) value;
+        desc = (axis2_svc_t *) value;
         svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(desc, env), env);
         
         svc_name2 = axis2_hash_get(config_impl->all_svcs, svc_name, 
                 AXIS2_HASH_KEY_STRING);
+        /* no two service names deployed in the engine can be same */
         if(NULL != svc_name2)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME,
@@ -841,6 +844,9 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
     index_i = axis2_hash_first (svcs, env);
     while(NULL != index_i)
     {
+        void *value = NULL;
+        axis2_svc_t *desc = NULL;
+        
         axis2_hash_this (index_i, NULL, NULL, &value);
         desc = (struct axis2_svc *) value;
         svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(desc, env), env);
@@ -864,7 +870,6 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
     }
 
     svc_grp_name = AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
-    printf("svc_grp_name:%s\n", svc_grp_name);
     if(!config_impl->svc_grps)
     {
         config_impl->svc_grps = axis2_hash_make(env);
@@ -908,13 +913,12 @@ axis2_conf_get_svc_grps(axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL 
 axis2_conf_add_svc (axis2_conf_t *conf, 
                                 axis2_env_t **env, 
-                                struct axis2_svc *svc)
+                                axis2_svc_t *svc)
 {
     struct axis2_svc_grp *svc_grp = NULL;
     axis2_qname_t *svc_grp_qname = NULL;
     axis2_char_t *svc_grp_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-        
     AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc, AXIS2_FAILURE);
 	

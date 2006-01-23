@@ -180,9 +180,7 @@ axis2_bool_t AXIS2_CALL
 axis2_param_is_locked(axis2_param_t *param, 
 							axis2_env_t **env)
 {
-    printf("came22\n");
     AXIS2_FUNC_PARAM_CHECK(param, env, AXIS2_FAILURE);
-    printf("came23\n");
     return AXIS2_INTF_TO_IMPL(param)->locked;
 }
 

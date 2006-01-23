@@ -169,7 +169,6 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
     
     /* Processing service level paramters */
     svc_grp_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(grp_builder_impl->svc_grp, env);
-    printf("svc_element name:%s\n", AXIS2_OM_ELEMENT_GET_LOCALNAME(svc_grp_element, env));
     qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
     
     itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_grp_element, env, qparamst,
@@ -224,7 +223,7 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
                 
                 qsvc_name = axis2_qname_create(env, svc_name, NULL, NULL);
                 axis_svc = axis2_svc_create_with_qname(env, qsvc_name);
-                AXIS2_SVC_SET_QNAME(axis_svc, env, qsvc_name);
+                AXIS2_QNAME_FREE(qsvc_name, env);
                 AXIS2_ARCH_FILE_DATA_ADD_SVC(file_data, env, axis_svc);
                 
             }

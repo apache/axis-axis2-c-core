@@ -118,7 +118,7 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env, axis2_svc_ctx_t *s
     axis2_call_impl_t *call_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, svc_ctx, NULL);
+    /*AXIS2_PARAM_CHECK((*env)->error, svc_ctx, NULL);*/
     
     call_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_call_impl_t) );
     if (!call_impl)

@@ -38,6 +38,10 @@ int axis2_test_dep_engine_load()
         printf("conf is NULL\n)");
         return -1;
     }
+    else
+    {
+        printf("conf is not null\n");
+    }
     
     svc_map = AXIS2_CONF_GET_SVCS(conf, &env);
     if (svc_map)

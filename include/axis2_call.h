@@ -104,8 +104,9 @@ struct axis2_call_ops
         axis2_env_t **env,
         axis2_endpoint_ref_t *to);
     /**
-     * Set transport information to the the Call, for find how the each parameter acts see the commant at the instance
-     * variables. The senarios supoorted are as follows.
+     * Set transport information to the the Call, for find how the each parameter 
+     * acts see the commant at the instance variables. The senarios supoorted 
+     * are as follows.
      * [sender_transport, listener_transport, use_separate_listener]
      * http, http, true
      * http, http, false

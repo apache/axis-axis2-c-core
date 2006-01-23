@@ -28,7 +28,7 @@ struct axis2_svc_impl
 	axis2_svc_t svc;
 	struct axis2_svc_grp *parent;
 	axis2_hash_t *wasaction_opeartionmap;  
-    axis2_char_t *axis2_svc_name; 
+    axis2_char_t *axis_svc_name; 
     /** to keep the time that last update time of the service */
     long last_update;
     axis2_char_t *filename;
@@ -204,7 +204,7 @@ axis2_svc_get_axis2_svc_name(axis2_svc_t *svc,
 axis2_status_t AXIS2_CALL
 axis2_svc_set_axis2_svc_name(axis2_svc_t *svc,
                             axis2_env_t **env,
-                            axis2_char_t *axis2_svc_name);
+                            axis2_char_t *axis_svc_name);
 
 axis2_status_t AXIS2_CALL
 axis2_svc_set_last_update(axis2_svc_t *svc,
@@ -283,7 +283,8 @@ axis2_svc_create (axis2_env_t **env)
 	}
     
     svc_impl->parent = NULL;
-    svc_impl->axis2_svc_name = NULL;
+    svc_impl->axis_svc_name = NULL;
+    svc_impl->filename = NULL;
     svc_impl->last_update = 0;
     svc_impl->svc.param_container = NULL;
     svc_impl->svc.flow_container = NULL;
@@ -593,8 +594,8 @@ axis2_svc_free (axis2_svc_t *svc,
         svc_impl->module_list = NULL;
     }
 
-    if(NULL != svc_impl->axis2_svc_name)
-        AXIS2_FREE((*env)->allocator, svc_impl->axis2_svc_name);        
+    if(NULL != svc_impl->axis_svc_name)
+        AXIS2_FREE((*env)->allocator, svc_impl->axis_svc_name);        
     
 	AXIS2_FREE((*env)->allocator, svc_impl);
     
@@ -1290,21 +1291,21 @@ axis2_char_t * AXIS2_CALL
 axis2_svc_get_axis2_svc_name(axis2_svc_t *svc,
                             axis2_env_t **env) 
 {
-    return AXIS2_INTF_TO_IMPL(svc)->axis2_svc_name;
+    return AXIS2_INTF_TO_IMPL(svc)->axis_svc_name;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_svc_set_axis2_svc_name(axis2_svc_t *svc,
                             axis2_env_t **env,
-                            axis2_char_t *axis2_svc_name) 
+                            axis2_char_t *axis_svc_name) 
 {
     axis2_svc_impl_t *svc_impl = AXIS2_INTF_TO_IMPL(svc);
-    if(svc_impl->axis2_svc_name)
+    if(svc_impl->axis_svc_name)
     {
-        AXIS2_FREE((*env)->allocator, svc_impl->axis2_svc_name);
+        AXIS2_FREE((*env)->allocator, svc_impl->axis_svc_name);
     }
-    svc_impl->axis2_svc_name = AXIS2_STRDUP(axis2_svc_name, env);
-    if(!svc_impl->axis2_svc_name)
+    svc_impl->axis_svc_name = AXIS2_STRDUP(axis_svc_name, env);
+    if(!svc_impl->axis_svc_name)
     {
         return AXIS2_FAILURE;
     }

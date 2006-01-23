@@ -688,10 +688,10 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
         engine_impl->conf = NULL;
     }
     status = AXIS2_CONF_BUILDER_POPULATE_CONF(builder, env);
+    AXIS2_CONF_BUILDER_FREE(builder, env);
     if(AXIS2_SUCCESS != status)
     {
         AXIS2_CONF_FREE(engine_impl->conf, env);
-        AXIS2_CONF_BUILDER_FREE(builder, env);
         engine_impl->conf = NULL;
         return NULL;
     }
@@ -711,7 +711,6 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     if(!repos_listener)
     {
         AXIS2_CONF_FREE(engine_impl->conf, env);
-        AXIS2_CONF_BUILDER_FREE(builder, env);
         return NULL;
     }
     AXIS2_CONF_SET_REPOS(engine_impl->conf, env, engine_impl->axis2_repos);
@@ -720,20 +719,18 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     {
         AXIS2_REPOS_LISTENER_FREE(repos_listener, env);
         AXIS2_CONF_FREE(engine_impl->conf, env);
-        AXIS2_CONF_BUILDER_FREE(builder, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_VAL_FAILED, 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED, 
             AXIS2_FAILURE);
         return NULL;
     }
     
     AXIS2_CONF_SET_PHASESINFO(engine_impl->conf, env, engine_impl->phases_info);
     status = axis2_dep_engine_engage_modules(dep_engine, env);
-    if(AXIS2_FAILURE == status)
+    if(AXIS2_SUCCESS != status)
     {
         AXIS2_REPOS_LISTENER_FREE(repos_listener, env);
         AXIS2_CONF_FREE(engine_impl->conf, env);
-        AXIS2_CONF_BUILDER_FREE(builder, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_VAL_FAILED, 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED, 
             AXIS2_FAILURE);
         return NULL;
     }
@@ -817,7 +814,7 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
         AXIS2_REPOS_LISTENER_FREE(repos_listener, env);
         AXIS2_CONF_FREE(engine_impl->conf, env);
         AXIS2_CONF_BUILDER_FREE(builder, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_VAL_FAILED, 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED, 
             AXIS2_FAILURE);
         return NULL;
     }
@@ -965,7 +962,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
 {
     axis2_dep_engine_impl_t *engine_impl = NULL;
     axis2_array_list_t *svcs = NULL;
-    int size = 0;
+    int sizei = 0;
     int i = 0;
     
     AXIS2_FUNC_PARAM_CHECK(dep_engine, env, AXIS2_FAILURE);
@@ -975,20 +972,23 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
 /*  Iterator services = currentArchiveFile.getService().values().iterator(); */
     
     svcs = AXIS2_ARCH_FILE_DATA_GET_DEPLOYABLE_SVCS(engine_impl->curr_file, env);
-    size = AXIS2_ARRAY_LIST_SIZE(svcs, env);
-    for(i = 0; i < size; i++)
+    
+    sizei = AXIS2_ARRAY_LIST_SIZE(svcs, env);
+    
+    for(i = 0; i < sizei; i++)
     {
         axis2_svc_t *svc = NULL;
         axis2_file_t *file = NULL;
         axis2_array_list_t *grp_modules = NULL;
         axis2_array_list_t *list = NULL;
-        int size = 0;
-        int i = 0;
+        int sizej = 0;
+        int j = 0;
         axis2_hash_t *ops = NULL;
         axis2_hash_index_t *index_i = NULL;
         axis2_char_t *file_name = NULL;
         
         svc = (axis2_svc_t *) AXIS2_ARRAY_LIST_GET(svcs, env, i);
+        
         axis2_dep_engine_load_svc_props(dep_engine, env, svc);
         file = AXIS2_ARCH_FILE_DATA_GET_FILE(engine_impl->curr_file, env);
         file_name = AXIS2_FILE_GET_NAME(file, env);
@@ -996,14 +996,14 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
 
         /* module form serviceGroup */
         grp_modules = AXIS2_SVC_GRP_GET_MODULES(svc_metadata, env);
-        size = AXIS2_ARRAY_LIST_SIZE(grp_modules, env);
-        for(i = 0; i< size; i++)
+        sizej = AXIS2_ARRAY_LIST_SIZE(grp_modules, env);
+        for(j = 0; j < sizej; j++)
         {
             axis2_module_desc_t *module_desc = NULL;
             axis2_qname_t *qmodulename = NULL;
             
             qmodulename = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(grp_modules, 
-                env, i);
+                env, j);
             module_desc = AXIS2_CONF_GET_MODULE(engine_impl->conf, env,
                 qmodulename);
             if(NULL != module_desc)
@@ -1021,14 +1021,14 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
 
         /* modules from <service> */
         list = AXIS2_SVC_GET_MODULES(svc, env);
-        size = AXIS2_ARRAY_LIST_SIZE(list, env);
-        for (i = 0; i < size; i++) 
+        sizej = AXIS2_ARRAY_LIST_SIZE(list, env);
+        for (j = 0; j < sizej; j++) 
         {
             axis2_module_desc_t *module_desc = NULL;
             axis2_qname_t *qmodulename = NULL;
             
             qmodulename = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(grp_modules, 
-                env, i);
+                env, j);
             module_desc = AXIS2_CONF_GET_MODULE(engine_impl->conf, env,
                 qmodulename);
             if(NULL != module_desc)
@@ -1051,8 +1051,8 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             void * v = NULL;
             axis2_op_t *op_desc = NULL;
             axis2_array_list_t *modules = NULL;
-            int size = 0;
-            int i = 0;
+            int sizek = 0;
+            int k = 0;
             
             axis2_hash_this (index_i, NULL, NULL, &v);
             op_desc = (axis2_op_t *)v;
@@ -1060,15 +1060,15 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             modules = AXIS2_OP_GET_MODULE_REFS(op_desc, env);
             if(modules)
             {
-                size = AXIS2_ARRAY_LIST_SIZE(modules, env);
+                sizek = AXIS2_ARRAY_LIST_SIZE(modules, env);
             }
-            for (i = 0; i < size; i++) 
+            for (k = 0; k < sizek; k++) 
             {
                 axis2_qname_t *module_qname = NULL;
                 axis2_module_desc_t *module = NULL;
                 
                 module_qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(modules, 
-                    env, i);
+                    env, k);
                 module = AXIS2_CONF_GET_MODULE(engine_impl->conf, env, 
                     module_qname);
                 
@@ -1287,7 +1287,7 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
     engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
     size = AXIS2_ARRAY_LIST_SIZE(engine_impl->ws_to_deploy, env);
-    printf("dep_engine:size:%d\n", size);
+    printf("number of service directories deployed:%d\n", size);
     if (size > 0) 
     {
         int i = 0;
@@ -1303,7 +1303,6 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                 AXIS2_ARRAY_LIST_GET(engine_impl->ws_to_deploy, env, i);
             
             type = AXIS2_ARCH_FILE_DATA_GET_TYPE(engine_impl->curr_file, env);
-            printf("type:%d\n", type);
             switch (type) 
             {
                 case AXIS2_SVC:
@@ -1315,7 +1314,6 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                         engine_impl->conf);
                     file_name = AXIS2_ARCH_FILE_DATA_GET_NAME(engine_impl->
                         curr_file, env);
-                    printf("file_name:%s\n", file_name);
                     status = AXIS2_ARCH_READER_PROCESS_SVC_GRP(arch_reader, env,
                         file_name, dep_engine, svc_grp);
                     if(AXIS2_SUCCESS != status)

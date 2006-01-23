@@ -384,7 +384,7 @@ axis2_arch_file_data_set_module_dll_name(axis2_arch_file_data_t *file_data,
 axis2_status_t AXIS2_CALL
 axis2_arch_file_data_add_svc(axis2_arch_file_data_t *file_data,
                                 axis2_env_t **env,
-                                struct axis2_svc *svc_desc)
+                                axis2_svc_t *svc_desc)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     axis2_qname_t *svc_qname = NULL;
@@ -458,7 +458,6 @@ axis2_arch_file_data_set_deployable_svcs(axis2_arch_file_data_t *file_data,
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, deployable_svcs, AXIS2_FAILURE);
-    
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
     if(file_data_impl->deployable_svcs)
     {

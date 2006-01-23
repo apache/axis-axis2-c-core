@@ -379,6 +379,7 @@ axis2_svc_grp_add_svc (axis2_svc_grp_t *svc_grp,
     axis2_svc_grp_impl_t *svc_grp_impl = NULL;
     struct axis2_phase_resolver *handler_resolver = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_qname_t *svc_qname = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(svc_grp, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc, AXIS2_FAILURE);
@@ -391,8 +392,8 @@ axis2_svc_grp_add_svc (axis2_svc_grp_t *svc_grp,
         if(!svc_grp_impl->svcs)
             return AXIS2_FAILURE;
     }
-	axis2_hash_set (svc_grp_impl->svcs, AXIS2_SVC_GET_QNAME(svc, env), 
-        sizeof(axis2_qname_t), svc);
+    svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
+	axis2_hash_set (svc_grp_impl->svcs, svc_qname, sizeof(axis2_qname_t), svc);
     
     handler_resolver = axis2_phase_resolver_create_with_config_and_svc(env,
         svc_grp_impl->parent, svc);
@@ -400,7 +401,7 @@ axis2_svc_grp_add_svc (axis2_svc_grp_t *svc_grp,
     if(NULL == handler_resolver)
     {
         /* Remove the previously added service */
-        axis2_hash_set(svc_grp_impl->svcs, AXIS2_SVC_GET_QNAME(svc, env), sizeof(
+        axis2_hash_set(svc_grp_impl->svcs, svc_qname, sizeof(
             axis2_qname_t), NULL);
         
         return AXIS2_FAILURE;
@@ -701,7 +702,7 @@ axis2_svc_grp_get_axis_desc(axis2_svc_grp_t *svc_grp,
 axis2_status_t AXIS2_CALL
 axis2_svc_grp_set_axis_desc(axis2_svc_grp_t *svc_grp,
                             axis2_env_t **env,
-                            struct axis2_conf *axis2_desc) 
+                            axis2_conf_t *axis2_desc) 
 {
     axis2_svc_grp_impl_t *svc_grp_impl = NULL;
     

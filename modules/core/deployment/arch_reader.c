@@ -338,7 +338,6 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
         }
         arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
         svc_name = AXIS2_ARCH_FILE_DATA_GET_SVC_NAME(arch_file_data, env);
-        printf("svc_name:%s\n", svc_name);
         AXIS2_SVC_GRP_SET_NAME(svc_grp, env, svc_name);
     } else 
     {
@@ -374,6 +373,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         return AXIS2_FAILURE;
     }
     svcs = AXIS2_DESC_BUILDER_BUILD_OM(desc_builder, env);
+    AXIS2_DESC_BUILDER_FREE(desc_builder, env);
     svcs_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(svcs, env);
     root_element_name = AXIS2_OM_ELEMENT_GET_LOCALNAME(svcs_element, env);
     printf("root_element_name:%s\n", root_element_name);
@@ -387,7 +387,6 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         
         file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
         svc_name = AXIS2_ARCH_FILE_DATA_GET_NAME(file_data, env);
-        printf("svc_name:%s\n", svc_name);
         svc = AXIS2_ARCH_FILE_DATA_GET_SVC(file_data, env, svc_name);
         if(NULL == svc)
         {
@@ -396,9 +395,9 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
             svc_qname = axis2_qname_create(env, svc_name, NULL, NULL);
             svc = axis2_svc_create_with_qname(env, svc_qname);
             status = AXIS2_ARCH_FILE_DATA_ADD_SVC(file_data, env, svc);
-            if(AXIS2_FAILURE == status)
+            AXIS2_QNAME_FREE(svc_qname, env);
+            if(AXIS2_SUCCESS != status)
             {
-                AXIS2_QNAME_FREE(svc_qname, env);
                 svc_qname = NULL;
                 return AXIS2_FAILURE;
             }
@@ -409,6 +408,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         svc_builder = axis2_svc_builder_create_with_dep_engine_and_svc(env,
             dep_engine, svc);
         status = AXIS2_SVC_BUILDER_POPULATE_SVC(svc_builder, env, svcs);
+        AXIS2_SVC_BUILDER_FREE(svc_builder, env);
         if(AXIS2_SUCCESS != status)
         {
             printf("populate svc is not successful\n");
@@ -417,14 +417,23 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
         
         dep_svcs = AXIS2_ARCH_FILE_DATA_GET_DEPLOYABLE_SVCS(file_data, env);
-        AXIS2_ARRAY_LIST_ADD(dep_svcs, env, svc);
+        if(!dep_svcs)
+        {
+            return AXIS2_FAILURE;
+        }
+        status = AXIS2_ARRAY_LIST_ADD(dep_svcs, env, svc);
+        if(AXIS2_SUCCESS != status)
+        {
+            return AXIS2_FAILURE;
+        }
+        
     }
     else if(0 == AXIS2_STRCMP(AXIS2_SVC_GRP_ELEMENT, root_element_name))
     {
         axis2_svc_grp_builder_t *grp_builder = NULL;
         grp_builder = axis2_svc_grp_builder_create_with_svc_and_dep_engine(env, 
             svcs, dep_engine);
-        AXIS2_SVC_GRP_BUILDER_POPULATE_SVC_GRP(grp_builder, env, svc_grp);
+        status = AXIS2_SVC_GRP_BUILDER_POPULATE_SVC_GRP(grp_builder, env, svc_grp);
     }
     return status;
 }

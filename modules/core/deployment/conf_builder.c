@@ -303,7 +303,6 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
         {
             ref_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_ref_att, env);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
-            printf("came\n");
             AXIS2_DEP_ENGINE_ADD_MODULE(conf_builder->desc_builder->engine, env,
                 qrefname);
             if (qrefname)
