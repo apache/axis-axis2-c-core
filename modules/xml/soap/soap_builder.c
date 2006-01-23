@@ -473,7 +473,6 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             AXIS2_SOAP_ENVELOPE_SET_BODY(builder_impl->soap_envelope, env, soap_body);
             status = axis2_soap_builder_process_namespace_data(builder, env, 
                         om_element_node, AXIS2_TRUE);
-            printf("body create");                        
         }
         else
         {
@@ -609,6 +608,7 @@ identify_soap_version(axis2_soap_builder_t *builder,
     }
     envelope_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(builder_impl->soap_envelope, env);
     om_ele = (axis2_om_element_t *) AXIS2_OM_NODE_GET_DATA_ELEMENT(envelope_node, env);
+    
     om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env);
     
     ns_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
@@ -632,6 +632,7 @@ axis2_soap_builder_parse_headers(axis2_soap_builder_t *builder,
     axis2_soap_builder_impl_t *builder_impl = NULL;
     axis2_om_node_t *om_node = NULL;
     axis2_soap_header_t *soap_header = NULL;
+    int status = AXIS2_SUCCESS;
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(builder_impl->soap_envelope, env);
     om_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
@@ -640,10 +641,13 @@ axis2_soap_builder_parse_headers(axis2_soap_builder_t *builder,
     {
         while(!AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env))
         {
-            axis2_soap_builder_next(builder, env);
+            status = axis2_soap_builder_next(builder, env);
+            if(status == AXIS2_FAILURE)
+                return AXIS2_FAILURE;
             
         }
     }
+    return AXIS2_SUCCESS;
 } 
 
 axis2_status_t AXIS2_CALL 

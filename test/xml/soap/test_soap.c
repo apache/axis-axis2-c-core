@@ -17,6 +17,8 @@
 #include <axis2_soap_message.h>
 #include <axis2_soap_header_block.h>
 #include <axis2_soap_fault.h>
+#include <axis2_soap_fault_code.h>
+#include <axis2_soap_fault_role.h>
 
 FILE *f = NULL;
 
@@ -63,7 +65,7 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
     axis2_soap_body_t *soap_body = NULL;
     axis2_soap_header_t *soap_header = NULL;
     axis2_soap_header_block_t *header_block = NULL;
-    axis2_om_children_iterator_t *children_iter = NULL;
+    axis2_om_children_qname_iterator_t *children_iter = NULL;
     axis2_hash_t *hbs = NULL;
     int status = AXIS2_SUCCESS;    
     
@@ -89,7 +91,7 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
           
     om_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
     printnode(om_node, env);
-    
+    /*
     soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
     if(soap_header)
     {
@@ -125,15 +127,15 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
         return AXIS2_FAILURE;
     }
     
-    
-    /*
+    */
+
     while(!(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env)) && !(AXIS2_OM_STAX_BUILDER_IS_COMPLETE(om_builder, env)))
     {
         status = AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
         if(status == AXIS2_FAILURE)
-               printf("%s" ,AXIS2_ERROR_GET_MESSAGE((*env)->error));
+               printf("failure %s" ,AXIS2_ERROR_GET_MESSAGE((*env)->error));
     }
-    */
+
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     
     om_output = axis2_om_output_create( env, xml_writer);  
@@ -156,14 +158,34 @@ int build_soap_programatically(axis2_env_t **env)
     axis2_xml_writer_t *xml_writer = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
+    axis2_soap_header_block_t *hb1 = NULL;
+    axis2_om_namespace_t *test_ns = NULL;
+    axis2_om_namespace_t *role_ns = NULL;
+    axis2_om_node_t *hb_node = NULL;
+    axis2_om_element_t *hb_ele =  NULL;
+    axis2_soap_fault_code_t *fault_code = NULL;
 
     env_ns = axis2_om_namespace_create(env, "http://www.w3.org/2003/05/soap-envelope", "env");
     soap_envelope = axis2_soap_envelope_create(env, env_ns);
     
     soap_header = axis2_soap12_header_create_with_parent(env, soap_envelope);
+    
+    test_ns = axis2_om_namespace_create(env, "http://example.org/ts-tests", "test");
+    role_ns = axis2_om_namespace_create(env, "http://www.w3.org/2003/05/soap-envelope/role/next","role");
+
+   
+    hb1 = axis2_soap12_header_block_create_with_parent(env, "echoOk", role_ns , soap_header);
+    hb_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(hb1, env);
+    hb_ele = AXIS2_OM_NODE_GET_DATA_ELEMENT(hb_node, env);
+    
+    AXIS2_OM_ELEMENT_SET_NAMESPACE(hb_ele, env, test_ns, hb_node);
+    
     soap_body = axis2_soap_body_create_with_parent(env, soap_envelope);
+    
 
     soap_fault = axis2_soap_fault_create_with_parent(env, soap_body);
+    
+    fault_code = axis2_soap12_fault_code_create(env, soap_fault);
     
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     om_output = axis2_om_output_create( env, xml_writer);
@@ -199,11 +221,11 @@ int main(int argc, char *argv[])
     
     axis2_error_init();
     /*build_soap_programatically(&env);*/
-    /*
+    
     
     printf("\nbuild soap\n");
-    */
     build_soap(&env, filename,uri);
     printf("\n");
+
     return 0;        
 }

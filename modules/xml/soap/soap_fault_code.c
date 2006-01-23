@@ -36,9 +36,7 @@
     
     axis2_soap_fault_value_t *value;
     
-    axis2_soap_fault_t *parent;
-    
-    axis2_soap_builder_t *soap_builder;
+    axis2_soap_builder_t *builder;
  
  }axis2_soap_fault_code_impl_t;
  
@@ -115,7 +113,7 @@ axis2_soap_fault_code_create(axis2_env_t **env)
     fault_code_impl->subcode = NULL;
     fault_code_impl->value = NULL;
     fault_code_impl->soap_version = AXIS2_SOAP_VERSION_NOT_SET;
-    fault_code_impl->parent = NULL;
+    fault_code_impl->builder = NULL;
     
     fault_code_impl->fault_code.ops = 
             (axis2_soap_fault_code_ops_t*)AXIS2_MALLOC((*env)->allocator,
@@ -181,8 +179,6 @@ axis2_soap_fault_code_create_with_parent(axis2_env_t **env,
         return NULL;
         
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
-    
-    fault_code_impl->parent = fault;
     
     parent_node = AXIS2_SOAP_FAULT_GET_BASE_NODE(fault, env);
     
@@ -420,7 +416,8 @@ axis2_soap_fault_code_set_builder(axis2_soap_fault_code_t *fault_code,
     axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(fault_code, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_builder, AXIS2_FAILURE);
-    fault_code_impl->soap_builder = soap_builder;
+    fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
+    fault_code_impl->builder = soap_builder;
     return AXIS2_SUCCESS;
 }                                                             
 /*********************** soap11 create function *******************************/

@@ -335,11 +335,10 @@ axis2_soap_envelope_get_header(axis2_soap_envelope_t *envelope,
     
     if(envelope_impl->header)
     {
-        printf("header already there ");
         return envelope_impl->header;
     }
     if(envelope_impl->soap_builder)
-    {   printf("header pulled");
+    {
         while(!(envelope_impl->header) && !AXIS2_OM_NODE_GET_BUILD_STATUS(envelope_impl->om_ele_node, env))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(envelope_impl->soap_builder, env);  
@@ -376,7 +375,7 @@ axis2_soap_envelope_get_header(axis2_soap_envelope_t *envelope,
     } 
     */           
     if(!(envelope_impl->header))
-    {    printf(" create new");
+    { 
         envelope_impl->header = axis2_soap_header_create_with_parent(env, envelope);
         if(envelope_impl->soap_version == AXIS2_SOAP12)
         {

@@ -33,8 +33,6 @@
     
     axis2_soap_fault_sub_code_t *subcode;
     
-    axis2_soap_fault_code_t *parent;
-    
     int soap_version; 
     
     axis2_soap_builder_t *builder;   
@@ -123,7 +121,6 @@ axis2_soap_fault_sub_code_create(axis2_env_t **env)
     fault_subcode_impl->soap_version = AXIS2_SOAP_VERSION_NOT_SET;
     fault_subcode_impl->value = NULL;
     fault_subcode_impl->subcode = NULL;
-    fault_subcode_impl->parent = NULL;
     fault_subcode_impl->builder = NULL;
     
     fault_subcode_impl->fault_sub_code.ops = 
@@ -189,7 +186,6 @@ axis2_soap_fault_sub_code_create_with_parent(axis2_env_t **env,
         return NULL;
     fault_sub_code_impl = AXIS2_INTF_TO_IMPL(fault_sub_code);
     
-    fault_sub_code_impl->parent = fault_code;
     parent_node = AXIS2_SOAP_FAULT_CODE_GET_BASE_NODE(fault_code, env);
     parent_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
                         parent_node, env);

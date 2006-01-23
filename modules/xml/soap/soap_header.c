@@ -280,7 +280,6 @@ axis2_soap_header_examine_all_header_blocks
     axis2_om_element_t *om_ele = NULL;
     AXIS2_FUNC_PARAM_CHECK(header, env, NULL);
     header_impl = AXIS2_INTF_TO_IMPL(header);
-    printf(" header block");
     om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(header_impl->om_ele_node, env);
     return AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(om_ele,
                 env, NULL, header_impl->om_ele_node);
