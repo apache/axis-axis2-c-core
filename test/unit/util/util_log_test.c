@@ -5,6 +5,11 @@ void Testaxis2_log_write(CuTest *tc)
 
     printf("testing axis2_log_write\n"); 
     char actual[10];
+
+    printf("************************\n");
+    printf("testing axis2_log_write \n");
+    printf("************************\n");
+
     axis2_allocator_t *allocator = axis2_allocator_init(NULL);
     axis2_error_t *error = axis2_error_create(allocator);
     axis2_log_t *log  = axis2_log_create (allocator, NULL);

@@ -17,7 +17,7 @@ CuSuite* axis2_deploymentGetSuite()
 	  */
     SUITE_ADD_TEST(suite, Testaxis2_dep_engine_free );
 	SUITE_ADD_TEST(suite,Testaxis2_dep_engine_create);
-	/*SUITE_ADD_TEST(suite,Testaxis2_dep_engine_create_with_repos_name);*/
+	SUITE_ADD_TEST(suite,Testaxis2_dep_engine_create_with_repos_name);
 	SUITE_ADD_TEST(suite,Testaxis2_dep_engine_load);
 
     return suite;

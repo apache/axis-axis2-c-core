@@ -13,7 +13,11 @@ void Testaxis2_svc_add_module_ops(CuTest *tc)
     axis2_status_t actual = AXIS2_FAILURE;
     struct axis2_flow *inflow = NULL;
     axis2_qname_t *svc_qname = NULL;
-         
+          
+    printf("**************************************\n");
+    printf("testing axis2_svc_add_module_ops  method \n");
+    printf("**************************************\n");
+
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);    
 
@@ -131,6 +135,10 @@ void Testaxis2_svc_create_with_qname(CuTest *tc)
     axis2_char_t *expected = NULL;
     axis2_char_t *actual = NULL;
     
+    printf("********************************************\n");
+    printf("testing axis2_svc_create_with_qname  method \n");
+    printf("********************************************\n");
+
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
     

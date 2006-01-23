@@ -14,6 +14,10 @@ void Testaxis2_phase_holder_free(CuTest *tc)
     axis2_phase_holder_t *phase_holder = NULL;
     axis2_array_list_t *phases = NULL;
 
+    printf("****************************************\n");
+    printf("testing axis2_phase_holder_free  method \n");
+    printf("****************************************\n");
+
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
 

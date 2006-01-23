@@ -4,11 +4,6 @@
 
 void Testaxis2_dir_handler_list_dir(CuTest *tc)
 {
-    puts("testing axis2_dir_handler_list_dir\n");
-
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create(allocator);
-
 	axis2_char_t *pathname = NULL;
     axis2_array_list_t *file_list = NULL;
     int size = 0;
@@ -17,6 +12,13 @@ void Testaxis2_dir_handler_list_dir(CuTest *tc)
     int i = 0;
     axis2_char_t *axis2c_home = NULL;
     
+    printf("******************************************************************\n");
+    printf("testing axis2_dir_handler_list_services_or_modules_in_dir  method \n");
+    printf("******************************************************************\n");
+
+    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+    axis2_env_t *env = axis2_env_create(allocator);
+
     expected = AXIS2_STRDUP("libaxis2_util.so", &env);
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     pathname = AXIS2_STRACAT (axis2c_home, "/lib", &env);

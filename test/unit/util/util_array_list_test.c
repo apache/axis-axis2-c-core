@@ -7,12 +7,16 @@ typedef struct a
 
 void Testaxis2_array_list_get(CuTest *tc)
 {
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create(allocator);
-
     axis2_array_list_t *al;
     a *actual, *expected;
     a *actual2;
+
+    printf("*************************************\n");
+    printf("testing axis2_array_list_get  method \n");
+    printf("*************************************\n");
+
+    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+    axis2_env_t *env = axis2_env_create(allocator);
 
     actual = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
     actual2 = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));

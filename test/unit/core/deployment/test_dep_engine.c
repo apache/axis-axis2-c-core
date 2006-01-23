@@ -8,6 +8,10 @@ void Testaxis2_dep_engine_free(CuTest *tc)
     axis2_status_t expected = AXIS2_SUCCESS;
     axis2_char_t *axis2c_home = NULL;
 	
+    printf("**************************************\n");
+    printf("testing axis2_dep_engine_free  method \n");
+    printf("**************************************\n");
+    
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
@@ -20,7 +24,6 @@ void Testaxis2_dep_engine_free(CuTest *tc)
         return;
     }
     actual = AXIS2_DEP_ENGINE_FREE(dep_engine, &env);
-	printf("ok1");
     CuAssertIntEquals(tc, expected, actual);
 	axis2_env_free(env);
 }
@@ -31,6 +34,11 @@ void Testaxis2_dep_engine_create(CuTest *tc)
     axis2_env_t *env;
     axis2_allocator_t *allocator;
     axis2_dep_engine_t *dep_engine = NULL;
+
+    printf("****************************************\n");
+    printf("testing axis2_dep_engine_create  method \n");
+    printf("****************************************\n");
+
     allocator = axis2_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
@@ -49,6 +57,11 @@ void Testaxis2_dep_engine_create_with_repos_name(CuTest *tc)
     axis2_allocator_t *allocator;
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_char_t *axis2c_home = NULL;
+
+    printf("********************************************************\n");
+    printf("testing axis2_dep_engine_create_with_repos_name  method \n");
+    printf("********************************************************\n");
+
     allocator = axis2_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
@@ -56,10 +69,10 @@ void Testaxis2_dep_engine_create_with_repos_name(CuTest *tc)
 	
     dep_engine = axis2_dep_engine_create_with_repos_name(&env,axis2c_home);
 
-	CuAssertPtrNotNull(tc,dep_engine);
+	CuAssertPtrNotNull(tc, dep_engine);
 
     if (dep_engine)
-        axis2_dep_engine_free(&dep_engine, &env);
+        axis2_dep_engine_free(dep_engine, &env);
 
     axis2_env_free(env);
 }
@@ -72,13 +85,16 @@ void Testaxis2_dep_engine_load(CuTest *tc)
     axis2_allocator_t *allocator;
     axis2_conf_t *conf_actual = NULL;
     axis2_char_t *axis2c_home = NULL;
-    axis2_status_t actual = AXIS2_FAILURE;
+    axis2_dep_engine_t *dep_engine = NULL;
+
+    printf("**************************************\n");
+    printf("testing axis2_dep_engine_load  method \n");
+    printf("**************************************\n");
+
     allocator = axis2_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-	
-    axis2_dep_engine_t *dep_engine = NULL;
 
     dep_engine = axis2_dep_engine_create_with_repos_name(&env,axis2c_home);
     if (dep_engine)

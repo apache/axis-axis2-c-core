@@ -13,7 +13,11 @@ test_handler_desc_create_handler_desc(axis2_env_t **env)
     axis2_handler_t *handler = NULL;
     axis2_qname_t *qname = NULL;
     axis2_phase_rule_t *rule = NULL;
-        
+         
+    printf("*******************************************************\n");
+    printf("testing axis2_handler_desc_create_handler_desc  method \n");
+    printf("*******************************************************\n");
+
     rule = axis2_phase_rule_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
     AXIS2_PHASE_RULE_SET_BEFORE(rule, env, "before");
     AXIS2_PHASE_RULE_SET_AFTER(rule, env, "after");
@@ -33,6 +37,10 @@ void Testaxis2_handler_desc_free(CuTest *tc)
     axis2_status_t actual = AXIS2_FAILURE;
     axis2_status_t expected = AXIS2_TRUE;
     axis2_handler_desc_t *handler_desc = NULL;
+ 
+    printf("****************************************\n");
+    printf("testing axis2_handler_desc_free  method \n");
+    printf("****************************************\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);

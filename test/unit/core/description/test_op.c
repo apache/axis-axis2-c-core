@@ -10,6 +10,10 @@ void Testaxis2_op_set_remaining_phases_inflow(CuTest *tc)
     axis2_status_t actual = AXIS2_FAILURE;
     axis2_op_t *op = NULL;
     
+    printf("*****************************************************\n");
+    printf("testing axis2_op_set_remaining_phases_inflow  method \n");
+    printf("*****************************************************\n");
+
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
 

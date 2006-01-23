@@ -17,6 +17,10 @@ void Testaxis2_phase_resolver_free(CuTest *tc)
     axis2_status_t expected = AXIS2_TRUE;
     axis2_phase_resolver_t *resolver = NULL;
 
+    printf("******************************************\n");
+    printf("testing axis2_phase_resolver_free  method \n");
+    printf("******************************************\n");
+
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
 
@@ -36,6 +40,10 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
     axis2_status_t expected = AXIS2_SUCCESS;
     axis2_status_t actual = AXIS2_FAILURE;
     
+    printf("*********************************************************\n");
+    printf("testing axis2_phase_resolver_engage_module_to_op  method \n");
+    printf("*********************************************************\n");
+
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
     axis2_op_t *optr = axis2_op_create(&env);
