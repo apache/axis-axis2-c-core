@@ -26,5 +26,9 @@ wsdl_test_LDADD   =   \
                      $(top_builddir)/test/unit/wsdl/libtest_wsdl.la \
                     -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
-                    -laxis2_wsdl
+                    -laxis2_wsdl \
+                    -laxis2_phaseresolver \
+                    -laxis2_context \
+                    -laxis2_addr \
+                    -laxis2_description
 

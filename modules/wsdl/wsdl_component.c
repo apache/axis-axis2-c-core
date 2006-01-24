@@ -107,22 +107,16 @@ axis2_wsdl_component_create (axis2_env_t **env)
 	}
     
 	wsdl_component_impl->wsdl_component.ops->free = axis2_wsdl_component_free;
-    
 	wsdl_component_impl->wsdl_component.ops->set_component_properties =
-        axis2_wsdl_component_set_component_properties;
-    
+            axis2_wsdl_component_set_component_properties;
     wsdl_component_impl->wsdl_component.ops->get_component_properties =
-        axis2_wsdl_component_get_component_properties;
-    
+            axis2_wsdl_component_get_component_properties;
     wsdl_component_impl->wsdl_component.ops->set_component_property =
-        axis2_wsdl_component_set_component_property;
-    
+            axis2_wsdl_component_set_component_property;
     wsdl_component_impl->wsdl_component.ops->get_component_property =
-        axis2_wsdl_component_get_component_property;
-    
+            axis2_wsdl_component_get_component_property;
     wsdl_component_impl->wsdl_component.ops->add_extensibility_element = 
             axis2_wsdl_component_add_extensibility_element;
-    
     wsdl_component_impl->wsdl_component.ops->get_extensibility_elements = 
             axis2_wsdl_component_get_extensibility_elements;
 	
@@ -169,7 +163,6 @@ axis2_wsdl_component_free (axis2_wsdl_component_t *wsdl_component,
             
             if(0 == AXIS2_STRCMP(AXIS2_MODULEREF_KEY, (axis2_char_t *)key))
             {
-                void *val = NULL;
                 int i = 0;
                 int size = 0;
                 module_desc_list = (axis2_array_list_t *) val;
@@ -178,21 +171,20 @@ axis2_wsdl_component_free (axis2_wsdl_component_t *wsdl_component,
                     size = AXIS2_ARRAY_LIST_SIZE(module_desc_list, env);
                     for (i = 0; i < size; i++)
                     {
-                        struct axis2_module_desc *module_desc = NULL;
-                        module_desc = AXIS2_ARRAY_LIST_GET(module_desc_list, env, i);
+                        axis2_module_desc_t *module_desc = NULL;
                         
-                        module_desc = (struct axis2_module_desc *) val;
+                        module_desc = AXIS2_ARRAY_LIST_GET(module_desc_list, 
+                            env, i);
                         if (module_desc)
-                           AXIS2_MODULE_DESC_FREE (module_desc, env);
-                        
-                        val = NULL;
-                        module_desc = NULL;
+                        {
+                            AXIS2_MODULE_DESC_FREE (module_desc, env);
+                            module_desc = NULL;
+                        }
                            
                     }
                     AXIS2_ARRAY_LIST_FREE(module_desc_list, env);
+                    module_desc_list = NULL;
                 }
-                
-                module_desc_list = NULL;
             }
             
             val = NULL;
@@ -318,7 +310,7 @@ axis2_wsdl_component_set_component_property(
 	return AXIS2_SUCCESS;
 }
 
-void * AXIS2_CALL
+void *AXIS2_CALL
 axis2_wsdl_component_get_component_property(
 		                                axis2_wsdl_component_t *wsdl_component,
                                         axis2_env_t **env, 
