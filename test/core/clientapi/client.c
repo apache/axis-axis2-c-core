@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     int tmp;
     tmp = stat("soap_req", &buf);
     printf("%d\n", buf.st_size);
-    buffer = malloc(buf.st_size* sizeof(char));
+    buffer = (char *) malloc(buf.st_size* sizeof(char));
     int fd = open("soap_req", O_RDONLY,0);
     if (fd == -1)
     {
