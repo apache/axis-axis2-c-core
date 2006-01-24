@@ -16,6 +16,16 @@ void error(char *msg)
 
 int main(int argc, char *argv[])
 {
+    if (argc < 3) {
+       fprintf(stderr,"usage %s hostname port\n", argv[0]);
+       exit(0);
+    }
+	write_to_socket(argv[1], argv[2]);
+    return 0;
+}
+
+int write_to_socket(char *address, char* port)
+{
     int sockfd, portno, n, i;
     struct sockaddr_in serv_addr;
     struct hostent *server;
@@ -23,16 +33,12 @@ int main(int argc, char *argv[])
 
 
     char *buffer;
-    if (argc < 3) {
-       fprintf(stderr,"usage %s hostname port\n", argv[0]);
-       exit(0);
-    }
 
-    portno = atoi(argv[2]);
+	portno = atoi(port);
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) 
         error("ERROR opening socket");
-    server = gethostbyname(argv[1]);
+    server = gethostbyname(address);
     if (server == NULL) {
         fprintf(stderr,"ERROR, no such host\n");
         exit(0);
@@ -69,11 +75,10 @@ int main(int argc, char *argv[])
 
 /*    bzero(buffer,2000);*/
     buffer = '\0';
-    n = read(sockfd,buffer,BUFSIZ);
-    printf("%s\n", buffer);
+	
+    while((n = read(sockfd,buffer,BUFSIZ)) > 0)
+    		printf("%s\n", buffer);
     if (n < 0) 
          error("ERROR reading from socket");
     printf("%s\n",buffer);
-
-    return 0;
 }
