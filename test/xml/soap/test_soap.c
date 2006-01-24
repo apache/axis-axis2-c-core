@@ -110,7 +110,7 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
             printnode(om_node, env);
         }
     }
- //   AXIS2_OM_CHILDREN_QNAME_ITERATOR_FREE(children_iter, env);
+ /* AXIS2_OM_CHILDREN_QNAME_ITERATOR_FREE(children_iter, env); */
     
     soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
     if (soap_body)
