@@ -240,17 +240,12 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axis2_char_t *svc_dll_name = NULL;
     axis2_dll_desc_t *dll_desc = NULL;
     axis2_param_t *impl_info_param = NULL;
-    /*axis2_char_t *repos_path = NULL;
-    axis2_char_t *svcs_path = NULL;
-    axis2_char_t *temp_path1 = NULL;
-    axis2_char_t *temp_path2 = NULL;
-    axis2_char_t *temp_path3 = NULL;
-    */
     axis2_arch_file_data_t *arch_file_data = NULL;
     axis2_file_t *svc_folder = NULL;
     axis2_char_t *temp_path = NULL;
     axis2_char_t *dll_path = NULL;
     axis2_char_t *svc_folder_path = NULL;
+    axis2_param_container_t *param_container_l = NULL;
     int i = 0;
     int size = 0;
     
@@ -269,8 +264,11 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env, qparamst,
         svc_node);
     parent = AXIS2_SVC_GET_PARENT(builder_impl->svc, env);
+    param_container_l = (axis2_param_container_t *)
+        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(builder_impl->svc->wsdl_svc->
+            wsdl_component, env, AXIS2_PARAMETER_KEY);
     status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(svc_builder->desc_builder, env, 
-        itr, builder_impl->svc->param_container, parent->param_container);
+        itr, param_container_l, parent->param_container);
     if(AXIS2_SUCCESS != status)
     {
         AXIS2_QNAME_FREE(qparamst, env);
@@ -331,23 +329,14 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     
     /* create dll_desc and set it in a parameter. then set that param in svc */
     dll_desc = axis2_dll_desc_create(env);
-    impl_info_param = AXIS2_PARAM_CONTAINER_GET_PARAM(builder_impl->svc->
-        param_container, env, AXIS2_SERVICE_CLASS);
+    impl_info_param = AXIS2_PARAM_CONTAINER_GET_PARAM(param_container_l, env, 
+        AXIS2_SERVICE_CLASS);
     if(!impl_info_param)
     {
         AXIS2_DLL_DESC_FREE(dll_desc, env);
         return AXIS2_FAILURE;
     }
     svc_dll_name = AXIS2_PARAM_GET_VALUE(impl_info_param, env);
-    
-    /*repos_path = AXIS2_DEP_ENGINE_GET_REPOS_PATH(builder_impl->svc_builder.
-        desc_builder->engine, env);
-    printf("repos_path:%s\n", repos_path);
-    temp_path1 = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
-    temp_path2 = AXIS2_STRACAT(temp_path1, AXIS2_SERVICE_FOLDER, env);
-    svcs_path = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
-    temp_path3 = AXIS2_STRACAT(svcs_path, svc_name, env);
-    svc_folder_path = AXIS2_STRACAT(temp_path3, AXIS2_PATH_SEP_STR, env);*/
     
     arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(builder_impl->
         svc_builder.desc_builder->engine, env);
@@ -361,19 +350,22 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
      * therefore we free the value
      */
     AXIS2_FREE((*env)->allocator, svc_dll_name);
+    svc_dll_name = NULL;
     /* free all temp vars */
-    /*AXIS2_FREE((*env)->allocator, svcs_path);
-    AXIS2_FREE((*env)->allocator, temp_path1);
-    AXIS2_FREE((*env)->allocator, temp_path2);
-    AXIS2_FREE((*env)->allocator, temp_path3);*/
     AXIS2_FREE((*env)->allocator, temp_path);
+    temp_path = NULL;
     AXIS2_FREE((*env)->allocator, svc_folder_path);
+    svc_folder_path = NULL;
     AXIS2_FREE((*env)->allocator, dll_path);
+    dll_path = NULL;
     
     AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_SVC_DLL);
     axis2_class_loader_init(env);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
-      
+    status = AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+    if(AXIS2_SUCCESS != status)
+    {
+        return AXIS2_FAILURE;
+    }
     /* end of my logic */
     /* processing service wide modules which required to engage globally */
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);

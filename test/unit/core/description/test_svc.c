@@ -35,6 +35,37 @@ void Testaxis2_svc_add_module_ops(CuTest *tc)
     
 }
 
+void Testaxis2_svc_add_param(CuTest *tc)
+{
+    struct axis2_svc *svc = NULL;
+    axis2_status_t expected = AXIS2_FAILURE;
+    axis2_status_t actual = AXIS2_FAILURE;
+          
+    printf("**************************************\n");
+    printf("testing axis2_svc_add_param  method \n");
+    printf("**************************************\n");
+
+    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+    axis2_env_t *env = axis2_env_create (allocator);    
+
+    svc = axis2_svc_create(&env);
+    axis2_param_t *param = NULL;
+    axis2_char_t *param_name = NULL;
+    axis2_char_t *param_value = NULL;
+    axis2_param_container_t *param_container = NULL;
+
+    param_name = "damitha";
+    param_value = "kumarage";
+    param = axis2_param_create(&env, NULL, NULL);
+    AXIS2_PARAM_SET_NAME(param, &env, param_name);
+    AXIS2_PARAM_SET_VALUE(param, &env, param_value);
+    AXIS2_SVC_ADD_PARAM(svc, env, param);
+    
+
+    CuAssertIntEquals(tc, expected, actual);
+    
+}
+
 struct axis2_module_desc *create_module_desc(axis2_env_t **env) 
 {
     struct axis2_op *op = NULL;

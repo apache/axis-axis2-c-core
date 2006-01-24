@@ -236,6 +236,7 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
             svc_builder = axis2_svc_builder_create_with_dep_engine_and_svc(env,
                 grp_builder->desc_builder->engine, axis_svc);
             status = AXIS2_SVC_BUILDER_POPULATE_SVC(svc_builder, env, svc_node);
+            AXIS2_SVC_BUILDER_FREE(svc_builder, env);
             
         }
     }

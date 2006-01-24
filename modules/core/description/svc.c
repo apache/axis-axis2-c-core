@@ -731,7 +731,7 @@ axis2_svc_add_param (axis2_svc_t *svc,
     } 
     else
     {
-        param_container_l = (struct axis2_param_container *)
+        param_container_l = (axis2_param_container_t *)
             AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(svc->wsdl_svc->
                 wsdl_component, env, AXIS2_PARAMETER_KEY);
         return AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container_l, env, param);
@@ -750,6 +750,10 @@ axis2_svc_get_param (axis2_svc_t *svc,
     param_container_l = (axis2_param_container_t *)
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(svc->wsdl_svc->
             wsdl_component, env, AXIS2_PARAMETER_KEY);
+    if(!param_container_l)
+    {
+        return NULL;
+    }
     return AXIS2_PARAM_CONTAINER_GET_PARAM(param_container_l, env, name);
 }
 
