@@ -110,7 +110,7 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
             printnode(om_node, env);
         }
     }
-    AXIS2_OM_CHILDREN_QNAME_ITERATOR_FREE(children_iter, env);
+ //   AXIS2_OM_CHILDREN_QNAME_ITERATOR_FREE(children_iter, env);
     
     soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
     if (soap_body)
@@ -235,7 +235,7 @@ int main(int argc, char *argv[])
     printf("\nbuild soap\n");
     build_soap(&env, filename,uri);
     axis2_env_free(env); 
-    free(allocator);
+    
     env = NULL;
     allocator = NULL;
     printf("\n");

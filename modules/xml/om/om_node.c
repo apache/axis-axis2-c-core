@@ -592,13 +592,16 @@ axis2_om_node_get_first_child(axis2_om_node_t *om_node,
                               axis2_env_t **env)
 {   
     axis2_om_node_impl_t *om_node_impl = NULL;
+    int token = 0;
     AXIS2_FUNC_PARAM_CHECK(om_node, env, NULL);
     om_node_impl = AXIS2_INTF_TO_IMPL(om_node);
     /**********************************************************/
     while(!(om_node_impl->first_child) && !(om_node_impl->done) 
         && om_node_impl->builder)
     {
-        AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node_impl->builder, env);
+        token = AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node_impl->builder, env);
+        if(token == -1)
+            break;
     }
     /**********************************************************/
     return om_node_impl->first_child;
@@ -626,13 +629,16 @@ axis2_om_node_get_next_sibling(axis2_om_node_t *om_node,
                                 axis2_env_t **env)
 {
     axis2_om_node_impl_t *om_node_impl = NULL;
+    int token = 0;
     AXIS2_FUNC_PARAM_CHECK(om_node, env, NULL);
     om_node_impl = AXIS2_INTF_TO_IMPL(om_node);
     /*****************************************************/
     while(!(om_node_impl->next_sibling) && om_node_impl->parent &&
     om_node_impl->builder && !(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node_impl->parent, env)))
     {
-        AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node_impl->builder, env);
+        token = AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node_impl->builder, env);
+        if(token == -1)
+           break;
     }
     /*******************************************************/
     return om_node_impl->next_sibling;

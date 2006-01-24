@@ -893,13 +893,13 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
     if (builder_impl->done)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL, AXIS2_FAILURE);
-            return -1;
+        return -1;
     }
 
         token = AXIS2_XML_READER_NEXT (builder_impl->parser, env);
         if(token == -1)
         {
-          /*  builder_impl->done = AXIS2_TRUE; */
+            builder_impl->done = AXIS2_TRUE;
             return -1;
         }
                 

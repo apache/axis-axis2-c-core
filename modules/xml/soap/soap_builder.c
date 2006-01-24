@@ -60,7 +60,7 @@
     
     int last_node_status;
     
-    
+    axis2_bool_t  done;
 }axis2_soap_builder_impl_t;
 
 typedef enum axis2_builder_last_node_states
@@ -69,6 +69,9 @@ typedef enum axis2_builder_last_node_states
     AXIS2_BUILDER_LAST_NODE_DONE_TRUE,
     AXIS2_BUILDER_LAST_NODE_DONE_FALSE
 }axis2_builder_last_node_states;
+
+#define AXIS2_MAX_EVENT 100
+
 
 /***************** Macro ******************************************************/
 
@@ -170,7 +173,7 @@ axis2_soap_builder_create(axis2_env_t **env,
         return NULL;
     }
     
-    
+    builder_impl->done = AXIS2_FALSE;
     builder_impl->body_present = AXIS2_FALSE;
     builder_impl->builder_helper = NULL;
     builder_impl->element_level= 0;
@@ -289,11 +292,16 @@ axis2_soap_builder_next(axis2_soap_builder_t *builder,
 {
     axis2_soap_builder_impl_t *builder_impl = NULL;
     axis2_om_node_t *lastnode = NULL;
-    int current_event = -1;
+    int current_event = AXIS2_MAX_EVENT;
     axis2_om_node_t *current_node =  NULL;
     int status = AXIS2_SUCCESS;
     AXIS2_FUNC_PARAM_CHECK(builder, env, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    if(builder_impl->done)
+    {
+        return AXIS2_FAILURE;
+    }
+    
     lastnode = AXIS2_OM_STAX_BUILDER_GET_LAST_NODE(builder_impl->om_builder, env);
     
     if(!lastnode)
@@ -314,6 +322,11 @@ axis2_soap_builder_next(axis2_soap_builder_t *builder,
     /*
     current_event = AXIS2_OM_STAX_BUILDER_GET_CURRENT_EVENT(builder_impl->om_builder, env);
     */
+    if(current_event == -1)
+    {
+        builder_impl->done = AXIS2_TRUE;
+        return AXIS2_FAILURE;
+    }
     if(current_event == AXIS2_XML_READER_EMPTY_ELEMENT ||
         current_event ==  AXIS2_XML_READER_START_ELEMENT)
     {
