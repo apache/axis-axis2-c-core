@@ -19,22 +19,29 @@ int main(int argc, char *argv[])
     char *hostname = "localhost";
     char *port = "9090";
     char *filename = "soap_req";
+    char* endpoint = "/axis2/services/echo/echo";
+    char c;
+    extern char *optarg;
     
-    if (argc > 1) 
+    while ((c = getopt(argc, argv, ":h:p:f:e:")) != -1) 
     {
-        hostname = argv[1];
+        switch(c) 
+        {
+            case 'h':
+                hostname = optarg;
+                break;
+            case 'p':
+                port = optarg;
+                break;
+            case 'f':
+                filename = optarg;
+                break;
+            case 'e':
+                endpoint = optarg;
+                break;
+        }
     }
 
-    if (argc > 2) 
-    {
-        port = argv[2];
-    }
-    
-    if (argc > 3) 
-    {
-        filename = argv[3];
-    }
-    
 	write_to_socket(hostname, port, filename);
     return 0;
 }
