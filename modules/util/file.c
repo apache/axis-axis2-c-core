@@ -21,6 +21,7 @@ typedef struct axis2_file_impl
 {
     axis2_file_t file;
     axis2_char_t *name;
+    axis2_char_t *path;
     AXIS2_TIME_T timestamp;
     
     
@@ -42,6 +43,15 @@ axis2_file_set_name(axis2_file_t *file,
 
 axis2_char_t *AXIS2_CALL
 axis2_file_get_name(axis2_file_t *file,
+                    axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_file_set_path(axis2_file_t *file,
+                        axis2_env_t **env,
+                        axis2_char_t *path);
+
+axis2_char_t *AXIS2_CALL
+axis2_file_get_path(axis2_file_t *file,
                     axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
@@ -75,6 +85,7 @@ axis2_file_create(axis2_env_t **env)
         return NULL;
     }
     file_impl->name = NULL;
+    file_impl->path = NULL;
     file_impl->timestamp = 0;
     
     file_impl->file.ops = 
@@ -89,6 +100,8 @@ axis2_file_create(axis2_env_t **env)
     file_impl->file.ops->free =  axis2_file_free;
     file_impl->file.ops->set_name = axis2_file_set_name;
     file_impl->file.ops->get_name = axis2_file_get_name;
+    file_impl->file.ops->set_path = axis2_file_set_path;
+    file_impl->file.ops->get_path = axis2_file_get_path;
     file_impl->file.ops->set_timestamp = axis2_file_set_timestamp;
     file_impl->file.ops->get_timestamp = axis2_file_get_timestamp;
     file_impl->file.ops->clone = axis2_file_clone;
@@ -110,6 +123,12 @@ axis2_file_free (axis2_file_t *file,
     {
         AXIS2_FREE((*env)->allocator, file_impl->name);
         file_impl->name = NULL;
+    }
+    
+    if(file_impl->path)
+    {
+        AXIS2_FREE((*env)->allocator, file_impl->path);
+        file_impl->path = NULL;
     }
     
     if(file_impl)
@@ -149,22 +168,61 @@ axis2_file_get_name(axis2_file_t *file,
                     axis2_env_t **env)
 {
     axis2_file_impl_t *file_impl = NULL;
-    axis2_char_t *name = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(file, env, NULL);
     file_impl = AXIS2_INTF_TO_IMPL(file);
     
     if(!file_impl->name)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_FILE_NAME_NOT_SET, AXIS2_FAILURE);   
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_FILE_NAME_NOT_SET, 
+            AXIS2_FAILURE);   
         return NULL;
     }
-    name = AXIS2_STRDUP(file_impl->name, env);
-    if(!name)
+    
+    return file_impl->name;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_file_set_path(axis2_file_t *file,
+                    axis2_env_t **env,
+                    axis2_char_t *path)
+{
+    axis2_file_impl_t *file_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, path, AXIS2_FAILURE);
+    file_impl = AXIS2_INTF_TO_IMPL(file);
+    
+    if(file_impl->path)
+    {
+        AXIS2_FREE((*env)->allocator, file_impl->path);
+        file_impl->path = NULL;
+    }
+    file_impl->path = AXIS2_STRDUP(path, env);
+    if(!file_impl->path)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
+}
+
+axis2_char_t *AXIS2_CALL
+axis2_file_get_path(axis2_file_t *file,
+                    axis2_env_t **env)
+{
+    axis2_file_impl_t *file_impl = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(file, env, NULL);
+    file_impl = AXIS2_INTF_TO_IMPL(file);
+    
+    if(!file_impl->path)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_FILE_NAME_NOT_SET, 
+            AXIS2_FAILURE);   
         return NULL;
     }
-    return name;
+    
+    return file_impl->path;
 }
 
 axis2_status_t AXIS2_CALL
@@ -187,7 +245,7 @@ axis2_file_get_timestamp(axis2_file_t *file,
                     axis2_env_t **env)
 {
     axis2_file_impl_t *file_impl = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     file_impl = AXIS2_INTF_TO_IMPL(file);
     return file_impl->timestamp;
 }
@@ -205,6 +263,11 @@ axis2_file_clone(axis2_file_t *file,
     
     new_file = axis2_file_create(env);
     status = AXIS2_FILE_SET_NAME(new_file, env, file_impl->name);
+    if(AXIS2_SUCCESS != status)
+    {
+        return NULL;
+    }
+    status = AXIS2_FILE_SET_PATH(new_file, env, file_impl->path);
     if(AXIS2_SUCCESS != status)
     {
         return NULL;

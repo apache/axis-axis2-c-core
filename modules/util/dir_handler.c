@@ -71,6 +71,7 @@ axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
         strcpy(path, pathname);
         strcat(path, AXIS2_PATH_SEP_STR);
         strcat(path, fname);
+        AXIS2_FILE_SET_PATH(arch_file, env, path);
         buf = AXIS2_MALLOC((*env)->allocator, sizeof(struct stat));
         if(!buf)
         {
@@ -146,6 +147,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
         strcpy(path, pathname);
         strcat(path, AXIS2_PATH_SEP_STR);
         strcat(path, fname);
+        AXIS2_FILE_SET_PATH(arch_file, env, path);
         buf = AXIS2_MALLOC((*env)->allocator, sizeof(struct stat));
         if(!buf)
         {

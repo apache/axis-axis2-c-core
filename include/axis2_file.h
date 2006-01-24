@@ -58,6 +58,15 @@ AXIS2_DECLARE_DATA struct axis2_file_ops
                 axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
+    set_path)(axis2_file_t *file,
+                axis2_env_t **env,
+                axis2_char_t *path);
+    
+    axis2_char_t *(AXIS2_CALL *
+    get_path)(axis2_file_t *file,
+                axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
     set_timestamp)(axis2_file_t *file,
                     axis2_env_t **env,
                     AXIS2_TIME_T timestamp);
@@ -101,6 +110,12 @@ axis2_file_create(axis2_env_t **env);
 
 #define AXIS2_FILE_SET_NAME(file, env, name) \
 		((file)->ops->set_name (file, env, name)) 
+
+#define AXIS2_FILE_GET_PATH(file, env) \
+		((file)->ops->get_path (file, env))  
+
+#define AXIS2_FILE_SET_PATH(file, env, path) \
+		((file)->ops->set_path (file, env, path)) 
 
 #define AXIS2_FILE_GET_TIMESTAMP(file, env) \
 		((file)->ops->get_timestamp (file, env))  

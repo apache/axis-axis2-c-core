@@ -1302,6 +1302,9 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
             engine_impl->curr_file = (axis2_arch_file_data_t *) 
                 AXIS2_ARRAY_LIST_GET(engine_impl->ws_to_deploy, env, i);
             
+            axis2_file_t *svc_folder = AXIS2_ARCH_FILE_DATA_GET_FILE(engine_impl->curr_file, env);
+            axis2_char_t *svc_folder_path = AXIS2_FILE_GET_PATH(svc_folder, env);
+            axis2_char_t *folder_name = AXIS2_FILE_GET_NAME(svc_folder, env);
             type = AXIS2_ARCH_FILE_DATA_GET_TYPE(engine_impl->curr_file, env);
             switch (type) 
             {

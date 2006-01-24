@@ -150,6 +150,9 @@ AXIS2_DECLARE_DATA struct axis2_dll_desc
 AXIS2_DECLARE(axis2_dll_desc_t*) 
 axis2_dll_desc_create(axis2_env_t **env);
 
+#define AXIS2_DLL_DESC_FREE(dll_desc, env) \
+    ((dll_desc)->ops->free(dll_desc, env))
+
 #define AXIS2_DLL_DESC_GET_NAME(dll_desc, env) \
     ((dll_desc)->ops->get_name(dll_desc, env))
     
