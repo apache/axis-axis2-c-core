@@ -185,7 +185,7 @@ axis2_http_server_start(axis2_transport_receiver_t *server, axis2_env_t **env)
 		AXIS2_HTTP_SVR_THREAD_FREE(server_impl->svr_thread, env);
 		return AXIS2_FAILURE;
 	}
-	AXIS2_LOG_WRITE((*env)->log, "[Axis2]Starting HTTP server thread\n", 
+	AXIS2_LOG_WRITE((*env)->log, "[Axis2]Starting HTTP server thread", 
 						AXIS2_LOG_INFO);
 	AXIS2_HTTP_SVR_THREAD_SET_WORKER(server_impl->svr_thread, env, worker);
 	AXIS2_HTTP_SVR_THREAD_RUN(server_impl->svr_thread, env);
@@ -198,7 +198,7 @@ axis2_http_server_stop(axis2_transport_receiver_t *server, axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(server, env, AXIS2_FAILURE);
 	
-	AXIS2_LOG_WRITE((*env)->log, "[Axis2]Terminating HTTP server thread\n", 
+	AXIS2_LOG_WRITE((*env)->log, "[Axis2]Terminating HTTP server thread", 
 						AXIS2_LOG_INFO);
 	if(NULL != AXIS2_INTF_TO_IMPL(server)->svr_thread)
 	{
@@ -206,7 +206,7 @@ axis2_http_server_stop(axis2_transport_receiver_t *server, axis2_env_t **env)
 						env);
 	}
 	AXIS2_LOG_WRITE((*env)->log, "[Axis2]Successfully terminated  HTTP server\
-						thread\n", AXIS2_LOG_INFO);
+						thread", AXIS2_LOG_INFO);
 	return AXIS2_SUCCESS;
 }
 

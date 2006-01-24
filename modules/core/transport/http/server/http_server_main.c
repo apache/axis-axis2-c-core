@@ -80,17 +80,17 @@ int main(int argc, char *argv[])
 	printf("[Axis2]Starting Axis2 HTTP server....\n");
 	AXIS2_LOG_WRITE(env->log, "[Axis2]Starting Axis2 HTTP server....\n", 
 						AXIS2_LOG_INFO);
-	sprintf(tmp_str, "[Axis2]Server port : %d\n", port);
+	sprintf(tmp_str, "[Axis2]Server port : %d", port);
 	printf(tmp_str);
 	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_INFO);
-	sprintf(tmp_str, "[Axis2]Repo location : %s\n", repo);
+	sprintf(tmp_str, "[Axis2]Repo location : %s", repo);
 	printf(tmp_str);
 	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_INFO);
 	
 	server = axis2_http_server_create(&env, repo, port);
 	if(NULL == server)
 	{
-		sprintf(tmp_str, "[Axis2]Server creation failed: Error code: %d\n", 
+		sprintf(tmp_str, "[Axis2]Server creation failed: Error code: %d", 
 						env->error->error_number);
 		printf(tmp_str);
         printf("%s \n", AXIS2_ERROR_GET_MESSAGE(env->error));

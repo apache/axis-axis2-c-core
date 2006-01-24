@@ -90,6 +90,14 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
     op_desc = AXIS2_OP_CTX_GET_OP(op_ctx, env);
     
     svc_obj = AXIS2_MSG_RECV_GET_IMPL_OBJ(msg_recv, env, msg_ctx);
+    
+    if (!svc_obj)
+    {
+        axis2_char_t message[1024];
+        sprintf(message, "%s:%d - Impl object for service not set in message receiver", __FILE__, __LINE__);
+        AXIS2_LOG(env, message, AXIS2_LOG_DEBUG);
+        return AXIS2_FAILURE;
+    }
     /* find the WebService method */
     /*Object obj = getTheImplementationObject(msgContext);
 
