@@ -209,7 +209,6 @@ axis2_wsdl_component_free (axis2_wsdl_component_t *wsdl_component,
     
     AXIS2_FREE((*env)->allocator, component_impl);
     component_impl = NULL;
-    
 	return AXIS2_SUCCESS;
 }
 

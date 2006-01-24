@@ -379,12 +379,13 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         if(NULL == mep_url)
         {
             /* assuming in-out mep */
-            /* TODO op_descrip = new InOnlyAxisOperation(); */
             op_desc = axis2_op_create(env); 
         }
         else
         {
-            /* TODO op_descrip = AxisOperationFactory.getOperetionDescription(mepURL); */
+            /* TODO op_descrip = AxisOperationFactory.getOperetionDescription(mepURL); 
+             * we don't have a operation constructor taking mepURL as argument.
+             * do we need this? */
             op_desc = axis2_op_create(env);
         }
         

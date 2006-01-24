@@ -1,5 +1,5 @@
 <service name="echo">
-    <parameter name="ServiceClass" locked="xsd:false">echo.so</parameter>
+    <parameter name="ServiceClass" locked="xsd:false">libecho.so</parameter>
 
    <description>
         This is a testing service , to test the system is working or not

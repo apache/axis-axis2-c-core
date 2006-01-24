@@ -81,7 +81,7 @@ void Testaxis2_wsdl_component_set_component_properties(CuTest *tc)
     module_list_map = get_module_list_map(&env);
     CuAssertPtrNotNull(tc, module_list_map);
     actual = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTIES(wsdl_comp, &env, module_list_map);
-    AXIS2_WSDL_COMPONENT_FREE(wsdl_comp, &env);
+    /*AXIS2_WSDL_COMPONENT_FREE(wsdl_comp, &env);*/
    
     CuAssertIntEquals(tc, expected, actual);
 }

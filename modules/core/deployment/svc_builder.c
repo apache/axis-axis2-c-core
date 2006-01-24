@@ -15,6 +15,7 @@
  */
  
 #include <axis2_svc_builder.h>
+#include <axis2_class_loader.h>
 
  /**
  * This struct is to convert OM->ServiceDescrption , where it first create OM 
@@ -210,7 +211,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axis2_om_children_qname_iterator_t *operation_itr = NULL;
     /*axis2_om_children_qname_iterator_t *module_configs_itr = NULL; */
     axis2_qname_t *qparamst = NULL;
-    axis2_qname_t *qdesc = NULL;
+    /*axis2_qname_t *qdesc = NULL;*/
     axis2_qname_t *qmodulest = NULL;
     axis2_qname_t *qinflowst = NULL;
     axis2_qname_t *qoutflowst = NULL;
@@ -221,8 +222,9 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     /*axis2_qname_t *qmodule_config = NULL; */
     axis2_status_t status = AXIS2_FAILURE;
     axis2_svc_grp_t *parent = NULL;
-    axis2_om_element_t *desc_element = NULL;
+    /*axis2_om_element_t *desc_element = NULL;
     axis2_om_node_t *desc_node = NULL;
+    */
     axis2_om_children_qname_iterator_t *module_refs = NULL;
     axis2_om_node_t *in_flow_node = NULL;
     axis2_om_element_t *in_flow_element = NULL;
@@ -235,6 +237,16 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axis2_om_attribute_t *name_attr = NULL;
     axis2_array_list_t *ops = NULL;
     axis2_char_t *svc_name = NULL;
+    axis2_char_t *svc_dll_name = NULL;
+    axis2_dll_desc_t *dll_desc = NULL;
+    axis2_param_t *impl_info_param = NULL;
+    axis2_char_t *repos_path = NULL;
+    axis2_char_t *svcs_path = NULL;
+    axis2_char_t *temp_path1 = NULL;
+    axis2_char_t *temp_path2 = NULL;
+    axis2_char_t *temp_path3 = NULL;
+    axis2_char_t *dll_path = NULL;
+    axis2_char_t *svc_folder_path = NULL;
     int i = 0;
     int size = 0;
     
@@ -312,6 +324,39 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     svc_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(name_attr, env);
     AXIS2_SVC_SET_AXIS2_SVC_NAME(builder_impl->svc, env, svc_name);
     AXIS2_QNAME_FREE(qattname, env);
+    
+    /* create dll_desc and set it in a parameter. then set that param in svc */
+    dll_desc = axis2_dll_desc_create(env);
+    impl_info_param = AXIS2_PARAM_CONTAINER_GET_PARAM(builder_impl->svc->
+        param_container, env, AXIS2_SERVICE_CLASS);
+    svc_dll_name = AXIS2_PARAM_GET_VALUE(impl_info_param, env);
+    
+    repos_path = AXIS2_DEP_ENGINE_GET_REPOS_PATH(builder_impl->svc_builder.
+        desc_builder->engine, env);
+    temp_path1 = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
+    temp_path2 = AXIS2_STRACAT(temp_path1, AXIS2_SERVICE_FOLDER, env);
+    svcs_path = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
+    temp_path3 = AXIS2_STRACAT(svcs_path, svc_name, env);
+    svc_folder_path = AXIS2_STRACAT(temp_path3, AXIS2_PATH_SEP_STR, env);
+    dll_path = AXIS2_STRACAT(svc_folder_path, svc_dll_name, env);
+    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_path);
+    /* param does not free the value, because it does not know the value type.
+     * therefore we free the value
+     */
+    AXIS2_FREE((*env)->allocator, svc_dll_name);
+    /* free all temp vars */
+    AXIS2_FREE((*env)->allocator, repos_path);
+    AXIS2_FREE((*env)->allocator, svcs_path);
+    AXIS2_FREE((*env)->allocator, temp_path1);
+    AXIS2_FREE((*env)->allocator, temp_path2);
+    AXIS2_FREE((*env)->allocator, temp_path3);
+    AXIS2_FREE((*env)->allocator, svc_folder_path);
+    AXIS2_FREE((*env)->allocator, dll_path);
+    
+    AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_SVC_DLL);
+    axis2_class_loader_init(env);
+    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+         
     /* end of my logic */
     /* processing service wide modules which required to engage globally */
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
@@ -467,7 +512,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         axis2_qname_t *qparamst = NULL;
         axis2_qname_t *qmsgrecv = NULL;
         axis2_qname_t *qmodulest = NULL;
-        axis2_qname_t *qmodule_config = NULL;
+        /*axis2_qname_t *qmodule_config = NULL;*/
         axis2_qname_t *qattname = NULL;
         axis2_char_t *mep_url = NULL;
         axis2_char_t *op_name = NULL;

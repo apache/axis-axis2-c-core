@@ -111,7 +111,7 @@ extern "C"
 /**
  * Field SERVICE_CLASS
  */
-#define AXIS2_SERVICE_CLASS  "SERVICE_CLASS"
+#define AXIS2_SERVICE_CLASS  "ServiceClass"
 
 /**
  * Field SERVICE_CLASS_NAME
