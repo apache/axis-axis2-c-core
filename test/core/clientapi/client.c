@@ -30,8 +30,6 @@ int write_to_socket(char *address, char* port)
     struct sockaddr_in serv_addr;
     struct hostent *server;
     struct stat buf;
-
-
     char *buffer;
 
 	portno = atoi(port);
@@ -52,9 +50,7 @@ int write_to_socket(char *address, char* port)
     if (connect(sockfd,&serv_addr,sizeof(serv_addr)) < 0) 
         error("ERROR connecting");
 
-    int tmp;
-    tmp = stat("soap_req", &buf);
-    printf("%d\n", buf.st_size);
+    stat("soap_req", &buf);
     buffer = (char *) malloc(buf.st_size* sizeof(char));
     int fd = open("soap_req", O_RDONLY,0);
     if (fd == -1)
