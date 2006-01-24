@@ -319,8 +319,10 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	axis2_op_ctx_t *op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
 	if(NULL != op_ctx)
 	{
-		ctx_written = AXIS2_OP_CTX_GET_PROPERTY(op_ctx, env, 
-						AXIS2_RESPONSE_WRITTEN);
+        axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(
+                                msg_ctx, env), env);
+        if (ctx)
+    		ctx_written = AXIS2_CTX_GET_PROPERTY(ctx, env, AXIS2_RESPONSE_WRITTEN, AXIS2_FALSE);
 	}
 	if(NULL != ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE"))
 	{

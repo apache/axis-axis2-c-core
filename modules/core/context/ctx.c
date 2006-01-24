@@ -34,7 +34,7 @@ typedef struct axis2_ctx_impl
 #define AXIS2_INTF_TO_IMPL(ctx) ((axis2_ctx_impl_t *)ctx)
 
 axis2_char_t* AXIS2_CALL axis2_ctx_get_property(struct axis2_ctx *ctx, axis2_env_t **env, axis2_char_t *key, axis2_bool_t persistent);
-axis2_status_t AXIS2_CALL axis2_ctx_set_property(struct axis2_ctx *ctx, axis2_env_t **env, axis2_char_t *key, axis2_status_t *value, axis2_bool_t persistent);
+axis2_status_t AXIS2_CALL axis2_ctx_set_property(struct axis2_ctx *ctx, axis2_env_t **env, axis2_char_t *key, axis2_char_t *value, axis2_bool_t persistent);
 axis2_hash_t* AXIS2_CALL axis2_ctx_get_non_persistent_map(struct axis2_ctx *ctx, axis2_env_t **env);
 axis2_hash_t* AXIS2_CALL axis2_ctx_get_persistent_map(struct axis2_ctx *ctx, axis2_env_t **env);
 axis2_status_t AXIS2_CALL axis2_ctx_free (struct axis2_ctx *ctx, 
@@ -89,7 +89,7 @@ axis2_ctx_t* AXIS2_CALL axis2_ctx_create(axis2_env_t **env)
     return &(ctx_impl->ctx);
 }
 
-axis2_status_t AXIS2_CALL axis2_ctx_set_property(struct axis2_ctx *ctx, axis2_env_t **env, axis2_char_t *key, axis2_status_t *value, axis2_bool_t persistent) 
+axis2_status_t AXIS2_CALL axis2_ctx_set_property(struct axis2_ctx *ctx, axis2_env_t **env, axis2_char_t *key, axis2_char_t *value, axis2_bool_t persistent) 
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     

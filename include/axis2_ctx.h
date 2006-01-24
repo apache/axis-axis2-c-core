@@ -54,7 +54,7 @@ struct axis2_ctx_ops
      * @param value
      * @param persistent
      */
-    axis2_status_t (AXIS2_CALL *set_property)(struct axis2_ctx *ctx, axis2_env_t **env, axis2_char_t *key, axis2_status_t *value, axis2_bool_t persistent);
+    axis2_status_t (AXIS2_CALL *set_property)(struct axis2_ctx *ctx, axis2_env_t **env, axis2_char_t *key, axis2_char_t *value, axis2_bool_t persistent);
     
     /**
      * @param key

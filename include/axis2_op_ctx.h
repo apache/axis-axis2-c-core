@@ -134,8 +134,6 @@ struct axis2_op_ctx_ops
     axis2_hash_t* (AXIS2_CALL *get_msg_ctx_map)(struct axis2_op_ctx *op_ctx, 
         axis2_env_t **env);
     
-    void * (AXIS2_CALL *get_property)(struct axis2_op_ctx *op_ctx,
-        axis2_env_t **env, axis2_char_t *key);
 };
 
 /** 
@@ -164,7 +162,6 @@ axis2_op_ctx_t* AXIS2_CALL axis2_op_ctx_create(axis2_env_t **env,
 #define AXIS2_OP_CTX_CLEANUP(op_ctx, env) ((op_ctx)->ops->cleanup(op_ctx, env))
 #define AXIS2_OP_CTX_SET_PARENT(op_ctx, env, svc_ctx) ((op_ctx)->ops->set_parent(op_ctx, env, svc_ctx))
 #define AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env) ((op_ctx)->ops->get_msg_ctx_map(op_ctx, env))    
-#define AXIS2_OP_CTX_GET_PROPERTY(op_ctx, env, key)((op_ctx)->ops->get_property(op_ctx, env, key))
 
 /************************** End of function macros ****************************/    
 
