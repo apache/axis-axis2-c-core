@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<book xmlns:axiomc="http://ws.apache.org/axis2/c/om" xmlns:isbn="urn:ISBN:0-395-74341-6">
+<axiomc:book xmlns:axiomc="http://ws.apache.org/axis2/c/om" xmlns:isbn="urn:ISBN:0-395-74341-6">
 	<axiomc:title>Axis2C OM HOWTO</axiomc:title>
 	<isbn:number>1748491379</isbn:number>
 	<author title="Mr" name="Axitoc Oman"/>
@@ -9,4 +9,4 @@
 			This is vey good book on OM!
 		</p>
 	</notes>
-</book>
+</axiomc:book>

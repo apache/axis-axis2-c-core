@@ -541,8 +541,8 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
     axis2_soap_fault_t *soap_fault = NULL;
     axis2_soap_body_t *soap_body = NULL;
     axis2_soap_fault_code_t *fault_code = NULL;
-    axis2_om_node_t *om_node = NULL;
-    axis2_om_element_t *om_ele = NULL;
+    axis2_om_node_t *fault_node = NULL;
+    axis2_om_element_t *fault_ele  = NULL;
     
     axis2_om_node_t *om_node1 = NULL;
     axis2_om_element_t *om_ele1 = NULL;
@@ -609,8 +609,9 @@ axis2_status_t AXIS2_CALL axis2_soap_envelope_set_header(axis2_soap_envelope_t *
     return AXIS2_SUCCESS;
 }
 
-axis2_om_namespace_t* AXIS2_CALL axis2_soap_envelope_get_namespace(axis2_soap_envelope_t *envelope,
-            axis2_env_t **env)
+axis2_om_namespace_t* AXIS2_CALL 
+axis2_soap_envelope_get_namespace(axis2_soap_envelope_t *envelope,
+                                  axis2_env_t **env)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(envelope, env, NULL);
