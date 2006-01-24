@@ -11,7 +11,8 @@ libaxis2_engine_la_SOURCES = handler.c \
                                 disp.c \
                                 soap_action_disp.c \
                                 soap_body_disp.c \
-                                engine.c
+                                ctx_handler.c \
+                                engine.c 
 
 libaxis2_engine_la_LIBADD = 
 INCLUDES = -I$(top_builddir)/include \

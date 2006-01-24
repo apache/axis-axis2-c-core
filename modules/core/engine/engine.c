@@ -619,15 +619,15 @@ axis2_status_t AXIS2_CALL axis2_engine_verify_ctx_built(struct axis2_engine *eng
     AXIS2_FUNC_PARAM_CHECK(engine, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);    
     
-    if (AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env))
+    if (!AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env))
     {
         return AXIS2_FAILURE;
     }
-    if (AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env))
+    if (!AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env))
     {
         return AXIS2_FAILURE;
     }
-    if (AXIS2_MSG_CTX_GET_SVC_CTX(msg_ctx, env))
+    if (!AXIS2_MSG_CTX_GET_SVC_CTX(msg_ctx, env))
     {
         return AXIS2_FAILURE;
     }

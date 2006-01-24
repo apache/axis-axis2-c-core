@@ -1605,18 +1605,13 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     }
     
     disp_checker = axis2_disp_checker_create(env, NULL);
-    
-    /* TODO uncomment this when instant dispatcher is available */
-    /*
-    InstanceDispatcher instanceDispatcher = new InstanceDispatcher();
-    instanceDispatcher.getHandlerDesc().setParent(this);
-    */
-    
     handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
     handler = NULL;
+
+    handler = axis2_ctx_handler_create(env, NULL);
+    AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 1, handler);
     
-    /*postDispatch.addHandler(instanceDispatcher,1); */
     status = AXIS2_ARRAY_LIST_ADD(config_impl->
             in_phases_upto_and_including_post_dispatch, env, post_dispatch);
     if(AXIS2_FAILURE == status)

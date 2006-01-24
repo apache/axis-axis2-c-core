@@ -170,7 +170,7 @@ axis2_op_t* AXIS2_CALL axis2_req_uri_disp_find_op(axis2_msg_ctx_t *msg_ctx,
                     AXIS2_LOG(env, url_tokens[1], AXIS2_LOG_INFO);
                     AXIS2_LOG(env, "\n", AXIS2_LOG_INFO);
                     op_qname = axis2_qname_create(env, url_tokens[1], NULL, NULL);
-                    op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname);
+                    op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, AXIS2_QNAME_GET_LOCALPART(op_qname, env));
                     AXIS2_QNAME_FREE(op_qname, env);
                     return op;
                 }

@@ -246,8 +246,6 @@ axis2_status_t AXIS2_CALL axis2_disp_checker_invoke(axis2_handler_t* handler, ax
         else
             AXIS2_LOG(env, "NULL ", AXIS2_LOG_INFO);
 
-        AXIS2_LOG(env, "\n", AXIS2_LOG_INFO);
-       
         return AXIS2_FAILURE;
     }
     
@@ -262,10 +260,8 @@ axis2_status_t AXIS2_CALL axis2_disp_checker_invoke(axis2_handler_t* handler, ax
         else
             AXIS2_LOG(env, "NULL ", AXIS2_LOG_INFO);
 
-        AXIS2_LOG(env, "\n", AXIS2_LOG_INFO);
         AXIS2_LOG(env, " and WSA Action = ", AXIS2_LOG_INFO);
         AXIS2_LOG(env, AXIS2_MSG_CTX_GET_WSA_ACTION(msg_ctx, env), AXIS2_LOG_INFO);
-        AXIS2_LOG(env, "\n", AXIS2_LOG_INFO);
         
         return AXIS2_FAILURE;
     }    

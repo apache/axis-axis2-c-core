@@ -133,6 +133,7 @@ extern "C"
  * creates handler struct
  */
 AXIS2_DECLARE(axis2_handler_t*) axis2_handler_create(axis2_env_t **env);
+AXIS2_DECLARE(axis2_handler_t*) axis2_ctx_handler_create(axis2_env_t **env, axis2_qname_t *qname);
     
 #define AXIS2_HANDLER_FREE(handler, env) ((handler)->ops->free(handler, env))
 #define AXIS2_HANDLER_INIT(handler, env, handler_desc) ((handler)->ops->init(handler, env, handler_desc))

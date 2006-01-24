@@ -209,7 +209,8 @@ axis2_msg_recv_get_impl_obj(axis2_msg_recv_t *msg_recv,
     }
     scope_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SCOPE);
     svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
-    param_value = AXIS2_PARAM_GET_VALUE(scope_param, env);
+    if (scope_param)
+        param_value = AXIS2_PARAM_GET_VALUE(scope_param, env);
     /* TODO
      * This part is left until session_ctx is implemented or this will before
      * totally removed???
