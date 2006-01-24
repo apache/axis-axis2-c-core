@@ -639,7 +639,6 @@ axis2_om_element_get_attribute (axis2_om_element_t *om_element,
     name = AXIS2_QNAME_TO_STRING(qname, env);
     attr = (axis2_om_attribute_t*) (axis2_hash_get(AXIS2_INTF_TO_IMPL(
         om_element)->attributes, name, AXIS2_HASH_KEY_STRING));
-    AXIS2_FREE((*env)->allocator, name);
     return attr;
 }
 

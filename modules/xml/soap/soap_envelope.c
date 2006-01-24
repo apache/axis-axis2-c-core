@@ -242,13 +242,21 @@ axis2_soap_envelope_free(axis2_soap_envelope_t *envelope,
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(envelope, env, AXIS2_FAILURE);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
-    
+    if(envelope_impl->header)
+    {
+        AXIS2_SOAP_HEADER_FREE(envelope_impl->header, env);
+        envelope_impl->header = NULL;      
+    }
+    if(envelope_impl->body)
+    {
+        AXIS2_SOAP_BODY_FREE(envelope_impl->body, env); 
+        envelope_impl->body = NULL;        
+    }
     if(envelope->ops)
     {
         AXIS2_FREE((*env)->allocator, envelope->ops);
         envelope->ops = NULL;
     }
-    
     if(envelope_impl->om_ele_node)
     {
         AXIS2_OM_NODE_FREE_TREE(envelope_impl->om_ele_node, env);
@@ -676,5 +684,3 @@ axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
     return NULL;
 }
-
-                                

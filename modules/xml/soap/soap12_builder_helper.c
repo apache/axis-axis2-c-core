@@ -521,6 +521,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     AXIS2_SOAP_FAULT_VALUE_SET_BASE_NODE(value, env, om_ele_node);
                     AXIS2_SOAP_FAULT_VALUE_SET_SOAP_VERSION(value, env, AXIS2_SOAP12);
                     AXIS2_SOAP_FAULT_SUB_CODE_SET_VALUE(sub_code, env, value);
+             
                     builder_helper_impl->subcode_value_present = AXIS2_TRUE;
                     builder_helper_impl->sub_sub_code_present = AXIS2_FALSE;
                     builder_helper_impl->sub_code_processing = AXIS2_FALSE;

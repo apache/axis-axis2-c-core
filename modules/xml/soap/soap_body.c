@@ -187,19 +187,16 @@ axis2_soap_body_free(axis2_soap_body_t *body,
     axis2_soap_body_impl_t *body_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(body, env, AXIS2_FAILURE);
     body_impl = AXIS2_INTF_TO_IMPL(body);
-    
+    if(body_impl->soap_fault)
+    {
+        AXIS2_SOAP_FAULT_FREE(body_impl->soap_fault, env);
+        body_impl->soap_fault = NULL;        
+    }
     if(body->ops)
     {
         AXIS2_FREE((*env)->allocator, body->ops);
         body->ops = NULL;
     }
-    
-    if(body_impl->om_ele_node)
-    {
-        AXIS2_OM_NODE_FREE_TREE(body_impl->om_ele_node, env);
-        body_impl->om_ele_node = NULL;
-    }
-    
     AXIS2_FREE((*env)->allocator, body_impl);
     body_impl = NULL;
     return AXIS2_SUCCESS;
@@ -387,4 +384,4 @@ axis2_soap_body_set_builder(axis2_soap_body_t *body,
     body_impl = AXIS2_INTF_TO_IMPL(body);
     body_impl->soap_builder = builder;
     return AXIS2_SUCCESS;
-}                            
+}

@@ -197,9 +197,24 @@ axis2_soap_header_free(axis2_soap_header_t *header,
     axis2_soap_header_impl_t *header_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(header, env, AXIS2_FAILURE);
     header_impl = AXIS2_INTF_TO_IMPL(header);
+    
     if(header_impl->header_blocks)
     {
-        
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+            
+        for (hi = axis2_hash_first (header_impl->header_blocks ,env); hi;
+                 hi = axis2_hash_next ( env, hi))
+        {
+               axis2_hash_this (hi, NULL, NULL, &val);
+
+                if (val)
+                   AXIS2_SOAP_HEADER_BLOCK_FREE((axis2_soap_header_block_t *)val, env);
+                val = NULL;
+                   
+         }
+        AXIS2_FREE((*env)->allocator, hi); 
+        axis2_hash_free (header_impl->header_blocks, env);
     }
     if(header->ops)
     {
@@ -438,5 +453,4 @@ axis2_soap_header_set_builder(axis2_soap_header_t *header,
     header_impl = AXIS2_INTF_TO_IMPL(header);
     header_impl->soap_builder = builder;
     return AXIS2_SUCCESS;
-}                              
-                                                             
+}

@@ -83,6 +83,11 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
     axis2_char_t* (AXIS2_CALL *get_localpart)(struct axis2_qname *qname,
                                               axis2_env_t **env);
                                               
+    /**
+     * returns a unique string created by concatanting namespace uri 
+     * and localpart .
+     * The returned char* is freed when qname free function is called.
+     */
     axis2_char_t* (AXIS2_CALL *to_string)(struct axis2_qname *qname,
                                           axis2_env_t **env);                                                      
                                               

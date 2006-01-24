@@ -125,24 +125,6 @@ test_om_build (char *filename)
             ele2 =(axis2_om_element_t*) AXIS2_OM_NODE_GET_DATA_ELEMENT(node2, &environment);
             if(ele2 && AXIS2_OM_ELEMENT_GET_LOCALNAME(ele2,&environment))
             {
-                if(0 == AXIS2_STRCMP("messageReceiver", AXIS2_OM_ELEMENT_GET_LOCALNAME(ele2, &environment)))
-                {
-                    axis2_char_t *class_name = NULL;
-                    axis2_qname_t *class_qname = NULL;
-                    axis2_om_attribute_t *recv_name = NULL;
-
-                    printf("messageReceiver***********************\n");
-                    class_qname = axis2_qname_create(&environment, "class", NULL, NULL);
-                    printf("came1\n");
-                    recv_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(ele2, &environment, class_qname);
-                    if(!recv_name)
-                    {
-                        printf("attribute is null\n");
-                    }
-                    class_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(recv_name, &environment);
-                    printf("class name:%s\n", class_name);
-                    return 0;
-                }
                 printf("\n localname %s\n" , AXIS2_OM_ELEMENT_GET_LOCALNAME(ele2,&environment)); 
             }
                         
@@ -181,9 +163,6 @@ test_om_build (char *filename)
     AXIS2_OM_STAX_BUILDER_FREE(builder, &environment);
     if(buffer)
         AXIS2_FREE(environment->allocator, buffer); 
-    
-
-    
     printf ("\ndone\n");
     return 0;
 }
@@ -289,8 +268,10 @@ main (int argc, char *argv[])
     
     environment = axis2_env_create_with_error_log(allocator, error,  axis_log);
     test_om_build (file_name);
-    test_om_serialize();
+/*    test_om_serialize(); */
+
     axis2_env_free(environment); 
+    free(allocator);
     return 0;
 }
 

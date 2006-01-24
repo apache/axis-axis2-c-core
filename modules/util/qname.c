@@ -67,6 +67,8 @@ typedef struct axis2_qname_impl_t
     /**  prefix mandatory */
     axis2_char_t *prefix;
     
+    axis2_char_t *qname_string;
+    
 
 }axis2_qname_impl_t;
 
@@ -99,12 +101,16 @@ axis2_qname_create (axis2_env_t **env,
                                              sizeof (axis2_qname_impl_t));
     if (!qn)
     {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     /* set properties */
-
+    qn->localpart = NULL;
+    qn->qname_string = NULL;
+    qn->prefix = NULL;
+    qn->namespace_uri = NULL;
+    
+    
     qn->localpart = (axis2_char_t *)AXIS2_STRDUP (localpart, env);
     if (!(qn->localpart))
     {
@@ -200,6 +206,11 @@ axis2_qname_free ( axis2_qname_t * qname,
     {
         AXIS2_FREE ((*env)->allocator, qname_impl->prefix);
         qname_impl->prefix = NULL;
+    }
+    if(qname_impl->qname_string)
+    {
+        AXIS2_FREE((*env)->allocator, qname_impl->qname_string);
+        qname_impl->qname_string = NULL;        
     }
     if (qname->ops)
     {
@@ -304,9 +315,17 @@ axis2_qname_to_string(axis2_qname_t *qname,
     axis2_qname_impl_t *qname_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(qname, env, NULL);
     qname_impl = AXIS2_INTF_TO_IMPL(qname);
-    
+    if(qname_impl->qname_string)
+    {
+        return qname_impl->qname_string;
+    }
     if(!(qname_impl->namespace_uri) || AXIS2_STRCMP(qname_impl->namespace_uri,"") == 0)
-        return AXIS2_STRDUP(qname_impl->localpart, env);
+    {
+        qname_impl->qname_string = AXIS2_STRDUP(qname_impl->localpart, env);
+    }
     else 
-        return AXIS2_STRACAT( qname_impl->namespace_uri, qname_impl->localpart, env);
+    {
+        qname_impl->qname_string = AXIS2_STRACAT( qname_impl->namespace_uri, qname_impl->localpart, env);
+    }
+    return qname_impl->qname_string;        
 }
