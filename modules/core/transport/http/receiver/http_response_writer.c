@@ -268,7 +268,6 @@ axis2_http_response_writer_print_str
 		return AXIS2_FAILURE;
 	}
     write = AXIS2_STREAM_WRITE(writer_impl->stream, env, str, len);
-    printf ("str = %s...\n len = %d\n", str, len);
 	if(write < 0)
 	{
 		return AXIS2_FAILURE;
