@@ -16,21 +16,37 @@ void error(char *msg)
 
 int main(int argc, char *argv[])
 {
-    if (argc < 3) {
-       fprintf(stderr,"usage %s hostname port\n", argv[0]);
-       exit(0);
+    char *hostname = "localhost";
+    char *port = "9090";
+    char *filename = "soap_req";
+    
+    if (argc > 1) 
+    {
+        hostname = argv[1];
     }
-	write_to_socket(argv[1], argv[2]);
+
+    if (argc > 2) 
+    {
+        port = argv[2];
+    }
+    
+    if (argc > 3) 
+    {
+        filename = argv[3];
+    }
+    
+	write_to_socket(hostname, port, filename);
     return 0;
 }
 
-int write_to_socket(char *address, char* port)
+int write_to_socket(char *address, char* port, char* filename)
 {
     int sockfd, portno, n, i;
     struct sockaddr_in serv_addr;
     struct hostent *server;
     struct stat buf;
     char *buffer;
+    int bufsize = 0;
 
 	portno = atoi(port);
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -50,9 +66,10 @@ int write_to_socket(char *address, char* port)
     if (connect(sockfd,&serv_addr,sizeof(serv_addr)) < 0) 
         error("ERROR connecting");
 
-    stat("soap_req", &buf);
-    buffer = (char *) malloc(buf.st_size* sizeof(char));
-    int fd = open("soap_req", O_RDONLY,0);
+    stat(filename, &buf);
+    bufsize = buf.st_size* sizeof(char);
+    buffer = (char *) malloc(bufsize);
+    int fd = open(filename, O_RDONLY, 0);
     if (fd == -1)
     {
         printf("can't open file soap_req\n");
@@ -61,20 +78,28 @@ int write_to_socket(char *address, char* port)
     else
         printf("opened file soap_req\n");
 	
-    while((i = read(fd, buffer, BUFSIZ)) > 0)
+    while((i = read(fd, buffer, bufsize - 1)) > 0)
     {
+        buffer[i] = '\0';
     	n = write(sockfd,buffer,strlen(buffer));
-	printf("%s", buffer);
+	    printf("buffer = %s %d...", buffer, i);
     	if (n < 0) 
        	    error("ERROR writing to socket");
     }
 
+    printf("Done writing to server\n");
+
 /*    bzero(buffer,2000);*/
-    buffer = '\0';
+    buffer[0] = '\0';
 	
-    while((n = read(sockfd,buffer,BUFSIZ)) > 0)
-    		printf("%s\n", buffer);
+    while((n = read(sockfd, buffer, bufsize -1)) > 0)
+    {
+        buffer[i] = '\0';
+        printf("%s\n", buffer);
+    }
+
     if (n < 0) 
          error("ERROR reading from socket");
     printf("%s\n",buffer);
 }
+
