@@ -305,7 +305,12 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
             return AXIS2_FAILURE;
         receiver = AXIS2_OP_GET_MSG_RECEIVER(op, env);
         if (!receiver)
+        {
+            axis2_char_t message[1024];
+            sprintf(message, "%s:%d - Message receiver not set in operation description", __FILE__, __LINE__); 
+            AXIS2_LOG(env, message, AXIS2_LOG_DEBUG);
             return AXIS2_FAILURE;
+        }
         AXIS2_MSG_RECV_RECEIVE(receiver, env, msg_ctx);        
     }
     return AXIS2_SUCCESS;
