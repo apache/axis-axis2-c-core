@@ -22,6 +22,10 @@
  #include <axis2_soap.h>
  #include <axis2_soap_builder.h>
  #include <axis2_soap_fault_code.h>
+ #include <axis2_soap_fault_reason.h>
+ #include <axis2_soap_fault_detail.h>
+ #include <axis2_soap_fault_role.h>
+ 
  /******************* impl struct *********************************************/
  
  typedef struct axis2_soap_envelope_impl_t
@@ -533,7 +537,6 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                 OMConstants.DEFAULT_CHAR_SET_ENCODING : charSetEncoding,
                 xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION : xmlVersion);
     }*/
-    /*
     if(envelope_impl->soap_version == AXIS2_SOAP11)
     {
         axis2_soap_body_t *soap_body = NULL;
@@ -546,29 +549,83 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
             
             if(AXIS2_SOAP_BODY_HAS_FAULT(soap_body, env))
             {
-                axis2_soap_fault_code_t *fault_code = NULL;
-                axis2_om_node_t *fault_code_om_node = NULL;
-                axis2_om_element_t *fault_code_om_ele = NULL;
-                
                 soap_fault = AXIS2_SOAP_BODY_GET_FAULT(soap_body, env);
                 if(soap_fault)
                 {
+                    axis2_soap_fault_code_t *fault_code = NULL;
+                    axis2_soap_fault_reason_t *fault_reason = NULL;
+                    axis2_soap_fault_detail_t *fault_detail = NULL;
+                    axis2_soap_fault_role_t *fault_role = NULL;
                     fault_code = AXIS2_SOAP_FAULT_GET_CODE(soap_fault, env);
                     if(fault_code)
                     {
+                        axis2_om_node_t *fault_code_om_node = NULL;
+                        axis2_om_element_t *fault_code_om_ele = NULL;
+                        axis2_om_node_t *fault_value_om_node = NULL;
+                        axis2_om_element_t *fault_value_om_ele = NULL;
+                        axis2_char_t *text = NULL;
                         fault_code_om_node = AXIS2_SOAP_FAULT_CODE_GET_BASE_NODE(fault_code, env);
                         fault_code_om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_code_om_node, env);
                         AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_code_om_ele, env, AXIS2_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME); 
+                        fault_value_om_node = AXIS2_OM_NODE_GET_FIRST_CHILD(fault_code_om_node, env);
+                        AXIS2_OM_NODE_DETACH(fault_value_om_node, env);
+                        fault_value_om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_value_om_node, env);
+                        text = AXIS2_OM_ELEMENT_GET_TEXT(fault_value_om_ele, env, fault_value_om_node);
+                        AXIS2_OM_ELEMENT_SET_TEXT(fault_code_om_ele, env, text, fault_code_om_node);
                         
-                                           
-                    
+                        AXIS2_OM_NODE_FREE_TREE(fault_value_om_node, env);                                                                                              
                     }
+                    fault_reason = AXIS2_SOAP_FAULT_GET_REASON(soap_fault, env);
+                    if(fault_reason)
+                    {
+                        axis2_om_node_t *fault_reason_om_node = NULL;
+                        axis2_om_element_t *fault_reason_om_ele = NULL;
+                        
+                        axis2_om_node_t *fault_text_om_node = NULL;
+                        axis2_om_element_t *fault_text_om_ele = NULL;
+
+                        axis2_char_t *text =  NULL;                        
                     
+                        fault_reason_om_node = AXIS2_SOAP_FAULT_REASON_GET_BASE_NODE(fault_reason, env);
+                        fault_reason_om_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_reason_om_node, env);
+                        AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_reason_om_ele, env, AXIS2_SOAP11_SOAP_FAULT_STRING_LOCAL_NAME);
+                        
+                        
+                        fault_text_om_node = AXIS2_OM_NODE_GET_FIRST_CHILD(fault_reason_om_node, env);
+                        fault_text_om_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_text_om_node, env);
+                        AXIS2_OM_NODE_DETACH(fault_text_om_node, env);                        
+                        
+                        text = AXIS2_OM_ELEMENT_GET_TEXT(fault_text_om_ele, env, fault_text_om_node);
+                        AXIS2_OM_ELEMENT_SET_TEXT( fault_reason_om_ele, env, text, fault_reason_om_node);   
+                        
+                        AXIS2_OM_NODE_FREE_TREE(fault_text_om_node, env);
+                    }
+                   
+                    fault_role = AXIS2_SOAP_FAULT_GET_ROLE(soap_fault, env);
+                    if(fault_role)
+                    {
+                        axis2_om_node_t *fault_role_om_node = NULL;
+                        axis2_om_element_t *fault_role_om_ele = NULL;
+                        
+                        fault_role_om_node = AXIS2_SOAP_FAULT_ROLE_GET_BASE_NODE(fault_role, env);
+                        fault_role_om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_role_om_node, env);
+                        AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_role_om_ele, env, AXIS2_SOAP11_SOAP_FAULT_ACTOR_LOCAL_NAME);
+                    }
+                
+                    fault_detail = AXIS2_SOAP_FAULT_GET_DETAIL(soap_fault, env);
+                    if(fault_detail)
+                    {
+                        axis2_om_node_t *fault_detail_om_node = NULL;
+                        axis2_om_element_t *fault_detail_om_ele = NULL;
+                        
+                        fault_detail_om_node = AXIS2_SOAP_FAULT_DETAIL_GET_BASE_NODE(fault_detail, env);
+                    //    fault_detail_om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_detail_om_node, env);
+                      //  AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_detail_om_ele, env, AXIS2_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME);
+                    }
                 }  
             }
         }
     }
-    */
     return AXIS2_OM_NODE_SERIALIZE(envelope_impl->om_ele_node, env, om_output);
 }
 

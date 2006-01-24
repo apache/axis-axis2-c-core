@@ -251,6 +251,7 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
         {
             axis2_soap_fault_detail_t *fault_detail = NULL;
             fault_detail = axis2_soap_fault_detail_create(env);
+            printf("\n\n fault detail create\n\n");
             AXIS2_OM_ELEMENT_SET_LOCALNAME(om_ele, env, AXIS2_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME);
             AXIS2_SOAP_FAULT_SET_BASE_NODE(soap_fault, env, om_element_node);
             AXIS2_SOAP_FAULT_SET_DETAIL(soap_fault, env, fault_detail);

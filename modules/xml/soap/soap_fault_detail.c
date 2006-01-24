@@ -252,8 +252,9 @@ axis2_soap_fault_detail_set_base_node
         return AXIS2_FAILURE;
    }
    fault_detail_impl->om_ele_node = node;
-   fault_detail_impl->om_ele = (axis2_om_element_t *)
-            AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
+   fault_detail_impl->om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
+   printf("\n\n ___ %s ____\n\n", AXIS2_OM_ELEMENT_GET_LOCALNAME( fault_detail_impl->om_ele, env));
+            
    return AXIS2_SUCCESS;
 }
 

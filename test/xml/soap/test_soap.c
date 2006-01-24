@@ -239,6 +239,6 @@ int main(int argc, char *argv[])
     env = NULL;
     allocator = NULL;
     printf("\n");
-
+    getchar();
     return 0;        
 }
