@@ -83,7 +83,11 @@ axis2_soap_body_set_soap_version(axis2_soap_body_t *body,
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_set_builder(axis2_soap_body_t *body,
                             axis2_env_t **env,
-                            axis2_soap_builder_t *builder);                                 
+                            axis2_soap_builder_t *builder);   
+
+axis2_status_t AXIS2_CALL
+axis2_soap_body_build(axis2_soap_body_t *body,
+                      axis2_env_t **env);
 
 /*************** function implementations *************************************/
 axis2_soap_body_t* AXIS2_CALL
@@ -127,6 +131,7 @@ axis2_soap_body_create(axis2_env_t **env)
     body_impl->soap_body.ops->get_soap_version = axis2_soap_body_get_soap_version;
     body_impl->soap_body.ops->set_soap_version = axis2_soap_body_set_soap_version;
     body_impl->soap_body.ops->set_builder = axis2_soap_body_set_builder;
+    body_impl->soap_body.ops->build = axis2_soap_body_build;
     return &(body_impl->soap_body);
 return NULL;
 }
@@ -383,5 +388,26 @@ axis2_soap_body_set_builder(axis2_soap_body_t *body,
     AXIS2_PARAM_CHECK((*env)->error, builder, AXIS2_FAILURE);
     body_impl = AXIS2_INTF_TO_IMPL(body);
     body_impl->soap_builder = builder;
+    return AXIS2_SUCCESS;
+}
+
+
+axis2_status_t AXIS2_CALL
+axis2_soap_body_build(axis2_soap_body_t *body,
+                      axis2_env_t **env)
+{
+    axis2_soap_body_impl_t *soap_body_impl = NULL;
+    int status = AXIS2_SUCCESS;
+    AXIS2_FUNC_PARAM_CHECK(body, env, AXIS2_FAILURE);
+    soap_body_impl = AXIS2_INTF_TO_IMPL(body);
+    if(soap_body_impl->om_ele_node && soap_body_impl->soap_builder)
+    {
+        while(!AXIS2_OM_NODE_GET_BUILD_STATUS(soap_body_impl->om_ele_node, env))
+        {
+            status = AXIS2_SOAP_BUILDER_NEXT(soap_body_impl->soap_builder, env);
+            if(status == AXIS2_FAILURE)
+                return AXIS2_FAILURE;                
+        }
+    }            
     return AXIS2_SUCCESS;
 }

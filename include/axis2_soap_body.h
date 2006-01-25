@@ -111,6 +111,9 @@ struct axis2_soap_builder;
         axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_body_t *body,
                                                  axis2_env_t **env,
                                                  struct axis2_soap_builder *builder);
+                                                     
+        axis2_status_t (AXIS2_CALL *build)(axis2_soap_body_t *body, 
+                                           axis2_env_t **env);                                                 
                                                               
 };                                                      
 
@@ -166,6 +169,9 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
         
 #define AXIS2_SOAP_BODY_SET_BUILDER(body, env, builder) \
         ((body)->ops->set_builder(body, env, builder))               
+
+#define AXIS2_SOAP_BODY_BUILD(body, env) \
+        ((body)->ops->build(body, env))
 
 /** @} */
 #ifdef __cplusplus
