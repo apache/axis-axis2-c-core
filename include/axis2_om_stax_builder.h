@@ -122,11 +122,10 @@ extern "C"
         axis2_bool_t (AXIS2_CALL *is_complete)(struct axis2_om_stax_builder* builder,
                                                axis2_env_t **env);
                                                                    
-        axis2_om_node_t* (AXIS2_CALL *set_last_node)
+        axis2_status_t (AXIS2_CALL *set_last_node)
                                               (struct axis2_om_stax_builder* builder,
                                                axis2_env_t **env,
                                                axis2_om_node_t *om_node);                                                                                            
-        
         int (AXIS2_CALL *get_element_level)(struct axis2_om_stax_builder* builder,
                                             axis2_env_t **env); 
                                             
@@ -137,7 +136,7 @@ extern "C"
                                              
         int (AXIS2_CALL *next_with_token)(struct axis2_om_stax_builder *builder,
                                           axis2_env_t **env);                                                                                                                                                                                                                                                 
-                                                           
+                                                        
     } axis2_om_stax_builder_ops_t;
 
   /** 

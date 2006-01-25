@@ -31,27 +31,24 @@
 typedef struct axis2_soap_fault_impl_t
 {
     axis2_soap_fault_t soap_fault;
-    
+    /* om element node corresponding to soap fault */
     axis2_om_node_t *om_ele_node;
     
-    axis2_om_element_t *om_ele;
-
-    axis2_soap_body_t *parent;
-
+    /* soap fault code sub element */
     axis2_soap_fault_code_t *fcode;
-    
+    /* soap fault reason sub element */
     axis2_soap_fault_reason_t *freason;
-
+    /* soap fault node sub element */
     axis2_soap_fault_node_t *fnode;
-    
+    /* soap fault role sub element */
     axis2_soap_fault_role_t *frole;
-    
+    /* soap fault detail sub element */
     axis2_soap_fault_detail_t *fdetail;
     
     axis2_char_t *exception;
-    
+    /* soap version */
     int soap_version;
-    
+    /* reference to soap builder */
     axis2_soap_builder_t *soap_builder;
     
 }axis2_soap_fault_impl_t;
@@ -165,9 +162,7 @@ axis2_soap_fault_create(axis2_env_t **env)
     fault_impl->fnode = NULL;
     fault_impl->freason = NULL;
     fault_impl->frole = NULL;
-    fault_impl->om_ele = NULL;
     fault_impl->om_ele_node = NULL;
-    fault_impl->parent = NULL;
     fault_impl->soap_fault.ops = NULL;
     fault_impl->soap_version = AXIS2_SOAP_VERSION_NOT_SET;
 
@@ -243,25 +238,17 @@ axis2_soap_fault_create_with_parent(axis2_env_t **env,
         return NULL;
         
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
-    
-    fault_impl->parent = body;
-    
     parent_node = AXIS2_SOAP_BODY_GET_BASE_NODE(body, env);
-    
     parent_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
                         parent_node, env);
-    
     parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env);
-    
     this_ele = axis2_om_element_create(env, 
                                        parent_node,                             
                                        AXIS2_SOAP_FAULT_LOCAL_NAME,
                                        parent_ns,
                                        &this_node);
-    fault_impl->om_ele = this_ele;
     fault_impl->om_ele_node = this_node;                                       
     return  &(fault_impl->soap_fault);  
-
 }
 
 
@@ -331,14 +318,10 @@ axis2_soap_fault_set_code(axis2_soap_fault_t *fault,
                           axis2_soap_fault_code_t *code)
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
-    axis2_om_node_t *code_node = NULL;
-    axis2_om_node_t *my_node = NULL;
-    
     AXIS2_FUNC_PARAM_CHECK(fault, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, code, AXIS2_FAILURE);
-    
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
-   /* axis2_soap_fault_get_code(fault_code, env); 
+    /* axis2_soap_fault_get_code(fault_code, env); 
     if(fault_impl->fcode)
     {
         my_node = AXIS2_SOAP_FAULT_CODE_GET_BASE_NODE(
@@ -346,10 +329,8 @@ axis2_soap_fault_set_code(axis2_soap_fault_t *fault,
         AXIS2_SOAP_FAULT_CODE_FREE(fault_impl->fcode, env);
         fault_impl->fcode = NULL;
     }
-    
     code_node = AXIS2_SOAP_FAULT_CODE_GET_BASE_NODE(
                             code, env);
-    
     axis2_soap_utils_set_new_node(env, 
                     fault_impl->om_ele_node,
                     &my_node, 
@@ -364,9 +345,6 @@ axis2_soap_fault_get_code(axis2_soap_fault_t *fault,
                           axis2_env_t **env)
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
-    axis2_om_node_t *code_node = NULL;
-    axis2_om_node_t *this_node = NULL;
-    axis2_soap_fault_code_t* code = NULL;
     int status = AXIS2_SUCCESS;
     AXIS2_FUNC_PARAM_CHECK(fault, env, NULL);
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
@@ -383,17 +361,16 @@ axis2_soap_fault_get_code(axis2_soap_fault_t *fault,
                 break;
         }            
     }
-    
-    
     /*
+    axis2_om_node_t *code_node = NULL;
+    axis2_om_node_t *this_node = NULL;
+    axis2_soap_fault_code_t* code = NULL;
     this_node = fault_impl->om_ele_node;
-    
     if(!(fault_impl->fcode))
     {
         code_node = axis2_soap_utils_get_child_with_name(env, 
                                             this_node, 
                                             AXIS2_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME);
-                                                    
         code = axis2_soap_fault_code_create(env);
         AXIS2_SOAP_FAULT_CODE_SET_BASE_NODE(code , env, code_node);
         fault_impl->fcode = code;
@@ -408,14 +385,13 @@ axis2_soap_fault_set_reason(axis2_soap_fault_t *fault,
                             axis2_soap_fault_reason_t *reason)
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
-    axis2_om_node_t *reason_node = NULL;
-    axis2_om_node_t *my_node = NULL;
-    
     AXIS2_FUNC_PARAM_CHECK(fault, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, reason, AXIS2_FAILURE);
-    
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
-   /* axis2_soap_fault_get_reason(fault_reason, env); 
+   /*
+    axis2_om_node_t *reason_node = NULL;
+    axis2_om_node_t *my_node = NULL;
+    axis2_soap_fault_get_reason(fault_reason, env); 
     if(fault_impl->freason)
     {
         my_node = AXIS2_SOAP_FAULT_REASON_GET_BASE_NODE(
@@ -423,10 +399,8 @@ axis2_soap_fault_set_reason(axis2_soap_fault_t *fault,
         AXIS2_SOAP_FAULT_REASON_FREE(fault_impl->freason, env);
         fault_impl->freason = NULL;
     }
-    
     reason_node = AXIS2_SOAP_FAULT_REASON_GET_BASE_NODE(
                             reason, env);
-    
     axis2_soap_utils_set_new_node(env, 
                     fault_impl->om_ele_node,
                     &my_node, 
@@ -434,7 +408,6 @@ axis2_soap_fault_set_reason(axis2_soap_fault_t *fault,
     */                    
     fault_impl->freason = reason;
     return AXIS2_SUCCESS;  
-
 }
                                         
 axis2_soap_fault_reason_t* AXIS2_CALL 
@@ -442,13 +415,9 @@ axis2_soap_fault_get_reason(axis2_soap_fault_t *fault,
                             axis2_env_t **env)
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
-    axis2_om_node_t *reason_node = NULL;
-    axis2_om_node_t *this_node = NULL;
-    axis2_soap_fault_reason_t* reason = NULL;
     int status = AXIS2_SUCCESS;
     AXIS2_FUNC_PARAM_CHECK(fault, env, NULL);
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
-    this_node = fault_impl->om_ele_node;
     if(fault_impl->freason)
     {
         return fault_impl->freason;
@@ -463,12 +432,15 @@ axis2_soap_fault_get_reason(axis2_soap_fault_t *fault,
         }            
     }
     /*
+    axis2_om_node_t *reason_node = NULL;
+    axis2_om_node_t *this_node = NULL;
+    axis2_soap_fault_reason_t* reason = NULL;
+    this_node = fault_impl->om_ele_node;
     if(!(fault_impl->freason))
     {
         reason_node = axis2_soap_utils_get_child_with_name(env, 
                                             this_node, 
                                             AXIS2_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME);
-                                                    
         reason = axis2_soap_fault_reason_create(env);
         AXIS2_SOAP_FAULT_REASON_SET_BASE_NODE(reason , env, reason_node);
         fault_impl->freason = reason;
@@ -483,14 +455,13 @@ axis2_soap_fault_set_node(axis2_soap_fault_t *fault,
                           axis2_soap_fault_node_t *node)
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
-    axis2_om_node_t *node_node = NULL;
-    axis2_om_node_t *my_node = NULL;
-    
     AXIS2_FUNC_PARAM_CHECK(fault, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
-    
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
-   /* axis2_soap_fault_get_node(fault_node, env); 
+   /* 
+    axis2_om_node_t *node_node = NULL;
+    axis2_om_node_t *my_node = NULL;
+    axis2_soap_fault_get_node(fault_node, env); 
     if(fault_impl->fnode)
     {
         my_node = AXIS2_SOAP_FAULT_NODE_GET_BASE_NODE(
@@ -498,10 +469,8 @@ axis2_soap_fault_set_node(axis2_soap_fault_t *fault,
         AXIS2_SOAP_FAULT_NODE_FREE(fault_impl->fnode, env);
         fault_impl->fnode = NULL;
     }
-    
     node_node = AXIS2_SOAP_FAULT_NODE_GET_BASE_NODE(
                             node, env);
-    
     axis2_soap_utils_set_new_node(env, 
                     fault_impl->om_ele_node,
                     &my_node, 
@@ -509,7 +478,6 @@ axis2_soap_fault_set_node(axis2_soap_fault_t *fault,
     */                    
     fault_impl->fnode = node;
     return AXIS2_SUCCESS;
-
 }
                                         
 axis2_soap_fault_node_t* AXIS2_CALL 
@@ -517,9 +485,6 @@ axis2_soap_fault_get_node(axis2_soap_fault_t *fault,
                           axis2_env_t **env)
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
-    axis2_om_node_t *node_node = NULL;
-    axis2_om_node_t *this_node = NULL;
-    axis2_soap_fault_node_t* node = NULL;
     int status = AXIS2_SUCCESS;
     AXIS2_FUNC_PARAM_CHECK(fault, env, NULL);
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
@@ -538,22 +503,21 @@ axis2_soap_fault_get_node(axis2_soap_fault_t *fault,
         }            
     }
     /*
-    
+    axis2_om_node_t *node_node = NULL;
+    axis2_om_node_t *this_node = NULL;
+    axis2_soap_fault_node_t* node = NULL;
     this_node = fault_impl->om_ele_node;
-    
     if(!(fault_impl->fnode))
     {
         node_node = axis2_soap_utils_get_child_with_name(env, 
                                             this_node, 
                                             AXIS2_SOAP12_SOAP_FAULT_NODE_LOCAL_NAME);
-                                                    
         node = axis2_soap_fault_node_create(env);
         AXIS2_SOAP_FAULT_NODE_SET_BASE_NODE(node , env, node_node);
         fault_impl->fnode = node;
     }
     */
     return fault_impl->fnode; 
-
 }
                                         
 axis2_status_t AXIS2_CALL 
@@ -562,14 +526,15 @@ axis2_soap_fault_set_role(axis2_soap_fault_t *fault,
                           axis2_soap_fault_role_t *role)
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
-    axis2_om_node_t *role_node = NULL;
-    axis2_om_node_t *my_node = NULL;
-    
+   
     AXIS2_FUNC_PARAM_CHECK(fault, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, role, AXIS2_FAILURE);
     
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
-   /* axis2_soap_fault_get_role(fault_role, env); 
+   /* 
+    axis2_om_node_t *role_node = NULL;
+    axis2_om_node_t *my_node = NULL;
+    axis2_soap_fault_get_role(fault_role, env); 
     if(fault_impl->frole)
     {
         my_node = AXIS2_SOAP_FAULT_ROLE_GET_BASE_NODE(
@@ -577,10 +542,8 @@ axis2_soap_fault_set_role(axis2_soap_fault_t *fault,
         AXIS2_SOAP_FAULT_ROLE_FREE(fault_impl->frole, env);
         fault_impl->frole = NULL;
     }
-    
     role_node = AXIS2_SOAP_FAULT_ROLE_GET_BASE_NODE(
                             role, env);
-    
     axis2_soap_utils_set_new_node(env, 
                     fault_impl->om_ele_node,
                     &my_node, 
@@ -596,9 +559,6 @@ axis2_soap_fault_get_role(axis2_soap_fault_t *fault,
                           axis2_env_t **env)
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
-    axis2_om_node_t *role_node = NULL;
-    axis2_om_node_t *this_node = NULL;
-    axis2_soap_fault_role_t* role = NULL;
     int status = AXIS2_SUCCESS;
     AXIS2_FUNC_PARAM_CHECK(fault, env, NULL);
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
@@ -616,6 +576,9 @@ axis2_soap_fault_get_role(axis2_soap_fault_t *fault,
         }            
     }
     /*
+    axis2_om_node_t *role_node = NULL;
+    axis2_om_node_t *this_node = NULL;
+    axis2_soap_fault_role_t* role = NULL;
     this_node = fault_impl->om_ele_node;
     if(!(fault_impl->frole))
     {
@@ -637,14 +600,15 @@ axis2_soap_fault_set_detail(axis2_soap_fault_t *fault,
                             axis2_soap_fault_detail_t *detail)
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
-    axis2_om_node_t *detail_node = NULL;
-    axis2_om_node_t *my_node = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(fault, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, detail, AXIS2_FAILURE);
     
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
-   /* axis2_soap_fault_get_detail(fault_detail, env); 
+   /* 
+    axis2_om_node_t *detail_node = NULL;
+    axis2_om_node_t *my_node = NULL;
+    axis2_soap_fault_get_detail(fault_detail, env); 
     if(fault_impl->fdetail)
     {
         my_node = AXIS2_SOAP_FAULT_DETAIL_GET_BASE_NODE(
@@ -672,9 +636,6 @@ axis2_soap_fault_get_detail(axis2_soap_fault_t *fault,
                             axis2_env_t **env)
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
-    axis2_om_node_t *detail_node = NULL;
-    axis2_om_node_t *this_node = NULL;
-    axis2_soap_fault_detail_t* detail = NULL;
     int status = AXIS2_SUCCESS;
     AXIS2_FUNC_PARAM_CHECK(fault, env, NULL);
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
@@ -691,8 +652,10 @@ axis2_soap_fault_get_detail(axis2_soap_fault_t *fault,
                 break;
         }            
     }
- 
     /*
+    axis2_om_node_t *detail_node = NULL;
+    axis2_om_node_t *this_node = NULL;
+    axis2_soap_fault_detail_t* detail = NULL;
     this_node = fault_impl->om_ele_node;
     
     if(!(fault_impl->fdetail))
@@ -718,15 +681,13 @@ axis2_soap_fault_set_base_node(axis2_soap_fault_t *fault,
    AXIS2_FUNC_PARAM_CHECK(fault, env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
    fault_impl = AXIS2_INTF_TO_IMPL(fault);
-   
-   if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
+
+    if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
    {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
    }
    fault_impl->om_ele_node = node;
-   fault_impl->om_ele = (axis2_om_element_t *)
-            AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
    return AXIS2_SUCCESS;
 
 }
@@ -836,4 +797,4 @@ axis2_soap_fault_set_builder(axis2_soap_fault_t *fault,
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
     fault_impl->soap_builder = builder;
     return AXIS2_SUCCESS;
-}                              
+}

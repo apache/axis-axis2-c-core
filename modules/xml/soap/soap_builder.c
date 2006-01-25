@@ -217,7 +217,6 @@ axis2_soap_builder_create(axis2_env_t **env,
     builder_impl->soap_builder.ops->get_soap_version =
             axis2_soap_builder_get_soap_version;
     status = identify_soap_version(&(builder_impl->soap_builder), env, soap_version);
-    printf(" \nbuilder soap version %d \n", builder_impl->soap_version);
     if(status == AXIS2_FAILURE)
     {
         axis2_soap_builder_free(&(builder_impl->soap_builder), env);
@@ -652,7 +651,6 @@ axis2_soap_builder_parse_headers(axis2_soap_builder_t *builder,
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(builder_impl->soap_envelope, env);
     om_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
-    
     if(soap_header)
     {
         while(!AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env))
@@ -660,7 +658,6 @@ axis2_soap_builder_parse_headers(axis2_soap_builder_t *builder,
             status = axis2_soap_builder_next(builder, env);
             if(status == AXIS2_FAILURE)
                 return AXIS2_FAILURE;
-            
         }
     }
     return AXIS2_SUCCESS;

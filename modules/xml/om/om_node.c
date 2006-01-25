@@ -791,4 +791,5 @@ axis2_om_node_set_builder(axis2_om_node_t *om_node,
     AXIS2_INTF_TO_IMPL(om_node)->builder = builder;
     return AXIS2_SUCCESS;
 
-}                           
+}
+

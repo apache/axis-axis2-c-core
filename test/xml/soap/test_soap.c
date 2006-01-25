@@ -229,16 +229,8 @@ int main(int argc, char *argv[])
     env = axis2_env_create_with_error_log(allocator, error,  log);
     
     axis2_error_init();
-    /*build_soap_programatically(&env);*/
-    
-   
-    printf("\nbuild soap\n");
+    build_soap_programatically(&env);
     build_soap(&env, filename,uri);
     axis2_env_free(env); 
-    
-    env = NULL;
-    allocator = NULL;
-    printf("\n");
-    getchar();
     return 0;        
 }

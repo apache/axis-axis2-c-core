@@ -27,17 +27,13 @@
 typedef struct axis2_soap_fault_reason_impl_t
 {
     axis2_soap_fault_reason_t fault_reason;
-    
-    axis2_om_element_t *om_ele;
-    
+    /* corresponding om element node */    
     axis2_om_node_t *om_ele_node;
-    
-    axis2_soap_fault_t *parent;
-    
+    /* sub element soap fault text */    
     axis2_soap_fault_text_t *text;
-    
+    /* pointer to soap builder */
     axis2_soap_builder_t *soap_builder;
-    
+    /* soap version */
     int soap_version;
     
 }axis2_soap_fault_reason_impl_t;
@@ -96,7 +92,7 @@ axis2_soap_fault_reason_set_builder(axis2_soap_fault_reason_t *fault_reason,
 AXIS2_DECLARE(axis2_soap_fault_reason_t *)
 axis2_soap_fault_reason_create(axis2_env_t **env)
 {
- axis2_soap_fault_reason_impl_t *fault_reason_impl = NULL;
+    axis2_soap_fault_reason_impl_t *fault_reason_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     fault_reason_impl = (axis2_soap_fault_reason_impl_t*) AXIS2_MALLOC(
                             (*env)->allocator,
@@ -108,13 +104,9 @@ axis2_soap_fault_reason_create(axis2_env_t **env)
     }
     
     fault_reason_impl->fault_reason.ops = NULL;
-    fault_reason_impl->om_ele = NULL;
     fault_reason_impl->om_ele_node = NULL;
     fault_reason_impl->text = NULL;
-    
     fault_reason_impl->soap_version = AXIS2_SOAP_VERSION_NOT_SET;
-    fault_reason_impl->parent = NULL;
-    
     fault_reason_impl->fault_reason.ops = 
             (axis2_soap_fault_reason_ops_t*)AXIS2_MALLOC((*env)->allocator,
                 sizeof(axis2_soap_fault_reason_ops_t));
@@ -149,8 +141,6 @@ axis2_soap_fault_reason_create(axis2_env_t **env)
         
     fault_reason_impl->fault_reason.ops->set_builder =
         axis2_soap_fault_reason_set_builder;          
-        
-                          
   return  &(fault_reason_impl->fault_reason);  
 }
 
@@ -175,11 +165,7 @@ axis2_soap_fault_reason_create_with_parent(axis2_env_t **env,
         return NULL;
         
     fault_reason_impl = AXIS2_INTF_TO_IMPL(fault_reason);
-    
-    fault_reason_impl->parent = fault;
-    
     parent_node = AXIS2_SOAP_FAULT_GET_BASE_NODE(fault, env);
-    
     parent_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
                         parent_node, env);
     
@@ -193,9 +179,7 @@ axis2_soap_fault_reason_create_with_parent(axis2_env_t **env,
                                        AXIS2_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME,
                                        parent_ns,
                                        &this_node);
-    fault_reason_impl->om_ele = this_ele;
     fault_reason_impl->om_ele_node = this_node; 
-    
     AXIS2_SOAP_FAULT_SET_REASON(fault, env, fault_reason);                                      
     return  &(fault_reason_impl->fault_reason);            
 }                            
@@ -231,14 +215,12 @@ axis2_soap_fault_reason_set_soap_text
                                  axis2_soap_fault_text_t *soap_text)
 {
     axis2_soap_fault_reason_impl_t *fault_reason_impl = NULL;
-    axis2_om_node_t *text_node = NULL;
-    axis2_om_node_t *my_node = NULL;
-    
     AXIS2_FUNC_PARAM_CHECK(fault_reason, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_text, AXIS2_FAILURE);
-    
     fault_reason_impl = AXIS2_INTF_TO_IMPL(fault_reason);
     /*
+    axis2_om_node_t *text_node = NULL;
+    axis2_om_node_t *my_node = NULL;
     if(fault_reason_impl->text)
     {
         my_node = AXIS2_SOAP_FAULT_TEXT_GET_BASE_NODE(
@@ -246,10 +228,8 @@ axis2_soap_fault_reason_set_soap_text
         AXIS2_SOAP_FAULT_TEXT_FREE(fault_reason_impl->text, env);
         fault_reason_impl->text = NULL;
     }
-    
     text_node = AXIS2_SOAP_FAULT_TEXT_GET_BASE_NODE(
                             soap_text, env);
-    
     axis2_soap_utils_set_new_node(env, 
                     fault_reason_impl->om_ele_node,
                     &my_node, 
@@ -265,16 +245,11 @@ axis2_soap_fault_reason_get_soap_text
                                  axis2_env_t **env)
 {
     axis2_soap_fault_reason_impl_t *fault_reason_impl = NULL;
-    axis2_om_node_t *text_node = NULL;
-    axis2_om_node_t *this_node = NULL;
-    axis2_soap_fault_text_t* text = NULL;
     int status = AXIS2_SUCCESS;
-    
     AXIS2_FUNC_PARAM_CHECK(fault_reason, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, fault_reason, NULL);
     fault_reason_impl = AXIS2_INTF_TO_IMPL(fault_reason);
-    this_node = fault_reason_impl->om_ele_node ;
-
+    
     if(fault_reason_impl->text)
     {
         return fault_reason_impl->text;
@@ -288,17 +263,21 @@ axis2_soap_fault_reason_get_soap_text
                 return NULL;
         }
     }
-    
+    /*
+    axis2_om_node_t *text_node = NULL;
+    axis2_om_node_t *this_node = NULL;
+    axis2_soap_fault_text_t* text = NULL;
+    this_node = fault_reason_impl->om_ele_node ;
     if(!(fault_reason_impl->text))
     {
         text_node = axis2_soap_utils_get_child_with_name(env, 
                                             this_node, 
                                             AXIS2_SOAP12_SOAP_FAULT_TEXT_LOCAL_NAME);
-                                                    
         text = axis2_soap_fault_text_create(env);
         AXIS2_SOAP_FAULT_TEXT_SET_BASE_NODE(text , env, text_node);
         fault_reason_impl->text = text;
     }
+    */
     return fault_reason_impl->text;
 
 }
@@ -313,17 +292,13 @@ axis2_soap_fault_reason_set_base_node
    AXIS2_FUNC_PARAM_CHECK(fault_reason, env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
    fault_reason_impl = AXIS2_INTF_TO_IMPL(fault_reason);
-   
    if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
    {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
    }
    fault_reason_impl->om_ele_node = node;
-   fault_reason_impl->om_ele = (axis2_om_element_t *)
-            AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
    return AXIS2_SUCCESS;
-
 }
 
 axis2_om_node_t* AXIS2_CALL 
