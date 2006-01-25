@@ -179,7 +179,7 @@ axis2_file_get_name(axis2_file_t *file,
         return NULL;
     }
     
-    return file_impl->name;
+    return (file_impl->name);
 }
 
 axis2_status_t AXIS2_CALL
@@ -198,7 +198,7 @@ axis2_file_set_path(axis2_file_t *file,
         file_impl->path = NULL;
     }
     file_impl->path = AXIS2_STRDUP(path, env);
-    if(!file_impl->path)
+    if(!(file_impl->path))
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -215,14 +215,15 @@ axis2_file_get_path(axis2_file_t *file,
     AXIS2_FUNC_PARAM_CHECK(file, env, NULL);
     file_impl = AXIS2_INTF_TO_IMPL(file);
     
-    if(!file_impl->path)
+    if(!(file_impl->path))
     {
+        printf("came**\n");
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_FILE_NAME_NOT_SET, 
             AXIS2_FAILURE);   
         return NULL;
     }
-    
-    return file_impl->path;
+    printf("file_impl->path:%s\n", file_impl->path);
+    return (file_impl->path);
 }
 
 axis2_status_t AXIS2_CALL

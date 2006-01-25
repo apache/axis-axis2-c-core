@@ -248,6 +248,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axis2_param_container_t *param_container_l = NULL;
     int i = 0;
     int size = 0;
+    AXIS2_TIME_T timestamp = 0;
     
     AXIS2_FUNC_PARAM_CHECK(svc_builder, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_node, AXIS2_FAILURE);
@@ -341,10 +342,18 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(builder_impl->
         svc_builder.desc_builder->engine, env);
     svc_folder = AXIS2_ARCH_FILE_DATA_GET_FILE(arch_file_data, env);
+    timestamp = AXIS2_FILE_GET_TIMESTAMP(svc_folder, env);
+    AXIS2_DLL_DESC_SET_TIMESTAMP(dll_desc, env, timestamp);
     svc_folder_path = AXIS2_FILE_GET_PATH(svc_folder, env);
+    printf("file name:%s\n", AXIS2_FILE_GET_NAME(svc_folder, env));
     temp_path = AXIS2_STRACAT(svc_folder_path, AXIS2_PATH_SEP_STR, env);
     dll_path = AXIS2_STRACAT(temp_path, svc_dll_name, env);
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_path);
+    status = AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_path);
+    if(AXIS2_SUCCESS != status)
+    {
+        AXIS2_DLL_DESC_FREE(dll_desc, env);
+        return AXIS2_FAILURE;
+    }
     /* param does not free the value, because it does not know the value type.
      * therefore we free the value
      */
@@ -448,19 +457,22 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         qopst, svc_node);
     
     ops = axis2_svc_builder_process_ops(svc_builder, env, operation_itr);
-    size = AXIS2_ARRAY_LIST_SIZE(ops, env);
+    if(ops)
+    {
+        size = AXIS2_ARRAY_LIST_SIZE(ops, env);
+    }
     for(i = 0; i < size; i++)
     {
         axis2_op_t *op_desc = NULL;
         axis2_array_list_t *params = NULL;
         int j = 0;
-        int size = 0;
+        int sizej = 0;
         
         op_desc = (axis2_op_t *) AXIS2_ARRAY_LIST_GET(ops, env, i);
         params = AXIS2_OP_GET_PARAMS(op_desc, env);
         /* Adding wsa-mapping into service */
         size = AXIS2_ARRAY_LIST_SIZE(params, env);
-        for(j = 0; j < size; j++)
+        for(j = 0; j < sizej; j++)
         {
             axis2_param_t *param = NULL;
             axis2_char_t *param_name = NULL;
@@ -508,7 +520,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
     AXIS2_PARAM_CHECK((*env)->error, op_itr, NULL);
     builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
     
-    ops = axis2_array_list_create(env, 10);
+    ops = axis2_array_list_create(env, 16);
     while(AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(op_itr, env))
     {
         axis2_om_element_t *op_element = NULL;

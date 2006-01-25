@@ -128,6 +128,15 @@ AXIS2_DECLARE_DATA struct axis2_dll_desc_ops
     DELETE_FUNCT (AXIS2_CALL *
     get_delete_funct) (axis2_dll_desc_t *dll_desc,
                             axis2_env_t **env);
+                            
+    axis2_status_t (AXIS2_CALL *
+    set_timestamp) (axis2_dll_desc_t *dll_desc,
+                            axis2_env_t **env,
+                            AXIS2_TIME_T timestamp);
+    
+    AXIS2_TIME_T (AXIS2_CALL *
+    get_timestamp) (axis2_dll_desc_t *dll_desc,
+                            axis2_env_t **env);                            
 
         
 };
@@ -188,7 +197,13 @@ axis2_dll_desc_create(axis2_env_t **env);
     
 #define AXIS2_DLL_DESC_SET_DELETE_FUNCT(dll_desc, env, funct) \
     ((dll_desc)->ops->set_delete_funct(dll_desc, env, funct))
+
+#define AXIS2_DLL_DESC_GET_TIMESTAMP(dll_desc, env) \
+    ((dll_desc)->ops->get_timestamp(dll_desc, env))
     
+#define AXIS2_DLL_DESC_SET_TIMESTAMP(dll_desc, env, timestamp) \
+    ((dll_desc)->ops->set_timestamp(dll_desc, env, timestamp))
+
 /** @} */
     
 #ifdef __cplusplus

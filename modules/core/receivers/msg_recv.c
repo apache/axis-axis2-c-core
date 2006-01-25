@@ -64,7 +64,12 @@ axis2_msg_recv_set_scope(axis2_msg_recv_t *msg_recv,
                                    
 axis2_char_t * AXIS2_CALL
 axis2_msg_recv_get_scope(axis2_msg_recv_t *msg_recv,
-                            axis2_env_t **env);                            
+                            axis2_env_t **env);    
+
+axis2_status_t AXIS2_CALL
+axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
+                                    axis2_env_t **env,
+                                    axis2_msg_ctx_t *msg_ctx);                            
 		
 /************************* End of function headers ****************************/	
 
@@ -103,6 +108,7 @@ axis2_msg_recv_create (axis2_env_t **env)
     msg_recv_impl->msg_recv.ops->get_impl_obj = axis2_msg_recv_get_impl_obj;
     msg_recv_impl->msg_recv.ops->set_scope = axis2_msg_recv_set_scope;
     msg_recv_impl->msg_recv.ops->get_scope = axis2_msg_recv_get_scope;
+    msg_recv_impl->msg_recv.ops->delete_svc_obj = axis2_msg_recv_delete_svc_obj;
 						
 	return &(msg_recv_impl->msg_recv);
 }
@@ -289,4 +295,48 @@ axis2_msg_recv_get_scope(axis2_msg_recv_t *msg_recv,
                             axis2_env_t **env)
 {
     return AXIS2_INTF_TO_IMPL(msg_recv)->scope;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
+                                    axis2_env_t **env,
+                                    axis2_msg_ctx_t *msg_ctx)
+{
+    axis2_svc_t *svc = NULL;
+    axis2_op_ctx_t *op_ctx = NULL;
+    axis2_svc_ctx_t *svc_ctx = NULL;
+    axis2_param_t *impl_info_param = NULL;
+    axis2_param_t *scope_param = NULL;
+    axis2_char_t *param_value = NULL;
+
+    AXIS2_FUNC_PARAM_CHECK(msg_recv, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
+    svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
+    if(NULL == svc)
+    {
+        return AXIS2_FAILURE;
+    }
+    
+    scope_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SCOPE);
+    if (scope_param)
+    {
+        param_value = AXIS2_PARAM_GET_VALUE(scope_param, env);
+    }
+    if(NULL != param_value && (0 == AXIS2_STRCMP(AXIS2_APPLICATION_SCOPE, 
+        param_value)))
+    {
+        return AXIS2_SUCCESS;
+    }
+
+    impl_info_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SERVICE_CLASS);
+    if(!impl_info_param)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_SVC,
+            AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    return axis2_class_loader_delete_dll(env, impl_info_param);
 }

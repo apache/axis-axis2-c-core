@@ -32,14 +32,15 @@
 typedef struct axis2_dep_engine_impl
 {
 	axis2_dep_engine_t dep_engine;
-    struct axis2_arch_file_data *curr_file;
+    
+    axis2_arch_file_data_t *curr_file;
     
     /**
      * to keep a ref to engine register
      * this ref will pass to engine when it call start()
      * method
      */
-    struct axis2_conf *conf;
+    axis2_conf_t *conf;
     axis2_char_t *axis2_repos;
     axis2_bool_t hot_dep;   /* to do hot deployment or not */
     axis2_bool_t hot_update;  /* to do hot update or not */
@@ -52,7 +53,7 @@ typedef struct axis2_dep_engine_impl
      */
     axis2_array_list_t *ws_to_undeploy;
     
-    struct axis2_phases_info *phases_info; /* to store phases list in axis2.xml */
+    axis2_phases_info_t *phases_info; /* to store phases list in axis2.xml */
     /**
      * this constructor for the testing
      */
@@ -589,7 +590,10 @@ axis2_dep_engine_add_ws_to_undeploy(axis2_dep_engine_t *dep_engine,
     AXIS2_FUNC_PARAM_CHECK(dep_engine, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, file, AXIS2_FAILURE);
     dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
-    
+    if(!(dep_engine_impl->ws_to_undeploy))
+    {
+        dep_engine_impl->ws_to_undeploy = axis2_array_list_create(env, 0);
+    }
     return AXIS2_ARRAY_LIST_ADD(dep_engine_impl->ws_to_undeploy, env, file);
 }
 

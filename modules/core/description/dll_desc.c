@@ -30,6 +30,7 @@ typedef struct axis2_dll_desc_impl
     AXIS2_DLHANDLER dl_handler;
     CREATE_FUNCT create_funct;
     DELETE_FUNCT delete_funct;
+    AXIS2_TIME_T timestamp;
     
     
 } axis2_dll_desc_impl_t;
@@ -54,49 +55,58 @@ axis2_dll_desc_get_name(axis2_dll_desc_t *dll_desc,
 
 axis2_status_t AXIS2_CALL
 axis2_dll_desc_set_type (axis2_dll_desc_t *dll_desc,
-                        axis2_env_t **env,
-                        axis2_dll_type_t type);
+                            axis2_env_t **env,
+                            axis2_dll_type_t type);
 
 axis2_dll_type_t AXIS2_CALL
 axis2_dll_desc_get_type (axis2_dll_desc_t *dll_desc,
-                        axis2_env_t **env);
+                            axis2_env_t **env);
                             
 axis2_status_t AXIS2_CALL
 axis2_dll_desc_set_load_options(axis2_dll_desc_t *dll_desc,
-                        axis2_env_t **env,
-                        int options);
+                                axis2_env_t **env,
+                                int options);
 
 int AXIS2_CALL
 axis2_dll_desc_get_load_options(axis2_dll_desc_t *dll_desc,
-                        axis2_env_t **env);
+                                axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_dll_desc_set_dl_handler(axis2_dll_desc_t *dll_desc,
-                        axis2_env_t **env,
-                        AXIS2_DLHANDLER dl_handler);
+                                axis2_env_t **env,
+                                AXIS2_DLHANDLER dl_handler);
 
 AXIS2_DLHANDLER AXIS2_CALL
 axis2_dll_desc_get_dl_handler(axis2_dll_desc_t *dll_desc,
-                        axis2_env_t **env);
+                                axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_dll_desc_set_create_funct(axis2_dll_desc_t *dll_desc,
-                        axis2_env_t **env,
-                        CREATE_FUNCT funct);
+                                axis2_env_t **env,
+                                CREATE_FUNCT funct);
 
 CREATE_FUNCT AXIS2_CALL
 axis2_dll_desc_get_create_funct(axis2_dll_desc_t *dll_desc,
-                        axis2_env_t **env);
+                                axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_dll_desc_set_delete_funct(axis2_dll_desc_t *dll_desc,
-                        axis2_env_t **env,
-                        DELETE_FUNCT funct);
+                                axis2_env_t **env,
+                                DELETE_FUNCT funct);
 
 DELETE_FUNCT AXIS2_CALL
 axis2_dll_desc_get_delete_funct(axis2_dll_desc_t *dll_desc,
-                        axis2_env_t **env);
+                                axis2_env_t **env);
 
+axis2_status_t AXIS2_CALL
+axis2_dll_desc_set_timestamp (axis2_dll_desc_t *dll_desc,
+                                axis2_env_t **env,
+                                AXIS2_TIME_T timestamp);
+
+AXIS2_TIME_T AXIS2_CALL
+axis2_dll_desc_get_timestamp (axis2_dll_desc_t *dll_desc,
+                                axis2_env_t **env);
+                        
 /************************* End of function headers ****************************/	
 
 axis2_dll_desc_t * AXIS2_CALL
@@ -122,6 +132,7 @@ axis2_dll_desc_create (axis2_env_t **env)
     dll_desc_impl->create_funct = NULL;
     dll_desc_impl->delete_funct = NULL;
     dll_desc_impl->dll_desc.ops = NULL;
+    dll_desc_impl->timestamp = 0;
     
     dll_desc_impl->dll_desc.ops = (axis2_dll_desc_ops_t *) AXIS2_MALLOC(
         (*env)->allocator, sizeof(axis2_dll_desc_ops_t));
@@ -146,6 +157,8 @@ axis2_dll_desc_create (axis2_env_t **env)
     dll_desc_impl->dll_desc.ops->set_delete_funct = axis2_dll_desc_set_delete_funct;
     dll_desc_impl->dll_desc.ops->set_type = axis2_dll_desc_set_type;
     dll_desc_impl->dll_desc.ops->get_type = axis2_dll_desc_get_type;
+    dll_desc_impl->dll_desc.ops->get_timestamp = axis2_dll_desc_get_timestamp;
+    dll_desc_impl->dll_desc.ops->set_timestamp = axis2_dll_desc_set_timestamp;
 						
 	return &(dll_desc_impl->dll_desc);
 }
@@ -345,4 +358,26 @@ axis2_dll_desc_get_delete_funct(axis2_dll_desc_t *dll_desc,
 {
     AXIS2_FUNC_PARAM_CHECK(dll_desc, env, NULL);
     return AXIS2_INTF_TO_IMPL(dll_desc)->delete_funct;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_dll_desc_set_timestamp (axis2_dll_desc_t *dll_desc,
+                                axis2_env_t **env,
+                                AXIS2_TIME_T timestamp)
+{
+    axis2_dll_desc_impl_t *dll_desc_impl = NULL;
+    
+    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, AXIS2_FAILURE);
+    dll_desc_impl = AXIS2_INTF_TO_IMPL(dll_desc);
+   
+    dll_desc_impl->timestamp = timestamp;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_TIME_T AXIS2_CALL
+axis2_dll_desc_get_timestamp (axis2_dll_desc_t *dll_desc,
+                                axis2_env_t **env)
+{
+    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(dll_desc)->timestamp;
 }

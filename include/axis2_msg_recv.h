@@ -105,7 +105,12 @@ struct axis2_msg_recv_ops
                                             
     axis2_char_t * (AXIS2_CALL *
     get_scope) (axis2_msg_recv_t *msg_recv,
-                    axis2_env_t **env);                                      
+                    axis2_env_t **env);
+                    
+    axis2_status_t (AXIS2_CALL *
+    delete_svc_obj) (axis2_msg_recv_t *msg_recv,
+                        axis2_env_t **env,
+                        axis2_msg_ctx_t *msg_ctx);                    
 };
 
 /** 
@@ -146,6 +151,8 @@ axis2_msg_recv_create ();
 #define AXIS2_MSG_RECV_GET_SCOPE(msg_recv, env) \
         ((msg_recv)->ops->get_scope(msg_recv, env))
 
+#define AXIS2_MSG_RECV_DELETE_SVC_OBJ(msg_recv, env, msg_ctx) \
+        ((msg_recv)->ops->delete_svc_obj(msg_recv, env, msg_ctx))
 
 /************************** End of function macros ****************************/
     

@@ -360,29 +360,32 @@ axis2_ws_info_list_check_for_undeploy(axis2_ws_info_list_t *info_list,
 {
     axis2_ws_info_list_impl_t *info_list_impl = NULL;
     int list_size = 0;
-    int current_lists_size = 0;
     axis2_array_list_t *temp_list = NULL;
     axis2_char_t *file_name = NULL;
-    axis2_bool_t exist = AXIS2_FALSE;
     int i = 0;
-    int j = 0;
     
     AXIS2_FUNC_PARAM_CHECK(info_list, env, AXIS2_FAILURE);
     info_list_impl = AXIS2_INTF_TO_IMPL(info_list);
 
     /* create temp list*/
-    temp_list = axis2_array_list_create(env, 5);
+    temp_list = axis2_array_list_create(env, 16);
     if (!temp_list)
+    {
         return AXIS2_FAILURE;
-    
+    }
+    list_size = AXIS2_ARRAY_LIST_SIZE(info_list_impl->info_list, env);
     for(i = 0; i < list_size; i++)
     {
+        int current_lists_size = 0;
         axis2_ws_info_t *file_item = NULL;
         axis2_char_t *file_item_name = NULL;
+        axis2_bool_t exist = AXIS2_FALSE;
+        int j = 0;
         
         file_item = (axis2_ws_info_t *) AXIS2_ARRAY_LIST_GET(info_list_impl->
             info_list, env, i);
-        exist = AXIS2_FALSE;
+        current_lists_size = AXIS2_ARRAY_LIST_SIZE(info_list_impl->
+            current_info_lists, env);
         for (j = 0; j < current_lists_size; j++) 
         {
             file_item_name = AXIS2_WS_INFO_GET_FILE_NAME(file_item, env);            

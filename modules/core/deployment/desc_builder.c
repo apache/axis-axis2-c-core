@@ -161,7 +161,7 @@ axis2_desc_builder_t * AXIS2_CALL
 axis2_desc_builder_create_with_file_and_dep_engine (
                                         axis2_env_t **env, 
                                         axis2_char_t *file_name, 
-                                        struct axis2_dep_engine *engine)
+                                        axis2_dep_engine_t *engine)
 {
     axis2_desc_builder_impl_t *desc_builder_impl = NULL;
     
@@ -228,14 +228,17 @@ axis2_desc_builder_free (axis2_desc_builder_t *desc_builder,
         AXIS2_FREE((*env)->allocator, desc_builder_impl->file_name);
         desc_builder_impl->file_name = NULL;
     }
+    /* we should not free deployment engine here */
     desc_builder->engine = NULL;
     
 	if(NULL != desc_builder->ops)
         AXIS2_FREE((*env)->allocator, desc_builder->ops);
     
-    AXIS2_FREE((*env)->allocator, desc_builder_impl);
-    desc_builder_impl = NULL;
-    
+    if(desc_builder_impl)
+    {
+        AXIS2_FREE((*env)->allocator, desc_builder_impl);
+        desc_builder_impl = NULL;
+    }
 	return AXIS2_SUCCESS;
 }
 

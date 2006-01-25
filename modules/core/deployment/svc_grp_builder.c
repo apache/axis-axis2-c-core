@@ -71,6 +71,8 @@ axis2_svc_grp_builder_create (axis2_env_t **env)
     }
     
     svc_grp_builder_impl->svc_grp_builder.ops = NULL;
+    svc_grp_builder_impl->svc_grp = NULL;
+    svc_grp_builder_impl->svc_grp_builder.desc_builder = NULL;
     
 	svc_grp_builder_impl->svc_grp_builder.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_svc_grp_builder_ops_t));
@@ -210,7 +212,7 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
         else
         {
             axis2_svc_t *axis_svc = NULL;
-            struct axis2_arch_file_data *file_data = NULL;
+            axis2_arch_file_data_t *file_data = NULL;
             axis2_array_list_t *deployable_svcs = NULL;
             axis2_svc_builder_t *svc_builder = NULL;
             

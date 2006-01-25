@@ -35,8 +35,17 @@ axis2_class_loader_init(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_class_loader_delete_dll (axis2_env_t **env,
-                                    axis2_dll_desc_t *dll_desc)
+                                    axis2_param_t *impl_info_param)
 {
+    axis2_dll_desc_t *dll_desc = NULL;
+    
+    dll_desc = AXIS2_PARAM_GET_VALUE(impl_info_param, env);
+    if(!dll_desc)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
+            AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
     axis2_class_loader_unload_lib(env, dll_desc);
     AXIS2_PLATFORM_LOADLIBEXIT()
     return AXIS2_SUCCESS;
@@ -113,6 +122,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         create_funct(&svc_skeli, env);
         if(NULL == svc_skeli)
         {
+            axis2_class_loader_unload_lib(env, dll_desc);
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_SVC_SKELETON_CREATION_FAILED,AXIS2_FAILURE);
             return NULL;
@@ -124,6 +134,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         create_funct(&handler, env);
         if(NULL == handler)
         {
+            axis2_class_loader_unload_lib(env, dll_desc);
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_HANDLER_CREATION_FAILED,AXIS2_FAILURE);
             return NULL;
@@ -135,6 +146,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         create_funct(&module, env);
         if(NULL == module)
         {
+            axis2_class_loader_unload_lib(env, dll_desc);
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_MODULE_CREATION_FAILED,AXIS2_FAILURE);
             return NULL;
@@ -147,6 +159,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         printf("message receiver loaded successfully\n");
         if(NULL == msg_recv)
         {
+            axis2_class_loader_unload_lib(env, dll_desc);
             printf("msg_recv is null\n");
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_MSG_RECV_CREATION_FAILED,AXIS2_FAILURE);
@@ -160,6 +173,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         printf("transport receiver loaded successfully\n");
         if(NULL == transport_recv)
         {
+            axis2_class_loader_unload_lib(env, dll_desc);
             printf("transport_recv is null\n");
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED,AXIS2_FAILURE);
@@ -173,6 +187,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         printf("transport sender loaded successfully\n");
         if(NULL == transport_sender)
         {
+            axis2_class_loader_unload_lib(env, dll_desc);
             printf("transport_sender is null\n");
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED,AXIS2_FAILURE);

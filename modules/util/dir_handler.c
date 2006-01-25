@@ -48,10 +48,10 @@ axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
     
 	for (i = 1; i < (count + 1) ; ++i )
     {
-        int len = 0;
         axis2_char_t *fname = NULL;
         axis2_file_t *arch_file = NULL;
         axis2_char_t *path = NULL;
+        axis2_char_t *temp_path = NULL;
        
         fname = files[i-1]->d_name;
         arch_file = (axis2_file_t *) axis2_file_create(env);
@@ -61,16 +61,13 @@ axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
             return NULL;
         }
         AXIS2_FILE_SET_NAME(arch_file, env, fname);
-        len = strlen(pathname) + strlen(fname) + 3;
-        path = AXIS2_MALLOC((*env)->allocator, len);
+        temp_path = AXIS2_STRACAT(pathname, AXIS2_PATH_SEP_STR, env);
+        path = AXIS2_STRACAT(temp_path, fname, env);
         if(!path)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
-        strcpy(path, pathname);
-        strcat(path, AXIS2_PATH_SEP_STR);
-        strcat(path, fname);
         AXIS2_FILE_SET_PATH(arch_file, env, path);
         buf = AXIS2_MALLOC((*env)->allocator, sizeof(struct stat));
         if(!buf)
@@ -124,10 +121,10 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
     
 	for (i = 1; i < (count + 1) ; ++i )
     {
-        int len = 0;
         axis2_char_t *fname = NULL;
         axis2_file_t *arch_file = NULL;
         axis2_char_t *path = NULL;
+        axis2_char_t *temp_path = NULL;
        
         fname = files[i-1]->d_name;
         arch_file = (axis2_file_t *) axis2_file_create(env);
@@ -137,17 +134,17 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
             return NULL;
         }
         AXIS2_FILE_SET_NAME(arch_file, env, fname);
-        len = strlen(pathname) + strlen(fname) + 3;
-        path = AXIS2_MALLOC((*env)->allocator, len);
+        
+        temp_path = AXIS2_STRACAT(pathname, AXIS2_PATH_SEP_STR, env);
+        path = AXIS2_STRACAT(temp_path, fname, env);
         if(!path)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
-        strcpy(path, pathname);
-        strcat(path, AXIS2_PATH_SEP_STR);
-        strcat(path, fname);
         AXIS2_FILE_SET_PATH(arch_file, env, path);
+        /* free temp vars */
+        AXIS2_FREE((*env)->allocator, temp_path);
         buf = AXIS2_MALLOC((*env)->allocator, sizeof(struct stat));
         if(!buf)
         {
