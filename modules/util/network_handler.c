@@ -23,6 +23,8 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/if.h>
 
 int AXIS2_CALL
 axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port)
@@ -148,7 +150,7 @@ axis2_network_handler_set_sock_option(axis2_env_t **env, int socket,
 	return AXIS2_FAILURE;    
 }
 
-AXIS2_DECLARE(int)						
+int AXIS2_CALL
 axis2_network_handler_svr_socket_accept(axis2_env_t **env, int svr_socket)
 {
 	int cli_socket = -1;
@@ -160,10 +162,38 @@ axis2_network_handler_svr_socket_accept(axis2_env_t **env, int svr_socket)
 	cli_len = sizeof(cli_addr);
 	cli_socket = accept(svr_socket, (struct sockaddr *)&cli_addr, &cli_len);
     if (cli_socket < 0)
-        perror("Accept Failed ");
-    else
-        printf("cli_socket = %d\n", cli_socket);
-	return cli_socket;
+    	AXIS2_LOG_WRITE((*env)->log, "[Axis2][network_handler] Socket accept \
+						failed", AXIS2_LOG_ERROR);
+    return cli_socket;
 }
 
-
+char * AXIS2_CALL
+axis2_network_handler_get_mac_addr(axis2_env_t **env)
+{
+	struct ifreq ifr;
+	struct sockaddr *sa;
+	int s = 0;
+	int i = 0;
+	char *buffer = NULL;
+	
+	AXIS2_ENV_CHECK(env, NULL);
+	
+	if ((s = socket(PF_INET, SOCK_DGRAM, 0)) < 0)
+		return NULL;
+	sprintf(ifr.ifr_name, "eth0");
+	if (ioctl(s, SIOCGIFHWADDR, &ifr) < 0) 
+	{
+		close(s);
+		return NULL;
+	}
+	buffer = AXIS2_MALLOC((*env)->allocator, 6*sizeof(char));
+	if(NULL == buffer)
+	{
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+	}
+	sa = (struct sockaddr *)&ifr.ifr_addr;
+	for (i = 0; i < 6; i++)
+		buffer[i] = (unsigned char)(sa->sa_data[i] & 0xff);
+	close(s);
+	return buffer;	
+}

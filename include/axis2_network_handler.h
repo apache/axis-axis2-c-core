@@ -80,6 +80,12 @@ axis2_network_handler_set_sock_option(axis2_env_t **env, int socket, int option,
 AXIS2_DECLARE(int)						
 axis2_network_handler_svr_socket_accept(axis2_env_t **env, int socket);
 
+/**
+ * Returns the mac address of the first interface
+ * @return MAC address of the first interface
+ */
+AXIS2_DECLARE(char *)
+axis2_network_handler_get_mac_addr(axis2_env_t **env);
 /** @} */
     
 #ifdef __cplusplus

@@ -22,6 +22,7 @@
 #include <axis2_stream_default.h>
 #include <axis2_array_list.h>
 #include <axis2_platform_auto_sense.h>
+#include <axis2_uuid_gen.h>
 
 typedef struct a
 {
@@ -187,6 +188,18 @@ void test_array_list(axis2_env_t *env)
 }
 
 
+void test_uuid_gen(axis2_env_t *env)
+{
+    char *uuid = NULL;
+    printf("starting uuid_gen test...\n");
+    uuid = axis2_uuid_gen(&env);
+    printf("Generated UUID 1:%s\n", uuid);
+    AXIS2_FREE(env->allocator, uuid);
+    uuid = axis2_uuid_gen(&env);
+    printf("Generated UUID 2:%s\n", uuid);
+    AXIS2_FREE(env->allocator, uuid);
+    printf("finished uuid_gen test...\n");
+}
 
 int main(void)
 {
@@ -195,6 +208,7 @@ int main(void)
 	test_hash_get(env);
 	test_env_null(); 
     test_array_list(env);
+    test_uuid_gen(env);
 
 	return 0;	
 }
