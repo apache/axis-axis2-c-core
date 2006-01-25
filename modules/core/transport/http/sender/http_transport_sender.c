@@ -232,6 +232,9 @@ axis2_http_transport_sender_invoke
 							AXIS2_TRANSPORT_OUT, AXIS2_FALSE);
 		if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env))
 		{
+            axis2_op_ctx_t *op_ctx = NULL;
+            axis2_ctx_t *ctx = NULL;
+
 			axis2_http_out_transport_info_t *out_info = 
 							(axis2_http_out_transport_info_t *)
 							AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
@@ -259,9 +262,18 @@ axis2_http_transport_sender_invoke
 			buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
 			AXIS2_STREAM_WRITE(out_stream, env, buffer, AXIS2_STRLEN(buffer));				
 			AXIS2_FREE((*env)->allocator, buffer);
-			
-			AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_RESPONSE_WRITTEN,
-							"TRUE", AXIS2_FALSE);			
+	
+            op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+            if (op_ctx)
+            {
+                ctx = AXIS2_OP_CTX_GET_BASE(op_ctx, env);
+                if (ctx)
+                {
+                    AXIS2_CTX_SET_PROPERTY(ctx, env, AXIS2_RESPONSE_WRITTEN,
+                                                "TRUE", AXIS2_FALSE);
+                }
+            }
+            
 		}
 	}
 	/*

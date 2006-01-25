@@ -324,7 +324,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
         if (ctx)
     		ctx_written = AXIS2_CTX_GET_PROPERTY(ctx, env, AXIS2_RESPONSE_WRITTEN, AXIS2_FALSE);
 	}
-	if(NULL != ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE"))
+	if(NULL != ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE") == 0)
 	{
 		AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE(response, env, http_version,
 						AXIS2_HTTP_RESPONSE_OK_CODE_VAL, "OK");
