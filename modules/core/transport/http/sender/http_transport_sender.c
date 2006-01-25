@@ -249,8 +249,9 @@ axis2_http_transport_sender_invoke
 			 */
 			AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CHAR_ENCODING(out_info, env, 
 							char_set_enc);
-			AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info, env, 
-							AXIS2_OM_OUTPUT_GET_CONTENT_TYPE(om_output, env));
+			/*TODO: uncomment this
+            AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info, env, 
+							AXIS2_OM_OUTPUT_GET_CONTENT_TYPE(om_output, env));*/
 			/* AXIS2_OM_OUTPUT_SET_DO_OPTIMIZE(om_output, env, 
 			 *				AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
 			 */

@@ -134,6 +134,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
         body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
         om_node = AXIS2_SOAP_BODY_GET_BASE_NODE(body, env);
         om_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);
+        om_node = AXIS2_OM_NODE_GET_FIRST_CHILD(om_node, env);
         
     }
     else if(0 == AXIS2_STRCMP(AXIS2_STYLE_RPC, style))
@@ -208,35 +209,55 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
                 AXIS2_ERROR_UNKNOWN_STYLE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
+    
     result_node = AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node);
+    
     if(0 == AXIS2_STRCMP(style, AXIS2_STYLE_RPC))
     {
         axis2_om_namespace_t *ns = NULL;
         axis2_char_t *res_name = NULL;
         
-        default_envelope = axis2_soap_envelope_create_null(env);
-        out_body = AXIS2_SOAP_ENVELOPE_GET_BODY(default_envelope, env);
-        if(!default_envelope)
-        {
-            return AXIS2_FAILURE;
-        }
         res_name = AXIS2_STRACAT(local_name, "Response", env);
         ns = axis2_om_namespace_create(env, "http://soapenc/", "res");
         if(!ns)
         {
             return AXIS2_FAILURE;
         }
-        out_node = AXIS2_SOAP_BODY_GET_BASE_NODE(out_body, env);
-        body_content_element = axis2_om_element_create(env, out_node, res_name, 
+        body_content_element = axis2_om_element_create(env, NULL, res_name, 
             ns, &body_content_node);
         
-        AXIS2_OM_NODE_ADD_CHILD(body_content_node, env, result_node);
+        AXIS2_OM_NODE_ADD_CHILD(result_node, env, body_content_node);
         
     }
     else
     {
         body_content_node = result_node;
     }
+
+    /* create the soap envelope here*/
+    axis2_om_namespace_t *env_ns = 
+        axis2_om_namespace_create(env, "http://www.w3.org/2003/05/soap-envelope", "env"); /** TODO: Change to get the correct SOAP version */
+    default_envelope = axis2_soap_envelope_create(env, env_ns);
+
+    if (!default_envelope)
+    {
+        return AXIS2_FAILURE;
+    }
+
+    out_body = axis2_soap_body_create_with_parent(env, default_envelope);
+    if (!out_body)
+    {
+        return AXIS2_FAILURE;
+    }
+
+    out_node = AXIS2_SOAP_BODY_GET_BASE_NODE(out_body, env);
+    if (!out_node)
+    {
+        return AXIS2_FAILURE;
+    }
+
+    AXIS2_OM_NODE_ADD_CHILD(body_content_node, env, out_node);
+
     return AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
 }
 

@@ -344,7 +344,6 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     svc_folder_path = AXIS2_FILE_GET_PATH(svc_folder, env);
     temp_path = AXIS2_STRACAT(svc_folder_path, AXIS2_PATH_SEP_STR, env);
     dll_path = AXIS2_STRACAT(temp_path, svc_dll_name, env);
-    printf("dll_path:%s\n", dll_path);
     AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_path);
     /* param does not free the value, because it does not know the value type.
      * therefore we free the value
