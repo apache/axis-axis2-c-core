@@ -354,8 +354,8 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
         axis2_status_t (AXIS2_CALL *write_start_document_with_version_encoding)(
                                                  axis2_xml_writer_t *writer,
                                                  axis2_env_t **env,
-                                                 axis2_char_t *encoding,
-                                                 axis2_char_t *version);
+                                                 axis2_char_t *version,
+                                                 axis2_char_t *encoding);
          
         /**
          * @param writer xml_writer
@@ -537,9 +537,9 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
         ((writer)->ops->write_start_document_with_version(writer, env, version)) 
 
 #define AXIS2_XML_WRITER_WRITE_START_DOCUMENT_WITH_VERSION_ENCODING(\
-        writer, env, encoding, version) \
+        writer, env,  version, encoding) \
         ((writer)->ops->write_start_document_with_version_encoding(\
-        writer, env, encoding, version))
+        writer, env, version, encoding))
 
 #define AXIS2_XML_WRITER_WRITE_CHARACTERS(writer, env, text) \
         ((writer)->ops->write_characters(writer, env, text)) 

@@ -107,6 +107,10 @@ AXIS2_DECLARE_DATA struct axis2_om_output_ops
         axis2_char_t* (AXIS2_CALL *get_content_type)                                                                     
                                   (axis2_om_output_t *om_output,
                                    axis2_env_t **env);
+                                   
+        axis2_status_t (AXIS2_CALL *write_xml_version_encoding)
+                                  (axis2_om_output_t *om_output,
+                                   axis2_env_t **env);
 };  
     
 
@@ -180,6 +184,9 @@ axis2_om_output_write(axis2_om_output_t * om_output,
         
 #define AXIS2_OM_OUTPUT_GET_CONTENT_TYPE(output, env) \
         ((output)->ops->get_content_type(output, env))                      
+
+#define AXIS2_OM_OUTPUT_WRITE_XML_VERSION_ENCODING(output, env) \
+        ((output)->ops->write_xml_version_encoding(output, env))
    
 /** @} */
 

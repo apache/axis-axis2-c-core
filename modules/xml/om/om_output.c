@@ -18,9 +18,8 @@
 #include <stdarg.h>
 #include <axis2_xml_writer.h>
 
-#define   DEFAULT_CHAR_SET_ENCODING  "utf-8"
+#define AXIS2_DEFAULT_CHAR_SET_ENCODING  "utf-8"
 #define MAX_ARGS  4
-
 /****************************** impl struct ***********************************/
 
 typedef struct axis2_om_output_impl_t
@@ -104,7 +103,9 @@ axis2_om_output_get_xml_writer
                             (axis2_om_output_t *om_output,
                             axis2_env_t **env);                                                                                                                                                                             
                                                                     
-
+axis2_status_t AXIS2_CALL
+axis2_om_output_write_xml_version_encoding(axis2_om_output_t *om_output,
+                                           axis2_env_t **env);
 
                       
 /*********************** end function prototypes ******************************/                      
@@ -176,7 +177,10 @@ axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
         axis2_om_output_is_ignore_xml_declaration;
         
     om_output_impl->om_output.ops->set_soap11 =
-        axis2_om_output_set_soap11;             
+        axis2_om_output_set_soap11;  
+
+    om_output_impl->om_output.ops->write_xml_version_encoding =
+        axis2_om_output_write_xml_version_encoding;
         
     return &(om_output_impl->om_output);
 }
@@ -224,7 +228,7 @@ axis2_om_output_is_soap11(axis2_om_output_t *om_output,
 axis2_bool_t AXIS2_CALL 
 axis2_om_output_is_ignore_xml_declaration
                             (axis2_om_output_t *om_output,
-                            axis2_env_t **env)
+                             axis2_env_t **env)
 {
     AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(om_output)->ignore_xml_declaration;
@@ -468,5 +472,17 @@ axis2_om_output_write (axis2_om_output_t * om_output,
         return AXIS2_FAILURE;
 }
 
-
-
+axis2_status_t AXIS2_CALL 
+axis2_om_output_write_xml_version_encoding(axis2_om_output_t *om_output,
+                                           axis2_env_t **env)
+{
+    axis2_om_output_impl_t *output_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
+    output_impl = AXIS2_INTF_TO_IMPL(om_output);
+    AXIS2_XML_WRITER_WRITE_START_DOCUMENT_WITH_VERSION_ENCODING(
+                                output_impl->xml_writer, 
+                                env, 
+                                output_impl->xml_version, 
+                                output_impl->char_set_encoding);
+    return AXIS2_SUCCESS;
+}

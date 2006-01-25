@@ -616,6 +616,7 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
             }
         }
     }
+    AXIS2_OM_OUTPUT_WRITE_XML_VERSION_ENCODING(om_output, env);
     return AXIS2_OM_NODE_SERIALIZE(envelope_impl->om_ele_node, env, om_output);
 }
 

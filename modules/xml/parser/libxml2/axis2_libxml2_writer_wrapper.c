@@ -1176,14 +1176,12 @@ axis2_status_t AXIS2_CALL
 axis2_libxml2_writer_wrapper_write_start_document_with_version_encoding(
                                          axis2_xml_writer_t *writer,
                                          axis2_env_t **env,
-                                         axis2_char_t *encoding,
-                                         axis2_char_t *version)
+                                         axis2_char_t *version,
+                                         axis2_char_t *encoding)
 {
     axis2_libxml2_writer_wrapper_impl_t *wrapper_impl = NULL;
     int status = 0;
     AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, version, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, encoding, AXIS2_FAILURE);
     
     wrapper_impl = AXIS2_INTF_TO_IMPL(writer);
     status = xmlTextWriterStartDocument(wrapper_impl->xml_writer,
