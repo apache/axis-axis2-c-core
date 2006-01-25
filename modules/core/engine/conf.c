@@ -1072,7 +1072,7 @@ axis2_conf_get_transport_in(axis2_conf_t *conf,
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     
     return (struct axis2_transport_in_desc *) axis2_hash_get(config_impl->
-            transports_in, qname, sizeof(axis2_qname_t));
+            transports_in, AXIS2_QNAME_TO_STRING(qname, env), AXIS2_HASH_KEY_STRING);
 }
 
 /**
@@ -1087,6 +1087,7 @@ axis2_conf_add_transport_in(axis2_conf_t *conf,
                                         struct axis2_transport_in_desc *transport)
 {
     axis2_conf_impl_t *config_impl = NULL;
+    axis2_qname_t *qname = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, transport, AXIS2_FAILURE);
@@ -1099,8 +1100,12 @@ axis2_conf_add_transport_in(axis2_conf_t *conf,
         if(!transports_in)
             return AXIS2_FAILURE;
     }
+    qname = AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport, env);
+    if (!qname)
+        return AXIS2_FAILURE;
+        
     axis2_hash_set(config_impl->transports_in,
-        AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport, env), sizeof(axis2_qname_t), 
+        AXIS2_QNAME_TO_STRING(qname, env), AXIS2_HASH_KEY_STRING, 
             transport);
     
     return AXIS2_SUCCESS;
@@ -1119,7 +1124,7 @@ axis2_conf_get_transport_out(axis2_conf_t *conf,
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     
     return (struct axis2_transport_out_desc *) axis2_hash_get(config_impl->
-            transports_out, qname, sizeof(axis2_qname_t));
+            transports_out, AXIS2_QNAME_TO_STRING(qname, env), AXIS2_HASH_KEY_STRING);
 }
 
 /**
@@ -1134,6 +1139,7 @@ axis2_conf_add_transport_out(axis2_conf_t *conf,
                                         struct axis2_transport_out_desc *transport)
 {
     axis2_conf_impl_t *config_impl = NULL;
+    axis2_qname_t *qname = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, transport, AXIS2_FAILURE);
@@ -1147,9 +1153,12 @@ axis2_conf_add_transport_out(axis2_conf_t *conf,
             return AXIS2_FAILURE;
     }
     
+    qname = AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport, env);
+    if (!qname)
+        AXIS2_FAILURE;
     axis2_hash_set(config_impl->transports_out,
-        AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport, env),
-            sizeof(axis2_qname_t), transport);
+        AXIS2_QNAME_TO_STRING(qname, env),
+            AXIS2_HASH_KEY_STRING, transport);
     return AXIS2_SUCCESS;
     
 }
