@@ -16,9 +16,10 @@
 
 #include <axis2_om_output.h>
 #include <stdarg.h>
+#include <axis2_string.h>
 #include <axis2_xml_writer.h>
 
-#define AXIS2_DEFAULT_CHAR_SET_ENCODING  "utf-8"
+#define AXIS2_DEFAULT_CHAR_SET_ENCODING  "ISO-8859-1"
 #define MAX_ARGS  4
 /****************************** impl struct ***********************************/
 
@@ -182,6 +183,9 @@ axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
     om_output_impl->om_output.ops->write_xml_version_encoding =
         axis2_om_output_write_xml_version_encoding;
         
+        
+    om_output_impl->char_set_encoding = AXIS2_STRDUP(
+        AXIS2_DEFAULT_CHAR_SET_ENCODING, env);        
     return &(om_output_impl->om_output);
 }
 
