@@ -106,6 +106,12 @@ axis2_http_header_create_by_str (axis2_env_t **env, axis2_char_t *str)
 	{
 		return NULL;
 	}
+	/* remove trailing \r\n */
+	if('\r' == tmp_str[AXIS2_STRLEN(tmp_str)-2])
+	{
+		tmp_str[AXIS2_STRLEN(tmp_str)-2] = '\0';
+	}
+	
 	ch = strchr(tmp_str, ':');
 	if(NULL == ch)
 	{
@@ -115,6 +121,11 @@ axis2_http_header_create_by_str (axis2_env_t **env, axis2_char_t *str)
 		return NULL;
 	}
 	ch2 = ch + sizeof(axis2_char_t);
+	/* skip spaces */
+	while(' ' == *ch2)
+	{
+		ch2 += sizeof(axis2_char_t);
+	}
 	*ch = '\0';
 	ret = axis2_http_header_create(env, tmp_str, ch2);
 	AXIS2_FREE((*env)->allocator, tmp_str);

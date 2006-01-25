@@ -688,16 +688,28 @@ axis2_http_transport_utils_get_charset_enc(axis2_env_t **env,
 						axis2_char_t *content_type)
 {
 	axis2_char_t *tmp = NULL;
-		
+	axis2_char_t *tmp_content_type = NULL;
+	axis2_char_t *tmp2 = NULL;
+	
 	AXIS2_ENV_CHECK(env, NULL);
 	AXIS2_PARAM_CHECK((*env)->error, content_type, NULL);
 	
-	tmp = strstr(content_type, AXIS2_HTTP_CHAR_SET_ENCODING);
+	tmp_content_type = AXIS2_STRDUP(content_type, env);
+	if(NULL == tmp_content_type)
+	{
+		return AXIS2_STRDUP(AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING, env);
+	}
+	tmp = strstr(tmp_content_type, AXIS2_HTTP_CHAR_SET_ENCODING);
 	if(NULL == tmp)
 	{
 		return AXIS2_STRDUP(AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING, env);
 	}
 	tmp = strchr(tmp, '=');
+	tmp2 = strchr(tmp, ';');
+	if(NULL != tmp2)
+	{
+		*tmp2 = '\0';
+	}
 	if(NULL == tmp)
 	{
 		return AXIS2_STRDUP(AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING, env);
