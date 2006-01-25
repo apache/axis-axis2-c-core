@@ -159,6 +159,9 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 		axis2_simple_http_svr_conn_t *svr_conn = NULL;
 		axis2_http_simple_request_t *request = NULL;
 		char log_str[128];
+		int millisecs = 0;
+		double secs = 0;
+		axis2_http_worker_t *tmp = NULL;
 		
 		socket = axis2_network_handler_svr_socket_accept(env, 
 						svr_thread_impl->listen_socket);
@@ -169,13 +172,12 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 		AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t1);
 		svr_conn = axis2_simple_http_svr_conn_create(env, socket);
 		request = AXIS2_SIMPLE_HTTP_SVR_CONN_READ_REQUEST(svr_conn, env);
-		axis2_http_worker_t *tmp = svr_thread_impl->worker;        
 		tmp = svr_thread_impl->worker;
 		AXIS2_HTTP_WORKER_PROCESS_REQUEST(tmp, env, svr_conn, request);
 		AXIS2_SIMPLE_HTTP_SVR_CONN_FREE(svr_conn, env);
 		AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t2);
-		int millisecs = t2.millitm - t1.millitm;
-		double secs = difftime(t2.time, t1.time);
+		millisecs = t2.millitm - t1.millitm;
+		secs = difftime(t2.time, t1.time);
 		if(millisecs < 0)
 		{
 			millisecs += 1000;

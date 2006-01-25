@@ -149,6 +149,10 @@ axis2_http_transport_utils_process_http_post_request
 	xml_reader = axis2_xml_reader_create_for_memory(env, 
 						axis2_http_transport_utils_on_data_request, 
 						(void *)&callback_ctx, NULL);
+	if(NULL == xml_reader)
+	{
+		return AXIS2_FAILURE;
+	}
 	char_set = axis2_http_transport_utils_get_charset_enc(env,content_type);
 	/* TODO set the charset of the stream before (at least default)
 	 *	we read them
@@ -156,13 +160,35 @@ axis2_http_transport_utils_process_http_post_request
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
 					char_set, AXIS2_TRUE);
 	om_builder = axis2_om_stax_builder_create(env, xml_reader);
+	if(NULL == om_builder)
+	{
+		AXIS2_XML_READER_FREE(xml_reader, env);
+		xml_reader = NULL;
+		return AXIS2_FAILURE;
+	}
 	if(NULL != strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP))
 	{
 		is_soap11 = AXIS2_FALSE;
 		soap_builder = axis2_soap_builder_create(env, om_builder, 
                     AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+		if(NULL == soap_builder)
+		{
+			AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+			om_builder = NULL;
+			xml_reader = NULL;
+			return AXIS2_FAILURE;
+		}
 		soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder,
 					env);
+		if(NULL == soap_envelope)
+		{
+			AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+			om_builder = NULL;
+			xml_reader = NULL;
+			AXIS2_SOAP_BUILDER_FREE(soap_builder, env);
+			soap_builder = NULL;
+			return AXIS2_FAILURE;
+		}
 	}
 	else if(NULL != strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML))
 	{
@@ -172,8 +198,24 @@ axis2_http_transport_utils_process_http_post_request
 		{
 			soap_builder = axis2_soap_builder_create(env, om_builder, 
 						AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
+			if(NULL == soap_builder)
+			{
+				AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+				om_builder = NULL;
+				xml_reader = NULL;
+				return AXIS2_FAILURE;
+			}
 			soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(
 					soap_builder, env);
+			if(NULL == soap_envelope)
+			{
+				AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+				om_builder = NULL;
+				xml_reader = NULL;
+				AXIS2_SOAP_BUILDER_FREE(soap_builder, env);
+				soap_builder = NULL;
+				return AXIS2_FAILURE;
+			}
 		}
 		/* REST support
 		 * else

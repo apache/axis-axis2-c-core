@@ -321,8 +321,11 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	{
         axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(
                                 msg_ctx, env), env);
-        if (ctx)
-    		ctx_written = AXIS2_CTX_GET_PROPERTY(ctx, env, AXIS2_RESPONSE_WRITTEN, AXIS2_FALSE);
+        if (NULL != ctx)
+		{
+    		ctx_written = AXIS2_CTX_GET_PROPERTY(ctx, env, 
+						AXIS2_RESPONSE_WRITTEN, AXIS2_FALSE);
+		}
 	}
 	if(NULL != ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE") == 0)
 	{
@@ -394,8 +397,9 @@ axis2_http_worker_set_response_headers(axis2_http_worker_t *http_worker,
         }
         else
         {
-            if(AXIS2_HTTP_SIMPLE_RESPONSE_GET_HTTP_VERSION(simple_response, env) &&
-                    AXIS2_STRCASECMP(AXIS2_HTTP_SIMPLE_RESPONSE_GET_HTTP_VERSION(
+            if(AXIS2_HTTP_SIMPLE_RESPONSE_GET_HTTP_VERSION(simple_response, env)
+					&& AXIS2_STRCASECMP(
+					AXIS2_HTTP_SIMPLE_RESPONSE_GET_HTTP_VERSION(
                     simple_response, env), AXIS2_HTTP_HEADER_PROTOCOL_11))
             {
                 AXIS2_SIMPLE_HTTP_SVR_CONN_SET_KEEP_ALIVE(svr_conn, env, 
@@ -407,7 +411,7 @@ axis2_http_worker_set_response_headers(axis2_http_worker_t *http_worker,
                     AXIS2_FALSE);
             }
         }
-        if(AXIS2_TRUE == AXIS2_HTTP_SIMPLE_RESPONSE_CONTAINS_HEADER(
+        if(AXIS2_FALSE == AXIS2_HTTP_SIMPLE_RESPONSE_CONTAINS_HEADER(
                     simple_response, env, AXIS2_HTTP_HEADER_TRANSFER_ENCODING))
         {
             if(0 != content_length)
@@ -415,7 +419,7 @@ axis2_http_worker_set_response_headers(axis2_http_worker_t *http_worker,
                 axis2_char_t content_len_str[10];
 				axis2_http_header_t *content_len_hdr = NULL;
 				
-                sprintf(content_len_str, "%10d", content_length);
+                sprintf(content_len_str, "%d", content_length);
                 content_len_hdr = axis2_http_header_create(
                     env, AXIS2_HTTP_HEADER_CONTENT_LENGTH, content_len_str);
                 AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(simple_response, env,

@@ -37,7 +37,8 @@ extern "C"
     typedef struct axis2_simple_http_svr_conn_ops 
                     axis2_simple_http_svr_conn_ops_t;
     typedef struct axis2_simple_http_svr_conn axis2_simple_http_svr_conn_t;
-    
+  
+	extern int axis2_http_socket_read_timeout;	
 /**
  * @ingroup axis2_core_transport_http
  * @{

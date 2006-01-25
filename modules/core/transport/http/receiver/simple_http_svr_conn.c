@@ -100,7 +100,8 @@ axis2_simple_http_svr_conn_create (axis2_env_t **env, int sockfd)
     svr_conn_impl->keep_alive = AXIS2_FALSE;
 	
 	/* set the socket timeout to 30 seconds */
-	axis2_network_handler_set_sock_option(env, sockfd, SO_RCVTIMEO, 30000);
+	axis2_network_handler_set_sock_option(env, sockfd, SO_RCVTIMEO, 
+						axis2_http_socket_read_timeout);
     
 	if(-1 != svr_conn_impl->socket)
 	{

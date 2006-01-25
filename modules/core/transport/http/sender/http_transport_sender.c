@@ -216,10 +216,6 @@ axis2_http_transport_sender_invoke
 	 */
 	{
 		soap_data_out = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
-		if(NULL != soap_data_out)
-		{
-			data_out = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_data_out, env);
-		}
 	}
 	if(NULL != epr)
 	{
@@ -258,7 +254,8 @@ axis2_http_transport_sender_invoke
 			/* AXIS2_OM_OUTPUT_SET_DO_OPTIMIZE(om_output, env, 
 			 *				AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
 			 */
-			AXIS2_OM_NODE_SERIALIZE (data_out, env, om_output);
+			AXIS2_SOAP_ENVELOPE_SERIALIZE (soap_data_out, env, om_output, 
+						AXIS2_FALSE);
 			buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
 			AXIS2_STREAM_WRITE(out_stream, env, buffer, AXIS2_STRLEN(buffer));				
 			AXIS2_FREE((*env)->allocator, buffer);

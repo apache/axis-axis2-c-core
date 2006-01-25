@@ -63,7 +63,14 @@ int main(int argc, char *argv[])
 	{
 	    repo = argv[2];
 	}
-    
+    if(argc > 3)
+	{
+		axis2_http_socket_read_timeout = atoi(argv[3]);
+	}
+	else
+	{
+		axis2_http_socket_read_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
+	}
 	allocator = axis2_allocator_init(NULL);
     
 	if(NULL == allocator)
@@ -81,10 +88,14 @@ int main(int argc, char *argv[])
 	AXIS2_LOG_WRITE(env->log, "[Axis2]Starting Axis2 HTTP server....\n", 
 						AXIS2_LOG_INFO);
 	sprintf(tmp_str, "[Axis2]Server port : %d", port);
-	printf(tmp_str);
+	printf("%s\n",tmp_str);
 	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_INFO);
 	sprintf(tmp_str, "[Axis2]Repo location : %s", repo);
-	printf(tmp_str);
+	printf("%s\n",tmp_str);
+	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_INFO);
+	sprintf(tmp_str, "[Axis2]Read Timeout : %d ms", 
+						axis2_http_socket_read_timeout);
+	printf("%s\n",tmp_str);
 	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_INFO);
 	
 	server = axis2_http_server_create(&env, repo, port);
@@ -92,7 +103,7 @@ int main(int argc, char *argv[])
 	{
 		sprintf(tmp_str, "[Axis2]Server creation failed: Error code: %d", 
 						env->error->error_number);
-		printf(tmp_str);
+		printf("%s\n",tmp_str);
         printf("%s \n", AXIS2_ERROR_GET_MESSAGE(env->error));
 		AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_INFO);
 		system_exit(allocator, env, -1);
