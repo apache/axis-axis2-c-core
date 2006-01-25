@@ -619,8 +619,8 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                         axis2_om_element_t *fault_detail_om_ele = NULL;
                         
                         fault_detail_om_node = AXIS2_SOAP_FAULT_DETAIL_GET_BASE_NODE(fault_detail, env);
-                    //    fault_detail_om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_detail_om_node, env);
-                      //  AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_detail_om_ele, env, AXIS2_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME);
+                        fault_detail_om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_detail_om_node, env);
+                        AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_detail_om_ele, env, AXIS2_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME);
                     }
                 }  
             }
