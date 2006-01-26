@@ -82,7 +82,7 @@ echo_free(axis2_svc_skeleton_t *svc_skeleton,
         AXIS2_FREE((*env)->allocator, svc_skeleton);
         svc_skeleton = NULL;
     }
-    
+    return AXIS2_SUCCESS; 
 }
 
 /*
@@ -106,8 +106,6 @@ axis2_om_node_t *echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
 int axis2_get_instance(struct axis2_svc_skeleton **inst,
                         axis2_env_t **env)
 {
-    axis2_status_t status = AXIS2_FAILURE;
-    
 	*inst = axis2_echo_create(env);
     /*if(NULL != *inst)
     {

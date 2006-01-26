@@ -18,6 +18,9 @@
 
 
 #include <axis2_svc_skeleton.h>
+#include <axis2_log_default.h>
+#include <axis2_error_default.h>
+#include <axis2_om_text.h>
 #include <axis2_om_node.h>
 
 axis2_om_node_t *echo(axis2_om_node_t *node);
