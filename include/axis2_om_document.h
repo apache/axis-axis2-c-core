@@ -62,6 +62,14 @@ extern "C"
         axis2_status_t (AXIS2_CALL *free) (struct axis2_om_document *document,
                                            axis2_env_t **env);
 
+      /** Free documents xml tree. When this function is called the entire 
+        * xml structure is freed
+        * @param document pointer
+        * @param env environment. Must not be null
+        */
+        axis2_status_t (AXIS2_CALL *free_om_nodes)(struct axis2_om_document *document,
+                                                       axis2_env_t **env);
+
       /**
         * Builds the next node if the builder is not finished with input xml stream
         * @param document document whose next node is to be built. cannot be NULL
@@ -183,6 +191,9 @@ extern "C"
 /** serialize opertation */
 #define AXIS2_OM_DOCUMENT_SERIALIZE(document, env, om_output) \
         ((document)->ops->serialize(document, env, om_output))                
+
+#define AXIS2_OM_DOCUMENT_FREE_OM_NODES(document, env) \
+        ((document)->ops->free_om_nodes(document, env))
 
 /** @} */
 

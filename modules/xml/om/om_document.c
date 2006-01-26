@@ -53,7 +53,10 @@ axis2_status_t AXIS2_CALL
 axis2_om_document_serialize(axis2_om_document_t *document,
                             axis2_env_t **env,
                             axis2_om_output_t *om_output);                              
-                                  
+                                 
+axis2_status_t AXIS2_CALL
+axis2_om_document_free_om_nodes(axis2_om_document_t *document,
+                             axis2_env_t **env);
 /********************************* end of function pointers ******************/
 
 typedef struct axis2_om_document_impl_t
@@ -152,6 +155,8 @@ axis2_om_document_create (axis2_env_t **env,
     document->om_document.ops->build_all = axis2_om_document_build_all;
     document->om_document.ops->get_builder = axis2_om_document_get_builder;
     document->om_document.ops->serialize = axis2_om_document_serialize;
+    document->om_document.ops->free_om_nodes = axis2_om_document_free_om_nodes;
+    
     if (builder)
         AXIS2_OM_STAX_BUILDER_SET_DOCUMENT (builder, env, &(document->om_document) );
     
@@ -172,7 +177,7 @@ axis2_om_document_free (axis2_om_document_t *om_document,
     if (document->xml_version)
         AXIS2_FREE((*env)->allocator, document->xml_version);
     
-    AXIS2_OM_NODE_FREE_TREE(document->root_element, env);
+   /* AXIS2_OM_NODE_FREE_TREE(document->root_element, env); */
     
     if(document->om_document.ops)
         AXIS2_FREE((*env)->allocator, document->om_document.ops);
@@ -333,4 +338,18 @@ axis2_om_document_serialize(axis2_om_document_t *document,
         axis2_om_document_get_root_element(document, env);        
     }
     return AXIS2_OM_NODE_SERIALIZE(document_impl->root_element, env, om_output);
+}
+
+axis2_status_t AXIS2_CALL
+axis2_om_document_free_om_nodes(axis2_om_document_t *document,
+                                axis2_env_t **env)
+{
+    axis2_om_document_impl_t *document_impl = NULL;
+    document_impl = AXIS2_INTF_TO_IMPL(document);
+    if(document_impl->root_element)
+    {
+        AXIS2_OM_NODE_FREE_TREE(document_impl->root_element, env);
+        return AXIS2_SUCCESS;
+    }
+    return AXIS2_FAILURE;
 }

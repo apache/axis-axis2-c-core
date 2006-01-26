@@ -778,7 +778,6 @@ AXIS2_CALL axis2_om_stax_builder_free(axis2_om_stax_builder_t *builder,
     AXIS2_FUNC_PARAM_CHECK(builder, env, AXIS2_FAILURE);
     
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
-
     if(builder_impl->parser)
     {
         AXIS2_XML_READER_FREE(builder_impl->parser, env);
@@ -952,4 +951,3 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
     }
    return token;
 }
-

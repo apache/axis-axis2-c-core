@@ -87,7 +87,13 @@ AXIS2_DECLARE_DATA   struct axis2_soap_builder_ops
         axis2_status_t (AXIS2_CALL *set_element_level)
                                           (axis2_soap_builder_t *builder,
                                            axis2_env_t **env,
-                                           int ele_level);                                                                                                                                                                                                        
+                                           int ele_level);
+
+        axis2_status_t (AXIS2_CALL *process_namespace_data)
+                                          (axis2_soap_builder_t *builder,
+                                           axis2_env_t **env,
+                                           axis2_om_node_t *om_node,
+                                           axis2_bool_t *is_soap_element);
 };
                                                       
 
@@ -147,6 +153,10 @@ axis2_soap_builder_create(axis2_env_t **env,
         
 #define AXIS2_SOAP_BUILDER_SET_ELEMENT_LEVEL(builder, env, ele_level) \
         ((builder)->ops->set_element_level(builder, env, ele_level))
+        
+#define AXIS2_SOAP_BUILDER_PROCESS_NAMESPACE_DATA(builder, env, om_node, is_soap_element) \
+        ((builder)->ops->process_namespace_data(builder, env, om_node, is_soap_element))
+        
                 
 /** @} */
 #ifdef __cplusplus
@@ -156,7 +166,3 @@ axis2_soap_builder_create(axis2_env_t **env,
 
 
 #endif /* AXIS2_SOAP_BUILDER_H */
-
-
-
-

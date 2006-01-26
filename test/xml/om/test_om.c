@@ -157,13 +157,14 @@ test_om_build (char *filename)
     AXIS2_OM_OUTPUT_FREE(om_output, &environment);  
     if(buffer)
         printf("%s",buffer);
-    
+    AXIS2_OM_DOCUMENT_FREE_OM_NODES(document, &environment);    
     AXIS2_OM_DOCUMENT_FREE(document, &environment); 
   
     AXIS2_OM_STAX_BUILDER_FREE(builder, &environment);
     if(buffer)
         AXIS2_FREE(environment->allocator, buffer); 
     printf ("\ndone\n");
+    fclose(f);
     return 0;
 }
 

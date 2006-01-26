@@ -239,13 +239,16 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
         }else if(AXIS2_STRCMP(AXIS2_SOAP11_SOAP_FAULT_ACTOR_LOCAL_NAME, ele_localname) == 0)
         {
             axis2_soap_fault_role_t *fault_role = NULL;
-            
+            int status = AXIS2_SUCCESS;
             fault_role = axis2_soap_fault_role_create(env);
             AXIS2_OM_ELEMENT_SET_LOCALNAME(om_ele, env, AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME);
             AXIS2_SOAP_FAULT_ROLE_SET_BASE_NODE(fault_role, env, om_element_node);
             AXIS2_SOAP_FAULT_ROLE_SET_SOAP_VRESION(fault_role, env, AXIS2_SOAP11);
             AXIS2_SOAP_FAULT_SET_ROLE(soap_fault, env, fault_role);
-            /* process namespace data */
+            status = AXIS2_SOAP_BUILDER_PROCESS_NAMESPACE_DATA(
+                builder_helper_impl->soap_builder, env, om_element_node, AXIS2_TRUE);
+            if(status == AXIS2_FAILURE)
+                    return AXIS2_FAILURE;
         }
         else if(AXIS2_STRCMP(AXIS2_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME, ele_localname) == 0)
         {
@@ -256,65 +259,33 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             AXIS2_SOAP_FAULT_SET_DETAIL(soap_fault, env, fault_detail);
             AXIS2_SOAP_FAULT_SET_SOAP_VERSION(soap_fault, env, AXIS2_SOAP11);
         }
-        /*   else
-            {
-                return ;
-            }
-        */
+        else
+        {
+           return AXIS2_SUCCESS;
+        }
     }
-    /*
     else if(element_level == 5)
     {
+        axis2_om_node_t *parent_node = NULL;
+        axis2_om_element_t *parent_element = NULL;
+        axis2_char_t *parent_localname = NULL;
+
+        parent_node = AXIS2_OM_NODE_GET_PARENT(om_element_node, env);
+        if(!parent_node)
+            return AXIS2_FAILURE;                
+        parent_element = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
+                            om_element_node, env);
+        parent_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(parent_element, env);
         
-    
-    
-    
-    
-    
-    
-    
-    
-    }
-    else if (elementLevel == 5) {
-
-        	String parentTagName = "";
-        	if(parent instanceof Element) {
-        		parentTagName = ((Element)parent).getTagName();
-        	} else {
-        		parentTagName = parent.getLocalName();
-        	}
-        	
-            if (parentTagName.equals(SOAP_FAULT_CODE_LOCAL_NAME)) {
-                throw new OMBuilderException(
-                        "faultcode element should not have children");
-            } else if (parentTagName.equals(
-                    SOAP_FAULT_STRING_LOCAL_NAME)) {
-                throw new OMBuilderException(
-                        "faultstring element should not have children");
-            } else if (parentTagName.equals(
-                    SOAP_FAULT_ACTOR_LOCAL_NAME)) {
-                throw new OMBuilderException(
-                        "faultactor element should not have children");
-            } else {
-                element =
-                        this.factory.createOMElement(
-                                localName, null, parent, builder);
-                processNamespaceData(element, false);
-                processAttributes(element);
-            }
-
-        } else if (elementLevel > 5) {
-            element =
-                    this.factory.createOMElement(localName,
-                            null,
-                            parent,
-                            builder);
-            processNamespaceData(element, false);
-            processAttributes(element);
+        if(!parent_localname)
+            return AXIS2_FAILURE;
+        if(AXIS2_STRCMP(parent_localname, AXIS2_ERROR_SOAP_FAULT_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT) == 0)
+        {
+            AXIS2_ERROR_SET((*env)->error, 
+                AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
         }
-    
-    
-    */
+    }
     return AXIS2_SUCCESS;
 }                                                                                                                    
                                          

@@ -315,7 +315,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE,
         /** SOAP envelope or SOAP body NULL */
         AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
-        
+        /* must understatnd attribute should have values of true or false */
         AXIS2_ERROR_MUST_UNDERSTAND_SHOULD_BE_1_0_TRUE_FALSE,
         
         AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND,
@@ -432,6 +432,8 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT,
 
         AXIS2_ERROR_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT,
+        
+        AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS,
     
         /* OM output is NULL */
         AXIS2_ERROR_NULL_OM_OUTPUT,

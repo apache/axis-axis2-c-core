@@ -108,7 +108,7 @@ axis2_soap_builder_create_om_element
                                  axis2_env_t **env,
                                  axis2_om_node_t *current_node);
                                  
-axis2_status_t 
+axis2_status_t AXIS2_CALL
 axis2_soap_builder_process_namespace_data
                                 (axis2_soap_builder_t *builder,
                                  axis2_env_t **env,
@@ -216,6 +216,9 @@ axis2_soap_builder_create(axis2_env_t **env,
             axis2_soap_builder_is_processing_detail_elements;            
     builder_impl->soap_builder.ops->get_soap_version =
             axis2_soap_builder_get_soap_version;
+    builder_impl->soap_builder.ops->process_namespace_data =
+            axis2_soap_builder_process_namespace_data;
+    
     status = identify_soap_version(&(builder_impl->soap_builder), env, soap_version);
     if(status == AXIS2_FAILURE)
     {
@@ -269,6 +272,8 @@ axis2_soap_builder_get_soap_envelope
         !AXIS2_OM_STAX_BUILDER_IS_COMPLETE(builder_impl->om_builder, env))
     {
        status = axis2_soap_builder_next(builder, env); 
+            if(status == AXIS2_FAILURE)
+                  break;
     }        
     
     return builder_impl->soap_envelope;
@@ -298,7 +303,7 @@ axis2_soap_builder_next(axis2_soap_builder_t *builder,
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     if(builder_impl->done)
     {
-        return AXIS2_FAILURE;
+        return AXIS2_FAILURE;   
     }
     
     lastnode = AXIS2_OM_STAX_BUILDER_GET_LAST_NODE(builder_impl->om_builder, env);
