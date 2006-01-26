@@ -146,17 +146,15 @@ axis2_http_transport_utils_process_http_post_request
 					AXIS2_TRANSPORT_OUT, out_stream, AXIS2_FALSE);
 	AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
 	
+	char_set = axis2_http_transport_utils_get_charset_enc(env,content_type);
 	xml_reader = axis2_xml_reader_create_for_memory(env, 
 						axis2_http_transport_utils_on_data_request, 
-						(void *)&callback_ctx, NULL);
+						(void *)&callback_ctx, char_set);
 	if(NULL == xml_reader)
 	{
 		return AXIS2_FAILURE;
 	}
-	char_set = axis2_http_transport_utils_get_charset_enc(env,content_type);
-	/* TODO set the charset of the stream before (at least default)
-	 *	we read them
-	 */
+
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
 					char_set, AXIS2_TRUE);
 	om_builder = axis2_om_stax_builder_create(env, xml_reader);
@@ -714,7 +712,9 @@ axis2_http_transport_utils_get_charset_enc(axis2_env_t **env,
 	{
 		return AXIS2_STRDUP(AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING, env);
 	}
-	return AXIS2_STRDUP(tmp, env);
+	tmp2 =  AXIS2_STRDUP(tmp, env);
+	AXIS2_FREE((*env)->allocator, tmp_content_type);
+	return tmp2;
 }
 
 int
