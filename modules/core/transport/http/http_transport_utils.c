@@ -729,7 +729,7 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
 	}
 	if(((axis2_callback_info_t*)ctx)->unread_len <= 0)
 	{
-		return -1;
+		return 0;
 	}
 	in_stream = ((axis2_callback_info_t*)ctx)->in_stream;
 	env = &((axis2_callback_info_t*)ctx)->env;
