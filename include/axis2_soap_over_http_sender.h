@@ -28,6 +28,7 @@
 #include <axis2_msg_ctx.h>
 #include <axis2_om_output.h>
 #include <axis2_http_simple_response.h>
+#include <axis2_soap_envelope.h>
 
 
 #ifdef __cplusplus
@@ -53,7 +54,8 @@ AXIS2_DECLARE_DATA struct axis2_soap_over_http_sender_ops
 	axis2_status_t (AXIS2_CALL *send) 
                                 (axis2_soap_over_http_sender_t *sender, 
                                 axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
-								axis2_om_node_t *output, axis2_char_t *str_url, 
+								axis2_soap_envelope_t *out, 
+								axis2_char_t *str_url, 
 								axis2_char_t *soap_action);
 	
 	axis2_status_t (AXIS2_CALL *set_chunked) 

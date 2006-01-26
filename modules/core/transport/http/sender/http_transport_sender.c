@@ -68,7 +68,8 @@ axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_write_message
 							(axis2_transport_sender_t *transport_sender, 
                     		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
-							axis2_endpoint_ref_t *epr, axis2_om_node_t *out, 
+							axis2_endpoint_ref_t *epr, 
+							axis2_soap_envelope_t *out, 
 							axis2_om_output_t *om_output);
     
 axis2_status_t AXIS2_CALL 
@@ -147,7 +148,6 @@ axis2_http_transport_sender_invoke
     axis2_char_t *char_set_enc = NULL;
 	axis2_endpoint_ref_t *epr = NULL;
 	axis2_char_t *transport_url = NULL;
-	axis2_om_node_t *data_out = NULL;
 	axis2_xml_writer_t *xml_writer = NULL;
 	axis2_om_output_t *om_output = NULL;
 	axis2_char_t *buffer = NULL;
@@ -220,7 +220,7 @@ axis2_http_transport_sender_invoke
 	if(NULL != epr)
 	{
 		axis2_http_transport_sender_write_message(transport_sender, env, msg_ctx
-							, epr, data_out, om_output);
+							, epr, soap_data_out, om_output);
 	}
 	else
 	{
@@ -374,7 +374,8 @@ axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_write_message
 							(axis2_transport_sender_t *transport_sender, 
                     		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
-							axis2_endpoint_ref_t *epr, axis2_om_node_t *out, 
+							axis2_endpoint_ref_t *epr, 
+							axis2_soap_envelope_t *out, 
 							axis2_om_output_t *om_output)
 {
 	axis2_char_t *soap_action = NULL;

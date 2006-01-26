@@ -67,7 +67,7 @@ axis2_status_t AXIS2_CALL
 axis2_soap_over_http_sender_send 
 						(axis2_soap_over_http_sender_t *sender, 
 						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
-						axis2_om_node_t *output, axis2_char_t *str_url, 
+						axis2_soap_envelope_t *out, axis2_char_t *str_url, 
 						axis2_char_t *soap_action);
 
 axis2_status_t AXIS2_CALL 
@@ -162,7 +162,7 @@ axis2_status_t AXIS2_CALL
 axis2_soap_over_http_sender_send 
 						(axis2_soap_over_http_sender_t *sender, 
 						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
-						axis2_om_node_t *output, axis2_char_t *str_url, 
+						axis2_soap_envelope_t *out, axis2_char_t *str_url, 
 						axis2_char_t *soap_action)
 {
 	axis2_http_simple_request_t *request = NULL;
@@ -178,7 +178,7 @@ axis2_soap_over_http_sender_send
 	
     AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, output, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, out, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, url, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, soap_action, AXIS2_FAILURE);
 	
@@ -210,7 +210,8 @@ axis2_soap_over_http_sender_send
 	/* AXIS2_OM_OUTPUT_SET_DO_OPTIMIZE(om_output, env, 
 	 *				AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
 	 */
-	AXIS2_OM_NODE_SERIALIZE (output, env, sender_impl->om_output);
+	AXIS2_SOAP_ENVELOPE_SERIALIZE (out, env, sender_impl->om_output, 
+						AXIS2_FALSE);
 	buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
 	
 	request_line = axis2_http_request_line_create(env, "POST", 
