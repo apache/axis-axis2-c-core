@@ -217,12 +217,11 @@ axis2_file_get_path(axis2_file_t *file,
     
     if(!(file_impl->path))
     {
-        printf("came**\n");
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_FILE_NAME_NOT_SET, 
             AXIS2_FAILURE);   
         return NULL;
     }
-    printf("file_impl->path:%s\n", file_impl->path);
+    
     return (file_impl->path);
 }
 

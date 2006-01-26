@@ -211,8 +211,6 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
     }
     
     result_node = AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node);
-    /* if scope is not application delete the dll */
-    AXIS2_MSG_RECV_DELETE_SVC_OBJ(msg_recv, env, msg_ctx);
    
     if(0 == AXIS2_STRCMP(style, AXIS2_STYLE_RPC))
     {

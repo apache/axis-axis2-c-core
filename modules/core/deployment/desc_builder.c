@@ -809,27 +809,41 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
     axis2_char_t *temp_path = NULL;
     axis2_char_t *temp_path2 = NULL;
     axis2_char_t *temp_path3 = NULL;
+    axis2_conf_t *conf = NULL;
         
     AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, recv_element, NULL);
     class_qname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
     recv_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(recv_element, env, class_qname);
     class_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(recv_name, env);
-    dll_desc = axis2_dll_desc_create(env);
-    repos_name = AXIS2_DEP_ENGINE_GET_REPOS_PATH(desc_builder->engine, env);
-    temp_path = AXIS2_STRACAT(repos_name, AXIS2_PATH_SEP_STR, env);
-    temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_LIB_FOLDER, env);
-    temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
-    dll_name = AXIS2_STRACAT(temp_path3, class_name, env);
-    AXIS2_FREE((*env)->allocator, temp_path);
-    AXIS2_FREE((*env)->allocator, temp_path2);
-    AXIS2_FREE((*env)->allocator, temp_path3);
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
-    AXIS2_FREE((*env)->allocator, dll_name);
-    AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_MSG_RECV_DLL);
+    
+    
+    conf = AXIS2_DEP_ENGINE_GET_AXIS2_CONF(desc_builder->engine, env);
+    impl_info_param = AXIS2_CONF_GET_PARAM(conf, env, AXIS2_MSG_RECV_PARAM);
+    
+    if(!impl_info_param)
+    {
+        dll_desc = axis2_dll_desc_create(env);
+        repos_name = AXIS2_DEP_ENGINE_GET_REPOS_PATH(desc_builder->engine, env);
+        temp_path = AXIS2_STRACAT(repos_name, AXIS2_PATH_SEP_STR, env);
+        temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_LIB_FOLDER, env);
+        temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
+        dll_name = AXIS2_STRACAT(temp_path3, class_name, env);
+        AXIS2_FREE((*env)->allocator, temp_path);
+        AXIS2_FREE((*env)->allocator, temp_path2);
+        AXIS2_FREE((*env)->allocator, temp_path3);
+        AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
+        AXIS2_FREE((*env)->allocator, dll_name);
+        AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_MSG_RECV_DLL);
+        impl_info_param = axis2_param_create(env, AXIS2_MSG_RECV_PARAM, NULL);
+        AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+        /* set the impl_info_param(which contain dll_desc as value) so that
+         * loaded msg_recv can be re-used in future
+         */
+        AXIS2_CONF_ADD_PARAM(conf, env, impl_info_param);
+    }
+    
     axis2_class_loader_init(env);
-    impl_info_param = axis2_param_create(env, NULL, NULL);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
     msg_recv = (axis2_msg_recv_t *) axis2_class_loader_create_dll(env, 
         impl_info_param);
     return msg_recv;
@@ -842,18 +856,28 @@ axis2_desc_builder_load_default_msg_recv(axis2_desc_builder_t *desc_builder,
     axis2_char_t *default_msg_recv = "axis2_raw_xml_in_out_msg_recv";
     axis2_msg_recv_t *msg_recv = NULL;
     axis2_param_t *impl_info_param = NULL;
-    struct axis2_dll_desc *dll_desc = NULL;
+    axis2_dll_desc_t *dll_desc = NULL;
+    axis2_conf_t *conf = NULL;
     
     /**
      * Setting default Message Recive as Message Receiver
      */
-    dll_desc = axis2_dll_desc_create(env);
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, default_msg_recv);
-    AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_MSG_RECV_DLL);
-    axis2_class_loader_init(env);
-    impl_info_param = axis2_param_create(env, NULL, NULL);
+    conf = AXIS2_DEP_ENGINE_GET_AXIS2_CONF(desc_builder->engine, env);
+    impl_info_param = AXIS2_CONF_GET_PARAM(conf, env, AXIS2_MSG_RECV_PARAM);
     
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc); 
+    if(!impl_info_param)
+    {
+        dll_desc = axis2_dll_desc_create(env);
+        AXIS2_DLL_DESC_SET_NAME(dll_desc, env, default_msg_recv);
+        AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_MSG_RECV_DLL);
+        impl_info_param = axis2_param_create(env, AXIS2_MSG_RECV_PARAM, NULL);
+        AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+        /* set the impl_info_param(which contain dll_desc as value) so that
+         * loaded msg_recv can be re-used in future
+         */
+        AXIS2_CONF_ADD_PARAM(conf, env, impl_info_param);
+    }
+    axis2_class_loader_init(env);
     msg_recv = (axis2_msg_recv_t *) axis2_class_loader_create_dll(env, 
         impl_info_param);
     

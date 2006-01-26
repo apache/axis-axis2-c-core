@@ -209,7 +209,7 @@ axis2_test_transport_sender_load()
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
-    
+    env->log->level = AXIS2_LOG_INFO;
     msg_ctx = (axis2_msg_ctx_t *) AXIS2_MALLOC(env->allocator, 5);
     dll_desc = axis2_dll_desc_create(&env);
     

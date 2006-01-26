@@ -124,6 +124,10 @@ extern "C"
 #define AXIS2_MODULE_FOLDER "modules"
 #define AXIS2_SERVICE_FOLDER "services"
 #define AXIS2_LIB_FOLDER "lib"
+/* this param contain the dll_desc as value. dll_desc contain the loaded
+ * msg recv library handler
+ */
+#define AXIS2_MSG_RECV_PARAM "msg_recv_param"
 	
 /*********************************** Constants*********************************/	
 	

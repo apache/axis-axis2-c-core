@@ -384,6 +384,9 @@ axis2_error_init()
     "AXIS2_ERROR_FILE_NAME_NOT_SET";
     axis2_error_messages[AXIS2_ERROR_REPOS_LISTENER_INIT_FAILED] =
     "AXIS2_ERROR_REPOSITORY_LISTENER_INIT_FAILED";
+    axis2_error_messages[AXIS2_ERROR_INVALID_STATE_DLL_DESC] =
+    "dll description has invalid state of not having valid dll create function, \
+        of valid delete function or valid dll_handler";
 
     return AXIS2_SUCCESS;
 }

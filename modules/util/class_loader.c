@@ -62,6 +62,8 @@ axis2_class_loader_create_dll (axis2_env_t **env,
     void *transport_recv = NULL; /* axis2_transport_receiver */
     void *transport_sender = NULL; /* axis2_transport_sender */
     CREATE_FUNCT create_funct = NULL;
+    DELETE_FUNCT delete_funct = NULL;
+    AXIS2_DLHANDLER dl_handler = NULL;
     axis2_dll_desc_t *dll_desc = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_dll_type_t dll_type = AXIS2_SVC_DLL;
@@ -73,16 +75,28 @@ axis2_class_loader_create_dll (axis2_env_t **env,
             AXIS2_FAILURE);
         return NULL;
     }
-    status = axis2_class_loader_load_lib(env, dll_desc);
-    if (AXIS2_SUCCESS == status)
+    dl_handler = AXIS2_DLL_DESC_GET_DL_HANDLER(dll_desc, env);
+    if(NULL == dl_handler)
     {
-        CREATE_FUNCT create_funct = NULL;
-        DELETE_FUNCT delete_funct = NULL;
-        AXIS2_DLHANDLER dl_handler = NULL;
-        
+        status = axis2_class_loader_load_lib(env, dll_desc);
+        if(AXIS2_SUCCESS != status)
+        {
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
+                    AXIS2_FAILURE);
+            return NULL;
+        }
         dl_handler = AXIS2_DLL_DESC_GET_DL_HANDLER(dll_desc, env);
+        if(!dl_handler)
+        {
+            return NULL;
+        }
+        
         create_funct = (CREATE_FUNCT) AXIS2_PLATFORM_GETPROCADDR(dl_handler,
             AXIS2_CREATE_FUNCTION);
+        if (!create_funct)
+        {
+            return NULL;
+        }
         status = AXIS2_DLL_DESC_SET_CREATE_FUNCT(dll_desc, env, create_funct); 
         if(AXIS2_FAILURE == status)
         {
@@ -94,7 +108,10 @@ axis2_class_loader_create_dll (axis2_env_t **env,
             
         delete_funct = (DELETE_FUNCT) AXIS2_PLATFORM_GETPROCADDR(dl_handler,
             AXIS2_DELETE_FUNCTION);
-
+        if (!delete_funct)
+        {
+            return NULL;
+        }
         status = AXIS2_DLL_DESC_SET_DELETE_FUNCT(dll_desc, env, delete_funct);
         if(AXIS2_FAILURE == status)
         {
@@ -104,18 +121,13 @@ axis2_class_loader_create_dll (axis2_env_t **env,
             return NULL;
         }
     }
-    else
+    create_funct = AXIS2_DLL_DESC_GET_CREATE_FUNCT(dll_desc, env);
+    if(!create_funct)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
-                AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_DLL_DESC,
+            AXIS2_FAILURE);
         return NULL;
     }
-    
-    create_funct = AXIS2_DLL_DESC_GET_CREATE_FUNCT(dll_desc, env);
-
-    if (!create_funct)
-        return NULL;
-    
     dll_type = AXIS2_DLL_DESC_GET_TYPE(dll_desc, env);
     if(AXIS2_SVC_DLL == dll_type)
     {

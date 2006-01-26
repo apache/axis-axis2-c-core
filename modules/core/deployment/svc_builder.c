@@ -249,6 +249,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     int i = 0;
     int size = 0;
     AXIS2_TIME_T timestamp = 0;
+    axis2_char_t message[1024];
+    axis2_char_t *log_msg = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(svc_builder, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_node, AXIS2_FAILURE);
@@ -328,7 +330,9 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     AXIS2_SVC_SET_AXIS2_SVC_NAME(builder_impl->svc, env, svc_name);
     AXIS2_QNAME_FREE(qattname, env);
     
-    /* create dll_desc and set it in a parameter. then set that param in svc */
+    /* create dll_desc and set it in a parameter. then set that param in param
+     * container taken from svc 
+     */
     dll_desc = axis2_dll_desc_create(env);
     impl_info_param = AXIS2_PARAM_CONTAINER_GET_PARAM(param_container_l, env, 
         AXIS2_SERVICE_CLASS);
@@ -338,16 +342,18 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         return AXIS2_FAILURE;
     }
     svc_dll_name = AXIS2_PARAM_GET_VALUE(impl_info_param, env);
-    
     arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(builder_impl->
         svc_builder.desc_builder->engine, env);
     svc_folder = AXIS2_ARCH_FILE_DATA_GET_FILE(arch_file_data, env);
     timestamp = AXIS2_FILE_GET_TIMESTAMP(svc_folder, env);
     AXIS2_DLL_DESC_SET_TIMESTAMP(dll_desc, env, timestamp);
     svc_folder_path = AXIS2_FILE_GET_PATH(svc_folder, env);
-    printf("file name:%s\n", AXIS2_FILE_GET_NAME(svc_folder, env));
     temp_path = AXIS2_STRACAT(svc_folder_path, AXIS2_PATH_SEP_STR, env);
     dll_path = AXIS2_STRACAT(temp_path, svc_dll_name, env);
+    sprintf(message, "%s:%d - dll path is:", __FILE__, __LINE__);
+    log_msg = AXIS2_STRACAT(message, dll_path, env);
+    AXIS2_LOG(env, log_msg, AXIS2_LOG_INFO);
+    printf("log_msg:%s\n", log_msg);
     status = AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_path);
     if(AXIS2_SUCCESS != status)
     {
@@ -368,7 +374,6 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     dll_path = NULL;
     
     AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_SVC_DLL);
-    axis2_class_loader_init(env);
     status = AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
     if(AXIS2_SUCCESS != status)
     {
