@@ -212,12 +212,15 @@ axis2_repos_listener_check_modules(axis2_repos_listener_t *listener,
 {
     axis2_repos_listener_impl_t *listener_impl = NULL;
     axis2_char_t *module_path = NULL;
+    axis2_char_t *temp_path = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(listener, env, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
     
-    module_path = AXIS2_STRACAT(listener_impl->folder_name, AXIS2_MODULE_PATH,
+    temp_path = AXIS2_STRACAT(listener_impl->folder_name, AXIS2_PATH_SEP_STR, 
         env);
+    module_path = AXIS2_STRACAT(temp_path, AXIS2_MODULE_PATH, env);
+    AXIS2_FREE((*env)->allocator, temp_path);
     return axis2_repos_listener_search(listener, env, module_path, AXIS2_MODULE);
 }
 
@@ -227,10 +230,14 @@ axis2_repos_listener_check_svcs(axis2_repos_listener_t *listener,
 {
     axis2_repos_listener_impl_t *listener_impl = NULL;
     axis2_char_t *svc_path = NULL;
+    axis2_char_t *temp_path = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(listener, env, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
-    svc_path = AXIS2_STRACAT(listener_impl->folder_name, AXIS2_SVC_PATH, env);
+    temp_path = AXIS2_STRACAT(listener_impl->folder_name, AXIS2_PATH_SEP_STR, 
+        env);
+    svc_path = AXIS2_STRACAT(temp_path, AXIS2_SVC_PATH, env);
+    AXIS2_FREE((*env)->allocator, temp_path);
     return axis2_repos_listener_search(listener, env, svc_path, AXIS2_SVC);
 }
 
@@ -318,7 +325,7 @@ axis2_repos_listener_search(axis2_repos_listener_t *listener,
         file = AXIS2_ARRAY_LIST_GET(current_info_list, env, i);
         AXIS2_WS_INFO_LIST_ADD_WS_INFO_ITEM(listener_impl->info_list, env,
             file, type);
-        AXIS2_FILE_FREE(file, env);
+        /*AXIS2_FILE_FREE(file, env);*/
         
     }
     return AXIS2_SUCCESS;

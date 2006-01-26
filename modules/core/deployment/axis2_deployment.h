@@ -65,8 +65,8 @@ extern "C"
 #define AXIS2_OUT_FAILTFLOW "Outfaultflow" /* faultflow start tag */
 
 /* #define AXIS2_FOLDE_NAME "D:/Axis 2.0/projects/Deployement/test-data" */
-#define AXIS2_MODULE_PATH "/modules/"
-#define AXIS2_SVC_PATH "/services/"
+#define AXIS2_MODULE_PATH "modules"
+#define AXIS2_SVC_PATH "services"
 
 /* for jws file extension */
 #define AXIS2_JWS_EXTENSION ".jws"

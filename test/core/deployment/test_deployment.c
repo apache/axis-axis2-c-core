@@ -181,9 +181,9 @@ axis2_test_transport_receiver_load()
     printf("transport receiver name:%s\n", dll_name);
     AXIS2_DLL_DESC_SET_NAME(dll_desc, &env, dll_name);
     AXIS2_DLL_DESC_SET_TYPE(dll_desc, &env, AXIS2_TRANSPORT_RECV_DLL);
-    axis2_class_loader_init(&env);
     impl_info_param = axis2_param_create(&env, NULL, NULL);
     AXIS2_PARAM_SET_VALUE(impl_info_param, &env, dll_desc);
+    axis2_class_loader_init(&env);
     transport_recv = (axis2_transport_receiver_t *) axis2_class_loader_create_dll(&env, 
         impl_info_param);
     is_running = AXIS2_TRANSPORT_RECEIVER_IS_RUNNING(transport_recv, &env);
@@ -218,9 +218,9 @@ axis2_test_transport_sender_load()
     printf("transport sender name:%s\n", dll_name);
     AXIS2_DLL_DESC_SET_NAME(dll_desc, &env, dll_name);
     AXIS2_DLL_DESC_SET_TYPE(dll_desc, &env, AXIS2_TRANSPORT_SENDER_DLL);
-    axis2_class_loader_init(&env);
     impl_info_param = axis2_param_create(&env, NULL, NULL);
     AXIS2_PARAM_SET_VALUE(impl_info_param, &env, dll_desc);
+    axis2_class_loader_init(&env);
     transport_sender = (axis2_transport_sender_t *) axis2_class_loader_create_dll(&env, 
         impl_info_param);
     

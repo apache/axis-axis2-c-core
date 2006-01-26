@@ -368,8 +368,6 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     /* free all temp vars */
     AXIS2_FREE((*env)->allocator, temp_path);
     temp_path = NULL;
-    AXIS2_FREE((*env)->allocator, svc_folder_path);
-    svc_folder_path = NULL;
     AXIS2_FREE((*env)->allocator, dll_path);
     dll_path = NULL;
     

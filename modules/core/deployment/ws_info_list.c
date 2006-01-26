@@ -361,7 +361,6 @@ axis2_ws_info_list_check_for_undeploy(axis2_ws_info_list_t *info_list,
     axis2_ws_info_list_impl_t *info_list_impl = NULL;
     int list_size = 0;
     axis2_array_list_t *temp_list = NULL;
-    axis2_char_t *file_name = NULL;
     int i = 0;
     
     AXIS2_FUNC_PARAM_CHECK(info_list, env, AXIS2_FAILURE);
@@ -384,13 +383,16 @@ axis2_ws_info_list_check_for_undeploy(axis2_ws_info_list_t *info_list,
         
         file_item = (axis2_ws_info_t *) AXIS2_ARRAY_LIST_GET(info_list_impl->
             info_list, env, i);
+        file_item_name = AXIS2_WS_INFO_GET_FILE_NAME(file_item, env);            
         current_lists_size = AXIS2_ARRAY_LIST_SIZE(info_list_impl->
             current_info_lists, env);
         for (j = 0; j < current_lists_size; j++) 
         {
-            file_item_name = AXIS2_WS_INFO_GET_FILE_NAME(file_item, env);            
+            axis2_char_t *file_name = NULL;
+            printf("file_item_name:%s\n", file_item_name);
             file_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(info_list_impl->
                 current_info_lists, env, j);
+            printf("file_name:%s\n", file_name);
             if(0 == AXIS2_STRCMP(file_name, file_item_name))
             {
                 exist = AXIS2_TRUE;
