@@ -44,11 +44,11 @@ int main(int argc, char *argv[])
         }
     }
 	
-	write_to_socket(hostname, port, filename);
+	write_to_socket(hostname, port, filename, endpoint);
     return 0;
 }
 
-int write_to_socket(char *address, char* port, char* filename)
+int write_to_socket(char *address, char* port, char* filename, char* endpoint)
 {
 	axis2_char_t buffer_l[4999];
     int sockfd, portno, n, i;
@@ -80,17 +80,17 @@ int write_to_socket(char *address, char* port, char* filename)
     stat(filename, &buf);
     bufsize = buf.st_size* sizeof(char);
     buffer = (char *) malloc(bufsize);
-	strcpy(buffer_l, "POST /axis2/services/RMInteropService\r\nUser-Agent: Axis/2.0\r\nConnection: Keep-Alive\r\nHost: ");
+	sprintf(buffer_l, "POST %s HTTP/1.1\r\nUser-Agent: Axis/2.0/C\r\nConnection: Keep-Alive\r\nHost: ", endpoint);
 	strcat(buffer_l, address);
 	strcat(buffer_l, ":");
 	strcat(buffer_l, port);
 	strcat(buffer_l, "\r\n");
 	strcat(buffer_l, "Content-Length: ");
-	sprintf(tmpstr, "%d", buf.st_size);
+	sprintf(tmpstr, "%d", buf.st_size - 1);
 	strcat(buffer_l, tmpstr);
 	strcat(buffer_l, "\r\n");
-	strcat(buffer_l, "application/soap+xml; charset=UTF-8;action=\"http://127.0.0.1:8070/axis2/services/RMInteropService/__OPERATION_OUT_IN__\"");
-	strcat(buffer_l, "\r\n\r\n");
+	strcat(buffer_l, "Content-Type: application/soap+xml;\r\n");
+	strcat(buffer_l, "\r\n");
 
     int fd = open(filename, O_RDONLY, 0);
     if (fd == -1)
@@ -101,28 +101,37 @@ int write_to_socket(char *address, char* port, char* filename)
     else
         printf("opened file %s\n", filename);
 	
+    printf("Writing buffer_1...\n%s", buffer_l);
 	n = write(sockfd, buffer_l, strlen(buffer_l));
 
-    while((i = read(fd, buffer, bufsize - 1)) > 0)
-    {
+    /*while((i = read(fd, buffer, bufsize - 1)) > 0)
+    {*/
+    i = read(fd, buffer, bufsize - 1);
         buffer[i] = '\0';
+        printf("%s...\n", buffer);
     	n = write(sockfd,buffer,strlen(buffer));
     	if (n < 0) 
        	    error("ERROR writing to socket");
-    }
+    	/*n = write(sockfd,"\r\n",2);
+    	if (n < 0) 
+       	    error("ERROR writing to socket");*/
+    /*}*/
 
     printf("Done writing to server\n");
 
     buffer[0] = '\0';
 	
-    while((n = read(sockfd, buffer, bufsize -1)) > 0)
+    while((n = read(sockfd, buffer, bufsize - 1)) > 0)
     {
-        buffer[i] = '\0';
-        printf("%s\n", buffer);
+        buffer[n] = '\0';
+        printf("%s %d\n", buffer, n);
     }
 
-    if (n < 0) 
-         error("ERROR reading from socket");
+    if (n < 0)
+    {
+        error("ERROR reading from socket");
+        buffer[0] = '\0';
+    }
     printf("%s\n",buffer);
 	free(buffer);
 }
