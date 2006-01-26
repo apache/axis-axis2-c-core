@@ -113,7 +113,7 @@ axis2_conf_builder_create (axis2_env_t **env)
 axis2_conf_builder_t * AXIS2_CALL 
 axis2_conf_builder_create_with_file_and_dep_engine_and_conf (axis2_env_t **env,
                                                 axis2_char_t *file,
-                                                struct axis2_dep_engine *engine,
+                                                axis2_dep_engine_t *engine,
                                                 axis2_conf_t *conf)
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;

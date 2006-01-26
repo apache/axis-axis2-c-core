@@ -793,7 +793,7 @@ axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
     return AXIS2_SUCCESS;
 }
 
-struct axis2_msg_recv *AXIS2_CALL
+axis2_msg_recv_t *AXIS2_CALL
 axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
                                     axis2_env_t **env,
                                     struct axis2_om_element *recv_element)
@@ -819,6 +819,10 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
     
     
     conf = AXIS2_DEP_ENGINE_GET_AXIS2_CONF(desc_builder->engine, env);
+    if(!conf)
+    {
+        return NULL;
+    }
     impl_info_param = AXIS2_CONF_GET_PARAM(conf, env, AXIS2_MSG_RECV_PARAM);
     
     if(!impl_info_param)
