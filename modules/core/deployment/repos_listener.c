@@ -325,8 +325,6 @@ axis2_repos_listener_search(axis2_repos_listener_t *listener,
         file = AXIS2_ARRAY_LIST_GET(current_info_list, env, i);
         AXIS2_WS_INFO_LIST_ADD_WS_INFO_ITEM(listener_impl->info_list, env,
             file, type);
-        /*AXIS2_FILE_FREE(file, env);*/
-        
     }
     return AXIS2_SUCCESS;
 }

@@ -353,7 +353,6 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     sprintf(message, "%s:%d - dll path is:", __FILE__, __LINE__);
     log_msg = AXIS2_STRACAT(message, dll_path, env);
     AXIS2_LOG(env, log_msg, AXIS2_LOG_INFO);
-    printf("log_msg:%s\n", log_msg);
     status = AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_path);
     if(AXIS2_SUCCESS != status)
     {

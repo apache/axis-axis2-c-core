@@ -8,6 +8,8 @@
 #include <axis2_env.h>
 #include <axis2_allocator.h>
 #include <axis2_class_loader.h>
+#include <axis2_error_default.h>
+#include <axis2_log_default.h>
 
 int axis2_test_dep_engine_load()
 {
@@ -16,13 +18,17 @@ int axis2_test_dep_engine_load()
     axis2_hash_t *svc_map = NULL;
     axis2_array_list_t *in_phases = NULL;
     axis2_char_t *axis2c_home = NULL;
+    axis2_env_t *env = NULL;
 
     printf("******************************************\n");
     printf("testing dep_engine_load method \n");
     printf("******************************************\n");
-    
+   
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-	axis2_env_t *env = axis2_env_create (allocator);
+    axis2_error_t *error = axis2_error_create(allocator);
+    axis2_log_t *log = axis2_log_create(allocator, NULL);
+    env = axis2_env_create_with_error_log(allocator, error, log);
+    env->log->level = AXIS2_LOG_INFO;
     
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     dep_engine = axis2_dep_engine_create_with_repos_name(&env, 
@@ -37,10 +43,6 @@ int axis2_test_dep_engine_load()
     {
         printf("conf is NULL\n)");
         return -1;
-    }
-    else
-    {
-        printf("conf is not null\n");
     }
     
     svc_map = AXIS2_CONF_GET_SVCS(conf, &env);
@@ -209,7 +211,6 @@ axis2_test_transport_sender_load()
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_env_t *env = axis2_env_create (allocator);
-    env->log->level = AXIS2_LOG_INFO;
     msg_ctx = (axis2_msg_ctx_t *) AXIS2_MALLOC(env->allocator, 5);
     dll_desc = axis2_dll_desc_create(&env);
     
@@ -235,9 +236,8 @@ int main()
 {
     /*axis2_test_dep_engine_do_deploy();
     axis2_test_engine_conf_builder_populate_conf();*/
-    axis2_test_dep_engine_load();
-/*    axis2_test_transport_receiver_load();
+    axis2_test_transport_receiver_load();
     axis2_test_transport_sender_load();
-  */  
+    axis2_test_dep_engine_load();
 	return 0;
 }

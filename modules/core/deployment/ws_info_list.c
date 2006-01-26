@@ -389,10 +389,8 @@ axis2_ws_info_list_check_for_undeploy(axis2_ws_info_list_t *info_list,
         for (j = 0; j < current_lists_size; j++) 
         {
             axis2_char_t *file_name = NULL;
-            printf("file_item_name:%s\n", file_item_name);
             file_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(info_list_impl->
                 current_info_lists, env, j);
-            printf("file_name:%s\n", file_name);
             if(0 == AXIS2_STRCMP(file_name, file_item_name))
             {
                 exist = AXIS2_TRUE;
