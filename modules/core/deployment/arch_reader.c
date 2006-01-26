@@ -319,7 +319,6 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
     AXIS2_FREE((*env)->allocator, temp_path3);
     AXIS2_FREE((*env)->allocator, svc_container_path);
     AXIS2_FREE((*env)->allocator, svc_folder);
-    printf("svcs_xml:%s\n", svcs_xml);
     if(!svcs_xml)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -339,7 +338,6 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
         }
         arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
         svc_name = AXIS2_ARCH_FILE_DATA_GET_SVC_NAME(arch_file_data, env);
-        printf("svc_grp_name:%s\n", svc_name);
         AXIS2_SVC_GRP_SET_NAME(svc_grp, env, svc_name);
     } else 
     {
@@ -378,7 +376,6 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
     AXIS2_DESC_BUILDER_FREE(desc_builder, env);
     svcs_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(svcs, env);
     root_element_name = AXIS2_OM_ELEMENT_GET_LOCALNAME(svcs_element, env);
-    printf("root_element_name:%s\n", root_element_name);
     if(0 == AXIS2_STRCMP(AXIS2_SVC_ELEMENT, root_element_name))
     {
         axis2_svc_t *svc = NULL;
@@ -413,7 +410,10 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         AXIS2_SVC_BUILDER_FREE(svc_builder, env);
         if(AXIS2_SUCCESS != status)
         {
-            printf("populate svc is not successful\n");
+            axis2_char_t message[1024];
+            sprintf(message, "%s:%d - populating service is not successful\n:", __FILE__, __LINE__);
+            AXIS2_LOG(env, message, AXIS2_LOG_INFO);
+
             return AXIS2_FAILURE;
         }
         

@@ -1291,7 +1291,6 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
     engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
     size = AXIS2_ARRAY_LIST_SIZE(engine_impl->ws_to_deploy, env);
-    printf("number of service directories deployed:%d\n", size);
     if (size > 0) 
     {
         int i = 0;
