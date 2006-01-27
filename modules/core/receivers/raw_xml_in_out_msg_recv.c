@@ -19,6 +19,7 @@
 #include <axis2_om_element.h>
 #include <axis2_soap_envelope.h>
 #include <axis2_soap_body.h>
+#include <axis2_soap_fault.h>
 #include <axis2_core_utils.h>
 #include <axis2_engine.h>
 
@@ -82,9 +83,12 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
     axis2_om_element_t *body_content_element = NULL;
     axis2_soap_envelope_t *default_envelope = NULL;
     axis2_soap_body_t *out_body = NULL;
+    axis2_soap_fault_t *soap_fault = NULL;
     axis2_om_node_t *out_node = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
+    axis2_bool_t skel_invoked = AXIS2_FALSE;
     axis2_char_t *soap_ns = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    int soap_version = AXIS2_SOAP12;
     axis2_om_namespace_t *env_ns = NULL;
     
     /* get the implementation class for the Web Service */
@@ -184,7 +188,11 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
             status = AXIS2_FAILURE;
         }
         
-        result_node = AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node);
+        if (status == AXIS2_SUCCESS)
+        {
+            skel_invoked = AXIS2_TRUE;
+            result_node = AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node);
+        }
        
         if (result_node)
         {
@@ -221,13 +229,14 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
     if (msg_ctx && AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
     {
         soap_ns = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI; /* default is 1.2 */
+        soap_version = AXIS2_SOAP11;
     }
     
     /* create the soap envelope here*/
     env_ns = axis2_om_namespace_create(env, soap_ns, "soapenv"); 
     if (!env_ns)
     {
-        return NULL;
+        return AXIS2_FAILURE;
     }
     
     default_envelope = axis2_soap_envelope_create(env, env_ns);
@@ -252,11 +261,40 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
     if (status != AXIS2_SUCCESS)
     {
         /* something went wrong. set a SOAP Fault*/
+        axis2_char_t *fault_value_str = "env:Sender";
+        axis2_char_t *fault_reason_str = NULL;
+        axis2_char_t *err_msg = NULL;
+        
+        if (!skel_invoked)
+            fault_value_str = "env:Receiver";
+            
+        err_msg = AXIS2_ERROR_GET_MESSAGE((*env)->error);
+        if (err_msg)
+        {
+            fault_reason_str = err_msg;
+        }
+        else
+        {
+            fault_reason_str = "Something went wrong";
+        }
+            
+        soap_fault = axis2_soap_fault_create_default_fault(env, out_body, 
+            fault_value_str, fault_reason_str, soap_version);
     }
 
-    AXIS2_OM_NODE_ADD_CHILD(out_node , env ,body_content_node);
+    if (body_content_node)
+    {
+        AXIS2_OM_NODE_ADD_CHILD(out_node , env, body_content_node);
+        status = AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
+    }
+    else if (soap_fault)
+    {
+        AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
+        status = AXIS2_FAILURE; /* if there is a failure we have to return a failure code */
+    }
+    
 
-    return AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
+    return status;
 }
 
 axis2_status_t AXIS2_CALL
