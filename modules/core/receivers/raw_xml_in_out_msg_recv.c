@@ -83,6 +83,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
     axis2_soap_envelope_t *default_envelope = NULL;
     axis2_soap_body_t *out_body = NULL;
     axis2_om_node_t *out_node = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
     
     /* get the implementation class for the Web Service */
     svc_obj = AXIS2_MSG_RECV_GET_IMPL_OBJ(msg_recv, env, msg_ctx);
@@ -92,148 +93,129 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
         axis2_char_t message[1024];
         sprintf(message, "%s:%d - Impl object for service not set in message receiver", __FILE__, __LINE__);
         AXIS2_LOG(env, message, AXIS2_LOG_DEBUG);
-        return AXIS2_FAILURE;
+        status = AXIS2_FAILURE;
     }
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
-    op_desc = AXIS2_OP_CTX_GET_OP(op_ctx, env);
-    
-    
-    /* find the WebService method */
-    /*Object obj = getTheImplementationObject(msgContext);
-
-    // find the WebService method
-    Class ImplClass = obj.getClass();
-
-    //Inject the Message Context if it is asked for
-    DependencyManager.configureBusinessLogicProvider(obj, msgContext, newmsgContext);
-
-    AxisOperation opDesc = msgContext.getOperationContext()
-            .getAxisOperation();
-    Method method = findOperation(opDesc, ImplClass);
-    if (method != null) {
-        String style = msgContext.getOperationContext()
-                .getAxisOperation()
-                .getStyle();
-
-        Class[] parameters = method.getParameterTypes();
-        Object[] args = null;
-
-        if (parameters == null || parameters.length == 0) {
-            args = new Object[0];
-        } else if (parameters.length == 1) 
-        {
-        */
-    
-    style = AXIS2_OP_GET_STYLE(op_desc, env);
-    if(0 == AXIS2_STRCMP(AXIS2_STYLE_DOC, style))
+    else
     {
-        axis2_soap_envelope_t *envelope = NULL;
-        axis2_soap_body_t *body = NULL;
-        
-        envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
-        body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
-        om_node = AXIS2_SOAP_BODY_GET_BASE_NODE(body, env);
-        om_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);
-        om_node = AXIS2_OM_NODE_GET_FIRST_CHILD(om_node, env);
-        
-    }
-    else if(0 == AXIS2_STRCMP(AXIS2_STYLE_RPC, style))
-    {
-        axis2_soap_envelope_t *envelope = NULL;
-        axis2_soap_body_t *body = NULL;
-        axis2_om_node_t *op_node = NULL;
-        axis2_om_element_t *op_element = NULL;
-        
-        envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
-        body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
-        op_node = AXIS2_SOAP_BODY_GET_BASE_NODE(body, env);
-        op_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(op_node, env);
-        if(NULL != op_element)
+        op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+        op_desc = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+
+        style = AXIS2_OP_GET_STYLE(op_desc, env);
+        if(0 == AXIS2_STRCMP(AXIS2_STYLE_DOC, style))
         {
-            local_name = AXIS2_OM_ELEMENT_GET_LOCALNAME(op_element, env);
-            if(NULL != local_name)
+            axis2_soap_envelope_t *envelope = NULL;
+            axis2_soap_body_t *body = NULL;
+            
+            envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+            body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
+            om_node = AXIS2_SOAP_BODY_GET_BASE_NODE(body, env);
+            om_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);
+            om_node = AXIS2_OM_NODE_GET_FIRST_CHILD(om_node, env);            
+        }
+        else if(0 == AXIS2_STRCMP(AXIS2_STYLE_RPC, style))
+        {
+            axis2_soap_envelope_t *envelope = NULL;
+            axis2_soap_body_t *body = NULL;
+            axis2_om_node_t *op_node = NULL;
+            axis2_om_element_t *op_element = NULL;
+            
+            envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+            body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
+            op_node = AXIS2_SOAP_BODY_GET_BASE_NODE(body, env);
+            op_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(op_node, env);
+            if(NULL != op_element)
             {
-                axis2_array_list_t *function_arr = NULL;
-                int i = 0;
-                int size = 0;
-                axis2_bool_t matches = AXIS2_FALSE;
-                
-                function_arr = svc_obj->func_array;
-                size = AXIS2_ARRAY_LIST_SIZE(function_arr, env);
-                if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
+                local_name = AXIS2_OM_ELEMENT_GET_LOCALNAME(op_element, env);
+                if(NULL != local_name)
                 {
-                    return AXIS2_FAILURE;
-                }
-                
-                for (i = 0; i < size; i++) 
-                {
-                    axis2_char_t *function_name = NULL;
+                    axis2_array_list_t *function_arr = NULL;
+                    int i = 0;
+                    int size = 0;
+                    axis2_bool_t matches = AXIS2_FALSE;
                     
-                    function_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(
-                        function_arr, env, i);
-                    if(0 == AXIS2_STRCMP(function_name, local_name))
+                    function_arr = svc_obj->func_array;
+                    size = AXIS2_ARRAY_LIST_SIZE(function_arr, env);
+                    
+                    for (i = 0; i < size; i++) 
                     {
-                        matches = AXIS2_TRUE;
+                        axis2_char_t *function_name = NULL;
                         
+                        function_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(
+                            function_arr, env, i);
+                        if(0 == AXIS2_STRCMP(function_name, local_name))
+                        {
+                            matches = AXIS2_TRUE;
+                            
+                        }
                     }
-                }
-                if(AXIS2_TRUE == matches)
-                {
-                    om_node = AXIS2_OM_NODE_GET_FIRST_CHILD(op_node, env);
-                    om_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);   
+
+                    if(AXIS2_TRUE == matches)
+                    {
+                        om_node = AXIS2_OM_NODE_GET_FIRST_CHILD(op_node, env);
+                        om_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);   
+                    }
+                    else
+                    {
+                        AXIS2_ERROR_SET((*env)->error, 
+                            AXIS2_ERROR_OM_ELEMENT_MISMATCH, AXIS2_FAILURE);
+                        status = AXIS2_FAILURE;
+                    }
                 }
                 else
                 {
                     AXIS2_ERROR_SET((*env)->error, 
-                        AXIS2_ERROR_OM_ELEMENT_MISMATCH, AXIS2_FAILURE);
-                    return AXIS2_FAILURE;
+                        AXIS2_ERROR_OM_ELEMENT_INVALID_STATE, AXIS2_FAILURE);
+                    status = AXIS2_FAILURE;
                 }
             }
             else
             {
                 AXIS2_ERROR_SET((*env)->error, 
-                    AXIS2_ERROR_OM_ELEMENT_INVALID_STATE, AXIS2_FAILURE);
-                return AXIS2_FAILURE;
+                        AXIS2_ERROR_RPC_NEED_MATCHING_CHILD, AXIS2_FAILURE);
+                status = AXIS2_FAILURE;
             }
         }
         else
         {
             AXIS2_ERROR_SET((*env)->error, 
-                    AXIS2_ERROR_RPC_NEED_MATCHING_CHILD, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
+                    AXIS2_ERROR_UNKNOWN_STYLE, AXIS2_FAILURE);
+            status = AXIS2_FAILURE;
         }
-    }
-    else
-    {
-        AXIS2_ERROR_SET((*env)->error, 
-                AXIS2_ERROR_UNKNOWN_STYLE, AXIS2_FAILURE);
-        return AXIS2_FAILURE;
+        
+        result_node = AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node);
+       
+        if (result_node)
+        {
+            if(0 == AXIS2_STRCMP(style, AXIS2_STYLE_RPC))
+            {
+                axis2_om_namespace_t *ns = NULL;
+                axis2_char_t *res_name = NULL;
+                
+                res_name = AXIS2_STRACAT(local_name, "Response", env);
+                ns = axis2_om_namespace_create(env, "http://soapenc/", "res");
+                if(!ns)
+                {
+                    status = AXIS2_FAILURE;
+                }
+                else 
+                {
+                    body_content_element = axis2_om_element_create(env, NULL, res_name, 
+                        ns, &body_content_node);
+                    AXIS2_OM_NODE_ADD_CHILD(body_content_node, env, result_node);
+                }
+                
+            }
+            else
+            {
+                body_content_node = result_node;
+            }
+        }
+        else
+        {
+            status = AXIS2_FAILURE;
+        }
     }
     
-    result_node = AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node);
-   
-    if(0 == AXIS2_STRCMP(style, AXIS2_STYLE_RPC))
-    {
-        axis2_om_namespace_t *ns = NULL;
-        axis2_char_t *res_name = NULL;
-        
-        res_name = AXIS2_STRACAT(local_name, "Response", env);
-        ns = axis2_om_namespace_create(env, "http://soapenc/", "res");
-        if(!ns)
-        {
-            return AXIS2_FAILURE;
-        }
-        body_content_element = axis2_om_element_create(env, NULL, res_name, 
-            ns, &body_content_node);
-        
-        AXIS2_OM_NODE_ADD_CHILD(body_content_node, env, result_node);
-        
-    }
-    else
-    {
-        body_content_node = result_node;
-    }
-
     /* create the soap envelope here*/
     axis2_om_namespace_t *env_ns = 
         axis2_om_namespace_create(env, "http://www.w3.org/2003/05/soap-envelope", "env"); /** TODO: Change to get the correct SOAP version */
@@ -254,6 +236,11 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
     if (!out_node)
     {
         return AXIS2_FAILURE;
+    }
+    
+    if (status != AXIS2_SUCCESS)
+    {
+        /* something went wrong. set a SOAP Fault*/
     }
 
     AXIS2_OM_NODE_ADD_CHILD(out_node , env ,body_content_node);
