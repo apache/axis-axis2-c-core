@@ -216,6 +216,20 @@ axis2_http_transport_sender_invoke
 	 */
 	{
 		soap_data_out = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+		if(NULL == soap_data_out)
+		{
+			char error_msg[1024];
+			AXIS2_ERROR_SET((*env)->error, 
+						AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX, 
+						AXIS2_FAILURE);
+			sprintf(error_msg, "%s in %s:%d", AXIS2_ERROR_GET_MESSAGE(
+						(*env)->error), __FILE__, __LINE__);
+			AXIS2_LOG(env, error_msg, AXIS2_LOG_CRITICAL);
+			AXIS2_OM_OUTPUT_FREE(om_output, env);
+			om_output = NULL;
+			xml_writer = NULL;
+			return AXIS2_FAILURE;
+		}
 	}
 	if(NULL != epr)
 	{
@@ -273,6 +287,9 @@ axis2_http_transport_sender_invoke
             
 		}
 	}
+	AXIS2_OM_OUTPUT_FREE(om_output, env);
+	om_output = NULL;
+	xml_writer = NULL;
 	/*
 	 * TODO handle errors
 	 */	
