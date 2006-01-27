@@ -387,7 +387,8 @@ axis2_error_init()
     axis2_error_messages[AXIS2_ERROR_INVALID_STATE_DLL_DESC] =
     "dll description has invalid state of not having valid dll create function, \
         of valid delete function or valid dll_handler";
-
+    axis2_error_messages[AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX] =
+    "Null soap envelope in msg_ctx";
     return AXIS2_SUCCESS;
 }
 
