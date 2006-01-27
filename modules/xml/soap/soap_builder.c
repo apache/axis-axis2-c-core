@@ -116,7 +116,7 @@ axis2_soap_builder_process_namespace_data
                                  int is_soap_element);
 
 static axis2_status_t
-identify_soap_version(axis2_soap_builder_t *builder,
+axis2_soap_builder_identify_soap_version(axis2_soap_builder_t *builder,
                       axis2_env_t **env,
                       axis2_char_t* soap_version_uri_from_transport);
                       
@@ -219,7 +219,13 @@ axis2_soap_builder_create(axis2_env_t **env,
     builder_impl->soap_builder.ops->process_namespace_data =
             axis2_soap_builder_process_namespace_data;
     
-    status = identify_soap_version(&(builder_impl->soap_builder), env, soap_version);
+    status = axis2_soap_builder_identify_soap_version(&(builder_impl->soap_builder), env, soap_version);
+    if(status == AXIS2_FAILURE)
+    {
+        axis2_soap_builder_free(&(builder_impl->soap_builder), env);
+        return NULL;
+    }
+    status = axis2_soap_builder_parse_headers(&(builder_impl->soap_builder), env);
     if(status == AXIS2_FAILURE)
     {
         axis2_soap_builder_free(&(builder_impl->soap_builder), env);
@@ -592,9 +598,8 @@ axis2_soap_builder_process_namespace_data
                 (AXIS2_STRCMP(ns_uri, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) != 0) &&
                 (AXIS2_STRCMP(ns_uri, AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) != 0))
         {
-            printf("AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI");
-            
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI, AXIS2_FAILURE);                
+            AXIS2_LOG_WRITE((*env)->log,"AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI", AXIS2_LOG_DEBUG);
             return AXIS2_FAILURE;
         }
     }    
@@ -602,7 +607,7 @@ axis2_soap_builder_process_namespace_data
 }
 
 static axis2_status_t 
-identify_soap_version(axis2_soap_builder_t *builder,
+axis2_soap_builder_identify_soap_version(axis2_soap_builder_t *builder,
                       axis2_env_t **env,
                       axis2_char_t* soap_version_uri_from_transport)
 {
@@ -636,13 +641,23 @@ identify_soap_version(axis2_soap_builder_t *builder,
        if(soap_version_uri_from_transport && AXIS2_STRCMP(soap_version_uri_from_transport, ns_uri) != 0)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP, AXIS2_FAILURE);
+            AXIS2_LOG_WRITE((*env)->log , "AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP",
+                AXIS2_LOG_ERROR);            
             return AXIS2_FAILURE;
         }            
         if(AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
+        {
             builder_impl->soap_version = AXIS2_SOAP11;        
+            AXIS2_LOG_WRITE((*env)->log,"Identified soap version is soap11", AXIS2_LOG_DEBUG);
+        }
         else if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
+        {
             builder_impl->soap_version = AXIS2_SOAP12;          
+            AXIS2_LOG_WRITE((*env)->log,"identified soap version is soap12", AXIS2_LOG_DEBUG);
+            
+        }
         AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(builder_impl->soap_envelope, env, builder_impl->soap_version);        
+       
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;

@@ -179,7 +179,7 @@ struct axis2_soap_builder;
     */
 AXIS2_DECLARE(axis2_soap_fault_t *)
 axis2_soap_fault_create(axis2_env_t **env);
-
+    
 AXIS2_DECLARE(axis2_soap_fault_t *)
 axis2_soap_fault_create_with_parent(axis2_env_t **env,
                                     struct axis2_soap_body *parent);

@@ -129,7 +129,6 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
         return AXIS2_FAILURE;
     }
     AXIS2_SOAP_BODY_BUILD(soap_body, env);
-  */  
 
     while(!(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env)) && !(AXIS2_OM_STAX_BUILDER_IS_COMPLETE(om_builder, env)))
     {
@@ -137,6 +136,7 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
         if(status == AXIS2_FAILURE)
                printf("failure %s" ,AXIS2_ERROR_GET_MESSAGE((*env)->error));
     }
+*/    
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     
     om_output = axis2_om_output_create( env, xml_writer);  
@@ -227,6 +227,7 @@ int main(int argc, char *argv[])
     }
     allocator = axis2_allocator_init (NULL);
     log = axis2_log_create(allocator, NULL);
+    log->level = AXIS2_LOG_DEBUG;
     error = axis2_error_create(allocator);
     env = axis2_env_create_with_error_log(allocator, error,  log);
     
