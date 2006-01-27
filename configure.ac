@@ -113,6 +113,7 @@ AC_CONFIG_FILES([Makefile \
     test/Makefile \
     test/server/Makefile \
     test/server/echo/Makefile \
+    test/server/math/Makefile \
     test/xml/Makefile \
     test/xml/om/Makefile \
     test/xml/soap/Makefile \
