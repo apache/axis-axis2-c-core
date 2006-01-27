@@ -63,58 +63,102 @@ struct axis2_soap_builder;
  */
  AXIS2_DECLARE_DATA   struct axis2_soap_body_ops
     {
+        /**
+         * Deallocate all the resources associated to soap_body
+         * But it does not deallocate the underlying om structure
+         * @param body soap_body struct
+         * @param env must not be null
+         * @return status code AXIS2_SUCCESS 
+         */
         axis2_status_t (AXIS2_CALL *free)(axis2_soap_body_t *body,
                                           axis2_env_t **env);
         /**
-         * Indicates whether a <code>SOAPFault</code> object exists in
-         * this <code>SOAPBody</code> object.
-         *
-         * @return <code>true</code> if a <code>SOAPFault</code> object exists in
-         *         this <code>SOAPBody</code> object; <code>false</code>
-         *         otherwise
+         * Indicates whether a soap fault is available with this 
+         * soap body 
+         * @param body soap_body struct
+         * @param env environment must not be null
+         * @return AXIS2_TRUE if fault is available, AXIS2_FALSE otherwise
          */
         axis2_bool_t (AXIS2_CALL *has_fault)(axis2_soap_body_t *body,
                                              axis2_env_t **env);
         /**
-         * Returns the <code>SOAPFault</code> object in this <code>SOAPBody</code>
-         * object.
-         *
-         * @return the <code>SOAPFault</code> object in this <code>SOAPBody</code>
-         *         object
-         */
+         * returns the soap fault in this soap_body 
+         * IF a soap_builder is associated with the soap_body
+         * Pulling will  take place 
+         * @param body soap_body 
+         * @param env environment must not be null
+         * @return axis2_soap_fault_t if available, NULL otherwise
+        */
         axis2_soap_fault_t* (AXIS2_CALL *get_fault)(axis2_soap_body_t *body,
                                                     axis2_env_t **env);
         /**
-         * @param soapFault
-         * @throws org.apache.axis2.om.OMException
-         *
-         * @throws OMException
+         * get the underlying om_node 
+         * @param body soap_body
+         * @param env environment must not be null
+         * @returns axis2_om_node_t
          */
-        axis2_status_t (AXIS2_CALL *add_fault)(axis2_soap_body_t *body,
-                                               axis2_env_t **env,
-                                               axis2_soap_fault_t *soap_fault);
-                                                
         axis2_om_node_t* (AXIS2_CALL *get_base_node)(axis2_soap_body_t *body,
                                                      axis2_env_t **env);
-                                                     
+        /**
+         * associate an om node with this soap body
+         * This om node should contain a om element with localname as Body
+         * @param body soap_body
+         * @param env environment
+         * @param status code AXIS2_SUCCESS on success , AXIS2_FAILURE on error
+         */
         axis2_status_t (AXIS2_CALL *set_base_node)(axis2_soap_body_t *body,
                                                     axis2_env_t **env,
                                                     axis2_om_node_t *om_node);
-        
+        /**
+         *  return the soap version 
+         * @param body soap_body
+         * @param env environment must not be null
+         * @return one of AXIS2_SOAP11 or AXIS2_SOAP12 
+         */
         int (AXIS2_CALL *get_soap_version)(axis2_soap_body_t *body,
                                            axis2_env_t **env);
-         
+        /**
+         * set soap version of this soap_body
+         * this only set a property in soap_body struct , does not alter 
+         * namespace uri, so user must make sure that the wrapped om node is of 
+         * the corresponding soap version 
+         * @param body soap_body
+         * @param env environment
+         * @param soap_version soap_version SHOULD be one of AXIS2_SOAP11 or
+         *                     AXIS2_SOAP12
+         * @return status code
+         */    
+    
         axis2_status_t (AXIS2_CALL *set_soap_version)(axis2_soap_body_t *body,
                                                       axis2_env_t **env,
                                                       int soap_version);
                                                       
+        /**
+         *  associate a soap_builder with this soap_body
+         * This function is only to be used by soap builder
+         * @param body soap_body
+         * @param env environment must not be null
+         * @param builder pointer to soap_builder
+         * @return return status code
+         */
         axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_body_t *body,
                                                  axis2_env_t **env,
                                                  struct axis2_soap_builder *builder);
                                                      
+        /**
+         * build the soap body completely 
+         */                                                 
         axis2_status_t (AXIS2_CALL *build)(axis2_soap_body_t *body, 
                                            axis2_env_t **env);                                                 
-                                                              
+        /**
+         * This function is should be used by the soap builder only,
+         * just set internal pointer in soap body struct to its fault
+         * Does not create the om tree . If om tree is needed, use add_fault 
+         * function 
+         */                                                 
+        axis2_status_t (AXIS2_CALL *set_fault)(axis2_soap_body_t *body,
+                                               axis2_env_t **env,
+                                               struct axis2_soap_fault *soap_fault);                                                 
 };                                                      
 
   /**
@@ -145,15 +189,12 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
 /** free soap_body */
 #define AXIS2_SOAP_BODY_FREE(body , env) \
         ((body)->ops->free(body, env))
-        
+/** indecate whether soap_body has a fault or not*/        
 #define AXIS2_SOAP_BODY_HAS_FAULT(body, env) \
         ((body)->ops->has_fault(body, env))
         
 #define AXIS2_SOAP_BODY_GET_FAULT(body, env) \
         ((body)->ops->get_fault(body, env))
-        
-#define AXIS2_SOAP_BODY_ADD_FAULT(body, env, soap_fault) \
-        ((body)->ops->add_fault(body, env, soap_fault))
         
 #define AXIS2_SOAP_BODY_GET_BASE_NODE(body, env) \
         ((body)->ops->get_base_node(body, env))
@@ -173,6 +214,8 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
 #define AXIS2_SOAP_BODY_BUILD(body, env) \
         ((body)->ops->build(body, env))
 
+#define AXIS2_SOAP_BODY_SET_FAULT(body, env, fault) \
+        ((body)->ops->set_fault(body, env, fault))
 /** @} */
 #ifdef __cplusplus
 }

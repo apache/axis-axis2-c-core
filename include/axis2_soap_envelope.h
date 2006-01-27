@@ -165,7 +165,10 @@ axis2_soap_envelope_create_null(axis2_env_t **env);
 AXIS2_DECLARE(axis2_soap_envelope_t *)
 axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
                                                  int soap_version);
-                           
+   
+AXIS2_DECLARE(axis2_soap_envelope_t *)
+axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
+                                                 int soap_version);                           
 /******************** Macros **************************************************/
 
 #define AXIS2_SOAP_ENVELOPE_GET_HEADER(envelope, env) \

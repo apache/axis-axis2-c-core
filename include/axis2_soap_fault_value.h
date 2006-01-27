@@ -97,7 +97,7 @@ axis2_soap_fault_value_create_with_subcode(axis2_env_t **env,
 
 AXIS2_DECLARE(axis2_soap_fault_value_t *)
 axis2_soap_fault_value_create_with_code(axis2_env_t **env,
-                            axis2_soap_fault_code_t *parent);                            
+                            axis2_soap_fault_code_t *parent);  
 
 AXIS2_DECLARE(axis2_soap_fault_value_t *)
 axis2_soap_fault_value_create(axis2_env_t **env);
@@ -129,4 +129,3 @@ axis2_soap_fault_value_create(axis2_env_t **env);
 #endif 
  
 #endif /* AXIS2_SOAP_FAULT_VALUE_H */
-

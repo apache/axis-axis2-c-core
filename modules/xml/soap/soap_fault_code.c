@@ -451,18 +451,18 @@ axis2_soap_fault_code_set_builder(axis2_soap_fault_code_t *fault_code,
 /*********************** soap11 create function *******************************/
 
 AXIS2_DECLARE(axis2_soap_fault_code_t *)
-axis2_soap11_fault_code_create(axis2_env_t **env,
+axis2_soap11_fault_code_create_with_parent(axis2_env_t **env,
                              axis2_soap_fault_t *fault)
 {
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, fault, NULL);
-    return axis2_soap_fault_code_create_with_parent(env, fault, AXIS2_FALSE);
+    return axis2_soap_fault_code_create_with_parent(env, fault, AXIS2_TRUE);
 
 }                             
 
 /********************** soap12 create function ********************************/
 AXIS2_DECLARE(axis2_soap_fault_code_t *)
-axis2_soap12_fault_code_create(axis2_env_t **env,
+axis2_soap12_fault_code_create_with_parent(axis2_env_t **env,
                              axis2_soap_fault_t *fault)
 {
     AXIS2_ENV_CHECK(env, NULL);

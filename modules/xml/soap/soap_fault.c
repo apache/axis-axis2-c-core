@@ -20,6 +20,8 @@
  #include <axis2_om_element.h>
  #include <axis2_soap_fault_code.h>
  #include <axis2_soap_fault_detail.h>
+ #include <axis2_soap_fault_value.h>
+ #include <axis2_soap_fault_text.h>
  #include <axis2_soap_fault_reason.h>
  #include <axis2_soap_fault_role.h>
  #include <axis2_soap_fault_node.h>
@@ -247,7 +249,8 @@ axis2_soap_fault_create_with_parent(axis2_env_t **env,
                                        AXIS2_SOAP_FAULT_LOCAL_NAME,
                                        parent_ns,
                                        &this_node);
-    fault_impl->om_ele_node = this_node;                                       
+    fault_impl->om_ele_node = this_node;
+    AXIS2_SOAP_BODY_SET_FAULT(body, env, fault);    
     return  &(fault_impl->soap_fault);  
 }
 
@@ -797,4 +800,54 @@ axis2_soap_fault_set_builder(axis2_soap_fault_t *fault,
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
     fault_impl->soap_builder = builder;
     return AXIS2_SUCCESS;
+}
+
+AXIS2_DECLARE(axis2_soap_fault_t *)
+axis2_soap_fault_create_default_fault(axis2_env_t **env,
+                                      struct axis2_soap_body *parent,
+                                      axis2_char_t *code_value,
+                                      axis2_char_t *reason_text,
+                                      int soap_version)
+{
+    axis2_soap_fault_t *soap_fault = NULL;
+    
+    axis2_soap_fault_code_t *soap_fault_code = NULL;
+    axis2_soap_fault_value_t *soap_fault_value = NULL;
+    axis2_soap_fault_reason_t *soap_fault_reason = NULL;
+    axis2_soap_fault_text_t *soap_fault_text = NULL;
+    axis2_om_node_t *value_node  = NULL;
+    axis2_om_element_t *value_ele = NULL;
+    
+    axis2_om_node_t *text_node = NULL;
+    axis2_om_element_t *text_ele = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, code_value, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, reason_text, AXIS2_FAILURE);
+
+    soap_fault = axis2_soap_fault_create_with_parent(env, parent);
+    if(soap_fault)
+    {
+        AXIS2_SOAP_FAULT_SET_SOAP_VERSION(soap_fault, env, soap_version);
+        if(soap_version == AXIS2_SOAP11)
+        {
+            soap_fault_code = axis2_soap11_fault_code_create_with_parent(env, soap_fault);
+            soap_fault_reason = axis2_soap11_fault_reason_create_with_parent(env, soap_fault);
+        }
+        else if(soap_version == AXIS2_SOAP12)
+        {
+            soap_fault_code = axis2_soap12_fault_code_create_with_parent(env, soap_fault);
+            soap_fault_reason = axis2_soap12_fault_reason_create_with_parent(env, soap_fault);    
+        }
+        
+        soap_fault_value = axis2_soap_fault_value_create_with_code( env,soap_fault_code);
+        value_node = AXIS2_SOAP_FAULT_VALUE_GET_BASE_NODE(soap_fault_value, env);
+        value_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(value_node, env);
+        AXIS2_OM_ELEMENT_SET_TEXT(value_ele, env, code_value, value_node);
+    
+        soap_fault_text = axis2_soap_fault_text_create_with_parent( env, soap_fault_reason);
+        text_node = AXIS2_SOAP_FAULT_TEXT_GET_BASE_NODE(soap_fault_text, env);
+        text_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(text_node, env);
+        AXIS2_OM_ELEMENT_SET_TEXT(text_ele, env, reason_text, text_node);
+    }
+    return soap_fault;
 }

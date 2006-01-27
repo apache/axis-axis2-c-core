@@ -540,7 +540,7 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             
             AXIS2_SOAP_FAULT_SET_SOAP_VERSION(soap_fault, env, builder_impl->soap_version);
             
-            AXIS2_SOAP_BODY_ADD_FAULT(soap_body, env, soap_fault);                    
+            AXIS2_SOAP_BODY_SET_FAULT(soap_body, env, soap_fault);                    
                                 
             builder_impl->processing_fault = AXIS2_TRUE;
             builder_impl->processing_mandatory_fault_elements = AXIS2_TRUE; 

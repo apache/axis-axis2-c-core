@@ -183,11 +183,21 @@ axis2_soap_fault_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_soap_fault_t *)
 axis2_soap_fault_create_with_parent(axis2_env_t **env,
                                     struct axis2_soap_body *parent);
+                                        
+                                     
 
 AXIS2_DECLARE(axis2_soap_fault_t *)
 axis2_soap_fault_create_with_exception(axis2_env_t **env,
                                         struct axis2_soap_body *parent,  
                                         axis2_char_t* exception);
+                                        
+AXIS2_DECLARE(axis2_soap_fault_t *)
+axis2_soap_fault_create_default_fault(axis2_env_t **env,
+                                      struct axis2_soap_body *parent,
+                                      axis2_char_t *code_value,
+                                      axis2_char_t *reason_text,
+                                      int soap_version);                                         
+                                        
 /******************** Macros **************************************************/
     
     

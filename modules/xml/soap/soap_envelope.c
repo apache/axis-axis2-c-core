@@ -541,7 +541,7 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
             {
                 soap_fault = AXIS2_SOAP_BODY_GET_FAULT(soap_body, env);
                 if(soap_fault)
-                {
+                {   
                     axis2_soap_fault_code_t *fault_code = NULL;
                     axis2_soap_fault_reason_t *fault_reason = NULL;
                     axis2_soap_fault_detail_t *fault_detail = NULL;
@@ -702,6 +702,7 @@ axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
     axis2_soap_header_t *soap_header = NULL;
     axis2_soap_body_t *soap_body = NULL;
     axis2_om_namespace_t *om_ns = NULL;
+    axis2_soap_envelope_impl_t *env_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     if(soap_version == AXIS2_SOAP11)
     {
@@ -711,9 +712,13 @@ axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
         if(!om_ns)
             return NULL;    
         soap_env = axis2_soap_envelope_create(env, om_ns);
+        env_impl = AXIS2_INTF_TO_IMPL(soap_env);
+        
         AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(soap_env, env, AXIS2_SOAP11);
         soap_header = axis2_soap11_header_create_with_parent(env, soap_env);
         soap_body   = axis2_soap_body_create_with_parent(env, soap_env);
+        env_impl->body = soap_body;
+        env_impl->header = soap_header;
         AXIS2_SOAP_BODY_SET_SOAP_VERSION(soap_body, env, AXIS2_SOAP11);
         return soap_env;    
     }
@@ -725,12 +730,62 @@ axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
         if(!om_ns)
             return NULL;    
         soap_env = axis2_soap_envelope_create(env, om_ns);
+        env_impl = AXIS2_INTF_TO_IMPL(soap_env);
+        
         AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(soap_env, env, AXIS2_SOAP12);
         soap_header = axis2_soap12_header_create_with_parent(env, soap_env);
         soap_body   = axis2_soap_body_create_with_parent(env, soap_env);
+        env_impl->body = soap_body;
+        env_impl->header = soap_header;
+        
         AXIS2_SOAP_BODY_SET_SOAP_VERSION(soap_body, env, AXIS2_SOAP12);
         return soap_env;    
     }
     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
     return NULL;
+}
+
+AXIS2_DECLARE(axis2_soap_envelope_t *)
+axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
+                                                 int soap_version)
+{
+    axis2_soap_envelope_t *soap_env = NULL;
+    axis2_soap_body_t *soap_body = NULL;
+    axis2_om_namespace_t *om_ns = NULL;
+    axis2_soap_envelope_impl_t *env_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    if(soap_version == AXIS2_SOAP11)
+    {
+        om_ns = axis2_om_namespace_create(env,
+            AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, 
+            AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX);
+        if(!om_ns)
+            return NULL;    
+        soap_env = axis2_soap_envelope_create(env, om_ns);
+        env_impl = AXIS2_INTF_TO_IMPL(soap_env);
+        
+        AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(soap_env, env, AXIS2_SOAP11);
+        soap_body   = axis2_soap_body_create_with_parent(env, soap_env);
+        env_impl->body = soap_body;
+        AXIS2_SOAP_BODY_SET_SOAP_VERSION(soap_body, env, AXIS2_SOAP11);
+        return soap_env;    
+    }
+    else if(soap_version == AXIS2_SOAP12)
+    {
+        om_ns = axis2_om_namespace_create(env,
+            AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, 
+            AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX);
+        if(!om_ns)
+            return NULL;    
+        soap_env = axis2_soap_envelope_create(env, om_ns);
+        env_impl = AXIS2_INTF_TO_IMPL(soap_env);
+        
+        AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(soap_env, env, AXIS2_SOAP12);
+        soap_body   = axis2_soap_body_create_with_parent(env, soap_env);
+        env_impl->body = soap_body;
+        AXIS2_SOAP_BODY_SET_SOAP_VERSION(soap_body, env, AXIS2_SOAP12);
+        return soap_env;    
+    }
+    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
+    return NULL;    
 }

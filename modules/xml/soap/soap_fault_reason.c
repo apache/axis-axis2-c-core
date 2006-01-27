@@ -353,7 +353,7 @@ axis2_soap11_fault_reason_create_with_parent(axis2_env_t **env,
 {
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, fault, NULL);
-    return axis2_soap_fault_reason_create_with_parent(env, fault, AXIS2_FALSE);
+    return axis2_soap_fault_reason_create_with_parent(env, fault, AXIS2_TRUE);
 }                            
 
 AXIS2_DECLARE(axis2_soap_fault_reason_t *)
