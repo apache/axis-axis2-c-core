@@ -84,6 +84,8 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
     axis2_soap_body_t *out_body = NULL;
     axis2_om_node_t *out_node = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
+    axis2_char_t *soap_ns = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    axis2_om_namespace_t *env_ns = NULL;
     
     /* get the implementation class for the Web Service */
     svc_obj = AXIS2_MSG_RECV_GET_IMPL_OBJ(msg_recv, env, msg_ctx);
@@ -216,9 +218,18 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
         }
     }
     
+    if (msg_ctx && AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
+    {
+        soap_ns = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI; /* default is 1.2 */
+    }
+    
     /* create the soap envelope here*/
-    axis2_om_namespace_t *env_ns = 
-        axis2_om_namespace_create(env, "http://www.w3.org/2003/05/soap-envelope", "env"); /** TODO: Change to get the correct SOAP version */
+    env_ns = axis2_om_namespace_create(env, soap_ns, "soapenv"); 
+    if (!env_ns)
+    {
+        return NULL;
+    }
+    
     default_envelope = axis2_soap_envelope_create(env, env_ns);
 
     if (!default_envelope)

@@ -19,7 +19,8 @@
 #include <axis2_string.h>
 #include <axis2_xml_writer.h>
 
-#define AXIS2_DEFAULT_CHAR_SET_ENCODING  "ISO-8859-1"
+#define AXIS2_DEFAULT_CHAR_SET_ENCODING  "UTF-8"
+/*#define AXIS2_DEFAULT_CHAR_SET_ENCODING  "ISO-8859-1"*/
 #define MAX_ARGS  4
 /****************************** impl struct ***********************************/
 
