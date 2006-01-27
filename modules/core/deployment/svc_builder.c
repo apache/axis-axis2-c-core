@@ -266,6 +266,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     }
     itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env, qparamst,
         svc_node);
+    AXIS2_QNAME_FREE(qparamst, env);
+    qparamst = NULL;
     parent = AXIS2_SVC_GET_PARENT(builder_impl->svc, env);
     param_container_l = (axis2_param_container_t *)
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(builder_impl->svc->wsdl_svc->
@@ -274,8 +276,6 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         itr, param_container_l, parent->param_container);
     if(AXIS2_SUCCESS != status)
     {
-        AXIS2_QNAME_FREE(qparamst, env);
-        qparamst = NULL;
         return AXIS2_FAILURE;
     }
 
@@ -287,6 +287,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     /*qdesc = axis2_qname_create(env, AXIS2_DESCRIPTION, NULL, NULL);
     desc_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element, env,
         qdesc, svc_node, &desc_node);
+    AXIS2_QNAME_FREE(qdesc, env) ;
+    qdesc = NULL;
     if(NULL != desc_element)
     {
         axis2_om_element_t *desc_value_element = NULL;
@@ -381,6 +383,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
     module_refs = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env,
         qmodulest, svc_node);
+    AXIS2_QNAME_FREE(qmodulest, env) ;
+    qmodulest = NULL;
     status = axis2_svc_builder_process_module_refs(svc_builder, env, module_refs);
     if(AXIS2_SUCCESS != status)
     {
@@ -391,7 +395,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL);
     in_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element, 
         env, qinflowst, svc_node, &in_flow_node);
-    
+    AXIS2_QNAME_FREE(qinflowst, env) ;
+    qinflowst = NULL; 
     if(in_flow_element != NULL && NULL != in_flow_node)
     {
         axis2_flow_t *flow = NULL;
@@ -407,6 +412,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     qoutflowst = axis2_qname_create(env, AXIS2_OUTFLOWST, NULL, NULL);
     out_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
         env, qoutflowst, svc_node, &out_flow_node);
+    AXIS2_QNAME_FREE(qoutflowst, env) ;
+    qoutflowst = NULL;
     if(NULL != out_flow_element && NULL != out_flow_node)
     {
         axis2_flow_t *flow = NULL;
@@ -422,6 +429,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     qin_faultflowst = axis2_qname_create(env, AXIS2_IN_FAILTFLOW, NULL, NULL);
     in_faultflow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element, 
         env, qin_faultflowst, svc_node, &in_faultflow_node);
+    AXIS2_QNAME_FREE(qin_faultflowst, env) ;
+    qin_faultflowst = NULL;
     
     if(in_faultflow_element != NULL && NULL != in_faultflow_node)
     {
@@ -439,6 +448,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     qout_faultflowst = axis2_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL, NULL);
     out_faultflow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
         env, qoutflowst, svc_node, &out_faultflow_node);
+    AXIS2_QNAME_FREE(qout_faultflowst, env) ;
+    qout_faultflowst = NULL;
     if(NULL != out_faultflow_element && NULL != out_faultflow_node)
     {
         axis2_flow_t *flow = NULL;
@@ -457,7 +468,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     qopst = axis2_qname_create(env, AXIS2_OPERATIONST, NULL, NULL);
     operation_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env,
         qopst, svc_node);
-    
+    AXIS2_QNAME_FREE(qopst, env) ;
+    qopst = NULL; 
     ops = axis2_svc_builder_process_ops(svc_builder, env, operation_itr);
     if(ops)
     {
@@ -491,22 +503,15 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         }
         AXIS2_SVC_ADD_OP(builder_impl->svc, env, op_desc);   
     }
+    AXIS2_ARRAY_LIST_FREE(ops, env);
     /*
     qmodule_config = axis2_qname_create(env, AXIS2_MODULECONFIG, NULL, NULL);
     module_configs_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element,
         env, qmodule_config, svc_node);
+    AXIS2_QNAME_FREE(qmodule_config, env) ;
     status = axis2_svc_builder_process_svc_module_conf(svc_builder, env, 
         module_configs_itr, builder_impl->svc->param_container, builder_impl->svc);
     */
-    AXIS2_QNAME_FREE(qparamst, env);
-    /*AXIS2_QNAME_FREE(qdesc, env) ;*/
-    AXIS2_QNAME_FREE(qmodulest, env) ;
-    AXIS2_QNAME_FREE(qinflowst, env) ;
-    AXIS2_QNAME_FREE(qoutflowst, env) ;
-    AXIS2_QNAME_FREE(qin_faultflowst, env) ;
-    AXIS2_QNAME_FREE(qout_faultflowst, env) ;
-    AXIS2_QNAME_FREE(qopst, env) ;
-    /*AXIS2_QNAME_FREE(qmodule_config, env) ; */
     return status;
 }
 
@@ -534,7 +539,6 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         axis2_qname_t *qparamst = NULL;
         axis2_qname_t *qmsgrecv = NULL;
         axis2_qname_t *qmodulest = NULL;
-        /*axis2_qname_t *qmodule_config = NULL;*/
         axis2_qname_t *qattname = NULL;
         axis2_char_t *mep_url = NULL;
         axis2_char_t *op_name = NULL;
@@ -551,6 +555,8 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         op_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(op_node, env);
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         op_name_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(op_element, env, qattname);
+        AXIS2_QNAME_FREE(qattname, env);
+        qattname = NULL;
         if(NULL == op_name_att)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_OPERATION_NAME_MISSING,
@@ -560,6 +566,8 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         /* set the mep of the operation */
         qmep = axis2_qname_create(env, AXIS2_MEP, NULL, NULL);
         op_mep_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(op_element, env, qmep);
+        AXIS2_QNAME_FREE(qmep, env);
+        qmep = NULL;
         if(NULL != op_mep_att)
         {
             mep_url = AXIS2_OM_ATTRIBUTE_GET_VALUE(op_mep_att, env);
@@ -571,7 +579,6 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         }
         op_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(op_name_att, env);
         qopname = axis2_qname_create(env, op_name, NULL, NULL);
-        
         wsdl_op = AXIS2_SVC_GET_WSDL_OP(builder_impl->svc, env, qopname);
         if(NULL == wsdl_op)
         {
@@ -606,10 +613,14 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
                 AXIS2_OP_SET_WSDL_OP(op_desc, env, wsdl_op);
             } 
         }
+        AXIS2_QNAME_FREE(qopname, env);
+        qopname = NULL;
         /* operation parameters */
         qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
         params_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env,
             qparamst, op_node);
+        AXIS2_QNAME_FREE(qparamst, env);
+        qparamst = NULL;
         status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(svc_builder->desc_builder, 
             env, params_itr, op_desc->param_container, builder_impl->svc->
                 param_container);        
@@ -618,6 +629,8 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         qmsgrecv = axis2_qname_create(env, AXIS2_MESSAGERECEIVER, NULL, NULL);
         recv_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(op_element, 
             env, qmsgrecv, op_node, &recv_node);
+        AXIS2_QNAME_FREE(qmsgrecv, env);
+        qmsgrecv = NULL;
         if(NULL != recv_element && NULL != recv_node)
         {
             axis2_msg_recv_t *msg_recv = NULL;
@@ -638,6 +651,8 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
         module_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env,
             qmodulest, op_node);
+        AXIS2_QNAME_FREE(qmodulest, env);
+        qmodulest = NULL;
         status = AXIS2_DESC_BUILDER_PROCESS_OP_MODULE_REFS(svc_builder->
             desc_builder, env, module_itr, op_desc);
         if(AXIS2_SUCCESS != status)
@@ -653,15 +668,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         }
         
         /* adding operation */
-        status = AXIS2_ARRAY_LIST_ADD(ops, env, op_desc);
-        
-        AXIS2_QNAME_FREE(qmep, env);
-        AXIS2_QNAME_FREE(qopname, env);
-        AXIS2_QNAME_FREE(qparamst, env);
-        AXIS2_QNAME_FREE(qmsgrecv, env);
-        AXIS2_QNAME_FREE(qmodulest, env);
-        /*AXIS2_QNAME_FREE(qmodule_config, env);*/
-        AXIS2_QNAME_FREE(qattname, env);
+        status = AXIS2_ARRAY_LIST_ADD(ops, env, op_desc); 
     }
     return ops;
 }
@@ -687,6 +694,8 @@ axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         module_name_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(module_conf_element,
             env, qattname);
+        AXIS2_QNAME_FREE(qattname, env);
+        qattname = NULL;
         if(NULL == module_name_att)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MODULE_CONF,
@@ -722,6 +731,8 @@ axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
         module_ref_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(module_ref_element,
             env, qref);
+        AXIS2_QNAME_FREE(qref, env);
+        qref = NULL;
         if(NULL != module_ref_att)
         {
             axis2_char_t *ref_name = NULL;
@@ -740,6 +751,8 @@ axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
             {
                 AXIS2_SVC_ADD_MODULE_REF(builder_impl->svc, env, qrefname);
             }
+            AXIS2_QNAME_FREE(qrefname, env);
+            qrefname = NULL;
         }
     }
     return AXIS2_SUCCESS;

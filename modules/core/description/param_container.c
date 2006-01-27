@@ -127,15 +127,15 @@ axis2_param_container_free (axis2_param_container_t *param_container,
         for (hi = axis2_hash_first (param_container_impl->params, env); hi;
                  hi = axis2_hash_next ( env, hi))
         {
-            struct axis2_param *param = NULL;
+            axis2_param_t *param = NULL;
             axis2_hash_this (hi, NULL, NULL, &val);
-            param = (struct axis2_param *) val;
+            param = (axis2_param_t *) val;
             if (param)
-               AXIS2_PARAM_FREE (param, env);
-            
+            {
+                AXIS2_PARAM_FREE (param, env);
+                param = NULL;
+            }
             val = NULL;
-            param = NULL;
-               
         }
 		axis2_hash_free(param_container_impl->params, env);
     }
