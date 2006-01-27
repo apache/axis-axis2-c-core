@@ -115,7 +115,7 @@ axis2_stub_create_with_endpoint_ref (axis2_env_t **env,
 }
 
 axis2_stub_t * AXIS2_CALL 
-axis2_stub_create_with_end_point_uri (axis2_env_t **env,
+axis2_stub_create_with_endpoint_uri (axis2_env_t **env,
                                         axis2_char_t *endpoint_uri)
 {
     axis2_stub_impl_t *stub_impl = NULL;
