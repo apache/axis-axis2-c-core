@@ -457,6 +457,8 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_INVALID_STATE_DLL_DESC,
         /* Null soap envelope in msg_ctx */
         AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX,
+        /* Generation of platform dependent uuid failed */
+        AXIS2_ERROR_UUID_GEN_FAILED,
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
             AXIS2_ERROR_LAST is used to track the number of error codes present

@@ -22,9 +22,9 @@ static struct axis2_uuid_st axis2_uuid_static;
 
 
 axis2_char_t * AXIS2_CALL
-axis2_uuid_gen(axis2_env **env)
+axis2_uuid_gen(axis2_env_t **env)
 {
-	axis2_char_t *str = axis2_uuid_get();
+	axis2_char_t *str = axis2_platform_uuid_gen();
 	if (str == NULL)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_UUID_GEN_FAILED, 

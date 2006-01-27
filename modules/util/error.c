@@ -389,6 +389,8 @@ axis2_error_init()
         of valid delete function or valid dll_handler";
     axis2_error_messages[AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX] =
     "Null soap envelope in msg_ctx";
+    axis2_error_messages[AXIS2_ERROR_UUID_GEN_FAILED] = 
+    "Generation of platform dependent uuid failed"; 
     return AXIS2_SUCCESS;
 }
 

@@ -149,7 +149,7 @@ axis2_uuid_gen_v1()
 
 
 axis2_char_t* AXIS2_CALL
-axis2_uuid_gen()
+axis2_platform_uuid_gen()
 {
 	axis2_uuid_t *uuid_struct = NULL;
 	axis2_char_t *uuid_str = NULL;
