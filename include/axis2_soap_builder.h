@@ -93,7 +93,7 @@ AXIS2_DECLARE_DATA   struct axis2_soap_builder_ops
                                           (axis2_soap_builder_t *builder,
                                            axis2_env_t **env,
                                            axis2_om_node_t *om_node,
-                                           axis2_bool_t *is_soap_element);
+                                           axis2_bool_t is_soap_element);
 };
                                                       
 

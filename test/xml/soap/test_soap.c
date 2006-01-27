@@ -27,6 +27,11 @@ int read_soap(char *buffer, int size, void *ctx)
     return fread(buffer, sizeof(char), size, f); 
 }
 
+int close_soap(void *ctx)
+{
+    fclose(f);
+}
+
 int printnode(axis2_om_node_t *om_node, axis2_env_t **env)
 {
     axis2_om_element_t *om_ele = NULL;
@@ -75,7 +80,7 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
     if(!f)
         return -1;
     
-    xml_reader = axis2_xml_reader_create_for_memory(env, read_soap, NULL, NULL);
+    xml_reader = axis2_xml_reader_create_for_memory(env, read_soap,close_soap ,NULL, NULL);
     
     om_builder = axis2_om_stax_builder_create(env, xml_reader);
     
@@ -91,7 +96,7 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
     soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
     om_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
     printnode(om_node, env);
-
+/*
     soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
     if(soap_header)
     {
@@ -124,8 +129,7 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
         return AXIS2_FAILURE;
     }
     AXIS2_SOAP_BODY_BUILD(soap_body, env);
-    
-    /*
+  */  
 
     while(!(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env)) && !(AXIS2_OM_STAX_BUILDER_IS_COMPLETE(om_builder, env)))
     {
@@ -133,21 +137,19 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
         if(status == AXIS2_FAILURE)
                printf("failure %s" ,AXIS2_ERROR_GET_MESSAGE((*env)->error));
     }
-    */
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     
     om_output = axis2_om_output_create( env, xml_writer);  
     
     AXIS2_SOAP_ENVELOPE_SERIALIZE(soap_envelope, env, om_output, AXIS2_FALSE);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
-    printf("%s", buffer);
+    printf("%s \n", buffer);
     if(buffer)
          AXIS2_FREE((*env)->allocator, buffer);
     AXIS2_SOAP_ENVELOPE_FREE(soap_envelope, env);
     AXIS2_SOAP_BUILDER_FREE(soap_builder, env);
     AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
     AXIS2_OM_OUTPUT_FREE(om_output, env);
-    
     return AXIS2_SUCCESS;
     
 }

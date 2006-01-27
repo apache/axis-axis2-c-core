@@ -269,6 +269,18 @@ axis2_soap_fault_t* AXIS2_CALL axis2_soap_body_get_fault(axis2_soap_body_t *body
     {
         return body_impl->soap_fault;
     }
+    else if(body_impl->soap_builder != NULL)
+    {
+        while(!(body_impl->soap_fault) && !(AXIS2_OM_NODE_GET_BUILD_STATUS(body_impl->om_ele_node, env)))
+        {
+            int status = AXIS2_SUCCESS;
+            status = AXIS2_SOAP_BUILDER_NEXT(body_impl->soap_builder, env);
+            if(status == AXIS2_FAILURE)
+                return NULL;
+        }
+    }
+    
+    /*
     else
     {
         axis2_om_node_t *first_node = NULL;
@@ -296,7 +308,8 @@ axis2_soap_fault_t* AXIS2_CALL axis2_soap_body_get_fault(axis2_soap_body_t *body
                 return body_impl->soap_fault;                            
             }                 
         }
-    } 
+    }
+    */
     return NULL;
 }
 

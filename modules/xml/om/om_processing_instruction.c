@@ -126,7 +126,7 @@ axis2_om_processing_instruction_create (axis2_env_t **env,
     if (parent)
     {
         AXIS2_OM_NODE_SET_PARENT((*node), env, parent);
-        AXIS2_OM_NODE_ADD_CHILD((*node), env, parent); 
+        AXIS2_OM_NODE_ADD_CHILD(parent, env, (*node)); 
     }
 
     /* ops */

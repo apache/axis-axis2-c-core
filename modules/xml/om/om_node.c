@@ -34,7 +34,7 @@ axis2_om_node_free_tree (axis2_om_node_t * om_node,
 axis2_status_t AXIS2_CALL 
 axis2_om_node_add_child (axis2_om_node_t *om_node,
                          axis2_env_t **env,
-                         axis2_om_node_t * parent);
+                         axis2_om_node_t * child);
                               
 axis2_om_node_t * AXIS2_CALL 
 axis2_om_node_detach (axis2_om_node_t *om_node,
@@ -331,26 +331,26 @@ axis2_status_t AXIS2_CALL axis2_om_node_free_tree(axis2_om_node_t *om_node,
 axis2_status_t AXIS2_CALL 
 axis2_om_node_add_child (axis2_om_node_t *om_node,
                          axis2_env_t **env,
-                         axis2_om_node_t *parent)
+                         axis2_om_node_t *child)
 {
     AXIS2_FUNC_PARAM_CHECK(om_node,env,AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, parent, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, child, AXIS2_FAILURE);
 
-    if (AXIS2_INTF_TO_IMPL(parent)->first_child  == NULL)
+    if (AXIS2_INTF_TO_IMPL(om_node)->first_child  == NULL)
     {
-        AXIS2_INTF_TO_IMPL(parent)->first_child = om_node;
+        AXIS2_INTF_TO_IMPL(om_node)->first_child = child;
     }
     else
     {
        axis2_om_node_t *last_sib = NULL;
-       last_sib  = AXIS2_INTF_TO_IMPL(parent)->last_child;
+       last_sib  = AXIS2_INTF_TO_IMPL(om_node)->last_child;
        if(last_sib)
-           AXIS2_INTF_TO_IMPL(last_sib)->next_sibling = om_node;
-        AXIS2_INTF_TO_IMPL(om_node)->prev_sibling = last_sib;
+           AXIS2_INTF_TO_IMPL(last_sib)->next_sibling = child;
+        AXIS2_INTF_TO_IMPL(child)->prev_sibling = last_sib;
     }
 
-    AXIS2_INTF_TO_IMPL(om_node)->parent  = parent;
-    AXIS2_INTF_TO_IMPL(parent)->last_child = om_node;
+    AXIS2_INTF_TO_IMPL(child)->parent  = om_node;
+    AXIS2_INTF_TO_IMPL(om_node)->last_child = child;
     return AXIS2_SUCCESS;
 }
 

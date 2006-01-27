@@ -63,7 +63,7 @@ test_om_build (char *filename)
         return -1;
       
     /** create pull parser */
-     reader = axis2_xml_reader_create_for_memory(&environment, read_input, NULL, NULL);
+     reader = axis2_xml_reader_create_for_memory(&environment, read_input,NULL ,NULL, NULL);
     
     if(!reader)
     {

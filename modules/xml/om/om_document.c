@@ -208,8 +208,7 @@ axis2_om_document_add_child (axis2_om_document_t *document,
     if (document_impl->root_element && child)
     {
         
-        return AXIS2_OM_NODE_ADD_CHILD (child, env,
-                                        document_impl->last_child);
+        return AXIS2_OM_NODE_ADD_CHILD (document_impl->last_child, env, child);
     }
     return AXIS2_FAILURE;
 }

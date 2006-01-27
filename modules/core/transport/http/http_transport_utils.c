@@ -148,7 +148,7 @@ axis2_http_transport_utils_process_http_post_request
 	
 	char_set = axis2_http_transport_utils_get_charset_enc(env,content_type);
 	xml_reader = axis2_xml_reader_create_for_memory(env, 
-						axis2_http_transport_utils_on_data_request, 
+						axis2_http_transport_utils_on_data_request,NULL, 
 						(void *)&callback_ctx, char_set);
 	if(NULL == xml_reader)
 	{

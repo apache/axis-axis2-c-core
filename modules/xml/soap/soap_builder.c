@@ -569,7 +569,7 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
     return status;
 }
 
-axis2_status_t 
+axis2_status_t AXIS2_CALL 
 axis2_soap_builder_process_namespace_data
                                 (axis2_soap_builder_t *builder,
                                  axis2_env_t **env,

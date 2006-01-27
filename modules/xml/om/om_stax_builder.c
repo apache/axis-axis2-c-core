@@ -259,6 +259,9 @@ axis2_om_stax_builder_create_om_text (axis2_om_stax_builder_t * om_stax_builder,
     {
         AXIS2_ERROR_SET((*env)->error, 
                          AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL,AXIS2_FAILURE);
+        AXIS2_LOG_WRITE((*env)->log, 
+            "AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL creating a text node without a parent", 
+            AXIS2_LOG_CRITICAL);
         return NULL;
     }
     temp_value = AXIS2_XML_READER_GET_VALUE (builder->parser, env);
@@ -266,6 +269,7 @@ axis2_om_stax_builder_create_om_text (axis2_om_stax_builder_t * om_stax_builder,
     if (!temp_value)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_XML_READER_VALUE_NULL, AXIS2_FAILURE);
+        AXIS2_LOG_WRITE((*env)->log,"XML_READER RETURNED NULL VALUE CREATING OM TEXT",  AXIS2_LOG_CRITICAL);
         return NULL;
     }
   
@@ -274,7 +278,7 @@ axis2_om_stax_builder_create_om_text (axis2_om_stax_builder_t * om_stax_builder,
         axis2_om_text_create (env, 
                               AXIS2_OM_NODE_GET_PARENT(builder->lastnode, env),
                               temp_value, &node);
-
+  
     }
     else
     {
@@ -308,6 +312,7 @@ axis2_om_stax_builder_discard_current_element (axis2_om_stax_builder_t *om_stax_
     {
         AXIS2_ERROR_SET((*env)->error,
                 AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD, AXIS2_FAILURE);
+              
         return AXIS2_FAILURE;
     }
 
@@ -430,6 +435,9 @@ axis2_om_stax_builder_process_namespaces (axis2_om_stax_builder_t *om_stax_build
         {
             AXIS2_ERROR_SET((*env)->error,
             AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE, AXIS2_FAILURE);
+            AXIS2_LOG_WRITE((*env)->log, 
+                "AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE", AXIS2_LOG_CRITICAL);
+            
              return AXIS2_FAILURE;
         }
     }
@@ -451,6 +459,8 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
 
     if (!temp_localname)
     {
+        AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_XML_READER_ELEMENT_NULL localname null",
+            AXIS2_LOG_CRITICAL);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_XML_READER_ELEMENT_NULL, AXIS2_FAILURE); 
         return NULL;
     }
@@ -689,12 +699,16 @@ axis2_om_stax_builder_next (axis2_om_stax_builder_t *om_stax_builder,
     {
         if (builder_impl->done)
         {
+            AXIS2_LOG_WRITE((*env)->log,
+                "AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL either the xml is over or a critical error occured",
+                AXIS2_LOG_INFO);
+            
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL, AXIS2_FAILURE);
             return NULL;
         }
 
         token = AXIS2_XML_READER_NEXT (builder_impl->parser, env);
-
+        
         if(token == -1)
             return NULL;
 
@@ -883,12 +897,18 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
     
     if (builder_impl->done)
     {
+        AXIS2_LOG_WRITE((*env)->log,
+                "AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL either the xml is over or a critical error occured",
+                AXIS2_LOG_INFO);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL, AXIS2_FAILURE);
         return -1;
     }
     token = AXIS2_XML_READER_NEXT (builder_impl->parser, env);
     if(token == -1)
     {
+        AXIS2_LOG_WRITE((*env)->log,
+                "AXIS2_XML_READER_RETURNED AN ERROR either the xml is over or a critical error occured",
+                AXIS2_LOG_CRITICAL);
         builder_impl->done = AXIS2_TRUE;
         return -1;
     }
@@ -901,20 +921,27 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
     switch (token)
     {
         case AXIS2_XML_READER_START_DOCUMENT:
+            AXIS2_LOG_WRITE((*env)->log, " start of xml document START_DOCUMENT_EVENT",
+                AXIS2_LOG_DEBUG);
         /*Do nothing */
         break;
         
         case AXIS2_XML_READER_START_ELEMENT:
             axis2_om_stax_builder_create_om_element (
                         builder, env); 
+          AXIS2_LOG_WRITE((*env)->log, "AXIS2_XML_READER_START_ELEMENT",
+                AXIS2_LOG_DEBUG);
             break;
         
         case AXIS2_XML_READER_EMPTY_ELEMENT:
              axis2_om_stax_builder_create_om_element (
                         builder, env);
-        
+         AXIS2_LOG_WRITE((*env)->log, "AXIS2_XML_READER_EMPTY_ELEMENT",
+                AXIS2_LOG_DEBUG);
         case AXIS2_XML_READER_END_ELEMENT:
             axis2_om_stax_builder_end_element (builder, env);
+         AXIS2_LOG_WRITE((*env)->log, "AXIS2_XML_READER_END_ELEMENT",
+                AXIS2_LOG_DEBUG);
             break;
         
         
@@ -924,6 +951,8 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
         
         case AXIS2_XML_READER_CHARACTER:
             axis2_om_stax_builder_create_om_text(builder, env);
+         AXIS2_LOG_WRITE((*env)->log, "AXIS2_XML_READER_CHARACTER",
+                AXIS2_LOG_DEBUG);
             break;
                 
         case AXIS2_XML_READER_ENTITY_REFERANCE:

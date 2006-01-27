@@ -232,7 +232,7 @@ axis2_om_element_create (axis2_env_t **env,
     if (parent)
     {
         AXIS2_OM_NODE_SET_PARENT((*node), env, parent);
-        AXIS2_OM_NODE_ADD_CHILD((*node), env, parent);
+        AXIS2_OM_NODE_ADD_CHILD(parent, env, (*node));
     }
     
     AXIS2_OM_NODE_SET_BUILD_STATUS((*node), env, AXIS2_FALSE);
@@ -1122,7 +1122,7 @@ axis2_om_element_set_text(axis2_om_element_t *om_element,
     temp_node = NULL;
        
     om_text = axis2_om_text_create(env, NULL, text, &temp_node);
-    AXIS2_OM_NODE_ADD_CHILD(temp_node, env, element_node);
+    AXIS2_OM_NODE_ADD_CHILD(element_node, env, temp_node);
     return AXIS2_SUCCESS;
 }
 

@@ -217,7 +217,7 @@ axis2_soap_fault_detail_add_detail_entry
         return AXIS2_FAILURE;                
     }
 
-    AXIS2_OM_NODE_ADD_CHILD(node, env, fault_detail_impl->om_ele_node);    
+    AXIS2_OM_NODE_ADD_CHILD(fault_detail_impl->om_ele_node,env, node);    
     return AXIS2_SUCCESS;
 }
                             

@@ -279,7 +279,7 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
         
         if(!parent_localname)
             return AXIS2_FAILURE;
-        if(AXIS2_STRCMP(parent_localname, AXIS2_ERROR_SOAP_FAULT_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT) == 0)
+        if(AXIS2_STRCMP(parent_localname, AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME) == 0)
         {
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS, AXIS2_FAILURE);

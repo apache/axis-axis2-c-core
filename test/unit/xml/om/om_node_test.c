@@ -14,7 +14,7 @@ void Testaxis2_om_node_add_child(CuTest *tc)
     parent = axis2_om_node_create(&env);   
     child  = axis2_om_node_create(&env); 
     
-    AXIS2_OM_NODE_ADD_CHILD(child, &env, parent);
+    AXIS2_OM_NODE_ADD_CHILD(parent, &env, child);
     actual = AXIS2_OM_NODE_GET_FIRST_CHILD(parent, &env);
     CuAssertPtrEquals(tc, child, actual);  
     /*axis2_env_free(env); */
@@ -54,7 +54,7 @@ void Testaxis2_om_node_insert_sibling_before(CuTest *tc)
     child  = axis2_om_node_create(&env);
     sibling = axis2_om_node_create(&env);
 
-    AXIS2_OM_NODE_ADD_CHILD(child, &env, parent);
+    AXIS2_OM_NODE_ADD_CHILD(parent,  &env, child);
     AXIS2_OM_NODE_INSERT_SIBLING_BEFORE(child, &env, sibling);
     
     CuAssertPtrEquals(tc, sibling,AXIS2_OM_NODE_GET_FIRST_CHILD(parent, &env));    
@@ -74,7 +74,7 @@ void Testaxis2_om_node_insert_sibling_after(CuTest *tc)
     child  = axis2_om_node_create(&env);
     sibling = axis2_om_node_create(&env);
 
-    AXIS2_OM_NODE_ADD_CHILD(child, &env, parent);
+    AXIS2_OM_NODE_ADD_CHILD(parent, &env, child);
     AXIS2_OM_NODE_INSERT_SIBLING_AFTER(child, &env, sibling);
     
     CuAssertPtrEquals(tc, sibling,AXIS2_OM_NODE_GET_NEXT_SIBLING(child, &env));
@@ -98,9 +98,9 @@ void Testaxis2_om_node_detach(CuTest *tc)
     sibling2 = axis2_om_node_create(&env);
     
     
-    AXIS2_OM_NODE_ADD_CHILD(child, &env, parent);
-    AXIS2_OM_NODE_ADD_CHILD(sibling1, &env, parent);
-    AXIS2_OM_NODE_ADD_CHILD(sibling2, &env, parent);
+    AXIS2_OM_NODE_ADD_CHILD(parent, &env, child);
+    AXIS2_OM_NODE_ADD_CHILD(parent, &env, sibling1);
+    AXIS2_OM_NODE_ADD_CHILD(parent, &env, sibling2);
 
     CuAssertPtrEquals(tc, sibling1, AXIS2_OM_NODE_GET_NEXT_SIBLING(child, &env));
 

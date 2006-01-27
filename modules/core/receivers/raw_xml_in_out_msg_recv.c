@@ -226,7 +226,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
         body_content_element = axis2_om_element_create(env, NULL, res_name, 
             ns, &body_content_node);
         
-        AXIS2_OM_NODE_ADD_CHILD(result_node, env, body_content_node);
+        AXIS2_OM_NODE_ADD_CHILD(body_content_node, env, result_node);
         
     }
     else
@@ -256,7 +256,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
         return AXIS2_FAILURE;
     }
 
-    AXIS2_OM_NODE_ADD_CHILD(body_content_node, env, out_node);
+    AXIS2_OM_NODE_ADD_CHILD(out_node , env ,body_content_node);
 
     return AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
 }

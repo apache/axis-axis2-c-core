@@ -201,7 +201,6 @@ axis2_soap_fault_sub_code_free(axis2_soap_fault_sub_code_t *fault_sub_code,
     axis2_soap_fault_sub_code_impl_t *fault_sub_code_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(fault_sub_code, env, AXIS2_FAILURE);
     fault_sub_code_impl = AXIS2_INTF_TO_IMPL(fault_sub_code);
-    
     if(fault_sub_code_impl->value)
     {
         AXIS2_SOAP_FAULT_VALUE_FREE(fault_sub_code_impl->value, env);

@@ -116,7 +116,8 @@ axis2_libxml2_reader_wrapper_read_input_callback(void *ctx,
                                                  char *buffer,
                                                  int size);                                           
                                                  
-
+static int 
+axis2_libxml2_reader_wrapper_close_input_callback(void *ctx);
                                    
 /************* End function parameters , axis2_libxml2_reader_wrapper_impl_t struct ***/
 
@@ -139,6 +140,8 @@ typedef struct axis2_libxml2_reader_wrapper_impl_t
     /******************************************/
     /* read callback function */
     int (*read_input_callback)(char *buffer, int size,void* ctx);
+
+    int (*close_input_callback)(void *ctx);
     
 } axis2_libxml2_reader_wrapper_impl_t;
 
@@ -298,6 +301,7 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
 AXIS2_DECLARE(axis2_xml_reader_t *)
 axis2_xml_reader_create_for_memory(axis2_env_t **env,
                                     int (*read_input_callback)(char *buffer,int size,void *ctx),
+                                    int (*close_input_callback)(void *ctx),
                                     void* ctx,
                                     const axis2_char_t *encoding)
 {
@@ -312,12 +316,21 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;   
     }
-    
+    wrapper_impl->close_input_callback = NULL;
+    wrapper_impl->read_input_callback = NULL;
     wrapper_impl->read_input_callback = read_input_callback;
+    wrapper_impl->close_input_callback = close_input_callback;
     wrapper_impl->ctx = ctx;
-    wrapper_impl->reader =  xmlReaderForIO(axis2_libxml2_reader_wrapper_read_input_callback,
-             NULL, wrapper_impl, NULL, encoding, XML_PARSE_RECOVER);
-    
+    if(wrapper_impl->close_input_callback)
+    {
+        wrapper_impl->reader =  xmlReaderForIO(axis2_libxml2_reader_wrapper_read_input_callback,
+             axis2_libxml2_reader_wrapper_close_input_callback, wrapper_impl, NULL, encoding, XML_PARSE_RECOVER);
+    }
+    else
+    {
+         wrapper_impl->reader =  xmlReaderForIO(axis2_libxml2_reader_wrapper_read_input_callback,
+                             NULL, wrapper_impl, NULL, encoding, XML_PARSE_RECOVER);
+    }
     if(!(wrapper_impl->reader))
     {
         AXIS2_FREE((*env)->allocator, wrapper_impl);
@@ -411,7 +424,16 @@ axis2_libxml2_reader_wrapper_next(axis2_xml_reader_t *parser,
     }
     */
     ret_val = xmlTextReaderRead(parser_impl->reader);
-    
+    if(ret_val == 0)
+    {
+        AXIS2_LOG_WRITE((*env)->log,"xml stream is over ", AXIS2_LOG_INFO);
+    }
+    if(ret_val == -1)
+    {
+        AXIS2_LOG_WRITE((*env)->log,"critical error occured in xml reader", AXIS2_LOG_CRITICAL);
+        return -1;
+    }
+   
     if(ret_val == 1)
     {
         node = xmlTextReaderNodeType(parser_impl->reader);
@@ -786,6 +808,42 @@ axis2_libxml2_reader_wrapper_error_handler(void *arg,
                                            int severities,
                                            void *locator_ptr)
 {
-    printf("%s", msg);
-    
+    axis2_env_t *env = NULL;
+    env = (axis2_env_t*)arg;
+    axis2_char_t error_msg[200];        
+    switch(severities)
+    {
+        case XML_PARSER_SEVERITY_VALIDITY_WARNING :
+        {
+            sprintf(error_msg, "%s -- VALIDITY WARNTING", msg);            
+            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_CRITICAL);
+        }
+            break;
+        case XML_PARSER_SEVERITY_VALIDITY_ERROR:
+        {
+            sprintf(error_msg, "%s -- VALIDITY ERROR", msg);            
+            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_CRITICAL);
+        }
+            break;
+        case XML_PARSER_SEVERITY_WARNING:
+        {
+            sprintf(error_msg, "%s -- SEVERITY_WARNING", msg);            
+            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_CRITICAL);
+        }
+            break;
+        case XML_PARSER_SEVERITY_ERROR:
+        {
+            sprintf(error_msg, "%s -- SEVERITY_ERROR", msg);            
+            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_CRITICAL);
+        }
+            break;
+        default:
+            break;
+     }
+}
+
+static int
+axis2_libxml2_reader_wrapper_close_input_callback(void *ctx)
+{
+    return ((axis2_libxml2_reader_wrapper_impl_t*)ctx)->close_input_callback(((axis2_libxml2_reader_wrapper_impl_t*)ctx)->ctx);
 }

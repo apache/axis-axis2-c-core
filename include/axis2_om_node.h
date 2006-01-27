@@ -89,14 +89,14 @@ AXIS2_DECLARE_DATA   typedef struct axis2_om_node_ops
                                         axis2_env_t **env);
     /**
     * Adds given node as child to parent
-    * @param om_node child node. cannot be NULL.
+    * @param om_node parent node. cannot be NULL.
     * @param env Environment. MUST NOT be NULL, .
     * @param child child node.
     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
     */
     axis2_status_t (AXIS2_CALL *add_child) (axis2_om_node_t* om_node,
                                             axis2_env_t **env,
-                                            axis2_om_node_t  *parent);
+                                            axis2_om_node_t *child);
 
     /**
     * Detaches given node from the parent and reset the links
