@@ -473,7 +473,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         op_desc = (axis2_op_t *) AXIS2_ARRAY_LIST_GET(ops, env, i);
         params = AXIS2_OP_GET_PARAMS(op_desc, env);
         /* Adding wsa-mapping into service */
-        size = AXIS2_ARRAY_LIST_SIZE(params, env);
+        sizej = AXIS2_ARRAY_LIST_SIZE(params, env);
         for(j = 0; j < sizej; j++)
         {
             axis2_param_t *param = NULL;

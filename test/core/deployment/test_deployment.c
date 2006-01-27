@@ -187,8 +187,8 @@ axis2_test_transport_sender_load()
 
 int main()
 {
-    axis2_test_transport_receiver_load();
-    axis2_test_transport_sender_load();
+    /*axis2_test_transport_receiver_load();
+    axis2_test_transport_sender_load();*/
     axis2_test_dep_engine_load();
 	return 0;
 }

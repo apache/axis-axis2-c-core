@@ -237,7 +237,7 @@ AXIS2_DECLARE(axis2_call_t*) axis2_call_create(axis2_env_t **env, axis2_svc_ctx_
 #define AXIS2_CALL_CLOSE(call, env) ((call)->ops->close(call, env))
 #define AXIS2_CALL_SET_TIME(call, env, time_out_ms) ((call)->ops->set_time(call, env, time_out_ms))
 #define AXIS2_CALL_INVOKE_BLOCKING_WITH_OM ((call)->ops->invoke_blocking_with_om(call, env, op_name, om_node_to_send))
-#define AXIS2_CALL_INVOKE_BLOCKING_WITH_SOAP(call, env, op_name, om_node_to_send) ((call)->ops->invoke_blocking_with_soap(call, env, op_name, envelope))
+#define AXIS2_CALL_INVOKE_BLOCKING_WITH_SOAP(call, env, op_name, envelope) ((call)->ops->invoke_blocking_with_soap(call, env, op_name, envelope))
 #define AXIS2_CALL_INVOKE_NON_BLOCKING_WITH_OM(call, env, op_name, om_node_to_send, callback) ((call)->ops->invoke_non_blocking_with_om(call, env, op_name, om_node_to_send, callback))
 #define AXIS2_CALL_INVOKE_NON_BLOCKING_WITH_SOAP(call, env, op_name, envelope, callback) ((call)->ops->invoke_non_blocking_with_soap(call, env, op_name, envelope, callback))
 #define AXIS2_CALL_CREATE_OP_FILL_FLOW(call, env, op_name) ((call)->ops->create_op_fill_flow(call, env, op_name))

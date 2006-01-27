@@ -473,14 +473,14 @@ axis2_wsdl_interface_set_op(axis2_wsdl_interface_t *wsdl_interface,
     axis2_wsdl_interface_impl_t *interface_impl = NULL;
     axis2_qname_t *wsdl_op_name = NULL;
     axis2_char_t *op_name = NULL;
-    struct axis2_op *op_l = NULL;
+    axis2_op_t *op_l = NULL;
         
     AXIS2_FUNC_PARAM_CHECK(wsdl_interface, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
     
     interface_impl = AXIS2_INTF_TO_IMPL(wsdl_interface);
     
-    op_l = (struct axis2_op *) op;
+    op_l = (axis2_op_t *) op;
         
     wsdl_op_name = AXIS2_WSDL_OP_GET_QNAME(op_l->wsdl_op, env);    
     if (!wsdl_op_name) 

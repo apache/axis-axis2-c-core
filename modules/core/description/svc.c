@@ -589,21 +589,21 @@ axis2_svc_free (axis2_svc_t *svc,
 
 axis2_status_t AXIS2_CALL
 axis2_svc_add_op (axis2_svc_t *svc,
-                            axis2_env_t **env,
-		                    struct axis2_op *axis2_opt)
+                    axis2_env_t **env,
+                    axis2_op_t *op)
 {
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, axis2_opt, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
     
-    status = AXIS2_OP_SET_PARENT(axis2_opt, env, svc);
+    status = AXIS2_OP_SET_PARENT(op, env, svc);
     if(AXIS2_SUCCESS == status)
     {
         axis2_wsdl_interface_t *wsdl_interface = NULL;
         
         wsdl_interface = axis2_svc_get_svc_interface(svc, env);
-        status = AXIS2_WSDL_INTERFACE_SET_OP(wsdl_interface, env, axis2_opt, 
+        status = AXIS2_WSDL_INTERFACE_SET_OP(wsdl_interface, env, op, 
             AXIS2_OP_T);
     }
     return status;
