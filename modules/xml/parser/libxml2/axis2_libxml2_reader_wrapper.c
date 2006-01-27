@@ -816,19 +816,19 @@ axis2_libxml2_reader_wrapper_error_handler(void *arg,
         case XML_PARSER_SEVERITY_VALIDITY_WARNING :
         {
             sprintf(error_msg, "%s -- VALIDITY WARNTING", msg);            
-            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_CRITICAL);
+            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_DEBUG);
         }
             break;
         case XML_PARSER_SEVERITY_VALIDITY_ERROR:
         {
             sprintf(error_msg, "%s -- VALIDITY ERROR", msg);            
-            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_CRITICAL);
+            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_DEBUG);
         }
             break;
         case XML_PARSER_SEVERITY_WARNING:
         {
             sprintf(error_msg, "%s -- SEVERITY_WARNING", msg);            
-            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_CRITICAL);
+            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_DEBUG);
         }
             break;
         case XML_PARSER_SEVERITY_ERROR:

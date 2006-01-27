@@ -611,8 +611,7 @@ identify_soap_version(axis2_soap_builder_t *builder,
     axis2_om_node_t *envelope_node = NULL;
     axis2_om_element_t *om_ele = NULL;
     axis2_char_t *ns_uri = NULL;
-    
-    AXIS2_FUNC_PARAM_CHECK(builder, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, soap_version_uri_from_transport, AXIS2_FAILURE);    
     
     
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
@@ -622,6 +621,8 @@ identify_soap_version(axis2_soap_builder_t *builder,
     {
         AXIS2_ERROR_SET((*env)->error, 
             AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE, AXIS2_FAILURE);
+        AXIS2_LOG_WRITE((*env)->log, " soap message does not have a soap envelope element ",
+            AXIS2_LOG_CRITICAL);        
         return AXIS2_FAILURE;
     }
     envelope_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(builder_impl->soap_envelope, env);
@@ -630,20 +631,21 @@ identify_soap_version(axis2_soap_builder_t *builder,
     om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env);
     
     ns_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
-        
-    if(soap_version_uri_from_transport && AXIS2_STRCMP(soap_version_uri_from_transport, ns_uri) != 0)
-    {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP, AXIS2_FAILURE);
-        return AXIS2_FAILURE;
-    }            
-    if(AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
-        builder_impl->soap_version = AXIS2_SOAP11;        
-    else if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
-        builder_impl->soap_version = AXIS2_SOAP12;          
-        
-        
-    AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(builder_impl->soap_envelope, env, builder_impl->soap_version);        
-    return AXIS2_SUCCESS;
+    if(ns_uri != NULL)
+    {        
+       if(soap_version_uri_from_transport && AXIS2_STRCMP(soap_version_uri_from_transport, ns_uri) != 0)
+        {
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }            
+        if(AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
+            builder_impl->soap_version = AXIS2_SOAP11;        
+        else if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
+            builder_impl->soap_version = AXIS2_SOAP12;          
+        AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(builder_impl->soap_envelope, env, builder_impl->soap_version);        
+        return AXIS2_SUCCESS;
+    }
+    return AXIS2_FAILURE;
 } 
 
 static axis2_status_t 
@@ -656,9 +658,9 @@ axis2_soap_builder_parse_headers(axis2_soap_builder_t *builder,
     int status = AXIS2_SUCCESS;
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(builder_impl->soap_envelope, env);
-    om_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
-    if(soap_header)
+    if(soap_header != NULL)
     {
+        om_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
         while(!AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env))
         {
             status = axis2_soap_builder_next(builder, env);
