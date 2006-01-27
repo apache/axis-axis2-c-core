@@ -109,6 +109,7 @@ AC_CONFIG_FILES([Makefile \
     modules/xml/soap/Makefile \
     modules/xml/om/Makefile \
     modules/util/Makefile \
+    modules/platforms/unix/Makefile \
     modules/wsdl/Makefile \
     test/Makefile \
     test/server/Makefile \

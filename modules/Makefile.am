@@ -1,1 +1,1 @@
-SUBDIRS = util xml wsdl core
+SUBDIRS = util xml wsdl core platforms/unix

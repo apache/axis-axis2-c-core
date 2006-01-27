@@ -20,11 +20,8 @@
 #include <axis2.h>
 #include <axis2_defines.h>
 #include <axis2_env.h>
-#include <axis2_network_handler.h>
 #include <axis2_platform_auto_sense.h>
 
-#define UUIDS_PER_TICK 100
-#define UUID_TIMEOFFSET AXIS2_UNSIGNED_LONGLONGVALUE(0x01B21DD213814000)
 
 #ifdef __cplusplus
 extern "C"
@@ -37,33 +34,6 @@ extern "C"
  * @ingroup axis2_util 
  * @{
  */
- 
-struct axis2_uuid {
-	AXIS2_LONGLONG time_stamp_ver;
-	short int clock_variant;
-	unsigned char mac_addr[6];
-};
-
-/* bits  0-59 time field
- * bits 60-63 version
- * bits 64-65 2 bit variant
- * bits 66-79 clock sequence
- * bits 80-107 node MAC address
- */
-struct axis2_uuid_st {
-    unsigned char   mac[6];		/* pre-determined MAC address */
-    struct timeval time_last;   /* last retrieved timestamp */
-    unsigned long  time_seq;    /* last timestamp sequence counter */
-    short int clock;            /* clock tick - incremented random number */
-};
-
-typedef struct axis2_uuid axis2_uuid_t;
-/**
- * generate a uuid
- * @return generated uuid as a <code>axis2_uuid_t</code> struct
- */
-axis2_uuid_t* AXIS2_CALL
-axis2_uuid_gen_v1(axis2_env_t **env);
 	
 /**
  * generate a uuid
