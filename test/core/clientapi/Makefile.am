@@ -21,8 +21,9 @@ test_clientapi_LDADD   =  -L$(AXIS2C_HOME)/lib \
 	                -laxis2_receivers \
 					-laxis2_clientapi \
 					-laxis2_soap \
-	                -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
-	                -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
+                    -laxis2_unix \
+	                -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \
+	                -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME)
 
 test_client_LDADD   =  -L$(AXIS2C_HOME)/lib \
                     -laxis2_description \
@@ -39,8 +40,9 @@ test_client_LDADD   =  -L$(AXIS2C_HOME)/lib \
 	                -laxis2_receivers \
 					-laxis2_clientapi \
 					-laxis2_soap \
-	                -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
-	                -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
+                    -laxis2_unix \
+	                -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \
+	                -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) 
 
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/include \
