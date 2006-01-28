@@ -391,6 +391,12 @@ axis2_error_init()
     "Null soap envelope in msg_ctx";
     axis2_error_messages[AXIS2_ERROR_UUID_GEN_FAILED] = 
     "Generation of platform dependent uuid failed"; 
+    axis2_error_messages[AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST] =
+    "Invalid XML format in request";
+    axis2_error_messages[AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL] =
+    "Input OM node NULL, Probably error in SOAP request";
+    axis2_error_messages[AXIS2_ERROR_SVC_SKEL_INVALID_OPERATION_PARAMETERS_IN_SOAP_REQUEST] =
+    "Invalid parameters for service operation in SOAP request";
     return AXIS2_SUCCESS;
 }
 

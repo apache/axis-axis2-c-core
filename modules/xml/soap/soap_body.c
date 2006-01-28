@@ -243,18 +243,21 @@ axis2_bool_t AXIS2_CALL axis2_soap_body_has_fault(axis2_soap_body_t *body,
             axis2_om_namespace_t *om_ns = NULL;
             axis2_char_t* namespace_uri = NULL;
             fault_ele = AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT( soap_body_ele, env, body_impl->om_ele_node, &fault_node);
-            localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(fault_ele, env);
-            om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(fault_ele, env);
-            if (om_ns)
-                namespace_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
+            if (fault_ele)
+            {
+                localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(fault_ele, env);
+                om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(fault_ele, env);
+                if (om_ns)
+                    namespace_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
             
-            if(localname && namespace_uri && fault_ele && AXIS2_STRCMP(AXIS2_SOAP_FAULT_LOCAL_NAME, localname) == 0 &&
-                   (AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, namespace_uri) == 0 ||   
-                     AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, namespace_uri) == 0))
-             {
-                body_impl->has_fault = AXIS2_TRUE;
-                return body_impl->has_fault;
-             }   
+                if(localname && namespace_uri && fault_ele && AXIS2_STRCMP(AXIS2_SOAP_FAULT_LOCAL_NAME, localname) == 0 &&
+                       (AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, namespace_uri) == 0 ||   
+                         AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, namespace_uri) == 0))
+                 {
+                    body_impl->has_fault = AXIS2_TRUE;
+                    return body_impl->has_fault;
+                 }   
+             }
         }
     }
     return AXIS2_FALSE;

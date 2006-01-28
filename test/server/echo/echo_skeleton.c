@@ -96,7 +96,7 @@ axis2_om_node_t *echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
      *  corresponding echo method
      */
         
-    return echo(node);
+    return axis2_echo_echo(env, node);
 }
 
 /**

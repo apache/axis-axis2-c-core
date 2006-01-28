@@ -23,6 +23,6 @@
 #include <axis2_om_text.h>
 #include <axis2_om_node.h>
 
-axis2_om_node_t *echo(axis2_om_node_t *node);
+axis2_om_node_t *axis2_echo_echo(axis2_env_t **env, axis2_om_node_t *node);
 
 #endif /* CALC_H*/

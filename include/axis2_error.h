@@ -459,12 +459,19 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX,
         /* Generation of platform dependent uuid failed */
         AXIS2_ERROR_UUID_GEN_FAILED,
+        /** Invalid XML format in request */
+        AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST,
+        /** Input OM node NULL, Probably error in SOAP request */
+        AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL,
+        /** Invalid parameters for service operation in SOAP request */
+        AXIS2_ERROR_SVC_SKEL_INVALID_OPERATION_PARAMETERS_IN_SOAP_REQUEST,
+
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
             AXIS2_ERROR_LAST is used to track the number of error codes present
             for the purpose of sizing the error message array.
           */
-       AXIS2_ERROR_LAST
+        AXIS2_ERROR_LAST
     };
 
 /** @} */

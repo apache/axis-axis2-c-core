@@ -110,13 +110,13 @@ axis2_om_node_t *math_invoke(axis2_svc_skeleton_t *svc_skeleton,
                 if (op_name)
                 {
                     if ( AXIS2_STRCMP(op_name, "add") == 0 )
-                        return axis2_math_svc_add(node);
+                        return axis2_math_add(env, node);
                     if ( AXIS2_STRCMP(op_name, "sub") == 0 )
-                        return axis2_math_svc_sub(node);
+                        return axis2_math_sub(env, node);
                     if ( AXIS2_STRCMP(op_name, "mul") == 0 )
-                        return axis2_math_svc_mul(node);
+                        return axis2_math_mul(env, node);
                     if ( AXIS2_STRCMP(op_name, "div") == 0 )
-                        return axis2_math_svc_div(node);
+                        return axis2_math_div(env, node);
                 }
             }
         }
