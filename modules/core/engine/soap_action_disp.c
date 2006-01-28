@@ -86,7 +86,7 @@ axis2_svc_t* AXIS2_CALL axis2_soap_action_disp_find_svc(axis2_msg_ctx_t *msg_ctx
 {    
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);    
 
-    AXIS2_LOG(env, "Checking for Service using SOAPAction is a TODO item\n", AXIS2_LOG_INFO);
+    AXIS2_LOG(env, "Checking for Service using SOAPAction is a TODO item", AXIS2_LOG_INFO);
 
     return NULL;
 }
@@ -112,23 +112,33 @@ axis2_op_t* AXIS2_CALL axis2_soap_action_disp_find_op(axis2_msg_ctx_t *msg_ctx,
     if (action)
     {
         axis2_op_t *op = NULL;        
+        axis2_char_t message[1024];
+        sprintf(message, "Checking for operation using SOAP action : %s", action);
+        AXIS2_LOG(env, message, AXIS2_LOG_INFO);
 
         op = AXIS2_SVC_GET_OP_BY_SOAP_ACTION(svc, env, action);
         if (!op)
         {
-            axis2_qname_t *op_qname = axis2_qname_create(env, action, NULL, NULL);
-            op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname);
-            AXIS2_QNAME_FREE(op_qname, env);
+            axis2_char_t * op_name = NULL;
+            op_name = AXIS2_RINDEX(action, '/');
+
+            if (op_name)
+            {
+                op_name += 1;
+            }
+            else
+            {
+                op_name = action;
+            }
+
+            if (op_name)
+            {
+                axis2_qname_t *op_qname = axis2_qname_create(env, op_name, NULL, NULL);
+                op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, AXIS2_QNAME_GET_LOCALPART(op_qname, env));
+                AXIS2_QNAME_FREE(op_qname, env);
+            }
         }
 
-        /* HACK: Please remove this when we add support for custom action uri */
-        /*if (!op)
-        {
-            if (action.lastIndexOf('/') != -1) 
-            {
-                op = service.getOperation(new QName(action.substring(action.lastIndexOf('/'), action.length())));
-            }
-        }*/
         return op;
     }
     

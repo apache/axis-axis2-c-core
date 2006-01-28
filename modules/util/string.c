@@ -113,3 +113,11 @@ axis2_strstr (const axis2_char_t *heystack,
 {
 	return strstr(heystack, needle);
 }
+
+
+AXIS2_DECLARE(axis2_char_t *)
+axis2_rindex(const axis2_char_t *s, axis2_char_t c)
+{
+    return rindex(s, c);
+}
+

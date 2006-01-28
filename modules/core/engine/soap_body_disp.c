@@ -114,7 +114,7 @@ axis2_svc_t* AXIS2_CALL axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                                 {
                                     axis2_char_t **url_tokens = NULL;
                                     axis2_char_t message[1024];
-                                    sprintf(message, "Checking for Service using target endpoint address : %s", uri);
+                                    sprintf(message, "Checking for service using SOAP message body's first child's namespace URI : %s", uri);
                                     AXIS2_LOG(env, message, AXIS2_LOG_INFO);
                                     
                                     url_tokens = axis2_parse_request_url_for_svc_and_op(env, uri);
