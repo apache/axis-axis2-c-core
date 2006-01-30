@@ -92,11 +92,28 @@ struct axis2_soap_builder;
                                         (axis2_soap_header_t* header,
                                          axis2_env_t **env,
                                          axis2_char_t* param_role);
-    
+       /**
+        * returns an arraylist of header_blocks which has a given namesapce uri
+        * @param header 
+        * @param env environment must not be null
+        * @param ns_uri namespace uri 
+        * @return pointer to axis2_array_list_t, or null if no header_blocks with
+        * given namespace uri exists
+        * The returned array_list must be freed by the user.
+        */
+        axis2_array_list_t* (AXIS2_CALL *get_header_block_with_namespace_uri)
+                                        (axis2_soap_header_t* header,
+                                         axis2_env_t **env,
+                                         axis2_char_t *ns_uri);
+       /**
+        * 
+        */
         axis2_om_children_qname_iterator_t* (AXIS2_CALL *examine_all_header_blocks)
                                         (axis2_soap_header_t* header,
                                          axis2_env_t **env);
-        
+       /**
+        *
+        */
         axis2_om_children_with_specific_attribute_iterator_t *
             (AXIS2_CALL *extract_header_blocks)(axis2_soap_header_t *header,
                                                 axis2_env_t **env,
@@ -184,8 +201,8 @@ axis2_soap12_header_create_with_parent(axis2_env_t **env,
 #define AXIS2_SOAP_HEADER_EXAMINE_ALL_HEADER_BLOCKS(header, env) \
         ((header)->ops->examine_all_header_blocks(header, env))
         
-#define AXIS2_SOAP_HEADER_EXTRACT_HEADER_BLOCKS(header, env) \
-        ((header)->ops->extract_header_blocks(header, env))                        
+#define AXIS2_SOAP_HEADER_EXTRACT_HEADER_BLOCKS(header, env, role) \
+        ((header)->ops->extract_header_blocks(header, env, role))                        
 
 #define AXIS2_SOAP_HEADER_SET_BASE_NODE(header, env, node) \
         ((header)->ops->set_base_node(header, env, node))
@@ -205,6 +222,8 @@ axis2_soap12_header_create_with_parent(axis2_env_t **env,
 #define AXIS2_SOAP_HEADER_SET_BUILDER(header, env, builder) \
         ((header)->ops->set_builder(header, env, builder))             
 
+#define AXIS2_SOAP_HEADER_GET_HEADER_BLOCK_WITH_NAMESPACE_URI(header, env, uri)\
+        ((header)->ops->get_header_block_with_namespace_uri(header, env, uri))
 /** @} */
 
 #ifdef __cplusplus

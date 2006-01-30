@@ -72,8 +72,10 @@ axis2_om_children_with_specific_attribute_iterator_create(
                                   axis2_bool_t detach)
 {
     axis2_om_children_with_specific_attribute_iterator_impl_t *iterator_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(current_child, env, NULL);
-    
+
+    AXIS2_PARAM_CHECK((*env)->error, current_child, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, attr_qname, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, attr_value, NULL);    
     iterator_impl = (axis2_om_children_with_specific_attribute_iterator_impl_t *)
                         AXIS2_MALLOC((*env)->allocator,
                         sizeof(axis2_om_children_with_specific_attribute_iterator_impl_t));
@@ -167,7 +169,6 @@ axis2_om_children_with_specific_attribute_iterator_has_next(
     axis2_om_children_with_specific_attribute_iterator_impl_t *iterator_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(iterator, env, AXIS2_FAILURE);
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
-
     if(!(iterator_impl->current_child))
     {
         return AXIS2_FALSE;
@@ -181,6 +182,9 @@ axis2_om_children_with_specific_attribute_iterator_has_next(
             axis2_om_element_t *om_ele = NULL;
             om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
                             iterator_impl->current_child, env);
+            if(!om_ele)
+                printf(" om element null");
+            printf("\n localname %s", AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env));
             om_attr = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(om_ele, env,
                             iterator_impl->attr_qname);
             if(om_attr && 
@@ -205,9 +209,10 @@ axis2_om_children_with_specific_attribute_iterator_has_next(
                 iterator_impl->current_child = 
                             AXIS2_OM_NODE_GET_NEXT_SIBLING(
                                 iterator_impl->current_child, env);
-                need_to_move_forward = iterator_impl->current_child != NULL;
+                need_to_move_forward = (iterator_impl->current_child != NULL);
         }
-    }    
+        
+    }   
     return matching_node_found;
 }                                      
 

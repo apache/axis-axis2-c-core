@@ -25,17 +25,12 @@
 typedef struct axis2_soap_header_block_impl_t
 {
     axis2_soap_header_block_t header_block;
-    
+    /** om_element node corresponding to this headerblock */    
     axis2_om_node_t *om_ele_node;
-    
-    axis2_om_element_t *om_ele;
-    
+    /** soap version */
     int soap_version;
     
-    axis2_soap_header_t *parent;
-
     axis2_bool_t processed;
-    
     
 }axis2_soap_header_block_impl_t;
 
@@ -141,9 +136,7 @@ axis2_soap_header_block_create(axis2_env_t **env)
     }                         
     
     header_block_impl->header_block.ops = NULL;
-    header_block_impl->om_ele           = NULL;
     header_block_impl->om_ele_node      = NULL;
-    header_block_impl->parent           = NULL;
     header_block_impl->soap_version     = AXIS2_SOAP_VERSION_NOT_SET;
     
     header_block_impl->header_block.ops = (axis2_soap_header_block_ops_t *)AXIS2_MALLOC(
@@ -179,7 +172,8 @@ axis2_soap_header_block_create(axis2_env_t **env)
     header_block_impl->header_block.ops->set_base_node =
         axis2_soap_header_block_set_base_node;
     header_block_impl->header_block.ops->get_base_node =
-        axis2_soap_header_block_get_base_node;                                                        
+        axis2_soap_header_block_get_base_node;    
+            
 
     return &(header_block_impl->header_block);
 }
@@ -195,7 +189,7 @@ axis2_soap_header_block_create_with_parent(axis2_env_t **env,
     axis2_soap_header_block_t *header_block = NULL;
     axis2_om_node_t *this_node = NULL;
     axis2_om_node_t *parent_node = NULL;
-    
+    axis2_om_element_t *om_ele = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, localname, NULL);
     
@@ -205,11 +199,10 @@ axis2_soap_header_block_create_with_parent(axis2_env_t **env,
     
     parent_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(header, env);    
     header_block_impl = AXIS2_INTF_TO_IMPL(header_block);
-    header_block_impl->om_ele = axis2_om_element_create( env,
-                                    parent_node, localname, ns , &this_node);
-                                    
+    om_ele = axis2_om_element_create( env, parent_node, localname, 
+                                      ns , &this_node);
+
     header_block_impl->om_ele_node = this_node; 
-    header_block_impl->parent = header;               
     return &(header_block_impl->header_block);                                
 }
 
@@ -406,6 +399,7 @@ axis2_soap_header_block_set_attribute
     axis2_om_attribute_t* om_attr = NULL;
     axis2_qname_t *qn = NULL;
     axis2_om_namespace_t *om_ns = NULL;
+    axis2_om_element_t *om_ele = NULL;
     AXIS2_FUNC_PARAM_CHECK(header_block, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, attr_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_envelope_namespace_uri, AXIS2_FAILURE);
@@ -415,7 +409,9 @@ axis2_soap_header_block_set_attribute
     qn = axis2_qname_create(env, attr_name, soap_envelope_namespace_uri, NULL);
     if(!qn)
         return AXIS2_FAILURE;
-    om_attr = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(header_block_impl->om_ele, env, qn);
+    om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
+                                    header_block_impl->om_ele_node, env);
+    om_attr = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(om_ele, env, qn);
     if(om_attr)
     {
        AXIS2_OM_ATTRIBUTE_SET_VALUE(om_attr, env, attr_value);
@@ -427,8 +423,8 @@ axis2_soap_header_block_set_attribute
                                           AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX);
                                             
         om_attr = axis2_om_attribute_create(env, attr_name, attr_value, om_ns);
-        AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(header_block_impl->om_ele, 
-                                env, om_attr, header_block_impl->om_ele_node);
+        AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(om_ele, env, om_attr, 
+                                        header_block_impl->om_ele_node);
     }
     AXIS2_QNAME_FREE(qn, env);
     return AXIS2_SUCCESS;    
@@ -445,6 +441,7 @@ axis2_soap_header_block_get_attribute
     axis2_om_attribute_t* om_attr = NULL;
     axis2_char_t *attr_value = NULL;
     axis2_qname_t *qn = NULL;
+    axis2_om_element_t *om_ele = NULL;
     AXIS2_FUNC_PARAM_CHECK(header_block, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, attr_name, NULL);
     AXIS2_PARAM_CHECK((*env)->error, soap_envelope_namespace_uri, NULL);
@@ -453,7 +450,9 @@ axis2_soap_header_block_get_attribute
     qn = axis2_qname_create(env, attr_name, soap_envelope_namespace_uri, NULL);
     if(!qn)
         return NULL;
-    om_attr = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(header_block_impl->om_ele, env, qn);
+    om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
+                    header_block_impl->om_ele_node, env);
+    om_attr = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(om_ele, env, qn);
     if(om_attr)
        attr_value = AXIS2_OM_ATTRIBUTE_GET_VALUE(om_attr, env);
     AXIS2_QNAME_FREE(qn, env);
@@ -495,8 +494,6 @@ axis2_status_t AXIS2_CALL axis2_soap_header_block_set_base_node
         return AXIS2_FAILURE;
    }
    header_block_impl->om_ele_node = node;
-   header_block_impl->om_ele = (axis2_om_element_t *)
-            AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
    return AXIS2_SUCCESS;
 
 }
@@ -558,4 +555,4 @@ axis2_soap12_header_block_create_with_parent(axis2_env_t **env,
         return NULL;
     axis2_soap_header_block_set_soap_version(header_block, env, AXIS2_SOAP12);
     return header_block;
-}                                           
+}

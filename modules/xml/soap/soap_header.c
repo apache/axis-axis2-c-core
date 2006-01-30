@@ -95,12 +95,18 @@ axis2_soap_header_set_soap_version(axis2_soap_header_t *header,
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_set_header_block(axis2_soap_header_t *header,
                                    axis2_env_t **env,
-                                   struct axis2_soap_header_block *header_block);
+                                   axis2_soap_header_block_t *header_block);
                                    
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_set_builder(axis2_soap_header_t *header,
                               axis2_env_t **env,
-                              struct axis2_soap_builder *builder);                                   
+                              axis2_soap_builder_t *builder); 
+
+axis2_array_list_t* AXIS2_CALL
+axis2_soap_header_get_header_block_with_namespace_uri
+                                        (axis2_soap_header_t* header,
+                                         axis2_env_t **env,
+                                         axis2_char_t *ns_uri);                              
                                    
 /*************** function implementations *************************************/
 
@@ -155,8 +161,9 @@ axis2_soap_header_create(axis2_env_t **env)
     header_impl->soap_header.ops->set_header_block = 
         axis2_soap_header_set_header_block;
     header_impl->soap_header.ops->set_builder =
-        axis2_soap_header_set_builder;        
-            
+        axis2_soap_header_set_builder;      
+    header_impl->soap_header.ops->get_header_block_with_namespace_uri =
+        axis2_soap_header_get_header_block_with_namespace_uri;
     return &(header_impl->soap_header);        
 }
 
@@ -453,4 +460,57 @@ axis2_soap_header_set_builder(axis2_soap_header_t *header,
     header_impl = AXIS2_INTF_TO_IMPL(header);
     header_impl->soap_builder = builder;
     return AXIS2_SUCCESS;
+}
+
+axis2_array_list_t* AXIS2_CALL
+axis2_soap_header_get_header_block_with_namespace_uri
+                                        (axis2_soap_header_t* header,
+                                         axis2_env_t **env,
+                                         axis2_char_t *ns_uri)
+{
+    axis2_soap_header_impl_t *header_impl = NULL;
+    axis2_array_list_t *header_block_list = NULL;
+    axis2_hash_index_t *hash_index = NULL;
+    axis2_soap_header_block_t *header_block = NULL;
+    axis2_om_node_t *header_block_om_node = NULL;
+    axis2_om_element_t *header_block_om_ele = NULL;
+    axis2_om_namespace_t *ns = NULL;
+    axis2_char_t *hb_namespace_uri = NULL;
+    int found = 0;
+    void *hb =  NULL;
+    AXIS2_PARAM_CHECK((*env)->error, ns_uri, AXIS2_FAILURE);
+    header_impl = AXIS2_INTF_TO_IMPL(header);
+    header_block_list = axis2_array_list_create(env, 10);
+    for(hash_index = axis2_hash_first(header_impl->header_blocks, env);
+            hash_index; hash_index = axis2_hash_next( env, hash_index))
+    {
+        axis2_hash_this(hash_index, NULL, NULL, &hb);
+        header_block = (axis2_soap_header_block_t*)hb;
+        header_block_om_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block, env);
+        header_block_om_ele  = (axis2_om_element_t *)
+            AXIS2_OM_NODE_GET_DATA_ELEMENT(header_block_om_node, env);
+        ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(header_block_om_ele, env);
+        hb_namespace_uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+        if(AXIS2_STRCMP(hb_namespace_uri, ns_uri) == 0)
+        {
+            AXIS2_ARRAY_LIST_ADD(header_block_list, env, header_block);
+            found++;            
+        }            
+        
+        hb = NULL;
+        header_block = NULL;
+        header_block_om_ele = NULL;
+        header_block_om_node = NULL;
+        ns = NULL;
+        hb_namespace_uri = NULL;
+    }
+    if(found > 0)
+    {
+        return header_block_list;  
+    }
+    else
+    {
+        AXIS2_ARRAY_LIST_FREE(header_block_list, env);
+    }
+    return NULL;        
 }

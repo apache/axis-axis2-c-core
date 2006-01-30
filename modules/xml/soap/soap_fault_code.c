@@ -403,8 +403,6 @@ axis2_soap_fault_code_set_base_node(axis2_soap_fault_code_t *fault_code,
         return AXIS2_FAILURE;
    }
    fault_code_impl->om_ele_node = node;
-   fault_code_impl->om_ele = (axis2_om_element_t *)
-            AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
    return AXIS2_SUCCESS;
 
 }

@@ -178,7 +178,8 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
     soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(builder_helper_impl->soap_builder, env);
     soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
     soap_fault = AXIS2_SOAP_BODY_GET_FAULT(soap_body, env);   
-    
+    if(!soap_fault)
+        printf("soap fault null");
     if(element_level == 4)
     {
         if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME, ele_localname) == 0)
@@ -194,7 +195,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             {
                 axis2_soap_fault_code_t* soap_fault_code = NULL;
                 soap_fault_code = axis2_soap_fault_code_create(env);
-                AXIS2_SOAP_FAULT_CODE_SET_BASE_NODE(soap_fault, env, om_ele_node);            
+                AXIS2_SOAP_FAULT_CODE_SET_BASE_NODE(soap_fault_code , env, om_ele_node);            
                 AXIS2_SOAP_FAULT_CODE_SET_SOAP_VERSION(soap_fault_code, env, AXIS2_SOAP12);
                 
                 AXIS2_SOAP_FAULT_CODE_SET_BUILDER(soap_fault_code, env, 

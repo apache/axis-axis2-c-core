@@ -276,7 +276,7 @@ axis2_soap_fault_t* AXIS2_CALL axis2_soap_body_get_fault(axis2_soap_body_t *body
     axis2_soap_body_impl_t *body_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(body, env, NULL);
     body_impl = AXIS2_INTF_TO_IMPL(body);
-    if(body_impl->has_fault)
+    if(body_impl->soap_fault)
     {
         return body_impl->soap_fault;
     }

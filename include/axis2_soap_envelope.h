@@ -53,108 +53,132 @@ extern "C"
  AXIS2_DECLARE_DATA   struct axis2_soap_envelope_ops
     {
         /**
-         * Returns the <CODE>SOAPHeader</CODE> object for this <CODE>
-         * SOAPEnvelope</CODE> object. <P> This SOAPHeader will just be a container
-         * for all the headers in the <CODE>OMMessage</CODE> </P>
-         *
-         * @return the <CODE>SOAPHeader</CODE> object or <CODE> null</CODE> if there
-         *         is none
-         * @throws org.apache.axis2.om.OMException
-         *                     if there is a problem obtaining
-         *                     the <CODE>SOAPHeader</CODE>
-         *                     object
-         * @throws OMException
+         * gets the soap header of this soap envelope
+         * @param envelope soap envelope
+         * @param env environment must not be null
+         * @return soap header null it no header is present
          */
         struct axis2_soap_header* (AXIS2_CALL *get_header)
                                             (axis2_soap_envelope_t *envelope,
                                              axis2_env_t **env);
         /**
-         * Convenience method to add a SOAP header to this envelope
-         *
-         * @param namespaceURI
-         * @param name
-         */
-         /*
-        struct axis2* (AXIS2_CALL *add_header)
-                                            (axis2_soap_envelope_t *envelope,
-                                             axis2_env_t **env,
-                                             axis2_char_t *namespace_uri, 
-                                             axis2_char_t *name);
-        */                                             
-        /**
-         * Returns the <CODE>SOAPBody</CODE> object associated with this
-         * <CODE>SOAPEnvelope</CODE> object. <P> This SOAPBody will just be a
-         * container for all the BodyElements in the <CODE>OMMessage</CODE> </P>
-         *
-         * @return the <CODE>SOAPBody</CODE> object for this <CODE>
-         *         SOAPEnvelope</CODE> object or <CODE>null</CODE> if there is none
-         * @throws org.apache.axis2.om.OMException
-         *                     if there is a problem obtaining
-         *                     the <CODE>SOAPBody</CODE> object
-         * @throws OMException
+         * Returns the soap body associated with this soap envelope
+         * @param envelope soap_envelope
+         * @param env environment
+         * @return soap_body
          */
         struct axis2_soap_body* (AXIS2_CALL *get_body)
                                         (axis2_soap_envelope_t *envelope,
                                          axis2_env_t **env);
-        
+        /**
+         * serialize function , serialize the soap envelope 
+         * IF the soap version it set to soap11 the soap fault part is converted 
+         * to soap11 fault even is the underlying soap fault is of soap12 type
+         * @param envelope soap envelope
+         * @param env environment must not be null
+         * @param om_output 
+         * @param cache whether caching is enabled or not
+         * @return status code , AXIS2_SUCCESS if success ,
+         *                 AXIS2_FAILURE otherwise
+         */
         axis2_status_t (AXIS2_CALL *serialize)
                                         (axis2_soap_envelope_t *envelope,
                                          axis2_env_t **env,
                                          axis2_om_output_t *om_output, 
                                          axis2_bool_t cache);
-                                         
+        /**
+         * Free function, This function deallocate all the resources associated 
+         * with the soap_envelope
+         * IT frees it's soap body and soap headers as well as the underlying
+         * om node tree by calling AXIS2_OM_NODE_FREE_TREE function
+         * @param envelope soap_envelope
+         * @param env environment
+         * @return status code AXIS2_SUCCESS on success , AXIS2_FAILURE otherwise
+         */         
         axis2_status_t (AXIS2_CALL *free)(axis2_soap_envelope_t *envelope,
                                           axis2_env_t **env);
-                                          
+        /**
+         * returns the om_node associated with this soap envelope
+         * @param envelope soap_envelope
+         * @param env environment
+         * @return axis2_om_node_t pointer
+         */
         axis2_om_node_t* (AXIS2_CALL *get_base_node)
                                         (axis2_soap_envelope_t *envelope,
                                          axis2_env_t **env);
-                                         
+
+        /** 
+         * This function is intended to be used by the soap builder
+         * associate an om_node with the soap_envelope
+         */
         axis2_status_t (AXIS2_CALL *set_base_node)
                                         (axis2_soap_envelope_t *envelope,
                                          axis2_env_t **env,
                                          axis2_om_node_t *base_node);                                        
-                                         
+           
+        /** returns the soap version of this soap envelope
+         * @param envelope soap_envelope
+         * @param env environment must not be null
+         * @return soap_version AXIS2_SOAP12 or AXIS2_SOAP11
+         */         
         int (AXIS2_CALL *get_soap_version)(axis2_soap_envelope_t *envelope,
                                            axis2_env_t **env);
-                                           
+                   
+        /**
+         * set soap version
+         */         
         axis2_status_t (AXIS2_CALL *set_soap_version)
                                           (axis2_soap_envelope_t *envelope,
                                            axis2_env_t **env,
                                            int soap_version);
-                                           
+        /**
+         * set soap body. This is just a pointer assignment intended to be used
+         * by soap builder . Does not adjust the om tree accordingly
+         */         
         axis2_status_t (AXIS2_CALL *set_body)(axis2_soap_envelope_t *envelope,
                                               axis2_env_t **env, 
                                               struct axis2_soap_body *body);
-                                              
+        /** 
+         * set soap header. This is just a pointer assignment intended to be used
+         * by soap builder . Does not adjust the om tree accordingly
+         */         
         axis2_status_t (AXIS2_CALL *set_header)(axis2_soap_envelope_t *envelope,
                                                 axis2_env_t **env, 
                                                 struct axis2_soap_header *header);
-                                                
+
+        /** return the soap envelope namespace 
+         * @param envelope 
+         * @param env 
+         * @return axis2_om_namespace_t 
+         */                                                
         axis2_om_namespace_t* (AXIS2_CALL *get_namespace)
                                                 (axis2_soap_envelope_t *envelope,
                                                  axis2_env_t **env);
+        /** 
+         * Associate a soap builder with this soap envelope
+         * This function is intended to be used by builder
+         */                                                
 
         axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_envelope_t *envelope,
                                                  axis2_env_t **env,
                                                  struct axis2_soap_builder *builder);
     };
 
-  /**
-    * \brief soap_envelope struct
-    * represent a soap_envelope
-    */
-    struct axis2_soap_envelope
-    {
-        /** operation of axis2_soap_envelope struct */
-        axis2_soap_envelope_ops_t *ops;
-       
-    };
+/**
+ * \brief soap_envelope struct
+ * represent a soap_envelope
+ */
+struct axis2_soap_envelope
+{
+  /** operation of axis2_soap_envelope struct */
+  axis2_soap_envelope_ops_t *ops;
+};
 
-  /**
-    * creates a soap body struct 
-    * @param env Environment. MUST NOT be NULL
-    */
+ /**
+  * creates a soap envelope struct with empty values 
+  * Indended to be uaed by soap_builder
+  * @param env Environment. MUST NOT be NULL
+  */
 AXIS2_DECLARE(axis2_soap_envelope_t*)
 axis2_soap_envelope_create(axis2_env_t **env, axis2_om_namespace_t *ns);
 
@@ -179,7 +203,9 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
 */        
 #define AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env) \
         ((envelope)->ops->get_body(envelope, env))
-        
+/**
+ *   serialize soap envelope
+ */
 #define AXIS2_SOAP_ENVELOPE_SERIALIZE(envelope, env, om_output, cache) \
         ((envelope)->ops->serialize(envelope, env, om_output, cache))
         

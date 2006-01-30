@@ -15,6 +15,7 @@
  */
 
 #include <axis2_allocator.h>
+#include <axis2.h>
 #include <stdlib.h>
 
 AXIS2_DECLARE(axis2_allocator_t *)
@@ -35,4 +36,12 @@ axis2_allocator_init (axis2_allocator_t * allocator)
         }
     }
     return NULL;
+}
+
+AXIS2_DECLARE(axis2_status_t)
+axis2_allocator_free(axis2_allocator_t *allocator)
+{
+    if(allocator)
+        free(allocator);
+    return AXIS2_SUCCESS;
 }
