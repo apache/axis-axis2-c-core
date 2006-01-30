@@ -246,11 +246,11 @@ axis2_om_node_t *AXIS2_CALL
 axis2_build_OM(axis2_desc_builder_t *desc_builder,
                 axis2_env_t **env) 
 {
-    struct axis2_desc_builder_impl *builder_impl = NULL;
-    struct axis2_om_stax_builder *builder = NULL;
-    struct axis2_xml_reader *reader = NULL;
-    struct axis2_om_document *document = NULL;
-    struct axis2_om_node *root = NULL;
+    axis2_desc_builder_impl_t *builder_impl = NULL;
+    axis2_om_stax_builder_t *builder = NULL;
+    axis2_xml_reader_t *reader = NULL;
+    axis2_om_document_t *document = NULL;
+    axis2_om_node_t *root = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
     
@@ -299,14 +299,14 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
     return root;
 }
 
-struct axis2_flow *AXIS2_CALL
+axis2_flow_t *AXIS2_CALL
 axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
                                 axis2_env_t **env,
                                 axis2_om_element_t *flow_element,
                                 axis2_param_container_t *parent,
                                 axis2_om_node_t *flow_node)
 {
-    struct axis2_flow *flow = NULL;
+    axis2_flow_t *flow = NULL;
     axis2_om_children_qname_iterator_t *handlers = NULL;
     axis2_qname_t *child = NULL;
         
@@ -358,9 +358,9 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                                     struct axis2_param_container *parent)
 {
     axis2_handler_desc_t *handler = NULL;
-    struct axis2_om_attribute *name_attrib = NULL;
+    axis2_om_attribute_t *name_attrib = NULL;
     axis2_qname_t *attr_qname = NULL;
-    struct axis2_om_attribute *class_attrib = NULL;
+    axis2_om_attribute_t *class_attrib = NULL;
     axis2_qname_t *class_qname = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *attrib_value = NULL;

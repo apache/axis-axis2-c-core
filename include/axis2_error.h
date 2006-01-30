@@ -455,6 +455,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_FILE_NAME_NOT_SET,
         AXIS2_ERROR_REPOS_LISTENER_INIT_FAILED,
         AXIS2_ERROR_INVALID_STATE_DLL_DESC,
+        AXIS2_ERROR_UNSUPPORTED_TYPE,
         /* Null soap envelope in msg_ctx */
         AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX,
         /* Generation of platform dependent uuid failed */

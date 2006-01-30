@@ -19,6 +19,8 @@
 
 #include <axis2_endpoint_ref.h>
 #include <axis2_call.h>
+#include <axis2_xml_reader.h>
+
 
 #ifdef __cplusplus
 extern "C"
@@ -38,7 +40,10 @@ extern "C"
 
 typedef struct axis2_stub_ops axis2_stub_ops_t;   
 typedef struct axis2_stub axis2_stub_t;
-  
+ 
+#define AXIS2_SOAP_11 0
+#define AXIS2_SOAP_12 1
+
 AXIS2_DECLARE_DATA struct axis2_stub_ops
 {
     axis2_status_t (AXIS2_CALL * 
@@ -55,79 +60,103 @@ AXIS2_DECLARE_DATA struct axis2_stub_ops
                         axis2_env_t **env,
                         axis2_char_t *endpoint_uri);
     
+    
+    /**
+     *
+     * @param sender_transport
+     * @param listener_transport
+     * @param use_separate_transport
+     */
     axis2_status_t (AXIS2_CALL *
-    invoke_blocking) (axis2_stub_t *stub,
+    set_transport_info)(axis2_stub_t *stub,
                         axis2_env_t **env,
-                        axis2_msg_ctx_t *msg_ctx);
+                        axis2_char_t *sender_transport,
+                        axis2_char_t *listener_transport,
+                        axis2_bool_t use_separate_listener);
+    
+    /**
+     *
+     * @param key
+     * @param value
+     */
+    axis2_status_t (AXIS2_CALL *
+    put)(axis2_stub_t *stub,
+            axis2_env_t **env,
+            axis2_char_t *key,
+            void *value);
+    
+    /**
+     *
+     * @param key
+     * @return the object
+     */
+    void *(AXIS2_CALL *
+    get)(axis2_stub_t *stub,
+                    axis2_env_t **env,
+                    axis2_char_t *key);
     
     axis2_status_t (AXIS2_CALL *
-    invoke_non_blocking) (axis2_stub_t *stub,
+    engage_module)(axis2_stub_t *stub,
+                    axis2_env_t **env,
+                    axis2_char_t *module_name);
+    
+    /**
+     * Set the soap version
+     * @param soap_version
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_soap_version)(axis2_stub_t *stub,
                         axis2_env_t **env,
-                        axis2_msg_ctx_t *msg_ctx,
-                        axis2_callback_t *callback);
-                        
-    /**
-     * Invoke the blocking/Synchronous call
-     *
-     * @param op - this will be used to identify the operation in the client 
-     *              side, without dispatching
-     * @param toSend - This should be OM Element (payload)
-     * @return
-     */
-    axis2_om_node_t* (AXIS2_CALL *
-    invoke_blocking_with_om)(struct axis2_stub *stub, 
-                                axis2_env_t **env,
-                                axis2_char_t *op_name, 
-                                axis2_om_node_t *om_node_to_send);
-    /**
-     * Invoke the blocking/Synchronous call
-     *
-     * @param op_name - this will be used to identify the operation in the client
-     *                      side, without dispatching
-     * @param envelope - This should be SOAPEnvelope
-     * @return
-     */
-    axis2_soap_envelope_t* (AXIS2_CALL *
-    invoke_blocking_with_soap)(struct axis2_stub *stub, 
-                                axis2_env_t **env,
-                                axis2_char_t *op_name, 
-                                axis2_soap_envelope_t *envelope);
+                        int soap_version);
     
-    /**
-     * Invoke the nonblocking/Asynchronous call
-     *
-     * @param op_name
-     * @param om_node_to_send   -  This should be OM Element (payload)
-     *                 invocation behaves accordingly
-     * @param callback
-     */
+    axis2_char_t *(AXIS2_CALL *
+    get_svc_ctx_id)(axis2_stub_t *stub,
+                    axis2_env_t **env);
+    
+    
+    axis2_om_node_t *(AXIS2_CALL *
+    get_element_from_reader)(axis2_stub_t *stub,
+                                axis2_env_t **env,
+                                axis2_xml_reader_t *reader);
+
+
     axis2_status_t (AXIS2_CALL *
-    invoke_non_blocking_with_om)(struct axis2_stub *stub, 
-                                    axis2_env_t **env,
-                                    axis2_char_t *op_name,
-                                    axis2_om_node_t *om_node_to_send,
-                                    axis2_callback_t *callback);
+    set_value_doc)(axis2_stub_t *stub,
+                    axis2_env_t **env,
+                    axis2_soap_envelope_t *envelope,
+                    axis2_om_node_t *value,
+                    axis2_bool_t is_header);
+
     /**
-     * Invoke the nonblocking/Asynchronous call
-     *
-     * @param op_name
-     * @param envelope   -  This should be a SOAP Envelope
-     *                 invocation behaves accordingly
-     * @param callback
+     * Extract the correct element - A util method
+     * @param env
+     * @param type
+     * @return the relevant element to be databound
      */
+    axis2_om_node_t *(AXIS2_CALL *
+    get_element)(axis2_stub_t *stub,
+                    axis2_env_t **env,
+                    axis2_soap_envelope_t *envelope,
+                    axis2_char_t *type);
     
     axis2_status_t (AXIS2_CALL *
-    invoke_non_blocking_with_soap)(struct axis2_stub *call, 
-                                    axis2_env_t **env,
-                                    axis2_char_t *op_name,
-                                    axis2_soap_envelope_t *envelope,
-                                    axis2_callback_t * callback);
+    populate_properties)(axis2_stub_t *stub,
+                            axis2_env_t **env,
+                            axis2_call_t *call);
+        
+    axis2_status_t (AXIS2_CALL *
+    populate_modules)(axis2_stub_t *stub,
+                        axis2_env_t **env,
+                        axis2_call_t *call); 
+
+    axis2_call_t *(AXIS2_CALL *
+    get_call_obj)(axis2_stub_t *stub,
+                            axis2_env_t **env);
 } ;
 
 AXIS2_DECLARE_DATA struct axis2_stub 
 {
-    axis2_stub_ops_t *ops; 
-    axis2_array_list_t *func_array;
+    axis2_stub_ops_t *ops;
 };
 
 /**
@@ -159,23 +188,44 @@ axis2_stub_create_with_endpoint_uri(axis2_env_t **env,
 #define AXIS2_STUB_SET_ENDPOINT_URI(stub, env, endpoint_uri) \
 		((stub)->ops->set_endpoint_uri (stub, env, endpoint_uri))
         
-#define AXIS2_STUB_INVOKE_BLOCKING(stub, env, msg_ctx) \
-		((stub)->ops->invoke_blocking (stub, env, msg_ctx))  
+#define AXIS2_STUB_SET_TRANSPORT_INFO(stub, env, sender_transport, listener_transport, \
+        use_separate_listener) \
+		((stub)->ops->set_transport_info (stub, env, sender_transport, \
+        listener_transport, use_separate_listener))  
 
-#define AXIS2_STUB_INVOKE_NON_BLOCKING(stub, env, msg_ctx, callback) \
-		((stub)->ops->invoke_non_blocking (stub, env, msg_ctx, callback))
-
-#define AXIS2_STUB_INVOKE_BLOCKING_WITH_OM(stub, env, op_name, om_node_to_send) \
-		((stub)->ops->invoke_blocking_with_om (stub, env, op_name, om_node_to_send))  
-
-#define AXIS2_STUB_INVOKE_NON_BLOCKING_WITH_OM(stub, env, op_name, om_node_to_send, callback) \
-		((stub)->ops->invoke_non_blocking_with_om (stub, env, op_name, om_node_to_send, callback))
+#define AXIS2_STUB_PUT(stub, env, key, value) \
+		((stub)->ops->put (stub, env, key, value))
         
-#define AXIS2_STUB_INVOKE_BLOCKING_WITH_SOAP(stub, env, op_name, envelope) \
-		((stub)->ops->invoke_blocking_with_soap (stub, env, op_name, envelope))  
+#define AXIS2_STUB_GET(stub, env, key) \
+		((stub)->ops->get (stub, env, key))
 
-#define AXIS2_STUB_INVOKE_NON_BLOCKING_WITH_SOAP(stub, env, op_name, envelope, callback) \
-		((stub)->ops->invoke_non_blocking_with_soap (stub, env, op_name, envelope, callback))
+#define AXIS2_STUB_ENGAGE_MODULE(stub, env, module_name) \
+		((stub)->ops->engage_module (stub, env, module_name))
+        
+#define AXIS2_STUB_SET_SOAP_VERSION(stub, env, soap_version) \
+		((stub)->ops->set_soap_version (stub, env, soap_version))
+
+#define AXIS2_STUB_GET_SVC_CTX_ID(stub, env) \
+		((stub)->ops->get_svc_ctx_id (stub, env))
+        
+#define AXIS2_STUB_GET_ELEMENT_FROM_READER(stub, env, reader) \
+		((stub)->ops->get_element_from_reader (stub, env, reader))
+
+#define AXIS2_STUB_SET_VALUE_DOC(stub, env, envelope, value, is_header) \
+		((stub)->ops->set_value_doc (stub, env, envelope, value, is_header))
+        
+#define AXIS2_STUB_GET_ELEMENT(stub, env, envelope, type) \
+		((stub)->ops->get_element (stub, env, envelope, type))
+
+#define AXIS2_STUB_POPULATE_PROPERTIES(stub, env, call) \
+		((stub)->ops->populate_properties (stub, env, call))
+        
+#define AXIS2_STUB_POPULATE_MODULES(stub, env, call) \
+		((stub)->ops->populate_modules (stub, env, call))
+
+#define AXIS2_STUB_GET_CALL_OBJ(stub, env) \
+		((stub)->ops->get_call_obj (stub, env))
+        
         
 /** @} */
 

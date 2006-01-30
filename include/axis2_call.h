@@ -73,31 +73,6 @@ struct axis2_call_ops
      */
     
     /**
-     * This invocation done via this method blocks till the result arrives, 
-     * using this method does not indicate
-     * anyhting about the transport used or the nature of the transport.
-     * e.g. invocation done with this method might
-     * <ol>
-     * <li>send request via http and recevie the response via the return path of the same http connection</li>
-     * <li>send request via http and recevie the response different http connection</li>
-     * <li>send request via an email smtp and recevie the response via an email</li>
-     * </ol>
-     */
-    
-    axis2_msg_ctx_t* (AXIS2_CALL *invoke_blocking)(struct axis2_call *call, 
-                                        axis2_env_t **env,
-                                        axis2_op_t *op,
-                                        axis2_msg_ctx_t *msg_ctx);
-    /**
-     * This invocation done via this method blocks till the result arrives, using this method does not indicate
-     * anyhting about the transport used or the nature of the transport.
-     */
-    axis2_status_t (AXIS2_CALL *invoke_non_blocking)(struct axis2_call *call, 
-                                        axis2_env_t **env,
-                                        axis2_op_t *op,
-                                        axis2_msg_ctx_t *msg_ctx,
-                                        axis2_callback_t *callback);
-    /**
      * @param to
      */
     axis2_status_t (AXIS2_CALL *set_to)(struct axis2_call *call, 
@@ -211,6 +186,17 @@ struct axis2_call_ops
      */
     axis2_msg_ctx_t* (AXIS2_CALL *get_last_res_msg_ctx)(struct axis2_call *call, 
         axis2_env_t **env);
+    
+    /**
+     * @param key
+     * @param value
+     */
+    axis2_status_t (AXIS2_CALL *
+    set)(axis2_call_t *call,
+                    axis2_env_t **env,
+                    axis2_char_t *key,
+                    void *value);
+    
     axis2_status_t (AXIS2_CALL *free)(struct axis2_call *call, 
                                        axis2_env_t **env);
 };
@@ -229,19 +215,19 @@ AXIS2_DECLARE(axis2_call_t*) axis2_call_create(axis2_env_t **env, axis2_svc_ctx_
     
 /************************** Start of function macros **************************/
 
-#define AXIS2_CALL_INVOKE_BLOCKING(call, env, op, msg_ctx) ((call)->ops->invoke_blocking(call, env, op, msg_ctx))
-#define AXIS2_CALL_INVOKE_NON_BLOCKING(call, env, op, msg_ctx, callback) ((call)->ops->invoke_non_blocking(call, env, op, msg_ctx, callback))
 #define AXIS2_CALL_SET_TO(call, env, to) ((call)->ops->set_to(call, env, to))
 #define AXIS2_CALL_SET_TRANSPORT_INFO(call, env, sender_transport, listener_transport, use_separate_listener) ((call)->ops->set_transport_info(call, env, sender_transport, listener_transport, use_separate_listener))
 #define AXIS2_CALL_CHECK_TRANSPORT(call, env, msg_ctx) ((call)->ops->check_transport(call, env, msg_ctx))
 #define AXIS2_CALL_CLOSE(call, env) ((call)->ops->close(call, env))
 #define AXIS2_CALL_SET_TIME(call, env, time_out_ms) ((call)->ops->set_time(call, env, time_out_ms))
-#define AXIS2_CALL_INVOKE_BLOCKING_WITH_OM ((call)->ops->invoke_blocking_with_om(call, env, op_name, om_node_to_send))
+#define AXIS2_CALL_INVOKE_BLOCKING_WITH_OM(call, env, op_name, om_node_to_send) ((call)->ops->invoke_blocking_with_om(call, env, op_name, om_node_to_send))
 #define AXIS2_CALL_INVOKE_BLOCKING_WITH_SOAP(call, env, op_name, envelope) ((call)->ops->invoke_blocking_with_soap(call, env, op_name, envelope))
 #define AXIS2_CALL_INVOKE_NON_BLOCKING_WITH_OM(call, env, op_name, om_node_to_send, callback) ((call)->ops->invoke_non_blocking_with_om(call, env, op_name, om_node_to_send, callback))
 #define AXIS2_CALL_INVOKE_NON_BLOCKING_WITH_SOAP(call, env, op_name, envelope, callback) ((call)->ops->invoke_non_blocking_with_soap(call, env, op_name, envelope, callback))
 #define AXIS2_CALL_CREATE_OP_FILL_FLOW(call, env, op_name) ((call)->ops->create_op_fill_flow(call, env, op_name))
 #define AXIS2_CALL_GET_LAST_RES_MSG_CTX(call, env) ((call)->ops->get_last_res_msg_ctx(call, env))
+#define AXIS2_CALL_SET(call, env, key, value) \
+        ((call)->ops->set(call, env, key, value))
 #define AXIS2_CALL_FREE(call, env) ((call)->ops->free(call, env))
 
 /************************** End of function macros ****************************/    

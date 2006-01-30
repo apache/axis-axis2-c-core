@@ -883,17 +883,17 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
         axis2_qname_t *mod_name = NULL; 
 
         axis2_hash_this (index_i, NULL, NULL, &v);
-        svc_grp = (struct axis2_svc_grp *) v;
+        svc_grp = (axis2_svc_grp_t *) v;
         svcs = AXIS2_SVC_GRP_GET_SVCS(svc_grp, env);    
         
         index_j = axis2_hash_first (svcs, env);
         while(NULL != index_j)
         {
-            struct axis2_svc *svc = NULL;
+            axis2_svc_t *svc = NULL;
             void *w = NULL;
 
             axis2_hash_this (index_i, NULL, NULL, &w);
-            svc = (struct axis2_svc *) w;
+            svc = (axis2_svc_t *) w;
                 
             status = AXIS2_SVC_ADD_MODULE_OPS(svc, env, module, 
                 resolver_impl->axis2_config);

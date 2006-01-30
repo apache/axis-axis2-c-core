@@ -551,4 +551,3 @@ axis2_svc_grp_ctx_t* AXIS2_CALL axis2_conf_ctx_fill_ctxs(struct axis2_conf_ctx *
     AXIS2_MSG_CTX_SET_SVC_GRP_CTX(msg_ctx, env, svc_grp_ctx);
     return svc_grp_ctx;
 }
-

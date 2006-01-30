@@ -68,66 +68,66 @@ AXIS2_DECLARE_DATA struct axis2_transport_out_desc_ops
      */
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (struct axis2_transport_out_desc *transport_out,
-                                            axis2_env_t **env);
+                axis2_env_t **env);
     
     /**
      * @param name
      */
     axis2_status_t (AXIS2_CALL *
     set_qname) (struct axis2_transport_out_desc *transport_out,
-                                            axis2_env_t **env,
-                                            axis2_qname_t *qname);
+                axis2_env_t **env,
+                axis2_qname_t *qname);
     
     struct axis2_flow *(AXIS2_CALL *
     get_outflow) (struct axis2_transport_out_desc *transport_out,
-                                            axis2_env_t **env);
+                    axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
     set_outflow) (struct axis2_transport_out_desc *transport_out,
-                                            axis2_env_t **env,
-                                            struct axis2_flow *outflow);
+                    axis2_env_t **env,
+                    struct axis2_flow *outflow);
     
     struct axis2_flow *(AXIS2_CALL *
     get_faultflow) (struct axis2_transport_out_desc *transport_out,
-                                            axis2_env_t **env);
+                    axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
     set_faultflow) (struct axis2_transport_out_desc *transport_out,
-                                            axis2_env_t **env,
-                                            struct axis2_flow *faultflow);
+                    axis2_env_t **env,
+                    struct axis2_flow *faultflow);
     
     /**
      * @return
      */
     struct axis2_transport_sender * (AXIS2_CALL *
     get_sender) (struct axis2_transport_out_desc *transport_out,
-                                            axis2_env_t **env);
+                    axis2_env_t **env);
     
     /**
      * @param receiver
      */
     axis2_status_t (AXIS2_CALL *
     set_sender) (struct axis2_transport_out_desc *transport_out,
-                                            axis2_env_t **env,
-                                            struct axis2_transport_sender *sender);
+                    axis2_env_t **env,
+                    struct axis2_transport_sender *sender);
     
     struct axis2_phase * (AXIS2_CALL *
     get_out_phase) (struct axis2_transport_out_desc *transport_out,
-                                            axis2_env_t **env);
+                    axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
     set_out_phase) (struct axis2_transport_out_desc *transport_out,
-                                            axis2_env_t **env,
-                                            struct axis2_phase *out_phase);
+                    axis2_env_t **env,
+                    struct axis2_phase *out_phase);
     
     struct axis2_phase *(AXIS2_CALL *
     get_faultphase) (struct axis2_transport_out_desc *transport_out,
-                                            axis2_env_t **env);
+                        axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
     set_faultphase) (struct axis2_transport_out_desc *transport_out,
-                                            axis2_env_t **env,
-                                            struct axis2_phase *faultphase);
+                        axis2_env_t **env,
+                        struct axis2_phase *faultphase);
         
 
 };

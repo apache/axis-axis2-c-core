@@ -297,7 +297,8 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          * @return the contanated text of all text childrens text values
          *         return null if no text children is avilable or on error
          */                                              
-        axis2_char_t* (AXIS2_CALL *get_text)(axis2_om_element_t *om_element,
+        axis2_char_t* (AXIS2_CALL *
+        get_text)(axis2_om_element_t *om_element,
                                              axis2_env_t **env,
                                              axis2_om_node_t *element_node);
         
@@ -306,19 +307,20 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          * @param element_node the container node of this om_element
          * @return om_element if one is availble otherwise return NULL
          */
-        axis2_om_element_t* (AXIS2_CALL *get_first_element)
-                                (axis2_om_element_t *om_element,
-                                 axis2_env_t **env,
-                                 axis2_om_node_t *element_node,
-                                 axis2_om_node_t **first_element_node);  
+        axis2_om_element_t* (AXIS2_CALL *
+        get_first_element)(axis2_om_element_t *om_element,
+                             axis2_env_t **env,
+                             axis2_om_node_t *element_node,
+                             axis2_om_node_t **first_element_node);  
         /**
          * returns the serilized text of this element and its children
          * @param element_node the container node this on element is contained 
          * @return a char array of xml , returns NULL on error
          */
-        axis2_char_t* (AXIS2_CALL *to_string)(axis2_om_element_t *om_element,
-                                              axis2_env_t **env,
-                                              axis2_om_node_t *element_node);
+        axis2_char_t* (AXIS2_CALL *
+        to_string)(axis2_om_element_t *om_element,
+                      axis2_env_t **env,
+                      axis2_om_node_t *element_node);
         /**
          * returns an iterator with child elements of type AXIS2_OM_ELEMENT
          * iterator must be freed by user
@@ -327,7 +329,8 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          * @param env enviroment must not be null
          * @returns axis2_om_child_element_iterator_t , NULL on error                                             
          */
-         axis2_om_child_element_iterator_t* (AXIS2_CALL *get_child_elements)
+         axis2_om_child_element_iterator_t* (AXIS2_CALL *
+         get_child_elements)
                         (axis2_om_element_t *om_element,
                          axis2_env_t **env,
                          axis2_om_node_t *element_node);                                                                     
