@@ -4,9 +4,24 @@ SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
 test_http_transport_SOURCES = test_http_transport.c
 
-test_http_transport_LDADD   =  $(LDFLAGS) -L$(AXIS2C_HOME)/lib -laxis2_util -laxis2_http_transport -laxis2_context -laxis2_addr -laxis2_om -laxis2_engine -laxis2_description -laxis2_soap -laxis2_wsdl -laxis2_phaseresolver -laxis2_deployment -laxis2_parser -laxis2_http_sender \
--L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \
-                    -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME)
+test_http_transport_LDADD   =  $(LDFLAGS) \
+								-L$(AXIS2C_HOME)/lib \
+								-laxis2_util \
+								-laxis2_http_transport \
+								-laxis2_context \
+								-laxis2_addr \
+								-laxis2_om \
+								-laxis2_unix \
+								-laxis2_engine \
+								-laxis2_description \
+								-laxis2_soap \
+								-laxis2_wsdl \
+								-laxis2_phaseresolver \
+								-laxis2_deployment \
+								-laxis2_parser \
+								-laxis2_http_sender \
+								-L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \
+                    			-L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME)
                     
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util\
