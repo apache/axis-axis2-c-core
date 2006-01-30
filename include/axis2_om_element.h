@@ -390,7 +390,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
 
 /** finds namespace with given qname */
 #define AXIS2_OM_ELEMENT_FIND_NAMESPACE_WITH_QNAME (om_element, env, om_node, qname) \
-        ((om_element)->ops->find_namespace_with_qname (om_element, environment, node, qname))
+        ((om_element)->ops->find_namespace_with_qname (om_element, environment, om_node, qname))
         
 /** adds given attribute to given element */
 #define AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(om_element, env, attribute, element_node) \
