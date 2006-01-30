@@ -34,15 +34,6 @@ axis2_log_impl_free (axis2_log_t *log)
 /* function prototypes */
 axis2_status_t AXIS2_CALL axis2_log_impl_write (axis2_log_t *log, const axis2_char_t *buffer, axis2_log_levels_t level,const axis2_char_t *file,const int line);
 axis2_status_t AXIS2_CALL axis2_log_impl_write_to_file(FILE *fd,axis2_log_levels_t level,const axis2_char_t *file,const int line,const axis2_char_t *value);
-axis2_status_t AXIS2_CALL axis2_log_impl_log_critical(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
-
-axis2_status_t AXIS2_CALL axis2_log_impl_log_error(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
-
-axis2_status_t AXIS2_CALL axis2_log_impl_log_warning(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
-
-axis2_status_t AXIS2_CALL axis2_log_impl_log_info(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
-
-axis2_status_t AXIS2_CALL axis2_log_impl_log_debug(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
 
 AXIS2_DECLARE(axis2_log_t *)
 axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops)
