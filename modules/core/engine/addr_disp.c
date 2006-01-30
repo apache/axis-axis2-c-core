@@ -98,9 +98,7 @@ axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
         if (address)
         {
             axis2_char_t **url_tokens = NULL;
-            axis2_char_t message[1024];
-            sprintf(message, "Checking for service using WSA enpoint address : %s", address);
-            AXIS2_LOG(env, message, AXIS2_LOG_LEVEL_INFO);
+            AXIS2_LOG_INFO((*env)->log, LOG_SI, "Checking for service using WSA enpoint address : %s", address);
 
             if ( (AXIS2_STRCMP(AXIS2_WSA_ANONYMOUS_URL, address) == 0 ) || 
                   (AXIS2_STRCMP(AXIS2_WSA_NAMESPACE_SUBMISSION, address) == 0 ))
@@ -161,8 +159,7 @@ axis2_op_t* AXIS2_CALL axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx,
     if (action)
     {
         axis2_char_t message[1024];
-        sprintf(message, "Checking for Operation using WSAAction : %s", action);
-        AXIS2_LOG(env, message, AXIS2_LOG_LEVEL_INFO);
+        AXIS2_LOG_INFO((*env)->log, LOG_SI, "Checking for Operation using WSAAction : %s", action);
         
         qname = axis2_qname_create(env, action, NULL, NULL);
         return AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, qname);

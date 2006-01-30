@@ -101,28 +101,17 @@ int main(int argc, char *argv[])
 	
     axis2_error_init();
     
-	printf("[Axis2]Starting Axis2 HTTP server....\n");
-	AXIS2_LOG_WRITE(env->log, "[Axis2]Starting Axis2 HTTP server....\n", 
-						AXIS2_LOG_LEVEL_INFO);
-	sprintf(tmp_str, "[Axis2]Server port : %d", port);
-	printf("%s\n",tmp_str);
-	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_LEVEL_INFO);
-	sprintf(tmp_str, "[Axis2]Repo location : %s", repo_path);
-	printf("%s\n",tmp_str);
-	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_LEVEL_INFO);
-	sprintf(tmp_str, "[Axis2]Read Timeout : %d ms", 
-						axis2_http_socket_read_timeout);
-	printf("%s\n",tmp_str);
-	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_LEVEL_INFO);
+	AXIS2_LOG_INFO(env->log, LOG_SI, "Starting Axis2 HTTP server....");
+	AXIS2_LOG_INFO(env->log, LOG_SI, "Server port : %d", port);
+	AXIS2_LOG_INFO(env->log, LOG_SI, "Repo location : %s", repo_path);
+	AXIS2_LOG_INFO(env->log, LOG_SI, "Read Timeout : %d ms", axis2_http_socket_read_timeout);
 	
 	server = axis2_http_server_create(&env, repo_path, port);
 	if(NULL == server)
 	{
-		sprintf(tmp_str, "[Axis2]Server creation failed: Error code: %d", 
-						env->error->error_number);
-		printf("%s\n",tmp_str);
-        printf("%s \n", AXIS2_ERROR_GET_MESSAGE(env->error));
-		AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_LEVEL_INFO);
+	    AXIS2_LOG_ERROR(env->log, LOG_SI, "Server creation failed: Error code: %d :: %s", 
+						env->error->error_number,
+                        AXIS2_ERROR_GET_MESSAGE(env->error));
 		system_exit(allocator, env, -1);
 		
 	}

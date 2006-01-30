@@ -41,7 +41,7 @@ int main(void)
     error = axis2_error_create(allocator);
     log = axis2_log_create(allocator, NULL);
     env = axis2_env_create_with_error_log(allocator, error, log);
-    env->log->level = AXIS2_LOG_INFO;
+    env->log->level = AXIS2_LOG_LEVEL_INFO;
 
     envelope = build_soap_programatically(&env);
     node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(envelope, &env);
@@ -115,3 +115,4 @@ build_soap_programatically(axis2_env_t **env)
 
     return soap_envelope;
 }
+

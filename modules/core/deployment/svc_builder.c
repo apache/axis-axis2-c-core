@@ -249,8 +249,6 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     int i = 0;
     int size = 0;
     AXIS2_TIME_T timestamp = 0;
-    axis2_char_t message[1024];
-    axis2_char_t *log_msg = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(svc_builder, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_node, AXIS2_FAILURE);
@@ -352,9 +350,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     svc_folder_path = AXIS2_FILE_GET_PATH(svc_folder, env);
     temp_path = AXIS2_STRACAT(svc_folder_path, AXIS2_PATH_SEP_STR, env);
     dll_path = AXIS2_STRACAT(temp_path, svc_dll_name, env);
-    sprintf(message, "%s:%d - dll path is:", __FILE__, __LINE__);
-    log_msg = AXIS2_STRACAT(message, dll_path, env);
-    AXIS2_LOG(env, log_msg, AXIS2_LOG_LEVEL_INFO);
+    AXIS2_LOG_INFO((*env)->log, LOG_SI, "dll path is : %s", dll_path);
     status = AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_path);
     if(AXIS2_SUCCESS != status)
     {

@@ -86,7 +86,7 @@ axis2_svc_t* AXIS2_CALL axis2_soap_action_disp_find_svc(axis2_msg_ctx_t *msg_ctx
 {    
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);    
 
-    AXIS2_LOG(env, "Checking for Service using SOAPAction is a TODO item", AXIS2_LOG_LEVEL_INFO);
+    AXIS2_LOG_INFO((*env)->log, LOG_SI, "Checking for Service using SOAPAction is a TODO item");
 
     return NULL;
 }
@@ -112,9 +112,7 @@ axis2_op_t* AXIS2_CALL axis2_soap_action_disp_find_op(axis2_msg_ctx_t *msg_ctx,
     if (action)
     {
         axis2_op_t *op = NULL;        
-        axis2_char_t message[1024];
-        sprintf(message, "Checking for operation using SOAP action : %s", action);
-        AXIS2_LOG(env, message, AXIS2_LOG_LEVEL_INFO);
+        AXIS2_LOG_INFO((*env)->log, LOG_SI, "Checking for operation using SOAP action : %s", action);
 
         op = AXIS2_SVC_GET_OP_BY_SOAP_ACTION(svc, env, action);
         if (!op)

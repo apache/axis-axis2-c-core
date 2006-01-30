@@ -67,7 +67,7 @@ extern "C"
         
     /* =======================================================================*/
 
-    #define WS_ADDRESSING_VERSION "WSAddressingVersion"
+    #define AXIS2_WSA_VERSION "WSAddressingVersion"
     #define AXIS2_WSA_DEFAULT_PREFIX "wsa"
 
     #define PARAM_SERVICE_GROUP_CONTEXT_ID "ServiceGroupContextIdFromAddressing"
