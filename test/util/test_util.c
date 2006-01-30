@@ -23,6 +23,10 @@
 #include <axis2_array_list.h>
 #include <axis2_platform_auto_sense.h>
 #include <axis2_uuid_gen.h>
+#include <axis2_log_default.h>
+#include <axis2_log.h>
+#include <axis2_dir_handler.h>
+#include <axis2_file.h>
 
 typedef struct a
 {
@@ -91,6 +95,39 @@ int test_hash_get (axis2_env_t *env)
     return 0;
 }
 
+void test_axis2_dir_handler_list_service_or_module_dirs()
+{
+    int i,isize;
+    axis2_file_t *file = NULL;
+    axis2_char_t *filename = NULL;
+    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+    axis2_error_t *error = axis2_error_create (allocator);
+    axis2_env_t *env = axis2_env_create_with_error(allocator, error);
+
+    axis2_char_t *pathname = AXIS2_STRDUP("/tmp/test/",&env);
+
+    axis2_array_list_t *arr_folders = AXIS2_DIR_HANDLER_LIST_SERVICE_OR_MODULE_DIRS(&env,pathname);
+    if (arr_folders == NULL)
+    {
+        printf("List of folders is NULL\n");
+        return ;
+    }
+
+
+    isize = AXIS2_ARRAY_LIST_SIZE(arr_folders,&env);
+    printf("Folder array size = %d \n",isize);
+
+    for (i =0;i<isize;++i)
+    {
+        file = (axis2_file_t*)AXIS2_ARRAY_LIST_GET(arr_folders,&env,i);
+        filename = AXIS2_FILE_GET_NAME(file,&env);
+        printf("filename = %s \n",filename);
+    }
+    printf("----end of test_axis2_dir_handler_list_service_or_module_dirs----\n");
+
+}
+
+
 /**
   * This test is intended to test whether given two files are equal or not.
   * Spaces and new lines are ignored in comparing
@@ -122,14 +159,16 @@ char* test_funct_for_test_env_null(axis2_env_t **env)
 int test_env_null()
 {
 	axis2_env_t *env = NULL;
+	char *msg;
+	int status;
 	/* Suppose we did properly initialized env here */
 	/* But here we mistakenly make env to null */
 	env = NULL;
 	/*Now we call an axis2 mock function called
 	 * test_funct_for_test_env_null
 	 */
-	char *msg = test_funct_for_test_env_null(&env);
-	int status = axis2_env_check_status(&env);
+	msg = test_funct_for_test_env_null(&env);
+	status = axis2_env_check_status(&env);
 	if(AXIS2_SUCCESS == status)
 		printf("%s\n", msg);
 	else
@@ -143,7 +182,7 @@ void test_array_list(axis2_env_t *env)
 {
     axis2_array_list_t *al;
     a *entry = NULL;
-    
+    int size;
     
     al = axis2_array_list_create (&env, 1);
     printf("list size %d\n", AXIS2_ARRAY_LIST_SIZE (al, &env));
@@ -182,7 +221,7 @@ void test_array_list(axis2_env_t *env)
     
     entry = (a *) AXIS2_ARRAY_LIST_GET (al, &env, 2);
     printf("entry->value:%s\n", entry->value);
-    int size = AXIS2_ARRAY_LIST_SIZE (al, &env);
+    size = AXIS2_ARRAY_LIST_SIZE (al, &env);
     printf("list size %d\n", AXIS2_ARRAY_LIST_SIZE (al, &env));
     
 }
@@ -201,6 +240,48 @@ void test_uuid_gen(axis2_env_t *env)
     printf("finished uuid_gen test...\n");
 }
 
+void test_log_write()
+{
+	char msg[10];
+	printf("start of test_log_write\n\n");
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+	if (!allocator)
+	{
+		printf("allocator is NULL\n");
+		return;
+	}
+	axis2_error_t *error = axis2_error_create(allocator);
+	if (!error)
+	{
+		printf("cannot create error\n");
+		return;
+	}
+    axis2_log_t *log  = axis2_log_create (allocator, NULL);
+	if (!log)
+	{
+		printf("cannot create log\n");
+		return;
+	}
+	log->level = AXIS2_LOG_LEVEL_DEBUG;
+
+    axis2_env_t *env = axis2_env_create_with_error_log(allocator, error, log);
+	if (!env)
+	{
+		printf("cannot create env with error and log\n");
+		return;
+	}
+	strcpy(msg,"abcd test123");
+	AXIS2_LOG_WRITE(env->log,msg,AXIS2_LOG_LEVEL_ERROR);
+
+	AXIS2_LOG_CRITICAL(env->log,LOG_SI,"log1 %s","test1");
+	AXIS2_LOG_ERROR(env->log,LOG_SI,"log2 %d",2);
+	AXIS2_LOG_WARNING(env->log,LOG_SI,"log3 %s","test3");
+	AXIS2_LOG_INFO(env->log,LOG_SI,"log4 %s %s","info1","info2");
+	AXIS2_LOG_DEBUG(env->log,LOG_SI,"log5 %s %d","test",5);
+    printf("end of test_log_write \n\n");
+	
+}
+
 int main(void)
 {
 	axis2_env_t *env = test_init();
@@ -209,6 +290,7 @@ int main(void)
 	test_env_null(); 
     test_array_list(env);
     test_uuid_gen(env);
-
+	test_log_write();
+	test_axis2_dir_handler_list_service_or_module_dirs();
 	return 0;	
 }
