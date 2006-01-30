@@ -38,6 +38,18 @@ extern "C"
 
 /*TODO:log_xml*/
 
+	/**
+	  *Examples
+	  *To write debug information to log
+	  *AXIS2_LOG_DEBUG(log,LOG_SI,"log this %s %d","test",123);
+	  *This would log
+	  *"log this test 123" into the log file
+	  *
+	  *similar macros are defined for different log levels: CRITICAL,ERROR,WARNING and INFO
+	  *
+	  *CRITICAL and ERROR logs are always written to file and other logs are written 
+	  *depending on the log level set (log->level)
+	  */
 /** 
   * \brief Axis2 log levels
   */
@@ -54,6 +66,12 @@ extern "C"
         /** Debug level, logs everything */
         AXIS2_LOG_LEVEL_DEBUG
     } axis2_log_levels_t;
+
+
+
+
+
+
 
   /** 
     * \brief Axis2 log ops struct
@@ -103,16 +121,26 @@ extern "C"
 
     } axis2_log_t;
 
+axis2_status_t AXIS2_CALL axis2_log_impl_log_critical(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+
+axis2_status_t AXIS2_CALL axis2_log_impl_log_error(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+
+axis2_status_t AXIS2_CALL axis2_log_impl_log_warning(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+
+axis2_status_t AXIS2_CALL axis2_log_impl_log_info(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+
+axis2_status_t AXIS2_CALL axis2_log_impl_log_debug(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+
 
 #define AXIS2_LOG_FREE(log) ((log->ops)->free(log))
 
 #define AXIS2_LOG_WRITE(log, buffer, level) ((log)->ops->write(log, buffer, level,LOG_SI))
 
-#define AXIS2_LOG_DEBUG log->ops->log_debug
-#define AXIS2_LOG_INFO log->ops->log_info
-#define AXIS2_LOG_WARNING log->ops->log_warning
-#define AXIS2_LOG_ERROR log->ops->log_error
-#define AXIS2_LOG_CRITICAL log->ops->log_critical
+#define AXIS2_LOG_DEBUG axis2_log_impl_log_debug 
+#define AXIS2_LOG_INFO axis2_log_impl_log_info 
+#define AXIS2_LOG_WARNING axis2_log_impl_log_warning 
+#define AXIS2_LOG_ERROR axis2_log_impl_log_error 
+#define AXIS2_LOG_CRITICAL axis2_log_impl_log_critical 
 
 /** @} */
     
