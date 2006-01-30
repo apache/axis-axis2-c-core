@@ -27,11 +27,16 @@ extern "C"
     struct axis2_log;
     struct axis2_log_ops;
 
+
+#define LOG_SI __FILE__,__LINE__
+
 /**
  * @defgroup axis2_log Log
  * @ingroup axis2_util 
  * @{
  */
+
+/*TODO:log_xml*/
 
 /** 
   * \brief Axis2 log levels
@@ -71,7 +76,13 @@ extern "C"
         * @param size size of the buffer to be written to log
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *write) (struct axis2_log *log, const axis2_char_t *buffer, axis2_log_levels_t level);
+        axis2_status_t (AXIS2_CALL *write) (struct axis2_log *log, const axis2_char_t *buffer, axis2_log_levels_t level,const axis2_char_t *file,const int line);
+
+		axis2_status_t (AXIS2_CALL *log_critical) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
+		axis2_status_t (AXIS2_CALL *log_error) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
+		axis2_status_t (AXIS2_CALL *log_warning) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
+		axis2_status_t (AXIS2_CALL *log_info) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
+		axis2_status_t (AXIS2_CALL *log_debug) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
     } axis2_log_ops_t;
 
   /** 
@@ -83,15 +94,25 @@ extern "C"
     {
         /** Log related ops */
         struct axis2_log_ops *ops;
+		
+		/*FILE *log;*/
         /** Log level */
         axis2_log_levels_t level;
         /** Is logging enabled? */
         axis2_bool_t enabled;
+
     } axis2_log_t;
- 
+
 
 #define AXIS2_LOG_FREE(log) ((log->ops)->free(log))
-#define AXIS2_LOG_WRITE(log, buffer, level) ((log)->ops->write(log, buffer, level))
+
+#define AXIS2_LOG_WRITE(log, buffer, level) ((log)->ops->write(log, buffer, level,LOG_SI))
+
+#define AXIS2_LOG_DEBUG log->ops->log_debug
+#define AXIS2_LOG_INFO log->ops->log_info
+#define AXIS2_LOG_WARNING log->ops->log_warning
+#define AXIS2_LOG_ERROR log->ops->log_error
+#define AXIS2_LOG_CRITICAL log->ops->log_critical
 
 /** @} */
     
