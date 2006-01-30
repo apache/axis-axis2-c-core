@@ -19,7 +19,7 @@
 
 /**
  * @file axis2_echo_stub.h
- * @brief echo stub interface
+ * @brief axis2 echo stub interface
  */
 
 #include <axis2.h>
@@ -29,11 +29,17 @@
 #include <axis2_allocator.h>
 #include <axis2_stub.h>
 #include <axis2_endpoint_ref.h>
+#include <axis2_om_node.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+AXIS2_DECLARE(axis2_om_node_t *)
+axis2_echo_stub_echo(axis2_stub_t *stub,
+                        axis2_env_t **env,
+                        axis2_om_node_t *node);
 
 /**
  * Creates axis2_stub struct

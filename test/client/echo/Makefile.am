@@ -1,5 +1,5 @@
 bin_PROGRAMS = echo
-echo_SOURCES = echo_stub.c \
+echo_SOURCES = axis2_echo_stub.c \
                 echo_client.c
 
 echo_LDADD   =  -L$(AXIS2C_HOME)/lib \
@@ -13,6 +13,7 @@ echo_LDADD   =  -L$(AXIS2C_HOME)/lib \
                     -laxis2_engine \
                     -laxis2_parser \
                     -laxis2_addr \
+                    -laxis2_unix \
                     -laxis2_receivers \
                     -laxis2_core_util \
                     -laxis2_clientapi \

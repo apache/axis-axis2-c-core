@@ -14,21 +14,11 @@
  * limitations under the License.
  */
  
-#include "echo_stub.h"
+#include "axis2_echo_stub.h"
 #include <axis2_om_node.h>
+#include <axis2_msg_ctx.h>
+#include <axis2_call.h>
 
-/************************* Function prototypes ********************************/
-axis2_status_t AXIS2_CALL
-axis2_echo_stub_invoke_blocking(axis2_stub_t *echo_stub,
-                                axis2_env_t **env,
-                                axis2_msg_ctx_t *msg_ctx);
-
-axis2_status_t AXIS2_CALL
-axis2_echo_stub_echo(axis2_stub_t *echo_stub,
-                        axis2_env_t **env,
-                        axis2_om_node_t *node);
-
-/************************** End of function prototypes ************************/
 
 axis2_stub_t *AXIS2_CALL 
 axis2_echo_stub_create_with_endpoint_ref(axis2_env_t **env,
@@ -45,8 +35,6 @@ axis2_echo_stub_create_with_endpoint_ref(axis2_env_t **env,
         return NULL;
     }
     
-    stub->ops->invoke_blocking = axis2_echo_stub_invoke_blocking;
-	
 	return stub;
 }
 
@@ -65,26 +53,24 @@ axis2_echo_stub_create_with_endpoint_uri(axis2_env_t **env,
         return NULL;
     }
     
-    stub->ops->invoke_blocking = axis2_echo_stub_invoke_blocking;
-	
+    
 	return stub;
 }
 
 /***************************Function implementation****************************/
 
-axis2_status_t AXIS2_CALL
-axis2_echo_stub_invoke_blocking(axis2_stub_t *echo_stub,
-                                axis2_env_t **env,
-                                axis2_msg_ctx_t *msg_ctx)
-{
-    return 0;
-}
-
-axis2_status_t AXIS2_CALL
-axis2_echo_stub_echo(axis2_stub_t *echo_stub,
+axis2_om_node_t *AXIS2_CALL
+axis2_echo_stub_echo(axis2_stub_t *stub,
                         axis2_env_t **env,
                         axis2_om_node_t *node)
 {
-    return 0;
-}
+    axis2_call_t *call = NULL;
+    axis2_om_node_t *ret_node = NULL;
 
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    call = AXIS2_STUB_GET_CALL_OBJ(stub, env);
+    ret_node = AXIS2_CALL_INVOKE_BLOCKING_WITH_OM(call, env, "echo", node);
+    
+    return ret_node;
+}
