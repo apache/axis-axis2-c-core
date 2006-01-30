@@ -21,6 +21,7 @@
 #include <axis2_allocator.h>
 
 #include <stdlib.h>
+#include <stdarg.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -33,6 +34,9 @@ extern "C"
  * @ingroup axis2_util 
  * @{
  */
+
+#define AXIS2_LEN_VALUE 6000
+
 
   /**
     * Creates a log struct
