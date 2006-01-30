@@ -224,7 +224,7 @@ axis2_http_transport_sender_invoke
 						AXIS2_FAILURE);
 			sprintf(error_msg, "%s in %s:%d", AXIS2_ERROR_GET_MESSAGE(
 						(*env)->error), __FILE__, __LINE__);
-			AXIS2_LOG(env, error_msg, AXIS2_LOG_CRITICAL);
+			AXIS2_LOG(env, error_msg, AXIS2_LOG_LEVEL_CRITICAL);
 			AXIS2_OM_OUTPUT_FREE(om_output, env);
 			om_output = NULL;
 			xml_writer = NULL;

@@ -448,7 +448,7 @@ axis2_soap_body_set_fault(axis2_soap_body_t *body,
         AXIS2_ERROR_SET((*env)->error, 
             AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY, AXIS2_FAILURE);
         AXIS2_LOG_WRITE((*env)->log, 
-            "AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY", AXIS2_LOG_DEBUG);
+            "AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY", AXIS2_LOG_LEVEL_DEBUG);
         return AXIS2_FAILURE;
     }
     body_impl->soap_fault = soap_fault;

@@ -186,7 +186,7 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 		secs += millisecs/1000.0;
 		sprintf(log_str, "[Axis2]Request served in %.3f seconds", secs);
 		AXIS2_LOG_WRITE((*env)->log, log_str, 
-						AXIS2_LOG_INFO);
+						AXIS2_LOG_LEVEL_INFO);
 	}
 	
     return AXIS2_SUCCESS;

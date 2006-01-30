@@ -412,7 +412,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         {
             axis2_char_t message[1024];
             sprintf(message, "%s:%d - populating service is not successful\n:", __FILE__, __LINE__);
-            AXIS2_LOG(env, message, AXIS2_LOG_INFO);
+            AXIS2_LOG(env, message, AXIS2_LOG_LEVEL_INFO);
 
             return AXIS2_FAILURE;
         }

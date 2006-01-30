@@ -426,11 +426,11 @@ axis2_libxml2_reader_wrapper_next(axis2_xml_reader_t *parser,
     ret_val = xmlTextReaderRead(parser_impl->reader);
     if(ret_val == 0)
     {
-        AXIS2_LOG_WRITE((*env)->log,"xml stream is over ", AXIS2_LOG_INFO);
+        AXIS2_LOG_WRITE((*env)->log,"xml stream is over ", AXIS2_LOG_LEVEL_INFO);
     }
     if(ret_val == -1)
     {
-        AXIS2_LOG_WRITE((*env)->log,"critical error occured in xml reader", AXIS2_LOG_CRITICAL);
+        AXIS2_LOG_WRITE((*env)->log,"critical error occured in xml reader", AXIS2_LOG_LEVEL_CRITICAL);
         return -1;
     }
    
@@ -816,25 +816,25 @@ axis2_libxml2_reader_wrapper_error_handler(void *arg,
         case XML_PARSER_SEVERITY_VALIDITY_WARNING :
         {
             sprintf(error_msg, "%s -- VALIDITY WARNTING", msg);            
-            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_DEBUG);
+            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_LEVEL_DEBUG);
         }
             break;
         case XML_PARSER_SEVERITY_VALIDITY_ERROR:
         {
             sprintf(error_msg, "%s -- VALIDITY ERROR", msg);            
-            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_DEBUG);
+            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_LEVEL_DEBUG);
         }
             break;
         case XML_PARSER_SEVERITY_WARNING:
         {
             sprintf(error_msg, "%s -- SEVERITY_WARNING", msg);            
-            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_DEBUG);
+            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_LEVEL_DEBUG);
         }
             break;
         case XML_PARSER_SEVERITY_ERROR:
         {
             sprintf(error_msg, "%s -- SEVERITY_ERROR", msg);            
-            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_CRITICAL);
+            AXIS2_LOG_WRITE(env->log, error_msg, AXIS2_LOG_LEVEL_CRITICAL);
         }
             break;
         default:

@@ -188,7 +188,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             if(builder_helper_impl->code_present)
             {
                 AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
-                AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED", AXIS2_LOG_DEBUG);
+                AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED", AXIS2_LOG_LEVEL_DEBUG);
                 
                 return AXIS2_FAILURE;
             }else
@@ -216,7 +216,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         AXIS2_ERROR_SET((*env)->error, 
                             AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
                             
-                       AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED",AXIS2_LOG_DEBUG);
+                       AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED",AXIS2_LOG_LEVEL_DEBUG);
                         return AXIS2_FAILURE;
                     }
                     else
@@ -237,7 +237,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 {
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FAILURE);
-                        AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED",AXIS2_LOG_DEBUG);
+                        AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED",AXIS2_LOG_LEVEL_DEBUG);
                     return AXIS2_FAILURE;                        
                 }
             }
@@ -247,14 +247,14 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 {
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE, AXIS2_FAILURE);
-                    AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE",AXIS2_LOG_DEBUG);
+                    AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE",AXIS2_LOG_LEVEL_DEBUG);
                     return AXIS2_FAILURE;                            
                 }
                 else
                 {
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE, AXIS2_FAILURE);
-                     AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE", AXIS2_LOG_DEBUG);
+                     AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE", AXIS2_LOG_LEVEL_DEBUG);
                     return AXIS2_FAILURE;                
                 }
             }
@@ -271,7 +271,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     {
                         AXIS2_ERROR_SET((*env)->error, 
                             AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
-                        AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED",AXIS2_LOG_CRITICAL);
+                        AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED",AXIS2_LOG_LEVEL_CRITICAL);
                         return AXIS2_FAILURE;
                     }
                     else
@@ -289,7 +289,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FALSE);
                     
-                    AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED",AXIS2_LOG_CRITICAL);
+                    AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED",AXIS2_LOG_LEVEL_CRITICAL);
 
                     return AXIS2_FAILURE;                
                 }
@@ -312,7 +312,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     {
                         AXIS2_ERROR_SET((*env)->error, 
                             AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
-                        AXIS2_LOG_WRITE((*env)->log,"AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED", AXIS2_LOG_DEBUG);                                                    
+                        AXIS2_LOG_WRITE((*env)->log,"AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED", AXIS2_LOG_LEVEL_DEBUG);                                                    
                         return AXIS2_FAILURE;
                     }
                     else
@@ -330,7 +330,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FAILURE);
                     AXIS2_LOG_WRITE((*env)->log,"AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED",
-                            AXIS2_LOG_DEBUG);
+                            AXIS2_LOG_LEVEL_DEBUG);
                     return AXIS2_FAILURE;                        
                 }
             }
@@ -338,7 +338,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             {
                 
                 AXIS2_ERROR_SET((*env)->error,  AXIS2_ERROR_SOAP_FAULT_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT, AXIS2_FAILURE);
-                AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_SOAP_FAULT_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT", AXIS2_LOG_DEBUG);
+                AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_SOAP_FAULT_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT", AXIS2_LOG_LEVEL_DEBUG);
                 return AXIS2_FAILURE;
             }
         }
@@ -353,7 +353,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         AXIS2_ERROR_SET((*env)->error, 
                             AXIS2_ERROR_MULTIPLE_DETAIL_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
                         AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_MULTIPLE_DETAIL_ELEMENTS_ENCOUNTERED",
-                            AXIS2_LOG_DEBUG);
+                            AXIS2_LOG_LEVEL_DEBUG);
                         return AXIS2_FAILURE;                                            
                     }
                     else
@@ -371,7 +371,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 {
                     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED, AXIS2_FAILURE);
                     AXIS2_LOG_WRITE((*env)->log,"AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED",
-                        AXIS2_LOG_DEBUG);
+                        AXIS2_LOG_LEVEL_DEBUG);
                     
                     return AXIS2_FAILURE;
                     
@@ -382,7 +382,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 AXIS2_ERROR_SET((*env)->error, 
                     AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT, AXIS2_FAILURE);
                 AXIS2_LOG_WRITE((*env)->log,"AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT",
-                    AXIS2_LOG_DEBUG);
+                    AXIS2_LOG_LEVEL_DEBUG);
                 return AXIS2_FAILURE;                    
             }
             
@@ -392,7 +392,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_UNSUPPORTED_ELEMENT_IN_SOAP_FAULT_ELEMENT, AXIS2_FAILURE);
             AXIS2_LOG_WRITE((*env)->log,"AXIS2_ERROR_UNSUPPORTED_ELEMENT_IN_SOAP_FAULT_ELEMENT",
-                AXIS2_LOG_DEBUG);
+                AXIS2_LOG_LEVEL_DEBUG);
                 return AXIS2_FAILURE;
         }
     }
@@ -428,7 +428,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_MULTIPLE_VALUE_ENCOUNTERED_IN_CODE_ELEMENT, AXIS2_FAILURE);
                     AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_MULTIPLE_VALUE_ENCOUNTERED_IN_CODE_ELEMENT",
-                        AXIS2_LOG_DEBUG);
+                        AXIS2_LOG_LEVEL_DEBUG);
                     return AXIS2_FAILURE;                        
                 }            
             }
@@ -459,7 +459,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         AXIS2_ERROR_SET((*env)->error,
                             AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE, AXIS2_FAILURE);
                         AXIS2_LOG_WRITE((*env)->log,"AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE",
-                            AXIS2_LOG_DEBUG);
+                            AXIS2_LOG_LEVEL_DEBUG);
                         return AXIS2_FAILURE;                                                            
                     }
                 }
@@ -467,7 +467,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 {
                     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED, AXIS2_FAILURE);
                     AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED",
-                        AXIS2_LOG_DEBUG);
+                        AXIS2_LOG_LEVEL_DEBUG);
                     return AXIS2_FAILURE;                    
                 }            
             }
@@ -476,7 +476,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 AXIS2_ERROR_SET((*env)->error, 
                     AXIS2_ERROR_THIS_LOCALNAME_NOT_SUPPORTED_INSIDE_THE_CODE_ELEMENT, AXIS2_FAILURE);
                 AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_THIS_LOCALNAME_NOT_SUPPORTED_INSIDE_THE_CODE_ELEMENT",
-                    AXIS2_LOG_DEBUG);
+                    AXIS2_LOG_LEVEL_DEBUG);
                 return AXIS2_FAILURE;                    
             }
         }
@@ -502,7 +502,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             {
                 AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_REASON_ELEMENT, AXIS2_FAILURE);   
                 AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_REASON_ELEMENT",
-                    AXIS2_LOG_DEBUG);
+                    AXIS2_LOG_LEVEL_DEBUG);
                 return AXIS2_FAILURE;
             }
             
@@ -521,7 +521,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
         {
             axis2_char_t error_msg[200];
             sprintf(error_msg,"%s should not nave a child element",parent_localname);
-            AXIS2_LOG_WRITE((*env)->log, error_msg, AXIS2_LOG_DEBUG);
+            AXIS2_LOG_WRITE((*env)->log, error_msg, AXIS2_LOG_LEVEL_DEBUG);
             return AXIS2_FAILURE;
         }
                 
@@ -584,7 +584,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     {
                         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED, AXIS2_FAILURE);
                         AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED",
-                            AXIS2_LOG_DEBUG);
+                            AXIS2_LOG_LEVEL_DEBUG);
                         return AXIS2_FAILURE;                                                        
                     }
                 }
@@ -592,7 +592,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 {
                     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE, AXIS2_FAILURE);
                     AXIS2_LOG_WRITE((*env)->log,"AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE",
-                        AXIS2_LOG_DEBUG);
+                        AXIS2_LOG_LEVEL_DEBUG);
                     return AXIS2_FAILURE;
                 
                 }
@@ -601,7 +601,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             {
                 AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT, AXIS2_FAILURE);
                 AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT",
-                    AXIS2_LOG_DEBUG);
+                    AXIS2_LOG_LEVEL_DEBUG);
                 return AXIS2_FAILURE;
             } 
         }
@@ -628,7 +628,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             {
                 axis2_char_t error_msg[200];
                 sprintf(error_msg,"%s should not have child at element level  %d",parent_localname, element_level);
-                AXIS2_LOG_WRITE((*env)->log,error_msg, AXIS2_LOG_DEBUG);
+                AXIS2_LOG_WRITE((*env)->log,error_msg, AXIS2_LOG_LEVEL_DEBUG);
                 return AXIS2_FAILURE;
             }
         }

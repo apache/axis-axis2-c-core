@@ -80,23 +80,23 @@ int main(int argc, char *argv[])
 	}
 	
     env = init_syetem_env(allocator);
-    env->log->level = AXIS2_LOG_DEBUG;
+    env->log->level = AXIS2_LOG_LEVEL_DEBUG;
 	
     axis2_error_init();
     
 	printf("[Axis2]Starting Axis2 HTTP server....\n");
 	AXIS2_LOG_WRITE(env->log, "[Axis2]Starting Axis2 HTTP server....\n", 
-						AXIS2_LOG_INFO);
+						AXIS2_LOG_LEVEL_INFO);
 	sprintf(tmp_str, "[Axis2]Server port : %d", port);
 	printf("%s\n",tmp_str);
-	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_INFO);
+	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_LEVEL_INFO);
 	sprintf(tmp_str, "[Axis2]Repo location : %s", repo);
 	printf("%s\n",tmp_str);
-	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_INFO);
+	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_LEVEL_INFO);
 	sprintf(tmp_str, "[Axis2]Read Timeout : %d ms", 
 						axis2_http_socket_read_timeout);
 	printf("%s\n",tmp_str);
-	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_INFO);
+	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_LEVEL_INFO);
 	
 	server = axis2_http_server_create(&env, repo, port);
 	if(NULL == server)
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
 						env->error->error_number);
 		printf("%s\n",tmp_str);
         printf("%s \n", AXIS2_ERROR_GET_MESSAGE(env->error));
-		AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_INFO);
+		AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_LEVEL_INFO);
 		system_exit(allocator, env, -1);
 		
 	}

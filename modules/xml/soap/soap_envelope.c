@@ -514,7 +514,7 @@ axis2_soap_envelope_set_body(axis2_soap_envelope_t *envelope,
     }
     else
     {
-        AXIS2_LOG_WRITE((*env)->log, " trying to set a soap bedy to envelope when a soap body alrady exists ", AXIS2_LOG_DEBUG);
+        AXIS2_LOG_WRITE((*env)->log, " trying to set a soap bedy to envelope when a soap body alrady exists ", AXIS2_LOG_LEVEL_DEBUG);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -533,7 +533,7 @@ axis2_status_t AXIS2_CALL axis2_soap_envelope_set_header(axis2_soap_envelope_t *
     }
     else
     {
-       AXIS2_LOG_WRITE((*env)->log, " trying to set a soap header to envelope when a soap header alrady exists ", AXIS2_LOG_DEBUG);
+       AXIS2_LOG_WRITE((*env)->log, " trying to set a soap header to envelope when a soap header alrady exists ", AXIS2_LOG_LEVEL_DEBUG);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;

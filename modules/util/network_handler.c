@@ -163,6 +163,6 @@ axis2_network_handler_svr_socket_accept(axis2_env_t **env, int svr_socket)
 	cli_socket = accept(svr_socket, (struct sockaddr *)&cli_addr, &cli_len);
     if (cli_socket < 0)
     	AXIS2_LOG_WRITE((*env)->log, "[Axis2][network_handler] Socket accept \
-						failed", AXIS2_LOG_ERROR);
+						failed", AXIS2_LOG_LEVEL_ERROR);
     return cli_socket;
 }

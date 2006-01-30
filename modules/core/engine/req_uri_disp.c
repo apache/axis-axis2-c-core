@@ -100,7 +100,7 @@ axis2_svc_t* AXIS2_CALL axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
             axis2_char_t **url_tokens = NULL;
             axis2_char_t message[1024];
             sprintf(message, "Checking for service using target endpoint address : %s", address);
-            AXIS2_LOG(env, message, AXIS2_LOG_INFO);
+            AXIS2_LOG(env, message, AXIS2_LOG_LEVEL_INFO);
             
             url_tokens = axis2_parse_request_url_for_svc_and_op(env, address);
             
@@ -167,7 +167,7 @@ axis2_op_t* AXIS2_CALL axis2_req_uri_disp_find_op(axis2_msg_ctx_t *msg_ctx,
                     axis2_op_t *op = NULL;
                     axis2_char_t message[1024];
                     sprintf(message, "Checking for operation using target endpoint uri fragment : %s", url_tokens[1]);
-                    AXIS2_LOG(env, message, AXIS2_LOG_INFO);
+                    AXIS2_LOG(env, message, AXIS2_LOG_LEVEL_INFO);
                     op_qname = axis2_qname_create(env, url_tokens[1], NULL, NULL);
                     op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, AXIS2_QNAME_GET_LOCALPART(op_qname, env));
                     AXIS2_QNAME_FREE(op_qname, env);

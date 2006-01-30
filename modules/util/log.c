@@ -75,19 +75,19 @@ axis2_log_impl_write (struct axis2_log *log, const axis2_char_t *buffer, axis2_l
         char *level_str = "";
         switch (level)
         {
-            case AXIS2_LOG_CRITICAL:
+            case AXIS2_LOG_LEVEL_CRITICAL:
                 level_str = "[critical] ";
                 break;
-            case AXIS2_LOG_ERROR:
+            case AXIS2_LOG_LEVEL_ERROR:
                 level_str = "[error] ";
                 break;
-            case AXIS2_LOG_WARNING:
+            case AXIS2_LOG_LEVEL_WARNING:
                 level_str = "[warning] ";
                 break;
-            case AXIS2_LOG_INFO:
+            case AXIS2_LOG_LEVEL_INFO:
                 level_str = "[info] ";
                 break;
-            case AXIS2_LOG_DEBUG:
+            case AXIS2_LOG_LEVEL_DEBUG:
                 level_str = "[debug] ";
                 break;
         }

@@ -39,15 +39,15 @@ extern "C"
     typedef enum axis2_log_levels
     {
         /** Critical level, logs only critical errors */
-        AXIS2_LOG_CRITICAL = 0,
+        AXIS2_LOG_LEVEL_CRITICAL = 0,
         /** Error level, logs only errors */
-        AXIS2_LOG_ERROR,
+        AXIS2_LOG_LEVEL_ERROR,
         /** Warning level, logs only warnings */
-        AXIS2_LOG_WARNING,
+        AXIS2_LOG_LEVEL_WARNING,
         /** Info level, logs information */
-        AXIS2_LOG_INFO,
+        AXIS2_LOG_LEVEL_INFO,
         /** Debug level, logs everything */
-        AXIS2_LOG_DEBUG
+        AXIS2_LOG_LEVEL_DEBUG
     } axis2_log_levels_t;
 
   /** 

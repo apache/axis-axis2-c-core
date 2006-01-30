@@ -599,7 +599,7 @@ axis2_soap_builder_process_namespace_data
                 (AXIS2_STRCMP(ns_uri, AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) != 0))
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI, AXIS2_FAILURE);                
-            AXIS2_LOG_WRITE((*env)->log,"AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI", AXIS2_LOG_DEBUG);
+            AXIS2_LOG_WRITE((*env)->log,"AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI", AXIS2_LOG_LEVEL_DEBUG);
             return AXIS2_FAILURE;
         }
     }    
@@ -627,7 +627,7 @@ axis2_soap_builder_identify_soap_version(axis2_soap_builder_t *builder,
         AXIS2_ERROR_SET((*env)->error, 
             AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE, AXIS2_FAILURE);
         AXIS2_LOG_WRITE((*env)->log, " soap message does not have a soap envelope element ",
-            AXIS2_LOG_CRITICAL);        
+            AXIS2_LOG_LEVEL_CRITICAL);        
         return AXIS2_FAILURE;
     }
     envelope_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(builder_impl->soap_envelope, env);
@@ -642,18 +642,18 @@ axis2_soap_builder_identify_soap_version(axis2_soap_builder_t *builder,
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP, AXIS2_FAILURE);
             AXIS2_LOG_WRITE((*env)->log , "AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP",
-                AXIS2_LOG_ERROR);            
+                AXIS2_LOG_LEVEL_ERROR);            
             return AXIS2_FAILURE;
         }            
         if(AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
         {
             builder_impl->soap_version = AXIS2_SOAP11;        
-            AXIS2_LOG_WRITE((*env)->log,"Identified soap version is soap11", AXIS2_LOG_DEBUG);
+            AXIS2_LOG_WRITE((*env)->log,"Identified soap version is soap11", AXIS2_LOG_LEVEL_DEBUG);
         }
         else if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
         {
             builder_impl->soap_version = AXIS2_SOAP12;          
-            AXIS2_LOG_WRITE((*env)->log,"identified soap version is soap12", AXIS2_LOG_DEBUG);
+            AXIS2_LOG_WRITE((*env)->log,"identified soap version is soap12", AXIS2_LOG_LEVEL_DEBUG);
             
         }
         AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(builder_impl->soap_envelope, env, builder_impl->soap_version);        
