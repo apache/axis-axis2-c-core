@@ -116,8 +116,15 @@ axis2_strstr (const axis2_char_t *heystack,
 
 
 AXIS2_DECLARE(axis2_char_t *)
-axis2_rindex(const axis2_char_t *s, axis2_char_t c)
+axis2_rindex(const axis2_char_t *_s, axis2_char_t _ch)
 {
-    return rindex(s, c);
+        int i,ilen = strlen(_s);
+        if (ilen < 1)
+                return NULL;
+        for (i=ilen-1;i>=0;i--)
+        {
+                if (_s[i] == _ch)
+                        return _s+i;
+        }
+        return NULL;
 }
-

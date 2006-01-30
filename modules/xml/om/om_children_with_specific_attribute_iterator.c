@@ -92,7 +92,7 @@ axis2_om_children_with_specific_attribute_iterator_create(
     iterator_impl->next_called = AXIS2_FALSE;
     iterator_impl->remove_called = AXIS2_FALSE;
     
-    iterator_impl->attr_qname = attr_qname;
+    iterator_impl->attr_qname = AXIS2_QNAME_CLONE(attr_qname, env);
     iterator_impl->attr_value = attr_value;
     iterator_impl->detach = detach;
     
@@ -182,9 +182,6 @@ axis2_om_children_with_specific_attribute_iterator_has_next(
             axis2_om_element_t *om_ele = NULL;
             om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
                             iterator_impl->current_child, env);
-            if(!om_ele)
-                printf(" om element null");
-            printf("\n localname %s", AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env));
             om_attr = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(om_ele, env,
                             iterator_impl->attr_qname);
             if(om_attr && 

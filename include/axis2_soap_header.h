@@ -151,6 +151,9 @@ struct axis2_soap_builder;
         axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_header_t *header,
                                                 axis2_env_t **env,
                                                 struct axis2_soap_builder* builder);
+
+        axis2_hash_t* (AXIS2_CALL *get_all_header_blocks)(axis2_soap_header_t *header,
+                                                          axis2_env_t **env);                                                
                                          
     };
 
@@ -224,6 +227,9 @@ axis2_soap12_header_create_with_parent(axis2_env_t **env,
 
 #define AXIS2_SOAP_HEADER_GET_HEADER_BLOCK_WITH_NAMESPACE_URI(header, env, uri)\
         ((header)->ops->get_header_block_with_namespace_uri(header, env, uri))
+
+#define AXIS2_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(header, env) \
+        ((header)->ops->get_all_header_blocks(header, env))
 /** @} */
 
 #ifdef __cplusplus

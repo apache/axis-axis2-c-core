@@ -106,7 +106,11 @@ axis2_array_list_t* AXIS2_CALL
 axis2_soap_header_get_header_block_with_namespace_uri
                                         (axis2_soap_header_t* header,
                                          axis2_env_t **env,
-                                         axis2_char_t *ns_uri);                              
+                                         axis2_char_t *ns_uri);  
+
+axis2_hash_t* AXIS2_CALL 
+axis2_soap_header_get_all_header_blocks(axis2_soap_header_t *header,
+                                        axis2_env_t **env);                                                                      
                                    
 /*************** function implementations *************************************/
 
@@ -164,6 +168,9 @@ axis2_soap_header_create(axis2_env_t **env)
         axis2_soap_header_set_builder;      
     header_impl->soap_header.ops->get_header_block_with_namespace_uri =
         axis2_soap_header_get_header_block_with_namespace_uri;
+    header_impl->soap_header.ops->get_all_header_blocks =
+        axis2_soap_header_get_all_header_blocks;        
+        
     return &(header_impl->soap_header);        
 }
 
@@ -478,7 +485,7 @@ axis2_soap_header_get_header_block_with_namespace_uri
     axis2_char_t *hb_namespace_uri = NULL;
     int found = 0;
     void *hb =  NULL;
-    AXIS2_PARAM_CHECK((*env)->error, ns_uri, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, ns_uri, NULL);
     header_impl = AXIS2_INTF_TO_IMPL(header);
     header_block_list = axis2_array_list_create(env, 10);
     for(hash_index = axis2_hash_first(header_impl->header_blocks, env);
@@ -514,3 +521,12 @@ axis2_soap_header_get_header_block_with_namespace_uri
     }
     return NULL;        
 }
+
+axis2_hash_t* AXIS2_CALL 
+axis2_soap_header_get_all_header_blocks(axis2_soap_header_t *header,
+                                        axis2_env_t **env)
+{
+    axis2_soap_header_impl_t *header_impl = NULL;
+    header_impl = AXIS2_INTF_TO_IMPL(header);
+    return header_impl->header_blocks;
+}                                        
