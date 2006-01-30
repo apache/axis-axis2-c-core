@@ -25,6 +25,7 @@
 /***************************** Function headers *******************************/
 axis2_env_t* init_syetem_env(axis2_allocator_t *allocator);
 void system_exit(axis2_allocator_t *allocator, axis2_env_t *env, int status);
+void usage(axis2_char_t* prog_name);
 /***************************** End of function headers ************************/
 axis2_env_t* init_syetem_env(axis2_allocator_t *allocator)
 {
@@ -51,26 +52,42 @@ int main(int argc, char *argv[])
 	axis2_allocator_t *allocator = NULL;
 	axis2_env_t *env = NULL;
 	axis2_transport_receiver_t *server = NULL;
+    extern char *optarg;
+    extern int optopt;
 	char tmp_str[512];
 	int port = 9090;
-    axis2_char_t *repo = "../../../../../deploy";
-	
-	if(argc > 1)
-	{
-	    port = atoi(argv[1]);
+    axis2_char_t *repo_path = "../";
+	axis2_http_socket_read_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
+    int c;
+
+    while ((c = getopt(argc, argv, ":p:r:ht:")) != -1)
+    {
+        switch(c)
+        {
+            case 'p':
+                port = atoi(optarg);
+                break;
+            case 'r':
+                repo_path = optarg;
+                break;
+            case 't':
+                axis2_http_socket_read_timeout = atoi(optarg) * 1000;
+                break;
+            case 'h':
+                usage(argv[0]);
+                return 0;
+            case ':':
+                fprintf(stderr, "\nOption -%c requires an operand\n", optopt);
+                usage(argv[0]);
+	            return -1;
+	        case '?':
+	            if (isprint (optopt))
+	            fprintf (stderr, "\nUnknown option `-%c'.\n", optopt);
+	            usage(argv[0]);
+	            return -1;
+	    }
 	}
-	if(argc > 2)
-	{
-	    repo = argv[2];
-	}
-    if(argc > 3)
-	{
-		axis2_http_socket_read_timeout = atoi(argv[3]);
-	}
-	else
-	{
-		axis2_http_socket_read_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
-	}
+
 	allocator = axis2_allocator_init(NULL);
     
 	if(NULL == allocator)
@@ -90,7 +107,7 @@ int main(int argc, char *argv[])
 	sprintf(tmp_str, "[Axis2]Server port : %d", port);
 	printf("%s\n",tmp_str);
 	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_LEVEL_INFO);
-	sprintf(tmp_str, "[Axis2]Repo location : %s", repo);
+	sprintf(tmp_str, "[Axis2]Repo location : %s", repo_path);
 	printf("%s\n",tmp_str);
 	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_LEVEL_INFO);
 	sprintf(tmp_str, "[Axis2]Read Timeout : %d ms", 
@@ -98,7 +115,7 @@ int main(int argc, char *argv[])
 	printf("%s\n",tmp_str);
 	AXIS2_LOG_WRITE(env->log, tmp_str, AXIS2_LOG_LEVEL_INFO);
 	
-	server = axis2_http_server_create(&env, repo, port);
+	server = axis2_http_server_create(&env, repo_path, port);
 	if(NULL == server)
 	{
 		sprintf(tmp_str, "[Axis2]Server creation failed: Error code: %d", 
@@ -112,3 +129,16 @@ int main(int argc, char *argv[])
 	AXIS2_TRANSPORT_RECEIVER_START(server, &env);
 	return 0;
 }
+
+void usage(axis2_char_t* prog_name)
+{
+    fprintf(stdout, "\n Usage : [-p PORT] axis2_http_server" );
+    fprintf(stdout, " [-t TIMEOUT]");
+    fprintf(stdout, " [-r REPO_PATH]\n");
+    fprintf(stdout, " Options :\n");
+    fprintf(stdout, "\t-p PORT \t use port number PORT. The default port is 9090\n");
+    fprintf(stdout, "\t-r REPO_PATH \t use the repository path REPO_PATH. The default repository path is ../\n");
+    fprintf(stdout, "\t-t SOCKET_READ_TIMEOUT\t set timeout to SOCKET_READ_TIMEOUT. Default timeout is 30 seconds\n");
+    fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
+}
+
