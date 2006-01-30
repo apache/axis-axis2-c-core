@@ -10,6 +10,7 @@ test_soap_LDADD   =   \
                     -laxis2_soap \
                     -laxis2_util \
                     -laxis2_libxml2 \
+                    -laxis2_unix \
                     -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \
                     -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME)
                     
