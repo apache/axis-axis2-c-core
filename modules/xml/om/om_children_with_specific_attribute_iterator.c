@@ -166,6 +166,7 @@ axis2_om_children_with_specific_attribute_iterator_has_next(
     axis2_bool_t matching_node_found = AXIS2_FALSE;
     axis2_bool_t need_to_move_forward = AXIS2_TRUE;
     
+    
     axis2_om_children_with_specific_attribute_iterator_impl_t *iterator_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(iterator, env, AXIS2_FAILURE);
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
@@ -184,6 +185,7 @@ axis2_om_children_with_specific_attribute_iterator_has_next(
                             iterator_impl->current_child, env);
             om_attr = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(om_ele, env,
                             iterator_impl->attr_qname);
+            break;           
             if(om_attr && 
                 (AXIS2_STRCMP(AXIS2_OM_ATTRIBUTE_GET_VALUE(om_attr, env), 
                     iterator_impl->attr_value) == 0))
@@ -209,7 +211,7 @@ axis2_om_children_with_specific_attribute_iterator_has_next(
                 need_to_move_forward = (iterator_impl->current_child != NULL);
         }
         
-    }   
+    } 
     return matching_node_found;
 }                                      
 
