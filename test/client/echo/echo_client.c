@@ -27,18 +27,15 @@ build_om_programatically(axis2_env_t **env);
 int main(void)
 {
     axis2_stub_t *stub = NULL;
-    axis2_soap_envelope_t *envelope = NULL;
     axis2_om_node_t *node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
     axis2_allocator_t *allocator = NULL;
-    /*axis2_endpoint_ref_t *epr = NULL; */
     axis2_char_t *address = NULL;
     axis2_char_t *client_home = NULL;
-    axis2_char_t *temp_path1 = NULL;
-    axis2_char_t *temp_path2 = NULL;
+    axis2_om_node_t *ret_node = NULL;
     
     allocator = axis2_allocator_init (NULL);
     error = axis2_error_create(allocator);
@@ -47,71 +44,45 @@ int main(void)
     env->log->level = AXIS2_LOG_LEVEL_INFO;
 
     client_home = AXIS2_GETENV("AXIS2C_HOME");
-    /*temp_path1 = AXIS2_GETENV("AXIS2C_HOME");
-    temp_path2 = AXIS2_STRACAT(temp_path1, AXIS2_PATH_SEP_STR, &env);
-    client_home = AXIS2_STRACAT(temp_path2, "client_repository", &env);
-    AXIS2_FREE((env)->allocator, temp_path1);*/
-    AXIS2_FREE((env)->allocator, temp_path2);
 
     node = build_om_programatically(&env);
     address = "http://localhost:9090/axis2/services/echo/echo";
-    /*epr = axis2_endpoint_ref_create(&env, address);*/
     stub = 
         axis2_stub_create_with_endpoint_uri_and_client_home(&env, address,
             client_home);
     AXIS2_STUB_SET_TRANSPORT_INFO(stub, &env, AXIS2_TRANSPORT_HTTP, 
         AXIS2_TRANSPORT_HTTP, AXIS2_FALSE);
     /* create node and invoke echo */
-    status = axis2_echo_stub_echo(stub, &env, node);
-    if(AXIS2_SUCCESS != status)
-    {
-        printf("echo stub invoke failed!\n");
-    }
-    else
+    ret_node = axis2_echo_stub_echo(stub, &env, node);
+    if(ret_node)
     {
         printf("echo stub invoke successful!\n");
     }
+    else
+    {
+        printf("echo stub invoke failed!\n");
+    }
     
-    if (envelope)
-        AXIS2_SOAP_ENVELOPE_FREE(envelope, &env);
+    if (node)
+    {
+        AXIS2_OM_NODE_FREE_TREE(node, &env);
+    }
     return status;
 }
 
 axis2_om_node_t *
 build_om_programatically(axis2_env_t **env)
 {
-    axis2_soap_envelope_t *soap_envelope = NULL;
-    axis2_soap_body_t *soap_body = NULL;
-    axis2_om_node_t *envelope_base_node = NULL;
-    axis2_om_element_t *envelope_om_ele = NULL;
     axis2_om_node_t *echo_om_node = NULL;
     axis2_om_element_t* echo_om_ele = NULL;
     axis2_om_node_t* text_om_node = NULL;
     axis2_om_element_t * text_om_ele = NULL;
     
 
-    axis2_om_node_t *body_om_node = NULL;
-    axis2_om_namespace_t *env_ns = NULL;
     axis2_xml_writer_t *xml_writer = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
-    axis2_om_namespace_t *wsa_ns = NULL;
 
-    env_ns = axis2_om_namespace_create(env, "http://www.w3.org/2003/05/soap-envelope", "soapenv");
-    soap_envelope = axis2_soap_envelope_create(env, env_ns);
-    
-    
-    wsa_ns = axis2_om_namespace_create(env, "http://schemas.xmlsoap.org/ws/2004/08/addressing", "wsa");
-
-    envelope_base_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
-    envelope_om_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(envelope_base_node, env);
-    AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(envelope_om_ele, env, envelope_base_node, 
-        wsa_ns);
-    
-    soap_body = axis2_soap_body_create_with_parent(env, soap_envelope);
-    
-    body_om_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
-    
     echo_om_ele = axis2_om_element_create(env, NULL, "echoString", NULL, &echo_om_node);
     
     text_om_ele = axis2_om_element_create(env, echo_om_node, "text", NULL, &text_om_node);
