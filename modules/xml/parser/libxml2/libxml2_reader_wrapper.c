@@ -107,7 +107,7 @@ axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser
                                             
 void 
 axis2_libxml2_reader_wrapper_error_handler(void *arg, 
-                                           char *msg, 
+                                           const char *msg, 
                                            int severities, 
                                            void *locator_ptr);                                            
                                             
@@ -808,9 +808,10 @@ axis2_libxml2_reader_wrapper_error_handler(void *arg,
                                            int severities,
                                            void *locator_ptr)
 {
+    axis2_char_t error_msg[200]; 
     axis2_env_t *env = NULL;
     env = (axis2_env_t*)arg;
-    axis2_char_t error_msg[200];        
+           
     switch(severities)
     {
         case XML_PARSER_SEVERITY_VALIDITY_WARNING :
