@@ -677,11 +677,7 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 		ret = AXIS2_STRDUP("<h2>There are no services deployed</h2>", env);
 	}
 	ret = AXIS2_STRACAT("<html><head><title>Axis2C :: Services</title></head>"
-						"<table width=\"100%\"><tr><td align=\"left\"><img src="
-						"\"http://www.apache.org/images/asf-logo.gif\"/></td>"
-						"<td align=\"right\"><img src=\"http://ws.apache.org/"
-						"axis2/images/axis.jpg\"/></td></tr></table><body><font"
-						" face=\"courier\">" 
+						"<body><font face=\"courier\">" 
 						, tmp2, env);
 	/*AXIS2_FREE((*env)->allocator, tmp2);*/
     tmp2 = ret;
