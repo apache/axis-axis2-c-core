@@ -109,7 +109,7 @@ int write_to_socket(char *address, char* port, char* filename, char* endpoint)
 	sprintf(tmpstr, "%d", strlen(buffer));
 	strcat(buffer_l, tmpstr);
 	strcat(buffer_l, "\r\n");
-	strcat(buffer_l, "SOAPAction: http://localhost:9090/axis2/services/echo/echo\r\n");
+	/*strcat(buffer_l, "SOAPAction: http://localhost:9090/axis2/services/echo/echo\r\n");*/
 	strcat(buffer_l, "Content-Type: application/soap+xml;\r\n");
 	strcat(buffer_l, "\r\n");
 

@@ -42,7 +42,7 @@ axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
 	/* If no files found, make a non-selectable menu item */
 	if (count <= 0)
 	{		 
-		printf("No files in this directory:%s\n", pathname);
+        AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "No files in this directory : %s", pathname);
 		return NULL;
 	}
     
@@ -115,7 +115,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
 	/* If no files found, make a non-selectable menu item */
 	if (count <= 0)
 	{		 
-		printf("No files in this directory:%s\n", pathname);
+        AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "No files in this directory : %s", pathname);
 		return NULL;
 	}
     
