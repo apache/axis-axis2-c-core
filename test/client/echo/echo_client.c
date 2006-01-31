@@ -21,8 +21,8 @@
 #include <axis2_soap_fault_code.h>
 #include <axis2_soap_fault_role.h>
 
-axis2_soap_envelope_t *
-build_soap_programatically(axis2_env_t **env);
+axis2_om_node_t *
+build_om_programatically(axis2_env_t **env);
 
 int main(void)
 {
@@ -53,8 +53,7 @@ int main(void)
     AXIS2_FREE((env)->allocator, temp_path1);*/
     AXIS2_FREE((env)->allocator, temp_path2);
 
-    envelope = build_soap_programatically(&env);
-    node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(envelope, &env);
+    node = build_om_programatically(&env);
     address = "http://localhost:9090/axis2/services/echo/echo";
     /*epr = axis2_endpoint_ref_create(&env, address);*/
     stub = 
@@ -76,8 +75,8 @@ int main(void)
     return status;
 }
 
-axis2_soap_envelope_t *
-build_soap_programatically(axis2_env_t **env)
+axis2_om_node_t *
+build_om_programatically(axis2_env_t **env)
 {
     axis2_soap_envelope_t *soap_envelope = NULL;
     axis2_soap_body_t *soap_body = NULL;
@@ -111,7 +110,7 @@ build_soap_programatically(axis2_env_t **env)
     
     body_om_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
     
-    echo_om_ele = axis2_om_element_create(env, body_om_node, "echoString", NULL, &echo_om_node);
+    echo_om_ele = axis2_om_element_create(env, NULL, "echoString", NULL, &echo_om_node);
     
     text_om_ele = axis2_om_element_create(env, echo_om_node, "text", NULL, &text_om_node);
 
@@ -121,10 +120,10 @@ build_soap_programatically(axis2_env_t **env)
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     om_output = axis2_om_output_create( env, xml_writer);
     
-    AXIS2_SOAP_ENVELOPE_SERIALIZE(soap_envelope, env, om_output, AXIS2_FALSE);
+    AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
     printf("%s \n",  buffer); 
 
-    return soap_envelope;
+    return echo_om_node;
 }
 

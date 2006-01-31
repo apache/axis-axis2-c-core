@@ -202,7 +202,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_
         return NULL;
     }
     
-    envelope = axis2_soap_envelope_create(env, NULL);
+    envelope = axis2_soap_envelope_create_default_soap_envelope(env, AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env)?AXIS2_SOAP11:AXIS2_SOAP12);
     if (!envelope)
     {
         return NULL;

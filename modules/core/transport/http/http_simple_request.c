@@ -213,9 +213,11 @@ axis2_http_simple_request_free(axis2_http_simple_request_t *simple_request,
         for(i = 0; i< AXIS2_ARRAY_LIST_SIZE(simple_request_impl->header_group, 
                         env); i++)
         {
+            /*TODO: fix it here
             tmp = (axis2_http_header_t *)AXIS2_ARRAY_LIST_REMOVE(
                             simple_request_impl->header_group, env, i);
             AXIS2_HTTP_HEADER_FREE(tmp, env);        
+            */
         }
         AXIS2_ARRAY_LIST_FREE(simple_request_impl->header_group, env);
         simple_request_impl->header_group = NULL;
@@ -480,8 +482,8 @@ axis2_http_simple_request_get_body_bytes
 	length = AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_LENGTH(simple_request, env);
 	if(length > 0)
 	{
-		*buf = (char*)AXIS2_MALLOC((*env)->allocator, length);
-		read_len = AXIS2_STREAM_READ(body, env, buf, length);
+		*buf = (char*)AXIS2_MALLOC((*env)->allocator, length + 1);
+		read_len = AXIS2_STREAM_READ(body, env, *buf, length + 1);
 		return read_len;
 	}
 	tmp_buf2 = AXIS2_MALLOC((*env)->allocator, 128 * sizeof(char));

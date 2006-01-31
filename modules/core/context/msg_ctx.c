@@ -444,7 +444,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->doing_mtom = AXIS2_FALSE;
     msg_ctx_impl->doing_rest = AXIS2_FALSE;
     msg_ctx_impl->do_rest_through_post = AXIS2_TRUE;
-    msg_ctx_impl->is_soap_11 = AXIS2_TRUE;
+    msg_ctx_impl->is_soap_11 = AXIS2_FALSE;
     msg_ctx_impl->svc_grp_ctx_id = NULL;
     msg_ctx_impl->transport_in_desc_qname = NULL;
     msg_ctx_impl->transport_out_desc_qname = NULL;
