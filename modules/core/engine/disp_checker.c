@@ -202,10 +202,14 @@ axis2_status_t AXIS2_CALL axis2_disp_checker_invoke(axis2_handler_t* handler, ax
     axis2_svc_t *svc = NULL;
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_endpoint_ref_t *endpoint_ref = NULL;
+    axis2_char_t *address = NULL;
 
     AXIS2_FUNC_PARAM_CHECK(handler, env, AXIS2_FAILURE);
     
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+
+    if (!(AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env))) /*if is client side, no point in proceeding*/
+        return AXIS2_FAILURE;
 
     op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
     
@@ -234,18 +238,20 @@ axis2_status_t AXIS2_CALL axis2_disp_checker_invoke(axis2_handler_t* handler, ax
     }
 
     endpoint_ref = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
+    if (endpoint_ref)
+        address = AXIS2_ENDPOINT_REF_GET_ADDRESS(endpoint_ref, env);
     
     svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
     if (!svc)
     {
-        AXIS2_LOG_INFO((*env)->log, LOG_SI, "Service Not found. Endpoint reference is : %s", (endpoint_ref)?endpoint_ref:"NULL");
+        AXIS2_LOG_INFO((*env)->log, "Service Not found. Endpoint reference is : %s", (address)?address:"NULL");
         return AXIS2_FAILURE;
     }
     
     op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
     if (!op)
     {
-        AXIS2_LOG_INFO((*env)->log, LOG_SI, "Operation Not found. Endpoint reference is : %s", (endpoint_ref)?endpoint_ref:"NULL");
+        AXIS2_LOG_INFO((*env)->log, "Operation Not found. Endpoint reference is : %s", (address)?address:"NULL");
         return AXIS2_FAILURE;
     }    
     return AXIS2_SUCCESS;

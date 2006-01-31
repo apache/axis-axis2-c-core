@@ -180,7 +180,7 @@ axis2_status_t AXIS2_CALL axis2_phase_add_handler(struct axis2_phase *phase,
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
     
-    AXIS2_LOG_INFO((*env)->log, LOG_SI, "Handler %s added to phase %s",
+    AXIS2_LOG_INFO((*env)->log, "Handler %s added to phase %s",
                      AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_NAME(handler, env), env), 
                      phase_impl->name);
     
@@ -210,7 +210,7 @@ axis2_status_t AXIS2_CALL axis2_phase_invoke(struct axis2_phase *phase,
         } 
         else 
         {
-            AXIS2_LOG_INFO((*env)->log, LOG_SI, "Invoke the first handler %s within the phase %s",
+            AXIS2_LOG_INFO((*env)->log, "Invoke the first handler %s within the phase %s",
                      AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_NAME(phase_impl->first_handler, env), env), 
                      phase_impl->name);
             status = AXIS2_HANDLER_INVOKE(phase_impl->first_handler, env, msg_ctx);
@@ -254,7 +254,7 @@ axis2_status_t AXIS2_CALL axis2_phase_invoke(struct axis2_phase *phase,
         } 
         else 
         {
-            AXIS2_LOG_INFO((*env)->log, LOG_SI, "Invoke the last handler %s within the phase %s",
+            AXIS2_LOG_INFO((*env)->log, "Invoke the last handler %s within the phase %s",
                      AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_NAME(phase_impl->last_handler, env), env), 
                      phase_impl->name);
             status = AXIS2_HANDLER_INVOKE(phase_impl->last_handler, env, msg_ctx);

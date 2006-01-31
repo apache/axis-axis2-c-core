@@ -1155,7 +1155,7 @@ axis2_conf_add_transport_out(axis2_conf_t *conf,
     
     qname = AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport, env);
     if (!qname)
-        AXIS2_FAILURE;
+        return AXIS2_FAILURE;
     axis2_hash_set(config_impl->transports_out,
         AXIS2_QNAME_TO_STRING(qname, env),
             AXIS2_HASH_KEY_STRING, transport);

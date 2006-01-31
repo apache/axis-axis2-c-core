@@ -100,7 +100,7 @@ axis2_engine_t* AXIS2_CALL axis2_engine_create(axis2_env_t **env, axis2_conf_ctx
     engine_impl->engine.ops->get_receiver_fault_code = axis2_engine_get_receiver_fault_code;
     engine_impl->engine.ops->free = axis2_engine_free;
 
-    AXIS2_LOG_INFO((*env)->log, LOG_SI, "Axis2 Engine Started");
+    AXIS2_LOG_INFO((*env)->log, "Axis2 Engine Started");
     
     return &(engine_impl->engine);
 }
@@ -488,7 +488,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_engine_create_fault_msg_ctx(struct axis2_engin
     AXIS2_MSG_CTX_SET_PROCESS_FAULT(fault_ctx, env, AXIS2_TRUE);
     AXIS2_MSG_CTX_SET_SERVER_SIDE(fault_ctx, env, AXIS2_TRUE);
     AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, 
-        AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_TRUE), AXIS2_TRUE );
+    AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_TRUE), AXIS2_TRUE );
 
     
     /*axis2_soap_envelope_t *envelope = NULL;

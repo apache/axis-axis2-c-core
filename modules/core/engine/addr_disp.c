@@ -158,7 +158,6 @@ axis2_op_t* AXIS2_CALL axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx,
     
     if (action)
     {
-        axis2_char_t message[1024];
         AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "Checking for operation using WSAAction : %s", action);
         
         qname = axis2_qname_create(env, action, NULL, NULL);
