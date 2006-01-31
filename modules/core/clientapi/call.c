@@ -164,7 +164,8 @@ axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call,
 /******************************************************************************/
 
 axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env, 
-                                            axis2_svc_ctx_t *svc_ctx) 
+                                            axis2_svc_ctx_t *svc_ctx,
+                                            axis2_char_t *client_home) 
 {
     axis2_call_impl_t *call_impl = NULL;
     
@@ -199,9 +200,11 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env,
     else
     {
         /*assume svc ctx */
+        call_impl->svc_ctx = axis2_call_assume_svc_ctx(&(call_impl->call), env, 
+            client_home);
     }
     
-    call_impl->base = axis2_mep_client_create(env, svc_ctx, AXIS2_MEP_URI_OUT_IN);
+    call_impl->base = axis2_mep_client_create(env, call_impl->svc_ctx, AXIS2_MEP_URI_OUT_IN);
     if (!(call_impl->base))
     {
         axis2_call_free(&(call_impl->call), env);
@@ -237,39 +240,6 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env,
     call_impl->call.ops->set = axis2_call_set;
     call_impl->call.ops->free = axis2_call_free;
 
-    return &(call_impl->call);
-}
-
-axis2_call_t* AXIS2_CALL 
-axis2_call_create_with_svc_ctx_and_client_home(axis2_env_t **env,
-                                                axis2_svc_ctx_t *svc_ctx,
-                                                axis2_char_t *client_home) 
-{
-    axis2_call_impl_t *call_impl = NULL;
-    
-    AXIS2_ENV_CHECK(env, NULL);
-    /*AXIS2_PARAM_CHECK((*env)->error, svc_ctx, NULL);*/
-    
-    call_impl = (axis2_call_impl_t *) axis2_call_create(env, NULL);
-    if (!call_impl)
-    { 
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;        
-    }
-    call_impl->svc_ctx = NULL;
-    if(svc_ctx)
-    {
-        call_impl->svc_ctx = svc_ctx;
-    }
-    else
-    {
-        /*assume svc ctx */
-        call_impl->svc_ctx = axis2_call_assume_svc_ctx(&(call_impl->call), env, 
-            client_home);
-    }
-    
-    
-    
     return &(call_impl->call);
 }
 
@@ -636,7 +606,11 @@ axis2_status_t AXIS2_CALL axis2_call_set_transport_info(struct axis2_call *call,
     }
 
     /* find and set the transport details */
-    conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(call_impl->svc_ctx, env);
+    if (call_impl->svc_ctx)
+    {
+        conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(call_impl->svc_ctx, env);
+    }
+    
     if (conf_ctx)
     {
         conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
@@ -706,6 +680,12 @@ axis2_status_t AXIS2_CALL axis2_call_check_transport(struct axis2_call *call,
     if (!(call_impl->sender_transport)) 
     {
         call_impl->sender_transport = AXIS2_MEP_CLIENT_INFER_TRANSPORT(call_impl->base, env, call_impl->to);
+    }
+    
+    if (!(call_impl->sender_transport)) 
+    {
+        /** TODO : set an error here */
+        return AXIS2_FAILURE;
     }
     
     if (!(call_impl->listener_transport))
@@ -1112,10 +1092,12 @@ axis2_op_t* AXIS2_CALL axis2_call_create_op_fill_flow(struct axis2_call *call,
         axis2_array_list_t *remaining_phases = NULL;
         
         op = axis2_op_create_with_qname(env, op_qname);
+        AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
         if(!op)
         {
             return AXIS2_FAILURE;   
         }
+        call_impl->op_template = op;
         remaining_phases = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(call_impl->
             op_template, env);
         AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op, env, remaining_phases);
@@ -1239,6 +1221,7 @@ axis2_call_assume_svc_ctx(axis2_call_t *call,
             "TemplateOperation")); */
         qtemp_op = axis2_qname_create(env, "TemplateOperation", NULL, NULL);
         call_impl->op_template = axis2_op_create_with_qname(env, qtemp_op);
+        AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(call_impl->op_template, env, AXIS2_MEP_URI_OUT_IN);
         AXIS2_QNAME_FREE(qtemp_op, env);
         info = AXIS2_CONF_GET_PHASESINFO(conf, env);
         /* to set the operation flows */
@@ -1251,8 +1234,8 @@ axis2_call_assume_svc_ctx(axis2_call_t *call,
     }
     svc_grp = AXIS2_SVC_GET_PARENT(axis_svc, env);
     svc_grp_ctx = AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env, conf_ctx);
-    assumed_svc_name = AXIS2_QNAME_GET_LOCALPART(assumed_svc_qname, env);
-    AXIS2_QNAME_FREE(assumed_svc_qname, env);
+    assumed_svc_name = AXIS2_QNAME_GET_LOCALPART(assumed_svc_qname, env);    
     svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, assumed_svc_name);
+    AXIS2_QNAME_FREE(assumed_svc_qname, env);
     return svc_ctx;
 }

@@ -34,7 +34,7 @@ int main(void)
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
     axis2_allocator_t *allocator = NULL;
-    axis2_endpoint_ref_t *epr = NULL;
+    /*axis2_endpoint_ref_t *epr = NULL; */
     axis2_char_t *address = NULL;
     axis2_char_t *client_home = NULL;
     axis2_char_t *temp_path1 = NULL;
@@ -46,18 +46,19 @@ int main(void)
     env = axis2_env_create_with_error_log(allocator, error, log);
     env->log->level = AXIS2_LOG_LEVEL_INFO;
 
-    temp_path1 = AXIS2_GETENV("AXIS2C_HOME");
+    client_home = AXIS2_GETENV("AXIS2C_HOME");
+    /*temp_path1 = AXIS2_GETENV("AXIS2C_HOME");
     temp_path2 = AXIS2_STRACAT(temp_path1, AXIS2_PATH_SEP_STR, &env);
     client_home = AXIS2_STRACAT(temp_path2, "client_repository", &env);
-    AXIS2_FREE((env)->allocator, temp_path1);
+    AXIS2_FREE((env)->allocator, temp_path1);*/
     AXIS2_FREE((env)->allocator, temp_path2);
 
     envelope = build_soap_programatically(&env);
     node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(envelope, &env);
-    address = "http://localhost:9090/echo";
-    epr = axis2_endpoint_ref_create(&env, address);
+    address = "http://localhost:9090/axis2/services/echo/echo";
+    /*epr = axis2_endpoint_ref_create(&env, address);*/
     stub = 
-        axis2_echo_stub_create_with_endpoint_ref_and_client_home(&env, epr,
+        axis2_stub_create_with_endpoint_uri_and_client_home(&env, address,
             client_home);
     AXIS2_STUB_SET_TRANSPORT_INFO(stub, &env, AXIS2_TRANSPORT_HTTP, 
         AXIS2_TRANSPORT_HTTP, AXIS2_FALSE);

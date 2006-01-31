@@ -210,14 +210,10 @@ struct axis2_call
     axis2_call_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_call_t*) axis2_call_create(axis2_env_t **env, axis2_svc_ctx_t *svc_ctx);
+AXIS2_DECLARE(axis2_call_t*) axis2_call_create(axis2_env_t **env, 
+    axis2_svc_ctx_t *svc_ctx, 
+    axis2_char_t *client_home);
 
-AXIS2_DECLARE(axis2_call_t*)
-axis2_call_create_with_svc_ctx_and_client_home(axis2_env_t **env,
-                                                axis2_svc_ctx_t *svc_ctx,
-                                                axis2_char_t *client_home);
-
-    
 /************************** Start of function macros **************************/
 
 #define AXIS2_CALL_SET_TO(call, env, to) ((call)->ops->set_to(call, env, to))
