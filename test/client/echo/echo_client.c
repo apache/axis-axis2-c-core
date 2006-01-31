@@ -47,7 +47,7 @@ int main(void)
     client_home = AXIS2_GETENV("AXIS2C_HOME");
 
     node = build_om_programatically(&env);
-    address = "http://localhost:9090/axis2/services/echo/echo";
+    address = "http://localhost:9090/axis2/services/echo/";
     stub = 
         axis2_stub_create_with_endpoint_uri_and_client_home(&env, address,
             client_home);

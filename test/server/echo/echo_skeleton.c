@@ -55,7 +55,7 @@ int echo_init(axis2_svc_skeleton_t *svc_skeleton,
                         axis2_env_t **env)
 {
     svc_skeleton->func_array = axis2_array_list_create(env, 0);
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echo");
+    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoString");
 
     /* Any initialization stuff of echo goes here */
     return AXIS2_SUCCESS;

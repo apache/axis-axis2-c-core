@@ -5,7 +5,7 @@
         This is a testing service , to test the system is working or not
    </description>
 
-    <operation name="echo">
+    <operation name="echoString">
             <messageReceiver class="libaxis2_receivers.so" />
     </operation>
 
