@@ -399,6 +399,8 @@ axis2_error_init()
     "Input OM node NULL, Probably error in SOAP request";
     axis2_error_messages[AXIS2_ERROR_SVC_SKEL_INVALID_OPERATION_PARAMETERS_IN_SOAP_REQUEST] =
     "Invalid parameters for service operation in SOAP request";
+    axis2_error_messages[AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX] =
+    "Input stream is NULL in msg_ctx"; 
     return AXIS2_SUCCESS;
 }
 

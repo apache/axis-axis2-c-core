@@ -90,7 +90,11 @@ axis2_char_t* AXIS2_CALL
 axis2_http_transport_utils_get_charset_enc(axis2_env_t **env, 
 						axis2_char_t *content_type);
 int
-axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx);						
+axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx);
+
+axis2_soap_envelope_t* AXIS2_CALL
+axis2_http_transport_utils_create_soap_msg(axis2_env_t **env, 
+                        axis2_msg_ctx_t *msg_ctx, axis2_char_t *soap_ns_uri);
 /***************************** End of function headers ************************/
 
 axis2_status_t AXIS2_CALL 
@@ -729,11 +733,13 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
 	axis2_stream_t *in_stream = NULL;
 	axis2_env_t **env = NULL;
 	int len = -1;
+    axis2_callback_info_t *cb_ctx = (axis2_callback_info_t*)ctx;
+    
 	if(NULL == buffer || NULL == ctx)
 	{
 		return 0;
 	}
-	if(((axis2_callback_info_t*)ctx)->unread_len <= 0)
+	if(cb_ctx->unread_len <= 0 && -1 != cb_ctx->content_length)
 	{
 		return 0;
 	}
@@ -745,4 +751,90 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
 		((axis2_callback_info_t*)ctx)->unread_len -= len;
 	}
 	return len;
+}
+
+axis2_soap_envelope_t* AXIS2_CALL
+axis2_http_transport_utils_create_soap_msg(axis2_env_t **env, 
+                        axis2_msg_ctx_t *msg_ctx, axis2_char_t *soap_ns_uri)
+{
+    axis2_op_ctx_t *op_ctx = NULL;
+    axis2_char_t *char_set_enc = NULL;
+    axis2_char_t *content_type = NULL;
+    axis2_stream_t *in_stream = NULL;
+    axis2_callback_info_t callback_ctx;
+    AXIS2_ENV_CHECK(env, NULL);
+	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, soap_ns_uri, NULL);
+    
+    in_stream = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, 
+                        AXIS2_FALSE);
+    if(NULL == in_stream)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX,
+                        AXIS2_FAILURE);
+        return NULL;
+    }
+    
+    callback_ctx.in_stream = in_stream;
+	callback_ctx.env = *env;
+	callback_ctx.content_length = -1;
+	callback_ctx.unread_len = -1;
+    
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    if(NULL != op_ctx)
+    {
+        axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(op_ctx, env);
+        if (NULL != ctx)
+        {
+            char_set_enc = AXIS2_CTX_GET_PROPERTY(ctx, env,
+                        AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
+            content_type = AXIS2_CTX_GET_PROPERTY(ctx, env, 
+                        MTOM_RECIVED_CONTENT_TYPE, AXIS2_FALSE);
+        }
+    }
+    if(NULL == char_set_enc)
+    {
+        char_set_enc = AXIS2_DEFAULT_CHAR_SET_ENCODING;
+    }
+    if(NULL != content_type)
+    {
+        AXIS2_MSG_CTX_SET_DOING_MTOM(msg_ctx, env, AXIS2_TRUE);
+        /**
+         * TODO MTOM stuff - create builder and get envelope
+         */
+    }
+    else if(AXIS2_TRUE != AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env))
+    {
+        axis2_xml_reader_t *xml_reader = NULL;
+        axis2_om_stax_builder_t *om_builder = NULL;
+        axis2_soap_builder_t *soap_builder = NULL;
+        axis2_soap_envelope_t *soap_envelope = NULL;
+        
+        xml_reader = axis2_xml_reader_create_for_memory(env,
+                        axis2_http_transport_utils_on_data_request,NULL,
+                        (void *)&callback_ctx, char_set_enc);
+        if(NULL == xml_reader)
+        {
+            return NULL;
+        }
+        om_builder = axis2_om_stax_builder_create(env, xml_reader);
+        if(NULL == om_builder)
+        {
+            AXIS2_XML_READER_FREE(xml_reader, env);
+            xml_reader = NULL;
+            return NULL;
+        }
+        soap_builder = soap_builder = axis2_soap_builder_create(env, om_builder,
+                        soap_ns_uri);
+        soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
+        /* TODO have to free the buider, xml reader and om builder */
+        return soap_envelope;
+    }
+    /**
+     * TODO REST handling
+     * else
+     * {
+     * }
+     */
+    return NULL;
 }

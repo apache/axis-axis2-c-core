@@ -353,6 +353,11 @@ extern "C"
 	 */
 	#define AXIS2_RESPONSE_WRITTEN "CONTENT_WRITTEN"
     
+    /**
+     * Content type for MTOM
+     */
+    #define MTOM_RECIVED_CONTENT_TYPE "MTOM_RECEIVED"
+    
 /** @} */
     
 #ifdef __cplusplus
