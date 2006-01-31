@@ -28,7 +28,7 @@ int axis2_test_dep_engine_load()
     axis2_error_t *error = axis2_error_create(allocator);
     axis2_log_t *log = axis2_log_create(allocator, NULL);
     env = axis2_env_create_with_error_log(allocator, error, log);
-    env->log->level = AXIS2_LOG_INFO;
+    env->log->level = AXIS2_LOG_LEVEL_INFO;
     
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     dep_engine = axis2_dep_engine_create_with_repos_name(&env, 
