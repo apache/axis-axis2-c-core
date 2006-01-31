@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
 	server = axis2_http_server_create(&env, repo_path, port);
 	if(NULL == server)
 	{
-	    AXIS2_LOG_ERROR(env->log, LOG_SI, "Server creation failed: Error code:"
+	    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server creation failed: Error code:"
 						" %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
 		system_exit(allocator, env, -1);
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 	printf("Started Simple Axis2 HTTP Server ...\n");
 	if(AXIS2_TRANSPORT_RECEIVER_START(server, &env) == AXIS2_FAILURE)
 	{
-		AXIS2_LOG_ERROR(env->log, LOG_SI, "Server start failed: Error code:"
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server start failed: Error code:"
 						" %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
 		system_exit(allocator, env, -1);

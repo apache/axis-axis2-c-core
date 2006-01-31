@@ -220,12 +220,12 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
         }
         else
         {
-            AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "Transport out is not set in message context");
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Transport out is not set in message context");
             return AXIS2_FAILURE;
         }
     }
     
-    AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "Axis2 engine send successful");
+    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Axis2 engine send successful");
     return AXIS2_SUCCESS;
 }
 
@@ -316,12 +316,12 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
         receiver = AXIS2_OP_GET_MSG_RECEIVER(op, env);
         if (!receiver)
         {
-            AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "Message receiver not set in operation description");
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Message receiver not set in operation description");
             return AXIS2_FAILURE;
         }
         AXIS2_MSG_RECV_RECEIVE(receiver, env, msg_ctx);        
     }
-    AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "Axis2 engine receive successful");
+    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Axis2 engine receive successful");
     return AXIS2_SUCCESS;
 }
 

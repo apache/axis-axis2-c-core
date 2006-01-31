@@ -171,14 +171,14 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         if(NULL == msg_recv)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
-            AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "message receiver is NULL");
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "message receiver is NULL");
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_MSG_RECV_CREATION_FAILED,AXIS2_FAILURE);
             return NULL;
         }
         else
         {
-            AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "message receiver loaded successfully");
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "message receiver loaded successfully");
         }
         return msg_recv;
     }
@@ -188,14 +188,14 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         if(NULL == transport_recv)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
-            AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "transport receiver is NULL");
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "transport receiver is NULL");
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED,AXIS2_FAILURE);
             return NULL;
         }
         else
         {
-            AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "transport receiver loaded successfully");
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "transport receiver loaded successfully");
         }
         return transport_recv;
     }
@@ -205,14 +205,14 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         if(NULL == transport_sender)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
-            AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "transport sender is NULL");
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "transport sender is NULL");
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED,AXIS2_FAILURE);
             return NULL;
         }
         else
         {
-            AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "transport sender loaded successfully");
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "transport sender loaded successfully");
         }
         return transport_sender;
     }

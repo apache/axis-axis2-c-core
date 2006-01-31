@@ -113,7 +113,7 @@ axis2_svc_t* AXIS2_CALL axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                                 if (uri)
                                 {
                                     axis2_char_t **url_tokens = NULL;
-                                    AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "Checking for service using SOAP message body's first child's namespace URI : %s", uri);
+                                    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Checking for service using SOAP message body's first child's namespace URI : %s", uri);
                                     
                                     url_tokens = axis2_parse_request_url_for_svc_and_op(env, uri);
                                     
@@ -189,7 +189,7 @@ axis2_op_t* AXIS2_CALL axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx,
                             {
                                 axis2_qname_t *op_qname = NULL;
                                 axis2_op_t *op = NULL;
-                                AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "Checking for operation using SOAP message body's first child's local name : %s", element_name);
+                                AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Checking for operation using SOAP message body's first child's local name : %s", element_name);
                                 op_qname = axis2_qname_create(env, element_name, NULL, NULL);
                                 op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, AXIS2_QNAME_GET_LOCALPART(op_qname, env));
                                 AXIS2_QNAME_FREE(op_qname, env);

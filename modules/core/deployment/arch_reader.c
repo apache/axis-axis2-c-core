@@ -410,7 +410,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         AXIS2_SVC_BUILDER_FREE(svc_builder, env);
         if(AXIS2_SUCCESS != status)
         {
-            AXIS2_LOG_INFO((*env)->log, LOG_SI, "populating service is not successful");
+            AXIS2_LOG_INFO((*env)->log, AXIS2_LOG_SI, "populating service is not successful");
 
             return AXIS2_FAILURE;
         }

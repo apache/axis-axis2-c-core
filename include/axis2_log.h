@@ -28,7 +28,7 @@ extern "C"
     struct axis2_log_ops;
 
 
-#define LOG_SI __FILE__,__LINE__
+#define AXIS2_LOG_SI __FILE__,__LINE__
 
 /**
  * @defgroup axis2_log Log
@@ -41,7 +41,7 @@ extern "C"
 	/**
 	  *Examples
 	  *To write debug information to log
-	  *AXIS2_LOG_DEBUG(log,LOG_SI,"log this %s %d","test",123);
+	  *AXIS2_LOG_DEBUG(log,AXIS2_LOG_SI,"log this %s %d","test",123);
 	  *This would log
 	  *"log this test 123" into the log file
 	  *
@@ -134,7 +134,7 @@ axis2_status_t AXIS2_CALL axis2_log_impl_log_debug(axis2_log_t *log,const axis2_
 
 #define AXIS2_LOG_FREE(log) ((log->ops)->free(log))
 
-#define AXIS2_LOG_WRITE(log, buffer, level) ((log)->ops->write(log, buffer, level,LOG_SI))
+#define AXIS2_LOG_WRITE(log, buffer, level) ((log)->ops->write(log, buffer, level,AXIS2_LOG_SI))
 
 #define AXIS2_LOG_DEBUG axis2_log_impl_log_debug 
 #define AXIS2_LOG_INFO axis2_log_impl_log_info 
