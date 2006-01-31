@@ -132,7 +132,10 @@ axis2_status_t AXIS2_CALL axis2_log_impl_write_to_file(FILE *fd,axis2_log_levels
             level_str = "[debug] ";
             break;
     }
-	fprintf(fd,"%s %s(%d) %s\n", level_str,file,line,value);
+    if (file)
+    	fprintf(fd,"%s %s(%d) %s\n", level_str, file, line, value);
+    else
+    	fprintf(fd,"%s %s\n", level_str, value);
 	return 0;
 }
 
@@ -155,7 +158,7 @@ axis2_log_impl_log_debug(axis2_log_t *log,const axis2_char_t *filename,const int
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_log_impl_log_info(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...)
+axis2_log_impl_log_info(axis2_log_t *log, const axis2_char_t *format,...)
 {
 	if (!log || !format)
 		return -1;
@@ -167,7 +170,7 @@ axis2_log_impl_log_info(axis2_log_t *log,const axis2_char_t *filename,const int 
     	va_start(ap, format);
     	vsnprintf(value, AXIS2_LEN_VALUE, format, ap);
     	va_end(ap);
-		axis2_log_impl_write_to_file(stderr,AXIS2_LOG_LEVEL_INFO,filename,linenumber,value);
+		axis2_log_impl_write_to_file(stderr, AXIS2_LOG_LEVEL_INFO, NULL, -1, value);
 	}
 	return 0;
 }

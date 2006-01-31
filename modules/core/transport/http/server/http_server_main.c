@@ -109,10 +109,10 @@ int main(int argc, char *argv[])
 	
     axis2_error_init();
     
-	AXIS2_LOG_INFO(env->log, LOG_SI, "Starting Axis2 HTTP server....");
-	AXIS2_LOG_INFO(env->log, LOG_SI, "Server port : %d", port);
-	AXIS2_LOG_INFO(env->log, LOG_SI, "Repo location : %s", repo_path);
-	AXIS2_LOG_INFO(env->log, LOG_SI, "Read Timeout : %d ms", axis2_http_socket_read_timeout);
+	AXIS2_LOG_INFO(env->log, "Starting Axis2 HTTP server....");
+	AXIS2_LOG_INFO(env->log, "Server port : %d", port);
+	AXIS2_LOG_INFO(env->log, "Repo location : %s", repo_path);
+	AXIS2_LOG_INFO(env->log, "Read Timeout : %d ms", axis2_http_socket_read_timeout);
 	
 	server = axis2_http_server_create(&env, repo_path, port);
 	if(NULL == server)

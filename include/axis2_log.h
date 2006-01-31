@@ -99,7 +99,7 @@ extern "C"
 		axis2_status_t (AXIS2_CALL *log_critical) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
 		axis2_status_t (AXIS2_CALL *log_error) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
 		axis2_status_t (AXIS2_CALL *log_warning) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
-		axis2_status_t (AXIS2_CALL *log_info) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
+		axis2_status_t (AXIS2_CALL *log_info) (struct axis2_log *log, axis2_char_t *format, ...);
 		axis2_status_t (AXIS2_CALL *log_debug) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
     } axis2_log_ops_t;
 
@@ -127,7 +127,7 @@ axis2_status_t AXIS2_CALL axis2_log_impl_log_error(axis2_log_t *log,const axis2_
 
 axis2_status_t AXIS2_CALL axis2_log_impl_log_warning(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
 
-axis2_status_t AXIS2_CALL axis2_log_impl_log_info(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+axis2_status_t AXIS2_CALL axis2_log_impl_log_info(axis2_log_t *log, const axis2_char_t *format,...);
 
 axis2_status_t AXIS2_CALL axis2_log_impl_log_debug(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
 
