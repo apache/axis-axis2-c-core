@@ -57,11 +57,21 @@ int main(void)
     ret_node = axis2_echo_stub_echo(stub, &env, node);
     if(ret_node)
     {
+        axis2_xml_writer_t *writer = NULL;
+        axis2_om_output_t *om_output = NULL;
+        axis2_char_t *buffer = NULL;
+        
         printf("echo stub invoke successful!\n");
+        writer = axis2_xml_writer_create_for_memory(&env, NULL, AXIS2_TRUE, 0);
+        om_output = axis2_om_output_create (&env, writer);
+
+        AXIS2_OM_NODE_SERIALIZE (ret_node, &env, om_output);
+        buffer = AXIS2_XML_WRITER_GET_XML(writer, &env);
+        printf ("Received OM node in XML : %s\n", buffer);
     }
     else
     {
-		AXIS2_LOG_ERROR(env->log, LOG_SI, "Server start failed: Error code:"
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server start failed: Error code:"
 						" %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("echo stub invoke failed!\n");
@@ -99,7 +109,7 @@ build_om_programatically(axis2_env_t **env)
     
     AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
-    printf("%s \n",  buffer); 
+    printf("Sending OM node in XML : %s \n",  buffer); 
 
     return echo_om_node;
 }
