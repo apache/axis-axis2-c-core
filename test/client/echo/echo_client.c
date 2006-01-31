@@ -71,7 +71,9 @@ int main(void)
     {
         printf("echo stub invoke successful!\n");
     }
-    AXIS2_SOAP_ENVELOPE_FREE(envelope, &env);
+    
+    if (envelope)
+        AXIS2_SOAP_ENVELOPE_FREE(envelope, &env);
     return status;
 }
 
