@@ -197,10 +197,10 @@ axis2_http_transport_sender_invoke
 	else
 	{
 		axis2_endpoint_ref_t *ctx_epr = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
-		if(NULL !=  ctx_epr && 0 == AXIS2_STRCMP(
+		if(NULL !=  ctx_epr && 0 != AXIS2_STRCMP(
 							AXIS2_WSA_ANONYMOUS_URL_SUBMISSION, 
 							AXIS2_ENDPOINT_REF_GET_ADDRESS(ctx_epr, env)) &&
-							0 == AXIS2_STRCMP(AXIS2_WSA_ANONYMOUS_URL, 
+							0 != AXIS2_STRCMP(AXIS2_WSA_ANONYMOUS_URL, 
 							AXIS2_ENDPOINT_REF_GET_ADDRESS(ctx_epr, env)))
 		{
 			epr = ctx_epr;
