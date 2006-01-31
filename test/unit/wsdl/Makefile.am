@@ -3,8 +3,7 @@ prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_wsdl.la
 AM_CPPFLAGS = $(CPPFLAGS)
 
-libtest_wsdl_la_SOURCES = wsdl_test.c \
-                            test_wsdl_component.c
+libtest_wsdl_la_SOURCES = wsdl_test.c test_wsdl_component.c
 
 include_HEADERS=$(top_builddir)/test/unit/wsdl/*.h
 
@@ -27,6 +26,7 @@ wsdl_test_LDADD   =   \
                     -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
                     -laxis2_wsdl \
+					-laxis2_unix \
                     -laxis2_phaseresolver \
                     -laxis2_context \
                     -laxis2_addr \
