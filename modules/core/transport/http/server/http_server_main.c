@@ -58,9 +58,10 @@ int main(int argc, char *argv[])
 	int port = 9090;
     axis2_char_t *repo_path = "../";
 	axis2_http_socket_read_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
+    axis2_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
     int c;
 
-    while ((c = getopt(argc, argv, ":p:r:ht:")) != -1)
+    while ((c = getopt(argc, argv, ":p:r:ht:l:")) != -1)
     {
         switch(c)
         {
@@ -72,6 +73,13 @@ int main(int argc, char *argv[])
                 break;
             case 't':
                 axis2_http_socket_read_timeout = atoi(optarg) * 1000;
+                break;
+            case 'l':
+                log_level = atoi(optarg);
+                if (log_level < AXIS2_LOG_LEVEL_CRITICAL)
+                    log_level = AXIS2_LOG_LEVEL_CRITICAL;
+                if (log_level > AXIS2_LOG_LEVEL_DEBUG)
+                    log_level = AXIS2_LOG_LEVEL_CRITICAL;
                 break;
             case 'h':
                 usage(argv[0]);
@@ -97,7 +105,7 @@ int main(int argc, char *argv[])
 	}
 	
     env = init_syetem_env(allocator);
-    env->log->level = AXIS2_LOG_LEVEL_DEBUG;
+    env->log->level = log_level;
 	
     axis2_error_init();
     
@@ -124,11 +132,13 @@ void usage(axis2_char_t* prog_name)
     fprintf(stdout, "\n Usage : %s", prog_name );
     fprintf(stdout, " [-p PORT]");
     fprintf(stdout, " [-t TIMEOUT]");
-    fprintf(stdout, " [-r REPO_PATH]\n");
+    fprintf(stdout, " [-r REPO_PATH]");
+    fprintf(stdout, " [-l LOG_LEVEL]\n");
     fprintf(stdout, " Options :\n");
-    fprintf(stdout, "\t-p PORT \t use port number PORT. The default port is 9090\n");
+    fprintf(stdout, "\t-p PORT \t use the port number PORT. The default port is 9090\n");
     fprintf(stdout, "\t-r REPO_PATH \t use the repository path REPO_PATH. The default repository path is ../\n");
-    fprintf(stdout, "\t-t SOCKET_READ_TIMEOUT\t set timeout to SOCKET_READ_TIMEOUT. Default timeout is 30 seconds\n");
+    fprintf(stdout, "\t-t SOCKET_READ_TIMEOUT\t set socket read timeout to SOCKET_READ_TIMEOUT. Default timeout is 30 seconds\n");
+    fprintf(stdout, "\t-l LOG_LEVEL\t set log level to LOG_LEVEL. Available log levels range from 0(critical only) to 4(debug).\n\t\t\t Default log level is 4(debug)\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
 }
 
