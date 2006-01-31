@@ -100,7 +100,6 @@ axis2_engine_t* AXIS2_CALL axis2_engine_create(axis2_env_t **env, axis2_conf_ctx
     engine_impl->engine.ops->get_receiver_fault_code = axis2_engine_get_receiver_fault_code;
     engine_impl->engine.ops->free = axis2_engine_free;
 
-    AXIS2_LOG_INFO((*env)->log, "Axis2 Engine Started");
     
     return &(engine_impl->engine);
 }
@@ -226,6 +225,7 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
         }
     }
     
+    AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "Axis2 engine send successful");
     return AXIS2_SUCCESS;
 }
 
@@ -321,6 +321,7 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
         }
         AXIS2_MSG_RECV_RECEIVE(receiver, env, msg_ctx);        
     }
+    AXIS2_LOG_DEBUG((*env)->log, LOG_SI, "Axis2 engine receive successful");
     return AXIS2_SUCCESS;
 }
 
