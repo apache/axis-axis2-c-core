@@ -123,6 +123,7 @@ int main(int argc, char *argv[])
 		system_exit(allocator, env, -1);
 		
 	}
+	printf("Started Simple Axis2 HTTP Server ...\n");
 	AXIS2_TRANSPORT_RECEIVER_START(server, &env);
 	return 0;
 }
