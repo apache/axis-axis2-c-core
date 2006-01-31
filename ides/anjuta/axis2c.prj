@@ -238,7 +238,15 @@ module.include.files=\
 	test/unit/core/description/description_test.h\
 	test/unit/core/description/test_op.h\
 	test/unit/core/description/test_svc.h\
-	include/axis2_file.h
+	include/axis2_file.h\
+	include/axis2_stub.h\
+	include/axis2_soap11_builder_helper.h\
+	include/axis2_soap12_builder_helper.h\
+	include/axis2_soap_builder.h\
+	include/axis2_http_server.h\
+	include/axis2_http_svr_thread.h\
+	include/axis2_uuid_gen.h\
+	include/axis2_conf_init.h
 
 module.source.name=.
 module.source.type=
@@ -403,7 +411,29 @@ module.source.files=\
 	modules/core/transport/http/sender/http_client.c\
 	modules/core/transport/http/sender/http_transport_sender.c\
 	modules/core/transport/http/sender/soap_over_http_sender.c\
-	modules/util/file.c
+	modules/util/file.c\
+	modules/core/clientapi/stub.c\
+	modules/xml/soap/soap11_builder_helper.c\
+	modules/xml/soap/soap12_builder_helper.c\
+	modules/xml/soap/soap_body.c\
+	modules/xml/soap/soap_builder.c\
+	modules/xml/soap/soap_envelope.c\
+	modules/xml/soap/soap_fault.c\
+	modules/xml/soap/soap_fault_code.c\
+	modules/xml/soap/soap_fault_detail.c\
+	modules/xml/soap/soap_fault_node.c\
+	modules/xml/soap/soap_fault_reason.c\
+	modules/xml/soap/soap_fault_role.c\
+	modules/xml/soap/soap_fault_sub_code.c\
+	modules/xml/soap/soap_fault_text.c\
+	modules/xml/soap/soap_fault_value.c\
+	modules/xml/soap/soap_header.c\
+	modules/xml/soap/soap_header_block.c\
+	modules/xml/soap/soap_message.c\
+	modules/xml/soap/soap_utils.c\
+	test/client/echo/echo_client.c\
+	test/client/echo/axis2_echo_stub.c\
+	modules/core/deployment/conf_init.c
 
 module.pixmap.name=.
 module.pixmap.type=
