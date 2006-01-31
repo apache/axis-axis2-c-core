@@ -24,7 +24,7 @@
 axis2_om_node_t *
 build_om_programatically(axis2_env_t **env);
 
-int main(void)
+int main(int argc, char** argv)
 {
     axis2_stub_t *stub = NULL;
     axis2_om_node_t *node = NULL;
@@ -45,9 +45,16 @@ int main(void)
     axis2_error_init();
 
     client_home = AXIS2_GETENV("AXIS2C_HOME");
+    if (!client_home)
+        client_home = "../../deploy";
+    
+    address = "http://localhost:9090/axis2/services/echo/echo";
+    if (argc > 1 )
+        address = argv[1];
+
+    printf ("Using endpoint : %s\n", address);
 
     node = build_om_programatically(&env);
-    address = "http://localhost:9090/axis2/services/echo/";
     stub = 
         axis2_stub_create_with_endpoint_uri_and_client_home(&env, address,
             client_home);
@@ -61,13 +68,13 @@ int main(void)
         axis2_om_output_t *om_output = NULL;
         axis2_char_t *buffer = NULL;
         
-        printf("echo stub invoke successful!\n");
+        printf("\necho stub invoke successful!\n");
         writer = axis2_xml_writer_create_for_memory(&env, NULL, AXIS2_TRUE, 0);
         om_output = axis2_om_output_create (&env, writer);
 
         AXIS2_OM_NODE_SERIALIZE (ret_node, &env, om_output);
         buffer = AXIS2_XML_WRITER_GET_XML(writer, &env);
-        printf ("Received OM node in XML : %s\n", buffer);
+        printf ("\nReceived OM node in XML : %s\n", buffer);
     }
     else
     {
@@ -109,7 +116,7 @@ build_om_programatically(axis2_env_t **env)
     
     AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
-    printf("Sending OM node in XML : %s \n",  buffer); 
+    printf("\nSending OM node in XML : %s \n",  buffer); 
 
     return echo_om_node;
 }
