@@ -107,7 +107,7 @@ axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser
                                             
 void 
 axis2_libxml2_reader_wrapper_error_handler(void *arg, 
-                                           const char *msg, 
+                                           char *msg, 
                                            int severities, 
                                            void *locator_ptr);                                            
                                             
