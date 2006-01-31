@@ -175,6 +175,7 @@ axis2_soap_over_http_sender_send
 	int status_code = -1;
 	axis2_http_header_t *http_header = NULL;
 	axis2_http_simple_response_t *response = NULL;
+	axis2_char_t *content_type = NULL;
 		
     AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -226,7 +227,6 @@ axis2_soap_over_http_sender_send
 	http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_SOAP_ACTION, 
 						soap_action);
 	AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
-	AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(request, env, buffer);
 	if(AXIS2_FALSE == sender_impl->chunked)
 	{
 		axis2_char_t tmp_buf[10];
@@ -235,6 +235,19 @@ axis2_soap_over_http_sender_send
 						AXIS2_HTTP_HEADER_CONTENT_LENGTH, tmp_buf);
 		AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
 	}
+	/* TODO we need to set the content type with soap action header for soap12*/
+	if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
+	{
+		content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
+	}
+	else
+	{
+		content_type = AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP;
+	}
+	http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_TYPE, 
+						content_type);
+	AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
+	AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(request, env, buffer);
 	axis2_soap_over_http_sender_get_timeout_values(sender, env, msg_ctx);
 	AXIS2_HTTP_CLIENT_SET_TIMEOUT(sender_impl->client, env, 
 						sender_impl->so_timeout);
