@@ -27,6 +27,7 @@
 #include <axis2_log.h>
 #include <axis2_dir_handler.h>
 #include <axis2_file.h>
+#include "axis2_log.h"
 
 typedef struct a
 {
@@ -256,15 +257,15 @@ void test_log_write()
 		printf("cannot create error\n");
 		return;
 	}
-    axis2_log_t *log  = axis2_log_create (allocator, NULL);
-	if (!log)
+    axis2_log_t *log22  = axis2_log_create (allocator, NULL);
+	if (!log22)
 	{
 		printf("cannot create log\n");
 		return;
 	}
-	log->level = AXIS2_LOG_LEVEL_DEBUG;
+	log22->level = AXIS2_LOG_LEVEL_DEBUG;
 
-    axis2_env_t *env = axis2_env_create_with_error_log(allocator, error, log);
+    axis2_env_t *env = axis2_env_create_with_error_log(allocator, error, log22);
 	if (!env)
 	{
 		printf("cannot create env with error and log\n");
@@ -290,7 +291,7 @@ int main(void)
 	test_env_null(); 
     test_array_list(env);
     test_uuid_gen(env);
-	test_log_write();
+	run_test_log();
 	test_axis2_dir_handler_list_service_or_module_dirs();
 	return 0;	
 }
