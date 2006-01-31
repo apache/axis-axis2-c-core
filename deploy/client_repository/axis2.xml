@@ -1,0 +1,9 @@
+<axisconfig name="AxisJava2.0">
+    <!-- ================================================= -->
+    <!-- Parameters -->
+    <!-- ================================================= -->
+    <parameter name="userName" locked="false">admin</parameter>
+    <parameter name="password" locked="false">axis2</parameter>
+
+</axisconfig>
+
