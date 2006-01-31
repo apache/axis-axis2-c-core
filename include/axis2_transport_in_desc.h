@@ -99,7 +99,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_in_desc_ops
     /**
      * @return
      */
-    struct axis2_transport_listener * (AXIS2_CALL *
+    struct axis2_transport_receiver * (AXIS2_CALL *
     get_recv) (struct axis2_transport_in_desc *transport_in,
                                             axis2_env_t **env);
     

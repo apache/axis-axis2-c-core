@@ -71,6 +71,11 @@ struct axis2_listener_manager_ops
         axis2_env_t **env, 
         axis2_char_t *svc_name,
         axis2_char_t *transport);
+    
+    axis2_conf_ctx_t *(AXIS2_CALL *
+    get_conf_ctx)(axis2_listener_manager_t *listener_manager,
+                                    axis2_env_t **env);
+    
     axis2_status_t (AXIS2_CALL *free)(struct axis2_listener_manager *listener_manager, 
                                        axis2_env_t **env);
 };
@@ -91,6 +96,8 @@ AXIS2_DECLARE(axis2_listener_manager_t*) axis2_listener_manager_create(axis2_env
 #define AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(listener_manager, env, transport, conf_ctx) ((listener_manager)->ops->make_sure_started(listener_manager, env, transport, conf_ctx))
 #define AXIS2_LISTNER_MANAGER_STOP(listener_manager, env, transport) ((listener_manager)->ops->stop(listener_manager, env, transport))
 #define AXIS2_LISTNER_MANAGER_REPLY_TO_EPR(listener_manager, env, svc_name, transport) ((listener_manager)->ops->reply_to_epr(listener_manager, env, svc_name, transport))
+#define AXIS2_LISTNER_MANAGER_GET_CONF_CTX(listener_manager, env) \
+        ((listener_manager)->ops->get_conf_ctx(listener_manager, env))
 #define AXIS2_LISTNER_MANAGER_FREE(listener_manager, env) ((listener_manager)->ops->free(listener_manager, env))
 
 /************************** End of function macros ****************************/    

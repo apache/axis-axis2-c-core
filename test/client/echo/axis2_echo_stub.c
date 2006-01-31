@@ -21,14 +21,17 @@
 
 
 axis2_stub_t *AXIS2_CALL 
-axis2_echo_stub_create_with_endpoint_ref(axis2_env_t **env,
-                                            axis2_endpoint_ref_t *endpoint_ref)
+axis2_echo_stub_create_with_endpoint_ref_and_client_home(axis2_env_t **env,
+                                            axis2_endpoint_ref_t *endpoint_ref,
+                                            axis2_char_t *client_home)
 {
     axis2_stub_t *stub = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	stub = (axis2_stub_t *) axis2_stub_create_with_endpoint_ref(env, endpoint_ref);
+	stub = (axis2_stub_t *) 
+        axis2_stub_create_with_endpoint_ref_and_client_home(env, endpoint_ref,
+            client_home);
 	if(NULL == stub)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
@@ -39,14 +42,17 @@ axis2_echo_stub_create_with_endpoint_ref(axis2_env_t **env,
 }
 
 axis2_stub_t *AXIS2_CALL 
-axis2_echo_stub_create_with_endpoint_uri(axis2_env_t **env,
-                                            axis2_char_t *endpoint_uri)
+axis2_echo_stub_create_with_endpoint_uri_and_client_home(axis2_env_t **env,
+                                            axis2_char_t *endpoint_uri,
+                                            axis2_char_t *client_home)
 {
     axis2_stub_t *stub = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	stub = (axis2_stub_t *) axis2_stub_create_with_endpoint_uri(env, endpoint_uri);
+	stub = (axis2_stub_t *) 
+        axis2_stub_create_with_endpoint_uri_and_client_home(env, endpoint_uri,
+            client_home);
 	if(NULL == stub)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 

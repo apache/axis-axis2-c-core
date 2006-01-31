@@ -36,7 +36,9 @@ int main(void)
     axis2_allocator_t *allocator = NULL;
     axis2_endpoint_ref_t *epr = NULL;
     axis2_char_t *address = NULL;
+    axis2_char_t *client_home = NULL;
     
+    client_home = AXIS2_GETENV("AXIS2C_HOME");
     allocator = axis2_allocator_init (NULL);
     error = axis2_error_create(allocator);
     log = axis2_log_create(allocator, NULL);
@@ -47,7 +49,9 @@ int main(void)
     node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(envelope, &env);
     address = "http://localhost:9090/echo";
     epr = axis2_endpoint_ref_create(&env, address);
-    stub = axis2_echo_stub_create_with_endpoint_ref(&env, epr);
+    stub = 
+        axis2_echo_stub_create_with_endpoint_ref_and_client_home(&env, epr,
+            client_home);
     AXIS2_STUB_SET_TRANSPORT_INFO(stub, &env, AXIS2_TRANSPORT_HTTP, 
         AXIS2_TRANSPORT_HTTP, AXIS2_FALSE);
     /* create node and invoke echo */

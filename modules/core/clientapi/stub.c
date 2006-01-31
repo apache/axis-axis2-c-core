@@ -257,8 +257,9 @@ axis2_stub_create (axis2_env_t **env)
 }
 
 axis2_stub_t * AXIS2_CALL 
-axis2_stub_create_with_endpoint_ref (axis2_env_t **env,
-                                        axis2_endpoint_ref_t *endpoint_ref)
+axis2_stub_create_with_endpoint_ref_and_client_home (axis2_env_t **env,
+                                        axis2_endpoint_ref_t *endpoint_ref,
+                                        axis2_char_t *client_home)
 {
     axis2_stub_impl_t *stub_impl = NULL;
    
@@ -273,7 +274,9 @@ axis2_stub_create_with_endpoint_ref (axis2_env_t **env,
         return NULL;  
     }
     /* create call without passing svc_ctx_t struct */
-    stub_impl->call = axis2_call_create(env, NULL);
+    stub_impl->call = axis2_call_create_with_svc_ctx_and_client_home(env, NULL,
+        client_home);
+    
     if(!stub_impl->call)
     {
         axis2_stub_free(&(stub_impl->stub), env);
@@ -286,8 +289,9 @@ axis2_stub_create_with_endpoint_ref (axis2_env_t **env,
 }
 
 axis2_stub_t * AXIS2_CALL 
-axis2_stub_create_with_endpoint_uri (axis2_env_t **env,
-                                        axis2_char_t *endpoint_uri)
+axis2_stub_create_with_endpoint_uri_and_client_home (axis2_env_t **env,
+                                        axis2_char_t *endpoint_uri,
+                                        axis2_char_t *client_home)
 {
     axis2_stub_impl_t *stub_impl = NULL;
     axis2_endpoint_ref_t *endpoint_ref = NULL;
@@ -300,8 +304,9 @@ axis2_stub_create_with_endpoint_uri (axis2_env_t **env,
     {
         return NULL;
     }
-    stub_impl = (axis2_stub_impl_t *) axis2_stub_create_with_endpoint_ref(env,
-        endpoint_ref);
+    stub_impl = (axis2_stub_impl_t *) 
+        axis2_stub_create_with_endpoint_ref_and_client_home(env, endpoint_ref,
+            client_home);
     
     if(!stub_impl)
     {

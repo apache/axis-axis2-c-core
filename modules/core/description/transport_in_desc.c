@@ -46,7 +46,7 @@ typedef struct axis2_transport_in_desc_impl
     /**
      * This will have a shallow copy and will not be freed by the descructor
      */
-    struct axis2_transport_listener *recv;
+    axis2_transport_receiver_t *recv;
     
     /** to store handler in inFlow */
     struct axis2_phase *in_phase;
@@ -93,14 +93,14 @@ axis2_transport_in_desc_set_faultflow(struct axis2_transport_in_desc *transport_
                                         axis2_env_t **env,
                                         struct axis2_flow *faultflow);
 
-struct axis2_transport_listener * AXIS2_CALL
+axis2_transport_receiver_t * AXIS2_CALL
 axis2_transport_in_desc_get_recv(struct axis2_transport_in_desc *transport_in,
                                         axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_transport_in_desc_set_recv(struct axis2_transport_in_desc *transport_in,
                                         axis2_env_t **env,
-                                        struct axis2_transport_listener *recv);
+                                        axis2_transport_receiver_t *recv);
 
 struct axis2_phase * AXIS2_CALL
 axis2_transport_in_desc_get_in_phase(struct axis2_transport_in_desc *transport_in,
@@ -341,7 +341,7 @@ axis2_transport_in_desc_set_faultflow(struct axis2_transport_in_desc *transport_
     return AXIS2_SUCCESS;
 }
 
-struct axis2_transport_listener * AXIS2_CALL
+axis2_transport_receiver_t * AXIS2_CALL
 axis2_transport_in_desc_get_recv(struct axis2_transport_in_desc *transport_in,
                                         axis2_env_t **env) 
 {
@@ -352,7 +352,7 @@ axis2_transport_in_desc_get_recv(struct axis2_transport_in_desc *transport_in,
 axis2_status_t AXIS2_CALL
 axis2_transport_in_desc_set_recv(struct axis2_transport_in_desc *transport_in,
                                         axis2_env_t **env,
-                                        struct axis2_transport_listener *recv) 
+                                        axis2_transport_receiver_t *recv) 
 {
     axis2_transport_in_desc_impl_t *transport_in_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(transport_in, env, AXIS2_FAILURE);

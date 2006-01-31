@@ -55,6 +55,10 @@ axis2_endpoint_ref_t* AXIS2_CALL axis2_listener_manager_reply_to_epr(struct axis
 axis2_status_t AXIS2_CALL axis2_listener_manager_free (struct axis2_listener_manager *listener_manager, 
                                    axis2_env_t **env);
 
+axis2_conf_ctx_t *AXIS2_CALL
+axis2_listener_manager_get_conf_ctx(axis2_listener_manager_t *listener_manager,
+                                    axis2_env_t **env);
+
 axis2_listener_manager_t* AXIS2_CALL axis2_listener_manager_create(axis2_env_t **env)
 {
     axis2_listener_manager_impl_t *listener_manager_impl = NULL;
@@ -91,6 +95,8 @@ axis2_listener_manager_t* AXIS2_CALL axis2_listener_manager_create(axis2_env_t *
     listener_manager_impl->listener_manager.ops->make_sure_started = axis2_listener_manager_make_sure_started;
     listener_manager_impl->listener_manager.ops->stop = axis2_listener_manager_stop;
     listener_manager_impl->listener_manager.ops->reply_to_epr = axis2_listener_manager_reply_to_epr;
+    listener_manager_impl->listener_manager.ops->get_conf_ctx = 
+            axis2_listener_manager_get_conf_ctx;
     listener_manager_impl->listener_manager.ops->free = axis2_listener_manager_free;
 
     return &(listener_manager_impl->listener_manager);
@@ -248,4 +254,12 @@ axis2_status_t AXIS2_CALL axis2_listener_manager_free (struct axis2_listener_man
     listener_manager_impl = NULL;
     
     return AXIS2_SUCCESS;
+}
+
+axis2_conf_ctx_t *AXIS2_CALL
+axis2_listener_manager_get_conf_ctx(axis2_listener_manager_t *listener_manager,
+                                    axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(listener_manager)->conf_ctx;
 }

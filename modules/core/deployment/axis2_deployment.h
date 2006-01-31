@@ -120,6 +120,7 @@ extern "C"
 #define AXIS2_SVC_GRP_ELEMENT "serviceGroup"
 
 #define AXIS2_SERVER_XML_FILE "axis2.xml"
+#define AXIS2_CLIENT_XML_FILE "axis2_client.xml"
 
 #define AXIS2_MODULE_FOLDER "modules"
 #define AXIS2_SERVICE_FOLDER "services"

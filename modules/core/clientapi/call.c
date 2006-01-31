@@ -23,6 +23,7 @@
 #include <callback_recv.h>
 #include <axis2_engine.h>
 #include <axis2_soap_body.h>
+#include <axis2_conf_init.h>
 
 typedef struct axis2_call_impl
 {
@@ -63,6 +64,8 @@ typedef struct axis2_call_impl
 
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(call) ((axis2_call_impl_t *)call)
+
+/******************************************************************************/
 
 axis2_msg_ctx_t* AXIS2_CALL 
 axis2_call_invoke_blocking(struct axis2_call *call, 
@@ -144,10 +147,24 @@ axis2_call_set(axis2_call_t *call,
                 axis2_char_t *key,
                 void *value);
 
+/**
+ * Assume the values for the conf_ctx and svc_ctx to make the 
+ * NON WSDL cases simple.
+ * @return svc_ctx that has a conf_ctx set in and has assumed 
+ *          values.
+ */
+axis2_svc_ctx_t *
+axis2_call_assume_svc_ctx(axis2_call_t *call,
+                            axis2_env_t **env,
+                            axis2_char_t *client_home);
+
 axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call, 
                                    axis2_env_t **env);
 
-axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env, axis2_svc_ctx_t *svc_ctx) 
+/******************************************************************************/
+
+axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env, 
+                                            axis2_svc_ctx_t *svc_ctx) 
 {
     axis2_call_impl_t *call_impl = NULL;
     
@@ -178,6 +195,10 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env, axis2_svc_ctx_t *s
     if(svc_ctx)
     {
         call_impl->svc_ctx = svc_ctx;
+    }
+    else
+    {
+        /*assume svc ctx */
     }
     
     call_impl->base = axis2_mep_client_create(env, svc_ctx, AXIS2_MEP_URI_OUT_IN);
@@ -218,6 +239,41 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env, axis2_svc_ctx_t *s
 
     return &(call_impl->call);
 }
+
+axis2_call_t* AXIS2_CALL 
+axis2_call_create_with_svc_ctx_and_client_home(axis2_env_t **env,
+                                                axis2_svc_ctx_t *svc_ctx,
+                                                axis2_char_t *client_home) 
+{
+    axis2_call_impl_t *call_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    /*AXIS2_PARAM_CHECK((*env)->error, svc_ctx, NULL);*/
+    
+    call_impl = (axis2_call_impl_t *) axis2_call_create(env, NULL);
+    if (!call_impl)
+    { 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;        
+    }
+    call_impl->svc_ctx = NULL;
+    if(svc_ctx)
+    {
+        call_impl->svc_ctx = svc_ctx;
+    }
+    else
+    {
+        /*assume svc ctx */
+        call_impl->svc_ctx = axis2_call_assume_svc_ctx(&(call_impl->call), env, 
+            client_home);
+    }
+    
+    
+    
+    return &(call_impl->call);
+}
+
+/******************************************************************************/
 
 axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call, 
                                    axis2_env_t **env)
@@ -1053,14 +1109,16 @@ axis2_op_t* AXIS2_CALL axis2_call_create_op_fill_flow(struct axis2_call *call,
     if (op_qname)
     {
         axis2_svc_t *svc = NULL;
+        axis2_array_list_t *remaining_phases = NULL;
         
         op = axis2_op_create_with_qname(env, op_qname);
         if(!op)
         {
             return AXIS2_FAILURE;   
         }
-        AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op, env, 
-            AXIS2_OP_GET_REMAINING_PHASES_INFLOW(call_impl->op_template, env));
+        remaining_phases = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(call_impl->
+            op_template, env);
+        AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op, env, remaining_phases);
         AXIS2_OP_SET_PHASES_OUTFLOW(op, env, 
             AXIS2_OP_GET_PHASES_OUTFLOW(call_impl->op_template, env));
         AXIS2_OP_SET_PHASES_IN_FAULT_FLOW(op, env, 
@@ -1118,4 +1176,83 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_get_last_res_msg_ctx(struct axis2_call *c
 {
     AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(call)->last_res_msg_ctx;
+}
+
+/**
+ * Assume the values for the conf_ctx and svc_ctx to make the 
+ * NON WSDL cases simple.
+ * @return svc_ctx that has a conf_ctx set in and has assumed 
+ *          values.
+ */
+axis2_svc_ctx_t *
+axis2_call_assume_svc_ctx(axis2_call_t *call,
+                            axis2_env_t **env,
+                            axis2_char_t *client_home)
+{
+    axis2_call_impl_t *call_impl = NULL;
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_conf_t *conf = NULL;
+    axis2_svc_grp_t *svc_grp = NULL;
+    axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
+    axis2_svc_ctx_t *svc_ctx = NULL;
+    axis2_char_t *assumed_svc_name = NULL;
+    axis2_qname_t *assumed_svc_qname = NULL;
+    axis2_svc_t *axis_svc = NULL;
+    axis2_char_t *svc_name = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, client_home, NULL);
+    call_impl = AXIS2_INTF_TO_IMPL(call);
+    
+    /* we are trying to keep one configuration Context at the Client side. 
+     * That make it easier to manage the TransportListeners.
+     */
+    if(call_impl->listener_manager)
+    {
+        conf_ctx = AXIS2_LISTNER_MANAGER_GET_CONF_CTX(call_impl->
+            listener_manager, env);
+    }
+    if(!conf_ctx)
+    {
+        conf_ctx = build_client_conf_ctx(env, client_home);
+    }
+    if(!conf_ctx)
+    {
+        return NULL;
+    }
+    svc_name = "AnonymousService";
+    assumed_svc_qname = axis2_qname_create(env, svc_name, NULL, NULL);
+    conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+    if(!conf)
+    {
+        return NULL;
+    }
+    axis_svc = AXIS2_CONF_GET_SVC(conf, env, svc_name); 
+    if(!axis_svc)
+    {
+        axis2_qname_t *qtemp_op = NULL;
+        axis2_phases_info_t *info = NULL;
+        
+        /* we will assume a Service and operations */
+        axis_svc = axis2_svc_create_with_qname(env, assumed_svc_qname);
+        /*axisOperationTemplate = new AxisOperation(new QName(
+            "TemplateOperation")); */
+        qtemp_op = axis2_qname_create(env, "TemplateOperation", NULL, NULL);
+        call_impl->op_template = axis2_op_create_with_qname(env, qtemp_op);
+        AXIS2_QNAME_FREE(qtemp_op, env);
+        info = AXIS2_CONF_GET_PHASESINFO(conf, env);
+        /* to set the operation flows */
+        if(info != NULL)
+        {
+            AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, call_impl->op_template);
+        }
+        AXIS2_SVC_ADD_OP(axis_svc, env, call_impl->op_template);
+        AXIS2_CONF_ADD_SVC(conf, env, axis_svc);
+    }
+    svc_grp = AXIS2_SVC_GET_PARENT(axis_svc, env);
+    svc_grp_ctx = AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env, conf_ctx);
+    assumed_svc_name = AXIS2_QNAME_GET_LOCALPART(assumed_svc_qname, env);
+    AXIS2_QNAME_FREE(assumed_svc_qname, env);
+    svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, assumed_svc_name);
+    return svc_ctx;
 }

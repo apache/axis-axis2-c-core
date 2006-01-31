@@ -212,6 +212,11 @@ struct axis2_call
 
 AXIS2_DECLARE(axis2_call_t*) axis2_call_create(axis2_env_t **env, axis2_svc_ctx_t *svc_ctx);
 
+AXIS2_DECLARE(axis2_call_t*)
+axis2_call_create_with_svc_ctx_and_client_home(axis2_env_t **env,
+                                                axis2_svc_ctx_t *svc_ctx,
+                                                axis2_char_t *client_home);
+
     
 /************************** Start of function macros **************************/
 

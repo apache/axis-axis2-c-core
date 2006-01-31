@@ -336,7 +336,7 @@ axis2_conf_create(axis2_env_t **env);
         ((conf)->ops->get_svc_grps (conf, env))
 
 #define AXIS2_CONF_ADD_SVC(conf, env, svc) \
-		((conf)->ops->get_svc (conf, env, svc))
+		((conf)->ops->add_svc (conf, env, svc))
 		
 #define AXIS2_CONF_GET_SVC(conf, env, svc_name) \
 		((conf)->ops->get_svc (conf, env, svc_name))
