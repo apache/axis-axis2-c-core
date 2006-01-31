@@ -610,7 +610,8 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 				void *op = NULL;
 				axis2_char_t *oname = NULL;
 				
-				ret = AXIS2_STRACAT(tmp2, "Available Operations <ul>", env);
+				ret = AXIS2_STRACAT(tmp2, "<i>Available Operations</i> <ul>", 
+						env);
 				AXIS2_FREE((*env)->allocator, tmp2);
                 tmp2 = ret;
 				for(hi2 = axis2_hash_first(ops, env); NULL != hi2;
@@ -646,7 +647,7 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 	{
 		void *fsname = NULL;
 		svcs_exists = AXIS2_TRUE;
-		ret = AXIS2_STRACAT(tmp2, "<hr><h2><font color=\"blue\">Faulty \
+		ret = AXIS2_STRACAT(tmp2, "<hr><h2><font color=\"red\">Faulty \
 						Services</font></h2>"
 							, env);
 		AXIS2_FREE((*env)->allocator, tmp2);
@@ -656,7 +657,7 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 							axis2_hash_next(env, hi))
 		{
 			axis2_hash_this(hi, (const void **)&fsname, NULL, NULL);
-			ret = AXIS2_STRACAT(tmp2, "<h3><font color=\"blue\">", env);
+			ret = AXIS2_STRACAT(tmp2, "<h3><font color=\"red\">", env);
 			AXIS2_FREE((*env)->allocator, tmp2);
             tmp2 = ret;
 			ret = AXIS2_STRACAT(tmp2, (axis2_char_t*)fsname, env);
@@ -671,11 +672,16 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 	{
 		ret = AXIS2_STRDUP("<h2>There are no services deployed</h2>", env);
 	}
-	ret = AXIS2_STRACAT("<html><head><title>Axis2C :: Services</title></head>\
-						<body>" , tmp2, env);
+	ret = AXIS2_STRACAT("<html><head><title>Axis2C :: Services</title></head>"
+						"<table width=\"100%\"><tr><td align=\"left\"><img src="
+						"\"http://www.apache.org/images/asf-logo.gif\"/></td>"
+						"<td align=\"right\"><img src=\"http://ws.apache.org/"
+						"axis2/images/axis.jpg\"/></td></tr></table><body><font"
+						" face=\"courier\">" 
+						, tmp2, env);
 	/*AXIS2_FREE((*env)->allocator, tmp2);*/
     tmp2 = ret;
-	ret = AXIS2_STRACAT(tmp2, "</body></html>\r\n", env);
+	ret = AXIS2_STRACAT(tmp2, "</font></body></html>\r\n", env);
 	/*AXIS2_FREE((*env)->allocator, tmp);*/
 	
 	return ret;

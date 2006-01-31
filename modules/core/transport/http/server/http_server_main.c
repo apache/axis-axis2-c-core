@@ -117,14 +117,20 @@ int main(int argc, char *argv[])
 	server = axis2_http_server_create(&env, repo_path, port);
 	if(NULL == server)
 	{
-	    AXIS2_LOG_ERROR(env->log, LOG_SI, "Server creation failed: Error code: %d :: %s", 
-						env->error->error_number,
+	    AXIS2_LOG_ERROR(env->log, LOG_SI, "Server creation failed: Error code:"
+						" %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
 		system_exit(allocator, env, -1);
 		
 	}
 	printf("Started Simple Axis2 HTTP Server ...\n");
-	AXIS2_TRANSPORT_RECEIVER_START(server, &env);
+	if(AXIS2_TRANSPORT_RECEIVER_START(server, &env) == AXIS2_FAILURE)
+	{
+		AXIS2_LOG_ERROR(env->log, LOG_SI, "Server start failed: Error code:"
+						" %d :: %s", env->error->error_number,
+                        AXIS2_ERROR_GET_MESSAGE(env->error));
+		system_exit(allocator, env, -1);
+	}
 	return 0;
 }
 
@@ -136,10 +142,14 @@ void usage(axis2_char_t* prog_name)
     fprintf(stdout, " [-r REPO_PATH]");
     fprintf(stdout, " [-l LOG_LEVEL]\n");
     fprintf(stdout, " Options :\n");
-    fprintf(stdout, "\t-p PORT \t use the port number PORT. The default port is 9090\n");
-    fprintf(stdout, "\t-r REPO_PATH \t use the repository path REPO_PATH. The default repository path is ../\n");
-    fprintf(stdout, "\t-t SOCKET_READ_TIMEOUT\t set socket read timeout to SOCKET_READ_TIMEOUT. Default timeout is 30 seconds\n");
-    fprintf(stdout, "\t-l LOG_LEVEL\t set log level to LOG_LEVEL. Available log levels range from 0(critical only) to 4(debug).\n\t\t\t Default log level is 4(debug)\n");
+    fprintf(stdout, "\t-p PORT \t use the port number PORT. The default port is"
+						" 9090\n");
+    fprintf(stdout, "\t-r REPO_PATH \t use the repository path REPO_PATH. The"
+						" default repository path is ../\n");
+    fprintf(stdout, "\t-t SOCKET_READ_TIMEOUT\t set socket read timeout to "
+						"SOCKET_READ_TIMEOUT. Default timeout is 30 seconds\n");
+    fprintf(stdout, "\t-l LOG_LEVEL\t set log level to LOG_LEVEL. Available "
+						"log levels range from 0(critical only) to 4(debug)."
+						"\n\t\t\t Default log level is 4(debug)\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
 }
-
