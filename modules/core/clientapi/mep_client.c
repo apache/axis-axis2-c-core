@@ -503,6 +503,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_op_t *op = NULL;
     axis2_soap_envelope_t *response_envelope = NULL;
+    axis2_char_t *soap_ns_uri = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);
 
@@ -539,7 +540,10 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
     AXIS2_MSG_CTX_SET_DOING_REST(response, env, AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env));
 
     /* TODO response_envelope = TransportUtils.createSOAPMessage(response, msg_ctx.getEnvelope().getNamespace().getName());*/
-
+    soap_ns_uri = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) ?
+        AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI:AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    response_envelope = axis2_http_transport_utils_create_soap_msg(env, 
+                            msg_ctx, soap_ns_uri);
     if (response_envelope) 
     {
         AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);

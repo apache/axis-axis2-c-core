@@ -42,6 +42,7 @@ int main(void)
     log = axis2_log_create(allocator, NULL);
     env = axis2_env_create_with_error_log(allocator, error, log);
     env->log->level = AXIS2_LOG_LEVEL_INFO;
+    axis2_error_init();
 
     client_home = AXIS2_GETENV("AXIS2C_HOME");
 
@@ -60,6 +61,9 @@ int main(void)
     }
     else
     {
+		AXIS2_LOG_ERROR(env->log, LOG_SI, "Server start failed: Error code:"
+						" %d :: %s", env->error->error_number,
+                        AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("echo stub invoke failed!\n");
     }
     
