@@ -179,7 +179,7 @@ axis2_soap_over_http_sender_send
     AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, out, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, url, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, str_url, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, soap_action, AXIS2_FAILURE);
 	
 	url = axis2_url_parse_string(env, str_url);
