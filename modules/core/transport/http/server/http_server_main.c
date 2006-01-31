@@ -121,7 +121,8 @@ int main(int argc, char *argv[])
 
 void usage(axis2_char_t* prog_name)
 {
-    fprintf(stdout, "\n Usage : [-p PORT] axis2_http_server" );
+    fprintf(stdout, "\n Usage : %s", prog_name );
+    fprintf(stdout, " [-p PORT]");
     fprintf(stdout, " [-t TIMEOUT]");
     fprintf(stdout, " [-r REPO_PATH]\n");
     fprintf(stdout, " Options :\n");
