@@ -227,39 +227,27 @@ axis2_bool_t AXIS2_CALL axis2_soap_body_has_fault(axis2_soap_body_t *body,
     axis2_env_t **env) 
 {
     axis2_soap_body_impl_t *body_impl = NULL;
-    axis2_om_node_t *fault_node = NULL;
-    axis2_om_element_t *fault_ele = NULL;
-    axis2_om_element_t *soap_body_ele = NULL;
+    int status = AXIS2_SUCCESS;
     AXIS2_FUNC_PARAM_CHECK(body, env, AXIS2_FAILURE);
     body_impl = AXIS2_INTF_TO_IMPL(body);
-    if(body_impl->has_fault)
-        return body_impl->has_fault;
-    else
+    if(body_impl->soap_fault)
     {
-        soap_body_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(body_impl->om_ele_node, env);
-        if(soap_body_ele)
+        body_impl->has_fault = AXIS2_TRUE;
+        return AXIS2_TRUE;
+    }
+    else{
+        if(body_impl->soap_builder != NULL)
         {
-            axis2_char_t* localname = NULL;
-            axis2_om_namespace_t *om_ns = NULL;
-            axis2_char_t* namespace_uri = NULL;
-            fault_ele = AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT( soap_body_ele, env, body_impl->om_ele_node, &fault_node);
-            if (fault_ele)
+            while(!(body_impl->soap_fault) && !(AXIS2_OM_NODE_GET_BUILD_STATUS(body_impl->om_ele_node, env)))
             {
-                localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(fault_ele, env);
-                om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(fault_ele, env);
-                if (om_ns)
-                    namespace_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
-            
-                if(localname && namespace_uri && fault_ele && AXIS2_STRCMP(AXIS2_SOAP_FAULT_LOCAL_NAME, localname) == 0 &&
-                       (AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, namespace_uri) == 0 ||   
-                         AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, namespace_uri) == 0))
-                 {
-                    body_impl->has_fault = AXIS2_TRUE;
-                    return body_impl->has_fault;
-                 }   
-             }
+                status = AXIS2_SOAP_BUILDER_NEXT(body_impl->soap_builder, env);
+                if(status == AXIS2_FAILURE)
+                    return AXIS2_FALSE;
+            }
         }
     }
+    if(body_impl->soap_fault)
+        return AXIS2_TRUE;
     return AXIS2_FALSE;
 }
 
@@ -452,5 +440,6 @@ axis2_soap_body_set_fault(axis2_soap_body_t *body,
         return AXIS2_FAILURE;
     }
     body_impl->soap_fault = soap_fault;
+    body_impl->has_fault = AXIS2_TRUE;
     return AXIS2_SUCCESS;
 }
