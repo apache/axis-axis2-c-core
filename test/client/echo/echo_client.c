@@ -37,13 +37,20 @@ int main(void)
     axis2_endpoint_ref_t *epr = NULL;
     axis2_char_t *address = NULL;
     axis2_char_t *client_home = NULL;
+    axis2_char_t *temp_path1 = NULL;
+    axis2_char_t *temp_path2 = NULL;
     
-    client_home = AXIS2_GETENV("AXIS2C_HOME");
     allocator = axis2_allocator_init (NULL);
     error = axis2_error_create(allocator);
     log = axis2_log_create(allocator, NULL);
     env = axis2_env_create_with_error_log(allocator, error, log);
     env->log->level = AXIS2_LOG_LEVEL_INFO;
+
+    temp_path1 = AXIS2_GETENV("AXIS2C_HOME");
+    temp_path2 = AXIS2_STRACAT(temp_path1, AXIS2_PATH_SEP_STR, &env);
+    client_home = AXIS2_STRACAT(temp_path2, "client_repository", &env);
+    AXIS2_FREE((env)->allocator, temp_path1);
+    AXIS2_FREE((env)->allocator, temp_path2);
 
     envelope = build_soap_programatically(&env);
     node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(envelope, &env);

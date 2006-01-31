@@ -848,7 +848,7 @@ axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
         return AXIS2_FAILURE;
     }
     path_l = AXIS2_STRACAT(client_home, AXIS2_PATH_SEP_STR, env);
-    engine_impl->conf_name = AXIS2_STRACAT(path_l,AXIS2_CLIENT_XML_FILE, env);
+    engine_impl->conf_name = AXIS2_STRACAT(path_l,AXIS2_SERVER_XML_FILE, env);
     AXIS2_FREE((*env)->allocator, path_l);
     if(!engine_impl->conf_name)
     {
