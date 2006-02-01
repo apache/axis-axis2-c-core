@@ -7,6 +7,9 @@ To get both the binary and source distribution, you need libxml2 from http://xml
 Getting Axis2C working with the binary release on Linux.
 ========================================================
 1. Extract the binary tar package to a folder. 
+   Set AXIS2C_HOME environment variable pointing to the location where you have extracted Axis2C
+        AXIS2C_HOME='/your_path_to_axis2c'
+        export AXIS2C_HOME
 2. Run the simple axis server:
         cd /your_path_to_axis2c/bin
         ./axis2_http_server
