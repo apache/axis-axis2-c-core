@@ -1,0 +1,2 @@
+SUBDIRS = anjuta
+EXTRA_DIST = README
