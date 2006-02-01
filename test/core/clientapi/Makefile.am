@@ -16,11 +16,13 @@ test_clientapi_LDADD   =  -L$(AXIS2C_HOME)/lib \
 	                -laxis2_om \
 	                -laxis2_engine \
 	                -laxis2_wsdl \
+	                -laxis2_http_sender \
 	                -laxis2_parser \
 	                -laxis2_phaseresolver \
 	                -laxis2_addr \
 	                -laxis2_receivers \
 					-laxis2_clientapi \
+	                -laxis2_http_transport \
 					-laxis2_soap \
                     -laxis2_unix \
 	                -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \
@@ -42,6 +44,7 @@ test_client_LDADD   =  -L$(AXIS2C_HOME)/lib \
 					-laxis2_clientapi \
 					-laxis2_soap \
                     -laxis2_unix \
+	                -laxis2_http_transport \
 	                -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \
 	                -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) 
 

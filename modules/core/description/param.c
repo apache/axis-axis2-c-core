@@ -86,6 +86,7 @@ axis2_status_t AXIS2_CALL
 axis2_param_free(axis2_param_t *param, 
 						axis2_env_t **env);
 
+/******************************************************************************/
 axis2_param_t* AXIS2_CALL 
 axis2_param_create(axis2_env_t **env, 
 						axis2_char_t *name, void *value)
@@ -135,6 +136,8 @@ axis2_param_create(axis2_env_t **env,
     
     return &(param_impl->param);
 }
+
+/******************************************************************************/
 
 axis2_char_t* AXIS2_CALL 
 axis2_param_get_name(axis2_param_t *param, 
@@ -241,9 +244,23 @@ axis2_status_t AXIS2_CALL
 axis2_param_free(axis2_param_t *param, 
 						axis2_env_t **env)
 {
+    void *param_value = NULL;
+    
     AXIS2_FUNC_PARAM_CHECK(param, env, AXIS2_FAILURE);
-	if(NULL != param->ops)
-		AXIS2_FREE((*env)->allocator, param->ops);
+    
+    param_value = AXIS2_PARAM_GET_VALUE(param, env);
+    if(param_value)
+    {
+        if(param->ops && param->ops->value_free)
+        { 
+            param->ops->value_free(param_value, env);
+        }
+        else /* we assume that param value is axis2_char_t* */
+        {
+            AXIS2_FREE((*env)->allocator, param_value);
+        }
+    }
+    AXIS2_FREE((*env)->allocator, param->ops);
     AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(param));    
     return AXIS2_SUCCESS;
 }

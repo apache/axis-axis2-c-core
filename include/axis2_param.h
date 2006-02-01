@@ -141,6 +141,10 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
          
      axis2_status_t (AXIS2_CALL *free)(struct axis2_param *param, 
 	 									axis2_env_t **env);
+     
+    axis2_status_t (AXIS2_CALL *
+    value_free) (void *param_value, 
+                            axis2_env_t **env);
 }axis2_param_ops_t;
  
 /** 

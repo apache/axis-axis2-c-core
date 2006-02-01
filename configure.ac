@@ -111,13 +111,14 @@ AC_CONFIG_FILES([Makefile \
     modules/util/Makefile \
     modules/platforms/unix/Makefile \
     modules/wsdl/Makefile \
+    samples/Makefile \
+    samples/server/Makefile \
+    samples/server/echo/Makefile \
+    samples/server/math/Makefile \
+    samples/client/Makefile \
+    samples/client/echo/Makefile \
+    samples/client/math/Makefile \
     test/Makefile \
-    test/server/Makefile \
-    test/server/echo/Makefile \
-    test/server/math/Makefile \
-    test/client/Makefile \
-    test/client/echo/Makefile \
-    test/client/math/Makefile \
     test/xml/Makefile \
     test/xml/om/Makefile \
     test/xml/soap/Makefile \

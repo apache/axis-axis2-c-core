@@ -42,6 +42,13 @@ extern "C"
 
 struct axis2_param_container;
 struct axis2_param_container_ops;
+ 
+/**
+ * each type which is passed as a param value to a parameter, must have this 
+ * type of function implemented. When the param value is set this function  
+ * should also be assigned to param free function
+ */
+typedef axis2_status_t (*AXIS2_PARAM_VALUE_FREE) (void *param, axis2_env_t **env);    
 
 /** @defgroup axis2_param_container Parameter Container
  * @ingroup axis2_description

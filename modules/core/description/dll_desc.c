@@ -203,6 +203,17 @@ axis2_dll_desc_free (axis2_dll_desc_t *dll_desc,
 }
 
 axis2_status_t AXIS2_CALL
+axis2_dll_desc_as_param_value_free (void *as_param_value,
+                                    axis2_env_t **env)
+{
+    axis2_dll_desc_t *dll_desc = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    dll_desc = (axis2_dll_desc_t *) as_param_value;
+    return axis2_dll_desc_free(dll_desc, env);
+}
+
+axis2_status_t AXIS2_CALL
 axis2_dll_desc_set_name(axis2_dll_desc_t *dll_desc,
                         axis2_env_t **env,
                         axis2_char_t *name)
