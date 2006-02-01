@@ -1,43 +1,69 @@
-Axis2 nstallation instructions
-=======================================
+The release comes in two forms, source and binary. Both works only on Linux platforms as of now. 
+We are striving hard to make the next release work on Windows platform.
 
-To build
-Create the environment variable pointing to your root source
+To get both the binary and source distribution, you need libxml2 from http://xmlsoft.org/downloads.html
+(NOTE: most systems has libxml2 by default)
 
-eg:
-AXIS2C_HOME="/home/x/projects/c"
-cd ${AXIS2C_HOME}
+Getting Axis2C working with the binary release on Linux.
+1. Extract the binary tar package to a folder. 
+2. Run the simple axis server:
+        cd /your_path_to_axis2c/deploy/bin
+        ./axis2_http_server
+This will start the simple axis server on port 9090. To see the possible command line options run
+        ./axis2_http_server -h
+3. Run the sample clients in a new shell
+        cd /your_path_to_axis2c/deploy/bin
+        ./echo
+This will invoke the echo service.
+        ./math
+This will invoke the math service.
+To see the possible command line options for sample clients run them with '-h' option
 
-./autogen.sh
-./configure
-make
-make install
+Getting Axis2C working with the source release on Linux.
+1. Extract the binary tar package to a folder. 
+2. Set AXIS2C_HOME environment variable pointing to the location where you want to install Axis2C.
+        AXIS2C_HOME='/your_desired_path_to_axis2c_installation'
+        export AXIS2C_HOME
+3. Then go to the folder where you extracted the source
+        cd /your_path_to_axis2c_source
+4. Set parser location
+You need to set the following two environment variables to point to libxml2. 
+        LIBXML2_INCLUDE
+        LIBXML2_LIB
+If you are using the default installation of libxml2, usually those are
+LIBXML2_LIB=/usr/lib
+LIBXML2_INCLUDE=/usr/include/libxml2
 
-or optionally you can use the build.sh script.
+5. Build the source
+This can be done using the following command sequence:
+        ./configure
+        make
+        make install
+use './configure --help' for options.
 
-User can select the parser between Guththila and
-libxml2. This can be done using a configure option
+To get the samples working, you also need to make and make install the samples.
+        cd /your_path_to_axis2c_source/samples
+        make
+        make install
 
-configure --enable-guththila=yes      build the guththila pull parser wrapper library wrapper
-configure --enable-guththila=no       does not build the guththila pull parser library wrapper
+   make -C test/server/echo install
+6. go to AXIS2C_HOME
+        cd $AXIS2C_HOME
+7. Set up sample service libs
+        cp deploy/lib/libecho.so deploy/services/echo/
+        cp deploy/lib/libmath.so deploy/services/math/
+8. Start simple axis server
+        cd deploy/bin
+        ./axis2_http_server
+This will start the simple axis server on port 9090. To see the posible command line options run:
+        ./axis2_http_server -h
+9. Run the sample clients in a new shell
+        cd $AXIS2C_HOME/deploy/bin
+        ./echo
+This will invoke the echo service.
+        ./math
+This will invoke the math service.
+To see the possible command line options for sample clients run them with '-h' option
 
-By default libxml2 parser wrapper is built.
 
-When running tests remember to rename the parser wrapper you want, to libaxis2_parser.so
-
-So when running tests user can change the parser by just renaming the libaxis2_libxml2.so or 
-libaxis2_guththila.so to libaxis2_parser.so
-
-Note:
-1) If you use libxml2 make sure to create two environment variables
-
-    LIBXML2_INCLUDE
-    LIBXML2_LIB
-    
-    If you use guththila create two environment variables
-    GUTHTHILA_INCLUDE
-    GUTHTHILA_LIB
-    
-2) Before you build tests make sure that all the axis2c libraries are installed in (or copied to)
-   AXIS2C_HOME/install/lib
-   
+Hope you would enjoy this first working version of Axis2C soap engine :)
