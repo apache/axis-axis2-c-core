@@ -25,10 +25,12 @@ void axis2_test_call_invoke_blocking()
 	struct axis2_call *call = NULL;
 	struct axis2_svc_grp *svc_grp = NULL;
     struct axis2_conf *conf = NULL;
+    axis2_char_t *axis2c_home;
 	
 	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
 	axis2_env_t *env = axis2_env_create (allocator);
-
+    
+    axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
 	conf = axis2_conf_create(&env);
 	conf_ctx = axis2_conf_ctx_create(&env, conf);
 
@@ -42,11 +44,11 @@ void axis2_test_call_invoke_blocking()
 
 	svc_ctx = axis2_svc_ctx_create(&env, svc, svc_grp_ctx);
 
-	call = axis2_call_create(&env, svc_ctx);
+	call = axis2_call_create(&env, svc_ctx, axis2c_home);
 
 	msg_ctx = axis2_msg_ctx_create(&env, conf_ctx, NULL, NULL);
 	
-	msg_ctx_res = AXIS2_CALL_INVOKE_BLOCKING(call, &env, op, msg_ctx);
+	/*msg_ctx_res = AXIS2_CALL_INVOKE_BLOCKING(call, &env, op, msg_ctx);*/
 
     if (msg_ctx_res)
         printf("axis2_test_call_invoke_blocking SUCCESS\n");

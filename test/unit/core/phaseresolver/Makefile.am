@@ -23,6 +23,7 @@ phaseresolver_test_LDADD   =   libtest_phaseresolver.la  \
                      -lcutest \
                     -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
+                    -laxis2_unix \
                     -laxis2_context \
                     -laxis2_description \
                     -laxis2_deployment \

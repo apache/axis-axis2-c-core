@@ -9,6 +9,7 @@ test_addr_LDADD   =  -L$(AXIS2C_HOME)/lib \
 	                -laxis2_description \
 	                -laxis2_context \
 	                -laxis2_util \
+                    -laxis2_unix \
 	                -laxis2_deployment \
 	                -laxis2_om \
 	                -laxis2_engine \

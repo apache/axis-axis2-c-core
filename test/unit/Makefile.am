@@ -16,6 +16,7 @@ main_unit_test_suite_LDADD   =   \
                     -L$(top_builddir)/test/unit/xml/om/.libs -ltest_om \
                     -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
+                    -laxis2_unix \
                     -laxis2_om \
                     -laxis2_description \
                     -laxis2_deployment \

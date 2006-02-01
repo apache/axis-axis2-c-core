@@ -8,6 +8,7 @@ test_deployment_LDADD   =  -L$(AXIS2C_HOME)/lib \
 					-laxis2_util \
                     -laxis2_context \
                     -laxis2_description \
+                    -laxis2_unix \
                     -laxis2_deployment \
                     -laxis2_phaseresolver \
                     -laxis2_om \

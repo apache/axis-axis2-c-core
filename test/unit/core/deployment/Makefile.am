@@ -26,6 +26,7 @@ deployment_test_LDADD   =   libtest_deployment.la  \
                      -lcutest \
                     -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
+                    -laxis2_unix \
                     -laxis2_context \
                     -laxis2_deployment \
                     -laxis2_description \

@@ -31,6 +31,7 @@ util_test_LDADD   =   \
                      $(top_builddir)/test/unit/util/libtest_util.la \
                     -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
+                    -laxis2_unix \
                     -laxis2_context \
                     -laxis2_description \
                     -laxis2_deployment \
