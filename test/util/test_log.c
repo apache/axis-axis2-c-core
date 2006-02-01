@@ -51,7 +51,7 @@ void test_axis2_log_debug(axis2_env_t *env)
 {
     printf("\n####start of test_axis2_log_degug\n\n");
 	env->log->level = AXIS2_LOG_LEVEL_DEBUG;
-    AXIS2_LOG_DEBUG(env->log,LOG_SI,"log_debug test %s %d","foo",1);
+    AXIS2_LOG_DEBUG(env->log,AXIS2_LOG_SI,"log_debug test %s %d","foo",1);
 	printf("\n####end of test_axis2_log_debug\n\n");
 }
 
@@ -59,7 +59,7 @@ void test_axis2_log_debug_off(axis2_env_t *env)
 {
     printf("\n####start of test_axis2_log_degug_off\n\n");
 	env->log->level = AXIS2_LOG_LEVEL_ERROR;/*log only ERROR's and CRITICAL's*/
-    AXIS2_LOG_DEBUG(env->log,LOG_SI,"this should not be logged log_debug test %s %d","foo",1);
+    AXIS2_LOG_DEBUG(env->log,AXIS2_LOG_SI,"this should not be logged log_debug test %s %d","foo",1);
 	printf("\n####end of test_axis2_log_debug_off\n\n");
 }
 
@@ -85,7 +85,7 @@ void test_axis2_log_warning(axis2_env_t *env)
 {
     printf("\n####start of test_axis2_log_warning\n\n");
 	env->log->level = AXIS2_LOG_LEVEL_DEBUG;
-    AXIS2_LOG_WARNING(env->log,LOG_SI,"log_warning test %s %d","foo",1);
+    AXIS2_LOG_WARNING(env->log,AXIS2_LOG_SI,"log_warning test %s %d","foo",1);
 	printf("\n####end of test_axis2_log_warning\n\n");
 }
 
@@ -94,7 +94,7 @@ void test_axis2_log_warning_off(axis2_env_t *env)
 {
     printf("\n####start of test_axis2_log_warning_off\n\n");
 	env->log->level = AXIS2_LOG_LEVEL_ERROR;/*log only ERROR's and CRITICAL's*/
-    AXIS2_LOG_WARNING(env->log,LOG_SI,"this should not be logged log_warning test %s %d","foo",1);
+    AXIS2_LOG_WARNING(env->log,AXIS2_LOG_SI,"this should not be logged log_warning test %s %d","foo",1);
 	printf("\n####end of test_axis2_log_warning_off\n\n");
 }
 
@@ -102,7 +102,7 @@ void test_axis2_log_warning_off(axis2_env_t *env)
 void test_axis2_log_error(axis2_env_t *env)
 {
     printf("\n####start of test_axis2_log_error\n\n");
-    AXIS2_LOG_ERROR(env->log,LOG_SI,"log_error test %s %d","foo",1);
+    AXIS2_LOG_ERROR(env->log,AXIS2_LOG_SI,"log_error test %s %d","foo",1);
 	printf("\n####end of test_axis2_log_error\n\n");
 }
 
@@ -110,7 +110,7 @@ void test_axis2_log_error(axis2_env_t *env)
 void test_axis2_log_critical(axis2_env_t *env)
 {
     printf("\n####start of test_axis2_log_critical\n\n");
-    AXIS2_LOG_CRITICAL(env->log,LOG_SI,"log_critical test %s %d","foo",1);
+    AXIS2_LOG_CRITICAL(env->log,AXIS2_LOG_SI,"log_critical test %s %d","foo",1);
 	printf("\n####end of test_axis2_log_critical\n\n");
 }
 

@@ -274,11 +274,11 @@ void test_log_write()
 	strcpy(msg,"abcd test123");
 	AXIS2_LOG_WRITE(env->log,msg,AXIS2_LOG_LEVEL_ERROR);
 
-	AXIS2_LOG_CRITICAL(env->log,LOG_SI,"log1 %s","test1");
-	AXIS2_LOG_ERROR(env->log,LOG_SI,"log2 %d",2);
-	AXIS2_LOG_WARNING(env->log,LOG_SI,"log3 %s","test3");
-	AXIS2_LOG_INFO(env->log,LOG_SI,"log4 %s %s","info1","info2");
-	AXIS2_LOG_DEBUG(env->log,LOG_SI,"log5 %s %d","test",5);
+	AXIS2_LOG_CRITICAL(env->log,AXIS2_LOG_SI,"log1 %s","test1");
+	AXIS2_LOG_ERROR(env->log,AXIS2_LOG_SI,"log2 %d",2);
+	AXIS2_LOG_WARNING(env->log,AXIS2_LOG_SI,"log3 %s","test3");
+	AXIS2_LOG_INFO(env->log,AXIS2_LOG_SI,"log4 %s %s","info1","info2");
+	AXIS2_LOG_DEBUG(env->log,AXIS2_LOG_SI,"log5 %s %d","test",5);
     printf("end of test_log_write \n\n");
 	
 }
