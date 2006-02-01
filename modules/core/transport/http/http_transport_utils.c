@@ -820,6 +820,13 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
             xml_reader = NULL;
             return NULL;
         }
+        if(NULL == soap_builder)
+        {
+            AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+            om_builder = NULL;
+            xml_reader = NULL;
+            return NULL;
+        }
         soap_builder = axis2_soap_builder_create(env, om_builder,
                         soap_ns_uri);
         soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
