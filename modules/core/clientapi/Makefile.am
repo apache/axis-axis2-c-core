@@ -1,4 +1,6 @@
 lib_LTLIBRARIES = libaxis2_clientapi.la
+noinst_HEADERS = callback_recv.h listener_manager.h
+
 AM_CPPFLAGS = $(CPPFLAGS)
 
 libaxis2_clientapi_la_SOURCES = async_result.c \

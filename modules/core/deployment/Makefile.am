@@ -23,3 +23,5 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/deployment \
             -I$(top_builddir)/modules/xml/parser \
             -I$(top_builddir)/modules/platforms
+
+noinst_HEADERS = axis2_deployment.h

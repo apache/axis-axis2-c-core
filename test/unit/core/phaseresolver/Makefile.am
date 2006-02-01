@@ -31,8 +31,8 @@ phaseresolver_test_LDADD   =   libtest_phaseresolver.la  \
                     -laxis2_wsdl \
                     -laxis2_phaseresolver \
                     -laxis2_om \
-                    -laxis2_parser \
                     -laxis2_addr \
+					-laxis2_parser \
                     -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
                     -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
 

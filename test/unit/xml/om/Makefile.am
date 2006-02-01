@@ -1,5 +1,6 @@
 prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
+noinst_HEADERS = om_node_test.h
 prglib_LTLIBRARIES = libtest_om.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libtest_om_la_SOURCES = om_test.c om_node_test.c

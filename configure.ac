@@ -78,10 +78,49 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library w
   LIBXML2_LIBNAME="-lxml2"
 )
 
+AC_MSG_CHECKING(whether to build tests)
+AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    TESTS=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    TESTS="test"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  TESTS=""
+)
+
+AC_MSG_CHECKING(whether to build samples)
+AC_ARG_ENABLE(tests, [  --enable-samples    build samples. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    SAMPLES=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    SAMPLES="samples"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  SAMPLES=""
+)
+
+PKG_CHECK_MODULES(XML2, libxml-2.0)
+AC_SUBST(XML2_CFLAGS)
+AC_SUBST(XML2_LIBS)
 AC_SUBST(LIBXML2)
 AC_SUBST(GUTHTHILA)
 AC_SUBST(LIBXML2_LIBNAME)
 AC_SUBST(GUTHTHILA_LIBNAME)
+AC_SUBST(TESTS)
+AC_SUBST(SAMPLES)
 
 AC_CONFIG_FILES([Makefile \
     modules/Makefile \
@@ -102,9 +141,6 @@ AC_CONFIG_FILES([Makefile \
     modules/core/util/Makefile \
     modules/xml/Makefile \
     modules/xml/parser/Makefile \
-    modules/xml/parser/guththila/Makefile \
-    modules/xml/parser/guththila/impl/Makefile \
-    modules/xml/parser/guththila/impl/src/Makefile \
     modules/xml/parser/libxml2/Makefile \
     modules/xml/soap/Makefile \
     modules/xml/om/Makefile \
@@ -142,7 +178,9 @@ AC_CONFIG_FILES([Makefile \
     test/unit/xml/Makefile \
     test/unit/xml/om/Makefile\
     test/core/transport/Makefile\
-    test/core/transport/http/Makefile
+    test/core/transport/http/Makefile \
+    ides/Makefile \
+    ides/anjuta/Makefile
     ])
     
 AC_OUTPUT

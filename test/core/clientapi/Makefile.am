@@ -1,10 +1,9 @@
 prgbindir=$(prefix)/bin/system_test
-prgbin_PROGRAMS = test_clientapi test_client
+prgbin_PROGRAMS = test_client test_clientapi
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -pthread 
-test_clientapi_SOURCES = test_clientapi.c
 test_client_SOURCES = test_client.c
-
+test_clientapi_SOURCES = test_clientapi.c
 
 test_clientapi_LDADD   =  -L$(AXIS2C_HOME)/lib \
                     -laxis2_description \

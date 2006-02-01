@@ -1,4 +1,5 @@
 bin_PROGRAMS = math
+noinst_HEADERS = axis2_math_stub.h
 math_SOURCES = axis2_math_stub.c \
                 math_client.c
 

@@ -1,4 +1,5 @@
 lib_LTLIBRARIES = libmath.la
+noinst_HEADERS = math.h
 SUBDIRS =
 libmath_la_SOURCES = math.c math_skeleton.c
 libmath_la_LIBADD  =

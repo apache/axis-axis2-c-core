@@ -1,4 +1,5 @@
 bin_PROGRAMS = echo
+noinst_HEADERS = axis2_echo_stub.h
 echo_SOURCES = axis2_echo_stub.c \
                 echo_client.c
 

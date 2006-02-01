@@ -1,4 +1,6 @@
 lib_LTLIBRARIES = libaxis2_description.la
+noinst_HEADERS = axis2_description.h
+
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_description_la_SOURCES = param_container.c \
                             op.c \
@@ -26,3 +28,4 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/description \
             -I$(top_builddir)/modules/core/addr \
             -I$(top_builddir)/modules/platforms
+
