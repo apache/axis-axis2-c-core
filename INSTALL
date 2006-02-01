@@ -36,22 +36,26 @@ LIBXML2_INCLUDE=/usr/include/libxml2
 
 5. Build the source
 This can be done using the following command sequence:
+        autogen.sh
         ./configure
         make
         make install
 use './configure --help' for options.
+NOTE: you may wich to use './configure --prefix=$AXIS2C_HOME' to ensure AXIS2C_HOME and 
+intall forlder are the same
 
 To get the samples working, you also need to make and make install the samples.
         cd /your_path_to_axis2c_source/samples
         make
         make install
 
-   make -C test/server/echo install
 6. go to AXIS2C_HOME
         cd $AXIS2C_HOME
 7. Set up sample service libs
-        cp deploy/lib/libecho.so deploy/services/echo/
-        cp deploy/lib/libmath.so deploy/services/math/
+        cp  /your_path_to_axis2c_source/deploy/axis2.xml .
+        cp -r /your_path_to_axis2c_source/deploy/services .
+        cp lib/libecho.so services/echo/
+        cp lib/libmath.so services/math/
 8. Start simple axis server
         cd deploy/bin
         ./axis2_http_server
