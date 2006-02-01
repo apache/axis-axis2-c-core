@@ -446,6 +446,8 @@ axis2_math_div (axis2_env_t **env, axis2_om_node_t *node)
         
         param1 = strtol(param1_str, NULL, 10);
         param2 = strtol(param2_str, NULL, 10);
+        if (param2 == 0)
+            return NULL;
         result = param1 / param2;
         sprintf(result_str, "%ld", result);
 
