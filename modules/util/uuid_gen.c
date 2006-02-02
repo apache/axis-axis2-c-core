@@ -18,10 +18,10 @@
 
 /* We need these static variables to track throughout the program execution */
 static axis2_bool_t axis2_uuid_gen_is_first = AXIS2_TRUE;
-static struct axis2_uuid_st axis2_uuid_static;
+/*static struct axis2_uuid_st axis2_uuid_static;*/
 
 
-axis2_char_t * AXIS2_CALL
+AXIS2_DECLARE(axis2_char_t *) 
 axis2_uuid_gen(axis2_env_t **env)
 {
 	axis2_char_t *str = axis2_platform_uuid_gen();
