@@ -41,6 +41,7 @@ extern "C"
 typedef struct axis2_http_svr_thread_ops axis2_http_svr_thread_ops_t;
 typedef struct axis2_http_svr_thread axis2_http_svr_thread_t;
 
+extern int axis2_http_socket_read_timeout;
     
 /** 
  * @brief HTTP Server Thread ops struct

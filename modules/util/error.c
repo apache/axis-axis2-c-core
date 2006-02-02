@@ -401,6 +401,8 @@ axis2_error_init()
     "Invalid parameters for service operation in SOAP request";
     axis2_error_messages[AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX] =
     "Input stream is NULL in msg_ctx"; 
+    axis2_error_messages[AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM] =
+    "NULL stream in the http chunked stream";
     return AXIS2_SUCCESS;
 }
 

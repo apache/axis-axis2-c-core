@@ -8,7 +8,8 @@ libaxis2_http_transport_la_SOURCES = http_worker.c \
 				                     http_status_line.c\
 				                     http_header.c\
                                      url.c\
-                                     http_out_transport_info.c
+                                     http_out_transport_info.c\
+                                     http_chunked_stream.c
 
 INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/modules/util \

@@ -468,6 +468,8 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_SVC_SKEL_INVALID_OPERATION_PARAMETERS_IN_SOAP_REQUEST,
         /* Input stream is NULL in msg_ctx */
         AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX,
+        /* NULL stream in the http chunked stream */
+        AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM,
 
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.

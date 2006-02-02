@@ -176,40 +176,40 @@ axis2_http_simple_response_create_default(axis2_env_t **env);
 #define AXIS2_HTTP_SIMPLE_RESPONSE_GET_HEADERS(simple_response, env) \
                     ((simple_response)->ops->get_headers\
                     (simple_response, env))
-#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_FIRST_HEADER(simple_request, env) \
-                    ((simple_request)->ops->get_first_header\
-                    (simple_request, env))
-#define AXIS2_HTTP_SIMPLE_RESPONSE_REMOVE_HEADERS(simple_request, env, str)\
-                    ((simple_request)->ops->remove_headers\
-                    (simple_request, env, str))
+#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_FIRST_HEADER(simple_response, env, str) \
+                    ((simple_response)->ops->get_first_header\
+                    (simple_response, env, str))
+#define AXIS2_HTTP_SIMPLE_RESPONSE_REMOVE_HEADERS(simple_response, env, str)\
+                    ((simple_response)->ops->remove_headers\
+                    (simple_response, env, str))
 #define AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(simple_response, env, header) \
                     ((simple_response)->ops->set_header\
                     (simple_response, env, header))
 #define AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADERS(simple_response, env, headers) \
                     ((simple_response)->ops->set_headers\
                     (simple_response, env, headers))
-#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_CHARSET(simple_request, env) \
-                    ((simple_request)->ops->get_charset(simple_request, env))
-#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_LENGTH(simple_request, env) \
-                    ((simple_request)->ops->get_content_length\
-                    (simple_request, env))
-#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_TYPE(simple_request, env) \
-                    ((simple_request)->ops->get_content_type\
-                    (simple_request, env))
-#define AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STRING(simple_request, env, str)\
-                    ((simple_request)->ops->set_body_string\
-                    (simple_request, env, str))
-#define AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STREAM(simple_request, env, stream)\
-                    ((simple_request)->ops->set_body_stream\
-                    (simple_request, env, stream))
-#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY(simple_request, env)\
-                    ((simple_request)->ops->get_body\
-                    (simple_request, env))
-#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY_BYTES(simple_request, env, buf)\
-                    ((simple_request)->ops->get_body_bytes\
-                    (simple_request, env, buf))
-#define AXIS2_HTTP_SIMPLE_RESPONSE_FREE(simple_request, env)\
-                    ((simple_request)->ops->free(simple_request, env))
+#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_CHARSET(simple_response, env) \
+                    ((simple_response)->ops->get_charset(simple_response, env))
+#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_LENGTH(simple_response, env) \
+                    ((simple_response)->ops->get_content_length\
+                    (simple_response, env))
+#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_TYPE(simple_response, env) \
+                    ((simple_response)->ops->get_content_type\
+                    (simple_response, env))
+#define AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STRING(simple_response, env, str)\
+                    ((simple_response)->ops->set_body_string\
+                    (simple_response, env, str))
+#define AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STREAM(simple_response, env, stream)\
+                    ((simple_response)->ops->set_body_stream\
+                    (simple_response, env, stream))
+#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY(simple_response, env)\
+                    ((simple_response)->ops->get_body\
+                    (simple_response, env))
+#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY_BYTES(simple_response, env, buf)\
+                    ((simple_response)->ops->get_body_bytes\
+                    (simple_response, env, buf))
+#define AXIS2_HTTP_SIMPLE_RESPONSE_FREE(simple_response, env)\
+                    ((simple_response)->ops->free(simple_response, env))
 
 /************************** End of function macros ****************************/    
 

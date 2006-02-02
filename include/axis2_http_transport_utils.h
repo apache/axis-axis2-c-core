@@ -33,6 +33,7 @@
 #include <axis2_om_element.h>
 #include <axis2_stream.h>
 #include <axis2_soap_envelope.h>
+#include <axis2_http_chunked_stream.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -50,9 +51,10 @@ extern "C"
 struct axis2_callback_info
 {
 	axis2_env_t *env;
-	axis2_stream_t *in_stream;
+	void *in_stream;
 	int content_length;
 	int unread_len;
+	axis2_http_chunked_stream_t *chunked_stream;
 };
 typedef struct axis2_callback_info axis2_callback_info_t;
 

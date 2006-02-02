@@ -17,11 +17,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-/*#include <unistd.h>*/
 #include <axis2_network_handler.h>
-/*#include <arpa/inet.h>
-#includ <netinet/in.h>
-#include <netdb.h>*/
 #include <fcntl.h>
 #include <axis2_platform_auto_sense.h>
 
@@ -57,7 +53,8 @@ axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port)
         lphost = gethostbyname(server); /*nnn netdb.h*/
 
         if (NULL != lphost)
-            sock_addr.sin_addr.s_addr = ((struct in_addr*)lphost->h_addr)->s_addr;
+            sock_addr.sin_addr.s_addr = 
+						((struct in_addr*)lphost->h_addr)->s_addr;
         else
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_ADDRESS, 
@@ -77,7 +74,7 @@ axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port)
 	setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, &nodelay, 
 						sizeof(nodelay));
 	ll.l_onoff = 1;
-    ll.l_linger = 1;
+    ll.l_linger = 5;
     setsockopt(sock, SOL_SOCKET, SO_LINGER , &ll, sizeof(struct linger));
 	return sock;
 }
@@ -98,7 +95,8 @@ axis2_network_handler_create_server_socket(axis2_env_t **env, int port)
 	}
 	/** Address re-use */
 	i = 1;
-	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR ,(char*) &i, sizeof(axis2_socket_t));/*nnn casted 4th param to char* */
+	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR ,(char*) &i, 
+						sizeof(axis2_socket_t));/*nnn casted 4th param to char* */
 	/** Exec behaviour */
 	AXIS2_CLOSE_SOCKET_ON_EXIT(sock)
 	
@@ -158,7 +156,8 @@ axis2_network_handler_set_sock_option(axis2_env_t **env, axis2_socket_t socket,
 }
 
 AXIS2_DECLARE(axis2_socket_t)						
-axis2_network_handler_svr_socket_accept(axis2_env_t **env, axis2_socket_t svr_socket)
+axis2_network_handler_svr_socket_accept(axis2_env_t **env, 
+						axis2_socket_t svr_socket)
 {
 	axis2_socket_t cli_socket = AXIS2_INVALID_SOCKET;
 	struct sockaddr cli_addr;
@@ -178,7 +177,7 @@ axis2_network_handler_svr_socket_accept(axis2_env_t **env, axis2_socket_t svr_so
 	setsockopt(cli_socket, IPPROTO_TCP, TCP_NODELAY, &nodelay, 
 						sizeof(nodelay));
 	ll.l_onoff = 1;
-    ll.l_linger = 1;
+    ll.l_linger = 5;
     setsockopt(cli_socket, SOL_SOCKET, SO_LINGER , &ll, sizeof(struct linger));
     return cli_socket;
 }

@@ -161,7 +161,7 @@ axis2_http_transport_sender_invoke
 	
 	char_set_enc = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
 							AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
-	if(NULL != char_set_enc)
+	if(NULL == char_set_enc)
 	{
 		axis2_op_ctx_t *op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
 		if(NULL != op_ctx)

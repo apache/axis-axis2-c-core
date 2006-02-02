@@ -25,6 +25,7 @@
 #include <axis2_http_transport_utils.h>
 #include <axis2_op_ctx.h>
 #include <axis2_engine.h>
+#include <axis2_uuid_gen.h>
 
 /** 
  * @brief HTTP Worker struct impl
@@ -139,6 +140,8 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	axis2_char_t *ctx_written = NULL;
 	axis2_status_t status = AXIS2_FAILURE;
 	int content_length = -1;
+	axis2_http_header_t *encoding_header = NULL;
+	axis2_char_t *encoding_header_value = NULL;
 	
 	AXIS2_FUNC_PARAM_CHECK(http_worker, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svr_conn, AXIS2_FAILURE);
@@ -165,8 +168,20 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 						AXIS2_FAILURE);
 		return AXIS2_FAILURE;
 	}
+	AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Client HTTP version %s", 
+						http_version);
+	
 	response = axis2_http_simple_response_create_default(env);
-	if(content_length < 0)
+	encoding_header = AXIS2_HTTP_SIMPLE_REQUEST_GET_FIRST_HEADER(simple_request,
+						env, AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
+	if(NULL != encoding_header)
+	{
+		encoding_header_value = AXIS2_HTTP_HEADER_GET_VALUE(encoding_header, 
+						env);
+	}
+	if(content_length < 0 && (NULL != encoding_header_value && 0 != AXIS2_STRCMP
+						(encoding_header_value, 
+						AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED)))
 	{
 		if(0 == AXIS2_STRCASECMP(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(
 						AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
@@ -206,10 +221,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS, 
 						axis2_http_worker_get_headers(http_worker, env, 
 						simple_request), AXIS2_FALSE);
-	/*
-	 * TODO uuidgen
-	 * AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(uuid, env);
-	 */
+	AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, axis2_uuid_gen(env));
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
 						axis2_http_out_transport_info_create(env, response), 
 						AXIS2_FALSE);
@@ -331,13 +343,13 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	{
 		AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE(response, env, http_version,
 						AXIS2_HTTP_RESPONSE_OK_CODE_VAL, "OK");
+		AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STREAM(response, env, out_stream);
 	}
 	else
 	{
 		AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE(response, env, http_version,
 						AXIS2_HTTP_RESPONSE_ACK_CODE_VAL, "Accepted");
 	}
-	AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STREAM(response, env, out_stream);
 	axis2_http_worker_set_response_headers(http_worker, env, svr_conn, 
 						simple_request, response, AXIS2_STREAM_BASIC_GET_LEN(
 						out_stream, env));
@@ -411,8 +423,8 @@ axis2_http_worker_set_response_headers(axis2_http_worker_t *http_worker,
                     AXIS2_FALSE);
             }
         }
-        if(AXIS2_FALSE == AXIS2_HTTP_SIMPLE_RESPONSE_CONTAINS_HEADER(
-                    simple_response, env, AXIS2_HTTP_HEADER_TRANSFER_ENCODING))
+        if(AXIS2_FALSE == AXIS2_HTTP_SIMPLE_REQUEST_CONTAINS_HEADER(
+                    simple_request, env, AXIS2_HTTP_HEADER_TRANSFER_ENCODING))
         {
             if(0 != content_length)
             {
@@ -426,6 +438,14 @@ axis2_http_worker_set_response_headers(axis2_http_worker_t *http_worker,
                     content_len_hdr);
             }
         }
+		else
+		{
+			axis2_http_header_t *transfer_enc_header = axis2_http_header_create(
+						env, AXIS2_HTTP_HEADER_TRANSFER_ENCODING, 
+						AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
+			AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(simple_response, env, 
+						transfer_enc_header);			
+		}
     }
     return AXIS2_SUCCESS;
 }
@@ -461,6 +481,42 @@ axis2_hash_t* AXIS2_CALL
 axis2_http_worker_get_headers(axis2_http_worker_t *http_worker, 
 						axis2_env_t **env, axis2_http_simple_request_t *request)
 {
-	/* TODO implement */
-	return NULL;
+	axis2_array_list_t *header_list = NULL;
+	int hdr_count = 0;
+	int i = 0;
+	axis2_hash_t *header_map = NULL;
+	AXIS2_FUNC_PARAM_CHECK(http_worker, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, request, AXIS2_FAILURE);
+	
+	header_list = AXIS2_HTTP_SIMPLE_REQUEST_GET_HEADERS(request, env);
+	if(NULL == header_list)
+	{
+		return NULL;
+	}
+	hdr_count = AXIS2_ARRAY_LIST_SIZE(header_list, env);
+	if(0 == hdr_count)
+	{
+		return NULL;
+	}
+	
+	for(i = 0; i < hdr_count; i++)
+	{
+		axis2_http_header_t *tmp_hdr = NULL;
+		tmp_hdr = AXIS2_ARRAY_LIST_GET(header_list, env, i);
+		if(NULL == tmp_hdr)
+		{
+			continue;
+		}
+		if(NULL == header_map)
+		{
+			header_map = axis2_hash_make(env);
+			if(NULL == header_map)
+			{
+				return NULL;
+			}
+		}
+		axis2_hash_set(header_map, AXIS2_HTTP_HEADER_GET_NAME(tmp_hdr, env),
+						AXIS2_HASH_KEY_STRING, tmp_hdr);
+	}
+	return header_map;
 }

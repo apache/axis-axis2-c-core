@@ -171,8 +171,8 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 		}
 		AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t1);
 		svr_conn = axis2_simple_http_svr_conn_create(env, socket);
-		/*AXIS2_SIMPLE_HTTP_SVR_CONN_SET_RCV_TIMEOUT(svr_conn, env, 
-						axis2_http_socket_read_timeout);*/
+		AXIS2_SIMPLE_HTTP_SVR_CONN_SET_RCV_TIMEOUT(svr_conn, env, 
+						axis2_http_socket_read_timeout);
 		request = AXIS2_SIMPLE_HTTP_SVR_CONN_READ_REQUEST(svr_conn, env);
 		tmp = svr_thread_impl->worker;
 		status = AXIS2_HTTP_WORKER_PROCESS_REQUEST(tmp, env, svr_conn, request);
@@ -197,7 +197,6 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 		}
 		
 	}
-	
     return AXIS2_SUCCESS;
 }
 
@@ -216,13 +215,13 @@ axis2_http_svr_thread_destroy(axis2_http_svr_thread_t *svr_thread,
 		return AXIS2_SUCCESS;
 	}
 	svr_thread_impl->stopped = AXIS2_TRUE;
-	/* TODO log*/
+	AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Destrying HTTP server thread.");
 	if(svr_thread_impl->listen_socket)
 	{
 		axis2_network_handler_close_socket(env, svr_thread_impl->listen_socket);
 		svr_thread_impl->listen_socket = -1;
 	}
-	/* TODO: stop all the chiled threads */
+	/* TODO: stop all the child threads */
 	return AXIS2_SUCCESS;
 }
 

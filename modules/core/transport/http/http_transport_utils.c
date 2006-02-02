@@ -29,6 +29,7 @@
 #include <axis2_om_node.h>
 #include <axis2_hash.h>
 #include <axis2_soap.h>
+#include <axis2_http_header.h>
 
 /***************************** Function headers *******************************/
 
@@ -114,6 +115,7 @@ axis2_http_transport_utils_process_http_post_request
 	/*axis2_char_t *xml_char_set = NULL;*/
 	axis2_conf_ctx_t *conf_ctx = NULL;
 	axis2_callback_info_t callback_ctx;
+	axis2_hash_t *headers = NULL;
 	
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, in_stream, AXIS2_FAILURE);
@@ -127,7 +129,7 @@ axis2_http_transport_utils_process_http_post_request
 	callback_ctx.env = *env;
 	callback_ctx.content_length = content_length;
 	callback_ctx.unread_len = content_length;
-	
+	callback_ctx.chunked_stream = NULL;
 	
 	if(NULL != soap_action_header)	
 	{
@@ -140,6 +142,34 @@ axis2_http_transport_utils_process_http_post_request
 		if('"' == soap_action_header[strlen(soap_action_header) -1])
 		{
 			soap_action_header[strlen(soap_action_header) -1] = '\0';
+		}
+	}
+	headers = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS, 
+						AXIS2_FALSE);
+	if(NULL != headers)
+	{
+		axis2_http_header_t *encoding_header = NULL;
+		encoding_header = (axis2_http_header_t*)axis2_hash_get(headers, 
+						AXIS2_HTTP_HEADER_TRANSFER_ENCODING,
+						AXIS2_HASH_KEY_STRING);
+		if(NULL != encoding_header)
+		{
+			axis2_char_t *encoding_value = NULL;
+			encoding_value = AXIS2_HTTP_HEADER_GET_VALUE(encoding_header, env);
+			if(NULL != encoding_value && 0 == AXIS2_STRCASECMP(encoding_value, 
+						AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
+			{
+				callback_ctx.chunked_stream = axis2_http_chunked_stream_create(
+							env, in_stream);
+				if(NULL == callback_ctx.chunked_stream)
+				{
+					AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Error occured in"
+							" creating in chunked stream.");
+					return AXIS2_FALSE;				
+				}
+				AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "HTTP"
+						" stream chunked");
+			}
 		}
 	}
 	AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env, soap_action_header);
@@ -726,7 +756,6 @@ axis2_http_transport_utils_get_charset_enc(axis2_env_t **env,
 int
 axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
 {
-	axis2_stream_t *in_stream = NULL;
 	axis2_env_t **env = NULL;
 	int len = -1;
     axis2_callback_info_t *cb_ctx = (axis2_callback_info_t*)ctx;
@@ -735,18 +764,31 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
 	{
 		return 0;
 	}
+	env = &((axis2_callback_info_t*)ctx)->env;
 	if(cb_ctx->unread_len <= 0 && -1 != cb_ctx->content_length)
 	{
 		return 0;
 	}
-	in_stream = ((axis2_callback_info_t*)ctx)->in_stream;
-	env = &((axis2_callback_info_t*)ctx)->env;
-	len = AXIS2_STREAM_READ(in_stream, env, buffer, size);
-	if(len > 0)
+	if(cb_ctx->chunked_stream != NULL)
 	{
-		((axis2_callback_info_t*)ctx)->unread_len -= len;
+		/*TODO remove this debug message */
+		AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Stream chunked");
+		len = AXIS2_HTTP_CHUNKED_STREAM_READ(cb_ctx->chunked_stream, env, 
+						buffer, size);
+		return len;
 	}
-	return len;
+	else
+	{
+		axis2_stream_t *in_stream = NULL;
+		in_stream = (axis2_stream_t *)((axis2_callback_info_t*)ctx)->in_stream;
+		len = AXIS2_STREAM_READ(in_stream, env, buffer, size);
+		if(len > 0)
+		{
+			((axis2_callback_info_t*)ctx)->unread_len -= len;
+		}
+		return len;
+	}
+	return 0;	
 }
 
 axis2_soap_envelope_t* AXIS2_CALL
@@ -775,6 +817,7 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
 	callback_ctx.env = *env;
 	callback_ctx.content_length = -1;
 	callback_ctx.unread_len = -1;
+	callback_ctx.chunked_stream = NULL;
     
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     if(NULL != op_ctx)
@@ -826,6 +869,13 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
         {
             AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
             om_builder = NULL;
+            xml_reader = NULL;
+            return NULL;
+        }
+		if(NULL == soap_builder)
+        {
+            AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+			om_builder = NULL;
             xml_reader = NULL;
             return NULL;
         }

@@ -165,9 +165,10 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
 	AXIS2_FUNC_PARAM_CHECK(client, env, AXIS2_FAILURE);
     client_impl = AXIS2_INTF_TO_IMPL(client);
 	
-	if(NULL != client_impl->url)
+	if(NULL == client_impl->url)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_URL, AXIS2_FAILURE);
+		return AXIS2_FAILURE;
 	}
     
 	client_impl->sockfd = axis2_network_handler_open_socket(env, 
