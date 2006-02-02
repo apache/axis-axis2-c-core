@@ -16,15 +16,17 @@
  
 #include <axis2_dir_handler.h>
 #include <axis2_file.h>
+#include <axis2_platform_auto_sense.h>
+#include <axis2_string.h>
 
-extern  int alphasort();
+extern int AXIS2_ALPHASORT();
 
 /**
  * List the dll files in the given service or module folder path
  * @param pathname path to your service or module directory
  * @return array list of dll file names
  */
-axis2_array_list_t *AXIS2_CALL
+AXIS2_DECLARE(axis2_array_list_t *)
 axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
                             axis2_char_t *pathname)   
 { 
@@ -32,17 +34,17 @@ axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
     struct stat *buf = NULL;
 	int count = 1;
     int i = 0;
-	struct direct **files = NULL;
+	struct dirent **files = NULL;
 	int file_select();
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, NULL);
     file_list = axis2_array_list_create(env, 100);
-	count = scandir(pathname, &files, file_select, alphasort);
+	count = AXIS2_SCANDIR(pathname, &files, file_select, AXIS2_ALPHASORT);
 	/* If no files found, make a non-selectable menu item */
 	if (count <= 0)
 	{		 
-        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "No files in this directory : %s", pathname);
+		printf("No files in this directory:%s\n", pathname);
 		return NULL;
 	}
     
@@ -97,7 +99,7 @@ axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
  * @param pathname path  your modules or services folder
  * @return array list of contents of services or modules folder
  */
-axis2_array_list_t *AXIS2_CALL
+AXIS2_DECLARE(axis2_array_list_t *)
 axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
                             axis2_char_t *pathname)   
 { 
@@ -105,17 +107,24 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
     struct stat *buf = NULL;
 	int count = 1;
     int i = 0;
-	struct direct **files = NULL;
+	struct dirent **files = NULL;
+	DIR *handle = NULL;
+	
 	int dir_select();
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, NULL);
+	/*if ((handle = opendir(pathname)) != NULL && (handle->finished == 1))
+	{
+		printf("Path Name does not exist:%s\n",pathname);
+		return NULL;
+	}*/
     file_list = axis2_array_list_create(env, 100);
-	count = scandir(pathname, &files, dir_select, alphasort);
+	count = AXIS2_SCANDIR(pathname, &files, dir_select, AXIS2_ALPHASORT);
 	/* If no files found, make a non-selectable menu item */
 	if (count <= 0)
 	{		 
-        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "No files in this directory : %s", pathname);
+		printf("No files in this directory:%s\n", pathname);
 		return NULL;
 	}
     
@@ -168,18 +177,18 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
 }
 
 
-int file_select(struct direct *entry)
+int file_select(struct dirent *entry)
  
 {
 	axis2_char_t *ptr;
-	axis2_char_t *rindex(const axis2_char_t *s, int c);
+	/*axis2_char_t *rindex(const axis2_char_t *s, int c);*/
  
 	if ((strcmp(entry->d_name, ".")== 0) ||
 			(strcmp(entry->d_name, "..") == 0))
 		return (AXIS2_FALSE);
  
 	/* Check for filename extensions */
-	ptr = rindex(entry->d_name, '.');
+	ptr = AXIS2_RINDEX(entry->d_name, '.');
 	if ((ptr != NULL) &&
 		((strcmp(ptr, AXIS2_LIB_SUFFIX) == 0) ))
     {
@@ -189,7 +198,7 @@ int file_select(struct direct *entry)
 		return(AXIS2_FALSE);
 }
 
-int dir_select(struct direct *entry)
+int dir_select(struct dirent *entry)
  
 {
 	axis2_char_t *ptr;
@@ -202,7 +211,7 @@ int dir_select(struct direct *entry)
     }
  
 	/* Check for filename extensions */
-	ptr = rindex(entry->d_name, '.');
+	ptr = AXIS2_RINDEX(entry->d_name, '.');
 	if (ptr != NULL)
     {
 		return (AXIS2_FALSE);
