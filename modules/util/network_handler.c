@@ -17,41 +17,42 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
+/*#include <unistd.h>*/
 #include <axis2_network_handler.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <netdb.h>
+/*#include <arpa/inet.h>
+#includ <netinet/in.h>
+#include <netdb.h>*/
 #include <fcntl.h>
-#include <sys/ioctl.h>
+#include <axis2_platform_auto_sense.h>
 
 
-int AXIS2_CALL
+axis2_socket_t AXIS2_CALL
 axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port)
 {
-	int sock = -1;
+	axis2_socket_t sock = AXIS2_INVALID_SOCKET;
 	struct sockaddr_in sock_addr;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, server, AXIS2_CRTICAL_FAILURE);
 	
 	if((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+		/*nnn AF_INET is not defined in sys/socket.h but PF_INET*/
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
-		return -1;
+		return AXIS2_INVALID_SOCKET;
 	}
 	
     memset(&sock_addr,0,sizeof(sock_addr));
     sock_addr.sin_family = AF_INET;
-    sock_addr.sin_addr.s_addr = inet_addr(server);
+    sock_addr.sin_addr.s_addr = inet_addr(server);/*nnn arpa/inet.d */
 
-    if (sock_addr.sin_addr.s_addr == (in_addr_t)-1)
+    if (sock_addr.sin_addr.s_addr == AXIS2_INADDR_NONE) /*nnn netinet/in.h */
     {
         /**
          * server may be a host name
          */
         struct hostent* lphost = NULL;
-        lphost = gethostbyname(server);
+        lphost = gethostbyname(server); /*nnn netdb.h*/
 
         if (NULL != lphost)
             sock_addr.sin_addr.s_addr = ((struct in_addr*)lphost->h_addr)->s_addr;
@@ -59,26 +60,26 @@ axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_ADDRESS, 
 						AXIS2_FAILURE);
-            return -1;
+            return AXIS2_INVALID_SOCKET;
         }
     }
 
-    sock_addr.sin_port = htons((uint16_t)port);
+    sock_addr.sin_port = htons((axis2_unsigned_short_t)port);
 	/** Connect to server */
     if (connect(sock, (struct sockaddr*)&sock_addr, sizeof(sock_addr)) < 0)
     {
-        close(sock);
+        AXIS2_CLOSE_SOCKET(sock);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
-        return -1;
+        return AXIS2_INVALID_SOCKET;
     }
 	return sock;
 }
 
-int AXIS2_CALL
+axis2_socket_t AXIS2_CALL
 axis2_network_handler_create_server_socket(axis2_env_t **env, int port)
 {
-	int sock = -1;
-	unsigned int i = 0;
+	axis2_socket_t sock = AXIS2_INVALID_SOCKET;
+	axis2_socket_t i = 0;
 	struct sockaddr_in sock_addr;
 		
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
@@ -86,39 +87,38 @@ axis2_network_handler_create_server_socket(axis2_env_t **env, int port)
 	if(sock < 0)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
-		return -1;
+		return AXIS2_INVALID_SOCKET;
 	}
 	/** Address re-use */
 	i = 1;
-	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR ,&i, sizeof(int));
+	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR ,(char*) &i, sizeof(axis2_socket_t));/*nnn casted 4th param to char* */
 	/** Exec behaviour */
-	fcntl(sock, F_SETFD, FD_CLOEXEC);
-	
+	AXIS2_CLOSE_SOCKET_ON_EXIT(sock)
 	
     memset(&sock_addr,0,sizeof(sock_addr));
 
     sock_addr.sin_family = AF_INET;
     sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    sock_addr.sin_port = htons((uint16_t)port);
+    sock_addr.sin_port = htons((axis2_unsigned_short_t)port);
 
     /* Bind the socket to our port number */
     if (bind(sock, (struct sockaddr*)&sock_addr, sizeof(sock_addr)) < 0)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOCKET_BIND_FAILED, 
 						AXIS2_FAILURE);
-		return -1;
+		return AXIS2_INVALID_SOCKET;
 	}
     if(listen(sock, 50) < 0)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOCKET_LISTEN_FAILED,
                         AXIS2_FAILURE);
-        return -1;
+        return AXIS2_INVALID_SOCKET;
     }
 	return sock;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_network_handler_close_socket (axis2_env_t **env, int socket)
+axis2_network_handler_close_socket (axis2_env_t **env,  axis2_socket_t socket)
 {
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	if(socket < 0)
@@ -127,7 +127,7 @@ axis2_network_handler_close_socket (axis2_env_t **env, int socket)
 							AXIS2_FAILURE);
 		return AXIS2_FAILURE;
 	}
-	if(0 != close(socket))
+	if(0 != AXIS2_CLOSE_SOCKET(socket))
 	{
 		return AXIS2_FAILURE;
 	}
@@ -135,7 +135,7 @@ axis2_network_handler_close_socket (axis2_env_t **env, int socket)
 }
 
 axis2_status_t AXIS2_CALL
-axis2_network_handler_set_sock_option(axis2_env_t **env, int socket, 
+axis2_network_handler_set_sock_option(axis2_env_t **env, axis2_socket_t socket, 
 						int option, int value)
 {
 	if(option == SO_RCVTIMEO || option == SO_SNDTIMEO)
@@ -144,18 +144,18 @@ axis2_network_handler_set_sock_option(axis2_env_t **env, int socket,
 		/* we deal with milliseconds */
 		tv.tv_sec = value/1000;
 		tv.tv_usec = (value%1000) * 1000;
-		setsockopt(socket, SOL_SOCKET, option, &tv, sizeof(tv));
+		setsockopt(socket, SOL_SOCKET, option, (char*) &tv, sizeof(tv));
 		return AXIS2_SUCCESS;
 	}
 	return AXIS2_FAILURE;    
 }
 
-int AXIS2_CALL
-axis2_network_handler_svr_socket_accept(axis2_env_t **env, int svr_socket)
+AXIS2_DECLARE(axis2_socket_t)						
+axis2_network_handler_svr_socket_accept(axis2_env_t **env, axis2_socket_t svr_socket)
 {
-	int cli_socket = -1;
+	axis2_socket_t cli_socket = AXIS2_INVALID_SOCKET;
 	struct sockaddr cli_addr;
-	socklen_t cli_len = 0;
+	axis2_socket_len_t cli_len = 0;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	
@@ -166,3 +166,34 @@ axis2_network_handler_svr_socket_accept(axis2_env_t **env, int svr_socket)
 						failed", AXIS2_LOG_LEVEL_ERROR);
     return cli_socket;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
