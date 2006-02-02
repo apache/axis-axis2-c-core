@@ -117,6 +117,7 @@ axis2_param_create(axis2_env_t **env,
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+    param_impl->param.ops->value_free = NULL;
     /* initialize ops */
     param_impl->param.ops->get_name = axis2_param_get_name;
     param_impl->param.ops->get_value = axis2_param_get_value;
