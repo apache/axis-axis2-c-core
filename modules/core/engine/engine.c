@@ -141,6 +141,8 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_array_list_t *phases = NULL;
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_conf_t *conf = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(engine, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -162,8 +164,7 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
         }
     }
     
-    axis2_conf_ctx_t *conf_ctx = NULL;
-    axis2_conf_t *conf = NULL;
+
     /*axis2_array_list_t *global_out_phase = NULL;*/
 
     if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
@@ -650,11 +651,12 @@ axis2_status_t AXIS2_CALL axis2_engine_verify_ctx_built(struct axis2_engine *eng
 axis2_status_t AXIS2_CALL axis2_engine_invoke_phases(struct axis2_engine *engine, axis2_env_t **env, axis2_array_list_t *phases, axis2_msg_ctx_t *msg_ctx)
 {
     int i = 0;
+    int count = 0;
     AXIS2_FUNC_PARAM_CHECK(engine, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, phases, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);    
     
-    int count = AXIS2_ARRAY_LIST_SIZE(phases, env);
+    count = AXIS2_ARRAY_LIST_SIZE(phases, env);
     for (i = 0; (i < count && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))); i++) 
     {
         axis2_phase_t *phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phases, env, i);
@@ -666,15 +668,17 @@ axis2_status_t AXIS2_CALL axis2_engine_invoke_phases(struct axis2_engine *engine
 axis2_status_t AXIS2_CALL axis2_engine_resume_invocation_phases(struct axis2_engine *engine, axis2_env_t **env, axis2_array_list_t *phases, axis2_msg_ctx_t *msg_ctx)
 {
     int i = 0;
+    int count = 0;
+    axis2_bool_t found_match = AXIS2_FALSE;
+
     AXIS2_FUNC_PARAM_CHECK(engine, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, phases, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);    
     
     AXIS2_MSG_CTX_SET_PAUSED(msg_ctx, env, AXIS2_FALSE);
     
-    int count = AXIS2_ARRAY_LIST_SIZE(phases, env);
-    axis2_bool_t found_match = AXIS2_FALSE;
-
+    count = AXIS2_ARRAY_LIST_SIZE(phases, env);
+    
     for (i = 0; i < count && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)); i++) 
     {
         axis2_phase_t *phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phases, env, i);

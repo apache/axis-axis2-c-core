@@ -472,11 +472,11 @@ axis2_svc_t * AXIS2_CALL
 axis2_svc_create_with_wsdl_svc (axis2_env_t **env, 
                                 axis2_wsdl_svc_t *wsdl_svc)
 {
+    axis2_svc_impl_t *svc_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, wsdl_svc, NULL);
     
-	axis2_svc_impl_t *svc_impl = 
-        AXIS2_INTF_TO_IMPL(axis2_svc_create(env));
+	 svc_impl = AXIS2_INTF_TO_IMPL(axis2_svc_create(env));
     
 	if(NULL == svc_impl)
 	{

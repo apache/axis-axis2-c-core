@@ -74,7 +74,7 @@ axis2_disp_t* AXIS2_CALL axis2_addr_disp_create(axis2_env_t **env)
     Here we have only the dummy implementation to gauard against erros due to 
     the failure to provide an impl version by mistake.
  */
-    
+
 /**
  * finds the service
  *

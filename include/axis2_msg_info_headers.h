@@ -177,23 +177,56 @@ AXIS2_DECLARE(axis2_msg_info_headers_t*) axis2_msg_info_headers_create(axis2_env
                                            axis2_char_t *action);
     
 
-#define AXIS2_MSG_INFO_HEADERS_GET_TO(msg_info_headers, env) ((msg_info_headers)->ops->get_to(msg_info_headers, env)) 
-#define AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, to) ((msg_info_headers)->ops->set_to(msg_info_headers, env, to))
-#define AXIS2_MSG_INFO_HEADERS_GET_FROM(msg_info_headers, env) ((msg_info_headers)->ops->get_from(msg_info_headers, env))
-#define AXIS2_MSG_INFO_HEADERS_SET_FROM(msg_info_headers, env, from) ((msg_info_headers)->ops->set_from(msg_info_headers, env, from))
-#define AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(msg_info_headers, env) ((msg_info_headers)->ops->get_reply_to(msg_info_headers, env))
-#define AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(msg_info_headers, env, reply_to) ((msg_info_headers)->ops->set_reply_to(msg_info_headers, env, reply_to))
-#define AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(msg_info_headers, env) ((msg_info_headers)->ops->get_fault_to(msg_info_headers, env))
-#define AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(msg_info_headers, env, fault_to) ((msg_info_headers)->ops->set_fault_to(msg_info_headers, env, fault_to))
-#define AXIS2_MSG_INFO_HEADERS_GET_ACTION(msg_info_headers, env) ((msg_info_headers)->ops->get_action(msg_info_headers, env))
-#define AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, env, action) ((msg_info_headers)->ops->set_action(msg_info_headers, env, action))
-#define AXIS2_MSG_INFO_HEADERS_GET_MESSAGE_ID(msg_info_headers, env) ((msg_info_headers)->ops->get_message_id(msg_info_headers, env))
-#define AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, message_id) ((msg_info_headers)->ops->set_message_id(msg_info_headers, env, message_id))
-#define AXIS2_MSG_INFO_HEADERS_GET_RELATES_TO(msg_info_headers, env) ((msg_info_headers)->ops->get_relates_to(msg_info_headers, env))
-#define AXIS2_MSG_INFO_HEADERS_SET_RELATES_TO(msg_info_headers, env, relates_to) ((msg_info_headers)->ops->set_relates_to(msg_info_headers, env, relates_to))
-#define AXIS2_MSG_INFO_HEADERS_GET_REF_PARAMS(msg_info_headers, env) ((msg_info_headers)->ops->get_ref_params(msg_info_headers, env))
-#define AXIS2_MSG_INFO_HEADERS_ADD_REF_PARAM(msg_info_headers, env, ref_param) ((msg_info_headers)->ops->add_ref_param(msg_info_headers, env, ref_param))
-#define AXIS2_MSG_INFO_HEADERS_FREE(msg_info_headers, env) ((msg_info_headers)->ops->free(msg_info_headers, env))
+#define AXIS2_MSG_INFO_HEADERS_GET_TO(msg_info_headers, env) \
+        ((msg_info_headers)->ops->get_to(msg_info_headers, env)) 
+        
+#define AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, to) \
+        ((msg_info_headers)->ops->set_to(msg_info_headers, env, to))
+        
+#define AXIS2_MSG_INFO_HEADERS_GET_FROM(msg_info_headers, env) \
+        ((msg_info_headers)->ops->get_from(msg_info_headers, env))
+        
+#define AXIS2_MSG_INFO_HEADERS_SET_FROM(msg_info_headers, env, from) \
+        ((msg_info_headers)->ops->set_from(msg_info_headers, env, from))
+        
+#define AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(msg_info_headers, env) \
+        ((msg_info_headers)->ops->get_reply_to(msg_info_headers, env))
+        
+#define AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(msg_info_headers, env, reply_to) \
+        ((msg_info_headers)->ops->set_reply_to(msg_info_headers, env, reply_to))
+        
+#define AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(msg_info_headers, env) \
+        ((msg_info_headers)->ops->get_fault_to(msg_info_headers, env))
+        
+#define AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(msg_info_headers, env, fault_to) \
+        ((msg_info_headers)->ops->set_fault_to(msg_info_headers, env, fault_to))
+        
+#define AXIS2_MSG_INFO_HEADERS_GET_ACTION(msg_info_headers, env) \
+        ((msg_info_headers)->ops->get_action(msg_info_headers, env))
+        
+#define AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, env, action) \
+        ((msg_info_headers)->ops->set_action(msg_info_headers, env, action))
+        
+#define AXIS2_MSG_INFO_HEADERS_GET_MESSAGE_ID(msg_info_headers, env) \
+        ((msg_info_headers)->ops->get_message_id(msg_info_headers, env))
+        
+#define AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, message_id) \
+        ((msg_info_headers)->ops->set_message_id(msg_info_headers, env, message_id))
+        
+#define AXIS2_MSG_INFO_HEADERS_GET_RELATES_TO(msg_info_headers, env) \
+        ((msg_info_headers)->ops->get_relates_to(msg_info_headers, env))
+        
+#define AXIS2_MSG_INFO_HEADERS_SET_RELATES_TO(msg_info_headers, env, relates_to) \
+        ((msg_info_headers)->ops->set_relates_to(msg_info_headers, env, relates_to))
+        
+#define AXIS2_MSG_INFO_HEADERS_GET_REF_PARAMS(msg_info_headers, env) \
+        ((msg_info_headers)->ops->get_ref_params(msg_info_headers, env))
+        
+#define AXIS2_MSG_INFO_HEADERS_ADD_REF_PARAM(msg_info_headers, env, ref_param) \
+        ((msg_info_headers)->ops->add_ref_param(msg_info_headers, env, ref_param))
+        
+#define AXIS2_MSG_INFO_HEADERS_FREE(msg_info_headers, env) \
+        ((msg_info_headers)->ops->free(msg_info_headers, env))
 
 /** @} */
     

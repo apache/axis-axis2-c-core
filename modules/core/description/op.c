@@ -334,10 +334,11 @@ axis2_op_create (axis2_env_t **env)
 {
     struct axis2_param_container *param_container_l = NULL;
     axis2_array_list_t *array_list_l = NULL;
+    axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-	axis2_op_impl_t *op_impl = 
-		(axis2_op_impl_t *) AXIS2_MALLOC ((*env)->allocator,
+	
+	op_impl =  (axis2_op_impl_t *) AXIS2_MALLOC ((*env)->allocator,
 		sizeof (axis2_op_impl_t));
      
 	if(NULL == op_impl)

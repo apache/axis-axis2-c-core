@@ -101,7 +101,7 @@ struct axis2_msg_ctx_impl
     /** qname of transport in */
     axis2_qname_t *transport_in_desc_qname;
     /** qname of transport out */
-    axis2_qname_t *transport_out_desc_qname;;
+    axis2_qname_t *transport_out_desc_qname;
     /** service group id */
     axis2_char_t *svc_grp_id;
     /** service description qname */

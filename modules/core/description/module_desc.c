@@ -239,11 +239,11 @@ axis2_module_desc_create (axis2_env_t **env)
 axis2_module_desc_t * AXIS2_CALL 
 axis2_module_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qname)
 {
+	axis2_module_desc_impl_t *module_desc_impl = NULL;
 	AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
 	
-	axis2_module_desc_impl_t *module_desc_impl = 
-        AXIS2_INTF_TO_IMPL(axis2_module_desc_create(env));
+	 module_desc_impl = AXIS2_INTF_TO_IMPL(axis2_module_desc_create(env));
     if(NULL == module_desc_impl)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

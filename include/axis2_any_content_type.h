@@ -54,7 +54,11 @@ extern "C"
          * @param value value to be added.
          * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *add_value)(struct axis2_any_content_type *any_content_type, axis2_env_t **env, axis2_qname_t *qname, axis2_char_t *value); 
+        axis2_status_t (AXIS2_CALL *
+        add_value)(struct axis2_any_content_type *any_content_type,
+                   axis2_env_t **env, 
+                   axis2_qname_t *qname, 
+                   axis2_char_t *value); 
        
         /**
          * Gets the value from the content value map.
@@ -98,7 +102,8 @@ extern "C"
  * @param env Environment. MUST NOT be NULL.
  * @return Pointer to the newly created any_content_type instance. Returns NULL on error.
  */
-AXIS2_DECLARE(axis2_any_content_type_t*) axis2_any_content_type_create(axis2_env_t **env);
+AXIS2_DECLARE(axis2_any_content_type_t*) 
+axis2_any_content_type_create(axis2_env_t **env);
     
     
 /**************************** Start of function macros ************************/    

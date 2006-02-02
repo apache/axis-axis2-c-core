@@ -146,7 +146,8 @@ AXIS2_DECLARE_DATA struct axis2_transport_in_desc
  * @return pointer to newly created phase holder
  */
 AXIS2_DECLARE(axis2_transport_in_desc_t *) 
-axis2_transport_in_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qname);
+axis2_transport_in_desc_create_with_qname (axis2_env_t **env, 
+                                           axis2_qname_t *qname);
 
 /*************************** Function macros **********************************/
 
