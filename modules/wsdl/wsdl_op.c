@@ -287,10 +287,10 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
         int i = 0;
         for (i = 0; i < AXIS2_LINKED_LIST_SIZE(wsdl_op_impl->in_faults, env); i++)
         {
-            struct axis2_wsdl_fault_ref *fault = NULL;
+            axis2_wsdl_fault_ref_t *fault = NULL;
             fault = AXIS2_LINKED_LIST_GET(wsdl_op_impl->in_faults, env, i);
             
-            fault = (struct axis2_wsdl_fault_ref *) val;
+            fault = (axis2_wsdl_fault_ref_t *) val;
             if (fault)
                AXIS2_PHASE_FREE (fault, env);
             
@@ -311,10 +311,10 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
         
         for (i = 0; i < size; i++)
         {
-            struct axis2_wsdl_fault_ref *fault = NULL;
+            axis2_wsdl_fault_ref_t *fault = NULL;
             fault = AXIS2_LINKED_LIST_GET(wsdl_op_impl->out_faults, env, i);
             
-            fault = (struct axis2_wsdl_fault_ref *) val;
+            fault = (axis2_wsdl_fault_ref_t *) val;
             if (fault)
                AXIS2_PHASE_FREE (fault, env);
             
@@ -481,10 +481,10 @@ axis2_wsdl_op_set_in_faults(axis2_wsdl_op_t *wsdl_op,
         int i = 0;
         for (i = 0; i < AXIS2_LINKED_LIST_SIZE(wsdl_op_impl->in_faults, env); i++)
         {
-            struct axis2_wsdl_fault_ref *fault = NULL;
+            axis2_wsdl_fault_ref_t *fault = NULL;
             fault = AXIS2_LINKED_LIST_GET(wsdl_op_impl->in_faults, env, i);
             
-            fault = (struct axis2_wsdl_fault_ref *) val;
+            fault = (axis2_wsdl_fault_ref_t *) val;
             if (fault)
                AXIS2_PHASE_FREE (fault, env);
             
@@ -553,10 +553,10 @@ axis2_wsdl_op_set_out_faults(axis2_wsdl_op_t *wsdl_op,
         int i = 0;
         for (i = 0; i < AXIS2_LINKED_LIST_SIZE(wsdl_op_impl->out_faults, env); i++)
         {
-            struct axis2_wsdl_fault_ref *fault = NULL;
+            axis2_wsdl_fault_ref_t *fault = NULL;
             fault = AXIS2_LINKED_LIST_GET(wsdl_op_impl->out_faults, env, i);
             
-            fault = (struct axis2_wsdl_fault_ref *) val;
+            fault = (axis2_wsdl_fault_ref_t *) val;
             if (fault)
                AXIS2_PHASE_FREE (fault, env);
             

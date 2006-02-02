@@ -34,7 +34,7 @@ struct axis2_wsdl_svc_impl
 	/**
      * The Interface that this Service is an instance of.
      */
-    struct axis2_wsdl_interface *svc_interface;
+    axis2_wsdl_interface_t *svc_interface;
     /**
      *
      */
@@ -70,7 +70,7 @@ axis2_wsdl_svc_set_endpoints(axis2_wsdl_svc_t *wsdl_svc,
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_svc_set_endpoint(axis2_wsdl_svc_t *wsdl_svc,
                                 axis2_env_t **env,
-                                struct axis2_wsdl_endpoint *endpoint);
+                                axis2_wsdl_endpoint_t *endpoint);
 
 axis2_wsdl_endpoint_t * AXIS2_CALL
 axis2_wsdl_svc_get_endpoint(axis2_wsdl_svc_t *wsdl_svc,
@@ -81,14 +81,14 @@ axis2_char_t *AXIS2_CALL
 axis2_wsdl_svc_get_namespace(axis2_wsdl_svc_t *wsdl_svc,
                                 axis2_env_t **env);
 
-struct axis2_wsdl_interface * AXIS2_CALL
+axis2_wsdl_interface_t * AXIS2_CALL
 axis2_wsdl_svc_get_svc_interface(axis2_wsdl_svc_t *wsdl_svc,
                                     axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_svc_set_svc_interface(axis2_wsdl_svc_t *wsdl_svc,
                                     axis2_env_t **env,
-                                    struct axis2_wsdl_interface *svc_interface);
+                                    axis2_wsdl_interface_t *svc_interface);
 
 /***************************** End of function headers ************************/
 
@@ -177,9 +177,9 @@ axis2_wsdl_svc_free (axis2_wsdl_svc_t *wsdl_svc,
         for (hi = axis2_hash_first (wsdl_svc_impl->endpoints, env); hi;
                  hi = axis2_hash_next ( env, hi))
         {
-            struct axis2_wsdl_endpoint *endpoint = NULL;
+            axis2_wsdl_endpoint_t *endpoint = NULL;
             axis2_hash_this (hi, NULL, NULL, &val);
-            endpoint = (struct axis2_wsdl_endpoint *) val;
+            endpoint = (axis2_wsdl_endpoint_t *) val;
             if (endpoint)
                 AXIS2_TRANSPORT_IN_DESC_FREE (endpoint, env);
             
@@ -261,7 +261,7 @@ axis2_wsdl_svc_set_endpoints(axis2_wsdl_svc_t *wsdl_svc,
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_svc_set_endpoint(axis2_wsdl_svc_t *wsdl_svc,
                                 axis2_env_t **env,
-                                struct axis2_wsdl_endpoint *endpoint) 
+                                axis2_wsdl_endpoint_t *endpoint) 
 {
     AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, endpoint, AXIS2_FAILURE);
@@ -299,7 +299,7 @@ axis2_wsdl_svc_get_namespace(axis2_wsdl_svc_t *wsdl_svc,
     return AXIS2_QNAME_GET_URI(AXIS2_INTF_TO_IMPL(wsdl_svc)->qname, env);
 }
 
-struct axis2_wsdl_interface * AXIS2_CALL
+axis2_wsdl_interface_t * AXIS2_CALL
 axis2_wsdl_svc_get_svc_interface(axis2_wsdl_svc_t *wsdl_svc,
                                     axis2_env_t **env) 
 {
@@ -310,7 +310,7 @@ axis2_wsdl_svc_get_svc_interface(axis2_wsdl_svc_t *wsdl_svc,
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_svc_set_svc_interface(axis2_wsdl_svc_t *wsdl_svc,
                                     axis2_env_t **env,
-                                    struct axis2_wsdl_interface *svc_interface) 
+                                    axis2_wsdl_interface_t *svc_interface) 
 {
     AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_interface, AXIS2_FAILURE);

@@ -287,17 +287,17 @@ axis2_wsdl_interface_free (
         for (hi = axis2_hash_first (wsdl_interface_impl->ops, env); hi;
                  hi = axis2_hash_next ( env, hi))
         {
-            struct axis2_wsdl_op *wsdl_optr = NULL;
-            struct axis2_op *optr = NULL;
+            axis2_wsdl_op_t *wsdl_optr = NULL;
+            axis2_op_t *optr = NULL;
             axis2_hash_this (hi, NULL, NULL, &val);
             if(AXIS2_OP == wsdl_interface->op_type)
             {
-                optr = (struct axis2_op *) val;
+                optr = (axis2_op_t *) val;
                 AXIS2_OP_FREE (optr, env);
             }
             if(AXIS2_WSDL_OP == wsdl_interface->op_type)
             {
-                wsdl_optr = (struct axis2_wsdl_op *) val;
+                wsdl_optr = (axis2_wsdl_op_t *) val;
                 AXIS2_WSDL_OP_FREE(wsdl_optr, env);
             }
             
@@ -368,7 +368,7 @@ axis2_wsdl_interface_get_op(axis2_wsdl_interface_t *wsdl_interface,
                                 axis2_env_t **env,
                                 axis2_char_t *nc_name) 
 {
-    return (struct axis2_op *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
+    return (axis2_op_t *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
         wsdl_interface)->ops, nc_name, AXIS2_HASH_KEY_STRING);
 }
 

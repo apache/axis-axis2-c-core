@@ -29,13 +29,13 @@ typedef struct axis2_transport_out_desc_impl
      * Field flowInclude 
      * This will have a shallow copy and will not be freed by the descructor
      */
-    struct axis2_flow *outflow;
+    axis2_flow_t *outflow;
     
     /** 
      * Field flowInclude 
      * This will have a shallow copy and will not be freed by the descructor
      */
-    struct axis2_flow *faultflow;
+    axis2_flow_t *faultflow;
         
     /** 
      * Field name
@@ -46,13 +46,13 @@ typedef struct axis2_transport_out_desc_impl
     /**
      * This will have a shallow copy and will not be freed by the descructor
      */
-    struct axis2_transport_sender *sender;
+    axis2_transport_sender_t *sender;
     
     /** to store handler in inFlow */
-    struct axis2_phase *out_phase;
+    axis2_phase_t *out_phase;
         
     /** to store handler Fault in inFlow */
-    struct axis2_phase *faultphase;
+    axis2_phase_t *faultphase;
     
     
 } axis2_transport_out_desc_impl_t;
@@ -67,58 +67,58 @@ axis2_transport_out_desc_free (
 				axis2_env_t **env);
 
 axis2_qname_t *AXIS2_CALL
-axis2_transport_out_desc_get_qname(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_get_qname(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_transport_out_desc_set_qname(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_set_qname(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname);
 
-struct axis2_flow *AXIS2_CALL
-axis2_transport_out_desc_get_outflow(struct axis2_transport_out_desc *transport_out,
+axis2_flow_t *AXIS2_CALL
+axis2_transport_out_desc_get_outflow(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_transport_out_desc_set_outflow(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_set_outflow(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env,
-                                        struct axis2_flow *outflow);
+                                        axis2_flow_t *outflow);
 
-struct axis2_flow *AXIS2_CALL
-axis2_transport_out_desc_get_faultflow(struct axis2_transport_out_desc *transport_out,
+axis2_flow_t *AXIS2_CALL
+axis2_transport_out_desc_get_faultflow(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_transport_out_desc_set_faultflow(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_set_faultflow(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env,
-                                        struct axis2_flow *faultflow);
+                                        axis2_flow_t *faultflow);
 
-struct axis2_transport_sender * AXIS2_CALL
-axis2_transport_out_desc_get_sender(struct axis2_transport_out_desc *transport_out,
+axis2_transport_sender_t * AXIS2_CALL
+axis2_transport_out_desc_get_sender(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_transport_out_desc_set_sender(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_set_sender(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env,
-                                        struct axis2_transport_sender *sender);
+                                        axis2_transport_sender_t *sender);
 
-struct axis2_phase * AXIS2_CALL
-axis2_transport_out_desc_get_out_phase(struct axis2_transport_out_desc *transport_out,
+axis2_phase_t * AXIS2_CALL
+axis2_transport_out_desc_get_out_phase(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_transport_out_desc_set_out_phase(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_set_out_phase(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env,
-                                        struct axis2_phase *out_phase);
+                                        axis2_phase_t *out_phase);
                                             
-struct axis2_phase *AXIS2_CALL
-axis2_transport_out_desc_get_faultphase(struct axis2_transport_out_desc *transport_out,
+axis2_phase_t *AXIS2_CALL
+axis2_transport_out_desc_get_faultphase(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_transport_out_desc_set_faultphase(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_set_faultphase(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env,
-                                        struct axis2_phase *faultphase);
+                                        axis2_phase_t *faultphase);
 
 
 /************************** End of function prototypes ************************/
@@ -260,7 +260,7 @@ axis2_transport_out_desc_free (axis2_transport_out_desc_t *transport_out,
 }
 
 axis2_qname_t *AXIS2_CALL
-axis2_transport_out_desc_get_qname(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_get_qname(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(transport_out, env, NULL);
@@ -268,7 +268,7 @@ axis2_transport_out_desc_get_qname(struct axis2_transport_out_desc *transport_ou
 }
 
 axis2_status_t AXIS2_CALL
-axis2_transport_out_desc_set_qname(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_set_qname(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname) 
 {
@@ -285,8 +285,8 @@ axis2_transport_out_desc_set_qname(struct axis2_transport_out_desc *transport_ou
     return AXIS2_SUCCESS;
 }
 
-struct axis2_flow *AXIS2_CALL
-axis2_transport_out_desc_get_outflow(struct axis2_transport_out_desc *transport_out,
+axis2_flow_t *AXIS2_CALL
+axis2_transport_out_desc_get_outflow(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(transport_out, env, NULL);
@@ -294,9 +294,9 @@ axis2_transport_out_desc_get_outflow(struct axis2_transport_out_desc *transport_
 }
 
 axis2_status_t AXIS2_CALL
-axis2_transport_out_desc_set_outflow(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_set_outflow(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env,
-                                        struct axis2_flow *outflow) 
+                                        axis2_flow_t *outflow) 
 {
     axis2_transport_out_desc_impl_t *transport_out_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(transport_out, env, AXIS2_FAILURE);
@@ -312,17 +312,17 @@ axis2_transport_out_desc_set_outflow(struct axis2_transport_out_desc *transport_
     return AXIS2_SUCCESS;
 }
 
-struct axis2_flow *AXIS2_CALL
-axis2_transport_out_desc_get_faultflow(struct axis2_transport_out_desc *transport_out,
+axis2_flow_t *AXIS2_CALL
+axis2_transport_out_desc_get_faultflow(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env) 
 {
     return AXIS2_INTF_TO_IMPL(transport_out)->faultflow;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_transport_out_desc_set_faultflow(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_set_faultflow(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env,
-                                        struct axis2_flow *faultflow) 
+                                        axis2_flow_t *faultflow) 
 {
     axis2_transport_out_desc_impl_t *transport_out_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(transport_out, env, AXIS2_FAILURE);
@@ -338,8 +338,8 @@ axis2_transport_out_desc_set_faultflow(struct axis2_transport_out_desc *transpor
     return AXIS2_SUCCESS;
 }
 
-struct axis2_transport_sender * AXIS2_CALL
-axis2_transport_out_desc_get_sender(struct axis2_transport_out_desc *transport_out,
+axis2_transport_sender_t * AXIS2_CALL
+axis2_transport_out_desc_get_sender(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(transport_out, env, NULL);
@@ -347,9 +347,9 @@ axis2_transport_out_desc_get_sender(struct axis2_transport_out_desc *transport_o
 }
 
 axis2_status_t AXIS2_CALL
-axis2_transport_out_desc_set_sender(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_set_sender(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env,
-                                        struct axis2_transport_sender *sender) 
+                                        axis2_transport_sender_t *sender) 
 {
     axis2_transport_out_desc_impl_t *transport_out_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(transport_out, env, AXIS2_FAILURE);
@@ -361,8 +361,8 @@ axis2_transport_out_desc_set_sender(struct axis2_transport_out_desc *transport_o
     return AXIS2_SUCCESS;
 }
 
-struct axis2_phase * AXIS2_CALL
-axis2_transport_out_desc_get_out_phase(struct axis2_transport_out_desc *transport_out,
+axis2_phase_t * AXIS2_CALL
+axis2_transport_out_desc_get_out_phase(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(transport_out, env, NULL);
@@ -371,9 +371,9 @@ axis2_transport_out_desc_get_out_phase(struct axis2_transport_out_desc *transpor
 }
 
 axis2_status_t AXIS2_CALL
-axis2_transport_out_desc_set_out_phase(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_set_out_phase(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env,
-                                        struct axis2_phase *out_phase) 
+                                        axis2_phase_t *out_phase) 
 {
     axis2_transport_out_desc_impl_t *transport_out_impl = NULL;
     
@@ -390,8 +390,8 @@ axis2_transport_out_desc_set_out_phase(struct axis2_transport_out_desc *transpor
     return AXIS2_SUCCESS;
 }
 
-struct axis2_phase *AXIS2_CALL
-axis2_transport_out_desc_get_faultphase(struct axis2_transport_out_desc *transport_out,
+axis2_phase_t *AXIS2_CALL
+axis2_transport_out_desc_get_faultphase(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env) 
 {
     AXIS2_FUNC_PARAM_CHECK(transport_out, env, NULL);
@@ -400,9 +400,9 @@ axis2_transport_out_desc_get_faultphase(struct axis2_transport_out_desc *transpo
 }
 
 axis2_status_t AXIS2_CALL
-axis2_transport_out_desc_set_faultphase(struct axis2_transport_out_desc *transport_out,
+axis2_transport_out_desc_set_faultphase(axis2_transport_out_desc_t *transport_out,
                                         axis2_env_t **env,
-                                        struct axis2_phase *faultphase) 
+                                        axis2_phase_t *faultphase) 
 {
     axis2_transport_out_desc_impl_t *transport_out_impl = NULL;
     

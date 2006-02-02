@@ -86,12 +86,12 @@ axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
                                 axis2_qname_t *module_qname);
     
-struct axis2_module_desc *AXIS2_CALL
+axis2_module_desc_t *AXIS2_CALL
 axis2_dep_engine_get_module(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
                                 axis2_qname_t *module_name);
 
-struct axis2_arch_file_data *AXIS2_CALL
+axis2_arch_file_data_t *AXIS2_CALL
 axis2_dep_engine_get_current_file_item(axis2_dep_engine_t *dep_engine,
                                         axis2_env_t **env);
 
@@ -127,7 +127,7 @@ axis2_dep_engine_get_axis_conf(axis2_dep_engine_t *dep_engine,
 /**
  * To set hotDeployment and hot update
  */
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env);
 
@@ -140,7 +140,7 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
                                 axis2_char_t *client_home);
 
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_char_t *client_home);
@@ -149,24 +149,24 @@ axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
  * This methode used to check the modules referd by server.xml
  * are exist , or they have deployed
  */
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env);
 
 /**
  * This method is to check wether some one has change the system pre defined phases for all the
- * flows if some one has done so will throw a DeploymentException
+ * flows if some one has done so will set an error code
  *
  */
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engine,
                                                     axis2_env_t **env);
 
-axis2_conf_t *
+static axis2_conf_t *
 axis2_dep_engine_create_conf(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env);
 
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
                                 axis2_svc_grp_t *svc_metadata);
@@ -176,19 +176,18 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
  * and it will also load the service handlers
  *
  * @param axisService
- * @throws org.apache.axis2.AxisFault
  */
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_load_svc_props(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
                                 axis2_svc_t *svc);
 
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_module_desc_t *module_desc);
 
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_add_flow_handlers(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_flow_t *flow);
@@ -200,7 +199,7 @@ axis2_dep_engine_get_handler_dll(axis2_dep_engine_t *dep_engine,
                                 axis2_char_t *dll_name);
 
 
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_add_new_module(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_module_desc_t *module_metadata);
@@ -224,7 +223,7 @@ axis2_dep_engine_is_hot_update(axis2_dep_engine_t *dep_engine,
  * @param fileName
  * @return String
  */
-axis2_char_t *
+static axis2_char_t *
 axis2_dep_engine_get_axis_svc_name(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_char_t *file_name);
@@ -244,7 +243,6 @@ axis2_dep_engine_set_phases_info(axis2_dep_engine_t *dep_engine,
  * @param serviceInputStream
  * @param classLoader
  * @return
- * @throws DeploymentException
  */
 axis2_svc_t *AXIS2_CALL
 axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
@@ -257,7 +255,6 @@ axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
  *
  * @param modulearchive
  * @return
- * @throws DeploymentException
  */
 
 axis2_module_desc_t *AXIS2_CALL
@@ -622,7 +619,7 @@ axis2_dep_engine_get_axis_conf(axis2_dep_engine_t *dep_engine,
 /**
  * To set hotDeployment and hot update
  */
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env) 
 {
@@ -830,7 +827,7 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
 }
 
 
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_char_t *client_home)
@@ -871,11 +868,7 @@ axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
     return AXIS2_SUCCESS;
 }
 
-/**
- * This methode used to check the modules referd by server.xml
- * are exist , or they have deployed
- */
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env)
 {
@@ -908,12 +901,7 @@ axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
     return AXIS2_SUCCESS;
 }
 
-/**
- * This method is to check wether some one has change the system pre defined phases for all the
- * flows if some one has done so will throw a DeploymentException
- *
- */
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engine,
                                                     axis2_env_t **env) 
 {
@@ -953,7 +941,7 @@ axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engin
     return AXIS2_SUCCESS;
 }
 
-axis2_conf_t *
+static axis2_conf_t *
 axis2_dep_engine_create_conf(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env) 
 {
@@ -962,7 +950,7 @@ axis2_dep_engine_create_conf(axis2_dep_engine_t *dep_engine,
 }
 
 
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
                                 axis2_svc_grp_t *svc_metadata)
@@ -1096,14 +1084,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
     return AXIS2_CONF_ADD_SVC_GRP(engine_impl->conf, env, svc_metadata);
 }
 
-/**
- * This method is used to fill the axis service , it dose loading service class and also the provider class
- * and it will also load the service handlers
- *
- * @param axisService
- * @throws org.apache.axis2.AxisFault
- */
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_load_svc_props(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
                                 axis2_svc_t *svc)
@@ -1146,7 +1127,7 @@ axis2_dep_engine_load_svc_props(axis2_dep_engine_t *dep_engine,
 }
 
 
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_module_desc_t *module_desc)
@@ -1176,7 +1157,7 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
 }
 
 
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_add_flow_handlers(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_flow_t *flow)
@@ -1239,7 +1220,7 @@ axis2_dep_engine_get_handler_dll(axis2_dep_engine_t *dep_engine,
 }
 
 
-axis2_status_t
+static axis2_status_t
 axis2_dep_engine_add_new_module(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_module_desc_t *module_metadata)
@@ -1429,14 +1410,7 @@ axis2_dep_engine_is_hot_update(axis2_dep_engine_t *dep_engine,
     return AXIS2_INTF_TO_IMPL(dep_engine)->hot_update;
 }
 
-/**
- * This method is used to retrive service name form the arechive file name
- * if the archive file name is service1.aar , then axis service name would be service1
- *
- * @param fileName
- * @return String
- */
-axis2_char_t *
+static axis2_char_t *
 axis2_dep_engine_get_axis_svc_name(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_char_t *file_name) 
@@ -1481,7 +1455,6 @@ axis2_dep_engine_set_phases_info(axis2_dep_engine_t *dep_engine,
  * @param serviceInputStream
  * @param classLoader
  * @return
- * @throws DeploymentException
  */
 axis2_svc_t *AXIS2_CALL
 axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
@@ -1515,7 +1488,6 @@ axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
  *
  * @param modulearchive
  * @return
- * @throws DeploymentException
  */
 
 axis2_module_desc_t *AXIS2_CALL

@@ -78,7 +78,7 @@ axis2_repos_listener_start_listen(axis2_repos_listener_t *listener,
  * This method is to search a given folder  for jar files
  * and added them to a list wich is in the WSInfolist class
  */
-axis2_status_t
+static axis2_status_t
 axis2_repos_listener_search(axis2_repos_listener_t *listener,
                                 axis2_env_t **env,
                                 axis2_char_t *folder_name,
@@ -298,7 +298,7 @@ axis2_repos_listener_start_listen(axis2_repos_listener_t *listener,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t
+static axis2_status_t
 axis2_repos_listener_search(axis2_repos_listener_t *listener,
                                 axis2_env_t **env,
                                 axis2_char_t *folder_name,

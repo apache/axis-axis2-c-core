@@ -1,4 +1,5 @@
-lib_LTLIBRARIES = libecho.la
+prglibdir=$(prefix)/services/echo
+prglib_LTLIBRARIES = libecho.la
 noinst_HEADERS = echo.h
 SUBDIRS =
 libecho_la_SOURCES = echo.c echo_skeleton.c

@@ -32,7 +32,7 @@ typedef struct axis2_wsdl_endpoint_impl
     /**
      * Field binding
      */
-    struct axis2_wsdl_binding *wsdl_binding;	
+    axis2_wsdl_binding_t *wsdl_binding;	
     
 } axis2_wsdl_endpoint_impl_t;
 
@@ -54,14 +54,14 @@ axis2_wsdl_endpoint_set_name(axis2_wsdl_endpoint_t *wsdl_endpoint,
                                 axis2_env_t **env,
                                 axis2_qname_t *qname);
 
-struct axis2_wsdl_binding * AXIS2_CALL
+axis2_wsdl_binding_t * AXIS2_CALL
 axis2_wsdl_endpoint_get_binding(axis2_wsdl_endpoint_t *wsdl_endpoint,
                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_endpoint_set_binding(axis2_wsdl_endpoint_t *wsdl_endpoint,
                                 axis2_env_t **env,
-                                struct axis2_wsdl_binding *wsdl_binding);
+                                axis2_wsdl_binding_t *wsdl_binding);
                                 
 /************************** End of function prototypes ************************/
 
@@ -202,7 +202,7 @@ axis2_wsdl_endpoint_set_name(axis2_wsdl_endpoint_t *wsdl_endpoint,
  *
  * @return
  */
-struct axis2_wsdl_binding * AXIS2_CALL
+axis2_wsdl_binding_t * AXIS2_CALL
 axis2_wsdl_endpoint_get_binding(axis2_wsdl_endpoint_t *wsdl_endpoint,
                                 axis2_env_t **env) 
 {
@@ -218,7 +218,7 @@ axis2_wsdl_endpoint_get_binding(axis2_wsdl_endpoint_t *wsdl_endpoint,
 axis2_status_t AXIS2_CALL
 axis2_wsdl_endpoint_set_binding(axis2_wsdl_endpoint_t *wsdl_endpoint,
                                 axis2_env_t **env,
-                                struct axis2_wsdl_binding *wsdl_binding) 
+                                axis2_wsdl_binding_t *wsdl_binding) 
 {
     axis2_wsdl_endpoint_impl_t *wsdl_endpoint_impl = NULL;
     

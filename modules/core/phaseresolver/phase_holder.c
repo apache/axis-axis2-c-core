@@ -45,9 +45,9 @@ axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
 axis2_status_t AXIS2_CALL
 axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder, 
                                 axis2_env_t **env,
-                                struct axis2_handler_desc *handler);
+                                axis2_handler_desc_t *handler);
                                     
-struct axis2_phase * AXIS2_CALL
+axis2_phase_t * AXIS2_CALL
 axis2_phase_holder_get_phase(axis2_phase_holder_t *phase_holder, 
                                 axis2_env_t **env,
                                 axis2_char_t *phase_name);
@@ -55,7 +55,7 @@ axis2_phase_holder_get_phase(axis2_phase_holder_t *phase_holder,
 axis2_status_t AXIS2_CALL
 axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_holder, 
                                                     axis2_env_t **env,
-                                                    struct axis2_phase *phase,
+                                                    axis2_phase_t *phase,
                                                     axis2_array_list_t *handlers);
 
 /************************** End of function prototypes ************************/
@@ -228,7 +228,7 @@ axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
  * @param phaseName
  * @return
  */
-struct axis2_phase * AXIS2_CALL
+axis2_phase_t * AXIS2_CALL
 axis2_phase_holder_get_phase(axis2_phase_holder_t *phase_holder, 
                                 axis2_env_t **env,
                                 axis2_char_t *phase_name) 
@@ -236,7 +236,7 @@ axis2_phase_holder_get_phase(axis2_phase_holder_t *phase_holder,
     int size = 0;
     int i = 0;
     axis2_phase_holder_impl_t *phase_holder_impl = NULL;
-    struct axis2_phase *phase = NULL;
+    axis2_phase_t *phase = NULL;
         
     AXIS2_FUNC_PARAM_CHECK(phase_holder, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, phase_name, NULL);
@@ -270,14 +270,14 @@ axis2_phase_holder_get_phase(axis2_phase_holder_t *phase_holder,
 axis2_status_t AXIS2_CALL
 axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_holder, 
                                                     axis2_env_t **env,
-                                                    struct axis2_phase *phase,
+                                                    axis2_phase_t *phase,
                                                     axis2_array_list_t *handlers) 
 {
-    struct axis2_handler *handler = NULL;
+    axis2_handler_t *handler = NULL;
     int size = 0;
     int status = AXIS2_FAILURE;
     int i = 0;
-    struct axis2_handler_desc *handler_desc = NULL;
+    axis2_handler_desc_t *handler_desc = NULL;
         
     AXIS2_FUNC_PARAM_CHECK(phase_holder, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, phase, AXIS2_FAILURE);
@@ -287,7 +287,7 @@ axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_hol
        
     for (i = 0; i < size; i++) 
     {
-        handler_desc = (struct axis2_handler_desc *) AXIS2_ARRAY_LIST_GET(
+        handler_desc = (axis2_handler_desc_t *) AXIS2_ARRAY_LIST_GET(
             handlers, env, i);
         /* Write the handler loading logic here */
         /*handlerClass =

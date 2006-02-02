@@ -47,7 +47,7 @@ struct axis2_conf_impl
     axis2_array_list_t *out_faultphases;
 
     axis2_array_list_t *in_phases_upto_and_including_post_dispatch;
-    struct axis2_phases_info *phases_info;
+    axis2_phases_info_t *phases_info;
     axis2_hash_t *all_svcs;
     axis2_hash_t *msg_recvs;
     axis2_hash_t *faulty_svcs;
@@ -67,9 +67,9 @@ axis2_conf_free (axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL 
 axis2_conf_add_svc_grp (axis2_conf_t *conf, 
                                     axis2_env_t **env,
-    	                            struct axis2_svc_grp *svc_grp);
+    	                            axis2_svc_grp_t *svc_grp);
 
-struct axis2_svc_grp * AXIS2_CALL 
+axis2_svc_grp_t * AXIS2_CALL 
 axis2_conf_get_svc_grp (axis2_conf_t *conf, 
                                     axis2_env_t **env,
 		                            axis2_char_t *svc_grp_name);
@@ -81,9 +81,9 @@ axis2_conf_get_svc_grps(axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL 
 axis2_conf_add_svc (axis2_conf_t *conf, 
                                 axis2_env_t **env,
-		                        struct axis2_svc *svc);
+		                        axis2_svc_t *svc);
 
-struct axis2_svc * AXIS2_CALL 
+axis2_svc_t * AXIS2_CALL 
 axis2_conf_get_svc (axis2_conf_t *conf, 
                                 axis2_env_t **env,
                                 axis2_char_t* svc_name);
@@ -121,12 +121,12 @@ axis2_conf_is_param_locked (axis2_conf_t *conf,
  * @param svc_name
  * @return svc name and grp name 
  */
-axis2_status_t 
+static axis2_status_t 
 split_svc_name(axis2_env_t **env,
                 axis2_char_t *svc_name, 
                 axis2_char_t **svc_name_st);
 		
-struct axis2_transport_in_desc * AXIS2_CALL
+axis2_transport_in_desc_t * AXIS2_CALL
 axis2_conf_get_transport_in(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname);
@@ -134,9 +134,9 @@ axis2_conf_get_transport_in(axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL
 axis2_conf_add_transport_in(axis2_conf_t *conf,
                                         axis2_env_t **env,
-                                        struct axis2_transport_in_desc *transport);
+                                        axis2_transport_in_desc_t *transport);
 
-struct axis2_transport_out_desc * AXIS2_CALL
+axis2_transport_out_desc_t * AXIS2_CALL
 axis2_conf_get_transport_out(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname);
@@ -144,7 +144,7 @@ axis2_conf_get_transport_out(axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL
 axis2_conf_add_transport_out(axis2_conf_t *conf,
                                         axis2_env_t **env,
-                                        struct axis2_transport_out_desc *transport);
+                                        axis2_transport_out_desc_t *transport);
 
 axis2_hash_t * AXIS2_CALL
 axis2_conf_get_transports_in(axis2_conf_t *conf,
@@ -154,7 +154,7 @@ axis2_hash_t * AXIS2_CALL
 axis2_conf_get_transports_out(axis2_conf_t *conf,
                                         axis2_env_t **env);	
                                         
-struct axis2_module_desc *AXIS2_CALL
+axis2_module_desc_t *AXIS2_CALL
 axis2_conf_get_module(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname);
@@ -198,21 +198,21 @@ axis2_conf_is_engaged(axis2_conf_t *conf,
                                 axis2_env_t **env,
                                 axis2_qname_t *module_name);
 
-struct axis2_phases_info *AXIS2_CALL
+axis2_phases_info_t *AXIS2_CALL
 axis2_conf_get_phases_info(axis2_conf_t *conf,
                                     axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_conf_set_phases_info(axis2_conf_t *conf,
                                     axis2_env_t **env,
-                                    struct axis2_phases_info *phases_info);
+                                    axis2_phases_info_t *phases_info);
 axis2_status_t AXIS2_CALL
 axis2_conf_add_msg_recv(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     axis2_char_t *key,
-                                    struct axis2_msg_recv *msg_recv);
+                                    axis2_msg_recv_t *msg_recv);
 
-struct axis2_msg_recv *AXIS2_CALL
+axis2_msg_recv_t *AXIS2_CALL
 axis2_conf_get_msg_recv(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     axis2_char_t *key);
@@ -256,7 +256,7 @@ axis2_conf_get_modules(axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL
 axis2_conf_add_module(axis2_conf_t *conf,
                                 axis2_env_t **env,
-                                struct axis2_module_desc *module);
+                                axis2_module_desc_t *module);
 
 axis2_status_t AXIS2_CALL
 axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
@@ -299,7 +299,7 @@ axis2_conf_create (axis2_env_t **env)
     config_impl->modules = NULL;
     config_impl->engaged_modules = NULL;
     config_impl->in_phases_upto_and_including_post_dispatch = NULL;
-    struct axis2_phase *phase = NULL;
+    axis2_phase_t *phase = NULL;
     config_impl->out_phases = NULL;
     config_impl->in_faultphases = NULL;
     config_impl->out_faultphases = NULL;
@@ -605,9 +605,9 @@ axis2_conf_free (axis2_conf_t *conf,
         for (hi = axis2_hash_first (config_impl->svc_grps, env); hi;
                  hi = axis2_hash_next ( env, hi))
         {
-            struct axis2_svc_grp *svc_grp = NULL;
+            axis2_svc_grp_t *svc_grp = NULL;
             axis2_hash_this (hi, NULL, NULL, &val);
-            svc_grp = (struct axis2_svc_grp *) val;
+            svc_grp = (axis2_svc_grp_t *) val;
             if (svc_grp)
                AXIS2_SVC_GRP_FREE (svc_grp, env);
             
@@ -626,9 +626,9 @@ axis2_conf_free (axis2_conf_t *conf,
         for (hi = axis2_hash_first (config_impl->transports_in, env); hi;
                  hi = axis2_hash_next ( env, hi))
         {
-            struct axis2_transport_in_desc *transport_in = NULL;
+            axis2_transport_in_desc_t *transport_in = NULL;
             axis2_hash_this (hi, NULL, NULL, &val);
-            transport_in = (struct axis2_transport_in_desc *) val;
+            transport_in = (axis2_transport_in_desc_t *) val;
             if (transport_in)
                AXIS2_TRANSPORT_IN_DESC_FREE (transport_in, env);
             
@@ -647,9 +647,9 @@ axis2_conf_free (axis2_conf_t *conf,
         for (hi = axis2_hash_first (config_impl->transports_out, env); hi;
                  hi = axis2_hash_next ( env, hi))
         {
-            struct axis2_transport_out_desc *transport_out = NULL;
+            axis2_transport_out_desc_t *transport_out = NULL;
             axis2_hash_this (hi, NULL, NULL, &val);
-            transport_out = (struct axis2_transport_out_desc *) val;
+            transport_out = (axis2_transport_out_desc_t *) val;
             if (transport_out)
                 AXIS2_TRANSPORT_IN_DESC_FREE (transport_out, env);
             
@@ -679,10 +679,10 @@ axis2_conf_free (axis2_conf_t *conf,
         int i = 0;
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->out_phases, env); i++)
         {
-            struct axis2_phase *phase = NULL;
+            axis2_phase_t *phase = NULL;
             phase = AXIS2_ARRAY_LIST_GET(config_impl->out_phases, env, i);
             
-            phase = (struct axis2_phase *) val;
+            phase = (axis2_phase_t *) val;
             if (phase)
                AXIS2_PHASE_FREE (phase, env);
             
@@ -700,10 +700,10 @@ axis2_conf_free (axis2_conf_t *conf,
         int i = 0;
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->in_faultphases, env); i++)
         {
-            struct axis2_phase *phase = NULL;
+            axis2_phase_t *phase = NULL;
             phase = AXIS2_ARRAY_LIST_GET(config_impl->in_faultphases, env, i);
             
-            phase = (struct axis2_phase *) val;
+            phase = (axis2_phase_t *) val;
             if (phase)
                AXIS2_PHASE_FREE (phase, env);
             
@@ -721,10 +721,10 @@ axis2_conf_free (axis2_conf_t *conf,
         int i = 0;
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->out_faultphases, env); i++)
         {
-            struct axis2_phase *phase = NULL;
+            axis2_phase_t *phase = NULL;
             phase = AXIS2_ARRAY_LIST_GET(config_impl->out_faultphases, env, i);
             
-            phase = (struct axis2_phase *) val;
+            phase = (axis2_phase_t *) val;
             if (phase)
                AXIS2_PHASE_FREE (phase, env);
             
@@ -743,11 +743,11 @@ axis2_conf_free (axis2_conf_t *conf,
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->
                 in_phases_upto_and_including_post_dispatch, env); i++)
         {
-            struct axis2_phase *phase = NULL;
+            axis2_phase_t *phase = NULL;
             phase = AXIS2_ARRAY_LIST_GET(config_impl->
                 in_phases_upto_and_including_post_dispatch, env, i);
             
-            phase = (struct axis2_phase *) val;
+            phase = (axis2_phase_t *) val;
             if (phase)
                AXIS2_PHASE_FREE (phase, env);
             
@@ -849,7 +849,7 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
         axis2_svc_t *desc = NULL;
         
         axis2_hash_this (index_i, NULL, NULL, &value);
-        desc = (struct axis2_svc *) value;
+        desc = (axis2_svc_t *) value;
         svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(desc, env), env);
         axis2_hash_set(config_impl->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
             desc);
@@ -883,7 +883,7 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
 	return AXIS2_SUCCESS;
 }
 
-struct axis2_svc_grp * AXIS2_CALL 
+axis2_svc_grp_t * AXIS2_CALL 
 axis2_conf_get_svc_grp (axis2_conf_t *conf, 
                                     axis2_env_t **env,
 		                            axis2_char_t *svc_grp_name)
@@ -899,7 +899,7 @@ axis2_conf_get_svc_grp (axis2_conf_t *conf,
             AXIS2_FAILURE);
         return NULL;
     }
-	return (struct axis2_svc_grp *) (axis2_hash_get (config_impl->svc_grps, 
+	return (axis2_svc_grp_t *) (axis2_hash_get (config_impl->svc_grps, 
             svc_grp_name, AXIS2_HASH_KEY_STRING));
 }
 
@@ -916,7 +916,7 @@ axis2_conf_add_svc (axis2_conf_t *conf,
                                 axis2_env_t **env, 
                                 axis2_svc_t *svc)
 {
-    struct axis2_svc_grp *svc_grp = NULL;
+    axis2_svc_grp_t *svc_grp = NULL;
     axis2_qname_t *svc_grp_qname = NULL;
     axis2_char_t *svc_grp_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -965,7 +965,7 @@ axis2_conf_add_svc (axis2_conf_t *conf,
 	return status;
 }
 
-struct axis2_svc * AXIS2_CALL 
+axis2_svc_t * AXIS2_CALL 
 axis2_conf_get_svc (axis2_conf_t *conf, 
                                 axis2_env_t **env,
 		                        axis2_char_t* svc_name)
@@ -1051,7 +1051,7 @@ axis2_conf_is_param_locked (axis2_conf_t *conf,
                             axis2_env_t **env,
 		                    axis2_char_t *param_name)
 {
-    struct axis2_param *param = NULL;
+    axis2_param_t *param = NULL;
         
     AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, param_name, AXIS2_FALSE);
@@ -1060,7 +1060,7 @@ axis2_conf_is_param_locked (axis2_conf_t *conf,
     return (NULL != param  && AXIS2_PARAM_IS_LOCKED(param, env));
 }
 
-struct axis2_transport_in_desc * AXIS2_CALL
+axis2_transport_in_desc_t * AXIS2_CALL
 axis2_conf_get_transport_in(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname)
@@ -1071,7 +1071,7 @@ axis2_conf_get_transport_in(axis2_conf_t *conf,
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     
-    return (struct axis2_transport_in_desc *) axis2_hash_get(config_impl->
+    return (axis2_transport_in_desc_t *) axis2_hash_get(config_impl->
             transports_in, AXIS2_QNAME_TO_STRING(qname, env), AXIS2_HASH_KEY_STRING);
 }
 
@@ -1084,7 +1084,7 @@ axis2_conf_get_transport_in(axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL
 axis2_conf_add_transport_in(axis2_conf_t *conf,
                                         axis2_env_t **env,
-                                        struct axis2_transport_in_desc *transport)
+                                        axis2_transport_in_desc_t *transport)
 {
     axis2_conf_impl_t *config_impl = NULL;
     axis2_qname_t *qname = NULL;
@@ -1112,7 +1112,7 @@ axis2_conf_add_transport_in(axis2_conf_t *conf,
     
 }
 
-struct axis2_transport_out_desc * AXIS2_CALL
+axis2_transport_out_desc_t * AXIS2_CALL
 axis2_conf_get_transport_out(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname)
@@ -1123,7 +1123,7 @@ axis2_conf_get_transport_out(axis2_conf_t *conf,
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     
-    return (struct axis2_transport_out_desc *) axis2_hash_get(config_impl->
+    return (axis2_transport_out_desc_t *) axis2_hash_get(config_impl->
             transports_out, AXIS2_QNAME_TO_STRING(qname, env), AXIS2_HASH_KEY_STRING);
 }
 
@@ -1136,7 +1136,7 @@ axis2_conf_get_transport_out(axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL
 axis2_conf_add_transport_out(axis2_conf_t *conf,
                                         axis2_env_t **env,
-                                        struct axis2_transport_out_desc *transport)
+                                        axis2_transport_out_desc_t *transport)
 {
     axis2_conf_impl_t *config_impl = NULL;
     axis2_qname_t *qname = NULL;
@@ -1177,7 +1177,7 @@ axis2_conf_get_transports_in(axis2_conf_t *conf,
  * @param name
  * @return ModuleDescription
  */
-struct axis2_module_desc *AXIS2_CALL
+axis2_module_desc_t *AXIS2_CALL
 axis2_conf_get_module(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname) 
@@ -1185,7 +1185,7 @@ axis2_conf_get_module(axis2_conf_t *conf,
     AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
     
-    return (struct axis2_module_desc *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
+    return (axis2_module_desc_t *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
         conf)->modules, qname, sizeof(axis2_qname_t));
 }
 
@@ -1251,7 +1251,7 @@ axis2_conf_get_transports_out(axis2_conf_t *conf,
     return AXIS2_INTF_TO_IMPL(conf)->transports_out;
 }	
 
-/*axis2_status_t 
+/*static axis2_status_t 
 split_svc_name (axis2_env_t **env, 
                 axis2_char_t *svc_name, 
                 axis2_char_t **svc_name_st)
@@ -1305,9 +1305,9 @@ axis2_conf_get_svcs(axis2_conf_t *conf,
     axis2_hash_index_t *index_j = NULL;
     void *value = NULL;
     void *value2 = NULL;
-    struct axis2_svc_grp *axis_svc_grp = NULL;
+    axis2_svc_grp_t *axis_svc_grp = NULL;
     axis2_hash_t *svcs = NULL;
-    struct axis2_svc *svc =NULL;
+    axis2_svc_t *svc =NULL;
     axis2_char_t *svc_name = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
@@ -1318,13 +1318,13 @@ axis2_conf_get_svcs(axis2_conf_t *conf,
     while(NULL != index_i)
     {
         axis2_hash_this(index_i, NULL, NULL, &value);
-        axis_svc_grp = (struct axis2_svc_grp *) value;
+        axis_svc_grp = (axis2_svc_grp_t *) value;
         svcs = AXIS2_SVC_GRP_GET_SVCS(axis_svc_grp, env);
         index_j = axis2_hash_first(svcs, env);
         while(NULL != index_j)
         {
             axis2_hash_this(index_j, NULL, NULL, &value2);
-            svc = (struct axis2_svc *) value2;
+            svc = (axis2_svc_t *) value2;
             svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(svc, env), env);
             axis2_hash_set(config_impl->all_svcs, svc_name,
                 AXIS2_HASH_KEY_STRING, svc);    
@@ -1349,7 +1349,7 @@ axis2_conf_is_engaged(axis2_conf_t *conf,
         engaged_modules, env, module_name);
 }
 
-struct axis2_phases_info *AXIS2_CALL
+axis2_phases_info_t *AXIS2_CALL
 axis2_conf_get_phases_info(axis2_conf_t *conf,
                                     axis2_env_t **env) 
 {
@@ -1382,7 +1382,7 @@ axis2_status_t AXIS2_CALL
 axis2_conf_add_msg_recv(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     axis2_char_t *key,
-                                    struct axis2_msg_recv *msg_recv) 
+                                    axis2_msg_recv_t *msg_recv) 
 {
     axis2_conf_impl_t *config_impl = NULL;
     
@@ -1402,14 +1402,14 @@ axis2_conf_add_msg_recv(axis2_conf_t *conf,
     return AXIS2_SUCCESS;
 }
 
-struct axis2_msg_recv *AXIS2_CALL
+axis2_msg_recv_t *AXIS2_CALL
 axis2_conf_get_msg_recv(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     axis2_char_t *key) 
 {
     AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
     
-    return (struct axis2_msg_recv *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
+    return (axis2_msg_recv_t *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
         conf)->msg_recvs, key, AXIS2_HASH_KEY_STRING);
 }
 
@@ -1507,7 +1507,7 @@ axis2_conf_get_modules(axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL
 axis2_conf_add_module(axis2_conf_t *conf,
                                 axis2_env_t **env,
-                                struct axis2_module_desc *module) 
+                                axis2_module_desc_t *module) 
 {
     axis2_conf_impl_t *config_impl = NULL;
     axis2_qname_t *module_qname = NULL;
@@ -1705,7 +1705,7 @@ axis2_conf_engage_module(axis2_conf_t *conf,
     axis2_module_desc_t *module_desc = NULL;
     axis2_bool_t is_new_module = AXIS2_FAILURE;
     axis2_bool_t to_be_engaged = AXIS2_TRUE;
-    struct axis2_dep_engine *dep_engine = NULL;
+    axis2_dep_engine_t *dep_engine = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_ref, AXIS2_FAILURE);

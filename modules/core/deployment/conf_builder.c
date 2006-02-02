@@ -48,24 +48,24 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
                                 axis2_env_t **env,
                                 axis2_om_children_qname_iterator_t *module_refs);
 
-axis2_status_t
+static axis2_status_t
 axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
                                                 axis2_env_t **env,
                                                 axis2_om_node_t *disp_order);
 
-axis2_status_t
+static axis2_status_t
 axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
                             axis2_env_t **env,
                             axis2_om_children_qname_iterator_t *phase_orders);
-axis2_array_list_t *
+static axis2_array_list_t *
 axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
                                     axis2_env_t **env,
                                     axis2_om_node_t *phase_orders);
-axis2_status_t
+static axis2_status_t
 axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
                             axis2_env_t **env,
                             axis2_om_children_qname_iterator_t *trs_senders);
-axis2_status_t
+static axis2_status_t
 axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                                     axis2_env_t **env,
                                     axis2_om_children_qname_iterator_t *trs_recvs);
@@ -331,7 +331,7 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t
+static axis2_status_t
 axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
                                         axis2_env_t **env,
                                         axis2_om_node_t *disp_order_node)
@@ -412,7 +412,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
 }
 
 /*
-axis2_status_t
+static axis2_status_t
 axis2_conf_builder_process_axis_storage(OMElement storageElement) throws DeploymentException {
     AxisStorage axisStorage;
     if(storageElement !=null){
@@ -485,7 +485,7 @@ axis2_conf_builder_process_axis_storage(OMElement storageElement) throws Deploym
  * To process all the phase orders which are defined in axis2.xml
  * @param phase_orders
  */
-axis2_status_t
+static axis2_status_t
 axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
                             axis2_env_t **env,
                             axis2_om_children_qname_iterator_t *phase_orders)
@@ -545,7 +545,7 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
 }
 
 
-axis2_array_list_t *
+static axis2_array_list_t *
 axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
                                     axis2_env_t **env,
                                     axis2_om_node_t *phase_orders_node)
@@ -601,7 +601,7 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
     return phase_list;
 }
 
-axis2_status_t
+static axis2_status_t
 axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
                                 axis2_env_t **env,
                                 axis2_om_children_qname_iterator_t *trs_senders)
@@ -758,7 +758,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
 }
 
 
-axis2_status_t
+static axis2_status_t
 axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                                     axis2_env_t **env,
                                     axis2_om_children_qname_iterator_t *trs_recvs)
@@ -923,7 +923,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
  * @param oservers
  */
 /*
-axis2_status_t
+static axis2_status_t
 axis2_conf_builder_process_observers(Iterator oservers) throws DeploymentException {
     while (oservers.hasNext()) {
         OMElement observerelement = (OMElement) oservers.next();
