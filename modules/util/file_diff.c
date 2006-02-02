@@ -17,6 +17,7 @@
 #include <axis2_file_diff.h>
 #include <axis2_file_handler.h>
 #include <axis2_stream.h>
+#include <axis2_defines.h>
 
 void *expected_file, *actual_file; /* File pointers */
 axis2_stream_t *expected_file_stream, *actual_file_stream; /* Streams corresponding to above files*/
@@ -24,7 +25,7 @@ axis2_stream_t *output_stream;
 /* private function header */
 axis2_status_t axis2_file_diff_clean(axis2_env_t *env);
 
-axis2_status_t axis2_file_diff(axis2_env_t *env
+axis2_status_t AXIS2_CALL axis2_file_diff(axis2_env_t *env
 		, axis2_char_t* expected_file_name, axis2_char_t* actual_file_name)
 {
     int ch1, ch2;
