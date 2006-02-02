@@ -108,6 +108,20 @@ extern "C"
 #include <sys/types.h>
 #include "axis2_uuid_gen_unix.h" /* uuid_gen unix implementation */
 
+/* for file access handling */
+#include <unistd.h>
+
+/* network handling*/
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <sys/ioctl.h>
+#include <linux/if.h>
+
+/* dir handling */
+#include <dirent.h>
+
 #define AXIS2_STRRCHR(x, y) (strrchr(x, y))
 
 #define AXIS2_PLATFORM_SLEEP(x) sleep(0);
@@ -172,6 +186,7 @@ extern "C"
 /**
  * Platform specific file handling
  */
+#define AXIS2_ACCESS(zpath,imode) access(zpath,imode)
 #define AXIS2_R_OK R_OK /* test for read permission */
 #define AXIS2_W_OK W_OK /* test for write permission */
 #define AXIS2_X_OK X_OK /* test for execute or search permission */
@@ -182,6 +197,28 @@ extern "C"
  * Platform specific environment variable access method
  */
 #define AXIS2_GETENV(_env_var_name) getenv(_env_var_name)
+
+/**
+  * unix specific directory handling functions
+  */
+#define AXIS2_SCANDIR       scandir
+#define AXIS2_ALPHASORT     alphasort
+#define AXIS2_OPENDIR       opendir
+#define AXIS2_CLOSEDIR      closedir
+#define AXIS2_READDIR       readdir
+#define AXIS2_READDIR_R     readdir_r
+#define AXIS2_REWINDDIR     rewinddir
+
+/**
+  * network specific functions and defs
+  */
+#define axis2_socket_t                        int
+#define AXIS2_INVALID_SOCKET                -1
+#define AXIS2_INADDR_NONE                   (in_addr_t)-1
+#define axis2_unsigned_short_t                uint16_t
+#define AXIS2_CLOSE_SOCKET(sock)            close(sock)
+#define AXIS2_CLOSE_SOCKET_ON_EXIT(sock)    fcntl(sock,F_SETFD, FD_CLOEXEC);
+#define axis2_socket_len_t                  socklen_t
 
 /** @} */
 #ifdef __cplusplus
