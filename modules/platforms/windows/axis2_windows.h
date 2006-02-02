@@ -22,6 +22,7 @@
   * @file axis2_unix.h
   * @brief axis2 unix platform specific interface
   */
+#include <axis2_defines.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -33,8 +34,21 @@ extern "C"
  * @{
  */
 
+/*enum platform_error_codes
+{
+	PLATFORM_ERROR_UUID_NO_ADDRESS = 0,
+	PLATFORM_ERROR_OUT_OF_MEMORY = 1
+};*/
+
 #define _WINSOCKAPI_ /* Prevent inclusion of winsock.h in windows.h */
 #include <windows.h>
+/*for file access check*/
+#include <io.h>
+#include <sys/stat.h>
+
+/*for network handling*/
+#include <winsock2.h>
+
 
 /***************************************************************
  * Default paths to shared library/DLLs and files
@@ -61,11 +75,13 @@ extern "C"
 #define RTLD_LAZY 0    // not sure this is needed?
 
 #define AXIS2_PLATFORM_LOADLIBINIT()
-#define AXIS2_PLATFORM_LOADLIB(_lib)     callLoadLib(_lib)
+#define AXIS2_PLATFORM_LOADLIB(_lib)     LoadLibrary(_lib) /*callLoadLib(_lib)*/
 #define AXIS2_PLATFORM_UNLOADLIB         FreeLibrary
 #define AXIS2_PLATFORM_GETPROCADDR       GetProcAddress
 #define AXIS2_PLATFORM_LOADLIBEXIT()
 #define AXIS2_PLATFORM_LOADLIB_ERROR     ""
+
+#define AXIS2_DLHANDLER void*
 
 // =============================================================
 // National Language Support
@@ -108,12 +124,15 @@ extern "C"
 #define AXIS2_PRINTF_LONGLONG_FORMAT_SPECIFIER "%I64d"
 #define AXIS2_PRINTF_LONGLONG_FORMAT_SPECIFIER_CHARS "I64d"
 
-HMODULE callLoadLib(LPCTSTR lib);
+AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
 
 /**
  * Platform specific path separator char
  */
-#define AXIS2_PATH_SEP_CHAR "/"
+#define AXIS2_PATH_SEP_CHAR '/'
+#define AXIS2_PATH_SEP_STR "/"
+#define AXIS2_LIB_PREFIX ""
+#define AXIS2_LIB_SUFFIX ".dll"
 
 /**
  * Platform specific time
@@ -128,11 +147,33 @@ HMODULE callLoadLib(LPCTSTR lib);
 /**
  * Platform specific file handling
  */
-#define AXIS2_R_OK R_OK /* test for read permission */
-#define AXIS2_W_OK W_OK /* test for write permission */
-#define AXIS2_X_OK X_OK /* test for execute or search permission */
-#define AXIS2_F_OK F_OK /* test whether the directories leading to the file can be 
+#define AXIS2_ACCESS(zpath,imode) _access(zpath,imode)
+#define AXIS2_R_OK 04 /* test for read permission */
+#define AXIS2_W_OK 02 /* test for write permission */
+#define AXIS2_X_OK 00 /* test for execute or search permission */
+/*#define AXIS2_F_OK F_OK*/ /* test whether the directories leading to the file can be 
                       searched and the file exists */
+/**
+  * windows specific directory handling functions
+  */
+#define AXIS2_SCANDIR		scandir
+#define AXIS2_ALPHASORT		alphasort
+#define AXIS2_OPENDIR		opendir
+#define AXIS2_CLOSEDIR		closedir
+#define AXIS2_READDIR		readdir
+#define AXIS2_READDIR_R		readdir_r
+#define AXIS2_REWINDDIR		rewinddir
+
+/**
+  * network specific functions and defs
+  */
+#define axis2_socket_t						SOCKET
+#define AXIS2_INVALID_SOCKET				INVALID_SOCKET
+#define AXIS2_INADDR_NONE					INADDR_NONE
+#define axis2_unsigned_short_t				u_short
+#define AXIS2_CLOSE_SOCKET(sock)			closesocket(sock)
+#define AXIS2_CLOSE_SOCKET_ON_EXIT(sock)	
+#define axis2_socket_len_t					int
 
 /** @} */
 #ifdef __cplusplus
