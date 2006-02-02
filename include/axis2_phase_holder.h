@@ -80,7 +80,6 @@ AXIS2_DECLARE_DATA struct axis2_phase_holder_ops
      * Method addHandler
      *
      * @param handler
-     * @throws PhaseException
      */
     axis2_status_t (AXIS2_CALL *
     add_handler) (axis2_phase_holder_t *phase_holder, 
@@ -105,7 +104,6 @@ AXIS2_DECLARE_DATA struct axis2_phase_holder_ops
      *
      * @param phase
      * @param handlers
-     * @throws PhaseException
      */
     axis2_status_t (AXIS2_CALL *
     build_transport_handler_chain) (axis2_phase_holder_t *phase_holder, 

@@ -569,7 +569,6 @@ axis2_status_t AXIS2_CALL axis2_call_set_to(struct axis2_call *call,
  * @param sender_transport
  * @param listener_transport
  * @param use_separate_listener
- * @throws AxisFault
  */
 
 axis2_status_t AXIS2_CALL axis2_call_set_transport_info(struct axis2_call *call, 
@@ -665,7 +664,6 @@ axis2_status_t AXIS2_CALL axis2_call_set_transport_info(struct axis2_call *call,
  * Check has the transports are identified correctly
  *
  * @param msg_ctx
- * @throws AxisFault
  */
 axis2_status_t AXIS2_CALL axis2_call_check_transport(struct axis2_call *call, 
     axis2_env_t **env,
@@ -810,7 +808,6 @@ axis2_status_t AXIS2_CALL axis2_call_set_time(struct axis2_call *call,
  * @param op - this will be used to identify the operation in the client side, without dispatching
  * @param toSend - This should be OM Element (payload)
  * @return
- * @throws AxisFault
  */
 axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(struct axis2_call *call, 
     axis2_env_t **env,
@@ -883,7 +880,6 @@ axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(struct axis2_call
  * @param op_name - this will be used to identify the operation in the client side, without dispatching
  * @param envelope - This should be SOAPEnvelope
  * @return
- * @throws AxisFault
  */
 axis2_soap_envelope_t* AXIS2_CALL axis2_call_invoke_blocking_with_soap(struct axis2_call *call, 
     axis2_env_t **env,
@@ -949,7 +945,6 @@ axis2_soap_envelope_t* AXIS2_CALL axis2_call_invoke_blocking_with_soap(struct ax
  * @param om_node_to_send   -  This should be OM Element (payload)
  *                 invocation behaves accordingly
  * @param callback
- * @throws org.apache.axis2.AxisFault
  */
 
 axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking_with_om(struct axis2_call *call, 
@@ -1004,7 +999,6 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking_with_om(struct axis2_ca
  * @param envelope   -  This should be a SOAP Envelope
  *                 invocation behaves accordingly
  * @param callback
- * @throws org.apache.axis2.AxisFault
  */
 
 axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking_with_soap(struct axis2_call *call, 

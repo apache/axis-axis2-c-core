@@ -314,9 +314,7 @@ axis2_soap_fault_t* AXIS2_CALL axis2_soap_body_get_fault(axis2_soap_body_t *body
 
 /**
  * @param soapFault
- * @throws org.apache.axis2.om.OMException
  *
- * @throws OMException
  */
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_add_fault(axis2_soap_body_t *body,

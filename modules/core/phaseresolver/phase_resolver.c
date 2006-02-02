@@ -97,7 +97,6 @@ axis2_phase_resolver_build_in_transport_chains(axis2_phase_resolver_t *phase_res
  * Method buildTransportChains
  *
  * @param transport
- * @throws PhaseException
  */
 axis2_status_t
 axis2_phase_resolver_build_out_transport_chains(axis2_phase_resolver_t *phase_resolver,

@@ -185,7 +185,6 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
     * Constructs a new array list with the supplied initial capacity.
     * If capacity is invalid (<= 0) then default capacity is used
     * @param capacity initial capacity of this array_list
-    * @throws IllegalArgumentException if capacity is negative
     */
     AXIS2_DECLARE(axis2_array_list_t*) axis2_array_list_create(axis2_env_t **env, int capacity);
 

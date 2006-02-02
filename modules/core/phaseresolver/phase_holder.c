@@ -192,7 +192,6 @@ axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
  * Method addHandler
  *
  * @param handler
- * @throws PhaseException
  */
 axis2_status_t AXIS2_CALL
 axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder, 
@@ -267,7 +266,6 @@ axis2_phase_holder_get_phase(axis2_phase_holder_t *phase_holder,
  *
  * @param phase
  * @param handlers
- * @throws PhaseException
  */
 axis2_status_t AXIS2_CALL
 axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_holder, 

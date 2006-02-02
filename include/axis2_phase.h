@@ -79,7 +79,6 @@ extern "C"
          * If need to see how this works look at the stack!
          *
          * @param msg_ctx
-         * @throws org.apache.axis2.AxisFault
          */
         axis2_status_t (AXIS2_CALL *invoke)(struct axis2_phase *phase, 
                                           axis2_env_t **env,
@@ -98,7 +97,6 @@ extern "C"
          * Method setPhaseFirst
          *
          * @param first_handler
-         * @throws PhaseException
          */
         axis2_status_t (AXIS2_CALL *set_first_handler)(struct axis2_phase *phase, 
                                       axis2_env_t **env, axis2_handler_t * handler);
@@ -106,7 +104,6 @@ extern "C"
          * Method setPhaseLast
          *
          * @param last_handler
-         * @throws PhaseException
          */
         axis2_status_t (AXIS2_CALL *set_last_handler)(struct axis2_phase *phase, 
                                       axis2_env_t **env, axis2_handler_t * handler);
@@ -114,7 +111,6 @@ extern "C"
          * Method add_handler
          *
          * @param handler
-         * @throws PhaseException
          */
         axis2_status_t (AXIS2_CALL *add_handler_desc)(struct axis2_phase *phase, 
                                       axis2_env_t **env, axis2_handler_desc_t * handler_desc);
@@ -137,7 +133,6 @@ extern "C"
          * That condition is not checked by this function. It should be checked befor calling this function
          *
          * @param handler
-         * @throws PhaseException
          */
         axis2_status_t (AXIS2_CALL *insert_before_and_after)(struct axis2_phase *phase, axis2_env_t **env, axis2_handler_t * handler);
         

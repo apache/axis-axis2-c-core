@@ -131,7 +131,6 @@ axis2_status_t AXIS2_CALL axis2_engine_free(struct axis2_engine *engine,
  * deployment time by the deployment module
  *
  * @param msgContext
- * @throws AxisFault
  * @see MessageContext
  * @see Phase
  * @see Handler
@@ -234,7 +233,6 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
  * Here the <code>ExecutionChain</code> is created using the Phases. The Handlers at the each Phases is ordered in
  * deployment time by the deployment module
  *
- * @throws AxisFault
  * @see MessageContext
  * @see Phase
  * @see Handler
@@ -329,7 +327,6 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
  * Sends the SOAP Fault to another SOAP node.
  *
  * @param msg_ctx
- * @throws AxisFault
  */
 axis2_status_t AXIS2_CALL axis2_engine_send_fault(struct axis2_engine *engine, axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
 {
@@ -377,7 +374,6 @@ axis2_status_t AXIS2_CALL axis2_engine_send_fault(struct axis2_engine *engine, a
  * Receives a SOAP fault from another SOAP node.
  *
  * @param msg_ctx
- * @throws AxisFault
  */
 axis2_status_t AXIS2_CALL axis2_engine_receive_fault(struct axis2_engine *engine, axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
 {
@@ -440,7 +436,6 @@ axis2_status_t AXIS2_CALL axis2_engine_receive_fault(struct axis2_engine *engine
  *
  * @param processingContext
  * @param e
- * @throws AxisFault
  */
 axis2_msg_ctx_t* AXIS2_CALL axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine, axis2_env_t **env,
         axis2_msg_ctx_t *processing_context)

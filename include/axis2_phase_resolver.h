@@ -78,8 +78,6 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver_ops
     /**
      * Method buildchains
      *
-     * @throws PhaseException
-     * @throws AxisFault
      */
     axis2_status_t (AXIS2_CALL *
     build_chains) (axis2_phase_resolver_t *phase_resolver,
@@ -89,7 +87,6 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver_ops
      * To build the opration for the opeartion which the module going to be added
      *
      * @param op <code>AxisOperation</code>
-     * @throws AxisFault
      */
     axis2_status_t (AXIS2_CALL *
     build_module_op) (axis2_phase_resolver_t *phase_resolver,
@@ -102,7 +99,6 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver_ops
     /**
      * Method buildTranspotsChains
      *
-     * @throws PhaseException
      */
     axis2_status_t (AXIS2_CALL *
     build_transport_chains) (axis2_phase_resolver_t *phase_resolver,
@@ -119,7 +115,6 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver_ops
      *
      * @param service
      * @param module
-     * @throws PhaseException
      */
     axis2_status_t (AXIS2_CALL *
     engage_module_to_svc_from_global) (axis2_phase_resolver_t *phase_resolver,

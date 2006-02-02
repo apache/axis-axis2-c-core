@@ -156,7 +156,6 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      * @param serviceInputStream
      * @param classLoader
      * @return
-     * @throws DeploymentException
      */
     axis2_svc_t *(AXIS2_CALL *
     build_svc) (axis2_dep_engine_t *dep_engine,
@@ -169,7 +168,6 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      *
      * @param modulearchive
      * @return
-     * @throws DeploymentException
      */
     
     axis2_module_desc_t *(AXIS2_CALL *

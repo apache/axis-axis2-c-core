@@ -39,7 +39,7 @@ typedef struct axis2_linked_list_impl
     * the list (that is, insertions and removals). Structural modifications
     * are ones which change the list size or affect how iterations would
     * behave. This field is available for use by Iterator and ListIterator,
-    * in order to throw a {@link ConcurrentModificationException} in response
+    * in order to set an error code in response
     * to the next op on the iterator. This <i>fail-fast</i> behavior
     * saves the user from many subtle bugs otherwise possible from concurrent
     * modification during iteration.
@@ -451,7 +451,6 @@ axis2_linked_list_check_bounds_inclusive(axis2_linked_list_t *linked_list,
 * Checks that the index is in the range of existing elements (exclusive).
 *
 * @param index the index to check
-* @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size
 */
 axis2_bool_t AXIS2_CALL
 axis2_linked_list_check_bounds_exclusive(axis2_linked_list_t *linked_list,
@@ -471,7 +470,6 @@ axis2_linked_list_check_bounds_exclusive(axis2_linked_list_t *linked_list,
 * Returns the first element in the list.
 *
 * @return the first list element
-* @throws NoSuchElementException if the list is empty
 */
 void * AXIS2_CALL
 axis2_linked_list_get_first(axis2_linked_list_t *linked_list,
@@ -811,7 +809,6 @@ axis2_linked_list_add_at_index(axis2_linked_list_t *linked_list,
 *
 * @param index the location of the element to remove
 * @return the removed element
-* @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
 */
 void * AXIS2_CALL
 axis2_linked_list_remove_at_index(axis2_linked_list_t *linked_list,

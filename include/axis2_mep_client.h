@@ -91,8 +91,8 @@ struct axis2_mep_client_ops
         axis2_env_t **env);
     /**
      * Engage a given Module to the current invocation. But to call this method the
-     * Module *MUST* be enable (picked up by the deployment and known to Axis2) else
-     * Exception will be thrown. To be detected put the moduels to the AXIS2_REPOSITORY/modules directory
+     * Module *MUST* be enable (picked up by the deployment and known to Axis2) .
+     * To be detected put the moduels to the AXIS2_REPOSITORY/modules directory
      *
      * @param name
      * @
