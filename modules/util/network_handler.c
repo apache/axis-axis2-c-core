@@ -31,6 +31,8 @@ axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port)
 {
 	axis2_socket_t sock = AXIS2_INVALID_SOCKET;
 	struct sockaddr_in sock_addr;
+	struct linger ll;
+	int nodelay = 1;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, server, AXIS2_CRTICAL_FAILURE);
@@ -72,6 +74,11 @@ axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port)
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
         return AXIS2_INVALID_SOCKET;
     }
+	setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, &nodelay, 
+						sizeof(nodelay));
+	ll.l_onoff = 1;
+    ll.l_linger = 1;
+    setsockopt(sock, SOL_SOCKET, SO_LINGER , &ll, sizeof(struct linger));
 	return sock;
 }
 
@@ -156,6 +163,9 @@ axis2_network_handler_svr_socket_accept(axis2_env_t **env, axis2_socket_t svr_so
 	axis2_socket_t cli_socket = AXIS2_INVALID_SOCKET;
 	struct sockaddr cli_addr;
 	axis2_socket_len_t cli_len = 0;
+	struct linger ll;
+	int nodelay = 1;
+
 	
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	
@@ -164,36 +174,11 @@ axis2_network_handler_svr_socket_accept(axis2_env_t **env, axis2_socket_t svr_so
     if (cli_socket < 0)
     	AXIS2_LOG_WRITE((*env)->log, "[Axis2][network_handler] Socket accept \
 						failed", AXIS2_LOG_LEVEL_ERROR);
+	
+	setsockopt(cli_socket, IPPROTO_TCP, TCP_NODELAY, &nodelay, 
+						sizeof(nodelay));
+	ll.l_onoff = 1;
+    ll.l_linger = 1;
+    setsockopt(cli_socket, SOL_SOCKET, SO_LINGER , &ll, sizeof(struct linger));
     return cli_socket;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
