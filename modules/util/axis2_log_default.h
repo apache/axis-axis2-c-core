@@ -17,11 +17,11 @@
 #ifndef AXIS2_LOG_DEFAULT_H
 #define AXIS2_LOG_DEFAULT_H
 
+#include <stdlib.h>
+#include <stdarg.h>
 #include <axis2_log.h>
 #include <axis2_allocator.h>
 
-#include <stdlib.h>
-#include <stdarg.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -44,7 +44,7 @@ extern "C"
     * @return pointer to the newly created log struct 
     */
     AXIS2_DECLARE(axis2_log_t *) axis2_log_create (axis2_allocator_t * allocator,
-                                   axis2_log_ops_t * ops);
+                     axis2_log_ops_t * ops, axis2_char_t * stream_name);
 
 /** @} */
     
