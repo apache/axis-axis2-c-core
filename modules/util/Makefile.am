@@ -4,7 +4,7 @@ noinst_HEADERS = axis2_hash.h \
 				axis2_array_list.h \
 				axis2_log_default.h \
 				axis2_error_default.h \
-				axis2_stream_default.h \
+#				axis2_stream_default.h \
 				axis2_file_diff.h \
 				axis2_utils.h \
 				axis2_linked_list.h

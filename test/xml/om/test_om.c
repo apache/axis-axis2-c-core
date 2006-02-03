@@ -19,7 +19,7 @@
 #include <axis2_om_node.h>
 #include <axis2_om_element.h>
 #include <axis2_om_text.h>
-#include <axis2_stream_default.h>
+#include <axis2_stream.h>
 #include <axis2_log_default.h>
 #include <axis2_error_default.h>
 #include <axis2_xml_reader.h>
