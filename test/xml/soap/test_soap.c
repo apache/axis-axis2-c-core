@@ -246,7 +246,7 @@ int main(int argc, char *argv[])
             uri = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     }
     allocator = axis2_allocator_init (NULL);
-    log = axis2_log_create(allocator, NULL);
+    log = axis2_log_create(allocator, NULL, "test_soap.log");
     log->level = AXIS2_LOG_LEVEL_DEBUG;
     error = axis2_error_create(allocator);
     env = axis2_env_create_with_error_log(allocator, error,  log);

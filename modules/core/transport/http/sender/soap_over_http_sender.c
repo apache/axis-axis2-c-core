@@ -235,6 +235,13 @@ axis2_soap_over_http_sender_send
 						AXIS2_HTTP_HEADER_CONTENT_LENGTH, tmp_buf);
 		AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
 	}
+	else
+	{
+		http_header = axis2_http_header_create(env, 
+						AXIS2_HTTP_HEADER_TRANSFER_ENCODING, 
+						AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
+		AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
+	}
 	/* TODO we need to set the content type with soap action header for soap12*/
 	if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
 	{
@@ -311,22 +318,37 @@ axis2_soap_over_http_sender_get_header_info
 	 * TODO MTOM support (MIME header)
 	 */
 	headers = AXIS2_HTTP_SIMPLE_RESPONSE_GET_HEADERS(response, env);
+	if(headers == NULL)
+	{
+		return AXIS2_SUCCESS;
+	}
 	for(i = 0; i < AXIS2_ARRAY_LIST_SIZE(headers, env); i++)
 	{
 		axis2_http_header_t *header = AXIS2_ARRAY_LIST_GET(headers, env, i);
 		axis2_char_t *name = AXIS2_HTTP_HEADER_GET_NAME((axis2_http_header_t *)
 						header, env);
-		if(NULL != name && 0 != AXIS2_STRCMP(name, 
-						AXIS2_HTTP_HEADER_CONTENT_TYPE))
+		if(NULL != name)
 		{
-			axis2_char_t *tmp_charset = NULL;
-			axis2_char_t *content_type = AXIS2_HTTP_HEADER_GET_VALUE(header, 
-						env);
-			tmp_charset = strstr(content_type, AXIS2_HTTP_CHAR_SET_ENCODING);
-			if(NULL != charset)
+			if(0 == AXIS2_STRCMP(name, AXIS2_HTTP_HEADER_TRANSFER_ENCODING) && 
+						0 == AXIS2_STRCMP(AXIS2_HTTP_HEADER_GET_VALUE(header
+						, env), AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
 			{
-				charset = AXIS2_STRDUP(tmp_charset, env);
-				break;
+				AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, 
+						AXIS2_HTTP_HEADER_TRANSFER_ENCODING, 
+						AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED,
+						AXIS2_FALSE);
+			}
+			if(0 != AXIS2_STRCMP(name, AXIS2_HTTP_HEADER_CONTENT_TYPE))
+			{
+				axis2_char_t *tmp_charset = NULL;
+				axis2_char_t *content_type = AXIS2_HTTP_HEADER_GET_VALUE(header, 
+						env);
+				tmp_charset = strstr(content_type, AXIS2_HTTP_CHAR_SET_ENCODING);
+				if(NULL != charset)
+				{
+					charset = AXIS2_STRDUP(tmp_charset, env);
+					break;
+				}
 			}
 		}
 	}

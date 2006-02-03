@@ -771,8 +771,6 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
 	}
 	if(cb_ctx->chunked_stream != NULL)
 	{
-		/*TODO remove this debug message */
-		AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Stream chunked");
 		len = AXIS2_HTTP_CHUNKED_STREAM_READ(cb_ctx->chunked_stream, env, 
 						buffer, size);
 		return len;
@@ -800,24 +798,38 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
     axis2_char_t *content_type = NULL;
     axis2_stream_t *in_stream = NULL;
     axis2_callback_info_t callback_ctx;
+	axis2_char_t *trans_enc = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
     AXIS2_PARAM_CHECK((*env)->error, soap_ns_uri, NULL);
     
     in_stream = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, 
                         AXIS2_FALSE);
+	callback_ctx.in_stream = in_stream;
+	callback_ctx.env = *env;
+	callback_ctx.content_length = -1;
+	callback_ctx.unread_len = -1;
+	callback_ctx.chunked_stream = NULL;
+	
     if(NULL == in_stream)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX,
                         AXIS2_FAILURE);
         return NULL;
     }
-    
-    callback_ctx.in_stream = in_stream;
-	callback_ctx.env = *env;
-	callback_ctx.content_length = -1;
-	callback_ctx.unread_len = -1;
-	callback_ctx.chunked_stream = NULL;
+    trans_enc = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
+						AXIS2_HTTP_HEADER_TRANSFER_ENCODING, AXIS2_FALSE);
+	if(NULL != trans_enc && 0 == AXIS2_STRCMP(trans_enc, 
+						AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
+	{
+		callback_ctx.chunked_stream = axis2_http_chunked_stream_create(env, 
+						in_stream);
+		if(NULL == callback_ctx.chunked_stream)
+		{
+			return NULL;
+		}
+	}
+	
     
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     if(NULL != op_ctx)

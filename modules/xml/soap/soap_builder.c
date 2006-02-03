@@ -661,7 +661,7 @@ axis2_soap_builder_identify_soap_version(axis2_soap_builder_t *builder,
         else if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
         {
             builder_impl->soap_version = AXIS2_SOAP12;          
-            AXIS2_LOG_WRITE((*env)->log,"identified soap version is soap12", AXIS2_LOG_LEVEL_DEBUG);
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "identified soap version is soap12");
             
         }
         AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(builder_impl->soap_envelope, env, builder_impl->soap_version);        

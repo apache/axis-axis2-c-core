@@ -93,7 +93,6 @@ axis2_http_transport_sender_create(axis2_env_t **env)
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 		return NULL;
 	}
-
     transport_sender_impl->http_version = AXIS2_STRDUP(
 						AXIS2_HTTP_HEADER_PROTOCOL_11, env);
 	transport_sender_impl->chunked = AXIS2_TRUE;
@@ -155,7 +154,7 @@ axis2_http_transport_sender_invoke
 	
 	AXIS2_FUNC_PARAM_CHECK(transport_sender, env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-    
+
 	xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
 	om_output = axis2_om_output_create(env, xml_writer);
 	
@@ -317,21 +316,27 @@ axis2_http_transport_sender_init
                     		axis2_env_t **env, axis2_conf_ctx_t *conf_ctx, 
 							axis2_transport_out_desc_t *out_desc)
 {
+	axis2_param_t *version_param = NULL;
     axis2_char_t *version = NULL;
 	axis2_char_t *temp = NULL;
-	
+	axis2_param_t *temp_param = NULL;
 	AXIS2_FUNC_PARAM_CHECK(transport_sender, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, conf_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, out_desc, AXIS2_FAILURE);
 	
-	version = (axis2_char_t *)AXIS2_PARAM_CONTAINER_GET_PARAM(
+	version_param = AXIS2_PARAM_CONTAINER_GET_PARAM(
 							out_desc->param_container, env, 
 							AXIS2_HTTP_PROTOCOL_VERSION);
+	if(NULL != version_param)
+	{
+		version = AXIS2_PARAM_GET_VALUE(version_param, env);
+	}
 	if(NULL != version)
 	{
 		if(0 == AXIS2_STRCMP(version, AXIS2_HTTP_HEADER_PROTOCOL_11))
 		{
 			axis2_char_t *encoding = NULL;
+			axis2_param_t *encoding_param = NULL;
 			if(NULL != AXIS2_INTF_TO_IMPL(transport_sender)->http_version)
 			{
 				AXIS2_FREE((*env)->allocator, 
@@ -339,13 +344,21 @@ axis2_http_transport_sender_init
 			}
 			AXIS2_INTF_TO_IMPL(transport_sender)->http_version = AXIS2_STRDUP(
 							version, env);
-			encoding = (axis2_char_t *)AXIS2_PARAM_CONTAINER_GET_PARAM(
+			encoding_param = AXIS2_PARAM_CONTAINER_GET_PARAM(
 							out_desc->param_container, env, 
 							AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
+			if(NULL != encoding_param)
+			{
+				encoding = AXIS2_PARAM_GET_VALUE(encoding_param, env);
+			}
 			if(NULL != encoding && 0 == AXIS2_STRCMP(encoding, 
 							AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
 			{
 				AXIS2_INTF_TO_IMPL(transport_sender)->chunked = AXIS2_TRUE;
+			}
+			else
+			{
+				AXIS2_INTF_TO_IMPL(transport_sender)->chunked = AXIS2_FALSE;
 			}
 		}
 		else if(0 == AXIS2_STRCMP(version, AXIS2_HTTP_HEADER_PROTOCOL_10))
@@ -359,30 +372,38 @@ axis2_http_transport_sender_init
 							version, env);
 			AXIS2_INTF_TO_IMPL(transport_sender)->chunked = AXIS2_FALSE;
 		}
-		else
-		{
-			AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_HTTP_VERSION, 
+	}
+	else
+	{
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_HTTP_VERSION, 
 							AXIS2_FAILURE);
-			return AXIS2_FAILURE;
-			
-		}
+		return AXIS2_FAILURE;
+	}
 		
-		temp = (axis2_char_t *)AXIS2_PARAM_CONTAINER_GET_PARAM(
+		
+	temp_param = AXIS2_PARAM_CONTAINER_GET_PARAM(
 							out_desc->param_container, env, 
 							AXIS2_HTTP_SO_TIMEOUT);
-		if(NULL != temp)
-		{
-			AXIS2_INTF_TO_IMPL(transport_sender)->so_timeout = atoi(temp);
-		}
-		temp = (axis2_char_t *)AXIS2_PARAM_CONTAINER_GET_PARAM(
+	if(NULL != temp_param)
+	{
+		temp = AXIS2_PARAM_GET_VALUE(temp_param, env);
+	}
+	if(NULL != temp)
+	{
+		AXIS2_INTF_TO_IMPL(transport_sender)->so_timeout = atoi(temp);
+	}
+	temp = (axis2_char_t *)AXIS2_PARAM_CONTAINER_GET_PARAM(
 							out_desc->param_container, env, 
 							AXIS2_HTTP_CONNECTION_TIMEOUT);
-		if(NULL != temp)
-		{
-			AXIS2_INTF_TO_IMPL(transport_sender)->connection_timeout=atoi(temp);
-		}
+	if(NULL != temp_param)
+	{
+		temp = AXIS2_PARAM_GET_VALUE(temp_param, env);
 	}
-    
+	if(NULL != temp)
+	{
+		AXIS2_INTF_TO_IMPL(transport_sender)->connection_timeout=atoi(temp);
+	}
+
 	return AXIS2_SUCCESS;
 }
 
@@ -425,6 +446,12 @@ axis2_http_transport_sender_write_message
 	 */
 	axis2_soap_over_http_sender_t *sender = axis2_soap_over_http_sender_create
 							(env);
+	if(NULL == sender)
+	{
+		return AXIS2_FAILURE;
+	}
+	AXIS2_SOAP_OVER_HTTP_SENDER_SET_CHUNKED(sender, env, 
+						AXIS2_INTF_TO_IMPL(transport_sender)->chunked);
 	AXIS2_SOAP_OVER_HTTP_SENDER_SET_OM_OUTPUT(sender, env, om_output);
 	AXIS2_SOAP_OVER_HTTP_SENDER_SEND(sender, env, msg_ctx, out, url,
 						soap_action);

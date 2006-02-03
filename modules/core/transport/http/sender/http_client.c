@@ -22,6 +22,7 @@
 #include <axis2_http_request_line.h>
 #include <axis2_http_header.h>
 #include <axis2_http_status_line.h>
+#include <axis2_http_chunked_stream.h>
 
 
 /** 
@@ -162,8 +163,10 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
 	char *str_request_line = NULL;
 	int body_size = 0;
 	int written = 0;
+	axis2_status_t status = AXIS2_FAILURE;
 	AXIS2_FUNC_PARAM_CHECK(client, env, AXIS2_FAILURE);
     client_impl = AXIS2_INTF_TO_IMPL(client);
+	axis2_bool_t chunking_enabled = AXIS2_FALSE;
 	
 	if(NULL == client_impl->url)
 	{
@@ -209,6 +212,19 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
 		{
 			axis2_http_header_t *tmp_header = (axis2_http_header_t*)
 						AXIS2_ARRAY_LIST_GET(headers, env, i);
+			if(NULL == tmp_header)
+			{
+				continue;
+			}
+			/* check whether we have transfer encoding and then see whether the
+			 * value is "chunked" */
+			if(0 == AXIS2_STRCMP(AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env), 
+						AXIS2_HTTP_HEADER_TRANSFER_ENCODING) && 0 == 
+						AXIS2_STRCMP(AXIS2_HTTP_HEADER_GET_VALUE(tmp_header, 
+						env), AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
+			{
+				chunking_enabled = AXIS2_TRUE;
+			}
 			axis2_char_t *header_ext_form = AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(
 						tmp_header, env);
 			str_header2 = AXIS2_STRACAT(str_header, header_ext_form, env);
@@ -237,18 +253,57 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
 						&str_body);
 	if(body_size > 0 && NULL != str_body)
 	{
-		written = AXIS2_STREAM_WRITE(client_impl->data_stream, env, str_body, 
-						body_size);		
+		if(AXIS2_FALSE == chunking_enabled)
+		{
+			status = AXIS2_SUCCESS;
+			while(written < body_size)
+			{
+				written = AXIS2_STREAM_WRITE(client_impl->data_stream, env, 
+								str_body, body_size);
+				if(-1 == written)
+				{
+					status = AXIS2_FAILURE;
+					break;
+				}
+			}
+		}
+		else
+		{
+			axis2_http_chunked_stream_t *chunked_stream = NULL;
+			chunked_stream = axis2_http_chunked_stream_create(env, 
+							client_impl->data_stream);
+			status = AXIS2_SUCCESS;
+			if(NULL == chunked_stream)
+			{
+				AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Creatoin of chunked"
+							"stream failed");
+				return AXIS2_FAILURE;
+			}
+			while(written < body_size)
+			{
+				written = AXIS2_HTTP_CHUNKED_STREAM_WRITE(chunked_stream, env, 
+							str_body, body_size);
+				if(-1 == written)
+				{
+					status = AXIS2_FAILURE;
+					break;
+				}
+			}
+			if(AXIS2_SUCCESS == status)
+			{
+				AXIS2_HTTP_CHUNKED_STREAM_WRITE_LAST_CHUNK(chunked_stream, env);
+			}
+			AXIS2_HTTP_CHUNKED_STREAM_FREE(chunked_stream, env);
+		}
 	}
-	written = AXIS2_STREAM_WRITE(client_impl->data_stream, env, AXIS2_HTTP_CRLF, 
-						2); 
+	
 	client_impl->request_sent = AXIS2_TRUE;
 	if(NULL != str_body)
 	{
 		AXIS2_FREE((*env)->allocator, str_body);
 		str_body = NULL;
 	}
-    return AXIS2_SUCCESS;
+    return status;
 }
 
 

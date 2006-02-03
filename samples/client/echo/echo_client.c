@@ -39,7 +39,7 @@ int main(int argc, char** argv)
     
     allocator = axis2_allocator_init (NULL);
     error = axis2_error_create(allocator);
-    log = axis2_log_create(allocator, NULL);
+    log = axis2_log_create(allocator, NULL, "echo_client.log");
     env = axis2_env_create_with_error_log(allocator, error, log);
     env->log->level = AXIS2_LOG_LEVEL_INFO;
     axis2_error_init();

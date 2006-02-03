@@ -30,7 +30,7 @@ void usage(axis2_char_t* prog_name);
 axis2_env_t* init_syetem_env(axis2_allocator_t *allocator)
 {
 	axis2_error_t *error = axis2_error_create(allocator);
-	axis2_log_t *log = axis2_log_create(allocator, NULL);
+	axis2_log_t *log = axis2_log_create(allocator, NULL, NULL);
 	return axis2_env_create_with_error_log(allocator, error, log);
 }
 

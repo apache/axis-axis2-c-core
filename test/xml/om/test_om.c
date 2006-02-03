@@ -264,7 +264,7 @@ main (int argc, char *argv[])
     if (argc > 1)
         file_name = argv[1];
     allocator = axis2_allocator_init (NULL);
-    axis_log = axis2_log_create(allocator, NULL);
+    axis_log = axis2_log_create(allocator, NULL, NULL);
     error = axis2_error_create(allocator);
     
     environment = axis2_env_create_with_error_log(allocator, error,  axis_log);
