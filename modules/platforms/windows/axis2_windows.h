@@ -175,6 +175,11 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
 #define AXIS2_CLOSE_SOCKET_ON_EXIT(sock)	
 #define axis2_socket_len_t					int
 
+/**
+  * handling variable number of arguments (for log.c)
+  */
+#define AXIS2_VSNPRINTF		_vsnprintf
+
 /** @} */
 #ifdef __cplusplus
 }
