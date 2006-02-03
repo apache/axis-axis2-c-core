@@ -21,7 +21,6 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <sys/types.h>
-#include <sys/socket.h>
 
 
 

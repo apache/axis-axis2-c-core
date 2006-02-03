@@ -22,7 +22,7 @@
 #include <axis2_platform_auto_sense.h>
 
 
-axis2_socket_t AXIS2_CALL
+AXIS2_DECLARE( axis2_socket_t )
 axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port)
 {
 	axis2_socket_t sock = AXIS2_INVALID_SOCKET;
@@ -79,7 +79,7 @@ axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port)
 	return sock;
 }
 
-axis2_socket_t AXIS2_CALL
+AXIS2_DECLARE( axis2_socket_t )
 axis2_network_handler_create_server_socket(axis2_env_t **env, int port)
 {
 	axis2_socket_t sock = AXIS2_INVALID_SOCKET;

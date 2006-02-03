@@ -625,6 +625,7 @@ axis2_stream_write_socket(axis2_stream_t *stream, axis2_env_t **env,
 	/*len = fwrite(buffer, sizeof(axis2_char_t), count, fp);*/
     len = write(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count);
 	return len;
+	
 }
 
 

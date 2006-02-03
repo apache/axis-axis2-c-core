@@ -87,6 +87,6 @@ AXIS2_DECLARE(int) scandir(const char *_dirname, struct dirent **__namelist[], i
 /**
   * Compare two `struct dirent's alphabetically
   */
-AXIS2_IMPORT int alphasort(const struct dirent **__d1, const struct dirent **__d2);
+AXIS2_DECLARE_DATA int alphasort(const struct dirent **__d1, const struct dirent **__d2);
 
 #endif /* READDIR_H */

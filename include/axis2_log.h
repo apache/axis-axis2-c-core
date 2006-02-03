@@ -96,12 +96,13 @@ extern "C"
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *write) (axis2_log_t *log, const axis2_char_t *buffer, axis2_log_levels_t level,const axis2_char_t *file,const int line);
-
-		axis2_status_t (AXIS2_CALL *log_critical) (axis2_log_t *log,const char *filename,const int linenumber,axis2_char_t *format,...);
-		axis2_status_t (AXIS2_CALL *log_error) (axis2_log_t *log,const char *filename,const int linenumber,axis2_char_t *format,...);
-		axis2_status_t (AXIS2_CALL *log_warning) (axis2_log_t *log,const char *filename,const int linenumber,axis2_char_t *format,...);
-		axis2_status_t (AXIS2_CALL *log_info) (axis2_log_t *log, axis2_char_t *format, ...);
-		axis2_status_t (AXIS2_CALL *log_debug) (axis2_log_t *log,const char *filename,const int linenumber,axis2_char_t *format,...);
+        /*
+		axis2_status_t (AXIS2_CALL *log_critical) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
+		axis2_status_t (AXIS2_CALL *log_error) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
+		axis2_status_t (AXIS2_CALL *log_warning) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
+		axis2_status_t (AXIS2_CALL *log_info) (struct axis2_log *log, axis2_char_t *format, ...);
+		axis2_status_t (AXIS2_CALL *log_debug) (struct axis2_log *log,const char *filename,const int linenumber,axis2_char_t *format,...);
+        */
     };
 
   /** 
@@ -122,15 +123,15 @@ extern "C"
 
     };
 
-axis2_status_t AXIS2_CALL axis2_log_impl_log_critical(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_critical(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
 
-axis2_status_t AXIS2_CALL axis2_log_impl_log_error(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_error(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
 
-axis2_status_t AXIS2_CALL axis2_log_impl_log_warning(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_warning(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
 
-axis2_status_t AXIS2_CALL axis2_log_impl_log_info(axis2_log_t *log, const axis2_char_t *format,...);
+AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_info(axis2_log_t *log, const axis2_char_t *format,...);
 
-axis2_status_t AXIS2_CALL axis2_log_impl_log_debug(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_debug(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
 
 
 #define AXIS2_LOG_FREE(allocator, log) ((log->ops)->free(allocator, log))

@@ -283,6 +283,8 @@ axis2_conf_t * AXIS2_CALL
 axis2_conf_create (axis2_env_t **env)
 {
     axis2_conf_impl_t *config_impl = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    axis2_phase_t *phase = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     
 	config_impl = (axis2_conf_impl_t *) AXIS2_MALLOC ((*env)->allocator
@@ -299,7 +301,7 @@ axis2_conf_create (axis2_env_t **env)
     config_impl->modules = NULL;
     config_impl->engaged_modules = NULL;
     config_impl->in_phases_upto_and_including_post_dispatch = NULL;
-    axis2_phase_t *phase = NULL;
+   
     config_impl->out_phases = NULL;
     config_impl->in_faultphases = NULL;
     config_impl->out_faultphases = NULL;
@@ -310,7 +312,6 @@ axis2_conf_create (axis2_env_t **env)
     config_impl->faulty_modules = NULL;
     config_impl->axis2_repos = NULL;
     config_impl->conf.ops = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
     
     config_impl->conf.param_container = (axis2_param_container_t *) 
         axis2_param_container_create(env);		

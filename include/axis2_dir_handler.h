@@ -50,7 +50,7 @@ extern "C"
      * @param pathname path  your modules or services folder
      * @return array list of contents of services or modules folder
      */
-    axis2_array_list_t *AXIS2_CALL
+    AXIS2_DECLARE(axis2_array_list_t *)
     axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
                                 axis2_char_t *pathname);
                                 

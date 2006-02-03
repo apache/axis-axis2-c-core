@@ -168,6 +168,7 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
   * network specific functions and defs
   */
 #define axis2_socket_t						SOCKET
+
 #define AXIS2_INVALID_SOCKET				INVALID_SOCKET
 #define AXIS2_INADDR_NONE					INADDR_NONE
 #define axis2_unsigned_short_t				u_short
@@ -176,8 +177,15 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
 #define axis2_socket_len_t					int
 
 /**
+ * Platform specific environment variable access method
+ */
+#define AXIS2_GETENV(_env_var_name) getenv(_env_var_name)
+
+/**
   * handling variable number of arguments (for log.c)
   */
+  
+  
 #define AXIS2_VSNPRINTF		_vsnprintf
 
 /** @} */
