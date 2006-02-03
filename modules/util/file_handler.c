@@ -17,23 +17,24 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <axis2_platform_auto_sense.h>
 
 #include <axis2_file_handler.h>
 
 void* AXIS2_CALL 
 axis2_file_handler_open(const axis2_char_t *file_name, 
-                            const axis2_char_t *options,
-                            axis2_env_t **env)
+                            const axis2_char_t *options)
+                            
 {
     FILE *file_ptr;
-    axis2_char_t *f_opt;
-	axis2_char_t *f_name = (axis2_char_t*) AXIS2_STRDUP(file_name, env);
-	if(!f_name) return NULL;
-	    f_opt = (axis2_char_t*) AXIS2_STRDUP(options, env);
-	if(!f_opt) return NULL;
 	
-	file_ptr = fopen (f_name, f_opt);
+	if (!file_name)
+		return NULL;
+
+	if (!options)
+		return NULL;
+	
+	file_ptr = fopen (file_name, options);
 	return file_ptr;
 }
 
@@ -50,7 +51,7 @@ axis2_file_handler_access(axis2_char_t *path,
 {
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
-    i = access(path, mode);
+    i = AXIS2_ACCESS(path, mode);
     if(0 == i)
     {
         status = AXIS2_SUCCESS;
