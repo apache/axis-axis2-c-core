@@ -17,8 +17,6 @@
 #ifndef AXIS2_FILE_HANDLER_H
 #define AXIS2_FILE_HANDLER_H
 
-#include <axis2_allocator.h>
-#include <axis2_env.h>
 #include <axis2_string.h>
 
 #ifdef __cplusplus
@@ -41,8 +39,7 @@ extern "C"
  */ 
 AXIS2_DECLARE(void *) 
 axis2_file_handler_open(const char *file_name, 
-                        const char *options,
-                        axis2_env_t **env);
+                        const char *options);
 
 /**
  * close a file
