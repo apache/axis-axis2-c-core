@@ -32,9 +32,9 @@ axis2_status_t AXIS2_CALL axis2_file_diff(axis2_env_t *env
     int j = 0, k = 0;
    	axis2_char_t *buffer1, *buffer2;
    	int flag1 = 0, flag2 = 0;
-	expected_file = axis2_file_handler_open(expected_file_name,"rt", &env);
+	expected_file = axis2_file_handler_open(expected_file_name,"rt");
 	 
-	actual_file = axis2_file_handler_open(actual_file_name,"rt", &env); 
+	actual_file = axis2_file_handler_open(actual_file_name,"rt"); 
 	
 	if( expected_file == NULL || actual_file == NULL ) {
 		/*printf("Unable to open one of datafile %s, %s\n", expected_file_name
