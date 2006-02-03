@@ -221,6 +221,12 @@ extern "C"
 #define AXIS2_CLOSE_SOCKET_ON_EXIT(sock)    fcntl(sock,F_SETFD, FD_CLOEXEC);
 #define axis2_socket_len_t                  socklen_t
 
+
+/**
+  * handling variable number of arguments (for log.c)
+  */
+#define AXIS2_VSNPRINTF     	vsnprintf
+
 /** @} */
 #ifdef __cplusplus
 }
