@@ -157,7 +157,7 @@ axis2_status_t AXIS2_CALL axis2_init_transports(axis2_env_t **env,
             for (hi = axis2_hash_first (transport_map, env);
                     hi; hi = axis2_hash_next (env, hi))
             {
-                axis2_hash_this (hi, NULL, NULL, transport);
+                axis2_hash_this (hi, NULL, NULL, &transport);
                 if (transport)
                 {
                     axis2_transport_in_desc_t *transport_in = (axis2_transport_in_desc_t*)transport;
@@ -179,7 +179,7 @@ axis2_status_t AXIS2_CALL axis2_init_transports(axis2_env_t **env,
             for (hi = axis2_hash_first (transport_map, env);
                     hi; hi = axis2_hash_next (env, hi))
             {
-                axis2_hash_this (hi, NULL, NULL, transport);
+                axis2_hash_this (hi, NULL, NULL, &transport);
                 if (transport)
                 {
                     axis2_transport_out_desc_t *transport_out = (axis2_transport_out_desc_t*)transport;
