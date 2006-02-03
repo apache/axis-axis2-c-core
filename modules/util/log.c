@@ -85,7 +85,7 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops,
     	log_file_name[len*sizeof(axis2_char_t) - sizeof(axis2_char_t)] = '\0';
 		printf("default file name = %s\n",log_file_name);
 	}
-	log_impl->stream = axis2_file_handler_open(log_file_name,"w");
+	log_impl->stream = axis2_file_handler_open("axis2.log","w");
 	
 	log_impl->log.enabled = 1;
 
@@ -206,7 +206,8 @@ axis2_log_impl_log_debug(axis2_log_t *log, const axis2_char_t *filename,
     	va_start(ap, format);
     	AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
     	va_end(ap);
-		axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_DEBUG, filename, linenumber, value);
+		axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_DEBUG, filename, 
+						linenumber, value);
 	}
 	return 0;
 }
@@ -257,7 +258,8 @@ axis2_log_impl_log_warning(axis2_log_t *log, const axis2_char_t *filename,
     	va_start(ap, format);
     	AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
     	va_end(ap);
-		axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_WARNING, filename, linenumber, value);
+		axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_WARNING, filename, 
+						linenumber, value);
 	}
 	return 0;
 }
@@ -282,7 +284,8 @@ axis2_log_impl_log_error(axis2_log_t *log, const axis2_char_t *filename,
    	va_start(ap, format);
   	AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
    	va_end(ap);
-	axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_ERROR, filename, linenumber, value);
+	axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_ERROR, filename, 
+						linenumber, value);
 	return 0;
 }
 	
@@ -305,7 +308,7 @@ axis2_log_impl_log_critical(axis2_log_t *log, const axis2_char_t *filename,
    	va_start(ap, format);
    	AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
    	va_end(ap);
-	axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_CRITICAL, filename, linenumber, value);
+	axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_CRITICAL, filename, 
+						linenumber, value);
 	return 0;
 }
-

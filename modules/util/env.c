@@ -23,7 +23,7 @@
 AXIS2_DECLARE(axis2_status_t)  axis2_env_free (axis2_env_t *env)
 {
     if(NULL != env && NULL != env->log)
-        AXIS2_LOG_FREE(env->log);
+        AXIS2_LOG_FREE(env->allocator, env->log);
 	
 	if(NULL != env && NULL != env->error)
         AXIS2_ERROR_FREE(env->error);
