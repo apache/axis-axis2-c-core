@@ -88,7 +88,7 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops,
     	log_file_name[len*sizeof(axis2_char_t) - sizeof(axis2_char_t)] = '\0';
 		printf("default file name = %s\n",log_file_name);
 	}
-	log_impl->stream = axis2_file_handler_open("axis2.log","w");
+	log_impl->stream = axis2_file_handler_open(log_file_name,"w");
 	
 	log_impl->log.enabled = 1;
 
@@ -187,6 +187,7 @@ axis2_log_impl_write_to_file(FILE *fd, axis2_log_levels_t level,
     	fprintf(fd,"%s %s(%d) %s\n", level_str, file, line, value);
     else
     	fprintf(fd,"%s %s\n", level_str, value);
+	fflush(fd);
 	return 0;
 }
 
