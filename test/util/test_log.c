@@ -18,7 +18,8 @@ axis2_env_t *create_env_with_error_log()
         printf("cannot create error\n");
         return NULL;
     }
-    axis2_log_t *log22  = axis2_log_create (allocator, NULL);
+
+    axis2_log_t *log22  = axis2_log_create (allocator, NULL,NULL);
     if (!log22)
     {
         printf("cannot create log\n");
@@ -28,7 +29,7 @@ axis2_env_t *create_env_with_error_log()
 	 * allow all types of logs
  	 */
     log22->level = AXIS2_LOG_LEVEL_DEBUG;
-
+/*	log22->enabled = 0;*/
     axis2_env_t *env = axis2_env_create_with_error_log(allocator, error, log22);
     if (!env)
     {
