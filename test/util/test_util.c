@@ -257,7 +257,7 @@ void test_log_write()
 		printf("cannot create error\n");
 		return;
 	}
-    axis2_log_t *log22  = axis2_log_create (allocator, NULL);
+    axis2_log_t *log22  = axis2_log_create (allocator, NULL,NULL);
 	if (!log22)
 	{
 		printf("cannot create log\n");
