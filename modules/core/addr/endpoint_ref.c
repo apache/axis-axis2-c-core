@@ -55,6 +55,9 @@ axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_ref_properties(struct axis2_end
                                                axis2_env_t **env, axis2_any_content_type_t *ref_properties);
 axis2_any_content_type_t* AXIS2_CALL axis2_endpoint_ref_get_ref_params(struct axis2_endpoint_ref *endpoint_ref, 
                                                axis2_env_t **env);
+axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_ref_params(struct axis2_endpoint_ref *endpoint_ref,
+                                                    axis2_env_t **env,
+                                                    axis2_any_content_type_t* any_content_type);
 axis2_svc_name_t* AXIS2_CALL axis2_endpoint_ref_get_svc_name(struct axis2_endpoint_ref *endpoint_ref, 
                                                axis2_env_t **env);
 axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_svc_name(struct axis2_endpoint_ref *endpoint_ref, 
@@ -122,6 +125,7 @@ axis2_endpoint_ref_t* AXIS2_CALL axis2_endpoint_ref_create(axis2_env_t **env, ax
     endpoint_ref_impl->endpoint_ref.ops->get_ref_properties = axis2_endpoint_ref_get_ref_properties;
     endpoint_ref_impl->endpoint_ref.ops->set_ref_properties = axis2_endpoint_ref_set_ref_properties;
     endpoint_ref_impl->endpoint_ref.ops->get_ref_params = axis2_endpoint_ref_get_ref_params;
+    endpoint_ref_impl->endpoint_ref.ops->set_ref_params = axis2_endpoint_ref_set_ref_params;
     endpoint_ref_impl->endpoint_ref.ops->get_svc_name = axis2_endpoint_ref_get_svc_name;
     endpoint_ref_impl->endpoint_ref.ops->set_svc_name = axis2_endpoint_ref_set_svc_name;
     endpoint_ref_impl->endpoint_ref.ops->get_policies = axis2_endpoint_ref_get_policies;
@@ -214,6 +218,14 @@ axis2_any_content_type_t* AXIS2_CALL axis2_endpoint_ref_get_ref_params(struct ax
     return AXIS2_INTF_TO_IMPL(endpoint_ref)->ref_params;
 }
 
+axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_ref_params(struct axis2_endpoint_ref *endpoint_ref,
+                                                    axis2_env_t **env,
+                                                    axis2_any_content_type_t* any_content_type)
+{
+    AXIS2_FUNC_PARAM_CHECK(endpoint_ref, env, NULL);
+    AXIS2_INTF_TO_IMPL(endpoint_ref)->ref_params = any_content_type;
+    return AXIS2_SUCCESS;
+}
 
 /**
  * Method get_svc_name

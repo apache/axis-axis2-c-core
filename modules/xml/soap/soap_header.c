@@ -103,7 +103,7 @@ axis2_soap_header_set_builder(axis2_soap_header_t *header,
                               axis2_soap_builder_t *builder); 
 
 axis2_array_list_t* AXIS2_CALL
-axis2_soap_header_get_header_block_with_namespace_uri
+axis2_soap_header_get_header_blocks_with_namespace_uri
                                         (axis2_soap_header_t* header,
                                          axis2_env_t **env,
                                          axis2_char_t *ns_uri);  
@@ -166,8 +166,8 @@ axis2_soap_header_create(axis2_env_t **env)
         axis2_soap_header_set_header_block;
     header_impl->soap_header.ops->set_builder =
         axis2_soap_header_set_builder;      
-    header_impl->soap_header.ops->get_header_block_with_namespace_uri =
-        axis2_soap_header_get_header_block_with_namespace_uri;
+    header_impl->soap_header.ops->get_header_blocks_with_namespace_uri =
+        axis2_soap_header_get_header_blocks_with_namespace_uri;
     header_impl->soap_header.ops->get_all_header_blocks =
         axis2_soap_header_get_all_header_blocks;        
         
@@ -470,7 +470,7 @@ axis2_soap_header_set_builder(axis2_soap_header_t *header,
 }
 
 axis2_array_list_t* AXIS2_CALL
-axis2_soap_header_get_header_block_with_namespace_uri
+axis2_soap_header_get_header_blocks_with_namespace_uri
                                         (axis2_soap_header_t* header,
                                          axis2_env_t **env,
                                          axis2_char_t *ns_uri)

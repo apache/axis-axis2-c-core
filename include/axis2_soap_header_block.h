@@ -175,7 +175,7 @@ axis2_soap12_header_block_create_with_parent(axis2_env_t **env,
         ((header_block)->ops->is_precessed(header_block, env))
 
 #define AXIS2_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block , env) \
-        ((header_block)->ops->set_precessed(header_block, env))
+        ((header_block)->ops->set_processed(header_block, env))
         
 #define AXIS2_SOAP_HEADER_BLOCK_GET_MUST_UNDERSTAND(header_block, env) \
         ((header_block)->ops->get_must_understand(header_block, env)) 

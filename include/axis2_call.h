@@ -123,6 +123,31 @@ struct axis2_call_ops
         axis2_env_t **env,
         long time_out_ms);
     /**
+     * This invocation done via this method blocks till the result arrives, 
+     * using this method does not indicate
+     * anyhting about the transport used or the nature of the transport.
+     * e.g. invocation done with this method might
+     * <ol>
+     * <li>send request via http and recevie the response via the return path of the same http connection</li>
+     * <li>send request via http and recevie the response different http connection</li>
+     * <li>send request via an email smtp and recevie the response via an email</li>
+     * </ol>
+     */
+    
+    axis2_msg_ctx_t* (AXIS2_CALL *invoke_blocking)(struct axis2_call *call, 
+                                        axis2_env_t **env,
+                                        axis2_op_t *op,
+                                        axis2_msg_ctx_t *msg_ctx);
+    /**
+     * This invocation done via this method blocks till the result arrives, using this method does not indicate
+     * anyhting about the transport used or the nature of the transport.
+     */
+    axis2_status_t (AXIS2_CALL *invoke_non_blocking)(struct axis2_call *call, 
+                                        axis2_env_t **env,
+                                        axis2_op_t *op,
+                                        axis2_msg_ctx_t *msg_ctx,
+                                        axis2_callback_t *callback);
+    /**
      * Invoke the blocking/Synchronous call
      *
      * @param op - this will be used to identify the operation in the client side, without dispatching
@@ -215,7 +240,8 @@ AXIS2_DECLARE(axis2_call_t*) axis2_call_create(axis2_env_t **env,
     axis2_char_t *client_home);
 
 /************************** Start of function macros **************************/
-
+#define AXIS2_CALL_INVOKE_BLOCKING(call, env, op, msg_ctx) ((call)->ops->invoke_blocking(call, env, op, msg_ctx))
+#define AXIS2_CALL_INVOKE_NON_BLOCKING(call, env, op, msg_ctx, callback) ((call)->ops->invoke_non_blocking(call, env, op, msg_ctx, callback))
 #define AXIS2_CALL_SET_TO(call, env, to) ((call)->ops->set_to(call, env, to))
 #define AXIS2_CALL_SET_TRANSPORT_INFO(call, env, sender_transport, listener_transport, use_separate_listener) ((call)->ops->set_transport_info(call, env, sender_transport, listener_transport, use_separate_listener))
 #define AXIS2_CALL_CHECK_TRANSPORT(call, env, msg_ctx) ((call)->ops->check_transport(call, env, msg_ctx))

@@ -317,10 +317,10 @@ typedef enum axis2_svc_type
 /******************************************************************************/
 
 
-#define AXIS2_AXIS2_NAMESPACE_PREFIX "axis2"
-#define AXIS2_AXIS2_NAMESPACE_URI "http://ws.apache.org/namespaces/axis2"
+#define AXIS2_NAMESPACE_PREFIX "axis2"
+#define AXIS2_NAMESPACE_URI "http://ws.apache.org/namespaces/axis2"
 
-#define AXIS2_SERVICE_GROUP_ID "ServiceGroupId"    
+#define AXIS2_SVC_GRP_ID "ServiceGroupId"    
 
 /** @} */
 

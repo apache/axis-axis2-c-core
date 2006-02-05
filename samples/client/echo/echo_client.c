@@ -66,6 +66,7 @@ int main(int argc, char** argv)
             client_home);
     AXIS2_STUB_SET_TRANSPORT_INFO(stub, &env, AXIS2_TRANSPORT_HTTP, 
         AXIS2_TRANSPORT_HTTP, AXIS2_FALSE);
+    AXIS2_STUB_SET_SOAP_VERSION(stub, &env, AXIS2_SOAP_11);
     /* create node and invoke echo */
     ret_node = axis2_echo_stub_echo(stub, &env, node);
     if(ret_node)

@@ -90,6 +90,12 @@ extern "C"
         axis2_any_content_type_t* (AXIS2_CALL *get_ref_params)(struct axis2_endpoint_ref *endpoint_ref, 
                                                        axis2_env_t **env);
         /**
+         * Method set_ref_params
+         */
+        axis2_status_t (AXIS2_CALL *set_ref_params)(struct axis2_endpoint_ref *endpoint_ref,
+                                                    axis2_env_t **env,
+                                                    axis2_any_content_type_t* any_content_type);
+        /**
          * Method get_svc_name
          */
         axis2_svc_name_t* (AXIS2_CALL *get_svc_name)(struct axis2_endpoint_ref *endpoint_ref, 
@@ -140,6 +146,7 @@ AXIS2_DECLARE(axis2_endpoint_ref_t*) axis2_endpoint_ref_create(axis2_env_t **env
 #define AXIS2_ENDPOINT_REF_GET_REF_PROPERTIES(endpoint_ref, env) ((endpoint_ref)->ops->get_ref_properties(endpoint_ref, env))
 #define AXIS2_ENDPOINT_REF_SET_REF_PROPERTIES(endpoint_ref, env, ref_properties) ((endpoint_ref)->ops->set_ref_properties(endpoint_ref, env, ref_properties))
 #define AXIS2_ENDPOINT_REF_GET_REF_PARAMS(endpoint_ref, env) ((endpoint_ref)->ops->get_ref_params(endpoint_ref, env))
+#define AXIS2_ENDPOINT_REF_SET_REF_PARAMS(endpoint_ref, env, any_content_type) ((endpoint_ref)->ops->set_ref_params(endpoint_ref, env, any_content_type))
 #define AXIS2_ENDPOINT_REF_GET_SVC_NAME(endpoint_ref, env) ((endpoint_ref)->ops->get_svc_name(endpoint_ref, env))
 #define AXIS2_ENDPOINT_REF_SET_SVC_NAME(endpoint_ref, env, svc_name) ((endpoint_ref)->ops->set_svc_name(endpoint_ref, env, svc_name))
 #define AXIS2_ENDPOINT_REF_GET_POLICIES(endpoint_ref, env) ((endpoint_ref)->ops->get_policies(endpoint_ref, env))

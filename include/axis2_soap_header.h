@@ -101,7 +101,7 @@ struct axis2_soap_builder;
         * given namespace uri exists
         * The returned array_list must be freed by the user.
         */
-        axis2_array_list_t* (AXIS2_CALL *get_header_block_with_namespace_uri)
+        axis2_array_list_t* (AXIS2_CALL *get_header_blocks_with_namespace_uri)
                                         (axis2_soap_header_t* header,
                                          axis2_env_t **env,
                                          axis2_char_t *ns_uri);
@@ -225,8 +225,8 @@ axis2_soap12_header_create_with_parent(axis2_env_t **env,
 #define AXIS2_SOAP_HEADER_SET_BUILDER(header, env, builder) \
         ((header)->ops->set_builder(header, env, builder))             
 
-#define AXIS2_SOAP_HEADER_GET_HEADER_BLOCK_WITH_NAMESPACE_URI(header, env, uri)\
-        ((header)->ops->get_header_block_with_namespace_uri(header, env, uri))
+#define AXIS2_SOAP_HEADER_GET_HEADER_BLOCKS_WITH_NAMESPACE_URI(header, env, uri)\
+        ((header)->ops->get_header_blocks_with_namespace_uri(header, env, uri))
 
 #define AXIS2_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(header, env) \
         ((header)->ops->get_all_header_blocks(header, env))
