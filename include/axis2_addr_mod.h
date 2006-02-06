@@ -30,6 +30,7 @@ extern "C"
 #endif
 
 AXIS2_DECLARE(axis2_handler_t*) axis2_addr_in_handler_create(axis2_env_t **env, axis2_qname_t *qname);
+AXIS2_DECLARE(axis2_handler_t*) axis2_addr_out_handler_create(axis2_env_t **env, axis2_qname_t *qname);
     
 /** @} */
     
