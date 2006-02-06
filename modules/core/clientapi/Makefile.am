@@ -9,6 +9,7 @@ libaxis2_clientapi_la_SOURCES = async_result.c \
                                 listener_manager.c \
                                 callback_recv.c \
                                 call.c \
+                                msg_sender.c \
                                 stub.c
 
 libaxis2_clientapi_la_LIBADD = 

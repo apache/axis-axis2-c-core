@@ -89,7 +89,7 @@ axis2_msg_sender_t* AXIS2_CALL axis2_msg_sender_create(axis2_env_t **env,
 	msg_sender_impl->msg_info_headers = NULL;
         
     msg_sender_impl->base = axis2_mep_client_create(env, svc_ctx, 
-						MEP_URI_IN_ONLY);
+						AXIS2_MEP_URI_IN_ONLY);
     if (NULL == msg_sender_impl->base)
     {
         axis2_msg_sender_free(&(msg_sender_impl->msg_sender), env);
