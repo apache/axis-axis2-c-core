@@ -40,6 +40,7 @@
 #include <axis2_allocator.h>
 #include <axis2_string.h>
 #include <axis2_conf.h>
+#include <axis2_hash.h>
 
 
 #ifdef __cplusplus
@@ -61,7 +62,8 @@ AXIS2_DECLARE_DATA struct axis2_module_ops
     /* initialize the module */
     axis2_status_t (AXIS2_CALL *
     init) (struct axis2_module *module, 
-            axis2_env_t **env, struct axis2_conf *axis2_system);
+            axis2_env_t **env, 
+            struct axis2_conf *axis2_system);
 
     /* TODO figure out how to get the engage() concept done */
     /* public void engage(ExecutionChain exeChain) throws AxisFault; */
@@ -69,14 +71,24 @@ AXIS2_DECLARE_DATA struct axis2_module_ops
     /* shutdown the module */
     axis2_status_t (AXIS2_CALL * 
     shutdown)(struct axis2_module *module,
-                axis2_env_t **env, struct axis2_conf *axis2_system);
+                axis2_env_t **env, 
+                struct axis2_conf *axis2_system);
     
+    /** 
+     * Return a hash map of handler create functions for the module
+     * @return function ptr map 
+     */
+    axis2_status_t (AXIS2_CALL * 
+    fill_handler_create_func_map)(struct axis2_module *module,
+                                    axis2_env_t **env);
+
 
 } ;
 
 AXIS2_DECLARE_DATA struct axis2_module 
 {
     axis2_module_ops_t *ops;
+    axis2_hash_t *handler_create_func_map;
 };
 
 /**
@@ -92,8 +104,10 @@ axis2_module_create (axis2_env_t **env);
 		((module)->ops->init (module, env, conf))
 
 #define AXIS2_MODULE_SHUTDOWN(module, env, conf) \
-		((module)->ops->free (module, env, conf))
+		((module)->ops->shutdown (module, env, conf))
 
+#define AXIS2_MODULE_FILL_HANDLER_CREATE_FUNC_MAP(module, env) \
+		((module)->ops->fill_handler_create_func_map (module, env))
 
 /** @} */
 

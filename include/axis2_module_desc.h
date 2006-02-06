@@ -207,7 +207,7 @@ struct axis2_module_desc_ops
     /**
      * @return
      */
-    axis2_module_t *(AXIS2_CALL *
+    struct axis2_module *(AXIS2_CALL *
     get_module) (axis2_module_desc_t *module_desc,
                                         axis2_env_t **env);
     
@@ -217,7 +217,7 @@ struct axis2_module_desc_ops
     axis2_status_t (AXIS2_CALL *
     set_module) (axis2_module_desc_t *module_desc,
                                     axis2_env_t **env,
-                                    axis2_module_t *module);                                        
+                                    struct axis2_module *module);                                        
 
 };
 

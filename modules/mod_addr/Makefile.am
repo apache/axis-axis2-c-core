@@ -1,6 +1,10 @@
+prglibdir=$(prefix)/modules/addressing
 lib_LTLIBRARIES = libaxis2_mod_addr.la
+prglib_DATA= module.xml
 AM_CPPFLAGS = $(CPPFLAGS)
-libaxis2_mod_addr_la_SOURCES = addr_in_handler.c addr_out_handler.c
+libaxis2_mod_addr_la_SOURCES = addr_in_handler.c \
+                                addr_out_handler.c \
+                                mod_addr.c
 
 libaxis2_mod_addr_la_LIBADD = 
 INCLUDES = -I$(top_builddir)/include \
