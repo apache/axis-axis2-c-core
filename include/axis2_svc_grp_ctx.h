@@ -91,9 +91,11 @@ struct axis2_svc_grp_ctx
     axis2_svc_grp_ctx_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_svc_grp_ctx_t*) axis2_svc_grp_ctx_create(axis2_env_t **env, 
-    struct axis2_svc_grp *svc_grp, 
-    struct axis2_conf_ctx *conf_ctx);
+
+AXIS2_DECLARE(axis2_svc_grp_ctx_t*) 
+axis2_svc_grp_ctx_create(axis2_env_t **env, 
+                        struct axis2_svc_grp *svc_grp, 
+                        struct axis2_conf_ctx *conf_ctx);
 
 /****************** Start of function macros **************************/
 

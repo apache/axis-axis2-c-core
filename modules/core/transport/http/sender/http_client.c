@@ -73,10 +73,10 @@ axis2_http_client_free (axis2_http_client_t *client, axis2_env_t **env);
 AXIS2_DECLARE(axis2_http_client_t *) 
 axis2_http_client_create (axis2_env_t **env, axis2_url_t *url)
 {
+    axis2_http_client_impl_t *http_client_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
             
-    axis2_http_client_impl_t *http_client_impl = 
-                        (axis2_http_client_impl_t *)AXIS2_MALLOC 
+    http_client_impl = (axis2_http_client_impl_t *)AXIS2_MALLOC 
                         ((*env)->allocator, sizeof(axis2_http_client_impl_t));
 	
     if(NULL == http_client_impl)
@@ -121,8 +121,10 @@ axis2_http_client_create (axis2_env_t **env, axis2_url_t *url)
 axis2_status_t AXIS2_CALL 
 axis2_http_client_free (axis2_http_client_t *client, axis2_env_t **env)
 {
+    axis2_http_client_impl_t *http_client_impl = NULL;
 	AXIS2_FUNC_PARAM_CHECK(client, env, AXIS2_FAILURE);
-    axis2_http_client_impl_t *http_client_impl = AXIS2_INTF_TO_IMPL(client);
+    http_client_impl = AXIS2_INTF_TO_IMPL(client);
+    
     if(NULL != http_client_impl->url)
     {
         AXIS2_URL_FREE(http_client_impl->url, env);
@@ -164,9 +166,10 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
 	int body_size = 0;
 	int written = 0;
 	axis2_status_t status = AXIS2_FAILURE;
+	axis2_bool_t chunking_enabled = AXIS2_FALSE;
+	
 	AXIS2_FUNC_PARAM_CHECK(client, env, AXIS2_FAILURE);
     client_impl = AXIS2_INTF_TO_IMPL(client);
-	axis2_bool_t chunking_enabled = AXIS2_FALSE;
 	
 	if(NULL == client_impl->url)
 	{
@@ -210,6 +213,7 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
 		char *str_header2 = NULL;
 		for(i = 0; i < header_count; i++)
 		{
+		    axis2_char_t *header_ext_form = NULL;
 			axis2_http_header_t *tmp_header = (axis2_http_header_t*)
 						AXIS2_ARRAY_LIST_GET(headers, env, i);
 			if(NULL == tmp_header)
@@ -225,7 +229,7 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
 			{
 				chunking_enabled = AXIS2_TRUE;
 			}
-			axis2_char_t *header_ext_form = AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(
+			header_ext_form = AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(
 						tmp_header, env);
 			str_header2 = AXIS2_STRACAT(str_header, header_ext_form, env);
 			AXIS2_FREE((*env)->allocator, str_header);

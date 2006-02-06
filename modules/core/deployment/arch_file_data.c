@@ -110,7 +110,7 @@ axis2_arch_file_data_set_deployable_svcs(axis2_arch_file_data_t *file_data,
                                
 /************************** End of function prototypes ************************/
 
-axis2_arch_file_data_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_arch_file_data_t *)
 axis2_arch_file_data_create(axis2_env_t **env)
 {
     axis2_arch_file_data_impl_t *arch_file_data_impl = NULL;
@@ -184,7 +184,7 @@ axis2_arch_file_data_create(axis2_env_t **env)
 	return &(arch_file_data_impl->arch_file_data);
 }
 
-axis2_arch_file_data_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_arch_file_data_t *) 
 axis2_arch_file_data_create_with_type_and_file(axis2_env_t **env,
                                                     int type,
                                                     axis2_file_t *file)
@@ -201,7 +201,7 @@ axis2_arch_file_data_create_with_type_and_file(axis2_env_t **env,
     return &(file_data_impl->arch_file_data);    
 }
 
-axis2_arch_file_data_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_arch_file_data_t *)
 axis2_arch_file_data_create_with_type_and_name(axis2_env_t **env,
                                                     int type,
                                                     axis2_char_t *name)

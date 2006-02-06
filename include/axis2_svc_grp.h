@@ -191,7 +191,7 @@ axis2_svc_grp_create (axis2_env_t **env);
  * @param conf
  * @return pointer to newly created service group
  */
-axis2_svc_grp_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_svc_grp_t *) 
 axis2_svc_grp_create_with_conf (axis2_env_t **env,
                                          struct axis2_conf *conf);
 

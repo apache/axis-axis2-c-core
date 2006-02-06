@@ -365,6 +365,9 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *attrib_value = NULL;
     axis2_om_element_t *handler_element = NULL;
+    axis2_om_node_t *order_node = NULL;
+    axis2_om_element_t *order_element = NULL;
+    axis2_qname_t *order_qname = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, handler_element, NULL);
@@ -446,9 +449,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     }
 
     /*processing phase Rules (order) */
-    axis2_om_node_t *order_node = NULL;
-    axis2_om_element_t *order_element = NULL;
-    axis2_qname_t *order_qname = NULL;
+
     
     order_qname = axis2_qname_create(env, AXIS2_ORDER, NULL, NULL);
     order_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(handler_element,

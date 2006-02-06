@@ -53,7 +53,7 @@ axis2_flow_get_handler_count(axis2_flow_t *flow,
 
 /************************** End of Function headers ************************/
 
-axis2_flow_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_flow_t *)
 axis2_flow_create (axis2_env_t **env)
 {
     axis2_flow_impl_t *flow_impl = NULL;

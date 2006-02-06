@@ -24,6 +24,7 @@
 #include <axis2_svc_builder.h>
 #include <axis2_om_node.h>
 #include <axis2_class_loader.h>
+#include <axis2_string.h>
 
 /** 
  * @brief DLL Description struct impl
@@ -1446,6 +1447,7 @@ axis2_dep_engine_get_axis_svc_name(axis2_dep_engine_t *dep_engine,
 
     file_name_l = AXIS2_STRDUP(file_name, env);
     ptr = AXIS2_STRRCHR(file_name_l, AXIS2_PATH_SEP_CHAR);
+   
     temp_name = ptr + 1;
     ptr = AXIS2_STRRCHR(temp_name, name_sep);
     ptr[0] = '\0';

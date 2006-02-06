@@ -85,10 +85,10 @@ axis2_phases_info_set_op_phases(axis2_phases_info_t *phases_info,
 axis2_phases_info_t * AXIS2_CALL 
 axis2_phases_info_create (axis2_env_t **env)
 {
+    axis2_phases_info_impl_t *phases_info_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     
-	axis2_phases_info_impl_t *phases_info_impl = 
-        (axis2_phases_info_impl_t *) AXIS2_MALLOC ((*env)->allocator, 
+	phases_info_impl = (axis2_phases_info_impl_t *) AXIS2_MALLOC ((*env)->allocator, 
         sizeof(axis2_phases_info_impl_t));
     
 	if(NULL == phases_info_impl)

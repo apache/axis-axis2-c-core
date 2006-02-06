@@ -89,10 +89,10 @@ axis2_soap_over_http_sender_free
 axis2_soap_over_http_sender_t * AXIS2_CALL 
 axis2_soap_over_http_sender_create(axis2_env_t **env)
 {
+    axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    axis2_soap_over_http_sender_impl_t *sender_impl = 
-                        (axis2_soap_over_http_sender_impl_t *)AXIS2_MALLOC 
+    sender_impl =  (axis2_soap_over_http_sender_impl_t *)AXIS2_MALLOC 
                         ((*env)->allocator, sizeof(
                         axis2_soap_over_http_sender_impl_t));
 	
@@ -137,9 +137,10 @@ axis2_status_t AXIS2_CALL
 axis2_soap_over_http_sender_free (axis2_soap_over_http_sender_t *sender, 
                         axis2_env_t **env)
 {
+    axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
 	AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
-    axis2_soap_over_http_sender_impl_t *sender_impl =
-                        AXIS2_INTF_TO_IMPL(sender);
+    
+    sender_impl = AXIS2_INTF_TO_IMPL(sender);
     if(NULL != sender_impl->http_version)
     {
         AXIS2_FREE((*env)->allocator, sender_impl->http_version);

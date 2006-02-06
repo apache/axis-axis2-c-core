@@ -87,7 +87,7 @@ axis2_flow_container_set_fault_outflow(axis2_flow_container_t *flow_container,
 
 /************************** End of function prototypes ************************/
 
-axis2_flow_container_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_flow_container_t *)
 axis2_flow_container_create (axis2_env_t **env)
 {
     axis2_flow_container_impl_t *flow_container_impl = NULL;

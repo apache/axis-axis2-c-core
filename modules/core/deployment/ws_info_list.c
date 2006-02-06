@@ -91,7 +91,7 @@ axis2_ws_info_list_update(axis2_ws_info_list_t *info_list,
                                 
 /************************** End of function prototypes ************************/
 
-axis2_ws_info_list_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_ws_info_list_t *) 
 axis2_ws_info_list_create_with_dep_engine (axis2_env_t **env,
                                             struct axis2_dep_engine *dep_engine)
 {
@@ -349,12 +349,12 @@ axis2_ws_info_list_get_file_item(axis2_ws_info_list_t *info_list,
 {
     axis2_ws_info_list_impl_t *info_list_impl = NULL;
     int i = 0;
-    
+    int size = 0;
     AXIS2_FUNC_PARAM_CHECK(info_list, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, file_name, NULL);
     info_list_impl = AXIS2_INTF_TO_IMPL(info_list);
     
-    int size = AXIS2_ARRAY_LIST_SIZE(info_list_impl->info_list, env);
+    size = AXIS2_ARRAY_LIST_SIZE(info_list_impl->info_list, env);
     for (i = 0; i < size; i++) 
     {
         axis2_ws_info_t *ws_info = NULL;

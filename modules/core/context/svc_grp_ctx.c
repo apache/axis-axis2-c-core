@@ -64,9 +64,10 @@ axis2_hash_t* AXIS2_CALL axis2_svc_grp_ctx_get_svc_ctx_map(struct axis2_svc_grp_
                         axis2_env_t **env);
 
 
-axis2_svc_grp_ctx_t* AXIS2_CALL axis2_svc_grp_ctx_create(axis2_env_t **env, 
-    axis2_svc_grp_t *svc_grp, 
-    struct axis2_conf_ctx *conf_ctx) 
+AXIS2_DECLARE(axis2_svc_grp_ctx_t*)
+axis2_svc_grp_ctx_create(axis2_env_t **env, 
+                        axis2_svc_grp_t *svc_grp, 
+                         struct axis2_conf_ctx *conf_ctx) 
 {
     axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
     

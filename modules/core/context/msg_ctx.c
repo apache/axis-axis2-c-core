@@ -399,7 +399,7 @@ axis2_op_t* AXIS2_CALL axis2_msg_ctx_find_op(axis2_msg_ctx_t *msg_ctx,
 
 /************************* End of function headers ****************************/	
 
-axis2_msg_ctx_t * AXIS2_CALL
+AXIS2_DECLARE(axis2_msg_ctx_t *)
 axis2_msg_ctx_create (axis2_env_t **env,
                         struct axis2_conf_ctx *conf_ctx,
                         struct axis2_transport_in_desc *transport_in_desc,

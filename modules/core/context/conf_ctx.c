@@ -92,7 +92,8 @@ axis2_svc_grp_ctx_t* AXIS2_CALL axis2_conf_ctx_fill_ctxs(struct axis2_conf_ctx *
                                                axis2_msg_ctx_t *msg_ctx);
 
 
-axis2_conf_ctx_t* AXIS2_CALL axis2_conf_ctx_create(axis2_env_t **env, axis2_conf_t *conf) 
+AXIS2_DECLARE(axis2_conf_ctx_t*)
+ axis2_conf_ctx_create(axis2_env_t **env, axis2_conf_t *conf) 
 {
     axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
     

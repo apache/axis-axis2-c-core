@@ -21,7 +21,7 @@
 #include <axis2_addr.h>
 #include <axis2_http_transport.h>
 
-axis2_msg_ctx_t *AXIS2_CALL
+AXIS2_DECLARE(axis2_msg_ctx_t *)
 axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
                                 axis2_msg_ctx_t *in_msg_ctx)
 {

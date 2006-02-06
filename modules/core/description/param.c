@@ -87,7 +87,7 @@ axis2_param_free(axis2_param_t *param,
 						axis2_env_t **env);
 
 /******************************************************************************/
-axis2_param_t* AXIS2_CALL 
+AXIS2_DECLARE(axis2_param_t*)
 axis2_param_create(axis2_env_t **env, 
 						axis2_char_t *name, void *value)
 {

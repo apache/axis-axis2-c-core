@@ -60,7 +60,7 @@ axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_hol
 
 /************************** End of function prototypes ************************/
 
-axis2_phase_holder_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_phase_holder_t *) 
 axis2_phase_holder_create (axis2_env_t **env)
 {
     axis2_phase_holder_impl_t *phase_holder_impl = NULL;
@@ -105,7 +105,7 @@ axis2_phase_holder_create (axis2_env_t **env)
 	return &(phase_holder_impl->phase_holder);
 }
 
-axis2_phase_holder_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_phase_holder_t *)
 axis2_phase_holder_create_with_phases (axis2_env_t **env, axis2_array_list_t *phases)
 {
     axis2_phase_holder_impl_t *phase_holder_impl = NULL;

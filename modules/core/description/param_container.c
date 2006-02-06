@@ -56,7 +56,7 @@ axis2_param_container_is_param_locked (axis2_param_container_t *param_container,
 
 /************************** End of function prototypes ************************/
 
-axis2_param_container_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_param_container_t *) 
 axis2_param_container_create (axis2_env_t **env)
 {
     axis2_param_container_impl_t *param_container_impl = NULL;

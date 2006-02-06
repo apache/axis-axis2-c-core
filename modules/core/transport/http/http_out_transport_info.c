@@ -59,11 +59,11 @@ axis2_http_out_transport_info_t * AXIS2_CALL
 axis2_http_out_transport_info_create(axis2_env_t **env,
 					axis2_http_simple_response_t *response)
 {
+    axis2_http_out_transport_info_impl_t *info_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_FUNC_PARAM_CHECK(response, env, NULL);
         
-    axis2_http_out_transport_info_impl_t *info_impl = 
-                        (axis2_http_out_transport_info_impl_t *)AXIS2_MALLOC 
+    info_impl = (axis2_http_out_transport_info_impl_t *)AXIS2_MALLOC 
                         ((*env)->allocator, sizeof(
                         axis2_http_out_transport_info_impl_t));
 	
@@ -100,9 +100,9 @@ axis2_status_t AXIS2_CALL
 axis2_http_out_transport_info_free (axis2_http_out_transport_info_t *info, 
 						axis2_env_t **env)
 {
+    axis2_http_out_transport_info_impl_t *info_impl = NULL;
 	AXIS2_FUNC_PARAM_CHECK(info, env, AXIS2_FAILURE);
-    axis2_http_out_transport_info_impl_t *info_impl =
-                        AXIS2_INTF_TO_IMPL(info);
+    info_impl = AXIS2_INTF_TO_IMPL(info);
 	
 	info_impl->response = NULL; /* response doesn't belong to info */
     if(NULL != info_impl->encoding)
@@ -125,11 +125,12 @@ axis2_http_out_transport_info_set_content_type
 {
     axis2_char_t *tmp1 = NULL;
 	axis2_char_t *tmp2 = NULL;
+	axis2_http_out_transport_info_impl_t *info_impl = NULL;
 	
 	AXIS2_FUNC_PARAM_CHECK(info, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, content_type, AXIS2_FAILURE);
 	
-	axis2_http_out_transport_info_impl_t *info_impl = AXIS2_INTF_TO_IMPL(info);
+	info_impl = AXIS2_INTF_TO_IMPL(info);
 	
 	if(NULL != info_impl->encoding)
 	{
@@ -157,10 +158,11 @@ axis2_http_out_transport_info_set_char_encoding
 				(axis2_http_out_transport_info_t *info, axis2_env_t **env,
 				axis2_char_t *encoding)
 {
+    axis2_http_out_transport_info_impl_t *info_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(info, env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, encoding, AXIS2_FAILURE);
 	
-    axis2_http_out_transport_info_impl_t *info_impl = AXIS2_INTF_TO_IMPL(info);
+    info_impl = AXIS2_INTF_TO_IMPL(info);
 	
 	if(NULL != info_impl->encoding)
 	{

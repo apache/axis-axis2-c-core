@@ -439,7 +439,7 @@ axis2_svc_create_with_qname (axis2_env_t **env,
  * @param wsdl_svc wsdl service
  * @return pointer to newly created service
  */
-axis2_svc_t * AXIS2_CALL
+AXIS2_DECLARE(axis2_svc_t *)
 axis2_svc_create_with_wsdl_svc (axis2_env_t **env, 
                                 struct axis2_wsdl_svc *wsdl_svc);
 

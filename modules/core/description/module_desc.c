@@ -236,7 +236,7 @@ axis2_module_desc_create (axis2_env_t **env)
 	return &(module_desc_impl->module_desc);
 }
 
-axis2_module_desc_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_module_desc_t *) 
 axis2_module_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qname)
 {
 	axis2_module_desc_impl_t *module_desc_impl = NULL;

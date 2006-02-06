@@ -109,7 +109,7 @@ axis2_dll_desc_get_timestamp (axis2_dll_desc_t *dll_desc,
                         
 /************************* End of function headers ****************************/	
 
-axis2_dll_desc_t * AXIS2_CALL
+AXIS2_DECLARE(axis2_dll_desc_t *)
 axis2_dll_desc_create (axis2_env_t **env)
 {
     axis2_dll_desc_impl_t *dll_desc_impl = NULL;

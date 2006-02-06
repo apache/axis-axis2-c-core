@@ -32,7 +32,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
                                 
 /************************** End of function prototypes ************************/
 
-axis2_msg_recv_t *AXIS2_CALL 
+AXIS2_DECLARE(axis2_msg_recv_t *) 
 axis2_raw_xml_in_out_msg_recv_create(axis2_env_t **env)
 {
     axis2_msg_recv_t *msg_recv = NULL;

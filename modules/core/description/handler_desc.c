@@ -96,7 +96,7 @@ axis2_status_t AXIS2_CALL
 axis2_handler_desc_free (struct axis2_handler_desc *handler_desc, 
                                                axis2_env_t **env);
 
-axis2_handler_desc_t* AXIS2_CALL 
+AXIS2_DECLARE(axis2_handler_desc_t*)
 axis2_handler_desc_create_with_qname(axis2_env_t **env, 
                                         axis2_qname_t *qname)
 {

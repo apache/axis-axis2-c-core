@@ -72,7 +72,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
 
 /************************** End of function prototypes ************************/
 
-axis2_conf_builder_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_conf_builder_t *) 
 axis2_conf_builder_create (axis2_env_t **env)
 {
     axis2_conf_builder_impl_t *conf_builder_impl = NULL;
@@ -110,7 +110,7 @@ axis2_conf_builder_create (axis2_env_t **env)
 	return &(conf_builder_impl->conf_builder);
 }
 
-axis2_conf_builder_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_conf_builder_t *)
 axis2_conf_builder_create_with_file_and_dep_engine_and_conf (axis2_env_t **env,
                                                 axis2_char_t *file,
                                                 axis2_dep_engine_t *engine,

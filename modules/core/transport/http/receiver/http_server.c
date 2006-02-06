@@ -71,10 +71,10 @@ axis2_http_server_free (axis2_transport_receiver_t *server, axis2_env_t **env);
 AXIS2_DECLARE(axis2_transport_receiver_t *) 
 axis2_http_server_create (axis2_env_t **env, axis2_char_t *repo, int port)
 {
+    axis2_http_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
             
-    axis2_http_server_impl_t *server_impl = 
-                        (axis2_http_server_impl_t *)AXIS2_MALLOC 
+    server_impl = (axis2_http_server_impl_t *)AXIS2_MALLOC 
                         ((*env)->allocator, sizeof(axis2_http_server_impl_t));
 	
     if(NULL == server_impl)

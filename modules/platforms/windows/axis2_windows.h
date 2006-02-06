@@ -48,7 +48,8 @@ extern "C"
 
 /*for network handling*/
 #include <winsock2.h>
-
+/* for time */
+#include <time.h>
 
 /***************************************************************
  * Default paths to shared library/DLLs and files
@@ -62,11 +63,15 @@ extern "C"
 #define AXIS2_PLATFORM_CHANNEL_PATH        "http_channel.dll"
 #define AXIS2_PLATFORM_SSLCHANNEL_PATH     "Unknown"
 
-#define AXIS2_PLATFORM_LOG_PATH            ""
-#define AXIS2_PLATFORM_CLIENTLOG_PATH      ""
-#define AXIS2_PLATFORM_CONFIG_PATH         ""
-#define AXIS2_PLATFORM_SECUREINFO			 ""
+#define AXIS2_PLATFORM_LOG_PATH            ""  /*/usr/local/axis2/log/axis2_log*/
+#define AXIS2_PLATFORM_CLIENTLOG_PATH      "" /* /usr/local/axis2/log/axis2_client_log*/
+#define AXIS2_PLATFORM_CONFIG_PATH         "" /* /etc/axiscpp.conf */
+#define AXIS2_PLATFORM_SECUREINFO			 "" 
 
+/**
+ * Resource that contains the configuration
+ */
+#define AXIS2_CONFIGURATION_RESOURCE "" /* should be set */
 
 // =============================================================
 // Library loading and procedure resolution
@@ -96,6 +101,9 @@ extern "C"
 // =============================================================
 // Miscellaneous
 // =============================================================
+
+#define AXIS2_STRRCHR(x, y) (strrchr(x, y))
+
 #define AXIS2_PLATFORM_SLEEP(x) Sleep(0);
 
 /**
@@ -143,7 +151,6 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
  */
 #define AXIS2_PLATFORM_GET_TIME_IN_MILLIS _ftime
 #define AXIS2_PLATFORM_TIMEB timeb
-
 /**
  * Platform specific file handling
  */
@@ -151,7 +158,7 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
 #define AXIS2_R_OK 04 /* test for read permission */
 #define AXIS2_W_OK 02 /* test for write permission */
 #define AXIS2_X_OK 00 /* test for execute or search permission */
-/*#define AXIS2_F_OK F_OK*/ /* test whether the directories leading to the file can be 
+#define AXIS2_F_OK 01 /* test whether the directories leading to the file can be 
                       searched and the file exists */
 /**
   * windows specific directory handling functions

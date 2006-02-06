@@ -70,11 +70,11 @@ AXIS2_DECLARE(axis2_url_t *)
 axis2_url_create (axis2_env_t **env, axis2_char_t *protocol, 
 						axis2_char_t *server, int port, axis2_char_t *path)
 {
+    axis2_url_impl_t *url_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, protocol, NULL);
 	
-    axis2_url_impl_t *url_impl = 
-                        (axis2_url_impl_t *)AXIS2_MALLOC ((*env)->allocator, 
+    url_impl =  (axis2_url_impl_t *)AXIS2_MALLOC ((*env)->allocator, 
 						sizeof(axis2_url_impl_t));
 	
     if(NULL == url_impl)
@@ -259,8 +259,9 @@ axis2_url_parse_string(axis2_env_t **env, axis2_char_t *str_url)
 axis2_status_t AXIS2_CALL 
 axis2_url_free (axis2_url_t *url, axis2_env_t **env)
 {
+    axis2_url_impl_t *url_impl = NULL;
 	AXIS2_FUNC_PARAM_CHECK(url, env, AXIS2_FAILURE);
-    axis2_url_impl_t *url_impl = AXIS2_INTF_TO_IMPL(url);
+    url_impl = AXIS2_INTF_TO_IMPL(url);
     if(NULL != url_impl->protocol)
     {
         AXIS2_FREE((*env)->allocator, url_impl->protocol);
@@ -289,12 +290,15 @@ axis2_char_t* AXIS2_CALL
 axis2_url_to_external_form (axis2_url_t *url, 
                 axis2_env_t **env)
 {
+    axis2_url_impl_t *url_impl = NULL;
+    axis2_char_t *external_form = NULL;
+    axis2_ssize_t len = 0;
     AXIS2_FUNC_PARAM_CHECK(url, env, NULL);
-    axis2_url_impl_t *url_impl = AXIS2_INTF_TO_IMPL(url);
-    axis2_ssize_t len = AXIS2_STRLEN(url_impl->protocol) + 
-                AXIS2_STRLEN(url_impl->server) + AXIS2_STRLEN(url_impl->path) + 
+    url_impl = AXIS2_INTF_TO_IMPL(url);
+    len = AXIS2_STRLEN(url_impl->protocol) + 
+            AXIS2_STRLEN(url_impl->server) + AXIS2_STRLEN(url_impl->path) + 
 				7; /* port number is maximum 5 digits */
-    axis2_char_t *external_form = (axis2_char_t*) AXIS2_MALLOC((*env)->allocator,
+    external_form = (axis2_char_t*) AXIS2_MALLOC((*env)->allocator,
                 len);
     sprintf(external_form, "%s://%s:%d%s", url_impl->protocol, url_impl->server,
                 url_impl->port, url_impl->path);

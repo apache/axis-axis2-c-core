@@ -78,8 +78,9 @@ axis2_http_worker_free(axis2_http_worker_t *http_worker,
 axis2_http_worker_t * AXIS2_CALL 
 axis2_http_worker_create (axis2_env_t **env, axis2_conf_ctx_t *conf_ctx)
 {
+    axis2_http_worker_impl_t *http_worker_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    axis2_http_worker_impl_t *http_worker_impl = (axis2_http_worker_impl_t *)
+    http_worker_impl = (axis2_http_worker_impl_t *)
         AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_http_worker_impl_t));
 	
     if(NULL == http_worker_impl)
@@ -142,6 +143,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	int content_length = -1;
 	axis2_http_header_t *encoding_header = NULL;
 	axis2_char_t *encoding_header_value = NULL;
+	axis2_op_ctx_t *op_ctx = NULL;
 	
 	AXIS2_FUNC_PARAM_CHECK(http_worker, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svr_conn, AXIS2_FAILURE);
@@ -328,7 +330,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 			
 		}
 	}
-	axis2_op_ctx_t *op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+	op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
 	if(NULL != op_ctx)
 	{
         axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(

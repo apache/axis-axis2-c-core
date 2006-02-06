@@ -66,17 +66,19 @@ axis2_http_status_line_free (axis2_http_status_line_t *status_line,
 axis2_http_status_line_t * AXIS2_CALL 
 axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_FUNC_PARAM_CHECK(str, env, NULL);
     axis2_char_t *tmp_status_line = NULL;
     axis2_char_t *reason_phrase = NULL;
     axis2_char_t *status_code= NULL;
     axis2_char_t *http_version = NULL;
     int i = 0;
     axis2_char_t *tmp = NULL;
+    axis2_http_status_line_impl_t *status_line_impl  = NULL;
     
-    axis2_http_status_line_impl_t *status_line_impl = 
-                        (axis2_http_status_line_impl_t *)AXIS2_MALLOC 
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_FUNC_PARAM_CHECK(str, env, NULL);
+   
+    
+    status_line_impl = (axis2_http_status_line_impl_t *)AXIS2_MALLOC 
                         ((*env)->allocator, sizeof(
                         axis2_http_status_line_impl_t));
 	
@@ -188,9 +190,10 @@ axis2_status_t AXIS2_CALL
 axis2_http_status_line_free (axis2_http_status_line_t *status_line, 
                                     axis2_env_t **env)
 {
+    axis2_http_status_line_impl_t *status_line_impl = NULL;
 	AXIS2_FUNC_PARAM_CHECK(status_line, env, AXIS2_FAILURE);
-    axis2_http_status_line_impl_t *status_line_impl =
-                        AXIS2_INTF_TO_IMPL(status_line);
+    status_line_impl = AXIS2_INTF_TO_IMPL(status_line);
+    
     if(NULL != status_line_impl->line)
     {
         AXIS2_FREE((*env)->allocator, status_line_impl->line);

@@ -81,13 +81,13 @@ axis2_wdsl_msg_ref_set_element(axis2_wsdl_msg_ref_t *msg_ref,
 
 /************************** End of function prototypes ************************/
 
-axis2_wsdl_msg_ref_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_wsdl_msg_ref_t *)
 axis2_wsdl_msg_ref_create (axis2_env_t **env)
 {
+    axis2_wsdl_msg_ref_impl_t *msg_ref_impl = NULL;
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	axis2_wsdl_msg_ref_impl_t *msg_ref_impl = 
-		(axis2_wsdl_msg_ref_impl_t *) AXIS2_MALLOC((*env)->allocator,
+	msg_ref_impl =  (axis2_wsdl_msg_ref_impl_t *) AXIS2_MALLOC((*env)->allocator,
 			sizeof(axis2_wsdl_msg_ref_impl_t));
 	
 	

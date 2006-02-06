@@ -175,7 +175,7 @@ extern "C"
  * @param ht The hash table
  * @return The number of key/value pairs in the hash table.
  */
-    unsigned int axis2_hash_count (axis2_hash_t *ht);
+  AXIS2_DECLARE( unsigned int ) axis2_hash_count (axis2_hash_t *ht);
 
 /**
  * Merge two hash tables into one new hash table. The values of the overlay

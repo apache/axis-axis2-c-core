@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
+#include <axis2_platform_auto_sense.h> 
 #include <axis2_http_svr_thread.h>
 #include <axis2_http_transport.h>
 #include <axis2_string.h>
@@ -21,6 +22,7 @@
 #include <axis2_http_simple_request.h>
 #include <axis2_simple_http_svr_conn.h>
 #include <axis2_url.h>
+
 
 
 /** 
@@ -67,10 +69,10 @@ axis2_http_svr_thread_free (axis2_http_svr_thread_t *svr_thread,
 axis2_http_svr_thread_t* AXIS2_CALL
 axis2_http_svr_thread_create (axis2_env_t **env, int port)
 {
+    axis2_http_svr_thread_impl_t *svr_thread_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
             
-    axis2_http_svr_thread_impl_t *svr_thread_impl = 
-                        (axis2_http_svr_thread_impl_t *)AXIS2_MALLOC 
+    svr_thread_impl = (axis2_http_svr_thread_impl_t *)AXIS2_MALLOC 
                         ((*env)->allocator, sizeof(
 						axis2_http_svr_thread_impl_t));
 	
@@ -155,7 +157,7 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 	while(AXIS2_FALSE == svr_thread_impl->stopped)
 	{
 		int socket = -1;
-		struct AXIS2_PLATFORM_TIMEB t1, t2;
+	 	struct AXIS2_PLATFORM_TIMEB t1, t2;  
 		axis2_simple_http_svr_conn_t *svr_conn = NULL;
 		axis2_http_simple_request_t *request = NULL;
 		int millisecs = 0;

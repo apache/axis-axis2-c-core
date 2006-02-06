@@ -63,7 +63,9 @@ axis2_status_t AXIS2_CALL axis2_phase_rule_free (struct axis2_phase_rule *phase_
 axis2_phase_rule_t*  AXIS2_CALL axis2_phase_rule_clone (struct axis2_phase_rule *phase_rule, 
                                    axis2_env_t **env);
 
-axis2_phase_rule_t* AXIS2_CALL axis2_phase_rule_create(axis2_env_t **env, axis2_char_t *name)
+
+AXIS2_DECLARE(axis2_phase_rule_t*)
+axis2_phase_rule_create(axis2_env_t **env, axis2_char_t *name)
 {
     axis2_phase_rule_impl_t *phase_rule_impl = NULL;
     

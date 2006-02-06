@@ -384,7 +384,7 @@ axis2_hash_set (axis2_hash_t *ht,
     /* else key not present and val==NULL */
 }
 
-unsigned int
+AXIS2_DECLARE( unsigned int )
 axis2_hash_count (axis2_hash_t * ht)
 {
     return ht->count;

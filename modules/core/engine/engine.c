@@ -57,7 +57,8 @@ axis2_status_t AXIS2_CALL axis2_engine_free(struct axis2_engine *engine,
                                    axis2_env_t **env);
     
 
-axis2_engine_t* AXIS2_CALL axis2_engine_create(axis2_env_t **env, axis2_conf_ctx_t *conf_ctx)
+AXIS2_DECLARE(axis2_engine_t*)
+axis2_engine_create(axis2_env_t **env, axis2_conf_ctx_t *conf_ctx)
 {
     axis2_engine_impl_t *engine_impl = NULL;
     

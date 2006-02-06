@@ -99,11 +99,11 @@ axis2_simple_http_svr_conn_free(axis2_simple_http_svr_conn_t *svr_conn,
 axis2_simple_http_svr_conn_t* AXIS2_CALL
 axis2_simple_http_svr_conn_create (axis2_env_t **env, int sockfd)
 {
+    axis2_simple_http_svr_conn_impl_t *svr_conn_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    axis2_simple_http_svr_conn_impl_t *svr_conn_impl = 
-                                (axis2_simple_http_svr_conn_impl_t *)
-                                AXIS2_MALLOC ((*env)->allocator, 
-                                sizeof(axis2_simple_http_svr_conn_impl_t));
+    svr_conn_impl = (axis2_simple_http_svr_conn_impl_t *)
+                        AXIS2_MALLOC ((*env)->allocator,
+                            sizeof(axis2_simple_http_svr_conn_impl_t));
     
     if(NULL == svr_conn_impl)
     {
@@ -182,9 +182,9 @@ axis2_status_t AXIS2_CALL
 axis2_simple_http_svr_conn_close(axis2_simple_http_svr_conn_t *svr_conn, 
                                     axis2_env_t **env)
 {
+    axis2_simple_http_svr_conn_impl_t *svr_conn_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(svr_conn, env, AXIS2_FAILURE);
-    axis2_simple_http_svr_conn_impl_t *svr_conn_impl = 
-                                    AXIS2_INTF_TO_IMPL(svr_conn);
+    svr_conn_impl = AXIS2_INTF_TO_IMPL(svr_conn);
 	
 	AXIS2_STREAM_FREE(svr_conn_impl->stream, env);
     if(-1 != svr_conn_impl->socket)
@@ -200,9 +200,9 @@ axis2_bool_t AXIS2_CALL
 axis2_simple_http_svr_conn_is_open(axis2_simple_http_svr_conn_t *svr_conn, 
                                     axis2_env_t **env)
 {
+    axis2_simple_http_svr_conn_impl_t *svr_conn_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(svr_conn, env, AXIS2_FAILURE);
-    axis2_simple_http_svr_conn_impl_t *svr_conn_impl = 
-                                    AXIS2_INTF_TO_IMPL(svr_conn);
+    svr_conn_impl = AXIS2_INTF_TO_IMPL(svr_conn);
     if(-1 != svr_conn_impl->socket)
     {
         return AXIS2_TRUE;

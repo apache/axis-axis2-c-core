@@ -55,12 +55,12 @@ AXIS2_DECLARE(axis2_http_header_t *) AXIS2_CALL
 axis2_http_header_create (axis2_env_t **env, axis2_char_t *name, 
                             axis2_char_t *value)
 {
+    axis2_http_header_impl_t *http_header_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_FUNC_PARAM_CHECK(name, env, NULL);
     AXIS2_FUNC_PARAM_CHECK(value, env, NULL);
         
-    axis2_http_header_impl_t *http_header_impl = 
-                        (axis2_http_header_impl_t *)AXIS2_MALLOC 
+    http_header_impl =  (axis2_http_header_impl_t *)AXIS2_MALLOC 
                         ((*env)->allocator, sizeof(
                         axis2_http_header_impl_t));
 	
@@ -135,9 +135,10 @@ axis2_http_header_create_by_str (axis2_env_t **env, axis2_char_t *str)
 axis2_status_t AXIS2_CALL 
 axis2_http_header_free (axis2_http_header_t *header, axis2_env_t **env)
 {
+    axis2_http_header_impl_t *http_header_impl = NULL;
 	AXIS2_FUNC_PARAM_CHECK(header, env, AXIS2_FAILURE);
-    axis2_http_header_impl_t *http_header_impl =
-                        AXIS2_INTF_TO_IMPL(header);
+    http_header_impl = AXIS2_INTF_TO_IMPL(header);
+    
     if(NULL != http_header_impl->name)
     {
         AXIS2_FREE((*env)->allocator, http_header_impl->name);
@@ -160,11 +161,14 @@ axis2_char_t* AXIS2_CALL
 axis2_http_header_to_external_form (axis2_http_header_t *header, 
                 axis2_env_t **env)
 {
+    axis2_http_header_impl_t *http_header_impl = NULL;
+    axis2_ssize_t len = 0;
+    axis2_char_t *external_form = NULL;
     AXIS2_FUNC_PARAM_CHECK(header, env, NULL);
-    axis2_http_header_impl_t *http_header_impl = AXIS2_INTF_TO_IMPL(header);
-    axis2_ssize_t len = AXIS2_STRLEN(http_header_impl->name) + 
+    http_header_impl = AXIS2_INTF_TO_IMPL(header);
+    len = AXIS2_STRLEN(http_header_impl->name) + 
                 AXIS2_STRLEN(http_header_impl->value) + 4;
-    axis2_char_t *external_form = (axis2_char_t*) AXIS2_MALLOC((*env)->allocator,
+    external_form = (axis2_char_t*) AXIS2_MALLOC((*env)->allocator,
                 len);
     sprintf(external_form, "%s:%s%s", http_header_impl->name, 
                 http_header_impl->value, AXIS2_HTTP_CRLF);

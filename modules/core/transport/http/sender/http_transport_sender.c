@@ -81,12 +81,12 @@ axis2_http_transport_sender_free
 axis2_transport_sender_t* AXIS2_CALL
 axis2_http_transport_sender_create(axis2_env_t **env)
 {
+    axis2_http_transport_sender_impl_t *transport_sender_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
         
-    axis2_http_transport_sender_impl_t *transport_sender_impl = 
-                        (axis2_http_transport_sender_impl_t *)AXIS2_MALLOC 
-                        ((*env)->allocator, sizeof(
-                        axis2_http_transport_sender_impl_t));
+    transport_sender_impl = (axis2_http_transport_sender_impl_t *)AXIS2_MALLOC 
+                            ((*env)->allocator, sizeof(
+                            axis2_http_transport_sender_impl_t));
 	
     if(NULL == transport_sender_impl)
 	{
@@ -127,9 +127,9 @@ axis2_http_transport_sender_free
 						(axis2_transport_sender_t *transport_sender, 
 						axis2_env_t **env)
 {
+    axis2_http_transport_sender_impl_t *transport_sender_impl = NULL;
 	AXIS2_FUNC_PARAM_CHECK(transport_sender, env, AXIS2_FAILURE);
-    axis2_http_transport_sender_impl_t *transport_sender_impl =
-                        AXIS2_INTF_TO_IMPL(transport_sender);
+    transport_sender_impl = AXIS2_INTF_TO_IMPL(transport_sender);
 
     if(NULL != transport_sender->ops)
         AXIS2_FREE((*env)->allocator, transport_sender->ops);
@@ -151,6 +151,7 @@ axis2_http_transport_sender_invoke
 	axis2_om_output_t *om_output = NULL;
 	axis2_char_t *buffer = NULL;
 	axis2_soap_envelope_t *soap_data_out = NULL;
+	axis2_bool_t do_mtom;
 	
 	AXIS2_FUNC_PARAM_CHECK(transport_sender, env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -180,7 +181,7 @@ axis2_http_transport_sender_invoke
 		char_set_enc = AXIS2_DEFAULT_CHAR_SET_ENCODING;
 	}
 		
-	axis2_bool_t do_mtom = axis2_http_transport_utils_do_write_mtom(env,
+	do_mtom = axis2_http_transport_utils_do_write_mtom(env,
 							msg_ctx);
 	AXIS2_MSG_CTX_SET_DOING_MTOM(msg_ctx, env, do_mtom);
 	AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx, 
@@ -417,7 +418,7 @@ axis2_http_transport_sender_write_message
 {
 	axis2_char_t *soap_action = NULL;
 	axis2_char_t *url = NULL;
-	
+	axis2_soap_over_http_sender_t *sender = NULL;
 	AXIS2_FUNC_PARAM_CHECK(transport_sender, env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, epr, AXIS2_FAILURE);
@@ -444,8 +445,8 @@ axis2_http_transport_sender_write_message
 	 *					soap_action);
 	 *	}
 	 */
-	axis2_soap_over_http_sender_t *sender = axis2_soap_over_http_sender_create
-							(env);
+	sender = axis2_soap_over_http_sender_create(env);
+	
 	if(NULL == sender)
 	{
 		return AXIS2_FAILURE;

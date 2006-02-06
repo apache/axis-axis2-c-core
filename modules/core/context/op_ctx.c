@@ -82,7 +82,8 @@ axis2_op_t* AXIS2_CALL axis2_op_ctx_get_op(struct axis2_op_ctx *op_ctx,
 axis2_hash_t* AXIS2_CALL axis2_op_ctx_get_msg_ctx_map(struct axis2_op_ctx *op_ctx, 
     axis2_env_t **env);
 
-axis2_op_ctx_t* AXIS2_CALL axis2_op_ctx_create(axis2_env_t **env, 
+AXIS2_DECLARE(axis2_op_ctx_t*)
+axis2_op_ctx_create(axis2_env_t **env, 
     axis2_op_t *op,
     struct axis2_svc_ctx* svc_ctx) 
 {

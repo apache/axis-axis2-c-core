@@ -100,11 +100,11 @@ axis2_http_response_writer_t* AXIS2_CALL
 axis2_http_response_writer_create_with_encoding(axis2_env_t **env,
                     axis2_stream_t *stream, const axis2_char_t *encoding)
 {
+    axis2_http_response_writer_impl_t *response_writer_impl = NULL;
     AXIS2_FUNC_PARAM_CHECK(stream, env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, encoding, NULL);
     
-    axis2_http_response_writer_impl_t *response_writer_impl = 
-                        (axis2_http_response_writer_impl_t *)AXIS2_MALLOC 
+    response_writer_impl = (axis2_http_response_writer_impl_t *)AXIS2_MALLOC 
                         ((*env)->allocator, sizeof(
                         axis2_http_response_writer_impl_t));
 	
@@ -281,8 +281,8 @@ axis2_http_response_writer_print_int
                 (axis2_http_response_writer_t *response_writer, 
                 axis2_env_t **env, int i)
 {
+    axis2_char_t int_str[10]; 
     AXIS2_FUNC_PARAM_CHECK(response_writer, env, AXIS2_FAILURE);
-    axis2_char_t int_str[10];
     sprintf(int_str, "%10d", i);
     return axis2_http_response_writer_print_str(response_writer, env, int_str);
 }

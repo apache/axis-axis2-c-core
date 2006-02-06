@@ -61,11 +61,11 @@ axis2_wsdl_soap_op_set_soap_action(axis2_wsdl_soap_op_t *soap_op,
                         
 /************************** End of function prototypes ************************/
 
-axis2_wsdl_soap_op_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_wsdl_soap_op_t *)
 axis2_wsdl_soap_op_create (axis2_env_t **env)
 {
     axis2_wsdl_soap_op_impl_t *soap_op_impl = NULL;
-    
+    axis2_qname_t *type_l = NULL;
 	AXIS2_ENV_CHECK(env, NULL);
 	
 	soap_op_impl = (axis2_wsdl_soap_op_impl_t *) 
@@ -80,7 +80,7 @@ axis2_wsdl_soap_op_create (axis2_env_t **env)
     soap_op_impl->style = NULL;
     soap_op_impl->soap_action = NULL;
     soap_op_impl->soap_op.ops = NULL;
-    axis2_qname_t *type_l = NULL;
+    
     
     type_l = axis2_qname_create(env, "op", AXIS2_SOAP_11_OP, NULL);
     

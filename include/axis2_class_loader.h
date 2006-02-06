@@ -40,14 +40,14 @@ extern "C"
  * @{
  */
     
-axis2_status_t AXIS2_CALL
+AXIS2_DECLARE(axis2_status_t)
 axis2_class_loader_init(axis2_env_t **env);
 
-axis2_status_t AXIS2_CALL
+AXIS2_DECLARE(axis2_status_t)
 axis2_class_loader_delete_dll (axis2_env_t **env,
                                     axis2_param_t *impl_info_param);
 
-void *AXIS2_CALL
+AXIS2_DECLARE(void *)
 axis2_class_loader_create_dll (axis2_env_t **env,
                                 axis2_param_t *impl_info_param);
     

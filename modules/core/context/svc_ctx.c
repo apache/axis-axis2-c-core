@@ -56,7 +56,8 @@ struct axis2_conf_ctx* AXIS2_CALL axis2_svc_ctx_get_conf_ctx(struct axis2_svc_ct
 axis2_op_ctx_t* AXIS2_CALL axis2_svc_ctx_create_op_ctx(struct axis2_svc_ctx *svc_ctx, 
                                             axis2_env_t **env, axis2_qname_t *qname);
 
-axis2_svc_ctx_t* AXIS2_CALL axis2_svc_ctx_create(axis2_env_t **env, 
+AXIS2_DECLARE(axis2_svc_ctx_t*)
+axis2_svc_ctx_create(axis2_env_t **env, 
     axis2_svc_t *svc,
     struct axis2_svc_grp_ctx *svc_grp_ctx) 
 {

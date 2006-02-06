@@ -196,7 +196,7 @@ axis2_phase_resolver_create (axis2_env_t **env)
 	return &(phase_resolver_impl->phase_resolver);
 }
 
-axis2_phase_resolver_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_phase_resolver_t *) 
 axis2_phase_resolver_create_with_config (axis2_env_t **env, 
                                          axis2_conf_t *axis2_config)
 {
@@ -213,7 +213,7 @@ axis2_phase_resolver_create_with_config (axis2_env_t **env,
     return &(phase_resolver_impl->phase_resolver);
 }
 
-axis2_phase_resolver_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_phase_resolver_t *)
 axis2_phase_resolver_create_with_config_and_svc (axis2_env_t **env, 
                                                 axis2_conf_t *axis2_config,
                                                 axis2_svc_t *svc)

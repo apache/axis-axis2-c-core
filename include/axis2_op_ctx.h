@@ -145,9 +145,10 @@ struct axis2_op_ctx
     axis2_op_ctx_ops_t *ops;    
 };
 
-axis2_op_ctx_t* AXIS2_CALL axis2_op_ctx_create(axis2_env_t **env, 
-    struct axis2_op *op,
-    struct axis2_svc_ctx * svc_ctx);
+AXIS2_DECLARE(axis2_op_ctx_t*)
+axis2_op_ctx_create(axis2_env_t **env, 
+                    struct axis2_op *op,
+                    struct axis2_svc_ctx * svc_ctx);
     
 /************************** Start of function macros **************************/
 #define AXIS2_OP_CTX_GET_BASE(op_ctx, env) ((op_ctx)->ops->get_base(op_ctx, env))
