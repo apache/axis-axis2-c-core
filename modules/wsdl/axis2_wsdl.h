@@ -124,7 +124,7 @@ extern "C"
  */
 #define AXIS2_MESSAGE_LABEL_IN 0
 
-#define AXIS2_MESSAGE_LABEL_IN_VALUE "In"
+#define AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE "In"
 
 /**
  * Constant to represent the message label "Out" which is used by the
@@ -133,7 +133,7 @@ extern "C"
  */
 #define AXIS2_MESSAGE_LABEL_OUT 1
 
-#define AXIS2_MESSAGE_LABEL_OUT_VALUE "Out"
+#define AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE "Out"
 
 /**
  *
