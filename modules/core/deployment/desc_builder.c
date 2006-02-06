@@ -739,41 +739,42 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
 
 axis2_status_t AXIS2_CALL
 axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
-                          axis2_env_t **env,
-                          struct axis2_om_children_qname_iterator *module_refs, 
-                          struct axis2_op *op)
+                              axis2_env_t **env,
+                              axis2_om_children_qname_iterator_t *module_refs, 
+                              axis2_op_t *op)
 {
     axis2_desc_builder_impl_t *desc_builder_impl = NULL;
-    struct axis2_om_element *moduleref = NULL;
-    struct axis2_om_attribute *module_ref_attrib = NULL;
-    axis2_qname_t *ref = NULL;
+    axis2_om_element_t *moduleref = NULL;
+    axis2_om_attribute_t *module_ref_attrib = NULL;
+    axis2_qname_t *qref = NULL;
     axis2_status_t status = AXIS2_FAILURE;
         
     AXIS2_FUNC_PARAM_CHECK(desc_builder, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_refs, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
-    
     desc_builder_impl = AXIS2_INTF_TO_IMPL(desc_builder);
     
     while(AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(module_refs,
         env))
     {
-        moduleref = (struct axis2_om_element *)
+        moduleref = (axis2_om_element_t *)
             AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(module_refs, env);
-        ref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
-        module_ref_attrib = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(moduleref, env, ref);
+        qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
+        module_ref_attrib = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(moduleref, env, qref);
+        AXIS2_QNAME_FREE(qref, env);
         if(NULL != module_ref_attrib)
         {
             axis2_char_t *ref_name = NULL;
             axis2_qname_t *ref_qname = NULL;
+            axis2_module_desc_t *module_desc = NULL;
             
             ref_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_ref_attrib, env);
             ref_qname = axis2_qname_create(env, ref_name, NULL, NULL);
-            if( NULL == AXIS2_DEP_ENGINE_GET_MODULE(desc_builder->engine, env,
-                ref_qname))
+            module_desc = AXIS2_DEP_ENGINE_GET_MODULE(desc_builder->engine, env, 
+                ref_qname);
+            if(NULL == module_desc)
             {
                 AXIS2_QNAME_FREE(ref_qname, env);
-                AXIS2_QNAME_FREE(ref, env);
                 AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_NOT_FOUND, 
                     AXIS2_FAILURE);
                 return AXIS2_FAILURE;
@@ -781,10 +782,9 @@ axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
             else
             {
                 status = AXIS2_OP_ADD_MODULE(op, env, ref_qname);
-                if(AXIS2_FAILURE == status)
+                AXIS2_QNAME_FREE(ref_qname, env);
+                if(AXIS2_SUCCESS != status)
                 {
-                    AXIS2_QNAME_FREE(ref_qname, env);
-                    AXIS2_QNAME_FREE(ref, env);
                     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_NOT_FOUND, 
                         AXIS2_FAILURE);
                     return AXIS2_FAILURE;

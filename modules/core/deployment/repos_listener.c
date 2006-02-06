@@ -240,6 +240,7 @@ axis2_repos_listener_check_svcs(axis2_repos_listener_t *listener,
     
     AXIS2_FUNC_PARAM_CHECK(listener, env, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
+    
     temp_path = AXIS2_STRACAT(listener_impl->folder_name, AXIS2_PATH_SEP_STR, 
         env);
     svc_path = AXIS2_STRACAT(temp_path, AXIS2_SVC_PATH, env);
