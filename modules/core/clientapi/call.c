@@ -1228,7 +1228,11 @@ axis2_call_assume_svc_ctx(axis2_call_t *call,
         AXIS2_CONF_ADD_SVC(conf, env, axis_svc);
     }
     svc_grp = AXIS2_SVC_GET_PARENT(axis_svc, env);
+    if (!svc_grp)
+        return NULL;
     svc_grp_ctx = AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env, conf_ctx);
+    if (!svc_grp_ctx)
+        return NULL;
     assumed_svc_name = AXIS2_QNAME_GET_LOCALPART(assumed_svc_qname, env);    
     svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, assumed_svc_name);
     AXIS2_QNAME_FREE(assumed_svc_qname, env);

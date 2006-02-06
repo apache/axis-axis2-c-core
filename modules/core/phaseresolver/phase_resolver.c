@@ -948,6 +948,9 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
     
     ops = AXIS2_SVC_GET_OPS(svc, env);
+    if (!ops)
+        return AXIS2_FAILURE;
+
     for (index_i = axis2_hash_first (ops, env); index_i; index_i = axis2_hash_next (env, index_i))
     {
         void *v = NULL;
