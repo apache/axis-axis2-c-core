@@ -75,7 +75,7 @@ axis2_http_worker_free(axis2_http_worker_t *http_worker,
 								
 /***************************** End of function headers ************************/
 
-axis2_http_worker_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_http_worker_t *)
 axis2_http_worker_create (axis2_env_t **env, axis2_conf_ctx_t *conf_ctx)
 {
     axis2_http_worker_impl_t *http_worker_impl = NULL;

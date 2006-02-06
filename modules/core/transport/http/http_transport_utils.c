@@ -33,7 +33,7 @@
 
 /***************************** Function headers *******************************/
 
-axis2_status_t AXIS2_CALL 
+AXIS2_DECLARE(axis2_status_t)
 axis2_http_transport_utils_process_http_post_request
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
                         axis2_stream_t *in_stream, axis2_stream_t *out_stream,
@@ -41,7 +41,7 @@ axis2_http_transport_utils_process_http_post_request
                         axis2_char_t *soap_action_header,
                         axis2_char_t *request_uri);
     
-axis2_bool_t AXIS2_CALL 
+AXIS2_DECLARE(axis2_bool_t) 
 axis2_http_transport_utils_process_http_get_request
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
                         axis2_stream_t *in_stream, axis2_stream_t *out_stream,
@@ -50,55 +50,55 @@ axis2_http_transport_utils_process_http_get_request
                         axis2_char_t *request_uri, axis2_conf_ctx_t *conf_ctx, 
                         axis2_hash_t *request_params);
     
-axis2_soap_envelope_t* AXIS2_CALL 
+AXIS2_DECLARE(axis2_soap_envelope_t*)
 axis2_http_transport_utils_create_envelope_from_get_request
                         (axis2_env_t **env, axis2_char_t *request_uri,
                         axis2_hash_t *request_params);
     
-axis2_om_stax_builder_t* AXIS2_CALL 
+AXIS2_DECLARE(axis2_om_stax_builder_t* )
 axis2_http_transport_utils_select_builder_for_mime
                         (axis2_env_t **env, axis2_char_t *request_uri,
                         axis2_msg_ctx_t *msg_ctx, axis2_stream_t *in_stream,
                         axis2_char_t *content_type);
     
-axis2_bool_t AXIS2_CALL 
+AXIS2_DECLARE(axis2_bool_t ) 
 axis2_http_transport_utils_is_optimized(axis2_env_t **env, 
                                         axis2_om_element_t *om_element);
                                                 
-axis2_bool_t AXIS2_CALL 
+AXIS2_DECLARE(axis2_bool_t ) 
 axis2_http_transport_utils_do_write_mtom(axis2_env_t **env, 
                                         axis2_msg_ctx_t *msg_ctx);
                                                 
-axis2_bool_t AXIS2_CALL 
+AXIS2_DECLARE(axis2_bool_t ) 
 axis2_http_transport_utils_is_doing_rest(axis2_env_t **env, 
                                         axis2_msg_ctx_t *msg_ctx);
                                                 
-axis2_bool_t AXIS2_CALL 
+AXIS2_DECLARE(axis2_bool_t) 
 axis2_http_transport_utils_is_doing_rest_through_post
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx);
 						
-axis2_status_t AXIS2_CALL
+AXIS2_DECLARE(axis2_status_t)
 axis2_http_transport_utils_strdecode(axis2_env_t **env, axis2_char_t *dest, 
 						axis2_char_t *src);
 						
-int AXIS2_CALL
+AXIS2_DECLARE(int)
 axis2_http_transport_utils_hexit(axis2_char_t c);
 
-axis2_char_t* AXIS2_CALL
+AXIS2_DECLARE(axis2_char_t* )
 axis2_http_transport_utils_get_services_html(axis2_env_t **env, 
 							axis2_conf_ctx_t *conf_ctx);
-axis2_char_t* AXIS2_CALL
+AXIS2_DECLARE(axis2_char_t*)
 axis2_http_transport_utils_get_charset_enc(axis2_env_t **env, 
 						axis2_char_t *content_type);
 int
 axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx);
 
-axis2_soap_envelope_t* AXIS2_CALL
+AXIS2_DECLARE(axis2_soap_envelope_t*)
 axis2_http_transport_utils_create_soap_msg(axis2_env_t **env, 
                         axis2_msg_ctx_t *msg_ctx, axis2_char_t *soap_ns_uri);
 /***************************** End of function headers ************************/
 
-axis2_status_t AXIS2_CALL 
+AXIS2_DECLARE(axis2_status_t ) 
 axis2_http_transport_utils_process_http_post_request
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
                         axis2_stream_t *in_stream, axis2_stream_t *out_stream,
@@ -316,7 +316,7 @@ axis2_http_transport_utils_process_http_post_request
 }
 
 
-axis2_bool_t AXIS2_CALL 
+AXIS2_DECLARE(axis2_bool_t) 
 axis2_http_transport_utils_process_http_get_request
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
                         axis2_stream_t *in_stream, axis2_stream_t *out_stream,
@@ -374,7 +374,7 @@ axis2_http_transport_utils_process_http_get_request
 }
 
 
-axis2_soap_envelope_t* AXIS2_CALL 
+AXIS2_DECLARE(axis2_soap_envelope_t*)
 axis2_http_transport_utils_create_envelope_from_get_request
                         (axis2_env_t **env, axis2_char_t *request_uri,
                         axis2_hash_t *request_params)
@@ -436,7 +436,7 @@ axis2_http_transport_utils_create_envelope_from_get_request
 }
 
 
-axis2_om_stax_builder_t* AXIS2_CALL 
+AXIS2_DECLARE(axis2_om_stax_builder_t* )
 axis2_http_transport_utils_select_builder_for_mime
                         (axis2_env_t **env, axis2_char_t *request_uri,
                         axis2_msg_ctx_t *msg_ctx, axis2_stream_t *in_stream,
@@ -449,7 +449,7 @@ axis2_http_transport_utils_select_builder_for_mime
 }
 
 
-axis2_bool_t AXIS2_CALL 
+AXIS2_DECLARE(axis2_bool_t ) 
 axis2_http_transport_utils_is_optimized(axis2_env_t **env, 
                                         axis2_om_element_t *om_element)
 {
@@ -460,7 +460,7 @@ axis2_http_transport_utils_is_optimized(axis2_env_t **env,
 }
 
 
-axis2_bool_t AXIS2_CALL 
+AXIS2_DECLARE(axis2_bool_t) 
 axis2_http_transport_utils_do_write_mtom(axis2_env_t **env, 
                                         axis2_msg_ctx_t *msg_ctx)
 {
@@ -471,7 +471,7 @@ axis2_http_transport_utils_do_write_mtom(axis2_env_t **env,
 }
 
 
-axis2_bool_t AXIS2_CALL 
+AXIS2_DECLARE(axis2_bool_t) 
 axis2_http_transport_utils_is_doing_rest(axis2_env_t **env, 
                                         axis2_msg_ctx_t *msg_ctx)
 {
@@ -482,7 +482,7 @@ axis2_http_transport_utils_is_doing_rest(axis2_env_t **env,
 }
 
 
-axis2_bool_t AXIS2_CALL 
+AXIS2_DECLARE(axis2_bool_t) 
 axis2_http_transport_utils_is_doing_rest_through_post
                         (axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
 {
@@ -492,7 +492,7 @@ axis2_http_transport_utils_is_doing_rest_through_post
     return AXIS2_FALSE;
 }
 
-axis2_hash_t *AXIS2_CALL
+AXIS2_DECLARE(axis2_hash_t *)
 axis2_http_transport_utils_get_request_params(axis2_env_t **env, 
 						axis2_char_t *request_uri)
 {
@@ -555,7 +555,7 @@ axis2_http_transport_utils_get_request_params(axis2_env_t **env,
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_DECLARE(axis2_status_t)
 axis2_http_transport_utils_strdecode(axis2_env_t **env, axis2_char_t *dest, 
 						axis2_char_t *src)
 {
@@ -582,7 +582,7 @@ axis2_http_transport_utils_strdecode(axis2_env_t **env, axis2_char_t *dest,
 }
 
 
-int AXIS2_CALL
+AXIS2_DECLARE(int )
 axis2_http_transport_utils_hexit(axis2_char_t c)
 {
 	if ( c >= '0' && c <= '9' )
@@ -600,7 +600,7 @@ axis2_http_transport_utils_hexit(axis2_char_t c)
 	return 0;           /* shouldn't happen, we're guarded by isxdigit() */
 }
 
-axis2_char_t* AXIS2_CALL
+AXIS2_DECLARE(axis2_char_t*)
 axis2_http_transport_utils_get_services_html(axis2_env_t **env, 
 							axis2_conf_ctx_t *conf_ctx)
 {
@@ -719,7 +719,7 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 	return ret;
 }
 
-axis2_char_t* AXIS2_CALL
+AXIS2_DECLARE(axis2_char_t*)
 axis2_http_transport_utils_get_charset_enc(axis2_env_t **env, 
 						axis2_char_t *content_type)
 {
@@ -791,7 +791,7 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
 	return 0;	
 }
 
-axis2_soap_envelope_t* AXIS2_CALL
+AXIS2_DECLARE(axis2_soap_envelope_t*)
 axis2_http_transport_utils_create_soap_msg(axis2_env_t **env, 
                         axis2_msg_ctx_t *msg_ctx, axis2_char_t *soap_ns_uri)
 {

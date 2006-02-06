@@ -66,14 +66,14 @@ axis2_http_chunked_stream_free (axis2_http_chunked_stream_t *chunked_stream,
                         axis2_env_t **env);				
 /***************************** End of function headers ************************/
 
-axis2_http_chunked_stream_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_http_chunked_stream_t *)
 axis2_http_chunked_stream_create(axis2_env_t **env, axis2_stream_t *stream)
 {
+    axis2_http_chunked_stream_impl_t *chunked_stream_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, stream, NULL);
         
-    axis2_http_chunked_stream_impl_t *chunked_stream_impl = 
-                        (axis2_http_chunked_stream_impl_t *)AXIS2_MALLOC 
+    chunked_stream_impl = (axis2_http_chunked_stream_impl_t *)AXIS2_MALLOC 
                         ((*env)->allocator, sizeof(
                         axis2_http_chunked_stream_impl_t));
 	
@@ -158,7 +158,7 @@ axis2_http_chunked_stream_read (axis2_http_chunked_stream_t *chunked_stream,
 		if(chunked_stream_impl->unread_len < yet_to_read)
 		{
 			len = AXIS2_STREAM_READ(chunked_stream_impl->stream, env, 
-						buffer + count - yet_to_read, 
+						(axis2_char_t*)buffer + count - yet_to_read, 
 						chunked_stream_impl->unread_len);
 			yet_to_read -= len;
 			chunked_stream_impl->unread_len -= len;
@@ -170,7 +170,7 @@ axis2_http_chunked_stream_read (axis2_http_chunked_stream_t *chunked_stream,
 		else
 		{
 			len = AXIS2_STREAM_READ(chunked_stream_impl->stream, env, 
-						buffer + count - yet_to_read, 
+						(axis2_char_t*)buffer + count - yet_to_read, 
 						yet_to_read);
 			yet_to_read -= len;	
 			chunked_stream_impl->unread_len -= len;

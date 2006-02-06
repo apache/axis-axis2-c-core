@@ -74,7 +74,7 @@ AXIS2_DECLARE_DATA struct axis2_http_chunked_stream
 };
 
 
-axis2_http_chunked_stream_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_http_chunked_stream_t *) 
 axis2_http_chunked_stream_create(axis2_env_t **env, axis2_stream_t* stream);
 /********************* Start of function macros	***************************/
 

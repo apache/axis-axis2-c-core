@@ -70,7 +70,7 @@ AXIS2_DECLARE_DATA struct axis2_http_out_transport_info
 };
 
 
-axis2_http_out_transport_info_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_http_out_transport_info_t *) 
 axis2_http_out_transport_info_create(axis2_env_t **env,
 					axis2_http_simple_response_t *response);
 
