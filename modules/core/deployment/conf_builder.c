@@ -685,7 +685,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
         
             AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc); 
             impl_info_param->ops->value_free = 
-                axis2_dll_desc_as_param_value_free;
+                axis2_dll_desc_free_void_arg;
             transport_sender = (axis2_transport_sender_t *) 
                 axis2_class_loader_create_dll(env, impl_info_param);
             AXIS2_TRANSPORT_OUT_DESC_SET_SENDER(transport_out, env, 
@@ -841,7 +841,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             
                 AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc); 
                 impl_info_param->ops->value_free = 
-                    axis2_dll_desc_as_param_value_free;
+                    axis2_dll_desc_free_void_arg;
                 recv = (axis2_transport_receiver_t *) 
                     axis2_class_loader_create_dll(env, impl_info_param);
                 stat = AXIS2_TRANSPORT_IN_DESC_SET_RECV(transport_in, env, 

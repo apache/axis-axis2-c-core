@@ -52,7 +52,7 @@ extern "C"
 /**
  * Resource that contains the configuration
  */
-#define AXIS2_CONFIGURATION_RESOURCE "/home/damitha/programs/axis2c/axis2.xml"
+#define AXIS2_CONFIGURATION_RESOURCE "/usr/local/axis2/axis2.xml"
 
 /*****************************************************************
  * Library loading and procedure resolution

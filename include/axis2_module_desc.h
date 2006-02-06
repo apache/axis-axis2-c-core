@@ -256,7 +256,22 @@ AXIS2_DECLARE(axis2_module_desc_t *)
 axis2_module_desc_create_with_qname (axis2_env_t **env, 
                                         axis2_qname_t *qname);
 
+/**
+ * Free module_desc passed as void pointer. This will be
+ * cast into appropriate type and then pass the cast object
+ * into the module_desc structure's free method
+ */
+AXIS2_DECLARE(axis2_status_t) 
+axis2_module_desc_free_void_arg (void *module_desc,
+                                        axis2_env_t **env);
 
+/**
+ * Free module_desc array passed as void pointer.
+ */
+AXIS2_DECLARE(axis2_status_t) 
+axis2_module_desc_array_list_free (void *module_desc_list,
+                                axis2_env_t **env);
+                                
 /************************* Start of function macros	***************************/
 	
 #define AXIS2_MODULE_DESC_FREE(module_desc, env) \

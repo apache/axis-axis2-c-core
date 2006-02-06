@@ -29,7 +29,7 @@ get_module_list(axis2_env_t **env)
 }
 
 axis2_hash_t *
-get_module_list_map(axis2_env_t **env)
+get_module_list_map(axis2_wsdl_component_t *wsdl_comp, axis2_env_t **env)
 {
     axis2_hash_t *module_list_map = NULL;
     axis2_array_list_t *module_list = NULL;
@@ -42,16 +42,22 @@ get_module_list_map(axis2_env_t **env)
     module_list = get_module_list(env);
     axis2_hash_set(module_list_map, AXIS2_MODULEREF_KEY, 
         AXIS2_HASH_KEY_STRING, module_list);
+    AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(wsdl_comp, 
+        env, AXIS2_MODULEREF_KEY, axis2_module_desc_array_list_free);
     module_list = NULL;
 
     module_list = get_module_list(env);
     axis2_hash_set(module_list_map, AXIS2_MODULEREF_KEY, 
         AXIS2_HASH_KEY_STRING, module_list);
+    AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(wsdl_comp, 
+        env, AXIS2_MODULEREF_KEY, axis2_module_desc_array_list_free);
     module_list = NULL;
     
     module_list = get_module_list(env);
     axis2_hash_set(module_list_map, AXIS2_MODULEREF_KEY, 
         AXIS2_HASH_KEY_STRING, module_list);
+    AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(wsdl_comp, 
+        env, AXIS2_MODULEREF_KEY, axis2_module_desc_array_list_free);
     module_list = NULL;
 
     return module_list_map;
@@ -73,12 +79,12 @@ void Testaxis2_wsdl_component_set_component_properties(CuTest *tc)
 
     wsdl_comp = axis2_wsdl_component_create(&env);
     CuAssertPtrNotNull(tc, wsdl_comp);
-    module_list_map = get_module_list_map(&env);
+    module_list_map = get_module_list_map(wsdl_comp, &env);
     CuAssertPtrNotNull(tc, module_list_map);
     actual = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTIES(wsdl_comp, &env, module_list_map);
     /* again create a module_list_map and assign to see whether it works correctly */
     module_list_map = NULL;
-    module_list_map = get_module_list_map(&env);
+    module_list_map = get_module_list_map(wsdl_comp, &env);
     CuAssertPtrNotNull(tc, module_list_map);
     actual = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTIES(wsdl_comp, &env, module_list_map);
     /*AXIS2_WSDL_COMPONENT_FREE(wsdl_comp, &env);*/

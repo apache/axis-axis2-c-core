@@ -129,6 +129,17 @@ axis2_flow_free (axis2_flow_t *flow, axis2_env_t **env)
 }
 
 axis2_status_t AXIS2_CALL
+axis2_flow_free_void_arg (void *flow,
+                            axis2_env_t **env)
+{
+    axis2_flow_t *flow_l = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    flow_l = (axis2_flow_t *) flow;
+    return axis2_flow_free(flow_l, env);
+}
+
+axis2_status_t AXIS2_CALL
 axis2_flow_add_handler (axis2_flow_t *flow,
                         axis2_env_t **env,
                         axis2_handler_desc_t *handler)

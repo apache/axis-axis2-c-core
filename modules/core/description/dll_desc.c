@@ -203,14 +203,14 @@ axis2_dll_desc_free (axis2_dll_desc_t *dll_desc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_dll_desc_as_param_value_free (void *as_param_value,
+axis2_dll_desc_free_void_arg (void *dll_desc,
                                     axis2_env_t **env)
 {
-    axis2_dll_desc_t *dll_desc = NULL;
+    axis2_dll_desc_t *dll_desc_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    dll_desc = (axis2_dll_desc_t *) as_param_value;
-    return axis2_dll_desc_free(dll_desc, env);
+    dll_desc_l = (axis2_dll_desc_t *) dll_desc;
+    return axis2_dll_desc_free(dll_desc_l, env);
 }
 
 axis2_status_t AXIS2_CALL

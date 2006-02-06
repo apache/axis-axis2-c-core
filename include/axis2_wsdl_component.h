@@ -15,9 +15,6 @@
 #include <axis2_linked_list.h>
 #include <axis2_array_list.h>
 #include <axis2_wsdl_extensible_element.h>
-#include <axis2_param_container.h>
-#include <axis2_description.h>
-#include <axis2_module_desc.h>
 
 
 #ifdef __cplusplus
@@ -59,6 +56,7 @@ struct axis2_wsdl_component_ops
                                 axis2_env_t **env, 
                                 axis2_hash_t *properties);
     
+
     /**
      * Returns the properties that are specific to this WSDL Component
      * @return axis2_hash_t component properties
@@ -78,6 +76,20 @@ struct axis2_wsdl_component_ops
                                 axis2_env_t **env, 
                                 axis2_char_t *key, 
                                 void *value);
+                                
+    /**
+     * Will set the free function pointer keyed with the relavent key
+     * @param void Key in the map. This should be the same key used to set
+     *        the corresponding property.     
+     * @param void Function pointer to be put
+     * @return status code
+     */
+    axis2_status_t (AXIS2_CALL *
+    set_component_property_free_func) (axis2_wsdl_component_t *wsdl_component,
+                                        axis2_env_t **env, 
+                                        axis2_char_t *key, 
+                                        void *value);                                
+                                
     
     /**
      * Gets the component property
@@ -137,7 +149,7 @@ axis2_wsdl_component_create (axis2_env_t **env);
 		properties) \
 		((wsdl_component)->ops->set_component_properties(wsdl_component , env, \
             properties))
-	
+            
 #define AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTIES(wsdl_component, env) \
 		((wsdl_component)->ops->get_component_properties(wsdl_component, env))
 
@@ -145,6 +157,11 @@ axis2_wsdl_component_create (axis2_env_t **env);
 		key, value) \
 		((wsdl_component)->ops->set_component_property(wsdl_component, env,\
             key, value))
+            
+#define AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(wsdl_component, \
+            env, key, value) \
+		((wsdl_component)->ops->set_component_property_free_func(\
+            wsdl_component, env, key, value))            
 		
 #define AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(wsdl_component, env, key) \
 		((wsdl_component)->ops->get_component_property(wsdl_component, env, key))

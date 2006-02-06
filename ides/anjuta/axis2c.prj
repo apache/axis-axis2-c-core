@@ -246,7 +246,8 @@ module.include.files=\
 	include/axis2_http_server.h\
 	include/axis2_http_svr_thread.h\
 	include/axis2_uuid_gen.h\
-	include/axis2_conf_init.h
+	include/axis2_conf_init.h\
+	include/axis2_svr_callback.h
 
 module.source.name=.
 module.source.type=
@@ -433,7 +434,8 @@ module.source.files=\
 	modules/xml/soap/soap_utils.c\
 	test/client/echo/echo_client.c\
 	test/client/echo/axis2_echo_stub.c\
-	modules/core/deployment/conf_init.c
+	modules/core/deployment/conf_init.c\
+	modules/core/receivers/svr_callback.c
 
 module.pixmap.name=.
 module.pixmap.type=

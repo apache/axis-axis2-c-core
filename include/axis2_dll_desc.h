@@ -160,7 +160,7 @@ AXIS2_DECLARE(axis2_dll_desc_t*)
 axis2_dll_desc_create(axis2_env_t **env);
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_dll_desc_as_param_value_free (void *as_param_value,
+axis2_dll_desc_free_void_arg (void *dll_desc,
                                     axis2_env_t **env);
 
 /******************************************************************************/

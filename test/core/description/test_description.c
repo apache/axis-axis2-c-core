@@ -27,12 +27,13 @@ int axis2_test_op_engage_module()
 
 	if(status != AXIS2_SUCCESS )
 	{
+	    AXIS2_OP_FREE(op, &env);
+	    AXIS2_MODULE_DESC_FREE(moduleref, &env);
 		printf("ERROR %d\n", status);
 	    /*return -1;*/
 	}
 
 	AXIS2_OP_FREE(op, &env);
-	AXIS2_MODULE_DESC_FREE(moduleref, &env);
 	axis2_env_free(env);
     return 0;
 }

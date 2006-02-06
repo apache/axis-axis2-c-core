@@ -15,7 +15,6 @@
  */
 
 #include <axis2_class_loader.h>
-#include <axis2_msg_recv.h>
 
 axis2_status_t 
 axis2_class_loader_load_lib (axis2_env_t **env,

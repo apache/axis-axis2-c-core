@@ -335,6 +335,7 @@ axis2_op_create (axis2_env_t **env)
     struct axis2_param_container *param_container_l = NULL;
     axis2_array_list_t *array_list_l = NULL;
     axis2_op_impl_t *op_impl = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, NULL);
 	
@@ -420,15 +421,37 @@ axis2_op_create (axis2_env_t **env)
     {
         return NULL;
     }
-    AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(op_impl->op.wsdl_op->
+    status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(op_impl->op.wsdl_op->
         extensible_component->wsdl_component, env, AXIS2_PARAMETER_KEY, 
             param_container_l);
+    if(AXIS2_SUCCESS == status)
+    {
+        status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(op_impl->
+            op.wsdl_op->extensible_component->wsdl_component, env, 
+                AXIS2_PARAMETER_KEY, axis2_param_container_free_void_arg);
+        if(AXIS2_FAILURE == status)
+        {
+            axis2_op_free(&(op_impl->op), env);
+            return NULL;
+        }
+    }
     
-    array_list_l = axis2_array_list_create(env, 20);
+    array_list_l = axis2_array_list_create(env, 0);
     if(NULL == array_list_l) return NULL;
-    AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(op_impl->op.wsdl_op->
+    status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(op_impl->op.wsdl_op->
         extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY, array_list_l);
-    
+    if(AXIS2_SUCCESS == status)
+    {
+        status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(
+            op_impl->op.wsdl_op->extensible_component->wsdl_component, env, 
+            AXIS2_MODULEREF_KEY, axis2_module_desc_array_list_free);
+        if(AXIS2_FAILURE == status)
+        {
+            axis2_op_free(&(op_impl->op), env);
+            return NULL;
+        }
+    }
+
     op_impl->op.ops = AXIS2_MALLOC((*env)->allocator, sizeof(axis2_op_ops_t));
 	if(NULL == op_impl->op.ops)
 	{

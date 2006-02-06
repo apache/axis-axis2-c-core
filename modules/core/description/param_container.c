@@ -144,6 +144,17 @@ axis2_param_container_free (axis2_param_container_t *param_container,
     return status;
 }
 
+axis2_status_t AXIS2_CALL
+axis2_param_container_free_void_arg (void *param_container,
+                                        axis2_env_t **env)
+{
+    axis2_param_container_t *param_container_l = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    param_container_l = (axis2_param_container_t *) param_container;
+    return axis2_param_container_free(param_container_l, env);
+}
+
 axis2_status_t AXIS2_CALL 
 axis2_param_container_add_param (axis2_param_container_t *param_container, 
 					axis2_env_t **env, 

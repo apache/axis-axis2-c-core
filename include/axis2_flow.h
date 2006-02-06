@@ -99,6 +99,15 @@ struct axis2_flow
 AXIS2_DECLARE(axis2_flow_t *) 
 axis2_flow_create (axis2_env_t **env);
 
+/**
+ * Free flow passed as void pointer. This will be
+ * cast into appropriate type and then pass the cast object
+ * into the flow structure's free method
+ */
+AXIS2_DECLARE(axis2_status_t) 
+axis2_flow_free_void_arg (void *flow,
+                            axis2_env_t **env);
+
 /*************************** Function macros **********************************/
 
 #define AXIS2_FLOW_FREE(flow, env) ((flow)->ops->free (flow, env))

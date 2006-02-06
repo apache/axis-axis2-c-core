@@ -371,8 +371,16 @@ axis2_svc_create (axis2_env_t **env)
         axis2_svc_free(&(svc_impl->svc), env);
         return NULL;
     }
+    status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(svc_impl->
+        svc.wsdl_svc->wsdl_component, env, AXIS2_PARAMETER_KEY, 
+            axis2_param_container_free_void_arg);
+    if(AXIS2_FAILURE == status)
+    {
+        axis2_svc_free(&(svc_impl->svc), env);
+        return NULL;
+    }
     
-    array_list_l = axis2_array_list_create(env, 20);
+    array_list_l = axis2_array_list_create(env, 0);
     if(NULL == array_list_l)
     {
         axis2_svc_free(&(svc_impl->svc), env);
@@ -388,6 +396,14 @@ axis2_svc_create (axis2_env_t **env)
         return NULL;
     }
     
+    status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(svc_impl->svc.wsdl_svc->
+        wsdl_component, env, AXIS2_MODULEREF_KEY, axis2_module_desc_array_list_free);
+    if(AXIS2_FAILURE == status)
+    {
+        axis2_svc_free(&(svc_impl->svc), env);
+        return NULL;
+    }
+
 	svc_impl->svc.ops->free = axis2_svc_free;
 	svc_impl->svc.ops->add_op = axis2_svc_add_op;
 	svc_impl->svc.ops->get_op_with_qname = axis2_svc_get_op_with_qname;
@@ -1133,11 +1149,20 @@ axis2_svc_set_inflow(axis2_svc_t *svc,
                             axis2_env_t **env,
                             axis2_flow_t *inflow) 
 {
+    axis2_status_t status = AXIS2_FAILURE;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, inflow, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
+    status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
         wsdl_component, env, AXIS2_INFLOW_KEY, inflow);
+    if(AXIS2_SUCCESS == status)
+    {
+        status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(svc->
+            wsdl_svc->wsdl_component, env, AXIS2_OUTFLOW_KEY, 
+            axis2_flow_free_void_arg);
+    }
+    return status;
 }
 
 axis2_flow_t * AXIS2_CALL
@@ -1154,11 +1179,20 @@ axis2_svc_set_outflow(axis2_svc_t *svc,
                             axis2_env_t **env,
                             axis2_flow_t *outflow) 
 {
+    axis2_status_t status = AXIS2_FAILURE;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, outflow, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
+    status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
         wsdl_component, env, AXIS2_OUTFLOW_KEY, outflow);
+    if(AXIS2_SUCCESS == status)
+    {
+        status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(svc->
+            wsdl_svc->wsdl_component, env, AXIS2_OUTFLOW_KEY, 
+            axis2_flow_free_void_arg);
+    }
+    return status;
 }
 
 axis2_flow_t *AXIS2_CALL
@@ -1176,10 +1210,19 @@ axis2_svc_set_fault_inflow(axis2_svc_t *svc,
                             axis2_env_t **env,
                             axis2_flow_t *fault_flow) 
 {
+    axis2_status_t status = AXIS2_FAILURE;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, fault_flow, AXIS2_FAILURE);
-    return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
+    status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
         wsdl_component, env, AXIS2_IN_FAULTFLOW_KEY, fault_flow);
+    if(AXIS2_SUCCESS == status)
+    {
+        status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(svc->
+            wsdl_svc->wsdl_component, env, AXIS2_OUTFLOW_KEY, 
+            axis2_flow_free_void_arg);
+    }
+    return status;
 }
 
 axis2_flow_t * AXIS2_CALL
@@ -1197,11 +1240,20 @@ axis2_svc_set_fault_outflow(axis2_svc_t *svc,
                             axis2_env_t **env,
                             axis2_flow_t *fault_flow) 
 {
+    axis2_status_t status = AXIS2_FAILURE;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, fault_flow, AXIS2_FAILURE);
     
-    return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
+    status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
         wsdl_component, env, AXIS2_OUT_FAULTFLOW_KEY, fault_flow);
+    if(AXIS2_SUCCESS == status)
+    {
+        status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(svc->
+            wsdl_svc->wsdl_component, env, AXIS2_OUTFLOW_KEY, 
+            axis2_flow_free_void_arg);
+    }
+    return status;
 }
 
 axis2_op_t * AXIS2_CALL

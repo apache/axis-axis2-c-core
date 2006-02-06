@@ -93,6 +93,8 @@ extern "C"
   *  @{
  */
 
+typedef int (*AXIS2_FREE_VOID_ARG) (void *obj_to_be_freed, axis2_env_t **env);
+    
 typedef enum axis2_op_type
 {
     /** axis2_wsdl_op_t */
