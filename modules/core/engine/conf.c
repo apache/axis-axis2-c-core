@@ -652,7 +652,7 @@ axis2_conf_free (axis2_conf_t *conf,
             axis2_hash_this (hi, NULL, NULL, &val);
             transport_out = (axis2_transport_out_desc_t *) val;
             if (transport_out)
-                AXIS2_TRANSPORT_IN_DESC_FREE (transport_out, env);
+                AXIS2_TRANSPORT_OUT_DESC_FREE (transport_out, env);
             
             val = NULL;
             transport_out = NULL;

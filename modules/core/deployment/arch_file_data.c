@@ -136,7 +136,7 @@ axis2_arch_file_data_create(axis2_env_t **env)
     arch_file_data_impl->deployable_svcs = NULL;
     arch_file_data_impl->arch_file_data.ops = NULL;
     
-    arch_file_data_impl->deployable_svcs = axis2_array_list_create(env, 20);
+    arch_file_data_impl->deployable_svcs = axis2_array_list_create(env, 0);
     if(!arch_file_data_impl->deployable_svcs)
     {
         axis2_arch_file_data_free(&(arch_file_data_impl->arch_file_data), env);

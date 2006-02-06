@@ -196,6 +196,12 @@ axis2_repos_listener_free (axis2_repos_listener_t *repos_listener,
         listener_impl->folder_name = NULL;
     }
     
+    if(listener_impl->info_list)
+    {
+        AXIS2_WS_INFO_LIST_FREE(listener_impl->info_list, env);
+        listener_impl->info_list = NULL;
+    }
+
 	if(NULL != repos_listener->ops)
     {
 		AXIS2_FREE((*env)->allocator, repos_listener->ops);
@@ -308,6 +314,7 @@ axis2_repos_listener_search(axis2_repos_listener_t *listener,
     int size = 0;
     int i = 0;
     axis2_array_list_t *current_info_list = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_FUNC_PARAM_CHECK(listener, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, folder_name, AXIS2_FAILURE);
@@ -323,8 +330,36 @@ axis2_repos_listener_search(axis2_repos_listener_t *listener,
     {    
         axis2_file_t *file = NULL;
         file = AXIS2_ARRAY_LIST_GET(current_info_list, env, i);
-        AXIS2_WS_INFO_LIST_ADD_WS_INFO_ITEM(listener_impl->info_list, env,
+        status = AXIS2_WS_INFO_LIST_ADD_WS_INFO_ITEM(listener_impl->info_list, env,
             file, type);
+        if(AXIS2_SUCCESS != status)
+        {
+            int size_j = NULL;
+            int j = 0;
+
+            size_j = AXIS2_ARRAY_LIST_SIZE(current_info_list, env);
+            for(j = 0; j < size_j; j++)
+            {
+                axis2_file_t *del_file = NULL;
+
+                del_file = AXIS2_ARRAY_LIST_GET(current_info_list, env, j);
+                AXIS2_FILE_FREE(del_file, env);
+            }
+            AXIS2_ARRAY_LIST_FREE(current_info_list, env);
+            current_info_list = NULL;
+            return status;
+        }
     }
+    
+    size = AXIS2_ARRAY_LIST_SIZE(current_info_list, env);
+    for(i = 0; i < size; i++)
+    {
+        axis2_file_t *del_file = NULL;
+
+        del_file = AXIS2_ARRAY_LIST_GET(current_info_list, env, i);
+        AXIS2_FILE_FREE(del_file, env);
+    }
+    AXIS2_ARRAY_LIST_FREE(current_info_list, env);
+    current_info_list = NULL;
     return AXIS2_SUCCESS;
 }

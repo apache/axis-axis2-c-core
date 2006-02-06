@@ -223,12 +223,12 @@ axis2_desc_builder_free (axis2_desc_builder_t *desc_builder,
     
     desc_builder_impl = AXIS2_INTF_TO_IMPL(desc_builder);
     
-    if(!desc_builder_impl->file_name)
+    if(desc_builder_impl->file_name)
     {
         AXIS2_FREE((*env)->allocator, desc_builder_impl->file_name);
         desc_builder_impl->file_name = NULL;
     }
-    /* we should not free deployment engine here */
+    /* we cannot free deployment engine here */
     desc_builder->engine = NULL;
     
 	if(NULL != desc_builder->ops)
@@ -679,6 +679,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
         att_locked = axis2_qname_create(env, AXIS2_ATTLOCKED, NULL, NULL);
         para_locked = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(param_element, env, 
             att_locked);
+        AXIS2_QNAME_FREE(att_locked, env);
         if(NULL != parent)
         {
             parent_para = AXIS2_PARAM_CONTAINER_GET_PARAM(parent, env, 

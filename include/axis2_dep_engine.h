@@ -267,12 +267,6 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
 #define AXIS2_DEP_ENGINE_GET_HANDLER_DLL(dep_engine, env, dll_name) \
 		((dep_engine)->ops->get_handler_dll (dep_engine, env, dll_name))
         
-#define AXIS2_DEP_ENGINE_DO_DEPLOY(dep_engine, env) \
-		((dep_engine)->ops->do_deploy (dep_engine, env))
-
-#define AXIS2_DEP_ENGINE_UNDEPLOY(dep_engine, env) \
-		((dep_engine)->ops->undeploy (dep_engine, env))
-        
 #define AXIS2_DEP_ENGINE_IS_HOT_UPDATE(dep_engine, env) \
 		((dep_engine)->ops->is_hot_update (dep_engine, env))
 

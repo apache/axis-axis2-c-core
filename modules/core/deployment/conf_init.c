@@ -76,6 +76,7 @@ axis2_conf_ctx_t* AXIS2_CALL build_conf_ctx (axis2_env_t **env,
     }
     
     conf = AXIS2_DEP_ENGINE_LOAD_CLIENT(dep_engine, env, axis2_home);
+    AXIS2_DEP_ENGINE_FREE(dep_engine, env);
     if (!conf)
     {
         return NULL;

@@ -19,10 +19,9 @@
 #include <axis2_msg_recv.h>
 #include <axis2_param.h>
 #include <axis2_description.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <axis2_class_loader.h>
+#include <axis2_engine.h>
+#include <axis2_core_utils.h>
 
 /** 
  * @brief Message Receiver struct impl
@@ -46,6 +45,16 @@ axis2_status_t AXIS2_CALL
 axis2_msg_recv_receive (axis2_msg_recv_t *msg_recv,
                         axis2_env_t **env,
                         struct axis2_msg_ctx *in_msg_ctx);
+                            
+axis2_status_t AXIS2_CALL
+axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
+                                    axis2_env_t **env,
+                                    axis2_msg_ctx_t *msg_ctx);
+
+axis2_status_t AXIS2_CALL
+axis2_raw_xml_in_out_msg_recv_receive_async(axis2_msg_recv_t *msg_recv,
+                                    axis2_env_t **env,
+                                    axis2_msg_ctx_t *msg_ctx);                        
 
 axis2_svc_skeleton_t * AXIS2_CALL
 axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
@@ -89,10 +98,11 @@ axis2_msg_recv_create (axis2_env_t **env)
     }
     
     /*msg_recv_impl->scope = AXIS2_STRDUP(AXIS2_APPLICATION_SCOPE, env);*/
-    msg_recv_impl->scope = AXIS2_STRDUP("app*", env);;
+    msg_recv_impl->scope = AXIS2_STRDUP("app*", env);
     msg_recv_impl->msg_recv.ops = NULL;
     
-    msg_recv_impl->msg_recv.ops = (axis2_msg_recv_ops_t *) malloc(sizeof(axis2_msg_recv_ops_t));
+    msg_recv_impl->msg_recv.ops = (axis2_msg_recv_ops_t *) 
+        AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_msg_recv_ops_t));
     
 	if(NULL == msg_recv_impl->msg_recv.ops)
 	{
@@ -109,7 +119,11 @@ axis2_msg_recv_create (axis2_env_t **env)
     msg_recv_impl->msg_recv.ops->set_scope = axis2_msg_recv_set_scope;
     msg_recv_impl->msg_recv.ops->get_scope = axis2_msg_recv_get_scope;
     msg_recv_impl->msg_recv.ops->delete_svc_obj = axis2_msg_recv_delete_svc_obj;
-						
+    msg_recv_impl->msg_recv.ops->receive_sync = 
+        axis2_raw_xml_in_out_msg_recv_receive_sync;
+	msg_recv_impl->msg_recv.ops->receive_async = 
+        axis2_raw_xml_in_out_msg_recv_receive_async;
+											
 	return &(msg_recv_impl->msg_recv);
 }
 
@@ -147,7 +161,7 @@ axis2_msg_recv_free (axis2_msg_recv_t *msg_recv,
 axis2_status_t AXIS2_CALL
 axis2_msg_recv_receive (axis2_msg_recv_t *msg_recv,
                         axis2_env_t **env,
-                        struct axis2_msg_ctx *in_msg_ctx)
+                        axis2_msg_ctx_t *in_msg_ctx)
 {
 	return AXIS2_SUCCESS;
 }
@@ -339,4 +353,97 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
         return AXIS2_FAILURE;
     }
     return axis2_class_loader_delete_dll(env, impl_info_param);
+}
+
+axis2_status_t AXIS2_CALL
+axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
+                                    axis2_env_t **env,
+                                    axis2_msg_ctx_t *msg_ctx)
+{
+    axis2_msg_ctx_t *out_msg_ctx = NULL;
+    axis2_engine_t *engine = NULL;
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_op_ctx_t *op_ctx = NULL;
+    axis2_svc_ctx_t *svc_ctx = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    
+    AXIS2_FUNC_PARAM_CHECK(msg_recv, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+    
+    out_msg_ctx = axis2_core_utils_create_out_msg_ctx(env, msg_ctx);
+    if(!out_msg_ctx)
+    {
+        return AXIS2_FAILURE;
+    }
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(out_msg_ctx, env);
+    if(!op_ctx)
+    {
+        AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+        return AXIS2_FAILURE;
+    }
+    status = AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, out_msg_ctx);
+    if(AXIS2_SUCCESS != status)
+    {
+        AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+        return status;
+    }
+    status = AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC_SYNC(msg_recv, env, 
+        msg_ctx, out_msg_ctx);
+    if(AXIS2_SUCCESS != status)
+    {
+        AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+        return status;
+    }
+    svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
+    conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env);
+    engine = axis2_engine_create(env, conf_ctx);
+    if(!engine)
+    {
+        AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+        return AXIS2_FAILURE;
+    }        
+    return AXIS2_ENGINE_SEND(engine, env, out_msg_ctx);
+    
+}
+
+axis2_status_t AXIS2_CALL
+axis2_raw_xml_in_out_msg_recv_receive_async(axis2_msg_recv_t *msg_recv,
+                                    axis2_env_t **env,
+                                    axis2_msg_ctx_t *msg_ctx)
+{
+    axis2_svr_callback_t *callback = NULL;
+    axis2_msg_ctx_t *new_msg_ctx = NULL;
+    axis2_op_ctx_t *op_ctx = NULL;
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+    
+    callback = axis2_svr_callback_create(env);
+    if(!callback)
+    {
+        return AXIS2_FAILURE;
+    }
+    /* TODO run this code in a thread */
+    
+    new_msg_ctx = axis2_core_utils_create_out_msg_ctx(env, msg_ctx);
+    if(!new_msg_ctx)
+    {
+        return AXIS2_FAILURE;
+    }
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(new_msg_ctx, env);
+    if(!op_ctx)
+    {
+        AXIS2_MSG_CTX_FREE(new_msg_ctx, env);
+        return AXIS2_FAILURE;
+    }
+    AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, new_msg_ctx);
+    status = AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC_ASYNC(msg_recv, env, 
+        msg_ctx, new_msg_ctx, callback);
+    /* end of code that run in a thread */
+    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+    /* get thread pool from conf_ctx and execute the thread task */
+    /*messageCtx.getConfigurationContext().getThreadPool().execute(theadedTask);*/
+    return status;
 }

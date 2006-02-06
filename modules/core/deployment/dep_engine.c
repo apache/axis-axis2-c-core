@@ -463,11 +463,35 @@ axis2_dep_engine_free (axis2_dep_engine_t *dep_engine,
     }
     if(engine_impl->ws_to_deploy)
     {
+        int i = 0;
+        int size = 0;
+
+        size = AXIS2_ARRAY_LIST_SIZE(engine_impl->ws_to_deploy, env);
+        for(i = 0; i < size; i++)
+        {
+            axis2_arch_file_data_t *file_data = NULL;
+            
+            file_data = (axis2_arch_file_data_t *) 
+                AXIS2_ARRAY_LIST_GET(engine_impl->ws_to_deploy, env, i);
+            AXIS2_ARCH_FILE_DATA_FREE(file_data, env);
+        }
         AXIS2_ARRAY_LIST_FREE(engine_impl->ws_to_deploy, env);
         engine_impl->ws_to_deploy = NULL;
     }
     if(engine_impl->ws_to_undeploy)
     {
+        int i = 0;
+        int size = 0;
+
+        size = AXIS2_ARRAY_LIST_SIZE(engine_impl->ws_to_undeploy, env);
+        for(i = 0; i < size; i++)
+        {
+            axis2_arch_file_data_t *file_data = NULL;
+            
+            file_data = (axis2_arch_file_data_t *) 
+                AXIS2_ARRAY_LIST_GET(engine_impl->ws_to_undeploy, env, i);
+            AXIS2_ARCH_FILE_DATA_FREE(file_data, env);
+        }
         AXIS2_ARRAY_LIST_FREE(engine_impl->ws_to_undeploy, env);
         engine_impl->ws_to_undeploy = NULL;
     }
@@ -568,7 +592,7 @@ axis2_dep_engine_add_ws_to_deploy(axis2_dep_engine_t *dep_engine,
                                     axis2_arch_file_data_t *file) 
 {
     axis2_dep_engine_impl_t *dep_engine_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(dep_engine, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, file, AXIS2_FAILURE);
     dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
@@ -1352,7 +1376,6 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
             }
         }
     }
-    AXIS2_ARRAY_LIST_FREE(engine_impl->ws_to_deploy, env);
     return AXIS2_SUCCESS;
 }
 
@@ -1388,8 +1411,7 @@ axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
                 svc_name = axis2_dep_engine_get_axis_svc_name(dep_engine, env,
                     file_name);
                 
-                /* todo  */
-                /*   axisConfig.removeService(new QName(serviceName)); */
+                AXIS2_CONF_REMOVE_SVC(engine_impl->conf, env, svc_name);
                 /*log.info(Messages.getMessage(DeploymentErrorMsgs.SERVICE_REMOVED,
                         wsInfo.getFilename()));*/
             }

@@ -684,6 +684,8 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             impl_info_param = axis2_param_create(env, NULL, NULL);
         
             AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc); 
+            impl_info_param->ops->value_free = 
+                axis2_dll_desc_as_param_value_free;
             transport_sender = (axis2_transport_sender_t *) 
                 axis2_class_loader_create_dll(env, impl_info_param);
             AXIS2_TRANSPORT_OUT_DESC_SET_SENDER(transport_out, env, 
@@ -786,13 +788,14 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         trs_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(transport_element, env,
             qattname);
+        AXIS2_QNAME_FREE(qattname, env);
        
         if(NULL != trs_name)
         {
             axis2_char_t *name = NULL;
             axis2_om_attribute_t *trs_dll_name = NULL;
             axis2_om_children_qname_iterator_t *itr = NULL;
-            axis2_qname_t *qname = NULL;
+            axis2_qname_t *transport_in_desc_qname = NULL;
             axis2_qname_t *qdllname = NULL;
             axis2_qname_t *qparamst = NULL;
             axis2_qname_t *qinflowst = NULL;
@@ -810,13 +813,16 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             
             
             name = AXIS2_OM_ATTRIBUTE_GET_VALUE(trs_name, env);
-            qname = axis2_qname_create(env, name, NULL, NULL);
-            transport_in = axis2_transport_in_desc_create_with_qname(env, qname);
+            transport_in_desc_qname = axis2_qname_create(env, name, NULL, NULL);
+            transport_in = axis2_transport_in_desc_create_with_qname(env, 
+                transport_in_desc_qname);
+            AXIS2_QNAME_FREE(transport_in_desc_qname, env);
 
             /* transport impl class */
             qdllname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
             trs_dll_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(transport_element, env,
                 qdllname);
+            AXIS2_QNAME_FREE(qdllname, env);
             
             if(NULL != trs_dll_name) 
             {
@@ -834,6 +840,8 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 impl_info_param = axis2_param_create(env, NULL, NULL);
             
                 AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc); 
+                impl_info_param->ops->value_free = 
+                    axis2_dll_desc_as_param_value_free;
                 recv = (axis2_transport_receiver_t *) 
                     axis2_class_loader_create_dll(env, impl_info_param);
                 stat = AXIS2_TRANSPORT_IN_DESC_SET_RECV(transport_in, env, 
@@ -846,6 +854,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);            
             itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(transport_element,
                 env, qparamst, transport_node);
+            AXIS2_QNAME_FREE(qparamst, env);
             AXIS2_DESC_BUILDER_PROCESS_PARAMS(conf_builder->desc_builder, env,
                 itr, transport_in->param_container, 
                     builder_impl->conf->param_container);
@@ -854,6 +863,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL);
             in_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                 transport_element, env, qinflowst, transport_node, &in_flow_node);
+            AXIS2_QNAME_FREE(qinflowst, env);
             if(NULL != in_flow_element)
             {
                 AXIS2_ERROR_SET((*env)->error, 
@@ -864,6 +874,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             qoutflowst = axis2_qname_create(env, AXIS2_OUTFLOWST, NULL, NULL);
             out_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                 transport_element, env, qoutflowst, transport_node, &out_flow_node);
+            AXIS2_QNAME_FREE(qoutflowst, env);
             if(NULL != out_flow_element)
             {
                 axis2_flow_t *flow = NULL;
@@ -879,6 +890,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             in_fault_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                 transport_element, env, qinfaultflowst, transport_node,
                     &in_fault_flow_node);
+            AXIS2_QNAME_FREE(qinfaultflowst, env);
             if(NULL != in_fault_flow_element)
             {
                 axis2_flow_t *flow = NULL;
@@ -904,16 +916,9 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             /* adding to axis config */
             AXIS2_CONF_ADD_TRANSPORT_IN(builder_impl->conf, env, transport_in);
           
-            AXIS2_QNAME_FREE(qname, env);
-            AXIS2_QNAME_FREE(qdllname, env);
-            AXIS2_QNAME_FREE(qparamst, env);
-            AXIS2_QNAME_FREE(qinflowst, env);
-            AXIS2_QNAME_FREE(qoutflowst, env);
-            AXIS2_QNAME_FREE(qinfaultflowst, env);
             AXIS2_QNAME_FREE(qoutfaultflowst, env);
 
         }
-        AXIS2_QNAME_FREE(qattname, env);
     }
     return AXIS2_SUCCESS;
 }

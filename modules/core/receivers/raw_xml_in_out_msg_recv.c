@@ -20,21 +20,15 @@
 #include <axis2_soap_envelope.h>
 #include <axis2_soap_body.h>
 #include <axis2_soap_fault.h>
-#include <axis2_core_utils.h>
-#include <axis2_engine.h>
+
 
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
+axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_recv,
                                                     axis2_env_t **env,
                                                     axis2_msg_ctx_t *msg_ctx,
                                                     axis2_msg_ctx_t *new_msg_ctx);
-
-axis2_status_t AXIS2_CALL
-axis2_raw_xml_in_out_msg_recv_receive(axis2_msg_recv_t *msg_recv,
-                                    axis2_env_t **env,
-                                    axis2_msg_ctx_t *msg_ctx);
                                 
 /************************** End of function prototypes ************************/
 
@@ -57,16 +51,16 @@ axis2_raw_xml_in_out_msg_recv_create(axis2_env_t **env)
         AXIS2_MSG_RECV_FREE(msg_recv, env);
         return NULL;
     }
-    msg_recv->ops->invoke_in_out_business_logic = 
-        axis2_raw_xml_in_out_msg_recv_invoke_business_logic;
-    msg_recv->ops->receive = axis2_raw_xml_in_out_msg_recv_receive;
+    msg_recv->ops->invoke_in_out_business_logic_sync = 
+        axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync;
+    msg_recv->ops->receive = msg_recv->ops->receive_sync;
 	return msg_recv;
 }
 
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL
-axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
+axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_recv,
                                                     axis2_env_t **env,
                                                     axis2_msg_ctx_t *msg_ctx,
                                                     axis2_msg_ctx_t *new_msg_ctx)
@@ -297,34 +291,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
     return status;
 }
 
-axis2_status_t AXIS2_CALL
-axis2_raw_xml_in_out_msg_recv_receive(axis2_msg_recv_t *msg_recv,
-                                    axis2_env_t **env,
-                                    axis2_msg_ctx_t *msg_ctx)
-{
-    axis2_msg_ctx_t *out_msg_ctx = NULL;
-    axis2_engine_t *engine = NULL;
-    axis2_conf_ctx_t *conf_ctx = NULL;
-    axis2_op_ctx_t *op_ctx = NULL;
-    axis2_svc_ctx_t *svc_ctx = NULL;
-    
-    AXIS2_FUNC_PARAM_CHECK(msg_recv, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-    
-    out_msg_ctx = axis2_core_utils_create_out_msg_ctx(env, msg_ctx);
-    axis2_raw_xml_in_out_msg_recv_invoke_business_logic(msg_recv, env, msg_ctx,
-        out_msg_ctx);
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
-    svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
-    conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env);
-    engine = axis2_engine_create(env, conf_ctx);
-    if(!engine)
-    {
-        return AXIS2_FAILURE;
-    }        
-    return AXIS2_ENGINE_SEND(engine, env, out_msg_ctx);
-    
-}
+
 
 /*
 public Method findOperation(AxisOperation op, Class ImplClass) {
