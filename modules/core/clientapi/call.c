@@ -325,6 +325,9 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_svc_t *svc = NULL;
+    /* The message ID is sent all the time */
+    axis2_char_t *message_id = "uuid:"; /* TODO UUIDGenerator.getUUID()*/
+    
     
     AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
     
@@ -339,8 +342,6 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
     if (!svc_ctx)
         return NULL;
     
-    /* The message ID is sent all the time */
-    axis2_char_t *message_id = "uuid:"; /* TODO UUIDGenerator.getUUID()*/
     AXIS2_MSG_CTX_SET_MESSAGE_ID(msg_ctx, env, message_id);
 
     if (call_impl->use_separate_listener) 
