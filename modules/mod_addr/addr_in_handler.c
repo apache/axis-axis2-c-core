@@ -231,7 +231,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
             axis2_char_t *addr_ns_str = NULL;
             axis2_msg_info_headers_t *msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
             
-            /*addr_headers = AXIS2_SOAP_HEADER_GET_HEADER_BLOCKS(soap_header, env);*/
+            addr_headers = AXIS2_SOAP_HEADER_GET_HEADER_BLOCKS_WITH_NAMESPACE_URI(soap_header, env, AXIS2_WSA_NAMESPACE_SUBMISSION);
             if (addr_headers)
             {
                 addr_ns_str = AXIS2_WSA_NAMESPACE_SUBMISSION;
