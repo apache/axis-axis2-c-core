@@ -454,6 +454,8 @@ axis2_http_transport_sender_write_message
 	AXIS2_SOAP_OVER_HTTP_SENDER_SET_CHUNKED(sender, env, 
 						AXIS2_INTF_TO_IMPL(transport_sender)->chunked);
 	AXIS2_SOAP_OVER_HTTP_SENDER_SET_OM_OUTPUT(sender, env, om_output);
+	AXIS2_SOAP_OVER_SENDER_SET_HTTP_VERSION(sender, env, 
+						AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
 	AXIS2_SOAP_OVER_HTTP_SENDER_SEND(sender, env, msg_ctx, out, url,
 						soap_action);
 	/*

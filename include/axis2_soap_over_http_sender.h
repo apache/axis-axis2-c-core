@@ -66,6 +66,10 @@ AXIS2_DECLARE_DATA struct axis2_soap_over_http_sender_ops
                                 (axis2_soap_over_http_sender_t *sender, 
                                 axis2_env_t **env, axis2_om_output_t *om_output);
 	
+	axis2_status_t (AXIS2_CALL *set_http_version)
+								(axis2_soap_over_http_sender_t *sender, 
+								axis2_env_t **env, axis2_char_t *version);
+	
 	axis2_status_t (AXIS2_CALL *free) 
                                 (axis2_soap_over_http_sender_t *sender, 
                                 axis2_env_t **env);
@@ -111,6 +115,8 @@ axis2_soap_over_http_sender_create(axis2_env_t **env);
                         ((sender)->ops->set_chunked(sender, env, chunked))
 #define AXIS2_SOAP_OVER_HTTP_SENDER_SET_OM_OUTPUT(sender, env, om_output) \
                         ((sender)->ops->set_om_output (sender, env, om_output))
+#define AXIS2_SOAP_OVER_SENDER_SET_HTTP_VERSION(sender, env, version)\
+                        ((sender)->ops->set_http_version (sender, env, version))
 #define AXIS2_SOAP_OVER_HTTP_SENDER_FREE(sender, env) \
                         ((sender)->ops->free(sender, env))
 
