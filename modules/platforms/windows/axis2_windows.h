@@ -50,6 +50,7 @@ extern "C"
 #include <winsock2.h>
 /* for time */
 #include <time.h>
+#include <sys/timeb.h>
 
 /***************************************************************
  * Default paths to shared library/DLLs and files
@@ -150,7 +151,7 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
  * Platform specific method to obtain current time in milli seconds
  */
 #define AXIS2_PLATFORM_GET_TIME_IN_MILLIS _ftime
-#define AXIS2_PLATFORM_TIMEB timeb
+#define AXIS2_PLATFORM_TIMEB _timeb
 /**
  * Platform specific file handling
  */
