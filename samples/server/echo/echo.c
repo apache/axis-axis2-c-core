@@ -50,7 +50,7 @@ axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)
     {
         axis2_om_text_t *text = (axis2_om_text_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(text_node, env);
         if( text && AXIS2_OM_TEXT_GET_VALUE(text , env))
-            printf("Eching text value  %s \n", AXIS2_OM_TEXT_GET_VALUE(text, env));
+            printf("Echoing text value  %s \n", AXIS2_OM_TEXT_GET_VALUE(text, env));
     }
     else
     {
