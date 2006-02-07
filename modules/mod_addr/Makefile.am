@@ -1,5 +1,5 @@
 prglibdir=$(prefix)/modules/addressing
-lib_LTLIBRARIES = libaxis2_mod_addr.la
+prglib_LTLIBRARIES = libaxis2_mod_addr.la
 prglib_DATA= module.xml
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_mod_addr_la_SOURCES = addr_in_handler.c \
