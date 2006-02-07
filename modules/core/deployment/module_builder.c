@@ -168,6 +168,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     axis2_om_node_t *out_fault_flow_node = NULL;
     struct axis2_conf *parent = NULL;
     axis2_array_list_t *ops = NULL;
+    axis2_param_container_t *parent_container = NULL;
     int size = 0;
     int i = 0;
     
@@ -270,8 +271,10 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         AXIS2_QNAME_FREE(qparamst, env);
 
     parent = AXIS2_MODULE_DESC_GET_PARENT(builder_impl->module, env);
+    if(parent)
+        parent_container = parent->param_container;
     AXIS2_DESC_BUILDER_PROCESS_PARAMS(module_builder->desc_builder, env,
-        itr, builder_impl->module->params, parent->param_container);
+        itr, builder_impl->module->params, parent_container);
 
     /* process INFLOW */
     qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL);
