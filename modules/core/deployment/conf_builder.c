@@ -253,7 +253,11 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     module_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, env,
         qmodulest, conf_node);
     AXIS2_QNAME_FREE(qmodulest, env);
-    axis2_conf_builder_process_module_refs(conf_builder, env, module_itr);
+    status = axis2_conf_builder_process_module_refs(conf_builder, env, module_itr);
+    if(AXIS2_SUCCESS != status)
+    {
+        return AXIS2_FAILURE;
+    }
     /* Proccessing Transport Sennders */
     qtransportsender = axis2_qname_create(env, AXIS2_TRANSPORTSENDER, NULL, NULL);
     trs_senders = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, env,
@@ -296,8 +300,9 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
                                 axis2_om_children_qname_iterator_t *module_refs) 
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(conf_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_refs, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
     
@@ -311,6 +316,10 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
         axis2_om_attribute_t *module_ref_att = NULL;
         module_ref_node = (axis2_om_node_t *)
             AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(module_refs, env);
+        if(!module_ref_node)
+        {
+            return AXIS2_FAILURE;
+        }
         module_ref_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(module_ref_node, env);
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
         module_ref_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(module_ref_element, env,
@@ -324,13 +333,13 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
             
             ref_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_ref_att, env);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
-            AXIS2_DEP_ENGINE_ADD_MODULE(conf_builder->desc_builder->engine, env,
-                qrefname);
+            status = AXIS2_DEP_ENGINE_ADD_MODULE(conf_builder->desc_builder->
+                engine, env, qrefname);
             if (qrefname)
                 AXIS2_QNAME_FREE(qrefname, env);
         }
     }
-    return AXIS2_SUCCESS;
+    return status;
 }
 
 static axis2_status_t

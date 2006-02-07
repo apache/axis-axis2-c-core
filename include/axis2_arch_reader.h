@@ -106,6 +106,10 @@ AXIS2_DECLARE_DATA struct axis2_arch_reader_ops
                                         struct axis2_dep_engine *dep_engine,
                                         axis2_module_desc_t *module);
 
+axis2_file_t *(AXIS2_CALL *
+create_module_arch)(axis2_arch_reader_t *arch_reader,
+                    axis2_env_t **env,
+                    axis2_char_t *module_name);
 };
 
 /** 
@@ -142,6 +146,9 @@ axis2_arch_reader_create (axis2_env_t **env);
 #define AXIS2_ARCH_READER_READ_MODULE_ARCH(arch_reader, env, file_path, dep_engine, module) \
 		((arch_reader)->ops->read_module_arch (arch_reader, env, file_path, dep_engine, module))
 
+#define AXIS2_ARCH_READER_CREATE_MODULE_ARCH(arch_reader, env, module_name) \
+		((arch_reader)->ops->create_module_arch (arch_reader, env, module_name))
+        
 /*************************** End of function macros ***************************/
 
 /** @} */

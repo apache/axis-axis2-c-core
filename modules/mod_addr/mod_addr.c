@@ -16,12 +16,12 @@
 #include <axis2_module.h>
 #include <axis2_addr_mod.h>
 
-int 
+axis2_status_t 
 axis2_mod_addr_shutdown(axis2_module_t *module,
                         axis2_env_t **env,
                         axis2_conf_t *axis2_system);
 
-int 
+axis2_status_t
 axis2_mod_addr_init(axis2_module_t *module,
                         axis2_env_t **env,
                         axis2_conf_t *axis2_system);
@@ -50,7 +50,7 @@ axis2_mod_addr_create(axis2_env_t **env)
     return module;
 }
 
-int 
+axis2_status_t 
 axis2_mod_addr_init(axis2_module_t *module,
                         axis2_env_t **env,
                         axis2_conf_t *axis2_system)
@@ -59,7 +59,7 @@ axis2_mod_addr_init(axis2_module_t *module,
     return AXIS2_SUCCESS;
 }
 
-int 
+axis2_status_t 
 axis2_mod_addr_shutdown(axis2_module_t *module,
                         axis2_env_t **env,
                         axis2_conf_t *axis2_system)

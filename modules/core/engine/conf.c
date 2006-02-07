@@ -19,6 +19,7 @@
 #include <axis2_conf.h>
 #include <axis2_dir_handler.h>
 #include <axis2_dep_engine.h>
+#include <axis2_arch_reader.h>
 
 
 typedef struct axis2_conf_impl axis2_conf_impl_t;
@@ -267,16 +268,21 @@ axis2_conf_set_dispatch_phase(axis2_conf_t *conf,
                                 axis2_env_t **env,
                                 axis2_phase_t *dispatch);
 
-axis2_status_t AXIS2_CALL
-axis2_conf_set_repos(axis2_conf_t *conf,
-                        axis2_env_t **env,
-                        axis2_char_t *axis2_repos);                                
 
 axis2_status_t AXIS2_CALL
 axis2_conf_engage_module(axis2_conf_t *conf,
                         axis2_env_t **env,
                         axis2_qname_t *module_ref);
-                                
+
+axis2_char_t *AXIS2_CALL
+axis2_conf_get_repos(axis2_conf_t *conf,
+                     axis2_env_t **env);
+                            
+axis2_status_t AXIS2_CALL
+axis2_conf_set_repos(axis2_conf_t *conf,
+                        axis2_env_t **env,
+                        axis2_char_t *repos_path);
+
 /************************** End of function prototypes ************************/
 
 axis2_conf_t * AXIS2_CALL 
@@ -569,6 +575,7 @@ axis2_conf_create (axis2_env_t **env)
     config_impl->conf.ops->set_default_dispatchers = 
         axis2_conf_set_default_dispatchers;
     config_impl->conf.ops->set_dispatch_phase = axis2_conf_set_dispatch_phase;
+    config_impl->conf.ops->get_repos = axis2_conf_get_repos;
     config_impl->conf.ops->set_repos = axis2_conf_set_repos;
     config_impl->conf.ops->engage_module = axis2_conf_engage_module;
     
@@ -1183,11 +1190,16 @@ axis2_conf_get_module(axis2_conf_t *conf,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
+    axis2_conf_impl_t *conf_impl = NULL;
+    axis2_char_t *name = NULL;
     
-    return (axis2_module_desc_t *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
-        conf)->modules, qname, sizeof(axis2_qname_t));
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
+    conf_impl = AXIS2_INTF_TO_IMPL(conf);
+
+    name = AXIS2_QNAME_TO_STRING(qname, env);
+    return (axis2_module_desc_t *) axis2_hash_get(conf_impl->modules, 
+        name, AXIS2_HASH_KEY_STRING);
 }
 
 /**
@@ -1688,16 +1700,6 @@ axis2_conf_set_dispatch_phase(axis2_conf_t *conf,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_conf_set_repos(axis2_conf_t *conf,
-                        axis2_env_t **env,
-                        axis2_char_t *axis2_repos)
-{
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(conf)->axis2_repos = axis2_repos;
-    return AXIS2_SUCCESS;
-}
-
-axis2_status_t AXIS2_CALL
 axis2_conf_engage_module(axis2_conf_t *conf,
                         axis2_env_t **env,
                         axis2_qname_t *module_ref) 
@@ -1717,11 +1719,36 @@ axis2_conf_engage_module(axis2_conf_t *conf,
     {
         axis2_file_t *file = NULL;
         axis2_char_t *file_name = NULL;
+        axis2_arch_reader_t *arch_reader = NULL;
+        axis2_char_t *repos_path = NULL;
+        axis2_arch_file_data_t *file_data = NULL;
+        axis2_char_t *temp_path1 = NULL;
+        axis2_char_t *temp_path2 = NULL;
+        axis2_char_t *temp_path3 = NULL;
+        axis2_char_t *path = NULL;
         
-        file = (axis2_file_t *) axis2_file_create(env);
+        arch_reader = axis2_arch_reader_create(env);
+        if(!arch_reader)
+        {
+            return AXIS2_FAILURE;
+        }
         file_name = AXIS2_QNAME_GET_LOCALPART(module_ref, env);
-        AXIS2_FILE_SET_NAME(file, env, file_name);
-        dep_engine = axis2_dep_engine_create(env);
+        file = (axis2_file_t *) AXIS2_ARCH_READER_CREATE_MODULE_ARCH(
+            arch_reader, env, file_name) ;
+        repos_path = AXIS2_CONF_GET_REPOS(conf, env);
+        temp_path1 = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
+        temp_path2 = AXIS2_STRACAT(temp_path1, AXIS2_MODULE_FOLDER, env);
+        temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
+        path = AXIS2_STRACAT(temp_path3, file_name, env);
+        AXIS2_FREE((*env)->allocator, temp_path1);
+        AXIS2_FREE((*env)->allocator, temp_path2);
+        AXIS2_FREE((*env)->allocator, temp_path3);
+        AXIS2_FILE_SET_PATH(file, env, path);
+        file_data = axis2_arch_file_data_create_with_type_and_file(env,
+                AXIS2_MODULE, file);
+
+        dep_engine = axis2_dep_engine_create_with_repos_name(env, repos_path);
+        AXIS2_DEP_ENGINE_SET_CURRENT_FILE_ITEM(dep_engine, env, file_data);
         module_desc = AXIS2_DEP_ENGINE_BUILD_MODULE(dep_engine, env, file, conf);
         is_new_module = AXIS2_TRUE;
     }
@@ -1762,5 +1789,37 @@ axis2_conf_engage_module(axis2_conf_t *conf,
     {
         axis2_conf_add_module(conf, env, module_desc);
     }
+    return AXIS2_SUCCESS;
+}
+
+axis2_char_t *AXIS2_CALL
+axis2_conf_get_repos(axis2_conf_t *conf,
+                        axis2_env_t **env)
+{
+    axis2_conf_impl_t *conf_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    conf_impl = AXIS2_INTF_TO_IMPL(conf);
+
+    return conf_impl->axis2_repos;
+
+}
+
+axis2_status_t AXIS2_CALL
+axis2_conf_set_repos(axis2_conf_t *conf,
+               axis2_env_t **env,
+               axis2_char_t *repos_path)
+{
+    axis2_conf_impl_t *conf_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    conf_impl = AXIS2_INTF_TO_IMPL(conf);
+
+    if(conf_impl->axis2_repos)
+    {
+        AXIS2_FREE((*env)->allocator, conf_impl->axis2_repos);
+        conf_impl->axis2_repos = NULL;
+    }
+    conf_impl->axis2_repos = AXIS2_STRDUP(repos_path, env);
     return AXIS2_SUCCESS;
 }

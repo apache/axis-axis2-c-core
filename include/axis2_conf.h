@@ -288,6 +288,10 @@ struct axis2_conf_ops
     set_dispatch_phase) (axis2_conf_t *conf,
                             axis2_env_t **env,
                             axis2_phase_t *dispatch);
+                            
+    axis2_char_t *(AXIS2_CALL *
+    get_repos) (axis2_conf_t *conf,
+                    axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL *
     set_repos) (axis2_conf_t *conf,
@@ -298,7 +302,8 @@ struct axis2_conf_ops
     engage_module) (axis2_conf_t *conf,
                             axis2_env_t **env,
                             axis2_qname_t *module_ref);
-                                                
+                            
+                   
 };
 
 /**
@@ -441,6 +446,9 @@ axis2_conf_create(axis2_env_t **env);
 #define AXIS2_CONF_SET_DISPATCH_PHASE(conf, env, dispatch) \
         ((conf)->ops->set_dispatch_phase(conf , env, dispatch)) 
 
+#define AXIS2_CONF_GET_REPOS(conf, env) \
+        ((conf)->ops->get_repos(conf , env))
+        
 #define AXIS2_CONF_SET_REPOS(conf, env, axis2_repos) \
         ((conf)->ops->set_repos(conf , env, axis2_repos))
         

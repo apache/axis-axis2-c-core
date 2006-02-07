@@ -66,7 +66,11 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
                                     axis2_char_t *file_path,
                                     struct axis2_dep_engine *dep_engine,
                                     axis2_module_desc_t *module);
-                                
+axis2_file_t *AXIS2_CALL
+axis2_arch_reader_create_module_arch(axis2_arch_reader_t *arch_reader,
+                                        axis2_env_t **env,
+                                        axis2_char_t *module_name);
+                              
 /************************** End of function prototypes ************************/
 
 AXIS2_DECLARE(axis2_arch_reader_t *)
@@ -105,6 +109,8 @@ axis2_arch_reader_create (axis2_env_t **env)
             axis2_arch_reader_build_svc_grp;
     arch_reader_impl->arch_reader.ops->read_module_arch = 
             axis2_arch_reader_read_module_arch;
+    arch_reader_impl->arch_reader.ops->create_module_arch = 
+            axis2_arch_reader_create_module_arch;
 	
 	return &(arch_reader_impl->arch_reader);
 }
@@ -497,4 +503,22 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
         status = AXIS2_FAILURE;
     }
     return status;
+}
+
+axis2_file_t *AXIS2_CALL
+axis2_arch_reader_create_module_arch(axis2_arch_reader_t *arch_reader,
+                                        axis2_env_t **env,
+                                        axis2_char_t *module_name)
+{
+    axis2_file_t *file = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    file = axis2_file_create(env);
+    if(!file)
+    {
+        return NULL;
+    }
+    AXIS2_FILE_SET_NAME(file, env, module_name);
+    return file;
 }

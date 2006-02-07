@@ -179,6 +179,11 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     axis2_char_t *(AXIS2_CALL *
     get_repos_path) (axis2_dep_engine_t *dep_engine,
                         axis2_env_t **env);
+                        
+    axis2_status_t (AXIS2_CALL *
+    set_current_file_item)(axis2_dep_engine_t *dep_engine,
+                            axis2_env_t **env,
+                            axis2_arch_file_data_t *file_data);                        
                                        
 };
     
@@ -220,7 +225,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     axis2_dep_engine_create_with_repos_name_and_svr_xml_file (
                                             axis2_env_t **env, 
                                             axis2_char_t *repos_path, 
-                                            axis2_char_t *svr_xml_file);
+                                            axis2_char_t *svr_xml_file);                                            
 
 
 
@@ -281,6 +286,9 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
 
 #define AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env) \
 		((dep_engine)->ops->get_repos_path (dep_engine, env))
+ 
+#define AXIS2_DEP_ENGINE_SET_CURRENT_FILE_ITEM(dep_engine, env, file_data) \
+		((dep_engine)->ops->set_current_file_item (dep_engine, env, file_data)) 
         
 /*************************** End of function macros ***************************/
 

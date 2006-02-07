@@ -189,7 +189,11 @@ axis2_file_set_path(axis2_file_t *file,
 {
     axis2_file_impl_t *file_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, path, AXIS2_FAILURE);
+    if(NULL == path)
+    {
+        /* path is optional */
+        return AXIS2_SUCCESS;
+    }
     file_impl = AXIS2_INTF_TO_IMPL(file);
     
     if(file_impl->path)
