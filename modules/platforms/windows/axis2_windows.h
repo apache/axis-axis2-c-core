@@ -51,7 +51,8 @@ extern "C"
 /* for time */
 #include <time.h>
 #include <sys/timeb.h>
-
+/* get opt */
+#include <axis2_getopt_windows.h>
 /***************************************************************
  * Default paths to shared library/DLLs and files
  ***************************************************************
@@ -193,6 +194,8 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
   * handling variable number of arguments (for log.c)
   */
   
+/** getopt function */
+#define AXIS2_GETOPT axis2_getopt  
   
 #define AXIS2_VSNPRINTF		_vsnprintf
 

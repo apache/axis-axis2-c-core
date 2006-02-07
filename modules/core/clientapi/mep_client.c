@@ -20,6 +20,7 @@
 #include <axis2_engine.h>
 #include <axis2_soap.h>
 #include <axis2_soap_body.h>
+#include <axis2_http_transport_utils.h>
 
 typedef struct axis2_mep_client_impl
 {
@@ -542,6 +543,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
     /* TODO response_envelope = TransportUtils.createSOAPMessage(response, msg_ctx.getEnvelope().getNamespace().getName());*/
     soap_ns_uri = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) ?
         AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI:AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    
     response_envelope = axis2_http_transport_utils_create_soap_msg(env, 
                             msg_ctx, soap_ns_uri);
     if (response_envelope) 

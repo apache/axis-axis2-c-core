@@ -55,14 +55,16 @@ int main(int argc, char *argv[])
     extern char *optarg;
     extern int optopt;
 	char tmp_str[512];
+    int c;
+
+    axis2_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
 	int port = 9090;
     axis2_char_t *repo_path = "../";
 	axis2_http_socket_read_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
-    axis2_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
-    int c;
 
     while ((c = getopt(argc, argv, ":p:r:ht:l:")) != -1)
     {
+        
         switch(c)
         {
             case 'p':
