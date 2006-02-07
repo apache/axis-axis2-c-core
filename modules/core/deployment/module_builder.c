@@ -108,7 +108,7 @@ axis2_module_builder_create_with_file_and_dep_engine_module (axis2_env_t **env,
         axis2_module_builder_free(&(builder_impl->module_builder), env);
         return NULL;
     }
-    builder_impl->module= module;
+    builder_impl->module = module;
     return &(builder_impl->module_builder);   
 }
 
@@ -171,15 +171,21 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     int size = 0;
     int i = 0;
     
-    AXIS2_FUNC_PARAM_CHECK(module_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(module_builder);
     
     module_node = AXIS2_DESC_BUILDER_BUILD_OM(module_builder->desc_builder, env);
-
+    module_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(module_node, env);
+    if(!module_element)
+    {
+        return AXIS2_FAILURE;
+    }
     /* Setting Module Name */
     qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
     module_name_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(module_element, env, 
         qattname);
+    if(qattname)
+        AXIS2_QNAME_FREE(qattname, env);
     if(NULL != module_name_att)
     {
         axis2_char_t *module_name = NULL;
@@ -188,55 +194,58 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         if(NULL != module_name && (0 != AXIS2_STRCMP("", module_name)))
         {
             axis2_qname_t *qmodule_name = NULL;
+            
             qmodule_name = axis2_qname_create(env, module_name, NULL, NULL);
             AXIS2_MODULE_DESC_SET_NAME(builder_impl->module, env, qmodule_name);
-            AXIS2_QNAME_FREE(qmodule_name, env);
+            if(qmodule_name)
+                AXIS2_QNAME_FREE(qmodule_name, env);
         }
         else
         {
             axis2_arch_file_data_t *file_data = NULL;
-            axis2_qname_t *qshortfilename = NULL;
-            axis2_char_t *svc_name = NULL;
-            axis2_char_t *short_file_name = NULL;
+            axis2_char_t *module_name = NULL;
+            axis2_qname_t *module_qname = NULL;
             
             file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(module_builder->
                 desc_builder->engine, env);
-            svc_name = AXIS2_ARCH_FILE_DATA_GET_SVC_NAME(file_data, env);
-            short_file_name = AXIS2_DESC_BUILDER_GET_SHORT_FILE_NAME(
-                module_builder->desc_builder, env, svc_name);
-            qshortfilename = axis2_qname_create(env, short_file_name, NULL, NULL);
-            AXIS2_MODULE_DESC_SET_NAME(builder_impl->module, env, qshortfilename);
-            AXIS2_QNAME_FREE(qshortfilename, env);
+            module_name = AXIS2_ARCH_FILE_DATA_GET_MODULE_NAME(file_data, env);
+     
+            module_qname = axis2_qname_create(env, module_name, NULL, NULL);
+            AXIS2_MODULE_DESC_SET_NAME(builder_impl->module, env, module_qname);
+            if(module_qname)
+                AXIS2_QNAME_FREE(module_qname, env);
         }
     }
     else
     {
         axis2_arch_file_data_t *file_data = NULL;
-        axis2_qname_t *qshortfilename = NULL;
-        axis2_char_t *svc_name = NULL;
-        axis2_char_t *short_file_name = NULL;
+        axis2_char_t *module_name = NULL;
+        axis2_qname_t *module_qname = NULL;
         
         file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(module_builder->
             desc_builder->engine, env);
-        svc_name = AXIS2_ARCH_FILE_DATA_GET_SVC_NAME(file_data, env);
-        short_file_name = AXIS2_DESC_BUILDER_GET_SHORT_FILE_NAME(
-            module_builder->desc_builder, env, svc_name);
-        qshortfilename = axis2_qname_create(env, short_file_name, NULL, NULL);
-        AXIS2_MODULE_DESC_SET_NAME(builder_impl->module, env, qshortfilename);
-        AXIS2_QNAME_FREE(qshortfilename, env);
+        module_name = AXIS2_ARCH_FILE_DATA_GET_SVC_NAME(file_data, env);
+        
+        module_qname = axis2_qname_create(env, module_name, NULL, NULL);
+        AXIS2_MODULE_DESC_SET_NAME(builder_impl->module, env, module_qname);
+        if(module_qname)
+            AXIS2_QNAME_FREE(module_qname, env);
     }
 
     /* Setting Module Dll Name , if it is there */
     
     qdllname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
     module_dll_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(module_element, env, qdllname);
+    if(qdllname)
+        AXIS2_QNAME_FREE(qdllname, env);
+    
     if(NULL != module_dll_att)
     {
-        axis2_char_t *module_dll = NULL;
+        axis2_char_t *module_dll_name = NULL;
         
         
-        module_dll = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_dll_att, env);
-        if(NULL != module_dll && (0 != AXIS2_STRCMP("", module_dll)))
+        module_dll_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_dll_att, env);
+        if(NULL != module_dll_name && (0 != AXIS2_STRCMP("", module_dll_name)))
         {
             if(NULL != module_builder->desc_builder->engine)
             {
@@ -245,7 +254,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
                 file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(
                     module_builder->desc_builder->engine, env);
                 AXIS2_ARCH_FILE_DATA_SET_MODULE_DLL_NAME(file_data, env, 
-                    module_dll);
+                    module_dll_name);
                 
             }
         }
@@ -257,6 +266,9 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
     itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(module_element, env,
         qparamst, module_node);
+    if(qparamst)
+        AXIS2_QNAME_FREE(qparamst, env);
+
     parent = AXIS2_MODULE_DESC_GET_PARENT(builder_impl->module, env);
     AXIS2_DESC_BUILDER_PROCESS_PARAMS(module_builder->desc_builder, env,
         itr, builder_impl->module->params, parent->param_container);
@@ -265,6 +277,9 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL);
     in_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(module_element,
         env, qinflowst, module_node, &in_flow_node);
+    if(qinflowst)
+        AXIS2_QNAME_FREE(qinflowst, env);
+
     if(NULL != in_flow_element && NULL != in_flow_node)
     {
         axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
@@ -276,6 +291,9 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     qoutflowst = axis2_qname_create(env, AXIS2_OUTFLOWST, NULL, NULL);
     out_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(module_element,
         env, qoutflowst, module_node, &out_flow_node);
+    if(qoutflowst)
+        AXIS2_QNAME_FREE(qoutflowst, env);
+
     if(NULL != out_flow_element && NULL != out_flow_node)
     {
         axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
@@ -287,6 +305,9 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     qinfaultflow = axis2_qname_create(env, AXIS2_IN_FAILTFLOW, NULL, NULL);
     in_fault_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(module_element,
         env, qinfaultflow, module_node, &in_fault_flow_node);
+    if(qinfaultflow)
+        AXIS2_QNAME_FREE(qinfaultflow, env);
+
     if(NULL != in_fault_flow_element && NULL != in_fault_flow_node)
     {
         axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
@@ -298,6 +319,9 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     qoutfaultflow = axis2_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL, NULL);
     out_fault_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(module_element,
         env, qoutfaultflow, module_node, &out_fault_flow_node);
+    if(qoutfaultflow)
+        AXIS2_QNAME_FREE(qoutfaultflow, env);
+
     if(NULL != out_fault_flow_element && NULL != out_fault_flow_node)
     {
         axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
@@ -310,7 +334,8 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     qopst = axis2_qname_create(env, AXIS2_OPERATIONST, NULL, NULL);
     op_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(module_element, env,
         qopst, module_node);
-    
+    if(qopst)
+        AXIS2_QNAME_FREE(qopst, env);
     ops = axis2_module_builder_process_ops(module_builder, env, op_itr);
     size = AXIS2_ARRAY_LIST_SIZE(ops, env);
     for(i = 0; i < size; i++)
@@ -332,11 +357,11 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
     axis2_module_builder_impl_t *builder_impl = NULL;
     axis2_array_list_t *ops = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(module_builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, op_itr, NULL);
     builder_impl = AXIS2_INTF_TO_IMPL(module_builder);
     
-    ops = axis2_array_list_create(env, 10);
+    ops = axis2_array_list_create(env, 0);
     while(AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(op_itr, env))
     {
         axis2_om_element_t *op_element = NULL;
@@ -364,6 +389,9 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         /* getting operation name */
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         op_name_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(op_element, env, qattname);
+        if(qattname)
+            AXIS2_QNAME_FREE(qattname, env);
+
         if(NULL == op_name_att)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_OP_NAME_MISSING,
@@ -372,6 +400,9 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         }
         qmep = axis2_qname_create(env, AXIS2_MEP, NULL, NULL);
         op_mep_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(op_element, env, qmep);
+        if(qmep)
+            AXIS2_QNAME_FREE(qmep, env);
+        
         if(NULL != op_mep_att)
         {
             mep_url = AXIS2_OM_ATTRIBUTE_GET_VALUE(op_mep_att, env);
@@ -392,10 +423,16 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         op_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(op_name_att, env);
         qopname = axis2_qname_create(env, op_name, NULL, NULL);
         AXIS2_OP_SET_QNAME(op_desc, env, qopname);
+        if(qopname)
+            AXIS2_QNAME_FREE(qopname, env);
+
         /* Operation parameters */
         qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
         params = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env, 
             qparamst, op_node);
+        if(qparamst)
+            AXIS2_QNAME_FREE(qparamst, env);
+
         AXIS2_DESC_BUILDER_PROCESS_PARAMS(module_builder->desc_builder, env,
             params, op_desc->param_container, builder_impl->module->params);
         /* setting the mep of the operation */
@@ -404,6 +441,8 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         qmsgrecv = axis2_qname_create(env, AXIS2_MESSAGERECEIVER, NULL, NULL);
         recv_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(op_element, 
             env, qmsgrecv, op_node, &recv_node);
+        if(qmsgrecv)
+            AXIS2_QNAME_FREE(qmsgrecv, env);
         if(NULL != recv_element && NULL != recv_node)
         {
             axis2_msg_recv_t *msg_recv = NULL;
@@ -425,6 +464,8 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
         modules = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env, 
             qmodulest, op_node);
+        if(qmodulest)
+            AXIS2_QNAME_FREE(qmodulest, env);
         AXIS2_DESC_BUILDER_PROCESS_OP_MODULE_REFS(module_builder->desc_builder,
             env, modules, op_desc);
         /* setting Operation phase */
@@ -433,9 +474,7 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_desc);
         
         /* adding operation */
-        AXIS2_ARRAY_LIST_ADD(ops, env, op_desc);
-        
-        
+        AXIS2_ARRAY_LIST_ADD(ops, env, op_desc); 
     }
     return ops;
 }

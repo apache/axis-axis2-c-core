@@ -307,8 +307,7 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
         axis2_om_node_t *module_ref_node = NULL;
         axis2_om_element_t *module_ref_element = NULL;
         axis2_qname_t *qref = NULL;
-        axis2_qname_t *qrefname = NULL;
-        axis2_char_t *ref_name = NULL;
+        
         axis2_om_attribute_t *module_ref_att = NULL;
         module_ref_node = (axis2_om_node_t *)
             AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(module_refs, env);
@@ -320,6 +319,9 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
             AXIS2_QNAME_FREE(qref, env);
         if (module_ref_att)
         {
+            axis2_qname_t *qrefname = NULL;
+            axis2_char_t *ref_name = NULL;
+            
             ref_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_ref_att, env);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
             AXIS2_DEP_ENGINE_ADD_MODULE(conf_builder->desc_builder->engine, env,

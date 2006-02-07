@@ -440,34 +440,52 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
 axis2_status_t AXIS2_CALL
 axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
                                     axis2_env_t **env,
-                                    axis2_char_t *file_path,
-                                    struct axis2_dep_engine *dep_engine,
+                                    axis2_char_t *file_name,
+                                    axis2_dep_engine_t *dep_engine,
                                     axis2_module_desc_t *module)
 {
-    axis2_char_t *file_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_char_t *module_xml = NULL;
+    axis2_char_t *repos_path = NULL;
+    axis2_char_t *temp_path = NULL;
+    axis2_char_t *temp_path2 = NULL;
+    axis2_char_t *temp_path3 = NULL;
+    axis2_char_t *module_container_path = NULL;
+    axis2_char_t *module_folder = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(arch_reader, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, file_path, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, file_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module, AXIS2_FAILURE);
     
-    file_name = AXIS2_STRACAT(file_path, AXIS2_MODULE_XML, env);
-    if(!file_name)
+    repos_path = AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env);
+    temp_path = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
+    temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_MODULE_FOLDER, env);
+    temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
+    module_container_path = AXIS2_STRACAT(temp_path3, file_name, env);
+    module_folder = AXIS2_STRACAT(module_container_path, AXIS2_PATH_SEP_STR, env);
+    module_xml = AXIS2_STRACAT(module_folder, AXIS2_MODULE_XML, env);
+    AXIS2_FREE((*env)->allocator, temp_path);
+    AXIS2_FREE((*env)->allocator, temp_path2);
+    AXIS2_FREE((*env)->allocator, temp_path3);
+    AXIS2_FREE((*env)->allocator, module_container_path);
+    AXIS2_FREE((*env)->allocator, module_folder);
+    if(!module_xml)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    status = axis2_file_handler_access(file_name, AXIS2_F_OK);
+    status = axis2_file_handler_access(module_xml, AXIS2_F_OK);
+    
     if(AXIS2_SUCCESS == status)
     {
         axis2_module_builder_t *module_builder = NULL;
         
         module_builder = 
             axis2_module_builder_create_with_file_and_dep_engine_module(env,
-                file_name, dep_engine, module);
+                module_xml, dep_engine, module);
         status = AXIS2_MODULE_BUILDER_POPULATE_MODULE(module_builder, env);
-        if(AXIS2_FAILURE == status)
+        if(AXIS2_SUCCESS != status)
         {
             return AXIS2_FAILURE;
         }

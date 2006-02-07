@@ -250,7 +250,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     int size = 0;
     AXIS2_TIME_T timestamp = 0;
     
-    AXIS2_FUNC_PARAM_CHECK(svc_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_node, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
 
@@ -706,8 +706,9 @@ axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
 
 axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
-                                    axis2_env_t **env,
-                                    axis2_om_children_qname_iterator_t *module_refs)
+                                        axis2_env_t **env,
+                                        axis2_om_children_qname_iterator_t *
+                                            module_refs)
 {
     axis2_svc_builder_impl_t *builder_impl = NULL;
     
@@ -729,7 +730,6 @@ axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
         module_ref_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(module_ref_element,
             env, qref);
         AXIS2_QNAME_FREE(qref, env);
-        qref = NULL;
         if(NULL != module_ref_att)
         {
             axis2_char_t *ref_name = NULL;
@@ -749,7 +749,6 @@ axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
                 AXIS2_SVC_ADD_MODULE_REF(builder_impl->svc, env, qrefname);
             }
             AXIS2_QNAME_FREE(qrefname, env);
-            qrefname = NULL;
         }
     }
     return AXIS2_SUCCESS;

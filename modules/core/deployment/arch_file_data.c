@@ -30,6 +30,7 @@ typedef struct axis2_arch_file_data_impl
     axis2_file_t *file;
     int type;
     axis2_char_t *msg_recv;
+    axis2_char_t *module_name;
     axis2_char_t *module_dll_name;
     axis2_char_t *name;
     /*
@@ -77,6 +78,15 @@ axis2_arch_file_data_get_file(axis2_arch_file_data_t *file_data,
                                     axis2_env_t **env);
 
 axis2_char_t *AXIS2_CALL
+axis2_arch_file_data_get_module_name(axis2_arch_file_data_t *file_data,
+                                            axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_arch_file_data_set_module_name(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env,
+                                    axis2_char_t *module_name);
+                                    
+axis2_char_t *AXIS2_CALL
 axis2_arch_file_data_get_module_dll_name(axis2_arch_file_data_t *file_data,
                                             axis2_env_t **env);
 
@@ -84,10 +94,11 @@ axis2_status_t AXIS2_CALL
 axis2_arch_file_data_set_module_dll_name(axis2_arch_file_data_t *file_data,
                                     axis2_env_t **env,
                                     axis2_char_t *module_dll_name);
+                                    
 axis2_status_t AXIS2_CALL
 axis2_arch_file_data_add_svc(axis2_arch_file_data_t *file_data,
                                 axis2_env_t **env,
-                                struct axis2_svc *svc_desc);
+                                axis2_svc_t *svc_desc);
 
 struct axis2_svc *AXIS2_CALL
 axis2_arch_file_data_get_svc(axis2_arch_file_data_t *file_data,
@@ -130,6 +141,7 @@ axis2_arch_file_data_create(axis2_env_t **env)
     arch_file_data_impl->file = NULL;
     arch_file_data_impl->type = 0;
     arch_file_data_impl->msg_recv = NULL;
+    arch_file_data_impl->module_name = NULL;
     arch_file_data_impl->module_dll_name = NULL;
     arch_file_data_impl->name = NULL;
     arch_file_data_impl->svc_map = NULL;
@@ -166,6 +178,10 @@ axis2_arch_file_data_create(axis2_env_t **env)
         axis2_arch_file_data_get_type;
     arch_file_data_impl->arch_file_data.ops->get_file = 
         axis2_arch_file_data_get_file;
+    arch_file_data_impl->arch_file_data.ops->get_module_name = 
+        axis2_arch_file_data_get_module_name;
+    arch_file_data_impl->arch_file_data.ops->set_module_name =
+        axis2_arch_file_data_set_module_name;
     arch_file_data_impl->arch_file_data.ops->get_module_dll_name = 
         axis2_arch_file_data_get_module_dll_name;
     arch_file_data_impl->arch_file_data.ops->set_module_dll_name =
@@ -240,10 +256,10 @@ axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data,
         AXIS2_FREE((*env)->allocator, file_data_impl->msg_recv);
         file_data_impl->msg_recv = NULL;        
     }
-    if(file_data_impl->module_dll_name)
+    if(file_data_impl->module_name)
     {
-        AXIS2_FREE((*env)->allocator, file_data_impl->module_dll_name);
-        file_data_impl->module_dll_name = NULL;        
+        AXIS2_FREE((*env)->allocator, file_data_impl->module_name);
+        file_data_impl->module_name = NULL;        
     }
     if(file_data_impl->name)
     {
@@ -324,8 +340,10 @@ axis2_arch_file_data_get_svc_name(axis2_arch_file_data_t *file_data,
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     axis2_char_t *svc_name = NULL;
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    
+    AXIS2_ENV_CHECK(env, NULL);
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
+    
     if(NULL != file_data_impl->file)
     {
         svc_name = AXIS2_FILE_GET_NAME(file_data_impl->file, env);
@@ -355,11 +373,55 @@ axis2_arch_file_data_get_file(axis2_arch_file_data_t *file_data,
 }
 
 axis2_char_t *AXIS2_CALL
+axis2_arch_file_data_get_module_name(axis2_arch_file_data_t *file_data,
+                                            axis2_env_t **env)
+{
+    axis2_arch_file_data_impl_t *file_data_impl = NULL;
+    axis2_char_t *module_name = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
+    
+    if(NULL != file_data_impl->file)
+    {
+        module_name = AXIS2_FILE_GET_NAME(file_data_impl->file, env);
+    }
+    else
+    {
+        module_name = file_data_impl->module_name;
+    }
+    return module_name;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_arch_file_data_set_module_name(axis2_arch_file_data_t *file_data,
+                                    axis2_env_t **env,
+                                    axis2_char_t *module_name) 
+{
+    axis2_arch_file_data_impl_t *file_data_impl = NULL;
+    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FAILURE);
+    
+    file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
+    if(file_data_impl->module_name)
+    {
+        AXIS2_FREE((*env)->allocator, file_data_impl->module_name);
+        file_data_impl->module_name = NULL;
+    }
+    file_data_impl->module_name = module_name;
+    return AXIS2_SUCCESS;
+}
+
+axis2_char_t *AXIS2_CALL
 axis2_arch_file_data_get_module_dll_name(axis2_arch_file_data_t *file_data,
                                             axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
-    return AXIS2_INTF_TO_IMPL(file_data)->module_dll_name;
+    axis2_arch_file_data_impl_t *file_data_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
+    
+    return file_data_impl->module_dll_name;
 }
 
 axis2_status_t AXIS2_CALL

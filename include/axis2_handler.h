@@ -36,6 +36,7 @@ extern "C"
     struct axis2_handler_desc;
     struct axis2_msg_ctx;
 
+
 /**
  * @defgroup axis2_handler Handlers
  * @ingroup axis2_core_handlers
@@ -128,7 +129,10 @@ extern "C"
         axis2_handler_ops_t *ops;
     } axis2_handler_t;
 
-
+    typedef axis2_handler_t *(* 
+    AXIS2_HANDLER_CREATE_FUNC) (axis2_env_t **env, 
+                                axis2_qname_t *qname);
+    
 /**
  * creates handler struct
  */

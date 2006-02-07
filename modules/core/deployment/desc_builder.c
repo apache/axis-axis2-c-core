@@ -308,9 +308,9 @@ axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
 {
     axis2_flow_t *flow = NULL;
     axis2_om_children_qname_iterator_t *handlers = NULL;
-    axis2_qname_t *child = NULL;
+    axis2_qname_t *qchild = NULL;
         
-    AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, parent, NULL);
     AXIS2_PARAM_CHECK((*env)->error, flow_node, NULL);
         
@@ -326,9 +326,12 @@ axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
         return flow;
     }
     
-    child = axis2_qname_create(env, AXIS2_HANDLERST, NULL, NULL); 
+    qchild = axis2_qname_create(env, AXIS2_HANDLERST, NULL, NULL); 
     handlers = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(flow_element, env, 
-        child, flow_node);
+        qchild, flow_node);
+    if(qchild)
+        AXIS2_QNAME_FREE(qchild, env);
+
     while(AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(handlers ,env))
     {
         axis2_om_node_t *handler_node = NULL;
@@ -341,7 +344,7 @@ axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
         handler = axis2_desc_builder_process_handler(desc_builder, env, 
             handler_node, parent);
         status = AXIS2_FLOW_ADD_HANDLER(flow, env, handler);
-        if(AXIS2_FAILURE == status)
+        if(AXIS2_SUCCESS != status)
         {
             AXIS2_FLOW_FREE(flow, env);
             return NULL;
@@ -369,7 +372,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     axis2_om_element_t *order_element = NULL;
     axis2_qname_t *order_qname = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, handler_element, NULL);
     AXIS2_PARAM_CHECK((*env)->error, parent, NULL);
     
@@ -380,18 +383,15 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     }
     /* Setting Handler name */
     attr_qname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-    if(!attr_qname)
-    {
-        AXIS2_HANDLER_DESC_FREE(handler, env);
-        return NULL;
-    }
     handler_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(handler_node, env);
     name_attrib = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(handler_element, env, 
         attr_qname);
+    if(attr_qname)
+        AXIS2_QNAME_FREE(attr_qname, env);
+
     if(NULL == name_attrib)
     {
         AXIS2_HANDLER_DESC_FREE(handler, env);
-        AXIS2_QNAME_FREE(attr_qname, env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
             AXIS2_FAILURE);
         return NULL;
@@ -403,21 +403,15 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
         
         value = AXIS2_OM_ATTRIBUTE_GET_VALUE(name_attrib, env);
         handler_qname = axis2_qname_create(env, value, NULL, NULL); 
-        if(!handler_qname)
-        {
-            AXIS2_HANDLER_DESC_FREE(handler, env);
-            AXIS2_QNAME_FREE(attr_qname, env);
-            return NULL;
-        }
         status = AXIS2_HANDLER_DESC_SET_QNAME(handler, env, handler_qname);
-        if(AXIS2_FAILURE == status)
+        if(handler_qname)
+            AXIS2_QNAME_FREE(handler_qname, env);
+
+        if(AXIS2_SUCCESS != status)
         {
             AXIS2_HANDLER_DESC_FREE(handler, env);
-            AXIS2_QNAME_FREE(attr_qname, env);
-            AXIS2_QNAME_FREE(handler_qname, env);
             return NULL;
         }  
-        AXIS2_QNAME_FREE(handler_qname, env);        
     }
 
     /*Setting Handler Class name */
@@ -425,13 +419,12 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     class_qname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
     class_attrib = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(handler_element, env,
         class_qname);
-        
-    AXIS2_QNAME_FREE(class_qname, env);
+    if(class_qname)    
+        AXIS2_QNAME_FREE(class_qname, env);
     
     if(NULL == class_attrib)
     {
         AXIS2_HANDLER_DESC_FREE(handler, env);
-        AXIS2_QNAME_FREE(attr_qname, env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
             AXIS2_FAILURE);
         return NULL;   
@@ -443,7 +436,6 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
         if(AXIS2_FAILURE == status)
         {
             AXIS2_HANDLER_DESC_FREE(handler, env);
-            AXIS2_QNAME_FREE(attr_qname, env);
             return NULL;
         }
     }
@@ -454,10 +446,12 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     order_qname = axis2_qname_create(env, AXIS2_ORDER, NULL, NULL);
     order_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(handler_element,
         env, order_qname, handler_node, &order_node);
+    if(order_qname)
+        AXIS2_QNAME_FREE(order_qname, env);
+
     if(NULL == (&order_element) || NULL == order_node)
     {
         AXIS2_HANDLER_DESC_FREE(handler, env);
-        AXIS2_QNAME_FREE(attr_qname, env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_HANDLER_STATE, 
             AXIS2_FAILURE);
         return NULL;
@@ -473,7 +467,6 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
         if(!order_itr)
         {
             AXIS2_HANDLER_DESC_FREE(handler, env);
-            AXIS2_QNAME_FREE(attr_qname, env);
             return NULL;
         }
         
@@ -491,6 +484,9 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
             order_attrib = (axis2_om_attribute_t *) v;
             qname = AXIS2_OM_ATTRIBUTE_GET_QNAME(order_attrib, env);
             name = AXIS2_QNAME_GET_LOCALPART(qname, env);
+            if(qname)
+                AXIS2_QNAME_FREE(qname, env);
+
             value = AXIS2_OM_ATTRIBUTE_GET_VALUE(order_attrib, env);
             if(0 == AXIS2_STRCMP(AXIS2_AFTER, name))
             {
@@ -500,7 +496,6 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                 if(AXIS2_FAILURE == status)
                 {
                     AXIS2_HANDLER_DESC_FREE(handler, env);
-                    AXIS2_QNAME_FREE(attr_qname, env);
                     return NULL;
                 }
             }
@@ -512,7 +507,6 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                 if(AXIS2_FAILURE == status)
                 {
                     AXIS2_HANDLER_DESC_FREE(handler, env);
-                    AXIS2_QNAME_FREE(attr_qname, env);
                     return NULL;
                 }
             }
@@ -524,7 +518,6 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                 if(AXIS2_FAILURE == status)
                 {
                     AXIS2_HANDLER_DESC_FREE(handler, env);
-                    AXIS2_QNAME_FREE(attr_qname, env);
                     return NULL;
                 }
             }
@@ -542,7 +535,6 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                     if(AXIS2_FAILURE == status)
                     {
                         AXIS2_HANDLER_DESC_FREE(handler, env);
-                        AXIS2_QNAME_FREE(attr_qname, env);
                         AXIS2_FREE((*env)->allocator, bool_val);
                         return NULL;
                     }
@@ -556,7 +548,6 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                     if(AXIS2_FAILURE == status)
                     {
                         AXIS2_HANDLER_DESC_FREE(handler, env);
-                        AXIS2_QNAME_FREE(attr_qname, env);
                         AXIS2_FREE((*env)->allocator, bool_val);
                         return NULL;
                     }
@@ -574,8 +565,6 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
         if(AXIS2_FAILURE == status)
         {
             AXIS2_HANDLER_DESC_FREE(handler, env);
-            AXIS2_QNAME_FREE(attr_qname, env);
-            AXIS2_QNAME_FREE(param_qname, env);
             return NULL;   
         }      
     }
@@ -584,7 +573,6 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     if(AXIS2_FAILURE == status)
     {
         AXIS2_HANDLER_DESC_FREE(handler, env);
-        AXIS2_QNAME_FREE(attr_qname, env);
         return NULL; 
     }
     
