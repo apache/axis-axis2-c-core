@@ -1189,7 +1189,7 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     module_folder_path = AXIS2_FILE_GET_PATH(module_folder, env);
     temp_path = AXIS2_STRACAT(module_folder_path, AXIS2_PATH_SEP_STR, env);
     dll_path = AXIS2_STRACAT(temp_path, read_in_dll, env);
-    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "dll path is : %s", dll_path);
+    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "axis2_dep_engine_load_module_dll; dll path is : %s", dll_path);
     status = AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_path);
     if(AXIS2_SUCCESS != status)
     {
