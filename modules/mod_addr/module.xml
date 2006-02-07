@@ -1,4 +1,4 @@
-<module name="addressing">
+<module name="addressing" class="libaxis2_mod_addr.so">
     <inflow>
         <handler name="AddressingInHandler" class="libaxis2_mod_addr.so">
             <order phase="PreDispatch"/>

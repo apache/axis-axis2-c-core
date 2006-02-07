@@ -1190,7 +1190,7 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     temp_path = AXIS2_STRACAT(module_folder_path, AXIS2_PATH_SEP_STR, env);
     dll_path = AXIS2_STRACAT(temp_path, read_in_dll, env);
     AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "dll path is : %s", dll_path);
- 
+    /*dll_path = "/home/damitha/projects/c/deploy/modules/addressing/libaxis2_mod_addr.so";*/
     status = AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_path);
     if(AXIS2_SUCCESS != status)
     {
@@ -1323,12 +1323,23 @@ axis2_dep_engine_add_new_module(axis2_dep_engine_t *dep_engine,
     axis2_flow_t *in_fault_flow = NULL;
     axis2_flow_t *out_fault_flow = NULL;
     axis2_module_t *module = NULL;
-    /* currentArchiveFile.setClassLoader(); */
+    axis2_status_t status = AXIS2_FAILURE;
     
-    axis2_dep_engine_load_module_dll(dep_engine, env, module_metadata);
+    status = axis2_dep_engine_load_module_dll(dep_engine, env, module_metadata);
+    if(AXIS2_SUCCESS != status)
+    {
+        return status;
+    }
     module = AXIS2_MODULE_DESC_GET_MODULE(module_metadata, env);
-    AXIS2_MODULE_FILL_HANDLER_CREATE_FUNC_MAP(module, env);
-    /* module_metadata.setModuleClassLoader(currentArchiveFile.getClassLoader()); */
+    if(!module)
+    {
+        return AXIS2_FAILURE;
+    }
+    status = AXIS2_MODULE_FILL_HANDLER_CREATE_FUNC_MAP(module, env);
+    if(AXIS2_SUCCESS != status)
+    {
+        return status;
+    }
     AXIS2_CONF_ADD_MODULE(AXIS2_INTF_TO_IMPL(dep_engine)->conf, env, 
         module_metadata);
     /* log.info(Messages.getMessage(DeploymentErrorMsgs.ADDING_NEW_MODULE)); */

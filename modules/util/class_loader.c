@@ -232,6 +232,7 @@ axis2_class_loader_load_lib (axis2_env_t **env,
     dl_handler = AXIS2_PLATFORM_LOADLIB(dll_name);
     if(NULL == dl_handler)
     {
+        printf("dll_name:%s\n", dll_name);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_LOADING_FAILED, 
             AXIS2_FAILURE);
         return AXIS2_FAILURE;

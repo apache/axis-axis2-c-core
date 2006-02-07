@@ -27,7 +27,7 @@ axis2_mod_addr_init(axis2_module_t *module,
                         axis2_conf_t *axis2_system);
 
 
-axis2_status_t AXIS2_CALL
+axis2_status_t
 axis2_mod_addr_fill_handler_create_func_map(axis2_module_t *module,
                                             axis2_env_t **env);
 
@@ -87,10 +87,12 @@ axis2_mod_addr_shutdown(axis2_module_t *module,
     return AXIS2_SUCCESS; 
 }
 
-axis2_status_t AXIS2_CALL
+axis2_status_t
 axis2_mod_addr_fill_handler_create_func_map(axis2_module_t *module,
                                             axis2_env_t **env)
 {
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
     module->handler_create_func_map = axis2_hash_make(env);
     if(!module->handler_create_func_map)
     {
@@ -111,7 +113,7 @@ axis2_mod_addr_fill_handler_create_func_map(axis2_module_t *module,
  * Following block distinguish the exposed part of the dll.
  */
 
-int axis2_get_instance(struct axis2_module **inst,
+int axis2_get_instance(axis2_module_t **inst,
                         axis2_env_t **env)
 {
 	*inst = axis2_mod_addr_create(env);
