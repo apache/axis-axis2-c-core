@@ -1,6 +1,6 @@
-prgbindir=$(prefix)/bin/system_test
+TESTS = test_util
 noinst_HEADERS = test_log.h
-prgbin_PROGRAMS = test_util
+check_PROGRAMS = test_util
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS)
 test_util_SOURCES = test_util.c test_log.c

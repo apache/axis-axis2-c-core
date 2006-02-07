@@ -1,1 +1,2 @@
+TESTS =
 SUBDIRS = src

@@ -1,3 +1,4 @@
+TESTS =
 prgbindir=$(prefix)/bin/unit_test
 prgbin_PROGRAMS = main_unit_test_suite
 SUBDIRS = util core xml wsdl

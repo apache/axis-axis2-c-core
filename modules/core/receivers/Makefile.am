@@ -1,3 +1,4 @@
+TESTS =
 lib_LTLIBRARIES = libaxis2_receivers.la
 AM_CPPFLAGS = $(CPPFLAGS)
 

@@ -1,3 +1,4 @@
+TESTS =
 prgbindir=$(prefix)/bin/system_test
 prgbin_PROGRAMS = test_description
 SUBDIRS =

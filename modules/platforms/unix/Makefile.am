@@ -1,3 +1,4 @@
+TESTS =
 lib_LTLIBRARIES = libaxis2_unix.la
 noinst_HEADERS = axis2_unix.h axis2_uuid_gen_unix.h
 AM_CPPFLAGS = $(CPPFLAGS)

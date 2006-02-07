@@ -1,3 +1,4 @@
+TESTS =
 lib_LTLIBRARIES = libaxis2_deployment.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_deployment_la_SOURCES = phases_info.c \

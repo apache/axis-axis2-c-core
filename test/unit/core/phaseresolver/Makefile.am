@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/unit_test
+TESTS = phaseresolver_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_phaseresolver.la
 AM_CPPFLAGS = $(CPPFLAGS)
@@ -16,7 +16,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/platforms
 
-prgbin_PROGRAMS = phaseresolver_test
+check_PROGRAMS = phaseresolver_test
 phaseresolver_test_SOURCES = main.c
 phaseresolver_test_LDADD   =   libtest_phaseresolver.la  \
                      -L$(CUTEST_HOME)/lib \

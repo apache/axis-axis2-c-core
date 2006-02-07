@@ -1,3 +1,4 @@
+TESTS =
 lib_LTLIBRARIES = libaxis2_util.la
 noinst_HEADERS = axis2_hash.h \
 				axis2_string.h \

@@ -1,3 +1,4 @@
+TESTS =
 lib_LTLIBRARIES = libaxis2_http_sender.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_http_sender_la_SOURCES = http_transport_sender.c\

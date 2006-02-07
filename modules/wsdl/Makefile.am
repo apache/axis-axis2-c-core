@@ -1,3 +1,4 @@
+TESTS =
 lib_LTLIBRARIES = libaxis2_wsdl.la
 noinst_HEADERS = axis2_wsdl.h
 AM_CPPFLAGS = $(CPPFLAGS)

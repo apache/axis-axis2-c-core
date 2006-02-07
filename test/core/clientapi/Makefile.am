@@ -1,5 +1,5 @@
-prgbindir=$(prefix)/bin/system_test
-prgbin_PROGRAMS = test_client test_clientapi
+TESTS = test_client test_clientapi
+check_PROGRAMS = test_client test_clientapi
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -pthread 
 test_client_SOURCES = test_client.c

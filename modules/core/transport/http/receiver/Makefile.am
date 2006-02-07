@@ -1,3 +1,4 @@
+TESTS =
 lib_LTLIBRARIES = libaxis2_http_receiver.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_http_receiver_la_SOURCES = simple_http_svr_conn.c\

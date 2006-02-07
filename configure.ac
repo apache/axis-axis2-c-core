@@ -83,16 +83,16 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
-    TESTS=""
+    TESTDIR=""
     ;;
   *)
     AC_MSG_RESULT(yes)
-    TESTS="test"
+    TESTDIR="test"
 
     ;;
   esac ],
   AC_MSG_RESULT(no)
-  TESTS=""
+  TESTDIR=""
 )
 
 AC_MSG_CHECKING(whether to build samples)
@@ -119,7 +119,7 @@ AC_SUBST(LIBXML2)
 AC_SUBST(GUTHTHILA)
 AC_SUBST(LIBXML2_LIBNAME)
 AC_SUBST(GUTHTHILA_LIBNAME)
-AC_SUBST(TESTS)
+AC_SUBST(TESTDIR)
 AC_SUBST(SAMPLES)
 
 AC_CONFIG_FILES([Makefile \

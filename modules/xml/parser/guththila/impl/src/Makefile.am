@@ -1,3 +1,4 @@
+TESTS =
 lib_LTLIBRARIES = libguththila.la
 AM_CPPFLAGS = $(CPPFLAGS) 
 libguththila_la_SOURCES = guththila_token.c \

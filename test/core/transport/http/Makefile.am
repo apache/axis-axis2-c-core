@@ -1,5 +1,5 @@
-prgbindir=$(prefix)/bin/system_test
-prgbin_PROGRAMS = test_http_transport
+TESTS = test_http_transport
+check_PROGRAMS = test_http_transport
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
 test_http_transport_SOURCES = test_http_transport.c

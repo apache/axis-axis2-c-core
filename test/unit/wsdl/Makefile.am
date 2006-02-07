@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/unit_test
+TESTS = wsdl_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_wsdl.la
 AM_CPPFLAGS = $(CPPFLAGS)
@@ -16,7 +16,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/platforms
 
 
-prgbin_PROGRAMS = wsdl_test
+check_PROGRAMS = wsdl_test
 wsdl_test_SOURCES = main.c
 
 wsdl_test_LDADD   =   \

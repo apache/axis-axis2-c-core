@@ -1,3 +1,4 @@
+TESTS =
 lib_LTLIBRARIES = libaxis2_phaseresolver.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_phaseresolver_la_SOURCES = phase_holder.c \

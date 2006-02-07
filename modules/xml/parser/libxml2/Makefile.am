@@ -1,3 +1,4 @@
+TESTS =
 lib_LTLIBRARIES = libaxis2_libxml2.la libaxis2_parser.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_libxml2_la_SOURCES = libxml2_reader_wrapper.c \

@@ -1,5 +1,5 @@
-prgbindir=$(prefix)/bin/system_test
-prgbin_PROGRAMS = test_om
+TESTS = test_om
+check_PROGRAMS = test_om
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -O2 -pthread
 test_om_SOURCES = test_om.c

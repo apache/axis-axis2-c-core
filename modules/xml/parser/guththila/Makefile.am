@@ -1,3 +1,4 @@
+TESTS =
 lib_LTLIBRARIES = libaxis2_guththila.la
 SUBDIRS = impl
 AM_CPPFLAGS = $(CPPFLAGS)
