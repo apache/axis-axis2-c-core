@@ -51,7 +51,7 @@ axis2_mod_addr_create(axis2_env_t **env)
 }
 
 int 
-axis2_addr_module_init(axis2_module_t *module,
+axis2_mod_addr_init(axis2_module_t *module,
                         axis2_env_t **env,
                         axis2_conf_t *axis2_system)
 {
@@ -100,12 +100,12 @@ axis2_mod_addr_fill_handler_create_func_map(axis2_module_t *module,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    axis2_hash_set(module->handler_create_func_map, "AddressingInHandler", 
+    /*axis2_hash_set(module->handler_create_func_map, "AddressingInHandler", 
         AXIS2_HASH_KEY_STRING, axis2_addr_in_handler_create);
 
     axis2_hash_set(module->handler_create_func_map, "AddressingOutHandler", 
         AXIS2_HASH_KEY_STRING, axis2_addr_out_handler_create);
-
+    */
     return AXIS2_SUCCESS;
 }
 
