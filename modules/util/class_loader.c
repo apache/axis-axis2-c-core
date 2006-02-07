@@ -234,7 +234,7 @@ axis2_class_loader_load_lib (axis2_env_t **env,
     {
         axis2_char_t *errormsg = NULL;
         /* Diagnose the encountered error. */
-        errormsg = dlerrordup (errormsg);
+        errormsg =  (axis2_char_t *) dlerror ();
         printf("errormsg:%s\n", errormsg);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_LOADING_FAILED, 
             AXIS2_FAILURE);
