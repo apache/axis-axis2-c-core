@@ -32,7 +32,7 @@ main (int argc, char *argv[])
     allocator = guththila_allocator_init (NULL);
     environment =
         guththila_environment_create (allocator, NULL, NULL);
-    red = guththila_reader_create_for_file (environment, "response.xml");
+    red = guththila_reader_create_for_file (environment, argv[1]);
     parser = guththila_xml_pull_parser_create (environment, red);
     guththila_xml_pull_parser_read (environment, parser);
 
