@@ -336,6 +336,9 @@ axis2_op_create (axis2_env_t **env)
     axis2_array_list_t *array_list_l = NULL;
     axis2_op_impl_t *op_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_phase_t *policy_determination = NULL;
+    axis2_phase_t *message_processing = NULL;
+    axis2_phase_t *message_out = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
 	
@@ -378,35 +381,88 @@ axis2_op_create (axis2_env_t **env)
         return NULL;		
 	}
 
-    /*op_impl->remaining_phases_inflow = axis2_array_list_create(env, 20);
+    op_impl->remaining_phases_inflow = axis2_array_list_create(env, 0);
     if(NULL == op_impl->remaining_phases_inflow)
     {
         axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
+    policy_determination = axis2_phase_create(env, 
+        AXIS2_PHASE_POLICY_DETERMINATION);
+    status = AXIS2_ARRAY_LIST_ADD(op_impl->remaining_phases_inflow, env, 
+        policy_determination);
+    if(AXIS2_SUCCESS != status)
+    {
+        AXIS2_PHASE_FREE(policy_determination, env);
+        policy_determination = NULL;
+        return NULL;
+    }
+    policy_determination = NULL;
+    message_processing = axis2_phase_create(env, AXIS2_PHASE_MESSAGE_PROCESSING);
+    /* TODO
+     * Add soap processing model checker handler to this when the handler once
+     * handler is written
+     */
+
+    status = AXIS2_ARRAY_LIST_ADD(op_impl->remaining_phases_inflow, env,
+        message_processing);
+    if(AXIS2_SUCCESS != status)
+    {
+        AXIS2_PHASE_FREE(policy_determination, env);
+        AXIS2_PHASE_FREE(message_processing, env);
+        policy_determination = NULL;
+        message_processing = NULL;
+        return NULL;
+    }
+    message_processing = NULL;
     
-    op_impl->phases_outflow = axis2_array_list_create(env, 20);
+    
+    op_impl->phases_outflow = axis2_array_list_create(env, 0);
     if(NULL == op_impl->phases_outflow)
     {
         axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
+   
+    policy_determination = axis2_phase_create(env, 
+        AXIS2_PHASE_POLICY_DETERMINATION);
+    status = AXIS2_ARRAY_LIST_ADD(op_impl->phases_outflow, env, 
+        policy_determination);
+    if(AXIS2_SUCCESS != status)
+    {
+        AXIS2_PHASE_FREE(policy_determination, env);
+        policy_determination = NULL;
+        return NULL;
+    }
+    policy_determination = NULL;
     
-    op_impl->phases_in_fault_flow = axis2_array_list_create(env, 20);
+    message_out = axis2_phase_create(env, AXIS2_PHASE_MESSAGE_OUT);
+    status = AXIS2_ARRAY_LIST_ADD(op_impl->phases_outflow, env, message_out);
+    if(AXIS2_SUCCESS != status)
+    {
+        AXIS2_PHASE_FREE(policy_determination, env);
+        AXIS2_PHASE_FREE(message_out, env);
+        policy_determination = NULL;
+        message_out = NULL;
+        return NULL;
+    }
+    message_out = NULL;
+    /*
+    op_impl->phases_in_fault_flow = axis2_array_list_create(env, 0);
     if(NULL == op_impl->phases_in_fault_flow)
     {
         axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
     
-    op_impl->modulerefs = axis2_array_list_create(env, 20);
+    op_impl->modulerefs = axis2_array_list_create(env, 0);
     if(NULL == op_impl->modulerefs)
     {
         axis2_op_free(&(op_impl->op), env);
         return NULL;
     }
     
-    op_impl->phases_out_fault_flow = axis2_array_list_create(env, 20);
+    op_impl->phases_out_fault_flow = axis2_array_list_create(env, 0);
     if(NULL == op_impl->phases_out_fault_flow)
     {
         axis2_op_free(&(op_impl->op), env);
