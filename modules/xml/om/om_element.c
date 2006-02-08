@@ -625,10 +625,12 @@ axis2_om_element_get_attribute (axis2_om_element_t *om_element,
                                 axis2_env_t **env,
                                 axis2_qname_t *qname)
 {
+    axis2_om_element_impl_t *element_impl = NULL;
     axis2_char_t *name = NULL;
     axis2_om_attribute_t *attr = NULL;
     AXIS2_FUNC_PARAM_CHECK(om_element, env, NULL);
-    
+    element_impl = AXIS2_INTF_TO_IMPL(om_element);
+
     if (!qname)
     {
         AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, 
@@ -637,8 +639,10 @@ axis2_om_element_get_attribute (axis2_om_element_t *om_element,
         return NULL;
     }
     name = AXIS2_QNAME_TO_STRING(qname, env);
-    attr = (axis2_om_attribute_t*) (axis2_hash_get(AXIS2_INTF_TO_IMPL(
-        om_element)->attributes, name, AXIS2_HASH_KEY_STRING));
+    if (element_impl->attributes)
+    {
+        attr = (axis2_om_attribute_t*) (axis2_hash_get(element_impl->attributes, name, AXIS2_HASH_KEY_STRING));
+    }
     return attr;
 }
 
