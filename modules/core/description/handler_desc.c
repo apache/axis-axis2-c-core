@@ -184,7 +184,7 @@ axis2_status_t AXIS2_CALL axis2_handler_desc_set_qname (struct axis2_handler_des
 {
     /**TODO: need to have the qname copy constructor here */
     AXIS2_FUNC_PARAM_CHECK(handler_desc, env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(handler_desc)->qname = qname;
+    AXIS2_INTF_TO_IMPL(handler_desc)->qname = AXIS2_QNAME_CLONE(qname, env);
     return AXIS2_SUCCESS;
     
 }

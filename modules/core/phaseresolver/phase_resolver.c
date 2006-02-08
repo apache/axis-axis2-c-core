@@ -857,7 +857,7 @@ axis2_phase_resolver_build_out_transport_chains(axis2_phase_resolver_t *phase_re
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolver,
                                                 axis2_env_t **env,
-                                                axis2_module_desc_t *module)
+                                                axis2_module_desc_t *module_desc)
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
     axis2_hash_t *svc_grps = NULL;
@@ -866,7 +866,8 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
         
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
     
-    status = axis2_phase_resolver_engage_to_global_chain(phase_resolver, env, module);
+    status = axis2_phase_resolver_engage_to_global_chain(phase_resolver, env, 
+        module_desc);
     if(AXIS2_FAILURE == status)
         return status;
     svc_grps = AXIS2_CONF_GET_SVC_GRPS(resolver_impl->axis2_config, env);
@@ -896,21 +897,21 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
             axis2_hash_this (index_j, NULL, NULL, &w);
             svc = (axis2_svc_t *) w;
                 
-            status = AXIS2_SVC_ADD_MODULE_OPS(svc, env, module, 
+            status = AXIS2_SVC_ADD_MODULE_OPS(svc, env, module_desc, 
                 resolver_impl->axis2_config);
             if(AXIS2_SUCCESS != status)
             {
                 return status;
             }
             status = axis2_phase_resolver_engage_module_to_svc_from_global(
-                phase_resolver, env, svc, module);
+                phase_resolver, env, svc, module_desc);
             
             if(AXIS2_SUCCESS != status)
             {
                 return status;
             }
             
-            status = AXIS2_SVC_ADD_TO_ENGAGED_MODULE_LIST(svc, env, module);
+            status = AXIS2_SVC_ADD_TO_ENGAGED_MODULE_LIST(svc, env, module_desc);
             if(AXIS2_SUCCESS != status)
             {
                 return status;
@@ -918,7 +919,7 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
             index_j = axis2_hash_next (env, index_j);
             
         }         
-        mod_name = AXIS2_MODULE_DESC_GET_NAME(module, env);
+        mod_name = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
         status = AXIS2_SVC_GRP_ADD_MODULE(svc_grp, env, 
             mod_name);
         

@@ -171,6 +171,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     axis2_param_container_t *parent_container = NULL;
     int size = 0;
     int i = 0;
+    axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(module_builder);
@@ -288,7 +289,11 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
             desc_builder, env, in_flow_element, builder_impl->module_desc->params,
                 in_flow_node);
-        AXIS2_MODULE_DESC_SET_INFLOW(builder_impl->module_desc, env, flow);
+        status = AXIS2_MODULE_DESC_SET_INFLOW(builder_impl->module_desc, env, flow);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
+        }
     }
     
     qoutflowst = axis2_qname_create(env, AXIS2_OUTFLOWST, NULL, NULL);
@@ -302,7 +307,11 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
             desc_builder, env, out_flow_element, builder_impl->module_desc->params,
                 out_flow_node);
-        AXIS2_MODULE_DESC_SET_OUTFLOW(builder_impl->module_desc, env, flow);
+        status = AXIS2_MODULE_DESC_SET_OUTFLOW(builder_impl->module_desc, env, flow);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
+        }
     }
 
     qinfaultflow = axis2_qname_create(env, AXIS2_IN_FAILTFLOW, NULL, NULL);
@@ -316,7 +325,11 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
             desc_builder, env, in_fault_flow_element, builder_impl->module_desc->
                 params, in_fault_flow_node);
-        AXIS2_MODULE_DESC_SET_FAULT_INFLOW(builder_impl->module_desc, env, flow);
+        status = AXIS2_MODULE_DESC_SET_FAULT_INFLOW(builder_impl->module_desc, env, flow);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
+        }
     }
     
     qoutfaultflow = axis2_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL, NULL);
@@ -330,7 +343,11 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
             desc_builder, env, out_fault_flow_element, builder_impl->module_desc->
                 params, out_fault_flow_node);
-        AXIS2_MODULE_DESC_SET_FAULT_OUTFLOW(builder_impl->module_desc, env, flow);
+        status = AXIS2_MODULE_DESC_SET_FAULT_OUTFLOW(builder_impl->module_desc, env, flow);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
+        }
     }
 
     /* processing Operations */

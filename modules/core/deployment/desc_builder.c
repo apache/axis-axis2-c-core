@@ -373,7 +373,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     axis2_qname_t *order_qname = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, handler_element, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, handler_node, NULL);
     AXIS2_PARAM_CHECK((*env)->error, parent, NULL);
     
     handler = axis2_handler_desc_create_with_qname(env, NULL);
