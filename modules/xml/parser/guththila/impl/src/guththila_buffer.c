@@ -57,13 +57,14 @@ guththila_buffer_grow (guththila_environment_t * environment,
                        guththila_buffer_t * name)
 {
 
-    guththila_buffer_t *x = NULL;
+    guththila_char_t *x = NULL;
     name->size <<= 1;
-    x = (guththila_buffer_t *) GUTHTHILA_REALLOC (environment->allocator,
-                                                  name, name->size);
+    x = (guththila_char_t *) GUTHTHILA_REALLOC (environment->allocator,
+                                                  name->buff,name->size);
     if (x)
-        name = x;
+        name->buff = x;
     else
-        return NULL;
+        name->size >>= 1;
     return name;
 }
+

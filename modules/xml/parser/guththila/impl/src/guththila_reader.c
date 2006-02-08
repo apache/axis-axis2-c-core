@@ -26,7 +26,8 @@ typedef struct guththila_reader_impl_t
 {
     guththila_reader_t reader;
     FILE *fp;
-    int (*input_read_callback)(char *buffer,int size);
+    int (*input_read_callback)(char *buffer,int size, void *ctx);
+    void* context;
 }guththila_reader_impl_t;
 
 
@@ -74,6 +75,7 @@ guththila_reader_create_for_memory(
     }
     
     memory_reader->input_read_callback  = input_read_callback;
+    memory_reader->context = ctx;
     memory_reader->reader.guththila_reader_type = GUTHTHILA_IN_MEMORY_READER;
     
     return &(memory_reader->reader);
@@ -111,7 +113,8 @@ guththila_reader_read (guththila_environment_t * environment,
        return (int)fread (buffer + offset, 1, length,((guththila_reader_impl_t*)r)->fp);
     }
     else if(r->guththila_reader_type == GUTHTHILA_IN_MEMORY_READER)
-        return ((guththila_reader_impl_t*)r)->input_read_callback((buffer + offset), length);
+        return ((guththila_reader_impl_t*)r)->input_read_callback((buffer + offset), length,
+        ((guththila_reader_impl_t*)r)->context);
  
     return GUTHTHILA_FAILURE;       
 }

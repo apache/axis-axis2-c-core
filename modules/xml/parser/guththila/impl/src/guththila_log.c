@@ -71,7 +71,7 @@ guththila_log_create (guththila_allocator_t * allocator,
 int GUTHTHILA_CALL
 guththila_log_impl_write (const void *buffer, size_t count)
 {
-    int i;
+    size_t i;
     if (!buffer)
         return -1;
 

@@ -83,7 +83,7 @@ guththila_strndup (guththila_environment_t *environment,
         register guththila_char_t *dst;
 
         n = guththila_strlen (s1);
-        if (len < n)
+        if ((size_t)len < n)
             n = len;
         dst = (guththila_char_t *) GUTHTHILA_MALLOC(environment->allocator ,(n + 1));
         if (dst)

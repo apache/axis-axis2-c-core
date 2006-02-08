@@ -50,7 +50,7 @@ guththila_create_xml_stream_writer (guththila_environment_t * environment,
     {
         fp = fopen(filename, "w");
         if(!fp)
-            return GUTHTHILA_STREAM_WRITER_ERROR_FILE_NOT_FOUND;            
+            return 0; /* GUTHTHILA_STREAM_WRITER_ERROR_FILE_NOT_FOUND; */
         stream_writer->writer = fp;
     }
     else{

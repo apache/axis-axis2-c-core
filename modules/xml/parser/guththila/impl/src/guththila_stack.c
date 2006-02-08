@@ -94,7 +94,6 @@ guththila_stack_free (guththila_environment_t * environment,
     {
         guththila_element_t *ele = stack->tail;
         guththila_stack_free_rec (environment, stack, ele);
-       /*  GUTHTHILA_FREE (environment->allocator, ele); */
         GUTHTHILA_FREE (environment->allocator, stack);
     }
 }
@@ -111,6 +110,7 @@ guththila_stack_free_rec (guththila_environment_t * environment,
     }
     else
     {
+
 /*         elem = elem->prev; */
         guththila_stack_free_rec (environment, stack, elem->prev);
         GUTHTHILA_FREE (environment->allocator, elem);
@@ -172,7 +172,7 @@ guththila_stack_push_namespace (guththila_environment_t * environment,
         guththila_element_t *e =
             (guththila_element_t *) GUTHTHILA_MALLOC (environment->allocator,
                                                sizeof(guththila_element_t));
-        e->namespace = ns;
+        e->_namespace = ns;
         e->attribute = NULL;
         e->token = NULL;
         if (stack->pointer == 0)
@@ -231,7 +231,7 @@ guththila_stack_push_depth (guththila_environment_t * environment,
         guththila_element_t *e =
             (guththila_element_t *) GUTHTHILA_MALLOC (environment->allocator,
                                             sizeof (guththila_element_t));
-        e->namespace = NULL;
+        e->_namespace = NULL;
         e->attribute = NULL;
         e->token = NULL;
         e->depth = d;

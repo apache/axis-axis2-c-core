@@ -39,7 +39,7 @@ struct guththila_element_s
 {
     guththila_token_t *token;
     guththila_attribute_t *attribute;
-    guththila_namespace_t *namespace;
+    guththila_namespace_t *_namespace;
     guththila_depth_t *depth;
     guththila_element_t *prev;
 };

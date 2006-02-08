@@ -135,12 +135,11 @@ guththila_xml_pull_parser_read (guththila_environment_t * environment,
         }
         else
         {
-            guththila_buffer_t *b = NULL;
-            b = parser->buffer;
+            int b = parser->buffer->size;
             parser->buffer =
                 guththila_buffer_grow (environment, parser->buffer);
             guththila_xml_pull_parser_relocate_tokens (
-                environment, parser,  (b->size - parser->buffer->size));
+            environment, parser, (parser->buffer->size - b));
         }
     }
     c = guththila_reader_read (environment, (parser->buffer->buff),
@@ -664,6 +663,7 @@ guththila_xml_pull_parser_process_char_data (guththila_environment_t *
     }
     while (c != '<');
 
+
     /*  if (all_spaces) */
     /*         parser->guththila_event = GUTHTHILA_SPACE; */
     guththila_xml_pull_parser_close_token (environment, parser, _char_data,
@@ -768,6 +768,13 @@ guththila_xml_pull_parser_tokenize (guththila_environment_t * environment,
         switch (parser->status)
         {
         case S_1:
+            while (isspace(c))
+            {
+               c = guththila_xml_pull_parser_next_char (environment, parser, -1);
+               if (c == -1)
+                   return -1;
+            }
+
             if ('<' == c)
                 parser->status = S_2;
             else
@@ -1024,15 +1031,15 @@ guththila_xml_pull_parser_close_element (guththila_environment_t *
     for (; ii > 0; ii--)
     {
         e = guththila_stack_pull (environment, parser->namesp);
-        if (e->namespace->name)
+        if (e->_namespace->name)
         {
-            free (e->namespace->name);
-            e->namespace->name = NULL;
+            free (e->_namespace->name);
+            e->_namespace->name = NULL;
         }
-        if (e->namespace->uri)
+        if (e->_namespace->uri)
         {
-            free (e->namespace->uri);
-            e->namespace->uri = NULL;
+            free (e->_namespace->uri);
+            e->_namespace->uri = NULL;
         }
         if (e)
         {
@@ -1309,8 +1316,8 @@ guththila_xml_pull_parser_get_namespace (guththila_environment_t *
 {
     guththila_element_t *e;
     e = guththila_stack_pull_current (environment, parser->namesp);
-    if (e->namespace)
-        return e->namespace;
+    if (e->_namespace)
+        return e->_namespace;
     else
         return NULL;
 }
@@ -1356,8 +1363,8 @@ guththila_xml_pull_parser_get_namespace_prefix_by_number
     else
     {
         e = guththila_stack_get (environment, parser->namesp, i);
-        if (e->namespace)
-            ns = e->namespace;
+        if (e->_namespace)
+            ns = e->_namespace;
     }
     return GUTHTHILA_STRDUP (environment, ns->name);
 }
@@ -1377,8 +1384,8 @@ guththila_xml_pull_parser_get_namespace_uri_by_number (guththila_environment_t
     else
     {
         e = guththila_stack_get (environment, parser->namesp, i);
-        if (e->namespace)
-            ns = e->namespace;
+        if (e->_namespace)
+            ns = e->_namespace;
     }
     return GUTHTHILA_STRDUP (environment , ns->uri);
 }
@@ -1402,9 +1409,9 @@ guththila_xml_pull_parser_get_attribute_namespace_by_number
         e = guththila_stack_get (environment, parser->namesp, ii);
         if (e)
         {
-            if (e->namespace && att_prefix)
+            if (e->_namespace && att_prefix)
             {
-                ns = e->namespace;
+                ns = e->_namespace;
                 if (!
                     (GUTHTHILA_STRCMP
                      ( ns->name, att_prefix)))
