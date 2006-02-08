@@ -87,6 +87,7 @@ axis2_http_svr_thread_create (axis2_env_t **env, int port)
 	svr_thread_impl->port = port;
 	svr_thread_impl->listen_socket = axis2_network_handler_create_server_socket
                         (env, svr_thread_impl->port);
+    svr_thread_impl->svr_thread.ops = NULL;
     if(-1 == svr_thread_impl->listen_socket)
     {
         axis2_http_svr_thread_free((axis2_http_svr_thread_t*) svr_thread_impl,
