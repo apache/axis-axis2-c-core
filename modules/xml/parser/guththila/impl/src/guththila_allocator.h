@@ -32,7 +32,7 @@ extern "C"
         void (*free)(void *ptr);
         void *(*calloc)(size_t nelem, size_t elsize);
         
-    } guththila_allocator_t;
+   } guththila_allocator_t;
 
 /**
 *   if the parsed allocator is null a default allocator is created

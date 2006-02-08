@@ -73,7 +73,7 @@ main (int argc, char *argv[])
                 char *p;
                 guththila_element_t *e;
                 printf ("<");
-
+		/* printf ("\n %s \n", guththila_xml_pull_parser_get_encoding (environment, parser)); */
                 p = guththila_xml_pull_parser_get_prefix (environment,
                                                           parser);
                 if (p)
@@ -128,7 +128,7 @@ main (int argc, char *argv[])
                     printf ("%s\" ", p);
                     GUTHTHILA_FREE (allocator, p);
                 }
-                if (guththila_event == GUTHTHILA_START_ELEMENT)
+                if (parser->guththila_event == GUTHTHILA_START_ELEMENT)
                     printf (">");
                 else
                     printf ("/>");

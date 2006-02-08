@@ -184,7 +184,7 @@ guththila_token_to_string (guththila_environment_t * environment,
             memcpy (buffer, tok->start, length);
             buffer[length] = 0;
             if (tok->ref)
-                guththila_token_char_ref (environment, buffer);
+                return guththila_token_char_ref (environment, buffer);
             else
                 return buffer;
         }
@@ -203,8 +203,8 @@ guththila_token_to_string (guththila_environment_t * environment,
                                                           length);
         }
     }
-
-    return NULL;
+    else
+      return NULL;
 }
 
 
