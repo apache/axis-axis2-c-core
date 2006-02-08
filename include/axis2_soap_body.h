@@ -47,12 +47,11 @@ struct axis2_soap_builder;
  */
 
 /**
- * An object that represents the contents of the SOAP body
- * element in a SOAP message. B SOAP body element consists of XML data
+ * a struct that represents the contents of the SOAP body
+ * element in a SOAP message. SOAP body element consists of XML data
  * that affects the way the application-specific content is processed.
- * <P>
- * B <code>SOAPBody</code> object contains <code>OMBodyBlock</code>
- * objects, which have the content for the SOAP body.
+ * soap_body_struct contains soap_header and 
+ * which have the content for the SOAP body.
  * B <code>SOAPFault</code> object, which carries status and/or
  * error information, is an example of a <code>OMBodyBlock</code> object.
  */

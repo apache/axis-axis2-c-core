@@ -82,7 +82,7 @@ extern "C"
 #define RTLD_LAZY 0    // not sure this is needed?
 
 #define AXIS2_PLATFORM_LOADLIBINIT()
-#define AXIS2_PLATFORM_LOADLIB(_lib)     LoadLibrary(_lib) /*callLoadLib(_lib)*/
+#define AXIS2_PLATFORM_LOADLIB(_lib)     /*LoadLibrary(_lib) */ callLoadLib(_lib)
 #define AXIS2_PLATFORM_UNLOADLIB         FreeLibrary
 #define AXIS2_PLATFORM_GETPROCADDR       GetProcAddress
 #define AXIS2_PLATFORM_LOADLIBEXIT()

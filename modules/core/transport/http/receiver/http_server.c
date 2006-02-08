@@ -262,7 +262,7 @@ axis2_http_server_is_running (axis2_transport_receiver_t *server,
 /**
  * Following block distinguish the exposed part of the dll.
  */
-int axis2_get_instance(struct axis2_transport_receiver **inst,
+AXIS2_EXPORT int axis2_get_instance(struct axis2_transport_receiver **inst,
                         axis2_env_t **env)
 {
     *inst = axis2_http_server_create(env, NULL, -1);
@@ -275,7 +275,7 @@ int axis2_get_instance(struct axis2_transport_receiver **inst,
     return AXIS2_SUCCESS;
 }
 
-int axis2_remove_instance(axis2_transport_receiver_t *inst,
+AXIS2_EXPORT int axis2_remove_instance(axis2_transport_receiver_t *inst,
                             axis2_env_t **env)
 {
     axis2_status_t status = AXIS2_FAILURE;
