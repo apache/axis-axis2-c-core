@@ -1039,10 +1039,12 @@ axis2_svc_add_to_engaged_module_list(axis2_svc_t *svc,
     }
     
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
-    if(AXIS2_TRUE != size)
+    
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
     {
-        return AXIS2_FAILURE;
+        return AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
     }
+    
     for(i = 0; i < size; i++)
     {
         module_desc = (axis2_module_desc_t *) AXIS2_ARRAY_LIST_GET(
