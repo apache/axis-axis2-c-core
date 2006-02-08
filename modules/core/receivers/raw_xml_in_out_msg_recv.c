@@ -313,7 +313,7 @@ public Method findOperation(AxisOperation op, Class ImplClass) {
  */
 
 
-int axis2_get_instance(struct axis2_msg_recv **inst,
+AXIS2_EXPORT int axis2_get_instance(struct axis2_msg_recv **inst,
                         axis2_env_t **env)
 {
     *inst = axis2_raw_xml_in_out_msg_recv_create(env);
@@ -325,7 +325,7 @@ int axis2_get_instance(struct axis2_msg_recv **inst,
     return AXIS2_SUCCESS;
 }
 
-int axis2_remove_instance(axis2_svc_skeleton_t *inst,
+AXIS2_EXPORT int axis2_remove_instance(axis2_svc_skeleton_t *inst,
                             axis2_env_t **env)
 {
     axis2_status_t status = AXIS2_FAILURE;
