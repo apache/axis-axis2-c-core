@@ -194,21 +194,24 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         AXIS2_SOAP_ENVELOPE_GET_HEADER (soap_envelope, env);
     axis2_om_node_t *soap_header_node = NULL;
     axis2_om_element_t *soap_header_ele = NULL;
+    axis2_endpoint_ref_t *epr = NULL;
 
     /* by this time, we definitely have some addressing information to be sent. This is because,
        // we have tested at the start of this whether msg_info_headers are null or not.
        // So rather than declaring addressing namespace in each and every addressing header, lets
        // define that in the Header itself. */
+    if (soap_header)
+    {
+        soap_header_node = AXIS2_SOAP_HEADER_GET_BASE_NODE (soap_header, env);
+        soap_header_ele =
+            (axis2_om_element_t *)
+            AXIS2_OM_NODE_GET_DATA_ELEMENT (soap_header_node, env);
+        AXIS2_OM_ELEMENT_DECLARE_NAMESPACE (soap_header_ele, env,
+                                            soap_header_node, addring_namespace);
 
-    soap_header_node = AXIS2_SOAP_HEADER_GET_BASE_NODE (soap_header, env);
-    soap_header_ele =
-        (axis2_om_element_t *)
-        AXIS2_OM_NODE_GET_DATA_ELEMENT (soap_header_node, env);
-    AXIS2_OM_ELEMENT_DECLARE_NAMESPACE (soap_header_ele, env,
-                                        soap_header_node, addring_namespace);
-
-    axis2_endpoint_ref_t *epr =
-        AXIS2_MSG_INFO_HEADERS_GET_TO (msg_info_headers, env);
+        epr = AXIS2_MSG_INFO_HEADERS_GET_TO (msg_info_headers, env);
+    }
+    
     if (epr)
     {
         axis2_char_t *address = AXIS2_ENDPOINT_REF_GET_ADDRESS (epr, env);
