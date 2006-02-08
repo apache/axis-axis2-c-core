@@ -160,7 +160,7 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
 #define AXIS2_R_OK 04 /* test for read permission */
 #define AXIS2_W_OK 02 /* test for write permission */
 #define AXIS2_X_OK 00 /* test for execute or search permission */
-#define AXIS2_F_OK 01 /* test whether the directories leading to the file can be 
+#define AXIS2_F_OK 00 /* test whether the directories leading to the file can be 
                       searched and the file exists */
 /**
   * windows specific directory handling functions

@@ -6,9 +6,10 @@
 
 int		opterr = 1; /*default - log error*/
 int		optind = 1;
+/*
 int		optopt;
 char	*optarg;
-
+*/
 #define AXIS2_OPT_ERR_NO_ARG			1
 #define	AXIS2_OPT_ERR_INVALID_OPTION	2
 #define AXIS2_OPT_ERR_BAD_ARG			3
@@ -36,7 +37,7 @@ int _axis2_opt_error(int __optopt, int __err, int __showerr)
 	return (int)'?';
 }
 
-int axis2_getopt(int __argc, char * const *__argv, const char *__shortopts)
+AXIS2_DECLARE(int) axis2_getopt(int __argc, char * const *__argv, const char *__shortopts)
 {
 	static char *pos = "";
 	char *olstindex;	

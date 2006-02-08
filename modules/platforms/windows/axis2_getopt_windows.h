@@ -1,6 +1,7 @@
 #ifndef _AXIS2_GETOPT_WINDOWS_H_
 #define _AXIS2_GETOPT_WINDOWS_H_
 
+#include <axis2_defines.h>
 /**
  * @file axis2_getopt_windows.h
  * @brief windows cutdown version of getopt function in unix
@@ -15,9 +16,9 @@ extern "C" {
  * @{
  */
 
-extern int	opterr;
-extern int 	optopt;	
-extern char	*optarg;
+AXIS2_DECLARE_DATA  int	opterr;
+AXIS2_DECLARE_DATA  int 	optopt;	
+AXIS2_DECLARE_DATA  char	*optarg;
 
 /**
   * return and log error
@@ -35,7 +36,7 @@ int _axis2_opt_error(int __optopt, int __err, int __showerr);
   * @param __shortopts options
   * @return option char if successful, -1 if over, ':' or '?' if error
   */
-int axis2_getopt(int __argc, char * const *__argv, const char *__shortopts);
+AXIS2_DECLARE(int) axis2_getopt(int __argc, char * const *__argv, const char *__shortopts);
 
 /** @} */
 

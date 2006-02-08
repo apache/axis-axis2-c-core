@@ -16,6 +16,7 @@
  
 #include <axis2_http_server.h>
 #include <axis2_http_transport.h>
+#include <axis2_platform_auto_sense.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <axis2_error_default.h>
@@ -42,7 +43,7 @@ void system_exit(axis2_allocator_t *allocator, axis2_env_t *env, int status)
 	}
 	if(NULL != allocator)
 	{
-		free(allocator);
+	/*	axis2_allocator_free(allocator); */
 	}
 	_exit(status);
 }
@@ -54,7 +55,6 @@ int main(int argc, char *argv[])
 	axis2_transport_receiver_t *server = NULL;
     extern char *optarg;
     extern int optopt;
-	char tmp_str[512];
     int c;
 
     axis2_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     axis2_char_t *repo_path = "../";
 	axis2_http_socket_read_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
 
-    while ((c = getopt(argc, argv, ":p:r:ht:l:")) != -1)
+    while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:")) != -1)
     {
         
         switch(c)
