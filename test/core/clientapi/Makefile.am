@@ -1,4 +1,5 @@
 TESTS = test_client test_clientapi
+noinst_PROGRAMS = test_client test_clientapi
 check_PROGRAMS = test_client test_clientapi
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -pthread 
