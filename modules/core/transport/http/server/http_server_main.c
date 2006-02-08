@@ -24,14 +24,14 @@
 
 
 /***************************** Function headers *******************************/
-axis2_env_t* init_syetem_env(axis2_allocator_t *allocator);
+axis2_env_t* init_syetem_env(axis2_allocator_t *allocator, axis2_char_t *log_file);
 void system_exit(axis2_allocator_t *allocator, axis2_env_t *env, int status);
 void usage(axis2_char_t* prog_name);
 /***************************** End of function headers ************************/
-axis2_env_t* init_syetem_env(axis2_allocator_t *allocator)
+axis2_env_t* init_syetem_env(axis2_allocator_t *allocator, axis2_char_t *log_file)
 {
 	axis2_error_t *error = axis2_error_create(allocator);
-	axis2_log_t *log = axis2_log_create(allocator, NULL, NULL);
+	axis2_log_t *log = axis2_log_create(allocator, NULL, log_file);
 	return axis2_env_create_with_error_log(allocator, error, log);
 }
 
@@ -58,11 +58,12 @@ int main(int argc, char *argv[])
     int c;
 
     axis2_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
+    axis2_char_t *log_file = "/dev/stderr";
 	int port = 9090;
     axis2_char_t *repo_path = "../";
 	axis2_http_socket_read_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
 
-    while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:")) != -1)
+    while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:f:")) != -1)
     {
         
         switch(c)
@@ -82,6 +83,9 @@ int main(int argc, char *argv[])
                     log_level = AXIS2_LOG_LEVEL_CRITICAL;
                 if (log_level > AXIS2_LOG_LEVEL_DEBUG)
                     log_level = AXIS2_LOG_LEVEL_CRITICAL;
+                break;
+            case 'f':
+                log_file = optarg;
                 break;
             case 'h':
                 usage(argv[0]);
@@ -106,7 +110,7 @@ int main(int argc, char *argv[])
 		system_exit(NULL, NULL, -1);
 	}
 	
-    env = init_syetem_env(allocator);
+    env = init_syetem_env(allocator, log_file);
     env->log->level = log_level;
 	
     axis2_error_init();
@@ -142,7 +146,8 @@ void usage(axis2_char_t* prog_name)
     fprintf(stdout, " [-p PORT]");
     fprintf(stdout, " [-t TIMEOUT]");
     fprintf(stdout, " [-r REPO_PATH]");
-    fprintf(stdout, " [-l LOG_LEVEL]\n");
+    fprintf(stdout, " [-l LOG_LEVEL]");
+    fprintf(stdout, " [-f LOG_FILE]\n");
     fprintf(stdout, " Options :\n");
     fprintf(stdout, "\t-p PORT \t use the port number PORT. The default port is"
 						" 9090\n");
@@ -153,5 +158,6 @@ void usage(axis2_char_t* prog_name)
     fprintf(stdout, "\t-l LOG_LEVEL\t set log level to LOG_LEVEL. Available "
 						"log levels range from 0(critical only) to 4(debug)."
 						"\n\t\t\t Default log level is 4(debug)\n");
+    fprintf(stdout, "\t-f LOG_FILE\t set log file to LOG_FILE. Default is /dev/stderr\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
 }

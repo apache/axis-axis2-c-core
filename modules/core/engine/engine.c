@@ -661,6 +661,7 @@ axis2_status_t AXIS2_CALL axis2_engine_invoke_phases(struct axis2_engine *engine
     for (i = 0; (i < count && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))); i++) 
     {
         axis2_phase_t *phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phases, env, i);
+        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Invoking phase %s", AXIS2_PHASE_GET_NAME(phase, env));
         AXIS2_PHASE_INVOKE(phase, env, msg_ctx);
     }
     return AXIS2_SUCCESS;
