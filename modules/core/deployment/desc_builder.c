@@ -449,7 +449,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     if(order_qname)
         AXIS2_QNAME_FREE(order_qname, env);
 
-    if(NULL == (&order_element) || NULL == order_node)
+    if(NULL == order_element || NULL == order_node)
     {
         AXIS2_HANDLER_DESC_FREE(handler, env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_HANDLER_STATE, 
@@ -484,8 +484,8 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
             order_attrib = (axis2_om_attribute_t *) v;
             qname = AXIS2_OM_ATTRIBUTE_GET_QNAME(order_attrib, env);
             name = AXIS2_QNAME_GET_LOCALPART(qname, env);
-            if(qname)
-                AXIS2_QNAME_FREE(qname, env);
+            /*if(qname)
+                AXIS2_QNAME_FREE(qname, env);*/
 
             value = AXIS2_OM_ATTRIBUTE_GET_VALUE(order_attrib, env);
             if(0 == AXIS2_STRCMP(AXIS2_AFTER, name))
