@@ -24,7 +24,7 @@
 typedef struct axis2_module_builder_impl
 {
 	axis2_module_builder_t module_builder;
-    axis2_module_desc_t *module;
+    axis2_module_desc_t *module_desc;
     	
 } axis2_module_builder_impl_t;
 
@@ -85,10 +85,10 @@ axis2_module_builder_create (axis2_env_t **env)
 }
 
 axis2_module_builder_t * AXIS2_CALL 
-axis2_module_builder_create_with_file_and_dep_engine_module (axis2_env_t **env,
+axis2_module_builder_create_with_file_and_dep_engine_and_module (axis2_env_t **env,
                                                 axis2_char_t *file_name,
                                                 axis2_dep_engine_t *dep_engine,
-                                                axis2_module_desc_t *module)
+                                                axis2_module_desc_t *module_desc)
 {
     axis2_module_builder_impl_t *builder_impl = NULL;
     
@@ -108,7 +108,7 @@ axis2_module_builder_create_with_file_and_dep_engine_module (axis2_env_t **env,
         axis2_module_builder_free(&(builder_impl->module_builder), env);
         return NULL;
     }
-    builder_impl->module = module;
+    builder_impl->module_desc = module_desc;
     return &(builder_impl->module_builder);   
 }
 
@@ -197,7 +197,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
             axis2_qname_t *qmodule_name = NULL;
             
             qmodule_name = axis2_qname_create(env, module_name, NULL, NULL);
-            AXIS2_MODULE_DESC_SET_NAME(builder_impl->module, env, qmodule_name);
+            AXIS2_MODULE_DESC_SET_NAME(builder_impl->module_desc, env, qmodule_name);
             if(qmodule_name)
                 AXIS2_QNAME_FREE(qmodule_name, env);
         }
@@ -212,7 +212,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
             module_name = AXIS2_ARCH_FILE_DATA_GET_MODULE_NAME(file_data, env);
      
             module_qname = axis2_qname_create(env, module_name, NULL, NULL);
-            AXIS2_MODULE_DESC_SET_NAME(builder_impl->module, env, module_qname);
+            AXIS2_MODULE_DESC_SET_NAME(builder_impl->module_desc, env, module_qname);
             if(module_qname)
                 AXIS2_QNAME_FREE(module_qname, env);
         }
@@ -225,10 +225,10 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         
         file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(module_builder->
             desc_builder->engine, env);
-        module_name = AXIS2_ARCH_FILE_DATA_GET_SVC_NAME(file_data, env);
+        module_name = AXIS2_ARCH_FILE_DATA_GET_MODULE_NAME(file_data, env);
         
         module_qname = axis2_qname_create(env, module_name, NULL, NULL);
-        AXIS2_MODULE_DESC_SET_NAME(builder_impl->module, env, module_qname);
+        AXIS2_MODULE_DESC_SET_NAME(builder_impl->module_desc, env, module_qname);
         if(module_qname)
             AXIS2_QNAME_FREE(module_qname, env);
     }
@@ -270,11 +270,11 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     if(qparamst)
         AXIS2_QNAME_FREE(qparamst, env);
 
-    parent = AXIS2_MODULE_DESC_GET_PARENT(builder_impl->module, env);
+    parent = AXIS2_MODULE_DESC_GET_PARENT(builder_impl->module_desc, env);
     if(parent)
         parent_container = parent->param_container;
     AXIS2_DESC_BUILDER_PROCESS_PARAMS(module_builder->desc_builder, env,
-        itr, builder_impl->module->params, parent_container);
+        itr, builder_impl->module_desc->params, parent_container);
 
     /* process INFLOW */
     qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL);
@@ -286,9 +286,9 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     if(NULL != in_flow_element && NULL != in_flow_node)
     {
         axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
-            desc_builder, env, in_flow_element, builder_impl->module->params,
+            desc_builder, env, in_flow_element, builder_impl->module_desc->params,
                 in_flow_node);
-        AXIS2_MODULE_DESC_SET_INFLOW(builder_impl->module, env, flow);
+        AXIS2_MODULE_DESC_SET_INFLOW(builder_impl->module_desc, env, flow);
     }
     
     qoutflowst = axis2_qname_create(env, AXIS2_OUTFLOWST, NULL, NULL);
@@ -300,9 +300,9 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     if(NULL != out_flow_element && NULL != out_flow_node)
     {
         axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
-            desc_builder, env, out_flow_element, builder_impl->module->params,
+            desc_builder, env, out_flow_element, builder_impl->module_desc->params,
                 out_flow_node);
-        AXIS2_MODULE_DESC_SET_OUTFLOW(builder_impl->module, env, flow);
+        AXIS2_MODULE_DESC_SET_OUTFLOW(builder_impl->module_desc, env, flow);
     }
 
     qinfaultflow = axis2_qname_create(env, AXIS2_IN_FAILTFLOW, NULL, NULL);
@@ -314,9 +314,9 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     if(NULL != in_fault_flow_element && NULL != in_fault_flow_node)
     {
         axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
-            desc_builder, env, in_fault_flow_element, builder_impl->module->
+            desc_builder, env, in_fault_flow_element, builder_impl->module_desc->
                 params, in_fault_flow_node);
-        AXIS2_MODULE_DESC_SET_FAULT_INFLOW(builder_impl->module, env, flow);
+        AXIS2_MODULE_DESC_SET_FAULT_INFLOW(builder_impl->module_desc, env, flow);
     }
     
     qoutfaultflow = axis2_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL, NULL);
@@ -328,9 +328,9 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     if(NULL != out_fault_flow_element && NULL != out_fault_flow_node)
     {
         axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
-            desc_builder, env, out_fault_flow_element, builder_impl->module->
+            desc_builder, env, out_fault_flow_element, builder_impl->module_desc->
                 params, out_fault_flow_node);
-        AXIS2_MODULE_DESC_SET_FAULT_OUTFLOW(builder_impl->module, env, flow);
+        AXIS2_MODULE_DESC_SET_FAULT_OUTFLOW(builder_impl->module_desc, env, flow);
     }
 
     /* processing Operations */
@@ -346,7 +346,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         axis2_op_t *op = NULL;
         
         op = (axis2_op_t *) AXIS2_ARRAY_LIST_GET(ops, env, i);
-        AXIS2_MODULE_DESC_ADD_OP(builder_impl->module, env, op);
+        AXIS2_MODULE_DESC_ADD_OP(builder_impl->module_desc, env, op);
     }
     return AXIS2_SUCCESS;
 }
@@ -437,7 +437,7 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
             AXIS2_QNAME_FREE(qparamst, env);
 
         AXIS2_DESC_BUILDER_PROCESS_PARAMS(module_builder->desc_builder, env,
-            params, op_desc->param_container, builder_impl->module->params);
+            params, op_desc->param_container, builder_impl->module_desc->params);
         /* setting the mep of the operation */
         
         /* loading the message receivers */

@@ -448,7 +448,7 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
                                     axis2_env_t **env,
                                     axis2_char_t *file_name,
                                     axis2_dep_engine_t *dep_engine,
-                                    axis2_module_desc_t *module)
+                                    axis2_module_desc_t *module_desc)
 {
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *module_xml = NULL;
@@ -459,10 +459,10 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     axis2_char_t *module_container_path = NULL;
     axis2_char_t *module_folder = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(arch_reader, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, file_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, module, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
     
     repos_path = AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env);
     temp_path = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
@@ -488,8 +488,8 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
         axis2_module_builder_t *module_builder = NULL;
         
         module_builder = 
-            axis2_module_builder_create_with_file_and_dep_engine_module(env,
-                module_xml, dep_engine, module);
+            axis2_module_builder_create_with_file_and_dep_engine_and_module(env,
+                module_xml, dep_engine, module_desc);
         status = AXIS2_MODULE_BUILDER_POPULATE_MODULE(module_builder, env);
         if(AXIS2_SUCCESS != status)
         {

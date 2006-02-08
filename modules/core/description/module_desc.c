@@ -461,7 +461,7 @@ axis2_module_desc_set_name (axis2_module_desc_t *module_desc,
         module_desc_impl->qname = NULL;
     }
     
-    module_desc_impl->qname = qname;
+    module_desc_impl->qname = AXIS2_QNAME_CLONE(qname, env);
     
     return AXIS2_SUCCESS;
 }

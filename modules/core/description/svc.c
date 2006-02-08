@@ -108,13 +108,13 @@ axis2_status_t AXIS2_CALL
 axis2_svc_engage_module(axis2_svc_t *svc,
                             axis2_env_t **env,
                             axis2_module_desc_t * moduleref,
-                            axis2_conf_t * axis2_config);
+                            axis2_conf_t * conf);
 
 axis2_status_t AXIS2_CALL
 axis2_svc_add_module_ops(axis2_svc_t *svc,
                             axis2_env_t **env,
                             axis2_module_desc_t * module,
-                            axis2_conf_t * axis2_config);
+                            axis2_conf_t * conf);
                                 
 axis2_status_t AXIS2_CALL
 axis2_svc_add_to_engaged_module_list(axis2_svc_t *svc,
@@ -856,7 +856,7 @@ axis2_status_t AXIS2_CALL
 axis2_svc_engage_module(axis2_svc_t *svc,
                             axis2_env_t **env,
                             axis2_module_desc_t * moduleref,
-                            axis2_conf_t * axis2_config)
+                            axis2_conf_t * conf)
 {
     axis2_module_desc_t * modu = NULL;
     axis2_array_list_t *collection_module = NULL;
@@ -867,7 +867,7 @@ axis2_svc_engage_module(axis2_svc_t *svc,
         
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, moduleref, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, axis2_config, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, conf, AXIS2_FAILURE);
     
     
     collection_module = (axis2_array_list_t *) 
@@ -896,7 +896,7 @@ axis2_svc_engage_module(axis2_svc_t *svc,
         
     }
    
-    phase_resolver = axis2_phase_resolver_create_with_config(env, axis2_config);
+    phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
     if(!phase_resolver)
     {
         return AXIS2_FAILURE;
@@ -920,7 +920,7 @@ axis2_status_t AXIS2_CALL
 axis2_svc_add_module_ops(axis2_svc_t *svc,
                             axis2_env_t **env,
                             axis2_module_desc_t *module_desc,
-                            axis2_conf_t *axis2_config) 
+                            axis2_conf_t *conf) 
 {
     axis2_hash_t *map = NULL;
     axis2_hash_index_t *index = NULL;
@@ -932,10 +932,10 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, axis2_config, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, conf, AXIS2_FAILURE);
     
     map = AXIS2_MODULE_DESC_GET_OPS(module_desc, env);
-    pr = axis2_phase_resolver_create_with_config_and_svc(env, axis2_config, svc);
+    pr = axis2_phase_resolver_create_with_config_and_svc(env, conf, svc);
     
     if(!pr)
     {
@@ -997,6 +997,15 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
         }
         
         status = axis2_svc_add_op(svc, env, axis2_opt);
+        if(AXIS2_SUCCESS != status)
+        {
+            if(pr)
+            {
+                AXIS2_PHASE_RESOLVER_FREE(pr, env);
+                pr = NULL;                
+            }
+            return status;
+        }
  
     }
     
@@ -1005,7 +1014,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
         AXIS2_PHASE_RESOLVER_FREE(pr, env); 
         pr = NULL;
     }
-    return status;
+    return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL

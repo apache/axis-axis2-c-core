@@ -1540,13 +1540,20 @@ axis2_conf_add_module(axis2_conf_t *conf,
     {
         config_impl->modules = axis2_hash_make(env);
         if(!config_impl->modules)
+        {
             return AXIS2_FAILURE;
+        }
     }
 
     module_qname = AXIS2_MODULE_DESC_GET_NAME(module, env);
     if (module_qname)
-        axis2_hash_set(config_impl->modules, AXIS2_QNAME_TO_STRING(module_qname, env), 
+    {
+        axis2_char_t *module_name = NULL;
+
+        module_name = AXIS2_QNAME_TO_STRING(module_qname, env);
+        axis2_hash_set(config_impl->modules, module_name, 
             AXIS2_HASH_KEY_STRING, module);
+    }
     
     return AXIS2_SUCCESS;
 }
@@ -1706,9 +1713,10 @@ axis2_conf_engage_module(axis2_conf_t *conf,
 {
     axis2_conf_impl_t *config_impl = NULL;
     axis2_module_desc_t *module_desc = NULL;
-    axis2_bool_t is_new_module = AXIS2_FAILURE;
+    axis2_bool_t is_new_module = AXIS2_FALSE;
     axis2_bool_t to_be_engaged = AXIS2_TRUE;
     axis2_dep_engine_t *dep_engine = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_ref, AXIS2_FAILURE);
@@ -1781,15 +1789,25 @@ axis2_conf_engage_module(axis2_conf_t *conf,
     {
         axis2_phase_resolver_t *phase_resolver = NULL;
         phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
-        AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_GLOBALLY(phase_resolver, env, 
+        if(!phase_resolver)
+        {
+            return AXIS2_FAILURE;
+        }
+
+        status = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_GLOBALLY(phase_resolver, env, 
             module_desc);
-        AXIS2_ARRAY_LIST_ADD(config_impl->engaged_modules, env, module_ref);
+        if(AXIS2_SUCCESS != status)
+        {
+            return AXIS2_FAILURE;
+        }
+        status = AXIS2_ARRAY_LIST_ADD(config_impl->engaged_modules, env, 
+            module_ref);
     }
     if (is_new_module) 
     {
-        axis2_conf_add_module(conf, env, module_desc);
+        status = axis2_conf_add_module(conf, env, module_desc);
     }
-    return AXIS2_SUCCESS;
+    return status;
 }
 
 axis2_char_t *AXIS2_CALL
