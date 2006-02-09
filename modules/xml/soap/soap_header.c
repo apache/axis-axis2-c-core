@@ -270,7 +270,7 @@ axis2_soap_header_add_header_block(axis2_soap_header_t* header,
     
     header_block_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(
                             header_block, env);
-    
+        
     AXIS2_OM_NODE_SET_BUILD_STATUS(header_block_node, env, AXIS2_TRUE);
     sprintf(key,"%d", header_impl->hbnumber++);
     if(header_impl->header_blocks)
@@ -487,29 +487,38 @@ axis2_soap_header_get_header_blocks_with_namespace_uri
     void *hb =  NULL;
     AXIS2_PARAM_CHECK((*env)->error, ns_uri, NULL);
     header_impl = AXIS2_INTF_TO_IMPL(header);
+    if(!(header_impl->header_blocks))
+        return NULL;
+    
     header_block_list = axis2_array_list_create(env, 10);
+    if(!header_block_list)
+        return NULL;
+        
     for(hash_index = axis2_hash_first(header_impl->header_blocks, env);
             hash_index; hash_index = axis2_hash_next( env, hash_index))
     {
         axis2_hash_this(hash_index, NULL, NULL, &hb);
-        header_block = (axis2_soap_header_block_t*)hb;
-        header_block_om_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block, env);
-        header_block_om_ele  = (axis2_om_element_t *)
-            AXIS2_OM_NODE_GET_DATA_ELEMENT(header_block_om_node, env);
-        ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(header_block_om_ele, env);
-        hb_namespace_uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
-        if(AXIS2_STRCMP(hb_namespace_uri, ns_uri) == 0)
+        if(hb)
         {
-            AXIS2_ARRAY_LIST_ADD(header_block_list, env, header_block);
-            found++;            
-        }            
+            header_block = (axis2_soap_header_block_t*)hb;
+            header_block_om_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block, env);
+            header_block_om_ele  = (axis2_om_element_t *)
+                AXIS2_OM_NODE_GET_DATA_ELEMENT(header_block_om_node, env);
+            ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(header_block_om_ele, env);
+            hb_namespace_uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+            if(AXIS2_STRCMP(hb_namespace_uri, ns_uri) == 0)
+            {
+                AXIS2_ARRAY_LIST_ADD(header_block_list, env, header_block);
+                found++;            
+            }            
         
-        hb = NULL;
-        header_block = NULL;
-        header_block_om_ele = NULL;
-        header_block_om_node = NULL;
-        ns = NULL;
-        hb_namespace_uri = NULL;
+            hb = NULL;
+            header_block = NULL;
+            header_block_om_ele = NULL;
+            header_block_om_node = NULL;
+            ns = NULL;
+            hb_namespace_uri = NULL;
+        }            
     }
     if(found > 0)
     {

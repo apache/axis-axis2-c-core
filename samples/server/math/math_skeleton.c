@@ -17,22 +17,23 @@
 #include "math.h"
 #include <axis2_array_list.h>
 
-int 
+int AXIS2_CALL
 math_free(axis2_svc_skeleton_t *svc_skeleton,
-            axis2_env_t **env);
+          axis2_env_t **env);
 
 /*
  * This method invokes the right service method 
  */
-axis2_om_node_t *math_invoke(axis2_svc_skeleton_t *svc_skeleton,
-                                    axis2_env_t **env,
-                                    axis2_om_node_t *node);
+axis2_om_node_t* AXIS2_CALL 
+math_invoke(axis2_svc_skeleton_t *svc_skeleton,
+            axis2_env_t **env,
+            axis2_om_node_t *node);
 
-int math_init(axis2_svc_skeleton_t *svc_skeleton,
+int AXIS2_CALL math_init(axis2_svc_skeleton_t *svc_skeleton,
                         axis2_env_t **env);
 
 
-axis2_svc_skeleton_t *
+AXIS2_DECLARE(axis2_svc_skeleton_t *)
 axis2_math_create(axis2_env_t **env)
 {
     axis2_svc_skeleton_t *svc_skeleton = NULL;
@@ -51,7 +52,8 @@ axis2_math_create(axis2_env_t **env)
     return svc_skeleton;
 }
 
-int math_init(axis2_svc_skeleton_t *svc_skeleton,
+int AXIS2_CALL
+math_init(axis2_svc_skeleton_t *svc_skeleton,
                         axis2_env_t **env)
 {
     svc_skeleton->func_array = axis2_array_list_create(env, 0);
@@ -64,7 +66,7 @@ int math_init(axis2_svc_skeleton_t *svc_skeleton,
     return AXIS2_SUCCESS;
 }
 
-int 
+int AXIS2_CALL
 math_free(axis2_svc_skeleton_t *svc_skeleton,
             axis2_env_t **env)
 {
@@ -91,9 +93,10 @@ math_free(axis2_svc_skeleton_t *svc_skeleton,
 /*
  * This method invokes the right service method 
  */
-axis2_om_node_t *math_invoke(axis2_svc_skeleton_t *svc_skeleton,
-                                    axis2_env_t **env,
-                                    axis2_om_node_t *node)
+axis2_om_node_t* AXIS2_CALL
+math_invoke(axis2_svc_skeleton_t *svc_skeleton,
+            axis2_env_t **env,
+            axis2_om_node_t *node)
 {
     /* Depending on the function name invoke the
      *  corresponding math method
@@ -132,7 +135,7 @@ axis2_om_node_t *math_invoke(axis2_svc_skeleton_t *svc_skeleton,
  * Following block distinguish the exposed part of the dll.
  */
 
-int axis2_get_instance(struct axis2_svc_skeleton **inst,
+AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
                         axis2_env_t **env)
 {
 	*inst = axis2_math_create(env);
@@ -148,7 +151,7 @@ int axis2_get_instance(struct axis2_svc_skeleton **inst,
     return AXIS2_SUCCESS;
 }
 
-int axis2_remove_instance(axis2_svc_skeleton_t *inst,
+AXIS2_EXPORT int axis2_remove_instance(axis2_svc_skeleton_t *inst,
                             axis2_env_t **env)
 {
     axis2_status_t status = AXIS2_FAILURE;
