@@ -325,8 +325,9 @@ AXIS2_DECLARE(axis2_char_t *)
 axis2_log_impl_get_time_str(void)
 {
     time_t tp;
+	char *time_str;
     tp = time(&tp);
-    char *time_str = ctime(&tp);
+    time_str = ctime(&tp);
     if(NULL == time_str)
     {
         return NULL;;
