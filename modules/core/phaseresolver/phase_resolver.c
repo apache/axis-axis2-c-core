@@ -920,9 +920,10 @@ axis2_phase_resolver_build_out_transport_chains(axis2_phase_resolver_t *phase_re
             for (j = 0; j < hndlr_count; j++) 
             {
                 axis2_handler_desc_t *metadata = NULL;
-                
-                metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
                 axis2_phase_rule_t *rule = NULL;
+
+                metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
+                
 
                 rule = AXIS2_HANDLER_DESC_GET_RULES(metadata, env);
                 if(rule)
