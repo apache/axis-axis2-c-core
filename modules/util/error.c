@@ -365,44 +365,48 @@ axis2_error_init()
     axis2_error_messages[AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY] = 
         "We got a NULL strem in the response body";
     axis2_error_messages[AXIS2_ERROR_OM_ELEMENT_MISMATCH] =
-    "AXIS2_ERROR_OM_ELEMENT_MISMATCH";
+        "AXIS2_ERROR_OM_ELEMENT_MISMATCH";
     axis2_error_messages[AXIS2_ERROR_OM_ELEMENT_INVALID_STATE] =
-    "AXIS2_ERROR_OM_ELEMENT_INVALID_STATE";
+        "AXIS2_ERROR_OM_ELEMENT_INVALID_STATE";
     axis2_error_messages[AXIS2_ERROR_RPC_NEED_MATCHING_CHILD] =
-    "AXIS2_ERROR_RPC_NEED_MATCHING_CHILD";
+        "AXIS2_ERROR_RPC_NEED_MATCHING_CHILD";
     axis2_error_messages[AXIS2_ERROR_UNKNOWN_STYLE] =
-    "AXIS2_ERROR_UNKNOWN_STYLE";
+        "AXIS2_ERROR_UNKNOWN_STYLE";
     axis2_error_messages[AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE] =
-    "AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE";
+        "AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE";
     axis2_error_messages[AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED] =
-    "AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED";
+        "AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED";
     axis2_error_messages[AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED] =
-    "AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED";
+        "AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED";
+    axis2_error_messages[AXIS2_ERROR_NO_TRANSPORT_IN_CONFIGURED] =
+        "There are no in transport chains configured";
+    axis2_error_messages[AXIS2_ERROR_NO_TRANSPORT_OUT_CONFIGURED] =
+        "There are no out transport chains configured";
     axis2_error_messages[AXIS2_ERROR_SOCKET_LISTEN_FAILED] =
-    "Listen failed for the server socket";
+        "Listen failed for the server socket";
     axis2_error_messages[AXIS2_ERROR_FILE_NAME_NOT_SET] =
-    "AXIS2_ERROR_FILE_NAME_NOT_SET";
+        "AXIS2_ERROR_FILE_NAME_NOT_SET";
     axis2_error_messages[AXIS2_ERROR_REPOS_LISTENER_INIT_FAILED] =
-    "AXIS2_ERROR_REPOSITORY_LISTENER_INIT_FAILED";
+        "AXIS2_ERROR_REPOSITORY_LISTENER_INIT_FAILED";
     axis2_error_messages[AXIS2_ERROR_INVALID_STATE_DLL_DESC] =
-    "dll description has invalid state of not having valid dll create function, \
-        of valid delete function or valid dll_handler";
+        "dll description has invalid state of not having valid dll create function, \
+            of valid delete function or valid dll_handler";
     axis2_error_messages[AXIS2_ERROR_UNSUPPORTED_TYPE] =
-    "type is not supported";
+        "type is not supported";
     axis2_error_messages[AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX] =
-    "Null soap envelope in msg_ctx";
+        "Null soap envelope in msg_ctx";
     axis2_error_messages[AXIS2_ERROR_UUID_GEN_FAILED] = 
-    "Generation of platform dependent uuid failed"; 
+        "Generation of platform dependent uuid failed"; 
     axis2_error_messages[AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST] =
-    "Invalid XML format in request";
+        "Invalid XML format in request";
     axis2_error_messages[AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL] =
-    "Input OM node NULL, Probably error in SOAP request";
+        "Input OM node NULL, Probably error in SOAP request";
     axis2_error_messages[AXIS2_ERROR_SVC_SKEL_INVALID_OPERATION_PARAMETERS_IN_SOAP_REQUEST] =
-    "Invalid parameters for service operation in SOAP request";
+        "Invalid parameters for service operation in SOAP request";
     axis2_error_messages[AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX] =
-    "Input stream is NULL in msg_ctx"; 
+        "Input stream is NULL in msg_ctx"; 
     axis2_error_messages[AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM] =
-    "NULL stream in the http chunked stream";
+        "NULL stream in the http chunked stream";
     return AXIS2_SUCCESS;
 }
 
