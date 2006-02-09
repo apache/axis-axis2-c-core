@@ -1047,12 +1047,19 @@ axis2_svc_add_to_engaged_module_list(axis2_svc_t *svc,
     
     for(i = 0; i < size; i++)
     {
+        axis2_qname_t *module_d_name = NULL;
+        axis2_qname_t *module_d_name_l = NULL;
+        
         module_desc = (axis2_module_desc_t *) AXIS2_ARRAY_LIST_GET(
             collection_module, env, i);
-        if(AXIS2_QNAME_EQUALS(AXIS2_MODULE_DESC_GET_NAME(module_desc, env), env,
-                AXIS2_MODULE_DESC_GET_NAME(module_name, env)))
+        module_d_name = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
+        module_d_name_l = AXIS2_MODULE_DESC_GET_NAME(module_name, env);
+            
+        if(AXIS2_QNAME_EQUALS(module_d_name, env, module_d_name_l))
         {
-            return AXIS2_FAILURE;
+            AXIS2_ERROR_SET((*env)->error, 
+                AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC, AXIS2_FAILURE);
+            return AXIS2_SUCCESS;
         }
     }
     return AXIS2_ARRAY_LIST_ADD(collection_module, env, module_name);

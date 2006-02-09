@@ -1026,7 +1026,7 @@ axis2_op_engage_module(axis2_op_t *op,
         {
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
+            return AXIS2_SUCCESS;
         }
 
     }
@@ -1085,7 +1085,7 @@ axis2_op_add_to_engage_module_list(axis2_op_t *op,
         {
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
+            return AXIS2_SUCCESS;
         }
 
     }
