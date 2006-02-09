@@ -81,8 +81,8 @@ struct axis2_hash_t
 static axis2_hash_entry_t **
 alloc_array (axis2_hash_t *ht, unsigned int max)
 {
-    return memset (AXIS2_MALLOC (ht->environment->allocator,
-                                 sizeof (*ht->array) * (max + 1)), 0,
+    return memset (AXIS2_MALLOC (ht->environment->allocator,  
+                   sizeof (*ht->array) * (max + 1)), 0,
                    sizeof (*ht->array) * (max + 1));
 }
 
@@ -121,7 +121,6 @@ axis2_hash_make_custom (axis2_env_t **environment,
 AXIS2_DECLARE(axis2_hash_index_t*)
 axis2_hash_next (axis2_env_t **environment, axis2_hash_index_t *hi)
 {
-    AXIS2_ENV_CHECK(environment, NULL);
     hi->this = hi->next;
     while (!hi->this)
     {
@@ -141,7 +140,6 @@ AXIS2_DECLARE(axis2_hash_index_t*)
 axis2_hash_first (axis2_hash_t *ht, axis2_env_t **environment)
 {
     axis2_hash_index_t *hi;
-    AXIS2_ENV_CHECK(environment, NULL);
     if (environment && *environment)
         hi = AXIS2_MALLOC ((*environment)->allocator, sizeof (*hi));
     else
@@ -175,13 +173,16 @@ static void
 expand_array (axis2_hash_t * ht)
 {
     axis2_hash_index_t *hi;
+    axis2_env_t **env = NULL;
+    
     axis2_hash_entry_t **new_array;
     unsigned int new_max;
 
     new_max = ht->max * 2 + 1;
     new_array = alloc_array (ht, new_max);
-    for (hi = axis2_hash_first (ht, NULL); hi;
-         hi = axis2_hash_next (NULL, hi))
+    env = &(ht->environment);
+    for (hi = axis2_hash_first (ht, env); hi;
+         hi = axis2_hash_next (env , hi))
     {
         unsigned int i = hi->this->hash & new_max;
         hi->this->next = new_array[i];
