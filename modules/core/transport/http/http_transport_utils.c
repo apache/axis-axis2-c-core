@@ -780,14 +780,24 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
 	else
 	{
 		axis2_stream_t *in_stream = NULL;
-		in_stream = (axis2_stream_t *)((axis2_callback_info_t*)ctx)->in_stream;
-		len = AXIS2_STREAM_READ(in_stream, env, buffer, size);
-		if(len > 0)
-		{
-			((axis2_callback_info_t*)ctx)->unread_len -= len;
-		}
-		return len;
-	}
+        int read_len = 0;
+        in_stream = (axis2_stream_t *)((axis2_callback_info_t*)ctx)->in_stream;
+        if(size > ((axis2_callback_info_t*)ctx)->unread_len)
+        {
+            read_len = ((axis2_callback_info_t*)ctx)->unread_len;
+        }
+        else
+        {
+            read_len = size;
+        }
+        len = AXIS2_STREAM_READ(in_stream, env, buffer, read_len);
+        if(len > 0)
+        {
+            ((axis2_callback_info_t*)ctx)->unread_len -= len;
+        }
+        return len;
+    }
+
 	return 0;	
 }
 
