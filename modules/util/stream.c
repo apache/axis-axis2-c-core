@@ -534,8 +534,7 @@ axis2_stream_create_socket (axis2_env_t **env, int socket)
 {
 	axis2_stream_t *def_stream = NULL;
 	axis2_stream_impl_t *stream_impl = NULL;
-	int osfh = -1;
-	
+		
 	AXIS2_ENV_CHECK(env, NULL);
 	def_stream = axis2_stream_create_internal(env);
 	if(NULL == def_stream)
@@ -558,19 +557,6 @@ axis2_stream_create_socket (axis2_env_t **env, int socket)
 	stream_impl->stream_type = AXIS2_STREAM_SOCKET;
 	stream_impl->socket = socket;
 	stream_impl->fp = NULL;
-#if defined(WIN32)
-	osfh = _open_osfhandle(socket, _O_TEXT);
-	stream_impl->fp = fdopen(osfh, "w+");
-#else	
-	stream_impl->fp = fdopen(socket, "w+");
-#endif
-	if(NULL == stream_impl->fp)
-	{
-		axis2_stream_free(def_stream, env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOCKET_STREAM_CREATION, 
-						AXIS2_FAILURE);
-		return NULL;
-	}
 	
 	return def_stream;
 }
@@ -580,7 +566,6 @@ int AXIS2_CALL
 axis2_stream_read_socket (axis2_stream_t *stream, axis2_env_t **env, 
 						void *buffer, size_t count)
 {
-	FILE *fp = NULL;
 	int len = 0;
 	AXIS2_FUNC_PARAM_CHECK(stream, env, AXIS2_CRTICAL_FAILURE);
 	
@@ -590,18 +575,12 @@ axis2_stream_read_socket (axis2_stream_t *stream, axis2_env_t **env,
 						AXIS2_FAILURE);
 		return -1;
 	}
-	fp = AXIS2_INTF_TO_IMPL(stream)->fp;
-	if(NULL == fp)
-	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_FD, AXIS2_FAILURE);
-		return -1;
-	}
     if (NULL == buffer)
 	{
         return -1;
 	}
-        
-    len = read(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count);
+    
+    len = recv(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count, 0);
     return len;
 }
 
@@ -610,7 +589,6 @@ axis2_stream_write_socket(axis2_stream_t *stream, axis2_env_t **env,
 						const void *buffer, size_t count)
 {
     int len = 0;
-	FILE *fp = NULL;
 			
 	AXIS2_FUNC_PARAM_CHECK(stream, env, AXIS2_CRTICAL_FAILURE);
 	
@@ -620,16 +598,9 @@ axis2_stream_write_socket(axis2_stream_t *stream, axis2_env_t **env,
 						AXIS2_FAILURE);
 		return -1;
 	}
-	if(NULL == AXIS2_INTF_TO_IMPL(stream)->fp)
-	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_FD, AXIS2_FAILURE);
-		return -1;
-	}
-	fp = AXIS2_INTF_TO_IMPL(stream)->fp;
 	if (NULL == buffer)
 		return -1;
-	/*len = fwrite(buffer, sizeof(axis2_char_t), count, fp);*/
-    len = write(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count);
+	len = send(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count, 0);
 	return len;
 	
 }
@@ -646,9 +617,9 @@ int AXIS2_CALL
 axis2_stream_skip_socket (axis2_stream_t *stream, axis2_env_t **env, int count)
 {
 	axis2_stream_impl_t *stream_impl = NULL;
-	axis2_char_t c = -1;
-	int i = count;
+	int len = 0;
 	AXIS2_FUNC_PARAM_CHECK(stream, env, AXIS2_CRTICAL_FAILURE);
+	char buffer[2];
 	
 	if(-1 == AXIS2_INTF_TO_IMPL(stream)->socket)
 	{
@@ -656,11 +627,11 @@ axis2_stream_skip_socket (axis2_stream_t *stream, axis2_env_t **env, int count)
 						AXIS2_FAILURE);
 		return -1;
 	}
-	while(EOF != (c = fgetc(stream_impl->fp)) && i > 0)
+	while(len < count)
 	{
-		i--;
+		len += recv(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, 1, 0);
 	}
-	return count - i;
+	return len;
 }
 
 int AXIS2_CALL 
@@ -673,12 +644,7 @@ axis2_stream_get_char_socket (axis2_stream_t *stream, axis2_env_t **env)
 						AXIS2_FAILURE);
 		return -1;
 	}
-	if(NULL == AXIS2_INTF_TO_IMPL(stream)->fp)
-	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_FD, AXIS2_FAILURE);
-		return -1;
-	}
-	return fgetc(AXIS2_INTF_TO_IMPL(stream)->fp);
+	return -1;
 }
 
 int AXIS2_CALL 
@@ -692,11 +658,6 @@ axis2_stream_unget_char_socket (axis2_stream_t *stream, axis2_env_t **env,
 						AXIS2_FAILURE);
 		return -1;
 	}
-	if(NULL == AXIS2_INTF_TO_IMPL(stream)->fp)
-	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_FD, AXIS2_FAILURE);
-		return -1;
-	}
-	return ungetc(ch, AXIS2_INTF_TO_IMPL(stream)->fp);
+	return -1;
 }
 /********************** End of Socket Stream Operations ***********************/
