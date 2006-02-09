@@ -472,7 +472,8 @@ axis2_module_desc_add_op (axis2_module_desc_t *module_desc,
                                     axis2_op_t *op)
 {
     axis2_module_desc_impl_t *module_desc_impl = NULL;
-    axis2_qname_t *optr_name = NULL;
+    axis2_qname_t *op_qname = NULL;
+    axis2_char_t *op_name = NULL;
     
     AXIS2_FUNC_PARAM_CHECK(module_desc, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
@@ -485,15 +486,14 @@ axis2_module_desc_add_op (axis2_module_desc_t *module_desc,
             return AXIS2_FAILURE;
 	}	
     
-    optr_name = AXIS2_OP_GET_QNAME(op, env);
+    op_qname = AXIS2_OP_GET_QNAME(op, env);
     
-    if(NULL == optr_name)
+    if(NULL == op_qname)
     {
         return AXIS2_FAILURE;
     }
-    
-    axis2_hash_set(module_desc_impl->ops, optr_name, sizeof(axis2_qname_t), 
-        op);
+    op_name = AXIS2_QNAME_TO_STRING(op_qname, env);
+    axis2_hash_set(module_desc_impl->ops, op_name, AXIS2_HASH_KEY_STRING, op);
     
     return AXIS2_SUCCESS;
 }

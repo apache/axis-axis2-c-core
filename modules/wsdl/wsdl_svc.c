@@ -263,11 +263,16 @@ axis2_wsdl_svc_set_endpoint(axis2_wsdl_svc_t *wsdl_svc,
                                 axis2_env_t **env,
                                 axis2_wsdl_endpoint_t *endpoint) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, endpoint, AXIS2_FAILURE);
+    axis2_wsdl_svc_impl_t *wsdl_svc_impl = NULL;
+    axis2_char_t *endpoint_name = NULL;
     
-    axis2_hash_set(AXIS2_INTF_TO_IMPL(wsdl_svc)->endpoints, 
-        AXIS2_WSDL_ENDPOINT_GET_NAME(endpoint, env), sizeof(axis2_qname_t), endpoint);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, endpoint, AXIS2_FAILURE);
+    wsdl_svc_impl = AXIS2_INTF_TO_IMPL(wsdl_svc);
+   
+    endpoint_name = AXIS2_WSDL_ENDPOINT_GET_NAME(endpoint, env);
+    axis2_hash_set(wsdl_svc_impl->endpoints, endpoint_name , 
+        AXIS2_HASH_KEY_STRING, endpoint);
     
     return AXIS2_SUCCESS;
 }
@@ -277,9 +282,16 @@ axis2_wsdl_svc_get_endpoint(axis2_wsdl_svc_t *wsdl_svc,
                                 axis2_env_t **env,
                                 axis2_qname_t *qname) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, NULL);
-    return (axis2_wsdl_endpoint_t *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
-        wsdl_svc)->endpoints, qname, sizeof(axis2_qname_t));
+    axis2_wsdl_svc_impl_t *wsdl_svc_impl = NULL;
+    axis2_char_t *name = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);
+    wsdl_svc_impl = AXIS2_INTF_TO_IMPL(wsdl_svc);
+
+    name = AXIS2_QNAME_TO_STRING(qname, env);
+    return (axis2_wsdl_endpoint_t *) axis2_hash_get(wsdl_svc_impl->endpoints, 
+        name, AXIS2_HASH_KEY_STRING);
 }
 
 axis2_char_t *AXIS2_CALL

@@ -468,20 +468,22 @@ axis2_svc_grp_get_svcs(axis2_svc_grp_t *svc_grp,
 axis2_status_t AXIS2_CALL 
 axis2_svc_grp_remove_svc (axis2_svc_grp_t *svc_grp, 
                             axis2_env_t **env,
-		                    axis2_qname_t* svc_name)
+		                    axis2_qname_t* svc_qname)
 {
     axis2_svc_t *svc = NULL;
+    axis2_char_t *svc_name = NULL;
         
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, svc_name, AXIS2_FAILURE);
     
-    svc = axis2_svc_grp_get_svc(svc_grp, env, svc_name);
+    svc = axis2_svc_grp_get_svc(svc_grp, env, svc_qname);
     if (NULL != svc) 
     {
         /*this.parent.notifyObservers(AxisEvent.SERVICE_DEPLOY , service);*/
     }
-	axis2_hash_set (AXIS2_INTF_TO_IMPL(svc_grp)->svcs, 
-        svc_name, sizeof(axis2_qname_t), NULL);
+    svc_name = AXIS2_QNAME_TO_STRING(svc_qname, env);
+	axis2_hash_set (AXIS2_INTF_TO_IMPL(svc_grp)->svcs, svc_name, 
+        AXIS2_HASH_KEY_STRING, NULL);
 	
 	return AXIS2_SUCCESS;
 }

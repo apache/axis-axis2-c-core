@@ -106,14 +106,17 @@ axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type,
 {
     axis2_any_content_type_impl_t *any_content_type_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(any_content_type, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     any_content_type_impl = AXIS2_INTF_TO_IMPL(any_content_type);
     
     if (any_content_type_impl->value_map)
     {
-        axis2_hash_set(any_content_type_impl->value_map, qname, 
-            sizeof(axis2_qname_t), value);
+        axis2_char_t *name = NULL;
+
+        name = AXIS2_QNAME_TO_STRING(qname, env);
+        axis2_hash_set(any_content_type_impl->value_map, name, 
+            AXIS2_HASH_KEY_STRING, value);
     }
     return AXIS2_SUCCESS;
 }
@@ -125,14 +128,17 @@ axis2_any_content_type_get_value(axis2_any_content_type_t *any_content_type,
 {
     axis2_any_content_type_impl_t *any_content_type_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(any_content_type, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     any_content_type_impl = AXIS2_INTF_TO_IMPL(any_content_type);
     
     if (any_content_type_impl->value_map)
     {
-        return axis2_hash_get(any_content_type_impl->value_map, qname, 
-            sizeof(axis2_qname_t));
+        axis2_char_t *name = NULL;
+
+        name = AXIS2_QNAME_TO_STRING(qname, env);
+        return axis2_hash_get(any_content_type_impl->value_map, name, 
+            AXIS2_HASH_KEY_STRING);
     }
     return NULL;
 }

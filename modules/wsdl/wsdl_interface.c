@@ -384,8 +384,16 @@ axis2_wsdl_interface_get_super_interface(axis2_wsdl_interface_t *wsdl_interface,
                                             axis2_env_t **env,
                                             axis2_qname_t *qname)
 {
-    return (axis2_wsdl_interface_t *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
-        wsdl_interface)->super_interfaces, qname, sizeof(axis2_qname_t));
+    axis2_wsdl_interface_impl_t *interface_impl = NULL;
+    axis2_char_t *name = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
+    interface_impl = AXIS2_INTF_TO_IMPL(wsdl_interface);
+
+    name = AXIS2_QNAME_TO_STRING(qname, env);
+    return (axis2_wsdl_interface_t *) axis2_hash_get(
+        interface_impl->super_interfaces, name, AXIS2_HASH_KEY_STRING);
 }
 
 axis2_char_t *AXIS2_CALL
@@ -528,10 +536,10 @@ axis2_wsdl_interface_add_super_interface(axis2_wsdl_interface_t *wsdl_interface,
 {
     axis2_wsdl_interface_impl_t *interface_impl = NULL;
     axis2_qname_t *qname = NULL;
+    axis2_char_t *name = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(wsdl_interface, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, interface_component, AXIS2_FAILURE);
-    
     interface_impl = AXIS2_INTF_TO_IMPL(wsdl_interface);
     
     qname = axis2_wsdl_interface_get_name(interface_component, env);
@@ -539,8 +547,10 @@ axis2_wsdl_interface_add_super_interface(axis2_wsdl_interface_t *wsdl_interface,
     {
         return AXIS2_FAILURE;
     }
-    axis2_hash_set(AXIS2_INTF_TO_IMPL(wsdl_interface)->super_interfaces, qname,
-        sizeof(axis2_qname_t), interface_component);
+
+    name = AXIS2_QNAME_TO_STRING(qname, env);
+    axis2_hash_set(interface_impl->super_interfaces, name,
+        AXIS2_HASH_KEY_STRING, interface_component);
     
     return AXIS2_SUCCESS;
 }
