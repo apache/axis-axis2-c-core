@@ -45,6 +45,7 @@ extern "C"
     */
     AXIS2_DECLARE(axis2_log_t *) axis2_log_create (axis2_allocator_t * allocator,
                      axis2_log_ops_t * ops, axis2_char_t * stream_name);
+    AXIS2_DECLARE(axis2_char_t *) axis2_log_impl_get_time_str(void);
 
 /** @} */
     

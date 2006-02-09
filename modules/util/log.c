@@ -184,9 +184,9 @@ axis2_log_impl_write_to_file(FILE *fd, axis2_log_levels_t level,
             break;
     }
     if (file)
-    	fprintf(fd,"%s %s(%d) %s\n", level_str, file, line, value);
+    	fprintf(fd,"[%s] %s%s(%d) %s\n", axis2_log_impl_get_time_str(), level_str, file, line, value);
     else
-    	fprintf(fd,"%s %s\n", level_str, value);
+    	fprintf(fd,"[%s] %s %s\n", axis2_log_impl_get_time_str(), level_str, value);
 	fflush(fd);
 	return 0;
 }
@@ -319,4 +319,21 @@ axis2_log_impl_log_critical(axis2_log_t *log, const axis2_char_t *filename,
 	axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_CRITICAL, filename, 
 						linenumber, value);
 	return 0;
+}
+
+AXIS2_DECLARE(axis2_char_t *)
+axis2_log_impl_get_time_str(void)
+{
+    time_t tp;
+    tp = time(&tp);
+    char *time_str = ctime(&tp);
+    if(NULL == time_str)
+    {
+        return NULL;;
+    }
+    if('\n' == time_str[strlen(time_str)-1])
+    {
+       time_str[strlen(time_str)-1] = '\0';
+    }
+    return time_str;
 }
