@@ -77,7 +77,6 @@ build_conf_ctx (axis2_env_t **env,
     }
     
     conf = AXIS2_DEP_ENGINE_LOAD_CLIENT(dep_engine, env, axis2_home);
-    AXIS2_DEP_ENGINE_FREE(dep_engine, env);
     if (!conf)
     {
         return NULL;
@@ -126,8 +125,13 @@ axis2_status_t AXIS2_CALL axis2_init_modules(axis2_env_t **env,
                 axis2_hash_this (hi, NULL, NULL, &module);
                 if (module)
                 {
-                    axis2_module_t *mod = (axis2_module_t*)module;
-                    AXIS2_MODULE_INIT(mod, env, conf);
+                    axis2_module_desc_t *mod_desc = (axis2_module_desc_t*)module;
+                    if (mod_desc)
+                    {
+                        axis2_module_t *mod = AXIS2_MODULE_DESC_GET_MODULE(mod_desc, env);
+                        if (mod)
+                            AXIS2_MODULE_INIT(mod, env, conf);
+                    }
                 }
             }
         }

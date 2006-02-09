@@ -207,7 +207,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
         }
     }
     
-    return AXIS2_FAILURE;
+    return AXIS2_SUCCESS;
 }
 
 axis2_status_t 

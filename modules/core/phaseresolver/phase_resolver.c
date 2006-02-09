@@ -347,7 +347,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
     /********************* Handlers from   axis2.xml from modules *************/
     /**************************************************************************/
     
-    moduleqnames = (axis2_array_list_t *) AXIS2_CONF_GET_ENGAGED_MODULES(
+    moduleqnames = AXIS2_CONF_GET_ENGAGED_MODULES(
         resolver_impl->axis2_config, env);
     
     size = AXIS2_ARRAY_LIST_SIZE(moduleqnames, env);
