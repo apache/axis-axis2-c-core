@@ -300,7 +300,7 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
                                 axis2_om_children_qname_iterator_t *module_refs) 
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
+    axis2_status_t status = AXIS2_SUCCESS;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_refs, AXIS2_FAILURE);
@@ -332,6 +332,7 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
             axis2_char_t *ref_name = NULL;
             
             ref_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_ref_att, env);
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "module %s found in axis2.xml", ref_name);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
             status = AXIS2_DEP_ENGINE_ADD_MODULE(conf_builder->desc_builder->
                 engine, env, qrefname);
