@@ -380,6 +380,7 @@ axis2_svc_grp_add_svc (axis2_svc_grp_t *svc_grp,
     axis2_phase_resolver_t *handler_resolver = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_qname_t *svc_qname = NULL;
+    axis2_char_t *svc_name = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc, AXIS2_FAILURE);
@@ -393,7 +394,8 @@ axis2_svc_grp_add_svc (axis2_svc_grp_t *svc_grp,
             return AXIS2_FAILURE;
     }
     svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
-	axis2_hash_set (svc_grp_impl->svcs, svc_qname, sizeof(axis2_qname_t), svc);
+    svc_name = AXIS2_QNAME_TO_STRING(svc_qname, env);
+	axis2_hash_set (svc_grp_impl->svcs, svc_name, AXIS2_HASH_KEY_STRING, svc);
     
     handler_resolver = axis2_phase_resolver_create_with_config_and_svc(env,
         svc_grp_impl->parent, svc);
@@ -401,38 +403,35 @@ axis2_svc_grp_add_svc (axis2_svc_grp_t *svc_grp,
     if(NULL == handler_resolver)
     {
         /* Remove the previously added service */
-        axis2_hash_set(svc_grp_impl->svcs, svc_qname, sizeof(
-            axis2_qname_t), NULL);
+        axis2_hash_set(svc_grp_impl->svcs, svc_name, AXIS2_HASH_KEY_STRING, 
+            NULL);
         
         return AXIS2_FAILURE;
     }
 
     status = AXIS2_PHASE_RESOLVER_BUILD_CHAINS(handler_resolver, env);
-    if(AXIS2_FAILURE == status)
+    if(AXIS2_SUCCESS != status)
     {
         /* Remove the previously added service */
-        axis2_hash_set(svc_grp_impl->svcs, AXIS2_SVC_GET_QNAME(svc, env), sizeof(
-            axis2_qname_t), NULL);
+        axis2_hash_set(svc_grp_impl->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
         AXIS2_PHASE_RESOLVER_FREE(handler_resolver, env);
-        return AXIS2_FAILURE;
+        return status;
     }
     
     status = AXIS2_SVC_SET_LAST_UPDATE(svc, env);
-    if(AXIS2_FAILURE == status)
+    if(AXIS2_SUCCESS != status)
     {
         /* Remove the previously added service */
-        axis2_hash_set(svc_grp_impl->svcs, AXIS2_SVC_GET_QNAME(svc, env), sizeof(
-            axis2_qname_t), NULL);
+        axis2_hash_set(svc_grp_impl->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
         AXIS2_PHASE_RESOLVER_FREE(handler_resolver, env);
         return status;
     }
     
     status = AXIS2_SVC_SET_PARENT(svc, env, svc_grp);
-    if(AXIS2_FAILURE == status)
+    if(AXIS2_SUCCESS != status)
     {
         /* Remove the previously added service */
-        axis2_hash_set(svc_grp_impl->svcs, AXIS2_SVC_GET_QNAME(svc, env), sizeof(
-            axis2_qname_t), NULL);
+        axis2_hash_set(svc_grp_impl->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
         AXIS2_PHASE_RESOLVER_FREE(handler_resolver, env);
         return status;
     }   
@@ -444,16 +443,18 @@ axis2_svc_grp_add_svc (axis2_svc_grp_t *svc_grp,
 axis2_svc_t *AXIS2_CALL
 axis2_svc_grp_get_svc(axis2_svc_grp_t *svc_grp,
                         axis2_env_t **env,
-                        axis2_qname_t *name)
+                        axis2_qname_t *qname)
 {
     axis2_svc_grp_impl_t *svc_grp_impl = NULL;
+    axis2_char_t *name = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, name, NULL);
-    
+    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
     svc_grp_impl = AXIS2_INTF_TO_IMPL(svc_grp);
+
+    name = AXIS2_QNAME_TO_STRING(qname, env);
     return (axis2_svc_t *) axis2_hash_get(svc_grp_impl->svcs, name, 
-        sizeof(axis2_qname_t));
+        AXIS2_HASH_KEY_STRING);
 }
 
 axis2_hash_t *AXIS2_CALL
