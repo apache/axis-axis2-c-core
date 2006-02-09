@@ -22,6 +22,11 @@
 #include <axis2_platform_auto_sense.h>
 
 
+#if defined(WIN32)
+static int is_init_socket = 0;
+axis2_bool_t axis2_init_socket();
+#endif
+
 AXIS2_DECLARE( axis2_socket_t )
 axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port)
 {
@@ -29,10 +34,18 @@ axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port)
 	struct sockaddr_in sock_addr;
 	struct linger ll;
 	int nodelay = 1;
-	
-	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+
+#if defined(WIN32)
+if (is_init_socket == 0)
+{
+	axis2_init_socket();
+	is_init_socket = 1;
+}
+#endif
+
+    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, server, AXIS2_CRTICAL_FAILURE);
-	
+
 	if((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 		/*nnn AF_INET is not defined in sys/socket.h but PF_INET*/
 	{
@@ -182,3 +195,35 @@ axis2_network_handler_svr_socket_accept(axis2_env_t **env,
     setsockopt(cli_socket, SOL_SOCKET, SO_LINGER , &ll, sizeof(struct linger));
     return cli_socket;
 }
+
+#if defined (WIN32)
+axis2_bool_t axis2_init_socket()
+{
+	WORD wVersionRequested;
+	WSADATA wsaData;
+	int err;
+ 
+	wVersionRequested = MAKEWORD( 2, 2 );
+ 
+	err = WSAStartup( wVersionRequested, &wsaData );
+
+	if ( err != 0 ) 
+		return 0; //WinSock 2.2 not found
+ 
+
+	// Confirm that the WinSock DLL supports 2.2.
+	// Note that if the DLL supports versions greater    
+	// than 2.2 in addition to 2.2, it will still return 
+	// 2.2 in wVersion since that is the version we      
+	// requested.                                        
+ 
+	if ( LOBYTE( wsaData.wVersion ) != 2 ||
+			HIBYTE( wsaData.wVersion ) != 2 ) 
+	{
+		WSACleanup( );
+		return 0; //WinSock 2.2 not supported 
+	}
+
+	return 1;
+}
+#endif
