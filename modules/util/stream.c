@@ -534,6 +534,7 @@ axis2_stream_create_socket (axis2_env_t **env, int socket)
 {
 	axis2_stream_t *def_stream = NULL;
 	axis2_stream_impl_t *stream_impl = NULL;
+	int osfh = -1;
 	
 	AXIS2_ENV_CHECK(env, NULL);
 	def_stream = axis2_stream_create_internal(env);
@@ -557,7 +558,12 @@ axis2_stream_create_socket (axis2_env_t **env, int socket)
 	stream_impl->stream_type = AXIS2_STREAM_SOCKET;
 	stream_impl->socket = socket;
 	stream_impl->fp = NULL;
+#if defined(WIN32)
+	osfh = _open_osfhandle(socket, _O_TEXT);
+	stream_impl->fp = fdopen(osfh, "w+");
+#else	
 	stream_impl->fp = fdopen(socket, "w+");
+#endif
 	if(NULL == stream_impl->fp)
 	{
 		axis2_stream_free(def_stream, env);
