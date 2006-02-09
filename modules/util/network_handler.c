@@ -101,6 +101,13 @@ axis2_network_handler_create_server_socket(axis2_env_t **env, int port)
 	int err_code = 0;
 		
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+#if defined(WIN32)
+    if (is_init_socket == 0)
+    {
+	    axis2_init_socket();
+	    is_init_socket = 1;
+    }
+#endif
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if(sock < 0)
 	{

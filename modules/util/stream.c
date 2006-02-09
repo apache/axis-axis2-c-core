@@ -618,8 +618,9 @@ axis2_stream_skip_socket (axis2_stream_t *stream, axis2_env_t **env, int count)
 {
 	axis2_stream_impl_t *stream_impl = NULL;
 	int len = 0;
-	AXIS2_FUNC_PARAM_CHECK(stream, env, AXIS2_CRTICAL_FAILURE);
 	char buffer[2];
+	AXIS2_FUNC_PARAM_CHECK(stream, env, AXIS2_CRTICAL_FAILURE);
+
 	
 	if(-1 == AXIS2_INTF_TO_IMPL(stream)->socket)
 	{

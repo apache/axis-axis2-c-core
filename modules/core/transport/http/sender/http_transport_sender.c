@@ -467,7 +467,8 @@ axis2_http_transport_sender_write_message
 /**
  * Following block distinguish the exposed part of the dll.
  */
-int axis2_get_instance(struct axis2_transport_sender **inst,
+AXIS2_EXPORT int 
+axis2_get_instance(struct axis2_transport_sender **inst,
                         axis2_env_t **env)
 {
     *inst = axis2_http_transport_sender_create(env);
@@ -480,7 +481,8 @@ int axis2_get_instance(struct axis2_transport_sender **inst,
     return AXIS2_SUCCESS;
 }
 
-int axis2_remove_instance(axis2_transport_sender_t *inst,
+AXIS2_EXPORT int 
+axis2_remove_instance(axis2_transport_sender_t *inst,
                             axis2_env_t **env)
 {
     axis2_status_t status = AXIS2_FAILURE;

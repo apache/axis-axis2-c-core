@@ -764,7 +764,7 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     }
     
     status = AXIS2_CONF_SET_PHASESINFO(engine_impl->conf, env, engine_impl->phases_info);
-    if(AXIS2_SUCCESS != status)
+    if(AXIS2_SUCCESS != status) 
     {
         AXIS2_REPOS_LISTENER_FREE(repos_listener, env);
         AXIS2_CONF_FREE(engine_impl->conf, env);

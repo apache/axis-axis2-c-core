@@ -218,6 +218,8 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
             transport_sender = AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out, env);
             if (transport_sender)
                 AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);
+            else
+                return AXIS2_FAILURE;
         }
         else
         {

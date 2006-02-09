@@ -42,17 +42,21 @@ extern "C"
 
 #define _WINSOCKAPI_ /* Prevent inclusion of winsock.h in windows.h */
 #include <windows.h>
+
 /*for file access check*/
 #include <io.h>
 #include <sys/stat.h>
 
 /*for network handling*/
 #include <winsock2.h>
+#include <fcntl.h>
+#include <Mswsock.h>
 /* for time */
 #include <time.h>
 #include <sys/timeb.h>
 /* get opt */
 #include <axis2_getopt_windows.h>
+
 /***************************************************************
  * Default paths to shared library/DLLs and files
  ***************************************************************
@@ -197,7 +201,7 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
 /** getopt function */
 #define AXIS2_GETOPT axis2_getopt  
   
-#define AXIS2_VSNPRINTF		_vsnprintf
+#define AXIS2_VSNPRINTF _vsnprintf
 
 /** @} */
 #ifdef __cplusplus
