@@ -1092,7 +1092,6 @@ axis2_op_t* AXIS2_CALL axis2_call_create_op_fill_flow(struct axis2_call *call,
         {
             return AXIS2_FAILURE;   
         }
-        call_impl->op_template = op;
         remaining_phases = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(call_impl->
             op_template, env);
         AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op, env, remaining_phases);
