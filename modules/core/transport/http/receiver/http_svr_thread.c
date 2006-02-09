@@ -172,33 +172,35 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 		{
 			continue;
 		}
-		AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t1);
-		svr_conn = axis2_simple_http_svr_conn_create(env, socket);
-		AXIS2_SIMPLE_HTTP_SVR_CONN_SET_RCV_TIMEOUT(svr_conn, env, 
-						axis2_http_socket_read_timeout);
-		request = AXIS2_SIMPLE_HTTP_SVR_CONN_READ_REQUEST(svr_conn, env);
-		tmp = svr_thread_impl->worker;
-		status = AXIS2_HTTP_WORKER_PROCESS_REQUEST(tmp, env, svr_conn, request);
-		AXIS2_SIMPLE_HTTP_SVR_CONN_FREE(svr_conn, env);
-		AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t2);
-		millisecs = t2.millitm - t1.millitm;
-		secs = difftime(t2.time, t1.time);
-		if(millisecs < 0)
+		/* This block goes inside thread execution */
 		{
-			millisecs += 1000;
-			secs--;
+			AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t1);
+			svr_conn = axis2_simple_http_svr_conn_create(env, socket);
+			AXIS2_SIMPLE_HTTP_SVR_CONN_SET_RCV_TIMEOUT(svr_conn, env, 
+							axis2_http_socket_read_timeout);
+			request = AXIS2_SIMPLE_HTTP_SVR_CONN_READ_REQUEST(svr_conn, env);
+			tmp = svr_thread_impl->worker;
+			status = AXIS2_HTTP_WORKER_PROCESS_REQUEST(tmp, env, svr_conn, request);
+			AXIS2_SIMPLE_HTTP_SVR_CONN_FREE(svr_conn, env);
+			AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t2);
+			millisecs = t2.millitm - t1.millitm;
+			secs = difftime(t2.time, t1.time);
+			if(millisecs < 0)
+			{
+				millisecs += 1000;
+				secs--;
+			}
+			secs += millisecs/1000.0;
+			if(status == AXIS2_SUCCESS)
+			{
+				AXIS2_LOG_INFO((*env)->log, "Request served in %.3f seconds", secs);
+			}
+			else
+			{
+				AXIS2_LOG_INFO((*env)->log, "Error occured in processing request." 
+							"(%.3f seconds)", secs);
+			}
 		}
-		secs += millisecs/1000.0;
-		if(status == AXIS2_SUCCESS)
-		{
-			AXIS2_LOG_INFO((*env)->log, "Request served in %.3f seconds", secs);
-		}
-		else
-		{
-			AXIS2_LOG_INFO((*env)->log, "Error occured in processing request." 
-						"(%.3f seconds)", secs);
-		}
-		
 	}
     return AXIS2_SUCCESS;
 }
