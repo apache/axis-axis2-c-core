@@ -1548,8 +1548,10 @@ axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
         if (NULL != flow) 
         {
             int j = 0;
-            
-            for (j = 0; j < AXIS2_FLOW_GET_HANDLER_COUNT(flow, env); j++) 
+            int handler_count = 0;
+
+            handler_count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
+            for (j = 0; j < handler_count; j++) 
             {
                 axis2_handler_desc_t *metadata = NULL;
                 axis2_char_t *phase_name = NULL;
@@ -1572,7 +1574,7 @@ axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
                     AXIS2_ERROR_SET((*env)->error, 
                         AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE, 
                             AXIS2_FAILURE);
-                    return AXIS2_FAILURE;
+                    continue;
                     
                 }
             }
