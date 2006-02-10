@@ -145,6 +145,8 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_conf_t *conf = NULL;
     
+    AXIS2_LOG_TRACE((*env)->log, AXIS2_LOG_SI, "axis2_engine_send start");
+
     AXIS2_FUNC_PARAM_CHECK(engine, env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
     
@@ -229,6 +231,7 @@ axis2_status_t AXIS2_CALL axis2_engine_send(struct axis2_engine *engine, axis2_e
     }
     
     AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Axis2 engine send successful");
+    AXIS2_LOG_TRACE((*env)->log, AXIS2_LOG_SI, "axis2_engine_send end");
     return AXIS2_SUCCESS;
 }
 

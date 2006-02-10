@@ -107,13 +107,6 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops,
         }
         log_impl->log.ops->free = axis2_log_impl_free;
         log_impl->log.ops->write = axis2_log_impl_write;
-		/*
-		log_impl->log.ops->log_critical = axis2_log_impl_log_critical;
-		log_impl->log.ops->log_error = axis2_log_impl_log_error;
-		log_impl->log.ops->log_warning = axis2_log_impl_log_warning;
-		log_impl->log.ops->log_info = axis2_log_impl_log_info;
-		log_impl->log.ops->log_debug = axis2_log_impl_log_debug;
-        */
     }
 
     return &(log_impl->log);
@@ -145,6 +138,9 @@ axis2_log_impl_write (axis2_log_t *log, const axis2_char_t *buffer, axis2_log_le
                 break;
             case AXIS2_LOG_LEVEL_DEBUG:
                 level_str = "[debug] ";
+                break;
+            case AXIS2_LOG_LEVEL_TRACE:
+                level_str = "[trace] ";
                 break;
         }
 	  fprintf(stderr,"%s %s(%d) %s\n", level_str, file, line, buffer);
@@ -181,6 +177,9 @@ axis2_log_impl_write_to_file(FILE *fd, axis2_log_levels_t level,
             break;
         case AXIS2_LOG_LEVEL_DEBUG:
             level_str = "[debug] ";
+            break;
+        case AXIS2_LOG_LEVEL_TRACE:
+            level_str = "[trace] ";
             break;
     }
     if (file)
@@ -338,3 +337,32 @@ axis2_log_impl_get_time_str(void)
     }
     return time_str;
 }
+
+AXIS2_DECLARE(axis2_status_t)
+axis2_log_impl_log_trace(axis2_log_t *log, const axis2_char_t *filename,
+	   	const int linenumber, const axis2_char_t *format,...)
+{
+	FILE *fd = NULL;
+	
+	if (!log || !format)
+		return -1;
+
+	if (!log->enabled)
+		return -1;
+	
+	if (NULL == (fd = AXIS2_INTF_TO_IMPL(log)->stream))
+		return -1;
+	
+	if (AXIS2_LOG_LEVEL_TRACE <= log->level)
+	{
+		char value[AXIS2_LEN_VALUE+1];
+    	va_list ap;
+    	va_start(ap, format);
+    	AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+    	va_end(ap);
+		axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_TRACE, filename, 
+						linenumber, value);
+	}
+	return 0;
+}
+

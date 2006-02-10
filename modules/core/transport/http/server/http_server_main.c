@@ -81,8 +81,8 @@ int main(int argc, char *argv[])
                 log_level = atoi(optarg);
                 if (log_level < AXIS2_LOG_LEVEL_CRITICAL)
                     log_level = AXIS2_LOG_LEVEL_CRITICAL;
-                if (log_level > AXIS2_LOG_LEVEL_DEBUG)
-                    log_level = AXIS2_LOG_LEVEL_CRITICAL;
+                if (log_level > AXIS2_LOG_LEVEL_TRACE)
+                    log_level = AXIS2_LOG_LEVEL_TRACE;
                 break;
             case 'f':
                 log_file = optarg;
@@ -157,7 +157,7 @@ void usage(axis2_char_t* prog_name)
 						"SOCKET_READ_TIMEOUT. Default timeout is 30 seconds\n");
     fprintf(stdout, "\t-l LOG_LEVEL\t set log level to LOG_LEVEL. Available "
 						"log levels range from 0(critical only) to 4(debug)."
-						"\n\t\t\t Default log level is 4(debug)\n");
+						"\n\t\t\t Default log level is 4(debug).\n");
     fprintf(stdout, "\t-f LOG_FILE\t set log file to LOG_FILE. Default is /dev/stderr\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
 }
