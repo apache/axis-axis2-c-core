@@ -112,6 +112,22 @@ AC_ARG_ENABLE(tests, [  --enable-samples    build samples. default=no],
   SAMPLES=""
 )
 
+AC_MSG_CHECKING(whether to enable trace)
+AC_ARG_ENABLE(tests, [  --enable-trace    enable trace. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    CFLAGS=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -DAXIS2_TRACE"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  CFLAGS=""
+)
+
 PKG_CHECK_MODULES(XML2, libxml-2.0)
 AC_SUBST(XML2_CFLAGS)
 AC_SUBST(XML2_LIBS)
