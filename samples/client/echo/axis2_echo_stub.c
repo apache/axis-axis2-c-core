@@ -19,8 +19,7 @@
 #include <axis2_msg_ctx.h>
 #include <axis2_call.h>
 
-
-axis2_stub_t *AXIS2_CALL 
+axis2_stub_t *
 axis2_echo_stub_create_with_endpoint_ref_and_client_home(axis2_env_t **env,
                                             axis2_endpoint_ref_t *endpoint_ref,
                                             axis2_char_t *client_home)
@@ -41,7 +40,7 @@ axis2_echo_stub_create_with_endpoint_ref_and_client_home(axis2_env_t **env,
 	return stub;
 }
 
-axis2_stub_t *AXIS2_CALL 
+axis2_stub_t *
 axis2_echo_stub_create_with_endpoint_uri_and_client_home(axis2_env_t **env,
                                             axis2_char_t *endpoint_uri,
                                             axis2_char_t *client_home)
@@ -64,8 +63,7 @@ axis2_echo_stub_create_with_endpoint_uri_and_client_home(axis2_env_t **env,
 }
 
 /***************************Function implementation****************************/
-
-axis2_om_node_t *AXIS2_CALL
+axis2_om_node_t *
 axis2_echo_stub_echo(axis2_stub_t *stub,
                         axis2_env_t **env,
                         axis2_om_node_t *node)

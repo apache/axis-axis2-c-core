@@ -95,6 +95,7 @@ int main(int argc, char** argv)
     {
         AXIS2_OM_NODE_FREE_TREE(node, &env);
     }
+    getchar();
     return status;
 }
 
