@@ -1,4 +1,6 @@
 TESTS = test_util
+prgbindir=$(prefix)/bin/system_test
+prgbin_PROGRAMS = test_util
 noinst_HEADERS = test_log.h
 check_PROGRAMS = test_util
 SUBDIRS =
