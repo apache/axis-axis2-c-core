@@ -39,9 +39,9 @@ int main(int argc, char** argv)
     
     allocator = axis2_allocator_init (NULL);
     error = axis2_error_create(allocator);
-    log = axis2_log_create(allocator, NULL, "echo_client.log");
+    log = axis2_log_create(allocator, NULL, "/dev/stderr");
     env = axis2_env_create_with_error_log(allocator, error, log);
-    env->log->level = AXIS2_LOG_LEVEL_INFO;
+    env->log->level = AXIS2_LOG_LEVEL_TRACE;
     axis2_error_init();
 
     client_home = AXIS2_GETENV("AXIS2C_HOME");
