@@ -14,27 +14,25 @@
  * limitations under the License.
  */
 
-#include "axis2.h"
 #include "axis2_thread_unix.h"
 
 
 AXIS2_DECLARE(axis2_threadattr_t*)
-axis2_threadattr_create(axis2_env_t **env)
+axis2_threadattr_create(axis2_allocator_t* allocator)
 {
     int stat = 0;
 	axis2_threadattr_t *new = NULL;
 
-    new = AXIS2_MALLOC((*env)->allocator, sizeof(axis2_threadattr_t));
+    new = AXIS2_MALLOC(allocator, sizeof(axis2_threadattr_t));
 	if(NULL == new)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE)
 		return NULL;
 	}
     stat = pthread_attr_init(&(new->attr));
 
     if (stat != 0) 
 	{
-		AXIS2_FREE((*env)->allocator, new);
+		AXIS2_FREE(allocator, new);
         return NULL;
     }
     return new;
@@ -59,8 +57,7 @@ threadattr_cleanup(void *data)
 #define DETACH_ARG(v) ((v) ? PTHREAD_CREATE_DETACHED : PTHREAD_CREATE_JOINABLE)
 
 AXIS2_DECLARE(axis2_status_t) axis2_threadattr_detach_set(
-						axis2_threadattr_t *attr, axis2_env_t **env,
-						axis2_bool_t detached)
+						axis2_threadattr_t *attr, axis2_bool_t detached)
 {
     if (0 == pthread_attr_setdetachstate(&attr->attr, DETACH_ARG(detached)))
 	{
@@ -70,7 +67,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_threadattr_detach_set(
 }
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_threadattr_detach_get(axis2_threadattr_t *attr, axis2_env_t **env)
+axis2_threadattr_detach_get(axis2_threadattr_t *attr)
 {
     int state = 0;
     pthread_attr_getdetachstate(&attr->attr, &state);
@@ -88,26 +85,23 @@ static void *dummy_worker(void *opaque)
 }
 
 AXIS2_DECLARE(axis2_thread_t*)
-axis2_thread_create(axis2_env_t **env, axis2_threadattr_t *attr,
+axis2_thread_create(axis2_allocator_t* allocator, axis2_threadattr_t *attr,
 						axis2_thread_start_t func, void *data)
 {
     axis2_status_t stat;
     pthread_attr_t *temp = NULL;
 	axis2_thread_t *new = NULL;
 
-    new = (axis2_thread_t *)AXIS2_MALLOC((*env)->allocator, 
-						sizeof(axis2_thread_t));
+    new = (axis2_thread_t *)AXIS2_MALLOC(allocator, sizeof(axis2_thread_t));
 
     if (NULL == new) 
 	{
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-		return NULL;
+        return NULL;
     }
-    new->td = (pthread_t *)AXIS2_MALLOC((*env)->allocator, sizeof(pthread_t));
+    new->td = (pthread_t *)AXIS2_MALLOC(allocator, sizeof(pthread_t));
     if (NULL == new->td) 
 	{
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-		return NULL;
+        return NULL;
     }
 
     new->data = data;
@@ -142,14 +136,14 @@ axis2_os_thread_equal(axis2_os_thread_t tid1, axis2_os_thread_t tid2)
 }
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_thread_exit(axis2_thread_t *thd, axis2_env_t **env)
+axis2_thread_exit(axis2_thread_t *thd)
 {
     pthread_exit(NULL);
     return AXIS2_SUCCESS;
 }
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_thread_join(axis2_thread_t *thd, axis2_env_t **env)
+axis2_thread_join(axis2_thread_t *thd)
 {
     void *thread_stat;
     if (0 == pthread_join(*thd->td,(void *)&thread_stat)) 
@@ -160,7 +154,7 @@ axis2_thread_join(axis2_thread_t *thd, axis2_env_t **env)
 }
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_thread_detach(axis2_thread_t *thd, axis2_env_t **env)
+axis2_thread_detach(axis2_thread_t *thd)
 {
     if (0 == pthread_detach(*(thd->td)))
 	{
@@ -169,26 +163,29 @@ axis2_thread_detach(axis2_thread_t *thd, axis2_env_t **env)
     return AXIS2_FAILURE;
 }
 
-void axis2_thread_yield(axis2_env_t **env)
+void axis2_thread_yield(void)
 {
 	return;
 }
 
-AXIS2_DECLARE(axis2_os_thread_t)
-axis2_os_thread_get(axis2_thread_t *thd, axis2_env_t **env)
+AXIS2_DECLARE(axis2_os_thread_t*)
+axis2_os_thread_get(axis2_thread_t *thd)
 {
-	AXIS2_PARAM_CHECK((*env)->error, thd, AXIS2_FAILURE);
-    return thd->td;
+	if(NULL == thd)
+	{
+		return NULL;
+	}
+	return thd->td;
 }
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_thread_once_init(axis2_thread_once_t **control, axis2_env_t **env)
+axis2_thread_once_init(axis2_thread_once_t **control, 
+						axis2_allocator_t* allocator)
 {
     static const pthread_once_t once_init = PTHREAD_ONCE_INIT;
-    *control = AXIS2_MALLOC((*env)->allocator, sizeof(**control));
+    *control = AXIS2_MALLOC(allocator, sizeof(**control));
 	if(NULL == *control)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 		return AXIS2_FAILURE;
 	}
     (*control)->once = once_init;
@@ -196,8 +193,7 @@ axis2_thread_once_init(axis2_thread_once_t **control, axis2_env_t **env)
 }
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_thread_once(axis2_thread_once_t *control, axis2_env_t **env, 
-						void (*func)(void))
+axis2_thread_once(axis2_thread_once_t *control, void (*func)(void))
 {
     return pthread_once(&control->once, func);
 }

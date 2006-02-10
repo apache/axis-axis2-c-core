@@ -28,7 +28,6 @@ struct axis2_thread_t {
     pthread_t *td;
     void *data;
     axis2_thread_start_t func;
-    axis2_status_t exitval;
 };
 
 struct axis2_threadattr_t {
