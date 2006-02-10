@@ -250,8 +250,8 @@ axis2_http_request_line_to_string(axis2_http_request_line_t *request_line,
                             request_line);
     alloc_len = AXIS2_STRLEN(req_line_impl->method) + 
                     AXIS2_STRLEN(req_line_impl->uri)+
-                    AXIS2_STRLEN(req_line_impl->http_version) + 5;
-    /* 5 = 2 * spaces + CR + LF + '\0' */
+                    AXIS2_STRLEN(req_line_impl->http_version) + 6;
+    /* 5 = 2 * spaces + '/' +CR + LF + '\0' */
 
     ret = AXIS2_MALLOC((*env)->allocator, 
                     alloc_len * sizeof(axis2_char_t));
@@ -260,7 +260,7 @@ axis2_http_request_line_to_string(axis2_http_request_line_t *request_line,
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-    sprintf(ret, "%s %s %s%s", req_line_impl->method, req_line_impl->uri, 
+    sprintf(ret, "%s /%s %s%s", req_line_impl->method, req_line_impl->uri, 
                     req_line_impl->http_version, AXIS2_HTTP_CRLF);
     return ret;
 }
