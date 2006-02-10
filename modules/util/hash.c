@@ -180,9 +180,8 @@ expand_array (axis2_hash_t * ht)
 
     new_max = ht->max * 2 + 1;
     new_array = alloc_array (ht, new_max);
-    env = &(ht->environment);
-    for (hi = axis2_hash_first (ht, env); hi;
-         hi = axis2_hash_next (env , hi))
+    for (hi = axis2_hash_first (ht, NULL); hi;
+         hi = axis2_hash_next (NULL, hi))
     {
         unsigned int i = hi->this->hash & new_max;
         hi->this->next = new_array[i];
