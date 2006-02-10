@@ -129,7 +129,7 @@ extern "C"
         axis2_handler_ops_t *ops;
     } axis2_handler_t;
 
-    typedef axis2_handler_t *(* 
+    typedef axis2_handler_t *(AXIS2_CALL * 
     AXIS2_HANDLER_CREATE_FUNC) (axis2_env_t **env, 
                                 axis2_qname_t *qname);
     
