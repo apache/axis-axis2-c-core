@@ -140,7 +140,7 @@ axis2_log_impl_write (axis2_log_t *log, const axis2_char_t *buffer, axis2_log_le
                 level_str = "[debug] ";
                 break;
             case AXIS2_LOG_LEVEL_TRACE:
-                level_str = "[trace] ";
+                level_str = "[...TRACE...] ";
                 break;
         }
 	  fprintf(stderr,"%s %s(%d) %s\n", level_str, file, line, buffer);
@@ -179,7 +179,7 @@ axis2_log_impl_write_to_file(FILE *fd, axis2_log_levels_t level,
             level_str = "[debug] ";
             break;
         case AXIS2_LOG_LEVEL_TRACE:
-            level_str = "[trace] ";
+            level_str = "[...TRACE...] ";
             break;
     }
     if (file)
