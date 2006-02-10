@@ -125,8 +125,8 @@ AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_warning(axis2_log_t *log,const 
 AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_info(axis2_log_t *log, const axis2_char_t *format,...);
 
 AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_debug(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
-AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_trace(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
 
+AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_trace(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
 
 #define AXIS2_LOG_FREE(allocator, log) ((log->ops)->free(allocator, log))
 
@@ -141,7 +141,11 @@ AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_trace(axis2_log_t *log,const ax
 #ifdef AXIS2_TRACE
 #define AXIS2_LOG_TRACE axis2_log_impl_log_trace
 #else
-#define AXIS2_LOG_TRACE(params, args ...) 
+  #ifdef WIN32
+  #define AXIS2_LOG_TRACE axis2_log_impl_log_trace
+  #else
+  #define AXIS2_LOG_TRACE(params, args ...)
+  #endif
 #endif
 
 /** @} */

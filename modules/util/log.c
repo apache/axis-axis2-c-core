@@ -338,6 +338,7 @@ axis2_log_impl_get_time_str(void)
     return time_str;
 }
 
+#ifdef AXIS2_TRACE
 AXIS2_DECLARE(axis2_status_t)
 axis2_log_impl_log_trace(axis2_log_t *log, const axis2_char_t *filename,
 	   	const int linenumber, const axis2_char_t *format,...)
@@ -365,4 +366,7 @@ axis2_log_impl_log_trace(axis2_log_t *log, const axis2_char_t *filename,
 	}
 	return 0;
 }
+#else
+AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_trace(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...) {}
+#endif
 
