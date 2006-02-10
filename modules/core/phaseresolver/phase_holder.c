@@ -128,7 +128,7 @@ axis2_phase_holder_free (axis2_phase_holder_t *phase_holder,
 {
     axis2_phase_holder_impl_t *phase_holder_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phase_holder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
    
@@ -167,7 +167,7 @@ axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
     axis2_phase_t *phase = NULL;
     axis2_phase_holder_impl_t *phase_holder_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phase_holder, env, AXIS2_FALSE);
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, phase_name, AXIS2_FALSE);
     phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
     
@@ -201,7 +201,7 @@ axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
     axis2_char_t *phase_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(phase_holder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, handler, AXIS2_FAILURE);
     
     phase_name = AXIS2_PHASE_RULE_GET_NAME(
@@ -238,7 +238,7 @@ axis2_phase_holder_get_phase(axis2_phase_holder_t *phase_holder,
     axis2_phase_holder_impl_t *phase_holder_impl = NULL;
     axis2_phase_t *phase = NULL;
         
-    AXIS2_FUNC_PARAM_CHECK(phase_holder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, phase_name, NULL);
     
     phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
@@ -279,7 +279,7 @@ axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_hol
     int i = 0;
     axis2_handler_desc_t *handler_desc = NULL;
         
-    AXIS2_FUNC_PARAM_CHECK(phase_holder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, phase, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, handlers, AXIS2_FAILURE);
     

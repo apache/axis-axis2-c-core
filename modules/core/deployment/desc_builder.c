@@ -219,7 +219,7 @@ axis2_desc_builder_free (axis2_desc_builder_t *desc_builder,
 {
     axis2_desc_builder_impl_t *desc_builder_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(desc_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     desc_builder_impl = AXIS2_INTF_TO_IMPL(desc_builder);
     
@@ -252,7 +252,7 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
     axis2_om_document_t *document = NULL;
     axis2_om_node_t *root = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     builder_impl = AXIS2_INTF_TO_IMPL(desc_builder);
     
@@ -588,7 +588,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
 {
     axis2_status_t status = AXIS2_FAILURE;
         
-    AXIS2_FUNC_PARAM_CHECK(desc_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, params, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, param_container, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, parent, AXIS2_FAILURE);
@@ -737,7 +737,7 @@ axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
     axis2_qname_t *qref = NULL;
     axis2_status_t status = AXIS2_FAILURE;
         
-    AXIS2_FUNC_PARAM_CHECK(desc_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_refs, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
     desc_builder_impl = AXIS2_INTF_TO_IMPL(desc_builder);
@@ -801,7 +801,7 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
     axis2_char_t *temp_path3 = NULL;
     axis2_conf_t *conf = NULL;
         
-    AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, recv_element, NULL);
     class_qname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
     recv_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(recv_element, env, class_qname);
@@ -888,7 +888,7 @@ axis2_desc_builder_get_short_file_name(axis2_desc_builder_t *desc_builder,
     axis2_char_t *file_name_l = NULL;
     axis2_char_t *short_name = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, file_name, NULL);
     
     file_name_l = AXIS2_STRDUP(file_name, env);
@@ -915,7 +915,7 @@ axis2_desc_builder_get_file_name_without_prefix(axis2_desc_builder_t *desc_build
     axis2_char_t *file_name_l = NULL;
     axis2_char_t *short_name = NULL;
     int len = 0;
-    AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, short_file_name, NULL);
     file_name_l = AXIS2_STRDUP(short_file_name, env);
     if(!file_name_l)
@@ -938,7 +938,7 @@ axis2_desc_builder_get_value(axis2_desc_builder_t *desc_builder,
     axis2_char_t *value = NULL;
     axis2_char_t *in_l = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(desc_builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, in, NULL);
     
     in_l = AXIS2_STRDUP(in, env);

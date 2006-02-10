@@ -250,7 +250,7 @@ axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call,
 {
     axis2_call_impl_t *call_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     call_impl = AXIS2_INTF_TO_IMPL(call);
     
@@ -329,7 +329,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
     axis2_char_t *message_id = "uuid:"; /* TODO UUIDGenerator.getUUID()*/
     
     
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     call_impl = AXIS2_INTF_TO_IMPL(call);
     svc = AXIS2_SVC_CTX_GET_SVC(call_impl->svc_ctx, env);
@@ -460,7 +460,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
     axis2_engine_t *engine = NULL;
     axis2_char_t *message_id =NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     call_impl = AXIS2_INTF_TO_IMPL(call);
     
@@ -552,7 +552,7 @@ axis2_status_t AXIS2_CALL axis2_call_set_to(struct axis2_call *call,
     axis2_env_t **env,
     axis2_endpoint_ref_t *to) 
 {
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(call)->to = to;
     return AXIS2_SUCCESS;
 }
@@ -583,7 +583,7 @@ axis2_status_t AXIS2_CALL axis2_call_set_transport_info(struct axis2_call *call,
     axis2_conf_t *conf = NULL;
     axis2_qname_t *qname = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     call_impl = AXIS2_INTF_TO_IMPL(call);
     
@@ -672,7 +672,7 @@ axis2_status_t AXIS2_CALL axis2_call_check_transport(struct axis2_call *call,
 {
     axis2_call_impl_t *call_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     call_impl = AXIS2_INTF_TO_IMPL(call);
     
@@ -726,7 +726,7 @@ axis2_status_t AXIS2_CALL axis2_call_close(struct axis2_call *call,
     axis2_char_t *transport_name = NULL;
     axis2_qname_t *transport_qname = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     call_impl = AXIS2_INTF_TO_IMPL(call);
     
@@ -798,7 +798,7 @@ axis2_status_t AXIS2_CALL axis2_call_set_time(struct axis2_call *call,
     axis2_env_t **env,
     long timeout_ms) 
 {
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(call)->timeout_ms = timeout_ms;
     return AXIS2_SUCCESS;
 }
@@ -819,7 +819,7 @@ axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(struct axis2_call
     axis2_svc_t *svc = NULL;
     axis2_op_t *op = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     call_impl = AXIS2_INTF_TO_IMPL(call);
 
@@ -893,7 +893,7 @@ axis2_soap_envelope_t* AXIS2_CALL axis2_call_invoke_blocking_with_soap(struct ax
     axis2_msg_ctx_t *msg_ctx = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     call_impl = AXIS2_INTF_TO_IMPL(call);
 
@@ -960,7 +960,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking_with_om(struct axis2_ca
     axis2_op_t *op = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     call_impl = AXIS2_INTF_TO_IMPL(call);
 
@@ -1014,7 +1014,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking_with_soap(struct axis2_
     axis2_op_t *op = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     call_impl = AXIS2_INTF_TO_IMPL(call);
     
@@ -1073,7 +1073,7 @@ axis2_op_t* AXIS2_CALL axis2_call_create_op_fill_flow(struct axis2_call *call,
     axis2_qname_t *op_qname = NULL;
     axis2_op_t *op = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     call_impl = AXIS2_INTF_TO_IMPL(call);
     
@@ -1150,7 +1150,7 @@ axis2_call_set(axis2_call_t *call,
 axis2_msg_ctx_t* AXIS2_CALL axis2_call_get_last_res_msg_ctx(struct axis2_call *call, 
     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(call, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(call)->last_res_msg_ctx;
 }
 

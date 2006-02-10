@@ -223,7 +223,7 @@ axis2_ws_info_list_init(axis2_ws_info_list_t *info_list,
     int size = 0;
     int i = 0;
     
-    AXIS2_FUNC_PARAM_CHECK(info_list, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     info_list_impl = AXIS2_INTF_TO_IMPL(info_list);
     
     size = AXIS2_ARRAY_LIST_SIZE(info_list_impl->info_list, env);
@@ -254,7 +254,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
     axis2_char_t *info_list_name = NULL;
     axis2_char_t *temp_name = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(info_list, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, file, AXIS2_FAILURE);
     
     temp_name = AXIS2_FILE_GET_NAME(file, env);
@@ -350,7 +350,7 @@ axis2_ws_info_list_get_file_item(axis2_ws_info_list_t *info_list,
     axis2_ws_info_list_impl_t *info_list_impl = NULL;
     int i = 0;
     int size = 0;
-    AXIS2_FUNC_PARAM_CHECK(info_list, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, file_name, NULL);
     info_list_impl = AXIS2_INTF_TO_IMPL(info_list);
     
@@ -379,7 +379,7 @@ axis2_ws_info_list_is_modified(axis2_ws_info_list_t *info_list,
 {
     long last_modified_date = 0;
     
-    AXIS2_FUNC_PARAM_CHECK(info_list, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, file, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, ws_info, AXIS2_FAILURE);
     
@@ -394,7 +394,7 @@ axis2_ws_info_list_is_file_exist(axis2_ws_info_list_t *info_list,
 {
     axis2_ws_info_t *ws_info = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(info_list, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, file_name, AXIS2_FAILURE);
     ws_info = axis2_ws_info_list_get_file_item(info_list, env, file_name);
     return !(ws_info == NULL);
@@ -409,7 +409,7 @@ axis2_ws_info_list_check_for_undeploy(axis2_ws_info_list_t *info_list,
     axis2_array_list_t *temp_list = NULL;
     int i = 0;
     
-    AXIS2_FUNC_PARAM_CHECK(info_list, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     info_list_impl = AXIS2_INTF_TO_IMPL(info_list);
 
     /* create temp list*/
@@ -492,7 +492,7 @@ axis2_ws_info_list_update(axis2_ws_info_list_t *info_list,
     axis2_ws_info_list_impl_t *info_list_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(info_list, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     info_list_impl = AXIS2_INTF_TO_IMPL(info_list);
     
     status = axis2_ws_info_list_check_for_undeploy(info_list, env);

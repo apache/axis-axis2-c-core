@@ -220,7 +220,7 @@ axis2_repos_listener_check_modules(axis2_repos_listener_t *listener,
     axis2_char_t *module_path = NULL;
     axis2_char_t *temp_path = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(listener, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
     
     temp_path = AXIS2_STRACAT(listener_impl->folder_name, AXIS2_PATH_SEP_STR, 
@@ -238,7 +238,7 @@ axis2_repos_listener_check_svcs(axis2_repos_listener_t *listener,
     axis2_char_t *svc_path = NULL;
     axis2_char_t *temp_path = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(listener, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
     
     temp_path = AXIS2_STRACAT(listener_impl->folder_name, AXIS2_PATH_SEP_STR, 
@@ -254,7 +254,7 @@ axis2_repos_listener_update(axis2_repos_listener_t *listener,
 {
     axis2_repos_listener_impl_t *listener_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(listener, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
     /* TODO completet this */
     /* this call the update method of WSInfoList */
@@ -268,7 +268,7 @@ axis2_repos_listener_init(axis2_repos_listener_t *listener,
     axis2_repos_listener_impl_t *listener_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(listener, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
     
     status = AXIS2_WS_INFO_LIST_INIT(listener_impl->info_list, env);
@@ -295,7 +295,7 @@ axis2_repos_listener_start_listen(axis2_repos_listener_t *listener,
 {
     axis2_repos_listener_impl_t *listener_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(listener, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
     
     AXIS2_WS_INFO_LIST_INIT(listener_impl->info_list, env);
@@ -317,7 +317,7 @@ axis2_repos_listener_search(axis2_repos_listener_t *listener,
     axis2_array_list_t *current_info_list = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(listener, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, folder_name, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
     current_info_list = AXIS2_DIR_HANDLER_LIST_SERVICE_OR_MODULE_DIRS(env, 

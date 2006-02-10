@@ -173,7 +173,7 @@ axis2_svc_builder_free (axis2_svc_builder_t *svc_builder,
 {
     axis2_svc_builder_impl_t *svc_builder_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(svc_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     svc_builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
     
@@ -520,7 +520,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
     axis2_svc_builder_impl_t *builder_impl = NULL;
     axis2_array_list_t *ops = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(svc_builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, op_itr, NULL);
     builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
     
@@ -712,7 +712,7 @@ axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
 {
     axis2_svc_builder_impl_t *builder_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(svc_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_refs, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
     

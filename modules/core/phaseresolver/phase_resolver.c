@@ -245,7 +245,7 @@ axis2_phase_resolver_free (axis2_phase_resolver_t *phase_resolver,
 {
     axis2_phase_resolver_impl_t *phase_resolver_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phase_resolver, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
     
@@ -315,7 +315,7 @@ axis2_phase_resolver_build_module_op(axis2_phase_resolver_t *phase_resolver,
 {
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
-    AXIS2_FUNC_PARAM_CHECK(phase_resolver, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
     
    

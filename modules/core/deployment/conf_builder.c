@@ -142,7 +142,7 @@ axis2_conf_builder_free (axis2_conf_builder_t *conf_builder,
 {
     axis2_conf_builder_impl_t *conf_builder_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     conf_builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
     
@@ -185,10 +185,14 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     axis2_om_node_t *disp_order_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
    
-    AXIS2_FUNC_PARAM_CHECK(conf_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
     
     conf_node  = AXIS2_DESC_BUILDER_BUILD_OM(conf_builder->desc_builder, env);
+    if(!conf_node)
+    {
+        return AXIS2_FAILURE;
+    }
     conf_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(conf_node, env);
     /* processing Paramters */
     /* Processing service level paramters */
@@ -356,7 +360,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
     axis2_phase_t *disp_phase = NULL;
     int count = 0;
     
-    AXIS2_FUNC_PARAM_CHECK(conf_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, disp_order_node, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
     
@@ -505,7 +509,7 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
     axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_phases_info_t *info = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, phase_orders, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
     
@@ -568,7 +572,7 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
     axis2_qname_t *qphase = NULL;
     axis2_om_element_t *phase_orders_element;
     
-    AXIS2_FUNC_PARAM_CHECK(conf_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, phase_orders_node, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
     
@@ -620,7 +624,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, trs_senders, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
     
@@ -779,7 +783,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, trs_recvs, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
     

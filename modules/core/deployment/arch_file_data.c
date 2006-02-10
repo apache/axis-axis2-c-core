@@ -242,7 +242,7 @@ axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data,
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(arch_file_data, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     file_data_impl = AXIS2_INTF_TO_IMPL(arch_file_data);
     

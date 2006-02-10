@@ -84,6 +84,10 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     axis2_char_t *soap_ns = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     int soap_version = AXIS2_SOAP12;
     axis2_om_namespace_t *env_ns = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, new_msg_ctx, AXIS2_FAILURE);
     
     /* get the implementation class for the Web Service */
     svc_obj = AXIS2_MSG_RECV_GET_IMPL_OBJ(msg_recv, env, msg_ctx);

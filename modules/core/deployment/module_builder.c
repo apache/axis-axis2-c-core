@@ -120,7 +120,7 @@ axis2_module_builder_free (axis2_module_builder_t *module_builder,
 {
     axis2_module_builder_impl_t *module_builder_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(module_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     module_builder_impl = AXIS2_INTF_TO_IMPL(module_builder);
     

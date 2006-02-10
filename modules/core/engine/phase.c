@@ -158,7 +158,7 @@ axis2_status_t AXIS2_CALL axis2_phase_add_handler_at(struct axis2_phase *phase,
 {
     axis2_phase_impl_t *phase_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
     
@@ -176,7 +176,7 @@ axis2_status_t AXIS2_CALL axis2_phase_add_handler(struct axis2_phase *phase,
 {
     axis2_phase_impl_t *phase_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
     
@@ -195,7 +195,7 @@ axis2_status_t AXIS2_CALL axis2_phase_invoke(struct axis2_phase *phase,
     int index = 0, size = 0;
     axis2_status_t status = AXIS2_SUCCESS;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
     
@@ -270,14 +270,14 @@ axis2_status_t AXIS2_CALL axis2_phase_invoke(struct axis2_phase *phase,
 axis2_char_t* AXIS2_CALL axis2_phase_get_name(struct axis2_phase *phase, 
                               axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(phase, env, NULL);    
+    AXIS2_ENV_CHECK(env, NULL);    
     return AXIS2_INTF_TO_IMPL(phase)->name;
 }
 
 int AXIS2_CALL axis2_phase_get_handler_count(struct axis2_phase *phase, 
                               axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);    
     return AXIS2_ARRAY_LIST_SIZE(AXIS2_INTF_TO_IMPL(phase)->handlers, env );
 }
 
@@ -337,7 +337,7 @@ axis2_status_t AXIS2_CALL axis2_phase_set_first_handler(struct axis2_phase *phas
 {
     axis2_phase_impl_t *phase_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
     
@@ -365,7 +365,7 @@ axis2_status_t AXIS2_CALL axis2_phase_set_last_handler(struct axis2_phase *phase
 {
     axis2_phase_impl_t *phase_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
 
@@ -397,7 +397,7 @@ axis2_status_t AXIS2_CALL axis2_phase_add_handler_desc(struct axis2_phase *phase
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_bool_t first = AXIS2_FALSE, last = AXIS2_FALSE;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase); 
 
@@ -479,7 +479,7 @@ axis2_bool_t AXIS2_CALL _axis2_phase_is_valid_before(axis2_phase_t *phase, axis2
     axis2_handler_desc_t *handler_desc = NULL;    
     axis2_char_t *first_handler_name = NULL, *before = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase); 
     
@@ -522,7 +522,7 @@ axis2_bool_t AXIS2_CALL _axis2_phase_is_valid_after(axis2_phase_t *phase, axis2_
     axis2_handler_desc_t *handler_desc = NULL;    
     axis2_char_t *last_handler_name = NULL, *after = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase); 
     
@@ -567,7 +567,7 @@ axis2_status_t AXIS2_CALL axis2_phase_insert_before(axis2_phase_t *phase, axis2_
     int i = 0;
     int size = 0;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase); 
     
@@ -660,7 +660,7 @@ axis2_status_t AXIS2_CALL axis2_phase_insert_after(axis2_phase_t *phase, axis2_e
     int i = 0;
     int size = 0;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase); 
     
@@ -756,7 +756,7 @@ axis2_status_t AXIS2_CALL axis2_phase_insert_before_and_after(axis2_phase_t *pha
     int i = 0;
     int size = 0;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase); 
     
@@ -901,7 +901,7 @@ axis2_status_t AXIS2_CALL axis2_phase_insert_handler_desc(axis2_phase_t *phase, 
     axis2_handler_t *handler = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase); 
     
@@ -950,7 +950,7 @@ axis2_status_t AXIS2_CALL axis2_phase_insert_handler_desc(axis2_phase_t *phase, 
 
 axis2_array_list_t* AXIS2_CALL axis2_phase_get_handlers(axis2_phase_t *phase, axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(phase, env, NULL);    
+    AXIS2_ENV_CHECK(env, NULL);    
     return AXIS2_INTF_TO_IMPL(phase)->handlers;
 }
 
@@ -960,7 +960,7 @@ axis2_status_t AXIS2_CALL axis2_phase_invoke_start_from_handler(axis2_phase_t *p
     int size = 0, i = 0;
     axis2_bool_t found = AXIS2_FALSE;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase); 
     
@@ -997,7 +997,7 @@ axis2_status_t AXIS2_CALL axis2_phase_free (struct axis2_phase *phase,
 {
     axis2_phase_impl_t *phase_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phase, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
     

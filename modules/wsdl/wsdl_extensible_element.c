@@ -117,7 +117,7 @@ axis2_wsdl_extensible_element_free (
                         axis2_wsdl_extensible_element_t *extensible_element, 
                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(extensible_element, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	if(NULL != extensible_element->ops)
         AXIS2_FREE((*env)->allocator, extensible_element->ops);
     
@@ -139,7 +139,7 @@ axis2_wsdl_extensible_element_is_required(
                             axis2_wsdl_extensible_element_t *extensible_element,
                             axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(extensible_element, env, AXIS2_FALSE);
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     return AXIS2_INTF_TO_IMPL(extensible_element)->required;
 }
 
@@ -149,7 +149,7 @@ axis2_wsdl_extensible_element_set_required(
                             axis2_env_t **env,
                             axis2_bool_t required) 
 {
-    AXIS2_FUNC_PARAM_CHECK(extensible_element, env, AXIS2_FALSE);
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     
     AXIS2_INTF_TO_IMPL(extensible_element)->required = required;
     return AXIS2_SUCCESS;
@@ -160,7 +160,7 @@ axis2_wsdl_extensible_element_get_type(
                             axis2_wsdl_extensible_element_t *extensible_element,
                             axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(extensible_element, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(extensible_element)->type;
 }
 
@@ -173,7 +173,7 @@ axis2_wsdl_extensible_element_set_type(
     axis2_wsdl_extensible_element_impl_t *extensible_element_impl = 
         AXIS2_INTF_TO_IMPL(extensible_element);
     
-    AXIS2_FUNC_PARAM_CHECK(extensible_element, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, type, AXIS2_FAILURE);
     
     if(extensible_element_impl->type)

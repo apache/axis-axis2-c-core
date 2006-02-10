@@ -119,14 +119,14 @@ axis2_disp_checker_t* AXIS2_CALL axis2_disp_checker_create(axis2_env_t **env, ax
 axis2_handler_t* AXIS2_CALL axis2_disp_checker_get_base(struct axis2_disp_checker *disp_checker, 
                                                axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(disp_checker, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(disp_checker)->base;
 }
 
 axis2_qname_t* AXIS2_CALL axis2_disp_checker_get_qname(struct axis2_disp_checker *disp_checker, 
                                        axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(disp_checker, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(disp_checker)->qname;
 }
 
@@ -135,7 +135,7 @@ axis2_status_t AXIS2_CALL axis2_disp_checker_set_qname(struct axis2_disp_checker
 {
     axis2_disp_checker_impl_t *disp_checker_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(disp_checker, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     disp_checker_impl = AXIS2_INTF_TO_IMPL(disp_checker);
     
@@ -160,7 +160,7 @@ axis2_disp_checker_free(struct axis2_disp_checker * disp_checker,
                     axis2_env_t **env)
 {
     axis2_disp_checker_impl_t *disp_checker_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(disp_checker, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     disp_checker_impl = AXIS2_INTF_TO_IMPL(disp_checker);
     
     if (disp_checker_impl->qname)

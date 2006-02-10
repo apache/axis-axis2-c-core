@@ -134,7 +134,7 @@ axis2_msg_recv_free (axis2_msg_recv_t *msg_recv,
                         axis2_env_t **env)
 {
     axis2_msg_recv_impl_t *recv_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(msg_recv, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     recv_impl = AXIS2_INTF_TO_IMPL(msg_recv);
     
     if(recv_impl->scope)
@@ -178,7 +178,7 @@ axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
     axis2_param_t *impl_info_param = NULL;
     void *impl_class = NULL;
 
-    AXIS2_FUNC_PARAM_CHECK(msg_recv, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
 
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
@@ -217,7 +217,7 @@ axis2_msg_recv_get_impl_obj(axis2_msg_recv_t *msg_recv,
     axis2_qname_t *svc_qname = NULL;
     axis2_char_t *param_value = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_recv, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
     
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
@@ -286,7 +286,7 @@ axis2_msg_recv_set_scope(axis2_msg_recv_t *msg_recv,
 {
     axis2_msg_recv_impl_t *msg_recv_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_recv, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, scope, AXIS2_FAILURE);
     msg_recv_impl = AXIS2_INTF_TO_IMPL(msg_recv);
     
@@ -323,7 +323,7 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
     axis2_param_t *scope_param = NULL;
     axis2_char_t *param_value = NULL;
 
-    AXIS2_FUNC_PARAM_CHECK(msg_recv, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
@@ -367,7 +367,7 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_recv, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
     
     out_msg_ctx = axis2_core_utils_create_out_msg_ctx(env, msg_ctx);

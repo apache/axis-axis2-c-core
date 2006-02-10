@@ -164,7 +164,7 @@ axis2_phases_info_free (axis2_phases_info_t *phases_info,
                             axis2_env_t **env)
 {
     axis2_phases_info_impl_t *phases_info_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     phases_info_impl = AXIS2_INTF_TO_IMPL(phases_info);
     
 	if(NULL != phases_info->ops)
@@ -190,7 +190,7 @@ axis2_phases_info_set_in_phases(axis2_phases_info_t *phases_info,
 {
     axis2_phases_info_impl_t *info_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, in_phases, AXIS2_FAILURE);
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
     if(info_impl->in_phases)
@@ -207,7 +207,7 @@ axis2_phases_info_set_out_phases(axis2_phases_info_t *phases_info,
 {
     axis2_phases_info_impl_t *info_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, out_phases, AXIS2_FAILURE);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
@@ -224,7 +224,7 @@ axis2_phases_info_set_in_faultphases(axis2_phases_info_t *phases_info,
 {
     axis2_phases_info_impl_t *info_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, in_faultphases, AXIS2_FAILURE);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
@@ -241,7 +241,7 @@ axis2_phases_info_set_out_faultphases(axis2_phases_info_t *phases_info,
 {
     axis2_phases_info_impl_t *info_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, out_faultphases, AXIS2_FAILURE);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
@@ -256,7 +256,7 @@ axis2_array_list_t *AXIS2_CALL
 axis2_phases_info_get_in_phases(axis2_phases_info_t *phases_info,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(phases_info)->in_phases;
 }
@@ -265,7 +265,7 @@ axis2_array_list_t *AXIS2_CALL
 axis2_phases_info_get_out_phases(axis2_phases_info_t *phases_info,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(phases_info)->out_phases;
 }
@@ -274,7 +274,7 @@ axis2_array_list_t *AXIS2_CALL
 axis2_phases_info_get_in_faultphases(axis2_phases_info_t *phases_info,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(phases_info)->in_faultphases;
 }
@@ -283,7 +283,7 @@ axis2_array_list_t *AXIS2_CALL
 axis2_phases_info_get_out_faultphases(axis2_phases_info_t *phases_info,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(phases_info)->out_faultphases;
 }
@@ -300,7 +300,7 @@ axis2_phases_info_get_op_in_phases(axis2_phases_info_t *phases_info,
     axis2_array_list_t * op_in_phases = NULL; 
     axis2_status_t status = AXIS2_FAILURE;    
     
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
     op_in_phases = axis2_array_list_create(env, 20);
@@ -362,7 +362,7 @@ axis2_phases_info_get_op_out_phases(axis2_phases_info_t *phases_info,
     axis2_array_list_t * op_out_phases = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
     op_out_phases = axis2_array_list_create(env, 20);
@@ -427,7 +427,7 @@ axis2_phases_info_get_op_in_faultphases(axis2_phases_info_t *phases_info,
     axis2_array_list_t * op_in_faultphases = NULL;
     struct axis2_phase *phase = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
     op_in_faultphases = axis2_array_list_create(env, 20);
@@ -466,7 +466,7 @@ axis2_phases_info_get_op_out_faultphases(axis2_phases_info_t *phases_info,
     axis2_array_list_t * op_out_faultphases = NULL;
     struct axis2_phase *phase = NULL;
         
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
     op_out_faultphases = axis2_array_list_create(env, 20);
@@ -506,7 +506,7 @@ axis2_phases_info_set_op_phases(axis2_phases_info_t *phases_info,
     
     axis2_phases_info_impl_t *info_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(phases_info, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, axis2_opt, AXIS2_FAILURE);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);

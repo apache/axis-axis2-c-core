@@ -86,7 +86,7 @@ axis2_svc_t* AXIS2_CALL axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
 {    
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);    
+    AXIS2_ENV_CHECK(env, NULL);    
     
     endpoint_ref = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
     
@@ -141,7 +141,7 @@ axis2_op_t* AXIS2_CALL axis2_req_uri_disp_find_op(axis2_msg_ctx_t *msg_ctx,
 {
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);    
+    AXIS2_ENV_CHECK(env, NULL);    
     AXIS2_PARAM_CHECK((*env)->error, svc, NULL);
     
     endpoint_ref = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
@@ -179,7 +179,7 @@ axis2_status_t AXIS2_CALL axis2_req_uri_disp_invoke(struct axis2_handler * handl
                                                 axis2_env_t **env,
                                                 struct axis2_msg_ctx *msg_ctx)
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);    
     
     msg_ctx->ops->find_svc = axis2_req_uri_disp_find_svc;
     msg_ctx->ops->find_op = axis2_req_uri_disp_find_op;

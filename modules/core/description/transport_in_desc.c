@@ -207,7 +207,7 @@ axis2_transport_in_desc_free (axis2_transport_in_desc_t *transport_in,
 {
     axis2_transport_in_desc_impl_t *transport_in_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(transport_in, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     transport_in_impl = AXIS2_INTF_TO_IMPL(transport_in);
     
@@ -264,7 +264,7 @@ axis2_qname_t *AXIS2_CALL
 axis2_transport_in_desc_get_qname(axis2_transport_in_desc_t *transport_in,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(transport_in, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(transport_in)->qname;
 }
 
@@ -275,7 +275,7 @@ axis2_transport_in_desc_set_qname(axis2_transport_in_desc_t *transport_in,
 {
     axis2_transport_in_desc_impl_t *transport_in_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(transport_in, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);
     
     transport_in_impl = AXIS2_INTF_TO_IMPL(transport_in);
@@ -293,7 +293,7 @@ axis2_flow_t *AXIS2_CALL
 axis2_transport_in_desc_get_inflow(axis2_transport_in_desc_t *transport_in,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(transport_in, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(transport_in)->inflow;
 }
 
@@ -303,7 +303,7 @@ axis2_transport_in_desc_set_inflow(axis2_transport_in_desc_t *transport_in,
                                         axis2_flow_t *inflow) 
 {
     axis2_transport_in_desc_impl_t *transport_in_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(transport_in, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, inflow, AXIS2_FAILURE);
     
     transport_in_impl = AXIS2_INTF_TO_IMPL(transport_in);
@@ -329,7 +329,7 @@ axis2_transport_in_desc_set_faultflow(axis2_transport_in_desc_t *transport_in,
                                         axis2_flow_t *faultflow) 
 {
     axis2_transport_in_desc_impl_t *transport_in_impl = AXIS2_INTF_TO_IMPL(transport_in);
-    AXIS2_FUNC_PARAM_CHECK(transport_in, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, faultflow, AXIS2_FAILURE);
     
     transport_in_impl = AXIS2_INTF_TO_IMPL(transport_in);
@@ -346,7 +346,7 @@ axis2_transport_receiver_t * AXIS2_CALL
 axis2_transport_in_desc_get_recv(axis2_transport_in_desc_t *transport_in,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(transport_in, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(transport_in)->recv;
 }
 
@@ -356,7 +356,7 @@ axis2_transport_in_desc_set_recv(axis2_transport_in_desc_t *transport_in,
                                         axis2_transport_receiver_t *recv) 
 {
     axis2_transport_in_desc_impl_t *transport_in_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(transport_in, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, recv, AXIS2_FAILURE);
    
     transport_in_impl = AXIS2_INTF_TO_IMPL(transport_in);
@@ -368,7 +368,7 @@ axis2_phase_t * AXIS2_CALL
 axis2_transport_in_desc_get_in_phase(axis2_transport_in_desc_t *transport_in,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(transport_in, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(transport_in)->in_phase;
 }
@@ -380,7 +380,7 @@ axis2_transport_in_desc_set_in_phase(axis2_transport_in_desc_t *transport_in,
 {
     axis2_transport_in_desc_impl_t *transport_in_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(transport_in, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, in_phase, AXIS2_FAILURE);
     
     transport_in_impl = AXIS2_INTF_TO_IMPL(transport_in);
@@ -397,7 +397,7 @@ axis2_phase_t *AXIS2_CALL
 axis2_transport_in_desc_get_faultphase(axis2_transport_in_desc_t *transport_in,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(transport_in, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(transport_in)->faultphase;
 }
@@ -409,7 +409,7 @@ axis2_transport_in_desc_set_faultphase(axis2_transport_in_desc_t *transport_in,
 {
     axis2_transport_in_desc_impl_t *transport_in_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(transport_in, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, faultphase, AXIS2_FAILURE);
     
     transport_in_impl = AXIS2_INTF_TO_IMPL(transport_in);

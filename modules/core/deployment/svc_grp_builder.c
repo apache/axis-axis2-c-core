@@ -126,7 +126,7 @@ axis2_svc_grp_builder_free (axis2_svc_grp_builder_t *svc_grp_builder,
 {
     axis2_svc_grp_builder_impl_t *grp_builder_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(svc_grp_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     grp_builder_impl = AXIS2_INTF_TO_IMPL(svc_grp_builder);
     

@@ -591,7 +591,7 @@ axis2_conf_free (axis2_conf_t *conf,
     axis2_conf_impl_t *config_impl = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
     
-	AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     
     if(NULL != conf->ops)
@@ -814,7 +814,7 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
     int size = 0;
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
@@ -897,7 +897,7 @@ axis2_conf_get_svc_grp (axis2_conf_t *conf,
 		                            axis2_char_t *svc_grp_name)
 {
     axis2_conf_impl_t *config_impl = NULL;
-	AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+	AXIS2_ENV_CHECK(env, NULL);
 	AXIS2_PARAM_CHECK((*env)->error, svc_grp_name, NULL);
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
@@ -915,7 +915,7 @@ axis2_hash_t * AXIS2_CALL
 axis2_conf_get_svc_grps(axis2_conf_t *conf, 
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(conf)->svc_grps;
 }
 
@@ -928,7 +928,7 @@ axis2_conf_add_svc (axis2_conf_t *conf,
     axis2_qname_t *svc_grp_qname = NULL;
     axis2_char_t *svc_grp_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc, AXIS2_FAILURE);
 	
 	svc_grp = axis2_svc_grp_create(env);
@@ -978,7 +978,7 @@ axis2_conf_get_svc (axis2_conf_t *conf,
                                 axis2_env_t **env,
 		                        axis2_char_t* svc_name)
 {   
-	AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+	AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, svc_name, NULL);
 	
     return axis2_hash_get(AXIS2_INTF_TO_IMPL(conf)->all_svcs, svc_name,
@@ -992,7 +992,7 @@ axis2_conf_remove_svc (axis2_conf_t *conf,
 {
     axis2_conf_impl_t *config_impl = NULL;
         
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_name, AXIS2_FAILURE);
     
     axis2_hash_set(config_impl->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
@@ -1007,7 +1007,7 @@ axis2_conf_add_param (axis2_conf_t *conf,
 {
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, param, AXIS2_FAILURE);
     
 	if(AXIS2_TRUE == axis2_conf_is_param_locked(conf, env, 
@@ -1030,7 +1030,7 @@ axis2_conf_get_param (axis2_conf_t *conf,
                         axis2_env_t **env,
 		                const axis2_char_t *name)
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, name, NULL);
     
 	if(NULL == conf->param_container)
@@ -1049,7 +1049,7 @@ axis2_array_list_t * AXIS2_CALL
 axis2_conf_get_params (axis2_conf_t *conf, 
                         axis2_env_t **env)
 {
-	AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+	AXIS2_ENV_CHECK(env, NULL);
 	return AXIS2_PARAM_CONTAINER_GET_PARAMS(conf->param_container, env);
 	
 }
@@ -1061,7 +1061,7 @@ axis2_conf_is_param_locked (axis2_conf_t *conf,
 {
     axis2_param_t *param = NULL;
         
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FALSE);
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, param_name, AXIS2_FALSE);
     
     param = axis2_conf_get_param(conf, env, param_name);
@@ -1074,7 +1074,7 @@ axis2_conf_get_transport_in(axis2_conf_t *conf,
                                         axis2_qname_t *qname)
 {
     axis2_conf_impl_t *config_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
@@ -1097,7 +1097,7 @@ axis2_conf_add_transport_in(axis2_conf_t *conf,
     axis2_conf_impl_t *config_impl = NULL;
     axis2_qname_t *qname = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, transport, AXIS2_FAILURE);
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
@@ -1126,7 +1126,7 @@ axis2_conf_get_transport_out(axis2_conf_t *conf,
                                         axis2_qname_t *qname)
 {
     axis2_conf_impl_t *config_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
@@ -1149,7 +1149,7 @@ axis2_conf_add_transport_out(axis2_conf_t *conf,
     axis2_conf_impl_t *config_impl = NULL;
     axis2_qname_t *qname = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, transport, AXIS2_FAILURE);
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
@@ -1175,7 +1175,7 @@ axis2_hash_t * AXIS2_CALL
 axis2_conf_get_transports_in(axis2_conf_t *conf,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(conf)->transports_in;
 }
 
@@ -1211,7 +1211,7 @@ axis2_array_list_t * AXIS2_CALL
 axis2_conf_get_engaged_modules(axis2_conf_t *conf,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(conf)->engaged_modules;
 }
 
@@ -1220,7 +1220,7 @@ axis2_conf_get_in_phases_upto_and_including_post_dispatch(
                                             axis2_conf_t *conf,
                                             axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(conf)->
         in_phases_upto_and_including_post_dispatch;
 }
@@ -1229,7 +1229,7 @@ axis2_array_list_t * AXIS2_CALL
 axis2_conf_get_outflow(axis2_conf_t *conf,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(conf)->out_phases;
 }
 
@@ -1241,7 +1241,7 @@ axis2_array_list_t * AXIS2_CALL
 axis2_conf_get_in_faultflow(axis2_conf_t *conf,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(conf)->in_faultphases;
 }
 
@@ -1252,7 +1252,7 @@ axis2_array_list_t * AXIS2_CALL
 axis2_conf_get_out_faultflow(axis2_conf_t *conf,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(conf)->out_faultphases;
 }
 
@@ -1260,7 +1260,7 @@ axis2_hash_t * AXIS2_CALL
 axis2_conf_get_transports_out(axis2_conf_t *conf,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(conf)->transports_out;
 }	
 
@@ -1294,7 +1294,7 @@ axis2_hash_t *AXIS2_CALL
 axis2_conf_get_faulty_svcs(axis2_conf_t *conf,
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(conf)->faulty_svcs;
 }
@@ -1303,7 +1303,7 @@ axis2_hash_t *AXIS2_CALL
 axis2_conf_get_faulty_modules(axis2_conf_t *conf,
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(conf)->faulty_modules;
 }
     
@@ -1323,7 +1323,7 @@ axis2_conf_get_svcs(axis2_conf_t *conf,
     axis2_svc_t *svc =NULL;
     axis2_char_t *svc_name = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     sgs = axis2_conf_get_svc_grps(conf, env);
@@ -1355,7 +1355,7 @@ axis2_conf_is_engaged(axis2_conf_t *conf,
                                 axis2_env_t **env,
                                 axis2_qname_t *module_name) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FALSE);
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FALSE);
     
     return AXIS2_ARRAY_LIST_CONTAINS(AXIS2_INTF_TO_IMPL(conf)->
@@ -1366,7 +1366,7 @@ axis2_phases_info_t *AXIS2_CALL
 axis2_conf_get_phases_info(axis2_conf_t *conf,
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return (AXIS2_INTF_TO_IMPL(conf))->phases_info;
 }
@@ -1378,7 +1378,7 @@ axis2_conf_set_phases_info(axis2_conf_t *conf,
 {
     axis2_conf_impl_t *config_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, phases_info, AXIS2_FAILURE);
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     
@@ -1399,7 +1399,7 @@ axis2_conf_add_msg_recv(axis2_conf_t *conf,
 {
     axis2_conf_impl_t *config_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, key, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_recv, AXIS2_FAILURE);
     
@@ -1420,7 +1420,7 @@ axis2_conf_get_msg_recv(axis2_conf_t *conf,
                                     axis2_env_t **env,
                                     axis2_char_t *key) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return (axis2_msg_recv_t *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
         conf)->msg_recvs, key, AXIS2_HASH_KEY_STRING);
@@ -1433,7 +1433,7 @@ axis2_conf_set_out_phases(axis2_conf_t *conf,
 {
     axis2_conf_impl_t *config_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, out_phases, AXIS2_FAILURE);
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
@@ -1450,7 +1450,7 @@ axis2_array_list_t* AXIS2_CALL
 axis2_conf_get_out_phases(axis2_conf_t *conf,
                                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(conf)->out_phases;
 }
     
@@ -1464,7 +1464,7 @@ axis2_conf_set_in_faultphases(axis2_conf_t *conf,
 {
     axis2_conf_impl_t *config_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
@@ -1487,7 +1487,7 @@ axis2_conf_set_out_faultphases(axis2_conf_t *conf,
 {
     axis2_conf_impl_t *config_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
@@ -1507,7 +1507,7 @@ axis2_hash_t *AXIS2_CALL
 axis2_conf_get_modules(axis2_conf_t *conf,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(conf, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(conf)->modules;
 }  
@@ -1526,7 +1526,7 @@ axis2_conf_add_module(axis2_conf_t *conf,
     axis2_qname_t *module_qname = NULL;
     
     axis2_status_t status = AXIS2_FAILURE;
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module, AXIS2_FAILURE);
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
@@ -1573,7 +1573,7 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     axis2_phase_t *post_dispatch = NULL;
     axis2_disp_checker_t *disp_checker = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     config_impl = AXIS2_INTF_TO_IMPL(conf);
 
     dispatch = axis2_phase_create(env, AXIS2_PHASE_DISPATCH);
@@ -1664,7 +1664,7 @@ axis2_conf_set_dispatch_phase(axis2_conf_t *conf,
     axis2_phase_t *post_dispatch = NULL;
     axis2_disp_checker_t *disp_checker = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, dispatch, AXIS2_FAILURE);
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     
@@ -1718,7 +1718,7 @@ axis2_conf_engage_module(axis2_conf_t *conf,
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(conf, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_ref, AXIS2_FAILURE);
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     

@@ -117,7 +117,7 @@ axis2_wsdl_feature_free (axis2_wsdl_feature_t *wsdl_feature,
 {
     axis2_wsdl_feature_impl_t *feature_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(wsdl_feature, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     feature_impl = AXIS2_INTF_TO_IMPL(wsdl_feature);
     
@@ -146,7 +146,7 @@ axis2_char_t *AXIS2_CALL
 axis2_wsdl_feature_get_name(axis2_wsdl_feature_t *wsdl_feature,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_feature, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(wsdl_feature)->name;
 }
 
@@ -157,7 +157,7 @@ axis2_wsdl_feature_set_name(axis2_wsdl_feature_t *wsdl_feature,
 {
     axis2_wsdl_feature_impl_t *feature_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(wsdl_feature, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
     
     feature_impl = AXIS2_INTF_TO_IMPL(wsdl_feature);
@@ -175,7 +175,7 @@ axis2_bool_t AXIS2_CALL
 axis2_wsdl_feature_is_required(axis2_wsdl_feature_t *wsdl_feature,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_feature, env, AXIS2_FALSE);
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     return AXIS2_INTF_TO_IMPL(wsdl_feature)->required;
 }
 
@@ -184,7 +184,7 @@ axis2_wsdl_feature_set_required(axis2_wsdl_feature_t *wsdl_feature,
                                 axis2_env_t **env,
                                 axis2_bool_t required) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_feature, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(wsdl_feature)->required = required;
     return AXIS2_SUCCESS;
 }

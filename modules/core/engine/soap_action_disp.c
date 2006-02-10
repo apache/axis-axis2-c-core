@@ -84,7 +84,7 @@ axis2_disp_t* AXIS2_CALL axis2_soap_action_disp_create(axis2_env_t **env)
 axis2_svc_t* AXIS2_CALL axis2_soap_action_disp_find_svc(axis2_msg_ctx_t *msg_ctx, 
                     axis2_env_t **env) 
 {    
-    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);    
+    AXIS2_ENV_CHECK(env, NULL);    
 
     AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Checking for service using SOAPAction is a TODO item");
 
@@ -104,7 +104,7 @@ axis2_op_t* AXIS2_CALL axis2_soap_action_disp_find_op(axis2_msg_ctx_t *msg_ctx,
 {
     axis2_char_t *action = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);  
+    AXIS2_ENV_CHECK(env, NULL);  
     AXIS2_PARAM_CHECK((*env)->error, svc, NULL);    
     
     action = AXIS2_MSG_CTX_GET_SOAP_ACTION(msg_ctx, env);
@@ -147,7 +147,7 @@ axis2_status_t AXIS2_CALL axis2_soap_action_disp_invoke(struct axis2_handler * h
                                                 axis2_env_t **env,
                                                 struct axis2_msg_ctx *msg_ctx)
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);    
     
     msg_ctx->ops->find_svc = axis2_soap_action_disp_find_svc;
     msg_ctx->ops->find_op = axis2_soap_action_disp_find_op;

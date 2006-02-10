@@ -158,7 +158,7 @@ axis2_ws_info_free (axis2_ws_info_t *ws_info,
 {
     axis2_ws_info_impl_t *ws_info_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(ws_info, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     ws_info_impl = AXIS2_INTF_TO_IMPL(ws_info);
     
@@ -187,7 +187,7 @@ axis2_char_t *AXIS2_CALL
 axis2_ws_info_get_file_name(axis2_ws_info_t *ws_info,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(ws_info, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(ws_info)->file_name;
 }
 
@@ -198,7 +198,7 @@ axis2_ws_info_set_file_name(axis2_ws_info_t *ws_info,
 {
     axis2_ws_info_impl_t *ws_info_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(ws_info, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, file_name, AXIS2_FAILURE);
     
     ws_info_impl = AXIS2_INTF_TO_IMPL(ws_info);
@@ -215,7 +215,7 @@ long AXIS2_CALL
 axis2_ws_info_get_last_modified_date(axis2_ws_info_t *ws_info,
                                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(ws_info, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     return AXIS2_INTF_TO_IMPL(ws_info)->last_modified_date;
 }
@@ -225,7 +225,7 @@ axis2_ws_info_set_last_modified_date(axis2_ws_info_t *ws_info,
                                         axis2_env_t **env,
                                         long last_modified_date) 
 {
-    AXIS2_FUNC_PARAM_CHECK(ws_info, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(ws_info)->last_modified_date = last_modified_date;
     return AXIS2_SUCCESS;
 }
@@ -234,6 +234,6 @@ int AXIS2_CALL
 axis2_ws_info_get_type(axis2_ws_info_t *ws_info,
                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(ws_info, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(ws_info)->type;
 }

@@ -160,7 +160,7 @@ axis2_wsdl_svc_free (axis2_wsdl_svc_t *wsdl_svc,
                         axis2_env_t **env)
 {
     axis2_wsdl_svc_impl_t *wsdl_svc_impl = NULL;
-	AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     wsdl_svc_impl = AXIS2_INTF_TO_IMPL(wsdl_svc);
     
@@ -214,7 +214,7 @@ axis2_qname_t * AXIS2_CALL
 axis2_wsdl_svc_get_qname(axis2_wsdl_svc_t *wsdl_svc, 
                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(wsdl_svc)->qname; 
 }
 
@@ -225,7 +225,7 @@ axis2_wsdl_svc_set_qname(axis2_wsdl_svc_t *wsdl_svc,
 {
     axis2_qname_t *svc_name = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);
     
     svc_name = AXIS2_QNAME_CLONE(qname, env);
@@ -243,7 +243,7 @@ axis2_hash_t *AXIS2_CALL
 axis2_wsdl_svc_get_endpoints(axis2_wsdl_svc_t *wsdl_svc,
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(wsdl_svc)->endpoints;
 }
 
@@ -252,7 +252,7 @@ axis2_wsdl_svc_set_endpoints(axis2_wsdl_svc_t *wsdl_svc,
                                 axis2_env_t **env,
                                 axis2_hash_t *endpoints) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, endpoints, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(wsdl_svc)->endpoints = endpoints;
     return AXIS2_SUCCESS;
@@ -298,7 +298,7 @@ axis2_char_t *AXIS2_CALL
 axis2_wsdl_svc_get_namespace(axis2_wsdl_svc_t *wsdl_svc,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     if (NULL == AXIS2_INTF_TO_IMPL(wsdl_svc)->qname) 
     {
@@ -315,7 +315,7 @@ axis2_wsdl_interface_t * AXIS2_CALL
 axis2_wsdl_svc_get_svc_interface(axis2_wsdl_svc_t *wsdl_svc,
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(wsdl_svc)->svc_interface;
 }
 
@@ -324,7 +324,7 @@ axis2_wsdl_svc_set_svc_interface(axis2_wsdl_svc_t *wsdl_svc,
                                     axis2_env_t **env,
                                     axis2_wsdl_interface_t *svc_interface) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_svc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_interface, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(wsdl_svc)->svc_interface = svc_interface;
     return AXIS2_SUCCESS;

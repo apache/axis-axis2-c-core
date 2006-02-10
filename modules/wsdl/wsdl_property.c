@@ -130,7 +130,7 @@ axis2_wsdl_property_free (axis2_wsdl_property_t *wsdl_property,
 {
     axis2_wsdl_property_impl_t *property_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(wsdl_property, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	if(NULL != wsdl_property->ops)
         AXIS2_FREE((*env)->allocator, wsdl_property->ops);
     
@@ -161,7 +161,7 @@ void * AXIS2_CALL
 axis2_wsdl_property_get_constraint(axis2_wsdl_property_t *wsdl_property,
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_property, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(wsdl_property)->constraint;
 }
 
@@ -170,7 +170,7 @@ axis2_wsdl_property_set_constraint(axis2_wsdl_property_t *wsdl_property,
                                     axis2_env_t **env,
                                     void *constraint) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_property, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, constraint, AXIS2_FAILURE);
     
     AXIS2_INTF_TO_IMPL(wsdl_property)->constraint = constraint;
@@ -181,7 +181,7 @@ axis2_char_t *AXIS2_CALL
 axis2_wsdl_property_get_name(axis2_wsdl_property_t *wsdl_property,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_property, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(wsdl_property)->name;
 }
 
@@ -192,7 +192,7 @@ axis2_wsdl_property_set_name(axis2_wsdl_property_t *wsdl_property,
 {
     axis2_wsdl_property_impl_t *property_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(wsdl_property, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
     
     property_impl = AXIS2_INTF_TO_IMPL(wsdl_property);
@@ -210,7 +210,7 @@ void *AXIS2_CALL
 axis2_wsdl_property_get_value(axis2_wsdl_property_t *wsdl_property,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(wsdl_property, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(wsdl_property)->value;
 }
 
@@ -221,7 +221,7 @@ axis2_wsdl_property_set_value(axis2_wsdl_property_t *wsdl_property,
 {
     axis2_wsdl_property_impl_t *property_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(wsdl_property, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
     
     property_impl = AXIS2_INTF_TO_IMPL(wsdl_property);

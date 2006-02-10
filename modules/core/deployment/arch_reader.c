@@ -123,7 +123,7 @@ axis2_arch_reader_free (axis2_arch_reader_t *arch_reader,
 {
     axis2_arch_reader_impl_t *feature_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(arch_reader, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     feature_impl = AXIS2_INTF_TO_IMPL(arch_reader);
     
@@ -308,7 +308,7 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
     axis2_char_t *svc_container_path = NULL;
     axis2_char_t *svc_folder = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(arch_reader, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, file_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
@@ -367,7 +367,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
     axis2_om_element_t *svcs_element = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(arch_reader, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_xml, AXIS2_FAILURE);    
     AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);

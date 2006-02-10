@@ -120,7 +120,7 @@ axis2_status_t AXIS2_CALL
 axis2_http_server_free (axis2_transport_receiver_t *server, axis2_env_t **env)
 {
 	axis2_http_server_impl_t *server_impl = NULL;
-	AXIS2_FUNC_PARAM_CHECK(server, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     server_impl = AXIS2_INTF_TO_IMPL(server);
     if(NULL != server_impl->svr_thread)
 	{
@@ -150,7 +150,7 @@ axis2_http_server_init(axis2_transport_receiver_t *server, axis2_env_t **env,
     axis2_http_server_impl_t *server_impl = NULL;
 	axis2_char_t *port_str = NULL;
 	
-	AXIS2_FUNC_PARAM_CHECK(server, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     server_impl = AXIS2_INTF_TO_IMPL(server);
 	
 	server_impl->conf_ctx = conf_ctx;
@@ -170,7 +170,7 @@ axis2_http_server_start(axis2_transport_receiver_t *server, axis2_env_t **env)
 
 	axis2_http_server_impl_t *server_impl = NULL;
 	axis2_http_worker_t *worker = NULL;
-    AXIS2_FUNC_PARAM_CHECK(server, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 		
 	server_impl = AXIS2_INTF_TO_IMPL(server);
 	server_impl->svr_thread = axis2_http_svr_thread_create(env, 
@@ -195,7 +195,7 @@ axis2_http_server_start(axis2_transport_receiver_t *server, axis2_env_t **env)
 axis2_status_t AXIS2_CALL 
 axis2_http_server_stop(axis2_transport_receiver_t *server, axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(server, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	
 	AXIS2_LOG_INFO((*env)->log, "Terminating HTTP server thread");
 	if(NULL != AXIS2_INTF_TO_IMPL(server)->svr_thread)
@@ -212,7 +212,7 @@ axis2_conf_ctx_t* AXIS2_CALL
 axis2_http_server_get_conf_ctx (axis2_transport_receiver_t *server, 
 						axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(server, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
 	return AXIS2_INTF_TO_IMPL(server)->conf_ctx;
 }
 
@@ -224,7 +224,7 @@ axis2_http_server_get_reply_to_epr(axis2_transport_receiver_t *server,
 	axis2_char_t *host_address = NULL;
 	axis2_char_t *svc_path = NULL;
 	axis2_url_t *url = NULL;
-    AXIS2_FUNC_PARAM_CHECK(server, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, svc_name, NULL);
 	
 	host_address = "127.0.0.1"; /* TODO : get from axis2.xml */
@@ -246,7 +246,7 @@ axis2_http_server_is_running (axis2_transport_receiver_t *server,
 						axis2_env_t **env)
 {
 	axis2_http_server_impl_t *server_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(server, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	server_impl = AXIS2_INTF_TO_IMPL(server);
 	if(NULL == server_impl->svr_thread)
 	{

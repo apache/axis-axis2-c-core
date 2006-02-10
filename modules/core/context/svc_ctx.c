@@ -126,14 +126,14 @@ axis2_svc_ctx_create(axis2_env_t **env,
 axis2_ctx_t* AXIS2_CALL axis2_svc_ctx_get_base(struct axis2_svc_ctx *svc_ctx, 
                                             axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(svc_ctx, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_ctx)->base;
 }
 
 
 struct axis2_svc_grp_ctx * AXIS2_CALL axis2_svc_ctx_get_parent(struct axis2_svc_ctx *svc_ctx, axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(svc_ctx, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_ctx)->parent;
 }
 
@@ -144,7 +144,7 @@ axis2_status_t AXIS2_CALL axis2_svc_ctx_free (struct axis2_svc_ctx *svc_ctx,
 {
     axis2_svc_ctx_impl_t *svc_ctx_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(svc_ctx, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     svc_ctx_impl = AXIS2_INTF_TO_IMPL(svc_ctx);
     
@@ -176,7 +176,7 @@ axis2_status_t AXIS2_CALL axis2_svc_ctx_init(struct axis2_svc_ctx *svc_ctx,
 {
     axis2_svc_ctx_impl_t *svc_ctx_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(svc_ctx, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     svc_ctx_impl = AXIS2_INTF_TO_IMPL(svc_ctx);
 
@@ -195,7 +195,7 @@ axis2_status_t AXIS2_CALL axis2_svc_ctx_init(struct axis2_svc_ctx *svc_ctx,
 axis2_char_t* AXIS2_CALL axis2_svc_ctx_get_svc_id(struct axis2_svc_ctx *svc_ctx, 
                                             axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(svc_ctx, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_ctx)->svc_id;
 }
 
@@ -203,14 +203,14 @@ axis2_char_t* AXIS2_CALL axis2_svc_ctx_get_svc_id(struct axis2_svc_ctx *svc_ctx,
 axis2_svc_t* AXIS2_CALL axis2_svc_ctx_get_svc(struct axis2_svc_ctx *svc_ctx, 
                                             axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(svc_ctx, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_ctx)->svc;
 }
 
 struct axis2_conf_ctx* AXIS2_CALL axis2_svc_ctx_get_conf_ctx(struct axis2_svc_ctx *svc_ctx, 
                                             axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(svc_ctx, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_SVC_GRP_CTX_GET_PARENT(AXIS2_INTF_TO_IMPL(svc_ctx)->parent, env);
 }
 
@@ -220,7 +220,7 @@ axis2_op_ctx_t* AXIS2_CALL axis2_svc_ctx_create_op_ctx(struct axis2_svc_ctx *svc
     axis2_svc_ctx_impl_t *svc_ctx_impl = NULL;
     axis2_op_t *op = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(svc_ctx, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     svc_ctx_impl = AXIS2_INTF_TO_IMPL(svc_ctx);
     

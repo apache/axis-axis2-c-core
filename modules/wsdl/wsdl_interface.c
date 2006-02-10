@@ -264,7 +264,7 @@ axis2_wsdl_interface_free (
 {
     axis2_wsdl_interface_impl_t *wsdl_interface_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(wsdl_interface, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     wsdl_interface_impl = AXIS2_INTF_TO_IMPL(wsdl_interface);
     
@@ -410,7 +410,7 @@ axis2_wsdl_interface_set_faults(axis2_wsdl_interface_t *wsdl_interface,
 {
     axis2_wsdl_interface_impl_t *interface_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(wsdl_interface, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
     
     interface_impl = AXIS2_INTF_TO_IMPL(wsdl_interface);
@@ -431,7 +431,7 @@ axis2_wsdl_interface_set_name(axis2_wsdl_interface_t *wsdl_interface,
 {
     axis2_wsdl_interface_impl_t *interface_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(wsdl_interface, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, qName, AXIS2_FAILURE);
     
     interface_impl = AXIS2_INTF_TO_IMPL(wsdl_interface);
@@ -459,7 +459,7 @@ axis2_wsdl_interface_set_ops(axis2_wsdl_interface_t *wsdl_interface,
 {
     axis2_wsdl_interface_impl_t *interface_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(wsdl_interface, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
     
     interface_impl = AXIS2_INTF_TO_IMPL(wsdl_interface);
@@ -483,7 +483,7 @@ axis2_wsdl_interface_set_op(axis2_wsdl_interface_t *wsdl_interface,
     axis2_char_t *op_name = NULL;
     axis2_op_t *op_l = NULL;
         
-    AXIS2_FUNC_PARAM_CHECK(wsdl_interface, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
     
     interface_impl = AXIS2_INTF_TO_IMPL(wsdl_interface);
@@ -515,7 +515,7 @@ axis2_wsdl_interface_set_super_interfaces(axis2_wsdl_interface_t *wsdl_interface
 {
     axis2_wsdl_interface_impl_t *interface_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(wsdl_interface, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
     
     interface_impl = AXIS2_INTF_TO_IMPL(wsdl_interface);
@@ -569,7 +569,7 @@ axis2_wsdl_interface_set_style_default(axis2_wsdl_interface_t *wsdl_interface,
 {
     axis2_wsdl_interface_impl_t *interface_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(wsdl_interface, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, style_default, AXIS2_FAILURE);
     
     interface_impl = AXIS2_INTF_TO_IMPL(wsdl_interface);

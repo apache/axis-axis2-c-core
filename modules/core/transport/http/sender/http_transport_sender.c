@@ -128,7 +128,7 @@ axis2_http_transport_sender_free
 						axis2_env_t **env)
 {
     axis2_http_transport_sender_impl_t *transport_sender_impl = NULL;
-	AXIS2_FUNC_PARAM_CHECK(transport_sender, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     transport_sender_impl = AXIS2_INTF_TO_IMPL(transport_sender);
 
     if(NULL != transport_sender->ops)
@@ -153,7 +153,7 @@ axis2_http_transport_sender_invoke
 	axis2_soap_envelope_t *soap_data_out = NULL;
 	axis2_bool_t do_mtom;
 	
-	AXIS2_FUNC_PARAM_CHECK(transport_sender, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 
 	xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
@@ -301,7 +301,7 @@ axis2_http_transport_sender_clean_up
 							(axis2_transport_sender_t *transport_sender, 
                     		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
 {
-    AXIS2_FUNC_PARAM_CHECK(transport_sender, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 	/*
 	 * Clean up is not used. If the http sender needs
@@ -321,7 +321,7 @@ axis2_http_transport_sender_init
     axis2_char_t *version = NULL;
 	axis2_char_t *temp = NULL;
 	axis2_param_t *temp_param = NULL;
-	AXIS2_FUNC_PARAM_CHECK(transport_sender, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, conf_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, out_desc, AXIS2_FAILURE);
 	
@@ -419,7 +419,7 @@ axis2_http_transport_sender_write_message
 	axis2_char_t *soap_action = NULL;
 	axis2_char_t *url = NULL;
 	axis2_soap_over_http_sender_t *sender = NULL;
-	AXIS2_FUNC_PARAM_CHECK(transport_sender, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, epr, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);

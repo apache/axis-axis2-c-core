@@ -91,7 +91,7 @@ axis2_status_t AXIS2_CALL axis2_ctx_handler_invoke(struct axis2_handler *handler
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(handler, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
     
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);

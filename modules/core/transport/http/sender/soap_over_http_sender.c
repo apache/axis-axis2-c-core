@@ -145,7 +145,7 @@ axis2_soap_over_http_sender_free (axis2_soap_over_http_sender_t *sender,
                         axis2_env_t **env)
 {
     axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
-	AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     sender_impl = AXIS2_INTF_TO_IMPL(sender);
     if(NULL != sender_impl->http_version)
@@ -185,7 +185,7 @@ axis2_soap_over_http_sender_send
 	axis2_http_simple_response_t *response = NULL;
 	axis2_char_t *content_type = NULL;
 		
-    AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, out, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, str_url, AXIS2_FAILURE);
@@ -288,7 +288,7 @@ axis2_soap_over_http_sender_set_chunked
 						(axis2_soap_over_http_sender_t *sender, 
 						axis2_env_t **env, axis2_bool_t chunked)
 {
-    AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(sender)->chunked = chunked;
 	return AXIS2_SUCCESS;	
 }
@@ -299,7 +299,7 @@ axis2_soap_over_http_sender_set_om_output
 						(axis2_soap_over_http_sender_t *sender, 
 						axis2_env_t **env, axis2_om_output_t *om_output)
 {
-    AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(sender)->om_output = om_output;
 	return AXIS2_SUCCESS;
 }
@@ -316,7 +316,7 @@ axis2_soap_over_http_sender_get_header_info
 	axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
 	int i = 0;
 	
-	AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, response, AXIS2_FAILURE);
 	
@@ -382,7 +382,7 @@ axis2_soap_over_http_sender_process_response
     axis2_stream_t *in_stream = NULL;
 	axis2_ctx_t *axis_ctx = NULL;
 	
-	AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, response, AXIS2_FAILURE);
 	
@@ -410,7 +410,7 @@ axis2_soap_over_http_sender_get_timeout_values
     axis2_char_t *so_str = NULL;
 	axis2_char_t *connection_str = NULL;
 	
-	AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	
 	so_str = (axis2_char_t*)AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, 
 						env, AXIS2_HTTP_SO_TIMEOUT);
@@ -433,7 +433,7 @@ axis2_soap_over_http_sender_set_http_version
 									(axis2_soap_over_http_sender_t *sender, 
 									axis2_env_t **env, axis2_char_t *version)
 {
-	AXIS2_FUNC_PARAM_CHECK(sender, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_INTF_TO_IMPL(sender)->http_version =  AXIS2_STRDUP(version, env);
 	if(NULL == AXIS2_INTF_TO_IMPL(sender)->http_version)
 	{
