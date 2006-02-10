@@ -165,7 +165,7 @@ AXIS2_DECLARE_DATA struct axis2_stub
  * @return pointer to newly created axis2_stub struct
  */
 AXIS2_DECLARE(axis2_stub_t *)
-axis2_stub_create_with_endpoint_refand_client_home(axis2_env_t **env,
+axis2_stub_create_with_endpoint_ref_and_client_home(axis2_env_t **env,
                                         axis2_endpoint_ref_t *endpoint_ref,
                                         axis2_char_t *client_home);
 
