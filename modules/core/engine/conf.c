@@ -806,8 +806,6 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
     axis2_hash_t *svcs = NULL;
     axis2_hash_index_t *index_i = NULL;
     axis2_char_t *svc_name = NULL;
-    axis2_char_t *svc_name2 = NULL;
-    axis2_qname_t *module_desc = NULL;
     axis2_char_t *svc_grp_name = NULL;
     int i = 0;
     int k = 0;
@@ -831,24 +829,26 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
     {
         void *value = NULL;
         axis2_svc_t *desc = NULL;
+        axis2_char_t *svc_name2 = NULL;
+        axis2_qname_t *svc_qname = NULL;
         
         axis2_hash_this (index_i, NULL, NULL, &value);
         desc = (axis2_svc_t *) value;
-        svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(desc, env), env);
+        svc_qname = AXIS2_SVC_GET_QNAME(desc, env);
+        svc_name = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
         
         svc_name2 = axis2_hash_get(config_impl->all_svcs, svc_name, 
                 AXIS2_HASH_KEY_STRING);
         /* no two service names deployed in the engine can be same */
         if(NULL != svc_name2)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME,
-                AXIS2_FAILURE);
+            AXIS2_ERROR_SET((*env)->error, 
+                AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME, AXIS2_FAILURE);
             return AXIS2_FAILURE;            
         }
         index_i = axis2_hash_next(env, index_i);
     }
    
-    svcs = NULL;
     svcs = AXIS2_SVC_GRP_GET_SVCS(svc_grp, env);
     index_i = axis2_hash_first (svcs, env);
     while(NULL != index_i)
@@ -867,13 +867,14 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
     size = AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules, env);
     while(i < size)
     {
+        axis2_qname_t *module_desc = NULL;
         
         module_desc = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(config_impl->
             engaged_modules, env, i);
-        status = AXIS2_SVC_GRP_ADD_MODULE(svc_grp, env, module_desc);
-        if(AXIS2_FAILURE == status)
+        status = AXIS2_SVC_GRP_ENGAGE_MODULE_TO_GRP(svc_grp, env, module_desc);
+        if(AXIS2_SUCCESS != status)
         {
-            return AXIS2_FAILURE;
+            return status;
         }
         i++;    
     }

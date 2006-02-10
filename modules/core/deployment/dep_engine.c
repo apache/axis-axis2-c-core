@@ -307,7 +307,7 @@ axis2_dep_engine_create(axis2_env_t **env)
     engine_impl->conf_name = NULL; 
     engine_impl->dep_engine.ops = NULL;
 
-    engine_impl->ws_to_deploy = axis2_array_list_create(env, 10);
+    engine_impl->ws_to_deploy = axis2_array_list_create(env, 0);
     if (!(engine_impl->ws_to_deploy))
     {
         axis2_dep_engine_free(&(engine_impl->dep_engine), env);

@@ -1403,32 +1403,34 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
     axis2_hash_t *ops = NULL;
-    axis2_bool_t engaged = AXIS2_FALSE;
     axis2_hash_index_t *index_i = NULL;
-    void *v = NULL;
-    int j = 0;
     axis2_status_t status = AXIS2_FAILURE;
-        
+    axis2_qname_t *module_d_qname = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
     
-    ops = AXIS2_SVC_GET_OPS(resolver_impl->svc, env);
+    ops = AXIS2_SVC_GET_OPS(svc, env);
     if(!ops)
     {
         return AXIS2_FAILURE;
     }
-    status = AXIS2_SVC_ADD_MODULE_OPS(resolver_impl->svc, env, module_desc, 
+    status = AXIS2_SVC_ADD_MODULE_OPS(svc, env, module_desc, 
             resolver_impl->axis2_config);
 
     if(AXIS2_SUCCESS != status)
     {
         return status;
     }
+    module_d_qname = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
     for (index_i = axis2_hash_first (ops, env); index_i; index_i = 
             axis2_hash_next (env, index_i))
     {
         axis2_array_list_t *modules = NULL;
         axis2_op_t *op_desc = NULL;
         int size = 0;
+        int j = 0;
+        void *v = NULL;
 
         axis2_hash_this (index_i, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
@@ -1437,13 +1439,11 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
         for(j = 0; j < size; j++)
         {
             axis2_module_desc_t *module_desc_l = NULL;
-            axis2_qname_t *module_d_qname = NULL;
             axis2_qname_t *module_d_qname_l = NULL;
-
-            module_d_qname = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
-            module_d_qname_l = AXIS2_MODULE_DESC_GET_NAME(module_desc_l, env);
+            axis2_bool_t engaged = AXIS2_FALSE;
 
             module_desc_l = AXIS2_ARRAY_LIST_GET(modules, env, j);
+            module_d_qname_l = AXIS2_MODULE_DESC_GET_NAME(module_desc_l, env);
             if(0 == AXIS2_QNAME_EQUALS(module_d_qname, env, module_d_qname_l))
             {
                 engaged = AXIS2_TRUE;

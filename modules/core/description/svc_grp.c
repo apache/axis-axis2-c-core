@@ -619,11 +619,10 @@ axis2_svc_grp_engage_module_to_grp(axis2_svc_grp_t *svc_grp,
     axis2_qname_t *modu = NULL;
     axis2_char_t *modu_local = NULL;
     axis2_char_t *module_name_local = NULL;
-    axis2_hash_t *svc = NULL;
+    axis2_hash_t *svc_map = NULL;
     axis2_phase_resolver_t *phase_resolver = NULL;
     axis2_module_desc_t *module = NULL;
     
-    axis2_svc_t *axis_svc = NULL;
     int size = 0;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -648,20 +647,28 @@ axis2_svc_grp_engage_module_to_grp(axis2_svc_grp_t *svc_grp,
         }
     }
     
-    svc = axis2_svc_grp_get_svcs(svc_grp, env);
-    if(NULL == svc) return AXIS2_FAILURE;
+    svc_map = axis2_svc_grp_get_svcs(svc_grp, env);
+    if(NULL == svc_map) 
+    {
+        return AXIS2_FAILURE;
+    }
         
     phase_resolver = axis2_phase_resolver_create_with_config(env, svc_grp_impl->
         parent);
     
-    if(NULL == phase_resolver) return AXIS2_FAILURE;
+    if(NULL == phase_resolver) 
+    {
+        return AXIS2_FAILURE;
+    }
         
     module = AXIS2_CONF_GET_MODULE(svc_grp_impl->parent, env, module_name);
     if(NULL != module)
     {
+        axis2_svc_t *axis_svc = NULL;
         axis2_hash_index_t *index = NULL;
-        index = axis2_hash_first (svc, env);
-        while(NULL != index);  
+
+        index = axis2_hash_first (svc_map, env);
+        while(NULL != index)
         {
             void *v = NULL;
             /* engage in per each service */
@@ -672,14 +679,18 @@ axis2_svc_grp_engage_module_to_grp(axis2_svc_grp_t *svc_grp,
             if(AXIS2_FAILURE == status)
             {
                 if(phase_resolver)
+                {
                     AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env);
+                }
                 return status;
             }
             index = axis2_hash_next (env, index);
         }          
     }
     if(phase_resolver)
+    {
         AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env);
+    }
     
     return axis2_svc_grp_add_module(svc_grp, env, module_name);
 }
