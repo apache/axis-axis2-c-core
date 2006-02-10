@@ -126,7 +126,7 @@ axis2_hash_next (axis2_env_t **environment, axis2_hash_index_t *hi)
     {
         if (hi->index > hi->ht->max)
         {
-            AXIS2_FREE ((*environment)->allocator, hi);
+            /*AXIS2_FREE ((*environment)->allocator, hi);*/
             return NULL;
         }
 
