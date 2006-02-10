@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/samples/echo
+prgbindir=$(prefix)/bin/samples
 prgbin_PROGRAMS = echo
 noinst_HEADERS = axis2_echo_stub.h
 echo_SOURCES = axis2_echo_stub.c \
