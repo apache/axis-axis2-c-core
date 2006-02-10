@@ -315,6 +315,8 @@ axis2_soap_over_http_sender_get_header_info
 	axis2_char_t *charset = NULL;
 	axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
 	int i = 0;
+	axis2_bool_t response_chunked = AXIS2_FALSE;
+	int *content_length = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -345,6 +347,7 @@ axis2_soap_over_http_sender_get_header_info
 						AXIS2_HTTP_HEADER_TRANSFER_ENCODING, 
 						AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED,
 						AXIS2_FALSE);
+				response_chunked = AXIS2_TRUE;
 			}
 			if(0 != AXIS2_STRCMP(name, AXIS2_HTTP_HEADER_CONTENT_TYPE))
 			{
@@ -369,6 +372,20 @@ axis2_soap_over_http_sender_get_header_info
 			AXIS2_CTX_SET_PROPERTY(axis_ctx, env, AXIS2_CHARACTER_SET_ENCODING, 
 						(void*)charset, AXIS2_FALSE);
 		}
+	}
+	if(AXIS2_FALSE == response_chunked)
+	{
+		int tmp_len = 0;
+		content_length = AXIS2_MALLOC((*env)->allocator, sizeof(int));
+		if(NULL == content_length)
+		{
+			return AXIS2_FAILURE;
+		}
+		tmp_len = AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_LENGTH(response, env);
+		memcpy(content_length, &tmp_len, sizeof(int));
+		AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, 
+						AXIS2_HTTP_HEADER_CONTENT_LENGTH, content_length, 
+						AXIS2_FALSE);
 	}
 	return AXIS2_SUCCESS;
 }

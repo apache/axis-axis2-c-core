@@ -782,7 +782,8 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
 		axis2_stream_t *in_stream = NULL;
         int read_len = 0;
         in_stream = (axis2_stream_t *)((axis2_callback_info_t*)ctx)->in_stream;
-        if(size > ((axis2_callback_info_t*)ctx)->unread_len)
+        if(size > ((axis2_callback_info_t*)ctx)->unread_len && 
+						-1 != ((axis2_callback_info_t*)ctx)->unread_len)
         {
             read_len = ((axis2_callback_info_t*)ctx)->unread_len;
         }
@@ -811,6 +812,7 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
     axis2_stream_t *in_stream = NULL;
     axis2_callback_info_t callback_ctx;
 	axis2_char_t *trans_enc = NULL;
+	int *content_length = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
     AXIS2_PARAM_CHECK((*env)->error, soap_ns_uri, NULL);
@@ -823,6 +825,13 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
 	callback_ctx.unread_len = -1;
 	callback_ctx.chunked_stream = NULL;
 	
+	content_length = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
+						AXIS2_HTTP_HEADER_CONTENT_LENGTH, AXIS2_FALSE);
+	if(content_length != NULL)
+	{
+		callback_ctx.content_length = *content_length;
+		callback_ctx.unread_len = *content_length;
+	}
     if(NULL == in_stream)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX,
