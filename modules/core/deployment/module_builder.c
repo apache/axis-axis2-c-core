@@ -173,6 +173,8 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
     
+    AXIS2_LOG_TRACE((*env)->log, AXIS2_LOG_SI, "axis2_module_builder_populate_module start");
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(module_builder);
     
@@ -195,6 +197,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         module_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_name_att, env);
         if(NULL != module_name && (0 != AXIS2_STRCMP("", module_name)))
         {
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Populate module %s", module_name);
             axis2_qname_t *qmodule_name = NULL;
             
             qmodule_name = axis2_qname_create(env, module_name, NULL, NULL);
@@ -211,6 +214,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
             file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(module_builder->
                 desc_builder->engine, env);
             module_name = AXIS2_ARCH_FILE_DATA_GET_MODULE_NAME(file_data, env);
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Populate module %s", module_name);
      
             module_qname = axis2_qname_create(env, module_name, NULL, NULL);
             AXIS2_MODULE_DESC_SET_NAME(builder_impl->module_desc, env, module_qname);
@@ -365,6 +369,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         op = (axis2_op_t *) AXIS2_ARRAY_LIST_GET(ops, env, i);
         AXIS2_MODULE_DESC_ADD_OP(builder_impl->module_desc, env, op);
     }
+    AXIS2_LOG_TRACE((*env)->log, AXIS2_LOG_SI, "axis2_module_builder_populate_module end");
     return AXIS2_SUCCESS;
 }
 

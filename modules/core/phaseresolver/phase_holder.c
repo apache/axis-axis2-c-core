@@ -201,6 +201,7 @@ axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
     axis2_char_t *phase_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
+    AXIS2_LOG_TRACE((*env)->log, AXIS2_LOG_SI, "axis2_phase_holder_add_handler start");
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, handler, AXIS2_FAILURE);
     
@@ -213,12 +214,16 @@ axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
         
         phase = axis2_phase_holder_get_phase(phase_holder, env, phase_name);
         status = AXIS2_PHASE_ADD_HANDLER_DESC(phase, env, handler);
+        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Add handler %s to phase %s", 
+            AXIS2_QNAME_TO_STRING(AXIS2_HANDLER_DESC_GET_QNAME(handler, env), env), phase_name);
     } 
     else 
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_PHASE, AXIS2_FAILURE);
-        return AXIS2_FAILURE;
+        status = AXIS2_FAILURE;
     }
+    AXIS2_LOG_TRACE((*env)->log, AXIS2_LOG_SI, "axis2_phase_holder_add_handler end status = %s",    
+        status ? "SUCCESS" : "FAILURE");
     return status;
 }
 
