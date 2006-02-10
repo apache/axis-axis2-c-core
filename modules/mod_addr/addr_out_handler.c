@@ -28,7 +28,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler *handler,
                                struct axis2_msg_ctx *msg_ctx);
 
 
-axis2_status_t
+axis2_status_t 
 axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
                                            axis2_endpoint_ref_t *
                                            endpoint_ref, axis2_char_t * type,
@@ -124,7 +124,13 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
     axis2_char_t *addr_ns = NULL;
     axis2_msg_info_headers_t *msg_info_headers = NULL;
     axis2_ctx_t *ctx = NULL;
-
+    axis2_om_namespace_t *addressing_namespace = NULL;
+    axis2_soap_envelope_t *soap_envelope = NULL;
+    axis2_soap_header_t *soap_header = NULL;
+    axis2_om_node_t *soap_header_node = NULL;
+    axis2_om_element_t *soap_header_ele = NULL;
+    axis2_endpoint_ref_t *epr = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK ((*env)->error, msg_ctx, AXIS2_FAILURE);
 
@@ -185,16 +191,11 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         addr_ns = AXIS2_WSA_NAMESPACE_SUBMISSION;
     }
 
-    axis2_om_namespace_t *addring_namespace =
-        axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+    addressing_namespace = axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS (msg_ctx, env);
-    axis2_soap_envelope_t *soap_envelope =
-        AXIS2_MSG_CTX_GET_SOAP_ENVELOPE (msg_ctx, env);
-    axis2_soap_header_t *soap_header =
-        AXIS2_SOAP_ENVELOPE_GET_HEADER (soap_envelope, env);
-    axis2_om_node_t *soap_header_node = NULL;
-    axis2_om_element_t *soap_header_ele = NULL;
-    axis2_endpoint_ref_t *epr = NULL;
+    soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE (msg_ctx, env);
+    soap_header  = AXIS2_SOAP_ENVELOPE_GET_HEADER (soap_envelope, env);
+   
 
     /* by this time, we definitely have some addressing information to be sent. This is because,
        // we have tested at the start of this whether msg_info_headers are null or not.
@@ -207,28 +208,39 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
             (axis2_om_element_t *)
             AXIS2_OM_NODE_GET_DATA_ELEMENT (soap_header_node, env);
         AXIS2_OM_ELEMENT_DECLARE_NAMESPACE (soap_header_ele, env,
-                                            soap_header_node, addring_namespace);
+                                            soap_header_node, addressing_namespace);
 
         epr = AXIS2_MSG_INFO_HEADERS_GET_TO (msg_info_headers, env);
     }
     
     if (epr)
     {
-        axis2_char_t *address = AXIS2_ENDPOINT_REF_GET_ADDRESS (epr, env);
+        axis2_any_content_type_t *reference_parameters = NULL;
+        axis2_char_t *action = NULL;
+        axis2_char_t *address = NULL;
+        axis2_char_t *svc_group_context_id = NULL;
+        axis2_char_t *message_id =  NULL;
+        axis2_relates_to_t *relates_to = NULL;
+        axis2_om_node_t *relates_to_header_node = NULL;
+        axis2_om_element_t *relates_to_header_ele = NULL;
+        
+        
+        address = AXIS2_ENDPOINT_REF_GET_ADDRESS (epr, env);
         if (address && AXIS2_STRCMP (address, "") != 0)
         {
-            axis2_soap_header_block_t *to_header_block =
+            axis2_om_node_t *to_header_block_node = NULL;
+            axis2_soap_header_block_t *to_header_block = NULL;
+            
+            to_header_block  =
                 AXIS2_SOAP_HEADER_ADD_HEADER_BLOCK (soap_header, env,
                                                     AXIS2_WSA_TO,
-                                                    addring_namespace);
-            axis2_om_node_t *to_header_block_node = NULL;
+                                                    addressing_namespace);
             to_header_block_node =
                 AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE (to_header_block, env);
         }
 
 
-        axis2_any_content_type_t *reference_parameters =
-            AXIS2_ENDPOINT_REF_GET_REF_PARAMS (epr, env);
+        reference_parameters = AXIS2_ENDPOINT_REF_GET_REF_PARAMS (epr, env);
         if (reference_parameters)
         {
 
@@ -240,7 +252,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                                                   addr_ns);
         }
 
-        axis2_char_t *action = NULL;
+        
 
         action = AXIS2_MSG_INFO_HEADERS_GET_ACTION (msg_info_headers, env);
         if (action)
@@ -264,12 +276,13 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
 
         }
         /* add the service group id as a reference parameter */
-        axis2_char_t *svc_group_context_id =
-            AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID (msg_ctx, env);
+        svc_group_context_id = AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID (msg_ctx, env);
+        
         if (svc_group_context_id
             && AXIS2_STRCMP (svc_group_context_id, "") != 0)
         {
             axis2_any_content_type_t *any_content = NULL;
+            axis2_qname_t *svc_qn = NULL;
             if (!AXIS2_ENDPOINT_REF_GET_REF_PARAMS (epr, env))
             {
                 axis2_any_content_type_t *any_content_type =
@@ -278,8 +291,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                                                    any_content_type);
             }
             any_content = AXIS2_ENDPOINT_REF_GET_REF_PARAMS (epr, env);
-            axis2_qname_t *svc_qn =
-                axis2_qname_create (env, AXIS2_SVC_GRP_ID,
+            svc_qn = axis2_qname_create (env, AXIS2_SVC_GRP_ID,
                                     AXIS2_NAMESPACE_URI,
                                     AXIS2_NAMESPACE_PREFIX);
             AXIS2_ANY_CONTENT_TYPE_ADD_VALUE (any_content, env, svc_qn,
@@ -310,8 +322,8 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                                                        soap_header, addr_ns);
         }
 
-        axis2_char_t *message_id =
-            AXIS2_MSG_INFO_HEADERS_GET_MESSAGE_ID (msg_info_headers, env);
+        message_id = AXIS2_MSG_INFO_HEADERS_GET_MESSAGE_ID (msg_info_headers, env);
+        
         if (message_id)
         {
             axis2_addr_out_handler_process_string_info (env, message_id,
@@ -320,11 +332,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                                                         addr_ns);
         }
 
-
-        axis2_relates_to_t *relates_to =
-            AXIS2_MSG_INFO_HEADERS_GET_RELATES_TO (msg_info_headers, env);
-        axis2_om_node_t *relates_to_header_node = NULL;
-        axis2_om_element_t *relates_to_header_ele = NULL;
+        relates_to = AXIS2_MSG_INFO_HEADERS_GET_RELATES_TO (msg_info_headers, env);
         if (relates_to)
         {
             axis2_char_t *value = NULL;
@@ -339,8 +347,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         if (relates_to_header_node)
         {
             axis2_char_t *relationship_type = NULL;
-            relationship_type =
-                AXIS2_RELATES_TO_GET_RELATIONSHIP_TYPE (relates_to, env);
+            relationship_type = AXIS2_RELATES_TO_GET_RELATIONSHIP_TYPE (relates_to, env);
             if (AXIS2_STRCMP (relationship_type, "") != 0)
             {
                 axis2_om_attribute_t *om_attr = NULL;
@@ -420,14 +427,15 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
     axis2_any_content_type_t *reference_param = NULL;
     axis2_om_node_t *header_block_node = NULL;
     axis2_om_node_t *header_node = NULL;
-
+    axis2_om_namespace_t *addr_ns_obj = NULL;
+    
     AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK ((*env)->error, endpoint_ref, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK ((*env)->error, type, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK ((*env)->error, soap_header, AXIS2_FAILURE);
 
     header_node = AXIS2_SOAP_HEADER_GET_BASE_NODE (soap_header, env);
-    axis2_om_namespace_t *addr_ns_obj = NULL;
+    
     addr_ns_obj =
         axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
     header_block =

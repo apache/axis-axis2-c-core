@@ -25,7 +25,7 @@
 #include <axis2_msg_ctx.h>
 #include <axis2_msg_info_headers.h>
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 axis2_addr_in_handler_invoke(struct axis2_handler *handler, 
                          axis2_env_t **env,
                          struct axis2_msg_ctx *msg_ctx);
@@ -132,7 +132,7 @@ axis2_addr_in_handler_create(axis2_env_t **env,
 }
 
 
-axis2_status_t 
+axis2_status_t AXIS2_CALL
 axis2_addr_in_handler_invoke(struct axis2_handler *handler, 
                          axis2_env_t **env,
                          struct axis2_msg_ctx *msg_ctx)
@@ -441,7 +441,7 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
     axis2_qname_t *wsa_meta_qn = NULL;
     axis2_om_node_t *header_block_node = NULL;
     axis2_om_element_t *header_block_ele = NULL;
-    
+    axis2_om_child_element_iterator_t *child_ele_iter = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_header_block, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, endpoint_ref, AXIS2_FAILURE);
@@ -451,7 +451,7 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
     header_block_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(header_block_node, env);
     
     
-    axis2_om_child_element_iterator_t *child_ele_iter = AXIS2_OM_ELEMENT_GET_CHILD_ELEMENTS(header_block_ele, env, header_block_node);
+    child_ele_iter = AXIS2_OM_ELEMENT_GET_CHILD_ELEMENTS(header_block_ele, env, header_block_node);
     if(!child_ele_iter)
         return AXIS2_FAILURE;
     epr_addr_qn = axis2_qname_create(env, EPR_ADDRESS, addr_ns_str, NULL); 
@@ -461,11 +461,12 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
     {
         axis2_om_node_t *child_node = NULL;
         axis2_om_element_t *child_ele = NULL;
+        axis2_qname_t *child_qn = NULL;
         child_node = AXIS2_OM_CHILD_ELEMENT_ITERATOR_NEXT(child_ele_iter, env);
         child_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(child_node, env);
        
         
-        axis2_qname_t *child_qn = AXIS2_OM_ELEMENT_GET_QNAME(child_ele, env);
+        child_qn = AXIS2_OM_ELEMENT_GET_QNAME(child_ele, env);
         if(axis2_addr_in_check_element(env, epr_addr_qn, child_qn ))
         {
             AXIS2_ENDPOINT_REF_SET_ADDRESS(endpoint_ref, env,

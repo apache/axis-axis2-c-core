@@ -16,18 +16,18 @@
 #include <axis2_module.h>
 #include <axis2_addr_mod.h>
 
-axis2_status_t 
+axis2_status_t AXIS2_CALL
 axis2_mod_addr_shutdown(axis2_module_t *module,
                         axis2_env_t **env,
                         axis2_conf_t *axis2_system);
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_mod_addr_init(axis2_module_t *module,
                         axis2_env_t **env,
                         axis2_conf_t *axis2_system);
 
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_mod_addr_fill_handler_create_func_map(axis2_module_t *module,
                                             axis2_env_t **env);
 
@@ -50,7 +50,7 @@ axis2_mod_addr_create(axis2_env_t **env)
     return module;
 }
 
-axis2_status_t 
+axis2_status_t AXIS2_CALL
 axis2_mod_addr_init(axis2_module_t *module,
                         axis2_env_t **env,
                         axis2_conf_t *axis2_system)
@@ -59,7 +59,7 @@ axis2_mod_addr_init(axis2_module_t *module,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t 
+axis2_status_t AXIS2_CALL
 axis2_mod_addr_shutdown(axis2_module_t *module,
                         axis2_env_t **env,
                         axis2_conf_t *axis2_system)
@@ -87,7 +87,7 @@ axis2_mod_addr_shutdown(axis2_module_t *module,
     return AXIS2_SUCCESS; 
 }
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 axis2_mod_addr_fill_handler_create_func_map(axis2_module_t *module,
                                             axis2_env_t **env)
 {
@@ -113,8 +113,9 @@ axis2_mod_addr_fill_handler_create_func_map(axis2_module_t *module,
  * Following block distinguish the exposed part of the dll.
  */
 
-int axis2_get_instance(axis2_module_t **inst,
-                        axis2_env_t **env)
+AXIS2_EXPORT int 
+axis2_get_instance(axis2_module_t **inst,
+                   axis2_env_t **env)
 {
 	*inst = axis2_mod_addr_create(env);
     if(!(*inst))
@@ -125,8 +126,9 @@ int axis2_get_instance(axis2_module_t **inst,
     return AXIS2_SUCCESS;
 }
 
-int axis2_remove_instance(axis2_module_t *inst,
-                            axis2_env_t **env)
+AXIS2_EXPORT int 
+axis2_remove_instance(axis2_module_t *inst,
+                      axis2_env_t **env)
 {
     axis2_status_t status = AXIS2_FAILURE;
 	if (inst)
