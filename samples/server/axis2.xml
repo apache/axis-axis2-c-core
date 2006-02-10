@@ -136,29 +136,28 @@
         </phase>
         <!--  System pre defined phases       -->
         <!--   After Postdispatch phase module author or or service author can add any phase he want      -->
-        <phase name="userphase1"/>
-	  <phase name="RMPhase"/>
+        <!--phase name="userphase1"/-->
     </phaseOrder>
     <phaseOrder type="outflow">
         <!--      user can add his own phases to this area  -->
-	  <phase name="RMPhase"/>
-        <phase name="userphase1"/>
+	    <!--phase name="RMPhase"/-->
+        <!--phase name="userphase1"/-->
         <!--system predefined phase-->
         <!--these phase will run irrespective of the service-->
-        <phase name="PolicyDetermination"/>
-        <phase name="MessageOut"/>
+        <!--phase name="PolicyDetermination"/-->
+        <!--phase name="MessageOut"/-->
     </phaseOrder>
     <phaseOrder type="INfaultflow">
         <!--      user can add his own phases to this area  -->
-        <phase name="userphase1"/>
-	  <phase name="RMPhase"/>
+        <!--phase name="userphase1"/-->
+	    <!--phase name="RMPhase"/-->
     </phaseOrder>
     <phaseOrder type="Outfaultflow">
         <!--      user can add his own phases to this area  -->
-        <phase name="RMPhase"/>
-        <phase name="userphase1"/>
-        <phase name="PolicyDetermination"/>
-        <phase name="MessageOut"/>
+        <!--phase name="RMPhase"/-->
+        <!--phase name="userphase1"/-->
+        <!--phase name="PolicyDetermination"/-->
+        <!--phase name="MessageOut"/-->
     </phaseOrder>
 </axisconfig>
 
