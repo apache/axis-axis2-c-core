@@ -169,7 +169,7 @@ axis2_file_get_name(axis2_file_t *file,
 {
     axis2_file_impl_t *file_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(file, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     file_impl = AXIS2_INTF_TO_IMPL(file);
     
     if(!file_impl->name)
@@ -216,7 +216,7 @@ axis2_file_get_path(axis2_file_t *file,
 {
     axis2_file_impl_t *file_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(file, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     file_impl = AXIS2_INTF_TO_IMPL(file);
     
     if(!(file_impl->path))

@@ -110,7 +110,7 @@ axis2_status_t AXIS2_CALL axis2_listener_manager_make_sure_started(struct axis2_
     axis2_listener_manager_impl_t *listener_manager_impl = NULL;
     axis2_transport_listener_state_t *tl_state = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(listener_manager, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, conf_ctx, AXIS2_FAILURE);
     
     listener_manager_impl = AXIS2_INTF_TO_IMPL(listener_manager);
@@ -187,7 +187,7 @@ axis2_status_t AXIS2_CALL axis2_listener_manager_stop(struct axis2_listener_mana
     axis2_transport_listener_state_t *tl_state = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(listener_manager, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     listener_manager_impl = AXIS2_INTF_TO_IMPL(listener_manager);
     
@@ -216,7 +216,7 @@ axis2_endpoint_ref_t* AXIS2_CALL axis2_listener_manager_reply_to_epr(struct axis
     axis2_listener_manager_impl_t *listener_manager_impl = NULL;
     axis2_transport_listener_state_t *tl_state = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(listener_manager, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     listener_manager_impl = AXIS2_INTF_TO_IMPL(listener_manager);
     
@@ -234,7 +234,7 @@ axis2_status_t AXIS2_CALL axis2_listener_manager_free (struct axis2_listener_man
 {
     axis2_listener_manager_impl_t *listener_manager_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(listener_manager, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     listener_manager_impl = AXIS2_INTF_TO_IMPL(listener_manager);
     

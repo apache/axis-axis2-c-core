@@ -166,7 +166,7 @@ axis2_om_processing_instruction_free (axis2_om_processing_instruction_t *om_pi,
                                       axis2_env_t **env)
 {
         axis2_om_processing_instruction_impl_t *pi_impl = NULL;
-        AXIS2_FUNC_PARAM_CHECK(om_pi, env, AXIS2_FAILURE);
+        AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
         
         pi_impl = AXIS2_INTF_TO_IMPL(om_pi);
         
@@ -192,7 +192,7 @@ axis2_om_processing_instruction_set_value(axis2_om_processing_instruction_t *om_
                                           axis2_env_t **env,
                                           const axis2_char_t *value)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_pi, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(om_pi)->value = (axis2_char_t*)AXIS2_STRDUP(value,env);
     return AXIS2_SUCCESS;
@@ -204,7 +204,7 @@ axis2_om_processing_instruction_set_target(axis2_om_processing_instruction_t *om
                                            axis2_env_t **env,
                                            const axis2_char_t *target)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_pi, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, target, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(om_pi)->target = (axis2_char_t*)AXIS2_STRDUP(target,env);
     return AXIS2_SUCCESS;
@@ -215,14 +215,14 @@ axis2_char_t* AXIS2_CALL
 axis2_om_processing_instruction_get_value(axis2_om_processing_instruction_t *om_pi,
                                           axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_pi, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(om_pi)->value;
 }                                          
 axis2_char_t*  AXIS2_CALL
 axis2_om_processing_instruction_get_target(axis2_om_processing_instruction_t *om_pi,
                                            axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_pi, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(om_pi)->target;
 }
 
@@ -234,7 +234,7 @@ axis2_om_processing_instruction_serialize
                                  axis2_om_output_t *om_output)
 {
     axis2_om_processing_instruction_impl_t *om_pi_impl;
-    AXIS2_FUNC_PARAM_CHECK(om_pi, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
         
     om_pi_impl = AXIS2_INTF_TO_IMPL(om_pi);

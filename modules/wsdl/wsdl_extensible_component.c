@@ -155,7 +155,7 @@ axis2_wsdl_extensible_component_free (
 {
     axis2_wsdl_extensible_component_impl_t *extensible_component_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(extensible_component, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     extensible_component_impl = AXIS2_INTF_TO_IMPL(extensible_component);
     
@@ -228,7 +228,7 @@ axis2_wsdl_extensible_component_add_feature(
 {
     axis2_wsdl_extensible_component_impl_t *extensible_component_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(extensible_component, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, wsdl_feature, AXIS2_FAILURE);
     
     extensible_component_impl = AXIS2_INTF_TO_IMPL(extensible_component);
@@ -248,7 +248,7 @@ axis2_wsdl_extensible_component_get_features(
                         axis2_wsdl_extensible_component_t *extensible_component,
                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(extensible_component, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(extensible_component)->features;
 }
@@ -261,7 +261,7 @@ axis2_wsdl_extensible_component_add_property(
 {
     axis2_wsdl_extensible_component_impl_t *extensible_component_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(extensible_component, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, wsdl_property, AXIS2_FAILURE);
     
     extensible_component_impl = AXIS2_INTF_TO_IMPL(extensible_component);
@@ -281,7 +281,7 @@ axis2_wsdl_extensible_component_get_properties(
                         axis2_wsdl_extensible_component_t *extensible_component,
                         axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(extensible_component, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(extensible_component)->properties;
 }

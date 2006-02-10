@@ -180,7 +180,7 @@ axis2_status_t AXIS2_CALL
 axis2_soap_fault_role_free(axis2_soap_fault_role_t *fault_role,
                               axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(fault_role, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(fault_role->ops)
         AXIS2_FREE((*env)->allocator, fault_role->ops);
         
@@ -195,7 +195,7 @@ axis2_soap_fault_role_set_role_value
                              axis2_char_t* uri)
 {
     axis2_soap_fault_role_impl_t *fault_role_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_role, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, uri, AXIS2_FAILURE);
     fault_role_impl = AXIS2_INTF_TO_IMPL(fault_role);
     
@@ -215,7 +215,7 @@ axis2_soap_fault_role_get_role_value
                              axis2_env_t **env)
 {
     axis2_soap_fault_role_impl_t *fault_role_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_role, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     fault_role_impl = AXIS2_INTF_TO_IMPL(fault_role);
     
     if(fault_role_impl->om_ele && fault_role_impl->om_ele_node)   
@@ -234,7 +234,7 @@ axis2_soap_fault_role_set_base_node
                              axis2_om_node_t *node)
 {
    axis2_soap_fault_role_impl_t *fault_role_impl = NULL;
-   AXIS2_FUNC_PARAM_CHECK(fault_role, env, AXIS2_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
    fault_role_impl = AXIS2_INTF_TO_IMPL(fault_role);
    
@@ -254,7 +254,7 @@ axis2_soap_fault_role_get_base_node
                         (axis2_soap_fault_role_t *fault_role,
                          axis2_env_t **env)
 {
-     AXIS2_FUNC_PARAM_CHECK(fault_role, env, NULL);
+     AXIS2_ENV_CHECK(env, NULL);
      return AXIS2_INTF_TO_IMPL(fault_role)->om_ele_node;
 }
                             
@@ -263,7 +263,7 @@ axis2_soap_fault_role_get_soap_version
                         (axis2_soap_fault_role_t *fault_role,
                          axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(fault_role, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(fault_role)->soap_version;
 }
 
@@ -273,7 +273,7 @@ axis2_soap_fault_role_set_soap_version
                          axis2_env_t **env,
                          int soap_version)
 {
-    AXIS2_FUNC_PARAM_CHECK(fault_role, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_version, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(fault_role)->soap_version = soap_version;
     return AXIS2_SUCCESS;

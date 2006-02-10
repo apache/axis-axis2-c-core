@@ -342,7 +342,7 @@ axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_free(axis2_xml_writer_t *writer,
                                   axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     if(AXIS2_INTF_TO_IMPL(writer)->guththila_writer)
         guththila_xml_stream_writer_free(
             AXIS2_INTF_TO_IMPL(writer)->guththila_env,
@@ -363,7 +363,7 @@ guththila_xml_writer_wrapper_write_start_element(
                                     axis2_char_t *localname)
 {
     int status = AXIS2_SUCCESS;
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, localname, AXIS2_FAILURE);
     status = guththila_xml_stream_writer_write_start_element(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
@@ -376,7 +376,7 @@ axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_end_start_element(axis2_xml_writer_t *writer,
                                                axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     return guththila_xml_stream_writer_end_start_element(    
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
                     AXIS2_INTF_TO_IMPL(writer)->guththila_writer);
@@ -389,7 +389,7 @@ guththila_xml_writer_wrapper_write_start_element_with_namespace(
                                         axis2_char_t *localname,
                                         axis2_char_t *namespace_uri)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, localname, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error,namespace_uri, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_start_element_with_namespace(
@@ -407,7 +407,7 @@ guththila_xml_writer_wrapper_write_start_element_with_namespace_prefix(
                                         axis2_char_t *namespace_uri,
                                         axis2_char_t *prefix)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, localname,  AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, namespace_uri, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, prefix, AXIS2_FAILURE);
@@ -424,7 +424,7 @@ guththila_xml_writer_wrapper_write_empty_element(
                                         axis2_env_t **env,
                                         axis2_char_t *localname)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, localname, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_empty_element(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
@@ -440,7 +440,7 @@ guththila_xml_writer_wrapper_write_empty_element_with_namespace(
                                         axis2_char_t *localname,
                                         axis2_char_t *namespace_uri)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, localname, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, namespace_uri, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_empty_element_with_namespace(
@@ -457,7 +457,7 @@ guththila_xml_writer_wrapper_write_empty_element_with_namespace_prefix(
                                         axis2_char_t *namespace_uri,
                                         axis2_char_t *prefix)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, localname, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, namespace_uri, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, prefix, AXIS2_FAILURE);
@@ -474,7 +474,7 @@ axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_end_element(axis2_xml_writer_t *writer,
                                                axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_end_element(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
                     AXIS2_INTF_TO_IMPL(writer)->guththila_writer);
@@ -484,7 +484,7 @@ axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_end_document(axis2_xml_writer_t *writer,
                                                axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_end_document(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
                     AXIS2_INTF_TO_IMPL(writer)->guththila_writer);
@@ -497,7 +497,7 @@ guththila_xml_writer_wrapper_write_attribute(axis2_xml_writer_t *writer,
                                            axis2_char_t *localname,
                                            axis2_char_t *value)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, localname, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_attribute(
@@ -517,7 +517,7 @@ guththila_xml_writer_wrapper_write_attribute_with_namespace(
                                           axis2_char_t *value,
                                           axis2_char_t *namespace_uri)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, localname,  AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, namespace_uri, AXIS2_FAILURE);
@@ -537,7 +537,7 @@ guththila_xml_writer_wrapper_write_attribute_with_namespace_prefix(
                                           axis2_char_t *namespace_uri,
                                           axis2_char_t *prefix)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, localname, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, namespace_uri, AXIS2_FAILURE);
@@ -557,7 +557,7 @@ guththila_xml_writer_wrapper_write_namespace(axis2_xml_writer_t *writer,
                                              axis2_char_t *prefix,
                                              axis2_char_t *namespace_uri)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, namespace_uri, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, prefix , AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_namespace(
@@ -574,7 +574,7 @@ guththila_xml_writer_wrapper_write_default_namespace
                                              axis2_env_t **env,
                                              axis2_char_t *namespace_uri)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, namespace_uri, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_default_namespace(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
@@ -588,7 +588,7 @@ guththila_xml_writer_wrapper_write_comment(axis2_xml_writer_t *writer,
                                            axis2_env_t **env,
                                            axis2_char_t *value)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_comment(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
@@ -604,7 +604,7 @@ guththila_xml_writer_wrapper_write_processing_instruction(
                                            axis2_env_t **env,
                                            axis2_char_t *target)
 {   
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, target, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_processing_instruction(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
@@ -621,7 +621,7 @@ guththila_xml_writer_wrapper_write_processing_instruction_data(
                                            axis2_char_t *target,
                                            axis2_char_t *data)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, target, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, data, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_processing_instruction_data(
@@ -636,7 +636,7 @@ guththila_xml_writer_wrapper_write_cdata(axis2_xml_writer_t *writer,
                                          axis2_env_t **env,
                                          axis2_char_t *data)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, data, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_cdata(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
@@ -650,7 +650,7 @@ guththila_xml_writer_wrapper_write_dtd(axis2_xml_writer_t *writer,
                                          axis2_env_t **env,
                                          axis2_char_t *dtd)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, dtd, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_dtd(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
@@ -664,7 +664,7 @@ guththila_xml_writer_wrapper_write_entity_ref(
                                          axis2_env_t **env,
                                          axis2_char_t *name)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_entity_ref(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
@@ -678,7 +678,7 @@ guththila_xml_writer_wrapper_write_start_document(
                                          axis2_xml_writer_t *writer,
                                          axis2_env_t **env)
 {
-     AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
      return guththila_xml_stream_writer_write_start_document(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
                     AXIS2_INTF_TO_IMPL(writer)->guththila_writer);
@@ -690,7 +690,7 @@ guththila_xml_writer_wrapper_write_start_document_with_version(
                                          axis2_env_t **env,
                                          axis2_char_t *version)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, version, AXIS2_FAILURE); 
     return guththila_xml_stream_writer_write_start_document_with_version(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
@@ -705,7 +705,7 @@ guththila_xml_writer_wrapper_write_start_document_with_version_encoding(
                                          axis2_char_t *encoding,
                                          axis2_char_t *version)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, encoding, AXIS2_FAILURE); 
     AXIS2_PARAM_CHECK((*env)->error, version, AXIS2_FAILURE); 
     
@@ -722,7 +722,7 @@ guththila_xml_writer_wrapper_write_characters(
                                          axis2_env_t **env,
                                          axis2_char_t *text)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, text, AXIS2_FAILURE); 
     return guththila_xml_stream_writer_write_characters(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
@@ -735,7 +735,7 @@ guththila_xml_writer_wrapper_get_prefix(  axis2_xml_writer_t *writer,
                                          axis2_env_t **env,
                                          axis2_char_t *uri)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, NULL);
+    AXIS2_ENV_CHECK( env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, uri, NULL);
     return guththila_xml_stream_writer_get_prefix(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
@@ -751,7 +751,7 @@ guththila_xml_writer_wrapper_set_prefix( axis2_xml_writer_t *writer,
                                          axis2_char_t *prefix,
                                          axis2_char_t *uri)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, prefix, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, uri, AXIS2_FAILURE);
     return guththila_xml_stream_writer_set_prefix(
@@ -765,7 +765,7 @@ guththila_xml_writer_wrapper_set_default_prefix(
                                          axis2_env_t **env,
                                          axis2_char_t *uri)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, uri, AXIS2_FAILURE);
     return guththila_xml_stream_writer_set_default_prefix(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,
@@ -779,7 +779,7 @@ guththila_xml_writer_wrapper_write_encoded(
                                          axis2_char_t *text,
                                          int in_attr)
 {
-    AXIS2_FUNC_PARAM_CHECK(writer, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, text, AXIS2_FAILURE);
     return guththila_xml_stream_writer_write_encoded(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_env,

@@ -39,7 +39,7 @@ int printnode(axis2_om_node_t *om_node, axis2_env_t **env)
     axis2_om_namespace_t *om_ns =  NULL;
     axis2_char_t *uri = NULL;
     axis2_char_t *prefix = NULL;
-    AXIS2_FUNC_PARAM_CHECK(om_node, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(AXIS2_OM_NODE_GET_NODE_TYPE(om_node, env) == AXIS2_OM_ELEMENT)
     {
         om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);

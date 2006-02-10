@@ -245,7 +245,7 @@ axis2_soap_envelope_free(axis2_soap_envelope_t *envelope,
                        axis2_env_t **env)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(envelope, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     if(envelope_impl->header)
     {
@@ -277,7 +277,7 @@ axis2_om_node_t* AXIS2_CALL
 axis2_soap_envelope_get_base_node(axis2_soap_envelope_t *envelope,
                                 axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(envelope, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(envelope)->om_ele_node;
 }
 
@@ -287,7 +287,7 @@ axis2_soap_envelope_set_base_node(axis2_soap_envelope_t *envelope,
                                   axis2_om_node_t *node)
 {
    axis2_soap_envelope_impl_t *envelope_impl = NULL;
-   AXIS2_FUNC_PARAM_CHECK( envelope, env, AXIS2_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
    envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
    if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
@@ -303,7 +303,7 @@ int AXIS2_CALL
 axis2_soap_envelope_get_soap_version(axis2_soap_envelope_t *envelope,
                                    axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(envelope, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(envelope)->soap_version;    
 }
                                              
@@ -312,7 +312,7 @@ axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *envelope,
                                    axis2_env_t **env,
                                    int soap_version)
 {
-    AXIS2_FUNC_PARAM_CHECK(envelope, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(envelope)->soap_version = soap_version;
     return AXIS2_SUCCESS;
 }
@@ -323,7 +323,7 @@ axis2_soap_envelope_get_header(axis2_soap_envelope_t *envelope,
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     int status = AXIS2_SUCCESS;
-    AXIS2_FUNC_PARAM_CHECK(envelope, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     if(envelope_impl->header)
     {
@@ -350,7 +350,7 @@ axis2_soap_envelope_add_header(axis2_soap_envelope_t *envelope,
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     axis2_om_namespace_t *ns = NULL;
-    AXIS2_FUNC_PARAM_CHECK(envelope, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     
     /* TODO : cache SOAP header and envelope instead of looking them up?*/
@@ -369,7 +369,7 @@ axis2_soap_envelope_get_body(axis2_soap_envelope_t *envelope,
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     int status = AXIS2_SUCCESS;
-    AXIS2_FUNC_PARAM_CHECK(envelope, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     
     if(envelope_impl->body)
@@ -397,7 +397,7 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                               axis2_bool_t cache)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(envelope, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
 /*
    if soap version is soap11 we modify the soap fault part.
@@ -505,7 +505,7 @@ axis2_soap_envelope_set_body(axis2_soap_envelope_t *envelope,
                             axis2_soap_body_t *body)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(envelope, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     
     if (!(envelope_impl->body))
@@ -524,7 +524,7 @@ axis2_status_t AXIS2_CALL axis2_soap_envelope_set_header(axis2_soap_envelope_t *
     axis2_env_t **env, axis2_soap_header_t *header)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(envelope, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     
     if (!(envelope_impl->header))
@@ -544,7 +544,7 @@ axis2_soap_envelope_get_namespace(axis2_soap_envelope_t *envelope,
                                   axis2_env_t **env)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(envelope, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     
     if (envelope_impl->om_ele_node)
@@ -568,7 +568,7 @@ axis2_soap_envelope_set_builder(axis2_soap_envelope_t *envelope,
                                 axis2_soap_builder_t *soap_builder)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(envelope, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_builder, AXIS2_FAILURE);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     envelope_impl->soap_builder = soap_builder;

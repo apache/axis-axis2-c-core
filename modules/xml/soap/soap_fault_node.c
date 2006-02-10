@@ -172,7 +172,7 @@ axis2_status_t AXIS2_CALL
 axis2_soap_fault_node_free(axis2_soap_fault_node_t *fault_node,
                            axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(fault_node, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(fault_node->ops)
     {
         AXIS2_FREE((*env)->allocator, fault_node->ops);
@@ -189,7 +189,7 @@ axis2_soap_fault_node_set_value
                            axis2_char_t *uri)
 {
     axis2_soap_fault_node_impl_t *fault_node_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_node, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, uri, AXIS2_FAILURE);
     fault_node_impl = AXIS2_INTF_TO_IMPL(fault_node);
     return AXIS2_OM_ELEMENT_SET_TEXT(fault_node_impl->om_ele,
@@ -202,7 +202,7 @@ axis2_soap_fault_node_get_value
                            axis2_env_t **env)
 {
     axis2_soap_fault_node_impl_t *fault_node_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_node, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     fault_node_impl = AXIS2_INTF_TO_IMPL(fault_node);
     return AXIS2_OM_ELEMENT_GET_TEXT(fault_node_impl->om_ele,
                 env, fault_node_impl->om_ele_node);
@@ -236,7 +236,7 @@ axis2_soap_fault_node_get_base_node
                            axis2_env_t **env)
 {
     axis2_soap_fault_node_impl_t* fault_node_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_node, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     fault_node_impl = AXIS2_INTF_TO_IMPL(fault_node); 
     return fault_node_impl->om_ele_node;
 }
@@ -246,7 +246,7 @@ int AXIS2_CALL axis2_soap_fault_node_get_soap_version
                            axis2_env_t **env)
 {
     axis2_soap_fault_node_impl_t* fault_node_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_node, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     fault_node_impl = AXIS2_INTF_TO_IMPL(fault_node); 
     return fault_node_impl->soap_version;
 }
@@ -258,7 +258,7 @@ axis2_soap_fault_node_set_soap_version
                            int soap_version)
 {
     axis2_soap_fault_node_impl_t* fault_node_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_node, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_version, AXIS2_FAILURE);
     fault_node_impl = AXIS2_INTF_TO_IMPL(fault_node);
     fault_node_impl->soap_version = soap_version;

@@ -188,7 +188,7 @@ axis2_status_t AXIS2_CALL
 axis2_soap_fault_detail_free(axis2_soap_fault_detail_t *fault_detail,
                              axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(fault_detail, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(fault_detail->ops)
     {
         AXIS2_FREE((*env)->allocator, fault_detail->ops);
@@ -206,7 +206,7 @@ axis2_soap_fault_detail_add_detail_entry
                          axis2_om_node_t *node)
 {
     axis2_soap_fault_detail_impl_t *fault_detail_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_detail, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
     fault_detail_impl = AXIS2_INTF_TO_IMPL(fault_detail);
         
@@ -227,7 +227,7 @@ axis2_soap_fault_detail_get_all_detail_entries
                          axis2_env_t **env)
 {
     axis2_soap_fault_detail_impl_t *fault_detail_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_detail, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     fault_detail_impl = AXIS2_INTF_TO_IMPL(fault_detail);
     
     return AXIS2_OM_ELEMENT_GET_CHILDREN(fault_detail_impl->om_ele, env,
@@ -242,7 +242,7 @@ axis2_soap_fault_detail_set_base_node
                          axis2_om_node_t *node)
 {
    axis2_soap_fault_detail_impl_t *fault_detail_impl = NULL;
-   AXIS2_FUNC_PARAM_CHECK(fault_detail, env, AXIS2_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
    fault_detail_impl = AXIS2_INTF_TO_IMPL(fault_detail);
    
@@ -261,7 +261,7 @@ axis2_soap_fault_detail_get_base_node
                         (axis2_soap_fault_detail_t *fault_detail,
                          axis2_env_t **env)
 {
-   AXIS2_FUNC_PARAM_CHECK(fault_detail, env, NULL);
+   AXIS2_ENV_CHECK(env, NULL);
    return AXIS2_INTF_TO_IMPL(fault_detail)->om_ele_node;
 }
 
@@ -270,7 +270,7 @@ axis2_soap_fault_detail_get_soap_version
                         (axis2_soap_fault_detail_t *fault_detail,
                          axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(fault_detail, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(fault_detail)->soap_version;
 }
                             
@@ -280,7 +280,7 @@ axis2_soap_fault_detail_set_soap_version
                          axis2_env_t **env,
                          int soap_version)
 {
-     AXIS2_FUNC_PARAM_CHECK(fault_detail, env, AXIS2_FAILURE);
+     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
      AXIS2_PARAM_CHECK((*env)->error, soap_version, AXIS2_FAILURE);
      AXIS2_INTF_TO_IMPL(fault_detail)->soap_version = soap_version;
      return AXIS2_SUCCESS;

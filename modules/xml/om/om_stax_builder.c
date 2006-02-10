@@ -198,7 +198,7 @@ axis2_om_stax_builder_process_attributes (axis2_om_stax_builder_t *om_builder,
     axis2_om_stax_builder_impl_t *builder_impl = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
     
-    AXIS2_FUNC_PARAM_CHECK(om_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, element_node, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(om_builder);
     
@@ -252,7 +252,7 @@ axis2_om_stax_builder_create_om_text (axis2_om_stax_builder_t * om_stax_builder,
     axis2_om_node_t *node = NULL;
     axis2_om_stax_builder_impl_t *builder = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(om_stax_builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     builder = AXIS2_INTF_TO_IMPL(om_stax_builder);
     
     if (!builder->lastnode)
@@ -302,7 +302,7 @@ axis2_om_stax_builder_discard_current_element (axis2_om_stax_builder_t *om_stax_
     axis2_om_node_t *parent = NULL;
     axis2_om_stax_builder_impl_t *builder = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(om_stax_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     builder = AXIS2_INTF_TO_IMPL(om_stax_builder);
     
@@ -362,7 +362,7 @@ axis2_om_stax_builder_process_namespaces (axis2_om_stax_builder_t *om_stax_build
     
     axis2_om_stax_builder_impl_t *builder = NULL;
     int i=0;
-    AXIS2_FUNC_PARAM_CHECK(om_stax_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     builder = AXIS2_INTF_TO_IMPL(om_stax_builder);
     
@@ -453,7 +453,7 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
     axis2_om_stax_builder_impl_t *builder_impl = NULL;
     axis2_char_t *temp_localname = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(om_stax_builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     builder_impl = AXIS2_INTF_TO_IMPL(om_stax_builder);
     temp_localname  = AXIS2_XML_READER_GET_NAME (builder_impl->parser, env);
 
@@ -531,7 +531,7 @@ axis2_om_stax_builder_create_om_comment (axis2_om_stax_builder_t *builder,
     axis2_om_node_t *comment_node = NULL;
     axis2_om_stax_builder_impl_t *builder_impl = NULL;
     axis2_char_t *comment_value = NULL;
-    AXIS2_FUNC_PARAM_CHECK(builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     comment_value  = AXIS2_XML_READER_GET_VALUE(builder_impl->parser, env);
@@ -582,7 +582,7 @@ axis2_om_stax_builder_create_om_doctype (axis2_om_stax_builder_t * builder,
     axis2_om_node_t *doctype_node = NULL;
     axis2_char_t *doc_value = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     doc_value = AXIS2_XML_READER_GET_DTD(builder_impl->parser, env);
@@ -609,7 +609,7 @@ axis2_om_stax_builder_create_om_processing_instruction (axis2_om_stax_builder_t 
     axis2_char_t *target = NULL;
     axis2_char_t *value  = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     target = AXIS2_XML_READER_GET_PI_TARGET (builder_impl->parser, env);
@@ -657,7 +657,7 @@ axis2_om_stax_builder_end_element (axis2_om_stax_builder_t *om_stax_builder,
     axis2_om_node_t *parent = NULL;
     axis2_om_stax_builder_impl_t *builder = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(om_stax_builder, env, AXIS2_FAILURE );
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE );
     
     builder = AXIS2_INTF_TO_IMPL(om_stax_builder);
     builder->element_level--;
@@ -691,7 +691,7 @@ axis2_om_stax_builder_next (axis2_om_stax_builder_t *om_stax_builder,
     int token = 0;
     axis2_om_stax_builder_impl_t *builder_impl = NULL;
     axis2_om_node_t *node = NULL;
-    AXIS2_FUNC_PARAM_CHECK(om_stax_builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
 
     builder_impl = AXIS2_INTF_TO_IMPL(om_stax_builder);
     
@@ -785,7 +785,7 @@ AXIS2_CALL axis2_om_stax_builder_free(axis2_om_stax_builder_t *builder,
                                       axis2_env_t **env)
 {
     axis2_om_stax_builder_impl_t *builder_impl =  NULL;
-    AXIS2_FUNC_PARAM_CHECK(builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     if(builder_impl->parser)
@@ -805,7 +805,7 @@ axis2_om_document_t* AXIS2_CALL
 axis2_om_stax_builder_get_document (axis2_om_stax_builder_t *builder,
                                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(builder,env,NULL);
+    AXIS2_ENV_CHECK(env,NULL);
     return AXIS2_INTF_TO_IMPL(builder)->document;
 }
                                     
@@ -816,7 +816,7 @@ axis2_om_stax_builder_set_document(axis2_om_stax_builder_t *builder,
                                     axis2_env_t **env,
                                     axis2_om_document_t *document)
 {
-    AXIS2_FUNC_PARAM_CHECK(builder,env,AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, document , AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(builder)->document = document ;
     return AXIS2_SUCCESS;
@@ -826,7 +826,7 @@ int AXIS2_CALL
 axis2_om_stax_builder_get_current_event(axis2_om_stax_builder_t *builder,
                                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(builder, env, -1);
+    AXIS2_ENV_CHECK(env, -1);
     return AXIS2_INTF_TO_IMPL(builder)->current_event;
 } 
 
@@ -835,7 +835,7 @@ axis2_om_node_t* AXIS2_CALL
 axis2_om_stax_builder_get_lastnode(axis2_om_stax_builder_t *builder,
                                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(builder, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(builder)->lastnode;   
 }
 
@@ -844,7 +844,7 @@ axis2_om_stax_builder_is_complete(axis2_om_stax_builder_t *builder,
                                    axis2_env_t **env)
 {
     axis2_om_stax_builder_impl_t *builder_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(builder, env, AXIS2_FALSE);
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     return builder_impl->done;    
 }                                                                                                              

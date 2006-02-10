@@ -140,7 +140,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
     axis2_soap_envelope_t *soap_envelope = NULL;
     axis2_soap_header_t *soap_header = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(handler, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
     
     /*op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
@@ -219,8 +219,6 @@ axis2_addr_in_extract_svc_grp_ctx_id(axis2_env_t **env,
     axis2_om_element_t *element = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_FUNC_PARAM_CHECK(soap_header, env, AXIS2_FAILURE);
-    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, AXIS2_FAILURE);
     
     node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
     if (node && AXIS2_OM_NODE_GET_NODE_TYPE(node, env) == AXIS2_OM_ELEMENT)

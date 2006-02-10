@@ -104,7 +104,7 @@ axis2_flow_free (axis2_flow_t *flow, axis2_env_t **env)
 {
     axis2_flow_impl_t *flow_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(flow, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     flow_impl = AXIS2_INTF_TO_IMPL(flow);
     
     if(NULL != flow->ops)
@@ -146,7 +146,7 @@ axis2_flow_add_handler (axis2_flow_t *flow,
 {
     axis2_flow_impl_t *flow_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(flow, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, handler, AXIS2_FAILURE);
   
     flow_impl = AXIS2_INTF_TO_IMPL(flow);
@@ -169,7 +169,7 @@ axis2_flow_get_handler (axis2_flow_t *flow,
                         axis2_env_t **env,
                         int index)
 {
-    AXIS2_FUNC_PARAM_CHECK(flow, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_ARRAY_LIST_GET(AXIS2_INTF_TO_IMPL(flow)->list, env, index);
 }
@@ -178,7 +178,7 @@ int AXIS2_CALL
 axis2_flow_get_handler_count(axis2_flow_t *flow,
                                 axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(flow, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     return AXIS2_ARRAY_LIST_SIZE(AXIS2_INTF_TO_IMPL(flow)->list, env);
 }

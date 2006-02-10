@@ -107,7 +107,7 @@ axis2_svc_name_t* AXIS2_CALL axis2_svc_name_create(axis2_env_t **env, axis2_qnam
 axis2_qname_t* AXIS2_CALL axis2_svc_name_get_qname(struct axis2_svc_name *svc_name, 
                                                axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(svc_name, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_name)->qname;
 }
 
@@ -121,7 +121,7 @@ axis2_status_t AXIS2_CALL axis2_svc_name_set_qname(struct axis2_svc_name *svc_na
 {
     axis2_svc_name_impl_t *svc_name_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(svc_name, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     svc_name_impl = AXIS2_INTF_TO_IMPL(svc_name);
     
@@ -149,7 +149,7 @@ axis2_status_t AXIS2_CALL axis2_svc_name_set_qname(struct axis2_svc_name *svc_na
 axis2_char_t* AXIS2_CALL axis2_svc_name_get_endpoint_name(struct axis2_svc_name *svc_name, 
                                                axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(svc_name, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_name)->endpoint_name;
 }
 
@@ -163,7 +163,7 @@ axis2_status_t AXIS2_CALL axis2_svc_name_set_endpoint_name(struct axis2_svc_name
 {
     axis2_svc_name_impl_t *svc_name_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(svc_name, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     svc_name_impl = AXIS2_INTF_TO_IMPL(svc_name);
     
@@ -188,7 +188,7 @@ axis2_status_t AXIS2_CALL axis2_svc_name_free (struct axis2_svc_name *svc_name,
 {
     axis2_svc_name_impl_t *svc_name_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(svc_name, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     svc_name_impl = AXIS2_INTF_TO_IMPL(svc_name);
     

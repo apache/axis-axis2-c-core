@@ -186,7 +186,7 @@ axis2_repos_listener_free (axis2_repos_listener_t *repos_listener,
 {
     axis2_repos_listener_impl_t *listener_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(repos_listener, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     listener_impl = AXIS2_INTF_TO_IMPL(repos_listener);
    

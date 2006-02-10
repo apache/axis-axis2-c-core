@@ -798,7 +798,7 @@ axis2_svc_is_param_locked (axis2_svc_t *svc,
     axis2_svc_grp_t *parent = NULL;
     axis2_bool_t ret = AXIS2_FALSE;
     
-    AXIS2_FUNC_PARAM_CHECK(svc, env, AXIS2_FALSE);
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, param_name, AXIS2_FALSE);
     
    /*checking the locked value of parent */

@@ -120,7 +120,7 @@ axis2_http_simple_request_create
 {
     axis2_http_simple_request_impl_t *simple_request_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_FUNC_PARAM_CHECK(request_line, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     simple_request_impl = (axis2_http_simple_request_impl_t *)AXIS2_MALLOC 
                             ((*env)->allocator, sizeof(
@@ -196,7 +196,7 @@ axis2_http_simple_request_free(axis2_http_simple_request_t *simple_request,
                         axis2_env_t **env)
 {
     axis2_http_simple_request_impl_t *simple_request_impl = NULL;
-	AXIS2_FUNC_PARAM_CHECK(simple_request, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     simple_request_impl = AXIS2_INTF_TO_IMPL(simple_request);
     /*
@@ -238,7 +238,7 @@ axis2_http_simple_request_get_request_line
                         (axis2_http_simple_request_t *simple_request, 
                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(simple_request, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(simple_request)->request_line;
 }
 
@@ -249,7 +249,7 @@ axis2_http_simple_request_set_request_line
                         axis2_env_t **env, 
                         axis2_http_request_line_t *request_line)
 {
-    AXIS2_FUNC_PARAM_CHECK(simple_request, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, request_line, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(simple_request)->request_line = request_line;
     return AXIS2_SUCCESS;
@@ -266,7 +266,7 @@ axis2_http_simple_request_contains_header
     axis2_http_simple_request_impl_t *simple_request_impl = NULL;
     int count = 0;
     
-    AXIS2_FUNC_PARAM_CHECK(simple_request, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
     
     simple_request_impl = AXIS2_INTF_TO_IMPL(simple_request);
@@ -300,7 +300,7 @@ axis2_http_simple_request_get_headers
                         (axis2_http_simple_request_t *simple_request, 
                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(simple_request, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(simple_request)->header_group;
 }
 
@@ -317,7 +317,7 @@ axis2_http_simple_request_get_first_header
     axis2_http_header_t *tmp_header = NULL;
     axis2_char_t *tmp_name = NULL;
 
-    AXIS2_FUNC_PARAM_CHECK(simple_request, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, str, NULL);
     
     simple_request_impl = AXIS2_INTF_TO_IMPL(simple_request);
@@ -362,7 +362,7 @@ axis2_http_simple_request_remove_headers
     int count = 0;
     axis2_array_list_t *header_group = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(simple_request, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, str, AXIS2_FAILURE);
     
     header_group = AXIS2_INTF_TO_IMPL(simple_request)->header_group;
@@ -400,7 +400,7 @@ axis2_http_simple_request_add_header
                         axis2_env_t **env, axis2_http_header_t *header)
 {
     axis2_http_simple_request_impl_t *simple_request_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(simple_request, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, header, AXIS2_FAILURE);
     
     simple_request_impl = AXIS2_INTF_TO_IMPL(
@@ -420,7 +420,7 @@ axis2_http_simple_request_get_content_type
                         axis2_env_t **env)
 {
     axis2_http_header_t *tmp_header = NULL;
-    AXIS2_FUNC_PARAM_CHECK(simple_request, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     tmp_header = axis2_http_simple_request_get_first_header
                         (simple_request, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
     if(NULL != tmp_header)
@@ -436,7 +436,7 @@ axis2_http_simple_request_get_charset
                         axis2_env_t **env)
 {
     axis2_http_header_t *tmp_header  = NULL;
-    AXIS2_FUNC_PARAM_CHECK(simple_request, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     tmp_header = axis2_http_simple_request_get_first_header
                         (simple_request, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
     if(NULL != tmp_header)
@@ -461,7 +461,7 @@ axis2_http_simple_request_get_content_length
                         axis2_env_t **env)
 {
     axis2_http_header_t *tmp_header = NULL;
-    AXIS2_FUNC_PARAM_CHECK(simple_request, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     tmp_header = axis2_http_simple_request_get_first_header
                         (simple_request, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH);
     if(NULL != tmp_header)
@@ -476,7 +476,7 @@ axis2_stream_t* AXIS2_CALL
 axis2_http_simple_request_get_body(axis2_http_simple_request_t *simple_request, 
                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(simple_request, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(simple_request)->stream;
 }
 
@@ -493,7 +493,7 @@ axis2_http_simple_request_get_body_bytes
 	int length = 0;
 	int read_len = 0;
 	
-    AXIS2_FUNC_PARAM_CHECK(simple_request, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	
 	body = AXIS2_INTF_TO_IMPL(simple_request)->stream;
 	if(NULL == body)
@@ -538,7 +538,7 @@ axis2_http_simple_request_set_body_string
                     axis2_env_t **env, axis2_char_t *str)
 {
 	axis2_stream_t *body_stream = NULL;
-    AXIS2_FUNC_PARAM_CHECK(simple_request, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, str, AXIS2_FAILURE);
     
 	body_stream = AXIS2_INTF_TO_IMPL(simple_request)->stream;

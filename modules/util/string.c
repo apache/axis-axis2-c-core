@@ -24,7 +24,7 @@
 AXIS2_DECLARE(void*)
 axis2_strdup (const void *ptr, axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(ptr, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     if (ptr)
     {
         int len = strlen(ptr);

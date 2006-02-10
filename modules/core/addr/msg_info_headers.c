@@ -163,7 +163,7 @@ axis2_msg_info_headers_t* AXIS2_CALL axis2_msg_info_headers_create(axis2_env_t *
 axis2_endpoint_ref_t* AXIS2_CALL axis2_msg_info_headers_get_to(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(msg_info_headers)->to;
 }
 
@@ -175,7 +175,7 @@ axis2_endpoint_ref_t* AXIS2_CALL axis2_msg_info_headers_get_to(struct axis2_msg_
 axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_to(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env, axis2_endpoint_ref_t *to) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(msg_info_headers)->to = to;
     return AXIS2_SUCCESS;
 }
@@ -188,7 +188,7 @@ axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_to(struct axis2_msg_info_he
 axis2_endpoint_ref_t* AXIS2_CALL axis2_msg_info_headers_get_from(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(msg_info_headers)->from;
 }
 
@@ -200,7 +200,7 @@ axis2_endpoint_ref_t* AXIS2_CALL axis2_msg_info_headers_get_from(struct axis2_ms
 axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_from(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env, axis2_endpoint_ref_t *from) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(msg_info_headers)->from = from;
     return AXIS2_SUCCESS;
 }
@@ -213,7 +213,7 @@ axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_from(struct axis2_msg_info_
 axis2_endpoint_ref_t* AXIS2_CALL axis2_msg_info_headers_get_reply_to(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(msg_info_headers)->reply_to;
 }
 
@@ -225,7 +225,7 @@ axis2_endpoint_ref_t* AXIS2_CALL axis2_msg_info_headers_get_reply_to(struct axis
 axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_reply_to(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env, axis2_endpoint_ref_t *reply_to) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(msg_info_headers)->reply_to = reply_to;
     return AXIS2_SUCCESS;
 }
@@ -238,7 +238,7 @@ axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_reply_to(struct axis2_msg_i
 axis2_endpoint_ref_t* AXIS2_CALL axis2_msg_info_headers_get_fault_to(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(msg_info_headers)->fault_to;
 }
 
@@ -250,7 +250,7 @@ axis2_endpoint_ref_t* AXIS2_CALL axis2_msg_info_headers_get_fault_to(struct axis
 axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_fault_to(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env, axis2_endpoint_ref_t *fault_to) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(msg_info_headers)->fault_to = fault_to;
     return AXIS2_SUCCESS;
 }
@@ -263,7 +263,7 @@ axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_fault_to(struct axis2_msg_i
 axis2_char_t* AXIS2_CALL axis2_msg_info_headers_get_action(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(msg_info_headers)->action;
 }
 
@@ -275,7 +275,7 @@ axis2_char_t* AXIS2_CALL axis2_msg_info_headers_get_action(struct axis2_msg_info
 axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_action(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env, axis2_char_t *action) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(msg_info_headers)->action = action;
     return AXIS2_SUCCESS;
 }
@@ -288,7 +288,7 @@ axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_action(struct axis2_msg_inf
 axis2_char_t* AXIS2_CALL axis2_msg_info_headers_get_message_id(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(msg_info_headers)->message_id;
 }
 
@@ -302,7 +302,7 @@ axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_message_id(struct axis2_msg
 {
     axis2_msg_info_headers_impl_t *msg_info_headers_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     msg_info_headers_impl = AXIS2_INTF_TO_IMPL(msg_info_headers);
     
@@ -333,7 +333,7 @@ axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_message_id(struct axis2_msg
 axis2_relates_to_t* AXIS2_CALL axis2_msg_info_headers_get_relates_to(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(msg_info_headers)->relates_to;
 }
 
@@ -345,7 +345,7 @@ axis2_relates_to_t* AXIS2_CALL axis2_msg_info_headers_get_relates_to(struct axis
 axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_relates_to(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env, axis2_relates_to_t *relates_to) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(msg_info_headers)->relates_to = relates_to;
     return AXIS2_SUCCESS;
 }
@@ -353,7 +353,7 @@ axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_relates_to(struct axis2_msg
 axis2_array_list_t* AXIS2_CALL axis2_msg_info_headers_get_ref_params(struct axis2_msg_info_headers *msg_info_headers, 
                                                axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(msg_info_headers)->ref_params;
 }
 
@@ -362,7 +362,7 @@ axis2_status_t AXIS2_CALL axis2_msg_info_headers_add_ref_param(struct axis2_msg_
 {
     axis2_msg_info_headers_impl_t *msg_info_headers_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     msg_info_headers_impl = AXIS2_INTF_TO_IMPL(msg_info_headers);
     
@@ -386,7 +386,7 @@ axis2_status_t AXIS2_CALL axis2_msg_info_headers_free(struct axis2_msg_info_head
 {
     axis2_msg_info_headers_impl_t *msg_info_headers_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_info_headers, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     msg_info_headers_impl = AXIS2_INTF_TO_IMPL(msg_info_headers);
     

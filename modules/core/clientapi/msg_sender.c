@@ -127,7 +127,7 @@ axis2_status_t AXIS2_CALL axis2_msg_sender_free(struct axis2_msg_sender *msg_sen
 {
     axis2_msg_sender_impl_t *msg_sender_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_sender, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     msg_sender_impl = AXIS2_INTF_TO_IMPL(msg_sender);
     
@@ -161,7 +161,7 @@ axis2_msg_sender_send(axis2_msg_sender_t *msg_sender, axis2_env_t **env,
 	axis2_conf_ctx_t *sys_context = NULL;
 	axis2_engine_t *engine = NULL;
 		
-    AXIS2_FUNC_PARAM_CHECK(msg_sender, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     msg_sender_impl = AXIS2_INTF_TO_IMPL(msg_sender);
     
@@ -210,7 +210,7 @@ axis2_msg_sender_set_transport_info(axis2_msg_sender_t *msg_sender,
     axis2_qname_t *qname = NULL;
 	axis2_svc_ctx_t *svc_ctx = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_sender, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     msg_sender_impl = AXIS2_INTF_TO_IMPL(msg_sender);
     
 	svc_ctx = AXIS2_MEP_CLIENT_GET_SVC_CTX(msg_sender_impl->base, env);
@@ -250,7 +250,7 @@ axis2_msg_sender_send_with_om(struct axis2_msg_sender *msg_sender,
     axis2_soap_envelope_t *soap_envelope = NULL;
 	axis2_status_t status = AXIS2_FAILURE;
 	
-    AXIS2_FUNC_PARAM_CHECK(msg_sender, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, op_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, om_node_to_send, AXIS2_FAILURE);
 	
@@ -281,7 +281,7 @@ axis2_msg_sender_send_with_soap(axis2_msg_sender_t *msg_sender,
 	axis2_svc_ctx_t *svc_ctx = NULL;
 	axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_sender, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, op_name, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, envelope, AXIS2_FAILURE);
     
@@ -331,6 +331,6 @@ axis2_msg_info_headers_t* AXIS2_CALL
 axis2_msg_sender_get_msg_info_headers(axis2_msg_sender_t *msg_sender, 
 						axis2_env_t **env)
 {
-	AXIS2_FUNC_PARAM_CHECK(msg_sender, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	return AXIS2_INTF_TO_IMPL(msg_sender)->msg_info_headers;
 }

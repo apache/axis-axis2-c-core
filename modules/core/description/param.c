@@ -144,7 +144,7 @@ axis2_char_t* AXIS2_CALL
 axis2_param_get_name(axis2_param_t *param, 
 							axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(param, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(param)->name;
 }
@@ -153,7 +153,7 @@ void* AXIS2_CALL
 axis2_param_get_value(axis2_param_t *param, 
 							axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(param, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(param)->value;
 }
@@ -163,7 +163,7 @@ axis2_param_set_name(axis2_param_t *param,
 							axis2_env_t **env, 
 							axis2_char_t *name)
 {
-    AXIS2_FUNC_PARAM_CHECK(param, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     AXIS2_INTF_TO_IMPL(param)->name = name; /* shallow copy */
     return AXIS2_SUCCESS;
@@ -174,7 +174,7 @@ axis2_param_set_value(axis2_param_t *param,
 							axis2_env_t **env, 
 							void *value)
 {
-    AXIS2_FUNC_PARAM_CHECK(param, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     AXIS2_INTF_TO_IMPL(param)->value = value; /* shallow copy */
     return AXIS2_SUCCESS;
@@ -184,7 +184,7 @@ axis2_bool_t AXIS2_CALL
 axis2_param_is_locked(axis2_param_t *param, 
 							axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(param, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(param)->locked;
 }
 
@@ -193,7 +193,7 @@ axis2_param_set_locked(axis2_param_t *param,
 							axis2_env_t **env, 
 							axis2_bool_t value)
 {
-    AXIS2_FUNC_PARAM_CHECK(param, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     AXIS2_INTF_TO_IMPL(param)->locked = value;
     return AXIS2_SUCCESS;
@@ -203,7 +203,7 @@ int AXIS2_CALL
 axis2_param_get_param_type(axis2_param_t *param, 
 									axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(param, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     return AXIS2_INTF_TO_IMPL(param)->type;
 }
@@ -213,7 +213,7 @@ axis2_param_set_param_type(axis2_param_t *param,
 									axis2_env_t **env, 
 									int type)
 {
-    AXIS2_FUNC_PARAM_CHECK(param, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     AXIS2_INTF_TO_IMPL(param)->type = type;
     return AXIS2_SUCCESS;
@@ -225,7 +225,7 @@ axis2_param_set_param_element(axis2_param_t *param,
 										axis2_env_t **env, 
 										axis2_om_node_t *element)
 {
-    AXIS2_FUNC_PARAM_CHECK(param, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     AXIS2_INTF_TO_IMPL(param)->param_element = element; /* shallow copy */
     return AXIS2_SUCCESS;
@@ -236,7 +236,7 @@ axis2_om_node_t* AXIS2_CALL
 axis2_param_get_param_element(axis2_param_t *param, 
 										axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(param, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     return AXIS2_INTF_TO_IMPL(param)->param_element;
 }
@@ -247,7 +247,7 @@ axis2_param_free(axis2_param_t *param,
 {
     void *param_value = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(param, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     param_value = AXIS2_PARAM_GET_VALUE(param, env);
     if(param_value)

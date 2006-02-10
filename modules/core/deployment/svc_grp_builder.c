@@ -253,7 +253,7 @@ axis2_svc_grp_builder_process_module_refs(axis2_svc_grp_builder_t *grp_builder,
 {
     axis2_svc_grp_builder_impl_t *grp_builder_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(grp_builder, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_refs, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
     grp_builder_impl = AXIS2_INTF_TO_IMPL(grp_builder);

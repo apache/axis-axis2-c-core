@@ -75,7 +75,7 @@ axis2_soap_envelope_t* AXIS2_CALL axis2_async_result_get_envelope(struct axis2_a
 {
     axis2_async_result_impl_t *async_result_impl = NULL;
         
-    AXIS2_FUNC_PARAM_CHECK(async_result, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     async_result_impl = AXIS2_INTF_TO_IMPL(async_result);
     
@@ -89,7 +89,7 @@ axis2_soap_envelope_t* AXIS2_CALL axis2_async_result_get_envelope(struct axis2_a
 
 axis2_msg_ctx_t* AXIS2_CALL axis2_async_result_get_result(struct axis2_async_result *async_result, axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(async_result, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(async_result)->result;
 }
 
@@ -98,7 +98,7 @@ axis2_status_t AXIS2_CALL axis2_async_result_free (struct axis2_async_result *as
 {
     axis2_async_result_impl_t *async_result_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(async_result, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     async_result_impl = AXIS2_INTF_TO_IMPL(async_result);
     

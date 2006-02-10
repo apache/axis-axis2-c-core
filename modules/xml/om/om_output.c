@@ -116,7 +116,7 @@ AXIS2_DECLARE(axis2_om_output_t *)
 axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
 {
     axis2_om_output_impl_t *om_output_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(xml_writer, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     om_output_impl = (axis2_om_output_impl_t *) AXIS2_MALLOC (
                         (*env)->allocator,
@@ -195,7 +195,7 @@ axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
                       axis2_env_t **env)
 {
     axis2_om_output_impl_t *om_output_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     om_output_impl = AXIS2_INTF_TO_IMPL(om_output);
     if(om_output_impl->xml_version)
     {
@@ -226,7 +226,7 @@ axis2_bool_t AXIS2_CALL
 axis2_om_output_is_soap11(axis2_om_output_t *om_output,
                           axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(om_output)->is_soap11;
 } 
                                                                                     
@@ -235,7 +235,7 @@ axis2_om_output_is_ignore_xml_declaration
                             (axis2_om_output_t *om_output,
                              axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(om_output)->ignore_xml_declaration;
 
 }                               
@@ -246,7 +246,7 @@ axis2_om_output_set_ignore_xml_declaration
                             axis2_env_t **env,
                             axis2_bool_t ignore_xml_dec)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, ignore_xml_dec, AXIS2_FAILURE); 
     AXIS2_INTF_TO_IMPL(om_output)->ignore_xml_declaration = ignore_xml_dec;
     return AXIS2_SUCCESS;
@@ -257,7 +257,7 @@ axis2_om_output_set_soap11(axis2_om_output_t *om_output,
                            axis2_env_t **env,
                            axis2_bool_t soap11)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap11, AXIS2_FAILURE); 
     AXIS2_INTF_TO_IMPL(om_output)->is_soap11 = soap11;
     return AXIS2_SUCCESS;
@@ -268,7 +268,7 @@ axis2_om_output_set_xml_version(axis2_om_output_t *om_output,
                                 axis2_env_t **env,
                                 axis2_char_t *xml_version)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, xml_version, AXIS2_FAILURE); 
     if(AXIS2_INTF_TO_IMPL(om_output)->xml_version)
         AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(om_output)->xml_version);
@@ -280,7 +280,7 @@ axis2_char_t* AXIS2_CALL
 axis2_om_output_get_xml_version(axis2_om_output_t *om_output,
                                 axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(om_output)->xml_version;
 }  
                             
@@ -291,7 +291,7 @@ axis2_om_output_set_char_set_encoding
                             axis2_char_t *char_set_encoding)
 {
 
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, char_set_encoding, AXIS2_FAILURE); 
     AXIS2_INTF_TO_IMPL(om_output)->char_set_encoding = char_set_encoding;
     if(AXIS2_INTF_TO_IMPL(om_output)->xml_version)
@@ -304,7 +304,7 @@ axis2_om_output_get_char_set_encoding
                             (axis2_om_output_t *om_output,
                             axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(om_output)->char_set_encoding;
 } 
                             
@@ -314,7 +314,7 @@ axis2_om_output_set_do_optimize
                             axis2_env_t **env,
                             axis2_bool_t optimize)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, optimize, AXIS2_FAILURE); 
     AXIS2_INTF_TO_IMPL(om_output)->do_optimize = optimize;
     return AXIS2_SUCCESS;    
@@ -325,7 +325,7 @@ axis2_om_output_get_xml_writer
                             (axis2_om_output_t *om_output,
                             axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(om_output)->xml_writer;
 
 }                                                                                                                                                                             
@@ -345,7 +345,7 @@ axis2_om_output_write (axis2_om_output_t * om_output,
     int i = 0;
     va_list ap;
     
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     om_output_impl = AXIS2_INTF_TO_IMPL(om_output);
 
     va_start (ap, no_of_args);
@@ -482,7 +482,7 @@ axis2_om_output_write_xml_version_encoding(axis2_om_output_t *om_output,
                                            axis2_env_t **env)
 {
     axis2_om_output_impl_t *output_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     output_impl = AXIS2_INTF_TO_IMPL(om_output);
     AXIS2_XML_WRITER_WRITE_START_DOCUMENT_WITH_VERSION_ENCODING(
                                 output_impl->xml_writer, 

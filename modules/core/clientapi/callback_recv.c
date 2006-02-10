@@ -102,7 +102,7 @@ axis2_callback_recv_t* AXIS2_CALL axis2_callback_recv_create(axis2_env_t **env)
 axis2_msg_recv_t* AXIS2_CALL axis2_callback_recv_get_base(struct axis2_callback_recv *callback_recv, 
                                             axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(callback_recv, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(callback_recv)->base;
 }
 
@@ -111,7 +111,7 @@ axis2_status_t AXIS2_CALL axis2_callback_recv_free (struct axis2_callback_recv *
 {
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(callback_recv, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     callback_recv_impl = AXIS2_INTF_TO_IMPL(callback_recv);
     
@@ -147,7 +147,7 @@ axis2_status_t AXIS2_CALL axis2_callback_recv_add_callback(struct axis2_callback
 {
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(callback_recv, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     callback_recv_impl = AXIS2_INTF_TO_IMPL(callback_recv);
     
@@ -168,8 +168,7 @@ axis2_status_t AXIS2_CALL axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv
     axis2_relates_to_t *relates_to = NULL;
     axis2_msg_info_headers_t *msg_info_headers = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_recv, env, AXIS2_FAILURE);
-    AXIS2_FUNC_PARAM_CHECK(callback_recv_param, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     callback_recv = (axis2_callback_recv_t*)callback_recv_param;
     callback_recv_impl = AXIS2_INTF_TO_IMPL(callback_recv);

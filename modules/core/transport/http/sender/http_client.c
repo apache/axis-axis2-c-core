@@ -122,7 +122,7 @@ axis2_status_t AXIS2_CALL
 axis2_http_client_free (axis2_http_client_t *client, axis2_env_t **env)
 {
     axis2_http_client_impl_t *http_client_impl = NULL;
-	AXIS2_FUNC_PARAM_CHECK(client, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     http_client_impl = AXIS2_INTF_TO_IMPL(client);
     
     if(NULL != http_client_impl->url)
@@ -168,7 +168,7 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
 	axis2_status_t status = AXIS2_FAILURE;
 	axis2_bool_t chunking_enabled = AXIS2_FALSE;
 	
-	AXIS2_FUNC_PARAM_CHECK(client, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     client_impl = AXIS2_INTF_TO_IMPL(client);
 	
 	if(NULL == client_impl->url)
@@ -324,7 +324,7 @@ axis2_http_client_recieve_header(axis2_http_client_t *client, axis2_env_t **env)
 	axis2_bool_t end_of_line = AXIS2_FALSE;
 	axis2_bool_t end_of_headers = AXIS2_FALSE;
 	
-    AXIS2_FUNC_PARAM_CHECK(client, env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	
 	client_impl = AXIS2_INTF_TO_IMPL(client);
 	if(-1 == client_impl->sockfd || NULL == client_impl->data_stream || 
@@ -414,7 +414,7 @@ axis2_http_client_recieve_header(axis2_http_client_t *client, axis2_env_t **env)
 axis2_http_simple_response_t* AXIS2_CALL 
 axis2_http_client_get_response (axis2_http_client_t *client, axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(client, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(client)->response;
 }
 
@@ -422,7 +422,7 @@ axis2_status_t AXIS2_CALL
 axis2_http_client_set_url (axis2_http_client_t *client, 
 						axis2_env_t **env, axis2_url_t *url)
 {
-    AXIS2_FUNC_PARAM_CHECK(client, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, url, AXIS2_FAILURE);
 	if(NULL != AXIS2_INTF_TO_IMPL(client)->url)
 	{
@@ -436,7 +436,7 @@ axis2_http_client_set_url (axis2_http_client_t *client,
 axis2_url_t* AXIS2_CALL 
 axis2_http_client_get_url (axis2_http_client_t *client, axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(client, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(client)->url;
 }
 
@@ -444,7 +444,7 @@ axis2_status_t AXIS2_CALL
 axis2_http_client_set_timeout (axis2_http_client_t *client, axis2_env_t **env, 
 						int timeout_ms)
 {
-    AXIS2_FUNC_PARAM_CHECK(client, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(client)->timeout = timeout_ms;
 	return AXIS2_SUCCESS;
 }
@@ -452,6 +452,6 @@ axis2_http_client_set_timeout (axis2_http_client_t *client, axis2_env_t **env,
 int AXIS2_CALL 
 axis2_http_client_get_timeout (axis2_http_client_t *client, axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(client, env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(client)->timeout;
 }

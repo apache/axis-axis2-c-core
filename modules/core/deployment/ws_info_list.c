@@ -166,7 +166,7 @@ axis2_ws_info_list_free (axis2_ws_info_list_t *ws_info_list,
 {
     axis2_ws_info_list_impl_t *info_list_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(ws_info_list, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     info_list_impl = AXIS2_INTF_TO_IMPL(ws_info_list);
     

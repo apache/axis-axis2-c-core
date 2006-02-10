@@ -147,7 +147,7 @@ axis2_hash_t* AXIS2_CALL
 axis2_any_content_type_get_value_map(axis2_any_content_type_t *any_content_type, 
                                      axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(any_content_type, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(any_content_type)->value_map;
 }
 
@@ -157,7 +157,7 @@ axis2_any_content_type_free (axis2_any_content_type_t *any_content_type,
 {
     axis2_any_content_type_impl_t *any_content_type_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(any_content_type, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     any_content_type_impl = AXIS2_INTF_TO_IMPL(any_content_type);
     

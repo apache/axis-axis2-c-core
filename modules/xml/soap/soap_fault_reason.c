@@ -190,7 +190,7 @@ axis2_soap_fault_reason_free(axis2_soap_fault_reason_t *fault_reason,
                                   axis2_env_t **env)
 {
     axis2_soap_fault_reason_impl_t *fault_reason_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_reason, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     fault_reason_impl = AXIS2_INTF_TO_IMPL(fault_reason);
     
     if(fault_reason_impl->text)
@@ -215,7 +215,7 @@ axis2_soap_fault_reason_set_soap_text
                                  axis2_soap_fault_text_t *soap_text)
 {
     axis2_soap_fault_reason_impl_t *fault_reason_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_reason, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_text, AXIS2_FAILURE);
     fault_reason_impl = AXIS2_INTF_TO_IMPL(fault_reason);
     /*
@@ -246,7 +246,7 @@ axis2_soap_fault_reason_get_soap_text
 {
     axis2_soap_fault_reason_impl_t *fault_reason_impl = NULL;
     int status = AXIS2_SUCCESS;
-    AXIS2_FUNC_PARAM_CHECK(fault_reason, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, fault_reason, NULL);
     fault_reason_impl = AXIS2_INTF_TO_IMPL(fault_reason);
     
@@ -289,7 +289,7 @@ axis2_soap_fault_reason_set_base_node
                                  axis2_om_node_t *node)
 {
    axis2_soap_fault_reason_impl_t *fault_reason_impl = NULL;
-   AXIS2_FUNC_PARAM_CHECK(fault_reason, env, AXIS2_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
    fault_reason_impl = AXIS2_INTF_TO_IMPL(fault_reason);
    if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
@@ -306,7 +306,7 @@ axis2_soap_fault_reason_get_base_node
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env)
 {
-     AXIS2_FUNC_PARAM_CHECK(fault_reason, env, NULL);
+     AXIS2_ENV_CHECK(env, NULL);
      return AXIS2_INTF_TO_IMPL(fault_reason)->om_ele_node;
 
 
@@ -318,7 +318,7 @@ axis2_soap_fault_reason_get_soap_version
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(fault_reason, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(fault_reason)->soap_version;
 }
                             
@@ -328,7 +328,7 @@ axis2_soap_fault_reason_set_soap_version
                                  axis2_env_t **env,
                                  int soap_version)
 {
-    AXIS2_FUNC_PARAM_CHECK(fault_reason, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_version, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(fault_reason)->soap_version = soap_version;
     return AXIS2_SUCCESS;

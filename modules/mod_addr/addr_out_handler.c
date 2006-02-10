@@ -125,7 +125,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
     axis2_msg_info_headers_t *msg_info_headers = NULL;
     axis2_ctx_t *ctx = NULL;
 
-    AXIS2_FUNC_PARAM_CHECK (handler, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK ((*env)->error, msg_ctx, AXIS2_FAILURE);
 
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS (msg_ctx, env);

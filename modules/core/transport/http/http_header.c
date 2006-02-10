@@ -57,8 +57,8 @@ axis2_http_header_create (axis2_env_t **env, axis2_char_t *name,
 {
     axis2_http_header_impl_t *http_header_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_FUNC_PARAM_CHECK(name, env, NULL);
-    AXIS2_FUNC_PARAM_CHECK(value, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
         
     http_header_impl =  (axis2_http_header_impl_t *)AXIS2_MALLOC 
                         ((*env)->allocator, sizeof(
@@ -99,7 +99,7 @@ axis2_http_header_create_by_str (axis2_env_t **env, axis2_char_t *str)
 	axis2_char_t *ch2 = NULL;
 	axis2_http_header_t *ret = NULL;
 	AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_FUNC_PARAM_CHECK(str, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
 	
 	tmp_str = AXIS2_STRDUP(str, env);
 	if(NULL == tmp_str)
@@ -136,7 +136,7 @@ axis2_status_t AXIS2_CALL
 axis2_http_header_free (axis2_http_header_t *header, axis2_env_t **env)
 {
     axis2_http_header_impl_t *http_header_impl = NULL;
-	AXIS2_FUNC_PARAM_CHECK(header, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     http_header_impl = AXIS2_INTF_TO_IMPL(header);
     
     if(NULL != http_header_impl->name)
@@ -164,7 +164,7 @@ axis2_http_header_to_external_form (axis2_http_header_t *header,
     axis2_http_header_impl_t *http_header_impl = NULL;
     axis2_ssize_t len = 0;
     axis2_char_t *external_form = NULL;
-    AXIS2_FUNC_PARAM_CHECK(header, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     http_header_impl = AXIS2_INTF_TO_IMPL(header);
     len = AXIS2_STRLEN(http_header_impl->name) + 
                 AXIS2_STRLEN(http_header_impl->value) + 4;
@@ -179,7 +179,7 @@ axis2_http_header_to_external_form (axis2_http_header_t *header,
 axis2_char_t* AXIS2_CALL 
 axis2_http_header_get_name (axis2_http_header_t *header, axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(header, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(header)->name;
 }
 
@@ -187,6 +187,6 @@ axis2_http_header_get_name (axis2_http_header_t *header, axis2_env_t **env)
 axis2_char_t* AXIS2_CALL 
 axis2_http_header_get_value (axis2_http_header_t *header, axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(header, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(header)->value;
 }

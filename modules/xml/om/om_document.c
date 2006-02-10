@@ -169,7 +169,7 @@ axis2_om_document_free (axis2_om_document_t *om_document,
 {
     axis2_om_document_impl_t *document = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(om_document, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     document = AXIS2_INTF_TO_IMPL(om_document);
     
     if (document->char_set_encoding)
@@ -194,7 +194,7 @@ axis2_om_document_add_child (axis2_om_document_t *document,
                              axis2_om_node_t * child)
 {
     axis2_om_document_impl_t *document_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(document, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error,child, AXIS2_FAILURE);
 
     document_impl = AXIS2_INTF_TO_IMPL(document);
@@ -220,7 +220,7 @@ axis2_om_document_build_next (axis2_om_document_t *om_document,
     axis2_om_document_impl_t *document = NULL;
     axis2_om_node_t  *last_child = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(om_document, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
   
     document = AXIS2_INTF_TO_IMPL(om_document);
     
@@ -250,7 +250,7 @@ axis2_om_document_get_root_element (axis2_om_document_t * document,
 {
     axis2_om_node_t *node = NULL;
     axis2_om_document_impl_t *doc_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(document, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     doc_impl = AXIS2_INTF_TO_IMPL(document);
     
     if (doc_impl->root_element)
@@ -283,7 +283,7 @@ axis2_om_document_set_root_element(axis2_om_document_t *document,
     int status = AXIS2_SUCCESS;
     axis2_om_document_impl_t *document_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(document, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
     
     document_impl = AXIS2_INTF_TO_IMPL(document);
@@ -309,7 +309,7 @@ axis2_om_node_t* AXIS2_CALL
 axis2_om_document_build_all(struct axis2_om_document *document,
                             axis2_env_t **env)
 {   
-    AXIS2_FUNC_PARAM_CHECK(document,env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     do{ 
         AXIS2_OM_DOCUMENT_BUILD_NEXT(document,env);
     }while(!AXIS2_OM_NODE_GET_BUILD_STATUS(AXIS2_INTF_TO_IMPL(document)->root_element,env));
@@ -320,7 +320,7 @@ axis2_om_stax_builder_t* AXIS2_CALL
 axis2_om_document_get_builder(axis2_om_document_t *document,
                               axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(document, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(document)->builder;
 }
 
@@ -330,7 +330,7 @@ axis2_om_document_serialize(axis2_om_document_t *document,
                             axis2_om_output_t *om_output)
 {
     axis2_om_document_impl_t *document_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(document, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     document_impl = AXIS2_INTF_TO_IMPL(document);
     if(!(document_impl->root_element))
     {

@@ -189,7 +189,7 @@ axis2_qname_free ( axis2_qname_t * qname,
                    axis2_env_t **env)
 {   
     axis2_qname_impl_t *qname_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(qname, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     qname_impl = AXIS2_INTF_TO_IMPL(qname);
     
     if (qname_impl->localpart)
@@ -232,7 +232,7 @@ axis2_qname_equals (axis2_qname_t *qname,
     int uris_differ = 0;
     int localparts_differ = 0;
 
-    AXIS2_FUNC_PARAM_CHECK(qname ,env, AXIS2_FALSE);
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     
     if (!qname1)
     {
@@ -274,7 +274,7 @@ axis2_qname_clone(axis2_qname_t *qname,
                   axis2_env_t **env)
 {
     axis2_qname_impl_t *qname_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(qname, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     qname_impl = AXIS2_INTF_TO_IMPL(qname);
     return axis2_qname_create(env, qname_impl->localpart,
                               qname_impl->namespace_uri,
@@ -287,7 +287,7 @@ axis2_char_t* AXIS2_CALL
 axis2_qname_get_uri(axis2_qname_t *qname,
                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(qname, env,NULL);
+    AXIS2_ENV_CHECK(env,NULL);
     return AXIS2_INTF_TO_IMPL(qname)->namespace_uri;
 }                    
                                         
@@ -295,7 +295,7 @@ axis2_char_t* AXIS2_CALL
 axis2_qname_get_prefix(axis2_qname_t *qname,
                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(qname, env,NULL);
+    AXIS2_ENV_CHECK(env,NULL);
     return AXIS2_INTF_TO_IMPL(qname)->prefix;
 }
 
@@ -304,7 +304,7 @@ axis2_char_t* AXIS2_CALL
 axis2_qname_get_localpart(axis2_qname_t *qname,
                           axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(qname, env,NULL);
+    AXIS2_ENV_CHECK(env,NULL);
     return AXIS2_INTF_TO_IMPL(qname)->localpart;
 } 
 
@@ -313,7 +313,7 @@ axis2_qname_to_string(axis2_qname_t *qname,
                       axis2_env_t **env)
 {
     axis2_qname_impl_t *qname_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(qname, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     qname_impl = AXIS2_INTF_TO_IMPL(qname);
     if(qname_impl->qname_string)
     {

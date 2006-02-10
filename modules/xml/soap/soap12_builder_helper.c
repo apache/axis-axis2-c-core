@@ -137,7 +137,7 @@ axis2_soap12_builder_helper_free(axis2_soap12_builder_helper_t *builder_helper,
                                  axis2_env_t **env)
 {
     axis2_soap12_builder_helper_impl_t *builder_helper_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(builder_helper, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     builder_helper_impl = AXIS2_INTF_TO_IMPL(builder_helper);
 
     if(builder_helper_impl->detail_element_names)
@@ -169,7 +169,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
     axis2_soap_fault_t *soap_fault = NULL;
     axis2_soap_envelope_t *soap_envelope = NULL;    
     
-    AXIS2_FUNC_PARAM_CHECK(builder_helper, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, om_ele_node, AXIS2_FAILURE);
 
     builder_helper_impl = AXIS2_INTF_TO_IMPL(builder_helper);

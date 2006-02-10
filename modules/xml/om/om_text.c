@@ -137,7 +137,7 @@ axis2_status_t AXIS2_CALL
 axis2_om_text_free (axis2_om_text_t * om_text,
                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_text, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (AXIS2_INTF_TO_IMPL(om_text)->value)
         AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_text)->value);
@@ -157,7 +157,7 @@ axis2_om_text_serialize (axis2_om_text_t *om_text,
                          axis2_om_output_t * om_output)
 {
     int status = AXIS2_SUCCESS;
-    AXIS2_FUNC_PARAM_CHECK(om_text, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
     
     if (AXIS2_INTF_TO_IMPL(om_text)->value)
@@ -171,7 +171,7 @@ axis2_char_t* AXIS2_CALL
 axis2_om_text_get_value(axis2_om_text_t *om_text,
                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_text, env,NULL);
+    AXIS2_ENV_CHECK(env,NULL);
     return AXIS2_INTF_TO_IMPL(om_text)->value;
 }                        
 
@@ -180,7 +180,7 @@ axis2_om_text_set_value(axis2_om_text_t *om_text,
                         axis2_env_t **env,
                         const axis2_char_t *value)
 {
-    AXIS2_FUNC_PARAM_CHECK(om_text, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error , om_text, AXIS2_FAILURE);
     if(AXIS2_INTF_TO_IMPL(om_text)->value)
         AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(om_text)->value);

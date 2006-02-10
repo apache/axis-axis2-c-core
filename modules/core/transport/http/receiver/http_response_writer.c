@@ -90,7 +90,7 @@ axis2_http_response_writer_free(axis2_http_response_writer_t *response_writer,
 axis2_http_response_writer_t* AXIS2_CALL
 axis2_http_response_writer_create (axis2_env_t **env, axis2_stream_t *stream)
 {
-    AXIS2_FUNC_PARAM_CHECK(stream, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return axis2_http_response_writer_create_with_encoding(env, stream, 
                 AXIS2_HTTP_DEFAULT_CONTENT_CHARSET);
     
@@ -101,7 +101,7 @@ axis2_http_response_writer_create_with_encoding(axis2_env_t **env,
                     axis2_stream_t *stream, const axis2_char_t *encoding)
 {
     axis2_http_response_writer_impl_t *response_writer_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(stream, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, encoding, NULL);
     
     response_writer_impl = (axis2_http_response_writer_impl_t *)AXIS2_MALLOC 

@@ -91,7 +91,7 @@ axis2_callback_t* AXIS2_CALL axis2_callback_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL axis2_callback_invoke_on_complete(struct axis2_callback *callback, axis2_env_t **env, axis2_async_result_t *result)
 {
-    AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return axis2_callback_set_envelope(callback, env, AXIS2_ASYNC_RESULT_GET_ENVELOPE(result, env));
 }
 
@@ -102,13 +102,13 @@ axis2_status_t AXIS2_CALL axis2_callback_report_error(struct axis2_callback *cal
 
 axis2_bool_t AXIS2_CALL axis2_callback_get_complete(struct axis2_callback *callback, axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(callback)->complete;
 }
 
 axis2_status_t AXIS2_CALL axis2_callback_set_complete(struct axis2_callback *callback, axis2_env_t **env, axis2_bool_t complete) 
 {
-    AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(callback)->complete = complete;
     return AXIS2_SUCCESS;
 }
@@ -116,14 +116,14 @@ axis2_status_t AXIS2_CALL axis2_callback_set_complete(struct axis2_callback *cal
 axis2_soap_envelope_t* AXIS2_CALL axis2_callback_get_envelope(struct axis2_callback *callback, 
         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(callback)->envelope;
 }
 
 axis2_status_t AXIS2_CALL axis2_callback_set_envelope(struct axis2_callback *callback, 
         axis2_env_t **env, axis2_soap_envelope_t *envelope)
 {
-    AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(callback)->envelope = envelope;
     return AXIS2_SUCCESS;
 }
@@ -131,14 +131,14 @@ axis2_status_t AXIS2_CALL axis2_callback_set_envelope(struct axis2_callback *cal
 int AXIS2_CALL axis2_callback_get_error(struct axis2_callback *callback, 
         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(callback)->error;
 }
 axis2_status_t AXIS2_CALL axis2_callback_set_error(struct axis2_callback *callback, 
         axis2_env_t **env, 
         int error)
 {
-    AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(callback)->error = error;
     return AXIS2_SUCCESS;
 }
@@ -148,7 +148,7 @@ axis2_status_t AXIS2_CALL axis2_callback_free (struct axis2_callback *callback,
 {
     axis2_callback_impl_t *callback_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(callback, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     callback_impl = AXIS2_INTF_TO_IMPL(callback);
     

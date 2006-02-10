@@ -506,7 +506,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
     axis2_soap_envelope_t *response_envelope = NULL;
     axis2_char_t *soap_ns_uri = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(msg_ctx, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
 
     conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);

@@ -207,7 +207,7 @@ axis2_soap_fault_code_free(axis2_soap_fault_code_t *fault_code,
                            axis2_env_t **env)
 {
     axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_code, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
     if(fault_code_impl->subcode)
     {
@@ -236,7 +236,7 @@ axis2_soap_fault_code_set_value(axis2_soap_fault_code_t *fault_code,
 {
     axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(fault_code, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, fault_val, AXIS2_FAILURE);
     
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
@@ -270,7 +270,7 @@ axis2_soap_fault_code_set_sub_code(axis2_soap_fault_code_t *fault_code,
                                   axis2_soap_fault_sub_code_t *fault_subcode)
 {
     axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_code, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, fault_subcode, AXIS2_FAILURE);
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
    /* 
@@ -303,7 +303,7 @@ axis2_soap_fault_code_get_sub_code(axis2_soap_fault_code_t *fault_code,
 {
     axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
     int status = AXIS2_SUCCESS;
-    AXIS2_FUNC_PARAM_CHECK(fault_code, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
     
     if(fault_code_impl->subcode)
@@ -348,7 +348,7 @@ axis2_soap_fault_code_get_value(axis2_soap_fault_code_t *fault_code,
     axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
     
     int status = AXIS2_SUCCESS;
-    AXIS2_FUNC_PARAM_CHECK(fault_code, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
     
     if(fault_code_impl->value)
@@ -393,7 +393,7 @@ axis2_soap_fault_code_set_base_node(axis2_soap_fault_code_t *fault_code,
                                     axis2_om_node_t *node)
 {
    axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
-   AXIS2_FUNC_PARAM_CHECK(fault_code, env, AXIS2_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
    fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
    
@@ -411,7 +411,7 @@ axis2_om_node_t* AXIS2_CALL
 axis2_soap_fault_code_get_base_node(axis2_soap_fault_code_t *fault_code,
                                     axis2_env_t **env)
 {
-   AXIS2_FUNC_PARAM_CHECK(fault_code, env, NULL);
+   AXIS2_ENV_CHECK(env, NULL);
    return AXIS2_INTF_TO_IMPL(fault_code)->om_ele_node;
 }
  
@@ -420,7 +420,7 @@ axis2_soap_fault_code_set_soap_version(axis2_soap_fault_code_t *fault_code,
                                   axis2_env_t **env,
                                   int soap_version)
 {
-    AXIS2_FUNC_PARAM_CHECK(fault_code, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_version, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(fault_code)->soap_version = soap_version;
     return AXIS2_SUCCESS;
@@ -430,7 +430,7 @@ axis2_status_t AXIS2_CALL
 axis2_soap_fault_code_get_soap_version(axis2_soap_fault_code_t *fault_code,
                                   axis2_env_t **env)
 {
-     AXIS2_FUNC_PARAM_CHECK(fault_code, env, AXIS2_FAILURE);
+     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
      return AXIS2_INTF_TO_IMPL(fault_code)->soap_version;
 } 
 
@@ -440,7 +440,7 @@ axis2_soap_fault_code_set_builder(axis2_soap_fault_code_t *fault_code,
                                   axis2_soap_builder_t *soap_builder)
 {
     axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_code, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_builder, AXIS2_FAILURE);
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
     fault_code_impl->builder = soap_builder;

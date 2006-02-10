@@ -94,7 +94,7 @@ axis2_status_t AXIS2_CALL axis2_ctx_set_property(struct axis2_ctx *ctx, axis2_en
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(ctx, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
@@ -116,7 +116,7 @@ axis2_char_t* AXIS2_CALL axis2_ctx_get_property(struct axis2_ctx *ctx, axis2_env
     axis2_ctx_impl_t *ctx_impl = NULL;
     axis2_char_t *ret = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(ctx, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     
@@ -142,13 +142,13 @@ axis2_char_t* AXIS2_CALL axis2_ctx_get_property(struct axis2_ctx *ctx, axis2_env
 axis2_hash_t* AXIS2_CALL 
 axis2_ctx_get_non_persistent_map(struct axis2_ctx *ctx, axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(ctx, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(ctx)->non_persistent_map;
 }
 
 axis2_hash_t* AXIS2_CALL axis2_ctx_get_persistent_map(struct axis2_ctx *ctx, axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(ctx, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(ctx)->persistent_map;
 }
 
@@ -157,7 +157,7 @@ axis2_status_t AXIS2_CALL axis2_ctx_free (struct axis2_ctx *ctx,
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(ctx, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     

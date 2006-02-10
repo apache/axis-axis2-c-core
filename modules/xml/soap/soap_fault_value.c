@@ -190,7 +190,7 @@ axis2_status_t AXIS2_CALL
 axis2_soap_fault_value_free(axis2_soap_fault_value_t *fault_value,
                               axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(fault_value, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(fault_value->ops)
     {
         AXIS2_FREE((*env)->allocator, fault_value->ops);
@@ -207,8 +207,7 @@ axis2_soap_fault_value_set_base_node(axis2_soap_fault_value_t *fault_value,
                                   axis2_om_node_t *node)
 {
     axis2_soap_fault_value_impl_t *fault_val_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(fault_value, env, AXIS2_FAILURE);
-    AXIS2_FUNC_PARAM_CHECK(node, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
     {
         AXIS2_ERROR_SET((*env)->error, 

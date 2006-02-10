@@ -115,7 +115,7 @@ axis2_status_t AXIS2_CALL
 axis2_http_chunked_stream_free(axis2_http_chunked_stream_t *chunked_stream, 
                         axis2_env_t **env)
 {
-	AXIS2_FUNC_PARAM_CHECK(chunked_stream, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(NULL != chunked_stream->ops)
         AXIS2_FREE((*env)->allocator, chunked_stream->ops);
     
@@ -132,7 +132,7 @@ axis2_http_chunked_stream_read (axis2_http_chunked_stream_t *chunked_stream,
 	axis2_http_chunked_stream_impl_t *chunked_stream_impl = AXIS2_INTF_TO_IMPL
 						(chunked_stream);
     axis2_stream_t *stream = chunked_stream_impl->stream;
-   	AXIS2_FUNC_PARAM_CHECK(chunked_stream, env, AXIS2_FAILURE);
+   	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	
 	if(NULL == buffer)
 	{
@@ -187,7 +187,7 @@ axis2_http_chunked_stream_write (axis2_http_chunked_stream_t *chunked_stream
 	axis2_stream_t *stream = AXIS2_INTF_TO_IMPL(chunked_stream)->stream;
 	int len = -1;
 	axis2_char_t tmp_buf[10];
-    AXIS2_FUNC_PARAM_CHECK(chunked_stream, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 		
 	if(NULL == buffer)
 	{
@@ -212,7 +212,7 @@ axis2_http_chunked_stream_get_current_chunk_size
                         (axis2_http_chunked_stream_t *chunked_stream, 
                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(chunked_stream, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(chunked_stream)->current_chunk_size;
 }
 
@@ -227,7 +227,7 @@ axis2_http_chunked_stream_start_chunk(
 	axis2_char_t *tmp = NULL;
 	int read = -1;
 	axis2_http_chunked_stream_impl_t *chunked_stream_impl = NULL;
-	AXIS2_FUNC_PARAM_CHECK(chunked_stream, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	
 	chunked_stream_impl = AXIS2_INTF_TO_IMPL(chunked_stream);
 	/* remove the last CRLF of the previous chunk if any */
@@ -274,7 +274,7 @@ axis2_http_chunked_stream_write_last_chunk(
                         axis2_env_t **env)
 {
 	axis2_stream_t *stream = NULL;
-	AXIS2_FUNC_PARAM_CHECK(chunked_stream, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	
 	stream = AXIS2_INTF_TO_IMPL(chunked_stream)->stream;
 	if(AXIS2_STREAM_WRITE(stream, env, "0\r\n", 3) == 3)

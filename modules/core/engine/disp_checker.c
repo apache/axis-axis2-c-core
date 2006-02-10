@@ -204,7 +204,7 @@ axis2_status_t AXIS2_CALL axis2_disp_checker_invoke(axis2_handler_t* handler, ax
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     axis2_char_t *address = NULL;
 
-    AXIS2_FUNC_PARAM_CHECK(handler, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 

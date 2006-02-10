@@ -108,7 +108,7 @@ axis2_soap_message_free(axis2_soap_message_t *message,
                         axis2_env_t **env)
 {
     axis2_soap_message_impl_t *soap_message_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(message, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     soap_message_impl = AXIS2_INTF_TO_IMPL(message);
     if(soap_message_impl->om_doc)
     {
@@ -135,7 +135,7 @@ axis2_soap_message_get_soap_envelope(axis2_soap_message_t *message,
                                      axis2_env_t **env)
 {
     axis2_soap_message_impl_t* soap_message_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(message, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     soap_message_impl = AXIS2_INTF_TO_IMPL(message);
     if(soap_message_impl->soap_envelope)
     {
@@ -155,7 +155,7 @@ axis2_soap_message_set_soap_envelope(axis2_soap_message_t *message,
                                      axis2_soap_envelope_t *soap_envelope)
 {
     axis2_soap_message_impl_t *soap_message_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(message, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_envelope, AXIS2_FAILURE);
     soap_message_impl->soap_envelope = soap_envelope;
     return AXIS2_SUCCESS;    
@@ -167,7 +167,7 @@ axis2_soap_message_serialize(axis2_soap_message_t *message,
                              axis2_om_output_t *om_output)
 {
     axis2_soap_message_impl_t *soap_message_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(message, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     soap_message_impl = AXIS2_INTF_TO_IMPL(message);
     return AXIS2_OM_DOCUMENT_SERIALIZE(soap_message_impl->om_doc, env, om_output);
 }                             

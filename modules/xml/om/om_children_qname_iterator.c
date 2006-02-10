@@ -130,7 +130,7 @@ axis2_om_children_qname_iterator_free(axis2_om_children_qname_iterator_t *iterat
                                 axis2_env_t **env)
 {
     axis2_om_children_qname_iterator_impl_t *iterator_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(iterator, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
     
@@ -150,7 +150,7 @@ axis2_om_children_qname_iterator_remove(axis2_om_children_qname_iterator_t *iter
                                   axis2_env_t **env)
 {
     axis2_om_children_qname_iterator_impl_t *iterator_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(iterator, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
 
     if(!(iterator_impl->next_called))
@@ -172,7 +172,7 @@ axis2_om_children_qname_iterator_has_next
              axis2_env_t **env)
 {   
     axis2_om_children_qname_iterator_impl_t *iterator_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(iterator, env, AXIS2_FALSE);
+    AXIS2_ENV_CHECK( env, AXIS2_FALSE);
 
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
     
@@ -223,7 +223,7 @@ axis2_om_children_qname_iterator_next(axis2_om_children_qname_iterator_t *iterat
                                 axis2_env_t **env)
 {
     axis2_om_children_qname_iterator_impl_t *iterator_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(iterator, env, NULL);
+    AXIS2_ENV_CHECK( env, NULL);
 
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
     

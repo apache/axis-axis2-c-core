@@ -109,7 +109,7 @@ axis2_http_worker_create (axis2_env_t **env, axis2_conf_ctx_t *conf_ctx)
 axis2_status_t AXIS2_CALL
 axis2_http_worker_free (axis2_http_worker_t *http_worker, axis2_env_t **env)
 {
-	AXIS2_FUNC_PARAM_CHECK(http_worker, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     AXIS2_INTF_TO_IMPL(http_worker)->conf_ctx = NULL;
     
@@ -145,7 +145,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	axis2_char_t *encoding_header_value = NULL;
 	axis2_op_ctx_t *op_ctx = NULL;
 	
-	AXIS2_FUNC_PARAM_CHECK(http_worker, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svr_conn, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, simple_request, AXIS2_FAILURE);
 	
@@ -375,7 +375,7 @@ axis2_http_worker_set_response_headers(axis2_http_worker_t *http_worker,
 {
     axis2_http_header_t *conn_header = NULL;
 	
-	AXIS2_FUNC_PARAM_CHECK(http_worker, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svr_conn, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, simple_request, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, simple_response, AXIS2_FAILURE);
@@ -465,7 +465,7 @@ axis2_http_worker_set_transport_out_config(axis2_http_worker_t *http_worker,
     axis2_conf_t *config = NULL;
 	axis2_hash_t *tranport_outs = NULL;
 	
-	AXIS2_FUNC_PARAM_CHECK(http_worker, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, conf_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, simple_response, AXIS2_FAILURE);
 	
@@ -487,7 +487,7 @@ axis2_http_worker_get_headers(axis2_http_worker_t *http_worker,
 	int hdr_count = 0;
 	int i = 0;
 	axis2_hash_t *header_map = NULL;
-	AXIS2_FUNC_PARAM_CHECK(http_worker, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, request, AXIS2_FAILURE);
 	
 	header_list = AXIS2_HTTP_SIMPLE_REQUEST_GET_HEADERS(request, env);

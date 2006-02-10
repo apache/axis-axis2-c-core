@@ -63,7 +63,7 @@ axis2_om_child_element_iterator_create(axis2_env_t **env,
                                   axis2_om_node_t *current_child)
 {
     axis2_om_child_element_iterator_impl_t *iterator_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(current_child, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     iterator_impl = (axis2_om_child_element_iterator_impl_t *)AXIS2_MALLOC(
                         (*env)->allocator,
@@ -111,7 +111,7 @@ axis2_om_child_element_iterator_free
             (axis2_om_child_element_iterator_t *iterator,
              axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(iterator, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(iterator->ops)
         AXIS2_FREE((*env)->allocator, iterator->ops);
         
@@ -125,7 +125,7 @@ axis2_om_child_element_iterator_remove
                  axis2_env_t **env)
 {
     axis2_om_child_element_iterator_impl_t *iterator_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(iterator, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
 
     if(!(iterator_impl->next_called))
@@ -147,7 +147,7 @@ axis2_om_child_element_iterator_has_next
                  axis2_env_t **env)
 {
     axis2_om_child_element_iterator_impl_t *iterator_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(iterator, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
     
     return iterator_impl->current_child ? AXIS2_TRUE : AXIS2_FALSE;
@@ -159,7 +159,7 @@ axis2_om_child_element_iterator_next
                  axis2_env_t **env)
 {
     axis2_om_child_element_iterator_impl_t *iterator_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(iterator, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
     
     iterator_impl->next_called = AXIS2_TRUE;

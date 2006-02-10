@@ -124,7 +124,7 @@ axis2_http_svr_thread_free (axis2_http_svr_thread_t *svr_thread,
 						axis2_env_t **env)
 {
 	axis2_http_svr_thread_impl_t *svr_thread_impl = NULL;
-	AXIS2_FUNC_PARAM_CHECK(svr_thread, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     svr_thread_impl = AXIS2_INTF_TO_IMPL(svr_thread);
 	
     if(NULL != svr_thread_impl->worker)
@@ -152,7 +152,7 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 {
     axis2_http_svr_thread_impl_t *svr_thread_impl = NULL;
 	
-	AXIS2_FUNC_PARAM_CHECK(svr_thread, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     svr_thread_impl = AXIS2_INTF_TO_IMPL(svr_thread);
 	
 	while(AXIS2_FALSE == svr_thread_impl->stopped)
@@ -212,7 +212,7 @@ axis2_http_svr_thread_destroy(axis2_http_svr_thread_t *svr_thread,
 {
 	axis2_http_svr_thread_impl_t *svr_thread_impl = NULL;
 		
-    AXIS2_FUNC_PARAM_CHECK(svr_thread, env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	
 	svr_thread_impl = AXIS2_INTF_TO_IMPL(svr_thread);
 	if(AXIS2_TRUE == svr_thread_impl->stopped)
@@ -236,7 +236,7 @@ axis2_http_svr_thread_get_local_port
 						(axis2_http_svr_thread_t *svr_thread, 
 						axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(svr_thread, env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(svr_thread)->port;
 }
 
@@ -244,7 +244,7 @@ axis2_bool_t AXIS2_CALL
 axis2_http_svr_thread_is_running(axis2_http_svr_thread_t *svr_thread, 
 						axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(svr_thread, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	return AXIS2_INTF_TO_IMPL(svr_thread)->port;
 }
 
@@ -252,7 +252,7 @@ axis2_status_t AXIS2_CALL
 axis2_http_svr_thread_set_worker(axis2_http_svr_thread_t *svr_thread, 
 						axis2_env_t **env, axis2_http_worker_t *worker)
 {
-    AXIS2_FUNC_PARAM_CHECK(svr_thread, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, worker, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(svr_thread)->worker = worker;
 	return AXIS2_SUCCESS;

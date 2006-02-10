@@ -119,7 +119,7 @@ axis2_http_request_line_free(axis2_http_request_line_t *request_line,
                         axis2_env_t **env)
 {
     axis2_http_request_line_impl_t *request_line_impl = NULL;
-	AXIS2_FUNC_PARAM_CHECK(request_line, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     request_line_impl = AXIS2_INTF_TO_IMPL(request_line);
     
     if(NULL != request_line_impl->method)
@@ -212,7 +212,7 @@ axis2_char_t* AXIS2_CALL
 axis2_http_request_line_get_method(axis2_http_request_line_t *request_line, 
                             axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(request_line, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(request_line)->method;
 }
 
@@ -222,7 +222,7 @@ axis2_http_request_line_get_http_version
                             (axis2_http_request_line_t *request_line, 
                             axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(request_line, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(request_line)->http_version;
 }
 
@@ -231,7 +231,7 @@ axis2_char_t* AXIS2_CALL
 axis2_http_request_line_get_uri(axis2_http_request_line_t *request_line, 
                             axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(request_line, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(request_line)->uri;
 }
 
@@ -244,7 +244,7 @@ axis2_http_request_line_to_string(axis2_http_request_line_t *request_line,
     int alloc_len = 0;
     axis2_char_t *ret = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(request_line, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     
     req_line_impl = AXIS2_INTF_TO_IMPL(
                             request_line);

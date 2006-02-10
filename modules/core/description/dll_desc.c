@@ -171,7 +171,7 @@ axis2_dll_desc_free (axis2_dll_desc_t *dll_desc,
 {
     axis2_dll_desc_impl_t *dll_desc_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     dll_desc_impl = AXIS2_INTF_TO_IMPL(dll_desc);
     
@@ -220,7 +220,7 @@ axis2_dll_desc_set_name(axis2_dll_desc_t *dll_desc,
 {
     axis2_dll_desc_impl_t *dll_desc_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
     
     dll_desc_impl = AXIS2_INTF_TO_IMPL(dll_desc);
@@ -242,7 +242,7 @@ axis2_char_t *AXIS2_CALL
 axis2_dll_desc_get_name(axis2_dll_desc_t *dll_desc,
                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(dll_desc)->dll_name;
 }
 
@@ -253,7 +253,7 @@ axis2_dll_desc_set_load_options(axis2_dll_desc_t *dll_desc,
 {
     axis2_dll_desc_impl_t *dll_desc_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     dll_desc_impl = AXIS2_INTF_TO_IMPL(dll_desc);
     
@@ -269,7 +269,7 @@ axis2_dll_desc_set_type (axis2_dll_desc_t *dll_desc,
 {
     axis2_dll_desc_impl_t *dll_desc_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     dll_desc_impl = AXIS2_INTF_TO_IMPL(dll_desc);
     
@@ -282,7 +282,7 @@ axis2_dll_type_t AXIS2_CALL
 axis2_dll_desc_get_type (axis2_dll_desc_t *dll_desc,
                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(dll_desc)->dll_type;
 }
 
@@ -290,7 +290,7 @@ int AXIS2_CALL
 axis2_dll_desc_get_load_options(axis2_dll_desc_t *dll_desc,
                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(dll_desc)->load_options;
 }
 
@@ -301,7 +301,7 @@ axis2_dll_desc_set_dl_handler(axis2_dll_desc_t *dll_desc,
 {
     axis2_dll_desc_impl_t *dll_desc_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, dl_handler, AXIS2_FAILURE);
     
     dll_desc_impl = AXIS2_INTF_TO_IMPL(dll_desc);
@@ -319,7 +319,7 @@ AXIS2_DLHANDLER AXIS2_CALL
 axis2_dll_desc_get_dl_handler(axis2_dll_desc_t *dll_desc,
                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(dll_desc)->dl_handler;
 }
 
@@ -330,7 +330,7 @@ axis2_dll_desc_set_create_funct(axis2_dll_desc_t *dll_desc,
 {
     axis2_dll_desc_impl_t *dll_desc_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     dll_desc_impl = AXIS2_INTF_TO_IMPL(dll_desc);
     
@@ -343,7 +343,7 @@ CREATE_FUNCT AXIS2_CALL
 axis2_dll_desc_get_create_funct(axis2_dll_desc_t *dll_desc,
                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(dll_desc)->create_funct;
 }
 
@@ -354,7 +354,7 @@ axis2_dll_desc_set_delete_funct(axis2_dll_desc_t *dll_desc,
 {
     axis2_dll_desc_impl_t *dll_desc_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     dll_desc_impl = AXIS2_INTF_TO_IMPL(dll_desc);
     
@@ -367,7 +367,7 @@ DELETE_FUNCT AXIS2_CALL
 axis2_dll_desc_get_delete_funct(axis2_dll_desc_t *dll_desc,
                         axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(dll_desc)->delete_funct;
 }
 
@@ -378,7 +378,7 @@ axis2_dll_desc_set_timestamp (axis2_dll_desc_t *dll_desc,
 {
     axis2_dll_desc_impl_t *dll_desc_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     dll_desc_impl = AXIS2_INTF_TO_IMPL(dll_desc);
    
     dll_desc_impl->timestamp = timestamp;
@@ -389,6 +389,6 @@ AXIS2_TIME_T AXIS2_CALL
 axis2_dll_desc_get_timestamp (axis2_dll_desc_t *dll_desc,
                                 axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(dll_desc, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(dll_desc)->timestamp;
 }

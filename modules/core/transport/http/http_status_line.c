@@ -75,8 +75,6 @@ axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
     axis2_http_status_line_impl_t *status_line_impl  = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_FUNC_PARAM_CHECK(str, env, NULL);
-   
     
     status_line_impl = (axis2_http_status_line_impl_t *)AXIS2_MALLOC 
                         ((*env)->allocator, sizeof(
@@ -191,7 +189,7 @@ axis2_http_status_line_free (axis2_http_status_line_t *status_line,
                                     axis2_env_t **env)
 {
     axis2_http_status_line_impl_t *status_line_impl = NULL;
-	AXIS2_FUNC_PARAM_CHECK(status_line, env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     status_line_impl = AXIS2_INTF_TO_IMPL(status_line);
     
     if(NULL != status_line_impl->line)
@@ -226,7 +224,7 @@ int AXIS2_CALL
 axis2_http_status_line_get_status_code (axis2_http_status_line_t *status_line, 
                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(status_line, env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     if(NULL != AXIS2_INTF_TO_IMPL(status_line)->status_code)
     {
         return atoi(AXIS2_INTF_TO_IMPL(status_line)->status_code);
@@ -243,7 +241,7 @@ axis2_char_t* AXIS2_CALL
 axis2_http_status_line_get_http_version (axis2_http_status_line_t *status_line, 
                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(status_line, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(status_line)->http_version;
 }
 
@@ -252,7 +250,7 @@ axis2_char_t* AXIS2_CALL
 axis2_http_status_line_get_reason_phrase (axis2_http_status_line_t *status_line,
                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(status_line, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(status_line)->reason_phrase;
 }
 
@@ -261,7 +259,7 @@ axis2_bool_t AXIS2_CALL
 axis2_http_status_line_starts_with_http (axis2_http_status_line_t *status_line, 
                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(status_line, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(0 == AXIS2_STRNCASECMP(AXIS2_INTF_TO_IMPL(status_line)->line, "HTTP", 4))
     {
         return AXIS2_TRUE;
@@ -273,6 +271,6 @@ axis2_char_t *AXIS2_CALL
 axis2_http_status_line_to_string (axis2_http_status_line_t *status_line, 
                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(status_line, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(status_line)->line;
 }

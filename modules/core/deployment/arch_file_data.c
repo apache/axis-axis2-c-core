@@ -299,7 +299,7 @@ axis2_char_t *AXIS2_CALL
 axis2_arch_file_data_get_msg_recv(axis2_arch_file_data_t *file_data,
                                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(file_data)->msg_recv;
 }
 
@@ -309,7 +309,7 @@ axis2_arch_file_data_set_msg_recv(axis2_arch_file_data_t *file_data,
                                     axis2_char_t *msg_recv)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_recv, AXIS2_FAILURE);
     
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
@@ -328,7 +328,7 @@ axis2_arch_file_data_get_name(axis2_arch_file_data_t *file_data,
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
     
     return AXIS2_FILE_GET_NAME(file_data_impl->file, env);
@@ -360,7 +360,7 @@ int AXIS2_CALL
 axis2_arch_file_data_get_type(axis2_arch_file_data_t *file_data,
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(file_data)->type;
 }
 
@@ -368,7 +368,7 @@ axis2_file_t *AXIS2_CALL
 axis2_arch_file_data_get_file(axis2_arch_file_data_t *file_data,
                                     axis2_env_t **env) 
 {
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(file_data)->file;
 }
 
@@ -399,7 +399,7 @@ axis2_arch_file_data_set_module_name(axis2_arch_file_data_t *file_data,
                                     axis2_char_t *module_name) 
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FAILURE);
     
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
@@ -430,7 +430,7 @@ axis2_arch_file_data_set_module_dll_name(axis2_arch_file_data_t *file_data,
                                     axis2_char_t *module_dll_name) 
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_dll_name, AXIS2_FAILURE);
     
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
@@ -451,7 +451,7 @@ axis2_arch_file_data_add_svc(axis2_arch_file_data_t *file_data,
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     axis2_qname_t *svc_qname = NULL;
     axis2_char_t *svc_name = NULL;
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_desc, AXIS2_FAILURE);
     
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
@@ -480,7 +480,7 @@ axis2_arch_file_data_get_svc(axis2_arch_file_data_t *file_data,
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     axis2_svc_t *svc = NULL;
         
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_name, AXIS2_FAILURE);
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
     
@@ -500,7 +500,7 @@ axis2_hash_t *AXIS2_CALL
 axis2_arch_file_data_get_svc_map(axis2_arch_file_data_t *file_data,
                                     axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(file_data)->svc_map;
 }
 
@@ -508,7 +508,7 @@ axis2_array_list_t *AXIS2_CALL
 axis2_arch_file_data_get_deployable_svcs(axis2_arch_file_data_t *file_data,
                                             axis2_env_t **env)
 {
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(file_data)->deployable_svcs;
 }
 
@@ -518,7 +518,7 @@ axis2_arch_file_data_set_deployable_svcs(axis2_arch_file_data_t *file_data,
                                     axis2_array_list_t *deployable_svcs) 
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
-    AXIS2_FUNC_PARAM_CHECK(file_data, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, deployable_svcs, AXIS2_FAILURE);
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
     if(file_data_impl->deployable_svcs)

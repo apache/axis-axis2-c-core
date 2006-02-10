@@ -290,7 +290,7 @@ int AXIS2_CALL _axis2_phase_get_before_after(axis2_handler_t *handler, axis2_env
     axis2_handler_desc_t *handler_desc = NULL;
     axis2_phase_rule_t *rules = NULL;
     
-    AXIS2_FUNC_PARAM_CHECK(handler, env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     handler_desc = AXIS2_HANDLER_GET_HANDLER_DESC(handler, env);
     if (!handler_desc)
