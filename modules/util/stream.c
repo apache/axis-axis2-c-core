@@ -616,7 +616,6 @@ axis2_stream_get_len_socket (axis2_stream_t *stream, axis2_env_t **env)
 int AXIS2_CALL 
 axis2_stream_skip_socket (axis2_stream_t *stream, axis2_env_t **env, int count)
 {
-	axis2_stream_impl_t *stream_impl = NULL;
 	int len = 0;
 	char buffer[2];
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);

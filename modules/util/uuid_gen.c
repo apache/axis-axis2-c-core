@@ -16,9 +16,6 @@
 
 #include <axis2_uuid_gen.h>
 
-/* We need these static variables to track throughout the program execution */
-static axis2_bool_t axis2_uuid_gen_is_first = AXIS2_TRUE;
-/*static struct axis2_uuid_st axis2_uuid_static;*/
 
 
 AXIS2_DECLARE(axis2_char_t *) 

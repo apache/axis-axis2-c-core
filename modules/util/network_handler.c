@@ -98,7 +98,6 @@ axis2_network_handler_create_server_socket(axis2_env_t **env, int port)
 	axis2_socket_t sock = AXIS2_INVALID_SOCKET;
 	axis2_socket_t i = 0;
 	struct sockaddr_in sock_addr;
-	int err_code = 0;
 		
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 #if defined(WIN32)

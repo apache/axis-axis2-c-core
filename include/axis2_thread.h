@@ -23,9 +23,8 @@
   * @brief axis2 thread api
   */
 
-#include <axis2.h>
-#include <axis2_defines.h>
 #include <axis2_allocator.h>
+#include <axis2.h>
 
 
 
@@ -69,7 +68,8 @@ typedef struct axis2_threadkey_t        axis2_threadkey_t;
  * @param cont The pool to use
  * @return Newly created thread attribute
  */
-AXIS2_DECLARE(axis2_threadattr_t*) axis2_threadattr_create(axis2_env_t **env);
+AXIS2_DECLARE(axis2_threadattr_t*) axis2_threadattr_create(
+						axis2_allocator_t *allocator);
 
 /**
  * Set if newly created threads should be created in detached state.
@@ -78,8 +78,7 @@ AXIS2_DECLARE(axis2_threadattr_t*) axis2_threadattr_create(axis2_env_t **env);
  * @return The status of the operation
  */
 AXIS2_DECLARE(axis2_status_t) axis2_threadattr_detach_set(
-						axis2_threadattr_t *attr, axis2_env_t **env, 
-						axis2_bool_t detached);
+						axis2_threadattr_t *attr, axis2_bool_t detached);
 
 /**
  * Get the detach state for this threadattr.
@@ -99,32 +98,29 @@ AXIS2_DECLARE(axis2_bool_t) axis2_threadattr_is_detach(
  * @param cont The pool to use
  * @return The newly created thread handle.
  */
-AXIS2_DECLARE(axis2_thread_t*) axis2_thread_create(axis2_env_t **env, 
+AXIS2_DECLARE(axis2_thread_t*) axis2_thread_create(axis2_allocator_t *allocator,
 						axis2_threadattr_t *attr,
                         axis2_thread_start_t func,
                         void *data);
 
 /**
- * stop the current thread
+ * Stop the current thread
  * @param thd The thread to stop
  * @return The status of the operation
  */
-AXIS2_DECLARE(axis2_status_t) axis2_thread_exit(axis2_thread_t *thd, 
-						axis2_env_t **env);
+AXIS2_DECLARE(axis2_status_t) axis2_thread_exit(axis2_thread_t *thd);
 
 /**
- * block until the desired thread stops executing.
- * @param retval The return value from the dead thread.
+ * Block until the desired thread stops executing.
  * @param thd The thread to join
  * @return The status of the operation
  */
-AXIS2_DECLARE(axis2_status_t) axis2_thread_join(axis2_thread_t *thd, 
-						axis2_env_t **env);
+AXIS2_DECLARE(axis2_status_t) axis2_thread_join(axis2_thread_t *thd);
 
 /**
  * force the current thread to yield the processor
  */
-AXIS2_DECLARE(void) axis2_thread_yield(axis2_env_t **env);
+AXIS2_DECLARE(void) axis2_thread_yield();
 
 /**
  * Initialize the control variable for axis2_thread_once.
@@ -132,7 +128,8 @@ AXIS2_DECLARE(void) axis2_thread_yield(axis2_env_t **env);
  * @return The status of the operation
  */
 AXIS2_DECLARE(axis2_status_t) axis2_thread_once_init(
-						axis2_thread_once_t **control, axis2_env_t **env);
+						axis2_thread_once_t **control, 
+						axis2_allocator_t *allocator);
 
 /**
  * Run the specified function one time, regardless of how many threads
@@ -145,15 +142,14 @@ AXIS2_DECLARE(axis2_status_t) axis2_thread_once_init(
  * @return The status of the operation
  */
 AXIS2_DECLARE(axis2_status_t) axis2_thread_once(axis2_thread_once_t *control, 
-						axis2_env_t **env, void (*func)(void));
+						void (*func)(void));
 
 /**
  * detach a thread
  * @param thd The thread to detach
  * @return The status of the operation
  */
-AXIS2_DECLARE(axis2_status_t) axis2_thread_detach(axis2_thread_t *thd, 
-						axis2_env_t **env);
+AXIS2_DECLARE(axis2_status_t) axis2_thread_detach(axis2_thread_t *thd);
 
 
 /** @} */
