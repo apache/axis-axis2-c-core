@@ -1,1 +1,1 @@
-SUBDIRS = echo math
+SUBDIRS = echo math addr_echo

@@ -171,6 +171,7 @@ AC_CONFIG_FILES([Makefile \
     samples/client/Makefile \
     samples/client/echo/Makefile \
     samples/client/math/Makefile \
+    samples/client/addr_echo/Makefile \
     test/Makefile \
     test/xml/Makefile \
     test/xml/om/Makefile \

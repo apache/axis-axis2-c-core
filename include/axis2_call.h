@@ -50,6 +50,8 @@ struct axis2_conf;
  */  
 struct axis2_call_ops
 {
+    axis2_mep_client_t* (AXIS2_CALL *get_base)(struct axis2_call *call,
+                                    axis2_env_t **env);
     /**
      * This accepts a ServiceContext, and the axis2_svc_ctx_t *should have all the parents set in to it right
      * Ideall this should be generated from a WSDL, we do not have it yet.
@@ -240,6 +242,8 @@ AXIS2_DECLARE(axis2_call_t*) axis2_call_create(axis2_env_t **env,
     axis2_char_t *client_home);
 
 /************************** Start of function macros **************************/
+
+#define AXIS2_CALL_GET_BASE(call, env) ((call)->ops->get_base(call, env))
 #define AXIS2_CALL_INVOKE_BLOCKING(call, env, op, msg_ctx) ((call)->ops->invoke_blocking(call, env, op, msg_ctx))
 #define AXIS2_CALL_INVOKE_NON_BLOCKING(call, env, op, msg_ctx, callback) ((call)->ops->invoke_non_blocking(call, env, op, msg_ctx, callback))
 #define AXIS2_CALL_SET_TO(call, env, to) ((call)->ops->set_to(call, env, to))

@@ -67,6 +67,10 @@ typedef struct axis2_call_impl
 
 /******************************************************************************/
 
+axis2_mep_client_t *AXIS2_CALL
+axis2_call_get_base(struct axis2_call *call,
+                                    axis2_env_t **env);
+
 axis2_msg_ctx_t* AXIS2_CALL 
 axis2_call_invoke_blocking(struct axis2_call *call, 
                                     axis2_env_t **env,
@@ -226,11 +230,14 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env,
         axis2_call_free(&(call_impl->call), env);
         return NULL;        
     }
+   
+    call_impl->call.ops->get_base = axis2_call_get_base;
     call_impl->call.ops->set_to = axis2_call_set_to;
     call_impl->call.ops->set_transport_info = axis2_call_set_transport_info;
     call_impl->call.ops->check_transport = axis2_call_check_transport;
     call_impl->call.ops->close = axis2_call_close;
     call_impl->call.ops->set_time = axis2_call_set_time;
+    call_impl->call.ops->invoke_blocking = axis2_call_invoke_blocking;
     call_impl->call.ops->invoke_blocking_with_om = axis2_call_invoke_blocking_with_om;
     call_impl->call.ops->invoke_blocking_with_soap = axis2_call_invoke_blocking_with_soap;
     call_impl->call.ops->invoke_non_blocking_with_om = axis2_call_invoke_non_blocking_with_om;
@@ -1236,4 +1243,13 @@ axis2_call_assume_svc_ctx(axis2_call_t *call,
     svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, assumed_svc_name);
     AXIS2_QNAME_FREE(assumed_svc_qname, env);
     return svc_ctx;
+}
+
+
+axis2_mep_client_t *AXIS2_CALL
+axis2_call_get_base(struct axis2_call *call,
+                                    axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(call)->base;
 }

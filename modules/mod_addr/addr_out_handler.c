@@ -140,7 +140,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
 
     ctx = AXIS2_MSG_CTX_GET_BASE (msg_ctx, env);
     addressing_version_from_msg_ctx =
-        AXIS2_MSG_CTX_GET_PROPERTY (ctx, env, AXIS2_WSA_VERSION, AXIS2_FALSE);
+        AXIS2_CTX_GET_PROPERTY (ctx, env, AXIS2_WSA_VERSION, AXIS2_FALSE);
 
     if (addressing_version_from_msg_ctx)
     {
@@ -237,6 +237,15 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                                                     addressing_namespace);
             to_header_block_node =
                 AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE (to_header_block, env);
+            if (to_header_block_node)
+            {
+                axis2_om_element_t *to_header_block_element = NULL;
+                to_header_block_element = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(to_header_block_node, env);
+                if (to_header_block_element)
+                {
+                    AXIS2_OM_ELEMENT_SET_TEXT(to_header_block_element, env, address, to_header_block_node);
+                }
+            }
         }
 
 
