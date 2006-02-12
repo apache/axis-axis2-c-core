@@ -18,6 +18,7 @@
 #include <string.h>
 #include <axis2_om_element.h>
 #include <axis2_soap_envelope.h>
+#include <axis2_soap_header.h>
 #include <axis2_soap_body.h>
 #include <axis2_soap_fault.h>
 
@@ -77,6 +78,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     axis2_om_element_t *body_content_element = NULL;
     axis2_soap_envelope_t *default_envelope = NULL;
     axis2_soap_body_t *out_body = NULL;
+    axis2_soap_header_t *out_header = NULL;
     axis2_soap_fault_t *soap_fault = NULL;
     axis2_om_node_t *out_node = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
@@ -244,6 +246,13 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
         return AXIS2_FAILURE;
     }
 
+    out_header = axis2_soap_header_create_with_parent(env, default_envelope);
+    if (!out_header)
+    {
+        return AXIS2_FAILURE;
+    }
+    AXIS2_SOAP_ENVELOPE_SET_HEADER(default_envelope, env, out_header);
+
     out_body = axis2_soap_body_create_with_parent(env, default_envelope);
     if (!out_body)
     {
@@ -255,6 +264,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     {
         return AXIS2_FAILURE;
     }
+    AXIS2_SOAP_ENVELOPE_SET_BODY(default_envelope, env, out_body);
     
     if (status != AXIS2_SUCCESS)
     {
