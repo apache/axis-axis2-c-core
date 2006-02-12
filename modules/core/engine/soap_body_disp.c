@@ -85,6 +85,7 @@ axis2_svc_t* AXIS2_CALL axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                     axis2_env_t **env) 
 {    
     axis2_soap_envelope_t *soap_envelope = NULL;
+    axis2_svc_t *svc = NULL;
     
     AXIS2_ENV_CHECK(env, NULL); 
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
@@ -130,9 +131,9 @@ axis2_svc_t* AXIS2_CALL axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                                                 conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
                                                 if (conf)
                                                 {
-                                                    axis2_svc_t *svc = NULL;
                                                     svc = AXIS2_CONF_GET_SVC(conf, env, url_tokens[0]);
-                                                    return svc;
+                                                    if (svc)
+                                                        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Service found using SOAP message body's first child's namespace URI");
                                                 }
                                             }                    
                                         }
@@ -146,7 +147,7 @@ axis2_svc_t* AXIS2_CALL axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
         }
     }
     
-    return NULL;
+    return svc;
 }
 
 /**
@@ -161,6 +162,7 @@ axis2_op_t* AXIS2_CALL axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx,
                                 axis2_svc_t *svc)
 {
     axis2_soap_envelope_t *soap_envelope = NULL;
+    axis2_op_t *op = NULL;
     
     AXIS2_ENV_CHECK(env, NULL); 
     AXIS2_PARAM_CHECK((*env)->error, svc, NULL);
@@ -188,12 +190,13 @@ axis2_op_t* AXIS2_CALL axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx,
                             if (element_name)
                             {
                                 axis2_qname_t *op_qname = NULL;
-                                axis2_op_t *op = NULL;
                                 AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Checking for operation using SOAP message body's first child's local name : %s", element_name);
                                 op_qname = axis2_qname_create(env, element_name, NULL, NULL);
                                 op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, AXIS2_QNAME_GET_LOCALPART(op_qname, env));
                                 AXIS2_QNAME_FREE(op_qname, env);
-                                return op;
+                                if (op)
+                                    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Operation found using SOAP message body's first child's local name");
+                                
                             }
                         }
                     }
@@ -201,7 +204,7 @@ axis2_op_t* AXIS2_CALL axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx,
             }
         }
     }
-    return NULL;
+    return op;
 }
             
 axis2_status_t AXIS2_CALL axis2_soap_body_disp_invoke(struct axis2_handler * handler, 

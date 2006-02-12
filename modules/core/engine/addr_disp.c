@@ -85,6 +85,7 @@ axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                     axis2_env_t **env) 
 {    
     axis2_endpoint_ref_t *endpoint_ref = NULL;
+    axis2_svc_t *svc = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);    
     
@@ -121,12 +122,12 @@ axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                         conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
                         if (conf)
                         {
-                            axis2_svc_t *svc = NULL;
                             axis2_qname_t *qname = axis2_qname_create(env, url_tokens[0], NULL, NULL);
                             svc = AXIS2_CONF_GET_SVC(conf, env, AXIS2_QNAME_GET_LOCALPART(qname, env));
                             
                             AXIS2_QNAME_FREE(qname, env);
-                            return svc;
+                            if(svc)
+                                AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Service found using WSA enpoint address");
                         }
                     }                    
                 }
@@ -134,7 +135,7 @@ axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
         }
     }
         
-    return NULL;
+    return svc;
 }
 
 /**
@@ -150,6 +151,7 @@ axis2_op_t* AXIS2_CALL axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx,
 {
     axis2_char_t *action = NULL;
     axis2_qname_t *qname = NULL;
+    axis2_op_t *op = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, svc, NULL);
@@ -158,13 +160,15 @@ axis2_op_t* AXIS2_CALL axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx,
     
     if (action)
     {
-        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Checking for operation using WSAAction : %s", action);
+        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Checking for operation using WSA Action : %s", action);
         
         qname = axis2_qname_create(env, action, NULL, NULL);
-        return AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, qname);
+        op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, qname);
+        if (op)
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Operation found using WSA Action");
     }
     
-    return NULL;
+    return op;
 }
 
 

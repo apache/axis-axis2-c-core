@@ -103,6 +103,7 @@ axis2_op_t* AXIS2_CALL axis2_soap_action_disp_find_op(axis2_msg_ctx_t *msg_ctx,
                                 axis2_svc_t *svc)
 {
     axis2_char_t *action = NULL;
+    axis2_op_t *op = NULL;        
     
     AXIS2_ENV_CHECK(env, NULL);  
     AXIS2_PARAM_CHECK((*env)->error, svc, NULL);    
@@ -111,7 +112,6 @@ axis2_op_t* AXIS2_CALL axis2_soap_action_disp_find_op(axis2_msg_ctx_t *msg_ctx,
     
     if (action)
     {
-        axis2_op_t *op = NULL;        
         AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Checking for operation using SOAPAction : %s", action);
 
         op = AXIS2_SVC_GET_OP_BY_SOAP_ACTION(svc, env, action);
@@ -137,10 +137,11 @@ axis2_op_t* AXIS2_CALL axis2_soap_action_disp_find_op(axis2_msg_ctx_t *msg_ctx,
             }
         }
 
-        return op;
+        if (op)
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Operation found using SOAPAction");
     }
     
-    return NULL;
+    return op;
 }
     
 axis2_status_t AXIS2_CALL axis2_soap_action_disp_invoke(struct axis2_handler * handler, 
