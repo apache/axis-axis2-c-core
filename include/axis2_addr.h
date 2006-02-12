@@ -37,6 +37,7 @@ extern "C"
     #define AXIS2_WSA_REPLY_TO "ReplyTo"
     #define AXIS2_WSA_FAULT_TO "FaultTo"
     #define AXIS2_WSA_ACTION "Action"
+    #define AXIS2_WSA_MAPPING "wsamapping"
 
     /* ====================== Common EPR Elements ============================*/
     #define EPR_ADDRESS "Address"

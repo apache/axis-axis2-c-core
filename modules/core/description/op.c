@@ -834,11 +834,13 @@ axis2_op_get_params(axis2_op_t *op,
     AXIS2_PARAM_CHECK((*env)->error, op->param_container, 
         AXIS2_FALSE);
 	
-    param_container_l = (axis2_param_container_t *) 
+    /*param_container_l = (axis2_param_container_t *) 
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op->wsdl_op->
             extensible_component->wsdl_component, env, (axis2_char_t *) 
                 AXIS2_PARAMETER_KEY);
-	return AXIS2_PARAM_CONTAINER_GET_PARAMS(param_container_l, env);
+	return AXIS2_PARAM_CONTAINER_GET_PARAMS(param_container_l, env);*/
+   
+    return AXIS2_PARAM_CONTAINER_GET_PARAMS(op->param_container, env);
 }
 
 axis2_bool_t AXIS2_CALL 

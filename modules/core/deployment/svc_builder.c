@@ -490,7 +490,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
             
             param = AXIS2_ARRAY_LIST_GET(params, env, j);
             param_name = AXIS2_PARAM_GET_NAME(param, env);
-            if(0 == AXIS2_STRCMP(param_name, AXIS2_WSA_ACTION))
+            if(0 == AXIS2_STRCMP(param_name, AXIS2_WSA_MAPPING))
             {
                 axis2_char_t *key = NULL;
                 
