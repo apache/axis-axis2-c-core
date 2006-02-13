@@ -236,7 +236,7 @@ axis2_om_node_t* AXIS2_CALL
 axis2_param_get_param_element(axis2_param_t *param, 
 										axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(param)->param_element;
 }

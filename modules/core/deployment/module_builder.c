@@ -197,8 +197,8 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         module_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_name_att, env);
         if(NULL != module_name && (0 != AXIS2_STRCMP("", module_name)))
         {
-            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Populate module %s", module_name);
             axis2_qname_t *qmodule_name = NULL;
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Populate module %s", module_name);
             
             qmodule_name = axis2_qname_create(env, module_name, NULL, NULL);
             AXIS2_MODULE_DESC_SET_NAME(builder_impl->module_desc, env, qmodule_name);
