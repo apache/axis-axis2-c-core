@@ -52,6 +52,8 @@ int main(int argc, char** argv)
     axis2_char_t *wsa_action = NULL;
     axis2_char_t *client_home = NULL;
     axis2_om_node_t *ret_node = NULL;
+    axis2_svc_t *svc = NULL;
+    axis2_op_t *op = NULL;
     
     allocator = axis2_allocator_init (NULL);
     error = axis2_error_create(allocator);
@@ -89,15 +91,36 @@ int main(int argc, char** argv)
     AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, &env, endpoint_ref);
     AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, &env, wsa_action); 
     AXIS2_CALL_SET_TO(call, &env, endpoint_ref);
-    axis2_qname_t *svc_qname = axis2_qname_create(&env, "echo", NULL, NULL);
-    axis2_svc_t *svc = axis2_svc_create_with_qname(&env, svc_qname);
-    axis2_qname_t *op_qname = axis2_qname_create(&env, "echoString", NULL, NULL);
-    axis2_op_t *op = axis2_op_create_with_qname(&env, op_qname);
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, &env, AXIS2_MEP_URI_OUT_IN);
-    AXIS2_SVC_ADD_OP(svc, &env, op);
+    axis2_conf_t *conf = AXIS2_CONF_CTX_GET_CONF(
+                            AXIS2_SVC_CTX_GET_CONF_CTX(
+                                AXIS2_MEP_CLIENT_GET_SVC_CTX(mep_client, &env), 
+                                &env), 
+                                &env);
+    svc = AXIS2_CONF_GET_SVC(conf, &env, "echo");
+    if (svc)
+    {
+        op = AXIS2_SVC_GET_OP_WITH_NAME(svc, &env, "echoString");
+        if (op)
+        {
+            AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, &env, AXIS2_MEP_URI_OUT_IN);
+        }
+    }
+    else
+    {
+        axis2_qname_t *svc_qname = axis2_qname_create(&env, "echo", NULL, NULL);
+        svc = axis2_svc_create_with_qname(&env, svc_qname);
+        axis2_qname_t *op_qname = axis2_qname_create(&env, "echoString", NULL, NULL);
+        op = axis2_op_create_with_qname(&env, op_qname);
+        AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, &env, AXIS2_MEP_URI_OUT_IN);
+        AXIS2_SVC_ADD_OP(svc, &env, op);
+        AXIS2_CONF_ADD_SVC(conf, &env, svc);
+    }
 
-    AXIS2_CONF_ADD_SVC(AXIS2_CONF_CTX_GET_CONF(AXIS2_SVC_CTX_GET_CONF_CTX(AXIS2_MEP_CLIENT_GET_SVC_CTX(mep_client, &env), &env), &env), &env, svc);
-
+    if (!op)
+    {
+        printf("ERROR: operation not present in service\n");
+        return -1;
+    }
     axis2_msg_ctx_t *response_ctx = AXIS2_CALL_INVOKE_BLOCKING(call, &env, op, msg_ctx);
 
     if (response_ctx)
