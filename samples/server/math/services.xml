@@ -1,24 +1,24 @@
 <service name="math">
-    <parameter name="ServiceClass" locked="xsd:false">libmath.so</parameter>
+    <parameter name="ServiceClass" locked="xsd:false">math</parameter>
 
    <description>
         This is a testing service, named 'math' to test multiple operations in the same service
    </description>
 
     <operation name="add">
-            <messageReceiver class="libaxis2_receivers.so" />
+            <messageReceiver class="axis2_receivers" />
     </operation>
 
     <operation name="sub">
-            <messageReceiver class="libaxis2_receivers.so" />
+            <messageReceiver class="axis2_receivers" />
     </operation>
 
     <operation name="mul">
-            <messageReceiver class="libaxis2_receivers.so" />
+            <messageReceiver class="axis2_receivers" />
     </operation>
 
     <operation name="div">
-            <messageReceiver class="libaxis2_receivers.so" />
+            <messageReceiver class="axis2_receivers" />
     </operation>
 
 </service>

@@ -15,7 +15,8 @@
  */
  
 #include <axis2_transport_in_desc.h>
-    
+#include <axis2_transport_receiver.h>
+
 /** 
  * @brief Description transport in struct impl
  * Transport in

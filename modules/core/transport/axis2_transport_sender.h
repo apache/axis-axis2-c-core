@@ -31,8 +31,6 @@
 #include <axis2_ctx.h>
 #include <axis2_msg_ctx.h>
 
-#include <axis2_wsdl.h>
-
 #ifdef __cplusplus
 extern "C"
 {

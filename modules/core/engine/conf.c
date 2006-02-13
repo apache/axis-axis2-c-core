@@ -360,7 +360,7 @@ axis2_conf_create (axis2_env_t **env)
         return NULL;
 	}
     
-    config_impl->engaged_modules = axis2_array_list_create(env, 20);		
+    config_impl->engaged_modules = axis2_array_list_create(env, 0);		
 	if(NULL == config_impl->engaged_modules)
 	{
         axis2_conf_free(&(config_impl->conf), env);
@@ -369,7 +369,7 @@ axis2_conf_create (axis2_env_t **env)
 	}
     
     config_impl->in_phases_upto_and_including_post_dispatch = 
-        axis2_array_list_create(env, 20);		
+        axis2_array_list_create(env, 0);		
 	if(NULL == config_impl->in_phases_upto_and_including_post_dispatch)
 	{
         axis2_conf_free(&(config_impl->conf), env);
@@ -407,7 +407,7 @@ axis2_conf_create (axis2_env_t **env)
         }
     }
     
-    config_impl->out_phases = axis2_array_list_create(env, 20);		
+    config_impl->out_phases = axis2_array_list_create(env, 0);		
 	if(NULL == config_impl->out_phases)
 	{
         axis2_conf_free(&(config_impl->conf), env);
@@ -415,7 +415,7 @@ axis2_conf_create (axis2_env_t **env)
         return NULL;
 	}
     
-    config_impl->in_faultphases = axis2_array_list_create(env, 20);		
+    config_impl->in_faultphases = axis2_array_list_create(env, 0);		
 	if(NULL == config_impl->in_faultphases)
 	{
         axis2_conf_free(&(config_impl->conf), env);
@@ -423,7 +423,7 @@ axis2_conf_create (axis2_env_t **env)
         return NULL;
 	}
     
-    config_impl->out_faultphases = axis2_array_list_create(env, 20);		
+    config_impl->out_faultphases = axis2_array_list_create(env, 0);		
 	if(NULL == config_impl->out_faultphases)
 	{
         axis2_conf_free(&(config_impl->conf), env);
@@ -475,13 +475,10 @@ axis2_conf_create (axis2_env_t **env)
 	config_impl->conf.ops->free = axis2_conf_free;
 	config_impl->conf.ops->add_svc_grp = 
         axis2_conf_add_svc_grp;
-    
 	config_impl->conf.ops->get_svc_grp = 
         axis2_conf_get_svc_grp;
-    
     config_impl->conf.ops->get_svc_grps = 
         axis2_conf_get_svc_grps;
-    
 	config_impl->conf.ops->add_svc = axis2_conf_add_svc;
 	config_impl->conf.ops->get_svc = axis2_conf_get_svc;
 	config_impl->conf.ops->remove_svc = 
@@ -494,82 +491,56 @@ axis2_conf_create (axis2_env_t **env)
         axis2_conf_get_params;
     config_impl->conf.ops->is_param_locked = 
             axis2_conf_is_param_locked;
-    
     config_impl->conf.ops->get_transport_in = 
             axis2_conf_get_transport_in;
-      
     config_impl->conf.ops->add_transport_in = 
             axis2_conf_add_transport_in;    
-     
     config_impl->conf.ops->get_transport_out = 
             axis2_conf_get_transport_out;
-            
     config_impl->conf.ops->add_transport_out = 
             axis2_conf_add_transport_out;
-
     config_impl->conf.ops->get_transports_in = 
             axis2_conf_get_transports_in;
-            
     config_impl->conf.ops->get_transports_out = 
             axis2_conf_get_transports_out;
-	
     config_impl->conf.ops->get_module = 
             axis2_conf_get_module;
-    
     config_impl->conf.ops->get_engaged_modules =
             axis2_conf_get_engaged_modules;
-    
     config_impl->conf.ops->get_in_phases_upto_and_including_post_dispatch =
             axis2_conf_get_in_phases_upto_and_including_post_dispatch;
-    
     config_impl->conf.ops->get_outflow =
             axis2_conf_get_outflow;
-    
     config_impl->conf.ops->get_in_faultflow =
             axis2_conf_get_in_faultflow;
-    
     config_impl->conf.ops->get_out_faultflow =
             axis2_conf_get_out_faultflow;
-
     config_impl->conf.ops->get_faulty_svcs =
             axis2_conf_get_faulty_svcs;
-    
     config_impl->conf.ops->get_faulty_modules =
             axis2_conf_get_faulty_modules;
-    
     config_impl->conf.ops->get_svcs =
             axis2_conf_get_svcs;
-    
     config_impl->conf.ops->is_engaged =
             axis2_conf_is_engaged;
-    
     config_impl->conf.ops->get_phases_info =
             axis2_conf_get_phases_info;
-    
     config_impl->conf.ops->set_phases_info =
             axis2_conf_set_phases_info;
-    
     config_impl->conf.ops->add_msg_recv =
             axis2_conf_add_msg_recv;
-    
     config_impl->conf.ops->get_msg_recv =
             axis2_conf_get_msg_recv;
-    
     config_impl->conf.ops->set_out_phases =
             axis2_conf_set_out_phases;
-    
     config_impl->conf.ops->get_out_phases =
             axis2_conf_get_out_phases;
-            
     config_impl->conf.ops->set_in_faultphases =
             axis2_conf_set_in_faultphases;
-    
     config_impl->conf.ops->set_out_faultphases =
             axis2_conf_set_out_faultphases;
-    
     config_impl->conf.ops->get_modules =
             axis2_conf_get_modules;
-    
     config_impl->conf.ops->add_module =
             axis2_conf_add_module;
     config_impl->conf.ops->set_default_dispatchers = 

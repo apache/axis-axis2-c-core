@@ -1,5 +1,4 @@
 #include <axis2_wsdl_binding_op.h>
-#include <string.h>
 
 /** 
  * @brief Wsdl Component struct impl
@@ -348,7 +347,6 @@ axis2_wsdl_binding_op_set_op(axis2_wsdl_binding_op_t *binding_op,
                                             void *op) 
 {
     axis2_wsdl_binding_op_impl_t *binding_op_impl = NULL;
-    axis2_op_t *optr = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
@@ -357,8 +355,7 @@ axis2_wsdl_binding_op_set_op(axis2_wsdl_binding_op_t *binding_op,
     
     if(NULL != binding_op_impl->op)
     {
-        optr = binding_op_impl->op;
-        AXIS2_OP_FREE(optr , env);
+        axis2_wsdl_op_free_void_arg(op, env);
         binding_op_impl->op = NULL;
     }
     binding_op_impl->op = op;

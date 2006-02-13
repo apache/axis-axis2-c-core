@@ -181,7 +181,7 @@ axis2_wsdl_svc_free (axis2_wsdl_svc_t *wsdl_svc,
             axis2_hash_this (hi, NULL, NULL, &val);
             endpoint = (axis2_wsdl_endpoint_t *) val;
             if (endpoint)
-                AXIS2_TRANSPORT_IN_DESC_FREE (endpoint, env);
+                AXIS2_WSDL_ENDPOINT_FREE (endpoint, env);
             
             val = NULL;
             endpoint = NULL;

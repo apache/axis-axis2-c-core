@@ -29,7 +29,6 @@
 #include <axis2_allocator.h>
 #include <axis2_hash.h>
 #include <axis2_wsdl_op.h>
-#include <axis2_op.h>
 #include <axis2_linked_list.h>
 #include <axis2_wsdl_extensible_component.h>
 
@@ -166,8 +165,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
     axis2_status_t (AXIS2_CALL *
     set_op) (axis2_wsdl_interface_t *wsdl_interface,
                                         axis2_env_t **env,
-                                        void *op,
-                                        axis2_op_type_t opt_type);
+                                        void *op);
     
     /**
      * @param list
@@ -218,7 +216,6 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface
 {
 	axis2_wsdl_interface_ops_t *ops;
     struct axis2_wsdl_extensible_component *extensible_component;
-    axis2_op_type_t op_type; /*0-wsdl_op, 1-axis2_op */
 };
 
 /**
@@ -265,8 +262,8 @@ AXIS2_DECLARE(axis2_wsdl_interface_t *) axis2_wsdl_interface_create (axis2_env_t
 #define AXIS2_WSDL_INTERFACE_SET_OPS(wsdl_interface, env, list) \
 		((wsdl_interface)->ops->set_ops (wsdl_interface, env, list))
 
-#define AXIS2_WSDL_INTERFACE_SET_OP(wsdl_interface, env, op, op_type) \
-		((wsdl_interface)->ops->set_op (wsdl_interface, env, op, op_type))
+#define AXIS2_WSDL_INTERFACE_SET_OP(wsdl_interface, env, op) \
+		((wsdl_interface)->ops->set_op (wsdl_interface, env, op))
 
 #define AXIS2_WSDL_INTERFACE_SET_SUPER_INTERFACES(wsdl_interface, env, list) \
 		((wsdl_interface)->ops->set_super_interfaces (wsdl_interface, env, list))

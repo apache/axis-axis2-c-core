@@ -90,8 +90,8 @@ axis2_wsdl_op_set_qname (axis2_wsdl_op_t *wsdl_op,
 		                        axis2_qname_t *name);
 
 axis2_qname_t * AXIS2_CALL 
-axis2_wsdl_op_get_qname (axis2_wsdl_op_t *wsdl_op,
-                                axis2_env_t **env);
+axis2_wsdl_op_get_qname (void *wsdl_op,
+                         axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_op_set_style (axis2_wsdl_op_t *wsdl_op,
@@ -225,13 +225,11 @@ axis2_wsdl_op_create (axis2_env_t **env)
 	}
     
 	wsdl_op_impl->wsdl_op.ops->free = axis2_wsdl_op_free;
-	
+	wsdl_op_impl->wsdl_op.ops->free_void_arg = axis2_wsdl_op_free_void_arg;
     wsdl_op_impl->wsdl_op.ops->set_msg_exchange_pattern =
         axis2_wsdl_op_set_msg_exchange_pattern;
-    
     wsdl_op_impl->wsdl_op.ops->get_msg_exchange_pattern =
-        axis2_wsdl_op_get_msg_exchange_pattern;
-    
+        axis2_wsdl_op_get_msg_exchange_pattern; 
     wsdl_op_impl->wsdl_op.ops->set_qname = axis2_wsdl_op_set_qname;
     wsdl_op_impl->wsdl_op.ops->get_qname = axis2_wsdl_op_get_qname;
     wsdl_op_impl->wsdl_op.ops->set_style = axis2_wsdl_op_set_style;
@@ -292,7 +290,7 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
             
             fault = (axis2_wsdl_fault_ref_t *) val;
             if (fault)
-               AXIS2_PHASE_FREE (fault, env);
+               AXIS2_WSDL_FAULT_REF_FREE (fault, env);
             
             val = NULL;
             fault = NULL;
@@ -316,7 +314,7 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
             
             fault = (axis2_wsdl_fault_ref_t *) val;
             if (fault)
-               AXIS2_PHASE_FREE (fault, env);
+               AXIS2_WSDL_FAULT_REF_FREE (fault, env);
             
             val = NULL;
             fault = NULL;
@@ -345,6 +343,18 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
     }
     
 	return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_wsdl_op_free_void_arg(void *wsdl_op,
+                        axis2_env_t **env)
+{
+    axis2_wsdl_op_t *wsdl_op_l = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    wsdl_op_l = (axis2_wsdl_op_t *) wsdl_op;
+    return axis2_wsdl_op_free(wsdl_op_l, env);
 }
 
 axis2_status_t AXIS2_CALL 
@@ -412,12 +422,15 @@ axis2_wsdl_op_set_qname (axis2_wsdl_op_t *wsdl_op,
 
 
 axis2_qname_t * AXIS2_CALL 
-axis2_wsdl_op_get_qname (axis2_wsdl_op_t *wsdl_op, 
-                                axis2_env_t **env)
+axis2_wsdl_op_get_qname (void *wsdl_op, 
+                         axis2_env_t **env)
 {
+    axis2_wsdl_op_t *wsdl_op_l = NULL;
+    
 	AXIS2_ENV_CHECK(env, NULL);
     
-	return AXIS2_INTF_TO_IMPL(wsdl_op)->name;
+    wsdl_op_l = (axis2_wsdl_op_t *) wsdl_op;
+	return AXIS2_INTF_TO_IMPL(wsdl_op_l)->name;
 }
 
 axis2_status_t AXIS2_CALL 
@@ -486,7 +499,7 @@ axis2_wsdl_op_set_in_faults(axis2_wsdl_op_t *wsdl_op,
             
             fault = (axis2_wsdl_fault_ref_t *) val;
             if (fault)
-               AXIS2_PHASE_FREE (fault, env);
+               AXIS2_WSDL_FAULT_REF_FREE (fault, env);
             
             val = NULL;
             fault = NULL;
@@ -558,7 +571,7 @@ axis2_wsdl_op_set_out_faults(axis2_wsdl_op_t *wsdl_op,
             
             fault = (axis2_wsdl_fault_ref_t *) val;
             if (fault)
-               AXIS2_PHASE_FREE (fault, env);
+               AXIS2_WSDL_FAULT_REF_FREE (fault, env);
             
             val = NULL;
             fault = NULL;

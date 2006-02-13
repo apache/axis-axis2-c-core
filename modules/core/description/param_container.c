@@ -49,7 +49,7 @@ axis2_array_list_t * AXIS2_CALL
 axis2_param_container_get_params (axis2_param_container_t *param_container, 
 						axis2_env_t **env);
 
-axis2_status_t AXIS2_CALL 
+axis2_bool_t AXIS2_CALL 
 axis2_param_container_is_param_locked (axis2_param_container_t *param_container, 
 							axis2_env_t **env, 
 							const axis2_char_t *param_name);
@@ -227,7 +227,7 @@ axis2_param_container_get_params (axis2_param_container_t *param_container,
 	return array_list_l;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_bool_t AXIS2_CALL 
 axis2_param_container_is_param_locked (axis2_param_container_t *param_container, 
 						axis2_env_t **env, 
 						const axis2_char_t *param_name)

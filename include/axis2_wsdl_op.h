@@ -54,13 +54,23 @@ typedef struct axis2_wsdl_op axis2_wsdl_op_t;
 
 struct axis2_wsdl_op_ops
 {
-	/** Deallocate memory
+	/** 
+     * Deallocate memory
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
     free) (axis2_wsdl_op_t *wsdl_op,
             axis2_env_t **env);
         
+	/** 
+     * Deallocate memory
+     * @param void wsdl_op to be freed
+     * @return status code
+     */
+    axis2_status_t (AXIS2_CALL *
+    free_void_arg) (void *wsdl_op,
+                    axis2_env_t **env);
+            
     /**
      * set the message exchange pattern
      * @param axis2_char_t message exchange pattern
@@ -93,7 +103,7 @@ struct axis2_wsdl_op_ops
      * @return axis2_qname_t wsdl op name
      */
     axis2_qname_t *(AXIS2_CALL *
-    get_qname) (axis2_wsdl_op_t *wsdl_op,
+    get_qname) (void *wsdl_op,
                 axis2_env_t **env);
     
 
@@ -247,9 +257,13 @@ struct axis2_wsdl_op
     struct axis2_wsdl_extensible_component *extensible_component;
 };
 
-AXIS2_DECLARE(axis2_wsdl_op_t *) axis2_wsdl_op_create (
-                                                            axis2_env_t **env);
+AXIS2_DECLARE(axis2_wsdl_op_t *) 
+axis2_wsdl_op_create (axis2_env_t **env);
 
+AXIS2_DECLARE(axis2_status_t)
+axis2_wsdl_op_free_void_arg(void *wsdl_op,
+                        axis2_env_t **env);
+                        
 /**************************** Start of function macros ************************/
 
 #define AXIS2_WSDL_OP_FREE(wsdl_op, env) \
@@ -262,7 +276,7 @@ AXIS2_DECLARE(axis2_wsdl_op_t *) axis2_wsdl_op_create (
 		((wsdl_op)->ops->set_msg_exchange_pattern(wsdl_op, env, pattern))
 		
 #define AXIS2_WSDL_OP_GET_QNAME(wsdl_op, env) \
-		((wsdl_op)->ops->get_qname(wsdl_op, env))
+		(((axis2_wsdl_op_t *) wsdl_op)->ops->get_qname(wsdl_op, env))
 		
 #define AXIS2_WSDL_OP_SET_QNAME(wsdl_op, env, name) \
 		((wsdl_op)->ops->set_qname(wsdl_op, env, name))

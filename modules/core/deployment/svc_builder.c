@@ -237,6 +237,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axis2_om_attribute_t *name_attr = NULL;
     axis2_array_list_t *ops = NULL;
     axis2_char_t *svc_name = NULL;
+    axis2_char_t *class_name = NULL;
     axis2_char_t *svc_dll_name = NULL;
     axis2_dll_desc_t *dll_desc = NULL;
     axis2_param_t *impl_info_param = NULL;
@@ -341,7 +342,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         AXIS2_DLL_DESC_FREE(dll_desc, env);
         return AXIS2_FAILURE;
     }
-    svc_dll_name = AXIS2_PARAM_GET_VALUE(impl_info_param, env);
+    class_name = AXIS2_PARAM_GET_VALUE(impl_info_param, env);
+    svc_dll_name = axis2_platform_get_dll_name(env, class_name);
     arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(builder_impl->
         svc_builder.desc_builder->engine, env);
     svc_folder = AXIS2_ARCH_FILE_DATA_GET_FILE(arch_file_data, env);

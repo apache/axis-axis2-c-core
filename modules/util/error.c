@@ -407,6 +407,11 @@ axis2_error_init()
         "Input stream is NULL in msg_ctx"; 
     axis2_error_messages[AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM] =
         "NULL stream in the http chunked stream";
+    axis2_error_messages[AXIS2_ERROR_FLOW_TYPE_CANNOT_BE_NULL] =
+        "Flow type of PhaseOrder element cannot be null";
+    axis2_error_messages[AXIS2_ERROR_DATA_ELEMENT_IS_NULL] =
+        "Data element of the OM Node is null";
+
     return AXIS2_SUCCESS;
 }
 

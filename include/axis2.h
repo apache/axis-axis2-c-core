@@ -94,24 +94,6 @@ extern "C"
  */
 
 typedef int (*AXIS2_FREE_VOID_ARG) (void *obj_to_be_freed, axis2_env_t **env);
-    
-typedef enum axis2_op_type
-{
-    /** axis2_wsdl_op_t */
-    AXIS2_WSDL_OP_T = 0,
-    /** axis2_op_t */
-    AXIS2_OP_T
-    
-}axis2_op_type_t;
-
-typedef enum axis2_svc_type
-{
-    /** axis2_wsdl_svc_t */
-    AXIS2_WSDL_SVC_T = 0,
-    /** axis2_svc_t */
-    AXIS2_SVC_T
-    
-}axis2_svc_type_t;
 
 /******************************************************************************/
 /********************Axis2 specific constants**********************************/

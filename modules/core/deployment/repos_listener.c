@@ -274,7 +274,7 @@ axis2_repos_listener_init(axis2_repos_listener_t *listener,
     status = AXIS2_WS_INFO_LIST_INIT(listener_impl->info_list, env);
     if(AXIS2_SUCCESS != status)
     {
-        return AXIS2_FAILURE;
+        return status;
     }
     /* if check_modules return AXIS2_FAILURE that means
      * there are no modules to load
@@ -320,11 +320,20 @@ axis2_repos_listener_search(axis2_repos_listener_t *listener,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, folder_name, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
+
     current_info_list = AXIS2_DIR_HANDLER_LIST_SERVICE_OR_MODULE_DIRS(env, 
         folder_name);
     if(!current_info_list)
     {
-        return AXIS2_FAILURE;
+        axis2_status_t status_code = AXIS2_FAILURE;
+
+        status_code = AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
+        }
+        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "No %s in the folder.", folder_name); 
+        return AXIS2_SUCCESS;
     }
     size = AXIS2_ARRAY_LIST_SIZE(current_info_list, env);
     for (i = 0; i< size; i++) /* loop until empty */

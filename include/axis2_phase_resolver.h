@@ -38,7 +38,6 @@
 #include <axis2_flow.h>
 #include <axis2_module_desc.h>
 #include <axis2_phase_holder.h>
-#include <axis2_wsdl.h>
 
 #ifdef __cplusplus
 extern "C"

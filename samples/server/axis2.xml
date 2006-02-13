@@ -34,12 +34,12 @@
     <!-- Message Receivers -->
     <!-- ================================================= -->
     <!-- This is the Deafult Message Receiver for the Request Response style Operations -->
-    <messageReceiver mep="INOUT" class="libaxis2_receivers.so"/>
+    <messageReceiver mep="INOUT" class="axis2_receivers"/>
 
     <!-- ================================================= -->
     <!-- Transport Ins -->
     <!-- ================================================= -->
-    <transportReceiver name="http" class="libaxis2_http_receiver.so">
+    <transportReceiver name="http" class="axis2_http_receiver">
         <parameter name="port" locked="false">6060</parameter>
     </transportReceiver>
 
@@ -65,7 +65,7 @@
     <transportSender name="tcp" class="org.apache.axis2.transport.tcp.TCPTransportSender"/>
     <transportSender name="local" class="org.apache.axis2.transport.local.LocalTransportSender"/> 
     -->
-    <transportSender name="http" class="libaxis2_http_sender.so">
+    <transportSender name="http" class="axis2_http_sender">
         <parameter name="PROTOCOL" locked="false">HTTP/1.1</parameter>
     </transportSender>
     <!--
@@ -104,33 +104,33 @@
         <phase name="PreDispatch"/>
         <phase name="Dispatch">
             <handler name="AddressingBasedDispatcher"
-                     class="axis2_engine.so">
+                     class="axis2_engine">
                 <order phase="Dispatch"/>
             </handler>
              <handler name="RequestURIBasedDispatcher"
-                     class="axis2_engine.so">
+                     class="axis2_engine">
                 <order phase="Dispatch"/>
             </handler>
              <handler name="SOAPActionBasedDispatcher"
-                     class="axis2_engine.so">
+                     class="axis2_engine">
                 <order phase="Dispatch"/>
             </handler>
              <handler name="SOAPMessageBodyBasedDispatcher"
-                     class="axis2_engine.so">
+                     class="axis2_engine">
                 <order phase="Dispatch"/>
             </handler>
         </phase>
         <phase name="PostDispatch">
              <handler name="DispatchPostConditionsEvaluator"
-                     class="axis2_engine.so">
+                     class="axis2_engine">
                 <order phase="PostDispatch"/>
             </handler>
             <handler name="InstanceDispatcher"
-                     class="axis2_engine.so">
+                     class="axis2_engine">
                 <order phase="PostDispatch"/>
             </handler>
             <handler name="SOAPProcessingModelChecker"
-                     class="axis2_engine.so">
+                     class="axis2_engine">
                 <order phase="PostDispatch"/>
             </handler>
         </phase>

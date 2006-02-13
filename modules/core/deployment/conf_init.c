@@ -15,6 +15,8 @@
  */
  
 #include <axis2_conf_init.h>
+#include <axis2_transport_sender.h>
+#include <axis2_transport_receiver.h>
 
 axis2_status_t AXIS2_CALL axis2_init_modules(axis2_env_t **env, 
     axis2_conf_ctx_t *conf_ctx);

@@ -84,8 +84,8 @@ struct axis2_wsdl_binding_op_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_op)(axis2_wsdl_binding_op_t *binding_op,
-                                                axis2_env_t **env,
-                                                void *op);
+                axis2_env_t **env,
+                void *op);
     
     /**
      * Method getOutput

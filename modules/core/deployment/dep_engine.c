@@ -25,6 +25,7 @@
 #include <axis2_om_node.h>
 #include <axis2_class_loader.h>
 #include <axis2_string.h>
+#include <axis2_utils.h>
 
 /** 
  * @brief DLL Description struct impl
@@ -740,12 +741,16 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
         return NULL;
     }
     /*
-    if (hotDeployment) {
-        startSearch(this);
-    } else {
+     * TODO
+    if (hot_deployment) 
+    {
+        start_search();
+    } 
+    else 
+    {
     */
     repos_listener = 
-        axis2_repos_listener_create_with_folder_name_and_dep_engine(env, 
+        axis2_repos_listener_create_with_folder_name_and_dep_engine(env,
             engine_impl->folder_name, dep_engine);
     if(!repos_listener)
     {
@@ -851,7 +856,7 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
         engine_impl->hot_dep = AXIS2_FALSE;
         engine_impl->hot_update = AXIS2_FALSE;
         repos_listener = 
-            axis2_repos_listener_create_with_folder_name_and_dep_engine(env, 
+            axis2_repos_listener_create_with_folder_name_and_dep_engine(env,
                 engine_impl->folder_name, dep_engine);
     }
     
@@ -962,23 +967,23 @@ axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engin
     engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
     in_phases = AXIS2_PHASES_INFO_GET_IN_PHASES(engine_impl->phases_info, env);
-    if (!in_phases)
-    {
-        return AXIS2_FAILURE;
-    }
     /* TODO condition checking should be otherway since null value can occur */
-    phase0 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 0);
-    phase1 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 1);
-    phase2 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 2);
-    phase3 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 3);
-    if(0 != AXIS2_STRCMP(phase0, AXIS2_PHASE_TRANSPORTIN) || 
-        0 != AXIS2_STRCMP(phase1, AXIS2_PHASE_PRE_DISPATCH) ||
-        0 != AXIS2_STRCMP(phase2, AXIS2_PHASE_DISPATCH) ||
-        0 != AXIS2_STRCMP(phase3, AXIS2_PHASE_POST_DISPATCH))
+    if(in_phases)
+    {
+        phase0 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 0);
+        phase1 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 1);
+        phase2 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 2);
+        phase3 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 3);
+    }
+    if((phase0 && 0 != AXIS2_STRCMP(phase0, AXIS2_PHASE_TRANSPORTIN)) || 
+        (phase1 && 0 != AXIS2_STRCMP(phase1, AXIS2_PHASE_PRE_DISPATCH)) ||
+        (phase2 && 0 != AXIS2_STRCMP(phase2, AXIS2_PHASE_DISPATCH)) ||
+        (phase3 && 0 != AXIS2_STRCMP(phase3, AXIS2_PHASE_POST_DISPATCH)))
     {
         AXIS2_ERROR_SET((*env)->error, AXI2_ERROR_INVALID_PHASE, AXIS2_FAILURE);
-        return AXIS2_FAILURE;
+        return AXIS2_SUCCESS;
     }
+    
     /*  ArrayList outPhaes = tempdata.getOutphases(); */
     /* TODO do the validation code here */
     /* ArrayList systemDefaultPhases =((AxisConfigurationImpl)axisConfig).
@@ -1189,6 +1194,7 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     axis2_char_t *temp_path = NULL;
     axis2_char_t *dll_path = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_char_t *dll_name = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
@@ -1196,6 +1202,7 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     
     read_in_dll = AXIS2_ARCH_FILE_DATA_GET_MODULE_DLL_NAME(engine_impl->
         curr_file, env);
+    dll_name = axis2_platform_get_dll_name(env, read_in_dll);
     dll_desc = axis2_dll_desc_create(env);
 
     module_folder = AXIS2_ARCH_FILE_DATA_GET_FILE(engine_impl->curr_file, env);
@@ -1203,7 +1210,7 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     AXIS2_DLL_DESC_SET_TIMESTAMP(dll_desc, env, timestamp);
     module_folder_path = AXIS2_FILE_GET_PATH(module_folder, env);
     temp_path = AXIS2_STRACAT(module_folder_path, AXIS2_PATH_SEP_STR, env);
-    dll_path = AXIS2_STRACAT(temp_path, read_in_dll, env);
+    dll_path = AXIS2_STRACAT(temp_path, dll_name, env);
     AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "axis2_dep_engine_load_module_dll; dll path is : %s", dll_path);
     status = AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_path);
     if(AXIS2_SUCCESS != status)
@@ -1281,11 +1288,13 @@ axis2_dep_engine_add_flow_handlers(axis2_dep_engine_t *dep_engine,
         axis2_handler_desc_t *handlermd = NULL;
         axis2_handler_t *handler = NULL;
         axis2_char_t *handler_dll_name = NULL;
+        axis2_char_t *handler_class_name = NULL;
         axis2_dll_desc_t *dll_desc = NULL;
         axis2_param_t *impl_info_param = NULL;
         
         handlermd = AXIS2_FLOW_GET_HANDLER(flow, env, j);
-        handler_dll_name = AXIS2_HANDLER_DESC_GET_CLASS_NAME(handlermd, env);
+        handler_class_name = AXIS2_HANDLER_DESC_GET_CLASS_NAME(handlermd, env);
+        handler_dll_name = axis2_platform_get_dll_name(env, handler_class_name);
         dll_desc = axis2_dll_desc_create(env);
         /* TODO 
          * set full dll path here instead of dll lib name only */
@@ -1305,16 +1314,19 @@ axis2_dep_engine_add_flow_handlers(axis2_dep_engine_t *dep_engine,
 void * AXIS2_CALL
 axis2_dep_engine_get_handler_dll(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
-                                axis2_char_t *dll_name)
+                                axis2_char_t *class_name)
 {
     axis2_dll_desc_t *dll_desc = NULL;
     axis2_param_t *impl_info_param = NULL;
     axis2_handler_t *handler = NULL;
+    axis2_char_t *dll_name = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, dll_name, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, class_name, NULL);
     
     dll_desc = axis2_dll_desc_create(env);
+    dll_name = axis2_platform_get_dll_name(env, class_name);
+    /* TODO set fill dll path here instead of dll lib name only */
     AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
     AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_HANDLER_DLL);
     axis2_class_loader_init(env);

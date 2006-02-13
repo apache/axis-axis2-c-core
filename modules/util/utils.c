@@ -90,3 +90,16 @@ axis2_parse_request_url_for_svc_and_op(axis2_env_t **env,
 }
 
 
+axis2_char_t* AXIS2_CALL
+axis2_platform_get_dll_name(axis2_env_t **env,
+                            axis2_char_t *class_name)
+{
+    axis2_char_t *temp_name = NULL;
+    axis2_char_t *dll_name = NULL;
+    
+    temp_name = AXIS2_STRACAT(AXIS2_LIB_PREFIX, class_name, env);
+    dll_name = AXIS2_STRACAT(temp_name, AXIS2_LIB_SUFFIX, env);
+    AXIS2_FREE((*env)->allocator, temp_name);
+    return dll_name;
+}
+

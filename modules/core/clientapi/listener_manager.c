@@ -17,6 +17,7 @@
 #include <listener_manager.h>
 #include <axis2.h>
 #include <axis2_hash.h>
+#include <axis2_transport_receiver.h>
 
 typedef struct axis2_listener_manager_impl
 {

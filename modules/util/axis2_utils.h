@@ -46,6 +46,19 @@ extern "C"
     axis2_parse_request_url_for_svc_and_op(axis2_env_t **env, axis2_char_t *request);
     
 
+    /**
+     * This function will accept the library name without any platform
+     * dependant prefixes or suffixes. It then prefix and suffix
+     * platform dependant prefix and suffix macros to the original name
+     * and return the platform specific dll name
+     *
+     * @param class_name
+     * @return platform specific dll name
+     */
+    axis2_char_t *
+    axis2_platform_get_dll_name(axis2_env_t **env,
+                                axis2_char_t *class_name);
+
 /** @} */
     
 #ifdef __cplusplus

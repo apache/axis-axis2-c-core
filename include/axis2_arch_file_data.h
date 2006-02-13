@@ -205,8 +205,8 @@ axis2_arch_file_data_create_with_type_and_name(axis2_env_t **env,
 #define AXIS2_ARCH_FILE_DATA_GET_MODULE_DLL_NAME(arch_file_data, env) \
 		((arch_file_data)->ops->get_module_dll_name (arch_file_data, env)) 
         
-#define AXIS2_ARCH_FILE_DATA_SET_MODULE_DLL_NAME(arch_file_data, env, module_name) \
-		((arch_file_data)->ops->set_module_dll_name (arch_file_data, env, module_dll_name))
+#define AXIS2_ARCH_FILE_DATA_SET_MODULE_DLL_NAME(arch_file_data, env, class_name) \
+		((arch_file_data)->ops->set_module_dll_name (arch_file_data, env, class_name))
         
 #define AXIS2_ARCH_FILE_DATA_ADD_SVC(arch_file_data, env, svc_desc) \
 		((arch_file_data)->ops->add_svc (arch_file_data, env, svc_desc)) 

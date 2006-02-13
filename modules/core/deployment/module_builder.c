@@ -166,7 +166,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     axis2_om_node_t *in_fault_flow_node = NULL;
     axis2_om_element_t *out_fault_flow_element = NULL;
     axis2_om_node_t *out_fault_flow_node = NULL;
-    struct axis2_conf *parent = NULL;
+    axis2_conf_t *parent = NULL;
     axis2_array_list_t *ops = NULL;
     axis2_param_container_t *parent_container = NULL;
     int size = 0;
@@ -247,11 +247,11 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     
     if(NULL != module_dll_att)
     {
-        axis2_char_t *module_dll_name = NULL;
+        axis2_char_t *class_name = NULL;
         
         
-        module_dll_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_dll_att, env);
-        if(NULL != module_dll_name && (0 != AXIS2_STRCMP("", module_dll_name)))
+        class_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_dll_att, env);
+        if(NULL != class_name && (0 != AXIS2_STRCMP("", class_name)))
         {
             if(NULL != module_builder->desc_builder->engine)
             {
@@ -260,7 +260,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
                 file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(
                     module_builder->desc_builder->engine, env);
                 AXIS2_ARCH_FILE_DATA_SET_MODULE_DLL_NAME(file_data, env, 
-                    module_dll_name);
+                    class_name);
                 
             }
         }

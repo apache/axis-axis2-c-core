@@ -471,6 +471,10 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX,
         /* NULL stream in the http chunked stream */
         AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM,
+        /* Flow type of PhaseOrder element cannot be null */
+        AXIS2_ERROR_FLOW_TYPE_CANNOT_BE_NULL,
+        /* Data element of the OM Node is null */
+        AXIS2_ERROR_DATA_ELEMENT_IS_NULL,
 
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.

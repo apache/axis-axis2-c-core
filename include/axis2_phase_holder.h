@@ -33,7 +33,6 @@
 #include <axis2_phase.h>
 #include <axis2_phase_rule.h>
 #include <axis2_handler.h>
-#include <axis2_wsdl.h>
 
 #ifdef __cplusplus
 extern "C"

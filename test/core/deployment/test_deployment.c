@@ -10,6 +10,8 @@
 #include <axis2_class_loader.h>
 #include <axis2_error_default.h>
 #include <axis2_log_default.h>
+#include <axis2_transport_sender.h>
+#include <axis2_transport_receiver.h>
 
 int axis2_test_dep_engine_load()
 {

@@ -193,7 +193,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
 	if (count <= 0)
 	{		 
         AXIS2_ARRAY_LIST_FREE(file_list, env);
-		printf("No files in this directory:%s\n", pathname);
+        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "No files in the path %s.", pathname);
 		return NULL;
 	}
     

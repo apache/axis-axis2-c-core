@@ -619,8 +619,7 @@ axis2_svc_add_op (axis2_svc_t *svc,
         axis2_wsdl_interface_t *wsdl_interface = NULL;
         
         wsdl_interface = axis2_svc_get_svc_interface(svc, env);
-        status = AXIS2_WSDL_INTERFACE_SET_OP(wsdl_interface, env, op, 
-            AXIS2_OP_T);
+        status = AXIS2_WSDL_INTERFACE_SET_OP(wsdl_interface, env, op);
     }
     return status;
 }

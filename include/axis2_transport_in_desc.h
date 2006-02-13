@@ -29,11 +29,10 @@
 #include <axis2_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_array_list.h>
-#include <axis2_transport_receiver.h>
+/*#include <axis2_transport_receiver.h>*/
 #include <axis2_phase_meta.h>
 #include <axis2_phase.h>
 #include <axis2_flow.h>
-#include <axis2_wsdl.h>
 
 #ifdef __cplusplus
 extern "C"

@@ -29,7 +29,6 @@
 #include <axis2_allocator.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_ctx.h>
-#include <axis2_wsdl.h>
 #include <axis2_conf_ctx.h>
 
 

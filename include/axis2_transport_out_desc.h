@@ -29,11 +29,10 @@
 #include <axis2_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_array_list.h>
-#include <axis2_transport_sender.h>
 #include <axis2_phase_meta.h>
 #include <axis2_phase.h>
 #include <axis2_flow.h>
-#include <axis2_wsdl.h>
+#include <axis2_transport_sender.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -99,7 +98,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_out_desc_ops
     /**
      * @return
      */
-    struct axis2_transport_sender * (AXIS2_CALL *
+    axis2_transport_sender_t * (AXIS2_CALL *
     get_sender) (struct axis2_transport_out_desc *transport_out,
                     axis2_env_t **env);
     
@@ -109,7 +108,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_out_desc_ops
     axis2_status_t (AXIS2_CALL *
     set_sender) (struct axis2_transport_out_desc *transport_out,
                     axis2_env_t **env,
-                    struct axis2_transport_sender *sender);
+                    axis2_transport_sender_t *sender);
     
     struct axis2_phase * (AXIS2_CALL *
     get_out_phase) (struct axis2_transport_out_desc *transport_out,

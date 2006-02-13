@@ -32,6 +32,9 @@ deployment_test_LDADD   =   libtest_deployment.la  \
                     -laxis2_deployment \
                     -laxis2_description \
                     -laxis2_engine \
+                    -laxis2_receivers \
+                    -laxis2_soap \
+                    -laxis2_core_util \
                     -laxis2_wsdl \
                     -laxis2_phaseresolver \
                     -laxis2_om \

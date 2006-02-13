@@ -227,9 +227,9 @@ axis2_ws_info_list_init(axis2_ws_info_list_t *info_list,
     info_list_impl = AXIS2_INTF_TO_IMPL(info_list);
     
     size = AXIS2_ARRAY_LIST_SIZE(info_list_impl->info_list, env);
-    if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
     {
-        return AXIS2_FAILURE;
+        return AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
     }
     
     for (i = 0; i < size; i++) 
