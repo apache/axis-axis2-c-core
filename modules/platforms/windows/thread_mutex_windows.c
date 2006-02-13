@@ -15,7 +15,7 @@
  */
 
 
-#include <axis2_thread_mutex.h>
+#include <axis2_thread.h>
 #include "axis2_thread_mutex_windows.h"
 
 static axis2_status_t thread_mutex_cleanup(void *data)
@@ -42,7 +42,7 @@ AXIS2_DECLARE(axis2_thread_mutex_t *) axis2_thread_mutex_create(axis2_allocator_
 
     mutex = (axis2_thread_mutex_t *)AXIS2_MALLOC(allocator, sizeof(*mutex));
 
-    if (flags & AXIS2_THREAD_MUTEX_UNNESTED) 
+    if (flags == AXIS2_THREAD_MUTEX_DEFAULT) /*unnested*/
 	{
         /* Use an auto-reset signaled event, ready to accept one
          * waiting thread.
@@ -78,15 +78,12 @@ AXIS2_DECLARE(axis2_status_t) axis2_thread_mutex_lock(axis2_thread_mutex_t *mute
 
 AXIS2_DECLARE(axis2_status_t) axis2_thread_mutex_trylock(axis2_thread_mutex_t *mutex)
 {
-	/*TODO:implement trylock for critical section*/
-    /*if (mutex->type == thread_mutex_critical_section) 
+	
+    if (mutex->type == thread_mutex_critical_section) 
 	{
-        if (!TryEnterCriticalSection(&mutex->section)) 
-		{
-            return AXIS2_FAILURE; //return APR_EBUSY;
-        }
+        /*TODO:implement trylock for critical section*/
     }
-    else*/ 
+    else 
 	{
         DWORD rv = WaitForSingleObject(mutex->handle, 0);
 		if ((rv != WAIT_OBJECT_0) && (rv != WAIT_ABANDONED))
