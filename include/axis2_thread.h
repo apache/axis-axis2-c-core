@@ -160,6 +160,9 @@ axis2_thread_detach(axis2_thread_t *thd);
 typedef struct axis2_thread_mutex_t axis2_thread_mutex_t;
 
 #define AXIS2_THREAD_MUTEX_DEFAULT  0x0   /**< platform-optimal lock behavior */
+#define AXIS2_THREAD_MUTEX_NESTED   0x1   /**< enable nested (recursive) locks */
+#define AXIS2_THREAD_MUTEX_UNNESTED 0x2   /**< disable nested locks */
+
 /**
  * Create and initialize a mutex that can be used to synchronize threads.
  * @param allocator Memory allocator to allocate memory for the mutex
@@ -176,6 +179,14 @@ axis2_thread_mutex_create(axis2_allocator_t *allocator, unsigned int flags);
  */
 AXIS2_DECLARE(axis2_status_t) 
 axis2_thread_mutex_lock(axis2_thread_mutex_t *mutex);
+
+/**
+ * Attempt to acquire the lock for the given mutex. If the mutex has already
+ * been acquired, the call returns immediately 
+ * @param mutex the mutex on which to attempt the lock acquiring.
+ */
+AXIS2_DECLARE(axis2_status_t) 
+axis2_thread_mutex_trylock(axis2_thread_mutex_t *mutex);
 
 /**
  * Release the lock for the given mutex.
