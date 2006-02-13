@@ -72,6 +72,10 @@ axis2_thread_pool_init(axis2_allocator_t *allocator)
 		axis2_thread_pool_free(&(pool_impl->thread_pool));
 		return NULL;
 	}
+	pool_impl->thread_pool.ops->get_thread = axis2_thread_pool_get_thread;
+	pool_impl->thread_pool.ops->join_thread = axis2_thread_pool_join_thread;
+	pool_impl->thread_pool.ops->exit_thread = axis2_thread_pool_exit_thread;
+	pool_impl->thread_pool.ops->thread_detach = axis2_thread_pool_thread_detach;
 	pool_impl->thread_pool.ops->free = axis2_thread_pool_free;
 	return &(pool_impl->thread_pool);
 }

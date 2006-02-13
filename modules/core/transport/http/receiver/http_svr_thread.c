@@ -190,7 +190,9 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 		arg_list->env = env;
 		arg_list->socket = socket;
 		arg_list->worker = svr_thread_impl->worker;
-		worker_func(NULL, (void*)arg_list);
+		AXIS2_THREAD_POOL_GET_THREAD((*env)->thread_pool, worker_func, 
+						(void*)arg_list);
+		/*worker_func(NULL, (void*)arg_list);*/
 	}
     return AXIS2_SUCCESS;
 }

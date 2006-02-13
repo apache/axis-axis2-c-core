@@ -101,13 +101,13 @@ AXIS2_DECLARE(axis2_thread_pool_t *) axis2_thread_pool_init(
 					axis2_allocator_t *allocator);
 
 #define AXIS2_THREAD_POOL_GET_THREAD(thread_pool, func, data) \
-						((thread_pool)->get_thread(thread_pool, func, data))
+						((thread_pool)->ops->get_thread(thread_pool, func, data))
 #define AXIS2_THREAD_POOL_JOIN_THREAD(thread_pool, thd) \
-						((thread_pool)->join_thread(thread_pool, thd))
+						((thread_pool)->ops->join_thread(thread_pool, thd))
 #define AXIS2_THREAD_POOL_EXIT_THREAD(thread_pool, thd) \
-						((thread_pool)->exit_thread(thread_pool, thd))
+						((thread_pool)->ops->exit_thread(thread_pool, thd))
 #define AXIS2_THREAD_POOL_THREAD_DETACH(thread_pool, thd) \
-						((thread_pool)->thread_detach(thread_pool, thd))
+						((thread_pool)->ops->thread_detach(thread_pool, thd))
 #define AXIS2_THREAD_POOL_FREE(thread_pool) ((thread_pool)->free(thread_pool))
 
 /** @} */
