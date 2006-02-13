@@ -54,6 +54,12 @@ int main(int argc, char** argv)
     axis2_om_node_t *ret_node = NULL;
     axis2_svc_t *svc = NULL;
     axis2_op_t *op = NULL;
+    axis2_call_t *call = NULL;
+    axis2_msg_ctx_t *msg_ctx = NULL;
+    axis2_mep_client_t *mep_client = NULL;
+    axis2_msg_info_headers_t *msg_info_headers = NULL;
+    axis2_endpoint_ref_t* endpoint_ref = NULL;
+    axis2_conf_t *conf = NULL;
     
     allocator = axis2_allocator_init (NULL);
     error = axis2_error_create(allocator);
@@ -82,16 +88,15 @@ int main(int argc, char** argv)
     node = build_om_programatically(&env);
 
     /* create call without passing svc_ctx_t struct */
-    axis2_call_t *call = axis2_call_create(&env, NULL, client_home);
-    axis2_msg_ctx_t *msg_ctx = NULL;
-    axis2_mep_client_t *mep_client = AXIS2_CALL_GET_BASE(call, &env);
+    call = axis2_call_create(&env, NULL, client_home);
+    mep_client = AXIS2_CALL_GET_BASE(call, &env);
     msg_ctx = AXIS2_MEP_CLIENT_PREPARE_SOAP_ENVELOPE(mep_client, &env, node);
-    axis2_msg_info_headers_t *msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, &env);
-    axis2_endpoint_ref_t* endpoint_ref = axis2_endpoint_ref_create(&env, address);
+    msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, &env);
+    endpoint_ref = axis2_endpoint_ref_create(&env, address);
     AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, &env, endpoint_ref);
     AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, &env, wsa_action); 
     AXIS2_CALL_SET_TO(call, &env, endpoint_ref);
-    axis2_conf_t *conf = AXIS2_CONF_CTX_GET_CONF(
+    conf = AXIS2_CONF_CTX_GET_CONF(
                             AXIS2_SVC_CTX_GET_CONF_CTX(
                                 AXIS2_MEP_CLIENT_GET_SVC_CTX(mep_client, &env), 
                                 &env), 
