@@ -51,7 +51,7 @@ static void thread_init(axis2_env_t *env)
 
     control = axis2_thread_once_init(allocator);
 
-	if (AXIS2_SUCCESS == rv) printf("success - thread_init - axis2_thread_once_init \n");
+	if (NULL != control) printf("success - thread_init - axis2_thread_once_init \n");
 	else printf("failure - thread_init - axis2_thread_once_init \n");
 
     thread_lock = axis2_thread_mutex_create(allocator, AXIS2_THREAD_MUTEX_DEFAULT); 
@@ -249,7 +249,46 @@ void run_test_thread(axis2_env_t *env)
 			
 	axis2_thread_mutex_destroy(thread_lock);
 }
-/*
+
+axis2_env_t *create_env_with_error_log()
+{
+	axis2_error_t *error = NULL;
+	axis2_log_t *log22 = NULL;
+	axis2_env_t *env = NULL;
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    if (!allocator)
+    {
+        printf("allocator is NULL\n");
+        return NULL;
+    }
+    error = axis2_error_create(allocator);
+    if (!error)
+    {
+        printf("cannot create error\n");
+        return NULL;
+    }
+
+    log22  = axis2_log_create (allocator, NULL,"test123.log");
+    if (!log22)
+    {
+        printf("cannot create log\n");
+        return NULL;
+    }
+	/*
+	 * allow all types of logs
+ 	 */
+    log22->level = AXIS2_LOG_LEVEL_DEBUG;
+/*	log22->enabled = 0;*/
+    env = axis2_env_create_with_error_log(allocator, error, log22);
+    if (!env)
+    {
+        printf("cannot create env with error and log\n");
+        return NULL;
+    }
+	return env;
+}
+
+
 int main (void)
 {
 	axis2_env_t *env = create_env_with_error_log();
@@ -260,4 +299,4 @@ int main (void)
 	
 	return 0;
 }
-*/
+
