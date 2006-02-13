@@ -21,7 +21,6 @@
 #include <axis2_log_default.h>
 #include <axis2_allocator.h>
 #include <axis2.h>
-#include <axis2_thread_mutex.h>
 #include "test_thread.h"
 
 
@@ -55,7 +54,7 @@ static void thread_init(axis2_env_t *env)
 	if (AXIS2_SUCCESS == rv) printf("success - thread_init - axis2_thread_once_init \n");
 	else printf("failure - thread_init - axis2_thread_once_init \n");
 
-    thread_lock = axis2_thread_mutex_create(allocator, AXIS2_THREAD_MUTEX_UNNESTED); 
+    thread_lock = axis2_thread_mutex_create(allocator, AXIS2_THREAD_MUTEX_DEFAULT); 
 
     if (NULL != thread_lock) printf("success - thread_init - axis2_thread_mutex_create \n");
 	else printf("failure - thread_init - axis2_thread_mutex_create \n");

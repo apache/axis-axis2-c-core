@@ -22,6 +22,7 @@
 #include <axis2_http_simple_request.h>
 #include <axis2_simple_http_svr_conn.h>
 #include <axis2_url.h>
+#include <axis2_error_default.h>
 
 
 
@@ -30,7 +31,7 @@
  *	Axis2 HTTP Server Thread impl  
  */
 typedef struct axis2_http_svr_thread_impl axis2_http_svr_thread_impl_t;  
-  
+typedef struct axis2_http_svr_thd_args axis2_http_svr_thd_args_t;
 struct axis2_http_svr_thread_impl
 {
 	axis2_http_svr_thread_t svr_thread;
@@ -39,6 +40,14 @@ struct axis2_http_svr_thread_impl
 	axis2_http_worker_t *worker;
 	int port;
 };
+
+struct axis2_http_svr_thd_args
+{
+	axis2_env_t **env;
+	axis2_socket_t socket;
+	axis2_http_worker_t *worker;	
+};
+
 
 #define AXIS2_INTF_TO_IMPL(http_svr_thread) \
                 ((axis2_http_svr_thread_impl_t *)(http_svr_thread))
@@ -62,8 +71,12 @@ axis2_http_svr_thread_set_worker(axis2_http_svr_thread_t *svr_thread,
 						axis2_env_t **env, axis2_http_worker_t *worker);
 axis2_status_t AXIS2_CALL 
 axis2_http_svr_thread_free (axis2_http_svr_thread_t *svr_thread, 
-						axis2_env_t **env);					
+						axis2_env_t **env);
+AXIS2_DECLARE (axis2_env_t*)
+init_thread_env(axis2_env_t **system_env);
 
+void * AXIS2_THREAD_FUNC
+worker_func(axis2_thread_t *thd, void *data);
 /***************************** End of function headers ************************/
 
 axis2_http_svr_thread_t* AXIS2_CALL
@@ -158,13 +171,7 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 	while(AXIS2_FALSE == svr_thread_impl->stopped)
 	{
 		int socket = -1;
-	 	struct AXIS2_PLATFORM_TIMEB t1, t2;  
-		axis2_simple_http_svr_conn_t *svr_conn = NULL;
-		axis2_http_simple_request_t *request = NULL;
-		int millisecs = 0;
-		double secs = 0;
-		axis2_http_worker_t *tmp = NULL;
-		axis2_status_t status = AXIS2_FAILURE;
+	 	axis2_http_svr_thd_args_t *arg_list = NULL;
 		
 		socket = axis2_network_handler_svr_socket_accept(env, 
 						svr_thread_impl->listen_socket);
@@ -172,35 +179,18 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 		{
 			continue;
 		}
-		/* This block goes inside thread execution */
+		arg_list = AXIS2_MALLOC((*env)->allocator, 
+						sizeof(axis2_http_svr_thd_args_t));
+		if(NULL == arg_list)
 		{
-			AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t1);
-			svr_conn = axis2_simple_http_svr_conn_create(env, socket);
-			AXIS2_SIMPLE_HTTP_SVR_CONN_SET_RCV_TIMEOUT(svr_conn, env, 
-							axis2_http_socket_read_timeout);
-			request = AXIS2_SIMPLE_HTTP_SVR_CONN_READ_REQUEST(svr_conn, env);
-			tmp = svr_thread_impl->worker;
-			status = AXIS2_HTTP_WORKER_PROCESS_REQUEST(tmp, env, svr_conn, request);
-			AXIS2_SIMPLE_HTTP_SVR_CONN_FREE(svr_conn, env);
-			AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t2);
-			millisecs = t2.millitm - t1.millitm;
-			secs = difftime(t2.time, t1.time);
-			if(millisecs < 0)
-			{
-				millisecs += 1000;
-				secs--;
-			}
-			secs += millisecs/1000.0;
-			if(status == AXIS2_SUCCESS)
-			{
-				AXIS2_LOG_INFO((*env)->log, "Request served in %.3f seconds", secs);
-			}
-			else
-			{
-				AXIS2_LOG_INFO((*env)->log, "Error occured in processing request." 
-							"(%.3f seconds)", secs);
-			}
+			AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, 
+						"Memory allocation error in the svr thread loop");
+			continue;			
 		}
+		arg_list->env = env;
+		arg_list->socket = socket;
+		arg_list->worker = svr_thread_impl->worker;
+		worker_func(NULL, (void*)arg_list);
 	}
     return AXIS2_SUCCESS;
 }
@@ -256,4 +246,72 @@ axis2_http_svr_thread_set_worker(axis2_http_svr_thread_t *svr_thread,
 	AXIS2_PARAM_CHECK((*env)->error, worker, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(svr_thread)->worker = worker;
 	return AXIS2_SUCCESS;
+}
+
+
+AXIS2_DECLARE (axis2_env_t*)
+axis2_init_thread_env(axis2_env_t **system_env)
+{
+	axis2_error_t *error = axis2_error_create((*system_env)->allocator);
+	return axis2_env_create_with_error_log((*system_env)->allocator, error, 
+						(*system_env)->log);
+}
+
+/**
+ * Thread worker function. 
+ */
+void * AXIS2_THREAD_FUNC
+worker_func(axis2_thread_t *thd, void *data)
+{
+	struct AXIS2_PLATFORM_TIMEB t1, t2;  
+	axis2_simple_http_svr_conn_t *svr_conn = NULL;
+	axis2_http_simple_request_t *request = NULL;
+	int millisecs = 0;
+	double secs = 0;
+	axis2_http_worker_t *tmp = NULL;
+	axis2_status_t status = AXIS2_FAILURE;
+	axis2_env_t **env = NULL;
+	axis2_socket_t socket;
+	axis2_env_t *thread_env = NULL;
+	axis2_http_svr_thd_args_t *arg_list = NULL;
+	
+	
+	arg_list = (axis2_http_svr_thd_args_t*)data;
+	if(NULL == arg_list)
+	{
+		return NULL;
+	}
+	AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t1);
+	env = arg_list->env;
+	thread_env = axis2_init_thread_env(env);
+	socket = arg_list->socket;
+	svr_conn = axis2_simple_http_svr_conn_create(&thread_env, socket);
+	AXIS2_SIMPLE_HTTP_SVR_CONN_SET_RCV_TIMEOUT(svr_conn, &thread_env, 
+					axis2_http_socket_read_timeout);
+	request = AXIS2_SIMPLE_HTTP_SVR_CONN_READ_REQUEST(svr_conn, &thread_env);
+	tmp = arg_list->worker;
+	status = AXIS2_HTTP_WORKER_PROCESS_REQUEST(tmp, &thread_env, svr_conn, 
+						request);
+	AXIS2_SIMPLE_HTTP_SVR_CONN_FREE(svr_conn, &thread_env);
+	AXIS2_FREE((*env)->allocator, arg_list);
+	AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t2);
+	millisecs = t2.millitm - t1.millitm;
+	secs = difftime(t2.time, t1.time);
+	if(millisecs < 0)
+	{
+		millisecs += 1000;
+		secs--;
+	}
+	secs += millisecs/1000.0;
+	if(status == AXIS2_SUCCESS)
+	{
+		AXIS2_LOG_INFO(thread_env->log, "Request served in %.3f seconds", secs);
+	}
+	else
+	{
+		AXIS2_LOG_WARNING(thread_env->log, AXIS2_LOG_SI, 
+						"Error occured in processing request (%.3f seconds)", 
+						secs);
+	}
+	return NULL;
 }

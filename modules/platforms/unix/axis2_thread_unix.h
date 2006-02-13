@@ -42,4 +42,10 @@ struct axis2_thread_once_t {
     pthread_once_t once;
 };
 
+/*************************Thread locking functions*****************************/
+struct axis2_thread_mutex_t {
+    axis2_allocator_t *allocator;
+    pthread_mutex_t mutex;
+};
+
 #endif  /* AXIS2_THREAD_UNIX_H */

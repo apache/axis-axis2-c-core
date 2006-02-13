@@ -53,7 +53,7 @@ axis2_env_create (axis2_allocator_t *allocator)
     environment->error = axis2_error_create (allocator);
     if(NULL == environment->error)
         return NULL;
-	
+	environment->thread_pool = NULL;
 	return environment;
     
 }
@@ -74,6 +74,8 @@ axis2_env_create_with_error_log (axis2_allocator_t *allocator
     axis2_env_t *environment;
     if (NULL == allocator)
         return NULL;
+	if (NULL == error)
+        return NULL;
 
     environment =
         (axis2_env_t *) AXIS2_MALLOC (allocator,
@@ -83,11 +85,40 @@ axis2_env_create_with_error_log (axis2_allocator_t *allocator
         return NULL;
 
     environment->allocator = allocator;
-
-    if (NULL == error)
-        return NULL;
     environment->error = error;
 
+
+    if (NULL == log)
+        environment->log_enabled = AXIS2_FALSE;
+	environment->log_enabled = AXIS2_TRUE;
+    environment->log = log;
+	environment->thread_pool = NULL;
+    return environment;
+}
+
+AXIS2_DECLARE(axis2_env_t *) 
+axis2_env_create_with_error_log_thread_pool (axis2_allocator_t *allocator
+							, axis2_error_t *error
+                            , axis2_log_t *log
+							, axis2_thread_pool_t *pool)
+{
+	axis2_env_t *environment;
+    if (NULL == allocator)
+        return NULL;
+	if (NULL == error)
+        return NULL;
+	if(NULL == pool)
+		return NULL;
+
+    environment =
+        (axis2_env_t *) AXIS2_MALLOC (allocator, sizeof (axis2_env_t));
+
+    if (NULL == environment)
+        return NULL;
+
+    environment->allocator = allocator;
+    environment->error = error;
+	environment->thread_pool = pool;
 
     if (NULL == log)
         environment->log_enabled = AXIS2_FALSE;
@@ -96,7 +127,6 @@ axis2_env_create_with_error_log (axis2_allocator_t *allocator
 
     return environment;
 }
-
 
 AXIS2_DECLARE( axis2_status_t )
 axis2_env_check_status (axis2_env_t **env)

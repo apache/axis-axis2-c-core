@@ -56,8 +56,8 @@ threadattr_cleanup(void *data)
 
 #define DETACH_ARG(v) ((v) ? PTHREAD_CREATE_DETACHED : PTHREAD_CREATE_JOINABLE)
 
-AXIS2_DECLARE(axis2_status_t) axis2_threadattr_detach_set(
-						axis2_threadattr_t *attr, axis2_bool_t detached)
+AXIS2_DECLARE(axis2_status_t) 
+axis2_threadattr_detach_set(axis2_threadattr_t *attr, axis2_bool_t detached)
 {
     if (0 == pthread_attr_setdetachstate(&attr->attr, DETACH_ARG(detached)))
 	{
@@ -196,4 +196,48 @@ AXIS2_DECLARE(axis2_status_t)
 axis2_thread_once(axis2_thread_once_t *control, void (*func)(void))
 {
     return pthread_once(&control->once, func);
+}
+
+/*************************Thread locking functions*****************************/
+AXIS2_DECLARE(axis2_thread_mutex_t *)
+axis2_thread_mutex_create(axis2_allocator_t *allocator, unsigned int flags)
+{
+    axis2_thread_mutex_t *new_mutex = NULL;
+		
+    new_mutex = AXIS2_MALLOC(allocator, sizeof(axis2_thread_mutex_t));
+    new_mutex->allocator = allocator;
+
+    if (pthread_mutex_init(&new_mutex->mutex, NULL) != 0)
+	{
+			AXIS2_FREE(allocator, new_mutex);
+			return NULL;
+	}
+	return new_mutex;
+}
+
+AXIS2_DECLARE(axis2_status_t) 
+axis2_thread_mutex_lock(axis2_thread_mutex_t *mutex)
+{
+	return pthread_mutex_lock(&mutex->mutex);
+}
+
+AXIS2_DECLARE(axis2_status_t) 
+axis2_thread_mutex_unlock(axis2_thread_mutex_t *mutex)
+{
+    if(pthread_mutex_unlock(&mutex->mutex) != 0)
+	{
+		return AXIS2_FAILURE;
+	}
+	return AXIS2_SUCCESS;
+}
+
+AXIS2_DECLARE(axis2_status_t) 
+axis2_thread_mutex_destroy(axis2_thread_mutex_t *mutex)
+{
+	if(0 != pthread_mutex_destroy(&mutex->mutex))
+	{
+		return AXIS2_FAILURE;
+	}
+    AXIS2_FREE(mutex->allocator, mutex);
+	return AXIS2_SUCCESS;
 }

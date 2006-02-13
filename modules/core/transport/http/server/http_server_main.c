@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <axis2_error_default.h>
 #include <axis2_log_default.h>
+#include <axis2_thread_pool.h>
 
 
 /***************************** Function headers *******************************/
@@ -32,7 +33,9 @@ axis2_env_t* init_syetem_env(axis2_allocator_t *allocator, axis2_char_t *log_fil
 {
 	axis2_error_t *error = axis2_error_create(allocator);
 	axis2_log_t *log = axis2_log_create(allocator, NULL, log_file);
-	return axis2_env_create_with_error_log(allocator, error, log);
+	axis2_thread_pool_t *thread_pool = axis2_thread_pool_init(allocator);
+	return axis2_env_create_with_error_log_thread_pool(allocator, error, log, 
+						thread_pool);
 }
 
 void system_exit(axis2_allocator_t *allocator, axis2_env_t *env, int status)
