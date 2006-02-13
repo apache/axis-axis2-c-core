@@ -54,34 +54,34 @@ AXIS2_DECLARE_DATA struct axis2_thread_pool_ops
 	* @param data arguments to be passed to the function
 	* @return pointer to a thread in ready state.
 	*/
-	axis2_thread_t * (*get_thread) (axis2_thread_pool_t *pool, 
+	axis2_thread_t * (AXIS2_CALL *get_thread) (axis2_thread_pool_t *pool, 
 					axis2_thread_start_t func, void *data);
   /**
 	* Blocks until the desired thread stops executing.
 	* @param thd The thread to joined
 	* @return status of the operation
 	*/
-	axis2_status_t (*join_thread) (axis2_thread_pool_t *pool, 
+	axis2_status_t (AXIS2_CALL *join_thread) (axis2_thread_pool_t *pool, 
 					axis2_thread_t *thd);
   /**
 	* Stop the execution of current thread
 	* @param thd thread to be stopped
 	* @return status of the operation
 	*/
-	axis2_status_t (*exit_thread) (axis2_thread_pool_t *pool, 
+	axis2_status_t (AXIS2_CALL *exit_thread) (axis2_thread_pool_t *pool, 
 					axis2_thread_t *thd);
   /**
 	* Detaches a thread
 	* @param thd thread to be detached
 	* @return status of the operation
 	*/
-	axis2_status_t (*thread_detach) (axis2_thread_pool_t *pool, 
+	axis2_status_t (AXIS2_CALL *thread_detach) (axis2_thread_pool_t *pool, 
 					axis2_thread_t *thd);
   /**
 	* Frees resources used by thread_pool
 	* @param pool thread_pool to be freed
 	*/
-	axis2_status_t (*free) (axis2_thread_pool_t *pool);
+	axis2_status_t (AXIS2_CALL *free) (axis2_thread_pool_t *pool);
 };
 
 /**
