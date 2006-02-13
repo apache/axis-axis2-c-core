@@ -28,6 +28,7 @@
 #include <axis2_dir_handler.h>
 #include <axis2_file.h>
 #include "axis2_log.h"
+#include "test_thread.h"
 
 typedef struct a
 {
@@ -293,5 +294,6 @@ int main(void)
     test_uuid_gen(env);
 	run_test_log();
 	test_axis2_dir_handler_list_service_or_module_dirs();
+    run_test_thread(env);
 	return 0;	
 }

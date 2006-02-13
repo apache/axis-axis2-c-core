@@ -130,9 +130,8 @@ axis2_thread_yield();
  * @param control The control variable to initialize
  * @return The status of the operation
  */
-AXIS2_DECLARE(axis2_status_t) 
-axis2_thread_once_init(axis2_thread_once_t **control, 
-						axis2_allocator_t *allocator);
+AXIS2_DECLARE(axis2_thread_once_t*) 
+axis2_thread_once_init(axis2_allocator_t *allocator);
 
 /**
  * Run the specified function one time, regardless of how many threads

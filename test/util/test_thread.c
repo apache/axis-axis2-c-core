@@ -49,7 +49,7 @@ static void thread_init(axis2_env_t *env)
     	
 	allocator = env->allocator;
 
-	rv = axis2_thread_once_init(&control, allocator);
+    control = axis2_thread_once_init(allocator);
 
 	if (AXIS2_SUCCESS == rv) printf("success - thread_init - axis2_thread_once_init \n");
 	else printf("failure - thread_init - axis2_thread_once_init \n");
