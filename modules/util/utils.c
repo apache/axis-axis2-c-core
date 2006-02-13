@@ -90,7 +90,7 @@ axis2_parse_request_url_for_svc_and_op(axis2_env_t **env,
 }
 
 
-axis2_char_t* AXIS2_CALL
+AXIS2_DECLARE(axis2_char_t*)
 axis2_platform_get_dll_name(axis2_env_t **env,
                             axis2_char_t *class_name)
 {
