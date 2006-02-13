@@ -42,7 +42,7 @@ extern "C"
  * Thread callbacks from axis2 functions must be declared with AXIS2_THREAD_FUNC
  * so that they follow the platform's calling convention.
  */
-#define AXIS2_THREAD_FUNC
+/*#define AXIS2_THREAD_FUNC*/
 	
 /** Thread structure. */
 typedef struct axis2_thread_t           axis2_thread_t;
@@ -87,7 +87,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_threadattr_detach_set(
  * if threads are to be joinable.
  */
 AXIS2_DECLARE(axis2_bool_t) axis2_threadattr_is_detach(
-						axis2_threadattr_t *attr, axis2_env_t **env);
+						axis2_threadattr_t *attr, axis2_allocator_t *allocator);
 
 
 /**
