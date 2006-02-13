@@ -67,6 +67,8 @@ extern "C"
 #define AXIS2_CALL __stdcall
 #endif
 #endif
+#define AXIS2_THREAD_FUNC AXIS2_CALL
+
 #ifdef DOXYGEN
 
 /* define these just so doxygen documents them */
