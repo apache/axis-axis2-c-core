@@ -194,15 +194,12 @@ axis2_os_thread_get(axis2_thread_t *thd, axis2_env_t **env)
 	return thd->td;
 }
 
-AXIS2_DECLARE(axis2_status_t)
-axis2_thread_once_init(axis2_thread_once_t **control, axis2_allocator_t *allocator)
+AXIS2_DECLARE(axis2_thread_once_t *)
+axis2_thread_once_init(axis2_allocator_t *allocator)
 {
-    *control = AXIS2_MALLOC(allocator, sizeof(**control));
-	if(NULL == *control)
-	{
-		return AXIS2_FAILURE;
-	}
-    return AXIS2_SUCCESS;
+	axis2_thread_once_t *control = NULL;
+    control = AXIS2_MALLOC(allocator, sizeof(*control));
+	return control;
 }
 
 AXIS2_DECLARE(axis2_status_t)
