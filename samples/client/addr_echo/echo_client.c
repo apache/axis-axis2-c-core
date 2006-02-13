@@ -60,6 +60,7 @@ int main(int argc, char** argv)
     axis2_msg_info_headers_t *msg_info_headers = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_conf_t *conf = NULL;
+    axis2_msg_ctx_t *response_ctx = NULL;
     
     allocator = axis2_allocator_init (NULL);
     error = axis2_error_create(allocator);
@@ -126,7 +127,7 @@ int main(int argc, char** argv)
         printf("ERROR: operation not present in service\n");
         return -1;
     }
-    axis2_msg_ctx_t *response_ctx = AXIS2_CALL_INVOKE_BLOCKING(call, &env, op, msg_ctx);
+    response_ctx = AXIS2_CALL_INVOKE_BLOCKING(call, &env, op, msg_ctx);
 
     if (response_ctx)
     {
