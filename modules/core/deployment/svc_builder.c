@@ -16,6 +16,7 @@
  
 #include <axis2_svc_builder.h>
 #include <axis2_class_loader.h>
+#include <axis2_utils.h>
 
  /**
  * This struct is to convert OM->ServiceDescrption , where it first create OM 
