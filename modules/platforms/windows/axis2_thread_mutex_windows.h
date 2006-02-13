@@ -2,6 +2,7 @@
 #define AXIS2_THREAD_MUTEX_WINDOWS_H
 
 #include <process.h>
+#include <windows.h>
 
 typedef enum thread_mutex_type 
 {
