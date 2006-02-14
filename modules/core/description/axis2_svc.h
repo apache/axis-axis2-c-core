@@ -22,7 +22,6 @@
   * @brief axis2 service interface
   */
 
-#include <axis2_core.h>
 #include <axis2_param_container.h>
 #include <axis2_flow_container.h>
 #include <axis2_wsdl_svc.h>

@@ -22,7 +22,6 @@
   * @brief axis2 op interface
   */
 
-#include <axis2_core.h>
 #include <axis2_param_container.h>
 #include <axis2_wsdl_op.h>
 #include <axis2_svc.h>

@@ -23,7 +23,6 @@
  *        can be accessed here
  */
 
-#include <axis2_core.h>
 #include <axis2_param_container.h>
 #include <axis2_svc_grp.h>
 #include <axis2_transport_in_desc.h>

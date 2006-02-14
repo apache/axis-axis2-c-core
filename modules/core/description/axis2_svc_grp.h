@@ -22,7 +22,6 @@
  * @brief axis2 Service Group interface
  */
 
-#include <axis2_core.h>
 #include <axis2_param_container.h>
 #include <axis2_svc.h>
 #include <axis2_svc_grp_ctx.h>

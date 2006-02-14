@@ -26,7 +26,6 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_ctx.h>
-#include <axis2_core.h>
 #include <axis2_relates_to.h>
 #include <axis2_param.h>
 #include <axis2_handler_desc.h>
