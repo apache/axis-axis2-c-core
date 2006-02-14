@@ -177,6 +177,14 @@ int main(int argc, char** argv)
                 print_invalid_om(&env, ret_node1);
                 return AXIS2_FAILURE;
             }
+            /*see if we have got a fault*/
+            result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node, &env);
+            if (AXIS2_STRCMP(AXIS2_OM_ELEMENT_GET_LOCALNAME(result_ele, &env), "doSpellingSuggestionResponse") != 0 )
+            {
+                print_invalid_om(&env, ret_node1);
+                return AXIS2_FAILURE;
+            }
+            
             ret_node1 = AXIS2_OM_NODE_GET_FIRST_CHILD(ret_node, &env); /*return*/
             if (!ret_node1)
             {
@@ -283,7 +291,7 @@ void print_invalid_om(axis2_env_t **env, axis2_om_node_t *ret_node)
 
     AXIS2_OM_NODE_SERIALIZE (ret_node, env, om_output);
     buffer = AXIS2_XML_WRITER_GET_XML(writer, env);
-    printf ("\nReceived invalid OM as result : %s\n", buffer);
+    printf ("\nReceived OM as result : %s\n", buffer);
 }
 /***************************Function implementation****************************/
 /*axis2_om_node_t *AXIS2_CALL
