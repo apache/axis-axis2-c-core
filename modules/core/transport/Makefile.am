@@ -1,2 +1,1 @@
-noinst_HEADERS = axis2_transport_receiver.h \
-                    axis2_transport_sender.h
+noinst_HEADERS = axis2_transport_receiver.h
