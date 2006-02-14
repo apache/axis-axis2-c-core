@@ -1,5 +1,5 @@
 TESTS =
-lib_LTLIBRARIES = libaxis2_receivers.la
+noinst_LTLIBRARIES = libaxis2_receivers.la
 AM_CPPFLAGS = $(CPPFLAGS)
 
 libaxis2_receivers_la_SOURCES = msg_recv.c \

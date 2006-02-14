@@ -1,5 +1,5 @@
 TESTS =
-lib_LTLIBRARIES = libaxis2_description.la
+noinst_LTLIBRARIES = libaxis2_description.la
 noinst_HEADERS = axis2_description.h
 
 AM_CPPFLAGS = $(CPPFLAGS)

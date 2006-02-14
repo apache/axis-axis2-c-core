@@ -1,5 +1,5 @@
 TESTS =
-lib_LTLIBRARIES = libaxis2_core_util.la
+noinst_LTLIBRARIES = libaxis2_core_util.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_core_util_la_SOURCES = core_utils.c
 

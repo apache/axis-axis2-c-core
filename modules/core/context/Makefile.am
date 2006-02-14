@@ -1,5 +1,5 @@
 TESTS =
-lib_LTLIBRARIES = libaxis2_context.la
+noinst_LTLIBRARIES = libaxis2_context.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_context_la_SOURCES = ctx.c \
                                 msg_ctx.c \

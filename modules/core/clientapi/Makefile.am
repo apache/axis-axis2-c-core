@@ -1,5 +1,5 @@
 TESTS =
-lib_LTLIBRARIES = libaxis2_clientapi.la
+noinst_LTLIBRARIES = libaxis2_clientapi.la
 noinst_HEADERS = callback_recv.h listener_manager.h
 
 AM_CPPFLAGS = $(CPPFLAGS)

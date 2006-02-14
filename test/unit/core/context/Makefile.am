@@ -19,15 +19,10 @@ context_test_LDADD   =   libtest_context.la  \
                     -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
                     -laxis2_unix \
-                    -laxis2_context \
-                    -laxis2_description \
-                    -laxis2_deployment \
                     -laxis2_engine \
                     -laxis2_wsdl \
-                    -laxis2_phaseresolver \
                     -laxis2_om \
                     -laxis2_parser \
-                    -laxis2_addr \
                     -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
                     -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
 

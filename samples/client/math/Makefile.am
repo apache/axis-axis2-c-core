@@ -6,19 +6,11 @@ math_SOURCES = axis2_math_stub.c \
 
 math_LDADD   =  -L$(AXIS2C_HOME)/lib \
 					-laxis2_util \
-                    -laxis2_context \
-                    -laxis2_description \
-                    -laxis2_deployment \
-                    -laxis2_phaseresolver \
                     -laxis2_om \
                     -laxis2_wsdl \
                     -laxis2_engine \
                     -laxis2_parser \
-                    -laxis2_addr \
                     -laxis2_unix \
-                    -laxis2_receivers \
-                    -laxis2_core_util \
-                    -laxis2_clientapi \
                     -laxis2_soap \
                     -laxis2_http_transport \
                     -laxis2_http_sender \

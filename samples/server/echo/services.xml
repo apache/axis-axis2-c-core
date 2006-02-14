@@ -6,7 +6,7 @@
    </description>
 
     <operation name="echoString">
-            <messageReceiver class="axis2_receivers" />
+            <!--messageReceiver class="axis2_receivers" /-->
             <parameter name="wsamapping" >http://127.0.0.1:9090/axis2/services/echo/echoString</parameter>
     </operation>
 

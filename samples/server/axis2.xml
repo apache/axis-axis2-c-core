@@ -34,7 +34,7 @@
     <!-- Message Receivers -->
     <!-- ================================================= -->
     <!-- This is the Deafult Message Receiver for the Request Response style Operations -->
-    <messageReceiver mep="INOUT" class="axis2_receivers"/>
+    <!--messageReceiver mep="INOUT" class="axis2_receivers"/-->
 
     <!-- ================================================= -->
     <!-- Transport Ins -->

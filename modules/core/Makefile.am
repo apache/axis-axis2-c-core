@@ -1,2 +1,1 @@
-TESTS =
-SUBDIRS = context engine phaseresolver description deployment addr receivers clientapi util transport 
+SUBDIRS = engine transport transport/http transport/http/sender transport/http/receiver transport/http/server
