@@ -660,7 +660,8 @@ axis2_msg_ctx_free (axis2_msg_ctx_t *msg_ctx,
 
     if (msg_ctx_impl->svc_grp_id)
     {
-        AXIS2_FREE((*env)->allocator, msg_ctx_impl->svc_grp_id);
+        /*AXIS2_FREE((*env)->allocator, msg_ctx_impl->svc_grp_id);
+		Freeing this is wrong. This is a shallow copy */
         msg_ctx_impl->svc_grp_id = NULL;
     }
     
