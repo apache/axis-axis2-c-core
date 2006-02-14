@@ -11,6 +11,7 @@ test_description_LDADD   =  -L$(AXIS2C_HOME)/lib \
                     -laxis2_unix \
                     -laxis2_wsdl \
                     -laxis2_engine \
+                    -lpthread \
                     -laxis2_soap \
                     -laxis2_parser \
                     -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \

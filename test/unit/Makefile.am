@@ -19,6 +19,7 @@ main_unit_test_suite_LDADD   =   \
                     -laxis2_util \
                     -laxis2_unix \
                     -laxis2_om \
+                    -lpthread \
                     -laxis2_engine \
                     -laxis2_soap \
                     -laxis2_wsdl \

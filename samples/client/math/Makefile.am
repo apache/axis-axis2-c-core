@@ -11,6 +11,7 @@ math_LDADD   =  -L$(AXIS2C_HOME)/lib \
                     -laxis2_engine \
                     -laxis2_parser \
                     -laxis2_unix \
+                    -lpthread \
                     -laxis2_soap \
                     -laxis2_http_transport \
                     -laxis2_http_sender \

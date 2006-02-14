@@ -36,6 +36,7 @@ deployment_test_LDADD   =   libtest_deployment.la  \
                     -laxis2_soap \
                     -laxis2_wsdl \
                     -laxis2_om \
+                    -lpthread \
                     -laxis2_parser \
                     -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
                     -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)

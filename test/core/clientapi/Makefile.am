@@ -14,6 +14,7 @@ test_clientapi_LDADD   =  -L$(AXIS2C_HOME)/lib \
 	                -laxis2_wsdl \
 	                -laxis2_http_sender \
 	                -laxis2_parser \
+	                -lpthread \
 	                -laxis2_http_transport \
 					-laxis2_soap \
                     -laxis2_unix \
@@ -25,6 +26,7 @@ test_client_LDADD   =  -L$(AXIS2C_HOME)/lib \
 	                -laxis2_om \
 	                -laxis2_engine \
 	                -laxis2_wsdl \
+	                -lpthread \
 	                -laxis2_parser \
 					-laxis2_soap \
                     -laxis2_unix \
