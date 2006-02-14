@@ -200,8 +200,11 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
   
 /** getopt function */
 #define AXIS2_GETOPT axis2_getopt  
-  
+/** string functions */  
 #define AXIS2_VSNPRINTF _vsnprintf
+
+#define AXIS2_SNPRINTF _snprintf
+
 
 /** @} */
 #ifdef __cplusplus

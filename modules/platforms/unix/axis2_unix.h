@@ -213,7 +213,7 @@ extern "C"
 /**
   * network specific functions and defs
   */
-#define axis2_socket_t                        int
+#define axis2_socket_t                      int
 #define AXIS2_INVALID_SOCKET                -1
 #define AXIS2_INADDR_NONE                   (in_addr_t)-1
 #define axis2_unsigned_short_t                uint16_t
@@ -227,7 +227,9 @@ extern "C"
 /**
   * handling variable number of arguments (for log.c)
   */
-#define AXIS2_VSNPRINTF     	vsnprintf
+#define AXIS2_VSNPRINTF vsnprintf
+
+#define AXIS2_SNPRINTF snprintf
 
 /** @} */
 #ifdef __cplusplus
