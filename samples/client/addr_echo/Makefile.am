@@ -11,7 +11,6 @@ addr_echo_LDADD   =  -L$(AXIS2C_HOME)/lib \
                     -laxis2_unix \
                     -lpthread \
                     -laxis2_soap \
-                    -laxis2_http_transport \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
                     -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
