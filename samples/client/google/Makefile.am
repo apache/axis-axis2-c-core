@@ -2,7 +2,8 @@ prgbindir=$(prefix)/bin/samples
 prgbin_PROGRAMS = google
 google_SOURCES = google_client.c
 
-google_LDADD   =  -L$(AXIS2C_HOME)/lib \
+google_LDADD   =    $(LDFLAGS) \
+                    -L$(AXIS2C_HOME)/lib \
 					-laxis2_util \
                     -laxis2_om \
                     -laxis2_wsdl \
