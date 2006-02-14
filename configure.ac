@@ -141,20 +141,11 @@ AC_SUBST(SAMPLES)
 AC_CONFIG_FILES([Makefile \
     modules/Makefile \
     modules/core/Makefile \
-    modules/core/description/Makefile \
-    modules/core/context/Makefile \
     modules/core/engine/Makefile \
-    modules/core/addr/Makefile \
-    modules/core/phaseresolver/Makefile \
     modules/core/transport/Makefile \
-    modules/core/transport/http/Makefile \
     modules/core/transport/http/sender/Makefile \
     modules/core/transport/http/receiver/Makefile \
     modules/core/transport/http/server/Makefile \
-    modules/core/deployment/Makefile \
-    modules/core/clientapi/Makefile \
-    modules/core/receivers/Makefile \
-    modules/core/util/Makefile \
     modules/xml/Makefile \
     modules/xml/parser/Makefile \
     modules/xml/parser/libxml2/Makefile \
