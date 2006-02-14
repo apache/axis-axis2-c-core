@@ -251,7 +251,6 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     {
         return AXIS2_FAILURE;
     }
-    AXIS2_SOAP_ENVELOPE_SET_HEADER(default_envelope, env, out_header);
 
     out_body = axis2_soap_body_create_with_parent(env, default_envelope);
     if (!out_body)
@@ -264,7 +263,6 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     {
         return AXIS2_FAILURE;
     }
-    AXIS2_SOAP_ENVELOPE_SET_BODY(default_envelope, env, out_body);
     
     if (status != AXIS2_SUCCESS)
     {
