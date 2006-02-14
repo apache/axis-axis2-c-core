@@ -10,6 +10,7 @@ axis2_http_server_LDADD   =  $(LDFLAGS) \
                             -laxis2_om \
                             -laxis2_engine \
                             -laxis2_soap \
+                            -lpthread \
                             -laxis2_wsdl \
                             -laxis2_libxml2 \
                             -laxis2_http_sender \
