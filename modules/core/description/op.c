@@ -453,7 +453,7 @@ axis2_op_create (axis2_env_t **env)
     }
     message_out = NULL;
     
-    op_impl->phases_in_fault_flow = axis2_array_list_create(env, 0);
+    /*op_impl->phases_in_fault_flow = axis2_array_list_create(env, 0);
     if(NULL == op_impl->phases_in_fault_flow)
     {
         axis2_op_free(&(op_impl->op), env);
@@ -465,7 +465,7 @@ axis2_op_create (axis2_env_t **env)
     {
         axis2_op_free(&(op_impl->op), env);
         return NULL;
-    }
+    }*/
     /*
     op_impl->modulerefs = axis2_array_list_create(env, 0);
     if(NULL == op_impl->modulerefs)
