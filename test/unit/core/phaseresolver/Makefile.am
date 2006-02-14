@@ -10,9 +10,14 @@ include_HEADERS=$(top_builddir)/test/unit/core/phaseresolver/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
-            -I$(top_builddir)/modules/core/description \
-            -I$(top_builddir)/modules/core/transport \
             -I$(top_builddir)/modules/wsdl \
+            -I$(top_builddir)/modules/core/description \
+            -I$(top_builddir)/modules/core/context \
+            -I$(top_builddir)/modules/core/phaseresolver \
+            -I$(top_builddir)/modules/core/deployment \
+            -I$(top_builddir)/modules/core/transport \
+            -I$(top_builddir)/modules/core/engine \
+            -I$(top_builddir)/modules/core/clientapi \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/platforms
 
