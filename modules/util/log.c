@@ -118,7 +118,7 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops,
 	
 	axis2_thread_mutex_lock(log_impl->mutex);
 	
-	log_impl->stream = axis2_file_handler_open(log_file_name,"as+");
+	log_impl->stream = axis2_file_handler_open(log_file_name,"a+");
 	
 	axis2_thread_mutex_unlock(log_impl->mutex);
 	
