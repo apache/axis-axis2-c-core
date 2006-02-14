@@ -18,7 +18,7 @@ This will start the simple axis server on port 9090. To see the possible command
 NOTE: If you run into shared lib problems, set the LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib
 3. Run the sample clients in a new shell
-        cd /your_path_to_axis2c/deploy/bin
+        cd /your_path_to_axis2c/bin/samples
         ./echo
 This will invoke the echo service.
         ./math
@@ -66,12 +66,12 @@ To get the samples working, you also need to make and make install the samples.
         cp lib/libecho.so services/echo/
         cp lib/libmath.so services/math/
 8. Start simple axis server
-        cd deploy/bin
+        cd $AXIS2C_HOME/bin
         ./axis2_http_server
 This will start the simple axis server on port 9090. To see the posible command line options run:
         ./axis2_http_server -h
 9. Run the sample clients in a new shell
-        cd $AXIS2C_HOME/deploy/bin
+        cd $AXIS2C_HOME/bin/samples
         ./echo
 This will invoke the echo service.
         ./math

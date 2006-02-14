@@ -88,15 +88,16 @@ int main(int argc, char** argv)
     
     address = "http://api.google.com/search/beta2";
     
-    if (AXIS2_STRCMP(operation, "-h") == 0)
+    if ( (argc > 1) && (AXIS2_STRCMP("-h", argv[1]) == 0) )
     {
-        printf("Usage : %s [google_key] [word_to_spell] \n", argv[0]);
-        printf("use -h for help\n");
-        printf("default google_key %s. Default won't work. You must use your key here.\n", google_key);
-        printf("default word_to_spell %s\n", word_to_spell);
+        printf("\nUsage : %s [google_key] [word_to_spell] \n", argv[0]);
+        printf("\tgoogle_key Your Google license key. Default value won't work. You must use your key here.\n");
+        printf("\tword_to_spell Word to be spelled by Google service. Default is %s\n", word_to_spell);
         printf("NOTE: command line arguments must appear in given order, with trailing ones being optional\n");
+        printf("\tUse -h for help\n");
         return 0;
     }
+
     if (argc > 1 )
         google_key = argv[1];
     if (argc > 2 )
