@@ -320,15 +320,25 @@ worker_func(axis2_thread_t *thd, void *data)
 		secs--;
 	}
 	secs += millisecs/1000.0;
+	
 	if(status == AXIS2_SUCCESS)
 	{
-		AXIS2_LOG_INFO(thread_env->log, "Request served in %.3f seconds", secs);
+#if defined(WIN32)
+		AXIS2_LOG_INFO(thread_env->log, "Request served successfully");
+#else 		
+       	AXIS2_LOG_INFO(thread_env->log, "Request served in %.3f seconds", secs);
+#endif       	
 	}
 	else
 	{
+#if defined(WIN32)	
 		AXIS2_LOG_WARNING(thread_env->log, AXIS2_LOG_SI, 
+						"Error occured in processing request ");
+#else
+	    AXIS2_LOG_WARNING(thread_env->log, AXIS2_LOG_SI, 
 						"Error occured in processing request (%.3f seconds)", 
 						secs);
+#endif											
 	}
 #ifdef AXIS2_SVR_MULTI_THREADED
 	AXIS2_THREAD_POOL_EXIT_THREAD((*env)->thread_pool, thd);
