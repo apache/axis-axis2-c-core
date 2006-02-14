@@ -15,4 +15,5 @@ INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/modules/core/context \
            -I$(top_builddir)/modules/core/phaseresolver \
            -I$(top_builddir)/modules/core/engine \
+           -I$(top_builddir)/modules/core/deployment \
            -I$(top_builddir)/modules/platforms
