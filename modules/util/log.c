@@ -17,13 +17,15 @@
 #include <axis2_platform_auto_sense.h>
 #include <axis2_log_default.h>
 #include <axis2_file_handler.h>
+#include <axis2_thread.h>
 
 typedef struct axis2_log_impl axis2_log_impl_t;
 
 struct axis2_log_impl
 {
-	axis2_log_t 	log;
-	void 			*stream;
+	axis2_log_t 			log;
+	void 					*stream;
+	axis2_thread_mutex_t 	*mutex;
 };
 
 #define AXIS2_INTF_TO_IMPL(log) ((axis2_log_impl_t*)(log))
@@ -50,8 +52,8 @@ axis2_status_t AXIS2_CALL axis2_log_impl_write (axis2_log_t *log,
 	   	const axis2_char_t *file, const int line);
 
 AXIS2_DECLARE(axis2_status_t) axis2_log_impl_write_to_file(FILE *fd,
-	   	axis2_log_levels_t level, const axis2_char_t * file, const int line,
-	   	const axis2_char_t * value);
+	   	axis2_thread_mutex_t *mutex, axis2_log_levels_t level, 
+		const axis2_char_t * file, const int line, const axis2_char_t * value);
 
 
 AXIS2_DECLARE(axis2_log_t *)
@@ -59,37 +61,66 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops,
 		axis2_char_t * stream_name)
 {
     axis2_log_impl_t *log_impl;
-	axis2_char_t *log_file_name = NULL;
+	axis2_char_t *path_home;
+	axis2_char_t log_file_name[500];
+	axis2_char_t log_dir[500];
+	axis2_char_t tmp_filename[100];
+	
     if (!allocator)
         return NULL;
 
-    log_impl = (axis2_log_impl_t *) AXIS2_MALLOC (allocator, sizeof (axis2_log_impl_t));
+    log_impl = (axis2_log_impl_t *) AXIS2_MALLOC (allocator, 
+	sizeof (axis2_log_impl_t));
 
     if (!log_impl)
         return NULL;
-
-	if (stream_name)
-	{
-		log_file_name = stream_name;
-	}
-	else
-	{
-	    axis2_char_t *filename = NULL;
-		axis2_char_t *path = NULL;
-		int len = 0;
-		path = AXIS2_GETENV("AXIS2C_HOME");
-		filename = "/log/axis2.log";
-		len = axis2_strlen(path) + axis2_strlen(filename)+1;
-		log_file_name = (axis2_char_t*)AXIS2_MALLOC(allocator,
-                    len*sizeof(axis2_char_t));
-    	memcpy(log_file_name, path, axis2_strlen(path)*sizeof(axis2_char_t));
-    	memcpy((log_file_name + axis2_strlen(path)*sizeof(axis2_char_t)), filename,
-                    axis2_strlen(filename)*sizeof(axis2_char_t));
-    	log_file_name[len*sizeof(axis2_char_t) - sizeof(axis2_char_t)] = '\0';
-		printf("default file name = %s\n",log_file_name);
-	}
-	log_impl->stream = axis2_file_handler_open(log_file_name,"w");
 	
+	log_impl->mutex = axis2_thread_mutex_create(allocator, 
+				AXIS2_THREAD_MUTEX_DEFAULT);
+	
+	if (!log_impl->mutex)
+	{
+		fprintf(stderr,"cannot create log mutex \n");
+		return NULL;
+	}
+	
+	/* default log file is axis2.log */
+	if (stream_name)
+		snprintf(tmp_filename,100,"%s",stream_name);
+	else
+		snprintf(tmp_filename,100,"%s","axis2.log");
+	
+	/* we write all logs to AXIS2C_HOME/logs if it is set otherwise
+	 * to the working dir
+	 */
+	if (NULL != (path_home = AXIS2_GETENV("AXIS2C_HOME")))
+    {
+		snprintf(log_dir, 500, "%s%c%s", path_home, AXIS2_PATH_SEP_CHAR, "logs");
+		if (AXIS2_SUCCESS == axis2_file_handler_access(log_dir,AXIS2_F_OK))
+		{
+			snprintf(log_file_name, 500, "%s%c%s", log_dir, AXIS2_PATH_SEP_CHAR,
+                tmp_filename);
+		}
+		else
+		{
+			fprintf(stderr, "log folder %s does not exist - log file %s is written to . dir\n",
+				log_dir, tmp_filename);
+			snprintf(log_file_name, 500, "%s", tmp_filename);
+		}
+    }
+    else
+    {
+		fprintf(stderr, "AXIS2C_HOME is not set - log is written to . dir\n");
+    	snprintf(log_file_name, 500, "%s", tmp_filename);
+    }
+	
+	axis2_thread_mutex_lock(log_impl->mutex);
+	
+	log_impl->stream = axis2_file_handler_open(log_file_name,"as+");
+	
+	axis2_thread_mutex_unlock(log_impl->mutex);
+	
+	/* by default, log is enabled */
 	log_impl->log.enabled = 1;
 
     if (ops)
@@ -114,8 +145,8 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops,
 
 /*TODO:remove this method*/
 axis2_status_t AXIS2_CALL
-axis2_log_impl_write (axis2_log_t *log, const axis2_char_t *buffer, axis2_log_levels_t level,
-		const axis2_char_t *file, const int line)
+axis2_log_impl_write (axis2_log_t *log, const axis2_char_t *buffer, 
+	axis2_log_levels_t level, const axis2_char_t *file, const int line)
 {
     if (!log || !buffer)
         return -1;
@@ -151,8 +182,9 @@ axis2_log_impl_write (axis2_log_t *log, const axis2_char_t *buffer, axis2_log_le
 
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_log_impl_write_to_file(FILE *fd, axis2_log_levels_t level,
-	   	const axis2_char_t *file, const int line, const axis2_char_t *value)
+axis2_log_impl_write_to_file(FILE *fd, axis2_thread_mutex_t *mutex, 
+		axis2_log_levels_t level, const axis2_char_t *file, 
+		const int line, const axis2_char_t *value)
 {
     char *level_str = "";
 	if (!fd)
@@ -182,11 +214,16 @@ axis2_log_impl_write_to_file(FILE *fd, axis2_log_levels_t level,
             level_str = "[...TRACE...] ";
             break;
     }
+	axis2_thread_mutex_lock(mutex);
     if (file)
-    	fprintf(fd,"[%s] %s%s(%d) %s\n", axis2_log_impl_get_time_str(), level_str, file, line, value);
+    	fprintf(fd,"[%s] %s%s(%d) %s\n", axis2_log_impl_get_time_str(), 
+			level_str, file, line, value);
     else
-    	fprintf(fd,"[%s] %s %s\n", axis2_log_impl_get_time_str(), level_str, value);
+    	fprintf(fd,"[%s] %s %s\n", axis2_log_impl_get_time_str(), 
+			level_str, value);
 	fflush(fd);
+	axis2_thread_mutex_unlock(mutex);
+	
 	return 0;
 }
 
@@ -195,6 +232,7 @@ axis2_log_impl_log_debug(axis2_log_t *log, const axis2_char_t *filename,
 	   	const int linenumber, const axis2_char_t *format,...)
 {
 	FILE *fd = NULL;
+	axis2_thread_mutex_t *mutex = NULL;
 	
 	if (!log || !format)
 		return -1;
@@ -203,7 +241,16 @@ axis2_log_impl_log_debug(axis2_log_t *log, const axis2_char_t *filename,
 		return -1;
 	
 	if (NULL == (fd = AXIS2_INTF_TO_IMPL(log)->stream))
+	{
+		fprintf(stderr,"Stream is not found\n");
 		return -1;
+	}
+	
+	if (NULL == (mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+	{
+		fprintf(stderr,"Log mutex is not found\n");
+		return -1;
+	}
 	
 	if (AXIS2_LOG_LEVEL_DEBUG <= log->level)
 	{
@@ -212,7 +259,7 @@ axis2_log_impl_log_debug(axis2_log_t *log, const axis2_char_t *filename,
     	va_start(ap, format);
     	AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
     	va_end(ap);
-		axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_DEBUG, filename, 
+		axis2_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_DEBUG, filename, 
 						linenumber, value);
 	}
 	return 0;
@@ -222,14 +269,25 @@ AXIS2_DECLARE(axis2_status_t)
 axis2_log_impl_log_info(axis2_log_t *log, const axis2_char_t *format,...)
 {
 	FILE *fd = NULL;
+	axis2_thread_mutex_t *mutex = NULL;
 	
 	if (!log || !format)
 		return -1;
 	
 	if (!log->enabled)
 		return -1;
+	
 	if (NULL == (fd = AXIS2_INTF_TO_IMPL(log)->stream))
+	{
+		fprintf(stderr,"Stream is not found\n");
 		return -1;
+	}
+	
+	if (NULL == (mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+	{
+		fprintf(stderr,"Log mutex is not found\n");
+		return -1;
+	}
 	
 	if (AXIS2_LOG_LEVEL_INFO <= log->level)
 	{
@@ -238,7 +296,8 @@ axis2_log_impl_log_info(axis2_log_t *log, const axis2_char_t *format,...)
     	va_start(ap, format);
     	AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
     	va_end(ap);
-		axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_INFO, NULL, -1, value);
+		axis2_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_INFO, NULL, -1,
+			value);
 	}
 	return 0;
 }
@@ -248,14 +307,25 @@ axis2_log_impl_log_warning(axis2_log_t *log, const axis2_char_t *filename,
 	   	const int linenumber, const axis2_char_t *format,...)
 {
 	FILE *fd = NULL;
+	axis2_thread_mutex_t *mutex = NULL;
 	
 	if (!log || !format)
 		return -1;
 	
 	if (!log->enabled)
 		return -1;
+	
 	if (NULL == (fd = AXIS2_INTF_TO_IMPL(log)->stream))
+	{
+		fprintf(stderr,"Stream is not found\n");
 		return -1;
+	}
+	
+	if (NULL == (mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+	{
+		fprintf(stderr,"Log mutex is not found\n");
+		return -1;
+	}
 	
 	if (AXIS2_LOG_LEVEL_WARNING <= log->level)
 	{
@@ -264,8 +334,8 @@ axis2_log_impl_log_warning(axis2_log_t *log, const axis2_char_t *filename,
     	va_start(ap, format);
     	AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
     	va_end(ap);
-		axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_WARNING, filename, 
-						linenumber, value);
+		axis2_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_WARNING, 
+				filename, linenumber, value);
 	}
 	return 0;
 }
@@ -276,6 +346,8 @@ axis2_log_impl_log_error(axis2_log_t *log, const axis2_char_t *filename,
 	   	const int linenumber, const axis2_char_t *format,...)
 {
 	FILE *fd = NULL;
+	axis2_thread_mutex_t *mutex = NULL;
+	
 	char value[AXIS2_LEN_VALUE+1];
    	va_list ap;
    	
@@ -284,14 +356,24 @@ axis2_log_impl_log_error(axis2_log_t *log, const axis2_char_t *filename,
 	
 	if (!log->enabled)
 		return -1;
+	
 	if (NULL == (fd = AXIS2_INTF_TO_IMPL(log)->stream))
+	{
+		fprintf(stderr,"Stream is not found\n");
 		return -1;
+	}
+	
+	if (NULL == (mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+	{
+		fprintf(stderr,"Log mutex is not found\n");
+		return -1;
+	}
 	
 	
    	va_start(ap, format);
   	AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
    	va_end(ap);
-	axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_ERROR, filename, 
+	axis2_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_ERROR, filename, 
 						linenumber, value);
 	return 0;
 }
@@ -301,6 +383,8 @@ axis2_log_impl_log_critical(axis2_log_t *log, const axis2_char_t *filename,
 	   	const int linenumber, const axis2_char_t *format,...)
 {
 	FILE *fd = NULL;
+	axis2_thread_mutex_t *mutex = NULL;
+	
 	char value[AXIS2_LEN_VALUE+1];
    	va_list ap;
 	if (!log || !format)
@@ -308,14 +392,24 @@ axis2_log_impl_log_critical(axis2_log_t *log, const axis2_char_t *filename,
 	
 	if (!log->enabled)
 		return -1;
+	
 	if (NULL == (fd = AXIS2_INTF_TO_IMPL(log)->stream))
+	{
+		fprintf(stderr,"Stream is not found\n");
 		return -1;
+	}
+	
+	if (NULL == (mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+	{
+		fprintf(stderr,"Log mutex is not found\n");
+		return -1;
+	}
 	
 	
    	va_start(ap, format);
    	AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
    	va_end(ap);
-	axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_CRITICAL, filename, 
+	axis2_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_CRITICAL, filename, 
 						linenumber, value);
 	return 0;
 }
@@ -344,6 +438,7 @@ axis2_log_impl_log_trace(axis2_log_t *log, const axis2_char_t *filename,
 	   	const int linenumber, const axis2_char_t *format,...)
 {
 	FILE *fd = NULL;
+	axis2_thread_mutex_t *mutex = NULL;
 	
 	if (!log || !format)
 		return -1;
@@ -352,7 +447,16 @@ axis2_log_impl_log_trace(axis2_log_t *log, const axis2_char_t *filename,
 		return -1;
 	
 	if (NULL == (fd = AXIS2_INTF_TO_IMPL(log)->stream))
+	{
+		fprintf(stderr,"Stream is not found\n");
 		return -1;
+	}
+	
+	if (NULL == (mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+	{
+		fprintf(stderr,"Log mutex is not found\n");
+		return -1;
+	}
 	
 	if (AXIS2_LOG_LEVEL_TRACE <= log->level)
 	{
@@ -361,12 +465,13 @@ axis2_log_impl_log_trace(axis2_log_t *log, const axis2_char_t *filename,
     	va_start(ap, format);
     	AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
     	va_end(ap);
-		axis2_log_impl_write_to_file(fd, AXIS2_LOG_LEVEL_TRACE, filename, 
+		axis2_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_TRACE, filename, 
 						linenumber, value);
 	}
 	return 0;
 }
 #else
-AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_trace(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...) {}
+AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_trace(axis2_log_t *log, 
+	const axis2_char_t *filename, const int linenumber,
+	const axis2_char_t *format,...) {}
 #endif
-
