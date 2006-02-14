@@ -203,8 +203,8 @@ axis2_http_server_stop(axis2_transport_receiver_t *server, axis2_env_t **env)
 		AXIS2_HTTP_SVR_THREAD_DESTROY(AXIS2_INTF_TO_IMPL(server)->svr_thread, 
 						env);
 	}
-	AXIS2_LOG_INFO((*env)->log, "Successfully terminated  HTTP server\
-						thread");
+	AXIS2_LOG_INFO((*env)->log, "Successfully terminated  HTTP server"
+						" thread");
 	return AXIS2_SUCCESS;
 }
 

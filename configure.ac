@@ -128,6 +128,21 @@ AC_ARG_ENABLE(tests, [  --enable-trace    enable trace. default=no],
   CFLAGS=""
 )
 
+AC_ARG_ENABLE(tests, [  --enable-multi_threaded  enable trace. default=yes],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    CFLAGS=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -DAXIS2_SVR_MULTI_THREADED"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  CFLAGS=""
+)
+
 PKG_CHECK_MODULES(XML2, libxml-2.0)
 AC_SUBST(XML2_CFLAGS)
 AC_SUBST(XML2_LIBS)

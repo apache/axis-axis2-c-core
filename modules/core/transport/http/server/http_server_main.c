@@ -22,12 +22,15 @@
 #include <axis2_error_default.h>
 #include <axis2_log_default.h>
 #include <axis2_thread_pool.h>
+#include <signal.h>
 
-
+axis2_env_t *system_env = NULL;
+axis2_transport_receiver_t *server = NULL;
 /***************************** Function headers *******************************/
 axis2_env_t* init_syetem_env(axis2_allocator_t *allocator, axis2_char_t *log_file);
-void system_exit(axis2_allocator_t *allocator, axis2_env_t *env, int status);
+void system_exit(axis2_env_t *env, int status);
 void usage(axis2_char_t* prog_name);
+void sig_handler(int signal);
 /***************************** End of function headers ************************/
 axis2_env_t* init_syetem_env(axis2_allocator_t *allocator, axis2_char_t *log_file)
 {
@@ -38,15 +41,11 @@ axis2_env_t* init_syetem_env(axis2_allocator_t *allocator, axis2_char_t *log_fil
 						thread_pool);
 }
 
-void system_exit(axis2_allocator_t *allocator, axis2_env_t *env, int status)
+void system_exit(axis2_env_t *env, int status)
 {
 	if(NULL != env)
 	{
 		axis2_env_free(env);
-	}
-	if(NULL != allocator)
-	{
-	/*	axis2_allocator_free(allocator); */
 	}
 	_exit(status);
 }
@@ -55,7 +54,6 @@ int main(int argc, char *argv[])
 {
 	axis2_allocator_t *allocator = NULL;
 	axis2_env_t *env = NULL;
-	axis2_transport_receiver_t *server = NULL;
     extern char *optarg;
     extern int optopt;
     int c;
@@ -110,14 +108,16 @@ int main(int argc, char *argv[])
 	if(NULL == allocator)
 	{
 		printf("[Axis2]Startup FAILED due to memory allocation failure\n");
-		system_exit(NULL, NULL, -1);
+		system_exit(NULL, -1);
 	}
 	
     env = init_syetem_env(allocator, log_file);
     env->log->level = log_level;
 	
     axis2_error_init();
-    
+	system_env = env;
+    signal(SIGINT, sig_handler);
+	signal(SIGPIPE, sig_handler);
 	AXIS2_LOG_INFO(env->log, "Starting Axis2 HTTP server....");
 	AXIS2_LOG_INFO(env->log, "Server port : %d", port);
 	AXIS2_LOG_INFO(env->log, "Repo location : %s", repo_path);
@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
 	    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server creation failed: Error code:"
 						" %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
-		system_exit(allocator, env, -1);
+		system_exit(env, -1);
 		
 	}
 	printf("Started Simple Axis2 HTTP Server ...\n");
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
 		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server start failed: Error code:"
 						" %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
-		system_exit(allocator, env, -1);
+		system_exit(env, -1);
 	}
 	return 0;
 }
@@ -163,4 +163,33 @@ void usage(axis2_char_t* prog_name)
 						"\n\t\t\t Default log level is 4(debug).\n");
     fprintf(stdout, "\t-f LOG_FILE\t set log file to LOG_FILE. Default is /dev/stderr\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
+}
+
+/**
+ * Signal handler
+ */
+void sig_handler(int signal)
+{
+	switch(signal)
+	{
+		case SIGINT : 
+		{
+			AXIS2_LOG_INFO(system_env->log, "Received signal SIGINT. Server "
+						"shutting down");
+			axis2_http_server_stop(server, &system_env);
+			AXIS2_LOG_INFO(system_env->log, "Shutdown complete ...");
+			system_exit(system_env, 0);			
+		}
+		case SIGPIPE :
+		{
+			AXIS2_LOG_INFO(system_env->log, "Received signal SIGPIPE.  Client "
+						"request serve aborted");
+			return;
+		}
+		case SIGSEGV :
+		{
+			fprintf(stderr, "Received deadly signal SIGSEGV. Terminating\n");
+			_exit(-1);
+		}
+	}
 }

@@ -172,11 +172,15 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 	{
 		int socket = -1;
 	 	axis2_http_svr_thd_args_t *arg_list = NULL;
+		axis2_thread_t *worker_thread = NULL;
 		
 		socket = axis2_network_handler_svr_socket_accept(env, 
 						svr_thread_impl->listen_socket);
 		if(NULL == svr_thread_impl->worker)
 		{
+			AXIS2_LOG_WARNING((*env)->log, AXIS2_LOG_SI, "Worker not ready yet."
+						" Cannot serve the request");
+			axis2_network_handler_close_socket(env, socket);
 			continue;
 		}
 		arg_list = AXIS2_MALLOC((*env)->allocator, 
@@ -190,9 +194,19 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 		arg_list->env = env;
 		arg_list->socket = socket;
 		arg_list->worker = svr_thread_impl->worker;
-		AXIS2_THREAD_POOL_GET_THREAD((*env)->thread_pool, worker_func, 
+#ifdef AXIS2_SVR_MULTI_THREADED
+		worker_thread = AXIS2_THREAD_POOL_GET_THREAD((*env)->thread_pool, worker_func, 
 						(void*)arg_list);
-		/*worker_func(NULL, (void*)arg_list);*/
+		if(NULL == worker_thread)
+		{
+			AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread creation failed"
+						"server thread loop");
+			continue;
+		}
+		AXIS2_THREAD_POOL_THREAD_DETACH((*env)->thread_pool, worker_thread);
+#else
+		worker_func(NULL, (void*)arg_list);
+#endif
 	}
     return AXIS2_SUCCESS;
 }
@@ -212,7 +226,8 @@ axis2_http_svr_thread_destroy(axis2_http_svr_thread_t *svr_thread,
 		return AXIS2_SUCCESS;
 	}
 	svr_thread_impl->stopped = AXIS2_TRUE;
-	AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Destrying HTTP server thread.");
+	AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Terminating HTTP server "
+						"thread.");
 	if(svr_thread_impl->listen_socket)
 	{
 		axis2_network_handler_close_socket(env, svr_thread_impl->listen_socket);
@@ -295,7 +310,7 @@ worker_func(axis2_thread_t *thd, void *data)
 	status = AXIS2_HTTP_WORKER_PROCESS_REQUEST(tmp, &thread_env, svr_conn, 
 						request);
 	AXIS2_SIMPLE_HTTP_SVR_CONN_FREE(svr_conn, &thread_env);
-	AXIS2_FREE((*env)->allocator, arg_list);
+	AXIS2_FREE(thread_env->allocator, arg_list);
 	AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t2);
 	millisecs = t2.millitm - t1.millitm;
 	secs = difftime(t2.time, t1.time);
@@ -315,5 +330,8 @@ worker_func(axis2_thread_t *thd, void *data)
 						"Error occured in processing request (%.3f seconds)", 
 						secs);
 	}
+#ifdef AXIS2_SVR_MULTI_THREADED
+	AXIS2_THREAD_POOL_EXIT_THREAD((*env)->thread_pool, thd);
+#endif
 	return NULL;
 }
