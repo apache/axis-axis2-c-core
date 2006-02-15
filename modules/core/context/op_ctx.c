@@ -46,6 +46,8 @@ typedef struct axis2_op_ctx_impl
     axis2_qname_t *op_qname;
     /** service qname */
     axis2_qname_t *svc_qname;
+	/* Mutex to syncronize the read/write operations */
+	axis2_thread_mutex_t *mutex;
 } axis2_op_ctx_impl_t;
 
 /** Interface to implementation conversion macro */
@@ -108,7 +110,15 @@ axis2_op_ctx_create(axis2_env_t **env,
     op_ctx_impl->op_ctx_map = NULL;
     op_ctx_impl->op_qname = NULL;
     op_ctx_impl->svc_qname = NULL;
-    
+    op_ctx_impl->mutex = axis2_thread_mutex_create((*env)->allocator, 
+						AXIS2_THREAD_MUTEX_DEFAULT);
+	
+	if(NULL == op_ctx_impl->mutex)
+	{
+		axis2_op_ctx_free(&(op_ctx_impl->op_ctx), env);
+        return NULL;
+	}
+	
     op_ctx_impl->base = axis2_ctx_create(env);
     if (!(op_ctx_impl->base))
     {
@@ -286,7 +296,8 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_add_msg_ctx(struct axis2_op_ctx *op_ctx, 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     op_ctx_impl = AXIS2_INTF_TO_IMPL(op_ctx);
-    
+	
+    axis2_thread_mutex_lock(op_ctx_impl->mutex);
     if (op_ctx_impl->msg_ctx_map)
     {
         axis2_char_t *message_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
@@ -295,7 +306,7 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_add_msg_ctx(struct axis2_op_ctx *op_ctx, 
             axis2_hash_set(op_ctx_impl->msg_ctx_map, message_id, AXIS2_HASH_KEY_STRING, msg_ctx); 
         }
     }
-    
+    axis2_thread_mutex_unlock(op_ctx_impl->mutex);
     return AXIS2_SUCCESS;
 }
 
@@ -314,11 +325,16 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_op_ctx_get_msg_ctx(struct axis2_op_ctx *op_ctx
     
     op_ctx_impl = AXIS2_INTF_TO_IMPL(op_ctx);
     
+	axis2_thread_mutex_lock(op_ctx_impl->mutex);
     if (op_ctx_impl->msg_ctx_map)
     {
-        return axis2_hash_get(op_ctx_impl->msg_ctx_map, message_id, AXIS2_HASH_KEY_STRING); 
+		axis2_msg_ctx_t *rv = NULL;
+		rv = axis2_hash_get(op_ctx_impl->msg_ctx_map, message_id, 
+						AXIS2_HASH_KEY_STRING); 
+		axis2_thread_mutex_unlock(op_ctx_impl->mutex);
+        return rv;
     }
-    
+    axis2_thread_mutex_unlock(op_ctx_impl->mutex);
     return NULL;
 }
 
