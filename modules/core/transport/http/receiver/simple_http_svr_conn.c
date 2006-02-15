@@ -15,7 +15,6 @@
  */
  
 #include <axis2_simple_http_svr_conn.h>
-#include <unistd.h>
 #include <axis2_http_transport.h>
 #include <axis2_string.h>
 #include <axis2_network_handler.h>
