@@ -12,6 +12,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include
 
 prgbin_PROGRAMS = context_test
+check_PROGRAMS = context_test
 context_test_SOURCES = main.c
 context_test_LDADD   =   libtest_context.la  \
                      -L$(CUTEST_HOME)/lib \

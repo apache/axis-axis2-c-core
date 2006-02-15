@@ -1,5 +1,7 @@
+prgbindir=$(prefix)/bin/system_test
 TESTS = test_engine
 check_PROGRAMS = test_engine
+prgbin_PROGRAMS = test_engine
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
 test_engine_SOURCES = test_engine.c

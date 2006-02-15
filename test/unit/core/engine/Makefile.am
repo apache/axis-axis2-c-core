@@ -1,4 +1,5 @@
 TESTS = engine_test
+prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_engine.la
 AM_CPPFLAGS = $(CPPFLAGS)
@@ -19,6 +20,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/platforms
 
 check_PROGRAMS = engine_test
+prgbin_PROGRAMS = engine_test
 engine_test_SOURCES = main.c
 engine_test_LDADD   =   libtest_engine.la  \
                      -L$(CUTEST_HOME)/lib \

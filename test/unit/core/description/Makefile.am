@@ -25,6 +25,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/platforms
 
 prgbin_PROGRAMS = description_test
+check_PROGRAMS = description_test
 description_test_SOURCES = main.c
 description_test_LDADD   =   libtest_description.la  \
                      -L$(CUTEST_HOME)/lib \

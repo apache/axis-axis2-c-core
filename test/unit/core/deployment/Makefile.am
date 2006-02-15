@@ -1,4 +1,4 @@
-TESTS =
+TESTS = deployment_test
 prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_deployment.la
@@ -25,6 +25,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include
 
 prgbin_PROGRAMS = deployment_test
+check_PROGRAMS = deployment_test
 deployment_test_SOURCES = main.c
 deployment_test_LDADD   =   libtest_deployment.la  \
                      -L$(CUTEST_HOME)/lib \

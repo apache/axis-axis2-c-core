@@ -1,5 +1,6 @@
 TESTS = om_test
 prglibdir=$(prefix)/lib/unit_test
+prgbindir=$(prefix)/bin/unit_test
 noinst_HEADERS = om_node_test.h
 prglib_LTLIBRARIES = libtest_om.la
 AM_CPPFLAGS = $(CPPFLAGS)
@@ -14,6 +15,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/platforms
 
 check_PROGRAMS = om_test
+prgbin_PROGRAMS = om_test
 om_test_SOURCES = main.c
 om_test_LDADD   =   libtest_om.la  \
                      -L$(CUTEST_HOME)/lib \

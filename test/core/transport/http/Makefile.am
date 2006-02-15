@@ -1,5 +1,7 @@
+prgbindir=$(prefix)/bin/system_test
 TESTS = test_http_transport
 check_PROGRAMS = test_http_transport
+prgbin_PROGRAMS = test_http_transport
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
 test_http_transport_SOURCES = test_http_transport.c
@@ -19,4 +21,4 @@ test_http_transport_LDADD   =  $(LDFLAGS) \
                     
 INCLUDES = -I${CUTEST_HOME}/include -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util\
-            -I$(top_builddir)/modules/platforms
+            -I$(top_builddir)/modules/platforms 

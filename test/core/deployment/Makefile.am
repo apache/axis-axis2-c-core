@@ -1,4 +1,4 @@
-TESTS =
+TESTS = test_deployment
 prgbindir=$(prefix)/bin/system_test
 prgbin_PROGRAMS = test_deployment
 SUBDIRS =

@@ -23,6 +23,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/platforms
 
 prgbin_PROGRAMS = phaseresolver_test
+check_PROGRAMS = phaseresolver_test
 phaseresolver_test_SOURCES = main.c
 phaseresolver_test_LDADD   =   libtest_phaseresolver.la  \
                      -L$(CUTEST_HOME)/lib \

@@ -3,7 +3,7 @@ prgbindir=$(prefix)/bin/system_test
 prgbin_PROGRAMS = test_util test_thread
 noinst_HEADERS = test_log.h \
                     test_thread.h 
-check_PROGRAMS = test_util
+check_PROGRAMS = test_util test_thread
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS)
 test_util_SOURCES = test_util.c test_log.c

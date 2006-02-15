@@ -1,4 +1,4 @@
-TESTS =
+TESTS =  util_test
 prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_util.la
@@ -30,6 +30,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/platforms
 
 prgbin_PROGRAMS = util_test
+check_PROGRAMS = util_test
 util_test_SOURCES = main.c
 util_test_LDADD   =   \
                      -L$(CUTEST_HOME)/lib \

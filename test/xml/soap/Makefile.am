@@ -1,4 +1,6 @@
 TESTS = test_soap
+prgbindir=$(prefix)/bin/system_test
+prgbin_PROGRAMS = test_soap
 check_PROGRAMS = test_soap
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS) -g -O2 -pthread
