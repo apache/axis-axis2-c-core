@@ -42,5 +42,4 @@ void Testaxis2_dir_handler_list_dir(CuTest *tc)
     CuAssertStrEquals(tc, expected, actual);
     AXIS2_FREE(env->allocator, expected);
     AXIS2_FREE(env->allocator, pathname);
-    AXIS2_FREE(env->allocator, axis2c_home);
 }
