@@ -44,7 +44,6 @@ LIBXML2_INCLUDE=/usr/include/libxml2
 
 5. Build the source
 This can be done using the following command sequence:
-        autogen.sh
         ./configure
         make
         make install
