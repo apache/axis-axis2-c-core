@@ -24,6 +24,7 @@
 #include <axis2_thread_pool.h>
 #include <signal.h>
 
+
 axis2_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;
 /***************************** Function headers *******************************/
@@ -116,8 +117,12 @@ int main(int argc, char *argv[])
 	
     axis2_error_init();
 	system_env = env;
+	
+#ifndef WIN32
     signal(SIGINT, sig_handler);
-	signal(SIGPIPE, sig_handler);
+	signal(SIGPIPE, sig_handler); 
+#endif	
+
 	AXIS2_LOG_INFO(env->log, "Starting Axis2 HTTP server....");
 	AXIS2_LOG_INFO(env->log, "Server port : %d", port);
 	AXIS2_LOG_INFO(env->log, "Repo location : %s", repo_path);
@@ -168,6 +173,8 @@ void usage(axis2_char_t* prog_name)
 /**
  * Signal handler
  */
+#ifndef WIN32
+ 
 void sig_handler(int signal)
 {
 	switch(signal)
@@ -193,3 +200,4 @@ void sig_handler(int signal)
 		}
 	}
 }
+#endif
