@@ -49,27 +49,21 @@ This can be done using the following command sequence:
         make
         make install
 use './configure --help' for options.
-NOTE: you may wich to use './configure --prefix=$AXIS2C_HOME' to ensure AXIS2C_HOME and 
+NOTE: you may wish to use './configure --prefix=$AXIS2C_HOME' to ensure AXIS2C_HOME and 
 intall forlder are the same
 
-To get the samples working, you also need to make and make install the samples.
-        cd /your_path_to_axis2c_source/samples
-        make
-        make install
+If you need to get the samples working, you also need to give the configure option
+    --enable-samples=yes
 
 6. go to AXIS2C_HOME
         cd $AXIS2C_HOME
-7. Set up sample service libs
-        cp  /your_path_to_axis2c_source/deploy/axis2.xml .
-        cp -r /your_path_to_axis2c_source/deploy/services .
-        cp lib/libecho.so services/echo/
-        cp lib/libmath.so services/math/
-8. Start simple axis server
+
+7. Start simple axis server
         cd $AXIS2C_HOME/bin
         ./axis2_http_server
 This will start the simple axis server on port 9090. To see the posible command line options run:
         ./axis2_http_server -h
-9. Run the sample clients in a new shell
+8. Run the sample clients in a new shell
         cd $AXIS2C_HOME/bin/samples
         ./echo
 This will invoke the echo service.
