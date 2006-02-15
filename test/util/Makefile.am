@@ -1,7 +1,8 @@
 TESTS = test_util
 prgbindir=$(prefix)/bin/system_test
 prgbin_PROGRAMS = test_util test_thread
-noinst_HEADERS = test_log.h
+noinst_HEADERS = test_log.h \
+                    test_thread.h 
 check_PROGRAMS = test_util
 SUBDIRS =
 AM_CPPFLAGS = $(CPPFLAGS)
