@@ -1,8 +1,7 @@
-The release comes in two forms, source and binary. Both works only on Linux platforms as of now. 
-We are striving hard to make the next release work on Windows platform.
+The release comes in two forms, source and binary. 
 
 To get both the binary and source distribution, you need libxml2 from http://xmlsoft.org/downloads.html
-(NOTE: most systems has libxml2 by default)
+(NOTE: most Linux systems has libxml2 by default. On Windows you need to download and install libxml2)
 
 Getting Axis2C working with the binary release on Linux.
 ========================================================
@@ -29,7 +28,7 @@ NOTE: If you run into shared lib problems, set the LD_LIBRARY_PATH
 
 Getting Axis2C working with the source release on Linux.
 ========================================================
-1. Extract the binary tar package to a folder. 
+1. Extract the source tar package to a folder. 
 2. Set AXIS2C_HOME environment variable pointing to the location where you want to install Axis2C.
         AXIS2C_HOME='/your_desired_path_to_axis2c_installation'
         export AXIS2C_HOME
@@ -78,5 +77,11 @@ This will invoke the echo service.
 This will invoke the math service.
 To see the possible command line options for sample clients run them with '-h' option
 
+
+Getting Axis2C working with the binary release on Windows.
+========================================================
+
+Getting Axis2C working with the source release on Windows.
+========================================================
 
 Hope you would enjoy this first working version of Axis2C soap engine :)
