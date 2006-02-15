@@ -9,6 +9,7 @@ test_engine_LDADD   =  -L$(AXIS2C_HOME)/lib \
 	                -laxis2_util \
                     -laxis2_unix \
 	                -laxis2_om \
+	                -laxis2_soap \
 	                -laxis2_engine \
 	                -laxis2_wsdl \
 	                -laxis2_parser \
@@ -22,6 +23,7 @@ INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/description \
             -I$(top_builddir)/modules/core/deployment \
+            -I$(top_builddir)/modules/core/engine \
             -I$(top_builddir)/modules/core/transport \
             -I$(top_builddir)/modules/xml/parser \
             -I$(top_builddir)/modules/platforms

@@ -32,8 +32,9 @@ wsdl_test_LDADD   =   \
                     -laxis2_util \
                     -laxis2_wsdl \
 					-laxis2_unix \
-                    -laxis2_phaseresolver \
-                    -laxis2_context \
-                    -laxis2_addr \
-                    -laxis2_description
-
+                    -laxis2_engine \
+                    -laxis2_om \
+                    -laxis2_soap \
+                    -laxis2_parser \
+                    -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
+                    -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)

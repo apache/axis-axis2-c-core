@@ -7,7 +7,6 @@ test_http_transport_SOURCES = test_http_transport.c
 test_http_transport_LDADD   =  $(LDFLAGS) \
 								-L$(AXIS2C_HOME)/lib \
 								-laxis2_util \
-								-laxis2_http_transport \
 								-laxis2_om \
 								-laxis2_unix \
 								-laxis2_engine \

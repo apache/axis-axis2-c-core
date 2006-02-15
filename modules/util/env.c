@@ -53,6 +53,7 @@ axis2_env_create (axis2_allocator_t *allocator)
     environment->error = axis2_error_create (allocator);
     if(NULL == environment->error)
         return NULL;
+    environment->log = NULL;
 	environment->thread_pool = NULL;
 	return environment;
     
