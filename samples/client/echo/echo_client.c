@@ -111,10 +111,6 @@ int main(int argc, char** argv)
     {
         AXIS2_OM_NODE_FREE_TREE(node, &env);
     }
-    if (stub)
-    {
-        AXIS2_STUB_FREE(stub, env);
-    }
     return status;
 }
 
