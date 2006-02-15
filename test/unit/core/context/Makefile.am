@@ -11,7 +11,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
             -I${CUTEST_HOME}/include
 
-check_PROGRAMS = context_test
+prgbin_PROGRAMS = context_test
 context_test_SOURCES = main.c
 context_test_LDADD   =   libtest_context.la  \
                      -L$(CUTEST_HOME)/lib \
@@ -22,6 +22,7 @@ context_test_LDADD   =   libtest_context.la  \
                     -laxis2_engine \
                     -laxis2_wsdl \
                     -laxis2_om \
+                    -laxis2_soap \
                     -laxis2_parser \
                     -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
                     -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)

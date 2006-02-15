@@ -1,4 +1,6 @@
 #include "test_svc.h"
+#include <axis2_log_default.h>
+#include <axis2_error_default.h>
 
 struct axis2_module_desc *create_module_desc(axis2_env_t **env);
 void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env); 
@@ -13,13 +15,22 @@ void Testaxis2_svc_add_module_ops(CuTest *tc)
     axis2_status_t actual = AXIS2_FAILURE;
     struct axis2_flow *inflow = NULL;
     axis2_qname_t *svc_qname = NULL;
+    axis2_allocator_t *allocator = NULL;
+    axis2_log_t *log = NULL;
+    axis2_env_t *env = NULL;
+    axis2_error_t *error = NULL;
           
     printf("**************************************\n");
     printf("testing axis2_svc_add_module_ops  method \n");
     printf("**************************************\n");
 
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create (allocator);    
+
+    allocator = axis2_allocator_init (NULL);
+    error = axis2_error_create(allocator);
+    log = axis2_log_create(allocator, NULL, "/dev/stderr");
+    env = axis2_env_create_with_error_log(allocator, error, log);
+    env->log->level = AXIS2_LOG_LEVEL_TRACE;
+    axis2_error_init();
 
     conf = axis2_conf_create(&env);
     module_desc = create_module_desc(&env);

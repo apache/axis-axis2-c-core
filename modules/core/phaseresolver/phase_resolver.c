@@ -650,7 +650,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
     */
     
     size = AXIS2_ARRAY_LIST_SIZE(all_handlers, env);
-    if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
     {
         return AXIS2_FAILURE;
     }

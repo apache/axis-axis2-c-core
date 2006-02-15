@@ -1,4 +1,5 @@
 TESTS = description_test
+prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_description.la
 AM_CPPFLAGS = $(CPPFLAGS)
@@ -23,7 +24,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/platforms
 
-check_PROGRAMS = description_test
+prgbin_PROGRAMS = description_test
 description_test_SOURCES = main.c
 description_test_LDADD   =   libtest_description.la  \
                      -L$(CUTEST_HOME)/lib \
@@ -34,6 +35,7 @@ description_test_LDADD   =   libtest_description.la  \
                     -laxis2_engine \
                     -laxis2_wsdl \
                     -laxis2_om \
+                    -laxis2_soap \
                     -laxis2_parser \
                     -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
                     -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)

@@ -1,4 +1,5 @@
 TESTS = phaseresolver_test
+prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_phaseresolver.la
 AM_CPPFLAGS = $(CPPFLAGS)
@@ -21,7 +22,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/platforms
 
-check_PROGRAMS = phaseresolver_test
+prgbin_PROGRAMS = phaseresolver_test
 phaseresolver_test_SOURCES = main.c
 phaseresolver_test_LDADD   =   libtest_phaseresolver.la  \
                      -L$(CUTEST_HOME)/lib \
@@ -32,6 +33,7 @@ phaseresolver_test_LDADD   =   libtest_phaseresolver.la  \
                     -laxis2_engine \
                     -laxis2_wsdl \
                     -laxis2_om \
+                    -laxis2_soap \
 					-laxis2_parser \
                     -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
                     -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)

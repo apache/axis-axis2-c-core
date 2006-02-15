@@ -96,15 +96,15 @@ void Testaxis2_dep_engine_load(CuTest *tc)
 
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
 
-    dep_engine = axis2_dep_engine_create_with_repos_name(&env,axis2c_home);
+    dep_engine = axis2_dep_engine_create_with_repos_name(&env, axis2c_home);
     if (dep_engine)
-        conf_actual = axis2_dep_engine_load(dep_engine,&env);
+        conf_actual = axis2_dep_engine_load(dep_engine, &env);
 
-	CuAssertPtrNotNull(tc,conf_actual);
+	CuAssertPtrNotNull(tc, conf_actual);
 
     if (conf_actual)
-        AXIS2_CONF_FREE(conf_actual,&env);
-
+        AXIS2_DEP_ENGINE_FREE(dep_engine, &env);
+    
     axis2_env_free(env);
 }
 

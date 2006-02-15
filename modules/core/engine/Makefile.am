@@ -1,6 +1,7 @@
 TESTS =
 lib_LTLIBRARIES = libaxis2_engine.la
 AM_CPPFLAGS = $(CPPFLAGS)
+noinst_HEADERS = axis2_engine.h
 
 libaxis2_engine_la_SOURCES = handler.c \
                                 conf.c \

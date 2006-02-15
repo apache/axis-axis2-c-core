@@ -16,13 +16,21 @@ void Testaxis2_phase_resolver_free(CuTest *tc)
     axis2_status_t actual = AXIS2_FAILURE;
     axis2_status_t expected = AXIS2_TRUE;
     axis2_phase_resolver_t *resolver = NULL;
+    axis2_allocator_t *allocator = NULL;
+    axis2_log_t *log = NULL;
+    axis2_env_t *env = NULL;
+    axis2_error_t *error = NULL;
 
     printf("******************************************\n");
     printf("testing axis2_phase_resolver_free  method \n");
     printf("******************************************\n");
 
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create (allocator);
+    allocator = axis2_allocator_init (NULL);
+    error = axis2_error_create(allocator);
+    log = axis2_log_create(allocator, NULL, "/dev/stderr");
+    env = axis2_env_create_with_error_log(allocator, error, log);
+    env->log->level = AXIS2_LOG_LEVEL_TRACE;
+    axis2_error_init();
 
     resolver = axis2_phase_resolver_create(&env); 
     actual = axis2_phase_resolver_free(resolver,  &env);
@@ -39,15 +47,23 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
     struct axis2_flow *flow = NULL;
     axis2_status_t expected = AXIS2_SUCCESS;
     axis2_status_t actual = AXIS2_FAILURE;
+    axis2_allocator_t *allocator = NULL;
+    axis2_log_t *log = NULL;
+    axis2_env_t *env = NULL;
+    axis2_error_t *error = NULL;
     
     printf("*********************************************************\n");
     printf("testing axis2_phase_resolver_engage_module_to_op  method \n");
     printf("*********************************************************\n");
 
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create (allocator);
-    axis2_op_t *optr = axis2_op_create(&env);
+    allocator = axis2_allocator_init (NULL);
+    error = axis2_error_create(allocator);
+    log = axis2_log_create(allocator, NULL, "/dev/stderr");
+    env = axis2_env_create_with_error_log(allocator, error, log);
+    env->log->level = AXIS2_LOG_LEVEL_TRACE;
+    axis2_error_init();
 
+    axis2_op_t *optr = axis2_op_create(&env);
     op_in_phases = get_op_in_phases(&env);  
     AXIS2_OP_SET_REMAINING_PHASES_INFLOW(optr, &env, op_in_phases);
     flow = axis2_flow_create(&env); 
