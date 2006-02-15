@@ -17,6 +17,7 @@
 #include <axis2_conf_ctx.h>
 #include <axis2_svc_grp.h>
 #include <axis2.h>
+#include <axis2_uuid_gen.h>
 
 typedef struct axis2_conf_ctx_impl
 {
@@ -516,11 +517,7 @@ axis2_svc_grp_ctx_t* AXIS2_CALL axis2_conf_ctx_fill_ctxs(struct axis2_conf_ctx *
     
     if (!svc_grp_ctx_id)
     {
-        /** TODO generate ID and set it*/
-        /*
-        svc_grp_ctx_id = UUIDGenerator.getUUID();
-        */
-        svc_grp_ctx_id = "uuid_svc_grp";
+        svc_grp_ctx_id = axis2_uuid_gen(env);
         AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id);
     }
     

@@ -20,6 +20,7 @@
 #include <axis2_relates_to.h>
 #include <axis2_addr.h>
 #include <axis2_http_transport.h>
+#include <axis2_uuid_gen.h>
 
 AXIS2_DECLARE(axis2_msg_ctx_t *)
 axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
@@ -68,9 +69,7 @@ axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
     {
         return NULL;
     }
-    /* TODO UUID is hard coded until it is generated */
-    AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, "UUID");
-    /*messageInformationHeaders.setMessageId(UUIDGenerator.getUUID());*/
+    AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, axis2_uuid_gen(env));
     reply_to = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(old_msg_info_headers, env);
     AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, reply_to);
     

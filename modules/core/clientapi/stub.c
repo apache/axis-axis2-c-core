@@ -20,6 +20,7 @@
 #include <axis2_om_stax_builder.h>
 #include <axis2_soap_header.h>
 #include <axis2_soap_body.h>
+#include <axis2_uuid_gen.h>
 
 /** 
  * @brief
@@ -522,8 +523,7 @@ axis2_stub_get_id(axis2_stub_t *stub,
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    /* TODO Get the UUID generator to generate values */
-    return "uuid";
+    return axis2_uuid_gen(env);
 }
 
 axis2_om_node_t *AXIS2_CALL

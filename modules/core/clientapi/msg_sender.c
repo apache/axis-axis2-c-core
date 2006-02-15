@@ -19,6 +19,7 @@
 #include <axis2_svc_ctx.h>
 #include <axis2_engine.h>
 #include <axis2_msg_info_headers.h>
+#include <axis2_uuid_gen.h>
 
 typedef struct axis2_msg_sender_impl axis2_msg_sender_impl_t;
 
@@ -171,7 +172,7 @@ axis2_msg_sender_send(axis2_msg_sender_t *msg_sender, axis2_env_t **env,
         return AXIS2_FAILURE;
   	AXIS2_MSG_CTX_SET_MSG_INFO_HEADERS(msg_ctx, env, 
 						msg_sender_impl->msg_info_headers);
-	message_id = "uuid:"; /* TODO UUIDGenerator.getUUID()*/
+	message_id = axis2_uuid_gen(env);
     AXIS2_MSG_CTX_SET_MESSAGE_ID(msg_ctx, env, message_id);
 	
     svc_ctx = AXIS2_MEP_CLIENT_GET_SVC_CTX(msg_sender_impl->base, env);
