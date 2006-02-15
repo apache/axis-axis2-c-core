@@ -113,9 +113,10 @@ int main(int argc, char** argv)
     }
     else
     {
+        axis2_qname_t *op_qname = NULL;
         axis2_qname_t *svc_qname = axis2_qname_create(&env, "echo", NULL, NULL);
         svc = axis2_svc_create_with_qname(&env, svc_qname);
-        axis2_qname_t *op_qname = axis2_qname_create(&env, "echoString", NULL, NULL);
+        op_qname = axis2_qname_create(&env, "echoString", NULL, NULL);
         op = axis2_op_create_with_qname(&env, op_qname);
         AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, &env, AXIS2_MEP_URI_OUT_IN);
         AXIS2_SVC_ADD_OP(svc, &env, op);

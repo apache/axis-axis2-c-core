@@ -68,12 +68,14 @@ int main(int argc, char** argv)
     axis2_soap_body_t *soap_body = NULL;
     axis2_om_namespace_t *env_ns = NULL;
     axis2_om_node_t *body_node = NULL;
-    
+    axis2_char_t *operation = NULL;
+    axis2_char_t *google_key = NULL;
+    axis2_char_t *word_to_spell = NULL;
     allocator = axis2_allocator_init (NULL);
 
-    axis2_char_t *operation = "doSpellingSuggestion";
-    axis2_char_t *google_key = "00000000000000000000000000000000";
-    axis2_char_t *word_to_spell = "salvasion";
+    operation = "doSpellingSuggestion";
+    google_key = "00000000000000000000000000000000";
+    word_to_spell = "salvasion";
     
     allocator = axis2_allocator_init (NULL);
     error = axis2_error_create(allocator);
@@ -137,9 +139,10 @@ int main(int argc, char** argv)
     }
     else
     {
+        axis2_qname_t *op_qname = NULL;
         axis2_qname_t *svc_qname = axis2_qname_create(&env, "google", NULL, NULL);
         svc = axis2_svc_create_with_qname(&env, svc_qname);
-        axis2_qname_t *op_qname = axis2_qname_create(&env, "doSpellingSuggestion", NULL, NULL);
+        op_qname = axis2_qname_create(&env, "doSpellingSuggestion", NULL, NULL);
         op = axis2_op_create_with_qname(&env, op_qname);
         AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, &env, AXIS2_MEP_URI_OUT_IN);
         AXIS2_SVC_ADD_OP(svc, &env, op);
@@ -233,6 +236,7 @@ build_soap_body_content(axis2_env_t **env, axis2_char_t *operation, axis2_char_t
     axis2_om_attribute_t* attri1 = NULL;
 
     axis2_xml_writer_t *xml_writer = NULL;
+    axis2_xml_writer_t *writer = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
 
@@ -270,7 +274,6 @@ build_soap_body_content(axis2_env_t **env, axis2_char_t *operation, axis2_char_t
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
     AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "\nSending OM node in XML : %s \n",  buffer); 
 
-	axis2_xml_writer_t *writer = NULL;
         /*axis2_om_output_t *om_output = NULL;*/
 	/*axis2_char_t *buffer = NULL;*/
 	writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
