@@ -13,12 +13,11 @@
 #	AXIS2_INSTALL_DIR
 #	|
 #	|- bin        - server and other executables
-#       |   |- samples
-#       |	
+#       |   |- samples - samples
+#       |- logs	
 #	|- lib	      - library modules
 #	|- services   - deployed services will be hear
 #	|- modules    - deployed modules will be hear
-#	|- samples    - deployed samples will be hear
 #       |- include    - all include files of axis2 will go here
 #       |- tests
 #            |- system_tests
