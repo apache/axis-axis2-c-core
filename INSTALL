@@ -74,7 +74,133 @@ To see the possible command line options for sample clients run them with '-h' o
 Getting Axis2C working with the binary release on Windows.
 ========================================================
 
+Requirements
+------------
+
+* the binaries shipped with this version is compiled with Microsoft visual studio compiler (cl) 
+(Note: you can download microsoft VSExpress2005 editon from microsoft website and intall it to run these binaries)
+
+* You also need the following dlls
+	- libxml2.dll [http://www.xmlsoft.org - download the version >=  libxml2-2.6.20.win32]
+	- iconv.dll [http://www.xmlsoft.org - download the version >= iconv-1.9.1.win32]
+	- zlib1.dll [http://www.xmlsoft.org - download the version >= zlib-1.2.3.win32]
+
+Binaries
+--------
+
+Extract the binary distribution to a folder of your choice. (example: C:\axis2c-M0.4)
+
+The c:\axis2c-M0.4 folder structure is as follows.
+
+     axis2c-M0.4
+	|- bin        - server and other executables
+       	|- samples - samples go here
+        	|	
+ 	|- lib	      - library modules
+ 	|- services   - deployed services 
+	|- modules    - deployed modules 
+	|- include    - all include files of axis2 
+	|- logs       - system and client logs are written to this folder
+
+Copy libxml2.dll, iconv.dll and zlib1.dll downloaded to C:\axis2c-M0.4\lib
+
+Running
+-------
+You need to set couple of environment variables before you can run the server and samples.
+
+Set the varibale AXIS2C_HOME to the deploy folder (C:\axis2c-M0.4)
+Add the path to lib directory to PATH variable (%AXIS2C_HOME%\lib)
+
+Now everything is set to run the server!
+
+C:\axis2c-M0.4\bin>axis2_http_server.exe 
+
+You should see the message
+Started Simple Axis2 HTTP Server...
+
+The log is by default created under %AXIS2C_HOME%\logs folder with the name axis2.log.
+(Note: you may provide command line options to change the default behaviour. Type "axis2_http_server.exe -h" to learn about  the usage)
+
+Now you can run any sample client deployed under %AXIS2C_HOME%\bin\samples\
+Example:
+C:\axis2c-M0.4\bin\samples>echo.exe
+
+
+
 Getting Axis2C working with the source release on Windows.
 ========================================================
+
+Requirements
+------------
+
+* the makefile shipped with this version needs Microsoft visual studio compiler (cl) and nmake build tool 
+(Note: you can download microsoft VSExpress2005 editon and Platform SDK from microsoft website. You will need to add the path  to Platform SDK Include and Lib folders to makefile)
+
+* You also need 
+	- libxml2 [http://www.xmlsoft.org - download the version >=  libxml2-2.6.20.win32]
+	- iconv [http://www.xmlsoft.org - download the version >= iconv-1.9.1.win32]
+	- zlib [http://www.xmlsoft.org - download the version >= zlib-1.2.3.win32]
+
+Configure.in
+------------
+The default places for libxml2 and iconv are speceficed in configure.in. 
+
+Example:
+Default location for libxml2 is C:\libxml2
+	You can either extract libxml2 to this folder. Folder structure should look like the following.
+	C:\libxml2
+		|- include
+		|- bin
+		|- lib
+	Or extract to whatever place of your choice and edit the configure.in accordingly.
+
+You need to have zlib1.dll in a library path. You may copy this dll to libxml2/lib.
+	
+
+Compiling the source
+--------------------
+Extract the source distribution to a folder of your choice. (Example: C:\axis2c)
+Open a DOS shell
+cd C:\axis2c\build\win32
+C:\axis2c\build\win32>vcvars32.bat to access .Net tools (Note: You may need to set the environment PATH variable to  vcvars32.bat if windows complaints that it cannot find this bat)
+C:\axis2c\build\win32>nmake install
+
+
+Thats it! This will build the system and create a directory named deploy under build directory.
+The deploy folder structure is as follows.
+
+     deploy
+	|- bin        - server and other executables
+       	|   |- samples - samples go here
+        	|	
+ 	|- lib	      - library modules
+ 	|- services   - deployed services 
+	|- modules    - deployed modules 
+	|- include    - all include files of axis2 
+	|- logs       - system and client logs are written to this folder
+
+
+Running
+-------
+You need to set couple of environment variables before you can run the server and samples.
+
+Set the varibale AXIS2C_HOME to the deploy folder (C:\axis2c\build\deploy)
+Add the path to lib directory to PATH variable (%AXIS2C_HOME%\lib)
+
+Copy libxml2.dll, iconv.dll and zlib1.dll to axis2c lib folder (%AXIS2C_HOME%\lib)
+
+Now everything is set to run the server!
+
+C:\axis2c\build\deploy\bin>axis2_http_server.exe 
+
+You should see the message
+Started Simple Axis2 HTTP Server...
+
+The log is by default created under %AXIS2C_HOME%\logs folder with the name axis2.log.
+(Note: you may provide command line options to change the default behaviour. Type "axis2_http_server.exe -h" to learn about  the usage)
+
+Now you can run any sample client deployed under %AXIS2C_HOME%\bin\samples\
+Example:
+C:\axis2c\build\deploy\bin\samples>echo.exe
 
 Hope you would enjoy this first working version of Axis2C soap engine :)
