@@ -1,2 +1,2 @@
 TESTS =
-SUBDIRS = util xml unit core interop
+SUBDIRS = util xml unit core
