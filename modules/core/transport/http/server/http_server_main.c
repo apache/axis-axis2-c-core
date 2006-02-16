@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     int c;
 
     axis2_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
-    axis2_char_t *log_file = "/dev/stderr";
+    axis2_char_t *log_file = "axis2.log";
 	int port = 9090;
     axis2_char_t *repo_path = "../";
 	axis2_http_socket_read_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
