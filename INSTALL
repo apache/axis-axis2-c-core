@@ -3,8 +3,23 @@ The release comes in two forms, source and binary.
 To get both the binary and source distribution, you need libxml2 from http://xmlsoft.org/downloads.html
 (NOTE: most Linux systems has libxml2 by default. On Windows you need to download and install libxml2)
 
-Getting Axis2C working with the binary release on Linux.
-========================================================
+Table of Contents
+=================
+1. Getting Axis2C working with the binary release on Linux
+2. Getting Axis2C working with the source release on Linux
+3. Getting Axis2C working with the binary release on Windows (win32)
+	3.1 Requirements
+	3.2 Binaries in the release
+	3.3 Running the binaries
+4. Getting Axis2c working with the source release on Windows (win32)
+	4.1 Requirements
+	4.2 Editing Configure.in file
+	4.3 Compiling the source
+	4.4 Running the binaries
+	
+
+1. Getting Axis2C working with the binary release on Linux.
+==========================================================
 1. Extract the binary tar package to a folder. 
    Set AXIS2C_HOME environment variable pointing to the location where you have extracted Axis2C
         AXIS2C_HOME='/your_path_to_axis2c'
@@ -26,8 +41,8 @@ To see the possible command line options for sample clients run them with '-h' o
 NOTE: If you run into shared lib problems, set the LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib
 
-Getting Axis2C working with the source release on Linux.
-========================================================
+2. Getting Axis2C working with the source release on Linux.
+==========================================================
 1. Extract the source tar package to a folder. 
 2. Set AXIS2C_HOME environment variable pointing to the location where you want to install Axis2C.
         AXIS2C_HOME='/your_desired_path_to_axis2c_installation'
@@ -71,11 +86,11 @@ This will invoke the math service.
 To see the possible command line options for sample clients run them with '-h' option
 
 
-Getting Axis2C working with the binary release on Windows.
-========================================================
+3. Getting Axis2C working with the binary release on Windows.
+============================================================
 
-Requirements
-------------
+3.1 Requirements
+----------------
 
 * the binaries shipped with this version is compiled with Microsoft visual studio compiler (cl) 
 (Note: you can download microsoft VSExpress2005 editon from microsoft website and intall it to run these binaries)
@@ -85,8 +100,8 @@ Requirements
 	- iconv.dll [http://www.xmlsoft.org - download the version >= iconv-1.9.1.win32]
 	- zlib1.dll [http://www.xmlsoft.org - download the version >= zlib-1.2.3.win32]
 
-Binaries
---------
+3.2 Binaries in the release
+---------------------------
 
 Extract the binary distribution to a folder of your choice. (example: C:\axis2c-M0.4)
 
@@ -104,8 +119,9 @@ The c:\axis2c-M0.4 folder structure is as follows.
 
 Copy libxml2.dll, iconv.dll and zlib1.dll downloaded to C:\axis2c-M0.4\lib
 
-Running
--------
+3.3 Running the binaries
+------------------------
+
 You need to set couple of environment variables before you can run the server and samples.
 
 Set the varibale AXIS2C_HOME to the deploy folder (C:\axis2c-M0.4)
@@ -127,11 +143,11 @@ C:\axis2c-M0.4\bin\samples>echo.exe
 
 
 
-Getting Axis2C working with the source release on Windows.
-========================================================
+4. Getting Axis2C working with the source release on Windows.
+============================================================
 
-Requirements
-------------
+4.1 Requirements
+----------------
 
 * the makefile shipped with this version needs Microsoft visual studio compiler (cl) and nmake build tool 
 (Note: you can download microsoft VSExpress2005 editon and Platform SDK from microsoft website. You will need to add the path  to Platform SDK Include and Lib folders to makefile)
@@ -141,8 +157,9 @@ Requirements
 	- iconv [http://www.xmlsoft.org - download the version >= iconv-1.9.1.win32]
 	- zlib [http://www.xmlsoft.org - download the version >= zlib-1.2.3.win32]
 
-Configure.in
-------------
+4.2 Editing configure.in file
+-----------------------------
+
 The default places for libxml2 and iconv are speceficed in configure.in. 
 
 Example:
@@ -157,8 +174,9 @@ Default location for libxml2 is C:\libxml2
 You need to have zlib1.dll in a library path. You may copy this dll to libxml2/lib.
 	
 
-Compiling the source
---------------------
+4.3 Compiling the source
+------------------------
+
 Extract the source distribution to a folder of your choice. (Example: C:\axis2c)
 Open a DOS shell
 cd C:\axis2c\build\win32
@@ -180,8 +198,9 @@ The deploy folder structure is as follows.
 	|- logs       - system and client logs are written to this folder
 
 
-Running
--------
+4.4 Running the binaries
+------------------------
+
 You need to set couple of environment variables before you can run the server and samples.
 
 Set the varibale AXIS2C_HOME to the deploy folder (C:\axis2c\build\deploy)
