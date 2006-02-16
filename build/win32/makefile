@@ -26,10 +26,11 @@
 
 
 # directory structure of install directory
-AUTOCONF = axis2config.msvc
+AUTOCONF = configure.in
+!include $(AUTOCONF)
 
-LIBXML2_INSTALL_DIR = C:\libxml2
-ICONV_INSTALL_DIR = C:\iconv
+#LIBXML2_INSTALL_DIR = C:\libxml2
+#ICONV_INSTALL_DIR = C:\iconv
 
 AXIS2_INSTALL_DIR = ..\deploy
 AXIS2_SERVICES = $(AXIS2_INSTALL_DIR)\services
@@ -90,7 +91,7 @@ AXIS2_INCP = /I$(AXIS2_SOURCE_DIR)\modules\util /I$(AXIS2_SOURCE_DIR)\modules\xm
 
 
 CC = cl.exe 
-CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT" /nologo
+CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT" /w /nologo
 CFLAGS = $(CFLAGS) $(AXIS2_INCP) $(GUTHTHILA_INCP)
 
 
@@ -212,7 +213,7 @@ axis2_http_receiver:
 
 
 axis2_server: 
-	$(CC) /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP) $(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\http_server_main.c /c
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP) $(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\http_server_main.c /c
 	$(LD) $(LDFLAGS) http_server_main.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib  /OUT:$(AXIS2_SERVER).exe 
 	del *.obj
 	copy $(AXIS2_SERVER).exe $(AXIS2_BINS)\
@@ -267,44 +268,51 @@ axis2_mod_addr:
 	copy $(AXIS2_SOURCE_DIR)\modules\mod_addr\module.xml $(AXIS2_MODULES)\addressing
 
 axis2_client_math:
-	$(CC) /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\math\*.c /c
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\math\*.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:math.exe 
 	del *.obj
 	
 	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
 
 	copy math.exe $(AXIS2_BINS)\samples
+	del math.exe
+	del math.exp
 
 axis2_client_echo:
-	$(CC) /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\echo\*.c /c
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\echo\*.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo.exe 
 	del *.obj
 	
 	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
 
 	copy echo.exe $(AXIS2_BINS)\samples
+	del echo.exe
+	del echo.exp
+	
 
 axis2_client_echo_addr:
-	$(CC) /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\addr_echo\*.c /c
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\addr_echo\*.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:addr_echo.exe 
 	del *.obj
 	
 	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
 
 	copy addr_echo.exe $(AXIS2_BINS)\samples
- 
+ 	del addr_echo.exe
+
 
 axis2_client_google_search:
-	$(CC) /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\google\*.c /c
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\google\*.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:google_search.exe 
 	del *.obj
 	
 	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
 
 	copy google_search.exe $(AXIS2_BINS)\samples
+	del google_search.exe
 
 all: clean_make_dir clean deploy axis2_win axis2_util axis2_parser axis2_om axis2_soap axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server axis2_services_echo axis2_services_math axis2_client_echo axis2_client_math axis2_client_echo_addr axis2_client_google_search copy_include clean_make_dir 
  
 
-	
-	
+install: all
+	 
