@@ -185,12 +185,12 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
                                   &(body_impl->om_ele_node));
     if (!ele)
     {
-        printf(" element null");
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_soap_body_free(&(body_impl->soap_body), env);
         return NULL;
     }
-     return &(body_impl->soap_body);           
+    AXIS2_SOAP_ENVELOPE_SET_BODY(envelope, env, &(body_impl->soap_body));
+    return &(body_impl->soap_body);           
 }
 
 axis2_status_t AXIS2_CALL
