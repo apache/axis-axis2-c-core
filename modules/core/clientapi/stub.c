@@ -343,6 +343,12 @@ axis2_stub_free (axis2_stub_t *stub,
         stub_impl->call = NULL;
     }
     
+    if(NULL != stub_impl->property_map)
+    {
+        axis2_hash_free(stub_impl->property_map, env);
+        stub_impl->property_map = NULL;
+    }
+    
     if(stub_impl)
     {
         AXIS2_FREE((*env)->allocator, stub_impl);

@@ -29,6 +29,7 @@ typedef struct axis2_arch_reader_impl
 {
 	axis2_arch_reader_t arch_reader;
     
+    axis2_desc_builder_t *desc_builder;
     	
 } axis2_arch_reader_impl_t;
 
@@ -91,6 +92,7 @@ axis2_arch_reader_create (axis2_env_t **env)
     }
     
     arch_reader_impl->arch_reader.ops = NULL;
+    arch_reader_impl->desc_builder = NULL;
     
 	arch_reader_impl->arch_reader.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_arch_reader_ops_t));
@@ -129,6 +131,13 @@ axis2_arch_reader_free (axis2_arch_reader_t *arch_reader,
     
 	if(NULL != arch_reader->ops)
         AXIS2_FREE((*env)->allocator, arch_reader->ops);
+   
+    /* TODO: it fails to load svc so file if I do this. Fix this - Samisa
+	if(NULL != feature_impl->desc_builder)
+    {
+        AXIS2_DESC_BUILDER_FREE(feature_impl->desc_builder, env);
+        feature_impl->desc_builder = NULL;
+    }*/
     
     AXIS2_FREE((*env)->allocator, feature_impl);
     feature_impl = NULL;
@@ -361,7 +370,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
                                 axis2_dep_engine_t *dep_engine,
                                 axis2_svc_grp_t *svc_grp)
 {                       
-    axis2_desc_builder_t *desc_builder = NULL;
+    axis2_arch_reader_impl_t *feature_impl = NULL;
     axis2_char_t *root_element_name = NULL;
     axis2_om_node_t *svcs = NULL;
     axis2_om_element_t *svcs_element = NULL;
@@ -371,14 +380,15 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
     AXIS2_PARAM_CHECK((*env)->error, svc_xml, AXIS2_FAILURE);    
     AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
+    feature_impl = AXIS2_INTF_TO_IMPL(arch_reader);
     
-    desc_builder = axis2_desc_builder_create_with_file_and_dep_engine(env, 
+    feature_impl->desc_builder = axis2_desc_builder_create_with_file_and_dep_engine(env, 
         svc_xml, dep_engine);
-    if(!desc_builder)
+    if(!(feature_impl->desc_builder))
     {
         return AXIS2_FAILURE;
     }
-    svcs = AXIS2_DESC_BUILDER_BUILD_OM(desc_builder, env);
+    svcs = AXIS2_DESC_BUILDER_BUILD_OM(feature_impl->desc_builder, env);
     svcs_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(svcs, env);
     root_element_name = AXIS2_OM_ELEMENT_GET_LOCALNAME(svcs_element, env);
     if(0 == AXIS2_STRCMP(AXIS2_SVC_ELEMENT, root_element_name))
