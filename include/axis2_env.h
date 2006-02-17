@@ -143,8 +143,14 @@ extern "C"
     AXIS2_DECLARE(axis2_status_t) axis2_env_write_log (axis2_env_t **env, const char* message, axis2_log_levels_t level);
     #define AXIS2_LOG(env, message, level) axis2_env_write_log (env,message, level)
 
-    #define AXIS2_ENV_CHECK(env, error_return) \
-    if(!env || !(*env))  \
+
+
+#define AXIS2_ENV_CHECK(env, error_return) \
+    if(!env) \
+    { \
+        return error_return; \
+    } \
+    if(!(*env))  \
 	{ \
 		axis2_allocator_t *allocator = axis2_allocator_init (NULL); \
         *env = axis2_env_create (allocator); \
