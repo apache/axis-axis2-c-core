@@ -32,6 +32,7 @@ typedef struct axis2_desc_builder_impl
      * Store the full path to configuration file.
      */
     axis2_char_t *file_name;
+    axis2_om_stax_builder_t *builder;
     	
 } axis2_desc_builder_impl_t;
 
@@ -123,7 +124,7 @@ axis2_desc_builder_create (axis2_env_t **env)
     }
     desc_builder_impl->file_name = NULL;
     desc_builder_impl->desc_builder.engine = NULL;
-    
+    desc_builder_impl->builder = NULL; 
     desc_builder_impl->desc_builder.ops = NULL;
     
 	desc_builder_impl->desc_builder.ops = 
@@ -230,6 +231,13 @@ axis2_desc_builder_free (axis2_desc_builder_t *desc_builder,
         AXIS2_FREE((*env)->allocator, desc_builder_impl->file_name);
         desc_builder_impl->file_name = NULL;
     }
+
+    if(desc_builder_impl->builder)
+    {
+        AXIS2_OM_STAX_BUILDER_FREE(desc_builder_impl->builder, env);
+        desc_builder_impl->builder = NULL;
+    }
+    
     /* we cannot free deployment engine here */
     desc_builder->engine = NULL;
     
@@ -249,7 +257,6 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
                 axis2_env_t **env) 
 {
     axis2_desc_builder_impl_t *builder_impl = NULL;
-    axis2_om_stax_builder_t *builder = NULL;
     axis2_xml_reader_t *reader = NULL;
     axis2_om_document_t *document = NULL;
     axis2_om_node_t *root = NULL;
@@ -276,9 +283,9 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
     }
     
     /** create axis2_om_stax_builder by parsing pull_parser struct */
-    builder = axis2_om_stax_builder_create (env, reader);
+    builder_impl->builder = axis2_om_stax_builder_create (env, reader);
 
-    if(!builder)
+    if(!(builder_impl->builder))
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
             AXIS2_FAILURE)
@@ -288,7 +295,7 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
         create an om document
         document is the container of om model created using builder
     */
-    document = axis2_om_document_create (env, NULL, builder);
+    document = axis2_om_document_create (env, NULL, builder_impl->builder);
     /** 
      * In description building we don't want defferred building. So build
      * the whole tree at once

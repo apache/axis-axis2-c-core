@@ -280,6 +280,23 @@ axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call,
         call_impl->callback_recv = NULL;
     }    
     
+    if (call_impl->svc_ctx)
+    {
+        axis2_conf_ctx_t *conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(call_impl->svc_ctx, env);
+        if (conf_ctx)
+        {
+            axis2_conf_t *conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+            if (conf)
+            {
+                AXIS2_CONF_CTX_FREE(conf, env);
+                conf = NULL;
+            }
+                
+            AXIS2_CONF_CTX_FREE(conf_ctx, env);
+            conf_ctx = NULL;
+        }
+    }    
+    
     AXIS2_FREE((*env)->allocator, call_impl);
     call_impl = NULL;
     

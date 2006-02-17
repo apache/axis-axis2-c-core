@@ -45,6 +45,7 @@ build_conf_ctx (axis2_env_t **env,
     {
         return NULL;
     }
+    AXIS2_CONF_SET_DEP_ENGINE(conf, env, dep_engine);
     
     phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
     if (!phase_resolver)
@@ -100,7 +101,8 @@ build_conf_ctx (axis2_env_t **env,
 
     axis2_init_modules(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
-    
+   
+    /*AXIS2_DEP_ENGINE_FREE(dep_engine, env);*/
     return conf_ctx;
 }
 

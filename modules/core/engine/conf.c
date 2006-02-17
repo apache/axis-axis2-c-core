@@ -54,7 +54,7 @@ struct axis2_conf_impl
     axis2_hash_t *faulty_svcs;
     axis2_hash_t *faulty_modules;
     axis2_char_t *axis2_repos;
-
+    axis2_dep_engine_t *dep_engine;
 };
 
 #define AXIS2_INTF_TO_IMPL(conf) ((axis2_conf_impl_t *)conf)
@@ -268,6 +268,11 @@ axis2_conf_set_dispatch_phase(axis2_conf_t *conf,
                                 axis2_env_t **env,
                                 axis2_phase_t *dispatch);
 
+axis2_status_t AXIS2_CALL
+axis2_conf_set_dep_engine(axis2_conf_t *conf,
+                                axis2_env_t **env,
+                                axis2_dep_engine_t *dep_engine);
+
 
 axis2_status_t AXIS2_CALL
 axis2_conf_engage_module(axis2_conf_t *conf,
@@ -317,6 +322,7 @@ axis2_conf_create (axis2_env_t **env)
     config_impl->faulty_svcs = NULL;
     config_impl->faulty_modules = NULL;
     config_impl->axis2_repos = NULL;
+    config_impl->dep_engine = NULL;
     config_impl->conf.ops = NULL;
     
     config_impl->conf.param_container = (axis2_param_container_t *) 
@@ -549,6 +555,7 @@ axis2_conf_create (axis2_env_t **env)
     config_impl->conf.ops->get_repos = axis2_conf_get_repos;
     config_impl->conf.ops->set_repos = axis2_conf_set_repos;
     config_impl->conf.ops->engage_module = axis2_conf_engage_module;
+    config_impl->conf.ops->set_dep_engine = axis2_conf_set_dep_engine;
     
 	return &(config_impl->conf);	
 }	
@@ -575,6 +582,12 @@ axis2_conf_free (axis2_conf_t *conf,
     {
         AXIS2_PARAM_CONTAINER_FREE(conf->param_container, env);
         conf->param_container = NULL;
+    }
+    
+	if(NULL != config_impl->dep_engine)
+    {
+        AXIS2_PARAM_CONTAINER_FREE(config_impl->dep_engine, env);
+        config_impl->dep_engine= NULL;
     }
     
     if(config_impl->svc_grps)
@@ -1811,5 +1824,16 @@ axis2_conf_set_repos(axis2_conf_t *conf,
         conf_impl->axis2_repos = NULL;
     }
     conf_impl->axis2_repos = AXIS2_STRDUP(repos_path, env);
+    return AXIS2_SUCCESS;
+}
+
+
+axis2_status_t AXIS2_CALL
+axis2_conf_set_dep_engine(axis2_conf_t *conf,
+                                axis2_env_t **env,
+                                axis2_dep_engine_t *dep_engine)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(conf)->dep_engine = dep_engine;
     return AXIS2_SUCCESS;
 }

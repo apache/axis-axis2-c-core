@@ -791,11 +791,19 @@ AXIS2_CALL axis2_om_stax_builder_free(axis2_om_stax_builder_t *builder,
     if(builder_impl->parser)
     {
         AXIS2_XML_READER_FREE(builder_impl->parser, env);
+        builder_impl->parser = NULL;
+    }
+    
+    if(builder_impl->document)
+    {
+        AXIS2_OM_DOCUMENT_FREE(builder_impl->document, env);
+        builder_impl->document = NULL;
     }
 
 	if(builder->ops)
 	{
-		AXIS2_FREE ((*env)->allocator,builder->ops);
+		AXIS2_FREE ((*env)->allocator, builder->ops);
+        builder->ops = NULL;
 	}	
 	AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(builder));
 	return AXIS2_SUCCESS;	

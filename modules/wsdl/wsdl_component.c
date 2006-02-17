@@ -175,12 +175,14 @@ axis2_wsdl_component_free (axis2_wsdl_component_t *wsdl_component,
                 component_properties_free_func_ptrs, key, AXIS2_HASH_KEY_STRING);
             if(!free_func_ptr)
             {
-                /* If free_func_ptr is NULL we assume that property is type
-                 * axis2_char_t *
+                /* If free_func_ptr is NULL we assume that property is of type
+                 * axis2_char_t* (that is string)
                  */
                 AXIS2_FREE((*env)->allocator, val);
             }
-            free_func_ptr(val, env);
+
+            /* TODO: commenting this for the time being. Should if AXIS2C-73 to solve the problem permanantly
+            free_func_ptr(val, env);*/
             
             val = NULL;
             key = NULL;

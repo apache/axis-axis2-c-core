@@ -153,6 +153,12 @@ axis2_conf_builder_free (axis2_conf_builder_t *conf_builder,
         AXIS2_FREE((*env)->allocator, conf_builder->ops);
         conf_builder->ops = NULL;
     }
+
+    if (conf_builder_impl->conf_builder.desc_builder)
+    {
+        AXIS2_DESC_BUILDER_FREE(conf_builder_impl->conf_builder.desc_builder, env);
+        conf_builder_impl->conf_builder.desc_builder = NULL;
+    }
     
     if(conf_builder_impl)
     {

@@ -54,6 +54,8 @@ struct axis2_svc_grp;
 struct axis2_svc;
 struct axis2_op;    
     
+struct axis2_dep_engine;
+
 /** 
  * @brief Engine Configuration ops struct
  * Encapsulator struct for ops of axis2_config
@@ -302,6 +304,10 @@ struct axis2_conf_ops
                             axis2_env_t **env,
                             axis2_qname_t *module_ref);
                             
+    axis2_status_t (AXIS2_CALL *
+    set_dep_engine)(axis2_conf_t *conf,
+                                axis2_env_t **env,
+                                struct axis2_dep_engine *dep_engine);
                    
 };
 
@@ -454,6 +460,8 @@ axis2_conf_create(axis2_env_t **env);
 #define AXIS2_CONF_ENGAGE_MODULE(conf, env, module_ref) \
         ((conf)->ops->engage_module(conf , env, module_ref))        
     
+#define AXIS2_CONF_SET_DEP_ENGINE(conf, env, dep_engine) \
+        ((conf)->ops->set_dep_engine(conf, env, dep_engine))
 
 /************************* End of function macros *****************************/
 
