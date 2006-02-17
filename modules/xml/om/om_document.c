@@ -177,7 +177,7 @@ axis2_om_document_free (axis2_om_document_t *om_document,
     if (document->xml_version)
         AXIS2_FREE((*env)->allocator, document->xml_version);
     
-   /* AXIS2_OM_NODE_FREE_TREE(document->root_element, env); */
+    AXIS2_OM_NODE_FREE_TREE(document->root_element, env);
     
     if(document->om_document.ops)
         AXIS2_FREE((*env)->allocator, document->om_document.ops);
