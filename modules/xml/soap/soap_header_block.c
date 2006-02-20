@@ -75,10 +75,7 @@ axis2_soap_header_block_is_processed
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_block_set_processed
                         (axis2_soap_header_block_t *header_block,
-                         axis2_env_t **env);                                                                                                                                                                                    
-                                                                                                                            
-                            
-axis2_char_t* AXIS2_CALL 
+                         axis2_env_t **env);                                                                                                                      axis2_char_t* AXIS2_CALL 
 axis2_soap_header_block_get_role
                         (axis2_soap_header_block_t *header_block,
                          axis2_env_t **env);
@@ -165,16 +162,13 @@ axis2_soap_header_block_create(axis2_env_t **env)
         axis2_soap_header_block_set_processed;
     header_block_impl->header_block.ops->get_role =
         axis2_soap_header_block_get_role;
-    header_block_impl->header_block.ops->set_soap_version =
-        axis2_soap_header_block_set_soap_version;
+
     header_block_impl->header_block.ops->get_soap_version =
         axis2_soap_header_block_get_soap_version;
     header_block_impl->header_block.ops->set_base_node =
         axis2_soap_header_block_set_base_node;
     header_block_impl->header_block.ops->get_base_node =
         axis2_soap_header_block_get_base_node;    
-            
-
     return &(header_block_impl->header_block);
 }
 
@@ -204,6 +198,8 @@ axis2_soap_header_block_create_with_parent(axis2_env_t **env,
 
     header_block_impl->om_ele_node = this_node; 
     AXIS2_SOAP_HEADER_SET_HEADER_BLOCK(header, env, header_block);
+    header_block_impl->soap_version = 
+        AXIS2_SOAP_HEADER_GET_SOAP_VERSION(header, env);
     return &(header_block_impl->header_block);                                
 }
 
@@ -516,44 +512,4 @@ axis2_soap_header_block_get_soap_version
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(header_block)->soap_version;
 }
-axis2_status_t AXIS2_CALL 
-axis2_soap_header_block_set_soap_version  
-                        (axis2_soap_header_block_t *header_block,
-                         axis2_env_t **env,
-                         int soap_version)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, soap_version, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(header_block)->soap_version = soap_version;
-    return AXIS2_SUCCESS;
-}
-/******************** soap11 **************************************************/
-AXIS2_DECLARE(axis2_soap_header_block_t *)
-axis2_soap11_header_block_create_with_parent(axis2_env_t **env,
-                                           axis2_char_t *localname,
-                                           axis2_om_namespace_t *ns,
-                                           axis2_soap_header_t *header)
-{
-    axis2_soap_header_block_t *header_block = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-    header_block = axis2_soap_header_block_create_with_parent(env, localname, ns, header);
-    if(!header_block)
-        return NULL;
-    axis2_soap_header_block_set_soap_version(header_block, env, AXIS2_SOAP11);
-    return header_block;
-}                                           
-/******************** soap12 **************************************************/                                           
-AXIS2_DECLARE(axis2_soap_header_block_t *)
-axis2_soap12_header_block_create_with_parent(axis2_env_t **env,
-                                           axis2_char_t *localname,
-                                           axis2_om_namespace_t *ns,
-                                           axis2_soap_header_t *header)
-{
-    axis2_soap_header_block_t *header_block = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-    header_block = axis2_soap_header_block_create_with_parent(env, localname, ns, header);
-    if(!header_block)
-        return NULL;
-    axis2_soap_header_block_set_soap_version(header_block, env, AXIS2_SOAP12);
-    return header_block;
-}
+

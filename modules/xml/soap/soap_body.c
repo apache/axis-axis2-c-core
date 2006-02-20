@@ -76,11 +76,6 @@ axis2_soap_body_get_soap_version(axis2_soap_body_t *body,
                                  
                                  
 axis2_status_t AXIS2_CALL 
-axis2_soap_body_set_soap_version(axis2_soap_body_t *body,
-                                 axis2_env_t **env,
-                                 int soap_version);
-                                 
-axis2_status_t AXIS2_CALL 
 axis2_soap_body_set_builder(axis2_soap_body_t *body,
                             axis2_env_t **env,
                             axis2_soap_builder_t *builder);   
@@ -381,16 +376,6 @@ axis2_soap_body_get_soap_version(axis2_soap_body_t *body,
     return AXIS2_INTF_TO_IMPL(body)->soap_version;    
 }
                                              
-axis2_status_t AXIS2_CALL 
-axis2_soap_body_set_soap_version(axis2_soap_body_t *body,
-                                   axis2_env_t **env,
-                                   int soap_version)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(body)->soap_version = soap_version;
-    return AXIS2_SUCCESS;
-}
-
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_set_builder(axis2_soap_body_t *body,
                             axis2_env_t **env,

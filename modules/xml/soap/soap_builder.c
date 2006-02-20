@@ -471,7 +471,7 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             builder_impl->header_present = AXIS2_TRUE;
             soap_header = axis2_soap_header_create(env);
             AXIS2_SOAP_HEADER_SET_BASE_NODE(soap_header, env, om_element_node);
-/*            AXIS2_SOAP_HEADER_SET_SOAP_VERSION(soap_header, env, builder_impl->soap_version); */
+
             AXIS2_SOAP_ENVELOPE_SET_HEADER(builder_impl->soap_envelope, env, soap_header);
             AXIS2_SOAP_HEADER_SET_BUILDER(soap_header, env, builder);
             status = axis2_soap_builder_process_namespace_data(builder, env, 
@@ -517,7 +517,7 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             axis2_soap_header_t *soap_header = NULL;
             header_block = axis2_soap_header_block_create(env);
             AXIS2_SOAP_HEADER_BLOCK_SET_BASE_NODE(header_block, env, om_element_node);
-            AXIS2_SOAP_HEADER_BLOCK_SET_SOAP_VERSION(header_block, env, builder_impl->soap_version);
+           
             soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(builder_impl->soap_envelope, env);
             AXIS2_SOAP_HEADER_SET_HEADER_BLOCK(soap_header, env, header_block);
 

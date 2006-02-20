@@ -258,18 +258,7 @@ axis2_soap_header_add_header_block(axis2_soap_header_t* header,
     AXIS2_PARAM_CHECK((*env)->error, ns, NULL);
     header_impl = AXIS2_INTF_TO_IMPL(header);
     
-    if(header_impl->soap_version == AXIS2_SOAP11)
-    {
-        header_block = 
-        axis2_soap11_header_block_create_with_parent(env,
-                    localname, ns, header);
-    }
-    if(header_impl->soap_version == AXIS2_SOAP12)
-    {
-        header_block =
-        axis2_soap12_header_block_create_with_parent(env, 
-                localname, ns, header);            
-    }
+    header_block = axis2_soap_header_block_create_with_parent(env, localname, ns, header);
     
     header_block_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(
                             header_block, env);
