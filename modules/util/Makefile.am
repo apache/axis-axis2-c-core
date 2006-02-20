@@ -1,13 +1,16 @@
 TESTS =
 lib_LTLIBRARIES = libaxis2_util.la
 noinst_HEADERS = axis2_hash.h \
+				axis2_file_diff.h \
+				axis2_utils.h
+
+include_HEADERS = axis2_hash.h \
 				axis2_string.h \
 				axis2_array_list.h \
 				axis2_log_default.h \
 				axis2_error_default.h \
-				axis2_file_diff.h \
-				axis2_utils.h \
 				axis2_linked_list.h
+                
 
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_util_la_SOURCES = hash.c \
