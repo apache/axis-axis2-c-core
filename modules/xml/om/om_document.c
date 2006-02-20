@@ -173,15 +173,26 @@ axis2_om_document_free (axis2_om_document_t *om_document,
     document = AXIS2_INTF_TO_IMPL(om_document);
     
     if (document->char_set_encoding)
+    {
         AXIS2_FREE((*env)->allocator, document->char_set_encoding);
+        document->char_set_encoding = NULL;
+    }
     if (document->xml_version)
+    {
         AXIS2_FREE((*env)->allocator, document->xml_version);
+        document->xml_version = NULL;
+    }
+    if(document->root_element)
+    {
     
-    AXIS2_OM_NODE_FREE_TREE(document->root_element, env);
-    
+        AXIS2_OM_NODE_FREE_TREE(document->root_element, env);
+        document->root_element = NULL;
+    }
     if(document->om_document.ops)
+    {
         AXIS2_FREE((*env)->allocator, document->om_document.ops);
-
+        document->om_document.ops = NULL;
+    }
     AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(document));
     return AXIS2_SUCCESS;
 }

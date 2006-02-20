@@ -49,7 +49,7 @@ axis2_soap_fault_reason_free(axis2_soap_fault_reason_t *fault_reason,
                                   axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
-axis2_soap_fault_reason_set_soap_text
+axis2_soap_fault_reason_set_soap_fault_text
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env,
                                  axis2_soap_fault_text_t *soap_text);
@@ -121,8 +121,8 @@ axis2_soap_fault_reason_create(axis2_env_t **env)
     fault_reason_impl->fault_reason.ops->free_fn = 
         axis2_soap_fault_reason_free;
     
-    fault_reason_impl->fault_reason.ops->set_soap_text =
-        axis2_soap_fault_reason_set_soap_text;        
+    fault_reason_impl->fault_reason.ops->set_soap_fault_text =
+        axis2_soap_fault_reason_set_soap_fault_text;        
         
     fault_reason_impl->fault_reason.ops->get_soap_text =
         axis2_soap_fault_reason_get_soap_text;        
@@ -209,7 +209,7 @@ axis2_soap_fault_reason_free(axis2_soap_fault_reason_t *fault_reason,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_soap_fault_reason_set_soap_text
+axis2_soap_fault_reason_set_soap_fault_text
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env,
                                  axis2_soap_fault_text_t *soap_text)

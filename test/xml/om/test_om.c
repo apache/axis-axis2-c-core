@@ -157,8 +157,6 @@ test_om_build (char *filename)
     AXIS2_OM_OUTPUT_FREE(om_output, &environment);  
     if(buffer)
         printf("%s",buffer);
-    AXIS2_OM_DOCUMENT_FREE_OM_NODES(document, &environment);    
-    AXIS2_OM_DOCUMENT_FREE(document, &environment); 
   
     AXIS2_OM_STAX_BUILDER_FREE(builder, &environment);
     if(buffer)
@@ -272,7 +270,7 @@ main (int argc, char *argv[])
 /*    test_om_serialize(); */
 
     axis2_env_free(environment); 
-    free(allocator);
+    axis2_allocator_free(allocator);
     return 0;
 }
 

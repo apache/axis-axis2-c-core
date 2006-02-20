@@ -20,8 +20,14 @@
 
 static axis2_status_t thread_mutex_cleanup(void *data)
 {
-    axis2_thread_mutex_t *lock = data;
-
+    axis2_thread_mutex_t *lock = NULL;
+    axis2_allocator_t *allocator = NULL;
+    if(!data)
+        return AXIS2_FAILURE;
+        
+    lock = (axis2_thread_mutex_t *)data;
+    allocator = lock->allocator;        
+    
     if (lock->type == thread_mutex_critical_section) 
 	{
         DeleteCriticalSection(&lock->section);
@@ -32,6 +38,8 @@ static axis2_status_t thread_mutex_cleanup(void *data)
             return AXIS2_FAILURE;
         }
     }
+    
+    AXIS2_FREE(allocator, lock);
     return AXIS2_SUCCESS;
 }
 
@@ -40,8 +48,9 @@ AXIS2_DECLARE(axis2_thread_mutex_t *) axis2_thread_mutex_create(axis2_allocator_
 {
 	axis2_thread_mutex_t *mutex = NULL;
 
-    mutex = (axis2_thread_mutex_t *)AXIS2_MALLOC(allocator, sizeof(*mutex));
-
+    mutex = (axis2_thread_mutex_t *)AXIS2_MALLOC(allocator, sizeof(axis2_thread_mutex_t));
+    mutex->allocator = allocator;
+    
     if (flags == AXIS2_THREAD_MUTEX_DEFAULT) /*unnested*/
 	{
         /* Use an auto-reset signaled event, ready to accept one
@@ -95,7 +104,8 @@ AXIS2_DECLARE(axis2_status_t) axis2_thread_mutex_trylock(axis2_thread_mutex_t *m
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_status_t) axis2_thread_mutex_unlock(axis2_thread_mutex_t *mutex)
+AXIS2_DECLARE(axis2_status_t) 
+axis2_thread_mutex_unlock(axis2_thread_mutex_t *mutex)
 {
     if (mutex->type == thread_mutex_critical_section)
 	{
@@ -120,7 +130,8 @@ AXIS2_DECLARE(axis2_status_t) axis2_thread_mutex_unlock(axis2_thread_mutex_t *mu
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_status_t) axis2_thread_mutex_destroy(axis2_thread_mutex_t *mutex)
+AXIS2_DECLARE(axis2_status_t) 
+axis2_thread_mutex_destroy(axis2_thread_mutex_t *mutex)
 {
     return thread_mutex_cleanup((void*)mutex);
 }

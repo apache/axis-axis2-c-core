@@ -490,7 +490,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 AXIS2_SOAP_FAULT_TEXT_SET_BASE_NODE(soap_fault_text, env, om_ele_node);
                 AXIS2_SOAP_FAULT_TEXT_SET_SOAP_VERSION(soap_fault_text, env, AXIS2_SOAP12);
                 fault_reason = AXIS2_SOAP_FAULT_GET_REASON(soap_fault, env);
-                AXIS2_SOAP_FAULT_REASON_SET_SOAP_TEXT(fault_reason, env, soap_fault_text);
+                AXIS2_SOAP_FAULT_REASON_SET_SOAP_FAULT_TEXT(fault_reason, env, soap_fault_text);
                 /*****************
                 AXIS2_OM_NODE_SET_BUILD_STATUS(om_ele_node, env, AXIS2_FALSE);
                 ******************/

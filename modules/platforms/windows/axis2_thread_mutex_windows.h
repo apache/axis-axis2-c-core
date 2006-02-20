@@ -3,7 +3,7 @@
 
 #include <process.h>
 #include <windows.h>
-
+#include <axis2_allocator.h>
 typedef enum thread_mutex_type 
 {
     thread_mutex_critical_section,
@@ -20,6 +20,7 @@ struct axis2_thread_mutex_t
     thread_mutex_type type;
     HANDLE            handle;
     CRITICAL_SECTION  section;
+    axis2_allocator_t *allocator;
 };
 
 #endif  /* AXIS2_THREAD_MUTEX_WINDOWS_H */

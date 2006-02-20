@@ -203,6 +203,7 @@ axis2_soap_header_block_create_with_parent(axis2_env_t **env,
                                       ns , &this_node);
 
     header_block_impl->om_ele_node = this_node; 
+    AXIS2_SOAP_HEADER_SET_HEADER_BLOCK(header, env, header_block);
     return &(header_block_impl->header_block);                                
 }
 

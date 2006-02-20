@@ -30,6 +30,7 @@ int read_soap(char *buffer, int size, void *ctx)
 int close_soap(void *ctx)
 {
     fclose(f);
+    return AXIS2_TRUE;
 }
 
 int printnode(axis2_om_node_t *om_node, axis2_env_t **env)
@@ -200,8 +201,8 @@ int build_soap_programatically(axis2_env_t **env)
     printf("%s \n",  buffer); 
 
     AXIS2_SOAP_ENVELOPE_FREE(soap_envelope, env);
-
-
+    AXIS2_FREE((*env)->allocator, buffer);
+    AXIS2_OM_OUTPUT_FREE(om_output, env);
     return AXIS2_SUCCESS;
 }
 
@@ -222,10 +223,10 @@ int create_soap_fault(axis2_env_t **env)
     AXIS2_SOAP_ENVELOPE_SERIALIZE(soap_envelope, env, om_output, AXIS2_FALSE);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
         printf("%s \n",  buffer);
-
+    AXIS2_FREE((*env)->allocator, buffer);
     AXIS2_SOAP_ENVELOPE_FREE(soap_envelope, env);
     AXIS2_OM_OUTPUT_FREE(om_output, env);
-
+return 0;
 }
 
 int main(int argc, char *argv[])
@@ -256,5 +257,7 @@ int main(int argc, char *argv[])
     build_soap(&env, filename,uri);
     create_soap_fault(&env);
     axis2_env_free(env); 
+    axis2_allocator_free(allocator);
+    getchar();
     return 0;        
 }

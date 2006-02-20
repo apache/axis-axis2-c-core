@@ -186,7 +186,7 @@ axis2_soap_fault_text_create_with_parent(axis2_env_t **env,
                     &this_node);
     fault_text_impl->om_ele_node = this_node;
     fault_text_impl->om_ele = this_ele;
-    
+    AXIS2_SOAP_FAULT_REASON_SET_SOAP_FAULT_TEXT(parent, env, fault_text);
     return &(fault_text_impl->fault_text);
 }
                             

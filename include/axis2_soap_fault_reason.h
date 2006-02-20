@@ -57,7 +57,7 @@ struct axis2_soap_builder;
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env);
 
-        axis2_status_t (AXIS2_CALL *set_soap_text)
+        axis2_status_t (AXIS2_CALL *set_soap_fault_text)
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env,
                                  struct axis2_soap_fault_text *soap_text);
@@ -126,8 +126,8 @@ axis2_soap12_fault_reason_create_with_parent(axis2_env_t **env,
 #define AXIS2_SOAP_FAULT_REASON_FREE(fault_reason , env) \
         ((fault_reason)->ops->free_fn(fault_reason, env))
 
-#define AXIS2_SOAP_FAULT_REASON_SET_SOAP_TEXT(fault_reason , env, soap_text) \
-        ((fault_reason)->ops->set_soap_text(fault_reason, env, soap_text))
+#define AXIS2_SOAP_FAULT_REASON_SET_SOAP_FAULT_TEXT(fault_reason , env, soap_text) \
+        ((fault_reason)->ops->set_soap_fault_text(fault_reason, env, soap_text))
         
 #define AXIS2_SOAP_FAULT_REASON_GET_SOAP_TEXT(fault_reason , env) \
         ((fault_reason)->ops->get_soap_text(fault_reason, env)) 

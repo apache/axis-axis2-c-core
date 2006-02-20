@@ -35,15 +35,28 @@ struct axis2_log_impl
 axis2_status_t AXIS2_CALL
 axis2_log_impl_free (axis2_allocator_t *allocator, axis2_log_t *log)
 {
+	axis2_log_impl_t *log_impl = NULL;
 	
     if (NULL != log )
     {
-		if ( NULL != log->ops)
-        	AXIS2_FREE (allocator, log->ops);
-		if (NULL != AXIS2_INTF_TO_IMPL(log)->stream)
-			axis2_file_handler_close(AXIS2_INTF_TO_IMPL(log)->stream);
+        log_impl = AXIS2_INTF_TO_IMPL(log);
 
-        AXIS2_FREE (allocator, AXIS2_INTF_TO_IMPL(log)); 
+		if(NULL != log_impl->mutex)
+        {
+            axis2_thread_mutex_destroy(log_impl->mutex);
+		    log_impl->mutex = NULL;   
+		}    
+		if (NULL != AXIS2_INTF_TO_IMPL(log)->stream)
+		{
+			axis2_file_handler_close(log_impl->stream);
+			log_impl->stream = NULL;
+        }
+        if ( NULL != log->ops)
+        {
+        	AXIS2_FREE (allocator, log->ops);
+        	log->ops = NULL;
+        }
+        AXIS2_FREE (allocator, log_impl); 
     }
     return AXIS2_SUCCESS;
 }
