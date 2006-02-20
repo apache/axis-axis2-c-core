@@ -820,9 +820,9 @@ axis2_soap_fault_create_default_fault(axis2_env_t **env,
     
     axis2_om_node_t *text_node = NULL;
     axis2_om_element_t *text_ele = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, code_value, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, reason_text, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, code_value, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, reason_text, NULL);
 
     soap_fault = axis2_soap_fault_create_with_parent(env, parent);
     if(soap_fault)

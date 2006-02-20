@@ -134,7 +134,6 @@ axis2_soap_body_create(axis2_env_t **env)
     body_impl->soap_body.ops->get_base_node = axis2_soap_body_get_base_node;
     body_impl->soap_body.ops->set_base_node = axis2_soap_body_set_base_node;
     body_impl->soap_body.ops->get_soap_version = axis2_soap_body_get_soap_version;
-    body_impl->soap_body.ops->set_soap_version = axis2_soap_body_set_soap_version;
     body_impl->soap_body.ops->set_builder = axis2_soap_body_set_builder;
     body_impl->soap_body.ops->build = axis2_soap_body_build;
     body_impl->soap_body.ops->set_fault = axis2_soap_body_set_fault;
@@ -156,7 +155,7 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
     axis2_om_namespace_t *om_ns = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, envelope, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, envelope, NULL);
     
     body = axis2_soap_body_create(env);
     if(!body)
@@ -190,6 +189,9 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
         return NULL;
     }
     AXIS2_SOAP_ENVELOPE_SET_BODY(envelope, env, &(body_impl->soap_body));
+    body_impl->soap_version = 
+        AXIS2_SOAP_ENVELOPE_GET_SOAP_VERSION(envelope, env);
+    
     return &(body_impl->soap_body);           
 }
 

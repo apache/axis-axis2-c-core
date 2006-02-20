@@ -159,10 +159,10 @@ axis2_soap_header_create(axis2_env_t **env)
         axis2_soap_header_set_base_node;
     header_impl->soap_header.ops->get_base_node =
         axis2_soap_header_get_base_node;
-    header_impl->soap_header.ops->set_soap_version =
+/*    header_impl->soap_header.ops->set_soap_version =
         axis2_soap_header_set_soap_version;
     header_impl->soap_header.ops->get_soap_version =
-        axis2_soap_header_get_soap_version;
+        axis2_soap_header_get_soap_version; */
     header_impl->soap_header.ops->set_header_block = 
         axis2_soap_header_set_header_block;
     header_impl->soap_header.ops->set_builder =
@@ -406,34 +406,6 @@ axis2_soap_header_set_soap_version(axis2_soap_header_t *header,
     return AXIS2_SUCCESS;
 
 }                                         
-
-/******************** soap11 **************************************************/
-
-AXIS2_DECLARE(axis2_soap_header_t *)
-axis2_soap11_header_create_with_parent(axis2_env_t **env,
-                                     axis2_soap_envelope_t *envelope)
-{
-    axis2_soap_header_t *header = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, envelope, NULL);
-    header = axis2_soap_header_create_with_parent(env, envelope);
-    AXIS2_SOAP_HEADER_BLOCK_SET_SOAP_VERSION(header, env, AXIS2_SOAP11);
-    return header;
-}                                     
-
-/******************** soap12 **************************************************/
-                                     
-AXIS2_DECLARE(axis2_soap_header_t *)
-axis2_soap12_header_create_with_parent(axis2_env_t **env,
-                                     axis2_soap_envelope_t *envelope)
-{
-    axis2_soap_header_t *header = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, envelope, NULL);
-    header = axis2_soap_header_create_with_parent(env, envelope);
-    AXIS2_SOAP_HEADER_BLOCK_SET_SOAP_VERSION(header, env, AXIS2_SOAP11);
-    return header;
-}
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_set_header_block(axis2_soap_header_t *header,

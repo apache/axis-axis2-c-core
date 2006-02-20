@@ -116,21 +116,6 @@ struct axis2_soap_builder;
          */
         int (AXIS2_CALL *get_soap_version)(axis2_soap_body_t *body,
                                            axis2_env_t **env);
-        /**
-         * set soap version of this soap_body
-         * this only set a property in soap_body struct , does not alter 
-         * namespace uri, so user must make sure that the wrapped om node is of 
-         * the corresponding soap version 
-         * @param body soap_body
-         * @param env environment
-         * @param soap_version soap_version SHOULD be one of AXIS2_SOAP11 or
-         *                     AXIS2_SOAP12
-         * @return status code
-         */    
-    
-        axis2_status_t (AXIS2_CALL *set_soap_version)(axis2_soap_body_t *body,
-                                                      axis2_env_t **env,
-                                                      int soap_version);
                                                       
         /**
          *  associate a soap_builder with this soap_body
@@ -203,9 +188,6 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
         
 #define AXIS2_SOAP_BODY_GET_SOAP_VERSION(body, env) \
         ((body)->ops->get_soap_version(body, env))
-        
-#define AXIS2_SOAP_BODY_SET_SOAP_VERSION(body, env, soap_version) \
-        ((body)->ops->set_soap_version(body, env, soap_version)) 
         
 #define AXIS2_SOAP_BODY_SET_BUILDER(body, env, builder) \
         ((body)->ops->set_builder(body, env, builder))               

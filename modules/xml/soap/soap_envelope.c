@@ -625,11 +625,10 @@ axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
         env_impl = AXIS2_INTF_TO_IMPL(soap_env);
         
         AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(soap_env, env, AXIS2_SOAP11);
-        soap_header = axis2_soap11_header_create_with_parent(env, soap_env);
+        soap_header = axis2_soap_header_create_with_parent(env, soap_env);
         soap_body   = axis2_soap_body_create_with_parent(env, soap_env);
         env_impl->body = soap_body;
         env_impl->header = soap_header;
-        AXIS2_SOAP_BODY_SET_SOAP_VERSION(soap_body, env, AXIS2_SOAP11);
         return soap_env;    
     }
     else if(soap_version == AXIS2_SOAP12)
@@ -643,12 +642,10 @@ axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
         env_impl = AXIS2_INTF_TO_IMPL(soap_env);
         
         AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(soap_env, env, AXIS2_SOAP12);
-        soap_header = axis2_soap12_header_create_with_parent(env, soap_env);
+        soap_header = axis2_soap_header_create_with_parent(env, soap_env);
         soap_body   = axis2_soap_body_create_with_parent(env, soap_env);
         env_impl->body = soap_body;
         env_impl->header = soap_header;
-        
-        AXIS2_SOAP_BODY_SET_SOAP_VERSION(soap_body, env, AXIS2_SOAP12);
         return soap_env;    
     }
     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
@@ -677,7 +674,6 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
         AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(soap_env, env, AXIS2_SOAP11);
         soap_body   = axis2_soap_body_create_with_parent(env, soap_env);
         env_impl->body = soap_body;
-        AXIS2_SOAP_BODY_SET_SOAP_VERSION(soap_body, env, AXIS2_SOAP11);
         return soap_env;    
     }
     else if(soap_version == AXIS2_SOAP12)
@@ -693,7 +689,6 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
         AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(soap_env, env, AXIS2_SOAP12);
         soap_body   = axis2_soap_body_create_with_parent(env, soap_env);
         env_impl->body = soap_body;
-        AXIS2_SOAP_BODY_SET_SOAP_VERSION(soap_body, env, AXIS2_SOAP12);
         return soap_env;    
     }
     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
