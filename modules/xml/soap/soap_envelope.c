@@ -320,8 +320,29 @@ axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *envelope,
                                    axis2_env_t **env,
                                    int soap_version)
 {
+    axis2_soap_envelope_impl_t *envelope_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(envelope)->soap_version = soap_version;
+    envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
+    if(envelope_impl->soap_version && envelope_impl->soap_version != soap_version)
+    {
+        axis2_om_namespace_t *om_ns    = NULL;
+        axis2_char_t *uri              = NULL;
+        axis2_om_element_t *env_ele    = 
+            AXIS2_OM_NODE_GET_DATA_ELEMENT(envelope_impl->om_ele_node, env);
+        
+        om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(env_ele, env);
+        
+        if(om_ns )
+           AXIS2_OM_NAMESPACE_FREE(om_ns, env);
+        
+        if(soap_version == AXIS2_SOAP11)
+            uri = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
+        else if(soap_version == AXIS2_SOAP12)
+            uri = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;                                           
+        om_ns = axis2_om_namespace_create(env, uri, AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX);
+        AXIS2_OM_ELEMENT_SET_NAMESPACE(env_ele, env, om_ns, envelope_impl->om_ele_node);
+    }
+    envelope_impl->soap_version = soap_version;
     return AXIS2_SUCCESS;
 }
 
