@@ -159,10 +159,9 @@ axis2_soap_header_create(axis2_env_t **env)
         axis2_soap_header_set_base_node;
     header_impl->soap_header.ops->get_base_node =
         axis2_soap_header_get_base_node;
-/*    header_impl->soap_header.ops->set_soap_version =
-        axis2_soap_header_set_soap_version;
+        
     header_impl->soap_header.ops->get_soap_version =
-        axis2_soap_header_get_soap_version; */
+        axis2_soap_header_get_soap_version; 
     header_impl->soap_header.ops->set_header_block = 
         axis2_soap_header_set_header_block;
     header_impl->soap_header.ops->set_builder =
