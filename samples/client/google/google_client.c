@@ -38,6 +38,7 @@
 #include <axis2_om_node.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_call.h>
+#include <axis2_platform_auto_sense.h>
 
 axis2_om_node_t *
 build_soap_body_content(axis2_env_t **env, axis2_char_t *operation, axis2_char_t *google_key, 

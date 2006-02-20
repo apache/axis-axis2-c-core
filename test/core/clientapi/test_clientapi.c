@@ -11,6 +11,7 @@
 #include <axis2_soap_body.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_conf_ctx.h>
+#include <axis2_platform_auto_sense.h>
 
 void axis2_test_call_invoke_blocking()
 {
