@@ -7,7 +7,7 @@ libtest_phaseresolver_la_SOURCES = phaseresolver_test.c \
                                     test_resolver.c \
                                     test_phase_holder.c
 
-include_HEADERS=$(top_builddir)/test/unit/core/phaseresolver/*.h
+noinst_HEADERS=$(top_builddir)/test/unit/core/phaseresolver/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \

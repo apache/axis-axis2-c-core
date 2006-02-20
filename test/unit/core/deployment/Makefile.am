@@ -7,7 +7,7 @@ libtest_deployment_la_SOURCES = deployment_test.c \
                                 test_phases_info.c \
                                 test_dep_engine.c
 
-include_HEADERS=$(top_builddir)/test/unit/core/deployment/*.h
+noinst_HEADERS=$(top_builddir)/test/unit/core/deployment/*.h
 
 
 INCLUDES = -I$(top_builddir)/include \

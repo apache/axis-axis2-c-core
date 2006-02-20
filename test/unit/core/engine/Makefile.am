@@ -4,7 +4,7 @@ prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_engine.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libtest_engine_la_SOURCES = engine_test.c test_conf.c
-include_HEADERS=$(top_builddir)/test/unit/core/engine/*.h
+noinst_HEADERS=$(top_builddir)/test/unit/core/engine/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \

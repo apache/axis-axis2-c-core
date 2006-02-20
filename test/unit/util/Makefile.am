@@ -13,7 +13,7 @@ libtest_util_la_SOURCES = util_hash_test.c \
                             util_dir_handler_test.c \
                             util_class_loader_test.c
 
-include_HEADERS=$(top_builddir)/test/unit/util/*.h
+noinst_HEADERS=$(top_builddir)/test/unit/util/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \

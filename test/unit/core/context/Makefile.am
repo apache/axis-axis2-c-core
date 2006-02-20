@@ -4,7 +4,7 @@ prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_context.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libtest_context_la_SOURCES = context_test.c
-include_HEADERS=$(top_builddir)/test/unit/core/context/*.h
+noinst_HEADERS=$(top_builddir)/test/unit/core/context/*.h
 
 
 INCLUDES = -I$(top_builddir)/include \

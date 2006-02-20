@@ -7,7 +7,7 @@ AM_CPPFLAGS = $(CPPFLAGS)
 libtest_om_la_SOURCES = om_test.c om_node_test.c
 
                         
-include_HEADERS=$(top_builddir)/test/unit/xml/om/*.h
+noinst_HEADERS=$(top_builddir)/test/unit/xml/om/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \

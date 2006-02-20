@@ -6,7 +6,7 @@ AM_CPPFLAGS = $(CPPFLAGS)
 
 libtest_wsdl_la_SOURCES = wsdl_test.c test_wsdl_component.c
 
-include_HEADERS=$(top_builddir)/test/unit/wsdl/*.h
+noinst_HEADERS=$(top_builddir)/test/unit/wsdl/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
