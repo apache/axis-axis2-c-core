@@ -58,6 +58,8 @@ extern "C"
 #define AXIS2_DEFAULT_CHAR_SET_ENCODING "UTF_8"
 /** axis2 transport succeeded */
 #define AXIS2_TRANSPORT_SUCCEED "AXIS2_TRANSPORT_SUCCEED"
+
+#define AXIS2_TRANSPORT_URL "TransportURL"
     
 typedef struct axis2_msg_ctx_ops axis2_msg_ctx_ops_t;
 typedef struct axis2_msg_ctx axis2_msg_ctx_t; 

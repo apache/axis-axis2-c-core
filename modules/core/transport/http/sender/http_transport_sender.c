@@ -25,7 +25,6 @@
 #include <axis2_http_transport.h>
 #include <axis2_soap_over_http_sender.h>
 
-#define AXIS2_TRANSPORT_URL "TransportURL"
 
 /** 
  * @brief HTTP Transport Sender struct impl

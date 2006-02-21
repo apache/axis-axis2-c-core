@@ -195,25 +195,15 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS (msg_ctx, env);
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE (msg_ctx, env);
     soap_header  = AXIS2_SOAP_ENVELOPE_GET_HEADER (soap_envelope, env);
-   
+  
+    if (!soap_header)
+        return AXIS2_SUCCESS; /*No SOAP header, so no point proceeding*/
 
     /* by this time, we definitely have some addressing information to be sent. This is because,
        // we have tested at the start of this whether msg_info_headers are null or not.
        // So rather than declaring addressing namespace in each and every addressing header, lets
        // define that in the Header itself. */
     if (soap_header)
-    {
-        soap_header_node = AXIS2_SOAP_HEADER_GET_BASE_NODE (soap_header, env);
-        soap_header_ele =
-            (axis2_om_element_t *)
-            AXIS2_OM_NODE_GET_DATA_ELEMENT (soap_header_node, env);
-        AXIS2_OM_ELEMENT_DECLARE_NAMESPACE (soap_header_ele, env,
-                                            soap_header_node, addressing_namespace);
-
-        epr = AXIS2_MSG_INFO_HEADERS_GET_TO (msg_info_headers, env);
-    }
-    
-    if (epr)
     {
         axis2_any_content_type_t *reference_parameters = NULL;
         axis2_char_t *action = NULL;
@@ -223,45 +213,58 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         axis2_relates_to_t *relates_to = NULL;
         axis2_om_node_t *relates_to_header_node = NULL;
         axis2_om_element_t *relates_to_header_ele = NULL;
+
+        soap_header_node = AXIS2_SOAP_HEADER_GET_BASE_NODE (soap_header, env);
+        soap_header_ele =
+            (axis2_om_element_t *)
+            AXIS2_OM_NODE_GET_DATA_ELEMENT (soap_header_node, env);
+        AXIS2_OM_ELEMENT_DECLARE_NAMESPACE (soap_header_ele, env,
+                                            soap_header_node, addressing_namespace);
+
+        epr = AXIS2_MSG_INFO_HEADERS_GET_TO (msg_info_headers, env);
+    
+    
         
-        
-        address = AXIS2_ENDPOINT_REF_GET_ADDRESS (epr, env);
-        if (address && AXIS2_STRCMP (address, "") != 0)
+       
+        if (epr) 
         {
-            axis2_om_node_t *to_header_block_node = NULL;
-            axis2_soap_header_block_t *to_header_block = NULL;
-            
-            to_header_block  =
-                AXIS2_SOAP_HEADER_ADD_HEADER_BLOCK (soap_header, env,
-                                                    AXIS2_WSA_TO,
-                                                    addressing_namespace);
-            to_header_block_node =
-                AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE (to_header_block, env);
-            if (to_header_block_node)
+            address = AXIS2_ENDPOINT_REF_GET_ADDRESS (epr, env);
+            if (address && AXIS2_STRCMP (address, "") != 0)
             {
-                axis2_om_element_t *to_header_block_element = NULL;
-                to_header_block_element = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(to_header_block_node, env);
-                if (to_header_block_element)
+                axis2_om_node_t *to_header_block_node = NULL;
+                axis2_soap_header_block_t *to_header_block = NULL;
+                
+                to_header_block  =
+                    AXIS2_SOAP_HEADER_ADD_HEADER_BLOCK (soap_header, env,
+                                                        AXIS2_WSA_TO,
+                                                        addressing_namespace);
+                to_header_block_node =
+                    AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE (to_header_block, env);
+                if (to_header_block_node)
                 {
-                    AXIS2_OM_ELEMENT_SET_TEXT(to_header_block_element, env, address, to_header_block_node);
+                    axis2_om_element_t *to_header_block_element = NULL;
+                    to_header_block_element = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(to_header_block_node, env);
+                    if (to_header_block_element)
+                    {
+                        AXIS2_OM_ELEMENT_SET_TEXT(to_header_block_element, env, address, to_header_block_node);
+                    }
                 }
             }
+
+
+            reference_parameters = AXIS2_ENDPOINT_REF_GET_REF_PARAMS (epr, env);
+            if (reference_parameters)
+            {
+
+                axis2_addr_out_handler_process_any_content_type (env,
+                                                                 reference_parameters,
+                                                                 soap_header_node,
+                                                                 addr_ns);
+                axis2_addr_out_handler_add_to_header (env, epr, &soap_header_node,
+                                                      addr_ns);
+            }
+
         }
-
-
-        reference_parameters = AXIS2_ENDPOINT_REF_GET_REF_PARAMS (epr, env);
-        if (reference_parameters)
-        {
-
-            axis2_addr_out_handler_process_any_content_type (env,
-                                                             reference_parameters,
-                                                             soap_header_node,
-                                                             addr_ns);
-            axis2_addr_out_handler_add_to_header (env, epr, &soap_header_node,
-                                                  addr_ns);
-        }
-
-        
 
         action = AXIS2_MSG_INFO_HEADERS_GET_ACTION (msg_info_headers, env);
         if (action)

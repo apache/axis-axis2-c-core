@@ -23,7 +23,7 @@ AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_LIB(cutest, CuTestInit)
 
 #CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -g3 -O2"
-CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -g"
+CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE"
 #CFLAGS="$CFLAGS -Wall -ansi -Wshadow -DLINUX=2 -D_REENTRANT -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -g -O2 -pthread"
 LDFLAGS="-lpthread"
 
@@ -118,7 +118,7 @@ AC_ARG_ENABLE(tests, [  --enable-trace    enable trace. default=no],
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
-    CFLAGS=""
+    CFLAGS="$CFLAGS"
     ;;
   *)
     AC_MSG_RESULT(yes)
@@ -126,14 +126,14 @@ AC_ARG_ENABLE(tests, [  --enable-trace    enable trace. default=no],
     ;;
   esac ],
   AC_MSG_RESULT(no)
-  CFLAGS=""
+  CFLAGS="$CFLAGS"
 )
 
 AC_ARG_ENABLE(tests, [  --enable-multi_threaded  enable trace. default=yes],
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
-    CFLAGS=""
+    CFLAGS="$CFLAGS"
     ;;
   *)
     AC_MSG_RESULT(yes)
@@ -141,7 +141,7 @@ AC_ARG_ENABLE(tests, [  --enable-multi_threaded  enable trace. default=yes],
     ;;
   esac ],
   AC_MSG_RESULT(no)
-  CFLAGS=""
+  CFLAGS="$CFLAGS"
 )
 
 PKG_CHECK_MODULES(XML2, libxml-2.0)
