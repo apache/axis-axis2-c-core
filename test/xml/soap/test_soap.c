@@ -174,13 +174,13 @@ int build_soap_programatically(axis2_env_t **env)
     env_ns = axis2_om_namespace_create(env, "http://www.w3.org/2003/05/soap-envelope", "env");
     soap_envelope = axis2_soap_envelope_create(env, env_ns);
     
-    soap_header = axis2_soap12_header_create_with_parent(env, soap_envelope);
+    soap_header = axis2_soap_header_create_with_parent(env, soap_envelope);
     
     test_ns = axis2_om_namespace_create(env, "http://example.org/ts-tests", "test");
     role_ns = axis2_om_namespace_create(env, "http://www.w3.org/2003/05/soap-envelope/role/next","role");
 
    
-    hb1 = axis2_soap12_header_block_create_with_parent(env, "echoOk", role_ns , soap_header);
+    hb1 = axis2_soap_header_block_create_with_parent(env, "echoOk", role_ns , soap_header);
     hb_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(hb1, env);
     hb_ele = AXIS2_OM_NODE_GET_DATA_ELEMENT(hb_node, env);
     
