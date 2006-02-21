@@ -3,7 +3,7 @@ TESTS = test_http_transport
 check_PROGRAMS = test_http_transport
 prgbin_PROGRAMS = test_http_transport
 SUBDIRS =
-AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
+AM_CFLAGS = -g -pthread
 test_http_transport_SOURCES = test_http_transport.c
 
 test_http_transport_LDADD   =  $(LDFLAGS) \

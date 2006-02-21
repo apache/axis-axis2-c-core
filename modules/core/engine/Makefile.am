@@ -1,6 +1,5 @@
 TESTS =
 lib_LTLIBRARIES = libaxis2_engine.la
-AM_CPPFLAGS = $(CPPFLAGS)
 noinst_HEADERS = axis2_engine.h \
                     axis2_event.h
 

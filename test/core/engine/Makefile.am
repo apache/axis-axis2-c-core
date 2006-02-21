@@ -3,7 +3,7 @@ TESTS = test_engine
 check_PROGRAMS = test_engine
 prgbin_PROGRAMS = test_engine
 SUBDIRS =
-AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
+AM_CFLAGS = -g -pthread
 test_engine_SOURCES = test_engine.c
 
 

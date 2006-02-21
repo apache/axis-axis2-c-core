@@ -3,7 +3,6 @@ prglibdir=$(prefix)/modules/addressing
 prglib_LTLIBRARIES = libaxis2_mod_addr.la
 prglib_DATA= module.xml
 EXTRA_DIST = module.xml
-AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_mod_addr_la_SOURCES = addr_in_handler.c \
                                 addr_out_handler.c \
                                 mod_addr.c

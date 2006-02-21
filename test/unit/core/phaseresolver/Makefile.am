@@ -2,7 +2,6 @@ TESTS = phaseresolver_test
 prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_phaseresolver.la
-AM_CPPFLAGS = $(CPPFLAGS)
 libtest_phaseresolver_la_SOURCES = phaseresolver_test.c \
                                     test_resolver.c \
                                     test_phase_holder.c

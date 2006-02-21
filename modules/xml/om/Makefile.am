@@ -1,6 +1,5 @@
 TESTS =
 lib_LTLIBRARIES = libaxis2_om.la
-AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_om_la_SOURCES = om_attribute.c \
                         om_document.c \
                         om_node.c \

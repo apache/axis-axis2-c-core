@@ -1,6 +1,5 @@
 TESTS =
 lib_LTLIBRARIES = libguththila.la
-AM_CPPFLAGS = $(CPPFLAGS) 
 libguththila_la_SOURCES = guththila_token.c \
                             guththila_xml_pull_parser.c \
                             guththila_buffer.c \

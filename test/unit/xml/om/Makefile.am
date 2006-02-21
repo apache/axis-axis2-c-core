@@ -1,13 +1,9 @@
 TESTS = om_test
 prglibdir=$(prefix)/lib/unit_test
 prgbindir=$(prefix)/bin/unit_test
-noinst_HEADERS = om_node_test.h
+noinst_HEADERS = om_node_test.h $(top_builddir)/test/unit/xml/om/*.h
 prglib_LTLIBRARIES = libtest_om.la
-AM_CPPFLAGS = $(CPPFLAGS)
 libtest_om_la_SOURCES = om_test.c om_node_test.c
-
-                        
-noinst_HEADERS=$(top_builddir)/test/unit/xml/om/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \

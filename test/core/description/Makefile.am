@@ -2,7 +2,7 @@ TESTS = test_description
 prgbindir=$(prefix)/bin/system_test
 prgbin_PROGRAMS = test_description
 SUBDIRS =
-AM_CPPFLAGS = $(CPPFLAGS) -g -O2 -pthread
+AM_CFLAGS = -g -O2 -pthread
 test_description_SOURCES = test_description.c
 
 test_description_LDADD   =  -L$(AXIS2C_HOME)/lib \

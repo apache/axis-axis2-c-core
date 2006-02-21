@@ -1,7 +1,7 @@
 TESTS = test_addr
 check_PROGRAMS = test_addr
 SUBDIRS =
-AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
+AM_CFLAGS = -g -pthread
 test_addr_SOURCES = test_addr.c
 
 

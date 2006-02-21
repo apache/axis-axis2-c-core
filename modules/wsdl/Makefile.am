@@ -1,6 +1,5 @@
 TESTS =
 lib_LTLIBRARIES = libaxis2_wsdl.la
-AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_wsdl_la_SOURCES = wsdl_op.c \
                         wsdl_svc.c \
                         wsdl_component.c \

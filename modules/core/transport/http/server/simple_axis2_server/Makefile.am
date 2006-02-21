@@ -2,7 +2,7 @@ TESTS =
 prgbindir=$(prefix)/bin/
 prgbin_PROGRAMS = axis2_http_server
 SUBDIRS =
-AM_CPPFLAGS = $(CPPFLAGS) -g -pthread
+AM_CFLAGS = -g -pthread
 axis2_http_server_SOURCES = http_server_main.c
 
 axis2_http_server_LDADD   =  $(LDFLAGS) \

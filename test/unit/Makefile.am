@@ -2,7 +2,6 @@ TESTS =
 prgbindir=$(prefix)/bin/unit_test
 prgbin_PROGRAMS = main_unit_test_suite
 SUBDIRS = util core xml wsdl
-AM_CPPFLAGS = $(CPPFLAGS)
 main_unit_test_suite_SOURCES = main.c
 
 main_unit_test_suite_LDADD   =   \

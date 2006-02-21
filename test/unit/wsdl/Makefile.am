@@ -2,7 +2,6 @@ TESTS = wsdl_test
 prglibdir=$(prefix)/lib/unit_test
 prgbindir=$(prefix)/bin/unit_test
 prglib_LTLIBRARIES = libtest_wsdl.la
-AM_CPPFLAGS = $(CPPFLAGS)
 
 libtest_wsdl_la_SOURCES = wsdl_test.c test_wsdl_component.c
 

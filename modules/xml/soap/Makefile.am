@@ -1,5 +1,4 @@
 lib_LTLIBRARIES = libaxis2_soap.la
-AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_soap_la_SOURCES = soap_fault.c \
                            soap_fault_code.c \
                            soap_fault_detail.c \

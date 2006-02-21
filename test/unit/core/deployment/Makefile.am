@@ -2,7 +2,6 @@ TESTS = deployment_test
 prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_deployment.la
-AM_CPPFLAGS = $(CPPFLAGS)
 libtest_deployment_la_SOURCES = deployment_test.c \
                                 test_phases_info.c \
                                 test_dep_engine.c

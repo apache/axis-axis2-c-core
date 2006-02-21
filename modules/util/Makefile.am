@@ -12,7 +12,6 @@ include_HEADERS = axis2_hash.h \
 				axis2_linked_list.h
                 
 
-AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_util_la_SOURCES = hash.c \
                         allocator.c \
                         env.c \

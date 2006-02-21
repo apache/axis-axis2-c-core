@@ -2,7 +2,6 @@ TESTS = context_test
 prgbindir=$(prefix)/bin/unit_test
 prglibdir=$(prefix)/lib/unit_test
 prglib_LTLIBRARIES = libtest_context.la
-AM_CPPFLAGS = $(CPPFLAGS)
 libtest_context_la_SOURCES = context_test.c
 noinst_HEADERS=$(top_builddir)/test/unit/core/context/*.h
 

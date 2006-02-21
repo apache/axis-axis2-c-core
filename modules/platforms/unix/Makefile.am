@@ -6,7 +6,6 @@ noinst_HEADERS = axis2_unix.h \
                     axis2_uuid_gen_unix.h \
 					axis2_thread_unix.h
                     
-AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_unix_la_SOURCES = uuid_gen_unix.c\
                            thread_unix.c
 

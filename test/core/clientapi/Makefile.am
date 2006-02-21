@@ -3,7 +3,7 @@ TESTS = test_client test_clientapi
 prgbin_PROGRAMS = test_client test_clientapi
 check_PROGRAMS = test_client test_clientapi
 SUBDIRS =
-AM_CPPFLAGS = $(CPPFLAGS) -g -pthread 
+AM_CFLAGS = -g -pthread 
 test_client_SOURCES = test_client.c
 test_clientapi_SOURCES = test_clientapi.c
 
