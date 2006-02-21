@@ -292,7 +292,11 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
     } 
     else 
     {
-        axis2_engine_invoke_phases(engine, env, pre_calculated_phases, msg_ctx);
+        axis2_status_t status = axis2_engine_invoke_phases(engine, env, pre_calculated_phases, msg_ctx);
+
+        if (status != AXIS2_SUCCESS)
+            return status;
+            
         if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
         {
             return AXIS2_SUCCESS;
@@ -658,6 +662,7 @@ axis2_status_t AXIS2_CALL axis2_engine_invoke_phases(struct axis2_engine *engine
 {
     int i = 0;
     int count = 0;
+    axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, phases, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);    
@@ -667,7 +672,9 @@ axis2_status_t AXIS2_CALL axis2_engine_invoke_phases(struct axis2_engine *engine
     {
         axis2_phase_t *phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phases, env, i);
         AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Invoking phase %s", AXIS2_PHASE_GET_NAME(phase, env));
-        AXIS2_PHASE_INVOKE(phase, env, msg_ctx);
+        status = AXIS2_PHASE_INVOKE(phase, env, msg_ctx);
+        if (status != AXIS2_SUCCESS)
+            return status;
     }
     return AXIS2_SUCCESS;
 }
