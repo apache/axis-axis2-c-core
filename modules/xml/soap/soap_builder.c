@@ -497,8 +497,10 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             AXIS2_SOAP_BODY_SET_BASE_NODE(soap_body, env, om_element_node);
             AXIS2_SOAP_BODY_SET_BUILDER(soap_body, env, builder);
             AXIS2_SOAP_ENVELOPE_SET_BODY(builder_impl->soap_envelope, env, soap_body);
+            /*HACK: to fix AXIS2C-75 - Samisa
             status = axis2_soap_builder_process_namespace_data(builder, env, 
                         om_element_node, AXIS2_TRUE);
+            */
             if(status == AXIS2_FAILURE)
                 return AXIS2_FAILURE;
         }
