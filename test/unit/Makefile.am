@@ -8,13 +8,13 @@ main_unit_test_suite_SOURCES = main.c
 main_unit_test_suite_LDADD   =   \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
-                    -L$(top_builddir)/test/unit/core/description/.libs -ltest_description \
-                    -L$(top_builddir)/test/unit/core/engine/.libs -ltest_engine \
-                    -L$(top_builddir)/test/unit/core/context/.libs -ltest_context \
-                    -L$(top_builddir)/test/unit/core/phaseresolver/.libs -ltest_phaseresolver \
-                    -L$(top_builddir)/test/unit/util/.libs -ltest_util \
-                    -L$(top_builddir)/test/unit/wsdl/.libs -ltest_wsdl \
-                    -L$(top_builddir)/test/unit/xml/om/.libs -ltest_om \
+                    -L$(top_builddir)/test/unit/core/description -ltest_description \
+                    -L$(top_builddir)/test/unit/core/engine -ltest_engine \
+                    -L$(top_builddir)/test/unit/core/context -ltest_context \
+                    -L$(top_builddir)/test/unit/core/phaseresolver -ltest_phaseresolver \
+                    -L$(top_builddir)/test/unit/util -ltest_util \
+                    -L$(top_builddir)/test/unit/wsdl -ltest_wsdl \
+                    -L$(top_builddir)/test/unit/xml/om -ltest_om \
                     -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
                     -laxis2_unix \
