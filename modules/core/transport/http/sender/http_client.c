@@ -322,6 +322,7 @@ axis2_http_client_recieve_header(axis2_http_client_t *client, axis2_env_t **env)
 	char tmp_buf[3];
 	char str_header[512];
 	int read = 0;
+	int http_status = 0;
 	axis2_bool_t end_of_line = AXIS2_FALSE;
 	axis2_bool_t end_of_headers = AXIS2_FALSE;
 	
@@ -336,26 +337,33 @@ axis2_http_client_recieve_header(axis2_http_client_t *client, axis2_env_t **env)
 		return -1;
 	}
 	/* read the status line */
-	memset(str_status_line, 0, 512);
-	while((read = AXIS2_STREAM_READ(client_impl->data_stream, env, tmp_buf, 
-						1)) > 0)
-	{
-		tmp_buf[read] = '\0';
-		strcat(str_status_line, tmp_buf);
-		if(0 != strstr(str_status_line, AXIS2_HTTP_CRLF))
-		{
-			end_of_line = AXIS2_TRUE;
-			break;
-		}
-	}
-	status_line = axis2_http_status_line_create(env, str_status_line);
-	if(NULL == status_line)
-	{
-		AXIS2_ERROR_SET((*env)->error, 
-						AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
-						AXIS2_FAILURE);
-		return -1;
-	}
+    do {
+	    memset(str_status_line, 0, 512);
+        while((read = AXIS2_STREAM_READ(client_impl->data_stream, env, tmp_buf, 
+                            1)) > 0)
+        {
+            tmp_buf[read] = '\0';
+            strcat(str_status_line, tmp_buf);
+            if(0 != strstr(str_status_line, AXIS2_HTTP_CRLF))
+            {
+                end_of_line = AXIS2_TRUE;
+                break;
+            }
+        }
+        status_line = axis2_http_status_line_create(env, str_status_line);
+        if(NULL == status_line)
+        {
+            AXIS2_ERROR_SET((*env)->error, 
+                            AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
+                            AXIS2_FAILURE);
+            /*return -1;*/
+            http_status = 0;
+            continue;
+            
+        }
+        http_status = AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(status_line, env);
+    } while(AXIS2_HTTP_RESPONSE_OK_CODE_VAL > http_status);
+
 	client_impl->response = axis2_http_simple_response_create_default(env);
 	AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE(client_impl->response, env, 
 						AXIS2_HTTP_STATUS_LINE_GET_HTTP_VERSION(status_line, 
