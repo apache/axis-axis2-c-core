@@ -44,6 +44,10 @@ axis2_env_t* init_syetem_env(axis2_allocator_t *allocator, axis2_char_t *log_fil
 
 void system_exit(axis2_env_t *env, int status)
 {
+    if(NULL != server)
+    {
+       AXIS2_TRANSPORT_RECEIVER_FREE(server,  &system_env);
+    }
 	if(NULL != env)
 	{
 		axis2_env_free(env);
