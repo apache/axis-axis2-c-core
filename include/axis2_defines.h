@@ -19,6 +19,7 @@ extern "C"
     typedef char axis2_char_t;
     typedef int axis2_bool_t;
     typedef int axis2_status_t;
+    typedef int axis2_scope_t;
     typedef unsigned int axis2_ssize_t;
 
 /* These constant definitions should later be moved to platform dependant
