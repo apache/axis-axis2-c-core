@@ -474,10 +474,8 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
 
             AXIS2_SOAP_ENVELOPE_SET_HEADER(builder_impl->soap_envelope, env, soap_header);
             AXIS2_SOAP_HEADER_SET_BUILDER(soap_header, env, builder);
-            /*HACK: to fix AXIS2C-75 I commeted this out - Samisa
             status = axis2_soap_builder_process_namespace_data(builder, env, 
                                 om_element_node, AXIS2_TRUE);
-            */
             if(status == AXIS2_FAILURE)
                 return AXIS2_FAILURE;
             
@@ -499,10 +497,8 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             AXIS2_SOAP_BODY_SET_BASE_NODE(soap_body, env, om_element_node);
             AXIS2_SOAP_BODY_SET_BUILDER(soap_body, env, builder);
             AXIS2_SOAP_ENVELOPE_SET_BODY(builder_impl->soap_envelope, env, soap_body);
-            /*HACK: to fix AXIS2C-75 I commeted this out - Samisa
             status = axis2_soap_builder_process_namespace_data(builder, env, 
                         om_element_node, AXIS2_TRUE);
-            */
             if(status == AXIS2_FAILURE)
                 return AXIS2_FAILURE;
         }
@@ -603,9 +599,13 @@ axis2_soap_builder_process_namespace_data
     if(AXIS2_OM_NODE_GET_NODE_TYPE(om_node, env) == AXIS2_OM_ELEMENT)
     {
         om_ele = (axis2_om_element_t *) AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);
-        om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env);
-        ns_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
-        if(om_ns && 
+        if(om_ele)
+        {
+            om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env);
+            if(om_ns)
+                ns_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
+        }
+        if(ns_uri && 
                 (AXIS2_STRCMP(ns_uri, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) != 0) &&
                 (AXIS2_STRCMP(ns_uri, AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) != 0))
         {
@@ -613,7 +613,7 @@ axis2_soap_builder_process_namespace_data
             AXIS2_LOG_WRITE((*env)->log,"AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI", AXIS2_LOG_LEVEL_DEBUG);
             return AXIS2_FAILURE;
         }
-    }    
+    }        
     return AXIS2_SUCCESS;
 }
 
