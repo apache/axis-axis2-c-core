@@ -30,7 +30,8 @@ libaxis2_util_la_SOURCES = hash.c \
                         network_handler.c \
                         file.c\
                         uuid_gen.c\
-                        thread_pool.c
+                        thread_pool.c \
+                        property.c
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \

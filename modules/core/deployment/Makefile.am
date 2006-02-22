@@ -1,4 +1,5 @@
 TESTS =
+noinst_LTLIBRARIES = libaxis2_deployment.la
 
 noinst_HEADERS = axis2_deployment.h \
                     axis2_arch_file_data.h \
@@ -14,3 +15,28 @@ noinst_HEADERS = axis2_deployment.h \
                     axis2_ws_info.h \
                     axis2_ws_info_list.h
 
+libaxis2_deployment_la_SOURCES = \
+                                phases_info.c \
+                                desc_builder.c \
+                                arch_reader.c \
+                                dep_engine.c \
+                                arch_file_data.c \
+                                ws_info.c \
+                                ws_info_list.c \
+                                svc_builder.c \
+                                svc_grp_builder.c \
+                                module_builder.c \
+                                conf_builder.c \
+                                repos_listener.c \
+                                conf_init.c
+
+INCLUDES = -I$(top_builddir)/include \
+            -I$(top_builddir)/modules/util \
+            -I$(top_builddir)/modules/wsdl \
+            -I$(top_builddir)/modules/core/description \
+            -I$(top_builddir)/modules/core/engine \
+            -I$(top_builddir)/modules/core/phaseresolver \
+            -I$(top_builddir)/modules/core/deployment \
+            -I$(top_builddir)/modules/core/transport \
+            -I$(top_builddir)/modules/xml/parser \
+            -I$(top_builddir)/modules/platforms

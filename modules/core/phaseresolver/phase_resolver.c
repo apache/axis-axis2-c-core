@@ -24,7 +24,8 @@
  */
  
 #include <axis2_phase_resolver.h>
-    
+#include <axis2_property.h>
+   
 /** 
  * @brief Wsdl phase holder struct impl
  * Phase Resolver
@@ -340,6 +341,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
     int size = 0;
     int status = AXIS2_FAILURE;
     axis2_flow_t *flow = NULL;
+    axis2_property_t *property = NULL;
     
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
     
@@ -483,26 +485,39 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             
         case AXIS2_INFLOW:
         {
-            flow = AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
+            
+            property = (axis2_property_t *) 
+                AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
                 svc->wsdl_svc->wsdl_component, env, AXIS2_INFLOW_KEY);
+            if(property)
+                flow = (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
             break;
         }
         case AXIS2_OUTFLOW:
         {
-            flow = AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
+            property = (axis2_property_t *) 
+                AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
                 svc->wsdl_svc->wsdl_component, env, AXIS2_OUTFLOW_KEY);
+            if(property)
+                flow = (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
             break;
         }
         case AXIS2_FAULT_INFLOW:
         {
-            flow = AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
+            property = (axis2_property_t *) 
+                AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
                 svc->wsdl_svc->wsdl_component, env, AXIS2_IN_FAULTFLOW_KEY);
+            if(property)
+                flow = (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
             break;
         }
         case AXIS2_FAULT_OUTFLOW:
         {
-            flow = AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
+            property = (axis2_property_t *) 
+                AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
                 svc->wsdl_svc->wsdl_component, env, AXIS2_OUT_FAULTFLOW_KEY);
+            if(property)
+                flow = (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
             break;
         }
     }

@@ -88,19 +88,15 @@ axis2_phase_holder_create (axis2_env_t **env)
         return NULL;
     }
     
-    phase_holder_impl->phase_holder.ops->free = axis2_phase_holder_free;
-    
+    phase_holder_impl->phase_holder.ops->free = axis2_phase_holder_free; 
 	phase_holder_impl->phase_holder.ops->is_phase_exist =  
-        axis2_phase_holder_is_phase_exist;
-    
+            axis2_phase_holder_is_phase_exist;
 	phase_holder_impl->phase_holder.ops->add_handler =  
-        axis2_phase_holder_add_handler;
-    
+            axis2_phase_holder_add_handler;
 	phase_holder_impl->phase_holder.ops->get_phase =  
-        axis2_phase_holder_get_phase;
-    
+            axis2_phase_holder_get_phase;
 	phase_holder_impl->phase_holder.ops->build_transport_handler_chain = 
-        axis2_phase_holder_build_transport_handler_chain;
+            axis2_phase_holder_build_transport_handler_chain;
 	
 	return &(phase_holder_impl->phase_holder);
 }

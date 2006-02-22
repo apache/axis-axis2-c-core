@@ -74,12 +74,18 @@ AXIS2_DECLARE_DATA struct axis2_dll_desc_ops
     axis2_status_t (AXIS2_CALL *
     free) (axis2_dll_desc_t *dll_desc, 
             axis2_env_t **env);
-        
+    
+    /**
+     * Set path qualified platform specific dll name
+     */    
     axis2_status_t (AXIS2_CALL *
     set_name) (axis2_dll_desc_t *dll_desc,
                             axis2_env_t **env,
                             axis2_char_t *name);
     
+    /**
+     * Return the path qualified platform specific dll name
+     */ 
     axis2_char_t *(AXIS2_CALL *
     get_name) (axis2_dll_desc_t *dll_desc,
                             axis2_env_t **env);
@@ -137,6 +143,19 @@ AXIS2_DECLARE_DATA struct axis2_dll_desc_ops
     AXIS2_TIME_T (AXIS2_CALL *
     get_timestamp) (axis2_dll_desc_t *dll_desc,
                             axis2_env_t **env);                            
+     /**
+     * This function will accept the library name without any platform
+     * dependant prefixes or suffixes. It then prefix and suffix
+     * platform dependant prefix and suffix macros to the original name
+     * and return the platform specific dll name
+     *
+     * @param class_name
+     * @return platform specific dll name
+     */
+    axis2_char_t *(AXIS2_CALL *
+    create_platform_specific_dll_name)(axis2_dll_desc_t *dll_desc,
+                                        axis2_env_t **env,
+                                        axis2_char_t *class_name);
 
         
 };
@@ -209,6 +228,9 @@ axis2_dll_desc_free_void_arg (void *dll_desc,
     
 #define AXIS2_DLL_DESC_SET_TIMESTAMP(dll_desc, env, timestamp) \
     ((dll_desc)->ops->set_timestamp(dll_desc, env, timestamp))
+
+#define AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env, class_name) \
+    ((dll_desc)->ops->create_platform_specific_dll_name(dll_desc, env, class_name))
 
 /** @} */
     

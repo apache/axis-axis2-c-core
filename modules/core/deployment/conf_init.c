@@ -102,7 +102,6 @@ build_conf_ctx (axis2_env_t **env,
     axis2_init_modules(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
    
-    /*AXIS2_DEP_ENGINE_FREE(dep_engine, env);*/
     return conf_ctx;
 }
 

@@ -412,8 +412,10 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
             continue;
         }
         class_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(disp_att, env);
-        dll_name = axis2_platform_get_dll_name(env, class_name);
         dll_desc = axis2_dll_desc_create(env);
+        dll_name = 
+            AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env, 
+                class_name);
         /* TODO 
          * set full dll path here instead of dll lib name only */
         AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
@@ -428,6 +430,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
         axis2_class_loader_init(env);
         disp_dll = (axis2_disp_t *) axis2_class_loader_create_dll(env, 
             impl_info_param);
+        AXIS2_PARAM_FREE(impl_info_param, env);
         
         handler = AXIS2_DISP_GET_BASE(disp_dll, env);
         
@@ -698,10 +701,13 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
                 return AXIS2_FAILURE;
             }
             class_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(trs_dll_att, env);
-            dll_name = axis2_platform_get_dll_name(env, class_name);
             dll_desc = axis2_dll_desc_create(env);
-            /* TODO 
-             * set full dll path here instead of dll lib name only */
+            dll_name = 
+                AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env, 
+                    class_name);
+            /* TODO
+             * make the dll_name path qualified
+             */
             AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
             AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
             impl_info_param = axis2_param_create(env, NULL, NULL); 
@@ -713,6 +719,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             impl_info_param->ops->value_free = axis2_dll_desc_free_void_arg;
             axis2_class_loader_init(env);
             transport_sender = axis2_class_loader_create_dll(env, impl_info_param);
+            AXIS2_PARAM_FREE(impl_info_param, env);
             status = AXIS2_TRANSPORT_OUT_DESC_SET_SENDER(transport_out, env, 
                 transport_sender);
             if(AXIS2_SUCCESS != status)
@@ -881,22 +888,25 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 axis2_status_t stat = AXIS2_FAILURE;
                 
                 class_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(trs_class_name, env);
-                dll_name = axis2_platform_get_dll_name(env, class_name);
                 dll_desc = axis2_dll_desc_create(env);
+                dll_name = 
+                    AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, 
+                        env, class_name);
                 /* TODO 
                  * set full dll path here instead of dll lib name only */
                 AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
                 AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
-                axis2_class_loader_init(env);
                 impl_info_param = axis2_param_create(env, NULL, NULL);
             
                 AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc); 
                 impl_info_param->ops->value_free = 
                     axis2_dll_desc_free_void_arg;
+                axis2_class_loader_init(env);
                 recv = (axis2_transport_receiver_t *) 
                     axis2_class_loader_create_dll(env, impl_info_param);
+                AXIS2_PARAM_FREE(impl_info_param, env);
                 stat = AXIS2_TRANSPORT_IN_DESC_SET_RECV(transport_in, env, 
-                    recv);            
+                    recv);
             }
             
             /* process Parameters */

@@ -17,6 +17,7 @@
 #include <axis2_svc_builder.h>
 #include <axis2_class_loader.h>
 #include <axis2_utils.h>
+#include <axis2_property.h>
 
  /**
  * This struct is to convert OM->ServiceDescrption , where it first create OM 
@@ -251,6 +252,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     int i = 0;
     int size = 0;
     AXIS2_TIME_T timestamp = 0;
+    axis2_property_t *property = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_node, AXIS2_FAILURE);
@@ -269,9 +271,11 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     AXIS2_QNAME_FREE(qparamst, env);
     qparamst = NULL;
     parent = AXIS2_SVC_GET_PARENT(builder_impl->svc, env);
-    param_container_l = (axis2_param_container_t *)
-        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(builder_impl->svc->wsdl_svc->
-            wsdl_component, env, AXIS2_PARAMETER_KEY);
+    
+    property = (axis2_property_t *) AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
+        builder_impl->svc->wsdl_svc->wsdl_component, env, AXIS2_PARAMETER_KEY);
+    param_container_l = (axis2_param_container_t *) AXIS2_PROPERTY_GET_VALUE(
+        property, env);
     status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(svc_builder->desc_builder, env, 
         itr, param_container_l, parent->param_container);
     if(AXIS2_SUCCESS != status)
@@ -344,7 +348,9 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         return AXIS2_FAILURE;
     }
     class_name = AXIS2_PARAM_GET_VALUE(impl_info_param, env);
-    svc_dll_name = axis2_platform_get_dll_name(env, class_name);
+    svc_dll_name = 
+        AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env, 
+            class_name);
     arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(builder_impl->
         svc_builder.desc_builder->engine, env);
     svc_folder = AXIS2_ARCH_FILE_DATA_GET_FILE(arch_file_data, env);

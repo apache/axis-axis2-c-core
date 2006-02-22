@@ -34,11 +34,8 @@ axis2_class_loader_init(axis2_env_t **env)
 
 AXIS2_DECLARE(axis2_status_t)
 axis2_class_loader_delete_dll (axis2_env_t **env,
-                                    axis2_param_t *impl_info_param)
-{
-    axis2_dll_desc_t *dll_desc = NULL;
-    
-    dll_desc = AXIS2_PARAM_GET_VALUE(impl_info_param, env);
+                                    axis2_dll_desc_t *dll_desc)
+{ 
     if(!dll_desc)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
@@ -246,7 +243,8 @@ axis2_class_loader_load_lib (axis2_env_t **env,
 
     if(AXIS2_FAILURE == status)
     {
-        AXIS2_FREE((*env)->allocator, dl_handler);
+        AXIS2_PLATFORM_UNLOADLIB(dl_handler);
+        dl_handler = NULL;
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_LOADING_FAILED, 
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -260,8 +258,10 @@ axis2_class_loader_unload_lib (axis2_env_t **env,
                                 axis2_dll_desc_t *dll_desc)
 {
     AXIS2_DLHANDLER dl_handler = AXIS2_DLL_DESC_GET_DL_HANDLER(dll_desc, env);
-    
-    AXIS2_PLATFORM_UNLOADLIB(dl_handler);
+    if(dl_handler)
+    { 
+        AXIS2_PLATFORM_UNLOADLIB(dl_handler);
+    }
 
     return AXIS2_SUCCESS;
 }

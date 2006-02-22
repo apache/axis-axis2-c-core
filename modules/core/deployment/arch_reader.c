@@ -448,6 +448,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         grp_builder = axis2_svc_grp_builder_create_with_svc_and_dep_engine(env, 
             svcs, dep_engine);
         status = AXIS2_SVC_GRP_BUILDER_POPULATE_SVC_GRP(grp_builder, env, svc_grp);
+        AXIS2_SVC_GRP_BUILDER_FREE(grp_builder, env);
     }
     return status;
 }

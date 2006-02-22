@@ -38,8 +38,10 @@ extern "C"
 {
 #endif
 struct axis2_arch_file_data;
+struct axis2_arch_reader;
 struct axis2_ws_info;
 struct axis2_phases_info;
+struct axis2_svc;
     
 typedef struct axis2_dep_engine axis2_dep_engine_t;
 typedef struct axis2_dep_engine_ops axis2_dep_engine_ops_t;
@@ -82,7 +84,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     struct axis2_arch_file_data *(AXIS2_CALL *
     get_current_file_item) (axis2_dep_engine_t *dep_engine,
                                             axis2_env_t **env);
-    
+	 
     /**
      * @param file
      */
@@ -108,16 +110,16 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      *
      * @return AxisConfiguration <code>AxisConfiguration</code>
      */
-    axis2_conf_t *(AXIS2_CALL *
+    struct axis2_conf *(AXIS2_CALL *
     get_axis_conf) (axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env);
     
     
-    axis2_conf_t *(AXIS2_CALL *
+    struct axis2_conf *(AXIS2_CALL *
     load) (axis2_dep_engine_t *dep_engine,
                             axis2_env_t **env);
     
-    axis2_conf_t *(AXIS2_CALL *
+    struct axis2_conf *(AXIS2_CALL *
     load_client) (axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_char_t *client_home);
@@ -144,7 +146,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     axis2_status_t (AXIS2_CALL *
     set_phases_info) (axis2_dep_engine_t *dep_engine,
                                         axis2_env_t **env,
-                                        axis2_phases_info_t *phases_info);
+                                        struct axis2_phases_info *phases_info);
     
     /**
      * This method is used to fill a axisservice object using services.xml , first it should create
@@ -157,10 +159,10 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      * @param classLoader
      * @return
      */
-    axis2_svc_t *(AXIS2_CALL *
+    struct axis2_svc *(AXIS2_CALL *
     build_svc) (axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
-                                axis2_svc_t *svc,
+                                struct axis2_svc *svc,
                                 axis2_char_t *file_name);
     
     /**
@@ -170,11 +172,11 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      * @return
      */
     
-    axis2_module_desc_t *(AXIS2_CALL *
+    struct axis2_module_desc *(AXIS2_CALL *
     build_module) (axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_file_t *module_archive,
-                                    axis2_conf_t *conf); 
+                                    struct axis2_conf *conf); 
 
     axis2_char_t *(AXIS2_CALL *
     get_repos_path) (axis2_dep_engine_t *dep_engine,
@@ -183,8 +185,13 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     axis2_status_t (AXIS2_CALL *
     set_current_file_item)(axis2_dep_engine_t *dep_engine,
                             axis2_env_t **env,
-                            axis2_arch_file_data_t *file_data);                        
+                            struct axis2_arch_file_data *file_data);                        
                                        
+    axis2_status_t (AXIS2_CALL *
+    set_arch_reader)(axis2_dep_engine_t *dep_engine,
+                        axis2_env_t **env,
+                        struct axis2_arch_reader *arch_reader);
+
 };
     
     /** 
@@ -290,6 +297,9 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
 #define AXIS2_DEP_ENGINE_SET_CURRENT_FILE_ITEM(dep_engine, env, file_data) \
 		((dep_engine)->ops->set_current_file_item (dep_engine, env, file_data)) 
         
+#define AXIS2_DEP_ENGINE_SET_ARCH_READER(dep_engine, env, arch_reader) \
+		((dep_engine)->ops->set_arch_reader (dep_engine, env, arch_reader)) 
+
 /*************************** End of function macros ***************************/
 
 /** @} */

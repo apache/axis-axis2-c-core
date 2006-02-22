@@ -539,7 +539,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                     phase_rule = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
                     status = AXIS2_PHASE_RULE_SET_PHASE_FIRST(phase_rule, env,
                         AXIS2_TRUE);
-                    if(AXIS2_FAILURE == status)
+                    if(AXIS2_SUCCESS != status)
                     {
                         AXIS2_HANDLER_DESC_FREE(handler_desc, env);
                         AXIS2_FREE((*env)->allocator, bool_val);
@@ -552,7 +552,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                     phase_rule = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
                     status = AXIS2_PHASE_RULE_SET_PHASE_FIRST(phase_rule, env,
                         AXIS2_FALSE);
-                    if(AXIS2_FAILURE == status)
+                    if(AXIS2_SUCCESS != status)
                     {
                         AXIS2_HANDLER_DESC_FREE(handler_desc, env);
                         AXIS2_FREE((*env)->allocator, bool_val);
@@ -571,7 +571,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
             env, param_qname, handler_node);
         status = axis2_desc_builder_process_params(desc_builder, env, params, 
             handler_desc->param_container, parent);
-        if(AXIS2_FAILURE == status)
+        if(AXIS2_SUCCESS != status)
         {
             AXIS2_HANDLER_DESC_FREE(handler_desc, env);
             return NULL;   
@@ -579,7 +579,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     }
     
     status = AXIS2_HANDLER_DESC_SET_PARENT(handler_desc, env, parent);
-    if(AXIS2_FAILURE == status)
+    if(AXIS2_SUCCESS != status)
     {
         AXIS2_HANDLER_DESC_FREE(handler_desc, env);
         return NULL; 
@@ -822,7 +822,9 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
     class_qname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
     recv_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(recv_element, env, class_qname);
     class_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(recv_name, env);
-    msg_recv_dll_name = axis2_platform_get_dll_name(env, class_name);
+    msg_recv_dll_name = 
+        AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env, 
+            class_name);
     
     conf = AXIS2_DEP_ENGINE_GET_AXIS2_CONF(desc_builder->engine, env);
     if(!conf)

@@ -219,6 +219,7 @@ axis2_repos_listener_check_modules(axis2_repos_listener_t *listener,
     axis2_repos_listener_impl_t *listener_impl = NULL;
     axis2_char_t *module_path = NULL;
     axis2_char_t *temp_path = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
@@ -227,7 +228,9 @@ axis2_repos_listener_check_modules(axis2_repos_listener_t *listener,
         env);
     module_path = AXIS2_STRACAT(temp_path, AXIS2_MODULE_PATH, env);
     AXIS2_FREE((*env)->allocator, temp_path);
-    return axis2_repos_listener_search(listener, env, module_path, AXIS2_MODULE);
+    status = axis2_repos_listener_search(listener, env, module_path, AXIS2_MODULE);
+    AXIS2_FREE((*env)->allocator, module_path);
+    return status;
 }
 
 axis2_status_t AXIS2_CALL

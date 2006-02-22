@@ -62,6 +62,9 @@ AXIS2_DECLARE_DATA struct axis2_property_ops
     set_value) (axis2_property_t *property,
                 axis2_env_t **env,
                 void *value);
+    void *(AXIS2_CALL *
+    get_value) (axis2_property_t *property,
+                            axis2_env_t **env);
 
 };
     
@@ -95,7 +98,8 @@ axis2_property_create(axis2_env_t **env);
 #define AXIS2_PROPERTY_SET_VALUE(property, env, value) \
 		((property)->ops->set_value (property, env, value))
 
-
+#define AXIS2_PROPERTY_GET_VALUE(property, env) \
+        ((property)->ops->get_value(property, env))
                                         
 /*************************** End of function macros ***************************/
 

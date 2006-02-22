@@ -47,6 +47,10 @@ axis2_property_set_value(axis2_property_t *property,
                             axis2_env_t **env,
                             void *value);
 
+void *AXIS2_CALL
+axis2_property_get_value(axis2_property_t *property,
+                            axis2_env_t **env);
+
 /************************** End of function prototypes ************************/
 
 axis2_property_t *AXIS2_CALL 
@@ -65,7 +69,7 @@ axis2_property_create(axis2_env_t **env)
         return NULL;
     }
     property_impl->value= NULL;
-    property_impl->scope = AXIS2_SCOPE_APPLICATION;
+    property_impl->scope = AXIS2_SCOPE_REQUEST;
     property_impl->free_func = 0;
     
     property_impl->property.ops = 
@@ -81,7 +85,7 @@ axis2_property_create(axis2_env_t **env)
     property_impl->property.ops->set_free_func = axis2_property_set_free_func;
     property_impl->property.ops->set_scope = axis2_property_set_scope;
     property_impl->property.ops->set_value = axis2_property_set_value;
-	
+	property_impl->property.ops->get_value = axis2_property_get_value;
 	return &(property_impl->property);
 }
 
@@ -165,4 +169,16 @@ axis2_property_set_value(axis2_property_t *property,
    
     property_impl->value = value;
     return AXIS2_SUCCESS;
+}
+
+void *AXIS2_CALL
+axis2_property_get_value(axis2_property_t *property,
+                            axis2_env_t **env)
+{
+    axis2_property_impl_t *property_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    property_impl = AXIS2_INTF_TO_IMPL(property);
+
+    return property_impl->value;
 }

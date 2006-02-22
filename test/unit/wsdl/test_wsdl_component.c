@@ -3,6 +3,7 @@
 #include <axis2_module_desc.h>
 #include <axis2_hash.h>
 #include <axis2_array_list.h>
+#include <axis2_property.h>
 
 axis2_array_list_t *
 get_module_list(axis2_env_t **env)
@@ -33,6 +34,7 @@ get_module_list_map(axis2_wsdl_component_t *wsdl_comp, axis2_env_t **env)
 {
     axis2_hash_t *module_list_map = NULL;
     axis2_array_list_t *module_list = NULL;
+    axis2_property_t *property = NULL;
     
     module_list_map = axis2_hash_make(env);
     if(!module_list_map)
@@ -40,24 +42,33 @@ get_module_list_map(axis2_wsdl_component_t *wsdl_comp, axis2_env_t **env)
         return NULL;
     }
     module_list = get_module_list(env);
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, 
+        axis2_module_desc_array_list_free);
+    AXIS2_PROPERTY_SET_VALUE(property, env, module_list);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
     axis2_hash_set(module_list_map, AXIS2_MODULEREF_KEY, 
-        AXIS2_HASH_KEY_STRING, module_list);
-    AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(wsdl_comp, 
-        env, AXIS2_MODULEREF_KEY, axis2_module_desc_array_list_free);
+        AXIS2_HASH_KEY_STRING, property);
     module_list = NULL;
 
     module_list = get_module_list(env);
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, 
+        axis2_module_desc_array_list_free);
+    AXIS2_PROPERTY_SET_VALUE(property, env, module_list);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
     axis2_hash_set(module_list_map, AXIS2_MODULEREF_KEY, 
-        AXIS2_HASH_KEY_STRING, module_list);
-    AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(wsdl_comp, 
-        env, AXIS2_MODULEREF_KEY, axis2_module_desc_array_list_free);
+        AXIS2_HASH_KEY_STRING, property);
     module_list = NULL;
     
     module_list = get_module_list(env);
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, 
+        axis2_module_desc_array_list_free);
+    AXIS2_PROPERTY_SET_VALUE(property, env, module_list);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
     axis2_hash_set(module_list_map, AXIS2_MODULEREF_KEY, 
-        AXIS2_HASH_KEY_STRING, module_list);
-    AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(wsdl_comp, 
-        env, AXIS2_MODULEREF_KEY, axis2_module_desc_array_list_free);
+        AXIS2_HASH_KEY_STRING, property);
     module_list = NULL;
 
     return module_list_map;

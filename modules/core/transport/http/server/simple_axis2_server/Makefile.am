@@ -17,15 +17,15 @@ axis2_http_server_LDADD   =  $(LDFLAGS) \
                             -laxis2_http_receiver \
                             -lxml2 \
                             -laxis2_unix\
-                            -L$(top_builddir)/modules/util/.libs\
-                            -L$(top_builddir)/modules/wsdl/.libs\
-                            -L$(top_builddir)/modules/core/engine/.libs \
-                            -L$(top_builddir)/modules/core/transport/http/sender/.libs\
-                            -L$(top_builddir)/modules/core/transport/http/receiver/.libs\
-                            -L$(top_builddir)/modules/xml/om/.libs\
-                            -L$(top_builddir)/modules/xml/parser/libxml2/.libs\
-                            -L$(top_builddir)/modules/xml/soap/.libs\
-                            -L$(top_builddir)/modules/platforms/unix/.libs\
+                            -L$(top_builddir)/modules/util \
+                            -L$(top_builddir)/modules/wsdl \
+                            -L$(top_builddir)/modules/core/engine \
+                            -L$(top_builddir)/modules/core/transport/http/sender \
+                            -L$(top_builddir)/modules/core/transport/http/receiver \
+                            -L$(top_builddir)/modules/xml/om \
+                            -L$(top_builddir)/modules/xml/parser/libxml2 \
+                            -L$(top_builddir)/modules/xml/soap \
+                            -L$(top_builddir)/modules/platforms/unix \
                             -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \
                             -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME)
                     

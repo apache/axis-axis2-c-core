@@ -75,20 +75,7 @@ struct axis2_wsdl_component_ops
     set_component_property) (axis2_wsdl_component_t *wsdl_component,
                                 axis2_env_t **env, 
                                 axis2_char_t *key, 
-                                void *value);
-                                
-    /**
-     * Will set the free function pointer keyed with the relavent key
-     * @param void Key in the map. This should be the same key used to set
-     *        the corresponding property.     
-     * @param void Function pointer to be put
-     * @return status code
-     */
-    axis2_status_t (AXIS2_CALL *
-    set_component_property_free_func) (axis2_wsdl_component_t *wsdl_component,
-                                        axis2_env_t **env, 
-                                        axis2_char_t *key, 
-                                        void *value);                                
+                                void *value);        
                                 
     
     /**
@@ -156,12 +143,7 @@ axis2_wsdl_component_create (axis2_env_t **env);
 #define AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(wsdl_component, env, \
 		key, value) \
 		((wsdl_component)->ops->set_component_property(wsdl_component, env,\
-            key, value))
-            
-#define AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY_FREE_FUNC(wsdl_component, \
-            env, key, value) \
-		((wsdl_component)->ops->set_component_property_free_func(\
-            wsdl_component, env, key, value))            
+            key, value))            
 		
 #define AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(wsdl_component, env, key) \
 		((wsdl_component)->ops->get_component_property(wsdl_component, env, key))
