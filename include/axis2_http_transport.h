@@ -69,6 +69,11 @@ extern "C"
      */
     #define AXIS2_HTTP_RESPONSE_OK_CODE_VAL 200
 
+    /*
+     * RESPONSE_CONTINUE_CODE_VAL
+     */
+    #define AXIS2_HTTP_RESPONSE_CONTINUE_CODE_VAL 100
+
     /**
      * SOCKET
      */
