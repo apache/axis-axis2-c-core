@@ -213,15 +213,27 @@ axis2_om_stax_builder_process_attributes (axis2_om_stax_builder_t *om_builder,
               
         prefix = AXIS2_XML_READER_GET_ATTRIBUTE_PREFIX_BY_NUMBER(
                         builder_impl->parser, env, i);
-
         if (uri)
         {
-            if (axis2_strcmp (uri, "") != 0);
+            if (axis2_strcmp (uri, "") != 0)
             {
-                ns = AXIS2_OM_ELEMENT_FIND_NAMESPACE (
-                        (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(element_node,env),
+                axis2_om_element_t *om_ele = NULL;
+                om_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(element_node,env);
+                if(om_ele)
+                {
+                    ns = AXIS2_OM_ELEMENT_FIND_NAMESPACE ( om_ele ,
                         env , element_node, uri, prefix);
+        
+        /* newly added to handle "xml:*" attributes" (AXIS2_STRCMP(prefix, "xml") == 0) && */
+                    if(!ns)
+                    {
+                        ns = axis2_om_namespace_create(env, uri, prefix);
+                    }
+        /*                                          */                                
+                }                        
             }
+           
+            
         }
         attr_name = AXIS2_XML_READER_GET_ATTRIBUTE_NAME_BY_NUMBER(
                                  builder_impl->parser, env, i);

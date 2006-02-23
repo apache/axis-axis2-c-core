@@ -683,7 +683,6 @@ axis2_om_element_free (axis2_om_element_t *om_element,
                    
         }
         axis2_hash_free (AXIS2_INTF_TO_IMPL(om_element)->attributes, env);
-        AXIS2_FREE((*env)->allocator, hi);
     }
         
         if (element_impl->namespaces)
@@ -701,7 +700,6 @@ axis2_om_element_free (axis2_om_element_t *om_element,
                 val = NULL;
                    
             }
-            AXIS2_FREE((*env)->allocator, hi);
             axis2_hash_free (element_impl->namespaces, env);
             /*TODO: free namespaces */
            /* need to iterate and free individual namespaces */
