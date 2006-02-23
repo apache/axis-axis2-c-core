@@ -88,7 +88,7 @@ axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
     status_line_impl->line = (axis2_char_t *)AXIS2_STRDUP(str, env);
     status_line_impl->http_version = NULL;
     status_line_impl->reason_phrase = NULL;
-    
+    status_line_impl->status_code = NULL;
     
     tmp = strstr(str, AXIS2_HTTP_CRLF);
     if(NULL == tmp)
