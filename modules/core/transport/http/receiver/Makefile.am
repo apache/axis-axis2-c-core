@@ -1,6 +1,8 @@
 TESTS =
 lib_LTLIBRARIES = libaxis2_http_receiver.la
-libaxis2_http_receiver_la_LIBADD= -laxis2_unix
+libaxis2_http_receiver_la_LIBADD= -L$(top_builddir)/modules/platforms/unix \
+                                    -laxis2_unix
+
 libaxis2_http_receiver_la_SOURCES = simple_http_svr_conn.c\
 				                    http_response_writer.c\
                                     http_svr_thread.c\
