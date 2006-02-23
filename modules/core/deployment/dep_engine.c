@@ -492,6 +492,12 @@ axis2_dep_engine_free (axis2_dep_engine_t *dep_engine,
         engine_impl->curr_file = NULL;
     }
     
+    if(engine_impl->phases_info)
+    {
+        AXIS2_PHASES_INFO_FREE(engine_impl->phases_info, env);
+        engine_impl->phases_info = NULL;
+    }
+    
     if(engine_impl->conf_builder)
     {
         AXIS2_CONF_BUILDER_FREE(engine_impl->conf_builder, env);

@@ -455,28 +455,6 @@ axis2_op_create (axis2_env_t **env)
     }
     message_out = NULL;
     
-    /*op_impl->phases_in_fault_flow = axis2_array_list_create(env, 0);
-    if(NULL == op_impl->phases_in_fault_flow)
-    {
-        axis2_op_free(&(op_impl->op), env);
-        return NULL;
-    }
-     
-    op_impl->phases_out_fault_flow = axis2_array_list_create(env, 0);
-    if(NULL == op_impl->phases_out_fault_flow)
-    {
-        axis2_op_free(&(op_impl->op), env);
-        return NULL;
-    }*/
-    /*
-    op_impl->modulerefs = axis2_array_list_create(env, 0);
-    if(NULL == op_impl->modulerefs)
-    {
-        axis2_op_free(&(op_impl->op), env);
-        return NULL;
-    }
-    */
-    
     axis2_op_set_msg_exchange_pattern(&(op_impl->op), env, 
         (axis2_char_t *) AXIS2_MEP_URI_IN_OUT);
     
@@ -695,6 +673,7 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
             }
       
         }
+   
         AXIS2_ARRAY_LIST_FREE(op_impl->remaining_phases_inflow, env);
         op_impl->remaining_phases_inflow = NULL;
     }

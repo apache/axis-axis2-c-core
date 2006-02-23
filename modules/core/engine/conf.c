@@ -414,7 +414,7 @@ axis2_conf_create (axis2_env_t **env)
         }
     }
     
-    config_impl->out_phases = axis2_array_list_create(env, 0);		
+    /*config_impl->out_phases = axis2_array_list_create(env, 0);		
 	if(NULL == config_impl->out_phases)
 	{
         axis2_conf_free(&(config_impl->conf), env);
@@ -436,7 +436,7 @@ axis2_conf_create (axis2_env_t **env)
         axis2_conf_free(&(config_impl->conf), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+	}*/
 	
     config_impl->all_svcs = axis2_hash_make(env);
     if(NULL == config_impl->all_svcs)

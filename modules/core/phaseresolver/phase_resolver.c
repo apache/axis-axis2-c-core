@@ -249,22 +249,23 @@ axis2_phase_resolver_free (axis2_phase_resolver_t *phase_resolver,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     phase_resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
-    
-	if(NULL != phase_resolver->ops)
-    {
-        AXIS2_FREE((*env)->allocator, phase_resolver->ops);
-        phase_resolver->ops = NULL;
-    }
-    
+     
     phase_resolver_impl->axis2_config = NULL;
     
     phase_resolver_impl->svc = NULL;
     
-    if(NULL != phase_resolver_impl->phase_holder)
+    if(phase_resolver_impl->phase_holder)
     {
         AXIS2_PHASE_HOLDER_FREE(phase_resolver_impl->phase_holder, env);
         phase_resolver_impl->phase_holder = NULL;
     }
+	
+    if(phase_resolver->ops)
+    {
+        AXIS2_FREE((*env)->allocator, phase_resolver->ops);
+        phase_resolver->ops = NULL;
+    }
+
     if(phase_resolver_impl)
     {
         AXIS2_FREE((*env)->allocator, phase_resolver_impl);
@@ -1299,8 +1300,14 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
                 phase_list = 
                     AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(
                         resolver_impl->axis2_config, env);
+                if(resolver_impl->phase_holder)
+                {
+                    AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
+                    resolver_impl->phase_holder = NULL;
+                } 
                 resolver_impl->phase_holder = 
                     axis2_phase_holder_create_with_phases(env, phase_list);
+                if(!resolver_impl->phase_holder) continue;
                 break;
             }
             case AXIS2_OUTFLOW:
@@ -1309,8 +1316,14 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
 
                 phase_list = AXIS2_CONF_GET_OUTFLOW(resolver_impl->axis2_config,
                         env);
+                if(resolver_impl->phase_holder)
+                {
+                    AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
+                    resolver_impl->phase_holder = NULL;
+                } 
                 resolver_impl->phase_holder = 
                     axis2_phase_holder_create_with_phases(env, phase_list);
+                if(!resolver_impl->phase_holder) continue;
                 break;
             }
             case AXIS2_FAULT_INFLOW:
@@ -1319,8 +1332,14 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
 
                 phase_list = AXIS2_CONF_GET_IN_FAULT_FLOW(resolver_impl->
                     axis2_config, env);
+                if(resolver_impl->phase_holder)
+                {
+                    AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
+                    resolver_impl->phase_holder = NULL;
+                } 
                 resolver_impl->phase_holder = 
                     axis2_phase_holder_create_with_phases(env, phase_list);
+                if(!resolver_impl->phase_holder) continue;
                 break;
             }
             case AXIS2_FAULT_OUTFLOW:
@@ -1329,8 +1348,14 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
 
                 phase_list = AXIS2_CONF_GET_OUT_FAULT_FLOW(resolver_impl->
                     axis2_config, env);
+                if(resolver_impl->phase_holder)
+                {
+                    AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
+                    resolver_impl->phase_holder = NULL;
+                } 
                 resolver_impl->phase_holder = 
                     axis2_phase_holder_create_with_phases(env, phase_list);
+                if(!resolver_impl->phase_holder) continue;
                 break;
             }
         }

@@ -556,6 +556,7 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
     axis2_om_children_qname_iterator_t *phases = NULL;
     axis2_qname_t *qphase = NULL;
     axis2_om_element_t *phase_orders_element;
+    axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, phase_orders_node, AXIS2_FAILURE);
@@ -574,6 +575,11 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
     phases = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(phase_orders_element, env,
         qphase, phase_orders_node);
     AXIS2_QNAME_FREE(qphase, env);
+    if(!phases)
+    {
+        AXIS2_ARRAY_LIST_FREE(phase_list, env);
+        return NULL;
+    }
     
     while (AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(phases, env))
     {
