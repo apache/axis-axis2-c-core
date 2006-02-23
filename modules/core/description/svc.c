@@ -541,6 +541,7 @@ axis2_svc_free (axis2_svc_t *svc,
     
     if(NULL != svc_impl->wasaction_opeartionmap)
     {
+        /* By this time operations are already freed
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
         for (hi = axis2_hash_first (svc_impl->wasaction_opeartionmap, env); hi;
@@ -557,6 +558,7 @@ axis2_svc_free (axis2_svc_t *svc,
             val = NULL;
                
         }
+        */
 		axis2_hash_free(svc_impl->wasaction_opeartionmap, env);
         svc_impl->wasaction_opeartionmap = NULL;
     }

@@ -631,8 +631,14 @@ axis2_status_t AXIS2_CALL
 axis2_op_free (axis2_op_t *op, axis2_env_t **env)
 { 
     axis2_op_impl_t *op_impl = NULL;
+    axis2_qname_t *op_qname = NULL;
+    axis2_char_t *op_name = NULL;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
+
+    op_qname = AXIS2_OP_GET_QNAME(&(op_impl->op), env);
+    op_name = AXIS2_QNAME_GET_LOCALPART(op_qname, env); 
     
 	if(NULL != op->ops)
     {
@@ -655,8 +661,9 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     op_impl->parent = NULL;
     
     op_impl->msg_recv = NULL;
-    
-    if(NULL != op_impl->remaining_phases_inflow)
+
+    if(NULL != op_impl->remaining_phases_inflow && 
+        (0 != AXIS2_STRCMP(op_name, "TemplateOperation")))
     {
         int i = 0;
         int size = 0;
@@ -678,7 +685,8 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
         op_impl->remaining_phases_inflow = NULL;
     }
     
-    if(NULL != op_impl->phases_outflow)
+    if(NULL != op_impl->phases_outflow &&
+        (0 != AXIS2_STRCMP(op_name, "TemplateOperation")))
     {
         int i = 0;
         int size = 0;

@@ -281,16 +281,16 @@ axis2_wsdl_interface_free (
     
     if(NULL != wsdl_interface_impl->ops)
     {
-        /*axis2_hash_index_t *hi = NULL;
+        axis2_hash_index_t *hi = NULL;
         void *val = NULL;
         for (hi = axis2_hash_first (wsdl_interface_impl->ops, env); hi;
                  hi = axis2_hash_next ( env, hi))
         {
             axis2_hash_this (hi, NULL, NULL, &val);
-            AXIS2_WSDL_OP_FREE(val, env);
+            AXIS2_WSDL_OP_FREE_VOID_ARG(val, env);
             val = NULL;
                
-        }*/
+        }
         axis2_hash_free(wsdl_interface_impl->ops, env);
         wsdl_interface_impl->ops = NULL;
     }

@@ -268,6 +268,9 @@ axis2_wsdl_op_free_void_arg(void *wsdl_op,
 
 #define AXIS2_WSDL_OP_FREE(wsdl_op, env) \
 		((wsdl_op)->ops->free (wsdl_op, env))
+
+#define AXIS2_WSDL_OP_FREE_VOID_ARG(wsdl_op, env) \
+		(((axis2_wsdl_op_t *) wsdl_op)->ops->free_void_arg(wsdl_op, env))
 	
 #define AXIS2_WSDL_OP_GET_MSG_EXCHANGE_PATTERN(wsdl_op, env) \
 		((wsdl_op)->ops->get_msg_exchange_pattern(wsdl_op, env))

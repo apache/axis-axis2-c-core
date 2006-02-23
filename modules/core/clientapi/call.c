@@ -1104,15 +1104,15 @@ axis2_op_t* AXIS2_CALL axis2_call_create_op_fill_flow(struct axis2_call *call,
     
     call_impl = AXIS2_INTF_TO_IMPL(call);
     
-    /* if the operation is not alrady define we will copy the
-    crated Phases from the templete operation to the this Operation */
+    /* if the operation is not alrady defined we will copy the
+    created Phases from the templete operation to the this Operation */
 
     op_qname = axis2_qname_create(env, op_name, NULL, NULL);
     if (op_qname)
     {
         axis2_svc_t *svc = NULL;
         axis2_array_list_t *remaining_phases = NULL;
-        
+
         op = axis2_op_create_with_qname(env, op_qname);
         AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
         if(!op)

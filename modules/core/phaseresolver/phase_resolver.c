@@ -1173,6 +1173,11 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
                     axis2_array_list_t *phase_list = NULL; 
 
                     phase_list = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(op_desc, env);
+                    if(resolver_impl->phase_holder)
+                    {
+                        AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
+                        resolver_impl->phase_holder = NULL;
+                    }
                     resolver_impl->phase_holder = 
                         axis2_phase_holder_create_with_phases(env, phase_list);
                     break;
@@ -1182,6 +1187,11 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
                     axis2_array_list_t *phase_list = NULL;
 
                     phase_list = AXIS2_OP_GET_PHASES_OUTFLOW(op_desc, env);
+                    if(resolver_impl->phase_holder)
+                    {
+                        AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
+                        resolver_impl->phase_holder = NULL;
+                    }
                     resolver_impl->phase_holder = 
                         axis2_phase_holder_create_with_phases(env, phase_list);
                     break;
@@ -1191,6 +1201,11 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
                     axis2_array_list_t *phase_list = NULL;
 
                     phase_list = AXIS2_OP_GET_PHASES_IN_FAULT_FLOW(op_desc, env);
+                    if(resolver_impl->phase_holder)
+                    {
+                        AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
+                        resolver_impl->phase_holder = NULL;
+                    }
                     resolver_impl->phase_holder = 
                         axis2_phase_holder_create_with_phases(env, phase_list);
                     break;
@@ -1200,6 +1215,11 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
                     axis2_array_list_t *phase_list = NULL; 
 
                     phase_list = AXIS2_OP_GET_PHASES_OUT_FAULT_FLOW(op_desc, env);
+                    if(resolver_impl->phase_holder)
+                    {
+                        AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
+                        resolver_impl->phase_holder = NULL;
+                    }
                     resolver_impl->phase_holder = 
                         axis2_phase_holder_create_with_phases(env, phase_list);
                     break;
