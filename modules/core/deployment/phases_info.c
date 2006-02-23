@@ -303,9 +303,10 @@ axis2_phases_info_get_op_in_phases(axis2_phases_info_t *phases_info,
     AXIS2_ENV_CHECK(env, NULL);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
-    op_in_phases = axis2_array_list_create(env, 20);
+    op_in_phases = axis2_array_list_create(env, 0);
     if(!op_in_phases)
     {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
@@ -365,12 +366,15 @@ axis2_phases_info_get_op_out_phases(axis2_phases_info_t *phases_info,
     AXIS2_ENV_CHECK(env, NULL);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
-    op_out_phases = axis2_array_list_create(env, 20);
-    if(!info_impl->out_phases)
+    op_out_phases = axis2_array_list_create(env, 0);
+    if(!op_out_phases)
     {
-        return op_out_phases;
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
-    size = AXIS2_ARRAY_LIST_SIZE(info_impl->out_phases, env);
+
+    if(info_impl->out_phases)
+        size = AXIS2_ARRAY_LIST_SIZE(info_impl->out_phases, env);
     for (i = 0; i < size; i++) 
     {
         phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(info_impl->out_phases, env, i);
@@ -430,12 +434,22 @@ axis2_phases_info_get_op_in_faultphases(axis2_phases_info_t *phases_info,
     AXIS2_ENV_CHECK(env, NULL);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
-    op_in_faultphases = axis2_array_list_create(env, 20);
+    op_in_faultphases = axis2_array_list_create(env, 0);
+    if(!op_in_faultphases)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
     if(!info_impl->in_faultphases)
     {
-        return op_in_faultphases;
+        return NULL;
     }
     size = AXIS2_ARRAY_LIST_SIZE(info_impl->in_faultphases, env);
+    if(0 == size)
+    {
+        return NULL;
+    }
     for (i = 0; i < size; i++) 
     {
         phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(info_impl->in_faultphases, env, i);
@@ -469,12 +483,20 @@ axis2_phases_info_get_op_out_faultphases(axis2_phases_info_t *phases_info,
     AXIS2_ENV_CHECK(env, NULL);
     
     info_impl = AXIS2_INTF_TO_IMPL(phases_info);
-    op_out_faultphases = axis2_array_list_create(env, 20);
+    op_out_faultphases = axis2_array_list_create(env, 0);
+    if(!op_out_faultphases)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
     if(!info_impl->out_faultphases)
     {
-        return op_out_faultphases;
+        return NULL;
     }
     size = AXIS2_ARRAY_LIST_SIZE(info_impl->out_faultphases, env);
+    if(0 == size)
+        return NULL;
     for (i = 0; i < size; i++) 
     {
         phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(info_impl->out_faultphases, env, i);
@@ -513,19 +535,31 @@ axis2_phases_info_set_op_phases(axis2_phases_info_t *phases_info,
     
     op_in_phases = axis2_phases_info_get_op_in_phases(phases_info, env);
     if(NULL == op_in_phases)
-        return AXIS2_FAILURE;
+    {
+        status = AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
+        return status;
+    }
     
     op_out_phases = axis2_phases_info_get_op_out_phases(phases_info, env);
     if(NULL == op_out_phases)
-        return AXIS2_FAILURE;
+    {
+        status = AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
+        return status;
+    }
     
     op_in_faultphases = axis2_phases_info_get_op_in_faultphases(phases_info, env);
     if(NULL == op_in_faultphases)
-        return AXIS2_FAILURE;
+    {
+        status = AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
+        return status;
+    }
     
     op_out_faultphases = axis2_phases_info_get_op_out_faultphases(phases_info, env);
     if(NULL == op_out_faultphases)
-        return AXIS2_FAILURE;
+    {
+        status = AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
+        return status;
+    }
     
     status = AXIS2_OP_SET_REMAINING_PHASES_INFLOW(axis2_opt, env, op_in_phases);
     if(AXIS2_FAILURE == status)

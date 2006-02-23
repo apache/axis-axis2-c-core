@@ -588,6 +588,12 @@ axis2_dep_engine_free (axis2_dep_engine_t *dep_engine,
         dep_engine->ops = NULL;
     }
     
+    if(engine_impl)
+    {
+        AXIS2_FREE((*env)->allocator, engine_impl);
+        engine_impl = NULL;
+    }
+    
 	return AXIS2_SUCCESS;
 }
 

@@ -111,6 +111,7 @@ int axis2_test_dep_engine_load()
     {
         printf("dep engine load is successfull\n");
     }
+    AXIS2_CONF_FREE(conf, &env);
 
     return 0;
 }

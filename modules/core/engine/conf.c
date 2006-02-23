@@ -296,6 +296,7 @@ axis2_conf_create (axis2_env_t **env)
     axis2_conf_impl_t *config_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_phase_t *phase = NULL;
+
     AXIS2_ENV_CHECK(env, NULL);
     
 	config_impl = (axis2_conf_impl_t *) AXIS2_MALLOC ((*env)->allocator
@@ -572,24 +573,12 @@ axis2_conf_free (axis2_conf_t *conf,
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     
-    if(NULL != conf->ops)
-    {
-		AXIS2_FREE((*env)->allocator, conf->ops);
-        conf->ops = NULL;
-    }
-    
 	if(NULL != conf->param_container)
     {
         AXIS2_PARAM_CONTAINER_FREE(conf->param_container, env);
         conf->param_container = NULL;
     }
-    
-	if(NULL != config_impl->dep_engine)
-    {
-        AXIS2_PARAM_CONTAINER_FREE(config_impl->dep_engine, env);
-        config_impl->dep_engine= NULL;
-    }
-    
+     
     if(config_impl->svc_grps)
     {
         axis2_hash_index_t *hi = NULL;
@@ -805,8 +794,24 @@ axis2_conf_free (axis2_conf_t *conf,
         axis2_hash_free(config_impl->faulty_modules, env);
         config_impl->faulty_modules = NULL;
     }
-	AXIS2_FREE((*env)->allocator, config_impl);
-    config_impl = NULL;
+    
+	if(NULL != config_impl->dep_engine)
+    {
+        AXIS2_DEP_ENGINE_FREE(config_impl->dep_engine, env);
+        config_impl->dep_engine= NULL;
+    }
+
+    if(NULL != conf->ops)
+    {
+		AXIS2_FREE((*env)->allocator, conf->ops);
+        conf->ops = NULL;
+    }
+    
+    if(config_impl)
+    {
+	    AXIS2_FREE((*env)->allocator, config_impl);
+        config_impl = NULL;
+    }
     
 	return status;
 }

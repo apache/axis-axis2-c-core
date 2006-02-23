@@ -1,4 +1,4 @@
-# Anjuta Version 1.2.3 
+# Anjuta Version 1.2.4 
 Compatibility Level: 1 
 
 <PROJECT_DESCRIPTION_START>
@@ -22,7 +22,7 @@ Compatibility Level: 1
 
 props.file.type=project
 
-anjuta.version=1.2.3
+anjuta.version=1.2.4
 anjuta.compatibility.level=1
 
 project.name=axis2c
@@ -180,7 +180,6 @@ module.include.files=\
 	include/axis2_wsdl_binding_op.h\
 	include/axis2_wsdl_op.h\
 	include/axis2_wsdl_soap_op.h\
-	include/axis2_desc_builder.h\
 	modules/core/deployment/axis2_deployment.h\
 	include/axis2_om_child_element_iterator.h\
 	include/axis2_om_children_qname_iterator.h\
@@ -188,9 +187,7 @@ module.include.files=\
 	include/axis2_class_loader.h\
 	include/axis2_dll_desc.h\
 	include/axis2_svc_skeleton.h\
-	include/axis2_dep_engine.h\
 	include/axis2_arch_file_data.h\
-	include/axis2_arch_reader.h\
 	include/axis2_ws_info.h\
 	include/axis2_ws_info_list.h\
 	test/unit/util/util_dir_handler_test.h\
@@ -198,7 +195,6 @@ module.include.files=\
 	include/axis2_file_handler.h\
 	modules/platforms/unix/axis2_unix.h\
 	modules/platforms/axis2_platform_auto_sense.h\
-	include/axis2_conf_builder.h\
 	include/axis2_module_builder.h\
 	include/axis2_svc_builder.h\
 	include/axis2_svc_grp_builder.h\
@@ -248,7 +244,16 @@ module.include.files=\
 	include/axis2_uuid_gen.h\
 	include/axis2_conf_init.h\
 	include/axis2_svr_callback.h\
-	include/axis2_addr_mod.h
+	include/axis2_addr_mod.h\
+	modules/core/deployment/axis2_arch_file_data.h\
+	modules/core/deployment/axis2_arch_reader.h\
+	modules/core/deployment/axis2_conf_builder.h\
+	modules/core/deployment/axis2_dep_engine.h\
+	modules/core/deployment/axis2_desc_builder.h\
+	modules/core/deployment/axis2_module_builder.h\
+	modules/core/deployment/axis2_svc_builder.h\
+	modules/core/deployment/axis2_svc_grp_builder.h\
+	modules/util/axis2_property.h
 
 module.source.name=.
 module.source.type=
@@ -439,7 +444,8 @@ module.source.files=\
 	modules/core/receivers/svr_callback.c\
 	modules/mod_addr/addr_in_handler.c\
 	modules/mod_addr/addr_out_handler.c\
-	modules/mod_addr/mod_addr.c
+	modules/mod_addr/mod_addr.c\
+	modules/util/property.c
 
 module.pixmap.name=.
 module.pixmap.type=
