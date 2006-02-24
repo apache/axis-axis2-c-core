@@ -350,6 +350,14 @@ axis2_http_client_recieve_header(axis2_http_client_t *client, axis2_env_t **env)
                 break;
             }
         }
+        
+        if (read < 0)
+        {
+            AXIS2_ERROR_SET((*env)->error, 
+                            AXIS2_ERROR_RESPONSE_TIMED_OUT, 
+                            AXIS2_FAILURE);
+            return -1;
+        }
         status_line = axis2_http_status_line_create(env, str_status_line);
         if(NULL == status_line)
         {
