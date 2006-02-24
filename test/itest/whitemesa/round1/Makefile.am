@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/samples
+prgbindir=$(prefix)/bin/itest
 prgbin_PROGRAMS = round1 
 round1_SOURCES = round1_client.c
 

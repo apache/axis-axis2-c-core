@@ -1,1 +1,1 @@
-while read x; do ./test $x; done < input
+while read x; do ./round1 $x; done < input
