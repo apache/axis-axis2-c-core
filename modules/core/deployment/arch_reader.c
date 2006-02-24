@@ -30,6 +30,8 @@ typedef struct axis2_arch_reader_impl
 	axis2_arch_reader_t arch_reader;
     
     axis2_desc_builder_t *desc_builder;
+    
+    axis2_module_builder_t *module_builder;
     	
 } axis2_arch_reader_impl_t;
 
@@ -93,6 +95,7 @@ axis2_arch_reader_create (axis2_env_t **env)
     
     arch_reader_impl->arch_reader.ops = NULL;
     arch_reader_impl->desc_builder = NULL;
+    arch_reader_impl->module_builder = NULL;
     
 	arch_reader_impl->arch_reader.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_arch_reader_ops_t));
@@ -138,6 +141,12 @@ axis2_arch_reader_free (axis2_arch_reader_t *arch_reader,
         AXIS2_DESC_BUILDER_FREE(feature_impl->desc_builder, env);
         feature_impl->desc_builder = NULL;
     }*/
+    
+	if(NULL != feature_impl->module_builder)
+    {
+        AXIS2_DESC_BUILDER_FREE(feature_impl->module_builder, env);
+        feature_impl->module_builder = NULL;
+    }
     
     AXIS2_FREE((*env)->allocator, feature_impl);
     feature_impl = NULL;
@@ -460,6 +469,7 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
                                     axis2_dep_engine_t *dep_engine,
                                     axis2_module_desc_t *module_desc)
 {
+    axis2_arch_reader_impl_t *feature_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *module_xml = NULL;
     axis2_char_t *repos_path = NULL;
@@ -474,6 +484,7 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
     
+    feature_impl = AXIS2_INTF_TO_IMPL(arch_reader);
     repos_path = AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env);
     temp_path = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
     temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_MODULE_FOLDER, env);
@@ -495,12 +506,11 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     
     if(AXIS2_SUCCESS == status)
     {
-        axis2_module_builder_t *module_builder = NULL;
         
-        module_builder = 
+        feature_impl->module_builder = 
             axis2_module_builder_create_with_file_and_dep_engine_and_module(env,
                 module_xml, dep_engine, module_desc);
-        status = AXIS2_MODULE_BUILDER_POPULATE_MODULE(module_builder, env);
+        status = AXIS2_MODULE_BUILDER_POPULATE_MODULE(feature_impl->module_builder, env);
         if(AXIS2_SUCCESS != status)
         {
             return AXIS2_FAILURE;
