@@ -81,7 +81,6 @@ main (int argc, char **argv)
     echo_operation = "String";
     word_to_echo = "helloworld";
     echo_type = "string";
-    /*end_point = "http://www.mssoapinterop.org"; */
 
     allocator = axis2_allocator_init (NULL);
     error = axis2_error_create (allocator);
@@ -98,7 +97,7 @@ main (int argc, char **argv)
 
     if ((argc > 1) && (AXIS2_STRCMP ("-h", argv[1]) == 0))
     {
-        printf ("\nUsage : %s [echo_operation] [word_to_echo] [echo_type]\n",
+        printf ("\nUsage : %s [echo_operation] [echo_value] [XSD_type]\n",
                 argv[0]);
         return 0;
     }
@@ -113,7 +112,7 @@ main (int argc, char **argv)
     sprintf (operation, "echo%s", echo_operation);
 
     printf ("Using endpoint : %s\n", address);
-    printf ("\nInvoking %s with param %s\n", operation, word_to_echo);
+    printf ("Invoking %s with param %s\n", operation, word_to_echo);
 
 
     /* create call without passing svc_ctx_t struct */
@@ -220,22 +219,20 @@ main (int argc, char **argv)
             result_ele =
                 (axis2_om_element_t *)
                 AXIS2_OM_NODE_GET_DATA_ELEMENT (ret_node1, &env);
-            /*printf(AXIS2_OM_ELEMENT_GET_LOCALNAME(result_ele, &env)); */
             result = AXIS2_OM_ELEMENT_GET_TEXT (result_ele, &env, ret_node1);
-            /*printf( "\nSent = %s\nEchoedResult = %s\n", word_to_echo, result); */
             if (!strcmp (word_to_echo, result))
             {
-                printf ("SUCCESS\n");
+                printf ("\nSUCCESS\n\n");
             }
             else
             {
-                printf ("FAIL\n");
+                printf ("\nFAIL\n\n");
             }
 
         }
         else
         {
-            printf ("FAIL\n");
+            printf ("\nFAIL\n\n");
             return AXIS2_FAILURE;
         }
     }
@@ -307,7 +304,6 @@ build_soap_body_content (axis2_env_t ** env, axis2_char_t * echo_operation,
     ns5 =
         axis2_om_namespace_create (env, "http://soapinterop.org/encodedTypes",
                                    "types");
-    /*ns6 = axis2_om_namespace_create (env, "http://schemas.xmlsoap.org/soap/envelope/", "soap"); */
 
     envelope_node = AXIS2_OM_NODE_GET_PARENT (body_node, env);
     envelope_element =
@@ -355,13 +351,11 @@ build_soap_body_content (axis2_env_t ** env, axis2_char_t * echo_operation,
     AXIS2_LOG_DEBUG ((*env)->log, AXIS2_LOG_SI,
                      "\nSending OM node in XML : %s \n", buffer);
 
-    /*axis2_om_output_t *om_output = NULL; */
-    /*axis2_char_t *buffer = NULL; */
     writer = axis2_xml_writer_create_for_memory (env, NULL, AXIS2_TRUE, 0);
     om_output = axis2_om_output_create (env, writer);
-    AXIS2_OM_NODE_SERIALIZE (echo_om_node, env, om_output);
+    AXIS2_OM_NODE_SERIALIZE (envelope_node, env, om_output);
     buffer = AXIS2_XML_WRITER_GET_XML (writer, env);
-    printf ("%s\n", buffer);
+    printf ("Sending :\n%s\n", buffer);
     return echo_om_node;
 }
 
@@ -377,5 +371,5 @@ print_invalid_om (axis2_env_t ** env, axis2_om_node_t * ret_node)
 
     AXIS2_OM_NODE_SERIALIZE (ret_node, env, om_output);
     buffer = AXIS2_XML_WRITER_GET_XML (writer, env);
-    printf ("\nReceived OM as result : %s\n", buffer);
+    printf ("Received : \n%s\n", buffer);
 }
