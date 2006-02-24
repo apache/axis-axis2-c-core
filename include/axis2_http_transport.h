@@ -330,7 +330,7 @@ extern "C"
     /**
      * DEFAULT_SO_TIMEOUT
      */
-    #define AXIS2_HTTP_DEFAULT_SO_TIMEOUT 60000
+    #define AXIS2_HTTP_DEFAULT_SO_TIMEOUT 30000
     
     /**
      * DEFAULT_CONNECTION_TIMEOUT
