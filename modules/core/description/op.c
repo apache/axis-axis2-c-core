@@ -510,18 +510,13 @@ axis2_op_create (axis2_env_t **env)
 	op_impl->op.ops->set_msg_recv = axis2_op_set_msg_recv;
 	op_impl->op.ops->get_msg_recv = axis2_op_get_msg_recv;
     op_impl->op.ops->set_qname = axis2_op_set_qname;
-	op_impl->op.ops->get_qname = axis2_op_get_qname;
-    
+	op_impl->op.ops->get_qname = axis2_op_get_qname; 
 	op_impl->op.ops->set_msg_exchange_pattern 
-		= axis2_op_set_msg_exchange_pattern;
-    
+		= axis2_op_set_msg_exchange_pattern; 
 	op_impl->op.ops->get_msg_exchange_pattern
 		= axis2_op_get_msg_exchange_pattern;
-        
     op_impl->op.ops->set_style = axis2_op_set_style;
-    
 	op_impl->op.ops->get_style = axis2_op_get_style; 
-
     op_impl->op.ops->engage_module = axis2_op_engage_module;
     op_impl->op.ops->add_to_engage_module_list = axis2_op_add_to_engage_module_list;
     op_impl->op.ops->get_modules = axis2_op_get_modules;
@@ -646,25 +641,6 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
         op->ops = NULL;
     }
     
-    if(NULL != op->param_container)
-    {
-	    AXIS2_PARAM_CONTAINER_FREE(op->param_container, env);
-        op->param_container = NULL;
-    }
-    
-    if(NULL != op_impl->wsdl_op)
-    {
-	    AXIS2_WSDL_OP_FREE(op_impl->wsdl_op, env);
-        op_impl->wsdl_op = NULL;
-    }
-    
-    op_impl->parent = NULL;
-    if(op_impl->msg_recv)
-    {
-        AXIS2_MSG_RECV_FREE(op_impl->msg_recv, env);
-        op_impl->msg_recv = NULL;
-    }
-
     if(NULL != op_impl->remaining_phases_inflow && 
         (0 != AXIS2_STRCMP(op_name, "TemplateOperation")))
     {
@@ -709,7 +685,8 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
         op_impl->phases_outflow = NULL;
     }
     
-    if(NULL != op_impl->phases_in_fault_flow)
+    if(NULL != op_impl->phases_in_fault_flow &&
+        (0 != AXIS2_STRCMP(op_name, "TemplateOperation")))
     {
         int i = 0;
         int size = 0;
@@ -729,7 +706,8 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
         op_impl->phases_in_fault_flow = NULL;
     }
     
-    if(NULL != op_impl->phases_out_fault_flow)
+    if(NULL != op_impl->phases_out_fault_flow &&
+        (0 != AXIS2_STRCMP(op_name, "TemplateOperation")))
     {
         int i = 0;
         int size = 0;
@@ -748,6 +726,25 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
         AXIS2_ARRAY_LIST_FREE(op_impl->phases_out_fault_flow, env);
         op_impl->phases_out_fault_flow = NULL;
     }
+
+    if(NULL != op->param_container)
+    {
+	    AXIS2_PARAM_CONTAINER_FREE(op->param_container, env);
+        op->param_container = NULL;
+    }
+    
+    if(NULL != op_impl->wsdl_op)
+    {
+	    AXIS2_WSDL_OP_FREE(op_impl->wsdl_op, env);
+        op_impl->wsdl_op = NULL;
+    }
+    
+    op_impl->parent = NULL;
+    if(op_impl->msg_recv)
+    {
+        AXIS2_MSG_RECV_FREE(op_impl->msg_recv, env);
+        op_impl->msg_recv = NULL;
+    } 
     
     if(NULL != op_impl->modulerefs)
     {

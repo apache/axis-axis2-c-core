@@ -66,6 +66,7 @@ axis2_handler_t* AXIS2_CALL axis2_ctx_handler_create(axis2_env_t **env, axis2_qn
     
     /* handler desc of base handler */
     handler_desc = axis2_handler_desc_create_with_qname(env, handler_qname);
+    AXIS2_QNAME_FREE(handler_qname, env);
     if (!handler_desc)
     {
         AXIS2_HANDLER_FREE(handler, env);

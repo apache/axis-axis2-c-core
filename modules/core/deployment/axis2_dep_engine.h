@@ -42,7 +42,7 @@ struct axis2_arch_reader;
 struct axis2_ws_info;
 struct axis2_phases_info;
 struct axis2_svc;
-    
+
 typedef struct axis2_dep_engine axis2_dep_engine_t;
 typedef struct axis2_dep_engine_ops axis2_dep_engine_ops_t;
 
@@ -191,7 +191,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     set_arch_reader)(axis2_dep_engine_t *dep_engine,
                         axis2_env_t **env,
                         struct axis2_arch_reader *arch_reader);
-
+    
 };
     
     /** 

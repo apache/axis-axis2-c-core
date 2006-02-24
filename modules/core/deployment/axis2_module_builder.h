@@ -70,7 +70,7 @@ AXIS2_DECLARE_DATA struct axis2_module_builder_ops
 AXIS2_DECLARE_DATA struct axis2_module_builder
 {
 	axis2_module_builder_ops_t *ops;
-    axis2_desc_builder_t *desc_builder;
+    struct axis2_desc_builder *desc_builder;
 };
 
 /**

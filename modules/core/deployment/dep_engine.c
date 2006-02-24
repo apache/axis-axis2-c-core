@@ -53,27 +53,22 @@ typedef struct axis2_dep_engine_impl
     /**
      * this will store all the web Services to undeploy
      */
-    axis2_array_list_t *ws_to_undeploy;
-    
+    axis2_array_list_t *ws_to_undeploy;    
     axis2_phases_info_t *phases_info; /* to store phases list in axis2.xml */
     /**
      * this constructor for the testing
      */
     axis2_char_t *folder_name;
-
     /**
      * Full path to the server xml file(axis2.xml)
      */
     axis2_char_t *conf_name;
-
     /**
      * To store the module specified in the server.xml at the document parsing 
      * time
      */
     axis2_array_list_t *module_list;
- 
     axis2_repos_listener_t *repos_listener; /*Added this here to help with feeing memory allocated for this - Samisa*/
-    
     axis2_conf_builder_t *conf_builder;
     axis2_svc_builder_t *svc_builder;
 } axis2_dep_engine_impl_t;
@@ -1489,10 +1484,15 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
             switch (type) 
             {
                 case AXIS2_SVC:
+                    if(dep_engine_impl->arch_reader)
+                    {
+                        AXIS2_ARCH_READER_FREE(dep_engine_impl->arch_reader, env);
+                        dep_engine_impl->arch_reader = NULL;
+                    }
                     dep_engine_impl->arch_reader = axis2_arch_reader_create(env);
 		    
                     
-                    /*archiveReader.processWSDLs(currentArchiveFile,this); */
+                    /* TODO archiveReader.processWSDLs(currentArchiveFile,this); */
                     /* AxisService service = archiveReader.createService(currentArchiveFile.getAbsolutePath()); */
                     svc_grp = axis2_svc_grp_create_with_conf(env, 
                         dep_engine_impl->conf);
@@ -1519,6 +1519,11 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                     dep_engine_impl->curr_file = NULL;
                     break;
                 case AXIS2_MODULE:
+                    if(dep_engine_impl->arch_reader)
+                    {
+                        AXIS2_ARCH_READER_FREE(dep_engine_impl->arch_reader, env);
+                        dep_engine_impl->arch_reader = NULL;
+                    }
                     dep_engine_impl->arch_reader = axis2_arch_reader_create(env);
                     meta_data = axis2_module_desc_create(env);
                     file_name = AXIS2_ARCH_FILE_DATA_GET_NAME(dep_engine_impl->

@@ -266,12 +266,6 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
     
     wsdl_op_impl = AXIS2_INTF_TO_IMPL(wsdl_op);
     
-    if(NULL != wsdl_op->ops)
-    {
-        AXIS2_FREE((*env)->allocator, wsdl_op->ops);
-        wsdl_op->ops = NULL;
-    }
-    
     if(NULL != wsdl_op->extensible_component)
     {
         AXIS2_WSDL_EXTENSIBLE_COMPONENT_FREE(wsdl_op->extensible_component, env);
@@ -326,7 +320,7 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
     
     if(NULL != wsdl_op_impl->name)
     {
-        AXIS2_FREE((*env)->allocator, wsdl_op_impl->name);
+        AXIS2_QNAME_FREE(wsdl_op_impl->name, env);
         wsdl_op_impl->name = NULL;
     }
     
@@ -334,6 +328,12 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
     {
         AXIS2_FREE((*env)->allocator, wsdl_op_impl->style);
         wsdl_op_impl->style = NULL;
+    }
+    
+    if(NULL != wsdl_op->ops)
+    {
+        AXIS2_FREE((*env)->allocator, wsdl_op->ops);
+        wsdl_op->ops = NULL;
     }
     
     if(wsdl_op_impl)
@@ -408,7 +408,7 @@ axis2_wsdl_op_set_qname (axis2_wsdl_op_t *wsdl_op,
 	
     if(wsdl_op_impl->name)
     {
-        AXIS2_FREE((*env)->allocator, wsdl_op_impl->name);
+        AXIS2_QNAME_FREE(wsdl_op_impl->name, env);
         wsdl_op_impl->name = NULL;
     }
 	wsdl_op_impl->name = AXIS2_QNAME_CLONE(name, env);
@@ -419,7 +419,6 @@ axis2_wsdl_op_set_qname (axis2_wsdl_op_t *wsdl_op,
     
 	return AXIS2_SUCCESS;
 }
-
 
 axis2_qname_t * AXIS2_CALL 
 axis2_wsdl_op_get_qname (void *wsdl_op, 

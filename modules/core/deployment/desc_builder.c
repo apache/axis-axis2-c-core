@@ -561,14 +561,13 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                 }
                 AXIS2_FREE((*env)->allocator, bool_val);
             }
-            if(qname)
-                AXIS2_QNAME_FREE(qname, env);
             index_i = axis2_hash_next (env, index_i);
         }
         
         param_qname = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
         params = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(handler_element,
             env, param_qname, handler_node);
+        AXIS2_QNAME_FREE(param_qname, env);
         status = axis2_desc_builder_process_params(desc_builder, env, params, 
             handler_desc->param_container, parent);
         if(AXIS2_SUCCESS != status)
@@ -623,13 +622,15 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
             AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(params, env);
         param_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(param_node, env);
         param = axis2_param_create(env, NULL, NULL);
-        /* Setting param_element */
-        status = AXIS2_PARAM_SET_ELEMENT(param, env, param_node);
+        /* TODO Setting param_element. Do not set element like following.
+         * break it and set 
+         */
+        /*status = AXIS2_PARAM_SET_ELEMENT(param, env, param_node);
         if(AXIS2_SUCCESS != status)
         {
             AXIS2_PARAM_FREE(param, env);
             return status;
-        }
+        }*/
         /* Setting paramter name */
         att_qname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         para_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(param_element, env, 
@@ -653,6 +654,8 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
             param_node, &para_node);
         if(NULL != para_value)
         {
+            /* TODO uncomment this when find usages */
+            /*
             status = AXIS2_PARAM_SET_VALUE(param, env, param_element);
             if(AXIS2_SUCCESS != status)
             {
@@ -660,11 +663,16 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
                 return AXIS2_FAILURE;
             }
             AXIS2_PARAM_SET_PARAM_TYPE(param, env, AXIS2_DOM_PARAM);
+            */
         }
         else
         {
-            axis2_char_t *para_test_value = AXIS2_OM_ELEMENT_GET_TEXT(
+            axis2_char_t *para_test_value = NULL;
+            axis2_char_t *temp = NULL;
+
+            temp = AXIS2_OM_ELEMENT_GET_TEXT(
                 param_element, env, param_node);
+            para_test_value = AXIS2_STRDUP(temp, env);
             status = AXIS2_PARAM_SET_VALUE(param, env, para_test_value);
             if(AXIS2_FAILURE == status)
             {

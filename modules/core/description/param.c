@@ -16,6 +16,7 @@
 
 #include <axis2_param.h>
 #include <axis2.h>
+#include <axis2_string.h>
 
 typedef struct axis2_param_impl_s
 {
@@ -165,7 +166,7 @@ axis2_param_set_name(axis2_param_t *param,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    AXIS2_INTF_TO_IMPL(param)->name = name; /* shallow copy */
+    AXIS2_INTF_TO_IMPL(param)->name = AXIS2_STRDUP(name, env);
     return AXIS2_SUCCESS;
 }
 
@@ -176,7 +177,7 @@ axis2_param_set_value(axis2_param_t *param,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    AXIS2_INTF_TO_IMPL(param)->value = value; /* shallow copy */
+    AXIS2_INTF_TO_IMPL(param)->value = value;
     return AXIS2_SUCCESS;
 }
 

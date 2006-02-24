@@ -508,7 +508,7 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
         {
             AXIS2_MODULE_BUILDER_FREE(arch_reader_impl->module_builder, env);
             arch_reader_impl->module_builder = NULL;
-        }
+        } 
         arch_reader_impl->module_builder = 
             axis2_module_builder_create_with_file_and_dep_engine_and_module(env,
                 module_xml, dep_engine, module_desc);
