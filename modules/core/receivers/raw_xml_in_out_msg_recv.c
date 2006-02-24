@@ -192,6 +192,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
         {
             skel_invoked = AXIS2_TRUE;
             result_node = AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node);
+            AXIS2_SVC_SKELETON_FREE(svc_obj, env);
         }
        
         if (result_node)
@@ -337,7 +338,7 @@ AXIS2_EXPORT int axis2_get_instance(struct axis2_msg_recv **inst,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXPORT int axis2_remove_instance(axis2_svc_skeleton_t *inst,
+AXIS2_EXPORT int axis2_remove_instance(struct axis2_msg_recv *inst,
                             axis2_env_t **env)
 {
     axis2_status_t status = AXIS2_FAILURE;

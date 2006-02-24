@@ -28,9 +28,7 @@
 typedef struct axis2_arch_reader_impl
 {
 	axis2_arch_reader_t arch_reader;
-    
     axis2_desc_builder_t *desc_builder;
-    
     axis2_module_builder_t *module_builder;
     	
 } axis2_arch_reader_impl_t;
@@ -126,30 +124,32 @@ axis2_status_t AXIS2_CALL
 axis2_arch_reader_free (axis2_arch_reader_t *arch_reader, 
                             axis2_env_t **env)
 {
-    axis2_arch_reader_impl_t *feature_impl = NULL;
+    axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    feature_impl = AXIS2_INTF_TO_IMPL(arch_reader);
+    arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
     
 	if(NULL != arch_reader->ops)
         AXIS2_FREE((*env)->allocator, arch_reader->ops);
    
-    /* TODO: it fails to load svc so file if I do this. Fix this - Samisa
-	if(NULL != feature_impl->desc_builder)
+	if(NULL != arch_reader_impl->desc_builder)
     {
-        AXIS2_DESC_BUILDER_FREE(feature_impl->desc_builder, env);
-        feature_impl->desc_builder = NULL;
-    }*/
-    
-	if(NULL != feature_impl->module_builder)
-    {
-        AXIS2_DESC_BUILDER_FREE(feature_impl->module_builder, env);
-        feature_impl->module_builder = NULL;
+        AXIS2_DESC_BUILDER_FREE(arch_reader_impl->desc_builder, env);
+        arch_reader_impl->desc_builder = NULL;
     }
-    
-    AXIS2_FREE((*env)->allocator, feature_impl);
-    feature_impl = NULL;
+
+	if(NULL != arch_reader_impl->module_builder)
+    {
+        AXIS2_MODULE_BUILDER_FREE(arch_reader_impl->module_builder, env);
+        arch_reader_impl->module_builder = NULL;
+    }
+   
+    if(arch_reader_impl) 
+    {
+        AXIS2_FREE((*env)->allocator, arch_reader_impl);
+        arch_reader_impl = NULL;
+    }
     
 	return AXIS2_SUCCESS;
 }
@@ -379,7 +379,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
                                 axis2_dep_engine_t *dep_engine,
                                 axis2_svc_grp_t *svc_grp)
 {                       
-    axis2_arch_reader_impl_t *feature_impl = NULL;
+    axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     axis2_char_t *root_element_name = NULL;
     axis2_om_node_t *svcs = NULL;
     axis2_om_element_t *svcs_element = NULL;
@@ -389,15 +389,15 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
     AXIS2_PARAM_CHECK((*env)->error, svc_xml, AXIS2_FAILURE);    
     AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
-    feature_impl = AXIS2_INTF_TO_IMPL(arch_reader);
+    arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
     
-    feature_impl->desc_builder = axis2_desc_builder_create_with_file_and_dep_engine(env, 
+    arch_reader_impl->desc_builder = axis2_desc_builder_create_with_file_and_dep_engine(env, 
         svc_xml, dep_engine);
-    if(!(feature_impl->desc_builder))
+    if(!(arch_reader_impl->desc_builder))
     {
         return AXIS2_FAILURE;
     }
-    svcs = AXIS2_DESC_BUILDER_BUILD_OM(feature_impl->desc_builder, env);
+    svcs = AXIS2_DESC_BUILDER_BUILD_OM(arch_reader_impl->desc_builder, env);
     svcs_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(svcs, env);
     root_element_name = AXIS2_OM_ELEMENT_GET_LOCALNAME(svcs_element, env);
     if(0 == AXIS2_STRCMP(AXIS2_SVC_ELEMENT, root_element_name))
@@ -426,7 +426,6 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
             }
         }
         AXIS2_SVC_SET_PARENT(svc, env, svc_grp);
-        /*axisService.setClassLoader(engine.getCurrentFileItem().getClassLoader());*/
         
         svc_builder = axis2_svc_builder_create_with_dep_engine_and_svc(env,
             dep_engine, svc);
@@ -457,7 +456,6 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         grp_builder = axis2_svc_grp_builder_create_with_svc_and_dep_engine(env, 
             svcs, dep_engine);
         status = AXIS2_SVC_GRP_BUILDER_POPULATE_SVC_GRP(grp_builder, env, svc_grp);
-        AXIS2_SVC_GRP_BUILDER_FREE(grp_builder, env);
     }
     return status;
 }
@@ -469,7 +467,7 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
                                     axis2_dep_engine_t *dep_engine,
                                     axis2_module_desc_t *module_desc)
 {
-    axis2_arch_reader_impl_t *feature_impl = NULL;
+    axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *module_xml = NULL;
     axis2_char_t *repos_path = NULL;
@@ -483,8 +481,8 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     AXIS2_PARAM_CHECK((*env)->error, file_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
+    arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
     
-    feature_impl = AXIS2_INTF_TO_IMPL(arch_reader);
     repos_path = AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env);
     temp_path = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
     temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_MODULE_FOLDER, env);
@@ -505,12 +503,17 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     status = axis2_file_handler_access(module_xml, AXIS2_F_OK);
     
     if(AXIS2_SUCCESS == status)
-    {
-        
-        feature_impl->module_builder = 
+    { 
+        if(arch_reader_impl->module_builder)
+        {
+            AXIS2_MODULE_BUILDER_FREE(arch_reader_impl->module_builder, env);
+            arch_reader_impl->module_builder = NULL;
+        }
+        arch_reader_impl->module_builder = 
             axis2_module_builder_create_with_file_and_dep_engine_and_module(env,
                 module_xml, dep_engine, module_desc);
-        status = AXIS2_MODULE_BUILDER_POPULATE_MODULE(feature_impl->module_builder, env);
+        status = AXIS2_MODULE_BUILDER_POPULATE_MODULE(arch_reader_impl->
+            module_builder, env);
         if(AXIS2_SUCCESS != status)
         {
             return AXIS2_FAILURE;

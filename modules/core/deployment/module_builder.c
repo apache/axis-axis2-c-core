@@ -124,18 +124,18 @@ axis2_module_builder_free (axis2_module_builder_t *module_builder,
     
     module_builder_impl = AXIS2_INTF_TO_IMPL(module_builder);
     
+    if(module_builder->desc_builder)
+    {
+        AXIS2_DESC_BUILDER_FREE(module_builder->desc_builder, env);
+        module_builder->desc_builder = NULL;
+    }
+
 	if(NULL != module_builder->ops)
     {
         AXIS2_FREE((*env)->allocator, module_builder->ops);
         module_builder->ops = NULL;
     }
     
-    if(module_builder_impl->module_builder.desc_builder)
-    {
-        AXIS2_DESC_BUILDER_FREE(module_builder_impl->module_builder.desc_builder, env);
-        module_builder_impl->module_builder.desc_builder = NULL;
-    }
-
     if(module_builder_impl)
     {
         AXIS2_FREE((*env)->allocator, module_builder_impl);

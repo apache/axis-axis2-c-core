@@ -293,107 +293,107 @@ axis2_dep_engine_get_repos_path(axis2_dep_engine_t *dep_engine,
 axis2_dep_engine_t *AXIS2_CALL
 axis2_dep_engine_create(axis2_env_t **env)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
-    engine_impl = (axis2_dep_engine_impl_t *) AXIS2_MALLOC ((*env)->allocator
+    dep_engine_impl = (axis2_dep_engine_impl_t *) AXIS2_MALLOC ((*env)->allocator
 		    , sizeof (axis2_dep_engine_impl_t));
     
-	if(NULL == engine_impl)
+	if(NULL == dep_engine_impl)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     } 
-    engine_impl->conf = NULL;
-    engine_impl->axis2_repos = NULL;
-    engine_impl->curr_file = NULL;
-    engine_impl->arch_reader = NULL;
-    engine_impl->ws_to_deploy = NULL;
-    engine_impl->ws_to_undeploy = NULL;
-    engine_impl->phases_info = NULL;
-    engine_impl->module_list = NULL;
-    engine_impl->folder_name = NULL;
-    engine_impl->conf_name = NULL; 
-    engine_impl->dep_engine.ops = NULL;
-    engine_impl->repos_listener = NULL;
-    engine_impl->conf_builder = NULL;
-    engine_impl->svc_builder = NULL;
+    dep_engine_impl->conf = NULL;
+    dep_engine_impl->axis2_repos = NULL;
+    dep_engine_impl->curr_file = NULL;
+    dep_engine_impl->arch_reader = NULL;
+    dep_engine_impl->ws_to_deploy = NULL;
+    dep_engine_impl->ws_to_undeploy = NULL;
+    dep_engine_impl->phases_info = NULL;
+    dep_engine_impl->module_list = NULL;
+    dep_engine_impl->folder_name = NULL;
+    dep_engine_impl->conf_name = NULL; 
+    dep_engine_impl->dep_engine.ops = NULL;
+    dep_engine_impl->repos_listener = NULL;
+    dep_engine_impl->conf_builder = NULL;
+    dep_engine_impl->svc_builder = NULL;
 
-    engine_impl->ws_to_deploy = axis2_array_list_create(env, 0);
-    if (!(engine_impl->ws_to_deploy))
+    dep_engine_impl->ws_to_deploy = axis2_array_list_create(env, 0);
+    if (!(dep_engine_impl->ws_to_deploy))
     {
-        axis2_dep_engine_free(&(engine_impl->dep_engine), env);
+        axis2_dep_engine_free(&(dep_engine_impl->dep_engine), env);
         return NULL;
     }
     
-    engine_impl->phases_info = axis2_phases_info_create(env);
-    if (!(engine_impl->phases_info))
+    dep_engine_impl->phases_info = axis2_phases_info_create(env);
+    if (!(dep_engine_impl->phases_info))
     {
-        axis2_dep_engine_free(&(engine_impl->dep_engine), env);
+        axis2_dep_engine_free(&(dep_engine_impl->dep_engine), env);
         return NULL;
     }
     
-    engine_impl->dep_engine.ops = (axis2_dep_engine_ops_t *) AXIS2_MALLOC(
+    dep_engine_impl->dep_engine.ops = (axis2_dep_engine_ops_t *) AXIS2_MALLOC(
         (*env)->allocator, sizeof(axis2_dep_engine_ops_t));
     
-    if(NULL == engine_impl->dep_engine.ops)
+    if(NULL == dep_engine_impl->dep_engine.ops)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_dep_engine_free(&(engine_impl->dep_engine), env);
+        axis2_dep_engine_free(&(dep_engine_impl->dep_engine), env);
         return NULL;
     }
     
-    engine_impl->dep_engine.ops->free = axis2_dep_engine_free;
-    engine_impl->dep_engine.ops->add_module = axis2_dep_engine_add_module;
-    engine_impl->dep_engine.ops->get_module = axis2_dep_engine_get_module;
-    engine_impl->dep_engine.ops->get_current_file_item = 
+    dep_engine_impl->dep_engine.ops->free = axis2_dep_engine_free;
+    dep_engine_impl->dep_engine.ops->add_module = axis2_dep_engine_add_module;
+    dep_engine_impl->dep_engine.ops->get_module = axis2_dep_engine_get_module;
+    dep_engine_impl->dep_engine.ops->get_current_file_item = 
             axis2_dep_engine_get_current_file_item; 
-    engine_impl->dep_engine.ops->add_ws_to_deploy = 
+    dep_engine_impl->dep_engine.ops->add_ws_to_deploy = 
             axis2_dep_engine_add_ws_to_deploy;
-    engine_impl->dep_engine.ops->add_ws_to_undeploy = 
+    dep_engine_impl->dep_engine.ops->add_ws_to_undeploy = 
             axis2_dep_engine_add_ws_to_undeploy;
-    engine_impl->dep_engine.ops->get_phases_info = 
+    dep_engine_impl->dep_engine.ops->get_phases_info = 
             axis2_dep_engine_get_phases_info;
     
-    engine_impl->dep_engine.ops->get_axis_conf = axis2_dep_engine_get_axis_conf;
-    engine_impl->dep_engine.ops->load = axis2_dep_engine_load;
-    engine_impl->dep_engine.ops->load_client = axis2_dep_engine_load_client; 
-    engine_impl->dep_engine.ops->get_handler_dll = 
+    dep_engine_impl->dep_engine.ops->get_axis_conf = axis2_dep_engine_get_axis_conf;
+    dep_engine_impl->dep_engine.ops->load = axis2_dep_engine_load;
+    dep_engine_impl->dep_engine.ops->load_client = axis2_dep_engine_load_client; 
+    dep_engine_impl->dep_engine.ops->get_handler_dll = 
             axis2_dep_engine_get_handler_dll;
-    engine_impl->dep_engine.ops->do_deploy = axis2_dep_engine_do_deploy;
-    engine_impl->dep_engine.ops->undeploy = axis2_dep_engine_undeploy;
-    engine_impl->dep_engine.ops->is_hot_update = axis2_dep_engine_is_hot_update;
-    engine_impl->dep_engine.ops->set_phases_info = 
+    dep_engine_impl->dep_engine.ops->do_deploy = axis2_dep_engine_do_deploy;
+    dep_engine_impl->dep_engine.ops->undeploy = axis2_dep_engine_undeploy;
+    dep_engine_impl->dep_engine.ops->is_hot_update = axis2_dep_engine_is_hot_update;
+    dep_engine_impl->dep_engine.ops->set_phases_info = 
             axis2_dep_engine_set_phases_info;
-    engine_impl->dep_engine.ops->build_svc = axis2_dep_engine_build_svc;
-    engine_impl->dep_engine.ops->build_module = axis2_dep_engine_build_module;
-    engine_impl->dep_engine.ops->get_repos_path = axis2_dep_engine_get_repos_path;
-    engine_impl->dep_engine.ops->set_current_file_item = 
+    dep_engine_impl->dep_engine.ops->build_svc = axis2_dep_engine_build_svc;
+    dep_engine_impl->dep_engine.ops->build_module = axis2_dep_engine_build_module;
+    dep_engine_impl->dep_engine.ops->get_repos_path = axis2_dep_engine_get_repos_path;
+    dep_engine_impl->dep_engine.ops->set_current_file_item = 
             axis2_dep_engine_set_current_file_item;
-    engine_impl->dep_engine.ops->set_arch_reader = 
+    dep_engine_impl->dep_engine.ops->set_arch_reader = 
 	    axis2_dep_engine_set_arch_reader;
     
-    return &(engine_impl->dep_engine);
+    return &(dep_engine_impl->dep_engine);
 }
 axis2_dep_engine_t *AXIS2_CALL 
 axis2_dep_engine_create_with_repos_name (
                                         axis2_env_t **env, 
                                         axis2_char_t *repos_path)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
-	engine_impl = (axis2_dep_engine_impl_t *)
+	dep_engine_impl = (axis2_dep_engine_impl_t *)
         axis2_dep_engine_create_with_repos_name_and_svr_xml_file(env, 
             repos_path, AXIS2_SERVER_XML_FILE);
-    if(!engine_impl)
+    if(!dep_engine_impl)
     {
         return NULL;
     }
 					
-	return &(engine_impl->dep_engine);
+	return &(dep_engine_impl->dep_engine);
 }
 
 axis2_dep_engine_t *AXIS2_CALL
@@ -401,7 +401,7 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(axis2_env_t **env,
                                                     axis2_char_t *repos_path,
                                                     axis2_char_t *svr_xml_file)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_char_t *conf_file_l = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
@@ -415,9 +415,9 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(axis2_env_t **env,
         return NULL;
     }
     
-    engine_impl = (axis2_dep_engine_impl_t *) axis2_dep_engine_create(env);
+    dep_engine_impl = (axis2_dep_engine_impl_t *) axis2_dep_engine_create(env);
     
-	if(NULL == engine_impl)
+	if(NULL == dep_engine_impl)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -426,52 +426,52 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(axis2_env_t **env,
     status = axis2_file_handler_access(repos_path, AXIS2_F_OK);
     if(AXIS2_SUCCESS != status)
     {
-        axis2_dep_engine_free(&(engine_impl->dep_engine), env);
+        axis2_dep_engine_free(&(dep_engine_impl->dep_engine), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_REPOSITORY_NOT_EXIST, 
             AXIS2_FAILURE);
         return NULL;
     }
     
-    engine_impl->folder_name = AXIS2_STRDUP(repos_path, env);
-    if(NULL == engine_impl->folder_name)
+    dep_engine_impl->folder_name = AXIS2_STRDUP(repos_path, env);
+    if(NULL == dep_engine_impl->folder_name)
 	{
-        axis2_dep_engine_free(&(engine_impl->dep_engine), env);
+        axis2_dep_engine_free(&(dep_engine_impl->dep_engine), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
-    engine_impl->axis2_repos = AXIS2_STRDUP(repos_path, env);
-    if(NULL == engine_impl->axis2_repos)
+    dep_engine_impl->axis2_repos = AXIS2_STRDUP(repos_path, env);
+    if(NULL == dep_engine_impl->axis2_repos)
 	{
-        axis2_dep_engine_free(&(engine_impl->dep_engine), env);
+        axis2_dep_engine_free(&(dep_engine_impl->dep_engine), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
    
     conf_file_l = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
-    engine_impl->conf_name = AXIS2_STRACAT(conf_file_l, svr_xml_file, env);
+    dep_engine_impl->conf_name = AXIS2_STRACAT(conf_file_l, svr_xml_file, env);
     AXIS2_FREE((*env)->allocator, conf_file_l);
-    if(!engine_impl->conf_name)
+    if(!dep_engine_impl->conf_name)
     {
-        engine_impl->conf_name = 
+        dep_engine_impl->conf_name = 
             AXIS2_STRDUP(AXIS2_CONFIGURATION_RESOURCE, env);
-        if(!engine_impl->conf_name)
+        if(!dep_engine_impl->conf_name)
         {
-            axis2_dep_engine_free(&(engine_impl->dep_engine), env);
+            axis2_dep_engine_free(&(dep_engine_impl->dep_engine), env);
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
     }
-    status = axis2_file_handler_access(engine_impl->conf_name, AXIS2_F_OK);
+    status = axis2_file_handler_access(dep_engine_impl->conf_name, AXIS2_F_OK);
     if(AXIS2_SUCCESS != status)
     {
-        axis2_dep_engine_free(&(engine_impl->dep_engine), env);
+        axis2_dep_engine_free(&(dep_engine_impl->dep_engine), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CONFIG_NOT_FOUND, 
             AXIS2_FAILURE);
         return NULL;
     }
     
-    return &(engine_impl->dep_engine); 
+    return &(dep_engine_impl->dep_engine); 
 }
 
 /******************************************************************************/
@@ -480,112 +480,112 @@ axis2_status_t AXIS2_CALL
 axis2_dep_engine_free (axis2_dep_engine_t *dep_engine,
                         axis2_env_t **env)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    if(engine_impl->curr_file)
+    if(dep_engine_impl->curr_file)
     {
-        AXIS2_ARCH_FILE_DATA_FREE(engine_impl->curr_file, env);
-        engine_impl->curr_file = NULL;
+        AXIS2_ARCH_FILE_DATA_FREE(dep_engine_impl->curr_file, env);
+        dep_engine_impl->curr_file = NULL;
     }
     
-    if(engine_impl->phases_info)
+    if(dep_engine_impl->phases_info)
     {
-        AXIS2_PHASES_INFO_FREE(engine_impl->phases_info, env);
-        engine_impl->phases_info = NULL;
+        AXIS2_PHASES_INFO_FREE(dep_engine_impl->phases_info, env);
+        dep_engine_impl->phases_info = NULL;
     }
     
-    if(engine_impl->conf_builder)
+    if(dep_engine_impl->conf_builder)
     {
-        AXIS2_CONF_BUILDER_FREE(engine_impl->conf_builder, env);
-        engine_impl->conf_builder = NULL;
+        AXIS2_CONF_BUILDER_FREE(dep_engine_impl->conf_builder, env);
+        dep_engine_impl->conf_builder = NULL;
     }
     
-    if(engine_impl->arch_reader)
+    if(dep_engine_impl->arch_reader)
     {
-        AXIS2_ARCH_READER_FREE(engine_impl->arch_reader, env);
-        engine_impl->arch_reader = NULL;
+        AXIS2_ARCH_READER_FREE(dep_engine_impl->arch_reader, env);
+        dep_engine_impl->arch_reader = NULL;
     }
     
-    if(engine_impl->svc_builder)
+    if(dep_engine_impl->svc_builder)
     {
-        AXIS2_SVC_BUILDER_FREE(engine_impl->svc_builder, env);
-        engine_impl->svc_builder = NULL;
+        AXIS2_SVC_BUILDER_FREE(dep_engine_impl->svc_builder, env);
+        dep_engine_impl->svc_builder = NULL;
     }
     
-    if(engine_impl->ws_to_deploy)
+    if(dep_engine_impl->ws_to_deploy)
     {
         int i = 0;
         int size = 0;
 
-        size = AXIS2_ARRAY_LIST_SIZE(engine_impl->ws_to_deploy, env);
+        size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->ws_to_deploy, env);
         for(i = 0; i < size; i++)
         {
             axis2_arch_file_data_t *file_data = NULL;
             
             file_data = (axis2_arch_file_data_t *) 
-                AXIS2_ARRAY_LIST_GET(engine_impl->ws_to_deploy, env, i);
+                AXIS2_ARRAY_LIST_GET(dep_engine_impl->ws_to_deploy, env, i);
             AXIS2_ARCH_FILE_DATA_FREE(file_data, env);
         }
-        AXIS2_ARRAY_LIST_FREE(engine_impl->ws_to_deploy, env);
-        engine_impl->ws_to_deploy = NULL;
+        AXIS2_ARRAY_LIST_FREE(dep_engine_impl->ws_to_deploy, env);
+        dep_engine_impl->ws_to_deploy = NULL;
     }
-    if(engine_impl->ws_to_undeploy)
+    if(dep_engine_impl->ws_to_undeploy)
     {
         int i = 0;
         int size = 0;
 
-        size = AXIS2_ARRAY_LIST_SIZE(engine_impl->ws_to_undeploy, env);
+        size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->ws_to_undeploy, env);
         for(i = 0; i < size; i++)
         {
             axis2_arch_file_data_t *file_data = NULL;
             
             file_data = (axis2_arch_file_data_t *) 
-                AXIS2_ARRAY_LIST_GET(engine_impl->ws_to_undeploy, env, i);
+                AXIS2_ARRAY_LIST_GET(dep_engine_impl->ws_to_undeploy, env, i);
             AXIS2_ARCH_FILE_DATA_FREE(file_data, env);
         }
-        AXIS2_ARRAY_LIST_FREE(engine_impl->ws_to_undeploy, env);
-        engine_impl->ws_to_undeploy = NULL;
+        AXIS2_ARRAY_LIST_FREE(dep_engine_impl->ws_to_undeploy, env);
+        dep_engine_impl->ws_to_undeploy = NULL;
     }
-    if(engine_impl->module_list)
+    if(dep_engine_impl->module_list)
     {
         int size = 0;
         int i = 0;
         
-        size = AXIS2_ARRAY_LIST_SIZE(engine_impl->module_list, env);
+        size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->module_list, env);
         for(i = 0; i < size; i++)
         {
             axis2_qname_t *qname = NULL;
-            qname = AXIS2_ARRAY_LIST_GET(engine_impl->module_list, env, i);
+            qname = AXIS2_ARRAY_LIST_GET(dep_engine_impl->module_list, env, i);
             AXIS2_QNAME_FREE(qname, env);
             qname = NULL;
         }
-        AXIS2_ARRAY_LIST_FREE(engine_impl->module_list, env);
-        engine_impl->module_list = NULL;
+        AXIS2_ARRAY_LIST_FREE(dep_engine_impl->module_list, env);
+        dep_engine_impl->module_list = NULL;
     }
-    if(engine_impl->folder_name)
+    if(dep_engine_impl->folder_name)
     {
-        AXIS2_FREE((*env)->allocator, engine_impl->folder_name);
-        engine_impl->folder_name = NULL;
+        AXIS2_FREE((*env)->allocator, dep_engine_impl->folder_name);
+        dep_engine_impl->folder_name = NULL;
     }
-    if(engine_impl->conf_name)
+    if(dep_engine_impl->conf_name)
     {
-        AXIS2_FREE((*env)->allocator, engine_impl->conf_name);
-        engine_impl->conf_name = NULL;
+        AXIS2_FREE((*env)->allocator, dep_engine_impl->conf_name);
+        dep_engine_impl->conf_name = NULL;
     }
-    if(engine_impl->axis2_repos)
+    if(dep_engine_impl->axis2_repos)
     {
-        AXIS2_FREE((*env)->allocator, engine_impl->axis2_repos);
-        engine_impl->axis2_repos = NULL;
+        AXIS2_FREE((*env)->allocator, dep_engine_impl->axis2_repos);
+        dep_engine_impl->axis2_repos = NULL;
     }
     
-    if(engine_impl->repos_listener)
+    if(dep_engine_impl->repos_listener)
     {
-        AXIS2_REPOS_LISTENER_FREE(engine_impl->repos_listener, env);
-        engine_impl->repos_listener = NULL;
+        AXIS2_REPOS_LISTENER_FREE(dep_engine_impl->repos_listener, env);
+        dep_engine_impl->repos_listener = NULL;
     }
 
 	if(NULL != dep_engine->ops)
@@ -594,10 +594,10 @@ axis2_dep_engine_free (axis2_dep_engine_t *dep_engine,
         dep_engine->ops = NULL;
     }
     
-    if(engine_impl)
+    if(dep_engine_impl)
     {
-        AXIS2_FREE((*env)->allocator, engine_impl);
-        engine_impl = NULL;
+        AXIS2_FREE((*env)->allocator, dep_engine_impl);
+        dep_engine_impl = NULL;
     }
     
 	return AXIS2_SUCCESS;
@@ -610,20 +610,20 @@ axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
                                 axis2_qname_t *module_qname) 
 {
     axis2_qname_t *qname = NULL;
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_qname, AXIS2_FAILURE);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
     qname = AXIS2_QNAME_CLONE(module_qname, env);
-    if(!engine_impl->module_list)
+    if(!dep_engine_impl->module_list)
     {
-        engine_impl->module_list = axis2_array_list_create(env, 0);
-        if(!engine_impl->module_list)
+        dep_engine_impl->module_list = axis2_array_list_create(env, 0);
+        if(!dep_engine_impl->module_list)
             return AXIS2_FAILURE;
     }
-    return AXIS2_ARRAY_LIST_ADD(engine_impl->module_list, env, qname);
+    return AXIS2_ARRAY_LIST_ADD(dep_engine_impl->module_list, env, qname);
 }
     
 struct axis2_module_desc *AXIS2_CALL
@@ -713,18 +713,18 @@ static axis2_status_t
 axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env) 
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_char_t *value = NULL;
     axis2_param_t *para_hot_dep = NULL;
     axis2_param_t *para_hot_update = NULL;
     
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    para_hot_dep = AXIS2_CONF_GET_PARAM(engine_impl->conf, env, 
+    para_hot_dep = AXIS2_CONF_GET_PARAM(dep_engine_impl->conf, env, 
         AXIS2_HOTDEPLOYMENT);
-    para_hot_update = AXIS2_CONF_GET_PARAM(engine_impl->conf, env, 
+    para_hot_update = AXIS2_CONF_GET_PARAM(dep_engine_impl->conf, env, 
         AXIS2_HOTUPDATE); 
     
     if(NULL != para_hot_dep)
@@ -732,7 +732,7 @@ axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
         value = (axis2_char_t *) AXIS2_PARAM_GET_VALUE(para_hot_dep, env);
         if(0 == AXIS2_STRCASECMP("false", value))
         {
-            engine_impl->hot_dep = AXIS2_FALSE;
+            dep_engine_impl->hot_dep = AXIS2_FALSE;
         }
     }
     if(NULL != para_hot_update)
@@ -740,7 +740,7 @@ axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
         value = (axis2_char_t *) AXIS2_PARAM_GET_VALUE(para_hot_update, env);
         if(0 == AXIS2_STRCASECMP("false", value))
         {
-            engine_impl->hot_update = AXIS2_FALSE;
+            dep_engine_impl->hot_update = AXIS2_FALSE;
         }
     }
     return AXIS2_SUCCESS;
@@ -750,37 +750,37 @@ axis2_conf_t *AXIS2_CALL
 axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
                         axis2_env_t **env) 
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, NULL);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    if(NULL == engine_impl->conf_name)
+    if(NULL == dep_engine_impl->conf_name)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_PATH_TO_CONFIG_CAN_NOT_BE_NULL,
             AXIS2_FAILURE);
         return NULL;        
     }
     
-    engine_impl->conf = axis2_conf_create(env);
+    dep_engine_impl->conf = axis2_conf_create(env);
     
-    if(!engine_impl->conf)
+    if(!dep_engine_impl->conf)
     {
         return NULL;
     }
     
-    engine_impl->conf_builder = axis2_conf_builder_create_with_file_and_dep_engine_and_conf(env,
-        engine_impl->conf_name, dep_engine, engine_impl->conf);
-    if(!(engine_impl->conf_builder))
+    dep_engine_impl->conf_builder = axis2_conf_builder_create_with_file_and_dep_engine_and_conf(env,
+        dep_engine_impl->conf_name, dep_engine, dep_engine_impl->conf);
+    if(!(dep_engine_impl->conf_builder))
     {
-        AXIS2_CONF_FREE(engine_impl->conf, env);
-        engine_impl->conf = NULL;
+        AXIS2_CONF_FREE(dep_engine_impl->conf, env);
+        dep_engine_impl->conf = NULL;
     }
-    status = AXIS2_CONF_BUILDER_POPULATE_CONF(engine_impl->conf_builder, env);
+    status = AXIS2_CONF_BUILDER_POPULATE_CONF(dep_engine_impl->conf_builder, env);
     if(AXIS2_SUCCESS != status)
     {
-        AXIS2_CONF_FREE(engine_impl->conf, env);
-        engine_impl->conf = NULL;
+        AXIS2_CONF_FREE(dep_engine_impl->conf, env);
+        dep_engine_impl->conf = NULL;
         return NULL;
     }
     status = axis2_dep_engine_set_dep_features(dep_engine, env);
@@ -797,49 +797,49 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     else 
     {
     */
-    if (engine_impl->repos_listener)
+    if (dep_engine_impl->repos_listener)
     {
-        AXIS2_REPOS_LISTENER_FREE(engine_impl->repos_listener, env);
+        AXIS2_REPOS_LISTENER_FREE(dep_engine_impl->repos_listener, env);
     }
-    engine_impl->repos_listener = 
+    dep_engine_impl->repos_listener = 
         axis2_repos_listener_create_with_folder_name_and_dep_engine(env,
-            engine_impl->folder_name, dep_engine);
-    if(!engine_impl->repos_listener)
+            dep_engine_impl->folder_name, dep_engine);
+    if(!dep_engine_impl->repos_listener)
     {
-        AXIS2_CONF_FREE(engine_impl->conf, env);
+        AXIS2_CONF_FREE(dep_engine_impl->conf, env);
         return NULL;
     }
-    AXIS2_CONF_SET_REPOS(engine_impl->conf, env, engine_impl->axis2_repos);
+    AXIS2_CONF_SET_REPOS(dep_engine_impl->conf, env, dep_engine_impl->axis2_repos);
     status = axis2_dep_engine_validate_system_predefined_phases(dep_engine, env);
     if(AXIS2_SUCCESS != status)
     {
-        AXIS2_REPOS_LISTENER_FREE(engine_impl->repos_listener, env);
-        AXIS2_CONF_FREE(engine_impl->conf, env);
+        AXIS2_REPOS_LISTENER_FREE(dep_engine_impl->repos_listener, env);
+        AXIS2_CONF_FREE(dep_engine_impl->conf, env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED, 
             AXIS2_FAILURE);
         return NULL;
     }
     
-    status = AXIS2_CONF_SET_PHASESINFO(engine_impl->conf, env, engine_impl->phases_info);
+    status = AXIS2_CONF_SET_PHASESINFO(dep_engine_impl->conf, env, dep_engine_impl->phases_info);
     if(AXIS2_SUCCESS != status) 
     {
-        AXIS2_REPOS_LISTENER_FREE(engine_impl->repos_listener, env);
-        AXIS2_CONF_FREE(engine_impl->conf, env);
+        AXIS2_REPOS_LISTENER_FREE(dep_engine_impl->repos_listener, env);
+        AXIS2_CONF_FREE(dep_engine_impl->conf, env);
         return NULL;
     }
     
     status = axis2_dep_engine_engage_modules(dep_engine, env);
     if(AXIS2_SUCCESS != status)
     {
-        AXIS2_REPOS_LISTENER_FREE(engine_impl->repos_listener, env);
-        AXIS2_CONF_FREE(engine_impl->conf, env);
+        AXIS2_REPOS_LISTENER_FREE(dep_engine_impl->repos_listener, env);
+        AXIS2_CONF_FREE(dep_engine_impl->conf, env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED, 
             AXIS2_FAILURE);
         return NULL;
     }
     /*}*/
     
-    return engine_impl->conf;
+    return dep_engine_impl->conf;
 }
 
 
@@ -848,16 +848,16 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
                                 axis2_char_t *client_home) 
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_bool_t is_repos_exist = AXIS2_FALSE;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, client_home, NULL);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    engine_impl->axis2_repos = AXIS2_STRDUP(client_home, env);
-    if(!engine_impl->axis2_repos)
+    dep_engine_impl->axis2_repos = AXIS2_STRDUP(client_home, env);
+    if(!dep_engine_impl->axis2_repos)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -872,60 +872,60 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
     }
     else
     {
-        engine_impl->conf_name = AXIS2_STRDUP(AXIS2_CONFIGURATION_RESOURCE,
+        dep_engine_impl->conf_name = AXIS2_STRDUP(AXIS2_CONFIGURATION_RESOURCE,
                 env);
-        if(!engine_impl->conf_name)
+        if(!dep_engine_impl->conf_name)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
     }
-    engine_impl->conf = axis2_conf_create(env);
-    if(!engine_impl->conf)
+    dep_engine_impl->conf = axis2_conf_create(env);
+    if(!dep_engine_impl->conf)
     {
         return NULL;
     }
-    engine_impl->conf_builder = axis2_conf_builder_create_with_file_and_dep_engine_and_conf(env,
-        engine_impl->conf_name, dep_engine, engine_impl->conf);
-    if(!(engine_impl->conf_builder))
+    dep_engine_impl->conf_builder = axis2_conf_builder_create_with_file_and_dep_engine_and_conf(env,
+        dep_engine_impl->conf_name, dep_engine, dep_engine_impl->conf);
+    if(!(dep_engine_impl->conf_builder))
     {
-        AXIS2_CONF_FREE(engine_impl->conf, env);
-        engine_impl->conf = NULL;
+        AXIS2_CONF_FREE(dep_engine_impl->conf, env);
+        dep_engine_impl->conf = NULL;
     }
-    status = AXIS2_CONF_BUILDER_POPULATE_CONF(engine_impl->conf_builder, env);
+    status = AXIS2_CONF_BUILDER_POPULATE_CONF(dep_engine_impl->conf_builder, env);
     if(AXIS2_SUCCESS != status)
     {
-        AXIS2_CONF_FREE(engine_impl->conf, env);
-        engine_impl->conf = NULL;
+        AXIS2_CONF_FREE(dep_engine_impl->conf, env);
+        dep_engine_impl->conf = NULL;
         return NULL;
     }
  
     if (AXIS2_TRUE == is_repos_exist) 
     {
-        engine_impl->hot_dep = AXIS2_FALSE;
-        engine_impl->hot_update = AXIS2_FALSE;
-        if (engine_impl->repos_listener)
+        dep_engine_impl->hot_dep = AXIS2_FALSE;
+        dep_engine_impl->hot_update = AXIS2_FALSE;
+        if (dep_engine_impl->repos_listener)
         {
-            AXIS2_REPOS_LISTENER_FREE(engine_impl->repos_listener, env);
+            AXIS2_REPOS_LISTENER_FREE(dep_engine_impl->repos_listener, env);
         }
-        engine_impl->repos_listener = 
+        dep_engine_impl->repos_listener = 
             axis2_repos_listener_create_with_folder_name_and_dep_engine(env,
-                engine_impl->folder_name, dep_engine);
+                dep_engine_impl->folder_name, dep_engine);
     }
     
-    AXIS2_CONF_SET_REPOS(engine_impl->conf, env, engine_impl->axis2_repos);
-    AXIS2_CONF_SET_PHASESINFO(engine_impl->conf, env, engine_impl->phases_info);
+    AXIS2_CONF_SET_REPOS(dep_engine_impl->conf, env, dep_engine_impl->axis2_repos);
+    AXIS2_CONF_SET_PHASESINFO(dep_engine_impl->conf, env, dep_engine_impl->phases_info);
     status = axis2_dep_engine_engage_modules(dep_engine, env);
     if(AXIS2_FAILURE == status)
     {
-        AXIS2_REPOS_LISTENER_FREE(engine_impl->repos_listener, env);
-        AXIS2_CONF_FREE(engine_impl->conf, env);
+        AXIS2_REPOS_LISTENER_FREE(dep_engine_impl->repos_listener, env);
+        AXIS2_CONF_FREE(dep_engine_impl->conf, env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED, 
             AXIS2_FAILURE);
         return NULL;
     }
     
-    return engine_impl->conf;
+    return dep_engine_impl->conf;
 }
 
 
@@ -934,32 +934,32 @@ axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_char_t *client_home)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_char_t *path_l = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
 
-    engine_impl->folder_name = AXIS2_STRDUP(client_home, env);
-    if(!engine_impl->folder_name)
+    dep_engine_impl->folder_name = AXIS2_STRDUP(client_home, env);
+    if(!dep_engine_impl->folder_name)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     path_l = AXIS2_STRACAT(client_home, AXIS2_PATH_SEP_STR, env);
-    engine_impl->conf_name = AXIS2_STRACAT(path_l,AXIS2_SERVER_XML_FILE, env);
+    dep_engine_impl->conf_name = AXIS2_STRACAT(path_l,AXIS2_SERVER_XML_FILE, env);
     AXIS2_FREE((*env)->allocator, path_l);
-    if(!engine_impl->conf_name)
+    if(!dep_engine_impl->conf_name)
     {
-        engine_impl->conf_name = AXIS2_STRDUP(AXIS2_CONFIGURATION_RESOURCE, env);
-        if(!engine_impl->conf_name)
+        dep_engine_impl->conf_name = AXIS2_STRDUP(AXIS2_CONFIGURATION_RESOURCE, env);
+        if(!dep_engine_impl->conf_name)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CONFIG_NOT_FOUND,
                 AXIS2_FAILURE)
             return AXIS2_FAILURE;
         }  
     }
-    status = axis2_file_handler_access(engine_impl->conf_name, AXIS2_F_OK);
+    status = axis2_file_handler_access(dep_engine_impl->conf_name, AXIS2_F_OK);
     if(AXIS2_SUCCESS != status)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CONFIG_NOT_FOUND, 
@@ -974,27 +974,27 @@ static axis2_status_t
 axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     int size = 0;
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    if(!engine_impl->module_list)
+    if(!dep_engine_impl->module_list)
     {
         /* there are no modules */
         return AXIS2_SUCCESS;
     }
-    size = AXIS2_ARRAY_LIST_SIZE(engine_impl->module_list, env);
+    size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->module_list, env);
     for(i = 0; i < size; i++)
     {
         axis2_qname_t *qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(
-            engine_impl->module_list, env, i);
-        if (qname && engine_impl->conf)
+            dep_engine_impl->module_list, env, i);
+        if (qname && dep_engine_impl->conf)
         {
-            status = AXIS2_CONF_ENGAGE_MODULE(engine_impl->conf, env, qname);
+            status = AXIS2_CONF_ENGAGE_MODULE(dep_engine_impl->conf, env, qname);
             if(AXIS2_SUCCESS != status)
             {
                 return AXIS2_FAILURE;
@@ -1008,7 +1008,7 @@ static axis2_status_t
 axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engine,
                                                     axis2_env_t **env) 
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_array_list_t *in_phases = NULL;
     axis2_char_t *phase0 = NULL;
     axis2_char_t *phase1 = NULL;
@@ -1016,9 +1016,9 @@ axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engin
     axis2_char_t *phase3 = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    in_phases = AXIS2_PHASES_INFO_GET_IN_PHASES(engine_impl->phases_info, env);
+    in_phases = AXIS2_PHASES_INFO_GET_IN_PHASES(dep_engine_impl->phases_info, env);
     /* TODO condition checking should be otherway since null value can occur */
     if(in_phases)
     {
@@ -1058,18 +1058,18 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
                                 axis2_svc_grp_t *svc_metadata)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_array_list_t *svcs = NULL;
     int sizei = 0;
     int i = 0;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_metadata, AXIS2_FAILURE);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
 /*  Iterator services = currentArchiveFile.getService().values().iterator(); */
     
-    svcs = AXIS2_ARCH_FILE_DATA_GET_DEPLOYABLE_SVCS(engine_impl->curr_file, env);
+    svcs = AXIS2_ARCH_FILE_DATA_GET_DEPLOYABLE_SVCS(dep_engine_impl->curr_file, env);
     
     sizei = AXIS2_ARRAY_LIST_SIZE(svcs, env);
     
@@ -1088,7 +1088,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
         svc = (axis2_svc_t *) AXIS2_ARRAY_LIST_GET(svcs, env, i);
         
         axis2_dep_engine_load_svc_props(dep_engine, env, svc);
-        file = AXIS2_ARCH_FILE_DATA_GET_FILE(engine_impl->curr_file, env);
+        file = AXIS2_ARCH_FILE_DATA_GET_FILE(dep_engine_impl->curr_file, env);
         file_name = AXIS2_FILE_GET_NAME(file, env);
         AXIS2_SVC_SET_FILENAME(svc, env, file_name);
 
@@ -1102,11 +1102,11 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             
             qmodulename = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(grp_modules, 
                 env, j);
-            module_desc = AXIS2_CONF_GET_MODULE(engine_impl->conf, env,
+            module_desc = AXIS2_CONF_GET_MODULE(dep_engine_impl->conf, env,
                 qmodulename);
             if(NULL != module_desc)
             {
-                AXIS2_SVC_ENGAGE_MODULE(svc, env, module_desc, engine_impl->conf);
+                AXIS2_SVC_ENGAGE_MODULE(svc, env, module_desc, dep_engine_impl->conf);
                 
             } 
             else 
@@ -1127,11 +1127,11 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             
             qmodulename = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(grp_modules, 
                 env, j);
-            module_desc = AXIS2_CONF_GET_MODULE(engine_impl->conf, env,
+            module_desc = AXIS2_CONF_GET_MODULE(dep_engine_impl->conf, env,
                 qmodulename);
             if(NULL != module_desc)
             {
-                AXIS2_SVC_ENGAGE_MODULE(svc, env, module_desc, engine_impl->conf);
+                AXIS2_SVC_ENGAGE_MODULE(svc, env, module_desc, dep_engine_impl->conf);
                 
             } 
             else 
@@ -1167,7 +1167,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
                 
                 module_qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(modules, 
                     env, k);
-                module = AXIS2_CONF_GET_MODULE(engine_impl->conf, env, 
+                module = AXIS2_CONF_GET_MODULE(dep_engine_impl->conf, env, 
                     module_qname);
                 
                 if (NULL != module) 
@@ -1184,7 +1184,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
         }
         AXIS2_SVC_GRP_ADD_SVC(svc_metadata, env, svc);
     }
-    return AXIS2_CONF_ADD_SVC_GRP(engine_impl->conf, env, svc_metadata);
+    return AXIS2_CONF_ADD_SVC_GRP(dep_engine_impl->conf, env, svc_metadata);
 }
 
 static axis2_status_t
@@ -1192,7 +1192,7 @@ axis2_dep_engine_load_svc_props(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
                                 axis2_svc_t *svc)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_flow_t *in_flow = NULL;
     axis2_flow_t *out_flow = NULL;
     axis2_flow_t *in_fault_flow = NULL;
@@ -1200,7 +1200,7 @@ axis2_dep_engine_load_svc_props(axis2_dep_engine_t *dep_engine,
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc, AXIS2_FAILURE);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
     in_flow = AXIS2_SVC_GET_INFLOW(svc, env);
     if(NULL != in_flow)
@@ -1235,7 +1235,7 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
                                     axis2_env_t **env,
                                     axis2_module_desc_t *module_desc)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_char_t *read_in_dll = NULL;
     axis2_module_t *module = NULL;
     axis2_dll_desc_t *dll_desc = NULL;
@@ -1250,15 +1250,15 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    read_in_dll = AXIS2_ARCH_FILE_DATA_GET_MODULE_DLL_NAME(engine_impl->
+    read_in_dll = AXIS2_ARCH_FILE_DATA_GET_MODULE_DLL_NAME(dep_engine_impl->
         curr_file, env);
     dll_desc = axis2_dll_desc_create(env);
     dll_name = AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env, 
         read_in_dll);
 
-    module_folder = AXIS2_ARCH_FILE_DATA_GET_FILE(engine_impl->curr_file, env);
+    module_folder = AXIS2_ARCH_FILE_DATA_GET_FILE(dep_engine_impl->curr_file, env);
     timestamp = AXIS2_FILE_GET_TIMESTAMP(module_folder, env);
     AXIS2_DLL_DESC_SET_TIMESTAMP(dll_desc, env, timestamp);
     module_folder_path = AXIS2_FILE_GET_PATH(module_folder, env);
@@ -1464,14 +1464,14 @@ axis2_status_t AXIS2_CALL
 axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                             axis2_env_t **env)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     int size = 0;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    size = AXIS2_ARRAY_LIST_SIZE(engine_impl->ws_to_deploy, env);
+    size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->ws_to_deploy, env);
     if (size > 0) 
     {
         int i = 0;
@@ -1482,23 +1482,23 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
             axis2_char_t *file_name = NULL;
             axis2_module_desc_t *meta_data = NULL;
             
-            engine_impl->curr_file = (axis2_arch_file_data_t *) 
-                AXIS2_ARRAY_LIST_GET(engine_impl->ws_to_deploy, env, i);
+            dep_engine_impl->curr_file = (axis2_arch_file_data_t *) 
+                AXIS2_ARRAY_LIST_GET(dep_engine_impl->ws_to_deploy, env, i);
             
-            type = AXIS2_ARCH_FILE_DATA_GET_TYPE(engine_impl->curr_file, env);
+            type = AXIS2_ARCH_FILE_DATA_GET_TYPE(dep_engine_impl->curr_file, env);
             switch (type) 
             {
                 case AXIS2_SVC:
-                    engine_impl->arch_reader = axis2_arch_reader_create(env);
+                    dep_engine_impl->arch_reader = axis2_arch_reader_create(env);
 		    
                     
                     /*archiveReader.processWSDLs(currentArchiveFile,this); */
                     /* AxisService service = archiveReader.createService(currentArchiveFile.getAbsolutePath()); */
                     svc_grp = axis2_svc_grp_create_with_conf(env, 
-                        engine_impl->conf);
-                    file_name = AXIS2_ARCH_FILE_DATA_GET_NAME(engine_impl->
+                        dep_engine_impl->conf);
+                    file_name = AXIS2_ARCH_FILE_DATA_GET_NAME(dep_engine_impl->
                         curr_file, env);
-                    status = AXIS2_ARCH_READER_PROCESS_SVC_GRP(engine_impl->arch_reader, env,
+                    status = AXIS2_ARCH_READER_PROCESS_SVC_GRP(dep_engine_impl->arch_reader, env,
                         file_name, dep_engine, svc_grp);
                     if(AXIS2_SUCCESS != status)
                     {
@@ -1516,16 +1516,16 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                     }
                     /* log.info(Messages.getMessage(
                             DeploymentErrorMsgs.DEPLOYING_WS, currentArchiveFile.getName())); */
-                    engine_impl->curr_file = NULL;
+                    dep_engine_impl->curr_file = NULL;
                     break;
                 case AXIS2_MODULE:
-                    engine_impl->arch_reader = axis2_arch_reader_create(env);
+                    dep_engine_impl->arch_reader = axis2_arch_reader_create(env);
                     meta_data = axis2_module_desc_create(env);
-                    file_name = AXIS2_ARCH_FILE_DATA_GET_NAME(engine_impl->
+                    file_name = AXIS2_ARCH_FILE_DATA_GET_NAME(dep_engine_impl->
                         curr_file, env);
                     status = AXIS2_ARCH_READER_READ_MODULE_ARCH(
-		        engine_impl->arch_reader, env, file_name, dep_engine, 
-			meta_data);
+		                dep_engine_impl->arch_reader, env, file_name, dep_engine, 
+			                meta_data);
                     if(AXIS2_SUCCESS != status)
                     {
                         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MODULE, 
@@ -1543,7 +1543,7 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                         
                     /*log.info(Messages.getMessage(DeploymentErrorMsgs.DEPLOYING_MODULE,
                             metaData.getName().getLocalPart())); */
-                    engine_impl->curr_file = NULL;
+                    dep_engine_impl->curr_file = NULL;
                     break;
 
             }
@@ -1556,13 +1556,13 @@ axis2_status_t AXIS2_CALL
 axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
                             axis2_env_t **env)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     int size = 0;
     axis2_char_t *svc_name = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
-    size = AXIS2_ARRAY_LIST_SIZE (engine_impl->ws_to_undeploy, env);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    size = AXIS2_ARRAY_LIST_SIZE (dep_engine_impl->ws_to_undeploy, env);
     
     if (size > 0) 
     {
@@ -1573,7 +1573,7 @@ axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
             axis2_ws_info_t *ws_info = NULL;
             axis2_hash_t *faulty_svcs = NULL;
             
-            ws_info = (axis2_ws_info_t *) AXIS2_ARRAY_LIST_GET(engine_impl->
+            ws_info = (axis2_ws_info_t *) AXIS2_ARRAY_LIST_GET(dep_engine_impl->
                 ws_to_undeploy, env, i);
             type = AXIS2_WS_INFO_GET_TYPE(ws_info, env);
             if (type == AXIS2_SVC) 
@@ -1584,16 +1584,16 @@ axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
                 svc_name = axis2_dep_engine_get_axis_svc_name(dep_engine, env,
                     file_name);
                 
-                AXIS2_CONF_REMOVE_SVC(engine_impl->conf, env, svc_name);
+                AXIS2_CONF_REMOVE_SVC(dep_engine_impl->conf, env, svc_name);
                 /*log.info(Messages.getMessage(DeploymentErrorMsgs.SERVICE_REMOVED,
                         wsInfo.getFilename()));*/
             }
-            faulty_svcs = AXIS2_CONF_GET_FAULTY_SVCS(engine_impl->conf, env);
+            faulty_svcs = AXIS2_CONF_GET_FAULTY_SVCS(dep_engine_impl->conf, env);
             axis2_hash_set(faulty_svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
         }
 
     }
-    AXIS2_ARRAY_LIST_FREE(engine_impl->ws_to_undeploy, env);
+    AXIS2_ARRAY_LIST_FREE(dep_engine_impl->ws_to_undeploy, env);
     return AXIS2_SUCCESS;
 }
 
@@ -1658,23 +1658,23 @@ axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
                             axis2_svc_t *svc,
                             axis2_char_t *file_name)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_om_node_t *node = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, file_name, NULL);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    engine_impl->curr_file = axis2_arch_file_data_create_with_type_and_name(
+    dep_engine_impl->curr_file = axis2_arch_file_data_create_with_type_and_name(
         env, AXIS2_SVC, "");
 
-    engine_impl->svc_builder = 
+    dep_engine_impl->svc_builder = 
         axis2_svc_builder_create_with_file_and_dep_engine_and_svc(env, 
         file_name, dep_engine, svc);
     
-    node = AXIS2_DESC_BUILDER_BUILD_OM(engine_impl->svc_builder->desc_builder, 
+    node = AXIS2_DESC_BUILDER_BUILD_OM(dep_engine_impl->svc_builder->desc_builder, 
         env);
-    AXIS2_SVC_BUILDER_POPULATE_SVC(engine_impl->svc_builder, env, node);
+    AXIS2_SVC_BUILDER_POPULATE_SVC(dep_engine_impl->svc_builder, env, node);
     axis2_dep_engine_load_svc_props(dep_engine, env, svc);
     
     return svc;
@@ -1693,7 +1693,7 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
                                 axis2_file_t *module_archive,
                                 axis2_conf_t *conf)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_module_desc_t *module_desc = NULL;
     axis2_module_t *module = NULL;
     axis2_phases_info_t *phases_info = NULL;
@@ -1708,11 +1708,11 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, module_archive, NULL);
     AXIS2_PARAM_CHECK((*env)->error, conf, NULL);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
     phases_info = AXIS2_CONF_GET_PHASESINFO(conf, env);
     axis2_dep_engine_set_phases_info(dep_engine, env, phases_info);
-    engine_impl->curr_file = axis2_arch_file_data_create_with_type_and_file(
+    dep_engine_impl->curr_file = axis2_arch_file_data_create_with_type_and_file(
         env, AXIS2_MODULE, module_archive);
     module_desc = axis2_module_desc_create(env);
     arch_reader = axis2_arch_reader_create(env);
@@ -1764,7 +1764,7 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
             module->handler_create_func_map);
     }
     
-    engine_impl->curr_file = NULL;
+    dep_engine_impl->curr_file = NULL;
     AXIS2_ARCH_READER_FREE(arch_reader, env);            
    
     /*axismodule.setModuleClassLoader(currentArchiveFile.getClassLoader()); */
@@ -1783,17 +1783,17 @@ axis2_dep_engine_set_current_file_item(axis2_dep_engine_t *dep_engine,
                                         axis2_env_t **env,
                                         axis2_arch_file_data_t *file_data)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    if(engine_impl->curr_file)
+    if(dep_engine_impl->curr_file)
     {
-        AXIS2_ARCH_FILE_DATA_FREE(engine_impl->curr_file, env);
-        engine_impl->curr_file = NULL;
+        AXIS2_ARCH_FILE_DATA_FREE(dep_engine_impl->curr_file, env);
+        dep_engine_impl->curr_file = NULL;
     }
-    engine_impl->curr_file = file_data;
+    dep_engine_impl->curr_file = file_data;
     return AXIS2_SUCCESS;
 }
 
@@ -1803,17 +1803,17 @@ axis2_dep_engine_set_arch_reader(axis2_dep_engine_t *dep_engine,
                                         axis2_env_t **env,
                                         axis2_arch_reader_t *arch_reader)
 {
-    axis2_dep_engine_impl_t *engine_impl = NULL;
+    axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
+    dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    if(engine_impl->arch_reader)
+    if(dep_engine_impl->arch_reader)
     {
-        AXIS2_ARCH_FILE_DATA_FREE(engine_impl->arch_reader, env);
-        engine_impl->arch_reader = NULL;
+        AXIS2_ARCH_FILE_DATA_FREE(dep_engine_impl->arch_reader, env);
+        dep_engine_impl->arch_reader = NULL;
     }
-    engine_impl->arch_reader = arch_reader;
+    dep_engine_impl->arch_reader = arch_reader;
     return AXIS2_SUCCESS;
 }
 

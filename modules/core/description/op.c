@@ -659,8 +659,11 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     }
     
     op_impl->parent = NULL;
-    
-    op_impl->msg_recv = NULL;
+    if(op_impl->msg_recv)
+    {
+        AXIS2_MSG_RECV_FREE(op_impl->msg_recv, env);
+        op_impl->msg_recv = NULL;
+    }
 
     if(NULL != op_impl->remaining_phases_inflow && 
         (0 != AXIS2_STRCMP(op_name, "TemplateOperation")))

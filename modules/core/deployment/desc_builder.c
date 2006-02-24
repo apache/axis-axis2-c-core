@@ -256,23 +256,23 @@ axis2_om_node_t *AXIS2_CALL
 axis2_build_OM(axis2_desc_builder_t *desc_builder,
                 axis2_env_t **env) 
 {
-    axis2_desc_builder_impl_t *builder_impl = NULL;
+    axis2_desc_builder_impl_t *desc_builder_impl = NULL;
     axis2_xml_reader_t *reader = NULL;
     axis2_om_document_t *document = NULL;
     axis2_om_node_t *root = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
-    builder_impl = AXIS2_INTF_TO_IMPL(desc_builder);
+    desc_builder_impl = AXIS2_INTF_TO_IMPL(desc_builder);
     
-    if(!builder_impl->file_name)
+    if(!desc_builder_impl->file_name)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_DESC_BUILDER,
             AXIS2_FAILURE);
         return NULL;
     }
     /** create pull parser using the file path to configuration file */
-    reader = axis2_xml_reader_create_for_file(env, builder_impl->file_name,
+    reader = axis2_xml_reader_create_for_file(env, desc_builder_impl->file_name,
         NULL);
 
     if(!reader)
@@ -283,9 +283,9 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
     }
     
     /** create axis2_om_stax_builder by parsing pull_parser struct */
-    builder_impl->builder = axis2_om_stax_builder_create (env, reader);
+    desc_builder_impl->builder = axis2_om_stax_builder_create (env, reader);
 
-    if(!(builder_impl->builder))
+    if(!(desc_builder_impl->builder))
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
             AXIS2_FAILURE)
@@ -295,7 +295,7 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
         create an om document
         document is the container of om model created using builder
     */
-    document = axis2_om_document_create (env, NULL, builder_impl->builder);
+    document = axis2_om_document_create (env, NULL, desc_builder_impl->builder);
     /** 
      * In description building we don't want defferred building. So build
      * the whole tree at once
@@ -831,7 +831,7 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
     {
         return NULL;
     }
-    impl_info_param = AXIS2_CONF_GET_PARAM(conf, env, AXIS2_MSG_RECV_PARAM);
+    impl_info_param = AXIS2_CONF_GET_PARAM(conf, env, class_name);
     
     if(!impl_info_param)
     {
@@ -847,10 +847,11 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
         AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
         AXIS2_FREE((*env)->allocator, dll_name);
         AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_MSG_RECV_DLL);
-        impl_info_param = axis2_param_create(env, AXIS2_MSG_RECV_PARAM, NULL);
+        impl_info_param = axis2_param_create(env, class_name, NULL);
         AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+        impl_info_param->ops->value_free = axis2_dll_desc_free_void_arg;
         /* set the impl_info_param(which contain dll_desc as value) so that
-         * loaded msg_recv can be re-used in future
+         * loaded msg_recv loader lib can be re-used in future
          */
         AXIS2_CONF_ADD_PARAM(conf, env, impl_info_param);
     }

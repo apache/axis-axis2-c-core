@@ -764,6 +764,22 @@ axis2_conf_free (axis2_conf_t *conf,
     
     if(config_impl->msg_recvs)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+        for (hi = axis2_hash_first (config_impl->msg_recvs, env); hi;
+                 hi = axis2_hash_next ( env, hi))
+        {
+            axis2_msg_recv_t *msg_recv = NULL;
+            axis2_hash_this (hi, NULL, NULL, &val);
+            msg_recv = (axis2_msg_recv_t *) val;
+            if (msg_recv)
+            {
+                AXIS2_MSG_RECV_FREE(msg_recv, env);
+                msg_recv = NULL;
+            }
+            
+            val = NULL;
+        }
         axis2_hash_free(config_impl->msg_recvs, env);
         config_impl->msg_recvs = NULL;
     }
