@@ -460,6 +460,8 @@ axis2_http_transport_sender_write_message
 	/*
 	 * TODO check for errors
 	 */
+    AXIS2_SOAP_OVER_HTTP_SENDER_FREE(sender, env);
+    sender = NULL;
 	return AXIS2_SUCCESS;
 }
 
