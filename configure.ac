@@ -214,6 +214,9 @@ AC_CONFIG_FILES([Makefile \
     test/unit/xml/om/Makefile\
     test/core/transport/Makefile\
     test/core/transport/http/Makefile \
+    test/itest/Makefile \
+    test/itest/whitemesa/Makefile \
+    test/itest/whitemesa/round1/Makefile \
     ides/Makefile \
     ides/anjuta/Makefile
     ])
