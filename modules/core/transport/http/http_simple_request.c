@@ -215,7 +215,6 @@ axis2_http_simple_request_free(axis2_http_simple_request_t *simple_request,
         for(i = 0; i< AXIS2_ARRAY_LIST_SIZE(simple_request_impl->header_group, 
                         env); i++)
         {
-            /*TODO: fix it here*/
             tmp = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(
                             simple_request_impl->header_group, env, i);
             AXIS2_HTTP_HEADER_FREE(tmp, env);        
