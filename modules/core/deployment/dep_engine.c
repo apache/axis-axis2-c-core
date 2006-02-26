@@ -550,14 +550,14 @@ axis2_dep_engine_free (axis2_dep_engine_t *dep_engine,
         int size = 0;
         int i = 0;
         
-        size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->module_list, env);
+        /*size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->module_list, env);
         for(i = 0; i < size; i++)
         {
             axis2_qname_t *qname = NULL;
             qname = AXIS2_ARRAY_LIST_GET(dep_engine_impl->module_list, env, i);
             AXIS2_QNAME_FREE(qname, env);
             qname = NULL;
-        }
+        }*/
         AXIS2_ARRAY_LIST_FREE(dep_engine_impl->module_list, env);
         dep_engine_impl->module_list = NULL;
     }
@@ -920,6 +920,7 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
         return NULL;
     }
     
+    AXIS2_CONF_SET_DEP_ENGINE(dep_engine_impl->conf, env, dep_engine);
     return dep_engine_impl->conf;
 }
 

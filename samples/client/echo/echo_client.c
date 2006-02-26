@@ -108,9 +108,13 @@ int main(int argc, char** argv)
         printf("echo stub invoke failed!\n");
     }
     
-    if (node)
+    /*if (node)
     {
         AXIS2_OM_NODE_FREE_TREE(node, &env);
+    }*/
+    if (stub)
+    {
+        AXIS2_STUB_FREE(stub, &env);
     }
     return status;
 }

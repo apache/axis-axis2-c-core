@@ -482,6 +482,7 @@ axis2_ws_info_list_check_for_undeploy(axis2_ws_info_list_t *info_list,
         AXIS2_FREE((*env)->allocator, file_name);
     }
     AXIS2_ARRAY_LIST_FREE(info_list_impl->current_info_lists, env);
+    info_list_impl->current_info_lists = NULL;
     return AXIS2_SUCCESS;
 }
 
