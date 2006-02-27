@@ -480,6 +480,11 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_free (struct axis2_conf_ctx *conf_ctx,
         axis2_hash_free(conf_ctx_impl->svc_grp_ctx_map, env);
         conf_ctx_impl->svc_grp_ctx_map = NULL;
     }
+    if(conf_ctx_impl->conf)
+    {
+        AXIS2_CONF_FREE(conf_ctx_impl->conf, env);
+        conf_ctx_impl->conf = NULL;
+    }
     
     AXIS2_FREE((*env)->allocator, conf_ctx_impl);
     conf_ctx_impl = NULL;

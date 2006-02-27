@@ -278,20 +278,19 @@ axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call,
     {
         AXIS2_CALLBACK_RECV_FREE(call_impl->callback_recv, env);
         call_impl->callback_recv = NULL;
-    }    
+    }   
+
+    if (call_impl->last_res_msg_ctx)
+    {
+        AXIS2_MSG_CTX_FREE(call_impl->last_res_msg_ctx, env);
+        call_impl->last_res_msg_ctx = NULL;
+    }
     
     if (call_impl->svc_ctx)
     {
         axis2_conf_ctx_t *conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(call_impl->svc_ctx, env);
         if (conf_ctx)
         {
-            axis2_conf_t *conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
-            if (conf)
-            {
-                AXIS2_CONF_CTX_FREE(conf, env);
-                conf = NULL;
-            }
-                
             AXIS2_CONF_CTX_FREE(conf_ctx, env);
             conf_ctx = NULL;
         }
@@ -845,6 +844,7 @@ axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(struct axis2_call
     axis2_qname_t *op_qname = NULL;
     axis2_svc_t *svc = NULL;
     axis2_op_t *op = NULL;
+    axis2_om_node_t* node_to_ret = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -879,6 +879,12 @@ axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(struct axis2_call
         msg_ctx = AXIS2_MEP_CLIENT_PREPARE_SOAP_ENVELOPE(call_impl->base, env, om_node_to_send);
         if (msg_ctx)
         {
+            if (call_impl->last_res_msg_ctx)
+            {
+                AXIS2_MSG_CTX_FREE(call_impl->last_res_msg_ctx, env);
+                call_impl->last_res_msg_ctx = NULL;
+            }
+
             call_impl->last_res_msg_ctx = axis2_call_invoke_blocking(call, env, op, msg_ctx);
             if (call_impl->last_res_msg_ctx)
             {
@@ -891,15 +897,17 @@ axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(struct axis2_call
                     soap_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
                     if (soap_node)
                     {
-                        return AXIS2_OM_NODE_GET_FIRST_CHILD(soap_node, env);
+                        node_to_ret = AXIS2_OM_NODE_GET_FIRST_CHILD(soap_node, env);
                     }
                 }
             }
+            AXIS2_MSG_CTX_FREE(msg_ctx, env);
+            msg_ctx = NULL;
         }
         
     }
     
-    return NULL;
+    return node_to_ret;
 }
 
 /**
@@ -957,6 +965,13 @@ axis2_soap_envelope_t* AXIS2_CALL axis2_call_invoke_blocking_with_soap(struct ax
         if (msg_ctx)
         {
             AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, envelope);
+            
+            if (call_impl->last_res_msg_ctx)
+            {
+                AXIS2_MSG_CTX_FREE(call_impl->last_res_msg_ctx, env);
+                call_impl->last_res_msg_ctx = NULL;
+            }
+
             call_impl->last_res_msg_ctx = axis2_call_invoke_blocking(call, env, op, msg_ctx);
             return AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(call_impl->last_res_msg_ctx, env);
         }
