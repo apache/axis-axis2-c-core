@@ -108,25 +108,32 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops,
 	/* we write all logs to AXIS2C_HOME/logs if it is set otherwise
 	 * to the working dir
 	 */
-	if (NULL != (path_home = AXIS2_GETENV("AXIS2C_HOME")))
+    if (stream_name && !(AXIS2_RINDEX(stream_name, AXIS2_PATH_SEP_CHAR)))
     {
-		AXIS2_SNPRINTF(log_dir, 500, "%s%c%s", path_home, AXIS2_PATH_SEP_CHAR, "logs");
-		if (AXIS2_SUCCESS == axis2_file_handler_access(log_dir,AXIS2_F_OK))
-		{
-			AXIS2_SNPRINTF(log_file_name, 500, "%s%c%s", log_dir, AXIS2_PATH_SEP_CHAR,
-                tmp_filename);
-		}
-		else
-		{
-			fprintf(stderr, "log folder %s does not exist - log file %s is written to . dir\n",
-				log_dir, tmp_filename);
-			AXIS2_SNPRINTF(log_file_name, 500, "%s", tmp_filename);
-		}
+        if (NULL != (path_home = AXIS2_GETENV("AXIS2C_HOME")))
+        {
+            AXIS2_SNPRINTF(log_dir, 500, "%s%c%s", path_home, AXIS2_PATH_SEP_CHAR, "logs");
+            if (AXIS2_SUCCESS == axis2_file_handler_access(log_dir,AXIS2_F_OK))
+            {
+                AXIS2_SNPRINTF(log_file_name, 500, "%s%c%s", log_dir, AXIS2_PATH_SEP_CHAR,
+                    tmp_filename);
+            }
+            else
+            {
+                fprintf(stderr, "log folder %s does not exist - log file %s is written to . dir\n",
+                    log_dir, tmp_filename);
+                AXIS2_SNPRINTF(log_file_name, 500, "%s", tmp_filename);
+            }
+        }
+        else
+        {
+            fprintf(stderr, "AXIS2C_HOME is not set - log is written to . dir\n");
+            AXIS2_SNPRINTF(log_file_name, 500, "%s", tmp_filename);
+        }
     }
     else
     {
-		fprintf(stderr, "AXIS2C_HOME is not set - log is written to . dir\n");
-    	AXIS2_SNPRINTF(log_file_name, 500, "%s", tmp_filename);
+        AXIS2_SNPRINTF(log_file_name, 500, "%s", tmp_filename);
     }
 	
 	axis2_thread_mutex_lock(log_impl->mutex);
