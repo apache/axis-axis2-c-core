@@ -56,7 +56,8 @@ axis2_svr_callback_create (axis2_env_t **env)
     
     AXIS2_ENV_CHECK(env, NULL);
     
-	svr_callback_impl = (axis2_svr_callback_impl_t *) malloc (sizeof (axis2_svr_callback_impl_t));
+	svr_callback_impl = (axis2_svr_callback_impl_t *) 
+        AXIS2_MALLOC ((*env)->allocator, sizeof (axis2_svr_callback_impl_t));
     
 	if(NULL == svr_callback_impl)
     {

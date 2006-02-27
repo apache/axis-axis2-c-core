@@ -96,9 +96,10 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     
     if (!svc_obj)
     {
-        axis2_char_t message[1024];
-        sprintf(message, "%s:%d - Impl object for service not set in message receiver", __FILE__, __LINE__);
-        AXIS2_LOG(env, message, AXIS2_LOG_LEVEL_DEBUG);
+        AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, 
+            "Impl object for service not set in message receiver"
+            " %d :: %s", (*env)->error->error_number,
+            AXIS2_ERROR_GET_MESSAGE((*env)->error));
         status = AXIS2_FAILURE;
     }
     else
