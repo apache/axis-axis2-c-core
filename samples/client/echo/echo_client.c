@@ -108,10 +108,10 @@ int main(int argc, char** argv)
         printf("echo stub invoke failed!\n");
     }
     
-    /*if (node)
+    if (node)
     {
         AXIS2_OM_NODE_FREE_TREE(node, &env);
-    }*/
+    }
     if (stub)
     {
         AXIS2_STUB_FREE(stub, &env);
@@ -148,6 +148,9 @@ build_om_programatically(axis2_env_t **env)
     AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
     printf("\nSending OM node in XML : %s \n",  buffer); 
+
+    AXIS2_OM_OUTPUT_FREE(om_output, env);
+    AXIS2_FREE((*env)->allocator, buffer);
 
     return echo_om_node;
 }

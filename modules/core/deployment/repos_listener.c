@@ -208,7 +208,9 @@ axis2_repos_listener_free (axis2_repos_listener_t *repos_listener,
         repos_listener->ops = NULL;
     }
     
-    
+    AXIS2_FREE((*env)->allocator, listener_impl);
+    listener_impl = NULL;
+
 	return AXIS2_SUCCESS;
 }
 

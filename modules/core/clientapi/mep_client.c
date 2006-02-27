@@ -266,8 +266,11 @@ axis2_transport_out_desc_t* AXIS2_CALL axis2_mep_client_infer_transport(struct a
                 transport_out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, qname);
             }
         }
-        
+       
+        AXIS2_FREE((*env)->allocator, transport);
+        transport = NULL;
         AXIS2_QNAME_FREE(qname, env);
+        qname = NULL;
         return transport_out_desc;        
 
     } 
