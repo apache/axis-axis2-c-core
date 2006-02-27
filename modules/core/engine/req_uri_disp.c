@@ -122,6 +122,8 @@ axis2_svc_t* AXIS2_CALL axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                         }
                     }                    
                 }
+                AXIS2_FREE((*env)->allocator, url_tokens);
+                url_tokens = NULL;
             }
         }
     }
