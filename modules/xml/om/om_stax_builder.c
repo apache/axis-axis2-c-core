@@ -800,11 +800,12 @@ AXIS2_CALL axis2_om_stax_builder_free(axis2_om_stax_builder_t *builder,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
-    /*if(builder_impl->parser)
+
+    if(builder_impl->parser)
     {
         AXIS2_XML_READER_FREE(builder_impl->parser, env);
         builder_impl->parser = NULL;
-    }*/
+    }
     
     if(builder_impl->document)
     {
