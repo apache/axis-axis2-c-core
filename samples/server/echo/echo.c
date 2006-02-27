@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 #include "echo.h"
+#include <axis2_om_element.h>
+
+axis2_om_node_t *
+build_om_programatically(axis2_env_t **env, axis2_char_t *text);
 
 axis2_om_node_t *
 axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)
 {
     axis2_om_node_t *text_parent_node = NULL;
     axis2_om_node_t *text_node = NULL;
+    axis2_om_node_t *ret_node = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     
@@ -50,7 +55,11 @@ axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)
     {
         axis2_om_text_t *text = (axis2_om_text_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(text_node, env);
         if( text && AXIS2_OM_TEXT_GET_VALUE(text , env))
-            printf("Echoing text value  %s \n", AXIS2_OM_TEXT_GET_VALUE(text, env));
+        {
+            axis2_char_t *text_str = AXIS2_OM_TEXT_GET_VALUE(text, env);
+            printf("Echoing text value  %s \n", text_str);
+            ret_node = build_om_programatically(env, text_str);
+        }
     }
     else
     {
@@ -59,6 +68,42 @@ axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)
         return NULL;
     }
 	
-    return node;
+    return ret_node;
+}
+
+axis2_om_node_t *
+build_om_programatically(axis2_env_t **env, axis2_char_t *text)
+{
+    axis2_om_node_t *echo_om_node = NULL;
+    axis2_om_element_t* echo_om_ele = NULL;
+    axis2_om_node_t* text_om_node = NULL;
+    axis2_om_element_t * text_om_ele = NULL;
+    axis2_om_namespace_t *ns1 = NULL;
+    
+
+    axis2_xml_writer_t *xml_writer = NULL;
+    axis2_om_output_t *om_output = NULL;
+    axis2_char_t *buffer = NULL;
+
+    ns1 = axis2_om_namespace_create (env, "http://localhost:9090/axis2/services/echo", "ns1");
+
+    echo_om_ele = axis2_om_element_create(env, NULL, "echoString", ns1, &echo_om_node);
+    
+    text_om_ele = axis2_om_element_create(env, echo_om_node, "text", NULL, &text_om_node);
+
+    AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, text, text_om_node);
+    
+    
+    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
+    om_output = axis2_om_output_create( env, xml_writer);
+    
+    AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
+    buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
+    printf("\nSending OM node in XML : %s \n",  buffer); 
+
+    AXIS2_OM_OUTPUT_FREE(om_output, env);
+    AXIS2_FREE((*env)->allocator, buffer);
+
+    return echo_om_node;
 }
 
