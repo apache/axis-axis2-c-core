@@ -292,14 +292,16 @@ axis2_status_t AXIS2_CALL axis2_om_node_free_tree(axis2_om_node_t *om_node,
         while (node_impl->first_child)
         {
             child_node = AXIS2_OM_NODE_DETACH (node_impl->first_child, env);
-            AXIS2_OM_NODE_FREE_TREE ( child_node , env); 
+            if (child_node)
+            {
+                AXIS2_OM_NODE_FREE_TREE ( child_node , env); 
+            }
         }
     }
     
     switch (node_impl->node_type)
     {
     case AXIS2_OM_ELEMENT:
-        
         AXIS2_OM_ELEMENT_FREE((axis2_om_element_t*)(node_impl->data_element), env);
         break;
 
@@ -382,6 +384,7 @@ axis2_om_node_detach (axis2_om_node_t *om_node,
                 AXIS2_INTF_TO_IMPL(om_node)->next_sibling;
         }
     }
+    
     if (AXIS2_INTF_TO_IMPL(om_node)->next_sibling)
     {
         axis2_om_node_t *next_sibling = NULL;
@@ -392,6 +395,8 @@ axis2_om_node_detach (axis2_om_node_t *om_node,
     }
 
     AXIS2_INTF_TO_IMPL(om_node)->parent = NULL;
+    AXIS2_INTF_TO_IMPL(om_node)->prev_sibling = NULL;
+    AXIS2_INTF_TO_IMPL(om_node)->next_sibling = NULL;
     return om_node;
 
 }

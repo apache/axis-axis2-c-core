@@ -218,11 +218,12 @@ axis2_soap_header_free(axis2_soap_header_t *header,
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
+        void *key = NULL;
             
         for (hi = axis2_hash_first (header_impl->header_blocks ,env); hi;
                  hi = axis2_hash_next ( env, hi))
         {
-               axis2_hash_this (hi, NULL, NULL, &val);
+               axis2_hash_this (hi, &key, NULL, &val);
 
                 if (val)
                    AXIS2_SOAP_HEADER_BLOCK_FREE((axis2_soap_header_block_t *)val, env);

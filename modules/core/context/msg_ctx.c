@@ -665,6 +665,12 @@ axis2_msg_ctx_free (axis2_msg_ctx_t *msg_ctx,
         msg_ctx_impl->svc_grp_id = NULL;
     }
     
+    if (msg_ctx_impl->soap_envelope)
+    {
+        AXIS2_SOAP_ENVELOPE_FREE(msg_ctx_impl->soap_envelope, env);
+        msg_ctx_impl->soap_envelope = NULL;
+    }
+
     AXIS2_FREE((*env)->allocator, msg_ctx_impl);
     
     return AXIS2_SUCCESS;
