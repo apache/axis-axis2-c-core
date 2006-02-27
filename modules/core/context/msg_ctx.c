@@ -618,13 +618,13 @@ axis2_msg_ctx_free (axis2_msg_ctx_t *msg_ctx,
     
     if (msg_ctx_impl->base)
     {
-        AXIS2_FREE((*env)->allocator, msg_ctx_impl->base);
+        AXIS2_CTX_FREE(msg_ctx_impl->base, env);
         msg_ctx_impl->base = NULL;
     }
     
     if (msg_ctx_impl->msg_info_headers)
     {
-        AXIS2_FREE((*env)->allocator, msg_ctx_impl->msg_info_headers);
+        AXIS2_MSG_INFO_HEADERS_FREE(msg_ctx_impl->msg_info_headers, env);
         msg_ctx_impl->msg_info_headers = NULL;
     }
 
