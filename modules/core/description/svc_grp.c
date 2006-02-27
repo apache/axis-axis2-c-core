@@ -284,10 +284,11 @@ axis2_svc_grp_free (axis2_svc_grp_t *svc_grp,
             axis2_hash_this (hi, NULL, NULL, &val);
             svc = (axis2_svc_t *) val;
             if (svc)
-               AXIS2_SVC_FREE (svc, env);
-            
+            {
+                AXIS2_SVC_FREE (svc, env);
+                svc = NULL;
+            }
             val = NULL;
-            svc = NULL;
                
         }
         axis2_hash_free(svc_grp_impl->svcs, env);
@@ -342,22 +343,18 @@ axis2_svc_grp_set_svc_grp_name (axis2_svc_grp_t *svc_grp,
 		                axis2_char_t *name)
 {
     axis2_svc_grp_impl_t *svc_grp_impl = NULL;
-    axis2_char_t *svc_grp_name_l = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);	
     svc_grp_impl = AXIS2_INTF_TO_IMPL(svc_grp);
-    
-	svc_grp_name_l = AXIS2_STRDUP(name, env);
-    if(NULL == svc_grp_name_l)
+	
+    if(svc_grp_impl->svc_grp_name)
+        AXIS2_FREE((*env)->allocator, svc_grp_impl->svc_grp_name);
+	svc_grp_impl->svc_grp_name = AXIS2_STRDUP(name, env); 
+    if(!svc_grp_impl->svc_grp_name)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-	
-    if(svc_grp_impl->svc_grp_name)
-        AXIS2_FREE((*env)->allocator, svc_grp_impl->svc_grp_name);
-	svc_grp_impl->svc_grp_name = name;
     
 	return AXIS2_SUCCESS;
 }

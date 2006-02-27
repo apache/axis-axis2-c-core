@@ -550,14 +550,17 @@ axis2_dep_engine_free (axis2_dep_engine_t *dep_engine,
         int size = 0;
         int i = 0;
         
-        /*size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->module_list, env);
+        size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->module_list, env);
         for(i = 0; i < size; i++)
         {
             axis2_qname_t *qname = NULL;
             qname = AXIS2_ARRAY_LIST_GET(dep_engine_impl->module_list, env, i);
-            AXIS2_QNAME_FREE(qname, env);
-            qname = NULL;
-        }*/
+            if(qname)
+            {
+                AXIS2_QNAME_FREE(qname, env);
+                qname = NULL;
+            }
+        }
         AXIS2_ARRAY_LIST_FREE(dep_engine_impl->module_list, env);
         dep_engine_impl->module_list = NULL;
     }
@@ -616,7 +619,10 @@ axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
     {
         dep_engine_impl->module_list = axis2_array_list_create(env, 0);
         if(!dep_engine_impl->module_list)
+        {
+            AXIS2_QNAME_FREE(qname, env);
             return AXIS2_FAILURE;
+        }
     }
     return AXIS2_ARRAY_LIST_ADD(dep_engine_impl->module_list, env, qname);
 }
@@ -920,7 +926,6 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
         return NULL;
     }
     
-    AXIS2_CONF_SET_DEP_ENGINE(dep_engine_impl->conf, env, dep_engine);
     return dep_engine_impl->conf;
 }
 
@@ -986,14 +991,15 @@ axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
     size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->module_list, env);
     for(i = 0; i < size; i++)
     {
-        axis2_qname_t *qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(
+        axis2_qname_t *qname = NULL;
+        qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(
             dep_engine_impl->module_list, env, i);
         if (qname && dep_engine_impl->conf)
         {
             status = AXIS2_CONF_ENGAGE_MODULE(dep_engine_impl->conf, env, qname);
             if(AXIS2_SUCCESS != status)
             {
-                return AXIS2_FAILURE;
+                return status;
             }
         }
     }
@@ -1281,7 +1287,11 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     axis2_class_loader_init(env);
     module = (axis2_module_t *) axis2_class_loader_create_dll(env, 
         impl_info_param);
-    
+    /* We cannot free the created impl_info_param here because by freeing
+     * so, it will free dll_desc which in turn unload the module. So we
+     * add this as a param to module_desc
+     */
+    AXIS2_MODULE_DESC_ADD_PARAM(module_desc, env, impl_info_param);
     return AXIS2_MODULE_DESC_SET_MODULE(module_desc, env, module);
 }
 
@@ -1477,6 +1487,7 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
             axis2_svc_grp_t *svc_grp = NULL;
             axis2_char_t *file_name = NULL;
             axis2_module_desc_t *meta_data = NULL;
+            axis2_arch_reader_t *arch_reader = NULL;
             
             dep_engine_impl->curr_file = (axis2_arch_file_data_t *) 
                 AXIS2_ARRAY_LIST_GET(dep_engine_impl->ws_to_deploy, env, i);
@@ -1485,13 +1496,7 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
             switch (type) 
             {
                 case AXIS2_SVC:
-                    if(dep_engine_impl->arch_reader)
-                    {
-                        AXIS2_ARCH_READER_FREE(dep_engine_impl->arch_reader, env);
-                        dep_engine_impl->arch_reader = NULL;
-                    }
-                    dep_engine_impl->arch_reader = axis2_arch_reader_create(env);
-		    
+                    arch_reader = axis2_arch_reader_create(env); 
                     
                     /* TODO archiveReader.processWSDLs(currentArchiveFile,this); */
                     /* AxisService service = archiveReader.createService(currentArchiveFile.getAbsolutePath()); */
@@ -1499,7 +1504,7 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                         dep_engine_impl->conf);
                     file_name = AXIS2_ARCH_FILE_DATA_GET_NAME(dep_engine_impl->
                         curr_file, env);
-                    status = AXIS2_ARCH_READER_PROCESS_SVC_GRP(dep_engine_impl->arch_reader, env,
+                    status = AXIS2_ARCH_READER_PROCESS_SVC_GRP(arch_reader, env,
                         file_name, dep_engine, svc_grp);
                     if(AXIS2_SUCCESS != status)
                     {
@@ -1520,11 +1525,7 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                     dep_engine_impl->curr_file = NULL;
                     break;
                 case AXIS2_MODULE:
-                    if(dep_engine_impl->arch_reader)
-                    {
-                        AXIS2_ARCH_READER_FREE(dep_engine_impl->arch_reader, env);
-                        dep_engine_impl->arch_reader = NULL;
-                    }
+                    arch_reader = axis2_arch_reader_create(env); 
                     dep_engine_impl->arch_reader = axis2_arch_reader_create(env);
                     meta_data = axis2_module_desc_create(env);
                     file_name = AXIS2_ARCH_FILE_DATA_GET_NAME(dep_engine_impl->
@@ -1551,8 +1552,8 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                             metaData.getName().getLocalPart())); */
                     dep_engine_impl->curr_file = NULL;
                     break;
-
             }
+            AXIS2_ARCH_READER_FREE(arch_reader, env);
         }
     }
     return AXIS2_SUCCESS;
@@ -1725,17 +1726,16 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
     file_name = AXIS2_FILE_GET_NAME(module_archive, env);
     status = AXIS2_ARCH_READER_READ_MODULE_ARCH(arch_reader, env, file_name, 
         dep_engine, module_desc);    
+    AXIS2_ARCH_READER_FREE(arch_reader, env);
     if(AXIS2_SUCCESS != status)
     {
         AXIS2_MODULE_DESC_FREE(module_desc, env);
-        AXIS2_ARCH_READER_FREE(arch_reader, env);
         return NULL;
     }
     status = axis2_dep_engine_load_module_dll(dep_engine, env, module_desc);
     if(AXIS2_SUCCESS != status)
     {
         AXIS2_MODULE_DESC_FREE(module_desc, env);
-        AXIS2_ARCH_READER_FREE(arch_reader, env);
         return NULL;
     }
     
@@ -1771,9 +1771,7 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
     }
     
     dep_engine_impl->curr_file = NULL;
-    AXIS2_ARCH_READER_FREE(arch_reader, env);            
    
-    /*axismodule.setModuleClassLoader(currentArchiveFile.getClassLoader()); */
     return module_desc;
 }
 

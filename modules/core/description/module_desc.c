@@ -22,14 +22,10 @@
  */ 
 typedef struct axis2_module_desc_impl
 {
-	axis2_module_desc_t module_desc;
-    
+	axis2_module_desc_t module_desc;    
     axis2_module_t *module;
-    
     axis2_qname_t *qname;
-    
     axis2_conf_t *parent;
-    
     /** 
      * To store module opeartions , which are suppose to be added to a service 
      * if it is engaged to a service
@@ -349,6 +345,7 @@ axis2_module_desc_array_list_free (void *module_desc_list,
             AXIS2_ARRAY_LIST_GET(module_desc_list_l, env, i);
         axis2_module_desc_free(module_desc, env);
     }
+    AXIS2_ARRAY_LIST_FREE(module_desc_list_l, env);
     return AXIS2_SUCCESS;
 }
 

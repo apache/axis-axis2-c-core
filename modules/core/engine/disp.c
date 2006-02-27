@@ -227,12 +227,12 @@ axis2_disp_free (struct axis2_disp * disp,
         disp_impl->qname = NULL;
     }
     
-    if (disp_impl->base)
+    /*if (disp_impl->base)
     {
         axis2_handler_desc_t *handler_desc = AXIS2_HANDLER_GET_HANDLER_DESC(disp_impl->base, env);
-        AXIS2_HANDLER_DESC_FREE(handler_desc, env); /* freeing handler desc frees handler */
+        AXIS2_HANDLER_DESC_FREE(handler_desc, env); // freeing handler desc frees handler
         disp_impl->base = NULL;
-    }
+    }*/
     
     if (disp_impl->disp.ops)
     {

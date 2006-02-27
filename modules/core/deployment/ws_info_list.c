@@ -29,8 +29,7 @@ typedef struct axis2_ws_info_list_impl
     /**
      * This is to store all the jar files in a specified folder (WEB_INF)
      */
-    axis2_array_list_t *info_list;
-    
+    axis2_array_list_t *info_list; 
     /**
      * All the curently updated jars
      */
@@ -166,8 +165,7 @@ axis2_ws_info_list_free (axis2_ws_info_list_t *ws_info_list,
 {
     axis2_ws_info_list_impl_t *info_list_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);    
     info_list_impl = AXIS2_INTF_TO_IMPL(ws_info_list);
     
     if(info_list_impl->current_info_lists)
@@ -179,6 +177,7 @@ axis2_ws_info_list_free (axis2_ws_info_list_t *ws_info_list,
         for (i = 0; i < list_size; i++) 
         {
             axis2_char_t *file_name = NULL;
+
             file_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(info_list_impl->
                 current_info_lists, env, i);
             AXIS2_FREE((*env)->allocator, file_name);
@@ -284,8 +283,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
             status = AXIS2_ARRAY_LIST_ADD(info_list_impl->info_list, env, ws_info);
             if(AXIS2_SUCCESS != status)
             {
-                AXIS2_FILE_FREE(file, env);
-                return AXIS2_FAILURE;
+                return status;
             }
             file_data = axis2_arch_file_data_create_with_type_and_file(env,
                 AXIS2_SVC, file);
@@ -294,8 +292,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
                 env, file_data);            
             if(AXIS2_SUCCESS != status)
             {
-                AXIS2_FILE_FREE(file, env);
-                return AXIS2_FAILURE;
+                return status;
             }
                 
             /*}*/
@@ -319,8 +316,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
             status = AXIS2_ARRAY_LIST_ADD(info_list_impl->info_list, env, ws_info);
             if(AXIS2_SUCCESS != status)
             {
-                AXIS2_FILE_FREE(file, env);
-                return AXIS2_FAILURE;
+                return status;
             }
             file_data = axis2_arch_file_data_create_with_type_and_file(env,
                 AXIS2_MODULE, file);
@@ -329,8 +325,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
                 env, file_data);
             if(AXIS2_SUCCESS != status)
             {
-                AXIS2_FILE_FREE(file, env);
-                return AXIS2_FAILURE;
+                return status;
             }
             /*}*/
                 
@@ -473,16 +468,6 @@ axis2_ws_info_list_check_for_undeploy(axis2_ws_info_list_t *info_list,
         AXIS2_ARRAY_LIST_REMOVE(info_list_impl->info_list, env, index);
     }
     AXIS2_ARRAY_LIST_FREE(temp_list, env);
-    list_size = AXIS2_ARRAY_LIST_SIZE(info_list_impl->current_info_lists, env);
-    for (i = 0; i < list_size; i++) 
-    {
-        axis2_char_t *file_name = NULL;
-        file_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(info_list_impl->
-            current_info_lists, env, i);
-        AXIS2_FREE((*env)->allocator, file_name);
-    }
-    AXIS2_ARRAY_LIST_FREE(info_list_impl->current_info_lists, env);
-    info_list_impl->current_info_lists = NULL;
     return AXIS2_SUCCESS;
 }
 

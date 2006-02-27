@@ -107,16 +107,28 @@ axis2_flow_free (axis2_flow_t *flow, axis2_env_t **env)
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     flow_impl = AXIS2_INTF_TO_IMPL(flow);
     
+    if(NULL != flow_impl->list)
+    {
+        int i = 0;
+        int size = 0;
+        
+        size = AXIS2_ARRAY_LIST_SIZE(flow_impl->list, env);
+        for(i = 0; i < size; i++)
+        {
+            axis2_handler_desc_t *handler_desc = NULL;
+
+            handler_desc = (axis2_handler_desc_t *) AXIS2_ARRAY_LIST_GET(
+                flow_impl->list, env, i);
+            AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+        }
+        AXIS2_ARRAY_LIST_FREE(flow_impl->list, env);
+        flow_impl->list = NULL;
+    }
+    
     if(NULL != flow->ops)
     {
         AXIS2_FREE((*env)->allocator, flow->ops);
         flow->ops = NULL;
-    }
-    
-    if(NULL != flow_impl->list)
-    {
-        AXIS2_ARRAY_LIST_FREE(flow_impl->list, env);
-        flow_impl->list = NULL;
     }
     
     if(flow_impl)

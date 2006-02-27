@@ -353,7 +353,8 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
             desc_builder, env, out_fault_flow_element, builder_impl->module_desc->
                 params, out_fault_flow_node);
-        status = AXIS2_MODULE_DESC_SET_FAULT_OUTFLOW(builder_impl->module_desc, env, flow);
+        status = AXIS2_MODULE_DESC_SET_FAULT_OUTFLOW(builder_impl->module_desc, 
+            env, flow);
         if(AXIS2_SUCCESS != status)
         {
             return status;
@@ -375,6 +376,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         op = (axis2_op_t *) AXIS2_ARRAY_LIST_GET(ops, env, i);
         AXIS2_MODULE_DESC_ADD_OP(builder_impl->module_desc, env, op);
     }
+    AXIS2_ARRAY_LIST_FREE(ops, env);
     AXIS2_LOG_TRACE((*env)->log, AXIS2_LOG_SI, "axis2_module_builder_populate_module end");
     return AXIS2_SUCCESS;
 }

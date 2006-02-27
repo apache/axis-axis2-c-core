@@ -29,7 +29,6 @@ typedef struct axis2_arch_reader_impl
 {
 	axis2_arch_reader_t arch_reader;
     axis2_desc_builder_t *desc_builder;
-    axis2_module_builder_t *module_builder;
     	
 } axis2_arch_reader_impl_t;
 
@@ -91,9 +90,8 @@ axis2_arch_reader_create (axis2_env_t **env)
         return NULL;
     }
     
-    arch_reader_impl->arch_reader.ops = NULL;
     arch_reader_impl->desc_builder = NULL;
-    arch_reader_impl->module_builder = NULL;
+    arch_reader_impl->arch_reader.ops = NULL;
     
 	arch_reader_impl->arch_reader.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_arch_reader_ops_t));
@@ -126,25 +124,18 @@ axis2_arch_reader_free (axis2_arch_reader_t *arch_reader,
 {
     axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE); 
     arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
     
 	if(NULL != arch_reader->ops)
-        AXIS2_FREE((*env)->allocator, arch_reader->ops);
-   
-	if(NULL != arch_reader_impl->desc_builder)
+        AXIS2_FREE((*env)->allocator, arch_reader->ops);   
+
+    if(arch_reader_impl->desc_builder) 
     {
         AXIS2_DESC_BUILDER_FREE(arch_reader_impl->desc_builder, env);
         arch_reader_impl->desc_builder = NULL;
     }
 
-	if(NULL != arch_reader_impl->module_builder)
-    {
-        AXIS2_MODULE_BUILDER_FREE(arch_reader_impl->module_builder, env);
-        arch_reader_impl->module_builder = NULL;
-    }
-   
     if(arch_reader_impl) 
     {
         AXIS2_FREE((*env)->allocator, arch_reader_impl);
@@ -369,6 +360,7 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
             AXIS2_FAILURE);
         status = AXIS2_FAILURE;
     }
+    AXIS2_FREE((*env)->allocator, svcs_xml);
     return status;
 }
 
@@ -390,10 +382,16 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
     AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
     arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
-    
-    arch_reader_impl->desc_builder = axis2_desc_builder_create_with_file_and_dep_engine(env, 
-        svc_xml, dep_engine);
-    if(!(arch_reader_impl->desc_builder))
+   
+    if(arch_reader_impl->desc_builder)
+    {
+        AXIS2_DESC_BUILDER_FREE(arch_reader_impl->desc_builder, env);
+        arch_reader_impl->desc_builder = NULL;
+    }
+    arch_reader_impl->desc_builder = 
+        axis2_desc_builder_create_with_file_and_dep_engine(env, svc_xml, 
+            dep_engine);
+    if(!arch_reader_impl->desc_builder)
     {
         return AXIS2_FAILURE;
     }
@@ -456,6 +454,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         grp_builder = axis2_svc_grp_builder_create_with_svc_and_dep_engine(env, 
             svcs, dep_engine);
         status = AXIS2_SVC_GRP_BUILDER_POPULATE_SVC_GRP(grp_builder, env, svc_grp);
+        AXIS2_SVC_GRP_BUILDER_FREE(grp_builder, env);
     }
     return status;
 }
@@ -504,20 +503,12 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     
     if(AXIS2_SUCCESS == status)
     { 
-        if(arch_reader_impl->module_builder)
-        {
-            AXIS2_MODULE_BUILDER_FREE(arch_reader_impl->module_builder, env);
-            arch_reader_impl->module_builder = NULL;
-        } 
-        arch_reader_impl->module_builder = 
+        axis2_module_builder_t *module_builder = NULL;
+        module_builder = 
             axis2_module_builder_create_with_file_and_dep_engine_and_module(env,
                 module_xml, dep_engine, module_desc);
-        status = AXIS2_MODULE_BUILDER_POPULATE_MODULE(arch_reader_impl->
-            module_builder, env);
-        if(AXIS2_SUCCESS != status)
-        {
-            return AXIS2_FAILURE;
-        }
+        status = AXIS2_MODULE_BUILDER_POPULATE_MODULE(module_builder, env);
+        AXIS2_MODULE_BUILDER_FREE(module_builder, env);
     }
     else
     {
@@ -525,6 +516,7 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
             AXIS2_ERROR_MODULE_XML_NOT_FOUND_FOR_THE_MODULE, AXIS2_FAILURE);
         status = AXIS2_FAILURE;
     }
+    AXIS2_FREE((*env)->allocator, module_xml);
     return status;
 }
 

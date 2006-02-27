@@ -261,8 +261,7 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
     axis2_om_document_t *document = NULL;
     axis2_om_node_t *root = NULL;
     
-    AXIS2_ENV_CHECK(env, NULL);
-    
+    AXIS2_ENV_CHECK(env, NULL); 
     desc_builder_impl = AXIS2_INTF_TO_IMPL(desc_builder);
     
     if(!desc_builder_impl->file_name)
@@ -330,9 +329,9 @@ axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
         return NULL;
     }
     
-    if(NULL == flow_element)
+    if(!flow_element)
     {
-        return flow;
+        return NULL;
     }
     
     qchild = axis2_qname_create(env, AXIS2_HANDLERST, NULL, NULL); 
@@ -344,7 +343,7 @@ axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
     while(AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(handlers ,env))
     {
         axis2_om_node_t *handler_node = NULL;
-        struct axis2_handler_desc *handler = NULL;
+        axis2_handler_desc_t *handler = NULL;
         axis2_status_t status = AXIS2_FAILURE;
             
         handler_node = (axis2_om_node_t *)
@@ -827,8 +826,10 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
         
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, recv_element, NULL);
+
     class_qname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
     recv_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(recv_element, env, class_qname);
+    AXIS2_QNAME_FREE(class_qname, env);
     class_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(recv_name, env);
     msg_recv_dll_name = 
         AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env, 

@@ -366,11 +366,6 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         AXIS2_DLL_DESC_FREE(dll_desc, env);
         return AXIS2_FAILURE;
     }
-    /* param does not free the value, because it does not know the value type.
-     * therefore we free the value
-     */
-    AXIS2_FREE((*env)->allocator, svc_dll_name);
-    svc_dll_name = NULL;
     /* free all temp vars */
     AXIS2_FREE((*env)->allocator, temp_path);
     temp_path = NULL;
@@ -533,7 +528,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
     AXIS2_PARAM_CHECK((*env)->error, op_itr, NULL);
     builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
     
-    ops = axis2_array_list_create(env, 16);
+    ops = axis2_array_list_create(env, 0);
     while(AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(op_itr, env))
     {
         axis2_om_element_t *op_element = NULL;
@@ -595,9 +590,8 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
             }
             else
             {
-               /* TODO uncomment this when constructor is available */
-               /*op_desc = axis2_op_create(env, mep_url); */
                 op_desc = axis2_op_create(env);
+                AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op_desc, env, mep_url);
             }
             AXIS2_OP_SET_QNAME(op_desc, env, qopname);
         }
@@ -613,9 +607,8 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
             }
             else
             {
-                /* TODO uncomment this when constructor is available */
-               /*op_desc = axis2_op_create(env, mep); */
                 op_desc = axis2_op_create(env);
+                AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op_desc, env, mep);
                 AXIS2_OP_SET_WSDL_OP(op_desc, env, wsdl_op);
             } 
         }

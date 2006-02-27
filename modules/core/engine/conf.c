@@ -632,10 +632,12 @@ axis2_conf_free (axis2_conf_t *conf,
             axis2_hash_this (hi, NULL, NULL, &val);
             transport_out = (axis2_transport_out_desc_t *) val;
             if (transport_out)
+            {
                 AXIS2_TRANSPORT_OUT_DESC_FREE (transport_out, env);
+                transport_out = NULL;
+            }
             
             val = NULL;
-            transport_out = NULL;
                
         }
         axis2_hash_free(config_impl->transports_out, env);
@@ -653,11 +655,12 @@ axis2_conf_free (axis2_conf_t *conf,
             axis2_hash_this (hi, NULL, NULL, &val);
             module_desc = (axis2_module_desc_t *) val;
             if (module_desc)
-               AXIS2_MODULE_DESC_FREE (module_desc, env);
+            {
+                AXIS2_MODULE_DESC_FREE (module_desc, env);
+                module_desc = NULL;
+            }
             
             val = NULL;
-            module_desc = NULL;
-               
         }
         axis2_hash_free(config_impl->modules, env);
         config_impl->modules = NULL;
@@ -1624,6 +1627,7 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
         return AXIS2_FAILURE;
     }
     handler = AXIS2_DISP_GET_BASE(add_dispatch, env);
+    AXIS2_DISP_FREE(add_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 0, handler);
     handler = NULL;
     
@@ -1633,6 +1637,7 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
         return AXIS2_FAILURE;
     }
     handler = AXIS2_DISP_GET_BASE(uri_dispatch, env);
+    AXIS2_DISP_FREE(uri_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 1, handler);
     handler = NULL;
     
@@ -1642,6 +1647,7 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
         return AXIS2_FAILURE;
     }
     handler = AXIS2_DISP_GET_BASE(soap_action_based_dispatch, env);
+    AXIS2_DISP_FREE(soap_action_based_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 2, handler);
     handler = NULL;
     
@@ -1651,6 +1657,7 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
         return AXIS2_FAILURE;
     }
     handler = AXIS2_DISP_GET_BASE(soap_msg_body_based_dispatch, env);
+    AXIS2_DISP_FREE(soap_msg_body_based_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 3, handler);
     handler = NULL;
     
@@ -1671,6 +1678,7 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     
     disp_checker = axis2_disp_checker_create(env, NULL);
     handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
+    AXIS2_DISP_CHECKER_FREE(disp_checker, env);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
     handler = NULL;
 
@@ -1679,12 +1687,11 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     
     status = AXIS2_ARRAY_LIST_ADD(config_impl->
             in_phases_upto_and_including_post_dispatch, env, post_dispatch);
-    if(AXIS2_FAILURE == status)
+    if(AXIS2_SUCCESS != status)
     {
         AXIS2_PHASE_FREE(dispatch, env);
         AXIS2_PHASE_FREE(post_dispatch, env);
-        AXIS2_DISP_CHECKER_FREE(disp_checker, env);
-        return AXIS2_FAILURE;   
+        return status;   
     }
     return AXIS2_SUCCESS;
 }
@@ -1824,6 +1831,8 @@ axis2_conf_engage_module(axis2_conf_t *conf,
     if (to_be_engaged) 
     {
         axis2_phase_resolver_t *phase_resolver = NULL;
+        axis2_qname_t *module_qref_l = NULL;
+
         phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
         if(!phase_resolver)
         {
@@ -1837,8 +1846,9 @@ axis2_conf_engage_module(axis2_conf_t *conf,
         {
             return AXIS2_FAILURE;
         }
+        module_qref_l = AXIS2_QNAME_CLONE(module_ref, env);
         status = AXIS2_ARRAY_LIST_ADD(config_impl->engaged_modules, env, 
-            module_ref);
+            module_qref_l);
     }
     if (is_new_module) 
     {

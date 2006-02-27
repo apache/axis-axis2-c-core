@@ -69,16 +69,16 @@ int AXIS2_CALL
 echo_free(axis2_svc_skeleton_t *svc_skeleton,
             axis2_env_t **env)
 {
-    if(svc_skeleton->ops)
-    {
-        AXIS2_FREE((*env)->allocator, svc_skeleton->ops);
-        svc_skeleton->ops = NULL;
-    }
-
     if(svc_skeleton->func_array)
     {
         AXIS2_ARRAY_LIST_FREE(svc_skeleton->func_array, env);
         svc_skeleton->func_array = NULL;
+    }
+    
+    if(svc_skeleton->ops)
+    {
+        AXIS2_FREE((*env)->allocator, svc_skeleton->ops);
+        svc_skeleton->ops = NULL;
     }
     
     if(svc_skeleton)

@@ -41,6 +41,7 @@ int axis2_test_dep_engine_load()
         return -1;
     }
     conf = AXIS2_DEP_ENGINE_LOAD(dep_engine, &env);
+    AXIS2_CONF_SET_DEP_ENGINE(conf, &env, dep_engine);
     if (!conf)
     {
         printf("conf is NULL\n)");

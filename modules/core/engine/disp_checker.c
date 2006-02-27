@@ -168,13 +168,15 @@ axis2_disp_checker_free(struct axis2_disp_checker * disp_checker,
         AXIS2_QNAME_FREE(disp_checker_impl->qname, env);
         disp_checker_impl->qname = NULL;
     }
-    
-    if (disp_checker_impl->base)
+    /* Hi Samisa !. Do I think we should not free handler_desc here. So I
+     * commented this
+     */  
+    /*if (disp_checker_impl->base)
     {
         axis2_handler_desc_t *handler_desc = AXIS2_HANDLER_GET_HANDLER_DESC(disp_checker_impl->base, env);
-        AXIS2_HANDLER_DESC_FREE(handler_desc, env); /* freeing handler desc frees handler */
+        AXIS2_HANDLER_DESC_FREE(handler_desc, env); // freeing handler desc frees handler
         disp_checker_impl->base = NULL;
-    }
+    }*/
     
     if (disp_checker_impl->disp_checker.ops)
     {

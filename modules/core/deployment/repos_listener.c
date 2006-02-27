@@ -240,6 +240,7 @@ axis2_repos_listener_check_svcs(axis2_repos_listener_t *listener,
     axis2_repos_listener_impl_t *listener_impl = NULL;
     axis2_char_t *svc_path = NULL;
     axis2_char_t *temp_path = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
@@ -248,7 +249,9 @@ axis2_repos_listener_check_svcs(axis2_repos_listener_t *listener,
         env);
     svc_path = AXIS2_STRACAT(temp_path, AXIS2_SVC_PATH, env);
     AXIS2_FREE((*env)->allocator, temp_path);
-    return axis2_repos_listener_search(listener, env, svc_path, AXIS2_SVC);
+    status = axis2_repos_listener_search(listener, env, svc_path, AXIS2_SVC);
+    AXIS2_FREE((*env)->allocator, svc_path);
+    return status;
 }
 
 axis2_status_t AXIS2_CALL
@@ -259,6 +262,7 @@ axis2_repos_listener_update(axis2_repos_listener_t *listener,
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
+
     /* TODO completet this */
     /* this call the update method of WSInfoList */
     return AXIS2_WS_INFO_LIST_UPDATE(listener_impl->info_list, env);
@@ -364,7 +368,6 @@ axis2_repos_listener_search(axis2_repos_listener_t *listener,
         }
     }
     
-    size = AXIS2_ARRAY_LIST_SIZE(current_info_list, env);
     for(i = 0; i < size; i++)
     {
         axis2_file_t *del_file = NULL;

@@ -146,24 +146,42 @@ axis2_status_t AXIS2_CALL
 axis2_flow_container_free(axis2_flow_container_t *flow_container,
                             axis2_env_t **env)
 {
+    axis2_flow_container_impl_t *container_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    container_impl = AXIS2_INTF_TO_IMPL(flow_container);
     
+    if(NULL != container_impl->in)
+    {
+        AXIS2_FLOW_FREE(container_impl->in, env);
+        container_impl->in = NULL;
+    }
+
+    if(NULL != container_impl->out)
+    {
+        AXIS2_FLOW_FREE(container_impl->out, env);
+        container_impl->out = NULL;
+    }
+    
+    if(NULL != container_impl->in_fault)
+    {
+        AXIS2_FLOW_FREE(container_impl->in_fault, env);
+        container_impl->in_fault = NULL;
+    }
+    
+    if(NULL != container_impl->out_fault)
+    {
+        AXIS2_FLOW_FREE(container_impl->out_fault, env);
+        container_impl->out_fault = NULL;
+    }
+
     if(NULL != flow_container->ops)
         AXIS2_FREE((*env)->allocator, flow_container->ops);
     
-    if(NULL != AXIS2_INTF_TO_IMPL(flow_container)->in)
-        AXIS2_FLOW_FREE(AXIS2_INTF_TO_IMPL(flow_container)->in, env);
-    
-    if(NULL != AXIS2_INTF_TO_IMPL(flow_container)->out)
-        AXIS2_FLOW_FREE(AXIS2_INTF_TO_IMPL(flow_container)->out, env);
-    
-    if(NULL != AXIS2_INTF_TO_IMPL(flow_container)->in_fault)
-        AXIS2_FLOW_FREE(AXIS2_INTF_TO_IMPL(flow_container)->in_fault, env);
-    
-    if(NULL != AXIS2_INTF_TO_IMPL(flow_container)->out_fault)
-        AXIS2_FLOW_FREE(AXIS2_INTF_TO_IMPL(flow_container)->out_fault, env);
-     
-    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(flow_container));
+    if(container_impl)
+    { 
+        AXIS2_FREE((*env)->allocator, container_impl);
+        container_impl = NULL;
+    }
     
     return AXIS2_SUCCESS;
 }
@@ -193,6 +211,7 @@ axis2_flow_container_set_inflow(axis2_flow_container_t *flow_container,
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE); 
     container_impl = AXIS2_INTF_TO_IMPL(flow_container);
+
     if(container_impl->in)
     {
         AXIS2_FLOW_FREE(container_impl->in, env);

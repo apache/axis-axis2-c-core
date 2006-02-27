@@ -247,10 +247,11 @@ axis2_param_free(axis2_param_t *param,
 						axis2_env_t **env)
 {
     void *param_value = NULL;
+    axis2_char_t *param_name = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    param_value = AXIS2_PARAM_GET_VALUE(param, env);
+    param_value = axis2_param_get_value(param, env);
     if(param_value)
     {
         if(param->ops && param->ops->value_free)
@@ -262,6 +263,8 @@ axis2_param_free(axis2_param_t *param,
             AXIS2_FREE((*env)->allocator, param_value);
         }
     }
+    param_name = axis2_param_get_name(param, env);
+    AXIS2_FREE((*env)->allocator, param_name);
     AXIS2_FREE((*env)->allocator, param->ops);
     AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(param));    
     return AXIS2_SUCCESS;

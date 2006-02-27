@@ -542,22 +542,6 @@ axis2_svc_free (axis2_svc_t *svc,
     if(NULL != svc_impl->wasaction_opeartionmap)
     {
         /* By this time operations are already freed
-        axis2_hash_index_t *hi = NULL;
-        void *val = NULL;
-        for (hi = axis2_hash_first (svc_impl->wasaction_opeartionmap, env); hi;
-                 hi = axis2_hash_next ( env, hi))
-        {
-            axis2_op_t *opt = NULL;
-            axis2_hash_this (hi, NULL, NULL, &val);
-            opt = (axis2_op_t *) val;
-            if (opt)
-            {
-                AXIS2_OP_FREE (opt, env);
-                opt = NULL;
-            }
-            val = NULL;
-               
-        }
         */
 		axis2_hash_free(svc_impl->wasaction_opeartionmap, env);
         svc_impl->wasaction_opeartionmap = NULL;
@@ -891,7 +875,7 @@ axis2_svc_engage_module(axis2_svc_t *svc,
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
     if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
     {
-        return AXIS2_FAILURE;
+        return AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
     }
     for(i = 0; i < size; i++)
     {
@@ -1592,11 +1576,16 @@ axis2_svc_add_module_ref(axis2_svc_t *svc,
                             axis2_env_t **env,
                             axis2_qname_t *moduleref)
 {
+    axis2_svc_impl_t *svc_impl = NULL;
+    axis2_qname_t *qmoduleref_l = NULL;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, moduleref, AXIS2_FAILURE);
-    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+
+    qmoduleref_l = AXIS2_QNAME_CLONE(moduleref, env);
     return AXIS2_ARRAY_LIST_ADD(AXIS2_INTF_TO_IMPL(svc)->module_list, env, 
-        moduleref);
+        qmoduleref_l);
 }
 
 axis2_array_list_t *AXIS2_CALL

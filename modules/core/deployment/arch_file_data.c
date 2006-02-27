@@ -439,7 +439,7 @@ axis2_arch_file_data_set_module_dll_name(axis2_arch_file_data_t *file_data,
         AXIS2_FREE((*env)->allocator, file_data_impl->module_dll_name);
         file_data_impl->module_dll_name = NULL;
     }
-    file_data_impl->module_dll_name = module_dll_name;
+    file_data_impl->module_dll_name = AXIS2_STRDUP(module_dll_name, env);
     return AXIS2_SUCCESS;
 }
 

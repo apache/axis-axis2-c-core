@@ -1403,16 +1403,18 @@ axis2_op_set_remaining_phases_inflow(axis2_op_t *op,
 axis2_status_t AXIS2_CALL
 axis2_op_add_module(axis2_op_t *op,
                                 axis2_env_t **env,
-                                axis2_qname_t *module_name) 
+                                axis2_qname_t *module_qname) 
 {
     axis2_op_impl_t *op_impl = NULL;
+    axis2_qname_t *module_qname_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FAILURE);
-    
+    AXIS2_PARAM_CHECK((*env)->error, module_qname, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
-    return AXIS2_ARRAY_LIST_ADD(op_impl->modulerefs, env, module_name);
+    module_qname_l = AXIS2_QNAME_CLONE(module_qname, env);
+    
+    return AXIS2_ARRAY_LIST_ADD(op_impl->modulerefs, env, module_qname_l);
 }
 
 axis2_array_list_t *AXIS2_CALL
