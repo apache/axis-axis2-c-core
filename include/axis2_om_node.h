@@ -386,8 +386,10 @@ AXIS2_DECLARE(axis2_om_node_t *) axis2_om_node_create (axis2_env_t **env);
 #define AXIS2_OM_NODE_FREE_TREE(om_node,env) ((om_node)->ops->free(om_node,env))
 /** adds given child to the given parent */
 
-#define AXIS2_OM_NODE_ADD_CHILD(om_node,env,parent) \
-        ((parent)->ops->add_child(om_node,env,parent))
+/*#define AXIS2_OM_NODE_ADD_CHILD(om_node,env,parent) \
+        ((parent)->ops->add_child(om_node,env,parent))*/
+#define AXIS2_OM_NODE_ADD_CHILD(om_node,env,child) \
+        ((om_node)->ops->add_child(om_node,env,child))
 /** detaches the given node from its parent */
 
 #define AXIS2_OM_NODE_DETACH(om_node,env) ((om_node)->ops->detach(om_node,env))
