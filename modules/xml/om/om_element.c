@@ -437,7 +437,7 @@ axis2_om_element_find_namespace (axis2_om_element_t *ele,
              (AXIS2_OM_NODE_GET_NODE_TYPE(parent, env) == AXIS2_OM_ELEMENT))
     {
         return axis2_om_element_find_namespace (
-                (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env),
+                (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(parent, env),
                     env, parent, uri, prefix);
     }
     return NULL;
