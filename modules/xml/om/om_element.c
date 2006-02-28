@@ -170,6 +170,12 @@ typedef struct axis2_om_element_impl
     
     axis2_qname_t *qname;
     
+    axis2_om_child_element_iterator_t *child_ele_iter;
+
+    axis2_om_children_iterator_t* children_iter;
+
+    axis2_om_children_qname_iterator_t *children_qname_iter;
+  
 }axis2_om_element_impl_t;
 
 /************************************Macro *****************************/
@@ -218,7 +224,10 @@ axis2_om_element_create (axis2_env_t **env,
     element->attributes = NULL;
     element->namespaces = NULL;
     element->qname = NULL;
-
+    element->child_ele_iter = NULL;
+    element->children_iter = NULL;
+    element->children_qname_iter = NULL;
+    
     element->localname = (axis2_char_t *) AXIS2_STRDUP(localname,env);
     if (!element->localname)
     {
@@ -658,6 +667,7 @@ axis2_om_element_free (axis2_om_element_t *om_element,
     if (element_impl->localname)
     {
         AXIS2_FREE ((*env)->allocator,element_impl->localname);
+        element_impl->localname = NULL;
     }
     if (element_impl->ns)
     {
@@ -682,33 +692,50 @@ axis2_om_element_free (axis2_om_element_t *om_element,
                  val = NULL;
                    
         }
-        axis2_hash_free (AXIS2_INTF_TO_IMPL(om_element)->attributes, env);
+        axis2_hash_free (element_impl->attributes, env);
+        element_impl->attributes = NULL;
     }
         
-        if (element_impl->namespaces)
-        {
-            axis2_hash_index_t *hi;
-            void *val = NULL;
+    if (element_impl->namespaces)
+    {
+        axis2_hash_index_t *hi;
+        void *val = NULL;
             
-            for (hi = axis2_hash_first (element_impl->namespaces, env); hi;
-                 hi = axis2_hash_next ( env, hi))
-            {
-               axis2_hash_this (hi, NULL, NULL, &val);
+        for (hi = axis2_hash_first (element_impl->namespaces, env); hi;
+                hi = axis2_hash_next ( env, hi))
+        {
+            axis2_hash_this (hi, NULL, NULL, &val);
 
-                if (val)
-                AXIS2_OM_NAMESPACE_FREE ((axis2_om_namespace_t *)val, env);
-                val = NULL;
-                   
-            }
-            axis2_hash_free (element_impl->namespaces, env);
+            if (val)
+                 AXIS2_OM_NAMESPACE_FREE ((axis2_om_namespace_t *)val, env);
+                 val = NULL;
+        }
+        axis2_hash_free (element_impl->namespaces, env);
             /*TODO: free namespaces */
            /* need to iterate and free individual namespaces */
-        }
-        if(element_impl->qname)
-            AXIS2_QNAME_FREE(element_impl->qname, env);
-        AXIS2_FREE ((*env)->allocator, om_element->ops);
-        AXIS2_FREE ((*env)->allocator, element_impl);
-  
+    }
+    if(element_impl->qname)
+    {
+        AXIS2_QNAME_FREE(element_impl->qname, env);
+        element_impl->qname = NULL;
+    }
+    if(element_impl->children_iter)
+    {
+        AXIS2_OM_CHILDREN_ITERATOR_FREE(element_impl->children_iter, env);
+        element_impl->children_iter = NULL;
+    }
+    if(element_impl->child_ele_iter)
+    {
+        AXIS2_OM_CHILD_ELEMENT_ITERATOR_FREE(element_impl->child_ele_iter, env);
+        element_impl->child_ele_iter = NULL;
+    }
+    if(element_impl->children_qname_iter)
+    {
+        AXIS2_OM_CHILDREN_QNAME_ITERATOR_FREE(element_impl->children_qname_iter, env);
+        element_impl->children_qname_iter = NULL;
+    }
+    AXIS2_FREE ((*env)->allocator, om_element->ops);
+    AXIS2_FREE ((*env)->allocator, element_impl);
     return status;
 }
 
@@ -944,11 +971,21 @@ axis2_om_element_get_children(axis2_om_element_t *om_element,
                               axis2_env_t **env,
                               axis2_om_node_t *element_node)
 {
+    axis2_om_element_impl_t *om_ele_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
-    return axis2_om_children_iterator_create(env,
-                AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env));
-    
+    om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
+    if(om_ele_impl->children_iter)
+    {
+        return om_ele_impl->children_iter;
+    }
+    else
+    {
+        om_ele_impl->children_iter = axis2_om_children_iterator_create(env,
+                    AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env));
+        return om_ele_impl->children_iter;                     
+    }
+    return NULL;
 }
 
 axis2_om_children_qname_iterator_t* AXIS2_CALL
@@ -957,13 +994,22 @@ axis2_om_element_get_children_with_qname(axis2_om_element_t *om_element,
                                          axis2_qname_t *element_qname,
                                          axis2_om_node_t *element_node)
 {
+    axis2_om_element_impl_t *om_ele_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
-    
-    return axis2_om_children_qname_iterator_create(env,
+    om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
+    if(om_ele_impl->children_iter)
+    {
+        return om_ele_impl->children_qname_iter;
+    }
+    else
+    {
+       om_ele_impl->children_qname_iter =  axis2_om_children_qname_iterator_create(env,
                 AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env),
                 element_qname);
-     
+        return om_ele_impl->children_qname_iter;                
+    }
+    return NULL;
 }
 
 axis2_om_element_t* AXIS2_CALL
@@ -1160,14 +1206,21 @@ axis2_om_element_get_child_elements(axis2_om_element_t *om_element,
                                     axis2_env_t **env,
                                     axis2_om_node_t *element_node)
 {
+   axis2_om_element_impl_t *om_ele_impl = NULL;
    axis2_om_node_t *first_node = NULL;
    axis2_om_element_t *ele = NULL;
    AXIS2_ENV_CHECK(env, NULL);
    AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
+   om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
    ele = AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(om_element, env, element_node, &first_node);
-   if(ele && first_node)
+   if(om_ele_impl->child_ele_iter)
    {
-        return axis2_om_child_element_iterator_create(env, first_node);
+        return om_ele_impl->child_ele_iter;
    }
-   else return NULL;
+   else if(ele && first_node)
+   {
+        om_ele_impl->child_ele_iter = axis2_om_child_element_iterator_create(env, first_node);
+        return om_ele_impl->child_ele_iter;
+   }
+   return NULL;
 }
