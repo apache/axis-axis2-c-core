@@ -1,0 +1,12 @@
+#! /bin/sh
+
+echo 'Running samples' 
+cd ../../samples/client/echo 
+./echo
+cd ../math
+./math
+cd ../google
+./google 
+cd ../addr_echo
+./addr_echo
+echo 'Done'
