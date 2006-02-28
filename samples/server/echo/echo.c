@@ -93,7 +93,7 @@ build_om_programatically(axis2_env_t **env, axis2_char_t *text)
 
     AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, text, text_om_node);
     
-    
+    /*
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     om_output = axis2_om_output_create( env, xml_writer);
     
@@ -103,7 +103,7 @@ build_om_programatically(axis2_env_t **env, axis2_char_t *text)
 
     AXIS2_OM_OUTPUT_FREE(om_output, env);
     AXIS2_FREE((*env)->allocator, buffer);
-
+    */
     return echo_om_node;
 }
 
