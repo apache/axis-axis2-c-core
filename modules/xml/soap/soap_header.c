@@ -226,8 +226,15 @@ axis2_soap_header_free(axis2_soap_header_t *header,
                axis2_hash_this (hi, &key, NULL, &val);
 
                 if (val)
-                   AXIS2_SOAP_HEADER_BLOCK_FREE((axis2_soap_header_block_t *)val, env);
-                val = NULL;
+                {   AXIS2_SOAP_HEADER_BLOCK_FREE((axis2_soap_header_block_t *)val, env);
+                    val = NULL;
+                }
+                if(key)
+                {
+                    AXIS2_FREE((*env)->allocator, key);
+                    key = NULL;                    
+                }
+                    
                    
          }
         AXIS2_FREE((*env)->allocator, hi); 
@@ -252,7 +259,7 @@ axis2_soap_header_add_header_block(axis2_soap_header_t* header,
     axis2_soap_header_impl_t *header_impl = NULL;
     axis2_soap_header_block_t *header_block = NULL;
     axis2_om_node_t* header_block_node = NULL;
-    axis2_char_t key[10];
+    axis2_char_t *key = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, localname, NULL);
     AXIS2_PARAM_CHECK((*env)->error, ns, NULL);
@@ -264,6 +271,7 @@ axis2_soap_header_add_header_block(axis2_soap_header_t* header,
                             header_block, env);
         
     AXIS2_OM_NODE_SET_BUILD_STATUS(header_block_node, env, AXIS2_TRUE);
+    key = (axis2_char_t*)AXIS2_MALLOC((*env)->allocator, sizeof(axis2_char_t)*10);
     sprintf(key,"%d", header_impl->hbnumber++);
     if(header_impl->header_blocks)
     {
@@ -401,11 +409,12 @@ axis2_soap_header_set_header_block(axis2_soap_header_t *header,
                                    axis2_env_t **env,
                                    struct axis2_soap_header_block *header_block)
 {
-    axis2_char_t key[10];
+    axis2_char_t *key = NULL ;
     axis2_soap_header_impl_t *header_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, header_block, AXIS2_FAILURE);
     header_impl = AXIS2_INTF_TO_IMPL(header);
+    key = (axis2_char_t*)AXIS2_MALLOC((*env)->allocator, sizeof(axis2_char_t)*10);
     sprintf(key,"%d", header_impl->hbnumber++);
     if(header_impl->header_blocks)
     {
@@ -502,4 +511,4 @@ axis2_soap_header_get_all_header_blocks(axis2_soap_header_t *header,
     axis2_soap_header_impl_t *header_impl = NULL;
     header_impl = AXIS2_INTF_TO_IMPL(header);
     return header_impl->header_blocks;
-}                                        
+}
