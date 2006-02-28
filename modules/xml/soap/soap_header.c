@@ -264,27 +264,11 @@ axis2_soap_header_add_header_block(axis2_soap_header_t* header,
     AXIS2_PARAM_CHECK((*env)->error, localname, NULL);
     AXIS2_PARAM_CHECK((*env)->error, ns, NULL);
     header_impl = AXIS2_INTF_TO_IMPL(header);
-    
     header_block = axis2_soap_header_block_create_with_parent(env, localname, ns, header);
-    
     header_block_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(
                             header_block, env);
-        
     AXIS2_OM_NODE_SET_BUILD_STATUS(header_block_node, env, AXIS2_TRUE);
     key = (axis2_char_t*)AXIS2_MALLOC((*env)->allocator, sizeof(axis2_char_t)*10);
-    sprintf(key,"%d", header_impl->hbnumber++);
-    if(header_impl->header_blocks)
-    {
-        axis2_hash_set(header_impl->header_blocks,
-             key , AXIS2_HASH_KEY_STRING, header_block);
-    }
-    else
-    {
-            header_impl->header_blocks = axis2_hash_make(env);
-            axis2_hash_set(header_impl->header_blocks,
-                key , AXIS2_HASH_KEY_STRING, header_block);
-    }
-    
     return header_block;
 } 
 axis2_hash_t* AXIS2_CALL 
