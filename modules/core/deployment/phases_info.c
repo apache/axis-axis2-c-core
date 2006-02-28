@@ -169,71 +169,24 @@ axis2_phases_info_free (axis2_phases_info_t *phases_info,
     
     if(phases_info_impl->in_phases)
     {
-        int i = 0;
-        int size = 0;
-
-        size = AXIS2_ARRAY_LIST_SIZE(phases_info_impl->in_phases, env);
-        for(i = 0; i < size; i++)
-        {
-            axis2_char_t *phase_name = NULL;
-            
-            phase_name = AXIS2_ARRAY_LIST_GET(phases_info_impl->in_phases, env, i);
-            AXIS2_FREE((*env)->allocator, phase_name);
-        }
         AXIS2_ARRAY_LIST_FREE(phases_info_impl->in_phases, env);
         phases_info_impl->in_phases = NULL;
     }
     
     if(phases_info_impl->out_phases)
     {
-        int i = 0;
-        int size = 0;
-
-        size = AXIS2_ARRAY_LIST_SIZE(phases_info_impl->out_phases, env);
-        for(i = 0; i < size; i++)
-        {
-            axis2_char_t *phase_name = NULL;
-            
-            phase_name = AXIS2_ARRAY_LIST_GET(phases_info_impl->out_phases, 
-                env, i);
-            AXIS2_FREE((*env)->allocator, phase_name);
-        }
         AXIS2_ARRAY_LIST_FREE(phases_info_impl->out_phases, env);
         phases_info_impl->out_phases = NULL;
     }
     
     if(phases_info_impl->in_faultphases)
     {
-        int i = 0;
-        int size = 0;
-
-        size = AXIS2_ARRAY_LIST_SIZE(phases_info_impl->in_faultphases, env);
-        for(i = 0; i < size; i++)
-        {
-            axis2_char_t *phase_name = NULL;
-            
-            phase_name = AXIS2_ARRAY_LIST_GET(phases_info_impl->in_faultphases, 
-                env, i);
-            AXIS2_FREE((*env)->allocator, phase_name);
-        }
         AXIS2_ARRAY_LIST_FREE(phases_info_impl->in_faultphases, env);
         phases_info_impl->in_faultphases = NULL;
     }
 
     if(phases_info_impl->out_faultphases)
     {
-        int i = 0;
-        int size = 0;
-
-        size = AXIS2_ARRAY_LIST_SIZE(phases_info_impl->out_faultphases, env);
-        for(i = 0; i < size; i++)
-        {
-            axis2_char_t *phase_name = NULL;
-            
-            phase_name = AXIS2_ARRAY_LIST_GET(phases_info_impl->out_faultphases, 
-                env, i);
-            AXIS2_FREE((*env)->allocator, phase_name);
-        }
         AXIS2_ARRAY_LIST_FREE(phases_info_impl->out_faultphases, env);
         phases_info_impl->out_faultphases = NULL;
     }
@@ -264,20 +217,9 @@ axis2_phases_info_set_in_phases(axis2_phases_info_t *phases_info,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, in_phases, AXIS2_FAILURE);
     phases_info_impl = AXIS2_INTF_TO_IMPL(phases_info);
+
     if(phases_info_impl->in_phases)
     {
-        int i = 0;
-        int size = 0;
-
-        size = AXIS2_ARRAY_LIST_SIZE(phases_info_impl->in_phases, env);
-        for(i = 0; i < size; i++)
-        {
-            axis2_char_t *phase_name = NULL;
-            
-            phase_name = AXIS2_ARRAY_LIST_GET(phases_info_impl->in_phases, env,
-                 i);
-            AXIS2_FREE((*env)->allocator, phase_name);
-        }
         AXIS2_ARRAY_LIST_FREE(phases_info_impl->in_phases, env);
         phases_info_impl->in_phases = NULL;
     }
@@ -299,18 +241,6 @@ axis2_phases_info_set_out_phases(axis2_phases_info_t *phases_info,
     phases_info_impl = AXIS2_INTF_TO_IMPL(phases_info);
     if(phases_info_impl->out_phases)
     {
-        int i = 0;
-        int size = 0;
-
-        size = AXIS2_ARRAY_LIST_SIZE(phases_info_impl->out_phases, env);
-        for(i = 0; i < size; i++)
-        {
-            axis2_char_t *phase_name = NULL;
-            
-            phase_name = AXIS2_ARRAY_LIST_GET(phases_info_impl->out_phases, 
-                env, i);
-            AXIS2_FREE((*env)->allocator, phase_name);
-        }
         AXIS2_ARRAY_LIST_FREE(phases_info_impl->out_phases, env);
         phases_info_impl->out_phases = NULL;
     }
@@ -331,18 +261,6 @@ axis2_phases_info_set_in_faultphases(axis2_phases_info_t *phases_info,
     phases_info_impl = AXIS2_INTF_TO_IMPL(phases_info);
     if(phases_info_impl->in_faultphases)
     {
-        int i = 0;
-        int size = 0;
-
-        size = AXIS2_ARRAY_LIST_SIZE(phases_info_impl->in_faultphases, env);
-        for(i = 0; i < size; i++)
-        {
-            axis2_char_t *phase_name = NULL;
-            
-            phase_name = AXIS2_ARRAY_LIST_GET(phases_info_impl->in_faultphases, 
-                env, i);
-            AXIS2_FREE((*env)->allocator, phase_name);
-        }
         AXIS2_ARRAY_LIST_FREE(phases_info_impl->in_faultphases, env);
         phases_info_impl->in_faultphases = NULL;
     }
@@ -363,18 +281,6 @@ axis2_phases_info_set_out_faultphases(axis2_phases_info_t *phases_info,
     phases_info_impl = AXIS2_INTF_TO_IMPL(phases_info);
     if(phases_info_impl->out_faultphases)
     {
-        int i = 0;
-        int size = 0;
-
-        size = AXIS2_ARRAY_LIST_SIZE(phases_info_impl->out_faultphases, env);
-        for(i = 0; i < size; i++)
-        {
-            axis2_char_t *phase_name = NULL;
-            
-            phase_name = AXIS2_ARRAY_LIST_GET(phases_info_impl->out_faultphases, 
-                env, i);
-            AXIS2_FREE((*env)->allocator, phase_name);
-        }
         AXIS2_ARRAY_LIST_FREE(phases_info_impl->out_faultphases, env);
         phases_info_impl->out_faultphases = NULL;
     } 
