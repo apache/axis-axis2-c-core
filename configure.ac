@@ -217,6 +217,7 @@ AC_CONFIG_FILES([Makefile \
     test/itest/Makefile \
     test/itest/whitemesa/Makefile \
     test/itest/whitemesa/round1/Makefile \
+    test/tools/Makefile \
     ides/Makefile \
     ides/anjuta/Makefile
     ])
