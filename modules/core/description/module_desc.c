@@ -264,16 +264,13 @@ axis2_module_desc_free(axis2_module_desc_t *module_desc,
     
     module_desc_impl = AXIS2_INTF_TO_IMPL(module_desc);
     
-    if(NULL != module_desc->ops)
-        AXIS2_FREE((*env)->allocator, module_desc->ops);
-    
-    if(NULL == module_desc->params)
+    if(module_desc->params)
     {
         AXIS2_PARAM_CONTAINER_FREE(module_desc->params, env);
         module_desc->params = NULL;
     }
     
-    if(NULL == module_desc->flow_container)
+    if(module_desc->flow_container)
     {
         AXIS2_FLOW_CONTAINER_FREE(module_desc->flow_container, env);
         module_desc->flow_container = NULL;
@@ -281,13 +278,13 @@ axis2_module_desc_free(axis2_module_desc_t *module_desc,
     
     module_desc_impl->parent = NULL;
     
-    if(NULL != module_desc_impl->qname)
+    if(module_desc_impl->qname)
     {
         AXIS2_QNAME_FREE(module_desc_impl->qname, env);
         module_desc_impl->qname = NULL;
     }
     
-    if(NULL != module_desc_impl->ops)
+    if(module_desc_impl->ops)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
@@ -308,9 +305,17 @@ axis2_module_desc_free(axis2_module_desc_t *module_desc,
         module_desc_impl->ops = NULL;
     }
     
+    if(module_desc->ops)
+    {
+        AXIS2_FREE((*env)->allocator, module_desc->ops);
+        module_desc->ops = NULL;
+    }
+    
     if(module_desc_impl)
+    {
         AXIS2_FREE((*env)->allocator, module_desc_impl);
-    module_desc_impl = NULL;
+        module_desc_impl = NULL;
+    }
     
     return AXIS2_SUCCESS;
 }

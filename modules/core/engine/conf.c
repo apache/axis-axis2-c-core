@@ -653,6 +653,7 @@ axis2_conf_free (axis2_conf_t *conf,
                  hi = axis2_hash_next ( env, hi))
         {
             axis2_module_desc_t *module_desc = NULL;
+
             axis2_hash_this (hi, NULL, NULL, &val);
             module_desc = (axis2_module_desc_t *) val;
             if (module_desc)
