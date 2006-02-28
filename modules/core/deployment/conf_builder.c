@@ -435,7 +435,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
         
         handler = AXIS2_DISP_GET_BASE(disp_dll, env);
         handler_desc = AXIS2_HANDLER_GET_HANDLER_DESC(handler, env);
-        AXIS2_HANDLER_DESC_SET_PARAM(handler_desc, env, impl_info_param);
+        AXIS2_HANDLER_DESC_ADD_PARAM(handler_desc, env, impl_info_param);
         
         /*disptachClas.getHandlerDesc().setParent(axisConfiguration); */
         AXIS2_PHASE_ADD_HANDLER_AT(disp_phase, env, count, handler);
