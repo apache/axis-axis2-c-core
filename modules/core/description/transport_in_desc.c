@@ -24,37 +24,30 @@
  */ 
 typedef struct axis2_transport_in_desc_impl
 {
-	axis2_transport_in_desc_t transport_in;
-    
+	axis2_transport_in_desc_t transport_in;    
     /** 
      * Field flowInclude 
      * This will have a shallow copy and will not be freed by the descructor
      */
     axis2_flow_t *inflow;
-    
     /** 
      * Field flowInclude 
      * This will have a shallow copy and will not be freed by the descructor
      */
     axis2_flow_t *faultflow;
-        
     /** 
      * Field name
      * This will have a shallow copy and will not be freed by the descructor
      */
     axis2_qname_t *qname;
-    
     /**
      * This will have a shallow copy and will not be freed by the descructor
      */
     axis2_transport_receiver_t *recv;
-    
     /** to store handler in inFlow */
     axis2_phase_t *in_phase;
-        
     /** to store handler Fault in inFlow */
     axis2_phase_t *faultphase;
-    
     
 } axis2_transport_in_desc_impl_t;
 
@@ -121,6 +114,21 @@ axis2_transport_in_desc_set_faultphase(axis2_transport_in_desc_t *transport_in,
                                         axis2_env_t **env,
                                         axis2_phase_t *faultphase);
 
+axis2_status_t AXIS2_CALL
+axis2_transport_in_desc_add_param(axis2_transport_in_desc_t *transport_in_desc,
+                                    axis2_env_t **env,
+                                    axis2_param_t *param);
+
+axis2_param_t *AXIS2_CALL
+axis2_transport_in_desc_get_param(axis2_transport_in_desc_t *transport_in_desc,
+                                    axis2_env_t **env,
+                                    axis2_char_t *param_name);
+
+axis2_bool_t AXIS2_CALL
+axis2_transport_in_desc_is_param_locked (axis2_transport_in_desc_t *
+                                                transport_in_desc,
+                                            axis2_env_t **env,
+                                            axis2_char_t *param_name);
 
 /************************** End of function prototypes ************************/
 
@@ -196,6 +204,12 @@ axis2_transport_in_desc_create_with_qname (axis2_env_t **env,
         axis2_transport_in_desc_get_faultphase;
     transport_in_impl->transport_in.ops->set_faultphase = 
         axis2_transport_in_desc_set_faultphase;
+    transport_in_impl->transport_in.ops->add_param = 
+    axis2_transport_in_desc_add_param;
+    transport_in_impl->transport_in.ops->get_param = 
+    axis2_transport_in_desc_get_param;
+    transport_in_impl->transport_in.ops->is_param_locked = 
+    axis2_transport_in_desc_is_param_locked;
     
 	return &(transport_in_impl->transport_in);
 }
@@ -218,10 +232,10 @@ axis2_transport_in_desc_free (axis2_transport_in_desc_t *transport_in,
         transport_in->ops = NULL;
     }
     
-    if(NULL != transport_in_impl->transport_in.param_container)
+    if(NULL != transport_in->param_container)
     {
-        AXIS2_PARAM_CONTAINER_FREE(transport_in_impl->transport_in.param_container, env);
-        transport_in_impl->transport_in.param_container = NULL;
+        AXIS2_PARAM_CONTAINER_FREE(transport_in->param_container, env);
+        transport_in->param_container = NULL;
     }
     
     if(NULL != transport_in_impl->qname)
@@ -422,4 +436,41 @@ axis2_transport_in_desc_set_faultphase(axis2_transport_in_desc_t *transport_in,
     transport_in_impl->faultphase = faultphase;
     return AXIS2_SUCCESS;
     
+}
+
+axis2_status_t AXIS2_CALL
+axis2_transport_in_desc_add_param(axis2_transport_in_desc_t *transport_in_desc,
+                                    axis2_env_t **env,
+                                    axis2_param_t *param)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, param, AXIS2_FAILURE);    
+    
+    return AXIS2_PARAM_CONTAINER_ADD_PARAM(transport_in_desc->
+            param_container, env, param);
+}
+
+axis2_param_t *AXIS2_CALL
+axis2_transport_in_desc_get_param(axis2_transport_in_desc_t *transport_in_desc,
+                                    axis2_env_t **env,
+                                    axis2_char_t *param_name)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, param_name, NULL);    
+    
+    return AXIS2_PARAM_CONTAINER_GET_PARAM(transport_in_desc->param_container, 
+        env, param_name);
+}
+
+axis2_bool_t AXIS2_CALL
+axis2_transport_in_desc_is_param_locked (axis2_transport_in_desc_t *
+                                                transport_in_desc,
+                                            axis2_env_t **env,
+                                            axis2_char_t *param_name)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, param_name, AXIS2_FAILURE);    
+
+    return AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(transport_in_desc->
+        param_container, env, param_name);
 }

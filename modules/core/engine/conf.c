@@ -608,14 +608,15 @@ axis2_conf_free (axis2_conf_t *conf,
                  hi = axis2_hash_next ( env, hi))
         {
             axis2_transport_in_desc_t *transport_in = NULL;
+
             axis2_hash_this (hi, NULL, NULL, &val);
             transport_in = (axis2_transport_in_desc_t *) val;
             if (transport_in)
-               AXIS2_TRANSPORT_IN_DESC_FREE (transport_in, env);
-            
+            {
+                AXIS2_TRANSPORT_IN_DESC_FREE (transport_in, env);
+                transport_in = NULL;
+            }
             val = NULL;
-            transport_in = NULL;
-               
         }
         axis2_hash_free(config_impl->transports_in, env);
         config_impl->transports_in = NULL;

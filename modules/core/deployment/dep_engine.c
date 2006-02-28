@@ -1281,7 +1281,7 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     dll_path = NULL;
     
     AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_MODULE_DLL);
-    impl_info_param = axis2_param_create(env, NULL, NULL);
+    impl_info_param = axis2_param_create(env, read_in_dll, NULL);
     AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
     impl_info_param->ops->value_free = axis2_dll_desc_free_void_arg;
     axis2_class_loader_init(env);

@@ -719,7 +719,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
              */
             AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
             AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
-            impl_info_param = axis2_param_create(env, NULL, NULL); 
+            impl_info_param = axis2_param_create(env, class_name, NULL); 
             if(!impl_info_param)
             {
                 return AXIS2_FAILURE;
@@ -728,7 +728,8 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             impl_info_param->ops->value_free = axis2_dll_desc_free_void_arg;
             axis2_class_loader_init(env);
             transport_sender = axis2_class_loader_create_dll(env, impl_info_param);
-            AXIS2_PARAM_FREE(impl_info_param, env);
+            AXIS2_TRANSPORT_OUT_DESC_ADD_PARAM(transport_out, env, 
+                    impl_info_param);
             status = AXIS2_TRANSPORT_OUT_DESC_SET_SENDER(transport_out, env, 
                 transport_sender);
             if(AXIS2_SUCCESS != status)
@@ -910,15 +911,15 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                  * set full dll path here instead of dll lib name only */
                 AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
                 AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
-                impl_info_param = axis2_param_create(env, NULL, NULL);
+                impl_info_param = axis2_param_create(env, class_name, NULL);
             
                 AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc); 
-                impl_info_param->ops->value_free = 
-                    axis2_dll_desc_free_void_arg;
+                impl_info_param->ops->value_free = axis2_dll_desc_free_void_arg;
                 axis2_class_loader_init(env);
                 recv = (axis2_transport_receiver_t *) 
                     axis2_class_loader_create_dll(env, impl_info_param);
-                AXIS2_PARAM_FREE(impl_info_param, env);
+                AXIS2_TRANSPORT_IN_DESC_ADD_PARAM(transport_in, env, 
+                    impl_info_param);
                 stat = AXIS2_TRANSPORT_IN_DESC_SET_RECV(transport_in, env, 
                     recv);
             }

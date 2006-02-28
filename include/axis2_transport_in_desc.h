@@ -127,6 +127,20 @@ AXIS2_DECLARE_DATA struct axis2_transport_in_desc_ops
     set_faultphase) (struct axis2_transport_in_desc *transport_in,
                                             axis2_env_t **env,
                                             struct axis2_phase *faultphase);
+    axis2_status_t (AXIS2_CALL *
+    add_param) (axis2_transport_in_desc_t *transport_in_desc,
+                axis2_env_t **env,
+                axis2_param_t *param);
+
+    axis2_param_t *(AXIS2_CALL *
+    get_param) (axis2_transport_in_desc_t *transport_in_desc,
+                axis2_env_t **env,
+                axis2_char_t *param_name);
+
+    axis2_bool_t (AXIS2_CALL *
+    is_param_locked) (axis2_transport_in_desc_t *transport_in_desc,
+                      axis2_env_t **env,
+                      axis2_char_t *param_name);
         
 
 };
@@ -188,6 +202,15 @@ axis2_transport_in_desc_create_with_qname (axis2_env_t **env,
         
 #define AXIS2_TRANSPORT_IN_DESC_SET_FAULTPHASE(transport_in_desc, env, faultphase) \
 		((transport_in_desc)->ops->set_faultphase (transport_in_desc, env, faultphase))
+
+#define AXIS2_TRANSPORT_IN_DESC_ADD_PARAM(transport_in_desc, env, param) \
+		((transport_in_desc)->ops->add_param (transport_in_desc, env, param)) 
+
+#define AXIS2_TRANSPORT_IN_DESC_GET_PARAM(transport_in_desc, env, param_name) \
+		((transport_in_desc)->ops->get_param (transport_in_desc, env, param_name)) 
+
+#define AXIS2_TRANSPORT_IN_DESC_IS_PARAM_LOCKED(transport_in_desc, env, param_name) \
+		((transport_in_desc)->ops->is_param_locked (transport_in_desc, env, param_name)) 
 
 /*************************** End of function macros ***************************/
 
