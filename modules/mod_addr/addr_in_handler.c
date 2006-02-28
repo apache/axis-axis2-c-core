@@ -502,7 +502,6 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
                        
                    }                       
                 }                    
-                AXIS2_OM_CHILD_ELEMENT_ITERATOR_FREE(ref_param_iter, env);
             }
             
         }else if(axis2_addr_in_check_element(env, wsa_meta_qn, child_qn))        
