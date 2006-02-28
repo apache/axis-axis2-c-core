@@ -146,8 +146,6 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
     if(buffer)
          AXIS2_FREE((*env)->allocator, buffer);
     AXIS2_SOAP_ENVELOPE_FREE(soap_envelope, env);
-    AXIS2_SOAP_BUILDER_FREE(soap_builder, env);
-    AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
     AXIS2_OM_OUTPUT_FREE(om_output, env);
     return AXIS2_SUCCESS;
     
