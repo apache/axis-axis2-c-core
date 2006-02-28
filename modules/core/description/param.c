@@ -104,8 +104,8 @@ axis2_param_create(axis2_env_t **env,
         return NULL;        
     }
     
-    param_impl->name = name; /* shallow copy */
-    param_impl->value = value; /* shallow copy */
+    param_impl->name = AXIS2_STRDUP(name, env);
+    param_impl->value = value; /* shallow copy.*/
     param_impl->locked = AXIS2_FALSE;
     param_impl->type = AXIS2_TEXT_PARAM;
     param_impl->param_element = NULL;
