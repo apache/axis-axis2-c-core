@@ -812,7 +812,14 @@ AXIS2_CALL axis2_om_stax_builder_free(axis2_om_stax_builder_t *builder,
         AXIS2_OM_DOCUMENT_FREE(builder_impl->document, env);
         builder_impl->document = NULL;
     }
-
+    else
+    {
+        if(NULL != builder_impl->root_node )
+        {
+            AXIS2_OM_NODE_FREE_TREE(builder_impl->root_node, env);
+            builder_impl->root_node = NULL;
+        }
+    }
 	if(builder->ops)
 	{
 		AXIS2_FREE ((*env)->allocator, builder->ops);

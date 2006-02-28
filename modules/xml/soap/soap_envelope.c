@@ -272,8 +272,17 @@ axis2_soap_envelope_free(axis2_soap_envelope_t *envelope,
     }
     if(envelope_impl->om_ele_node)
     {
-        AXIS2_OM_NODE_FREE_TREE(envelope_impl->om_ele_node, env);
-        envelope_impl->om_ele_node = NULL;
+        if(envelope_impl->soap_builder)
+        {
+            AXIS2_SOAP_BUILDER_FREE(envelope_impl->soap_builder, env);
+            envelope_impl->soap_builder = NULL;
+            envelope_impl->om_ele_node = NULL;
+        }
+        else
+        {
+            AXIS2_OM_NODE_FREE_TREE(envelope_impl->om_ele_node, env); 
+            envelope_impl->om_ele_node = NULL;
+        }
     }
     
     AXIS2_FREE((*env)->allocator, envelope_impl);

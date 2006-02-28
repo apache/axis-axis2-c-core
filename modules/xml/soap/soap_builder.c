@@ -252,6 +252,11 @@ axis2_soap_builder_free(axis2_soap_builder_t *builder,
             AXIS2_SOAP12_BUILDER_HELPER_FREE((axis2_soap12_builder_helper_t *)(builder_impl->builder_helper), env);
         }
     }
+    if(builder_impl->om_builder)
+    {
+        AXIS2_OM_STAX_BUILDER_FREE(builder_impl->om_builder, env);
+        builder_impl->om_builder = NULL;
+    }
     if(builder->ops)
     {
         AXIS2_FREE((*env)->allocator, builder->ops);
@@ -456,14 +461,12 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             axis2_soap_header_t *soap_header = NULL;
             if(builder_impl->header_present)
             {
-                printf("AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED");
                 AXIS2_ERROR_SET((*env)->error, 
                     AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED, AXIS2_FAILURE);
                     return AXIS2_FAILURE;
             }
             if(builder_impl->body_present)
             {
-                printf("AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER");
                 AXIS2_ERROR_SET((*env)->error,
                     AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER, AXIS2_FAILURE);
                 return  AXIS2_FAILURE;                                              
@@ -486,7 +489,6 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             axis2_soap_body_t *soap_body = NULL;
             if(builder_impl->body_present)
             {
-                printf("AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED");
                 AXIS2_ERROR_SET((*env)->error, 
                     AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
                 return AXIS2_FAILURE;                   
@@ -504,7 +506,6 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
         }
         else
         {
-            printf("AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY");
             AXIS2_ERROR_SET((*env)->error,
                     AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY, AXIS2_FAILURE);
             return AXIS2_FAILURE;                                            
