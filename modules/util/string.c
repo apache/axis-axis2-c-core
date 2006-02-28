@@ -28,7 +28,8 @@ axis2_strdup (const void *ptr, axis2_env_t **env)
     if (ptr)
     {
         int len = strlen(ptr);
-        char* str = (char*) AXIS2_MALLOC( (*env)->allocator, sizeof(char) * (len + 1 ));
+        axis2_char_t * str = (axis2_char_t *) AXIS2_MALLOC( (*env)->allocator, 
+            sizeof(axis2_char_t) * (len + 1 ));
         if (!str)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

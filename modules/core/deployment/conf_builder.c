@@ -397,6 +397,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
         axis2_disp_t *disp_dll = NULL;
         axis2_dll_desc_t *dll_desc = NULL;
         axis2_param_t *impl_info_param = NULL;
+        axis2_handler_desc_t *handler_desc = NULL;
         axis2_handler_t *handler = NULL;
         
         found_disp = AXIS2_TRUE;
@@ -420,19 +421,21 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
          * set full dll path here instead of dll lib name only */
         AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
         AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_HANDLER_DLL);
-        impl_info_param = axis2_param_create(env, NULL, NULL);
+        impl_info_param = axis2_param_create(env, class_name, NULL);
         if(!impl_info_param)
         {
             AXIS2_PHASE_FREE(disp_phase, env);
             return AXIS2_FAILURE;
         }
         AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc); 
+        impl_info_param->ops->value_free = axis2_dll_desc_free_void_arg;
         axis2_class_loader_init(env);
         disp_dll = (axis2_disp_t *) axis2_class_loader_create_dll(env, 
             impl_info_param);
-        AXIS2_PARAM_FREE(impl_info_param, env);
         
         handler = AXIS2_DISP_GET_BASE(disp_dll, env);
+        handler_desc = AXIS2_HANDLER_GET_HANDLER_DESC(handler, env);
+        AXIS2_HANDLER_DESC_SET_PARAM(handler_desc, env, impl_info_param);
         
         /*disptachClas.getHandlerDesc().setParent(axisConfiguration); */
         AXIS2_PHASE_ADD_HANDLER_AT(disp_phase, env, count, handler);

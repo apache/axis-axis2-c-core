@@ -235,8 +235,7 @@ axis2_dll_desc_set_name(axis2_dll_desc_t *dll_desc,
     axis2_dll_desc_impl_t *dll_desc_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
-    
+    AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE); 
     dll_desc_impl = AXIS2_INTF_TO_IMPL(dll_desc);
     
     if(dll_desc_impl->path_qualified_dll_name)
