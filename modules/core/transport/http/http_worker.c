@@ -26,6 +26,7 @@
 #include <axis2_op_ctx.h>
 #include <axis2_engine.h>
 #include <axis2_uuid_gen.h>
+#include <axis2_url.h>
 
 /** 
  * @brief HTTP Worker struct impl
@@ -37,6 +38,7 @@ struct axis2_http_worker_impl
 {
 	axis2_http_worker_t http_worker;
 	axis2_conf_ctx_t *conf_ctx;
+    int svr_port;
 };
 
 #define AXIS2_INTF_TO_IMPL(http_worker) ((axis2_http_worker_impl_t *)\
@@ -68,6 +70,9 @@ axis2_hash_t* AXIS2_CALL
 axis2_http_worker_get_headers(axis2_http_worker_t *http_worker, 
 							axis2_env_t **env, 
 							axis2_http_simple_request_t *request);
+                            
+axis2_status_t axis2_http_worker_set_svr_port(axis2_http_worker_t *worker, 
+                            axis2_env_t **env, int port);
 	
 axis2_status_t AXIS2_CALL 
 axis2_http_worker_free(axis2_http_worker_t *http_worker, 
@@ -89,6 +94,7 @@ axis2_http_worker_create (axis2_env_t **env, axis2_conf_ctx_t *conf_ctx)
         return NULL;
 	}
     http_worker_impl->conf_ctx = conf_ctx;
+    http_worker_impl->svr_port = 9090; /* default - must set later*/
     
     http_worker_impl->http_worker.ops = AXIS2_MALLOC((*env)->allocator,
         sizeof(axis2_http_worker_ops_t));
@@ -100,7 +106,9 @@ axis2_http_worker_create (axis2_env_t **env, axis2_conf_ctx_t *conf_ctx)
 	}
     
     http_worker_impl->http_worker.ops->process_request = 
-                                    axis2_http_worker_process_request;
+                        axis2_http_worker_process_request;
+    http_worker_impl->http_worker.ops->set_svr_port = 
+                        axis2_http_worker_set_svr_port;
     http_worker_impl->http_worker.ops->free = axis2_http_worker_free;
     
 	return &(http_worker_impl->http_worker);
@@ -144,6 +152,8 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	axis2_http_header_t *encoding_header = NULL;
 	axis2_char_t *encoding_header_value = NULL;
 	axis2_op_ctx_t *op_ctx = NULL;
+    axis2_char_t *svr_ip = NULL;
+    axis2_url_t *request_url = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svr_conn, AXIS2_FAILURE);
@@ -218,6 +228,12 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 		axis2_http_worker_set_transport_out_config(http_worker, env, conf_ctx,
 						response);
 	}
+    svr_ip = AXIS2_SIMPLE_HTTP_SVR_CONN_GET_SVR_IP(svr_conn, env);
+    request_url = axis2_url_create(env, "http", svr_ip, 
+                        http_worker_impl->svr_port, 
+                        AXIS2_HTTP_REQUEST_LINE_GET_URI(
+                        AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
+                        simple_request, env), env));
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_OUT, out_stream, 
 						AXIS2_FALSE);
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS, 
@@ -243,9 +259,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
                         (env, msg_ctx, request_body, out_stream,
 						AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_TYPE(
 						simple_request, env) ,soap_action,
-						AXIS2_HTTP_REQUEST_LINE_GET_URI(
-						AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
-						simple_request, env), env),
+                        AXIS2_URL_TO_EXTERNAL_FORM(request_url, env),
                         conf_ctx, 
                         axis2_http_transport_utils_get_request_params(env,
 						AXIS2_HTTP_REQUEST_LINE_GET_URI(
@@ -287,9 +301,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
                         (env, msg_ctx, request_body, out_stream,
 						AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_TYPE(
 						simple_request, env) , content_length, soap_action,
-						AXIS2_HTTP_REQUEST_LINE_GET_URI
-						(AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
-						simple_request, env), env));
+                        AXIS2_URL_TO_EXTERNAL_FORM(request_url, env));
 		if(status == AXIS2_FAILURE)
 		{
 			axis2_msg_ctx_t *fault_ctx = NULL;
@@ -521,4 +533,12 @@ axis2_http_worker_get_headers(axis2_http_worker_t *http_worker,
 						AXIS2_HASH_KEY_STRING, tmp_hdr);
 	}
 	return header_map;
+}
+
+axis2_status_t axis2_http_worker_set_svr_port(axis2_http_worker_t *worker, 
+                                              axis2_env_t **env, int port)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(worker)->svr_port = port;
+    return AXIS2_SUCCESS;
 }

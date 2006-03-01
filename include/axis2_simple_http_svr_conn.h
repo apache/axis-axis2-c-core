@@ -79,6 +79,9 @@ AXIS2_DECLARE_DATA struct axis2_simple_http_svr_conn_ops
         axis2_status_t (AXIS2_CALL *set_snd_timeout) 
                         (axis2_simple_http_svr_conn_t *svr_conn, 
                         axis2_env_t **env, int timeout);
+        axis2_char_t* (AXIS2_CALL *get_svr_ip) 
+                        (axis2_simple_http_svr_conn_t *svr_conn, 
+                        axis2_env_t **env);
         axis2_status_t (AXIS2_CALL *free) 
                         (axis2_simple_http_svr_conn_t *svr_conn, 
                         axis2_env_t **env);
@@ -120,6 +123,8 @@ axis2_simple_http_svr_conn_create(axis2_env_t **env, int sockfd);
                     ((svr_conn)->ops->set_snd_timeout(svr_conn, env, timeout))
 #define AXIS2_SIMPLE_HTTP_SVR_CONN_SET_RCV_TIMEOUT(svr_conn, env, timeout) \
                     ((svr_conn)->ops->set_rcv_timeout(svr_conn, env, timeout))
+#define AXIS2_SIMPLE_HTTP_SVR_CONN_GET_SVR_IP(svr_conn, env) \
+                    ((svr_conn)->ops->get_svr_ip(svr_conn, env))
 #define AXIS2_SIMPLE_HTTP_SVR_CONN_FREE(svr_conn, env) \
                     ((svr_conn)->ops->free(svr_conn, env))
     

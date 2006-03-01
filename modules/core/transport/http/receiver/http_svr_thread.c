@@ -195,8 +195,8 @@ axis2_http_svr_thread_run(axis2_http_svr_thread_t *svr_thread,
 		arg_list->socket = socket;
 		arg_list->worker = svr_thread_impl->worker;
 #ifdef AXIS2_SVR_MULTI_THREADED
-		worker_thread = AXIS2_THREAD_POOL_GET_THREAD((*env)->thread_pool, worker_func, 
-						(void*)arg_list);
+		worker_thread = AXIS2_THREAD_POOL_GET_THREAD((*env)->thread_pool, 
+                        worker_func, (void*)arg_list);
 		if(NULL == worker_thread)
 		{
 			AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread creation failed"

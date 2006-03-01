@@ -294,7 +294,7 @@ axis2_http_transport_utils_process_http_post_request
     soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, 
 						env);
     
-    if (!soap_body)
+    if (NULL == soap_body)
         return AXIS2_FAILURE;
     
 	if(AXIS2_TRUE == AXIS2_SOAP_BODY_HAS_FAULT(soap_body, env))
@@ -913,7 +913,6 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
             return NULL;
         }
         soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
-        /* TODO have to free the buider, xml reader and om builder */
         return soap_envelope;
     }
     /**

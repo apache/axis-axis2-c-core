@@ -180,6 +180,7 @@ axis2_http_server_start(axis2_transport_receiver_t *server, axis2_env_t **env)
 		return AXIS2_FAILURE;
 	}
 	worker = axis2_http_worker_create(env, server_impl->conf_ctx);
+    AXIS2_HTTP_WORKER_SET_SVR_PORT(worker, env, server_impl->port);
 	if(NULL == worker)
 	{
 		AXIS2_HTTP_SVR_THREAD_FREE(server_impl->svr_thread, env);

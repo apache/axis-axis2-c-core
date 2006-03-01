@@ -89,6 +89,10 @@ int AXIS2_CALL
 axis2_simple_http_svr_conn_read_request_body
                         (axis2_simple_http_svr_conn_t *svr_conn, 
                         axis2_env_t **env, axis2_char_t *buffer, int size);
+                        
+axis2_char_t *axis2_simple_http_svr_conn_get_svr_ip
+                        (axis2_simple_http_svr_conn_t *svr_conn, 
+                        axis2_env_t **env);
                                 
 axis2_status_t AXIS2_CALL 
 axis2_simple_http_svr_conn_free(axis2_simple_http_svr_conn_t *svr_conn, 
@@ -152,6 +156,8 @@ axis2_simple_http_svr_conn_create (axis2_env_t **env, int sockfd)
 						axis2_simple_http_svr_conn_set_rcv_timeout;
 	svr_conn_impl->svr_conn.ops->set_snd_timeout = 
 						axis2_simple_http_svr_conn_set_snd_timeout;
+    svr_conn_impl->svr_conn.ops->get_svr_ip =
+                        axis2_simple_http_svr_conn_get_svr_ip;
     svr_conn_impl->svr_conn.ops->free = axis2_simple_http_svr_conn_free;
     return &(svr_conn_impl->svr_conn);
 }
@@ -474,4 +480,13 @@ axis2_simple_http_svr_conn_set_snd_timeout
 	return axis2_network_handler_set_sock_option(env, 
 						AXIS2_INTF_TO_IMPL(svr_conn)->socket, SO_SNDTIMEO, 
 						timeout);
+}
+
+axis2_char_t *axis2_simple_http_svr_conn_get_svr_ip(
+                        axis2_simple_http_svr_conn_t *svr_conn, 
+                        axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return axis2_network_handler_get_svr_ip(env, 
+                        AXIS2_INTF_TO_IMPL(svr_conn)->socket);
 }

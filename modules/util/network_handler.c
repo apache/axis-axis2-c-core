@@ -19,7 +19,6 @@
 #include <stdio.h>
 #include <axis2_network_handler.h>
 #include <fcntl.h>
-#include <axis2_platform_auto_sense.h>
 
 
 #if defined(WIN32)
@@ -238,3 +237,19 @@ axis2_bool_t axis2_init_socket()
 	return 1;
 }
 #endif
+
+
+axis2_char_t* axis2_network_handler_get_svr_ip(axis2_env_t **env, 
+                        axis2_socket_t socket)
+{
+    struct sockaddr_in addr;
+    socklen_t len = sizeof(addr);
+    char *ret = NULL;
+    memset(&addr, 0, sizeof(addr));
+    if(getsockname(socket, (struct sockaddr *)&addr, &len) < 0)
+    {
+        return NULL;
+    }
+    ret = inet_ntoa(addr.sin_addr);
+    return ret;
+}

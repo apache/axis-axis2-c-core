@@ -21,6 +21,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <sys/types.h>
+#include <axis2_platform_auto_sense.h>
 
 
 
@@ -78,6 +79,14 @@ axis2_network_handler_set_sock_option(axis2_env_t **env, int socket, int option,
  */						
 AXIS2_DECLARE(int)						
 axis2_network_handler_svr_socket_accept(axis2_env_t **env, int socket);
+
+/**
+ * Returns the ip address of the server associated with the socket
+ * @param socket valid socket (obtained by accept() or similar call)
+ * @return ip address asoociated with the socket or NULL
+ */
+AXIS2_DECLARE(axis2_char_t *)
+axis2_network_handler_get_svr_ip(axis2_env_t **env, axis2_socket_t socket);
 /** @} */
     
 #ifdef __cplusplus
