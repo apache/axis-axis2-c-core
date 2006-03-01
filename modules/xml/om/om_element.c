@@ -863,8 +863,15 @@ axis2_om_element_set_localname(axis2_om_element_t *om_element,
                                axis2_env_t **env,
                                const axis2_char_t *localname)
 {
+    axis2_om_element_impl_t *om_ele_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, localname, AXIS2_FAILURE);
+    om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
+    if(om_ele_impl->localname)
+    {
+        AXIS2_FREE((*env)->allocator, om_ele_impl->localname);
+        om_ele_impl->localname = NULL;
+    }
     AXIS2_INTF_TO_IMPL(om_element)->localname = 
         (axis2_char_t*)AXIS2_STRDUP(localname,env);
     return AXIS2_SUCCESS;        

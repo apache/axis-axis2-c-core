@@ -332,6 +332,7 @@ axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *envelope,
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
+    /*
     if(envelope_impl->soap_version && envelope_impl->soap_version != soap_version)
     {
         axis2_om_namespace_t *om_ns    = NULL;
@@ -351,6 +352,7 @@ axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *envelope,
         om_ns = axis2_om_namespace_create(env, uri, AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX);
         AXIS2_OM_ELEMENT_SET_NAMESPACE(env_ele, env, om_ns, envelope_impl->om_ele_node);
     }
+    */
     envelope_impl->soap_version = soap_version;
     return AXIS2_SUCCESS;
 }
@@ -475,7 +477,7 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                         fault_value_om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_value_om_node, env);
                         text = AXIS2_OM_ELEMENT_GET_TEXT(fault_value_om_ele, env, fault_value_om_node);
                         AXIS2_OM_ELEMENT_SET_TEXT(fault_code_om_ele, env, text, fault_code_om_node);
-                        
+                        AXIS2_FREE((*env)->allocator, text);
                         AXIS2_OM_NODE_FREE_TREE(fault_value_om_node, env);                                                                                              
                     }
                     fault_reason = AXIS2_SOAP_FAULT_GET_REASON(soap_fault, env);
@@ -500,7 +502,7 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                         
                         text = AXIS2_OM_ELEMENT_GET_TEXT(fault_text_om_ele, env, fault_text_om_node);
                         AXIS2_OM_ELEMENT_SET_TEXT( fault_reason_om_ele, env, text, fault_reason_om_node);   
-                        
+                        AXIS2_FREE((*env)->allocator, text); 
                         AXIS2_OM_NODE_FREE_TREE(fault_text_om_node, env);
                     }
                    
