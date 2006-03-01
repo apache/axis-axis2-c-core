@@ -794,6 +794,7 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
         len = AXIS2_STREAM_READ(in_stream, env, buffer, read_len);
         if(len > 0)
         {
+                buffer[len] = '\0';
             ((axis2_callback_info_t*)ctx)->unread_len -= len;
         }
         return len;
@@ -902,13 +903,6 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
         {
             AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
             om_builder = NULL;
-            xml_reader = NULL;
-            return NULL;
-        }
-		if(NULL == soap_builder)
-        {
-            AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
-			om_builder = NULL;
             xml_reader = NULL;
             return NULL;
         }
