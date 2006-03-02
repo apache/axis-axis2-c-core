@@ -227,8 +227,8 @@ axis2_http_transport_utils_process_http_post_request
 	else if(NULL != strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML))
 	{
 		is_soap11 = AXIS2_TRUE;
-		if(NULL != soap_action_header && AXIS2_STRLEN(soap_action_header)
-					> 0)
+		/*if(NULL != soap_action_header && AXIS2_STRLEN(soap_action_header)
+					> 0)*/
 		{
 			soap_builder = axis2_soap_builder_create(env, om_builder, 
 						AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
@@ -243,10 +243,9 @@ axis2_http_transport_utils_process_http_post_request
 					soap_builder, env);
 			if(NULL == soap_envelope)
 			{
-				AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+				AXIS2_SOAP_BUILDER_FREE(soap_builder, env);
 				om_builder = NULL;
 				xml_reader = NULL;
-				AXIS2_SOAP_BUILDER_FREE(soap_builder, env);
 				soap_builder = NULL;
 				return AXIS2_FAILURE;
 			}
@@ -775,6 +774,7 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
 	{
 		len = AXIS2_HTTP_CHUNKED_STREAM_READ(cb_ctx->chunked_stream, env, 
 						buffer, size);
+        buffer[len] = '\0';
 		return len;
 	}
 	else
@@ -794,7 +794,7 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
         len = AXIS2_STREAM_READ(in_stream, env, buffer, read_len);
         if(len > 0)
         {
-                buffer[len] = '\0';
+             buffer[len] = '\0';
             ((axis2_callback_info_t*)ctx)->unread_len -= len;
         }
         return len;
