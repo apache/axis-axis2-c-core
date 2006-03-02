@@ -92,7 +92,7 @@ extern "C"
   *  @{
  */
 
-typedef int (*AXIS2_FREE_VOID_ARG) (void *obj_to_be_freed, axis2_env_t **env);
+typedef int (AXIS2_CALL *AXIS2_FREE_VOID_ARG) (void *obj_to_be_freed, axis2_env_t **env);
 
 /** 
     * \brief Axis2 scopes

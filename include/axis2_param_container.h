@@ -48,7 +48,7 @@ struct axis2_param_container_ops;
  * type of function implemented. When the param value is set this function  
  * should also be assigned to param free function
  */
-typedef axis2_status_t (*AXIS2_PARAM_VALUE_FREE) (void *param, axis2_env_t **env);    
+typedef axis2_status_t (AXIS2_CALL *AXIS2_PARAM_VALUE_FREE)(void *param, axis2_env_t **env);    
 
 /** @defgroup axis2_param_container Parameter Container
  * @ingroup axis2_description

@@ -43,7 +43,7 @@ extern "C"
  * @param port port of the service
  * @return opened socket
  */ 
-AXIS2_DECLARE(int) 
+AXIS2_DECLARE(axis2_socket_t) 
 axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port);
 
 /**
@@ -51,7 +51,7 @@ axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port);
  * @param port port of the socket to be bound
  * @return creates server socket
  */ 
-AXIS2_DECLARE(int) 
+AXIS2_DECLARE(axis2_socket_t) 
 axis2_network_handler_create_server_socket(axis2_env_t **env, int port);
 
 /**
@@ -60,7 +60,7 @@ axis2_network_handler_create_server_socket(axis2_env_t **env, int port);
  * @return status code
  */
 AXIS2_DECLARE(axis2_status_t) 
-axis2_network_handler_close_socket (axis2_env_t **env, int socket);
+axis2_network_handler_close_socket (axis2_env_t **env, axis2_socket_t socket);
 
 /**
  * used to set up socket options such as timeouts, non-blocking ..etc
@@ -70,7 +70,7 @@ axis2_network_handler_close_socket (axis2_env_t **env, int socket);
  * @return status of the operations as axis2_status_t
  */
 AXIS2_DECLARE(axis2_status_t)
-axis2_network_handler_set_sock_option(axis2_env_t **env, int socket, int option,
+axis2_network_handler_set_sock_option(axis2_env_t **env, axis2_socket_t socket, int option,
 						int value);
 /**
  * Accepts remote connections for a server socket
@@ -78,7 +78,7 @@ axis2_network_handler_set_sock_option(axis2_env_t **env, int socket, int option,
  * @return created socket to handle the incoming client connection
  */						
 AXIS2_DECLARE(int)						
-axis2_network_handler_svr_socket_accept(axis2_env_t **env, int socket);
+axis2_network_handler_svr_socket_accept(axis2_env_t **env, axis2_socket_t socket);
 
 /**
  * Returns the ip address of the server associated with the socket
