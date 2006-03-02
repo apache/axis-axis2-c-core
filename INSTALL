@@ -24,6 +24,10 @@ Table of Contents
    Set AXIS2C_HOME environment variable pointing to the location where you have extracted Axis2C
         AXIS2C_HOME='/your_path_to_axis2c'
         export AXIS2C_HOME
+   Note: You will need to set AXIS2C_HOME only if you need to run axis2c samples or tests. The
+    reason is that from sample and test codes it used AXIS2C_HOME to get path to axis2c. To write
+    your own services or clients this is not a requirement.
+
 2. Run the simple axis server:
         cd /your_path_to_axis2c/bin
         ./axis2_http_server
@@ -47,14 +51,15 @@ NOTE: If you run into shared lib problems, set the LD_LIBRARY_PATH
 2. Set AXIS2C_HOME environment variable pointing to the location where you want to install Axis2C.
         AXIS2C_HOME='/your_desired_path_to_axis2c_installation'
         export AXIS2C_HOME
+NOTE: If you run into shared lib problems, set the LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib
+
 3. Then go to the folder where you extracted the source
         cd /your_path_to_axis2c_source
 4. Set parser location
-You need to set the following two environment variables to point to libxml2. 
+You need to set the following environment variable to point to libxml2. 
         LIBXML2_INCLUDE
-        LIBXML2_LIB
-If you are using the default installation of libxml2, usually those are
-LIBXML2_LIB=/usr/lib
+If you are using the default installation of libxml2, usually it is
 LIBXML2_INCLUDE=/usr/include/libxml2
 
 5. Build the source
@@ -63,22 +68,22 @@ This can be done using the following command sequence:
         make
         make install
 use './configure --help' for options.
-NOTE: you may wish to use './configure --prefix=$AXIS2C_HOME' to ensure AXIS2C_HOME and 
-intall forlder are the same
+
+NOTE: If you don't provide a --prefix configure option, it will by default install into
+/usr/local/axis2c folder.
 
 If you need to get the samples working, you also need to give the configure option
     --enable-samples=yes
 
-6. go to AXIS2C_HOME
-        cd $AXIS2C_HOME
+6. go to where you installed axis2c.
 
 7. Start simple axis server
-        cd $AXIS2C_HOME/bin
+        cd axis2c/bin
         ./axis2_http_server
 This will start the simple axis server on port 9090. To see the posible command line options run:
         ./axis2_http_server -h
 8. Run the sample clients in a new shell
-        cd $AXIS2C_HOME/bin/samples
+        cd bin/samples
         ./echo
 This will invoke the echo service.
         ./math
