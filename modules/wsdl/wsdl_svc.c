@@ -264,13 +264,15 @@ axis2_wsdl_svc_set_endpoint(axis2_wsdl_svc_t *wsdl_svc,
                                 axis2_wsdl_endpoint_t *endpoint) 
 {
     axis2_wsdl_svc_impl_t *wsdl_svc_impl = NULL;
+    axis2_qname_t *endpoint_qname = NULL;
     axis2_char_t *endpoint_name = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, endpoint, AXIS2_FAILURE);
     wsdl_svc_impl = AXIS2_INTF_TO_IMPL(wsdl_svc);
    
-    endpoint_name = AXIS2_WSDL_ENDPOINT_GET_NAME(endpoint, env);
+    endpoint_qname = AXIS2_WSDL_ENDPOINT_GET_NAME(endpoint, env);
+    endpoint_name = AXIS2_QNAME_TO_STRING(endpoint_qname, env);
     axis2_hash_set(wsdl_svc_impl->endpoints, endpoint_name , 
         AXIS2_HASH_KEY_STRING, endpoint);
     
