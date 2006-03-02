@@ -66,6 +66,12 @@ struct axis2_svc_ctx_ops
                                                 axis2_env_t **env);
     struct axis2_svc* (AXIS2_CALL *get_svc)(struct axis2_svc_ctx *svc_ctx, 
                                                 axis2_env_t **env);
+
+    axis2_status_t (AXIS2_CALL *
+    set_svc) (axis2_svc_ctx_t *svc_ctx,
+                        axis2_env_t **env,
+                        struct axis2_svc *svc);
+
     struct axis2_conf_ctx* (AXIS2_CALL *get_conf_ctx)(struct axis2_svc_ctx *svc_ctx, 
                                                 axis2_env_t **env);
     struct axis2_op_ctx* (AXIS2_CALL *create_op_ctx)(struct axis2_svc_ctx *svc_ctx, 
@@ -93,6 +99,8 @@ AXIS2_DECLARE(axis2_svc_ctx_t*) axis2_svc_ctx_create(axis2_env_t **env,
 #define AXIS2_SVC_CTX_INIT(svc_ctx, env, conf) ((svc_ctx)->ops->init(svc_ctx, env, conf))
 #define AXIS2_SVC_CTX_GET_SVC_ID(svc_ctx, env) ((svc_ctx)->ops->get_svc_id(svc_ctx, env))
 #define AXIS2_SVC_CTX_GET_SVC(svc_ctx, env) ((svc_ctx)->ops->get_svc(svc_ctx, env))
+#define AXIS2_SVC_CTX_SET_SVC(svc_ctx, env, svc) \
+        ((svc_ctx)->ops->set_svc(svc_ctx, env, svc))
 #define AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env) ((svc_ctx)->ops->get_conf_ctx(svc_ctx, env))
 #define AXIS2_SVC_CTX_CREATE_OP_CTX(svc_ctx, env, qname) ((svc_ctx)->ops->create_op_ctx(svc_ctx, env, qname))
     

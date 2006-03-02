@@ -73,6 +73,7 @@ extern "C"
 
  #define AXIS2_PLATFORM_LOADLIBINIT()
  #define AXIS2_PLATFORM_LOADLIB(_lib)     dlopen(_lib, RTLD_LAZY)
+ /*#define AXIS2_PLATFORM_LOADLIB(_lib)     dlopen(_lib, RTLD_NOW)*/
 
  #define AXIS2_PLATFORM_UNLOADLIB         dlclose
  #define AXIS2_PLATFORM_GETPROCADDR       dlsym

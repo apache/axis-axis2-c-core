@@ -44,7 +44,7 @@ get_module_list_map(axis2_wsdl_component_t *wsdl_comp, axis2_env_t **env)
     module_list = get_module_list(env);
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env, 
-        axis2_module_desc_array_list_free);
+        axis2_array_list_free_void_arg);
     AXIS2_PROPERTY_SET_VALUE(property, env, module_list);
     AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
     axis2_hash_set(module_list_map, AXIS2_MODULEREF_KEY, 
@@ -54,7 +54,7 @@ get_module_list_map(axis2_wsdl_component_t *wsdl_comp, axis2_env_t **env)
     module_list = get_module_list(env);
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env, 
-        axis2_module_desc_array_list_free);
+        axis2_array_list_free_void_arg);
     AXIS2_PROPERTY_SET_VALUE(property, env, module_list);
     AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
     axis2_hash_set(module_list_map, AXIS2_MODULEREF_KEY, 
@@ -64,7 +64,7 @@ get_module_list_map(axis2_wsdl_component_t *wsdl_comp, axis2_env_t **env)
     module_list = get_module_list(env);
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env, 
-        axis2_module_desc_array_list_free);
+        axis2_array_list_free_void_arg);
     AXIS2_PROPERTY_SET_VALUE(property, env, module_list);
     AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
     axis2_hash_set(module_list_map, AXIS2_MODULEREF_KEY, 

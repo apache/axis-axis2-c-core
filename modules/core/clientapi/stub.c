@@ -331,19 +331,19 @@ axis2_stub_free (axis2_stub_t *stub,
     
     stub_impl = AXIS2_INTF_TO_IMPL(stub);
     
-	if(NULL != stub->ops)
+	if(stub->ops)
     {
         AXIS2_FREE((*env)->allocator, stub->ops);
         stub->ops = NULL;
     }
 
-    if(NULL != stub_impl->call)
+    if(stub_impl->call)
     {
         AXIS2_CALL_FREE(stub_impl->call, env);
         stub_impl->call = NULL;
     }
     
-    if(NULL != stub_impl->property_map)
+    if(stub_impl->property_map)
     {
         axis2_hash_free(stub_impl->property_map, env);
         stub_impl->property_map = NULL;

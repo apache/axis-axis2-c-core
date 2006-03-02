@@ -186,7 +186,14 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
     * If capacity is invalid (<= 0) then default capacity is used
     * @param capacity initial capacity of this array_list
     */
+
     AXIS2_DECLARE(axis2_array_list_t*) axis2_array_list_create(axis2_env_t **env, int capacity);
+    /**
+     * Free array passed as void pointer.
+     */
+    axis2_status_t AXIS2_CALL 
+    axis2_array_list_free_void_arg(void *array_list, 
+                                axis2_env_t **env);
 
 
 #define AXIS2_ARRAY_LIST_FREE(array_list, env) ((array_list)->ops->free(array_list, env))

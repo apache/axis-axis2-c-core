@@ -480,8 +480,8 @@ axis2_op_create (axis2_env_t **env)
     if(NULL == array_list_l) return NULL;
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env, 
-        axis2_module_desc_array_list_free);
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
+        axis2_array_list_free_void_arg);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
     AXIS2_PROPERTY_SET_VALUE(property, env, array_list_l);
     
     status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(op_impl->wsdl_op->
@@ -583,9 +583,8 @@ axis2_op_create_with_qname (axis2_env_t **env, axis2_qname_t *qname)
             return NULL;		
         }
     }
-    
 	status = axis2_op_set_qname(&(op_impl->op), env, qname);
-    if(AXIS2_FAILURE == status)
+    if(AXIS2_SUCCESS != status)
     {
         axis2_op_free(&(op_impl->op), env);
         return NULL;
@@ -628,20 +627,13 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     axis2_op_impl_t *op_impl = NULL;
     axis2_qname_t *op_qname = NULL;
     axis2_char_t *op_name = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
 
-    op_qname = AXIS2_OP_GET_QNAME(&(op_impl->op), env);
-    op_name = AXIS2_QNAME_GET_LOCALPART(op_qname, env); 
+    op_qname = AXIS2_OP_GET_QNAME(op, env);
+    op_name = AXIS2_QNAME_GET_LOCALPART(op_qname, env);
     
-	if(NULL != op->ops)
-    {
-		AXIS2_FREE((*env)->allocator, op->ops);
-        op->ops = NULL;
-    }
-    
-    if(NULL != op_impl->remaining_phases_inflow && 
+    if(op_impl->remaining_phases_inflow && 
         (0 != AXIS2_STRCMP(op_name, "TemplateOperation")))
     {
         int i = 0;
@@ -733,13 +725,8 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
         op->param_container = NULL;
     }
     
-    if(NULL != op_impl->wsdl_op)
-    {
-	    AXIS2_WSDL_OP_FREE(op_impl->wsdl_op, env);
-        op_impl->wsdl_op = NULL;
-    }
-    
     op_impl->parent = NULL;
+
     if(op_impl->msg_recv)
     {
         AXIS2_MSG_RECV_FREE(op_impl->msg_recv, env);
@@ -762,6 +749,18 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
         }
         AXIS2_ARRAY_LIST_FREE(op_impl->modulerefs, env);
         op_impl->modulerefs = NULL;
+    }
+    
+    if(NULL != op_impl->wsdl_op)
+    {
+	    AXIS2_WSDL_OP_FREE(op_impl->wsdl_op, env);
+        op_impl->wsdl_op = NULL;
+    }
+    
+	if(NULL != op->ops)
+    {
+		AXIS2_FREE((*env)->allocator, op->ops);
+        op->ops = NULL;
     }
     
     if(op_impl)    
@@ -954,6 +953,7 @@ axis2_op_set_qname (axis2_op_t *op,
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	op_impl = AXIS2_INTF_TO_IMPL(op);
+    axis2_char_t *op_n = AXIS2_QNAME_GET_LOCALPART(qname, env); 
     
     return AXIS2_WSDL_OP_SET_QNAME(op_impl->wsdl_op, env, qname);
 }
@@ -1093,17 +1093,18 @@ axis2_op_engage_module(axis2_op_t *op,
 axis2_status_t AXIS2_CALL
 axis2_op_add_to_engage_module_list(axis2_op_t *op,
                                             axis2_env_t **env,
-                                            axis2_module_desc_t *module_name) 
+                                            axis2_module_desc_t *module_desc) 
 {
     axis2_op_impl_t *op_impl = NULL;
     axis2_array_list_t *collection_module = NULL;
-    axis2_module_desc_t *module_desc = NULL;
+    axis2_module_desc_t *module_desc_l = NULL;
     int size = 0;
     int index = 0;
     axis2_property_t *property = NULL;
+    axis2_qname_t *module_qname = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     property = (axis2_property_t *) 
@@ -1118,14 +1119,15 @@ axis2_op_add_to_engage_module_list(axis2_op_t *op,
     {
         return AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
     }
-
+    module_qname = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
     for(index = 0; index < size; index++)
     {
-        module_desc = (axis2_module_desc_t *) AXIS2_ARRAY_LIST_GET(
+        axis2_qname_t *module_qname_l = NULL;
+
+        module_desc_l = (axis2_module_desc_t *) AXIS2_ARRAY_LIST_GET(
             collection_module, env, index);
-        
-        if(AXIS2_QNAME_EQUALS(AXIS2_MODULE_DESC_GET_NAME(module_desc, env), env,
-                AXIS2_MODULE_DESC_GET_NAME(module_name, env)))
+        module_qname_l = AXIS2_MODULE_DESC_GET_NAME(module_desc_l, env);        
+        if(AXIS2_QNAME_EQUALS(module_qname, env, module_qname_l))
         {
             AXIS2_ERROR_SET((*env)->error, 
                 AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP, AXIS2_FAILURE);
@@ -1133,7 +1135,7 @@ axis2_op_add_to_engage_module_list(axis2_op_t *op,
         }
 
     }
-    return AXIS2_ARRAY_LIST_ADD(collection_module, env, module_name);
+    return AXIS2_ARRAY_LIST_ADD(collection_module, env, module_desc);
 }
 
 axis2_array_list_t *AXIS2_CALL

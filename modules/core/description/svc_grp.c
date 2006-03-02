@@ -176,7 +176,7 @@ axis2_svc_grp_create (axis2_env_t **env)
         return NULL;
     }
     
-    svc_grp_impl->module_list = axis2_array_list_create(env, 20);
+    svc_grp_impl->module_list = axis2_array_list_create(env, 0);
     if(NULL == svc_grp_impl->module_list)
     {
         axis2_svc_grp_free(&(svc_grp_impl->svc_grp), env);
@@ -249,11 +249,11 @@ axis2_svc_grp_free (axis2_svc_grp_t *svc_grp,
                     axis2_env_t **env)
 {
     axis2_svc_grp_impl_t *svc_grp_impl = NULL;
-    
+ 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     svc_grp_impl = AXIS2_INTF_TO_IMPL(svc_grp);
-    
+
     if(NULL != svc_grp->ops)
     {
 		AXIS2_FREE((*env)->allocator, svc_grp->ops);
@@ -303,32 +303,10 @@ axis2_svc_grp_free (axis2_svc_grp_t *svc_grp,
     
     if(NULL != svc_grp_impl->module_list)
     {
-        void *val = NULL;
-        int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(svc_grp_impl->module_list, env); i++)
-        {
-            axis2_module_desc_t *module_desc = NULL;
-            module_desc = AXIS2_ARRAY_LIST_GET(svc_grp_impl->module_list, env, i);
-            
-            module_desc = (axis2_module_desc_t *) val;
-            if (module_desc)
-               AXIS2_MODULE_DESC_FREE (module_desc, env);
-            
-            val = NULL;
-            module_desc = NULL;
-               
-        }
         AXIS2_ARRAY_LIST_FREE(svc_grp_impl->module_list, env);
         svc_grp_impl->module_list = NULL;
     }
    
-    /* Samisa: parenet should not be freed here. 
-    if(NULL != svc_grp_impl->parent)
-    {
-        AXIS2_CONF_FREE(svc_grp_impl->parent, env);
-        svc_grp_impl->parent = NULL;
-    }*/
-    
     if(NULL != svc_grp_impl) 
     {
 	    AXIS2_FREE((*env)->allocator, svc_grp_impl);
@@ -742,7 +720,7 @@ axis2_svc_grp_add_moduleref(axis2_svc_grp_t *svc_grp,
     svc_grp_impl = AXIS2_INTF_TO_IMPL(svc_grp);
     if(!svc_grp_impl->module_list)
     {
-        svc_grp_impl->module_list = axis2_array_list_create(env, 20);
+        svc_grp_impl->module_list = axis2_array_list_create(env, 0);
         if(!svc_grp_impl->module_list)
             return AXIS2_FAILURE;
     }

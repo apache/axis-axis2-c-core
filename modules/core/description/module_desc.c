@@ -331,29 +331,6 @@ axis2_module_desc_free_void_arg (void *module_desc,
     return axis2_module_desc_free(module_desc_l, env);
 }
 
-axis2_status_t AXIS2_CALL
-axis2_module_desc_array_list_free (void *module_desc_list,
-                                axis2_env_t **env)
-{
-    axis2_module_desc_t *module_desc = NULL;
-    axis2_array_list_t *module_desc_list_l = NULL;
-    int i = 0;
-    int size = 0;
-    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    module_desc_list_l = (axis2_array_list_t *) module_desc_list;
-    size = AXIS2_ARRAY_LIST_SIZE(module_desc_list_l, env);
-    for(i = 0; i < size; i++)
-    {
-        module_desc = (axis2_module_desc_t *) 
-            AXIS2_ARRAY_LIST_GET(module_desc_list_l, env, i);
-        axis2_module_desc_free(module_desc, env);
-    }
-    AXIS2_ARRAY_LIST_FREE(module_desc_list_l, env);
-    return AXIS2_SUCCESS;
-}
-
 axis2_flow_t *AXIS2_CALL
 axis2_module_desc_get_inflow(axis2_module_desc_t *module_desc,
                                     axis2_env_t **env)

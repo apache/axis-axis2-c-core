@@ -287,6 +287,9 @@ axis2_wsdl_interface_free (
                  hi = axis2_hash_next ( env, hi))
         {
             axis2_hash_this (hi, NULL, NULL, &val);
+            axis2_wsdl_op_t *op_o = (axis2_wsdl_op_t *) val;
+            axis2_qname_t *op_qn = AXIS2_WSDL_OP_GET_QNAME(op_o, env);
+            axis2_char_t *op_n = AXIS2_QNAME_GET_LOCALPART(op_qn, env);
             AXIS2_WSDL_OP_FREE_VOID_ARG(val, env);
             val = NULL;
                
@@ -463,15 +466,15 @@ axis2_wsdl_interface_set_op(axis2_wsdl_interface_t *wsdl_interface,
                                     void *op) 
 {
     axis2_wsdl_interface_impl_t *interface_impl = NULL;
-    axis2_qname_t *wsdl_op_name = NULL;
+    axis2_qname_t *wsdl_op_qname = NULL;
     axis2_char_t *op_name = NULL;
         
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE); 
     interface_impl = AXIS2_INTF_TO_IMPL(wsdl_interface);
     
-    wsdl_op_name = AXIS2_WSDL_OP_GET_QNAME(op, env);    
-    if (!wsdl_op_name) 
+    wsdl_op_qname = AXIS2_WSDL_OP_GET_QNAME(op, env);    
+    if (!wsdl_op_qname) 
     {
         /* The Operation name cannot be null (required) */
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_WSDL_OP, 
@@ -479,7 +482,7 @@ axis2_wsdl_interface_set_op(axis2_wsdl_interface_t *wsdl_interface,
         return AXIS2_FAILURE;
     }
     
-    op_name = AXIS2_QNAME_GET_LOCALPART(wsdl_op_name, env);
+    op_name = AXIS2_QNAME_GET_LOCALPART(wsdl_op_qname, env);
     
     axis2_hash_set(interface_impl->ops, op_name, AXIS2_HASH_KEY_STRING, op);
     

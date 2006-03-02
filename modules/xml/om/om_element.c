@@ -167,6 +167,8 @@ typedef struct axis2_om_element_impl
     axis2_hash_t *attributes;
     /** List of namespaces */
     axis2_hash_t *namespaces;
+    /** to hold text value if it is a text element */
+    axis2_char_t *text_value;
     
     axis2_qname_t *qname;
     
@@ -227,6 +229,7 @@ axis2_om_element_create (axis2_env_t **env,
     element->child_ele_iter = NULL;
     element->children_iter = NULL;
     element->children_qname_iter = NULL;
+    element->text_value = NULL;
     
     element->localname = (axis2_char_t *) AXIS2_STRDUP(localname,env);
     if (!element->localname)
@@ -734,6 +737,11 @@ axis2_om_element_free (axis2_om_element_t *om_element,
         AXIS2_OM_CHILDREN_QNAME_ITERATOR_FREE(element_impl->children_qname_iter, env);
         element_impl->children_qname_iter = NULL;
     }
+    if(element_impl->text_value)
+    {
+        AXIS2_FREE((*env)->allocator, element_impl->text_value);
+        element_impl->text_value = NULL;
+    }
     AXIS2_FREE ((*env)->allocator, om_element->ops);
     AXIS2_FREE ((*env)->allocator, element_impl);
     return status;
@@ -1110,14 +1118,16 @@ axis2_om_element_get_text(axis2_om_element_t *om_element,
                           axis2_env_t **env,
                           axis2_om_node_t *element_node)
 {
-    axis2_char_t* dest = NULL;
+    axis2_om_element_impl_t *element_impl = NULL;
+    axis2_char_t *dest = NULL;
     axis2_char_t* temp_text = NULL;
     axis2_om_text_t* text_node = NULL;
     axis2_om_node_t* temp_node = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
-    
+    element_impl = AXIS2_INTF_TO_IMPL(om_element);
+
     temp_node = AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env);
     
     while(temp_node)
@@ -1151,8 +1161,10 @@ axis2_om_element_get_text(axis2_om_element_t *om_element,
 
         }
         temp_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(temp_node, env);
-    }  
-    return dest;
+    }
+    element_impl->text_value = dest;
+    dest = NULL;  
+    return element_impl->text_value;
 }                          
 
 axis2_status_t AXIS2_CALL

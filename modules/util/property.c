@@ -101,7 +101,7 @@ axis2_property_free (axis2_property_t *property,
     
     if(property_impl->value)
     {
-        if(property_impl->scope == AXIS2_SCOPE_REQUEST)
+        if(property_impl->scope != AXIS2_SCOPE_APPLICATION)
         {
             if(property_impl->free_func)
             {

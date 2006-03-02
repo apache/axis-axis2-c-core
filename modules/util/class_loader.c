@@ -241,13 +241,13 @@ axis2_class_loader_load_lib (axis2_env_t **env,
     }
     status = AXIS2_DLL_DESC_SET_DL_HANDLER(dll_desc, env, dl_handler);
 
-    if(AXIS2_FAILURE == status)
+    if(AXIS2_SUCCESS != status)
     {
         AXIS2_PLATFORM_UNLOADLIB(dl_handler);
         dl_handler = NULL;
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_LOADING_FAILED, 
             AXIS2_FAILURE);
-        return AXIS2_FAILURE;
+        return status;
     }
     
     return AXIS2_SUCCESS;

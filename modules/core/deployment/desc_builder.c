@@ -815,7 +815,7 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
     axis2_msg_recv_t *msg_recv = NULL;
     axis2_qname_t *class_qname = NULL;
     axis2_param_t *impl_info_param = NULL;
-    struct axis2_dll_desc *dll_desc = NULL;
+    axis2_dll_desc_t *dll_desc = NULL;
     axis2_char_t *repos_name = NULL;
     axis2_char_t *dll_name = NULL;
     axis2_char_t *temp_path = NULL;

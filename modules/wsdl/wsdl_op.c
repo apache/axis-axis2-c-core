@@ -400,7 +400,7 @@ axis2_wsdl_op_set_qname (axis2_wsdl_op_t *wsdl_op,
 		                        axis2_qname_t *name)
 {
     axis2_wsdl_op_impl_t *wsdl_op_impl = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
     

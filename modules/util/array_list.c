@@ -379,3 +379,15 @@ axis2_status_t AXIS2_CALL axis2_array_list_free(struct axis2_array_list *array_l
     
     return AXIS2_SUCCESS;
 }
+
+axis2_status_t AXIS2_CALL 
+axis2_array_list_free_void_arg(void *array_list, 
+                                axis2_env_t **env)
+{
+    axis2_array_list_t *array_list_l = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    array_list_l = (axis2_array_list_t *) array_list;
+    return axis2_array_list_free(array_list_l, env);
+}

@@ -23,7 +23,8 @@
 typedef struct axis2_param_container_impl
 {
 	axis2_param_container_t param_container;
-    axis2_hash_t *params;	
+    axis2_hash_t *params;
+    axis2_array_list_t *params_list;
 } axis2_param_container_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(param_container) \
@@ -73,6 +74,7 @@ axis2_param_container_create (axis2_env_t **env)
     }        
 	
     param_container_impl->params = NULL;
+    param_container_impl->params_list = NULL;
     
     param_container_impl->params = axis2_hash_make (env);
 	if(NULL == param_container_impl->params)
@@ -138,6 +140,15 @@ axis2_param_container_free (axis2_param_container_t *param_container,
             val = NULL;
         }
 		axis2_hash_free(param_container_impl->params, env);
+    }
+    if(param_container_impl->params_list)
+    {
+        /* This is the array list which is returned when all params are
+         * requested from param_container. Params referenced here are
+         * actually contained in params hash table
+         */
+        AXIS2_ARRAY_LIST_FREE(param_container_impl->params_list, env);
+        param_container_impl->params_list = NULL;
     }
 	
     AXIS2_FREE((*env)->allocator, param_container_impl);    
@@ -207,29 +218,36 @@ axis2_param_container_get_params (axis2_param_container_t *param_container,
     axis2_param_container_impl_t *param_container_impl = NULL;
     axis2_hash_index_t *index_i = 0;
     axis2_status_t status = AXIS2_FAILURE;
-    /* create an array list with the initial default capacity 
-     * Caller of this method should free this array list
-     */
-    axis2_array_list_t *array_list_l = axis2_array_list_create(env, 20);
     void *value = NULL;
     
-    AXIS2_ENV_CHECK(env, NULL);
-    
+    AXIS2_ENV_CHECK(env, NULL); 
     param_container_impl = AXIS2_INTF_TO_IMPL(param_container);
+
+    if(!param_container_impl->params_list)
+    {
+        param_container_impl->params_list = axis2_array_list_create(env, 0);
+        if(!param_container_impl->params_list)
+        {
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, 
+                AXIS2_FAILURE);
+            return NULL;
+        }
+    }
    
-    for (index_i = axis2_hash_first (param_container_impl->params, env); index_i; 
-            index_i = axis2_hash_next (env, index_i))
+    for (index_i = axis2_hash_first (param_container_impl->params, env); 
+            index_i; index_i = axis2_hash_next (env, index_i))
     {
         axis2_hash_this (index_i, NULL, NULL, &value);
-        status = AXIS2_ARRAY_LIST_ADD(array_list_l, env, value);
-        if(AXIS2_FAILURE == status)
+        status = AXIS2_ARRAY_LIST_ADD(param_container_impl->params_list, env, 
+            value);
+        if(AXIS2_SUCCESS != status)
         {
-            AXIS2_ARRAY_LIST_FREE(array_list_l ,env);
+            AXIS2_ARRAY_LIST_FREE(param_container_impl->params_list ,env);
             return NULL;            
         }
     }
     
-	return array_list_l;
+	return param_container_impl->params_list;
 }
 
 axis2_bool_t AXIS2_CALL 

@@ -164,13 +164,13 @@ axis2_wsdl_svc_free (axis2_wsdl_svc_t *wsdl_svc,
     
     wsdl_svc_impl = AXIS2_INTF_TO_IMPL(wsdl_svc);
     
-    if(NULL != wsdl_svc->wsdl_component)
+    if(wsdl_svc->wsdl_component)
     {
         AXIS2_WSDL_COMPONENT_FREE(wsdl_svc->wsdl_component, env);
         wsdl_svc->wsdl_component = NULL;
     }
     
-    if(NULL != wsdl_svc_impl->endpoints)
+    if(wsdl_svc_impl->endpoints)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
@@ -191,13 +191,13 @@ axis2_wsdl_svc_free (axis2_wsdl_svc_t *wsdl_svc,
         wsdl_svc_impl->endpoints = NULL;
     }
     
-    if(NULL != wsdl_svc_impl->svc_interface)
+    if(wsdl_svc_impl->svc_interface)
     {
         AXIS2_WSDL_INTERFACE_FREE(wsdl_svc_impl->svc_interface, env);
         wsdl_svc_impl->svc_interface = NULL;
     }
     
-    if(NULL != wsdl_svc->ops)
+    if(wsdl_svc->ops)
     {
         AXIS2_FREE((*env)->allocator, wsdl_svc->ops);
         wsdl_svc->ops = NULL;

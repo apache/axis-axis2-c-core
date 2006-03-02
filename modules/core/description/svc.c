@@ -28,7 +28,7 @@ struct axis2_svc_impl
 {
 	axis2_svc_t svc;
 	axis2_svc_grp_t *parent;
-	axis2_hash_t *wasaction_opeartionmap;  
+	axis2_hash_t *wasaction_op_map;  
     axis2_char_t *axis_svc_name; 
     /** to keep the time that last update time of the service */
     long last_update;
@@ -251,7 +251,7 @@ axis2_status_t AXIS2_CALL
 axis2_svc_add_mapping(axis2_svc_t *svc,
                             axis2_env_t **env,
                             axis2_char_t * mapping_key , 
-                            axis2_op_t * axis2_opt);
+                            axis2_op_t * op_desc);
  
 axis2_status_t AXIS2_CALL
 axis2_svc_add_module_ref(axis2_svc_t *svc,
@@ -291,7 +291,7 @@ axis2_svc_create (axis2_env_t **env)
     svc_impl->svc.param_container = NULL;
     svc_impl->svc.flow_container = NULL;
     svc_impl->svc.wsdl_svc = NULL;
-    svc_impl->wasaction_opeartionmap = NULL;
+    svc_impl->wasaction_op_map = NULL;
     svc_impl->module_list = NULL;
     
     svc_impl->svc.param_container = axis2_param_container_create(env);		
@@ -318,8 +318,8 @@ axis2_svc_create (axis2_env_t **env)
         return NULL;
 	}
     
-    svc_impl->wasaction_opeartionmap = axis2_hash_make (env);				
-	if(NULL == svc_impl->wasaction_opeartionmap)
+    svc_impl->wasaction_op_map = axis2_hash_make (env);				
+	if(NULL == svc_impl->wasaction_op_map)
 	{
         axis2_svc_free(&(svc_impl->svc), env);
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);		
@@ -385,8 +385,8 @@ axis2_svc_create (axis2_env_t **env)
     }
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env, 
-        axis2_module_desc_array_list_free);
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
+        axis2_array_list_free_void_arg);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_SESSION);
     AXIS2_PROPERTY_SET_VALUE(property, env, array_list_l);
 
     status = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc_impl->svc.wsdl_svc->
@@ -513,12 +513,6 @@ axis2_svc_free (axis2_svc_t *svc,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     svc_impl = AXIS2_INTF_TO_IMPL(svc);
     
-	if(NULL != svc->ops)
-    {
-		AXIS2_FREE((*env)->allocator, svc->ops);
-        svc->ops = NULL;
-    }
-    
     if(NULL != svc->param_container)
     {
 	    AXIS2_PARAM_CONTAINER_FREE(svc->param_container, env);
@@ -539,12 +533,12 @@ axis2_svc_free (axis2_svc_t *svc,
     
     svc_impl->parent = NULL;
     
-    if(NULL != svc_impl->wasaction_opeartionmap)
+    if(NULL != svc_impl->wasaction_op_map)
     {
         /* By this time operations are already freed
         */
-		axis2_hash_free(svc_impl->wasaction_opeartionmap, env);
-        svc_impl->wasaction_opeartionmap = NULL;
+		axis2_hash_free(svc_impl->wasaction_op_map, env);
+        svc_impl->wasaction_op_map = NULL;
     }
     
     if(NULL != svc_impl->module_list)
@@ -572,6 +566,13 @@ axis2_svc_free (axis2_svc_t *svc,
         AXIS2_FREE((*env)->allocator, svc_impl->axis_svc_name);
         svc_impl->axis_svc_name = NULL;        
     }        
+    
+	if(NULL != svc->ops)
+    {
+		AXIS2_FREE((*env)->allocator, svc->ops);
+        svc->ops = NULL;
+    }
+
     if(svc_impl)
     {
 	    AXIS2_FREE((*env)->allocator, svc_impl);
@@ -598,6 +599,10 @@ axis2_svc_add_op (axis2_svc_t *svc,
         axis2_wsdl_interface_t *wsdl_interface = NULL;
         
         wsdl_interface = axis2_svc_get_svc_interface(svc, env);
+        axis2_qname_t *svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
+        axis2_char_t *svc_name = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
+        axis2_qname_t *op_qname = AXIS2_OP_GET_QNAME(op, env);
+        axis2_char_t *op_name = AXIS2_QNAME_GET_LOCALPART(op_qname, env);
         status = AXIS2_WSDL_INTERFACE_SET_OP(wsdl_interface, env, op);
     }
     return status;
@@ -627,7 +632,7 @@ axis2_svc_get_op_with_qname (axis2_svc_t *svc,
     if(NULL == op_l )
     {
         op_l = (axis2_op_t *) (axis2_hash_get (
-            svc_impl->wasaction_opeartionmap, op_str, AXIS2_HASH_KEY_STRING));
+            svc_impl->wasaction_op_map, op_str, AXIS2_HASH_KEY_STRING));
     }
     
     return op_l;	
@@ -884,7 +889,7 @@ axis2_svc_engage_module(axis2_svc_t *svc,
         if(AXIS2_QNAME_EQUALS(AXIS2_MODULE_DESC_GET_NAME(modu, env), env,  
             AXIS2_MODULE_DESC_GET_NAME(moduleref, env)))
         {
-            /* module has alredy been engaged on the service. Operation 
+            /* module has already been engaged on the service. Operation 
              *terminated !!! 
              */
             AXIS2_ERROR_SET((*env)->error, 
@@ -923,7 +928,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
     axis2_hash_t *map = NULL;
     axis2_hash_index_t *index = NULL;
     axis2_phase_resolver_t *pr = NULL;
-    axis2_op_t *axis2_opt = NULL;
+    axis2_op_t *op_desc = NULL;
     axis2_array_list_t *params = NULL;
     axis2_param_t *param = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -947,8 +952,8 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
         int j = 0;
         void *v = NULL;
         axis2_hash_this (index, NULL, NULL, &v);
-        axis2_opt = (axis2_op_t *) v;
-        params = AXIS2_OP_GET_PARAMS(axis2_opt, env);
+        op_desc = (axis2_op_t *) v;
+        params = AXIS2_OP_GET_PARAMS(op_desc, env);
         /* Adding wsa-maping into service */
         size = AXIS2_ARRAY_LIST_SIZE(params, env);
         
@@ -968,7 +973,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
                     AXIS2_WSA_ACTION))
             {
                 status = axis2_svc_add_mapping(svc, env,
-                    (axis2_char_t *) AXIS2_PARAM_GET_VALUE(param, env), axis2_opt);
+                    (axis2_char_t *) AXIS2_PARAM_GET_VALUE(param, env), op_desc);
                 if(AXIS2_SUCCESS != status)
                 {
                     if(pr)
@@ -982,7 +987,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
                 
         }
         
-        status = AXIS2_PHASE_RESOLVER_BUILD_MODULE_OP(pr, env, axis2_opt);
+        status = AXIS2_PHASE_RESOLVER_BUILD_MODULE_OP(pr, env, op_desc);
         
         if(AXIS2_SUCCESS != status)
         {
@@ -994,7 +999,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
             return status;
         }
         
-        status = axis2_svc_add_op(svc, env, axis2_opt);
+        status = axis2_svc_add_op(svc, env, op_desc);
         if(AXIS2_SUCCESS != status)
         {
             if(pr)
@@ -1557,17 +1562,17 @@ axis2_status_t AXIS2_CALL
 axis2_svc_add_mapping(axis2_svc_t *svc,
                             axis2_env_t **env,
                             axis2_char_t * mapping_key , 
-                            axis2_op_t * axis2_opt)
+                            axis2_op_t * op_desc)
 {
     axis2_svc_impl_t *svc_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, mapping_key, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, axis2_opt, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, op_desc, AXIS2_FAILURE);
     svc_impl = AXIS2_INTF_TO_IMPL(svc);
     
-    axis2_hash_set(svc_impl->wasaction_opeartionmap, mapping_key, 
-        AXIS2_HASH_KEY_STRING, axis2_opt);
+    axis2_hash_set(svc_impl->wasaction_op_map, mapping_key, 
+        AXIS2_HASH_KEY_STRING, op_desc);
     return AXIS2_SUCCESS;
 }
 

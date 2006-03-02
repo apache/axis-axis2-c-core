@@ -836,7 +836,7 @@ axis2_status_t AXIS2_CALL axis2_call_set_time(struct axis2_call *call,
  * @param toSend - This should be OM Element (payload)
  * @return
  */
-axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(struct axis2_call *call, 
+axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(axis2_call_t *call, 
     axis2_env_t **env,
     axis2_char_t *op_name, axis2_om_node_t *om_node_to_send)
 {
@@ -1253,8 +1253,6 @@ axis2_call_assume_svc_ctx(axis2_call_t *call,
         
         /* we will assume a Service and operations */
         axis_svc = axis2_svc_create_with_qname(env, assumed_svc_qname);
-        /*axisOperationTemplate = new AxisOperation(new QName(
-            "TemplateOperation")); */
         qtemp_op = axis2_qname_create(env, "TemplateOperation", NULL, NULL);
         call_impl->op_template = axis2_op_create_with_qname(env, qtemp_op);
         AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(call_impl->op_template, env, AXIS2_MEP_URI_OUT_IN);

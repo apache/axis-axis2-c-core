@@ -265,12 +265,6 @@ AXIS2_DECLARE(axis2_status_t)
 axis2_module_desc_free_void_arg (void *module_desc,
                                         axis2_env_t **env);
 
-/**
- * Free module_desc array passed as void pointer.
- */
-AXIS2_DECLARE(axis2_status_t) 
-axis2_module_desc_array_list_free (void *module_desc_list,
-                                axis2_env_t **env);
                                 
 /************************* Start of function macros	***************************/
 	

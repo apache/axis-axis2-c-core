@@ -158,17 +158,24 @@ axis2_status_t AXIS2_CALL axis2_mep_client_prepare_invocation(struct axis2_mep_c
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MEP_CANNOT_BE_NULL_IN_MEP_CLIENT, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-
-    /* if operation not alrady added, add it */
-    svc = AXIS2_SVC_CTX_GET_SVC(mep_client_impl->svc_ctx, env);
-    if (svc)
+    /* If operation has a parent service get it */
+    svc = AXIS2_OP_GET_PARENT(op, env);
+    if(svc)
     {
-        axis2_op_t *temp_op = NULL;
-        axis2_qname_t *op_qname = AXIS2_OP_GET_QNAME(op, env);
-        temp_op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname);
-        if (!temp_op)
+        AXIS2_SVC_CTX_SET_SVC(mep_client_impl->svc_ctx, env, svc);
+    }
+    else
+    {
+        svc = AXIS2_SVC_CTX_GET_SVC(mep_client_impl->svc_ctx, env);
+        if (svc)
         {
-            AXIS2_SVC_ADD_OP(svc, env, op);
+            axis2_op_t *temp_op = NULL;
+            axis2_qname_t *op_qname = AXIS2_OP_GET_QNAME(op, env);
+            temp_op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname);
+            if (!temp_op)
+            {
+                AXIS2_SVC_ADD_OP(svc, env, op);
+            }
         }
     }
     
