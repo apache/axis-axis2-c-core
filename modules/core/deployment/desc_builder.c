@@ -760,11 +760,10 @@ axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
     axis2_status_t status = AXIS2_FAILURE;
         
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, module_refs, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
     desc_builder_impl = AXIS2_INTF_TO_IMPL(desc_builder);
     
-    while(AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(module_refs,
+    while(module_refs && AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(module_refs,
         env))
     {
         moduleref = (axis2_om_element_t *)
