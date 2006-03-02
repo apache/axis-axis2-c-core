@@ -599,10 +599,6 @@ axis2_svc_add_op (axis2_svc_t *svc,
         axis2_wsdl_interface_t *wsdl_interface = NULL;
         
         wsdl_interface = axis2_svc_get_svc_interface(svc, env);
-        axis2_qname_t *svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
-        axis2_char_t *svc_name = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
-        axis2_qname_t *op_qname = AXIS2_OP_GET_QNAME(op, env);
-        axis2_char_t *op_name = AXIS2_QNAME_GET_LOCALPART(op_qname, env);
         status = AXIS2_WSDL_INTERFACE_SET_OP(wsdl_interface, env, op);
     }
     return status;
