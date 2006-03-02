@@ -23,6 +23,7 @@
 #include <axis2_simple_http_svr_conn.h>
 #include <axis2_url.h>
 #include <axis2_error_default.h>
+#include <signal.h>
 
 
 
@@ -291,8 +292,13 @@ worker_func(axis2_thread_t *thd, void *data)
 	axis2_socket_t socket;
 	axis2_env_t *thread_env = NULL;
 	axis2_http_svr_thd_args_t *arg_list = NULL;
-	
-	
+
+#ifndef WIN32
+#ifdef AXIS2_SVR_MULTI_THREADED
+    signal(SIGPIPE, SIG_IGN);
+#endif
+#endif
+    	
 	arg_list = (axis2_http_svr_thd_args_t*)data;
 	if(NULL == arg_list)
 	{
