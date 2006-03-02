@@ -286,10 +286,13 @@ axis2_wsdl_interface_free (
         for (hi = axis2_hash_first (wsdl_interface_impl->ops, env); hi;
                  hi = axis2_hash_next ( env, hi))
         {
+            axis2_qname_t *op_qn = NULL;
+            axis2_wsdl_op_t *op_o = NULL;
+            axis2_char_t *op_n = NULL;
             axis2_hash_this (hi, NULL, NULL, &val);
-            axis2_wsdl_op_t *op_o = (axis2_wsdl_op_t *) val;
-            axis2_qname_t *op_qn = AXIS2_WSDL_OP_GET_QNAME(op_o, env);
-            axis2_char_t *op_n = AXIS2_QNAME_GET_LOCALPART(op_qn, env);
+            op_o = (axis2_wsdl_op_t *) val;
+            op_qn = AXIS2_WSDL_OP_GET_QNAME(op_o, env);
+            op_n = AXIS2_QNAME_GET_LOCALPART(op_qn, env);
             AXIS2_WSDL_OP_FREE_VOID_ARG(val, env);
             val = NULL;
                

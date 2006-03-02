@@ -950,10 +950,10 @@ axis2_op_set_qname (axis2_op_t *op,
                             axis2_qname_t *qname)
 {
     axis2_op_impl_t *op_impl = NULL;
-    
+    axis2_char_t *op_n = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	op_impl = AXIS2_INTF_TO_IMPL(op);
-    axis2_char_t *op_n = AXIS2_QNAME_GET_LOCALPART(qname, env); 
+    op_n = AXIS2_QNAME_GET_LOCALPART(qname, env); 
     
     return AXIS2_WSDL_OP_SET_QNAME(op_impl->wsdl_op, env, qname);
 }

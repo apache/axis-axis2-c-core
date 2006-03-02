@@ -71,7 +71,8 @@ axis2_http_worker_get_headers(axis2_http_worker_t *http_worker,
 							axis2_env_t **env, 
 							axis2_http_simple_request_t *request);
                             
-axis2_status_t axis2_http_worker_set_svr_port(axis2_http_worker_t *worker, 
+axis2_status_t AXIS2_CALL
+axis2_http_worker_set_svr_port(axis2_http_worker_t *worker, 
                             axis2_env_t **env, int port);
 	
 axis2_status_t AXIS2_CALL 
@@ -535,8 +536,9 @@ axis2_http_worker_get_headers(axis2_http_worker_t *http_worker,
 	return header_map;
 }
 
-axis2_status_t axis2_http_worker_set_svr_port(axis2_http_worker_t *worker, 
-                                              axis2_env_t **env, int port)
+axis2_status_t AXIS2_CALL
+axis2_http_worker_set_svr_port(axis2_http_worker_t *worker, 
+                               axis2_env_t **env, int port)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(worker)->svr_port = port;

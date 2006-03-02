@@ -337,7 +337,11 @@ axis2_om_node_add_child (axis2_om_node_t *om_node,
 {
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, child, AXIS2_FAILURE);
-
+    if(AXIS2_INTF_TO_IMPL(child)->parent)
+    {
+        child = AXIS2_OM_NODE_DETACH(child, env);
+    }
+    
     if (AXIS2_INTF_TO_IMPL(om_node)->first_child  == NULL)
     {
         AXIS2_INTF_TO_IMPL(om_node)->first_child = child;

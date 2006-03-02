@@ -90,7 +90,8 @@ axis2_simple_http_svr_conn_read_request_body
                         (axis2_simple_http_svr_conn_t *svr_conn, 
                         axis2_env_t **env, axis2_char_t *buffer, int size);
                         
-axis2_char_t *axis2_simple_http_svr_conn_get_svr_ip
+axis2_char_t * AXIS2_CALL
+axis2_simple_http_svr_conn_get_svr_ip
                         (axis2_simple_http_svr_conn_t *svr_conn, 
                         axis2_env_t **env);
                                 
@@ -482,7 +483,8 @@ axis2_simple_http_svr_conn_set_snd_timeout
 						timeout);
 }
 
-axis2_char_t *axis2_simple_http_svr_conn_get_svr_ip(
+axis2_char_t* AXIS2_CALL 
+axis2_simple_http_svr_conn_get_svr_ip(
                         axis2_simple_http_svr_conn_t *svr_conn, 
                         axis2_env_t **env)
 {

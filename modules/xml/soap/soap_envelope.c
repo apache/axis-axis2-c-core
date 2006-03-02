@@ -332,6 +332,7 @@ axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *envelope,
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
+
     /*
     if(envelope_impl->soap_version && envelope_impl->soap_version != soap_version)
     {

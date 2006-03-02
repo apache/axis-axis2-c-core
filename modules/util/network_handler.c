@@ -26,7 +26,7 @@ static int is_init_socket = 0;
 axis2_bool_t axis2_init_socket();
 #endif
 
-AXIS2_DECLARE( axis2_socket_t )
+AXIS2_DECLARE(axis2_socket_t )
 axis2_network_handler_open_socket(axis2_env_t **env, char *server, int port)
 {
 	axis2_socket_t sock = AXIS2_INVALID_SOCKET;
@@ -141,7 +141,7 @@ axis2_network_handler_create_server_socket(axis2_env_t **env, int port)
 	return sock;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_DECLARE(axis2_status_t )
 axis2_network_handler_close_socket (axis2_env_t **env,  axis2_socket_t socket)
 {
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
@@ -158,7 +158,7 @@ axis2_network_handler_close_socket (axis2_env_t **env,  axis2_socket_t socket)
 	return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_DECLARE(axis2_status_t)
 axis2_network_handler_set_sock_option(axis2_env_t **env, axis2_socket_t socket, 
 						int option, int value)
 {
@@ -178,13 +178,13 @@ AXIS2_DECLARE(axis2_socket_t)
 axis2_network_handler_svr_socket_accept(axis2_env_t **env, 
 						axis2_socket_t svr_socket)
 {
-	axis2_socket_t cli_socket = AXIS2_INVALID_SOCKET;
 	struct sockaddr cli_addr;
-	axis2_socket_len_t cli_len = 0;
+	
 	struct linger ll;
 	int nodelay = 1;
+	axis2_socket_len_t cli_len = 0;
+	axis2_socket_t cli_socket = AXIS2_INVALID_SOCKET;
 
-	
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	
 	cli_len = sizeof(cli_addr);
@@ -239,11 +239,13 @@ axis2_bool_t axis2_init_socket()
 #endif
 
 
-axis2_char_t* axis2_network_handler_get_svr_ip(axis2_env_t **env, 
-                        axis2_socket_t socket)
+AXIS2_DECLARE(axis2_char_t*)
+axis2_network_handler_get_svr_ip(axis2_env_t **env, 
+                                 axis2_socket_t socket)
 {
     struct sockaddr_in addr;
-    socklen_t len = sizeof(addr);
+    
+    axis2_socket_len_t len = sizeof(addr);
     char *ret = NULL;
     memset(&addr, 0, sizeof(addr));
     if(getsockname(socket, (struct sockaddr *)&addr, &len) < 0)

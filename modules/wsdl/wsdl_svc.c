@@ -288,7 +288,7 @@ axis2_wsdl_svc_get_endpoint(axis2_wsdl_svc_t *wsdl_svc,
     axis2_char_t *name = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
     wsdl_svc_impl = AXIS2_INTF_TO_IMPL(wsdl_svc);
 
     name = AXIS2_QNAME_TO_STRING(qname, env);
@@ -307,7 +307,7 @@ axis2_wsdl_svc_get_namespace(axis2_wsdl_svc_t *wsdl_svc,
         /* Target Namespace not set and the Service Name is null */
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_WSDL_SVC, 
             AXIS2_FAILURE);
-        return AXIS2_FAILURE;
+        return NULL;
     }
     
     return AXIS2_QNAME_GET_URI(AXIS2_INTF_TO_IMPL(wsdl_svc)->qname, env);
