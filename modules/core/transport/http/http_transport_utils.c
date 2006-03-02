@@ -811,7 +811,7 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
     axis2_char_t *char_set_enc = NULL;
     axis2_char_t *content_type = NULL;
     axis2_stream_t *in_stream = NULL;
-    axis2_callback_info_t callback_ctx;
+    axis2_callback_info_t *callback_ctx = NULL;
 	axis2_char_t *trans_enc = NULL;
 	int *content_length = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -820,18 +820,25 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
     
     in_stream = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, 
                         AXIS2_FALSE);
-	callback_ctx.in_stream = in_stream;
-	callback_ctx.env = *env;
-	callback_ctx.content_length = -1;
-	callback_ctx.unread_len = -1;
-	callback_ctx.chunked_stream = NULL;
+    /* TODO free this when xml pulling is over */
+    callback_ctx = AXIS2_MALLOC((*env)->allocator, sizeof(axis2_callback_info_t));
+    if(NULL == callback_ctx)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+	callback_ctx->in_stream = in_stream;
+	callback_ctx->env = *env;
+	callback_ctx->content_length = -1;
+	callback_ctx->unread_len = -1;
+	callback_ctx->chunked_stream = NULL;
 	
 	content_length = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
 						AXIS2_HTTP_HEADER_CONTENT_LENGTH, AXIS2_FALSE);
 	if(content_length != NULL)
 	{
-		callback_ctx.content_length = *content_length;
-		callback_ctx.unread_len = *content_length;
+		callback_ctx->content_length = *content_length;
+		callback_ctx->unread_len = *content_length;
 	}
     if(NULL == in_stream)
     {
@@ -844,9 +851,9 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
 	if(NULL != trans_enc && 0 == AXIS2_STRCMP(trans_enc, 
 						AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
 	{
-		callback_ctx.chunked_stream = axis2_http_chunked_stream_create(env, 
+		callback_ctx->chunked_stream = axis2_http_chunked_stream_create(env, 
 						in_stream);
-		if(NULL == callback_ctx.chunked_stream)
+		if(NULL == callback_ctx->chunked_stream)
 		{
 			return NULL;
 		}
@@ -885,7 +892,7 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
         
         xml_reader = axis2_xml_reader_create_for_memory(env,
                         axis2_http_transport_utils_on_data_request,NULL,
-                        (void *)&callback_ctx, char_set_enc);
+                        (void *)callback_ctx, char_set_enc);
         if(NULL == xml_reader)
         {
             return NULL;
