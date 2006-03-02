@@ -293,15 +293,17 @@ axis2_url_to_external_form (axis2_url_t *url,
     axis2_url_impl_t *url_impl = NULL;
     axis2_char_t *external_form = NULL;
     axis2_ssize_t len = 0;
+    axis2_char_t port_str[8];
     AXIS2_ENV_CHECK(env, NULL);
     url_impl = AXIS2_INTF_TO_IMPL(url);
+    sprintf(port_str, "%d", url_impl->port); 
     len = AXIS2_STRLEN(url_impl->protocol) + 
             AXIS2_STRLEN(url_impl->server) + AXIS2_STRLEN(url_impl->path) + 
-				7; /* port number is maximum 5 digits */
+				strlen(port_str) + 7; 
     external_form = (axis2_char_t*) AXIS2_MALLOC((*env)->allocator,
                 len);
-    sprintf(external_form, "%s://%s:%d%s", url_impl->protocol, url_impl->server,
-                url_impl->port, url_impl->path);
+    sprintf(external_form, "%s://%s:%s%s", url_impl->protocol, url_impl->server,
+                port_str, url_impl->path);
     return external_form;
 }
 
