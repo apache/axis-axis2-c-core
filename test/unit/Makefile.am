@@ -14,7 +14,6 @@ main_unit_test_suite_LDADD   =   \
                     -L$(top_builddir)/test/unit/util -ltest_util \
                     -L$(top_builddir)/test/unit/wsdl -ltest_wsdl \
                     -L$(top_builddir)/test/unit/xml/om -ltest_om \
-                    -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
                     -laxis2_unix \
                     -laxis2_om \
@@ -23,8 +22,8 @@ main_unit_test_suite_LDADD   =   \
                     -laxis2_soap \
                     -laxis2_wsdl \
                     -laxis2_parser \
-                    -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
-                    -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
+                    $(GUTHTHILA_LIBNAME) \
+                    $(LIBXML2_LIBNAME)
                     
 
 INCLUDES = -I${CUTEST_HOME}/include \

@@ -29,7 +29,6 @@ wsdl_test_LDADD   =   \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                      $(top_builddir)/test/unit/wsdl/libtest_wsdl.la \
-                    -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
                     -laxis2_wsdl \
 					-laxis2_unix \
@@ -37,5 +36,5 @@ wsdl_test_LDADD   =   \
                     -laxis2_om \
                     -laxis2_soap \
                     -laxis2_parser \
-                    -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
-                    -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
+                    $(GUTHTHILA_LIBNAME) \
+                    $(LIBXML2_LIBNAME)

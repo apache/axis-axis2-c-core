@@ -8,7 +8,8 @@ libtest_description_la_SOURCES = description_test.c \
                                     test_flow.c \
                                     test_handler_desc.c
 
-noinst_HEADERS=$(top_builddir)/test/unit/core/description/*.h $(top_builddir)/test/unit/core/phaseresolver/*.h
+noinst_HEADERS=$(top_builddir)/test/unit/core/description/*.h \
+                $(top_builddir)/test/unit/core/phaseresolver/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
@@ -29,7 +30,6 @@ description_test_SOURCES = main.c
 description_test_LDADD   =   libtest_description.la  \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
-                    -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
                     -laxis2_unix \
                     -laxis2_engine \
@@ -37,6 +37,6 @@ description_test_LDADD   =   libtest_description.la  \
                     -laxis2_om \
                     -laxis2_soap \
                     -laxis2_parser \
-                    -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
-                    -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
+                    $(GUTHTHILA_LIBNAME) \
+                    $(LIBXML2_LIBNAME)
 

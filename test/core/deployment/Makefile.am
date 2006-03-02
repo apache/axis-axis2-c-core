@@ -5,7 +5,7 @@ SUBDIRS =
 AM_CFLAGS = $(CFLAGS) -g -pthread
 test_deployment_SOURCES = test_deployment.c
 
-test_deployment_LDADD   =  -L$(AXIS2C_HOME)/lib \
+test_deployment_LDADD   =  \
 					-laxis2_util \
                     -laxis2_unix \
                     -laxis2_om \
@@ -13,8 +13,8 @@ test_deployment_LDADD   =  -L$(AXIS2C_HOME)/lib \
                     -laxis2_engine \
                     -laxis2_soap \
                     -laxis2_parser \
-                    -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
-                    -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
+                    $(GUTHTHILA_LIBNAME) \
+                    $(LIBXML2_LIBNAME)
                     
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \

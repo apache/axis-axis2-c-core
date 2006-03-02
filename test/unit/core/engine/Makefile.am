@@ -24,7 +24,6 @@ engine_test_SOURCES = main.c
 engine_test_LDADD   =   libtest_engine.la  \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
-                    -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
                     -laxis2_unix \
                     -laxis2_engine \
@@ -32,5 +31,5 @@ engine_test_LDADD   =   libtest_engine.la  \
                     -laxis2_om \
                     -laxis2_parser \
                     -laxis2_soap \
-                    -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
-                    -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
+                    $(GUTHTHILA_LIBNAME) \
+                    $(LIBXML2_LIBNAME)

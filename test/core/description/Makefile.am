@@ -5,7 +5,7 @@ SUBDIRS =
 AM_CFLAGS = -g -O2 -pthread
 test_description_SOURCES = test_description.c
 
-test_description_LDADD   =  -L$(AXIS2C_HOME)/lib \
+test_description_LDADD   =  \
 					-laxis2_util \
                     -laxis2_om \
                     -laxis2_unix \
@@ -14,8 +14,8 @@ test_description_LDADD   =  -L$(AXIS2C_HOME)/lib \
                     -lpthread \
                     -laxis2_soap \
                     -laxis2_parser \
-                    -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
-                    -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
+                    $(GUTHTHILA_LIBNAME) \
+                    $(LIBXML2_LIBNAME)
                     
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \

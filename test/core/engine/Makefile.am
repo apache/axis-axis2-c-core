@@ -7,7 +7,7 @@ AM_CFLAGS = -g -pthread
 test_engine_SOURCES = test_engine.c
 
 
-test_engine_LDADD   =  -L$(AXIS2C_HOME)/lib \
+test_engine_LDADD   =   \
 	                -laxis2_util \
                     -laxis2_unix \
 	                -laxis2_om \
@@ -15,8 +15,8 @@ test_engine_LDADD   =  -L$(AXIS2C_HOME)/lib \
 	                -laxis2_engine \
 	                -laxis2_wsdl \
 	                -laxis2_parser \
-	                -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
-	                -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
+	                $(GUTHTHILA_LIBNAME) \
+	                $(LIBXML2_LIBNAME)
 
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/xml/guththila \

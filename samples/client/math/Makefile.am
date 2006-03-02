@@ -4,7 +4,7 @@ noinst_HEADERS = axis2_math_stub.h
 math_SOURCES = axis2_math_stub.c \
                 math_client.c
 
-math_LDADD   =  -L$(AXIS2C_HOME)/lib \
+math_LDADD   =  \
 					-laxis2_util \
                     -laxis2_om \
                     -laxis2_wsdl \
@@ -15,8 +15,8 @@ math_LDADD   =  -L$(AXIS2C_HOME)/lib \
                     -laxis2_soap \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
-                    -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
-                    -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
+                    $(GUTHTHILA_LIBNAME) \
+                    $(LIBXML2_LIBNAME)
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \

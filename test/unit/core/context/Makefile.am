@@ -13,17 +13,17 @@ INCLUDES = -I$(top_builddir)/include \
 prgbin_PROGRAMS = context_test
 check_PROGRAMS = context_test
 context_test_SOURCES = main.c
-context_test_LDADD   =   libtest_context.la  \
-                     -L$(CUTEST_HOME)/lib \
-                     -lcutest \
-                    -L$(AXIS2C_HOME)/lib \
-                    -laxis2_util \
-                    -laxis2_unix \
-                    -laxis2_engine \
-                    -laxis2_wsdl \
-                    -laxis2_om \
-                    -laxis2_soap \
-                    -laxis2_parser \
-                    -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
-                    -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
+context_test_LDADD   =   \
+                        libtest_context.la  \
+                        -L$(CUTEST_HOME)/lib \
+                        -lcutest \
+                        -laxis2_util \
+                        -laxis2_unix \
+                        -laxis2_engine \
+                        -laxis2_wsdl \
+                        -laxis2_om \
+                        -laxis2_soap \
+                        -laxis2_parser \
+                        $(GUTHTHILA_LIBNAME) \
+                        $(LIBXML2_LIBNAME)
 

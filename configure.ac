@@ -6,6 +6,8 @@ AC_INIT(axis2c-src, M0.4)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
+#AC_PREFIX_DEFAULT(/usr/local/axis2)
+AC_PREFIX_DEFAULT(/usr/local/axis2c)
 
 #AC_CONFIG_SRCDIR([modules/common/src/axis2.c])
 
@@ -71,6 +73,7 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library w
     AC_MSG_RESULT(yes)
     LIBXML2="libxml2"
     LIBXML2_LIBNAME="-lxml2"
+    PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
 
     ;;
   esac ],

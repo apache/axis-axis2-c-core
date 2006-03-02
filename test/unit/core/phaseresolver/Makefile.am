@@ -27,7 +27,6 @@ phaseresolver_test_SOURCES = main.c
 phaseresolver_test_LDADD   =   libtest_phaseresolver.la  \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
-                    -L$(AXIS2C_HOME)/lib \
                     -laxis2_util \
                     -laxis2_unix \
                     -laxis2_engine \
@@ -35,6 +34,6 @@ phaseresolver_test_LDADD   =   libtest_phaseresolver.la  \
                     -laxis2_om \
                     -laxis2_soap \
 					-laxis2_parser \
-                    -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
-                    -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
+                    $(GUTHTHILA_LIBNAME) \
+                    $(LIBXML2_LIBNAME)
 

@@ -7,7 +7,7 @@ AM_CFLAGS = -g -pthread
 test_client_SOURCES = test_client.c
 test_clientapi_SOURCES = test_clientapi.c
 
-test_clientapi_LDADD   =  -L$(AXIS2C_HOME)/lib \
+test_clientapi_LDADD   =  \
 	                -laxis2_util \
 	                -laxis2_om \
 	                -laxis2_engine \
@@ -17,10 +17,10 @@ test_clientapi_LDADD   =  -L$(AXIS2C_HOME)/lib \
 	                -lpthread \
 					-laxis2_soap \
                     -laxis2_unix \
-	                -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \
-	                -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME)
+	                $(LIBXML2_LIBNAME) \
+	                $(GUTHTHILA_LIBNAME)
 
-test_client_LDADD   =  -L$(AXIS2C_HOME)/lib \
+test_client_LDADD   =  \
 	                -laxis2_util \
 	                -laxis2_om \
 	                -laxis2_engine \
@@ -29,8 +29,8 @@ test_client_LDADD   =  -L$(AXIS2C_HOME)/lib \
 	                -laxis2_parser \
 					-laxis2_soap \
                     -laxis2_unix \
-	                -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \
-	                -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) 
+	                $(LIBXML2_LIBNAME) \
+	                $(GUTHTHILA_LIBNAME) 
 
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/include \

@@ -5,7 +5,6 @@ echo_SOURCES = axis2_echo_stub.c \
                 echo_client.c
 
 echo_LDADD   =  $(LDFLAGS) \
-                -L$(AXIS2C_HOME)/lib \
 				-laxis2_util \
                 -laxis2_om \
                 -laxis2_wsdl \
@@ -16,8 +15,8 @@ echo_LDADD   =  $(LDFLAGS) \
                 -laxis2_soap \
                 -laxis2_http_sender \
                 -laxis2_http_receiver \
-                -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME) \
-                -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME)
+                $(GUTHTHILA_LIBNAME) \
+                $(LIBXML2_LIBNAME)
 
 
 INCLUDES = -I$(top_builddir)/include \
