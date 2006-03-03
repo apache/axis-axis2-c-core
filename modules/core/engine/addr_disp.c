@@ -166,6 +166,7 @@ axis2_op_t* AXIS2_CALL axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx,
         op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, qname);
         if (op)
             AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Operation found using WSA Action");
+        AXIS2_QNAME_FREE(qname, env);            
     }
     
     return op;
