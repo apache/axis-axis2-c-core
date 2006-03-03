@@ -1508,17 +1508,19 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                         file_name, dep_engine, svc_grp);
                     if(AXIS2_SUCCESS != status)
                     {
+                        AXIS2_ARCH_READER_FREE(arch_reader, env);
                         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SVC, 
                             AXIS2_FAILURE);
-                        return AXIS2_FAILURE;
+                        return status;
                     }
                     status = axis2_dep_engine_add_new_svc(dep_engine, env, 
                         svc_grp);
                     if(AXIS2_SUCCESS != status)
                     {
+                        AXIS2_ARCH_READER_FREE(arch_reader, env);
                         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SVC, 
                             AXIS2_FAILURE);
-                        return AXIS2_FAILURE;
+                        return status;
                     }
                     /* log.info(Messages.getMessage(
                             DeploymentErrorMsgs.DEPLOYING_WS, currentArchiveFile.getName())); */
@@ -1535,6 +1537,7 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
 			                meta_data);
                     if(AXIS2_SUCCESS != status)
                     {
+                        AXIS2_ARCH_READER_FREE(arch_reader, env);
                         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MODULE, 
                             AXIS2_FAILURE);
                         return AXIS2_FAILURE;
@@ -1543,6 +1546,7 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                         meta_data);
                     if(AXIS2_SUCCESS != status)
                     {
+                        AXIS2_ARCH_READER_FREE(arch_reader, env);
                         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MODULE, 
                             AXIS2_FAILURE);
                         return AXIS2_FAILURE;

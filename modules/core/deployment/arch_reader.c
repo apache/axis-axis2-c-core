@@ -347,9 +347,9 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
         
         status = axis2_arch_reader_build_svc_grp(arch_reader, env, svcs_xml, 
             dep_engine, svc_grp);
-        if(AXIS2_FAILURE == status)
+        if(AXIS2_SUCCESS != status)
         {
-            return AXIS2_FAILURE;
+            return status;
         }
         arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
         svc_name = AXIS2_ARCH_FILE_DATA_GET_SVC_NAME(arch_file_data, env);
@@ -419,8 +419,8 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
             AXIS2_QNAME_FREE(svc_qname, env);
             if(AXIS2_SUCCESS != status)
             {
-                svc_qname = NULL;
-                return AXIS2_FAILURE;
+                AXIS2_SVC_FREE(svc, env);
+                return status;
             }
         }
         AXIS2_SVC_SET_PARENT(svc, env, svc_grp);
