@@ -375,8 +375,7 @@ axis2_op_create (axis2_env_t **env)
         return NULL;        
 	}
 
-	op_impl->wsdl_op = (axis2_wsdl_op_t *)
-		axis2_wsdl_op_create(env);		
+	op_impl->wsdl_op = (axis2_wsdl_op_t *) axis2_wsdl_op_create(env);		
 	if(NULL == op_impl->wsdl_op)
 	{
         axis2_op_free(&(op_impl->op), env);
@@ -384,7 +383,8 @@ axis2_op_create (axis2_env_t **env)
         return NULL;		
 	}
     /* Set the function pointers of the base */
-    op_impl->op.base.ops = AXIS2_MALLOC((*env)->allocator, sizeof(axis2_wsdl_op_ops_t));
+    op_impl->op.base.ops = AXIS2_MALLOC((*env)->allocator, 
+        sizeof(axis2_wsdl_op_ops_t));
     op_impl->op.base.ops->free_void_arg = axis2_op_free_void_arg;
     op_impl->op.base.ops->get_qname = axis2_op_get_qname;
 
@@ -633,8 +633,7 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     op_qname = AXIS2_OP_GET_QNAME(op, env);
     op_name = AXIS2_QNAME_GET_LOCALPART(op_qname, env);
     
-    if(op_impl->remaining_phases_inflow && 
-        (0 != AXIS2_STRCMP(op_name, "TemplateOperation")))
+    if(op_impl->remaining_phases_inflow)
     {
         int i = 0;
         int size = 0;
@@ -656,8 +655,7 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
         op_impl->remaining_phases_inflow = NULL;
     }
     
-    if(NULL != op_impl->phases_outflow &&
-        (0 != AXIS2_STRCMP(op_name, "TemplateOperation")))
+    if(NULL != op_impl->phases_outflow)
     {
         int i = 0;
         int size = 0;
@@ -677,8 +675,7 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
         op_impl->phases_outflow = NULL;
     }
     
-    if(NULL != op_impl->phases_in_fault_flow &&
-        (0 != AXIS2_STRCMP(op_name, "TemplateOperation")))
+    if(NULL != op_impl->phases_in_fault_flow)
     {
         int i = 0;
         int size = 0;
@@ -698,8 +695,7 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
         op_impl->phases_in_fault_flow = NULL;
     }
     
-    if(NULL != op_impl->phases_out_fault_flow &&
-        (0 != AXIS2_STRCMP(op_name, "TemplateOperation")))
+    if(NULL != op_impl->phases_out_fault_flow)
     {
         int i = 0;
         int size = 0;
@@ -950,10 +946,9 @@ axis2_op_set_qname (axis2_op_t *op,
                             axis2_qname_t *qname)
 {
     axis2_op_impl_t *op_impl = NULL;
-    axis2_char_t *op_n = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	op_impl = AXIS2_INTF_TO_IMPL(op);
-    op_n = AXIS2_QNAME_GET_LOCALPART(qname, env); 
     
     return AXIS2_WSDL_OP_SET_QNAME(op_impl->wsdl_op, env, qname);
 }

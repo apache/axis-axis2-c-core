@@ -280,7 +280,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         itr, param_container_l, parent->param_container);
     if(AXIS2_SUCCESS != status)
     {
-        return AXIS2_FAILURE;
+        return status;
     }
 
     /* process service description */
@@ -364,7 +364,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     if(AXIS2_SUCCESS != status)
     {
         AXIS2_DLL_DESC_FREE(dll_desc, env);
-        return AXIS2_FAILURE;
+        return status;
     }
     /* free all temp vars */
     AXIS2_FREE((*env)->allocator, temp_path);
@@ -377,7 +377,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     impl_info_param->ops->value_free = axis2_dll_desc_free_void_arg;
     if(AXIS2_SUCCESS != status)
     {
-        return AXIS2_FAILURE;
+        return status;
     }
     /* end of my logic */
     /* processing service wide modules which required to engage globally */
@@ -389,7 +389,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     status = axis2_svc_builder_process_module_refs(svc_builder, env, module_refs);
     if(AXIS2_SUCCESS != status)
     {
-        return AXIS2_FAILURE;
+        return status;
     }
 
     /* process INFLOW */
@@ -401,12 +401,14 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     if(in_flow_element != NULL && NULL != in_flow_node)
     {
         axis2_flow_t *flow = NULL;
+
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(svc_builder->desc_builder, env,
             in_flow_element, builder_impl->svc->param_container, in_flow_node);
         status = AXIS2_SVC_SET_INFLOW(builder_impl->svc, env, flow);
-        if(AXIS2_FAILURE == status)
+        if(AXIS2_SUCCESS != status)
         {
-            return AXIS2_FAILURE;
+            AXIS2_FLOW_FREE(flow, env);
+            return status;
         }
     }
 
@@ -418,12 +420,14 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     if(NULL != out_flow_element && NULL != out_flow_node)
     {
         axis2_flow_t *flow = NULL;
+
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(svc_builder->desc_builder, env,
             out_flow_element, builder_impl->svc->param_container, out_flow_node);
         status = AXIS2_SVC_SET_OUTFLOW(builder_impl->svc, env, flow);
-        if(AXIS2_FAILURE == status)
+        if(AXIS2_SUCCESS != status)
         {
-            return AXIS2_FAILURE;
+            AXIS2_FLOW_FREE(flow, env);
+            return status;
         }
     }
 
@@ -436,13 +440,15 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     if(in_faultflow_element != NULL && NULL != in_faultflow_node)
     {
         axis2_flow_t *flow = NULL;
+
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(svc_builder->desc_builder, env,
             in_faultflow_element, builder_impl->svc->param_container, 
                 in_faultflow_node);
         status = AXIS2_SVC_SET_FAULT_INFLOW(builder_impl->svc, env, flow);
-        if(AXIS2_FAILURE == status)
+        if(AXIS2_SUCCESS != status)
         {
-            return AXIS2_FAILURE;
+            AXIS2_FLOW_FREE(flow, env);
+            return status;
         }
     }
 
@@ -454,13 +460,15 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     if(NULL != out_faultflow_element && NULL != out_faultflow_node)
     {
         axis2_flow_t *flow = NULL;
+
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(svc_builder->desc_builder, env,
             out_faultflow_element, builder_impl->svc->param_container, 
                 out_faultflow_node);
         status = AXIS2_SVC_SET_FAULT_OUTFLOW(builder_impl->svc, env, flow);
-        if(AXIS2_FAILURE == status)
+        if(AXIS2_SUCCESS != status)
         {
-            return AXIS2_FAILURE;
+            AXIS2_FLOW_FREE(flow, env);
+            return status;
         }
         
     }
@@ -513,7 +521,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     status = axis2_svc_builder_process_svc_module_conf(svc_builder, env, 
         module_configs_itr, builder_impl->svc->param_container, builder_impl->svc);
     */
-    return status;
+    return AXIS2_SUCCESS;
 }
 
 static axis2_array_list_t *
@@ -599,7 +607,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         {
             axis2_char_t *mep = NULL;
             
-            /* craeting operation from existing operation */
+            /* Creating operation from existing operation */
             mep = AXIS2_WSDL_OP_GET_MSG_EXCHANGE_PATTERN(wsdl_op, env);
             if(NULL == mep)
             {

@@ -263,36 +263,29 @@ axis2_wsdl_interface_free (
 {
     axis2_wsdl_interface_impl_t *wsdl_interface_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE); 
     wsdl_interface_impl = AXIS2_INTF_TO_IMPL(wsdl_interface);
     
-	if(NULL != wsdl_interface->ops)
+	if(wsdl_interface->ops)
     {
         AXIS2_FREE((*env)->allocator, wsdl_interface->ops);
         wsdl_interface->ops = NULL;
     }
     
-    if(NULL != wsdl_interface_impl->super_interfaces)
+    if(wsdl_interface_impl->super_interfaces)
     {
         axis2_hash_free(wsdl_interface_impl->super_interfaces, env);
         wsdl_interface_impl->super_interfaces = NULL;
     }
     
-    if(NULL != wsdl_interface_impl->ops)
+    if(wsdl_interface_impl->ops)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
         for (hi = axis2_hash_first (wsdl_interface_impl->ops, env); hi;
                  hi = axis2_hash_next ( env, hi))
         {
-            axis2_qname_t *op_qn = NULL;
-            axis2_wsdl_op_t *op_o = NULL;
-            axis2_char_t *op_n = NULL;
             axis2_hash_this (hi, NULL, NULL, &val);
-            op_o = (axis2_wsdl_op_t *) val;
-            op_qn = AXIS2_WSDL_OP_GET_QNAME(op_o, env);
-            op_n = AXIS2_QNAME_GET_LOCALPART(op_qn, env);
             AXIS2_WSDL_OP_FREE_VOID_ARG(val, env);
             val = NULL;
                
@@ -301,25 +294,25 @@ axis2_wsdl_interface_free (
         wsdl_interface_impl->ops = NULL;
     }
     
-    if(NULL != wsdl_interface_impl->faults)
+    if(wsdl_interface_impl->faults)
     {
         AXIS2_LINKED_LIST_FREE(wsdl_interface_impl->faults, env);
         wsdl_interface_impl->faults = NULL;
     }
     
-    if(NULL != AXIS2_INTF_TO_IMPL(wsdl_interface)->qname)
+    if(wsdl_interface_impl->qname)
     {
         AXIS2_QNAME_FREE(wsdl_interface_impl->qname, env);
         wsdl_interface_impl->qname = NULL;
     }
     
-    if(NULL != wsdl_interface_impl->style_default)
+    if(wsdl_interface_impl->style_default)
     {
         AXIS2_FREE((*env)->allocator, wsdl_interface_impl->style_default);
         wsdl_interface_impl->style_default = NULL;
     }
     
-    if(NULL != wsdl_interface->extensible_component)
+    if(wsdl_interface->extensible_component)
     {
         AXIS2_WSDL_EXTENSIBLE_COMPONENT_FREE(wsdl_interface->
             extensible_component, env);

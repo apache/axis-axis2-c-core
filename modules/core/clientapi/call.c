@@ -861,14 +861,15 @@ axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(axis2_call_t *cal
         {
             op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname);            
         }
-        
-        /* now free qname as it is no more required */
-        AXIS2_QNAME_FREE(op_qname, env);
-        
+         
         if (!op)
         {
-            op = axis2_call_create_op_fill_flow(call, env, op_name);
+            /*op = axis2_call_create_op_fill_flow(call, env, op_name);*/
+            op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, "TemplateOperation");
+            AXIS2_OP_SET_QNAME(op, env, op_qname);
         }
+        /* now free qname as it is no more required */
+        AXIS2_QNAME_FREE(op_qname, env);
         
         if (!op || !svc)
             return NULL;
@@ -941,14 +942,15 @@ axis2_soap_envelope_t* AXIS2_CALL axis2_call_invoke_blocking_with_soap(struct ax
         {
             op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname);            
         }
-        
-        /* now free qname as it is no more required */
-        AXIS2_QNAME_FREE(op_qname, env);
-        
+         
         if (!op)
         {
-            op = axis2_call_create_op_fill_flow(call, env, op_name);
+            /*op = axis2_call_create_op_fill_flow(call, env, op_name);*/
+            op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, "TemplateOperation");
+            AXIS2_OP_SET_QNAME(op, env, op_qname);
         }
+        /* now free qname as it is no more required */
+        AXIS2_QNAME_FREE(op_qname, env);
         
         if (!op)
             return NULL;
@@ -1016,13 +1018,14 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking_with_om(struct axis2_ca
             op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname);            
         }
         
-        /* now free qname as it is no more required */
-        AXIS2_QNAME_FREE(op_qname, env);
-        
         if (!op)
         {
-            op = axis2_call_create_op_fill_flow(call, env, op_name);
-        }
+            /*op = axis2_call_create_op_fill_flow(call, env, op_name);*/
+            op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, "TemplateOperation");
+            AXIS2_OP_SET_QNAME(op, env, op_qname);
+        }  
+        /* now free qname as it is no more required */
+        AXIS2_QNAME_FREE(op_qname, env);
         
         if (!op)
             return AXIS2_FAILURE;
@@ -1071,13 +1074,14 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking_with_soap(struct axis2_
             op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname);            
         }
         
-        /* now free qname as it is no more required */
-        AXIS2_QNAME_FREE(op_qname, env);
-        
         if (!op)
         {
-            op = axis2_call_create_op_fill_flow(call, env, op_name);
-        }
+            /*op = axis2_call_create_op_fill_flow(call, env, op_name);*/
+            op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, "TemplateOperation");
+            AXIS2_OP_SET_QNAME(op, env, op_qname);
+        } 
+        /* now free qname as it is no more required */
+        AXIS2_QNAME_FREE(op_qname, env);
         
         if (!op)
             return AXIS2_FAILURE;

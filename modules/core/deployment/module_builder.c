@@ -296,12 +296,15 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
 
     if(NULL != in_flow_element && NULL != in_flow_node)
     {
-        axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
+        axis2_flow_t *flow = NULL;
+        
+        flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
             desc_builder, env, in_flow_element, builder_impl->module_desc->params,
                 in_flow_node);
         status = AXIS2_MODULE_DESC_SET_INFLOW(builder_impl->module_desc, env, flow);
         if(AXIS2_SUCCESS != status)
         {
+            AXIS2_FLOW_FREE(flow, env);
             return status;
         }
     }
@@ -314,12 +317,15 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
 
     if(NULL != out_flow_element && NULL != out_flow_node)
     {
-        axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
+        axis2_flow_t *flow = NULL;
+        
+        flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
             desc_builder, env, out_flow_element, builder_impl->module_desc->params,
                 out_flow_node);
         status = AXIS2_MODULE_DESC_SET_OUTFLOW(builder_impl->module_desc, env, flow);
         if(AXIS2_SUCCESS != status)
         {
+            AXIS2_FLOW_FREE(flow, env);
             return status;
         }
     }
@@ -332,12 +338,15 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
 
     if(NULL != in_fault_flow_element && NULL != in_fault_flow_node)
     {
-        axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
+        axis2_flow_t *flow = NULL;
+        
+        flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
             desc_builder, env, in_fault_flow_element, builder_impl->module_desc->
                 params, in_fault_flow_node);
         status = AXIS2_MODULE_DESC_SET_FAULT_INFLOW(builder_impl->module_desc, env, flow);
         if(AXIS2_SUCCESS != status)
         {
+            AXIS2_FLOW_FREE(flow, env);
             return status;
         }
     }
@@ -350,13 +359,16 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
 
     if(NULL != out_fault_flow_element && NULL != out_fault_flow_node)
     {
-        axis2_flow_t *flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
+        axis2_flow_t *flow = NULL;
+
+        flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
             desc_builder, env, out_fault_flow_element, builder_impl->module_desc->
                 params, out_fault_flow_node);
         status = AXIS2_MODULE_DESC_SET_FAULT_OUTFLOW(builder_impl->module_desc, 
             env, flow);
         if(AXIS2_SUCCESS != status)
         {
+            AXIS2_FLOW_FREE(flow, env);
             return status;
         }
     }

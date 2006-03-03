@@ -261,6 +261,11 @@ axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data,
         AXIS2_FREE((*env)->allocator, file_data_impl->module_name);
         file_data_impl->module_name = NULL;        
     }
+    if(file_data_impl->module_dll_name)
+    {
+        AXIS2_FREE((*env)->allocator, file_data_impl->module_dll_name);
+        file_data_impl->module_dll_name = NULL;        
+    }
     if(file_data_impl->name)
     {
         AXIS2_FREE((*env)->allocator, file_data_impl->name);
@@ -457,7 +462,7 @@ axis2_arch_file_data_add_svc(axis2_arch_file_data_t *file_data,
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
     
     svc_qname = AXIS2_SVC_GET_QNAME(svc_desc, env);
-    svc_name = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
+    svc_name = AXIS2_QNAME_TO_STRING(svc_qname, env);
     if(!file_data_impl->svc_map)
     {
         file_data_impl->svc_map = axis2_hash_make(env);

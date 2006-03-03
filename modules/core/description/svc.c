@@ -327,7 +327,7 @@ axis2_svc_create (axis2_env_t **env)
 	}
     
     /** Create modle list of default size */
-    svc_impl->module_list = axis2_array_list_create(env, 20);
+    svc_impl->module_list = axis2_array_list_create(env, 0);
     if(NULL == svc_impl->module_list)
     {
         axis2_svc_free(&(svc_impl->svc), env);

@@ -343,15 +343,15 @@ axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
     while(AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(handlers ,env))
     {
         axis2_om_node_t *handler_node = NULL;
-        axis2_handler_desc_t *handler = NULL;
+        axis2_handler_desc_t *handler_desc = NULL;
         axis2_status_t status = AXIS2_FAILURE;
             
         handler_node = (axis2_om_node_t *)
             AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(handlers, env);
         
-        handler = axis2_desc_builder_process_handler(desc_builder, env, 
+        handler_desc = axis2_desc_builder_process_handler(desc_builder, env, 
             handler_node, parent);
-        status = AXIS2_FLOW_ADD_HANDLER(flow, env, handler);
+        status = AXIS2_FLOW_ADD_HANDLER(flow, env, handler_desc);
         if(AXIS2_SUCCESS != status)
         {
             AXIS2_FLOW_FREE(flow, env);
@@ -395,9 +395,11 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     name_attrib = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(handler_element, env, 
         attr_qname);
     if(attr_qname)
+    {
         AXIS2_QNAME_FREE(attr_qname, env);
+    }
 
-    if(NULL == name_attrib)
+    if(!name_attrib)
     {
         AXIS2_HANDLER_DESC_FREE(handler_desc, env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
@@ -498,7 +500,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
 
                 phase_rule = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
                 status = AXIS2_PHASE_RULE_SET_AFTER(phase_rule, env, value);
-                if(AXIS2_FAILURE == status)
+                if(AXIS2_SUCCESS != status)
                 {
                     AXIS2_HANDLER_DESC_FREE(handler_desc, env);
                     return NULL;
@@ -509,7 +511,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                 struct axis2_phase_rule *phase_rule = NULL;
                 phase_rule = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
                 status = AXIS2_PHASE_RULE_SET_BEFORE(phase_rule, env, value);
-                if(AXIS2_FAILURE == status)
+                if(AXIS2_SUCCESS != status)
                 {
                     AXIS2_HANDLER_DESC_FREE(handler_desc, env);
                     return NULL;
@@ -520,7 +522,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                 struct axis2_phase_rule *phase_rule = NULL;
                 phase_rule = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
                 status = AXIS2_PHASE_RULE_SET_NAME(phase_rule, env, value);
-                if(AXIS2_FAILURE == status)
+                if(AXIS2_SUCCESS != status)
                 {
                     AXIS2_HANDLER_DESC_FREE(handler_desc, env);
                     return NULL;
@@ -651,7 +653,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
         /* Setting paramter Value (the chiled elemnt of the paramter) */
         para_value = AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(param_element, env,
             param_node, &para_node);
-        if(NULL != para_value)
+        if(para_value)
         {
             /* TODO uncomment this when find usages */
             /*
@@ -673,10 +675,10 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
                 param_element, env, param_node);
             para_test_value = AXIS2_STRDUP(temp, env);
             status = AXIS2_PARAM_SET_VALUE(param, env, para_test_value);
-            if(AXIS2_FAILURE == status)
+            if(AXIS2_SUCCESS != status)
             {
                 AXIS2_PARAM_FREE(param, env);
-                return AXIS2_FAILURE;
+                return status;
             }
             AXIS2_PARAM_SET_PARAM_TYPE(param, env, AXIS2_TEXT_PARAM);
         }
@@ -685,7 +687,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
         para_locked = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(param_element, env, 
             att_locked);
         AXIS2_QNAME_FREE(att_locked, env);
-        if(NULL != parent)
+        if(parent)
         {
             axis2_char_t *param_name = NULL;
 
@@ -693,7 +695,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
             parent_para = AXIS2_PARAM_CONTAINER_GET_PARAM(parent, env, 
                 param_name);
         }
-        if(NULL != para_locked)
+        if(para_locked)
         {
             axis2_char_t *locked_value = NULL;
             locked_value = AXIS2_OM_ATTRIBUTE_GET_VALUE(para_locked, env);
@@ -707,7 +709,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
                 param_name = AXIS2_PARAM_GET_NAME(param, env);
                 is_param_locked = AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(parent,
                     env, param_name);
-                if(NULL != parent && AXIS2_TRUE == is_param_locked)
+                if(parent && AXIS2_TRUE == is_param_locked)
                 {
                     AXIS2_PARAM_FREE(param, env);
                     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CONF_NOT_FOUND,
@@ -725,22 +727,33 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
             }
         }
         
-        if(NULL != parent)
+        if(parent)
         {
             axis2_char_t *name = NULL;
             axis2_bool_t bvalue = AXIS2_FALSE;
+
             name = AXIS2_PARAM_GET_NAME(param, env);
             bvalue = AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(parent, env, name);
-            if(NULL != parent_para || AXIS2_FALSE == bvalue)
+            if(parent_para || AXIS2_FALSE == bvalue)
             {
                 status = AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container, env, 
                     param);
+                if(AXIS2_SUCCESS != status)
+                {
+                    AXIS2_PARAM_FREE(param, env);
+                    return status;
+                }
             }
         }
         else
         {
             status = AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container, env, 
-                param);            
+                param);           
+            if(AXIS2_SUCCESS != status)
+            {
+                AXIS2_PARAM_FREE(param, env);
+                return status;
+            } 
         }   
     }
     return AXIS2_SUCCESS;
