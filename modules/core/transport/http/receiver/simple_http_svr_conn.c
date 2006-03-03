@@ -415,9 +415,13 @@ axis2_simple_http_svr_conn_write_response
 							i);
 			if(NULL != header)
 			{
+                axis2_char_t *header_ext_form =  
+                        AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(
+                        (axis2_http_header_t*)header, env);
+
 				AXIS2_HTTP_RESPONSE_WRITER_PRINT_STR(response_writer, env, 
-							AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(
-							(axis2_http_header_t*)header, env));
+							header_ext_form);
+                AXIS2_FREE((*env)->allocator, header_ext_form);
 			}
 	    }
     }
@@ -457,6 +461,7 @@ axis2_simple_http_svr_conn_write_response
 		AXIS2_HTTP_CHUNKED_STREAM_FREE(chunked_stream, env);
 	}
     AXIS2_FREE((*env)->allocator, response_body);
+    AXIS2_HTTP_RESPONSE_WRITER_FREE(response_writer, env);
     return AXIS2_SUCCESS;
 }
 
