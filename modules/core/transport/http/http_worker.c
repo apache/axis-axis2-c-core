@@ -155,6 +155,8 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	axis2_op_ctx_t *op_ctx = NULL;
     axis2_char_t *svr_ip = NULL;
     axis2_url_t *request_url = NULL;
+    axis2_char_t *url_external_form = NULL;
+    axis2_qname_t *tmp_qname = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svr_conn, AXIS2_FAILURE);
@@ -211,15 +213,15 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 		
 	}
 	request_body = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY(simple_request, env);
-	
+
+    tmp_qname = axis2_qname_create(env, AXIS2_TRANSPORT_HTTP, NULL, NULL);
 	out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(AXIS2_CONF_CTX_GET_CONF
-						(http_worker_impl->conf_ctx, env), env, 
-						axis2_qname_create(env, AXIS2_TRANSPORT_HTTP, NULL, 
-						NULL));
+						(http_worker_impl->conf_ctx, env), env,
+                        tmp_qname);
 	in_desc = AXIS2_CONF_GET_TRANSPORT_IN(AXIS2_CONF_CTX_GET_CONF
 						(http_worker_impl->conf_ctx, env), env, 
-						axis2_qname_create(env, AXIS2_TRANSPORT_HTTP, NULL,
-						NULL));
+						tmp_qname);
+    AXIS2_QNAME_FREE(tmp_qname, env);
 	msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
 	AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
 	
@@ -235,6 +237,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
                         AXIS2_HTTP_REQUEST_LINE_GET_URI(
                         AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
                         simple_request, env), env));
+    url_external_form = AXIS2_URL_TO_EXTERNAL_FORM(request_url, env);
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_OUT, out_stream, 
 						AXIS2_FALSE);
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS, 
@@ -302,7 +305,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
                         (env, msg_ctx, request_body, out_stream,
 						AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_TYPE(
 						simple_request, env) , content_length, soap_action,
-                        AXIS2_URL_TO_EXTERNAL_FORM(request_url, env));
+                        url_external_form);
 		if(status == AXIS2_FAILURE)
 		{
 			axis2_msg_ctx_t *fault_ctx = NULL;
@@ -370,8 +373,12 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 						out_stream, env));
 	
 	status = AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, response);
+    AXIS2_FREE((*env)->allocator, url_external_form);
+    url_external_form = NULL;
 	AXIS2_MSG_CTX_FREE(msg_ctx, env);
 	msg_ctx = NULL;
+    AXIS2_URL_FREE(request_url, env);
+    request_url = NULL;
 	AXIS2_HTTP_SIMPLE_RESPONSE_FREE(response, env);
 	response = NULL;	
     return status;
