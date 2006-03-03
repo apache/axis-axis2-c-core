@@ -268,7 +268,6 @@ axis2_soap_header_add_header_block(axis2_soap_header_t* header,
     header_block_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(
                             header_block, env);
     AXIS2_OM_NODE_SET_BUILD_STATUS(header_block_node, env, AXIS2_TRUE);
-    key = (axis2_char_t*)AXIS2_MALLOC((*env)->allocator, sizeof(axis2_char_t)*10);
     return header_block;
 } 
 axis2_hash_t* AXIS2_CALL 
