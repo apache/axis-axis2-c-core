@@ -203,6 +203,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
             /* extract service group context, if available */
             axis2_addr_in_extract_svc_grp_ctx_id(env, soap_header, msg_ctx);
             
+            AXIS2_ARRAY_LIST_FREE(addr_headers, env);
             return AXIS2_SUCCESS;
         }
     }
@@ -518,6 +519,7 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
     }        
     AXIS2_QNAME_FREE(epr_addr_qn, env);
     AXIS2_QNAME_FREE(epr_ref_qn, env);
+    AXIS2_QNAME_FREE(wsa_meta_qn, env);
     return AXIS2_SUCCESS;
 }
  
