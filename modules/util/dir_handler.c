@@ -74,6 +74,7 @@ axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
+            AXIS2_FREE((*env)->allocator, *files);
             AXIS2_FREE((*env)->allocator, files);
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
@@ -99,6 +100,7 @@ axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
+            AXIS2_FREE((*env)->allocator, *files);
             AXIS2_FREE((*env)->allocator, files);
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
@@ -124,6 +126,7 @@ axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
+            AXIS2_FREE((*env)->allocator, *files);
             AXIS2_FREE((*env)->allocator, files);
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
@@ -151,6 +154,7 @@ axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
+            AXIS2_FREE((*env)->allocator, *files);
             AXIS2_FREE((*env)->allocator, files);
             return NULL;
         }
@@ -161,6 +165,7 @@ axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
         arch_file = NULL;
         fname = NULL;
     }
+    AXIS2_FREE((*env)->allocator, *files);
     AXIS2_FREE((*env)->allocator, files);
     
     return file_list;
@@ -226,6 +231,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
+            AXIS2_FREE((*env)->allocator, *files);
             AXIS2_FREE((*env)->allocator, files);
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
@@ -251,6 +257,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
+            AXIS2_FREE((*env)->allocator, *files);
             AXIS2_FREE((*env)->allocator, files);
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
@@ -278,6 +285,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
+            AXIS2_FREE((*env)->allocator, *files);
             AXIS2_FREE((*env)->allocator, files);
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
@@ -306,6 +314,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
+            AXIS2_FREE((*env)->allocator, *files);
             AXIS2_FREE((*env)->allocator, files);
             return NULL;
             
@@ -317,6 +326,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
         arch_file = NULL;
         fname = NULL;
     }
+    AXIS2_FREE((*env)->allocator, *files);
     AXIS2_FREE((*env)->allocator, files);
     
     return file_list;
