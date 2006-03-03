@@ -275,22 +275,7 @@ axis2_svc_grp_free (axis2_svc_grp_t *svc_grp,
     
     if(NULL != svc_grp_impl->svcs)
     {
-        axis2_hash_index_t *hi = NULL;
-        void *val = NULL;
-        for (hi = axis2_hash_first (svc_grp_impl->svcs, env); hi;
-                 hi = axis2_hash_next ( env, hi))
-        {
-            axis2_svc_t *svc = NULL;
-            axis2_hash_this (hi, NULL, NULL, &val);
-            svc = (axis2_svc_t *) val;
-            if (svc)
-            {
-                AXIS2_SVC_FREE (svc, env);
-                svc = NULL;
-            }
-            val = NULL;
-               
-        }
+        /* Services are freed by arch_file_data */
         axis2_hash_free(svc_grp_impl->svcs, env);
         svc_grp_impl->svcs = NULL;
     }

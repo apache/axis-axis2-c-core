@@ -274,6 +274,22 @@ axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data,
     
     if(file_data_impl->svc_map)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+
+        for (hi = axis2_hash_first (file_data_impl->svc_map, env); hi;
+                 hi = axis2_hash_next ( env, hi))
+        {
+            axis2_svc_t *svc = NULL;
+            axis2_hash_this (hi, NULL, NULL, &val);
+            svc = (axis2_svc_t *) val;
+            if (svc)
+            {
+                AXIS2_SVC_FREE (svc, env);
+                svc = NULL;
+            }
+            val = NULL;
+        }
         axis2_hash_free(file_data_impl->svc_map, env);
         file_data_impl->svc_map = NULL;        
     }
