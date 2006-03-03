@@ -251,6 +251,7 @@ axis2_addr_in_extract_svc_grp_ctx_id(axis2_env_t **env,
                 }
             }
         }
+        AXIS2_QNAME_FREE(qname, env);
     }
     /** TODO, set error */
     return AXIS2_FAILURE;
