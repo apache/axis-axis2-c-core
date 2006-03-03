@@ -559,7 +559,6 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
     axis2_om_children_qname_iterator_t *phases = NULL;
     axis2_qname_t *qphase = NULL;
     axis2_om_element_t *phase_orders_element;
-    axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, phase_orders_node, AXIS2_FAILURE);
@@ -721,6 +720,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             impl_info_param = axis2_param_create(env, class_name, NULL); 
             if(!impl_info_param)
             {
+                AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
                 return AXIS2_FAILURE;
             }
             dll_desc = axis2_dll_desc_create(env);
@@ -750,6 +750,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
                 transport_sender);
             if(AXIS2_SUCCESS != status)
             {
+                AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
                 return status;
             }
             
@@ -759,10 +760,14 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(transport_element,
                 env, qparamst, transport_node);
             AXIS2_QNAME_FREE(qparamst, env);
-            AXIS2_DESC_BUILDER_PROCESS_PARAMS(conf_builder->desc_builder, env,
+            status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(conf_builder->desc_builder, env,
                 itr, transport_out->param_container, builder_impl->conf->
                     param_container);
-
+            if(AXIS2_SUCCESS != status)
+            {
+                AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
+                return status;
+            }
             /* process INFLOW */
             qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL); 
             in_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
@@ -770,6 +775,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             AXIS2_QNAME_FREE(qinflowst, env);
             if(NULL != in_flow_element)
             {
+                AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
                 AXIS2_ERROR_SET((*env)->error, 
                     AXIS2_ERROR_INFLOW_NOT_ALLOWED_IN_TRS_OUT, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
@@ -785,9 +791,11 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->desc_builder,
                     env, out_flow_element, builder_impl->conf->param_container,
                         out_flow_node);
-                if(flow)
+                status = AXIS2_TRANSPORT_OUT_DESC_SET_OUTFLOW(transport_out, env, flow);
+                if(AXIS2_SUCCESS != status)
                 {
-                    AXIS2_TRANSPORT_OUT_DESC_SET_OUTFLOW(transport_out, env, flow);
+                    AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
+                    return status;
                 }
             }
 
@@ -800,6 +808,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             AXIS2_QNAME_FREE(qinfaultflowst, env);
             if(NULL != in_fault_flow_element)
             {
+                AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
                 AXIS2_ERROR_SET((*env)->error, 
                     AXIS2_ERROR_INFLOW_NOT_ALLOWED_IN_TRS_OUT, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
@@ -818,14 +827,22 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->desc_builder,
                     env, out_fault_flow_element, builder_impl->conf->param_container,
                         out_fault_flow_node);
-                if(flow)
+                status = AXIS2_TRANSPORT_OUT_DESC_SET_FAULTFLOW(transport_out, env, flow);
+                if(AXIS2_SUCCESS != status)
                 {
-                    AXIS2_TRANSPORT_OUT_DESC_SET_FAULTFLOW(transport_out, env, flow);
+                    AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
+                    return status;
                 }
             }
 
             /* adding to axis config */
-            AXIS2_CONF_ADD_TRANSPORT_OUT(builder_impl->conf, env, transport_out);
+            status = AXIS2_CONF_ADD_TRANSPORT_OUT(builder_impl->conf, env, 
+                transport_out);
+            if(AXIS2_SUCCESS != status)
+            {
+                AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
+                return status;
+            }
         }
     }
     return AXIS2_SUCCESS;
@@ -902,6 +919,10 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             transport_in = axis2_transport_in_desc_create_with_qname(env, 
                 transport_in_desc_qname);
             AXIS2_QNAME_FREE(transport_in_desc_qname, env);
+            if(!transport_in)
+            {
+                return AXIS2_FAILURE;
+            }
 
             /* transport impl class */
             class_qname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
@@ -962,37 +983,43 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(transport_element,
                 env, qparamst, transport_node);
             AXIS2_QNAME_FREE(qparamst, env);
-            AXIS2_DESC_BUILDER_PROCESS_PARAMS(conf_builder->desc_builder, env,
+            status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(conf_builder->desc_builder, env,
                 itr, transport_in->param_container, 
                     builder_impl->conf->param_container);
-           
-            /* process INFLOW */
-            qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL);
-            in_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
-                transport_element, env, qinflowst, transport_node, &in_flow_node);
-            AXIS2_QNAME_FREE(qinflowst, env);
-            if(NULL != in_flow_element)
+            if(AXIS2_SUCCESS != status)
             {
-                AXIS2_ERROR_SET((*env)->error, 
-                    AXIS2_ERROR_INFLOW_NOT_ALLOWED_IN_TRS_OUT, AXIS2_FAILURE);
-                return AXIS2_FAILURE;
+                AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
+                return status;
             }
-
+            /* process OUTFLOW */
             qoutflowst = axis2_qname_create(env, AXIS2_OUTFLOWST, NULL, NULL);
             out_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                 transport_element, env, qoutflowst, transport_node, &out_flow_node);
             AXIS2_QNAME_FREE(qoutflowst, env);
             if(NULL != out_flow_element)
             {
+                AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
+                AXIS2_ERROR_SET((*env)->error, 
+                    AXIS2_ERROR_OUTFLOW_NOT_ALLOWED_IN_TRS_IN, AXIS2_FAILURE);
+                return AXIS2_FAILURE;
+            }
+
+            qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL);
+            in_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
+                transport_element, env, qinflowst, transport_node, &in_flow_node);
+            AXIS2_QNAME_FREE(qinflowst, env);
+            if(NULL != in_flow_element)
+            {
                 axis2_flow_t *flow = NULL;
                 
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->
-                    desc_builder, env, out_flow_element, builder_impl->conf->
-                        param_container, out_flow_node);
+                    desc_builder, env, in_flow_element, builder_impl->conf->
+                        param_container, in_flow_node);
                 status = AXIS2_TRANSPORT_IN_DESC_SET_INFLOW(transport_in, env, 
                     flow);
                 if(AXIS2_SUCCESS != status)
                 {
+                    AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
                     return status;
                 }
             }
@@ -1014,6 +1041,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                     env, flow);
                 if(AXIS2_SUCCESS != status)
                 {
+                    AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
                     return status;
                 }
             }
@@ -1035,6 +1063,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 transport_in);
             if(AXIS2_SUCCESS != status)
             {
+                AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
                 return status;
             }
           
