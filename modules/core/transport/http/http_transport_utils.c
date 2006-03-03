@@ -311,6 +311,10 @@ axis2_http_transport_utils_process_http_post_request
 						(env);
 		AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, def_envelope);
 	}
+    if(NULL == engine)
+    {
+        AXIS2_ENGINE_FREE(engine, env);
+    }
 	return AXIS2_SUCCESS;
 }
 

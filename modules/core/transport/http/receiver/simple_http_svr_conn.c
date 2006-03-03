@@ -456,6 +456,7 @@ axis2_simple_http_svr_conn_write_response
 		AXIS2_HTTP_CHUNKED_STREAM_WRITE_LAST_CHUNK(chunked_stream, env);
 		AXIS2_HTTP_CHUNKED_STREAM_FREE(chunked_stream, env);
 	}
+    AXIS2_FREE((*env)->allocator, response_body);
     return AXIS2_SUCCESS;
 }
 
