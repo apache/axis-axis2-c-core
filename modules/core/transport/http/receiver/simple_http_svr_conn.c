@@ -194,11 +194,11 @@ axis2_simple_http_svr_conn_close(axis2_simple_http_svr_conn_t *svr_conn,
     svr_conn_impl = AXIS2_INTF_TO_IMPL(svr_conn);
 	
 	AXIS2_STREAM_FREE(svr_conn_impl->stream, env);
-    /*if(-1 != svr_conn_impl->socket)
+    if(-1 != svr_conn_impl->socket)
     {
 		axis2_network_handler_close_socket(env, svr_conn_impl->socket);
         svr_conn_impl->socket = -1;
-    }*/
+    }
     return AXIS2_SUCCESS;
 }
 

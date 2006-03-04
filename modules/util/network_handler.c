@@ -144,6 +144,8 @@ axis2_network_handler_create_server_socket(axis2_env_t **env, int port)
 AXIS2_DECLARE(axis2_status_t )
 axis2_network_handler_close_socket (axis2_env_t **env,  axis2_socket_t socket)
 {
+    int i = 0;
+    char buf[32];
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	if(socket < 0)
 	{
@@ -151,10 +153,13 @@ axis2_network_handler_close_socket (axis2_env_t **env,  axis2_socket_t socket)
 							AXIS2_FAILURE);
 		return AXIS2_FAILURE;
 	}
+    /*
 	if(0 != AXIS2_CLOSE_SOCKET(socket))
 	{
 		return AXIS2_FAILURE;
-	}
+	}*/
+    shutdown(socket, SHUT_WR);
+    i = read(socket, buf, 32);
 	return AXIS2_SUCCESS;
 }
 
