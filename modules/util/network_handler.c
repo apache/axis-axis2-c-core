@@ -160,6 +160,7 @@ axis2_network_handler_close_socket (axis2_env_t **env,  axis2_socket_t socket)
 	}*/
     shutdown(socket, SHUT_WR);
     i = read(socket, buf, 32);
+    close(socket);
 	return AXIS2_SUCCESS;
 }
 
