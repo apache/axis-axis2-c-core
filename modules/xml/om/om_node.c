@@ -366,7 +366,6 @@ axis2_om_node_detach (axis2_om_node_t *om_node,
 {
     axis2_om_node_t *parent = NULL;
     
-   
     AXIS2_ENV_CHECK(env, NULL);
     
     parent = AXIS2_INTF_TO_IMPL(om_node)->parent;
@@ -396,6 +395,13 @@ axis2_om_node_detach (axis2_om_node_t *om_node,
         if(next_sibling)
             AXIS2_INTF_TO_IMPL(next_sibling)->prev_sibling =
                 AXIS2_INTF_TO_IMPL(om_node)->prev_sibling;
+    }
+
+    if(NULL != (AXIS2_INTF_TO_IMPL(parent)->last_child) &&
+        ((AXIS2_INTF_TO_IMPL(parent)->last_child) == om_node))
+    {
+        AXIS2_INTF_TO_IMPL(parent)->last_child = 
+            AXIS2_INTF_TO_IMPL(om_node)->prev_sibling;
     }
 
     AXIS2_INTF_TO_IMPL(om_node)->parent = NULL;
