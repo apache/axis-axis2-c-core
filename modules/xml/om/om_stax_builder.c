@@ -271,9 +271,6 @@ axis2_om_stax_builder_create_om_text (axis2_om_stax_builder_t * om_stax_builder,
     {
         AXIS2_ERROR_SET((*env)->error, 
                          AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL,AXIS2_FAILURE);
-        AXIS2_LOG_WRITE((*env)->log, 
-            "AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL creating a text node without a parent", 
-            AXIS2_LOG_LEVEL_DEBUG);
         return NULL;
     }
     temp_value = AXIS2_XML_READER_GET_VALUE (builder->parser, env);
@@ -281,7 +278,6 @@ axis2_om_stax_builder_create_om_text (axis2_om_stax_builder_t * om_stax_builder,
     if (!temp_value)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_XML_READER_VALUE_NULL, AXIS2_FAILURE);
-        AXIS2_LOG_WRITE((*env)->log,"XML_READER RETURNED NULL VALUE CREATING OM TEXT",  AXIS2_LOG_LEVEL_DEBUG);
         return NULL;
     }
   
@@ -447,10 +443,7 @@ axis2_om_stax_builder_process_namespaces (axis2_om_stax_builder_t *om_stax_build
         {
             AXIS2_ERROR_SET((*env)->error,
             AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE, AXIS2_FAILURE);
-            AXIS2_LOG_WRITE((*env)->log, 
-                "AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE", AXIS2_LOG_LEVEL_DEBUG);
-            
-             return AXIS2_FAILURE;
+            return AXIS2_FAILURE;
         }
     }
     AXIS2_XML_READER_XML_FREE(builder->parser, env, temp_prefix);
@@ -471,8 +464,7 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
 
     if (!temp_localname)
     {
-        AXIS2_LOG_WRITE((*env)->log, "AXIS2_ERROR_XML_READER_ELEMENT_NULL localname null",
-            AXIS2_LOG_LEVEL_DEBUG);
+        
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_XML_READER_ELEMENT_NULL, AXIS2_FAILURE); 
         return NULL;
     }
@@ -921,9 +913,7 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
     
     if (builder_impl->done)
     {
-        AXIS2_LOG_WRITE((*env)->log,
-                "AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL either the xml is over or a critical error occured",
-                AXIS2_LOG_LEVEL_DEBUG);
+        
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL, AXIS2_FAILURE);
         return -1;
     }
