@@ -51,7 +51,6 @@ axis2_echo_create(axis2_env_t **env)
         (*env)->allocator, sizeof(axis2_svc_skeleton_ops_t));
 
     svc_skeleton->ops->free = echo_free;
-    svc_skeleton->ops->free_void_arg = echo_free_void_arg;
     svc_skeleton->ops->init = echo_init;
     svc_skeleton->ops->invoke = echo_invoke;
     /*svc_skeleton->ops->on_fault = echo_on_fault;*/
@@ -92,17 +91,6 @@ echo_free(axis2_svc_skeleton_t *svc_skeleton,
         svc_skeleton = NULL;
     }
     return AXIS2_SUCCESS; 
-}
-
-axis2_status_t AXIS2_CALL
-echo_free_void_arg(void *svc_skeleton,
-                    axis2_env_t **env)
-{
-    axis2_svc_skeleton_t *svc_skeleton_l = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    svc_skeleton_l = (axis2_svc_skeleton_t *) svc_skeleton;
-    return echo_free(svc_skeleton_l ,env);
 }
 
 /*
