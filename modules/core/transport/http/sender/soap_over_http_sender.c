@@ -23,6 +23,7 @@
 #include <axis2_ctx.h>
 #include <axis2_http_client.h>
 #include <axis2_xml_writer.h>
+#include <axis2_property.h>
 
 /** 
  * @brief SOAP over HTTP sender struct impl
@@ -186,6 +187,7 @@ axis2_soap_over_http_sender_send
 	axis2_http_header_t *http_header = NULL;
 	axis2_http_simple_response_t *response = NULL;
 	axis2_char_t *content_type = NULL;
+    axis2_property_t *property = NULL;
 		
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -212,8 +214,13 @@ axis2_soap_over_http_sender_send
 	}
 	xml_writer = AXIS2_OM_OUTPUT_GET_XML_WRITER(sender_impl->om_output, env);
 	
-	char_set_enc = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
+	property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
 							AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
+    if(property)
+    {
+        char_set_enc = AXIS2_PROPERTY_GET_VALUE(property, env);
+        property = NULL;
+    }
 	if(NULL == char_set_enc)
 	{
 		char_set_enc = AXIS2_DEFAULT_CHAR_SET_ENCODING;
@@ -327,6 +334,7 @@ axis2_soap_over_http_sender_get_header_info
 	int i = 0;
 	axis2_bool_t response_chunked = AXIS2_FALSE;
 	int *content_length = NULL;
+    axis2_property_t *property = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -353,9 +361,17 @@ axis2_soap_over_http_sender_get_header_info
 						0 == AXIS2_STRCMP(AXIS2_HTTP_HEADER_GET_VALUE(header
 						, env), AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
 			{
+                axis2_char_t *transfer_encoding = NULL;
+
+                transfer_encoding = 
+                    AXIS2_STRDUP(AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED, 
+                    env);
+                property = axis2_property_create(env);
+                AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+                AXIS2_PROPERTY_SET_VALUE(property, env, transfer_encoding);
 				AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, 
 						AXIS2_HTTP_HEADER_TRANSFER_ENCODING, 
-						AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED,
+						property,
 						AXIS2_FALSE);
 				response_chunked = AXIS2_TRUE;
 			}
@@ -379,8 +395,11 @@ axis2_soap_over_http_sender_get_header_info
 						msg_ctx, env), env);
 		if(NULL != axis_ctx)
 		{
+            property = axis2_property_create(env);
+            AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+            AXIS2_PROPERTY_SET_VALUE(property, env, charset); 
 			AXIS2_CTX_SET_PROPERTY(axis_ctx, env, AXIS2_CHARACTER_SET_ENCODING, 
-						(void*)charset, AXIS2_FALSE);
+						property, AXIS2_FALSE);
 		}
 	}
 	if(AXIS2_FALSE == response_chunked)
@@ -393,8 +412,11 @@ axis2_soap_over_http_sender_get_header_info
 		}
 		tmp_len = AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_LENGTH(response, env);
 		memcpy(content_length, &tmp_len, sizeof(int));
+        property = axis2_property_create(env);
+        AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+        AXIS2_PROPERTY_SET_VALUE(property, env, content_length);
 		AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, 
-						AXIS2_HTTP_HEADER_CONTENT_LENGTH, content_length, 
+						AXIS2_HTTP_HEADER_CONTENT_LENGTH, property, 
 						AXIS2_FALSE);
 	}
 	return AXIS2_SUCCESS;
@@ -408,6 +430,7 @@ axis2_soap_over_http_sender_process_response
 {
     axis2_stream_t *in_stream = NULL;
 	axis2_ctx_t *axis_ctx = NULL;
+    axis2_property_t *property = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -424,7 +447,11 @@ axis2_soap_over_http_sender_process_response
 	axis2_soap_over_http_sender_get_header_info(sender, env, msg_ctx, response);
 	axis_ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env), 
 						env);
-	AXIS2_CTX_SET_PROPERTY(axis_ctx, env, AXIS2_TRANSPORT_IN, (void *)in_stream, 
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_stream_free_void_arg);
+    AXIS2_PROPERTY_SET_VALUE(property, env, in_stream);
+	AXIS2_CTX_SET_PROPERTY(axis_ctx, env, AXIS2_TRANSPORT_IN, property, 
 						AXIS2_FALSE);
 	return AXIS2_SUCCESS;
 }

@@ -33,8 +33,19 @@ typedef struct axis2_ctx_impl
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(ctx) ((axis2_ctx_impl_t *)ctx)
 
-axis2_char_t* AXIS2_CALL axis2_ctx_get_property(struct axis2_ctx *ctx, axis2_env_t **env, axis2_char_t *key, axis2_bool_t persistent);
-axis2_status_t AXIS2_CALL axis2_ctx_set_property(struct axis2_ctx *ctx, axis2_env_t **env, axis2_char_t *key, axis2_char_t *value, axis2_bool_t persistent);
+axis2_property_t* AXIS2_CALL 
+axis2_ctx_get_property(struct axis2_ctx *ctx, 
+                        axis2_env_t **env, 
+                        axis2_char_t *key, 
+                        axis2_bool_t persistent);
+
+axis2_status_t AXIS2_CALL 
+axis2_ctx_set_property(struct axis2_ctx *ctx, 
+                       axis2_env_t **env, 
+                       axis2_char_t *key, 
+                       axis2_property_t *value, 
+                       axis2_bool_t persistent);
+
 axis2_hash_t* AXIS2_CALL axis2_ctx_get_non_persistent_map(struct axis2_ctx *ctx, axis2_env_t **env);
 axis2_hash_t* AXIS2_CALL axis2_ctx_get_persistent_map(struct axis2_ctx *ctx, axis2_env_t **env);
 axis2_status_t AXIS2_CALL axis2_ctx_free (struct axis2_ctx *ctx, 
@@ -90,7 +101,12 @@ axis2_ctx_create(axis2_env_t **env)
     return &(ctx_impl->ctx);
 }
 
-axis2_status_t AXIS2_CALL axis2_ctx_set_property(struct axis2_ctx *ctx, axis2_env_t **env, axis2_char_t *key, axis2_char_t *value, axis2_bool_t persistent) 
+axis2_status_t AXIS2_CALL 
+axis2_ctx_set_property(struct axis2_ctx *ctx, 
+                       axis2_env_t **env, 
+                       axis2_char_t *key, 
+                       axis2_property_t *value, 
+                       axis2_bool_t persistent) 
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     
@@ -111,10 +127,14 @@ axis2_status_t AXIS2_CALL axis2_ctx_set_property(struct axis2_ctx *ctx, axis2_en
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t* AXIS2_CALL axis2_ctx_get_property(struct axis2_ctx *ctx, axis2_env_t **env, axis2_char_t *key, axis2_bool_t persistent) 
+axis2_property_t* AXIS2_CALL 
+axis2_ctx_get_property(struct axis2_ctx *ctx, 
+                        axis2_env_t **env, 
+                        axis2_char_t *key, 
+                        axis2_bool_t persistent) 
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
-    axis2_char_t *ret = NULL;
+    axis2_property_t *ret = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
@@ -169,12 +189,52 @@ axis2_status_t AXIS2_CALL axis2_ctx_free (struct axis2_ctx *ctx,
     
     if (ctx_impl->non_persistent_map)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+        const void *key = NULL;
+        for (hi = axis2_hash_first (ctx_impl->non_persistent_map, env); 
+            hi; hi = axis2_hash_next ( env, hi))
+        {  
+            axis2_property_t *property = NULL;
+            
+            axis2_hash_this (hi, &key, NULL, &val);
+            property = (axis2_property_t *) val;
+            
+            if(property)
+            {
+                AXIS2_PROPERTY_FREE(property, env);
+                property = NULL;
+            }
+            
+            val = NULL;
+            key = NULL;
+        }
         axis2_hash_free(ctx_impl->non_persistent_map, env);
         ctx_impl->non_persistent_map = NULL;
     }    
     
     if (ctx_impl->persistent_map)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+        const void *key = NULL;
+        for (hi = axis2_hash_first (ctx_impl->persistent_map, env); 
+            hi; hi = axis2_hash_next ( env, hi))
+        {  
+            axis2_property_t *property = NULL;
+            
+            axis2_hash_this (hi, &key, NULL, &val);
+            property = (axis2_property_t *) val;
+            
+            if(property)
+            {
+                AXIS2_PROPERTY_FREE(property, env);
+                property = NULL;
+            }
+            
+            val = NULL;
+            key = NULL;
+        }
         axis2_hash_free(ctx_impl->persistent_map, env);
         ctx_impl->persistent_map = NULL;
     }    

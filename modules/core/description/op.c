@@ -625,14 +625,9 @@ axis2_status_t AXIS2_CALL
 axis2_op_free (axis2_op_t *op, axis2_env_t **env)
 { 
     axis2_op_impl_t *op_impl = NULL;
-    axis2_qname_t *op_qname = NULL;
-    axis2_char_t *op_name = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
 
-    op_qname = AXIS2_OP_GET_QNAME(op, env);
-    op_name = AXIS2_QNAME_GET_LOCALPART(op_qname, env);
-    
     if(op_impl->remaining_phases_inflow)
     {
         int i = 0;

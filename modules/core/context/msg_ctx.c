@@ -303,14 +303,16 @@ axis2_msg_ctx_get_module_parameter(struct axis2_msg_ctx *msg_ctx,
                                     axis2_env_t **env, 
                                     axis2_char_t *key, axis2_char_t *module_name, 
                                     axis2_handler_desc_t *handler_desc);
-void* AXIS2_CALL
+axis2_property_t* AXIS2_CALL
 axis2_msg_ctx_get_property(struct axis2_msg_ctx *msg_ctx, 
                             axis2_env_t **env, 
                             axis2_char_t *key, axis2_bool_t persistent);
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_property(struct axis2_msg_ctx *msg_ctx, 
                             axis2_env_t **env, 
-                            axis2_char_t *key, void *value, axis2_bool_t persistent);
+                            axis2_char_t *key, 
+                            axis2_property_t *value, 
+                            axis2_bool_t persistent);
 axis2_qname_t* AXIS2_CALL
 axis2_msg_ctx_get_paused_handler_name(struct axis2_msg_ctx *msg_ctx, 
                                         axis2_env_t **env);
@@ -1524,9 +1526,10 @@ axis2_param_t * AXIS2_CALL axis2_msg_ctx_get_module_parameter(struct axis2_msg_c
     return NULL;
 }
 
-void* AXIS2_CALL axis2_msg_ctx_get_property(struct axis2_msg_ctx *msg_ctx, 
-                                axis2_env_t **env, 
-                                axis2_char_t *key, axis2_bool_t persistent) 
+axis2_property_t* AXIS2_CALL 
+axis2_msg_ctx_get_property(struct axis2_msg_ctx *msg_ctx, 
+                           axis2_env_t **env, 
+                           axis2_char_t *key, axis2_bool_t persistent) 
 {
     axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
     void *obj = NULL;
@@ -1600,7 +1603,9 @@ void* AXIS2_CALL axis2_msg_ctx_get_property(struct axis2_msg_ctx *msg_ctx,
 
 axis2_status_t AXIS2_CALL axis2_msg_ctx_set_property(struct axis2_msg_ctx *msg_ctx, 
                                 axis2_env_t **env, 
-                                axis2_char_t *key, void *value, axis2_bool_t persistent)
+                                axis2_char_t *key, 
+                                axis2_property_t *value, 
+                                axis2_bool_t persistent)
 {
     axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
     

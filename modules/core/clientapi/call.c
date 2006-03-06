@@ -150,7 +150,7 @@ axis2_status_t AXIS2_CALL
 axis2_call_set(axis2_call_t *call,
                 axis2_env_t **env,
                 axis2_char_t *key,
-                void *value);
+                axis2_property_t *value);
 
 /**
  * Assume the values for the conf_ctx and svc_ctx to make the 
@@ -351,6 +351,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
     axis2_svc_t *svc = NULL;
     /* The message ID is sent all the time */
     axis2_char_t *message_id = axis2_uuid_gen(env);
+    axis2_property_t *property = NULL;
     
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -426,11 +427,16 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
     {        
         axis2_op_ctx_t *op_ctx = NULL;
         axis2_msg_ctx_t *response = NULL;
-        axis2_soap_envelope_t *response_envelope = NULL;        
+        axis2_soap_envelope_t *response_envelope = NULL;
+        axis2_char_t *address = NULL;        
         
         /* Usual Request-Response Sync implemetation */
+        property = axis2_property_create(env);
+        AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+        address = AXIS2_ENDPOINT_REF_GET_ADDRESS(call_impl->to, env);
+        AXIS2_PROPERTY_SET_VALUE(property, env, address);
         AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
-                                    AXIS2_TRANSPORT_URL, AXIS2_ENDPOINT_REF_GET_ADDRESS(call_impl->to, env), AXIS2_FALSE);
+                                    AXIS2_TRANSPORT_URL, property, AXIS2_FALSE);
         /*AXIS2_MSG_CTX_SET_TO(msg_ctx, env, call_impl->to);*/
         AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, svc_ctx);
         AXIS2_MSG_CTX_SET_CONF_CTX(msg_ctx, env, AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env));
@@ -1164,7 +1170,7 @@ axis2_status_t AXIS2_CALL
 axis2_call_set(axis2_call_t *call,
                 axis2_env_t **env,
                 axis2_char_t *key,
-                void *value)
+                axis2_property_t *value)
 {
     axis2_call_impl_t *call_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;

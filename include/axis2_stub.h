@@ -20,6 +20,7 @@
 #include <axis2_endpoint_ref.h>
 #include <axis2_call.h>
 #include <axis2_xml_reader.h>
+#include <axis2_property.h>
 
 
 #ifdef __cplusplus
@@ -83,14 +84,14 @@ AXIS2_DECLARE_DATA struct axis2_stub_ops
     put)(axis2_stub_t *stub,
             axis2_env_t **env,
             axis2_char_t *key,
-            void *value);
+            axis2_property_t *value);
     
     /**
      *
      * @param key
      * @return the object
      */
-    void *(AXIS2_CALL *
+    axis2_property_t *(AXIS2_CALL *
     get)(axis2_stub_t *stub,
                     axis2_env_t **env,
                     axis2_char_t *key);

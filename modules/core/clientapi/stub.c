@@ -94,14 +94,14 @@ axis2_status_t AXIS2_CALL
 axis2_stub_put(axis2_stub_t *stub,
                 axis2_env_t **env,
                 axis2_char_t *key,
-                void *value);
+                axis2_property_t *value);
 
 /**
  *
  * @param key
  * @return the object
  */
-void *AXIS2_CALL
+axis2_property_t *AXIS2_CALL
 axis2_stub_get(axis2_stub_t *stub,
                 axis2_env_t **env,
                 axis2_char_t *key);
@@ -438,7 +438,7 @@ axis2_status_t AXIS2_CALL
 axis2_stub_put(axis2_stub_t *stub,
                 axis2_env_t **env,
                 axis2_char_t *key,
-                void *value)
+                axis2_property_t *value)
 {
     axis2_stub_impl_t *stub_impl = NULL;
     
@@ -456,7 +456,7 @@ axis2_stub_put(axis2_stub_t *stub,
  * @param key
  * @return the object
  */
-void *AXIS2_CALL
+axis2_property_t *AXIS2_CALL
 axis2_stub_get(axis2_stub_t *stub,
                 axis2_env_t **env,
                 axis2_char_t *key)
@@ -645,9 +645,11 @@ axis2_stub_populate_properties(axis2_stub_t *stub,
     {
         void *key = NULL;
         void *val = NULL;
+        axis2_property_t *property = NULL;
         
         axis2_hash_this(index, &key, NULL, &val);
-        AXIS2_CALL_SET(call, env, key, val);
+        property = (axis2_property_t *) val;
+        AXIS2_CALL_SET(call, env, key, property);
         
     }
     return AXIS2_SUCCESS;

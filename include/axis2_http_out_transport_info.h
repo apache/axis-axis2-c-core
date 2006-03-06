@@ -74,6 +74,15 @@ AXIS2_DECLARE(axis2_http_out_transport_info_t *)
 axis2_http_out_transport_info_create(axis2_env_t **env,
 					axis2_http_simple_response_t *response);
 
+/**
+ * Free http_out_transport_info passed as void pointer. This will be
+ * cast into appropriate type and then pass the cast object
+ * into the http_out_transport_info structure's free method
+ */
+AXIS2_DECLARE(axis2_status_t) 
+axis2_http_out_transport_info_free_void_arg (void *transport_info,
+                                             axis2_env_t **env);
+
 /************************* Start of function macros    ***************************/
 
 #define AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_transport_info, \

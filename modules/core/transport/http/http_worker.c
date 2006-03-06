@@ -27,6 +27,7 @@
 #include <axis2_engine.h>
 #include <axis2_uuid_gen.h>
 #include <axis2_url.h>
+#include <axis2_property.h>
 
 /** 
  * @brief HTTP Worker struct impl
@@ -155,6 +156,9 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	axis2_op_ctx_t *op_ctx = NULL;
     axis2_char_t *svr_ip = NULL;
     axis2_url_t *request_url = NULL;
+    axis2_http_out_transport_info_t *http_out_transport_info = NULL;
+    axis2_hash_t *headers = NULL;
+    axis2_property_t *property = NULL;
     axis2_char_t *url_external_form = NULL;
     axis2_qname_t *tmp_qname = NULL;
 	
@@ -237,16 +241,33 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
                         AXIS2_HTTP_REQUEST_LINE_GET_URI(
                         AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
                         simple_request, env), env));
+    
     url_external_form = AXIS2_URL_TO_EXTERNAL_FORM(request_url, env);
-	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_OUT, out_stream, 
-						AXIS2_FALSE);
-	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS, 
-						axis2_http_worker_get_headers(http_worker, env, 
-						simple_request), AXIS2_FALSE);
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_stream_free_void_arg);
+    AXIS2_PROPERTY_SET_VALUE(property, env, out_stream);
+	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_OUT, property, 
+	    AXIS2_FALSE);
+
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+    headers = axis2_http_worker_get_headers(http_worker, env, simple_request);
+    AXIS2_PROPERTY_SET_VALUE(property, env, headers);
+	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS, property, 
+            AXIS2_FALSE);
+
 	AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, axis2_uuid_gen(env));
+
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_http_out_transport_info_free_void_arg);
+    http_out_transport_info = axis2_http_out_transport_info_create(env, response);
+    AXIS2_PROPERTY_SET_VALUE(property, env, http_out_transport_info);
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
-						axis2_http_out_transport_info_create(env, response), 
+						property, 
 						AXIS2_FALSE);
+
 	if(NULL != AXIS2_HTTP_SIMPLE_REQUEST_GET_FIRST_HEADER(simple_request, env, 
 						AXIS2_HTTP_HEADER_SOAP_ACTION))
 	{
@@ -353,8 +374,9 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
                                 msg_ctx, env), env);
         if (NULL != ctx)
 		{
-    		ctx_written = AXIS2_CTX_GET_PROPERTY(ctx, env, 
+    		property = AXIS2_CTX_GET_PROPERTY(ctx, env, 
 						AXIS2_RESPONSE_WRITTEN, AXIS2_FALSE);
+            ctx_written = AXIS2_PROPERTY_GET_VALUE(property, env);
 		}
 	}
 	if(NULL != ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE") == 0)

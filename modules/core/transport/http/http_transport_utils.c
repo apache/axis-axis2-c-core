@@ -30,6 +30,7 @@
 #include <axis2_hash.h>
 #include <axis2_soap.h>
 #include <axis2_http_header.h>
+#include <axis2_property.h>
 
 /***************************** Function headers *******************************/
 
@@ -118,6 +119,7 @@ axis2_http_transport_utils_process_http_post_request
 	axis2_hash_t *headers = NULL;
 	axis2_engine_t *engine = NULL;
 	axis2_soap_body_t *soap_body = NULL;
+    axis2_property_t *property = NULL;
 	
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, in_stream, AXIS2_FAILURE);
@@ -146,8 +148,13 @@ axis2_http_transport_utils_process_http_post_request
 			soap_action_header[strlen(soap_action_header) -1] = '\0';
 		}
 	}
-	headers = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS, 
+	property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS, 
 						AXIS2_FALSE);
+    if(property)
+    {
+        headers = AXIS2_PROPERTY_GET_VALUE(property, env);
+        property = NULL;
+    }
 	if(NULL != headers)
 	{
 		axis2_http_header_t *encoding_header = NULL;
@@ -178,8 +185,14 @@ axis2_http_transport_utils_process_http_post_request
 	AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env, soap_action_header);
 	AXIS2_MSG_CTX_SET_TO(msg_ctx, env, axis2_endpoint_ref_create(env, 
 					request_uri));
+    
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_stream_free_void_arg);
+    AXIS2_PROPERTY_SET_VALUE(property, env, out_stream);
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, 
-					AXIS2_TRANSPORT_OUT, out_stream, AXIS2_FALSE);
+					AXIS2_TRANSPORT_OUT, property, AXIS2_FALSE);
+
 	AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
 	
 	char_set = axis2_http_transport_utils_get_charset_enc(env,content_type);
@@ -191,8 +204,12 @@ axis2_http_transport_utils_process_http_post_request
 		return AXIS2_FAILURE;
 	}
 
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+    AXIS2_PROPERTY_SET_VALUE(property, env, char_set);
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
-					char_set, AXIS2_TRUE);
+					property, AXIS2_TRUE);
+
 	om_builder = axis2_om_stax_builder_create(env, xml_reader);
 	if(NULL == om_builder)
 	{
@@ -332,6 +349,7 @@ axis2_http_transport_utils_process_http_get_request
 {
 	axis2_soap_envelope_t *soap_envelope = NULL;
 	axis2_engine_t *engine = NULL;
+    axis2_property_t *property = NULL;
 		
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FALSE);
 	AXIS2_PARAM_CHECK((*env)->error, in_stream, AXIS2_FALSE);
@@ -357,8 +375,14 @@ axis2_http_transport_utils_process_http_get_request
 	AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env, soap_action_header);
 	AXIS2_MSG_CTX_SET_TO(msg_ctx, env, axis2_endpoint_ref_create(env, 
 					request_uri));
+    
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_stream_free_void_arg);
+    AXIS2_PROPERTY_SET_VALUE(property, env, out_stream);
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, 
-					AXIS2_TRANSPORT_OUT, out_stream, AXIS2_FALSE);
+					AXIS2_TRANSPORT_OUT, property, AXIS2_FALSE);
+
 	AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
 	
 	soap_envelope = axis2_http_transport_utils_create_envelope_from_get_request(
@@ -823,9 +847,15 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
     AXIS2_ENV_CHECK(env, NULL);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
     AXIS2_PARAM_CHECK((*env)->error, soap_ns_uri, NULL);
+    axis2_property_t *property = NULL;
     
-    in_stream = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, 
-                        AXIS2_FALSE);
+    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
+        AXIS2_TRANSPORT_IN, AXIS2_FALSE);
+    if(property)
+    {
+        in_stream = AXIS2_PROPERTY_GET_VALUE(property, env);
+        property = NULL;
+    }
     /* TODO free this when xml pulling is over */
     callback_ctx = AXIS2_MALLOC((*env)->allocator, sizeof(axis2_callback_info_t));
     if(NULL == callback_ctx)
@@ -839,8 +869,13 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
 	callback_ctx->unread_len = -1;
 	callback_ctx->chunked_stream = NULL;
 	
-	content_length = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
+	property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
 						AXIS2_HTTP_HEADER_CONTENT_LENGTH, AXIS2_FALSE);
+    if(property)
+    {
+        content_length = AXIS2_PROPERTY_GET_VALUE(property, env);
+        property = NULL;
+    }
 	if(content_length != NULL)
 	{
 		callback_ctx->content_length = *content_length;
@@ -852,8 +887,13 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
                         AXIS2_FAILURE);
         return NULL;
     }
-    trans_enc = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
+    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
 						AXIS2_HTTP_HEADER_TRANSFER_ENCODING, AXIS2_FALSE);
+    if(property)
+    {
+        trans_enc = AXIS2_PROPERTY_GET_VALUE(property, env);
+        property = NULL;
+    }
 	if(NULL != trans_enc && 0 == AXIS2_STRCMP(trans_enc, 
 						AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
 	{
@@ -872,10 +912,21 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
         axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(op_ctx, env);
         if (NULL != ctx)
         {
-            char_set_enc = AXIS2_CTX_GET_PROPERTY(ctx, env,
+            property = AXIS2_CTX_GET_PROPERTY(ctx, env,
                         AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
-            content_type = AXIS2_CTX_GET_PROPERTY(ctx, env, 
+            if(property)
+            {
+                char_set_enc = AXIS2_PROPERTY_GET_VALUE(property, env);
+                property = NULL;
+            }
+            property = AXIS2_CTX_GET_PROPERTY(ctx, env, 
                         MTOM_RECIVED_CONTENT_TYPE, AXIS2_FALSE);
+            if(property)
+            {
+                content_type = AXIS2_PROPERTY_GET_VALUE(property, env);
+                property = NULL;
+            }
+            
         }
     }
     if(NULL == char_set_enc)

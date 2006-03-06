@@ -74,7 +74,6 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
     actual = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OP(resolver, &env, optr,
         module_desc);
 
-    AXIS2_FLOW_FREE(flow, &env);
     AXIS2_OP_FREE(optr, &env);
     AXIS2_MODULE_DESC_FREE(module_desc, &env);
     AXIS2_PHASE_RESOLVER_FREE(resolver, &env);

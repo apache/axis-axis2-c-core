@@ -28,6 +28,7 @@
 #include <axis2_mep_client.h>
 #include <axis2_callback.h>
 #include <axis2_soap_envelope.h>
+#include <axis2_property.h>
 
 
 #ifdef __cplusplus
@@ -222,7 +223,7 @@ struct axis2_call_ops
     set)(axis2_call_t *call,
                     axis2_env_t **env,
                     axis2_char_t *key,
-                    void *value);
+                    axis2_property_t *value);
     
     axis2_status_t (AXIS2_CALL *free)(struct axis2_call *call, 
                                        axis2_env_t **env);

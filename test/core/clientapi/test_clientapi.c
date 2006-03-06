@@ -49,22 +49,20 @@ void axis2_test_call_invoke_blocking()
 
 	msg_ctx = axis2_msg_ctx_create(&env, conf_ctx, NULL, NULL);
 	
-	/*msg_ctx_res = AXIS2_CALL_INVOKE_BLOCKING(call, &env, op, msg_ctx);*/
+	msg_ctx_res = AXIS2_CALL_INVOKE_BLOCKING(call, &env, op, msg_ctx);
 
     if (msg_ctx_res)
         printf("axis2_test_call_invoke_blocking SUCCESS\n");
     else
         printf("axis2_test_call_invoke_blocking FAILURE\n");
 
-    AXIS2_CONF_CTX_FREE(conf_ctx, &env);    
-    AXIS2_CONF_FREE(conf, &env);    
+    AXIS2_CALL_FREE(call, &env);    
     AXIS2_MSG_CTX_FREE(msg_ctx, &env);    
     AXIS2_QNAME_FREE(qname, &env);    
     AXIS2_SVC_GRP_CTX_FREE(svc_grp_ctx, &env);    
     AXIS2_SVC_CTX_FREE(svc_ctx, &env);    
     AXIS2_SVC_FREE(svc, &env);    
     AXIS2_OP_FREE(op, &env);    
-    AXIS2_CALL_FREE(call, &env);    
 
 }
 

@@ -22,6 +22,7 @@
 #include <axis2_class_loader.h>
 #include <axis2_engine.h>
 #include <axis2_core_utils.h>
+#include <axis2_property.h>
 
 /** 
  * @brief Message Receiver struct impl
@@ -216,6 +217,7 @@ axis2_msg_recv_get_impl_obj(axis2_msg_recv_t *msg_recv,
     struct axis2_param *scope_param = NULL;
     axis2_qname_t *svc_qname = NULL;
     axis2_char_t *param_value = NULL;
+    axis2_property_t *property = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
@@ -263,12 +265,20 @@ axis2_msg_recv_get_impl_obj(axis2_msg_recv_t *msg_recv,
         global_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         local_part = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
         ctx = AXIS2_CONF_CTX_GET_BASE(global_ctx, env);
-        obj = AXIS2_CTX_GET_PROPERTY(ctx, env, local_part, AXIS2_FALSE);
-        if(NULL == obj)
+        property = AXIS2_CTX_GET_PROPERTY(ctx, env, local_part, AXIS2_FALSE);
+        if(property)
         {
-            obj = axis2_msg_recv_make_new_svc_obj(msg_recv, env, msg_ctx);
-            AXIS2_CTX_SET_PROPERTY(ctx, env, local_part, obj, AXIS2_FALSE);
+            obj = AXIS2_PROPERTY_GET_VALUE(property , env);
         }
+        else
+        {
+            property = axis2_property_create(env);
+            AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
+            obj = (axis2_svc_skeleton_t *) axis2_msg_recv_make_new_svc_obj(
+                msg_recv, env, msg_ctx);
+            AXIS2_PROPERTY_SET_VALUE(property, env, obj);
+        }
+        AXIS2_CTX_SET_PROPERTY(ctx, env, local_part, property, AXIS2_FALSE);
         return obj;
     } 
     else

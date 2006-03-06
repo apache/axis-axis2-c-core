@@ -1316,15 +1316,15 @@ split_svc_name (axis2_env_t **env,
     svc_name_l = strpbrk(svc_name, SERVICE_NAME_SPLIT_CHAR);
     if(NULL == svc_name_l)
     {
-        *(svc_name_st + 1) = AXIS2_STRDUP((*env)->allocator, svc_name);
-        *(svc_name_st + 2) = AXIS2_STRDUP((*env)->allocator, svc_name);
+        *(svc_name_st + 1) = AXIS2_STRDUP(svc_name, env);
+        *(svc_name_st + 2) = AXIS2_STRDUP(svc_name, env);
         return AXIS2_SUCCESS;
     }
     svc_name_l[0] = AXIS2_EOLN;
     grp_name = AXIS2_MALLOC((*env)->allocator, strlen(svc_name));
     sscanf(svc_name, "%s", grp_name);
     svc_name_l = svc_name_l + 1;
-    *(svc_name_st + 1) = AXIS2_STRDUP((*env)->allocator, svc_name_l);
+    *(svc_name_st + 1) = AXIS2_STRDUP(svc_name_l, env);
     *(svc_name_st + 2) = grp_name;
 	
     return AXIS2_SUCCESS;	

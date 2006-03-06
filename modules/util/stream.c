@@ -137,6 +137,7 @@ axis2_stream_create_internal (axis2_env_t **env)
     stream_impl->stream.axis2_eof = EOF;
 	
 	stream_impl->stream.ops->free = axis2_stream_free;
+	stream_impl->stream.ops->free_void_arg = axis2_stream_free_void_arg; 
 	return &(stream_impl->stream);
 }
 
@@ -186,6 +187,17 @@ axis2_stream_free (axis2_stream_t *stream, axis2_env_t **env)
    	AXIS2_FREE((*env)->allocator, stream_impl);
 	
     return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_stream_free_void_arg (void *stream,
+                            axis2_env_t **env)
+{
+    axis2_stream_t *stream_l = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    stream_l = (axis2_stream_t *) stream;
+    return axis2_stream_free(stream_l, env);
 }
 
 axis2_stream_type_t AXIS2_CALL 

@@ -116,6 +116,16 @@ axis2_http_out_transport_info_free (axis2_http_out_transport_info_t *info,
 	return AXIS2_SUCCESS;
 }
 
+axis2_status_t AXIS2_CALL
+axis2_http_out_transport_info_free_void_arg (void *transport_info,
+                                             axis2_env_t **env)
+{
+    axis2_http_out_transport_info_t *transport_info_l = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    transport_info_l = (axis2_http_out_transport_info_t *) transport_info;
+    return axis2_http_out_transport_info_free(transport_info_l, env);
+}
 
 axis2_status_t AXIS2_CALL 
 axis2_http_out_transport_info_set_content_type 

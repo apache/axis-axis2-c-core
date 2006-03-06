@@ -21,6 +21,7 @@
 #include <axis2_addr.h>
 #include <axis2_soap_header_block.h>
 #include <axis2_endpoint_ref.h>
+#include <axis2_property.h>
 
 axis2_status_t AXIS2_CALL
 axis2_addr_out_handler_invoke (struct axis2_handler *handler,
@@ -130,7 +131,8 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
     axis2_om_node_t *soap_header_node = NULL;
     axis2_om_element_t *soap_header_ele = NULL;
     axis2_endpoint_ref_t *epr = NULL;
-    
+    axis2_property_t *property = NULL;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK ((*env)->error, msg_ctx, AXIS2_FAILURE);
 
@@ -139,8 +141,14 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         return AXIS2_FAILURE;
 
     ctx = AXIS2_MSG_CTX_GET_BASE (msg_ctx, env);
-    addressing_version_from_msg_ctx =
+    property =
         AXIS2_CTX_GET_PROPERTY (ctx, env, AXIS2_WSA_VERSION, AXIS2_FALSE);
+    if(property)
+    {
+        addressing_version_from_msg_ctx = AXIS2_PROPERTY_GET_VALUE(property, 
+            env);
+        property = NULL;
+    }
 
     if (addressing_version_from_msg_ctx)
     {
@@ -175,9 +183,14 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
             axis2_ctx_t *in_ctx = NULL;
             in_ctx = AXIS2_MSG_CTX_GET_BASE (in_msg_ctx, env);
 
-            addr_ns =
+            property =
                 AXIS2_CTX_GET_PROPERTY (in_ctx, env, AXIS2_WSA_VERSION,
                                         AXIS2_FALSE);
+            if(property)
+            {
+                addr_ns = AXIS2_PROPERTY_GET_VALUE(property, env);
+                property = NULL;
+            }
 
             if (!addr_ns)
             {

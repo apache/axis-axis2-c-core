@@ -24,6 +24,7 @@
 #include <axis2_op.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_msg_info_headers.h>
+#include <axis2_property.h>
 
 axis2_status_t AXIS2_CALL
 axis2_addr_in_handler_invoke(struct axis2_handler *handler, 
@@ -139,6 +140,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
 {
     axis2_soap_envelope_t *soap_envelope = NULL;
     axis2_soap_header_t *soap_header = NULL;
+    axis2_property_t *property = NULL;
     
     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -163,7 +165,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
             addr_headers = AXIS2_SOAP_HEADER_GET_HEADER_BLOCKS_WITH_NAMESPACE_URI(soap_header, env, AXIS2_WSA_NAMESPACE_SUBMISSION);
             if (addr_headers)
             {
-                addr_ns_str = AXIS2_WSA_NAMESPACE_SUBMISSION;
+                addr_ns_str = AXIS2_STRDUP(AXIS2_WSA_NAMESPACE_SUBMISSION, env);
                 axis2_addr_in_extract_addr_submission_info(env, 
                         soap_header,
                         &msg_info_headers,
@@ -174,7 +176,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
                 addr_headers = AXIS2_SOAP_HEADER_GET_HEADER_BLOCKS_WITH_NAMESPACE_URI(soap_header, env, AXIS2_WSA_NAMESPACE);
                 if (addr_headers)
                 {
-                    addr_ns_str = AXIS2_WSA_NAMESPACE;
+                    addr_ns_str = AXIS2_STRDUP(AXIS2_WSA_NAMESPACE, env);
                     axis2_addr_in_extract_addr_final_info(env, 
                             soap_header,
                             &msg_info_headers,
@@ -197,7 +199,10 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
             ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
             if (ctx)
             {
-                AXIS2_CTX_SET_PROPERTY(ctx, env, AXIS2_WSA_VERSION, addr_ns_str, AXIS2_TRUE);
+                property = axis2_property_create(env);
+                AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+                AXIS2_PROPERTY_SET_VALUE(property, env, addr_ns_str);
+                AXIS2_CTX_SET_PROPERTY(ctx, env, AXIS2_WSA_VERSION, property, AXIS2_TRUE);
             }
     
             /* extract service group context, if available */

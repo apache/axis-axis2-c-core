@@ -21,6 +21,7 @@
 #include <axis2_addr.h>
 #include <axis2_http_transport.h>
 #include <axis2_uuid_gen.h>
+#include <axis2_property.h>
 
 AXIS2_DECLARE(axis2_msg_ctx_t *)
 axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
@@ -40,13 +41,11 @@ axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
     axis2_char_t *action = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_svc_ctx_t *svc_ctx = NULL;
-    void *trt_property = NULL;
-    void *trt_out_info_property = NULL;
-    void *char_set_encoding_property = NULL;
     axis2_bool_t doing_rest = AXIS2_FALSE;
     axis2_bool_t doing_mtom = AXIS2_FALSE;
     axis2_bool_t server_side = AXIS2_FALSE;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
+    axis2_property_t *property = NULL;
     
     AXIS2_PARAM_CHECK((*env)->error, in_msg_ctx, NULL);
     
@@ -94,24 +93,35 @@ axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
     svc_ctx = AXIS2_MSG_CTX_GET_SVC_CTX(in_msg_ctx, env);
     AXIS2_MSG_CTX_SET_SVC_CTX(new_msg_ctx, env, svc_ctx);
     
-    trt_property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env, 
+    property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env, 
             AXIS2_TRANSPORT_OUT, AXIS2_FALSE);
+    if(property)
+    {
+        AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env, AXIS2_TRANSPORT_OUT, property,
+            AXIS2_FALSE);
+        property = NULL;
+    }
             
-    AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env, AXIS2_TRANSPORT_OUT, trt_property,
-        AXIS2_FALSE);
     
-    trt_out_info_property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env, 
+    property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env, 
             AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_FALSE);
-            
-    AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, 
-            trt_out_info_property, AXIS2_FALSE);
+    if(property)
+    {
+        AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, 
+            property, AXIS2_FALSE);
+        property = NULL;
+    }        
 
     /* Setting the charater set encoding */
     
-    char_set_encoding_property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env, 
+    property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env, 
             AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);         
-    AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING, 
-            char_set_encoding_property, AXIS2_FALSE);
+    if(property)
+    {
+        AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING, 
+            property, AXIS2_FALSE);
+        property = NULL;
+    }
             
     doing_rest = AXIS2_MSG_CTX_GET_DOING_REST(in_msg_ctx, env);
     AXIS2_MSG_CTX_SET_DOING_REST(new_msg_ctx, env, doing_rest);

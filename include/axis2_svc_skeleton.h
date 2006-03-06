@@ -49,6 +49,10 @@ AXIS2_DECLARE_DATA struct axis2_svc_skeleton_ops
     free)(axis2_svc_skeleton_t *svc_skeli,
             axis2_env_t **env);
     
+    int (AXIS2_CALL * 
+    free_void_arg)(void *svc_skeli,
+          axis2_env_t **env);
+    
     axis2_om_node_t *(AXIS2_CALL* 
     invoke)(axis2_svc_skeleton_t *svc_skeli, 
             axis2_env_t **env,
@@ -75,6 +79,10 @@ AXIS2_DECLARE_DATA struct axis2_svc_skeleton
 AXIS2_DECLARE(axis2_svc_skeleton_t *) 
 axis2_svc_skeleton_create (axis2_env_t **env);
 
+AXIS2_DECLARE(axis2_status_t) 
+axis2_svc_skeleton_free_void_arg(void *svc_skeleton,
+                                    axis2_env_t **env);
+
 /*************************** Function macros **********************************/
 
 #define AXIS2_SVC_SKELETON_INIT(svc_skeleton, env) \
@@ -82,6 +90,9 @@ axis2_svc_skeleton_create (axis2_env_t **env);
 
 #define AXIS2_SVC_SKELETON_FREE(svc_skeleton, env) \
 		((svc_skeleton)->ops->free (svc_skeleton, env))
+
+#define AXIS2_SVC_SKELETON_FREE_VOID_ARG(svc_skeleton, env) \
+		((svc_skeleton)->ops->free_void_arg (svc_skeleton, env))
 
 #define AXIS2_SVC_SKELETON_INVOKE(svc_skeleton, env, node) \
 		((svc_skeleton)->ops->invoke (svc_skeleton, env, node))

@@ -431,7 +431,7 @@ struct axis2_msg_ctx_ops
      * @param persistent : need to be persistent even when server re-start
      * @return Object
      */
-    void* (AXIS2_CALL *get_property)(struct axis2_msg_ctx *msg_ctx, 
+    axis2_property_t* (AXIS2_CALL *get_property)(struct axis2_msg_ctx *msg_ctx, 
                                         axis2_env_t **env, 
                                         axis2_char_t *key, 
                                         axis2_bool_t persistent);
@@ -439,7 +439,7 @@ struct axis2_msg_ctx_ops
     axis2_status_t (AXIS2_CALL *set_property)(struct axis2_msg_ctx *msg_ctx, 
                                         axis2_env_t **env, 
                                         axis2_char_t *key, 
-                                        void *value,
+                                        axis2_property_t *value,
                                         axis2_bool_t persistent);
     /**
      * @return

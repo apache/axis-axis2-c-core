@@ -21,6 +21,7 @@
 #include <axis2_soap.h>
 #include <axis2_soap_body.h>
 #include <axis2_http_transport_utils.h>
+#include <axis2_property.h>
 
 typedef struct axis2_mep_client_impl
 {
@@ -515,6 +516,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
     axis2_op_t *op = NULL;
     axis2_soap_envelope_t *response_envelope = NULL;
     axis2_char_t *soap_ns_uri = NULL;
+    axis2_property_t *property = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -534,9 +536,13 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
     if (!response)
         return NULL;
     
-    AXIS2_MSG_CTX_SET_PROPERTY(response, env, AXIS2_TRANSPORT_IN,
-                                AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, AXIS2_TRUE),
-                                AXIS2_TRUE);
+    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, AXIS2_TRUE);
+    if(property)
+    {
+        AXIS2_MSG_CTX_SET_PROPERTY(response, env, AXIS2_TRANSPORT_IN, property,
+            AXIS2_TRUE);
+        property = NULL;
+    }
     
     op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
     if (op)

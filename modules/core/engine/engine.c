@@ -451,6 +451,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_engine_create_fault_msg_ctx(struct axis2_engin
     axis2_msg_ctx_t *fault_ctx = NULL;
     axis2_engine_impl_t *engine_impl = NULL;
     axis2_endpoint_ref_t *fault_to = NULL;
+    axis2_property_t *property = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, processing_context, AXIS2_FAILURE);
@@ -476,11 +477,16 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_engine_create_fault_msg_ctx(struct axis2_engin
     }
     else
     {
-        void *writer = AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, AXIS2_TRANSPORT_OUT, AXIS2_TRUE);
-        if (writer) 
+        void *writer;
+        
+        property = AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, 
+                AXIS2_TRANSPORT_OUT, AXIS2_TRUE);
+        if(property)
         {
-            AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_TRANSPORT_OUT, writer, AXIS2_TRUE); 
-        } 
+            AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_TRANSPORT_OUT, property, 
+                AXIS2_TRUE); 
+            property = NULL;
+        }
         else 
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NOWHERE_TO_SEND_FAULT, AXIS2_FAILURE);
@@ -491,9 +497,15 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_engine_create_fault_msg_ctx(struct axis2_engin
     AXIS2_MSG_CTX_SET_OP_CTX(fault_ctx, env, AXIS2_MSG_CTX_GET_OP_CTX(processing_context, env));
     AXIS2_MSG_CTX_SET_PROCESS_FAULT(fault_ctx, env, AXIS2_TRUE);
     AXIS2_MSG_CTX_SET_SERVER_SIDE(fault_ctx, env, AXIS2_TRUE);
-    AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, 
-    AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_TRUE), AXIS2_TRUE );
-
+    
+    property = AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, 
+        AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_TRUE);
+    if(property)
+    {
+        AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, 
+            property , AXIS2_TRUE );
+        property = NULL;
+    }
     
     /*axis2_soap_envelope_t *envelope = NULL;
     if (AXIS2_MSG_CTX_GET_IS_SOAP_11(processing_context, env)) 

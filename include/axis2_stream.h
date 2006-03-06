@@ -65,6 +65,10 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
 	 * @return axis2_status_t AXIS2_SUCCESS on success else AXIS2_FAILURE
 	 */
    	axis2_status_t (AXIS2_CALL *free)(axis2_stream_t *stream, axis2_env_t **env);
+   	
+    axis2_status_t (AXIS2_CALL *
+    free_void_arg) (void *stream, 
+            axis2_env_t **env);
    
   	/**
 	 * reads from stream
@@ -155,7 +159,20 @@ axis2_stream_create_file (axis2_env_t **env, FILE *fp);
 AXIS2_DECLARE(axis2_stream_t *)
 axis2_stream_create_socket (axis2_env_t **env, int socket);
 
+/**
+ * Free stream passed as void pointer. This will be
+ * cast into appropriate type and then pass the cast object
+ * into the module_desc structure's free method
+ */
+AXIS2_DECLARE(axis2_status_t) 
+axis2_stream_free_void_arg (void *stream,
+                            axis2_env_t **env);
+
 #define AXIS2_STREAM_FREE(stream, env) ((stream->ops)->free(stream, env))
+
+#define AXIS2_STREAM_FREE_VOID_ARG(stream, env) \
+        ((stream->ops)->free_void_arg(stream, env))
+
 #define AXIS2_STREAM_READ(stream, env, buffer, count) \
 		((stream)->ops->read(stream, env, buffer, count))
 #define AXIS2_STREAM_WRITE(stream, env, buffer, count) \

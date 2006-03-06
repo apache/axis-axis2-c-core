@@ -26,6 +26,7 @@
 #include <axis2_defines.h>
 #include <axis2_hash.h>
 #include <axis2_env.h>
+#include <axis2_property.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -54,14 +55,23 @@ struct axis2_ctx_ops
      * @param value
      * @param persistent
      */
-    axis2_status_t (AXIS2_CALL *set_property)(struct axis2_ctx *ctx, axis2_env_t **env, axis2_char_t *key, axis2_char_t *value, axis2_bool_t persistent);
+    axis2_status_t (AXIS2_CALL *
+    set_property)(struct axis2_ctx *ctx, 
+                    axis2_env_t **env, 
+                    axis2_char_t *key, 
+                    axis2_property_t *value, 
+                    axis2_bool_t persistent);
     
     /**
      * @param key
      * @param persistent
      * @return
      */
-    axis2_char_t* (AXIS2_CALL *get_property)(struct axis2_ctx *ctx, axis2_env_t **env, axis2_char_t *key, axis2_bool_t persistent);
+    axis2_property_t* (AXIS2_CALL *
+    get_property)(struct axis2_ctx *ctx, 
+                    axis2_env_t **env, 
+                    axis2_char_t *key, 
+                    axis2_bool_t persistent);
     
     axis2_hash_t* (AXIS2_CALL *get_non_persistent_map)(struct axis2_ctx *ctx, 
                                                            axis2_env_t **env);
