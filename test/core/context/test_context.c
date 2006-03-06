@@ -88,7 +88,6 @@ void axis2_test_conf_ctx_init()
         printf("SUCCESS\n");
 
     AXIS2_CONF_CTX_FREE(conf_ctx, &env);
-    AXIS2_CONF_FREE(conf, &env);
 }
 
 int main()
