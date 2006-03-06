@@ -1,5 +1,6 @@
 TESTS = test_addr
 check_PROGRAMS = test_addr
+bin_PROGRAMS = test_addr
 SUBDIRS =
 AM_CFLAGS = -g -pthread
 test_addr_SOURCES = test_addr.c
