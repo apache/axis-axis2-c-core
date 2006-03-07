@@ -748,7 +748,7 @@ axis2_om_stax_builder_next (axis2_om_stax_builder_t *om_stax_builder,
             node = axis2_om_stax_builder_create_om_text(om_stax_builder, env);
             break;
                 
-        case AXIS2_XML_READER_ENTITY_REFERANCE:
+        case AXIS2_XML_READER_ENTITY_REFERENCE:
             break;
         
         case AXIS2_XML_READER_COMMENT:
@@ -956,7 +956,7 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
             axis2_om_stax_builder_create_om_text(builder, env);
             break;
                 
-        case AXIS2_XML_READER_ENTITY_REFERANCE:
+        case AXIS2_XML_READER_ENTITY_REFERENCE:
             break;
         
         case AXIS2_XML_READER_COMMENT:

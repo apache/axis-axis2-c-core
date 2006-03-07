@@ -184,7 +184,7 @@ axis2_libxml2_reader_wrapper_init_map(axis2_libxml2_reader_wrapper_impl_t *parse
                     AXIS2_XML_READER_END_ELEMENT;
         
         parser->event_map [XML_READER_TYPE_ENTITY_REFERENCE] = 
-                    AXIS2_XML_READER_ENTITY_REFERANCE;
+                    AXIS2_XML_READER_ENTITY_REFERENCE;
         
         parser->event_map [XML_READER_TYPE_END_ENTITY] = AXIS2_XML_READER_SPACE;
         

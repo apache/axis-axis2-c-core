@@ -41,15 +41,7 @@ axis2_char_t* AXIS2_CALL
 axis2_om_namespace_get_prefix(axis2_om_namespace_t *om_namespace,
                               axis2_env_t **env);
 
-axis2_status_t AXIS2_CALL
-axis2_om_namespace_set_uri(axis2_om_namespace_t *om_namespace,
-                            axis2_env_t **env,
-                            const axis2_char_t *uri);
-
-axis2_status_t AXIS2_CALL
-axis2_om_namespace_set_prefix(axis2_om_namespace_t *om_namespace,
-                              axis2_env_t **env,
-                              const axis2_char_t *prefix);                                                                                    
+                                                                                   
 
 /****************************** axis2_om_namesapce_impl_struct **************************/
 
@@ -136,9 +128,7 @@ axis2_om_namespace_create (axis2_env_t **env,
     ns->om_namespace.ops->serialize = axis2_om_namespace_serialize;
     ns->om_namespace.ops->get_uri = axis2_om_namespace_get_uri;
     ns->om_namespace.ops->get_prefix = axis2_om_namespace_get_prefix;
-    ns->om_namespace.ops->set_prefix = axis2_om_namespace_set_prefix;
-    ns->om_namespace.ops->set_uri = axis2_om_namespace_set_uri;
-
+  
     return &(ns->om_namespace) ;
 }
 
@@ -256,33 +246,3 @@ axis2_om_namespace_get_prefix(axis2_om_namespace_t *om_namespace,
 }                              
 
 
-axis2_status_t AXIS2_CALL
-axis2_om_namespace_set_uri(axis2_om_namespace_t *om_namespace,
-                            axis2_env_t **env,
-                            const axis2_char_t *uri)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if(!uri)
-    {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error , AXIS2_FAILURE);
-        return AXIS2_FAILURE;
-    }
-    AXIS2_INTF_TO_IMPL(om_namespace)->uri = (axis2_char_t*)AXIS2_STRDUP(uri,env);
-    return AXIS2_SUCCESS;   
-}
-axis2_status_t AXIS2_CALL
-axis2_om_namespace_set_prefix(axis2_om_namespace_t *om_namespace,
-                              axis2_env_t **env,
-                              const axis2_char_t *prefix)
-{
-    AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
-    if(!prefix)
-    {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
-        return AXIS2_FAILURE;   
-    }
-    AXIS2_INTF_TO_IMPL(om_namespace)->prefix = (axis2_char_t*)AXIS2_STRDUP(prefix,env);
-    return AXIS2_SUCCESS; 
-}

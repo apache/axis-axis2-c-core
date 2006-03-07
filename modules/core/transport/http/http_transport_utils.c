@@ -844,10 +844,11 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
     axis2_callback_info_t *callback_ctx = NULL;
 	axis2_char_t *trans_enc = NULL;
 	int *content_length = NULL;
+	axis2_property_t *property = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
     AXIS2_PARAM_CHECK((*env)->error, soap_ns_uri, NULL);
-    axis2_property_t *property = NULL;
+    
     
     property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
         AXIS2_TRANSPORT_IN, AXIS2_FALSE);

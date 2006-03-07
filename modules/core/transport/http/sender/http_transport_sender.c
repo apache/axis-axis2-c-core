@@ -268,6 +268,7 @@ axis2_http_transport_sender_invoke
             axis2_op_ctx_t *op_ctx = NULL;
             axis2_ctx_t *ctx = NULL;
             axis2_http_out_transport_info_t *out_info = NULL;
+			axis2_bool_t is_soap11 = AXIS2_FALSE;
 							
             property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
 			    AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_FALSE);
@@ -278,7 +279,7 @@ axis2_http_transport_sender_invoke
                     AXIS2_PROPERTY_GET_VALUE(property, env);
                 property = NULL;
             }
-			axis2_bool_t is_soap11 = AXIS2_FALSE;
+			
 			
 			if(NULL == out_info)
 			{

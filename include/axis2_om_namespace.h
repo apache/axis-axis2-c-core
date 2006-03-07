@@ -91,25 +91,7 @@ extern "C"
         */
         axis2_char_t* (AXIS2_CALL *get_prefix)(struct axis2_om_namespace *om_namespace,
                                                axis2_env_t **env);
-        /**   
-        *@param om_namespace pointer to om namespace struct
-        *@param env environment, MUST NOT be NULL.
-        *@param uri namespace uri to be set 
-        *@returns status of the op AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
-        */
-        axis2_status_t (AXIS2_CALL *set_uri)(struct axis2_om_namespace *om_namespace,
-                                            axis2_env_t **env,
-                                            const axis2_char_t *uri);
-        /**   
-        *@param om_namespace pointer to om_namespace struct
-        *@param env environment struct
-        *@param prefix prefix to be set
-        *@returns status code of the op AXIS2_SUCCESS on success,
-        *                       AXIS2_FAILURE on error.
-        */
-        axis2_status_t (AXIS2_CALL *set_prefix)(struct axis2_om_namespace *om_namespace,
-                                                axis2_env_t **env,
-                                                const axis2_char_t *prefix);
+
 
     } axis2_om_namespace_ops_t;
 
@@ -152,12 +134,7 @@ extern "C"
 /** get namespace uri */
 #define AXIS2_OM_NAMESPACE_GET_URI(om_namespace, env) \
         ((om_namespace)->ops->get_uri(om_namespace, env))
-/** set uri           */
-#define AXIS2_OM_NAMESPACE_SET_URI(om_namespace, env, uri) \
-        ((om_namespace)->ops->set_uri(om_namespace, env, uri))
-/** set prefix        */
-#define AXIS2_OM_NAMESPACE_SET_PREFIX(om_namespace, env, prefix) \
-        ((om_namespace)->ops->set_prefix(om_namesapce, env, prefix))
+
 
 /** @} */
 

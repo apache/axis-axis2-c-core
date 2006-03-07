@@ -88,7 +88,8 @@ AXIS2_DECLARE_DATA   typedef struct axis2_om_node_ops
     axis2_status_t (AXIS2_CALL *free) (axis2_om_node_t *om_node,
                                         axis2_env_t **env);
     /**
-    * Adds given node as child to parent
+    * Adds given node as child to parent. child should not have a parent
+    * if child has a parent it will be detached from existing parent
     * @param om_node parent node. cannot be NULL.
     * @param env Environment. MUST NOT be NULL, .
     * @param child child node.
