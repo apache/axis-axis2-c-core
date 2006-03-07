@@ -170,6 +170,7 @@ AC_CONFIG_FILES([Makefile \
     modules/core/transport/http/sender/Makefile \
     modules/core/transport/http/receiver/Makefile \
     modules/core/transport/http/server/simple_axis2_server/Makefile \
+    modules/core/transport/http/server/apache2/Makefile \
     modules/core/deployment/Makefile \
     modules/core/clientapi/Makefile \
     modules/core/receivers/Makefile \
