@@ -965,7 +965,9 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
                         soap_ns_uri);
         if(NULL == soap_builder)
         {
-            AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+			/* We should not be freeing om_builder here as it is done by
+            axis2_soap_builder_create in case of error - Samisa*/
+            /*AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);*/
             om_builder = NULL;
             xml_reader = NULL;
             return NULL;
