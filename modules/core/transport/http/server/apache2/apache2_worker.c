@@ -26,6 +26,9 @@
 #include <axis2_uuid_gen.h>
 #include <axis2_conf_init.h>
 #include <axis2_apache2_out_transport_info.h>
+#include <axis2_url.h>
+#include <http_core.h>
+#include <http_protocol.h>
 
 /** 
  * @brief Apahche2 Worker struct impl
@@ -142,6 +145,7 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
     int send_status = -1;
     axis2_char_t *content_type = NULL;
     axis2_property_t *property = NULL;
+    axis2_url_t *url = NULL;
     axis2_http_out_transport_info_t *apache2_out_transport_info = NULL;
 	
     AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
@@ -149,7 +153,9 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
 	
 	apache2_worker_impl = AXIS2_INTF_TO_IMPL(apache2_worker);
 	conf_ctx = apache2_worker_impl->conf_ctx;
-	    
+    url = axis2_url_create(env, "http",
+                        (axis2_char_t*)ap_get_server_name(request), 
+                        ap_get_server_port(request), request->unparsed_uri);
 	if(NULL == conf_ctx)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
@@ -158,8 +164,8 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
 	}
     content_length = request->remaining;
     http_version = request->protocol;
-    req_url = apr_uri_unparse(request->pool, &(request->parsed_uri),
-                        APR_URI_UNP_OMITUSERINFO);
+    req_url = AXIS2_URL_TO_EXTERNAL_FORM(url, env);
+    
     content_type = (axis2_char_t*)apr_table_get(request->headers_in, 
                         AXIS2_HTTP_HEADER_CONTENT_TYPE);
     request->content_type = content_type;
@@ -186,8 +192,13 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
 	msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
 	AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
 	
-	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_OUT, out_stream, 
-						AXIS2_FALSE);
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_stream_free_void_arg);
+    AXIS2_PROPERTY_SET_VALUE(property, env, out_stream);
+    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_OUT, property,
+                               AXIS2_FALSE);
+    
 	/*AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS, 
 						axis2_apache2_worker_get_headers(apache2_worker, env, 
                         simple_request), AXIS2_FALSE);*/
@@ -206,6 +217,12 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
     soap_action = (axis2_char_t*)apr_table_get(request->headers_in, 
                         AXIS2_HTTP_HEADER_SOAP_ACTION);
     request_body = axis2_stream_create_apache2(env, request);
+    if(NULL == request_body)
+    {
+        AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Error occured in"
+                " creating input stream.");
+        return AXIS2_CRTICAL_FAILURE;
+    }
     if(M_GET == request->method_number)
 	{
 		processed = axis2_http_transport_utils_process_http_get_request
@@ -284,7 +301,22 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
         body_string = NULL;
     }
     /*AXIS2_MSG_CTX_FREE(msg_ctx, env);*/
-	msg_ctx = NULL;
+    if(NULL != url)
+    {
+        AXIS2_URL_FREE(url, env);
+        url = NULL;
+    }
+    if(NULL != req_url)
+    {
+        AXIS2_FREE((*env)->allocator, req_url);
+        req_url = NULL;
+    }
+    if(NULL != request_body)
+    {
+        AXIS2_STREAM_FREE(request_body, env);
+        request_body = NULL;
+    }
+    msg_ctx = NULL;
 	return send_status;
 }
 

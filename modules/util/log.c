@@ -141,7 +141,13 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops,
 	log_impl->stream = axis2_file_handler_open(log_file_name,"a+");
 	
 	axis2_thread_mutex_unlock(log_impl->mutex);
-	
+
+    if(NULL == log_impl->stream)
+    {
+        log_impl->log.ops = NULL;
+        axis2_log_impl_free(allocator, &(log_impl->log));
+        return NULL;
+    }	
 	/* by default, log is enabled */
 	log_impl->log.enabled = 1;
 

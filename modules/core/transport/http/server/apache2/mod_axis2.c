@@ -171,8 +171,8 @@ static void axis2_module_init(apr_pool_t* p, server_rec* svr_rec)
     if(AXIS2_FAILURE == status)
     {
         fprintf(stderr, "[Axis2] Due to one or more errors mod_axis2 loading"
-                        "failed. Causing apache2 to stop loading\n");
-        /* TODO we should stop apache2 loading */
+                        " failed. Causing apache2 to stop loading\n");
+        exit(APEXIT_CHILDFATAL);
     }
 }
 
