@@ -112,8 +112,7 @@ axis2_om_child_element_iterator_create(axis2_env_t **env,
 #define AXIS2_OM_CHILD_ELEMENT_ITERATOR_NEXT(iterator, env) \
         ((iterator)->ops->next(iterator, env))        
         
-              
- /** @} */
+/** @} */
 
 #ifdef __cplusplus
 }

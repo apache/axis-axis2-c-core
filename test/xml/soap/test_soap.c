@@ -197,11 +197,9 @@ int build_soap_programatically(axis2_env_t **env)
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
     printf("%s \n",  buffer); 
 
-    free(buffer);
-    buffer = NULL;
-
     AXIS2_SOAP_ENVELOPE_FREE(soap_envelope, env);
     AXIS2_FREE((*env)->allocator, buffer);
+    buffer = NULL;
     AXIS2_OM_OUTPUT_FREE(om_output, env);
     return AXIS2_SUCCESS;
 }
@@ -258,5 +256,6 @@ int main(int argc, char *argv[])
     create_soap_fault(&env);
     axis2_env_free(env); 
     axis2_allocator_free(allocator);
+    getchar();
     return 0;        
 }

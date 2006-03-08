@@ -115,19 +115,31 @@ axis2_om_children_iterator_remove(axis2_om_children_iterator_t *iterator,
                                   axis2_env_t **env)
 {
     axis2_om_children_iterator_impl_t *iterator_impl = NULL;
+    axis2_om_node_t *om_node = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
 
     if(!(iterator_impl->next_called))
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED, AXIS2_FAILURE);
         return AXIS2_FAILURE;
-     if(iterator_impl->remove_called)
+    }
+    if(iterator_impl->remove_called)
+    {
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED, AXIS2_FAILURE); 
         return AXIS2_FAILURE;
-
+    }
     iterator_impl->remove_called = AXIS2_TRUE;
 
     if(!(iterator_impl->last_child))
         return AXIS2_FAILURE;
-    AXIS2_OM_NODE_DETACH(iterator_impl->last_child, env);
+    om_node = AXIS2_OM_NODE_DETACH(iterator_impl->last_child, env);
+    if(om_node)
+    {
+        AXIS2_OM_NODE_FREE_TREE(om_node, env);
+        om_node = NULL;
+    }
     return AXIS2_SUCCESS;
 }
 
@@ -139,7 +151,7 @@ axis2_om_children_iterator_has_next(axis2_om_children_iterator_t *iterator,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
     
-    return iterator_impl->current_child ? AXIS2_TRUE : AXIS2_FALSE;
+    return (iterator_impl->current_child) ? AXIS2_TRUE : AXIS2_FALSE;
 }                                      
 
 axis2_om_node_t* AXIS2_CALL 

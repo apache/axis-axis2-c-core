@@ -128,11 +128,20 @@ axis2_om_children_with_specific_attribute_iterator_free(
             axis2_om_children_with_specific_attribute_iterator_t *iterator,
             axis2_env_t **env)
 {
+    axis2_om_children_with_specific_attribute_iterator_impl_t *qname_iter_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    qname_iter_impl = AXIS2_INTF_TO_IMPL(iterator);
+    if(qname_iter_impl->attr_qname)
+    {
+        AXIS2_QNAME_FREE(qname_iter_impl->attr_qname, env);
+        qname_iter_impl->attr_qname = NULL;
+    }    
     if(iterator->ops)
+    {
         AXIS2_FREE((*env)->allocator, iterator->ops);
-        
-    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(iterator));        
+        iterator->ops = NULL;
+    }    
+    AXIS2_FREE((*env)->allocator, qname_iter_impl);        
     return AXIS2_SUCCESS;
 }                                
                                 
@@ -142,19 +151,32 @@ axis2_om_children_with_specific_attribute_iterator_remove(
             axis2_env_t **env)
 {
     axis2_om_children_with_specific_attribute_iterator_impl_t *iterator_impl = NULL;
+    axis2_om_node_t *last_child = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
 
     if(!(iterator_impl->next_called))
+    {
+        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED, AXIS2_FAILURE);
         return AXIS2_FAILURE;
-     if(iterator_impl->remove_called)
+    }
+    if(iterator_impl->remove_called)
+    {
+        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED, AXIS2_FAILURE);
         return AXIS2_FAILURE;
-
+    }
     iterator_impl->remove_called = AXIS2_TRUE;
 
     if(!(iterator_impl->last_child))
         return AXIS2_FAILURE;
-    AXIS2_OM_NODE_DETACH(iterator_impl->last_child, env);
+    last_child = AXIS2_OM_NODE_DETACH(iterator_impl->last_child, env);
+    if(last_child)
+    {
+        AXIS2_OM_NODE_FREE_TREE(last_child, env);
+        last_child = NULL;
+    }
     return AXIS2_SUCCESS;
 }
 
@@ -198,7 +220,7 @@ axis2_om_children_with_specific_attribute_iterator_has_next(
                 iterator_impl->current_child = 
                             AXIS2_OM_NODE_GET_NEXT_SIBLING(
                                 iterator_impl->current_child, env);
-                need_to_move_forward = iterator_impl->current_child != NULL;
+                need_to_move_forward = (iterator_impl->current_child != NULL);
             
             }                    
         }
@@ -221,6 +243,7 @@ axis2_om_children_with_specific_attribute_iterator_next(
             axis2_env_t **env)
 {
     axis2_om_children_with_specific_attribute_iterator_impl_t *iterator_impl = NULL;
+    axis2_om_node_t *last_child = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
     
@@ -232,7 +255,9 @@ axis2_om_children_with_specific_attribute_iterator_next(
     if(iterator_impl->last_child && iterator_impl->detach
             && (AXIS2_OM_NODE_GET_PARENT(iterator_impl->last_child, env)))
     {
-        AXIS2_OM_NODE_DETACH(iterator_impl->last_child, env);
+        last_child = AXIS2_OM_NODE_DETACH(iterator_impl->last_child, env);
+        if(last_child)
+            AXIS2_OM_NODE_FREE_TREE(last_child, env);
     }
     return iterator_impl->last_child;
 }

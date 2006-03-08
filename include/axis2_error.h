@@ -227,39 +227,39 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE,
         
         AXIS2_ERROR_INVALID_PHASE,
-        
+        /** error occured in writing start element in xml writer */
         AXIS2_ERROR_WRITING_START_ELEMENT,
-    
+        /** error occured in writing start element in start document in xml writer */
         AXIS2_ERROR_WRITING_START_DOCUMENT,
-        
+        /** error occured in writing end element in xml writer */
         AXIS2_ERROR_WRITING_END_ELEMENT,
-        
+        /** error occured in writing end document in xml writer */
         AXIS2_ERROR_WRITING_END_DOCUMENT,
-        
+        /** error occured in writing start element with namespace in xml writer*/
         AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE,
-        
+        /** error occured in writing start element with namespace prefix */
         AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE_PREFIX,
-        
+        /** error occured in writing empty element */
         AXIS2_ERROR_WRITING_EMPTY_ELEMENT,
-        
+        /** error occured in writing empty element with namespace */
         AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE,
-        
+        /** error in writing empty element with namespace prefix */
         AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE_PREFIX,
-        
+        /** error in writing attribute */
         AXIS2_ERROR_WRITING_ATTRIBUTE,
-        
+        /** error in writing attribute with namespace */
         AXIS2_ERROR_WRITING_ATTRIBUTE_WITH_NAMESPACE,
-        
+        /** error in writing attribute with namespace prefix */
         AXIS2_ERROR_WRITING_ATTRIBUTE_WITH_NAMESPACE_PREFIX,
-        
+        /** error in writing comment */
         AXIS2_ERROR_WRITING_COMMENT,
-        
+        /** error in writing processing instruction */
         AXIS2_ERROR_WRITING_PROCESSING_INSTRUCTION,
-        
+        /** error in writing cdata section */
         AXIS2_ERROR_WTRING_CDATA,
-        
+        /** error in writing dtd */
         AXIS2_ERROR_WRITING_DTD,
-        
+        /** error in writing default namespace */
         AXIS2_ERROR_WRITING_DEFAULT_NAMESPACE,
         /**Two service can not have same name, a service with same name alredy 
           * exist in the system
@@ -376,20 +376,21 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_INVALID_MODULE_CONF,
         
         AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME,
-        
+        /** soap builder encountered multiple headers */
         AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED,
-        
+        /** soap builder encounterd body element first and header next */
         AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER,
-        
+        /** soap builder multiple body elements encounterd */
         AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED,
-        
+        /** soap builder found a child element other than header or body in envelope 
+        element */
         AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY,
 
         /* Invalid messge addition , operation context completed */
         AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
-        
+        /** invalid soap namespace uri found */
         AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI,
-        
+        /** soap message does not have an envelope element */
         AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE,
        
         AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP,
@@ -434,7 +435,13 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT,
         
         AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS,
-    
+        /** next method has not been called so cannot remove
+        an element before calling next valid for any om iterator */
+        AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED,
+        /** remove method has alread been called once so cann't remove till 
+         next method is called valid for any om children iterator*/
+        AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED,
+        
         /* OM output is NULL */
         AXIS2_ERROR_NULL_OM_OUTPUT,
         /* We got a NULL strem in the response body */

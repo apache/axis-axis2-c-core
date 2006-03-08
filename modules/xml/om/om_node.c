@@ -107,10 +107,6 @@ axis2_om_node_set_first_child(axis2_om_node_t *om_node,
                               axis2_env_t **env,
                               axis2_om_node_t *first_child);
         
-axis2_status_t AXIS2_CALL 
-axis2_om_node_set_last_child(axis2_om_node_t *om_node,
-                             axis2_env_t **env,
-                             axis2_om_node_t *last_child);
 
 axis2_status_t AXIS2_CALL  
 axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,                                  
@@ -256,11 +252,9 @@ axis2_om_node_create (axis2_env_t **env)
     
     node->om_node.ops->set_data_element = axis2_om_node_set_data_element;
     node->om_node.ops->set_first_child = axis2_om_node_set_parent;
-    node->om_node.ops->set_last_child = axis2_om_node_set_last_child;
     node->om_node.ops->set_previous_sibling = axis2_om_node_set_previous_sibling;
     node->om_node.ops->set_next_sibling = axis2_om_node_set_next_sibling;
     node->om_node.ops->set_first_child = axis2_om_node_set_first_child;
-    node->om_node.ops->set_last_child = axis2_om_node_set_last_child;
     node->om_node.ops->set_node_type = axis2_om_node_set_node_type;
     node->om_node.ops->set_build_status = axis2_om_node_set_build_status;
     
@@ -686,17 +680,6 @@ axis2_om_node_set_first_child(axis2_om_node_t *om_node,axis2_env_t **env,
     return AXIS2_SUCCESS;
 }
         
-axis2_status_t AXIS2_CALL 
-axis2_om_node_set_last_child(axis2_om_node_t *om_node,axis2_env_t **env,
-                             axis2_om_node_t *last_child)
-{
-   
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, last_child, AXIS2_FAILURE);
-    
-    AXIS2_INTF_TO_IMPL(om_node)->last_child = last_child;
-    return AXIS2_SUCCESS;
-}
 axis2_status_t AXIS2_CALL  
 axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,                                  
                                    axis2_env_t **env,
