@@ -25,7 +25,6 @@
     <name>Apache Axis2 C</name>
     <id>axis2c</id>
     <groupId>axis2c</groupId>
-
     <currentVersion>${axis2_version}</currentVersion>
 
     <!-- details about the organization that 'owns' the project -->
@@ -54,29 +53,17 @@
     <mailingLists>
         <mailingList>
             <name>Axis C Developer List</name>
-            <subscribe>axis-c-dev-subscribe@ws.apache.org</subscribe>
-            <unsubscribe>axis-c-dev-unsubscribe@ws.apache.org</unsubscribe>
+            <subscribe>axis-c-dev-subscribe@ws.apache.org?subject=subscribe</subscribe>
+            <unsubscribe>axis-c-dev-unsubscribe@ws.apache.org?subject=unsubscribe</unsubscribe>
             <archive>http://marc.theaimsgroup.com/?l=axis-c-dev&amp;r=1&amp;w=2</archive>
         </mailingList>
         <mailingList>
             <name>Axis C User List</name>
-            <subscribe>axis-c-user-subscribe@ws.apache.org</subscribe>
-            <unsubscribe>axis-c-user-unsubscribe@ws.apache.org</unsubscribe>
+            <subscribe>axis-c-user-subscribe@ws.apache.org?subject=subscribe</subscribe>
+            <unsubscribe>axis-c-user-unsubscribe@ws.apache.org?subject=unsubscribe</unsubscribe>
             <archive>http://marc.theaimsgroup.com/?l=axis-c-user&amp;r=1&amp;w=2</archive>
         </mailingList>
     </mailingLists>
-    <developers>
-    <developer>
-      <name>Samisa Abeysinghe</name>
-      <id>samisa</id>
-      <email>samisa@apache.org</email>
-      <organization>WSO2</organization>
-      <roles>
-        <role>C Developer</role>
-      </roles>
-    </developer>
-    </developers>
-
 
     <!-- ################################################################ -->
     <!--        Project dependency section                                -->

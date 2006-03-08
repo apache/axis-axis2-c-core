@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <title>Axis2-C Installation Guide</title>
+  <meta name="generator" content="amaya 9.2.1, see http://www.w3.org/Amaya/"
+  />
+</head>
+
+<body xml:lang="en">
+<h1>Axis2/C Installation Guide</h1>
+
+<h4>-Milestone Release 0.5</h4>
+
+<p>This document will give you in step by step instructions on how to install
+Axis2/C, run the server &amp; web service client samples on Linux &amp; MS
+Windows operating systems.</p>
+
+<p>This release comes in two forms, source and binary. Instructions are given
+below to install in both methods.</p>
+
+<p>Hope you would enjoy this first working version of Axis2/C SOAP engine.</p>
+
+<p>Send your feedback to mailing list: <a
+href="mailto:axis-c-dev@ws.apache.org">axis-c-dev@ws.apache.org</a> (Prefix
+the subject with [Axis2]). To subscribe to developer mailing lists
+see <a href="../mail-lists.html">here</a></p>
+
+<h2>Contents</h2>
+<ul>
+  <li><a href="#linux">Installing and running on Linux</a>
+    <ul>
+      <li><a href="#linux_binary">Using binary release</a></li>
+      <li><a href="#linux_source">Using source release</a></li>
+    </ul>
+  </li>
+  <li><a href="#win">Installing and running on MS Windows (win32)</a>
+    <ul>
+      <li><a href="#win_binary">Using the binary release</a>
+        <ul>
+          <li><a href="#bin_req">Requirements</a></li>
+          <li><a href="#bin_binaries">Binaries in the release</a></li>
+          <li><a href="#bin_run">Running the binaries</a></li>
+        </ul>
+      </li>
+      <li><a href="#win_source">Using the source release</a>
+        <ul>
+          <li><a href="#src_req">Requirements</a></li>
+          <li><a href="#edit">Editing Configure.in file</a></li>
+          <li><a href="#src_compile">Compiling the source</a></li>
+          <li><a href="#src_run">Running the binaries</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<a name="linux"></a>
+<h2>Installing and running on Linux</h2>
+
+<p>This can be done using binary or source distributions</p>
+
+<p>To get both the binary and source distributions, you need libxml2 from <a
+href="http://xmlsoft.org/downloads.html" target="_blank">here</a>.</p>
+
+<p>(NOTE: most Linux systems has libxml2 by default.)</p>
+<a name="linux_binary"></a>
+<h3>1. Using binary release</h3>
+
+<p>The following steps need to be taken to install and run Axis2/C using
+binary distribution on Linux</p>
+
+<h4>1. Extract the binary tar package to a folder.</h4>
+<ul>
+  <li>Set AXIS2C_HOME environment variable pointing to the location where you
+    have extracted Axis2C</li>
+  <li>AXIS2C_HOME='/your_path_to_axis2c'</li>
+  <li>export AXIS2C_HOME</li>
+</ul>
+
+<h4>2. Run the simple axis server:</h4>
+<ul>
+  <li>To start the simple axis server on port 9090, run the following command
+    lines.
+    <ul>
+      <li>cd /your_path_to_axis2c/bin</li>
+      <li>./axis2_http_server</li>
+    </ul>
+  </li>
+  <li>To see the possible command line options run ./axis2_http_server -h</li>
+  <li>NOTE: If you run into shared lib problems,
+    <ul>
+      <li>set the LD_LIBRARY_PATH</li>
+      <li>export
+      LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib</li>
+    </ul>
+  </li>
+</ul>
+
+<h4>3. Run the sample clients in a new shell</h4>
+<ul>
+  <li>cd /your_path_to_axis2c/bin/samples</li>
+  <li>./echo will invoke the echo service.</li>
+  <li>./math will invoke the math service.</li>
+  <li>To see the possible command line options for sample clients run them
+    with '-h' option</li>
+  <li>NOTE: If you run into shared lib problems,
+    <ul>
+      <li>set the LD_LIBRARY_PATH</li>
+      <li>export
+      LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib</li>
+    </ul>
+  </li>
+</ul>
+<a name="linux_source"></a>
+<h3>2. Using source release</h3>
+
+<p>The following steps need to be taken to install and run Axis2/C using
+source distribution on Linux</p>
+<ol>
+  <li>Extract the source tar package to a folder.</li>
+  <li>Set AXIS2C_HOME environment variable pointing to the location where you
+    want to install Axis2C.
+    <ul>
+      <li>AXIS2C_HOME='/your_desired_path_to_axis2c_installation'</li>
+      <li>export AXIS2C_HOME</li>
+    </ul>
+  </li>
+  <li>Then go to the folder where you extracted the source
+    <ul>
+      <li>cd /your_path_to_axis2c_source</li>
+    </ul>
+  </li>
+  <li>Set parser location
+    <ul>
+      <li>You need to set the following two environment variables to point to
+        libxml2.
+        <ul>
+          <li>LIBXML2_INCLUDE</li>
+          <li>LIBXML2_LIB</li>
+        </ul>
+      </li>
+      <li>If you are using the default installation of libxml2, usually those
+        are,
+        <ul>
+          <li>LIBXML2_LIB=/usr/lib</li>
+          <li>LIBXML2_INCLUDE=/usr/include/libxml2</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Build the source
+    <ul>
+      <li>This can be done using the following command sequence:
+        <ul>
+          <li>./configure</li>
+          <li>make</li>
+          <li>make install</li>
+        </ul>
+      </li>
+      <li>use './configure --help' for possible command line options.</li>
+      <li>NOTE: you may wish to use './configure --prefix=$AXIS2C_HOME' to
+        ensure AXIS2C_HOME and install folder are the same</li>
+      <li>If you need to get the samples working, you also need to give the
+        configure option --enable-samples=yes</li>
+    </ul>
+  </li>
+  <li>Go to AXIS2C_HOME by running cd $AXIS2C_HOME</li>
+  <li>Start simple axis server
+    <ul>
+      <li>To start the simple axis server on port 9090 run the following
+        command lines
+        <ul>
+          <li>cd $AXIS2C_HOME/bin</li>
+          <li>./axis2_http_server</li>
+        </ul>
+      </li>
+      <li>To see the possible command line options run ./axis2_http_server
+      -h</li>
+    </ul>
+  </li>
+  <li>Run the sample clients in a new shell using the following command lines
+    <ul>
+      <li>cd $AXIS2C_HOME/bin/samples</li>
+      <li>./echo will invoke the echo service.</li>
+      <li>./math will invoke the math service.</li>
+      <li>To see the possible command line options for sample clients run
+        them with '-h' option</li>
+    </ul>
+  </li>
+</ol>
+<a name="win"></a>
+<h2>Installing and running on MS Windows (win32)</h2>
+
+<p>This too can be done using binary or source distributions</p>
+
+<p>To get both the binary and source distribution, you need libxml2 from <a
+href="http://xmlsoft.org/downloads.html">here</a>.</p>
+
+<p>(NOTE: most Linux systems has libxml2 by default. On Windows you need to
+download and install libxml2)</p>
+<a name="win_binary"></a>
+<h3>1. Using binary release</h3>
+<a name="bin_req"></a>
+<h4>Requirements</h4>
+<ul>
+  <li>The binaries shipped with this version is compiled with Microsoft
+    visual studio compiler (cl)</li>
+
+  <p>(Note: you can download microsoft VSExpress2005 edition from microsoft
+  web site and install it to run these binaries)</p>
+  <li>You also need the following dlls
+    <ul>
+      <li>libxml2.dll [http://www.xmlsoft.org - download the version &gt;=
+        libxml2-2.6.20.win32]</li>
+      <li>iconv.dll [http://www.xmlsoft.org - download the version &gt;=
+        iconv-1.9.1.win32]</li>
+      <li>zlib1.dll [http://www.xmlsoft.org - download the version &gt;=
+        zlib-1.2.3.win32]</li>
+    </ul>
+  </li>
+</ul>
+<a name="bin_binaries"></a>
+<h4>Binaries in the release</h4>
+<ul>
+  <li>Extract the binary distribution to a folder of your choice. (example:
+    C:\axis2c)</li>
+  <li>The C:\axis2c folder structure is as follows:</li>
+
+  <p><img alt="Figure: c:\axis2c Folder Structure"
+  src="images/binary_folder_structure.jpg" /></p>
+
+  <p><em>The above folders contain the following files:</em></p>
+  <ul>
+    <li>bin - server and other executables</li>
+    <li>samples - samples go here</li>
+    <li>lib - library modules</li>
+    <li>services - deployed services</li>
+    <li>modules - deployed modules</li>
+    <li>include - all include files of axis2</li>
+    <li>logs - system and client logs are written to this folder</li>
+  </ul>
+  <li>Copy libxml2.dll, iconv.dll and zlib1.dll downloaded to
+  C:\axis2c\lib</li>
+</ul>
+<a name="bin_run"></a>
+<h4>Running the binaries</h4>
+<ul>
+  <li>First you need to set couple of environment variables before you can
+    run the server and samples.
+    <ul>
+      <li>Set the varibale AXIS2C_HOME to the deploy folder (C:\axis2c)</li>
+      <li>Add the path to lib directory to PATH variable
+      (%AXIS2C_HOME%\lib)</li>
+    </ul>
+  </li>
+  <li>Now everything is set to run the server
+    C:\axis2c\bin&gt;axis2_http_server.exe</li>
+  <li>If the server is running successfully you should see the message
+    "Started Simple Axis2 HTTP Server..."</li>
+  <li>The log is by default created under %AXIS2C_HOME%\logs folder with the
+    name axis2.log.</li>
+  <li>(Note: you may provide command line options to change the default
+    behaviour. Type "axis2_http_server.exe -h" to learn about the usage)</li>
+  <li>Now you can run any sample client deployed under
+    %AXIS2C_HOME%\bin\samples\
+    <ul>
+      <li>Example: C:\axis2c\bin\samples&gt;echo.exe</li>
+    </ul>
+  </li>
+</ul>
+<a name="win_source"></a>
+<h3>2. Using the source release.</h3>
+<a name="src_req"></a>
+<h4>Requirements</h4>
+<ul>
+  <li>The makefile shipped with this version needs Microsoft visual studio
+    compiler (cl) and nmake build tool</li>
+
+  <p>(Note: you can download microsoft VSExpress2005 edition and Platform SDK
+  from microsoft web site. You will need to add the path to Platform SDK
+  Include and Lib folders to makefile)</p>
+  <li>You also need
+    <ul>
+      <li>libxml2 [http://www.xmlsoft.org - download the version &gt;=
+        libxml2-2.6.20.win32]</li>
+      <li>iconv [http://www.xmlsoft.org - download the version &gt;=
+        iconv-1.9.1.win32]</li>
+      <li>zlib [http://www.xmlsoft.org - download the version &gt;=
+        zlib-1.2.3.win32]</li>
+    </ul>
+  </li>
+</ul>
+<a name="edit"></a>
+<h4>Editing configure.in file</h4>
+<ul>
+  <li>The default places for libxml2 and iconv are speceficed in configure.in.
+    <ul>
+      <li>Example:Default location for libxml2 is C:\libxml2</li>
+    </ul>
+  </li>
+  <li>You can either extract libxml2 to this folder, in which case folder
+    structure for C:\libxml2 should look like the following.</li>
+
+  <p><img alt="Figure: C:\libxml2 Folder Structure"
+  src="images/folder_structure_libxml2.jpg" /></p>
+
+  <p>Or extract to whatever place of your choice and edit the configure.in
+  accordingly.</p>
+  <li>You need to have zlib1.dll in a library path. You may copy this dll to
+    libxml2/lib.</li>
+</ul>
+<a name="src_compile"></a>
+<h4>Compiling the source.</h4>
+
+<p>The following steps and command lines will take you through the source
+compilation</p>
+<ul>
+  <li>Extract the source distribution to a folder of your choice. (Example:
+    C:\axis2c)</li>
+  <li>Open a DOS shell</li>
+  <li>cd C:\axis2c\build\win32</li>
+  <li>C:\axis2c\build\win32&gt;vcvars32.bat to access .Net tools
+    <p>(Note: You may need to set the environment PATH variable to
+    vcvars32.bat if windows complaints that it cannot find this bat)</p>
+  </li>
+  <li>C:\axis2c\build\win32&gt;nmake install will build the system and create
+    a directory named deploy under build directory.</li>
+  <li>The deploy folder structure is as follows:</li>
+
+  <p><img alt="Figure: deploy Folder Structure"
+  src="images/folder_structure.jpg" /></p>
+
+  <p><em>The above folders contain the following files:</em></p>
+  <ul>
+    <li>bin - server and other executables</li>
+    <li>samples - samples</li>
+    <li>lib - library modules</li>
+    <li>services - deployed services</li>
+    <li>modules - deployed modules</li>
+    <li>include - all include files of axis2</li>
+    <li>logs - system and client logs are written to this folder</li>
+  </ul>
+</ul>
+<a name="src_run"></a>
+<h4>Running the binaries</h4>
+<ul>
+  <li>You need to set couple of environment variables before you can run the
+    server and samples.
+    <ul>
+      <li>Set the variable AXIS2C_HOME to the deploy folder
+        (C:\axis2c\build\deploy)</li>
+      <li>Add the path to lib directory to PATH variable
+      (%AXIS2C_HOME%\lib)</li>
+      <li>Copy libxml2.dll, iconv.dll and zlib1.dll to axis2c lib folder
+        (%AXIS2C_HOME%\lib)</li>
+    </ul>
+  </li>
+  <li>Now run the server -
+  C:\axis2c\build\deploy\bin&gt;axis2_http_server.exe</li>
+  <li>If server is running successfully you should see the message "Started
+    Simple Axis2 HTTP Server..."</li>
+  <li>The log is by default created under %AXIS2C_HOME%\logs folder with the
+    name axis2.log.</li>
+  <li>(Note: you may provide command line options to change the default
+    behaviour. Type "axis2_http_server.exe -h" to learn about the usage)</li>
+  <li>Now you can run any sample client deployed under
+    %AXIS2C_HOME%\bin\samples\
+    <ul>
+      <li>Example: C:\axis2c\build\deploy\bin\samples&gt;echo.exe</li>
+    </ul>
+  </li>
+</ul>
+</body>
+</html>
