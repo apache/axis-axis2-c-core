@@ -153,14 +153,9 @@ axis2_network_handler_close_socket (axis2_env_t **env,  axis2_socket_t socket)
 							AXIS2_FAILURE);
 		return AXIS2_FAILURE;
 	}
-    /*
-	if(0 != AXIS2_CLOSE_SOCKET(socket))
-	{
-		return AXIS2_FAILURE;
-	}*/
-    shutdown(socket, SHUT_WR);
+    shutdown(socket, AXIS2_SHUT_WR);
     i = read(socket, buf, 32);
-    close(socket);
+    AXIS2_CLOSE_SOCKET(socket);
 	return AXIS2_SUCCESS;
 }
 

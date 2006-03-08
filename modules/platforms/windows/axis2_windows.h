@@ -188,6 +188,7 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
 #define AXIS2_CLOSE_SOCKET(sock)			closesocket(sock)
 #define AXIS2_CLOSE_SOCKET_ON_EXIT(sock)	
 #define axis2_socket_len_t					int
+#define AXIS2_SHUT_WR                       SD_SEND
 
 /**
  * Platform specific environment variable access method
