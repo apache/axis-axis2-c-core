@@ -252,6 +252,7 @@ axis2_op_ctx_t* AXIS2_CALL axis2_conf_ctx_get_op_ctx(struct axis2_conf_ctx *conf
     axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, message_id, NULL);
     
     conf_ctx_impl = AXIS2_INTF_TO_IMPL(conf_ctx);
     axis2_thread_mutex_lock(conf_ctx_impl->mutex);

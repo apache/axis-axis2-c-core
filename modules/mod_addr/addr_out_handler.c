@@ -296,6 +296,10 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
             {
                 anonymous_uri = AXIS2_WSA_ANONYMOUS_URL_SUBMISSION;
             }
+            else
+            {
+                anonymous_uri = AXIS2_WSA_ANONYMOUS_URL;
+            }
 
             epr = axis2_endpoint_ref_create (env, anonymous_uri);
 
