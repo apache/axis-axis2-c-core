@@ -11,8 +11,8 @@ test_om_LDADD   =   \
                     -laxis2_util \
                     -laxis2_parser \
                     -laxis2_unix \
-                    $(LIBXML2_LIBNAME) \
-                    $(GUTHTHILA_LIBNAME)
+                    $(LIBXML2_LIBS) \
+                    $(GUTHTHILA_LIBS)
                     
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/xml/parser \

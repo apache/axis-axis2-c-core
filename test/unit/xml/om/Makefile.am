@@ -20,6 +20,6 @@ om_test_LDADD   =   libtest_om.la  \
                     -laxis2_om \
                     -laxis2_unix \
                     -laxis2_parser \
-                    $(LIBXML2_LIBNAME) \
-                    $(GUTHTHILA_LIBNAME)
+                    $(LIBXML2_LIBS) \
+                    $(GUTHTHILA_LIBS)
                     

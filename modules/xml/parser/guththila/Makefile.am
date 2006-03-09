@@ -9,5 +9,5 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/xml/parser \
             -I$(top_builddir)/modules/platforms \
-            -I${GUTHTHILA_INCLUDE}
+            -I${GUTHTHILA_INCLUDES}
            

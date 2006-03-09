@@ -16,8 +16,8 @@ test_http_transport_LDADD   =  \
 								-laxis2_wsdl \
 								-laxis2_parser \
 								-laxis2_http_sender \
-								$(LIBXML2_LIBNAME) \
-                    			$(GUTHTHILA_LIBNAME)
+								$(LIBXML2_LIBS) \
+                    			$(GUTHTHILA_LIBS)
                     
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/include \

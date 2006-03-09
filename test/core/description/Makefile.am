@@ -14,8 +14,8 @@ test_description_LDADD   =  \
                     -lpthread \
                     -laxis2_soap \
                     -laxis2_parser \
-                    $(GUTHTHILA_LIBNAME) \
-                    $(LIBXML2_LIBNAME)
+                    $(GUTHTHILA_LIBS) \
+                    $(LIBXML2_LIBS)
                     
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \

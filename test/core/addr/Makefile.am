@@ -14,8 +14,8 @@ test_addr_LDADD   =  \
 	                -laxis2_engine \
 	                -laxis2_wsdl \
 	                -laxis2_parser \
-	                $(GUTHTHILA_LIBNAME) \
-	                $(LIBXML2_LIBNAME)
+	                $(GUTHTHILA_LIBS) \
+	                $(LIBXML2_LIBS)
 
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/xml/guththila \

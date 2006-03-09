@@ -31,5 +31,5 @@ engine_test_LDADD   =   libtest_engine.la  \
                     -laxis2_om \
                     -laxis2_parser \
                     -laxis2_soap \
-                    $(GUTHTHILA_LIBNAME) \
-                    $(LIBXML2_LIBNAME)
+                    $(GUTHTHILA_LIBS) \
+                    $(LIBXML2_LIBS)

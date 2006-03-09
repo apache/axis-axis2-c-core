@@ -17,8 +17,8 @@ test_clientapi_LDADD   =  \
 	                -lpthread \
 					-laxis2_soap \
                     -laxis2_unix \
-	                $(LIBXML2_LIBNAME) \
-	                $(GUTHTHILA_LIBNAME)
+	                $(LIBXML2_LIBS) \
+	                $(GUTHTHILA_LIBS)
 
 test_client_LDADD   =  \
 	                -laxis2_util \
@@ -29,8 +29,8 @@ test_client_LDADD   =  \
 	                -laxis2_parser \
 					-laxis2_soap \
                     -laxis2_unix \
-	                $(LIBXML2_LIBNAME) \
-	                $(GUTHTHILA_LIBNAME) 
+	                $(LIBXML2_LIBS) \
+	                $(GUTHTHILA_LIBS) 
 
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/include \

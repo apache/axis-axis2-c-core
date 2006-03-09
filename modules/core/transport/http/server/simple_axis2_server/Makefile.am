@@ -6,7 +6,6 @@ AM_CFLAGS = -g -pthread
 axis2_http_server_SOURCES = http_server_main.c
 
 axis2_http_server_LDADD   =  $(LDFLAGS) \
-                            -L$(AXIS2C_HOME)/lib  \
                             -laxis2_om \
                             -laxis2_engine \
                             -laxis2_soap \
@@ -26,8 +25,8 @@ axis2_http_server_LDADD   =  $(LDFLAGS) \
                             -L$(top_builddir)/modules/xml/parser/libxml2 \
                             -L$(top_builddir)/modules/xml/soap \
                             -L$(top_builddir)/modules/platforms/unix \
-                            -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \
-                            -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME)
+                            $(LIBXML2_LIBS) \
+                            $(GUTHTHILA_LIBS)
                     
 INCLUDES =  -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util\

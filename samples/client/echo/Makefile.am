@@ -15,8 +15,8 @@ echo_LDADD   =  $(LDFLAGS) \
                 -laxis2_soap \
                 -laxis2_http_sender \
                 -laxis2_http_receiver \
-                $(GUTHTHILA_LIBNAME) \
-                $(LIBXML2_LIBNAME)
+                $(LIBXML2_LIBS) \
+                $(GUTHTHILA_LIBS)
 
 
 INCLUDES = -I$(top_builddir)/include \

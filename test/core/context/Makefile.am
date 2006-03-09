@@ -14,8 +14,8 @@ test_context_LDADD   =   \
 			        -laxis2_engine \
 			        -laxis2_parser \
 			        -laxis2_wsdl \
-			        $(GUTHTHILA_LIBNAME) \
-			        $(LIBXML2_LIBNAME)
+			        $(GUTHTHILA_LIBS) \
+			        $(LIBXML2_LIBS)
 
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/xml/guththila/src \

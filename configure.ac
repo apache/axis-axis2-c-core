@@ -26,7 +26,8 @@ AC_CHECK_LIB(cutest, CuTestInit)
 
 #CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -g3 -O2"
 CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE"
-#CFLAGS="$CFLAGS -Wall -ansi -Wshadow -DLINUX=2 -D_REENTRANT -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -g -O2 -pthread"
+#CFLAGS="$CFLAGS -Wall -ansi -Wshadow -DLINUX=2 -D_REENTRANT -D_GNU_SOURCE \
+#    -D_LARGEFILE64_SOURCE -g -O2 -pthread"
 LDFLAGS="-lpthread"
 
 dnl Checks for header files.
@@ -46,19 +47,16 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser lib
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
-    GUTHTHILA=""
-    GUTHTHILA_LIBNAME=""
+    GUTHTHILA_DIR=""
     ;;
   *)
     AC_MSG_RESULT(yes)
-    GUTHTHILA="guththila"
-    GUTHTHILA_LIBNAME="-lguththila"
+    GUTHTHILA_DIR="guththila"
 
     ;;
   esac ],
   AC_MSG_RESULT(no)
-  GUTHTHILA=""
-  GUTHTHILA_LIBNAME=""
+  GUTHTHILA_DIR=""
 )
 
 AC_MSG_CHECKING(whether to build libxml2 xml parser library)
@@ -66,20 +64,16 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library w
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
-    LIBXML2=""
-    LIBXML2_LIBNAME=""
+    LIBXML2_DIR=""
     ;;
   *)
     AC_MSG_RESULT(yes)
-    LIBXML2="libxml2"
-    LIBXML2_LIBNAME="-lxml2"
-    PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
+    LIBXML2_DIR="libxml2"
 
     ;;
   esac ],
   AC_MSG_RESULT(yes)
-  LIBXML2="libxml2"
-  LIBXML2_LIBNAME="-lxml2"
+  LIBXML2_DIR="libxml2"
 )
 
 AC_MSG_CHECKING(whether to build tests)
@@ -147,13 +141,14 @@ AC_ARG_ENABLE(tests, [  --enable-multi_threaded  enable trace. default=yes],
   CFLAGS="$CFLAGS"
 )
 
-PKG_CHECK_MODULES(XML2, libxml-2.0)
-AC_SUBST(XML2_CFLAGS)
-AC_SUBST(XML2_LIBS)
-AC_SUBST(LIBXML2)
-AC_SUBST(GUTHTHILA)
-AC_SUBST(LIBXML2_LIBNAME)
-AC_SUBST(GUTHTHILA_LIBNAME)
+PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
+CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
+
+AC_SUBST(LIBXML2_CFLAGS)
+AC_SUBST(LIBXML2_LIBS)
+AC_SUBST(LIBXML2_DIR)
+AC_SUBST(GUTHTHILA_DIR)
+AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(TESTDIR)
 AC_SUBST(SAMPLES)
 
