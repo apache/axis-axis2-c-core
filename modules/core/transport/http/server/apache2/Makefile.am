@@ -42,4 +42,4 @@ INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/modules/core/deployment \
            -I$(top_builddir)/modules/platforms\
            -I/usr/include/apr-0\
-           -I/usr/include/apache2
+            @APACHE2INC@

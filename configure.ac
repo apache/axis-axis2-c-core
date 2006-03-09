@@ -42,6 +42,31 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
+AC_MSG_CHECKING(whether to use apache2 as server transport)
+AC_ARG_WITH(apache2,
+[  --with-apache2[=PATH]      use apache2 as server transport.],
+[ case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    APACHE2BUILD=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    dnl Find apache2 include dir in the path pointed by APACHE2_HOME env variable
+    if test -d $withval; then
+        apache2inc="-I$withval/include"
+    dnl else find the apache2 include dir in /usr/local/apache2
+    elif test -d '/usr/local/apache2/include'; then
+        apache2inc="-I/usr/local/apache2/include"
+    else
+        AC_MSG_ERROR(could not find apache2. stop)
+    fi
+    APACHE2BUILD="apache2"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
 AC_MSG_CHECKING(whether to build guththila xml parser library)
 AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=no],
 [ case "${enableval}" in
@@ -144,6 +169,9 @@ AC_ARG_ENABLE(tests, [  --enable-multi_threaded  enable trace. default=yes],
 PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
 CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
 
+APACHE2INC=$apache2inc
+
+AC_SUBST(APACHE2INC)
 AC_SUBST(LIBXML2_CFLAGS)
 AC_SUBST(LIBXML2_LIBS)
 AC_SUBST(LIBXML2_DIR)
@@ -151,6 +179,7 @@ AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(TESTDIR)
 AC_SUBST(SAMPLES)
+AC_SUBST(APACHE2BUILD)
 
 AC_CONFIG_FILES([Makefile \
     modules/Makefile \
@@ -165,6 +194,7 @@ AC_CONFIG_FILES([Makefile \
     modules/core/transport/http/sender/Makefile \
     modules/core/transport/http/receiver/Makefile \
     modules/core/transport/http/server/simple_axis2_server/Makefile \
+    modules/core/transport/http/server/Makefile \
     modules/core/transport/http/server/apache2/Makefile \
     modules/core/deployment/Makefile \
     modules/core/clientapi/Makefile \

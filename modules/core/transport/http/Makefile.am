@@ -1,4 +1,5 @@
 TESTS =
+SUBDIRS = server
 noinst_LTLIBRARIES = libaxis2_http.la
 
 libaxis2_http_la_SOURCES = \
