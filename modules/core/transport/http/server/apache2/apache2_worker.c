@@ -30,6 +30,8 @@
 #include <http_core.h>
 #include <http_protocol.h>
 
+
+#define READ_SIZE  32
 /** 
  * @brief Apahche2 Worker struct impl
  *	Axis2 Apache2 Worker impl  
@@ -337,7 +339,7 @@ axis2_apache2_worker_get_bytes(axis2_env_t **env,
     {
         int read = 0;
         int write = 0;
-        int READ_SIZE = 32;
+        
         char buf[READ_SIZE];
         read = AXIS2_STREAM_READ(stream, env, buf, READ_SIZE);
         if(read < 0)

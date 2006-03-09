@@ -90,7 +90,8 @@ axis2_msg_recv_create (axis2_env_t **env)
     
     AXIS2_ENV_CHECK(env, NULL);
     
-	msg_recv_impl = (axis2_msg_recv_impl_t *) malloc (sizeof (axis2_msg_recv_impl_t));
+	msg_recv_impl = (axis2_msg_recv_impl_t *) AXIS2_MALLOC((*env)->allocator, 
+	                                sizeof(axis2_msg_recv_impl_t));
     
 	if(NULL == msg_recv_impl)
     {

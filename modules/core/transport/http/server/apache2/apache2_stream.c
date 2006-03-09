@@ -122,10 +122,11 @@ apache2_stream_write(axis2_stream_t *stream, axis2_env_t **env,
 {
 	apache2_stream_impl_t *stream_impl = NULL;
     char *write_buf = NULL;
+    axis2_char_t *buffer = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, buf, AXIS2_FAILURE);
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    axis2_char_t *buffer = (axis2_char_t*)buf;
+    buffer = (axis2_char_t*)buf;
     if(count <= 0)
     {
         return count;
