@@ -1,1 +1,1 @@
-SUBDIRS = addr clientapi context deployment description engine phaseresolver receivers transport transport/http/sender transport/http/receiver transport/http/server/simple_axis2_server util
+SUBDIRS = addr clientapi context deployment description engine phaseresolver receivers transport transport/http/server/simple_axis2_server util

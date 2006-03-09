@@ -1,5 +1,5 @@
 TESTS =
-SUBDIRS = server
+SUBDIRS = sender receiver server
 noinst_LTLIBRARIES = libaxis2_http.la
 
 libaxis2_http_la_SOURCES = \
