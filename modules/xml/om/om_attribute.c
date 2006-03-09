@@ -91,7 +91,7 @@ axis2_om_attribute_create (axis2_env_t **env,
     
     AXIS2_ENV_CHECK(env, NULL);
     /* localname is mandatory */
-    AXIS2_FUNC_PARAM_CHECK(localname, env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, localname, NULL);
     
     attribute_impl = (axis2_om_attribute_impl_t *) AXIS2_MALLOC ((*env)->allocator,
                                                sizeof (axis2_om_attribute_impl_t));
@@ -223,7 +223,7 @@ axis2_om_attribute_serialize (axis2_om_attribute_t *om_attribute,
     
     
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
-    AXIS2_FUNC_PARAM_CHECK(om_output, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
     attribute = AXIS2_INTF_TO_IMPL(om_attribute);
         
     if (attribute->ns && AXIS2_OM_NAMESPACE_GET_URI(attribute->ns,env) && 
@@ -283,7 +283,7 @@ axis2_om_attribute_set_localname(axis2_om_attribute_t *om_attribute,
 {
     axis2_om_attribute_impl_t *attr_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_FUNC_PARAM_CHECK(localname, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, localname, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(om_attribute);
     
     if(NULL != (attr_impl->localname))
@@ -310,7 +310,8 @@ axis2_om_attribute_set_value(axis2_om_attribute_t *om_attribute,
 {
     axis2_om_attribute_impl_t *attr_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_FUNC_PARAM_CHECK(value, env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
+    
     attr_impl = AXIS2_INTF_TO_IMPL(om_attribute);
     if(NULL != attr_impl->value)
     {
