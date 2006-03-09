@@ -84,8 +84,8 @@ axis2_svc_skeleton_create (axis2_env_t **env);
 #define AXIS2_SVC_SKELETON_INIT(svc_skeleton, env) \
 		((svc_skeleton)->ops->init (svc_skeleton, env))
 
-#define AXIS2_SVC_SKELETON_FREE_VOID_ARG(svc_skeleton, env) \
-		((svc_skeleton)->ops->free_void_arg (svc_skeleton, env))
+#define AXIS2_SVC_SKELETON_FREE(svc_skeleton, env) \
+		((svc_skeleton)->ops->free (svc_skeleton, env))
 
 #define AXIS2_SVC_SKELETON_INVOKE(svc_skeleton, env, node) \
 		((svc_skeleton)->ops->invoke (svc_skeleton, env, node))
