@@ -54,14 +54,37 @@ AC_ARG_WITH(apache2,
     AC_MSG_RESULT(yes)
     dnl Find apache2 include dir in the path pointed by APACHE2_HOME env variable
     if test -d $withval; then
-        apache2inc="-I$withval/include"
+        apache2inc="-I$withval"
     dnl else find the apache2 include dir in /usr/local/apache2
-    elif test -d '/usr/local/apache2/include'; then
-        apache2inc="-I/usr/local/apache2/include"
+    elif test -d '/usr/include/apache2'; then
+        apache2inc="-I/usr/include/apache2"
     else
         AC_MSG_ERROR(could not find apache2. stop)
     fi
     APACHE2BUILD="apache2"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+AC_MSG_CHECKING(whether to use apr. Note that if you build with apache2 you might need to do this.)
+AC_ARG_WITH(apr,
+[  --with-apr[=PATH]      use apr.],
+[ case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    dnl Find apr include dir in the path
+    if test -d $withval; then
+        aprinc="-I$withval"
+    dnl else find the apache2 include dir in /usr/local/apache2
+    elif test -d '/usr/include/apr-0'; then
+        aprinc="-I/usr/include/apr-0"
+    else
+        AC_MSG_ERROR(could not find apr. stop)
+    fi
     ;;
   esac ],
   AC_MSG_RESULT(no)
@@ -170,8 +193,10 @@ PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
 CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
 
 APACHE2INC=$apache2inc
+APRINC=$aprinc
 
 AC_SUBST(APACHE2INC)
+AC_SUBST(APRINC)
 AC_SUBST(LIBXML2_CFLAGS)
 AC_SUBST(LIBXML2_LIBS)
 AC_SUBST(LIBXML2_DIR)
