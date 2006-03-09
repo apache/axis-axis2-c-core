@@ -57,11 +57,8 @@ NOTE: If you run into shared lib problems, set the LD_LIBRARY_PATH
 3. Then go to the folder where you extracted the source
         cd /your_path_to_axis2c_source
 4. Set parser location
-You need to set the following environment variable to point to libxml2. 
-        LIBXML2_INCLUDE
-If you are using the default installation of libxml2, usually it is
-LIBXML2_INCLUDE=/usr/include/libxml2
-
+    Include path and library path to parser should be set. For libxml2 this is automatically
+    resolved by configure script.
 5. Build the source
 This can be done using the following command sequence:
         ./configure
