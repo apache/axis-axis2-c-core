@@ -376,7 +376,8 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 		{
     		property = AXIS2_CTX_GET_PROPERTY(ctx, env, 
 						AXIS2_RESPONSE_WRITTEN, AXIS2_FALSE);
-            ctx_written = AXIS2_PROPERTY_GET_VALUE(property, env);
+            if (property)
+                ctx_written = AXIS2_PROPERTY_GET_VALUE(property, env);
 		}
 	}
 	if(NULL != ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE") == 0)

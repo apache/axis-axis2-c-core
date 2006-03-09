@@ -316,7 +316,8 @@ worker_func(axis2_thread_t *thd, void *data)
 	status = AXIS2_HTTP_WORKER_PROCESS_REQUEST(tmp, &thread_env, svr_conn, 
 						request);
 	AXIS2_SIMPLE_HTTP_SVR_CONN_FREE(svr_conn, &thread_env);
-    AXIS2_HTTP_SIMPLE_REQUEST_FREE(request, &thread_env);
+    if (request)
+        AXIS2_HTTP_SIMPLE_REQUEST_FREE(request, &thread_env);
 	AXIS2_FREE(thread_env->allocator, arg_list);
 	AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t2);
 	millisecs = t2.millitm - t1.millitm;

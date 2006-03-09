@@ -253,7 +253,9 @@ axis2_http_transport_utils_process_http_post_request
 						AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
 			if(NULL == soap_builder)
 			{
-				AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+			    /* We should not be freeing om_builder here as it is done by
+                axis2_soap_builder_create in case of error - Samisa*/
+				/*AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);*/
 				om_builder = NULL;
 				xml_reader = NULL;
 				return AXIS2_FAILURE;
