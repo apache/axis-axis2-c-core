@@ -1,5 +1,7 @@
 prglibdir=$(prefix)/services/echo
+samplesdir=$(prefix)/samples/server/echo
 prglib_LTLIBRARIES = libecho.la
+samples_DATA=echo.c echo_skeleton.c echo.h services.xml
 prglib_DATA= services.xml
 EXTRA_DIST = services.xml
 noinst_HEADERS = echo.h

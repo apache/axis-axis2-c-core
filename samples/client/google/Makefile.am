@@ -1,5 +1,7 @@
 prgbindir=$(prefix)/bin/samples
+samplesdir=$(prefix)/samples/client/google
 prgbin_PROGRAMS = google
+samples_DATA=google_client.c
 google_SOURCES = google_client.c
 
 google_LDADD   =    $(LDFLAGS) \
