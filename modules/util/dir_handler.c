@@ -167,7 +167,6 @@ axis2_dir_handler_list_services_or_modules_in_dir(axis2_env_t **env,
     }
     AXIS2_FREE((*env)->allocator, *files);
     AXIS2_FREE((*env)->allocator, files);
-    
     return file_list;
 }
 
@@ -326,9 +325,12 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
         arch_file = NULL;
         fname = NULL;
     }
+#ifndef WIN32
+
     AXIS2_FREE((*env)->allocator, *files);
     AXIS2_FREE((*env)->allocator, files);
-    
+
+#endif 
     return file_list;
 }
 
