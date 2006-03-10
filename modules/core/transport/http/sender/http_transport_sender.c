@@ -292,7 +292,17 @@ axis2_http_transport_sender_invoke
 			 */
 			AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CHAR_ENCODING(out_info, env, 
 							char_set_enc);
-			/*TODO: uncomment this
+			if(AXIS2_TRUE == is_soap11)
+            {
+                AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info, env, 
+                        AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML);
+            }
+            else
+            {
+                AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info, env, 
+                        AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP);
+            }
+            /*
             AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info, env, 
 							AXIS2_OM_OUTPUT_GET_CONTENT_TYPE(om_output, env));*/
 			/* AXIS2_OM_OUTPUT_SET_DO_OPTIMIZE(om_output, env, 

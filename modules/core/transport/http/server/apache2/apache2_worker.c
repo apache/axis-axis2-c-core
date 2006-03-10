@@ -171,6 +171,10 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
     content_type = (axis2_char_t*)apr_table_get(request->headers_in, 
                         AXIS2_HTTP_HEADER_CONTENT_TYPE);
     request->content_type = content_type;
+    if(request->read_chunked == AXIS2_TRUE && 0 == content_length)
+    {
+        content_length = -1;
+    }
 	if(NULL == http_version)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_HTTP_VERSION, 

@@ -55,7 +55,7 @@ extern "C"
 /** axis2 UTF_16; This is the 'utf-16' value for AXIS2_CHARACTER_SET_ENCODING property  */
 #define AXIS2_UTF_16 "utf-16"
 /** axis2 default char set encoding; This is the default value for AXIS2_CHARACTER_SET_ENCODING property */
-#define AXIS2_DEFAULT_CHAR_SET_ENCODING "UTF_8"
+#define AXIS2_DEFAULT_CHAR_SET_ENCODING "UTF-8"
 /** axis2 transport succeeded */
 #define AXIS2_TRANSPORT_SUCCEED "AXIS2_TRANSPORT_SUCCEED"
 
