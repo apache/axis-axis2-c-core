@@ -5,7 +5,7 @@
     <menu name="Axis2 C">
       <item name="Home" href="index.html"/>
       <item name="Download Axis2 C">
-        <item name="M0.5 Release" href="http://www.apache.org/dyn/closer.cgi/ws/axis2/c/M0.5/"/>
+        <item name="M0.5 Release" href="download.cgi"/>
         <item name="Source Code"
           href="http://svn.apache.org/viewcvs.cgi/webservices/axis2/trunk/c/"/>
       </item>
