@@ -418,12 +418,22 @@ axis2_http_client_recieve_header(axis2_http_client_t *client, axis2_env_t **env)
 	}
 	AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STREAM(client_impl->response, env, 
 						client_impl->data_stream); 
-	if(NULL != status_line)
-	{
-		status_code = AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(status_line, env);
-		AXIS2_HTTP_STATUS_LINE_FREE(status_line, env);
-		status_line = NULL;
-	}
+    if(NULL != status_line)
+    {
+        status_code = AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(status_line, env);
+        AXIS2_HTTP_STATUS_LINE_FREE(status_line, env);
+        status_line = NULL;
+    }
+    if(AXIS2_FALSE == AXIS2_HTTP_SIMPLE_RESPONSE_CONTAINS_HEADER(
+                        client_impl->response, env,
+                        AXIS2_HTTP_HEADER_CONTENT_TYPE) && 202 != status_code)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING
+                , AXIS2_FAILURE);
+        AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Response does not contain"
+                        " Content-Type");
+        return -1;
+    }
     return status_code;
 }
 

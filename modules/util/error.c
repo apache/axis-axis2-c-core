@@ -411,6 +411,8 @@ axis2_error_init()
         "Flow type of PhaseOrder element cannot be null";
     axis2_error_messages[AXIS2_ERROR_DATA_ELEMENT_IS_NULL] =
         "Data element of the OM Node is null";
+    axis2_error_messages[AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING] =
+    "Content-Type header missing in HTTP response";
 
     return AXIS2_SUCCESS;
 }

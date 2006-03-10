@@ -347,6 +347,8 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_SERVICE_XML_NOT_FOUND,
         /** Module xml file is not found in the given path */
         AXIS2_ERROR_MODULE_XML_NOT_FOUND_FOR_THE_MODULE,
+        /** Content-Type header missing in HTTP response */
+        AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING,
         
         AXIS2_ERROR_OPERATION_NAME_MISSING,
         

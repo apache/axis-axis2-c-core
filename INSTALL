@@ -243,7 +243,8 @@ C:\axis2c\build\deploy\bin\samples>echo.exe
 
 Note: To do the following tasks you might need super user privileges in your machine.
 
-* Copy the mod_axis2.so to "<apache2 modules directory>" (eg: /usr/lib/apache2/modules)
+* Copy the libmod_axis2.so.0.0.0 to "<apache2 modules directory>" (eg: /usr/lib/apache2/modules) as mod_axis2.so 
+    eg: cp $AXIS2C_HOME/lib/libmod_axis2.so.0.0.0 /usr/lib/apache2/modules/mod_axis2.so
 * Edit the Apache2's configuration file (generally httpd.conf) and add the following directives
 
     LoadModule axis2_module   <apache2 modules directory>/mod_axis2.so
