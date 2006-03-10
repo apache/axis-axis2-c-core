@@ -230,7 +230,7 @@ C:\axis2c\build\deploy\bin\samples>echo.exe
 ---------------------------------------------------------------
 5.1 Building mod_axis2 from source tree
 
-* Provide the apache2 include files location to the configure script
+* Provide the apache2 include files location as configure option
   ./configure --with-apache2="<apache2 include files location>" [other configure options]
   - Some apache2 distributions install APR (Apache Portable Runtime) include files in a seperate location which is requred to build mod_axis2. In that case use
   ./configure --with-apache2="<apache2 include files location>" --with-apr="apr include files location>" [other configure options]
@@ -256,5 +256,8 @@ Note: To do the following tasks you might need super user privileges in your mac
 * Make sure that the apache2 user has correct permissions to above paths
     - Read permission to the repository
     - Write permission to the log file
+
+* Restart apache2 and test whether mod_axis2 module is loaded by typing the URL
+    http://localhost/axis2/services
 
 Hope you would enjoy this first working version of Axis2C soap engine :)
