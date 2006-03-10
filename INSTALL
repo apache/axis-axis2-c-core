@@ -16,6 +16,7 @@ Table of Contents
 	4.2 Editing Configure.in file
 	4.3 Compiling the source
 	4.4 Running the binaries
+5. Installing Apache2 Web Server integration module (mod_axis2)
 	
 
 1. Getting Axis2C working with the binary release on Linux.
@@ -223,5 +224,37 @@ The log is by default created under %AXIS2C_HOME%\logs folder with the name axis
 Now you can run any sample client deployed under %AXIS2C_HOME%\bin\samples\
 Example:
 C:\axis2c\build\deploy\bin\samples>echo.exe
+
+
+5. Installing Apache2 Web Server integration module (mod_axis2)
+---------------------------------------------------------------
+5.1 Building mod_axis2 from source tree
+
+* Provide the apache2 include files location to the configure script
+  ./configure --with-apache2="<apache2 include files location>" [other configure options]
+  - Some apache2 distributions install APR (Apache Portable Runtime) include files in a seperate location which is requred to build mod_axis2. In that case use
+  ./configure --with-apache2="<apache2 include files location>" --with-apr="apr include files location>" [other configure options]
+* Then build the source tree
+    make
+    make install
+  - This will install mod_axis2.so into your "<your_path_to_axis2c>/lib"
+
+5.1 Deploying in Apache2 Web Server
+
+Note: To do the following tasks you might need super user privileges in your machine.
+
+* Copy the mod_axis2.so to "<apache2 modules directory>" (eg: /usr/lib/apache2/modules)
+* Edit the Apache2's configuration file (generally httpd.conf) and add the following directives
+
+    LoadModule axis2_module   <apache2 modules directory>/mod_axis2.so
+    <Location /axis2>
+        SetHandler axis2_module
+        RepoPath <axis2 repository path>
+        LogFile <axis2 log file path>
+    </Location>
+
+* Make sure that the apache2 user has correct permissions to above paths
+    - Read permission to the repository
+    - Write permission to the log file
 
 Hope you would enjoy this first working version of Axis2C soap engine :)
