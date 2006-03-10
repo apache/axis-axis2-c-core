@@ -43,3 +43,5 @@ INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/modules/platforms\
             @APACHE2INC@ \
             @APRINC@
+
+EXTRA_DIST=axis2_apache2_worker.h apache2_stream.h axis2_apache2_out_transport_info.h
