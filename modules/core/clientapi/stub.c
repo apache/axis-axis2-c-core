@@ -348,6 +348,12 @@ axis2_stub_free (axis2_stub_t *stub,
         axis2_hash_free(stub_impl->property_map, env);
         stub_impl->property_map = NULL;
     }
+
+    if (stub_impl->modules)
+    {
+        AXIS2_ARRAY_LIST_FREE(stub_impl->modules, env);
+        stub_impl->modules = NULL;
+    }
     
     if(stub_impl)
     {

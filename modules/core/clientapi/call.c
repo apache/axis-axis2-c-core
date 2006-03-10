@@ -241,6 +241,7 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env,
     call_impl->call.ops->invoke_blocking = axis2_call_invoke_blocking;
     call_impl->call.ops->invoke_blocking_with_om = axis2_call_invoke_blocking_with_om;
     call_impl->call.ops->invoke_blocking_with_soap = axis2_call_invoke_blocking_with_soap;
+    call_impl->call.ops->invoke_non_blocking = axis2_call_invoke_non_blocking;
     call_impl->call.ops->invoke_non_blocking_with_om = axis2_call_invoke_non_blocking_with_om;
     call_impl->call.ops->invoke_non_blocking_with_soap = axis2_call_invoke_non_blocking_with_soap;
     call_impl->call.ops->create_op_fill_flow = axis2_call_create_op_fill_flow;
