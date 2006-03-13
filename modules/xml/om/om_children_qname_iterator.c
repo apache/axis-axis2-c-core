@@ -138,7 +138,7 @@ axis2_om_children_qname_iterator_free(axis2_om_children_qname_iterator_t *iterat
         AXIS2_FREE((*env)->allocator, iterator->ops);
     if(iterator_impl->given_qname)
     {
-        AXIS2_QNAME_FREE(iterator_impl->given_qname, env);
+        /**AXIS2_QNAME_FREE(iterator_impl->given_qname, env); */
         iterator_impl->given_qname = NULL;
     }
     AXIS2_FREE((*env)->allocator, iterator_impl);

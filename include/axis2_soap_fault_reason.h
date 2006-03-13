@@ -57,33 +57,25 @@ struct axis2_soap_builder;
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env);
 
-        axis2_status_t (AXIS2_CALL *set_soap_fault_text)
-                                (axis2_soap_fault_reason_t *fault_reason,
-                                 axis2_env_t **env,
-                                 struct axis2_soap_fault_text *soap_text);
-                                     
         struct axis2_soap_fault_text* (AXIS2_CALL *get_soap_text)                                         
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env);
                                      
+        axis2_om_node_t* (AXIS2_CALL *get_base_node)
+                                (axis2_soap_fault_reason_t *fault_reason,
+                                 axis2_env_t **env);
+                                 
+        /** internal functions , do not use */
         axis2_status_t (AXIS2_CALL *set_base_node)
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env,
                                  axis2_om_node_t *node);
     
-        axis2_om_node_t* (AXIS2_CALL *get_base_node)
-                                (axis2_soap_fault_reason_t *fault_reason,
-                                 axis2_env_t **env);
-                                 
-        int (AXIS2_CALL *get_soap_version)
-                                (axis2_soap_fault_reason_t *fault_reason,
-                                 axis2_env_t **env);
-                                 
-        axis2_status_t (AXIS2_CALL *set_soap_version)
+        axis2_status_t (AXIS2_CALL *set_soap_fault_text)
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env,
-                                 int soap_version);                                                                        
-                                                       
+                                 struct axis2_soap_fault_text *soap_text);      
+      
         axis2_status_t (AXIS2_CALL *set_builder)
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env,
@@ -110,24 +102,14 @@ axis2_soap_fault_reason_create(axis2_env_t **env);
     
 AXIS2_DECLARE(axis2_soap_fault_reason_t *)
 axis2_soap_fault_reason_create_with_parent(axis2_env_t **env,
-                            axis2_soap_fault_t *fault,
-                            axis2_bool_t extact_ns_from_parent);
-
-AXIS2_DECLARE(axis2_soap_fault_reason_t *)
-axis2_soap11_fault_reason_create_with_parent(axis2_env_t **env,
-                            axis2_soap_fault_t *fault);    
-                            
-AXIS2_DECLARE(axis2_soap_fault_reason_t *)
-axis2_soap12_fault_reason_create_with_parent(axis2_env_t **env,
                             axis2_soap_fault_t *fault);
+
 /******************** Macros **************************************************/
     
 /** free soap_fault_reason */
 #define AXIS2_SOAP_FAULT_REASON_FREE(fault_reason , env) \
         ((fault_reason)->ops->free_fn(fault_reason, env))
 
-#define AXIS2_SOAP_FAULT_REASON_SET_SOAP_FAULT_TEXT(fault_reason , env, soap_text) \
-        ((fault_reason)->ops->set_soap_fault_text(fault_reason, env, soap_text))
         
 #define AXIS2_SOAP_FAULT_REASON_GET_SOAP_TEXT(fault_reason , env) \
         ((fault_reason)->ops->get_soap_text(fault_reason, env)) 
@@ -135,16 +117,13 @@ axis2_soap12_fault_reason_create_with_parent(axis2_env_t **env,
 #define AXIS2_SOAP_FAULT_REASON_GET_BASE_NODE(fault_reason, env) \
         ((fault_reason)->ops->get_base_node(fault_reason, env))         
 
+/** internal functions , do not use */
+#define AXIS2_SOAP_FAULT_REASON_SET_SOAP_FAULT_TEXT(fault_reason , env, soap_text) \
+        ((fault_reason)->ops->set_soap_fault_text(fault_reason, env, soap_text))
+
 #define AXIS2_SOAP_FAULT_REASON_SET_BASE_NODE(fault_reason, env, node) \
         ((fault_reason)->ops->set_base_node(fault_reason, env, node))  
         
-#define AXIS2_SOAP_FAULT_REASON_GET_SOAP_VERSION(fault_reason, env) \
-        ((fault_reason)->ops->get_soap_version(fault_reason, env))
-        
-#define AXIS2_SOAP_FAULT_REASON_SET_SOAP_VERSION(fault_reason, env) \
-        ((fault_reason)->ops->set_soap_version(fault_reason, env))
-        
-
 #define AXIS2_SOAP_FAULT_REASON_SET_BUILDER(fault_reason, env, builder) \
         ((fault_reason)->ops->set_builder(fault_reason, env, builder))
 /** @} */

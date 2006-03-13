@@ -16,6 +16,7 @@
 
 #include <axis2_om_processing_instruction.h>
 #include <axis2_string.h>
+#include <axis2_om_node_internal.h>
 
 axis2_status_t AXIS2_CALL
 axis2_om_processing_instruction_free (axis2_om_processing_instruction_t *om_pi,
@@ -121,8 +122,8 @@ axis2_om_processing_instruction_create (axis2_env_t **env,
             return NULL;
         }
     }
-    AXIS2_OM_NODE_SET_DATA_ELEMENT(*node, env, processing_instruction);
-    AXIS2_OM_NODE_SET_NODE_TYPE(*node, env, AXIS2_OM_PROCESSING_INSTRUCTION);
+    axis2_om_node_set_data_element(*node, env, processing_instruction);
+    axis2_om_node_set_node_type(*node, env, AXIS2_OM_PROCESSING_INSTRUCTION);
     if (parent)
     {
         AXIS2_OM_NODE_ADD_CHILD(parent, env, (*node)); 

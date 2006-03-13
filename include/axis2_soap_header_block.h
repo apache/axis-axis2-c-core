@@ -121,6 +121,12 @@ extern "C"
         int (AXIS2_CALL *get_soap_version)  
                             (axis2_soap_header_block_t *header_block,
                              axis2_env_t **env);
+
+        axis2_status_t (AXIS2_CALL *set_soap_version)
+                            (axis2_soap_header_block_t *header_block,
+                             axis2_env_t **env,
+                             int soap_version);
+        
        
     };
 
@@ -135,10 +141,11 @@ extern "C"
        
     };
 
-  /**
-    * creates a soap struct 
-    * @param env Environment. MUST NOT be NULL
-    */
+/**
+* creates a soap struct 
+* @param env Environment. MUST NOT be NULL
+* this is an internal function.    
+*/
 
 AXIS2_DECLARE(axis2_soap_header_block_t *)
 axis2_soap_header_block_create(axis2_env_t **env);
@@ -195,6 +202,9 @@ axis2_soap_header_block_create_with_parent(axis2_env_t **env,
             attr_name, soap_envelope_namespace_uri)  \
         ((header_block)->ops->set_attribute(header_block, env, \
             attr_name, soap_envelope_namespace_uri))            
+
+#define AXIS2_SOAP_HEADER_BLOCK_SET_SOAP_VERSION(header_block, env, soap_version) \
+        ((header_block)->ops->set_soap_version(header_block, env, soap_version))
 /** @} */
 
 #ifdef __cplusplus

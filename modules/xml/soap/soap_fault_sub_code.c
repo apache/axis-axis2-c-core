@@ -30,8 +30,6 @@
     axis2_soap_fault_value_t *value;
     /* sub element fault subcode */
     axis2_soap_fault_sub_code_t *subcode;
-    /* soap version */
-    int soap_version; 
     /* pointer to soap builder */
     axis2_soap_builder_t *builder;   
  
@@ -80,22 +78,11 @@ axis2_soap_fault_sub_code_get_base_node
                              (axis2_soap_fault_sub_code_t *fault_sub_code,
                               axis2_env_t **env);
                                  
-int AXIS2_CALL 
-axis2_soap_fault_sub_code_get_soap_version
-                             (axis2_soap_fault_sub_code_t *fault_sub_code,
-                              axis2_env_t **env);    
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_sub_code_set_soap_version
-                             (axis2_soap_fault_sub_code_t *fault_sub_code,
-                              axis2_env_t **env,
-                              int soap_version); 
 
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_sub_code_set_builder(axis2_soap_fault_sub_code_t *fault_sub_code,
                                      axis2_env_t **env,
                                      axis2_soap_builder_t *builder);                                                           
-                                
-
 /********************** function implementations ******************************/
 
 AXIS2_DECLARE(axis2_soap_fault_sub_code_t *)
@@ -114,7 +101,6 @@ axis2_soap_fault_sub_code_create(axis2_env_t **env)
     
     fault_subcode_impl->fault_sub_code.ops = NULL;
     fault_subcode_impl->om_ele_node = NULL;
-    fault_subcode_impl->soap_version = AXIS2_SOAP12;
     fault_subcode_impl->value = NULL;
     fault_subcode_impl->subcode = NULL;
     fault_subcode_impl->builder = NULL;
@@ -150,12 +136,6 @@ axis2_soap_fault_sub_code_create(axis2_env_t **env)
         
     fault_subcode_impl->fault_sub_code.ops->get_base_node =
         axis2_soap_fault_sub_code_get_base_node;
-        
-    fault_subcode_impl->fault_sub_code.ops->get_soap_version =
-        axis2_soap_fault_sub_code_get_soap_version;
-        
-    fault_subcode_impl->fault_sub_code.ops->set_soap_version =
-        axis2_soap_fault_sub_code_set_soap_version;
         
     fault_subcode_impl->fault_sub_code.ops->set_builder =
         axis2_soap_fault_sub_code_set_builder;                            
@@ -231,24 +211,16 @@ axis2_soap_fault_sub_code_set_sub_code(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, sub_code, AXIS2_FAILURE);
     fault_subcode_impl = AXIS2_INTF_TO_IMPL(fault_sub_code);
-    /*
-    axis2_om_node_t *subcode_node = NULL;
-    axis2_om_node_t *my_node = NULL;
-    subcode_node = AXIS2_SOAP_FAULT_SUB_CODE_GET_BASE_NODE(sub_code, env);
-    if(fault_subcode_impl->subcode)
+    if(!(fault_subcode_impl->subcode))
     {
-        my_node = AXIS2_SOAP_FAULT_SUB_CODE_GET_BASE_NODE(
-                            fault_subcode_impl->subcode, env);
-        AXIS2_SOAP_FAULT_SUB_CODE_FREE(fault_subcode_impl->subcode, env);
-        fault_subcode_impl->subcode = NULL;
+        fault_subcode_impl->subcode  = sub_code; 
+        return AXIS2_SUCCESS; 
     }
-    axis2_soap_utils_set_new_node(env, 
-        fault_subcode_impl->om_ele_node,
-        &my_node,
-        subcode_node);
-    */                                    
-    fault_subcode_impl->subcode = sub_code;
-    return AXIS2_SUCCESS;            
+    else
+    {
+        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "error tring to set fault subcode more than once");
+    }
+    return AXIS2_FAILURE;
 }
                               
 axis2_soap_fault_value_t* AXIS2_CALL
@@ -269,21 +241,6 @@ axis2_soap_fault_sub_code_get_value
                 break;
         }                
     }
-    /*
-    axis2_om_node_t *subcode_node = NULL;
-    axis2_om_node_t *this_node = NULL;
-    axis2_soap_fault_value_t* fault_value = NULL;
-    this_node = AXIS2_SOAP_FAULT_SUB_CODE_GET_BASE_NODE(fault_sub_code, env);
-    if(!(fault_subcode_impl->value))
-    {
-        subcode_node = axis2_soap_utils_get_child_with_name(env, 
-                                            this_node, 
-                                            AXIS2_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME);
-        fault_value = axis2_soap_fault_value_create(env);
-        AXIS2_SOAP_FAULT_VALUE_SET_BASE_NODE(fault_value, env, subcode_node);
-        fault_subcode_impl->value = fault_value;
-    }
-    */
     return fault_subcode_impl->value;
 }                              
 axis2_status_t AXIS2_CALL
@@ -296,26 +253,16 @@ axis2_soap_fault_sub_code_set_value
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, fault_sub_code_val, AXIS2_FAILURE);
     fault_subcode_impl = AXIS2_INTF_TO_IMPL(fault_sub_code);
-
-    /*
-    axis2_om_node_t *value_node = NULL;
-    axis2_om_node_t *my_node = NULL;
-    if(fault_subcode_impl->value)
-    {
-        my_node = AXIS2_SOAP_FAULT_VALUE_GET_BASE_NODE(
-                            fault_subcode_impl->value, env);
-        AXIS2_SOAP_FAULT_SUB_CODE_FREE(fault_subcode_impl->value, env);
-        fault_subcode_impl->value = NULL;
+    if(!(fault_subcode_impl->value))
+    { 
+       fault_subcode_impl->value  = fault_sub_code_val;
+       return AXIS2_SUCCESS;
     }
-    value_node = AXIS2_SOAP_FAULT_VALUE_GET_BASE_NODE(
-                            fault_sub_code_val, env);
-    axis2_soap_utils_set_new_node(env, 
-                    fault_subcode_impl->om_ele_node,
-                    &my_node, 
-                    value_node);
-    */                
-    fault_subcode_impl->value = fault_sub_code_val;
-    return AXIS2_SUCCESS;    
+    else
+    {
+        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "error tring to set fault subcode value more than once");
+    }
+    return AXIS2_FAILURE;    
 }
                          
 axis2_soap_fault_sub_code_t* AXIS2_CALL
@@ -336,23 +283,6 @@ axis2_soap_fault_sub_code_get_sub_code(
                 break;
         }
     }
-    
-    /*
-    axis2_om_node_t *subcode_node = NULL;
-    axis2_om_node_t *this_node = NULL;
-    axis2_soap_fault_sub_code_t* subcode = NULL;
-    this_node = fault_subcode_impl->om_ele_node;
-    if(!(fault_subcode_impl->subcode))
-    {
-        subcode_node = axis2_soap_utils_get_child_with_name(env, 
-                                            this_node, 
-                                            AXIS2_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME);
-                                                    
-        subcode = axis2_soap_fault_sub_code_create(env);
-        AXIS2_SOAP_FAULT_SUB_CODE_SET_BASE_NODE(subcode , env, subcode_node);
-        fault_subcode_impl->subcode = subcode;
-    }
-    */
     return fault_subcode_impl->subcode;
 }
                               
@@ -384,27 +314,6 @@ axis2_soap_fault_sub_code_get_base_node
      return AXIS2_INTF_TO_IMPL(fault_sub_code)->om_ele_node;
 }
                                  
-int AXIS2_CALL 
-axis2_soap_fault_sub_code_get_soap_version
-                             (axis2_soap_fault_sub_code_t *fault_sub_code,
-                              axis2_env_t **env)
-{
-     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-     return AXIS2_INTF_TO_IMPL(fault_sub_code)->soap_version;
-} 
-
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_sub_code_set_soap_version
-                             (axis2_soap_fault_sub_code_t *fault_sub_code,
-                              axis2_env_t **env,
-                              int soap_version)
-{
-     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-     AXIS2_PARAM_CHECK((*env)->error, soap_version, AXIS2_FAILURE);
-     AXIS2_INTF_TO_IMPL(fault_sub_code)->soap_version = soap_version;
-     return AXIS2_SUCCESS;
-}
-
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_sub_code_set_builder(axis2_soap_fault_sub_code_t *fault_sub_code,
                                      axis2_env_t **env,

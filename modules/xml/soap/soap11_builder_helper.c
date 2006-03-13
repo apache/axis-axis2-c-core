@@ -25,7 +25,8 @@
  #include <axis2_soap_fault_detail.h>
  #include <axis2_soap_fault_text.h>
  #include <axis2_soap_fault_role.h>
- 
+ #include <axis2_om_stax_builder_internal.h>
+ #include <axis2_om_node_internal.h>
  
 
 
@@ -177,7 +178,6 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             }
             fault_code = axis2_soap_fault_code_create(env);
             AXIS2_SOAP_FAULT_CODE_SET_BASE_NODE(fault_code, env, om_element_node);
-            AXIS2_SOAP_FAULT_CODE_SET_SOAP_VERSION(fault_code, env, AXIS2_SOAP11);
             AXIS2_SOAP_FAULT_SET_CODE(soap_fault, env, fault_code);
             
             AXIS2_SOAP_FAULT_CODE_SET_BUILDER(fault_code, env, builder_helper_impl->soap_builder);
@@ -190,15 +190,15 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             fault_value_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
                                 fault_value_node, env);
 
-            AXIS2_OM_STAX_BUILDER_SET_LAST_NODE(builder_helper_impl->om_builder,
+            axis2_om_stax_builder_set_lastnode(builder_helper_impl->om_builder,
                                                 env, fault_value_node); 
             
             axis2_soap11_builder_helper_process_text(builder_helper, env);
-            AXIS2_OM_STAX_BUILDER_SET_LAST_NODE(builder_helper_impl->om_builder,
+            axis2_om_stax_builder_set_lastnode(builder_helper_impl->om_builder,
                                                 env, om_element_node); 
-            AXIS2_OM_NODE_SET_BUILD_STATUS(om_element_node, env, AXIS2_TRUE); 
+            axis2_om_node_set_build_status(om_element_node, env, AXIS2_TRUE); 
             
-            AXIS2_OM_STAX_BUILDER_SET_ELEMENT_LEVEL(builder_helper_impl->om_builder, 
+            axis2_om_stax_builder_set_element_level(builder_helper_impl->om_builder, 
                     env, (element_level-1));
             builder_helper_impl->fault_code_present = AXIS2_TRUE;                        
         }
@@ -225,14 +225,14 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             
             fault_text_node = AXIS2_SOAP_FAULT_TEXT_GET_BASE_NODE(fault_text, env);
             /* TODO process namespace data */
-            AXIS2_OM_STAX_BUILDER_SET_LAST_NODE(builder_helper_impl->om_builder, env, fault_text_node);
+            axis2_om_stax_builder_set_lastnode(builder_helper_impl->om_builder, env, fault_text_node);
             
             axis2_soap11_builder_helper_process_text(builder_helper, env);
-            AXIS2_OM_STAX_BUILDER_SET_LAST_NODE(builder_helper_impl->om_builder, env, om_element_node);
+            axis2_om_stax_builder_set_lastnode(builder_helper_impl->om_builder, env, om_element_node);
             
-            AXIS2_OM_NODE_SET_BUILD_STATUS(om_element_node, env, AXIS2_TRUE);
+            axis2_om_node_set_build_status(om_element_node, env, AXIS2_TRUE);
             
-            AXIS2_OM_STAX_BUILDER_SET_ELEMENT_LEVEL(builder_helper_impl->om_builder, 
+            axis2_om_stax_builder_set_element_level(builder_helper_impl->om_builder, 
                 env , (element_level -1));
          
             builder_helper_impl->fault_string_present = AXIS2_TRUE;   
@@ -243,7 +243,6 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             fault_role = axis2_soap_fault_role_create(env);
             AXIS2_OM_ELEMENT_SET_LOCALNAME(om_ele, env, AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME);
             AXIS2_SOAP_FAULT_ROLE_SET_BASE_NODE(fault_role, env, om_element_node);
-            AXIS2_SOAP_FAULT_ROLE_SET_SOAP_VRESION(fault_role, env, AXIS2_SOAP11);
             AXIS2_SOAP_FAULT_SET_ROLE(soap_fault, env, fault_role);
             /*
             Role element may not have a namespace associated, hence commented, else it segfaults here - Samisa
@@ -259,7 +258,6 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             AXIS2_OM_ELEMENT_SET_LOCALNAME(om_ele, env, AXIS2_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME);
             AXIS2_SOAP_FAULT_DETAIL_SET_BASE_NODE(fault_detail, env, om_element_node);
             AXIS2_SOAP_FAULT_SET_DETAIL(soap_fault, env, fault_detail);
-            AXIS2_SOAP_FAULT_SET_SOAP_VERSION(soap_fault, env, AXIS2_SOAP11);
         }
         else
         {

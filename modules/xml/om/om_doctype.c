@@ -16,6 +16,7 @@
 
 #include <axis2_om_doctype.h>
 #include <axis2_string.h>
+#include <axis2_om_node_internal.h>
 
 axis2_status_t AXIS2_CALL
 axis2_om_doctype_free (axis2_om_doctype_t *om_doctype,
@@ -93,8 +94,8 @@ axis2_om_doctype_create (axis2_env_t **env,
         }
     }
 
-    AXIS2_OM_NODE_SET_DATA_ELEMENT((*node), env, doctype);
-    AXIS2_OM_NODE_SET_NODE_TYPE((*node), env, AXIS2_OM_DOCTYPE);
+    axis2_om_node_set_data_element((*node), env, doctype);
+    axis2_om_node_set_node_type((*node), env, AXIS2_OM_DOCTYPE);
 
     if (parent)
     {

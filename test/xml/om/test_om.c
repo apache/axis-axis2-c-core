@@ -90,6 +90,12 @@ test_om_build (char *filename)
      */
     
     node1 = AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT (document,&environment);
+    if(!node1)
+    {
+        printf(" root element null ");
+        AXIS2_OM_STAX_BUILDER_FREE(builder, &environment);
+        return;
+    }
     if(node1)
     {
         /** print root node information */
@@ -267,7 +273,7 @@ main (int argc, char *argv[])
     
     environment = axis2_env_create_with_error_log(allocator, error,  axis_log);
     test_om_build (file_name);
-/*    test_om_serialize(); */
+    test_om_serialize(); 
 
     axis2_env_free(environment); 
     axis2_allocator_free(allocator);

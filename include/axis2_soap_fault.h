@@ -148,14 +148,6 @@ struct axis2_soap_builder;
                                              (axis2_soap_fault_t *fault,
                                               axis2_env_t **env);  
                                                      
-        axis2_status_t (AXIS2_CALL *set_soap_version)
-                                             (axis2_soap_fault_t *fault,
-                                              axis2_env_t **env,
-                                              int soap_version);
-                                           
-        int (AXIS2_CALL *get_soap_version)(axis2_soap_fault_t *fault,
-                                           axis2_env_t **env); 
-                                           
         axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_fault_t *fault,
                                             axis2_env_t **env,
                                             struct axis2_soap_builder *builder);                                                                                                                                                                                                                                                                                                     
@@ -241,11 +233,6 @@ axis2_soap_fault_create_default_fault(axis2_env_t **env,
 #define AXIS2_SOAP_FAULT_GET_BASE_NODE(fault, env) \
         ((fault)->ops->get_base_node(fault, env)) 
         
-#define AXIS2_SOAP_FAULT_GET_SOAP_VERSION(fault, env) \
-        ((fault)->ops->get_soap_version(fault, env))
-        
-#define AXIS2_SOAP_FAULT_SET_SOAP_VERSION(fault, env, soap_version) \
-        ((fault)->ops->set_soap_version(fault, env, soap_version))
         
 #define AXIS2_SOAP_FAULT_GET_EXCEPTION(fault, env) \
         ((fault)->ops->get_exception(fault, env))

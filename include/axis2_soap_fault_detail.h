@@ -76,15 +76,6 @@ extern "C"
                                 (axis2_soap_fault_detail_t *fault_code,
                                  axis2_env_t **env);
         
-        int (AXIS2_CALL *get_soap_version)
-                                (axis2_soap_fault_detail_t *fault_detail,
-                                 axis2_env_t **env);
-                                 
-        axis2_status_t (AXIS2_CALL *set_soap_version)
-                                (axis2_soap_fault_detail_t *fault_detail,
-                                 axis2_env_t **env,
-                                 int soap_version);                                  
-                                                                                                                
     };      
 
   /**
@@ -109,19 +100,9 @@ axis2_soap_fault_detail_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_soap_fault_detail_t *)
 axis2_soap_fault_detail_create_with_parent
                         (axis2_env_t **env,
-                         axis2_soap_fault_t *fault,
-                         axis2_bool_t extract_ns_from_parent);
+                         axis2_soap_fault_t *fault);
                          
-AXIS2_DECLARE(axis2_soap_fault_detail_t *)
-axis2_soap11_fault_detail_create(axis2_env_t **env,
-                               axis2_soap_fault_t *fault); 
-
-AXIS2_DECLARE(axis2_soap_fault_detail_t *)
-axis2_soap12_fault_detail_create(axis2_env_t **env,
-                               axis2_soap_fault_t *fault);                                                       
-
 /******************** Macros **************************************************/
-    
     
 /** free soap_fault_detail */
 #define AXIS2_SOAP_FAULT_DETAIL_FREE(fault_detail , env) \
@@ -139,11 +120,6 @@ axis2_soap12_fault_detail_create(axis2_env_t **env,
 #define AXIS2_SOAP_FAULT_DETAIL_SET_BASE_NODE(fault_detail, env, node) \
         ((fault_detail)->ops->set_base_node(fault_detail, env, node))
         
-#define AXIS2_SOAP_FAULT_DETAIL_GET_SOAP_VERSION(fault_detail, env) \
-        ((fault_detail)->ops->get_soap_version(fault_detail, env))
-        
-#define AXIS2_SOAP_FAULT_DETAIL_SET_SOAP_VERSION(fault_detail, env, version) \
-        ((fault_detail)->ops->set_soap_version(fault_detail, env, version))                  
 /** @} */
 
 #ifdef __cplusplus
@@ -151,5 +127,3 @@ axis2_soap12_fault_detail_create(axis2_env_t **env,
 #endif
  
 #endif /* AXIS2_SOAP_FAULT_DETAIL_H */
-
-

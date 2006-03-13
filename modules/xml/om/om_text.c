@@ -17,6 +17,7 @@
 #include <axis2_om_text.h>
 #include <axis2_om_output.h>
 #include <axis2_string.h>
+#include <axis2_om_node_internal.h>
 
 /* ops */
 axis2_status_t AXIS2_CALL
@@ -80,11 +81,8 @@ axis2_om_text_create (axis2_env_t **env,
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    
-    
     om_text = (axis2_om_text_impl_t *) AXIS2_MALLOC ((*env)->allocator,
                                           sizeof (axis2_om_text_impl_t));
-
     if (!om_text)
     {
         AXIS2_FREE ((*env)->allocator, *node);
@@ -100,13 +98,12 @@ axis2_om_text_create (axis2_env_t **env,
     om_text->content_id = NULL;
     om_text->mime_type = NULL;
 
-    AXIS2_OM_NODE_SET_DATA_ELEMENT((*node), env, om_text);
-    AXIS2_OM_NODE_SET_NODE_TYPE((*node), env, AXIS2_OM_TEXT);
-    AXIS2_OM_NODE_SET_BUILD_STATUS((*node), env, AXIS2_FALSE);
+    axis2_om_node_set_data_element((*node), env, om_text);
+    axis2_om_node_set_node_type((*node), env, AXIS2_OM_TEXT);
+    axis2_om_node_set_build_status((*node), env, AXIS2_FALSE);
 
     if (parent && AXIS2_OM_NODE_GET_NODE_TYPE(parent, env) == AXIS2_OM_ELEMENT)
     {
-        AXIS2_OM_NODE_SET_PARENT((*node), env, parent);
         AXIS2_OM_NODE_ADD_CHILD (parent, env, (*node));
     }
 
@@ -128,7 +125,6 @@ axis2_om_text_create (axis2_env_t **env,
     om_text->om_text.ops->serialize = axis2_om_text_serialize;
     om_text->om_text.ops->set_value = axis2_om_text_set_value;
     om_text->om_text.ops->get_value = axis2_om_text_get_value;
-
     return &(om_text->om_text);
 }
 
@@ -147,7 +143,6 @@ axis2_om_text_free (axis2_om_text_t * om_text,
 
     if (om_text)
         AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_text));
-
     return AXIS2_SUCCESS;
 }
 

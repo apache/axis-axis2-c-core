@@ -84,11 +84,6 @@ AXIS2_DECLARE_DATA   struct axis2_soap_builder_ops
         int (AXIS2_CALL *get_soap_version)(axis2_soap_builder_t *builder,
                                            axis2_env_t **env);
                                            
-        axis2_status_t (AXIS2_CALL *set_element_level)
-                                          (axis2_soap_builder_t *builder,
-                                           axis2_env_t **env,
-                                           int ele_level);
-
         axis2_status_t (AXIS2_CALL *process_namespace_data)
                                           (axis2_soap_builder_t *builder,
                                            axis2_env_t **env,

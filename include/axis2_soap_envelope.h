@@ -125,7 +125,7 @@ extern "C"
                                            axis2_env_t **env);
                    
         /**
-         * set soap version
+         * set soap version, This is internal function do not use outside of soap
          */         
         axis2_status_t (AXIS2_CALL *set_soap_version)
                                           (axis2_soap_envelope_t *envelope,
@@ -141,6 +141,7 @@ extern "C"
         /** 
          * set soap header. This is just a pointer assignment intended to be used
          * by soap builder . Does not adjust the om tree accordingly
+         * do not use outsize of soap
          */         
         axis2_status_t (AXIS2_CALL *set_header)(axis2_soap_envelope_t *envelope,
                                                 axis2_env_t **env, 
@@ -157,6 +158,7 @@ extern "C"
         /** 
          * Associate a soap builder with this soap envelope
          * This function is intended to be used by builder
+         * do not use outside of soap
          */                                                
 
         axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_envelope_t *envelope,
@@ -181,6 +183,7 @@ struct axis2_soap_envelope
   */
 AXIS2_DECLARE(axis2_soap_envelope_t*)
 axis2_soap_envelope_create(axis2_env_t **env, axis2_om_namespace_t *ns);
+
 
 AXIS2_DECLARE(axis2_soap_envelope_t*)
 axis2_soap_envelope_create_null(axis2_env_t **env);
@@ -220,10 +223,10 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
         
 #define AXIS2_SOAP_ENVELOPE_GET_SOAP_VERSION(envelope, env) \
         ((envelope)->ops->get_soap_version(envelope, env))
-        
+
 #define AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(envelope, env, soap_version) \
         ((envelope)->ops->set_soap_version(envelope, env, soap_version))
-        
+
 #define AXIS2_SOAP_ENVELOPE_SET_BODY(envelope, env, body) \
         ((envelope)->ops->set_body(envelope, env, body))
         

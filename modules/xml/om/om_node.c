@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_om_node.h>
+#include <axis2_om_node_internal.h>
 #include <axis2_om_element.h>
 #include <axis2_om_text.h>
 #include <axis2_om_comment.h>
@@ -42,11 +42,6 @@ axis2_om_node_detach (axis2_om_node_t *om_node,
 
 
 axis2_status_t AXIS2_CALL 
-axis2_om_node_set_parent (axis2_om_node_t * om_node,
-                          axis2_env_t **env,
-                          axis2_om_node_t * parent);
-                               
-axis2_status_t AXIS2_CALL 
 axis2_om_node_insert_sibling_after (axis2_om_node_t *om_node,
                                    axis2_env_t **env,
                                    axis2_om_node_t *node_to_insert);
@@ -55,18 +50,7 @@ axis2_status_t AXIS2_CALL
 axis2_om_node_insert_sibling_before (axis2_om_node_t *om_node,
                                      axis2_env_t **env, 
                                      axis2_om_node_t *node_to_insert);
-                                          
-                                          
-axis2_om_node_t * AXIS2_CALL 
-axis2_om_node_iterator_get_first_child(axis2_om_node_t *om_node,
-                                       axis2_env_t **env);
-                                                     
-                                                     
-                                                     
-axis2_om_node_t * AXIS2_CALL 
-axis2_om_node_iterator_get_next_child (axis2_om_node_t *om_node,
-                                       axis2_env_t **env);
-                                   
+                                                                             
 axis2_status_t AXIS2_CALL 
 axis2_om_node_serialize (axis2_om_node_t * om_node,
                          axis2_env_t **env,
@@ -102,51 +86,10 @@ void* AXIS2_CALL
 axis2_om_node_get_data_element(axis2_om_node_t *om_node,
                                axis2_env_t **env);                                
 
-axis2_status_t AXIS2_CALL  
-axis2_om_node_set_first_child(axis2_om_node_t *om_node,
-                              axis2_env_t **env,
-                              axis2_om_node_t *first_child);
-        
-
-axis2_status_t AXIS2_CALL  
-axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,                                  
-                                   axis2_env_t **env,
-                                   axis2_om_node_t *prev_sibling);
-
-axis2_status_t AXIS2_CALL  
-axis2_om_node_set_next_sibling(axis2_om_node_t *om_node,
-                               axis2_env_t **env,
-                               axis2_om_node_t *next_sibling);
-
-axis2_status_t AXIS2_CALL  
-axis2_om_node_set_node_type(axis2_om_node_t *om_node,
-                            axis2_env_t **env,
-                            axis2_om_types_t type);
-
-axis2_status_t AXIS2_CALL  
-axis2_om_node_set_data_element(axis2_om_node_t *om_node,
-                               axis2_env_t **env,
-                               void* data_element);
-        
-        
 axis2_bool_t AXIS2_CALL
 axis2_om_node_get_build_status(axis2_om_node_t *om_node,
                                axis2_env_t **env);
 
-axis2_status_t AXIS2_CALL
-axis2_om_node_set_build_status(axis2_om_node_t *om_node,
-                               axis2_env_t **env,
-                               axis2_bool_t done);
-axis2_status_t AXIS2_CALL
-axis2_om_node_set_document(axis2_om_node_t *om_node,
-                           axis2_env_t **env,
-                           struct axis2_om_document *om_doc);
-
-axis2_status_t AXIS2_CALL
-axis2_om_node_set_builder(axis2_om_node_t *om_node,
-                          axis2_env_t **env,
-                          axis2_om_stax_builder_t *builder);
-                           
 struct axis2_om_document* AXIS2_CALL
 axis2_om_node_get_document(axis2_om_node_t *om_node,
                            axis2_env_t **env);
@@ -200,8 +143,7 @@ axis2_om_node_create (axis2_env_t **env)
     axis2_om_node_impl_t *node = NULL;
     AXIS2_ENV_CHECK(env,NULL);
     
-    
-     node = (axis2_om_node_impl_t *) AXIS2_MALLOC ((*env)->allocator,
+    node = (axis2_om_node_impl_t *) AXIS2_MALLOC ((*env)->allocator,
                     sizeof (axis2_om_node_impl_t));
     if (!node)
     {
@@ -214,8 +156,7 @@ axis2_om_node_create (axis2_env_t **env)
     if (!(node->om_node.ops))
     {   
         AXIS2_FREE ((*env)->allocator, node);
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -237,7 +178,6 @@ axis2_om_node_create (axis2_env_t **env)
     
     node->om_node.ops->insert_sibling_after = axis2_om_node_insert_sibling_after;
     node->om_node.ops->insert_sibling_before = axis2_om_node_insert_sibling_before;
-    node->om_node.ops->set_parent = axis2_om_node_set_parent;
     node->om_node.ops->serialize = axis2_om_node_serialize;
 
     node->om_node.ops->get_first_child = axis2_om_node_get_first_child;
@@ -248,20 +188,7 @@ axis2_om_node_create (axis2_env_t **env)
     node->om_node.ops->get_node_type = axis2_om_node_get_node_type;
     node->om_node.ops->get_build_status = axis2_om_node_get_build_status;
     node->om_node.ops->get_data_element = axis2_om_node_get_data_element;
-    
-    
-    node->om_node.ops->set_data_element = axis2_om_node_set_data_element;
-    node->om_node.ops->set_first_child = axis2_om_node_set_parent;
-    node->om_node.ops->set_previous_sibling = axis2_om_node_set_previous_sibling;
-    node->om_node.ops->set_next_sibling = axis2_om_node_set_next_sibling;
-    node->om_node.ops->set_first_child = axis2_om_node_set_first_child;
-    node->om_node.ops->set_node_type = axis2_om_node_set_node_type;
-    node->om_node.ops->set_build_status = axis2_om_node_set_build_status;
-    
     node->om_node.ops->get_document = axis2_om_node_get_document;
-    node->om_node.ops->set_document = axis2_om_node_set_document;
-    node->om_node.ops->set_builder = axis2_om_node_set_builder;
-    
     node->om_node.ops->build_next = axis2_om_node_build_next;
         
     return &(node->om_node);
@@ -272,23 +199,27 @@ axis2_om_node_create (axis2_env_t **env)
  *  before calling this function  
 */ 
 
-axis2_status_t AXIS2_CALL axis2_om_node_free_tree(axis2_om_node_t *om_node,
-                                                  axis2_env_t **env)
+axis2_status_t AXIS2_CALL 
+axis2_om_node_free_tree(axis2_om_node_t *om_node,
+                        axis2_env_t **env)
 {
     axis2_om_node_impl_t *node_impl = NULL;   
     axis2_om_node_t *child_node = NULL;
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
+    if(!om_node)
+        return AXIS2_FAILURE;
     
     node_impl = AXIS2_INTF_TO_IMPL(om_node);
         
     if (node_impl->first_child)
     {   
-        while (node_impl->first_child)
+        while (NULL != (node_impl->first_child))
         {
             child_node = AXIS2_OM_NODE_DETACH (node_impl->first_child, env);
             if (child_node)
             {
                 AXIS2_OM_NODE_FREE_TREE ( child_node , env); 
+                child_node = NULL;
             }
         }
     }
@@ -319,8 +250,6 @@ axis2_status_t AXIS2_CALL axis2_om_node_free_tree(axis2_om_node_t *om_node,
     
     AXIS2_FREE ((*env)->allocator, om_node->ops);
     AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_node));
-    
-
     return AXIS2_SUCCESS;
 }
 
@@ -331,11 +260,13 @@ axis2_om_node_add_child (axis2_om_node_t *om_node,
 {
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, child, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_node, AXIS2_FAILURE);
+    
     if(AXIS2_INTF_TO_IMPL(child)->parent)
     {
         child = AXIS2_OM_NODE_DETACH(child, env);
     }
-    
+
     if (AXIS2_INTF_TO_IMPL(om_node)->first_child  == NULL)
     {
         AXIS2_INTF_TO_IMPL(om_node)->first_child = child;
@@ -345,8 +276,10 @@ axis2_om_node_add_child (axis2_om_node_t *om_node,
        axis2_om_node_t *last_sib = NULL;
        last_sib  = AXIS2_INTF_TO_IMPL(om_node)->last_child;
        if(last_sib)
+       {           
            AXIS2_INTF_TO_IMPL(last_sib)->next_sibling = child;
-        AXIS2_INTF_TO_IMPL(child)->prev_sibling = last_sib;
+           AXIS2_INTF_TO_IMPL(child)->prev_sibling = last_sib;
+       }           
     }
 
     AXIS2_INTF_TO_IMPL(child)->parent  = om_node;
@@ -404,8 +337,12 @@ axis2_om_node_detach (axis2_om_node_t *om_node,
     return om_node;
 
 }
+/**
+Internal function , only used in om and soap
+not to be used by users
 
-axis2_status_t AXIS2_CALL
+*/
+AXIS2_DECLARE(axis2_status_t)
 axis2_om_node_set_parent (axis2_om_node_t *om_node,
                                axis2_env_t **env,
                                axis2_om_node_t * parent)
@@ -421,7 +358,6 @@ axis2_om_node_set_parent (axis2_om_node_t *om_node,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-
     
     if (parent == AXIS2_INTF_TO_IMPL(om_node)->parent)
     {   /* same parent already exist */
@@ -466,7 +402,8 @@ axis2_om_node_insert_sibling_after (axis2_om_node_t * om_node,
     }
     
     AXIS2_INTF_TO_IMPL(node_to_insert)->next_sibling = 
-        AXIS2_INTF_TO_IMPL(om_node)->next_sibling;        
+        AXIS2_INTF_TO_IMPL(om_node)->next_sibling;  
+    
     AXIS2_INTF_TO_IMPL(om_node)->next_sibling = node_to_insert;
     return AXIS2_SUCCESS;
 }
@@ -480,14 +417,17 @@ axis2_om_node_insert_sibling_before (axis2_om_node_t *om_node,
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, node_to_insert, AXIS2_FAILURE);
-
+    
     AXIS2_INTF_TO_IMPL(node_to_insert)->parent = 
         AXIS2_INTF_TO_IMPL(om_node)->parent ;
             
     AXIS2_INTF_TO_IMPL(node_to_insert)->prev_sibling = 
         AXIS2_INTF_TO_IMPL(om_node)->prev_sibling;
+    
     AXIS2_INTF_TO_IMPL(node_to_insert)->next_sibling = om_node;
+    
     prev_sibling = AXIS2_INTF_TO_IMPL(om_node)->prev_sibling;
+    
     if (!prev_sibling)
     {
         axis2_om_node_t *parent = AXIS2_INTF_TO_IMPL(om_node)->parent;
@@ -660,71 +600,7 @@ axis2_om_node_get_node_type(axis2_om_node_t *om_node,
     AXIS2_ENV_CHECK(env, AXIS2_OM_INVALID);
     return AXIS2_INTF_TO_IMPL(om_node)->node_type;
 }
-                                 
-void* AXIS2_CALL 
-axis2_om_node_get_data_element(axis2_om_node_t *om_node,
-                               axis2_env_t **env)
-{
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(om_node)->data_element;
-}                                
 
-axis2_status_t AXIS2_CALL  
-axis2_om_node_set_first_child(axis2_om_node_t *om_node,axis2_env_t **env,
-                              axis2_om_node_t *first_child)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, first_child, AXIS2_FAILURE);
-    
-    AXIS2_INTF_TO_IMPL(om_node)->first_child = first_child;
-    return AXIS2_SUCCESS;
-}
-        
-axis2_status_t AXIS2_CALL  
-axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,                                  
-                                   axis2_env_t **env,
-                                   axis2_om_node_t *prev_sibling)
-{
-   
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, prev_sibling, AXIS2_FAILURE);
-    
-    AXIS2_INTF_TO_IMPL(om_node)->prev_sibling = prev_sibling;
-    return AXIS2_SUCCESS;
-} 
-axis2_status_t AXIS2_CALL  
-axis2_om_node_set_next_sibling(axis2_om_node_t *om_node,
-                               axis2_env_t **env,
-                               axis2_om_node_t *next_sibling)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, next_sibling, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(om_node)->next_sibling = next_sibling;
-    return AXIS2_SUCCESS;
-} 
-
-axis2_status_t AXIS2_CALL  
-axis2_om_node_set_node_type(axis2_om_node_t *om_node,
-                            axis2_env_t **env,
-                            axis2_om_types_t type)
-{
-   
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(om_node)->node_type = type;
-    return AXIS2_SUCCESS;
-}                            
-
-axis2_status_t AXIS2_CALL  
-axis2_om_node_set_data_element(axis2_om_node_t *om_node,
-                               axis2_env_t **env,
-                               void* data_element)
-{                               
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, data_element, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(om_node)->data_element = data_element;
-    return AXIS2_SUCCESS;                               
-}       
-        
 axis2_bool_t AXIS2_CALL
 axis2_om_node_get_build_status(axis2_om_node_t *om_node,
                                axis2_env_t **env)
@@ -733,28 +609,7 @@ axis2_om_node_get_build_status(axis2_om_node_t *om_node,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(om_node)->done;
 
-}                               
-
-axis2_status_t AXIS2_CALL
-axis2_om_node_set_build_status(axis2_om_node_t *om_node,
-                               axis2_env_t **env,
-                               axis2_bool_t done)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(om_node)->done = done;
-    return AXIS2_SUCCESS;
 }
-
-axis2_status_t AXIS2_CALL
-axis2_om_node_set_document(axis2_om_node_t *om_node,
-                           axis2_env_t **env,
-                           struct axis2_om_document *om_doc)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, om_doc, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(om_node)->om_doc = om_doc;
-    return AXIS2_SUCCESS;
-}                           
 
 struct axis2_om_document* AXIS2_CALL
 axis2_om_node_get_document(axis2_om_node_t *om_node,
@@ -779,15 +634,144 @@ axis2_om_node_build_next(axis2_om_node_t *om_node,
     return AXIS2_OM_STAX_BUILDER_NEXT(om_node_impl->builder, env);
 }
 
-axis2_status_t AXIS2_CALL
+void* AXIS2_CALL 
+axis2_om_node_get_data_element(axis2_om_node_t *om_node,
+                               axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(om_node)->data_element;
+}                                
+
+/**
+  internal function , not to be used by users 
+  only sets the first_child link because this is needed by builder
+*/
+AXIS2_DECLARE(axis2_status_t) 
+axis2_om_node_set_first_child(axis2_om_node_t *om_node,axis2_env_t **env,
+                              axis2_om_node_t *first_child)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_node, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, first_child, AXIS2_FAILURE);
+    
+    AXIS2_INTF_TO_IMPL(om_node)->first_child = first_child;
+    return AXIS2_SUCCESS;
+}
+/**
+  internal function not to be used by users 
+  only sets the previous sibling link as it is needed by builders
+
+*/
+AXIS2_DECLARE(axis2_status_t)  
+axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,                                  
+                                   axis2_env_t **env,
+                                   axis2_om_node_t *prev_sibling)
+{
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_node, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, prev_sibling, AXIS2_FAILURE);
+    
+    AXIS2_INTF_TO_IMPL(om_node)->prev_sibling = prev_sibling;
+    return AXIS2_SUCCESS;
+} 
+
+/**
+  internal function, not to be used by users 
+  only sets the next sibling link;
+*/
+AXIS2_DECLARE(axis2_status_t)  
+axis2_om_node_set_next_sibling(axis2_om_node_t *om_node,
+                               axis2_env_t **env,
+                               axis2_om_node_t *next_sibling)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_node, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, next_sibling, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(om_node)->next_sibling = next_sibling;
+    return AXIS2_SUCCESS;
+} 
+
+/**
+   internal function not to be used by users 
+   sets the node type only used in soap and om 
+*/
+
+AXIS2_DECLARE(axis2_status_t)  
+axis2_om_node_set_node_type(axis2_om_node_t *om_node,
+                            axis2_env_t **env,
+                            axis2_om_types_t type)
+{
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_node, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(om_node)->node_type = type;
+    return AXIS2_SUCCESS;
+}                            
+/**
+   internal function , not to be used by users
+   only used in om and soap
+*/
+AXIS2_DECLARE(axis2_status_t) 
+axis2_om_node_set_data_element(axis2_om_node_t *om_node,
+                               axis2_env_t **env,
+                               void* data_element)
+{                               
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_node, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, data_element, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(om_node)->data_element = data_element;
+    return AXIS2_SUCCESS;                               
+}       
+        
+                               
+/**
+ internal function not to be used by users
+ only sets the build status 
+
+*/
+AXIS2_DECLARE(axis2_status_t)
+axis2_om_node_set_build_status(axis2_om_node_t *om_node,
+                               axis2_env_t **env,
+                               axis2_bool_t done)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_node, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(om_node)->done = done;
+    return AXIS2_SUCCESS;
+}
+/**
+ internal function not to be used by users
+ only used by om builder
+
+*/
+AXIS2_DECLARE(axis2_status_t)
+axis2_om_node_set_document(axis2_om_node_t *om_node,
+                           axis2_env_t **env,
+                           struct axis2_om_document *om_doc)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_node, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_doc, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(om_node)->om_doc = om_doc;
+    return AXIS2_SUCCESS;
+}                           
+
+/**
+ internal function only sets the builder reference ,
+ should not be used by user
+
+*/
+
+AXIS2_DECLARE(axis2_status_t)
 axis2_om_node_set_builder(axis2_om_node_t *om_node,
                            axis2_env_t **env,
                            axis2_om_stax_builder_t* builder)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, builder, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_node, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(om_node)->builder = builder;
     return AXIS2_SUCCESS;
 
 }
-

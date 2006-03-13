@@ -36,11 +36,6 @@ extern "C"
     struct axis2_om_stax_builder;
     struct axis2_om_stax_builder_ops;
 
-    typedef enum builder_types
-    {
-        AXIS2_OM_STAX_BUILDER = 0,
-        AXIS2_SOAP_BUILDER
-    } builder_types_t;
 /**
  * @defgroup axis2_om_stax_builder OM Stax Builder
  * @ingroup axis2_om 
@@ -107,33 +102,14 @@ extern "C"
                                                    axis2_env_t **env,
                                                    axis2_om_document_t *document); 
         /**
-         *  get the builder's current event
-         *  @return returns one of axis2_xml_reader_event_types
-         *  returns -1 of the next method on builder has not been called yet
-         *
-         */
-        int (AXIS2_CALL *get_current_event)(struct axis2_om_stax_builder *builder,
-                                            axis2_env_t **env);
-                                            
-        axis2_om_node_t* (AXIS2_CALL *get_last_node)
-                                            (struct axis2_om_stax_builder* builder,
-                                             axis2_env_t **env);
+         * builder is finished building om structure
+         */        
                                              
         axis2_bool_t (AXIS2_CALL *is_complete)(struct axis2_om_stax_builder* builder,
                                                axis2_env_t **env);
-                                                                   
-        axis2_status_t (AXIS2_CALL *set_last_node)
-                                              (struct axis2_om_stax_builder* builder,
-                                               axis2_env_t **env,
-                                               axis2_om_node_t *om_node);                                                                                            
-        int (AXIS2_CALL *get_element_level)(struct axis2_om_stax_builder* builder,
-                                            axis2_env_t **env); 
-                                            
-        axis2_status_t (AXIS2_CALL *set_element_level)
-                                            (struct axis2_om_stax_builder* builder,
-                                             axis2_env_t **env,
-                                             int element_level); 
-                                             
+        /**
+         *  moves the reader to next event        
+         */                                                
         int (AXIS2_CALL *next_with_token)(struct axis2_om_stax_builder *builder,
                                           axis2_env_t **env);                                                                                                                                                                                                                                                 
                                                         
@@ -175,25 +151,10 @@ extern "C"
 /** get the document associated with the builder */  
 #define AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(builder,env) \
         ((builder)->ops->get_document(builder,env))
-/** returns the xml readers current event */
-#define AXIS2_OM_STAX_BUILDER_GET_CURRENT_EVENT(builder, env) \
-        ((builder)->ops->get_current_event(builder, env))
-        
-#define AXIS2_OM_STAX_BUILDER_GET_LAST_NODE(builder, env) \
-        ((builder)->ops->get_last_node(builder, env)) 
-        
+/** builder is finished building */        
 #define AXIS2_OM_STAX_BUILDER_IS_COMPLETE(builder, env) \
         ((builder)->ops->is_complete(builder, env))                       
-	
-#define AXIS2_OM_STAX_BUILDER_SET_LAST_NODE(builder, env, node) \
-        ((builder)->ops->set_last_node(builder, env, node))
-        
-#define AXIS2_OM_STAX_BUILDER_GET_ELEMENT_LEVEL(builder, env) \
-        ((builder)->ops->get_element_level(builder, env))
-        
-#define AXIS2_OM_STAX_BUILDER_SET_ELEMENT_LEVEL(builder, env, element_level) \
-        ((builder)->ops->set_element_level(builder, env, element_level)) 
-        
+/** moves the builder to next event */	
 #define AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(builder, env) \
         ((builder)->ops->next_with_token(builder, env))                    
 

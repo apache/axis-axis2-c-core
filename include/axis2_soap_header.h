@@ -155,16 +155,23 @@ struct axis2_soap_builder;
          */
         int  (AXIS2_CALL *get_soap_version) (axis2_soap_header_t *header,
                                              axis2_env_t **env);
+        
+        /** this is an internal function, only for soap code */
+        int (AXIS2_CALL *set_soap_version)(axis2_soap_header_t *header,
+                                           axis2_env_t **env,
+                                           int soap_version);
          
         axis2_status_t (AXIS2_CALL *set_header_block)
                                             (axis2_soap_header_t *header,
                                              axis2_env_t **env,
-                                             struct axis2_soap_header_block* header_block);                                                                                                     axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_header_t *header,
+                                             struct axis2_soap_header_block* header_block);
+       
+       axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_header_t *header,
                                                 axis2_env_t **env,
                                                 struct axis2_soap_builder* builder);
 
-        axis2_hash_t* (AXIS2_CALL *get_all_header_blocks)(axis2_soap_header_t *header,
-                                                          axis2_env_t **env);                                                
+       axis2_hash_t* (AXIS2_CALL *get_all_header_blocks)(axis2_soap_header_t *header,
+                                                         axis2_env_t **env);                                                
                                          
     };
 
@@ -231,6 +238,10 @@ axis2_soap_header_create_with_parent(axis2_env_t **env,
 
 #define AXIS2_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(header, env) \
         ((header)->ops->get_all_header_blocks(header, env))
+
+#define AXIS2_SOAP_HEADER_SET_SOAP_VERSION(header, env, soap_version) \
+        ((header)->ops->set_soap_version(header, env, soap_version))
+        
 /** @} */
 
 #ifdef __cplusplus

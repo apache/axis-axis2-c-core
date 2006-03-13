@@ -21,4 +21,5 @@ libaxis2_soap_la_LIBADD =
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/xml/parser \
             -I$(top_builddir)/modules/util \
-            -I$(top_builddir)/modules/platforms
+            -I$(top_builddir)/modules/platforms \
+            -I$(top_builddir)/modules/xml/om

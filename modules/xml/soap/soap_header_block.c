@@ -80,7 +80,8 @@ axis2_soap_header_block_get_role
                         (axis2_soap_header_block_t *header_block,
                          axis2_env_t **env);
                                                                                     
-axis2_status_t AXIS2_CALL axis2_soap_header_block_set_base_node
+axis2_status_t AXIS2_CALL 
+axis2_soap_header_block_set_base_node
                         (axis2_soap_header_block_t *header_block,
                          axis2_env_t **env,
                          axis2_om_node_t *node);
@@ -115,7 +116,11 @@ axis2_soap_header_block_get_attribute
                         axis2_char_t *attr_name,
                         axis2_char_t *soap_envelope_namespace_uri);  
                         
-                         
+axis2_status_t AXIS2_CALL
+axis2_soap_header_block_set_soap_version(axis2_soap_header_block_t *header_block,
+                                   axis2_env_t **env,
+                                   int soap_version);
+                                   
 /*************** function implementations *************************************/                                                                                             
 
 AXIS2_DECLARE(axis2_soap_header_block_t *)
@@ -165,6 +170,9 @@ axis2_soap_header_block_create(axis2_env_t **env)
 
     header_block_impl->header_block.ops->get_soap_version =
         axis2_soap_header_block_get_soap_version;
+    header_block_impl->header_block.ops->set_soap_version =
+        axis2_soap_header_block_set_soap_version;
+        
     header_block_impl->header_block.ops->set_base_node =
         axis2_soap_header_block_set_base_node;
     header_block_impl->header_block.ops->get_base_node =
@@ -513,3 +521,16 @@ axis2_soap_header_block_get_soap_version
     return AXIS2_INTF_TO_IMPL(header_block)->soap_version;
 }
 
+axis2_status_t AXIS2_CALL
+axis2_soap_header_block_set_soap_version
+                                  (axis2_soap_header_block_t *header_block,
+                                   axis2_env_t **env,
+                                   int soap_version)
+{
+   axis2_soap_header_block_impl_t *header_block_impl = NULL;
+   AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+   header_block_impl = AXIS2_INTF_TO_IMPL(header_block);
+   
+   header_block_impl->soap_version = soap_version;
+   return AXIS2_SUCCESS;
+}                                   

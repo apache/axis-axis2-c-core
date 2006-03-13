@@ -134,19 +134,6 @@ AXIS2_DECLARE_DATA   typedef struct axis2_om_node_ops
                                         axis2_om_node_t  * node_to_insert);
 
     /**
-    * Sets a parent node to a given node, if a parent already exist for this node
-    * then it is detached before seting the parent
-    * @param om_node child node to whom a parent to be added. , cannot be NULL.
-    * @param env Environment. MUST NOT be NULL, .
-    * @param parent_node the node that will be set as parent. , cannot be NULL.
-    * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
-    */
-    axis2_status_t (AXIS2_CALL *set_parent) (axis2_om_node_t  *om_node,
-                                             axis2_env_t **env,
-                                             axis2_om_node_t  *parent_node);
-
-    
-    /**
     * Serializes the given node. This op makes the node go
     * through its children and  serialize them in order.
     * @param om_node node to be serialized.  cannot be NULL.
@@ -176,7 +163,6 @@ AXIS2_DECLARE_DATA   typedef struct axis2_om_node_ops
     * @returns pointer to first child node , NULL is returned on error with 
     *                     error code set in environments error
     */
-
     axis2_om_node_t * (AXIS2_CALL *get_first_child)
                                             (axis2_om_node_t  *om_node,
                                             axis2_env_t **env);
@@ -186,7 +172,6 @@ AXIS2_DECLARE_DATA   typedef struct axis2_om_node_ops
     * @param env environment, MUST NOT be NULL
     * @return pointer to last child of this node , return NULL on error.
     */                                                   
-                
     axis2_om_node_t * (AXIS2_CALL *get_last_child)
                                         (axis2_om_node_t  *om_node,
                                             axis2_env_t **env);
@@ -197,7 +182,6 @@ AXIS2_DECLARE_DATA   typedef struct axis2_om_node_ops
     * @returns a pointer to previous sibling , NULL if a previous sibling does not exits
     *                (happens when this node is the first child of a node )
     */                                                            
-
     axis2_om_node_t * (AXIS2_CALL *get_previous_sibling)
                                         (axis2_om_node_t  *om_node,
                                          axis2_env_t **env);
@@ -207,8 +191,6 @@ AXIS2_DECLARE_DATA   typedef struct axis2_om_node_ops
     * @param env environment, MUST NOT be NULL.
     * @return next sibling of this node.
     */ 
-    
-    
     axis2_om_node_t * (AXIS2_CALL *get_next_sibling)
                                         (axis2_om_node_t  *om_node,
                                          axis2_env_t **env);
@@ -220,7 +202,6 @@ AXIS2_DECLARE_DATA   typedef struct axis2_om_node_ops
     * @param env environment
     * @return node type
     */
-    
     axis2_om_types_t (AXIS2_CALL *get_node_type)
                                         (axis2_om_node_t  *om_node,
                                          axis2_env_t **env);
@@ -245,83 +226,6 @@ AXIS2_DECLARE_DATA   typedef struct axis2_om_node_ops
     axis2_bool_t (AXIS2_CALL *get_build_status)
                                         (axis2_om_node_t  *om_node,
                                             axis2_env_t **env); 
-    /**
-    *   sets a node as first child of om_node
-    * @param om_node om_node
-    * @param env environment, MUST NOT be NULL.
-    * @param first_child child to be set as first child
-    */                                                                        
-
-    axis2_status_t (AXIS2_CALL *set_first_child)
-                                        (axis2_om_node_t  *om_node,
-                                        axis2_env_t **env,
-                                        axis2_om_node_t  *first_child);
-   /**
-    * set next sibling
-    * @param om_node 
-    * @param env environment, MUST NOT be NULL.
-    * @param last_sibling 
-    * @return status of the op, AXIS2_SUCCESS on success,
-    *                   AXIS2_FAILURE on error
-    */                                                  
-    axis2_status_t (AXIS2_CALL *set_next_sibling)
-                                        (axis2_om_node_t  *om_node,
-                                            axis2_env_t **env,
-                                            axis2_om_node_t  *last_sibling);
-    /**
-    * set previous sibling
-    * @param om_node 
-    * @param env environment, MUST NOT be NULL.
-    * @param prev_sibling 
-    * @return status of the op, AXIS2_SUCCESS on success
-    *               AXIS2_FAILURE on error
-    */
-    
-    axis2_status_t (AXIS2_CALL *set_previous_sibling)
-                                        (axis2_om_node_t  *om_node,
-                                            axis2_env_t **env,
-                                            axis2_om_node_t  *prev_sibling);
-    /**
-    *   set node type
-    * @param om_node    
-    * @param env environment, MUST NOT be NULL.
-    * @param type type of the node
-    * @return status code of the op AXIS2_SUCCESS on success,
-    *                       AXIS2_FAILURE on error
-    */
-    
-    axis2_status_t (AXIS2_CALL *set_node_type)
-                                        (axis2_om_node_t  *om_node,
-                                            axis2_env_t **env,
-                                            axis2_om_types_t type);
-    /**
-    * set data element
-    * @param om_node  node struct  
-    * @param env environment, MUST NOT be NULL.
-    * @param data_element 
-    * @return status code of the op AXIS2_SUCCESS on success,
-    *                       AXIS2_FAILURE on error
-    */
-    axis2_status_t (AXIS2_CALL *set_data_element)(axis2_om_node_t  *om_node,
-                                                  axis2_env_t **env,
-                                                  void* data_element);
-    /**
-    * set build status, if the node if completety build build status is
-    * set to AXIS2_TRUE , otherwise AXIS2_FALSE  
-    * @param om_node 
-    * @param env environment, MUST NOT be NULL.
-    * @param done                   
-    */                          
-    axis2_status_t (AXIS2_CALL *set_build_status)(axis2_om_node_t  *om_node,
-                                                  axis2_env_t **env,
-                                                  axis2_bool_t done);
-   /**
-    * This functions is only to be used by builder
-    * do not use this function
-    */                                             
-   axis2_status_t (AXIS2_CALL *set_document)(axis2_om_node_t *om_node,
-                                              axis2_env_t **env,
-                                             struct axis2_om_document *om_doc);
    /**
     * returns the associated document,
     * only valid if built using builder and for a node of type 
@@ -330,7 +234,7 @@ AXIS2_DECLARE_DATA   typedef struct axis2_om_node_ops
     * @param om_node 
     * @param env environment, MUST NOT be NULL.
     */   
-struct axis2_om_document* (AXIS2_CALL *get_document)
+    struct axis2_om_document* (AXIS2_CALL *get_document)
                                     (axis2_om_node_t *om_node,
                                      axis2_env_t **env);
    /**
@@ -345,10 +249,6 @@ struct axis2_om_document* (AXIS2_CALL *get_document)
     axis2_om_node_t* (AXIS2_CALL *build_next)(axis2_om_node_t *om_node,
                                               axis2_env_t **env);
                                               
-    axis2_status_t (AXIS2_CALL *set_builder)(axis2_om_node_t *om_node,
-                                             axis2_env_t **env,
-                                             struct axis2_om_stax_builder *builder);                                              
-    
                                                                         
 } axis2_om_node_ops_t;
 
@@ -369,28 +269,22 @@ struct axis2_om_document* (AXIS2_CALL *get_document)
     * @param env Environment. MUST NOT be NULL, .
     * @return a pointer to newly created node struct. NULL on error. 
     */
-AXIS2_DECLARE(axis2_om_node_t *) axis2_om_node_create (axis2_env_t **env);
+AXIS2_DECLARE(axis2_om_node_t *) 
+axis2_om_node_create (axis2_env_t **env);
 
 /** frees given node */
 #define AXIS2_OM_NODE_FREE_TREE(om_node,env) ((om_node)->ops->free(om_node,env))
 /** adds given child to the given parent */
-
 #define AXIS2_OM_NODE_ADD_CHILD(om_node, env, child) \
         ((om_node)->ops->add_child(om_node, env, child))
 /** detaches the given node from its parent */
-
 #define AXIS2_OM_NODE_DETACH(om_node,env) ((om_node)->ops->detach(om_node,env))
 /** inserts a sibling after the given node */
-
 #define AXIS2_OM_NODE_INSERT_SIBLING_AFTER(om_node,env,node_to_insert) \
         ((om_node)->ops->insert_sibling_after(om_node,env,node_to_insert))
 /** inserts a sibling before the given node */
 #define AXIS2_OM_NODE_INSERT_SIBLING_BEFORE(om_node,env,node_to_insert) \
         ((om_node)->ops->insert_sibling_before(om_node,env,node_to_insert))
-   
-/** sets the parent of the given node */
-#define AXIS2_OM_NODE_SET_PARENT(om_node,env,parent_node) \
-        ((om_node)->ops->set_parent(om_node,env,parent_node))
 /** serialize an om_node and all its children */
 #define AXIS2_OM_NODE_SERIALIZE(om_node,env, om_output) \
         ((om_node)->ops->serialize(om_node,env,om_output))
@@ -415,32 +309,9 @@ AXIS2_DECLARE(axis2_om_node_t *) axis2_om_node_create (axis2_env_t **env);
 /** get data element of this node can be om_element om_text etc */
 #define AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node,env) \
         ((om_node)->ops->get_data_element(om_node,env))
-        
 /** node type one of om_node_types */
 #define AXIS2_OM_NODE_GET_NODE_TYPE(om_node,env) \
         ((om_node)->ops->get_node_type(om_node,env))       
-
-/** set first child */
-#define AXIS2_OM_NODE_SET_FIRST_CHILD(om_node,env,first_child)\
-        ((om_node)->ops->set_first_child(om_node,env,first_child))
-/** set previous sibling */
-#define AXIS2_OM_NODE_SET_PREVIOUS_SIBLING(om_node,env,prev_sibling) \
-        ((om_node)->ops->set_previous_sibling(om_node,env,prev_sibling))
-/** set next sibling */  
-#define AXIS2_OM_NODE_SET_NEXT_SIBLING(om_node,env,next_sibling) \
-        ((om_node)->ops->set_next_sibling(om_node,env,next_sibling))
-/** set build status */
-#define AXIS2_OM_NODE_SET_BUILD_STATUS(om_node,env,done) \
-        ((om_node)->ops->set_build_status(om_node,env,done))
-/** set data element */
-#define AXIS2_OM_NODE_SET_DATA_ELEMENT(om_node,env,data_element) \
-        ((om_node)->ops->set_data_element(om_node,env,data_element))
-/** set node type */   
-#define AXIS2_OM_NODE_SET_NODE_TYPE(om_node,env,node_type) \
-        ((om_node)->ops->set_node_type(om_node,env,node_type))  
-/** set document */
-#define AXIS2_OM_NODE_SET_DOCUMENT(om_node, env, om_doc) \
-        ((om_node)->ops->set_document(om_node, env, om_doc))
 /** get document */        
 #define AXIS2_OM_NODE_GET_DOCUMENT(om_node, env) \
         ((om_node)->ops->get_document(om_node, env))
@@ -448,9 +319,6 @@ AXIS2_DECLARE(axis2_om_node_t *) axis2_om_node_create (axis2_env_t **env);
 #define AXIS2_OM_NODE_BUILD_NEXT(om_node, env) \
         ((om_node)->ops->build_next(om_node, env)) 
         
-#define AXIS2_OM_NODE_SET_BUILDER(om_node, env, builder) \
-        ((om_node)->ops->set_builder(om_node, env, builder))               
-
 /** @} */
 
 #ifdef __cplusplus

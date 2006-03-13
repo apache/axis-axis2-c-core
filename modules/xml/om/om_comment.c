@@ -15,6 +15,7 @@
  */
 
 #include <axis2_om_comment.h>
+#include <axis2_om_node_internal.h>
 #include <axis2_string.h>
 
 axis2_status_t AXIS2_CALL
@@ -91,8 +92,8 @@ axis2_om_comment_create(axis2_env_t **env,
         }
     }
 
-    AXIS2_OM_NODE_SET_DATA_ELEMENT((*node), env, comment);
-    AXIS2_OM_NODE_SET_NODE_TYPE((*node), env, AXIS2_OM_COMMENT);
+    axis2_om_node_set_data_element((*node), env, comment);
+    axis2_om_node_set_node_type((*node), env, AXIS2_OM_COMMENT);
     
     if (parent)
     {

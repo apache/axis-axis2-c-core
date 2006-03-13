@@ -1,4 +1,6 @@
 #include "om_node_test.h"
+#include <axis2_om_node_internal.h>
+
 #include <CuTest.h>
 
 void Testaxis2_om_node_add_child(CuTest *tc)
@@ -34,7 +36,7 @@ void Testaxis2_om_node_set_parent(CuTest *tc)
     parent = axis2_om_node_create(&env);   
     child  = axis2_om_node_create(&env); 
     
-    AXIS2_OM_NODE_SET_PARENT(child, &env, parent);
+    axis2_om_node_set_parent(child, &env, parent);
     CuAssertPtrEquals(tc, parent, AXIS2_OM_NODE_GET_PARENT(child, &env));
     /*axis2_env_free(env);*/
 }

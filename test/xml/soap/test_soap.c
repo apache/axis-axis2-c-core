@@ -95,6 +95,7 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
         return -1;
     }
     soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
+    
     om_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
     printnode(om_node, env);
     soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
@@ -102,16 +103,15 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
     {
         om_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
         printnode(om_node, env);
-    }
     
-    
-    children_iter = AXIS2_SOAP_HEADER_EXAMINE_ALL_HEADER_BLOCKS(soap_header, env);
-    if(children_iter)
-    {
-        while(AXIS2_OM_CHILDREN_ITERATOR_HAS_NEXT(children_iter, env))
-        {   
-            om_node = AXIS2_OM_CHILDREN_ITERATOR_NEXT(children_iter, env);
-            printnode(om_node, env);
+        children_iter = AXIS2_SOAP_HEADER_EXAMINE_ALL_HEADER_BLOCKS(soap_header, env);
+        if(children_iter)
+        {
+            while(AXIS2_OM_CHILDREN_ITERATOR_HAS_NEXT(children_iter, env))
+            {   
+                om_node = AXIS2_OM_CHILDREN_ITERATOR_NEXT(children_iter, env);
+                printnode(om_node, env);
+            }
         }
     }
     soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
@@ -127,14 +127,26 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
         printf ("\n\n ERROR soap_body NULL.\n\n");
         return AXIS2_FAILURE;
     }
-    AXIS2_SOAP_BODY_BUILD(soap_body, env);
 
+    if(soap_body)
+        if(AXIS2_SOAP_BODY_HAS_FAULT(soap_body, env))
+        {
+            printf("\n\n has fault\n\n\n ");
+        }
+    
+    AXIS2_SOAP_BODY_BUILD(soap_body, env);
+    om_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+    
     while(!(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env)) && !(AXIS2_OM_STAX_BUILDER_IS_COMPLETE(om_builder, env)))
     {
         status = AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
         if(status == AXIS2_FAILURE)
-               printf("failure %s" ,AXIS2_ERROR_GET_MESSAGE((*env)->error));
+        {      
+            printf("failure %s" ,AXIS2_ERROR_GET_MESSAGE((*env)->error));
+            break;
+        }               
     }
+    
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     
     om_output = axis2_om_output_create( env, xml_writer);  
@@ -188,7 +200,7 @@ int build_soap_programatically(axis2_env_t **env)
 
     soap_fault = axis2_soap_fault_create_with_parent(env, soap_body);
     
-    fault_code = axis2_soap12_fault_code_create_with_parent(env, soap_fault);
+    fault_code = axis2_soap_fault_code_create_with_parent(env, soap_fault);
     
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     om_output = axis2_om_output_create( env, xml_writer);
@@ -212,7 +224,7 @@ int create_soap_fault(axis2_env_t **env)
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
 
-    soap_envelope = axis2_soap_envelope_create_default_soap_fault_envelope(env, AXIS2_SOAP12);
+    soap_envelope = axis2_soap_envelope_create_default_soap_fault_envelope(env, AXIS2_SOAP11);
     soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
     axis2_soap_fault_create_default_fault(env, soap_body, "env:Receiver","A fault occured", AXIS2_SOAP12);
    
@@ -233,7 +245,7 @@ int main(int argc, char *argv[])
     axis2_allocator_t *allocator = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
-    axis2_char_t *uri = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    axis2_char_t *uri = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
     char *filename = "test.xml";
     if(argc > 1)
         filename = argv[1];
@@ -250,12 +262,11 @@ int main(int argc, char *argv[])
     error = axis2_error_create(allocator);
     env = axis2_env_create_with_error_log(allocator, error,  log);
     
-    axis2_error_init();
-    build_soap_programatically(&env); 
-    build_soap(&env, filename,uri);
-    create_soap_fault(&env);
+    axis2_error_init(); 
+    build_soap_programatically(&env);   
+    build_soap(&env, filename,uri); 
+    create_soap_fault(&env);  
     axis2_env_free(env); 
     axis2_allocator_free(allocator);
-    getchar();
     return 0;        
 }

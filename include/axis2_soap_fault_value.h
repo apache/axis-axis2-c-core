@@ -65,15 +65,6 @@ typedef struct axis2_soap_fault_value axis2_soap_fault_value_t;
                              (axis2_soap_fault_value_t *fault_value,
                               axis2_env_t **env);
                               
-        int (AXIS2_CALL *get_soap_version)
-                             (axis2_soap_fault_value_t *fault_value,
-                              axis2_env_t **env);
-                              
-        axis2_status_t (AXIS2_CALL *set_soap_version)
-                             (axis2_soap_fault_value_t *fault_value,
-                              axis2_env_t **env,
-                              int soap_version);                                                              
-                                                                                                                
     };      
 
   /**
@@ -117,11 +108,6 @@ axis2_soap_fault_value_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_VALUE_SET_BASE_NODE(fault_value, env, node) \
         ((fault_value)->ops->set_base_node(fault_value, env, node)) 
         
-#define AXIS2_SOAP_FAULT_VALUE_GET_SOAP_VERSION(fault_value, env) \
-        ((fault_value)->ops->get_soap_version(fault_value, env)) 
-        
-#define AXIS2_SOAP_FAULT_VALUE_SET_SOAP_VERSION(fault_value, env, version) \
-        ((fault_value)->ops->set_soap_version(fault_value, env, version))                
 /** @} */
 
 #ifdef __cplusplus

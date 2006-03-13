@@ -73,16 +73,7 @@ extern "C"
         axis2_om_node_t* (AXIS2_CALL *get_base_node)
                                     (axis2_soap_fault_role_t *fault_role,
                                      axis2_env_t **env);
-                                 
-        int (AXIS2_CALL *get_soap_version)
-                                    (axis2_soap_fault_role_t *fault_role,
-                                     axis2_env_t **env);
-                                     
-        int (AXIS2_CALL *set_soap_version)
-                                    (axis2_soap_fault_role_t *fault_role,
-                                     axis2_env_t **env,
-                                     int soap_version);                                                                      
-                                                                                                                
+                                                                                                                   
     };      
 
   /**
@@ -124,24 +115,18 @@ axis2_soap12_fault_role_create_with_parent(axis2_env_t **env,
 #define AXIS2_SOAP_FAULT_ROLE_FREE(fault_role , env) \
         ((fault_role)->ops->free_fn(fault_role, env))
 
-#define AXIS2_SOAP_FAULT_ROLE_SET_VALUE(fault_role , env, value) \
-        ((fault_role)->ops->set_role_value(fault_role, env, value))
-        
 #define AXIS2_SOAP_FAULT_ROLE_GET_VALUE(fault_role , env) \
         ((fault_role)->ops->get_role_value(fault_role, env)) 
         
 #define AXIS2_SOAP_FAULT_ROLE_GET_BASE_NODE(fault_role, env) \
         ((fault_role)->ops->get_base_node(fault_role, env))         
 
+/** internal functions , do not use */
 #define AXIS2_SOAP_FAULT_ROLE_SET_BASE_NODE(fault_role, env, node) \
         ((fault_role)->ops->set_base_node(fault_role, env, node)) 
 
-#define AXIS2_SOAP_FAULT_ROLE_GET_SOAP_VRESION(fault_role, env) \
-        ((fault_role)->ops->get_soap_version(fault_role, env)) 
-
-#define AXIS2_SOAP_FAULT_ROLE_SET_SOAP_VRESION(fault_role, env, version) \
-        ((fault_role)->ops->set_soap_version(fault_role, env, version))        
-                
+#define AXIS2_SOAP_FAULT_ROLE_SET_VALUE(fault_role , env, value) \
+        ((fault_role)->ops->set_role_value(fault_role, env, value))
 /** @} */
 
 #ifdef __cplusplus
@@ -149,5 +134,3 @@ axis2_soap12_fault_role_create_with_parent(axis2_env_t **env,
 #endif
  
 #endif /* AXIS2_SOAP_FAULT_ROLE_H */
-
-

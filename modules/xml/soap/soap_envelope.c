@@ -25,7 +25,7 @@
  #include <axis2_soap_fault_reason.h>
  #include <axis2_soap_fault_detail.h>
  #include <axis2_soap_fault_role.h>
- 
+ #include <axis2_soap_fault_value.h> 
  /******************* impl struct *********************************************/
  
  typedef struct axis2_soap_envelope_impl_t
@@ -51,7 +51,7 @@
  /****************** Function prototypes **************************************/
 
 axis2_soap_header_t* AXIS2_CALL
- axis2_soap_envelope_get_header(axis2_soap_envelope_t *envelope,
+axis2_soap_envelope_get_header(axis2_soap_envelope_t *envelope,
                                 axis2_env_t **env);
                                 
                                 
@@ -111,7 +111,11 @@ axis2_soap_envelope_set_builder(axis2_soap_envelope_t *envelope,
                                 axis2_env_t **env,
                                 axis2_soap_builder_t *soap_builder);                                  
 
-                                   
+static axis2_status_t
+check_and_set_soap_version(axis2_soap_envelope_t *env_impl, 
+                           axis2_env_t **env, 
+                           axis2_om_namespace_t *ns);
+
 /*************** function implementations *************************************/
 
 AXIS2_DECLARE(axis2_soap_envelope_t*)
@@ -181,8 +185,10 @@ axis2_soap_envelope_create(axis2_env_t **env,
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     axis2_om_element_t *ele = NULL;
-    
+    int status = AXIS2_SUCCESS;
     AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, ns, NULL);
+    
     envelope_impl = (axis2_soap_envelope_impl_t*)AXIS2_MALLOC(
                     (*env)->allocator,
                     sizeof(axis2_soap_envelope_impl_t));
@@ -198,6 +204,13 @@ axis2_soap_envelope_create(axis2_env_t **env,
     envelope_impl->body = NULL;
     envelope_impl->soap_builder =  NULL;
     
+    status =  check_and_set_soap_version(&(envelope_impl->soap_envelope), env, ns);
+    if(status == AXIS2_FAILURE)
+    {
+        AXIS2_FREE((*env)->allocator, envelope_impl); 
+        return NULL; 
+    }
+ 
     ele = axis2_om_element_create(env, NULL, 
                                   AXIS2_SOAP_ENVELOPE_LOCAL_NAME, ns, 
                                   &(envelope_impl->om_ele_node));
@@ -395,7 +408,9 @@ axis2_soap_envelope_add_header(axis2_soap_envelope_t *envelope,
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     
     /* TODO : cache SOAP header and envelope instead of looking them up?*/
-
+    if(!envelope_impl->header)
+        return NULL;
+    
     if (namespace_uri)
     {
         ns = axis2_om_namespace_create(env, namespace_uri, NULL);
@@ -439,6 +454,9 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, envelope, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
+    
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
 /*
    if soap version is soap11 we modify the soap fault part.
@@ -469,42 +487,86 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                         axis2_om_element_t *fault_code_om_ele = NULL;
                         axis2_om_node_t *fault_value_om_node = NULL;
                         axis2_om_element_t *fault_value_om_ele = NULL;
+                        axis2_soap_fault_value_t *fault_value = NULL;
                         axis2_char_t *text = NULL;
+
                         fault_code_om_node = AXIS2_SOAP_FAULT_CODE_GET_BASE_NODE(fault_code, env);
-                        fault_code_om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_code_om_node, env);
-                        AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_code_om_ele, env, AXIS2_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME); 
-                        fault_value_om_node = AXIS2_OM_NODE_GET_FIRST_CHILD(fault_code_om_node, env);
-                        AXIS2_OM_NODE_DETACH(fault_value_om_node, env);
-                        fault_value_om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_value_om_node, env);
-                        text = AXIS2_OM_ELEMENT_GET_TEXT(fault_value_om_ele, env, fault_value_om_node);
-                        AXIS2_OM_ELEMENT_SET_TEXT(fault_code_om_ele, env, text, fault_code_om_node);
-                        AXIS2_FREE((*env)->allocator, text);
-                        AXIS2_OM_NODE_FREE_TREE(fault_value_om_node, env);                                                                                              
+                        if(fault_code_om_node)
+                        {
+                           fault_code_om_ele = (axis2_om_element_t *)
+                           AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_code_om_node, env);
+                           if(fault_code_om_ele)
+                           {                               
+                                AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_code_om_ele, 
+                                    env, AXIS2_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME); 
+                                
+                                fault_value = AXIS2_SOAP_FAULT_VALUE_GET_BASE_NODE(fault_code, env);
+                                if(fault_value)
+                               {
+                                fault_value_om_node = AXIS2_OM_NODE_GET_FIRST_CHILD(fault_code_om_node, env);
+                                if(fault_value_om_node)
+                                {
+                                   fault_value_om_node =  AXIS2_OM_NODE_DETACH(fault_value_om_node, env);
+                                    fault_value_om_ele = (axis2_om_element_t *)
+                                        AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_value_om_node, env);
+                                    if(fault_value_om_ele)
+                                    {
+                                        text = AXIS2_OM_ELEMENT_GET_TEXT(fault_value_om_ele, env, fault_value_om_node);
+                                        if(NULL != text)
+                                        {
+                                            AXIS2_OM_ELEMENT_SET_TEXT(fault_code_om_ele, env, text, fault_code_om_node);
+                                            AXIS2_FREE((*env)->allocator, text);
+                                        }
+                                    }
+                                }
+                               }
+                            }
+                        }                            
                     }
                     fault_reason = AXIS2_SOAP_FAULT_GET_REASON(soap_fault, env);
                     if(fault_reason)
                     {
                         axis2_om_node_t *fault_reason_om_node = NULL;
                         axis2_om_element_t *fault_reason_om_ele = NULL;
-                        
                         axis2_om_node_t *fault_text_om_node = NULL;
                         axis2_om_element_t *fault_text_om_ele = NULL;
 
                         axis2_char_t *text =  NULL;                        
                     
                         fault_reason_om_node = AXIS2_SOAP_FAULT_REASON_GET_BASE_NODE(fault_reason, env);
-                        fault_reason_om_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_reason_om_node, env);
-                        AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_reason_om_ele, env, AXIS2_SOAP11_SOAP_FAULT_STRING_LOCAL_NAME);
+                        if(fault_reason_om_node)
+                        {
+                            fault_reason_om_ele  = (axis2_om_element_t *)
+                                AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_reason_om_node, env);
                         
+                            if(fault_reason_om_ele)
+                            {
+                                AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_reason_om_ele, 
+                                    env, AXIS2_SOAP11_SOAP_FAULT_STRING_LOCAL_NAME);
                         
-                        fault_text_om_node = AXIS2_OM_NODE_GET_FIRST_CHILD(fault_reason_om_node, env);
-                        fault_text_om_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_text_om_node, env);
-                        AXIS2_OM_NODE_DETACH(fault_text_om_node, env);                        
+                                
+                                fault_text_om_node =  AXIS2_OM_NODE_GET_FIRST_CHILD(fault_reason_om_node, env);
+                                if(fault_text_om_node)
+                                {
+                                    
+                                     fault_text_om_node = AXIS2_OM_NODE_DETACH(fault_text_om_node, env);                        
+                                    fault_text_om_ele  = (axis2_om_element_t *)
+                                        AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_text_om_node, env);
+                                    if(fault_text_om_ele)
+                                    {
                         
-                        text = AXIS2_OM_ELEMENT_GET_TEXT(fault_text_om_ele, env, fault_text_om_node);
-                        AXIS2_OM_ELEMENT_SET_TEXT( fault_reason_om_ele, env, text, fault_reason_om_node);   
-                        AXIS2_FREE((*env)->allocator, text); 
-                        AXIS2_OM_NODE_FREE_TREE(fault_text_om_node, env);
+                                        text = AXIS2_OM_ELEMENT_GET_TEXT(fault_text_om_ele, env, fault_text_om_node);
+                                        if(NULL != text)
+                                        {
+                                            AXIS2_OM_ELEMENT_SET_TEXT( fault_reason_om_ele, 
+                                                env, text, fault_reason_om_node);   
+                                
+                                            AXIS2_FREE((*env)->allocator, text); 
+                                        }                        
+                                    }
+                                }
+                            }
+                        }
                     }
                    
                     fault_role = AXIS2_SOAP_FAULT_GET_ROLE(soap_fault, env);
@@ -514,8 +576,16 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                         axis2_om_element_t *fault_role_om_ele = NULL;
                         
                         fault_role_om_node = AXIS2_SOAP_FAULT_ROLE_GET_BASE_NODE(fault_role, env);
-                        fault_role_om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_role_om_node, env);
-                        AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_role_om_ele, env, AXIS2_SOAP11_SOAP_FAULT_ACTOR_LOCAL_NAME);
+                        if(fault_role_om_node)
+                        {
+                            fault_role_om_ele = (axis2_om_element_t *)
+                                AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_role_om_node, env);
+                            if(fault_role_om_ele)
+                            {
+                                AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_role_om_ele, env, 
+                                    AXIS2_SOAP11_SOAP_FAULT_ACTOR_LOCAL_NAME);
+                            }                                
+                        }
                     }
                 
                     fault_detail = AXIS2_SOAP_FAULT_GET_DETAIL(soap_fault, env);
@@ -523,10 +593,17 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                     {
                         axis2_om_node_t *fault_detail_om_node = NULL;
                         axis2_om_element_t *fault_detail_om_ele = NULL;
-                        
                         fault_detail_om_node = AXIS2_SOAP_FAULT_DETAIL_GET_BASE_NODE(fault_detail, env);
-                        fault_detail_om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_detail_om_node, env);
-                        AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_detail_om_ele, env, AXIS2_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME);
+                        if(fault_detail_om_node)
+                        {
+                            fault_detail_om_ele = (axis2_om_element_t *)
+                                AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_detail_om_node, env);
+                            if(fault_detail_om_ele)
+                            {
+                            AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_detail_om_ele, 
+                                env, AXIS2_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME);
+                            }
+                        }
                     }
                 }  
             }
@@ -555,7 +632,8 @@ axis2_soap_envelope_set_body(axis2_soap_envelope_t *envelope,
     }
     else
     {
-        AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "trying to set a soap bedy to envelope when a soap body alrady exists");
+        AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, 
+            "trying to set a soap bedy to envelope when a soap body alrady exists");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -574,7 +652,8 @@ axis2_status_t AXIS2_CALL axis2_soap_envelope_set_header(axis2_soap_envelope_t *
     }
     else
     {
-       AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, " trying to set a soap header to envelope when a soap header alrady exists");
+       AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, 
+        " trying to set a soap header to envelope when a soap header alrady exists");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -706,3 +785,39 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
     return NULL;    
 }
+
+static axis2_status_t
+check_and_set_soap_version(axis2_soap_envelope_t *envelope,
+                           axis2_env_t **env,
+                           axis2_om_namespace_t *ns)
+{
+    axis2_soap_envelope_impl_t *envelope_impl = NULL;
+    axis2_char_t *uri = NULL;
+    if(!envelope)
+        return AXIS2_FAILURE;
+    if(!ns)
+        return AXIS2_FAILURE;
+         
+    envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
+    
+    uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+    if(!uri)
+        return AXIS2_FAILURE;
+        
+    if(AXIS2_STRCMP(uri, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+    {
+        envelope_impl->soap_version = AXIS2_SOAP11;
+        return AXIS2_SUCCESS;
+    }
+    else if(AXIS2_STRCMP(uri, AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+    {
+        envelope_impl->soap_version = AXIS2_SOAP12;
+        return AXIS2_SUCCESS;
+    }
+    else
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI, AXIS2_FAILURE);
+    }
+    return AXIS2_FAILURE;
+}                           
+

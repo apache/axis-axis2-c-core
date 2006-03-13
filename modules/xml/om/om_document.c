@@ -234,7 +234,9 @@ axis2_om_document_build_next (axis2_om_document_t *om_document,
     AXIS2_ENV_CHECK(env, NULL);
   
     document = AXIS2_INTF_TO_IMPL(om_document);
-    
+    if(!document->builder)
+        return NULL;
+   
     if (!(document->root_element))
     {
         last_child = AXIS2_OM_STAX_BUILDER_NEXT (document->builder, env);

@@ -24,8 +24,6 @@
  {
     axis2_soap_fault_role_t fault_role;
     
-    int soap_version;
-    
     axis2_om_node_t *om_ele_node;
     
     axis2_om_element_t *om_ele;
@@ -64,17 +62,6 @@ axis2_soap_fault_role_get_base_node
                         (axis2_soap_fault_role_t *fault_role,
                          axis2_env_t **env);
                             
-int AXIS2_CALL 
-axis2_soap_fault_role_get_soap_version
-                        (axis2_soap_fault_role_t *fault_role,
-                         axis2_env_t **env);
-                         
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_role_set_soap_version
-                        (axis2_soap_fault_role_t *fault_role,
-                         axis2_env_t **env,
-                         int soap_version);                         
-
 /*********************** end function prototypes ******************************/
 
 
@@ -96,7 +83,6 @@ axis2_soap_fault_role_create(axis2_env_t **env)
     fault_role_impl->om_ele = NULL;
     fault_role_impl->om_ele_node = NULL;
     
-    fault_role_impl->soap_version = AXIS2_SOAP_VERSION_NOT_SET;
     fault_role_impl->fault_role.ops = 
             (axis2_soap_fault_role_ops_t*)AXIS2_MALLOC((*env)->allocator,
                 sizeof(axis2_soap_fault_role_ops_t));
@@ -123,12 +109,6 @@ axis2_soap_fault_role_create(axis2_env_t **env)
     fault_role_impl->fault_role.ops->get_base_node =
         axis2_soap_fault_role_get_base_node;
         
-    fault_role_impl->fault_role.ops->get_soap_version =
-        axis2_soap_fault_role_get_soap_version; 
-        
-    fault_role_impl->fault_role.ops->set_soap_version =
-        axis2_soap_fault_role_set_soap_version;                    
-                                
   return  &(fault_role_impl->fault_role);  
 }
 
@@ -258,26 +238,6 @@ axis2_soap_fault_role_get_base_node
      return AXIS2_INTF_TO_IMPL(fault_role)->om_ele_node;
 }
                             
-int AXIS2_CALL 
-axis2_soap_fault_role_get_soap_version
-                        (axis2_soap_fault_role_t *fault_role,
-                         axis2_env_t **env)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return AXIS2_INTF_TO_IMPL(fault_role)->soap_version;
-}
-
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_role_set_soap_version
-                        (axis2_soap_fault_role_t *fault_role,
-                         axis2_env_t **env,
-                         int soap_version)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, soap_version, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(fault_role)->soap_version = soap_version;
-    return AXIS2_SUCCESS;
-} 
 
 /********************* soap11 *************************************************/
 AXIS2_DECLARE(axis2_soap_fault_role_t *)

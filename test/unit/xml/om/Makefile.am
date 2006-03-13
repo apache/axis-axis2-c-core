@@ -8,7 +8,8 @@ libtest_om_la_SOURCES = om_test.c om_node_test.c
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/util \
-            -I$(top_builddir)/modules/platforms
+            -I$(top_builddir)/modules/platforms \
+            -I$(top_builddir)/modules/xml/om
 
 check_PROGRAMS = om_test
 prgbin_PROGRAMS = om_test

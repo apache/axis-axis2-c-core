@@ -15,6 +15,7 @@
  */
 
 #include <axis2_om_element.h>
+#include <axis2_om_node_internal.h>
 #include <axis2_om_attribute.h>
 #include <axis2_om_namespace.h>
 #include <axis2_xml_writer.h>
@@ -199,16 +200,14 @@ axis2_om_element_create (axis2_env_t **env,
     
     if (!localname || !node)
     {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return NULL;
     }
 
     (*node) = axis2_om_node_create (env);
     if (!(*node))
     {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     element = (axis2_om_element_impl_t *) AXIS2_MALLOC ((*env)->allocator,
@@ -217,8 +216,7 @@ axis2_om_element_create (axis2_env_t **env,
     if (!element)
     {
         AXIS2_FREE ((*env)->allocator, (*node));
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     element->ns = NULL;
@@ -236,19 +234,17 @@ axis2_om_element_create (axis2_env_t **env,
     {
         AXIS2_FREE ((*env)->allocator, element);
         AXIS2_FREE ((*env)->allocator, (*node));
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-
     if (parent)
     {
         AXIS2_OM_NODE_ADD_CHILD(parent, env, (*node));
+         
     }
-    
-    AXIS2_OM_NODE_SET_BUILD_STATUS((*node), env, AXIS2_FALSE);
-    AXIS2_OM_NODE_SET_NODE_TYPE((*node), env, AXIS2_OM_ELEMENT);
-    AXIS2_OM_NODE_SET_DATA_ELEMENT((*node), env, element);
+    axis2_om_node_set_build_status((*node), env, AXIS2_FALSE);
+    axis2_om_node_set_node_type((*node), env, AXIS2_OM_ELEMENT);
+    axis2_om_node_set_data_element((*node), env, element);
 
     if (ns)
     {
@@ -274,8 +270,7 @@ axis2_om_element_create (axis2_env_t **env,
         AXIS2_FREE ((*env)->allocator, element->localname);
         AXIS2_FREE ((*env)->allocator, element);
         AXIS2_FREE ((*env)->allocator,(*node));
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -339,7 +334,6 @@ axis2_om_element_create (axis2_env_t **env,
         axis2_om_element_to_string;
     element->om_element.ops->get_child_elements =
         axis2_om_element_get_child_elements;        
-                                   
     return &(element->om_element);
 }
 
@@ -350,38 +344,66 @@ axis2_om_element_create_with_qname (axis2_env_t **env,
                                     axis2_om_node_t ** node)
 {
     axis2_om_element_t *element = NULL;
+    axis2_char_t *localpart = NULL;
+    
     AXIS2_ENV_CHECK(env, NULL);
     if (!qname || !(*node))
     {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return NULL;           
     }
-
-    /* TODO:handle namespace in the following */
-    element = axis2_om_element_create (env, parent,
-              AXIS2_QNAME_GET_LOCALPART(qname, env), NULL, node);
+    localpart = AXIS2_QNAME_GET_LOCALPART(qname, env);
+    if(!localpart)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);        
+        return NULL;
+    }
+    element = axis2_om_element_create (env, parent, localpart, NULL, node);
+    if(!element)
+        return NULL;
+        
     if (*node)
     {
-        axis2_om_element_t *ele = 
-            ((axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT((*node), env));
-        if ( AXIS2_INTF_TO_IMPL(ele)->ns)
+        axis2_om_element_t *ele = NULL;
+        axis2_char_t *temp_nsuri = NULL;
+        axis2_char_t *temp_prefix = NULL;
+        axis2_om_namespace_t *ns  = NULL;
+        
+        ele =  ((axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT((*node), env));
+        temp_nsuri = AXIS2_QNAME_GET_URI(qname, env);
+        temp_prefix = AXIS2_QNAME_GET_PREFIX(qname, env);
+        if(!ele)
+            return NULL;
+        
+        if((NULL == temp_nsuri) || (AXIS2_STRCMP(temp_nsuri, "") == 0))
         {
-            axis2_om_namespace_t *ns = AXIS2_INTF_TO_IMPL(ele)->ns;
-                
-            AXIS2_INTF_TO_IMPL(element)->ns = 
-                axis2_om_element_find_namespace (element, env, *node,
-                                                 AXIS2_OM_NAMESPACE_GET_URI(ns, env),
-                                                 AXIS2_OM_NAMESPACE_GET_PREFIX(ns, env));
-                                                 
-            if (!(AXIS2_INTF_TO_IMPL(element)->ns))
-            {
-                if (axis2_om_element_declare_namespace(element, env, *node, ns) == AXIS2_SUCCESS)
-                    (AXIS2_INTF_TO_IMPL(element)->ns) = ns;
-            }
-        }
+               /** no namespace uri is available in given qname
+                   no need to bother about it 
+                */
+            return ele;            
+        }            
+        
+      AXIS2_INTF_TO_IMPL(ele)->ns = axis2_om_element_find_namespace(ele, env,
+                (*node), temp_nsuri, temp_prefix);
+                                               
+       if (!(AXIS2_INTF_TO_IMPL(element)->ns))
+       {
+           /** could not find a namespace so declare namespace */
+           ns = axis2_om_namespace_create(env, temp_nsuri, temp_prefix);
+           if (axis2_om_element_declare_namespace(ele , env, *node, ns) == AXIS2_SUCCESS)
+           {
+                (AXIS2_INTF_TO_IMPL(element)->ns) = ns;
+                return ele;
+           }
+           else
+           {
+               AXIS2_OM_NAMESPACE_FREE(ns, env);
+               AXIS2_OM_ELEMENT_FREE(ele, env);
+               AXIS2_FREE((*env)->allocator, *node);
+               return NULL;
+           }               
+       }
     }
-
     return element;
 }
 
@@ -392,64 +414,86 @@ axis2_om_element_find_namespace (axis2_om_element_t *ele,
                                  const axis2_char_t * uri,
                                  const axis2_char_t * prefix)
 {
-    void *ns = NULL;
+    
     axis2_hash_index_t *hashindex;
     axis2_om_element_t *element = NULL;
     axis2_om_node_t *parent = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     
-    if (!node)
+    if (!node || !ele)
     {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return NULL;
     }
     if (!AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env) || 
             AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
     {
         /* wrong element type or null node */
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NODE_TYPE);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return NULL;
     }
-
     element = (axis2_om_element_t *) AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
     
-    if (AXIS2_INTF_TO_IMPL(element)->namespaces)
-    if (!prefix || axis2_strcmp ( prefix, "") == 0)
-    {   
-        for (hashindex = axis2_hash_first (AXIS2_INTF_TO_IMPL(element)->namespaces, env);
-             hashindex; hashindex = axis2_hash_next (env, hashindex))
-        {
-            axis2_hash_this (hashindex, NULL, NULL, &ns);
-            if (ns && 
-                axis2_strcmp (AXIS2_OM_NAMESPACE_GET_URI(
-                    (axis2_om_namespace_t *) (ns), env),uri) == 0)
-            {
-              
-		        AXIS2_FREE ((*env)->allocator, hashindex);
-                return (axis2_om_namespace_t *) (ns);
-            }
-        }
-        ns = NULL;
-    }
 
-    if (AXIS2_INTF_TO_IMPL(element)->namespaces && prefix)
-    {    ns = axis2_hash_get (AXIS2_INTF_TO_IMPL(element)->namespaces, prefix,
+    if (AXIS2_INTF_TO_IMPL(element)->namespaces)
+    {   
+        void *ns = NULL;
+        
+        if (!prefix || axis2_strcmp ( prefix, "") == 0)
+        {   
+            /** prefix is null , so iterate the namespaces hash to find the namespace */            
+            for (hashindex = axis2_hash_first (AXIS2_INTF_TO_IMPL(element)->namespaces, env);
+                 hashindex; hashindex = axis2_hash_next (env, hashindex))
+            {
+                axis2_hash_this (hashindex, NULL, NULL, &ns);
+                if (NULL != ns)
+                {   
+                    axis2_om_namespace_t *temp_ns = NULL;
+                    axis2_char_t *temp_nsuri = NULL;
+                    temp_ns = (axis2_om_namespace_t *)ns;
+                    temp_nsuri = AXIS2_OM_NAMESPACE_GET_URI(temp_ns, env);
+                    
+                    if(temp_nsuri && (AXIS2_STRCMP(temp_nsuri, uri) == 0))
+                    {
+                        /** namespace uri matches , so free hashindex and return ns*/
+		                AXIS2_FREE ((*env)->allocator, hashindex);
+                        return (axis2_om_namespace_t *) (ns);
+                    }
+                    temp_ns = NULL;
+                    temp_nsuri = NULL;
+                    ns = NULL;
+                }
+            }
+            ns = NULL;
+        }
+        else if(prefix)
+        {   
+            /** prefix is not null get namespace directly if exist */
+            ns = axis2_hash_get (AXIS2_INTF_TO_IMPL(element)->namespaces, prefix,
                              AXIS2_HASH_KEY_STRING);
-        if (ns)
-        {
-            return (axis2_om_namespace_t*)ns;
-        }                             
+            if (ns)
+            {
+                return (axis2_om_namespace_t*)ns;
+            }                             
+        }
     }
+    /** could not find the namespace in current element scope 
+        look in the parent */
+    
     parent = AXIS2_OM_NODE_GET_PARENT(node, env);                       
     
-    if ((parent != NULL) &&
-             (AXIS2_OM_NODE_GET_NODE_TYPE(parent, env) == AXIS2_OM_ELEMENT))
+    if( NULL != parent)
     {
-        return axis2_om_element_find_namespace (
-                (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(parent, env),
-                    env, parent, uri, prefix);
+        if(AXIS2_OM_NODE_GET_NODE_TYPE(parent, env) == AXIS2_OM_ELEMENT)
+        {
+            axis2_om_element_t *om_ele = NULL;
+            om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(parent, env);
+            if(om_ele)
+            {   /** parent exist, parent is om element so find in parent*/             
+                return axis2_om_element_find_namespace(om_ele, env,
+                        parent, uri, prefix);
+            }
+        }
     }
     return NULL;
 }
@@ -462,14 +506,14 @@ axis2_om_element_declare_namespace (axis2_om_element_t *ele,
 {
     axis2_om_namespace_t *declared_ns = NULL;
     axis2_om_element_t *element = NULL;
+    axis2_om_element_impl_t *om_ele_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (!node || !ns)
+    
+    if (!node || !ns || !ele)
     {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-
     declared_ns = axis2_om_element_find_namespace(ele, env, node, 
                                               AXIS2_OM_NAMESPACE_GET_URI(ns, env),
                                               AXIS2_OM_NAMESPACE_GET_PREFIX(ns ,env));
@@ -479,32 +523,33 @@ axis2_om_element_declare_namespace (axis2_om_element_t *ele,
         /*Namespace already declared, so return */
         return AXIS2_SUCCESS;
     }
-
+    
+    if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
+        return AXIS2_FAILURE;
+    
     element = (axis2_om_element_t *) AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
 
-    if (!element)
+    if (element)
     {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE); 
-        return AXIS2_FAILURE;
-    }
+        om_ele_impl = AXIS2_INTF_TO_IMPL(element);
+        
+        if (!(om_ele_impl->namespaces))
+        {
+            om_ele_impl->namespaces = axis2_hash_make (env);
+            if (!(om_ele_impl->namespaces))
+                return AXIS2_FAILURE;
+        }
 
-    if (!(AXIS2_INTF_TO_IMPL(element)->namespaces))
-    {
-        AXIS2_INTF_TO_IMPL(element)->namespaces = axis2_hash_make (env);
-        if (!(AXIS2_INTF_TO_IMPL(element)->namespaces))
-            return AXIS2_FAILURE;
-    }
-
-    if (AXIS2_OM_NAMESPACE_GET_PREFIX(ns,env))
-    {   axis2_hash_set (AXIS2_INTF_TO_IMPL(element)->namespaces,
-                        AXIS2_OM_NAMESPACE_GET_PREFIX(ns,env),
-                        AXIS2_HASH_KEY_STRING, ns);
-    }
-    else
-    {
-        axis2_hash_set (AXIS2_INTF_TO_IMPL(element)->namespaces,
-                        "default",  AXIS2_HASH_KEY_STRING,  ns);
+        if (AXIS2_OM_NAMESPACE_GET_PREFIX(ns,env))
+        {   axis2_hash_set (om_ele_impl->namespaces,
+                            AXIS2_OM_NAMESPACE_GET_PREFIX(ns,env),
+                            AXIS2_HASH_KEY_STRING, ns);
+        }
+        else
+        {
+            axis2_hash_set (om_ele_impl->namespaces, "default",
+                            AXIS2_HASH_KEY_STRING,  ns);
+        }
     }
     return AXIS2_SUCCESS;
 }
@@ -530,26 +575,37 @@ axis2_om_element_find_declared_namespace (axis2_om_element_t *om_element,
     }
     if (!prefix || AXIS2_STRCMP(prefix, "") == 0)
     {
+        /** prefix null iterate the namespace hash for matching uri */
         for (hash_index = axis2_hash_first (om_element_impl->namespaces, env);
              hash_index; hash_index = axis2_hash_next (env, hash_index))
         {
             axis2_hash_this (hash_index, NULL, NULL, &ns);
-            if (AXIS2_STRCMP(AXIS2_OM_NAMESPACE_GET_URI(
-                    (axis2_om_namespace_t *)(ns), env), uri) == 0)
+            if(NULL != ns)
             {
-		AXIS2_FREE ((*env)->allocator, hash_index);
-                return (axis2_om_namespace_t *) (ns);
+                axis2_om_namespace_t *temp_ns = NULL;
+                axis2_char_t *temp_nsuri = NULL;
+                temp_ns = (axis2_om_namespace_t *)(ns);
+                temp_nsuri = AXIS2_OM_NAMESPACE_GET_URI(temp_ns, env);
+                
+                if (temp_nsuri && AXIS2_STRCMP(temp_nsuri, uri) == 0)
+                {
+		            AXIS2_FREE ((*env)->allocator, hash_index);
+                    return temp_ns;
+                }
+                temp_ns = NULL;
+                temp_nsuri = NULL;
             }
         }
         ns = NULL;
         return NULL;
     }
-    
-    ns = axis2_hash_get (om_element_impl->namespaces, prefix, AXIS2_HASH_KEY_STRING);
-    if (ns)
-        return (axis2_om_namespace_t *) ns;
-    else
-        return NULL;
+    else if(prefix)
+    {        
+        ns = axis2_hash_get(om_element_impl->namespaces, prefix, AXIS2_HASH_KEY_STRING);
+        if (ns)
+            return (axis2_om_namespace_t *) ns;
+    }
+    return NULL;
 }
 
 
@@ -560,12 +616,9 @@ axis2_om_element_find_namespace_with_qname (axis2_om_element_t *element,
                                             axis2_qname_t *qname)
 {
     AXIS2_ENV_CHECK(env, NULL);
-   
-    if (!node || !qname)
+    if (!element || !node || !qname)
     {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, 
-                                     AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -594,7 +647,8 @@ axis2_om_element_add_attribute (axis2_om_element_t *om_element,
     axis2_om_namespace_t *temp_ns = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, attribute, AXIS2_FAILURE);
-
+    AXIS2_PARAM_CHECK((*env)->error, element_node, AXIS2_FAILURE);
+    
     om_element_impl = AXIS2_INTF_TO_IMPL(om_element);    
     om_namespace = AXIS2_OM_ATTRIBUTE_GET_NAMESPACE(attribute, env);
     
@@ -607,11 +661,13 @@ axis2_om_element_add_attribute (axis2_om_element_t *om_element,
                          AXIS2_OM_NAMESPACE_GET_PREFIX(om_namespace, env));
         if(!temp_ns)
         {
-            AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(om_element, env, 
+            axis2_status_t status = AXIS2_SUCCESS;
+            status = AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(om_element, env, 
                                                element_node, om_namespace); 
+            if(status == AXIS2_FAILURE)
+                return AXIS2_FAILURE;
         }
     } 
-    
    
     if(!(om_element_impl->attributes))
     {
@@ -640,17 +696,12 @@ axis2_om_element_get_attribute (axis2_om_element_t *om_element,
     axis2_char_t *name = NULL;
     axis2_om_attribute_t *attr = NULL;
     AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);
+    
     element_impl = AXIS2_INTF_TO_IMPL(om_element);
-
-    if (!qname)
-    {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, 
-                                     AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
-        return NULL;
-    }
     name = AXIS2_QNAME_TO_STRING(qname, env);
-    if (element_impl->attributes)
+
+    if ((element_impl->attributes) && name )
     {
         attr = (axis2_om_attribute_t*) (axis2_hash_get(element_impl->attributes, name, AXIS2_HASH_KEY_STRING));
     }
@@ -664,6 +715,9 @@ axis2_om_element_free (axis2_om_element_t *om_element,
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_om_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!om_element)
+        return AXIS2_FAILURE;
+    
     element_impl = AXIS2_INTF_TO_IMPL(om_element);
     
     if (element_impl->localname)
@@ -685,14 +739,11 @@ axis2_om_element_free (axis2_om_element_t *om_element,
         {
                axis2_hash_this (hi, NULL, NULL, &val);
 
-                if (val)
-                   status = AXIS2_OM_ATTRIBUTE_FREE ((axis2_om_attribute_t *)val, env);
-                else
-                {
-                   status = AXIS2_FAILURE;
-                }
-                 val = NULL;
-                   
+               if (val)
+               {
+                   AXIS2_OM_ATTRIBUTE_FREE ((axis2_om_attribute_t *)val, env);
+               }
+               val = NULL;
         }
         axis2_hash_free (element_impl->attributes, env);
         element_impl->attributes = NULL;
@@ -702,19 +753,18 @@ axis2_om_element_free (axis2_om_element_t *om_element,
     {
         axis2_hash_index_t *hi;
         void *val = NULL;
-            
         for (hi = axis2_hash_first (element_impl->namespaces, env); hi;
                 hi = axis2_hash_next ( env, hi))
         {
             axis2_hash_this (hi, NULL, NULL, &val);
-
-            if (val)
+            if (NULL != val)
+            {
                  AXIS2_OM_NAMESPACE_FREE ((axis2_om_namespace_t *)val, env);
                  val = NULL;
+            }
         }
         axis2_hash_free (element_impl->namespaces, env);
-            /*TODO: free namespaces */
-           /* need to iterate and free individual namespaces */
+        element_impl->namespaces = NULL;  
     }
     if(element_impl->qname)
     {
@@ -741,6 +791,7 @@ axis2_om_element_free (axis2_om_element_t *om_element,
         AXIS2_FREE((*env)->allocator, element_impl->text_value);
         element_impl->text_value = NULL;
     }
+    
     AXIS2_FREE ((*env)->allocator, om_element->ops);
     AXIS2_FREE ((*env)->allocator, element_impl);
     return status;
@@ -752,17 +803,10 @@ axis2_om_element_serialize_start_part (axis2_om_element_t *om_element,
                                        axis2_om_output_t *om_output)
 {
     int status = AXIS2_SUCCESS;
-   
     axis2_om_element_impl_t *ele_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-     
-    if (!om_output)
-    {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error,
-                                     AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);                                     
-        return AXIS2_FAILURE;
-    }
+    AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
+    
     ele_impl = AXIS2_INTF_TO_IMPL(om_element);
 
     if (ele_impl->ns &&
@@ -830,10 +874,7 @@ axis2_om_element_serialize_start_part (axis2_om_element_t *om_element,
                 status = AXIS2_FAILURE;
             }
         }
-        AXIS2_FREE((*env)->allocator, hi);
-        
     }
-
     return status;
 }
 
@@ -843,16 +884,8 @@ axis2_om_element_serialize_end_part (axis2_om_element_t *om_element,
                                      axis2_om_output_t * om_output)
 {
     int status = AXIS2_SUCCESS;
-    if (!om_output)
-    {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error ,
-                                     AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error , AXIS2_FAILURE);
-        return AXIS2_FAILURE;
-    }
-
-    status =
-        axis2_om_output_write (om_output, env, AXIS2_OM_ELEMENT, 0);
+    AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
+    status = axis2_om_output_write (om_output, env, AXIS2_OM_ELEMENT, 0);
     return status;
 }
 
@@ -879,8 +912,11 @@ axis2_om_element_set_localname(axis2_om_element_t *om_element,
         AXIS2_FREE((*env)->allocator, om_ele_impl->localname);
         om_ele_impl->localname = NULL;
     }
-    AXIS2_INTF_TO_IMPL(om_element)->localname = 
-        (axis2_char_t*)AXIS2_STRDUP(localname,env);
+    om_ele_impl->localname = (axis2_char_t*)AXIS2_STRDUP(localname,env);
+    if(!(om_ele_impl->localname))
+    {
+        return AXIS2_FAILURE;    
+    }
     return AXIS2_SUCCESS;        
 }                               
         
@@ -899,7 +935,7 @@ axis2_om_element_set_namespace(axis2_om_element_t *om_element,
                                axis2_om_node_t *node)
 {
     axis2_om_namespace_t *om_ns = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
+    axis2_status_t status = AXIS2_SUCCESS;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error,ns , AXIS2_FAILURE);
     om_ns = axis2_om_element_find_namespace(om_element, env, node,
@@ -908,11 +944,14 @@ axis2_om_element_set_namespace(axis2_om_element_t *om_element,
     if(!om_ns)
     {
         status = axis2_om_element_declare_namespace(om_element, env, node, ns);
+        if(status == AXIS2_FAILURE)
+            return AXIS2_FAILURE;
         AXIS2_INTF_TO_IMPL(om_element)->ns = ns;
     }
     else
+    {
         AXIS2_INTF_TO_IMPL(om_element)->ns = om_ns;
-    
+    }
     return AXIS2_SUCCESS;                                
 }
 
@@ -1079,10 +1118,15 @@ axis2_om_element_remove_attribute(axis2_om_element_t *om_element,
     
     qname = AXIS2_OM_ATTRIBUTE_GET_QNAME(om_attribute, env);
     if (qname && (om_element_impl->attributes))
-    {    axis2_hash_set (om_element_impl->attributes, 
-                        qname, sizeof (axis2_qname_t), NULL);
-    
-        return AXIS2_SUCCESS;
+    {    
+        axis2_char_t *name = NULL;
+        name = AXIS2_QNAME_TO_STRING(qname, env);
+        if(name)
+        {
+            axis2_hash_set (om_element_impl->attributes, name, 
+                AXIS2_HASH_KEY_STRING, NULL);
+            return AXIS2_SUCCESS;
+        }
     }
     return AXIS2_FAILURE;
 }
@@ -1098,7 +1142,7 @@ axis2_om_element_get_first_element(axis2_om_element_t *om_element,
     AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
    
     temp_node = AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env);
-    while(temp_node != NULL)
+    while(NULL != temp_node )
     {
         if(AXIS2_OM_NODE_GET_NODE_TYPE(temp_node, env) == AXIS2_OM_ELEMENT)
         {
@@ -1129,9 +1173,8 @@ axis2_om_element_get_text(axis2_om_element_t *om_element,
 
     temp_node = AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env);
     
-    while(temp_node)
+    while(NULL != temp_node)
     {
-        
         if(AXIS2_OM_NODE_GET_NODE_TYPE(temp_node, env) == AXIS2_OM_TEXT)
         {
             int dest_len = 0;
@@ -1139,30 +1182,38 @@ axis2_om_element_get_text(axis2_om_element_t *om_element,
             axis2_char_t *temp_dest = NULL;
             
             text_node = (axis2_om_text_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(temp_node, env); 
-            temp_text = AXIS2_OM_TEXT_GET_VALUE(text_node, env);
-            if(dest && temp_text && AXIS2_STRCMP(temp_text, "") != 0)
+            if(text_node)
             {
-                dest_len = AXIS2_STRLEN(dest);
-                curr_len = dest_len + AXIS2_STRLEN(temp_text);
-                temp_dest = AXIS2_MALLOC((*env)->allocator, (curr_len +1 )*sizeof(axis2_char_t));
-                memcpy(temp_dest, dest, dest_len*sizeof(axis2_char_t));
-                memcpy((temp_dest + dest_len * sizeof(axis2_char_t)), temp_text, curr_len - dest_len);
-                temp_dest[curr_len] = '\0';
+                temp_text = AXIS2_OM_TEXT_GET_VALUE(text_node, env);
+                if(dest && temp_text && AXIS2_STRCMP(temp_text, "") != 0)
+                {
+                    dest_len = AXIS2_STRLEN(dest);
+                    curr_len = dest_len + AXIS2_STRLEN(temp_text);
+                    temp_dest = AXIS2_MALLOC((*env)->allocator, 
+                                    (curr_len +1 )*sizeof(axis2_char_t));
+                    
+                    memcpy(temp_dest, dest, dest_len*sizeof(axis2_char_t));
+                    memcpy((temp_dest + dest_len * sizeof(axis2_char_t)), 
+                                temp_text, curr_len - dest_len);
+                    
+                    temp_dest[curr_len] = '\0';
                 
-                AXIS2_FREE((*env)->allocator, dest);
-                dest = NULL;
-                dest = temp_dest;
+                    AXIS2_FREE((*env)->allocator, dest);
+                    dest = NULL;
+                    dest = temp_dest;
+                }
+                else if(!dest && temp_text && AXIS2_STRCMP(temp_text, "") != 0)
+                {
+                    dest = AXIS2_STRDUP(temp_text, env);
+                }
             }
-            else if(!dest && temp_text && AXIS2_STRCMP(temp_text, "") != 0)
-            {
-                dest = AXIS2_STRDUP(temp_text, env);
-            }
-
         }
         temp_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(temp_node, env);
     }
+    
     element_impl->text_value = dest;
     dest = NULL;  
+    
     return element_impl->text_value;
 }                          
 
@@ -1209,7 +1260,13 @@ axis2_om_element_to_string(axis2_om_element_t *om_element,
     AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);    
     
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
+    if(!xml_writer)
+        return NULL;
+    
     om_output = axis2_om_output_create(env, xml_writer);
+    if(!om_output)
+        return NULL;
+    
     status = AXIS2_OM_NODE_SERIALIZE(element_node, env, om_output);
     if(status == AXIS2_SUCCESS)
     {
