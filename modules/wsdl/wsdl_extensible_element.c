@@ -182,6 +182,11 @@ axis2_wsdl_extensible_element_set_type(
         extensible_element_impl->type = NULL;
     }
     
-    extensible_element_impl->type = type;
+    extensible_element_impl->type = AXIS2_QNAME_CLONE(type, env);
+    if(!extensible_element_impl->type)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    } 
     return AXIS2_SUCCESS;
 }

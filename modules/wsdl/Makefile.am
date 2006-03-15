@@ -1,4 +1,5 @@
 TESTS =
+SUBDIRS=
 lib_LTLIBRARIES = libaxis2_wsdl.la
 libaxis2_wsdl_la_SOURCES = wsdl_op.c \
                         wsdl_svc.c \
@@ -15,7 +16,12 @@ libaxis2_wsdl_la_SOURCES = wsdl_op.c \
                         wsdl_endpoint.c \
                         wsdl_fault_ref.c \
                         wsdl_extensible_element.c \
-                        wsdl_soap_op.c
+                        wsdl_extensible_attribute.c \
+                        wsdl_soap_op.c \
+                        wsdl_types.c \
+                        wsdl_import.c \
+                        wsdl_include.c \
+                        wsdl_desc.c
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \

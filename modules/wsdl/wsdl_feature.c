@@ -167,7 +167,12 @@ axis2_wsdl_feature_set_name(axis2_wsdl_feature_t *wsdl_feature,
         AXIS2_FREE((*env)->allocator, feature_impl->name);
         feature_impl->name = NULL;
     }
-    feature_impl->name = name;
+    feature_impl->name = AXIS2_STRDUP(name, env);
+    if(!feature_impl->name)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
     return AXIS2_SUCCESS;
 }
 
