@@ -161,11 +161,11 @@ axis2_soap_over_http_sender_free (axis2_soap_over_http_sender_t *sender,
         sender_impl->om_output = NULL;
     }*/
 
-    if (sender_impl->client)
+    /*if (sender_impl->client)
     {
         AXIS2_HTTP_CLIENT_FREE(sender_impl->client, env);
         sender_impl->client = NULL;
-    }
+    }*/
     
     if(NULL != sender->ops)
         AXIS2_FREE((*env)->allocator, sender->ops);
