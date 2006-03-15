@@ -160,6 +160,12 @@ axis2_soap_over_http_sender_free (axis2_soap_over_http_sender_t *sender,
         AXIS2_OM_OUTPUT_FREE(sender_impl->om_output, env);
         sender_impl->om_output = NULL;
     }*/
+
+    if (sender_impl->client)
+    {
+        AXIS2_HTTP_CLIENT_FREE(sender_impl->client, env);
+        sender_impl->client = NULL;
+    }
     
     if(NULL != sender->ops)
         AXIS2_FREE((*env)->allocator, sender->ops);
@@ -201,11 +207,19 @@ axis2_soap_over_http_sender_send
 	{
 		return AXIS2_FAILURE;
 	}
+    
+    if (sender_impl->client)
+    {
+        AXIS2_HTTP_CLIENT_FREE(sender_impl->client, env);
+        sender_impl->client = NULL;
+    }
+    
 	sender_impl->client = axis2_http_client_create(env, url);
 	if(NULL == sender_impl->client)
 	{
 		return AXIS2_FAILURE;
 	}
+
 	if(NULL == sender_impl->om_output)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_OM_OUTPUT, 
