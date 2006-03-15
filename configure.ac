@@ -233,6 +233,7 @@ AC_CONFIG_FILES([Makefile \
     modules/util/Makefile \
     modules/platforms/unix/Makefile \
     modules/wsdl/Makefile \
+    modules/wsdl/builder/Makefile \
     modules/mod_addr/Makefile \
     samples/Makefile \
     samples/server/Makefile \

@@ -52,6 +52,8 @@ extern "C"
  */
 #define AXIS2_WSDL_MESSAGE_DIRECTION_OUT "out"
 
+#define AXIS2_WSDL_1_1  1
+#define AXIS2_WSDL_2_0  2
 
 /*********************Message Exchange Pattern Constants***********************/
 

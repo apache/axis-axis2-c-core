@@ -24,79 +24,6 @@
 extern "C"
 {
 #endif
-
-    struct axis2_error;
-    struct axis2_error_ops;
-	typedef enum axis2_status_codes axis2_status_codes_t;
-	typedef enum axis2_error_codes axis2_error_codes_t;
-
-/**
- * @defgroup axis2_error Error
- * @ingroup axis2_util 
- * @{
- */
-
-  /** 
-    * \brief Axis2 error ops struct
-    *
-    * Encapsulator struct for ops of axis2_error
-    */
-   AXIS2_DECLARE_DATA typedef struct axis2_error_ops
-    {
-
-      /**
-        * deallocate memory of a error struct
-        * @return axis2_status_t status code
-        */
-
-        axis2_status_t (AXIS2_CALL *free)(struct axis2_error *error);
-        
-      /**
-        * get error message for the last error
-        * @return error message for the last error. NULL on error.
-        */
-         axis2_char_t * (AXIS2_CALL *get_message) (struct axis2_error *error);
-		
-		 axis2_status_t  (AXIS2_CALL *set_error_number) (struct axis2_error *error
-				,  axis2_error_codes_t error_number);
-		
-         axis2_status_t  (AXIS2_CALL *set_status_code) (struct axis2_error *error
-				, axis2_status_codes_t status_code);
-		
-         axis2_status_t  (AXIS2_CALL *get_status_code) (struct axis2_error *error);
-			 
-    } axis2_error_ops_t;
-
-  /** 
-    * \brief Axis2 Error struct
-    *
-    * Error holds the last errorno
-    */
-    typedef struct axis2_error
-    {
-        /** error related ops */
-        struct axis2_error_ops *ops;
-        /** last error number */
-        int error_number;
-
-        int status_code;
-    } axis2_error_t;
-
-AXIS2_DECLARE(axis2_status_t) axis2_error_init();
-
-#define AXIS2_ERROR_FREE(error) ((error->ops)->free(error))
-
-#define AXIS2_ERROR_GET_MESSAGE(error) \
-    ((error)->ops->get_message(error))
-
-#define AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number) \
-        ((error)->ops->set_error_number(error, error_number))
-	
-#define AXIS2_ERROR_SET_STATUS_CODE(error, status_code) \
-        ((error)->ops->set_status_code(error, status_code))
-        
-#define AXIS2_ERROR_GET_STATUS_CODE(error) ((error)->ops->get_status_code(error))
-
   /** 
     * \brief Axis2 status codes
     *
@@ -111,7 +38,6 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         /** Success state */
         AXIS2_SUCCESS
     };
-
   /** 
     * \brief Axis2 error codes
     *
@@ -287,6 +213,8 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_MEP_CANNOT_BE_NULL_IN_MEP_CLIENT,
         /* MEP Mismatch */
         AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT,
+        /* Cannot determine MEP */
+        AXIS2_ERROR_MEP_CANNOT_DETERMINE_MEP,
         /** cannot infer transport from URL */
         AXIS2_ERROR_CANNOT_INFER_TRANSPORT,
         /** Invalid SOAP version */
@@ -347,8 +275,6 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_SERVICE_XML_NOT_FOUND,
         /** Module xml file is not found in the given path */
         AXIS2_ERROR_MODULE_XML_NOT_FOUND_FOR_THE_MODULE,
-        /** Content-Type header missing in HTTP response */
-        AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING,
         
         AXIS2_ERROR_OPERATION_NAME_MISSING,
         
@@ -411,7 +337,6 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_SOAP_FAULT_SUB_CODE_DOES_NOT_HAVE_A_VALUE,
         
         AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED,
-        
         AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT,
         
         AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED,
@@ -484,6 +409,14 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
         AXIS2_ERROR_FLOW_TYPE_CANNOT_BE_NULL,
         /* Data element of the OM Node is null */
         AXIS2_ERROR_DATA_ELEMENT_IS_NULL,
+        /* Wsdl binding name cannot be NULL(Is required) */
+        AXIS2_ERROR_WSDL_BINDING_NAME_IS_REQUIRED,
+        /* PortType/Interface name cannot be null(Required) */
+        AXIS2_ERROR_WSDL_INTERFACE_NAME_IS_REQUIRED,
+        /* Wsdl svc name cannot be null(Required) */
+        AXIS2_ERROR_WSDL_SVC_NAME_IS_REQUIRED,
+        /*Content-Type header missing in HTTP response" */
+        AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING,
 
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
@@ -492,6 +425,80 @@ AXIS2_DECLARE(axis2_status_t) axis2_error_init();
           */
         AXIS2_ERROR_LAST
     };
+        
+    struct axis2_error;
+    struct axis2_error_ops;
+	typedef enum axis2_status_codes axis2_status_codes_t;
+	typedef enum axis2_error_codes axis2_error_codes_t;
+
+/**
+ * @defgroup axis2_error Error
+ * @ingroup axis2_util 
+ * @{
+ */
+
+  /** 
+    * \brief Axis2 error ops struct
+    *
+    * Encapsulator struct for ops of axis2_error
+    */
+   AXIS2_DECLARE_DATA typedef struct axis2_error_ops
+    {
+
+      /**
+        * deallocate memory of a error struct
+        * @return axis2_status_t status code
+        */
+
+        axis2_status_t (AXIS2_CALL *free)(struct axis2_error *error);
+        
+      /**
+        * get error message for the last error
+        * @return error message for the last error. NULL on error.
+        */
+         axis2_char_t * (AXIS2_CALL *get_message) (struct axis2_error *error);
+		
+		 axis2_status_t  (AXIS2_CALL *set_error_number) (struct axis2_error *error
+				,  axis2_error_codes_t error_number);
+		
+         axis2_status_t  (AXIS2_CALL *set_status_code) (struct axis2_error *error
+				, axis2_status_codes_t status_code);
+		
+         axis2_status_t  (AXIS2_CALL *get_status_code) (struct axis2_error *error);
+			 
+    } axis2_error_ops_t;
+
+  /** 
+    * \brief Axis2 Error struct
+    *
+    * Error holds the last errorno
+    */
+    typedef struct axis2_error
+    {
+        /** error related ops */
+        struct axis2_error_ops *ops;
+        /** last error number */
+        int error_number;
+
+        int status_code;
+    } axis2_error_t;
+
+AXIS2_DECLARE(axis2_status_t) axis2_error_init();
+
+#define AXIS2_ERROR_FREE(error) ((error->ops)->free(error))
+
+#define AXIS2_ERROR_GET_MESSAGE(error) \
+    ((error)->ops->get_message(error))
+
+#define AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number) \
+        ((error)->ops->set_error_number(error, error_number))
+	
+#define AXIS2_ERROR_SET_STATUS_CODE(error, status_code) \
+        ((error)->ops->set_status_code(error, status_code))
+        
+#define AXIS2_ERROR_GET_STATUS_CODE(error) ((error)->ops->get_status_code(error))
+
+
 
 /** @} */
     

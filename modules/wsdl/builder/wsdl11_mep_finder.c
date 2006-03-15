@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#include <axis2_wom_builder_internals.h>
-
 axis2_char_t *AXIS2_CALL
 axis2_wom_builder_wsdl11_mep_finder_get_mep(wsdlOperation operation) 
 {

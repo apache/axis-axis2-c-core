@@ -204,6 +204,8 @@ axis2_error_init()
         "MEP cannot be NULL in MEP client";
     axis2_error_messages[AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT] = 
         "MEP Mismatch";
+    axis2_error_messages[AXIS2_ERROR_MEP_CANNOT_DETERMINE_MEP] = 
+        "Cannot determine MEP";
     axis2_error_messages[AXIS2_ERROR_CANNOT_INFER_TRANSPORT] = 
         "cannot infer transport from URL";
     axis2_error_messages[AXIS2_ERROR_INVALID_SOAP_VERSION] = 
@@ -411,6 +413,12 @@ axis2_error_init()
         "Flow type of PhaseOrder element cannot be null";
     axis2_error_messages[AXIS2_ERROR_DATA_ELEMENT_IS_NULL] =
         "Data element of the OM Node is null";
+    axis2_error_messages[AXIS2_ERROR_WSDL_BINDING_NAME_IS_REQUIRED] =
+        "Wsdl binding name is cannot be NULL(Is required)";
+    axis2_error_messages[AXIS2_ERROR_WSDL_INTERFACE_NAME_IS_REQUIRED] = 
+        " PortType/Interface name cannot be null(Required)";
+    axis2_error_messages[AXIS2_ERROR_WSDL_SVC_NAME_IS_REQUIRED] = 
+        " Wsdl svc name cannot be null(Required)";
     axis2_error_messages[AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING] =
     "Content-Type header missing in HTTP response";
 
