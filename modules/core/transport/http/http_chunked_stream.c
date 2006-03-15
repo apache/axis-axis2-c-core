@@ -257,6 +257,8 @@ axis2_http_chunked_stream_start_chunk(
 	chunked_stream_impl->current_chunk_size = strtol(str_chunk_len, NULL, 16);
 	if(0 == chunked_stream_impl->current_chunk_size)
 	{
+        /* Read the last CRLF */
+        read = AXIS2_STREAM_READ(chunked_stream_impl->stream, env, tmp_buf, 2);
 		chunked_stream_impl->end_of_chunks = AXIS2_TRUE;
 	}
 	else
@@ -277,7 +279,7 @@ axis2_http_chunked_stream_write_last_chunk(
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	
 	stream = AXIS2_INTF_TO_IMPL(chunked_stream)->stream;
-	if(AXIS2_STREAM_WRITE(stream, env, "0\r\n", 3) == 3)
+	if(AXIS2_STREAM_WRITE(stream, env, "0\r\n\r\n", 5) == 5)
 	{
 		return AXIS2_SUCCESS;
 	}

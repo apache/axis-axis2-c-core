@@ -105,6 +105,7 @@ static int axis2_handler(request_rec *req)
     {
         return rv;
     }
+    ap_should_client_block(req);
     rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, &axis2_env, req);
     if(AXIS2_CRTICAL_FAILURE == rv)
     {

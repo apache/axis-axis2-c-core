@@ -174,6 +174,7 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
     if(request->read_chunked == AXIS2_TRUE && 0 == content_length)
     {
         content_length = -1;
+        request->chunked = 1;
     }
 	if(NULL == http_version)
 	{

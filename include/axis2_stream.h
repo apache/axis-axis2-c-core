@@ -48,7 +48,8 @@ enum axis2_stream_type
 {
 	AXIS2_STREAM_BASIC = 0,
 	AXIS2_STREAM_FILE,
-	AXIS2_STREAM_SOCKET
+	AXIS2_STREAM_SOCKET,
+    AXIS2_STREAM_MANAGED /* Example Wrapper stream for Apache2 read mechanism */
 };
 
 
@@ -186,7 +187,8 @@ axis2_stream_free_void_arg (void *stream,
 
 #define AXIS2_STREAM_BASIC_GET_LEN(stream, env) \
 		((stream)->ops->get_len(stream, env))
-
+#define AXIS2_STREAM_GET_TYPE(stream, env)\
+        ((stream)->ops->get_type(stream, env))
 /** @} */
     
 #ifdef __cplusplus

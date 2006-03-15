@@ -27,7 +27,8 @@ typedef struct apache2_stream_impl apache2_stream_impl_t;
   
 struct apache2_stream_impl
 {
-	axis2_stream_t stream; 
+	axis2_stream_t stream;
+    axis2_stream_type_t stream_type;
     request_rec *request;   
 };
 
@@ -36,6 +37,9 @@ struct apache2_stream_impl
 /********************************Function headers******************************/
 axis2_status_t AXIS2_CALL 
 apache2_stream_free (axis2_stream_t *stream, axis2_env_t **env);
+
+axis2_stream_type_t AXIS2_CALL
+apache2_stream_get_type (axis2_stream_t *stream, axis2_env_t **env);
 
 int AXIS2_CALL
 apache2_stream_write(axis2_stream_t *stream, axis2_env_t **env, 
@@ -70,6 +74,7 @@ axis2_stream_create_apache2(axis2_env_t **env, request_rec *request)
 	}
     
     stream_impl->request = request;
+    stream_impl->stream_type = AXIS2_STREAM_MANAGED;
 	stream_impl->stream.ops = (axis2_stream_ops_t *) AXIS2_MALLOC (
                         (*env)->allocator, sizeof (axis2_stream_ops_t));
 	if (NULL == stream_impl->stream.ops)
@@ -84,6 +89,7 @@ axis2_stream_create_apache2(axis2_env_t **env, request_rec *request)
     stream_impl->stream.ops->write = apache2_stream_write;
     stream_impl->stream.ops->skip = apache2_stream_skip;
     stream_impl->stream.ops->get_char = apache2_stream_get_char;
+    stream_impl->stream.ops->get_type = apache2_stream_get_type;
     
 	return &(stream_impl->stream);
 }
@@ -188,4 +194,11 @@ apache2_stream_get_char(axis2_stream_t *stream, axis2_env_t **env)
     
     /* TODO implement this */
     return ret;
+}
+
+axis2_stream_type_t AXIS2_CALL
+apache2_stream_get_type (axis2_stream_t *stream, axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    return AXIS2_INTF_TO_IMPL(stream)->stream_type;
 }

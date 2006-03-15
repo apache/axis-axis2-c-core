@@ -137,6 +137,7 @@ axis2_stream_create_internal (axis2_env_t **env)
     stream_impl->stream.axis2_eof = EOF;
 	
 	stream_impl->stream.ops->free = axis2_stream_free;
+    stream_impl->stream.ops->get_type = axis2_stream_get_type;
 	stream_impl->stream.ops->free_void_arg = axis2_stream_free_void_arg; 
 	return &(stream_impl->stream);
 }
@@ -178,6 +179,7 @@ axis2_stream_free (axis2_stream_t *stream, axis2_env_t **env)
 			stream_impl->len = -1;
 			break;
 		}
+        default: break;
 	}
 		
 	if (NULL != stream_impl->stream.ops)
