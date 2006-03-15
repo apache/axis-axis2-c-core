@@ -67,6 +67,7 @@
     -->
     <transportSender name="http" class="axis2_http_sender">
         <parameter name="PROTOCOL" locked="false">HTTP/1.1</parameter>
+        <!--parameter name="Transfer-Encoding">chunked</parameter-->
     </transportSender>
     <!--
     <transportSender name="https"
