@@ -261,4 +261,4 @@ Note: To do the following tasks you might need super user privileges in your mac
 * Restart apache2 and test whether mod_axis2 module is loaded by typing the URL
     http://localhost/axis2/services
 
-Hope you would enjoy this first working version of Axis2C soap engine :)
+Hope you would enjoy the Axis2 C soap engine :)
