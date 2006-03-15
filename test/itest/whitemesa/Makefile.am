@@ -1,2 +1,2 @@
 TESTS =
-SUBDIRS = round1
+SUBDIRS = round1 round2
