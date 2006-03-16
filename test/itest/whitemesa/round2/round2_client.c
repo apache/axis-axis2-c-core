@@ -89,7 +89,7 @@ int main(int argc, char** argv)
     if (!client_home)
         client_home = "../../deploy";
     
-    address = "http://soap.4s4c.com/ilab/soap.asp";
+    address = "http://www.mssoapinterop.org/asmx/simple.asmx";
     
     if ( (argc > 1) && (AXIS2_STRCMP("-h", argv[1]) == 0) )
     {
@@ -163,7 +163,7 @@ int main(int argc, char** argv)
     }
 
     if(ret_node)
-    {        
+    {
         if (AXIS2_OM_NODE_GET_NODE_TYPE(ret_node, &env) == AXIS2_OM_ELEMENT)
         {
             axis2_char_t *result = NULL;
