@@ -14,14 +14,15 @@ main_unit_test_suite_LDADD   =   \
                     -L$(top_builddir)/test/unit/util -ltest_util \
                     -L$(top_builddir)/test/unit/wsdl -ltest_wsdl \
                     -L$(top_builddir)/test/unit/xml/om -ltest_om \
-                    -laxis2_util \
-                    -laxis2_unix \
-                    -laxis2_om \
-                    -lpthread \
-                    -laxis2_engine \
-                    -laxis2_soap \
-                    -laxis2_wsdl \
-                    -laxis2_parser \
+                    $(top_builddir)/modules/util/libaxis2_util.la \
+					$(top_builddir)/modules/platforms/unix/libaxis2_unix.la \
+					$(top_builddir)/modules/xml/om/libaxis2_om.la \
+					$(top_builddir)/modules/xml/soap/libaxis2_soap.la \
+					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
+					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
+					$(top_builddir)/modules/xml/parser/libxml2/libaxis2_parser.la \
+					$(top_builddir)//modules/core/transport/http/sender/libaxis2_http_sender.la \
+					$(top_builddir)/modules/core/transport/http/receiver/libaxis2_http_receiver.la \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
                     

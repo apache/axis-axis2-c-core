@@ -6,14 +6,14 @@ AM_CFLAGS = -g -O2 -pthread
 test_description_SOURCES = test_description.c
 
 test_description_LDADD   =  \
-					-laxis2_util \
-                    -laxis2_om \
-                    -laxis2_unix \
-                    -laxis2_wsdl \
-                    -laxis2_engine \
+                    $(top_builddir)/modules/util/libaxis2_util.la \
+					$(top_builddir)/modules/platforms/unix/libaxis2_unix.la \
+					$(top_builddir)/modules/xml/om/libaxis2_om.la \
+					$(top_builddir)/modules/xml/soap/libaxis2_soap.la \
+					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
+					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
+					$(top_builddir)/modules/xml/parser/libxml2/libaxis2_parser.la \
                     -lpthread \
-                    -laxis2_soap \
-                    -laxis2_parser \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
                     

@@ -9,13 +9,13 @@ test_util_SOURCES = test_util.c test_log.c
 test_thread_SOURCES = test_thread.c
 
 test_util_LDADD   =   \
-                         -laxis2_util \
-						-laxis2_unix \
+                    $(top_builddir)/modules/util/libaxis2_util.la \
+					$(top_builddir)/modules/platforms/unix/libaxis2_unix.la \
                         -lpthread
 
 test_thread_LDADD   =   \
-                        -laxis2_util \
-						-laxis2_unix\
+                    $(top_builddir)/modules/util/libaxis2_util.la \
+					$(top_builddir)/modules/platforms/unix/libaxis2_unix.la \
                         -lpthread
 
 INCLUDES = -I$(top_builddir)/include \

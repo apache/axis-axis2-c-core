@@ -36,14 +36,14 @@ util_test_LDADD   =   \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                      $(top_builddir)/test/unit/util/libtest_util.la \
-                    -laxis2_util \
-                    -laxis2_unix \
-                    -laxis2_engine \
-                    -laxis2_soap \
-                    -laxis2_wsdl \
-                    -laxis2_om \
+                    $(top_builddir)/modules/util/libaxis2_util.la \
+					$(top_builddir)/modules/platforms/unix/libaxis2_unix.la \
+					$(top_builddir)/modules/xml/om/libaxis2_om.la \
+					$(top_builddir)/modules/xml/soap/libaxis2_soap.la \
+					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
+					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
+					$(top_builddir)/modules/xml/parser/libxml2/libaxis2_parser.la \
                     -lpthread \
-                    -laxis2_parser \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
 

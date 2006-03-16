@@ -3,15 +3,15 @@ prgbin_PROGRAMS = round2
 round2_SOURCES = round2_client.c
 
 round2_LDADD   =    $(LDFLAGS) \
-					-laxis2_util \
-                    -laxis2_om \
-                    -laxis2_wsdl \
-                    -laxis2_engine \
-                    -laxis2_parser \
-                    -laxis2_unix \
-                    -laxis2_soap \
-                    -laxis2_http_sender \
-                    -laxis2_http_receiver \
+                    $(top_builddir)/modules/util/libaxis2_util.la \
+					$(top_builddir)/modules/platforms/unix/libaxis2_unix.la \
+					$(top_builddir)/modules/xml/om/libaxis2_om.la \
+					$(top_builddir)/modules/xml/soap/libaxis2_soap.la \
+					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
+					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
+					$(top_builddir)/modules/xml/parser/libxml2/libaxis2_parser.la \
+					$(top_builddir)//modules/core/transport/http/sender/libaxis2_http_sender.la \
+					$(top_builddir)/modules/core/transport/http/receiver/libaxis2_http_receiver.la \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
 

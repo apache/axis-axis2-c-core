@@ -15,12 +15,12 @@ check_PROGRAMS = om_test
 prgbin_PROGRAMS = om_test
 om_test_SOURCES = main.c
 om_test_LDADD   =   libtest_om.la  \
-                     -L$(CUTEST_HOME)/lib \
-                     -lcutest \
-                    -laxis2_util \
-                    -laxis2_om \
-                    -laxis2_unix \
-                    -laxis2_parser \
+                    -L$(CUTEST_HOME)/lib \
+                    -lcutest \
+		            $(top_builddir)/modules/util/libaxis2_util.la \
+					$(top_builddir)/modules/platforms/unix/libaxis2_unix.la \
+					$(top_builddir)/modules/xml/om/libaxis2_om.la \
+                    $(top_builddir)/modules/xml/parser/libxml2/libaxis2_parser.la \
                     $(LIBXML2_LIBS) \
                     $(GUTHTHILA_LIBS)
                     

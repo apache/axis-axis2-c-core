@@ -8,27 +8,28 @@ test_client_SOURCES = test_client.c
 test_clientapi_SOURCES = test_clientapi.c
 
 test_clientapi_LDADD   =  \
-	                -laxis2_util \
-	                -laxis2_om \
-	                -laxis2_engine \
-	                -laxis2_wsdl \
-	                -laxis2_http_sender \
-	                -laxis2_parser \
+                    $(top_builddir)/modules/util/libaxis2_util.la \
+					$(top_builddir)/modules/platforms/unix/libaxis2_unix.la \
+					$(top_builddir)/modules/xml/om/libaxis2_om.la \
+					$(top_builddir)/modules/xml/soap/libaxis2_soap.la \
+					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
+					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
+                    $(top_builddir)/modules/xml/parser/libxml2/libaxis2_parser.la \
+					$(top_builddir)/modules/core/transport/http/sender/libaxis2_http_sender.la \
 	                -lpthread \
-					-laxis2_soap \
-                    -laxis2_unix \
 	                $(LIBXML2_LIBS) \
 	                $(GUTHTHILA_LIBS)
 
 test_client_LDADD   =  \
-	                -laxis2_util \
-	                -laxis2_om \
-	                -laxis2_engine \
-	                -laxis2_wsdl \
+                    $(top_builddir)/modules/util/libaxis2_util.la \
+					$(top_builddir)/modules/platforms/unix/libaxis2_unix.la \
+					$(top_builddir)/modules/xml/om/libaxis2_om.la \
+					$(top_builddir)/modules/xml/soap/libaxis2_soap.la \
+					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
+					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
+                    $(top_builddir)/modules/xml/parser/libxml2/libaxis2_parser.la \
+					$(top_builddir)/modules/core/transport/http/sender/libaxis2_http_sender.la \
 	                -lpthread \
-	                -laxis2_parser \
-					-laxis2_soap \
-                    -laxis2_unix \
 	                $(LIBXML2_LIBS) \
 	                $(GUTHTHILA_LIBS) 
 

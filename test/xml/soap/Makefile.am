@@ -7,12 +7,11 @@ AM_CFLAGS = -g -O2 -pthread
 test_soap_SOURCES = test_soap.c
 
 test_soap_LDADD   =   \
-                    -laxis2_om \
-                    -laxis2_soap \
-                    -laxis2_util \
-                    -laxis2_parser \
-                    -laxis2_unix \
-                    -laxis2_unix \
+                    $(top_builddir)/modules/util/libaxis2_util.la \
+					$(top_builddir)/modules/platforms/unix/libaxis2_unix.la \
+					$(top_builddir)/modules/xml/om/libaxis2_om.la \
+					$(top_builddir)/modules/xml/soap/libaxis2_soap.la \
+					$(top_builddir)/modules/xml/parser/libxml2/libaxis2_parser.la \
                     $(LIBXML2_LIBS) \
                     $(GUTHTHILA_LIBS)
                     
