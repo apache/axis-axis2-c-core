@@ -27,6 +27,11 @@
 
 #include <axis2_string.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 struct axis2_qname;
 struct axis2_qname_ops;
 
@@ -139,5 +144,8 @@ axis2_qname_create (axis2_env_t **env,
         ((qname)->ops->to_string(qname, env))        
 /** @} */
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* AXIS2_QNAME_H */
