@@ -111,7 +111,7 @@ test_om_build (char *filename)
         if (ns)
         {
             printf ("root ns prefix %s\n", AXIS2_OM_NAMESPACE_GET_PREFIX(ns,&environment));
-            printf ("root ns uri %s\n", AXIS2_OM_NAMESPACE_GET_PREFIX(ns,&environment));
+            printf ("root ns uri %s\n", AXIS2_OM_NAMESPACE_GET_URI(ns,&environment));
 
         }
     }
@@ -273,7 +273,7 @@ main (int argc, char *argv[])
     
     environment = axis2_env_create_with_error_log(allocator, error,  axis_log);
     test_om_build (file_name);
-    test_om_serialize(); 
+  /*  test_om_serialize(); */
 
     axis2_env_free(environment); 
     axis2_allocator_free(allocator);

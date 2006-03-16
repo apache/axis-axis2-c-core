@@ -307,8 +307,12 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
 {
     
 	axis2_libxml2_reader_wrapper_impl_t *wrapper_impl = NULL;
+    
     AXIS2_ENV_CHECK( env, NULL);
     
+    if(!read_input_callback)
+        return NULL;
+        
     wrapper_impl = (axis2_libxml2_reader_wrapper_impl_t*)AXIS2_MALLOC((*env)->allocator,
          sizeof(axis2_libxml2_reader_wrapper_impl_t));
     if(!wrapper_impl)
@@ -469,7 +473,10 @@ axis2_libxml2_reader_wrapper_free(axis2_xml_reader_t *parser,
         xmlCleanupParser();
     }
     if(parser->ops)
+    {
         AXIS2_FREE((*env)->allocator, parser->ops);
+        parser->ops = NULL;
+    }
     AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(parser));
     return AXIS2_SUCCESS;   
 }

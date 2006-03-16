@@ -163,7 +163,12 @@ axis2_om_comment_set_value(axis2_om_comment_t *om_comment,
         AXIS2_FREE((*env)->allocator, comment_impl->value);
         comment_impl->value = NULL;
     }
+    
     AXIS2_INTF_TO_IMPL(om_comment)->value = (axis2_char_t*)AXIS2_STRDUP(value,env);
+
+    if(!AXIS2_INTF_TO_IMPL(om_comment)->value)
+        return AXIS2_FAILURE;
+    
     return AXIS2_SUCCESS;
 }
 

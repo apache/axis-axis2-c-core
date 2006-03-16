@@ -196,23 +196,25 @@ axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
 {
     axis2_om_output_impl_t *om_output_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
     om_output_impl = AXIS2_INTF_TO_IMPL(om_output);
-    if(om_output_impl->xml_version)
+    
+    if(NULL != om_output_impl->xml_version)
     {
         AXIS2_FREE((*env)->allocator, om_output_impl->xml_version);
         om_output_impl->xml_version = NULL;
     }        
-    if(om_output_impl->char_set_encoding)
+    if(NULL != om_output_impl->char_set_encoding)
     {
         AXIS2_FREE((*env)->allocator, om_output_impl->char_set_encoding);
         om_output_impl->char_set_encoding = NULL;
     }        
-    if(om_output_impl->xml_writer)
+    if(NULL != om_output_impl->xml_writer)
     {
         AXIS2_XML_WRITER_FREE(om_output_impl->xml_writer, env);
         om_output_impl->xml_writer = NULL;
     }        
-    if(om_output->ops)
+    if(NULL != om_output->ops)
     {
         AXIS2_FREE((*env)->allocator, om_output->ops);
         om_output->ops = NULL;
@@ -247,7 +249,6 @@ axis2_om_output_set_ignore_xml_declaration
                             axis2_bool_t ignore_xml_dec)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, ignore_xml_dec, AXIS2_FAILURE); 
     AXIS2_INTF_TO_IMPL(om_output)->ignore_xml_declaration = ignore_xml_dec;
     return AXIS2_SUCCESS;
 } 
@@ -258,7 +259,6 @@ axis2_om_output_set_soap11(axis2_om_output_t *om_output,
                            axis2_bool_t soap11)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, soap11, AXIS2_FAILURE); 
     AXIS2_INTF_TO_IMPL(om_output)->is_soap11 = soap11;
     return AXIS2_SUCCESS;
 }
@@ -268,11 +268,23 @@ axis2_om_output_set_xml_version(axis2_om_output_t *om_output,
                                 axis2_env_t **env,
                                 axis2_char_t *xml_version)
 {
+    axis2_om_output_impl_t *output_impl = NULL; 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
     AXIS2_PARAM_CHECK((*env)->error, xml_version, AXIS2_FAILURE); 
-    if(AXIS2_INTF_TO_IMPL(om_output)->xml_version)
-        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(om_output)->xml_version);
-    AXIS2_INTF_TO_IMPL(om_output)->xml_version = xml_version;
+    output_impl = AXIS2_INTF_TO_IMPL(om_output);
+    
+    if(NULL !=  output_impl->xml_version)
+    {
+        AXIS2_FREE((*env)->allocator,  output_impl->xml_version);
+        output_impl->xml_version = NULL;
+    }
+
+    output_impl->xml_version = AXIS2_STRDUP(xml_version, env);
+    if(!output_impl->xml_version)
+    {
+        return AXIS2_FAILURE;
+    }
     return AXIS2_SUCCESS;
 }
                                 
@@ -290,12 +302,22 @@ axis2_om_output_set_char_set_encoding
                             axis2_env_t **env,
                             axis2_char_t *char_set_encoding)
 {
-
+    axis2_om_output_impl_t *output_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, char_set_encoding, AXIS2_FAILURE); 
-    AXIS2_INTF_TO_IMPL(om_output)->char_set_encoding = char_set_encoding;
-    if(AXIS2_INTF_TO_IMPL(om_output)->xml_version)
-        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(om_output)->xml_version);
+    output_impl = AXIS2_INTF_TO_IMPL(om_output);
+    
+    if(NULL != output_impl->char_set_encoding)
+    {
+        AXIS2_FREE((*env)->allocator, output_impl->char_set_encoding);
+        output_impl->char_set_encoding = NULL;
+    }
+    
+    output_impl->char_set_encoding = AXIS2_STRDUP(char_set_encoding, env);
+    if(!output_impl->char_set_encoding)
+    {
+        return AXIS2_FAILURE;
+    }
     return AXIS2_SUCCESS;
 }
                                 
@@ -315,7 +337,6 @@ axis2_om_output_set_do_optimize
                             axis2_bool_t optimize)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, optimize, AXIS2_FAILURE); 
     AXIS2_INTF_TO_IMPL(om_output)->do_optimize = optimize;
     return AXIS2_SUCCESS;    
 } 
@@ -484,10 +505,10 @@ axis2_om_output_write_xml_version_encoding(axis2_om_output_t *om_output,
     axis2_om_output_impl_t *output_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     output_impl = AXIS2_INTF_TO_IMPL(om_output);
-    AXIS2_XML_WRITER_WRITE_START_DOCUMENT_WITH_VERSION_ENCODING(
+    return AXIS2_XML_WRITER_WRITE_START_DOCUMENT_WITH_VERSION_ENCODING(
                                 output_impl->xml_writer, 
                                 env, 
                                 output_impl->xml_version, 
                                 output_impl->char_set_encoding);
-    return AXIS2_SUCCESS;
+    
 }

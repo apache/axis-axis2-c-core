@@ -211,7 +211,7 @@ axis2_om_node_free_tree(axis2_om_node_t *om_node,
     
     node_impl = AXIS2_INTF_TO_IMPL(om_node);
         
-    if (node_impl->first_child)
+    if (NULL != node_impl->first_child)
     {   
         while (NULL != (node_impl->first_child))
         {
@@ -227,29 +227,41 @@ axis2_om_node_free_tree(axis2_om_node_t *om_node,
     switch (node_impl->node_type)
     {
     case AXIS2_OM_ELEMENT:
-        AXIS2_OM_ELEMENT_FREE((axis2_om_element_t*)(node_impl->data_element), env);
-        break;
+       if(NULL != node_impl->data_element)
+            AXIS2_OM_ELEMENT_FREE((axis2_om_element_t*)(node_impl->data_element), env);
+       
+       break;
 
     case AXIS2_OM_COMMENT:
-        AXIS2_OM_COMMENT_FREE((axis2_om_comment_t*)(node_impl->data_element), env);
+        if(NULL != node_impl->data_element)
+            AXIS2_OM_COMMENT_FREE((axis2_om_comment_t*)(node_impl->data_element), env);
+        
         break;
     case AXIS2_OM_DOCTYPE:
         /*AXIS2_OM_DOCTYPE_FREE((axis2_om_doctype_t*)(node_impl->data_element), env);*/
         break;
     case AXIS2_OM_PROCESSING_INSTRUCTION:
-         AXIS2_OM_PROCESSING_INSTRUCTION_FREE(
-            (axis2_om_processing_instruction_t*)(node_impl->data_element), env);
+         if(NULL != node_impl->data_element)
+                AXIS2_OM_PROCESSING_INSTRUCTION_FREE(
+                (axis2_om_processing_instruction_t*)(node_impl->data_element), env);
+        
         break;
     case AXIS2_OM_TEXT:
-        AXIS2_OM_TEXT_FREE((axis2_om_text_t*)(node_impl->data_element),env);
+        if(NULL != node_impl->data_element)
+            AXIS2_OM_TEXT_FREE((axis2_om_text_t*)(node_impl->data_element),env);
+    
         break;
 
     default:
         break;
     }
+    if(NULL != om_node->ops)
+    {
+        AXIS2_FREE ((*env)->allocator, om_node->ops);
+        om_node->ops = NULL;
+    }
     
-    AXIS2_FREE ((*env)->allocator, om_node->ops);
-    AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_node));
+    AXIS2_FREE ((*env)->allocator, node_impl);
     return AXIS2_SUCCESS;
 }
 
@@ -347,30 +359,30 @@ axis2_om_node_set_parent (axis2_om_node_t *om_node,
                                axis2_env_t **env,
                                axis2_om_node_t * parent)
 {
-   
+    axis2_om_node_impl_t *node_impl = NULL;
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
+    if(!om_node)
+        return AXIS2_FAILURE;
+        
     AXIS2_PARAM_CHECK((*env)->error, parent, AXIS2_FAILURE);
     
-    if(!parent)
-    {
-
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
-            AXIS2_FAILURE);
-        return AXIS2_FAILURE;
-    }
+    node_impl = AXIS2_INTF_TO_IMPL(om_node);
     
-    if (parent == AXIS2_INTF_TO_IMPL(om_node)->parent)
+    
+    if (parent == node_impl->parent)
     {   /* same parent already exist */
         return AXIS2_SUCCESS;
     }
     /* if a new parent is assigned in  place of existing 
      *  one first the node should  be detached  
      */
-    if((AXIS2_INTF_TO_IMPL(om_node)->parent))
+    if(NULL != node_impl->parent)
     {
-        axis2_om_node_detach(om_node,env);
+       om_node =  axis2_om_node_detach(om_node, env);
     }
-    AXIS2_INTF_TO_IMPL(om_node)->parent = parent;
+    
+    node_impl->parent = parent;
+    
     return AXIS2_SUCCESS;
 }
 
@@ -387,16 +399,19 @@ axis2_om_node_insert_sibling_after (axis2_om_node_t * om_node,
                                     axis2_om_node_t * node_to_insert)
 {
     axis2_om_node_t *next_sib = NULL;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
     AXIS2_PARAM_CHECK((*env)->error, node_to_insert, AXIS2_FAILURE);
  
     AXIS2_INTF_TO_IMPL(node_to_insert)->parent = 
         AXIS2_INTF_TO_IMPL(om_node)->parent;
+    
     AXIS2_INTF_TO_IMPL(node_to_insert)->prev_sibling = om_node;
         
     next_sib = AXIS2_INTF_TO_IMPL(om_node)->next_sibling;    
     
-    if(next_sib)
+    if(NULL != next_sib)
     {
         AXIS2_INTF_TO_IMPL(next_sib)->prev_sibling = node_to_insert;
     }
@@ -450,49 +465,76 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
 {
     
     int status = AXIS2_SUCCESS;
+    axis2_om_node_impl_t *node_impl = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    if(!om_node)
+        return AXIS2_SUCCESS;
+    
     AXIS2_PARAM_CHECK((*env)->error,om_output,AXIS2_FAILURE);
     
+    node_impl = AXIS2_INTF_TO_IMPL(om_node);
+    
 
-    switch (AXIS2_INTF_TO_IMPL(om_node)->node_type)
+    switch (node_impl->node_type)
     {
-    case AXIS2_OM_ELEMENT:
-        status = AXIS2_OM_ELEMENT_SERIALIZE_START_PART(
-                 (axis2_om_element_t *)(AXIS2_INTF_TO_IMPL(om_node)->data_element),
-                  env,
-                  om_output);
-                  
+     case AXIS2_OM_ELEMENT:
+        if(NULL != node_impl->data_element)
+        {
+             status = AXIS2_OM_ELEMENT_SERIALIZE_START_PART(
+                 (axis2_om_element_t *)(node_impl->data_element),
+                    env, om_output);
+        }         
         if (status != AXIS2_SUCCESS)
             return status;
+        
         break;
+    
     case AXIS2_OM_TEXT:
-        status = AXIS2_OM_TEXT_SERIALIZE (
-                (axis2_om_text_t*)(AXIS2_INTF_TO_IMPL(om_node)->data_element),
+        if(NULL !=  node_impl->data_element)
+        {
+            status = AXIS2_OM_TEXT_SERIALIZE (
+                (axis2_om_text_t*)(node_impl->data_element),
                 env, om_output);
+        }
         if(status != AXIS2_SUCCESS)
             return status;
+    
         break;
+    
     case AXIS2_OM_COMMENT:
-        status = AXIS2_OM_COMMENT_SERIALIZE(
-                (axis2_om_comment_t*)(AXIS2_INTF_TO_IMPL(om_node)->data_element),
-                env, om_output);
+        if(NULL !=  node_impl->data_element)
+        {
+            status = AXIS2_OM_COMMENT_SERIALIZE(
+                    (axis2_om_comment_t*)(node_impl->data_element),
+                    env, om_output);
+        }                
         if( status != AXIS2_SUCCESS)
             return status;
         
         break;    
     
     case AXIS2_OM_DOCTYPE:
-        status = AXIS2_OM_DOCTYPE_SERIALIZE(        
-                (axis2_om_doctype_t*)(AXIS2_INTF_TO_IMPL(om_node)->data_element),
-                 env, om_output);
+        if(NULL != node_impl->data_element)
+        {
+            status = AXIS2_OM_DOCTYPE_SERIALIZE(        
+                    (axis2_om_doctype_t*)(node_impl->data_element),
+                     env, om_output);
+        }                 
         if( status != AXIS2_SUCCESS)
             return status;
+        
         break;
         
     case AXIS2_OM_PROCESSING_INSTRUCTION:
-        status = AXIS2_OM_PROCESSING_INSTRUCTION_SERIALIZE(
-                (axis2_om_processing_instruction_t*)
-                    (AXIS2_INTF_TO_IMPL(om_node)->data_element), env, om_output);
+        if(NULL != node_impl->data_element)
+        {
+            status = AXIS2_OM_PROCESSING_INSTRUCTION_SERIALIZE(
+                    (axis2_om_processing_instruction_t*)(node_impl->data_element), 
+                    env, om_output);
+        }                    
+    
         if( status != AXIS2_SUCCESS)
             return status;
         break;
@@ -502,46 +544,50 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
     }
     
     /* serialize children of this node */
-    if(AXIS2_INTF_TO_IMPL(om_node)->first_child)
-        status =  axis2_om_node_serialize(AXIS2_INTF_TO_IMPL(om_node)->first_child, env, om_output);
+    if(NULL != node_impl->first_child)
+            status =  axis2_om_node_serialize(node_impl->first_child, env, om_output);
 
-    switch (AXIS2_INTF_TO_IMPL(om_node)->node_type)
+    switch (node_impl->node_type)
     {
     case AXIS2_OM_ELEMENT:
-        status = AXIS2_OM_ELEMENT_SERIALIZE_END_PART ((axis2_om_element_t *)
-                                   (AXIS2_INTF_TO_IMPL(om_node)->data_element),
-                                    env, om_output);
+        if(NULL != node_impl->data_element)
+        {
+            status = AXIS2_OM_ELEMENT_SERIALIZE_END_PART (
+                        (axis2_om_element_t *)(node_impl->data_element),
+                        env, om_output);
+        }
         if (status != AXIS2_SUCCESS)
             return status;
+        
         break;
     
     default:
         break;
     }
     /* serialize next sibling */  
-    if(AXIS2_INTF_TO_IMPL(om_node)->next_sibling)    
-        status = axis2_om_node_serialize(AXIS2_INTF_TO_IMPL(om_node)->next_sibling, env, om_output);
-    
+    if(NULL != node_impl->next_sibling)    
+        status = axis2_om_node_serialize(node_impl->next_sibling, env, om_output);
     
     return status;
- 
 }
 
 axis2_om_node_t* AXIS2_CALL 
 axis2_om_node_get_parent(axis2_om_node_t *om_node,
                          axis2_env_t **env)
 {
-    
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(om_node)->parent;
-    
 }
+
 axis2_om_node_t* AXIS2_CALL 
 axis2_om_node_get_first_child(axis2_om_node_t *om_node,
                               axis2_env_t **env)
 {   
     axis2_om_node_impl_t *om_node_impl = NULL;
     int token = 0;
+    if(! om_node)
+        return NULL;
+        
     AXIS2_ENV_CHECK(env, NULL);
     om_node_impl = AXIS2_INTF_TO_IMPL(om_node);
     /**********************************************************/
@@ -550,7 +596,7 @@ axis2_om_node_get_first_child(axis2_om_node_t *om_node,
     {
         token = AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node_impl->builder, env);
         if(token == -1)
-            break;
+            return NULL;
     }
     /**********************************************************/
     return om_node_impl->first_child;
@@ -579,6 +625,10 @@ axis2_om_node_get_next_sibling(axis2_om_node_t *om_node,
 {
     axis2_om_node_impl_t *om_node_impl = NULL;
     int token = 0;
+    
+    if(!om_node)
+        return NULL;
+        
     AXIS2_ENV_CHECK(env, NULL);
     om_node_impl = AXIS2_INTF_TO_IMPL(om_node);
     /*****************************************************/
@@ -587,7 +637,7 @@ axis2_om_node_get_next_sibling(axis2_om_node_t *om_node,
     {
         token = AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node_impl->builder, env);
         if(token == -1)
-           break;
+           return NULL;
     }
     /*******************************************************/
     return om_node_impl->next_sibling;
@@ -628,9 +678,11 @@ axis2_om_node_build_next(axis2_om_node_t *om_node,
     AXIS2_ENV_CHECK(env, NULL);
 
     om_node_impl = AXIS2_INTF_TO_IMPL(om_node);
+    
     builder = om_node_impl->builder;
     if(!builder)
         return NULL;
+    
     return AXIS2_OM_STAX_BUILDER_NEXT(om_node_impl->builder, env);
 }
 

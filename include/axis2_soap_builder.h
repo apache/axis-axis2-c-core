@@ -146,18 +146,11 @@ axis2_soap_builder_create(axis2_env_t **env,
 #define AXIS2_SOAP_BUILDER_GET_SOAP_VERSION(builder, env) \
         ((builder)->ops->get_soap_version(builder, env))
         
-#define AXIS2_SOAP_BUILDER_SET_ELEMENT_LEVEL(builder, env, ele_level) \
-        ((builder)->ops->set_element_level(builder, env, ele_level))
-        
 #define AXIS2_SOAP_BUILDER_PROCESS_NAMESPACE_DATA(builder, env, om_node, is_soap_element) \
         ((builder)->ops->process_namespace_data(builder, env, om_node, is_soap_element))
         
-                
 /** @} */
 #ifdef __cplusplus
 }
 #endif 
- 
-
-
 #endif /* AXIS2_SOAP_BUILDER_H */

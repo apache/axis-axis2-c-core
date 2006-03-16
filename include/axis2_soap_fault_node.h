@@ -106,7 +106,7 @@ axis2_soap_fault_node_create(axis2_env_t **env);
         ((fault_node)->ops->free_fn(fault_node, env))
 
 #define AXIS2_SOAP_FAULT_NODE_GET_VALUE(fault_node , env) \
-        ((fault_node)->ops->get_node(fault_node, env)) 
+        ((fault_node)->ops->get_value(fault_node, env)) 
         
 #define AXIS2_SOAP_FAULT_NODE_GET_BASE_NODE(fault_node, env) \
         ((fault_node)->ops->get_base_node(fault_node, env))         

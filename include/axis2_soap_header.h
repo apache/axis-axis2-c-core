@@ -243,10 +243,7 @@ axis2_soap_header_create_with_parent(axis2_env_t **env,
         ((header)->ops->set_soap_version(header, env, soap_version))
         
 /** @} */
-
 #ifdef __cplusplus
 }
 #endif
-
- 
 #endif /* AXIS2_SOAP_HEADER_H */

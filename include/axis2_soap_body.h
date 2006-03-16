@@ -173,6 +173,7 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
 /** free soap_body */
 #define AXIS2_SOAP_BODY_FREE(body , env) \
         ((body)->ops->free(body, env))
+        
 /** indecate whether soap_body has a fault or not*/        
 #define AXIS2_SOAP_BODY_HAS_FAULT(body, env) \
         ((body)->ops->has_fault(body, env))

@@ -96,18 +96,8 @@ axis2_soap_fault_role_create(axis2_env_t **env);
     
 AXIS2_DECLARE(axis2_soap_fault_role_t *)
 axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
-                            axis2_soap_fault_t *fault,
-                            axis2_bool_t extract_ns_from_parent);
+                            axis2_soap_fault_t *fault);
                             
-
-AXIS2_DECLARE(axis2_soap_fault_role_t *)
-axis2_soap11_fault_role_create_with_parent(axis2_env_t **env,
-                            axis2_soap_fault_t *fault);
-
-AXIS2_DECLARE(axis2_soap_fault_role_t *)
-axis2_soap12_fault_role_create_with_parent(axis2_env_t **env,
-                            axis2_soap_fault_t *fault);
-
 /******************** Macros **************************************************/
     
     

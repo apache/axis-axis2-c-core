@@ -74,9 +74,7 @@ axis2_om_namespace_create (axis2_env_t **env,
     /* There should be a uri */
     if(!uri)
     {
-
-        (*env)->error->error_number = AXIS2_ERROR_INVALID_NULL_PARAM;
-
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -84,19 +82,23 @@ axis2_om_namespace_create (axis2_env_t **env,
                                                     sizeof(axis2_om_namespace_impl_t));
     if (!ns)
     {
-        (*env)->error->error_number = AXIS2_ERROR_NO_MEMORY;
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY , AXIS2_FAILURE);
         return NULL;
     }
-
+   
+    
+    ns->om_namespace.ops = NULL;
+    ns->prefix = NULL;
+    ns->uri = NULL;
+     
     ns->uri = (axis2_char_t *) AXIS2_STRDUP(uri,env);
     if (!ns->uri)
     {
         AXIS2_FREE ((*env)->allocator, ns);
-        (*env)->error->error_number = AXIS2_ERROR_NO_MEMORY;
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    ns->prefix = NULL;
     if (prefix)
     {
         ns->prefix = (axis2_char_t *) AXIS2_STRDUP(prefix,env);
@@ -104,13 +106,12 @@ axis2_om_namespace_create (axis2_env_t **env,
         {
             AXIS2_FREE ((*env)->allocator, ns);
             AXIS2_FREE ((*env)->allocator, ns->uri);
-            (*env)->error->error_number = AXIS2_ERROR_NO_MEMORY;
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
     }
 
     /* ops */
-    ns->om_namespace.ops = NULL;
     ns->om_namespace.ops = (axis2_om_namespace_ops_t *) AXIS2_MALLOC (
                             (*env)->allocator, sizeof(axis2_om_namespace_ops_t));
 
@@ -119,7 +120,7 @@ axis2_om_namespace_create (axis2_env_t **env,
         AXIS2_FREE ((*env)->allocator, ns);
         AXIS2_FREE ((*env)->allocator, ns->uri);
         AXIS2_FREE ((*env)->allocator, ns->prefix);
-        (*env)->error->error_number = AXIS2_ERROR_NO_MEMORY;
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -140,23 +141,21 @@ axis2_om_namespace_free (axis2_om_namespace_t *om_namespace,
 {
     axis2_om_namespace_impl_t *ns_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
     ns_impl = AXIS2_INTF_TO_IMPL(om_namespace);
     
-    
-    if (ns_impl->prefix)
+    if (NULL != ns_impl->prefix)
     {
         AXIS2_FREE ((*env)->allocator, ns_impl->prefix);
         ns_impl->prefix = NULL;
     }
 
-    if (ns_impl->uri)
+    if (NULL != ns_impl->uri)
     {
         AXIS2_FREE ((*env)->allocator, ns_impl->uri);
         ns_impl->uri = NULL;
     }
 
-    if (om_namespace->ops)
+    if (NULL != om_namespace->ops)
     {
         AXIS2_FREE ((*env)->allocator, om_namespace->ops);
         om_namespace->ops = NULL;
@@ -178,13 +177,13 @@ axis2_om_namespace_equals (axis2_om_namespace_t *om_namespace,
     int uris_differ = 0;
     int prefixes_differ = 0;
     
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_namespace, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_namespace1, AXIS2_FAILURE);
     
     ns1 = AXIS2_INTF_TO_IMPL(om_namespace);
     ns2 = AXIS2_INTF_TO_IMPL(om_namespace1);
   
-   
-
     if (!ns1 || !ns2)
         return AXIS2_FALSE;
 
@@ -209,23 +208,19 @@ axis2_om_namespace_serialize (axis2_om_namespace_t *om_namespace,
 { 
     int status = AXIS2_SUCCESS;
     axis2_om_namespace_impl_t *ns_impl = NULL;
-    AXIS2_ENV_CHECK(env,AXIS2_CRTICAL_FAILURE);
-    if (!om_namespace || !om_output)
-    {
-
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
-
+    if(!om_namespace)
         return AXIS2_FAILURE;
-    }
+        
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
+
     ns_impl = AXIS2_INTF_TO_IMPL(om_namespace);
     
     if (ns_impl->uri && ns_impl->prefix)
-        status = axis2_om_output_write ( om_output, env, AXIS2_OM_NAMESPACE,
+            status = axis2_om_output_write ( om_output, env, AXIS2_OM_NAMESPACE,
                                          2, ns_impl->prefix,
                                          ns_impl->uri);
     return status;
-
 }
 
 axis2_char_t* AXIS2_CALL
@@ -244,5 +239,3 @@ axis2_om_namespace_get_prefix(axis2_om_namespace_t *om_namespace,
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(om_namespace)->prefix;
 }                              
-
-

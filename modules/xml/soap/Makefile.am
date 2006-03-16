@@ -10,7 +10,6 @@ libaxis2_soap_la_SOURCES = soap_fault.c \
                            soap_fault_value.c \
                            soap_header_block.c \
                            soap_header.c \
-                           soap_utils.c \
                            soap_body.c \
                            soap_envelope.c \
                            soap_builder.c \

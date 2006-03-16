@@ -47,20 +47,6 @@ struct axis2_soap_fault_value;
 struct axis2_soap_body;
 struct axis2_soap_builder;
     
-    typedef enum axis2_soap_fault_types
-    {
-        AXIS2_SOAP_TYPE_NONE = 0,
-        AXIS2_SOAP_FAULT,
-        AXIS2_SOAP_FAULT_DETAIL,
-        AXIS2_SOAP_FAULT_SUB_CODE,
-        AXIS2_SOAP_FAULT_CODE,
-        AXIS2_SOAP_FAULT_NODE,
-        AXIS2_SOAP_FAULT_ROLE,
-        AXIS2_SOAP_FAULT_TEXT,
-        AXIS2_SOAP_FAULT_VALUE
-    }axis2_soap_fault_types_t;
-    
-    
 /**
  * @defgroup axis2_soap_fault
  * @ingroup axis2_soap
@@ -83,7 +69,12 @@ struct axis2_soap_builder;
 
         axis2_status_t (AXIS2_CALL *free_fn)(axis2_soap_fault_t *fault,
                                              axis2_env_t **env);
-        
+       
+        /**
+         *  internal function set a pointer in soap fault struct
+         *  to code struct
+         */
+
         axis2_status_t (AXIS2_CALL *set_code)(axis2_soap_fault_t *fault,
                                               axis2_env_t **env,
                                               struct axis2_soap_fault_code *code);
@@ -176,8 +167,6 @@ AXIS2_DECLARE(axis2_soap_fault_t *)
 axis2_soap_fault_create_with_parent(axis2_env_t **env,
                                     struct axis2_soap_body *parent);
                                         
-                                     
-
 AXIS2_DECLARE(axis2_soap_fault_t *)
 axis2_soap_fault_create_with_exception(axis2_env_t **env,
                                         struct axis2_soap_body *parent,  

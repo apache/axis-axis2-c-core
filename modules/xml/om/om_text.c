@@ -133,16 +133,22 @@ axis2_status_t AXIS2_CALL
 axis2_om_text_free (axis2_om_text_t * om_text,
                     axis2_env_t **env)
 {
+    axis2_om_text_impl_t *text_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (AXIS2_INTF_TO_IMPL(om_text)->value)
-        AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_text)->value);
-
-    if (om_text->ops)
+    text_impl = AXIS2_INTF_TO_IMPL(om_text);
+    if(NULL != text_impl->value)
+    {
+        AXIS2_FREE ((*env)->allocator, text_impl->value);
+        text_impl->value = NULL;
+    }
+    if(NULL != om_text->ops)
+    {
         AXIS2_FREE ((*env)->allocator, om_text->ops);
+        om_text->ops = NULL;
+    }
 
-    if (om_text)
-        AXIS2_FREE ((*env)->allocator, AXIS2_INTF_TO_IMPL(om_text));
+    AXIS2_FREE ((*env)->allocator, text_impl);
     return AXIS2_SUCCESS;
 }
 
@@ -175,10 +181,25 @@ axis2_om_text_set_value(axis2_om_text_t *om_text,
                         axis2_env_t **env,
                         const axis2_char_t *value)
 {
+    axis2_om_text_impl_t *text_impl = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error , om_text, AXIS2_FAILURE);
-    if(AXIS2_INTF_TO_IMPL(om_text)->value)
-        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(om_text)->value);
-    AXIS2_INTF_TO_IMPL(om_text)->value = (axis2_char_t*)AXIS2_STRDUP(value,env);
+    
+    text_impl = AXIS2_INTF_TO_IMPL(om_text);
+    if(NULL != text_impl->value)
+    {
+        AXIS2_FREE((*env)->allocator, text_impl->value);
+        text_impl->value = NULL;
+    }
+    
+    text_impl->value = (axis2_char_t*)AXIS2_STRDUP(value, env);
+    if(!text_impl->value)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY,
+            AXIS2_FAILURE);
+            
+        return AXIS2_FAILURE;
+    }
     return AXIS2_SUCCESS;
 }

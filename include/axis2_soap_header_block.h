@@ -86,8 +86,6 @@ extern "C"
         axis2_status_t (AXIS2_CALL *set_processed)
                             (axis2_soap_header_block_t *header_block,
                              axis2_env_t **env);                                                                                                                                                                                    
-                                                                                                                                    
-                                   
         axis2_char_t* (AXIS2_CALL *get_role)
                             (axis2_soap_header_block_t *header_block,
                              axis2_env_t **env);
@@ -105,7 +103,6 @@ extern "C"
                              axis2_char_t *attr_name,
                              axis2_char_t *soap_envelope_namespace_uri);                            
                                        
-                                                                                          
        /**
         * This is only intended to be used by the builder,
         */
@@ -117,7 +114,7 @@ extern "C"
         axis2_om_node_t* (AXIS2_CALL *get_base_node)
                             (axis2_soap_header_block_t *header_block,
                              axis2_env_t **env);
-                                                                                                                                                                                       
+        
         int (AXIS2_CALL *get_soap_version)  
                             (axis2_soap_header_block_t *header_block,
                              axis2_env_t **env);
@@ -126,8 +123,6 @@ extern "C"
                             (axis2_soap_header_block_t *header_block,
                              axis2_env_t **env,
                              int soap_version);
-        
-       
     };
 
   /**
@@ -166,7 +161,7 @@ axis2_soap_header_block_create_with_parent(axis2_env_t **env,
         ((header_block)->ops->get_role(header_block, env))
 
 #define AXIS2_SOAP_HEADER_BLOCK_IS_PROCESSED(header_block , env) \
-        ((header_block)->ops->is_precessed(header_block, env))
+        ((header_block)->ops->is_processed(header_block, env))
 
 #define AXIS2_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block , env) \
         ((header_block)->ops->set_processed(header_block, env))
@@ -210,6 +205,4 @@ axis2_soap_header_block_create_with_parent(axis2_env_t **env,
 #ifdef __cplusplus
 }
 #endif
-
- 
- #endif /* AXIS2_SOAP_HEADER_BLOCK_H */
+#endif /* AXIS2_SOAP_HEADER_BLOCK_H */

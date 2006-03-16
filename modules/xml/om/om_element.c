@@ -168,8 +168,6 @@ typedef struct axis2_om_element_impl
     axis2_hash_t *attributes;
     /** List of namespaces */
     axis2_hash_t *namespaces;
-    /** to hold text value if it is a text element */
-    axis2_char_t *text_value;
     
     axis2_qname_t *qname;
     
@@ -227,7 +225,6 @@ axis2_om_element_create (axis2_env_t **env,
     element->child_ele_iter = NULL;
     element->children_iter = NULL;
     element->children_qname_iter = NULL;
-    element->text_value = NULL;
     
     element->localname = (axis2_char_t *) AXIS2_STRDUP(localname,env);
     if (!element->localname)
@@ -720,7 +717,7 @@ axis2_om_element_free (axis2_om_element_t *om_element,
     
     element_impl = AXIS2_INTF_TO_IMPL(om_element);
     
-    if (element_impl->localname)
+    if (NULL != element_impl->localname)
     {
         AXIS2_FREE ((*env)->allocator,element_impl->localname);
         element_impl->localname = NULL;
@@ -729,7 +726,7 @@ axis2_om_element_free (axis2_om_element_t *om_element,
     {
             /* it is the responsibility of the element where the namespace is declared to free it */
     }
-    if (element_impl->attributes)
+    if (NULL != element_impl->attributes)
     {
         axis2_hash_index_t *hi;
         void *val = NULL;
@@ -749,7 +746,7 @@ axis2_om_element_free (axis2_om_element_t *om_element,
         element_impl->attributes = NULL;
     }
         
-    if (element_impl->namespaces)
+    if (NULL != element_impl->namespaces)
     {
         axis2_hash_index_t *hi;
         void *val = NULL;
@@ -766,34 +763,34 @@ axis2_om_element_free (axis2_om_element_t *om_element,
         axis2_hash_free (element_impl->namespaces, env);
         element_impl->namespaces = NULL;  
     }
-    if(element_impl->qname)
+    if(NULL != element_impl->qname)
     {
         AXIS2_QNAME_FREE(element_impl->qname, env);
         element_impl->qname = NULL;
     }
-    if(element_impl->children_iter)
+    if(NULL != element_impl->children_iter)
     {
         AXIS2_OM_CHILDREN_ITERATOR_FREE(element_impl->children_iter, env);
         element_impl->children_iter = NULL;
     }
-    if(element_impl->child_ele_iter)
+    if(NULL != element_impl->child_ele_iter)
     {
         AXIS2_OM_CHILD_ELEMENT_ITERATOR_FREE(element_impl->child_ele_iter, env);
         element_impl->child_ele_iter = NULL;
     }
-    if(element_impl->children_qname_iter)
+    if(NULL != element_impl->children_qname_iter)
     {
         AXIS2_OM_CHILDREN_QNAME_ITERATOR_FREE(element_impl->children_qname_iter, env);
         element_impl->children_qname_iter = NULL;
     }
-    if(element_impl->text_value)
+    if(NULL != om_element->ops)
     {
-        AXIS2_FREE((*env)->allocator, element_impl->text_value);
-        element_impl->text_value = NULL;
+        AXIS2_FREE ((*env)->allocator, om_element->ops);
+        om_element->ops = NULL;
     }
     
-    AXIS2_FREE ((*env)->allocator, om_element->ops);
     AXIS2_FREE ((*env)->allocator, element_impl);
+    
     return status;
 }
 
@@ -804,6 +801,7 @@ axis2_om_element_serialize_start_part (axis2_om_element_t *om_element,
 {
     int status = AXIS2_SUCCESS;
     axis2_om_element_impl_t *ele_impl = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
     
@@ -1211,10 +1209,7 @@ axis2_om_element_get_text(axis2_om_element_t *om_element,
         temp_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(temp_node, env);
     }
     
-    element_impl->text_value = dest;
-    dest = NULL;  
-    
-    return element_impl->text_value;
+    return dest;
 }                          
 
 axis2_status_t AXIS2_CALL
