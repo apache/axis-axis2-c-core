@@ -58,7 +58,7 @@ preferences.build.option.warn.undef=0
 preferences.autoformat.custom.style=-nbad -bap -nbc -bbo -bl -bli0 -bls -ncdb -nce -cp1 -cs -di2 -ndj -nfc1 -nfca -hnl -i4 -ip5 -lp -pcs -nprs -psl -saf -sai -saw -nsc -nsob -ts4 -nut -nbfda
 preferences.indent.opening=0
 preferences.autoformat.disable=1
-preferences.indent.automatic=1
+preferences.indent.automatic=0
 preferences.use.tabs=0
 preferences.indent.size=4
 preferences.tabsize=4
@@ -253,7 +253,15 @@ module.include.files=\
 	modules/core/deployment/axis2_module_builder.h\
 	modules/core/deployment/axis2_svc_builder.h\
 	modules/core/deployment/axis2_svc_grp_builder.h\
-	modules/util/axis2_property.h
+	modules/util/axis2_property.h\
+	modules/wsdl/builder/axis2_wom_builder_internals.h\
+	modules/wsdl/builder/axis2_wom_builder_schema_parser.h\
+	modules/wsdl/builder/axis2_wom_builder_type_table.h\
+	include/axis2_wsdl_desc.h\
+	include/axis2_wsdl_types.h\
+	include/axis2_wsdl_import.h\
+	include/axis2_wsdl_include.h\
+	include/axis2_wsdl_extensible_attribute.h
 
 module.source.name=.
 module.source.type=
@@ -445,7 +453,22 @@ module.source.files=\
 	modules/mod_addr/addr_in_handler.c\
 	modules/mod_addr/addr_out_handler.c\
 	modules/mod_addr/mod_addr.c\
-	modules/util/property.c
+	modules/util/property.c\
+	modules/wsdl/builder/axis2_wom_builder_internals.h\
+	modules/wsdl/builder/axis2_wom_builder_schema_parser.h\
+	modules/wsdl/builder/schema_gen.c\
+	modules/wsdl/builder/schema_parser.c\
+	modules/wsdl/builder/type_table.c\
+	modules/wsdl/builder/wom_builder.c\
+	modules/wsdl/builder/wsdl11_mep_finder.c\
+	modules/wsdl/builder/wsdl1_to_wom_builder.c\
+	modules/wsdl/builder/wsdl_pump.c\
+	modules/wsdl/wsdl_desc.c\
+	modules/wsdl/wsdl_types.c\
+	modules/wsdl/wsdl_import.c\
+	modules/wsdl/wsdl_include.c\
+	modules/wsdl/wsdl_extensible_attribute.c\
+	modules/wsdl/builder/wsdl_version_wrapper.c
 
 module.pixmap.name=.
 module.pixmap.type=
