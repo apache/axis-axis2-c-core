@@ -93,7 +93,7 @@ main (int argc, char **argv)
     if (!client_home)
         client_home = "../../deploy";
 
-    address = "http://www.mssoapinterop.org/asmx/simple.asmx";
+    address = "http://easysoap.sourceforge.net/cgi-bin/interopserver";
 
     if ((argc > 1) && (AXIS2_STRCMP ("-h", argv[1]) == 0))
     {
