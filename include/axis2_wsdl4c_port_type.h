@@ -35,6 +35,62 @@ extern "C"
  * @ingroup axis2_wsdl4c_port_type 
  * @{
  */
+    void *
+    axis2_wsdl4c_port_type_create(void* parser);
+
+    void
+    axis2_wsdl4c_port_type_destroy(void *port_type);
+
+    int
+    axis2_wsdl4c_port_type_get_num_ops(void *port_type);
+
+    /**
+    * axis2_wsdl4c_port_type_get_operation
+    * @param index of the operation index:0..ops.size()-1
+    * @return pointer to  the Operation
+    */
+    const void *
+    axis2_wsdl4c_port_type_get_operation_a_index(void *port_type, 
+                                        int index);
+
+    /**
+    * axis2_wsdl4c_port_type_get_operation
+    * @param name of the operation
+    * @return pointer to  the Operation
+    */
+    const void *
+    axis2_wsdl4c_port_type_get_operation_a_qname(void *port_type, 
+                                        void *qname);
+
+    int
+    axis2_wsdl4c_port_type_get_operation_index(void *port_type, 
+                                        void *qname);
+
+    /**
+    * axis2_wsdl4c_port_type_get_operations
+    * @return axis2_array_list_t
+    * returns array list of operations 
+    */
+    axis2_array_list_t *
+    axis2_wsdl4c_port_type_get_operations(void *port_type);
+
+    /**
+    * @name   binding
+    * @return const Binding*
+    * returns Binding associated with the port type 
+    * which has a binding protocol specified by 'nsp'
+    */
+    const void *
+    axis2_wsdl4c_port_type_binding(void *port_type, 
+                            char *nsp);
+
+    void
+    axis2_wsdl4c_port_type_add_op(void *port_type, 
+                        void *op);
+    
+    void
+    axis2_wsdl4c_port_type_set_binding(void *port_type, 
+                                void *bn);
 
 
 /** @} */

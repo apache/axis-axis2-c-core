@@ -35,6 +35,34 @@ extern "C"
  * @ingroup axis2_wsdl4c_service 
  * @{
  */
+    void *
+    axis2_wsdl4c_service_create(void* parser);
+
+    void
+    axis2_wsdl4c_service_destroy(void *service);
+
+    /**
+    * axis2_wsdl4c_get_binding_info
+    * @return the extensibility element id of the  main binding extension element.
+    *  In case of soap it would  be the id of the soap:binding element
+    */
+    void
+    axis2_wsdl4c_service_add_port(void *service,
+                                    char *name,
+                                    void *binding,
+                                    int svc_ext_id);
+  
+    int
+    axis2_wsdl4c_service_get_port_extention(void *service,
+                                            char *name);
+  
+    const void *
+    axis2_wsdl4c_service_get_port_binding(void *service,
+                                            char *name);
+
+    axis2_array_list_t *
+    axis2_wsdl4c_service_get_ports(void *service,
+                                            char *name);
 
 
 /** @} */

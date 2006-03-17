@@ -35,7 +35,128 @@ extern "C"
  * @ingroup axis2_wsdl4c_binding 
  * @{
  */
+    void *
+    axis2_wsdl4c_binding_create(void* parser);
 
+    void
+    axis2_wsdl4c_binding_destroy(void *binding);
+
+    /**
+    * axis2_wsdl4c_binding_get_binding_info
+    * @return the extensibility element id of the  main binding extension element.
+    *  In case of soap it would  be the id of the soap:binding element
+    */
+    int
+    axis2_wsdl4c_binding_get_binding_info(void *binding);
+
+    /**
+    * axis2_wsdl4c_binding_get_port_type
+    * @return the wsdl port type associated with this binding
+    */
+    const void *
+    axis2_wsdl4c_binding_get_port_type(void *binding);
+
+    /**
+    * axis2_wsdl4c_binding_get_service_ext_id
+    * @return the id of the service element assocaited with this binding
+    */
+    int
+    axis2_wsdl4c_binding_get_service_ext_id(void *binding);
+
+    /**
+    * axis2_wsdl4c_binding_num_ops
+    * @return number of operations in this binding
+    */
+    int
+    axis2_wsdl4c_binding_num_ops(void *binding);
+
+    /**
+    * axis2_wsdl4c_binding_get_operation
+    * @param the index of the operation (index ranges from 0 to Ops_.size()-1)
+    * @return pointer to the  operation
+    */
+    const void *
+    axis2_wsdl4c_binding_get_operation(void *binding, 
+                                        int index);
+
+    /**
+    * axis2_wsdl4c_binding_get_binding_method
+    * @param void
+    * @return The namespace of the binding protocol 
+    *         example "http://schemas.xmlsoap.org/wsdl/soap/"
+    */
+    const char *
+    axis2_wsdl4c_binding_get_binding_method(void *binding);
+
+    /**
+    * axis2_wsdl4c_binding_get_binding
+    * @return The number of binding extensibility elements assocated with each
+    *         message of the operation whose index is given
+    *         returns a pointer to a list of extensibility binding ids
+    */
+    int
+    axis2_wsdl4c_binding_get_op_binding(void *binding, 
+                                        int index, 
+                                        int *&bindings);
+
+    int
+    axis2_wsdl4c_binding_get_output_binding(void *binding, 
+                                                int index, 
+                                                int *& bindings);
+
+    int
+    axis2_wsdl4c_binding_get_input_binding(void *binding, 
+                                            int index, 
+                                            int *& bindings);
+
+    int
+    axis2_wsdl4c_binding_get_fault_binding(void *binding, 
+                                            int index, 
+                                            int *& bindings);
+
+    void
+    axis2_wsdl4c_binding_set_port_type(void *binding, 
+                                        void *port_type);
+
+    void
+    axis2_wsdl4c_binding_set_binding_info(void *binding, 
+                                            int id);
+
+    void
+    axis2_wsdl4c_binding_set_method(void *binding, 
+                                    char *ns);
+
+    void
+    axis2_wsdl4c_binding_set_service_ext_id(void *binding, 
+                                            int id);
+
+    /**
+    * Add an operation to the binding .The index returned is to be used
+    * to add more bindings to the operation
+    */
+    int
+    axis2_wsdl4c_binding_add_operation(void *binding, 
+                                        void *operation);
+ 
+    void
+    axis2_wsdl4c_binding_add_op_binding(void *binding, 
+                                        int index, 
+                                        int oBn);
+     void
+    axis2_wsdl4c_binding_add_output_binding(void *binding, 
+                                        int index, 
+                                        int opBn);
+
+    void
+    axis2_wsdl4c_binding_add_input_binding(void *binding, 
+                                    int index, 
+                                    int ipBn);
+
+    void
+    axis2_wsdl4c_binding_add_fault_binding(void *binding, 
+                                    int index, 
+                                    int fBn); 
+    
 
 /** @} */
 

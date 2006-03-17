@@ -44,10 +44,10 @@ extern "C"
    *
    */
     void *
-    axis2_wsdl4c_parser_create_wsdl_parser(char* wsdl_file);
+    axis2_wsdl4c_parser_create(char* wsdl_file);
 
-    void *
-    axis2_wsdl4c_parser_destroy_parser(void *parser);
+    void
+    axis2_wsdl4c_parser_destroy(void *parser);
 
    /**
     * set_schema_path
