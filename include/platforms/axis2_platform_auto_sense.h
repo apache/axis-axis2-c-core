@@ -45,7 +45,7 @@ extern "C"
 #elif defined ( HPUX )
   #include <hp-ux/axis2_ht-ux.h>
 #else
-  #include <unix/axis2_unix.h>
+  #include <platforms/unix/axis2_unix.h>
 #endif
 
 /** @} */
