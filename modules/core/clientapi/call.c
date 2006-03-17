@@ -63,6 +63,18 @@ typedef struct axis2_call_impl
 
 } axis2_call_impl_t;
 
+typedef struct axis2_call_worker_func_args
+{
+    axis2_env_t **env;
+    axis2_call_impl_t *call_impl;
+    axis2_callback_t *callback;
+    axis2_op_t *op;
+    axis2_msg_ctx_t *msg_ctx;
+} axis2_call_worker_func_args_t;
+
+void * AXIS2_THREAD_FUNC
+axis2_call_worker_func(axis2_thread_t *thd, void *data);
+
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(call) ((axis2_call_impl_t *)call)
 
@@ -571,8 +583,41 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
     } 
     else 
     {
+        axis2_thread_t *worker_thread = NULL;
+        axis2_call_worker_func_args_t *arg_list = NULL;
+		arg_list = AXIS2_MALLOC((*env)->allocator, 
+						sizeof(axis2_call_worker_func_args_t));
+		if(NULL == arg_list)
+		{
+			return AXIS2_FAILURE;			
+		}
+		arg_list->env = env;
+		arg_list->call_impl = call_impl;
+		arg_list->callback = callback;
+		arg_list->op = op;
+        arg_list->msg_ctx = msg_ctx;
         /* here a bloking invocation happens in a new thread, so the progamming model is non blocking */
          /* TODO svc_ctx.getConfigurationContext().getThreadPool().execute(new NonBlockingInvocationWorker(callback, op, msg_ctx)); */
+#ifdef AXIS2_SVR_MULTI_THREADED
+        if ((*env)->thread_pool)
+        {
+            worker_thread = AXIS2_THREAD_POOL_GET_THREAD((*env)->thread_pool,
+                                             axis2_call_worker_func, (void*)arg_list);
+            if(NULL == worker_thread)
+            {
+                AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread creation failed"
+                                 "call invoke non blocking");
+            }
+            AXIS2_THREAD_POOL_THREAD_DETACH((*env)->thread_pool, worker_thread);
+        }
+        else
+        {
+            AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread pool not set in envioronment."
+                                         " Cannot invoke call non blocking");
+        }
+#else
+        axis2_call_worker_func(NULL, (void*)arg_list);
+#endif
     }
 
     return AXIS2_SUCCESS;
@@ -773,54 +818,34 @@ axis2_status_t AXIS2_CALL axis2_call_close(struct axis2_call *call,
     return AXIS2_LISTNER_MANAGER_STOP(call_impl->listener_manager, env, transport_name);
 }
 
-/**
- * This Class is the workhorse for a Non Blocking invocation that uses a
- * two way transport
- */
-/*typedef struct NonBlockingInvocationWorker implements Runnable {
+void * AXIS2_THREAD_FUNC
+axis2_call_worker_func(axis2_thread_t *thd, void *data)
+{
+    axis2_call_worker_func_args_t *args_list = NULL;
+    axis2_op_ctx_t *op_ctx = NULL;
+    axis2_msg_ctx_t *response = NULL;
+    axis2_async_result_t *async_result = NULL;
+    
+    args_list = (axis2_call_worker_func_args_t *) data;
+    if (!args_list)
+        return NULL;
+        
+    AXIS2_ENV_CHECK(args_list->env, AXIS2_FAILURE);
 
-    private Callback callback;
-    private axis2_op_t *op;
-    private axis2_msg_ctx_t *msg_ctx;
+    op_ctx = axis2_op_ctx_create(args_list->env, args_list->op, args_list->call_impl->svc_ctx);
+    if (!op_ctx)
+        return NULL;
+    AXIS2_MSG_CTX_SET_OP_CTX(args_list->msg_ctx, args_list->env, op_ctx);
+    AXIS2_MSG_CTX_SET_SVC_CTX(args_list->msg_ctx, args_list->env, args_list->call_impl->svc_ctx);
 
-    NonBlockingInvocationWorker(Callback callback,
-                                       axis2_op_t *op,
-                                       axis2_msg_ctx_t *msg_ctx) {
-        this.callback = callback;
-        this.op = op;
-        this.msg_ctx = msg_ctx;
-    }
-
-    axis2_status_t run() {
-        try {
-            axis2_op_ctx_t *opcontxt = new OperationContext(op,svc_ctx);
-            AXIS2_MSG_CTX_SET_(msg_ctx, env,   tOperationContext(opcontxt);
-            AXIS2_MSG_CTX_SET_(msg_ctx, env,   tServiceContext(svc_ctx);
-            //send the request and wait for reponse
-            axis2_msg_ctx_t *response =
-                    TwoWayTransportBasedSender.send(msg_ctx, listener_transport);
-            //call the callback                        
-            axis2_soap_envelope_t *response_envelope = response.getEnvelope();
-            SOAPBody body = response_envelope.getBody();
-            if (body.hasFault()){
-                Exception ex = body.getFault().getException();
-                if (ex !=null){
-                    callback.reportError(ex);
-                }else{
-                    //todo this needs to be fixed
-                    callback.reportError(new Exception(body.getFault().getReason().getText()));
-                }
-            }else{
-                AsyncResult asyncResult = new AsyncResult(response);
-                callback.onComplete(asyncResult);
-            }
-
-            callback.setComplete(true);
-        } catch (Exception e) {
-            callback.reportError(e);
-        }
-    }
-}*/
+    /* send the request and wait for reponse */
+    response = axis2_two_way_send(args_list->env, args_list->msg_ctx);
+    async_result = axis2_async_result_create(args_list->env, response);
+    AXIS2_CALLBACK_INVOKE_ON_COMPLETE(args_list->callback, args_list->env, async_result);
+    AXIS2_CALLBACK_SET_COMPLETE(args_list->callback, args_list->env, AXIS2_TRUE);
+    
+    return NULL; 
+}
 
 /**
  * This will be used in invoke blocking scenario. Client will wait the amount of time specified here
@@ -1283,6 +1308,7 @@ axis2_call_assume_svc_ctx(axis2_call_t *call,
     svc_grp_ctx = AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env, conf_ctx);
     if (!svc_grp_ctx)
         return NULL;
+    AXIS2_CONF_CTX_REGISTER_SVC_GRP_CTX(conf_ctx, env, svc_name, svc_grp_ctx);
     assumed_svc_name = AXIS2_QNAME_GET_LOCALPART(assumed_svc_qname, env);    
     svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, assumed_svc_name);
     AXIS2_QNAME_FREE(assumed_svc_qname, env);
