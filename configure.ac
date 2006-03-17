@@ -243,6 +243,7 @@ AC_CONFIG_FILES([Makefile \
     samples/client/echo/Makefile \
     samples/client/math/Makefile \
     samples/client/addr_echo/Makefile \
+    samples/client/echo_non_blocking/Makefile \
     samples/client/google/Makefile \
     test/Makefile \
     test/xml/Makefile \
