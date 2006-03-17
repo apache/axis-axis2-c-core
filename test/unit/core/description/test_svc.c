@@ -1,6 +1,9 @@
 #include "test_svc.h"
 #include <axis2_log_default.h>
 #include <axis2_error_default.h>
+#include <axis2_env.h>
+#include <stdio.h>
+#include <string.h>
 
 struct axis2_module_desc *create_module_desc(axis2_env_t **env);
 void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env); 
@@ -63,14 +66,13 @@ void Testaxis2_svc_add_param(CuTest *tc)
     axis2_param_t *param = NULL;
     axis2_char_t *param_name = NULL;
     axis2_char_t *param_value = NULL;
-    axis2_param_container_t *param_container = NULL;
 
     param_name = "damitha";
     param_value = "kumarage";
     param = axis2_param_create(&env, NULL, NULL);
     AXIS2_PARAM_SET_NAME(param, &env, param_name);
     AXIS2_PARAM_SET_VALUE(param, &env, param_value);
-    AXIS2_SVC_ADD_PARAM(svc, env, param);
+    AXIS2_SVC_ADD_PARAM(svc, &env, param);
     
 
     CuAssertIntEquals(tc, expected, actual);

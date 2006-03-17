@@ -1,8 +1,7 @@
 #ifndef TEST_SVC_H
 #define TEST_SVC_H
 
-#include <string.h>
-#include <stdio.h>
+#undef NULL
 #include <CuTest.h>
 #include <axis2_allocator.h>
 #include <axis2_env.h>

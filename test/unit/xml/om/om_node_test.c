@@ -29,7 +29,6 @@ void Testaxis2_om_node_set_parent(CuTest *tc)
     axis2_om_node_t *child;
     axis2_env_t *env;
     axis2_allocator_t *allocator;
-    axis2_om_node_t *actual;
     allocator = axis2_allocator_init(NULL);
     env = axis2_env_create(allocator);
     

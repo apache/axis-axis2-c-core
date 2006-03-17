@@ -1,8 +1,7 @@
 #ifndef TEST_OP_H
 #define TEST_OP_H
 
-#include <string.h>
-#include <stdio.h>
+#undef NULL
 #include <CuTest.h>
 #include <axis2_allocator.h>
 #include <axis2_env.h>

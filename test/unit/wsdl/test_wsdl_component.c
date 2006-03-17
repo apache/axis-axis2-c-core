@@ -4,6 +4,7 @@
 #include <axis2_hash.h>
 #include <axis2_array_list.h>
 #include <axis2_property.h>
+#include <stdio.h>
 
 axis2_array_list_t *
 get_module_list(axis2_env_t **env)

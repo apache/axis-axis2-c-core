@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "phaseresolver_test.h"
 
 void RunAllTests(void) {

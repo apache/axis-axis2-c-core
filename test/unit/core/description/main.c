@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "description_test.h"
 
 void RunAllTests(void) {

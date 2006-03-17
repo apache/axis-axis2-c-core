@@ -1,4 +1,5 @@
 #include "test_conf.h"
+#include <stdio.h>
 
 void Testaxis2_conf_set_default_dispatchers(CuTest *tc)
 {
@@ -32,7 +33,7 @@ void Testaxis2_conf_set_default_dispatchers(CuTest *tc)
         int sizej = 0;
         
         phase = AXIS2_ARRAY_LIST_GET(in_phases, &env, i);
-        handlers = axis2_phase_get_handlers(phase, &env);
+        handlers = AXIS2_PHASE_GET_HANDLERS (phase, &env);
         sizej = AXIS2_ARRAY_LIST_SIZE(handlers, &env);
         for(j = 0; j < sizej; j++)
         {

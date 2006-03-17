@@ -23,7 +23,7 @@ void Testaxis2_hash_get(CuTest *tc)
     axis2_hash_index_t *i = 0;
     void *v = NULL;
 
-    char *key1 = "key1";
+    const char *key1 = "key1";
 
     actual = (a *) AXIS2_MALLOC(environment->allocator, sizeof (a));
 
@@ -33,7 +33,7 @@ void Testaxis2_hash_get(CuTest *tc)
 
     ht = axis2_hash_make (&environment);
 
-    axis2_hash_set (ht, key1, AXIS2_HASH_KEY_STRING, actual);
+    axis2_hash_set (ht, &key1, AXIS2_HASH_KEY_STRING, actual);
 
     for (i = axis2_hash_first (ht, &environment); i; i = axis2_hash_next (&environment, i))
     {
@@ -61,7 +61,7 @@ void Testaxis2_hash_while(CuTest *tc)
 
     axis2_hash_index_t *index_i= 0;
     void *v = NULL;
-    void *k = NULL;
+    char *k = NULL;
 
     char *key = NULL;
     char *key1 = "key1";
@@ -93,14 +93,19 @@ void Testaxis2_hash_while(CuTest *tc)
     do 
     {
         axis2_hash_this (index_i, &k, NULL, &v);
-        key = (char *) k;
+        
+        key = (char *)k;
+        
         if(0 == AXIS2_STRCMP(key, "key2"))
         {
             actual = (a *) v;
             break;
         }
+        
         index_i = axis2_hash_next (&environment, index_i);
+    
     }while(NULL != index_i);
+    
     printf("actual:%s\n",  actual->value);
     CuAssertStrEquals(tc, expected->value, actual->value);
     free(expected->value);
@@ -113,12 +118,4 @@ void Testaxis2_hash_while(CuTest *tc)
     free(entry2->value);
     free(entry2);
     axis2_hash_free(ht, &environment);
-    
-    
-    
-    
-    
-    
-    
-    
 }

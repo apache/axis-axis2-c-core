@@ -3,7 +3,8 @@
 #include <axis2_env.h>
 #include <axis2_error_default.h>
 #include <axis2_log_default.h>
-#include <string.h>
+#include <stdlib.h>
+
 void Testaxis2_stream_write(CuTest *tc) 
 {
     char actual[10];
@@ -18,7 +19,7 @@ void Testaxis2_stream_write(CuTest *tc)
 
     axis2_stream_t *stream = axis2_stream_create_basic(&env);
     char *expected = (char*) strdup("aaaaaaaaa");
-    char *write_array = (char*)strdup("aaaaaaaaa"); 
+    char *write_array = (char*) strdup("aaaaaaaaa"); 
     AXIS2_STREAM_WRITE(stream, &env, write_array, 10);
     AXIS2_STREAM_READ(stream, &env, actual, 10);
     CuAssertStrEquals(tc, expected, actual);

@@ -1,9 +1,8 @@
 #include <axis2_env.h>
 #include <axis2_log_default.h>
 #include <axis2_error_default.h>
-#include "util_log_test.h"
+#include <util_log_test.h>
 #include <axis2_stream.h>
-#include <string.h>
 #include <stdio.h>
 
 void Testaxis2_log_write(CuTest *tc) 

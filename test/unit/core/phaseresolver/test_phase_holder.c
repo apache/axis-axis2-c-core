@@ -1,3 +1,6 @@
+#include <axis2_env.h>
+#include <string.h>
+#include <stdio.h>
 #include "test_phase_holder.h"
 #include <axis2_array_list.h>
 #include <axis2_phase_holder.h>
@@ -23,7 +26,7 @@ void Testaxis2_phase_holder_free(CuTest *tc)
 
     phases = get_phases(&env);
     phase_holder = axis2_phase_holder_create_with_phases(&env, phases); 
-    actual = axis2_phase_holder_free(phase_holder, &env);
+    actual = AXIS2_PHASE_HOLDER_FREE(phase_holder, &env);
     
     CuAssertIntEquals(tc, expected, actual);
 

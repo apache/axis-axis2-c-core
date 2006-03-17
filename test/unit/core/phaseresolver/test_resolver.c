@@ -1,8 +1,13 @@
 #include "test_resolver.h"
+#include <axis2_env.h>
+#include <axis2_log_default.h>
+#include <axis2_error_default.h>
 #include <axis2_phase_resolver.h>
 #include <axis2_module_desc.h>
 #include <axis2_op.h>
 #include <axis2_flow.h>
+#include <stdio.h>
+#include <string.h>
 
 void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env);
 axis2_array_list_t *get_op_in_phases(axis2_env_t **env);
@@ -33,7 +38,7 @@ void Testaxis2_phase_resolver_free(CuTest *tc)
     axis2_error_init();
 
     resolver = axis2_phase_resolver_create(&env); 
-    actual = axis2_phase_resolver_free(resolver,  &env);
+    actual = AXIS2_PHASE_RESOLVER_FREE(resolver,  &env);
     
     CuAssertIntEquals(tc, expected, actual);
 
@@ -100,8 +105,8 @@ void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env)
     AXIS2_FLOW_ADD_HANDLER(flow, env, handler_desc);
     
     rule = axis2_phase_rule_create(env, AXIS2_PHASE_POLICY_DETERMINATION); 
-    axis2_phase_rule_set_before(rule, env, "before");
-    axis2_phase_rule_set_after(rule, env, "after");
+    AXIS2_PHASE_RULE_SET_BEFORE (rule, env, "before");
+    AXIS2_PHASE_RULE_SET_AFTER (rule, env, "after");
     qname = axis2_qname_create(env, "handler2", NULL, NULL);
     handler_desc = axis2_handler_desc_create_with_qname(env, qname);
     AXIS2_HANDLER_DESC_SET_RULES(handler_desc, env, rule);
@@ -111,8 +116,8 @@ void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env)
     AXIS2_FLOW_ADD_HANDLER(flow, env, handler_desc);
     
     rule = axis2_phase_rule_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
-    axis2_phase_rule_set_before(rule, env, "before");
-    axis2_phase_rule_set_after(rule, env, "after");
+    AXIS2_PHASE_RULE_SET_BEFORE (rule, env, "before");
+    AXIS2_PHASE_RULE_SET_AFTER (rule, env, "after");
     qname = axis2_qname_create(env, "handler3", NULL, NULL);
     handler_desc = axis2_handler_desc_create_with_qname(env, qname);
     AXIS2_HANDLER_DESC_SET_RULES(handler_desc, env, rule);

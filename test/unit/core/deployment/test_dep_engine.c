@@ -1,4 +1,7 @@
 #include "test_dep_engine.h"
+#include <axis2_env.h>
+#include <stdio.h>
+#include <string.h>
 #include <axis2_dep_engine.h>
 
 void Testaxis2_dep_engine_free(CuTest *tc)
@@ -72,7 +75,7 @@ void Testaxis2_dep_engine_create_with_repos_name(CuTest *tc)
 	CuAssertPtrNotNull(tc, dep_engine);
 
     if (dep_engine)
-        axis2_dep_engine_free(dep_engine, &env);
+        AXIS2_DEP_ENGINE_FREE(dep_engine, &env);
 
     axis2_env_free(env);
 }
@@ -98,7 +101,7 @@ void Testaxis2_dep_engine_load(CuTest *tc)
 
     dep_engine = axis2_dep_engine_create_with_repos_name(&env, axis2c_home);
     if (dep_engine)
-        conf_actual = axis2_dep_engine_load(dep_engine, &env);
+        conf_actual = AXIS2_DEP_ENGINE_LOAD(dep_engine, &env);
 
 	CuAssertPtrNotNull(tc, conf_actual);
 

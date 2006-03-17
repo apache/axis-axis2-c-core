@@ -5,6 +5,7 @@
 #include <axis2_handler_desc.h>
 #include <axis2_handler.h>
 #include <axis2_phase_rule.h>
+#include <stdio.h>
 
 axis2_handler_desc_t * 
 test_handler_desc_create_handler_desc(axis2_env_t **env)
@@ -46,7 +47,7 @@ void Testaxis2_handler_desc_free(CuTest *tc)
     axis2_env_t *env = axis2_env_create (allocator);
 
     handler_desc = test_handler_desc_create_handler_desc(&env); 
-    actual = axis2_handler_desc_free(handler_desc,  &env);
+    actual = AXIS2_HANDLER_DESC_FREE (handler_desc,  &env);
     
     CuAssertIntEquals(tc, expected, actual);
 

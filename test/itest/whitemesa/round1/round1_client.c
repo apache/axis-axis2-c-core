@@ -39,6 +39,7 @@
 #include <axis2_msg_ctx.h>
 #include <axis2_call.h>
 #include <ctype.h>
+#include <string.h>
 
 axis2_om_node_t *build_soap_body_content (axis2_env_t ** env,
                                           axis2_char_t * echo_operation,

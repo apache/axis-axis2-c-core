@@ -1,4 +1,5 @@
 #include "wsdl_test.h"
+#include <stdio.h>
 
 void RunAllTests(void) 
 {

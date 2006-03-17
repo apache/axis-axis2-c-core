@@ -1,5 +1,5 @@
 #include "context_test.h"
-
+#include <stdio.h>
 void RunAllTests(void) {
     CuString *output = CuStringNew();
     CuSuite* suite = CuSuiteNew();

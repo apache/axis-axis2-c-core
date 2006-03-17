@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "deployment_test.h"
 
 void RunAllTests(void) {

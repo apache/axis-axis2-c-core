@@ -5,6 +5,10 @@
 #include <axis2_handler_desc.h>
 #include <axis2_handler.h>
 #include <axis2_phase_rule.h>
+#include <stdio.h>
+#include <string.h>
+
+
 
 axis2_handler_desc_t * 
 test_flow_create_handler(axis2_env_t **env)
@@ -50,7 +54,7 @@ void Testaxis2_flow_add_handler(CuTest *tc)
     handler_desc = test_flow_create_handler(&env);
     actual = AXIS2_FLOW_ADD_HANDLER(flow, &env, handler_desc); 
     CuAssertIntEquals(tc, expected, actual);
-    axis2_flow_free(flow,  &env);
+    AXIS2_FLOW_FREE (flow,  &env);
 
 }
 
@@ -68,7 +72,7 @@ void Testaxis2_flow_free(CuTest *tc)
     axis2_env_t *env = axis2_env_create (allocator);
 
     flow = axis2_flow_create(&env); 
-    actual = axis2_flow_free(flow,  &env);
+    actual = AXIS2_FLOW_FREE (flow,  &env);
     
     CuAssertIntEquals(tc, expected, actual);
 

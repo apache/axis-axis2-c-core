@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "test_op.h"
 
 void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env);
