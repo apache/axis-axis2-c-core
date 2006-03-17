@@ -23,6 +23,7 @@
 #include <axis2_log_default.h>
 #include <axis2_thread_pool.h>
 #include <signal.h>
+#include <axis2_types.h>
 
 
 axis2_env_t *system_env = NULL;
@@ -75,16 +76,16 @@ int main(int argc, char *argv[])
         switch(c)
         {
             case 'p':
-                port = atoi(optarg);
+                port = AXIS2_ATOI(optarg);
                 break;
             case 'r':
                 repo_path = optarg;
                 break;
             case 't':
-                axis2_http_socket_read_timeout = atoi(optarg) * 1000;
+                axis2_http_socket_read_timeout = AXIS2_ATOI(optarg) * 1000;
                 break;
             case 'l':
-                log_level = atoi(optarg);
+                log_level = AXIS2_ATOI(optarg);
                 if (log_level < AXIS2_LOG_LEVEL_CRITICAL)
                     log_level = AXIS2_LOG_LEVEL_CRITICAL;
                 if (log_level > AXIS2_LOG_LEVEL_TRACE)

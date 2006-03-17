@@ -24,6 +24,7 @@
 #include <axis2_http_out_transport_info.h>
 #include <axis2_http_transport.h>
 #include <axis2_soap_over_http_sender.h>
+#include <axis2_types.h>
 
 
 /** 
@@ -438,7 +439,7 @@ axis2_http_transport_sender_init
 	}
 	if(NULL != temp)
 	{
-		AXIS2_INTF_TO_IMPL(transport_sender)->so_timeout = atoi(temp);
+		AXIS2_INTF_TO_IMPL(transport_sender)->so_timeout = AXIS2_ATOI(temp);
 	}
 	temp = (axis2_char_t *)AXIS2_PARAM_CONTAINER_GET_PARAM(
 							out_desc->param_container, env, 
@@ -449,7 +450,8 @@ axis2_http_transport_sender_init
 	}
 	if(NULL != temp)
 	{
-		AXIS2_INTF_TO_IMPL(transport_sender)->connection_timeout=atoi(temp);
+		AXIS2_INTF_TO_IMPL(transport_sender)->connection_timeout = 
+                        AXIS2_ATOI(temp);
 	}
 
 	return AXIS2_SUCCESS;

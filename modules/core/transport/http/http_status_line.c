@@ -18,6 +18,7 @@
 #include <axis2_string.h>
 #include <axis2_http_transport.h>
 #include <string.h>
+#include <axis2_types.h>
 
 /** 
  * @brief HTTP Status Line struct impl
@@ -227,7 +228,7 @@ axis2_http_status_line_get_status_code (axis2_http_status_line_t *status_line,
     AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     if(NULL != AXIS2_INTF_TO_IMPL(status_line)->status_code)
     {
-        return atoi(AXIS2_INTF_TO_IMPL(status_line)->status_code);
+        return AXIS2_ATOI(AXIS2_INTF_TO_IMPL(status_line)->status_code);
     }
     else
     {

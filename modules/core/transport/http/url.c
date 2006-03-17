@@ -19,6 +19,7 @@
 #include <axis2_string.h>
 #include <axis2_file_handler.h>
 #include <axis2_network_handler.h>
+#include <axis2_types.h>
 
 
 /** 
@@ -223,7 +224,7 @@ axis2_url_parse_string(axis2_env_t **env, axis2_char_t *str_url)
 			{
 				*params = '\0';
 			}
-			port = atoi(port_str);
+			port = AXIS2_ATOI(port_str);
 			/* here we have protocol + server + port + def path */
 			ret = axis2_url_create(env, protocol, server, port, "/");
 			AXIS2_FREE((*env)->allocator, tmp_url_str);
@@ -232,7 +233,7 @@ axis2_url_parse_string(axis2_env_t **env, axis2_char_t *str_url)
 		else
 		{
 			*path++ = '\0';
-			port = atoi(port_str);
+			port = AXIS2_ATOI(port_str);
 			params = strchr(path, '?');
 			if(NULL != params)
 			{

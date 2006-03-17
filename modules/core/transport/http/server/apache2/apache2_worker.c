@@ -370,3 +370,4 @@ axis2_apache2_worker_get_bytes(axis2_env_t **env,
     AXIS2_STREAM_FREE(tmp_stream, env);
     return buffer;
 }
+

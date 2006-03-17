@@ -202,3 +202,4 @@ apache2_stream_get_type (axis2_stream_t *stream, axis2_env_t **env)
     AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(stream)->stream_type;
 }
+

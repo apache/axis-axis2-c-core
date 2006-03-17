@@ -18,6 +18,7 @@
 #include <axis2_string.h>
 #include <axis2_http_transport.h>
 #include <stdio.h>
+#include <string.h>
 
 /** 
  * @brief HTTP Header struct impl
@@ -112,7 +113,7 @@ axis2_http_header_create_by_str (axis2_env_t **env, axis2_char_t *str)
 		tmp_str[AXIS2_STRLEN(tmp_str)-2] = '\0';
 	}
 	
-	ch = strchr(tmp_str, ':');
+	ch = strchr((const char*)tmp_str, ':');
 	if(NULL == ch)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_HEADER, 
@@ -167,10 +168,10 @@ axis2_http_header_to_external_form (axis2_http_header_t *header,
     AXIS2_ENV_CHECK(env, NULL);
     http_header_impl = AXIS2_INTF_TO_IMPL(header);
     len = AXIS2_STRLEN(http_header_impl->name) + 
-                AXIS2_STRLEN(http_header_impl->value) + 4;
+                AXIS2_STRLEN(http_header_impl->value) + 8;
     external_form = (axis2_char_t*) AXIS2_MALLOC((*env)->allocator,
                 len);
-    sprintf(external_form, "%s:%s%s", http_header_impl->name, 
+    sprintf(external_form, "%s: %s%s", http_header_impl->name, 
                 http_header_impl->value, AXIS2_HTTP_CRLF);
     return external_form;
 }

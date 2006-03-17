@@ -36,7 +36,7 @@ axis2_apache2_worker_t *axis2_worker = NULL;
 axis2_env_t *axis2_env = NULL;
 
 /******************************Function Headers********************************/
-static void * axis2_create_svr(apr_pool_t *p, char *d);
+static void * axis2_create_svr(apr_pool_t *p, server_rec *s);
 static const char *axis2_set_repo_path(cmd_parms *cmd, void *dummy, 
                         const char *arg);
 static const char *axis2_set_log_file(cmd_parms *cmd, void *dummy, 
@@ -66,7 +66,7 @@ module AP_MODULE_DECLARE_DATA axis2_module = {
     axis2_register_hooks   /* register hooks                      */
 };
 
-static void * axis2_create_svr(apr_pool_t *p, char *d)
+static void * axis2_create_svr(apr_pool_t *p, server_rec *s)
 {
     axis2_config_rec_t *conf = apr_palloc(p, sizeof(*conf));
     conf->axis2_log_file = NULL;

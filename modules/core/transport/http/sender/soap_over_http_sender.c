@@ -24,6 +24,7 @@
 #include <axis2_http_client.h>
 #include <axis2_xml_writer.h>
 #include <axis2_property.h>
+#include <axis2_types.h>
 
 /** 
  * @brief SOAP over HTTP sender struct impl
@@ -486,11 +487,11 @@ axis2_soap_over_http_sender_get_timeout_values
 						env, AXIS2_HTTP_CONNECTION_TIMEOUT);
 	if(NULL != so_str)
 	{
-		AXIS2_INTF_TO_IMPL(sender)->so_timeout = atoi(so_str);
+		AXIS2_INTF_TO_IMPL(sender)->so_timeout = AXIS2_ATOI(so_str);
 	}
 	if(NULL != connection_str)
 	{
-		AXIS2_INTF_TO_IMPL(sender)->connection_timeout = atoi(connection_str);
+		AXIS2_INTF_TO_IMPL(sender)->connection_timeout = AXIS2_ATOI(connection_str);
 	}
     
 	return AXIS2_SUCCESS;

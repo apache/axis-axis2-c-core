@@ -18,6 +18,7 @@
 #include <axis2_string.h>
 #include <string.h>
 #include <axis2_http_transport.h>
+#include <stdlib.h>
 
 /** 
  * @brief HTTP Chunked Stream struct impl

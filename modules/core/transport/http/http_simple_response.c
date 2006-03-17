@@ -18,6 +18,7 @@
 #include <axis2_string.h>
 #include <stdio.h>
 #include <string.h>
+#include <axis2_types.h>
 
 /** 
  * @brief HTTP Simple Response struct impl
@@ -559,7 +560,7 @@ axis2_http_simple_response_get_content_length
                         (simple_response, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH);
     if(NULL != tmp_header)
     {
-        return atoi(AXIS2_HTTP_HEADER_GET_VALUE(tmp_header, env));
+        return AXIS2_ATOI(AXIS2_HTTP_HEADER_GET_VALUE(tmp_header, env));
     }
     return -1;
 }
