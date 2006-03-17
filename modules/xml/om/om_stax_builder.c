@@ -445,7 +445,7 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
     axis2_char_t *temp_localname = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, om_stax_builder, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_stax_builder, NULL);
     
     builder_impl = AXIS2_INTF_TO_IMPL(om_stax_builder);
     

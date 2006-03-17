@@ -17,6 +17,7 @@
  #include <axis2_soap_message.h>
  #include <axis2_om_document.h>
  #include <axis2_om_output.h>
+ #include <_axis2_soap_envelope.h>
 
 /*************************** impl struct **************************************/
 

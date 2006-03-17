@@ -693,7 +693,7 @@ axis2_om_element_get_attribute (axis2_om_element_t *om_element,
     axis2_char_t *name = NULL;
     axis2_om_attribute_t *attr = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
     
     element_impl = AXIS2_INTF_TO_IMPL(om_element);
     name = AXIS2_QNAME_TO_STRING(qname, env);
