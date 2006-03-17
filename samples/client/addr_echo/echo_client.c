@@ -36,7 +36,7 @@
 #include <axis2_soap_fault.h>
 #include <axis2_soap_fault_code.h>
 #include <axis2_soap_fault_role.h>
-#include <axis2_platform_auto_sense.h>
+#include <platforms/axis2_platform_auto_sense.h>
 
 axis2_om_node_t *
 build_om_programatically(axis2_env_t **env);
