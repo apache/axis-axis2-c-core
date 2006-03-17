@@ -222,7 +222,7 @@ axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_ref_params(struct axis2_endpoin
                                                     axis2_env_t **env,
                                                     axis2_any_content_type_t* any_content_type)
 {
-    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(endpoint_ref)->ref_params = any_content_type;
     return AXIS2_SUCCESS;
 }

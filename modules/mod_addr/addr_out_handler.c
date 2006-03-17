@@ -22,6 +22,7 @@
 #include <axis2_soap_header_block.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_property.h>
+#include <stdio.h>
 
 axis2_status_t AXIS2_CALL
 axis2_addr_out_handler_invoke (struct axis2_handler *handler,

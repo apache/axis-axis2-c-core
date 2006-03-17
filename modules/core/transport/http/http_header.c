@@ -17,7 +17,7 @@
 #include <axis2_http_header.h>
 #include <axis2_string.h>
 #include <axis2_http_transport.h>
-
+#include <stdio.h>
 
 /** 
  * @brief HTTP Header struct impl

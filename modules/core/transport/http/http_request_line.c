@@ -18,7 +18,7 @@
 #include <axis2_string.h>
 #include <string.h>
 #include <axis2_http_transport.h>
-
+#include <stdio.h>
 /** 
  * @brief HTTP Request Line struct impl
  *	Axis2 HTTP Request Line impl  

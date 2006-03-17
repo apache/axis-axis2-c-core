@@ -19,7 +19,7 @@
 #include <axis2_log_default.h>
 #include <axis2_file_handler.h>
 #include <axis2_thread.h>
-
+#include <stdio.h>
 
 typedef struct axis2_log_impl axis2_log_impl_t;
 
