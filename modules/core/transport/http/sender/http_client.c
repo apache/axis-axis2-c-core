@@ -23,7 +23,7 @@
 #include <axis2_http_header.h>
 #include <axis2_http_status_line.h>
 #include <axis2_http_chunked_stream.h>
-#include <axis2_platform_auto_sense.h>
+#include <platforms/axis2_platform_auto_sense.h>
 
 
 /** 

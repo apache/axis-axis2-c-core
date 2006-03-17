@@ -23,8 +23,8 @@
 #include <sys/socket.h>
 #include <linux/if.h>
 #include <sys/time.h>
-#include <axis2_uuid_gen_unix.h>
-#include <axis2_platform_auto_sense.h>
+#include <platforms/unix/axis2_uuid_gen_unix.h>
+#include <platforms/axis2_platform_auto_sense.h>
 
 	
 /* We need these static variables to track throughout the program execution */

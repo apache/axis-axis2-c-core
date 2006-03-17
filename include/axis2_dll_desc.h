@@ -27,7 +27,7 @@
 #include <axis2_error.h>
 #include <axis2.h>
 #include <axis2_svc_skeleton.h>
-#include <axis2_platform_auto_sense.h>
+#include <platforms/axis2_platform_auto_sense.h>
 
 #ifdef __cplusplus
 extern "C"

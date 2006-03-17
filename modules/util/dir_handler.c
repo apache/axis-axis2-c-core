@@ -16,7 +16,7 @@
  
 #include <axis2_dir_handler.h>
 #include <axis2_file.h>
-#include <axis2_platform_auto_sense.h>
+#include <platforms/axis2_platform_auto_sense.h>
 #include <axis2_string.h>
 
 extern int AXIS2_ALPHASORT();

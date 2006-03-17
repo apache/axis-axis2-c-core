@@ -15,7 +15,7 @@
  */
 #include <stdio.h>
 #include <string.h>
-#include <axis2_platform_auto_sense.h>
+#include <platforms/axis2_platform_auto_sense.h>
 #include <axis2_log_default.h>
 #include <axis2_file_handler.h>
 #include <axis2_thread.h>

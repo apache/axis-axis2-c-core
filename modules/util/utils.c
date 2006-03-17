@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <axis2_string.h>
 #include <string.h>
-#include <axis2_platform_auto_sense.h>
+#include <platforms/axis2_platform_auto_sense.h>
 
 AXIS2_DECLARE(axis2_char_t**)
 axis2_parse_request_url_for_svc_and_op(axis2_env_t **env, 

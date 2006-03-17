@@ -17,7 +17,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <axis2_stream.h>
-#include <axis2_platform_auto_sense.h>
+#include <platforms/axis2_platform_auto_sense.h>
 /** 
  * @brief Stream struct impl
  *	Axis2 Stream impl  

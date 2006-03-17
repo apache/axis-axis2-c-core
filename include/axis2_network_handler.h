@@ -21,7 +21,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <sys/types.h>
-#include <axis2_platform_auto_sense.h>
+#include <platforms/axis2_platform_auto_sense.h>
 
 
 

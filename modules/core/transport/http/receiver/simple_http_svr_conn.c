@@ -19,7 +19,7 @@
 #include <axis2_string.h>
 #include <axis2_network_handler.h>
 #include <axis2_http_chunked_stream.h>
-#include <axis2_platform_auto_sense.h>
+#include <platforms/axis2_platform_auto_sense.h>
 
 /** 
  * @brief Simple HTTP Server Connection struct impl
