@@ -21,7 +21,9 @@
  #include <axis2_soap.h>
  #include <axis2_soap_builder.h>
  #include <stdio.h>
- #include <axis2_om_node_internal.h> 
+ #include <axis2_om_node_internal.h>
+ #include <axis2_array_list.h>
+ 
  /******************* impl struct *********************************************/
  
  typedef struct axis2_soap_header_impl_t
@@ -37,6 +39,8 @@
     int hbnumber;
     
     axis2_soap_builder_t *soap_builder;
+    
+    axis2_array_list_t *header_block_keys;
     
  }axis2_soap_header_impl_t;
  
@@ -113,6 +117,7 @@ axis2_soap_header_create(axis2_env_t **env)
     header_impl->header_blocks = NULL;
     /** default value */
     header_impl->soap_version = AXIS2_SOAP12;
+    header_impl->header_block_keys = NULL;
     
     
     header_impl->soap_header.ops = NULL;
@@ -121,6 +126,14 @@ axis2_soap_header_create(axis2_env_t **env)
     if(!(header_impl->soap_header.ops))
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE((*env)->allocator, header_impl);
+        return NULL;
+    }
+    
+    header_impl->header_block_keys = axis2_array_list_create(env, 10);
+    if(!header_impl->header_block_keys)
+    {
+        AXIS2_FREE((*env)->allocator, header_impl->soap_header.ops);
         AXIS2_FREE((*env)->allocator, header_impl);
         return NULL;
     }
@@ -236,6 +249,24 @@ axis2_soap_header_free(axis2_soap_header_t *header,
         }
         
         axis2_hash_free (header_impl->header_blocks, env);
+    }
+    if(NULL != header_impl->header_block_keys)
+    {
+        int size = 0;
+        void *val = NULL;
+        int i = 0;
+        size = AXIS2_ARRAY_LIST_SIZE(header_impl->header_block_keys, env);
+        for(i = 0; i< size; i++)
+        {
+            val = AXIS2_ARRAY_LIST_GET(header_impl->header_block_keys, env, i);
+            if(NULL != val)
+            {
+                AXIS2_FREE((*env)->allocator, (char*)val);
+                val = NULL;
+            }
+        }
+        AXIS2_ARRAY_LIST_FREE(header_impl->header_block_keys, env);
+        header_impl->header_block_keys = NULL;
     }
     if(NULL != header->ops)
     {
@@ -464,6 +495,10 @@ axis2_soap_header_set_header_block(axis2_soap_header_t *header,
             header_impl->header_blocks = axis2_hash_make(env);
             axis2_hash_set(header_impl->header_blocks,
                 key , AXIS2_HASH_KEY_STRING, header_block);
+    }
+    if(NULL != header_impl->header_block_keys)
+    {
+        AXIS2_ARRAY_LIST_ADD(header_impl->header_block_keys, env, key);
     }
     return AXIS2_SUCCESS;
         
