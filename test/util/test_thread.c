@@ -16,13 +16,14 @@
 
 
 #include <stdio.h>
+#include <string.h>
 #include <axis2_error_default.h>
 #include <axis2_log.h>
 #include <axis2_log_default.h>
 #include <axis2_allocator.h>
 #include <axis2.h>
 #include "test_thread.h"
-
+#include <unistd.h>
 
 static axis2_thread_mutex_t *thread_lock = NULL;
 static axis2_thread_once_t *control = NULL;
@@ -36,16 +37,14 @@ static axis2_thread_t *t2 = NULL;
 static axis2_thread_t *t3 = NULL;
 static axis2_thread_t *t4 = NULL;
 
-static void init_func(void)
+void init_func(void)
 {
     value++;
 }
 
-static void thread_init(axis2_env_t *env)
+void thread_init(axis2_env_t *env)
 {
     axis2_allocator_t *allocator = NULL;
-	axis2_status_t rv;
-
     	
 	allocator = env->allocator;
 
@@ -219,14 +218,14 @@ void test_axis2_thread_detach2(axis2_env_t *env)
 	printf("success - test_axis2_thread_detach2\n");
 }
 
-static void check_locks()
+void check_locks()
 {
     if (2 == x) printf ("success - check_locks \n");
 	else printf ("failure - check_locks \n");
 
 }
 
-static void check_thread_once()
+void check_thread_once()
 {
     if (1 == value) printf ("success - check_thread_once \n");
 	else printf ("failure - check_thread_once \n");

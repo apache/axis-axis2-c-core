@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <axis2_error_default.h>
 #include <axis2_log.h>
+#include <axis2_log_default.h>
 #include <axis2_allocator.h>
-#include "test_log.h"
-
+#include <test_log.h>
+#include <string.h>
 axis2_env_t *create_env_with_error_log()
 {
     axis2_allocator_t *allocator = axis2_allocator_init(NULL);

@@ -175,6 +175,6 @@ int main(void)
     
     axis2_allocator_t *allocator = env->allocator;
     axis2_env_free(env);
-    free(allocator);
+    axis2_allocator_free(allocator);
 	return 0;	
 }

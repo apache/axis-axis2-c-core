@@ -19,7 +19,6 @@
 #include <axis2_string.h>
 #include <axis2_file_diff.h>
 #include <axis2_error_default.h>
-/*#include <axis2_stream_default.h>*/
 #include <axis2_array_list.h>
 #include <axis2_platform_auto_sense.h>
 #include <axis2_uuid_gen.h>
@@ -29,6 +28,7 @@
 #include <axis2_file.h>
 #include "axis2_log.h"
 #include "test_thread.h"
+#include <test_log.h>
 
 typedef struct a
 {

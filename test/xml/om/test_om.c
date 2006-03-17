@@ -272,8 +272,8 @@ main (int argc, char *argv[])
     error = axis2_error_create(allocator);
     
     environment = axis2_env_create_with_error_log(allocator, error,  axis_log);
-    test_om_build (file_name);
-  /*  test_om_serialize(); */
+/*    test_om_build (file_name); */
+    test_om_serialize(); 
 
     axis2_env_free(environment); 
     axis2_allocator_free(allocator);

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <strings.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -9,6 +10,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <axis2.h>
+#include <stdlib.h>
 
 /* Function prototypes */
 int write_to_socket(char *address, char* port, char* filename, char* endpoint);

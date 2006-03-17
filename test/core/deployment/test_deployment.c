@@ -80,7 +80,6 @@ int axis2_test_dep_engine_load()
                 axis2_hash_index_t *hi2 = NULL;
                 void *op = NULL;
                 axis2_char_t *oname = NULL;
-                int count = 0;
 
                 for(hi2 = axis2_hash_first(ops, &env); hi2; hi2 = axis2_hash_next(&env, hi2))
                 {
@@ -117,13 +116,13 @@ int axis2_test_dep_engine_load()
     return 0;
 }
 
-axis2_test_transport_receiver_load()
+int axis2_test_transport_receiver_load()
 {
     axis2_dll_desc_t *dll_desc = NULL;
     axis2_char_t *dll_name = NULL;
     axis2_transport_receiver_t *transport_recv = NULL;
     axis2_param_t *impl_info_param = NULL;
-    axis2_bool_t *is_running = AXIS2_FALSE;
+    axis2_bool_t is_running = AXIS2_FALSE;
     axis2_char_t *axis2c_home = NULL;
 
     printf("******************************************\n");
@@ -152,7 +151,7 @@ axis2_test_transport_receiver_load()
     return 0;
 }
 
-axis2_test_transport_sender_load()
+int axis2_test_transport_sender_load()
 {
     axis2_dll_desc_t *dll_desc = NULL;
     axis2_char_t *dll_name = NULL;

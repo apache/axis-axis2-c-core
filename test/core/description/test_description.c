@@ -114,7 +114,7 @@ int axis2_test_svc_get_op()
 	struct axis2_qname *qname = NULL;
 	struct axis2_hash_t *ops = NULL;
 	struct axis2_op *op = NULL;
-	axis2_status_t status = NULL;
+	axis2_status_t status = AXIS2_SUCCESS;
 
 
     printf("******************************************\n");

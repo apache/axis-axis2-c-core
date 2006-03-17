@@ -2,6 +2,7 @@
 #include <axis2_env.h>
 #include <axis2_allocator.h>
 #include <axis2_endpoint_ref.h>
+#include <stdio.h>
 
 int axis2_test_msg_info_headers()
 {

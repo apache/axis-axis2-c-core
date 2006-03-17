@@ -3,6 +3,7 @@
 #include <axis2.h>
 #include <axis2_allocator.h>
 #include <axis2_env.h>
+#include <stdio.h>
 
 void axis2_test_conf_ctx_init()
 {
