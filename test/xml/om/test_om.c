@@ -94,7 +94,7 @@ test_om_build (char *filename)
     {
         printf(" root element null ");
         AXIS2_OM_STAX_BUILDER_FREE(builder, &environment);
-        return;
+        return -1;
     }
     if(node1)
     {
@@ -196,7 +196,7 @@ test_om_serialize ()
     axis2_om_node_t *node1 = NULL, *node2 = NULL, *node3 = NULL, *node4 =
         NULL, *node5 = NULL, *node6 = NULL;
     axis2_om_attribute_t *attr1 = NULL, *attr2 = NULL;
-    axis2_om_namespace_t *ns1 = NULL, *ns2 = NULL, *ns3 = NULL;
+    axis2_om_namespace_t *ns1 = NULL, *ns2 = NULL;
     axis2_om_text_t *text1 = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_xml_writer_t *writer = NULL;

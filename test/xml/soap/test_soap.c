@@ -68,7 +68,6 @@ int printnode(axis2_om_node_t *om_node, axis2_env_t **env)
 
 int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
 {
-    axis2_om_document_t *om_doc = NULL;
     axis2_om_stax_builder_t *om_builder = NULL;
     
     axis2_xml_reader_t *xml_reader = NULL;
@@ -84,10 +83,7 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
     
     axis2_soap_body_t *soap_body = NULL;
     axis2_soap_header_t *soap_header = NULL;
-    axis2_soap_header_block_t *header_block = NULL;
     axis2_om_children_qname_iterator_t *children_iter = NULL;
-    
-    axis2_hash_t *hbs = NULL;
     
     int status = AXIS2_SUCCESS;    
     
