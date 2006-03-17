@@ -21,6 +21,7 @@
 
 extern int AXIS2_ALPHASORT();
 
+int dir_select(struct dirent *entry);
 /**
  * List the dll files in the given service or module folder path
  * @param pathname path to your service or module directory
@@ -186,7 +187,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
     int i = 0;
 	struct dirent **files = NULL;
 	
-	int dir_select();
+	/*int dir_select();*/
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, NULL);
@@ -229,7 +230,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
-            AXIS2_FREE((*env)->allocator, *files);
+            /*AXIS2_FREE((*env)->allocator, *files);*/
             AXIS2_FREE((*env)->allocator, files);
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
@@ -255,7 +256,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
-            AXIS2_FREE((*env)->allocator, *files);
+            /*AXIS2_FREE((*env)->allocator, *files);*/
             AXIS2_FREE((*env)->allocator, files);
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
@@ -283,7 +284,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
-            AXIS2_FREE((*env)->allocator, *files);
+            /*AXIS2_FREE((*env)->allocator, *files);*/
             AXIS2_FREE((*env)->allocator, files);
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
@@ -312,7 +313,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
-            AXIS2_FREE((*env)->allocator, *files);
+            /*AXIS2_FREE((*env)->allocator, *files);*/
             AXIS2_FREE((*env)->allocator, files);
             return NULL;
             
@@ -326,7 +327,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
     }
 #ifndef WIN32
 
-    AXIS2_FREE((*env)->allocator, *files);
+    /*AXIS2_FREE((*env)->allocator, *files);*/
     AXIS2_FREE((*env)->allocator, files);
 
 #endif 
