@@ -122,7 +122,7 @@ axis2_conf_is_param_locked (axis2_conf_t *conf,
  * @param svc_name
  * @return svc name and grp name 
  */
-static axis2_status_t 
+axis2_status_t 
 split_svc_name(axis2_env_t **env,
                 axis2_char_t *svc_name, 
                 axis2_char_t **svc_name_st);

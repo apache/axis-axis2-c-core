@@ -24,7 +24,7 @@
 #include <axis2_thread_pool.h>
 #include <signal.h>
 #include <axis2_types.h>
-
+#include <ctype.h>
 
 axis2_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;

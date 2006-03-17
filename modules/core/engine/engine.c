@@ -477,8 +477,6 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_engine_create_fault_msg_ctx(struct axis2_engin
     }
     else
     {
-        void *writer;
-        
         property = AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, 
                 AXIS2_TRANSPORT_OUT, AXIS2_TRUE);
         if(property)

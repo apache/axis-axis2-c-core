@@ -1124,7 +1124,9 @@ axis2_svc_set_context_path(axis2_svc_t *svc,
         return AXIS2_FAILURE;        
     }
     property = axis2_property_create(env);
-    property = AXIS2_PROPERTY_SET_VALUE(property, env, context_path_l);
+    
+    AXIS2_PROPERTY_SET_VALUE(property, env, context_path_l);
+    
     return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
             wsdl_component, env, AXIS2_CONTEXTPATH_KEY, property);
 }
@@ -1163,7 +1165,9 @@ axis2_svc_set_style(axis2_svc_t *svc,
         return AXIS2_FAILURE;
     }
     property = axis2_property_create(env);
-    property = AXIS2_PROPERTY_SET_VALUE(property, env, style_l);
+    
+    AXIS2_PROPERTY_SET_VALUE(property, env, style_l);
+    
     return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
         wsdl_component, env, AXIS2_STYLE_KEY, property);
 }
