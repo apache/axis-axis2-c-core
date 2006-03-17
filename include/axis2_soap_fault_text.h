@@ -63,11 +63,6 @@ extern "C"
         axis2_char_t* (AXIS2_CALL *get_lang)                                         
                                     (axis2_soap_fault_text_t *fault_text,
                                      axis2_env_t **env);
-        /** this is an internal function for soap builder, do not use*/                             
-        axis2_status_t (AXIS2_CALL *set_base_node)
-                                    (axis2_soap_fault_text_t *fault_text,
-                                     axis2_env_t **env,
-                                     axis2_om_node_t *node);
     
         axis2_om_node_t* (AXIS2_CALL *get_base_node)
                                 (axis2_soap_fault_text_t *fault_text,
@@ -93,15 +88,7 @@ AXIS2_DECLARE(axis2_soap_fault_text_t *)
 axis2_soap_fault_text_create_with_parent(axis2_env_t **env,
                             axis2_soap_fault_reason_t *fault);
                             
-/** this is an internal function for soap builder 
-    do not use externally */
-AXIS2_DECLARE(axis2_soap_fault_text_t *)
-axis2_soap_fault_text_create(axis2_env_t **env);
-
-                                     
-
 /******************** Macros **************************************************/
-    
     
 /** free soap_fault_text */
 #define AXIS2_SOAP_FAULT_TEXT_FREE(fault_text , env) \
@@ -116,9 +103,6 @@ axis2_soap_fault_text_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_TEXT_GET_BASE_NODE(fault_text, env) \
         ((fault_text)->ops->get_base_node(fault_text, env))         
 
-#define AXIS2_SOAP_FAULT_TEXT_SET_BASE_NODE(fault_text, env, node) \
-        ((fault_text)->ops->set_base_node(fault_text, env, node))
-        
 /** @} */
 
 #ifdef __cplusplus

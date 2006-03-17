@@ -14,10 +14,11 @@
  * limitations under the License.
  */
  
- #include <axis2_soap_fault_node.h>
+ #include <_axis2_soap_fault_node.h>
  #include <axis2_om_node.h>
  #include <axis2_om_element.h>
- 
+ #include <_axis2_soap_fault.h>
+
  /********************* impl struct *******************************************/
  
  typedef struct axis2_soap_fault_node_impl_t
@@ -49,11 +50,7 @@ axis2_soap_fault_node_get_value
                           (axis2_soap_fault_node_t *fault_node,
                            axis2_env_t **env);
                             
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_node_set_base_node
-                          (axis2_soap_fault_node_t *fault_node,
-                           axis2_env_t **env,
-                           axis2_om_node_t *node);
+
 
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_fault_node_get_base_node
@@ -90,9 +87,6 @@ axis2_soap_fault_node_create(axis2_env_t **env)
         return NULL;
     }                    
                                                                         
-    fault_node_impl->fault_node.ops->set_base_node =
-        axis2_soap_fault_node_set_base_node;
-        
     fault_node_impl->fault_node.ops->get_base_node =
         axis2_soap_fault_node_get_base_node;
         
@@ -101,6 +95,7 @@ axis2_soap_fault_node_create(axis2_env_t **env)
         
     fault_node_impl->fault_node.ops->get_value =
         axis2_soap_fault_node_get_value;
+
     fault_node_impl->fault_node.ops->free_fn =
         axis2_soap_fault_node_free;
                                         
@@ -161,7 +156,7 @@ axis2_soap_fault_node_create_with_parent(axis2_env_t **env,
                          
     fault_node_impl->om_ele_node = this_node;       
     
-    AXIS2_SOAP_FAULT_SET_NODE(fault, env, fault_node);
+    axis2_soap_fault_set_node (fault, env, fault_node);
                                     
     return  &(fault_node_impl->fault_node);  
 }
@@ -266,4 +261,3 @@ axis2_soap_fault_node_get_base_node
     fault_node_impl = AXIS2_INTF_TO_IMPL(fault_node); 
     return fault_node_impl->om_ele_node;
 }
-                        

@@ -15,7 +15,7 @@
  */
  
  #include <axis2_soap_fault_sub_code.h>
- #include <axis2_soap_fault_code.h>
+ #include <_axis2_soap_fault_code.h>
  #include <axis2_soap_fault_value.h>
  #include <axis2_soap_builder.h> 
  /********************** impl struct ******************************************/
@@ -45,43 +45,24 @@ axis2_status_t AXIS2_CALL
 axis2_soap_fault_sub_code_free(axis2_soap_fault_sub_code_t *fault_sub_code,
                                axis2_env_t **env);
                                
-axis2_status_t AXIS2_CALL
-axis2_soap_fault_sub_code_set_sub_code(
-                              axis2_soap_fault_sub_code_t *fault_sub_code,
-                              axis2_env_t **env,
-                              axis2_soap_fault_sub_code_t *sub_code);
+
                               
 axis2_soap_fault_value_t* AXIS2_CALL
 axis2_soap_fault_sub_code_get_value
                              (axis2_soap_fault_sub_code_t *fault_sub_code,
                               axis2_env_t **env);                              
-axis2_status_t AXIS2_CALL
-axis2_soap_fault_sub_code_set_value
-                             (axis2_soap_fault_sub_code_t *fault_sub_code,
-                              axis2_env_t **env,
-                              axis2_soap_fault_value_t *fault_sub_code_val);
+
                          
 axis2_soap_fault_sub_code_t* AXIS2_CALL
 axis2_soap_fault_sub_code_get_sub_code(
                               axis2_soap_fault_sub_code_t *fault_sub_code,
                               axis2_env_t **env);
                               
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_sub_code_set_base_node
-                             (axis2_soap_fault_sub_code_t *fault_sub_code,
-                              axis2_env_t **env,
-                              axis2_om_node_t *node);
-    
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_fault_sub_code_get_base_node
                              (axis2_soap_fault_sub_code_t *fault_sub_code,
                               axis2_env_t **env);
                                  
-
-axis2_status_t AXIS2_CALL
-axis2_soap_fault_sub_code_set_builder(axis2_soap_fault_sub_code_t *fault_sub_code,
-                                     axis2_env_t **env,
-                                     axis2_soap_builder_t *builder);                                                           
 /********************** function implementations ******************************/
 
 AXIS2_DECLARE(axis2_soap_fault_sub_code_t *)
@@ -114,30 +95,17 @@ axis2_soap_fault_sub_code_create(axis2_env_t **env)
         AXIS2_FREE((*env)->allocator, fault_subcode_impl);
         return NULL;
     }                                                                  
-    
     fault_subcode_impl->fault_sub_code.ops->free_fn = 
         axis2_soap_fault_sub_code_free;
         
     fault_subcode_impl->fault_sub_code.ops->get_sub_code =
         axis2_soap_fault_sub_code_get_sub_code;
         
-    fault_subcode_impl->fault_sub_code.ops->set_sub_code = 
-        axis2_soap_fault_sub_code_set_sub_code;
-        
     fault_subcode_impl->fault_sub_code.ops->get_value =
         axis2_soap_fault_sub_code_get_value;
         
-    fault_subcode_impl->fault_sub_code.ops->set_value =
-        axis2_soap_fault_sub_code_set_value;
-        
-    fault_subcode_impl->fault_sub_code.ops->set_base_node =
-        axis2_soap_fault_sub_code_set_base_node;
-        
     fault_subcode_impl->fault_sub_code.ops->get_base_node =
         axis2_soap_fault_sub_code_get_base_node;
-        
-    fault_subcode_impl->fault_sub_code.ops->set_builder =
-        axis2_soap_fault_sub_code_set_builder;                            
                                 
   return  &(fault_subcode_impl->fault_sub_code);        
 }
@@ -190,7 +158,7 @@ axis2_soap_fault_sub_code_create_with_parent(axis2_env_t **env,
     
     fault_sub_code_impl->om_ele_node = this_node;
     
-    AXIS2_SOAP_FAULT_CODE_SET_SUB_CODE(fault_code, env, fault_sub_code);
+    axis2_soap_fault_code_set_sub_code (fault_code, env, fault_sub_code);
     
     return &(fault_sub_code_impl->fault_sub_code);
 }

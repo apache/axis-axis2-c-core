@@ -14,10 +14,10 @@
  * limitations under the License.
  */
  
- #include <axis2_soap_fault.h>
+ #include <_axis2_soap_fault.h>
  #include <axis2_om_element.h>
  #include <axis2_om_node.h>
- #include <axis2_soap_fault_detail.h>
+ #include <_axis2_soap_fault_detail.h>
  
 /******************** impl struct ********************************************/
  
@@ -50,11 +50,7 @@ axis2_soap_fault_detail_get_all_detail_entries
                         (axis2_soap_fault_detail_t *fault_detail,
                          axis2_env_t **env); 
 
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_detail_set_base_node
-                        (axis2_soap_fault_detail_t *fault_detail,
-                         axis2_env_t **env,
-                         axis2_om_node_t *node);
+
 
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_fault_detail_get_base_node
@@ -104,9 +100,6 @@ axis2_soap_fault_detail_create(axis2_env_t **env)
     fault_detail_impl->fault_detail.ops->get_base_node =
         axis2_soap_fault_detail_get_base_node;
         
-    fault_detail_impl->fault_detail.ops->set_base_node =
-        axis2_soap_fault_detail_set_base_node;
-        
     return &(fault_detail_impl->fault_detail); 
 }
 
@@ -154,7 +147,7 @@ axis2_soap_fault_detail_create_with_parent
         return NULL;
     }
     fault_detail_impl->om_ele_node = this_node;                                       
-    AXIS2_SOAP_FAULT_SET_DETAIL(fault, env, fault_detail);
+    axis2_soap_fault_set_detail (fault, env, fault_detail);
     return  &(fault_detail_impl->fault_detail);            
 }    
                          
@@ -243,4 +236,3 @@ axis2_soap_fault_detail_get_base_node
    AXIS2_ENV_CHECK(env, NULL);
    return AXIS2_INTF_TO_IMPL(fault_detail)->om_ele_node;
 }
-

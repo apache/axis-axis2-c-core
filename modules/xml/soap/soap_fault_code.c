@@ -14,11 +14,12 @@
  * limitations under the License.
  */
  
- #include <axis2_soap_fault_code.h>
+ #include <_axis2_soap_fault_code.h>
  #include <axis2_soap_fault_sub_code.h>
  #include <axis2_soap_fault_value.h>
  #include <axis2_soap_builder.h>
- 
+ #include <_axis2_soap_fault.h>
+
  /***************** impl struct ***********************************************/
  
  typedef struct axis2_soap_fault_code_impl_t
@@ -45,16 +46,6 @@ axis2_status_t AXIS2_CALL
 axis2_soap_fault_code_free(axis2_soap_fault_code_t *fault_code,
                            axis2_env_t **env);
 
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_code_set_value(axis2_soap_fault_code_t *fault_code,
-                                axis2_env_t **env,
-                                axis2_soap_fault_value_t *fault_val);
-
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_code_set_sub_code(axis2_soap_fault_code_t *fault_code,
-                                  axis2_env_t **env,
-                                  axis2_soap_fault_sub_code_t *fault_subcode);                                                                         
-        
 axis2_soap_fault_sub_code_t* AXIS2_CALL 
 axis2_soap_fault_code_get_sub_code(axis2_soap_fault_code_t *fault_code,
                                   axis2_env_t **env);
@@ -63,21 +54,11 @@ axis2_soap_fault_value_t* AXIS2_CALL
 axis2_soap_fault_code_get_value(axis2_soap_fault_code_t *fault_code,
                                 axis2_env_t **env);
                                      
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_code_set_base_node(axis2_soap_fault_code_t *fault_code,
-                                    axis2_env_t **env,
-                                    axis2_om_node_t *node);
 
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_fault_code_get_base_node(axis2_soap_fault_code_t *fault_code,
                                     axis2_env_t **env);
  
-                                  
-axis2_status_t AXIS2_CALL
-axis2_soap_fault_code_set_builder(axis2_soap_fault_code_t *fault_code,
-                                  axis2_env_t **env,
-                                  axis2_soap_builder_t *soap_builder);
-                                  
 /********************* function implementation ********************************/
 
 AXIS2_DECLARE(axis2_soap_fault_code_t *)
@@ -117,24 +98,12 @@ axis2_soap_fault_code_create(axis2_env_t **env)
     fault_code_impl->fault_code.ops->get_sub_code =
         axis2_soap_fault_code_get_sub_code;
         
-    fault_code_impl->fault_code.ops->set_sub_code =
-        axis2_soap_fault_code_set_sub_code;
-        
-    fault_code_impl->fault_code.ops->set_value =
-        axis2_soap_fault_code_set_value;
-        
     fault_code_impl->fault_code.ops->get_value =
         axis2_soap_fault_code_get_value;              
-        
-    fault_code_impl->fault_code.ops->set_base_node =
-        axis2_soap_fault_code_set_base_node;
         
     fault_code_impl->fault_code.ops->get_base_node =
         axis2_soap_fault_code_get_base_node;
         
-    fault_code_impl->fault_code.ops->set_builder =
-        axis2_soap_fault_code_set_builder;                         
-                                
   return  &(fault_code_impl->fault_code);  
 }
 
@@ -192,7 +161,7 @@ axis2_soap_fault_code_create_with_parent(axis2_env_t **env,
     
     fault_code_impl->om_ele_node = this_node;    
     
-    AXIS2_SOAP_FAULT_SET_CODE(fault, env, fault_code);
+    axis2_soap_fault_set_code (fault, env, fault_code);
     
     return  &(fault_code_impl->fault_code);            
 }
@@ -376,5 +345,4 @@ axis2_soap_fault_code_set_builder(axis2_soap_fault_code_t *fault_code,
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
     fault_code_impl->builder = soap_builder;
     return AXIS2_SUCCESS;
-}                                                             
-
+}

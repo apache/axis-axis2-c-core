@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
- #include <axis2_soap_envelope.h>
+ #include <_axis2_soap_envelope.h>
  #include <axis2_soap_body.h>
  #include <axis2_soap_header.h>
  #include <axis2_soap_header_block.h>
@@ -80,10 +80,6 @@ axis2_om_node_t* AXIS2_CALL
 axis2_soap_envelope_get_base_node(axis2_soap_envelope_t *envelope,
                              axis2_env_t **env);
                              
-axis2_status_t AXIS2_CALL
-axis2_soap_envelope_set_base_node(axis2_soap_envelope_t *envelope,
-                                  axis2_env_t **env,
-                                  axis2_om_node_t *om_node);
                                   
 int AXIS2_CALL 
 axis2_soap_envelope_get_soap_version(axis2_soap_envelope_t *envelope,
@@ -93,25 +89,10 @@ axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *envelope,
                                    axis2_env_t **env,
                                    int soap_version);
                                    
-axis2_status_t AXIS2_CALL 
-axis2_soap_envelope_set_body(axis2_soap_envelope_t *envelope,
-                             axis2_env_t **env, 
-                             axis2_soap_body_t *body);
-
-axis2_status_t AXIS2_CALL 
-axis2_soap_envelope_set_header(axis2_soap_envelope_t *envelope,
-                               axis2_env_t **env, 
-                               axis2_soap_header_t *header);
-                               
 axis2_om_namespace_t* AXIS2_CALL 
 axis2_soap_envelope_get_namespace(axis2_soap_envelope_t *envelope,
                                   axis2_env_t **env);
                                   
-axis2_status_t AXIS2_CALL
-axis2_soap_envelope_set_builder(axis2_soap_envelope_t *envelope,
-                                axis2_env_t **env,
-                                axis2_soap_builder_t *soap_builder);                                  
-
 static axis2_status_t
 check_and_set_soap_version(axis2_soap_envelope_t *env_impl, 
                            axis2_env_t **env, 
@@ -153,26 +134,23 @@ axis2_soap_envelope_create_null(axis2_env_t **env)
     
     envelope_impl->soap_envelope.ops->get_base_node = 
             axis2_soap_envelope_get_base_node;
-    envelope_impl->soap_envelope.ops->set_base_node = 
-            axis2_soap_envelope_set_base_node;
+
     envelope_impl->soap_envelope.ops->get_soap_version = 
             axis2_soap_envelope_get_soap_version;
+ 
     envelope_impl->soap_envelope.ops->set_soap_version = 
             axis2_soap_envelope_set_soap_version;
+
     envelope_impl->soap_envelope.ops->get_body = 
             axis2_soap_envelope_get_body;
-    envelope_impl->soap_envelope.ops->set_body = 
-            axis2_soap_envelope_set_body;
     
     envelope_impl->soap_envelope.ops->get_header = 
             axis2_soap_envelope_get_header;
    /* envelope_impl->soap_envelope.ops->add_header = axis2_soap_envelope_add_header; */
-    envelope_impl->soap_envelope.ops->set_header = 
-            axis2_soap_envelope_set_header;
+   
     envelope_impl->soap_envelope.ops->get_namespace = 
             axis2_soap_envelope_get_namespace;
-    envelope_impl->soap_envelope.ops->set_builder =
-            axis2_soap_envelope_set_builder;                  
+   
     envelope_impl->soap_envelope.ops->serialize = 
             axis2_soap_envelope_serialize;    
 
@@ -236,26 +214,20 @@ axis2_soap_envelope_create(axis2_env_t **env,
     
     envelope_impl->soap_envelope.ops->get_base_node = 
             axis2_soap_envelope_get_base_node;
-    envelope_impl->soap_envelope.ops->set_base_node = 
-            axis2_soap_envelope_set_base_node;
+   
     envelope_impl->soap_envelope.ops->get_soap_version = 
             axis2_soap_envelope_get_soap_version;
     envelope_impl->soap_envelope.ops->set_soap_version = 
             axis2_soap_envelope_set_soap_version;
     envelope_impl->soap_envelope.ops->get_body = 
             axis2_soap_envelope_get_body;
-    envelope_impl->soap_envelope.ops->set_body = 
-            axis2_soap_envelope_set_body;
     
     envelope_impl->soap_envelope.ops->get_header = 
             axis2_soap_envelope_get_header;
    /* envelope_impl->soap_envelope.ops->add_header = axis2_soap_envelope_add_header; */
-    envelope_impl->soap_envelope.ops->set_header = 
-            axis2_soap_envelope_set_header;
     envelope_impl->soap_envelope.ops->get_namespace = 
             axis2_soap_envelope_get_namespace;
-    envelope_impl->soap_envelope.ops->set_builder =
-            axis2_soap_envelope_set_builder;                  
+
     envelope_impl->soap_envelope.ops->serialize = 
             axis2_soap_envelope_serialize;    
     
@@ -830,5 +802,4 @@ check_and_set_soap_version(axis2_soap_envelope_t *envelope,
             AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI, AXIS2_FAILURE);
     }
     return AXIS2_FAILURE;
-}                           
-
+}

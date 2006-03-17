@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  #include <axis2_soap_fault_value.h>
- #include <axis2_soap_fault_sub_code.h>
- #include <axis2_soap_fault_code.h>
+ #include <_axis2_soap_fault_sub_code.h>
+ #include <_axis2_soap_fault_code.h>
  
  
 /****************************** impl struct  *********************************/
@@ -41,11 +41,6 @@ axis2_status_t AXIS2_CALL
 axis2_soap_fault_value_free(axis2_soap_fault_value_t *fault_value,
                             axis2_env_t **env);
 
-axis2_status_t AXIS2_CALL
-axis2_soap_fault_value_set_base_node(axis2_soap_fault_value_t *fault_value,
-                                  axis2_env_t **env,
-                                  axis2_om_node_t *node);
-    
 axis2_om_node_t* AXIS2_CALL
 axis2_soap_fault_value_get_base_node(axis2_soap_fault_value_t *fault_value,
                                      axis2_env_t **env);
@@ -83,9 +78,6 @@ axis2_soap_fault_value_create(axis2_env_t **env)
     fault_val_impl->fault_value.ops->free_fn =
         axis2_soap_fault_value_free;
         
-    fault_val_impl->fault_value.ops->set_base_node =
-        axis2_soap_fault_value_set_base_node;
-    
     fault_val_impl->fault_value.ops->get_base_node =
         axis2_soap_fault_value_get_base_node;
         
@@ -148,7 +140,7 @@ axis2_soap_fault_value_create_with_subcode(axis2_env_t **env,
     
     fault_val_impl->om_ele_node = this_node;
     
-    AXIS2_SOAP_FAULT_SUB_CODE_SET_VALUE(parent, env, fault_value);
+    axis2_soap_fault_sub_code_set_value (parent, env, fault_value);
     
     return &(fault_val_impl->fault_value);
 }                            
@@ -204,7 +196,7 @@ axis2_soap_fault_value_create_with_code(axis2_env_t **env,
     }
     fault_val_impl->om_ele_node = this_node;
     
-    AXIS2_SOAP_FAULT_CODE_SET_VALUE(parent, env, fault_value);
+    axis2_soap_fault_code_set_value (parent, env, fault_value);
     
     return &(fault_val_impl->fault_value);
 }                                                        
@@ -253,5 +245,4 @@ axis2_soap_fault_value_get_base_node(axis2_soap_fault_value_t *fault_value,
     axis2_soap_fault_value_impl_t *fault_val_impl = NULL;
     fault_val_impl = AXIS2_INTF_TO_IMPL(fault_value);
     return fault_val_impl->om_ele_node;
-}                                  
-
+}

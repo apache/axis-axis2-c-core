@@ -36,7 +36,7 @@ extern "C"
 #endif
     
 typedef struct axis2_soap_header  axis2_soap_header_t;
-typedef struct axis2_soap_header_ops    axis2_soap_header_ops_t;
+typedef struct axis2_soap_header_ops axis2_soap_header_ops_t;
 
 struct axis2_soap_header_block;   
 struct axis2_soap_builder; 
@@ -127,17 +127,7 @@ struct axis2_soap_builder;
             (AXIS2_CALL *extract_header_blocks)(axis2_soap_header_t *header,
                                                 axis2_env_t **env,
                                                 axis2_char_t *role);
-                                             
-                                            
                                          
-       /**
-        * This is intended to be used by the builder,
-        * do not use this function in other places
-        */
-        axis2_status_t (AXIS2_CALL *set_base_node)
-                                            (axis2_soap_header_t *header,
-                                             axis2_env_t **env,
-                                             axis2_om_node_t *node);
        /**
         * returns the axis2_om_node_t struct wrapped in soap_header
         * @param header soap_header_t
@@ -153,22 +143,11 @@ struct axis2_soap_builder;
          *  @param env environment must not be null
          *  @return AXIS2_SOAP11 or AXIS2_SOAP12
          */
-        int  (AXIS2_CALL *get_soap_version) (axis2_soap_header_t *header,
+       int  (AXIS2_CALL *get_soap_version) (axis2_soap_header_t *header,
                                              axis2_env_t **env);
         
-        /** this is an internal function, only for soap code */
-        int (AXIS2_CALL *set_soap_version)(axis2_soap_header_t *header,
-                                           axis2_env_t **env,
-                                           int soap_version);
          
-        axis2_status_t (AXIS2_CALL *set_header_block)
-                                            (axis2_soap_header_t *header,
-                                             axis2_env_t **env,
-                                             struct axis2_soap_header_block* header_block);
        
-       axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_header_t *header,
-                                                axis2_env_t **env,
-                                                struct axis2_soap_builder* builder);
 
        axis2_hash_t* (AXIS2_CALL *get_all_header_blocks)(axis2_soap_header_t *header,
                                                          axis2_env_t **env);                                                
@@ -190,8 +169,7 @@ struct axis2_soap_builder;
     * creates a soap struct 
     * @param env Environment. MUST NOT be NULL
     */
-AXIS2_DECLARE(axis2_soap_header_t *)
-axis2_soap_header_create(axis2_env_t **env);
+
 
     
 AXIS2_DECLARE(axis2_soap_header_t *)
@@ -217,21 +195,11 @@ axis2_soap_header_create_with_parent(axis2_env_t **env,
 #define AXIS2_SOAP_HEADER_EXTRACT_HEADER_BLOCKS(header, env, role) \
         ((header)->ops->extract_header_blocks(header, env, role))                        
 
-#define AXIS2_SOAP_HEADER_SET_BASE_NODE(header, env, node) \
-        ((header)->ops->set_base_node(header, env, node))
-        
 #define AXIS2_SOAP_HEADER_GET_BASE_NODE(header, env) \
         ((header)->ops->get_base_node(header, env)) 
-        
        
 #define AXIS2_SOAP_HEADER_GET_SOAP_VERSION(header, env) \
         ((header)->ops->get_soap_version(header, env))
-        
-#define AXIS2_SOAP_HEADER_SET_HEADER_BLOCK(header, env, header_block) \
-        ((header)->ops->set_header_block(header, env, header_block))   
-
-#define AXIS2_SOAP_HEADER_SET_BUILDER(header, env, builder) \
-        ((header)->ops->set_builder(header, env, builder))             
 
 #define AXIS2_SOAP_HEADER_GET_HEADER_BLOCKS_WITH_NAMESPACE_URI(header, env, uri)\
         ((header)->ops->get_header_blocks_with_namespace_uri(header, env, uri))
@@ -239,9 +207,6 @@ axis2_soap_header_create_with_parent(axis2_env_t **env,
 #define AXIS2_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(header, env) \
         ((header)->ops->get_all_header_blocks(header, env))
 
-#define AXIS2_SOAP_HEADER_SET_SOAP_VERSION(header, env, soap_version) \
-        ((header)->ops->set_soap_version(header, env, soap_version))
-        
 /** @} */
 #ifdef __cplusplus
 }

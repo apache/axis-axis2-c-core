@@ -99,16 +99,6 @@ struct axis2_soap_builder;
         axis2_om_node_t* (AXIS2_CALL *get_base_node)(axis2_soap_body_t *body,
                                                      axis2_env_t **env);
         /**
-         * associate an om node with this soap body
-         * This om node should contain a om element with localname as Body
-         * @param body soap_body
-         * @param env environment
-         * @param status code AXIS2_SUCCESS on success , AXIS2_FAILURE on error
-         */
-        axis2_status_t (AXIS2_CALL *set_base_node)(axis2_soap_body_t *body,
-                                                    axis2_env_t **env,
-                                                    axis2_om_node_t *om_node);
-        /**
          *  return the soap version 
          * @param body soap_body
          * @param env environment must not be null
@@ -117,32 +107,13 @@ struct axis2_soap_builder;
         int (AXIS2_CALL *get_soap_version)(axis2_soap_body_t *body,
                                            axis2_env_t **env);
                                                       
-        /**
-         *  associate a soap_builder with this soap_body
-         * This function is only to be used by soap builder
-         * @param body soap_body
-         * @param env environment must not be null
-         * @param builder pointer to soap_builder
-         * @return return status code
-         */
-        axis2_status_t (AXIS2_CALL *set_builder)(axis2_soap_body_t *body,
-                                                 axis2_env_t **env,
-                                                 struct axis2_soap_builder *builder);
                                                      
         /**
          * build the soap body completely 
          */                                                 
         axis2_status_t (AXIS2_CALL *build)(axis2_soap_body_t *body, 
                                            axis2_env_t **env);                                                 
-        /**
-         * This function is should be used by the soap builder only,
-         * just set internal pointer in soap body struct to its fault
-         * Does not create the om tree . If om tree is needed, use add_fault 
-         * function 
-         */                                                 
-        axis2_status_t (AXIS2_CALL *set_fault)(axis2_soap_body_t *body,
-                                               axis2_env_t **env,
-                                               struct axis2_soap_fault *soap_fault);                                                 
+                                                       
 };                                                      
 
   /**
@@ -160,10 +131,7 @@ struct axis2_soap_builder;
     * creates a soap body struct 
     * @param env Environment. MUST NOT be NULL
     */
-AXIS2_DECLARE(axis2_soap_body_t *)
-axis2_soap_body_create(axis2_env_t **env);    
-    
-    
+   
 AXIS2_DECLARE(axis2_soap_body_t *)
 axis2_soap_body_create_with_parent(axis2_env_t **env, 
                                    struct axis2_soap_envelope *envelope);
@@ -184,20 +152,12 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
 #define AXIS2_SOAP_BODY_GET_BASE_NODE(body, env) \
         ((body)->ops->get_base_node(body, env))
                                    
-#define AXIS2_SOAP_BODY_SET_BASE_NODE(body, env, om_node) \
-        ((body)->ops->set_base_node(body, env, om_node))
-        
 #define AXIS2_SOAP_BODY_GET_SOAP_VERSION(body, env) \
         ((body)->ops->get_soap_version(body, env))
-        
-#define AXIS2_SOAP_BODY_SET_BUILDER(body, env, builder) \
-        ((body)->ops->set_builder(body, env, builder))               
 
 #define AXIS2_SOAP_BODY_BUILD(body, env) \
         ((body)->ops->build(body, env))
 
-#define AXIS2_SOAP_BODY_SET_FAULT(body, env, fault) \
-        ((body)->ops->set_fault(body, env, fault))
 /** @} */
 #ifdef __cplusplus
 }

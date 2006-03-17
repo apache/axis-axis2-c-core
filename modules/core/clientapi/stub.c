@@ -574,7 +574,7 @@ axis2_stub_set_value_doc(axis2_stub_t *stub,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, envelope, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
-    
+    /*
     if(is_header)
     {
         axis2_soap_header_t *soap_header = NULL;
@@ -597,6 +597,7 @@ axis2_stub_set_value_doc(axis2_stub_t *stub,
         }
         status = AXIS2_SOAP_BODY_SET_BASE_NODE(body, env, value);
     }
+    */
     return status;
 }
 

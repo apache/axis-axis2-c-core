@@ -71,26 +71,6 @@ extern "C"
                                     (axis2_soap_fault_code_t *fault_code,
                                      axis2_env_t **env);
                                  
-        axis2_status_t (AXIS2_CALL *set_value)
-                            (axis2_soap_fault_code_t *fault_code,
-                             axis2_env_t **env,
-                             struct axis2_soap_fault_value *fault_val);
-
-        axis2_status_t (AXIS2_CALL *set_sub_code)
-                                    (axis2_soap_fault_code_t *fault_code,
-                                     axis2_env_t **env,
-                                     struct axis2_soap_fault_sub_code *fault_subcode);                                                                         
-
-        axis2_status_t (AXIS2_CALL *set_builder)
-                                    (axis2_soap_fault_code_t *fault_code,
-                                     axis2_env_t **env,
-                                     struct axis2_soap_builder *builder);
-    
-        axis2_status_t (AXIS2_CALL *set_base_node)
-                                    (axis2_soap_fault_code_t *fault_code,
-                                     axis2_env_t **env,
-                                     axis2_om_node_t *node);
-
 };      
 
   /**
@@ -108,9 +88,6 @@ extern "C"
     * creates a soap struct 
     * @param env Environment. MUST NOT be NULL
     */
-
-AXIS2_DECLARE(axis2_soap_fault_code_t *)
-axis2_soap_fault_code_create(axis2_env_t **env);    
     
 AXIS2_DECLARE(axis2_soap_fault_code_t *)
 axis2_soap_fault_code_create_with_parent(axis2_env_t **env,
@@ -131,19 +108,6 @@ axis2_soap_fault_code_create_with_parent(axis2_env_t **env,
         
 #define AXIS2_SOAP_FAULT_CODE_GET_BASE_NODE(fault_code, env) \
         ((fault_code)->ops->get_base_node(fault_code, env))         
-
-/** internal functions */
-#define AXIS2_SOAP_FAULT_CODE_SET_SUB_CODE(fault_code , env, subcode) \
-        ((fault_code)->ops->set_sub_code(fault_code, env, subcode))
-
-#define AXIS2_SOAP_FAULT_CODE_SET_BASE_NODE(fault_code, env, node) \
-        ((fault_code)->ops->set_base_node(fault_code, env, node))  
-        
-#define AXIS2_SOAP_FAULT_CODE_SET_BUILDER(fault_code, env, builder) \
-        ((fault_code)->ops->set_builder(fault_code, env, builder))
-                
-#define AXIS2_SOAP_FAULT_CODE_SET_VALUE(fault_code , env, value) \
-        ((fault_code)->ops->set_value(fault_code, env, value))
 
 /** @} */
 

@@ -16,6 +16,7 @@
 #include "axis2_svc_skeleton.h"
 #include "math.h"
 #include <axis2_array_list.h>
+#include <stdio.h>
 
 int AXIS2_CALL
 math_free(axis2_svc_skeleton_t *svc_skeleton,

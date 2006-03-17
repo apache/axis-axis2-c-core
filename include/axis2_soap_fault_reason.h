@@ -97,8 +97,7 @@ struct axis2_soap_builder;
     * creates a soap struct 
     * @param env Environment. MUST NOT be NULL
     */
-AXIS2_DECLARE(axis2_soap_fault_reason_t *)
-axis2_soap_fault_reason_create(axis2_env_t **env);    
+    
     
 AXIS2_DECLARE(axis2_soap_fault_reason_t *)
 axis2_soap_fault_reason_create_with_parent(axis2_env_t **env,
@@ -117,15 +116,6 @@ axis2_soap_fault_reason_create_with_parent(axis2_env_t **env,
 #define AXIS2_SOAP_FAULT_REASON_GET_BASE_NODE(fault_reason, env) \
         ((fault_reason)->ops->get_base_node(fault_reason, env))         
 
-/** internal functions , do not use */
-#define AXIS2_SOAP_FAULT_REASON_SET_SOAP_FAULT_TEXT(fault_reason , env, soap_text) \
-        ((fault_reason)->ops->set_soap_fault_text(fault_reason, env, soap_text))
-
-#define AXIS2_SOAP_FAULT_REASON_SET_BASE_NODE(fault_reason, env, node) \
-        ((fault_reason)->ops->set_base_node(fault_reason, env, node))  
-        
-#define AXIS2_SOAP_FAULT_REASON_SET_BUILDER(fault_reason, env, builder) \
-        ((fault_reason)->ops->set_builder(fault_reason, env, builder))
 /** @} */
 
 #ifdef __cplusplus

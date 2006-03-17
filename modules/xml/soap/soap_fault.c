@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- #include <axis2_soap_fault.h>
+ #include <_axis2_soap_fault.h>
  #include <axis2_soap.h>
- #include <axis2_soap_body.h>
+ #include <_axis2_soap_body.h>
  #include <axis2_om_node.h>
  #include <axis2_om_element.h>
  #include <axis2_soap_fault_code.h>
@@ -63,55 +63,34 @@ axis2_status_t AXIS2_CALL
 axis2_soap_fault_free(axis2_soap_fault_t *fault,
                       axis2_env_t **env);
 
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_set_code(axis2_soap_fault_t *fault,
-                          axis2_env_t **env,
-                          axis2_soap_fault_code_t *code);
+
                                         
 axis2_soap_fault_code_t * AXIS2_CALL 
 axis2_soap_fault_get_code(axis2_soap_fault_t *fault,
                           axis2_env_t **env);
                                     
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_set_reason(axis2_soap_fault_t *fault,
-                            axis2_env_t **env,
-                            axis2_soap_fault_reason_t *reason);
+
                                         
 axis2_soap_fault_reason_t* AXIS2_CALL 
 axis2_soap_fault_get_reason(axis2_soap_fault_t *fault,
                             axis2_env_t **env);
                                         
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_set_node(axis2_soap_fault_t *fault,
-                          axis2_env_t **env,
-                          axis2_soap_fault_node_t *node);
+
                                         
 axis2_soap_fault_node_t* AXIS2_CALL 
 axis2_soap_fault_get_node(axis2_soap_fault_t *fault,
                           axis2_env_t **env);
                                         
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_set_role(axis2_soap_fault_t *fault,
-                          axis2_env_t **env,
-                          axis2_soap_fault_role_t *role);
-                                        
 axis2_soap_fault_role_t* AXIS2_CALL 
 axis2_soap_fault_get_role(axis2_soap_fault_t *fault,
                           axis2_env_t **env);
 
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_set_detail(axis2_soap_fault_t *fault,
-                            axis2_env_t **env,
-                            axis2_soap_fault_detail_t *detail);
                                 
 axis2_soap_fault_detail_t* AXIS2_CALL 
 axis2_soap_fault_get_detail(axis2_soap_fault_t *fault,
                             axis2_env_t **env);   
 
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_set_base_node(axis2_soap_fault_t *fault,
-                               axis2_env_t **env,
-                               axis2_om_node_t *node);
+
                                         
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_fault_get_base_node(axis2_soap_fault_t *fault,
@@ -127,11 +106,6 @@ axis2_soap_fault_set_exception(axis2_soap_fault_t *fault,
                                axis2_env_t **env,
                                axis2_char_t *exception);                                                                                                                                                                                                                                                                                         
 
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_set_builder(axis2_soap_fault_t *fault,
-                               axis2_env_t **env,
-                              axis2_soap_builder_t *builder);
-                              
 /***************** function implementations ***********************************/
 
 AXIS2_DECLARE(axis2_soap_fault_t *)
@@ -169,37 +143,29 @@ axis2_soap_fault_create(axis2_env_t **env)
 
     fault_impl->soap_fault.ops->free_fn =
         axis2_soap_fault_free;
+  
     fault_impl->soap_fault.ops->get_base_node =
         axis2_soap_fault_get_base_node;
-    fault_impl->soap_fault.ops->set_base_node =
-        axis2_soap_fault_set_base_node;
-    fault_impl->soap_fault.ops->set_code =
-        axis2_soap_fault_set_code;
+
     fault_impl->soap_fault.ops->get_code =
         axis2_soap_fault_get_code;
-    fault_impl->soap_fault.ops->set_reason =
-        axis2_soap_fault_set_reason;
+
     fault_impl->soap_fault.ops->get_reason =
         axis2_soap_fault_get_reason;        
-    fault_impl->soap_fault.ops->set_role =
-        axis2_soap_fault_set_role;
+
     fault_impl->soap_fault.ops->get_role =
         axis2_soap_fault_get_role;
+
     fault_impl->soap_fault.ops->get_node =
         axis2_soap_fault_get_node;
-    fault_impl->soap_fault.ops->set_node =
-        axis2_soap_fault_set_node;
+
     fault_impl->soap_fault.ops->get_detail =
         axis2_soap_fault_get_detail;
-    fault_impl->soap_fault.ops->set_detail =
-        axis2_soap_fault_set_detail; 
+
     fault_impl->soap_fault.ops->get_exception =
         axis2_soap_fault_get_exception;
     fault_impl->soap_fault.ops->set_exception =
         axis2_soap_fault_set_exception;
-    fault_impl->soap_fault.ops->set_builder =
-        axis2_soap_fault_set_builder;                            
-                                                                                               
     return &(fault_impl->soap_fault);
 }
 
@@ -252,7 +218,7 @@ axis2_soap_fault_create_with_parent(axis2_env_t **env,
     }
                                        
     fault_impl->om_ele_node = this_node;
-    AXIS2_SOAP_BODY_SET_FAULT(body, env, fault);    
+    axis2_soap_body_set_fault (body, env, fault);    
     return  &(fault_impl->soap_fault);  
 }
 

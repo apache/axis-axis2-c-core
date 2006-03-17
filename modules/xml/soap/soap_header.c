@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  
- #include <axis2_soap_envelope.h>
- #include <axis2_soap_header.h>
+ #include <_axis2_soap_envelope.h>
+ #include <_axis2_soap_header.h>
  #include <axis2_soap_header_block.h>
  #include <axis2_hash.h>
  #include <axis2_soap.h>
@@ -72,11 +72,6 @@ AXIS2_CALL axis2_soap_header_extract_header_blocks
                                  axis2_env_t **env,
                                  axis2_char_t *role);
 
-axis2_status_t AXIS2_CALL 
-axis2_soap_header_set_base_node(axis2_soap_header_t *header,
-                                axis2_env_t **env,
-                                axis2_om_node_t *node);
-
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_header_get_base_node(axis2_soap_header_t *header,
                                 axis2_env_t **env);
@@ -85,21 +80,6 @@ axis2_status_t AXIS2_CALL
 axis2_soap_header_get_soap_version(axis2_soap_header_t *header,
                                    axis2_env_t **env);
                                              
-axis2_status_t AXIS2_CALL 
-axis2_soap_header_set_soap_version(axis2_soap_header_t *header,
-                                   axis2_env_t **env,
-                                   int soap_version);                                                                                                                                                                                                       
-
-axis2_status_t AXIS2_CALL 
-axis2_soap_header_set_header_block(axis2_soap_header_t *header,
-                                   axis2_env_t **env,
-                                   axis2_soap_header_block_t *header_block);
-                                   
-axis2_status_t AXIS2_CALL 
-axis2_soap_header_set_builder(axis2_soap_header_t *header,
-                              axis2_env_t **env,
-                              axis2_soap_builder_t *builder); 
-
 axis2_array_list_t* AXIS2_CALL
 axis2_soap_header_get_header_blocks_with_namespace_uri
                                         (axis2_soap_header_t* header,
@@ -155,20 +135,13 @@ axis2_soap_header_create(axis2_env_t **env)
         axis2_soap_header_examine_all_header_blocks;
     header_impl->soap_header.ops->extract_header_blocks =
         axis2_soap_header_extract_header_blocks;
-    header_impl->soap_header.ops->set_base_node =
-        axis2_soap_header_set_base_node;
+   
     header_impl->soap_header.ops->get_base_node =
         axis2_soap_header_get_base_node;
         
     header_impl->soap_header.ops->get_soap_version =
         axis2_soap_header_get_soap_version; 
-    header_impl->soap_header.ops->set_soap_version =
-        axis2_soap_header_set_soap_version;
         
-    header_impl->soap_header.ops->set_header_block = 
-        axis2_soap_header_set_header_block;
-    header_impl->soap_header.ops->set_builder =
-        axis2_soap_header_set_builder;      
     header_impl->soap_header.ops->get_header_blocks_with_namespace_uri =
         axis2_soap_header_get_header_blocks_with_namespace_uri;
     header_impl->soap_header.ops->get_all_header_blocks =
@@ -232,7 +205,7 @@ axis2_soap_header_create_with_parent(axis2_env_t **env,
                            
     header_impl->om_ele_node = this_node;
     
-    AXIS2_SOAP_ENVELOPE_SET_HEADER(envelope, env, header);
+    axis2_soap_envelope_set_header(envelope, env, header);
     
     return &(header_impl->soap_header);                 
 }
@@ -254,7 +227,7 @@ axis2_soap_header_free(axis2_soap_header_t *header,
         for (hi = axis2_hash_first (header_impl->header_blocks ,env); hi;
                  hi = axis2_hash_next ( env, hi))
         {
-               axis2_hash_this (hi, NULL, NULL, &val);
+               axis2_hash_this (hi, NULL , NULL, &val);
 
                 if (val)
                 {   AXIS2_SOAP_HEADER_BLOCK_FREE((axis2_soap_header_block_t *)val, env);

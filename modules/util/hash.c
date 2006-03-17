@@ -174,7 +174,6 @@ static void
 expand_array (axis2_hash_t * ht)
 {
     axis2_hash_index_t *hi;
-    axis2_env_t **env = NULL;
     
     axis2_hash_entry_t **new_array;
     unsigned int new_max;

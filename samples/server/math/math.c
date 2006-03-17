@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include "math.h"
+#include <stdio.h>
 
 axis2_om_node_t *
 axis2_math_add (axis2_env_t **env, axis2_om_node_t *node)

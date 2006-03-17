@@ -18,13 +18,14 @@
  #include <axis2_om_stax_builder.h>
  #include <axis2_soap_builder.h>
  #include <axis2_soap.h>
- #include <axis2_soap_fault_code.h>
- #include <axis2_soap_fault_value.h>
- #include <axis2_soap_fault_reason.h>
- #include <axis2_soap_body.h>
- #include <axis2_soap_fault_detail.h>
+ #include <_axis2_soap_fault_code.h>
+ #include <_axis2_soap_fault_value.h>
+ #include <_axis2_soap_fault_reason.h>
+ #include <_axis2_soap_fault.h>
+ #include <_axis2_soap_body.h>
+ #include <_axis2_soap_fault_detail.h>
  #include <axis2_soap_fault_text.h>
- #include <axis2_soap_fault_role.h>
+ #include <_axis2_soap_fault_role.h>
  #include <axis2_om_stax_builder_internal.h>
  #include <axis2_om_node_internal.h>
  
@@ -105,6 +106,7 @@ axis2_soap11_builder_helper_create(axis2_env_t **env,
     
     builder_helper_impl->builder_helper.ops->free_fn = 
             axis2_soap11_builder_helper_free;
+    
     builder_helper_impl->builder_helper.ops->handle_event =
             axis2_soap11_builder_helper_handle_event;
             
@@ -197,11 +199,11 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             if(!fault_code)
                 return AXIS2_FAILURE;
             
-            AXIS2_SOAP_FAULT_CODE_SET_BASE_NODE(fault_code, env, om_element_node);
+            axis2_soap_fault_code_set_base_node (fault_code, env, om_element_node);
             
-            AXIS2_SOAP_FAULT_SET_CODE(soap_fault, env, fault_code);
+            axis2_soap_fault_set_code (soap_fault, env, fault_code);
             
-            AXIS2_SOAP_FAULT_CODE_SET_BUILDER(fault_code, env, builder_helper_impl->soap_builder);
+            axis2_soap_fault_code_set_builder (fault_code, env, builder_helper_impl->soap_builder);
             
             AXIS2_OM_ELEMENT_SET_LOCALNAME(om_ele, env, AXIS2_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME);
                         
@@ -251,9 +253,9 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             if(!fault_reason)
                 return AXIS2_FAILURE;
                 
-            AXIS2_SOAP_FAULT_REASON_SET_BASE_NODE(fault_reason, env, om_element_node);
+            axis2_soap_fault_reason_set_base_node (fault_reason, env, om_element_node);
             
-            AXIS2_SOAP_FAULT_SET_REASON(soap_fault, env, fault_reason); 
+            axis2_soap_fault_set_reason (soap_fault, env, fault_reason); 
             
             fault_text = axis2_soap_fault_text_create_with_parent(env, fault_reason);
             if(!fault_text)
@@ -288,9 +290,9 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             
             AXIS2_OM_ELEMENT_SET_LOCALNAME(om_ele, env, AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME);
 
-            AXIS2_SOAP_FAULT_ROLE_SET_BASE_NODE(fault_role, env, om_element_node);
+            axis2_soap_fault_role_set_base_node (fault_role, env, om_element_node);
             
-            AXIS2_SOAP_FAULT_SET_ROLE(soap_fault, env, fault_role);
+            axis2_soap_fault_set_role (soap_fault, env, fault_role);
             /*
             Role element may not have a namespace associated, hence commented, else it segfaults here - Samisa
             status = AXIS2_SOAP_BUILDER_PROCESS_NAMESPACE_DATA(
@@ -307,9 +309,9 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
                 
             AXIS2_OM_ELEMENT_SET_LOCALNAME(om_ele, env, AXIS2_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME);
             
-            AXIS2_SOAP_FAULT_DETAIL_SET_BASE_NODE(fault_detail, env, om_element_node);
+            axis2_soap_fault_detail_set_base_node(fault_detail, env, om_element_node);
             
-            AXIS2_SOAP_FAULT_SET_DETAIL(soap_fault, env, fault_detail);
+            axis2_soap_fault_set_detail (soap_fault, env, fault_detail);
         }
         else
         {

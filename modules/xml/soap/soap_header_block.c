@@ -15,8 +15,8 @@
  */
  
 #include <axis2_soap.h> 
-#include <axis2_soap_header_block.h>
-#include <axis2_soap_header.h>
+#include <_axis2_soap_header_block.h>
+#include <_axis2_soap_header.h>
 #include <axis2_soap_envelope.h>
 #include <axis2_soap_builder.h>
 
@@ -80,12 +80,6 @@ axis2_soap_header_block_get_role
                         (axis2_soap_header_block_t *header_block,
                          axis2_env_t **env);
                                                                                     
-axis2_status_t AXIS2_CALL 
-axis2_soap_header_block_set_base_node
-                        (axis2_soap_header_block_t *header_block,
-                         axis2_env_t **env,
-                         axis2_om_node_t *node);
-                                        
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_header_block_get_base_node
                         (axis2_soap_header_block_t *header_block,
@@ -95,11 +89,7 @@ int AXIS2_CALL
 axis2_soap_header_block_get_soap_version  
                         (axis2_soap_header_block_t *header_block,
                          axis2_env_t **env);
-axis2_status_t AXIS2_CALL 
-axis2_soap_header_block_set_soap_version  
-                        (axis2_soap_header_block_t *header_block,
-                         axis2_env_t **env,
-                         int soap_version); 
+
                          
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_block_set_attribute
@@ -170,11 +160,7 @@ axis2_soap_header_block_create(axis2_env_t **env)
 
     header_block_impl->header_block.ops->get_soap_version =
         axis2_soap_header_block_get_soap_version;
-    header_block_impl->header_block.ops->set_soap_version =
-        axis2_soap_header_block_set_soap_version;
         
-    header_block_impl->header_block.ops->set_base_node =
-        axis2_soap_header_block_set_base_node;
     header_block_impl->header_block.ops->get_base_node =
         axis2_soap_header_block_get_base_node;    
     return &(header_block_impl->header_block);
@@ -214,7 +200,7 @@ axis2_soap_header_block_create_with_parent(axis2_env_t **env,
     }
     header_block_impl->om_ele_node = this_node; 
     
-    AXIS2_SOAP_HEADER_SET_HEADER_BLOCK(header, env, header_block);
+    axis2_soap_header_set_header_block (header, env, header_block);
     
     header_block_impl->soap_version = 
         AXIS2_SOAP_HEADER_GET_SOAP_VERSION(header, env);
@@ -571,4 +557,4 @@ axis2_soap_header_block_set_soap_version
    
    header_block_impl->soap_version = soap_version;
    return AXIS2_SUCCESS;
-}                                   
+}

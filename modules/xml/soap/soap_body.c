@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  
- #include <axis2_soap_envelope.h>
- #include <axis2_soap_body.h>
+ #include <_axis2_soap_envelope.h>
+ #include <_axis2_soap_body.h>
  #include <axis2_hash.h>
  #include <axis2_soap.h>
  #include <axis2_soap_builder.h>
@@ -63,24 +63,12 @@ axis2_om_node_t* AXIS2_CALL
 axis2_soap_body_get_base_node(axis2_soap_body_t *body,
                               axis2_env_t **env);
                               
-axis2_status_t AXIS2_CALL
-axis2_soap_body_set_base_node(axis2_soap_body_t *body,
-                              axis2_env_t **env,
-                              axis2_om_node_t *om_node);                              
-                         
-axis2_status_t AXIS2_CALL 
-axis2_soap_body_set_builder(axis2_soap_body_t *body,
-                            axis2_env_t **env,
-                            axis2_soap_builder_t *builder);   
-
+                              
 axis2_status_t AXIS2_CALL
 axis2_soap_body_build(axis2_soap_body_t *body,
                       axis2_env_t **env);
                       
-axis2_status_t AXIS2_CALL 
-axis2_soap_body_set_fault(axis2_soap_body_t *body,
-                          axis2_env_t **env,
-                          axis2_soap_fault_t *soap_fault);                      
+                     
 
 /*************** function implementations *************************************/
 axis2_soap_body_t* AXIS2_CALL
@@ -127,17 +115,8 @@ axis2_soap_body_create(axis2_env_t **env)
     body_impl->soap_body.ops->get_base_node = 
         axis2_soap_body_get_base_node;
         
-    body_impl->soap_body.ops->set_base_node = 
-        axis2_soap_body_set_base_node;
-        
-    body_impl->soap_body.ops->set_builder = 
-        axis2_soap_body_set_builder;
-        
     body_impl->soap_body.ops->build = 
         axis2_soap_body_build;
-        
-    body_impl->soap_body.ops->set_fault = 
-        axis2_soap_body_set_fault;
         
     return &(body_impl->soap_body);
     
@@ -195,7 +174,7 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
         return NULL;
     }
     
-    AXIS2_SOAP_ENVELOPE_SET_BODY(envelope, env, &(body_impl->soap_body));
+    axis2_soap_envelope_set_body (envelope, env, &(body_impl->soap_body));
     
     return &(body_impl->soap_body);           
 }

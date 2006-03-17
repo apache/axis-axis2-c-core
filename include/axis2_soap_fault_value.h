@@ -56,11 +56,6 @@ typedef struct axis2_soap_fault_value axis2_soap_fault_value_t;
                             (axis2_soap_fault_value_t *fault_value,
                              axis2_env_t **env);
 
-        axis2_status_t (AXIS2_CALL *set_base_node)
-                             (axis2_soap_fault_value_t *fault_value,
-                              axis2_env_t **env,
-                              axis2_om_node_t *node);
-    
         axis2_om_node_t* (AXIS2_CALL *get_base_node)
                              (axis2_soap_fault_value_t *fault_value,
                               axis2_env_t **env);
@@ -90,8 +85,6 @@ AXIS2_DECLARE(axis2_soap_fault_value_t *)
 axis2_soap_fault_value_create_with_code(axis2_env_t **env,
                             axis2_soap_fault_code_t *parent);  
 
-AXIS2_DECLARE(axis2_soap_fault_value_t *)
-axis2_soap_fault_value_create(axis2_env_t **env);
 
                              
 
@@ -105,8 +98,7 @@ axis2_soap_fault_value_create(axis2_env_t **env);
 #define AXIS2_SOAP_FAULT_VALUE_GET_BASE_NODE(fault_value, env) \
         ((fault_value)->ops->get_base_node(fault_value, env))         
 
-#define AXIS2_SOAP_FAULT_VALUE_SET_BASE_NODE(fault_value, env, node) \
-        ((fault_value)->ops->set_base_node(fault_value, env, node)) 
+
         
 /** @} */
 

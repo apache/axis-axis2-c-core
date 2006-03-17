@@ -65,11 +65,6 @@ extern "C"
                                     (axis2_soap_fault_role_t *fault_role,
                                      axis2_env_t **env);
                                      
-        axis2_status_t (AXIS2_CALL *set_base_node)
-                                    (axis2_soap_fault_role_t *fault_role,
-                                     axis2_env_t **env,
-                                     axis2_om_node_t *node);
-    
         axis2_om_node_t* (AXIS2_CALL *get_base_node)
                                     (axis2_soap_fault_role_t *fault_role,
                                      axis2_env_t **env);
@@ -91,8 +86,6 @@ extern "C"
     * creates a soap struct 
     * @param env Environment. MUST NOT be NULL
     */
-AXIS2_DECLARE(axis2_soap_fault_role_t *)
-axis2_soap_fault_role_create(axis2_env_t **env);
     
 AXIS2_DECLARE(axis2_soap_fault_role_t *)
 axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
@@ -110,10 +103,6 @@ axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
         
 #define AXIS2_SOAP_FAULT_ROLE_GET_BASE_NODE(fault_role, env) \
         ((fault_role)->ops->get_base_node(fault_role, env))         
-
-/** internal functions , do not use */
-#define AXIS2_SOAP_FAULT_ROLE_SET_BASE_NODE(fault_role, env, node) \
-        ((fault_role)->ops->set_base_node(fault_role, env, node)) 
 
 #define AXIS2_SOAP_FAULT_ROLE_SET_VALUE(fault_role , env, value) \
         ((fault_role)->ops->set_role_value(fault_role, env, value))

@@ -16,8 +16,8 @@
  
 #include <axis2_soap_fault.h>
 #include <axis2_om_element.h>
-#include <axis2_soap_fault_text.h>
-#include <axis2_soap_fault_reason.h>
+#include <_axis2_soap_fault_text.h>
+#include <_axis2_soap_fault_reason.h>
 #include <axis2_om_namespace.h>
 #include <axis2_qname.h>
 
@@ -58,11 +58,6 @@ axis2_char_t* AXIS2_CALL
 axis2_soap_fault_text_get_lang(axis2_soap_fault_text_t *fault_text,
                                       axis2_env_t **env);
                                      
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_text_set_base_node(axis2_soap_fault_text_t *fault_text,
-                                      axis2_env_t **env,
-                                      axis2_om_node_t *node);
-    
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_fault_text_get_base_node(axis2_soap_fault_text_t *fault_text,
                                       axis2_env_t **env);
@@ -108,7 +103,6 @@ axis2_soap_fault_text_create(axis2_env_t **env)
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }                                       
-    
     fault_text_impl->fault_text.ops->free_fn = 
         axis2_soap_fault_text_free;
         
@@ -120,10 +114,7 @@ axis2_soap_fault_text_create(axis2_env_t **env)
     
     fault_text_impl->fault_text.ops->get_base_node =
         axis2_soap_fault_text_get_base_node;
-        
-    fault_text_impl->fault_text.ops->set_base_node =
-        axis2_soap_fault_text_set_base_node;
-        
+
     return &(fault_text_impl->fault_text);    
 }
 
@@ -181,7 +172,7 @@ axis2_soap_fault_text_create_with_parent(axis2_env_t **env,
     
     fault_text_impl->om_ele_node = this_node;
     
-    AXIS2_SOAP_FAULT_REASON_SET_SOAP_FAULT_TEXT(parent, env, fault_text);
+    axis2_soap_fault_reason_set_soap_fault_text(parent, env, fault_text);
     
     return &(fault_text_impl->fault_text);
 }
@@ -320,4 +311,3 @@ axis2_soap_fault_text_get_base_node(axis2_soap_fault_text_t *fault_text,
     fault_text_impl = AXIS2_INTF_TO_IMPL(fault_text); 
     return fault_text_impl->om_ele_node;
 }
-

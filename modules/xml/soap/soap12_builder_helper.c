@@ -16,17 +16,18 @@
  
  #include <axis2_soap12_builder_helper.h>
  #include <axis2_array_list.h>
- #include <axis2_soap_body.h>
- #include <axis2_soap_fault.h>
- #include <axis2_soap_envelope.h>
+ #include <_axis2_soap_body.h>
+ #include <_axis2_soap_fault.h>
+ #include <_axis2_soap_envelope.h>
  #include <axis2_soap_message.h>
- #include <axis2_soap_fault_code.h>
- #include <axis2_soap_fault_node.h>
- #include <axis2_soap_fault_detail.h>
- #include <axis2_soap_fault_reason.h>
- #include <axis2_soap_fault_role.h>
- #include <axis2_soap_fault_value.h>
- #include <axis2_soap_fault_text.h>
+ #include <_axis2_soap_fault_code.h>
+ #include <_axis2_soap_fault_sub_code.h>
+ #include <_axis2_soap_fault_node.h>
+ #include <_axis2_soap_fault_detail.h>
+ #include <_axis2_soap_fault_reason.h>
+ #include <_axis2_soap_fault_role.h>
+ #include <_axis2_soap_fault_value.h>
+ #include <_axis2_soap_fault_text.h>
 
 /********************* impl struct ********************************************/
  
@@ -128,6 +129,7 @@ axis2_soap12_builder_helper_create(axis2_env_t **env,
     
     builder_helper_impl->builder_helper.ops->free_fn = 
             axis2_soap12_builder_helper_free;
+    
     builder_helper_impl->builder_helper.ops->handle_event =
             axis2_soap12_builder_helper_handle_event;
             
@@ -213,14 +215,13 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 if(!soap_fault_code)
                     return AXIS2_FAILURE;
    
-                AXIS2_SOAP_FAULT_CODE_SET_BASE_NODE(soap_fault_code , env, om_ele_node);            
+                axis2_soap_fault_code_set_base_node (soap_fault_code , env, om_ele_node);            
                 
-       /*         AXIS2_SOAP_FAULT_CODE_SET_SOAP_VERSION(soap_fault_code, env, AXIS2_SOAP12); */
                 
-                AXIS2_SOAP_FAULT_CODE_SET_BUILDER(soap_fault_code, env, 
+                axis2_soap_fault_code_set_builder(soap_fault_code, env, 
                     builder_helper_impl->soap_builder);
                     
-                AXIS2_SOAP_FAULT_SET_CODE(soap_fault, env, soap_fault_code);
+                axis2_soap_fault_set_code (soap_fault, env, soap_fault_code);
                 
                 builder_helper_impl->code_present = AXIS2_TRUE;
                 builder_helper_impl->code_processing = AXIS2_TRUE;
@@ -246,12 +247,11 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         if(!fault_reason)
                             return AXIS2_FAILURE;
                  
-                        AXIS2_SOAP_FAULT_REASON_SET_BASE_NODE(fault_reason, env, om_ele_node);
-                     /*   AXIS2_SOAP_FAULT_SET_SOAP_VERSION(fault_reason, env, AXIS2_SOAP12); */
+                        axis2_soap_fault_reason_set_base_node (fault_reason, env, om_ele_node);
                      
-                        AXIS2_SOAP_FAULT_SET_REASON(soap_fault, env, fault_reason);
+                        axis2_soap_fault_set_reason (soap_fault, env, fault_reason);
                      
-                        AXIS2_SOAP_FAULT_REASON_SET_BUILDER(soap_fault, env, 
+                        axis2_soap_fault_reason_set_builder (fault_reason , env, 
                                 builder_helper_impl->soap_builder); 
                                 
                         builder_helper_impl->reason_present = AXIS2_TRUE;
@@ -302,11 +302,9 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         if(!soap_fault_node)
                             return AXIS2_FAILURE;
                         
-                        AXIS2_SOAP_FAULT_NODE_SET_BASE_NODE(soap_fault_node, env, om_ele_node);
+                        axis2_soap_fault_node_set_base_node (soap_fault_node, env, om_ele_node);
                         
-                /*        AXIS2_SOAP_FAULT_NODE_SET_SOAP_VERSION(soap_fault_node, env, AXIS2_SOAP12); */
-                
-                        AXIS2_SOAP_FAULT_SET_NODE(soap_fault, env, soap_fault_node);                    
+                        axis2_soap_fault_set_node (soap_fault, env, soap_fault_node);                    
                 
                         builder_helper_impl->node_present = AXIS2_TRUE;                    
                     }
@@ -347,10 +345,9 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         if(!soap_fault_role)
                             return AXIS2_FAILURE;
                         
-                        AXIS2_SOAP_FAULT_ROLE_SET_BASE_NODE(soap_fault_role, env, om_ele_node);
-                    /*    AXIS2_SOAP_FAULT_ROLE_SET_SOAP_VRESION(soap_fault_role, env, AXIS2_SOAP12); */
+                        axis2_soap_fault_role_set_base_node(soap_fault_role, env, om_ele_node);
                     
-                        AXIS2_SOAP_FAULT_SET_ROLE(soap_fault, env, soap_fault_role);
+                        axis2_soap_fault_set_role (soap_fault, env, soap_fault_role);
                         builder_helper_impl->role_present = AXIS2_TRUE;                    
                     }
                 }
@@ -388,10 +385,9 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         if(!soap_fault_detail)
                             return AXIS2_FAILURE;
                             
-                        AXIS2_SOAP_FAULT_DETAIL_SET_BASE_NODE(soap_fault_detail, env, om_ele_node);
-                   /*     AXIS2_SOAP_FAULT_SET_SOAP_VERSION(soap_fault_detail, env, AXIS2_SOAP12); */
+                        axis2_soap_fault_detail_set_base_node (soap_fault_detail, env, om_ele_node);
                    
-                        AXIS2_SOAP_FAULT_SET_DETAIL(soap_fault, env, soap_fault_detail);
+                        axis2_soap_fault_set_detail (soap_fault, env, soap_fault_detail);
                         builder_helper_impl->detail_present = AXIS2_TRUE;
                     }                        
                 }
@@ -449,14 +445,13 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     if(!soap_fault_value)
                         return AXIS2_FAILURE;
                         
-                    AXIS2_SOAP_FAULT_VALUE_SET_BASE_NODE(soap_fault_value, env, om_ele_node);
-             /*       AXIS2_SOAP_FAULT_VALUE_SET_SOAP_VERSION(soap_fault_value, env, AXIS2_SOAP12);  */
+                    axis2_soap_fault_value_set_base_node (soap_fault_value, env, om_ele_node);
              
                     parent_fcode = AXIS2_SOAP_FAULT_GET_CODE(soap_fault, env);
                     if(!parent_fcode)
                         return AXIS2_FAILURE;
                         
-                    AXIS2_SOAP_FAULT_CODE_SET_VALUE(parent_fcode, env, soap_fault_value);
+                    axis2_soap_fault_code_set_value (parent_fcode, env, soap_fault_value);
                     
                     builder_helper_impl->value_present = AXIS2_TRUE;
                     builder_helper_impl->code_processing = AXIS2_FALSE;
@@ -484,17 +479,16 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         if(!fault_subcode)
                             return AXIS2_FAILURE;
                         
-                        AXIS2_SOAP_FAULT_SUB_CODE_SET_BASE_NODE(fault_subcode, env, om_ele_node);
+                        axis2_soap_fault_sub_code_set_base_node(fault_subcode, env, om_ele_node);
                         
-              /*          AXIS2_SOAP_FAULT_SUB_CODE_SET_SOAP_VRESION(fault_subcode, env, AXIS2_SOAP12); */
               
                         fault_code = AXIS2_SOAP_FAULT_GET_CODE(soap_fault, env);
                         if(!fault_code)
                             return AXIS2_FAILURE;
                             
-                        AXIS2_SOAP_FAULT_CODE_SET_SUB_CODE(fault_code, env, fault_subcode);
+                        axis2_soap_fault_code_set_sub_code (fault_code, env, fault_subcode);
                         
-                        AXIS2_SOAP_FAULT_SUB_CODE_SET_BUILDER(fault_subcode, env,
+                        axis2_soap_fault_sub_code_set_builder(fault_subcode, env,
                             builder_helper_impl->soap_builder);
                         
                         builder_helper_impl->sub_code_present = AXIS2_TRUE;
@@ -531,14 +525,13 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 if(!soap_fault_text)
                     return AXIS2_FAILURE;
                                
-                AXIS2_SOAP_FAULT_TEXT_SET_BASE_NODE(soap_fault_text, env, om_ele_node);
-            /*    AXIS2_SOAP_FAULT_TEXT_SET_SOAP_VERSION(soap_fault_text, env, AXIS2_SOAP12); */
+                axis2_soap_fault_text_set_base_node(soap_fault_text, env, om_ele_node);
             
                 fault_reason = AXIS2_SOAP_FAULT_GET_REASON(soap_fault, env);
                 if(!fault_reason)
                     return AXIS2_FAILURE;
                     
-                AXIS2_SOAP_FAULT_REASON_SET_SOAP_FAULT_TEXT(fault_reason, env, soap_fault_text);
+                axis2_soap_fault_reason_set_soap_fault_text (fault_reason, env, soap_fault_text);
                 /*****************
                 AXIS2_OM_NODE_SET_BUILD_STATUS(om_ele_node, env, AXIS2_FALSE);
                 ******************/
@@ -624,9 +617,9 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     if(!value)
                         return AXIS2_FAILURE;
                         
-                    AXIS2_SOAP_FAULT_VALUE_SET_BASE_NODE(value, env, om_ele_node);
+                    axis2_soap_fault_value_set_base_node (value, env, om_ele_node);
                     
-                    AXIS2_SOAP_FAULT_SUB_CODE_SET_VALUE(sub_code, env, value);
+                    axis2_soap_fault_sub_code_set_value (sub_code, env, value);
              
                     builder_helper_impl->subcode_value_present = AXIS2_TRUE;
                     builder_helper_impl->sub_sub_code_present = AXIS2_FALSE;
@@ -647,7 +640,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                         if(!subcode)
                             return AXIS2_FAILURE;
                             
-                        AXIS2_SOAP_FAULT_SUB_CODE_SET_BASE_NODE(subcode, env, om_ele_node);
+                        axis2_soap_fault_sub_code_set_base_node(subcode, env, om_ele_node);
                   
                         fault_code = AXIS2_SOAP_FAULT_GET_CODE(soap_fault, env);
                         if(!fault_code)
@@ -662,7 +655,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                             return AXIS2_FAILURE;
                         }
                         
-                        AXIS2_SOAP_FAULT_SUB_CODE_SET_SUB_CODE(parent_subcode, env, subcode);
+                        axis2_soap_fault_sub_code_set_sub_code (parent_subcode, env, subcode);
                         
                         builder_helper_impl->subcode_value_present = AXIS2_FALSE;
                         builder_helper_impl->sub_sub_code_present = AXIS2_TRUE;
@@ -710,11 +703,9 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
             if(local_name_exists)
             {
                 AXIS2_ARRAY_LIST_ADD(builder_helper_impl->detail_element_names, env, ele_localname);            
-            
             }
             else
             {
-              
                 return AXIS2_FAILURE;
             }
         }

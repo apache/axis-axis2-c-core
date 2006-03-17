@@ -16,14 +16,15 @@
  
  #include <axis2_soap_builder.h>
  #include <axis2_soap_message.h>
- #include <axis2_soap_envelope.h>
- #include <axis2_soap_header.h>
+ #include <_axis2_soap_envelope.h>
+ #include <_axis2_soap_header.h>
  #include <axis2_soap11_builder_helper.h>
  #include <axis2_soap12_builder_helper.h>
  #include <axis2_soap.h>
- #include <axis2_soap_body.h>
- #include <axis2_soap_header_block.h>
+ #include <_axis2_soap_body.h>
+ #include <_axis2_soap_header_block.h>
  #include <axis2_om_stax_builder_internal.h>
+ #include <_axis2_soap_fault.h>
  /*********************** impl struct *****************************************/
  
  typedef struct axis2_soap_builder_impl_t
@@ -497,10 +498,10 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
         if(!builder_impl->soap_envelope)
             return AXIS2_FAILURE;
         /** wrap this om node in it */
-        status = AXIS2_SOAP_ENVELOPE_SET_BASE_NODE(builder_impl->soap_envelope, 
+        status = axis2_soap_envelope_set_base_node(builder_impl->soap_envelope, 
                     env, om_element_node);
         
-        AXIS2_SOAP_ENVELOPE_SET_BUILDER(builder_impl->soap_envelope, env, builder);
+        axis2_soap_envelope_set_builder(builder_impl->soap_envelope, env, builder);
         status = axis2_soap_builder_process_namespace_data(builder, env, om_element_node, AXIS2_TRUE);
         if(status == AXIS2_FAILURE)
             return AXIS2_FAILURE;
@@ -530,13 +531,13 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             if(!soap_header)
                 return AXIS2_FAILURE;
                 
-            AXIS2_SOAP_HEADER_SET_BASE_NODE(soap_header, env, om_element_node);
+            axis2_soap_header_set_base_node (soap_header, env, om_element_node);
 
-            AXIS2_SOAP_ENVELOPE_SET_HEADER(builder_impl->soap_envelope, env, soap_header);
+            axis2_soap_envelope_set_header(builder_impl->soap_envelope, env, soap_header);
             
-            AXIS2_SOAP_HEADER_SET_BUILDER(soap_header, env, builder);
+            axis2_soap_header_set_builder (soap_header, env, builder);
            
-            AXIS2_SOAP_HEADER_SET_SOAP_VERSION(soap_header, env, builder_impl->soap_version);
+            axis2_soap_header_set_soap_version (soap_header, env, builder_impl->soap_version);
            
             status = axis2_soap_builder_process_namespace_data(builder, env, 
                                 om_element_node, AXIS2_TRUE);
@@ -561,11 +562,11 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             if(!soap_body)
                 return AXIS2_FAILURE;
                 
-            AXIS2_SOAP_BODY_SET_BASE_NODE(soap_body, env, om_element_node);
+            axis2_soap_body_set_base_node (soap_body, env, om_element_node);
             
-            AXIS2_SOAP_BODY_SET_BUILDER(soap_body, env, builder);
+            axis2_soap_body_set_builder (soap_body, env, builder);
             
-            AXIS2_SOAP_ENVELOPE_SET_BODY(builder_impl->soap_envelope, env, soap_body);
+            axis2_soap_envelope_set_body(builder_impl->soap_envelope, env, soap_body);
             
             status = axis2_soap_builder_process_namespace_data(builder, env, 
                         om_element_node, AXIS2_TRUE);
@@ -594,11 +595,11 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             if(!header_block)
                 return AXIS2_FAILURE;
                 
-            AXIS2_SOAP_HEADER_BLOCK_SET_BASE_NODE(header_block, env, om_element_node);
+            axis2_soap_header_block_set_base_node (header_block, env, om_element_node);
            
-            AXIS2_SOAP_HEADER_SET_HEADER_BLOCK(soap_header, env, header_block);
+            axis2_soap_header_set_header_block (soap_header, env, header_block);
 
-            AXIS2_SOAP_HEADER_BLOCK_SET_SOAP_VERSION(header_block, env, builder_impl->soap_version);
+            axis2_soap_header_block_set_soap_version (header_block, env, builder_impl->soap_version);
             
 
     }
@@ -623,9 +624,9 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             if(!soap_fault) 
                 return AXIS2_FAILURE;
             
-            AXIS2_SOAP_FAULT_SET_BASE_NODE(soap_fault, env, om_element_node);
+            axis2_soap_fault_set_base_node (soap_fault, env, om_element_node);
             
-            AXIS2_SOAP_BODY_SET_FAULT(soap_body, env, soap_fault);                    
+            axis2_soap_body_set_fault (soap_body, env, soap_fault);                    
                                 
             builder_impl->processing_fault = AXIS2_TRUE;
             
@@ -948,13 +949,13 @@ axis2_soap_builder_construct_node_for_empty_element
             if(!soap_header)
                 return AXIS2_FAILURE;
                 
-            AXIS2_SOAP_HEADER_SET_BASE_NODE(soap_header, env, om_element_node);
+            axis2_soap_header_set_base_node (soap_header, env, om_element_node);
 
-            AXIS2_SOAP_ENVELOPE_SET_HEADER(builder_impl->soap_envelope, env, soap_header);
+            axis2_soap_envelope_set_header(builder_impl->soap_envelope, env, soap_header);
             
-            AXIS2_SOAP_HEADER_SET_BUILDER(soap_header, env, builder);
+            axis2_soap_header_set_builder (soap_header, env, builder);
            
-            AXIS2_SOAP_HEADER_SET_SOAP_VERSION(soap_header, env, builder_impl->soap_version);
+            axis2_soap_header_set_soap_version(soap_header, env, builder_impl->soap_version);
            
             status = axis2_soap_builder_process_namespace_data(builder, env, 
                                 om_element_node, AXIS2_TRUE);
@@ -978,11 +979,11 @@ axis2_soap_builder_construct_node_for_empty_element
             if(!soap_body)
                 return AXIS2_FAILURE;
                 
-            AXIS2_SOAP_BODY_SET_BASE_NODE(soap_body, env, om_element_node);
+            axis2_soap_body_set_base_node (soap_body, env, om_element_node);
             
-            AXIS2_SOAP_BODY_SET_BUILDER(soap_body, env, builder);
+            axis2_soap_body_set_builder (soap_body, env, builder);
             
-            AXIS2_SOAP_ENVELOPE_SET_BODY(builder_impl->soap_envelope, env, soap_body);
+            axis2_soap_envelope_set_body(builder_impl->soap_envelope, env, soap_body);
             
             status = axis2_soap_builder_process_namespace_data(builder, env, 
                         om_element_node, AXIS2_TRUE);

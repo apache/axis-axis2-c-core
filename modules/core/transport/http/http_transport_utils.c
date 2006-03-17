@@ -328,8 +328,8 @@ axis2_http_transport_utils_process_http_post_request
 	if(NULL == AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env) && 
 						AXIS2_FALSE == is_soap11)
 	{
-		axis2_soap_envelope_t *def_envelope = axis2_soap_envelope_create_null
-						(env);
+		axis2_soap_envelope_t *def_envelope = 
+            axis2_soap_envelope_create_default_soap_envelope(env, AXIS2_SOAP12);
 		AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, def_envelope);
 	}
     if(NULL == engine)
@@ -443,10 +443,13 @@ axis2_http_transport_utils_create_envelope_from_get_request
 		AXIS2_FREE((*env)->allocator, values);
 		return NULL;
 	}
-	envelope = axis2_soap_envelope_create_null(env);
+	envelope = axis2_soap_envelope_create_default_soap_envelope(env, AXIS2_SOAP12);
+    
 	om_ns = axis2_om_namespace_create(env, values[0], "services");
-	def_om_ns = axis2_om_namespace_create(env, "", NULL);
-	document_node = AXIS2_SOAP_BODY_GET_BASE_NODE(AXIS2_SOAP_ENVELOPE_GET_BODY(
+	
+    def_om_ns = axis2_om_namespace_create(env, "", NULL);
+	
+    document_node = AXIS2_SOAP_BODY_GET_BASE_NODE(AXIS2_SOAP_ENVELOPE_GET_BODY(
 						envelope, env), env);
 	op_ele = axis2_om_element_create(env, document_node, values[1], om_ns, 
 						&op_node);

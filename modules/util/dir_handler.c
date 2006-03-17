@@ -185,7 +185,6 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
 	int count = 1;
     int i = 0;
 	struct dirent **files = NULL;
-	DIR *handle = NULL;
 	
 	int dir_select();
     axis2_status_t status = AXIS2_FAILURE;

@@ -15,7 +15,7 @@
  */
  
  #include <axis2_soap_fault_role.h>
- #include <axis2_soap_fault.h>
+ #include <_axis2_soap_fault.h>
  #include <axis2_soap_builder.h>
  #include <axis2_om_element.h>
  
@@ -50,12 +50,6 @@ axis2_soap_fault_role_get_role_value
                             (axis2_soap_fault_role_t *fault_role,
                              axis2_env_t **env);
                                 
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_role_set_base_node
-                            (axis2_soap_fault_role_t *fault_role,
-                             axis2_env_t **env,
-                             axis2_om_node_t *node);
-
 axis2_om_node_t* AXIS2_CALL
 axis2_soap_fault_role_get_base_node
                         (axis2_soap_fault_role_t *fault_role,
@@ -102,9 +96,6 @@ axis2_soap_fault_role_create(axis2_env_t **env)
         
     fault_role_impl->fault_role.ops->set_role_value =
         axis2_soap_fault_role_set_role_value;
-        
-    fault_role_impl->fault_role.ops->set_base_node =
-        axis2_soap_fault_role_set_base_node;
         
     fault_role_impl->fault_role.ops->get_base_node =
         axis2_soap_fault_role_get_base_node;
@@ -165,7 +156,9 @@ axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
     }
                                        
     fault_role_impl->om_ele_node = this_node;  
-    AXIS2_SOAP_FAULT_SET_ROLE(fault, env, fault_role);                                     
+    
+    axis2_soap_fault_set_role (fault, env, fault_role);
+
     return  &(fault_role_impl->fault_role);            
 }
 
