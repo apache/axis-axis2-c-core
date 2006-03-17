@@ -277,6 +277,7 @@ AC_CONFIG_FILES([Makefile \
     test/tools/Makefile \
     ides/Makefile \
     ides/anjuta/Makefile
+    include/Makefile \
     ])
     
 AC_OUTPUT
