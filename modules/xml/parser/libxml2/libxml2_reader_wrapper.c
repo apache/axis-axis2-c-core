@@ -107,7 +107,7 @@ axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser
                                             
 void 
 axis2_libxml2_reader_wrapper_error_handler(void *arg, 
-                                           char *msg, 
+                                           const char *msg, 
                                            int severities, 
                                            void *locator_ptr);                                            
                                             
@@ -232,7 +232,8 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
     }
 
     xmlTextReaderSetErrorHandler(wrapper_impl->reader, 
-        axis2_libxml2_reader_wrapper_error_handler, (*env));
+        (xmlTextReaderErrorFunc)axis2_libxml2_reader_wrapper_error_handler, 
+        (*env));
     wrapper_impl->current_event = -1;
     
     axis2_libxml2_reader_wrapper_init_map(wrapper_impl);
@@ -342,7 +343,9 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
         return NULL;
     }
 
-    xmlTextReaderSetErrorHandler(wrapper_impl->reader, axis2_libxml2_reader_wrapper_error_handler, (*env));
+    xmlTextReaderSetErrorHandler(wrapper_impl->reader, 
+         (xmlTextReaderErrorFunc)axis2_libxml2_reader_wrapper_error_handler, 
+         (*env));
 
     wrapper_impl->current_event = -1;
     
@@ -811,11 +814,10 @@ static int axis2_libxml2_reader_wrapper_read_input_callback(void *ctx,char *buff
 
 void
 axis2_libxml2_reader_wrapper_error_handler(void *arg,
-                                           char *msg,
+                                           const char *msg,
                                            int severities,
                                            void *locator_ptr)
 {
-    axis2_char_t error_msg[200]; 
     axis2_env_t *env = NULL;
     env = (axis2_env_t*)arg;
            
