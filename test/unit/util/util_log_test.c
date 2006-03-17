@@ -1,4 +1,10 @@
+#include <axis2_env.h>
+#include <axis2_log_default.h>
+#include <axis2_error_default.h>
 #include "util_log_test.h"
+#include <axis2_stream.h>
+#include <string.h>
+#include <stdio.h>
 
 void Testaxis2_log_write(CuTest *tc) 
 {
@@ -12,7 +18,7 @@ void Testaxis2_log_write(CuTest *tc)
 
     axis2_allocator_t *allocator = axis2_allocator_init(NULL);
     axis2_error_t *error = axis2_error_create(allocator);
-    axis2_log_t *log  = axis2_log_create (allocator, NULL);
+    axis2_log_t *log  = axis2_log_create (allocator, NULL, NULL);
     axis2_env_t *env = axis2_env_create_with_error_log(allocator, error, log);
     axis2_stream_t *stream = axis2_stream_create_basic(&env);
 

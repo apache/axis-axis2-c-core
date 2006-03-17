@@ -3,6 +3,7 @@
 #include <axis2_svc_skeleton.h>
 #include <axis2_param.h>
 #include <axis2_class_loader.h>
+#include <stdio.h>
 
 void Testaxis2_class_loader_create_dll(CuTest *tc)
 {

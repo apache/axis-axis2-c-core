@@ -1,5 +1,10 @@
+#include <stdio.h>
+#include <axis2_hash.h>
 #include "util_hash_test.h"
 #include "axis2_string.h"
+#include <stdlib.h>
+#include <string.h>
+
 typedef struct a
 {
     char *value;

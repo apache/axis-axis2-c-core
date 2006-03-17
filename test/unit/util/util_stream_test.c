@@ -1,5 +1,9 @@
 #include "util_stream_test.h"
-
+#include <axis2_stream.h>
+#include <axis2_env.h>
+#include <axis2_error_default.h>
+#include <axis2_log_default.h>
+#include <string.h>
 void Testaxis2_stream_write(CuTest *tc) 
 {
     char actual[10];

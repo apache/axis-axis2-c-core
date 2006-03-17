@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <axis2_array_list.h>
+#include <string.h>
 #include "util_array_list_test.h"
 #include "axis2_string.h"
 typedef struct a
