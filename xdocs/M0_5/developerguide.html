@@ -3,14 +3,13 @@
       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
   <title>Axis2/C Developer Guide</title>
-  <meta name="generator" content="amaya 9.2.1, see http://www.w3.org/Amaya/"
-  />
+  <meta name="generator" content="amaya 9.2.1, see http://www.w3.org/Amaya/"/>
 </head>
 
 <body>
-<h1>Axis2/C Developer Guide</h1>
+    <h1>Axis2/C Developer Guide</h1>
 
 <h4>-Milestone 0.5 Release</h4>
 
@@ -28,16 +27,15 @@ you get familiar with the Axis2/C project quickly.</p>
   <li><a href="#Coding_Conventions">Coding conventions</a></li>
   <li><a href="#Unit_and_System_Tests">Unit and System tests</a></li>
 </ul>
-<a name="Programming_Model"></a>
+<a id="Programming_Model"></a>
 <h2>Programming Model</h2>
 <p>Axis2 programming model follows a clean approach to hide data and
 group functions together. The following example illustrates how Axis2/C
-achieves this.<br>
+achieves this.
 Operations are bundled into an operation struct and macros are provided
 to access the functions in this struct. Actual function pointers are
 assigned in the implementation file. </p>
 <p>Here's a sample header file.</p>
-<br>
 <strong>/* axis2_ foo.h */</strong>
 <pre class="code"> 
 typedef struct axis2_foo_ops axis2_foo_ops_t;
@@ -61,9 +59,9 @@ struct axis2_foo
 #define AXIS2_FOO_FREE(foo, env)\
             ((for)-&gt;ops-&gt;free(env, foo))
 </pre>
-<p>The implementation file for the above header is shown below.<br>
+<p>The implementation file for the above header is shown below.
 </p>
-<pre class="code"><strong>/* foo.c */</strong><br>
+<pre class="code"><strong>/* foo.c */</strong>
 #include &lt;axis2_foo.h&gt;
 
 typedef struct axis2_foo_impl axis2_foo_impl_t;
@@ -102,7 +100,7 @@ axis2_status_t AXIS2_CALL axis2_foo_free(axis2_env_t **env, axis2_foo_t *foo)
     /* do the dirty work of cleaning the allocated memory */
 }
 </pre>
-<a name="Memory_Management"></a>
+<a id="Memory_Management"></a>
 <h2>Memory Management</h2>
 <p>We need to look into two senarios of memory management: services and
 clients development. You need to be aware of the parts of the memory
@@ -131,18 +129,17 @@ AXIS2_DECLARE_DATA struct axis2_svc_skeleton
 <p>The service skeleton implementation should implement the free
 function and attach that to the operations struct of
 axis2_svc_skeleton_t struct. This free function is called each time
-after serving a web services request. <br>
+after serving a web services request. 
 </p>
 <p>
-Let's try to understand this through an example.<br>
-<br>
-Example: <b> Service skeleton implementation for math service. </b> <br>
+Let's try to understand this through an example.
+Example: <b> Service skeleton implementation for math service. </b> 
 The following code shows the implementation of math_free function which
 is to be attached to the ops of axis2_svc_skeleton_t struct. Usually
 the memory allocated for operations struct, function array and service
 skeleton struct are cleaned in this. You may clean additional memory
 here if you have allocated any specific memory block in math_create
-function.<br>
+function.
 </p>
 <pre class="code">
 int AXIS2_CALL math_free(axis2_svc_skeleton_t *svc_skeleton, axis2_env_t **env)
@@ -166,7 +163,7 @@ int AXIS2_CALL math_free(axis2_svc_skeleton_t *svc_skeleton, axis2_env_t **env)
     return AXIS2_SUCCESS;
 }
 </pre>
-<br>
+
 <p>In the axis2_math_create function you assign the function pointer of
 math_free function to the free function of the operations struct. As
 you can see, now the SOAP engine has a function reference to perform
@@ -196,16 +193,16 @@ and reply messges), should be cleaned in the client side itself. Memory
 allocated for properties are taken care of by the SOAP engine. SOAP
 engine reclaims the memory allocated for properties based on the scope
 (Request, Session or Application) you set for each property.
-<a name="Coding_Conventions"></a>
+<a id="Coding_Conventions"></a>
 <h2>Coding Conventions</h2>
 <p>Coding conventions used with the Axis2 project is listed in <a
  href="../coding_conventions.html">this</a> document.</p>
-<a name="Unit_and_System_Tests"></a>
+<a id="Unit_and_System_Tests"></a>
 <h2>Unit and System Tests</h2>
 <h3>Unit Tests</h3>
 <p>You need to follow two steps to write a unit test for a module.</p>
-1. Add the unit test to the module's test suite.<br>
-2. Add the modules test suite to the main unit test suite.<br>
+1. Add the unit test to the module's test suite.
+2. Add the modules test suite to the main unit test suite.
 <p>CuTest (opensource) library is used to write unit test. The
 following
 section illustrates the two steps.</p>
@@ -262,7 +259,7 @@ void RunAllTests(void)
     CuString *output = CuStringNew();
     CuSuite* suite = CuSuiteNew();
 
-    CuSuiteAddSuite(suite, axis2_utilGetSuite());</span>
+    CuSuiteAddSuite(suite, axis2_utilGetSuite());
     CuSuiteAddSuite(suite, axis2_commonGetSuite());
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);
@@ -312,6 +309,8 @@ int main(void)
     test_om_build();
     test_om_serialize();
 }
+
 </pre>
+
 </body>
 </html>
