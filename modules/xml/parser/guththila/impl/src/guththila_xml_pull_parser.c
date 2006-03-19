@@ -1426,6 +1426,8 @@ GUTHTHILA_DECLARE (guththila_char_t *)
      guththila_xml_pull_parser_get_encoding(guththila_environment_t *environment,
 				       guththila_xml_pull_parser_t *parser)
 {
+  /* parser will find character encoding base on Byte Order Mark
+     (BOM). */
   switch (parser->unicode_state)
     {
     case None:

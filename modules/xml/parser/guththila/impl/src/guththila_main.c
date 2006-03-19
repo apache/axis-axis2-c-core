@@ -138,7 +138,7 @@ main (int argc, char *argv[])
             {
                 char *p;
                 printf ("</");
-
+		/* printf ("\n %s \n", guththila_xml_pull_parser_get_encoding (environment, parser)); */
                 p = guththila_xml_pull_parser_get_prefix (environment,
                                                           parser);
                 if (p)
