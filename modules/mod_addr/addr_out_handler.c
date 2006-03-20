@@ -332,6 +332,12 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                                                    AXIS2_WSA_REPLY_TO,
                                                    soap_header, addr_ns);
 
+        if(NULL != epr)
+        {
+            AXIS2_ENDPOINT_REF_FREE(epr, env);
+            epr = NULL;
+        }
+
         epr = AXIS2_MSG_INFO_HEADERS_GET_FROM (msg_info_headers, env);
 
         if (epr)
@@ -587,7 +593,7 @@ axis2_addr_out_handler_add_to_header (axis2_env_t ** env,
     }
 
     service_name = AXIS2_ENDPOINT_REF_GET_SVC_NAME (epr, env);
-    if (service_name)
+    /*if (service_name)
     {
         axis2_char_t *service_name_text = NULL;
 
@@ -639,7 +645,7 @@ axis2_addr_out_handler_add_to_header (axis2_env_t ** env,
 
         }
 
-    }
+    }*/
     return AXIS2_SUCCESS;
 }
 

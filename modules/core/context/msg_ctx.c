@@ -1341,6 +1341,12 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_msg_info_headers(struct axis2_msg_ct
     
     if (msg_info_headers)
     {
+        if(NULL !=  AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers)
+        {
+            AXIS2_MSG_INFO_HEADERS_FREE(
+                        AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers, env);
+            AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers = NULL;
+        }
         AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers = msg_info_headers;
     }
     
