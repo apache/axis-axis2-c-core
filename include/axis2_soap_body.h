@@ -52,8 +52,8 @@ struct axis2_soap_builder;
  * that affects the way the application-specific content is processed.
  * soap_body_struct contains soap_header and 
  * which have the content for the SOAP body.
- * B <code>SOAPFault</code> object, which carries status and/or
- * error information, is an example of a <code>OMBodyBlock</code> object.
+ * this also contains axis2_soap_fault_t struct , which carries status and/or
+ * error information.
  */
 
 /**
@@ -69,8 +69,10 @@ struct axis2_soap_builder;
          * @param env must not be null
          * @return status code AXIS2_SUCCESS 
          */
-        axis2_status_t (AXIS2_CALL *free)(axis2_soap_body_t *body,
-                                          axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+		free)(axis2_soap_body_t *body,
+              axis2_env_t **env);
+		
         /**
          * Indicates whether a soap fault is available with this 
          * soap body 
@@ -78,8 +80,10 @@ struct axis2_soap_builder;
          * @param env environment must not be null
          * @return AXIS2_TRUE if fault is available, AXIS2_FALSE otherwise
          */
-        axis2_bool_t (AXIS2_CALL *has_fault)(axis2_soap_body_t *body,
-                                             axis2_env_t **env);
+        axis2_bool_t (AXIS2_CALL *
+		has_fault)(axis2_soap_body_t *body,
+                   axis2_env_t **env);
+				   
         /**
          * returns the soap fault in this soap_body 
          * IF a soap_builder is associated with the soap_body
@@ -88,31 +92,38 @@ struct axis2_soap_builder;
          * @param env environment must not be null
          * @return axis2_soap_fault_t if available, NULL otherwise
         */
-        axis2_soap_fault_t* (AXIS2_CALL *get_fault)(axis2_soap_body_t *body,
-                                                    axis2_env_t **env);
+        axis2_soap_fault_t* (AXIS2_CALL *
+		get_fault)(axis2_soap_body_t *body,
+                   axis2_env_t **env);
+				   
         /**
          * get the underlying om_node 
          * @param body soap_body
          * @param env environment must not be null
          * @returns axis2_om_node_t
          */
-        axis2_om_node_t* (AXIS2_CALL *get_base_node)(axis2_soap_body_t *body,
-                                                     axis2_env_t **env);
+        axis2_om_node_t* (AXIS2_CALL *
+		get_base_node)(axis2_soap_body_t *body,
+                       axis2_env_t **env);
+					   
         /**
          *  return the soap version 
          * @param body soap_body
          * @param env environment must not be null
          * @return one of AXIS2_SOAP11 or AXIS2_SOAP12 
          */
-        int (AXIS2_CALL *get_soap_version)(axis2_soap_body_t *body,
-                                           axis2_env_t **env);
+        int (AXIS2_CALL *
+		get_soap_version)(axis2_soap_body_t *body,
+                          axis2_env_t **env);
                                                       
                                                      
         /**
-         * build the soap body completely 
+         * build the soap body completely . return the status code,
+		 * @return AXIS2_SUCCESS on success and AXIS2_FAILURE on error
          */                                                 
-        axis2_status_t (AXIS2_CALL *build)(axis2_soap_body_t *body, 
-                                           axis2_env_t **env);                                                 
+        axis2_status_t (AXIS2_CALL *
+		build)(axis2_soap_body_t *body, 
+               axis2_env_t **env);                                                 
                                                        
 };                                                      
 

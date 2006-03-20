@@ -51,83 +51,93 @@ extern "C"
  */  
 AXIS2_DECLARE_DATA struct axis2_http_simple_response_ops
 {
-    axis2_status_t (AXIS2_CALL *set_status_line)
-                    (struct axis2_http_simple_response *simple_response, 
-                    axis2_env_t **env, const axis2_char_t *http_ver, 
-                    const int status_code, const axis2_char_t *phrase);
+    axis2_status_t (AXIS2_CALL *
+	set_status_line)(struct axis2_http_simple_response *simple_response, 
+                    axis2_env_t **env, 
+	                const axis2_char_t *http_ver, 
+                    const int status_code, 
+	                const axis2_char_t *phrase);
     
-    axis2_char_t* (AXIS2_CALL *get_phrase)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env);
+    axis2_char_t* (AXIS2_CALL *
+	get_phrase)(axis2_http_simple_response_t *simple_response, 
+                axis2_env_t **env);
     
-    int (AXIS2_CALL *get_status_code)
-                    (axis2_http_simple_response_t *simple_response, 
+    int (AXIS2_CALL *
+	get_status_code)(axis2_http_simple_response_t *simple_response, 
                     axis2_env_t **env);
 
-    axis2_char_t* (AXIS2_CALL *get_http_version)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env);
+    axis2_char_t* (AXIS2_CALL *
+	get_http_version)(axis2_http_simple_response_t *simple_response, 
+                      axis2_env_t **env);
 
-    axis2_char_t* (AXIS2_CALL *get_status_line)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env);
+    axis2_char_t* (AXIS2_CALL *
+	get_status_line)(axis2_http_simple_response_t *simple_response, 
+                     axis2_env_t **env);
 
-    axis2_bool_t (AXIS2_CALL *contains_header)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env, axis2_char_t *name);
+    axis2_bool_t (AXIS2_CALL *
+	contains_header)(axis2_http_simple_response_t *simple_response, 
+                     axis2_env_t **env, 
+					 axis2_char_t *name);
 
-    axis2_array_list_t* (AXIS2_CALL *get_headers)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env);
+    axis2_array_list_t* (AXIS2_CALL *
+	get_headers)(axis2_http_simple_response_t *simple_response, 
+                 axis2_env_t **env);
     
-    axis2_http_header_t* (AXIS2_CALL *get_first_header)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env, axis2_char_t *str);
+    axis2_http_header_t* (AXIS2_CALL *
+	get_first_header)(axis2_http_simple_response_t *simple_response, 
+                      axis2_env_t **env, 
+					  axis2_char_t *str);
     
-    axis2_status_t (AXIS2_CALL *remove_headers)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env, const axis2_char_t *str);
+    axis2_status_t (AXIS2_CALL *
+	remove_headers)(axis2_http_simple_response_t *simple_response, 
+                    axis2_env_t **env, 
+					const axis2_char_t *str);
     
-    axis2_status_t (AXIS2_CALL *set_header)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env, axis2_http_header_t* header);
+    axis2_status_t (AXIS2_CALL *
+	set_header)(axis2_http_simple_response_t *simple_response, 
+                axis2_env_t **env, 
+				axis2_http_header_t* header);
 
-    axis2_status_t (AXIS2_CALL *set_headers)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env, axis2_http_header_t** headers, 
-                    axis2_ssize_t array_size);
+    axis2_status_t (AXIS2_CALL *
+	set_headers)(axis2_http_simple_response_t *simple_response, 
+                 axis2_env_t **env, 
+				 axis2_http_header_t** headers, 
+                 axis2_ssize_t array_size);
     
-    axis2_char_t* (AXIS2_CALL *get_charset)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env);
+    axis2_char_t* (AXIS2_CALL *
+	get_charset)(axis2_http_simple_response_t *simple_response, 
+                 axis2_env_t **env);
     
-    axis2_ssize_t (AXIS2_CALL *get_content_length)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env);
+    axis2_ssize_t (AXIS2_CALL *
+	get_content_length)(axis2_http_simple_response_t *simple_response, 
+                        axis2_env_t **env);
     
-    axis2_char_t* (AXIS2_CALL *get_content_type)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env);
+    axis2_char_t* (AXIS2_CALL *
+	get_content_type)(axis2_http_simple_response_t *simple_response, 
+                      axis2_env_t **env);
 
-    axis2_status_t (AXIS2_CALL *set_body_string)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env, axis2_char_t *str);
+    axis2_status_t (AXIS2_CALL *
+	set_body_string)(axis2_http_simple_response_t *simple_response, 
+                     axis2_env_t **env, 
+					 axis2_char_t *str);
     
-    axis2_status_t (AXIS2_CALL *set_body_stream)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env, axis2_stream_t *stream);    
+    axis2_status_t (AXIS2_CALL *
+	set_body_stream)(axis2_http_simple_response_t *simple_response, 
+                     axis2_env_t **env, 
+					 axis2_stream_t *stream);    
 
-    axis2_stream_t* (AXIS2_CALL *get_body)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env);
+    axis2_stream_t* (AXIS2_CALL *
+	get_body)(axis2_http_simple_response_t *simple_response, 
+              axis2_env_t **env);
 
-    axis2_ssize_t (AXIS2_CALL *get_body_bytes)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env, axis2_char_t **buf);
+    axis2_ssize_t (AXIS2_CALL *
+	get_body_bytes)(axis2_http_simple_response_t *simple_response, 
+                    axis2_env_t **env, 
+					axis2_char_t **buf);
 
-    axis2_status_t (AXIS2_CALL *free)
-                    (axis2_http_simple_response_t *simple_response, 
-                    axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+	free)(axis2_http_simple_response_t *simple_response, 
+          axis2_env_t **env);
     
 };
 

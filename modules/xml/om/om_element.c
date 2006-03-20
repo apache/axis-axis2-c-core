@@ -19,6 +19,7 @@
 #include <axis2_om_attribute.h>
 #include <axis2_om_namespace.h>
 #include <axis2_xml_writer.h>
+#include <axis2_om_stax_builder.h>
 #include <string.h>
 
                                  
@@ -97,7 +98,7 @@ axis2_om_element_get_all_attributes(axis2_om_element_t *om_element,
                                     axis2_env_t **env);
                                                                                                                                                                                                                                
 axis2_hash_t* AXIS2_CALL 
-axis2_om_element_get_all_namespaces(axis2_om_element_t *om_element,
+axis2_om_element_get_namespaces(axis2_om_element_t *om_element,
                                     axis2_env_t **env);                                                                                                                  
                                      
                                      
@@ -154,7 +155,10 @@ axis2_om_element_get_child_elements(axis2_om_element_t *om_element,
                                     axis2_env_t **env,
                                     axis2_om_node_t *element_node);                                                                                                                
                                                                       
-                                         
+axis2_status_t AXIS2_CALL
+axis2_om_element_build(axis2_om_element_t *om_ele,
+                       axis2_env_t **env,
+                       axis2_om_node_t *om_ele_node);
                                          
 /************************** end function prototypes **********************/
 typedef struct axis2_om_element_impl
@@ -303,8 +307,8 @@ axis2_om_element_create (axis2_env_t **env,
         axis2_om_element_find_declared_namespace;  
     element->om_element.ops->get_all_attributes =
         axis2_om_element_get_all_attributes;   
-    element->om_element.ops->get_all_namespaces =
-        axis2_om_element_get_all_namespaces;
+    element->om_element.ops->get_namespaces =
+        axis2_om_element_get_namespaces;
     element->om_element.ops->get_qname =
         axis2_om_element_get_qname; 
         
@@ -330,7 +334,11 @@ axis2_om_element_create (axis2_env_t **env,
     element->om_element.ops->to_string =
         axis2_om_element_to_string;
     element->om_element.ops->get_child_elements =
-        axis2_om_element_get_child_elements;        
+        axis2_om_element_get_child_elements;   
+
+    element->om_element.ops->build =
+        axis2_om_element_build;
+
     return &(element->om_element);
 }
 
@@ -964,9 +972,9 @@ axis2_om_element_get_all_attributes(axis2_om_element_t *om_element,
 } 
 
 axis2_hash_t* AXIS2_CALL
-axis2_om_element_get_all_namespaces
-                                (axis2_om_element_t *om_element,
-                                 axis2_env_t **env)
+axis2_om_element_get_namespaces
+                     (axis2_om_element_t *om_element,
+                      axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(om_element)->namespaces;
@@ -1294,3 +1302,32 @@ axis2_om_element_get_child_elements(axis2_om_element_t *om_element,
    }
    return NULL;
 }
+
+axis2_status_t AXIS2_CALL
+axis2_om_element_build(axis2_om_element_t *om_ele,
+                       axis2_env_t **env,
+                       axis2_om_node_t *om_ele_node)
+{
+    axis2_om_element_impl_t *om_ele_impl = NULL;
+    axis2_om_stax_builder_t *builder = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    AXIS2_PARAM_CHECK((*env)->error, om_ele_node, AXIS2_FAILURE);
+    if(AXIS2_OM_NODE_GET_NODE_TYPE(om_ele_node, env) != AXIS2_OM_ELEMENT)
+        return AXIS2_FAILURE;
+        
+    om_ele_impl = AXIS2_INTF_TO_IMPL(om_ele);
+    
+    builder = axis2_om_node_get_builder(om_ele_node, env);
+    if(!builder)
+        return AXIS2_FAILURE;
+    while(!AXIS2_OM_NODE_GET_BUILD_STATUS(om_ele_node, env) && 
+            !AXIS2_OM_STAX_BUILDER_IS_COMPLETE(builder, env))
+    {
+        void *value  = NULL;
+        value   = AXIS2_OM_STAX_BUILDER_NEXT(builder, env);
+        if(!value)
+            return AXIS2_FAILURE;
+    }            
+    return AXIS2_SUCCESS;
+}                       

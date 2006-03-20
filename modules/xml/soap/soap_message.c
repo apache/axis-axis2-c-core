@@ -45,10 +45,6 @@ axis2_soap_envelope_t* AXIS2_CALL
 axis2_soap_message_get_soap_envelope(axis2_soap_message_t *message,
                                      axis2_env_t **env);
                                         
-axis2_status_t AXIS2_CALL 
-axis2_soap_message_set_soap_envelope(axis2_soap_message_t *message,
-                                      axis2_env_t **env,
-                                      axis2_soap_envelope_t *envelope);
                                         
 axis2_status_t AXIS2_CALL
 axis2_soap_message_serialize(axis2_soap_message_t *message,
@@ -96,7 +92,6 @@ axis2_soap_message_create(axis2_env_t **env,
             axis2_soap_message_free;
     soap_message_impl->soap_message.ops->serialize =
             axis2_soap_message_serialize;
-            
     soap_message_impl->soap_message.ops->get_soap_envelope =
             axis2_soap_message_get_soap_envelope;
                         
@@ -149,18 +144,6 @@ axis2_soap_message_get_soap_envelope(axis2_soap_message_t *message,
         return soap_message_impl->soap_envelope;        
     }
 }    
-
-axis2_status_t AXIS2_CALL
-axis2_soap_message_set_soap_envelope(axis2_soap_message_t *message,
-                                     axis2_env_t **env,
-                                     axis2_soap_envelope_t *soap_envelope)
-{
-    axis2_soap_message_impl_t *soap_message_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, soap_envelope, AXIS2_FAILURE);
-    soap_message_impl->soap_envelope = soap_envelope;
-    return AXIS2_SUCCESS;    
-}
 
 axis2_status_t AXIS2_CALL
 axis2_soap_message_serialize(axis2_soap_message_t *message,

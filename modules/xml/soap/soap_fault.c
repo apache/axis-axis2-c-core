@@ -229,13 +229,19 @@ axis2_soap_fault_create_with_exception(axis2_env_t **env,
                                         axis2_char_t* exception)
 {
     axis2_soap_fault_t *fault = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, body, NULL);
     AXIS2_PARAM_CHECK((*env)->error, exception, NULL);
     fault = axis2_soap_fault_create_with_parent(env, body);
     if(!fault)
         return NULL;
-    axis2_soap_fault_set_exception(fault, env, exception);
+    status = axis2_soap_fault_set_exception(fault, env, exception);
+    if(status == AXIS2_FAILURE)
+    {
+        axis2_soap_fault_free(fault, env);
+        return NULL;
+    }
     return fault;
 }
 
@@ -632,8 +638,11 @@ axis2_soap_fault_set_exception(axis2_soap_fault_t *fault,
     if(!detail)
     {
         detail = axis2_soap_fault_detail_create_with_parent(env, fault);
+        if(!detail)
+            return AXIS2_FAILURE;
     }
-
+    /** create an om element with the exception enrty */
+    
     fault_detail_ele = axis2_om_element_create(env, NULL, 
                             AXIS2_SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,
                             NULL, &fault_detail_entry_node);
@@ -641,10 +650,10 @@ axis2_soap_fault_set_exception(axis2_soap_fault_t *fault,
     {
         return AXIS2_FAILURE;
     }
-    
+    /** set the exception string as a text node of newly created om element */
     AXIS2_OM_ELEMENT_SET_TEXT(fault_detail_ele,
          env, exception, fault_detail_entry_node);
-
+    /** now add this om element as a child of soap fault detail om element node */
     return AXIS2_SOAP_FAULT_DETAIL_ADD_DETAIL_ENTRY(detail, env, fault_detail_entry_node);             
 }                                                                                                                                                                                                                                                                                        
                                   

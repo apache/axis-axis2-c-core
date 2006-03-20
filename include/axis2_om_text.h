@@ -53,8 +53,9 @@ extern "C"
         * @return satus of the op. AXIS2_SUCCESS on success
         *         AXIS2_FAILURE on error.
         */
-        axis2_status_t (AXIS2_CALL *free) (struct axis2_om_text *om_text,
-                                           axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+        free) (struct axis2_om_text *om_text,
+               axis2_env_t **env);
 
       /**
         * Serialize op
@@ -64,9 +65,10 @@ extern "C"
         * @return satus of the op. AXIS2_SUCCESS on success,
         *            AXIS2_FAILURE on error
         */
-        axis2_status_t (AXIS2_CALL *serialize) (struct axis2_om_text *om_text,
-                                                axis2_env_t **env,
-                                                axis2_om_output_t *om_output);
+        axis2_status_t (AXIS2_CALL *
+        serialize) (struct axis2_om_text *om_text,
+                    axis2_env_t **env,
+                    axis2_om_output_t *om_output);
        /**
         *  set the text value
         * @param om_text om_text struct
@@ -75,17 +77,19 @@ extern "C"
         * @return status of the op. AXIS2_SUCCESS on success,
         *           AXIS2_FAILURE on error.                                                
         */                                                
-        axis2_status_t (AXIS2_CALL *set_value)(struct axis2_om_text *om_text,
-                                               axis2_env_t **env,
-                                               const axis2_char_t *value);
+        axis2_status_t (AXIS2_CALL *
+        set_value)(struct axis2_om_text *om_text,
+                   axis2_env_t **env,
+                   const axis2_char_t *value);
        /**
         *  get text value 
         * @param om_text om_text struct
         * @param env environment, MUST NOT be NULL.
         * @return text value , NULL is returned if there is no text value.
         */                                                
-        axis2_char_t* (AXIS2_CALL *get_value)(struct axis2_om_text *om_text,
-                                              axis2_env_t **env);                                               
+        axis2_char_t* (AXIS2_CALL *
+        get_value)(struct axis2_om_text *om_text,
+                   axis2_env_t **env);                                               
                                                
                                                                                                 
     } axis2_om_text_ops_t;

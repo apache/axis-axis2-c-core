@@ -71,8 +71,10 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          *          axis2_xml_reader_event_types
          */
         
-        int (AXIS2_CALL *next)(axis2_xml_reader_t *parser,
-                               axis2_env_t **env);
+        int (AXIS2_CALL *
+		next)(axis2_xml_reader_t *parser,
+              axis2_env_t **env);
+		
          /**
          * free pull_parser
          * @param parser axis2_xml_reader struct 
@@ -80,8 +82,9 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * @returns axis2_status_code
          */
         
-        axis2_status_t (AXIS2_CALL *free)(axis2_xml_reader_t *parser,
-                                          axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+		free)(axis2_xml_reader_t *parser,
+              axis2_env_t **env);
         /**
          * Get the Number of attributes in the current element 
          * @param parser axis2_xml_reader  
@@ -89,8 +92,10 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * @returns Number of attributes , AXIS2_FAILURE on error 
          */  
         
-        int (AXIS2_CALL *get_attribute_count)(axis2_xml_reader_t *parser,
-                                              axis2_env_t **env);
+        int (AXIS2_CALL *
+		get_attribute_count)(axis2_xml_reader_t *parser,
+                             axis2_env_t **env);
+							 
                                               
        /** This is used to get an attribute's localname using an index relative to 
          * current element.The iterations are not zero based. 
@@ -101,10 +106,10 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * @returns the attribute localname 
          *          caller must free the value using AXIS2_XML_READER_XML_FREE macro         
          */
-        axis2_char_t* (AXIS2_CALL *get_attribute_name_by_number)
-                                                    (axis2_xml_reader_t *parser,
-                                                     axis2_env_t **env,
-                                                     int i);
+        axis2_char_t* (AXIS2_CALL *
+		get_attribute_name_by_number)(axis2_xml_reader_t *parser,
+                                      axis2_env_t **env,
+                                      int i);
                                                      
        /** This is used to get an attribute's prefix using an index relative to 
          * current element. The iterations are not zero based. 
@@ -116,10 +121,10 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          *          caller must free the value using AXIS2_XML_READER_XML_FREE macro         
          */                                                     
         
-        axis2_char_t* (AXIS2_CALL *get_attribute_prefix_by_number)
-                                                    (axis2_xml_reader_t *parser,
-                                                     axis2_env_t **env,
-                                                     int i);
+        axis2_char_t* (AXIS2_CALL *
+		get_attribute_prefix_by_number)(axis2_xml_reader_t *parser,
+                                        axis2_env_t **env,
+                                        int i);
                                                      
         /** get an attribute's value using an index relative to 
          * current element. The iterations are not zero based. 
@@ -131,10 +136,10 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          *          caller must free the value using AXIS2_XML_READER_XML_FREE macro         
          */        
                                              
-        axis2_char_t* (AXIS2_CALL *get_attribute_value_by_number)
-                                                    (axis2_xml_reader_t *parser,
-                                                     axis2_env_t **env,
-                                                     int i);
+        axis2_char_t* (AXIS2_CALL *
+		get_attribute_value_by_number)(axis2_xml_reader_t *parser,
+                                       axis2_env_t **env,
+                                       int i);
         
         /** get an attribute's namespace uri using an index relative to 
          * current element. The iterations are not zero based. 
@@ -146,10 +151,11 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          *          caller must free the value using AXIS2_XML_READER_XML_FREE macro        
          */ 
         
-        axis2_char_t* (AXIS2_CALL *get_attribute_namespace_by_number)
-                                                    (axis2_xml_reader_t *parser,
-                                                     axis2_env_t **env,
-                                                     int i);
+        axis2_char_t* (AXIS2_CALL *
+		get_attribute_namespace_by_number)(axis2_xml_reader_t *parser,
+                                           axis2_env_t **env,
+                                           int i);
+										   
        /** returns the text value of current element
          * @param parser pointer to parser
          * @param env environment, MUST not be NULL
@@ -157,8 +163,9 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          *          caller must free the value using AXIS2_XML_READER_XML_FREE macro 
          */
                                 
-        axis2_char_t* (AXIS2_CALL *get_value)(axis2_xml_reader_t *parser,
-                                              axis2_env_t **env);
+        axis2_char_t* (AXIS2_CALL *
+		get_value)(axis2_xml_reader_t *parser,
+                   axis2_env_t **env);
         
         /**
          * Returns the namespace count of current element 
@@ -166,8 +173,9 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * @param env environment
          * @returns namespace count of current element,
          */
-        int (AXIS2_CALL *get_namespace_count)(axis2_xml_reader_t *parser,
-                                              axis2_env_t **env);
+        int (AXIS2_CALL *
+		get_namespace_count)(axis2_xml_reader_t *parser,
+                             axis2_env_t **env);
         /**
          * access the namespace uri of the namespaces declared in current element 
          * using an index 
@@ -177,10 +185,10 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * @returns namespace uri of corresponding namespace 
          *          caller must free the value using AXIS2_XML_READER_XML_FREE macro         
          */
-        axis2_char_t* (AXIS2_CALL *get_namespace_uri_by_number)
-                                              (axis2_xml_reader_t *parser,
-                                               axis2_env_t **env,
-                                               int i);
+        axis2_char_t* (AXIS2_CALL *
+		get_namespace_uri_by_number)(axis2_xml_reader_t *parser,
+                                     axis2_env_t **env,
+                                     int i);
         /**
          * access the namespace prefix of the namespaces declared in current element 
          * using an index 
@@ -190,10 +198,10 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * @returns namespace prefix of corresponding namespace 
          * caller must free the value using AXIS2_XML_READER_XML_FREE macro         
          */                                               
-        axis2_char_t* (AXIS2_CALL *get_namespace_prefix_by_number)
-                                               (axis2_xml_reader_t *parser,
-                                                axis2_env_t **env,
-                                                int i); 
+        axis2_char_t* (AXIS2_CALL *
+		get_namespace_prefix_by_number)(axis2_xml_reader_t *parser,
+                                        axis2_env_t **env,
+                                        int i); 
         /**
          * Used to obtain the current element prefix
          * @param parser parser struct 
@@ -202,8 +210,9 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * caller must free the value using AXIS2_XML_READER_XML_FREE macro
          */         
         
-        axis2_char_t* (AXIS2_CALL *get_prefix)(axis2_xml_reader_t *parser,
-                                               axis2_env_t **env);   
+        axis2_char_t* (AXIS2_CALL *
+		get_prefix)(axis2_xml_reader_t *parser,
+                    axis2_env_t **env);   
         /**
          *  Used to obtain the current element localname
          * @param parser parser struct 
@@ -211,8 +220,9 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * @returns localname , NULL on error 
          *          caller must free the value using AXIS2_XML_READER_XML_FREE macro
          */         
-        axis2_char_t* (AXIS2_CALL *get_name)(axis2_xml_reader_t *parser,
-                                             axis2_env_t **env); 
+        axis2_char_t* (AXIS2_CALL *
+		get_name)(axis2_xml_reader_t *parser,
+                  axis2_env_t **env); 
         /**
          * Used to get the processingInstruction target
          * @param parser parser struct
@@ -220,8 +230,9 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * @returns target value of processingInstruction
          *          caller must free the value using AXIS2_XML_READER_XML_FREE macro
          */        
-        axis2_char_t* (AXIS2_CALL *get_pi_target)(axis2_xml_reader_t *parser,
-                                                  axis2_env_t **env);
+        axis2_char_t* (AXIS2_CALL *
+		get_pi_target)(axis2_xml_reader_t *parser,
+                       axis2_env_t **env);
         /**
          *  gets the processingInstruction data
          *@param parser parser struct
@@ -231,8 +242,9 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          */        
 
 
-        axis2_char_t* (AXIS2_CALL *get_pi_data)(axis2_xml_reader_t *parser,
-                                                axis2_env_t **env);
+        axis2_char_t* (AXIS2_CALL *
+		get_pi_data)(axis2_xml_reader_t *parser,
+                     axis2_env_t **env);
         /**
          *  used to get the DTD 
          * @param parser pointer to pull parser struct
@@ -240,8 +252,9 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * @return text of doctype declaration. NULL is returns of no data 
          *         exists.
          */         
-        axis2_char_t* (AXIS2_CALL *get_dtd)(axis2_xml_reader_t *parser,
-                                            axis2_env_t **env);                                                
+        axis2_char_t* (AXIS2_CALL *
+		get_dtd)(axis2_xml_reader_t *parser,
+                 axis2_env_t **env);                                                
         /**
          *  Free function , this function wraps the underlying parser's 
          *  xml free function. For freeing values obatined by calling
@@ -252,13 +265,14 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * @return status of the op, AXIS2_SUCCESS on success,
          *                  AXIS2_FAILURE on error.
          */         
-        axis2_status_t (AXIS2_CALL *xml_free)(axis2_xml_reader_t *parser,
-                                   axis2_env_t **env,
-                                   void *data);
+        axis2_status_t (AXIS2_CALL *
+		xml_free)(axis2_xml_reader_t *parser,
+                  axis2_env_t **env,
+                  void *data);
                                    
-        axis2_char_t* (AXIS2_CALL *get_char_set_encoding)
-                                             (axis2_xml_reader_t *parser,
-                                              axis2_env_t **env);                                                                                   
+        axis2_char_t* (AXIS2_CALL *
+		get_char_set_encoding)(axis2_xml_reader_t *parser,
+                               axis2_env_t **env);                                                                                   
     };
      
 /** 
@@ -362,6 +376,7 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
 /** macro to free values returned by pull parser */        
 #define AXIS2_XML_READER_XML_FREE(parser, env, data) \
         ((parser)->ops->xml_free(parser, env, data))
+		
 #define AXIS2_XML_READER_GET_CHAR_SET_ENCODING(parser, env) \
         ((parser)->ops->get_char_set_encoding(parser, env))        
 

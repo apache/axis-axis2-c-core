@@ -48,10 +48,18 @@ typedef struct axis2_async_result axis2_async_result_t;
  */  
 struct axis2_async_result_ops
 {
-    axis2_soap_envelope_t* (AXIS2_CALL *get_envelope)(struct axis2_async_result *async_result, axis2_env_t **env);
-    axis2_msg_ctx_t* (AXIS2_CALL *get_result)(struct axis2_async_result *async_result, axis2_env_t **env);
-    axis2_status_t (AXIS2_CALL *free)(struct axis2_async_result *async_result, 
-                                       axis2_env_t **env);
+    axis2_soap_envelope_t* (AXIS2_CALL *
+	get_envelope)(struct axis2_async_result *async_result, 
+				  axis2_env_t **env);
+	
+	
+    axis2_msg_ctx_t* (AXIS2_CALL *
+	get_result)(struct axis2_async_result *async_result, 
+				axis2_env_t **env);
+	
+    axis2_status_t (AXIS2_CALL *
+	free)(struct axis2_async_result *async_result, 
+          axis2_env_t **env);
 };
 
 /** 
@@ -63,13 +71,20 @@ struct axis2_async_result
     axis2_async_result_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_async_result_t*) axis2_async_result_create(axis2_env_t **env, axis2_msg_ctx_t *result); 
+AXIS2_DECLARE(axis2_async_result_t*) 
+axis2_async_result_create(axis2_env_t **env, 
+					      axis2_msg_ctx_t *result); 
     
 /************************** Start of function macros **************************/
 
-#define AXIS2_ASYNC_RESULT_GET_ENVELOPE(async_result, env) ((async_result)->ops->get_envelope(async_result, env))
-#define AXIS2_ASYNC_RESULT_GET_RESULT(async_result, env) ((async_result)->ops->get_result(async_result, env))
-#define AXIS2_ASYNC_RESULT_FREE(async_result, env) ((async_result)->ops->free (async_result, env))
+#define AXIS2_ASYNC_RESULT_GET_ENVELOPE(async_result, env) \
+		((async_result)->ops->get_envelope(async_result, env))
+
+#define AXIS2_ASYNC_RESULT_GET_RESULT(async_result, env) \
+		((async_result)->ops->get_result(async_result, env))
+
+#define AXIS2_ASYNC_RESULT_FREE(async_result, env) \
+		((async_result)->ops->free (async_result, env))
 
 /************************** End of function macros ****************************/    
 

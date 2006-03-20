@@ -59,8 +59,9 @@ extern "C"
         * @param env Environment. MUST NOT be NULL    
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-        axis2_status_t (AXIS2_CALL *free) (struct axis2_om_document *document,
-                                           axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+        free) (struct axis2_om_document *document,
+               axis2_env_t **env);
 
       /** Builds the next node if the builder is not finished with input xml stream
         * @param document document whose next node is to be built. cannot be NULL
@@ -68,8 +69,9 @@ extern "C"
         * @return pointer to the next node. NULL on error.
         */
       
-      axis2_om_node_t* (AXIS2_CALL *build_next) (struct axis2_om_document *document,
-                                                   axis2_env_t **env);
+      axis2_om_node_t* (AXIS2_CALL *
+      build_next) (struct axis2_om_document *document,
+                   axis2_env_t **env);
 
       /**
         * Gets the root element of the document.
@@ -78,8 +80,9 @@ extern "C"
         * @return returns a pointer to the root node. If no root present,
         *            this method tries to build the root. Returns NULL on error. 
         */
-        axis2_om_node_t* (AXIS2_CALL *get_root_element)(struct axis2_om_document *document,
-                                                        axis2_env_t **env);
+        axis2_om_node_t* (AXIS2_CALL *
+        get_root_element)(struct axis2_om_document *document,
+                          axis2_env_t **env);
 
       /**
         * set the root element of the document. IF a root node is already exist,it is freed 
@@ -89,32 +92,35 @@ extern "C"
         * @return returns status code AXIS2_SUCCESS on success ,AXIS2_FAILURE on error. 
         */        
                                                         
-        axis2_status_t (AXIS2_CALL *set_root_element)(struct axis2_om_document *document,
-                                                       axis2_env_t **env,
-                                                       axis2_om_node_t *om_node);
+        axis2_status_t (AXIS2_CALL *
+        set_root_element)(struct axis2_om_document *document,
+                          axis2_env_t **env,
+                          axis2_om_node_t *om_node);
        /**
         * This method builds the rest of the xml input stream from current position till
         * the root element is completed .
         *@param document pointer to axis2_om_document_t struct to be built.
         *@param env environment MUST NOT be NULL.
         */
-        axis2_om_node_t* (AXIS2_CALL *build_all)(struct axis2_om_document *document,
-                                                axis2_env_t **env); 
+        axis2_om_node_t* (AXIS2_CALL *
+        build_all)(struct axis2_om_document *document,
+                   axis2_env_t **env); 
         /**
          * get builder
          * @return builder , returns NULL if a builder is not associated with 
          *                   document
          */
-        struct axis2_om_stax_builder* (AXIS2_CALL *get_builder)
-                                                 (struct axis2_om_document *document,
-                                                  axis2_env_t **env);                                                         
+        struct axis2_om_stax_builder* (AXIS2_CALL *
+        get_builder)(struct axis2_om_document *document,
+                     axis2_env_t **env);                                                         
         /**
          * @param om_document
          * @return status code AXIS2_SUCCESS on success , otherwise AXIS2_FAILURE
          */                                                  
-        axis2_status_t (AXIS2_CALL *serialize)(struct axis2_om_document *document,
-                                               axis2_env_t **env,
-                                               axis2_om_output_t *om_output);
+        axis2_status_t (AXIS2_CALL *
+        serialize)(struct axis2_om_document *document,
+                   axis2_env_t **env,
+                   axis2_om_output_t *om_output);
                                                            
     } axis2_om_document_ops_t;
 

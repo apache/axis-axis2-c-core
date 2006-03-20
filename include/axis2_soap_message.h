@@ -55,20 +55,17 @@ extern "C"
         *         else AXIS2_FAILURE
         */
 
-        axis2_status_t (AXIS2_CALL *free_fn)(axis2_soap_message_t *message,
-                                             axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+		free_fn)(axis2_soap_message_t *message,
+                 axis2_env_t **env);
                                              
-        axis2_soap_envelope_t* (AXIS2_CALL *get_soap_envelope)
-                                            (axis2_soap_message_t *message,
-                                             axis2_env_t **env);
+        axis2_soap_envelope_t* (AXIS2_CALL *
+		get_soap_envelope)(axis2_soap_message_t *message,
+                           axis2_env_t **env);
                                              
-        axis2_status_t (AXIS2_CALL *set_soap_envelope)
-                                            (axis2_soap_message_t *message,
-                                             axis2_env_t **env,
-                                             axis2_soap_envelope_t *envelope);
-                                             
-        axis2_status_t (AXIS2_CALL *serialize)(axis2_soap_message_t *message,
-                                               axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+		serialize)(axis2_soap_message_t *message,
+                   axis2_env_t **env);
                                                        
                                                                                             
     };
@@ -103,9 +100,6 @@ axis2_soap_message_create(axis2_env_t **env,
 #define AXIS2_SOAP_MESSAGE_GET_SOAP_ENVELOPE(message, env) \
         ((message)->ops->get_envelope(message, env))
         
-#define AXIS2_SOAP_MESSAGE_SET_SOAP_ENVELOPE(message, env, envelope) \
-        ((message)->ops->set_envelope(message, env, envelope)) 
-        
 #define AXIS2_SOAP_MESSAGE_SERIALIZE(message, env) \
         ((message)->ops->serialize(message, env))
 /** @} */
@@ -117,4 +111,3 @@ axis2_soap_message_create(axis2_env_t **env,
  
  
 #endif /* AXIS2_SOAP_MESSAGE_H */
-

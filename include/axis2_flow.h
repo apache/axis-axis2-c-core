@@ -55,32 +55,36 @@ struct axis2_flow_ops
 	/** Deallocate memory
      * @return status code
      */
-    axis2_status_t (AXIS2_CALL *free) (axis2_flow_t *flow,
-                            axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+	free) (axis2_flow_t *flow,
+           axis2_env_t **env);
 
     /**
      * Add handler description
      * @param handler handler description
      */
-    axis2_status_t (AXIS2_CALL *add_handler) (axis2_flow_t *flow,
-                                                axis2_env_t **env,
-                                                axis2_handler_desc_t *handler);
+    axis2_status_t (AXIS2_CALL *
+	add_handler) (axis2_flow_t *flow,
+                  axis2_env_t **env,
+                  axis2_handler_desc_t *handler);
     
     /**
      * Get handler
      * @param index index of the handler
      * @return handler description
      */
-    axis2_handler_desc_t * (AXIS2_CALL *get_handler) (axis2_flow_t *flow,
-                                                        axis2_env_t **env,
-                                                        int index);
+    axis2_handler_desc_t * (AXIS2_CALL *
+	get_handler) (axis2_flow_t *flow,
+                  axis2_env_t **env,
+                  int index);
     
     /**
      * Get handler count
      * @return handler count
      */
-    int (AXIS2_CALL *get_handler_count) (axis2_flow_t *flow,
-                                            axis2_env_t **env);  
+    int (AXIS2_CALL *
+	get_handler_count) (axis2_flow_t *flow,
+                        axis2_env_t **env);  
 };
 
 /** 

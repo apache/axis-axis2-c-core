@@ -65,11 +65,13 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
    	 * Deletes the stream
 	 * @return axis2_status_t AXIS2_SUCCESS on success else AXIS2_FAILURE
 	 */
-   	axis2_status_t (AXIS2_CALL *free)(axis2_stream_t *stream, axis2_env_t **env);
+   	axis2_status_t (AXIS2_CALL *
+	free)(axis2_stream_t *stream, 
+		  axis2_env_t **env);
    	
     axis2_status_t (AXIS2_CALL *
     free_void_arg) (void *stream, 
-            axis2_env_t **env);
+            		axis2_env_t **env);
    
   	/**
 	 * reads from stream
@@ -78,30 +80,40 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
 	 * @return no: of bytes read
 	 */
    
-	int (AXIS2_CALL *read) (axis2_stream_t *stream, axis2_env_t **env, 
-						void *buffer, size_t count);
+	int (AXIS2_CALL *
+	read) (axis2_stream_t *stream, 
+		   axis2_env_t **env, 
+		   void *buffer, 
+		   size_t count);
 	/**
 	 * writes into stream
 	 * @param buffer buffer to be written
 	 * @param count size of the buffer
 	 * @return no: of bytes actually written
 	 */
-	int (AXIS2_CALL *write) (axis2_stream_t *stream, 
-						axis2_env_t **env, const void *buffer, size_t count);
+	int (AXIS2_CALL *
+	write) (axis2_stream_t *stream, 
+			axis2_env_t **env, 
+			const void *buffer, 
+			size_t count);
    	/**
 	 * Skips over and discards n bytes of data from this input stream.
 	 * @param count number of bytes to be discarded
 	 * @return no: of bytes actually skipped
 	 */
-	int (AXIS2_CALL *skip) (axis2_stream_t *stream, axis2_env_t **env, 
-						int count);
+	int (AXIS2_CALL *
+	skip) (axis2_stream_t *stream, 
+		   axis2_env_t **env, 
+		   int count);
 						
 	/**
 	 * Reads  the next character from stream and returns it as an unsigned char 
 	 * cast to an int, or EOF on end of file or error.
 	 * @return next character in the stream
 	 */
-	int (AXIS2_CALL *get_char) (axis2_stream_t *stream, axis2_env_t **env);
+	int (AXIS2_CALL *
+	get_char) (axis2_stream_t *stream, 
+	           axis2_env_t **env);
 	
 	/**
 	 * Pushes a character back to stream, cast to unsigned char, where it is 
@@ -109,22 +121,27 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
 	 * @param charachter to be pushed
 	 * @return the pushed character or EOF if an error
 	 */
-	int (AXIS2_CALL *unget_char) (axis2_stream_t *stream, axis2_env_t **env, 
-						int ch);
+	int (AXIS2_CALL *
+	unget_char) (axis2_stream_t *stream, 
+				 axis2_env_t **env, 
+				 int ch);
 
 	/**
 	 * Returns the length of the stream (applicable only to basic stream)
 	 * @return Length of the buffer if its type is basic, else -1
 	 * (we can't define a length of a stream unless it is just a buffer)
 	 */
-	int (AXIS2_CALL *get_len) (axis2_stream_t *stream, axis2_env_t **env);
+	int (AXIS2_CALL *
+	get_len) (axis2_stream_t *stream, 
+	          axis2_env_t **env);
 	
 	/**
 	 * Returns the type of the stream as axis2_stream_type_t
 	 * @return Type of the stream
 	 */
-	axis2_stream_type_t (AXIS2_CALL *get_type) (axis2_stream_t *stream, 
-						axis2_env_t **env); 
+	axis2_stream_type_t (AXIS2_CALL *
+	get_type) (axis2_stream_t *stream, 
+			   axis2_env_t **env); 
 	
 };
 
@@ -176,17 +193,22 @@ axis2_stream_free_void_arg (void *stream,
 
 #define AXIS2_STREAM_READ(stream, env, buffer, count) \
 		((stream)->ops->read(stream, env, buffer, count))
+		
 #define AXIS2_STREAM_WRITE(stream, env, buffer, count) \
 		((stream)->ops->write(stream, env, buffer, count))
+		
 #define AXIS2_STREAM_SKIP(stream, env, count) \
 		((stream)->ops->write(stream, env, count))
+		
 #define AXIS2_STREAM_GET_CHAR(stream, env) \
 		((stream)->ops->get_char(stream, env))
+		
 #define AXIS2_STREAM_UNGET_CHAR(stream, env, ch) \
 		((stream)->ops->unget_char(stream, env, ch))
 
 #define AXIS2_STREAM_BASIC_GET_LEN(stream, env) \
 		((stream)->ops->get_len(stream, env))
+		
 #define AXIS2_STREAM_GET_TYPE(stream, env)\
         ((stream)->ops->get_type(stream, env))
 /** @} */

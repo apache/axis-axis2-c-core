@@ -45,14 +45,23 @@ extern "C"
  */
  AXIS2_DECLARE_DATA   typedef struct axis2_disp_checker_ops
     { 
-        axis2_handler_t* (AXIS2_CALL *get_base) (struct axis2_disp_checker *disp_checker, 
-                                               axis2_env_t **env);
-        axis2_qname_t* (AXIS2_CALL *get_qname) (struct axis2_disp_checker *disp_checker, 
-                                               axis2_env_t **env);
-        axis2_status_t (AXIS2_CALL *set_qname) (struct axis2_disp_checker *disp_checker, 
-                                               axis2_env_t **env, axis2_qname_t *qname);
-        axis2_status_t (AXIS2_CALL *free) (struct axis2_disp_checker *disp_checker, 
-                                               axis2_env_t **env);
+        axis2_handler_t* (AXIS2_CALL *
+		get_base) (struct axis2_disp_checker *disp_checker, 
+                   axis2_env_t **env);
+		
+		
+        axis2_qname_t* (AXIS2_CALL *
+		get_qname) (struct axis2_disp_checker *disp_checker, 
+                    axis2_env_t **env);
+		
+        axis2_status_t (AXIS2_CALL *
+		set_qname) (struct axis2_disp_checker *disp_checker, 
+                    axis2_env_t **env, 
+					axis2_qname_t *qname);
+		
+        axis2_status_t (AXIS2_CALL *
+		free) (struct axis2_disp_checker *disp_checker, 
+               axis2_env_t **env);
         
     } axis2_disp_checker_ops_t;
 	
@@ -70,12 +79,22 @@ extern "C"
  * creates disp_checker struct
  * @param qname qname, can be NULL
  */
-AXIS2_DECLARE(axis2_disp_checker_t*) axis2_disp_checker_create(axis2_env_t **env, axis2_qname_t *qname);
+AXIS2_DECLARE(axis2_disp_checker_t*)
+axis2_disp_checker_create(axis2_env_t **env, 
+						  axis2_qname_t *qname);
 
-#define AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env) ((disp_checker)->ops->get_base(disp_checker, env))
-#define AXIS2_DISP_CHECKER_GET_QNAME(disp_checker, env) ((disp_checker)->ops->get_qname(disp_checker, env))
-#define AXIS2_DISP_CHECKER_SET_QNAME(disp_checker, env, name) ((disp_checker)->ops->set_qname(disp_checker, env, name))
-#define AXIS2_DISP_CHECKER_FREE(disp_checker, env) ((disp_checker)->ops->free(disp_checker, env))
+#define AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env) \
+		((disp_checker)->ops->get_base(disp_checker, env))
+	
+#define AXIS2_DISP_CHECKER_GET_QNAME(disp_checker, env) \
+		((disp_checker)->ops->get_qname(disp_checker, env))
+	
+#define AXIS2_DISP_CHECKER_SET_QNAME(disp_checker, env, name) \
+		((disp_checker)->ops->set_qname(disp_checker, env, name))
+	
+#define AXIS2_DISP_CHECKER_FREE(disp_checker, env) \
+		((disp_checker)->ops->free(disp_checker, env))
+		
     
 /** @} */
     

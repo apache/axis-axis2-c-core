@@ -52,16 +52,17 @@ extern "C"
         * @return satus of the op. AXIS2_SUCCESS on success
         *         AXIS2_FAILURE on error.
         */
-        axis2_status_t (AXIS2_CALL *free)(struct axis2_om_doctype *om_doctype,
-                                          axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+        free)(struct axis2_om_doctype *om_doctype,
+              axis2_env_t **env);
        /**
         * @param om_doctype pointer to a axis2_om_doctype_t struct
         * @param env environment must not be null       
         * @return DTD text 
         */
-        axis2_char_t* (AXIS2_CALL *get_value)
-                                    (struct axis2_om_doctype *om_doctype,
-                                     axis2_env_t **env);
+        axis2_char_t* (AXIS2_CALL *
+        get_value)(struct axis2_om_doctype *om_doctype,
+                   axis2_env_t **env);
        /**
         * @param om_doctype pointer to axis2_om doctype_t struct
         * @param env environment , MUST NOT be NULL.
@@ -70,10 +71,10 @@ extern "C"
         *         AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
         */
 
-        axis2_status_t (AXIS2_CALL *set_value)
-                                    (struct axis2_om_doctype *om_doctype,
-                                     axis2_env_t **env,
-                                     const axis2_char_t *value);
+        axis2_status_t (AXIS2_CALL *
+        set_value)(struct axis2_om_doctype *om_doctype,
+                   axis2_env_t **env,
+                   const axis2_char_t *value);
        /**
         * serialize op 
         * @param om_doctype pointer to axis2_om_doctype_t struct
@@ -83,10 +84,10 @@ extern "C"
         *          AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
         */                                   
         
-        axis2_status_t (AXIS2_CALL *serialize)
-                                    (struct axis2_om_doctype *om_doctype,
-                                     axis2_env_t **env,
-                                     axis2_om_output_t *om_output);
+        axis2_status_t (AXIS2_CALL *
+        serialize)(struct axis2_om_doctype *om_doctype,
+                   axis2_env_t **env,
+                   axis2_om_output_t *om_output);
                                                                                                                                       
     } axis2_om_doctype_ops_t;
 

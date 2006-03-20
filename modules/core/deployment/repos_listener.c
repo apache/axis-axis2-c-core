@@ -353,7 +353,7 @@ axis2_repos_listener_search(axis2_repos_listener_t *listener,
             file, type);
         if(AXIS2_SUCCESS != status)
         {
-            int size_j = NULL;
+            int size_j = 0;
             int j = 0;
 
             size_j = AXIS2_ARRAY_LIST_SIZE(current_info_list, env);

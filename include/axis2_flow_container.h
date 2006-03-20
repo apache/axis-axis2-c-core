@@ -55,74 +55,76 @@ struct axis2_flow_container_ops
 	/** Deallocate memory
      * @return status code
      */
-    axis2_status_t (AXIS2_CALL *free) (axis2_flow_container_t *flow_container,
-                                        axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+	free) (axis2_flow_container_t *flow_container,
+           axis2_env_t **env);
 
     /**
      * Get fault out flow
      * @return in flow
      */
-    axis2_flow_t *(AXIS2_CALL *get_inflow)(axis2_flow_container_t *flow_container,
-                                                axis2_env_t **env);
+    axis2_flow_t *(AXIS2_CALL *
+	get_inflow)(axis2_flow_container_t *flow_container,
+                axis2_env_t **env);
     
     /**
      * Set in flow
      * @param inflow in flow
      */
-    axis2_status_t (AXIS2_CALL *set_inflow)(
-                                        axis2_flow_container_t *flow_container,
-                                        axis2_env_t **env,
-                                        axis2_flow_t *inflow);
+    axis2_status_t (AXIS2_CALL *
+	set_inflow)(axis2_flow_container_t *flow_container,
+                axis2_env_t **env,
+                axis2_flow_t *inflow);
     
     /**
      * Get out flow
      * @return out flow
      */
-    axis2_flow_t *(AXIS2_CALL *get_outflow)(
-                                        axis2_flow_container_t *flow_container,
-                                        axis2_env_t **env);
+    axis2_flow_t *(AXIS2_CALL *
+	get_outflow)(axis2_flow_container_t *flow_container,
+                 axis2_env_t **env);
     
     /**
      * Set out flow
      * @param outflow out flow
      */
-    axis2_status_t (AXIS2_CALL *set_outflow)(
-                                        axis2_flow_container_t *flow_container,
-                                        axis2_env_t **env,
-                                        axis2_flow_t *outflow);
+    axis2_status_t (AXIS2_CALL *
+	set_outflow)(axis2_flow_container_t *flow_container,
+                 axis2_env_t **env,
+                 axis2_flow_t *outflow);
     
     /**
      * Get fault in flow
      * @return fault in flow
      */
-    axis2_flow_t * (AXIS2_CALL *get_fault_inflow)(
-                                        axis2_flow_container_t *flow_container,
-                                        axis2_env_t **env);
+    axis2_flow_t * (AXIS2_CALL *
+	get_fault_inflow)(axis2_flow_container_t *flow_container,
+                      axis2_env_t **env);
     
     /**
      * set fault in flow
      * @param falut_inflow falut in flow
      */
-    axis2_status_t (AXIS2_CALL *set_fault_inflow)(
-                                        axis2_flow_container_t *flow_container,
-                                        axis2_env_t **env,
-                                        axis2_flow_t *falut_inflow);
+    axis2_status_t (AXIS2_CALL *
+	set_fault_inflow)(axis2_flow_container_t *flow_container,
+                      axis2_env_t **env,
+                      axis2_flow_t *falut_inflow);
     /**
      * Get fault out flow
      * @return fault out flow
      */
-    axis2_flow_t *(AXIS2_CALL *get_fault_outflow)(
-                                        axis2_flow_container_t *flow_container,
-                                        axis2_env_t **env);
+    axis2_flow_t *(AXIS2_CALL *
+	get_fault_outflow)(axis2_flow_container_t *flow_container,
+                       axis2_env_t **env);
     
     /**
      * Set fault out flow
      * @param fault_outflow fault out flow
      */
-    axis2_status_t (AXIS2_CALL *set_fault_outflow)(
-                                        axis2_flow_container_t *flow_container,
-                                        axis2_env_t **env,
-                                        axis2_flow_t *fault_outflow);  
+    axis2_status_t (AXIS2_CALL *
+	set_fault_outflow)(axis2_flow_container_t *flow_container,
+                       axis2_env_t **env,
+                       axis2_flow_t *fault_outflow);  
 };
 
 /** 

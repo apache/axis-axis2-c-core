@@ -112,7 +112,11 @@ axis2_om_children_qname_iterator_create(axis2_env_t **env,
     if(given_qname)
     {
            iterator_impl->given_qname = AXIS2_QNAME_CLONE(given_qname, env);  
-        /* iterator_impl->given_qname = given_qname; */
+           if(!(iterator_impl->given_qname))
+           {     
+                AXIS2_OM_CHILDREN_QNAME_ITERATOR_FREE(&(iterator_impl->iterator), env);
+                return NULL;
+           }                
     }
     iterator_impl->iterator.ops->free_fn = 
             axis2_om_children_qname_iterator_free;
@@ -138,7 +142,7 @@ axis2_om_children_qname_iterator_free(axis2_om_children_qname_iterator_t *iterat
         AXIS2_FREE((*env)->allocator, iterator->ops);
     if(iterator_impl->given_qname)
     {
-        /**AXIS2_QNAME_FREE(iterator_impl->given_qname, env); */
+        AXIS2_QNAME_FREE(iterator_impl->given_qname, env); 
         iterator_impl->given_qname = NULL;
     }
     AXIS2_FREE((*env)->allocator, iterator_impl);

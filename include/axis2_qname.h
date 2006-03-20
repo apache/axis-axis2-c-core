@@ -56,8 +56,9 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
      *  Free a qname struct
      *  @return Status code
      */
-    axis2_status_t (AXIS2_CALL *free) (struct axis2_qname * qname,
-                                       axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+	free) (struct axis2_qname * qname,
+           axis2_env_t **env);
                                        
      /** 
       * Compare two qnames
@@ -66,9 +67,10 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
       * @return true if qname1 equals qname2, false otherwise 
       */
 
-    axis2_bool_t (AXIS2_CALL *equals) (struct axis2_qname * qname,
-                                       axis2_env_t **env,
-                                       struct axis2_qname * qname1);
+    axis2_bool_t (AXIS2_CALL *
+	equals) (struct axis2_qname * qname,
+             axis2_env_t **env,
+             struct axis2_qname * qname1);
       /** 
       * clones a given qname
       * @param qname , qname struct instance to be cloned
@@ -76,25 +78,31 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
       * @returns the newly cloned qname struct instance
       */                                       
        
-    struct axis2_qname* (AXIS2_CALL *clone)(struct axis2_qname *qname,
-                                            axis2_env_t **env);
+    struct axis2_qname* (AXIS2_CALL *
+	clone)(struct axis2_qname *qname,
+           axis2_env_t **env);
                                        
-    axis2_char_t* (AXIS2_CALL *get_uri)(struct axis2_qname *qname,
-                                        axis2_env_t **env);
+    axis2_char_t* (AXIS2_CALL *
+	get_uri)(struct axis2_qname *qname,
+             axis2_env_t **env);
                                         
-    axis2_char_t* (AXIS2_CALL *get_prefix)(struct axis2_qname *qname,
-                                           axis2_env_t **env);
+    axis2_char_t* (AXIS2_CALL *
+	get_prefix)(struct axis2_qname *qname,
+                axis2_env_t **env);
 
-    axis2_char_t* (AXIS2_CALL *get_localpart)(struct axis2_qname *qname,
-                                              axis2_env_t **env);
+    axis2_char_t* (AXIS2_CALL *
+	get_localpart)(struct axis2_qname *qname,
+                   axis2_env_t **env);
                                               
     /**
      * returns a unique string created by concatanting namespace uri 
      * and localpart .
      * The returned char* is freed when qname free function is called.
      */
-    axis2_char_t* (AXIS2_CALL *to_string)(struct axis2_qname *qname,
-                                          axis2_env_t **env);                                                      
+    axis2_char_t* (AXIS2_CALL *
+	to_string)(struct axis2_qname *qname,
+               axis2_env_t **env); 
+	
                                               
 } axis2_qname_ops_t;
 
@@ -110,8 +118,10 @@ typedef struct axis2_qname
  *  @localpart   mandatory
  *  @prefix      mandatory  
  *  @ns_uri      optional
- *  The prefix. Must not be null. Use "" (empty string) to indicate that no namespace URI is present or the namespace URI is not relevant
- *  if null is passed for prefix and uri , "'(empty string ) will be assinged to those fields
+ *  The prefix. Must not be null. Use "" (empty string) to indicate that no 
+ * namespace URI is present or the namespace URI is not relevant
+ *  if null is passed for prefix and uri , "'(empty string ) will be assinged to 
+ * those fields
  * @return a pointer to newly created qname struct
  */
 

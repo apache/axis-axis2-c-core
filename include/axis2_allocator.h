@@ -32,6 +32,7 @@ extern "C"
 /**
  * @defgroup axis2_allocator Memory Allocator
  * @ingroup axis2_util 
+
  * @{
  */
  
@@ -71,18 +72,25 @@ extern "C"
     * @param allocator user defined allcator. Optional, can be NULL. If NULL, a default allocator will be returned.
     * @return initialized allocator. NULL on error.
     */
-    AXIS2_DECLARE(axis2_allocator_t *) axis2_allocator_init (axis2_allocator_t * allocator);
+    AXIS2_DECLARE(axis2_allocator_t *) 
+	axis2_allocator_init (axis2_allocator_t * allocator);
 
   /** 
     * This function should be used to deallocate memory if the default allocator provided by
     * axis2_allocator_init() 
     * @param allocator 
     */
-    AXIS2_DECLARE(axis2_status_t) axis2_allocator_free(axis2_allocator_t *allocator);
+    AXIS2_DECLARE(axis2_status_t) 
+	axis2_allocator_free(axis2_allocator_t *allocator);
 
-#define AXIS2_MALLOC(allocator, size) ((allocator)->malloc(size))
-#define AXIS2_REALLOC(allocator, ptr, size) ((allocator)->realloc(ptr, size))
-#define AXIS2_FREE(allocator, ptr) ((allocator)->free(ptr))
+#define AXIS2_MALLOC(allocator, size) \
+		((allocator)->malloc(size))
+	
+#define AXIS2_REALLOC(allocator, ptr, size) \
+		((allocator)->realloc(ptr, size))
+		
+#define AXIS2_FREE(allocator, ptr) \
+		((allocator)->free(ptr))
 
 /** @} */
     

@@ -89,7 +89,7 @@ typedef enum soap_version
 
 #define AXIS2_SOAP12_SOAP_FAULT_VALUE_RECEIVER "Receiver"
 
-/** SOAP Fault Reason */
+/** SOAP Fault */
 
 #define AXIS2_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME "Reason"
 
@@ -108,8 +108,6 @@ typedef enum soap_version
 #define AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME "Role"
 
 #define AXIS2_SOAP_12_CONTENT_TYPE "application/soap+xml"
-
-/** soap fault codes */
 
 #define AXIS2_SOAP12_FAULT_CODE_SENDER "Sender"
 

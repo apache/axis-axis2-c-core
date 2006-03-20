@@ -53,17 +53,19 @@ struct axis2_callback_ops
      *
      * @param result
      */
-    axis2_status_t (AXIS2_CALL *invoke_on_complete)(struct axis2_callback *callback, 
-        axis2_env_t **env, 
-        axis2_async_result_t *result);
+    axis2_status_t (AXIS2_CALL *
+	invoke_on_complete)(struct axis2_callback *callback, 
+        				axis2_env_t **env, 
+        				axis2_async_result_t *result);
     /**
      * This Method is called by Axis2 once the Async Operation fails and the result returns
      *
      * @param e
      */
-    axis2_status_t (AXIS2_CALL *report_error)(struct axis2_callback *callback, 
-        axis2_env_t **env, 
-        int exception);
+    axis2_status_t (AXIS2_CALL *
+	report_error)(struct axis2_callback *callback, 
+        		  axis2_env_t **env, 
+                  int exception);
     /**
      * This says has the Async Operation is completed or not. this could be useful for poleing 
      * with a special callback written for poleing (checking repeatedly time to time).
@@ -79,27 +81,45 @@ struct axis2_callback_ops
      *
      * @return
      */
-    axis2_bool_t (AXIS2_CALL *get_complete)(struct axis2_callback *callback, 
-        axis2_env_t **env);
+    axis2_bool_t (AXIS2_CALL *
+	get_complete)(struct axis2_callback *callback, 
+                  axis2_env_t **env);
     /**
      * Method setComplete
      *
      * @param complete
      */
-    axis2_status_t (AXIS2_CALL *set_complete)(struct axis2_callback *callback, 
-        axis2_env_t **env, 
-        axis2_bool_t complete);
-    axis2_soap_envelope_t* (AXIS2_CALL *get_envelope)(struct axis2_callback *callback, 
-        axis2_env_t **env);
-    axis2_status_t (AXIS2_CALL *set_envelope)(struct axis2_callback *callback, 
-        axis2_env_t **env, axis2_soap_envelope_t *envelope);
-    int (AXIS2_CALL *get_error)(struct axis2_callback *callback, 
-        axis2_env_t **env);
-    axis2_status_t (AXIS2_CALL *set_error)(struct axis2_callback *callback, 
-        axis2_env_t **env, 
-        int error);
-    axis2_status_t (AXIS2_CALL *free)(struct axis2_callback *callback, 
-                                       axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+	set_complete)(struct axis2_callback *callback, 
+        		  axis2_env_t **env, 
+                  axis2_bool_t complete);
+	
+	
+    axis2_soap_envelope_t* (AXIS2_CALL *
+	get_envelope)(struct axis2_callback *callback, 
+        		  axis2_env_t **env);
+	
+	
+    axis2_status_t (AXIS2_CALL *
+	set_envelope)(struct axis2_callback *callback, 
+        		  axis2_env_t **env, 
+	              axis2_soap_envelope_t *envelope);
+	
+	
+    int (AXIS2_CALL *
+	get_error)(struct axis2_callback *callback, 
+               axis2_env_t **env);
+	
+	
+    axis2_status_t (AXIS2_CALL *
+	set_error)(struct axis2_callback *callback, 
+               axis2_env_t **env, 
+               int error);
+	
+	
+    axis2_status_t (AXIS2_CALL *
+	free)(struct axis2_callback *callback, 
+          axis2_env_t **env);
 };
 
 /** 
@@ -115,15 +135,32 @@ AXIS2_DECLARE(axis2_callback_t*) axis2_callback_create(axis2_env_t **env);
     
 /************************** Start of function macros **************************/
 
-#define AXIS2_CALLBACK_INVOKE_ON_COMPLETE(callback, env, result) ((callback)->ops->invoke_on_complete(callback, env, result))
-#define AXIS2_CALLBACK_REPORT_ERROR(callback, env, error) ((callback)->ops->report_error(callback, env, error))
-#define AXIS2_CALLBACK_GET_COMPLETE(callback, env) ((callback)->ops->get_complete(callback, env))
-#define AXIS2_CALLBACK_SET_COMPLETE(callback, env, complete) ((callback)->ops->set_complete(callback, env, complete))
-#define AXIS2_CALLBACK_GET_ENVELOPE(callback, env) ((callback)->ops->get_envelope(callback, env))
-#define AXIS2_CALLBACK_SET_ENVELOPE(callback, env, envelope) ((callback)->ops->set_envelope(callback, env, envelope))
-#define AXIS2_CALLBACK_GET_ERROR(callback, env) ((callback)->ops->get_error(callback, env))
-#define AXIS2_CALLBACK_SET_ERROR(callback, env, error) ((callback)->ops->set_error(callback, env, error))
-#define AXIS2_CALLBACK_FREE(callback, env) ((callback)->ops->free (callback, env))
+#define AXIS2_CALLBACK_INVOKE_ON_COMPLETE(callback, env, result) \
+		((callback)->ops->invoke_on_complete(callback, env, result))
+
+#define AXIS2_CALLBACK_REPORT_ERROR(callback, env, error) \
+		((callback)->ops->report_error(callback, env, error))
+
+#define AXIS2_CALLBACK_GET_COMPLETE(callback, env)\
+		((callback)->ops->get_complete(callback, env))
+
+#define AXIS2_CALLBACK_SET_COMPLETE(callback, env, complete) \
+		((callback)->ops->set_complete(callback, env, complete))
+
+#define AXIS2_CALLBACK_GET_ENVELOPE(callback, env) \
+		((callback)->ops->get_envelope(callback, env))
+
+#define AXIS2_CALLBACK_SET_ENVELOPE(callback, env, envelope) \
+		((callback)->ops->set_envelope(callback, env, envelope))
+		
+#define AXIS2_CALLBACK_GET_ERROR(callback, env) \
+		((callback)->ops->get_error(callback, env))
+		
+#define AXIS2_CALLBACK_SET_ERROR(callback, env, error) \
+		((callback)->ops->set_error(callback, env, error))
+		
+#define AXIS2_CALLBACK_FREE(callback, env) \
+		((callback)->ops->free (callback, env))
 
 /************************** End of function macros ****************************/    
 

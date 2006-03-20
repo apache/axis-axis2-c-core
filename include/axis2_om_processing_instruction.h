@@ -53,9 +53,9 @@ extern "C"
          * @param env Environment. MUST NOT be NULL, .
          * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *free)
-                            (struct axis2_om_processing_instruction * om_pi,
-                             axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+        free)(struct axis2_om_processing_instruction * om_pi,
+              axis2_env_t **env);
         /**
          * set processing instruction data
          *@param om_pi
@@ -63,10 +63,10 @@ extern "C"
          *@param value 
          */
          
-        axis2_status_t (AXIS2_CALL *set_value)
-                                (struct axis2_om_processing_instruction *om_pi,
-                                axis2_env_t **env,
-                                const axis2_char_t* value);
+        axis2_status_t (AXIS2_CALL *
+        set_value)(struct axis2_om_processing_instruction *om_pi,
+                   axis2_env_t **env,
+                   const axis2_char_t* value);
         /**
          * set processing instruction target
          *@param om_pi processing_instruction struct
@@ -76,28 +76,28 @@ extern "C"
          *                      AXIS2_FAILURE on error.
          */
         
-        axis2_status_t (AXIS2_CALL *set_target)
-                                (struct axis2_om_processing_instruction *om_pi,
-                                axis2_env_t **env,
-                                const axis2_char_t* target);
+        axis2_status_t (AXIS2_CALL *
+        set_target)(struct axis2_om_processing_instruction *om_pi,
+                    axis2_env_t **env,
+                    const axis2_char_t* target);
         /**
          * get PI target
          * @param om_pi processing_instruction struct
          * @param env environment 
          * @return target text , NULL on error or if target is null
          */
-        axis2_char_t* (AXIS2_CALL *get_target)
-                                (struct axis2_om_processing_instruction *om_pi,
-                                 axis2_env_t **env);
+        axis2_char_t* (AXIS2_CALL *
+        get_target)(struct axis2_om_processing_instruction *om_pi,
+                    axis2_env_t **env);
         /**
          *  get data part of processing_instruction
          * @param om_pi processing instruction 
          * @param env environment , MUST NOT be NULL.
          * @return data text , NULL if there is no data,
          */
-        axis2_char_t* (AXIS2_CALL *get_value)
-                                (struct axis2_om_processing_instruction *om_pi,
-                                 axis2_env_t **env);                                                                                                                           
+        axis2_char_t* (AXIS2_CALL *
+        get_value)(struct axis2_om_processing_instruction *om_pi,
+                   axis2_env_t **env);                                                                                                                           
                            
         /**
          *  serialize function
@@ -107,9 +107,10 @@ extern "C"
          * @return status of the op, AXIS2_SUCCESS on success,
          *         AXIS2_FAILURE on error 
          */
-        axis2_status_t (AXIS2_CALL *serialize)
-                                (struct axis2_om_processing_instruction *om_pi,
-                                 axis2_env_t **env, axis2_om_output_t *om_output);
+        axis2_status_t (AXIS2_CALL *
+        serialize)(struct axis2_om_processing_instruction *om_pi,
+                  axis2_env_t **env, 
+                  axis2_om_output_t *om_output);
                                     
                                           
     } axis2_om_processing_instruction_ops_t;

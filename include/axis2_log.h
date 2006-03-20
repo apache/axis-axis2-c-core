@@ -88,8 +88,9 @@ extern "C"
        * @return axis2_status_t AXIS2_SUCCESS on success else AXIS2_FAILURE
        */
 
-       axis2_status_t (AXIS2_CALL *free) (axis2_allocator_t *allocator, 
-						struct axis2_log *log);
+       axis2_status_t (AXIS2_CALL *
+		free) (axis2_allocator_t *allocator, 
+			   struct axis2_log *log);
 
       /**
         * writes to the log
@@ -97,7 +98,12 @@ extern "C"
         * @param size size of the buffer to be written to log
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *write) (axis2_log_t *log, const axis2_char_t *buffer, axis2_log_levels_t level,const axis2_char_t *file,const int line);
+        axis2_status_t (AXIS2_CALL *
+	    write) (axis2_log_t *log, 
+			    const axis2_char_t *buffer, 
+			    axis2_log_levels_t level,
+			    const axis2_char_t *file,
+			    const int line);
     };
 
   /** 
@@ -116,21 +122,45 @@ extern "C"
 
     };
 
-AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_critical(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+AXIS2_DECLARE(axis2_status_t) 
+axis2_log_impl_log_critical(axis2_log_t *log, 
+		 					const axis2_char_t *filename, 
+							const int linenumber,
+							const axis2_char_t *format,...);
 
-AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_error(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+AXIS2_DECLARE(axis2_status_t) 
+axis2_log_impl_log_error(axis2_log_t *log,
+						 const axis2_char_t *filename,
+						 const int linenumber,
+						 const axis2_char_t *format,...);
 
-AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_warning(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+AXIS2_DECLARE(axis2_status_t) 
+axis2_log_impl_log_warning(axis2_log_t *log,
+						   const axis2_char_t *filename,
+	                       const int linenumber,
+	                       const axis2_char_t *format,...);
 
-AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_info(axis2_log_t *log, const axis2_char_t *format,...);
+AXIS2_DECLARE(axis2_status_t) 
+axis2_log_impl_log_info(axis2_log_t *log, 
+						const axis2_char_t *format,...);
 
-AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_debug(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+AXIS2_DECLARE(axis2_status_t) 
+axis2_log_impl_log_debug(axis2_log_t *log,
+						 const axis2_char_t *filename,
+						 const int linenumber,
+						 const axis2_char_t *format,...);
 
-AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_trace(axis2_log_t *log,const axis2_char_t *filename,const int linenumber,const axis2_char_t *format,...);
+AXIS2_DECLARE(axis2_status_t) 
+axis2_log_impl_log_trace(axis2_log_t *log,
+                         const axis2_char_t *filename,
+						 const int linenumber,
+						 const axis2_char_t *format,...);
 
-#define AXIS2_LOG_FREE(allocator, log) ((log->ops)->free(allocator, log))
+#define AXIS2_LOG_FREE(allocator, log) \
+		((log->ops)->free(allocator, log))
 
-#define AXIS2_LOG_WRITE(log, buffer, level) ((log)->ops->write(log, buffer, level,AXIS2_LOG_SI))
+#define AXIS2_LOG_WRITE(log, buffer, level) \
+		((log)->ops->write(log, buffer, level,AXIS2_LOG_SI))
 
 #define AXIS2_LOG_DEBUG axis2_log_impl_log_debug 
 #define AXIS2_LOG_INFO axis2_log_impl_log_info 

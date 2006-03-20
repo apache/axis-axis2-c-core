@@ -94,11 +94,6 @@ struct axis2_om_document* AXIS2_CALL
 axis2_om_node_get_document(axis2_om_node_t *om_node,
                            axis2_env_t **env);
 
-axis2_om_node_t* AXIS2_CALL
-axis2_om_node_build_next(axis2_om_node_t *om_node,
-                         axis2_env_t **env);                                                                                     
-
-
 /************************************************************************************/
 
 typedef struct axis2_om_node_impl
@@ -189,7 +184,6 @@ axis2_om_node_create (axis2_env_t **env)
     node->om_node.ops->get_build_status = axis2_om_node_get_build_status;
     node->om_node.ops->get_data_element = axis2_om_node_get_data_element;
     node->om_node.ops->get_document = axis2_om_node_get_document;
-    node->om_node.ops->build_next = axis2_om_node_build_next;
         
     return &(node->om_node);
 }
@@ -669,23 +663,6 @@ axis2_om_node_get_document(axis2_om_node_t *om_node,
     return AXIS2_INTF_TO_IMPL(om_node)->om_doc;
 }                           
 
-axis2_om_node_t* AXIS2_CALL
-axis2_om_node_build_next(axis2_om_node_t *om_node,
-                         axis2_env_t **env)
-{
-    axis2_om_stax_builder_t *builder = NULL;
-    axis2_om_node_impl_t *om_node_impl = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-
-    om_node_impl = AXIS2_INTF_TO_IMPL(om_node);
-    
-    builder = om_node_impl->builder;
-    if(!builder)
-        return NULL;
-    
-    return AXIS2_OM_STAX_BUILDER_NEXT(om_node_impl->builder, env);
-}
-
 void* AXIS2_CALL 
 axis2_om_node_get_data_element(axis2_om_node_t *om_node,
                                axis2_env_t **env)
@@ -826,4 +803,15 @@ axis2_om_node_set_builder(axis2_om_node_t *om_node,
     AXIS2_INTF_TO_IMPL(om_node)->builder = builder;
     return AXIS2_SUCCESS;
 
+}
+/**
+ * This is an internal function 
+ */
+AXIS2_DECLARE(axis2_om_stax_builder_t *)
+axis2_om_node_get_builder(axis2_om_node_t *om_node,
+                          axis2_env_t **env)
+{
+    if(!om_node)
+        return NULL;
+    return AXIS2_INTF_TO_IMPL(om_node)->builder;
 }

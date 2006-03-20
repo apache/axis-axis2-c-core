@@ -55,62 +55,91 @@ AXIS2_DECLARE_DATA struct axis2_om_output_ops
     *@return status code AXIS2_SUCCESS on success,
     * AXIS2_FAILURE otherwise 
     */
-        axis2_status_t (AXIS2_CALL *free_fn)
-                                  (axis2_om_output_t *om_output,
-                                   axis2_env_t **env);
-                                             
-        axis2_bool_t (AXIS2_CALL *is_soap11)
-                                  (axis2_om_output_t *om_output,
-                                   axis2_env_t **env); 
-                                                                                           
-        axis2_bool_t (AXIS2_CALL *is_ignore_xml_declaration)
-                                  (axis2_om_output_t *om_output,
-                                   axis2_env_t **env);                               
+    axis2_status_t (AXIS2_CALL *
+	free_fn)(axis2_om_output_t *om_output,
+             axis2_env_t **env);
+    
+	/**
+     * If the xml to be serialized is soap 11, this property is set to true
+     */	
+    axis2_bool_t (AXIS2_CALL *
+	is_soap11)(axis2_om_output_t *om_output,
+			   axis2_env_t **env); 
+	/**
+     * @returns true if the ignore_xml_declaration property is true	
+	 */
+	axis2_bool_t (AXIS2_CALL *
+	is_ignore_xml_declaration)(axis2_om_output_t *om_output,
+							   axis2_env_t **env);                               
 
-        axis2_status_t (AXIS2_CALL *set_ignore_xml_declaration)
-                                  (axis2_om_output_t *om_output,
-                                   axis2_env_t **env,
-                                   axis2_bool_t ignore_xml_dec); 
-                                   
-        axis2_status_t (AXIS2_CALL *set_soap11)
-                                  (axis2_om_output_t *om_output,
-                                   axis2_env_t **env,
-                                   axis2_bool_t soap11);
-                                   
-        axis2_status_t (AXIS2_CALL *set_xml_version)
-                                  (axis2_om_output_t *om_output,
-                                   axis2_env_t **env,
-                                   axis2_char_t *xml_version);
-                                     
-        axis2_char_t* (AXIS2_CALL *get_xml_version)
-                                  (axis2_om_output_t *om_output,
-                                   axis2_env_t **env);  
-                                    
-        axis2_status_t (AXIS2_CALL *set_char_set_encoding)
-                                  (axis2_om_output_t *om_output,
-                                   axis2_env_t **env,
-                                   axis2_char_t *char_set_encoding);
-                                     
-        axis2_char_t* (AXIS2_CALL *get_char_set_encoding)
-                                  (axis2_om_output_t *om_output,
-                                   axis2_env_t **env); 
-                                    
-        axis2_status_t (AXIS2_CALL *set_do_optimize)
-                                  (axis2_om_output_t *om_output,
-                                   axis2_env_t **env,
-                                   axis2_bool_t optimize); 
-                                   
-        axis2_xml_writer_t* (AXIS2_CALL *get_xml_writer)
-                                  (axis2_om_output_t *om_output,
-                                   axis2_env_t **env);                                                                                                                                                                             
-                                                       
-        axis2_char_t* (AXIS2_CALL *get_content_type)                                                                     
-                                  (axis2_om_output_t *om_output,
-                                   axis2_env_t **env);
-                                   
-        axis2_status_t (AXIS2_CALL *write_xml_version_encoding)
-                                  (axis2_om_output_t *om_output,
-                                   axis2_env_t **env);
+	/**
+	 * sets the ignore_xml_declaration property is true
+	 */
+	axis2_status_t (AXIS2_CALL *
+	set_ignore_xml_declaration)(axis2_om_output_t *om_output,
+							    axis2_env_t **env,
+							    axis2_bool_t ignore_xml_dec); 
+	/**
+	 * sets the soap11  property to true
+	 */						   
+	axis2_status_t (AXIS2_CALL *
+	set_soap11)(axis2_om_output_t *om_output,
+				axis2_env_t **env,
+				axis2_bool_t soap11);
+					
+	/**
+     * set xml_version property
+     */	 
+	axis2_status_t (AXIS2_CALL *
+	set_xml_version)(axis2_om_output_t *om_output,
+					 axis2_env_t **env,
+					 axis2_char_t *xml_version);
+	/**
+     * @returns xml version property
+     */	 
+	axis2_char_t* (AXIS2_CALL *
+	get_xml_version)(axis2_om_output_t *om_output,
+					 axis2_env_t **env);  
+	/**	
+     * set the char set encoding property
+     */	 
+	axis2_status_t (AXIS2_CALL *
+	set_char_set_encoding)(axis2_om_output_t *om_output,
+						   axis2_env_t **env,
+						   axis2_char_t *char_set_encoding);
+	/**
+     * @returns the char set encoding property
+     */	 
+	axis2_char_t* (AXIS2_CALL *
+	get_char_set_encoding)(axis2_om_output_t *om_output,
+						   axis2_env_t **env); 
+	/** 
+     * set the do optimize property true
+     */	 
+	axis2_status_t (AXIS2_CALL *
+	set_do_optimize)(axis2_om_output_t *om_output,
+					 axis2_env_t **env,
+					 axis2_bool_t optimize); 
+	
+	/**
+     * returns the xml writer
+     */	 
+	axis2_xml_writer_t* (AXIS2_CALL *
+	get_xml_writer)(axis2_om_output_t *om_output,
+					axis2_env_t **env);                                                                                                                                                                             
+	/**
+     * returns the content_type property
+     */	 
+	axis2_char_t* (AXIS2_CALL *
+	get_content_type)(axis2_om_output_t *om_output,
+					  axis2_env_t **env);
+							   
+	/**
+     * writes the xml versio encoding 
+     */	 
+	axis2_status_t (AXIS2_CALL *
+	write_xml_version_encoding)(axis2_om_output_t *om_output,
+							    axis2_env_t **env);
 };  
     
 

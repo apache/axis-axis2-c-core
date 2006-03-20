@@ -57,8 +57,9 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
         *       AXIS2_SUCCESS on success and AXIS2_FAILURE on error
         */
         
-        axis2_status_t (AXIS2_CALL *free)(axis2_xml_writer_t *writer,
-                                          axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+		free)(axis2_xml_writer_t *writer,
+              axis2_env_t **env);
        /**
         *  Write a start tag to output stream with localname.
         *  Internally the writer keeps track of the opened tags 
@@ -68,9 +69,10 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
         *  @return the status of the op, AXIS2_SUCCESS on success
                     AXIS2_FAILURE on error.
         */
-        axis2_status_t (AXIS2_CALL *write_start_element)(
-                                    axis2_xml_writer_t *writer,
-                                    axis2_env_t **env, axis2_char_t *localname);
+        axis2_status_t (AXIS2_CALL *
+		write_start_element)(axis2_xml_writer_t *writer,
+                             axis2_env_t **env, 
+							 axis2_char_t *localname);
        /**
         *  write an end tag to the output relying on the internal
         *  state of writer to determine the prefix and localname of
@@ -80,8 +82,9 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
         *  @return status of the op. AXIS2_SUCCESS on success.
         *           AXIS2_FAILURE on error.
         */
-        axis2_status_t (AXIS2_CALL *end_start_element)(axis2_xml_writer_t *writer,
-                                                       axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+		end_start_element)(axis2_xml_writer_t *writer,
+                           axis2_env_t **env);
         /**
          * Write an element tag with localname and namespace uri 
          * @param writer pointer to xml writer struct
@@ -92,11 +95,11 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @returns status of the op, AXIS2_SUCCESS on success.
          *          AXIS2_FAILURE on error
          */
-        axis2_status_t (AXIS2_CALL *write_start_element_with_namespace)(
-                                        axis2_xml_writer_t *writer,
-                                        axis2_env_t **env,
-                                        axis2_char_t *localname,
-                                        axis2_char_t *namespace_uri);
+        axis2_status_t (AXIS2_CALL *
+		write_start_element_with_namespace)(axis2_xml_writer_t *writer,
+											axis2_env_t **env,
+											axis2_char_t *localname,
+											axis2_char_t *namespace_uri);
        
         /**
          * write a start tag to output
@@ -108,12 +111,12 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of the op 
                    AXIS2_SUCCESS on success. AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *write_start_element_with_namespace_prefix)(
-                                        axis2_xml_writer_t *writer,
-                                        axis2_env_t **env,
-                                        axis2_char_t *localname,
-                                        axis2_char_t *namespace_uri,
-                                        axis2_char_t *prefix);       
+        axis2_status_t (AXIS2_CALL *
+		write_start_element_with_namespace_prefix)(axis2_xml_writer_t *writer,
+													axis2_env_t **env,
+													axis2_char_t *localname,
+													axis2_char_t *namespace_uri,
+													axis2_char_t *prefix);       
         /**
          * write an element tag with localname 
          * @param writer xml_writer
@@ -122,10 +125,10 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of the op AXIS2_SUCCESS on success,
          *                AXIS2_FAILURE on error.
          */         
-        axis2_status_t (AXIS2_CALL *write_empty_element)(
-                                        axis2_xml_writer_t *writer,
-                                        axis2_env_t **env,
-                                        axis2_char_t *localname);
+        axis2_status_t (AXIS2_CALL *
+		write_empty_element)(axis2_xml_writer_t *writer,
+		                     axis2_env_t **env,
+							 axis2_char_t *localname);
         /**
          * write empty_element with localname and namespace uri.
          * @param writer xml writer
@@ -136,11 +139,11 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          *               AXIS2_FAILURE on error.
          */
         
-        axis2_status_t (AXIS2_CALL *write_empty_element_with_namespace)(
-                                        axis2_xml_writer_t *writer,
-                                        axis2_env_t **env,
-                                        axis2_char_t *localname,
-                                        axis2_char_t *namespace_uri);
+        axis2_status_t (AXIS2_CALL *
+		write_empty_element_with_namespace)(axis2_xml_writer_t *writer,
+											axis2_env_t **env,
+											axis2_char_t *localname,
+											axis2_char_t *namespace_uri);
         /**
          * write empty element with namespace uri and prefix 
          * @param writer xml_writer
@@ -151,12 +154,12 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of the op, AXIS2_SUCCESS on success,
          *                    AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *write_empty_element_with_namespace_prefix)(
-                                        axis2_xml_writer_t *writer,
-                                        axis2_env_t **env,
-                                        axis2_char_t *localname,
-                                        axis2_char_t *namespace_uri,
-                                        axis2_char_t *prefix);
+        axis2_status_t (AXIS2_CALL *
+		write_empty_element_with_namespace_prefix)(axis2_xml_writer_t *writer,
+													axis2_env_t **env,
+													axis2_char_t *localname,
+													axis2_char_t *namespace_uri,
+													axis2_char_t *prefix);
         /**
          * write end tag with correct localname prefix resolved internally 
          * @param writer xml writer
@@ -164,8 +167,9 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of the op, AXIS2_SUCCESS on success,
          *            AXIS2_FAILURE on failure 
          */
-        axis2_status_t (AXIS2_CALL *write_end_element)(axis2_xml_writer_t *writer,
-                                                       axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+		write_end_element)(axis2_xml_writer_t *writer,
+                           axis2_env_t **env);
         /**
          * write end document
          * @param writer xml writer
@@ -173,8 +177,9 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of the op AXIS2_SUCCESS on success,
          *              AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *write_end_document)(axis2_xml_writer_t *writer,
-                                                       axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+		write_end_document)(axis2_xml_writer_t *writer,
+                            axis2_env_t **env);
         /**
          * write attribute with localname and value
          * @param writer writer
@@ -184,10 +189,11 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of the op AXIS2_SUCCESS on success,
          *                 AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *write_attribute)(axis2_xml_writer_t *writer,
-                                                     axis2_env_t **env,
-                                                     axis2_char_t *localname,
-                                                     axis2_char_t *value);
+        axis2_status_t (AXIS2_CALL *
+		write_attribute)(axis2_xml_writer_t *writer,
+						 axis2_env_t **env,
+						 axis2_char_t *localname,
+						 axis2_char_t *value);
         /**
          *  @param writer
          *  @param env environment
@@ -197,12 +203,12 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          *  @return status code of the op AXIS2_SUCCESS on success,
          *                    AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *write_attribute_with_namespace)(
-                                                  axis2_xml_writer_t *writer,
-                                                  axis2_env_t **env,
-                                                  axis2_char_t *localname,
-                                                  axis2_char_t *value,
-                                                  axis2_char_t *namespace_uri);
+        axis2_status_t (AXIS2_CALL *
+		write_attribute_with_namespace)(axis2_xml_writer_t *writer,
+										  axis2_env_t **env,
+										  axis2_char_t *localname,
+										  axis2_char_t *value,
+										  axis2_char_t *namespace_uri);
         /**
          * @param writer xml_writer
          * @param env environment
@@ -211,8 +217,8 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @param namespace uri namespaceuri
          * @param prefix prefix 
          */         
-        axis2_status_t (AXIS2_CALL *write_attribute_with_namespace_prefix)(
-                                                  axis2_xml_writer_t *writer,
+        axis2_status_t (AXIS2_CALL *
+		write_attribute_with_namespace_prefix)(axis2_xml_writer_t *writer,
                                                   axis2_env_t **env,
                                                   axis2_char_t *localname,
                                                   axis2_char_t *value,
@@ -227,10 +233,11 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          *               AXIS2_FAILURE on error.
          */
         
-        axis2_status_t (AXIS2_CALL *write_namespace)(axis2_xml_writer_t *writer,
-                                                     axis2_env_t **env,
-                                                     axis2_char_t *prefix,
-                                                     axis2_char_t *namespace_uri);   
+        axis2_status_t (AXIS2_CALL *
+		write_namespace)(axis2_xml_writer_t *writer,
+						 axis2_env_t **env,
+						 axis2_char_t *prefix,
+						 axis2_char_t *namespace_uri);   
         /**
          * @param writer xml_writer
          * @param env environment
@@ -239,10 +246,10 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          *               AXIS2_FAILURE on error.
          */
 
-        axis2_status_t (AXIS2_CALL *write_default_namespace)
-                                                    (axis2_xml_writer_t *writer,
-                                                     axis2_env_t **env,
-                                                    axis2_char_t *namespace_uri);  
+        axis2_status_t (AXIS2_CALL *
+		write_default_namespace)(axis2_xml_writer_t *writer,
+								 axis2_env_t **env,
+								 axis2_char_t *namespace_uri);  
         /**
          * @param writer xml_writer
          * @param env environment
@@ -252,9 +259,10 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          */
                                                     
 
-        axis2_status_t (AXIS2_CALL *write_comment)(axis2_xml_writer_t *writer,
-                                                   axis2_env_t **env,
-                                                   axis2_char_t *value);
+        axis2_status_t (AXIS2_CALL *
+		write_comment)(axis2_xml_writer_t *writer,
+					   axis2_env_t **env,
+					   axis2_char_t *value);
         /**
          * @param writer xml_writer
          * @param env environment
@@ -264,10 +272,10 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          */
 
 
-        axis2_status_t (AXIS2_CALL *write_processing_instruction)(
-                                                   axis2_xml_writer_t *writer,
-                                                   axis2_env_t **env,
-                                                   axis2_char_t *target);
+        axis2_status_t (AXIS2_CALL *
+		write_processing_instruction)(axis2_xml_writer_t *writer,
+									   axis2_env_t **env,
+									   axis2_char_t *target);
                                    
         /**
          * @param writer xml_writer
@@ -278,11 +286,11 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          *               AXIS2_FAILURE on error.
          */
                                    
-        axis2_status_t (AXIS2_CALL *write_processing_instruction_data)(
-                                                   axis2_xml_writer_t *writer,
-                                                   axis2_env_t **env,
-                                                   axis2_char_t *target,
-                                                   axis2_char_t *data);
+        axis2_status_t (AXIS2_CALL *
+		write_processing_instruction_data)(axis2_xml_writer_t *writer,
+										   axis2_env_t **env,
+										   axis2_char_t *target,
+										   axis2_char_t *data);
          
         /**
          * @param writer xml_writer
@@ -291,9 +299,10 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */                                           
-        axis2_status_t (AXIS2_CALL *write_cdata)(axis2_xml_writer_t *writer,
-                                                 axis2_env_t **env,
-                                                 axis2_char_t *data);
+        axis2_status_t (AXIS2_CALL *
+		write_cdata)(axis2_xml_writer_t *writer,
+					 axis2_env_t **env,
+					 axis2_char_t *data);
         
          
         /**
@@ -303,9 +312,10 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *write_dtd)(axis2_xml_writer_t *writer,
-                                                 axis2_env_t **env,
-                                                 axis2_char_t *dtd); 
+        axis2_status_t (AXIS2_CALL *
+		write_dtd)(axis2_xml_writer_t *writer,
+				   axis2_env_t **env,
+				   axis2_char_t *dtd); 
         
          
         /**
@@ -315,10 +325,10 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *write_entity_ref)(
-                                                 axis2_xml_writer_t *writer,
-                                                 axis2_env_t **env,
-                                                 axis2_char_t *name); 
+        axis2_status_t (AXIS2_CALL *
+		write_entity_ref)(axis2_xml_writer_t *writer,
+                          axis2_env_t **env,
+                          axis2_char_t *name); 
          
         /**
          * @param writer xml_writer
@@ -326,9 +336,9 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *write_start_document)(
-                                                 axis2_xml_writer_t *writer,
-                                                 axis2_env_t **env);  
+        axis2_status_t (AXIS2_CALL *
+		write_start_document)(axis2_xml_writer_t *writer,
+                              axis2_env_t **env);  
         
          
         /**
@@ -338,10 +348,10 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *write_start_document_with_version)(
-                                                 axis2_xml_writer_t *writer,
-                                                 axis2_env_t **env,
-                                                 axis2_char_t *version);   
+        axis2_status_t (AXIS2_CALL *
+		write_start_document_with_version)(axis2_xml_writer_t *writer,
+                                           axis2_env_t **env,
+                                           axis2_char_t *version);   
          
         /**
          * @param writer xml_writer
@@ -351,11 +361,11 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *write_start_document_with_version_encoding)(
-                                                 axis2_xml_writer_t *writer,
-                                                 axis2_env_t **env,
-                                                 axis2_char_t *version,
-                                                 axis2_char_t *encoding);
+        axis2_status_t (AXIS2_CALL *
+		write_start_document_with_version_encoding)(axis2_xml_writer_t *writer,
+                                                    axis2_env_t **env,
+                                                    axis2_char_t *version,
+                                                    axis2_char_t *encoding);
          
         /**
          * @param writer xml_writer
@@ -364,10 +374,10 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */                                         
-        axis2_status_t (AXIS2_CALL *write_characters)(
-                                                 axis2_xml_writer_t *writer,
-                                                 axis2_env_t **env,
-                                                 axis2_char_t *text);   
+        axis2_status_t (AXIS2_CALL *
+		write_characters)(axis2_xml_writer_t *writer,
+                          axis2_env_t **env,
+                          axis2_char_t *text);   
          
         /**
          * @param writer xml_writer
@@ -376,9 +386,10 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-       axis2_char_t* (AXIS2_CALL *get_prefix)(  axis2_xml_writer_t *writer,
-                                                 axis2_env_t **env,
-                                                 axis2_char_t *uri);
+       axis2_char_t* (AXIS2_CALL *
+	   get_prefix)(axis2_xml_writer_t *writer,
+                   axis2_env_t **env,
+                   axis2_char_t *uri);
          
         /**
          * @param writer xml_writer
@@ -388,10 +399,11 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-       axis2_status_t (AXIS2_CALL *set_prefix)(  axis2_xml_writer_t *writer,
-                                                 axis2_env_t **env,
-                                                 axis2_char_t *prefix,
-                                                 axis2_char_t *uri);
+       axis2_status_t (AXIS2_CALL *
+	   set_prefix)(axis2_xml_writer_t *writer,
+                   axis2_env_t **env,
+                   axis2_char_t *prefix,
+                   axis2_char_t *uri);
          
         /**
          * @param writer xml_writer
@@ -400,10 +412,10 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */                                                 
-       axis2_status_t (AXIS2_CALL *set_default_prefix)(
-                                                 axis2_xml_writer_t *writer,
-                                                 axis2_env_t **env,
-                                                 axis2_char_t *uri);                                                 
+       axis2_status_t (AXIS2_CALL *
+	   set_default_prefix)(axis2_xml_writer_t *writer,
+                           axis2_env_t **env,
+                           axis2_char_t *uri);                                                 
          
         /**
          * @param writer xml_writer
@@ -413,14 +425,15 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *write_encoded)(
-                                                 axis2_xml_writer_t *writer,
-                                                 axis2_env_t **env,
-                                                 axis2_char_t *text,
-                                                 int in_attr);
+        axis2_status_t (AXIS2_CALL *
+		write_encoded)(axis2_xml_writer_t *writer,
+                       axis2_env_t **env,
+                       axis2_char_t *text,
+                       int in_attr);
                                                  
-        axis2_char_t* (AXIS2_CALL *get_xml)(axis2_xml_writer_t *,
-                                             axis2_env_t **env);                                                 
+        axis2_char_t* (AXIS2_CALL *
+		get_xml)(axis2_xml_writer_t *writer,
+                 axis2_env_t **env);                                                 
 
     };
 

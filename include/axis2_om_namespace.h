@@ -53,8 +53,9 @@ extern "C"
         * @param env Environment. MUST NOT be NULL.
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-        axis2_status_t (AXIS2_CALL *free) (struct axis2_om_namespace *om_namespace,
-                                           axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+        free) (struct axis2_om_namespace *om_namespace,
+               axis2_env_t **env);
 
       /**
         * Compares two namepsaces
@@ -63,9 +64,10 @@ extern "C"
         * @param om_namespace1 second namespace to be compared
         * @return AXIS2_TRUE if the two namespaces are equal,AXIS2_FALSE otherwise
         */
-        axis2_bool_t (AXIS2_CALL *equals)(struct axis2_om_namespace *om_namespace,
-                                          axis2_env_t **env,
-                                          struct axis2_om_namespace *om_namespace1);
+        axis2_bool_t (AXIS2_CALL *
+        equals)(struct axis2_om_namespace *om_namespace,
+                axis2_env_t **env,
+                struct axis2_om_namespace *om_namespace1);
 
       /**
         * Serializes given namespace 
@@ -74,23 +76,26 @@ extern "C"
         * @param om_output OM output handler to be used in serializing
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
-        axis2_status_t (AXIS2_CALL *serialize)(struct axis2_om_namespace *om_namespace,
-                                               axis2_env_t **env,
-                                               axis2_om_output_t * om_output);
+        axis2_status_t (AXIS2_CALL *
+        serialize)(struct axis2_om_namespace *om_namespace,
+                   axis2_env_t **env,
+                   axis2_om_output_t * om_output);
        /**   
         *@param om_namespace pointer to om_namespace struct
         *@param env environment , MUST NOT be NULL.
         *@returns namespace uri , NULL on error
         */
-        axis2_char_t* (AXIS2_CALL *get_uri)(struct axis2_om_namespace *om_namespace,
-                                            axis2_env_t **env);
+        axis2_char_t* (AXIS2_CALL *
+        get_uri)(struct axis2_om_namespace *om_namespace,
+                 axis2_env_t **env);
        /**   
         *@param om_namespace pointer to om namespace struct
         *@param env  environment, MUST NOT be NULL
         *@return prefix , NULL on error
         */
-        axis2_char_t* (AXIS2_CALL *get_prefix)(struct axis2_om_namespace *om_namespace,
-                                               axis2_env_t **env);
+        axis2_char_t* (AXIS2_CALL *
+        get_prefix)(struct axis2_om_namespace *om_namespace,
+                    axis2_env_t **env);
 
 
     } axis2_om_namespace_ops_t;

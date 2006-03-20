@@ -60,33 +60,38 @@ typedef struct axis2_thread_mutex_t axis2_thread_mutex_t;
  * most optimial mutex based on a given platform's performance charateristics,
  * it will behave as either a nested or an unnested lock.
  */
-AXIS2_DECLARE(axis2_thread_mutex_t *) axis2_thread_mutex_create(axis2_allocator_t *allocator,
-                                                  unsigned int flags);
+AXIS2_DECLARE(axis2_thread_mutex_t *) 
+axis2_thread_mutex_create(axis2_allocator_t *allocator,
+                          unsigned int flags);
 /**
  * Acquire the lock for the given mutex. If the mutex is already locked,
  * the current thread will be put to sleep until the lock becomes available.
  * @param mutex the mutex on which to acquire the lock.
  */
-AXIS2_DECLARE(axis2_status_t) axis2_thread_mutex_lock(axis2_thread_mutex_t *mutex);
+AXIS2_DECLARE(axis2_status_t) 
+axis2_thread_mutex_lock(axis2_thread_mutex_t *mutex);
 
 /**
  * Attempt to acquire the lock for the given mutex. If the mutex has already
  * been acquired, the call returns immediately 
  * @param mutex the mutex on which to attempt the lock acquiring.
  */
-AXIS2_DECLARE(axis2_status_t) axis2_thread_mutex_trylock(axis2_thread_mutex_t *mutex);
+AXIS2_DECLARE(axis2_status_t) 
+axis2_thread_mutex_trylock(axis2_thread_mutex_t *mutex);
 
 /**
  * Release the lock for the given mutex.
  * @param mutex the mutex from which to release the lock.
  */
-AXIS2_DECLARE(axis2_status_t) axis2_thread_mutex_unlock(axis2_thread_mutex_t *mutex);
+AXIS2_DECLARE(axis2_status_t) 
+axis2_thread_mutex_unlock(axis2_thread_mutex_t *mutex);
 
 /**
  * Destroy the mutex and free the memory associated with the lock.
  * @param mutex the mutex to destroy.
  */
-AXIS2_DECLARE(axis2_status_t) axis2_thread_mutex_destroy(axis2_thread_mutex_t *mutex);
+AXIS2_DECLARE(axis2_status_t) 
+axis2_thread_mutex_destroy(axis2_thread_mutex_t *mutex);
 
 /** @} */
 

@@ -54,22 +54,22 @@ extern "C"
         *         else AXIS2_FAILURE
         */
 
-        axis2_status_t (AXIS2_CALL *free_fn)
-                                (axis2_soap_fault_detail_t *fault_detail,
-                                 axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+		free_fn)(axis2_soap_fault_detail_t *fault_detail,
+                 axis2_env_t **env);
                                      
-        axis2_status_t (AXIS2_CALL *add_detail_entry)
-                                (axis2_soap_fault_detail_t *fault_detail,
-                                 axis2_env_t **env,
-                                 axis2_om_node_t *ele_node);
+        axis2_status_t (AXIS2_CALL *
+		add_detail_entry)(axis2_soap_fault_detail_t *fault_detail,
+                          axis2_env_t **env,
+                          axis2_om_node_t *ele_node);
                                  
-        axis2_om_children_iterator_t* (AXIS2_CALL *get_all_detail_entries)
-                                (axis2_soap_fault_detail_t *fault_detail,
+        axis2_om_children_iterator_t* (AXIS2_CALL *
+		get_all_detail_entries) (axis2_soap_fault_detail_t *fault_detail,
                                  axis2_env_t **env); 
 
-        axis2_om_node_t* (AXIS2_CALL *get_base_node)
-                                (axis2_soap_fault_detail_t *fault_code,
-                                 axis2_env_t **env);
+        axis2_om_node_t* (AXIS2_CALL *
+		get_base_node)(axis2_soap_fault_detail_t *fault_code,
+                       axis2_env_t **env);
         
     };      
 

@@ -51,31 +51,42 @@ extern "C"
          *
          * @return
          */
-        axis2_qname_t* (AXIS2_CALL *get_qname)(struct axis2_svc_name *svc_name, 
-                                                       axis2_env_t **env);
+        axis2_qname_t* (AXIS2_CALL *
+		get_qname)(struct axis2_svc_name *svc_name, 
+                   axis2_env_t **env);
         /**
          * Method setName
          *
          * @param qname
          */
-        axis2_status_t (AXIS2_CALL *set_qname)(struct axis2_svc_name *svc_name, 
-                                                       axis2_env_t **env, axis2_qname_t *qname);
+        axis2_status_t (AXIS2_CALL *
+		set_qname)(struct axis2_svc_name *svc_name, 
+                   axis2_env_t **env, 
+				   axis2_qname_t *qname);
         /**
          * Method getEndpointName
          *
          * @return
          */
-        axis2_char_t* (AXIS2_CALL *get_endpoint_name)(struct axis2_svc_name *svc_name, 
-                                                       axis2_env_t **env);
+        axis2_char_t* (AXIS2_CALL *
+		get_endpoint_name)(struct axis2_svc_name *svc_name, 
+                           axis2_env_t **env);
         /**
          * Method setEndpointName
          *
          * @param endpoint_name
          */
-        axis2_status_t (AXIS2_CALL *set_endpoint_name)(struct axis2_svc_name *svc_name, 
-                                                       axis2_env_t **env, axis2_char_t *endpoint_name);
-        axis2_status_t (AXIS2_CALL *free)(struct axis2_svc_name *svc_name, 
-                                                       axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+		set_endpoint_name)(struct axis2_svc_name *svc_name, 
+                           axis2_env_t **env, 
+						   axis2_char_t *endpoint_name);
+		
+		
+        axis2_status_t (AXIS2_CALL *
+		free)(struct axis2_svc_name *svc_name, 
+              axis2_env_t **env);
+		
+		
     } axis2_svc_name_ops_t;
 	
    /** 
@@ -94,13 +105,25 @@ extern "C"
  * @param value
  * @param relationship_type
  */
-AXIS2_DECLARE(axis2_svc_name_t*) axis2_svc_name_create(axis2_env_t **env, axis2_qname_t *qname, axis2_char_t *endpoint_name) ;
+AXIS2_DECLARE(axis2_svc_name_t*) 
+axis2_svc_name_create(axis2_env_t **env, 
+					  axis2_qname_t *qname, 
+					  axis2_char_t *endpoint_name) ;
     
-#define AXIS2_SVC_NAME_GET_QNAME(svc_name, env) ((svc_name)->ops->get_qname(svc_name, env))
-#define AXIS2_SVC_NAME_SET_QNAME(svc_name, env, qname) ((svc_name)->ops->set_qname(svc_name, env, qname))
-#define AXIS2_SVC_NAME_GET_ENDPOINT_NAME(svc_name, env) ((svc_name)->ops->get_endpoint_name(svc_name, env))
-#define AXIS2_SVC_NAME_SET_ENDPOINT_NAME(svc_name, env, endpoint_name) ((svc_name)->ops->set_endpoint_name(svc_name, env, endpoint_name))
-#define AXIS2_SVC_NAME_FREE(svc_name, env) ((svc_name)->ops->free(svc_name, env))
+#define AXIS2_SVC_NAME_GET_QNAME(svc_name, env) \
+		((svc_name)->ops->get_qname(svc_name, env))
+	
+#define AXIS2_SVC_NAME_SET_QNAME(svc_name, env, qname) \
+		((svc_name)->ops->set_qname(svc_name, env, qname))
+	
+#define AXIS2_SVC_NAME_GET_ENDPOINT_NAME(svc_name, env) \
+		((svc_name)->ops->get_endpoint_name(svc_name, env))
+		
+#define AXIS2_SVC_NAME_SET_ENDPOINT_NAME(svc_name, env, endpoint_name) \
+		((svc_name)->ops->set_endpoint_name(svc_name, env, endpoint_name))
+		
+#define AXIS2_SVC_NAME_FREE(svc_name, env) \
+		((svc_name)->ops->free(svc_name, env))
 
 /** @} */
     

@@ -61,28 +61,37 @@ struct axis2_svc_ctx;
  */  
 struct axis2_op_ctx_ops
 {
-    axis2_ctx_t* (AXIS2_CALL *get_base)(struct axis2_op_ctx *op_ctx, 
-                                                axis2_env_t **env);
+    axis2_ctx_t* (AXIS2_CALL *
+	get_base)(struct axis2_op_ctx *op_ctx, 
+              axis2_env_t **env);
     
-    axis2_status_t (AXIS2_CALL *free)(struct axis2_op_ctx *op_ctx, 
-                                       axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+	free)(struct axis2_op_ctx *op_ctx, 
+          axis2_env_t **env);
     
     /**
      * The method is used to do the intialization of the axis2_op_ctx
      */
-    axis2_status_t (AXIS2_CALL *init)(struct axis2_op_ctx *op_ctx, axis2_env_t **env, struct axis2_conf *conf);
+    axis2_status_t (AXIS2_CALL *
+	init)(struct axis2_op_ctx *op_ctx, 
+		  axis2_env_t **env, 
+	      struct axis2_conf *conf);
     
     /**
      * @return Returns the op.
      */
-    struct axis2_op* (AXIS2_CALL *get_op)(struct axis2_op_ctx *op_ctx, axis2_env_t **env);
+    struct axis2_op* (AXIS2_CALL *
+    get_op)(struct axis2_op_ctx *op_ctx, 
+		    axis2_env_t **env);
     
     /**
      * Return the struct axis2_svc_ctx * in which this op_ctx lives.
      *
      * @return parent struct axis2_svc_ctx *
      */
-    struct axis2_svc_ctx* (AXIS2_CALL *get_parent)(struct axis2_op_ctx *op_ctx, axis2_env_t **env);
+    struct axis2_svc_ctx* (AXIS2_CALL *
+	get_parent)(struct axis2_op_ctx *op_ctx, 
+		        axis2_env_t **env);
     
     /**
      * When a new message is added to the <code>MEPContext</code> the logic
@@ -92,27 +101,34 @@ struct axis2_op_ctx_ops
      *
      * @param msgContext
      */
-    axis2_status_t (AXIS2_CALL *add_msg_ctx)(struct axis2_op_ctx *op_ctx, axis2_env_t **env, axis2_msg_ctx_t *msg_ctx);
+    axis2_status_t (AXIS2_CALL *
+	add_msg_ctx)(struct axis2_op_ctx *op_ctx, 
+		         axis2_env_t **env, 
+	             axis2_msg_ctx_t *msg_ctx);
     
     /**
      * @param message_id
      * @return
      * @throws AxisFault
      */
-    axis2_msg_ctx_t* (AXIS2_CALL *get_msg_ctx)(struct axis2_op_ctx *op_ctx, 
-        axis2_env_t **env, axis2_char_t *message_id);
+    axis2_msg_ctx_t* (AXIS2_CALL *
+	get_msg_ctx)(struct axis2_op_ctx *op_ctx, 
+                 axis2_env_t **env, 
+	             axis2_char_t *message_id);
     
     /**
      * Checks to see if the MEP is complete. i.e. whether all the messages that
      * are associated with the MEP has arrived and MEP is complete.
      *
      */
-    axis2_bool_t (AXIS2_CALL *get_is_complete)(struct axis2_op_ctx *op_ctx, 
-        axis2_env_t **env);
+    axis2_bool_t (AXIS2_CALL *
+	get_is_complete)(struct axis2_op_ctx *op_ctx, 
+                     axis2_env_t **env);
     
-    axis2_status_t (AXIS2_CALL *set_complete)(struct axis2_op_ctx *op_ctx, 
-        axis2_env_t **env, 
-        axis2_bool_t is_complete);
+    axis2_status_t (AXIS2_CALL *
+	set_complete)(struct axis2_op_ctx *op_ctx, 
+                  axis2_env_t **env, 
+                  axis2_bool_t is_complete);
     
     /**
      * Removes the pointers to this <code>op_ctx</code> in the
@@ -124,15 +140,18 @@ struct axis2_op_ctx_ops
      * and OUT_OPTIONAL_IN, it is possibe this will get called without the MEP
      * being complete due to the optional nature of the MEP.
      */
-    axis2_status_t (AXIS2_CALL *cleanup)(struct axis2_op_ctx *op_ctx, 
-        axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+	cleanup)(struct axis2_op_ctx *op_ctx, 
+             axis2_env_t **env);
     
-    axis2_status_t (AXIS2_CALL *set_parent)(struct axis2_op_ctx *op_ctx, 
-        axis2_env_t **env, 
-        struct axis2_svc_ctx *svc_ctx);
+    axis2_status_t (AXIS2_CALL *
+	set_parent)(struct axis2_op_ctx *op_ctx, 
+                axis2_env_t **env, 
+                struct axis2_svc_ctx *svc_ctx);
     
-    axis2_hash_t* (AXIS2_CALL *get_msg_ctx_map)(struct axis2_op_ctx *op_ctx, 
-        axis2_env_t **env);
+    axis2_hash_t* (AXIS2_CALL *
+	get_msg_ctx_map)(struct axis2_op_ctx *op_ctx, 
+                     axis2_env_t **env);
     
 };
 
@@ -151,18 +170,40 @@ axis2_op_ctx_create(axis2_env_t **env,
                     struct axis2_svc_ctx * svc_ctx);
     
 /************************** Start of function macros **************************/
-#define AXIS2_OP_CTX_GET_BASE(op_ctx, env) ((op_ctx)->ops->get_base(op_ctx, env))
-#define AXIS2_OP_CTX_FREE(op_ctx, env) ((op_ctx)->ops->free(op_ctx, env))
-#define AXIS2_OP_CTX_INIT(op_ctx, env, conf) ((op_ctx)->ops->init(op_ctx, env, conf))
-#define AXIS2_OP_CTX_GET_OP(op_ctx, env) ((op_ctx)->ops->get_op(op_ctx, env))
-#define AXIS2_OP_CTX_GET_PARENT(op_ctx, env) ((op_ctx)->ops->get_parent(op_ctx, env))
-#define AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, msg_ctx) ((op_ctx)->ops->add_msg_ctx(op_ctx, env, msg_ctx))
-#define AXIS2_OP_CTX_GET_MSG_CTX(op_ctx, env, message_id) ((op_ctx)->ops->get_msg_ctx(op_ctx, env, message_id))
-#define AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env) ((op_ctx)->ops->get_is_complete(op_ctx, env))
-#define AXIS2_OP_CTX_SET_IS_COMPLETE(op_ctx, env, is_complete) ((op_ctx)->ops->set_complete(op_ctx, env, is_complete))
-#define AXIS2_OP_CTX_CLEANUP(op_ctx, env) ((op_ctx)->ops->cleanup(op_ctx, env))
-#define AXIS2_OP_CTX_SET_PARENT(op_ctx, env, svc_ctx) ((op_ctx)->ops->set_parent(op_ctx, env, svc_ctx))
-#define AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env) ((op_ctx)->ops->get_msg_ctx_map(op_ctx, env))    
+#define AXIS2_OP_CTX_GET_BASE(op_ctx, env) \
+		((op_ctx)->ops->get_base(op_ctx, env))
+					
+#define AXIS2_OP_CTX_FREE(op_ctx, env)\
+		((op_ctx)->ops->free(op_ctx, env))
+					
+#define AXIS2_OP_CTX_INIT(op_ctx, env, conf) \
+		((op_ctx)->ops->init(op_ctx, env, conf))
+					
+#define AXIS2_OP_CTX_GET_OP(op_ctx, env)\
+		((op_ctx)->ops->get_op(op_ctx, env))
+#define AXIS2_OP_CTX_GET_PARENT(op_ctx, env) \
+		((op_ctx)->ops->get_parent(op_ctx, env))
+					
+#define AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, msg_ctx) \
+		((op_ctx)->ops->add_msg_ctx(op_ctx, env, msg_ctx))
+					
+#define AXIS2_OP_CTX_GET_MSG_CTX(op_ctx, env, message_id) \
+		((op_ctx)->ops->get_msg_ctx(op_ctx, env, message_id))
+		
+#define AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env) \
+		((op_ctx)->ops->get_is_complete(op_ctx, env))
+		
+#define AXIS2_OP_CTX_SET_IS_COMPLETE(op_ctx, env, is_complete) \
+		((op_ctx)->ops->set_complete(op_ctx, env, is_complete))
+		
+#define AXIS2_OP_CTX_CLEANUP(op_ctx, env) \
+		((op_ctx)->ops->cleanup(op_ctx, env))
+		
+#define AXIS2_OP_CTX_SET_PARENT(op_ctx, env, svc_ctx) \
+		((op_ctx)->ops->set_parent(op_ctx, env, svc_ctx))
+		
+#define AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env) \
+		((op_ctx)->ops->get_msg_ctx_map(op_ctx, env))    
 
 /************************** End of function macros ****************************/    
 

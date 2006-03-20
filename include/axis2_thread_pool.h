@@ -54,34 +54,40 @@ AXIS2_DECLARE_DATA struct axis2_thread_pool_ops
 	* @param data arguments to be passed to the function
 	* @return pointer to a thread in ready state.
 	*/
-	axis2_thread_t * (AXIS2_CALL *get_thread) (axis2_thread_pool_t *pool, 
-					axis2_thread_start_t func, void *data);
+	axis2_thread_t * (AXIS2_CALL *
+	get_thread) (axis2_thread_pool_t *pool, 
+				 axis2_thread_start_t func, 
+	              void *data);
   /**
 	* Blocks until the desired thread stops executing.
 	* @param thd The thread to joined
 	* @return status of the operation
 	*/
-	axis2_status_t (AXIS2_CALL *join_thread) (axis2_thread_pool_t *pool, 
-					axis2_thread_t *thd);
+	axis2_status_t (AXIS2_CALL *
+	join_thread) (axis2_thread_pool_t *pool, 
+				  axis2_thread_t *thd);
   /**
 	* Stop the execution of current thread
 	* @param thd thread to be stopped
 	* @return status of the operation
 	*/
-	axis2_status_t (AXIS2_CALL *exit_thread) (axis2_thread_pool_t *pool, 
-					axis2_thread_t *thd);
+	axis2_status_t (AXIS2_CALL *
+	exit_thread) (axis2_thread_pool_t *pool, 
+				  axis2_thread_t *thd);
   /**
 	* Detaches a thread
 	* @param thd thread to be detached
 	* @return status of the operation
 	*/
-	axis2_status_t (AXIS2_CALL *thread_detach) (axis2_thread_pool_t *pool, 
+	axis2_status_t (AXIS2_CALL *
+	thread_detach) (axis2_thread_pool_t *pool, 
 					axis2_thread_t *thd);
   /**
 	* Frees resources used by thread_pool
 	* @param pool thread_pool to be freed
 	*/
-	axis2_status_t (AXIS2_CALL *free) (axis2_thread_pool_t *pool);
+	axis2_status_t (AXIS2_CALL *
+	free) (axis2_thread_pool_t *pool);
 };
 
 /**
@@ -101,14 +107,19 @@ AXIS2_DECLARE(axis2_thread_pool_t *) axis2_thread_pool_init(
 					axis2_allocator_t *allocator);
 
 #define AXIS2_THREAD_POOL_GET_THREAD(thread_pool, func, data) \
-						((thread_pool)->ops->get_thread(thread_pool, func, data))
+		((thread_pool)->ops->get_thread(thread_pool, func, data))
+
 #define AXIS2_THREAD_POOL_JOIN_THREAD(thread_pool, thd) \
-						((thread_pool)->ops->join_thread(thread_pool, thd))
+		((thread_pool)->ops->join_thread(thread_pool, thd))
+
 #define AXIS2_THREAD_POOL_EXIT_THREAD(thread_pool, thd) \
-						((thread_pool)->ops->exit_thread(thread_pool, thd))
+		((thread_pool)->ops->exit_thread(thread_pool, thd))
+
 #define AXIS2_THREAD_POOL_THREAD_DETACH(thread_pool, thd) \
-						((thread_pool)->ops->thread_detach(thread_pool, thd))
-#define AXIS2_THREAD_POOL_FREE(thread_pool) ((thread_pool)->free(thread_pool))
+		((thread_pool)->ops->thread_detach(thread_pool, thd))
+
+#define AXIS2_THREAD_POOL_FREE(thread_pool) \
+		((thread_pool)->free(thread_pool))
 
 /** @} */
     

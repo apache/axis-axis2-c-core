@@ -55,21 +55,28 @@ extern "C"
         * @return satus of the op. AXIS2_SUCCESS on success 
         *         else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *free_fn)
-                                    (axis2_soap_fault_code_t *fault_code,
-                                     axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+		free_fn)(axis2_soap_fault_code_t *fault_code,
+                 axis2_env_t **env);
+	   /**
+		* @returns axis2_soap_fault_sub_code struct if one is associated with
+		* this fault_code struct , otherwise teturns NULL
+		*/
         
-        struct axis2_soap_fault_sub_code* (AXIS2_CALL *get_sub_code)                                         
-                                    (axis2_soap_fault_code_t *fault_code,
-                                     axis2_env_t **env);
+        struct axis2_soap_fault_sub_code* (AXIS2_CALL *
+		get_sub_code)(axis2_soap_fault_code_t *fault_code,
+                      axis2_env_t **env);
                                      
+	   /**
+        * @returns soap_fault_value if available
+		*/		
         struct axis2_soap_fault_value* (AXIS2_CALL *get_value)                                         
                                     (axis2_soap_fault_code_t *fault_code,
                                      axis2_env_t **env);
                                      
-        axis2_om_node_t* (AXIS2_CALL *get_base_node)
-                                    (axis2_soap_fault_code_t *fault_code,
-                                     axis2_env_t **env);
+        axis2_om_node_t* (AXIS2_CALL *
+		get_base_node)(axis2_soap_fault_code_t *fault_code,
+                       axis2_env_t **env);
                                  
 };      
 

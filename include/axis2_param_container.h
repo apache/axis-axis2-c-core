@@ -64,43 +64,44 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_container_ops
 	/** De-allocate memory
   	 * @return status code
   	 */
-	axis2_status_t (AXIS2_CALL *free)(struct axis2_param_container *param_container,
-										axis2_env_t **env);
+	axis2_status_t (AXIS2_CALL *
+	free)(struct axis2_param_container *param_container,
+		  axis2_env_t **env);
 
 	/** Add a param
      * @param param param to be added
      * @return status code
      */
-	axis2_status_t (AXIS2_CALL *add_param)
-									(struct axis2_param_container *param_container,
-										axis2_env_t **env,
-		 								axis2_param_t *param);
+	axis2_status_t (AXIS2_CALL *
+	add_param)(struct axis2_param_container *param_container,
+				axis2_env_t **env,
+				axis2_param_t *param);
 
 	/** To get a param in a given description 
      * @param name param name
      * @return param
      */
-	axis2_param_t *(AXIS2_CALL *get_param) 
-									(struct axis2_param_container *param_container, 
-										axis2_env_t **env,
-										const axis2_char_t *name);
+	axis2_param_t *(AXIS2_CALL *
+	get_param) (struct axis2_param_container *param_container, 
+				axis2_env_t **env,
+				const axis2_char_t *name);
 
 
 	/** To get all the params in a given description
 	 * @return all the params contained
 	 */
-	axis2_array_list_t *(AXIS2_CALL *get_params)
-									(struct axis2_param_container *param_container, 
-										axis2_env_t **env);
-	
+	axis2_array_list_t *(AXIS2_CALL *
+	get_params)(struct axis2_param_container *param_container, 
+				axis2_env_t **env);
+
 	/** To check whether the paramter is locked at any level
 	 * @param param_name name of the param
 	 * @return whether param is locked
 	 */
-	axis2_bool_t (AXIS2_CALL *is_param_locked)
-									(struct axis2_param_container *param_container, 
-										axis2_env_t **env,
-										const axis2_char_t *param_name) ;
+	axis2_bool_t (AXIS2_CALL *
+	is_param_locked)(struct axis2_param_container *param_container, 
+					 axis2_env_t **env,
+					 const axis2_char_t *param_name) ;
 
 }axis2_param_container_ops_t;
 

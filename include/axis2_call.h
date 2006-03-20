@@ -51,10 +51,12 @@ struct axis2_conf;
  */  
 struct axis2_call_ops
 {
-    axis2_mep_client_t* (AXIS2_CALL *get_base)(struct axis2_call *call,
-                                    axis2_env_t **env);
+    axis2_mep_client_t* (AXIS2_CALL *
+	get_base)(struct axis2_call *call,
+              axis2_env_t **env);
     /**
-     * This accepts a ServiceContext, and the axis2_svc_ctx_t *should have all the parents set in to it right
+     * This accepts a ServiceContext, and the axis2_svc_ctx_t *should have all 
+	 * the parents set in to it right
      * Ideall this should be generated from a WSDL, we do not have it yet.
      * <p/>
      * Follwoing code works for the time been
@@ -78,9 +80,10 @@ struct axis2_call_ops
     /**
      * @param to
      */
-    axis2_status_t (AXIS2_CALL *set_to)(struct axis2_call *call, 
-        axis2_env_t **env,
-        axis2_endpoint_ref_t *to);
+    axis2_status_t (AXIS2_CALL *
+	set_to)(struct axis2_call *call, 
+    	    axis2_env_t **env,
+        	axis2_endpoint_ref_t *to);
     /**
      * Set transport information to the the Call, for find how the each parameter 
      * acts see the commant at the instance variables. The senarios supoorted 
@@ -97,34 +100,38 @@ struct axis2_call_ops
      * @param use_separate_listener
      * @throws AxisFault
      */
-    axis2_status_t (AXIS2_CALL *set_transport_info)(struct axis2_call *call, 
-                                axis2_env_t **env,
-                                axis2_char_t *sender_transport,
-                                 axis2_char_t *listener_transport,
-                                 axis2_bool_t use_separate_listener);
-    /**
+    axis2_status_t (AXIS2_CALL *
+	set_transport_info)(struct axis2_call *call, 
+						axis2_env_t **env,
+						axis2_char_t *sender_transport,
+                		axis2_char_t *listener_transport,
+						axis2_bool_t use_separate_listener);
+/**
      * Check has the transports are identified correctly
      *
      * @param msg_ctx
      * @throws AxisFault
      */
-    axis2_status_t (AXIS2_CALL *check_transport)(struct axis2_call *call, 
-        axis2_env_t **env,
-        axis2_msg_ctx_t *msg_ctx);
+    axis2_status_t (AXIS2_CALL *
+	check_transport)(struct axis2_call *call, 
+    			     axis2_env_t **env,
+        			 axis2_msg_ctx_t *msg_ctx);
     /**
      * Closing the Call, this will stop the started Transport Listeners. If there are multiple
      * request to send the Call should be kept open closing only when done
      */
-    axis2_status_t (AXIS2_CALL *close)(struct axis2_call *call, 
-        axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+	close)(struct axis2_call *call, 
+           axis2_env_t **env);
     /**
      * This will be used in invoke blocking scenario. Client will wait the amount of time specified here
      * and if there is no response, call will timeout. This should be given in multiples of 100 and defaults to 2000.
      * @param time_out_ms
      */
-    axis2_status_t (AXIS2_CALL *set_time)(struct axis2_call *call, 
-        axis2_env_t **env,
-        long time_out_ms);
+    axis2_status_t (AXIS2_CALL *
+	set_time)(struct axis2_call *call, 
+              axis2_env_t **env,
+              long time_out_ms);
     /**
      * This invocation done via this method blocks till the result arrives, 
      * using this method does not indicate
@@ -137,19 +144,21 @@ struct axis2_call_ops
      * </ol>
      */
     
-    axis2_msg_ctx_t* (AXIS2_CALL *invoke_blocking)(struct axis2_call *call, 
-                                        axis2_env_t **env,
-                                        axis2_op_t *op,
-                                        axis2_msg_ctx_t *msg_ctx);
+    axis2_msg_ctx_t* (AXIS2_CALL *
+	invoke_blocking)(struct axis2_call *call, 
+                     axis2_env_t **env,
+                     axis2_op_t *op,
+                     axis2_msg_ctx_t *msg_ctx);
     /**
      * This invocation done via this method blocks till the result arrives, using this method does not indicate
      * anyhting about the transport used or the nature of the transport.
      */
-    axis2_status_t (AXIS2_CALL *invoke_non_blocking)(struct axis2_call *call, 
-                                        axis2_env_t **env,
-                                        axis2_op_t *op,
-                                        axis2_msg_ctx_t *msg_ctx,
-                                        axis2_callback_t *callback);
+    axis2_status_t (AXIS2_CALL *
+	invoke_non_blocking)(struct axis2_call *call, 
+                         axis2_env_t **env,
+                         axis2_op_t *op,
+                         axis2_msg_ctx_t *msg_ctx,
+                         axis2_callback_t *callback);
     /**
      * Invoke the blocking/Synchronous call
      *
@@ -158,9 +167,11 @@ struct axis2_call_ops
      * @return
      * @throws AxisFault
      */
-    axis2_om_node_t* (AXIS2_CALL *invoke_blocking_with_om)(struct axis2_call *call, 
-        axis2_env_t **env,
-        axis2_char_t *op_name, axis2_om_node_t *om_node_to_send);
+    axis2_om_node_t* (AXIS2_CALL *
+	invoke_blocking_with_om)(struct axis2_call *call, 
+                             axis2_env_t **env,
+                             axis2_char_t *op_name, 
+	                         axis2_om_node_t *om_node_to_send);
     /**
      * Invoke the blocking/Synchronous call
      *
@@ -169,9 +180,11 @@ struct axis2_call_ops
      * @return
      * @throws AxisFault
      */
-    axis2_soap_envelope_t* (AXIS2_CALL *invoke_blocking_with_soap)(struct axis2_call *call, 
-        axis2_env_t **env,
-        axis2_char_t *op_name, axis2_soap_envelope_t *envelope);
+    axis2_soap_envelope_t* (AXIS2_CALL *
+	invoke_blocking_with_soap)(struct axis2_call *call, 
+                               axis2_env_t **env,
+                               axis2_char_t *op_name, 
+							   axis2_soap_envelope_t *envelope);
     /**
      * Invoke the nonblocking/Asynchronous call
      *
@@ -179,9 +192,10 @@ struct axis2_call_ops
      * @param om_node_to_send   -  This should be OM Element (payload)
      *                 invocation behaves accordingly
      * @param callback
-     * @throws org.apache.axis2.AxisFault
+     * @
      */
-    axis2_status_t (AXIS2_CALL *invoke_non_blocking_with_om)(struct axis2_call *call, 
+    axis2_status_t (AXIS2_CALL *
+	invoke_non_blocking_with_om)(struct axis2_call *call, 
         axis2_env_t **env,
         axis2_char_t *op_name,
         axis2_om_node_t *om_node_to_send,
@@ -190,30 +204,34 @@ struct axis2_call_ops
      * Invoke the nonblocking/Asynchronous call
      *
      * @param op_name
-     * @param envelope   -  This should be a SOAP Envelope
-     *                 invocation behaves accordingly
+     * @param envelope   -  This should be a axis2_soap_envelope_t
+     *         invocation behaves accordingly
      * @param callback
-     * @throws org.apache.axis2.AxisFault
+     * 
      */
     
-    axis2_status_t (AXIS2_CALL *invoke_non_blocking_with_soap)(struct axis2_call *call, 
-        axis2_env_t **env,
-        axis2_char_t *op_name,
-        axis2_soap_envelope_t *envelope,
-        axis2_callback_t * callback);
+    axis2_status_t (AXIS2_CALL *
+	invoke_non_blocking_with_soap)(struct axis2_call *call, 
+    							   axis2_env_t **env,
+        						   axis2_char_t *op_name,
+        						   axis2_soap_envelope_t *envelope,
+        						   axis2_callback_t * callback);
     /**
-     * This method create a operation desc if it null and copy the flows from the template operation
+     * This method create a operation desc if it null and copy the 
+	 * flows from the template operation
      * @param op
      * @param axisOp
      */
-    axis2_op_t* (AXIS2_CALL *create_op_fill_flow)(struct axis2_call *call, 
-        axis2_env_t **env,
-        axis2_char_t *op_name);
+    axis2_op_t* (AXIS2_CALL *
+	create_op_fill_flow)(struct axis2_call *call, 
+                         axis2_env_t **env,
+                         axis2_char_t *op_name);
     /**
      * @return
      */
-    axis2_msg_ctx_t* (AXIS2_CALL *get_last_res_msg_ctx)(struct axis2_call *call, 
-        axis2_env_t **env);
+    axis2_msg_ctx_t* (AXIS2_CALL *
+	get_last_res_msg_ctx)(struct axis2_call *call, 
+                          axis2_env_t **env);
     
     /**
      * @param key
@@ -225,8 +243,9 @@ struct axis2_call_ops
                     axis2_char_t *key,
                     axis2_property_t *value);
     
-    axis2_status_t (AXIS2_CALL *free)(struct axis2_call *call, 
-                                       axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+	free)(struct axis2_call *call, 
+          axis2_env_t **env);
 };
 
 /** 
@@ -244,23 +263,53 @@ AXIS2_DECLARE(axis2_call_t*) axis2_call_create(axis2_env_t **env,
 
 /************************** Start of function macros **************************/
 
-#define AXIS2_CALL_GET_BASE(call, env) ((call)->ops->get_base(call, env))
-#define AXIS2_CALL_INVOKE_BLOCKING(call, env, op, msg_ctx) ((call)->ops->invoke_blocking(call, env, op, msg_ctx))
-#define AXIS2_CALL_INVOKE_NON_BLOCKING(call, env, op, msg_ctx, callback) ((call)->ops->invoke_non_blocking(call, env, op, msg_ctx, callback))
-#define AXIS2_CALL_SET_TO(call, env, to) ((call)->ops->set_to(call, env, to))
-#define AXIS2_CALL_SET_TRANSPORT_INFO(call, env, sender_transport, listener_transport, use_separate_listener) ((call)->ops->set_transport_info(call, env, sender_transport, listener_transport, use_separate_listener))
-#define AXIS2_CALL_CHECK_TRANSPORT(call, env, msg_ctx) ((call)->ops->check_transport(call, env, msg_ctx))
-#define AXIS2_CALL_CLOSE(call, env) ((call)->ops->close(call, env))
-#define AXIS2_CALL_SET_TIME(call, env, time_out_ms) ((call)->ops->set_time(call, env, time_out_ms))
-#define AXIS2_CALL_INVOKE_BLOCKING_WITH_OM(call, env, op_name, om_node_to_send) ((call)->ops->invoke_blocking_with_om(call, env, op_name, om_node_to_send))
-#define AXIS2_CALL_INVOKE_BLOCKING_WITH_SOAP(call, env, op_name, envelope) ((call)->ops->invoke_blocking_with_soap(call, env, op_name, envelope))
-#define AXIS2_CALL_INVOKE_NON_BLOCKING_WITH_OM(call, env, op_name, om_node_to_send, callback) ((call)->ops->invoke_non_blocking_with_om(call, env, op_name, om_node_to_send, callback))
-#define AXIS2_CALL_INVOKE_NON_BLOCKING_WITH_SOAP(call, env, op_name, envelope, callback) ((call)->ops->invoke_non_blocking_with_soap(call, env, op_name, envelope, callback))
-#define AXIS2_CALL_CREATE_OP_FILL_FLOW(call, env, op_name) ((call)->ops->create_op_fill_flow(call, env, op_name))
-#define AXIS2_CALL_GET_LAST_RES_MSG_CTX(call, env) ((call)->ops->get_last_res_msg_ctx(call, env))
+#define AXIS2_CALL_GET_BASE(call, env) \
+		((call)->ops->get_base(call, env))
+
+#define AXIS2_CALL_INVOKE_BLOCKING(call, env, op, msg_ctx) \
+		((call)->ops->invoke_blocking(call, env, op, msg_ctx))
+
+#define AXIS2_CALL_INVOKE_NON_BLOCKING(call, env, op, msg_ctx, callback) \
+		((call)->ops->invoke_non_blocking(call, env, op, msg_ctx, callback))
+
+#define AXIS2_CALL_SET_TO(call, env, to) \
+		((call)->ops->set_to(call, env, to))
+
+#define AXIS2_CALL_SET_TRANSPORT_INFO(call, env, sender_transport, listener_transport, use_separate_listener) \
+		((call)->ops->set_transport_info(call, env, sender_transport, listener_transport, use_separate_listener))
+		
+#define AXIS2_CALL_CHECK_TRANSPORT(call, env, msg_ctx) \
+		((call)->ops->check_transport(call, env, msg_ctx))
+		
+#define AXIS2_CALL_CLOSE(call, env) \
+        ((call)->ops->close(call, env))
+		
+#define AXIS2_CALL_SET_TIME(call, env, time_out_ms) \
+		((call)->ops->set_time(call, env, time_out_ms))
+		
+#define AXIS2_CALL_INVOKE_BLOCKING_WITH_OM(call, env, op_name, om_node_to_send)\
+		((call)->ops->invoke_blocking_with_om(call, env, op_name, om_node_to_send))
+		
+#define AXIS2_CALL_INVOKE_BLOCKING_WITH_SOAP(call, env, op_name, envelope) \
+		((call)->ops->invoke_blocking_with_soap(call, env, op_name, envelope))
+		
+#define AXIS2_CALL_INVOKE_NON_BLOCKING_WITH_OM(call, env, op_name, om_node_to_send, callback) \
+		((call)->ops->invoke_non_blocking_with_om(call, env, op_name, om_node_to_send, callback))
+		
+#define AXIS2_CALL_INVOKE_NON_BLOCKING_WITH_SOAP(call, env, op_name, envelope, callback)\
+		((call)->ops->invoke_non_blocking_with_soap(call, env, op_name, envelope, callback))
+		
+#define AXIS2_CALL_CREATE_OP_FILL_FLOW(call, env, op_name) \
+		((call)->ops->create_op_fill_flow(call, env, op_name))
+		
+#define AXIS2_CALL_GET_LAST_RES_MSG_CTX(call, env) \
+		((call)->ops->get_last_res_msg_ctx(call, env))
+		
 #define AXIS2_CALL_SET(call, env, key, value) \
         ((call)->ops->set(call, env, key, value))
-#define AXIS2_CALL_FREE(call, env) ((call)->ops->free(call, env))
+		
+#define AXIS2_CALL_FREE(call, env) \
+		((call)->ops->free(call, env))
 
 /************************** End of function macros ****************************/    
 

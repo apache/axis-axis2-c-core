@@ -68,7 +68,10 @@ extern "C"
          * @return Pointer to the value if present, else returns NULL. 
          *          Environment status would be set to AXIS2_FAILURE on error.
          */
-        axis2_char_t* (AXIS2_CALL *get_value)(struct axis2_any_content_type *any_content_type, axis2_env_t **env, axis2_qname_t *qname);
+        axis2_char_t* (AXIS2_CALL *
+		get_value)(struct axis2_any_content_type *any_content_type, 
+				   axis2_env_t **env, 
+				   axis2_qname_t *qname);
         /**
          * Gets the map of values
          * @param any_content_type any_content_type struct. cannot be NULL.
@@ -76,15 +79,20 @@ extern "C"
          * @return Pointer to the value map. Would return NULL and set 
          *          Environment status to AXIS2_FAILURE on error.
          */
-        axis2_hash_t* (AXIS2_CALL *get_value_map)(struct axis2_any_content_type *any_content_type, axis2_env_t **env);
+        axis2_hash_t* (AXIS2_CALL *
+		get_value_map)(struct axis2_any_content_type *any_content_type, 
+					   axis2_env_t **env);
+		
         /**
          * Frees the given any_content_type struct
          * @param any_content_type any_content_type struct. cannot be NULL.
          * @param env Environment. MUST NOT be NULL.
          * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *free)(struct axis2_any_content_type *any_content_type, 
-                                                       axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+		free)(struct axis2_any_content_type *any_content_type, 
+              axis2_env_t **env);
+		
     } axis2_any_content_type_ops_t;
 	
    /** 

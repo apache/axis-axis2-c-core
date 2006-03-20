@@ -46,23 +46,29 @@ typedef struct axis2_http_status_line axis2_http_status_line_t;
  */
 AXIS2_DECLARE_DATA struct axis2_http_status_line_ops
 {
-    int (AXIS2_CALL *get_status_code) (axis2_http_status_line_t *status_line, 
-                                        axis2_env_t **env);
+    int (AXIS2_CALL *
+	get_status_code)(axis2_http_status_line_t *status_line, 
+                     axis2_env_t **env);
     
-    axis2_char_t* (AXIS2_CALL *get_http_version) 
-                    (axis2_http_status_line_t *status_line, axis2_env_t **env);
+    axis2_char_t* (AXIS2_CALL *
+	get_http_version)(axis2_http_status_line_t *status_line, 
+					  axis2_env_t **env);
     
-    axis2_char_t* (AXIS2_CALL *get_reason_phrase) 
-                    (axis2_http_status_line_t *status_line, axis2_env_t **env);
+    axis2_char_t* (AXIS2_CALL *
+	get_reason_phrase)(axis2_http_status_line_t *status_line, 
+					   axis2_env_t **env);
     
-    axis2_bool_t (AXIS2_CALL *starts_with_http)
-                    (axis2_http_status_line_t *status_line, axis2_env_t **env);
+    axis2_bool_t (AXIS2_CALL *
+	starts_with_http)(axis2_http_status_line_t *status_line, 
+		              axis2_env_t **env);
     
-    axis2_char_t* (AXIS2_CALL *to_string)
-                    (axis2_http_status_line_t *status_line, axis2_env_t **env);
+    axis2_char_t* (AXIS2_CALL *
+	to_string)(axis2_http_status_line_t *status_line, 
+		       axis2_env_t **env);
     
-    axis2_status_t (AXIS2_CALL *free) (axis2_http_status_line_t *status_line, 
-                                        axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+	free) (axis2_http_status_line_t *status_line, 
+           axis2_env_t **env);
 };
 
 /**
@@ -76,7 +82,8 @@ AXIS2_DECLARE_DATA struct axis2_http_status_line
 
 
 AXIS2_DECLARE(axis2_http_status_line_t *) 
-axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str);
+axis2_http_status_line_create(axis2_env_t **env, 
+                              axis2_char_t *str);
 
 /************************* Start of function macros    ***************************/
 

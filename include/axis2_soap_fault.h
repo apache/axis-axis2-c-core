@@ -63,54 +63,95 @@ struct axis2_soap_builder;
         * Free an axis2_soap_fault
         * @param  fault pointer to soap_fault struct
         * @param  env Environment. MUST NOT be NULL
-        * @return satus of the op. AXIS2_SUCCESS on success 
+        * @return status of the op. AXIS2_SUCCESS on success 
         *         else AXIS2_FAILURE
         */
 
-        axis2_status_t (AXIS2_CALL *free_fn)(axis2_soap_fault_t *fault,
-                                             axis2_env_t **env);
-       
-        /**
-         *  internal function set a pointer in soap fault struct
-         *  to code struct
-         */
-
+        axis2_status_t (AXIS2_CALL *
+		free_fn)(axis2_soap_fault_t *fault,
+                 axis2_env_t **env);
+	   /**
+        * this function returns a axis2_soap_fault_code struct
+        * if a fault code is associated with this soap fault
+        * only valid when called after building the soap fault
+        * @param fault soap fault struct
+        * @param env environment must not be NULL
+        * @returns pointer to  soap_fault_code struct if one is associated 
+        *  with this soap_fault struct , NULL is returned otherwise
+        */		
+        struct axis2_soap_fault_code * (AXIS2_CALL *
+		get_code)(axis2_soap_fault_t *fault,
+                  axis2_env_t **env);
+       /** 
+        * @param fault soap fault struct
+        * @param env environment must not be NULL
+        * @returns pointer to soap_fault_reason struct if one is associated 
+        * with this soap_fault struct , NULL is returned otherwise
+        */	                                
                                               
-        struct axis2_soap_fault_code * (AXIS2_CALL *get_code)
-                                             (axis2_soap_fault_t *fault,
-                                              axis2_env_t **env);
-                                         
-                                              
-        struct axis2_soap_fault_reason *(AXIS2_CALL *get_reason)
-                                             (axis2_soap_fault_t *fault,
-                                              axis2_env_t **env);
+        struct axis2_soap_fault_reason *(AXIS2_CALL *
+		get_reason)(axis2_soap_fault_t *fault,
+                    axis2_env_t **env);
                                              
-                                              
-        struct axis2_soap_fault_node* (AXIS2_CALL *get_node)
-                                             (axis2_soap_fault_t *fault,
-                                              axis2_env_t **env);
+       /** 
+        * @param fault soap fault struct
+        * @param env environment must not be NULL
+        * @returns pointer to soap_fault_node struct if one is associated 
+        *  with this soap_fault struct , NULL is returned otherwise
+        */	                                     
+        struct axis2_soap_fault_node* (AXIS2_CALL *
+		get_node)(axis2_soap_fault_t *fault,
+                  axis2_env_t **env);
                                              
-                                              
-        struct axis2_soap_fault_role* (AXIS2_CALL *get_role)
-                                             (axis2_soap_fault_t *fault,
-                                              axis2_env_t **env);
+       /** 
+        * @param fault soap fault struct
+        * @param env environment must not be NULL
+        * @returns pointer to soap_fault_code struct if one is associated 
+        * with this soap_fault struct , NULL is returned otherwise
+        */	                                      
+        struct axis2_soap_fault_role* (AXIS2_CALL *
+		get_role)(axis2_soap_fault_t *fault,
+                  axis2_env_t **env);
+	   /** 
+        * @param fault soap fault struct
+        * @param env environment must not be NULL
+        * @returns a pointer to  soap_fault_code struct if one is 
+        * associated with this soap_fault struct , NULL is returned otherwise
+        */	
 
-        struct axis2_soap_fault_detail* (AXIS2_CALL *get_detail)
-                                             (axis2_soap_fault_t *fault,
-                                              axis2_env_t **env);  
-                                              
-        axis2_char_t * (AXIS2_CALL *get_exception)
-                                             (axis2_soap_fault_t *fault,
-                                              axis2_env_t **env);
-                                              
-        axis2_status_t (AXIS2_CALL *set_exception)
-                                             (axis2_soap_fault_t *fault,
-                                              axis2_env_t **env,
-                                              axis2_char_t *exception);                                                                                             
-        
-        axis2_om_node_t* (AXIS2_CALL *get_base_node)
-                                             (axis2_soap_fault_t *fault,
-                                              axis2_env_t **env);  
+        struct axis2_soap_fault_detail* (AXIS2_CALL *
+		get_detail)(axis2_soap_fault_t *fault,
+                    axis2_env_t **env); 
+	   /** 
+        * @param fault soap fault struct 
+        * @param env enviroment must not be NULL
+        * @returns a pointer to  soap_fault_code struct if one is 
+        * associated with this soap_fault struct , NULL is returned otherwise
+        */	
+        axis2_char_t * (AXIS2_CALL *
+		get_exception)(axis2_soap_fault_t *fault,
+                       axis2_env_t **env);
+	   /**
+        * set an error string 
+        * @param fualt soap fault struct
+        * @param env enviroment must not be NULL
+        * @param exception error message to be stored on soap fault
+        */		
+        axis2_status_t (AXIS2_CALL *
+		set_exception) (axis2_soap_fault_t *fault,
+                        axis2_env_t **env,
+                        axis2_char_t *exception);                                                                                             
+	  /**
+       * returns the axis2_om_node_t struct which is wrapped by
+       * this soap fault struct
+       * @param fault soap fault struct
+       * @param env environment must not be NULL
+       * @returns a pointer to  axis2_om_node_t struct if an om node is associated 
+       * with this soap fault struct, otherwise return NULL
+       */
+        axis2_om_node_t* (AXIS2_CALL *
+		get_base_node)(axis2_soap_fault_t *fault,
+                       axis2_env_t **env);  
                                                      
     };
 
@@ -125,16 +166,31 @@ struct axis2_soap_builder;
        
     };
 
-  /**
-    * creates a soap struct 
-    * @param env Environment. MUST NOT be NULL
-    */
+/**
+ * creates a soap fault struct 
+ * @param env environment must not be NULL
+ * @param parent soap body struct to which this soap
+ * fault is the child
+ * @param env Environment. MUST NOT be NULL
+ * @returns pointer to axis2_soap_fault_t struct on success
+ *  otherwise return NULL with error code set in environments error
+ */
 
     
 AXIS2_DECLARE(axis2_soap_fault_t *)
 axis2_soap_fault_create_with_parent(axis2_env_t **env,
                                     struct axis2_soap_body *parent);
-                                        
+
+/** create an returns a axis2_soap_fault_t struct with a soap fault detail 
+ * element and have this exceptio string as a text of a child of soap fault
+ * detail
+ * @param env environment must not be NULL
+ * @param parent soap body struct must not be NULL
+ * @param exceptio an error string must not be NULL
+ * @returns pointer to axis2_soap_fault_t on success ,
+ * otherwise return NULL
+ */
+
 AXIS2_DECLARE(axis2_soap_fault_t *)
 axis2_soap_fault_create_with_exception(axis2_env_t **env,
                                         struct axis2_soap_body *parent,  

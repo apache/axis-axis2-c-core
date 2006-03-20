@@ -256,6 +256,7 @@ test_om_serialize ()
         AXIS2_FREE(environment->allocator, output_buffer); 
      }        
      printf ("\nDONE\n");
+     
 
     return 0;
 }
@@ -272,7 +273,7 @@ main (int argc, char *argv[])
     error = axis2_error_create(allocator);
     
     environment = axis2_env_create_with_error_log(allocator, error,  axis_log);
-/*    test_om_build (file_name); */
+    test_om_build (file_name); 
     test_om_serialize(); 
 
     axis2_env_free(environment); 

@@ -53,33 +53,18 @@ struct axis2_soap_builder;
         *         else AXIS2_FAILURE
         */
 
-        axis2_status_t (AXIS2_CALL *free_fn)
-                                (axis2_soap_fault_reason_t *fault_reason,
-                                 axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+		free_fn)(axis2_soap_fault_reason_t *fault_reason,
+                 axis2_env_t **env);
 
-        struct axis2_soap_fault_text* (AXIS2_CALL *get_soap_fault_text)                                         
-                                (axis2_soap_fault_reason_t *fault_reason,
-                                 axis2_env_t **env);
+        struct axis2_soap_fault_text* (AXIS2_CALL *
+		get_soap_fault_text)(axis2_soap_fault_reason_t *fault_reason,
+                             axis2_env_t **env);
                                      
-        axis2_om_node_t* (AXIS2_CALL *get_base_node)
-                                (axis2_soap_fault_reason_t *fault_reason,
-                                 axis2_env_t **env);
+        axis2_om_node_t* (AXIS2_CALL *
+		get_base_node)(axis2_soap_fault_reason_t *fault_reason,
+                       axis2_env_t **env);
                                  
-        /** internal functions , do not use */
-        axis2_status_t (AXIS2_CALL *set_base_node)
-                                (axis2_soap_fault_reason_t *fault_reason,
-                                 axis2_env_t **env,
-                                 axis2_om_node_t *node);
-    
-        axis2_status_t (AXIS2_CALL *set_soap_fault_text)
-                                (axis2_soap_fault_reason_t *fault_reason,
-                                 axis2_env_t **env,
-                                 struct axis2_soap_fault_text *soap_text);      
-      
-        axis2_status_t (AXIS2_CALL *set_builder)
-                                (axis2_soap_fault_reason_t *fault_reason,
-                                 axis2_env_t **env,
-                                 struct axis2_soap_builder *builder);                                                                                                                
     };      
 
   /**

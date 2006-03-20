@@ -145,7 +145,9 @@ axis2_om_node_set_builder(axis2_om_node_t *om_node,
                           axis2_env_t **env,
                           struct axis2_om_stax_builder *builder);                           
 
-  
+AXIS2_DECLARE(struct axis2_om_stax_builder *)
+axis2_om_node_get_builder(axis2_om_node_t *om_node,
+                          axis2_env_t **env);                                
 /** @} */
     
 #ifdef __cplusplus
