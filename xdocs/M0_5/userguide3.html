@@ -1,78 +1,83 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <meta http-equiv="content-type"
- content="text/html; charset=iso-8859-1">
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
   <title>Axis2 User's Guide</title>
-  <meta name="generator"
- content="amaya 9.2.1, see http://www.w3.org/Amaya/">
+  <meta name="generator" content="amaya 9.2.2, see http://www.w3.org/Amaya/">
 </head>
+
 <body dir="ltr" lang="en-US">
 <h3><a name="Axis2_User's_Guide">Axis2/C User's Guide</a></h3>
+
 <h4>-Milestone Release 0.5</h4>
+
 <p align="right">Pages: <a href="userguide.html">Content</a>, <a
- href="userguide1.html">1</a>, <a href="userguide2.html">2</a>, <b>3</b></p>
+href="userguide1.html">1</a>, <a href="userguide2.html">2</a>, <b>3</b></p>
+
 <p><strong>User Feedback</strong>: <a
- href="mailto:axis-user@ws.apache.org">axis-c-user@ws.apache.org</a>
-(Prefix
-the subject with [Axis2]). To subscribe to mailing list see <a
- href="../mail-lists.html">here.</a></p>
+href="mailto:axis-user@ws.apache.org">axis-c-user@ws.apache.org</a> (Please
+remember to prefix the subject with [Axis2]). To subscribe to mailing list
+see <a href="../mail-lists.html">here.</a></p>
 <a name="Conventions"></a>
+
 <h3>Conventions used in the document:</h3>
+
 <p>From here onwards I will refer to the folder where Axis2/C binary is
-installed
-as AXIS2C_HOME</p>
-<p>In this page of the user's guide we will look at how to write and
-deploy
+installed as AXIS2C_HOME</p>
+
+<p>In this page of the user's guide we will look at how to write and deploy
 Web Services using Axis2. All the user guide samples are located in the
 <b>"samples"</b> directory of the binary distribution.</p>
+
 <h2><a name="Web_Services_Using_Axis2">Web Services Using Axis2/C</a></h2>
+
 <p>Before starting, please make sure that you have installed Axis2/C
-correctly and check whether you can run the axis2_http_server located
-in
-AXIS2C_HOME/bin . (See <a href="installationguide.html" target="_blank">Installation
-Guide</a>).</p>
-<h3><a name="Writing_Web_Services_Using Axis2_C">Writing Web
-Services Using Axis2/C</a></h3>
-<h4><a name="Creating_Web_Service__MyService_">Creating Web Service
-(Echo
+correctly and check whether you can run the axis2_http_server located in
+AXIS2C_HOME/bin . (See <a href="installationguide.html"
+target="_blank">Installation Guide</a>).</p>
+
+<h3><a name="Writing_Web_Services_Using Axis2_C">Writing Web Services Using
+Axis2/C</a></h3>
+
+<h4><a name="Creating_Web_Service__MyService_">Creating Web Service (Echo
 service)</a></h4>
-<p>First let's see how we can write a simple Web Service (echo service)
-using
-Axis2/C's primary interfaces and deploy it. For this purpose we will
-create a
+
+<p>First let's see how we can write a simple Web Service (echo service) using
+Axis2/C's primary interfaces and deploy it. For this purpose we will create a
 Web Service with one operation as follows.</p>
 <pre><font color="#009900">/* IN-OUT operation, accepts an om element node and responds with another om element node after <br> *  processing <br> */ </font><br>axis2_om_node_t* axis2_echo_echo(axis2_om_node_t *echo_node){}<br> </pre>
+
 <p>You can have peek at the complete source code for this example echo
 service located in the "AXIS2C_HOME/samples/server/echo" directory .</p>
+
 <h4><a name="How_to_write_the_Web_Service_">How to write the Web
 Service?</a></h4>
-Writing a new Web Service with Axis2/C involve four steps. I will use
-the
+Writing a new Web Service with Axis2/C involve four steps. I will use the
 echo service as the example.
+
 <p>(eg . echo service )</p>
 <ol>
-  <li>
-    <p style="margin-bottom: 0in;">Write a echo_skeleton.c file which
-implement axis2_svc_skeleton.h header file.</p>
+  <li><p style="margin-bottom: 0in;">Write a echo_skeleton.c file which
+    implement axis2_svc_skeleton.h header file.</p>
   </li>
   <li>Write the *_service.c file (in this case echo.c service) which
-implements the actual business logic.</li>
+    implements the actual business logic.</li>
   <li>Write a services.xml file to explain the Web Service.</li>
-  <li>Create a folder with the service name under AXIS2C_HOME/services
-and put the compiled service ( .dll or .so file) for the Web Service
-and services.xml file in to that folder</li>
+  <li>Create a folder with the service name under AXIS2C_HOME/services and
+    put the compiled service ( .dll or .so file) for the Web Service and
+    services.xml file in to that folder</li>
 </ol>
 <a name="Step1"></a>
-<h4>Step1 :Write the
-echo_skeleton.c file implementing the axis2_svc_skeleton.h</h4>
+
+<h4>Step1 :Write the echo_skeleton.c file implementing the
+axis2_svc_skeleton.h</h4>
+
 <p>axis2_svc_skeleton.h header file has the axis2_svc_skeleton_ops_t
-operations struct which defines four function pointers to be
-implemented and
+operations struct which defines four function pointers to be implemented and
 assigned by a service skeleton.</p>
+
 <p>They are:-</p>
-<pre class="code">
-/* initialize the service */
+<pre class="code">/* initialize the service */
 int (AXIS2_CALL * init) (axis2_svc_skeleton_t *svc_skeleton,axis2_env_t **env);
 /*deallocate the memory */
 int (AXIS2_CALL *free)(axis2_svc_skeleton_t *svc_skeli, axis2_env_t **env);
@@ -82,13 +87,10 @@ axis2_om_node_t * (AXIS2_CALL*invoke)(axis2_svc_skeleton_t *svc_skeli,
                     axis2_env_t **env, axis2_om_node_t *node);
 /*on a fault, this function is called */
 axis2_om_node_t *(AXIS2_CALL* on_fault)(axis2_svc_skeleton_t *svc_skeli,
-                    axis2_env_t **env, axis2_om_node_t *node);
-</pre>
+                    axis2_env_t **env, axis2_om_node_t *node);</pre>
 
-<p>Lets implement the above functions for echo service. </p>
-
-<pre class="code">
-int AXIS2_CALL echo_init(axis2_svc_skeleton_t *svc_skeleton,axis2_env_t **env)
+<p>Lets implement the above functions for echo service.</p>
+<pre class="code">int AXIS2_CALL echo_init(axis2_svc_skeleton_t *svc_skeleton,axis2_env_t **env)
 {
     svc_skeleton-&gt;func_array = axis2_array_list_create(env, 0);
     /* Here, we add the implemented operation names of the service to an 
@@ -115,7 +117,7 @@ int AXIS2_CALL echo_free(axis2_svc_skeleton_t *svc_skeleton, axis2_env_t **env)
     /* free the function array */
     if(svc_skeleton-&gt;func_array)
     {
-    	AXIS2_ARRAY_LIST_FREE(svc_skeleton-&gt;func_array, env);
+            AXIS2_ARRAY_LIST_FREE(svc_skeleton-&gt;func_array, env);
         svc_skeleton-&gt;func_array = NULL;
     }
     /* free the operations struct */
@@ -149,14 +151,12 @@ echo_on_fault(axis2_svc_skeleton_t *svc_skeli,
     AXIS2_OM_ELEMENT_SET_TEXT(error_ele, env, "Echo service failed ", 
                                 &amp;text_node);
     return error_node;
-}
-</pre>
+}</pre>
 
 <p>Now we can write the create function of the echo_service_skeleton as<br>
 follows.<br>
 </p>
-<pre class="code">
-axis2_svc_skeleton_t *axis2_echo_create(axis2_env_t **env)
+<pre class="code">axis2_svc_skeleton_t *axis2_echo_create(axis2_env_t **env)
 {
     /* Here we are just allocating memory for the structures and setting 
      * the function pointers
@@ -173,15 +173,14 @@ axis2_svc_skeleton_t *axis2_echo_create(axis2_env_t **env)
     svc_skeleton-&gt;ops-&gt;invoke = echo_invoke;
     svc_skeleton-&gt;ops-&gt;on_fault = echo_on_fault;
     return svc_skeleton;
-}
-</pre>
+}</pre>
 
-<p>In addition to the above functions every service must have the
-following two functions with exactly the same as the functionsignature
-in xxx_skeleton.c file.</p> 
+<p>In addition to the above functions every service must have the following
+two functions with exactly the same as the functionsignature in
+xxx_skeleton.c file.</p>
 <br>
-<pre class-"code">
-AXIS2_EXPORT int axis2_get_instance(axis2_svc_skeleton_t **inst,
+
+<pre>AXIS2_EXPORT int axis2_get_instance(axis2_svc_skeleton_t **inst,
                                     axis2_env_t **env)
 {
     *inst = axis2_echo_create(env);
@@ -201,25 +200,23 @@ AXIS2_EXPORT int axis2_remove_instance(axis2_svc_skeleton_t *inst,
         status = AXIS2_SVC_SKELETON_FREE(inst, env);
     }
     return status;
-}
-</pre>
+}</pre>
 
 <p>Axis2 engine loads the service dll but it needs to know which method to
 call. Since C does not have refection, we need to have some dll exposed
-functions known to axis2 engine. <b>axis2_get_instance</b> and <b>axis2_remove_instance</b>
-are exactly those two functions that need to be exposed from service
-dll (or any other dll of axis2 engine). axis2_get_instance creates a
-new service instance. </p>
-<p>
-Axis2 engine gets it in a return pointer and cast it to
-axis2_svc_skeleton interface.Then inteface methods can be called by
-Axis2 Engine. Once it is cast to interface, any of the interface method
-can be used.</p>
+functions known to axis2 engine. <b>axis2_get_instance</b> and
+<b>axis2_remove_instance</b> are exactly those two functions that need to be
+exposed from service dll (or any other dll of axis2 engine).
+axis2_get_instance creates a new service instance.</p>
+
+<p>Axis2 engine gets it in a return pointer and cast it to axis2_svc_skeleton
+interface.Then inteface methods can be called by Axis2 Engine. Once it is
+cast to interface, any of the interface method can be used.</p>
 <a name="Step2"></a>
+
 <h4>Step2 : Now we can write the echo service in a file echo.c<br>
 </h4>
-<pre class="code">
-axis2_om_node_t* axis2_echo_echo(axis2_env_t **env, axis2_om_node_t *node)
+<pre class="code">axis2_om_node_t* axis2_echo_echo(axis2_env_t **env, axis2_om_node_t *node)
 {
     axis2_om_node_t *text_parent_node = NULL;
     axis2_om_node_t *text_node = NULL;
@@ -289,20 +286,18 @@ axis2_om_node_t *build_om_programatically(axis2_env_t **env, axis2_char_t *text)
                                           &amp;text_om_node);
     AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, text, text_om_node);
     return echo_om_node;
-}
-</pre>
-
+}</pre>
 <a name="Step3"></a>
-<h4>Step3 :Write the services.xml file</h4>
-<p>Axis2 uses "services.xml" to keep configurations for a Web Service.
-Each Web Service deployed in Axis2 needs a "services.xml" containing
-the configurations. Note that services.xml has the same semantics as
-Axis2 Java's services.xml file. Only difference is that for class
-attributes instead of giving package qualified class name, we use dll
-name. Services.xml for MyService will be as follows.</p>
 
-<pre class="code">
-&lt;service name="echo"&gt;
+<h4>Step3 :Write the services.xml file</h4>
+
+<p>Axis2 uses "services.xml" to keep configurations for a Web Service. Each
+Web Service deployed in Axis2 needs a "services.xml" containing the
+configurations. Note that services.xml has the same semantics as Axis2 Java's
+services.xml file. Only difference is that for class attributes instead of
+giving package qualified class name, we use dll name. Services.xml for
+MyService will be as follows.</p>
+<pre class="code">&lt;service name="echo"&gt;
     &lt;parameter name="ServiceClass" locked="xsd:false"&gt;echo&lt;/parameter&gt;
     &lt;description&gt;
         This is a echo service
@@ -313,23 +308,23 @@ name. Services.xml for MyService will be as follows.</p>
             http://127.0.0.1:9090/axis2/services/echo/echoString
         &lt;/parameter&gt;
     &lt;/operation&gt;
-&lt;/service&gt;
-</pre>
+&lt;/service&gt;</pre>
+
 <p><em>The above XML tags can be explained as follows:</em></p>
-Name of the service will be the name of the Folder with the shared
-library and the services.xml , In this case we will have a folder named
-echo in which we have the echo.dll and services.xml file. because
-services.xml contains only one service element.
-<br>
-<p>You can write a services.xml file to include a group of services
-instead of a single service. This makes management and deployment of a
-set of related services very easy. At runtime you can share information
-between these services within a single interaction using the
-axis2_svc_grp_ctx (ServiceGroupContext ). If you hope to use this
-functionality, the services.xml file should have following format.<br>
+Name of the service will be the name of the Folder with the shared library
+and the services.xml , In this case we will have a folder named echo in which
+we have the echo.dll and services.xml file. because services.xml contains
+only one service element. <br>
+
+
+<p>You can write a services.xml file to include a group of services instead
+of a single service. This makes management and deployment of a set of related
+services very easy. At runtime you can share information between these
+services within a single interaction using the axis2_svc_grp_ctx
+(ServiceGroupContext ). If you hope to use this functionality, the
+services.xml file should have following format.<br>
 </p>
-<pre class="code">
-&lt;serviceGroup&gt;
+<pre class="code">&lt;serviceGroup&gt;
   &lt;service name="Service1"&gt;
     &lt;!-- details for Service1 --&gt;
   &lt;/service&gt;<br>  &lt;service name="Service2"&gt;
@@ -337,27 +332,31 @@ functionality, the services.xml file should have following format.<br>
   &lt;/service&gt;
   &lt;module ref="ModuleName" /&gt;
   &lt;parameter name="serviceGroupParam1" locked="false"&gt;value 1&lt;/parameter&gt;
-&lt;/serviceGroup&gt;
-</pre>
+&lt;/serviceGroup&gt;</pre>
 
 <p>Note : name of the service is a compulsory attribute</p>
 <a name="Step4"></a>
+
 <h4>Step4 :Create the Web Service Folder in services folder.</h4>
+
 <p>In Axis2/C , it is required to create a folder with the corresponding
-service/service group name which will contain the shared library
-(compiled service) and the services.xml file which describe the web
-service. So in this case we will have a folder named echo which contain
-the services,xml file and echo dll.</p>
+service/service group name which will contain the shared library (compiled
+service) and the services.xml file which describe the web service. So in this
+case we will have a folder named echo which contain the services,xml file and
+echo dll.</p>
 <a name="deploy"></a>
+
 <h3>Deploy the Web Service</h3>
-<p>Deploying the service means putting the service folder to the
-services directory. At the moment the server has to be restarted for
-the service to be deployed since hot deployment has not yet been
-implemented.</p>
+
+<p>Deploying the service means putting the service folder to the services
+directory. At the moment the server has to be restarted for the service to be
+deployed since hot deployment has not yet been implemented.</p>
+
 <p align="right"><a href="userguide2.html"><img
- src="images/arrow_left.gif"><br>
+src="images/arrow_left.gif"><br>
 Previous Page</a></p>
+
 <p>Pages: <a href="userguide.html">Content</a>, <a
- href="userguide1.html">1</a>, <a href="userguide2.html">2</a>, <b>3</b></p>
+href="userguide1.html">1</a>, <a href="userguide2.html">2</a>, <b>3</b></p>
 </body>
 </html>

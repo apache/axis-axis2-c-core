@@ -64,7 +64,7 @@ behavior that we can get using the <strong>Non-Blocking API</strong> as
 
 <p>Both these mechanisms use a single transport connection to send the
 request and to receive the response. They do not have the capability of using
-two seperate transport connections, onefor the request and the other for the
+two separate transport connections, one for the request and the other for the
 response (either One-Way of Two-Way). So both these mechanisms fail to
 address the problem of long running transactions (the transport connection
 may time-out before the operation completes). A possible solution would be to
@@ -130,20 +130,20 @@ following table.</p>
 invoke Web Services.</p>
 
 <p>Currently we have implemented the blocking and non-blocking APIs (that is
-API level asynchriny). Support for dual transports would be implemented in
+API level asynchrony). Support for dual transports would be implemented in
 the future.</p>
 
 <h3><a name="Writing_Web_Service_Clients_using_Axis2's_Primary_APIs">Writing
 Web Service Clients Using Axis2's Primary APIs</a></h3>
 
-<h4><a name="EchoBlockingClient">EchoBlockingClient</a></h4>
+<h4><a name="EchoBlockingClient">Echo Blocking Client</a></h4>
 
 <p>Let's see how we can write a client to invoke "echoString" operation of
 "echo service" using the simplest blocking invocation. The complete client
 code with some explanation within comments is shown below.</p>
 
-<p> <font color="#008000">#include &lt;axis2_call.h&gt;<br></font>
-<font color="#008000">#include &lt;axis2_om_stax_builder.h&gt;<br>
+<p><font color="#008000">#include &lt;axis2_call.h&gt;<br>
+</font> <font color="#008000">#include &lt;axis2_om_stax_builder.h&gt;<br>
 </font> <font color="#008000">#include &lt;axis2_om_document.h&gt;<br>
 </font> <font color="#008000">#include &lt;axis2_om_node.h&gt;<br>
 </font> <font color="#008000">#include &lt;axis2_om_element.h&gt;<br>
@@ -217,7 +217,7 @@ color="#000000">conf</font> = <font color="#000000">NULL</font>;<br>
 color="#000000">response_ctx</font> = <font color="#000000">NULL</font>;<br>
     <br>
     <font
-color="#808080"><i>/* set up the envioronment with allocator and log*/</i></font><br>
+color="#808080"><i>/* set up the environment with allocator and log*/</i></font><br>
     <font color="#000000">allocator</font> = <font
 color="#000000">axis2_allocator_init</font> (<font
 color="#000000">NULL</font>);<br>
