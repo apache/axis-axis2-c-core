@@ -281,7 +281,7 @@ color="#000000">inst</font>,<br>
                    <font color="#000000">axis2_env_t</font> **<font
 color="#000000">env</font>)<br>
 {<br>
-        *<font color="#000000">inst</font> = <font
+    *<font color="#000000">inst</font> = <font
 color="#000000">axis2_echo_create</font>(<font
 color="#000000">env</font>);<br>
     <font color="#000000"><b>if</b></font>(!(*<font
@@ -290,7 +290,6 @@ color="#000000">inst</font>))<br>
         <font color="#000000"><b>return</b></font> <font
 color="#000000">AXIS2_FAILURE</font>;<br>
     }<br>
-<br>
     <font color="#000000"><b>return</b></font> <font
 color="#000000">AXIS2_SUCCESS</font>;<br>
 }<br>
@@ -306,9 +305,9 @@ color="#000000">env</font>)<br>
     <font color="#000000">axis2_status_t</font> <font
 color="#000000">status</font> = <font
 color="#000000">AXIS2_FAILURE</font>;<br>
-        <font color="#000000"><b>if</b></font> (<font
+    <font color="#000000"><b>if</b></font> (<font
 color="#000000">inst</font>)<br>
-        {<br>
+    {<br>
         <font color="#000000">status</font> = <font
 color="#000000">AXIS2_SVC_SKELETON_FREE</font>(<font
 color="#000000">inst</font>, <font color="#000000">env</font>);<br>
