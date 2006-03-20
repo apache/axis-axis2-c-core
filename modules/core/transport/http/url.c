@@ -92,9 +92,19 @@ axis2_url_create (axis2_env_t **env, axis2_char_t *protocol,
 	{
     	url_impl->server = (axis2_char_t *)AXIS2_STRDUP(server, env);
 	}
+    /** if the path is not starting with / we have to make it so
+     */
 	if(NULL != path)
 	{
-    	url_impl->path = (axis2_char_t *)AXIS2_STRDUP(path, env);
+        if(path[0] == '/')
+        {
+            url_impl->path = (axis2_char_t *)AXIS2_STRDUP(path, env);
+        }
+        else
+        {
+            url_impl->path = AXIS2_STRACAT("/", path, env);
+        }
+    	
 	}
 	     
     url_impl->url.ops = AXIS2_MALLOC((*env)->allocator,sizeof(axis2_url_ops_t));

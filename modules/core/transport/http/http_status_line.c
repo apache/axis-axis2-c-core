@@ -213,8 +213,8 @@ axis2_http_status_line_free (axis2_http_status_line_t *status_line,
         AXIS2_FREE((*env)->allocator, status_line_impl->reason_phrase);
         status_line_impl->reason_phrase = NULL;
     }     
-    /*if(NULL != status_line->ops)
-        AXIS2_FREE((*env)->allocator, status_line->ops);*/
+    if(NULL != status_line->ops)
+        AXIS2_FREE((*env)->allocator, status_line->ops);
     
 	AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(status_line));
 	return AXIS2_SUCCESS;

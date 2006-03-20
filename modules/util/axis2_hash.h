@@ -220,7 +220,15 @@ extern "C"
 AXIS2_DECLARE(axis2_status_t) axis2_hash_free(axis2_hash_t *ht
 		, axis2_env_t **environment);
 									
+/**
+ * Free a hash table with hash table given as void
+ * @param ht hash table to be freed as a void *
+ * @param environment The environment to use for hash table
+ * @return return status code
+ */
 
+AXIS2_DECLARE(axis2_status_t)
+axis2_hash_free_void_arg (void *ht_void, axis2_env_t** environment);
 
 /** @} */
 

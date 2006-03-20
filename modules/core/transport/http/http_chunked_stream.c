@@ -177,7 +177,7 @@ axis2_http_chunked_stream_read (axis2_http_chunked_stream_t *chunked_stream,
 			chunked_stream_impl->unread_len -= len;
 		}	
 	}
-    return count - yet_to_read;    
+    return count - yet_to_read;
 }
 
 int AXIS2_CALL

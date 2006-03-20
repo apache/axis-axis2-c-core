@@ -537,3 +537,25 @@ axis2_hash_free (axis2_hash_t *ht, axis2_env_t** environment)
     }
     return AXIS2_FAILURE;
 }
+
+AXIS2_DECLARE(axis2_status_t)
+axis2_hash_free_void_arg (void *ht_void, axis2_env_t** environment)
+{
+    int i =0;
+    axis2_hash_t *ht = (axis2_hash_t*)ht_void;
+    AXIS2_ENV_CHECK(environment, AXIS2_FAILURE);
+    if (ht)
+    {
+        for(i = 0;i <ht->max; i++)
+        {
+            if(ht->array[i])
+            {
+                AXIS2_FREE((*environment)->allocator, ht->array[i]);
+            }
+        }
+        AXIS2_FREE((*environment)->allocator, (ht->array));
+        AXIS2_FREE ((*environment)->allocator, ht);
+        return AXIS2_SUCCESS;
+    }
+    return AXIS2_FAILURE;
+}

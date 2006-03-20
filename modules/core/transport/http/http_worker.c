@@ -252,6 +252,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_hash_free_void_arg);
     headers = axis2_http_worker_get_headers(http_worker, env, simple_request);
     AXIS2_PROPERTY_SET_VALUE(property, env, headers);
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS, property, 
@@ -261,7 +262,8 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
-    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_http_out_transport_info_free_void_arg);
+    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, 
+                        axis2_http_out_transport_info_free_void_arg);
     http_out_transport_info = axis2_http_out_transport_info_create(env, response);
     AXIS2_PROPERTY_SET_VALUE(property, env, http_out_transport_info);
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
