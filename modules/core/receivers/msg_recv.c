@@ -415,8 +415,9 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
         AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
         return AXIS2_FAILURE;
     }        
-    return AXIS2_ENGINE_SEND(engine, env, out_msg_ctx);
-    
+    status = AXIS2_ENGINE_SEND(engine, env, out_msg_ctx);
+    AXIS2_ENGINE_FREE(engine, env);
+    return status;
 }
 
 axis2_status_t AXIS2_CALL
