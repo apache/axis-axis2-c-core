@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include "echo.h"
-#include <axis2_om_element.h>
 #include <stdio.h>
 
 axis2_om_node_t *
@@ -28,8 +27,13 @@ axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)
     axis2_om_node_t *ret_node = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    
-    if (!node)
+   
+    /* Expected request format is :-
+     * <ns1:echoString xmlns:ns1="http://localhost:9090/axis2/services/echo">
+     *      <text>echo5</text>
+     * </ns1:echoString>
+     */
+    if (!node) /* 'echoString' node */
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL, AXIS2_FAILURE);
         printf("Echo client ERROR: input parameter NULL\n");
@@ -37,7 +41,7 @@ axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)
     }
 
     text_parent_node = AXIS2_OM_NODE_GET_FIRST_CHILD(node, env);
-    if (!text_parent_node)
+    if (!text_parent_node) /* 'text' node */
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Echo client ERROR: invalid XML in request\n");
@@ -45,7 +49,7 @@ axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)
     }
     
     text_node = AXIS2_OM_NODE_GET_FIRST_CHILD(text_parent_node, env);
-    if (!text_node)
+    if (!text_node) /* actual text to echo */
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Echo client ERROR: invalid XML in request\n");
@@ -72,6 +76,7 @@ axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)
     return ret_node;
 }
 
+/* Builds the response content */
 axis2_om_node_t *
 build_om_programatically(axis2_env_t **env, axis2_char_t *text)
 {
@@ -81,11 +86,6 @@ build_om_programatically(axis2_env_t **env, axis2_char_t *text)
     axis2_om_element_t * text_om_ele = NULL;
     axis2_om_namespace_t *ns1 = NULL;
     
-    /*
-    axis2_xml_writer_t *xml_writer = NULL;
-    axis2_om_output_t *om_output = NULL;
-    axis2_char_t *buffer = NULL;
-    */
     ns1 = axis2_om_namespace_create (env, "http://localhost:9090/axis2/services/echo", "ns1");
 
     echo_om_ele = axis2_om_element_create(env, NULL, "echoString", ns1, &echo_om_node);
@@ -94,17 +94,6 @@ build_om_programatically(axis2_env_t **env, axis2_char_t *text)
 
     AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, text, text_om_node);
     
-    /*
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
-    om_output = axis2_om_output_create( env, xml_writer);
-    
-    AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
-    buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
-    printf("\nSending OM node in XML : %s \n",  buffer); 
-
-    AXIS2_OM_OUTPUT_FREE(om_output, env);
-    AXIS2_FREE((*env)->allocator, buffer);
-    */
     return echo_om_node;
 }
 

@@ -22,6 +22,7 @@
 #include <axis2_error_default.h>
 #include <axis2_om_text.h>
 #include <axis2_om_node.h>
+#include <axis2_om_element.h>
 
 axis2_om_node_t *axis2_echo_echo(axis2_env_t **env, axis2_om_node_t *node);
 
