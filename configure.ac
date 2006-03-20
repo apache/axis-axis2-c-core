@@ -141,23 +141,6 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
   TESTDIR=""
 )
 
-AC_MSG_CHECKING(whether to build samples)
-AC_ARG_ENABLE(tests, [  --enable-samples    build samples. default=no],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    SAMPLES=""
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    SAMPLES="samples"
-
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-  SAMPLES=""
-)
-
 AC_MSG_CHECKING(whether to enable trace)
 AC_ARG_ENABLE(tests, [  --enable-trace    enable trace. default=no],
 [ case "${enableval}" in
@@ -235,16 +218,6 @@ AC_CONFIG_FILES([Makefile \
     modules/wsdl/Makefile \
     modules/wsdl/builder/Makefile \
     modules/mod_addr/Makefile \
-    samples/Makefile \
-    samples/server/Makefile \
-    samples/server/echo/Makefile \
-    samples/server/math/Makefile \
-    samples/client/Makefile \
-    samples/client/echo/Makefile \
-    samples/client/math/Makefile \
-    samples/client/addr_echo/Makefile \
-    samples/client/echo_non_blocking/Makefile \
-    samples/client/google/Makefile \
     test/Makefile \
     test/xml/Makefile \
     test/xml/om/Makefile \

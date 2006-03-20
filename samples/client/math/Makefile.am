@@ -20,9 +20,5 @@ math_LDADD   =  \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
 
-INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util \
-            -I$(top_builddir)/modules/platforms \
-            -I$(top_builddir)/modules/xml/parser
-
-
+INCLUDES = -I$(AXIS2C_HOME)/include \
+            -I$(AXIS2C_HOME)/platforms
