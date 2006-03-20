@@ -276,7 +276,17 @@ axis2_status_t AXIS2_CALL axis2_msg_info_headers_set_action(struct axis2_msg_inf
                                                axis2_env_t **env, axis2_char_t *action) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(msg_info_headers)->action = action;
+    if(NULL != AXIS2_INTF_TO_IMPL(msg_info_headers)->action)
+    {
+        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(msg_info_headers)->action);
+        AXIS2_INTF_TO_IMPL(msg_info_headers)->action = NULL;
+    }
+    AXIS2_INTF_TO_IMPL(msg_info_headers)->action = AXIS2_STRDUP(action, env);
+    if(NULL == AXIS2_INTF_TO_IMPL(msg_info_headers)->action)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
     return AXIS2_SUCCESS;
 }
 
@@ -401,6 +411,16 @@ axis2_status_t AXIS2_CALL axis2_msg_info_headers_free(struct axis2_msg_info_head
         AXIS2_ARRAY_LIST_FREE(msg_info_headers_impl->ref_params, env);
         msg_info_headers_impl->ref_params = NULL;
     }    
+    if(NULL != AXIS2_INTF_TO_IMPL(msg_info_headers)->action)
+    {
+        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(msg_info_headers)->action);
+        AXIS2_INTF_TO_IMPL(msg_info_headers)->action = NULL;
+    }
+    if (msg_info_headers_impl->message_id)
+    {
+        AXIS2_FREE((*env)->allocator, msg_info_headers_impl->message_id);
+        msg_info_headers_impl->message_id = NULL;
+    }
     
     AXIS2_FREE((*env)->allocator, msg_info_headers_impl);
     msg_info_headers_impl = NULL;
