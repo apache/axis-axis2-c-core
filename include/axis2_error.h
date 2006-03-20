@@ -417,6 +417,8 @@ extern "C"
         AXIS2_ERROR_WSDL_SVC_NAME_IS_REQUIRED,
         /*Content-Type header missing in HTTP response" */
         AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING,
+        /* Wsdl parsing has resulted in an invalid state */
+        AXIS2_ERROR_WSDL_PARSER_INVALID_STATE,
 
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
