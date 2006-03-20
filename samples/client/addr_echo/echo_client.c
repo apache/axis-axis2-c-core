@@ -63,6 +63,7 @@ int main(int argc, char** argv)
     axis2_conf_t *conf = NULL;
     axis2_msg_ctx_t *response_ctx = NULL;
     
+    /* set up the envioronment with allocator and log*/
     allocator = axis2_allocator_init (NULL);
     error = axis2_error_create(allocator);
     log = axis2_log_create(allocator, NULL, "addr_echo.log");
@@ -70,12 +71,20 @@ int main(int argc, char** argv)
     env->log->level = AXIS2_LOG_LEVEL_TRACE;
     axis2_error_init();
 
+    /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
+     * using the axis2.xml file.
+     * In this sample client_home points to the Axis2/C default deploy folder. The client_home can 
+     * be different from this folder on your system. For example, you may have a different folder 
+     *(say, my_client_folder) with its own axis2.xml file. my_client_folder/modules will have the 
+     * modules that the client uses
+     */
     client_home = AXIS2_GETENV("AXIS2C_HOME");
     if (!client_home)
         client_home = "../../deploy";
     
-    address = "http://localhost:9090/axis2/services/echo/echo";
-    wsa_action = "http://127.0.0.1:9090/axis2/services/echo/echoString";
+    /* Set end point reference of echo service */
+    address = "http://localhost:9090/axis2/services/echo";
+    wsa_action = "http://localhost:9090/axis2/services/echo/echoString";
     if (argc > 1 )
         address = argv[1];
     if (AXIS2_STRCMP(address, "-h") == 0)
@@ -87,22 +96,40 @@ int main(int argc, char** argv)
 
     printf ("Using endpoint : %s\n", address);
 
+    /* build the SOAP request message content using OM API.*/
     node = build_om_programatically(&env);
 
-    /* create call without passing svc_ctx_t struct */
+    /* create call struct */
     call = axis2_call_create(&env, NULL, client_home);
     mep_client = AXIS2_CALL_GET_BASE(call, &env);
+
+    /* Prepare the SOAP envelope, using the SOAP message content to be sent.
+     * Get a reference to the message context */
     msg_ctx = AXIS2_MEP_CLIENT_PREPARE_SOAP_ENVELOPE(mep_client, &env, node);
+
+    /* Get the reference to message info headers structure from the message context. 
+       This can be used to manipulate SOAP header content when using WS-Addressing. */
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, &env);
+
+    /* create an axis2_endpoint_ref_t struct with ERP assigned */
     endpoint_ref = axis2_endpoint_ref_create(&env, address);
+
+    /* Set header parameters, required for WS-Addressing. 
+     * Required only if you need to make use of WS-Addressing.
+     */
     AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, &env, endpoint_ref);
     AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, &env, wsa_action); 
+    
     AXIS2_CALL_SET_TO(call, &env, endpoint_ref);
+
+    /* Get the configuration context */
     conf = AXIS2_CONF_CTX_GET_CONF(
                             AXIS2_SVC_CTX_GET_CONF_CTX(
                                 AXIS2_MEP_CLIENT_GET_SVC_CTX(mep_client, &env), 
                                 &env), 
                                 &env);
+
+    /* Get the echo service context if it is already loaded to service context*/
     svc = AXIS2_CONF_GET_SVC(conf, &env, "echo");
     if (svc)
     {
@@ -114,6 +141,10 @@ int main(int argc, char** argv)
     }
     else
     {
+       /* echo service is not in the configuration context. We need to create the 
+        * operation and add it to service context. Then add service context into 
+        * configuration context.
+        */
         axis2_qname_t *op_qname = NULL;
         axis2_qname_t *svc_qname = axis2_qname_create(&env, "echo", NULL, NULL);
         svc = axis2_svc_create_with_qname(&env, svc_qname);
@@ -129,21 +160,27 @@ int main(int argc, char** argv)
         printf("ERROR: operation not present in service\n");
         return -1;
     }
+
+   /* Invoke the operation. Client blocks until the response message comes. 
+    * Response message gets set in the response message context.
+    */
     response_ctx = AXIS2_CALL_INVOKE_BLOCKING(call, &env, op, msg_ctx);
 
     if (response_ctx)
     {
+        /* Get the response SOAP message from response message context */
         axis2_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(response_ctx, &env);
         ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, &env);
     }
                                                         
     if(ret_node)
     {
+        /* Get the response value from the SOAP message */
         axis2_xml_writer_t *writer = NULL;
         axis2_om_output_t *om_output = NULL;
         axis2_char_t *buffer = NULL;
         
-        printf("\necho stub invoke successful!\n");
+        printf("\necho stub invoke SUCCESSFUL!\n");
         writer = axis2_xml_writer_create_for_memory(&env, NULL, AXIS2_TRUE, 0);
         om_output = axis2_om_output_create (&env, writer);
 
@@ -166,6 +203,7 @@ int main(int argc, char** argv)
     return status;
 }
 
+/* build SOAP request message content using OM */
 axis2_om_node_t *
 build_om_programatically(axis2_env_t **env)
 {
