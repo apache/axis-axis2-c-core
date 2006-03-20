@@ -1,7 +1,7 @@
 TESTS =
 lib_LTLIBRARIES = libaxis2_wom.la
 libaxis2_wom_la_SOURCES = \
-                            schema_parser.c
+                            wsdl11_mep_finder.c
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \

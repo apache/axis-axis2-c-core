@@ -1,0 +1,80 @@
+test_print.o: test_print.c ../../../../include/axis2_wsdl4c_parser.h \
+  ../../../../include/axis2_array_list.h \
+  ../../../../include/axis2_defines.h \
+  /usr/lib/gcc/i486-linux-gnu/4.0.2/include/stddef.h \
+  ../../../../include/axis2_env.h ../../../../include/axis2_allocator.h \
+  ../../../../include/axis2_error.h ../../../../include/axis2_log.h \
+  ../../../../include/axis2_thread_pool.h \
+  ../../../../include/axis2_thread.h \
+  ../../../../include/axis2_wsdl4c_operation.h \
+  ../../../../include/axis2_wsdl4c_port_type.h \
+  ../../../../include/axis2_wsdl4c_message.h \
+  ../../../../include/axis2_wsdl4c_part.h /usr/include/stdio.h \
+  /usr/include/features.h /usr/include/sys/cdefs.h \
+  /usr/include/gnu/stubs.h /usr/include/bits/types.h \
+  /usr/include/bits/wordsize.h /usr/include/bits/typesizes.h \
+  /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+  /usr/include/bits/wchar.h /usr/include/gconv.h \
+  /usr/lib/gcc/i486-linux-gnu/4.0.2/include/stdarg.h \
+  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+  /usr/include/bits/stdio.h
+
+../../../../include/axis2_wsdl4c_parser.h:
+
+../../../../include/axis2_array_list.h:
+
+../../../../include/axis2_defines.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.0.2/include/stddef.h:
+
+../../../../include/axis2_env.h:
+
+../../../../include/axis2_allocator.h:
+
+../../../../include/axis2_error.h:
+
+../../../../include/axis2_log.h:
+
+../../../../include/axis2_thread_pool.h:
+
+../../../../include/axis2_thread.h:
+
+../../../../include/axis2_wsdl4c_operation.h:
+
+../../../../include/axis2_wsdl4c_port_type.h:
+
+../../../../include/axis2_wsdl4c_message.h:
+
+../../../../include/axis2_wsdl4c_part.h:
+
+/usr/include/stdio.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/usr/include/bits/wchar.h:
+
+/usr/include/gconv.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.0.2/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/bits/stdio.h:

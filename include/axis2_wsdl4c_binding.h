@@ -157,6 +157,51 @@ extern "C"
                                     int index, 
                                     int fBn); 
     
+    /**
+    * get_name
+    * @return name of the Wsdl Element
+    */
+    const char *
+    axis2_wsdl4c_binding_get_name(void *binding);
+
+    /**
+    * get_documentation
+    *   
+    */
+    const char *
+    axis2_wsdl4c_binding_get_documentation(void *binding);  
+
+    /**
+    *@name get_extensibility_elements/get_extensibility_attributes
+    *@brief return the extensibility elements/attributes belonging 
+    *       to a given namespace
+    *@params namspace uri
+    *@params reference to a vector<int>
+    *@return true if any extensibility elements were found
+    */
+    int *
+    axis2_wsdl4c_binding_get_extensibility_elements(void *binding,
+                                                    char *namespc);
+
+    int *
+    axis2_wsdl4c_binding_get_extensibility_attributes(void *binding,
+                                                        char *namespc);
+
+    void
+    axis2_wsdl4c_binding_set_name(void *binding,
+                                    char *name);
+  
+    void
+    axis2_wsdl4c_binding_add_ext_element(void *binding,
+                                    int ident);
+ 
+    void
+    axis2_wsdl4c_binding_add_ext_attribute(void *binding,
+                                            int ident);
+
+    void
+    axis2_wsdl4c_binding_set_documentation(void *binding, 
+                                            char *doc);
 
 /** @} */
 

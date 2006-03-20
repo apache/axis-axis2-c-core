@@ -64,6 +64,51 @@ extern "C"
     axis2_wsdl4c_service_get_ports(void *service,
                                             char *name);
 
+    /**
+    * get_name
+    * @return name of the Wsdl Element
+    */
+    const char *
+    axis2_wsdl4c_service_get_name(void *service);
+
+    /**
+    * get_documentation
+    *   
+    */
+    const char *
+    axis2_wsdl4c_service_get_documentation(void *service);  
+
+    /**
+    *@name get_extensibility_elements/get_extensibility_attributes
+    *@brief return the extensibility elements/attributes belonging 
+    *       to a given namespace
+    *@params namspace uri
+    *@params reference to a vector<int>
+    *@return true if any extensibility elements were found
+    */
+    int *
+    axis2_wsdl4c_service_get_extensibility_elements(void *service,
+                                                    char *namespc);
+
+    int *
+    axis2_wsdl4c_service_get_extensibility_attributes(void *service,
+                                                        char *namespc);
+
+    void
+    axis2_wsdl4c_service_set_name(void *service,
+                                    char *name);
+  
+    void
+    axis2_wsdl4c_service_add_ext_element(void *service,
+                                    int ident);
+ 
+    void
+    axis2_wsdl4c_service_add_ext_attribute(void *service,
+                                            int ident);
+
+    void
+    axis2_wsdl4c_service_set_documentation(void *service, 
+                                            char *doc);
 
 /** @} */
 

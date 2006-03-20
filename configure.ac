@@ -249,6 +249,9 @@ AC_CONFIG_FILES([Makefile \
     test/xml/Makefile \
     test/xml/om/Makefile \
     test/xml/soap/Makefile \
+    test/wsdl/Makefile \
+    test/wsdl/builder/Makefile \
+    test/wsdl/builder/print/Makefile \
     test/core/Makefile \
     test/core/description/Makefile \
     test/core/deployment/Makefile \

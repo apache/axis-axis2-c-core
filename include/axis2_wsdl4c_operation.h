@@ -37,24 +37,24 @@ extern "C"
  * @{
  */
 
-    enum optype
+    enum axis2_wsdl4c_optype
     {
-        OP_NONE,
-        OP_IN ,
-        OP_OUT,
-        OP_IN_OUT,
-        OP_OUT_IN
+        AXIS2_WSDL4C_OP_NONE ,
+        AXIS2_WSDL4C_OP_IN ,
+        AXIS2_WSDL4C_OP_OUT ,
+        AXIS2_WSDL4C_OP_IN_OUT ,
+        AXIS2_WSDL4C_OP_OUT_IN
     };
 
-    enum msg_type
+    enum axis2_wsdl4c_msg_type
     {
-        Input,
-        Output,
-        Fault
+        AXIS2_WSDL4C_INPUT,
+        AXIS2_WSDL4C_OUTPUT,
+        AXIS2_WSDL4C_FAULT
     };
 
-    typedef enum optype axis2_wsdl4c_optype_t;
-    typedef enum msg_type axis2_wsdl4c_msg_type_t;
+    typedef enum axis2_wsdl4c_optype axis2_wsdl4c_optype_t;
+    typedef enum axis2_wsdl4c_msg_type axis2_wsdl4c_msg_type_t;
 
     void *
     axis2_wsdl4c_operation_create(void* parser, 
@@ -93,6 +93,52 @@ extern "C"
     axis2_wsdl4c_operation_set_message(void *operation, 
                                         void *message, 
                                         axis2_wsdl4c_msg_type_t type);
+
+    /**
+    * get_name
+    * @return name of the Wsdl Element
+    */
+    const char *
+    axis2_wsdl4c_operation_get_name(void *operation);
+
+    /**
+    * get_documentation
+    *   
+    */
+    const char *
+    axis2_wsdl4c_operation_get_documentation(void *operation);  
+
+    /**
+    *@name get_extensibility_elements/get_extensibility_attributes
+    *@brief return the extensibility elements/attributes belonging 
+    *       to a given namespace
+    *@params namspace uri
+    *@params reference to a vector<int>
+    *@return true if any extensibility elements were found
+    */
+    int *
+    axis2_wsdl4c_operation_get_extensibility_elements(void *operation,
+                                                    char *namespc);
+
+    int *
+    axis2_wsdl4c_operation_get_extensibility_attributes(void *operation,
+                                                        char *namespc);
+
+    void
+    axis2_wsdl4c_operation_set_name(void *operation,
+                                    char *name);
+  
+    void
+    axis2_wsdl4c_operation_add_ext_element(void *operation,
+                                    int ident);
+ 
+    void
+    axis2_wsdl4c_operation_add_ext_attribute(void *operation,
+                                            int ident);
+
+    void
+    axis2_wsdl4c_operation_set_documentation(void *operation, 
+                                            char *doc);
 
 /** @} */
 

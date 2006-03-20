@@ -1,0 +1,119 @@
+/* 
+ * This example simply prints out most of the WSDL elements encountered
+ * demonstrates the WSDL pull API
+ */
+#include <axis2_wsdl4c_parser.h>
+#include <axis2_wsdl4c_operation.h>
+#include <axis2_wsdl4c_port_type.h>
+#include <axis2_wsdl4c_message.h>
+#include <axis2_array_list.h>
+#include <axis2_env.h>
+#include <axis2_allocator.h>
+#include <stdio.h>
+
+extern const void *
+    axis2_wsdl4c_parser_get_port_type(void *parser);
+
+extern int
+    axis2_wsdl4c_port_type_get_num_ops(void *port_type);
+
+extern axis2_array_list_t *
+    axis2_wsdl4c_port_type_get_operations(void *port_type);
+
+extern const void *
+    axis2_wsdl4c_operation_get_message(void *operation, 
+                                        axis2_wsdl4c_msg_type_t type );
+
+extern axis2_array_list_t *
+    axis2_wsdl4c_operation_get_faults(void *operation);
+
+extern const char *
+    axis2_wsdl4c_port_type_get_name(void *operation);
+
+extern const char *
+    axis2_wsdl4c_operation_get_name(void *operation);
+
+extern const char *
+    axis2_wsdl4c_msg_get_name(void *message);
+
+int 
+main (int argc, char *argv[]) 
+{
+    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+    axis2_env_t *env = axis2_env_create(allocator);
+    if (argc <= 1)
+    {
+      printf("Usage: print <wsdl_File_Name>\n");
+      return 1;
+    }
+    void *wp = axis2_wsdl4c_parser_create(argv[1], ""); 
+    while (axis2_wsdl4c_parser_get_event_type(wp) != AXIS2_WSDL4C_PARSER_END)
+    {
+	    switch (axis2_wsdl4c_parser_get_next_element(wp))
+	    {
+            axis2_array_list_t *msg_list = NULL;
+            void * port_type = NULL;
+            int i = 0;
+            int size = 0;
+            void *message = NULL;
+
+	        case AXIS2_WSDL4C_PARSER_DOCUMENTATION:
+                printf("%s\n", axis2_wsdl4c_parser_get_documentation(wp));
+	            break;
+	            case AXIS2_WSDL4C_PARSER_TYPES:
+                printf("%d schema(s) found \n", axis2_wsdl4c_parser_get_num_schemas(wp));
+	            break;
+	        case AXIS2_WSDL4C_PARSER_MESSAGE:
+                message = axis2_wsdl4c_parser_get_message(wp);
+	            printf("Message  :%s\n", axis2_wsdl4c_msg_get_name(message));
+	            break;
+	        case AXIS2_WSDL4C_PARSER_PORT_TYPE:
+                port_type = axis2_wsdl4c_parser_get_port_type(wp);
+                printf("Port Type %s ", axis2_wsdl4c_port_type_get_name(port_type));
+                printf("has :%d operations \n", axis2_wsdl4c_port_type_get_num_ops(port_type));
+                msg_list = axis2_wsdl4c_port_type_get_operations (port_type);
+                size = AXIS2_ARRAY_LIST_SIZE(msg_list, &env);
+                printf("size:%d\n", size);
+                for (i = 0; i < size; i++)
+                {
+                    const char *op_name = NULL;
+                    const char *in_msg_name = NULL;
+                    const char *out_msg_name = NULL;
+                    axis2_array_list_t *fault_list = NULL;
+
+                    void *op = AXIS2_ARRAY_LIST_GET(msg_list, &env, i);
+                    void *in_msg = axis2_wsdl4c_operation_get_message(op, AXIS2_WSDL4C_INPUT);
+                    void *out_msg = axis2_wsdl4c_operation_get_message(op, AXIS2_WSDL4C_OUTPUT);
+                    fault_list = axis2_wsdl4c_operation_get_faults(op);
+                    
+                    op_name = axis2_wsdl4c_operation_get_name(op);
+                    in_msg_name = axis2_wsdl4c_msg_get_name(in_msg);
+                    out_msg_name = axis2_wsdl4c_msg_get_name(out_msg);
+                    printf("Operation Name:%s\n", op_name);
+                    printf("Input:%s\n", in_msg_name); 
+                    printf("Output:%s\n", out_msg_name);
+                    if(fault_list)
+                    {
+                        int j = 0, sizej = 0;
+                        
+                        sizej = AXIS2_ARRAY_LIST_SIZE(fault_list, &env);
+                        printf("sizej:%d\n", sizej);
+                        for (j = 0; j < sizej; j++)
+                        {
+                            char *fault_msg_name = NULL;
+
+                            void *fault_msg = AXIS2_ARRAY_LIST_GET(fault_list, &env, j);
+                            /*fault_msg_name = axis2_wsdl4c_message_get_name(fault_msg);
+                            printf("Fault message name:%s\n", fault_msg_name);*/
+                        }     
+                    } 
+                }
+                break;
+        }
+    }
+    if (!axis2_wsdl4c_parser_status(wp))
+        return 1;
+    return 0;
+}
+
+

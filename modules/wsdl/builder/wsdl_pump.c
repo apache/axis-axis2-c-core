@@ -85,38 +85,105 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
 
-public class WSDLPump {
 
-    private static final String XMLSCHEMA_NAMESPACE_URI = Constants.URI_2001_SCHEMA_XSD;
-    private static final String XMLSCHEMA_NAMESPACE_PREFIX = "xs";
-    private static final String XML_SCHEMA_LOCAL_NAME = "schema";
-    private static final String XML_SCHEMA_SEQUENCE_LOCAL_NAME = "sequence";
-    private static final String XML_SCHEMA_COMPLEX_TYPE_LOCAL_NAME = "complexType";
-    private static final String XML_SCHEMA_ELEMENT_LOCAL_NAME = "element";
-    private static final String XML_SCHEMA_IMPORT_LOCAL_NAME = "import";
+#define XMLSCHEMA_NAMESPACE_URI Constants.URI_2001_SCHEMA_XSD
+#define XMLSCHEMA_NAMESPACE_PREFIX "xs"
+#define XML_SCHEMA_LOCAL_NAME "schema"
+#define XML_SCHEMA_SEQUENCE_LOCAL_NAME "sequence"
+#define XML_SCHEMA_COMPLEX_TYPE_LOCAL_NAME "complexType"
+#define XML_SCHEMA_ELEMENT_LOCAL_NAME "element"
+#define XML_SCHEMA_IMPORT_LOCAL_NAME "import"
 
-    private static final String XSD_NAME = "name";
-    private static final String XSD_TARGETNAMESPACE = "targetNamespace";
-    private static final String XMLNS_AXIS2WRAPPED = "xmlns:axis2wrapped";
-    private static final String AXIS2WRAPPED = "axis2wrapped";
-    private static final String XSD_TYPE = "type";
-    private static final String XSD_REF = "ref";
-    private static final String BOUND_INTERFACE_NAME = "BoundInterface";
+#define XSD_NAME "name"
+#define XSD_TARGETNAMESPACE "targetNamespace"
+#define XMLNS_AXIS2WRAPPED "xmlns:axis2wrapped"
+#define AXIS2WRAPPED "axis2wrapped"
+#define XSD_TYPE "type"
+#define XSD_REF "ref"
+#define BOUND_INTERFACE_NAME "BoundInterface"
+#define XSD_ELEMENT_FORM_DEFAULT "elementFormDefault"
+#define XSD_UNQUALIFIED "unqualified"
 
+/** 
+ * @brief Wsdl pump struct impl
+ *	Wsdl Pump  
+ */ 
+typedef struct axis2_wsdl_pump_impl
+{
+	axis2_wsdl_pump_t wsdl_pump;
+    int nsCount=0;
+    axis2_wsdl_desc_t *wom_def;
+    Definition wsdl4c_parsed_def;
+    axis2_hash_t * declared_nameSpaces;
+    axis2_hash_t *resolved_rpc_wrapped_element_map;
 
-    private static int nsCount=0;
+} axis2_wsdl_pump_impl_t;
 
-    private WSDLDescription womDefinition;
+#define AXIS2_INTF_TO_IMPL(wsdl_pump) \
+		((axis2_wsdl_pump_impl_t *)wsdl_pump)
 
-    private Definition wsdl4jParsedDefinition;
+/************************* Function prototypes ********************************/
 
-    private WSDLComponentFactory wsdlComponentFactory;
+axis2_status_t AXIS2_CALL
+	axis2_wsdl_pump_free (axis2_wsdl_pump_t *wsdl_pump,
+									axis2_env_t **env);
 
-    private Map declaredNameSpaces=null;
+                                
+/************************** End of function prototypes ************************/
 
-    private Map resolvedRpcWrappedElementMap = new HashMap();
-    private static final String XSD_ELEMENT_FORM_DEFAULT = "elementFormDefault";
-    private static final String XSD_UNQUALIFIED = "unqualified";
+axis2_wsdl_pump_t * AXIS2_CALL 
+axis2_wsdl_pump_create (axis2_env_t **env)
+{
+    axis2_wsdl_pump_impl_t *wsdl_pump_impl = NULL;
+    
+	AXIS2_ENV_CHECK(env, NULL);
+	
+	wsdl_pump_impl = (axis2_wsdl_pump_impl_t *) AXIS2_MALLOC((*env)->allocator,
+			sizeof(axis2_wsdl_pump_impl_t));
+
+	if(NULL == wsdl_pump_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        return NULL;
+    }
+    
+    wsdl_pump_impl->wsdl_pump.ops = NULL;
+	
+	wsdl_pump_impl->wsdl_pump.ops = 
+		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_pump_ops_t));
+	if(NULL == wsdl_pump_impl->wsdl_pump.ops)
+    {
+        axis2_wsdl_pump_free(&(wsdl_pump_impl->wsdl_pump), env);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
+	wsdl_pump_impl->wsdl_pump.ops->free =  axis2_wsdl_pump_free;
+	
+	return &(wsdl_pump_impl->wsdl_pump);
+}
+
+/***************************Function implementation****************************/
+
+axis2_status_t AXIS2_CALL 
+axis2_wsdl_pump_free (axis2_wsdl_pump_t *wsdl_pump, 
+                            axis2_env_t **env)
+{
+    axis2_wsdl_pump_impl_t *pump_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
+    
+	if(NULL != wsdl_pump->ops)
+        AXIS2_FREE((*env)->allocator, wsdl_pump->ops);
+    
+    AXIS2_FREE((*env)->allocator, pump_impl);
+    pump_impl = NULL;
+    
+	return AXIS2_SUCCESS;
+}
+
 
     public WSDLPump(WSDLDescription womDefinition,
                     Definition wsdl4jParsedDefinition) {
@@ -291,7 +358,7 @@ public class WSDLPump {
      * @param wsdlInterface
      * @param wsdl4jPortType
      */
-    // FIXME Evaluate a way of injecting features and priperties with a general
+    // FIXME Evaluate a way of injecting pumps and priperties with a general
     // formatted input
     private void populateInterfaces(WSDLInterface wsdlInterface,
                                     PortType wsdl4jPortType,
@@ -1360,4 +1427,3 @@ public class WSDLPump {
     private String getTemporaryNamespacePrefix(){
         return "ns"+nsCount++ ;
     }
-}

@@ -140,6 +140,52 @@ extern "C"
                                 void *d, 
                                 int schema_id);
 
+    /**
+    * get_name
+    * @return name of the Wsdl Element
+    */
+    const char *
+    axis2_wsdl4c_msg_get_name(void *message);
+
+    /**
+    * get_documentation
+    *   
+    */
+    const char *
+    axis2_wsdl4c_msg_get_documentation(void *message);  
+
+    /**
+    *@name get_extensibility_elements/get_extensibility_attributes
+    *@brief return the extensibility elements/attributes belonging 
+    *       to a given namespace
+    *@params namspace uri
+    *@params reference to a vector<int>
+    *@return true if any extensibility elements were found
+    */
+    int *
+    axis2_wsdl4c_msg_get_extensibility_elements(void *message,
+                                                    char *namespc);
+
+    int *
+    axis2_wsdl4c_msg_get_extensibility_attributes(void *message,
+                                                        char *namespc);
+
+    void
+    axis2_wsdl4c_msg_set_name(void *message,
+                                    char *name);
+  
+    void
+    axis2_wsdl4c_msg_add_ext_element(void *message,
+                                    int ident);
+ 
+    void
+    axis2_wsdl4c_msg_add_ext_attribute(void *message,
+                                            int ident);
+
+    void
+    axis2_wsdl4c_msg_set_documentation(void *message, 
+                                            char *doc);
+
 
 /** @} */
 

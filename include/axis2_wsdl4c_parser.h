@@ -36,6 +36,33 @@ extern "C"
  * @{
  */
 
+    /**
+    *The various states of the Wsdl Parser
+    */
+    enum
+    {
+        AXIS2_WSDL4C_PARSER_NONE ,
+        AXIS2_WSDL4C_PARSER_START,
+        AXIS2_WSDL4C_PARSER_DEFINITION,
+        AXIS2_WSDL4C_PARSER_DOCUMENTATION,
+        AXIS2_WSDL4C_PARSER_ANNOTATION,
+        AXIS2_WSDL4C_PARSER_IMPORT,
+        AXIS2_WSDL4C_PARSER_SCHEMA,
+        AXIS2_WSDL4C_PARSER_TYPES,
+        AXIS2_WSDL4C_PARSER_MESSAGE,
+        AXIS2_WSDL4C_PARSER_PART,
+        AXIS2_WSDL4C_PARSER_PORT_TYPE,
+        AXIS2_WSDL4C_PARSER_OPERATION,
+        AXIS2_WSDL4C_PARSER_INPUT,
+        AXIS2_WSDL4C_PARSER_OUTPUT,
+        AXIS2_WSDL4C_PARSER_FAULT,
+        AXIS2_WSDL4C_PARSER_BINDING,
+        AXIS2_WSDL4C_PARSER_EXTENSIBILITY,
+        AXIS2_WSDL4C_PARSER_SERVICE,
+        AXIS2_WSDL4C_PARSER_PORT,
+        AXIS2_WSDL4C_PARSER_END
+    };
+
    /**
    * The default constructor for WsdlParser
    * @param input stream for the wsdl file
@@ -44,7 +71,7 @@ extern "C"
    *
    */
     void *
-    axis2_wsdl4c_parser_create(char* wsdl_file);
+    axis2_wsdl4c_parser_create(char* wsdl_file, char *schema_path);
 
     void
     axis2_wsdl4c_parser_destroy(void *parser);
@@ -92,7 +119,7 @@ extern "C"
     *                  This method must be called after <code>getEventType</code> returns DOCUMENT
     * @return documentation std::string .
     */
-    const void *
+    const char *
     axis2_wsdl4c_parser_get_documentation(void *parser);
 
     /**
@@ -212,7 +239,7 @@ extern "C"
     /**
     * to query the status of wsdl parsing
     */
-    bool
+    axis2_bool_t
     axis2_wsdl4c_parser_status(void *parser);
 
     const char *

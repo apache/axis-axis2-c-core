@@ -13,22 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <axis2_wsdl4c_operation.h>
+#include <axis2_wsdl.h>
 
 axis2_char_t *AXIS2_CALL
-axis2_wom_builder_wsdl11_mep_finder_get_mep(wsdlOperation operation) 
+axis2_wom_builder_wsdl11_mep_finder_get_mep(void *op,
+                                            axis2_env_t **env) 
 {
-    wsdlOperationType operation_type = operation.type;
-    if(operation_type == AXIS2_REQUEST_RESPONSE_OPERATION)
+    axis2_wsdl4c_optype_t op_type = axis2_wsdl4c_operation_get_type(op);
+
+    if(op_type ==  AXIS2_WSDL4C_OP_IN_OUT)
     {
         return AXIS2_MEP_URI_IN_OUT;
     }
-    if (operation_type ==  AXIS2_ONE_WAY_OPERATION)
+    if (op_type ==  AXIS2_WSDL4C_OP_IN)
         return AXIS2_MEP_URI_IN_ONLY;
 
-    if (operationType == AXIS2_NOTIFICATION_OPERATION)
+    if (op_type == AXIS2_WSDL4C_OP_OUT)
         return AXIS2_MEP_URI_OUT_ONLY;
 
-    if (operationType == AXIS2_SOLICIT_RESPONSE_OPERATION)
+    if (op_type == AXIS2_WSDL4C_OP_OUT_IN)
         return AXIS2_MEP_URI_OUT_IN;
 
     AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MEP_CANNOT_DETERMINE_MEP,

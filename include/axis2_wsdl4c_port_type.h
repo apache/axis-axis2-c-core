@@ -92,6 +92,51 @@ extern "C"
     axis2_wsdl4c_port_type_set_binding(void *port_type, 
                                 void *bn);
 
+    /**
+    * get_name
+    * @return name of the Wsdl Element
+    */
+    const char *
+    axis2_wsdl4c_port_type_get_name(void *port_type);
+
+    /**
+    * get_documentation
+    *   
+    */
+    const char *
+    axis2_wsdl4c_port_type_get_documentation(void *port_type);  
+
+    /**
+    *@name get_extensibility_elements/get_extensibility_attributes
+    *@brief return the extensibility elements/attributes belonging 
+    *       to a given namespace
+    *@params namspace uri
+    *@params reference to a vector<int>
+    *@return true if any extensibility elements were found
+    */
+    int *
+    axis2_wsdl4c_port_type_get_extensibility_elements(void *port_type,
+                                                    char *namespc);
+
+    int *
+    axis2_wsdl4c_port_type_get_extensibility_attributes(void *port_type,
+                                                        char *namespc);
+
+    void
+    axis2_wsdl4c_port_type_set_name(void *port_type,
+                                    char *name);
+  
+    void
+    axis2_wsdl4c_port_type_add_ext_element(void *port_type,
+                                    int ident);
+ 
+    void
+    axis2_wsdl4c_port_type_add_ext_attribute(void *port_type,
+                                            int ident);
+
+    void
+    axis2_wsdl4c_port_type_set_documentation(void *port_type, 
+                                            char *doc);
 
 /** @} */
 
