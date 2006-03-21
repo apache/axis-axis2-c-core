@@ -38,4 +38,4 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/platforms
 
-EXTRA_DIST= axis2_file.h axis2_hash.h axis2_file_diff.h axis2_utils.h
+EXTRA_DIST= axis2_file.h axis2_hash.h axis2_file_diff.h axis2_utils.h axis2_types.h
