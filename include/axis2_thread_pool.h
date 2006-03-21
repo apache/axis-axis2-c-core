@@ -119,7 +119,7 @@ AXIS2_DECLARE(axis2_thread_pool_t *) axis2_thread_pool_init(
 		((thread_pool)->ops->thread_detach(thread_pool, thd))
 
 #define AXIS2_THREAD_POOL_FREE(thread_pool) \
-		((thread_pool)->free(thread_pool))
+		((thread_pool)->ops->free(thread_pool))
 
 /** @} */
     

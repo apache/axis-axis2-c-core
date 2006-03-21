@@ -27,7 +27,10 @@ AXIS2_DECLARE(axis2_status_t)  axis2_env_free (axis2_env_t *env)
 	
 	if(NULL != env && NULL != env->error)
         AXIS2_ERROR_FREE(env->error);
-    
+
+    if(NULL != env && NULL != env->thread_pool)
+        AXIS2_THREAD_POOL_FREE(env->thread_pool);
+
     if(NULL != env)
         free (env);
 	

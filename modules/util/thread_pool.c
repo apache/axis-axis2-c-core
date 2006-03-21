@@ -84,7 +84,7 @@ axis2_thread_pool_init(axis2_allocator_t *allocator)
 axis2_status_t AXIS2_CALL
 axis2_thread_pool_free (axis2_thread_pool_t *pool)
 {
-    axis2_thread_pool_impl_t *pool_impl = NULL;
+    axis2_thread_pool_impl_t *pool_impl = AXIS2_INTF_TO_IMPL(pool);
 	if(NULL == pool)
 	{
 		return AXIS2_FAILURE;
