@@ -106,6 +106,12 @@ int main(int argc, char** argv)
     /* Prepare the SOAP envelope, using the SOAP message content to be sent.
      * Get a reference to the message context */
     msg_ctx = AXIS2_MEP_CLIENT_PREPARE_SOAP_ENVELOPE(mep_client, &env, node);
+    if (!msg_ctx)
+    {
+        printf("ERROR: Could not prepare message context. ");
+        printf("May be you havent set the repository corretly.\n");
+        return -1;
+    }
 
     /* Get the reference to message info headers structure from the message context. 
        This can be used to manipulate SOAP header content when using WS-Addressing. */

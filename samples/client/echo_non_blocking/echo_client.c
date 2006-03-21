@@ -95,6 +95,13 @@ int main(int argc, char** argv)
     call = axis2_call_create(&env, NULL, client_home);
     mep_client = AXIS2_CALL_GET_BASE(call, &env);
     msg_ctx = AXIS2_MEP_CLIENT_PREPARE_SOAP_ENVELOPE(mep_client, &env, node);
+    if (!msg_ctx)
+    {
+        printf("ERROR: Could not prepare message context. ");
+        printf("May be you havent set the repository corretly.\n");
+        return -1;
+    }
+    
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, &env);
     endpoint_ref = axis2_endpoint_ref_create(&env, address);
     AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, &env, endpoint_ref);
