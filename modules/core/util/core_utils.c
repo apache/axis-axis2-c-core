@@ -63,10 +63,14 @@ axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
     {
         return NULL;
     }
-    msg_info_headers = axis2_msg_info_headers_create(env, NULL, NULL);
+    msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(new_msg_ctx, env);
     if(!msg_info_headers)
     {
-        return NULL;
+        /* if there is no msg info header in ew msg ctx, then create one */
+        msg_info_headers = axis2_msg_info_headers_create(env, NULL, NULL);
+        if (!msg_info_headers)
+            return NULL;
+        AXIS2_MSG_CTX_SET_MSG_INFO_HEADERS(new_msg_ctx, env, msg_info_headers);
     }
     AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, axis2_uuid_gen(env));
     reply_to = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(old_msg_info_headers, env);
@@ -85,7 +89,6 @@ axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
     
     action = AXIS2_MSG_INFO_HEADERS_GET_ACTION(old_msg_info_headers, env);
     AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, env, action);
-    AXIS2_MSG_CTX_SET_MSG_INFO_HEADERS(new_msg_ctx, env, msg_info_headers);
     
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(in_msg_ctx, env);
     AXIS2_MSG_CTX_SET_OP_CTX(new_msg_ctx, env, op_ctx);
