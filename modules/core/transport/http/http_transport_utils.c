@@ -135,7 +135,7 @@ axis2_http_transport_utils_process_http_post_request
 	callback_ctx.unread_len = content_length;
 	callback_ctx.chunked_stream = NULL;
 	
-	if(NULL != soap_action_header)	
+	if(NULL != soap_action_header && (strlen(soap_action_header) > 0) )	
 	{
 		/* remove leading and trailing " s */
 		if('"' == soap_action_header[0])
