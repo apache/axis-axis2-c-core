@@ -204,8 +204,14 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_
     AXIS2_ENV_CHECK(env, NULL);
     
     mep_client_impl = AXIS2_INTF_TO_IMPL(mep_client);
-    
-    msg_ctx = axis2_msg_ctx_create(env, AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env), NULL, NULL);
+   
+    if (mep_client_impl->svc_ctx)
+    {
+        msg_ctx = axis2_msg_ctx_create(env, 
+                    AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env), 
+                    NULL, NULL);
+    }
+
     if (!msg_ctx)
     {
         return NULL;
