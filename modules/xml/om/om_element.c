@@ -1057,7 +1057,7 @@ axis2_om_element_get_children_with_qname(axis2_om_element_t *om_element,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
     om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
-    if(om_ele_impl->children_iter)
+    if(om_ele_impl->children_qname_iter)
     {
         return om_ele_impl->children_qname_iter;
     }
