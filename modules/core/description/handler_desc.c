@@ -297,7 +297,7 @@ axis2_status_t AXIS2_CALL axis2_handler_desc_set_handler(struct axis2_handler_de
     
     handler_desc_impl = AXIS2_INTF_TO_IMPL(handler_desc);
     
-    if (handler_desc_impl->handler)
+    if (handler_desc_impl->handler && (handler_desc_impl->handler != handler))
     {
         AXIS2_HANDLER_FREE(handler_desc_impl->handler, env);
         handler_desc_impl->handler = NULL;

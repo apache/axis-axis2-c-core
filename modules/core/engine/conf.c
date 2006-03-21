@@ -55,6 +55,7 @@ struct axis2_conf_impl
     axis2_hash_t *faulty_modules;
     axis2_char_t *axis2_repos;
     axis2_dep_engine_t *dep_engine;
+    axis2_array_list_t *handlers;
 };
 
 #define AXIS2_INTF_TO_IMPL(conf) ((axis2_conf_impl_t *)conf)
@@ -437,7 +438,15 @@ axis2_conf_create (axis2_env_t **env)
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}*/
-	
+    
+    config_impl->handlers = axis2_array_list_create(env, 0);		
+	if(NULL == config_impl->handlers)
+	{
+        axis2_conf_free(&(config_impl->conf), env);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+	}
+    
     config_impl->all_svcs = axis2_hash_make(env);
     if(NULL == config_impl->all_svcs)
     {
@@ -820,6 +829,24 @@ axis2_conf_free (axis2_conf_t *conf,
     {
         AXIS2_DEP_ENGINE_FREE(config_impl->dep_engine, env);
         config_impl->dep_engine= NULL;
+    }
+    
+    if(config_impl->handlers)
+    {
+        int i = 0;
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->handlers, env); i++)
+        {
+            axis2_handler_desc_t *handler_desc = NULL;
+            handler_desc = (axis2_handler_desc_t *) 
+                AXIS2_ARRAY_LIST_GET(config_impl->handlers, env, i);
+            if (handler_desc)
+               AXIS2_HANDLER_FREE (handler_desc, env);
+            
+            handler_desc = NULL;
+               
+        }
+        AXIS2_ARRAY_LIST_FREE(config_impl->handlers, env);
+        config_impl->handlers = NULL;
     }
     
     if(config_impl->axis2_repos)
@@ -1634,9 +1661,11 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
         AXIS2_PHASE_FREE(dispatch, env);
         return AXIS2_FAILURE;
     }
+
     handler = AXIS2_DISP_GET_BASE(add_dispatch, env);
     AXIS2_DISP_FREE(add_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 0, handler);
+    AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
     
     uri_dispatch = axis2_req_uri_disp_create(env);
@@ -1644,9 +1673,11 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     {
         return AXIS2_FAILURE;
     }
+
     handler = AXIS2_DISP_GET_BASE(uri_dispatch, env);
     AXIS2_DISP_FREE(uri_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 1, handler);
+    AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
     
     soap_action_based_dispatch = axis2_soap_action_disp_create(env);
@@ -1654,9 +1685,11 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     {
         return AXIS2_FAILURE;
     }
+
     handler = AXIS2_DISP_GET_BASE(soap_action_based_dispatch, env);
     AXIS2_DISP_FREE(soap_action_based_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 2, handler);
+    AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
     
     soap_msg_body_based_dispatch = axis2_soap_body_disp_create(env);
@@ -1664,9 +1697,11 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     {
         return AXIS2_FAILURE;
     }
+    
     handler = AXIS2_DISP_GET_BASE(soap_msg_body_based_dispatch, env);
     AXIS2_DISP_FREE(soap_msg_body_based_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 3, handler);
+    AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
     
     status = AXIS2_ARRAY_LIST_ADD(config_impl->
@@ -1688,10 +1723,12 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
     AXIS2_DISP_CHECKER_FREE(disp_checker, env);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
+    AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
 
     handler = axis2_ctx_handler_create(env, NULL);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 1, handler);
+    AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     
     status = AXIS2_ARRAY_LIST_ADD(config_impl->
             in_phases_upto_and_including_post_dispatch, env, post_dispatch);

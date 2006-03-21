@@ -148,6 +148,7 @@ axis2_status_t AXIS2_CALL axis2_handler_init (struct axis2_handler * handler,
 {    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(handler)->handler_desc = handler_desc;
+    AXIS2_HANDLER_DESC_SET_HANDLER(handler_desc, env, handler);
     
     return AXIS2_SUCCESS;    
 }
