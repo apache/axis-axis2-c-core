@@ -1057,18 +1057,15 @@ axis2_om_element_get_children_with_qname(axis2_om_element_t *om_element,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
     om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
-    if(om_ele_impl->children_qname_iter)
+    if(NULL != om_ele_impl->children_qname_iter)
     {
-        return om_ele_impl->children_qname_iter;
+        AXIS2_OM_CHILDREN_QNAME_ITERATOR_FREE(om_ele_impl->children_qname_iter, env);
+        om_ele_impl->children_qname_iter = NULL;
     }
-    else
-    {
-       om_ele_impl->children_qname_iter =  axis2_om_children_qname_iterator_create(env,
+    om_ele_impl->children_qname_iter =  axis2_om_children_qname_iterator_create(env,
                 AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env),
                 element_qname);
-        return om_ele_impl->children_qname_iter;                
-    }
-    return NULL;
+    return om_ele_impl->children_qname_iter;                
 }
 
 axis2_om_element_t* AXIS2_CALL
