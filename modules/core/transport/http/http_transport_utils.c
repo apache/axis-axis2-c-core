@@ -200,7 +200,6 @@ axis2_http_transport_utils_process_http_post_request
 						axis2_http_transport_utils_on_data_request,NULL, 
 						(void *)&callback_ctx, char_set);
 
-    AXIS2_FREE((*env)->allocator, char_set); 
 	if(NULL == xml_reader)
 	{
 		return AXIS2_FAILURE;
