@@ -419,7 +419,8 @@ extern "C"
         AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING,
         /* Wsdl parsing has resulted in an invalid state */
         AXIS2_ERROR_WSDL_PARSER_INVALID_STATE,
-
+        /* Interface or Port Type not found for the binding */
+        AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING,
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
             AXIS2_ERROR_LAST is used to track the number of error codes present
