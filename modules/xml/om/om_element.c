@@ -1210,7 +1210,9 @@ axis2_om_element_get_text(axis2_om_element_t *om_element,
                 }
                 else if(!dest && temp_text && AXIS2_STRCMP(temp_text, "") != 0)
                 {
-                    dest = AXIS2_STRDUP(temp_text, env);
+                    /* We do not need to dup this here - Samisa
+                    dest = AXIS2_STRDUP(temp_text, env); */
+                    dest = temp_text;
                 }
             }
         }
