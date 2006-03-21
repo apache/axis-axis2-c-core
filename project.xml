@@ -64,6 +64,90 @@
             <archive>http://marc.theaimsgroup.com/?l=axis-c-user&amp;r=1&amp;w=2</archive>
         </mailingList>
     </mailingLists>
+	
+    <!-- ========== -->
+	<!-- Developers -->
+	<!-- ========== -->
+	<developers>
+		<developer>
+			<name>Samisa Abeysinghe</name>
+			<id>samisa</id>
+			<email>samisa AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
+			<name>Paul Fremantle</name>
+			<id>pzf</id>
+			<email>paul AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
+			<name>Sahan Gamage</name>
+			<id>sahan</id>
+			<email>sahan AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
+			<name>Nandika Jayawardana</name>
+			<id>nandika</id>
+			<email>nandika AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
+			<name>Damitha Kumarage</name>
+			<id>damitha</id>
+			<email>damitha AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
+			<name>Dinesh Premalal</name>
+			<id>dinesh</id>
+			<email>xydinesh AT gmail.com</email>
+			<organization>University of Moratuwa</organization>
+		</developer>
+		<developer>
+			<name>Davanum Srinivas</name>
+			<id>dims</id>
+			<email>dims AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
+			<name>Sanjiva Weerawarana</name>
+			<id>sanjiva</id>
+			<email>sanjiva AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>James Clark</name>
+			<email>jjc AT public.jclark.com</email>
+            <roles>
+                <role>Technical Adviser on Building a Portable/Re-usable C library</role>
+            </roles>
+		</contributor>
+		<contributor>
+			<name>Dimuthu Gamage</name>
+			<email>dimuthuc AT gmail.com</email>
+			<organization>Univerisity of Moratuwa</organization>
+            <roles>
+                <role>Handle Axis2/C Firefox Extension</role>
+            </roles>
+		</contributor>
+		<contributor>
+			<name>Sanjaya Rathnaweera</name>
+			<email>sanjaya AT wso2.com</email>
+			<organization>WSO2</organization>
+		</contributor>
+		<contributor>
+			<name>Nabeel Yoosuf</name>
+			<email>nabeel AT wso2.com</email>
+			<organization>WSO2</organization>
+            <roles>
+                <role>Handle Axis2/C PHP Binding</role>
+            </roles>
+		</contributor>
+	</contributors>
 
     <!-- ################################################################ -->
     <!--        Project dependency section                                -->
