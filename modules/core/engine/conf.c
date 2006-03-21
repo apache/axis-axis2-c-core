@@ -821,6 +821,12 @@ axis2_conf_free (axis2_conf_t *conf,
         AXIS2_DEP_ENGINE_FREE(config_impl->dep_engine, env);
         config_impl->dep_engine= NULL;
     }
+    
+    if(config_impl->axis2_repos)
+    {
+        AXIS2_FREE((*env)->allocator, config_impl->axis2_repos);
+        config_impl->axis2_repos = NULL;
+    }
 
     if(NULL != conf->ops)
     {
