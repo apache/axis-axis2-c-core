@@ -7,6 +7,7 @@ math_SOURCES = axis2_math_stub.c \
                 math_client.c
 
 math_LDADD   =  \
+                -L$(AXIS2C_HOME)/lib \
 					-laxis2_util \
                     -laxis2_om \
                     -laxis2_wsdl \

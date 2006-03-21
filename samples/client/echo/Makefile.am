@@ -7,6 +7,7 @@ echo_SOURCES = axis2_echo_stub.c \
                 echo_client.c
 
 echo_LDADD   =  $(LDFLAGS) \
+                -L$(AXIS2C_HOME)/lib \
 				-laxis2_util \
                 -laxis2_om \
                 -laxis2_wsdl \
