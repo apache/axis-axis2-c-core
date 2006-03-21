@@ -158,7 +158,13 @@ axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_address(struct axis2_endpoint_r
                                                axis2_env_t **env, axis2_char_t *address) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(endpoint_ref)->address = address;
+    if(NULL != AXIS2_INTF_TO_IMPL(endpoint_ref)->address)
+    {
+        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(endpoint_ref)->address);
+        AXIS2_INTF_TO_IMPL(endpoint_ref)->address = NULL;
+    }
+    
+    AXIS2_INTF_TO_IMPL(endpoint_ref)->address = AXIS2_STRDUP(address, env);
     return AXIS2_SUCCESS;
 }
 

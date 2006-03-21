@@ -161,6 +161,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
     axis2_property_t *property = NULL;
     axis2_char_t *url_external_form = NULL;
     axis2_qname_t *tmp_qname = NULL;
+    axis2_char_t *svc_grp_uuid = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svr_conn, AXIS2_FAILURE);
@@ -258,7 +259,13 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS, property, 
             AXIS2_FALSE);
 
-	AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, axis2_uuid_gen(env));
+    svc_grp_uuid = axis2_uuid_gen(env);
+	AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_uuid);
+    if(NULL != svc_grp_uuid)
+    {
+        AXIS2_FREE((*env)->allocator, svc_grp_uuid);
+        svc_grp_uuid = NULL;
+    }
 
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);

@@ -467,20 +467,31 @@ axis2_soap_over_http_sender_get_timeout_values
 	axis2_char_t *connection_str = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    axis2_param_t *tmp_param = NULL;
 	
-	so_str = (axis2_char_t*)AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, 
+	
+    tmp_param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, 
 						env, AXIS2_HTTP_SO_TIMEOUT);
-	connection_str = (axis2_char_t*)AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, 
-						env, AXIS2_HTTP_CONNECTION_TIMEOUT);
-	if(NULL != so_str)
-	{
-		AXIS2_INTF_TO_IMPL(sender)->so_timeout = AXIS2_ATOI(so_str);
-	}
-	if(NULL != connection_str)
-	{
-		AXIS2_INTF_TO_IMPL(sender)->connection_timeout = AXIS2_ATOI(connection_str);
-	}
-    
+	
+    if(NULL != tmp_param)
+    {
+        so_str = (axis2_char_t*)AXIS2_PARAM_GET_VALUE(tmp_param, env);
+        if(NULL != so_str)
+        {
+            AXIS2_INTF_TO_IMPL(sender)->so_timeout = AXIS2_ATOI(so_str);
+        }
+    }
+    tmp_param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env, 
+                        AXIS2_HTTP_CONNECTION_TIMEOUT);
+    if(NULL != tmp_param)
+    {
+        connection_str = (axis2_char_t*)AXIS2_PARAM_GET_VALUE(tmp_param, env);
+        if(NULL != connection_str)
+        {
+            AXIS2_INTF_TO_IMPL(sender)->connection_timeout = 
+                        AXIS2_ATOI(connection_str);
+        }
+    }
 	return AXIS2_SUCCESS;
 }
 
