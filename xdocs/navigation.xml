@@ -9,14 +9,15 @@
         <item name="Source Code"
           href="http://svn.apache.org/viewcvs.cgi/webservices/axis2/trunk/c/"/>
       </item>
-      <item name="Documentation">
+      <item name="Documentation" href="M0_5/index.html">
         <item name="Milestone 0.5" href="M0_5/index.html"/>
       </item>
-      <item name="Get Involved">
+      <item name="Get Involved" href="mail-lists.html">
         <item name="Mailing Lists" href="mail-lists.html"/>
       </item>
-      <item name="Project Information">
-        <item name="Issue Tracking" href="http://issues.apache.org/jira/browse/AXIS2C"/>
+      <item name="Project Information" href="team-list.html">
+        <item name="Project Team" href="team-list.html"/>
+        <item name="Issue Tracking" href="issue-tracking.html"/>
       </item>
     </menu>
   </body>
