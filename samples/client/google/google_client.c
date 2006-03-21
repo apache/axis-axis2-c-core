@@ -136,10 +136,10 @@ int main(int argc, char** argv)
                                 AXIS2_MEP_CLIENT_GET_SVC_CTX(mep_client, &env), 
                                 &env), 
                                 &env);
-    svc = AXIS2_CONF_GET_SVC(conf, &env, "echo");
+    svc = AXIS2_CONF_GET_SVC(conf, &env, "google");
     if (svc)
     {
-        op = AXIS2_SVC_GET_OP_WITH_NAME(svc, &env, "echoString");
+        op = AXIS2_SVC_GET_OP_WITH_NAME(svc, &env, "doSpellingSuggestion");
         if (op)
         {
             AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, &env, AXIS2_MEP_URI_OUT_IN);
