@@ -897,8 +897,11 @@ axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(axis2_call_t *cal
         if (!op)
         {
             /*op = axis2_call_create_op_fill_flow(call, env, op_name);*/
-            op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, "TemplateOperation");
-            AXIS2_OP_SET_QNAME(op, env, op_qname);
+            if (svc)
+            {
+                op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, "TemplateOperation");
+                AXIS2_OP_SET_QNAME(op, env, op_qname);
+            }
         }
         /* now free qname as it is no more required */
         AXIS2_QNAME_FREE(op_qname, env);
