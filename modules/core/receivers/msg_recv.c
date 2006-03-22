@@ -51,12 +51,14 @@ axis2_msg_recv_receive (axis2_msg_recv_t *msg_recv,
 axis2_status_t AXIS2_CALL
 axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
                                     axis2_env_t **env,
-                                    axis2_msg_ctx_t *msg_ctx);
+                                    axis2_msg_ctx_t *msg_ctx,
+                                    void *callback_recv_param);
 
 axis2_status_t AXIS2_CALL
 axis2_raw_xml_in_out_msg_recv_receive_async(axis2_msg_recv_t *msg_recv,
                                     axis2_env_t **env,
-                                    axis2_msg_ctx_t *msg_ctx);                        
+                                    axis2_msg_ctx_t *msg_ctx,
+                                    void *callback_recv_param);                        
 
 axis2_svc_skeleton_t * AXIS2_CALL
 axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
@@ -373,7 +375,8 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
 axis2_status_t AXIS2_CALL
 axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
                                     axis2_env_t **env,
-                                    axis2_msg_ctx_t *msg_ctx)
+                                    axis2_msg_ctx_t *msg_ctx,
+                                    void *callback_recv_param)
 {
     axis2_msg_ctx_t *out_msg_ctx = NULL;
     axis2_engine_t *engine = NULL;
@@ -425,7 +428,8 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
 axis2_status_t AXIS2_CALL
 axis2_raw_xml_in_out_msg_recv_receive_async(axis2_msg_recv_t *msg_recv,
                                     axis2_env_t **env,
-                                    axis2_msg_ctx_t *msg_ctx)
+                                    axis2_msg_ctx_t *msg_ctx,
+                                    void *callback_recv_param)
 {
     axis2_svr_callback_t *callback = NULL;
     axis2_msg_ctx_t *new_msg_ctx = NULL;

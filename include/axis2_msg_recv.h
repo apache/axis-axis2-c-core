@@ -85,7 +85,8 @@ struct axis2_msg_recv_ops
     axis2_status_t (AXIS2_CALL *
     receive_sync) (axis2_msg_recv_t *msg_recv,
                 axis2_env_t **env,
-                struct axis2_msg_ctx *in_msg_ctx);
+                struct axis2_msg_ctx *in_msg_ctx,
+                void *callback_recv_param);
 
     /**
      * This contain asynchronous receiving logic.
@@ -95,7 +96,8 @@ struct axis2_msg_recv_ops
     axis2_status_t (AXIS2_CALL *
     receive_async) (axis2_msg_recv_t *msg_recv,
                 axis2_env_t **env,
-                struct axis2_msg_ctx *in_msg_ctx);                
+                struct axis2_msg_ctx *in_msg_ctx,
+                void *callback_recv_param);                
     
     /** 
      * This contain in only synchronous business invoke logic
@@ -224,11 +226,11 @@ axis2_msg_recv_create (axis2_env_t **env);
 #define AXIS2_MSG_RECV_RECEIVE(msg_recv, env, msg_ctx, callback_recv_param) \
 		((msg_recv)->ops->receive (msg_recv, env, msg_ctx, callback_recv_param))
 
-#define AXIS2_MSG_RECV_RECEIVE_SYNC(msg_recv, env, msg_ctx) \
-		((msg_recv)->ops->receive_sync (msg_recv, env, msg_ctx))
+#define AXIS2_MSG_RECV_RECEIVE_SYNC(msg_recv, env, msg_ctx, callback_recv_param) \
+		((msg_recv)->ops->receive_sync (msg_recv, env, msg_ctx, callback_recv_param))
 
-#define AXIS2_MSG_RECV_RECEIVE_ASYNC(msg_recv, env, msg_ctx) \
-		((msg_recv)->ops->receive_async (msg_recv, env, msg_ctx))
+#define AXIS2_MSG_RECV_RECEIVE_ASYNC(msg_recv, env, msg_ctx, callback_recv_param) \
+		((msg_recv)->ops->receive_async (msg_recv, env, msg_ctx, callback_recv_param))
 
 #define AXIS2_MSG_RECV_INVOKE_IN_BUSINESS_LOGIC_SYNC(msg_recv, env, in_msg_ctx) \
         ((msg_recv)->ops->invoke_in_business_logic_sync(msg_recv, env, in_msg_ctx))
