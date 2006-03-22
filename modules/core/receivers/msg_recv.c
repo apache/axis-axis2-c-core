@@ -45,7 +45,8 @@ axis2_msg_recv_free (axis2_msg_recv_t *msg_recv,
 axis2_status_t AXIS2_CALL
 axis2_msg_recv_receive (axis2_msg_recv_t *msg_recv,
                         axis2_env_t **env,
-                        struct axis2_msg_ctx *in_msg_ctx);
+                        struct axis2_msg_ctx *in_msg_ctx,
+                        void *callback_recv_param);
                             
 axis2_status_t AXIS2_CALL
 axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
@@ -163,7 +164,8 @@ axis2_msg_recv_free (axis2_msg_recv_t *msg_recv,
 axis2_status_t AXIS2_CALL
 axis2_msg_recv_receive (axis2_msg_recv_t *msg_recv,
                         axis2_env_t **env,
-                        axis2_msg_ctx_t *in_msg_ctx)
+                        axis2_msg_ctx_t *in_msg_ctx, 
+                        void *callback_recv_param)
 {
 	return AXIS2_SUCCESS;
 }

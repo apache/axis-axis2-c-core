@@ -325,7 +325,7 @@ axis2_status_t AXIS2_CALL axis2_engine_receive(struct axis2_engine *engine, axis
             AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Message receiver not set in operation description");
             return AXIS2_FAILURE;
         }
-        AXIS2_MSG_RECV_RECEIVE(receiver, env, msg_ctx);        
+        AXIS2_MSG_RECV_RECEIVE(receiver, env, msg_ctx, NULL);        
     }
     AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Axis2 engine receive successful");
     return AXIS2_SUCCESS;

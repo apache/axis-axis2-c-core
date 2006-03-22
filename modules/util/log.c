@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <axis2_log_default.h>
 #include <axis2_file_handler.h>
 #include <axis2_thread.h>
-#include <stdio.h>
 
 typedef struct axis2_log_impl axis2_log_impl_t;
 

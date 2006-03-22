@@ -172,10 +172,6 @@ static axis2_status_t
 axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engine,
                                                     axis2_env_t **env);
 
-static axis2_conf_t *
-axis2_dep_engine_create_conf(axis2_dep_engine_t *dep_engine,
-                                axis2_env_t **env);
-
 static axis2_status_t
 axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
                                 axis2_env_t **env,
@@ -1045,15 +1041,6 @@ axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engin
      */
     return AXIS2_SUCCESS;
 }
-
-static axis2_conf_t *
-axis2_dep_engine_create_conf(axis2_dep_engine_t *dep_engine,
-                                axis2_env_t **env) 
-{
-    AXIS2_ENV_CHECK(env, NULL);
-    return axis2_conf_create(env);
-}
-
 
 static axis2_status_t
 axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,

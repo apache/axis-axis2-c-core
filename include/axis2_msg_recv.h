@@ -75,8 +75,8 @@ struct axis2_msg_recv_ops
     axis2_status_t (AXIS2_CALL *
     receive) (axis2_msg_recv_t *msg_recv,
                 axis2_env_t **env,
-                struct axis2_msg_ctx *in_msg_ctx);
-     
+                struct axis2_msg_ctx *in_msg_ctx,
+                void *callback_recv_param);
     /** 
      * This contain synchronous receiving logic.
      * @param in_msg_ctx
@@ -221,8 +221,8 @@ axis2_msg_recv_create (axis2_env_t **env);
 
 #define AXIS2_MSG_RECV_FREE(msg_recv, env) ((msg_recv)->ops->free (msg_recv, env))
 
-#define AXIS2_MSG_RECV_RECEIVE(msg_recv, env, msg_ctx) \
-		((msg_recv)->ops->receive (msg_recv, env, msg_ctx))
+#define AXIS2_MSG_RECV_RECEIVE(msg_recv, env, msg_ctx, callback_recv_param) \
+		((msg_recv)->ops->receive (msg_recv, env, msg_ctx, callback_recv_param))
 
 #define AXIS2_MSG_RECV_RECEIVE_SYNC(msg_recv, env, msg_ctx) \
 		((msg_recv)->ops->receive_sync (msg_recv, env, msg_ctx))
