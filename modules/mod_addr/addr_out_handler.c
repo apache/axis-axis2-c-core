@@ -472,11 +472,17 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
 
     header_node = AXIS2_SOAP_HEADER_GET_BASE_NODE (soap_header, env);
     
-    addr_ns_obj =
-        axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+    addr_ns_obj = axis2_om_namespace_create (env, 
+                        addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
     header_block =
         AXIS2_SOAP_HEADER_ADD_HEADER_BLOCK (soap_header, env, type,
                                             addr_ns_obj);
+
+    if(NULL !=  addr_ns_obj)
+    {
+        AXIS2_OM_NAMESPACE_FREE(addr_ns_obj, env);
+        addr_ns_obj = NULL;
+    }
 
     address = AXIS2_ENDPOINT_REF_GET_ADDRESS (endpoint_ref, env);
     if (address && AXIS2_STRCMP ("", address) != 0)
@@ -486,13 +492,26 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
         axis2_om_node_t *address_node = NULL;
         axis2_om_element_t *address_ele = NULL;
         hb_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE (header_block, env);
-        hb_ele =
-            (axis2_om_element_t *) AXIS2_OM_NODE_GET_DATA_ELEMENT (hb_node,
-                                                                   env);
+        hb_ele = (axis2_om_element_t *) 
+                    AXIS2_OM_NODE_GET_DATA_ELEMENT (hb_node, env);
+
+        addr_ns_obj = axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+        
         address_ele =
             axis2_om_element_create (env, hb_node, EPR_ADDRESS, addr_ns_obj,
                                      &address_node);
-        AXIS2_OM_ELEMENT_SET_TEXT (address_ele, env, address, address_node);
+        if(NULL != address_ele)
+        {
+            axis2_om_namespace_t *dec_ns = NULL;
+            AXIS2_OM_ELEMENT_SET_TEXT (address_ele, env, address, address_node);
+            dec_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(address_ele, env, 
+                                                 addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+            if(! dec_ns)
+            {
+                 AXIS2_OM_NAMESPACE_FREE(addr_ns_obj, env);
+                 addr_ns_obj = NULL;
+            }
+        }
     }
 
     header_block_node =
@@ -506,6 +525,9 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
     {
         axis2_om_node_t *reference_node = NULL;
         axis2_om_element_t *reference_ele = NULL;
+        
+        addr_ns_obj = axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+         
         reference_ele = axis2_om_element_create (env,
                                                  header_block_node,
                                                  EPR_REFERENCE_PARAMETERS,
@@ -514,6 +536,18 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
         axis2_addr_out_handler_process_any_content_type (env, reference_param,
                                                          reference_node,
                                                          addr_ns);
+
+        if(NULL != reference_ele)
+        {
+            axis2_om_namespace_t *dec_ns = NULL;
+            dec_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE( reference_ele , env,
+                                                 addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+            if(! dec_ns)
+            {
+                 AXIS2_OM_NAMESPACE_FREE(addr_ns_obj, env);
+                 addr_ns_obj = NULL;
+            }
+        }
     }
 
     if (AXIS2_STRCMP (AXIS2_WSA_NAMESPACE_SUBMISSION, addr_ns) == 0)
@@ -523,7 +557,7 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
         axis2_om_node_t *reference_node = NULL;
         referece_properties =
             AXIS2_ENDPOINT_REF_GET_REF_PROPERTIES (endpoint_ref, env);
-
+        addr_ns_obj = axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
         reference_ele =
             axis2_om_element_create (env, header_node,
                                      EPR_REFERENCE_PROPERTIES, addr_ns_obj,
@@ -532,6 +566,18 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
                                                          referece_properties,
                                                          reference_node,
                                                          addr_ns);
+         if(NULL != reference_ele)
+        {
+            axis2_om_namespace_t *dec_ns = NULL;
+            dec_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE( reference_ele , env,
+                                                 addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+            if(! dec_ns)
+            {
+                 AXIS2_OM_NAMESPACE_FREE(addr_ns_obj, env);
+                 addr_ns_obj = NULL;
+            }
+        }
+       
     }
     return AXIS2_SUCCESS;
 }
@@ -556,8 +602,7 @@ axis2_addr_out_handler_add_to_header (axis2_env_t ** env,
 
     parent_node = *(parent_node_p);
 
-    addr_ns_obj =
-        axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+
     interface_qname = AXIS2_ENDPOINT_REF_GET_INTERFACE_NAME (epr, env);
 
     if (interface_qname)
@@ -565,7 +610,9 @@ axis2_addr_out_handler_add_to_header (axis2_env_t ** env,
         axis2_char_t *text = NULL;
         axis2_char_t *qname_prefix = NULL;
         axis2_char_t *qname_localpart = NULL;
-
+         
+        addr_ns_obj = axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+        
         if (AXIS2_STRCMP (addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
         {
             element_localname = EPR_PORT_TYPE;
@@ -590,6 +637,18 @@ axis2_addr_out_handler_add_to_header (axis2_env_t ** env,
         sprintf (text, "%s:%s", qname_prefix, qname_localpart);
         AXIS2_OM_ELEMENT_SET_TEXT (interface_ele, env, text, interface_node);
         AXIS2_FREE ((*env)->allocator, text);
+        if(NULL !=interface_ele )
+        {
+            axis2_om_namespace_t *dec_ns = NULL;
+            dec_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE( interface_ele , env,
+                                                 addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+            if(! dec_ns)
+            {
+                 AXIS2_OM_NAMESPACE_FREE(addr_ns_obj, env);
+                 addr_ns_obj = NULL;
+            }
+        }
+
     }
 
     service_name = AXIS2_ENDPOINT_REF_GET_SVC_NAME (epr, env);
