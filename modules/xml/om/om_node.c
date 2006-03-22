@@ -350,8 +350,8 @@ not to be used by users
 */
 AXIS2_DECLARE(axis2_status_t)
 axis2_om_node_set_parent (axis2_om_node_t *om_node,
-                               axis2_env_t **env,
-                               axis2_om_node_t * parent)
+                          axis2_env_t **env,
+                          axis2_om_node_t * parent)
 {
     axis2_om_node_impl_t *node_impl = NULL;
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
@@ -682,6 +682,8 @@ axis2_om_node_set_first_child(axis2_om_node_t *om_node,axis2_env_t **env,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, om_node, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, first_child, AXIS2_FAILURE);
+    /** set the parent */
+    axis2_om_node_set_parent(first_child, env, om_node);
     
     AXIS2_INTF_TO_IMPL(om_node)->first_child = first_child;
     return AXIS2_SUCCESS;

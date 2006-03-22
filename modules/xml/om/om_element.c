@@ -180,6 +180,8 @@ typedef struct axis2_om_element_impl
     axis2_om_children_iterator_t* children_iter;
 
     axis2_om_children_qname_iterator_t *children_qname_iter;
+
+    axis2_char_t *text_value;
   
 }axis2_om_element_impl_t;
 
@@ -229,6 +231,7 @@ axis2_om_element_create (axis2_env_t **env,
     element->child_ele_iter = NULL;
     element->children_iter = NULL;
     element->children_qname_iter = NULL;
+    element->text_value = NULL;
     
     element->localname = (axis2_char_t *) AXIS2_STRDUP(localname,env);
     if (!element->localname)
@@ -791,12 +794,19 @@ axis2_om_element_free (axis2_om_element_t *om_element,
         AXIS2_OM_CHILDREN_QNAME_ITERATOR_FREE(element_impl->children_qname_iter, env);
         element_impl->children_qname_iter = NULL;
     }
+    if(NULL != element_impl->text_value)
+    {
+        AXIS2_FREE((*env)->allocator, element_impl->text_value);
+        element_impl->text_value = NULL;
+    }
+    
     if(NULL != om_element->ops)
     {
         AXIS2_FREE ((*env)->allocator, om_element->ops);
         om_element->ops = NULL;
     }
     
+   
     AXIS2_FREE ((*env)->allocator, element_impl);
     
     return status;
@@ -1174,6 +1184,12 @@ axis2_om_element_get_text(axis2_om_element_t *om_element,
     AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
     element_impl = AXIS2_INTF_TO_IMPL(om_element);
 
+    if(NULL != element_impl->text_value)
+    {
+        AXIS2_FREE((*env)->allocator, element_impl->text_value);
+        element_impl->text_value = NULL;
+    }
+
     temp_node = AXIS2_OM_NODE_GET_FIRST_CHILD(element_node, env);
     
     while(NULL != temp_node)
@@ -1207,16 +1223,15 @@ axis2_om_element_get_text(axis2_om_element_t *om_element,
                 }
                 else if(!dest && temp_text && AXIS2_STRCMP(temp_text, "") != 0)
                 {
-                    /* We do not need to dup this here - Samisa
-                    dest = AXIS2_STRDUP(temp_text, env); */
-                    dest = temp_text;
+                    dest = AXIS2_STRDUP(temp_text, env); 
                 }
             }
         }
         temp_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(temp_node, env);
     }
     
-    return dest;
+    element_impl->text_value = dest;
+    return element_impl->text_value;
 }                          
 
 axis2_status_t AXIS2_CALL
