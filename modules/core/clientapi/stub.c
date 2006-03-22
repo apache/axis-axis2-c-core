@@ -650,7 +650,7 @@ axis2_stub_populate_properties(axis2_stub_t *stub,
     for(index = axis2_hash_first(stub_impl->property_map, env); index; index = 
         axis2_hash_next(env, index))
     {
-        void *key = NULL;
+        const void *key = NULL;
         void *val = NULL;
         axis2_property_t *property = NULL;
         
