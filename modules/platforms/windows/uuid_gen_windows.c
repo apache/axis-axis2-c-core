@@ -27,7 +27,12 @@ AXIS2_DECLARE(axis2_char_t *)  axis2_platform_uuid_gen(char *s)
     UUID				uuid;
 	unsigned char		*str;
 	axis2_char_t		*retstr;
-	
+
+    if(NULL == s)
+    {
+        return NULL;
+    }	
+    retstr = s;
 	retval = UuidCreate(&uuid);
 	if (retval == RPC_S_UUID_LOCAL_ONLY)
 		printf("warning - unique within computer \n");
