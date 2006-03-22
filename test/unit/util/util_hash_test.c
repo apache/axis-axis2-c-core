@@ -26,20 +26,15 @@ void Testaxis2_hash_get(CuTest *tc)
     const char *key1 = "key1";
 
     actual = (a *) AXIS2_MALLOC(environment->allocator, sizeof (a));
-
-
     actual->value = AXIS2_STRDUP("value1", &environment);
-
 
     ht = axis2_hash_make (&environment);
 
-    axis2_hash_set (ht, &key1, AXIS2_HASH_KEY_STRING, actual);
+    axis2_hash_set (ht, key1, AXIS2_HASH_KEY_STRING, actual);
 
     for (i = axis2_hash_first (ht, &environment); i; i = axis2_hash_next (&environment, i))
     {
-
         axis2_hash_this (i, NULL, NULL, &v);
-
     }
 
     expected = (a *) axis2_hash_get (ht, key1, AXIS2_HASH_KEY_STRING);
