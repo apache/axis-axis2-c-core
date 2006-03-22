@@ -388,8 +388,6 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
             text = AXIS2_OM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node);
             AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, text);
             AXIS2_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);              
-            if(NULL != text)
-                AXIS2_FREE((*env)->allocator, text);
         }
         else if(AXIS2_STRCMP(ele_localname, AXIS2_WSA_ACTION) == 0)
         {
@@ -397,8 +395,6 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
             text = AXIS2_OM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node);
             AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, env, text); 
             AXIS2_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);       
-            if(NULL != text)
-                AXIS2_FREE((*env)->allocator, text);
         }
         else if(AXIS2_STRCMP(ele_localname, AXIS2_WSA_RELATES_TO) == 0)
         {

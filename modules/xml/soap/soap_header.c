@@ -289,6 +289,8 @@ axis2_soap_header_add_header_block(axis2_soap_header_t* header,
     axis2_soap_header_impl_t *header_impl = NULL;
     axis2_soap_header_block_t *header_block = NULL;
     
+    axis2_om_namespace_t *cloned_ns = NULL;
+    
     axis2_om_node_t* header_block_node = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
@@ -297,7 +299,11 @@ axis2_soap_header_add_header_block(axis2_soap_header_t* header,
     
     header_impl = AXIS2_INTF_TO_IMPL(header);
     
-    header_block = axis2_soap_header_block_create_with_parent(env, localname, ns, header);
+    cloned_ns = AXIS2_OM_NAMESPACE_CLONE(ns, env);
+    if(!cloned_ns)
+        return NULL;
+        
+    header_block = axis2_soap_header_block_create_with_parent(env, localname,cloned_ns, header);
     
     if(!header_block)
         return NULL;
@@ -307,7 +313,29 @@ axis2_soap_header_add_header_block(axis2_soap_header_t* header,
     
     if(header_block_node)
     {
+        axis2_om_element_t *hb_ele =  NULL;
+        axis2_char_t *uri = NULL;
+        axis2_char_t *prefix = NULL;
+        
         axis2_om_node_set_build_status(header_block_node, env, AXIS2_TRUE);
+        
+        hb_ele = (axis2_om_element_t *)
+            AXIS2_OM_NODE_GET_DATA_ELEMENT(header_block_node, env);
+        if(hb_ele)
+        {
+            axis2_om_namespace_t *dec_ns = NULL;
+            uri = AXIS2_OM_NAMESPACE_GET_URI(cloned_ns, env);
+            prefix = AXIS2_OM_NAMESPACE_GET_PREFIX(cloned_ns, env);
+
+            dec_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(hb_ele, env, uri, prefix);
+            if(!dec_ns)
+            {
+                /** this namespace it not in hb_ele list so free it */
+                AXIS2_OM_NAMESPACE_FREE(cloned_ns, env);
+                cloned_ns = NULL;
+            }
+        
+        }
         return header_block;
     }
     else
