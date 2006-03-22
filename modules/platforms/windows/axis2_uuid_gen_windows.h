@@ -30,7 +30,7 @@ extern "C"
   * Generate universally unique id
   * @return a char pointer to uuid
   */
-AXIS2_DECLARE(axis2_char_t *) axis2_platform_uuid_gen();
+AXIS2_DECLARE(axis2_char_t *) axis2_platform_uuid_gen(char *s);
 
 /** @} */
 #ifdef __cplusplus

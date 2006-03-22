@@ -21,7 +21,7 @@
 #include <string.h>
 
 
-AXIS2_DECLARE(axis2_char_t *)  axis2_platform_uuid_gen()
+AXIS2_DECLARE(axis2_char_t *)  axis2_platform_uuid_gen(char *s)
 {
 	RPC_STATUS			retval;   
     UUID				uuid;
@@ -40,7 +40,7 @@ AXIS2_DECLARE(axis2_char_t *)  axis2_platform_uuid_gen()
 	retval = UuidToStringA(&uuid,&str);
 	if (retval == RPC_S_OK)
 	{
-		retstr = strdup(str);
+		strcpy(retstr, str);
 		RpcStringFree(&str);
 	}
 	else if (retval == RPC_S_OUT_OF_MEMORY)

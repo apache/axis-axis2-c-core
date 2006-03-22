@@ -150,19 +150,23 @@ axis2_uuid_gen_v1()
 
 
 axis2_char_t* AXIS2_CALL
-axis2_platform_uuid_gen()
+axis2_platform_uuid_gen(char *s)
 {
 	axis2_uuid_t *uuid_struct = NULL;
 	axis2_char_t *uuid_str = NULL;
 	unsigned char mac[7];
 	char mac_hex[13];
-	
+
+    if(NULL == s)
+    {
+        return NULL;
+    }	
 	uuid_struct = axis2_uuid_gen_v1();
 	if(NULL == uuid_struct)
 	{
 		return NULL;
 	}
-	uuid_str = malloc(sizeof(axis2_char_t)*40);
+	uuid_str = s;
 	if(NULL == uuid_str)	
 	{
 		return NULL;

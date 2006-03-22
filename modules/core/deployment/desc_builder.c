@@ -678,6 +678,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
             if(AXIS2_SUCCESS != status)
             {
                 AXIS2_PARAM_FREE(param, env);
+                AXIS2_FREE((*env)->allocator, para_test_value);
                 return status;
             }
             AXIS2_PARAM_SET_PARAM_TYPE(param, env, AXIS2_TEXT_PARAM);

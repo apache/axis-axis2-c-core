@@ -263,6 +263,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_uuid);
     if(NULL != svc_grp_uuid)
     {
+
         AXIS2_FREE((*env)->allocator, svc_grp_uuid);
         svc_grp_uuid = NULL;
     }

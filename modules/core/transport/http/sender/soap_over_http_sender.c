@@ -465,9 +465,9 @@ axis2_soap_over_http_sender_get_timeout_values
 {
     axis2_char_t *so_str = NULL;
 	axis2_char_t *connection_str = NULL;
-	
-	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     axis2_param_t *tmp_param = NULL;
+
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	
 	
     tmp_param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, 

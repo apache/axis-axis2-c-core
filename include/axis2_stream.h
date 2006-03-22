@@ -29,7 +29,6 @@ extern "C"
 
 typedef struct axis2_stream axis2_stream_t;
 typedef struct axis2_stream_ops axis2_stream_ops_t;
-typedef enum axis2_stream_type axis2_stream_type_t;
 
 #define AXIS2_STREAM_DEFAULT_BUF_SIZE 512
 /**
@@ -52,6 +51,7 @@ enum axis2_stream_type
     AXIS2_STREAM_MANAGED /* Example Wrapper stream for Apache2 read mechanism */
 };
 
+typedef enum axis2_stream_type axis2_stream_type_t;
 
 /** 
 * \brief Axis2 stream ops struct

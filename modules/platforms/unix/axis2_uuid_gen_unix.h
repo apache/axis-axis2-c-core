@@ -78,7 +78,7 @@ axis2_uuid_gen_v1();
  * @return generated uuid as a string
  */ 
 axis2_char_t* AXIS2_CALL
-axis2_platform_uuid_gen();
+axis2_platform_uuid_gen(char *s);
 
 /** @} */
     
