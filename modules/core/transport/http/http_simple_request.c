@@ -33,6 +33,7 @@ struct axis2_http_simple_request_impl
 	axis2_http_request_line_t *request_line;
     axis2_array_list_t *header_group;
     axis2_stream_t *stream;
+    axis2_bool_t owns_stream;
 };
 
 #define AXIS2_INTF_TO_IMPL(simple_request) \
@@ -135,6 +136,7 @@ axis2_http_simple_request_create
     simple_request_impl->request_line = request_line;
     simple_request_impl->stream = content;
     simple_request_impl->header_group = NULL;
+    simple_request_impl->owns_stream = AXIS2_FALSE;
     if(http_hdr_count > 0 && NULL != http_headers)
     {
         int i = 0; 
@@ -200,6 +202,11 @@ axis2_http_simple_request_free(axis2_http_simple_request_t *simple_request,
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     simple_request_impl = AXIS2_INTF_TO_IMPL(simple_request);
+    if(AXIS2_TRUE == simple_request_impl->owns_stream)
+    {
+        AXIS2_STREAM_FREE(simple_request_impl->stream, env);
+        simple_request_impl->stream = NULL;
+    }
     /*
         Don't free the stream since it belongs to the socket
         TODO : if chunked remove the chunked stream.
@@ -550,6 +557,7 @@ axis2_http_simple_request_set_body_string
 			return AXIS2_FAILURE;
 		}
 		AXIS2_INTF_TO_IMPL(simple_request)->stream = body_stream;
+        AXIS2_INTF_TO_IMPL(simple_request)->owns_stream = AXIS2_TRUE;
 	}
 	AXIS2_STREAM_WRITE(body_stream, env, str, AXIS2_STRLEN(str));
     return AXIS2_SUCCESS;

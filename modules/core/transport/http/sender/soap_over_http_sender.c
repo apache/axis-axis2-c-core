@@ -233,6 +233,13 @@ axis2_soap_over_http_sender_send
 	AXIS2_SOAP_ENVELOPE_SERIALIZE (out, env, sender_impl->om_output, 
 						AXIS2_FALSE);
 	buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+
+    if(NULL == buffer)
+    {
+        AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "NULL xml returned"
+                        "from xml writer");
+        return AXIS2_FAILURE;
+    }
 	
 	request_line = axis2_http_request_line_create(env, "POST", 
 						AXIS2_URL_GET_PATH(url, env), 
@@ -287,6 +294,9 @@ axis2_soap_over_http_sender_send
 						sender_impl->so_timeout);
 	
 	status_code = AXIS2_HTTP_CLIENT_SEND(sender_impl->client, env, request);
+    
+    AXIS2_FREE((*env)->allocator, buffer);
+    buffer = NULL;
 	
 	AXIS2_HTTP_SIMPLE_REQUEST_FREE(request, env);
 	request = NULL;
