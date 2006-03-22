@@ -46,6 +46,7 @@ axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
     axis2_bool_t server_side = AXIS2_FALSE;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     axis2_property_t *property = NULL;
+    axis2_char_t *msg_uuid = NULL;
     
     AXIS2_PARAM_CHECK((*env)->error, in_msg_ctx, NULL);
     
@@ -72,7 +73,14 @@ axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
             return NULL;
         AXIS2_MSG_CTX_SET_MSG_INFO_HEADERS(new_msg_ctx, env, msg_info_headers);
     }
-    AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, axis2_uuid_gen(env));
+
+    msg_uuid =  axis2_uuid_gen(env);
+    AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, msg_uuid);
+    if(NULL != msg_uuid)
+    {
+        AXIS2_FREE((*env)->allocator, msg_uuid);
+        msg_uuid = NULL;
+    }
     reply_to = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(old_msg_info_headers, env);
     AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, reply_to);
     

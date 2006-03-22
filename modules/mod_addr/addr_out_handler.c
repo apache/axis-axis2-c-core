@@ -445,8 +445,19 @@ axis2_addr_out_handler_process_string_info (axis2_env_t ** env,
         header_block_ele =
             (axis2_om_element_t *)
             AXIS2_OM_NODE_GET_DATA_ELEMENT (header_block_node, env);
-        AXIS2_OM_ELEMENT_SET_TEXT (header_block_ele, env, value,
-                                   header_block_node);
+        if(NULL != header_block_ele)
+        {
+            axis2_om_namespace_t *dec_ns = NULL;
+            AXIS2_OM_ELEMENT_SET_TEXT (header_block_ele, env, value,
+                                        header_block_node);
+            dec_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(header_block_ele, env,
+                                                 addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+            if(! dec_ns)
+            {
+                 AXIS2_OM_NAMESPACE_FREE(addr_ns_obj, env);
+                 addr_ns_obj = NULL;
+            }
+        }
     }
     return header_block_node;
 }
