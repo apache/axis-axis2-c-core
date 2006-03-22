@@ -57,7 +57,12 @@ axis2_status_t AXIS2_CALL
 axis2_om_attribute_set_namespace(axis2_om_attribute_t *om_attribute,
                                  axis2_env_t **env,
                                  axis2_om_namespace_t *om_namespace);
-                                                                                                                                                                                             
+
+axis2_om_attribute_t* AXIS2_CALL
+axis2_om_attribute_clone(axis2_om_attribute_t *om_attribute,
+                         axis2_env_t **env);
+                         
+
 /*********************************** axis2_om_attribute_impl_t ************************/
 
 typedef struct axis2_om_attribute_impl
@@ -151,7 +156,8 @@ axis2_om_attribute_create (axis2_env_t **env,
     attribute_impl->om_attribute.ops->set_localname = axis2_om_attribute_set_localname;
     attribute_impl->om_attribute.ops->set_namespace = axis2_om_attribute_set_namespace;
     attribute_impl->om_attribute.ops->set_value = axis2_om_attribute_set_value;
-    
+   
+    attribute_impl->om_attribute.ops->clone = axis2_om_attribute_clone;
     return &(attribute_impl->om_attribute);
 }
 
@@ -338,3 +344,26 @@ axis2_om_attribute_set_namespace(axis2_om_attribute_t *om_attribute,
     AXIS2_INTF_TO_IMPL(om_attribute)->ns = om_namespace;
     return AXIS2_SUCCESS;
 }
+
+axis2_om_attribute_t* AXIS2_CALL
+axis2_om_attribute_clone(axis2_om_attribute_t *om_attribute,
+                         axis2_env_t **env)
+{
+    axis2_om_attribute_impl_t *attr_impl = NULL;
+    axis2_om_attribute_t *cloned_attr    = NULL;
+    if(!om_attribute) return NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    attr_impl = AXIS2_INTF_TO_IMPL(om_attribute);
+    
+    /** namespace is not cloned since it is a shollow copy*/
+    cloned_attr = axis2_om_attribute_create(env, 
+                            attr_impl->localname,
+                            attr_impl->value,
+                            attr_impl->ns );
+    if(NULL!= cloned_attr)
+    {
+        return cloned_attr;
+    }
+    return NULL;
+}                         

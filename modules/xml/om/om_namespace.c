@@ -41,7 +41,9 @@ axis2_char_t* AXIS2_CALL
 axis2_om_namespace_get_prefix(axis2_om_namespace_t *om_namespace,
                               axis2_env_t **env);
 
-                                                                                   
+axis2_om_namespace_t* AXIS2_CALL
+axis2_om_namespace_clone(axis2_om_namespace_t *om_namespace,
+                         axis2_env_t **env);
 
 /****************************** axis2_om_namesapce_impl_struct **************************/
 
@@ -129,7 +131,7 @@ axis2_om_namespace_create (axis2_env_t **env,
     ns->om_namespace.ops->serialize = axis2_om_namespace_serialize;
     ns->om_namespace.ops->get_uri = axis2_om_namespace_get_uri;
     ns->om_namespace.ops->get_prefix = axis2_om_namespace_get_prefix;
-  
+    ns->om_namespace.ops->clone = axis2_om_namespace_clone;
     return &(ns->om_namespace) ;
 }
 
@@ -238,4 +240,23 @@ axis2_om_namespace_get_prefix(axis2_om_namespace_t *om_namespace,
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(om_namespace)->prefix;
-}                              
+}
+
+axis2_om_namespace_t* AXIS2_CALL
+axis2_om_namespace_clone(axis2_om_namespace_t *om_namespace,
+                         axis2_env_t **env)
+{
+    axis2_om_namespace_impl_t *ns_impl = NULL;
+    axis2_om_namespace_t *cloned_ns    = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    ns_impl = AXIS2_INTF_TO_IMPL(om_namespace);
+    
+    cloned_ns = axis2_om_namespace_create(env,
+                      ns_impl->uri, ns_impl->prefix);
+    if(NULL != cloned_ns )
+    {
+        return cloned_ns;
+    }
+    return NULL;
+}

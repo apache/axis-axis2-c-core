@@ -145,6 +145,18 @@ extern "C"
                        axis2_env_t **env,
                        axis2_om_namespace_t *om_namespace);
 
+        /**
+         * clones an om attribute
+         * @param om_attibute 
+         * @param env environment
+         * @returns pointer to cloned om attribute struct on success
+         * NULL otherwise
+         */            
+        struct axis2_om_attribute* (AXIS2_CALL *
+        clone)(struct axis2_om_attribute *om_attribute,
+               axis2_env_t **env);
+
+
     } axis2_om_attribute_ops_t;
 
   /**
@@ -206,6 +218,8 @@ extern "C"
 #define AXIS2_OM_ATTRIBUTE_SET_VALUE(om_attribute, env,value) \
         ((om_attribute)->ops->set_value(om_attribute, env,value))
 
+#define AXIS2_OM_ATTRIBUTE_CLONE(om_attribute, env) \
+        ((om_attribute)->ops->clone(om_attribute, env))
 /** @} */
 
 #ifdef __cplusplus

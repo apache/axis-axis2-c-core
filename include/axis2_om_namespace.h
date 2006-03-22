@@ -98,6 +98,18 @@ extern "C"
                     axis2_env_t **env);
 
 
+        /**
+         * clones an om_namespace struct
+         * @param om_namespace pointer to namespace struct
+         * @param env environment
+         * @returns axis2_om_namespace on success , NULL on error
+         */
+        struct axis2_om_namespace* (AXIS2_CALL *
+        clone)(struct axis2_om_namespace *om_namespace,
+               axis2_env_t **env);
+                                                                                     
+
+
     } axis2_om_namespace_ops_t;
 
   /** 
@@ -140,6 +152,8 @@ extern "C"
 #define AXIS2_OM_NAMESPACE_GET_URI(om_namespace, env) \
         ((om_namespace)->ops->get_uri(om_namespace, env))
 
+#define AXIS2_OM_NAMESPACE_CLONE(om_namespace, env) \
+        ((om_namespace)->ops->clone(om_namespace, env))
 
 /** @} */
 
