@@ -1,1 +1,1 @@
-TESTS=server.test samples.test
+TESTS=
