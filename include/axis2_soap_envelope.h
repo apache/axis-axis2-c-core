@@ -164,7 +164,7 @@ axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
  
 AXIS2_DECLARE(axis2_soap_envelope_t *)
 axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
-		    axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version)
+		    axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version);
 
 /******************** Macros **************************************************/
 
