@@ -318,6 +318,7 @@ axis2_status_t AXIS2_CALL axis2_linked_list_free(
                                         axis2_env_t **env)
 {
     axis2_linked_list_impl_t *linked_list_impl = NULL;
+    entry_t *current = NULL, *next = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -329,7 +330,14 @@ axis2_status_t AXIS2_CALL axis2_linked_list_free(
         linked_list_impl->linked_list.ops = NULL;
     }
     
-    if(NULL != linked_list_impl->first)
+    current = linked_list_impl->first;
+    while(NULL != current)
+    {
+        next = current->next;
+        AXIS2_FREE((*env)->allocator, current); 
+        current = next;
+    }
+    /*if(NULL != linked_list_impl->first)
     {
         free_entry(linked_list_impl->first, env);
     }
@@ -337,7 +345,7 @@ axis2_status_t AXIS2_CALL axis2_linked_list_free(
     if(NULL != linked_list_impl->last)
     {
         free_entry(linked_list_impl->last, env);
-    }
+    }*/
     
     AXIS2_FREE((*env)->allocator, linked_list_impl);
     linked_list_impl = NULL;
