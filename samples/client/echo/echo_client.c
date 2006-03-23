@@ -99,6 +99,10 @@ int main(int argc, char** argv)
         AXIS2_OM_NODE_SERIALIZE (ret_node, &env, om_output);
         buffer = AXIS2_XML_WRITER_GET_XML(writer, &env);
         printf ("\nReceived OM node in XML : %s\n", buffer);
+        AXIS2_FREE(env->allocator, buffer);
+        buffer = NULL;
+        AXIS2_OM_OUTPUT_FREE(om_output, &env);
+        om_output = NULL;
     }
     else
     {
