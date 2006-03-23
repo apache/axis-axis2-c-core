@@ -542,11 +542,11 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
     if (!response)
         return NULL;
     
-    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, AXIS2_TRUE);
+    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, AXIS2_FALSE);
     if(property)
     {
         AXIS2_MSG_CTX_SET_PROPERTY(response, env, AXIS2_TRANSPORT_IN, property,
-            AXIS2_TRUE);
+            AXIS2_FALSE);
         property = NULL;
     }
     
@@ -584,6 +584,11 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, AXIS2_FAILURE);
         return NULL;
     }
+        
+    /* property is NULL, and we set null for AXIS2_TRANSPORT_IN in msg_ctx to
+    avoid double free of this property */
+    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, property,
+            AXIS2_FALSE);
     
     if(NULL != engine)
     {

@@ -466,18 +466,63 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_free (struct axis2_conf_ctx *conf_ctx,
     
     if (conf_ctx_impl->op_ctx_map)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+        for (hi = axis2_hash_first (conf_ctx_impl->op_ctx_map, env); hi;
+                 hi = axis2_hash_next ( env, hi))
+        {
+            axis2_op_ctx_t *op_ctx = NULL;
+            axis2_hash_this (hi, NULL, NULL, &val);
+            op_ctx = (axis2_op_ctx_t *) val;
+            if (op_ctx)
+               AXIS2_OP_CTX_FREE (op_ctx, env);
+            
+            val = NULL;
+            op_ctx = NULL;
+               
+        }
         axis2_hash_free(conf_ctx_impl->op_ctx_map, env);
         conf_ctx_impl->op_ctx_map = NULL;
     }    
     
     if (conf_ctx_impl->svc_ctx_map)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+        for (hi = axis2_hash_first (conf_ctx_impl->svc_ctx_map, env); hi;
+                 hi = axis2_hash_next ( env, hi))
+        {
+            axis2_svc_ctx_t *svc_ctx = NULL;
+            axis2_hash_this (hi, NULL, NULL, &val);
+            svc_ctx = (axis2_svc_ctx_t *) val;
+            if (svc_ctx)
+               AXIS2_SVC_CTX_FREE (svc_ctx, env);
+            
+            val = NULL;
+            svc_ctx = NULL;
+               
+        }
         axis2_hash_free(conf_ctx_impl->svc_ctx_map, env);
         conf_ctx_impl->svc_ctx_map = NULL;
     }    
     
     if (conf_ctx_impl->svc_grp_ctx_map)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+        for (hi = axis2_hash_first (conf_ctx_impl->svc_grp_ctx_map, env); hi;
+                 hi = axis2_hash_next ( env, hi))
+        {
+            axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
+            axis2_hash_this (hi, NULL, NULL, &val);
+            svc_grp_ctx = (axis2_svc_grp_ctx_t *) val;
+            if (svc_grp_ctx)
+               AXIS2_SVC_GRP_CTX_FREE (svc_grp_ctx, env);
+            
+            val = NULL;
+            svc_grp_ctx = NULL;
+               
+        }
         axis2_hash_free(conf_ctx_impl->svc_grp_ctx_map, env);
         conf_ctx_impl->svc_grp_ctx_map = NULL;
     }

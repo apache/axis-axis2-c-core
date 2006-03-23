@@ -457,13 +457,15 @@ axis2_soap_over_http_sender_process_response
 	}
 	
 	axis2_soap_over_http_sender_get_header_info(sender, env, msg_ctx, response);
-	axis_ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env), 
-						env);
+	/*axis_ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env), 
+						env);*/
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_stream_free_void_arg);
     AXIS2_PROPERTY_SET_VALUE(property, env, in_stream);
-	AXIS2_CTX_SET_PROPERTY(axis_ctx, env, AXIS2_TRANSPORT_IN, property, 
+	/*AXIS2_CTX_SET_PROPERTY(axis_ctx, env, AXIS2_TRANSPORT_IN, property, 
+						AXIS2_FALSE);*/
+	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, property, 
 						AXIS2_FALSE);
 	return AXIS2_SUCCESS;
 }
