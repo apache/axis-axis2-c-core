@@ -102,14 +102,14 @@ axis2_addr_out_handler_create (axis2_env_t ** env, axis2_qname_t * qname)
     }
 
     /* handler desc of base handler */
-    handler_desc = axis2_handler_desc_create_with_qname (env, handler_qname);
+    /*handler_desc = axis2_handler_desc_create_with_qname (env, handler_qname);
     if (!handler_desc)
     {
         AXIS2_HANDLER_FREE (handler, env);
         return NULL;
     }
 
-    AXIS2_HANDLER_INIT (handler, env, handler_desc);
+    AXIS2_HANDLER_INIT (handler, env, handler_desc);*/
 
     /* set the base struct's invoke op */
     if (handler->ops)
