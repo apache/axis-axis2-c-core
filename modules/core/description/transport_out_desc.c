@@ -273,7 +273,11 @@ axis2_transport_out_desc_free (axis2_transport_out_desc_t *transport_out,
         transport_out_impl->faultphase = NULL;
     }
     
-    transport_out_impl->sender = NULL;
+    if (transport_out_impl->sender)
+    {
+        AXIS2_TRANSPORT_SENDER_FREE(transport_out_impl->sender, env);
+        transport_out_impl->sender = NULL;
+    }
     
     AXIS2_FREE((*env)->allocator, transport_out_impl);
     
@@ -378,6 +382,12 @@ axis2_transport_out_desc_set_sender(axis2_transport_out_desc_t *transport_out,
     
     transport_out_impl = AXIS2_INTF_TO_IMPL(transport_out);
 
+    if (transport_out_impl->sender)
+    {
+        AXIS2_TRANSPORT_SENDER_FREE(transport_out_impl->sender, env);
+        transport_out_impl->sender = NULL;
+    }
+    
     transport_out_impl->sender = sender;
     return AXIS2_SUCCESS;
 }
