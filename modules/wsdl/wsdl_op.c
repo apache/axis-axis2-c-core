@@ -324,6 +324,12 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
         wsdl_op_impl->name = NULL;
     }
     
+    if(wsdl_op_impl->msg_exchange_pattern)
+    {
+        AXIS2_FREE((*env)->allocator, wsdl_op_impl->msg_exchange_pattern);
+        wsdl_op_impl->msg_exchange_pattern = NULL;
+    }
+    
     if(NULL != wsdl_op_impl->style)
     {
         AXIS2_FREE((*env)->allocator, wsdl_op_impl->style);
