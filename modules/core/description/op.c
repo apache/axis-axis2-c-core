@@ -760,6 +760,12 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
         op_impl->op.base.ops = NULL;
     }
     
+    if (op_impl->op.ops)
+    {
+        AXIS2_FREE((*env)->allocator, op_impl->op.ops);
+        op_impl->op.ops = NULL;
+    }
+
     if(op_impl)    
     {
         AXIS2_FREE((*env)->allocator, op_impl);

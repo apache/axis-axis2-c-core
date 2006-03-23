@@ -567,10 +567,10 @@ axis2_svc_free (axis2_svc_t *svc,
         svc_impl->axis_svc_name = NULL;        
     }        
     
-	if(NULL != svc->ops)
+    if(NULL != svc_impl->svc.ops)
     {
-		AXIS2_FREE((*env)->allocator, svc->ops);
-        svc->ops = NULL;
+	    AXIS2_FREE((*env)->allocator, svc_impl->svc.ops);
+        svc_impl->svc.ops = NULL;
     }
 
     if(svc_impl)
