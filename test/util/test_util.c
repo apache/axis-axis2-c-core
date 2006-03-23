@@ -74,6 +74,8 @@ int test_hash_get (axis2_env_t *env)
     axis2_hash_set (ht, key3, AXIS2_HASH_KEY_STRING, a3);
     axis2_hash_set (ht, key4, AXIS2_HASH_KEY_STRING, a4);
 
+    axis2_hash_set (ht, key2, AXIS2_HASH_KEY_STRING, NULL);
+    axis2_hash_set (ht, key2, AXIS2_HASH_KEY_STRING, a2);
     for (i = axis2_hash_first (ht, &env); i; i = axis2_hash_next (&env, i))
     {
 
@@ -94,6 +96,15 @@ int test_hash_get (axis2_env_t *env)
     printf ("\n demo get %s \n",
             ((a *) axis2_hash_get (ht, key4, AXIS2_HASH_KEY_STRING))->value);
 
+    axis2_hash_free(ht, &env);
+    AXIS2_FREE(env->allocator, a1->value);
+    AXIS2_FREE(env->allocator, a2->value);
+    AXIS2_FREE(env->allocator, a3->value);
+    AXIS2_FREE(env->allocator, a4->value);
+    AXIS2_FREE(env->allocator, a1);
+    AXIS2_FREE(env->allocator, a2);
+    AXIS2_FREE(env->allocator, a3);
+    AXIS2_FREE(env->allocator, a4);
     return 0;
 }
 
@@ -294,5 +305,8 @@ int main(void)
     test_uuid_gen(env);
 	run_test_log();
 	test_axis2_dir_handler_list_service_or_module_dirs();
+	axis2_allocator_t *allocator = env->allocator;
+    axis2_env_free(env);
+    axis2_allocator_free(allocator);
 	return 0;	
 }
