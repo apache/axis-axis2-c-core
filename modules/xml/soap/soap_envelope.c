@@ -732,40 +732,49 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
     axis2_soap_body_t *soap_body = NULL;
     axis2_om_namespace_t *om_ns = NULL;
     axis2_soap_envelope_impl_t *env_impl = NULL;
+	axis2_soap_fault_t *fault = NULL;
+	axis2_char_t *env_ns_uri = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    if(soap_version == AXIS2_SOAP11)
-    {
-        om_ns = axis2_om_namespace_create(env,
-            AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, 
-            AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX);
-        if(!om_ns)
-            return NULL;    
-        soap_env = axis2_soap_envelope_create(env, om_ns);
-        env_impl = AXIS2_INTF_TO_IMPL(soap_env);
-        
-        AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(soap_env, env, AXIS2_SOAP11);
-        soap_body   = axis2_soap_body_create_with_parent(env, soap_env);
-        env_impl->body = soap_body;
-        return soap_env;    
-    }
-    else if(soap_version == AXIS2_SOAP12)
-    {
-        om_ns = axis2_om_namespace_create(env,
-            AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, 
-            AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX);
-        if(!om_ns)
-            return NULL;    
-        soap_env = axis2_soap_envelope_create(env, om_ns);
-        env_impl = AXIS2_INTF_TO_IMPL(soap_env);
-        
-        AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(soap_env, env, AXIS2_SOAP12);
-        soap_body   = axis2_soap_body_create_with_parent(env, soap_env);
-        env_impl->body = soap_body;
-        return soap_env;    
-    }
-    AXIS2_ERROR_SET((*env)->error, 
-        AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
-    return NULL;    
+
+	if (AXIS2_SOAP11 == soap_version)
+		env_ns_uri = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
+	else if (AXIS2_SOAP12 == soap_version)
+		env_ns_uri = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+	else
+	{
+		AXIS2_ERROR_SET((*env)->error,
+			AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
+		return NULL;
+	}
+	om_ns = axis2_om_namespace_create(env,
+		AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI,
+		AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX);
+	if(!om_ns)
+		return NULL;
+	soap_env = axis2_soap_envelope_create(env, om_ns);
+	if (!soap_env)
+	{
+		AXIS2_OM_NAMESPACE_FREE(om_ns, env);
+		return NULL;
+	}
+	env_impl = AXIS2_INTF_TO_IMPL(soap_env);
+
+	AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(soap_env, env, soap_version);
+	soap_body   = axis2_soap_body_create_with_parent(env, soap_env);
+	env_impl->body = soap_body;
+	if (!soap_body)
+	{
+		AXIS2_SOAP_ENVELOPE_FREE(soap_env, env);
+		return NULL;
+	}
+	fault = axis2_soap_fault_create_with_parent(env, soap_body);
+	if (!fault)
+	{
+		AXIS2_SOAP_ENVELOPE_FREE(soap_env, env);
+		return NULL;
+	}
+	return soap_env;
+
 }
 
 static axis2_status_t
