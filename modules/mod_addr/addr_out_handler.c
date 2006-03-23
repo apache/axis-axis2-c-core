@@ -115,6 +115,8 @@ axis2_addr_out_handler_create (axis2_env_t ** env, axis2_qname_t * qname)
     if (handler->ops)
         handler->ops->invoke = axis2_addr_out_handler_invoke;
 
+    AXIS2_QNAME_FREE(handler_qname, env);
+
     return handler;
 }
 

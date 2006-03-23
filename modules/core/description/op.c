@@ -1288,7 +1288,7 @@ axis2_op_set_phases_in_fault_flow(axis2_op_t *op,
             }
                
         }
-        AXIS2_WSDL_OP_FREE(op_impl->phases_in_fault_flow, env);
+        AXIS2_ARRAY_LIST_FREE(op_impl->phases_in_fault_flow, env);
         op_impl->phases_in_fault_flow = NULL;
     }
     
@@ -1322,7 +1322,7 @@ axis2_op_set_phases_out_fault_flow(axis2_op_t *op,
                 phase = NULL;
             } 
         }
-        AXIS2_WSDL_OP_FREE(op_impl->phases_out_fault_flow, env);
+        AXIS2_ARRAY_LIST_FREE(op_impl->phases_out_fault_flow, env);
         op_impl->phases_out_fault_flow = NULL;
     }
     
@@ -1356,7 +1356,7 @@ axis2_op_set_phases_outflow(axis2_op_t *op,
                 phase = NULL;
             }
         }
-        AXIS2_WSDL_OP_FREE(op_impl->phases_outflow, env);
+        AXIS2_ARRAY_LIST_FREE(op_impl->phases_outflow, env);
         op_impl->phases_outflow = NULL;
     }
     
