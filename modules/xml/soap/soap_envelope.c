@@ -726,7 +726,7 @@ axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
 
 AXIS2_DECLARE(axis2_soap_envelope_t *)
 axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
-                                                 int soap_version)
+	axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version)
 {
     axis2_soap_envelope_t *soap_env = NULL;
     axis2_soap_body_t *soap_body = NULL;
@@ -767,7 +767,8 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
 		AXIS2_SOAP_ENVELOPE_FREE(soap_env, env);
 		return NULL;
 	}
-	fault = axis2_soap_fault_create_with_parent(env, soap_body);
+	fault = axis2_soap_fault_create_default_fault(env, soap_body,
+				code_value, reason_text, soap_version);
 	if (!fault)
 	{
 		AXIS2_SOAP_ENVELOPE_FREE(soap_env, env);
