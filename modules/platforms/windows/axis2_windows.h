@@ -112,6 +112,7 @@ extern "C"
 
 #define AXIS2_PLATFORM_SLEEP(x) Sleep(0);
 
+#define AXIS2_SLEEP Sleep
 /**
  * Get the last error code from the system.
  * Please ensure that this is a thread safe implementation

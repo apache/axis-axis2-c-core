@@ -127,7 +127,8 @@ extern "C"
 #define AXIS2_STRRCHR(x, y) (strrchr(x, y))
 
 #define AXIS2_PLATFORM_SLEEP(x) sleep(0);
-
+/** sleep function abstraction */
+#define AXIS2_SLEEP sleep 
 /**
  * Get the last error code from the system.
  * Please ensure that this is a thread safe implementation
