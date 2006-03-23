@@ -299,8 +299,6 @@ axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data,
         file_data_impl->deployable_svcs = NULL;        
     }
     
-    file_data_impl->arch_file_data.ops = NULL;
-    
 	if(NULL != arch_file_data->ops)
     {
         AXIS2_FREE((*env)->allocator, arch_file_data->ops);

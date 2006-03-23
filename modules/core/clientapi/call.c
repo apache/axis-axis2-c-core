@@ -308,7 +308,13 @@ axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call,
             conf_ctx = NULL;
         }
     }    
-    
+   
+    if(NULL != call_impl->op_template)
+    {
+        AXIS2_OP_FREE(call_impl->op_template, env);
+        call_impl->op_template = NULL;
+    } 
+
     AXIS2_FREE((*env)->allocator, call_impl);
     call_impl = NULL;
     
