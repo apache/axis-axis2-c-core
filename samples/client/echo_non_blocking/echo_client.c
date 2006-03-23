@@ -149,7 +149,7 @@ int main(int argc, char** argv)
         printf("sleep(2) till callback complete\n");
         if (count++ > 10)
             break;
-        sleep(2);
+        AXIS2_SLEEP(2);
     }
 
     /*if (response_ctx)
