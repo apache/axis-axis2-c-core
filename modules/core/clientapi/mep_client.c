@@ -562,7 +562,6 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
     /* If request is REST we assume the response is REST, so set the variable*/
     AXIS2_MSG_CTX_SET_DOING_REST(response, env, AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env));
 
-    /* TODO response_envelope = TransportUtils.createSOAPMessage(response, msg_ctx.getEnvelope().getNamespace().getName());*/
     soap_ns_uri = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) ?
         AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI:AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     
@@ -586,6 +585,11 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
         return NULL;
     }
     
+    if(NULL != engine)
+    {
+        AXIS2_ENGINE_FREE(engine, env);
+        engine = NULL;
+    } 
     return response;
 }
 
