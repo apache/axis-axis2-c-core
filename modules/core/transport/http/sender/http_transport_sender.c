@@ -337,6 +337,15 @@ axis2_http_transport_sender_invoke
 	AXIS2_OM_OUTPUT_FREE(om_output, env);
 	om_output = NULL;
 	xml_writer = NULL;
+
+    if(NULL != transport_url)
+    {
+        if(NULL != epr)
+        {
+            AXIS2_ENDPOINT_REF_FREE(epr, env);
+            epr = NULL;
+        }
+    }
 	/*
 	 * TODO handle errors
 	 */	

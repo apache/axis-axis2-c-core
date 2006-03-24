@@ -35,6 +35,7 @@ struct axis2_http_server_impl
 	axis2_http_svr_thread_t *svr_thread;
 	int port;
 	axis2_conf_ctx_t* conf_ctx;
+	axis2_conf_ctx_t* conf_ctx_private;
 };
 
 #define AXIS2_INTF_TO_IMPL(http_server) \
@@ -85,6 +86,7 @@ axis2_http_server_create (axis2_env_t **env, axis2_char_t *repo, int port)
     
 	server_impl->svr_thread = NULL;
 	server_impl->conf_ctx = NULL;
+	server_impl->conf_ctx_private = NULL;
 	server_impl->port = port;
 		
     server_impl->http_server.ops = AXIS2_MALLOC((*env)->allocator,
@@ -97,12 +99,19 @@ axis2_http_server_create (axis2_env_t **env, axis2_char_t *repo, int port)
 	}
     if(repo)
     {
-        server_impl->conf_ctx = build_conf_ctx(env, repo);
-	    if(NULL == server_impl->conf_ctx)
+        /**
+         * We first create a private conf ctx which is owned by this server
+         * we only free this private conf context. We should never free the
+         * server_impl->conf_ctx because it may own to any other object which
+         * may lead to double free
+         */ 
+        server_impl->conf_ctx_private = build_conf_ctx(env, repo);
+	    if(NULL == server_impl->conf_ctx_private)
 	    {
 		    axis2_http_server_free((axis2_transport_receiver_t*) server_impl, env);
             return NULL;		
     	}
+        server_impl->conf_ctx = server_impl->conf_ctx_private;
     }
     server_impl->http_server.ops->init = axis2_http_server_init;                        
     server_impl->http_server.ops->start = axis2_http_server_start;
@@ -129,11 +138,15 @@ axis2_http_server_free (axis2_transport_receiver_t *server, axis2_env_t **env)
 		server_impl->svr_thread = NULL;
 	}
     
-	if(NULL != server_impl->conf_ctx)
+	if(NULL != server_impl->conf_ctx_private)
 	{
-		AXIS2_CONF_CTX_FREE(server_impl->conf_ctx, env);
-		server_impl->conf_ctx = NULL;
+		AXIS2_CONF_CTX_FREE(server_impl->conf_ctx_private, env);
+		server_impl->conf_ctx_private = NULL;
 	}
+    /**
+     * Do not free this. It may own to some other object
+     */
+    server_impl->conf_ctx = NULL;
     
 	if(NULL != server->ops)
 	{
