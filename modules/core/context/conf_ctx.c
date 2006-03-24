@@ -531,6 +531,11 @@ axis2_status_t AXIS2_CALL axis2_conf_ctx_free (struct axis2_conf_ctx *conf_ctx,
         AXIS2_CONF_FREE(conf_ctx_impl->conf, env);
         conf_ctx_impl->conf = NULL;
     }
+    if(conf_ctx_impl->mutex)
+    {
+        axis2_thread_mutex_destroy(conf_ctx_impl->mutex);
+        conf_ctx_impl->mutex = NULL;
+    }
     
     AXIS2_FREE((*env)->allocator, conf_ctx_impl);
     conf_ctx_impl = NULL;

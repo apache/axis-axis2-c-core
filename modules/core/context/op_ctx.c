@@ -206,6 +206,11 @@ axis2_status_t AXIS2_CALL axis2_op_ctx_free (struct axis2_op_ctx *op_ctx,
         axis2_hash_free(op_ctx_impl->msg_ctx_map, env);
         op_ctx_impl->msg_ctx_map = NULL;
     }    
+    if(op_ctx_impl->mutex)
+    {
+        axis2_thread_mutex_destroy(op_ctx_impl->mutex);
+        op_ctx_impl->mutex = NULL;
+    }
     
     AXIS2_FREE((*env)->allocator, op_ctx_impl);
     op_ctx_impl = NULL;
