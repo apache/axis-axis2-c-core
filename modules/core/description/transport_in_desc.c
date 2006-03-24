@@ -268,11 +268,11 @@ axis2_transport_in_desc_free (axis2_transport_in_desc_t *transport_in,
         transport_in_impl->faultphase = NULL;
     }
     
-    /*if (transport_in_impl->recv)
+    if (transport_in_impl->recv)
     {
         AXIS2_TRANSPORT_RECEIVER_FREE(transport_in_impl->recv, env);
         transport_in_impl->recv = NULL;
-    }*/
+    }
       
     AXIS2_FREE((*env)->allocator, transport_in_impl);
     
