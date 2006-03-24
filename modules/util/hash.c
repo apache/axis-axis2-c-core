@@ -187,6 +187,7 @@ expand_array (axis2_hash_t * ht)
         hi->this->next = new_array[i];
         new_array[i] = hi->this;
     }
+    AXIS2_FREE (ht->environment->allocator, ht->array);
     ht->array = new_array;
     ht->max = new_max;
 }
@@ -298,6 +299,7 @@ find_entry (axis2_hash_t * ht,
     he->val = val;
     *hep = he;
     ht->count++;
+    ht->array[hash & ht->max] = *hep;
     return hep;
 }
 
@@ -364,11 +366,13 @@ axis2_hash_set (axis2_hash_t *ht,
         if (!val)
         {
             /* delete entry */
-            axis2_hash_entry_t *old = *hep;
+            /*axis2_hash_entry_t *old = *hep;
             *hep = (*hep)->next;
             old->next = ht->free;
-            ht->free = old;
+            ht->free = old;*/
             --ht->count;
+            AXIS2_FREE(ht->environment->allocator, *hep);
+            *hep = NULL;
         }
         else
         {
