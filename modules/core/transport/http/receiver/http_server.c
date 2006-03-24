@@ -128,11 +128,13 @@ axis2_http_server_free (axis2_transport_receiver_t *server, axis2_env_t **env)
 		AXIS2_HTTP_SVR_THREAD_FREE(server_impl->svr_thread, env);
 		server_impl->svr_thread = NULL;
 	}
+    
 	if(NULL != server_impl->conf_ctx)
 	{
 		AXIS2_CONF_CTX_FREE(server_impl->conf_ctx, env);
 		server_impl->conf_ctx = NULL;
 	}
+    
 	if(NULL != server->ops)
 	{
         AXIS2_FREE((*env)->allocator, server->ops);

@@ -44,7 +44,7 @@ typedef struct axis2_transport_out_desc_impl
     axis2_qname_t *qname;
     
     /**
-     * This will have a shallow copy and will not be freed by the descructor
+     * This will have a shallow copy, but will be freed by the descructor
      */
     axis2_transport_sender_t *sender;
     

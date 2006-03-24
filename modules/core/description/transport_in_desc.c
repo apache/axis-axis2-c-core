@@ -41,7 +41,7 @@ typedef struct axis2_transport_in_desc_impl
      */
     axis2_qname_t *qname;
     /**
-     * This will have a shallow copy and will not be freed by the descructor
+     * This will have a shallow copy, but will be freed by the descructor
      */
     axis2_transport_receiver_t *recv;
     /** to store handler in inFlow */
@@ -268,7 +268,11 @@ axis2_transport_in_desc_free (axis2_transport_in_desc_t *transport_in,
         transport_in_impl->faultphase = NULL;
     }
     
-    transport_in_impl->recv = NULL;
+    /*if (transport_in_impl->recv)
+    {
+        AXIS2_TRANSPORT_RECEIVER_FREE(transport_in_impl->recv, env);
+        transport_in_impl->recv = NULL;
+    }*/
       
     AXIS2_FREE((*env)->allocator, transport_in_impl);
     
@@ -375,6 +379,13 @@ axis2_transport_in_desc_set_recv(axis2_transport_in_desc_t *transport_in,
     AXIS2_PARAM_CHECK((*env)->error, recv, AXIS2_FAILURE);
    
     transport_in_impl = AXIS2_INTF_TO_IMPL(transport_in);
+    
+    if (transport_in_impl->recv)
+    {
+        AXIS2_TRANSPORT_RECEIVER_FREE(transport_in_impl->recv, env);
+        transport_in_impl->recv = NULL;
+    }
+      
     transport_in_impl->recv = recv;
     return AXIS2_SUCCESS;
 }
