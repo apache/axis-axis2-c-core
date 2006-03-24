@@ -175,8 +175,21 @@ axis2_param_set_value(axis2_param_t *param,
 							axis2_env_t **env, 
 							void *value)
 {
+    void *param_value = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
+    param_value = axis2_param_get_value(param, env);
+    if(param_value)
+    {
+        if(param->ops && param->ops->value_free)
+        { 
+            param->ops->value_free(param_value, env);
+        }
+        else /* we assume that param value is axis2_char_t* */
+        {
+            AXIS2_FREE((*env)->allocator, param_value);
+        }
+    }
     AXIS2_INTF_TO_IMPL(param)->value = value;
     return AXIS2_SUCCESS;
 }
