@@ -149,3 +149,52 @@ axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
     return new_msg_ctx;
 }
 
+AXIS2_DECLARE(void)
+axis2_core_utils_reset_out_msg_ctx(axis2_env_t **env,
+                                axis2_msg_ctx_t *out_msg_ctx)
+{
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_transport_in_desc_t *transport_in = NULL;
+    axis2_transport_out_desc_t *transport_out = NULL;
+    axis2_msg_info_headers_t *old_msg_info_headers = NULL;
+    axis2_msg_info_headers_t *msg_info_headers = NULL;
+    axis2_endpoint_ref_t *reply_to = NULL;
+    axis2_endpoint_ref_t *fault_to = NULL;
+    axis2_endpoint_ref_t *to = NULL;
+    axis2_char_t *msg_id = NULL;
+    axis2_relates_to_t *relates_to = NULL;
+    axis2_char_t *action = NULL;
+    axis2_op_ctx_t *op_ctx = NULL;
+    axis2_svc_ctx_t *svc_ctx = NULL;
+    axis2_bool_t doing_rest = AXIS2_FALSE;
+    axis2_bool_t doing_mtom = AXIS2_FALSE;
+    axis2_bool_t server_side = AXIS2_FALSE;
+    axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
+    axis2_property_t *property = NULL;
+    axis2_char_t *msg_uuid = NULL;
+    
+    AXIS2_PARAM_CHECK((*env)->error, out_msg_ctx, NULL);
+    
+    msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(out_msg_ctx, env);
+    if(msg_info_headers)
+    {
+        AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, NULL);
+        AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(msg_info_headers, env, NULL);
+        AXIS2_MSG_INFO_HEADERS_SET_FROM(msg_info_headers, env, NULL);
+        AXIS2_MSG_INFO_HEADERS_SET_RELATES_TO(msg_info_headers, env, NULL);
+    } 
+    
+    AXIS2_MSG_CTX_SET_OP_CTX(out_msg_ctx, env, NULL);
+    AXIS2_MSG_CTX_SET_SVC_CTX(out_msg_ctx, env, NULL);
+    AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_TRANSPORT_OUT, NULL,
+            AXIS2_FALSE);
+    AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, 
+            NULL, AXIS2_FALSE);
+    AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING, 
+            NULL, AXIS2_FALSE);
+            
+    AXIS2_MSG_CTX_SET_SVC_GRP_CTX(out_msg_ctx, env, svc_grp_ctx);
+    
+    return;
+}
+

@@ -37,6 +37,9 @@ extern "C"
     axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
                                 axis2_msg_ctx_t *in_msg_ctx);
 
+    AXIS2_DECLARE(void)
+    axis2_core_utils_reset_out_msg_ctx(axis2_env_t **env,
+                                    axis2_msg_ctx_t *out_msg_ctx);
 /** @} */
     
 #ifdef __cplusplus

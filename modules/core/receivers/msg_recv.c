@@ -422,6 +422,8 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
     }        
     status = AXIS2_ENGINE_SEND(engine, env, out_msg_ctx);
     AXIS2_ENGINE_FREE(engine, env);
+    axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
+    AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
     return status;
 }
 
