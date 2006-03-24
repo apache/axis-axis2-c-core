@@ -530,6 +530,12 @@ axis2_svc_free (axis2_svc_t *svc,
 	    AXIS2_WSDL_SVC_FREE(svc->wsdl_svc, env);
         svc->wsdl_svc = NULL;
     }
+
+    if(svc_impl->filename)
+    {
+        AXIS2_FREE((*env)->allocator, svc_impl->filename);
+        svc_impl->filename = NULL;
+    }
     
     svc_impl->parent = NULL;
     
