@@ -130,6 +130,12 @@ axis2_file_free (axis2_file_t *file,
         AXIS2_FREE((*env)->allocator, file_impl->path);
         file_impl->path = NULL;
     }
+	
+    if(file_impl->file.ops)
+    {
+        AXIS2_FREE((*env)->allocator, file_impl->file.ops);
+        file_impl->file.ops = NULL;
+    }
     
     if(file_impl)
     {
