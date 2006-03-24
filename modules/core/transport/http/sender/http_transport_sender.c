@@ -131,6 +131,12 @@ axis2_http_transport_sender_free
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     transport_sender_impl = AXIS2_INTF_TO_IMPL(transport_sender);
 
+    if(NULL != transport_sender_impl->http_version)
+    {
+        AXIS2_FREE((*env)->allocator, transport_sender_impl->http_version);
+        transport_sender_impl->http_version = NULL;
+    }
+
     if(NULL != transport_sender->ops)
         AXIS2_FREE((*env)->allocator, transport_sender->ops);
     
