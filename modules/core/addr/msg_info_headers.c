@@ -506,6 +506,11 @@ axis2_msg_info_headers_free(struct axis2_msg_info_headers *msg_info_headers,
     
     msg_info_headers_impl = AXIS2_INTF_TO_IMPL(msg_info_headers);
     
+    if (msg_info_headers_impl->to)
+    {
+        AXIS2_ENDPOINT_REF_FREE(msg_info_headers_impl->to, env);
+        msg_info_headers_impl->to = NULL;
+    }
     if (msg_info_headers_impl->msg_info_headers.ops)
     {
         AXIS2_FREE((*env)->allocator, msg_info_headers_impl->msg_info_headers.ops);
