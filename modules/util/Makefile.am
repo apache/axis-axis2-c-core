@@ -5,11 +5,8 @@ noinst_HEADERS = axis2_hash.h \
 				axis2_utils.h
 
 include_HEADERS = axis2_hash.h \
-				axis2_string.h \
-				axis2_array_list.h \
-				axis2_log_default.h \
-				axis2_error_default.h \
-				axis2_linked_list.h
+					axis2_string.h
+
                 
 
 libaxis2_util_la_SOURCES = hash.c \
