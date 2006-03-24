@@ -41,48 +41,94 @@ typedef struct axis2_endpoint_ref_impl
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(endpoint_ref) ((axis2_endpoint_ref_impl_t *)endpoint_ref)
 
-axis2_char_t* AXIS2_CALL axis2_endpoint_ref_get_address(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_address(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_char_t *address);
-axis2_qname_t* AXIS2_CALL axis2_endpoint_ref_get_interface_qname(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_interface_qname(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_qname_t *interface_qname);
-axis2_any_content_type_t* AXIS2_CALL axis2_endpoint_ref_get_ref_properties(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_ref_properties(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_any_content_type_t *ref_properties);
-axis2_any_content_type_t* AXIS2_CALL axis2_endpoint_ref_get_ref_params(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_ref_params(struct axis2_endpoint_ref *endpoint_ref,
-                                                    axis2_env_t **env,
-                                                    axis2_any_content_type_t* any_content_type);
-axis2_svc_name_t* AXIS2_CALL axis2_endpoint_ref_get_svc_name(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_svc_name(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_svc_name_t *svc_name);
-axis2_om_node_t* AXIS2_CALL axis2_endpoint_ref_get_policies(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_policies(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_om_node_t *policies);
-axis2_any_content_type_t* AXIS2_CALL axis2_endpoint_ref_get_metadata(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_metadata(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_any_content_type_t *metadata);
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_add_ref_param(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_qname_t *qname, axis2_char_t *value);
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_free (struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env);
 
 
-axis2_endpoint_ref_t* AXIS2_CALL axis2_endpoint_ref_create(axis2_env_t **env, axis2_char_t *address) 
+axis2_char_t* AXIS2_CALL 
+axis2_endpoint_ref_get_address(struct axis2_endpoint_ref *endpoint_ref, 
+                               axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_address(struct axis2_endpoint_ref *endpoint_ref, 
+                               axis2_env_t **env, 
+                               axis2_char_t *address);
+                               
+axis2_qname_t* AXIS2_CALL 
+axis2_endpoint_ref_get_interface_qname(struct axis2_endpoint_ref *endpoint_ref, 
+                                       axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_interface_qname(struct axis2_endpoint_ref *endpoint_ref, 
+                                       axis2_env_t **env, 
+                                       axis2_qname_t *interface_qname);
+                                       
+axis2_any_content_type_t* AXIS2_CALL 
+axis2_endpoint_ref_get_ref_properties(struct axis2_endpoint_ref *endpoint_ref, 
+                                      axis2_env_t **env);
+                                      
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_ref_properties(struct axis2_endpoint_ref *endpoint_ref, 
+                                      axis2_env_t **env, 
+                                      axis2_any_content_type_t *ref_properties);
+
+                                      
+axis2_any_content_type_t* AXIS2_CALL 
+axis2_endpoint_ref_get_ref_params(struct axis2_endpoint_ref *endpoint_ref, 
+                                  axis2_env_t **env);
+                                  
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_ref_params(struct axis2_endpoint_ref *endpoint_ref,
+                                  axis2_env_t **env,
+                                  axis2_any_content_type_t* any_content_type);
+                                  
+axis2_svc_name_t* AXIS2_CALL 
+axis2_endpoint_ref_get_svc_name(struct axis2_endpoint_ref *endpoint_ref, 
+                                axis2_env_t **env);
+                                
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_svc_name(struct axis2_endpoint_ref *endpoint_ref, 
+                                axis2_env_t **env, 
+                                axis2_svc_name_t *svc_name);
+                                
+axis2_om_node_t* AXIS2_CALL 
+axis2_endpoint_ref_get_policies(struct axis2_endpoint_ref *endpoint_ref, 
+                                axis2_env_t **env);
+                                
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_policies(struct axis2_endpoint_ref *endpoint_ref, 
+                                axis2_env_t **env, 
+                                axis2_om_node_t *policies);
+                                
+axis2_any_content_type_t* AXIS2_CALL 
+axis2_endpoint_ref_get_metadata(struct axis2_endpoint_ref *endpoint_ref, 
+                                axis2_env_t **env);
+                                
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_metadata(struct axis2_endpoint_ref *endpoint_ref, 
+                                axis2_env_t **env, 
+                                axis2_any_content_type_t *metadata);
+                                
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_add_ref_param(struct axis2_endpoint_ref *endpoint_ref, 
+                                 axis2_env_t **env, 
+                                 axis2_qname_t *qname, 
+                                 axis2_char_t *value);
+                                 
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_free (struct axis2_endpoint_ref *endpoint_ref, 
+                         axis2_env_t **env);
+
+
+
+axis2_endpoint_ref_t* AXIS2_CALL 
+axis2_endpoint_ref_create(axis2_env_t **env, 
+                          axis2_char_t *address) 
 {
     axis2_endpoint_ref_impl_t *endpoint_ref_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
-    endpoint_ref_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_endpoint_ref_impl_t) );
+    endpoint_ref_impl = AXIS2_MALLOC( (*env)->allocator, 
+                            sizeof(axis2_endpoint_ref_impl_t) );
     if (!endpoint_ref_impl)
     { 
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -110,7 +156,8 @@ axis2_endpoint_ref_t* AXIS2_CALL axis2_endpoint_ref_create(axis2_env_t **env, ax
     }
     
     /* initialize ops */
-    endpoint_ref_impl->endpoint_ref.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_endpoint_ref_ops_t) );
+    endpoint_ref_impl->endpoint_ref.ops  = 
+            AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_endpoint_ref_ops_t) );
     if (!endpoint_ref_impl->endpoint_ref.ops)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -118,22 +165,54 @@ axis2_endpoint_ref_t* AXIS2_CALL axis2_endpoint_ref_create(axis2_env_t **env, ax
         return NULL;        
     }
 
-    endpoint_ref_impl->endpoint_ref.ops->get_address = axis2_endpoint_ref_get_address;
-    endpoint_ref_impl->endpoint_ref.ops->set_address = axis2_endpoint_ref_set_address;
-    endpoint_ref_impl->endpoint_ref.ops->get_interface_qname = axis2_endpoint_ref_get_interface_qname;
-    endpoint_ref_impl->endpoint_ref.ops->set_interface_qname = axis2_endpoint_ref_set_interface_qname;
-    endpoint_ref_impl->endpoint_ref.ops->get_ref_properties = axis2_endpoint_ref_get_ref_properties;
-    endpoint_ref_impl->endpoint_ref.ops->set_ref_properties = axis2_endpoint_ref_set_ref_properties;
-    endpoint_ref_impl->endpoint_ref.ops->get_ref_params = axis2_endpoint_ref_get_ref_params;
-    endpoint_ref_impl->endpoint_ref.ops->set_ref_params = axis2_endpoint_ref_set_ref_params;
-    endpoint_ref_impl->endpoint_ref.ops->get_svc_name = axis2_endpoint_ref_get_svc_name;
-    endpoint_ref_impl->endpoint_ref.ops->set_svc_name = axis2_endpoint_ref_set_svc_name;
-    endpoint_ref_impl->endpoint_ref.ops->get_policies = axis2_endpoint_ref_get_policies;
-    endpoint_ref_impl->endpoint_ref.ops->set_policies = axis2_endpoint_ref_set_policies;
-    endpoint_ref_impl->endpoint_ref.ops->get_metadata = axis2_endpoint_ref_get_metadata;
-    endpoint_ref_impl->endpoint_ref.ops->set_metadata = axis2_endpoint_ref_set_metadata;
-    endpoint_ref_impl->endpoint_ref.ops->add_ref_param = axis2_endpoint_ref_add_ref_param;
-    endpoint_ref_impl->endpoint_ref.ops->free = axis2_endpoint_ref_free;
+    endpoint_ref_impl->endpoint_ref.ops->get_address = 
+        axis2_endpoint_ref_get_address;
+        
+    endpoint_ref_impl->endpoint_ref.ops->set_address = 
+        axis2_endpoint_ref_set_address;
+        
+    endpoint_ref_impl->endpoint_ref.ops->get_interface_qname = 
+        axis2_endpoint_ref_get_interface_qname;
+        
+    endpoint_ref_impl->endpoint_ref.ops->set_interface_qname = 
+        axis2_endpoint_ref_set_interface_qname;
+    
+    endpoint_ref_impl->endpoint_ref.ops->get_ref_properties = 
+        axis2_endpoint_ref_get_ref_properties;
+        
+    endpoint_ref_impl->endpoint_ref.ops->set_ref_properties = 
+        axis2_endpoint_ref_set_ref_properties;
+        
+    endpoint_ref_impl->endpoint_ref.ops->get_ref_params = 
+        axis2_endpoint_ref_get_ref_params;
+        
+    endpoint_ref_impl->endpoint_ref.ops->set_ref_params = 
+        axis2_endpoint_ref_set_ref_params;
+        
+    endpoint_ref_impl->endpoint_ref.ops->get_svc_name = 
+        axis2_endpoint_ref_get_svc_name;
+        
+    endpoint_ref_impl->endpoint_ref.ops->set_svc_name = 
+        axis2_endpoint_ref_set_svc_name;
+        
+    endpoint_ref_impl->endpoint_ref.ops->get_policies = 
+        axis2_endpoint_ref_get_policies;
+        
+    endpoint_ref_impl->endpoint_ref.ops->set_policies = 
+        axis2_endpoint_ref_set_policies;
+        
+    endpoint_ref_impl->endpoint_ref.ops->get_metadata = 
+        axis2_endpoint_ref_get_metadata;
+        
+    endpoint_ref_impl->endpoint_ref.ops->set_metadata = 
+        axis2_endpoint_ref_set_metadata;
+        
+    endpoint_ref_impl->endpoint_ref.ops->add_ref_param = 
+        axis2_endpoint_ref_add_ref_param;
+        
+    endpoint_ref_impl->endpoint_ref.ops->free = 
+        axis2_endpoint_ref_free;
+        
 
     return &(endpoint_ref_impl->endpoint_ref);
 }
@@ -142,8 +221,9 @@ axis2_endpoint_ref_t* AXIS2_CALL axis2_endpoint_ref_create(axis2_env_t **env, ax
 /**
  * Method get_address
  */
-axis2_char_t* AXIS2_CALL axis2_endpoint_ref_get_address(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env) 
+axis2_char_t* AXIS2_CALL 
+axis2_endpoint_ref_get_address(struct axis2_endpoint_ref *endpoint_ref, 
+                               axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(endpoint_ref)->address;
@@ -154,8 +234,10 @@ axis2_char_t* AXIS2_CALL axis2_endpoint_ref_get_address(struct axis2_endpoint_re
  *
  * @param address
  */
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_address(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_char_t *address) 
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_address(struct axis2_endpoint_ref *endpoint_ref, 
+                               axis2_env_t **env, 
+                               axis2_char_t *address) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(NULL != AXIS2_INTF_TO_IMPL(endpoint_ref)->address)
@@ -171,8 +253,9 @@ axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_address(struct axis2_endpoint_r
 /**
  * Method get_interface_qname
  */
-axis2_qname_t* AXIS2_CALL axis2_endpoint_ref_get_interface_qname(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env) 
+axis2_qname_t* AXIS2_CALL 
+axis2_endpoint_ref_get_interface_qname(struct axis2_endpoint_ref *endpoint_ref, 
+                                       axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(endpoint_ref)->interface_qname;
@@ -183,8 +266,10 @@ axis2_qname_t* AXIS2_CALL axis2_endpoint_ref_get_interface_qname(struct axis2_en
  *
  * @param interface_qname
  */
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_interface_qname(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_qname_t *interface_qname) 
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_interface_qname(struct axis2_endpoint_ref *endpoint_ref, 
+                                       axis2_env_t **env, 
+                                       axis2_qname_t *interface_qname) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(endpoint_ref)->interface_qname = interface_qname;
@@ -194,8 +279,9 @@ axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_interface_qname(struct axis2_en
 /**
  * Method get_ref_properties
  */
-axis2_any_content_type_t* AXIS2_CALL axis2_endpoint_ref_get_ref_properties(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env) 
+axis2_any_content_type_t* AXIS2_CALL 
+axis2_endpoint_ref_get_ref_properties(struct axis2_endpoint_ref *endpoint_ref, 
+                                      axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(endpoint_ref)->ref_properties;
@@ -206,8 +292,10 @@ axis2_any_content_type_t* AXIS2_CALL axis2_endpoint_ref_get_ref_properties(struc
  *
  * @param ref_properties
  */
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_ref_properties(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_any_content_type_t *ref_properties) 
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_ref_properties(struct axis2_endpoint_ref *endpoint_ref, 
+                                      axis2_env_t **env, 
+                                      axis2_any_content_type_t *ref_properties) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(endpoint_ref)->ref_properties = ref_properties;
@@ -217,16 +305,18 @@ axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_ref_properties(struct axis2_end
 /**
  * Method get_ref_params
  */
-axis2_any_content_type_t* AXIS2_CALL axis2_endpoint_ref_get_ref_params(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env) 
+axis2_any_content_type_t* AXIS2_CALL 
+axis2_endpoint_ref_get_ref_params(struct axis2_endpoint_ref *endpoint_ref, 
+                                  axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(endpoint_ref)->ref_params;
 }
 
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_ref_params(struct axis2_endpoint_ref *endpoint_ref,
-                                                    axis2_env_t **env,
-                                                    axis2_any_content_type_t* any_content_type)
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_ref_params(struct axis2_endpoint_ref *endpoint_ref,
+                                  axis2_env_t **env,
+                                  axis2_any_content_type_t* any_content_type)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(endpoint_ref)->ref_params = any_content_type;
@@ -236,8 +326,9 @@ axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_ref_params(struct axis2_endpoin
 /**
  * Method get_svc_name
  */
-axis2_svc_name_t* AXIS2_CALL axis2_endpoint_ref_get_svc_name(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env) 
+axis2_svc_name_t* AXIS2_CALL 
+axis2_endpoint_ref_get_svc_name(struct axis2_endpoint_ref *endpoint_ref, 
+                                axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(endpoint_ref)->svc_name;
@@ -248,46 +339,57 @@ axis2_svc_name_t* AXIS2_CALL axis2_endpoint_ref_get_svc_name(struct axis2_endpoi
  *
  * @param svc_name
  */
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_svc_name(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_svc_name_t *svc_name) 
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_svc_name(struct axis2_endpoint_ref *endpoint_ref, 
+                                axis2_env_t **env, 
+                                axis2_svc_name_t *svc_name) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(endpoint_ref)->svc_name = svc_name;
     return AXIS2_SUCCESS;
 }
 
-axis2_om_node_t* AXIS2_CALL axis2_endpoint_ref_get_policies(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env) 
+axis2_om_node_t* AXIS2_CALL 
+axis2_endpoint_ref_get_policies(struct axis2_endpoint_ref *endpoint_ref, 
+                                axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(endpoint_ref)->policies;
 }
 
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_policies(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_om_node_t *policies) 
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_policies(struct axis2_endpoint_ref *endpoint_ref, 
+                                axis2_env_t **env, 
+                                axis2_om_node_t *policies) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(endpoint_ref)->policies = policies;
     return AXIS2_SUCCESS;
 }
 
-axis2_any_content_type_t* AXIS2_CALL axis2_endpoint_ref_get_metadata(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env) 
+axis2_any_content_type_t* AXIS2_CALL 
+axis2_endpoint_ref_get_metadata(struct axis2_endpoint_ref *endpoint_ref, 
+                                axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(endpoint_ref)->metadata;
 }
 
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_set_metadata(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_any_content_type_t *metadata) 
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_set_metadata(struct axis2_endpoint_ref *endpoint_ref, 
+                               axis2_env_t **env, 
+                               axis2_any_content_type_t *metadata) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(endpoint_ref)->metadata = metadata;
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_add_ref_param(struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env, axis2_qname_t *qname, axis2_char_t *value) 
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_add_ref_param(struct axis2_endpoint_ref *endpoint_ref, 
+                                 axis2_env_t **env, 
+                                 axis2_qname_t *qname, 
+                                 axis2_char_t *value) 
 {
     axis2_endpoint_ref_impl_t *endpoint_ref_impl = NULL;
     
@@ -305,8 +407,9 @@ axis2_status_t AXIS2_CALL axis2_endpoint_ref_add_ref_param(struct axis2_endpoint
     return AXIS2_ANY_CONTENT_TYPE_ADD_VALUE(endpoint_ref_impl->ref_params, env, qname, value);
 }
 
-axis2_status_t AXIS2_CALL axis2_endpoint_ref_free (struct axis2_endpoint_ref *endpoint_ref, 
-                                               axis2_env_t **env)
+axis2_status_t AXIS2_CALL 
+axis2_endpoint_ref_free (struct axis2_endpoint_ref *endpoint_ref, 
+                         axis2_env_t **env)
 {
     axis2_endpoint_ref_impl_t *endpoint_ref_impl = NULL;
     

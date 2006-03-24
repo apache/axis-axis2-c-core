@@ -50,14 +50,21 @@ typedef struct axis2_callback_recv axis2_callback_recv_t;
  */  
 struct axis2_callback_recv_ops
 {
-    axis2_msg_recv_t* (AXIS2_CALL *get_base)(struct axis2_callback_recv *callback_recv, 
-                                                axis2_env_t **env);
-    axis2_status_t (AXIS2_CALL *free)(struct axis2_callback_recv *callback_recv, 
-                                       axis2_env_t **env);
-    axis2_status_t (AXIS2_CALL *add_callback)(struct axis2_callback_recv *callback_recv, 
-        axis2_env_t **env,
-        axis2_char_t *msg_id, 
-        axis2_callback_t *callback);
+    axis2_msg_recv_t* (AXIS2_CALL *
+    get_base)(struct axis2_callback_recv *callback_recv, 
+              axis2_env_t **env);
+          
+          
+    axis2_status_t (AXIS2_CALL *
+    free)(struct axis2_callback_recv *callback_recv, 
+          axis2_env_t **env);
+          
+          
+    axis2_status_t (AXIS2_CALL *
+    add_callback)(struct axis2_callback_recv *callback_recv, 
+                  axis2_env_t **env,
+                  axis2_char_t *msg_id, 
+                  axis2_callback_t *callback);
 };
 
 /** 
@@ -69,13 +76,19 @@ struct axis2_callback_recv
     axis2_callback_recv_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_callback_recv_t*) axis2_callback_recv_create(axis2_env_t **env);
+AXIS2_DECLARE(axis2_callback_recv_t*) 
+axis2_callback_recv_create(axis2_env_t **env);
     
 /************************** Start of function macros **************************/
 
-#define AXIS2_CALLBACK_RECV_GET_BASE(callback_recv, env) ((callback_recv)->ops->get_base(callback_recv, env))
-#define AXIS2_CALLBACK_RECV_FREE(callback_recv, env) ((callback_recv)->ops->free(callback_recv, env))
-#define AXIS2_CALLBACK_RECV_ADD_CALLBACK(callback_recv, env, msg_id, callback) ((callback_recv)->ops->add_callback(callback_recv, env, msg_id, callback))
+#define AXIS2_CALLBACK_RECV_GET_BASE(callback_recv, env) \
+        ((callback_recv)->ops->get_base(callback_recv, env))
+        
+#define AXIS2_CALLBACK_RECV_FREE(callback_recv, env) \
+        ((callback_recv)->ops->free(callback_recv, env))
+        
+#define AXIS2_CALLBACK_RECV_ADD_CALLBACK(callback_recv, env, msg_id, callback)\
+        ((callback_recv)->ops->add_callback(callback_recv, env, msg_id, callback))
     
 /************************** End of function macros ****************************/    
 

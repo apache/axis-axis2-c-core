@@ -31,14 +31,33 @@ typedef struct axis2_relates_to_impl
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(relates_to) ((axis2_relates_to_impl_t *)relates_to)
 
-axis2_char_t* AXIS2_CALL axis2_relates_to_get_value(struct axis2_relates_to *relates_to, axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_relates_to_set_value(struct axis2_relates_to *relates_to, axis2_env_t **env, axis2_char_t * value);
-axis2_char_t* AXIS2_CALL axis2_relates_to_get_relationship_type(struct axis2_relates_to *relates_to, axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to, axis2_env_t **env, axis2_char_t *relationship_type);
-axis2_status_t AXIS2_CALL axis2_relates_to_free (struct axis2_relates_to *relates_to, 
-                                               axis2_env_t **env);
 
-axis2_relates_to_t* AXIS2_CALL axis2_relates_to_create(axis2_env_t **env, axis2_char_t *value, axis2_char_t *relationship_type) 
+axis2_char_t* AXIS2_CALL 
+axis2_relates_to_get_value(struct axis2_relates_to *relates_to, 
+                           axis2_env_t **env);
+                           
+axis2_status_t AXIS2_CALL 
+axis2_relates_to_set_value(struct axis2_relates_to *relates_to, 
+                           axis2_env_t **env, 
+                           axis2_char_t * value);
+                           
+axis2_char_t* AXIS2_CALL 
+axis2_relates_to_get_relationship_type(struct axis2_relates_to *relates_to, 
+                                       axis2_env_t **env);
+                                       
+axis2_status_t AXIS2_CALL 
+axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to, 
+                                       axis2_env_t **env, 
+                                       axis2_char_t *relationship_type);
+                                       
+axis2_status_t AXIS2_CALL 
+axis2_relates_to_free (struct axis2_relates_to *relates_to, 
+                       axis2_env_t **env);
+
+axis2_relates_to_t* AXIS2_CALL 
+axis2_relates_to_create(axis2_env_t **env, 
+                        axis2_char_t *value, 
+                        axis2_char_t *relationship_type) 
 {
     axis2_relates_to_impl_t *relates_to_impl = NULL;
     
@@ -86,22 +105,36 @@ axis2_relates_to_t* AXIS2_CALL axis2_relates_to_create(axis2_env_t **env, axis2_
         return NULL;        
     }
 
-    relates_to_impl->relates_to.ops->get_value = axis2_relates_to_get_value;
-    relates_to_impl->relates_to.ops->set_value = axis2_relates_to_set_value;
-    relates_to_impl->relates_to.ops->get_relationship_type = axis2_relates_to_get_relationship_type;
-    relates_to_impl->relates_to.ops->set_relationship_type = axis2_relates_to_set_relationship_type;
-    relates_to_impl->relates_to.ops->free = axis2_relates_to_free;
+    relates_to_impl->relates_to.ops->get_value = 
+        axis2_relates_to_get_value;
+        
+    relates_to_impl->relates_to.ops->set_value = 
+        axis2_relates_to_set_value;
+        
+    relates_to_impl->relates_to.ops->get_relationship_type = 
+        axis2_relates_to_get_relationship_type;
+        
+    relates_to_impl->relates_to.ops->set_relationship_type = 
+        axis2_relates_to_set_relationship_type;
+        
+    relates_to_impl->relates_to.ops->free = 
+        axis2_relates_to_free;
 
     return &(relates_to_impl->relates_to);
 }
 
-axis2_char_t* AXIS2_CALL axis2_relates_to_get_value(struct axis2_relates_to *relates_to, axis2_env_t **env) 
+axis2_char_t* AXIS2_CALL 
+axis2_relates_to_get_value(struct axis2_relates_to *relates_to, 
+                           axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(relates_to)->value;
 }
 
-axis2_status_t AXIS2_CALL axis2_relates_to_set_value(struct axis2_relates_to *relates_to, axis2_env_t **env, axis2_char_t * value) 
+axis2_status_t AXIS2_CALL 
+axis2_relates_to_set_value(struct axis2_relates_to *relates_to, 
+                           axis2_env_t **env, 
+                           axis2_char_t * value) 
 {
     axis2_relates_to_impl_t *relates_to_impl = NULL;
     
@@ -128,13 +161,18 @@ axis2_status_t AXIS2_CALL axis2_relates_to_set_value(struct axis2_relates_to *re
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t* AXIS2_CALL axis2_relates_to_get_relationship_type(struct axis2_relates_to *relates_to, axis2_env_t **env) 
+axis2_char_t* AXIS2_CALL 
+axis2_relates_to_get_relationship_type(struct axis2_relates_to *relates_to, 
+                                       axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(relates_to)->relationship_type;
 }
 
-axis2_status_t AXIS2_CALL axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to, axis2_env_t **env, axis2_char_t *relationship_type) 
+axis2_status_t AXIS2_CALL 
+axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to, 
+                                       axis2_env_t **env, 
+                                       axis2_char_t *relationship_type) 
 {
     axis2_relates_to_impl_t *relates_to_impl = NULL;
     
@@ -150,7 +188,8 @@ axis2_status_t AXIS2_CALL axis2_relates_to_set_relationship_type(struct axis2_re
 
     if (relationship_type)
     {
-        relates_to_impl->relationship_type = (axis2_char_t*)AXIS2_STRDUP(relationship_type, env);
+        relates_to_impl->relationship_type = 
+                (axis2_char_t*)AXIS2_STRDUP(relationship_type, env);
         if (!(relates_to_impl->relationship_type))
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -161,8 +200,9 @@ axis2_status_t AXIS2_CALL axis2_relates_to_set_relationship_type(struct axis2_re
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL axis2_relates_to_free (struct axis2_relates_to *relates_to, 
-                                               axis2_env_t **env)
+axis2_status_t AXIS2_CALL 
+axis2_relates_to_free (struct axis2_relates_to *relates_to, 
+                       axis2_env_t **env)
 {
     axis2_relates_to_impl_t *relates_to_impl = NULL;
     

@@ -37,26 +37,37 @@ typedef struct axis2_callback_recv_impl
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(callback_recv) ((axis2_callback_recv_impl_t *)callback_recv)
 
-axis2_msg_recv_t* AXIS2_CALL axis2_callback_recv_get_base(struct axis2_callback_recv *callback_recv, 
-                                            axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_callback_recv_free (struct axis2_callback_recv *callback_recv, 
-                                   axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_callback_recv_add_callback(struct axis2_callback_recv *callback_recv, 
-    axis2_env_t **env,
-    axis2_char_t *msg_id, 
-    axis2_callback_t *callback);
-axis2_status_t AXIS2_CALL axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv, 
-    axis2_env_t **env,
-    axis2_msg_ctx_t *msg_ctx,
-    void *callback_recv_param);
 
-axis2_callback_recv_t* AXIS2_CALL axis2_callback_recv_create(axis2_env_t **env) 
+axis2_msg_recv_t* AXIS2_CALL 
+axis2_callback_recv_get_base(struct axis2_callback_recv *callback_recv, 
+                             axis2_env_t **env);
+                             
+axis2_status_t AXIS2_CALL 
+axis2_callback_recv_free (struct axis2_callback_recv *callback_recv, 
+                          axis2_env_t **env);
+                          
+axis2_status_t AXIS2_CALL 
+axis2_callback_recv_add_callback(struct axis2_callback_recv *callback_recv, 
+                                axis2_env_t **env,
+                                axis2_char_t *msg_id, 
+                                axis2_callback_t *callback);
+                                
+axis2_status_t AXIS2_CALL 
+axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv, 
+                            axis2_env_t **env,
+                            axis2_msg_ctx_t *msg_ctx,
+                            void *callback_recv_param);
+
+axis2_callback_recv_t* AXIS2_CALL 
+axis2_callback_recv_create(axis2_env_t **env) 
 {
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
-    callback_recv_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_callback_recv_impl_t) );
+    callback_recv_impl = 
+            AXIS2_MALLOC((*env)->allocator, sizeof(axis2_callback_recv_impl_t) );
+
     if (!callback_recv_impl)
     { 
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -84,7 +95,9 @@ axis2_callback_recv_t* AXIS2_CALL axis2_callback_recv_create(axis2_env_t **env)
     
     /* initialize ops */
     
-    callback_recv_impl->callback_recv.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_callback_recv_ops_t) );
+    callback_recv_impl->callback_recv.ops  = 
+        AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_callback_recv_ops_t) );
+        
     if (!callback_recv_impl->callback_recv.ops)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -92,22 +105,29 @@ axis2_callback_recv_t* AXIS2_CALL axis2_callback_recv_create(axis2_env_t **env)
         return NULL;        
     }
 
-    callback_recv_impl->callback_recv.ops->get_base = axis2_callback_recv_get_base;
-    callback_recv_impl->callback_recv.ops->free = axis2_callback_recv_free;
-    callback_recv_impl->callback_recv.ops->add_callback = axis2_callback_recv_add_callback;    
+    callback_recv_impl->callback_recv.ops->get_base = 
+        axis2_callback_recv_get_base;
+        
+    callback_recv_impl->callback_recv.ops->free = 
+        axis2_callback_recv_free;
+        
+    callback_recv_impl->callback_recv.ops->add_callback = 
+        axis2_callback_recv_add_callback;
     
     return &(callback_recv_impl->callback_recv);
 }
 
-axis2_msg_recv_t* AXIS2_CALL axis2_callback_recv_get_base(struct axis2_callback_recv *callback_recv, 
-                                            axis2_env_t **env)
+axis2_msg_recv_t* AXIS2_CALL 
+axis2_callback_recv_get_base(struct axis2_callback_recv *callback_recv, 
+                             axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(callback_recv)->base;
 }
 
-axis2_status_t AXIS2_CALL axis2_callback_recv_free (struct axis2_callback_recv *callback_recv, 
-                                   axis2_env_t **env)
+axis2_status_t AXIS2_CALL 
+axis2_callback_recv_free (struct axis2_callback_recv *callback_recv, 
+                          axis2_env_t **env)
 {
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
     
@@ -140,10 +160,11 @@ axis2_status_t AXIS2_CALL axis2_callback_recv_free (struct axis2_callback_recv *
 }
 
 
-axis2_status_t AXIS2_CALL axis2_callback_recv_add_callback(struct axis2_callback_recv *callback_recv, 
-    axis2_env_t **env,
-    axis2_char_t *msg_id, 
-    axis2_callback_t *callback) 
+axis2_status_t AXIS2_CALL 
+axis2_callback_recv_add_callback(struct axis2_callback_recv *callback_recv, 
+                                axis2_env_t **env,
+                                axis2_char_t *msg_id, 
+                                axis2_callback_t *callback) 
 {
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
     
@@ -153,15 +174,17 @@ axis2_status_t AXIS2_CALL axis2_callback_recv_add_callback(struct axis2_callback
     
     if (msg_id)
     {
-        axis2_hash_set(callback_recv_impl->callback_map, msg_id, AXIS2_HASH_KEY_STRING, callback);
+        axis2_hash_set(callback_recv_impl->callback_map, 
+                msg_id, AXIS2_HASH_KEY_STRING, callback);
     }    
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv, 
-    axis2_env_t **env,
-    axis2_msg_ctx_t *msg_ctx,
-    void *callback_recv_param)
+axis2_status_t AXIS2_CALL 
+axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv, 
+                            axis2_env_t **env,
+                            axis2_msg_ctx_t *msg_ctx,
+                            void *callback_recv_param)
 {
     axis2_callback_recv_t *callback_recv = NULL;
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
@@ -171,6 +194,7 @@ axis2_status_t AXIS2_CALL axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     callback_recv = (axis2_callback_recv_t*)callback_recv_param;
+
     callback_recv_impl = AXIS2_INTF_TO_IMPL(callback_recv);
     
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
@@ -183,7 +207,9 @@ axis2_status_t AXIS2_CALL axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv
             if (msg_id)
             {
                 axis2_async_result_t *result = NULL;
-                axis2_callback_t *callback = (axis2_callback_t*) axis2_hash_get(callback_recv_impl->callback_map, msg_id, AXIS2_HASH_KEY_STRING);
+                axis2_callback_t *callback = (axis2_callback_t*) 
+                    axis2_hash_get(callback_recv_impl->callback_map, msg_id, AXIS2_HASH_KEY_STRING);
+                    
                 result = axis2_async_result_create(env, msg_ctx);
                 if (callback && result) 
                 {

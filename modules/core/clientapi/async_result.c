@@ -29,18 +29,29 @@ typedef struct axis2_async_result_impl
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(async_result) ((axis2_async_result_impl_t *)async_result)
 
-axis2_soap_envelope_t* AXIS2_CALL axis2_async_result_get_envelope(struct axis2_async_result *async_result, axis2_env_t **env);
-axis2_msg_ctx_t* AXIS2_CALL axis2_async_result_get_result(struct axis2_async_result *async_result, axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_async_result_free (struct axis2_async_result *async_result, 
-                                   axis2_env_t **env);
 
-axis2_async_result_t* AXIS2_CALL axis2_async_result_create(axis2_env_t **env, axis2_msg_ctx_t *result) 
+axis2_soap_envelope_t* AXIS2_CALL 
+axis2_async_result_get_envelope(struct axis2_async_result *async_result, 
+                                axis2_env_t **env);
+                                
+axis2_msg_ctx_t* AXIS2_CALL 
+axis2_async_result_get_result(struct axis2_async_result *async_result, 
+                              axis2_env_t **env);
+                              
+axis2_status_t AXIS2_CALL 
+axis2_async_result_free (struct axis2_async_result *async_result, 
+                         axis2_env_t **env);
+
+axis2_async_result_t* AXIS2_CALL 
+axis2_async_result_create(axis2_env_t **env, 
+                          axis2_msg_ctx_t *result) 
 {
     axis2_async_result_impl_t *async_result_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
-    async_result_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_async_result_impl_t) );
+    async_result_impl = AXIS2_MALLOC((*env)->allocator, 
+                            sizeof(axis2_async_result_impl_t) );
     if (!async_result_impl)
     { 
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -56,7 +67,8 @@ axis2_async_result_t* AXIS2_CALL axis2_async_result_create(axis2_env_t **env, ax
     }
     
     /* initialize ops */    
-    async_result_impl->async_result.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_async_result_ops_t) );
+    async_result_impl->async_result.ops  = 
+            AXIS2_MALLOC((*env)->allocator, sizeof(axis2_async_result_ops_t) );
     if (!async_result_impl->async_result.ops)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -64,14 +76,21 @@ axis2_async_result_t* AXIS2_CALL axis2_async_result_create(axis2_env_t **env, ax
         return NULL;        
     }
 
-    async_result_impl->async_result.ops->get_envelope = axis2_async_result_get_envelope;
-    async_result_impl->async_result.ops->get_result = axis2_async_result_get_result;
-    async_result_impl->async_result.ops->free = axis2_async_result_free;
+    async_result_impl->async_result.ops->get_envelope = 
+        axis2_async_result_get_envelope;
+    
+    async_result_impl->async_result.ops->get_result = 
+        axis2_async_result_get_result;
+    
+    async_result_impl->async_result.ops->free = 
+        axis2_async_result_free;
 
     return &(async_result_impl->async_result);
 }
 
-axis2_soap_envelope_t* AXIS2_CALL axis2_async_result_get_envelope(struct axis2_async_result *async_result, axis2_env_t **env)
+axis2_soap_envelope_t* AXIS2_CALL 
+axis2_async_result_get_envelope(struct axis2_async_result *async_result, 
+                                axis2_env_t **env)
 {
     axis2_async_result_impl_t *async_result_impl = NULL;
         
@@ -87,14 +106,17 @@ axis2_soap_envelope_t* AXIS2_CALL axis2_async_result_get_envelope(struct axis2_a
     return NULL;
 }
 
-axis2_msg_ctx_t* AXIS2_CALL axis2_async_result_get_result(struct axis2_async_result *async_result, axis2_env_t **env)
+axis2_msg_ctx_t* AXIS2_CALL 
+axis2_async_result_get_result(struct axis2_async_result *async_result, 
+                              axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(async_result)->result;
 }
 
-axis2_status_t AXIS2_CALL axis2_async_result_free (struct axis2_async_result *async_result, 
-                                   axis2_env_t **env)
+axis2_status_t AXIS2_CALL 
+axis2_async_result_free (struct axis2_async_result *async_result, 
+                         axis2_env_t **env)
 {
     axis2_async_result_impl_t *async_result_impl = NULL;
     

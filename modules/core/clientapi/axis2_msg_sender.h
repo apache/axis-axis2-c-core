@@ -53,17 +53,18 @@ struct axis2_msg_sender_ops
      * @param axisop
      * @param msgctx
      */    
-    axis2_status_t (AXIS2_CALL *send)(axis2_msg_sender_t *msg_sender, 
-						axis2_env_t **env,
-						axis2_op_t *op,
-						axis2_msg_ctx_t *msg_ctx);
+    axis2_status_t (AXIS2_CALL *
+    send)(axis2_msg_sender_t *msg_sender, 
+		  axis2_env_t **env,
+		  axis2_op_t *op,
+		  axis2_msg_ctx_t *msg_ctx);
 
     /**
      * set the transport to used for sending the SOAP Message
      * @param senderTransport
      */
-    axis2_status_t (AXIS2_CALL *set_transport_info)(
-						axis2_msg_sender_t *msg_sender, 
+    axis2_status_t (AXIS2_CALL *
+    set_transport_info)(axis2_msg_sender_t *msg_sender, 
 						axis2_env_t **env,
 						axis2_char_t *sender_transport);
 
@@ -75,30 +76,32 @@ struct axis2_msg_sender_ops
 	 * @param om_node_to_send - This should be OM Element (payload)
 	 * @return
 	 */
-    axis2_status_t (AXIS2_CALL *send_with_om)(
-						struct axis2_msg_sender *msg_sender, 
-						axis2_env_t **env,
-						axis2_char_t *op_name, 
-						axis2_om_node_t *om_node_to_send);
+    axis2_status_t (AXIS2_CALL *
+    send_with_om)(struct axis2_msg_sender *msg_sender, 
+				  axis2_env_t **env,
+				  axis2_char_t *op_name, 
+				  axis2_om_node_t *om_node_to_send);
 	
 	/**
 	 * Send the SOAP Message, the actual worker
 	 *
 	 */
-    axis2_status_t (AXIS2_CALL *send_with_soap)(
-						axis2_msg_sender_t *msg_sender, 
-        				axis2_env_t **env,
-        				axis2_char_t *op_name, 
-						axis2_soap_envelope_t *envelope);
+    axis2_status_t (AXIS2_CALL *
+    send_with_soap)(axis2_msg_sender_t *msg_sender, 
+        			axis2_env_t **env,
+        			axis2_char_t *op_name, 
+					axis2_soap_envelope_t *envelope);
 	/**
 	 * Get the message information header object. All the sets to 
 	 * msg_info_headers should be done via get_msg_info and a set
 	 */					
-	axis2_msg_info_headers_t* (AXIS2_CALL *get_msg_info_headers)(
-						axis2_msg_sender_t *msg_sender, axis2_env_t **env);
+	axis2_msg_info_headers_t* (AXIS2_CALL *
+    get_msg_info_headers)(axis2_msg_sender_t *msg_sender, 
+                          axis2_env_t **env);
 						
-    axis2_status_t (AXIS2_CALL *free)(struct axis2_msg_sender *msg_sender, 
-						axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+    free)(struct axis2_msg_sender *msg_sender, 
+		  axis2_env_t **env);
 };
 
 /** 
@@ -110,25 +113,28 @@ struct axis2_msg_sender
     axis2_msg_sender_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_msg_sender_t*) axis2_msg_sender_create(axis2_env_t **env, 
+AXIS2_DECLARE(axis2_msg_sender_t*) 
+axis2_msg_sender_create(axis2_env_t **env, 
 						axis2_svc_ctx_t *svc_ctx);
 
     
 /************************** Start of function macros **************************/
 
 #define AXIS2_MSG_SENDER_SEND(msg_sender, env, op, msg_ctx) \
-						((msg_sender)->ops->send(msg_sender, env, \
-						op, msg_ctx))
+		((msg_sender)->ops->send(msg_sender, env, op, msg_ctx))
+        
 #define AXIS2_MSG_SENDER_SET_TRANSPORT_INFO(msg_sender, env, sender_transport)\
-						((msg_sender)->ops->set_transport_info(msg_sender, env,\
-						sender_transport))
-#define AXIS2_MSG_SENDER_SEND_WITH_OM ((msg_sender)->ops->send_with_om(\
-						msg_sender, env, op_name, om_node_to_send))
-#define AXIS2_MSG_SENDER_SEND_WITH_SOAP(msg_sender, env, op_name, \
-						om_node_to_send) ((msg_sender)->ops->send_with_soap(\
-						msg_sender, env, op_name, envelope))
-#define AXIS2_MSG_SENDER_FREE(msg_sender, env) ((msg_sender)->ops->free(\
-						msg_sender, env))
+		((msg_sender)->ops->set_transport_info(msg_sender, env,	sender_transport))
+        
+#define AXIS2_MSG_SENDER_SEND_WITH_OM(msg_sender, env, op_name, om_node_to_send) \
+        ((msg_sender)->ops->send_with_om(msg_sender, env, op_name, om_node_to_send))
+        
+#define AXIS2_MSG_SENDER_SEND_WITH_SOAP(msg_sender, env, op_name, om_node_to_send) \
+        ((msg_sender)->ops->send_with_soap(msg_sender, env, op_name, envelope))
+        
+#define AXIS2_MSG_SENDER_FREE(msg_sender, env) \
+        ((msg_sender)->ops->free(msg_sender, env))
+        
 /************************** End of function macros ****************************/    
 
 /** @} */

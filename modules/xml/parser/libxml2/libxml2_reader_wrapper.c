@@ -214,6 +214,7 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
     
 	axis2_libxml2_reader_wrapper_impl_t *wrapper_impl = NULL;
     AXIS2_ENV_CHECK( env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, filename, NULL);
     
     wrapper_impl = (axis2_libxml2_reader_wrapper_impl_t*)AXIS2_MALLOC((*env)->allocator,
          sizeof(axis2_libxml2_reader_wrapper_impl_t));
@@ -296,9 +297,6 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
 
 /************** create function for io callback function **********************/
 
-
-
-
 AXIS2_DECLARE(axis2_xml_reader_t *)
 axis2_xml_reader_create_for_memory(axis2_env_t **env,
                                     int (*read_input_callback)(char *buffer,int size,void *ctx),
@@ -328,8 +326,10 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
     wrapper_impl->ctx = ctx;
     if(wrapper_impl->close_input_callback)
     {
-        wrapper_impl->reader =  xmlReaderForIO(axis2_libxml2_reader_wrapper_read_input_callback,
-             axis2_libxml2_reader_wrapper_close_input_callback, wrapper_impl, NULL, encoding, XML_PARSE_RECOVER);
+        wrapper_impl->reader =  
+			xmlReaderForIO(axis2_libxml2_reader_wrapper_read_input_callback,
+             			   axis2_libxml2_reader_wrapper_close_input_callback, 
+						   wrapper_impl, NULL, encoding, XML_PARSE_RECOVER);
     }
     else
     {
@@ -408,7 +408,104 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
 	return &(wrapper_impl->parser);
 }
 
+/***************** create function for character buffer ************************/
+AXIS2_DECLARE(axis2_xml_reader_t *)
+axis2_xml_reader_create_for_buffer(axis2_env_t **env,
+                                  const axis2_char_t *buffer,
+                                  int size,
+                                  const axis2_char_t *encoding)
+{    
+	axis2_libxml2_reader_wrapper_impl_t *wrapper_impl = NULL;
+    
+    AXIS2_ENV_CHECK( env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, buffer , AXIS2_FAILURE);
+        
+    wrapper_impl = (axis2_libxml2_reader_wrapper_impl_t*)AXIS2_MALLOC((*env)->allocator,
+         sizeof(axis2_libxml2_reader_wrapper_impl_t));
+    if(!wrapper_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;   
+    }
+    wrapper_impl->close_input_callback = NULL;
+    wrapper_impl->read_input_callback = NULL;
+	wrapper_impl->ctx = NULL;
+	
+    wrapper_impl->reader =  xmlReaderForMemory(buffer, size, 
+								NULL, encoding, XML_PARSE_RECOVER);
 
+    if(!(wrapper_impl->reader))
+    {
+        AXIS2_FREE((*env)->allocator, wrapper_impl);
+        AXIS2_ERROR_SET((*env)->error, 
+				AXIS2_ERROR_CREATING_XML_STREAM_READER, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    xmlTextReaderSetErrorHandler(wrapper_impl->reader, 
+         (xmlTextReaderErrorFunc)axis2_libxml2_reader_wrapper_error_handler, 
+         (*env));
+
+    wrapper_impl->current_event = -1;
+    
+    axis2_libxml2_reader_wrapper_init_map(wrapper_impl);
+    
+    wrapper_impl->parser.ops = NULL;
+    wrapper_impl->parser.ops = (axis2_xml_reader_ops_t*)AXIS2_MALLOC((*env)->allocator,
+                                sizeof(axis2_xml_reader_ops_t));
+    
+    if(!(wrapper_impl->parser.ops))
+    {
+        xmlFreeTextReader(wrapper_impl->reader);
+        AXIS2_FREE((*env)->allocator, wrapper_impl);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+	
+	wrapper_impl->parser.ops->free = axis2_libxml2_reader_wrapper_free;
+    wrapper_impl->parser.ops->next = axis2_libxml2_reader_wrapper_next;
+    wrapper_impl->parser.ops->xml_free = axis2_libxml2_reader_wrapper_xml_free;
+    
+    wrapper_impl->parser.ops->get_attribute_count =
+        axis2_libxml2_reader_wrapper_get_attribute_count;
+    wrapper_impl->parser.ops->get_attribute_name_by_number =
+        axis2_libxml2_reader_wrapper_get_attribute_name_by_number;
+    wrapper_impl->parser.ops->get_attribute_value_by_number = 
+        axis2_libxml2_reader_wrapper_get_attribute_value_by_number;
+    wrapper_impl->parser.ops->get_attribute_namespace_by_number =
+        axis2_libxml2_reader_wrapper_get_attribute_namespace_by_number;
+    wrapper_impl->parser.ops->get_attribute_prefix_by_number =
+        axis2_libxml2_reader_wrapper_get_attribute_prefix_by_number;
+    
+    wrapper_impl->parser.ops->get_value =
+        axis2_libxml2_reader_wrapper_get_value;
+    wrapper_impl->parser.ops->get_prefix =
+        axis2_libxml2_reader_wrapper_get_prefix;
+    wrapper_impl->parser.ops->get_name =
+        axis2_libxml2_reader_wrapper_get_name;
+        
+        
+    wrapper_impl->parser.ops->get_namespace_count =
+        axis2_libxml2_reader_wrapper_get_namespace_count;
+    wrapper_impl->parser.ops->get_namespace_prefix_by_number =
+        axis2_libxml2_reader_wrapper_get_namespace_prefix_by_number;
+    wrapper_impl->parser.ops->get_namespace_uri_by_number =
+        axis2_libxml2_reader_wrapper_get_namespace_uri_by_number;
+        
+    wrapper_impl->parser.ops->get_pi_target =
+        axis2_libxml2_reader_wrapper_get_pi_target;
+    wrapper_impl->parser.ops->get_pi_data =
+        axis2_libxml2_reader_wrapper_get_pi_data;
+        
+    wrapper_impl->parser.ops->get_dtd =
+        axis2_libxml2_reader_wrapper_get_dtd;
+        
+    wrapper_impl->parser.ops->get_char_set_encoding =
+        axis2_libxml2_reader_get_char_set_encoding;            
+	return &(wrapper_impl->parser);
+}
+/****************** end create functions ***************************************/
 
 int AXIS2_CALL
 axis2_libxml2_reader_wrapper_next(axis2_xml_reader_t *parser,

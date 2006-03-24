@@ -269,6 +269,13 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
 		xml_free)(axis2_xml_reader_t *parser,
                   axis2_env_t **env,
                   void *data);
+
+        /**
+         * get the char set encoding of the parser 
+         * @param parser xml parser
+         * @param env environment
+         * @returns char set encoding string or NULL in failure
+         */
                                    
         axis2_char_t* (AXIS2_CALL *
 		get_char_set_encoding)(axis2_xml_reader_t *parser,
@@ -319,6 +326,20 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
                                     int (*close_input_callback)(void *ctx),
                                     void *ctx,
                                     const axis2_char_t *encoding);
+
+/**
+ * create an axis2_xml_reader_t using a buffer, which is the xml input
+ * @param env environment, MUST not be NULL
+ * @param buffer xml input string in a char buffer
+ * @param size size of the @buffer
+ * @param encoding encoding of the xml 
+ * @return pointer to axis2_xml_reader_t struct on success , NULL otherwise
+ */
+AXIS2_DECLARE(axis2_xml_reader_t *)
+axis2_xml_reader_create_for_buffer(axis2_env_t **env,
+                                  const axis2_char_t *buffer,
+                                  int size,
+                                  const axis2_char_t *encoding);
                                     
 /********************************* Macros *************************************/
 
