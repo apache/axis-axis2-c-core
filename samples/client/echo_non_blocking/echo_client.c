@@ -63,6 +63,9 @@ int main(int argc, char** argv)
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_conf_t *conf = NULL;
     axis2_msg_ctx_t *response_ctx = NULL;
+    axis2_callback_t* callback = NULL;
+    int count = 0;
+    axis2_soap_envelope_t *soap_envelope = NULL;
     
     allocator = axis2_allocator_init (NULL);
     error = axis2_error_create(allocator);
@@ -138,23 +141,24 @@ int main(int argc, char** argv)
         printf("ERROR: operation not present in service\n");
         return -1;
     }
-    axis2_callback_t* callback = axis2_callback_create(&env);
+    callback = axis2_callback_create(&env);
     
     AXIS2_CALL_INVOKE_NON_BLOCKING(call, &env, op, msg_ctx, callback);
 
-    int count = 0;
+  
     printf("\n");
     while (!AXIS2_CALLBACK_GET_COMPLETE(callback, &env))
     {
         printf("sleep(2) till callback complete\n");
         if (count++ > 10)
             break;
-        AXIS2_SLEEP(2);
+        AXIS2_SLEEP(2);            
+        
     }
 
     /*if (response_ctx)
     {*/
-        axis2_soap_envelope_t *soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, &env);
+        soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, &env);
         if (soap_envelope)
             ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, &env);
     /*}*/
