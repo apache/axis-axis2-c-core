@@ -83,48 +83,16 @@ axis2_addr_in_handler_create(axis2_env_t **env,
                          axis2_qname_t *qname) 
 {
     axis2_handler_t *handler = NULL;
-    axis2_handler_desc_t *handler_desc = NULL;
-    axis2_qname_t *handler_qname = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    
-    if (qname)
-    {
-        handler_qname = AXIS2_QNAME_CLONE(qname, env);
-        if (!(handler_qname))
-        {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return NULL;        
-        }
-    }
-    else
-    {
-        /* create default qname */
-        handler_qname = axis2_qname_create(env, "addr_in_handler", 
-                                                "http://axis.ws.apache.org",
-                                                NULL);
-        if (!handler_qname)
-        {
-            return NULL;        
-        }           
-    }
     
     handler = axis2_handler_create(env);
     if (!handler)
     {
         return NULL;
     }
-    
-    /* handler desc of base handler */
-    /*handler_desc = axis2_handler_desc_create_with_qname(env, handler_qname);
-    if (!handler_desc)
-    {
-        AXIS2_HANDLER_FREE(handler, env);
-        return NULL;
-    }
-    
-    AXIS2_HANDLER_INIT(handler, env, handler_desc);
-    */
+   
+    /* handler init is handled by conf loading, so no need to do it here */
     
     /* set the base struct's invoke op */
     if (handler->ops) 
