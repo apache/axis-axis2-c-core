@@ -62,8 +62,7 @@ AXIS2_DECLARE_DATA struct axis2_module_ops
     /* initialize the module */
     axis2_status_t (AXIS2_CALL *
     init) (struct axis2_module *module, 
-            axis2_env_t **env, 
-            struct axis2_conf *axis2_system);
+            axis2_env_t **env);
 
     /* TODO figure out how to get the engage() concept done */
     /* public void engage(ExecutionChain exeChain) throws AxisFault; */
@@ -71,8 +70,7 @@ AXIS2_DECLARE_DATA struct axis2_module_ops
     /* shutdown the module */
     axis2_status_t (AXIS2_CALL * 
     shutdown)(struct axis2_module *module,
-                axis2_env_t **env, 
-                struct axis2_conf *axis2_system);
+                axis2_env_t **env);
     
     /** 
      * Return a hash map of handler create functions for the module
@@ -100,11 +98,11 @@ axis2_module_create (axis2_env_t **env);
 
 /*************************** Function macros **********************************/
 
-#define AXIS2_MODULE_INIT(module, env, conf) \
-		((module)->ops->init (module, env, conf))
+#define AXIS2_MODULE_INIT(module, env) \
+		((module)->ops->init (module, env)) 
 
-#define AXIS2_MODULE_SHUTDOWN(module, env, conf) \
-		((module)->ops->shutdown (module, env, conf))
+#define AXIS2_MODULE_SHUTDOWN(module, env) \
+		((module)->ops->shutdown (module, env)) 
 
 #define AXIS2_MODULE_FILL_HANDLER_CREATE_FUNC_MAP(module, env) \
 		((module)->ops->fill_handler_create_func_map (module, env))

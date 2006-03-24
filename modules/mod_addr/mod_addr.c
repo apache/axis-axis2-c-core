@@ -18,14 +18,11 @@
 
 axis2_status_t AXIS2_CALL
 axis2_mod_addr_shutdown(axis2_module_t *module,
-                        axis2_env_t **env,
-                        axis2_conf_t *axis2_system);
+                        axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_mod_addr_init(axis2_module_t *module,
-                        axis2_env_t **env,
-                        axis2_conf_t *axis2_system);
-
+                        axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_mod_addr_fill_handler_create_func_map(axis2_module_t *module,
@@ -52,8 +49,7 @@ axis2_mod_addr_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_mod_addr_init(axis2_module_t *module,
-                        axis2_env_t **env,
-                        axis2_conf_t *axis2_system)
+                        axis2_env_t **env)
 {
     /* Any initialization stuff of mod_addr goes here */
     return AXIS2_SUCCESS;
@@ -61,8 +57,7 @@ axis2_mod_addr_init(axis2_module_t *module,
 
 axis2_status_t AXIS2_CALL
 axis2_mod_addr_shutdown(axis2_module_t *module,
-                        axis2_env_t **env,
-                        axis2_conf_t *axis2_system)
+                        axis2_env_t **env)
 {
     if(module->ops)
     {
@@ -133,7 +128,7 @@ axis2_remove_instance(axis2_module_t *inst,
     axis2_status_t status = AXIS2_FAILURE;
 	if (inst)
 	{
-        status = axis2_mod_addr_shutdown(inst, env, NULL);
+        status = axis2_mod_addr_shutdown(inst, env);
     }
     return status;
 }

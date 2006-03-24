@@ -134,7 +134,7 @@ axis2_status_t AXIS2_CALL axis2_init_modules(axis2_env_t **env,
                     {
                         axis2_module_t *mod = AXIS2_MODULE_DESC_GET_MODULE(mod_desc, env);
                         if (mod)
-                            AXIS2_MODULE_INIT(mod, env, conf);
+                            AXIS2_MODULE_INIT(mod, env);
                     }
                 }
             }

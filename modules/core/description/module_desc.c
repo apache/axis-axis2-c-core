@@ -264,6 +264,12 @@ axis2_module_desc_free(axis2_module_desc_t *module_desc,
     
     module_desc_impl = AXIS2_INTF_TO_IMPL(module_desc);
     
+    if(module_desc_impl->module)
+    {
+        AXIS2_MODULE_SHUTDOWN(module_desc_impl->module, env);
+        module_desc_impl->module = NULL;
+    }
+    
     if(module_desc->params)
     {
         AXIS2_PARAM_CONTAINER_FREE(module_desc->params, env);
