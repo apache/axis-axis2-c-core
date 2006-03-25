@@ -177,6 +177,8 @@ axis2_platform_uuid_gen(char *s)
 	sprintf(uuid_str, "%08x-%04x-%04x-%04x-%s", uuid_struct->time_low, 
 						uuid_struct->time_mid, uuid_struct->time_high_version, 
 						uuid_struct->clock_variant, mac_hex);
+    free(uuid_struct);
+    uuid_struct = NULL;
 	return uuid_str;	
 }
 

@@ -171,6 +171,12 @@ axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_free (struct axis2_svc_grp_ctx *svc_
         AXIS2_FREE((*env)->allocator, svc_grp_ctx_impl->svc_grp_ctx.ops);
         svc_grp_ctx_impl->svc_grp_ctx.ops = NULL;
     }
+
+    if (svc_grp_ctx_impl->id)
+    {
+        AXIS2_FREE((*env)->allocator, svc_grp_ctx_impl->id);
+        svc_grp_ctx_impl->id = NULL;
+    }
     
     if (svc_grp_ctx_impl->base)
     {
@@ -180,6 +186,20 @@ axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_free (struct axis2_svc_grp_ctx *svc_
     
     if (svc_grp_ctx_impl->svc_ctx_map)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+        for (hi = axis2_hash_first (svc_grp_ctx_impl->svc_ctx_map, env);
+         hi; hi = axis2_hash_next (env, hi))
+        {
+            axis2_hash_this (hi, NULL, NULL, &val);
+            if (val)
+            {
+                axis2_svc_ctx_t *svc_ctx = NULL;
+                svc_ctx = (axis2_svc_ctx_t *)val;
+                AXIS2_SVC_CTX_FREE(svc_ctx, env);
+            }
+        }
+
         axis2_hash_free(svc_grp_ctx_impl->svc_ctx_map, env);
         svc_grp_ctx_impl->base = NULL;
     }
