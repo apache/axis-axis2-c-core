@@ -284,6 +284,7 @@ find_entry (axis2_hash_t * ht,
             && he->klen == klen && memcmp (he->key, key, klen) == 0)
             break;
     }
+    
     if (he || !val)
         return hep;
 
@@ -299,7 +300,6 @@ find_entry (axis2_hash_t * ht,
     he->val = val;
     *hep = he;
     ht->count++;
-    ht->array[hash & ht->max] = *hep;
     return hep;
 }
 
@@ -366,13 +366,11 @@ axis2_hash_set (axis2_hash_t *ht,
         if (!val)
         {
             /* delete entry */
-            /*axis2_hash_entry_t *old = *hep;
+            axis2_hash_entry_t *old = *hep;
             *hep = (*hep)->next;
             old->next = ht->free;
-            ht->free = old;*/
+            ht->free = old;
             --ht->count;
-            AXIS2_FREE(ht->environment->allocator, *hep);
-            *hep = NULL;
         }
         else
         {
@@ -528,11 +526,29 @@ axis2_hash_free (axis2_hash_t *ht, axis2_env_t** environment)
     AXIS2_ENV_CHECK(environment, AXIS2_FAILURE);
     if (ht)
     {
-        for(i = 0;i <ht->max; i++)
+        for(i = 0;i <= ht->max; i++)
         {
-            if(ht->array[i])
+            axis2_hash_entry_t *next = NULL;
+            axis2_hash_entry_t *current = ht->array[i];
+            while(current)
             {
-                AXIS2_FREE((*environment)->allocator, ht->array[i]);
+                next = current->next;
+                AXIS2_FREE((*environment)->allocator, current);
+                current = NULL;
+                current = next;
+            }
+        }
+        if (ht->free)
+        {
+            axis2_hash_entry_t *next = NULL;
+            axis2_hash_entry_t *current = ht->free;
+            int i = 0;
+            while(current)
+            {
+                next = current->next;
+                AXIS2_FREE((*environment)->allocator, current);
+                current = NULL;
+                current = next;
             }
         }
         AXIS2_FREE((*environment)->allocator, (ht->array));
@@ -552,9 +568,13 @@ axis2_hash_free_void_arg (void *ht_void, axis2_env_t** environment)
     {
         for(i = 0;i <ht->max; i++)
         {
-            if(ht->array[i])
+            axis2_hash_entry_t *next = NULL;
+            axis2_hash_entry_t *current = ht->array[i];
+            while(current)
             {
-                AXIS2_FREE((*environment)->allocator, ht->array[i]);
+                next = current->next;
+                AXIS2_FREE((*environment)->allocator, current);
+                current = next;
             }
         }
         AXIS2_FREE((*environment)->allocator, (ht->array));

@@ -304,7 +304,8 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         status = AXIS2_MODULE_DESC_SET_INFLOW(builder_impl->module_desc, env, flow);
         if(AXIS2_SUCCESS != status)
         {
-            AXIS2_FLOW_FREE(flow, env);
+            if (flow)
+                AXIS2_FLOW_FREE(flow, env);
             return status;
         }
     }
