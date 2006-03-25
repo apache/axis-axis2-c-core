@@ -126,7 +126,19 @@ extern "C"
     * @return pointer to the newly created environment struct 
     */
     AXIS2_DECLARE(axis2_status_t) axis2_env_free (axis2_env_t *env);
-    
+
+    /**
+    * Frees the environment
+    * @param env environment to be freed
+    * @param mask bit pattern to according to which the components of the env struct are freed
+    *       0x1 - Frees the log
+    *       0x2 - Frees the error
+    *       0x4 - Frees the thread pool
+    *       You can use combinations to free multiple components as well
+    *       Eg : 0x3 frees both log and error
+    * @return status of the operation
+    */
+    AXIS2_DECLARE(axis2_status_t)  axis2_env_free_masked(axis2_env_t *env, char mask); 
     /**
      * Enables logging
      */

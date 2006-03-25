@@ -348,6 +348,7 @@ worker_func(axis2_thread_t *thd, void *data)
 						secs);
 #endif											
 	}
+    axis2_env_free_masked(thread_env, 0x2);
 #ifdef AXIS2_SVR_MULTI_THREADED
 	AXIS2_THREAD_POOL_EXIT_THREAD((*env)->thread_pool, thd);
 #endif

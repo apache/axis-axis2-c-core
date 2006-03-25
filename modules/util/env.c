@@ -162,3 +162,21 @@ AXIS2_DECLARE(axis2_status_t)  axis2_env_write_log (axis2_env_t **env, const cha
     }
     return AXIS2_SUCCESS;
 }
+
+AXIS2_DECLARE(axis2_status_t)  axis2_env_free_masked(axis2_env_t *env, char mask)
+{
+    if(mask & 0x1)
+    {
+        AXIS2_LOG_FREE(env->allocator, env->log);
+    }
+    if(mask & 0x2)
+    {
+        AXIS2_ERROR_FREE(env->error);
+    }
+    if(mask & 0x4)
+    {
+        AXIS2_THREAD_POOL_FREE(env->thread_pool);
+    }
+    if(NULL != env)
+        free (env);
+}
