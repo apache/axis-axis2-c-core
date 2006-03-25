@@ -196,7 +196,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
         {
             skel_invoked = AXIS2_TRUE;
             result_node = AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node);
-            /*AXIS2_SVC_SKELETON_FREE(svc_obj, env);*/
+            AXIS2_SVC_SKELETON_FREE(svc_obj, env);
         }
        
         if (result_node)
