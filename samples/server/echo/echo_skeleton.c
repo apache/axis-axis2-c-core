@@ -54,6 +54,7 @@ axis2_echo_create(axis2_env_t **env)
     svc_skeleton->ops = AXIS2_MALLOC(
         (*env)->allocator, sizeof(axis2_svc_skeleton_ops_t));
 
+    svc_skeleton->func_array = NULL;
     /* Assign function pointers */
     svc_skeleton->ops->free = echo_free;
     svc_skeleton->ops->init = echo_init;
