@@ -210,6 +210,8 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
     addressing_namespace = axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS (msg_ctx, env);
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE (msg_ctx, env);
+    if (!soap_envelope)
+        return AXIS2_SUCCESS; /* can happen in case of one way services/clients */
     soap_header  = AXIS2_SOAP_ENVELOPE_GET_HEADER (soap_envelope, env);
   
     if (!soap_header)

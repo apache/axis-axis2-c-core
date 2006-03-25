@@ -227,7 +227,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
         }
         else
         {
-            status = AXIS2_FAILURE;
+            status = AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
         }
     }
     
