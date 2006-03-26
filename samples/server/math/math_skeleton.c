@@ -45,6 +45,8 @@ axis2_math_create(axis2_env_t **env)
     svc_skeleton->ops = AXIS2_MALLOC(
         (*env)->allocator, sizeof(axis2_svc_skeleton_ops_t));
 
+    svc_skeleton->func_array = NULL;
+
     svc_skeleton->ops->free = math_free;
     svc_skeleton->ops->init = math_init;
     svc_skeleton->ops->invoke = math_invoke;

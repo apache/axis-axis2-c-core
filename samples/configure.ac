@@ -47,11 +47,13 @@ AC_CONFIG_FILES([Makefile \
     server/Makefile \
     server/echo/Makefile \
     server/math/Makefile \
+    server/notify/Makefile \
     client/Makefile \
     client/echo/Makefile \
     client/math/Makefile \
     client/addr_echo/Makefile \
     client/echo_non_blocking/Makefile \
+    client/notify/Makefile \
     client/google/Makefile \
     ])
     
