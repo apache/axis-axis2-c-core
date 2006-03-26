@@ -45,6 +45,7 @@ extern "C"
     */
     typedef struct axis2_om_output axis2_om_output_t;
     typedef struct axis2_om_output_ops axis2_om_output_ops_t;
+    struct axis2_om_text;
     
 AXIS2_DECLARE_DATA struct axis2_om_output_ops
 {
@@ -140,6 +141,14 @@ AXIS2_DECLARE_DATA struct axis2_om_output_ops
 	axis2_status_t (AXIS2_CALL *
 	write_xml_version_encoding)(axis2_om_output_t *om_output,
 							    axis2_env_t **env);
+
+    axis2_bool_t (AXIS2_CALL *is_optimized)
+                                  (axis2_om_output_t *om_output,
+                                   axis2_env_t **env);                               
+
+    axis2_char_t* (AXIS2_CALL *get_next_content_id)
+                                    (axis2_om_output_t *om_output,
+                                    axis2_env_t **env);
 };  
     
 
@@ -176,6 +185,11 @@ axis2_om_output_write(axis2_om_output_t * om_output,
                       axis2_env_t **env,
                       axis2_om_types_t type,
                       int no_of_args, ...);
+                      
+AXIS2_DECLARE(axis2_status_t)
+axis2_om_output_write_optimized(axis2_om_output_t *om_output, 
+                      axis2_env_t **env, 
+                      struct axis2_om_text *om_text);
 /************** Macros ********************************************************/
 
 #define AXIS2_OM_OUTPUT_FREE(output, env) \
@@ -216,6 +230,13 @@ axis2_om_output_write(axis2_om_output_t * om_output,
 
 #define AXIS2_OM_OUTPUT_WRITE_XML_VERSION_ENCODING(output, env) \
         ((output)->ops->write_xml_version_encoding(output, env))
+
+#define AXIS2_OM_OUTPUT_IS_OPTIMIZED(output, env) \
+        ((output)->ops->is_optimized(output, env))
+
+#define AXIS2_OM_OUTPUT_GET_NEXT_CONTENT_ID(om_output, env) \
+        ((om_output)->ops->get_next_content_id(om_output, env))
+
    
 /** @} */
 

@@ -14,9 +14,10 @@ libaxis2_om_la_SOURCES = om_attribute.c \
                         om_children_iterator.c \
                         om_children_qname_iterator.c \
                         om_child_element_iterator.c \
-                        om_children_with_specific_attribute_iterator.c
+                        om_children_with_specific_attribute_iterator.c \
+                        om_output_format.c
 
-libaxis2_om_la_LIBADD =  ../../util/libaxis2_util.la 
+libaxis2_om_la_LIBADD =  ../../util/libaxis2_util.la ../attachments/libaxis2_attachments.la
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/xml/parser \

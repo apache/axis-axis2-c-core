@@ -18,8 +18,11 @@
 #include <stdarg.h>
 #include <axis2_string.h>
 #include <axis2_xml_writer.h>
-
-#define AXIS2_DEFAULT_CHAR_SET_ENCODING  "UTF-8"
+#include <axis2_mime_output.h>
+#include <axis2_om_output_format.h>
+#include <axis2_om_text.h>
+#include <axis2_array_list.h>
+/*#define AXIS2_DEFAULT_CHAR_SET_ENCODING  "UTF-8"*/
 /*#define AXIS2_DEFAULT_CHAR_SET_ENCODING  "ISO-8859-1"*/
 #define MAX_ARGS  4
 /****************************** impl struct ***********************************/
@@ -41,7 +44,8 @@ typedef struct axis2_om_output_impl_t
     /* xml version */
     axis2_char_t *xml_version;
     axis2_bool_t ignore_xml_declaration;
-    
+  
+    axis2_array_list_t *binary_node_list;    
 }axis2_om_output_impl_t;
 
 /************************ Macro ***********************************************/
@@ -99,6 +103,9 @@ axis2_om_output_set_do_optimize
                             (axis2_om_output_t *om_output,
                             axis2_env_t **env,
                             axis2_bool_t optimize); 
+
+axis2_bool_t AXIS2_CALL
+axis2_om_output_is_optimized(axis2_om_output_t *om_output,axis2_env_t **env);
                             
 axis2_xml_writer_t* AXIS2_CALL
 axis2_om_output_get_xml_writer
@@ -109,7 +116,17 @@ axis2_status_t AXIS2_CALL
 axis2_om_output_write_xml_version_encoding(axis2_om_output_t *om_output,
                                            axis2_env_t **env);
 
+axis2_status_t AXIS2_CALL 
+axis2_om_output_flush(axis2_om_output_t *om_output,
+                                           axis2_env_t **env);
+axis2_char_t* AXIS2_CALL
+axis2_om_output_get_next_content_id(axis2_om_output_t *om_output,
+                        axis2_env_t **env);
                       
+
+axis2_status_t AXIS2_CALL
+axis2_om_output_write_optimized(axis2_om_output_t *om_output,
+                        axis2_env_t **env, axis2_om_text_t *om_text);
 /*********************** end function prototypes ******************************/                      
 
 AXIS2_DECLARE(axis2_om_output_t *)
@@ -139,6 +156,7 @@ axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
     om_output_impl->char_set_encoding = NULL;
     om_output_impl->xml_version = NULL;
     om_output_impl->ignore_xml_declaration = AXIS2_TRUE;
+    om_output_impl->binary_node_list = NULL;
     
     om_output_impl->om_output.ops = NULL;
     
@@ -183,7 +201,8 @@ axis2_om_output_create (axis2_env_t **env, axis2_xml_writer_t *xml_writer)
 
     om_output_impl->om_output.ops->write_xml_version_encoding =
         axis2_om_output_write_xml_version_encoding;
-        
+    
+    om_output_impl->om_output.ops->get_next_content_id = axis2_om_output_get_next_content_id;
         
     om_output_impl->char_set_encoding = AXIS2_STRDUP(
         AXIS2_DEFAULT_CHAR_SET_ENCODING, env);        
@@ -511,4 +530,70 @@ axis2_om_output_write_xml_version_encoding(axis2_om_output_t *om_output,
                                 output_impl->xml_version, 
                                 output_impl->char_set_encoding);
     
+}
+
+/*=================================================*/
+axis2_bool_t AXIS2_CALL
+axis2_om_output_is_optimized(axis2_om_output_t *om_output,axis2_env_t **env)
+{
+    axis2_bool_t is_optimized = AXIS2_FALSE;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    axis2_om_output_format_t *om_output_format = axis2_om_output_format_create(env);
+    is_optimized = AXIS2_OM_OUTPUT_FORMAT_IS_OPTIMIZED(om_output_format, env);    
+    return is_optimized;
+}
+
+/*@TODO Following method method must be implemented*/
+axis2_status_t AXIS2_CALL 
+axis2_om_output_flush(axis2_om_output_t *om_output,
+                                           axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    return AXIS2_SUCCESS;
+}
+/*
+    public void flush() throws XMLStreamException {
+        xmlWriter.flush();
+        String SOAPContentType;
+        if (format.isOptimized()) {
+            if (format.isSOAP11()) {
+                SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
+            } else {
+                SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
+            }
+            MIMEOutputUtils.complete(
+                    outStream,
+                    bufferedSOAPBody,
+                    binaryNodeList,
+                    format.getMimeBoundary(),
+                    format.getRootContentId(),
+                    format.getCharSetEncoding(), SOAPContentType);
+        }
+    }
+*/
+axis2_char_t* AXIS2_CALL
+axis2_om_output_get_next_content_id(axis2_om_output_t *om_output,
+                        axis2_env_t **env)
+{
+    axis2_om_output_format_t *om_output_format = NULL;
+    axis2_char_t *next_content_id = NULL;
+    AXIS2_ENV_CHECK(env,NULL);
+    om_output_format = axis2_om_output_format_create(env);
+    next_content_id = AXIS2_OM_OUTPUT_FORMAT_GET_NEXT_CONTENT_ID(om_output_format, env);
+    return next_content_id;
+}
+
+
+axis2_status_t AXIS2_CALL
+axis2_om_output_write_optimized(axis2_om_output_t *om_output, axis2_env_t **env, axis2_om_text_t *om_text)
+{
+    axis2_om_output_impl_t *om_output_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    om_output_impl = AXIS2_INTF_TO_IMPL(om_output);
+    om_output_impl->binary_node_list  = axis2_array_list_create(env, 5);
+    AXIS2_ARRAY_LIST_ADD(om_output_impl->binary_node_list, env, (void *)om_text);
+    return AXIS2_SUCCESS;
 }

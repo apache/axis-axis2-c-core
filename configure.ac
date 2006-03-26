@@ -213,6 +213,7 @@ AC_CONFIG_FILES([Makefile \
     modules/xml/parser/libxml2/Makefile \
     modules/xml/soap/Makefile \
     modules/xml/om/Makefile \
+    modules/xml/attachments/Makefile \
     modules/util/Makefile \
     modules/platforms/unix/Makefile \
     modules/wsdl/Makefile \

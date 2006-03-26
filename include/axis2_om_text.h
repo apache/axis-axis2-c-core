@@ -91,6 +91,15 @@ extern "C"
         get_value)(struct axis2_om_text *om_text,
                    axis2_env_t **env);                                               
                                                
+        axis2_status_t (AXIS2_CALL *
+        set_optimize)(struct axis2_om_text *om_text,
+                        axis2_env_t **env,
+                        const axis2_bool_t optimize);
+
+        axis2_status_t (AXIS2_CALL *
+        set_is_binary)(struct axis2_om_text *om_text,
+                        axis2_env_t **env,
+                        const axis2_bool_t is_binary);
                                                                                                 
     } axis2_om_text_ops_t;
 
@@ -136,6 +145,10 @@ extern "C"
 /** set text value */
 #define AXIS2_OM_TEXT_SET_VALUE(om_text, env, value) \
         ((om_text)->ops->set_value(om_text, env, value))
+#define AXIS2_OM_TEXT_SET_OPTIMIZE(om_text, env, optimize) \
+        ((om_text)->ops->set_optimize(om_text, env, optimize))
+#define AXIS2_OM_TEXT_SET_IS_BINARY(om_text, env, is_binary) \
+        ((om_text)->ops->set_is_binary(om_text, env, is_binary))    
               
 
 
