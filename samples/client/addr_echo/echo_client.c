@@ -193,6 +193,8 @@ int main(int argc, char** argv)
         AXIS2_OM_NODE_SERIALIZE (ret_node, &env, om_output);
         buffer = AXIS2_XML_WRITER_GET_XML(writer, &env);
         printf ("\nReceived OM node in XML : %s\n", buffer);
+        AXIS2_FREE(env->allocator, buffer);
+        AXIS2_OM_OUTPUT_FREE(om_output, &env);
     }
     else
     {
@@ -202,6 +204,16 @@ int main(int argc, char** argv)
         printf("echo stub invoke failed!\n");
     }
     
+    if (msg_ctx)
+    {
+        AXIS2_MSG_CTX_FREE(msg_ctx, &env);
+        msg_ctx = NULL;
+    }
+    if (response_ctx)
+    {
+        AXIS2_MSG_CTX_FREE(response_ctx, &env);
+        response_ctx = NULL;
+    }
     if (call)
     {
         AXIS2_CALL_FREE(call, &env);
@@ -239,6 +251,8 @@ build_om_programatically(axis2_env_t **env)
     AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
     printf("\nSending OM node in XML : %s \n",  buffer); 
+    AXIS2_FREE((*env)->allocator, buffer);
+    AXIS2_OM_OUTPUT_FREE(om_output, env);
 
     return echo_om_node;
 }
