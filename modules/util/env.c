@@ -179,4 +179,5 @@ AXIS2_DECLARE(axis2_status_t)  axis2_env_free_masked(axis2_env_t *env, char mask
     }
     if(NULL != env)
         free (env);
+    return AXIS2_SUCCESS;
 }

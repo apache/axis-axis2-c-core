@@ -542,7 +542,6 @@ axis2_hash_free (axis2_hash_t *ht, axis2_env_t** environment)
         {
             axis2_hash_entry_t *next = NULL;
             axis2_hash_entry_t *current = ht->free;
-            int i = 0;
             while(current)
             {
                 next = current->next;

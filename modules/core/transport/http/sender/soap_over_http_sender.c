@@ -441,7 +441,6 @@ axis2_soap_over_http_sender_process_response
 								axis2_http_simple_response_t *response)
 {
     axis2_stream_t *in_stream = NULL;
-	axis2_ctx_t *axis_ctx = NULL;
     axis2_property_t *property = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

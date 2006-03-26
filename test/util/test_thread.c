@@ -25,6 +25,8 @@
 #include "test_thread.h"
 #include <unistd.h>
 
+
+axis2_env_t *env = NULL;
 static axis2_thread_mutex_t *thread_lock = NULL;
 static axis2_thread_once_t *control = NULL;
 static int x = 0;
@@ -71,7 +73,7 @@ void * AXIS2_CALL test_function(axis2_thread_t *td,void *param)
 	printf ("x = %d \n",++x);
 	axis2_thread_mutex_unlock(thread_lock);
 
-	axis2_thread_exit(td);
+	axis2_thread_exit(td, env->allocator);
 
 	return (void*)1;
 }
@@ -115,7 +117,7 @@ void test_axis2_thread_create(axis2_env_t *env)
 void * AXIS2_CALL test_function2(axis2_thread_t *td,void *param)
 {
 	printf("thread \n");
-	axis2_thread_exit(td);
+	axis2_thread_exit(td, env->allocator);
 
 	return (void*)1;
 }
@@ -290,7 +292,7 @@ axis2_env_t *create_env_with_error_log()
 
 int main (void)
 {
-	axis2_env_t *env = create_env_with_error_log();
+	env = create_env_with_error_log();
 
 	if (!env)
 		return -1;

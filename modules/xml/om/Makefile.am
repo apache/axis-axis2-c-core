@@ -22,6 +22,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/xml/parser \
             -I$(top_builddir)/modules/platforms \
-            -I$(top_builddir)/modules/xml/om
+            -I$(top_builddir)/modules/xml/om\
+            -I$(top_builddir)/modules/xml/attachments
 
 EXTRA_DIST=axis2_om_node_internal.h axis2_om_stax_builder_internal.h

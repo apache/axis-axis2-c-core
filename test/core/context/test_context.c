@@ -60,7 +60,7 @@ void axis2_test_conf_ctx_init()
     if (op_ctx_map)
     {
         axis2_hash_set(op_ctx_map, "op_ctx1", AXIS2_HASH_KEY_STRING, op_ctx1);
-        axis2_hash_set(op_ctx_map, "op_ctx2", AXIS2_HASH_KEY_STRING, op_ctx1);
+        axis2_hash_set(op_ctx_map, "op_ctx2", AXIS2_HASH_KEY_STRING, op_ctx2);
     }
 
 	svc_ctx_map = AXIS2_CONF_CTX_GET_SVC_CTX_MAP(conf_ctx, &env);
