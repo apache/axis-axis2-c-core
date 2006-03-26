@@ -106,7 +106,8 @@ axis2_thread_create(axis2_allocator_t *allocator, axis2_threadattr_t *attr,
         return NULL;
     }
 	
-    if (attr && attr->detach) {
+    if (attr && attr->detach)
+    {
         CloseHandle(handle);
     }
     else
@@ -116,8 +117,12 @@ axis2_thread_create(axis2_allocator_t *allocator, axis2_threadattr_t *attr,
 }
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_thread_exit(axis2_thread_t *thd)
+axis2_thread_exit(axis2_thread_t *thd, axis2_allocator_t *allocator)
 {
+    if(NULL != thd)
+    {
+        AXIS2_FREE(allocator, thd);
+    }
     ExitThread(0);
 
     return AXIS2_SUCCESS;

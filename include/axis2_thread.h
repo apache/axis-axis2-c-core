@@ -109,7 +109,7 @@ axis2_thread_create(axis2_allocator_t *allocator, axis2_threadattr_t *attr,
  * @return The status of the operation
  */
 AXIS2_DECLARE(axis2_status_t) 
-axis2_thread_exit(axis2_thread_t *thd);
+axis2_thread_exit(axis2_thread_t *thd, axis2_allocator_t *allocator);
 
 /**
  * Block until the desired thread stops executing.

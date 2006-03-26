@@ -136,8 +136,18 @@ axis2_os_thread_equal(axis2_os_thread_t tid1, axis2_os_thread_t tid2)
 }
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_thread_exit(axis2_thread_t *thd)
+axis2_thread_exit(axis2_thread_t *thd, axis2_allocator_t *allocator)
 {
+    if(NULL != thd)
+    {
+        if(NULL != thd->td)
+        {
+            AXIS2_FREE(allocator, thd->td);
+            thd->td = NULL;
+        }
+        AXIS2_FREE(allocator, thd);
+        thd = NULL;
+    }
     pthread_exit(NULL);
     return AXIS2_SUCCESS;
 }

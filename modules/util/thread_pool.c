@@ -134,11 +134,12 @@ axis2_status_t AXIS2_CALL
 axis2_thread_pool_exit_thread (axis2_thread_pool_t *pool, 
 						axis2_thread_t *thd)
 {
+    axis2_thread_pool_impl_t *pool_impl = AXIS2_INTF_TO_IMPL(pool);
 	if(NULL == pool || NULL == thd)
 	{
 		return AXIS2_FAILURE;
 	}
-	return axis2_thread_exit(thd);
+	return axis2_thread_exit(thd, pool_impl->allocator);
 }
 
 
