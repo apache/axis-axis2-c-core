@@ -135,7 +135,8 @@ axis2_svc_t* AXIS2_CALL axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                                                     if (svc)
                                                         AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Service found using SOAP message body's first child's namespace URI");
                                                 }
-                                            }                    
+                                            }
+                                            AXIS2_FREE((*env)->allocator, url_tokens[0]);
                                         }
 
                                         AXIS2_FREE((*env)->allocator, url_tokens);
