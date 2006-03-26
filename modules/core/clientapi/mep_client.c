@@ -581,8 +581,13 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
     } 
     else 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, AXIS2_FAILURE);
-        return NULL;
+        /* if it is a two way message, then the status should be in error,
+           else it is a one way message */
+        if (AXIS2_ERROR_GET_STATUS_CODE((*env)->error) != AXIS2_SUCCESS)
+        {
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, AXIS2_FAILURE);
+            return NULL;
+        }
     }
         
     /* property is NULL, and we set null for AXIS2_TRANSPORT_IN in msg_ctx to
