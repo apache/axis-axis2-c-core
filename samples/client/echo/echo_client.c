@@ -92,7 +92,7 @@ int main(int argc, char** argv)
         axis2_om_output_t *om_output = NULL;
         axis2_char_t *buffer = NULL;
         
-        printf("\necho stub invoke successful!\n");
+        printf("\necho stub invoke SUCCESSFUL!\n");
         writer = axis2_xml_writer_create_for_memory(&env, NULL, AXIS2_TRUE, 0);
         om_output = axis2_om_output_create (&env, writer);
 
@@ -106,10 +106,10 @@ int main(int argc, char** argv)
     }
     else
     {
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke failed: Error code:"
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
 						" %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
-        printf("echo stub invoke failed!\n");
+        printf("echo stub invoke FAILED!\n");
     }
     
     if (stub)

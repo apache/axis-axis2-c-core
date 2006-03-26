@@ -198,10 +198,10 @@ int main(int argc, char** argv)
     }
     else
     {
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke failed: Error code:"
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
 						" %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
-        printf("echo stub invoke failed!\n");
+        printf("echo stub invoke FAILED!\n");
     }
     
     if (msg_ctx)
