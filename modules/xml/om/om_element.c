@@ -447,7 +447,7 @@ axis2_om_element_find_namespace (axis2_om_element_t *ele,
     {   
         void *ns = NULL;
         
-        if (!prefix || axis2_strcmp ( prefix, "") == 0)
+        if (!prefix || AXIS2_STRCMP( prefix, "") == 0)
         {   
             /** prefix is null , so iterate the namespaces hash to find the namespace */            
             for (hashindex = axis2_hash_first (AXIS2_INTF_TO_IMPL(element)->namespaces, env);
@@ -526,7 +526,7 @@ axis2_om_element_declare_namespace (axis2_om_element_t *ele,
                                               AXIS2_OM_NAMESPACE_GET_URI(ns, env),
                                               AXIS2_OM_NAMESPACE_GET_PREFIX(ns ,env));
 
-    if (declared_ns)
+    if (NULL != declared_ns)
     {
         /*Namespace already declared, so return */
         return AXIS2_SUCCESS;

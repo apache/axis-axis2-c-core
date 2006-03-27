@@ -125,7 +125,7 @@ axis2_rindex(const axis2_char_t *_s, axis2_char_t _ch)
         for (i=ilen-1;i>=0;i--)
         {
                 if (_s[i] == _ch)
-                        return _s+i;
+                        return (axis2_char_t *)(_s+i);
         }
         return NULL;
 }

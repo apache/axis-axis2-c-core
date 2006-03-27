@@ -25,11 +25,14 @@
  * This will then try to find the Contexts of ServiceGroup, Service and the Operation.
  */
 
-axis2_status_t AXIS2_CALL axis2_ctx_handler_invoke(struct axis2_handler *handler, 
-                                                axis2_env_t **env,
-                                                struct axis2_msg_ctx *msg_ctx);
+axis2_status_t AXIS2_CALL 
+axis2_ctx_handler_invoke(struct axis2_handler *handler, 
+                         axis2_env_t **env,
+                         struct axis2_msg_ctx *msg_ctx);
 
-axis2_handler_t* AXIS2_CALL axis2_ctx_handler_create(axis2_env_t **env, axis2_qname_t *qname) 
+axis2_handler_t* AXIS2_CALL 
+axis2_ctx_handler_create(axis2_env_t **env, 
+                         axis2_qname_t *qname) 
 {
     axis2_handler_t *handler = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
@@ -83,9 +86,10 @@ axis2_handler_t* AXIS2_CALL axis2_ctx_handler_create(axis2_env_t **env, axis2_qn
 }
 
 
-axis2_status_t AXIS2_CALL axis2_ctx_handler_invoke(struct axis2_handler *handler, 
-                                                axis2_env_t **env,
-                                                struct axis2_msg_ctx *msg_ctx)
+axis2_status_t AXIS2_CALL 
+axis2_ctx_handler_invoke(struct axis2_handler *handler, 
+                         axis2_env_t **env,
+                         struct axis2_msg_ctx *msg_ctx)
 {
     axis2_op_t *op = NULL;
     axis2_svc_ctx_t *svc_ctx = NULL;
@@ -103,7 +107,8 @@ axis2_status_t AXIS2_CALL axis2_ctx_handler_invoke(struct axis2_handler *handler
         svc_grp_ctx = AXIS2_SVC_CTX_GET_PARENT(svc_ctx, env);
         if (svc_grp_ctx)
         {
-            AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env));
+            AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, 
+                    AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env));
         }
         return AXIS2_SUCCESS;
     }
@@ -122,7 +127,9 @@ axis2_status_t AXIS2_CALL axis2_ctx_handler_invoke(struct axis2_handler *handler
             svc_grp_ctx = AXIS2_SVC_CTX_GET_PARENT(svc_ctx, env);
             AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, svc_ctx);
             AXIS2_MSG_CTX_SET_SVC_GRP_CTX(msg_ctx, env, svc_grp_ctx);
-            AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env));
+            
+            AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, 
+                AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env));
         }
         return AXIS2_SUCCESS;
     }

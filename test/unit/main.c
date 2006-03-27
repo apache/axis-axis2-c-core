@@ -5,7 +5,6 @@
 #include "core/description/description_test.h"
 #include "core/engine/engine_test.h"
 #include "wsdl/wsdl_test.h"
-#include <stdio.h>
 
 void RunAllTests(void) {
     CuString *output = CuStringNew();

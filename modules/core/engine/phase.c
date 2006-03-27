@@ -49,40 +49,106 @@ typedef struct axis2_phase_impl
 #define AXIS2_INTF_TO_IMPL(phase) ((axis2_phase_impl_t *)phase)
 
 
-axis2_status_t AXIS2_CALL axis2_phase_add_handler_at(struct axis2_phase *phase, 
-                              axis2_env_t **env,
-                              int index, 
-                              axis2_handler_t *handler);
-axis2_status_t AXIS2_CALL axis2_phase_add_handler(struct axis2_phase *phase, 
-                             axis2_env_t **env,
-                             axis2_handler_t *handler);
-axis2_status_t AXIS2_CALL axis2_phase_invoke(struct axis2_phase *phase, 
-                                  axis2_env_t **env,
-                                  axis2_msg_ctx_t *msg_ctx);
-axis2_char_t* AXIS2_CALL axis2_phase_get_name(struct axis2_phase *phase, 
-                              axis2_env_t **env);
-int AXIS2_CALL axis2_phase_get_handler_count(struct axis2_phase *phase, 
+axis2_status_t AXIS2_CALL 
+axis2_phase_add_handler_at(struct axis2_phase *phase, 
+                           axis2_env_t **env,
+                           int index, 
+                           axis2_handler_t *handler);
+                           
+axis2_status_t AXIS2_CALL 
+axis2_phase_add_handler(struct axis2_phase *phase, 
+                        axis2_env_t **env,
+                        axis2_handler_t *handler);
+                        
+axis2_status_t AXIS2_CALL 
+axis2_phase_invoke(struct axis2_phase *phase, 
+                   axis2_env_t **env,
+                   axis2_msg_ctx_t *msg_ctx);
+
+                   
+axis2_char_t* AXIS2_CALL 
+axis2_phase_get_name(struct axis2_phase *phase, 
+                     axis2_env_t **env);
+
+                     
+int AXIS2_CALL 
+axis2_phase_get_handler_count(struct axis2_phase *phase, 
                               axis2_env_t **env); 
-int AXIS2_CALL _axis2_phase_get_before_after(axis2_handler_t *handler, axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_phase_set_first_handler(struct axis2_phase *phase, 
-                              axis2_env_t **env, axis2_handler_t * handler);
-axis2_status_t AXIS2_CALL axis2_phase_set_last_handler(struct axis2_phase *phase, 
-                              axis2_env_t **env, axis2_handler_t * handler);
-axis2_status_t AXIS2_CALL axis2_phase_add_handler_desc(struct axis2_phase *phase, 
-                              axis2_env_t **env, axis2_handler_desc_t * handler_desc);
-axis2_bool_t AXIS2_CALL _axis2_phase_is_valid_before(axis2_phase_t *phase, axis2_env_t **env, axis2_handler_t * handler);
-axis2_bool_t AXIS2_CALL _axis2_phase_is_valid_after(axis2_phase_t *phase, axis2_env_t **env, axis2_handler_t * handler);
-axis2_status_t AXIS2_CALL axis2_phase_insert_before(axis2_phase_t *phase, axis2_env_t **env, axis2_handler_t * handler);
-axis2_status_t AXIS2_CALL axis2_phase_insert_after(axis2_phase_t *phase, axis2_env_t **env, axis2_handler_t * handler) ;
-axis2_status_t AXIS2_CALL axis2_phase_insert_before_and_after(axis2_phase_t *phase, axis2_env_t **env, axis2_handler_t * handler);
-axis2_status_t AXIS2_CALL axis2_phase_insert_handler_desc(axis2_phase_t *phase, axis2_env_t **env, axis2_handler_desc_t * handler_desc);
-axis2_array_list_t* AXIS2_CALL axis2_phase_get_handlers(axis2_phase_t *phase, axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_phase_invoke_start_from_handler(axis2_phase_t *phase, axis2_env_t **env, axis2_qname_t *qname, axis2_msg_ctx_t *msg_ctx) ;
-axis2_status_t AXIS2_CALL axis2_phase_free (struct axis2_phase *phase, 
-                                               axis2_env_t **env);
+                              
+int AXIS2_CALL 
+_axis2_phase_get_before_after(axis2_handler_t *handler, 
+                              axis2_env_t **env);
+
+                              
+axis2_status_t AXIS2_CALL 
+axis2_phase_set_first_handler(struct axis2_phase *phase, 
+                              axis2_env_t **env, 
+                              axis2_handler_t * handler);
+
+                              
+axis2_status_t AXIS2_CALL 
+axis2_phase_set_last_handler(struct axis2_phase *phase, 
+                             axis2_env_t **env, 
+                             axis2_handler_t * handler);
+
+                             
+axis2_status_t AXIS2_CALL 
+axis2_phase_add_handler_desc(struct axis2_phase *phase, 
+                             axis2_env_t **env, 
+                             axis2_handler_desc_t * handler_desc);
+                             
+axis2_bool_t AXIS2_CALL 
+_axis2_phase_is_valid_before(axis2_phase_t *phase, 
+                             axis2_env_t **env, 
+                             axis2_handler_t * handler);
+                             
+axis2_bool_t AXIS2_CALL 
+_axis2_phase_is_valid_after(axis2_phase_t *phase, 
+                            axis2_env_t **env, 
+                            axis2_handler_t * handler);
+
+                            
+axis2_status_t AXIS2_CALL 
+axis2_phase_insert_before(axis2_phase_t *phase, 
+                          axis2_env_t **env, 
+                          axis2_handler_t * handler);
+                          
+axis2_status_t AXIS2_CALL 
+axis2_phase_insert_after(axis2_phase_t *phase, 
+                         axis2_env_t **env, 
+                         axis2_handler_t * handler) ;
+
+                         
+axis2_status_t AXIS2_CALL 
+axis2_phase_insert_before_and_after(axis2_phase_t *phase, 
+                                    axis2_env_t **env, 
+                                    axis2_handler_t * handler);
+
+                                    
+axis2_status_t AXIS2_CALL 
+axis2_phase_insert_handler_desc(axis2_phase_t *phase, 
+                                axis2_env_t **env, 
+                                axis2_handler_desc_t * handler_desc);
+
+                                
+axis2_array_list_t* AXIS2_CALL 
+axis2_phase_get_handlers(axis2_phase_t *phase, 
+                         axis2_env_t **env);
+                         
+axis2_status_t AXIS2_CALL 
+axis2_phase_invoke_start_from_handler(axis2_phase_t *phase, 
+                                      axis2_env_t **env, 
+                                      axis2_qname_t *qname, 
+                                      axis2_msg_ctx_t *msg_ctx) ;
+                                      
+axis2_status_t AXIS2_CALL 
+axis2_phase_free (struct axis2_phase *phase, 
+                  axis2_env_t **env);
 
 
-axis2_phase_t* AXIS2_CALL axis2_phase_create(axis2_env_t **env, const axis2_char_t *phase_name) 
+axis2_phase_t* AXIS2_CALL 
+axis2_phase_create(axis2_env_t **env, 
+                   const axis2_char_t *phase_name) 
 {
     axis2_phase_impl_t *phase_impl = NULL;
     
@@ -132,29 +198,59 @@ axis2_phase_t* AXIS2_CALL axis2_phase_create(axis2_env_t **env, const axis2_char
         return NULL;        
     }
 
-    phase_impl->phase.ops->add_handler_at = axis2_phase_add_handler_at;
-    phase_impl->phase.ops->add_handler = axis2_phase_add_handler;
-    phase_impl->phase.ops->invoke = axis2_phase_invoke;
-    phase_impl->phase.ops->get_name = axis2_phase_get_name;
-    phase_impl->phase.ops->get_handler_count = axis2_phase_get_handler_count;
-    phase_impl->phase.ops->set_first_handler = axis2_phase_set_first_handler;
-    phase_impl->phase.ops->set_last_handler = axis2_phase_set_last_handler;
-    phase_impl->phase.ops->add_handler_desc = axis2_phase_add_handler_desc;
-    phase_impl->phase.ops->insert_before = axis2_phase_insert_before;
-    phase_impl->phase.ops->insert_after = axis2_phase_insert_after;
-    phase_impl->phase.ops->insert_before_and_after = axis2_phase_insert_before_and_after;
-    phase_impl->phase.ops->insert_handler_desc = axis2_phase_insert_handler_desc;
-    phase_impl->phase.ops->get_handlers = axis2_phase_get_handlers;
-    phase_impl->phase.ops->invoke_start_from_handler = axis2_phase_invoke_start_from_handler;
-    phase_impl->phase.ops->free = axis2_phase_free;
+    phase_impl->phase.ops->add_handler_at = 
+        axis2_phase_add_handler_at;
+        
+    phase_impl->phase.ops->add_handler = 
+        axis2_phase_add_handler;
+        
+    phase_impl->phase.ops->invoke = 
+        axis2_phase_invoke;
+        
+    phase_impl->phase.ops->get_name = 
+        axis2_phase_get_name;
+        
+    phase_impl->phase.ops->get_handler_count = 
+        axis2_phase_get_handler_count;
+        
+    phase_impl->phase.ops->set_first_handler = 
+        axis2_phase_set_first_handler;
+        
+    phase_impl->phase.ops->set_last_handler = 
+        axis2_phase_set_last_handler;
+        
+    phase_impl->phase.ops->add_handler_desc = 
+        axis2_phase_add_handler_desc;
+        
+    phase_impl->phase.ops->insert_before = 
+        axis2_phase_insert_before;
+        
+    phase_impl->phase.ops->insert_after = 
+        axis2_phase_insert_after;
+        
+    phase_impl->phase.ops->insert_before_and_after = 
+        axis2_phase_insert_before_and_after;
+        
+    phase_impl->phase.ops->insert_handler_desc = 
+        axis2_phase_insert_handler_desc;
+        
+    phase_impl->phase.ops->get_handlers = 
+        axis2_phase_get_handlers;
+        
+    phase_impl->phase.ops->invoke_start_from_handler = 
+        axis2_phase_invoke_start_from_handler;
+        
+    phase_impl->phase.ops->free = 
+        axis2_phase_free;
 
     return &(phase_impl->phase);
 }
 
-axis2_status_t AXIS2_CALL axis2_phase_add_handler_at(struct axis2_phase *phase, 
-                              axis2_env_t **env,
-                              int index, 
-                              axis2_handler_t *handler) 
+axis2_status_t AXIS2_CALL 
+axis2_phase_add_handler_at(struct axis2_phase *phase, 
+                           axis2_env_t **env,
+                           int index, 
+                           axis2_handler_t *handler) 
 {
     axis2_phase_impl_t *phase_impl = NULL;
     
@@ -162,7 +258,8 @@ axis2_status_t AXIS2_CALL axis2_phase_add_handler_at(struct axis2_phase *phase,
     
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
     
-    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "axis2_handler_t *%s added to the index %d of the phase %s",
+    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+            "axis2_handler_t *%s added to the index %d of the phase %s",
             AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_NAME(handler, env), env),
             index,
             phase_impl->name);
@@ -170,9 +267,10 @@ axis2_status_t AXIS2_CALL axis2_phase_add_handler_at(struct axis2_phase *phase,
     return AXIS2_ARRAY_LIST_ADD_AT(phase_impl->handlers, env, index, handler);
 }
 
-axis2_status_t AXIS2_CALL axis2_phase_add_handler(struct axis2_phase *phase, 
-                             axis2_env_t **env,
-                             axis2_handler_t *handler) 
+axis2_status_t AXIS2_CALL 
+axis2_phase_add_handler(struct axis2_phase *phase, 
+                        axis2_env_t **env,
+                        axis2_handler_t *handler) 
 {
     axis2_phase_impl_t *phase_impl = NULL;
     
@@ -187,9 +285,10 @@ axis2_status_t AXIS2_CALL axis2_phase_add_handler(struct axis2_phase *phase,
     return AXIS2_ARRAY_LIST_ADD(phase_impl->handlers, env, handler);
 }
 
-axis2_status_t AXIS2_CALL axis2_phase_invoke(struct axis2_phase *phase, 
-                                  axis2_env_t **env,
-                                  axis2_msg_ctx_t *msg_ctx)
+axis2_status_t AXIS2_CALL 
+axis2_phase_invoke(struct axis2_phase *phase, 
+                    axis2_env_t **env,
+                    axis2_msg_ctx_t *msg_ctx)
 {
     axis2_phase_impl_t *phase_impl = NULL;
     int index = 0, size = 0;
@@ -210,9 +309,12 @@ axis2_status_t AXIS2_CALL axis2_phase_invoke(struct axis2_phase *phase,
         } 
         else 
         {
-            AXIS2_LOG_INFO((*env)->log, "Invoke the first handler %s within the phase %s",
-                     AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_NAME(phase_impl->first_handler, env), env), 
+            AXIS2_LOG_INFO((*env)->log, 
+                     "Invoke the first handler %s within the phase %s",
+                     AXIS2_QNAME_GET_LOCALPART(
+                            AXIS2_HANDLER_GET_NAME(phase_impl->first_handler, env), env), 
                      phase_impl->name);
+            
             status = AXIS2_HANDLER_INVOKE(phase_impl->first_handler, env, msg_ctx);
             if (status != AXIS2_SUCCESS)
                 return status;
@@ -229,12 +331,15 @@ axis2_status_t AXIS2_CALL axis2_phase_invoke(struct axis2_phase *phase,
         } 
         else 
         {
-            axis2_handler_t *handler = (axis2_handler_t*) AXIS2_ARRAY_LIST_GET(phase_impl->handlers, env, index);
+            axis2_handler_t *handler = (axis2_handler_t*) 
+                        AXIS2_ARRAY_LIST_GET(phase_impl->handlers, env, index);
             if (handler) 
             {
-                AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Invoke the handler %s within the phase %s",
+                AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+                        "Invoke the handler %s within the phase %s",
                          AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_NAME(handler, env), env), 
                          phase_impl->name);
+                         
                 status = AXIS2_HANDLER_INVOKE(handler, env, msg_ctx);
                 if (status != AXIS2_SUCCESS)
                     return status;                
@@ -267,14 +372,16 @@ axis2_status_t AXIS2_CALL axis2_phase_invoke(struct axis2_phase *phase,
 }
 
 
-axis2_char_t* AXIS2_CALL axis2_phase_get_name(struct axis2_phase *phase, 
+axis2_char_t* AXIS2_CALL 
+axis2_phase_get_name(struct axis2_phase *phase, 
                               axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);    
     return AXIS2_INTF_TO_IMPL(phase)->name;
 }
 
-int AXIS2_CALL axis2_phase_get_handler_count(struct axis2_phase *phase, 
+int AXIS2_CALL 
+axis2_phase_get_handler_count(struct axis2_phase *phase, 
                               axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);    
@@ -284,7 +391,9 @@ int AXIS2_CALL axis2_phase_get_handler_count(struct axis2_phase *phase,
 
 /*/////////////////////////////////////////////////////////////// FROM PhaseMetaData /////////*/
 
-int AXIS2_CALL _axis2_phase_get_before_after(axis2_handler_t *handler, axis2_env_t **env)
+int AXIS2_CALL 
+_axis2_phase_get_before_after(axis2_handler_t *handler, 
+                              axis2_env_t **env)
 {
     axis2_char_t *before = NULL, *after = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
@@ -332,8 +441,10 @@ int AXIS2_CALL _axis2_phase_get_before_after(axis2_handler_t *handler, axis2_env
     }
 }
 
-axis2_status_t AXIS2_CALL axis2_phase_set_first_handler(struct axis2_phase *phase, 
-                              axis2_env_t **env, axis2_handler_t * handler)
+axis2_status_t AXIS2_CALL 
+axis2_phase_set_first_handler(struct axis2_phase *phase, 
+                              axis2_env_t **env, 
+                              axis2_handler_t * handler)
 {
     axis2_phase_impl_t *phase_impl = NULL;
     
@@ -360,8 +471,10 @@ axis2_status_t AXIS2_CALL axis2_phase_set_first_handler(struct axis2_phase *phas
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL axis2_phase_set_last_handler(struct axis2_phase *phase, 
-                              axis2_env_t **env, axis2_handler_t * handler)
+axis2_status_t AXIS2_CALL 
+axis2_phase_set_last_handler(struct axis2_phase *phase, 
+                             axis2_env_t **env, 
+                             axis2_handler_t * handler)
 {
     axis2_phase_impl_t *phase_impl = NULL;
     
@@ -388,8 +501,10 @@ axis2_status_t AXIS2_CALL axis2_phase_set_last_handler(struct axis2_phase *phase
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL axis2_phase_add_handler_desc(struct axis2_phase *phase, 
-                              axis2_env_t **env, axis2_handler_desc_t * handler_desc)
+axis2_status_t AXIS2_CALL 
+axis2_phase_add_handler_desc(struct axis2_phase *phase, 
+                              axis2_env_t **env, 
+                              axis2_handler_desc_t * handler_desc)
 {
     axis2_phase_impl_t *phase_impl = NULL;
     axis2_phase_rule_t *rules = NULL;
@@ -472,7 +587,10 @@ axis2_status_t AXIS2_CALL axis2_phase_add_handler_desc(struct axis2_phase *phase
     }
 }
 
-axis2_bool_t AXIS2_CALL _axis2_phase_is_valid_before(axis2_phase_t *phase, axis2_env_t **env, axis2_handler_t * handler)
+axis2_bool_t AXIS2_CALL 
+_axis2_phase_is_valid_before(axis2_phase_t *phase, 
+                             axis2_env_t **env, 
+                             axis2_handler_t * handler)
 {
     axis2_phase_impl_t *phase_impl = NULL;
     axis2_phase_rule_t *rules = NULL;
@@ -515,7 +633,10 @@ axis2_bool_t AXIS2_CALL _axis2_phase_is_valid_before(axis2_phase_t *phase, axis2
     return AXIS2_TRUE;
 }
 
-axis2_bool_t AXIS2_CALL _axis2_phase_is_valid_after(axis2_phase_t *phase, axis2_env_t **env, axis2_handler_t * handler)
+axis2_bool_t AXIS2_CALL 
+_axis2_phase_is_valid_after(axis2_phase_t *phase, 
+                            axis2_env_t **env, 
+                            axis2_handler_t * handler)
 {
     axis2_phase_impl_t *phase_impl = NULL;
     axis2_phase_rule_t *rules = NULL;
@@ -558,7 +679,10 @@ axis2_bool_t AXIS2_CALL _axis2_phase_is_valid_after(axis2_phase_t *phase, axis2_
     return AXIS2_TRUE;    
 }
 
-axis2_status_t AXIS2_CALL axis2_phase_insert_before(axis2_phase_t *phase, axis2_env_t **env, axis2_handler_t * handler) 
+axis2_status_t AXIS2_CALL 
+axis2_phase_insert_before(axis2_phase_t *phase, 
+                          axis2_env_t **env, 
+                          axis2_handler_t * handler) 
 {
     axis2_phase_impl_t *phase_impl = NULL;
     axis2_phase_rule_t *rules = NULL;
@@ -651,7 +775,10 @@ axis2_status_t AXIS2_CALL axis2_phase_insert_before(axis2_phase_t *phase, axis2_
     return AXIS2_ARRAY_LIST_ADD(phase_impl->handlers, env, handler);
 }
 
-axis2_status_t AXIS2_CALL axis2_phase_insert_after(axis2_phase_t *phase, axis2_env_t **env, axis2_handler_t * handler) 
+axis2_status_t AXIS2_CALL 
+axis2_phase_insert_after(axis2_phase_t *phase, 
+                         axis2_env_t **env, 
+                         axis2_handler_t * handler) 
 {
     axis2_phase_impl_t *phase_impl = NULL;
     axis2_phase_rule_t *rules = NULL;
@@ -744,7 +871,10 @@ axis2_status_t AXIS2_CALL axis2_phase_insert_after(axis2_phase_t *phase, axis2_e
         return AXIS2_ARRAY_LIST_ADD(phase_impl->handlers, env, handler);
 }
 
-axis2_status_t AXIS2_CALL axis2_phase_insert_before_and_after(axis2_phase_t *phase, axis2_env_t **env, axis2_handler_t * handler)
+axis2_status_t AXIS2_CALL 
+axis2_phase_insert_before_and_after(axis2_phase_t *phase, 
+                                    axis2_env_t **env, 
+                                    axis2_handler_t * handler)
 {
     int before = -1;
     int after = -1;
@@ -894,7 +1024,10 @@ axis2_status_t AXIS2_CALL axis2_phase_insert_before_and_after(axis2_phase_t *pha
     return AXIS2_ARRAY_LIST_ADD(phase_impl->handlers, env, handler);    
 }
 
-axis2_status_t AXIS2_CALL axis2_phase_insert_handler_desc(axis2_phase_t *phase, axis2_env_t **env, axis2_handler_desc_t * handler_desc)
+axis2_status_t AXIS2_CALL 
+axis2_phase_insert_handler_desc(axis2_phase_t *phase, 
+                                axis2_env_t **env, 
+                                axis2_handler_desc_t * handler_desc)
 {
     axis2_phase_impl_t *phase_impl = NULL;
     int type = 0;
@@ -948,13 +1081,19 @@ axis2_status_t AXIS2_CALL axis2_phase_insert_handler_desc(axis2_phase_t *phase, 
     return status;
 }
 
-axis2_array_list_t* AXIS2_CALL axis2_phase_get_handlers(axis2_phase_t *phase, axis2_env_t **env) 
+axis2_array_list_t* AXIS2_CALL 
+axis2_phase_get_handlers(axis2_phase_t *phase, 
+                         axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);    
     return AXIS2_INTF_TO_IMPL(phase)->handlers;
 }
 
-axis2_status_t AXIS2_CALL axis2_phase_invoke_start_from_handler(axis2_phase_t *phase, axis2_env_t **env, axis2_qname_t *qname, axis2_msg_ctx_t *msg_ctx) 
+axis2_status_t AXIS2_CALL 
+axis2_phase_invoke_start_from_handler(axis2_phase_t *phase, 
+                                      axis2_env_t **env, 
+                                      axis2_qname_t *qname, 
+                                      axis2_msg_ctx_t *msg_ctx) 
 {
     axis2_phase_impl_t *phase_impl = NULL;
     int size = 0, i = 0;
@@ -992,8 +1131,9 @@ axis2_status_t AXIS2_CALL axis2_phase_invoke_start_from_handler(axis2_phase_t *p
     return AXIS2_FAILURE;
 }
 
-axis2_status_t AXIS2_CALL axis2_phase_free (struct axis2_phase *phase, 
-                                               axis2_env_t **env)
+axis2_status_t AXIS2_CALL 
+axis2_phase_free (struct axis2_phase *phase, 
+                  axis2_env_t **env)
 {
     axis2_phase_impl_t *phase_impl = NULL;
     

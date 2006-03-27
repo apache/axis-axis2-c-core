@@ -38,22 +38,38 @@ typedef struct axis2_disp_impl
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(disp) ((axis2_disp_impl_t *)disp)
 
-axis2_handler_t* AXIS2_CALL axis2_disp_get_base(struct axis2_disp *disp, 
-                                               axis2_env_t **env);
-axis2_qname_t* AXIS2_CALL axis2_disp_get_qname(struct axis2_disp *disp, 
-                                       axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_disp_set_qname(struct axis2_disp *disp, 
-                                       axis2_env_t **env, axis2_qname_t *qname);
-axis2_status_t AXIS2_CALL axis2_disp_free (struct axis2_disp * disp, 
-                                            axis2_env_t **env);
-axis2_svc_t* AXIS2_CALL axis2_disp_find_svc(axis2_msg_ctx_t * msg_ctx,
+axis2_handler_t* AXIS2_CALL 
+axis2_disp_get_base(struct axis2_disp *disp, 
                     axis2_env_t **env);
-struct axis2_op* AXIS2_CALL axis2_disp_find_op(axis2_msg_ctx_t * msg_ctx,
-                                axis2_env_t **env,
-                                struct axis2_svc *svc);
+                    
+axis2_qname_t* AXIS2_CALL 
+axis2_disp_get_qname(struct axis2_disp *disp, 
+                     axis2_env_t **env);
+                     
+axis2_status_t AXIS2_CALL 
+axis2_disp_set_qname(struct axis2_disp *disp, 
+                     axis2_env_t **env, 
+                     axis2_qname_t *qname);
+
+                     
+axis2_status_t AXIS2_CALL 
+axis2_disp_free (struct axis2_disp * disp, 
+                 axis2_env_t **env);
+                 
+axis2_svc_t* AXIS2_CALL 
+axis2_disp_find_svc(axis2_msg_ctx_t * msg_ctx,
+                    axis2_env_t **env);
+                    
+struct axis2_op* AXIS2_CALL 
+axis2_disp_find_op(axis2_msg_ctx_t * msg_ctx,
+                   axis2_env_t **env,
+                   struct axis2_svc *svc);
+                   
 
 
-axis2_disp_t* AXIS2_CALL axis2_disp_create(axis2_env_t **env, axis2_qname_t *qname) 
+axis2_disp_t* AXIS2_CALL 
+axis2_disp_create(axis2_env_t **env, 
+                  axis2_qname_t *qname) 
 {
     axis2_disp_impl_t *disp_impl = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
@@ -134,22 +150,26 @@ axis2_disp_t* AXIS2_CALL axis2_disp_create(axis2_env_t **env, axis2_qname_t *qna
     return &(disp_impl->disp);
 }
 
-axis2_handler_t* AXIS2_CALL axis2_disp_get_base(struct axis2_disp *disp, 
-                                               axis2_env_t **env)
+axis2_handler_t* AXIS2_CALL 
+axis2_disp_get_base(struct axis2_disp *disp, 
+                    axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(disp)->base;
 }
 
-axis2_qname_t* AXIS2_CALL axis2_disp_get_qname(struct axis2_disp *disp, 
-                                       axis2_env_t **env)
+axis2_qname_t* AXIS2_CALL 
+axis2_disp_get_qname(struct axis2_disp *disp, 
+                     axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(disp)->qname;
 }
 
-axis2_status_t AXIS2_CALL axis2_disp_set_qname(struct axis2_disp *disp, 
-                                       axis2_env_t **env, axis2_qname_t *qname)
+axis2_status_t AXIS2_CALL 
+axis2_disp_set_qname(struct axis2_disp *disp, 
+                     axis2_env_t **env, 
+                     axis2_qname_t *qname)
 {
     axis2_disp_impl_t *disp_impl = NULL;
     
@@ -173,9 +193,10 @@ axis2_status_t AXIS2_CALL axis2_disp_set_qname(struct axis2_disp *disp,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL axis2_disp_invoke(struct axis2_handler *handler, 
-                                                axis2_env_t **env,
-                                                struct axis2_msg_ctx *msg_ctx)
+axis2_status_t AXIS2_CALL 
+axis2_disp_invoke(struct axis2_handler *handler, 
+                  axis2_env_t **env,
+                  struct axis2_msg_ctx *msg_ctx)
 {
     axis2_svc_t *axis_service = NULL;
     axis2_op_t *op = NULL;
@@ -215,7 +236,7 @@ axis2_status_t AXIS2_CALL axis2_disp_invoke(struct axis2_handler *handler,
 
 axis2_status_t AXIS2_CALL 
 axis2_disp_free (struct axis2_disp * disp, 
-                    axis2_env_t **env)
+                 axis2_env_t **env)
 {
     axis2_disp_impl_t *disp_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -260,7 +281,8 @@ axis2_disp_free (struct axis2_disp * disp,
  * @param messageContext
  * @return
  */
-axis2_svc_t* AXIS2_CALL axis2_disp_find_svc(axis2_msg_ctx_t * msg_ctx,
+axis2_svc_t* AXIS2_CALL 
+axis2_disp_find_svc(axis2_msg_ctx_t * msg_ctx,
                     axis2_env_t **env) 
 {
     return NULL;
@@ -273,9 +295,10 @@ axis2_svc_t* AXIS2_CALL axis2_disp_find_svc(axis2_msg_ctx_t * msg_ctx,
  * @param msg_ctx
  * @return
  */
-struct axis2_op* AXIS2_CALL axis2_disp_find_op(axis2_msg_ctx_t * msg_ctx,
-                                axis2_env_t **env,
-                                struct axis2_svc *svc)
+struct axis2_op* AXIS2_CALL 
+axis2_disp_find_op(axis2_msg_ctx_t * msg_ctx,
+                   axis2_env_t **env,
+                   struct axis2_svc *svc)
 {
     return NULL;
 }

@@ -328,8 +328,8 @@ int main(int argc, char *argv[])
     axis2_allocator_t *allocator = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
-    axis2_char_t *uri = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
-    char *filename = "test.xml";
+    axis2_char_t *uri = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    char *filename = "./../../resources/xml/soap/test.xml";
     if(argc > 1)
         filename = argv[1];
     if(argc > 2)

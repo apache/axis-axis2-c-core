@@ -50,10 +50,20 @@ typedef struct axis2_event axis2_event_t;
  */
 struct axis2_event_ops
 {
-    axis2_svc_t* (AXIS2_CALL *get_svc)(struct axis2_event *event, axis2_env_t **env);
-    int (AXIS2_CALL *get_event_type)(struct axis2_event *event, axis2_env_t **env);
-    axis2_status_t (AXIS2_CALL *free)(struct axis2_event *event, 
-                                       axis2_env_t **env);
+
+    axis2_svc_t* (AXIS2_CALL *
+    get_svc)(struct axis2_event *event, 
+            axis2_env_t **env);
+
+            
+    int (AXIS2_CALL *
+    get_event_type)(struct axis2_event *event, 
+                    axis2_env_t **env);
+
+                    
+    axis2_status_t (AXIS2_CALL *
+    free)(struct axis2_event *event,
+          axis2_env_t **env);
 };
 
 /** 
@@ -65,13 +75,21 @@ struct axis2_event
     axis2_event_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_event_t*) axis2_event_create(axis2_env_t **env, axis2_svc_t *svc, int event_type);
+AXIS2_DECLARE(axis2_event_t*) 
+axis2_event_create(axis2_env_t **env, 
+                   axis2_svc_t *svc, 
+                   int event_type);
     
 /************************** Start of function macros **************************/
 
-#define AXIS2_EVENT_GET_SVC(event, env) ((event)->ops->get_svc(event, env))
-#define AXIS2_EVENT_GET_EVENT_TYPE(event, env) ((event)->ops->get_event_type(event, env))
-#define AXIS2_EVENT_FREE(event, env) ((event)->ops->free (event, env))
+#define AXIS2_EVENT_GET_SVC(event, env) \
+        ((event)->ops->get_svc(event, env))
+        
+#define AXIS2_EVENT_GET_EVENT_TYPE(event, env) \
+        ((event)->ops->get_event_type(event, env))
+        
+#define AXIS2_EVENT_FREE(event, env) \
+        ((event)->ops->free (event, env))
 
 /************************** End of function macros ****************************/    
 

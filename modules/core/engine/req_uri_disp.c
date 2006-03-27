@@ -24,17 +24,24 @@
 #include <axis2_addr.h>
 #include <axis2_utils.h>
 
-axis2_status_t AXIS2_CALL axis2_req_uri_disp_invoke (struct axis2_handler * handler, 
-                                                axis2_env_t **env,
-                                                struct axis2_msg_ctx *msg_ctx);
-axis2_svc_t* AXIS2_CALL axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
-                    axis2_env_t **env);
-axis2_op_t* AXIS2_CALL axis2_req_uri_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
-                                axis2_env_t **env,
-                                axis2_svc_t *svc);
+axis2_status_t AXIS2_CALL 
+axis2_req_uri_disp_invoke (struct axis2_handler * handler, 
+                           axis2_env_t **env,
+                           struct axis2_msg_ctx *msg_ctx);
+                           
+axis2_svc_t* AXIS2_CALL 
+axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
+                            axis2_env_t **env);
+
+                            
+axis2_op_t* AXIS2_CALL 
+axis2_req_uri_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
+                           axis2_env_t **env,
+                           axis2_svc_t *svc);
 
 
-axis2_disp_t* AXIS2_CALL axis2_req_uri_disp_create(axis2_env_t **env) 
+axis2_disp_t* AXIS2_CALL 
+axis2_req_uri_disp_create(axis2_env_t **env) 
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
@@ -56,7 +63,8 @@ axis2_disp_t* AXIS2_CALL axis2_req_uri_disp_create(axis2_env_t **env)
     handler = AXIS2_DISP_GET_BASE(disp, env);
     if (!handler)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
         return NULL;        
     }
 
@@ -81,8 +89,9 @@ axis2_disp_t* AXIS2_CALL axis2_req_uri_disp_create(axis2_env_t **env)
  * @param messageContext
  * @return
  */
-axis2_svc_t* AXIS2_CALL axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx, 
-                    axis2_env_t **env) 
+axis2_svc_t* AXIS2_CALL 
+axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx, 
+                            axis2_env_t **env) 
 {    
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     axis2_svc_t *svc = NULL;
@@ -99,7 +108,8 @@ axis2_svc_t* AXIS2_CALL axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
         if (address)
         {
             axis2_char_t **url_tokens = NULL;
-            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Checking for service using target endpoint address : %s", address);
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+                "Checking for service using target endpoint address : %s", address);
             
             url_tokens = axis2_parse_request_url_for_svc_and_op(env, address);
             
@@ -118,7 +128,8 @@ axis2_svc_t* AXIS2_CALL axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                         {
                             svc = AXIS2_CONF_GET_SVC(conf, env, url_tokens[0]);
                             if (svc)
-                                AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Service found using target endpoint address");
+                                AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+                                    "Service found using target endpoint address");
                         }
                     }                    
                 }
@@ -138,9 +149,10 @@ axis2_svc_t* AXIS2_CALL axis2_req_uri_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
  * @param msg_ctx
  * @return
  */
-axis2_op_t* AXIS2_CALL axis2_req_uri_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
-                                axis2_env_t **env,
-                                axis2_svc_t *svc)
+axis2_op_t* AXIS2_CALL 
+axis2_req_uri_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
+                           axis2_env_t **env,
+                           axis2_svc_t *svc)
 {
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     axis2_op_t *op = NULL;
@@ -166,12 +178,14 @@ axis2_op_t* AXIS2_CALL axis2_req_uri_disp_find_op(axis2_msg_ctx_t *msg_ctx,
                 if (url_tokens[1])
                 {
                     axis2_qname_t *op_qname = NULL;
-                    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Checking for operation using target endpoint uri fragment : %s", url_tokens[1]);
+                    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+                        "Checking for operation using target endpoint uri fragment : %s", url_tokens[1]);
                     op_qname = axis2_qname_create(env, url_tokens[1], NULL, NULL);
                     op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, AXIS2_QNAME_GET_LOCALPART(op_qname, env));
                     AXIS2_QNAME_FREE(op_qname, env);
                     if (op)
-                        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Operation found using target endpoint uri fragment");
+                        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+                            "Operation found using target endpoint uri fragment");
                 }
                 if(NULL !=  url_tokens[0])
                     AXIS2_FREE((*env)->allocator, url_tokens[0]);
@@ -185,9 +199,10 @@ axis2_op_t* AXIS2_CALL axis2_req_uri_disp_find_op(axis2_msg_ctx_t *msg_ctx,
     return op;
 }
             
-axis2_status_t AXIS2_CALL axis2_req_uri_disp_invoke(struct axis2_handler * handler, 
-                                                axis2_env_t **env,
-                                                struct axis2_msg_ctx *msg_ctx)
+axis2_status_t AXIS2_CALL 
+axis2_req_uri_disp_invoke(struct axis2_handler * handler, 
+                          axis2_env_t **env,
+                          struct axis2_msg_ctx *msg_ctx)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);    
     

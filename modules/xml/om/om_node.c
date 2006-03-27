@@ -649,7 +649,6 @@ axis2_bool_t AXIS2_CALL
 axis2_om_node_get_build_status(axis2_om_node_t *om_node,
                                axis2_env_t **env)
 {
-    /* on error what value should be returned ?...*/
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(om_node)->done;
 

@@ -265,7 +265,7 @@ test_om_serialize ()
 int
 main (int argc, char *argv[])
 {
-    char *file_name = "test.xml";
+    char *file_name = "./../../resources/xml/om/test.xml";
     if (argc > 1)
         file_name = argv[1];
     allocator = axis2_allocator_init (NULL);

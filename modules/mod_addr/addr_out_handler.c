@@ -399,9 +399,6 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                 axis2_om_attribute_t *om_attr = NULL;
                 axis2_om_namespace_t *addr_ns_obj = NULL;
                 axis2_om_namespace_t *dec_ns = NULL;
-                addr_ns_obj =
-                    axis2_om_namespace_create (env, addr_ns,
-                                               AXIS2_WSA_DEFAULT_PREFIX);
                 relates_to_header_ele =
                     (axis2_om_element_t *)
                     AXIS2_OM_NODE_GET_DATA_ELEMENT (relates_to_header_node,
@@ -410,20 +407,41 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                 {
                     dec_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(relates_to_header_ele, env,
                                                  addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
-                    if(!dec_ns)
+                    if(NULL != dec_ns)
                     {
-                        AXIS2_OM_NAMESPACE_FREE(addr_ns_obj, env);
                         addr_ns_obj = dec_ns;
                     }
+                    else
+                    {
+                        addr_ns_obj = axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+                    }
+                    
+                    om_attr = axis2_om_attribute_create (env,
+                            AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE,
+                            AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE_SUBMISSION,
+                            addr_ns_obj);
+                            
+                    AXIS2_OM_ELEMENT_ADD_ATTRIBUTE (relates_to_header_ele, env,
+                                om_attr, relates_to_header_node);
+
+                }                                
+                if(NULL != relates_to_header_ele)
+                {
+                    dec_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(relates_to_header_ele, env,
+                                                         addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+                    if(NULL == dec_ns)
+                    {
+                        dec_ns = AXIS2_OM_ELEMENT_FIND_NAMESPACE(relates_to_header_ele, env, 
+                                    relates_to_header_node, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+                        if(NULL != dec_ns)
+                        {
+                            AXIS2_OM_NAMESPACE_FREE(addr_ns_obj, env);
+                            addr_ns_obj = NULL ;
+                            AXIS2_OM_ATTRIBUTE_SET_NAMESPACE(om_attr, env, dec_ns);
+                        }                            
+                    }
                 }
-                om_attr =
-                    axis2_om_attribute_create (env,
-                                       AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE,
-                                       AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE_SUBMISSION,
-                                       addr_ns_obj);
-                AXIS2_OM_ELEMENT_ADD_ATTRIBUTE (relates_to_header_ele, env,
-                                                om_attr,
-                                                relates_to_header_node);
+                                                                                                                                                                                                                                 
             }
         }
     }

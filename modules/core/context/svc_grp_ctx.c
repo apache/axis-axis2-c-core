@@ -40,28 +40,54 @@ typedef struct axis2_svc_grp_ctx_impl
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(svc_grp_ctx) ((axis2_svc_grp_ctx_impl_t *)svc_grp_ctx)
 
-axis2_ctx_t* AXIS2_CALL axis2_svc_grp_ctx_get_base(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                                            axis2_env_t **env);
-struct axis2_conf_ctx* AXIS2_CALL axis2_svc_grp_ctx_get_parent(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-       axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_free(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+
+axis2_ctx_t* AXIS2_CALL 
+axis2_svc_grp_ctx_get_base(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                           axis2_env_t **env);
+
+                           
+struct axis2_conf_ctx* AXIS2_CALL 
+axis2_svc_grp_ctx_get_parent(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                             axis2_env_t **env);
+
+                             
+axis2_status_t AXIS2_CALL 
+axis2_svc_grp_ctx_free(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                        axis2_env_t **env);
+
+                        
+axis2_status_t AXIS2_CALL 
+axis2_svc_grp_ctx_init(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                       axis2_env_t **env,
+                       axis2_conf_t *conf);
+
+                       
+axis2_char_t* AXIS2_CALL 
+axis2_svc_grp_ctx_get_id(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                         axis2_env_t **env);
+
+                         
+axis2_status_t AXIS2_CALL 
+axis2_svc_grp_ctx_set_id(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                         axis2_env_t **env, 
+                         axis2_char_t *id);
+                         
+axis2_svc_ctx_t* AXIS2_CALL 
+axis2_svc_grp_ctx_get_svc_ctx(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                              axis2_env_t **env,
+                              axis2_char_t *svc_name);
+
+                              
+axis2_status_t AXIS2_CALL 
+axis2_svc_grp_ctx_fill_svc_ctx_map(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                                    axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_init(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                                            axis2_env_t **env,
-                                            axis2_conf_t *conf);
-axis2_char_t* AXIS2_CALL axis2_svc_grp_ctx_get_id(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                        axis2_env_t **env);
-axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_set_id(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                        axis2_env_t **env, axis2_char_t *id);
-axis2_svc_ctx_t* AXIS2_CALL axis2_svc_grp_ctx_get_svc_ctx(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                        axis2_env_t **env,
-                        axis2_char_t *svc_name);
-axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_fill_svc_ctx_map(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                        axis2_env_t **env);
-axis2_svc_grp_t* AXIS2_CALL axis2_svc_grp_ctx_get_svc_grp(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                        axis2_env_t **env);
-axis2_hash_t* AXIS2_CALL axis2_svc_grp_ctx_get_svc_ctx_map(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                        axis2_env_t **env);
+axis2_svc_grp_t* AXIS2_CALL 
+axis2_svc_grp_ctx_get_svc_grp(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                              axis2_env_t **env);
+                              
+axis2_hash_t* AXIS2_CALL 
+axis2_svc_grp_ctx_get_svc_ctx_map(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                                  axis2_env_t **env);
 
 
 AXIS2_DECLARE(axis2_svc_grp_ctx_t*)
@@ -126,30 +152,51 @@ axis2_svc_grp_ctx_create(axis2_env_t **env,
         return NULL;        
     }
 
-    svc_grp_ctx_impl->svc_grp_ctx.ops->get_base = axis2_svc_grp_ctx_get_base;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->get_parent = axis2_svc_grp_ctx_get_parent;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->free = axis2_svc_grp_ctx_free;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->init = axis2_svc_grp_ctx_init;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->get_id = axis2_svc_grp_ctx_get_id;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->set_id = axis2_svc_grp_ctx_set_id;
+    svc_grp_ctx_impl->svc_grp_ctx.ops->get_base = 
+        axis2_svc_grp_ctx_get_base;
+        
+    svc_grp_ctx_impl->svc_grp_ctx.ops->get_parent = 
+        axis2_svc_grp_ctx_get_parent;
+        
+    svc_grp_ctx_impl->svc_grp_ctx.ops->free = 
+        axis2_svc_grp_ctx_free;
+        
+    svc_grp_ctx_impl->svc_grp_ctx.ops->init = 
+        axis2_svc_grp_ctx_init;
+        
+    svc_grp_ctx_impl->svc_grp_ctx.ops->get_id = 
+        axis2_svc_grp_ctx_get_id;
+
+    svc_grp_ctx_impl->svc_grp_ctx.ops->set_id = 
+        axis2_svc_grp_ctx_set_id;
     
-    svc_grp_ctx_impl->svc_grp_ctx.ops->get_svc_ctx = axis2_svc_grp_ctx_get_svc_ctx;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->fill_svc_ctx_map = axis2_svc_grp_ctx_fill_svc_ctx_map;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->get_svc_grp = axis2_svc_grp_ctx_get_svc_grp;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->get_svc_ctx_map = axis2_svc_grp_ctx_get_svc_ctx_map;
+    svc_grp_ctx_impl->svc_grp_ctx.ops->get_svc_ctx = 
+        axis2_svc_grp_ctx_get_svc_ctx;
+        
+    svc_grp_ctx_impl->svc_grp_ctx.ops->fill_svc_ctx_map = 
+        axis2_svc_grp_ctx_fill_svc_ctx_map;
+        
+    svc_grp_ctx_impl->svc_grp_ctx.ops->get_svc_grp = 
+        axis2_svc_grp_ctx_get_svc_grp;
+        
+    svc_grp_ctx_impl->svc_grp_ctx.ops->get_svc_ctx_map = 
+        axis2_svc_grp_ctx_get_svc_ctx_map;
     
     return &(svc_grp_ctx_impl->svc_grp_ctx);
 }
 
-axis2_ctx_t* AXIS2_CALL axis2_svc_grp_ctx_get_base(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                                            axis2_env_t **env)
+axis2_ctx_t* AXIS2_CALL 
+axis2_svc_grp_ctx_get_base(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                           axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_grp_ctx)->base;
 }
 
 
-struct axis2_conf_ctx* AXIS2_CALL axis2_svc_grp_ctx_get_parent(struct axis2_svc_grp_ctx *svc_grp_ctx, axis2_env_t **env) 
+struct axis2_conf_ctx* AXIS2_CALL 
+axis2_svc_grp_ctx_get_parent(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                             axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_grp_ctx)->parent;
@@ -157,8 +204,9 @@ struct axis2_conf_ctx* AXIS2_CALL axis2_svc_grp_ctx_get_parent(struct axis2_svc_
 
 
 
-axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_free (struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                                   axis2_env_t **env)
+axis2_status_t AXIS2_CALL 
+axis2_svc_grp_ctx_free (struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                        axis2_env_t **env)
 {
     axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
     
@@ -214,9 +262,10 @@ axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_free (struct axis2_svc_grp_ctx *svc_
 /**
  * The method is used to do the intialization of the EngineContext
  */
-axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_init(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                                            axis2_env_t **env,
-                    axis2_conf_t *conf) 
+axis2_status_t AXIS2_CALL 
+axis2_svc_grp_ctx_init(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                       axis2_env_t **env,
+                       axis2_conf_t *conf) 
 {
     axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
     
@@ -226,22 +275,26 @@ axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_init(struct axis2_svc_grp_ctx *svc_g
 
     if (svc_grp_ctx_impl->svc_grp_name)
     {        
-        svc_grp_ctx_impl->svc_grp = AXIS2_CONF_GET_SVC_GRP(conf, env, svc_grp_ctx_impl->svc_grp_name);
+        svc_grp_ctx_impl->svc_grp = 
+            AXIS2_CONF_GET_SVC_GRP(conf, env, svc_grp_ctx_impl->svc_grp_name);
     }
     
     return AXIS2_SUCCESS;
 }
 
 
-axis2_char_t* AXIS2_CALL axis2_svc_grp_ctx_get_id(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+axis2_char_t* AXIS2_CALL 
+axis2_svc_grp_ctx_get_id(struct axis2_svc_grp_ctx *svc_grp_ctx, 
                         axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_grp_ctx)->id;
 }
 
-axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_set_id(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                        axis2_env_t **env, axis2_char_t *id) 
+axis2_status_t AXIS2_CALL 
+axis2_svc_grp_ctx_set_id(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                         axis2_env_t **env, 
+                         axis2_char_t *id) 
 {
     axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
     
@@ -264,9 +317,10 @@ axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_set_id(struct axis2_svc_grp_ctx *svc
 }
 
 /** if the servic name is foo:bar , you should pass only bar */
-axis2_svc_ctx_t* AXIS2_CALL axis2_svc_grp_ctx_get_svc_ctx(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                        axis2_env_t **env,
-                        axis2_char_t *svc_name) 
+axis2_svc_ctx_t* AXIS2_CALL 
+axis2_svc_grp_ctx_get_svc_ctx(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                              axis2_env_t **env,
+                              axis2_char_t *svc_name) 
 {
     axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
     
@@ -282,8 +336,9 @@ axis2_svc_ctx_t* AXIS2_CALL axis2_svc_grp_ctx_get_svc_ctx(struct axis2_svc_grp_c
  * if service group has 2 service init , then two service contexts will be
  * created
  */
-axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_fill_svc_ctx_map(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                        axis2_env_t **env)
+axis2_status_t AXIS2_CALL 
+axis2_svc_grp_ctx_fill_svc_ctx_map(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                                   axis2_env_t **env)
 {
     axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
     axis2_hash_index_t *hi = NULL;
@@ -319,15 +374,17 @@ axis2_status_t AXIS2_CALL axis2_svc_grp_ctx_fill_svc_ctx_map(struct axis2_svc_gr
     return AXIS2_SUCCESS;
 }
 
-axis2_svc_grp_t* AXIS2_CALL axis2_svc_grp_ctx_get_svc_grp(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                        axis2_env_t **env) 
+axis2_svc_grp_t* AXIS2_CALL 
+axis2_svc_grp_ctx_get_svc_grp(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                              axis2_env_t **env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_grp_ctx)->svc_grp;
 }
 
-axis2_hash_t* AXIS2_CALL axis2_svc_grp_ctx_get_svc_ctx_map(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                        axis2_env_t **env)
+axis2_hash_t* AXIS2_CALL 
+axis2_svc_grp_ctx_get_svc_ctx_map(struct axis2_svc_grp_ctx *svc_grp_ctx, 
+                                  axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_grp_ctx)->svc_ctx_map;

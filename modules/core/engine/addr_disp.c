@@ -24,17 +24,24 @@
 #include <axis2_addr.h>
 #include <axis2_utils.h>
 
-axis2_status_t AXIS2_CALL axis2_addr_disp_invoke (struct axis2_handler * handler, 
-                                                axis2_env_t **env,
-                                                struct axis2_msg_ctx *msg_ctx);
-axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
-                    axis2_env_t **env);
-axis2_op_t* AXIS2_CALL axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
-                                axis2_env_t **env,
-                                axis2_svc_t *svc);
+axis2_status_t AXIS2_CALL 
+axis2_addr_disp_invoke (struct axis2_handler * handler, 
+                        axis2_env_t **env,
+                        struct axis2_msg_ctx *msg_ctx);
+                        
+axis2_svc_t* AXIS2_CALL 
+axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
+                        axis2_env_t **env);
+                        
+axis2_op_t* AXIS2_CALL 
+axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
+                        axis2_env_t **env,
+                        axis2_svc_t *svc);
+                        
 
 
-axis2_disp_t* AXIS2_CALL axis2_addr_disp_create(axis2_env_t **env) 
+axis2_disp_t* AXIS2_CALL 
+axis2_addr_disp_create(axis2_env_t **env) 
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
@@ -81,8 +88,9 @@ axis2_disp_t* AXIS2_CALL axis2_addr_disp_create(axis2_env_t **env)
  * @param messageContext
  * @return
  */
-axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx, 
-                    axis2_env_t **env) 
+axis2_svc_t* AXIS2_CALL 
+axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx, 
+                         axis2_env_t **env) 
 {    
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     axis2_svc_t *svc = NULL;
@@ -99,7 +107,8 @@ axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
         if (address)
         {
             axis2_char_t **url_tokens = NULL;
-            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Checking for service using WSA enpoint address : %s", address);
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+                "Checking for service using WSA enpoint address : %s", address);
 
             if ( (AXIS2_STRCMP(AXIS2_WSA_ANONYMOUS_URL, address) == 0 ) || 
                   (AXIS2_STRCMP(AXIS2_WSA_NAMESPACE_SUBMISSION, address) == 0 ))
@@ -123,11 +132,13 @@ axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                         if (conf)
                         {
                             axis2_qname_t *qname = axis2_qname_create(env, url_tokens[0], NULL, NULL);
+                
                             svc = AXIS2_CONF_GET_SVC(conf, env, AXIS2_QNAME_GET_LOCALPART(qname, env));
                             
                             AXIS2_QNAME_FREE(qname, env);
                             if(svc)
-                                AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Service found using WSA enpoint address");
+                                AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+                                        "Service found using WSA enpoint address");
                         }
                     }                    
                     AXIS2_FREE((*env)->allocator, url_tokens[0]);
@@ -152,9 +163,10 @@ axis2_svc_t* AXIS2_CALL axis2_addr_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
  * @param msg_ctx
  * @return
  */
-axis2_op_t* AXIS2_CALL axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
-                                axis2_env_t **env,
-                                axis2_svc_t *svc)
+axis2_op_t* AXIS2_CALL 
+axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
+                        axis2_env_t **env,
+                        axis2_svc_t *svc)
 {
     axis2_char_t *action = NULL;
     axis2_qname_t *qname = NULL;
@@ -167,12 +179,14 @@ axis2_op_t* AXIS2_CALL axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx,
     
     if (action)
     {
-        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Checking for operation using WSA Action : %s", action);
+        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+                "Checking for operation using WSA Action : %s", action);
         
         qname = axis2_qname_create(env, action, NULL, NULL);
         op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, qname);
         if (op)
-            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Operation found using WSA Action");
+            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+                    "Operation found using WSA Action");
         AXIS2_QNAME_FREE(qname, env);            
     }
     
@@ -180,9 +194,10 @@ axis2_op_t* AXIS2_CALL axis2_addr_disp_find_op(axis2_msg_ctx_t *msg_ctx,
 }
 
 
-axis2_status_t AXIS2_CALL axis2_addr_disp_invoke(struct axis2_handler * handler, 
-                                                axis2_env_t **env,
-                                                struct axis2_msg_ctx *msg_ctx)
+axis2_status_t AXIS2_CALL 
+axis2_addr_disp_invoke(struct axis2_handler * handler, 
+                       axis2_env_t **env,
+                       struct axis2_msg_ctx *msg_ctx)
 {
     axis2_relates_to_t *relates_to = NULL;
     
@@ -230,7 +245,8 @@ axis2_status_t AXIS2_CALL axis2_addr_disp_invoke(struct axis2_handler * handler,
                             svc_grp_ctx = AXIS2_SVC_CTX_GET_PARENT(svc_ctx, env);
                             if (svc_grp_ctx)
                             {
-                                AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env) );
+                                AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, 
+                                    AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env) );
                             }
                         }                      
                         
