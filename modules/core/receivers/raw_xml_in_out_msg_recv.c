@@ -303,6 +303,12 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
         AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
         status = AXIS2_FAILURE; /* if there is a failure we have to return a failure code */
     }
+    else
+    {
+        /* we should free the memory as the envelope is not used, one way case */
+        AXIS2_SOAP_ENVELOPE_FREE(default_envelope, env);
+        default_envelope = NULL;
+    }
     
 
     return status;
