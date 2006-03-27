@@ -163,6 +163,7 @@ axis2_core_utils_reset_out_msg_ctx(axis2_env_t **env,
         AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, NULL);
         AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(msg_info_headers, env, NULL);
         AXIS2_MSG_INFO_HEADERS_SET_FROM(msg_info_headers, env, NULL);
+        AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(msg_info_headers, env, NULL);
     } 
     
     AXIS2_MSG_CTX_SET_OP_CTX(out_msg_ctx, env, NULL);

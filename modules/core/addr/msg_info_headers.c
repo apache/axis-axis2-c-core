@@ -259,8 +259,20 @@ axis2_msg_info_headers_set_to(struct axis2_msg_info_headers *msg_info_headers,
                                axis2_env_t **env, 
                                axis2_endpoint_ref_t *to) 
 {
+    axis2_msg_info_headers_impl_t *msg_info_headers_impl = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(msg_info_headers)->to = to;
+    
+    msg_info_headers_impl = AXIS2_INTF_TO_IMPL(msg_info_headers);
+    
+    if (msg_info_headers_impl->to && to) /* if the incomming to is NULL, 
+                                            we consider that to be a reset,
+                                            so dont free */
+    {
+        AXIS2_ENDPOINT_REF_FREE(msg_info_headers_impl->to, env);
+        msg_info_headers_impl->to = NULL;
+    }
+    msg_info_headers_impl->to = to;
     return AXIS2_SUCCESS;
 }
 
