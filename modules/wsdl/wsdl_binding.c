@@ -337,7 +337,7 @@ axis2_qname_t * AXIS2_CALL
 axis2_wsdl_binding_get_name(axis2_wsdl_binding_t *wsdl_binding,
                             axis2_env_t **env) 
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(wsdl_binding)->qname;
 }
 

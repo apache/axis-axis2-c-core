@@ -258,8 +258,8 @@ axis2_wsdl_component_get_component_property(
                                         axis2_env_t **env, 
                                         axis2_char_t *key) 
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, key, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, key, NULL);
 	
 	return (void *)(axis2_hash_get (AXIS2_INTF_TO_IMPL(wsdl_component)->
         component_properties, key, AXIS2_HASH_KEY_STRING));
