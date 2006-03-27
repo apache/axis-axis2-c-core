@@ -22,7 +22,7 @@ int axis2_test_msg_info_headers()
 	reply_to = axis2_endpoint_ref_create(&env, "reply to");
 	fault_to = axis2_endpoint_ref_create(&env, "fault to");
 
-	axis2_msg_info_headers = axis2_msg_info_headers_create(&env, to, action);
+	axis2_msg_info_headers = axis2_msg_info_headers_create(&env, NULL, action);
 	if (axis2_msg_info_headers)
 		printf("SUCCESS axis2_msg_info_headers_create\n");
 	else
@@ -31,6 +31,16 @@ int axis2_test_msg_info_headers()
 		return -1;
 	}
 
+	status = AXIS2_MSG_INFO_HEADERS_SET_TO(axis2_msg_info_headers, &env, to);
+
+	if(status == AXIS2_SUCCESS)
+		printf("SUCCESS AXIS2_MSG_INFO_HEADERS_SET_TO\n");		
+	else
+	{
+		printf("ERROR AXIS2_MSG_INFO_HEADERS_SET_TO");
+		return -1;
+	}
+    
 	axis2_endpoint_ref = AXIS2_MSG_INFO_HEADERS_GET_TO(axis2_msg_info_headers, &env);
 
 	if (axis2_endpoint_ref)
@@ -39,17 +49,7 @@ int axis2_test_msg_info_headers()
 	{
 		printf("ERROR AXIS2_MSG_INFO_HEADERS_GET_TO\n");
 		return -1;
-	}
-	
-	status = AXIS2_MSG_INFO_HEADERS_SET_TO(axis2_msg_info_headers, &env, to);
-
-	if(status)
-		printf("SUCCESS AXIS2_MSG_INFO_HEADERS_SET_TO\n");		
-	else
-	{
-		printf("ERROR AXIS2_MSG_INFO_HEADERS_SET_TO");
-		return -1;
-	}
+    }
 
 	status = AXIS2_FAILURE;
 	status = AXIS2_MSG_INFO_HEADERS_SET_FROM(axis2_msg_info_headers, &env, from);
