@@ -211,11 +211,17 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS (msg_ctx, env);
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE (msg_ctx, env);
     if (!soap_envelope)
+    {
+        AXIS2_OM_NAMESPACE_FREE(addressing_namespace, env);
         return AXIS2_SUCCESS; /* can happen in case of one way services/clients */
+    }
     soap_header  = AXIS2_SOAP_ENVELOPE_GET_HEADER (soap_envelope, env);
   
     if (!soap_header)
+    {
+        AXIS2_OM_NAMESPACE_FREE(addressing_namespace, env);
         return AXIS2_SUCCESS; /*No SOAP header, so no point proceeding*/
+    }
 
     /* by this time, we definitely have some addressing information to be sent. This is because,
        // we have tested at the start of this whether msg_info_headers are null or not.
