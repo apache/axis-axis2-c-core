@@ -419,8 +419,13 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
     {
         AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
         return AXIS2_FAILURE;
-    }        
-    status = AXIS2_ENGINE_SEND(engine, env, out_msg_ctx);
+    }       
+    if (AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(out_msg_ctx, env) || AXIS2_ERROR_GET_STATUS_CODE((*env)->error) != AXIS2_SUCCESS )
+    {
+        /* if it is two way or if there is a fault then send through engine.
+           if it is one way we do not need to do an engine send */
+        status = AXIS2_ENGINE_SEND(engine, env, out_msg_ctx);
+    }
     AXIS2_ENGINE_FREE(engine, env);
     axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
     AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
