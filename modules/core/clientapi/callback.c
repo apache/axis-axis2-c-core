@@ -175,7 +175,7 @@ axis2_soap_envelope_t* AXIS2_CALL
 axis2_callback_get_envelope(struct axis2_callback *callback, 
                             axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(callback)->envelope;
 }
 

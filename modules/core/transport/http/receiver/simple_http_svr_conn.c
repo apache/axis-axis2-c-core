@@ -496,7 +496,7 @@ axis2_simple_http_svr_conn_get_svr_ip(
                         axis2_simple_http_svr_conn_t *svr_conn, 
                         axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     return axis2_network_handler_get_svr_ip(env, 
                         AXIS2_INTF_TO_IMPL(svr_conn)->socket);
 }
