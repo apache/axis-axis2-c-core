@@ -432,6 +432,7 @@ axis2_simple_http_svr_conn_write_response
 						&response_body);
 	if(body_size <= 0)
 	{
+        AXIS2_HTTP_RESPONSE_WRITER_FREE(response_writer, env);
 		return AXIS2_SUCCESS;
 	}
 	if(AXIS2_FALSE == chuked_encoding)
@@ -443,6 +444,7 @@ axis2_simple_http_svr_conn_write_response
 		{
 			AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WRITING_RESPONSE, 
 						AXIS2_FAILURE);
+            AXIS2_HTTP_RESPONSE_WRITER_FREE(response_writer, env);
 			return AXIS2_FAILURE;
 		}
 	}
