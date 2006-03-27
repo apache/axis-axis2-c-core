@@ -523,7 +523,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
     if (!svc_ctx)
         return AXIS2_FAILURE;
     
-    AXIS2_MSG_CTX_SET_TO(msg_ctx, env, call_impl->to);
+    /*AXIS2_MSG_CTX_SET_TO(msg_ctx, env, call_impl->to);*/
     
     conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env);
     if (!conf_ctx)
