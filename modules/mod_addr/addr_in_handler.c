@@ -313,11 +313,6 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
                 
                 axis2_addr_in_extract_to_epr_ref_params(env, epr, soap_header, addr_ns_str);
                 AXIS2_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);
-                if (epr)
-                {
-                    AXIS2_ENDPOINT_REF_FREE(epr, env);
-                    epr = NULL;
-                }
         }
         else if(AXIS2_STRCMP(ele_localname, AXIS2_WSA_FROM) == 0)
         {
