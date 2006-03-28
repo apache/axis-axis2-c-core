@@ -2,7 +2,8 @@ prgbindir=$(prefix)/bin/samples
 prgbin_PROGRAMS = dynamic_invocation
 samplesdir=$(prefix)/samples/client/dynamic_invocation
 samples_DATA=di_client.c
-dynamic_invocation_SOURCES = di_client.c
+dynamic_invocation_SOURCES = di_client.c \
+								main.c
 
 dynamic_invocation_LDADD   =  \
 					-laxis2_util \
