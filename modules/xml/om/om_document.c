@@ -141,9 +141,6 @@ axis2_om_document_create (axis2_env_t **env,
     document->om_document.ops->get_builder = axis2_om_document_get_builder;
     document->om_document.ops->serialize = axis2_om_document_serialize;
     
-    if (NULL != builder)
-        AXIS2_OM_STAX_BUILDER_SET_DOCUMENT (builder, env, &(document->om_document));
-    
     return &(document->om_document);
 }
 

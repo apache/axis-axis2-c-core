@@ -291,10 +291,10 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
         return NULL;
     }
     /**
-        create an om document
+        get the om document form builder 
         document is the container of om model created using builder
     */
-    document = axis2_om_document_create (env, NULL, desc_builder_impl->builder);
+    document = AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(desc_builder_impl->builder, env);
     /** 
      * In description building we don't want defferred building. So build
      * the whole tree at once

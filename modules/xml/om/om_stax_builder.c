@@ -115,7 +115,14 @@ axis2_om_stax_builder_create (axis2_env_t **env,
     builder->current_event = -1;
     builder->root_node = NULL;
     builder->element_level = 0;
-   
+  
+    builder->document = axis2_om_document_create(env, NULL, &(builder->om_stax_builder));
+    if(!builder->document)
+    {
+        AXIS2_FREE((*env)->allocator, builder);
+        return NULL;
+    }
+  
     /* ops */
     builder->om_stax_builder.ops = NULL;
     builder->om_stax_builder.ops = (axis2_om_stax_builder_ops_t *) AXIS2_MALLOC(
@@ -137,15 +144,19 @@ axis2_om_stax_builder_create (axis2_env_t **env,
         
 	builder->om_stax_builder.ops->free = 
 	        axis2_om_stax_builder_free;
-	builder->om_stax_builder.ops->set_document = 
+	
+    builder->om_stax_builder.ops->set_document = 
 	        axis2_om_stax_builder_set_document;
-	        
+	
+    builder->om_stax_builder.ops->get_document = 
+            axis2_om_stax_builder_get_document;
+    
     builder->om_stax_builder.ops->next_with_token =
             axis2_om_stax_builder_next_with_token;                       
             
     builder->om_stax_builder.ops->is_complete =
             axis2_om_stax_builder_is_complete;
-                                            
+                                               
 	
     return &(builder->om_stax_builder);
 }

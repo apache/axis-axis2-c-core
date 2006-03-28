@@ -84,12 +84,14 @@ test_om_build (char *filename)
         document is the container of om model created using builder 
     */
            
-    document = axis2_om_document_create (&environment, NULL, builder);
+    document = AXIS2_OM_STAX_BUILDER_GET_DOCUMENT (builder, &environment);
     /**
         get root element , building starts hear 
      */
-    
-    node1 = AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT (document,&environment);
+    if(!document)
+        return -1;
+
+    node1 = AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT (document, &environment);
     if(!node1)
     {
         printf(" root element null ");
