@@ -346,13 +346,13 @@ axis2_xml_reader_create_for_buffer(axis2_env_t **env,
  */
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_xml_reader_init(axis2_env_t **env);
+axis2_xml_reader_init();
 
 /**
  * parser cleanup function 
  */
 AXIS2_DECLARE(axis2_status_t)
-axis2_xml_reader_cleanup(axis2_env_t **env);
+axis2_xml_reader_cleanup();
 
 
 /********************************* Macros *************************************/

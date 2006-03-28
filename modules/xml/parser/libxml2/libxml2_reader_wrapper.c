@@ -208,14 +208,14 @@ axis2_libxml2_reader_wrapper_init_map(axis2_libxml2_reader_wrapper_impl_t *parse
 
 /*******************************************************************************/
 AXIS2_DECLARE( axis2_status_t )
-axis2_xml_reader_init(axis2_env_t **env)
+axis2_xml_reader_init()
 {
     xmlInitParser();
     return AXIS2_SUCCESS;
 }
 
 AXIS2_DECLARE( axis2_status_t )
-axis2_xml_reader_cleanup(axis2_env_t **env)
+axis2_xml_reader_cleanup()
 {
     xmlCleanupParser();
     return AXIS2_SUCCESS;
