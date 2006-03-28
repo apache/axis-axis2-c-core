@@ -57,7 +57,8 @@ struct axis2_mime_output_ops
 {
 
     axis2_byte_t* (AXIS2_CALL *complete)(axis2_mime_output_t *mime_output,
-                            axis2_env_t **env, axis2_byte_t **output_stream, 
+                            axis2_env_t **env, axis2_byte_t **output_stream,
+							int *output_stream_size,
                             axis2_char_t *string_to_write, 
                             axis2_array_list_t *binary_node_list,
                             axis2_char_t *boundary, axis2_char_t *content_id,

@@ -537,10 +537,10 @@ axis2_bool_t AXIS2_CALL
 axis2_om_output_is_optimized(axis2_om_output_t *om_output,axis2_env_t **env)
 {
     axis2_bool_t is_optimized = AXIS2_FALSE;
-    
+    axis2_om_output_format_t *om_output_format = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    axis2_om_output_format_t *om_output_format = axis2_om_output_format_create(env);
+    om_output_format = axis2_om_output_format_create(env);
     is_optimized = AXIS2_OM_OUTPUT_FORMAT_IS_OPTIMIZED(om_output_format, env);    
     return is_optimized;
 }
