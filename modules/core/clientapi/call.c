@@ -388,6 +388,13 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
     
     AXIS2_MSG_CTX_SET_MESSAGE_ID(msg_ctx, env, message_id);
 
+    if(NULL != message_id)
+    {
+        AXIS2_FREE((*env)->allocator, message_id);
+        message_id = NULL;
+    }
+
+   
     if (call_impl->use_separate_listener) 
     {
         axis2_callback_t *callback = NULL;
