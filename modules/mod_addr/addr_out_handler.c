@@ -179,7 +179,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
 
         if (!in_msg_ctx)
         {
-            addr_ns = AXIS2_WSA_NAMESPACE_SUBMISSION;   /* setting Submission version as the default addressing namespace */
+            addr_ns = AXIS2_WSA_NAMESPACE;   /* setting Submission version as the default addressing namespace */
         }
         else
         {
@@ -197,14 +197,14 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
 
             if (!addr_ns)
             {
-                addr_ns = AXIS2_WSA_NAMESPACE_SUBMISSION;   /* Addressing version has not been set in the IN path */
+                addr_ns = AXIS2_WSA_NAMESPACE;   /* Addressing version has not been set in the IN path */
             }
         }
     }
 
     if (!addr_ns || AXIS2_STRCMP ("", addr_ns) == 0)
     {
-        addr_ns = AXIS2_WSA_NAMESPACE_SUBMISSION;
+        addr_ns = AXIS2_WSA_NAMESPACE;
     }
 
     addressing_namespace = axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
@@ -418,7 +418,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                     
                     om_attr = axis2_om_attribute_create (env,
                             AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE,
-                            AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE_SUBMISSION,
+                            AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE,
                             addr_ns_obj);
                             
                     AXIS2_OM_ELEMENT_ADD_ATTRIBUTE (relates_to_header_ele, env,
