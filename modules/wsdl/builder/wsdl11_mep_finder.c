@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <axis2_wsdl11_mep_finder.h>
 #include <axis2_wsdl4c_operation.h>
 #include <axis2_wsdl.h>
 
 axis2_char_t *AXIS2_CALL
-axis2_wom_builder_wsdl11_mep_finder_get_mep(void *op,
-                                            axis2_env_t **env) 
+axis2_wsdl11_mep_finder_get_mep(void *op,
+                        		axis2_env_t **env) 
 {
     axis2_wsdl4c_optype_t op_type = axis2_wsdl4c_operation_get_type(op);
 

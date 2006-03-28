@@ -14,77 +14,44 @@
  * limitations under the License.
  */
 
-package org.apache.axis2.wsdl.builder.wsdl4j;
+#include <axis2_wsdl_pump.h>
+#include <axis2_wsdl4c_binding.h>
+#include <axis2_wsdl4c_constraint.h>
+#include <axis2_wsdl4c_element.h>
+#include <axis2_wsdl4c_message.h>
+#include <axis2_wsdl4c_operation.h>
+#include <axis2_wsdl4c_parser.h>
+#include <axis2_wsdl4c_part.h>
+#include <axis2_wsdl4c_port_type.h>
+#include <axis2_wsdl4c_qname.h>
+#include <axis2_wsdl4c_service.h>
+#include <axis2_wsdl4c_soap.h>
 
-import com.ibm.wsdl.extensions.soap.SOAPConstants;
-import org.apache.axis2.wsdl.builder.WSDLComponentFactory;
-import org.apache.axis2.namespace.Constants;
-import org.apache.ws.policy.util.DOMPolicyReader;
-import org.apache.ws.policy.util.PolicyFactory;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.wsdl.Component;
-import org.apache.wsdl.MessageReference;
-import org.apache.wsdl.WSDLBinding;
-import org.apache.wsdl.WSDLBindingFault;
-import org.apache.wsdl.WSDLBindingMessageReference;
-import org.apache.wsdl.WSDLBindingOperation;
-import org.apache.wsdl.WSDLConstants;
-import org.apache.wsdl.WSDLDescription;
-import org.apache.wsdl.WSDLEndpoint;
-import org.apache.wsdl.WSDLExtensibilityAttribute;
-import org.apache.wsdl.WSDLFaultReference;
-import org.apache.wsdl.WSDLInterface;
-import org.apache.wsdl.WSDLOperation;
-import org.apache.wsdl.WSDLService;
-import org.apache.wsdl.WSDLTypes;
-import org.apache.wsdl.extensions.DefaultExtensibilityElement;
-import org.apache.wsdl.extensions.ExtensionConstants;
-import org.apache.wsdl.extensions.ExtensionFactory;
-import org.apache.wsdl.extensions.PolicyExtensibilityElement;
-import org.apache.wsdl.impl.WSDLProcessingException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+#include <axis2_wsdl11_mep_finder.h>
+#include <axis2_wsdl_ext_soap_address.h>
+#include <axis2_wsdl_ext_soap_binding.h>
+#include <axis2_wsdl_ext_soap_body.h>
+#include <axis2_wsdl_ext_soap_header.h>
+#include <axis2_wsdl_ext_soap_op.h>
 
-import javax.wsdl.Binding;
-import javax.wsdl.BindingFault;
-import javax.wsdl.BindingInput;
-import javax.wsdl.BindingOperation;
-import javax.wsdl.BindingOutput;
-import javax.wsdl.Definition;
-import javax.wsdl.Fault;
-import javax.wsdl.Import;
-import javax.wsdl.Input;
-import javax.wsdl.Message;
-import javax.wsdl.Operation;
-import javax.wsdl.Output;
-import javax.wsdl.Part;
-import javax.wsdl.Port;
-import javax.wsdl.PortType;
-import javax.wsdl.Service;
-import javax.wsdl.Types;
-import javax.wsdl.extensions.ExtensibilityElement;
-import javax.wsdl.extensions.UnknownExtensibilityElement;
-import javax.wsdl.extensions.schema.Schema;
-import javax.wsdl.extensions.schema.SchemaImport;
-import javax.wsdl.extensions.soap.SOAPAddress;
-import javax.wsdl.extensions.soap.SOAPBinding;
-import javax.wsdl.extensions.soap.SOAPBody;
-import javax.wsdl.extensions.soap.SOAPHeader;
-import javax.wsdl.extensions.soap.SOAPOperation;
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-import java.util.Vector;
-
+#include <axis2_wsdl_binding_fault.h>
+#include <axis2_wsdl_binding.h>
+#include <axis2_wsdl_binding_msg_ref.h>
+#include <axis2_wsdl_binding_op.h>
+#include <axis2_wsdl_component.h>
+#include <axis2_wsdl_desc.h>
+#include <axis2_wsdl_endpoint.h>
+#include <axis2_wsdl_extensible_attribute.h>
+#include <axis2_wsdl_extensible_component.h>
+#include <axis2_wsdl_extensible_element.h>
+#include <axis2_wsdl_fault_ref.h>
+#include <axis2_wsdl_interface.h>
+#include <axis2_wsdl_msg_ref.h>
+#include <axis2_wsdl_op.h>
+#include <axis2_wsdl_soap_op.h>
+#include <axis2_wsdl_svc.h>
+#include <axis2_wsdl_types.h>
+#include <axis2_string.h>
 
 #define XMLSCHEMA_NAMESPACE_URI Constants.URI_2001_SCHEMA_XSD
 #define XMLSCHEMA_NAMESPACE_PREFIX "xs"
@@ -111,11 +78,11 @@ import java.util.Vector;
 typedef struct axis2_wsdl_pump_impl
 {
 	axis2_wsdl_pump_t wsdl_pump;
-    int nsCount=0;
+    int ns_count;
     axis2_wsdl_desc_t *wom_def;
-    Definition wsdl4c_parsed_def;
     axis2_hash_t * declared_nameSpaces;
     axis2_hash_t *resolved_rpc_wrapped_element_map;
+	void *parser;
 
 } axis2_wsdl_pump_impl_t;
 
@@ -128,11 +95,134 @@ axis2_status_t AXIS2_CALL
 	axis2_wsdl_pump_free (axis2_wsdl_pump_t *wsdl_pump,
 									axis2_env_t **env);
 
+axis2_status_t AXIS2_CALL
+axis2_wsdl_pump_pump(axis2_wsdl_pump_t *wsdl_pump,
+						axis2_env_t **env);
+
+static axis2_status_t
+axis2_wsdl_pump_populate_def(axis2_wsdl_pump_t *wsdl_pump,
+                                axis2_env_t **env);
+
+/*//////////////////////////////////////////////////////////////////////////////
+//////////////////////// Top level Components Copying ////////////////////////*/
+
+/**
+ * Simply Copy information.
+ *
+ * @param axis2_wsdl_interface
+ * @param wsdl4c_port_type
+ */
+/* FIXME Evaluate a way of injecting pumps and properties with a general
+ *  formatted input */
+
+static axis2_status_t
+axis2_wsdl_pump_populate_interfaces(axis2_wsdl_pump_t *wsdl_pump,
+                                    axis2_env_t **env,
+                                    axis2_wsdl_interface_t *interface,
+                                    void *port_type);
+
+/**
+ *
+ * Finds whether a given message is wrappable
+ * @return
+ */
+static axis2_bool_t
+axis2_wsdl_pump_find_wrappable(axis2_wsdl_pump_t *wsdl_pump,
+								axis2_env_t **env,
+								void *message);
+
+/**
+ * Pre Condition: The Interface Components must be copied by now.
+ */
+static axis2_status_t
+axis2_wsdl_pump_populate_bindings(axis2_wsdl_pump_t *wsdl_pump,
+                                    axis2_env_t **env,
+                                    axis2_wsdl_binding_t *wsdl_binding,
+                                    void *binding);
+
+/**
+ *
+ * @param wsdl_binding_op
+ * @param wsdl4c_binding_op
+ * @param namepace_of_the_binding_op
+ */
+static axis2_status_t
+axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
+											axis2_env_t **env,
+                                            void *binding,
+                                            axis2_wsdl_binding_op_t *
+                                                    wsdl_binding_op,
+                                            int op_index,
+                                            char *op_name);
+
+axis2_status_t AXIS2_CALL
+axis2_wsdl_pump_populate_services(axis2_wsdl_pump_t *wsdl_pump,
+									axis2_env_t **env,
+									axis2_wsdl_svc_t *wsdl_svc,
+									void *wsdl4c_svc);
+					
+/*
+/////////////////////////////////////////////////////////////////////////////
+//////////////////////////// Internal Component Copying ///////////////////
+*/
+
+axis2_status_t AXIS2_CALL
+axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
+									axis2_env_t **env,
+									axis2_wsdl_op_t *wsdl_op,
+									void *wsdl4c_op,
+									axis2_char_t *namespce_of_op,
+									axis2_wsdl_types_t *wsdl_types);
+
+/*
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+/**
+ * Generates a reference QName
+ * @param wsdl4c_message
+ * @return
+ */
+static axis2_qname_t *
+axis2_wsdl_pump_generate_reference_qname(axis2_wsdl_pump_t *wsdl_pump,
+											axis2_env_t **env,
+											axis2_qname_t *outer_qname,
+											void *wsdl4c_msg,
+											axis2_bool_t is_wrappable);
+
+axis2_status_t AXIS2_CALL
+axis2_wsdl_pump_populate_ports(axis2_wsdl_pump_t *wsdl_pump,
+								axis2_env_t **env,
+								axis2_wsdl_endpoint_t *wsdl_endpoint,
+								void *wsdl4c_binding,
+								char *port_name,
+								char *target_namespc);
+
+/**
+ * This method will fill up the gap of WSDL 1.1 and WSDL 2.0 w.r.t. the
+ * bound interface for the Service Component Defined in the WSDL 2.0. Logic
+ * being if there exist only one PortType in the WSDL 1.1 file then that
+ * will be set as the bound interface of the Service. If more than one
+ * Porttype exist in the WSDl 1.1 file this will create a dummy Interface
+ * with the available PortTypes and will return that interface so that it
+ * will inherit all those interfaces.
+ * <p/>
+ * Eventually this will have to be fixed using user input since
+ *
+ * @param service
+ * @return wsdl interface
+ */
+static axis2_wsdl_interface_t *
+axis2_wsdl_pump_get_bound_interface(axis2_wsdl_pump_t *wsdl_pump,
+									axis2_env_t **env,
+									axis2_wsdl_svc_t *wsdl_svc);
                                 
 /************************** End of function prototypes ************************/
 
 axis2_wsdl_pump_t * AXIS2_CALL 
-axis2_wsdl_pump_create (axis2_env_t **env)
+axis2_wsdl_pump_create (axis2_env_t **env,
+						axis2_wsdl_desc_t *wom_def,
+						void *wsdl_parser)
 {
     axis2_wsdl_pump_impl_t *wsdl_pump_impl = NULL;
     
@@ -147,7 +237,19 @@ axis2_wsdl_pump_create (axis2_env_t **env)
         return NULL;
     }
     
+    wsdl_pump_impl->wom_def = NULL;
+	wsdl_pump_impl->parser = NULL;
     wsdl_pump_impl->wsdl_pump.ops = NULL;
+
+	if(wom_def)
+	{
+		wsdl_pump_impl->wom_def = wom_def;
+	}
+
+	if(wsdl_parser)
+	{
+		wsdl_pump_impl->parser = wsdl_parser;
+	}
 	
 	wsdl_pump_impl->wsdl_pump.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_pump_ops_t));
@@ -159,6 +261,7 @@ axis2_wsdl_pump_create (axis2_env_t **env)
     }
     
 	wsdl_pump_impl->wsdl_pump.ops->free =  axis2_wsdl_pump_free;
+	wsdl_pump_impl->wsdl_pump.ops->pump = axis2_wsdl_pump_pump;
 	
 	return &(wsdl_pump_impl->wsdl_pump);
 }
@@ -184,271 +287,251 @@ axis2_wsdl_pump_free (axis2_wsdl_pump_t *wsdl_pump,
 	return AXIS2_SUCCESS;
 }
 
+axis2_status_t AXIS2_CALL
+axis2_wsdl_pump_pump(axis2_wsdl_pump_t *wsdl_pump,
+						axis2_env_t **env)
+{
+	axis2_wsdl_pump_impl_t *pump_impl = NULL;
+	
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
+	
+	return axis2_wsdl_pump_populate_def(wsdl_pump, env);	
+}
 
-    public WSDLPump(WSDLDescription womDefinition,
-                    Definition wsdl4jParsedDefinition) {
-        this(womDefinition, wsdl4jParsedDefinition, womDefinition);
+static axis2_status_t
+axis2_wsdl_pump_populate_def(axis2_wsdl_pump_t *wsdl_pump,
+                                axis2_env_t **env)
+{
+    axis2_wsdl_pump_impl_t *pump_impl = NULL;
+    axis2_array_list_t *port_types = NULL;
+    axis2_wsdl_interface_t *wsdl_interface = NULL;
+    void *port_type = NULL;
+    int i = 0, size = 0;
+    axis2_status_t status = AXIS2_FAILURE;
+    axis2_array_list_t *bindings = NULL;
+    axis2_wsdl_binding_t *wsdl_binding = NULL;
+    void *binding = NULL;
+    axis2_array_list_t *services = NULL;
+    axis2_wsdl_svc_t *wsdl_svc = NULL;
+    void *service = NULL;
+
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
+
+    /* Go through the axis2_wsdl4c interfaces and pump it to the WOM */
+    
+    /*
+    /////////////////////////////////////////////////////////////////// //
+    // Order of the following items shouldn't be changed unless you     //
+    // really know what you are doing. Reason being the components that //
+    // are copied(pumped) towards the end depend on the components that //
+    // has already being pumped. Following Lists some of the            //
+    // dependencies.                                                    //
+    //  1) The Binding refers to the Interface                          //
+    //  2) The Endpoint refers to the Bindings                          //
+    // ....                                                             //
+    //																   	//
+    //////////////////////////////////////////////////////////////////////
+    */
+	/*
+    ///////////////////(2)Copy the Interfaces////////////////////////////
+    //copy the Interfaces: Get the port_types from axis2_wsdl4c parse OM and
+    // copy it to the  WOM's axis2_wsdl_interface Components
+    */
+			
+    port_types = axis2_wsdl4c_parser_get_port_types(pump_impl->parser);
+    if(!port_types)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WSDL_PARSER_INVALID_STATE, 
+            AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    size = AXIS2_ARRAY_LIST_SIZE(port_types, env);
+    for(i = 0; i < size; i++)
+    {
+        wsdl_interface = axis2_wsdl_interface_create(env);
+        if(!wsdl_interface)
+        {
+            return AXIS2_FAILURE;
+        }
+        port_type = (void *) AXIS2_ARRAY_LIST_GET(port_types, env, i);
+        status = axis2_wsdl_pump_populate_interfaces(wsdl_pump, env, 
+            wsdl_interface, port_type);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
+        }
+        status = AXIS2_WSDL_DESC_ADD_INTERFACE(pump_impl->wom_def, env, 
+			wsdl_interface);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
+        }
     }
 
-    public WSDLPump(WSDLDescription womDefinition,
-                    Definition wsdl4jParsedDefinition,
-                    WSDLComponentFactory wsdlComponentFactory) {
-        this.womDefinition = womDefinition;
-        this.wsdl4jParsedDefinition = wsdl4jParsedDefinition;
-        this.wsdlComponentFactory = wsdlComponentFactory;
+    /*
+	///////////////////////////////////////(3)Copy the Bindings///////////////////////
+    //pump the Bindings: Get the Bindings map from wsdl4c and create a new
+    // map of wsdl_binding elements. At this point we need to do some extra work since there
+    //can be header parameters 
+	*/
+    
+    bindings = axis2_wsdl4c_parser_get_bindings(pump_impl->parser);
+    if(!bindings)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WSDL_PARSER_INVALID_STATE, 
+            AXIS2_FAILURE);
+        return AXIS2_FAILURE;
     }
-
-    public void pump() {
-        if (null != this.wsdl4jParsedDefinition && null != this.womDefinition) {
-            this.populateDefinition(this.womDefinition,
-                    this.wsdl4jParsedDefinition);
-        } else {
-            throw new WSDLProcessingException("Properties not set properly");
+    size = AXIS2_ARRAY_LIST_SIZE(bindings, env);
+    for(i = 0; i < size; i++)
+    {
+        wsdl_binding = axis2_wsdl_binding_create(env);
+        if(!wsdl_binding)
+        {
+            return AXIS2_FAILURE;
         }
+        binding = (void *) AXIS2_ARRAY_LIST_GET(bindings, env, i);
+        status = axis2_wsdl_pump_populate_bindings(wsdl_pump, env, wsdl_binding, 
+            binding);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
+        }
+        status = AXIS2_WSDL_DESC_ADD_BINDING(pump_impl->wom_def, env, wsdl_binding);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
+        }
+    }    
 
+   /* ///////////////////(4)Copy the Services///////////////////////////////*/
+
+    services = axis2_wsdl4c_parser_get_services(pump_impl->parser);
+    if(!services)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WSDL_PARSER_INVALID_STATE, 
+            AXIS2_FAILURE);
+        return AXIS2_FAILURE;
     }
-
-    private void populateDefinition(WSDLDescription wsdlDefinition,
-                                    Definition wsdl4JDefinition) {
-        //Go through the WSDL4J Definition and pump it to the WOM
-        wsdlDefinition.setWSDL1DefinitionName(wsdl4JDefinition.getQName());
-        wsdlDefinition
-                .setTargetNameSpace(wsdl4JDefinition.getTargetNamespace());
-        wsdlDefinition.setNamespaces(wsdl4JDefinition.getNamespaces());
-        this.copyExtensibleElements(
-                wsdl4JDefinition.getExtensibilityElements(), wsdlDefinition, null);
-
-        //get the namespace map
-        this.declaredNameSpaces = wsdl4JDefinition.getNamespaces();
-
-        /////////////////////////////////////////////////////////////////// //
-        // Order of the following items shouldn't be changed unless you     //
-        // really know what you are doing. Reason being the components that //
-        // are copied(pumped) towards the end depend on the components that //
-        // has already being pumped. Following Lists some of the            //
-        // dependencies.                                                    //
-        //  1) The Binding refers to the Interface                          //
-        //  2) The Endpoint refers to the Bindings                          //
-        // ....                                                             //
-        //																   	//
-        //////////////////////////////////////////////////////////////////////
-
-        //////////////////(0) process the imports ///////////////////////////
-        // There can be types that are imported. Check the imports and
-        // These schemas are needed for code generation
-        processImports(wsdl4JDefinition);
-
-        //////////////////(1.1)First Copy the Types/////////////////////////////
-        //Types may get changed inside the Operation pumping.
-
-        Types wsdl4jTypes = wsdl4JDefinition.getTypes();
-        WSDLTypes wsdlTypes = this.wsdlComponentFactory.createTypes();
-        this.womDefinition.setTypes(wsdlTypes);
-
-        if (null != wsdl4jTypes) {
-            this.copyExtensibleElements(wsdl4jTypes.getExtensibilityElements(),
-                    wsdlTypes, null);
+    size = AXIS2_ARRAY_LIST_SIZE(services, env);
+    for(i = 0; i < size; i++)
+    {
+        wsdl_svc = axis2_wsdl_svc_create(env);
+        if(!wsdl_svc)
+        {
+            return AXIS2_FAILURE;
         }
-
-        //////////////////(1.2) /////////////////////////////
-        // create new Schema extensions element for wrapping
-        Element[] schemaElements = generateWrapperSchema(wsdl4JDefinition);
-        if (schemaElements!=null && schemaElements.length>0){
-            for (int i = 0; i < schemaElements.length; i++) {
-                Element schemaElement = schemaElements[i];
-                if (schemaElement!=null){
-                    ExtensionFactory extensionFactory = wsdlComponentFactory.createExtensionFactory();
-                    org.apache.wsdl.extensions.Schema schemaExtensibilityElement = (org.apache.wsdl.extensions.Schema) extensionFactory.getExtensionElement(
-                            ExtensionConstants.SCHEMA);
-                    wsdlTypes.addExtensibilityElement(schemaExtensibilityElement);
-                    schemaExtensibilityElement.setElement(schemaElement);
-                }
-            }
+        service = (void *) AXIS2_ARRAY_LIST_GET(services, env, i);
+        status = axis2_wsdl_pump_populate_services(wsdl_pump, env, wsdl_svc, 
+            service);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
         }
-
-        ////////////////////// (1.3) ////////////////////////////
-        // get all the schema elements (as DOM elements) and read them
-        // into  commons XMLSchema objects. This comes in handy when we
-        // need to populate the message references
-
-        // this is temporarily commented until the xmlschema baseuri handling is fixed
-
-//        List typeExtensibilityElements = wsdlTypes.getExtensibilityElements();
-//        XmlSchemaCollection commonsSchemaReader = new XmlSchemaCollection();
-//        Map namespacesMap = wsdlDefinition.getNamespaces();
-//        String[] prefixes = (String[])namespacesMap.keySet().toArray(new String[namespacesMap.size()]);
-//        for (int i = 0; i < prefixes.length; i++) {
-//            commonsSchemaReader.mapNamespace(prefixes[i],(String)namespacesMap.get(prefixes[i]));
-//        }
-//
-//        XmlSchema schema;
-//        for (int i = 0; i < typeExtensibilityElements.size(); i++) {
-//            Object extElement =  typeExtensibilityElements.get(i);
-//            if (extElement instanceof org.apache.wsdl.extensions.Schema){
-//                org.apache.wsdl.extensions.Schema schemaExtesnsibilityElement = ((org.apache.wsdl.extensions.Schema) extElement);
-//                schema = commonsSchemaReader.read(schemaExtesnsibilityElement.getElement());
-//                //attach this schema in the extensibility element
-//                schemaExtesnsibilityElement.setSchema(schema);
-//            }
-//        }
-
-
-
-        ///////////////////(2)Copy the Interfaces///////////////////////////
-        //copy the Interfaces: Get the PortTypes from WSDL4J parse OM and
-        // copy it to the  WOM's WSDLInterface Components
-
-        Iterator portTypeIterator = wsdl4JDefinition.getPortTypes().values()
-                .iterator();
-        WSDLInterface wsdlInterface;
-        PortType portType;
-        while (portTypeIterator.hasNext()) {
-            wsdlInterface = this.wsdlComponentFactory.createInterface();
-            portType = (PortType) portTypeIterator.next();
-            this.populateInterfaces(wsdlInterface, portType,womDefinition);
-            this.copyExtensibilityAttribute(portType.getExtensionAttributes(),
-                    wsdlInterface);
-            wsdlDefinition.addInterface(wsdlInterface);
+        status = AXIS2_WSDL_DESC_ADD_SVC(pump_impl->wom_def, env, wsdl_svc);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
         }
-
-        //////////////////(3)Copy the Bindings///////////////////////
-        //pump the Bindings: Get the Bindings map from WSDL4J and create a new
-        // map of WSDLBinding elements. At this point we need to do some extra work since there
-        //can be header parameters
-
-        Iterator bindingIterator = wsdl4JDefinition.getBindings().values()
-                .iterator();
-        WSDLBinding wsdlBinding;
-        Binding wsdl4jBinding;
-        while (bindingIterator.hasNext()) {
-            wsdlBinding = this.wsdlComponentFactory.createBinding();
-            wsdl4jBinding = (Binding) bindingIterator.next();
-            this.populateBindings(wsdlBinding, wsdl4jBinding, wsdl4JDefinition);
-            this.copyExtensibleElements(
-                    wsdl4jBinding.getExtensibilityElements(),
-                    wsdlBinding, null);
-            wsdlDefinition.addBinding(wsdlBinding);
-
-        }
-
-        ///////////////////(4)Copy the Services///////////////////////////////
-
-        Iterator serviceIterator = wsdl4JDefinition.getServices().values()
-                .iterator();
-        WSDLService wsdlService;
-        Service wsdl4jService;
-        while (serviceIterator.hasNext()) {
-            wsdlService = this.wsdlComponentFactory.createService();
-            wsdl4jService = (Service) serviceIterator.next();
-            this.populateServices(wsdlService, wsdl4jService);
-            this.copyExtensibleElements(
-                    wsdl4jService.getExtensibilityElements(),
-                    wsdlService, null);
-            wsdlDefinition.addService(wsdlService);
-        }
-
     }
+	return AXIS2_SUCCESS;
+}
 
-    //////////////////////////////////////////////////////////////////////////////
-    //////////////////////// Top level Components Copying ////////////////////////
+/*//////////////////////////////////////////////////////////////////////////////
+//////////////////////// Top level Components Copying ////////////////////////*/
 
-    /**
-     * Simply Copy information.
-     *
-     * @param wsdlInterface
-     * @param wsdl4jPortType
+/**
+ * Simply Copy information.
+ *
+ * @param axis2_wsdl_interface
+ * @param wsdl4c_port_type
+ */
+/* FIXME Evaluate a way of injecting pumps and properties with a general
+ *  formatted input */
+
+static axis2_status_t
+axis2_wsdl_pump_populate_interfaces(axis2_wsdl_pump_t *wsdl_pump,
+                                    axis2_env_t **env,
+                                    axis2_wsdl_interface_t *interface,
+                                    void *port_type)
+{
+    axis2_wsdl_pump_impl_t *pump_impl = NULL;
+    axis2_qname_t *port_type_qname = NULL;
+    axis2_char_t *port_type_name = NULL;
+    axis2_array_list_t *operations = NULL;
+    axis2_wsdl_op_t *wsdl_op = NULL;
+    void *operation = NULL;
+	axis2_status_t status = AXIS2_FAILURE;
+	int i = 0, size = 0;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, interface, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, port_type, AXIS2_FAILURE);
+    pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
+
+    /* 
+     * Copy the Attribute information items
+     * Copied with the Same QName so it will require no Query in Binding
+     * Coping.
      */
-    // FIXME Evaluate a way of injecting pumps and priperties with a general
-    // formatted input
-    private void populateInterfaces(WSDLInterface wsdlInterface,
-                                    PortType wsdl4jPortType,
-                                    WSDLDescription desc) {
+    port_type_name = axis2_wsdl4c_port_type_get_name(port_type);
+    port_type_qname = axis2_qname_create(env, port_type_name, NULL, NULL); 
+    if(!port_type_qname)
+    {
+        return AXIS2_FAILURE;
+    }
+    status = AXIS2_WSDL_INTERFACE_SET_NAME(interface, env, port_type_qname);
+    if(AXIS2_SUCCESS != status)
+    {
+        return status;
+    }
+     
+    operations = axis2_wsdl4c_port_type_get_operations(port_type);
+    size = AXIS2_ARRAY_LIST_SIZE(operations, env);
+    for(i = 0; i < size; i++)
+    {
+        axis2_wsdl_types_t *wsdl_types = NULL;
+        char *namespc_uri = NULL;
 
-        //Copy the Attribute information items
-        //Copied with the Same QName so it will require no Query in Binding
-        //Coping.
-        wsdlInterface.setName(wsdl4jPortType.getQName());
-        Iterator wsdl4JOperationsIterator =
-                wsdl4jPortType.getOperations().iterator();
-        WSDLOperation wsdloperation;
-        Operation wsdl4jOperation;
-
-        while (wsdl4JOperationsIterator.hasNext()) {
-            wsdloperation = this.wsdlComponentFactory.createOperation();
-            wsdl4jOperation = (Operation) wsdl4JOperationsIterator.next();
-
-            this.populateOperations(wsdloperation,
-                    wsdl4jOperation,
-                    wsdl4jPortType.getQName().getNamespaceURI(),
-                    desc.getTypes());
-
-            this.copyExtensibleElements(
-                    wsdl4jOperation.getExtensibilityElements(), wsdloperation, null);
-
-            wsdlInterface.setOperation(wsdloperation);
+        wsdl_op = axis2_wsdl_op_create(env);
+        if(!wsdl_op)
+        {
+            return AXIS2_FAILURE;
+        }
+        operation = (void *) AXIS2_ARRAY_LIST_GET(operations, env, i);
+        namespc_uri = AXIS2_QNAME_GET_URI(port_type_qname, env); 
+        wsdl_types = AXIS2_WSDL_DESC_GET_TYPES(pump_impl->wom_def, env);
+        axis2_wsdl_pump_populate_operations(wsdl_pump, env, wsdl_op, operation,
+            namespc_uri, wsdl_types);
+        status = AXIS2_WSDL_INTERFACE_SET_OP(interface, env, wsdl_op);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
         }
     }
+	return AXIS2_SUCCESS;
+}
 
-    /**
-     * The intention of this procedure is to process the imports.
-     * When processing the imports the imported documents will be
-     * populating the items in the main document recursivley
-     * @param wsdl4JDefinition
-     */
-    private void processImports(Definition wsdl4JDefinition){
-        Map wsdlImports = wsdl4JDefinition.getImports();
+/**
+ *
+ * Finds whether a given message is wrappable
+ * @return
+ */
+static axis2_bool_t
+axis2_wsdl_pump_find_wrappable(axis2_wsdl_pump_t *wsdl_pump,
+								axis2_env_t **env,
+								void *message)
+{
+	int no_of_parts = 0;
+	axis2_bool_t wrappable = AXIS2_FALSE;
+	
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, message, AXIS2_FAILURE);
 
-        if (null != wsdlImports && !wsdlImports.isEmpty()){
-            Collection importsCollection = wsdlImports.values();
-            for (Iterator iterator = importsCollection.iterator(); iterator.hasNext();) {
-                Vector values = (Vector)iterator.next();
-                for (int i = 0; i < values.size(); i++) {
-                    Import wsdlImport = (Import)values.elementAt(i);
-
-                    if (wsdlImport.getDefinition()!=null){
-                        Definition importedDef = wsdlImport.getDefinition();
-                        if (importedDef!=null){
-                            processImports(importedDef);
-
-                            //copy types
-                            Types t = importedDef.getTypes();
-                            List typesList = t.getExtensibilityElements();
-                            for (int j = 0; j < typesList.size(); j++) {
-                                Types types = wsdl4JDefinition.getTypes();
-                                if(types == null){
-                                    types = wsdl4JDefinition.createTypes();
-                                    wsdl4JDefinition.setTypes(types);
-                                }
-                                types.addExtensibilityElement(
-                                        (ExtensibilityElement)typesList.get(j));
-
-                            }
-
-                            //add messages
-                            Map messagesMap = importedDef.getMessages();
-                            wsdl4JDefinition.getMessages().putAll(messagesMap);
-
-                            //add portypes
-                            Map porttypeMap = importedDef.getPortTypes();
-                            wsdl4JDefinition.getPortTypes().putAll(porttypeMap);
-
-                        }
-
-                    }
-                }
-            }
-        }
-    }
-
-
-
-    /**
-     *
-     * Finds whether a given message is wrappable
-     * @return
-     */
-    private boolean findWrapppable(Message message) {
-
+/*
 // ********************************************************************************************
 // Note
 // We will not use the binding to set the wrappable/unwrappable state here. instead we'll look at the
@@ -457,973 +540,733 @@ axis2_wsdl_pump_free (axis2_wsdl_pump_t *wsdl_pump,
 // 2. Messages with one part having a type attribute -> Again we have no choice but to wrap
 
 // ********************************************************************************************
-        Map partsMap = message.getParts();
-        Iterator parts=partsMap.values().iterator();
-        boolean wrappable= partsMap.size()>1;
-        Part part;
-        while (!wrappable && parts.hasNext()) {
-            part = (Part) parts.next();
-            wrappable = (part.getTypeName() != null) || wrappable;
-        }
+*/
+	no_of_parts = axis2_wsdl4c_msg_get_num_parts(message);
+	if(no_of_parts > 1)
+		wrappable = AXIS2_TRUE;
+	if(AXIS2_FALSE == wrappable)
+	{
+		void *part = axis2_wsdl4c_msg_get_message_part_a_index(message, 0);
+		int part_id = axis2_wsdl4c_part_type(part);
+		if(0 != part_id)
+			wrappable = AXIS2_TRUE;
+	}
+	return wrappable;
+}
 
+/**
+ * Pre Condition: The Interface Components must be copied by now.
+ */
+static axis2_status_t
+axis2_wsdl_pump_populate_bindings(axis2_wsdl_pump_t *wsdl_pump,
+                                    axis2_env_t **env,
+                                    axis2_wsdl_binding_t *wsdl_binding,
+                                    void *binding)
+{
+    axis2_wsdl_pump_impl_t *pump_impl = NULL;
+    axis2_qname_t *interface_qname = NULL;
+    axis2_char_t *interface_name = NULL;
+    axis2_qname_t *binding_qname = NULL;
+    axis2_char_t *binding_name = NULL;
+    axis2_wsdl_interface_t *wsdl_interface = NULL;
+    axis2_array_list_t *ops = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    void *port_type;
+    int i = 0, size = 0;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, wsdl_binding, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, binding, AXIS2_FAILURE);
+    pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
 
-        return wrappable;
+    binding_name = axis2_wsdl4c_binding_get_name(binding);
+    binding_qname = axis2_qname_create(env, binding_name, NULL, NULL);
+    status = AXIS2_WSDL_BINDING_SET_NAME(wsdl_binding, env, binding_qname);
+    if(binding_qname)
+    {
+        AXIS2_QNAME_FREE(binding_qname, env);
+        binding_qname = NULL;
     }
-
-    /**
-     * Pre Condition: The Interface Components must be copied by now.
-     */
-    private void populateBindings(WSDLBinding wsdlBinding,
-                                  Binding wsdl4JBinding, Definition wsdl4jDefinition) {
-
-        //Copy attributes
-        wsdlBinding.setName(wsdl4JBinding.getQName());
-        QName interfaceName = wsdl4JBinding.getPortType().getQName();
-        WSDLInterface wsdlInterface =
-                this.womDefinition.getInterface(interfaceName);
-
-        //FIXME Do We need this eventually???
-        if (null == wsdlInterface)
-            throw new WSDLProcessingException("Interface/PortType not found for the Binding :"
-                    + wsdlBinding.getName());
-        wsdlBinding.setBoundInterface(wsdlInterface);
-        Iterator bindingoperationsIterator =
-                wsdl4JBinding.getBindingOperations().iterator();
-        WSDLBindingOperation wsdlBindingOperation;
-        BindingOperation wsdl4jBindingOperation;
-        while (bindingoperationsIterator.hasNext()) {
-            wsdlBindingOperation =
-                    this.wsdlComponentFactory.createWSDLBindingOperation();
-            wsdl4jBindingOperation =
-                    (BindingOperation) bindingoperationsIterator.next();
-            this.populateBindingOperation(wsdlBindingOperation,
-                    wsdl4jBindingOperation,
-                    wsdl4JBinding.getQName().getNamespaceURI(), wsdl4jDefinition);
-            wsdlBindingOperation.setOperation(
-                    wsdlInterface.getOperation(
-                            wsdl4jBindingOperation.getOperation().getName()));
-            copyExtensibleElements(
-                    wsdl4jBindingOperation.getExtensibilityElements(),
-                    wsdlBindingOperation, wsdl4jDefinition);
-            wsdlBinding.addBindingOperation(wsdlBindingOperation);
-        }
-
+    if(AXIS2_SUCCESS != status)
+    {
+        return status;
     }
-
-    public void populateServices(WSDLService wsdlService,
-                                 Service wsdl4jService) {
-        wsdlService.setName(wsdl4jService.getQName());
-        Iterator wsdl4jportsIterator =
-                wsdl4jService.getPorts().values().iterator();
-        wsdlService.setServiceInterface(this.getBoundInterface(wsdlService));
-        WSDLEndpoint wsdlEndpoint;
-        Port wsdl4jPort;
-        while (wsdl4jportsIterator.hasNext()) {
-            wsdlEndpoint = this.wsdlComponentFactory.createEndpoint();
-            wsdl4jPort = (Port) wsdl4jportsIterator.next();
-            this.populatePorts(wsdlEndpoint,
-                    wsdl4jPort,
-                    wsdl4jService.getQName().getNamespaceURI());
-            this.copyExtensibleElements(wsdl4jPort.getExtensibilityElements(),
-                    wsdlEndpoint, null);
-            wsdlService.setEndpoint(wsdlEndpoint);
-        }
-
+    port_type = axis2_wsdl4c_binding_get_port_type(binding);
+    interface_name = axis2_wsdl4c_port_type_get_name(port_type);
+    interface_qname = axis2_qname_create(env, interface_name, NULL, NULL);
+    wsdl_interface = AXIS2_WSDL_DESC_GET_INTERFACE(pump_impl->wom_def, env, 
+			interface_qname);
+    if(interface_qname)
+    {
+        AXIS2_QNAME_FREE(interface_qname, env);
+        interface_qname = NULL;
     }
-
-    private void pushSchemaElement(Schema originalSchema,Stack stack){
-        if (originalSchema==null){
-            return;
-        }
-        stack.push(originalSchema.getElement());
-        Map map = originalSchema.getImports();
-        Collection values;
-        if (map!=null && map.size()>0){
-            values = map.values();
-            for (Iterator iterator = values.iterator(); iterator.hasNext();) {
-                //recursively add the schema's
-                Vector v = (Vector)iterator.next();
-                for (int i = 0; i < v.size(); i++) {
-                    pushSchemaElement(((SchemaImport)v.get(i)).getReferencedSchema(),stack);
-                }
-
-            }
-        }
+    /* FIXME Do We need this eventually??? */
+    if(!wsdl_interface)
+    {
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING,
+            AXIS2_FAILURE);
+        return AXIS2_FAILURE;
     }
-
-    /////////////////////////////////////////////////////////////////////////////
-    //////////////////////////// Internal Component Copying ///////////////////
-    public void populateOperations(WSDLOperation wsdlOperation,
-                                   Operation wsdl4jOperation,
-                                   String nameSpaceOfTheOperation,
-                                   WSDLTypes wsdlTypes) {
-        //Copy Name Attribute
-        wsdlOperation.setName(new QName(nameSpaceOfTheOperation,
-                wsdl4jOperation.getName()));
-
-        // This code make no attempt to make use of the special xs:Token
-        // defined in the WSDL 2.0. eg like #any, #none
-        // Create the Input Message and add
-        Input wsdl4jInputMessage = wsdl4jOperation.getInput();
-        QName wrappedInputName = wsdlOperation.getName();
-        QName wrappedOutputName = new QName(
-                wrappedInputName.getNamespaceURI(),
-                wrappedInputName.getLocalPart()+ "Response",
-                wrappedInputName.getPrefix());
-
-        if (null != wsdl4jInputMessage) {
-            MessageReference wsdlInputMessage = this.wsdlComponentFactory
-                    .createMessageReference();
-            wsdlInputMessage.setDirection(
-                    WSDLConstants.WSDL_MESSAGE_DIRECTION_IN);
-            wsdlInputMessage.setMessageLabel(
-                    WSDLConstants.MESSAGE_LABEL_IN_VALUE);
-
-            Message message = wsdl4jInputMessage.getMessage();
-            if (null != message) {
-                wsdlInputMessage.setElementQName(
-                        this.generateReferenceQname(
-                                wrappedInputName
-                                ,message,
-                                findWrapppable(message)));
-                this.copyExtensibleElements(
-                        (message).getExtensibilityElements(),
-                        wsdlInputMessage, null);
-            }
-
-            this.copyExtensibilityAttribute(
-                    wsdl4jInputMessage.getExtensionAttributes(),
-                    wsdlInputMessage);
-            wsdlOperation.setInputMessage(wsdlInputMessage);
-
-            // attach the right schema element
-            // Note  - commented till the XmlSchema baseuri code is fixed
-            //findSchemaElement(wsdlInputMessage,wsdlTypes);
-        }
-
-        //Create an output message and add
-        Output wsdl4jOutputMessage = wsdl4jOperation.getOutput();
-        if (null != wsdl4jOutputMessage) {
-            MessageReference wsdlOutputMessage =
-                    this.wsdlComponentFactory.createMessageReference();
-            wsdlOutputMessage.setDirection(
-                    WSDLConstants.WSDL_MESSAGE_DIRECTION_OUT);
-            wsdlOutputMessage.setMessageLabel(
-                    WSDLConstants.MESSAGE_LABEL_OUT_VALUE);
-
-
-            Message outputMessage = wsdl4jOutputMessage.getMessage();
-            if (null != outputMessage) {
-                wsdlOutputMessage.setElementQName(
-                        this.generateReferenceQname(wrappedOutputName,outputMessage,findWrapppable(outputMessage)));
-                this.copyExtensibleElements(
-                        (outputMessage).getExtensibilityElements(),
-                        wsdlOutputMessage, null);
-            }
-            this.copyExtensibilityAttribute(
-                    wsdl4jOutputMessage.getExtensionAttributes(),
-                    wsdlOutputMessage);
-            wsdlOperation.setOutputMessage(wsdlOutputMessage);
-
-            // attach the right schema element
-            //Note - Commented till fixing the commons schema
-            //findSchemaElement(wsdlOutputMessage,wsdlTypes);
-
-        }
-
-        Map faults = wsdl4jOperation.getFaults();
-        Iterator faultKeyIterator = faults.keySet().iterator();
-        WSDLFaultReference faultReference;
-
-        while (faultKeyIterator.hasNext()) {
-
-            Fault fault = (Fault) faults.get(faultKeyIterator.next());
-            faultReference = wsdlComponentFactory.createFaultReference();
-            faultReference.setDirection(
-                    WSDLConstants.WSDL_MESSAGE_DIRECTION_OUT);
-            Message faultMessage = fault.getMessage();
-            if (null != faultMessage) {
-                faultReference.setRef(
-                        this.generateReferenceQname(
-                                faultMessage.getQName(),
-                                faultMessage,findWrapppable(faultMessage)));
-            }
-            wsdlOperation.addOutFault(faultReference);
-            this.copyExtensibilityAttribute(fault.getExtensionAttributes(),
-                    faultReference);
-            //TODO Fault Message lable
-
-        }
-
-        //Set the MEP
-        wsdlOperation.setMessageExchangePattern(WSDL11MEPFinder
-                .getMEP(wsdl4jOperation));
-
+    status = AXIS2_WSDL_BINDING_SET_BOUND_INTERFACE(wsdl_binding, env, 
+        wsdl_interface);
+    if(AXIS2_SUCCESS != status)
+    {
+        return status;
     }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ops = axis2_wsdl4c_port_type_get_operations(port_type);
+    if(!ops)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WSDL_PARSER_INVALID_STATE,
+            AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    } 
+    size = AXIS2_ARRAY_LIST_SIZE(ops, env);
+    for(i = 0; i < size; i++)
+    {
+        void *operation = NULL;
+        axis2_wsdl_op_t *wsdl_op = NULL;
+        axis2_char_t *op_name = NULL;
+        int op_index = 0;
+        axis2_wsdl_binding_op_t *wsdl_binding_op = NULL;
 
-    /**
-     * Utility method to populate a schema
-     * @param messageRef
-     * @param types
-     */
-    private void findSchemaElement(MessageReference messageRef,WSDLTypes types){
-        QName elementQName = messageRef.getElementQName();
-        List typeExtensibilityElements = types.getExtensibilityElements();
-        XmlSchema schema;
-        for (int i = 0; i < typeExtensibilityElements.size(); i++) {
-            Object extElement =  typeExtensibilityElements.get(i);
-            if (extElement instanceof org.apache.wsdl.extensions.Schema){
-                org.apache.wsdl.extensions.Schema schemaExtesnsibilityElement = ((org.apache.wsdl.extensions.Schema) extElement);
-                schema = schemaExtesnsibilityElement.getSchema();
-                if (schema.getElementByName(elementQName)!=null){
-                    messageRef.setElementSchema(schema.getElementByName(elementQName));
-                    break;
-                }
-            }
+        operation = AXIS2_ARRAY_LIST_GET(ops, env, i);
+        op_name = axis2_wsdl4c_operation_get_name(operation);
+        op_index  = axis2_wsdl4c_port_type_get_operation_index(port_type, 
+				op_name);
+        wsdl_binding_op = axis2_wsdl_binding_op_create(env);
+        if(!wsdl_binding_op)
+        {
+            return AXIS2_FAILURE;
+        }
+        status = axis2_wsdl_pump_populate_binding_operation(wsdl_pump, env, 
+				binding, wsdl_binding_op, op_index, op_name);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
+        }
+        wsdl_op = AXIS2_WSDL_INTERFACE_GET_OP(wsdl_interface, env, op_name);
+       
+        AXIS2_WSDL_BINDING_OP_SET_OP(wsdl_binding_op, env, wsdl_op);
+        status = AXIS2_WSDL_BINDING_ADD_BINDING_OP(wsdl_binding, env, 
+            wsdl_binding_op);
+        if(AXIS2_SUCCESS != status)
+        {
+            return status;
         }
     }
+	return AXIS2_SUCCESS;
+}
 
-    /**
-     *
-     * @param wsdl4jDefinition
-     * @return
-     */
-    private Element[] generateWrapperSchema(Definition wsdl4jDefinition) {
+/**
+ *
+ * @param wsdl_binding_op
+ * @param wsdl4c_binding_op
+ * @param namepace_of_the_binding_op
+ */
+static axis2_status_t
+axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
+											axis2_env_t **env,
+                                            void *binding,
+                                            axis2_wsdl_binding_op_t *
+                                                    wsdl_binding_op,
+                                            int op_index,
+                                            char *op_name)
+{
+    axis2_wsdl_pump_impl_t *pump_impl = NULL;
+    int *bindings = 0;
+    int soap_op_binding_id = 0;
+    void *soap = NULL;
+    axis2_char_t *action = NULL;
+    int style = 0;
+	axis2_char_t *str_style = NULL;
+    axis2_qname_t *binding_op_qname = NULL;
+    int nbindings = 0;
+    int i = 0;
+    axis2_wsdl_binding_msg_ref_t *wsdl_input_binding = NULL;
+    axis2_wsdl_binding_msg_ref_t *wsdl_output_binding = NULL;
+    axis2_wsdl_binding_msg_ref_t *wsdl_fault_binding = NULL;
+	axis2_status_t status = AXIS2_FAILURE;
+	axis2_wsdl_ext_soap_op_t *ext_soap_op = NULL;
 
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, wsdl_binding_op, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, binding, AXIS2_FAILURE);
+    pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
+   
+    axis2_wsdl4c_binding_get_op_binding(binding, op_index, &bindings); 
+    soap_op_binding_id = bindings[0];
+    soap = axis2_wsdl4c_parser_get_extensibility_handler_a_ns(pump_impl->parser, 
+			AXIS2_WSDL4C_SOAP_BINDING_URI);
+    axis2_wsdl4c_soap_get_operation_info(soap, soap_op_binding_id, &action, 
+			&style);
+	ext_soap_op = axis2_wsdl_ext_soap_op_create(env, NULL);
+	AXIS2_WSDL_EXT_SOAP_OP_SET_SOAP_ACTION(ext_soap_op, env, action);
+	if(AXIS2_WSDL4C_RPC == style)
+	{
+		str_style = AXIS2_STRDUP("rpc", env);
+	}
+	if(AXIS2_WSDL4C_DOC == style)
+	{
+		str_style = AXIS2_STRDUP("document", env);
+	}
+	AXIS2_WSDL_EXT_SOAP_OP_SET_STYLE(ext_soap_op, env, str_style);
+	AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_binding_op->
+					extensible_component->wsdl_component, env, ext_soap_op);
+    binding_op_qname = axis2_qname_create(env, op_name, NULL, NULL);
+    AXIS2_WSDL_BINDING_OP_SET_QNAME(wsdl_binding_op, env, binding_op_qname); 
+    
+    /* Fill input message reference */ 
+    wsdl_input_binding = axis2_wsdl_binding_msg_ref_create(env);
+    if(!wsdl_input_binding)
+    {
+        return AXIS2_FAILURE;
+    } 
+    AXIS2_WSDL_BINDING_MSG_REF_SET_DIRECTION(wsdl_input_binding, env,
+        AXIS2_WSDL_MESSAGE_DIRECTION_IN); 
+    nbindings = axis2_wsdl4c_binding_get_input_binding(binding, op_index, &bindings);
+    for(i = 0; i < nbindings; i++)
+    {
+        if(AXIS2_TRUE == axis2_wsdl4c_soap_is_soap_body(soap, bindings[i]))
+        {
+            axis2_wsdl_ext_soap_body_t *soap_body = NULL;
+            axis2_wsdl4c_style_t use = 0;
+            axis2_char_t *nsp = NULL;
+			axis2_char_t *str_use = NULL;
 
-        List schemaElementList = new ArrayList();
-        String targetNamespaceUri = wsdl4jDefinition.getTargetNamespace();
-
-        /////////////////////////////////////////////////////////////////////////////////////////////
-        // if there are any bindings present then we have to process them. we have to generate a schema
-        // per binding (that is the safest option). if not we just resolve to the good old port type
-        // list, in which case we'll generate a schema per porttype
-        ////////////////////////////////////////////////////////////////////////////////////////////
-
-        Map bindingsMap = wsdl4jDefinition.getBindings();
-        Map porttypeMap = wsdl4jDefinition.getPortTypes();
-
-        if (bindingsMap!=null && !bindingsMap.isEmpty()){
-            Binding[] bindings = (Binding[])bindingsMap.values().toArray(new Binding[bindingsMap.size()]);
-            Binding binding;
-            for (int i = 0; i < bindings.length; i++) {
-                binding = bindings[i];
-                schemaElementList.add(
-                        createSchemaForPorttype(binding.getPortType(),targetNamespaceUri,
-                                findWrapForceable(binding)));
-            }
-        }else{
-            PortType[] porttypesArray = (PortType[])porttypeMap.values().toArray(new PortType[porttypeMap.size()]);
-            for (int i = 0; i < porttypesArray.length; i++) {
-                schemaElementList.add(
-                        createSchemaForPorttype(porttypesArray[i],targetNamespaceUri,false));
-            }
-
+            axis2_wsdl4c_soap_get_body_info(soap, bindings[i], &nsp, &use);
+			if(AXIS2_WSDL4C_RPC == use)
+				str_use = AXIS2_STRDUP("rpc", env);
+			if(AXIS2_WSDL4C_DOC == use)
+				str_use = AXIS2_STRDUP("document", env);
+	    	AXIS2_WSDL_EXT_SOAP_BODY_SET_USE(soap_body, env, str_use);
+			if(str_use)
+			{
+				AXIS2_FREE((*env)->allocator, str_use);
+				str_use = NULL;
+			}
+	    	AXIS2_WSDL_EXT_SOAP_BODY_SET_NAMESPC_URI(soap_body, env, nsp);
+            AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_input_binding->
+                extensible_component->wsdl_component, env, soap_body);
         }
-
-        return (Element[])schemaElementList.toArray(new Element[schemaElementList.size()]);
+        else if(AXIS2_TRUE == axis2_wsdl4c_soap_is_soap_header(soap, bindings[i]))
+        {
+            axis2_wsdl_ext_soap_header_t *soap_header = NULL;
+            int part_id = 0;
+			axis2_char_t *part_name = NULL;
+			axis2_char_t *msg_name = NULL;
+			axis2_qname_t *msg_qname = NULL;
+            void *message = NULL;
+    
+            axis2_wsdl4c_soap_get_header_info(soap, bindings[i], &part_id, &message);
+			part_name = axis2_wsdl4c_msg_get_part_name(message, part_id);
+			msg_name = axis2_wsdl4c_msg_get_name(message);
+			msg_qname = axis2_qname_create(env, msg_name, NULL, NULL);
+            AXIS2_WSDL_EXT_SOAP_HEADER_SET_PART(soap_header, env, part_name);
+            AXIS2_WSDL_EXT_SOAP_HEADER_SET_MSG_QNAME(soap_header, env, msg_qname);
+			if(msg_qname)
+			{
+				AXIS2_QNAME_FREE(msg_qname, env);
+				msg_qname = NULL;
+			}
+            AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_input_binding->
+					extensible_component->wsdl_component, env, soap_header);
+        }
+        status = AXIS2_WSDL_BINDING_OP_SET_INPUT(wsdl_binding_op, env, 
+				wsdl_input_binding);
+		if(AXIS2_SUCCESS != status)
+		{
+	    	return status;
+		}
     }
 
+    /* Fill output message reference */ 
+    wsdl_output_binding = axis2_wsdl_binding_msg_ref_create(env);
+    if(!wsdl_output_binding)
+    {
+        return AXIS2_FAILURE;
+    } 
+    AXIS2_WSDL_BINDING_MSG_REF_SET_DIRECTION(wsdl_input_binding, env,
+        AXIS2_WSDL_MESSAGE_DIRECTION_OUT); 
+    nbindings = axis2_wsdl4c_binding_get_output_binding(binding, op_index, &bindings);
+    for(i = 0; i < nbindings; i++)
+    {
+        if(AXIS2_TRUE == axis2_wsdl4c_soap_is_soap_body(soap, bindings[i]))
+        {
+            axis2_wsdl_ext_soap_body_t *soap_body = NULL;
+            axis2_wsdl4c_style_t use = 0;
+			axis2_char_t *str_use = NULL;
+            axis2_char_t *nsp = NULL;
 
-    private boolean findWrapForceable(Binding binding){
-        List extElements = binding.getExtensibilityElements();
-        for (int i = 0; i < extElements.size(); i++) {
-            if (extElements.get(i) instanceof SOAPBinding){
-                SOAPBinding soapBinding = (SOAPBinding)extElements.get(i);
-                if ("rpc".equals(soapBinding.getStyle())){
-                    //oops - we've found a SOAPBinding that has a rpc style
-                    //we better force the wrapping then
-                    return true;
-                }
-            }
+            axis2_wsdl4c_soap_get_body_info(soap, bindings[i], &nsp, &use);
+			if(AXIS2_WSDL4C_RPC == use)
+				str_use = AXIS2_STRDUP("rpc", env);
+			if(AXIS2_WSDL4C_DOC == use)
+				str_use = AXIS2_STRDUP("document", env);
+	    	AXIS2_WSDL_EXT_SOAP_BODY_SET_USE(soap_body, env, str_use);
+	    	AXIS2_WSDL_EXT_SOAP_BODY_SET_NAMESPC_URI(soap_body, env, nsp);
+            AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_output_binding->
+                extensible_component->wsdl_component, env, soap_body);
         }
-
-        return false;
+        else if(AXIS2_TRUE == axis2_wsdl4c_soap_is_soap_header(soap, bindings[i]))
+        {
+            axis2_wsdl_ext_soap_header_t *soap_header = NULL;
+            int part_id = 0;
+			axis2_char_t *part_name = NULL;
+			axis2_char_t *msg_name = NULL;
+			axis2_qname_t *msg_qname = NULL;
+            void *message = NULL;
+			
+    
+            axis2_wsdl4c_soap_get_header_info(soap, bindings[i], &part_id, &message);
+			part_name = axis2_wsdl4c_msg_get_part_name(message, part_id);
+			msg_name = axis2_wsdl4c_msg_get_name(message);
+			msg_qname = axis2_qname_create(env, msg_name, NULL, NULL);
+            AXIS2_WSDL_EXT_SOAP_HEADER_SET_PART(soap_header, env, part_name);
+            AXIS2_WSDL_EXT_SOAP_HEADER_SET_MSG_QNAME(soap_header, env, msg_qname);
+            AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_output_binding->
+                extensible_component->wsdl_component, env, soap_header);
+        }
+        status = AXIS2_WSDL_BINDING_OP_SET_INPUT(wsdl_binding_op, env, wsdl_output_binding);
+        if(AXIS2_SUCCESS != status)
+	    {
+	        return status;
+	    }
     }
+    
+    /* Fill fault message reference */ 
+    wsdl_fault_binding = axis2_wsdl_binding_msg_ref_create(env);
+    if(!wsdl_fault_binding)
+    {
+        return AXIS2_FAILURE;
+    } 
+    AXIS2_WSDL_BINDING_MSG_REF_SET_DIRECTION(wsdl_input_binding, env,
+        AXIS2_WSDL_MESSAGE_DIRECTION_OUT); 
+    nbindings = axis2_wsdl4c_binding_get_fault_binding(binding, op_index, &bindings);
+    for(i = 0; i < nbindings; i++)
+    {
+        if(AXIS2_TRUE == axis2_wsdl4c_soap_is_soap_body(soap, bindings[i]))
+        {
+            axis2_wsdl_ext_soap_body_t *soap_body = NULL;
+            axis2_wsdl4c_style_t use = 0;
+			axis2_char_t *str_use = NULL;
+            char *nsp = NULL;
 
-
-    /**
-     * Creates a schema given the porttype
-     * @return
-     */
-    private Element createSchemaForPorttype(PortType porttype,String targetNamespaceUri,boolean forceWrapping){
-
-        //loop through the messages. We'll populate this map with the relevant messages
-        //from the operations
-        Map messagesMap = new HashMap();
-        Map inputOperationsMap = new HashMap();
-        Map outputOperationsMap = new HashMap();
-        //this contains the required namespace imports. the key in this
-        //map would be the namaspace URI
-        Map namespaceImportsMap = new HashMap();
-        //generated complextypes. Keep in the list for writing later
-        //the key for the complexType map is the message QName
-        Map complexTypeElementsMap = new HashMap();
-        //generated Elements. Kep in the list for later writing
-        List elementElementsList = new ArrayList();
-        //list namespace prefix map. This map will include uri -> prefix
-        Map namespacePrefixMap = new HashMap();
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        // First thing is to populate the message map with the messages to process.
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-        //we really need to do this for a single porttype!
-        List operations = porttype.getOperations();
-        Operation op;
-        for (int k = 0; k < operations.size(); k++) {
-            op = (Operation)operations.get(k);
-            Input input = op.getInput();
-            Message message ;
-            if (input!=null){
-                message = input.getMessage();
-                messagesMap.put(message.getQName(),message);
-                inputOperationsMap.put(op.getName(),message);
-
-            }
-
-            Output output = op.getOutput();
-            if (output!=null){
-                message = output.getMessage();
-                messagesMap.put(message.getQName(),message);
-                outputOperationsMap.put(op.getName(),message);
-            }
-            //todo also handle the faults here
+            axis2_wsdl4c_soap_get_body_info(soap, bindings[i], &nsp, &use);
+			if(AXIS2_WSDL4C_RPC == use)
+				str_use = AXIS2_STRDUP("rpc", env);
+			if(AXIS2_WSDL4C_DOC == use)
+				str_use = AXIS2_STRDUP("document", env);
+	    	AXIS2_WSDL_EXT_SOAP_BODY_SET_USE(soap_body, env, str_use);
+	    	AXIS2_WSDL_EXT_SOAP_BODY_SET_NAMESPC_URI(soap_body, env, nsp);
+            AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_fault_binding->
+                extensible_component->wsdl_component, env, soap_body);
         }
-
-
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //check whether there are messages that are wrappable. If there are no messages that are wrappable we'll
-        //just return null and endup this process. However we need to take the force flag into account here
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        QName[] keys;
-        if(forceWrapping){
-            //just take all the messages and wrap them, we've been told to force wrapping!
-            keys = (QName[])messagesMap.keySet().toArray(new QName[messagesMap.size()]);
-        } else{
-            //
-            QName[] allKeys = (QName[])messagesMap.keySet().toArray(new QName[messagesMap.size()]);
-            List wrappableMessageNames = new ArrayList();
-            boolean noMessagesTobeProcessed = true;
-            for (int i = 0; i < allKeys.length; i++) {
-                if (findWrapppable((Message)messagesMap.get(allKeys[i]))){
-                    noMessagesTobeProcessed = false;
-                    //add that message to the list
-                    wrappableMessageNames.add(allKeys[i]);
-                }
-            }
-            if (noMessagesTobeProcessed){
-                return null;
-            }
-
-            keys = (QName[])wrappableMessageNames.toArray(new QName[wrappableMessageNames.size()]);
+        else if(AXIS2_TRUE == axis2_wsdl4c_soap_is_soap_header(soap, bindings[i]))
+        {
+            axis2_wsdl_ext_soap_header_t *soap_header = NULL;
+            int part_id = 0;
+			axis2_char_t *part_name = NULL;
+			axis2_char_t *msg_name = NULL;
+			axis2_qname_t *msg_qname = NULL;
+            void *message = NULL;
+    
+            axis2_wsdl4c_soap_get_header_info(soap, bindings[i], &part_id, &message);
+			part_name = axis2_wsdl4c_msg_get_part_name(message, part_id);
+			msg_name = axis2_wsdl4c_msg_get_name(message);
+			msg_qname = axis2_qname_create(env, msg_name, NULL, NULL);
+            AXIS2_WSDL_EXT_SOAP_HEADER_SET_PART(soap_header, env, part_name);
+            AXIS2_WSDL_EXT_SOAP_HEADER_SET_MSG_QNAME(soap_header, env, msg_qname);
+            AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_fault_binding->
+                extensible_component->wsdl_component, env, soap_header);
         }
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Now we have the message list to process - Process the whole list of messages at once
-        // since we need to generate one single schema
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        List resolvedMessageQNames = new ArrayList();
-        //find the xsd prefix
-        String xsdPrefix = findSchemaPrefix();
-        Message wsdl4jMessage;
-        //DOM document that will be the ultimate creator
-        Document document = getDOMDocumentBuilder().newDocument();
-        for (int i = 0; i < keys.length; i++) {
-            wsdl4jMessage = (Message)messagesMap.get(keys[i]);
-            //No need to check the wrappable,
-
-            //This message is wrappabel. However we need to see whether the message is already
-            //resolved!
-            if (!resolvedMessageQNames.contains(wsdl4jMessage.getQName())){
-                //This message has not been touched before!. So we can go ahead now
-                Map parts = wsdl4jMessage.getParts();
-                //add the complex type
-                String name = wsdl4jMessage.getQName().getLocalPart();
-                Element newComplexType = document.createElementNS(WSDLPump.XMLSCHEMA_NAMESPACE_URI, xsdPrefix + ":"+ XML_SCHEMA_COMPLEX_TYPE_LOCAL_NAME);
-                newComplexType.setAttribute(WSDLPump.XSD_NAME, name);
-
-                Element cmplxContentSequence = document.createElementNS(WSDLPump.XMLSCHEMA_NAMESPACE_URI, xsdPrefix + ":"+ XML_SCHEMA_SEQUENCE_LOCAL_NAME);
-                Element child;
-                Iterator iterator = parts.keySet().iterator();
-                while (iterator.hasNext()) {
-                    Part part = (Part) parts.get(iterator.next());
-                    //the part name
-                    String elementName = part.getName();
-                    boolean isTyped = true;
-                    //the type name
-                    QName schemaTypeName;
-                    if (part.getTypeName()!=null){
-                        schemaTypeName = part.getTypeName();
-                    }else if (part.getElementName()!=null){
-                        schemaTypeName = part.getElementName();
-                        isTyped = false;
-                    }else{
-                        throw new RuntimeException(" Unqualified Message part!");
-                    }
-
-                    child = document.createElementNS(XMLSCHEMA_NAMESPACE_URI, xsdPrefix + ":"+ XML_SCHEMA_ELEMENT_LOCAL_NAME);
-
-                    String prefix;
-                    if (XMLSCHEMA_NAMESPACE_URI.equals(schemaTypeName.getNamespaceURI())){
-                        prefix = xsdPrefix;
-                    }else{
-                        //this schema is a third party one. So we need to have an import statement in our generated schema
-                        String uri = schemaTypeName.getNamespaceURI();
-                        if (!namespaceImportsMap.containsKey(uri)){
-                            //create Element for namespace import
-                            Element namespaceImport = document.createElementNS(XMLSCHEMA_NAMESPACE_URI, xsdPrefix + ":"+ XML_SCHEMA_IMPORT_LOCAL_NAME);
-                            namespaceImport.setAttribute("namespace",uri);
-                            //add this to the map
-                            namespaceImportsMap.put(uri,namespaceImport);
-                            //we also need to associate this uri with a prefix and include that prefix
-                            //in the schema's namspace declarations. So add theis particular namespace to the
-                            //prefix map as well
-                            prefix = getTemporaryNamespacePrefix();
-                            namespacePrefixMap.put(uri,prefix);
-                        }else{
-                            //this URI should be already in the namspace prefix map
-                            prefix = (String)namespacePrefixMap.get(uri);
-                        }
-
-
-                    }
-                    // If it's from a type the element we need to add a name and the type
-                    //if not it's the element reference
-                    if (isTyped){
-                        child.setAttribute(WSDLPump.XSD_NAME, elementName);
-                        child.setAttribute(WSDLPump.XSD_TYPE, prefix +":"+schemaTypeName.getLocalPart());
-                    }else{
-                        child.setAttribute(WSDLPump.XSD_REF, prefix +":"+schemaTypeName.getLocalPart());
-                    }
-                    cmplxContentSequence.appendChild(child);
-                }
-                newComplexType.appendChild(cmplxContentSequence);
-                //add this newly created complextype to the list
-                complexTypeElementsMap.put(wsdl4jMessage.getQName(),newComplexType);
-                resolvedMessageQNames.add(wsdl4jMessage.getQName());
-            }
-
-        }
-
-        Element elementDeclaration;
-
-
-        //loop through the input op map and generate the elements
-        String[] inputOperationtNames = (String[])inputOperationsMap.keySet().toArray(
-                new String[inputOperationsMap.size()]);
-        for (int j = 0; j < inputOperationtNames.length; j++) {
-            String inputOpName = inputOperationtNames[j];
-            elementDeclaration = document.createElementNS(XMLSCHEMA_NAMESPACE_URI, xsdPrefix + ":"+ XML_SCHEMA_ELEMENT_LOCAL_NAME);
-            elementDeclaration.setAttribute(WSDLPump.XSD_NAME,
-                    inputOpName);
-
-            String typeValue = ((Message) inputOperationsMap.get(inputOpName)).getQName().getLocalPart();
-            elementDeclaration.setAttribute(WSDLPump.XSD_TYPE,
-                    AXIS2WRAPPED + ":" +typeValue);
-            elementElementsList.add(elementDeclaration);
-            resolvedRpcWrappedElementMap.put(inputOpName,new QName(
-                    targetNamespaceUri,
-                    inputOpName,
-                    AXIS2WRAPPED
-            ));
-        }
-
-        //loop through the output op map and generate the elements
-        String[] outputOperationtNames = (String[])outputOperationsMap.keySet().toArray(
-                new String[outputOperationsMap.size()]);
-        for (int j = 0; j < outputOperationtNames.length; j++) {
-
-            String baseoutputOpName = outputOperationtNames[j];
-            String outputOpName = baseoutputOpName+"Response";
-            elementDeclaration = document.createElementNS(XMLSCHEMA_NAMESPACE_URI, xsdPrefix + ":"+ XML_SCHEMA_ELEMENT_LOCAL_NAME);
-            elementDeclaration.setAttribute(WSDLPump.XSD_NAME,
-                    outputOpName);
-            String typeValue = ((Message) outputOperationsMap.get(baseoutputOpName)).getQName().getLocalPart();
-            elementDeclaration.setAttribute(WSDLPump.XSD_TYPE,
-                    AXIS2WRAPPED + ":" +typeValue);
-            elementElementsList.add(elementDeclaration);
-            resolvedRpcWrappedElementMap.put(outputOpName,new QName(
-                    targetNamespaceUri,
-                    outputOpName,
-                    AXIS2WRAPPED
-            ));
-
-        }
-
-
-
-
-
-
-
-        //////////////////////////////////////////////////////////////////////////////////////////////
-        // Now we are done with processing  the messages and generating the right schema object model
-        // time to write out the schema
-        //////////////////////////////////////////////////////////////////////////////////////////////
-
-
-        Element schemaElement = document.createElementNS(XMLSCHEMA_NAMESPACE_URI, xsdPrefix + ":"+XML_SCHEMA_LOCAL_NAME);
-
-
-        //loop through the namespace declarations first
-        String[] nameSpaceDeclarationArray = (String[])namespacePrefixMap.keySet().toArray(new String[namespacePrefixMap.size()]);
-        for (int i = 0; i < nameSpaceDeclarationArray.length; i++) {
-            String s = nameSpaceDeclarationArray[i];
-            schemaElement.setAttributeNS("http://www.w3.org/2000/xmlns/",
-                    "xmlns:" + namespacePrefixMap.get(s).toString(),
-                    s);
-
-        }
-
-        //add the targetNamespace
-
-        schemaElement.setAttributeNS("http://www.w3.org/2000/xmlns/",
-                XMLNS_AXIS2WRAPPED,
-                targetNamespaceUri);
-        schemaElement.setAttribute(XSD_TARGETNAMESPACE,targetNamespaceUri);
-        schemaElement.setAttribute(XSD_ELEMENT_FORM_DEFAULT,XSD_UNQUALIFIED);
-
-        Element[] namespaceImports = (Element[])namespaceImportsMap.values().toArray(new Element[namespaceImportsMap.size()]);
-        for (int i = 0; i < namespaceImports.length; i++) {
-            schemaElement.appendChild(namespaceImports[i]);
-
-        }
-
-
-        Element[] complexTypeElements = (Element[])complexTypeElementsMap.values().toArray(new Element[complexTypeElementsMap.size()]);
-        for (int i = 0; i < complexTypeElements.length; i++) {
-            schemaElement.appendChild(complexTypeElements[i]);
-
-        }
-
-        Element[] elementDeclarations = (Element[])elementElementsList.toArray(new Element[elementElementsList.size()]);
-        for (int i = 0; i < elementDeclarations.length; i++) {
-            schemaElement.appendChild(elementDeclarations[i]);
-
-        }
-
-
-
-
-        return schemaElement;
+        status = AXIS2_WSDL_BINDING_OP_SET_INPUT(wsdl_binding_op, env, wsdl_fault_binding);
+		if(AXIS2_SUCCESS != status)
+		{
+	    	return status;
+		}
     }
+	return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_wsdl_pump_populate_services(axis2_wsdl_pump_t *wsdl_pump,
+									axis2_env_t **env,
+									axis2_wsdl_svc_t *wsdl_svc,
+									void *wsdl4c_svc)
+{
+	axis2_wsdl_pump_impl_t *pump_impl = NULL;
+    axis2_qname_t *svc_qname = NULL;
+	axis2_char_t *svc_name = NULL;
+	axis2_array_list_t *ports = NULL;
+	int i = 0, size = 0;
+	axis2_wsdl_interface_t *bound_interface = NULL;
+	axis2_status_t status = AXIS2_FAILURE;
+
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, wsdl_svc, AXIS2_FAILURE);	
+	AXIS2_PARAM_CHECK((*env)->error, wsdl4c_svc, AXIS2_FAILURE);
+   	pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
+   	
+	svc_name = axis2_wsdl4c_service_get_name(wsdl4c_svc); 
+	svc_qname = axis2_qname_create(env, svc_name, NULL, NULL);
+	if(!svc_qname) return AXIS2_FAILURE;
+	status = AXIS2_WSDL_SVC_SET_QNAME(wsdl_svc, env, svc_qname);
+	if(AXIS2_SUCCESS != status) return status;
+
+	bound_interface = axis2_wsdl_pump_get_bound_interface(wsdl_pump, env, 
+		wsdl_svc);
+	status = AXIS2_WSDL_SVC_SET_SVC_INTERFACE(wsdl_svc, env, bound_interface);
+	if(AXIS2_SUCCESS != status) return status;
+	ports = axis2_wsdl4c_service_get_ports(wsdl4c_svc);
+	size = AXIS2_ARRAY_LIST_SIZE(ports ,env);
+	for(i = 0; i < size; i++)
+	{
+	    char *port_name = NULL;
+		axis2_wsdl_endpoint_t *wsdl_endpoint = NULL;
+		char *svc_location = NULL;
+		void *soap = NULL;
+		void *binding = NULL;
+		int svc_ext_id = 0;
+		axis2_wsdl_ext_soap_address_t *ext_soap_address = NULL;
+
+	    binding = axis2_wsdl4c_service_get_port_binding(wsdl4c_svc, port_name);
+		wsdl_endpoint = axis2_wsdl_endpoint_create(env);
+		if(!wsdl_endpoint) return AXIS2_FAILURE;
+		port_name = AXIS2_ARRAY_LIST_GET(ports, env, i);
+		status = axis2_wsdl_pump_populate_ports(wsdl_pump, env, wsdl_endpoint, 
+            binding, port_name, NULL);
+		if(AXIS2_SUCCESS != status) return status;
+		soap = axis2_wsdl4c_parser_get_extensibility_handler_a_ns(pump_impl->parser, 
+				AXIS2_WSDL4C_SOAP_BINDING_URI);
+		if(!soap) return AXIS2_FAILURE;
+		svc_ext_id = axis2_wsdl4c_binding_get_service_ext_id(binding);
+		axis2_wsdl4c_soap_get_service_location(soap, svc_ext_id, &svc_location);
+		ext_soap_address = axis2_wsdl_ext_soap_address_create(env, NULL);
+		if(!ext_soap_address) return AXIS2_FAILURE;
+		AXIS2_WSDL_EXT_SOAP_ADDRESS_SET_LOCATION_URI(ext_soap_address, env, svc_location);
+		AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_endpoint->wsdl_component, 
+            env, ext_soap_address);
+		status = AXIS2_WSDL_SVC_SET_ENDPOINT(wsdl_svc, env, wsdl_endpoint);
+	    if(AXIS2_SUCCESS != status) return status;
+	}
+	return AXIS2_SUCCESS;
+}
+					
+/*
+/////////////////////////////////////////////////////////////////////////////
+//////////////////////////// Internal Component Copying ///////////////////
+*/
+
+axis2_status_t AXIS2_CALL
+axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
+									axis2_env_t **env,
+									axis2_wsdl_op_t *wsdl_op,
+									void *wsdl4c_op,
+									axis2_char_t *namespc_of_op,
+									axis2_wsdl_types_t *wsdl_types)
+{
+	axis2_wsdl_pump_impl_t *pump_impl = NULL;
+	axis2_char_t *op_name = NULL;
+	axis2_qname_t *op_qname = NULL;
+	void *wsdl4c_input_msg = NULL;
+	void *wsdl4c_output_msg = NULL;
+	void *wsdl4c_fault_msg = NULL;
+	axis2_wsdl_msg_ref_t *wsdl_input_msg = NULL;
+	axis2_wsdl_msg_ref_t *wsdl_output_msg = NULL;
+	axis2_wsdl_msg_ref_t *wsdl_fault_msg = NULL;
+	axis2_array_list_t *faults = NULL;
+	axis2_qname_t *wrapped_input_qname = NULL;
+	axis2_qname_t *wrapped_output_qname = NULL;
+	axis2_char_t *qname_localpart = NULL;
+	axis2_char_t *qname_uri = NULL;
+	axis2_char_t *qname_prefix = NULL;
+	axis2_char_t *temp = NULL;
+	int i = 0, size = 0;
+	axis2_char_t *mep = NULL;
+
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, namespc_of_op, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, wsdl4c_op, AXIS2_FAILURE);
+	pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
+
+	wsdl_input_msg = axis2_wsdl_msg_ref_create(env);
+	if(!wsdl_input_msg) return AXIS2_FAILURE;
+	AXIS2_WSDL_MSG_REF_SET_DIRECTION(wsdl_input_msg, env, AXIS2_WSDL_MESSAGE_DIRECTION_IN);
+	AXIS2_WSDL_MSG_REF_SET_MSG_LABEL(wsdl_input_msg, env, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE);
+
+
+	
+    /* Copy Name Attribute */
+	op_name = axis2_wsdl4c_operation_get_name(wsdl4c_op);
+	op_qname = axis2_qname_create(env, op_name, namespc_of_op, NULL);
+	if(!op_qname) return AXIS2_FAILURE;
+	AXIS2_WSDL_OP_SET_QNAME(wsdl_op, env, op_qname);
+
+    /*
+	 * This code make no attempt to make use of the special xs:Token
+     * defined in the WSDL 2.0. eg like #any, #none
+     * Create the Input Message and add
+	 */
+    wsdl4c_input_msg = axis2_wsdl4c_operation_get_message(wsdl4c_op, 
+		AXIS2_WSDL4C_INPUT);
+	wrapped_input_qname = AXIS2_WSDL_OP_GET_QNAME(wsdl_op, env);
+	if(wsdl4c_input_msg)
+	{
+		axis2_wsdl_msg_ref_t *wsdl_input_msg = NULL;
+		axis2_qname_t *ref_qname = NULL;
+		axis2_bool_t is_wrappable = AXIS2_FALSE;
+
+		wsdl_input_msg = axis2_wsdl_msg_ref_create(env);
+		if(!wsdl_input_msg) 
+		{
+			return AXIS2_FAILURE;
+		}
+		AXIS2_WSDL_MSG_REF_SET_DIRECTION(wsdl_input_msg, env, 
+			AXIS2_WSDL_MESSAGE_DIRECTION_IN);
+		AXIS2_WSDL_MSG_REF_SET_MSG_LABEL(wsdl_input_msg, env,
+			AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE);
+		is_wrappable = axis2_wsdl_pump_find_wrappable(wsdl_pump, env,
+			wsdl4c_input_msg);
+		ref_qname = axis2_wsdl_pump_generate_reference_qname(wsdl_pump, env,
+			wrapped_input_qname, wsdl4c_input_msg, is_wrappable);
+		AXIS2_WSDL_MSG_REF_SET_ELEMENT(wsdl_input_msg, env, ref_qname);
+		if(ref_qname)
+		{
+			AXIS2_QNAME_FREE(ref_qname, env);
+			ref_qname = NULL;
+		}
+		AXIS2_WSDL_OP_SET_INPUT_MSG(wsdl_op, env, wsdl_input_msg);			
+	}
+
+    /* Create an output message and add */
+	temp = AXIS2_QNAME_GET_LOCALPART(wrapped_input_qname, env);
+	qname_localpart = AXIS2_STRACAT(temp, "Response", env);
+	if(temp)
+	{
+		AXIS2_FREE((*env)->allocator, temp);
+		temp = NULL;
+	}
+	qname_uri = AXIS2_QNAME_GET_URI(wrapped_input_qname, env);
+    qname_prefix = AXIS2_QNAME_GET_PREFIX(wrapped_input_qname, env);
+	wrapped_output_qname = axis2_qname_create(env, qname_localpart, qname_uri,
+		qname_prefix);
+	wsdl4c_output_msg = axis2_wsdl4c_operation_get_message(wsdl4c_op, 
+		AXIS2_WSDL4C_OUTPUT);
+	if(wsdl4c_output_msg)
+	{
+		axis2_wsdl_msg_ref_t *wsdl_output_msg = NULL;
+		axis2_qname_t *ref_qname = NULL;
+		axis2_bool_t is_wrappable = AXIS2_FALSE;
+
+		wsdl_output_msg = axis2_wsdl_msg_ref_create(env);
+		if(!wsdl_output_msg) 
+		{
+			return AXIS2_FAILURE;
+		}
+		AXIS2_WSDL_MSG_REF_SET_DIRECTION(wsdl_output_msg, env, 
+			AXIS2_WSDL_MESSAGE_DIRECTION_OUT);
+		AXIS2_WSDL_MSG_REF_SET_MSG_LABEL(wsdl_output_msg, env,
+			AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE);
+		is_wrappable = axis2_wsdl_pump_find_wrappable(wsdl_pump, env,
+			wsdl4c_output_msg);
+		ref_qname = axis2_wsdl_pump_generate_reference_qname(wsdl_pump, env,
+			wrapped_output_qname, wsdl4c_output_msg, is_wrappable);
+		AXIS2_WSDL_MSG_REF_SET_ELEMENT(wsdl_output_msg, env, ref_qname);
+		if(ref_qname)
+		{
+			AXIS2_QNAME_FREE(ref_qname, env);
+			ref_qname = NULL;
+		}
+		AXIS2_WSDL_OP_SET_OUTPUT_MSG(wsdl_op, env, wsdl_output_msg);			
+	}
+
+	faults = axis2_wsdl4c_operation_get_faults(wsdl4c_op);
+    size = AXIS2_ARRAY_LIST_SIZE(faults, env);
+	for(i = 0; i < size; i++)
+	{	
+		wsdl4c_fault_msg = AXIS2_ARRAY_LIST_GET(faults, env, i);
+		if(wsdl4c_fault_msg)
+		{
+			axis2_wsdl_fault_ref_t *wsdl_fault_msg = NULL;
+			axis2_char_t *fault_name = NULL;
+			axis2_qname_t *fault_qname = NULL;
+			axis2_qname_t *ref_qname = NULL;
+			axis2_bool_t is_wrappable = AXIS2_FALSE;
+
+			wsdl_fault_msg = axis2_wsdl_fault_ref_create(env);
+			if(!wsdl_fault_msg) 
+			{
+				return AXIS2_FAILURE;
+			}
+			AXIS2_WSDL_MSG_REF_SET_DIRECTION(wsdl_fault_msg, env, 
+				AXIS2_WSDL_MESSAGE_DIRECTION_OUT);
+			is_wrappable = axis2_wsdl_pump_find_wrappable(wsdl_pump, env,
+				wsdl4c_fault_msg);
+			fault_name = axis2_wsdl4c_msg_get_name(wsdl4c_fault_msg);
+			fault_qname = axis2_qname_create(env, fault_name, NULL, NULL);
+			ref_qname = axis2_wsdl_pump_generate_reference_qname(wsdl_pump, env, 
+				fault_qname, wsdl4c_fault_msg, is_wrappable);
+			AXIS2_WSDL_FAULT_REF_SET_REF(wsdl_fault_msg, env, ref_qname);
+			if(ref_qname)
+			{
+				AXIS2_QNAME_FREE(ref_qname, env);
+				ref_qname = NULL;
+			}
+			AXIS2_WSDL_OP_ADD_OUT_FAULT(wsdl_op, env, wsdl_fault_msg);
+		}
+	}
+    /* Set the MEP */
+	mep = axis2_wsdl11_mep_finder_get_mep(wsdl4c_op, env);
+	return AXIS2_WSDL_OP_SET_MSG_EXCHANGE_PATTERN(wsdl_op, env, mep);
+}
+
+/*
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * Generates a referenceQName
-     * @param wsdl4jMessage
-     * @return
-     */
-    private QName generateReferenceQname(QName outerName,Message wsdl4jMessage,boolean isWrappable) {
-        QName referenceQName = null;
-        if (isWrappable) {
-            //The schema for this should be already made ! Find the QName from the list
-            referenceQName=(QName)resolvedRpcWrappedElementMap.get(outerName.getLocalPart());
+*/
 
-        } else {
-            //Only one part so copy the QName of the referenced type.
-            Iterator outputIterator =
-                    wsdl4jMessage.getParts().values().iterator();
-            if (outputIterator.hasNext()) {
-                Part outPart = ((Part) outputIterator.next());
-                QName typeName;
-                if (null != (typeName = outPart.getTypeName())) {
-                    referenceQName = typeName;
-                } else {
-                    referenceQName = outPart.getElementName();
-                }
-            }
-        }
+/**
+ * Generates a reference QName
+ * @param wsdl4c_message
+ * @return
+ */
+static axis2_qname_t *
+axis2_wsdl_pump_generate_reference_qname(axis2_wsdl_pump_t *wsdl_pump,
+											axis2_env_t **env,
+											axis2_qname_t *outer_qname,
+											void *wsdl4c_msg,
+											axis2_bool_t is_wrappable)
+{
+	axis2_qname_t *reference_qname = NULL;
+	
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, outer_qname, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, wsdl4c_msg, AXIS2_FAILURE);
 
-        ////////////////////////////////////////////////////////////////////////////////
-        //System.out.println("final referenceQName = " + referenceQName);
-        ////////////////////////////////////////////////////////////////////////////////
-        return referenceQName;
+	if(AXIS2_TRUE == is_wrappable)
+	{
+        /* TODO The schema for this should be already made ! Find the QName from 
+		 * the list 
+		 */
+		
+    } 
+	else 
+	{
+	    int i = 0;
+		int no_of_parts = 0;
+		
+		no_of_parts = axis2_wsdl4c_msg_get_num_parts(wsdl4c_msg);
+		for(i = 0; i < no_of_parts; i++)
+		{
+			void *out_part = axis2_wsdl4c_msg_get_message_part_a_index(wsdl4c_msg, i);
+			void *element = axis2_wsdl4c_part_element(out_part);
+			axis2_char_t *name = axis2_wsdl4c_element_get_name(element);
+			reference_qname = axis2_qname_create(env, name, NULL, NULL);
+			if(!reference_qname) return AXIS2_FAILURE;
+		}
+				
     }
 
-    /**
-     * Utility method that returns a DOM Builder
-     * @return
-     */
-    private DocumentBuilder getDOMDocumentBuilder() {
-        DocumentBuilder documentBuilder;
-        try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
-        }
-        return documentBuilder;
-    }
+    return reference_qname;
+}
 
-    /**
-     *   Find the  XML schema prefix
-     */
-    private String  findSchemaPrefix() {
-        String xsdPrefix=null;
-        if (declaredNameSpaces.containsValue(XMLSCHEMA_NAMESPACE_URI)){
-            //loop and find the prefix
-            Iterator it = declaredNameSpaces.keySet().iterator();
-            String key;
-            while (it.hasNext()) {
-                key =  (String)it.next();
-                if (XMLSCHEMA_NAMESPACE_URI.equals(declaredNameSpaces.get(key))){
-                    xsdPrefix = key;
-                    break;
-                }
-            }
+axis2_status_t AXIS2_CALL
+axis2_wsdl_pump_populate_ports(axis2_wsdl_pump_t *wsdl_pump,
+								axis2_env_t **env,
+								axis2_wsdl_endpoint_t *wsdl_endpoint,
+								void *wsdl4c_binding,
+								char *port_name,
+								char *target_namespc)
+{
+	axis2_wsdl_pump_impl_t *pump_impl = NULL;
+	axis2_qname_t *port_qname = NULL;
+	void *binding = NULL;
+	axis2_char_t *binding_name = NULL;
+	axis2_qname_t *binding_qname = NULL;
+	axis2_wsdl_binding_t *wsdl_binding = NULL;
+	
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, wsdl_endpoint, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK((*env)->error, wsdl4c_binding, AXIS2_FAILURE);
+	pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
+	
+	port_qname = axis2_qname_create(env, port_name, target_namespc, NULL);
+	if(!port_qname) return AXIS2_FAILURE;
+    AXIS2_WSDL_ENDPOINT_SET_NAME(wsdl_endpoint, env, port_qname);
+	if(port_qname)
+	{
+		AXIS2_QNAME_FREE(port_qname, env);
+		port_qname = NULL;
+	}
+	binding_name = axis2_wsdl4c_binding_get_name(binding);
+	binding_qname = axis2_qname_create(env, binding_name, target_namespc, NULL);
+	wsdl_binding = AXIS2_WSDL_DESC_GET_BINDING(pump_impl->wom_def, env, binding_qname);
+    if(binding_qname)
+	{
+		AXIS2_QNAME_FREE(binding_qname, env);
+		binding_qname = NULL;
+	}	
+	return AXIS2_WSDL_ENDPOINT_SET_BINDING(wsdl_endpoint, env, wsdl_binding);
+}
 
-        }else{
-            xsdPrefix = XMLSCHEMA_NAMESPACE_PREFIX; //default prefix
-        }
+/**
+ * This method will fill up the gap of WSDL 1.1 and WSDL 2.0 w.r.t. the
+ * bound interface for the Service Component Defined in the WSDL 2.0. Logic
+ * being if there exist only one PortType in the WSDL 1.1 file then that
+ * will be set as the bound interface of the Service. If more than one
+ * Porttype exist in the WSDl 1.1 file this will create a dummy Interface
+ * with the available PortTypes and will return that interface so that it
+ * will inherit all those interfaces.
+ * <p/>
+ * Eventually this will have to be fixed using user input since
+ *
+ tt
+e @param service
+ * @return wsdl interface
+ */
+static axis2_wsdl_interface_t *
+axis2_wsdl_pump_get_bound_interface(axis2_wsdl_pump_t *wsdl_pump,
+									axis2_env_t **env,
+									axis2_wsdl_svc_t *wsdl_svc)
+{
+	axis2_wsdl_pump_impl_t *pump_impl = NULL;
+    int no_of_interfaces = 0;
+	axis2_hash_t *interfaces = NULL;
+	
+	AXIS2_ENV_CHECK(env, NULL);
+	AXIS2_PARAM_CHECK((*env)->error, wsdl_svc, NULL);
+	pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
+	
+	interfaces = AXIS2_WSDL_DESC_GET_INTERFACES(pump_impl->wom_def, env);
+	no_of_interfaces = axis2_hash_count(interfaces);
+    /* Return error code  if there are no interfaces defined as at yet */
+	if(0 == no_of_interfaces)
+	{
+		AXIS2_ERROR_SET((*env)->error, 
+			AXIS2_ERROR_INTERFACES_OR_PORTS_NOT_FOUND_FOR_PARTIALLY_BUILT_WOM,
+			AXIS2_FAILURE);
+		return NULL;
+	}
+	/*
+	 * If there is only one Interface available then return that because
+	 * normally that interface must be the one to the service should get bound.
+	 */
+	if(1 == no_of_interfaces)
+	{
+		axis2_hash_index_t *index = NULL;
+		void *value = NULL;
+		axis2_wsdl_interface_t *interface = NULL;
+		
+	    index = axis2_hash_first (interfaces, env);
+		axis2_hash_this(index, NULL, NULL, &value);
+		interface = (axis2_wsdl_interface_t *) value;
+		return interface;
+	}
+	if( 1 < no_of_interfaces)
+	{
+			/* TODO Handle this situation */
+	}
+	return NULL;
+}
 
-        return  xsdPrefix;
-    }
-
-    /**
-     *
-     * @param wsdlBindingOperation
-     * @param wsdl4jBindingOperation
-     * @param nameSpaceOfTheBindingOperation
-     * @param wsdl4jDefinition
-     */
-    private void populateBindingOperation(
-            WSDLBindingOperation wsdlBindingOperation,
-            BindingOperation wsdl4jBindingOperation,
-            String nameSpaceOfTheBindingOperation, Definition wsdl4jDefinition) {
-
-        wsdlBindingOperation.setName(
-                new QName(nameSpaceOfTheBindingOperation,
-                        wsdl4jBindingOperation.getName()));
-
-        BindingInput wsdl4jInputBinding =
-                wsdl4jBindingOperation.getBindingInput();
-
-        if (null != wsdl4jInputBinding) {
-            WSDLBindingMessageReference wsdlInputBinding =
-                    this.wsdlComponentFactory.createWSDLBindingMessageReference();
-            wsdlInputBinding.setDirection(
-                    WSDLConstants.WSDL_MESSAGE_DIRECTION_IN);
-            this.copyExtensibleElements(
-                    wsdl4jInputBinding.getExtensibilityElements(),
-                    wsdlInputBinding, wsdl4jDefinition);
-            wsdlBindingOperation.setInput(wsdlInputBinding);
-        }
-
-        BindingOutput wsdl4jOutputBinding = wsdl4jBindingOperation
-                .getBindingOutput();
-        if (null != wsdl4jOutputBinding) {
-            WSDLBindingMessageReference wsdlOutputBinding = this.wsdlComponentFactory
-                    .createWSDLBindingMessageReference();
-            wsdlOutputBinding.setDirection(
-                    WSDLConstants.WSDL_MESSAGE_DIRECTION_OUT);
-
-            this.copyExtensibleElements(
-                    wsdl4jOutputBinding.getExtensibilityElements(),
-                    wsdlOutputBinding, null);
-            wsdlBindingOperation.setOutput(wsdlOutputBinding);
-        }
-
-
-        Map bindingFaults = wsdl4jBindingOperation.getBindingFaults();
-        Iterator keyIterator = bindingFaults.keySet().iterator();
-        while (keyIterator.hasNext()) {
-            BindingFault bindingFault = (BindingFault) bindingFaults.get(
-                    keyIterator.next());
-            WSDLBindingFault womBindingFault = this.wsdlComponentFactory.createBindingFault();
-            this.copyExtensibleElements(
-                    bindingFault.getExtensibilityElements(), womBindingFault, null);
-            wsdlBindingOperation.addOutFault(womBindingFault);
-        }
-
-    }
-
-    public void populatePorts(WSDLEndpoint wsdlEndpoint, Port wsdl4jPort,
-                              String targetNamspace) {
-        wsdlEndpoint.setName(new QName(targetNamspace, wsdl4jPort.getName()));
-
-        wsdlEndpoint.setBinding(
-                this.womDefinition.getBinding(
-                        wsdl4jPort
-                                .getBinding()
-                                .getQName()));
-
-    }
-
-    /**
-     * This method will fill up the gap of WSDL 1.1 and WSDL 2.0 w.r.t. the
-     * bound interface for the Service Component Defined in the WSDL 2.0. Logic
-     * being if there exist only one PortType in the WSDL 1.1 file then that
-     * will be set as the bound interface of the Service. If more than one
-     * Porttype exist in the WSDl 1.1 file this will create a dummy Interface
-     * with the available PortTypes and will return that interface so that it
-     * will inherit all those interfaces.
-     * <p/>
-     * Eventuall this will have to be fixed using user input since
-     *
-     * @param service
-     * @return wsdl interface
-     */
-    private WSDLInterface getBoundInterface(WSDLService service) {
-
-        // Throw an exception if there are no interfaces defined as at yet.
-        if (0 == this.womDefinition.getWsdlInterfaces().size())
-            throw new WSDLProcessingException("There are no "
-                    +
-                    "Interfaces/PortTypes identified in the current partially built"
-                    + "WOM");
-
-//If there is only one Interface available hten return that because
-// normally
-// that interface must be the one to the service should get bound.
-        if (1 == this.womDefinition.getWsdlInterfaces().size())
-            return (WSDLInterface) this.womDefinition.getWsdlInterfaces()
-                    .values().iterator().next();
-
-//If there are more than one interface available... For the time being
-// create a
-// new interface and set all those existing interfaces as
-// superinterfaces of it
-// and return.
-        WSDLInterface newBoundInterface = this.womDefinition.createInterface();
-        newBoundInterface.setName(
-                new QName(service.getNamespace(),
-                        service
-                                .getName()
-                                .getLocalPart()
-                                + BOUND_INTERFACE_NAME));
-        Iterator interfaceIterator = this.womDefinition.getWsdlInterfaces()
-                .values().iterator();
-        while (interfaceIterator.hasNext()) {
-            newBoundInterface
-                    .addSuperInterface(
-                            (WSDLInterface) interfaceIterator.next());
-        }
-        return newBoundInterface;
-    }
-
-    /**
-     * Get the Extensible elements form wsdl4jExtensibleElements
-     * <code>Vector</code> if any and copy them to <code>Component</code>
-     *
-
-
-     @param wsdl4jExtensibleElements
-      * @param component
-     * @param wsdl4jDefinition
-
-     */
-    private void copyExtensibleElements(List wsdl4jExtensibleElements,
-                                        Component component, Definition wsdl4jDefinition) {
-        Iterator iterator = wsdl4jExtensibleElements.iterator();
-        ExtensionFactory extensionFactory = this.wsdlComponentFactory
-                .createExtensionFactory();
-        while (iterator.hasNext()) {
-
-            ExtensibilityElement wsdl4jElement = (ExtensibilityElement) iterator
-                    .next();
-
-            if (wsdl4jElement instanceof UnknownExtensibilityElement) {
-                UnknownExtensibilityElement unknown = (UnknownExtensibilityElement) (wsdl4jElement);
-
-//look for the SOAP 1.2 stuff here. WSDL4j does not understand SOAP 1.2 things
-                if (ExtensionConstants.SOAP_12_OPERATION.equals(unknown.getElementType())){
-                    org.apache.wsdl.extensions.SOAPOperation soapOperationExtensibiltyElement = (org.apache.wsdl.extensions.SOAPOperation) extensionFactory
-                            .getExtensionElement(wsdl4jElement.getElementType());
-                    Element element = unknown.getElement();
-                    soapOperationExtensibiltyElement.setSoapAction(element.getAttribute("soapAction"));
-                    soapOperationExtensibiltyElement.setStyle(element.getAttribute("style"));
-// soapActionRequired
-                    component.addExtensibilityElement(soapOperationExtensibiltyElement);
-                }else if (ExtensionConstants.SOAP_12_BODY.equals(unknown.getElementType())){
-                    org.apache.wsdl.extensions.SOAPBody soapBodyExtensibiltyElement = (org.apache.wsdl.extensions.SOAPBody) extensionFactory
-                            .getExtensionElement(wsdl4jElement.getElementType());
-                    Element element = unknown.getElement();
-                    soapBodyExtensibiltyElement.setUse(element.getAttribute("use"));
-                    soapBodyExtensibiltyElement.setNamespaceURI(element.getAttribute("namespace"));
-//encoding style
-                    component.addExtensibilityElement(soapBodyExtensibiltyElement);
-                }else if (ExtensionConstants.SOAP_12_HEADER.equals(unknown.getElementType())){
-                    org.apache.wsdl.extensions.SOAPHeader soapHeaderExtensibilityElement = (org.apache.wsdl.extensions.SOAPHeader) extensionFactory.getExtensionElement(
-                            unknown.getElementType());
-                       //right now there's no known header binding!. Ignore the copying of values for now
-                    component.addExtensibilityElement(soapHeaderExtensibilityElement);
-                }else if (ExtensionConstants.SOAP_12_BINDING.equals(unknown.getElementType())){
-                    org.apache.wsdl.extensions.SOAPBinding soapBindingExtensibiltyElement = (org.apache.wsdl.extensions.SOAPBinding) extensionFactory
-                            .getExtensionElement(wsdl4jElement.getElementType());
-                    Element element = unknown.getElement();
-                    soapBindingExtensibiltyElement.setTransportURI(element.getAttribute("transport"));
-                    soapBindingExtensibiltyElement.setStyle(element.getAttribute("style"));
-
-                    component.addExtensibilityElement(soapBindingExtensibiltyElement);
-                } else if (ExtensionConstants.SOAP_12_ADDRESS.equals(unknown.getElementType())){
-                    org.apache.wsdl.extensions.SOAPAddress soapAddressExtensibiltyElement = (org.apache.wsdl.extensions.SOAPAddress) extensionFactory
-                            .getExtensionElement(wsdl4jElement.getElementType());
-                    Element element = unknown.getElement();
-                    soapAddressExtensibiltyElement.setLocationURI(element.getAttribute("location"));
-                    component.addExtensibilityElement(soapAddressExtensibiltyElement);
-
-                } else if (ExtensionConstants.POLICY.equals(unknown.getElementType())) {
-                    PolicyExtensibilityElement policyExtensibilityElement = (PolicyExtensibilityElement) extensionFactory.getExtensionElement(wsdl4jElement.getElementType());
-                    DOMPolicyReader policyReader = (DOMPolicyReader) PolicyFactory.getPolicyReader(PolicyFactory.DOM_POLICY_READER);
-                    policyExtensibilityElement.setPolicyElement(policyReader.readPolicy(unknown.getElement()));
-                    component.addExtensibilityElement(policyExtensibilityElement);
-
-                } else if (ExtensionConstants.POLICY_REFERENCE.equals(unknown.getElementType())) {
-                    PolicyExtensibilityElement policyExtensibilityElement = (PolicyExtensibilityElement) extensionFactory.getExtensionElement(wsdl4jElement.getElementType());
-                    DOMPolicyReader policyReader = (DOMPolicyReader) PolicyFactory.getPolicyReader(PolicyFactory.DOM_POLICY_READER);
-                    policyExtensibilityElement.setPolicyElement(policyReader.readPolicyReference(unknown.getElement()));
-                    component.addExtensibilityElement(policyExtensibilityElement);
-
-                }else{
-
-                    DefaultExtensibilityElement defaultExtensibilityElement = (DefaultExtensibilityElement) extensionFactory
-                            .getExtensionElement(wsdl4jElement.getElementType());
-                    defaultExtensibilityElement.setElement(unknown.getElement());
-                    Boolean required = unknown.getRequired();
-                    if (null != required) {
-                        defaultExtensibilityElement.setRequired(required.booleanValue());
-                    }
-                    component.addExtensibilityElement(defaultExtensibilityElement);
-                }
-
-
-            } else if (wsdl4jElement instanceof SOAPAddress) {
-                SOAPAddress soapAddress = (SOAPAddress) wsdl4jElement;
-                org.apache.wsdl.extensions.SOAPAddress soapAddressExtensibilityElement = (org.apache.wsdl.extensions.SOAPAddress) extensionFactory
-                        .getExtensionElement(soapAddress.getElementType());
-                soapAddressExtensibilityElement.setLocationURI(soapAddress
-                        .getLocationURI());
-                Boolean required = soapAddress.getRequired();
-                if (null != required) {
-                    soapAddressExtensibilityElement.setRequired(required.booleanValue());
-                }
-                component.addExtensibilityElement(soapAddressExtensibilityElement);
-            } else if (wsdl4jElement instanceof Schema) {
-                Schema schema = (Schema) wsdl4jElement;
-//schema.getDocumentBaseURI()
-//populate the imported schema stack
-                Stack schemaStack = new Stack();
-//recursivly load the schema elements. The best thing is to push these into
-//a stack and then pop from the other side
-                pushSchemaElement(schema, schemaStack);
-                org.apache.wsdl.extensions.Schema schemaExtensibilityElement = (org.apache.wsdl.extensions.Schema) extensionFactory.getExtensionElement(
-                        schema.getElementType());
-                schemaExtensibilityElement.setElement(schema.getElement());
-                schemaExtensibilityElement.setImportedSchemaStack(schemaStack);
-                Boolean required = schema.getRequired();
-                if (null != required) {
-                    schemaExtensibilityElement.setRequired(required.booleanValue());
-                }
-                //set the name of this Schema element
-                //todo this needs to be fixed
-                if(schema.getDocumentBaseURI() != null) {
-                    schemaExtensibilityElement.setName(new QName("",schema.getDocumentBaseURI()));
-                }
-                component.addExtensibilityElement(schemaExtensibilityElement);
-            } else if (SOAPConstants.Q_ELEM_SOAP_OPERATION.equals(
-                    wsdl4jElement.getElementType())) {
-                SOAPOperation soapOperation = (SOAPOperation) wsdl4jElement;
-                org.apache.wsdl.extensions.SOAPOperation soapOperationextensibilityElement = (org.apache.wsdl.extensions.SOAPOperation) extensionFactory.getExtensionElement(
-                        soapOperation.getElementType());
-                soapOperationextensibilityElement.setSoapAction(
-                        soapOperation.getSoapActionURI());
-                soapOperationextensibilityElement.setStyle(soapOperation.getStyle());
-                Boolean required = soapOperation.getRequired();
-                if (null != required) {
-                    soapOperationextensibilityElement.setRequired(required.booleanValue());
-                }
-                component.addExtensibilityElement(soapOperationextensibilityElement);
-            } else if (SOAPConstants.Q_ELEM_SOAP_BODY.equals(
-                    wsdl4jElement.getElementType())) {
-                SOAPBody soapBody = (SOAPBody) wsdl4jElement;
-                org.apache.wsdl.extensions.SOAPBody soapBodyExtensibilityElement = (org.apache.wsdl.extensions.SOAPBody) extensionFactory.getExtensionElement(
-                        soapBody.getElementType());
-                soapBodyExtensibilityElement.setNamespaceURI(
-                        soapBody.getNamespaceURI());
-                soapBodyExtensibilityElement.setUse(soapBody.getUse());
-                Boolean required = soapBody.getRequired();
-                if (null != required) {
-                    soapBodyExtensibilityElement.setRequired(required.booleanValue());
-                }
-
-                component.addExtensibilityElement(soapBodyExtensibilityElement);
-//add the header
-            } else if (SOAPConstants.Q_ELEM_SOAP_HEADER.equals(
-                    wsdl4jElement.getElementType())) {
-                SOAPHeader soapHeader = (SOAPHeader) wsdl4jElement;
-                org.apache.wsdl.extensions.SOAPHeader soapHeaderExtensibilityElement = (org.apache.wsdl.extensions.SOAPHeader) extensionFactory.getExtensionElement(
-                        soapHeader.getElementType());
-                soapHeaderExtensibilityElement.setNamespaceURI(
-                        soapHeader.getNamespaceURI());
-                soapHeaderExtensibilityElement.setUse(soapHeader.getUse());
-                Boolean required = soapHeader.getRequired();
-                if (null != required) {
-                    soapHeaderExtensibilityElement.setRequired(required.booleanValue());
-                }
-                if (null!=wsdl4jDefinition){
-                    //find the relevant schema part from the messages
-                    Message msg = wsdl4jDefinition.getMessage(soapHeader.getMessage());
-                    Part msgPart = msg.getPart(soapHeader.getPart());
-                    soapHeaderExtensibilityElement.setElement(msgPart.getElementName());
-                }
-                soapHeaderExtensibilityElement.setMessage(soapHeader.getMessage());
-
-                soapHeaderExtensibilityElement.setPart(soapHeader.getPart());
-                soapHeader.getMessage();
-                component.addExtensibilityElement(soapHeaderExtensibilityElement);
-            } else if (SOAPConstants.Q_ELEM_SOAP_BINDING.equals(
-                    wsdl4jElement.getElementType())) {
-                SOAPBinding soapBinding = (SOAPBinding) wsdl4jElement;
-                org.apache.wsdl.extensions.SOAPBinding soapBindingExtensibilityElement = (org.apache.wsdl.extensions.SOAPBinding) extensionFactory.getExtensionElement(
-                        soapBinding.getElementType());
-                soapBindingExtensibilityElement.setTransportURI(
-                        soapBinding.getTransportURI());
-                soapBindingExtensibilityElement.setStyle(soapBinding.getStyle());
-                Boolean required = soapBinding.getRequired();
-                if (null != required) {
-                    soapBindingExtensibilityElement.setRequired(required.booleanValue());
-                }
-                component.addExtensibilityElement(soapBindingExtensibilityElement);
-            }
-        }
-    }
-
-    /**
-     * Get the Extensible Attributes from wsdl4jExtensibilityAttribute
-     * <code>Map</code> if any and copy them to the <code>Component</code>
-     *
-     * @param wsdl4jExtensibilityAttributes
-     * @param component
-     */
-    private void copyExtensibilityAttribute(Map wsdl4jExtensibilityAttributes,
-                                            Component component) {
-        Iterator iterator = wsdl4jExtensibilityAttributes.keySet().iterator();
-        while (iterator.hasNext()) {
-            QName attributeName = (QName) iterator.next();
-            QName value = (QName) wsdl4jExtensibilityAttributes
-                    .get(attributeName);
-            WSDLExtensibilityAttribute attribute = this.wsdlComponentFactory
-                    .createWSDLExtensibilityAttribute();
-            attribute.setKey(attributeName);
-            attribute.setValue(value);
-            component.addExtensibleAttributes(attribute);
-        }
-    }
-
-    /**
-
-
-     /**
-     *
-     * @return
-     */
-    private String getTemporaryNamespacePrefix(){
-        return "ns"+nsCount++ ;
-    }

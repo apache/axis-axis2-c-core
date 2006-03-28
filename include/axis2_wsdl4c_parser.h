@@ -146,16 +146,27 @@ extern "C"
     axis2_wsdl4c_parser_get_bindings(void *parser);
 
     /**
+    * get_services
+    * @return iterator to a list of service elements
+    */
+    axis2_array_list_t *
+    axis2_wsdl4c_parser_get_services(void *parser);
+
+    /**
     * get_service .This method must be called after
     *  <code>getEventType</code> returns SERVICE
     * @return reference to the Binding element just parsed.
     */
-    /*const void *
-    axis2_wsdl4c_parser_get_svc(void *parser) 
-    {
-        WsdlParser *wp = (WsdlParser *) parser;
-        return wp->getService();
-    }*/
+    const void *
+    axis2_wsdl4c_parser_get_service(void *parser);
+    
+    /**
+    * get_service.
+    * @param Qname refering to the service element
+    * @return reference to the Service element
+    */
+    const void *
+    axis2_wsdl4c_parser_get_service_a_q(void *parser, void *q);
 
     /**
     * get_port_type .This method must be called after
@@ -267,7 +278,7 @@ extern "C"
     * WsdlParser only stores ids for the extensibilit elements.
     */
     void *
-    axis2_wsdl4c_parser_get_extensibility_handler_a_extId(void *parser, int extId);
+    axis2_wsdl4c_parser_get_extensibility_handler_a_ext_id(void *parser, int ext_id);
 
     /**
     * set_feature enables one of the features of the parser

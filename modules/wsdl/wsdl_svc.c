@@ -24,14 +24,13 @@ typedef struct axis2_wsdl_svc_impl axis2_wsdl_svc_impl_t;
   
 struct axis2_wsdl_svc_impl
 {
-	axis2_wsdl_svc_t wsdl_svc;
-    
+    axis2_wsdl_svc_t wsdl_svc;
     /**
      * The QName that identifies the Service. This namespace of the QName
      * should be the target namespace defined in the Definitions component.
      */
     axis2_qname_t *qname;
-	/**
+    /**
      * The Interface that this Service is an instance of.
      */
     axis2_wsdl_interface_t *svc_interface;
@@ -226,27 +225,24 @@ axis2_wsdl_svc_get_qname(axis2_wsdl_svc_t *wsdl_svc,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_svc_set_qname(axis2_wsdl_svc_t *wsdl_svc, 
-                    axis2_env_t **env, 
-                    axis2_qname_t *qname) 
+                         axis2_env_t **env, 
+                         axis2_qname_t *qname) 
 {
-    axis2_qname_t *svc_name = NULL;
-    
+    axis2_wsdl_svc_impl_t *wsdl_svc_impl = NULL; 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);
-    
-    svc_name = AXIS2_QNAME_CLONE(qname, env);
-    if(NULL == svc_name)
+    wsdl_svc_impl = AXIS2_INTF_TO_IMPL(wsdl_svc);
+
+    if(wsdl_svc_impl->qname)
+    {
+        AXIS2_QNAME_FREE(wsdl_svc_impl->qname, env);
+        wsdl_svc_impl->qname = NULL;
+    } 
+    wsdl_svc_impl->qname = AXIS2_QNAME_CLONE(qname, env);
+    if(!wsdl_svc_impl->qname)
     {
         return AXIS2_FAILURE;
-    }
-    if(NULL != AXIS2_INTF_TO_IMPL(wsdl_svc)->qname)
-    {
-        AXIS2_QNAME_FREE(AXIS2_INTF_TO_IMPL(wsdl_svc)->qname, env);
-        AXIS2_INTF_TO_IMPL(wsdl_svc)->qname = NULL;
-    }
-    
-    AXIS2_INTF_TO_IMPL(wsdl_svc)->qname = svc_name;
-    
+    } 
     return AXIS2_SUCCESS;
 }
 

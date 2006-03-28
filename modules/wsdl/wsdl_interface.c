@@ -22,28 +22,23 @@
  */ 
 typedef struct axis2_wsdl_interface_impl
 {
-	axis2_wsdl_interface_t wsdl_interface;
-    
-	/**
+    axis2_wsdl_interface_t wsdl_interface;
+    /**
      * Field name
      */
     axis2_qname_t  *qname;
-
     /**
      * Field superInterfaces
      */
     axis2_hash_t *super_interfaces;
-
     /**
      * Field faults
      */
     axis2_linked_list_t *faults;
-
     /**
      * Field ops
      */
     axis2_hash_t *ops;
-
     /**
      * Field style_default
      */
@@ -425,7 +420,7 @@ axis2_wsdl_interface_set_name(axis2_wsdl_interface_t *wsdl_interface,
         AXIS2_QNAME_FREE(interface_impl->qname, env);
         interface_impl->qname = NULL;
     }
-    interface_impl->qname = qName;
+    interface_impl->qname = AXIS2_QNAME_CLONE(qName, env);
     return AXIS2_SUCCESS;
 }
 

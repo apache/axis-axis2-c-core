@@ -193,7 +193,7 @@ axis2_wsdl_endpoint_set_name(axis2_wsdl_endpoint_t *wsdl_endpoint,
         AXIS2_QNAME_FREE(wsdl_endpoint_impl->qname, env);
         wsdl_endpoint_impl->qname = NULL;
     }
-    wsdl_endpoint_impl->qname = qname;
+    wsdl_endpoint_impl->qname = AXIS2_QNAME_CLONE(qname, env);
     return AXIS2_SUCCESS;
 }
 

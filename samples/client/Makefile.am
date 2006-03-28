@@ -1,1 +1,1 @@
-SUBDIRS = echo math addr_echo google echo_non_blocking notify
+SUBDIRS = echo math addr_echo google echo_non_blocking notify dynamic_invocation

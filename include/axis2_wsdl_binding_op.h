@@ -65,8 +65,8 @@ struct axis2_wsdl_binding_op_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_input) (axis2_wsdl_binding_op_t *binding_op,
-                                            axis2_env_t **env,
-                                            struct axis2_wsdl_binding_msg_ref *input);
+                axis2_env_t **env,
+                struct axis2_wsdl_binding_msg_ref *input);
     
     /**
      * Method getOperation
@@ -186,18 +186,16 @@ axis2_wsdl_binding_op_create (axis2_env_t **env);
 #define AXIS2_WSDL_BINDING_OP_FREE(wsdl_binding_op, env) \
 		((wsdl_binding_op)->ops->free (wsdl_binding_op, env))
 
-#define AXIS2_WSDL_BINDING_OP_SET_INPUT(wsdl_binding_op, env, \
-		inut) \
-		((wsdl_binding_op)->ops->set_input(wsdl_binding_op , env, \
-            input)
+#define AXIS2_WSDL_BINDING_OP_SET_INPUT(wsdl_binding_op, env, input) \
+		((wsdl_binding_op)->ops->set_input(wsdl_binding_op , env, input))
 	
 #define AXIS2_WSDL_BINDING_OP_GET_OP(wsdl_binding_op, env) \
 		((wsdl_binding_op)->ops->get_op(wsdl_binding_op, env))
 
 #define AXIS2_WSDL_BINDING_OP_SET_OP(wsdl_binding_op, env, \
-		key, op) \
+		op) \
 		((wsdl_binding_op)->ops->set_op(wsdl_binding_op, env,\
-            key, op))
+            op))
 		
 #define AXIS2_WSDL_BINDING_OP_GET_OUTPUT(wsdl_binding_op, env) \
 		((wsdl_binding_op)->ops->get_output(wsdl_binding_op, env))

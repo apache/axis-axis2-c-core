@@ -62,23 +62,26 @@ struct axis2_wsdl_svc_ops
     /** Deallocate memory
      * @return status code
      */
-	axis2_status_t (AXIS2_CALL *free) (axis2_wsdl_svc_t *wsdl_svc, 
-                                        axis2_env_t **env);
+	axis2_status_t (AXIS2_CALL *
+	free) (axis2_wsdl_svc_t *wsdl_svc, 
+           axis2_env_t **env);
 
     /**
      * Get wsdl service name
      * @return wsdl service name
      */
-    axis2_qname_t * (AXIS2_CALL *get_qname)(axis2_wsdl_svc_t *wsdl_svc,
-                                            axis2_env_t **env);
+    axis2_qname_t * (AXIS2_CALL *
+	get_qname)(axis2_wsdl_svc_t *wsdl_svc,
+               axis2_env_t **env);
 
     /**
      * Set wsdl serivce name
      * @param set wsdl service name
      */
-    axis2_status_t (AXIS2_CALL *set_qname) (axis2_wsdl_svc_t *wsdl_svc,
-                                            axis2_env_t **env,
-                                            axis2_qname_t *qname);
+    axis2_status_t (AXIS2_CALL *
+	set_qname) (axis2_wsdl_svc_t *wsdl_svc,
+                axis2_env_t **env,
+                axis2_qname_t *qname);
     
     /**
      * Method getEndpoints
@@ -87,7 +90,7 @@ struct axis2_wsdl_svc_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_endpoints) (axis2_wsdl_svc_t *wsdl_svc,
-                                        axis2_env_t **env);
+                    axis2_env_t **env);
     
     /**
      * Method setEndpoints
@@ -96,8 +99,8 @@ struct axis2_wsdl_svc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_endpoints) (axis2_wsdl_svc_t *wsdl_svc,
-                                    axis2_env_t **env,
-                                    axis2_hash_t *endpoints);
+                    axis2_env_t **env,
+                    axis2_hash_t *endpoints);
     
     /**
      * Will add a WSDLEndpoint object to the WOM keyed with qname;

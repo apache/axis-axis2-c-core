@@ -161,6 +161,6 @@ axis2_binding_fault_set_ref(axis2_wsdl_binding_fault_t *binding_fault,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, ref, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(binding_fault)->ref = ref;
+    AXIS2_INTF_TO_IMPL(binding_fault)->ref = AXIS2_QNAME_CLONE(ref, env);
     return AXIS2_SUCCESS;
 }

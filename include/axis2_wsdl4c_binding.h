@@ -89,30 +89,30 @@ extern "C"
     axis2_wsdl4c_binding_get_binding_method(void *binding);
 
     /**
-    * axis2_wsdl4c_binding_get_binding
+    * axis2_wsdl4c_binding_get_op_binding
     * @return The number of binding extensibility elements assocated with each
-    *         message of the operation whose index is given
-    *         returns a pointer to a list of extensibility binding ids
+    *  message of the operation whose index is given
+    *  returns a pointer to a list of extensibility binding ids
     */
     int
     axis2_wsdl4c_binding_get_op_binding(void *binding, 
                                         int index, 
-                                        int *&bindings);
+                                        int **bindings);
 
     int
     axis2_wsdl4c_binding_get_output_binding(void *binding, 
                                                 int index, 
-                                                int *& bindings);
+                                                int ** bindings);
 
     int
     axis2_wsdl4c_binding_get_input_binding(void *binding, 
                                             int index, 
-                                            int *& bindings);
+                                            int ** bindings);
 
     int
     axis2_wsdl4c_binding_get_fault_binding(void *binding, 
                                             int index, 
-                                            int *& bindings);
+                                            int ** bindings);
 
     void
     axis2_wsdl4c_binding_set_port_type(void *binding, 
@@ -161,14 +161,14 @@ extern "C"
     * get_name
     * @return name of the Wsdl Element
     */
-    const char *
+    char *
     axis2_wsdl4c_binding_get_name(void *binding);
 
     /**
     * get_documentation
     *   
     */
-    const char *
+    char *
     axis2_wsdl4c_binding_get_documentation(void *binding);  
 
     /**

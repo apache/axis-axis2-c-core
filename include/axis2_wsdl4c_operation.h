@@ -65,7 +65,7 @@ extern "C"
 
     /**
     * axis2_wsdl4c_operation_get_message
-    * @param mesage type ,Input,Output or Fault
+    * @param mesage type , WSDL4C_INPUT, WSDL4C_OUTPUT or WSDL4C_FAULT
     * @return pointer to the message
     */
     const void *
@@ -98,14 +98,14 @@ extern "C"
     * get_name
     * @return name of the Wsdl Element
     */
-    const char *
+    char *
     axis2_wsdl4c_operation_get_name(void *operation);
 
     /**
     * get_documentation
     *   
     */
-    const char *
+    char *
     axis2_wsdl4c_operation_get_documentation(void *operation);  
 
     /**

@@ -45,7 +45,7 @@ extern "C"
     axis2_wsdl4c_element_set_type(void *element, 
                                     int id);
   
-    const char *
+    char *
     axis2_wsdl4c_element_get_name(void *element);
 
     int

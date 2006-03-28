@@ -149,9 +149,9 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_ops
                                                 axis2_hash_t *binding_ops);
     
     /**
-     * Method addBindingOperation
+     * Method add_binding_op
      *
-     * @param bindingOperation
+     * @param Binding Operation
      */
     axis2_status_t (AXIS2_CALL *
     add_binding_op) (
@@ -160,15 +160,15 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_ops
                             struct axis2_wsdl_binding_op *binding_op);
     
     /**
-     * Method getBindingOperation
+     * Method get_binding_op
      *
      * @param qName
-     * @return WSDLBindingOperation
+     * @return WSDL Binding Operation
      */
     struct axis2_wsdl_binding_op *(AXIS2_CALL *
     get_binding_op) (axis2_wsdl_binding_t *binding,
                                                 axis2_env_t **env,
-                                                axis2_qname_t *qName);
+                                                axis2_qname_t *qname);
     
     /**
      * Method addBindingFaults
@@ -243,8 +243,8 @@ AXIS2_DECLARE(axis2_wsdl_binding_t *) axis2_wsdl_binding_create (axis2_env_t **e
 #define AXIS2_WSDL_BINDING_ADD_BINDING_OP(wsdl_binding, env, op) \
 		((wsdl_binding)->ops->add_binding_op (wsdl_binding, env, op))
 
-#define AXIS2_WSDL_BINDING_GET_BINDING_OP(wsdl_binding, env) \
-		((wsdl_binding)->ops->get_binding_op (wsdl_binding, env)) 
+#define AXIS2_WSDL_BINDING_GET_BINDING_OP(wsdl_binding, env, qname) \
+		((wsdl_binding)->ops->get_binding_op (wsdl_binding, env, qname)) 
 
 #define AXIS2_WSDL_BINDING_ADD_BINDING_FAULT(wsdl_binding, env, op) \
 		((wsdl_binding)->ops->add_binding_fault (wsdl_binding, env, fault))

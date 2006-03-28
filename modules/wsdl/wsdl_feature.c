@@ -22,7 +22,7 @@
  */ 
 typedef struct axis2_wsdl_feature_impl
 {
-	axis2_wsdl_feature_t wsdl_feature;
+    axis2_wsdl_feature_t wsdl_feature;
     
     axis2_char_t *name;
     axis2_bool_t required;	

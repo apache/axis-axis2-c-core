@@ -52,6 +52,7 @@ AC_CONFIG_FILES([Makefile \
     client/echo/Makefile \
     client/math/Makefile \
     client/addr_echo/Makefile \
+    client/dynamic_invocation/Makefile \
     client/echo_non_blocking/Makefile \
     client/notify/Makefile \
     client/google/Makefile \

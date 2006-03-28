@@ -22,11 +22,11 @@
  */ 
 typedef struct axis2_wsdl_property_impl
 {
-	axis2_wsdl_property_t wsdl_property;
-    
+    axis2_wsdl_property_t wsdl_property;
     axis2_char_t *name;
     void *constraint;
-    void *value;	
+    void *value;
+
 } axis2_wsdl_property_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(wsdl_property) \

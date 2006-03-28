@@ -50,10 +50,10 @@ typedef struct axis2_wsdl_msg_ref_ops axis2_wsdl_msg_ref_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_msg_ref_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+    /** De-allocate memory
+     * @return status code
+     */
+    axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_msg_ref_t *wsdl_msg_ref,
 		    axis2_env_t **env);
 

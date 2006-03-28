@@ -22,7 +22,7 @@
  */ 
 typedef struct axis2_wsdl_binding_msg_ref_impl
 {
-	axis2_wsdl_binding_msg_ref_t binding_msg_ref;
+    axis2_wsdl_binding_msg_ref_t binding_msg_ref;
     
     /**
      * Field messageLabel

@@ -7,32 +7,26 @@
 typedef struct axis2_wsdl_binding_op_impl
 {
 	axis2_wsdl_binding_op_t binding_op;
-	    /**
+	/**
      * Field name
      */
     axis2_qname_t *qname;
-
-
     /**
      * Field in_faults
      */
     axis2_linked_list_t *in_faults;
-
     /**
      * Field out_faults
      */
     axis2_linked_list_t *out_faults;
-
     /**
      * Field op
      */
     void *op;
-
     /**
      * Field input
      */
     axis2_wsdl_binding_msg_ref_t *input;
-
     /**
      * Field output
      */
@@ -415,7 +409,7 @@ axis2_wsdl_binding_op_set_qname(axis2_wsdl_binding_op_t *binding_op,
         AXIS2_QNAME_FREE(binding_op_impl->qname, env);
         binding_op_impl->qname = NULL;
     }
-    binding_op_impl->qname = qname;
+    binding_op_impl->qname = AXIS2_QNAME_CLONE(qname, env);
     return AXIS2_SUCCESS;
 }
 

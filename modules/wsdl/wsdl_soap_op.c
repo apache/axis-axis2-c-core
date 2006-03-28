@@ -22,10 +22,8 @@
  */ 
 typedef struct axis2_wsdl_soap_op_impl
 {
-	axis2_wsdl_soap_op_t soap_op;
-    
+    axis2_wsdl_soap_op_t soap_op;
     axis2_char_t *soap_action;
-
     axis2_char_t *style;
     
 } axis2_wsdl_soap_op_impl_t;
@@ -36,13 +34,12 @@ typedef struct axis2_wsdl_soap_op_impl
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-	axis2_wsdl_soap_op_free (
-                axis2_wsdl_soap_op_t *soap_op,
-				axis2_env_t **env);
+axis2_wsdl_soap_op_free (axis2_wsdl_soap_op_t *soap_op,
+			 axis2_env_t **env);
 
 axis2_char_t *AXIS2_CALL
 axis2_wsdl_soap_op_get_style(axis2_wsdl_soap_op_t *soap_op,
-                                    axis2_env_t **env);
+                             axis2_env_t **env);
     
 axis2_status_t AXIS2_CALL
 axis2_wsdl_soap_op_set_style(axis2_wsdl_soap_op_t *soap_op,
@@ -66,12 +63,11 @@ axis2_wsdl_soap_op_create (axis2_env_t **env)
 {
     axis2_wsdl_soap_op_impl_t *soap_op_impl = NULL;
     axis2_qname_t *type_l = NULL;
-	AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_ENV_CHECK(env, NULL);
 	
-	soap_op_impl = (axis2_wsdl_soap_op_impl_t *) 
-        AXIS2_MALLOC((*env)->allocator, sizeof(axis2_wsdl_soap_op_impl_t));
-	
-	if(NULL == soap_op_impl)
+    soap_op_impl = (axis2_wsdl_soap_op_impl_t *) 
+    AXIS2_MALLOC((*env)->allocator, sizeof(axis2_wsdl_soap_op_impl_t));	
+    if(NULL == soap_op_impl)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;

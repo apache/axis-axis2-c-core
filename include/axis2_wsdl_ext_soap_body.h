@@ -109,7 +109,7 @@ axis2_wsdl_ext_soap_body_create (axis2_env_t **env,
 		((ext_soap_body)->ops->get_namespc_uri (ext_soap_body, env))
 
 #define AXIS2_WSDL_EXT_SOAP_BODY_SET_NAMESPC_URI(ext_soap_body, env, namespc_uri) \
-		((ext_soap_body)->ops->set_namespc_uri (wsdl_feature, env, namespc_uri))        
+		((ext_soap_body)->ops->set_namespc_uri (ext_soap_body, env, namespc_uri))        
 
 /*************************** End of function macros ***************************/
 

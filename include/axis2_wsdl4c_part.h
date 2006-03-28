@@ -53,12 +53,12 @@ extern "C"
 
     /**
     * @name axis2_wsdl4c_part_ref_type
-    * @return number of parts in the message
+    * @return number of part ref type
     */
     axis2_wsdl4c_part_ref_type_t
     axis2_wsdl4c_part_ref_type(void *part);
 
-    const char *
+    char *
     axis2_wsdl4c_part_name(void *part);
 
     int

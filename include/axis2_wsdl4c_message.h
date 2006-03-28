@@ -119,7 +119,7 @@ extern "C"
                                                         char *name);
 
 
-    const char *
+    char *
     axis2_wsdl4c_msg_get_part_name(void *message, 
                                     int index);
 
@@ -144,14 +144,14 @@ extern "C"
     * get_name
     * @return name of the Wsdl Element
     */
-    const char *
+    char *
     axis2_wsdl4c_msg_get_name(void *message);
 
     /**
     * get_documentation
     *   
     */
-    const char *
+    char *
     axis2_wsdl4c_msg_get_documentation(void *message);  
 
     /**

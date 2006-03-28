@@ -22,10 +22,10 @@
  */ 
 typedef struct axis2_wsdl_import_impl
 {
-	axis2_wsdl_import_t wsdl_import;
-    
+    axis2_wsdl_import_t wsdl_import;    
     axis2_char_t *location;
-    axis2_char_t *namespace;	
+    axis2_char_t *namespace;
+
 } axis2_wsdl_import_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(wsdl_import) \
@@ -34,7 +34,7 @@ typedef struct axis2_wsdl_import_impl
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-	axis2_wsdl_import_free (axis2_wsdl_import_t *wsdl_import,
+axis2_wsdl_import_free (axis2_wsdl_import_t *wsdl_import,
 									axis2_env_t **env);
 
 axis2_char_t *AXIS2_CALL
@@ -62,18 +62,15 @@ axis2_wsdl_import_create (axis2_env_t **env)
 {
     axis2_wsdl_import_impl_t *wsdl_import_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	wsdl_import_impl = (axis2_wsdl_import_impl_t *) AXIS2_MALLOC((*env)->allocator,
-			sizeof(axis2_wsdl_import_impl_t));
-	
-	
-	if(NULL == wsdl_import_impl)
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    wsdl_import_impl = (axis2_wsdl_import_impl_t *) AXIS2_MALLOC((*env)->allocator,
+        sizeof(axis2_wsdl_import_impl_t));
+    if(NULL == wsdl_import_impl)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-    
     wsdl_import_impl->namespace = NULL;
     wsdl_import_impl->location = NULL;
     wsdl_import_impl->wsdl_import.ops = NULL;

@@ -27,13 +27,13 @@ extern const void *
 extern axis2_array_list_t *
     axis2_wsdl4c_operation_get_faults(void *operation);
 
-extern const char *
+extern char *
     axis2_wsdl4c_port_type_get_name(void *operation);
 
-extern const char *
+extern char *
     axis2_wsdl4c_operation_get_name(void *operation);
 
-extern const char *
+extern char *
     axis2_wsdl4c_msg_get_name(void *message);
 
 int 

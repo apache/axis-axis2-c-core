@@ -22,9 +22,9 @@
  */ 
 typedef struct axis2_wsdl_include_impl
 {
-	axis2_wsdl_include_t wsdl_include;
-    
+    axis2_wsdl_include_t wsdl_include;
     axis2_char_t *location;
+
 } axis2_wsdl_include_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(wsdl_include) \

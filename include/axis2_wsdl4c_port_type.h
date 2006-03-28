@@ -96,14 +96,14 @@ extern "C"
     * get_name
     * @return name of the Wsdl Element
     */
-    const char *
+    char *
     axis2_wsdl4c_port_type_get_name(void *port_type);
 
     /**
     * get_documentation
     *   
     */
-    const char *
+    char *
     axis2_wsdl4c_port_type_get_documentation(void *port_type);  
 
     /**

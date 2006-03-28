@@ -164,7 +164,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
     /**
      * Method get_svcs
      *
-     * @return
+     * @return map of axis2_wsdl_svc's
      */
     axis2_hash_t *(AXIS2_CALL *
     get_svcs)(axis2_wsdl_desc_t *wsdl_desc,
@@ -393,7 +393,7 @@ axis2_wsdl_desc_create (axis2_env_t **env);
 		((wsdl_desc)->ops->get_binding (wsdl_desc, env, qname))
 
 #define AXIS2_WSDL_DESC_ADD_INTERFACE(wsdl_desc, env, interface) \
-		((wsdl_desc)->ops->get_interface (wsdl_desc, env, interface))
+		((wsdl_desc)->ops->add_interface (wsdl_desc, env, interface))
         
 #define AXIS2_WSDL_DESC_GET_INTERFACE(wsdl_desc, env, qname) \
 		((wsdl_desc)->ops->get_interface (wsdl_desc, env, qname))

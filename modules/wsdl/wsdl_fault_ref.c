@@ -22,7 +22,7 @@
  */ 
 typedef struct axis2_wsdl_fault_ref_impl
 {
-	axis2_wsdl_fault_ref_t fault_ref;
+    axis2_wsdl_fault_ref_t fault_ref;
     
     /**
      * Field messageLabel

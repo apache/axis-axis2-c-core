@@ -24,40 +24,35 @@ typedef struct axis2_wsdl_op_impl axis2_wsdl_op_impl_t;
  */
 struct axis2_wsdl_op_impl
 {
-	axis2_wsdl_op_t wsdl_op;
+    axis2_wsdl_op_t wsdl_op;
     /**
      * URI of the MEP
      */
-	axis2_char_t *msg_exchange_pattern;
+    axis2_char_t *msg_exchange_pattern;
     /** 
      * Field style
      */
-	axis2_char_t *style;
+    axis2_char_t *style;
     /**
      * Field name
      */
-	axis2_qname_t *name;
-    
+    axis2_qname_t *name;
     /**
      * Field inputMessage
      */
     axis2_wsdl_msg_ref_t *input_msg;
-
     /**
      * Field outputMessage
      */
     axis2_wsdl_msg_ref_t *output_msg;
-
     /**
      * Field in_faults
      */
     axis2_linked_list_t *in_faults;
-
     /**
      * Field out_faults
      */
     axis2_linked_list_t *out_faults;
-    
     /**
      * Field safety
      * value of parent if not specified
@@ -86,8 +81,8 @@ axis2_wsdl_op_get_msg_exchange_pattern (axis2_wsdl_op_t *wsdl_op,
 
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_op_set_qname (axis2_wsdl_op_t *wsdl_op, 
-                                axis2_env_t **env,
-		                        axis2_qname_t *name);
+                         axis2_env_t **env,
+		         axis2_qname_t *name);
 
 axis2_qname_t * AXIS2_CALL 
 axis2_wsdl_op_get_qname (void *wsdl_op,
@@ -95,12 +90,12 @@ axis2_wsdl_op_get_qname (void *wsdl_op,
 
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_op_set_style (axis2_wsdl_op_t *wsdl_op,
-                                    axis2_env_t **env,
-		                            axis2_char_t *style);
+                         axis2_env_t **env,
+		         axis2_char_t *style);
 
 axis2_char_t * AXIS2_CALL 
 axis2_wsdl_op_get_style (axis2_wsdl_op_t *wsdl_op,
-                                    axis2_env_t **env);
+                         axis2_env_t **env);
 		
 
 axis2_linked_list_t * AXIS2_CALL
@@ -109,17 +104,17 @@ axis2_wsdl_op_get_in_faults(axis2_wsdl_op_t *wsdl_op,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_op_set_in_faults(axis2_wsdl_op_t *wsdl_op,
-                                    axis2_env_t **env,
-                                    axis2_linked_list_t *in_faults);
+                            axis2_env_t **env,
+                            axis2_linked_list_t *in_faults);
 
 axis2_wsdl_msg_ref_t *AXIS2_CALL 
 axis2_wsdl_op_get_input_msg(axis2_wsdl_op_t *wsdl_op,
-                                    axis2_env_t **env);
+                            axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_op_set_input_msg(axis2_wsdl_op_t *wsdl_op,
-                                    axis2_env_t **env,
-                                    axis2_wsdl_msg_ref_t *input_msg);
+                            axis2_env_t **env,
+                            axis2_wsdl_msg_ref_t *input_msg);
 
 axis2_linked_list_t *AXIS2_CALL
 axis2_wsdl_op_get_out_faults(axis2_wsdl_op_t *wsdl_op,
@@ -136,8 +131,8 @@ axis2_wsdl_op_get_output_msg(axis2_wsdl_op_t *wsdl_op,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_op_set_output_msg(axis2_wsdl_op_t *wsdl_op,
-                                        axis2_env_t **env,
-                                        axis2_wsdl_msg_ref_t *output_msg);
+                             axis2_env_t **env,
+                             axis2_wsdl_msg_ref_t *output_msg);
 
 axis2_bool_t AXIS2_CALL
 axis2_wsdl_op_is_safe(axis2_wsdl_op_t *wsdl_op,
@@ -169,21 +164,21 @@ axis2_wsdl_op_create (axis2_env_t **env)
 {
     axis2_wsdl_op_impl_t *wsdl_op_impl = NULL;
     
-	wsdl_op_impl = (axis2_wsdl_op_impl_t *) AXIS2_MALLOC ((*env)->
+    wsdl_op_impl = (axis2_wsdl_op_impl_t *) AXIS2_MALLOC ((*env)->
         allocator, sizeof(axis2_wsdl_op_impl_t));
     
-	if(!wsdl_op_impl)
-	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+    if(!wsdl_op_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+    }
     
     wsdl_op_impl->in_faults = NULL;
     wsdl_op_impl->out_faults = NULL;
     wsdl_op_impl->wsdl_op.extensible_component = NULL;
     wsdl_op_impl->msg_exchange_pattern = NULL;
-	wsdl_op_impl->style = NULL;
-	wsdl_op_impl->name = NULL;
+    wsdl_op_impl->style = NULL;
+    wsdl_op_impl->name = NULL;
     wsdl_op_impl->input_msg = NULL;
     wsdl_op_impl->output_msg = NULL;
     wsdl_op_impl->safety = AXIS2_FALSE;
@@ -196,15 +191,14 @@ axis2_wsdl_op_create (axis2_env_t **env)
         axis2_wsdl_op_free(&(wsdl_op_impl->wsdl_op), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
-    
+    }
     wsdl_op_impl->out_faults = axis2_linked_list_create(env);
     if(NULL == wsdl_op_impl->out_faults)
     {
         axis2_wsdl_op_free(&(wsdl_op_impl->wsdl_op), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+    }
     
     wsdl_op_impl->wsdl_op.extensible_component = axis2_wsdl_extensible_component_create(env);
     if(NULL == wsdl_op_impl->wsdl_op.extensible_component)
@@ -212,24 +206,24 @@ axis2_wsdl_op_create (axis2_env_t **env)
         axis2_wsdl_op_free(&(wsdl_op_impl->wsdl_op), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+    }
     
-	wsdl_op_impl->wsdl_op.ops = (axis2_wsdl_op_ops_t *)
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_op_ops_t));
+    wsdl_op_impl->wsdl_op.ops = (axis2_wsdl_op_ops_t *)
+        AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_op_ops_t));
     
-	if(NULL == wsdl_op_impl->wsdl_op.ops)
-	{
+    if(NULL == wsdl_op_impl->wsdl_op.ops)
+    {
         axis2_wsdl_op_free(&(wsdl_op_impl->wsdl_op), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+    }
     
-	wsdl_op_impl->wsdl_op.ops->free = axis2_wsdl_op_free;
-	wsdl_op_impl->wsdl_op.ops->free_void_arg = axis2_wsdl_op_free_void_arg;
+    wsdl_op_impl->wsdl_op.ops->free = axis2_wsdl_op_free;
+    wsdl_op_impl->wsdl_op.ops->free_void_arg = axis2_wsdl_op_free_void_arg;
     wsdl_op_impl->wsdl_op.ops->set_msg_exchange_pattern =
-        axis2_wsdl_op_set_msg_exchange_pattern;
+    axis2_wsdl_op_set_msg_exchange_pattern;
     wsdl_op_impl->wsdl_op.ops->get_msg_exchange_pattern =
-        axis2_wsdl_op_get_msg_exchange_pattern; 
+    axis2_wsdl_op_get_msg_exchange_pattern; 
     wsdl_op_impl->wsdl_op.ops->set_qname = axis2_wsdl_op_set_qname;
     wsdl_op_impl->wsdl_op.ops->get_qname = axis2_wsdl_op_get_qname;
     wsdl_op_impl->wsdl_op.ops->set_style = axis2_wsdl_op_set_style;
@@ -251,7 +245,7 @@ axis2_wsdl_op_create (axis2_env_t **env)
     wsdl_op_impl->wsdl_op.ops->add_in_fault = axis2_wsdl_op_add_in_fault;    
     wsdl_op_impl->wsdl_op.ops->add_out_fault = axis2_wsdl_op_add_out_fault;
 	
-	return &(wsdl_op_impl->wsdl_op);	
+    return &(wsdl_op_impl->wsdl_op);	
 }
 
 /******************************************************************************/
@@ -262,7 +256,7 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
 {
     axis2_wsdl_op_impl_t *wsdl_op_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     wsdl_op_impl = AXIS2_INTF_TO_IMPL(wsdl_op);
     
@@ -388,7 +382,7 @@ axis2_wsdl_op_set_msg_exchange_pattern (axis2_wsdl_op_t *wsdl_op,
         return AXIS2_FAILURE;
     }
 	
-	return AXIS2_SUCCESS;
+    return AXIS2_SUCCESS;
 }
 
 axis2_char_t * AXIS2_CALL 
@@ -423,7 +417,7 @@ axis2_wsdl_op_set_qname (axis2_wsdl_op_t *wsdl_op,
         return AXIS2_FAILURE;
     }
     
-	return AXIS2_SUCCESS;
+    return AXIS2_SUCCESS;
 }
 
 axis2_qname_t * AXIS2_CALL 
@@ -432,16 +426,15 @@ axis2_wsdl_op_get_qname (void *wsdl_op,
 {
     axis2_wsdl_op_t *wsdl_op_l = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-    
+    AXIS2_ENV_CHECK(env, NULL);
     wsdl_op_l = (axis2_wsdl_op_t *) wsdl_op;
-	return AXIS2_INTF_TO_IMPL(wsdl_op_l)->name;
+    return AXIS2_INTF_TO_IMPL(wsdl_op_l)->name;
 }
 
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_op_set_style (axis2_wsdl_op_t *wsdl_op,
-                                    axis2_env_t **env,
-		                            axis2_char_t *style)
+                         axis2_env_t **env,
+		         axis2_char_t *style)
 {
     axis2_wsdl_op_impl_t *wsdl_op_impl = NULL;
     

@@ -21,7 +21,12 @@ libaxis2_wsdl_la_SOURCES = wsdl_op.c \
                         wsdl_types.c \
                         wsdl_import.c \
                         wsdl_include.c \
-                        wsdl_desc.c
+                        wsdl_desc.c \
+                        wsdl_ext_soap_body.c \
+                        wsdl_ext_soap_header.c \
+                        wsdl_ext_soap_binding.c \
+                        wsdl_ext_soap_address.c \
+                        wsdl_ext_soap_op.c
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \

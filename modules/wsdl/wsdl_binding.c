@@ -357,7 +357,7 @@ axis2_wsdl_binding_set_name(axis2_wsdl_binding_t *wsdl_binding,
         AXIS2_QNAME_FREE(binding_impl->qname, env);
         binding_impl->qname = NULL;
     }
-    binding_impl->qname = qname;
+    binding_impl->qname = AXIS2_QNAME_CLONE(qname, env);
     return AXIS2_SUCCESS;
 }
 

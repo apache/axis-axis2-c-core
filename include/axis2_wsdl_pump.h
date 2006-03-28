@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_TYPE_TABLE_H
-#define AXIS2_TYPE_TABLE_H
+#ifndef AXIS2_WSDL_PUMP_H
+#define AXIS2_WSDL_PUMP_H
 
 /**
  * @file axis2_wsdl_pump.h
@@ -37,7 +37,7 @@ extern "C"
 	
 typedef struct axis2_wsdl_pump_ops axis2_wsdl_pump_ops_t;
 typedef struct axis2_wsdl_pump axis2_wsdl_pump_t;	
-	
+struct axis2_wsdl_desc;	
 
 /** @defgroup axis2_wsdl_pump Wsdl Pump
   * @ingroup axis2_wsdl_pump
@@ -57,6 +57,10 @@ struct axis2_wsdl_pump_ops
     free) (axis2_wsdl_pump_t *wsdl_pump,
                             axis2_env_t **env);
 
+	axis2_status_t (AXIS2_CALL *
+	pump) (axis2_wsdl_pump_t *wsdl_pump,
+						axis2_env_t **env);
+
 };
 
 /** 
@@ -73,20 +77,16 @@ struct axis2_wsdl_pump
  * @return pointer to newly created wsdl_pump
  */
 AXIS2_DECLARE(axis2_wsdl_pump_t *) 
-axis2_wsdl_pump_create (axis2_env_t **env);
+axis2_wsdl_pump_create (axis2_env_t **env,
+						struct axis2_wsdl_desc *wom_def,
+						void *wsdl_parser);
 
 /*************************** Function macros **********************************/
 
-#define AXIS2_TYPE_TABLE_FREE(wsdl_pump, env) ((wsdl_pump)->ops->free (wsdl_pump, env))
+#define AXIS2_WSDL_PUMP_FREE(wsdl_pump, env) ((wsdl_pump)->ops->free (wsdl_pump, env))
 
-#define AXIS2_TYPE_TABLE_ADD_HANDLER(wsdl_pump, env, handler) \
-		((wsdl_pump)->ops->add_handler (wsdl_pump, env, handler))
-
-#define AXIS2_TYPE_TABLE_GET_HANDLER(wsdl_pump, env, index) \
-		((wsdl_pump)->ops->get_handler (wsdl_pump, env, index))
-
-#define AXIS2_TYPE_TABLE_GET_HANDLER_COUNT(wsdl_pump, env) \
-		((wsdl_pump)->ops->get_handler_count (wsdl_pump, env))
+#define AXIS2_WSDL_PUMP_PUMP(wsdl_pump, env) \
+		((wsdl_pump)->ops->pump (wsdl_pump, env))
 
 /*************************** End of function macros ***************************/
 
@@ -95,4 +95,4 @@ axis2_wsdl_pump_create (axis2_env_t **env);
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_TYPE_TABLE_H */
+#endif  /* AXIS2_WSDL_PUMP_H */
