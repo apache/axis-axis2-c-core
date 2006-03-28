@@ -53,21 +53,28 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
 int AXIS2_CALL 
 axis2_http_client_recieve_header (axis2_http_client_t *client, 
 						axis2_env_t **env);
+
 axis2_http_simple_response_t* AXIS2_CALL 
 axis2_http_client_get_response (axis2_http_client_t *client, axis2_env_t **env);
+
 axis2_status_t AXIS2_CALL 
 axis2_http_client_set_url (axis2_http_client_t *client, 
 						axis2_env_t **env, axis2_url_t *url);
 axis2_url_t* AXIS2_CALL 
 axis2_http_client_get_url (axis2_http_client_t *client, axis2_env_t **env);
+
 axis2_status_t AXIS2_CALL 
 axis2_http_client_set_timeout (axis2_http_client_t *client, axis2_env_t **env, 
 						int timeout_ms);
+
 int AXIS2_CALL 
 axis2_http_client_get_timeout (axis2_http_client_t *client, axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
-axis2_http_client_free (axis2_http_client_t *client, axis2_env_t **env);							
+axis2_http_client_free (axis2_http_client_t *client, axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_http_client_free_void_arg (void *client, axis2_env_t **env);							
 
 /***************************** End of function headers ************************/
 
@@ -131,11 +138,6 @@ axis2_http_client_free (axis2_http_client_t *client, axis2_env_t **env)
         AXIS2_URL_FREE(http_client_impl->url, env);
         http_client_impl->url = NULL;
     }
-    if(NULL != http_client_impl->data_stream)
-    {
-        AXIS2_STREAM_FREE(http_client_impl->data_stream, env);
-        http_client_impl->data_stream = NULL;
-    }
 	if(NULL != http_client_impl->response)
     {
         AXIS2_HTTP_SIMPLE_RESPONSE_FREE(http_client_impl->response, env);
@@ -151,6 +153,16 @@ axis2_http_client_free (axis2_http_client_t *client, axis2_env_t **env)
     
 	AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(client));
 	return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_http_client_free_void_arg (void *client, axis2_env_t **env)
+{
+    axis2_http_client_t *client_l = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    client_l = (axis2_http_client_t *)client;
+    return axis2_http_client_free(client_l, env);
 }
 
 

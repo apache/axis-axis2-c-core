@@ -58,6 +58,8 @@ extern "C"
 #define AXIS2_DEFAULT_CHAR_SET_ENCODING "UTF-8"
 /** axis2 transport succeeded */
 #define AXIS2_TRANSPORT_SUCCEED "AXIS2_TRANSPORT_SUCCEED"
+/* HTTP Client */
+#define AXIS2_HTTP_CLIENT "AXIS2_HTTP_CLIENT"
 
 #define AXIS2_TRANSPORT_URL "TransportURL"
     

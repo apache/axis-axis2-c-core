@@ -87,6 +87,14 @@ AXIS2_DECLARE_DATA struct axis2_http_client
 AXIS2_DECLARE(axis2_http_client_t *) 
 axis2_http_client_create (axis2_env_t **env, axis2_url_t *url);
 
+/**
+ * Free http_client passed as void pointer. This will be
+ * cast into appropriate type and then pass the cast object
+ * into the http_client structure's free method
+ */
+axis2_status_t AXIS2_CALL
+axis2_http_client_free_void_arg (void *client, axis2_env_t **env);
+
 /************************** Start of function macros **************************/
 
 #define AXIS2_HTTP_CLIENT_SEND(client, env, request) \
@@ -106,7 +114,6 @@ axis2_http_client_create (axis2_env_t **env, axis2_url_t *url);
                                 ((client)->ops->get_url(client, env))
 #define AXIS2_HTTP_CLIENT_FREE(client, env) \
                                 ((client)->ops->free(client, env))
-
 /************************** End of function macros ****************************/    
 
 /** @} */

@@ -44,6 +44,10 @@ struct axis2_stream_impl
 axis2_status_t AXIS2_CALL 
 axis2_stream_free (axis2_stream_t *stream, axis2_env_t **env);
 
+axis2_status_t AXIS2_CALL
+axis2_stream_free_void_arg (void *stream,
+                            axis2_env_t **env);
+
 axis2_stream_type_t AXIS2_CALL 
 axis2_stream_get_type (axis2_stream_t *stream, axis2_env_t **env);
 
