@@ -82,16 +82,26 @@ main (int argc, char *argv[])
                     axis2_array_list_t *fault_list = NULL;
 
                     void *op = AXIS2_ARRAY_LIST_GET(msg_list, &env, i);
+					if(!op)
+					{
+						return -1;
+					}
                     void *in_msg = axis2_wsdl4c_operation_get_message(op, AXIS2_WSDL4C_INPUT);
                     void *out_msg = axis2_wsdl4c_operation_get_message(op, AXIS2_WSDL4C_OUTPUT);
                     fault_list = axis2_wsdl4c_operation_get_faults(op);
                     
                     op_name = axis2_wsdl4c_operation_get_name(op);
-                    in_msg_name = axis2_wsdl4c_msg_get_name(in_msg);
-                    out_msg_name = axis2_wsdl4c_msg_get_name(out_msg);
                     printf("Operation Name:%s\n", op_name);
-                    printf("Input:%s\n", in_msg_name); 
-                    printf("Output:%s\n", out_msg_name);
+					if(in_msg)
+					{
+                    	in_msg_name = axis2_wsdl4c_msg_get_name(in_msg);
+                    	printf("Input:%s\n", in_msg_name); 
+					}
+					if(out_msg)
+					{
+                    	out_msg_name = axis2_wsdl4c_msg_get_name(out_msg);
+                    	printf("Output:%s\n", out_msg_name);
+					}
                     if(fault_list)
                     {
                         int j = 0, sizej = 0;
@@ -106,7 +116,7 @@ main (int argc, char *argv[])
                             /*fault_msg_name = axis2_wsdl4c_message_get_name(fault_msg);
                             printf("Fault message name:%s\n", fault_msg_name);*/
                         }     
-                    } 
+                    }
                 }
                 break;
         }
