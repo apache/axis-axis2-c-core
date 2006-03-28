@@ -17,6 +17,7 @@
  
  #include <axis2_xml_reader.h>
  #include <libxml/xmlreader.h>
+ #include <libxml/parser.h>
  #include <axis2_defines.h>
  #include <axis2.h>
  #include <string.h>
@@ -204,6 +205,21 @@ axis2_libxml2_reader_wrapper_init_map(axis2_libxml2_reader_wrapper_impl_t *parse
 
 
 
+
+/*******************************************************************************/
+AXIS2_DECLARE( axis2_status_t )
+axis2_xml_reader_init(axis2_env_t **env)
+{
+    xmlInitParser();
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_DECLARE( axis2_status_t )
+axis2_xml_reader_cleanup(axis2_env_t **env)
+{
+    xmlCleanupParser();
+    return AXIS2_SUCCESS;
+}
 
 /*******************************************************************************/
 AXIS2_DECLARE(axis2_xml_reader_t *)
@@ -570,7 +586,6 @@ axis2_libxml2_reader_wrapper_free(axis2_xml_reader_t *parser,
     {
         xmlTextReaderClose(AXIS2_INTF_TO_IMPL(parser)->reader);
         xmlFreeTextReader(AXIS2_INTF_TO_IMPL(parser)->reader);
-        xmlCleanupParser();
     }
     if(parser->ops)
     {
