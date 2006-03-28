@@ -18,6 +18,7 @@
 #include <axis2_env.h>
 #include <axis2.h>
 #include <axis2_defines.h>
+#include <string.h>
 
 /********************************** Function prototypes *****************/
 
@@ -321,11 +322,91 @@ axis2_qname_to_string(axis2_qname_t *qname,
     }
     if(!(qname_impl->namespace_uri) || AXIS2_STRCMP(qname_impl->namespace_uri,"") == 0)
     {
+        /** prefix url both null */
         qname_impl->qname_string = AXIS2_STRDUP(qname_impl->localpart, env);
     }
-    else 
+    else if(!(qname_impl->prefix) || AXIS2_STRCMP(qname_impl->prefix, "") == 0)
     {
-        qname_impl->qname_string = AXIS2_STRACAT( qname_impl->namespace_uri, qname_impl->localpart, env);
+        /** prefix null */
+        
+        axis2_char_t *temp_string1 = NULL;
+        temp_string1 = AXIS2_STRACAT(qname_impl->localpart, "|", env);
+        qname_impl->qname_string = AXIS2_STRACAT(temp_string1, qname_impl->namespace_uri, env);
+        if(NULL != temp_string1)
+        {
+            AXIS2_FREE((*env)->allocator, temp_string1);
+            temp_string1 = NULL;
+        }            
     }
+    else
+    {
+        /** both uri and prefix exist */
+        axis2_char_t *temp_string1 = NULL;
+        axis2_char_t *temp_string2 = NULL;
+        axis2_char_t *temp_string3 = NULL;
+        
+        temp_string1 = AXIS2_STRACAT(qname_impl->localpart, "|", env);
+        temp_string2 = AXIS2_STRACAT(temp_string1, qname_impl->namespace_uri, env);
+        temp_string3 = AXIS2_STRACAT(temp_string2, "|", env);
+        qname_impl->qname_string = AXIS2_STRACAT(temp_string3, qname_impl->prefix, env);
+        
+        if(NULL != temp_string1)
+        {
+            AXIS2_FREE((*env)->allocator, temp_string1);
+            temp_string1 = NULL;
+        }
+        if(NULL != temp_string2)
+        {
+            AXIS2_FREE((*env)->allocator, temp_string2);
+            temp_string2 = NULL;
+        }
+        if(NULL != temp_string3)
+        {
+            AXIS2_FREE((*env)->allocator, temp_string2);
+            temp_string2 = NULL;
+        }
+    }     
     return qname_impl->qname_string;        
 }
+
+AXIS2_DECLARE(axis2_qname_t*) 
+axis2_qname_create_from_string(axis2_env_t **env,
+                               axis2_char_t *qstring)
+{
+    axis2_char_t *localpart = NULL;
+    axis2_char_t *namespace_uri = NULL;
+    axis2_char_t *prefix = NULL;
+    axis2_char_t *index = NULL;
+    axis2_char_t *next = NULL;
+    if(!qstring || AXIS2_STRCMP(qstring, "") == 0)
+        return NULL;
+
+    index = strchr(qstring,'|');
+    if(index != NULL)
+    {
+        
+        next = index+1;
+        qstring[index - qstring] = '\0';
+        
+        localpart = qstring;
+        
+        index = strchr(next, '|');
+        if(NULL != index)
+        {
+            prefix = index+1;
+            next[index - next] = '\0';
+            namespace_uri = next;
+            return axis2_qname_create(env, localpart, namespace_uri, prefix);                   
+        }
+        else
+        {
+            /** only uri and localpart is available */
+            return axis2_qname_create(env, localpart, next, NULL);
+        }    
+    }
+    else
+    {
+        /** only localpart is there in this qname */
+        return axis2_qname_create(env, qstring, NULL, NULL);
+    }
+}                                

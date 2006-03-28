@@ -102,7 +102,8 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
     axis2_char_t* (AXIS2_CALL *
 	to_string)(struct axis2_qname *qname,
                axis2_env_t **env); 
-	
+               
+   
                                               
 } axis2_qname_ops_t;
 
@@ -131,6 +132,17 @@ axis2_qname_create (axis2_env_t **env,
                     const axis2_char_t * namespace_uri,
                     const axis2_char_t * prefix);
 
+
+/**
+ * returns a newly created qname using a string genarated form 
+ * axis2_qname_to_string method 
+ * freeing the returned qname is users responsibility
+ */           
+
+AXIS2_DECLARE(axis2_qname_t*) 
+axis2_qname_create_from_string(axis2_env_t **env,
+                               axis2_char_t *string);
+	
 
 #define AXIS2_QNAME_FREE(qname, env) \
         ((qname)->ops->free(qname,env))
