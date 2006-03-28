@@ -85,8 +85,9 @@ extern "C"
 		set_from)(struct axis2_msg_info_headers *msg_info_headers, 
                   axis2_env_t **env, 
 				  axis2_endpoint_ref_t *from);
+        
         /**
-         * Method getReply_to
+         * Method get_reply_to
          *
          * @return
          */
@@ -102,6 +103,23 @@ extern "C"
 		set_reply_to)(struct axis2_msg_info_headers *msg_info_headers, 
                       axis2_env_t **env, 
 		              axis2_endpoint_ref_t *reply_to);
+        
+        axis2_status_t (AXIS2_CALL *
+        set_reply_to_none)(struct axis2_msg_info_headers *msg_info_headers, 
+                                            axis2_env_t **env, axis2_bool_t none);
+
+        axis2_bool_t (AXIS2_CALL *
+        get_reply_to_none)(struct axis2_msg_info_headers *msg_info_headers, 
+                                            axis2_env_t **env);
+
+        axis2_status_t (AXIS2_CALL *
+        set_reply_to_anonymous)(struct axis2_msg_info_headers *msg_info_headers, 
+                                            axis2_env_t **env, axis2_bool_t anonymous);
+
+        axis2_bool_t (AXIS2_CALL *
+        get_reply_to_anonymous)(struct axis2_msg_info_headers *msg_info_headers, 
+                                        axis2_env_t **env);
+
         /**
          * Method getFault_to
          *
@@ -119,6 +137,23 @@ extern "C"
 		set_fault_to)(struct axis2_msg_info_headers *msg_info_headers, 
                       axis2_env_t **env, 
 		              axis2_endpoint_ref_t *fault_to);
+        
+        axis2_status_t (AXIS2_CALL *
+        set_fault_to_none)(struct axis2_msg_info_headers *msg_info_headers, 
+                                            axis2_env_t **env, axis2_bool_t none);
+
+        axis2_bool_t (AXIS2_CALL *
+        get_fault_to_none)(struct axis2_msg_info_headers *msg_info_headers, 
+                                            axis2_env_t **env);
+
+        axis2_status_t (AXIS2_CALL *
+        set_fault_to_anonymous)(struct axis2_msg_info_headers *msg_info_headers, 
+                                            axis2_env_t **env, axis2_bool_t anonymous);
+
+        axis2_bool_t (AXIS2_CALL *
+        get_fault_to_anonymous)(struct axis2_msg_info_headers *msg_info_headers, 
+                                        axis2_env_t **env);
+
         /**
          * Method get_action
          *
@@ -227,12 +262,36 @@ axis2_msg_info_headers_create(axis2_env_t **env, axis2_endpoint_ref_t *to,
 #define AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(msg_info_headers, env, reply_to) \
         ((msg_info_headers)->ops->set_reply_to(msg_info_headers, env, reply_to))
         
+#define AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO_NONE(msg_info_headers, env, none) \
+        ((msg_info_headers)->ops->set_reply_to_none(msg_info_headers, env, none))
+
+#define AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO_NONE(msg_info_headers, env) \
+        ((msg_info_headers)->ops->get_reply_to_none(msg_info_headers, env))
+
+#define AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO_ANONYMOUS(msg_info_headers, env, anonymous) \
+        ((msg_info_headers)->ops->set_reply_to_anonymous(msg_info_headers, env, anonymous))
+
+#define AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO_ANONYMOUS(msg_info_headers, env) \
+        ((msg_info_headers)->ops->get_reply_to_anonymous(msg_info_headers, env))
+
 #define AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(msg_info_headers, env) \
         ((msg_info_headers)->ops->get_fault_to(msg_info_headers, env))
         
 #define AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(msg_info_headers, env, fault_to) \
         ((msg_info_headers)->ops->set_fault_to(msg_info_headers, env, fault_to))
         
+#define AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO_NONE(msg_info_headers, env, none) \
+        ((msg_info_headers)->ops->set_fault_to_none(msg_info_headers, env, none))
+
+#define AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO_NONE(msg_info_headers, env) \
+        ((msg_info_headers)->ops->get_fault_to_none(msg_info_headers, env))
+
+#define AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO_ANONYMOUS(msg_info_headers, env, anonymous) \
+        ((msg_info_headers)->ops->set_fault_to_anonymous(msg_info_headers, env, anonymous))
+
+#define AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO_ANONYMOUS(msg_info_headers, env) \
+        ((msg_info_headers)->ops->get_fault_to_anonymous(msg_info_headers, env))
+
 #define AXIS2_MSG_INFO_HEADERS_GET_ACTION(msg_info_headers, env) \
         ((msg_info_headers)->ops->get_action(msg_info_headers, env))
         

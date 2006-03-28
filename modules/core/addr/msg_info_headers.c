@@ -28,10 +28,20 @@ typedef struct axis2_msg_info_headers_impl
     axis2_endpoint_ref_t *from;
     /** Pair of values that indicate how this message related to another message */
     axis2_relates_to_t *relates_to;    
-    /** identifies the intended receiver for replies to the message */
+    /** identifies the intended receiver for replies to the message,
+        if this is set, none and anonymous settings are ignored */
     axis2_endpoint_ref_t *reply_to;
-    /** identifies the intended receiver for faults related to the message */
+    /** reply to should be none */
+    axis2_bool_t reply_to_none;
+    /** reply to should be anonymous, this is overwridden by none*/
+    axis2_bool_t reply_to_anonymous;
+    /** identifies the intended receiver for faults related to the message 
+        if this is set, none and anonymous settings are ignored */
     axis2_endpoint_ref_t *fault_to;
+    /** fault to should be none */
+    axis2_bool_t fault_to_none;
+    /** fault to should be anonymous, this is overwridden by none*/
+    axis2_bool_t fault_to_anonymous;
     /** action */
     axis2_char_t *action;    
     /** message Id */
@@ -62,6 +72,22 @@ axis2_msg_info_headers_set_from(struct axis2_msg_info_headers *msg_info_headers,
                                 axis2_env_t **env, 
                                 axis2_endpoint_ref_t *from);
                                 
+axis2_status_t AXIS2_CALL 
+axis2_msg_info_headers_set_reply_to_none(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env, axis2_bool_t none);
+
+axis2_bool_t AXIS2_CALL 
+axis2_msg_info_headers_get_reply_to_none(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL 
+axis2_msg_info_headers_set_reply_to_anonymous(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env, axis2_bool_t anonymous);
+
+axis2_bool_t AXIS2_CALL 
+axis2_msg_info_headers_get_reply_to_anonymous(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env);
+
 axis2_endpoint_ref_t* AXIS2_CALL 
 axis2_msg_info_headers_get_reply_to(struct axis2_msg_info_headers *msg_info_headers, 
                                     axis2_env_t **env);
@@ -80,6 +106,22 @@ axis2_msg_info_headers_set_fault_to(struct axis2_msg_info_headers *msg_info_head
                                     axis2_env_t **env, 
                                     axis2_endpoint_ref_t *fault_to);
                                     
+axis2_status_t AXIS2_CALL 
+axis2_msg_info_headers_set_fault_to_none(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env, axis2_bool_t none);
+
+axis2_bool_t AXIS2_CALL 
+axis2_msg_info_headers_get_fault_to_none(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL 
+axis2_msg_info_headers_set_fault_to_anonymous(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env, axis2_bool_t anonymous);
+
+axis2_bool_t AXIS2_CALL 
+axis2_msg_info_headers_get_fault_to_anonymous(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env);
+
 axis2_char_t* AXIS2_CALL 
 axis2_msg_info_headers_get_action(struct axis2_msg_info_headers *msg_info_headers, 
                                   axis2_env_t **env);
@@ -149,7 +191,11 @@ axis2_msg_info_headers_create(axis2_env_t **env, axis2_endpoint_ref_t *to,
     msg_info_headers_impl->to = NULL;
     msg_info_headers_impl->from = NULL;
     msg_info_headers_impl->relates_to = NULL;    
+    msg_info_headers_impl->reply_to_none= AXIS2_FALSE;
+    msg_info_headers_impl->reply_to_anonymous = AXIS2_FALSE;
     msg_info_headers_impl->reply_to = NULL;
+    msg_info_headers_impl->fault_to_none= AXIS2_FALSE;
+    msg_info_headers_impl->fault_to_anonymous = AXIS2_FALSE;
     msg_info_headers_impl->fault_to = NULL;
     msg_info_headers_impl->action = NULL;    
     msg_info_headers_impl->message_id = NULL;
@@ -194,11 +240,35 @@ axis2_msg_info_headers_create(axis2_env_t **env, axis2_endpoint_ref_t *to,
     msg_info_headers_impl->msg_info_headers.ops->set_from = 
         axis2_msg_info_headers_set_from;
         
+    msg_info_headers_impl->msg_info_headers.ops->set_reply_to_none = 
+        axis2_msg_info_headers_set_reply_to_none;
+        
+    msg_info_headers_impl->msg_info_headers.ops->get_reply_to_none = 
+        axis2_msg_info_headers_get_reply_to_none;
+        
+    msg_info_headers_impl->msg_info_headers.ops->set_reply_to_anonymous= 
+        axis2_msg_info_headers_set_reply_to_anonymous;
+        
+    msg_info_headers_impl->msg_info_headers.ops->get_reply_to_anonymous = 
+        axis2_msg_info_headers_get_reply_to_anonymous;
+        
     msg_info_headers_impl->msg_info_headers.ops->get_reply_to = 
         axis2_msg_info_headers_get_reply_to;
         
     msg_info_headers_impl->msg_info_headers.ops->set_reply_to = 
         axis2_msg_info_headers_set_reply_to;
+        
+    msg_info_headers_impl->msg_info_headers.ops->set_fault_to_none = 
+        axis2_msg_info_headers_set_fault_to_none;
+        
+    msg_info_headers_impl->msg_info_headers.ops->get_fault_to_none = 
+        axis2_msg_info_headers_get_fault_to_none;
+        
+    msg_info_headers_impl->msg_info_headers.ops->set_fault_to_anonymous= 
+        axis2_msg_info_headers_set_fault_to_anonymous;
+        
+    msg_info_headers_impl->msg_info_headers.ops->get_fault_to_anonymous = 
+        axis2_msg_info_headers_get_fault_to_anonymous;
         
     msg_info_headers_impl->msg_info_headers.ops->get_fault_to = 
         axis2_msg_info_headers_get_fault_to;
@@ -560,3 +630,73 @@ axis2_msg_info_headers_free(struct axis2_msg_info_headers *msg_info_headers,
     
     return AXIS2_SUCCESS;
 }
+
+
+axis2_status_t AXIS2_CALL 
+axis2_msg_info_headers_set_reply_to_none(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env, axis2_bool_t none)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(msg_info_headers)->reply_to_none = none;
+    return AXIS2_SUCCESS;
+}
+
+axis2_bool_t AXIS2_CALL 
+axis2_msg_info_headers_get_reply_to_none(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(msg_info_headers)->reply_to_none;
+}
+
+axis2_status_t AXIS2_CALL 
+axis2_msg_info_headers_set_reply_to_anonymous(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env, axis2_bool_t anonymous)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(msg_info_headers)->reply_to_anonymous = anonymous;
+    return AXIS2_SUCCESS;
+}
+
+axis2_bool_t AXIS2_CALL 
+axis2_msg_info_headers_get_reply_to_anonymous(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(msg_info_headers)->reply_to_anonymous;
+}
+
+axis2_status_t AXIS2_CALL 
+axis2_msg_info_headers_set_fault_to_none(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env, axis2_bool_t none)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(msg_info_headers)->fault_to_none = none;
+    return AXIS2_SUCCESS;
+}
+
+axis2_bool_t AXIS2_CALL 
+axis2_msg_info_headers_get_fault_to_none(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(msg_info_headers)->fault_to_none;
+}
+
+axis2_status_t AXIS2_CALL 
+axis2_msg_info_headers_set_fault_to_anonymous(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env, axis2_bool_t anonymous)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(msg_info_headers)->fault_to_anonymous = anonymous;
+    return AXIS2_SUCCESS;
+}
+
+axis2_bool_t AXIS2_CALL 
+axis2_msg_info_headers_get_fault_to_anonymous(struct axis2_msg_info_headers *msg_info_headers, 
+                                    axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(msg_info_headers)->fault_to_anonymous;
+}
+

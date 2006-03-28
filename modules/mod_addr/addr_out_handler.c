@@ -303,18 +303,28 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         if (!epr)
         {
             axis2_char_t *anonymous_uri = NULL;
+            axis2_bool_t anonymous = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO_ANONYMOUS(msg_info_headers, env);
+            axis2_bool_t none = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO_NONE(msg_info_headers, env);
             if (AXIS2_STRCMP (addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
             {
-                anonymous_uri = AXIS2_WSA_ANONYMOUS_URL_SUBMISSION;
+                if (none)
+                    anonymous_uri = AXIS2_WSA_NONE_URL_SUBMISSION;
+                else if (anonymous)
+                    anonymous_uri = AXIS2_WSA_ANONYMOUS_URL_SUBMISSION;
             }
             else
             {
-                anonymous_uri = AXIS2_WSA_ANONYMOUS_URL;
+                if (none)
+                    anonymous_uri = AXIS2_WSA_NONE_URL;
+                else if (anonymous)
+                    anonymous_uri = AXIS2_WSA_ANONYMOUS_URL;
             }
 
-            epr = axis2_endpoint_ref_create (env, anonymous_uri);
-
+            if (anonymous_uri)
+                epr = axis2_endpoint_ref_create (env, anonymous_uri);
         }
+
+
         /* add the service group id as a reference parameter */
         svc_group_context_id = AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID (msg_ctx, env);
         
@@ -359,6 +369,29 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         }
 
         epr = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO (msg_info_headers, env);
+        if (!epr)
+        {
+            axis2_char_t *anonymous_uri = NULL;
+            axis2_bool_t anonymous = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO_ANONYMOUS(msg_info_headers, env);
+            axis2_bool_t none = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO_NONE(msg_info_headers, env);
+            if (AXIS2_STRCMP (addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
+            {
+                if (none)
+                    anonymous_uri = AXIS2_WSA_NONE_URL_SUBMISSION;
+                else if (anonymous)
+                    anonymous_uri = AXIS2_WSA_ANONYMOUS_URL_SUBMISSION;
+            }
+            else
+            {
+                if (none)
+                    anonymous_uri = AXIS2_WSA_NONE_URL;
+                else if (anonymous)
+                    anonymous_uri = AXIS2_WSA_ANONYMOUS_URL;
+            }
+
+            if (anonymous_uri)
+                epr = axis2_endpoint_ref_create (env, anonymous_uri);
+        }
 
         if (epr)
         {

@@ -438,7 +438,9 @@ axis2_http_client_recieve_header(axis2_http_client_t *client, axis2_env_t **env)
     }
     if(AXIS2_FALSE == AXIS2_HTTP_SIMPLE_RESPONSE_CONTAINS_HEADER(
                         client_impl->response, env,
-                        AXIS2_HTTP_HEADER_CONTENT_TYPE) && 202 != status_code)
+                        AXIS2_HTTP_HEADER_CONTENT_TYPE) && 202 != status_code
+                        && AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_LENGTH(
+                        client_impl->response, env) > 0)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING
                 , AXIS2_FAILURE);
