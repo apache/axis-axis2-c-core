@@ -164,7 +164,7 @@ axis2_http_simple_response_create_default(axis2_env_t **env);
 /************************** Start of function macros **************************/
 
 
-#define AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE(\
+#define AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(\
 					simple_response, env, http_version, status_code, phrase)\
                     ((simple_response)->ops->set_status_line\
                     (simple_response, env, http_version, status_code, phrase))
@@ -177,7 +177,7 @@ axis2_http_simple_response_create_default(axis2_env_t **env);
 #define AXIS2_HTTP_SIMPLE_RESPONSE_GET_STATUS_CODE(simple_response, env)\
                     ((simple_response)->ops->get_status_code\
                     (simple_response, env))
-#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_STAUTUS_LINE(simple_response, env) \
+#define AXIS2_HTTP_SIMPLE_RESPONSE_GET_STATUS_LINE(simple_response, env) \
                     ((simple_response)->ops->get_status_line\
                     (simple_response, env))
 #define AXIS2_HTTP_SIMPLE_RESPONSE_CONTAINS_HEADER(simple_response, env, name)\

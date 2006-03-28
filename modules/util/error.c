@@ -425,6 +425,8 @@ axis2_error_init()
     "Wsdl parsing has resulted in an invalid state";
     axis2_error_messages[AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING] =
      "Interface or Port Type not found for the binding";
+    axis2_error_messages[AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR] = 
+     "Error occured in transport";
 
     return AXIS2_SUCCESS;
 }

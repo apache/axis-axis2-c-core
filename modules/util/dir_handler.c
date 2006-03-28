@@ -328,9 +328,9 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
 #ifndef WIN32
     for(i = 0; i < count; i++)
     {
-        AXIS2_FREE((*env)->allocator, files[i]);
+        free(files[i]);
     }
-    AXIS2_FREE((*env)->allocator, files);
+    free(files);
 #endif 
     return file_list;
 }

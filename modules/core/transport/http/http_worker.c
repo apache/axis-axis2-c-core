@@ -207,7 +207,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 						AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
 						simple_request, env), env), AXIS2_HTTP_HEADER_POST))
 		{
-			AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE(response, env, 
+			AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(response, env, 
 						http_version, 411, "Length Required");
 			status = AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, 
 						response);
@@ -304,7 +304,7 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 		{
 			axis2_http_header_t *cont_len = NULL;
 			axis2_char_t *body_string = NULL;
-			AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE(response, env,
+			AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(response, env,
 						http_version, AXIS2_HTTP_RESPONSE_OK_CODE_VAL, "OK");
 			body_string = axis2_http_transport_utils_get_services_html(env, 
 						conf_ctx);
@@ -392,13 +392,13 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 	}
 	if(NULL != ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE") == 0)
 	{
-		AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE(response, env, http_version,
+		AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(response, env, http_version,
 						AXIS2_HTTP_RESPONSE_OK_CODE_VAL, "OK");
 		AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STREAM(response, env, out_stream);
 	}
 	else
 	{
-		AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE(response, env, http_version,
+		AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(response, env, http_version,
 						AXIS2_HTTP_RESPONSE_ACK_CODE_VAL, "Accepted");
 	}
 	axis2_http_worker_set_response_headers(http_worker, env, svr_conn, 

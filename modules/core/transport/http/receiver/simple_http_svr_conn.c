@@ -393,7 +393,7 @@ axis2_simple_http_svr_conn_write_response
 			}
 		}
 	}
-	status_line = AXIS2_HTTP_SIMPLE_RESPONSE_GET_STAUTUS_LINE(response, env);
+	status_line = AXIS2_HTTP_SIMPLE_RESPONSE_GET_STATUS_LINE(response, env);
 	if(NULL == status_line)
 	{
 		AXIS2_ERROR_SET((*env)->error, 

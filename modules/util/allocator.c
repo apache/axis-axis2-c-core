@@ -41,7 +41,11 @@ axis2_allocator_init (axis2_allocator_t * allocator)
 AXIS2_DECLARE(axis2_status_t)
 axis2_allocator_free(axis2_allocator_t *allocator)
 {
+    void (*free_func)(void *) = NULL;
     if(allocator)
-        free(allocator);
+    {
+        free_func = allocator->free; 
+        free_func(allocator);
+    }
     return AXIS2_SUCCESS;
 }

@@ -373,7 +373,7 @@ axis2_http_client_recieve_header(axis2_http_client_t *client, axis2_env_t **env)
     } while(AXIS2_HTTP_RESPONSE_OK_CODE_VAL > http_status);
 
 	client_impl->response = axis2_http_simple_response_create_default(env);
-	AXIS2_HTTP_SIMPLE_RESPONSE_SET_STAUTUS_LINE(client_impl->response, env, 
+	AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(client_impl->response, env, 
 						AXIS2_HTTP_STATUS_LINE_GET_HTTP_VERSION(status_line, 
 						env), AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(
 						status_line, env), 

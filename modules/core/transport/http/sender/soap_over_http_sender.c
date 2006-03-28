@@ -302,13 +302,39 @@ axis2_soap_over_http_sender_send
 	request = NULL;
 	
 	status_code = AXIS2_HTTP_CLIENT_RECIEVE_HEADER(sender_impl->client, env);
-	if(status_code < 0)
+    
+    if(status_code < 0)
 	{
 		return AXIS2_FAILURE;
 	}
-	response = AXIS2_HTTP_CLIENT_GET_RESPONSE(sender_impl->client, env);
-	return axis2_soap_over_http_sender_process_response(sender, env, msg_ctx,
-						response);    
+    response = AXIS2_HTTP_CLIENT_GET_RESPONSE(sender_impl->client, env);
+    if(AXIS2_HTTP_RESPONSE_OK_CODE_VAL == status_code || 
+                        AXIS2_HTTP_RESPONSE_ACK_CODE_VAL == status_code)
+    {
+        return axis2_soap_over_http_sender_process_response(sender, env, 
+                        msg_ctx, response);
+    }
+    else if(AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL == status_code)
+    {
+        axis2_http_header_t *tmp_header = NULL;
+        axis2_char_t *tmp_header_val = NULL;
+        tmp_header = AXIS2_HTTP_SIMPLE_RESPONSE_GET_FIRST_HEADER(response, env,
+                        AXIS2_HTTP_HEADER_CONTENT_TYPE);
+        if(NULL != tmp_header)
+        {
+            tmp_header_val = AXIS2_HTTP_HEADER_GET_VALUE(tmp_header, env);
+        }
+        if(NULL != tmp_header_val && (AXIS2_STRSTR(tmp_header_val, 
+                        AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP) || AXIS2_STRSTR(
+                        tmp_header_val, AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML)))
+        {
+            return axis2_soap_over_http_sender_process_response(sender, env, 
+                        msg_ctx, response);
+        }
+    }
+    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR, 
+                        AXIS2_FAILURE);
+    return AXIS2_FAILURE;
 }
 
 

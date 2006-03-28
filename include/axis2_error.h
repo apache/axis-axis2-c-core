@@ -421,6 +421,8 @@ extern "C"
         AXIS2_ERROR_WSDL_PARSER_INVALID_STATE,
         /* Interface or Port Type not found for the binding */
         AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING,
+        /* Error occured in transport */
+        AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
             AXIS2_ERROR_LAST is used to track the number of error codes present

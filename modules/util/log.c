@@ -151,6 +151,7 @@ axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops,
     }	
 	/* by default, log is enabled */
 	log_impl->log.enabled = 1;
+	log_impl->log.level = AXIS2_LOG_LEVEL_DEBUG;
 
     if (ops)
         log_impl->log.ops = ops;
