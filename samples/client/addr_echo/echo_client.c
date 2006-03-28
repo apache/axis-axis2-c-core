@@ -123,7 +123,7 @@ int main(int argc, char** argv)
     /* Set header parameters, required for WS-Addressing. 
      * Required only if you need to make use of WS-Addressing.
      */
-    AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, &env, endpoint_ref);
+  /*  AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, &env, endpoint_ref); */
     AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, &env, wsa_action); 
     
     AXIS2_CALL_SET_TO(call, &env, endpoint_ref);
