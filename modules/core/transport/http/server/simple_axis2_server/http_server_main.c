@@ -25,6 +25,7 @@
 #include <signal.h>
 #include <axis2_types.h>
 #include <ctype.h>
+#include <axis2_xml_reader.h>
 
 axis2_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;
@@ -39,6 +40,10 @@ axis2_env_t* init_syetem_env(axis2_allocator_t *allocator, axis2_char_t *log_fil
 	axis2_error_t *error = axis2_error_create(allocator);
 	axis2_log_t *log = axis2_log_create(allocator, NULL, log_file);
 	axis2_thread_pool_t *thread_pool = axis2_thread_pool_init(allocator);
+    /* We need to init the parser in main thread before spawning child 
+     * threads
+     */
+    axis2_xml_reader_init(); 
 	return axis2_env_create_with_error_log_thread_pool(allocator, error, log, 
 						thread_pool);
 }

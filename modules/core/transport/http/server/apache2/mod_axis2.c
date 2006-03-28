@@ -24,6 +24,7 @@
 #include <axis2_error_default.h>
 #include <axis2_log_default.h>
 #include <axis2_thread_pool.h>
+#include <axis2_xml_reader.h>
 
 /* Configuration structure populated by apache2.conf */
 typedef struct axis2_config_rec
@@ -71,6 +72,9 @@ static void * axis2_create_svr(apr_pool_t *p, server_rec *s)
     axis2_config_rec_t *conf = apr_palloc(p, sizeof(*conf));
     conf->axis2_log_file = NULL;
     conf->axis2_repo_path = NULL;
+    /* We need to init xml readers before we go into threaded env
+     */
+    axis2_xml_reader_init();
     return conf;
 }
 
