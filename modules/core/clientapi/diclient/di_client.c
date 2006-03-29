@@ -185,12 +185,12 @@ axis2_di_client_invoke(axis2_di_client_t *di_client,
     wsdl_pump = axis2_wsdl_pump_create(env, wsdl_desc, wp);
 	if(!wsdl_pump)
 	{
-		return -1;
+		return AXIS2_FAILURE;
 	}
 	status = AXIS2_WSDL_PUMP_PUMP(wsdl_pump, env);
 	if(AXIS2_SUCCESS != status)
 	{
-		return -1;
+		return status;
 	}
 	svcs = AXIS2_WSDL_DESC_GET_SVCS(wsdl_desc, env);
     index = axis2_hash_first (svcs, env);	
@@ -198,7 +198,7 @@ axis2_di_client_invoke(axis2_di_client_t *di_client,
 	wsdl_svc = (axis2_wsdl_svc_t *) value;
 	if(!wsdl_svc)
 	{
-		return -1;
+		return AXIS2_FAILURE;
 	}
 	endpoints = AXIS2_WSDL_SVC_GET_ENDPOINTS(wsdl_svc, env);
 	index = axis2_hash_first (endpoints, env);
@@ -206,17 +206,17 @@ axis2_di_client_invoke(axis2_di_client_t *di_client,
 	wsdl_endpoint = (axis2_wsdl_endpoint_t *) value;
 	if(!wsdl_endpoint)
 	{
-		return -1;
+		return AXIS2_FAILURE;
 	}
     wsdl_binding = AXIS2_WSDL_ENDPOINT_GET_BINDING(wsdl_endpoint, env);
 	if(!wsdl_binding)
 	{
-		return -1;
+		return AXIS2_FAILURE;
 	}
 	wsdl_interface = AXIS2_WSDL_BINDING_GET_BOUND_INTERFACE(wsdl_binding, env);
 	if(!wsdl_interface)
 	{
-		return -1;
+		return AXIS2_FAILURE;
 	}
 	ops = AXIS2_WSDL_INTERFACE_GET_OPS(wsdl_interface, env);
 	index = axis2_hash_first (ops, env);
@@ -224,12 +224,12 @@ axis2_di_client_invoke(axis2_di_client_t *di_client,
 	wsdl_op = (axis2_wsdl_op_t *) value;
 	if(!wsdl_op)
 	{
-		return -1;
+		return AXIS2_FAILURE;
 	}
 	op = axis2_op_create_with_wsdl_op(env, wsdl_op);
     if(!op)
 	{
-		return -1;
+		return AXIS2_FAILURE;
 	}
 	op_qname = AXIS2_OP_GET_QNAME(op, env);
 	op_name = AXIS2_QNAME_GET_LOCALPART(op_qname, env);
@@ -261,7 +261,7 @@ axis2_di_client_invoke(axis2_di_client_t *di_client,
     {
         printf("ERROR: Could not prepare message context. ");
         printf("May be you havent set the repository corretly.\n");
-        return -1;
+        return AXIS2_FAILURE;
     }
 
     /* Get the reference to message info headers structure from the message context. 
@@ -327,12 +327,13 @@ axis2_di_client_invoke(axis2_di_client_t *di_client,
 						" %d :: %s", (*env)->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE((*env)->error));
         printf("echo stub invoke failed!\n");
+        return AXIS2_FAILURE;
     }
     
     if (call)
     {
         AXIS2_CALL_FREE(call, env);
     }
-    return status;
+    return AXIS2_SUCCESS;
 }
 
