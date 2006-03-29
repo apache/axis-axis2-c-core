@@ -566,7 +566,7 @@ axis2_soap_header_get_header_blocks_with_namespace_uri
     int found = 0;
     void *hb =  NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, ns_uri, NULL);
     
     header_impl = AXIS2_INTF_TO_IMPL(header);
