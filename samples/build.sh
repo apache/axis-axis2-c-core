@@ -1,5 +1,5 @@
 #!/bin/bash
 ./autogen.sh
-./configure --prefix=${AXIS2C_HOME} --enable-diclient=yes
+./configure --prefix=${AXIS2C_HOME} 
 make
 make install
