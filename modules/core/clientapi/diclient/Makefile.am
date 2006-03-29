@@ -1,6 +1,6 @@
 TESTS =
-lib_LTLIBRARIES = libaxis2_di_client.la
-libaxis2_di_client_la_SOURCES = \
+lib_LTLIBRARIES = libaxis2_diclient.la
+libaxis2_diclient_la_SOURCES = \
 								di_client.c
 
 INCLUDES = -I$(top_builddir)/include \
