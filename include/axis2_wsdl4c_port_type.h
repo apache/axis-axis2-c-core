@@ -64,7 +64,7 @@ extern "C"
 
     int
     axis2_wsdl4c_port_type_get_operation_index(void *port_type, 
-                                        void *qname);
+                                                axis2_char_t *op_name);
 
     /**
     * axis2_wsdl4c_port_type_get_operations

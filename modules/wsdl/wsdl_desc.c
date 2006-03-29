@@ -537,7 +537,7 @@ axis2_wsdl_desc_add_binding(axis2_wsdl_desc_t *wsdl_desc,
     wsdl_desc_impl = AXIS2_INTF_TO_IMPL(wsdl_desc);
 
     binding_qname = AXIS2_WSDL_BINDING_GET_NAME(binding, env);
-    if(NULL == binding_name)
+    if(NULL == binding_qname)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WSDL_BINDING_NAME_IS_REQUIRED,
             AXIS2_FAILURE);

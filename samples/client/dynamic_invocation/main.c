@@ -76,13 +76,11 @@ build_om_programatically(axis2_env_t **env)
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
 
-    ns1 = axis2_om_namespace_create (env, "http://localhost:9090/axis2/services/echo", "ns1");
+    ns1 = axis2_om_namespace_create (env, "http://example.org/echo", "tns1");
 
-    echo_om_ele = axis2_om_element_create(env, NULL, "echoString", ns1, &echo_om_node);
+    echo_om_ele = axis2_om_element_create(env, NULL, "echoIn", ns1, &echo_om_node);
     
-    text_om_ele = axis2_om_element_create(env, echo_om_node, "text", NULL, &text_om_node);
-
-    AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, "echo5", text_om_node);
+    AXIS2_OM_ELEMENT_SET_TEXT(echo_om_ele, env, "Hello World", echo_om_node);
     
     
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);

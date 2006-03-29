@@ -833,7 +833,10 @@ axis2_op_get_param (axis2_op_t *op,
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op_impl->wsdl_op->
             extensible_component->wsdl_component, env, (axis2_char_t *) 
                 AXIS2_PARAMETER_KEY);
-	
+
+    if (!property)
+        return NULL;
+
     param_container_l = (axis2_param_container_t *) 
         AXIS2_PROPERTY_GET_VALUE(property, env);
 	return AXIS2_PARAM_CONTAINER_GET_PARAM(param_container_l, env, param_name);

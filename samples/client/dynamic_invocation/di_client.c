@@ -140,6 +140,7 @@ axis2_di_client_invoke(axis2_env_t **env,
 		return -1;
 	}
 	op = axis2_op_create_with_wsdl_op(env, wsdl_op);
+    if(!op)
 	{
 		return -1;
 	}
@@ -151,6 +152,8 @@ axis2_di_client_invoke(axis2_env_t **env,
 	soap_address = AXIS2_LINKED_LIST_GET(ext_elements, env, 0);
 	if(!soap_address) return -1;
 	address = AXIS2_WSDL_EXT_SOAP_ADDRESS_GET_LOCATION_URI(soap_address, env);
+    printf("address:%s\n", address);
+    printf("mep:%s\n", AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env));
 	binding_ops = AXIS2_WSDL_BINDING_GET_BINDING_OPS(wsdl_binding, env);
 	index = axis2_hash_first (binding_ops, env);
 	axis2_hash_this(index, NULL, NULL, &value);
@@ -159,7 +162,7 @@ axis2_di_client_invoke(axis2_env_t **env,
 				wsdl_binding_op->extensible_component->wsdl_component, env);
 	soap_op = AXIS2_LINKED_LIST_GET(ext_elements, env, 0);
 	wsa_action = AXIS2_WSDL_EXT_SOAP_OP_GET_SOAP_ACTION(soap_op, env);
-
+    printf("wsa_action:%s\n", wsa_action);
     /* create call struct */
     call = axis2_call_create(env, NULL, client_home);
     mep_client = AXIS2_CALL_GET_BASE(call, env);

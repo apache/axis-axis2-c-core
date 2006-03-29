@@ -296,6 +296,11 @@ axis2_wsdl_pump_pump(axis2_wsdl_pump_t *wsdl_pump,
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
 	
+    while (axis2_wsdl4c_parser_get_event_type(pump_impl->parser) != 
+                    AXIS2_WSDL4C_PARSER_END)
+    {
+	    axis2_wsdl4c_parser_get_next_element(pump_impl->parser);
+    }
 	return axis2_wsdl_pump_populate_def(wsdl_pump, env);	
 }
 
@@ -736,6 +741,8 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
 			axis2_char_t *str_use = NULL;
 
             axis2_wsdl4c_soap_get_body_info(soap, bindings[i], &nsp, &use);
+            soap_body = axis2_wsdl_ext_soap_body_create(env, NULL);
+            if(!soap_body) return AXIS2_FAILURE;
 			if(AXIS2_WSDL4C_RPC == use)
 				str_use = AXIS2_STRDUP("rpc", env);
 			if(AXIS2_WSDL4C_DOC == use)
@@ -787,7 +794,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
     {
         return AXIS2_FAILURE;
     } 
-    AXIS2_WSDL_BINDING_MSG_REF_SET_DIRECTION(wsdl_input_binding, env,
+    AXIS2_WSDL_BINDING_MSG_REF_SET_DIRECTION(wsdl_output_binding, env,
         AXIS2_WSDL_MESSAGE_DIRECTION_OUT); 
     nbindings = axis2_wsdl4c_binding_get_output_binding(binding, op_index, &bindings);
     for(i = 0; i < nbindings; i++)
@@ -800,6 +807,8 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
             axis2_char_t *nsp = NULL;
 
             axis2_wsdl4c_soap_get_body_info(soap, bindings[i], &nsp, &use);
+            soap_body = axis2_wsdl_ext_soap_body_create(env, NULL);
+            if(!soap_body) return AXIS2_FAILURE;
 			if(AXIS2_WSDL4C_RPC == use)
 				str_use = AXIS2_STRDUP("rpc", env);
 			if(AXIS2_WSDL4C_DOC == use)
@@ -828,7 +837,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
             AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_output_binding->
                 extensible_component->wsdl_component, env, soap_header);
         }
-        status = AXIS2_WSDL_BINDING_OP_SET_INPUT(wsdl_binding_op, env, wsdl_output_binding);
+        status = AXIS2_WSDL_BINDING_OP_SET_OUTPUT(wsdl_binding_op, env, wsdl_output_binding);
         if(AXIS2_SUCCESS != status)
 	    {
 	        return status;
@@ -841,7 +850,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
     {
         return AXIS2_FAILURE;
     } 
-    AXIS2_WSDL_BINDING_MSG_REF_SET_DIRECTION(wsdl_input_binding, env,
+    AXIS2_WSDL_BINDING_MSG_REF_SET_DIRECTION(wsdl_fault_binding, env,
         AXIS2_WSDL_MESSAGE_DIRECTION_OUT); 
     nbindings = axis2_wsdl4c_binding_get_fault_binding(binding, op_index, &bindings);
     for(i = 0; i < nbindings; i++)
@@ -881,7 +890,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
             AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_fault_binding->
                 extensible_component->wsdl_component, env, soap_header);
         }
-        status = AXIS2_WSDL_BINDING_OP_SET_INPUT(wsdl_binding_op, env, wsdl_fault_binding);
+        status = AXIS2_WSDL_BINDING_OP_SET_OUTPUT(wsdl_binding_op, env, wsdl_fault_binding);
 		if(AXIS2_SUCCESS != status)
 		{
 	    	return status;
@@ -931,10 +940,10 @@ axis2_wsdl_pump_populate_services(axis2_wsdl_pump_t *wsdl_pump,
 		int svc_ext_id = 0;
 		axis2_wsdl_ext_soap_address_t *ext_soap_address = NULL;
 
+		port_name = AXIS2_ARRAY_LIST_GET(ports, env, i);
 	    binding = axis2_wsdl4c_service_get_port_binding(wsdl4c_svc, port_name);
 		wsdl_endpoint = axis2_wsdl_endpoint_create(env);
 		if(!wsdl_endpoint) return AXIS2_FAILURE;
-		port_name = AXIS2_ARRAY_LIST_GET(ports, env, i);
 		status = axis2_wsdl_pump_populate_ports(wsdl_pump, env, wsdl_endpoint, 
             binding, port_name, NULL);
 		if(AXIS2_SUCCESS != status) return status;
@@ -1083,7 +1092,10 @@ axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
 	}
 
 	faults = axis2_wsdl4c_operation_get_faults(wsdl4c_op);
-    size = AXIS2_ARRAY_LIST_SIZE(faults, env);
+    if(faults)
+    {
+        size = AXIS2_ARRAY_LIST_SIZE(faults, env);
+    }
 	for(i = 0; i < size; i++)
 	{	
 		wsdl4c_fault_msg = AXIS2_ARRAY_LIST_GET(faults, env, i);
@@ -1181,7 +1193,6 @@ axis2_wsdl_pump_populate_ports(axis2_wsdl_pump_t *wsdl_pump,
 {
 	axis2_wsdl_pump_impl_t *pump_impl = NULL;
 	axis2_qname_t *port_qname = NULL;
-	void *binding = NULL;
 	axis2_char_t *binding_name = NULL;
 	axis2_qname_t *binding_qname = NULL;
 	axis2_wsdl_binding_t *wsdl_binding = NULL;
@@ -1199,7 +1210,7 @@ axis2_wsdl_pump_populate_ports(axis2_wsdl_pump_t *wsdl_pump,
 		AXIS2_QNAME_FREE(port_qname, env);
 		port_qname = NULL;
 	}
-	binding_name = axis2_wsdl4c_binding_get_name(binding);
+	binding_name = axis2_wsdl4c_binding_get_name(wsdl4c_binding);
 	binding_qname = axis2_qname_create(env, binding_name, target_namespc, NULL);
 	wsdl_binding = AXIS2_WSDL_DESC_GET_BINDING(pump_impl->wom_def, env, binding_qname);
     if(binding_qname)
