@@ -20,7 +20,7 @@
 #include <axis2_stream.h>
 #include <axis2_log_default.h>
 #include <axis2_error_default.h>
-#include "di_client.h"
+#include <axis2_di_client.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -36,6 +36,7 @@ int main(int argc, char** argv)
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
     axis2_allocator_t *allocator = NULL;
+    char *wsdl_file_name = NULL;
 
     /* set up the envioronment with allocator and log*/
     allocator = axis2_allocator_init (NULL);
@@ -50,10 +51,10 @@ int main(int argc, char** argv)
       printf("Usage: print <wsdl_File_Name>\n");
       return 1;
     }
-	wp = axis2_wsdl4c_parser_create(argv[1], "");
     /* build the SOAP request message content using OM API.*/
     node = build_om_programatically(&env);
-	status = axis2_di_client_invoke(&env, wp, node);
+    wsdl_file_name = argv[1];
+	status = axis2_di_client_invoke(&env, wsdl_file_name, node);
 	if(AXIS2_SUCCESS == status)
 		printf("status:%s\n", "Success");
 	else

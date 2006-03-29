@@ -15,12 +15,10 @@ libaxis2_engine_la_SOURCES = handler.c \
                                 soap_body_disp.c \
                                 ctx_handler.c \
                                 engine.c \
-                                ../description/param_container.c \
                                 ../description/op.c \
                                 ../description/svc.c \
                                 ../description/module.c \
                                 ../description/module_desc.c \
-                                ../description/param.c \
                                 ../description/svc_grp.c \
                                 ../description/phase_rule.c \
                                 ../description/handler_desc.c \
@@ -28,7 +26,6 @@ libaxis2_engine_la_SOURCES = handler.c \
                                 ../description/flow_container.c \
                                 ../description/transport_in_desc.c \
                                 ../description/transport_out_desc.c \
-                                ../description/dll_desc.c \
                                 ../receivers/msg_recv.c \
                                 ../receivers/raw_xml_in_out_msg_recv.c \
                                 ../receivers/svr_callback.c \

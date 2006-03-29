@@ -172,6 +172,23 @@ AC_ARG_ENABLE(tests, [  --enable-multi_threaded  enable trace. default=yes],
   CFLAGS="$CFLAGS"
 )
 
+AC_MSG_CHECKING(whether to build dynamic invocation client library)
+AC_ARG_ENABLE(diclient, [  --enable-diclient    build diclient library wrapper. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    DICLIENT_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    DICLIENT_DIR="diclient"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  DICLIENT_DIR="diclient"
+)
+
 PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
 CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
 
@@ -183,6 +200,7 @@ AC_SUBST(APRINC)
 AC_SUBST(LIBXML2_CFLAGS)
 AC_SUBST(LIBXML2_LIBS)
 AC_SUBST(LIBXML2_DIR)
+AC_SUBST(DICLIENT_DIR)
 AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(TESTDIR)
@@ -206,6 +224,7 @@ AC_CONFIG_FILES([Makefile \
     modules/core/transport/http/server/apache2/Makefile \
     modules/core/deployment/Makefile \
     modules/core/clientapi/Makefile \
+    modules/core/clientapi/diclient/Makefile \
     modules/core/receivers/Makefile \
     modules/core/util/Makefile \
     modules/xml/Makefile \

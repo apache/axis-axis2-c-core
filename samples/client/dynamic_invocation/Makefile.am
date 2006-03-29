@@ -1,11 +1,9 @@
 prgbindir=$(prefix)/bin/samples
-prgbin_PROGRAMS = di_client
+prgbin_PROGRAMS = echo_client
 samplesdir=$(prefix)/samples/client/dynamic_invocation
-samples_DATA=di_client.c
-di_client_SOURCES = di_client.c \
-								main.c
-
-di_client_LDADD   =  \
+samples_DATA=echo_client.c
+echo_client_SOURCES = echo_client.c
+echo_client_LDADD   =  \
 					-laxis2_util \
                     -laxis2_om \
                     -laxis2_wsdl \

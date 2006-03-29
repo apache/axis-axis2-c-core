@@ -1,4 +1,5 @@
 TESTS =
+SUBDIRS = $(DICLIENT_DIR) 
 noinst_LTLIBRARIES = libaxis2_clientapi.la
 libaxis2_clientapi_la_SOURCES = \
                                 async_result.c \
