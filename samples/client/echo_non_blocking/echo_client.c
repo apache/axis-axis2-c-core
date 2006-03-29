@@ -62,7 +62,6 @@ int main(int argc, char** argv)
     axis2_msg_info_headers_t *msg_info_headers = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_conf_t *conf = NULL;
-    axis2_msg_ctx_t *response_ctx = NULL;
     axis2_callback_t* callback = NULL;
     int count = 0;
     axis2_soap_envelope_t *soap_envelope = NULL;

@@ -52,7 +52,6 @@ int main(int argc, char** argv)
     axis2_char_t *address = NULL;
     axis2_char_t *wsa_action = NULL;
     axis2_char_t *client_home = NULL;
-    axis2_om_node_t *ret_node = NULL;
     axis2_svc_t *svc = NULL;
     axis2_op_t *op = NULL;
     axis2_call_t *call = NULL;
