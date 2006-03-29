@@ -68,7 +68,6 @@ AXIS2_DECLARE (axis2_handler_t *)
 axis2_addr_out_handler_create (axis2_env_t ** env, axis2_qname_t * qname)
 {
     axis2_handler_t *handler = NULL;
-    axis2_handler_desc_t *handler_desc = NULL;
     axis2_qname_t *handler_qname = NULL;
 
     AXIS2_ENV_CHECK (env, NULL);
@@ -229,7 +228,6 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
        // define that in the Header itself. */
     if (soap_header)
     {
-        axis2_any_content_type_t *reference_parameters = NULL;
         axis2_char_t *action = NULL;
         axis2_char_t *address = NULL;
         axis2_char_t *svc_group_context_id = NULL;
@@ -543,7 +541,6 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
 {
     axis2_soap_header_block_t *header_block = NULL;
     axis2_char_t *address = NULL;
-    axis2_any_content_type_t *reference_param = NULL;
     axis2_array_list_t *ref_param_list = NULL;
     axis2_array_list_t *meta_data_list = NULL;
     axis2_array_list_t *extension_list = NULL;

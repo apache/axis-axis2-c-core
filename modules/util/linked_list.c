@@ -268,23 +268,6 @@ create_entry(axis2_env_t **env, void *data)
     return entry;    
 }
 
-static axis2_status_t 
-free_entry(entry_t *e,
-            axis2_env_t **env)
-{
-    if(NULL != e->data)
-        AXIS2_FREE((*env)->allocator, e->data);
-    if(NULL != e->previous)
-        AXIS2_FREE((*env)->allocator, e->previous);
-    
-    if(NULL != e->next)
-        AXIS2_FREE((*env)->allocator, e->next);
-    
-    e = NULL;
-    
-    return AXIS2_SUCCESS;
-}
-
 /**
 * Inserts an element at the end of the list.
 *
@@ -337,15 +320,6 @@ axis2_status_t AXIS2_CALL axis2_linked_list_free(
         AXIS2_FREE((*env)->allocator, current); 
         current = next;
     }
-    /*if(NULL != linked_list_impl->first)
-    {
-        free_entry(linked_list_impl->first, env);
-    }
-    
-    if(NULL != linked_list_impl->last)
-    {
-        free_entry(linked_list_impl->last, env);
-    }*/
     
     AXIS2_FREE((*env)->allocator, linked_list_impl);
     linked_list_impl = NULL;

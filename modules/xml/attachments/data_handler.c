@@ -179,6 +179,7 @@ axis2_data_handler_write_to(axis2_data_handler_t *data_handler, axis2_env_t **en
               }
           }
 	*/  
+    return AXIS2_SUCCESS;
 }
 
 /* Private Functions */
@@ -371,11 +372,8 @@ axis2_data_handler_write_to(axis2_data_handler_t *data_handler, axis2_env_t **en
 257         return dch;
 258     }
 259 
-260     /**
 261      * This is used to check if the DataContentHandlerFactory has been changed.
 262      * This is not specified behaviour but this check is required to make this work like the RI.
-263      */
-/*
 264     private DataContentHandlerFactory originalFactory;
 265 
 266     {
@@ -386,14 +384,11 @@ axis2_data_handler_write_to(axis2_data_handler_t *data_handler, axis2_env_t **en
 271 
 272     private static DataContentHandlerFactory factory;
 273 
-274     /**
 275      * Set the DataContentHandlerFactory to use.
 276      * If this method has already been called then an Error is raised.
 277      *
 278      * @param newFactory the new factory
 279      * @throws SecurityException if the caller does not have "SetFactory" RuntimePermission
-280      */
-/*
 281     public static synchronized void setDataContentHandlerFactory(DataContentHandlerFactory newFactory) {
 282         if (factory != null) {
 283             throw new Error("javax.activation.DataHandler.setDataContentHandlerFactory has already been defined");

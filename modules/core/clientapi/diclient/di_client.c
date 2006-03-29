@@ -175,7 +175,6 @@ axis2_di_client_invoke(axis2_di_client_t *di_client,
 				       	axis2_om_node_t *node)
 {
     axis2_di_client_impl_t *di_client_impl = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *address = NULL;
     axis2_char_t *wsa_action = NULL;
     axis2_char_t *client_home = NULL;

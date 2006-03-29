@@ -862,7 +862,7 @@ axis2_libxml2_reader_get_char_set_encoding(axis2_xml_reader_t *parser,
     axis2_libxml2_reader_wrapper_impl_t *reader_impl = NULL;
     AXIS2_ENV_CHECK( env, NULL);
     reader_impl = AXIS2_INTF_TO_IMPL(parser);
-    return xmlTextReaderConstEncoding(reader_impl->reader);
+    return (axis2_char_t*)xmlTextReaderConstEncoding(reader_impl->reader);
 }                                           
 
 axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser,

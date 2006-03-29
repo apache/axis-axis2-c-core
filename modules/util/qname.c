@@ -409,4 +409,5 @@ axis2_qname_create_from_string(axis2_env_t **env,
         /** only localpart is there in this qname */
         return axis2_qname_create(env, qstring, NULL, NULL);
     }
-}                                
+}
+

@@ -116,8 +116,9 @@ axis2_status_t AXIS2_CALL
 axis2_mime_body_part_add_header (axis2_mime_body_part_t *mime_body_part, axis2_env_t **env,
     axis2_char_t *name, axis2_char_t *value) 
 {
-	AXIS2_ENV_CHECK(env, NULL);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	/* headers.addHeader(name, value);     */
+    return AXIS2_SUCCESS;
 }
 
 /**
@@ -130,7 +131,7 @@ axis2_mime_body_part_add_header (axis2_mime_body_part_t *mime_body_part, axis2_e
 axis2_status_t AXIS2_CALL
 axis2_mime_body_part_set_data_handler (axis2_mime_body_part_t *mime_body_part, axis2_env_t **env, axis2_data_handler_t *data_handler) 
 {
-	AXIS2_ENV_CHECK(env, NULL);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_SUCCESS;
 
 	/*** 
@@ -145,7 +146,7 @@ axis2_mime_body_part_write_to (axis2_mime_body_part_t *mime_body_part, axis2_env
                                 axis2_byte_t **output_stream, int *output_stream_size, 
                                 axis2_char_t *ignore_list) 
 {
-	AXIS2_ENV_CHECK(env, NULL);
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_SUCCESS;
 }
 

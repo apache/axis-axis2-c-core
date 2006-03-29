@@ -56,7 +56,7 @@ void Testaxis2_hash_while(CuTest *tc)
 
     axis2_hash_index_t *index_i= 0;
     void *v = NULL;
-    char *k = NULL;
+    const void *k = NULL;
 
     char *key = NULL;
     char *key1 = "key1";

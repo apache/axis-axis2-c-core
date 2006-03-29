@@ -468,7 +468,7 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
                 {
                    axis2_om_node_t *om_node =  NULL;
                    axis2_om_element_t *om_ele = NULL;
-                   axis2_any_content_type_t *any_content = NULL;
+                   /*axis2_any_content_type_t *any_content = NULL;*/
                    om_node = AXIS2_OM_CHILD_ELEMENT_ITERATOR_NEXT(ref_param_iter, env);
                    om_ele  = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);
                    /*any_content = AXIS2_ENDPOINT_REF_GET_REF_PARAMS(endpoint_ref, env);

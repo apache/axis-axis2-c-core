@@ -551,7 +551,7 @@ axis2_wsdl_pump_find_wrappable(axis2_wsdl_pump_t *wsdl_pump,
 		wrappable = AXIS2_TRUE;
 	if(AXIS2_FALSE == wrappable)
 	{
-		void *part = axis2_wsdl4c_msg_get_message_part_a_index(message, 0);
+		void *part = (void*)axis2_wsdl4c_msg_get_message_part_a_index(message, 0);
 		int part_id = axis2_wsdl4c_part_type(part);
 		if(0 != part_id)
 			wrappable = AXIS2_TRUE;
@@ -596,7 +596,7 @@ axis2_wsdl_pump_populate_bindings(axis2_wsdl_pump_t *wsdl_pump,
     {
         return status;
     }
-    port_type = axis2_wsdl4c_binding_get_port_type(binding);
+    port_type = (void*)axis2_wsdl4c_binding_get_port_type(binding);
     interface_name = axis2_wsdl4c_port_type_get_name(port_type);
     interface_qname = axis2_qname_create(env, interface_name, NULL, NULL);
     wsdl_interface = AXIS2_WSDL_DESC_GET_INTERFACE(pump_impl->wom_def, env, 
@@ -684,7 +684,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
     int soap_op_binding_id = 0;
     void *soap = NULL;
     axis2_char_t *action = NULL;
-    int style = 0;
+    axis2_wsdl4c_style_t style = 0;
 	axis2_char_t *str_style = NULL;
     axis2_qname_t *binding_op_qname = NULL;
     int nbindings = 0;
@@ -736,7 +736,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
         if(AXIS2_TRUE == axis2_wsdl4c_soap_is_soap_body(soap, bindings[i]))
         {
             axis2_wsdl_ext_soap_body_t *soap_body = NULL;
-            axis2_wsdl4c_style_t use = 0;
+            axis2_wsdl4c_encoding_t use = 0;
             axis2_char_t *nsp = NULL;
 			axis2_char_t *str_use = NULL;
 
@@ -802,7 +802,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
         if(AXIS2_TRUE == axis2_wsdl4c_soap_is_soap_body(soap, bindings[i]))
         {
             axis2_wsdl_ext_soap_body_t *soap_body = NULL;
-            axis2_wsdl4c_style_t use = 0;
+            axis2_wsdl4c_encoding_t use = 0;
 			axis2_char_t *str_use = NULL;
             axis2_char_t *nsp = NULL;
 
@@ -858,7 +858,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
         if(AXIS2_TRUE == axis2_wsdl4c_soap_is_soap_body(soap, bindings[i]))
         {
             axis2_wsdl_ext_soap_body_t *soap_body = NULL;
-            axis2_wsdl4c_style_t use = 0;
+            axis2_wsdl4c_encoding_t use = 0;
 			axis2_char_t *str_use = NULL;
             char *nsp = NULL;
 
@@ -941,7 +941,7 @@ axis2_wsdl_pump_populate_services(axis2_wsdl_pump_t *wsdl_pump,
 		axis2_wsdl_ext_soap_address_t *ext_soap_address = NULL;
 
 		port_name = AXIS2_ARRAY_LIST_GET(ports, env, i);
-	    binding = axis2_wsdl4c_service_get_port_binding(wsdl4c_svc, port_name);
+	    binding = (void*)axis2_wsdl4c_service_get_port_binding(wsdl4c_svc, port_name);
 		wsdl_endpoint = axis2_wsdl_endpoint_create(env);
 		if(!wsdl_endpoint) return AXIS2_FAILURE;
 		status = axis2_wsdl_pump_populate_ports(wsdl_pump, env, wsdl_endpoint, 
@@ -983,8 +983,6 @@ axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
 	void *wsdl4c_output_msg = NULL;
 	void *wsdl4c_fault_msg = NULL;
 	axis2_wsdl_msg_ref_t *wsdl_input_msg = NULL;
-	axis2_wsdl_msg_ref_t *wsdl_output_msg = NULL;
-	axis2_wsdl_msg_ref_t *wsdl_fault_msg = NULL;
 	axis2_array_list_t *faults = NULL;
 	axis2_qname_t *wrapped_input_qname = NULL;
 	axis2_qname_t *wrapped_output_qname = NULL;
@@ -1018,7 +1016,7 @@ axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
      * defined in the WSDL 2.0. eg like #any, #none
      * Create the Input Message and add
 	 */
-    wsdl4c_input_msg = axis2_wsdl4c_operation_get_message(wsdl4c_op, 
+    wsdl4c_input_msg = (void*)axis2_wsdl4c_operation_get_message(wsdl4c_op, 
 		AXIS2_WSDL4C_INPUT);
 	wrapped_input_qname = AXIS2_WSDL_OP_GET_QNAME(wsdl_op, env);
 	if(wsdl4c_input_msg)
@@ -1061,7 +1059,7 @@ axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
     qname_prefix = AXIS2_QNAME_GET_PREFIX(wrapped_input_qname, env);
 	wrapped_output_qname = axis2_qname_create(env, qname_localpart, qname_uri,
 		qname_prefix);
-	wsdl4c_output_msg = axis2_wsdl4c_operation_get_message(wsdl4c_op, 
+	wsdl4c_output_msg = (void*)axis2_wsdl4c_operation_get_message(wsdl4c_op, 
 		AXIS2_WSDL4C_OUTPUT);
 	if(wsdl4c_output_msg)
 	{
@@ -1171,8 +1169,8 @@ axis2_wsdl_pump_generate_reference_qname(axis2_wsdl_pump_t *wsdl_pump,
 		no_of_parts = axis2_wsdl4c_msg_get_num_parts(wsdl4c_msg);
 		for(i = 0; i < no_of_parts; i++)
 		{
-			void *out_part = axis2_wsdl4c_msg_get_message_part_a_index(wsdl4c_msg, i);
-			void *element = axis2_wsdl4c_part_element(out_part);
+			void *out_part = (void*)axis2_wsdl4c_msg_get_message_part_a_index(wsdl4c_msg, i);
+			void *element = (void*)axis2_wsdl4c_part_element(out_part);
 			axis2_char_t *name = axis2_wsdl4c_element_get_name(element);
 			reference_qname = axis2_qname_create(env, name, NULL, NULL);
 			if(!reference_qname) return AXIS2_FAILURE;

@@ -21,7 +21,7 @@ void Testaxis2_log_write(CuTest *tc)
     axis2_env_t *env = axis2_env_create_with_error_log(allocator, error, log);
     axis2_stream_t *stream = axis2_stream_create_basic(&env);
 
-    char *expected = strdup("aaaaaaaaa");
+    char *expected = (char*)strdup("aaaaaaaaa");
     AXIS2_STREAM_WRITE(stream, &env, "aaaaaaaaa", 10);
     AXIS2_STREAM_READ(stream, &env,  actual, 10);
     AXIS2_LOG_WRITE(env->log, actual, 10);

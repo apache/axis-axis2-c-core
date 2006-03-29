@@ -251,7 +251,6 @@ axis2_om_text_serialize (axis2_om_text_t *om_text,
     axis2_char_t *attribute_value = NULL;
     axis2_char_t *text = NULL;
     axis2_bool_t om_output_is_optimized = AXIS2_FALSE;
-    axis2_xml_writer_t *xml_writer = NULL;
     axis2_xml_writer_t *om_output_xml_writer = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
