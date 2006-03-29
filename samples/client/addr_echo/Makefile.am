@@ -1,7 +1,7 @@
 prgbindir=$(prefix)/bin/samples
 prgbin_PROGRAMS = addr_echo
 samplesdir=$(prefix)/samples/client/addr_echo
-samples_DATA=echo_client.c
+samples_DATA=echo_client.c README.txt Makefile.am
 addr_echo_SOURCES = echo_client.c
 
 addr_echo_LDADD   =  \

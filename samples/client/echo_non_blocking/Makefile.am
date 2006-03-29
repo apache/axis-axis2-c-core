@@ -4,7 +4,7 @@ prgbin_PROGRAMS = echo_non_blocking
 
 samplesdir=$(prefix)/samples/client/echo_non_blocking
 
-samples_DATA=echo_client.c
+samples_DATA=echo_client.c echo_client.bak Makefile.am README.txt
 echo_non_blocking_SOURCES = echo_client.c
 
 echo_non_blocking_LDADD   =  \

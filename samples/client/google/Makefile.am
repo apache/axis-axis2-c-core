@@ -1,7 +1,7 @@
 prgbindir=$(prefix)/bin/samples
 samplesdir=$(prefix)/samples/client/google
 prgbin_PROGRAMS = google
-samples_DATA=google_client.c
+samples_DATA=google_client.c Makefile.am README.txt
 google_SOURCES = google_client.c
 
 google_LDADD   =    $(LDFLAGS) \

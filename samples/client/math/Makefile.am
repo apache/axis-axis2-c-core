@@ -2,7 +2,7 @@ prgbindir=$(prefix)/bin/samples
 samplesdir=$(prefix)/samples/client/math
 prgbin_PROGRAMS = math
 noinst_HEADERS = axis2_math_stub.h
-samples_DATA=axis2_math_stub.c math_client.c axis2_math_stub.h
+samples_DATA=axis2_math_stub.c math_client.c axis2_math_stub.h Makefile.am
 math_SOURCES = axis2_math_stub.c \
                 math_client.c
 

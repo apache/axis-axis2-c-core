@@ -1,2 +1,5 @@
+samplesdir=$(prefix)/samples/server
 SUBDIRS = echo math notify
 EXTRA_DIST = axis2.xml
+samples_DATA= axis2.log  axis2.xml  Makefile.am
+

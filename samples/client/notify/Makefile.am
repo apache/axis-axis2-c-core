@@ -1,7 +1,7 @@
 prgbindir=$(prefix)/bin/samples
 prgbin_PROGRAMS = notify
 samplesdir=$(prefix)/samples/client/notify
-samples_DATA=notify_client.c
+samples_DATA=notify_client.c Makefile.am
 notify_SOURCES = notify_client.c
 
 notify_LDADD   =  \

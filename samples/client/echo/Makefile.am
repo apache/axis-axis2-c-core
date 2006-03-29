@@ -2,7 +2,8 @@ prgbindir=$(prefix)/bin/samples
 samplesdir=$(prefix)/samples/client/echo
 prgbin_PROGRAMS = echo
 noinst_HEADERS = axis2_echo_stub.h
-samples_DATA=axis2_echo_stub.c echo_client.c axis2_echo_stub.h
+samples_DATA=axis2_echo_stub.c echo_client.c axis2_echo_stub.h Makefile.am
+
 echo_SOURCES = axis2_echo_stub.c \
                 echo_client.c
 

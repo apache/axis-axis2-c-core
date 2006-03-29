@@ -1,7 +1,7 @@
 prglibdir=$(prefix)/services/notify
 samplesdir=$(prefix)/samples/server/notify
 prglib_LTLIBRARIES = libnotify.la
-samples_DATA=notify.c notify_skeleton.c notify.h services.xml
+samples_DATA=notify.c notify_skeleton.c notify.h services.xml Makefile.am
 prglib_DATA= services.xml
 EXTRA_DIST = services.xml
 noinst_HEADERS = notify.h
