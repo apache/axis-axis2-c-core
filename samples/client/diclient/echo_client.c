@@ -37,6 +37,7 @@ int main(int argc, char** argv)
     axis2_log_t *log = NULL;
     axis2_allocator_t *allocator = NULL;
     char *wsdl_file_name = NULL;
+    axis2_di_client_t *diclient = NULL;
 
     /* set up the envioronment with allocator and log*/
     allocator = axis2_allocator_init (NULL);
@@ -54,7 +55,8 @@ int main(int argc, char** argv)
     /* build the SOAP request message content using OM API.*/
     node = build_om_programatically(&env);
     wsdl_file_name = argv[1];
-	status = axis2_di_client_invoke(&env, wsdl_file_name, node);
+    diclient = axis2_di_client_create(&env);
+	status = AXIS2_DI_CLIENT_INVOKE(diclient, &env, wsdl_file_name, node);
 	if(AXIS2_SUCCESS == status)
 		printf("status:%s\n", "Success");
 	else
