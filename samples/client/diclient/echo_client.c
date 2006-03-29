@@ -52,11 +52,14 @@ int main(int argc, char** argv)
       printf("Usage: print <wsdl_File_Name>\n");
       return 1;
     }
-    /* build the SOAP request message content using OM API.*/
-    node = build_om_programatically(&env);
     wsdl_file_name = argv[1];
     diclient = axis2_di_client_create(&env);
-	status = AXIS2_DI_CLIENT_INVOKE(diclient, &env, wsdl_file_name, node);
+	status = AXIS2_DI_CLIENT_INIT(diclient, &env, wsdl_file_name);
+    if(AXIS2_SUCCESS != status)
+            return status;
+    /* build the SOAP request message content using OM API.*/
+    node = build_om_programatically(&env);
+	status = AXIS2_DI_CLIENT_INVOKE(diclient, &env, node);
 	if(AXIS2_SUCCESS == status)
 		printf("status:%s\n", "Success");
 	else

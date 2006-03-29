@@ -52,6 +52,8 @@
 typedef struct axis2_di_client_impl
 {
     axis2_di_client_t di_client;
+    void *parser;
+    axis2_wsdl_desc_t *wsdl_desc;
 } axis2_di_client_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(di_client) \
@@ -66,9 +68,13 @@ axis2_status_t AXIS2_CALL
 axis2_status_t AXIS2_CALL
 axis2_di_client_invoke(axis2_di_client_t *di_client,
                         axis2_env_t **env,
-						axis2_char_t *wsdl_file_name, 
 				       	axis2_om_node_t *node);
                                 
+axis2_status_t AXIS2_CALL
+axis2_di_client_init(axis2_di_client_t *di_client,
+                        axis2_env_t **env,
+						axis2_char_t *wsdl_file_name);
+
 /************************** End of function prototypes ************************/
 
 axis2_di_client_t * AXIS2_CALL 
@@ -88,6 +94,8 @@ axis2_di_client_create (axis2_env_t **env)
         return NULL;
     }
     
+    di_client_impl->parser = NULL;
+    di_client_impl->wsdl_desc = NULL;
     di_client_impl->di_client.ops = NULL;
 	
 	di_client_impl->di_client.ops = 
@@ -100,8 +108,8 @@ axis2_di_client_create (axis2_env_t **env)
     }
     
 	di_client_impl->di_client.ops->free =  axis2_di_client_free;
-	di_client_impl->di_client.ops->invoke = 
-        axis2_di_client_invoke;
+	di_client_impl->di_client.ops->init = axis2_di_client_init;
+	di_client_impl->di_client.ops->invoke = axis2_di_client_invoke;
 	
 	return &(di_client_impl->di_client);
 }
@@ -118,6 +126,16 @@ axis2_di_client_free (axis2_di_client_t *di_client,
     
     di_client_impl = AXIS2_INTF_TO_IMPL(di_client);
     
+    if(di_client_impl->parser)
+    {
+        /* Free wsdl parser */
+    }
+    
+    if(di_client_impl->wsdl_desc)
+    {
+        /* Free wsdl parser */
+    }
+    
 	if(NULL != di_client->ops)
         AXIS2_FREE((*env)->allocator, di_client->ops);
     
@@ -126,16 +144,38 @@ axis2_di_client_free (axis2_di_client_t *di_client,
         AXIS2_FREE((*env)->allocator, di_client_impl);
         di_client_impl = NULL;
     }
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_di_client_init(axis2_di_client_t *di_client,
+                        axis2_env_t **env,
+						axis2_char_t *wsdl_file_name)
+{
+    axis2_di_client_impl_t *di_client_impl = NULL;
+	axis2_wsdl_pump_t *wsdl_pump = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, wsdl_file_name, AXIS2_FAILURE);
+    di_client_impl = AXIS2_INTF_TO_IMPL(di_client);
+    
+    di_client_impl->parser = axis2_wsdl4c_parser_create(wsdl_file_name, "");
+	di_client_impl->wsdl_desc = axis2_wsdl_desc_create(env);
+    wsdl_pump = axis2_wsdl_pump_create(env, di_client_impl->wsdl_desc, di_client_impl->parser);
+	if(!wsdl_pump)
+	{
+		return AXIS2_FAILURE;
+	}
+	return AXIS2_WSDL_PUMP_PUMP(wsdl_pump, env);
 }
 
 axis2_status_t AXIS2_CALL
 axis2_di_client_invoke(axis2_di_client_t *di_client,
                         axis2_env_t **env,
-						axis2_char_t *wsdl_file_name, 
 				       	axis2_om_node_t *node)
 {
+    axis2_di_client_impl_t *di_client_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    void *wp = NULL;
     axis2_char_t *address = NULL;
     axis2_char_t *wsa_action = NULL;
     axis2_char_t *client_home = NULL;
@@ -147,8 +187,6 @@ axis2_di_client_invoke(axis2_di_client_t *di_client,
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_conf_t *conf = NULL;
     axis2_msg_ctx_t *response_ctx = NULL;
-	axis2_wsdl_desc_t *wsdl_desc = NULL;
-	axis2_wsdl_pump_t *wsdl_pump = NULL;
 	axis2_hash_index_t *index = NULL;
 	axis2_hash_t *svcs = NULL;
 	axis2_hash_t *endpoints = NULL;
@@ -169,6 +207,10 @@ axis2_di_client_invoke(axis2_di_client_t *di_client,
 	axis2_wsdl_ext_soap_address_t *soap_address = NULL;
 	axis2_wsdl_ext_soap_op_t *soap_op = NULL;
 
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
+    di_client_impl = AXIS2_INTF_TO_IMPL(di_client);
+    
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
      * using the axis2.xml file.
      * In this sample client_home points to the Axis2/C default deploy folder. The client_home can 
@@ -180,19 +222,7 @@ axis2_di_client_invoke(axis2_di_client_t *di_client,
     if (!client_home)
         client_home = "../../deploy";
    
-    wp = axis2_wsdl4c_parser_create(wsdl_file_name, "");
-	wsdl_desc = axis2_wsdl_desc_create(env);
-    wsdl_pump = axis2_wsdl_pump_create(env, wsdl_desc, wp);
-	if(!wsdl_pump)
-	{
-		return AXIS2_FAILURE;
-	}
-	status = AXIS2_WSDL_PUMP_PUMP(wsdl_pump, env);
-	if(AXIS2_SUCCESS != status)
-	{
-		return status;
-	}
-	svcs = AXIS2_WSDL_DESC_GET_SVCS(wsdl_desc, env);
+    svcs = AXIS2_WSDL_DESC_GET_SVCS(di_client_impl->wsdl_desc, env);
     index = axis2_hash_first (svcs, env);	
 	axis2_hash_this (index, NULL, NULL, &value);
 	wsdl_svc = (axis2_wsdl_svc_t *) value;

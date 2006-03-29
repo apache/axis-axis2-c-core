@@ -55,8 +55,12 @@ struct axis2_di_client_ops
     axis2_status_t (AXIS2_CALL *
     invoke) (axis2_di_client_t *di_client,
              axis2_env_t **env,
-             axis2_char_t *wsdl_file_name,
              axis2_om_node_t *node);
+    
+    axis2_status_t (AXIS2_CALL *
+    init) (axis2_di_client_t *di_client,
+           axis2_env_t **env,
+		   axis2_char_t *wsdl_file_name);
 };
 
 /** 
@@ -76,8 +80,11 @@ axis2_di_client_create(axis2_env_t **env);
 #define AXIS2_DI_CLIENT_FREE(di_client, env) \
 		((di_client)->ops->free (di_client, env))
 		
-#define AXIS2_DI_CLIENT_INVOKE(di_client, env, wsdl_file_name, node) \
-		((di_client)->ops->invoke (di_client, env, wsdl_file_name, node))
+#define AXIS2_DI_CLIENT_INVOKE(di_client, env, node) \
+		((di_client)->ops->invoke (di_client, env, node))
+
+#define AXIS2_DI_CLIENT_INIT(di_client, env, wsdl_file_name) \
+		((di_client)->ops->init (di_client, env, wsdl_file_name))
 
 /************************** End of function macros ****************************/    
 
