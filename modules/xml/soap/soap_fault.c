@@ -744,6 +744,7 @@ axis2_soap_fault_create_default_fault(axis2_env_t **env,
         AXIS2_OM_NODE_FREE_TREE(fault_node, env);
         return NULL;
     }
+    AXIS2_SOAP_FAULT_TEXT_SET_LANG(soap_fault_text, env, "en");
     
     text_node = AXIS2_SOAP_FAULT_TEXT_GET_BASE_NODE(soap_fault_text, env);
     if(!text_node)
