@@ -276,7 +276,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
             }
 
 
-            reference_parameters = AXIS2_ENDPOINT_REF_GET_REF_PARAMS (epr, env);
+            /*reference_parameters = AXIS2_ENDPOINT_REF_GET_REF_PARAMS (epr, env);
             if (reference_parameters)
             {
 
@@ -286,7 +286,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                                                                  addr_ns);
                 axis2_addr_out_handler_add_to_header (env, epr, &soap_header_node,
                                                       addr_ns);
-            }
+            }*/
 
         }
 
@@ -331,7 +331,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         if (svc_group_context_id
             && AXIS2_STRCMP (svc_group_context_id, "") != 0)
         {
-            axis2_any_content_type_t *any_content = NULL;
+            /*axis2_any_content_type_t *any_content = NULL;
             axis2_qname_t *svc_qn = NULL;
             if (!AXIS2_ENDPOINT_REF_GET_REF_PARAMS (epr, env))
             {
@@ -345,7 +345,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                                     AXIS2_NAMESPACE_URI,
                                     AXIS2_NAMESPACE_PREFIX);
             AXIS2_ANY_CONTENT_TYPE_ADD_VALUE (any_content, env, svc_qn,
-                                              svc_group_context_id);
+                                              svc_group_context_id);*/
         }
 
         axis2_addr_out_handler_add_to_soap_header (env, epr,
@@ -640,6 +640,7 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
     {
         axis2_om_node_t *reference_node = NULL;
         axis2_om_element_t *reference_ele = NULL;
+        axis2_array_list_t *ref_attribute_list = NULL;
         int i = 0;
         
         addr_ns_obj = axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
@@ -649,7 +650,22 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
                                                  EPR_REFERENCE_PARAMETERS,
                                                  addr_ns_obj,
                                                  &reference_node);
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(ref_param_list, env); i ++)
+        
+        ref_attribute_list = AXIS2_ENDPOINT_REF_GET_REF_ATTRIBUTE_LIST(endpoint_ref, env);
+        if (ref_attribute_list)
+        {
+            int j = 0;
+            for (j = 0; j < AXIS2_ARRAY_LIST_SIZE(ref_attribute_list, env); j++)
+            {
+                axis2_om_attribute_t *attr = (axis2_om_attribute_t *)AXIS2_ARRAY_LIST_GET(ref_attribute_list, env, j);
+                if (attr)
+                {
+                    AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(reference_ele, env, attr, reference_node);
+                }
+            }
+        }
+        
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(ref_param_list, env); i++)
         {
             axis2_om_node_t *ref_node = (axis2_om_node_t *)AXIS2_ARRAY_LIST_GET(ref_param_list, env, i);
             if (ref_node)
@@ -657,6 +673,7 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
                 AXIS2_OM_NODE_ADD_CHILD(reference_node, env, ref_node);
             }
         }
+
     }
     
     meta_data_list = AXIS2_ENDPOINT_REF_GET_META_DATA_LIST(endpoint_ref, env);
@@ -664,6 +681,7 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
     {
         axis2_om_node_t *reference_node = NULL;
         axis2_om_element_t *reference_ele = NULL;
+        axis2_array_list_t *meta_attribute_list = NULL;
         int i = 0;
         
         if (!reference_node) /* may be we alredy created this in ref params block */
@@ -677,6 +695,20 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
                                                  &reference_node);
         }
         
+        meta_attribute_list = AXIS2_ENDPOINT_REF_GET_META_ATTRIBUTE_LIST(endpoint_ref, env);
+        if (meta_attribute_list)
+        {
+            int j = 0;
+            for (j = 0; j < AXIS2_ARRAY_LIST_SIZE(meta_attribute_list, env); j++)
+            {
+                axis2_om_attribute_t *attr = (axis2_om_attribute_t *)AXIS2_ARRAY_LIST_GET(meta_attribute_list, env, j);
+                if (attr)
+                {
+                    AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(reference_ele, env, attr, reference_node);
+                }
+            }
+        }
+        
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(meta_data_list, env); i ++)
         {
             axis2_om_node_t *ref_node = (axis2_om_node_t *)AXIS2_ARRAY_LIST_GET(meta_data_list, env, i);
@@ -685,6 +717,7 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
                 AXIS2_OM_NODE_ADD_CHILD(reference_node, env, ref_node);
             }
         }
+        
     }
     
     if (AXIS2_STRCMP (AXIS2_WSA_NAMESPACE_SUBMISSION, addr_ns) == 0)

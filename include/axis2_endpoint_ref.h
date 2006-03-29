@@ -29,6 +29,7 @@
 #include <axis2_any_content_type.h>
 #include <axis2_svc_name.h>
 #include <axis2_om_node.h>
+#include <axis2_om_attribute.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -103,6 +104,18 @@ extern "C"
         get_meta_data_list)(struct axis2_endpoint_ref *endpoint_ref,
                                   axis2_env_t **env);
 
+        axis2_array_list_t* (AXIS2_CALL *
+        get_ref_attribute_list)(struct axis2_endpoint_ref *endpoint_ref,
+                                          axis2_env_t **env);
+
+        axis2_array_list_t* (AXIS2_CALL *
+        get_meta_attribute_list)(struct axis2_endpoint_ref *endpoint_ref,
+                                          axis2_env_t **env);
+
+        axis2_array_list_t* (AXIS2_CALL *
+        get_extension_list)(struct axis2_endpoint_ref *endpoint_ref,
+                                  axis2_env_t **env);
+
         axis2_status_t (AXIS2_CALL *
         add_ref_param)(struct axis2_endpoint_ref *endpoint_ref,
                                   axis2_env_t **env,
@@ -113,19 +126,34 @@ extern "C"
                                   axis2_env_t **env,
                                   axis2_om_node_t* meta_data_node);
 
+        axis2_status_t (AXIS2_CALL *
+        add_ref_attribute)(struct axis2_endpoint_ref *endpoint_ref,
+                                          axis2_env_t **env,
+                                          axis2_om_attribute_t* attr);
+
+        axis2_status_t (AXIS2_CALL *
+        add_meta_attribute)(struct axis2_endpoint_ref *endpoint_ref,
+                                          axis2_env_t **env,
+                                          axis2_om_attribute_t* attr);
+
+        axis2_status_t (AXIS2_CALL *
+        add_extension)(struct axis2_endpoint_ref *endpoint_ref,
+                                          axis2_env_t **env, 
+                                          axis2_om_node_t* extension_node);
+
         /**
          * Method get_ref_params
          */
-        axis2_any_content_type_t* (AXIS2_CALL *
+ /*       axis2_any_content_type_t* (AXIS2_CALL *
 		get_ref_params)(struct axis2_endpoint_ref *endpoint_ref, 
-                        axis2_env_t **env);
+                        axis2_env_t **env);*/
         /**
          * Method set_ref_params
          */
-        axis2_status_t (AXIS2_CALL *
+/*        axis2_status_t (AXIS2_CALL *
 		set_ref_params)(struct axis2_endpoint_ref *endpoint_ref,
                         axis2_env_t **env,
-                        axis2_any_content_type_t* any_content_type);
+                        axis2_any_content_type_t* any_content_type);*/
         /**
          * Method get_svc_name
          */
@@ -143,7 +171,7 @@ extern "C"
 					  axis2_svc_name_t *svc_name);
 		
 		
-        axis2_om_node_t* (AXIS2_CALL *
+/*        axis2_om_node_t* (AXIS2_CALL *
 		get_policies)(struct axis2_endpoint_ref *endpoint_ref, 
                       axis2_env_t **env);
 		
@@ -151,8 +179,8 @@ extern "C"
 		set_policies)(struct axis2_endpoint_ref *endpoint_ref, 
                       axis2_env_t **env, 
 					  axis2_om_node_t *policies);
-		
-        axis2_any_content_type_t* (AXIS2_CALL *
+*/		
+/*        axis2_any_content_type_t* (AXIS2_CALL *
 		get_metadata)(struct axis2_endpoint_ref *endpoint_ref, 
                       axis2_env_t **env);
 		
@@ -160,7 +188,7 @@ extern "C"
 		set_metadata)(struct axis2_endpoint_ref *endpoint_ref, 
                       axis2_env_t **env, 
 					  axis2_any_content_type_t *metadata);
-		
+**/		
 	/*	
         axis2_status_t (AXIS2_CALL *
 		add_ref_param)(struct axis2_endpoint_ref *endpoint_ref, 
@@ -213,11 +241,11 @@ axis2_endpoint_ref_create(axis2_env_t **env,
 #define AXIS2_ENDPOINT_REF_SET_REF_PROPERTIES(endpoint_ref, env, ref_properties)\
 		((endpoint_ref)->ops->set_ref_properties(endpoint_ref, env, ref_properties))
 		
-#define AXIS2_ENDPOINT_REF_GET_REF_PARAMS(endpoint_ref, env) \
+/*#define AXIS2_ENDPOINT_REF_GET_REF_PARAMS(endpoint_ref, env) \
 		((endpoint_ref)->ops->get_ref_params(endpoint_ref, env))
 		
 #define AXIS2_ENDPOINT_REF_SET_REF_PARAMS(endpoint_ref, env, any_content_type) \
-		((endpoint_ref)->ops->set_ref_params(endpoint_ref, env, any_content_type))
+		((endpoint_ref)->ops->set_ref_params(endpoint_ref, env, any_content_type))*/
 		
 #define AXIS2_ENDPOINT_REF_GET_SVC_NAME(endpoint_ref, env) \
 		((endpoint_ref)->ops->get_svc_name(endpoint_ref, env))
@@ -225,17 +253,17 @@ axis2_endpoint_ref_create(axis2_env_t **env,
 #define AXIS2_ENDPOINT_REF_SET_SVC_NAME(endpoint_ref, env, svc_name) \
 		((endpoint_ref)->ops->set_svc_name(endpoint_ref, env, svc_name))
 		
-#define AXIS2_ENDPOINT_REF_GET_POLICIES(endpoint_ref, env) \
+/*#define AXIS2_ENDPOINT_REF_GET_POLICIES(endpoint_ref, env) \
 		((endpoint_ref)->ops->get_policies(endpoint_ref, env))
 		
 #define AXIS2_ENDPOINT_REF_SET_POLICIES(endpoint_ref, env, policies) \
-		((endpoint_ref)->ops->set_policies(endpoint_ref, env, policies))
+		((endpoint_ref)->ops->set_policies(endpoint_ref, env, policies))*/
 		
-#define AXIS2_ENDPOINT_REF_GET_METADATA(endpoint_ref, env) \
+/*#define AXIS2_ENDPOINT_REF_GET_METADATA(endpoint_ref, env) \
 		((endpoint_ref)->ops->get_metadata(endpoint_ref, env))
 		
 #define AXIS2_ENDPOINT_REF_SET_METADATA(endpoint_ref, env, metadata) \
-		((endpoint_ref)->ops->set_metadata(endpoint_ref, env, metadata))
+		((endpoint_ref)->ops->set_metadata(endpoint_ref, env, metadata))*/
 		
 #define AXIS2_ENDPOINT_REF_GET_REF_PARAM_LIST(endpoint_ref, env) \
 		((endpoint_ref)->ops->get_ref_param_list(endpoint_ref, env))
@@ -251,6 +279,24 @@ axis2_endpoint_ref_create(axis2_env_t **env,
 		
 #define AXIS2_ENDPOINT_REF_FREE(endpoint_ref, env) \
 		((endpoint_ref)->ops->free(endpoint_ref, env))
+
+#define AXIS2_ENDPOINT_REF_GET_REF_ATTRIBUTE_LIST(endpoint_ref, env) \
+        ((endpoint_ref)->ops->get_ref_attribute_list(endpoint_ref, env))
+
+#define AXIS2_ENDPOINT_REF_GET_META_ATTRIBUTE_LIST(endpoint_ref, env) \
+        ((endpoint_ref)->ops->get_meta_attribute_list(endpoint_ref, env))
+
+#define AXIS2_ENDPOINT_REF_GET_REF_EXTENTION_LIST(endpoint_ref, env) \
+        ((endpoint_ref)->ops->get_extension_list(endpoint_ref, env))
+
+#define AXIS2_ENDPOINT_REF_ADD_REF_ATTRIBUTE(endpoint_ref, env, attr) \
+        ((endpoint_ref)->ops->add_ref_attribute(endpoint_ref, env, attr))
+
+#define AXIS2_ENDPOINT_REF_ADD_META_ATTRIBUTE(endpoint_ref, env, attr) \
+        ((endpoint_ref)->ops->add_meta_attribute(endpoint_ref, env, attr))
+
+#define AXIS2_ENDPOINT_REF_ADD_EXTENSION(endpoint_ref, env, node) \
+        ((endpoint_ref)->ops->add_extension(endpoint_ref, env, node))
 
 
 /** @} */
