@@ -286,7 +286,7 @@ axis2_endpoint_ref_create(axis2_env_t **env,
 #define AXIS2_ENDPOINT_REF_GET_META_ATTRIBUTE_LIST(endpoint_ref, env) \
         ((endpoint_ref)->ops->get_meta_attribute_list(endpoint_ref, env))
 
-#define AXIS2_ENDPOINT_REF_GET_REF_EXTENTION_LIST(endpoint_ref, env) \
+#define AXIS2_ENDPOINT_REF_GET_REF_EXTENSION_LIST(endpoint_ref, env) \
         ((endpoint_ref)->ops->get_extension_list(endpoint_ref, env))
 
 #define AXIS2_ENDPOINT_REF_ADD_REF_ATTRIBUTE(endpoint_ref, env, attr) \

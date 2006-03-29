@@ -546,6 +546,7 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
     axis2_any_content_type_t *reference_param = NULL;
     axis2_array_list_t *ref_param_list = NULL;
     axis2_array_list_t *meta_data_list = NULL;
+    axis2_array_list_t *extension_list = NULL;
     axis2_om_node_t *header_block_node = NULL;
     axis2_om_node_t *header_node = NULL;
     axis2_om_namespace_t *addr_ns_obj = NULL;
@@ -720,6 +721,20 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
         
     }
     
+    extension_list = AXIS2_ENDPOINT_REF_GET_REF_EXTENSION_LIST(endpoint_ref, env);
+    if (extension_list && AXIS2_ARRAY_LIST_SIZE(extension_list, env) > 0)
+    {
+        int i = 0;
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(extension_list, env); i ++)
+        {
+            axis2_om_node_t *ref_node = (axis2_om_node_t *)AXIS2_ARRAY_LIST_GET(extension_list, env, i);
+            if (ref_node)
+            {
+                AXIS2_OM_NODE_ADD_CHILD(header_block_node, env, ref_node);
+            }
+        }
+    }
+
     if (AXIS2_STRCMP (AXIS2_WSA_NAMESPACE_SUBMISSION, addr_ns) == 0)
     {
         axis2_any_content_type_t *referece_properties = NULL;
