@@ -90,16 +90,28 @@ extern "C"
         axis2_char_t* (AXIS2_CALL *
         get_value)(struct axis2_om_text *om_text,
                    axis2_env_t **env);                                               
-                                               
+       /**
+        * set optimized 
+        * @param om_text pointer to om_text struct
+        * @param env environment
+        * @optimize optimize value
+        * @returns AXIS2_SUCCESS
+        */                                               
         axis2_status_t (AXIS2_CALL *
         set_optimize)(struct axis2_om_text *om_text,
-                        axis2_env_t **env,
-                        const axis2_bool_t optimize);
+                      axis2_env_t **env,
+                      axis2_bool_t optimize);
 
+       /**
+        * @param om_text text value
+        * @param env environment
+        * @param is_binary
+        * @returns AXIS2_SUCCESS
+        */
         axis2_status_t (AXIS2_CALL *
         set_is_binary)(struct axis2_om_text *om_text,
-                        axis2_env_t **env,
-                        const axis2_bool_t is_binary);
+                       axis2_env_t **env,
+                       axis2_bool_t is_binary);
                                                                                                 
     } axis2_om_text_ops_t;
 
@@ -145,13 +157,15 @@ extern "C"
 /** set text value */
 #define AXIS2_OM_TEXT_SET_VALUE(om_text, env, value) \
         ((om_text)->ops->set_value(om_text, env, value))
+        
+/** set whether it is to be optimized */        
 #define AXIS2_OM_TEXT_SET_OPTIMIZE(om_text, env, optimize) \
         ((om_text)->ops->set_optimize(om_text, env, optimize))
+
+/** set whether it binary */
 #define AXIS2_OM_TEXT_SET_IS_BINARY(om_text, env, is_binary) \
         ((om_text)->ops->set_is_binary(om_text, env, is_binary))    
               
-
-
 /** @} */
 
 #ifdef __cplusplus
