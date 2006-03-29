@@ -1,6 +1,6 @@
 prgbindir=$(prefix)/bin/samples
 prgbin_PROGRAMS = echo_client
-samplesdir=$(prefix)/samples/client/dynamic_invocation
+samplesdir=$(prefix)/samples/client/diclient
 samples_DATA=echo_client.c
 echo_client_SOURCES = echo_client.c
 echo_client_LDADD   =  \
