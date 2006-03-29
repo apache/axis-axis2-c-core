@@ -16,7 +16,7 @@ echo_client_LDADD   =  \
                     -laxis2_http_receiver \
                     -laxis2_wom \
                     -laxis2_wsdl4c \
-					-ldiclient \
+					-laxis2_diclient \
                     -L$(WSDLPULL)/lib \
                     -lschema \
                     -lxmlpull \
