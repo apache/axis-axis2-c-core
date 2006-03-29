@@ -92,20 +92,6 @@ extern "C"
 		get_document)(struct axis2_om_stax_builder *builder,
                       axis2_env_t **env);
         /**
-         *  set the document associated with the builder
-         * @param builder pointer to builder struct
-         * @param env environment , MUST NOT be NULL.
-         * @param document pointer to document struct that needs to be associated 
-         *                  with builder
-         * @return status of the op. AXIS2_SUCCESS on success and AXIS2_FAILURE 
-         *                  on error.
-         */                                          
-
-        axis2_status_t  (AXIS2_CALL *
-		set_document)(struct axis2_om_stax_builder *builder,
-                      axis2_env_t **env,
-                      axis2_om_document_t *document); 
-        /**
          * builder is finished building om structure
          */        
                                              
@@ -152,9 +138,7 @@ extern "C"
 /** free op of the builder */
 #define AXIS2_OM_STAX_BUILDER_FREE(builder,env) \
         ((builder)->ops->free(builder,env))
-/** associate a document with a builder */       
-#define AXIS2_OM_STAX_BUILDER_SET_DOCUMENT(builder,env,document) \
-        ((builder)->ops->set_document(builder,env,document))
+
 /** get the document associated with the builder */  
 #define AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(builder,env) \
         ((builder)->ops->get_document(builder,env))

@@ -43,12 +43,6 @@ axis2_om_document_t* AXIS2_CALL
 axis2_om_stax_builder_get_document (axis2_om_stax_builder_t *builder,
                                     axis2_env_t **env);
                                             
-                                            
-axis2_status_t  AXIS2_CALL
-axis2_om_stax_builder_set_document(axis2_om_stax_builder_t *builder,
-                                    axis2_env_t **env,
-                                    axis2_om_document_t *document);                           
-   
 axis2_bool_t  AXIS2_CALL
 axis2_om_stax_builder_is_complete(axis2_om_stax_builder_t *builder,
                                    axis2_env_t **env);
@@ -144,10 +138,7 @@ axis2_om_stax_builder_create (axis2_env_t **env,
         
 	builder->om_stax_builder.ops->free = 
 	        axis2_om_stax_builder_free;
-	
-    builder->om_stax_builder.ops->set_document = 
-	        axis2_om_stax_builder_set_document;
-	
+
     builder->om_stax_builder.ops->get_document = 
             axis2_om_stax_builder_get_document;
     
@@ -842,20 +833,7 @@ axis2_om_stax_builder_get_document (axis2_om_stax_builder_t *builder,
     AXIS2_ENV_CHECK(env,NULL);
     return AXIS2_INTF_TO_IMPL(builder)->document;
 }
-/**
-    This is an internal function
-*/
-axis2_status_t  AXIS2_CALL
-axis2_om_stax_builder_set_document(axis2_om_stax_builder_t *builder,
-                                    axis2_env_t **env,
-                                    axis2_om_document_t *document)
-{
-    AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, builder, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, document , AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(builder)->document = document ;
-    return AXIS2_SUCCESS;
-}
+
 /**
     This is an internal function 
 */

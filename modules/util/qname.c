@@ -363,7 +363,7 @@ axis2_qname_to_string(axis2_qname_t *qname,
         if(NULL != temp_string3)
         {
             AXIS2_FREE((*env)->allocator, temp_string2);
-            temp_string2 = NULL;
+            temp_string3 = NULL;
         }
     }     
     return qname_impl->qname_string;        
