@@ -611,9 +611,10 @@ axis2_addr_in_extract_to_epr_ref_params(axis2_env_t **env,
                     attr_value = AXIS2_OM_ATTRIBUTE_GET_LOCALNAME(is_ref_param_attr, env);
                     if(AXIS2_STRCMP("true", attr_value) == 0)
                     {
-                        AXIS2_ENDPOINT_REF_ADD_REF_PARAM(to_epr, env,
+                        AXIS2_ENDPOINT_REF_ADD_REF_PARAM(to_epr, env, header_block_node);
+                        /*
                             AXIS2_OM_ELEMENT_GET_QNAME(header_block_ele, env), 
-                            AXIS2_OM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node));
+                            AXIS2_OM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node));*/
                     }
               }                    
         }

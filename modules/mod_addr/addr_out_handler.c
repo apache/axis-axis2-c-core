@@ -544,6 +544,8 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
     axis2_soap_header_block_t *header_block = NULL;
     axis2_char_t *address = NULL;
     axis2_any_content_type_t *reference_param = NULL;
+    axis2_array_list_t *ref_param_list = NULL;
+    axis2_array_list_t *meta_data_list = NULL;
     axis2_om_node_t *header_block_node = NULL;
     axis2_om_node_t *header_node = NULL;
     axis2_om_namespace_t *addr_ns_obj = NULL;
@@ -602,7 +604,7 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
     axis2_addr_out_handler_add_to_header (env, endpoint_ref,
                                           &header_block_node, addr_ns);
 
-    reference_param = AXIS2_ENDPOINT_REF_GET_REF_PARAMS (endpoint_ref, env);
+    /*reference_param = AXIS2_ENDPOINT_REF_GET_REF_PARAMS (endpoint_ref, env);
 
     if (reference_param)
     {
@@ -631,8 +633,60 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
                  addr_ns_obj = NULL;
             }
         }
+    }*/
+    
+    ref_param_list = AXIS2_ENDPOINT_REF_GET_REF_PARAM_LIST(endpoint_ref, env);
+    if (ref_param_list && AXIS2_ARRAY_LIST_SIZE(ref_param_list, env) > 0)
+    {
+        axis2_om_node_t *reference_node = NULL;
+        axis2_om_element_t *reference_ele = NULL;
+        int i = 0;
+        
+        addr_ns_obj = axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+         
+        reference_ele = axis2_om_element_create (env,
+                                                 header_block_node,
+                                                 EPR_REFERENCE_PARAMETERS,
+                                                 addr_ns_obj,
+                                                 &reference_node);
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(ref_param_list, env); i ++)
+        {
+            axis2_om_node_t *ref_node = (axis2_om_node_t *)AXIS2_ARRAY_LIST_GET(ref_param_list, env, i);
+            if (ref_node)
+            {
+                AXIS2_OM_NODE_ADD_CHILD(reference_node, env, ref_node);
+            }
+        }
     }
-
+    
+    meta_data_list = AXIS2_ENDPOINT_REF_GET_META_DATA_LIST(endpoint_ref, env);
+    if (meta_data_list && AXIS2_ARRAY_LIST_SIZE(meta_data_list, env) > 0)
+    {
+        axis2_om_node_t *reference_node = NULL;
+        axis2_om_element_t *reference_ele = NULL;
+        int i = 0;
+        
+        if (!reference_node) /* may be we alredy created this in ref params block */
+        {
+            addr_ns_obj = axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+         
+            reference_ele = axis2_om_element_create (env,
+                                                 header_block_node,
+                                                 AXIS2_WSA_METADATA,
+                                                 addr_ns_obj,
+                                                 &reference_node);
+        }
+        
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(meta_data_list, env); i ++)
+        {
+            axis2_om_node_t *ref_node = (axis2_om_node_t *)AXIS2_ARRAY_LIST_GET(meta_data_list, env, i);
+            if (ref_node)
+            {
+                AXIS2_OM_NODE_ADD_CHILD(reference_node, env, ref_node);
+            }
+        }
+    }
+    
     if (AXIS2_STRCMP (AXIS2_WSA_NAMESPACE_SUBMISSION, addr_ns) == 0)
     {
         axis2_any_content_type_t *referece_properties = NULL;
