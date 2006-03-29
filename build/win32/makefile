@@ -54,7 +54,7 @@ AXIS2_CONFIG_FILE = .\axis2config.msvc
 
 AXIS2_MAJOR_VERSION = M
 AXIS2_MINOR_VERSION = 0
-AXIS2_MICRO_VERSION = 3
+AXIS2_MICRO_VERSION = 9
 
 #binary distribution dll names
 
@@ -68,6 +68,7 @@ AXIS2_TRANSPORT_SENDER = axis2_http_sender
 AXIS2_TRANSPORT_RECEIVER = axis2_http_receiver
 AXIS2_ENGINE = axis2_engine
 AXIS2_SERVER = axis2_http_server
+AXIS2_APACHE_MODULE = mod_axis2
 
 # axis2_version
 
@@ -82,25 +83,22 @@ CPPFLAGS = /nologo /I$(AXIS2_SOURCE_DIR)\include
 
 # include path
 GUTHTHILA_INCP = /I$(AXIS2_SOURCE_DIR)\modules\xml\parser\guththila\impl\src
-
-AXIS2_INCP = /I$(AXIS2_SOURCE_DIR)\modules\util /I$(AXIS2_SOURCE_DIR)\modules\xml\parser /I$(AXIS2_SOURCE_DIR)\modules\platforms /I$(AXIS2_SOURCE_DIR)\modules\platforms\windows /I$(AXIS2_SOURCE_DIR)\modules\wsdl /I$(AXIS2_SOURCE_DIR)\modules\wsdl /I$(AXIS2_SOURCE_DIR)\modules\core\clientapi /I$(AXIS2_SOURCE_DIR)\modules\core\deployment /I$(AXIS2_SOURCE_DIR)\modules\core\description /I$(AXIS2_SOURCE_DIR)\modules\core\transport /I$(AXIS2_SOURCE_DIR)\include /I$(LIBXML2_INSTALL_DIR)\include /I$(ICONV_INSTALL_DIR)\include /I$(AXIS2_SOURCE_DIR)\modules\core\engine /I$(AXIS2_SOURCE_DIR)\modules\core\context /I$(AXIS2_SOURCE_DIR)\modules\core\util
+APACHE_INCP = /I$(APACHE_INSTALL_DIR)\include
+AXIS2_INCP = /I$(AXIS2_SOURCE_DIR)\modules\util /I$(AXIS2_SOURCE_DIR)\modules\xml\parser /I$(AXIS2_SOURCE_DIR)\modules\platforms /I$(AXIS2_SOURCE_DIR)\modules\platforms\windows /I$(AXIS2_SOURCE_DIR)\modules\wsdl /I$(AXIS2_SOURCE_DIR)\modules\wsdl /I$(AXIS2_SOURCE_DIR)\modules\core\clientapi /I$(AXIS2_SOURCE_DIR)\modules\core\deployment /I$(AXIS2_SOURCE_DIR)\modules\core\description /I$(AXIS2_SOURCE_DIR)\modules\core\transport /I$(AXIS2_SOURCE_DIR)\include /I$(LIBXML2_INSTALL_DIR)\include /I$(ICONV_INSTALL_DIR)\include /I$(AXIS2_SOURCE_DIR)\modules\core\engine /I$(AXIS2_SOURCE_DIR)\modules\core\context /I$(AXIS2_SOURCE_DIR)\modules\core\util /I$(AXIS2_SOURCE_DIR)\include\platforms /I$(AXIS2_SOURCE_DIR)\include\platforms\windows /I$(AXIS2_SOURCE_DIR)\modules\xml\om /I$(AXIS2_SOURCE_DIR)\modules\xml\soap  /I$(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\apache2
 
  
-
-
-
 CC = cl.exe 
 CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT" /w /nologo
-CFLAGS = $(CFLAGS) $(AXIS2_INCP) $(GUTHTHILA_INCP)
+CFLAGS = $(CFLAGS) $(AXIS2_INCP) $(GUTHTHILA_INCP) $(APACHE_INCP)
 
 
 
 # linker options
 
 LD = link.exe
-LDFLAGS = /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXML2_INSTALL_DIR)\lib
+LDFLAGS = /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXML2_INSTALL_DIR)\lib /LIBPATH:$(APACHE_INSTALL_DIR)\lib
 LIBS =  Rpcrt4.lib Ws2_32.lib
-
+APACHE_LIBS = apr.lib xml.lib libhttpd.lib aprutil.lib libapr.lib
 
 # The archiver and its options.
 AR = lib.exe
@@ -266,6 +264,18 @@ axis2_mod_addr:
 	
 	copy $(AXIS2_SOURCE_DIR)\modules\mod_addr\module.xml $(AXIS2_MODULES)\addressing
 
+axis2_apache_module:
+	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\apache2\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(APACHE_LIBS) /DLL /OUT:mod_apache.dll  /IMPLIB:mod_apache.lib 
+	del *.obj
+	copy mod_apache.dll $(AXIS2_LIBS)\
+
+	copy mod_apache.lib $(AXIS2_LIBS)\
+
+	del *.dll
+
+	del *.lib
+	
 axis2_client_math:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\math\*.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:math.exe 
