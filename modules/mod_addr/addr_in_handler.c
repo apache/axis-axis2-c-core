@@ -453,13 +453,13 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
         {
             axis2_om_child_element_iterator_t *ref_param_iter = NULL;       
             
-            axis2_any_content_type_t *any_content_type = NULL;
+            /*axis2_any_content_type_t *any_content_type = NULL;
             any_content_type = AXIS2_ENDPOINT_REF_GET_REF_PARAMS(endpoint_ref, env);
             if(any_content_type == NULL)
             {
                 any_content_type = axis2_any_content_type_create(env);
                 AXIS2_ENDPOINT_REF_SET_REF_PARAMS(endpoint_ref, env, any_content_type);
-            }            
+            } */           
 
             ref_param_iter = AXIS2_OM_ELEMENT_GET_CHILD_ELEMENTS(child_ele, env, child_node);
             if(ref_param_iter)
@@ -471,24 +471,24 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
                    axis2_any_content_type_t *any_content = NULL;
                    om_node = AXIS2_OM_CHILD_ELEMENT_ITERATOR_NEXT(ref_param_iter, env);
                    om_ele  = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);
-                   any_content = AXIS2_ENDPOINT_REF_GET_REF_PARAMS(endpoint_ref, env);
+                   /*any_content = AXIS2_ENDPOINT_REF_GET_REF_PARAMS(endpoint_ref, env);
                    if(any_content && om_ele)
                    {
                        AXIS2_ANY_CONTENT_TYPE_ADD_VALUE(any_content, env, 
                             AXIS2_OM_ELEMENT_GET_QNAME(om_ele, env), AXIS2_OM_ELEMENT_GET_TEXT(om_ele, env, om_node));
                        
-                   }                       
+                   } */                      
                 }                    
             }
             
         }else if(axis2_addr_in_check_element(env, wsa_meta_qn, child_qn))        
         {
-           axis2_any_content_type_t *any_content_type = AXIS2_ENDPOINT_REF_GET_METADATA(endpoint_ref, env);
+           /*axis2_any_content_type_t *any_content_type = AXIS2_ENDPOINT_REF_GET_METADATA(endpoint_ref, env);
            if(any_content_type)
            {
                AXIS2_ANY_CONTENT_TYPE_ADD_VALUE(any_content_type, env, 
                             child_qn , AXIS2_OM_ELEMENT_GET_TEXT(child_ele, env, child_node));
-           }               
+           } */              
             
         }
     }        

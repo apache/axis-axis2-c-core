@@ -656,7 +656,7 @@ axis2_stub_populate_properties(axis2_stub_t *stub,
         
         axis2_hash_this(index, &key, NULL, &val);
         property = (axis2_property_t *) val;
-        AXIS2_CALL_SET(call, env, key, property);
+        AXIS2_CALL_SET(call, env, (void*)key, property);
         
     }
     return AXIS2_SUCCESS;
