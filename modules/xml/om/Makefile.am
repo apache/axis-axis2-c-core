@@ -15,8 +15,7 @@ libaxis2_om_la_SOURCES = om_attribute.c \
                         om_children_qname_iterator.c \
                         om_child_element_iterator.c \
                         om_children_with_specific_attribute_iterator.c \
-                        om_navigator.c \
-                        om_output_format.c
+                        om_navigator.c
 
 libaxis2_om_la_LIBADD =  ../../util/libaxis2_util.la ../attachments/libaxis2_attachments.la
 INCLUDES = -I$(top_builddir)/include \
@@ -26,4 +25,4 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/xml/om\
             -I$(top_builddir)/modules/xml/attachments
 
-EXTRA_DIST=axis2_om_node_internal.h axis2_om_stax_builder_internal.h axis2_om_output_format.h
+EXTRA_DIST=axis2_om_node_internal.h axis2_om_stax_builder_internal.h 
