@@ -104,6 +104,8 @@ build_conf_ctx (axis2_env_t **env,
 
     axis2_init_modules(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
+
+    AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env);
    
     return conf_ctx;
 }

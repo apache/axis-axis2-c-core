@@ -593,6 +593,11 @@ axis2_msg_info_headers_free(struct axis2_msg_info_headers *msg_info_headers,
         AXIS2_ENDPOINT_REF_FREE(msg_info_headers_impl->to, env);
         msg_info_headers_impl->to = NULL;
     }
+    if (msg_info_headers_impl->from)
+    {
+        AXIS2_ENDPOINT_REF_FREE(msg_info_headers_impl->from, env);
+        msg_info_headers_impl->from = NULL;
+    }
     if (msg_info_headers_impl->reply_to)
     {
         AXIS2_ENDPOINT_REF_FREE(msg_info_headers_impl->reply_to, env);

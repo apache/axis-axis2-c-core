@@ -570,6 +570,12 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_two_way_send(axis2_env_t **env, axis2_msg_ctx_
     if (response_envelope) 
     {
         AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
+        if (engine)
+        {
+            AXIS2_ENGINE_FREE(engine, env);
+            engine = NULL;
+        }
+                    
         engine = axis2_engine_create(env, conf_ctx);
         if (engine)
         {

@@ -60,6 +60,8 @@ typedef struct axis2_call_impl
     axis2_op_t *op_template;
     /** last response message context */
     axis2_msg_ctx_t *last_res_msg_ctx;
+    /* used to hold the service created in assume service */
+    axis2_svc_t *axis_svc_private;
 
 } axis2_call_impl_t;
 
@@ -209,6 +211,7 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env,
     call_impl->op_template = NULL;
     call_impl->last_res_msg_ctx = NULL;
     call_impl->svc_ctx = NULL;
+    call_impl->axis_svc_private = NULL;
     
     if(svc_ctx)
     {
@@ -309,11 +312,17 @@ axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call,
         }
     }    
    
-    if(NULL != call_impl->op_template)
+    if (call_impl->axis_svc_private)
+    {
+        AXIS2_SVC_FREE(call_impl->axis_svc_private, env);
+        call_impl->axis_svc_private = NULL;
+    }
+
+    /*if(NULL != call_impl->op_template)
     {
         AXIS2_OP_FREE(call_impl->op_template, env);
         call_impl->op_template = NULL;
-    } 
+    }*/ 
 
     AXIS2_FREE((*env)->allocator, call_impl);
     call_impl = NULL;
@@ -1304,7 +1313,13 @@ axis2_call_assume_svc_ctx(axis2_call_t *call,
         axis2_phases_info_t *info = NULL;
         
         /* we will assume a Service and operations */
-        axis_svc = axis2_svc_create_with_qname(env, assumed_svc_qname);
+        if (call_impl->axis_svc_private)
+        {
+            AXIS2_SVC_FREE(call_impl->axis_svc_private, env);
+            call_impl->axis_svc_private = NULL;
+        }
+        call_impl->axis_svc_private = axis2_svc_create_with_qname(env, assumed_svc_qname);
+        axis_svc = call_impl->axis_svc_private;
         qtemp_op = axis2_qname_create(env, "TemplateOperation", NULL, NULL);
         call_impl->op_template = axis2_op_create_with_qname(env, qtemp_op);
         AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(call_impl->op_template, env, AXIS2_MEP_URI_OUT_IN);

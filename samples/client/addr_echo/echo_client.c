@@ -218,6 +218,11 @@ int main(int argc, char** argv)
     {
         AXIS2_CALL_FREE(call, &env);
     }
+    if (endpoint_ref)
+    {
+        AXIS2_ENDPOINT_REF_FREE(endpoint_ref, &env);
+        endpoint_ref = NULL;
+    }
     return status;
 }
 
