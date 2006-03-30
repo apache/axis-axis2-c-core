@@ -262,8 +262,15 @@ Note: To do the following tasks you might need super user privileges in your mac
         SetHandler axis2_module
         RepoPath <axis2 repository path>
         LogFile <axis2 log file path>
+        Axis2LogLevel LOG_LEVEL
     </Location>
-
+* LOG_LEVEL can be one of following
+    AXIS2_LOG_LEVEL_CRITICAL - Log critical errors only
+    AXIS2_LOG_LEVEL_ERROR - Log errors critical errors
+    AXIS2_LOG_LEVEL_WARNING - Log warnings and above
+    AXIS2_LOG_LEVEL_INFO - Log info and above
+    AXIS2_LOG_LEVEL_DEBUG - Log debug and above (default)
+    AXIS2_LOG_LEVEL_TRACE - Log trace messages
 * Make sure that the apache2 user has correct permissions to above paths
     - Read permission to the repository
     - Write permission to the log file

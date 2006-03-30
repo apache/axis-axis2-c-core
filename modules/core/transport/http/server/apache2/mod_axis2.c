@@ -31,6 +31,7 @@ typedef struct axis2_config_rec
 {
     char * axis2_log_file;
     char * axis2_repo_path;
+    axis2_log_levels_t log_level;
 }axis2_config_rec_t;
 
 axis2_apache2_worker_t *axis2_worker = NULL;
@@ -41,6 +42,8 @@ static void * axis2_create_svr(apr_pool_t *p, server_rec *s);
 static const char *axis2_set_repo_path(cmd_parms *cmd, void *dummy, 
                         const char *arg);
 static const char *axis2_set_log_file(cmd_parms *cmd, void *dummy, 
+                        const char *arg);
+static const char *axis2_set_log_level(cmd_parms *cmd, void *dummy, 
                         const char *arg);
 static int axis2_handler(request_rec *req);
 static void axis2_module_init(apr_pool_t* p, server_rec* svr_rec);
@@ -53,6 +56,8 @@ static const command_rec axis2_cmds[] =
                   "Axis2/C repository path"),
     AP_INIT_TAKE1("LogFile", axis2_set_log_file, NULL, ACCESS_CONF,
                   "Axis2/C log file name"),
+    AP_INIT_TAKE1("Axis2LogLevel", axis2_set_log_level, NULL, ACCESS_CONF,
+                  "Axis2/C log level"),
     {NULL}
 };
 
@@ -72,6 +77,7 @@ static void * axis2_create_svr(apr_pool_t *p, server_rec *s)
     axis2_config_rec_t *conf = apr_palloc(p, sizeof(*conf));
     conf->axis2_log_file = NULL;
     conf->axis2_repo_path = NULL;
+    conf->log_level = AXIS2_LOG_LEVEL_DEBUG;
     /* We need to init xml readers before we go into threaded env
      */
     axis2_xml_reader_init();
@@ -93,6 +99,44 @@ static const char *axis2_set_log_file(cmd_parms *cmd, void *dummy,
     axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
             cmd->server->module_config, &axis2_module);
     conf->axis2_log_file = apr_pstrdup(cmd->pool, arg);
+    return NULL;
+}
+
+static const char *axis2_set_log_level(cmd_parms *cmd, void *dummy, 
+                        const char *arg)
+{
+    axis2_log_levels_t level = AXIS2_LOG_LEVEL_DEBUG;
+    axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
+                        cmd->server->module_config, &axis2_module);
+    
+    if(NULL != arg)
+    {
+        if(!apr_strnatcmp(arg, "AXIS2_LOG_LEVEL_DEBUG"))
+        {
+            level = AXIS2_LOG_LEVEL_DEBUG;
+        }
+        else if(!apr_strnatcmp(arg,"AXIS2_LOG_LEVEL_CRITICAL"))
+        {
+            level = AXIS2_LOG_LEVEL_CRITICAL;
+        }
+        else if(!apr_strnatcmp(arg,"AXIS2_LOG_LEVEL_ERROR"))
+        {
+            level = AXIS2_LOG_LEVEL_ERROR;
+        }
+        else if(!apr_strnatcmp(arg,"AXIS2_LOG_LEVEL_WARNING"))
+        {
+            level = AXIS2_LOG_LEVEL_WARNING;
+        }
+        else if(!apr_strnatcmp(arg,"AXIS2_LOG_LEVEL_INFO"))
+        {
+            level = AXIS2_LOG_LEVEL_INFO;
+        }
+        else if(!apr_strnatcmp(arg,"AXIS2_LOG_LEVEL_TRACE"))
+        {
+            level = AXIS2_LOG_LEVEL_TRACE;
+        }
+    }
+    conf->log_level = level;
     return NULL;
 }
 
@@ -150,6 +194,7 @@ static void axis2_module_init(apr_pool_t* p, server_rec* svr_rec)
                         "log init failed\n");
         status = AXIS2_FAILURE;
     }
+    axis2_logger->level = conf->log_level;
     thread_pool = axis2_thread_pool_init(allocator);
     if(NULL == thread_pool)
     {
@@ -165,6 +210,8 @@ static void axis2_module_init(apr_pool_t* p, server_rec* svr_rec)
                         "axis2_environment init failed\n");
         status = AXIS2_FAILURE;
     }
+    AXIS2_LOG_INFO(axis2_env->log, "Starting log with log level %d", 
+                        conf->log_level);
     axis2_worker = axis2_apache2_worker_create(&axis2_env, 
                         conf->axis2_repo_path);
     if(NULL == axis2_worker)
