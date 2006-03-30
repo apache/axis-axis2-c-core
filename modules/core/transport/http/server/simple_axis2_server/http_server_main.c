@@ -61,6 +61,7 @@ void system_exit(axis2_env_t *env, int status)
 		axis2_env_free(env);
 	}
     axis2_allocator_free(allocator);
+    axis2_xml_reader_cleanup();
 	_exit(status);
 }
 

@@ -228,23 +228,33 @@ C:\axis2c\build\deploy\bin\samples>echo.exe
 
 5. Installing Apache2 Web Server integration module (mod_axis2)
 ---------------------------------------------------------------
-5.1 Building mod_axis2 from source tree
+5.1 Building mod_axis2 from source tree 
+5.1.1 On Linux Platform
 
 * Provide the apache2 include files location as configure option
   ./configure --with-apache2="<apache2 include files location>" [other configure options]
   - Some apache2 distributions install APR (Apache Portable Runtime) include files in a seperate location which is requred to build mod_axis2. In that case use
-  ./configure --with-apache2="<apache2 include files location>" --with-apr="apr include files location>" [other configure options]
+  ./configure --with-apache2="<apache2 include files location>" --with-apr="<apr include files location>" [other configure options]
 * Then build the source tree
     make
     make install
   - This will install mod_axis2.so into your "<your_path_to_axis2c>/lib"
 
-5.1 Deploying in Apache2 Web Server
+5.1.2 On Win32 platform
+* Provide the apache2 location in configure.in file in APACHE_INSTALL_DIR
+    eg : APACHE_INSTALL_DIR = E:\Apache
+* After compiling the sources (as described in section 4.3) build the mod_axis2.dll by issuing the command "nmake axis2_apache_module".
+* This will build the mod_axis2.dll and copy it to %AXIS2C_HOME%\lib directory.
+    eg: C:\axis2c\build\deploy\lib 
+
+5.2 Deploying in Apache2 Web Server
 
 Note: To do the following tasks you might need super user privileges in your machine.
 
-* Copy the libmod_axis2.so.0.0.0 to "<apache2 modules directory>" (eg: /usr/lib/apache2/modules) as mod_axis2.so 
+* Copy the mod_axis2 (libmod_axis2.so.0.0.0 on Linux and mod_axis2.dll in Windows) to "<apache2 modules directory>" (eg: /usr/lib/apache2/modules in Linux or C:\Apache2\modules in Windows) as mod_axis2.so 
     eg: cp $AXIS2C_HOME/lib/libmod_axis2.so.0.0.0 /usr/lib/apache2/modules/mod_axis2.so
+        copy C:\axis2c\build\deploy\lib\mod_axis2.dll C:\Apache2\modules\mod_axis2.so
+
 * Edit the Apache2's configuration file (generally httpd.conf) and add the following directives
 
     LoadModule axis2_module   <apache2 modules directory>/mod_axis2.so
