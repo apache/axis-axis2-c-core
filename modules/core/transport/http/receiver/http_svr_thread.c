@@ -23,6 +23,7 @@
 #include <axis2_simple_http_svr_conn.h>
 #include <axis2_url.h>
 #include <axis2_error_default.h>
+#include <axis2_xml_reader.h>
 #include <signal.h>
 
 
