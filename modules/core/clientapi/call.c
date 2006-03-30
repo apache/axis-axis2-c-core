@@ -471,12 +471,14 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
         axis2_op_ctx_t *op_ctx = NULL;
         axis2_msg_ctx_t *response = NULL;
         axis2_soap_envelope_t *response_envelope = NULL;
-        axis2_char_t *address = NULL;        
+        axis2_char_t *address = NULL;
+        axis2_char_t *epr_address = NULL;
         
         /* Usual Request-Response Sync implemetation */
         property = axis2_property_create(env);
         AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
-        address = AXIS2_ENDPOINT_REF_GET_ADDRESS(call_impl->to, env);
+        epr_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(call_impl->to, env);
+		address = AXIS2_STRDUP(epr_address, env);
         AXIS2_PROPERTY_SET_VALUE(property, env, address);
         AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
                                     AXIS2_TRANSPORT_URL, property, AXIS2_FALSE);

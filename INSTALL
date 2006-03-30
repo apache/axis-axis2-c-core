@@ -248,7 +248,6 @@ C:\axis2c\build\deploy\bin\samples>echo.exe
     eg: C:\axis2c\build\deploy\lib 
 
 5.2 Deploying in Apache2 Web Server
-
 Note: To do the following tasks you might need super user privileges in your machine.
 
 * Copy the mod_axis2 (libmod_axis2.so.0.0.0 on Linux and mod_axis2.dll in Windows) to "<apache2 modules directory>" (eg: /usr/lib/apache2/modules in Linux or C:\Apache2\modules in Windows) as mod_axis2.so 
@@ -271,6 +270,8 @@ Note: To do the following tasks you might need super user privileges in your mac
     AXIS2_LOG_LEVEL_INFO - Log info and above
     AXIS2_LOG_LEVEL_DEBUG - Log debug and above (default)
     AXIS2_LOG_LEVEL_TRACE - Log trace messages
+* Use forward slashes "/" for path seperators in <apache2 modules directory>, <axis2 repository path> and <axis2 log file path>
+
 * Make sure that the apache2 user has correct permissions to above paths
     - Read permission to the repository
     - Write permission to the log file

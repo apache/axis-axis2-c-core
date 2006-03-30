@@ -234,6 +234,22 @@ axis2_services_echo:
 	
 	copy $(AXIS2_SOURCE_DIR)\samples\server\echo\services.xml $(AXIS2_SERVICES)\echo
 
+axis2_services_notify:
+	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\echo  $(AXIS2_SOURCE_DIR)\samples\server\notify\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:notify.dll  
+	del *.obj
+	
+	if not exist $(AXIS2_SERVICES)\notify mkdir $(AXIS2_SERVICES)\notify
+
+	copy notify.dll $(AXIS2_SERVICES)\notify
+
+	del *.dll
+
+	del *.lib
+	
+	copy $(AXIS2_SOURCE_DIR)\samples\server\notify\services.xml $(AXIS2_SERVICES)\notify
+
+
 axis2_services_math:
 	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\math  $(AXIS2_SOURCE_DIR)\samples\server\math\*.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:math.dll  
@@ -310,18 +326,97 @@ axis2_client_echo_addr:
  	del addr_echo.exe
 
 
-axis2_client_google_search:
+axis2_client_google_spell:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\google\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:google_search.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:google_spell.exe 
 	del *.obj
 	
 	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
 
-	copy google_search.exe $(AXIS2_BINS)\samples
-	del google_search.exe
+	copy google_spell.exe $(AXIS2_BINS)\samples
+	del google_spell.exe
 
-all: clean_make_dir clean deploy axis2_win axis2_util axis2_parser axis2_om axis2_soap axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server axis2_services_echo axis2_services_math axis2_client_echo axis2_client_math axis2_client_echo_addr axis2_client_google_search copy_include clean_make_dir 
+axis2_client_notify:
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\notify\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:notify.exe 
+	del *.obj
+	
+	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
+
+	copy notify.exe $(AXIS2_BINS)\samples
+	del notify.exe
+	del notify.exp
+
+
+axis2_client_echo_non_blocking:
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP) $(AXIS2_SOURCE_DIR)\samples\client\echo_non_blocking\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_non_blocking.exe 
+	del *.obj
+	
+	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
+
+	copy echo_non_blocking.exe $(AXIS2_BINS)\samples
+ 	del echo_non_blocking.exe
+
+copy_extra:
+	copy $(AXIS2_SOURCE_DIR)\INSTALL $(AXIS2_INSTALL_DIR)
+	copy $(AXIS2_SOURCE_DIR)\LICENSE $(AXIS2_INSTALL_DIR)
+	copy $(AXIS2_SOURCE_DIR)\CREDITS $(AXIS2_INSTALL_DIR)
+
+copy_samples:
+	if not exist $(AXIS2_INSTALL_DIR)\samples mkdir $(AXIS2_INSTALL_DIR)\samples
+
+	if not exist $(AXIS2_INSTALL_DIR)\samples\client mkdir $(AXIS2_INSTALL_DIR)\samples\client
+
+	if not exist $(AXIS2_INSTALL_DIR)\samples\client\echo mkdir $(AXIS2_INSTALL_DIR)\samples\client\echo
+	copy $(AXIS2_SOURCE_DIR)\samples\client\echo\*.c $(AXIS2_INSTALL_DIR)\samples\client\echo
+	copy $(AXIS2_SOURCE_DIR)\samples\client\echo\*.h $(AXIS2_INSTALL_DIR)\samples\client\echo
+
+	if not exist $(AXIS2_INSTALL_DIR)\samples\client\math mkdir $(AXIS2_INSTALL_DIR)\samples\client\math
+	copy $(AXIS2_SOURCE_DIR)\samples\client\math\*.c $(AXIS2_INSTALL_DIR)\samples\client\math
+	copy $(AXIS2_SOURCE_DIR)\samples\client\math\*.h $(AXIS2_INSTALL_DIR)\samples\client\math
+
+	if not exist $(AXIS2_INSTALL_DIR)\samples\client\addr_echo mkdir $(AXIS2_INSTALL_DIR)\samples\client\addr_echo
+	copy $(AXIS2_SOURCE_DIR)\samples\client\addr_echo\*.c $(AXIS2_INSTALL_DIR)\samples\client\addr_echo
+	copy $(AXIS2_SOURCE_DIR)\samples\client\addr_echo\README.txt $(AXIS2_INSTALL_DIR)\samples\client\addr_echo
+	
+	if not exist $(AXIS2_INSTALL_DIR)\samples\client\google mkdir $(AXIS2_INSTALL_DIR)\samples\client\google
+	copy $(AXIS2_SOURCE_DIR)\samples\client\google\*.c $(AXIS2_INSTALL_DIR)\samples\client\google
+	copy $(AXIS2_SOURCE_DIR)\samples\client\google\README.txt $(AXIS2_INSTALL_DIR)\samples\client\google
+
+	if not exist $(AXIS2_INSTALL_DIR)\samples\client\notify mkdir $(AXIS2_INSTALL_DIR)\samples\client\notify
+	copy $(AXIS2_SOURCE_DIR)\samples\client\notify\*.c $(AXIS2_INSTALL_DIR)\samples\client\notify
+
+	if not exist $(AXIS2_INSTALL_DIR)\samples\client\echo_non_blocking mkdir $(AXIS2_INSTALL_DIR)\samples\client\echo_non_blocking
+	copy $(AXIS2_SOURCE_DIR)\samples\client\echo_non_blocking\*.c $(AXIS2_INSTALL_DIR)\samples\client\echo_non_blocking
+	copy $(AXIS2_SOURCE_DIR)\samples\client\echo_non_blocking\README.txt $(AXIS2_INSTALL_DIR)\samples\client\echo_non_blocking
+
+	if not exist $(AXIS2_INSTALL_DIR)\samples\server mkdir $(AXIS2_INSTALL_DIR)\samples\server
+
+	if not exist $(AXIS2_INSTALL_DIR)\samples\server\echo mkdir $(AXIS2_INSTALL_DIR)\samples\server\echo
+	copy $(AXIS2_SOURCE_DIR)\samples\server\echo\*.c $(AXIS2_INSTALL_DIR)\samples\server\echo
+	copy $(AXIS2_SOURCE_DIR)\samples\server\echo\*.h $(AXIS2_INSTALL_DIR)\samples\server\echo
+	copy $(AXIS2_SOURCE_DIR)\samples\server\echo\*.xml $(AXIS2_INSTALL_DIR)\samples\server\echo
+
+	if not exist $(AXIS2_INSTALL_DIR)\samples\server\math mkdir $(AXIS2_INSTALL_DIR)\samples\server\math
+	copy $(AXIS2_SOURCE_DIR)\samples\server\math\*.c $(AXIS2_INSTALL_DIR)\samples\server\math
+	copy $(AXIS2_SOURCE_DIR)\samples\server\math\*.h $(AXIS2_INSTALL_DIR)\samples\server\math
+	copy $(AXIS2_SOURCE_DIR)\samples\server\math\*.xml $(AXIS2_INSTALL_DIR)\samples\server\math
+
+	
+	if not exist $(AXIS2_INSTALL_DIR)\samples\server\notify mkdir $(AXIS2_INSTALL_DIR)\samples\server\notify
+	copy $(AXIS2_SOURCE_DIR)\samples\server\notify\*.c $(AXIS2_INSTALL_DIR)\samples\server\notify
+	copy $(AXIS2_SOURCE_DIR)\samples\server\notify\*.h $(AXIS2_INSTALL_DIR)\samples\server\notify
+	copy $(AXIS2_SOURCE_DIR)\samples\server\notify\*.xml $(AXIS2_INSTALL_DIR)\samples\server\notify
+
+mv_dist:
+	if exist ..\axis2c-bin-$(RELEASE_VER)-win32 rmdir /S /Q ..\axis2c-bin-$(RELEASE_VER)-win32
+	xcopy /E /I $(AXIS2_INSTALL_DIR) ..\axis2c-bin-$(RELEASE_VER)-win32
+	rmdir /S /Q $(AXIS2_INSTALL_DIR)
+
+all: clean_make_dir clean deploy axis2_win axis2_util axis2_parser axis2_om axis2_soap axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server axis2_services_echo axis2_services_math axis2_services_notify axis2_client_echo axis2_client_math axis2_client_echo_addr axis2_client_google_spell axis2_client_notify axis2_client_echo_non_blocking copy_include clean_make_dir 
  
 
 install: all
-	 
+
+dist: all axis2_apache_module copy_extra copy_samples mv_dist
