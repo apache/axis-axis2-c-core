@@ -86,6 +86,7 @@ axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
+    status_line_impl->status_line.ops = NULL;
     status_line_impl->line = (axis2_char_t *)AXIS2_STRDUP(str, env);
     status_line_impl->http_version = NULL;
     status_line_impl->reason_phrase = NULL;

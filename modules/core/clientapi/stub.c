@@ -50,6 +50,9 @@ typedef struct axis2_stub_impl
      */
     axis2_bool_t maintain_session;
     axis2_char_t *current_session_id;
+
+    /* keep track of locally created endpoint to free it*/
+    axis2_endpoint_ref_t *endpoint_ref;
     	
 } axis2_stub_impl_t;
 
@@ -201,6 +204,7 @@ axis2_stub_create (axis2_env_t **env)
     stub_impl->maintain_session = AXIS2_FALSE;
     stub_impl->current_session_id = NULL;
     stub_impl->stub.ops = NULL;
+    stub_impl->endpoint_ref = NULL;
     
     stub_impl->sender_transport = AXIS2_STRDUP(AXIS2_TRANSPORT_HTTP, env);
     if(!stub_impl->sender_transport)
@@ -315,6 +319,7 @@ axis2_stub_create_with_endpoint_uri_and_client_home (axis2_env_t **env,
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;  
     }
+    stub_impl->endpoint_ref = endpoint_ref;
     
     return &(stub_impl->stub);
 }
@@ -353,6 +358,12 @@ axis2_stub_free (axis2_stub_t *stub,
     {
         AXIS2_ARRAY_LIST_FREE(stub_impl->modules, env);
         stub_impl->modules = NULL;
+    }
+    
+    if (stub_impl->endpoint_ref)
+    {
+        AXIS2_ENDPOINT_REF_FREE(stub_impl->endpoint_ref, env);
+        stub_impl->endpoint_ref = NULL;
     }
     
     if(stub_impl)

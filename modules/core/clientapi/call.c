@@ -62,6 +62,8 @@ typedef struct axis2_call_impl
     axis2_msg_ctx_t *last_res_msg_ctx;
     /* used to hold the service created in assume service */
     axis2_svc_t *axis_svc_private;
+    /* to hold the locally created async result */
+    axis2_async_result_t *async_result;
 
 } axis2_call_impl_t;
 
@@ -212,6 +214,7 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env,
     call_impl->last_res_msg_ctx = NULL;
     call_impl->svc_ctx = NULL;
     call_impl->axis_svc_private = NULL;
+    call_impl->async_result = NULL;
     
     if(svc_ctx)
     {
@@ -293,6 +296,12 @@ axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call,
     if (call_impl->callback_recv)
     {
         AXIS2_CALLBACK_RECV_FREE(call_impl->callback_recv, env);
+        call_impl->callback_recv = NULL;
+    }   
+
+    if (call_impl->async_result)
+    {
+        AXIS2_ASYNC_RESULT_FREE(call_impl->async_result, env);
         call_impl->callback_recv = NULL;
     }   
 
@@ -402,7 +411,6 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
         AXIS2_FREE((*env)->allocator, message_id);
         message_id = NULL;
     }
-
    
     if (call_impl->use_separate_listener) 
     {
@@ -555,6 +563,12 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
     message_id = axis2_uuid_gen(env);
     AXIS2_MSG_CTX_SET_MESSAGE_ID(msg_ctx, env, message_id);
     
+    if(NULL != message_id)
+    {
+        AXIS2_FREE((*env)->allocator, message_id);
+        message_id = NULL;
+    }
+    
     if (call_impl->use_separate_listener) 
     {
         axis2_relates_to_t *relates_to = NULL;
@@ -640,6 +654,12 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
 #else
         axis2_call_worker_func(NULL, (void*)arg_list);
 #endif
+    }
+
+    if (engine)
+    {
+        AXIS2_ENGINE_FREE(engine, env);
+        engine = NULL;
     }
 
     return AXIS2_SUCCESS;
@@ -846,7 +866,6 @@ axis2_call_worker_func(axis2_thread_t *thd, void *data)
     axis2_call_worker_func_args_t *args_list = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_msg_ctx_t *response = NULL;
-    axis2_async_result_t *async_result = NULL;
     
     args_list = (axis2_call_worker_func_args_t *) data;
     if (!args_list)
@@ -862,8 +881,8 @@ axis2_call_worker_func(axis2_thread_t *thd, void *data)
 
     /* send the request and wait for reponse */
     response = axis2_two_way_send(args_list->env, args_list->msg_ctx);
-    async_result = axis2_async_result_create(args_list->env, response);
-    AXIS2_CALLBACK_INVOKE_ON_COMPLETE(args_list->callback, args_list->env, async_result);
+    args_list->call_impl->async_result = axis2_async_result_create(args_list->env, response);
+    AXIS2_CALLBACK_INVOKE_ON_COMPLETE(args_list->callback, args_list->env, args_list->call_impl->async_result);
     AXIS2_CALLBACK_SET_COMPLETE(args_list->callback, args_list->env, AXIS2_TRUE);
     
     return NULL; 

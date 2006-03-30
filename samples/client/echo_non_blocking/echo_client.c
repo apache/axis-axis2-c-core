@@ -144,6 +144,7 @@ int main(int argc, char** argv)
     
     AXIS2_CALL_INVOKE_NON_BLOCKING(call, &env, op, msg_ctx, callback);
 
+    printf("Non blocking call invoked\n");
   
     printf("\n");
     while (!AXIS2_CALLBACK_GET_COMPLETE(callback, &env))
@@ -155,13 +156,9 @@ int main(int argc, char** argv)
         
     }
 
-    /*if (response_ctx)
-    {*/
-        soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, &env);
-        if (soap_envelope)
-            ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, &env);
-    /*}*/
-
+    soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, &env);
+    if (soap_envelope)
+        ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, &env);
                                                         
     if(ret_node)
     {
@@ -176,6 +173,8 @@ int main(int argc, char** argv)
         AXIS2_OM_NODE_SERIALIZE (ret_node, &env, om_output);
         buffer = AXIS2_XML_WRITER_GET_XML(writer, &env);
         printf ("\nReceived OM node in XML : %s\n", buffer);
+        AXIS2_OM_OUTPUT_FREE(om_output, &env);
+        AXIS2_FREE(env->allocator, buffer);
     }
     else
     {
@@ -214,13 +213,14 @@ build_om_programatically(axis2_env_t **env)
 
     AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, "echo5", text_om_node);
     
-    
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     om_output = axis2_om_output_create( env, xml_writer);
     
     AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
     printf("\nSending OM node in XML : %s \n",  buffer); 
+    AXIS2_OM_OUTPUT_FREE(om_output, env);
+    AXIS2_FREE((*env)->allocator, buffer);
 
     return echo_om_node;
 }
