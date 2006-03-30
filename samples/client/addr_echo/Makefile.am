@@ -4,7 +4,8 @@ samplesdir=$(prefix)/samples/client/addr_echo
 samples_DATA=echo_client.c README.txt Makefile.am
 addr_echo_SOURCES = echo_client.c
 
-addr_echo_LDADD   =  \
+addr_echo_LDADD   = $(LDFLAGS) \
+                    -L$(AXIS2C_HOME)/lib \
 					-laxis2_util \
                     -laxis2_om \
                     -laxis2_wsdl \

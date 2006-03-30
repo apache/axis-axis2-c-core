@@ -5,6 +5,7 @@ samples_DATA=notify_client.c Makefile.am
 notify_SOURCES = notify_client.c
 
 notify_LDADD   =  \
+                    -L$(AXIS2C_HOME)/lib \
 					-laxis2_util \
                     -laxis2_om \
                     -laxis2_wsdl \

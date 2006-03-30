@@ -8,6 +8,7 @@ samples_DATA=echo_client.c echo_client.bak Makefile.am README.txt
 echo_non_blocking_SOURCES = echo_client.c
 
 echo_non_blocking_LDADD   =  \
+                    -L$(AXIS2C_HOME)/lib \
 					-laxis2_util \
                     -laxis2_om \
                     -laxis2_wsdl \
