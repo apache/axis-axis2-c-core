@@ -167,7 +167,7 @@ static void axis2_module_init(apr_pool_t* p, server_rec* svr_rec)
     }
     axis2_worker = axis2_apache2_worker_create(&axis2_env, 
                         conf->axis2_repo_path);
-    if(NULL == axis2_env)
+    if(NULL == axis2_worker)
     {
         fprintf(stderr, "[Axis2] Error initilizing mod_axis2. Reason :"
                         "axis2_worker init failed\n");

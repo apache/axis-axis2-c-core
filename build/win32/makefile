@@ -266,11 +266,11 @@ axis2_mod_addr:
 
 axis2_apache_module:
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\apache2\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(APACHE_LIBS) /DLL /OUT:mod_apache.dll  /IMPLIB:mod_apache.lib 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(APACHE_LIBS) /DLL /OUT:mod_axis2.dll  /IMPLIB:mod_axis2.lib 
 	del *.obj
-	copy mod_apache.dll $(AXIS2_LIBS)\
+	copy mod_axis2.dll $(AXIS2_LIBS)\
 
-	copy mod_apache.lib $(AXIS2_LIBS)\
+	copy mod_axis2.lib $(AXIS2_LIBS)\
 
 	del *.dll
 
