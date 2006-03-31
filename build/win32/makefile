@@ -132,7 +132,7 @@ clean_make_dir:
 	del *.obj del *.exe del *.exp
 
 copy_include: deploy
-	copy $(AXIS2_SOURCE_DIR)\include\*.h $(AXIS2_INSTALL_DIR)\include\
+	xcopy /E /I $(AXIS2_SOURCE_DIR)\include $(AXIS2_INSTALL_DIR)\include\
 	
 
 axis2_win: 
