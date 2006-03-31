@@ -5,8 +5,7 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
   <title>Axis2/C Developer Guide</title>
-  <meta name="generator" content="amaya 9.2.2, see http://www.w3.org/Amaya/"
-  />
+  <meta name="generator" content="amaya 9.4, see http://www.w3.org/Amaya/" />
 </head>
 
 <body xml:lang="en">
@@ -38,7 +37,7 @@ data hiding. The following example illustrates how this is done in Axis2/C.
 Each struct corresponds to the "class" concept in object oriented
 programming. Hence, each struct has its own header file, that exposes the API
 for that struct and a source file, that contains the functional
-implementation. </p>
+implementation.</p>
 
 <p>Operations associated with a struct are bundled into an operations struct,
 and the operations struct is exposed in the header file. The real
@@ -49,7 +48,7 @@ functions associated with a given struct. Since the data is hidden, it is the
 usual practice to provide getter and setter methods for the data fields of
 the struct, in addition to the other processing functionality. Actual
 function implementations are mapped to the functions in the operations struct
-in the source file by means of function pointer assignments. </p>
+in the source file by means of function pointer assignments.</p>
 
 <p>Here is a sample header file associated with the "foo" struct.</p>
 <strong>/* axis2_ foo.h */</strong>
@@ -153,9 +152,9 @@ AXIS2_DECLARE_DATA struct axis2_svc_skeleton
 attach that to the operations struct of axis2_svc_skeleton_t struct. This
 free function is called each time after web services request is served.</p>
 
-<p>Let's try to understand this through an example. </p>
+<p>Let's try to understand this through an example.</p>
 
-<p>Example: <b>Service skeleton implementation for math service.</b> </p>
+<p>Example: <b>Service skeleton implementation for math service.</b></p>
 
 <p>The following code shows the implementation of math_free function which is
 to be attached to the ops of axis2_svc_skeleton_t struct. Usually the memory
@@ -222,10 +221,10 @@ href="../coding_conventions.html">this</a> document.</p>
 <h3>Unit Tests</h3>
 
 <p><a href="http://cutest.sourceforge.net/">CuTest</a> library is used to
-write unit tests in Axis2/C. </p>
+write unit tests in Axis2/C.</p>
 
 <p>You need to follow two steps to write a unit test for a module.</p>
-1. Add the unit test to the module's test suite. 
+1. Add the unit test to the module's test suite.
 
 <p>2. Add the module's test suite to the main unit test suite.</p>
 
@@ -304,20 +303,21 @@ new function and call it from the main method.</p>
 <p>To test the OM module, you need to create a file named test_om.c under the
 directory modules/test/xml/om. A sample test_om.c might look like as
 follows.</p>
-<pre class="code">#include &lt;axis2_stax_ombuilder.h&gt;
+<pre class="code">#include &lt;axis2_om_stax_builder.h&gt;
 #include &lt;axis2_om_document.h&gt;
 #include &lt;axis2_om_node.h&gt;
 #include &lt;axis2_om_element.h&gt;
 #include &lt;axis2_om_text.h&gt;
-#include &lt;apr.h&gt;
+#include &lt;axis2_xml_reader.h&gt;
 
 int test_om_build()
 {
-    READER *red = NULL;
-    XML_PullParser *parser = NULL;
-    axis2_om_element_t *ele1=NULL,*ele2=NULL,*ele3 = NULL,*ele4 = NULL;
-    axis2_stax_om_builder_t *builder = NULL;axis2_om_document_t *document = NULL;
+    axis2_xml_reader_t *reader = NULL;  
     axis2_om_node_t *node1 = NULL ,*node2 = NULL ,*node3 = NULL;
+    axis2_om_element_t *ele1=NULL,*ele2=NULL,*ele3 = NULL;
+    axis2_stax_om_builder_t *builder = NULL;
+    axis2_om_document_t *document = NULL;
+    
     ...
 }
 
@@ -325,7 +325,6 @@ int main(void)
 {
     test_om_build();
     test_om_serialize();
-}
-</pre>
+}</pre>
 </body>
 </html>
