@@ -260,25 +260,21 @@ will get the value as AXIS2_OM_ELEMENT .</p>
 <div>
 <p><b>Code Listing 1</b></p>
 </div>
-<pre>axis2_xml_reader_t *xml_reader = NULL;
-axis2_om_stax_builder_t *om_builder = NULL;
-axis2_soap_builder_t *soap_builder = NULL;
-axis2_soap_envelope_t *soap_envelope = NULL;
-
-
-/** create the parser */<br />
-axis2_xml_reader_t *xml_reader = axis2_xml_reader_create_for_file(env, "test_soap.xml",NULL);
-
-/** create the OM builder */
-
-om_builder = axis2_om_stax_builder_create(env, xml_reader);
-
-/** create SOAP builder */
-
-soap_builder = axis2_soap_builder_create(env, om_builder , AXIS2_SOAP_ENVELOPE_NAMESPACE_URI);
-
-/** get soap envelope */
-soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);</pre>
+<pre text="#oooo">
+<font face="Monospace">
+<font color="#000000">axis2_xml_reader_t</font>&nbsp;*<font color="#000000">xml_reader</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+<font color="#000000">axis2_om_stax_builder_t</font>&nbsp;*<font color="#000000">om_builder</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+<font color="#000000">axis2_soap_builder_t</font>&nbsp;*<font color="#000000">soap_builder</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+<font color="#000000">axis2_soap_envelope_t</font>&nbsp;*<font color="#000000">soap_envelope</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+<font color="#808080"><i>/**&nbsp;create&nbsp;the&nbsp;parser&nbsp;*/</i></font><br>
+<font color="#000000">axis2_xml_reader_t</font>&nbsp;*<font color="#000000">xml_reader</font>&nbsp;=&nbsp;<font color="#000000">axis2_xml_reader_create_for_file</font>(<font color="#000000">env</font>,&nbsp;<font color="#FF0000">&quot;test_soap.xml&quot;</font>,<font color="#000000">NULL</font>);<br>
+<font color="#808080"><i>/**&nbsp;create&nbsp;the&nbsp;OM&nbsp;builder&nbsp;*/</i></font><br>
+<font color="#000000">om_builder</font>&nbsp;=&nbsp;<font color="#000000">axis2_om_stax_builder_create</font>(<font color="#000000">env</font>,&nbsp;<font color="#000000">xml_reader</font>);<br>
+<font color="#808080"><i>/**&nbsp;create&nbsp;SOAP&nbsp;builder&nbsp;*/</i></font><br>
+<font color="#000000">soap_builder</font>&nbsp;=&nbsp;<font color="#000000">axis2_soap_builder_create</font>(<font color="#000000">env</font>,&nbsp;<font color="#000000">om_builder</font>&nbsp;,&nbsp;<font color="#000000">AXIS2_SOAP_ENVELOPE_NAMESPACE_URI</font>);<br>
+<font color="#808080"><i>/**&nbsp;get&nbsp;soap&nbsp;envelope&nbsp;*/</i></font><br>
+<font color="#000000">soap_envelope</font>&nbsp;=&nbsp;<font color="#000000">AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE</font>(<font color="#000000">soap_builder</font>,&nbsp;<font color="#000000">env</font>);<br>
+</font></pre>
 <br />
 
 
@@ -689,124 +685,144 @@ console.</p>
 
 <p></p>
 </div>
-<pre>#include &lt;axis2_om_node.h&gt;
-#include &lt;axis2.h&gt;
-#include &lt;axis2_env.h&gt;
-#include &lt;axis2_om_element.h&gt;
-#include &lt;axis2_om_document.h&gt;
-#include &lt;axis2_om_stax_builder.h&gt;
-#include &lt;axis2_xml_reader.h&gt;
-#include &lt;axis2_log_default.h&gt;
-#include &lt;axis2_error_default.h&gt;
-#include &lt;axis2_xml_writer.h&gt;
-#include &lt;axis2_om_output.h&gt;
-#include &lt;stdio.h&gt;
+<pre text="#000000">
+<font face="Monospace">
+<font color="#008000">#include&nbsp;&lt;axis2_om_node.h&gt;</font>
+<font color="#008000">#include&nbsp;&lt;axis2.h&gt;</font>
+<font color="#008000">#include&nbsp;&lt;axis2_env.h&gt;</font>
+<font color="#008000">#include&nbsp;&lt;axis2_om_element.h&gt;</font>
+<font color="#008000">#include&nbsp;&lt;axis2_om_document.h&gt;</font>
+<font color="#008000">#include&nbsp;&lt;axis2_om_stax_builder.h&gt;</font>
+<font color="#008000">#include&nbsp;&lt;axis2_xml_reader.h&gt;</font>
+<font color="#008000">#include&nbsp;&lt;axis2_log_default.h&gt;</font>
+<font color="#008000">#include&nbsp;&lt;axis2_error_default.h&gt;</font>
+<font color="#008000">#include&nbsp;&lt;axis2_xml_writer.h&gt;</font>
+<font color="#008000">#include&nbsp;&lt;axis2_om_output.h&gt;</font>
+<font color="#008000">#include&nbsp;&lt;stdio.h&gt;</font>
 
-FILE *f = NULL;
-int read_input_callback(char *buffer, int size, void* ctx)
+
+<font color="#000000">FILE</font>&nbsp;*<font color="#000000">f</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+<font color="#800000">int</font>&nbsp;<font color="#000000">read_input_callback</font>(<font color="#800000">char</font>&nbsp;*<font color="#000000">buffer</font>,&nbsp;<font color="#800000">int</font>&nbsp;<font color="#000000">size</font>,&nbsp;<font color="#800000">void</font>*&nbsp;<font color="#000000">ctx</font>)
+
 {
-    return fread(buffer, sizeof(char), size, f);
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font color="#000000">fread</font>(<font color="#000000">buffer</font>,&nbsp;<font color="#000000"><b>sizeof</b></font>(<font color="#800000">char</font>),&nbsp;<font color="#000000">size</font>,&nbsp;<font color="#000000">f</font>);
+}
+<font color="#800000">int</font>&nbsp;<font color="#000000">close_input_callback</font>()
+{
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font color="#000000">fclose</font>(<font color="#000000">f</font>);
 }
 
-int close_input_callback()
+<font color="#000000">axis2_env_t</font>&nbsp;*&nbsp;<font color="#000000">create_environment</font>()
+
 {
-    return fclose(f);
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_allocator_t</font>&nbsp;*<font color="#000000">allocator</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_env_t</font>&nbsp;*<font color="#000000">env</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_log_t</font>&nbsp;*<font color="#000000">log</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_error_t</font>&nbsp;*<font color="#000000">error</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">allocator</font>&nbsp;=&nbsp;<font color="#000000">axis2_allocator_init</font>(<font color="#000000">NULL</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">log</font>&nbsp;=&nbsp;<font color="#000000">axis2_log_create</font>(<font color="#000000">allocator</font>,&nbsp;<font color="#000000">NULL</font>,&nbsp;<font color="#000000">NULL</font>);
+
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">error</font>&nbsp;=&nbsp;<font color="#000000">axis2_error_create</font>(<font color="#000000">allocator</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">env</font>&nbsp;=&nbsp;<font color="#000000">axis2_env_create_with_error_log</font>(<font color="#000000">allocator</font>,&nbsp;<font color="#000000">log</font>,&nbsp;<font color="#000000">error</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font color="#000000">env</font>;
 }
 
-axis2_env_t * create_environment()
+<font color="#000000">build_and_serialize_om</font>(<font color="#000000">axis2_env_t</font>&nbsp;**<font color="#000000">env</font>)
 {
-    axis2_allocator_t *allocator = NULL;
-    axis2_env_t *env = NULL;
-    axis2_log_t *log = NULL;
-    axis2_error_t *error = NULL;
-    allocator = axis2_allocator_init(NULL);
-    log = axis2_log_create(allocator, NULL, NULL);
-    error = axis2_error_create(allocator);
-    env = axis2_env_create_with_error_log(allocator, log, error);
-    return env;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_om_node_t</font>&nbsp;*<font color="#000000">root_node</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>:
+
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_om_element_t</font>&nbsp;*<font color="#000000">root_ele</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_om_document_t</font>&nbsp;*<font color="#000000">document</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_om_stax_builder_t</font>&nbsp;*<font color="#000000">om_builder</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_xml_reader_t</font>&nbsp;*<font color="#000000">xml_reader</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_xml_writer_t</font>&nbsp;*<font color="#000000">xml_writer</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_om_output_t</font>&nbsp;*<font color="#000000">om_output</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_char_t</font>&nbsp;*<font color="#000000">buffer</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">f</font>&nbsp;=&nbsp;<font color="#000000">fopen</font>(<font color="#FF0000">&quot;test.xml&quot;</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">xml_reader</font>&nbsp;=&nbsp;<font color="#000000">axis2_xml_reader_create_for_memory</font>(<font color="#000000">env</font>,&nbsp;<font color="#000000">read_input_callback</font>,
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">close_input_callback</font>,&nbsp;<font color="#000000">NULL</font>,&nbsp;<font color="#000000">NULL</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>(!<font color="#000000">xml_reader</font>)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;-<font color="#0000FF">1</font>;
+
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">om_builder</font>&nbsp;=&nbsp;<font color="#000000">axis2_om_stax_builder_create</font>(<font color="#000000">env</font>,&nbsp;<font color="#000000">xml_reader</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>(!<font color="#000000">om_builder</font>)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_XML_READER_FREE</font>(<font color="#000000">xml_reader</font>,&nbsp;<font color="#000000">env</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font color="#000000">AXIS2_FAILURE</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">document</font>&nbsp;=&nbsp;<font color="#000000">AXIS2_OM_STAX_BUILDER_GET_DOCUMENT</font>(<font color="#000000">env</font>,&nbsp;<font color="#000000">om_builder</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>(!<font color="#000000">document</font>)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_OM_STAX_BUILDER_FREE</font>(<font color="#000000">om_builder</font>,&nbsp;<font color="#000000">env</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font color="#000000">AXIS2_FAILURE</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">root_node</font>&nbsp;=&nbsp;<font color="#000000">AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT</font>(<font color="#000000">document</font>,&nbsp;<font color="#000000">env</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>(!<font color="#000000">root_node</font>)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_OM_STAX_BUILDER_FREE</font>(<font color="#000000">om_builder</font>,&nbsp;<font color="#000000">env</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font color="#000000">AXIS2_FAILURE</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>(<font color="#000000">root_node</font>)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>(<font color="#000000">AXIS2_OM_NODE_GET_NODE_TYPE</font>(<font color="#000000">root_node</font>,&nbsp;<font color="#000000">env</font>)&nbsp;==&nbsp;<font color="#000000">AXIS2_OM_ELEMENT</font>)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">root_ele</font>&nbsp;=&nbsp;(<font color="#000000">axis2_om_element_t</font>*)<font color="#000000">AXIS2_OM_NODE_GET_DATA_ELEMENT</font>&nbsp;(<font color="#000000">root_node</font>,&nbsp;<font color="#000000">env</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>(<font color="#000000">root_ele</font>)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>(<font color="#FF0000">&quot;&nbsp;%s&quot;</font>&nbsp;,&nbsp;<font color="#000000">AXIS2_OM_ELEMENT_GET_DATA_ELEMENT</font>(<font color="#000000">root_node</font>,&nbsp;<font color="#000000">env</font>));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_OM_DOCUMENT_BUILD_ALL</font>(<font color="#000000">document</font>,&nbsp;<font color="#000000">env</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">xml_writer</font>&nbsp;=&nbsp;<font color="#000000">axis2_xml_writer_create_for_memory</font>(<font color="#000000">env</font>,&nbsp;<font color="#000000">NULL</font>,&nbsp;<font color="#000000">AXIS2_TRUE</font>,&nbsp;<font color="#0000FF">0</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">om_output</font>&nbsp;=&nbsp;<font color="#000000">axis2_om_output_create</font>(<font color="#000000">env</font>,&nbsp;<font color="#000000">xml_writer</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_OM_NODE_SERIALIZE</font>(<font color="#000000">node1</font>,&nbsp;<font color="#000000">env</font>,&nbsp;<font color="#000000">om_output</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">buffer</font>&nbsp;=&nbsp;<font color="#000000">AXIS2_XML_WRITER_GET_XML</font>(<font color="#000000">xml_writer</font>,&nbsp;<font color="#000000">env</font>);
+
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>(<font color="#FF0000">&quot;The&nbsp;output&nbsp;XML&nbsp;is&nbsp;-&gt;&gt;&gt;&gt;\n&nbsp;%s&nbsp;&quot;</font>,&nbsp;<font color="#000000">buffer</font>);
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#808080"><i>/**&nbsp;when&nbsp;om_output&nbsp;is&nbsp;freed&nbsp;xml_writer&nbsp;is&nbsp;also&nbsp;freed&nbsp;*/</i></font>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_OM_OUTPUT_FREE</font>(<font color="#000000">om_output</font>,&nbsp;<font color="#000000">env</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#808080"><i>/**&nbsp;when&nbsp;om_builder&nbsp;is&nbsp;freed&nbsp;,&nbsp;the&nbsp;builder,&nbsp;om_document&nbsp;and&nbsp;the&nbsp;entire&nbsp;om&nbsp;structure&nbsp;is&nbsp;freed&nbsp;*/</i></font>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_OM_STAX_BUILDER_FREE</font>(<font color="#000000">om_builder</font>,&nbsp;<font color="#000000">env</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_FREE</font>((*<font color="#000000">env</font>)-&gt;<font color="#000000">allocator</font>,&nbsp;<font color="#000000">buffer</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font color="#000000">AXIS2_SUCCESS</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
 }
-
-build_and_serialize_om(axis2_env_t **env)
+<font color="#800000">int</font>&nbsp;<font color="#000000">main</font>()
 {
-    axis2_om_node_t *root_node = NULL:
-    axis2_om_element_t *root_ele = NULL;
-    axis2_om_document_t *document = NULL;
-    axis2_om_stax_builder_t *om_builder = NULL;
-    axis2_xml_reader_t *xml_reader = NULL;
-    axis2_xml_writer_t *xml_writer = NULL;
-    axis2_om_output_t *om_output = NULL;
-    axis2_char_t *buffer = NULL;
-    f = fopen("test.xml");
-    xml_reader = axis2_xml_reader_create_for_memory(env, read_input_callback,
-    close_input_callback, NULL, NULL);
-    if(!xml_reader)
-        return -1;
-    om_builder = axis2_om_stax_builder_create(env, xml_reader);
-    if(!om_builder)
-    {
-        AXIS2_XML_READER_FREE(xml_reader, env);
-        return AXIS2_FAILURE;
-    }
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#800000">int</font>&nbsp;<font color="#000000">status</font>&nbsp;=&nbsp;<font color="#000000">AXIS2_SUCCESS</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_env_t</font>&nbsp;*<font color="#000000">env</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_allocator_t</font>&nbsp;*<font color="#000000">allocator</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">env</font>&nbsp;=&nbsp;<font color="#000000">create_environment</font>();
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">status</font>&nbsp;=&nbsp;<font color="#000000">build_and_serialize_om</font>(&amp;<font color="#000000">env</font>);
 
-    document = AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(env, om_builder);
-    if(!document)
-    {
-        AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
-        return AXIS2_FAILURE;
-    }
-    root_node = AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(document, env);
-    if(!root_node)
-    {
-       AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
-       return AXIS2_FAILURE;
-    }
-    if(root_node)
-    {
-        if(AXIS2_OM_NODE_GET_NODE_TYPE(root_node, env) == AXIS2_OM_ELEMENT)
-        {
-            root_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT
-                                                            (root_node, env);
-
-            if(root_ele)
-            {
-                printf(" %s" , AXIS2_OM_ELEMENT_GET_DATA_ELEMENT(root_node, env));
-            }
-        }
-    }
-
-    AXIS2_OM_DOCUMENT_BUILD_ALL(document, env);
-
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
-
-    om_output = axis2_om_output_create(env, xml_writer);
-
-    AXIS2_OM_NODE_SERIALIZE(node1, env, om_output);
-
-    buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
-
-    printf("The output XML is -&gt;&gt;&gt;&gt;\n %s ", buffer);
-    /** when om_output is freed xml_writer is also freed */
-    AXIS2_OM_OUTPUT_FREE(om_output, env);
-    /** when om_builder is freed , the builder, om_document and the entire om structure is freed */
-    AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
-    
-    AXIS2_FREE((*env)-&gt;allocator, buffer);
-    return AXIS2_SUCCESS;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>(<font color="#000000">status</font>&nbsp;==&nbsp;<font color="#000000">AXIS2_FAILURE</font>)
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>(<font color="#FF0000">&quot;&nbsp;build&nbsp;om&nbsp;failed&quot;</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_env_free</font>(<font color="#000000">env</font>);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font color="#0000FF">0</font>;
 }
-
-int main()
-{
-    int status = AXIS2_SUCCESS;
-    axis2_env_t *env = NULL;
-    axis2_allocator_t *allocator = NULL;
-    env = create_environment();
-    status = build_and_serialize_om(&amp;env);
-    if(status == AXIS2_FAILURE)
-    { 
-        printf(" build om failed");
-    }
-    axis2_env_free(env);
-    return 0;
-}</pre>
+</font>
+</pre>
 </body>
 </html>
