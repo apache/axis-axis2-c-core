@@ -1,13 +1,5 @@
 TESTS =
 lib_LTLIBRARIES = libaxis2_util.la
-noinst_HEADERS = axis2_hash.h \
-				axis2_file_diff.h \
-				axis2_utils.h
-
-include_HEADERS = axis2_hash.h \
-					axis2_string.h
-
-                
 
 libaxis2_util_la_SOURCES = hash.c \
                         allocator.c \
