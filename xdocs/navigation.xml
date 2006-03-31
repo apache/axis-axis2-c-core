@@ -9,8 +9,7 @@
         <item name="Source Code"
           href="http://svn.apache.org/viewcvs.cgi/webservices/axis2/trunk/c/"/>
       </item>
-      <item name="Documentation" href="M0_5/index.html">
-        <item name="Milestone 0.5" href="M0_5/index.html"/>
+      <item name="Documentation" href="docs/index.html">
       </item>
       <item name="Get Involved" href="mail-lists.html">
         <item name="Mailing Lists" href="mail-lists.html"/>
