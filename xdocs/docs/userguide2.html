@@ -1,9 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
   <title>Axis2 User's Guide</title>
-  <meta name="generator" content="amaya 9.2.2, see http://www.w3.org/Amaya/">
+  <meta name="generator" content="amaya 8.5, see http://www.w3.org/Amaya/">
 </head>
 
 <body dir="ltr" lang="en-US">
@@ -26,19 +27,20 @@ Axis2/C</a></h2>
 going through some background information.</p>
 
 <p>Web Services can be used to provide wide range of functionality to the
-users ranging from simple, less time consuming  operations such as
-"getStockQuote",  to time consuming business services. When we utilize these
-Web Services (that is invoke the Web Service using a client application), we
-cannot use some simple generic invocation paradigm that suites all the timing
-complexities involved in the service operations. For example, if we use a
-single transport channel (such as HTTP) to invoke a Web Service with an
-IN-OUT operation that take long time to complete, then most of the time we
-may end up with "connection time outs". On the other hand, if there are
-simultaneous service invocations that  we need to perform from a single
-client application, then the use of a "blocking" client API will degrade the
-performance of the client application. Similarly there are various other
-consequences such as One-Way transports that come in to play when we need
-them. Let's try to analyze some common service invocation paradigms.</p>
+users ranging from simple, less time consuming&nbsp; operations such as
+"getStockQuote",&nbsp; to time consuming business services. When we utilize
+these Web Services (that is invoke the Web Service using a client
+application), we cannot use some simple generic invocation paradigm that
+suites all the timing complexities involved in the service operations. For
+example, if we use a single transport channel (such as HTTP) to invoke a Web
+Service with an IN-OUT operation that take long time to complete, then most
+of the time we may end up with "connection time outs". On the other hand, if
+there are simultaneous service invocations that&nbsp; we need to perform from
+a single client application, then the use of a "blocking" client API will
+degrade the performance of the client application. Similarly there are
+various other consequences such as One-Way transports that come in to play
+when we need them. Let's try to analyze some common service invocation
+paradigms.</p>
 
 <p>Many web service engines provide the users with a Blocking and
 Non-Blocking client APIs.</p>
@@ -58,9 +60,9 @@ Non-Blocking client APIs.</p>
   </li>
 </ul>
 
-<p>Both these mechanisms work in the API level. Let's name the  asynchronous
-behavior that we can get using the <strong>Non-Blocking API</strong> as
-<b>API Level Asynchrony.</b></p>
+<p>Both these mechanisms work in the API level. Let's name the&nbsp;
+asynchronous behavior that we can get using the <strong>Non-Blocking
+API</strong> as <b>API Level Asynchrony.</b></p>
 
 <p>Both these mechanisms use a single transport connection to send the
 request and to receive the response. They do not have the capability of using
@@ -83,7 +85,7 @@ following table.</p>
       <td height="19" width="33%"><p><strong>API
         (Blocking/Non-Blocking)</strong></p>
       </td>
-      <td width="33%"><p><strong> Dual Transports (Yes/No)</strong></p>
+      <td width="33%"><p><strong>&nbsp;Dual Transports (Yes/No)</strong></p>
       </td>
       <td width="33%"><p><strong>Description</strong></p>
       </td>
@@ -142,430 +144,543 @@ Web Service Clients Using Axis2's Primary APIs</a></h3>
 "echo service" using the simplest blocking invocation. The complete client
 code with some explanations within comments is shown below.</p>
 
-<p><font color="#008000">#include &lt;axis2_call.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_om_stax_builder.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_om_document.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_om_node.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_om_element.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_om_text.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_stream.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_log_default.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_error_default.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_xml_reader.h&gt;<br>
-</font> <font color="#008000">#include &lt;stdio.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_xml_writer.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_soap_builder.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_soap.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_soap_envelope.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_soap_body.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_soap_header.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_soap_message.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_soap_header_block.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_soap_fault.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_soap_fault_code.h&gt;<br>
-</font> <font color="#008000">#include &lt;axis2_soap_fault_role.h&gt;<br>
+<p><font color="#008000">#include&nbsp;&lt;axis2_call.h&gt;<br>
 </font> <font
-color="#008000">#include &lt;platforms/axis2_platform_auto_sense.h&gt;<br>
+color="#008000">#include&nbsp;&lt;axis2_om_stax_builder.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_om_document.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_om_node.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_om_element.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_om_text.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_stream.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_log_default.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_error_default.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_xml_reader.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;stdio.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_xml_writer.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_soap_builder.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_soap.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_soap_envelope.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_soap_body.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_soap_header.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_soap_message.h&gt;<br>
+</font> <font
+color="#008000">#include&nbsp;&lt;axis2_soap_header_block.h&gt;<br>
+</font> <font color="#008000">#include&nbsp;&lt;axis2_soap_fault.h&gt;<br>
+</font> <font
+color="#008000">#include&nbsp;&lt;axis2_soap_fault_code.h&gt;<br>
+</font> <font
+color="#008000">#include&nbsp;&lt;axis2_soap_fault_role.h&gt;<br>
+</font> <font
+color="#008000">#include&nbsp;&lt;platforms/axis2_platform_auto_sense.h&gt;<br>
 </font> <br>
-<font color="#000000">axis2_om_node_t</font> *<br>
+<font color="#000000">axis2_om_node_t</font>&nbsp;*<br>
 <font color="#000000">build_om_programatically</font>(<font
-color="#000000">axis2_env_t</font> **<font color="#000000">env</font>);<br>
+color="#000000">axis2_env_t</font>&nbsp;**<font
+color="#000000">env</font>);<br>
 <br>
-<font color="#800000">int</font> <font color="#000000">main</font>(<font
-color="#800000">int</font> <font color="#000000">argc</font>, <font
-color="#800000">char</font>** <font color="#000000">argv</font>)<br>
+<font color="#800000">int</font>&nbsp;<font color="#000000">main</font>(<font
+color="#800000">int</font>&nbsp;<font color="#000000">argc</font>,&nbsp;<font
+color="#800000">char</font>**&nbsp;<font color="#000000">argv</font>)<br>
 {<br>
-    <font color="#000000">axis2_om_node_t</font> *<font
-color="#000000">node</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_status_t</font> <font
-color="#000000">status</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_om_node_t</font>&nbsp;*<font
+color="#000000">node</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_status_t</font>&nbsp;<font
+color="#000000">status</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_FAILURE</font>;<br>
-    <font color="#000000">axis2_env_t</font> *<font
-color="#000000">env</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_error_t</font> *<font
-color="#000000">error</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_log_t</font> *<font
-color="#000000">log</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_allocator_t</font> *<font
-color="#000000">allocator</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_char_t</font> *<font
-color="#000000">address</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_char_t</font> *<font
-color="#000000">wsa_action</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_char_t</font> *<font
-color="#000000">client_home</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_om_node_t</font> *<font
-color="#000000">ret_node</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_svc_t</font> *<font
-color="#000000">svc</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_op_t</font> *<font
-color="#000000">op</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_call_t</font> *<font
-color="#000000">call</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_msg_ctx_t</font> *<font
-color="#000000">msg_ctx</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_mep_client_t</font> *<font
-color="#000000">mep_client</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_msg_info_headers_t</font> *<font
-color="#000000">msg_info_headers</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_env_t</font>&nbsp;*<font
+color="#000000">env</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_error_t</font>&nbsp;*<font
+color="#000000">error</font>&nbsp;=&nbsp;<font
 color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_endpoint_ref_t</font>* <font
-color="#000000">endpoint_ref</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_conf_t</font> *<font
-color="#000000">conf</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_msg_ctx_t</font> *<font
-color="#000000">response_ctx</font> = <font color="#000000">NULL</font>;<br>
-    <br>
-    <font
-color="#808080"><i>/* set up the environment with allocator and log*/</i></font><br>
-    <font color="#000000">allocator</font> = <font
-color="#000000">axis2_allocator_init</font> (<font
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_log_t</font>&nbsp;*<font
+color="#000000">log</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_allocator_t</font>&nbsp;*<font
+color="#000000">allocator</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_char_t</font>&nbsp;*<font
+color="#000000">address</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_char_t</font>&nbsp;*<font
+color="#000000">wsa_action</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_char_t</font>&nbsp;*<font
+color="#000000">client_home</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_om_node_t</font>&nbsp;*<font
+color="#000000">ret_node</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_svc_t</font>&nbsp;*<font
+color="#000000">svc</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_op_t</font>&nbsp;*<font
+color="#000000">op</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_call_t</font>&nbsp;*<font
+color="#000000">call</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_msg_ctx_t</font>&nbsp;*<font
+color="#000000">msg_ctx</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_mep_client_t</font>&nbsp;*<font
+color="#000000">mep_client</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_msg_info_headers_t</font>&nbsp;*<font
+color="#000000">msg_info_headers</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_endpoint_ref_t</font>*&nbsp;<font
+color="#000000">endpoint_ref</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_conf_t</font>&nbsp;*<font
+color="#000000">conf</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_msg_ctx_t</font>&nbsp;*<font
+color="#000000">response_ctx</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;set&nbsp;up&nbsp;the&nbsp;environment&nbsp;with&nbsp;allocator&nbsp;and&nbsp;log*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">allocator</font>&nbsp;=&nbsp;<font
+color="#000000">axis2_allocator_init</font>&nbsp;(<font
 color="#000000">NULL</font>);<br>
-    <font color="#000000">error</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">error</font>&nbsp;=&nbsp;<font
 color="#000000">axis2_error_create</font>(<font
 color="#000000">allocator</font>);<br>
-    <font color="#000000">log</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">log</font>&nbsp;=&nbsp;<font
 color="#000000">axis2_log_create</font>(<font
-color="#000000">allocator</font>, <font color="#000000">NULL</font>, <font
+color="#000000">allocator</font>,&nbsp;<font
+color="#000000">NULL</font>,&nbsp;<font
 color="#FF0000">"addr_echo.log"</font>);<br>
-    <font color="#000000">env</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">env</font>&nbsp;=&nbsp;<font
 color="#000000">axis2_env_create_with_error_log</font>(<font
-color="#000000">allocator</font>, <font color="#000000">error</font>, <font
-color="#000000">log</font>);<br>
-    <font color="#000000">env</font>-&gt;<font
-color="#000000">log</font>-&gt;<font color="#000000">level</font> = <font
+color="#000000">allocator</font>,&nbsp;<font
+color="#000000">error</font>,&nbsp;<font color="#000000">log</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">env</font>-&gt;<font
+color="#000000">log</font>-&gt;<font
+color="#000000">level</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_LOG_LEVEL_TRACE</font>;<br>
-    <font color="#000000">axis2_error_init</font>();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_error_init</font>();<br>
 <br>
-    <font
-color="#808080"><i>/* Set up deploy folder. It is from the deploy folder, the configuration is picked up <br>
-     * using the axis2.xml file.<br>
-     * In this sample client_home points to the Axis2/C default deploy folder. The client_home can <br>
-     * be different from this folder on your system. For example, you may have a different folder <br>
-     *(say, my_client_folder) with its own axis2.xml file. my_client_folder/modules will have the <br>
-     * modules that the client uses<br>
-     */</i></font><br>
-    <font color="#000000">client_home</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;Set&nbsp;up&nbsp;deploy&nbsp;folder.&nbsp;It&nbsp;is&nbsp;from&nbsp;the&nbsp;deploy&nbsp;folder,&nbsp;the&nbsp;configuration&nbsp;is&nbsp;picked&nbsp;up&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;using&nbsp;the&nbsp;axis2.xml&nbsp;file.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;In&nbsp;this&nbsp;sample&nbsp;client_home&nbsp;points&nbsp;to&nbsp;the&nbsp;Axis2/C&nbsp;default&nbsp;deploy&nbsp;folder.&nbsp;The&nbsp;client_home&nbsp;can&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;be&nbsp;different&nbsp;from&nbsp;this&nbsp;folder&nbsp;on&nbsp;your&nbsp;system.&nbsp;For&nbsp;example,&nbsp;you&nbsp;may&nbsp;have&nbsp;a&nbsp;different&nbsp;folder&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(say,&nbsp;my_client_folder)&nbsp;with&nbsp;its&nbsp;own&nbsp;axis2.xml&nbsp;file.&nbsp;my_client_folder/modules&nbsp;will&nbsp;have&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;modules&nbsp;that&nbsp;the&nbsp;client&nbsp;uses<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">client_home</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_GETENV</font>(<font
 color="#FF0000">"AXIS2C_HOME"</font>);<br>
-    <font color="#000000"><b>if</b></font> (!<font
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>&nbsp;(!<font
 color="#000000">client_home</font>)<br>
-        <font color="#000000">client_home</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">client_home</font>&nbsp;=&nbsp;<font
 color="#FF0000">"../../deploy"</font>;<br>
-    <br>
-    <font
-color="#808080"><i>/* Set end point reference of echo service */</i></font><br>
-    <font color="#000000">address</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;Set&nbsp;end&nbsp;point&nbsp;reference&nbsp;of&nbsp;echo&nbsp;service&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">address</font>&nbsp;=&nbsp;<font
 color="#FF0000">"http://localhost:9090/axis2/services/echo"</font>;<br>
-    <font color="#000000">wsa_action</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">wsa_action</font>&nbsp;=&nbsp;<font
 color="#FF0000">"http://localhost:9090/axis2/services/echo/echoString"</font>;<br>
-    <font color="#000000"><b>if</b></font> (<font
-color="#000000">argc</font> &gt; <font color="#0000FF">1</font> )<br>
-        <font color="#000000">address</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>&nbsp;(<font
+color="#000000">argc</font>&nbsp;&gt;&nbsp;<font
+color="#0000FF">1</font>&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">address</font>&nbsp;=&nbsp;<font
 color="#000000">argv</font>[<font color="#0000FF">1</font>];<br>
-    <font color="#000000"><b>if</b></font> (<font
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>&nbsp;(<font
 color="#000000">AXIS2_STRCMP</font>(<font
-color="#000000">address</font>, <font color="#FF0000">"-h"</font>) == <font
-color="#0000FF">0</font>)<br>
-    {<br>
-        <font color="#000000">printf</font>(<font
-color="#FF0000">"Usage : %s [endpoint_url]\n"</font>, <font
+color="#000000">address</font>,&nbsp;<font
+color="#FF0000">"-h"</font>)&nbsp;==&nbsp;<font color="#0000FF">0</font>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">printf</font>(<font
+color="#FF0000">"Usage&nbsp;:&nbsp;%s&nbsp;[endpoint_url]\n"</font>,&nbsp;<font
 color="#000000">argv</font>[<font color="#0000FF">0</font>]);<br>
-        <font color="#000000">printf</font>(<font
-color="#FF0000">"use -h for help\n"</font>);<br>
-        <font color="#000000"><b>return</b></font> <font
-color="#0000FF">0</font>;<br>
-    }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">printf</font>(<font
+color="#FF0000">"use&nbsp;-h&nbsp;for&nbsp;help\n"</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000"><b>return</b></font>&nbsp;<font color="#0000FF">0</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
 <br>
-    <font color="#000000">printf</font> (<font
-color="#FF0000">"Using endpoint : %s\n"</font>, <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>&nbsp;(<font
+color="#FF0000">"Using&nbsp;endpoint&nbsp;:&nbsp;%s\n"</font>,&nbsp;<font
 color="#000000">address</font>);<br>
 <br>
-    <font
-color="#808080"><i>/* build the SOAP request message content using OM API.*/</i></font><br>
-    <font color="#000000">node</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;build&nbsp;the&nbsp;SOAP&nbsp;request&nbsp;message&nbsp;content&nbsp;using&nbsp;OM&nbsp;API.*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">node</font>&nbsp;=&nbsp;<font
 color="#000000">build_om_programatically</font>(&amp;<font
 color="#000000">env</font>);<br>
 <br>
-    <font color="#808080"><i>/* create call struct */</i></font><br>
-    <font color="#000000">call</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;create&nbsp;call&nbsp;struct&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">call</font>&nbsp;=&nbsp;<font
 color="#000000">axis2_call_create</font>(&amp;<font
-color="#000000">env</font>, <font color="#000000">NULL</font>, <font
+color="#000000">env</font>,&nbsp;<font
+color="#000000">NULL</font>,&nbsp;<font
 color="#000000">client_home</font>);<br>
-    <font color="#000000">mep_client</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">mep_client</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_CALL_GET_BASE</font>(<font
-color="#000000">call</font>, &amp;<font color="#000000">env</font>);<br>
+color="#000000">call</font>,&nbsp;&amp;<font color="#000000">env</font>);<br>
 <br>
-    <font
-color="#808080"><i>/* Prepare the SOAP envelope, using the SOAP message content to be sent.<br>
-     * Get a reference to the message context */</i></font><br>
-    <font color="#000000">msg_ctx</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;Prepare&nbsp;the&nbsp;SOAP&nbsp;envelope,&nbsp;using&nbsp;the&nbsp;SOAP&nbsp;message&nbsp;content&nbsp;to&nbsp;be&nbsp;sent.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Get&nbsp;a&nbsp;reference&nbsp;to&nbsp;the&nbsp;message&nbsp;context&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">msg_ctx</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_MEP_CLIENT_PREPARE_SOAP_ENVELOPE</font>(<font
-color="#000000">mep_client</font>, &amp;<font
-color="#000000">env</font>, <font color="#000000">node</font>);<br>
+color="#000000">mep_client</font>,&nbsp;&amp;<font
+color="#000000">env</font>,&nbsp;<font color="#000000">node</font>);<br>
 <br>
-    <font
-color="#808080"><i>/* Get the reference to message info headers structure from the message context. <br>
-       This can be used to manipulate SOAP header content when using WS-Addressing. */</i></font><br>
-    <font color="#000000">msg_info_headers</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;Get&nbsp;the&nbsp;reference&nbsp;to&nbsp;message&nbsp;info&nbsp;headers&nbsp;structure&nbsp;from&nbsp;the&nbsp;message&nbsp;context.&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;can&nbsp;be&nbsp;used&nbsp;to&nbsp;manipulate&nbsp;SOAP&nbsp;header&nbsp;content&nbsp;when&nbsp;using&nbsp;WS-Addressing.&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">msg_info_headers</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS</font>(<font
-color="#000000">msg_ctx</font>, &amp;<font color="#000000">env</font>);<br>
+color="#000000">msg_ctx</font>,&nbsp;&amp;<font
+color="#000000">env</font>);<br>
 <br>
-    <font
-color="#808080"><i>/* create an axis2_endpoint_ref_t struct with ERP assigned */</i></font><br>
-    <font color="#000000">endpoint_ref</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;create&nbsp;an&nbsp;axis2_endpoint_ref_t&nbsp;struct&nbsp;with&nbsp;ERP&nbsp;assigned&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">endpoint_ref</font>&nbsp;=&nbsp;<font
 color="#000000">axis2_endpoint_ref_create</font>(&amp;<font
-color="#000000">env</font>, <font color="#000000">address</font>);<br>
+color="#000000">env</font>,&nbsp;<font color="#000000">address</font>);<br>
 <br>
-    <font
-color="#808080"><i>/* Set header parameters, required for WS-Addressing. <br>
-     * Required only if you need to make use of WS-Addressing.<br>
-     */</i></font><br>
-    <font color="#000000">AXIS2_MSG_INFO_HEADERS_SET_TO</font>(<font
-color="#000000">msg_info_headers</font>, &amp;<font
-color="#000000">env</font>, <font color="#000000">endpoint_ref</font>);<br>
-    <font color="#000000">AXIS2_MSG_INFO_HEADERS_SET_ACTION</font>(<font
-color="#000000">msg_info_headers</font>, &amp;<font
-color="#000000">env</font>, <font color="#000000">wsa_action</font>); <br>
-    <br>
-    <font color="#000000">AXIS2_CALL_SET_TO</font>(<font
-color="#000000">call</font>, &amp;<font color="#000000">env</font>, <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;Set&nbsp;header&nbsp;parameters,&nbsp;required&nbsp;for&nbsp;WS-Addressing.&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Required&nbsp;only&nbsp;if&nbsp;you&nbsp;need&nbsp;to&nbsp;make&nbsp;use&nbsp;of&nbsp;WS-Addressing.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">AXIS2_MSG_INFO_HEADERS_SET_TO</font>(<font
+color="#000000">msg_info_headers</font>,&nbsp;&amp;<font
+color="#000000">env</font>,&nbsp;<font
+color="#000000">endpoint_ref</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">AXIS2_MSG_INFO_HEADERS_SET_ACTION</font>(<font
+color="#000000">msg_info_headers</font>,&nbsp;&amp;<font
+color="#000000">env</font>,&nbsp;<font
+color="#000000">wsa_action</font>);&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_CALL_SET_TO</font>(<font
+color="#000000">call</font>,&nbsp;&amp;<font
+color="#000000">env</font>,&nbsp;<font
 color="#000000">endpoint_ref</font>);<br>
 <br>
-    <font
-color="#808080"><i>/* Get the configuration context */</i></font><br>
-    <font color="#000000">conf</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;Get&nbsp;the&nbsp;configuration&nbsp;context&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">conf</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_CONF_CTX_GET_CONF</font>(<br>
-                            <font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
 color="#000000">AXIS2_SVC_CTX_GET_CONF_CTX</font>(<br>
-                                <font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
 color="#000000">AXIS2_MEP_CLIENT_GET_SVC_CTX</font>(<font
-color="#000000">mep_client</font>, &amp;<font
-color="#000000">env</font>), <br>
-                                &amp;<font color="#000000">env</font>), <br>
-                                &amp;<font color="#000000">env</font>);<br>
+color="#000000">mep_client</font>,&nbsp;&amp;<font
+color="#000000">env</font>),&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;<font
+color="#000000">env</font>),&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;<font
+color="#000000">env</font>);<br>
 <br>
-    <font
-color="#808080"><i>/* Get the echo service context if it is already loaded to service context*/</i></font><br>
-    <font color="#000000">svc</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;Get&nbsp;the&nbsp;echo&nbsp;service&nbsp;context&nbsp;if&nbsp;it&nbsp;is&nbsp;already&nbsp;loaded&nbsp;to&nbsp;service&nbsp;context*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">svc</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_CONF_GET_SVC</font>(<font
-color="#000000">conf</font>, &amp;<font color="#000000">env</font>, <font
-color="#FF0000">"echo"</font>);<br>
-    <font color="#000000"><b>if</b></font> (<font
+color="#000000">conf</font>,&nbsp;&amp;<font
+color="#000000">env</font>,&nbsp;<font color="#FF0000">"echo"</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>&nbsp;(<font
 color="#000000">svc</font>)<br>
-    {<br>
-        <font color="#000000">op</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">op</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_SVC_GET_OP_WITH_NAME</font>(<font
-color="#000000">svc</font>, &amp;<font color="#000000">env</font>, <font
+color="#000000">svc</font>,&nbsp;&amp;<font
+color="#000000">env</font>,&nbsp;<font
 color="#FF0000">"echoString"</font>);<br>
-        <font color="#000000"><b>if</b></font> (<font
-color="#000000">op</font>)<br>
-        {<br>
-            <font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000"><b>if</b></font>&nbsp;(<font color="#000000">op</font>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
 color="#000000">AXIS2_OP_SET_MSG_EXCHANGE_PATTERN</font>(<font
-color="#000000">op</font>, &amp;<font color="#000000">env</font>, <font
+color="#000000">op</font>,&nbsp;&amp;<font
+color="#000000">env</font>,&nbsp;<font
 color="#000000">AXIS2_MEP_URI_OUT_IN</font>);<br>
-        }<br>
-    }<br>
-    <font color="#000000"><b>else</b></font><br>
-    {<br>
-       <font
-color="#808080"><i>/* echo service is not in the configuration context. We need to create the <br>
-        * operation and add it to service context. Then add service context into <br>
-        * configuration context.<br>
-        */</i></font><br>
-        <font color="#000000">axis2_qname_t</font> *<font
-color="#000000">op_qname</font> = <font color="#000000">NULL</font>;<br>
-        <font color="#000000">axis2_qname_t</font> *<font
-color="#000000">svc_qname</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>else</b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;echo&nbsp;service&nbsp;is&nbsp;not&nbsp;in&nbsp;the&nbsp;configuration&nbsp;context.&nbsp;We&nbsp;need&nbsp;to&nbsp;create&nbsp;the&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;operation&nbsp;and&nbsp;add&nbsp;it&nbsp;to&nbsp;service&nbsp;context.&nbsp;Then&nbsp;add&nbsp;service&nbsp;context&nbsp;into&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;configuration&nbsp;context.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_qname_t</font>&nbsp;*<font
+color="#000000">op_qname</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_qname_t</font>&nbsp;*<font
+color="#000000">svc_qname</font>&nbsp;=&nbsp;<font
 color="#000000">axis2_qname_create</font>(&amp;<font
-color="#000000">env</font>, <font color="#FF0000">"echo"</font>, <font
-color="#000000">NULL</font>, <font color="#000000">NULL</font>);<br>
-        <font color="#000000">svc</font> = <font
+color="#000000">env</font>,&nbsp;<font
+color="#FF0000">"echo"</font>,&nbsp;<font
+color="#000000">NULL</font>,&nbsp;<font color="#000000">NULL</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">svc</font>&nbsp;=&nbsp;<font
 color="#000000">axis2_svc_create_with_qname</font>(&amp;<font
-color="#000000">env</font>, <font color="#000000">svc_qname</font>);<br>
-        <font color="#000000">op_qname</font> = <font
+color="#000000">env</font>,&nbsp;<font color="#000000">svc_qname</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">op_qname</font>&nbsp;=&nbsp;<font
 color="#000000">axis2_qname_create</font>(&amp;<font
-color="#000000">env</font>, <font color="#FF0000">"echoString"</font>, <font
-color="#000000">NULL</font>, <font color="#000000">NULL</font>);<br>
-        <font color="#000000">op</font> = <font
+color="#000000">env</font>,&nbsp;<font
+color="#FF0000">"echoString"</font>,&nbsp;<font
+color="#000000">NULL</font>,&nbsp;<font color="#000000">NULL</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">op</font>&nbsp;=&nbsp;<font
 color="#000000">axis2_op_create_with_qname</font>(&amp;<font
-color="#000000">env</font>, <font color="#000000">op_qname</font>);<br>
-        <font color="#000000">AXIS2_OP_SET_MSG_EXCHANGE_PATTERN</font>(<font
-color="#000000">op</font>, &amp;<font color="#000000">env</font>, <font
+color="#000000">env</font>,&nbsp;<font color="#000000">op_qname</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">AXIS2_OP_SET_MSG_EXCHANGE_PATTERN</font>(<font
+color="#000000">op</font>,&nbsp;&amp;<font
+color="#000000">env</font>,&nbsp;<font
 color="#000000">AXIS2_MEP_URI_OUT_IN</font>);<br>
-        <font color="#000000">AXIS2_SVC_ADD_OP</font>(<font
-color="#000000">svc</font>, &amp;<font color="#000000">env</font>, <font
-color="#000000">op</font>);<br>
-        <font color="#000000">AXIS2_CONF_ADD_SVC</font>(<font
-color="#000000">conf</font>, &amp;<font color="#000000">env</font>, <font
-color="#000000">svc</font>);<br>
-    }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">AXIS2_SVC_ADD_OP</font>(<font
+color="#000000">svc</font>,&nbsp;&amp;<font
+color="#000000">env</font>,&nbsp;<font color="#000000">op</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">AXIS2_CONF_ADD_SVC</font>(<font
+color="#000000">conf</font>,&nbsp;&amp;<font
+color="#000000">env</font>,&nbsp;<font color="#000000">svc</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
 <br>
-    <font color="#000000"><b>if</b></font> (!<font
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>&nbsp;(!<font
 color="#000000">op</font>)<br>
-    {<br>
-        <font color="#000000">printf</font>(<font
-color="#FF0000">"ERROR: operation not present in service\n"</font>);<br>
-        <font color="#000000"><b>return</b></font> -<font
-color="#0000FF">1</font>;<br>
-    }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">printf</font>(<font
+color="#FF0000">"ERROR:&nbsp;operation&nbsp;not&nbsp;present&nbsp;in&nbsp;service\n"</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000"><b>return</b></font>&nbsp;-<font color="#0000FF">1</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
 <br>
-   <font
-color="#808080"><i>/* Invoke the operation. Client blocks until the response message comes. <br>
-    * Response message gets set in the response message context.<br>
-    */</i></font><br>
-    <font color="#000000">response_ctx</font> = <font
+&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;Invoke&nbsp;the&nbsp;operation.&nbsp;Client&nbsp;blocks&nbsp;until&nbsp;the&nbsp;response&nbsp;message&nbsp;comes.&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Response&nbsp;message&nbsp;gets&nbsp;set&nbsp;in&nbsp;the&nbsp;response&nbsp;message&nbsp;context.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">response_ctx</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_CALL_INVOKE_BLOCKING</font>(<font
-color="#000000">call</font>, &amp;<font color="#000000">env</font>, <font
-color="#000000">op</font>, <font color="#000000">msg_ctx</font>);<br>
+color="#000000">call</font>,&nbsp;&amp;<font
+color="#000000">env</font>,&nbsp;<font color="#000000">op</font>,&nbsp;<font
+color="#000000">msg_ctx</font>);<br>
 <br>
-    <font color="#000000"><b>if</b></font> (<font
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>&nbsp;(<font
 color="#000000">response_ctx</font>)<br>
-    {<br>
-        <font
-color="#808080"><i>/* Get the response SOAP message from response message context */</i></font><br>
-        <font color="#000000">axis2_soap_envelope_t</font> *<font
-color="#000000">soap_envelope</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;Get&nbsp;the&nbsp;response&nbsp;SOAP&nbsp;message&nbsp;from&nbsp;response&nbsp;message&nbsp;context&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_soap_envelope_t</font>&nbsp;*<font
+color="#000000">soap_envelope</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_MSG_CTX_GET_SOAP_ENVELOPE</font>(<font
-color="#000000">response_ctx</font>, &amp;<font
+color="#000000">response_ctx</font>,&nbsp;&amp;<font
 color="#000000">env</font>);<br>
-        <font color="#000000">ret_node</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">ret_node</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_SOAP_ENVELOPE_GET_BASE_NODE</font>(<font
-color="#000000">soap_envelope</font>, &amp;<font
+color="#000000">soap_envelope</font>,&nbsp;&amp;<font
 color="#000000">env</font>);<br>
-    }<br>
-                                                        <br>
-    <font color="#000000"><b>if</b></font>(<font
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>(<font
 color="#000000">ret_node</font>)<br>
-    {<br>
-        <font
-color="#808080"><i>/* Get the response value from the SOAP message */</i></font><br>
-        <font color="#000000">axis2_xml_writer_t</font> *<font
-color="#000000">writer</font> = <font color="#000000">NULL</font>;<br>
-        <font color="#000000">axis2_om_output_t</font> *<font
-color="#000000">om_output</font> = <font color="#000000">NULL</font>;<br>
-        <font color="#000000">axis2_char_t</font> *<font
-color="#000000">buffer</font> = <font color="#000000">NULL</font>;<br>
-        <br>
-        <font color="#000000">printf</font>(<font
-color="#FF0000">"\necho stub invoke SUCCESSFUL!\n"</font>);<br>
-        <font color="#000000">writer</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#808080"><i>/*&nbsp;Get&nbsp;the&nbsp;response&nbsp;value&nbsp;from&nbsp;the&nbsp;SOAP&nbsp;message&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_xml_writer_t</font>&nbsp;*<font
+color="#000000">writer</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_om_output_t</font>&nbsp;*<font
+color="#000000">om_output</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_char_t</font>&nbsp;*<font
+color="#000000">buffer</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">printf</font>(<font
+color="#FF0000">"\necho&nbsp;stub&nbsp;invoke&nbsp;SUCCESSFUL!\n"</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">writer</font>&nbsp;=&nbsp;<font
 color="#000000">axis2_xml_writer_create_for_memory</font>(&amp;<font
-color="#000000">env</font>, <font color="#000000">NULL</font>, <font
-color="#000000">AXIS2_TRUE</font>, <font color="#0000FF">0</font>);<br>
-        <font color="#000000">om_output</font> = <font
-color="#000000">axis2_om_output_create</font> (&amp;<font
-color="#000000">env</font>, <font color="#000000">writer</font>);<br>
+color="#000000">env</font>,&nbsp;<font
+color="#000000">NULL</font>,&nbsp;<font
+color="#000000">AXIS2_TRUE</font>,&nbsp;<font color="#0000FF">0</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">om_output</font>&nbsp;=&nbsp;<font
+color="#000000">axis2_om_output_create</font>&nbsp;(&amp;<font
+color="#000000">env</font>,&nbsp;<font color="#000000">writer</font>);<br>
 <br>
-        <font color="#000000">AXIS2_OM_NODE_SERIALIZE</font> (<font
-color="#000000">ret_node</font>, &amp;<font color="#000000">env</font>, <font
-color="#000000">om_output</font>);<br>
-        <font color="#000000">buffer</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">AXIS2_OM_NODE_SERIALIZE</font>&nbsp;(<font
+color="#000000">ret_node</font>,&nbsp;&amp;<font
+color="#000000">env</font>,&nbsp;<font color="#000000">om_output</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">buffer</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_XML_WRITER_GET_XML</font>(<font
-color="#000000">writer</font>, &amp;<font color="#000000">env</font>);<br>
-        <font color="#000000">printf</font> (<font
-color="#FF0000">"\nReceived OM node in XML : %s\n"</font>, <font
+color="#000000">writer</font>,&nbsp;&amp;<font
+color="#000000">env</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">printf</font>&nbsp;(<font
+color="#FF0000">"\nReceived&nbsp;OM&nbsp;node&nbsp;in&nbsp;XML&nbsp;:&nbsp;%s\n"</font>,&nbsp;<font
 color="#000000">buffer</font>);<br>
-    }<br>
-    <font color="#000000"><b>else</b></font><br>
-    {<br>
-                <font color="#000000">AXIS2_LOG_ERROR</font>(<font
-color="#000000">env</font>-&gt;<font color="#000000">log</font>, <font
-color="#000000">AXIS2_LOG_SI</font>, <font
-color="#FF0000">"Stub invoke failed: Error code:"</font><br>
-                                                <font
-color="#FF0000">" %d :: %s"</font>, <font
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>else</b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">AXIS2_LOG_ERROR</font>(<font
+color="#000000">env</font>-&gt;<font color="#000000">log</font>,&nbsp;<font
+color="#000000">AXIS2_LOG_SI</font>,&nbsp;<font
+color="#FF0000">"Stub&nbsp;invoke&nbsp;failed:&nbsp;Error&nbsp;code:"</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#FF0000">"&nbsp;%d&nbsp;::&nbsp;%s"</font>,&nbsp;<font
 color="#000000">env</font>-&gt;<font color="#000000">error</font>-&gt;<font
 color="#000000">error_number</font>,<br>
-                        <font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
 color="#000000">AXIS2_ERROR_GET_MESSAGE</font>(<font
 color="#000000">env</font>-&gt;<font color="#000000">error</font>));<br>
-        <font color="#000000">printf</font>(<font
-color="#FF0000">"echo stub invoke failed!\n"</font>);<br>
-    }<br>
-    <br>
-    <font color="#000000"><b>if</b></font> (<font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">printf</font>(<font
+color="#FF0000">"echo&nbsp;stub&nbsp;invoke&nbsp;failed!\n"</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>&nbsp;(<font
 color="#000000">call</font>)<br>
-    {<br>
-        <font color="#000000">AXIS2_CALL_FREE</font>(<font
-color="#000000">call</font>, &amp;<font color="#000000">env</font>);<br>
-    }<br>
-    <font color="#000000"><b>return</b></font> <font
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">AXIS2_CALL_FREE</font>(<font
+color="#000000">call</font>,&nbsp;&amp;<font color="#000000">env</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font
 color="#000000">status</font>;<br>
 }<br>
 <br>
 <font
-color="#808080"><i>/* build SOAP request message content using OM */</i></font><br>
-<font color="#000000">axis2_om_node_t</font> *<br>
+color="#808080"><i>/*&nbsp;build&nbsp;SOAP&nbsp;request&nbsp;message&nbsp;content&nbsp;using&nbsp;OM&nbsp;*/</i></font><br>
+<font color="#000000">axis2_om_node_t</font>&nbsp;*<br>
 <font color="#000000">build_om_programatically</font>(<font
-color="#000000">axis2_env_t</font> **<font color="#000000">env</font>)<br>
+color="#000000">axis2_env_t</font>&nbsp;**<font
+color="#000000">env</font>)<br>
 {<br>
-    <font color="#000000">axis2_om_node_t</font> *<font
-color="#000000">echo_om_node</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_om_element_t</font>* <font
-color="#000000">echo_om_ele</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_om_node_t</font>* <font
-color="#000000">text_om_node</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_om_element_t</font> * <font
-color="#000000">text_om_ele</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_om_namespace_t</font> *<font
-color="#000000">ns1</font> = <font color="#000000">NULL</font>;<br>
-    <br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_om_node_t</font>&nbsp;*<font
+color="#000000">echo_om_node</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_om_element_t</font>*&nbsp;<font
+color="#000000">echo_om_ele</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_om_node_t</font>*&nbsp;<font
+color="#000000">text_om_node</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_om_element_t</font>&nbsp;*&nbsp;<font
+color="#000000">text_om_ele</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_om_namespace_t</font>&nbsp;*<font
+color="#000000">ns1</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
 <br>
-    <font color="#000000">axis2_xml_writer_t</font> *<font
-color="#000000">xml_writer</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_om_output_t</font> *<font
-color="#000000">om_output</font> = <font color="#000000">NULL</font>;<br>
-    <font color="#000000">axis2_char_t</font> *<font
-color="#000000">buffer</font> = <font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_xml_writer_t</font>&nbsp;*<font
+color="#000000">xml_writer</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">axis2_om_output_t</font>&nbsp;*<font
+color="#000000">om_output</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_char_t</font>&nbsp;*<font
+color="#000000">buffer</font>&nbsp;=&nbsp;<font
+color="#000000">NULL</font>;<br>
 <br>
-    <font color="#000000">ns1</font> = <font
-color="#000000">axis2_om_namespace_create</font> (<font
-color="#000000">env</font>, <font
-color="#FF0000">"http://localhost:9090/axis2/services/echo"</font>, <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">ns1</font>&nbsp;=&nbsp;<font
+color="#000000">axis2_om_namespace_create</font>&nbsp;(<font
+color="#000000">env</font>,&nbsp;<font
+color="#FF0000">"http://localhost:9090/axis2/services/echo"</font>,&nbsp;<font
 color="#FF0000">"ns1"</font>);<br>
 <br>
-    <font color="#000000">echo_om_ele</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">echo_om_ele</font>&nbsp;=&nbsp;<font
 color="#000000">axis2_om_element_create</font>(<font
-color="#000000">env</font>, <font color="#000000">NULL</font>, <font
-color="#FF0000">"echoString"</font>, <font
-color="#000000">ns1</font>, &amp;<font
+color="#000000">env</font>,&nbsp;<font
+color="#000000">NULL</font>,&nbsp;<font
+color="#FF0000">"echoString"</font>,&nbsp;<font
+color="#000000">ns1</font>,&nbsp;&amp;<font
 color="#000000">echo_om_node</font>);<br>
-    <br>
-    <font color="#000000">text_om_ele</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">text_om_ele</font>&nbsp;=&nbsp;<font
 color="#000000">axis2_om_element_create</font>(<font
-color="#000000">env</font>, <font color="#000000">echo_om_node</font>, <font
-color="#FF0000">"text"</font>, <font color="#000000">NULL</font>, &amp;<font
+color="#000000">env</font>,&nbsp;<font
+color="#000000">echo_om_node</font>,&nbsp;<font
+color="#FF0000">"text"</font>,&nbsp;<font
+color="#000000">NULL</font>,&nbsp;&amp;<font
 color="#000000">text_om_node</font>);<br>
 <br>
-    <font color="#000000">AXIS2_OM_ELEMENT_SET_TEXT</font>(<font
-color="#000000">text_om_ele</font>, <font color="#000000">env</font>, <font
-color="#FF0000">"echo5"</font>, <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">AXIS2_OM_ELEMENT_SET_TEXT</font>(<font
+color="#000000">text_om_ele</font>,&nbsp;<font
+color="#000000">env</font>,&nbsp;<font
+color="#FF0000">"echo5"</font>,&nbsp;<font
 color="#000000">text_om_node</font>);<br>
-    <br>
-    <br>
-    <font color="#000000">xml_writer</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">xml_writer</font>&nbsp;=&nbsp;<font
 color="#000000">axis2_xml_writer_create_for_memory</font>(<font
-color="#000000">env</font>, <font color="#000000">NULL</font>, <font
-color="#000000">AXIS2_FALSE</font>, <font
+color="#000000">env</font>,&nbsp;<font
+color="#000000">NULL</font>,&nbsp;<font
+color="#000000">AXIS2_FALSE</font>,&nbsp;<font
 color="#000000">AXIS2_FALSE</font>);<br>
-    <font color="#000000">om_output</font> = <font
-color="#000000">axis2_om_output_create</font>( <font
-color="#000000">env</font>, <font color="#000000">xml_writer</font>);<br>
-    <br>
-    <font color="#000000">AXIS2_OM_NODE_SERIALIZE</font>(<font
-color="#000000">echo_om_node</font>, <font color="#000000">env</font>, <font
-color="#000000">om_output</font>);<br>
-    <font color="#000000">buffer</font> = <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">om_output</font>&nbsp;=&nbsp;<font
+color="#000000">axis2_om_output_create</font>(&nbsp;<font
+color="#000000">env</font>,&nbsp;<font color="#000000">xml_writer</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font
+color="#000000">AXIS2_OM_NODE_SERIALIZE</font>(<font
+color="#000000">echo_om_node</font>,&nbsp;<font
+color="#000000">env</font>,&nbsp;<font color="#000000">om_output</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">buffer</font>&nbsp;=&nbsp;<font
 color="#000000">AXIS2_XML_WRITER_GET_XML</font>(<font
-color="#000000">xml_writer</font>, <font
-color="#000000">env</font>);         <br>
-    <font color="#000000">printf</font>(<font
-color="#FF0000">"\nSending OM node in XML : %s \n"</font>,  <font
-color="#000000">buffer</font>); <br>
+color="#000000">xml_writer</font>,&nbsp;<font
+color="#000000">env</font>);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>(<font
+color="#FF0000">"\nSending&nbsp;OM&nbsp;node&nbsp;in&nbsp;XML&nbsp;:&nbsp;%s&nbsp;\n"</font>,&nbsp;&nbsp;<font
+color="#000000">buffer</font>);&nbsp;<br>
 <br>
-    <font color="#000000"><b>return</b></font> <font
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font
 color="#000000">echo_om_node</font>;<br>
 }<br>
 </p>
@@ -614,6 +729,54 @@ color="#000000">echo_om_node</font>;<br>
    &lt;/soapenv:Envelope&gt;</pre>
 <br>
 
+
+<p>Echo NonBlocking Client</p>
+
+<p>In the Echo Blocking Client exmple above, once the
+"axis2_echo_stub_echo(stub, &amp;env, node);" is called, the client is
+blocked till the operation is completed. This behavior is not desirable when
+there are many Web Service invocations to be done in a single client
+application. A solution would be to use a Non-Blocking API to invoke web
+services. Axis2 provides a callback based non-blocking API for users.</p>
+
+<p>A Sample demonstrating this senario can be found in the
+samples/client/echo_non_blocking folder. In fact, this sample demonstrates
+one level below the usual callback mechanism.</p>
+
+<p>Before we look at the code changes to the Echo Blocking Client,, let's get
+a feel of how it works. First You need to create a callback instance using
+axis2_callback_create(axis2_env_t*) and then call the macro
+AXIS2_CALL_INVOKE_NON_BLOCKING(axis2_call_t*, axis2_env_t**,
+axis2_msg_ctx_t*, axis2_callback_t*). In your code, you need to poll using
+the macro AXIS2_CALLBACK_GET_COMPLETE(axis2_callback_t*, axis2_env_t**) to
+check for the completion. Once this macro is true, you can access the reply
+SOAP payload using the macro AXIS2_CALLBACK_GET_ENVELOPE(axis2_callback_t*,
+axis2_env_t**).</p>
+
+<p></p>
+
+<p>You need to primarily replace the following portion of code in the Echo
+Blocking Client</p>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;stub&nbsp;=&nbsp;<font color="#000000">axis2_stub_create_with_endpoint_uri_and_client_home</font>(&amp;<font color="#000000">env</font>,&nbsp;<font color="#000000">address</font>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">client_home</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_STUB_SET_TRANSPORT_INFO</font>(<font color="#000000">stub</font>,&nbsp;&amp;<font color="#000000">env</font>,&nbsp;<font color="#000000">AXIS2_TRANSPORT_HTTP</font>,&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_TRANSPORT_HTTP</font>,&nbsp;<font color="#000000">AXIS2_FALSE</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_STUB_SET_SOAP_VERSION</font>(<font color="#000000">stub</font>,&nbsp;&amp;<font color="#000000">env</font>,&nbsp;<font color="#000000">AXIS2_SOAP_11</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#808080"><i>/*&nbsp;create&nbsp;node&nbsp;and&nbsp;invoke&nbsp;echo&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">ret_node</font>&nbsp;=&nbsp;<font color="#000000">axis2_echo_stub_echo</font>(<font color="#000000">stub</font>,&nbsp;&amp;<font color="#000000">env</font>,&nbsp;<font color="#000000">node</font>);<br>
+        </pre>
+
+<p>to the following (note that you need to create an instance of
+axis2_callback_t.</p>
+
+<p> </p>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">callback &nbsp;=&nbsp;axis2_callback_create</font>(&amp;<font color="#000000">env</font>);<br>
+<font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;AXIS2_CALL_INVOKE_NON_BLOCKING</font>(<font color="#000000">call</font>,&nbsp;&amp;<font color="#000000">env</font>,&nbsp;<font color="#000000">op</font>,&nbsp;<font color="#000000">msg_ctx</font>,&nbsp;<font color="#000000">callback</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>while</b></font>&nbsp;(!<font color="#000000">AXIS2_CALLBACK_GET_COMPLETE</font>(<font color="#000000">callback</font>,&nbsp;&amp;<font color="#000000">env</font>))<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>(<font color="#FF0000">"sleep(2)&nbsp;till&nbsp;callback&nbsp;complete\n"</font>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>&nbsp;(<font color="#000000">count</font>++&nbsp;&gt;&nbsp;<font color="#0000FF">10</font>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>break</b></font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_SLEEP</font>(<font color="#0000FF">2</font>);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">soap_envelope</font>&nbsp;=&nbsp;<font color="#000000">AXIS2_CALLBACK_GET_ENVELOPE</font>(<font color="#000000">callback</font>,&nbsp;&amp;<font color="#000000">env</font>);<br></pre>
+
+<p></p>
 
 <p align="right"><a href="userguide1.html"><img src="images/arrow_left.gif">
 Previous</a> | <a href="userguide3.html">Next <img
