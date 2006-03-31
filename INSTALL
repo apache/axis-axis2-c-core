@@ -70,8 +70,12 @@ use './configure --help' for options.
 NOTE: If you don't provide a --prefix configure option, it will by default install into
 /usr/local/axis2c folder.
 
-If you need to get the samples working, you also need to give the configure option
-    --enable-samples=yes
+If you need to get the samples working, you also need to build the samples.
+To build samples:
+    cd samples
+    ./configure --prefix=${AXIS2C_HOME}
+    make
+    make install
 
 6. go to where you installed axis2c.
 
