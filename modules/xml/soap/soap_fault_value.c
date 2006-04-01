@@ -16,7 +16,8 @@
  #include <axis2_soap_fault_value.h>
  #include <_axis2_soap_fault_sub_code.h>
  #include <_axis2_soap_fault_code.h>
- 
+ #include <axis2_om_element.h>
+ #include <axis2_om_text.h>
  
 /****************************** impl struct  *********************************/
 
@@ -45,7 +46,9 @@ axis2_om_node_t* AXIS2_CALL
 axis2_soap_fault_value_get_base_node(axis2_soap_fault_value_t *fault_value,
                                      axis2_env_t **env);
                                   
-
+axis2_char_t* AXIS2_CALL
+axis2_soap_fault_value_get_text(axis2_soap_fault_value_t *fault_value,
+									axis2_env_t **env);
 /*************************** function implementations *************************/
 
 AXIS2_DECLARE(axis2_soap_fault_value_t *)
@@ -80,6 +83,9 @@ axis2_soap_fault_value_create(axis2_env_t **env)
         
     fault_val_impl->fault_value.ops->get_base_node =
         axis2_soap_fault_value_get_base_node;
+
+	fault_val_impl->fault_value.ops->get_text =
+		axis2_soap_fault_value_get_text;
         
     return &(fault_val_impl->fault_value);
 }
@@ -245,4 +251,25 @@ axis2_soap_fault_value_get_base_node(axis2_soap_fault_value_t *fault_value,
     axis2_soap_fault_value_impl_t *fault_val_impl = NULL;
     fault_val_impl = AXIS2_INTF_TO_IMPL(fault_value);
     return fault_val_impl->om_ele_node;
+}
+
+axis2_char_t* AXIS2_CALL
+axis2_soap_fault_value_get_text(axis2_soap_fault_value_t *fault_value,
+								axis2_env_t **env)
+{
+	axis2_om_node_t *value_node = NULL;
+	axis2_om_element_t *value_element = NULL;
+	
+	value_node = axis2_soap_fault_value_get_base_node(fault_value, env);
+	
+	if (!value_node)
+		return NULL;
+
+	value_element = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(
+		value_node, env);
+	
+	if (!value_element)
+		return NULL;
+	
+	return AXIS2_OM_ELEMENT_GET_TEXT(value_element, env, value_node);
 }

@@ -19,6 +19,7 @@
 #include <axis2_soap_fault.h>
 #include <axis2_soap_fault_code.h>
 #include <axis2_soap_fault_role.h>
+#include <axis2_soap_fault_value.h>
 
 FILE *f = NULL;
 
@@ -322,6 +323,32 @@ int create_soap_fault(axis2_env_t **env)
 return 0;
 }
 
+int test_soap_fault_value(axis2_env_t **env)
+{
+	axis2_soap_envelope_t *soap_envelope = NULL;
+	axis2_soap_body_t *soap_body = NULL;
+	axis2_soap_fault_t *soap_fault = NULL;
+	axis2_soap_fault_code_t *soap_code = NULL;
+	axis2_soap_fault_value_t *value = NULL;
+	axis2_char_t *value_text = NULL;
+
+	printf("TEST SOAP FAULT VALUE\n");
+	soap_envelope = axis2_soap_envelope_create_default_soap_fault_envelope(
+			env, "env:Receiver", "Something went wrong!", AXIS2_SOAP12);
+	soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+	soap_fault = AXIS2_SOAP_BODY_GET_FAULT(soap_body, env);
+	soap_code = AXIS2_SOAP_FAULT_GET_CODE(soap_fault, env);
+	value = AXIS2_SOAP_FAULT_CODE_GET_VALUE(soap_code, env);
+	value_text = AXIS2_SOAP_FAULT_VALUE_GET_TEXT(value, env);	
+	
+	printf ("Actual = %s Expected = %s |", value_text, "env:Receiver");
+	if (0 == strcmp(value_text, "env:Receiver"))
+		printf("SUCCESS\n");
+	else
+		printf("FAILURE\n");
+
+	AXIS2_SOAP_ENVELOPE_FREE(soap_envelope, env);
+}	
 int main(int argc, char *argv[])
 {
     axis2_env_t *env = NULL;
@@ -349,6 +376,7 @@ int main(int argc, char *argv[])
 /*    build_soap_programatically(&env);   */
     build_soap(&env, filename,uri); 
     create_soap_fault(&env); 
+	test_soap_fault_value(&env);
     axis2_env_free(env); 
     axis2_allocator_free(allocator);
     return 0;        
