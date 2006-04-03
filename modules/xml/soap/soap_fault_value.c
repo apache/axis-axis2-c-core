@@ -92,6 +92,9 @@ axis2_soap_fault_value_create(axis2_env_t **env)
 
 	fault_val_impl->fault_value.ops->get_text =
 		axis2_soap_fault_value_get_text;
+		
+    fault_val_impl->fault_value.ops->set_text =
+        axis2_soap_fault_value_set_text;       		
         
     return &(fault_val_impl->fault_value);
 }
