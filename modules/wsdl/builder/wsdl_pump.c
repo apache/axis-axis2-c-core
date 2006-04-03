@@ -713,8 +713,9 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
             axis2_wsdl4c_style_t use = 0;
             axis2_char_t *nsp = NULL;
 			axis2_char_t *str_use = NULL;
+            axis2_char_t *encoding_style = NULL;
 
-            axis2_wsdl4c_soap_get_body_info(soap, bindings[i], &nsp, &use);
+            axis2_wsdl4c_soap_get_body_info(soap, bindings[i], &nsp, &use, &encoding_style);
             soap_body = axis2_wsdl_ext_soap_body_create(env, NULL);
             if(!soap_body) return AXIS2_FAILURE;
 			if(AXIS2_WSDL4C_RPC == use)
@@ -779,8 +780,9 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
             axis2_wsdl4c_style_t use = 0;
 			axis2_char_t *str_use = NULL;
             axis2_char_t *nsp = NULL;
+            axis2_char_t *encoding_style = NULL;
 
-            axis2_wsdl4c_soap_get_body_info(soap, bindings[i], &nsp, &use);
+            axis2_wsdl4c_soap_get_body_info(soap, bindings[i], &nsp, &use, &encoding_style);
             soap_body = axis2_wsdl_ext_soap_body_create(env, NULL);
             if(!soap_body) return AXIS2_FAILURE;
 			if(AXIS2_WSDL4C_RPC == use)
@@ -834,9 +836,10 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
             axis2_wsdl_ext_soap_body_t *soap_body = NULL;
             axis2_wsdl4c_style_t use = 0;
 			axis2_char_t *str_use = NULL;
-            char *nsp = NULL;
+            axis2_char_t *nsp = NULL;
+            axis2_char_t *encoding_style;
 
-            axis2_wsdl4c_soap_get_body_info(soap, bindings[i], &nsp, &use);
+            axis2_wsdl4c_soap_get_body_info(soap, bindings[i], &nsp, &use, &encoding_style);
 			if(AXIS2_WSDL4C_RPC == use)
 				str_use = AXIS2_STRDUP("rpc", env);
 			if(AXIS2_WSDL4C_DOC == use)
