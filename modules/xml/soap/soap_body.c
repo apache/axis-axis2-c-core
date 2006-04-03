@@ -70,6 +70,11 @@ axis2_soap_body_build(axis2_soap_body_t *body,
                       
                      
 
+axis2_status_t AXIS2_CALL
+axis2_soap_body_add_child(axis2_soap_body_t *body,
+                          axis2_env_t **env,
+                          axis2_om_node_t *child);
+                          
 /*************** function implementations *************************************/
 axis2_soap_body_t* AXIS2_CALL
 axis2_soap_body_create(axis2_env_t **env)
@@ -91,7 +96,7 @@ axis2_soap_body_create(axis2_env_t **env)
     body_impl->soap_builder = NULL;
     body_impl->has_fault = AXIS2_FALSE;
     body_impl->soap_fault = NULL; 
-
+   
     body_impl->soap_body.ops = (axis2_soap_body_ops_t*) AXIS2_MALLOC(
                                (*env)->allocator, sizeof(axis2_soap_body_ops_t));
 
@@ -117,6 +122,9 @@ axis2_soap_body_create(axis2_env_t **env)
         
     body_impl->soap_body.ops->build = 
         axis2_soap_body_build;
+    
+    body_impl->soap_body.ops->add_child = 
+        axis2_soap_body_add_child;
         
     return &(body_impl->soap_body);
     
@@ -376,7 +384,6 @@ axis2_soap_body_build(axis2_soap_body_t *body,
     This is an internal function 
 
 */
-
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_set_fault(axis2_soap_body_t *body,
                           axis2_env_t **env,
@@ -398,3 +405,20 @@ axis2_soap_body_set_fault(axis2_soap_body_t *body,
     }
     return AXIS2_SUCCESS;
 }
+
+axis2_status_t AXIS2_CALL
+axis2_soap_body_add_child(axis2_soap_body_t *body,
+                          axis2_env_t **env,
+                          axis2_om_node_t *child)
+{
+    axis2_soap_body_impl_t *body_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, child, AXIS2_FAILURE);
+
+    body_impl = AXIS2_INTF_TO_IMPL(body);
+    if(NULL != body_impl->om_ele_node)
+    {
+        return AXIS2_OM_NODE_ADD_CHILD(body_impl->om_ele_node, env, child);
+    }
+    return AXIS2_FAILURE;
+}                          

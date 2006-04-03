@@ -124,7 +124,21 @@ struct axis2_soap_builder;
         axis2_status_t (AXIS2_CALL *
 		build)(axis2_soap_body_t *body, 
                axis2_env_t **env);                                                 
-                                                       
+
+       /** add an om node as the child to this soap_body 
+        * the child is added to as the first child 
+        * @param body pointer to soap_body struct
+        * @param env axis2_environment struct MUST not be NULL
+        * @returns status code , AXIS2_SUCCESS on success , AXIS2_ERROR
+        * otherwise
+        */
+
+        axis2_status_t (AXIS2_CALL *
+        add_child)(axis2_soap_body_t *body,
+                   axis2_env_t **env,
+                   axis2_om_node_t *child);
+                   
+
 };                                                      
 
   /**
@@ -150,25 +164,27 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
 /******************** Macros **************************************************/
     
 /** free soap_body */
-#define AXIS2_SOAP_BODY_FREE(body , env) \
-        ((body)->ops->free(body, env))
+#define AXIS2_SOAP_BODY_FREE( body, env) \
+        ((body)->ops->free( body, env))
         
 /** indecate whether soap_body has a fault or not*/        
-#define AXIS2_SOAP_BODY_HAS_FAULT(body, env) \
-        ((body)->ops->has_fault(body, env))
+#define AXIS2_SOAP_BODY_HAS_FAULT( body, env) \
+        ((body)->ops->has_fault( body, env))
         
-#define AXIS2_SOAP_BODY_GET_FAULT(body, env) \
-        ((body)->ops->get_fault(body, env))
+#define AXIS2_SOAP_BODY_GET_FAULT( body, env) \
+        ((body)->ops->get_fault( body, env))
         
-#define AXIS2_SOAP_BODY_GET_BASE_NODE(body, env) \
-        ((body)->ops->get_base_node(body, env))
+#define AXIS2_SOAP_BODY_GET_BASE_NODE( body, env) \
+        ((body)->ops->get_base_node( body, env))
                                    
-#define AXIS2_SOAP_BODY_GET_SOAP_VERSION(body, env) \
-        ((body)->ops->get_soap_version(body, env))
+#define AXIS2_SOAP_BODY_GET_SOAP_VERSION( body, env) \
+        ((body)->ops->get_soap_version( body, env))
 
-#define AXIS2_SOAP_BODY_BUILD(body, env) \
-        ((body)->ops->build(body, env))
+#define AXIS2_SOAP_BODY_BUILD( body, env) \
+        ((body)->ops->build( body, env))
 
+#define AXIS2_SOAP_BODY_ADD_CHILD( body, env, child) \
+        ((body)->ops->add_child( body, env, child);
 /** @} */
 #ifdef __cplusplus
 }
