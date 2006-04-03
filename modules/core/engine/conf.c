@@ -1429,11 +1429,27 @@ axis2_conf_is_engaged(axis2_conf_t *conf,
                                 axis2_env_t **env,
                                 axis2_qname_t *module_name) 
 {
+    axis2_conf_impl_t *config_impl = NULL;
+    int i = 0;
+    int size = 0;
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FALSE);
-    
-    return AXIS2_ARRAY_LIST_CONTAINS(AXIS2_INTF_TO_IMPL(conf)->
-        engaged_modules, env, module_name);
+    config_impl = AXIS2_INTF_TO_IMPL(conf);
+   
+   
+    size = AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules, env);
+    for(i = 0; i < size; i++)
+    {
+        axis2_qname_t *qname = NULL;
+        
+        qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(config_impl->
+            engaged_modules, env, i);
+        if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_name, env, qname))
+        {
+            return AXIS2_TRUE;
+        }
+    }
+    return AXIS2_FALSE;
 }
 
 axis2_phases_info_t *AXIS2_CALL

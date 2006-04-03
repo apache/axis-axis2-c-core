@@ -241,6 +241,13 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env,
         return NULL;
     }
     
+    call_impl->listener_manager = axis2_listener_manager_create(env);
+    if (!(call_impl->listener_manager))
+    {
+        axis2_call_free(&(call_impl->call), env);
+        return NULL;
+    }
+    
     /* initialize ops */    
     call_impl->call.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_call_ops_t) );
     if (!call_impl->call.ops)
@@ -589,7 +596,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
         {
             axis2_char_t *svc_name = NULL, *temp = NULL;
             axis2_qname_t *svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
-            axis2_qname_t *op_qname = AXIS2_OP_GET_QNAME(svc, env);
+            axis2_qname_t *op_qname = AXIS2_OP_GET_QNAME(op, env);
             axis2_qname_t *transport_qname = AXIS2_TRANSPORT_IN_DESC_GET_QNAME(call_impl->listener_transport, env);
             axis2_endpoint_ref_t *epr = NULL;
             
@@ -598,12 +605,12 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
             if (temp)
                 AXIS2_FREE((*env)->allocator, temp);
             
-            epr = AXIS2_LISTNER_MANAGER_REPLY_TO_EPR(call_impl->listener_manager, env, svc_name,
+            /*epr = AXIS2_LISTNER_MANAGER_REPLY_TO_EPR(call_impl->listener_manager, env, svc_name,
                         AXIS2_QNAME_GET_LOCALPART(transport_qname, env));
             if (epr)
             {
                 AXIS2_MSG_CTX_SET_REPLY_TO(msg_ctx, env, epr);
-            }
+            }*/
             
             if (svc_name)
                 AXIS2_FREE((*env)->allocator, svc_name);
@@ -611,7 +618,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
             
         }
         
-        AXIS2_MSG_CTX_SET_TO(msg_ctx, env, call_impl->to);
+        /*AXIS2_MSG_CTX_SET_TO(msg_ctx, env, call_impl->to);*/
         /* create and set the Operation context */
         AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, AXIS2_OP_FIND_OP_CTX(op, env, msg_ctx, svc_ctx));
         AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, svc_ctx);

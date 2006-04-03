@@ -40,6 +40,15 @@ typedef struct axis2_transport_listener_state
     
 } axis2_transport_listener_state_t;
 
+typedef struct axis2_listener_manager_worker_func_args
+{
+    axis2_env_t **env;
+    axis2_listener_manager_impl_t *listner_manager;
+    axis2_transport_receiver_t *listener;
+} axis2_listener_manager_worker_func_args_t;
+
+void * AXIS2_THREAD_FUNC
+axis2_listener_manager_worker_func(axis2_thread_t *thd, void *data);
 
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(listener_manager) ((axis2_listener_manager_impl_t *)listener_manager)
@@ -180,7 +189,37 @@ axis2_listener_manager_make_sure_started(struct axis2_listener_manager *listener
                     listener = AXIS2_TRANSPORT_IN_DESC_GET_RECV(transport_in, env);
                     if (listener)
                     {
-                        AXIS2_TRANSPORT_RECEIVER_START(listener, env);
+                        axis2_thread_t *worker_thread = NULL;
+                        axis2_listener_manager_worker_func_args_t *arg_list = NULL;
+                        arg_list = AXIS2_MALLOC((*env)->allocator, 
+                                        sizeof(axis2_listener_manager_worker_func_args_t));
+                        if(NULL == arg_list)
+                        {
+                            return AXIS2_FAILURE;			
+                        }
+                        arg_list->env = env;
+                        arg_list->listner_manager = listener_manager_impl;
+                        arg_list->listener = listener;
+#ifdef AXIS2_SVR_MULTI_THREADED
+                        if ((*env)->thread_pool)
+                        {
+                            worker_thread = AXIS2_THREAD_POOL_GET_THREAD((*env)->thread_pool,
+                                                             axis2_listener_manager_worker_func, (void*)arg_list);
+                            if(NULL == worker_thread)
+                            {
+                                AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread creation failed"
+                                                 "call invoke non blocking");
+                            }
+                            AXIS2_THREAD_POOL_THREAD_DETACH((*env)->thread_pool, worker_thread);
+                        }
+                        else
+                        {
+                            AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread pool not set in envioronment."
+                                                         " Cannot invoke call non blocking");
+                        }
+#else
+                        axis2_listener_manager_worker_func(NULL, (void*)arg_list);
+#endif
                         
                         tl_state  = AXIS2_MALLOC( (*env)->allocator, 
                                         sizeof(axis2_transport_listener_state_t) );
@@ -300,4 +339,21 @@ axis2_listener_manager_get_conf_ctx(axis2_listener_manager_t *listener_manager,
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(listener_manager)->conf_ctx;
+}
+
+void * AXIS2_THREAD_FUNC
+axis2_listener_manager_worker_func(axis2_thread_t *thd, void *data)
+{
+    axis2_listener_manager_worker_func_args_t *args_list = NULL;
+    
+    args_list = (axis2_listener_manager_worker_func_args_t *) data;
+    if (!args_list)
+       return NULL;    
+
+    AXIS2_ENV_CHECK(args_list->env, AXIS2_FAILURE);
+    if (args_list->listener)
+    {
+        AXIS2_TRANSPORT_RECEIVER_START(args_list->listener, args_list->env);
+    }
+    return NULL;
 }
