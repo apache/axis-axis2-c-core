@@ -49,6 +49,12 @@ axis2_soap_fault_value_get_base_node(axis2_soap_fault_value_t *fault_value,
 axis2_char_t* AXIS2_CALL
 axis2_soap_fault_value_get_text(axis2_soap_fault_value_t *fault_value,
 									axis2_env_t **env);
+									
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_value_set_text(axis2_soap_fault_value_t *fault_value,
+								axis2_env_t **env,
+								axis2_char_t *text);									
+									
 /*************************** function implementations *************************/
 
 AXIS2_DECLARE(axis2_soap_fault_value_t *)
@@ -273,3 +279,24 @@ axis2_soap_fault_value_get_text(axis2_soap_fault_value_t *fault_value,
 	
 	return AXIS2_OM_ELEMENT_GET_TEXT(value_element, env, value_node);
 }
+
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_value_set_text(axis2_soap_fault_value_t *fault_value,
+								axis2_env_t **env,
+								axis2_char_t *text)
+{
+    axis2_soap_fault_value_impl_t *fault_value_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, text, AXIS2_FAILURE);
+    fault_value_impl = AXIS2_INTF_TO_IMPL(fault_value);
+    if(NULL != fault_value_impl->om_ele_node && 
+        AXIS2_OM_NODE_GET_NODE_TYPE(fault_value_impl->om_ele_node, env) == AXIS2_OM_ELEMENT)
+    {
+        axis2_om_element_t *om_ele = NULL;
+        om_ele = (axis2_om_element_t *)
+            AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_value_impl->om_ele_node, env);
+        return AXIS2_OM_ELEMENT_SET_TEXT(om_ele, env, text, fault_value_impl->om_ele_node);
+    }
+    return AXIS2_FAILURE;
+}								
