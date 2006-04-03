@@ -3,10 +3,15 @@ It should be noted that to run this sample you should have configured
 Axis2 C with the configure option --enable-wsdl-pull=yes.
 To do this you should have installed WsdlPull and Axis2c_wsdl4c which
 is a C wrapper for WsdlPull.
-However in the WsdlPull version I used(version 1.9) I noticed that,  WsdlParser::getService() 
-method is there in the Header file but not implemented. I sent a mail to WsdlPull yahoo group
-asking to rectify this, so I hope that this problem will not be there in future versions.
-However for the time being Please add the following code to WsdlParser.cpp
+
+I'm using WsdlPull 1.10
+
+Notes for WsdlPull 1.9
+======================
+Note1:
+In WsdlPull version 1.9 I noticed that,  WsdlParser::getService() 
+method is there in the Header file but not implemented.
+Therefore add the following code to WsdlParser.cpp
 
 const Service *
 WsdlParser::getService()
@@ -21,7 +26,7 @@ WsdlParser::getService()
         return services_.back();
     }
 }
-
+Note2:
 Also there is another fix for WsdlPull
 In WsdlParser.cpp's parseService method
 
