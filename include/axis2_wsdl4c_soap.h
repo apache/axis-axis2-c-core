@@ -60,7 +60,7 @@ extern "C"
     } axis2_wsdl4c_transport_t;
 
     void *
-    axis2_wsdl4c_soap_create(char *schema_path);
+    axis2_wsdl4c_soap_create(axis2_char_t *schema_path);
 
     void
     axis2_wsdl4c_soap_destroy(void *soap);
@@ -70,7 +70,7 @@ extern "C"
      */
     void
     axis2_wsdl4c_soap_set_schema_path(void *soap, 
-                                        char *schema_path); 
+                                        axis2_char_t *schema_path); 
 
     axis2_wsdl4c_transport_t 
     axis2_wsdl4c_soap_get_transport_method(void *soap);
@@ -82,27 +82,27 @@ extern "C"
      * Returns the namespace URI of the wsdl
      * extensibility elements that it can handle.
      */
-    char *
+    axis2_char_t *
     axis2_wsdl4c_soap_get_namespace(void *soap); 
  
     void
     axis2_wsdl4c_soap_set_namespace_prefix(void *soap, 
-                                            char *prefix);
+                                            axis2_char_t *prefix);
  
-    char *
+    axis2_char_t *
     axis2_wsdl4c_soap_get_namespace_prefix(void *soap); 
    
  
     axis2_bool_t
     axis2_wsdl4c_soap_is_namespace_handler(void *soap, 
-                                            char *ns);
+                                            axis2_char_t *ns);
   
  
-    char *
+    axis2_char_t *
     axis2_wsdl4c_soap_get_extensibility_schema(void *soap); 
  
  
-    char *
+    axis2_char_t *
     axis2_wsdl4c_soap_get_encoding_schema(void *soap);
  
 
@@ -127,7 +127,7 @@ extern "C"
     int 
     axis2_wsdl4c_soap_handle_attribute(void *soap, 
                                         int parent,
-                                        char *att_name,
+                                        axis2_char_t *att_name,
                                         void *xml_pull_parser);
  
     /** R
@@ -181,14 +181,15 @@ extern "C"
     void 
     axis2_wsdl4c_soap_get_operation_info(void *soap,
                                             int elem_id, 
-                                            char **soap_action, 
+                                            axis2_char_t **soap_action, 
                                             axis2_wsdl4c_style_t *style);
  
     void 
     axis2_wsdl4c_soap_get_body_info(void *soap,
                                     int elem_id,
-                                    char **ns,
-                                    axis2_wsdl4c_encoding_t *use);
+                                    axis2_char_t **ns,
+                                    axis2_wsdl4c_encoding_t *use,
+                                    axis2_char_t **encoding_style);
  
     void 
     axis2_wsdl4c_soap_get_header_info(void *soap,
@@ -199,7 +200,7 @@ extern "C"
     axis2_bool_t
     axis2_wsdl4c_soap_get_service_location(void *soap,
                                             int elem_id,
-                                            char **location);
+                                            axis2_char_t **location);
 
     /** TODO add more methods like this */
     axis2_bool_t
