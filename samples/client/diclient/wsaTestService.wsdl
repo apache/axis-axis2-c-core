@@ -23,6 +23,9 @@
       <wsdl:input name="echoInRequest" message="impl:wsaEchoOutMessage" wsaw:Action="http://example.org/action/echoIn"/>
       <wsdl:output name="echoInResponse" message="impl:wsaEchoInMessage" wsaw:Action="http://example.org/action/echoOut"/>
     </wsdl:operation>
+    <wsdl:operation name="notify">
+      <wsdl:input name="notifyRequest" message="impl:wsaNotifyMessage" wsaw:Action="http://example.org/action/notify"/>
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="wsaTestSoap11Binding" type="impl:wsaTestPortType">
     <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
@@ -34,6 +37,12 @@
       <wsdl:output>
         <wsdlsoap:body use="literal" namespace="http://org.apache.axis2/"/>
       </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="notify">
+      <wsdlsoap:operation soapAction="notify" style="document"/>
+      <wsdl:input>
+        <wsdlsoap:body use="literal" namespace="http://org.apache.axis2/"/>
+      </wsdl:input>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="wsaTestService">

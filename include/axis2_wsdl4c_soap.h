@@ -19,7 +19,7 @@
  
  /**
  * @file axis2_wsdl4c_soap.h
- * @brief defines WSDL4C_SOAP constants
+ * @brief defines WSDL4C_SOAP
  */
 #include <axis2_array_list.h>
 #include <axis2_allocator.h>
@@ -31,8 +31,8 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2 wsdl4c_soap constants
- * @ingroup axis2_wsdl4c_soap 
+ * @defgroup axis2 wsdl4c_soap
+ * @ingroup axis2_wsdl4c 
  * @{
  */
 #define AXIS2_WSDL4C_HTTP_TRANSPORT "http://schemas.xmlsoap.org/soap/http"
@@ -66,8 +66,8 @@ extern "C"
     axis2_wsdl4c_soap_destroy(void *soap);
 
     /**
-    * Set path to directory containing XML schemas.
-    */
+     * Set path to directory containing XML schemas.
+     */
     void
     axis2_wsdl4c_soap_set_schema_path(void *soap, 
                                         char *schema_path); 
@@ -78,10 +78,10 @@ extern "C"
     axis2_wsdl4c_style_t
     axis2_wsdl4c_soap_get_style(void *soap);
  
-    /*
-    Returns the namespace URI of the wsdl
-    extensibility elements that it can handle.
-    */
+    /**
+     * Returns the namespace URI of the wsdl
+     * extensibility elements that it can handle.
+     */
     char *
     axis2_wsdl4c_soap_get_namespace(void *soap); 
  
@@ -111,8 +111,8 @@ extern "C"
                                         void *schema_parser);
  
 
-    /* 
-     * parent is the Wsdl parent element type under which the extensibility 
+    /** 
+     * Parent is the Wsdl parent element type under which the extensibility 
      * element has come
      */
     int 
@@ -121,14 +121,18 @@ extern "C"
                                         void *xml_pull_parser);
 
  
-    /* att_name is the extensibility attribute */
+    /**
+     * att_name is the extensibility attribute 
+     */
     int 
     axis2_wsdl4c_soap_handle_attribute(void *soap, 
                                         int parent,
                                         char *att_name,
                                         void *xml_pull_parser);
  
-    /* returns a valid extensibilty element */
+    /** R
+     * eturns a valid extensibilty element 
+     */
     int 
     axis2_wsdl4c_soap_get_element_name(void *soap, 
                                         int id);
@@ -144,13 +148,15 @@ extern "C"
                                                 int att_num); 
 
  
-    /* returns a valid extensibility attribute */
+    /** 
+     * Returns a valid extensibility attribute 
+     */
     int 
     axis2_wsdl4c_soap_get_attribute_name(void *soap, int id);
  
 
-    /* 
-     * this is the start of all ids that must be used for elems/attributes
+    /** 
+     * This is the start of all ids that must be used for elems/attributes
      * in this namespace
      */
     void 
@@ -195,7 +201,7 @@ extern "C"
                                             int elem_id,
                                             char **location);
 
-    /* TODO add more methods like this */
+    /** TODO add more methods like this */
     axis2_bool_t
     axis2_wsdl4c_soap_is_soap_body(void *soap,
                                     int id);

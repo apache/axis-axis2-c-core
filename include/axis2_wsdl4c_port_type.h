@@ -19,7 +19,7 @@
  
  /**
  * @file axis2_wsdl4c_port_type.h
- * @brief defines WSDL4C_PORT_TYPE constants
+ * @brief defines WSDL4C_PORT_TYPE
  */
 #include <axis2_array_list.h>
 #include <axis2_allocator.h>
@@ -31,8 +31,8 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2 wsdl4c_port_type constants
- * @ingroup axis2_wsdl4c_port_type 
+ * @defgroup axis2 wsdl4c_port_type
+ * @ingroup axis2_wsdl4c
  * @{
  */
     void *
@@ -45,20 +45,20 @@ extern "C"
     axis2_wsdl4c_port_type_get_num_ops(void *port_type);
 
     /**
-    * axis2_wsdl4c_port_type_get_operation
-    * @param index of the operation index:0..ops.size()-1
-    * @return pointer to  the Operation
-    */
-    const void *
+     * axis2_wsdl4c_port_type_get_operation
+     * @param index of the operation index:0..number of operations
+     * @return pointer to  the Operation
+     */
+    void *
     axis2_wsdl4c_port_type_get_operation_a_index(void *port_type, 
                                         int index);
 
     /**
-    * axis2_wsdl4c_port_type_get_operation
-    * @param name of the operation
-    * @return pointer to  the Operation
-    */
-    const void *
+     * axis2_wsdl4c_port_type_get_operation
+     * @param name of the operation
+     * @return pointer to  the Operation
+     */
+    void *
     axis2_wsdl4c_port_type_get_operation_a_qname(void *port_type, 
                                         void *qname);
 
@@ -67,20 +67,20 @@ extern "C"
                                                 axis2_char_t *op_name);
 
     /**
-    * axis2_wsdl4c_port_type_get_operations
-    * @return axis2_array_list_t
-    * returns array list of operations 
-    */
+     * axis2_wsdl4c_port_type_get_operations
+     * @return axis2_array_list_t
+     * returns array list of operations 
+     */
     axis2_array_list_t *
     axis2_wsdl4c_port_type_get_operations(void *port_type);
 
     /**
-    * @name   binding
-    * @return const Binding*
-    * returns Binding associated with the port type 
-    * which has a binding protocol specified by 'nsp'
-    */
-    const void *
+     * @name   binding
+     * @return const Binding*
+     * returns Binding associated with the port type 
+     * which has a binding protocol specified by 'nsp'
+     */
+    void *
     axis2_wsdl4c_port_type_binding(void *port_type, 
                             char *nsp);
 
@@ -93,27 +93,27 @@ extern "C"
                                 void *bn);
 
     /**
-    * get_name
-    * @return name of the Wsdl Element
-    */
+     * get_name
+     * @return name of the Wsdl Element
+     */
     char *
     axis2_wsdl4c_port_type_get_name(void *port_type);
 
     /**
-    * get_documentation
-    *   
-    */
+     * get_documentation
+     *   
+     */
     char *
     axis2_wsdl4c_port_type_get_documentation(void *port_type);  
 
     /**
-    *@name get_extensibility_elements/get_extensibility_attributes
-    *@brief return the extensibility elements/attributes belonging 
-    *       to a given namespace
-    *@params namspace uri
-    *@params reference to a vector<int>
-    *@return true if any extensibility elements were found
-    */
+     *@name get_extensibility_elements/get_extensibility_attributes
+     *@brief return the extensibility elements/attributes belonging 
+     *       to a given namespace
+     *@params namspace uri
+     *@params reference to a vector<int>
+     *@return true if any extensibility elements were found
+     */
     int *
     axis2_wsdl4c_port_type_get_extensibility_elements(void *port_type,
                                                     char *namespc);

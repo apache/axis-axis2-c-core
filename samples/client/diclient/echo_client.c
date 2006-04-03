@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include <axis2_om_node.h>
+#include <axis2_op.h>
 #include <axis2_om_element.h>
 #include <axis2_om_text.h>
 #include <axis2_wsdl4c_parser.h>
@@ -25,19 +26,25 @@
 #include <stdio.h>
 
 axis2_om_node_t *
-build_om_programatically(axis2_env_t **env);
+build_om_programatically(axis2_env_t **env,
+                            axis2_diclient_t *diclient,
+                            axis2_qname_t *op_qname);
 
 int main(int argc, char** argv)
 {
 	axis2_status_t status = AXIS2_FAILURE;
-	void *wp = NULL;
 	axis2_om_node_t *node = NULL;
 	axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
     axis2_allocator_t *allocator = NULL;
     char *wsdl_file_name = NULL;
-    axis2_di_client_t *diclient = NULL;
+    axis2_diclient_t *diclient = NULL;
+    axis2_qname_t *op_qname = NULL;
+    axis2_qname_t *endpoint_qname = NULL;
+    axis2_hash_t *op_map = NULL;
+    axis2_hash_index_t *index = NULL;
+    axis2_op_t *op = NULL;
 
     /* set up the envioronment with allocator and log*/
     allocator = axis2_allocator_init (NULL);
@@ -53,38 +60,67 @@ int main(int argc, char** argv)
       return 1;
     }
     wsdl_file_name = argv[1];
-    diclient = axis2_di_client_create(&env);
-	status = AXIS2_DI_CLIENT_INIT(diclient, &env, wsdl_file_name);
+    diclient = axis2_diclient_create(&env);
+	status = AXIS2_DICLIENT_INIT(diclient, &env, wsdl_file_name);
     if(AXIS2_SUCCESS != status)
             return status;
+    op_qname = axis2_qname_create(&env, "echo", NULL, NULL);
+    endpoint_qname = axis2_qname_create(&env, "wsaTestServicePort0", NULL, NULL);
+    AXIS2_DICLIENT_SET_ADDRESS_AND_ACTION_FOR_OP(diclient, &env, op_qname,
+            endpoint_qname);
     /* build the SOAP request message content using OM API.*/
-    node = build_om_programatically(&env);
-	status = AXIS2_DI_CLIENT_INVOKE(diclient, &env, node);
+    node = build_om_programatically(&env, diclient, op_qname);
+    op_map = AXIS2_DICLIENT_GET_OPERATIONS(diclient, &env);
+    for (index = axis2_hash_first (op_map, &env); index; 
+            index = axis2_hash_next (&env, index))
+    {
+        void *value = NULL;
+        axis2_qname_t *op_qname = NULL;
+        axis2_char_t *op_name = NULL;
+        
+	    axis2_hash_this(index, NULL, NULL, &value);
+	    op = (axis2_op_t *) value;
+        op_qname = AXIS2_OP_GET_QNAME(op, &env);
+        op_name = AXIS2_QNAME_GET_LOCALPART(op_qname, &env);
+        if(0 == AXIS2_STRCMP(op_name, "echo"))
+            break;
+    }
+
+	status = AXIS2_DICLIENT_INVOKE(diclient, &env, node, op);
 	if(AXIS2_SUCCESS == status)
 		printf("status:%s\n", "Success");
 	else
 		printf("status:%s\n", "Failure");
+    if(diclient)
+    {
+        AXIS2_DICLIENT_FREE(diclient, &env);
+        diclient = NULL;
+    }
 	return 0;
 }
 
 /* build SOAP request message content using OM */
 axis2_om_node_t *
-build_om_programatically(axis2_env_t **env)
+build_om_programatically(axis2_env_t **env,
+                            axis2_diclient_t *diclient,
+                            axis2_qname_t *op_qname)
 {
     axis2_om_node_t *echo_om_node = NULL;
     axis2_om_element_t* echo_om_ele = NULL;
-    axis2_om_node_t* text_om_node = NULL;
-    axis2_om_element_t * text_om_ele = NULL;
     axis2_om_namespace_t *ns1 = NULL;
     
 
     axis2_xml_writer_t *xml_writer = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
+    axis2_char_t *param_localname = NULL;
+    axis2_char_t *param_namespc = NULL;
 
-    ns1 = axis2_om_namespace_create (env, "http://example.org/echo", "tns1");
+    param_localname = AXIS2_DICLIENT_GET_PARAM_LOCALNAME(diclient, env, op_qname);
+    param_namespc = AXIS2_DICLIENT_GET_PARAM_NAMESPACE(diclient, env, op_qname);
+    ns1 = axis2_om_namespace_create (env, param_namespc, "tns0");
 
-    echo_om_ele = axis2_om_element_create(env, NULL, "echoIn", ns1, &echo_om_node);
+    echo_om_ele = axis2_om_element_create(env, NULL, param_localname, ns1, &echo_om_node);
     
     AXIS2_OM_ELEMENT_SET_TEXT(echo_om_ele, env, "Hello World", echo_om_node);
     

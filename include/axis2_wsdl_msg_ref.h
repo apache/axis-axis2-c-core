@@ -39,13 +39,13 @@ struct axis2_wsdl_extensible_component;
 typedef struct axis2_wsdl_msg_ref axis2_wsdl_msg_ref_t;
 typedef struct axis2_wsdl_msg_ref_ops axis2_wsdl_msg_ref_ops_t;
 
-/** @defgroup axis2_wsdl_msg_ref Wsdl Binding Fault
+/** @defgroup axis2_wsdl_msg_ref Wsdl Binding Message Reference
  * @ingroup axis2_wsdl
  * @{
  */
 
 /** 
- * @brief Wsdl Binding Message Reference ops struct
+ * @brief Wsdl Message Reference ops struct
  * Encapsulator struct for ops of axis2_wsdl_msg_ref
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_msg_ref_ops

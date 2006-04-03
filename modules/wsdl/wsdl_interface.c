@@ -458,7 +458,7 @@ axis2_wsdl_interface_set_op(axis2_wsdl_interface_t *wsdl_interface,
 {
     axis2_wsdl_interface_impl_t *interface_impl = NULL;
     axis2_qname_t *wsdl_op_qname = NULL;
-    axis2_char_t *op_name = NULL;
+    axis2_char_t *op_qname_str = NULL;
         
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE); 
@@ -473,9 +473,9 @@ axis2_wsdl_interface_set_op(axis2_wsdl_interface_t *wsdl_interface,
         return AXIS2_FAILURE;
     }
     
-    op_name = AXIS2_QNAME_GET_LOCALPART(wsdl_op_qname, env);
+    op_qname_str = AXIS2_QNAME_TO_STRING(wsdl_op_qname, env);
     
-    axis2_hash_set(interface_impl->ops, op_name, AXIS2_HASH_KEY_STRING, op);
+    axis2_hash_set(interface_impl->ops, op_qname_str, AXIS2_HASH_KEY_STRING, op);
     
     return AXIS2_SUCCESS;
 }

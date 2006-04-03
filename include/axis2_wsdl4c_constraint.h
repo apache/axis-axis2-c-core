@@ -19,7 +19,7 @@
  
  /**
  * @file axis2_wsdl4c_constraint.h
- * @brief defines WSDL4C_CONSTRAINT constants
+ * @brief defines WSDL4C_CONSTRAINT
  */
 #include <axis2_array_list.h>
 #include <axis2_allocator.h>
@@ -31,15 +31,15 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2 wsdl4c_constraint constants
- * @ingroup axis2_wsdl4c_constraint 
+ * @defgroup axis2 wsdl4c_constraint
+ * @ingroup axis2_wsdl4c
  * @{
  */
     enum axis2_wsdl4c_constraints
     {
-        Key,
-        Keyref,
-        Unique
+        AXIS2_WSDL4C_KEY,
+        AXIS2_WSLD4C_KEYREF,
+        AXIS2_WSDL4C_UNIQUE
     };
 	
     typedef enum axis2_wsdl4c_constraints axis2_wsdl4c_constraints_t;
@@ -47,16 +47,17 @@ extern "C"
     void *
     axis2_wsdl4c_constraint_create(axis2_wsdl4c_constraints_t constraints);
 
-    const char *
+    char *
     axis2_wsdl4c_constraint_get_name(void *constraint);
 
     void
     axis2_wsdl4c_constraint_set_name(void *constraint, 
                                         char *name);
 
-    /*axis2_wsdl4c_constraints_t *
-    axis2_wsdl4c_constraint_get_constraint_type(void *constraint);
-    */
+    /** A
+     * xis2_wsdl4c_constraints_t *
+     * axis2_wsdl4c_constraint_get_constraint_type(void *constraint);
+     */
 
     void
     axis2_wsdl4c_constraint_set_selector(void *constraint, 
@@ -66,7 +67,7 @@ extern "C"
     axis2_wsdl4c_constraint_add_field(void *constraint, 
                                         char *xpath);
 
-    const char *
+    char *
     axis2_wsdl4c_constraint_selector(void *constraint); 
 
 

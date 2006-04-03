@@ -19,7 +19,7 @@
  
  /**
  * @file axis2_wsdl4c_service.h
- * @brief defines WSDL4C_SERVICE constants
+ * @brief defines WSDL4C_SERVICE
  */
 #include <axis2_array_list.h>
 #include <axis2_allocator.h>
@@ -31,8 +31,8 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2 wsdl4c_service constants
- * @ingroup axis2_wsdl4c_service 
+ * @defgroup axis2 wsdl4c_service
+ * @ingroup axis2_wsdl4c
  * @{
  */
     void *
@@ -42,10 +42,10 @@ extern "C"
     axis2_wsdl4c_service_destroy(void *service);
 
     /**
-    * axis2_wsdl4c_service_add_port
-    * @return the extensibility element id of the  main binding extension element.
-    *  In case of soap it would  be the id of the soap:binding element
-    */
+     * axis2_wsdl4c_service_add_port
+     * @return the extensibility element id of the  main binding extension 
+     * element. In case of soap it would  be the id of the soap:binding element
+     */
     void
     axis2_wsdl4c_service_add_port(void *service,
                                     char *name,
@@ -65,7 +65,7 @@ extern "C"
 	* @param port name
 	* @return binding associated with the port
 	*/	
-    const void *
+    void *
     axis2_wsdl4c_service_get_port_binding(void *service,
                                             char *name);
 
@@ -76,27 +76,27 @@ extern "C"
     axis2_wsdl4c_service_get_ports(void *service);
 
     /**
-    * get_name
-    * @return name of the Wsdl Element
-    */
+     * get_name
+     * @return name of the Wsdl Element
+     */
     char *
     axis2_wsdl4c_service_get_name(void *service);
 
     /**
-    * get_documentation
-    *   
-    */
+     * get_documentation
+     *   
+     */
     char *
     axis2_wsdl4c_service_get_documentation(void *service);  
 
     /**
-    *@name get_extensibility_elements/get_extensibility_attributes
-    *@brief return the extensibility elements/attributes belonging 
-    *       to a given namespace
-    *@params namspace uri
-    *@params reference to a vector<int>
-    *@return true if any extensibility elements were found
-    */
+     *@name get_extensibility_elements/get_extensibility_attributes
+     *@brief return the extensibility elements/attributes belonging 
+     *       to a given namespace
+     *@params namspace uri
+     *@params reference to a vector<int>
+     *@return true if any extensibility elements were found
+     */
     int *
     axis2_wsdl4c_service_get_extensibility_elements(void *service,
                                                     char *namespc);

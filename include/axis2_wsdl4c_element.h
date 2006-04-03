@@ -19,7 +19,7 @@
  
  /**
  * @file axis2_wsdl4c_element.h
- * @brief defines WSDL4C_ELEMENT constants
+ * @brief defines WSDL4C_ELEMENT
  */
 #include <axis2_array_list.h>
 #include <axis2_allocator.h>
@@ -31,8 +31,8 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2 wsdl4c_element constants
- * @ingroup axis2_wsdl4c_element 
+ * @defgroup axis2 wsdl4c_element
+ * @ingroup axis2_wsdl4c 
  * @{
  */
     void *

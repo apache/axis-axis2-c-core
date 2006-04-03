@@ -134,6 +134,7 @@ axis2_wsdl_binding_create (axis2_env_t **env)
     }
     
     wsdl_binding_impl->qname = NULL;
+    wsdl_binding_impl->bound_interface = NULL;
 	wsdl_binding_impl->binding_ops = NULL;
     wsdl_binding_impl->binding_faults = NULL;
     wsdl_binding_impl->wsdl_binding.extensible_component = NULL;

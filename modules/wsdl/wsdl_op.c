@@ -424,11 +424,14 @@ axis2_qname_t * AXIS2_CALL
 axis2_wsdl_op_get_qname (void *wsdl_op, 
                          axis2_env_t **env)
 {
+    axis2_wsdl_op_impl_t *op_impl = NULL;
     axis2_wsdl_op_t *wsdl_op_l = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     wsdl_op_l = (axis2_wsdl_op_t *) wsdl_op;
-    return AXIS2_INTF_TO_IMPL(wsdl_op_l)->name;
+    op_impl = AXIS2_INTF_TO_IMPL(wsdl_op_l);
+    
+    return op_impl->name;
 }
 
 axis2_status_t AXIS2_CALL 

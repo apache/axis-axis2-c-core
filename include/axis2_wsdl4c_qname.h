@@ -19,7 +19,7 @@
  
  /**
  * @file axis2_wsdl4c_qname.h
- * @brief defines WSDL4C_QNAME constants
+ * @brief defines WSDL4C_QNAME
  */
 #include <axis2_array_list.h>
 #include <axis2_allocator.h>
@@ -31,8 +31,8 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2 wsdl4c_qname constants
- * @ingroup axis2_wsdl4c_qname 
+ * @defgroup axis2 wsdl4c_qname
+ * @ingroup axis2_wsdl4c
  * @{
  */
     void *
@@ -48,20 +48,20 @@ extern "C"
     axis2_wsdl4c_qname_destroy(void *qname);
 
     /**
-    * @name axis2_wsdl4c_get_local_name
-    * @return
-    */
-    const char *
-    axis2_wsdl4c_part_get_local_name(void *qname);
+     * @name axis2_wsdl4c_get_localname
+     * @return
+     */
+    char *
+    axis2_wsdl4c_qname_get_localname(void *qname);
     
-    const char *
-    axis2_wsdl4c_part_get_prefix(void *qname);
+    char *
+    axis2_wsdl4c_qname_get_prefix(void *qname);
     
-    const char *
-    axis2_wsdl4c_part_get_namespace(void *qname);
+    char *
+    axis2_wsdl4c_qname_get_namespace(void *qname);
 
     void
-    axis2_wsdl4c_part_set_namespace(void *qname, 
+    axis2_wsdl4c_qname_set_namespace(void *qname, 
                                     char *uri);
 
 /** @} */

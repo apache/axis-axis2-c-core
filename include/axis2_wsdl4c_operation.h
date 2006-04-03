@@ -19,7 +19,7 @@
  
  /**
  * @file axis2_wsdl4c_operation.h
- * @brief defines WSDL4C_OPERATION constants
+ * @brief defines WSDL4C_OPERATION
  */
 #include <axis2_array_list.h>
 #include <axis2_allocator.h>
@@ -32,8 +32,8 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2 wsdl4c_operation constants
- * @ingroup axis2_wsdl4c_operation 
+ * @defgroup axis2 wsdl4c_operation
+ * @ingroup axis2_wsdl4c
  * @{
  */
 
@@ -64,11 +64,11 @@ extern "C"
     axis2_wsdl4c_operation_destroy(void *operation);
 
     /**
-    * axis2_wsdl4c_operation_get_message
-    * @param mesage type , WSDL4C_INPUT, WSDL4C_OUTPUT or WSDL4C_FAULT
-    * @return pointer to the message
-    */
-    const void *
+     * axis2_wsdl4c_operation_get_message
+     * @param mesage type , WSDL4C_INPUT, WSDL4C_OUTPUT or WSDL4C_FAULT
+     * @return pointer to the message
+     */
+    void *
     axis2_wsdl4c_operation_get_message(void *operation, 
                                         axis2_wsdl4c_msg_type_t type );
 
@@ -76,17 +76,17 @@ extern "C"
     axis2_wsdl4c_operation_get_faults(void *operation);
 
     /**
-    * axis2_wsdl4c_operation_get_optype
-    * @return type of the operation in,in-out,out,out-in
-    */
+     * axis2_wsdl4c_operation_get_optype
+     * @return type of the operation in,in-out,out,out-in
+     */
     axis2_wsdl4c_optype_t
     axis2_wsdl4c_operation_get_type(void *operation);
 
     /**
-    * axis2_wsdl4c_operation_port_type
-    * @return The porttype to which this operation belongs
-    */
-    const void *
+     * axis2_wsdl4c_operation_port_type
+     * @return The port type to which this operation belongs
+     */
+    void *
     axis2_wsdl4c_operation_port_type(void *operation);
 
     void
@@ -95,27 +95,27 @@ extern "C"
                                         axis2_wsdl4c_msg_type_t type);
 
     /**
-    * get_name
-    * @return name of the Wsdl Element
-    */
+     * get_name
+     * @return name of the Wsdl Element
+     */
     char *
     axis2_wsdl4c_operation_get_name(void *operation);
 
     /**
-    * get_documentation
-    *   
-    */
+     * get_documentation
+     *   
+     */
     char *
     axis2_wsdl4c_operation_get_documentation(void *operation);  
 
     /**
-    *@name get_extensibility_elements/get_extensibility_attributes
-    *@brief return the extensibility elements/attributes belonging 
-    *       to a given namespace
-    *@params namspace uri
-    *@params reference to a vector<int>
-    *@return true if any extensibility elements were found
-    */
+     *@name get_extensibility_elements/get_extensibility_attributes
+     *@brief return the extensibility elements/attributes belonging 
+     *       to a given namespace
+     *@params namspace uri
+     *@params reference to a vector<int>
+     *@return true if any extensibility elements were found
+     */
     int *
     axis2_wsdl4c_operation_get_extensibility_elements(void *operation,
                                                     char *namespc);

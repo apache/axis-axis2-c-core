@@ -19,7 +19,7 @@
  
  /**
  * @file axis2_wsdl4c_part.h
- * @brief defines WSDL4C_PART constants
+ * @brief defines WSDL4C_PART
  */
 #include <axis2_array_list.h>
 #include <axis2_allocator.h>
@@ -31,8 +31,8 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2 wsdl4c_part constants
- * @ingroup axis2_wsdl4c_part 
+ * @defgroup axis2 wsdl4c_part
+ * @ingroup axis2_wsdl4c
  * @{
  */
 
@@ -52,9 +52,9 @@ extern "C"
     axis2_wsdl4c_part_destroy(void *part);
 
     /**
-    * @name axis2_wsdl4c_part_ref_type
-    * @return number of part ref type
-    */
+     * @name axis2_wsdl4c_part_ref_type
+     * @return number of part ref type
+     */
     axis2_wsdl4c_part_ref_type_t
     axis2_wsdl4c_part_ref_type(void *part);
 
@@ -64,7 +64,7 @@ extern "C"
     int
     axis2_wsdl4c_part_type(void *part);
  
-    const void *
+    void *
     axis2_wsdl4c_part_element(void *part);
  
     int

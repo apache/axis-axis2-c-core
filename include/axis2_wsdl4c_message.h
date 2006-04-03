@@ -19,7 +19,7 @@
  
  /**
  * @file axis2_wsdl4c_message.h
- * @brief defines WSDL4C_MESSAGE constants
+ * @brief defines WSDL4C_MESSAGE
  */
 #include <axis2_array_list.h>
 #include <axis2_allocator.h>
@@ -33,8 +33,8 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2 wsdl4c_message constants
- * @ingroup axis2_wsdl4c_message 
+ * @defgroup axis2 wsdl4c_message
+ * @ingroup axis2_wsdl4c
  * @{
  */
     void *
@@ -46,29 +46,30 @@ extern "C"
  
 
     /**
-    * @name axis2_wsdl4c_msg_get_num_parts
-    * @return number of parts in the message
-    */
+     * @name axis2_wsdl4c_msg_get_num_parts
+     * @return number of parts in the message
+     */
     int
     axis2_wsdl4c_msg_get_num_parts(void *message); 
 
 
     /**
-    * @name axis2_wsdl4c_msg_get_part_index
-    * @param the name of the part
-    * @return index of the of the part whose name is passed
-    *         index:0..nParts-1
-    */
+     * @name axis2_wsdl4c_msg_get_part_index
+     * @param the name of the part
+     * @return index of the of the part whose name is passed
+     *         index:0..number of parts
+     */
     int
     axis2_wsdl4c_msg_get_part_index(void *message, 
                                     char *name);
 
-    /* @name axis2_wsdl4c_msg_get_part_type
-    * @param the index  of the part       index:0..nParts-1
-    * @return type id  of the part
-    *         for ex if we have <part name="one" type="xsd:int">
-    *         the id returned represents xsd:int,the schema type for integers
-    */
+    /** 
+     * @name axis2_wsdl4c_msg_get_part_type
+     * @param the index  of the part       index:0..number of parts
+     * @return type id  of the part
+     *         for ex if we have <part name="one" type="xsd:int">
+     *         the id returned represents xsd:int,the schema type for integers
+     */
     int
     axis2_wsdl4c_msg_get_part_type_a_index(void *message, 
                                             int index);
@@ -79,36 +80,39 @@ extern "C"
                                             char *name); 
 
 
-    /* @name axis2_wsdl4c_msg_get_part_element
-    * @param the index  of the part  index:0..nParts-1
-    * @return pointer to the Element which the part uses
-    *         for ex if we have <part name="one" element="ns:elem">
-    *         a pointer to the Element representing ns:elem is returned
-    *        I the part's reftype is Type ,0 is returned
-    */
-    const void *
+    /** 
+     * @name axis2_wsdl4c_msg_get_part_element
+     * @param the index  of the part  index:0..number of parts
+     * @return pointer to the Element which the part uses
+     *         for ex if we have <part name="one" element="ns:elem">
+     *         a pointer to the Element representing ns:elem is returned
+     *         If the part's reftype is Type ,0 is returned
+     */
+    void *
     axis2_wsdl4c_msg_get_part_element(void *message, 
                                         int index);
 
 
-    /* @name axis2_wsdl4c_msg_get_message_part
-    * @param the index  of the part,or the name
-    * @return pointer to the Part
-    */
-    const void*
+    /** 
+     * @name axis2_wsdl4c_msg_get_message_part
+     * @param the index  of the part,or the name
+     * @return pointer to the Part
+     */
+    void*
     axis2_wsdl4c_msg_get_message_part_a_index(void *message, 
                                                 size_t index); 
 
 
-    const void *
+    void *
     axis2_wsdl4c_msg_get_message_part_a_nam(void *message, 
                                             char *nam);
 
 
-    /* @name axis2_wsdl4c_msg_get_part_content_schema_id
-    * @param the index  of the part,or the name
-    * @return schema id to which the part's type or element belongs to
-    */
+    /**
+     * @name axis2_wsdl4c_msg_get_part_content_schema_id
+     * @param the index  of the part,or the name
+     * @return schema id to which the part's type or element belongs to
+     */
     int
     axis2_wsdl4c_msg_get_part_content_schema_id_a_index(void *message, 
                                                         int index);
@@ -141,27 +145,27 @@ extern "C"
                                 int schema_id);
 
     /**
-    * get_name
-    * @return name of the Wsdl Element
-    */
+     * get_name
+     * @return name of the Wsdl Element
+     */
     char *
     axis2_wsdl4c_msg_get_name(void *message);
 
     /**
-    * get_documentation
-    *   
-    */
+     * get_documentation
+     *   
+     */
     char *
     axis2_wsdl4c_msg_get_documentation(void *message);  
 
     /**
-    *@name get_extensibility_elements/get_extensibility_attributes
-    *@brief return the extensibility elements/attributes belonging 
-    *       to a given namespace
-    *@params namspace uri
-    *@params reference to a vector<int>
-    *@return true if any extensibility elements were found
-    */
+     *@name get_extensibility_elements/get_extensibility_attributes
+     *@brief return the extensibility elements/attributes belonging 
+     *       to a given namespace
+     *@params namspace uri
+     *@params reference to a vector<int>
+     *@return true if any extensibility elements were found
+     */
     int *
     axis2_wsdl4c_msg_get_extensibility_elements(void *message,
                                                     char *namespc);
