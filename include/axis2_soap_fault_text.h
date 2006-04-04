@@ -67,6 +67,13 @@ extern "C"
         axis2_om_node_t* (AXIS2_CALL *
 		get_base_node)(axis2_soap_fault_text_t *fault_text,
                        axis2_env_t **env);
+                       
+        axis2_status_t (AXIS2_CALL *
+        set_text)(axis2_soap_fault_text_t *fault_text,
+                  axis2_env_t **env,
+                  axis2_char_t *value,
+                  axis2_char_t *lang);
+                                                            
     };      
 
   /**
@@ -103,6 +110,9 @@ axis2_soap_fault_text_create_with_parent(axis2_env_t **env,
 #define AXIS2_SOAP_FAULT_TEXT_GET_BASE_NODE(fault_text, env) \
         ((fault_text)->ops->get_base_node(fault_text, env))         
 
+#define AXIS2_SOAP_FAULT_TEXT_SET_TEXT(fault_text, env, value, lang) \
+        ((fault_text)->ops->set_text(fault_text, env, value, lang))
+        
 /** @} */
 
 #ifdef __cplusplus

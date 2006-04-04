@@ -62,6 +62,13 @@ axis2_om_node_t* AXIS2_CALL
 axis2_soap_fault_text_get_base_node(axis2_soap_fault_text_t *fault_text,
                                       axis2_env_t **env);
                                       
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_text_set_text(axis2_soap_fault_text_t *fault_text,
+                               axis2_env_t **env,
+                               axis2_char_t *value,
+                               axis2_char_t *lang);
+                                                                    
+                                      
 /***************************** functions **************************************/                                      
                                                        
 
@@ -114,6 +121,9 @@ axis2_soap_fault_text_create(axis2_env_t **env)
     
     fault_text_impl->fault_text.ops->get_base_node =
         axis2_soap_fault_text_get_base_node;
+        
+    fault_text_impl->fault_text.ops->set_text =
+        axis2_soap_fault_text_set_text;        
 
     return &(fault_text_impl->fault_text);    
 }
@@ -214,6 +224,21 @@ axis2_soap_fault_text_set_lang(axis2_soap_fault_text_t *fault_text,
     AXIS2_PARAM_CHECK((*env)->error, lang, AXIS2_FAILURE);
     
     fault_text_impl = AXIS2_INTF_TO_IMPL(fault_text);
+    if(NULL != fault_text_impl->lang_attribute)
+    {
+        axis2_char_t *attr_lang = NULL;
+        attr_lang = AXIS2_OM_ATTRIBUTE_GET_VALUE( fault_text_impl->lang_attribute, env);
+        if(NULL != attr_lang)
+        {
+            if(AXIS2_STRCMP(attr_lang, lang) == 0)
+            {
+                /** this attribute already exists */
+                return AXIS2_SUCCESS;
+            }
+        } 
+        AXIS2_OM_ATTRIBUTE_SET_VALUE(fault_text_impl->lang_attribute, env, lang);
+        return AXIS2_SUCCESS;
+    }
     
     fault_text_impl->lang_attribute = axis2_om_attribute_create(env, 
                                         AXIS2_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
@@ -311,3 +336,35 @@ axis2_soap_fault_text_get_base_node(axis2_soap_fault_text_t *fault_text,
     fault_text_impl = AXIS2_INTF_TO_IMPL(fault_text); 
     return fault_text_impl->om_ele_node;
 }
+
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_text_set_text(axis2_soap_fault_text_t *fault_text,
+                               axis2_env_t **env,
+                               axis2_char_t *value,
+                               axis2_char_t *lang)
+{
+    axis2_soap_fault_text_impl_t *text_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
+    
+    text_impl = AXIS2_INTF_TO_IMPL(fault_text);
+    
+    if(NULL != text_impl->om_ele_node)
+    {
+        axis2_om_element_t *text_ele = NULL;
+        text_ele = (axis2_om_element_t *) 
+                AXIS2_OM_NODE_GET_DATA_ELEMENT(text_impl->om_ele_node, env);
+        if(NULL != text_ele)
+        {
+            AXIS2_OM_ELEMENT_SET_TEXT(text_ele, env, value, text_impl->om_ele_node);
+            if(NULL != lang)
+            {
+                axis2_soap_fault_text_set_lang(fault_text, env, lang);
+            }
+            return AXIS2_SUCCESS;
+        }
+    } 
+    return AXIS2_FAILURE;     
+}                               
+                               
