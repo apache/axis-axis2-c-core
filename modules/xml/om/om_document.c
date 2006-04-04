@@ -195,7 +195,7 @@ axis2_om_document_build_next (axis2_om_document_t *om_document,
     if (!(document->root_element))
     {
         last_child = AXIS2_OM_STAX_BUILDER_NEXT (document->builder, env);
-        if(!last_child)
+        if(NULL != last_child)
         {
             document->last_child = last_child;
             document->root_element = last_child;
