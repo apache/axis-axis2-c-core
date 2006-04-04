@@ -164,13 +164,18 @@ axis2_http_server_init(axis2_transport_receiver_t *server, axis2_env_t **env,
 {
     axis2_http_server_impl_t *server_impl = NULL;
 	axis2_char_t *port_str = NULL;
+    axis2_param_t *param = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     server_impl = AXIS2_INTF_TO_IMPL(server);
 	
 	server_impl->conf_ctx = conf_ctx;
-	port_str = (axis2_char_t*)AXIS2_PARAM_CONTAINER_GET_PARAM(
+    param = (axis2_char_t*)AXIS2_PARAM_CONTAINER_GET_PARAM(
 						in_desc->param_container, env, "port");
+    if(NULL != param)
+    {
+	    port_str = AXIS2_PARAM_GET_VALUE(param, env);
+    }
 	if(NULL != port_str)
 	{
 		server_impl->port = atoi(port_str);
