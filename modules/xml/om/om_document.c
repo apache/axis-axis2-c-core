@@ -207,7 +207,7 @@ axis2_om_document_build_next (axis2_om_document_t *om_document,
         return NULL;            /* Nothing wrong but done with pulling */
     
     last_child = AXIS2_OM_STAX_BUILDER_NEXT (document->builder, env);
-    if(!last_child)
+    if(NULL != last_child)
         document->last_child = last_child;
     return last_child;
 }
@@ -230,7 +230,7 @@ axis2_om_document_get_root_element (axis2_om_document_t * document,
     {  
         node = axis2_om_document_build_next(document, env);
             
-        if (NULL != doc_impl->root_element)
+        if(NULL != doc_impl->root_element)
         {
             
             return doc_impl->root_element;
@@ -293,10 +293,21 @@ axis2_om_document_build_all(struct axis2_om_document *document,
          do{ 
             axis2_om_node_t *ret_val = NULL;
             ret_val = AXIS2_OM_DOCUMENT_BUILD_NEXT(document,env);
-            if(!ret_val)
-              return NULL;
-            }while( !AXIS2_OM_NODE_GET_BUILD_STATUS(doc_impl->root_element,env));
-        
+                if(!ret_val)
+                {
+                    if(AXIS2_OM_NODE_GET_BUILD_STATUS(doc_impl->root_element, env) 
+                            == AXIS2_TRUE)
+                    {
+                        /** document is completly build */
+                        return doc_impl->root_element;
+                    }
+                    else
+                    {
+                        /** error occured */
+                        return NULL;
+                    }            
+                }
+           }while( !AXIS2_OM_NODE_GET_BUILD_STATUS(doc_impl->root_element,env));
         return doc_impl->root_element;
     }
     else
