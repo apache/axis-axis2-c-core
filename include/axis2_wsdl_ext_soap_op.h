@@ -28,6 +28,7 @@
 #include <axis2_env.h>
 #include <axis2_allocator.h>
 #include <axis2_wsdl_component.h>
+#include <axis2_wsdl_ext.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -82,6 +83,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_op_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_op
 {
+    axis2_wsdl_ext_t base;
 	axis2_wsdl_ext_soap_op_ops_t *ops;
     struct axis2_wsdl_extensible_element *ext_element;
 };

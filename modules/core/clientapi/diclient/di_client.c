@@ -41,6 +41,7 @@
 #include <axis2_wsdl4c_parser.h>
 #include <axis2_wsdl_pump.h>
 #include <axis2_wsdl_desc.h>
+#include <axis2_wsdl4c_soap.h>
 
 #include <axis2_wsdl_ext_soap_address.h>
 #include <axis2_wsdl_ext_soap_op.h>
@@ -56,6 +57,7 @@ typedef struct axis2_diclient_impl
     axis2_wsdl_desc_t *wsdl_desc;
     axis2_hash_t *op_map;
     axis2_hash_t *endpoint_map;
+    axis2_hash_t *svc_map;
     axis2_hash_t *op_param_map;
     axis2_char_t *wsa_action;
     axis2_char_t *address;
@@ -88,12 +90,15 @@ axis2_diclient_init(axis2_diclient_t *diclient,
 axis2_status_t *AXIS2_CALL
 axis2_diclient_set_address_and_action_for_op(axis2_diclient_t *diclient,
                                         axis2_env_t **env,
-                                        axis2_qname_t *op_qname,
-                                        axis2_qname_t *endpoint_qname);
+                                        axis2_qname_t *op_qname);
 
 
 axis2_hash_t *AXIS2_CALL
 axis2_diclient_get_endpoints(axis2_diclient_t *diclient,
+                                axis2_env_t **env);
+
+axis2_hash_t *AXIS2_CALL
+axis2_diclient_get_services(axis2_diclient_t *diclient,
                                 axis2_env_t **env);
 
 axis2_hash_t *AXIS2_CALL
@@ -146,6 +151,7 @@ axis2_diclient_create (axis2_env_t **env)
     diclient_impl->op_map = NULL;
     diclient_impl->op_param_map = NULL;
     diclient_impl->endpoint_map = NULL;
+    diclient_impl->svc_map = NULL;
     diclient_impl->wsa_action = NULL;
     diclient_impl->address= NULL;
     diclient_impl->diclient.ops = NULL;
@@ -165,6 +171,7 @@ axis2_diclient_create (axis2_env_t **env)
     diclient_impl->diclient.ops->set_address_and_action_for_op =  
             axis2_diclient_set_address_and_action_for_op;
 	diclient_impl->diclient.ops->get_endpoints = axis2_diclient_get_endpoints;
+	diclient_impl->diclient.ops->get_services = axis2_diclient_get_services;
 	diclient_impl->diclient.ops->get_operations = axis2_diclient_get_operations;
     diclient_impl->diclient.ops->get_param_localname = 
             axis2_diclient_get_param_localname;
@@ -240,7 +247,6 @@ axis2_diclient_init(axis2_diclient_t *diclient,
 {
     axis2_diclient_impl_t *diclient_impl = NULL;
 	axis2_wsdl_pump_t *wsdl_pump = NULL;
-	axis2_hash_t *svcs = NULL;
 	axis2_hash_t *endpoints = NULL;
 	axis2_hash_index_t *index1 = NULL;
 	axis2_hash_t *ops = NULL;
@@ -275,8 +281,8 @@ axis2_diclient_init(axis2_diclient_t *diclient,
 	}
 	AXIS2_WSDL_PUMP_PUMP(wsdl_pump, env);
     
-    svcs = AXIS2_WSDL_DESC_GET_SVCS(diclient_impl->wsdl_desc, env);
-    for (index1 = axis2_hash_first (svcs, env); index1; 
+    diclient_impl->svc_map = AXIS2_WSDL_DESC_GET_SVCS(diclient_impl->wsdl_desc, env);
+    for (index1 = axis2_hash_first (diclient_impl->svc_map, env); index1; 
                     index1 = axis2_hash_next (env, index1))
     {
         void *value = NULL;
@@ -473,13 +479,12 @@ axis2_diclient_invoke(axis2_diclient_t *diclient,
 axis2_status_t *AXIS2_CALL
 axis2_diclient_set_address_and_action_for_op(axis2_diclient_t *diclient,
                                         axis2_env_t **env,
-                                        axis2_qname_t *op_qname,
-                                        axis2_qname_t *endpoint_qname)
+                                        axis2_qname_t *op_qname)
 {
     axis2_diclient_impl_t *diclient_impl = NULL;
     axis2_op_t *op = NULL;
     axis2_svc_t *svc = NULL;
-    axis2_wsdl_endpoint_t *wsdl_endpoint = NULL;
+    axis2_hash_t *wsdl_endpoints = NULL;
     axis2_wsdl_binding_t *wsdl_binding = NULL;
     axis2_char_t *op_name = NULL;
     axis2_linked_list_t *ext_elements = NULL;
@@ -490,6 +495,7 @@ axis2_diclient_set_address_and_action_for_op(axis2_diclient_t *diclient,
     axis2_hash_index_t *index = NULL;
     axis2_wsdl_binding_op_t *wsdl_binding_op = NULL;
     axis2_char_t *wsa_action = NULL;
+    int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, op_qname, NULL);
@@ -498,42 +504,74 @@ axis2_diclient_set_address_and_action_for_op(axis2_diclient_t *diclient,
     op_name = AXIS2_QNAME_GET_LOCALPART(op_qname, env);
     op = axis2_hash_get(diclient_impl->op_map, op_name, AXIS2_HASH_KEY_STRING);
     svc = AXIS2_OP_GET_PARENT(op, env);
-    wsdl_endpoint = AXIS2_SVC_GET_ENDPOINT(svc, env, endpoint_qname);
-    ext_elements = AXIS2_WSDL_COMPONENT_GET_EXTENSIBILITY_ELEMENTS(
-            wsdl_endpoint->wsdl_component, env);
-    soap_address = AXIS2_LINKED_LIST_GET(ext_elements, env, 0);
-    if(!soap_address) return AXIS2_FAILURE;
-    address = AXIS2_WSDL_EXT_SOAP_ADDRESS_GET_LOCATION_URI(
-        soap_address, env);
-    diclient_impl->address = AXIS2_STRDUP(address, env);
-    if(!diclient_impl->address) return AXIS2_FAILURE;
-    printf("address:%s\n", address);
-    printf("mep:%s\n", AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env));
-    wsdl_binding = AXIS2_WSDL_ENDPOINT_GET_BINDING(wsdl_endpoint, env);
-    binding_ops = AXIS2_WSDL_BINDING_GET_BINDING_OPS(wsdl_binding, env);
-    for (index = axis2_hash_first (binding_ops, env); index; 
+    wsdl_endpoints = AXIS2_SVC_GET_ENDPOINTS(svc, env);
+    for (index = axis2_hash_first (wsdl_endpoints, env); index; 
             index = axis2_hash_next (env, index))
     {
-        axis2_wsdl_op_t *op_x = NULL;
-        axis2_qname_t *op_qname_x = NULL;
-        axis2_char_t *op_name_x = NULL;
         void *value = NULL;
+        axis2_wsdl_endpoint_t *wsdl_endpoint = NULL;
 
         axis2_hash_this(index, NULL, NULL, &value);
-        wsdl_binding_op = (axis2_wsdl_binding_op_t *) value;
-        op_x = AXIS2_WSDL_BINDING_OP_GET_OP(wsdl_binding_op, env);
-        op_qname_x = AXIS2_WSDL_OP_GET_QNAME(op_x, env);
-        op_name_x = AXIS2_QNAME_GET_LOCALPART(op_qname_x, env);
-        if(0 == AXIS2_STRCMP(op_name, op_name_x))
-            break;
+        wsdl_endpoint = (axis2_wsdl_endpoint_t *) value;
+        ext_elements = AXIS2_WSDL_COMPONENT_GET_EXTENSIBILITY_ELEMENTS(
+                wsdl_endpoint->wsdl_component, env);
+        size = AXIS2_LINKED_LIST_SIZE(ext_elements, env);
+        for(i = 0; i < size; i++)
+        {
+            axis2_wsdl_ext_t *wsdl_ext = NULL;
+            axis2_char_t *namespc = NULL;
+            
+            wsdl_ext = AXIS2_LINKED_LIST_GET(ext_elements, env, i);
+            if(!wsdl_ext) return AXIS2_FAILURE;
+            if(0 == AXIS2_STRCMP(AXIS2_WSDL4C_SOAP_BINDING_URI, wsdl_ext->namespc))
+            {
+                soap_address = (axis2_wsdl_ext_soap_address_t *) wsdl_ext;
+                address = AXIS2_WSDL_EXT_SOAP_ADDRESS_GET_LOCATION_URI(
+                    soap_address, env);
+                diclient_impl->address = AXIS2_STRDUP(address, env);
+                if(!diclient_impl->address) return AXIS2_FAILURE;
+                printf("address:%s\n", address);
+                printf("mep:%s\n", AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env));
+            }
+        }
+        wsdl_binding = AXIS2_WSDL_ENDPOINT_GET_BINDING(wsdl_endpoint, env);
+        binding_ops = AXIS2_WSDL_BINDING_GET_BINDING_OPS(wsdl_binding, env);
+        for (index = axis2_hash_first (binding_ops, env); index; 
+                index = axis2_hash_next (env, index))
+        {
+            axis2_wsdl_op_t *op_x = NULL;
+            axis2_qname_t *op_qname_x = NULL;
+            axis2_char_t *op_name_x = NULL;
+            void *value = NULL;
+
+            axis2_hash_this(index, NULL, NULL, &value);
+            wsdl_binding_op = (axis2_wsdl_binding_op_t *) value;
+            op_x = AXIS2_WSDL_BINDING_OP_GET_OP(wsdl_binding_op, env);
+            op_qname_x = AXIS2_WSDL_OP_GET_QNAME(op_x, env);
+            op_name_x = AXIS2_QNAME_GET_LOCALPART(op_qname_x, env);
+            if(0 == AXIS2_STRCMP(op_name, op_name_x))
+                break;
+        }
+        ext_elements = AXIS2_WSDL_COMPONENT_GET_EXTENSIBILITY_ELEMENTS(
+            wsdl_binding_op->extensible_component->wsdl_component, env);
+        size = AXIS2_LINKED_LIST_SIZE(ext_elements, env);
+        for(i = 0; i < size; i++)
+        {
+            axis2_wsdl_ext_t *wsdl_ext = NULL;
+            axis2_char_t *namespc = NULL;
+            
+            wsdl_ext = AXIS2_LINKED_LIST_GET(ext_elements, env, i);
+            if(!wsdl_ext) return AXIS2_FAILURE;
+            if(0 == AXIS2_STRCMP(AXIS2_WSDL4C_SOAP_BINDING_URI, wsdl_ext->namespc))
+            {
+                soap_op = (axis2_wsdl_ext_soap_op_t *) wsdl_ext;
+                wsa_action = AXIS2_WSDL_EXT_SOAP_OP_GET_SOAP_ACTION(soap_op, env);
+                diclient_impl->wsa_action = AXIS2_STRDUP(wsa_action, env);
+                if(!diclient_impl->wsa_action) return AXIS2_FAILURE;
+                printf("wsa_action:%s\n", wsa_action);
+            }
+        }
     }
-    ext_elements = AXIS2_WSDL_COMPONENT_GET_EXTENSIBILITY_ELEMENTS(
-        wsdl_binding_op->extensible_component->wsdl_component, env);
-    soap_op = AXIS2_LINKED_LIST_GET(ext_elements, env, 0);
-    wsa_action = AXIS2_WSDL_EXT_SOAP_OP_GET_SOAP_ACTION(soap_op, env);
-    diclient_impl->wsa_action = AXIS2_STRDUP(wsa_action, env);
-    if(!diclient_impl->wsa_action) return AXIS2_FAILURE;
-    printf("wsa_action:%s\n", wsa_action);
     return AXIS2_SUCCESS;
 }
 
@@ -543,6 +581,14 @@ axis2_diclient_get_endpoints(axis2_diclient_t *diclient,
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(diclient)->endpoint_map;
+}
+
+axis2_hash_t *AXIS2_CALL
+axis2_diclient_get_services(axis2_diclient_t *diclient,
+                                axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(diclient)->svc_map;
 }
 
 axis2_hash_t *AXIS2_CALL

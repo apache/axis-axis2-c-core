@@ -116,7 +116,7 @@ struct axis2_wsdl_svc_ops
      * Endpoint will be retrived by its qname.
      *
      * @param qName qname of the Service
-     * @return <code>WSDLEndpoint</code> Object.
+     * @return <code>WSDL Endpoint</code> Object.
      */
     struct axis2_wsdl_endpoint * (AXIS2_CALL *
     get_endpoint) (axis2_wsdl_svc_t *wsdl_svc,
@@ -125,16 +125,16 @@ struct axis2_wsdl_svc_ops
 
     /**
      * If the Name of the <code>WSDLService</code> is not set a
-     * <code>WSDLProcessingException</code> will be thrown.
+     * Error code will be set
      *
-     * @return Target Namespace as a <code>String</code>
+     * @return Target Namespace as a <code>axis2_char_t</code>
      */
     axis2_char_t *(AXIS2_CALL *
     get_namespace) (axis2_wsdl_svc_t *wsdl_svc,
                                     axis2_env_t **env);
 
     /**
-     * Method getServiceInterface
+     * Method get_svc_interface
      *
      * @return
      */

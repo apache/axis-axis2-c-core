@@ -41,7 +41,6 @@ int main(int argc, char** argv)
     char *wsdl_file_name = NULL;
     axis2_diclient_t *diclient = NULL;
     axis2_qname_t *op_qname = NULL;
-    axis2_qname_t *endpoint_qname = NULL;
     axis2_hash_t *op_map = NULL;
     axis2_hash_index_t *index = NULL;
     axis2_op_t *op = NULL;
@@ -65,9 +64,7 @@ int main(int argc, char** argv)
     if(AXIS2_SUCCESS != status)
             return status;
     op_qname = axis2_qname_create(&env, "echo", NULL, NULL);
-    endpoint_qname = axis2_qname_create(&env, "wsaTestServicePort0", NULL, NULL);
-    AXIS2_DICLIENT_SET_ADDRESS_AND_ACTION_FOR_OP(diclient, &env, op_qname,
-            endpoint_qname);
+    AXIS2_DICLIENT_SET_ADDRESS_AND_ACTION_FOR_OP(diclient, &env, op_qname);
     /* build the SOAP request message content using OM API.*/
     node = build_om_programatically(&env, diclient, op_qname);
     op_map = AXIS2_DICLIENT_GET_OPERATIONS(diclient, &env);

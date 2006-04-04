@@ -45,7 +45,7 @@ axis2_status_t AXIS2_CALL
 axis2_wsdl_ext_soap_address_set_location_uri(axis2_wsdl_ext_soap_address_t *ext_soap_address,
                                 axis2_env_t **env,
                                 axis2_char_t *location_uri);
-                                
+
 /************************** End of function prototypes ************************/
 
 axis2_wsdl_ext_soap_address_t * AXIS2_CALL 
@@ -70,6 +70,7 @@ axis2_wsdl_ext_soap_address_create (axis2_env_t **env,
     ext_soap_address_impl->ext_soap_address.ops = NULL;
     ext_soap_address_impl->ext_soap_address.ext_element = NULL;
 	
+
     ext_soap_address_impl->ext_soap_address.ext_element = 
         axis2_wsdl_extensible_element_create(env);
     if(NULL == ext_soap_address_impl->ext_soap_address.ext_element)
@@ -110,29 +111,23 @@ axis2_status_t AXIS2_CALL
 axis2_wsdl_ext_soap_address_free (axis2_wsdl_ext_soap_address_t *ext_soap_address, 
                             axis2_env_t **env)
 {
-    axis2_wsdl_ext_soap_address_impl_t *exp_soap_address_impl = NULL;
+    axis2_wsdl_ext_soap_address_impl_t *ext_soap_address_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    exp_soap_address_impl = AXIS2_INTF_TO_IMPL(ext_soap_address);
+    ext_soap_address_impl = AXIS2_INTF_TO_IMPL(ext_soap_address);
     
 	if(NULL != ext_soap_address->ops)
         AXIS2_FREE((*env)->allocator, ext_soap_address->ops);
     
-    if(NULL != exp_soap_address_impl->location_uri)
+    if(NULL != ext_soap_address_impl->location_uri)
     {
-        AXIS2_FREE((*env)->allocator, exp_soap_address_impl->location_uri);
-        exp_soap_address_impl->location_uri = NULL;
+        AXIS2_FREE((*env)->allocator, ext_soap_address_impl->location_uri);
+        ext_soap_address_impl->location_uri = NULL;
     }
     
-    if(NULL != ext_soap_address->ext_element)
-    {
-        AXIS2_WSDL_EXTENSIBLE_ELEMENT_FREE(ext_soap_address->ext_element, env);
-        ext_soap_address->ext_element = NULL;
-    }
-    
-    AXIS2_FREE((*env)->allocator, exp_soap_address_impl);
-    exp_soap_address_impl = NULL;
+    AXIS2_FREE((*env)->allocator, ext_soap_address_impl);
+    ext_soap_address_impl = NULL;
     
 	return AXIS2_SUCCESS;
 }

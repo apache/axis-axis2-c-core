@@ -691,6 +691,8 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
 		str_style = AXIS2_STRDUP("document", env);
 	}
 	AXIS2_WSDL_EXT_SOAP_OP_SET_STYLE(ext_soap_op, env, str_style);
+    ext_soap_op->base.namespc = AXIS2_STRDUP(AXIS2_WSDL4C_SOAP_BINDING_URI, env);
+        if(!ext_soap_op->base.namespc) return AXIS2_FAILURE;
 	AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_binding_op->
 					extensible_component->wsdl_component, env, ext_soap_op);
     binding_op_qname = axis2_qname_create(env, op_name, NULL, NULL);
@@ -932,6 +934,8 @@ axis2_wsdl_pump_populate_services(axis2_wsdl_pump_t *wsdl_pump,
 		ext_soap_address = axis2_wsdl_ext_soap_address_create(env, NULL);
 		if(!ext_soap_address) return AXIS2_FAILURE;
 		AXIS2_WSDL_EXT_SOAP_ADDRESS_SET_LOCATION_URI(ext_soap_address, env, svc_location);
+		ext_soap_address->base.namespc = AXIS2_STRDUP(AXIS2_WSDL4C_SOAP_BINDING_URI, env);
+        if(!ext_soap_address->base.namespc) return AXIS2_FAILURE;
 		AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_endpoint->wsdl_component, 
             env, ext_soap_address);
 		status = AXIS2_WSDL_SVC_SET_ENDPOINT(wsdl_svc, env, wsdl_endpoint);

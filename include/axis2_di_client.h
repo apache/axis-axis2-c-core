@@ -89,8 +89,7 @@ struct axis2_diclient_ops
     axis2_status_t *(AXIS2_CALL *
     set_address_and_action_for_op) (axis2_diclient_t *diclient,
                                     axis2_env_t **env,
-                                    axis2_qname_t *op_qname,
-                                    axis2_qname_t *endpoint_qname);
+                                    axis2_qname_t *op_qname);
 
 
     /**
@@ -99,6 +98,14 @@ struct axis2_diclient_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_endpoints) (axis2_diclient_t *diclient,
+                  axis2_env_t **env);
+
+    /**
+     * Return all the services associated with the wsdl
+     * @return table of services associated with the wsdl
+     */
+    axis2_hash_t *(AXIS2_CALL *
+    get_services) (axis2_diclient_t *diclient,
                   axis2_env_t **env);
 
     /**
@@ -169,13 +176,15 @@ axis2_diclient_create(axis2_env_t **env);
 #define AXIS2_DICLIENT_INIT(diclient, env, wsdl_file_name) \
 		((diclient)->ops->init (diclient, env, wsdl_file_name))
 
-#define AXIS2_DICLIENT_SET_ADDRESS_AND_ACTION_FOR_OP(diclient, env, op_qname, \
-                endpoint_qname) \
+#define AXIS2_DICLIENT_SET_ADDRESS_AND_ACTION_FOR_OP(diclient, env, op_qname) \
 		((diclient)->ops->set_address_and_action_for_op (diclient, env, \
-                op_qname, endpoint_qname))
+                op_qname))
 
 #define AXIS2_DICLIENT_GET_ENDPOINTS(diclient, env) \
 		((diclient)->ops->get_endpoints (diclient, env))
+
+#define AXIS2_DICLIENT_GET_SERVICES(diclient, env) \
+		((diclient)->ops->get_services (diclient, env))
 
 #define AXIS2_DICLIENT_GET_OPERATIONS(diclient, env) \
 		((diclient)->ops->get_operations (diclient, env))
