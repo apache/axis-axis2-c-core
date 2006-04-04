@@ -149,14 +149,17 @@ int main(int argc, char** argv)
     printf("\n");
     while (!AXIS2_CALLBACK_GET_COMPLETE(callback, &env))
     {
-        printf("sleep(2) till callback complete\n");
         if (count++ > 10)
             break;
-        AXIS2_SLEEP(2);            
-        
+        AXIS2_USLEEP(200);            
     }
 
-    soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, &env);
+    do
+    {
+        soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, &env);
+        AXIS2_USLEEP(200);            
+    } while (!soap_envelope);
+    
     if (soap_envelope)
         ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, &env);
                                                         
