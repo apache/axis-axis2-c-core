@@ -130,11 +130,11 @@ axis2_async_result_free (struct axis2_async_result *async_result,
         async_result_impl->async_result.ops = NULL;
     }
     
-    if (async_result_impl->result)
+    /*if (async_result_impl->result)
     {
         AXIS2_MSG_CTX_FREE(async_result_impl->result, env);
         async_result_impl->result = NULL;
-    }
+    }*/
     
     AXIS2_FREE((*env)->allocator, async_result_impl);
     async_result_impl = NULL;

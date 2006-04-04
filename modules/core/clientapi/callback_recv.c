@@ -84,6 +84,7 @@ axis2_callback_recv_create(axis2_env_t **env)
         axis2_callback_recv_free(&(callback_recv_impl->callback_recv), env);
         return NULL;
     }
+    callback_recv_impl->base->derived = callback_recv_impl;
     callback_recv_impl->base->ops->receive = axis2_callback_recv_receive;
 
     callback_recv_impl->callback_map = axis2_hash_make(env);
@@ -193,9 +194,7 @@ axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv,
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    callback_recv = (axis2_callback_recv_t*)callback_recv_param;
-
-    callback_recv_impl = AXIS2_INTF_TO_IMPL(callback_recv);
+    callback_recv_impl = AXIS2_INTF_TO_IMPL(msg_recv->derived);
     
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
     if (msg_info_headers)

@@ -207,7 +207,8 @@ struct axis2_msg_recv_ops
  */  
 struct axis2_msg_recv
 {
-    axis2_msg_recv_ops_t *ops;    
+    axis2_msg_recv_ops_t *ops;
+    void* derived;
 };
 
 /** 

@@ -572,11 +572,6 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
     message_id = axis2_uuid_gen(env);
     AXIS2_MSG_CTX_SET_MESSAGE_ID(msg_ctx, env, message_id);
     
-    if(NULL != message_id)
-    {
-        AXIS2_FREE((*env)->allocator, message_id);
-        message_id = NULL;
-    }
     
     if (call_impl->use_separate_listener) 
     {
@@ -665,6 +660,11 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
 #endif
     }
 
+    if(NULL != message_id)
+    {
+        AXIS2_FREE((*env)->allocator, message_id);
+        message_id = NULL;
+    }
     if (engine)
     {
         AXIS2_ENGINE_FREE(engine, env);
