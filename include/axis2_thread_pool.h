@@ -39,7 +39,7 @@ extern "C"
  
 typedef struct axis2_thread_pool_ops axis2_thread_pool_ops_t;
 typedef struct axis2_thread_pool axis2_thread_pool_t;
- 
+struct axis2_env;
 
 /** 
   * \brief Axis2 thread_pool
@@ -105,6 +105,13 @@ AXIS2_DECLARE_DATA struct axis2_thread_pool
 */
 AXIS2_DECLARE(axis2_thread_pool_t *) axis2_thread_pool_init(
 					axis2_allocator_t *allocator);
+
+/**
+ * This function can be used to initialize the environment in case of 
+ * spawning a new thread via a thread function
+ */
+AXIS2_DECLARE (struct axis2_env *)
+axis2_init_thread_env(struct axis2_env **system_env);
 
 #define AXIS2_THREAD_POOL_GET_THREAD(thread_pool, func, data) \
 		((thread_pool)->ops->get_thread(thread_pool, func, data))

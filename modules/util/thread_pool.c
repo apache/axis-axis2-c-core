@@ -15,6 +15,7 @@
  */
 
 #include <axis2_thread_pool.h>
+#include <axis2_env.h>
 
 /** 
  * @brief Stream struct impl
@@ -153,3 +154,13 @@ axis2_thread_pool_thread_detach (axis2_thread_pool_t *pool,
 	}
 	return axis2_thread_detach(thd);
 }
+
+AXIS2_DECLARE (axis2_env_t *)
+axis2_init_thread_env(axis2_env_t **system_env)
+{
+	axis2_error_t *error = axis2_error_create((*system_env)->allocator);
+	return axis2_env_create_with_error_log_thread_pool((*system_env)->allocator, error, 
+						(*system_env)->log, (*system_env)->thread_pool);
+}
+
+

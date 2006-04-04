@@ -40,11 +40,11 @@ extern "C"
 
 /** @} */
 
-    struct axis2_environment;
-    struct axis2_environment_ops;
+    struct axis2_env;
+    struct axis2_env_ops;
 
 /**
- * @defgroup axis2_environment Environment Container
+ * @defgroup axis2_env Environment Container
  * @ingroup axis2_util 
  * @{
  */
@@ -55,7 +55,7 @@ extern "C"
     * Environment acts as a container for error, log, memory allocator and other
     * routines
     */
-    typedef struct axis2_environment
+    typedef struct axis2_env
     {
         /** Memory allocation routines */
         axis2_allocator_t *allocator;
