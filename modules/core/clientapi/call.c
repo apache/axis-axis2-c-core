@@ -875,24 +875,28 @@ axis2_call_worker_func(axis2_thread_t *thd, void *data)
     axis2_call_worker_func_args_t *args_list = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_msg_ctx_t *response = NULL;
+	axis2_env_t **thread_env = NULL;
+	axis2_env_t *th_env = NULL;
     
     args_list = (axis2_call_worker_func_args_t *) data;
     if (!args_list)
         return NULL;
         
     AXIS2_ENV_CHECK(args_list->env, AXIS2_FAILURE);
+	th_env = axis2_init_thread_env(args_list->env);
+    thread_env = &th_env;
 
-    op_ctx = axis2_op_ctx_create(args_list->env, args_list->op, args_list->call_impl->svc_ctx);
+    op_ctx = axis2_op_ctx_create(thread_env, args_list->op, args_list->call_impl->svc_ctx);
     if (!op_ctx)
         return NULL;
-    AXIS2_MSG_CTX_SET_OP_CTX(args_list->msg_ctx, args_list->env, op_ctx);
-    AXIS2_MSG_CTX_SET_SVC_CTX(args_list->msg_ctx, args_list->env, args_list->call_impl->svc_ctx);
+    AXIS2_MSG_CTX_SET_OP_CTX(args_list->msg_ctx, thread_env, op_ctx);
+    AXIS2_MSG_CTX_SET_SVC_CTX(args_list->msg_ctx, thread_env, args_list->call_impl->svc_ctx);
 
     /* send the request and wait for reponse */
-    response = axis2_two_way_send(args_list->env, args_list->msg_ctx);
-    args_list->call_impl->async_result = axis2_async_result_create(args_list->env, response);
-    AXIS2_CALLBACK_INVOKE_ON_COMPLETE(args_list->callback, args_list->env, args_list->call_impl->async_result);
-    AXIS2_CALLBACK_SET_COMPLETE(args_list->callback, args_list->env, AXIS2_TRUE);
+    response = axis2_two_way_send(thread_env, args_list->msg_ctx);
+    args_list->call_impl->async_result = axis2_async_result_create(thread_env, response);
+    AXIS2_CALLBACK_INVOKE_ON_COMPLETE(args_list->callback, thread_env, args_list->call_impl->async_result);
+    AXIS2_CALLBACK_SET_COMPLETE(args_list->callback, thread_env, AXIS2_TRUE);
     
     return NULL; 
 }
