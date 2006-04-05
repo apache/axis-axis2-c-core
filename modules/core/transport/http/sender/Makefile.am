@@ -2,6 +2,7 @@ TESTS =
 lib_LTLIBRARIES = libaxis2_http_sender.la
 libaxis2_http_sender_la_SOURCES = http_transport_sender.c\
                                   soap_over_http_sender.c\
+                                  rest_sender.c\
                                   http_client.c
 
 INCLUDES = -I$(top_builddir)/include \

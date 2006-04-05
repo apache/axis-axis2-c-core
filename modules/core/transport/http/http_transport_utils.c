@@ -240,8 +240,7 @@ axis2_http_transport_utils_process_http_post_request
 	else if(NULL != strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML))
 	{
 		is_soap11 = AXIS2_TRUE;
-		/*if(NULL != soap_action_header && AXIS2_STRLEN(soap_action_header)
-					> 0)*/
+		if(NULL != soap_action_header)
 		{
 			soap_builder = axis2_soap_builder_create(env, om_builder, 
 						AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
@@ -265,15 +264,28 @@ axis2_http_transport_utils_process_http_post_request
 				return AXIS2_FAILURE;
 			}
 		}
-		/* REST support
-		 * else
-		 * {
-		 *		envelope = AXIS2_SOAP_ENVELOPE_GET_DEFAULT_SOAP_ENVELOPE(
-		 *			env);
-		 *		AXIS2_SOAP_BODY_ADD_CHILD(AXIS2_SOAP_ENVELOPE_GET_BODY(
-		 *			envelope, env), AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(
-		 *			om_builder, env));
-		 */			
+        else
+        {
+            /* REST support */
+            axis2_param_t *rest_param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env
+                        , AXIS2_ENABLE_REST);
+            if(NULL != rest_param && 0 == AXIS2_STRCMP(AXIS2_VALUE_TRUE, 
+                        AXIS2_PARAM_GET_VALUE(rest_param, env)))
+            {
+                /* TODO we have to check for NULLs */
+                axis2_soap_body_t *def_body = NULL;
+                axis2_om_document_t *om_doc = NULL;
+                axis2_om_node_t *root_node = NULL;
+                soap_envelope = axis2_soap_envelope_create_default_soap_envelope
+                            (env, AXIS2_SOAP11);
+                def_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+                om_doc = AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
+                root_node = AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
+                AXIS2_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
+                AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx, env, AXIS2_TRUE);
+            }
+        }
+		 		
 	}
 	/* xml_char_set = AXIS2_OM_DOCUMENT_GET_CHARSET_ENC(
 	 *					AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(env om_builder),

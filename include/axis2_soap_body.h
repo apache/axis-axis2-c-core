@@ -184,7 +184,7 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
         ((body)->ops->build( body, env))
 
 #define AXIS2_SOAP_BODY_ADD_CHILD( body, env, child) \
-        ((body)->ops->add_child( body, env, child);
+        ((body)->ops->add_child( body, env, child));
 /** @} */
 #ifdef __cplusplus
 }

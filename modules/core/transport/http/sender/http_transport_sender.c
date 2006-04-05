@@ -24,6 +24,8 @@
 #include <axis2_http_out_transport_info.h>
 #include <axis2_http_transport.h>
 #include <axis2_soap_over_http_sender.h>
+#include <axis2_soap_body.h>
+#include <axis2_rest_sender.h>
 #include <axis2_types.h>
 
 
@@ -159,12 +161,10 @@ axis2_http_transport_sender_invoke
 	axis2_soap_envelope_t *soap_data_out = NULL;
 	axis2_bool_t do_mtom;
     axis2_property_t *property = NULL;
+    axis2_om_node_t *data_out = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-
-	xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
-	om_output = axis2_om_output_create(env, xml_writer);
 	
 	property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
 							AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
@@ -203,9 +203,9 @@ axis2_http_transport_sender_invoke
 	do_mtom = axis2_http_transport_utils_do_write_mtom(env,
 							msg_ctx);
 	AXIS2_MSG_CTX_SET_DOING_MTOM(msg_ctx, env, do_mtom);
-	AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx, 
+	/*AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx, 
 							env, axis2_http_transport_utils_is_doing_rest(env, 
-							msg_ctx));
+							msg_ctx));*/
 	property = (axis2_property_t*)AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
 							AXIS2_TRANSPORT_URL, AXIS2_FALSE);
     if(property)
@@ -230,30 +230,29 @@ axis2_http_transport_sender_invoke
 		}
 	}
 	
-	/*if(AXIS2_TRUE == AXIS2_MSG_CTX_IS_DOING_REST(msg_ctx, env))
-	 *{
-	 *	data_out = AXIS2_SOAP_BODY_GET_FIRST_ELEMENT(AXIS2_SOAP_ENVELOPE_GET_BODY(
-							AXIS2_MSG_CTX_GET_ENVELOPE(msg_ctx, env), env),env);
-	 *}
-	 * else
-	 */
-	{
-		soap_data_out = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
-		if(NULL == soap_data_out)
-		{
-			char error_msg[1024];
-			AXIS2_ERROR_SET((*env)->error, 
-						AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX, 
-						AXIS2_FAILURE);
-			sprintf(error_msg, "%s in %s:%d", AXIS2_ERROR_GET_MESSAGE(
-						(*env)->error), __FILE__, __LINE__);
-			AXIS2_LOG(env, error_msg, AXIS2_LOG_LEVEL_CRITICAL);
-			AXIS2_OM_OUTPUT_FREE(om_output, env);
-			om_output = NULL;
-			xml_writer = NULL;
-			return AXIS2_FAILURE;
-		}
-	}
+    soap_data_out = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    if(NULL == soap_data_out)
+    {
+        AXIS2_ERROR_SET((*env)->error, 
+                    AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX, 
+                    AXIS2_FAILURE);
+        AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "%s", 
+                        AXIS2_ERROR_GET_MESSAGE((*env)->error));
+        return AXIS2_FAILURE;
+    }
+    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, 
+                    AXIS2_TRUE, 0);
+    if(NULL == xml_writer)
+    {
+        return AXIS2_FAILURE;
+    }
+    om_output = axis2_om_output_create(env, xml_writer);
+    if(NULL == om_output)
+    {
+        AXIS2_XML_WRITER_FREE(xml_writer, env);
+        xml_writer = NULL;
+        return AXIS2_FAILURE;
+    }
 	if(NULL != epr)
 	{
 		axis2_http_transport_sender_write_message(transport_sender, env, msg_ctx
@@ -292,6 +291,9 @@ axis2_http_transport_sender_invoke
 			{
 				AXIS2_ERROR_SET((*env)->error, 
 							AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL, AXIS2_FAILURE);
+                AXIS2_OM_OUTPUT_FREE(om_output, env);
+                om_output = NULL;
+                xml_writer = NULL;
 				return AXIS2_FAILURE;
 			}
 			is_soap11 = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env);
@@ -315,9 +317,50 @@ axis2_http_transport_sender_invoke
 			/* AXIS2_OM_OUTPUT_SET_DO_OPTIMIZE(om_output, env, 
 			 *				AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
 			 */
-			AXIS2_SOAP_ENVELOPE_SERIALIZE (soap_data_out, env, om_output, 
-						AXIS2_FALSE);
-			buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+            if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env))
+            {
+                axis2_om_node_t *body_node = NULL;
+                axis2_soap_body_t *soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(
+                                soap_data_out, env);
+                
+                if(NULL == soap_body)
+                {
+                    AXIS2_ERROR_SET((*env)->error, 
+                                AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL, 
+                                AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "%s", 
+                                AXIS2_ERROR_GET_MESSAGE((*env)->error));
+                    AXIS2_OM_OUTPUT_FREE(om_output, env);
+                    om_output = NULL;
+                    xml_writer = NULL;
+                    return AXIS2_FAILURE;
+                }
+                body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body,env);
+                if(NULL == body_node)
+                {
+                    AXIS2_OM_OUTPUT_FREE(om_output, env);
+                    om_output = NULL;
+                    xml_writer = NULL;
+                    return AXIS2_FAILURE;
+                }
+                data_out = AXIS2_OM_NODE_GET_FIRST_CHILD(body_node, env);
+                if(NULL == data_out || AXIS2_OM_NODE_GET_NODE_TYPE(data_out,env)
+                                != AXIS2_OM_ELEMENT)
+                {
+                    AXIS2_OM_OUTPUT_FREE(om_output, env);
+                    om_output = NULL;
+                    xml_writer = NULL;
+                    return AXIS2_FAILURE;
+                }
+                AXIS2_OM_NODE_SERIALIZE(data_out, env, om_output);
+                buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+            }
+            else
+            {
+                AXIS2_SOAP_ENVELOPE_SERIALIZE (soap_data_out, env, om_output, 
+                            AXIS2_FALSE);
+                buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+            }
 			AXIS2_STREAM_WRITE(out_stream, env, buffer, AXIS2_STRLEN(buffer));				
 			AXIS2_FREE((*env)->allocator, buffer);
 	
@@ -500,35 +543,62 @@ axis2_http_transport_sender_write_message
 	{
 		soap_action = "";
 	}
-	/*
-	 * TODO : when REST comes
-	 * if(AXIS2_TRUE == AXIS2_MSG_CTX_IS_DOING_REST(msg_ctx, env)
-	 * {
-	 * 		axis2_rest_sender_t *sender = axis2_rest_sender_create(env)
-	 *		AXIS2_REST_SENDER_SET_FORMAT(sender, env,
-	 *					AXIS2_INTF_TO_IMPL(transport_sender)->format);
-	 *		AXIS2_REST_SENDER_SEND(sender, env, msg_ctx, data_out, url, 
-	 *					soap_action);
-	 *	}
-	 */
-	sender = axis2_soap_over_http_sender_create(env);
-	
-	if(NULL == sender)
-	{
-		return AXIS2_FAILURE;
-	}
-	AXIS2_SOAP_OVER_HTTP_SENDER_SET_CHUNKED(sender, env, 
-						AXIS2_INTF_TO_IMPL(transport_sender)->chunked);
-	AXIS2_SOAP_OVER_HTTP_SENDER_SET_OM_OUTPUT(sender, env, om_output);
-	AXIS2_SOAP_OVER_SENDER_SET_HTTP_VERSION(sender, env, 
-						AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
-	status = AXIS2_SOAP_OVER_HTTP_SENDER_SEND(sender, env, msg_ctx, out, url,
-						soap_action);
-	/*
-	 * TODO check for errors
-	 */
-    AXIS2_SOAP_OVER_HTTP_SENDER_FREE(sender, env);
-    sender = NULL;
+	if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env))
+    {
+        axis2_om_node_t *data_out = NULL;
+        axis2_om_node_t *body_node = NULL;
+        axis2_soap_body_t *soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(out, env);
+        axis2_rest_sender_t *sender = NULL;
+        
+        if(NULL == soap_body)
+        {
+            AXIS2_ERROR_SET((*env)->error, 
+                        AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL, 
+                        AXIS2_FAILURE);
+            AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "%s", 
+                        AXIS2_ERROR_GET_MESSAGE((*env)->error));
+            return AXIS2_FAILURE;
+        }
+        body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body,env);
+        if(NULL == body_node)
+        {
+            return AXIS2_FAILURE;
+        }
+        data_out = AXIS2_OM_NODE_GET_FIRST_CHILD(body_node, env);
+        if(NULL == data_out || AXIS2_OM_NODE_GET_NODE_TYPE(data_out, env)
+                        != AXIS2_OM_ELEMENT)
+        {
+            return AXIS2_FAILURE;
+        }
+	    sender = axis2_rest_sender_create(env);
+        AXIS2_REST_SENDER_SET_CHUNKED(sender, env, 
+                            AXIS2_INTF_TO_IMPL(transport_sender)->chunked);
+        AXIS2_REST_SENDER_SET_OM_OUTPUT(sender, env, om_output);
+        AXIS2_REST_SENDER_SET_HTTP_VERSION(sender, env, 
+                            AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
+        status = AXIS2_REST_SENDER_SEND(sender, env, msg_ctx, data_out, url);
+    }
+	else
+    {
+        sender = axis2_soap_over_http_sender_create(env);
+        
+        if(NULL == sender)
+        {
+            return AXIS2_FAILURE;
+        }
+        AXIS2_SOAP_OVER_HTTP_SENDER_SET_CHUNKED(sender, env, 
+                            AXIS2_INTF_TO_IMPL(transport_sender)->chunked);
+        AXIS2_SOAP_OVER_HTTP_SENDER_SET_OM_OUTPUT(sender, env, om_output);
+        AXIS2_SOAP_OVER_SENDER_SET_HTTP_VERSION(sender, env, 
+                            AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
+        status = AXIS2_SOAP_OVER_HTTP_SENDER_SEND(sender, env, msg_ctx, out, url
+                            , soap_action);
+        /*
+         * TODO check for errors
+         */
+        AXIS2_SOAP_OVER_HTTP_SENDER_FREE(sender, env);
+        sender = NULL;
+    }
 	return status;
 }
 

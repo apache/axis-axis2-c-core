@@ -194,7 +194,6 @@ static void axis2_module_init(apr_pool_t* p, server_rec* svr_rec)
                         "log init failed\n");
         status = AXIS2_FAILURE;
     }
-    axis2_logger->level = conf->log_level;
     thread_pool = axis2_thread_pool_init(allocator);
     if(NULL == thread_pool)
     {
@@ -210,8 +209,13 @@ static void axis2_module_init(apr_pool_t* p, server_rec* svr_rec)
                         "axis2_environment init failed\n");
         status = AXIS2_FAILURE;
     }
-    AXIS2_LOG_INFO(axis2_env->log, "Starting log with log level %d", 
+    if(NULL != axis2_logger)
+    {
+        
+        axis2_logger->level = conf->log_level;
+        AXIS2_LOG_INFO(axis2_env->log, "Starting log with log level %d", 
                         conf->log_level);
+    }
     axis2_worker = axis2_apache2_worker_create(&axis2_env, 
                         conf->axis2_repo_path);
     if(NULL == axis2_worker)
