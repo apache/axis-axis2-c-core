@@ -334,11 +334,11 @@ axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call,
         call_impl->axis_svc_private = NULL;
     }
 
-    /*if(NULL != call_impl->op_template)
+    if(NULL != call_impl->listener_manager)
     {
-        AXIS2_OP_FREE(call_impl->op_template, env);
-        call_impl->op_template = NULL;
-    }*/ 
+        AXIS2_LISTNER_MANAGER_FREE(call_impl->listener_manager, env);
+        call_impl->listener_manager = NULL;
+    }
 
     AXIS2_FREE((*env)->allocator, call_impl);
     call_impl = NULL;
