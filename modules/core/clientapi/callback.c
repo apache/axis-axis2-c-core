@@ -40,6 +40,10 @@ axis2_callback_invoke_on_complete(struct axis2_callback *callback,
                                   axis2_async_result_t *result);
                                   
 axis2_status_t AXIS2_CALL 
+axis2_callback_on_complete(struct axis2_callback *callback, 
+                                  axis2_env_t **env);
+                                  
+axis2_status_t AXIS2_CALL 
 axis2_callback_report_error(struct axis2_callback *callback, 
                             axis2_env_t **env, 
                             int exception);
@@ -108,6 +112,9 @@ axis2_callback_create(axis2_env_t **env)
     callback_impl->callback.ops->invoke_on_complete = 
         axis2_callback_invoke_on_complete;
         
+    callback_impl->callback.ops->on_complete = 
+        axis2_callback_on_complete;
+        
     callback_impl->callback.ops->report_error = 
         axis2_callback_report_error;
         
@@ -141,8 +148,9 @@ axis2_callback_invoke_on_complete(struct axis2_callback *callback,
                                   axis2_async_result_t *result)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return axis2_callback_set_envelope(callback, env, 
+    axis2_callback_set_envelope(callback, env, 
                 AXIS2_ASYNC_RESULT_GET_ENVELOPE(result, env));
+    return AXIS2_CALLBACK_ON_COMPLETE(callback, env);
 }
 
 axis2_status_t AXIS2_CALL 
@@ -227,3 +235,11 @@ axis2_callback_free (struct axis2_callback *callback,
     
     return AXIS2_SUCCESS;
 }
+
+axis2_status_t AXIS2_CALL 
+axis2_callback_on_complete(struct axis2_callback *callback, 
+                                  axis2_env_t **env)
+{
+    return AXIS2_SUCCESS;
+}
+                                  

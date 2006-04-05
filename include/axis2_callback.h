@@ -58,6 +58,14 @@ struct axis2_callback_ops
         				axis2_env_t **env, 
         				axis2_async_result_t *result);
     /**
+     * This Method is called by invoke_on_complete.
+     * Users could provide this method to so that they can define what to be done
+     * when the callback returns on completion 
+     */
+    axis2_status_t (AXIS2_CALL *
+	on_complete)(struct axis2_callback *callback, 
+        				axis2_env_t **env);
+    /**
      * This Method is called by Axis2 once the Async Operation fails and the result returns
      *
      * @param e
@@ -137,6 +145,9 @@ AXIS2_DECLARE(axis2_callback_t*) axis2_callback_create(axis2_env_t **env);
 
 #define AXIS2_CALLBACK_INVOKE_ON_COMPLETE(callback, env, result) \
 		((callback)->ops->invoke_on_complete(callback, env, result))
+
+#define AXIS2_CALLBACK_ON_COMPLETE(callback, env) \
+		((callback)->ops->on_complete(callback, env))
 
 #define AXIS2_CALLBACK_REPORT_ERROR(callback, env, error) \
 		((callback)->ops->report_error(callback, env, error))
