@@ -460,6 +460,7 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
     
     int status = AXIS2_SUCCESS;
     axis2_om_node_impl_t *node_impl = NULL;
+    axis2_om_node_t *temp_node = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -537,10 +538,15 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
         break;
     }
     
-    /* serialize children of this node */
-    if(NULL != node_impl->first_child)
-            status =  axis2_om_node_serialize(node_impl->first_child, env, om_output);
 
+    temp_node = node_impl->first_child;
+    /* serialize children of this node */
+    while(NULL != temp_node)
+    {
+        status =  axis2_om_node_serialize(temp_node, env, om_output);
+        temp_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(temp_node, env);
+    }
+    
     switch (node_impl->node_type)
     {
     case AXIS2_OM_ELEMENT:
@@ -558,10 +564,7 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
     default:
         break;
     }
-    /* serialize next sibling */  
-    if(NULL != node_impl->next_sibling)    
-        status = axis2_om_node_serialize(node_impl->next_sibling, env, om_output);
-    
+  
     return status;
 }
 

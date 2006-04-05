@@ -528,8 +528,10 @@ axis2_om_element_declare_namespace (axis2_om_element_t *ele,
 
     if (NULL != declared_ns)
     {
-        /*Namespace already declared, so return */
-        return AXIS2_SUCCESS;
+        if(AXIS2_OM_NAMESPACE_EQUALS(ns, env, declared_ns) == AXIS2_TRUE)
+        {/*Namespace already declared, so return */
+            return AXIS2_SUCCESS;
+        }            
     }
     
     if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)

@@ -434,7 +434,7 @@ axis2_xml_reader_create_for_buffer(axis2_env_t **env,
 	axis2_libxml2_reader_wrapper_impl_t *wrapper_impl = NULL;
     
     AXIS2_ENV_CHECK( env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, buffer , AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, buffer , NULL);
         
     wrapper_impl = (axis2_libxml2_reader_wrapper_impl_t*)AXIS2_MALLOC((*env)->allocator,
          sizeof(axis2_libxml2_reader_wrapper_impl_t));
