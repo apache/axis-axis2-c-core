@@ -942,6 +942,8 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_envelope(struct axis2_msg_ctx *msg_c
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_ENVELOPE_STATE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
+    else
+        AXIS2_INTF_TO_IMPL(msg_ctx)->soap_envelope = NULL;
     
     return AXIS2_SUCCESS;
 }

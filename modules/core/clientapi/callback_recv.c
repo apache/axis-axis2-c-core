@@ -150,6 +150,16 @@ axis2_callback_recv_free (struct axis2_callback_recv *callback_recv,
     
     if (callback_recv_impl->callback_map)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+        for (hi = axis2_hash_first (callback_recv_impl->callback_map, env); hi;
+                 hi = axis2_hash_next ( env, hi))
+        {
+            if (val)
+               AXIS2_FREE ((*env)->allocator, val);
+            val = NULL;
+        }
+
         axis2_hash_free(callback_recv_impl->callback_map, env);
         callback_recv_impl->callback_map = NULL;
     }
@@ -175,8 +185,9 @@ axis2_callback_recv_add_callback(struct axis2_callback_recv *callback_recv,
     
     if (msg_id)
     {
+        axis2_char_t *mid = AXIS2_STRDUP(msg_id, env);
         axis2_hash_set(callback_recv_impl->callback_map, 
-                msg_id, AXIS2_HASH_KEY_STRING, callback);
+                mid, AXIS2_HASH_KEY_STRING, callback);
     }    
     return AXIS2_SUCCESS;
 }
@@ -214,6 +225,7 @@ axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv,
                 {
                     AXIS2_CALLBACK_INVOKE_ON_COMPLETE(callback, env, result);
                     AXIS2_CALLBACK_SET_COMPLETE(callback, env, AXIS2_TRUE);
+                    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, NULL);
                 }
                 
                 AXIS2_ASYNC_RESULT_FREE(result, env);

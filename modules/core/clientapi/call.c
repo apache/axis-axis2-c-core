@@ -202,7 +202,7 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env,
     
     call_impl->call.ops = NULL;
     call_impl->base = NULL;
-    call_impl->timeout_ms = 2000;
+    call_impl->timeout_ms = 60000;
     call_impl->transport_listener = NULL;
     call_impl->sender_transport = NULL;
     call_impl->listener_transport = NULL;
@@ -440,13 +440,13 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
         if (status != AXIS2_SUCCESS)
             return NULL;
         
-        index = call_impl->timeout_ms / 1000;
+        index = call_impl->timeout_ms / 100;
         while (!(AXIS2_CALLBACK_GET_COMPLETE(callback, env))) 
         {
             /*wait till the reponse arrives*/
             if (index-- >= 0) 
             {
-                /* TODO AXIS2_THREAD_SLEEP(env, 1); */
+                AXIS2_USLEEP(100);
             } 
             else 
             {
