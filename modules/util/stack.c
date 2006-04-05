@@ -60,10 +60,6 @@ void* AXIS2_CALL
 axis2_stack_get(axis2_stack_t *stack,
                 axis2_env_t **env);                 
 
-static axis2_status_t 
-axis2_stack_ensure_capacity(axis2_stack_t *stack,
-                            axis2_env_t **env);
-                            
 AXIS2_DECLARE(axis2_stack_t *)
 axis2_stack_create(axis2_env_t **env)
 {
