@@ -141,7 +141,7 @@ axis2_qname_create (axis2_env_t **env,
 
 AXIS2_DECLARE(axis2_qname_t*) 
 axis2_qname_create_from_string(axis2_env_t **env,
-                               axis2_char_t *string);
+                               const axis2_char_t *string);
 	
 
 #define AXIS2_QNAME_FREE(qname, env) \
