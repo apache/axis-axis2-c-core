@@ -625,25 +625,39 @@ application. A solution would be to use a Non-Blocking API to invoke web
 services. Axis2 provides a callback based non-blocking API for users.</p>
 
 <p>A Sample demonstrating this senario can be found in the
-samples/client/echo_non_blocking folder. In fact, this sample demonstrates
-one level below the usual callback mechanism.</p>
+samples/client/echo_non_blocking folder. </p>
 
-<p>Before we look at the code changes to the Echo Blocking Client,, let's get
-a feel of how it works. First You need to create a callback instance using
-axis2_callback_create(axis2_env_t*) and then call the macro
-AXIS2_CALL_INVOKE_NON_BLOCKING(axis2_call_t*, axis2_env_t**,
-axis2_msg_ctx_t*, axis2_callback_t*). In your code, you need to poll using
-the macro AXIS2_CALLBACK_GET_COMPLETE(axis2_callback_t*, axis2_env_t**) to
-check for the completion. Once this macro is true, you can access the reply
-SOAP payload using the macro AXIS2_CALLBACK_GET_ENVELOPE(axis2_callback_t*,
-axis2_env_t**).</p>
+<p>Before we look at the code changes to the Echo Blocking Client, let's get
+a feel of how it works. You need to follow the following steps.<br>
+<ul>
+<li>
+Create a callback instance using
+<font face="Monospace">axis2_callback_create(axis2_env_t*)</font>.</li>
+<li> Define your own on_complete function and set it to the callback object using the macro <font face="Monospace">AXIS2_CALLBACK_SET_ON_COMPLETE(axis2_callback_t *, on_complete_func_ptr).</font> <br> Your callback function should follow the following signature.<br>
+axis2_status_t your_function(axis2_callback *, axis2_env_t **);<br>
+A typedef for this function, <font face="Monospace">on_complete_func_ptr</font> is defined in axis2_callback.h.
+</li>
+<li> Define your own on_error callback function and set it to the callback object using the macro <font face="Monospace">AXIS2_CALLBACK_SET_ON_ERROR(axis2_callback_t *, on_error_func_ptr).</font> <br> Your callback function should follow the following signature. <br>
+<font face="Monospace">axis2_status_t your_function(axis2_callback_t *, axis2_env_t **, int);</font><br>
+A typedef for this function, <font face="Monospace">on_error_func_ptr</font> is defined in axis2_callback.h.
+</li>
+<li> Call the macro<br>
+<font face="Monospace">AXIS2_CALL_INVOKE_NON_BLOCKING(axis2_call_t*, axis2_env_t**,
+axis2_msg_ctx_t*, axis2_callback_t*) </font><br>to access the operation in asyncronous fashion. 
+</li>
+<li> That's all you need to do to invoke the web service. Now you need to flesh out your on_complete callback function to do whatever you want to do with the response message.<br>
+You can access the SOAP response message using the following macro. <br>
+<font face="Monospace">AXIS2_CALLBACK_GET_ENVELOPE(axis2_callback_t*,
+axis2_env_t**);</font>
+</li>
+</ul></p>
 
 <p></p>
 
 <p>You need to primarily replace the following portion of code in the Echo
 Blocking Client</p>
 
-<p>    stub = <font
+<p><font face="Monospace">    stub = <font
 color="#000000">axis2_stub_create_with_endpoint_uri_and_client_home</font>(&amp;<font
 color="#000000">env</font>, <font color="#000000">address</font>,<br>
         <font color="#000000">client_home</font>);<br>
@@ -659,42 +673,124 @@ color="#000000">AXIS2_SOAP_11</font>);<br>
     <font color="#000000">ret_node</font> = <font
 color="#000000">axis2_echo_stub_echo</font>(<font
 color="#000000">stub</font>, &amp;<font color="#000000">env</font>, <font
-color="#000000">node</font>);</p>
+color="#000000">node</font>);</font></p>
 
 <p></p>
 
 <p>to the following (note that you need to create an instance of
-axis2_callback_t.</p>
+<font face="Monospace">axis2_callback_t</font>).</p>
 
 <p></p>
 
-<p></p>
+<p><font face="Monospace">
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#808080"><i>/*&nbsp;create&nbsp;the&nbsp;callback&nbsp;object&nbsp;with&nbsp;default<br>
+&nbsp;&nbsp;&nbsp;&nbsp;on_complete&nbsp;and&nbsp;on_error&nbsp;callback&nbsp;functions*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">callback</font>&nbsp;=&nbsp;<font color="#000000">axis2_callback_create</font>(&amp;<font color="#000000">env</font>);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#808080"><i>/*&nbsp;set&nbsp;our&nbsp;on_complete&nbsp;fucntion&nbsp;pointer&nbsp;to&nbsp;the&nbsp;callback&nbsp;object&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_CALLBACK_SET_ON_COMPLETE</font>(<font color="#000000">callback</font>,&nbsp;<font color="#000000">my_on_complete</font>);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#808080"><i>/*&nbsp;set&nbsp;our&nbsp;on_error&nbsp;function&nbsp;pointer&nbsp;to&nbsp;the&nbsp;callback&nbsp;object&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_CALLBACK_SET_ON_ERROR</font>(<font color="#000000">callback</font>,&nbsp;<font color="#000000">my_on_error</font>);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#808080"><i>/*&nbsp;invoke&nbsp;the&nbsp;operation&nbsp;and&nbsp;get&nbsp;the&nbsp;control&nbsp;back&nbsp;to&nbsp;the&nbsp;main<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;program&nbsp;immediately&nbsp;(without&nbsp;blocking)*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_CALL_INVOKE_NON_BLOCKING</font>(<font color="#000000">call</font>,&nbsp;&amp;<font color="#000000">env</font>,&nbsp;<font color="#000000">op</font>,&nbsp;<font color="#000000">msg_ctx</font>,&nbsp;<font color="#000000">callback</font>);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>(<font color="#FF0000">&quot;Non&nbsp;blocking&nbsp;call&nbsp;invoked&nbsp;-&nbsp;Control&nbsp;back&nbsp;to&nbsp;Main&nbsp;Program\n&quot;</font>);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#808080"><i>/**&nbsp;this&nbsp;is&nbsp;simply&nbsp;to&nbsp;keep&nbsp;the&nbsp;parent&nbsp;thread&nbsp;running<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;until&nbsp;our&nbsp;on_complete&nbsp;or&nbsp;on_error&nbsp;is&nbsp;invoked<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>while</b></font>(<font color="#0000FF">1</font>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>&nbsp;(<font color="#000000">isComplete</font>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#808080"><i>/*&nbsp;we&nbsp;are&nbsp;done&nbsp;with&nbsp;the&nbsp;callback&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>break</b></font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+<br>
+		</font></p>
 
-<p>    <font color="#000000">callback
- = axis2_callback_create</font>(&amp;<font color="#000000">env</font>);<br>
-<font color="#000000">    AXIS2_CALL_INVOKE_NON_BLOCKING</font>(<font
-color="#000000">call</font>, &amp;<font color="#000000">env</font>, <font
-color="#000000">op</font>, <font color="#000000">msg_ctx</font>, <font
-color="#000000">callback</font>);<br>
-    <font color="#000000"><b>while</b></font> (!<font
-color="#000000">AXIS2_CALLBACK_GET_COMPLETE</font>(<font
-color="#000000">callback</font>, &amp;<font color="#000000">env</font>))<br>
-    {<br>
-        <font color="#000000">printf</font>(<font
-color="#FF0000">"sleep(2) till callback complete\n"</font>);<br>
-        <font color="#000000"><b>if</b></font> (<font
-color="#000000">count</font>++ &gt; <font color="#0000FF">10</font>)<br>
-            <font color="#000000"><b>break</b></font>;<br>
-        <font color="#000000">AXIS2_SLEEP</font>(<font
-color="#0000FF">2</font>);            <br>
-    }<br>
-    <font color="#000000">soap_envelope</font> = <font
-color="#000000">AXIS2_CALLBACK_GET_ENVELOPE</font>(<font
-color="#000000">callback</font>, &amp;<font color="#000000">env</font>);<br>
+<p>    
+
+<p> You need to impletement your own on_complete and on_error functions to handle callbacks. A sample implementation is shwon below.</p>
+<p><font face="Monospace">
+<font color="#000000">axis2_status_t</font>&nbsp;<br>
+<font color="#000000">my_on_complete</font>(<font color="#000000"><b>struct</b></font>&nbsp;<font color="#000000">axis2_callback</font>&nbsp;*<font color="#000000">callback</font>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_env_t</font>&nbsp;**<font color="#000000">env</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#808080"><i>/**&nbsp;SOAP&nbsp;response&nbsp;has&nbsp;arrived&nbsp;here;&nbsp;get&nbsp;the&nbsp;soap&nbsp;envelope&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from&nbsp;the&nbsp;callback&nbsp;object&nbsp;and&nbsp;do&nbsp;whatever&nbsp;you&nbsp;want&nbsp;to&nbsp;do&nbsp;with&nbsp;it&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_soap_envelope_t</font>&nbsp;*<font color="#000000">soap_envelope</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_om_node_t</font>&nbsp;*<font color="#000000">ret_node</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_xml_writer_t</font>&nbsp;*<font color="#000000">writer</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_om_output_t</font>&nbsp;*<font color="#000000">om_output</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_char_t</font>&nbsp;*<font color="#000000">buffer</font>&nbsp;=&nbsp;<font color="#000000">NULL</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>(<font color="#FF0000">&quot;inside&nbsp;on_complete_callback&nbsp;function\n&quot;</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">soap_envelope</font>&nbsp;=&nbsp;<font color="#000000">AXIS2_CALLBACK_GET_ENVELOPE</font>(<font color="#000000">callback</font>,&nbsp;<font color="#000000">env</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>&nbsp;(!<font color="#000000">soap_envelope</font>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_LOG_ERROR</font>((*<font color="#000000">env</font>)-&gt;<font color="#000000">log</font>,&nbsp;<font color="#000000">AXIS2_LOG_SI</font>,&nbsp;<font color="#FF0000">&quot;Stub&nbsp;invoke&nbsp;FAILED:&nbsp;Error&nbsp;code:&quot;</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FF0000">&quot;&nbsp;%d&nbsp;::&nbsp;%s&quot;</font>,&nbsp;(*<font color="#000000">env</font>)-&gt;<font color="#000000">error</font>-&gt;<font color="#000000">error_number</font>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_ERROR_GET_MESSAGE</font>((*<font color="#000000">env</font>)-&gt;<font color="#000000">error</font>));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>(<font color="#FF0000">&quot;echo&nbsp;stub&nbsp;invoke&nbsp;FAILED!\n&quot;</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font color="#000000">AXIS2_FAILURE</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">ret_node</font>&nbsp;=&nbsp;<font color="#000000">AXIS2_SOAP_ENVELOPE_GET_BASE_NODE</font>(<font color="#000000">soap_envelope</font>,&nbsp;<font color="#000000">env</font>);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>if</b></font>(!<font color="#000000">ret_node</font>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_LOG_ERROR</font>((*<font color="#000000">env</font>)-&gt;<font color="#000000">log</font>,&nbsp;<font color="#000000">AXIS2_LOG_SI</font>,&nbsp;<font color="#FF0000">&quot;Stub&nbsp;invoke&nbsp;FAILED:&nbsp;Error&nbsp;code:&quot;</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FF0000">&quot;&nbsp;%d&nbsp;::&nbsp;%s&quot;</font>,&nbsp;(*<font color="#000000">env</font>)-&gt;<font color="#000000">error</font>-&gt;<font color="#000000">error_number</font>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_ERROR_GET_MESSAGE</font>((*<font color="#000000">env</font>)-&gt;<font color="#000000">error</font>));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>(<font color="#FF0000">&quot;echo&nbsp;stub&nbsp;invoke&nbsp;FAILED!\n&quot;</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font color="#000000">AXIS2_FAILURE</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#808080"><i>/*we&nbsp;just&nbsp;serialize&nbsp;the&nbsp;SOAP&nbsp;message&nbsp;and&nbsp;output&nbsp;to&nbsp;stdout&nbsp;*/</i></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>(<font color="#FF0000">&quot;\necho&nbsp;stub&nbsp;invoke&nbsp;SUCCESSFUL!\n&quot;</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">writer</font>&nbsp;=&nbsp;<font color="#000000">axis2_xml_writer_create_for_memory</font>(<font color="#000000">env</font>,&nbsp;<font color="#000000">NULL</font>,&nbsp;<font color="#000000">AXIS2_TRUE</font>,&nbsp;<font color="#0000FF">0</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">om_output</font>&nbsp;=&nbsp;<font color="#000000">axis2_om_output_create</font>&nbsp;(<font color="#000000">env</font>,&nbsp;<font color="#000000">writer</font>);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_OM_NODE_SERIALIZE</font>&nbsp;(<font color="#000000">ret_node</font>,&nbsp;<font color="#000000">env</font>,&nbsp;<font color="#000000">om_output</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">buffer</font>&nbsp;=&nbsp;<font color="#000000">AXIS2_XML_WRITER_GET_XML</font>(<font color="#000000">writer</font>,&nbsp;<font color="#000000">env</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>&nbsp;(<font color="#FF0000">&quot;\nReceived&nbsp;OM&nbsp;node&nbsp;in&nbsp;XML&nbsp;:&nbsp;%s\n&quot;</font>,&nbsp;<font color="#000000">buffer</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_OM_OUTPUT_FREE</font>(<font color="#000000">om_output</font>,&nbsp;<font color="#000000">env</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_FREE</font>((*<font color="#000000">env</font>)-&gt;<font color="#000000">allocator</font>,&nbsp;<font color="#000000">buffer</font>);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">isComplete</font>&nbsp;=&nbsp;<font color="#0000FF">1</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font color="#000000">AXIS2_SUCCESS</font>;<br>
+}<br>
+<br>
+<font color="#000000">axis2_status_t</font>&nbsp;<br>
+<font color="#000000">my_on_error</font>(<font color="#000000"><b>struct</b></font>&nbsp;<font color="#000000">axis2_callback</font>&nbsp;*<font color="#000000">callback</font>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">axis2_env_t</font>&nbsp;**<font color="#000000">env</font>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#800000">int</font>&nbsp;<font color="#000000">exception</font>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#808080"><i>/**&nbsp;take&nbsp;necessary&nbsp;action&nbsp;on&nbsp;error&nbsp;*/</i></font><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>(<font color="#FF0000">&quot;my&nbsp;on_error&nbsp;error&nbsp;code:%d&nbsp;::%s&quot;</font>,&nbsp;<font color="#000000">exception</font>,&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_ERROR_GET_MESSAGE</font>((*<font color="#000000">env</font>)-&gt;<font color="#000000">error</font>));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">isComplete</font>&nbsp;=&nbsp;<font color="#0000FF">1</font>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000"><b>return</b></font>&nbsp;<font color="#000000">AXIS2_SUCCESS</font>;<br>
+}<br>
+<br>
+		</font></p>
+<p> There are situation where you may need to keep data pertaining to each callback you make. You can make use of the following macros in such situations.<br>
+<font face="Monospace">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_CALLBACK_SET_DATA</font>(<font color="#000000">axis2_callback_t</font>&nbsp;*,&nbsp;<font color="#800000">void</font>&nbsp;*);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_CALLBACK_GET_DATA</font>(<font color="#000000">axis2_callback_t</font>&nbsp;*);<br>
+		</font><br><br>
+Please refer to the sample shipped with the release to see the complete working code.
 </p>
-
-<p></p>
-
 <p align="right"><a href="userguide1.html"><img src="images/arrow_left.gif">
 Previous</a> | <a href="userguide3.html">Next <img
 src="images/arrow_right.gif"></a></p>

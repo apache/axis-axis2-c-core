@@ -37,9 +37,24 @@
 #include <axis2_soap_fault_code.h>
 #include <axis2_soap_fault_role.h>
 #include <platforms/axis2_platform_auto_sense.h>
+#include <axis2_async_result.h>
+
+/* my on_complete callback function */
+axis2_status_t
+my_on_complete(struct axis2_callback *callback,
+                                  axis2_env_t **env);
+
+/* my on_error callback function */
+axis2_status_t
+my_on_error(struct axis2_callback *callback,
+                            axis2_env_t **env,
+                            int exception);
 
 axis2_om_node_t *
 build_om_programatically(axis2_env_t **env);
+
+/* to check whether the callback is completed */
+int isComplete = 0;
 
 int main(int argc, char** argv)
 {
@@ -53,7 +68,6 @@ int main(int argc, char** argv)
     axis2_char_t *address = NULL;
     axis2_char_t *wsa_action = NULL;
     axis2_char_t *client_home = NULL;
-    axis2_om_node_t *ret_node = NULL;
     axis2_svc_t *svc = NULL;
     axis2_op_t *op = NULL;
     axis2_call_t *call = NULL;
@@ -63,8 +77,6 @@ int main(int argc, char** argv)
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_conf_t *conf = NULL;
     axis2_callback_t* callback = NULL;
-    int count = 0;
-    axis2_soap_envelope_t *soap_envelope = NULL;
     
     allocator = axis2_allocator_init (NULL);
     error = axis2_error_create(allocator);
@@ -140,58 +152,43 @@ int main(int argc, char** argv)
         printf("ERROR: operation not present in service\n");
         return -1;
     }
+
+	/* create the callback object with default
+	on_complete and on_error callback functions*/
     callback = axis2_callback_create(&env);
-    
+	
+	/* set our on_complete fucntion pointer to the callback object */
+	AXIS2_CALLBACK_SET_ON_COMPLETE(callback, my_on_complete);
+
+	/* set our on_error function pointer to the callback object */
+	AXIS2_CALLBACK_SET_ON_ERROR(callback, my_on_error);
+	
+	/* invoke the operation and get the control back to the main 
+	   program immediately (without blocking)*/
     AXIS2_CALL_INVOKE_NON_BLOCKING(call, &env, op, msg_ctx, callback);
 
-    printf("Non blocking call invoked\n");
+    printf("Non blocking call invoked - Control back to Main Program\n");
+
+	/** this is simply to keep the parent thread running
+	  until our on_complete or on_error is invoked 
+	  */
+	while(1)
+	{
+		if (isComplete)
+		{
+			/* we are done with the callback */
+			break;
+		}
+	}
   
-    printf("\n");
-    while (!AXIS2_CALLBACK_GET_COMPLETE(callback, &env))
-    {
-        if (count++ > 100)
-            break;
-        AXIS2_USLEEP(200);            
-    }
-
-    do
-    {
-        soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, &env);
-        AXIS2_USLEEP(200);            
-        count++;
-    } while (!soap_envelope && count < 200);
-    
-    if (soap_envelope)
-        ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, &env);
-                                                        
-    if(ret_node)
-    {
-        axis2_xml_writer_t *writer = NULL;
-        axis2_om_output_t *om_output = NULL;
-        axis2_char_t *buffer = NULL;
-        
-        printf("\necho stub invoke SUCCESSFUL!\n");
-        writer = axis2_xml_writer_create_for_memory(&env, NULL, AXIS2_TRUE, 0);
-        om_output = axis2_om_output_create (&env, writer);
-
-        AXIS2_OM_NODE_SERIALIZE (ret_node, &env, om_output);
-        buffer = AXIS2_XML_WRITER_GET_XML(writer, &env);
-        printf ("\nReceived OM node in XML : %s\n", buffer);
-        AXIS2_OM_OUTPUT_FREE(om_output, &env);
-        AXIS2_FREE(env->allocator, buffer);
-    }
-    else
-    {
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-						" %d :: %s", env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
-        printf("echo stub invoke FAILED!\n");
-    }
-    
     if (call)
     {
         AXIS2_CALL_FREE(call, &env);
     }
+	if (callback)
+	{
+		AXIS2_CALLBACK_FREE(callback, &env);
+	}
     return status;
 }
 
@@ -227,5 +224,71 @@ build_om_programatically(axis2_env_t **env)
     AXIS2_FREE((*env)->allocator, buffer);
 
     return echo_om_node;
+}
+
+axis2_status_t 
+my_on_complete(struct axis2_callback *callback,
+                                  axis2_env_t **env)
+{
+	/** SOAP response has arrived here; get the soap envelope 
+	  from the callback object and do whatever you want to do with it */
+	
+	axis2_soap_envelope_t *soap_envelope = NULL;
+	axis2_om_node_t *ret_node = NULL;
+	
+	axis2_xml_writer_t *writer = NULL;
+	axis2_om_output_t *om_output = NULL;
+	axis2_char_t *buffer = NULL;
+	
+	printf("inside on_complete_callback function\n");
+	
+	soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, env);
+	
+	if (!soap_envelope)
+	{
+		 AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+                     " %d :: %s", (*env)->error->error_number,
+                     AXIS2_ERROR_GET_MESSAGE((*env)->error));
+		printf("echo stub invoke FAILED!\n");
+		return AXIS2_FAILURE;
+	}
+	
+	ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
+
+	if(!ret_node)
+	{
+		AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+	                  " %d :: %s", (*env)->error->error_number,
+	                  AXIS2_ERROR_GET_MESSAGE((*env)->error));
+		printf("echo stub invoke FAILED!\n");
+		return AXIS2_FAILURE;
+	}
+
+	/*we just serialize the SOAP message and output to stdout */
+	printf("\necho stub invoke SUCCESSFUL!\n");
+	writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
+	om_output = axis2_om_output_create (env, writer);
+
+	AXIS2_OM_NODE_SERIALIZE (ret_node, env, om_output);
+	buffer = AXIS2_XML_WRITER_GET_XML(writer, env);
+	printf ("\nReceived OM node in XML : %s\n", buffer);
+	AXIS2_OM_OUTPUT_FREE(om_output, env);
+	AXIS2_FREE((*env)->allocator, buffer);
+
+	isComplete = 1;
+	return AXIS2_SUCCESS;
+}
+
+axis2_status_t 
+my_on_error(struct axis2_callback *callback,
+                            axis2_env_t **env,
+                            int exception)
+{
+	/** take necessary action on error */
+
+	printf("my on_error error code:%d ::%s", exception, 
+			AXIS2_ERROR_GET_MESSAGE((*env)->error));
+	isComplete = 1;
+	return AXIS2_SUCCESS;
 }
 
