@@ -21,6 +21,16 @@
 * @file axis2_constants.h
 * @brief defines the constants used in om
 */
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+/**
+ * @defgroup axis2_om_  OM constants
+ * @ingroup axis2_xml_schema
+ * @{
+ */
 
 #define AXIS2_OM_ARRAY_ITEM_NSURI   "http://axis.apache.org/encoding/Arrays"
 
@@ -39,5 +49,12 @@
 #define AXIS2_OM_XMLNS_NS_PREFIX "xmlns"
 
 #define AXIS2_OM_XMLNS_PREFIX "xml"
+
+
+/** @} */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* AXIS2_OM_H */

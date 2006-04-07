@@ -153,6 +153,8 @@ extern "C"
         AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE,
         
         AXIS2_ERROR_INVALID_PHASE,
+        /** error a namespace should have a valid uri */
+        AXIS2_ERROR_INVALID_EMPTY_NAMESPACE_URI,
         /** error occured in writing start element in xml writer */
         AXIS2_ERROR_WRITING_START_ELEMENT,
         /** error occured in writing start element in start document in xml writer */

@@ -362,25 +362,27 @@ axis2_om_stax_builder_process_namespaces (axis2_om_stax_builder_t *om_stax_build
         temp_ns_uri = AXIS2_XML_READER_GET_NAMESPACE_URI_BY_NUMBER(
                             builder->parser, env , i);
                             
-        if(AXIS2_STRCMP(temp_ns_prefix,"xmlns") == 0 || !temp_ns_prefix)
+        if(!temp_ns_prefix || AXIS2_STRCMP(temp_ns_prefix,"xmlns") == 0)
         {
             /** default namespace case */
             /** !temp_ns_prefix is for guththila */         
              axis2_om_element_t *om_ele = NULL;
              om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
             
-             om_ns = axis2_om_namespace_create ( env, temp_ns_uri, NULL );
+             om_ns = axis2_om_namespace_create ( env, temp_ns_uri, "");
              if(!om_ns || !om_ele)
                  return AXIS2_FAILURE;
              
              status = AXIS2_OM_ELEMENT_DECLARE_NAMESPACE( om_ele, env, node, om_ns);
             
              temp_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(om_ele, env, temp_ns_uri, NULL);
+             /*
              if(temp_ns)
              {
                 AXIS2_OM_ELEMENT_SET_NAMESPACE (om_ele, env, om_ns, node); 
-             }                 
-             else
+             } 
+             */                
+             if(!temp_ns)
              {
                 AXIS2_OM_NAMESPACE_FREE(om_ns, env);
                 om_ns = NULL;

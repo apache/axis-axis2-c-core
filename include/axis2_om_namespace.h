@@ -107,8 +107,18 @@ extern "C"
         struct axis2_om_namespace* (AXIS2_CALL *
         clone)(struct axis2_om_namespace *om_namespace,
                axis2_env_t **env);
-                                                                                     
-
+               
+        /**
+         * to string , returns the string by combining namespace_uri,
+         * and prefix seperated by a '|' character
+         * @param om_namespace 
+         * @param env environment
+         * @returns pointer to string , This is a property of namespace,
+         * should not be freed by user
+         */                                                                                     
+        axis2_char_t * (AXIS2_CALL *
+        to_string)(struct axis2_om_namespace *om_namespace,
+                   axis2_env_t **env);
 
     } axis2_om_namespace_ops_t;
 
@@ -151,9 +161,12 @@ extern "C"
 /** get namespace uri */
 #define AXIS2_OM_NAMESPACE_GET_URI(om_namespace, env) \
         ((om_namespace)->ops->get_uri(om_namespace, env))
-
+/** clones a namespace */
 #define AXIS2_OM_NAMESPACE_CLONE(om_namespace, env) \
         ((om_namespace)->ops->clone(om_namespace, env))
+/** returns a string from namespace */
+#define AXIS2_OM_NAMESPACE_TO_STRING(om_namespace, env) \
+        ((om_namespace)->ops->to_string(om_namespace, env))
 
 /** @} */
 

@@ -1123,7 +1123,8 @@ axis2_libxml2_writer_wrapper_write_namespace(axis2_xml_writer_t *writer,
     
     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, namespace_uri, AXIS2_FAILURE);
-    /* AXIS2_PARAM_CHECK((*env)->error, prefix , AXIS2_FAILURE); */
+    if(AXIS2_STRCMP(namespace_uri, "") == 0)
+        return AXIS2_FAILURE;
     
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
     
@@ -1145,8 +1146,9 @@ axis2_libxml2_writer_wrapper_write_namespace(axis2_xml_writer_t *writer,
     else
     {
         axis2_libxml2_writer_wrapper_push(writer, env, namespace_uri, prefix);
-        if(NULL != prefix)
+        if(NULL != prefix && (AXIS2_STRCMP(prefix,"") != 0))
         {
+             
             xmlnsprefix = (axis2_char_t*)AXIS2_MALLOC((*env)->allocator,
                         (sizeof(char)* (AXIS2_STRLEN(prefix) +7)));
             sprintf(xmlnsprefix,"xmlns:%s",prefix);
@@ -1195,7 +1197,8 @@ axis2_libxml2_writer_wrapper_write_default_namespace
         /* namespace already declared , nothing to do */
         return AXIS2_SUCCESS;
     }
-   
+    axis2_libxml2_writer_wrapper_push(writer, env, namespace_uri, NULL);
+      
     xmlns = AXIS2_MALLOC((*env)->allocator, 
             sizeof(axis2_char_t)*(strlen("xmlns")+1));
     sprintf(xmlns,"xmlns");
