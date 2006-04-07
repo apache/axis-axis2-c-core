@@ -41,6 +41,11 @@ extern "C"
 typedef struct axis2_callback_ops axis2_callback_ops_t;
 typedef struct axis2_callback axis2_callback_t; 
 
+typedef axis2_status_t(*on_complete_func_ptr)
+	(struct axis2_callback *, axis2_env_t **);
+
+typedef axis2_status_t(*on_error_func_ptr)(struct axis2_callback *,
+	axis2_env_t **, int);
     
 /** 
  * @brief Message Context ops struct
@@ -133,7 +138,21 @@ struct axis2_callback_ops
                axis2_env_t **env, 
                int error);
 	
-	
+	axis2_status_t (AXIS2_CALL *
+	set_data)(struct axis2_callback *callback,
+			void *data);
+
+	void * (AXIS2_CALL *
+	get_data)(struct axis2_callback *callback);
+
+	void (AXIS2_CALL *
+	set_on_complete)(struct axis2_callback *callback,
+		on_complete_func_ptr f);
+
+	void (AXIS2_CALL *
+	set_on_error)(struct axis2_callback *callback,
+		on_error_func_ptr f);
+
     axis2_status_t (AXIS2_CALL *
 	free)(struct axis2_callback *callback, 
           axis2_env_t **env);
@@ -181,7 +200,19 @@ AXIS2_DECLARE(axis2_callback_t*) axis2_callback_create(axis2_env_t **env);
 		
 #define AXIS2_CALLBACK_SET_ERROR(callback, env, error) \
 		((callback)->ops->set_error(callback, env, error))
-		
+
+#define AXIS2_CALLBACK_GET_DATA(callback) \
+		((callback)->ops->get_data(callback))
+
+#define AXIS2_CALLBACK_SET_DATA(callback, data) \
+		((callback)->ops->set_data(callback, data))
+
+#define AXIS2_CALLBACK_SET_ON_COMPLETE(callback, func) \
+		((callback)->ops->set_on_complete(callback, func))
+
+#define AXIS2_CALLBACK_SET_ON_ERROR(callback, func) \
+		((callback)->ops->set_on_error(callback, func))
+
 #define AXIS2_CALLBACK_FREE(callback, env) \
 		((callback)->ops->free (callback, env))
 
