@@ -41,11 +41,13 @@ extern "C"
 typedef struct axis2_callback_ops axis2_callback_ops_t;
 typedef struct axis2_callback axis2_callback_t; 
 
-typedef axis2_status_t(*on_complete_func_ptr)
-	(struct axis2_callback *, axis2_env_t **);
+typedef axis2_status_t (AXIS2_CALL *
+        on_complete_func_ptr)(struct axis2_callback *, 
+	                          axis2_env_t **);
 
-typedef axis2_status_t(*on_error_func_ptr)(struct axis2_callback *,
-	axis2_env_t **, int);
+typedef axis2_status_t (AXIS2_CALL *
+        on_error_func_ptr)(struct axis2_callback *,
+	                       axis2_env_t **, int);
     
 /** 
  * @brief Message Context ops struct
