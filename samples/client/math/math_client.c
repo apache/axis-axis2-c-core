@@ -163,7 +163,7 @@ build_om_programatically(axis2_env_t **env, axis2_char_t *operation, axis2_char_
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
 
-    ns1 = axis2_om_namespace_create (env, "http://localhost:9090/axis2/services/math", "ns1");
+    ns1 = axis2_om_namespace_create (env, "http://ws.apache.org/axis2/c/samplesmath", "ns1");
 
     math_om_ele = axis2_om_element_create(env, NULL, operation, ns1, &math_om_node);
     

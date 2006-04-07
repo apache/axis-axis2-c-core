@@ -7,7 +7,7 @@
 
     <operation name="echoString">
             <!--messageReceiver class="axis2_receivers" /-->
-            <parameter name="wsamapping" >http://localhost:9090/axis2/services/echo/echoString</parameter>
+            <parameter name="wsamapping" >http://ws.apache.org/axis2/c/samples/echoString</parameter>
     </operation>
 
 </service>

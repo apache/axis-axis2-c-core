@@ -980,7 +980,11 @@ axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(axis2_call_t *cal
             {
                 axis2_soap_body_t *soap_body = NULL;
                 axis2_soap_envelope_t *res_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(call_impl->last_res_msg_ctx, env);
-                soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(res_envelope, env);
+                if (res_envelope)
+                {
+                    soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(res_envelope, env);
+                }
+
                 if (soap_body)
                 {
                     axis2_om_node_t *soap_node = NULL;

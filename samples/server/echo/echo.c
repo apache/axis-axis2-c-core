@@ -29,7 +29,7 @@ axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)
     AXIS2_ENV_CHECK(env, NULL);
    
     /* Expected request format is :-
-     * <ns1:echoString xmlns:ns1="http://localhost:9090/axis2/services/echo">
+     * <ns1:echoString xmlns:ns1="http://ws.apache.org/axis2/c/samples">
      *      <text>echo5</text>
      * </ns1:echoString>
      */
@@ -86,7 +86,7 @@ build_om_programatically(axis2_env_t **env, axis2_char_t *text)
     axis2_om_element_t * text_om_ele = NULL;
     axis2_om_namespace_t *ns1 = NULL;
     
-    ns1 = axis2_om_namespace_create (env, "http://localhost:9090/axis2/services/echo", "ns1");
+    ns1 = axis2_om_namespace_create (env, "http://ws.apache.org/axis2/c/samples", "ns1");
 
     echo_om_ele = axis2_om_element_create(env, NULL, "echoString", ns1, &echo_om_node);
     

@@ -78,8 +78,8 @@ int main(int argc, char** argv)
     if (!client_home)
         client_home = "../../deploy";
     
-    address = "http://localhost:9090/axis2/services/echo/echo";
-    wsa_action = "http://127.0.0.1:9090/axis2/services/echo/echoString";
+    address = "http://localhost:9090/axis2/services/echo";
+    wsa_action = "http://ws.apache.org/axis2/c/samples/echo/echoString";
     if (argc > 1 )
         address = argv[1];
     if (AXIS2_STRCMP(address, "-h") == 0)
@@ -209,7 +209,7 @@ build_om_programatically(axis2_env_t **env)
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
 
-    ns1 = axis2_om_namespace_create (env, "http://localhost:9090/axis2/services/echo", "ns1");
+    ns1 = axis2_om_namespace_create (env, "http://ws.apache.org/axis2/c/samples", "ns1");
 
     echo_om_ele = axis2_om_element_create(env, NULL, "echoString", ns1, &echo_om_node);
     
