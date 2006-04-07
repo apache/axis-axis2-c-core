@@ -16,6 +16,7 @@
 
 #include <axis2_thread_pool.h>
 #include <axis2_env.h>
+#include <axis2_error_default.h>
 
 /** 
  * @brief Stream struct impl
