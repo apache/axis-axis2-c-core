@@ -364,7 +364,44 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          build)(axis2_om_element_t *om_element,
                 axis2_env_t **env,
                 axis2_om_node_t *element_node);
-                                                                                
+                
+        /** 
+         * retrieves the default namespace of this element , if available,
+         * @param om_element pointer to om element
+         * @param env axis2_environment MUST Not be NULL
+         * @returns pointer to default namespace if availale , NULL otherwise
+         */
+         axis2_om_namespace_t* (AXIS2_CALL *
+         get_default_namespace)(axis2_om_element_t *om_element,
+                               axis2_env_t **env,
+                               axis2_om_node_t *element_node);
+                                               
+        /**
+         * declared a default namespace explicitly 
+         * @param om_element pointer to om element
+         * @param env environment MUST not be NULL
+         * @param uri namespace uri of the default namespace
+         * @returns the declared namespace
+                                                     */
+         axis2_om_namespace_t* (AXIS2_CALL *
+         declare_default_namespace)(axis2_om_element_t *om_element,
+                                    axis2_env_t **env,
+                                    axis2_char_t *uri);
+                                    
+        /** 
+         * checks for the namespace in the context of this element 
+         * with the given prefix 
+         * @param om_element pointer to om_element
+         * @param env environment MUST not be NULL
+         * @param om_element_node pointer to this element node
+         * @returns pointer to relevent namespace 
+         */
+         
+         axis2_om_namespace_t* (AXIS2_CALL *
+         find_namespace_uri)(axis2_om_element_t *om_element,
+                             axis2_env_t **env,
+                             axis2_char_t *prefix,
+                             axis2_om_node_t *element_node);                                   
     };
 
     
@@ -502,7 +539,15 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
 
 #define AXIS2_OM_ELEMENT_BUILD(om_element, env, element_node) \
         ((om_element)->ops->build(om_element, env, element_node))
-                
+        
+#define AXIS2_OM_ELEMENT_GET_DEFAULT_NAMESPACE(om_element, env, element_node) \
+        ((om_element)->ops->get_default_namespace(om_element, env, element_node))
+        
+#define AXIS2_OM_ELEMENT_DECLARE_DEFAULT_NAMESPACE(om_element, env, uri) \
+        ((om_element)->ops->declare_default_namespace(om_element, env, uri))
+        
+#define AXIS2_OM_ELEMENT_FIND_NAMESPACE_URI(om_element, env, prefix, element_node) \
+        ((om_element)->ops->find_namespace_uri(om_element, env, prefix, element_node))                       
 /** @} */
 
 

@@ -84,7 +84,7 @@ axis2_rest_sender_free(axis2_rest_sender_t *sender,
 						axis2_env_t **env);
 /***************************** End of function headers ************************/
 
-axis2_rest_sender_t * AXIS2_CALL 
+AXIS2_DECLARE(axis2_rest_sender_t *) 
 axis2_rest_sender_create(axis2_env_t **env)
 {
     axis2_rest_sender_impl_t *sender_impl = NULL;

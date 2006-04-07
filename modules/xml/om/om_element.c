@@ -159,6 +159,31 @@ axis2_status_t AXIS2_CALL
 axis2_om_element_build(axis2_om_element_t *om_ele,
                        axis2_env_t **env,
                        axis2_om_node_t *om_ele_node);
+                       
+
+axis2_om_namespace_t* AXIS2_CALL
+axis2_om_element_get_default_namespace(axis2_om_element_t *om_element,
+                                        axis2_env_t **env,
+                                        axis2_om_node_t *element_node);
+                                    
+/**
+* declared a default namespace explicitly 
+*/     
+axis2_om_namespace_t* AXIS2_CALL 
+axis2_om_element_declare_default_namespace(axis2_om_element_t *om_element,
+                                           axis2_env_t **env,
+                                           axis2_char_t *uri);
+                        
+/** 
+* checks for the namespace in the context of this element 
+* with the given prefix 
+*/
+
+axis2_om_namespace_t* AXIS2_CALL 
+axis2_om_element_find_namespace_uri(axis2_om_element_t *om_element,
+                                    axis2_env_t **env,
+                                    axis2_char_t *prefix,
+                                    axis2_om_node_t *element_node);                          
                                          
 /************************** end function prototypes **********************/
 typedef struct axis2_om_element_impl
@@ -306,12 +331,25 @@ axis2_om_element_create (axis2_env_t **env,
     
     element->om_element.ops->get_namespace =
         axis2_om_element_get_namespace;
+        
     element->om_element.ops->find_declared_namespace =
-        axis2_om_element_find_declared_namespace;  
+        axis2_om_element_find_declared_namespace; 
+        
+    element->om_element.ops->get_default_namespace = 
+        axis2_om_element_get_default_namespace;
+        
+    element->om_element.ops->declare_default_namespace =
+        axis2_om_element_declare_default_namespace;
+        
+    element->om_element.ops->find_namespace_uri =
+        axis2_om_element_find_namespace_uri;                         
+        
     element->om_element.ops->get_all_attributes =
-        axis2_om_element_get_all_attributes;   
+        axis2_om_element_get_all_attributes;
+           
     element->om_element.ops->get_namespaces =
         axis2_om_element_get_namespaces;
+        
     element->om_element.ops->get_qname =
         axis2_om_element_get_qname; 
         
@@ -1347,3 +1385,119 @@ axis2_om_element_build(axis2_om_element_t *om_ele,
     }            
     return AXIS2_SUCCESS;
 }                       
+
+axis2_om_namespace_t* AXIS2_CALL
+axis2_om_element_get_default_namespace(axis2_om_element_t *om_element,
+                                        axis2_env_t **env,
+                                        axis2_om_node_t *element_node)
+{
+    axis2_om_element_impl_t *om_ele_impl = NULL;
+    axis2_om_node_t *parent_node = NULL;
+    axis2_om_namespace_t *default_ns = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
+    
+    om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
+    if(NULL != om_ele_impl->namespaces)
+    {
+        default_ns = axis2_hash_get(om_ele_impl->namespaces, "",
+            AXIS2_HASH_KEY_STRING);
+        if(NULL != default_ns)
+        {
+            return default_ns;
+        }             
+    }
+    
+    parent_node = AXIS2_OM_NODE_GET_PARENT(element_node, env);
+    if((NULL != parent_node) && 
+        (AXIS2_OM_NODE_GET_NODE_TYPE(parent_node, env) == AXIS2_OM_ELEMENT))
+    {
+        axis2_om_element_t *parent_ele = NULL;
+        parent_ele = (axis2_om_element_t *)
+                        AXIS2_OM_NODE_GET_DATA_ELEMENT(parent_node, env);
+        if(NULL != parent_ele)
+        {
+            return axis2_om_element_get_default_namespace(parent_ele, env, parent_node);
+        }            
+    } 
+    return NULL;
+}                                        
+                                    
+/**
+* declared a default namespace explicitly 
+*/     
+axis2_om_namespace_t* AXIS2_CALL 
+axis2_om_element_declare_default_namespace(axis2_om_element_t *om_element,
+                                           axis2_env_t **env,
+                                           axis2_char_t *uri)
+{
+    axis2_om_element_impl_t *om_ele_impl = NULL;
+    axis2_om_namespace_t *default_ns = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, uri, NULL);
+    
+    om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
+    default_ns = axis2_om_namespace_create(env, uri, "");
+    if(!default_ns)
+    {
+        return NULL;
+    }
+    if(NULL != om_ele_impl->namespaces)
+    {
+        om_ele_impl->namespaces = axis2_hash_make(env);
+        if(!(om_ele_impl->namespaces))
+        {
+            return NULL;
+        }
+    }
+    
+    axis2_hash_set(om_ele_impl->namespaces, "", 
+        AXIS2_HASH_KEY_STRING, default_ns);
+    return default_ns;        
+}                                           
+                        
+/** 
+* checks for the namespace in the context of this element 
+* with the given prefix 
+*/
+
+axis2_om_namespace_t* AXIS2_CALL 
+axis2_om_element_find_namespace_uri(axis2_om_element_t *om_element,
+                                    axis2_env_t **env,
+                                    axis2_char_t *prefix,
+                                    axis2_om_node_t *element_node)
+{
+    axis2_om_element_impl_t *om_ele_impl = NULL;
+    axis2_om_node_t *parent_node = NULL;
+    axis2_om_namespace_t *ns = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, element_node, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, prefix, NULL);
+    
+    om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
+    if(NULL != om_ele_impl->namespaces)
+    {
+        ns = axis2_hash_get(om_ele_impl->namespaces, prefix,
+            AXIS2_HASH_KEY_STRING);
+        if(NULL != ns)
+        {
+            return ns;
+        }             
+    }
+    
+    parent_node = AXIS2_OM_NODE_GET_PARENT(element_node, env);
+    if((NULL != parent_node) && 
+        (AXIS2_OM_NODE_GET_NODE_TYPE(parent_node, env) == AXIS2_OM_ELEMENT))
+    {
+        axis2_om_element_t *parent_ele = NULL;
+        parent_ele = (axis2_om_element_t *)
+                        AXIS2_OM_NODE_GET_DATA_ELEMENT(parent_node, env);
+        if(NULL != parent_ele)
+        {
+            return axis2_om_element_find_namespace_uri(parent_ele, env, prefix, parent_node);
+        }            
+    } 
+    return NULL;
+}                                    
