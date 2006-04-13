@@ -91,11 +91,13 @@ guththila_stack_free (guththila_environment_t * environment,
                       guththila_stack_t * stack)
 {
     if (stack && (stack->pointer > 0))
-    {
+      {
         guththila_element_t *ele = stack->tail;
         guththila_stack_free_rec (environment, stack, ele);
         GUTHTHILA_FREE (environment->allocator, stack);
     }
+    else
+      GUTHTHILA_FREE (environment->allocator, stack);
 }
 
 
