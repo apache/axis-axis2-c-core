@@ -2,14 +2,11 @@ dnl run autogen.sh to generate the configure script.
 
 AC_PREREQ(2.59)
 
-AC_INIT(axis2c-src, 0.90)
+AC_INIT(axis2c-src, 0.91_pre)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
-#AC_PREFIX_DEFAULT(/usr/local/axis2)
 AC_PREFIX_DEFAULT(/usr/local/axis2c)
-
-#AC_CONFIG_SRCDIR([modules/common/src/axis2.c])
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -24,10 +21,7 @@ dnl Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_LIB(cutest, CuTestInit)
 
-#CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -g3 -O2"
 CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
-#CFLAGS="$CFLAGS -Wall -ansi -Wshadow -DLINUX=2 -D_REENTRANT -D_GNU_SOURCE \
-#    -D_LARGEFILE64_SOURCE -g -O2 -pthread"
 LDFLAGS="-lpthread"
 
 dnl Checks for header files.
