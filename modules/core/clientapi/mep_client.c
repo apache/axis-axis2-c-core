@@ -85,7 +85,7 @@ axis2_mep_client_t* AXIS2_CALL axis2_mep_client_create(axis2_env_t **env, axis2_
         mep_client_impl->svc_ctx = svc_ctx;
     }
     
-    mep_client_impl->soap_version_uri = AXIS2_STRDUP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, env);
+    mep_client_impl->soap_version_uri = AXIS2_STRDUP(AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, env);
     if (!(mep_client_impl->soap_version_uri))
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -200,6 +200,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
     axis2_soap_envelope_t *envelope = NULL;
+    int soap_version = AXIS2_SOAP12;
     
     AXIS2_ENV_CHECK(env, NULL);
     
@@ -216,8 +217,17 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_
     {
         return NULL;
     }
-    
-    envelope = axis2_soap_envelope_create_default_soap_envelope(env, AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env)?AXIS2_SOAP11:AXIS2_SOAP12);
+
+    if (mep_client_impl->soap_version_uri)
+    {
+        if (AXIS2_STRCMP(mep_client_impl->soap_version_uri, 
+                AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+            soap_version = AXIS2_SOAP11;
+        else
+            soap_version = AXIS2_SOAP12;
+    }
+            
+    envelope = axis2_soap_envelope_create_default_soap_envelope(env, soap_version);
     if (!envelope)
     {
         return NULL;
