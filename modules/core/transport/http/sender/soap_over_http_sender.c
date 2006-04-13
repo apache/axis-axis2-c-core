@@ -264,9 +264,13 @@ axis2_soap_over_http_sender_send
 	http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_USER_AGENT, 
 						"Axis2/C");
 	AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
-	http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_SOAP_ACTION, 
-						soap_action);
-	AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
+    if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
+    {
+        http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_SOAP_ACTION, 
+                            soap_action);
+        AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
+    }
+
 	if(AXIS2_FALSE == sender_impl->chunked)
 	{
 		axis2_char_t tmp_buf[10];
@@ -286,13 +290,26 @@ axis2_soap_over_http_sender_send
 	if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
 	{
 		content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
+        content_type = AXIS2_STRACAT(content_type, ";charset=", env);
+        content_type = AXIS2_STRACAT(content_type, char_set_enc, env);
 	}
 	else
 	{
 		content_type = AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP;
+        content_type = AXIS2_STRACAT(content_type, ";charset=", env);
+        content_type = AXIS2_STRACAT(content_type, char_set_enc, env);
+        content_type = AXIS2_STRACAT(content_type, ";action=\"", env);
+        content_type = AXIS2_STRACAT(content_type, soap_action, env);
+        content_type = AXIS2_STRACAT(content_type, "\";", env);
 	}
 	http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_TYPE, 
 						content_type);
+    if (content_type)
+    {
+        AXIS2_FREE((*env)->allocator, content_type);
+        content_type = NULL;
+    }
+    
 	AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
 	if(0 == AXIS2_STRCMP(sender_impl->http_version, 
 		AXIS2_HTTP_HEADER_PROTOCOL_11))
