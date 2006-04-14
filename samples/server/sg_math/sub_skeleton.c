@@ -28,7 +28,8 @@ sub_free(axis2_svc_skeleton_t *svc_skeleton,
 axis2_om_node_t* AXIS2_CALL 
 sub_invoke(axis2_svc_skeleton_t *svc_skeleton,
             axis2_env_t **env,
-            axis2_om_node_t *node);
+            axis2_om_node_t *node,
+            axis2_msg_ctx_t *msg_ctx);
 
 int AXIS2_CALL sub_init(axis2_svc_skeleton_t *svc_skeleton,
                         axis2_env_t **env);
@@ -90,7 +91,8 @@ sub_free(axis2_svc_skeleton_t *svc_skeleton,
 axis2_om_node_t* AXIS2_CALL
 sub_invoke(axis2_svc_skeleton_t *svc_skeleton,
             axis2_env_t **env,
-            axis2_om_node_t *node)
+            axis2_om_node_t *node,
+            axis2_msg_ctx_t *msg_ctx)
 {
     /* Depending on the function name invoke the
      *  corresponding sub method

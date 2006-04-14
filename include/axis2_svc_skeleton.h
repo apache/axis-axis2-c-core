@@ -19,6 +19,7 @@
 
 #include <axis2_om_node.h>
 #include <axis2_array_list.h>
+#include <axis2_msg_ctx.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -56,7 +57,8 @@ AXIS2_DECLARE_DATA struct axis2_svc_skeleton_ops
     axis2_om_node_t *(AXIS2_CALL* 
     invoke)(axis2_svc_skeleton_t *svc_skeli, 
             axis2_env_t **env,
-            axis2_om_node_t *node);
+            axis2_om_node_t *node,
+            axis2_msg_ctx_t *msg_ctx);
     
     axis2_om_node_t *(AXIS2_CALL* 
     on_fault)(axis2_svc_skeleton_t *svc_skeli, 
@@ -87,8 +89,8 @@ axis2_svc_skeleton_create (axis2_env_t **env);
 #define AXIS2_SVC_SKELETON_FREE(svc_skeleton, env) \
 		((svc_skeleton)->ops->free (svc_skeleton, env))
 
-#define AXIS2_SVC_SKELETON_INVOKE(svc_skeleton, env, node) \
-		((svc_skeleton)->ops->invoke (svc_skeleton, env, node))
+#define AXIS2_SVC_SKELETON_INVOKE(svc_skeleton, env, node, msg_ctx) \
+		((svc_skeleton)->ops->invoke (svc_skeleton, env, node, msg_ctx))
 
 #define AXIS2_SVC_SKELETON_ON_FAULT(svc_skeleton, env, node) \
 		((svc_skeleton)->ops->on_fault (svc_skeleton, env, node))

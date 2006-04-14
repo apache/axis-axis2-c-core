@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "axis2_svc_skeleton.h"
+#include <axis2_svc_skeleton.h>
 #include "echo.h"
 #include <axis2_array_list.h>
 
@@ -31,7 +31,8 @@ echo_free_void_arg(void *svc_skeleton,
 axis2_om_node_t* AXIS2_CALL 
 echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
             axis2_env_t **env,
-            axis2_om_node_t *node);
+            axis2_om_node_t *node,
+            axis2_msg_ctx_t *msg_ctx);
             
 
 int AXIS2_CALL 
@@ -84,7 +85,8 @@ echo_init(axis2_svc_skeleton_t *svc_skeleton,
 axis2_om_node_t* AXIS2_CALL
 echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
             axis2_env_t **env,
-            axis2_om_node_t *node)
+            axis2_om_node_t *node,
+            axis2_msg_ctx_t *msg_ctx)
 {
     /* Invoke the business logic.
      * Depending on the function name invoke the correct impl method.
