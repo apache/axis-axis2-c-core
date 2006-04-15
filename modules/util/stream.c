@@ -584,6 +584,8 @@ axis2_stream_read_socket (axis2_stream_t *stream, axis2_env_t **env,
 						void *buffer, size_t count)
 {
 	int len = 0;
+    axis2_char_t *temp  = NULL;
+    
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	
 	if(-1 == AXIS2_INTF_TO_IMPL(stream)->socket)
@@ -598,6 +600,19 @@ axis2_stream_read_socket (axis2_stream_t *stream, axis2_env_t **env,
 	}
     
     len = recv(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count, 0);
+    
+#ifdef AXIS2_TCPMON
+    temp = (axis2_char_t *)AXIS2_MALLOC((*env)->allocator, 
+            (len + 1) * sizeof(axis2_char_t));
+    if (temp)
+    {
+        memcpy(temp, buffer, len * sizeof(axis2_char_t));
+        temp[len] = '\0';
+        fprintf (stderr, "%s", temp);
+        AXIS2_FREE((*env)->allocator, temp);
+        temp = NULL;
+    }
+#endif
     return len;
 }
 
@@ -606,6 +621,7 @@ axis2_stream_write_socket(axis2_stream_t *stream, axis2_env_t **env,
 						const void *buffer, size_t count)
 {
     int len = 0;
+    axis2_char_t *temp  = NULL;
 			
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	
@@ -618,6 +634,18 @@ axis2_stream_write_socket(axis2_stream_t *stream, axis2_env_t **env,
 	if (NULL == buffer)
 		return -1;
 	len = send(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count, 0);
+#ifdef AXIS2_TCPMON
+    temp = (axis2_char_t *)AXIS2_MALLOC((*env)->allocator, 
+            (len + 1) * sizeof(axis2_char_t));
+    if (temp)
+    {
+        memcpy(temp, buffer, len * sizeof(axis2_char_t));
+        temp[len] = '\0';
+        fprintf (stderr, "%s", temp);
+        AXIS2_FREE((*env)->allocator, temp);
+        temp = NULL;
+    }
+#endif
 	return len;
 	
 }
