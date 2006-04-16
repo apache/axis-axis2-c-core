@@ -820,6 +820,9 @@ axis2_soap_builder_parse_headers(axis2_soap_builder_t *builder,
                     if(status == AXIS2_FAILURE)
                         return AXIS2_FAILURE;
                 }
+                /*HACK: to fix AXIS2C-129 - Samisa*/
+                axis2_om_stax_builder_set_element_level(
+                        builder_impl->om_builder, env, 1);
         }                
     }
     return AXIS2_SUCCESS;

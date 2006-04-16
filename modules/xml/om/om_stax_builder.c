@@ -968,7 +968,6 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
                         builder, env);
             if(!val)
                return -1;
-            break;    
         case AXIS2_XML_READER_END_ELEMENT:
             axis2_om_stax_builder_end_element (builder, env);
             break;
