@@ -964,11 +964,11 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
             break;
         
         case AXIS2_XML_READER_EMPTY_ELEMENT:
-             val = axis2_om_stax_builder_create_om_element (
+            val = axis2_om_stax_builder_create_om_element (
                         builder, env);
-             if(!val)
-                return -1;
-                
+            if(!val)
+               return -1;
+            break;    
         case AXIS2_XML_READER_END_ELEMENT:
             axis2_om_stax_builder_end_element (builder, env);
             break;
