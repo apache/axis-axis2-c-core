@@ -750,7 +750,7 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
 		AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX);
 	if(!om_ns)
 		return NULL;
-	soap_env = axis2_soap_envelope_create(env, om_ns);
+	soap_env = axis2_soap_envelope_create_default_soap_envelope(env, soap_version);
 	if (!soap_env)
 	{
 		AXIS2_OM_NAMESPACE_FREE(om_ns, env);
@@ -758,9 +758,7 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
 	}
 	env_impl = AXIS2_INTF_TO_IMPL(soap_env);
 
-	AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(soap_env, env, soap_version);
-	soap_body   = axis2_soap_body_create_with_parent(env, soap_env);
-	env_impl->body = soap_body;
+    soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_env, env);
 	if (!soap_body)
 	{
 		AXIS2_SOAP_ENVELOPE_FREE(soap_env, env);

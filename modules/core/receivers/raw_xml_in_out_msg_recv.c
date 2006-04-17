@@ -236,6 +236,14 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
         soap_ns = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI; /* default is 1.2 */
         soap_version = AXIS2_SOAP11;
     }
+
+    if (AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(new_msg_ctx, env))
+    {
+        /* service implementation has set the envelope, 
+           useful when setting a SOAP fault.
+           No need to further process */
+        return AXIS2_SUCCESS;
+    }
     
     /* create the soap envelope here*/
     env_ns = axis2_om_namespace_create(env, soap_ns, "soapenv"); 
