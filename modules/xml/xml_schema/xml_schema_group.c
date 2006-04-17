@@ -1,0 +1,262 @@
+/*
+ * Copyright 2004,2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include <axis2_xml_schema_group.h>
+#include <axis2_xml_schema_group_base.h>
+
+typedef struct axis2_xml_schema_group_impl axis2_xml_schema_group_impl_t;
+
+/** 
+ * @brief Other Extension Struct Impl
+ *	Axis2 Other Extension  
+ */ 
+struct axis2_xml_schema_group_impl
+{
+    axis2_xml_schema_group_t group;
+    axis2_xml_schema_annotated_t *annotated;
+    axis2_hash_t *methods;
+    axis2_char_t *name;
+    axis2_xml_schema_group_base_t *particle;
+};
+
+#define INTF_TO_IMPL(group) ((axis2_xml_schema_group_impl_t *) group)
+
+axis2_status_t AXIS2_CALL 
+axis2_xml_schema_group_free(void *group,
+                        axis2_env_t **env);
+
+axis2_xml_schema_annotated_t *AXIS2_CALL
+axis2_xml_schema_group_get_base_impl(void *group,
+                                        axis2_env_t **env);
+
+axis2_char_t *AXIS2_CALL
+axis2_xml_schema_group_get_name(void *group,
+                                axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_group_set_name(void *group,
+                                axis2_env_t **env,
+                                axis2_char_t *name);
+
+axis2_xml_schema_group_base_t *AXIS2_CALL
+axis2_xml_schema_group_get_particle(void *group,
+                                        axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_group_set_particle(void *group,
+                                    axis2_env_t **env,
+                                    axis2_xml_schema_group_base_t *particle);
+
+AXIS2_DECLARE(axis2_xml_schema_group_t *)
+axis2_xml_schema_group_create(axis2_env_t **env)
+{
+    axis2_xml_schema_group_impl_t *group_impl = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+
+    group_impl = AXIS2_MALLOC((*env)->allocator, 
+                    sizeof(axis2_xml_schema_group_impl_t));
+
+    group_impl->annotated = NULL;
+    group_impl->methods = NULL;
+    group_impl->name = NULL;
+    group_impl->particle = NULL;
+    group_impl->group.ops = AXIS2_MALLOC((*env)->allocator, 
+                    sizeof(axis2_xml_schema_group_ops_t));
+
+    group_impl->group.ops->free = axis2_xml_schema_group_free;
+    group_impl->group.ops->get_base_impl = 
+            axis2_xml_schema_group_get_base_impl;
+    group_impl->group.ops->get_name = 
+            axis2_xml_schema_group_get_name;
+    group_impl->group.ops->set_name = 
+            axis2_xml_schema_group_set_name;
+    group_impl->group.ops->get_particle = 
+            axis2_xml_schema_group_get_particle;
+    group_impl->group.ops->set_particle = 
+            axis2_xml_schema_group_set_particle;
+   
+    group_impl->methods = axis2_hash_make(env);
+    if(!group_impl->methods)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    axis2_hash_set(group_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_group_free);
+    axis2_hash_set(group_impl->methods, "get_name", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_group_get_name);
+    axis2_hash_set(group_impl->methods, "set_name", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_group_set_name);
+    axis2_hash_set(group_impl->methods, "get_particle", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_group_get_particle);
+    axis2_hash_set(group_impl->methods, "set_particle", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_group_set_particle);
+    
+    group_impl->annotated = axis2_xml_schema_annotated_create(env);
+    status = axis2_xml_schema_annotated_resolve_methods(
+            &(group_impl->group.base), env, group_impl->annotated, 
+            group_impl->methods);
+    
+    return &(group_impl->group);
+}
+
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_group_free(void *group,
+                                    axis2_env_t **env)
+{
+    axis2_xml_schema_group_impl_t *group_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    group_impl = INTF_TO_IMPL(group);
+
+    if(group_impl->name)
+    {
+        AXIS2_FREE((*env)->allocator, group_impl->name);
+        group_impl->name = NULL;
+    }
+
+    if(group_impl->particle)
+    {
+        AXIS2_XML_SCHEMA_PARTICLE_FREE(group_impl->particle, env);
+        group_impl->particle = NULL;
+    }
+    
+    if(group_impl->methods)
+    {
+        axis2_hash_free(group_impl->methods, env);
+        group_impl->methods = NULL;
+    }
+
+    if(group_impl->annotated)
+    {
+        AXIS2_XML_SCHEMA_ANNOTATED_FREE(group_impl->annotated, env);
+        group_impl->annotated = NULL;
+    }
+    
+    if((&(group_impl->group))->ops)
+    {
+        AXIS2_FREE((*env)->allocator, (&(group_impl->group))->ops);
+        (&(group_impl->group))->ops = NULL;
+    }
+
+    if(group_impl)
+    {
+        AXIS2_FREE((*env)->allocator, group_impl);
+        group_impl = NULL;
+    }
+    return AXIS2_SUCCESS;
+}
+
+axis2_xml_schema_annotated_t *AXIS2_CALL
+axis2_xml_schema_group_get_base_impl(void *group,
+                                axis2_env_t **env)
+{
+    axis2_xml_schema_group_impl_t *group_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    group_impl = INTF_TO_IMPL(group);
+
+    return group_impl->annotated;
+}
+
+AXIS2_DECLARE(axis2_status_t)
+axis2_xml_schema_group_resolve_methods(
+                                axis2_xml_schema_group_t *group,
+                                axis2_env_t **env,
+                                axis2_xml_schema_group_t *group_impl,
+                                axis2_hash_t *methods)
+{
+    axis2_xml_schema_group_impl_t *group_impl_l = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, group_impl, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    
+    group_impl_l = (axis2_xml_schema_group_impl_t *) group_impl;
+    
+    group->ops = AXIS2_MALLOC((*env)->allocator, 
+            sizeof(axis2_xml_schema_group_ops_t));
+    group->ops->free = axis2_hash_get(methods, "free", 
+            AXIS2_HASH_KEY_STRING);
+    group->ops->get_base_impl = 
+            group_impl_l->group.ops->get_base_impl;
+    group->ops->get_name = 
+            group_impl_l->group.ops->get_name;
+    group->ops->set_name = 
+            group_impl_l->group.ops->set_name;
+    group->ops->get_particle = 
+            group_impl_l->group.ops->get_particle;
+    group->ops->set_particle = 
+            group_impl_l->group.ops->set_particle;
+    
+    return axis2_xml_schema_annotated_resolve_methods(&(group->base), 
+            env, group_impl_l->annotated, methods);
+}
+
+axis2_char_t *AXIS2_CALL
+axis2_xml_schema_group_get_name(void *group,
+                                axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return INTF_TO_IMPL(group)->name;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_group_set_name(void *group,
+                                axis2_env_t **env,
+                                axis2_char_t *name)
+{
+    axis2_xml_schema_group_impl_t *group_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    group_impl = INTF_TO_IMPL(group);
+
+    if(group_impl->name)
+    {
+        AXIS2_FREE((*env)->allocator, group_impl->name);
+        group_impl->name = NULL;
+    }
+    group_impl->name = AXIS2_STRDUP(name, env);
+    if(!group_impl->name)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
+}
+
+axis2_xml_schema_group_base_t *AXIS2_CALL
+axis2_xml_schema_group_get_particle(void *group,
+                                        axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return INTF_TO_IMPL(group)->particle;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_group_set_particle(void *group,
+                                    axis2_env_t **env,
+                                    axis2_xml_schema_group_base_t *particle)
+{
+    axis2_xml_schema_group_impl_t *group_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    group_impl = INTF_TO_IMPL(group);
+    
+    group_impl->particle = particle;
+    return AXIS2_SUCCESS;
+}
+
