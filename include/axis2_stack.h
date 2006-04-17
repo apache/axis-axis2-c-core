@@ -76,7 +76,13 @@ AXIS2_DECLARE_DATA struct axis2_stack_ops
           
     void* (AXIS2_CALL *
     get)(axis2_stack_t *stack,
-         axis2_env_t **env);                    
+         axis2_env_t **env);  
+         
+    void* (AXIS2_CALL *
+    get_at)(axis2_stack_t *stack,
+            axis2_env_t **env,
+            int i);
+                                       
           
 }axis2_stack_ops;
  
@@ -105,6 +111,9 @@ axis2_stack_create(axis2_env_t **env);
         
 #define AXIS2_STACK_GET( stack, env) \
         ((stack)->ops->get( stack, env))
+        
+#define AXIS2_STACK_GET_AT( stack, env, i) \
+        ((stack)->ops->get_at( stack, env, i))        
  
 /*************END MACROS ****************************************************/
  /** @} */

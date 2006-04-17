@@ -349,8 +349,11 @@ axis2_soap11_builder_helper_process_text(axis2_soap11_builder_helper_t *builder_
 {
     axis2_soap11_builder_helper_impl_t *builder_helper_impl = NULL;
     int token = 0;
+
     builder_helper_impl = AXIS2_INTF_TO_IMPL(builder_helper);
+
     token = AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(builder_helper_impl->om_builder, env);
+
     if(token == -1)
         return AXIS2_FAILURE;
    

@@ -23,6 +23,7 @@
     */
 #include <axis2_env.h>
 #include <axis2_soap_fault.h>
+#include <axis2_array_list.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -59,8 +60,22 @@ struct axis2_soap_builder;
 
         struct axis2_soap_fault_text* (AXIS2_CALL *
 		get_soap_fault_text)(axis2_soap_fault_reason_t *fault_reason,
-                             axis2_env_t **env);
-                                     
+                             axis2_env_t **env,
+                             axis2_char_t *lang);
+                             
+        axis2_array_list_t* (AXIS2_CALL *
+        get_all_soap_fault_texts)(axis2_soap_fault_reason_t *fault_reason,
+                                  axis2_env_t **env);
+                                  
+        struct axis2_soap_fault_text* (AXIS2_CALL *
+        get_first_soap_fault_text)(axis2_soap_fault_reason_t *fault_reason,
+                                   axis2_env_t **env);
+                             
+        axis2_status_t (AXIS2_CALL *
+        add_soap_fault_text)(axis2_soap_fault_reason_t *fault_reason,
+                             axis2_env_t **env,
+                             struct axis2_soap_fault_text *fault_text);
+                                           
         axis2_om_node_t* (AXIS2_CALL *
 		get_base_node)(axis2_soap_fault_reason_t *fault_reason,
                        axis2_env_t **env);
@@ -95,12 +110,21 @@ axis2_soap_fault_reason_create_with_parent(axis2_env_t **env,
         ((fault_reason)->ops->free_fn(fault_reason, env))
 
         
-#define AXIS2_SOAP_FAULT_REASON_GET_SOAP_FAULT_TEXT(fault_reason , env) \
-        ((fault_reason)->ops->get_soap_fault_text(fault_reason, env)) 
+#define AXIS2_SOAP_FAULT_REASON_GET_SOAP_FAULT_TEXT(fault_reason , env, lang) \
+        ((fault_reason)->ops->get_soap_fault_text(fault_reason, env, lang)) 
         
 #define AXIS2_SOAP_FAULT_REASON_GET_BASE_NODE(fault_reason, env) \
-        ((fault_reason)->ops->get_base_node(fault_reason, env))         
-
+        ((fault_reason)->ops->get_base_node(fault_reason, env))    
+        
+#define AXIS2_SOAP_FAULT_REASON_ADD_SOAP_FAULT_TEXT(fault_reason, env, fault_text) \
+        ((fault_reason)->ops->add_soap_fault_text(fault_reason, env, fault_text))             
+        
+#define AXIS2_SOAP_FAULT_REASON_GET_ALL_SOAP_FAULT_TEXTS(fault_reason, env) \
+        ((fault_reason)->ops->get_all_soap_fault_texts(fault_reason, env))
+        
+#define AXIS2_SOAP_FAULT_REASON_GET_FIRST_SOAP_FAULT_TEXT(fault_reason, env) \
+        ((fault_reason)->ops->get_first_soap_fault_text(fault_reason, env))
+        
 /** @} */
 
 #ifdef __cplusplus

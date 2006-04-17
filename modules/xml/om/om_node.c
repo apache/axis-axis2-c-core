@@ -210,7 +210,7 @@ axis2_om_node_free_tree(axis2_om_node_t *om_node,
         while (NULL != (node_impl->first_child))
         {
             child_node = AXIS2_OM_NODE_DETACH (node_impl->first_child, env);
-            if (child_node)
+            if (NULL != child_node)
             {
                 AXIS2_OM_NODE_FREE_TREE ( child_node , env); 
                 child_node = NULL;
@@ -478,8 +478,10 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
         if(NULL != node_impl->data_element)
         {
              status = AXIS2_OM_ELEMENT_SERIALIZE_START_PART(
-                 (axis2_om_element_t *)(node_impl->data_element),
-                    env, om_output);
+               (axis2_om_element_t *)(node_impl->data_element),
+                env, 
+                om_output,
+                om_node);
         }         
         if (status != AXIS2_SUCCESS)
             return status;

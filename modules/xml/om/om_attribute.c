@@ -232,27 +232,31 @@ axis2_om_attribute_serialize (axis2_om_attribute_t *om_attribute,
     AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
     attribute = AXIS2_INTF_TO_IMPL(om_attribute);
         
-    if (attribute->ns && AXIS2_OM_NAMESPACE_GET_URI(attribute->ns,env) && 
-        AXIS2_OM_NAMESPACE_GET_PREFIX(attribute->ns,env))
-    {    
-        status = axis2_om_output_write (om_output, env, AXIS2_OM_ATTRIBUTE, 4,
-                                        attribute->localname,
-                                        attribute->value,
-                                        AXIS2_OM_NAMESPACE_GET_URI(attribute->ns, env),
-                                        AXIS2_OM_NAMESPACE_GET_PREFIX(attribute->ns, env));
-    }                                   
-    else if (attribute->ns && AXIS2_OM_NAMESPACE_GET_URI(attribute->ns,env))
+    if (NULL != attribute->ns)
     {
-        status = axis2_om_output_write (om_output, env, AXIS2_OM_ATTRIBUTE, 3, 
+        axis2_char_t *uri = NULL;
+        axis2_char_t *prefix = NULL;
+        
+        uri = AXIS2_OM_NAMESPACE_GET_URI(attribute->ns,env);
+        prefix = AXIS2_OM_NAMESPACE_GET_PREFIX(attribute->ns,env);
+        
+        if((NULL != uri) && (NULL != prefix) && (AXIS2_STRCMP(prefix, "") != 0))
+        { 
+            status = axis2_om_output_write (om_output, env, AXIS2_OM_ATTRIBUTE, 4,
                                         attribute->localname,
                                         attribute->value,
-                                        AXIS2_OM_NAMESPACE_GET_URI(attribute->ns,env));
+                                        uri , prefix );
+        }
+        else if(NULL != uri)
+        {
+            status = axis2_om_output_write (om_output, env, AXIS2_OM_ATTRIBUTE, 3, 
+                            attribute->localname, attribute->value, uri);
+        }                                        
     }                                   
     else
     {
         status = axis2_om_output_write ( om_output, env, AXIS2_OM_ATTRIBUTE, 2,
-                                         attribute->localname,
-                                         attribute->value);
+                                attribute->localname, attribute->value);
     }                                   
     return status;
 }

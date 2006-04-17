@@ -229,7 +229,10 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
          * @param env environment, MUST NOT be NULL.
          * @returns target value of processingInstruction
          *          caller must free the value using AXIS2_XML_READER_XML_FREE macro
-         */        
+         */ 
+         
+         
+                
         axis2_char_t* (AXIS2_CALL *
 		get_pi_target)(axis2_xml_reader_t *parser,
                        axis2_env_t **env);
@@ -279,7 +282,18 @@ AXIS2_DECLARE_DATA struct axis2_xml_reader_ops
                                    
         axis2_char_t* (AXIS2_CALL *
 		get_char_set_encoding)(axis2_xml_reader_t *parser,
-                               axis2_env_t **env);                                                                                   
+                               axis2_env_t **env);                                         
+        /** returns the namespace uri associated with current node */                                                   
+        axis2_char_t* (AXIS2_CALL *
+		get_namespace_uri)(axis2_xml_reader_t *parser,
+                           axis2_env_t **env);
+                           
+        axis2_char_t* (AXIS2_CALL *
+        get_namespace_uri_by_prefix)(axis2_xml_reader_t *parser,
+                                     axis2_env_t **env,
+                                     axis2_char_t *prefix);
+                                       
+                               
     };
      
 /** 
@@ -413,8 +427,13 @@ axis2_xml_reader_cleanup();
         ((parser)->ops->xml_free(parser, env, data))
 		
 #define AXIS2_XML_READER_GET_CHAR_SET_ENCODING(parser, env) \
-        ((parser)->ops->get_char_set_encoding(parser, env))        
-
+        ((parser)->ops->get_char_set_encoding(parser, env)) 
+        
+#define AXIS2_XML_READER_GET_NAMESPACE_URI(parser, env) \
+        ((parser)->ops->get_namespace_uri(parser, env))
+        
+#define AXIS2_XML_READER_GET_NAMESPACE_URI_BY_PREFIX(parser, env, prefix) \
+        ((parser)->ops->get_namespace_uri_by_prefix(parser, env, prefix))         
 
 /******************************* End Macros ***********************************/
 /** @} */

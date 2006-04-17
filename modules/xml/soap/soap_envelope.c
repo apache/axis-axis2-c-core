@@ -491,7 +491,6 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                                             if(NULL != text)
                                             {
                                                 AXIS2_OM_ELEMENT_SET_TEXT(fault_code_om_ele, env, text, fault_code_om_node);
-                                              /*  AXIS2_FREE((*env)->allocator, text); */
                                              }
                                              AXIS2_OM_NODE_FREE_TREE(fault_value_om_node, env);
                                         }
@@ -523,7 +522,8 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                                 AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_reason_om_ele, 
                                     env, AXIS2_SOAP11_SOAP_FAULT_STRING_LOCAL_NAME);
                         
-                                fault_text = AXIS2_SOAP_FAULT_REASON_GET_SOAP_FAULT_TEXT(fault_reason, env);
+                                fault_text = 
+                                AXIS2_SOAP_FAULT_REASON_GET_FIRST_SOAP_FAULT_TEXT(fault_reason, env);
                                 if(NULL != fault_text)
                                 {
                                     fault_text_om_node = AXIS2_SOAP_FAULT_TEXT_GET_BASE_NODE(fault_text, env);
@@ -538,7 +538,6 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                                             {
                                                 AXIS2_OM_ELEMENT_SET_TEXT( fault_reason_om_ele, 
                                                     env, text, fault_reason_om_node);   
-                                              /* AXIS2_FREE((*env)->allocator, text);  */
                                             }   
                                         }                     
                                         AXIS2_OM_NODE_FREE_TREE(fault_text_om_node, env);

@@ -252,17 +252,17 @@ axis2_om_namespace_serialize (axis2_om_namespace_t *om_namespace,
 
     ns_impl = AXIS2_INTF_TO_IMPL(om_namespace);
     
-    if (ns_impl->uri && ns_impl->prefix)
+    if (NULL != ns_impl->uri && NULL != ns_impl->prefix && 
+            AXIS2_STRCMP(ns_impl->prefix, "") != 0)
     {
         status = axis2_om_output_write ( om_output, env, AXIS2_OM_NAMESPACE,
                                          2, ns_impl->prefix,
                                          ns_impl->uri);
     }
-    else if(ns_impl->uri)
+    else if(NULL != ns_impl->uri)
     {
         status = axis2_om_output_write(om_output, env, AXIS2_OM_NAMESPACE,
                                         2, NULL, ns_impl->uri);
-    
     }
     return status;
 }

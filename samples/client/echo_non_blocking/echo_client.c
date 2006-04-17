@@ -40,12 +40,12 @@
 #include <axis2_async_result.h>
 
 /* my on_complete callback function */
-axis2_status_t
+axis2_status_t AXIS2_CALL
 my_on_complete(struct axis2_callback *callback,
                                   axis2_env_t **env);
 
 /* my on_error callback function */
-axis2_status_t
+axis2_status_t AXIS2_CALL
 my_on_error(struct axis2_callback *callback,
                             axis2_env_t **env,
                             int exception);
@@ -226,7 +226,7 @@ build_om_programatically(axis2_env_t **env)
     return echo_om_node;
 }
 
-axis2_status_t 
+axis2_status_t AXIS2_CALL
 my_on_complete(struct axis2_callback *callback,
                                   axis2_env_t **env)
 {
@@ -279,7 +279,7 @@ my_on_complete(struct axis2_callback *callback,
 	return AXIS2_SUCCESS;
 }
 
-axis2_status_t 
+axis2_status_t AXIS2_CALL
 my_on_error(struct axis2_callback *callback,
                             axis2_env_t **env,
                             int exception)

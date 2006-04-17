@@ -608,7 +608,7 @@ axis2_endpoint_ref_get_ref_param_list(struct axis2_endpoint_ref *endpoint_ref,
 {
     axis2_endpoint_ref_impl_t *endpoint_ref_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     endpoint_ref_impl = AXIS2_INTF_TO_IMPL(endpoint_ref);
 
@@ -621,7 +621,7 @@ axis2_endpoint_ref_get_meta_data_list(struct axis2_endpoint_ref *endpoint_ref,
 {
     axis2_endpoint_ref_impl_t *endpoint_ref_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     endpoint_ref_impl = AXIS2_INTF_TO_IMPL(endpoint_ref);
 
@@ -674,7 +674,7 @@ axis2_endpoint_ref_get_ref_attribute_list(struct axis2_endpoint_ref *endpoint_re
 {
     axis2_endpoint_ref_impl_t *endpoint_ref_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     endpoint_ref_impl = AXIS2_INTF_TO_IMPL(endpoint_ref);
 
@@ -687,7 +687,7 @@ axis2_endpoint_ref_get_meta_attribute_list(struct axis2_endpoint_ref *endpoint_r
 {
     axis2_endpoint_ref_impl_t *endpoint_ref_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     endpoint_ref_impl = AXIS2_INTF_TO_IMPL(endpoint_ref);
 
@@ -700,7 +700,7 @@ axis2_endpoint_ref_get_extension_list(struct axis2_endpoint_ref *endpoint_ref,
 {
     axis2_endpoint_ref_impl_t *endpoint_ref_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     endpoint_ref_impl = AXIS2_INTF_TO_IMPL(endpoint_ref);
 

@@ -143,7 +143,8 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         axis2_status_t (AXIS2_CALL *
         serialize_start_part)(axis2_om_element_t *om_element,
                               axis2_env_t **env,
-                              axis2_om_output_t * om_output);
+                              axis2_om_output_t * om_output,
+                              axis2_om_node_t *ele_node);
 
       /**
         * Serializes the end part of the given element. serialize_start_part must 
@@ -475,8 +476,8 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         ((om_element)->ops->free(om_element, env))
         
 /** serialize the start part of given element */
-#define AXIS2_OM_ELEMENT_SERIALIZE_START_PART(om_element, env, om_output) \
-        ((om_element)->ops->serialize_start_part(om_element, env, om_output))
+#define AXIS2_OM_ELEMENT_SERIALIZE_START_PART(om_element, env, om_output, ele_node) \
+        ((om_element)->ops->serialize_start_part(om_element, env, om_output, ele_node))
         
 /** serialize the end part of given element */
 #define AXIS2_OM_ELEMENT_SERIALIZE_END_PART(om_element, env, om_output) \

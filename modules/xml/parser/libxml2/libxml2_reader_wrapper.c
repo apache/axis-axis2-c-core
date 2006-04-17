@@ -21,6 +21,7 @@
  #include <axis2_defines.h>
  #include <axis2.h>
  #include <string.h>
+ #include <axis2_string.h>
  
 /*************************** Function Prototypes ******************************/
 
@@ -100,10 +101,22 @@ axis2_libxml2_reader_wrapper_xml_free(axis2_xml_reader_t *parser,
                                void *data);
                                
 axis2_char_t* AXIS2_CALL
-axis2_libxml2_reader_get_char_set_encoding(axis2_xml_reader_t *parser,
-                                           axis2_env_t **env);                               
+axis2_libxml2_reader_wrapper_get_char_set_encoding(axis2_xml_reader_t *parser,
+                                           axis2_env_t **env);
+                                           
+axis2_char_t* AXIS2_CALL
+axis2_libxml2_reader_wrapper_get_namespace_uri
+                   (axis2_xml_reader_t *parser,
+                    axis2_env_t **env);
+                    
+axis2_char_t* AXIS2_CALL
+axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix
+                           (axis2_xml_reader_t *parser,
+                            axis2_env_t **env,
+                            axis2_char_t *prefix);                                                                          
 
-axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser,
+axis2_status_t 
+axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser,
                                             axis2_env_t **env);
                                             
 void 
@@ -306,8 +319,15 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
         
     wrapper_impl->parser.ops->get_dtd =
         axis2_libxml2_reader_wrapper_get_dtd;
+        
     wrapper_impl->parser.ops->get_char_set_encoding =
-        axis2_libxml2_reader_get_char_set_encoding;            
+        axis2_libxml2_reader_wrapper_get_char_set_encoding;            
+        
+    wrapper_impl->parser.ops->get_namespace_uri = 
+        axis2_libxml2_reader_wrapper_get_namespace_uri;
+        
+    wrapper_impl->parser.ops->get_namespace_uri_by_prefix = 
+        axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix;           
 	return &(wrapper_impl->parser);
 }
 
@@ -420,7 +440,14 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
         axis2_libxml2_reader_wrapper_get_dtd;
         
     wrapper_impl->parser.ops->get_char_set_encoding =
-        axis2_libxml2_reader_get_char_set_encoding;            
+        axis2_libxml2_reader_wrapper_get_char_set_encoding;     
+        
+    wrapper_impl->parser.ops->get_namespace_uri = 
+        axis2_libxml2_reader_wrapper_get_namespace_uri;
+        
+    wrapper_impl->parser.ops->get_namespace_uri_by_prefix = 
+        axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix; 
+                       
 	return &(wrapper_impl->parser);
 }
 
@@ -518,7 +545,14 @@ axis2_xml_reader_create_for_buffer(axis2_env_t **env,
         axis2_libxml2_reader_wrapper_get_dtd;
         
     wrapper_impl->parser.ops->get_char_set_encoding =
-        axis2_libxml2_reader_get_char_set_encoding;            
+        axis2_libxml2_reader_wrapper_get_char_set_encoding;
+        
+    wrapper_impl->parser.ops->get_namespace_uri = 
+        axis2_libxml2_reader_wrapper_get_namespace_uri;
+        
+    wrapper_impl->parser.ops->get_namespace_uri_by_prefix = 
+        axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix; 
+                            
 	return &(wrapper_impl->parser);
 }
 /****************** end create functions ***************************************/
@@ -856,14 +890,40 @@ axis2_libxml2_reader_wrapper_xml_free(axis2_xml_reader_t *parser,
  }
 
 axis2_char_t* AXIS2_CALL
-axis2_libxml2_reader_get_char_set_encoding(axis2_xml_reader_t *parser,
+axis2_libxml2_reader_wrapper_get_char_set_encoding(axis2_xml_reader_t *parser,
                                            axis2_env_t **env)
 {
     axis2_libxml2_reader_wrapper_impl_t *reader_impl = NULL;
     AXIS2_ENV_CHECK( env, NULL);
     reader_impl = AXIS2_INTF_TO_IMPL(parser);
     return (axis2_char_t*)xmlTextReaderConstEncoding(reader_impl->reader);
-}                                           
+}    
+
+axis2_char_t* AXIS2_CALL
+axis2_libxml2_reader_wrapper_get_namespace_uri
+                   (axis2_xml_reader_t *parser,
+                    axis2_env_t **env)
+{
+    axis2_libxml2_reader_wrapper_impl_t *parser_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    parser_impl = AXIS2_INTF_TO_IMPL(parser);
+    return xmlTextReaderNamespaceUri(parser_impl->reader);
+}                    
+                    
+axis2_char_t* AXIS2_CALL
+axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix
+                           (axis2_xml_reader_t *parser,
+                            axis2_env_t **env,
+                            axis2_char_t *prefix)
+{
+    axis2_libxml2_reader_wrapper_impl_t *parser_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    parser_impl = AXIS2_INTF_TO_IMPL(parser);   
+    if(!prefix || AXIS2_STRCMP(prefix, "" ) == 0)
+        return NULL;
+    
+    return xmlTextReaderLookupNamespace(parser_impl->reader, prefix);        
+}                                                                   
 
 axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser,
                                             axis2_env_t **env)
@@ -918,7 +978,8 @@ axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser
 }
 
 
-static int axis2_libxml2_reader_wrapper_read_input_callback(void *ctx,char *buffer,int size)
+static int 
+axis2_libxml2_reader_wrapper_read_input_callback(void *ctx,char *buffer,int size)
 {
  return  ((axis2_libxml2_reader_wrapper_impl_t*)ctx)->read_input_callback(
         buffer, size,((axis2_libxml2_reader_wrapper_impl_t*)ctx)->ctx);

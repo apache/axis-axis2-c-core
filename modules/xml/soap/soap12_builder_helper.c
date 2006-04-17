@@ -531,7 +531,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 if(!fault_reason)
                     return AXIS2_FAILURE;
                     
-                axis2_soap_fault_reason_set_soap_fault_text (fault_reason, env, soap_fault_text);
+                AXIS2_SOAP_FAULT_REASON_ADD_SOAP_FAULT_TEXT (fault_reason, env, soap_fault_text);
                 /*****************
                 AXIS2_OM_NODE_SET_BUILD_STATUS(om_ele_node, env, AXIS2_FALSE);
                 ******************/

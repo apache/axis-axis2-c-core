@@ -58,7 +58,13 @@ axis2_stack_size(axis2_stack_t *stack,
                  
 void* AXIS2_CALL
 axis2_stack_get(axis2_stack_t *stack,
-                axis2_env_t **env);                 
+                axis2_env_t **env);    
+                
+void* AXIS2_CALL
+axis2_stack_get_at(axis2_stack_t *stack,
+                   axis2_env_t **env,
+                   int i);
+                                                
 
 AXIS2_DECLARE(axis2_stack_t *)
 axis2_stack_create(axis2_env_t **env)
@@ -115,7 +121,10 @@ axis2_stack_create(axis2_env_t **env)
         axis2_stack_size;    
         
     stack_impl->stack.ops->get =
-        axis2_stack_get;            
+        axis2_stack_get;       
+        
+    stack_impl->stack.ops->get_at =
+        axis2_stack_get_at;             
     
     return &(stack_impl->stack);                   
 } 
@@ -231,4 +240,18 @@ axis2_stack_get(axis2_stack_t *stack,
         return stack_impl->data[stack_impl->size-1];
     }
     return NULL;
-}                              
+} 
+
+void* AXIS2_CALL
+axis2_stack_get_at(axis2_stack_t *stack,
+                   axis2_env_t **env,
+                   int i)
+{
+    axis2_stack_impl_t *stack_impl = NULL;
+    stack_impl = AXIS2_INTF_TO_IMPL(stack);
+    if((stack_impl->size == 0) || ( i < 0) || (i >= stack_impl->size))
+    {
+        return NULL;
+    }
+    return stack_impl->data[i];
+}                                                
