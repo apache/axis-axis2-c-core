@@ -564,6 +564,8 @@ axis2_om_stax_builder_create_om_comment (axis2_om_stax_builder_t *builder,
         axis2_om_node_set_parent(comment_node , env, builder_impl->lastnode);
     }
     
+    builder_impl->element_level++;
+    
     AXIS2_XML_READER_XML_FREE(builder_impl->parser , env, comment_value);
 
     builder_impl->lastnode = comment_node;
@@ -614,6 +616,8 @@ axis2_om_stax_builder_create_om_processing_instruction (axis2_om_stax_builder_t 
     AXIS2_ENV_CHECK(env, NULL);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
+    
+    
     target = AXIS2_XML_READER_GET_PI_TARGET (builder_impl->parser, env);
     value  = AXIS2_XML_READER_GET_PI_DATA(builder_impl->parser, env);
     if (!target)
@@ -645,6 +649,9 @@ axis2_om_stax_builder_create_om_processing_instruction (axis2_om_stax_builder_t 
         axis2_om_node_set_first_child(builder_impl->lastnode , env, pi_node);                     
         axis2_om_node_set_parent(pi_node , env, builder_impl->lastnode);
     }
+    
+    builder_impl->element_level++;
+    
     if(target)
         AXIS2_XML_READER_XML_FREE(builder_impl->parser , env, target);
     if(value)
@@ -665,7 +672,7 @@ axis2_om_stax_builder_end_element (axis2_om_stax_builder_t *om_stax_builder,
     builder = AXIS2_INTF_TO_IMPL(om_stax_builder);
 
     builder->element_level--;
-
+    
     if (builder->lastnode)
     {
         if (AXIS2_OM_NODE_GET_BUILD_STATUS((builder->lastnode), env))

@@ -62,6 +62,7 @@
     int last_node_status;
     
     axis2_bool_t  done;
+    
 }axis2_soap_builder_impl_t;
 
 typedef enum axis2_builder_last_node_states
@@ -821,8 +822,10 @@ axis2_soap_builder_parse_headers(axis2_soap_builder_t *builder,
                         return AXIS2_FAILURE;
                 }
                 /*HACK: to fix AXIS2C-129 - Samisa*/
+                /*
                 axis2_om_stax_builder_set_element_level(
                         builder_impl->om_builder, env, 1);
+                */                        
         }                
     }
     return AXIS2_SUCCESS;
