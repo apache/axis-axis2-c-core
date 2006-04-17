@@ -588,7 +588,7 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
         }
     }
     /* write the xml version and encoding 
-       These should be set so om output before calling the serialize function
+       These should be set to om output before calling the serialize function
        Otherwise default values will be written
     */
     AXIS2_OM_OUTPUT_WRITE_XML_VERSION_ENCODING(om_output, env);
@@ -653,7 +653,7 @@ axis2_soap_envelope_get_namespace(axis2_soap_envelope_t *envelope,
             ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(envelope_impl->om_ele_node, env);
             if (ele)
             {
-                return AXIS2_OM_ELEMENT_GET_NAMESPACE(ele, env);
+                return AXIS2_OM_ELEMENT_GET_NAMESPACE(ele, env, envelope_impl->om_ele_node);
             }
         }
     }

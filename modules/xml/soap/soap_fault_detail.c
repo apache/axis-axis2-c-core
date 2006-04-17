@@ -134,7 +134,7 @@ axis2_soap_fault_detail_create_with_parent
     if(!parent_ele)
         return NULL;
     
-    parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env);
+    parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
     
     this_ele = axis2_om_element_create(env, 
                                        parent_node,                             

@@ -145,7 +145,7 @@ axis2_soap_fault_value_create_with_subcode(axis2_env_t **env,
     this_ele = axis2_om_element_create(env, 
                     parent_node,
                     AXIS2_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME, 
-                    AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env),
+                    AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node),
                     &this_node);
     if(!this_ele)
     {
@@ -202,7 +202,7 @@ axis2_soap_fault_value_create_with_code(axis2_env_t **env,
     this_ele = axis2_om_element_create(env, 
                     parent_node,
                     AXIS2_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME, 
-                    AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env),
+                    AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node),
                     &this_node);
     if(!this_ele)
     {

@@ -204,7 +204,7 @@ axis2_soap_fault_create_with_parent(axis2_env_t **env,
         AXIS2_FREE((*env)->allocator, fault_impl);
         return NULL;
     }
-    parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env);
+    parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
     
     this_ele = axis2_om_element_create(env, 
                                        parent_node,                             

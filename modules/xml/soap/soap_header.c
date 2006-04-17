@@ -206,7 +206,7 @@ axis2_soap_header_create_with_parent(axis2_env_t **env,
         return NULL;
     }
     
-    parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env);
+    parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
     
     this_ele = axis2_om_element_create(env, parent_node,
                  AXIS2_SOAP_HEADER_LOCAL_NAME, parent_ns, &this_node);
@@ -593,7 +593,8 @@ axis2_soap_header_get_header_blocks_with_namespace_uri
                     AXIS2_OM_NODE_GET_DATA_ELEMENT(header_block_om_node, env);
                 if(header_block_om_ele)
                 {
-                    ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(header_block_om_ele, env);
+                    ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(header_block_om_ele, env,
+                             header_block_om_node);
                     if(NULL != ns)
                     {
                         hb_namespace_uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);

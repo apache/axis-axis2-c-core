@@ -108,7 +108,7 @@ test_om_build (char *filename)
              
         printf ("root localname %s\n",AXIS2_OM_ELEMENT_GET_LOCALNAME(ele1,&environment));
          
-        ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(ele1,&environment);
+        ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(ele1,&environment, node1);
     
         if (ns)
         {

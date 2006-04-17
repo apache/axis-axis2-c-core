@@ -204,8 +204,10 @@ axis2_om_children_qname_iterator_has_next
                                     iterator_impl->current_child, env);    
             }
             
-            if(om_element && axis2_om_children_qname_iterator_qname_matches(env,
-                    AXIS2_OM_ELEMENT_GET_QNAME(om_element, env), iterator_impl->given_qname))
+            if(om_element && 
+                axis2_om_children_qname_iterator_qname_matches(env,
+                    AXIS2_OM_ELEMENT_GET_QNAME(om_element, env, iterator_impl->current_child), 
+                    iterator_impl->given_qname))
             {
                 iterator_impl->matching_node_found = AXIS2_TRUE;
                 iterator_impl->need_to_move_forward = AXIS2_FALSE;                

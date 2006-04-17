@@ -86,7 +86,8 @@ axis2_om_element_set_localname(axis2_om_element_t *om_element,
         
 axis2_om_namespace_t *AXIS2_CALL
 axis2_om_element_get_namespace(axis2_om_element_t *om_element,
-                               axis2_env_t **env);
+                               axis2_env_t **env,
+                               axis2_om_node_t *ele_node);
                                                           
 axis2_status_t AXIS2_CALL 
 axis2_om_element_set_namespace(axis2_om_element_t *om_element,
@@ -100,12 +101,13 @@ axis2_om_element_get_all_attributes(axis2_om_element_t *om_element,
                                                                                                                                                                                                                                
 axis2_hash_t* AXIS2_CALL 
 axis2_om_element_get_namespaces(axis2_om_element_t *om_element,
-                                    axis2_env_t **env);                                                                                                                  
+                                axis2_env_t **env);                                                                                                                  
                                      
                                      
 axis2_qname_t* AXIS2_CALL
 axis2_om_element_get_qname(axis2_om_element_t *om_element,
-                            axis2_env_t **env);
+                            axis2_env_t **env,
+                            axis2_om_node_t *ele_node);
 
 axis2_om_children_iterator_t* AXIS2_CALL
 axis2_om_element_get_children(axis2_om_element_t *om_element,
@@ -1047,7 +1049,8 @@ axis2_om_element_set_localname(axis2_om_element_t *om_element,
         
 axis2_om_namespace_t *AXIS2_CALL
 axis2_om_element_get_namespace(axis2_om_element_t *om_element,
-                               axis2_env_t **env)
+                               axis2_env_t **env,
+                               axis2_om_node_t *ele_node)
                                
 {
     axis2_om_element_impl_t *om_ele_impl = NULL;
@@ -1117,7 +1120,8 @@ axis2_om_element_get_namespaces
 
 axis2_qname_t* AXIS2_CALL
 axis2_om_element_get_qname(axis2_om_element_t *om_element,
-                            axis2_env_t **env)
+                            axis2_env_t **env,
+                            axis2_om_node_t *ele_node)
 {
     axis2_om_namespace_t *ns =  NULL;
     axis2_om_element_impl_t *om_element_impl = NULL;
@@ -1131,7 +1135,7 @@ axis2_om_element_get_qname(axis2_om_element_t *om_element,
     }
     else
     {
-        ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_element, env);
+        ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_element, env, ele_node);
         if(ns)
         {            
             if(AXIS2_OM_NAMESPACE_GET_PREFIX(ns, env))

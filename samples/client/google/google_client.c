@@ -256,7 +256,7 @@ build_soap_body_content(axis2_env_t **env, axis2_char_t *operation, axis2_char_t
     envelope_element = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(envelope_node, env);
     AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns2);
     AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns3);
-    ns0 = AXIS2_OM_ELEMENT_GET_NAMESPACE(envelope_element, env);
+    ns0 = AXIS2_OM_ELEMENT_GET_NAMESPACE(envelope_element, env, envelope_node);
     attri1 = axis2_om_attribute_create (env, "encodingStyle", "http://schemas.xmlsoap.org/soap/encoding/", ns0);
     
     google_om_ele = axis2_om_element_create(env, body_node, operation, ns1, &google_om_node);

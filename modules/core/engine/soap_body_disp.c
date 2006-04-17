@@ -117,7 +117,8 @@ axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                         element = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(body_first_child_node, env);
                         if (element)
                         {
-                            axis2_om_namespace_t *ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(element, env);
+                            axis2_om_namespace_t *ns = 
+                                AXIS2_OM_ELEMENT_GET_NAMESPACE(element, env, body_first_child_node);
                             if (ns)
                             {
                                 axis2_char_t *uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);

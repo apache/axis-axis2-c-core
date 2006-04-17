@@ -692,7 +692,7 @@ axis2_soap_builder_process_namespace_data
         om_ele = (axis2_om_element_t *) AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);
         if(om_ele)
         {
-            om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env);
+            om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env, om_node);
             if(om_ns)
             {
                 ns_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
@@ -748,7 +748,7 @@ axis2_soap_builder_identify_soap_version(axis2_soap_builder_t *builder,
     if(!om_ele)
         return AXIS2_FAILURE;
         
-    om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env);
+    om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env, envelope_node);
     if(!om_ns)
         return AXIS2_FAILURE;
         

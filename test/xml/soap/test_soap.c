@@ -54,7 +54,7 @@ int printnode(axis2_om_node_t *om_node, axis2_env_t **env)
         localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env);
         if(NULL != localname)
             printf("\n %s \n", localname);
-        om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env);
+        om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env, om_node);
     
         if(om_ns)
         {

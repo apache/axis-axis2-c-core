@@ -205,7 +205,8 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          */
         axis2_om_namespace_t *(AXIS2_CALL *
         get_namespace)(axis2_om_element_t *om_element,
-                       axis2_env_t **env);
+                       axis2_env_t **env,
+                       axis2_om_node_t *ele_node);
        /**
         * set the namespace of the element
         * @param om_element Om_element struct
@@ -248,7 +249,8 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          */
         axis2_qname_t* (AXIS2_CALL *
         get_qname)(axis2_om_element_t *om_element,
-                   axis2_env_t **env);
+                   axis2_env_t **env,
+                   axis2_om_node_t *ele_node);
         
        /**
         *   returns a list of children iterator
@@ -486,8 +488,8 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
 #define AXIS2_OM_ELEMENT_GET_LOCALNAME(om_element, env)\
         ((om_element)->ops->get_localname(om_element,env))
 /** get namespace of this element */        
-#define AXIS2_OM_ELEMENT_GET_NAMESPACE(om_element, env) \
-        ((om_element)->ops->get_namespace(om_element, env))
+#define AXIS2_OM_ELEMENT_GET_NAMESPACE(om_element, env, ele_node) \
+        ((om_element)->ops->get_namespace(om_element, env, ele_node))
 /** set localname */        
 #define AXIS2_OM_ELEMENT_SET_LOCALNAME(om_element, env, localname) \
         ((om_element)->ops->set_localname(om_element, env, localname))
@@ -498,8 +500,8 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
 #define AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(om_element, env, uri, prefix) \
         ((om_element)->ops->find_declared_namespace(om_element, env, uri, prefix))        
         
-#define AXIS2_OM_ELEMENT_GET_QNAME(om_element, env) \
-        ((om_element)->ops->get_qname(om_element, env))
+#define AXIS2_OM_ELEMENT_GET_QNAME(om_element, env, ele_node) \
+        ((om_element)->ops->get_qname(om_element, env, ele_node))
 
 #define AXIS2_OM_ELEMENT_GET_ALL_ATTRIBUTES(om_element, env) \
         ((om_element)->ops->get_all_attributes(om_element, env))

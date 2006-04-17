@@ -443,7 +443,7 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
         child_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(child_node, env);
        
         
-        child_qn = AXIS2_OM_ELEMENT_GET_QNAME(child_ele, env);
+        child_qn = AXIS2_OM_ELEMENT_GET_QNAME(child_ele, env, child_node);
         if(axis2_addr_in_check_element(env, epr_addr_qn, child_qn ))
         {
             AXIS2_ENDPOINT_REF_SET_ADDRESS(endpoint_ref, env,
