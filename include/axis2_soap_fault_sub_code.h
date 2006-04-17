@@ -90,6 +90,10 @@ AXIS2_DECLARE(axis2_soap_fault_sub_code_t *)
 axis2_soap_fault_sub_code_create_with_parent(axis2_env_t **env,
                             axis2_soap_fault_code_t *fault_code);
                             
+AXIS2_DECLARE(axis2_soap_fault_sub_code_t *)
+axis2_soap_fault_sub_code_create_with_parent_value(axis2_env_t **env,
+                            axis2_soap_fault_code_t *fault_code,
+                            axis2_char_t *value);                            
 
 /******************** Macros **************************************************/
     

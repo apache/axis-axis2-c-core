@@ -166,6 +166,29 @@ axis2_soap_fault_code_create_with_parent(axis2_env_t **env,
     return  &(fault_code_impl->fault_code);            
 }
 
+AXIS2_DECLARE(axis2_soap_fault_code_t *)
+axis2_soap_fault_code_create_with_parent_value(axis2_env_t **env,
+                            axis2_soap_fault_t *fault,
+                            axis2_char_t *value)
+{
+    axis2_soap_fault_code_t *fault_code = NULL;
+    axis2_soap_fault_value_t *fault_value = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, value, NULL);
+
+    fault_code = axis2_soap_fault_code_create_with_parent(env, fault);
+    if(!fault_code)
+        return NULL;
+        
+    fault_value = axis2_soap_fault_value_create_with_code(env, fault_code);
+    if(!fault_value)
+    {
+        axis2_soap_fault_code_free(fault_code, env);
+        return NULL;
+    }
+    AXIS2_SOAP_FAULT_VALUE_SET_TEXT(fault_value, env, value);
+    return fault_code;
+}
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_code_free(axis2_soap_fault_code_t *fault_code,

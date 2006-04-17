@@ -99,7 +99,12 @@ extern "C"
 AXIS2_DECLARE(axis2_soap_fault_code_t *)
 axis2_soap_fault_code_create_with_parent(axis2_env_t **env,
                             axis2_soap_fault_t *fault);
-
+                            
+AXIS2_DECLARE(axis2_soap_fault_code_t *)
+axis2_soap_fault_code_create_with_parent_value(axis2_env_t **env,
+                            axis2_soap_fault_t *fault,
+                            axis2_char_t *value);
+                            
 /******************** Macros **************************************************/
     
     
