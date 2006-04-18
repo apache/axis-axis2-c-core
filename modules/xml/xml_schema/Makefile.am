@@ -2,6 +2,35 @@ TESTS =
 SUBDIRS = constants
 lib_LTLIBRARIES = libaxis2_xml_schema.la
 libaxis2_xml_schema_la_SOURCES = \
+								 constants/xml_schema_enum.c \
+								 xml_schema_obj.c \
+								 xml_schema_annotation.c \
+								 xml_schema_annotated.c \
+								 xml_schema_use.c \
+								 xml_schema_content_processing.c \
+								 xml_schema_particle.c \
+								 xml_schema_any.c \
+								 xml_schema_app_info.c \
+								 xml_schema_obj_collection.c \
+								 xml_schema_group_base.c \
+								 xml_schema_group.c \
+								 xml_schema_group_ref.c \
+								 xml_schema_form.c \
+								 xml_schema_all.c \
+								 xml_schema_choice.c \
+								 xml_schema_sequence.c \
+								 xml_tokenized_type.c \
+								 xml_schema_data_type.c \
+								 xml_schema_facet.c \
+								 xml_schema_xpath.c \
+								 xml_schema_identity_constraint.c \
+								 xml_schema_derivation_method.c \
+								 xml_schema_obj_table.c \
+								 xml_schema_collection.c \
+								 xml_schema_type.c \
+								 xml_schema_type_receiver.c \
+								 xml_schema_element.c \
+								 validation_event_handler.c \
 								 xml_schema.c
 
 INCLUDES = -I$(top_builddir)/include \

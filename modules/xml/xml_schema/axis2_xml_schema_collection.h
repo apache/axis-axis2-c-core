@@ -41,7 +41,7 @@ extern "C"
 typedef struct axis2_xml_schema_collection axis2_xml_schema_collection_t;
 typedef struct axis2_xml_schema_collection_ops axis2_xml_schema_collection_ops_t;
 struct axis2_xml_schema;
-struct axis2_validation_event_handler;
+struct axis2_xml_schema_validation_event_handler;
 struct axis2_om_element;
 struct axis2_om_node;
 struct axis2_xml_schema_type_receiver;
@@ -88,28 +88,28 @@ struct axis2_xml_schema_collection_ops
                                 void *collection,
                                 axis2_env_t **env,
                                 void *reader, 
-                                struct axis2_validation_event_handler *veh); 
+                                struct axis2_xml_schema_validation_event_handler *veh); 
 
     struct axis2_xml_schema *(AXIS2_CALL *
     read_a_input_source_and_validation_event_handler) (
                                 void *collection,
                                 axis2_env_t **env,
                                 void *input_source, 
-                                struct axis2_validation_event_handler *veh);
+                                struct axis2_xml_schema_validation_event_handler *veh);
 
     struct axis2_xml_schema *(AXIS2_CALL *
     read_a_source_and_validation_event_handler) (
                                 void *collection,
                                 axis2_env_t **env,
                                 void *source, 
-                                struct axis2_validation_event_handler *veh); 
+                                struct axis2_xml_schema_validation_event_handler *veh); 
 
     struct axis2_xml_schema *(AXIS2_CALL *
     read_a_document_and_validation_event_handler) (
                                 void *collection,
                                 axis2_env_t **env,
                                 void *source, 
-                                struct axis2_validation_event_handler *veh);
+                                struct axis2_xml_schema_validation_event_handler *veh);
 
     struct axis2_xml_schema *(AXIS2_CALL *
     read_a_element) (
@@ -124,7 +124,7 @@ struct axis2_xml_schema_collection_ops
                                 axis2_env_t **env,
                                 void *document,
                                 axis2_char_t *uri,
-                                struct axis2_validation_event_handler *veh); 
+                                struct axis2_xml_schema_validation_event_handler *veh); 
 
     struct axis2_xml_schema *(AXIS2_CALL *
     read_a_element_and_uri) (
@@ -134,13 +134,13 @@ struct axis2_xml_schema_collection_ops
                                 struct axis2_om_node *node,
                                 axis2_char_t *uri);
 
-    struct axis2_xml_schema_element (AXIS2_CALL *
+    struct axis2_xml_schema_element *(AXIS2_CALL *
     get_element_by_qname) (void *collection,
                                      axis2_env_t **env,
                                      axis2_qname_t *qname);
 
     struct axis2_xml_schema_type *(AXIS2_CALL *
-    get_type_by_qame) (void *collection,
+    get_type_by_qname) (void *collection,
                                  axis2_env_t **env,
                                  axis2_qname_t *schema_type_qname);
 

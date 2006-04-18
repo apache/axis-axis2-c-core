@@ -39,6 +39,7 @@ extern "C"
 
 typedef struct axis2_xml_schema_type_receiver axis2_xml_schema_type_receiver_t;
 typedef struct axis2_xml_schema_type_receiver_ops axis2_xml_schema_type_receiver_ops_t;
+struct axis2_xml_schema_type;
 
 /** @defgroup axis2_xml_schema_type_receiver Xml Schema Type Receiver
   * @ingroup axis2_xml_schema
@@ -58,7 +59,7 @@ struct axis2_xml_schema_type_receiver_ops
     axis2_status_t (AXIS2_CALL *
     set_type) (void *type_receiver,
                axis2_env_t **env,
-               axis2_xml_schema_type_t *type);
+               struct axis2_xml_schema_type *type);
 
 };
 

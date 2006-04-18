@@ -114,8 +114,6 @@ axis2_xml_schema_type_receiver_set_type(void *type_receiver,
 
     type_receiver_impl = INTF_TO_IMPL(type_receiver);
 
-    type_receiver_impl->type = type;
-
     return AXIS2_SUCCESS;
 }
 

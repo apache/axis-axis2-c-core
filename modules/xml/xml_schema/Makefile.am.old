@@ -26,7 +26,12 @@ libaxis2_xml_schema_la_SOURCES = \
 								 xml_schema_identity_constraint.c \
 								 xml_schema_derivation_method.c \
 								 xml_schema_obj_table.c \
-								 xml_schema_type.c
+								 xml_schema_collection.c \
+								 xml_schema_type.c \
+								 xml_schema_type_receiver.c \
+								 xml_schema_element.c \
+								 validation_event_handler.c \
+								 xml_schema.c
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \

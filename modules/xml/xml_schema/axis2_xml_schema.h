@@ -44,6 +44,7 @@ struct axis2_xml_schema_derivation_method;
 struct axis2_xml_schema_element;
 struct axis2_xml_schema_type;
 struct axis2_xml_schema_obj_collection;
+struct axis2_xml_schema_collection;
 
 #define AXIS2_XML_SCHEMA_NS "http://www.w3.org/2001/XMLSchema"
 
@@ -207,8 +208,8 @@ struct axis2_xml_schema
  */
 AXIS2_DECLARE(axis2_xml_schema_t *)
 axis2_xml_schema_create(axis2_env_t **env,
-                                void *value,
-                                axis2_bool_t fixed);
+                                axis2_char_t *namespc,
+                                struct axis2_xml_schema_collection *parent);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor

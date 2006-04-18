@@ -21,6 +21,8 @@
 #include <axis2_xml_schema_derivation_method.h>
 #include <axis2_xml_schema_type.h>
 #include <axis2_xml_schema_obj_collection.h>
+#include <axis2_validation_event_handler.h>
+#include <axis2_xml_schema_element.h>
 
 typedef struct axis2_xml_schema_impl axis2_xml_schema_impl_t;
 /** 
@@ -32,6 +34,7 @@ struct axis2_xml_schema_impl
     axis2_xml_schema_t schema;
     axis2_xml_schema_annotated_t *annotated;
     axis2_hash_t *methods;
+    axis2_xml_schema_form_t *attr_form_default;
     axis2_xml_schema_form_t *element_form_default;
     axis2_xml_schema_obj_table_t *attr_groups;
     axis2_xml_schema_obj_table_t *attrs;
@@ -106,12 +109,12 @@ axis2_xml_schema_get_elements(void *schema,
                                 axis2_env_t **env); 
 
 axis2_xml_schema_element_t *AXIS2_CALL
-axis2_xml_schema_get_element_by_name(void *schema,
+axis2_xml_schema_get_element_by_qname(void *schema,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname); 
 
 axis2_xml_schema_type_t *AXIS2_CALL
-axis2_xml_schema_get_type_by_name(void *schema,
+axis2_xml_schema_get_type_by_qname(void *schema,
                                     axis2_env_t **env,
                                     axis2_qname_t *qname); 
 
@@ -164,7 +167,7 @@ axis2_xml_schema_get_version(void *schema,
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_compile(void *schema,
                             axis2_env_t **env,
-                            axis2_xml_schema_validation_event_handler *eh);
+                            axis2_xml_schema_validation_event_handler_t *eh);
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_write_a_out(void *schema,
@@ -176,7 +179,7 @@ axis2_xml_schema_write_a_writer(void *schema,
                                 void *writer); 
 
 static axis2_status_t 
-serialize_internal(void schema,
+serialize_internal(void *schema,
                     void *writer);
 
 axis2_hash_t *AXIS2_CALL 
@@ -260,7 +263,7 @@ axis2_xml_schema_create(axis2_env_t **env,
     schema_impl->schema.ops->get_includes = 
             axis2_xml_schema_get_includes;
     schema_impl->schema.ops->is_compiled = 
-            axis2_xml_schema_is_compiled
+            axis2_xml_schema_is_compiled;
     schema_impl->schema.ops->get_items = 
             axis2_xml_schema_get_items;
     schema_impl->schema.ops->get_notations = 
@@ -315,7 +318,7 @@ axis2_xml_schema_create(axis2_env_t **env,
     axis2_hash_set(schema_impl->methods, "get_elements", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_get_elements);
     axis2_hash_set(schema_impl->methods, "get_element_by_qname", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_get_elment_by_qname);
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_get_element_by_qname);
     axis2_hash_set(schema_impl->methods, "get_type_by_qname", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_get_type_by_qname);
     axis2_hash_set(schema_impl->methods, "get_final_default", 
@@ -369,12 +372,6 @@ axis2_xml_schema_free(void *schema,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     schema_impl = INTF_TO_IMPL(schema);
-
-    if(schema_impl->x_path)
-    {
-        AXIS2_FREE((*env)->allocator, schema_impl->x_path);
-        schema_impl->x_path = NULL;
-    }
 
     if(schema_impl->methods)
     {
@@ -590,11 +587,11 @@ axis2_xml_schema_obj_table_t *AXIS2_CALL
 axis2_xml_schema_get_elements(void *schema,
                                 axis2_env_t **env) 
 {
-    return elements;
+    return NULL;
 }
 
 axis2_xml_schema_element_t *AXIS2_CALL
-axis2_xml_schema_get_element_by_name(void *schema,
+axis2_xml_schema_get_element_by_qname(void *schema,
                                         axis2_env_t **env,
                                         axis2_qname_t *qname) 
 {
@@ -602,7 +599,7 @@ axis2_xml_schema_get_element_by_name(void *schema,
 }
 
 axis2_xml_schema_type_t *AXIS2_CALL
-axis2_xml_schema_get_type_by_name(void *schema,
+axis2_xml_schema_get_type_by_qname(void *schema,
                                     axis2_env_t **env,
                                     axis2_qname_t *qname) 
 {
@@ -679,7 +676,7 @@ axis2_xml_schema_set_target_namespace(void *schema,
                                         axis2_env_t **env,
                                         axis2_char_t *target_namespc) 
 {
-    return NULL;
+    return AXIS2_SUCCESS;
 }
 
 axis2_char_t *AXIS2_CALL 
@@ -692,7 +689,7 @@ axis2_xml_schema_get_version(void *schema,
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_compile(void *schema,
                             axis2_env_t **env,
-                            axis2_xml_schema_validation_event_handler *eh) 
+                            axis2_xml_schema_validation_event_handler_t *eh) 
 {
     return AXIS2_SUCCESS;
 
@@ -714,7 +711,7 @@ axis2_xml_schema_write_a_writer(void *schema,
 }
 
 static axis2_status_t 
-serialize_internal(void schema,
+serialize_internal(void *schema,
                     void *writer)
 {
     return AXIS2_SUCCESS;
