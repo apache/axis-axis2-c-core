@@ -355,6 +355,9 @@ axis2_xml_reader_create_for_buffer(axis2_env_t **env,
                                   int size,
                                   const axis2_char_t *encoding);
 
+AXIS2_DECLARE(axis2_xml_reader_t *)
+axis2_xml_reader_create_for_xml_doc(axis2_env_t **env, 
+									void *doc);	
 /**
  * init function initializes the parser 
  */

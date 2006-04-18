@@ -464,6 +464,12 @@ axis2_xml_writer_create_for_memory(axis2_env_t **env,
                                    int is_prefix_default,
                                    int compression);
 
+AXIS2_DECLARE(axis2_xml_writer_t *)
+	axis2_xml_writer_create_for_xml_doc(axis2_env_t **env,
+                                   axis2_char_t *encoding,
+                                   int is_prefix_default,
+                                   int compression);
+	
 /********************** start macros *******************************************/
 
 #define AXIS2_XML_WRITER_FREE(writer, env) \
