@@ -59,6 +59,11 @@ axis2_om_attribute_t *AXIS2_CALL
 axis2_om_element_get_attribute(axis2_om_element_t *element,
                                axis2_env_t **env,
                                axis2_qname_t * qname);
+                               
+axis2_char_t* AXIS2_CALL
+axis2_om_element_get_attribute_value(axis2_om_element_t *element,
+                                     axis2_env_t **env,
+                                     axis2_qname_t * qname);                               
 
 axis2_status_t AXIS2_CALL
 axis2_om_element_free (axis2_om_element_t *element,                                     
@@ -327,6 +332,10 @@ axis2_om_element_create (axis2_env_t **env,
         axis2_om_element_add_attribute;
     element->om_element.ops->get_attribute =
         axis2_om_element_get_attribute;
+        
+    element->om_element.ops->get_attribute_value = 
+        axis2_om_element_get_attribute_value;
+                
     element->om_element.ops->free = axis2_om_element_free;
     
     element->om_element.ops->serialize_start_part =
@@ -1590,3 +1599,29 @@ axis2_om_element_find_namespace_uri(axis2_om_element_t *om_element,
     } 
     return NULL;
 }                                    
+
+axis2_char_t* AXIS2_CALL
+axis2_om_element_get_attribute_value (axis2_om_element_t *om_element,
+                                axis2_env_t **env,
+                                axis2_qname_t *qname)
+{
+    axis2_om_element_impl_t *element_impl = NULL;
+    axis2_char_t *name = NULL;
+    axis2_om_attribute_t *attr = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
+    
+    element_impl = AXIS2_INTF_TO_IMPL(om_element);
+    name = AXIS2_QNAME_TO_STRING(qname, env);
+
+    if ((NULL != element_impl->attributes) && (NULL != name) )
+    {
+        attr = (axis2_om_attribute_t*) axis2_hash_get(element_impl->attributes,
+                    name, AXIS2_HASH_KEY_STRING);
+        if(NULL != attr)
+        {
+            return AXIS2_OM_ATTRIBUTE_GET_VALUE(attr, env);
+        }
+    }
+    return NULL;
+}

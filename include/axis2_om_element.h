@@ -122,7 +122,20 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          get_attribute) (axis2_om_element_t *om_element,
                          axis2_env_t **env,
                          axis2_qname_t * qname);
-
+                         
+        /**
+        * Gets (finds) the attribute value with the given qname
+        * @param element element whose attribute is to be found. 
+        * @param env Environment. MUST NOT be NULL.
+        * @qname qname qname of the attribute to be found. should not be NULL.
+        * @return the attribute value with given qname if found, else NULL.
+        *  On error, returns NULL and sets the error code in environment's error struct.
+        */
+         axis2_char_t *(AXIS2_CALL *
+         get_attribute_value) (axis2_om_element_t *om_element,
+                               axis2_env_t **env,
+                               axis2_qname_t * qname);                         
+        
       /**
         * Frees given element 
         * @param element OM element to be freed.
@@ -550,7 +563,11 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         ((om_element)->ops->declare_default_namespace(om_element, env, uri))
         
 #define AXIS2_OM_ELEMENT_FIND_NAMESPACE_URI(om_element, env, prefix, element_node) \
-        ((om_element)->ops->find_namespace_uri(om_element, env, prefix, element_node))                       
+        ((om_element)->ops->find_namespace_uri(om_element, env, prefix, element_node))
+        
+#define AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE(om_element, env, qname) \
+        ((om_element)->ops->get_attribute_value(om_element, env, qname))
+                                       
 /** @} */
 
 
