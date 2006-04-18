@@ -352,6 +352,7 @@ int test_soap_fault_value(axis2_env_t **env)
 		printf("FAILURE\n");
 
 	AXIS2_SOAP_ENVELOPE_FREE(soap_envelope, env);
+	return 0;
 }	
 int main(int argc, char *argv[])
 {

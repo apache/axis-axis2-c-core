@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <axis2_apache2_worker.h>
+#include "axis2_apache2_worker.h"
 #include <axis2_http_transport.h>
 #include <axis2_conf.h>
 #include <axis2_string.h>
@@ -25,7 +25,7 @@
 #include <axis2_engine.h>
 #include <axis2_uuid_gen.h>
 #include <axis2_conf_init.h>
-#include <axis2_apache2_out_transport_info.h>
+#include "axis2_apache2_out_transport_info.h"
 #include <axis2_url.h>
 #include <http_core.h>
 #include <http_protocol.h>
