@@ -18,6 +18,7 @@
 #include <axis2_addr.h>
 #include <axis2_handler_desc.h>
 #include <axis2_array_list.h>
+#include <axis2_soap.h>
 #include <axis2_soap_envelope.h>
 #include <axis2_soap_header.h>
 #include <axis2_soap_header_block.h>
@@ -49,7 +50,8 @@ axis2_status_t
 axis2_addr_in_extract_addr_final_info(axis2_env_t **env,
                         axis2_soap_header_t *soap_header,
                         axis2_msg_info_headers_t **msg_info_headers,
-                        axis2_array_list_t *addr_headers);
+                        axis2_array_list_t *addr_headers,
+                        axis2_msg_ctx_t *msg_ctx);
                          
                          
 axis2_status_t 
@@ -69,12 +71,20 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
                     axis2_soap_header_t *soap_header,
                     axis2_msg_info_headers_t **msg_info_headers,
                     axis2_array_list_t *addr_headers,
-                    axis2_char_t *addr_ns);
+                    axis2_char_t *addr_ns,
+                    axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t axis2_addr_in_extract_addr_submission_info(axis2_env_t **env,
         axis2_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
-        axis2_array_list_t *addr_headers);
+        axis2_array_list_t *addr_headers,
+        axis2_msg_ctx_t *msg_ctx);
+
+axis2_soap_envelope_t *
+axis2_addr_in_create_fault_envelope(axis2_env_t **env,
+        axis2_char_t *header_name,
+        axis2_char_t *addr_ns_str,
+        int soap_version);
 
 /******************************************************************************/                         
 
@@ -110,6 +120,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
     axis2_soap_envelope_t *soap_envelope = NULL;
     axis2_soap_header_t *soap_header = NULL;
     axis2_property_t *property = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -135,10 +146,11 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
             if (addr_headers)
             {
                 addr_ns_str = AXIS2_STRDUP(AXIS2_WSA_NAMESPACE_SUBMISSION, env);
-                axis2_addr_in_extract_addr_submission_info(env, 
+                status = axis2_addr_in_extract_addr_submission_info(env, 
                         soap_header,
                         &msg_info_headers,
-                        addr_headers);
+                        addr_headers,
+                        msg_ctx);
             } 
             else 
             {
@@ -146,10 +158,11 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
                 if (addr_headers)
                 {
                     addr_ns_str = AXIS2_STRDUP(AXIS2_WSA_NAMESPACE, env);
-                    axis2_addr_in_extract_addr_final_info(env, 
+                    status = axis2_addr_in_extract_addr_final_info(env, 
                             soap_header,
                             &msg_info_headers,
-                            addr_headers);
+                            addr_headers,
+                            msg_ctx);
                     axis2_addr_in_extract_ref_params(env, soap_header, AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env));
     
                 } 
@@ -178,7 +191,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
             axis2_addr_in_extract_svc_grp_ctx_id(env, soap_header, msg_ctx);
             
             AXIS2_ARRAY_LIST_FREE(addr_headers, env);
-            return AXIS2_SUCCESS;
+            return status;
         }
     }
     
@@ -238,25 +251,29 @@ axis2_status_t
 axis2_addr_in_extract_addr_final_info(axis2_env_t **env,
                         axis2_soap_header_t *soap_header,
                         axis2_msg_info_headers_t **msg_info_headers,
-                        axis2_array_list_t *addr_headers)
+                        axis2_array_list_t *addr_headers,
+                        axis2_msg_ctx_t *msg_ctx)
 {
     return axis2_addr_in_extract_addr_params(env,
             soap_header,
             msg_info_headers,
             addr_headers,
-            AXIS2_WSA_NAMESPACE);
+            AXIS2_WSA_NAMESPACE,
+            msg_ctx);
 }
 
 axis2_status_t axis2_addr_in_extract_addr_submission_info(axis2_env_t **env,
         axis2_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
-        axis2_array_list_t *addr_headers)
+        axis2_array_list_t *addr_headers,
+        axis2_msg_ctx_t *msg_ctx)
 {
     return axis2_addr_in_extract_addr_params(env,
             soap_header,
             msg_info_headers,
             addr_headers,
-            AXIS2_WSA_NAMESPACE_SUBMISSION);
+            AXIS2_WSA_NAMESPACE_SUBMISSION,
+            msg_ctx);
 }
 
 axis2_status_t
@@ -264,11 +281,13 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
                     axis2_soap_header_t *soap_header,
                     axis2_msg_info_headers_t **msg_info_headers_p,
                     axis2_array_list_t *addr_headers,
-                    axis2_char_t *addr_ns_str)
+                    axis2_char_t *addr_ns_str,
+                    axis2_msg_ctx_t *msg_ctx)
 {
     axis2_hash_t *header_block_ht = NULL;
     axis2_hash_index_t *hash_index =  NULL;
     axis2_msg_info_headers_t *msg_info_headers = *(msg_info_headers_p);
+    axis2_bool_t to_found = AXIS2_FALSE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_header, AXIS2_FAILURE);
@@ -309,10 +328,25 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
              /* here the addressing epr overidde what ever already there in the message context */   
                 
                 epr = axis2_endpoint_ref_create(env, AXIS2_OM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node));
+                if (to_found == AXIS2_TRUE)
+                {
+                    /* Duplicate To */
+                    int soap_version = AXIS2_SOAP12;
+                    axis2_soap_envelope_t *envelope = NULL;
+                    if (AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
+                    {
+                        soap_version = AXIS2_SOAP11;
+                    }
+                    envelope = axis2_addr_in_create_fault_envelope(env, 
+                            "wsa:To", addr_ns_str, soap_version);
+                    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, envelope);
+                    return AXIS2_FAILURE;
+                }
                 AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, epr);
                 
                 axis2_addr_in_extract_to_epr_ref_params(env, epr, soap_header, addr_ns_str);
                 AXIS2_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);
+                to_found = AXIS2_TRUE;
         }
         else if(AXIS2_STRCMP(ele_localname, AXIS2_WSA_FROM) == 0)
         {
@@ -648,3 +682,34 @@ axis2_addr_in_check_element(axis2_env_t **env,
     return ((AXIS2_STRCMP(exp_qn_lpart, act_qn_lpart) == 0) && 
         (AXIS2_STRCMP(exp_qn_nsuri,act_qn_nsuri) == 0));
 }
+
+axis2_soap_envelope_t *
+axis2_addr_in_create_fault_envelope(axis2_env_t **env,
+        axis2_char_t *header_name,
+        axis2_char_t *addr_ns_str,
+        int soap_version)
+{
+    axis2_soap_envelope_t *envelope = NULL;
+    axis2_array_list_t *sub_codes = NULL;
+
+    axis2_om_node_t* text_om_node = NULL;
+    axis2_om_element_t * text_om_ele = NULL;
+    axis2_om_namespace_t *ns1 = NULL;
+    ns1 = axis2_om_namespace_create (env, addr_ns_str, "wsa");
+    text_om_ele = axis2_om_element_create(env, NULL, "ProblemHeaderQName", ns1, &text_om_node);
+    AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, header_name, text_om_node);
+
+    sub_codes = axis2_array_list_create(env, 2);
+    if (sub_codes)
+    {
+        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "wsa:InvalidAddressingHeader");
+        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "wsa:InvalidCardinality");
+    }
+
+    envelope = axis2_soap_envelope_create_default_soap_fault_envelope(env,
+            "soapenv:Sender", 
+            "A header representing a Message Addressing Property is not valid and the message cannot be processed",
+            soap_version, sub_codes, text_om_node);
+    return envelope;            
+}
+

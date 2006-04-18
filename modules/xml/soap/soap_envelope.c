@@ -725,7 +725,9 @@ axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
 
 AXIS2_DECLARE(axis2_soap_envelope_t *)
 axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
-	axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version)
+	axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version,
+    axis2_array_list_t *sub_codes,
+    axis2_om_node_t *detail_node)
 {
     axis2_soap_envelope_t *soap_env = NULL;
     axis2_soap_body_t *soap_body = NULL;
@@ -771,6 +773,35 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
 		AXIS2_SOAP_ENVELOPE_FREE(soap_env, env);
 		return NULL;
 	}
+
+    if (sub_codes)
+    {
+        int i = 0;
+        axis2_soap_fault_code_t *fault_code = NULL;
+        fault_code = AXIS2_SOAP_FAULT_GET_CODE(fault, env);
+        if (fault_code)
+        {
+            for ( i = 0; i < AXIS2_ARRAY_LIST_SIZE(sub_codes, env); i++)
+            {
+                axis2_char_t *sub_code = (axis2_char_t*) AXIS2_ARRAY_LIST_GET(sub_codes, env, i);
+                if (sub_code)
+                {
+                    axis2_soap_fault_sub_code_create_with_parent_value(env, fault_code, sub_code);
+                }
+            }
+        }
+    }
+
+    if (detail_node)
+    {
+        axis2_soap_fault_detail_t *detail = 
+            axis2_soap_fault_detail_create_with_parent(env, fault);
+        if (detail)
+        {
+            AXIS2_SOAP_FAULT_DETAIL_ADD_DETAIL_ENTRY(detail, env, detail_node);
+        }
+    }
+
 	return soap_env;
 
 }

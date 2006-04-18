@@ -308,7 +308,10 @@ int create_soap_fault(axis2_env_t **env)
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
 
-    soap_envelope = axis2_soap_envelope_create_default_soap_fault_envelope(env, "Fault Code", "Fault Reason", AXIS2_SOAP11);
+    soap_envelope = 
+            axis2_soap_envelope_create_default_soap_fault_envelope(env, 
+                "Fault Code", "Fault Reason", AXIS2_SOAP11,
+                NULL, NULL);
     soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
     axis2_soap_fault_create_default_fault(env, soap_body, "env:Receiver","A fault occured", AXIS2_SOAP12);
    
@@ -334,7 +337,8 @@ int test_soap_fault_value(axis2_env_t **env)
 
 	printf("TEST SOAP FAULT VALUE\n");
 	soap_envelope = axis2_soap_envelope_create_default_soap_fault_envelope(
-			env, "env:Receiver", "Something went wrong!", AXIS2_SOAP12);
+			env, "env:Receiver", "Something went wrong!", AXIS2_SOAP12,
+            NULL, NULL);
 	soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
 	soap_fault = AXIS2_SOAP_BODY_GET_FAULT(soap_body, env);
 	soap_code = AXIS2_SOAP_FAULT_GET_CODE(soap_fault, env);

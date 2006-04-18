@@ -18,6 +18,9 @@
 #include <axis2.h>
 #include <axis2_hash.h>
 #include <axis2_soap.h>
+#include <axis2_soap_envelope.h>
+#include <axis2_soap_body.h>
+#include <axis2_soap_fault.h>
 #include <axis2_transport_sender.h>
 #include <axis2_http_transport.h>
 
@@ -450,11 +453,27 @@ axis2_engine_send_fault(struct axis2_engine *engine,
     if (!(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))) 
     {
         /* send the SOAP Fault*/
+        axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_transport_sender_t *transport_sender = NULL;
+
+        /*conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+        if (conf_ctx)
+        {
+            axis2_conf_t *conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+            if (conf)
+            {
+                 axis2_array_list_t *phases = AXIS2_CONF_GET_OUT_FAULT_FLOW(conf, env);
+                 if (phases)
+                 {
+                    axis2_engine_invoke_phases(engine, env, phases, msg_ctx);
+                 }
+            }
+        }*/
+        
         axis2_transport_out_desc_t *transport_out = AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env);
+        
         if (transport_out)
             transport_sender = AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out, env);
-        /*TODO:Uncomment this once the implementation done*/
         if (transport_sender)
             AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);
     }
@@ -541,6 +560,7 @@ axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine,
     axis2_engine_impl_t *engine_impl = NULL;
     axis2_endpoint_ref_t *fault_to = NULL;
     axis2_property_t *property = NULL;
+    axis2_soap_envelope_t *envelope = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, processing_context, AXIS2_FAILURE);
@@ -568,11 +588,11 @@ axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine,
     else
     {
         property = AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, 
-                AXIS2_TRANSPORT_OUT, AXIS2_TRUE);
+                AXIS2_TRANSPORT_OUT, AXIS2_FALSE);
         if(property)
         {
             AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_TRANSPORT_OUT, property, 
-                AXIS2_TRUE); 
+                AXIS2_FALSE); 
             property = NULL;
         }
         else 
@@ -587,44 +607,47 @@ axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine,
     AXIS2_MSG_CTX_SET_SERVER_SIDE(fault_ctx, env, AXIS2_TRUE);
     
     property = AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, 
-        AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_TRUE);
+        AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_FALSE);
     if(property)
     {
         AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, 
-            property , AXIS2_TRUE );
+            property , AXIS2_FALSE);
         property = NULL;
     }
+
+    envelope = AXIS2_MSG_CTX_GET_FAULT_SOAP_ENVELOPE(processing_context, env);
     
-    /*axis2_soap_envelope_t *envelope = NULL;
-    if (AXIS2_MSG_CTX_GET_IS_SOAP_11(processing_context, env)) 
+    if (!envelope)
     {
-        envelope = axis2_create_default_fault_soap_envelope(env, AXIS2_SOAP_11);
-        
-    } 
-    else 
-    {
-        envelope = axis2_create_default_fault_soap_envilope(env, AXIS2_SOAP_12);
-    }
-
-    if (envelope)
-    {
-        axis2_soap_body_t *body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
-        if (body)
+        if (AXIS2_MSG_CTX_GET_IS_SOAP_11(processing_context, env)) 
         {
-            axis2_soap_fault_t *fault = AXIS2_SOAP_BODY_GET_FAULT(body, env);
+            envelope = axis2_soap_envelope_create_default_soap_envelope(env, AXIS2_SOAP11);
             
+        } 
+        else 
+        {
+            envelope = axis2_soap_envelope_create_default_soap_envelope(env, AXIS2_SOAP12);
         }
-        extract_fault_info_from_msg_ctx( engine, env, 
-                processing_context,fault);
-    }
-    else
-    {
-        return NULL;
-    }
 
-    AXIS2_MSG_CTX_SET_ENVELOPE(fault_ctx, env, envelope);
+        if (envelope)
+        {
+            axis2_soap_body_t *body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
+            if (body)
+            {
+                axis2_soap_fault_t *fault = AXIS2_SOAP_BODY_GET_FAULT(body, env);
+                axis2_engine_extract_fault_info_from_msg_ctx(engine, env, 
+                        processing_context, fault);
+            }
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+    
+    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(fault_ctx, env, envelope);
     AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, 
-        AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_TRUE) );*/
+        AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_FALSE), AXIS2_FALSE);
     return fault_ctx;
 }
 

@@ -18,6 +18,7 @@
 #include <axis2_qname.h>
 #include <axis2_svc.h>
 #include <axis2_soap_header.h>
+#include <axis2_soap_body.h>
 #include <axis2_addr.h>
 #include <axis2_soap_header_block.h>
 #include <axis2_endpoint_ref.h>
@@ -244,10 +245,25 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                                             soap_header_node, addressing_namespace);
 
         epr = AXIS2_MSG_INFO_HEADERS_GET_TO (msg_info_headers, env);
+
+        if (soap_envelope && epr)
+        {
+            axis2_soap_body_t *body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+            if (body)
+            {
+                /* in case of a SOAP fault, we got to send the response to 
+                   the adress specified by FaultTo */
+                if (AXIS2_SOAP_BODY_HAS_FAULT( body, env))
+                {
+                    axis2_endpoint_ref_t *fault_epr = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO (msg_info_headers, env); 
+                    if (fault_epr)
+                    {
+                        AXIS2_ENDPOINT_REF_SET_ADDRESS (epr, env, AXIS2_ENDPOINT_REF_GET_ADDRESS (fault_epr, env));
+                    }
+                }
+            }
+        }
     
-    
-        
-       
         if (epr) 
         {
             address = AXIS2_ENDPOINT_REF_GET_ADDRESS (epr, env);

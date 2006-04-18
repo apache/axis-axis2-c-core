@@ -141,6 +141,10 @@ struct axis2_msg_ctx_ops
 	get_soap_envelope)(struct axis2_msg_ctx *msg_ctx, 
                        axis2_env_t **env);
     
+    struct axis2_soap_envelope* (AXIS2_CALL *
+	get_fault_soap_envelope)(struct axis2_msg_ctx *msg_ctx, 
+                       axis2_env_t **env);
+    
     /**
      * @return
      */
@@ -219,7 +223,12 @@ struct axis2_msg_ctx_ops
      * @param soap_envelope
      */
     axis2_status_t (AXIS2_CALL *
-	set_envelope)(struct axis2_msg_ctx *msg_ctx, 
+	set_soap_envelope)(struct axis2_msg_ctx *msg_ctx, 
+                  axis2_env_t **env, 
+                  struct axis2_soap_envelope *soap_envelope);
+    
+    axis2_status_t (AXIS2_CALL *
+	set_fault_soap_envelope)(struct axis2_msg_ctx *msg_ctx, 
                   axis2_env_t **env, 
                   struct axis2_soap_envelope *soap_envelope);
     
@@ -713,6 +722,9 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env) \
 		((msg_ctx)->ops->get_soap_envelope(msg_ctx, env))
 		
+#define AXIS2_MSG_CTX_GET_FAULT_SOAP_ENVELOPE(msg_ctx, env) \
+		((msg_ctx)->ops->get_fault_soap_envelope(msg_ctx, env))
+		
 #define AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env) \
 		((msg_ctx)->ops->get_msg_id(msg_ctx, env))
 		
@@ -744,7 +756,10 @@ axis2_msg_ctx_create (axis2_env_t **env,
 		((msg_ctx)->ops->get_in_fault_flow(msg_ctx, env, in_fault_flow))
 		
 #define AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, soap_envelope) \
-		((msg_ctx)->ops->set_envelope(msg_ctx, env, soap_envelope))
+		((msg_ctx)->ops->set_soap_envelope(msg_ctx, env, soap_envelope))
+		
+#define AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, soap_envelope) \
+		((msg_ctx)->ops->set_fault_soap_envelope(msg_ctx, env, soap_envelope))
 		
 #define AXIS2_MSG_CTX_SET_MESSAGE_ID(msg_ctx, env, message_id) \
 		((msg_ctx)->ops->set_message_id(msg_ctx, env, message_id))

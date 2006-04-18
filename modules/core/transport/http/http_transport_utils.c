@@ -120,6 +120,7 @@ axis2_http_transport_utils_process_http_post_request
 	axis2_engine_t *engine = NULL;
 	axis2_soap_body_t *soap_body = NULL;
     axis2_property_t *property = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 	
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, in_stream, AXIS2_FAILURE);
@@ -174,7 +175,7 @@ axis2_http_transport_utils_process_http_post_request
 				{
 					AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Error occured in"
 							" creating in chunked stream.");
-					return AXIS2_FALSE;				
+					return AXIS2_FAILURE;				
 				}
 				AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "HTTP"
 						" stream chunked");
@@ -329,7 +330,7 @@ axis2_http_transport_utils_process_http_post_request
 	}
 	else
 	{
-		AXIS2_ENGINE_RECEIVE(engine, env, msg_ctx);
+		status = AXIS2_ENGINE_RECEIVE(engine, env, msg_ctx);
 	}
 	if(NULL == AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env) && 
 						AXIS2_FALSE == is_soap11)
@@ -342,7 +343,7 @@ axis2_http_transport_utils_process_http_post_request
     {
         AXIS2_ENGINE_FREE(engine, env);
     }
-	return AXIS2_SUCCESS;
+	return status;
 }
 
 

@@ -329,7 +329,7 @@ build_soap_body_content (axis2_env_t ** env, axis2_char_t * echo_operation,
                                         ns5);
     AXIS2_OM_ELEMENT_DECLARE_NAMESPACE (envelope_element, env, envelope_node,
                                         ns6);
-    ns0 = AXIS2_OM_ELEMENT_GET_NAMESPACE (envelope_element, env);
+    ns0 = AXIS2_OM_ELEMENT_GET_NAMESPACE (envelope_element, env, envelope_node);
     attri1 =
         axis2_om_attribute_create (env, "encodingStyle",
                                    "http://schemas.xmlsoap.org/soap/encoding/",

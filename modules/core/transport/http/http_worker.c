@@ -365,6 +365,10 @@ axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
 			tmp_stat_line = axis2_http_status_line_create(env, 
 						status_line_str);
 			AXIS2_ENGINE_SEND_FAULT(engine, env, fault_ctx);
+			AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(response, env,
+						AXIS2_HTTP_STATUS_LINE_GET_HTTP_VERSION(tmp_stat_line, env), 
+                        AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(tmp_stat_line, env) , 
+                        AXIS2_HTTP_STATUS_LINE_GET_REASON_PHRASE(tmp_stat_line, env));
 			AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STREAM(response, env, 
 						out_stream);
 			axis2_http_worker_set_response_headers(http_worker, env, svr_conn, 
