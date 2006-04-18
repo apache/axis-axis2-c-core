@@ -47,7 +47,7 @@ axis2_xml_tokenized_type_resolve_methods(
                                 axis2_xml_tokenized_type_t *tokenized_type_impl,
                                 axis2_hash_t *methods);
 
-axis2_array_list_t *
+axis2_array_list_t * AXIS2_CALL
 axis2_xml_tokenized_type_get_values(void *tokenized_type,
                         axis2_env_t **env);
 

@@ -131,7 +131,7 @@ axis2_xml_schema_any_free(void *any,
     
     if(any_impl->process_content)
     {
-        AXIS2_PROCESS_CONTENT_FREE(any_impl->process_content, env);
+        AXIS2_XML_SCHEMA_CONTENT_PROCESSING_FREE(any_impl->process_content, env);
         any_impl->process_content = NULL;
     }
  
@@ -253,7 +253,7 @@ axis2_xml_schema_any_set_process_content(void *any,
     
     if(!any_impl->process_content)
     {
-        AXIS2_PROCESS_CONTENT_FREE(any_impl->process_content, env);
+        AXIS2_XML_SCHEMA_CONTENT_PROCESSING_FREE(any_impl->process_content, env);
         any_impl->process_content = NULL;
     }
     any_impl->process_content = process_content;

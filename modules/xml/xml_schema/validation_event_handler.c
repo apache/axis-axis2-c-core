@@ -62,7 +62,7 @@ axis2_xml_schema_validation_event_handler_free(void *axis2_validation_event_hand
 
     if((&(axis2_validation_event_handler_impl->axis2_validation_event_handler))->ops)
     {
-        free((&(axis2_validation_event_handler_impl->axis2_validation_event_handler))->ops);
+        AXIS2_FREE((*env)->allocator ,((&(axis2_validation_event_handler_impl->axis2_validation_event_handler))->ops));
         (&(axis2_validation_event_handler_impl->axis2_validation_event_handler))->ops = NULL;
     }
 

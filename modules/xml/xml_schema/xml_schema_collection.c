@@ -18,8 +18,11 @@
 #include <axis2_xml_schema_element.h>
 #include <axis2_xml_schema_type.h>
 #include <axis2_xml_schema.h>
-#include <axis2_validation_event_handler.h>
+#include <axis2_validation_event_handler.h> 
 #include <axis2_hash.h>
+#include <axis2_xml_schema_type.h>
+#include <axis2_xml_schema_type_receiver.h>
+#include <axis2_xml_schema_element.h>
 
 typedef struct axis2_xml_schema_collection_impl axis2_xml_schema_collection_impl_t;
 
@@ -150,7 +153,7 @@ axis2_status_t AXIS2_CALL
 axis2_xml_schema_collection_resolve_type(void *collection,
                                             axis2_env_t **env,
                                             axis2_qname_t *type_qame, 
-                                            axis2_xml_schema_type_t *type); 
+                                         struct axis2_xml_schema_type *type); 
 
 axis2_char_t *AXIS2_CALL 
 axis2_xml_schema_collection_get_namespace_for_prefix(void *collection,
@@ -479,9 +482,9 @@ axis2_xml_schema_collection_add_unresolved_type(void *collection,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_collection_resolve_type(void *collection,
-                                            axis2_env_t **env,
-                                            axis2_qname_t *type_qame, 
-                                            axis2_xml_schema_type_t *type) 
+                                         axis2_env_t **env,
+                                         axis2_qname_t *type_qame, 
+                                          struct axis2_xml_schema_type *type) 
 {
     return AXIS2_SUCCESS;
 }

@@ -42,7 +42,7 @@ axis2_xml_schema_enum_t *AXIS2_CALL
 axis2_xml_schema_content_processing_get_base_impl(void *content_processing,
                                                     axis2_env_t **env);
 
-axis2_array_list_t *
+axis2_array_list_t *AXIS2_CALL
 axis2_xml_schema_content_processing_get_values(void *content_processing,
                         axis2_env_t **env);
 

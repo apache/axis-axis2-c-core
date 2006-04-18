@@ -192,6 +192,8 @@ main (int argc, char **argv)
             axis2_char_t *result = NULL;
             axis2_om_element_t *result_ele = NULL;
             axis2_om_node_t *ret_node1 = NULL;
+            axis2_char_t echo_response_buff[32];
+            
             ret_node1 = AXIS2_OM_NODE_GET_FIRST_CHILD (ret_node, &env); /*Body */
             if (!ret_node1)
             {
@@ -205,7 +207,7 @@ main (int argc, char **argv)
                 return AXIS2_FAILURE;
             }
             /*see if we have got a fault */
-            axis2_char_t echo_response_buff[32];
+            
             sprintf (echo_response_buff, "echo%sResponse", echo_operation);
             result_ele =
                 (axis2_om_element_t *)

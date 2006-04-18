@@ -47,7 +47,7 @@ axis2_xml_schema_use_resolve_methods(
                                 axis2_xml_schema_use_t *use_impl,
                                 axis2_hash_t *methods);
 
-axis2_array_list_t *
+axis2_array_list_t * AXIS2_CALL
 axis2_xml_schema_use_get_values(void *use,
                         axis2_env_t **env);
 

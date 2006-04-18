@@ -500,7 +500,7 @@ axis2_xml_schema_get_namespace(void *schema,
                                  axis2_env_t **env,
                                  axis2_char_t *prefix)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     return NULL;
 }
 
@@ -510,7 +510,7 @@ axis2_xml_schema_get_attr_form_default(void *schema,
 {
     axis2_xml_schema_impl_t *schema_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     schema_impl = INTF_TO_IMPL(schema);
     
     return NULL;
@@ -535,7 +535,7 @@ axis2_xml_schema_get_attr_groups(void *schema,
 {
     axis2_xml_schema_impl_t *schema_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     schema_impl = INTF_TO_IMPL(schema);
     
     return NULL;
@@ -547,7 +547,7 @@ axis2_xml_schema_get_attrs(void *schema,
 {
     axis2_xml_schema_impl_t *schema_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     schema_impl = INTF_TO_IMPL(schema);
     
     return NULL;

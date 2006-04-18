@@ -47,7 +47,7 @@ axis2_xml_schema_form_resolve_methods(
                                 axis2_xml_schema_form_t *form_impl,
                                 axis2_hash_t *methods);
 
-axis2_array_list_t *
+axis2_array_list_t *AXIS2_CALL
 axis2_xml_schema_form_get_values(void *form,
                         axis2_env_t **env);
 
@@ -176,9 +176,9 @@ axis2_xml_schema_form_resolve_methods(
             env, form_impl_l->schema_enum, methods);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axis2_array_list_t* AXIS2_CALL
 axis2_xml_schema_form_get_values(void *form,
-                                        axis2_env_t **env)
+                                axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return INTF_TO_IMPL(form)->members;

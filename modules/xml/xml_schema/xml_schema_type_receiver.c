@@ -69,13 +69,13 @@ axis2_xml_schema_type_receiver_free(void *type_receiver,
 
     if((&(type_receiver_impl->type_receiver))->ops)
     {
-        free((&(type_receiver_impl->type_receiver))->ops);
+        AXIS2_FREE((*env)->allocator,((&(type_receiver_impl->type_receiver))->ops));
         (&(type_receiver_impl->type_receiver))->ops = NULL;
     }
 
     if(type_receiver_impl)
     {
-        free(type_receiver_impl);
+        AXIS2_FREE((*env)->allocator,(type_receiver_impl));
         type_receiver_impl = NULL;
     }
     return AXIS2_SUCCESS;
