@@ -15,7 +15,7 @@
  */
 
 #include <axis2_om_element.h>
-#include <axis2_om_node_internal.h>
+#include "axis2_om_node_internal.h"
 #include <axis2_om_attribute.h>
 #include <axis2_om_namespace.h>
 #include <axis2_xml_writer.h>
@@ -653,7 +653,7 @@ axis2_om_element_declare_namespace (axis2_om_element_t *ele,
             key = AXIS2_MALLOC((*env)->allocator, sizeof(char) *10);
             memset(key, 0, sizeof(char)*10);
             om_ele_impl->next_ns_prefix_number++;
-            sprintf(key, "axis2ns%", om_ele_impl->next_ns_prefix_number);
+            sprintf(key, "axis2ns%d", om_ele_impl->next_ns_prefix_number);
             axis2_hash_set (om_ele_impl->namespaces, key, 
                             AXIS2_HASH_KEY_STRING,  ns);
     }

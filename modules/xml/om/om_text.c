@@ -17,7 +17,7 @@
 #include <axis2_om_text.h>
 #include <axis2_om_output.h>
 #include <axis2_string.h>
-#include <axis2_om_node_internal.h>
+#include "axis2_om_node_internal.h"
 #include <axis2_xml_writer.h>
 #include <axis2_om_output.h>
 #include <axis2_om_attribute.h>

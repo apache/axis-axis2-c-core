@@ -14,10 +14,10 @@
  * limitations under the License.
  */
  
- #include <_axis2_soap_fault_node.h>
+ #include "_axis2_soap_fault_node.h"
  #include <axis2_om_node.h>
  #include <axis2_om_element.h>
- #include <_axis2_soap_fault.h>
+ #include "_axis2_soap_fault.h"
 
  /********************* impl struct *******************************************/
  

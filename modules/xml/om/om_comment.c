@@ -15,7 +15,7 @@
  */
 
 #include <axis2_om_comment.h>
-#include <axis2_om_node_internal.h>
+#include "axis2_om_node_internal.h"
 #include <axis2_string.h>
 
 axis2_status_t AXIS2_CALL

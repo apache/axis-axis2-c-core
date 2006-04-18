@@ -16,8 +16,8 @@
  
 #include <axis2_soap_fault.h>
 #include <axis2_om_element.h>
-#include <_axis2_soap_fault_text.h>
-#include <_axis2_soap_fault_reason.h>
+#include "_axis2_soap_fault_text.h"
+#include "_axis2_soap_fault_reason.h"
 #include <axis2_om_namespace.h>
 #include <axis2_qname.h>
 

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- #include <_axis2_soap_fault.h>
+ #include "_axis2_soap_fault.h"
  #include <axis2_soap.h>
- #include <_axis2_soap_body.h>
+ #include "_axis2_soap_body.h"
  #include <axis2_om_node.h>
  #include <axis2_om_element.h>
  #include <axis2_soap_fault_code.h>

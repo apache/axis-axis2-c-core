@@ -22,8 +22,8 @@
 #include <axis2_string.h>
 #include <axis2_xml_writer.h>
 #include <axis2_om_doctype.h>
-#include <axis2_om_node_internal.h>
-#include <axis2_om_stax_builder_internal.h>
+#include "axis2_om_node_internal.h"
+#include "axis2_om_stax_builder_internal.h"
 /**************************** function prototypes *****************************/
 
 axis2_om_node_t * AXIS2_CALL 

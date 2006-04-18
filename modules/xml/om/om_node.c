@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_om_node_internal.h>
+#include "axis2_om_node_internal.h"
 #include <axis2_om_element.h>
 #include <axis2_om_text.h>
 #include <axis2_om_comment.h>

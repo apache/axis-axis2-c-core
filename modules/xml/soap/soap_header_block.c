@@ -15,8 +15,8 @@
  */
  
 #include <axis2_soap.h> 
-#include <_axis2_soap_header_block.h>
-#include <_axis2_soap_header.h>
+#include "_axis2_soap_header_block.h"
+#include "_axis2_soap_header.h"
 #include <axis2_soap_envelope.h>
 #include <axis2_soap_builder.h>
 

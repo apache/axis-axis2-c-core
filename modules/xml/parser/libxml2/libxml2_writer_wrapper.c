@@ -1499,13 +1499,13 @@ axis2_libxml2_writer_wrapper_set_default_prefix(
                                          axis2_char_t *uri)
 {
     axis2_bool_t is_declared = AXIS2_FALSE;
-    axis2_char_t *key = NULL;
     
     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, uri, AXIS2_FAILURE);
     if(AXIS2_STRCMP(uri, "") == 0)
         return AXIS2_FAILURE;
-    is_declared = axis2_libxml2_writer_wrapper_is_namespace_declared(writer, env, uri);    if(!is_declared)
+    is_declared = axis2_libxml2_writer_wrapper_is_namespace_declared(writer, env, uri); 
+    if(!is_declared)
     {
         return axis2_libxml2_writer_wrapper_push(writer, env, uri, NULL);
     }        
@@ -1586,9 +1586,7 @@ axis2_libxml2_writer_wrapper_pop_context(axis2_xml_writer_t *writer,
            ele = (uri_prefix_element_t *)value;
            if(NULL != writer_impl->uri_prefix_map && NULL != ele->key)
            {
-                axis2_char_t *prefix = NULL;
                 void *val = NULL;
-                
                 val = axis2_hash_get(writer_impl->uri_prefix_map, ele->key, 
                         AXIS2_HASH_KEY_STRING);
                 if(NULL != val)
@@ -1663,7 +1661,6 @@ axis2_libxml2_writer_wrapper_is_namespace_declared(axis2_xml_writer_t *writer,
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
     if(NULL != writer_impl->uri_prefix_map && NULL != key)
     {
-        axis2_char_t *pre = NULL;
         void *ret = NULL;
         ret = axis2_hash_get(writer_impl->uri_prefix_map, key, 
                 AXIS2_HASH_KEY_STRING);

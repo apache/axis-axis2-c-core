@@ -907,7 +907,7 @@ axis2_libxml2_reader_wrapper_get_namespace_uri
     axis2_libxml2_reader_wrapper_impl_t *parser_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     parser_impl = AXIS2_INTF_TO_IMPL(parser);
-    return xmlTextReaderNamespaceUri(parser_impl->reader);
+    return (axis2_char_t *)xmlTextReaderNamespaceUri(parser_impl->reader);
 }                    
                     
 axis2_char_t* AXIS2_CALL
@@ -922,7 +922,7 @@ axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix
     if(!prefix || AXIS2_STRCMP(prefix, "" ) == 0)
         return NULL;
     
-    return xmlTextReaderLookupNamespace(parser_impl->reader, prefix);        
+    return (axis2_char_t *)xmlTextReaderLookupNamespace(parser_impl->reader, prefix);        
 }                                                                   
 
 axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser,

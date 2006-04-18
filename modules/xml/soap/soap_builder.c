@@ -16,15 +16,15 @@
  
  #include <axis2_soap_builder.h>
  #include <axis2_soap_message.h>
- #include <_axis2_soap_envelope.h>
- #include <_axis2_soap_header.h>
+ #include "_axis2_soap_envelope.h"
+ #include "_axis2_soap_header.h"
  #include <axis2_soap11_builder_helper.h>
  #include <axis2_soap12_builder_helper.h>
  #include <axis2_soap.h>
- #include <_axis2_soap_body.h>
- #include <_axis2_soap_header_block.h>
+ #include "_axis2_soap_body.h"
+ #include "_axis2_soap_header_block.h"
  #include <axis2_om_stax_builder_internal.h>
- #include <_axis2_soap_fault.h>
+ #include "_axis2_soap_fault.h"
  /*********************** impl struct *****************************************/
  
  typedef struct axis2_soap_builder_impl_t

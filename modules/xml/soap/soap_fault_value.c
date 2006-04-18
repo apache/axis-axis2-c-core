@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  #include <axis2_soap_fault_value.h>
- #include <_axis2_soap_fault_sub_code.h>
- #include <_axis2_soap_fault_code.h>
+ #include "_axis2_soap_fault_sub_code.h"
+ #include "_axis2_soap_fault_code.h"
  #include <axis2_om_element.h>
  #include <axis2_om_text.h>
  
