@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "axis2_getopt_windows.h"
+#include <platforms/windows/axis2_getopt_windows.h>
 
 int		opterr = 1; /*default - log error*/
 int		optind = 1;

@@ -16,7 +16,7 @@
 
 
 #include <axis2_thread.h>
-#include "axis2_thread_mutex_windows.h"
+#include <platforms/windows/axis2_thread_mutex_windows.h>
 
 static axis2_status_t thread_mutex_cleanup(void *data)
 {

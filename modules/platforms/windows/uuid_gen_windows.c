@@ -15,7 +15,7 @@
  *   limitations under the License.
  */
 
-#include "axis2_uuid_gen_windows.h"
+#include <platforms/windows/axis2_uuid_gen_windows.h>
 #include <rpc.h>
 #include <stdio.h>
 #include <string.h>

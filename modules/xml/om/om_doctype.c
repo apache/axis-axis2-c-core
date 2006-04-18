@@ -16,7 +16,7 @@
 
 #include <axis2_om_doctype.h>
 #include <axis2_string.h>
-#include <axis2_om_node_internal.h>
+#include "axis2_om_node_internal.h"
 
 axis2_status_t AXIS2_CALL
 axis2_om_doctype_free (axis2_om_doctype_t *om_doctype,

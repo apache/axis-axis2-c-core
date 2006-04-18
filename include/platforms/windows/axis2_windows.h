@@ -55,7 +55,7 @@ extern "C"
 #include <time.h>
 #include <sys/timeb.h>
 /* get opt */
-#include <axis2_getopt_windows.h>
+#include "axis2_getopt_windows.h"
 
 /***************************************************************
  * Default paths to shared library/DLLs and files

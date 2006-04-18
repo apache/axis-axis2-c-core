@@ -27,7 +27,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_conf_ctx.h>
-#include <apache2_stream.h>
+#include "apache2_stream.h"
 
 
 #ifdef __cplusplus
