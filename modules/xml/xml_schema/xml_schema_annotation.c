@@ -167,7 +167,7 @@ axis2_xml_schema_annotation_resolve_methods(
     annotation->ops->get_items = 
             annotation_impl_l->annotation.ops->get_items;
     
-    return axis2_xml_schema_schema_obj_resolve_methods(&(annotation->base), 
+    return axis2_xml_schema_obj_resolve_methods(&(annotation->base), 
             env, annotation_impl_l->schema_obj, methods);
 }
 

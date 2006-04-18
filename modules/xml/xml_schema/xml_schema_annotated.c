@@ -234,7 +234,7 @@ axis2_xml_schema_annotated_resolve_methods(
     annotated->ops->set_unhandled_attrs = 
             annotated_impl_l->annotated.ops->set_unhandled_attrs;
     
-    return axis2_xml_schema_schema_obj_resolve_methods(&(annotated->base), 
+    return axis2_xml_schema_obj_resolve_methods(&(annotated->base), 
             env, annotated_impl_l->schema_obj, methods);
 }
 

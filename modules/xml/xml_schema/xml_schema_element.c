@@ -545,7 +545,7 @@ axis2_xml_schema_element_resolve_methods(
     element->ops->set_type = 
             element_impl_l->element.ops->set_type;
     
-    return axis2_xml_schema_schema_type_receiver_resolve_methods(&(element->base), 
+    return axis2_xml_schema_type_receiver_resolve_methods(&(element->base), 
             env, element_impl_l->type_recv, methods);
 }
 

@@ -201,7 +201,7 @@ axis2_xml_schema_app_info_resolve_methods(
     app_info->ops->set_markup = 
             app_info_impl_l->app_info.ops->set_markup;
     
-    return axis2_xml_schema_schema_obj_resolve_methods(&(app_info->base), 
+    return axis2_xml_schema_obj_resolve_methods(&(app_info->base), 
             env, app_info_impl_l->schema_obj, methods);
 }
 
