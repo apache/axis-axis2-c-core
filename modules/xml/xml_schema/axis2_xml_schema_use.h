@@ -24,7 +24,7 @@
  *
  */
 
-#include <constants/axis2_xml_schema_enum.h>
+#include <axis2_xml_schema_enum.h>
 
 /** @defgroup axis2_xml_schema_use Xml Schema Use
   * @ingroup axis2_xml_schema

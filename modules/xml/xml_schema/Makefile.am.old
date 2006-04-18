@@ -1,8 +1,7 @@
 TESTS =
-SUBDIRS = constants
 lib_LTLIBRARIES = libaxis2_xml_schema.la
 libaxis2_xml_schema_la_SOURCES = \
-								 constants/xml_schema_enum.c \
+								 xml_schema_enum.c \
 								 xml_schema_obj.c \
 								 xml_schema_annotation.c \
 								 xml_schema_annotated.c \

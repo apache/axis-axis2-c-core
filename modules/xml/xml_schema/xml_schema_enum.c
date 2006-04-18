@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include "axis2_xml_schema_enum.h"
+#include <axis2_xml_schema_enum.h>
 #include <axis2_hash.h>
 
 typedef struct axis2_xml_schema_enum_impl axis2_xml_schema_enum_impl_t;
