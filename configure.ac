@@ -224,6 +224,7 @@ AC_CONFIG_FILES([Makefile \
     modules/xml/Makefile \
     modules/xml/parser/Makefile \
     modules/xml/parser/libxml2/Makefile \
+    modules/xml/xml_schema/Makefile \
     modules/xml/soap/Makefile \
     modules/xml/om/Makefile \
     modules/xml/attachments/Makefile \
