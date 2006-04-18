@@ -10,4 +10,10 @@
             <order phase="MessageOut"/>
         </handler>
     </outflow>
+
+    <Outfaultflow>
+        <handler name="AddressingOutHandler" class="axis2_mod_addr">
+            <order phase="MessageOut"/>
+        </handler>
+    </Outfaultflow>
 </module>

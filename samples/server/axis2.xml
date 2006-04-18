@@ -158,7 +158,7 @@
         <!--phase name="RMPhase"/-->
         <!--phase name="userphase1"/-->
         <!--phase name="PolicyDetermination"/-->
-        <!--phase name="MessageOut"/-->
+        <phase name="MessageOut"/>
     </phaseOrder>
 </axisconfig>
 

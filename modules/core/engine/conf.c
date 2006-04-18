@@ -1478,7 +1478,7 @@ axis2_conf_set_phases_info(axis2_conf_t *conf,
         config_impl->phases_info = NULL;
     }
     config_impl->phases_info = phases_info;
-    config_impl->out_faultphases = AXIS2_PHASES_INFO_GET_OUT_FAULTPHASES(phases_info, env); 
+    /*config_impl->out_faultphases = AXIS2_PHASES_INFO_GET_OP_OUT_FAULTPHASES(phases_info, env); */
     return AXIS2_SUCCESS;
 }
 

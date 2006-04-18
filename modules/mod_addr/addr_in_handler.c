@@ -80,11 +80,11 @@ axis2_status_t axis2_addr_in_extract_addr_submission_info(axis2_env_t **env,
         axis2_array_list_t *addr_headers,
         axis2_msg_ctx_t *msg_ctx);
 
-axis2_soap_envelope_t *
+void 
 axis2_addr_in_create_fault_envelope(axis2_env_t **env,
         axis2_char_t *header_name,
         axis2_char_t *addr_ns_str,
-        int soap_version);
+        axis2_msg_ctx_t *msg_ctx);
 
 /******************************************************************************/                         
 
@@ -287,7 +287,12 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
     axis2_hash_t *header_block_ht = NULL;
     axis2_hash_index_t *hash_index =  NULL;
     axis2_msg_info_headers_t *msg_info_headers = *(msg_info_headers_p);
+    axis2_status_t status = AXIS2_SUCCESS;
     axis2_bool_t to_found = AXIS2_FALSE;
+    axis2_bool_t reply_to_found = AXIS2_FALSE;
+    axis2_bool_t fault_to_found = AXIS2_FALSE;
+    axis2_bool_t action_found = AXIS2_FALSE;
+    axis2_bool_t msg_id_found = AXIS2_FALSE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, soap_header, AXIS2_FAILURE);
@@ -327,26 +332,20 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
         {
              /* here the addressing epr overidde what ever already there in the message context */   
                 
-                epr = axis2_endpoint_ref_create(env, AXIS2_OM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node));
-                if (to_found == AXIS2_TRUE)
-                {
-                    /* Duplicate To */
-                    int soap_version = AXIS2_SOAP12;
-                    axis2_soap_envelope_t *envelope = NULL;
-                    if (AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
-                    {
-                        soap_version = AXIS2_SOAP11;
-                    }
-                    envelope = axis2_addr_in_create_fault_envelope(env, 
-                            "wsa:To", addr_ns_str, soap_version);
-                    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, envelope);
-                    return AXIS2_FAILURE;
-                }
-                AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, epr);
-                
-                axis2_addr_in_extract_to_epr_ref_params(env, epr, soap_header, addr_ns_str);
-                AXIS2_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);
-                to_found = AXIS2_TRUE;
+            epr = axis2_endpoint_ref_create(env, AXIS2_OM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node));
+            if (to_found == AXIS2_TRUE)
+            {
+                /* Duplicate To */
+                axis2_addr_in_create_fault_envelope(env, 
+                        "wsa:To", addr_ns_str, msg_ctx);
+                status = AXIS2_FAILURE;
+                continue;
+            }
+            AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, epr);
+            
+            axis2_addr_in_extract_to_epr_ref_params(env, epr, soap_header, addr_ns_str);
+            AXIS2_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);
+            to_found = AXIS2_TRUE;
         }
         else if(AXIS2_STRCMP(ele_localname, AXIS2_WSA_FROM) == 0)
         {
@@ -355,7 +354,6 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
                 {
                     /* I don't know the address now. Let me pass the empty 
                         string now and fill this once I process the Elements under this. */
-                    
                     
                     epr = axis2_endpoint_ref_create(env, "");
                     AXIS2_MSG_INFO_HEADERS_SET_FROM(msg_info_headers, env, epr);
@@ -366,6 +364,16 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
         else if( AXIS2_STRCMP(ele_localname, AXIS2_WSA_REPLY_TO) == 0)
         {
             epr = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(msg_info_headers, env);
+            
+            if (reply_to_found == AXIS2_TRUE)
+            {
+                /* Duplicate Reply To */
+                axis2_addr_in_create_fault_envelope(env, 
+                        "wsa:ReplyTo", addr_ns_str, msg_ctx);
+                status = AXIS2_FAILURE;
+                continue;
+            }
+            
             if(!epr)
             {
                 epr = axis2_endpoint_ref_create(env, "");
@@ -373,10 +381,22 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
             }
             axis2_addr_in_extract_epr_information(env, header_block, epr, addr_ns_str);
             AXIS2_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);
+            reply_to_found = AXIS2_TRUE;
         }
         else if(AXIS2_STRCMP(ele_localname, AXIS2_WSA_FAULT_TO) == 0)
         {
             epr = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(msg_info_headers , env);
+            
+            if (fault_to_found == AXIS2_TRUE)
+            {
+                /* Duplicate Fault To */
+                axis2_addr_in_create_fault_envelope(env, 
+                        "wsa:FaultTo", addr_ns_str, msg_ctx);
+                status = AXIS2_FAILURE;
+                AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(msg_info_headers, env, NULL);
+                continue;
+            }
+            
             if(!epr)
             {
                epr = axis2_endpoint_ref_create(env, "");
@@ -384,20 +404,43 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
              }                    
             axis2_addr_in_extract_epr_information(env, header_block, epr, addr_ns_str);
             AXIS2_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);         
+            fault_to_found = AXIS2_TRUE;
         }
         else if(AXIS2_STRCMP(ele_localname, AXIS2_WSA_MESSAGE_ID) == 0)
         {
             axis2_char_t *text = NULL;
+            
+            if (msg_id_found == AXIS2_TRUE)
+            {
+                /* Duplicate Message ID */
+                axis2_addr_in_create_fault_envelope(env, 
+                        "wsa:MessageID", addr_ns_str, msg_ctx);
+                status = AXIS2_FAILURE;
+                continue;
+            }
+            
             text = AXIS2_OM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node);
             AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, text);
             AXIS2_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);              
+            msg_id_found = AXIS2_TRUE;
         }
         else if(AXIS2_STRCMP(ele_localname, AXIS2_WSA_ACTION) == 0)
         {
             axis2_char_t *text = NULL;
+            
+            if (action_found == AXIS2_TRUE)
+            {
+                /* Duplicate Action */
+                axis2_addr_in_create_fault_envelope(env, 
+                        "wsa:Action", addr_ns_str, msg_ctx);
+                status = AXIS2_FAILURE;
+                continue;
+            }
+            
             text = AXIS2_OM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node);
             AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, env, text); 
             AXIS2_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);       
+            action_found = AXIS2_TRUE;
         }
         else if(AXIS2_STRCMP(ele_localname, AXIS2_WSA_RELATES_TO) == 0)
         {
@@ -438,7 +481,15 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
             AXIS2_QNAME_FREE(rqn, env);
         }
      }
-     return AXIS2_SUCCESS;
+    
+    if (action_found == AXIS2_FALSE) /* Check is an action was found */
+    {
+        axis2_addr_in_create_fault_envelope(env, 
+                "wsa:Action", addr_ns_str, msg_ctx);
+        status = AXIS2_FAILURE;
+    }
+    
+    return status;
 }
 
 axis2_status_t 
@@ -683,15 +734,21 @@ axis2_addr_in_check_element(axis2_env_t **env,
         (AXIS2_STRCMP(exp_qn_nsuri,act_qn_nsuri) == 0));
 }
 
-axis2_soap_envelope_t *
+void 
 axis2_addr_in_create_fault_envelope(axis2_env_t **env,
         axis2_char_t *header_name,
         axis2_char_t *addr_ns_str,
-        int soap_version)
+        axis2_msg_ctx_t *msg_ctx)
 {
     axis2_soap_envelope_t *envelope = NULL;
     axis2_array_list_t *sub_codes = NULL;
+    int soap_version = AXIS2_SOAP12;
 
+    if (AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
+    {
+        soap_version = AXIS2_SOAP11;
+    }
+    
     axis2_om_node_t* text_om_node = NULL;
     axis2_om_element_t * text_om_ele = NULL;
     axis2_om_namespace_t *ns1 = NULL;
@@ -710,6 +767,9 @@ axis2_addr_in_create_fault_envelope(axis2_env_t **env,
             "soapenv:Sender", 
             "A header representing a Message Addressing Property is not valid and the message cannot be processed",
             soap_version, sub_codes, text_om_node);
-    return envelope;            
+    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, envelope);
+    AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env,
+            "http://www.w3.org/2005/08/addressing/fault");
+    return;
 }
 

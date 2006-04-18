@@ -23,6 +23,7 @@
 #include <axis2_soap_fault.h>
 #include <axis2_transport_sender.h>
 #include <axis2_http_transport.h>
+#include <axis2_addr.h>
 
 /**
  * There is only one engine for the Server and the Client. the send() and receive()
@@ -336,6 +337,7 @@ axis2_engine_receive(struct axis2_engine *engine,
     axis2_op_t *op = NULL;
     axis2_array_list_t *pre_calculated_phases = NULL;
     axis2_array_list_t *op_specific_phases = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -376,7 +378,12 @@ axis2_engine_receive(struct axis2_engine *engine,
     } 
     else 
     {
-        axis2_engine_invoke_phases(engine, env, pre_calculated_phases, msg_ctx);
+        status = axis2_engine_invoke_phases(engine, env, pre_calculated_phases, msg_ctx);
+        if (status != AXIS2_SUCCESS)
+        {
+            if (AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env))
+                return status;
+        }
 
         if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
         {
@@ -389,7 +396,12 @@ axis2_engine_receive(struct axis2_engine *engine,
         {
             op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
             op_specific_phases = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(op, env);
-            axis2_engine_invoke_phases(engine, env, op_specific_phases, msg_ctx);
+            status = axis2_engine_invoke_phases(engine, env, op_specific_phases, msg_ctx);
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
+                                        
             if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
             {
                 return AXIS2_SUCCESS;
@@ -456,7 +468,7 @@ axis2_engine_send_fault(struct axis2_engine *engine,
         axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_transport_sender_t *transport_sender = NULL;
 
-        /*conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+        conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
             axis2_conf_t *conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
@@ -468,7 +480,7 @@ axis2_engine_send_fault(struct axis2_engine *engine,
                     axis2_engine_invoke_phases(engine, env, phases, msg_ctx);
                  }
             }
-        }*/
+        }
         
         axis2_transport_out_desc_t *transport_out = AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env);
         
@@ -561,7 +573,11 @@ axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine,
     axis2_endpoint_ref_t *fault_to = NULL;
     axis2_property_t *property = NULL;
     axis2_soap_envelope_t *envelope = NULL;
-    
+    axis2_char_t *wsa_action = NULL;
+    axis2_char_t *msg_id = NULL;
+    axis2_relates_to_t *relates_to = NULL;
+    axis2_char_t *msg_uuid = NULL;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, processing_context, AXIS2_FAILURE);
     
@@ -600,6 +616,29 @@ axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine,
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NOWHERE_TO_SEND_FAULT, AXIS2_FAILURE);
             return NULL;
         }
+    }
+
+    /* set soap action */
+    wsa_action = AXIS2_MSG_CTX_GET_SOAP_ACTION(processing_context, env);
+    if (!wsa_action)
+    {
+        wsa_action = "http://www.w3.org/2005/08/addressing/fault";
+    }
+    AXIS2_MSG_CTX_SET_WSA_ACTION(fault_ctx, env, wsa_action);
+
+    /* set relates to */
+    msg_id = AXIS2_MSG_CTX_GET_MSG_ID(processing_context, env);
+    relates_to = axis2_relates_to_create(env, msg_id,
+            AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE);
+    AXIS2_MSG_CTX_SET_RELATES_TO(fault_ctx, env, relates_to);
+    
+    /* set msg id */
+    msg_uuid =  axis2_uuid_gen(env);
+    AXIS2_MSG_CTX_SET_MESSAGE_ID(fault_ctx, env, msg_uuid);
+    if(NULL != msg_uuid)
+    {
+        AXIS2_FREE((*env)->allocator, msg_uuid);
+        msg_uuid = NULL;
     }
 
     AXIS2_MSG_CTX_SET_OP_CTX(fault_ctx, env, AXIS2_MSG_CTX_GET_OP_CTX(processing_context, env));
@@ -790,6 +829,8 @@ axis2_engine_invoke_phases(struct axis2_engine *engine,
 {
     int i = 0;
     int count = 0;
+    axis2_status_t status = AXIS2_SUCCESS;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, phases, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);    
@@ -803,7 +844,11 @@ axis2_engine_invoke_phases(struct axis2_engine *engine,
         AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
             "Invoking phase %s", AXIS2_PHASE_GET_NAME(phase, env));
         
-        AXIS2_PHASE_INVOKE(phase, env, msg_ctx);
+        status = AXIS2_PHASE_INVOKE(phase, env, msg_ctx);
+        if (status != AXIS2_SUCCESS)
+        {
+            return status;
+        }
     }
     return AXIS2_SUCCESS;
 }

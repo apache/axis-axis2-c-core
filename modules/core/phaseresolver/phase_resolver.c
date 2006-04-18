@@ -425,10 +425,10 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             }
            
             
-            if(!all_handlers)
+            /*if(!all_handlers)
             {
                 return AXIS2_FAILURE;
-            }
+            }*/
 
             for (j = 0; j < count; j++) 
             {
@@ -439,7 +439,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
                 metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
                 phase_rule = AXIS2_HANDLER_DESC_GET_RULES(metadata, env);
                 phase_name = AXIS2_PHASE_RULE_GET_NAME(phase_rule, env);
-                if(NULL != phase_name)
+                if(NULL == phase_name)
                 {
                     return AXIS2_FAILURE;
                 }
@@ -1424,10 +1424,10 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
                 {
                     return AXIS2_FAILURE;
                 }
-                if ((0 == AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) ||
-                    (0 == AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) ||
-                    (0 == AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
-                    (0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                /*if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) &&
+                    (0 != AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) &&
+                    (0 != AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
+                    (0 != AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))*/
                 {
                     status = AXIS2_PHASE_HOLDER_ADD_HANDLER(resolver_impl->
                         phase_holder, env, metadata);
@@ -1437,7 +1437,7 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
                     }
           
                 } 
-                else 
+                /*else 
                 {
                     /**
                      * These handlers will go to op's handler chains , since 
@@ -1446,7 +1446,7 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
                      * that. here the global module are the module which are
                      * reffred by axis2.xml
                      */
-                }
+                /*}*/
             }
         }
     }
