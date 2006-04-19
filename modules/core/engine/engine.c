@@ -24,6 +24,7 @@
 #include <axis2_transport_sender.h>
 #include <axis2_http_transport.h>
 #include <axis2_addr.h>
+#include <axis2_uuid_gen.h>
 
 /**
  * There is only one engine for the Server and the Client. the send() and receive()
@@ -467,7 +468,7 @@ axis2_engine_send_fault(struct axis2_engine *engine,
         /* send the SOAP Fault*/
         axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_transport_sender_t *transport_sender = NULL;
-
+        axis2_transport_out_desc_t *transport_out  = NULL;
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
@@ -482,7 +483,7 @@ axis2_engine_send_fault(struct axis2_engine *engine,
             }
         }
         
-        axis2_transport_out_desc_t *transport_out = AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env);
+        transport_out = AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env);
         
         if (transport_out)
             transport_sender = AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out, env);

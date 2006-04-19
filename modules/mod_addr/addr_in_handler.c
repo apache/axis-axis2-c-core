@@ -739,15 +739,16 @@ axis2_addr_in_create_fault_envelope(axis2_env_t **env,
     axis2_soap_envelope_t *envelope = NULL;
     axis2_array_list_t *sub_codes = NULL;
     int soap_version = AXIS2_SOAP12;
+    axis2_om_node_t* text_om_node = NULL;
+    axis2_om_element_t * text_om_ele = NULL;
+    axis2_om_namespace_t *ns1 = NULL;
 
     if (AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
     {
         soap_version = AXIS2_SOAP11;
     }
     
-    axis2_om_node_t* text_om_node = NULL;
-    axis2_om_element_t * text_om_ele = NULL;
-    axis2_om_namespace_t *ns1 = NULL;
+
     ns1 = axis2_om_namespace_create (env, addr_ns_str, "wsa");
     text_om_ele = axis2_om_element_create(env, NULL, "ProblemHeaderQName", ns1, &text_om_node);
     AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, header_name, text_om_node);

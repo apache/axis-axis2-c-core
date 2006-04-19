@@ -151,9 +151,9 @@ struct axis2_soap_envelope
 };
 
  /**
-  * creates a soap envelope struct with empty values 
-  * Indended to be uaed by soap_builder
   * @param env Environment. MUST NOT be NULL
+  * create a soap_envelope with the given namespace prefix and uri
+  * as the prefix and uri, The uri of ns should be valid soap uri
   */
 AXIS2_DECLARE(axis2_soap_envelope_t*)
 axis2_soap_envelope_create(axis2_env_t **env, 
