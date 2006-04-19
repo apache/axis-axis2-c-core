@@ -141,7 +141,10 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
 
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS (msg_ctx, env);
     if (!msg_info_headers)
-        return AXIS2_FAILURE;
+        return AXIS2_SUCCESS; /* no addressing in use */
+    if (!AXIS2_MSG_INFO_HEADERS_GET_ACTION (msg_info_headers, env))
+        return AXIS2_SUCCESS; /* If no action present, assume no addressing in use */
+
 
     ctx = AXIS2_MSG_CTX_GET_BASE (msg_ctx, env);
     property =

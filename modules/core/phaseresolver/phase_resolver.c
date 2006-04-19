@@ -677,8 +677,11 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             
         metadata = (axis2_handler_desc_t *)
             AXIS2_ARRAY_LIST_GET(all_handlers, env, i);
-        status = AXIS2_PHASE_HOLDER_ADD_HANDLER(resolver_impl->phase_holder, 
-            env, metadata);
+        if (resolver_impl->phase_holder)
+        {
+            status = AXIS2_PHASE_HOLDER_ADD_HANDLER(resolver_impl->phase_holder, 
+                env, metadata);
+        }
     }
     
     /* Free the locally created all_handlers list */
