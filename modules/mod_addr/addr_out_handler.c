@@ -261,7 +261,15 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                     axis2_endpoint_ref_t *fault_epr = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO (msg_info_headers, env); 
                     if (fault_epr)
                     {
-                        AXIS2_ENDPOINT_REF_SET_ADDRESS (epr, env, AXIS2_ENDPOINT_REF_GET_ADDRESS (fault_epr, env));
+                        axis2_char_t *fault_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(fault_epr, env);
+                        if (fault_address)
+                        {
+                            if (AXIS2_STRCMP(AXIS2_WSA_NONE_URL, fault_address) != 0 &&
+                                    AXIS2_STRCMP(AXIS2_WSA_NONE_URL_SUBMISSION, fault_address) != 0)
+                            {
+                                AXIS2_ENDPOINT_REF_SET_ADDRESS (epr, env, fault_address);
+                            }
+                        }
                     }
                 }
             }

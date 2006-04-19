@@ -255,10 +255,19 @@ axis2_http_transport_sender_invoke
     }
 	if(NULL != epr)
 	{
-		axis2_http_transport_sender_write_message(transport_sender, env, msg_ctx
+        if (AXIS2_STRCMP(AXIS2_WSA_NONE_URL_SUBMISSION, AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env)) == 0 || 
+                AXIS2_STRCMP(AXIS2_WSA_NONE_URL, AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env)) ==0 )
+        {
+            epr = NULL;
+        }
+        else
+        {
+    		axis2_http_transport_sender_write_message(transport_sender, env, msg_ctx
 							, epr, soap_data_out, om_output);
+        }    
 	}
-	else
+	
+    if (!epr)
 	{
 		axis2_stream_t *out_stream = NULL;
         

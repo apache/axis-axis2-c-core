@@ -23,6 +23,8 @@
 #include <axis2_engine.h>
 #include <axis2_core_utils.h>
 #include <axis2_property.h>
+#include <axis2_soap_envelope.h>
+#include <axis2_soap_body.h>
 
 /** 
  * @brief Message Receiver struct impl
@@ -420,11 +422,30 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
         AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
         return AXIS2_FAILURE;
     }       
-    if (AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(out_msg_ctx, env) || AXIS2_ERROR_GET_STATUS_CODE((*env)->error) != AXIS2_SUCCESS )
+    if (AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(out_msg_ctx, env))
     {
-        /* if it is two way or if there is a fault then send through engine.
-           if it is one way we do not need to do an engine send */
-        status = AXIS2_ENGINE_SEND(engine, env, out_msg_ctx);
+        axis2_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE (out_msg_ctx, env);
+        if (soap_envelope)
+        {
+            axis2_soap_body_t *body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+            if (body)
+            {
+                /* in case of a SOAP fault, we got to return failure so that 
+                   transport gets to know that it should send 500 */
+                if (AXIS2_SOAP_BODY_HAS_FAULT(body, env))
+                {
+                    status = AXIS2_FAILURE;
+                    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
+                    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(out_msg_ctx, env, NULL);
+                }
+                else
+                {
+                    /* if it is two way and not a fault then send through engine.
+                       if it is one way we do not need to do an engine send */
+                    status = AXIS2_ENGINE_SEND(engine, env, out_msg_ctx);
+                }
+            }
+        }
     }
     AXIS2_ENGINE_FREE(engine, env);
     axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);

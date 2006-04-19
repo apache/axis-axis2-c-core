@@ -338,6 +338,7 @@ axis2_engine_receive(struct axis2_engine *engine,
     axis2_op_t *op = NULL;
     axis2_array_list_t *pre_calculated_phases = NULL;
     axis2_array_list_t *op_specific_phases = NULL;
+    axis2_soap_envelope_t *soap_envelope = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -422,10 +423,34 @@ axis2_engine_receive(struct axis2_engine *engine,
             AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Message receiver not set in operation description");
             return AXIS2_FAILURE;
         }
-        AXIS2_MSG_RECV_RECEIVE(receiver, env, msg_ctx, receiver->derived);        
+        status = AXIS2_MSG_RECV_RECEIVE(receiver, env, msg_ctx, receiver->derived);        
+    }
+    else
+    {
+        status = AXIS2_SUCCESS;
     }
     AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Axis2 engine receive successful");
-    return AXIS2_SUCCESS;
+
+    /*soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE (msg_ctx, env);
+    if (soap_envelope)
+    {
+        axis2_soap_body_t *body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+        if (body)
+        {
+            /* in case of a SOAP fault, we got to return failure so that 
+               transport gets to know that it should send 500 */
+      /*      if (AXIS2_SOAP_BODY_HAS_FAULT(body, env))
+            {
+                status = AXIS2_FAILURE;
+                AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
+            }
+            else
+            {
+                status = AXIS2_SUCCESS;
+            }
+        }
+    }*/
+    return status;
 }
 
 /**
@@ -572,6 +597,7 @@ axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine,
     axis2_msg_ctx_t *fault_ctx = NULL;
     axis2_engine_impl_t *engine_impl = NULL;
     axis2_endpoint_ref_t *fault_to = NULL;
+    axis2_endpoint_ref_t *reply_to = NULL;
     axis2_property_t *property = NULL;
     axis2_soap_envelope_t *envelope = NULL;
     axis2_char_t *wsa_action = NULL;
@@ -600,9 +626,32 @@ axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine,
     fault_to = AXIS2_MSG_CTX_GET_FAULT_TO(processing_context, env);
     if (fault_to)
     {
-        AXIS2_MSG_CTX_SET_FAULT_TO(fault_ctx, env, fault_to);
+        axis2_char_t *address = AXIS2_ENDPOINT_REF_GET_ADDRESS(fault_to, env);
+        if (!address)
+        {
+            fault_to = NULL;
+        }
+        else if (AXIS2_STRCMP(AXIS2_WSA_NONE_URL, address) == 0 ||
+            AXIS2_STRCMP(AXIS2_WSA_NONE_URL_SUBMISSION, address) == 0)
+        {
+            reply_to = AXIS2_MSG_CTX_GET_REPLY_TO(processing_context, env);
+            if (reply_to)
+            {
+               AXIS2_MSG_CTX_SET_FAULT_TO(fault_ctx, env, reply_to); 
+            }
+            else
+            {
+                AXIS2_MSG_CTX_SET_FAULT_TO(fault_ctx, env, fault_to);
+            }
+        }
+        else
+        {
+            AXIS2_MSG_CTX_SET_FAULT_TO(fault_ctx, env, fault_to);
+        }
+        
     }
-    else
+    
+    if (!fault_to)
     {
         property = AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, 
                 AXIS2_TRANSPORT_OUT, AXIS2_FALSE);

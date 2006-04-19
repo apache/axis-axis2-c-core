@@ -83,6 +83,19 @@ axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
     }
     reply_to = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(old_msg_info_headers, env);
     AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, reply_to);
+    /*if (reply_to)
+    {
+        axis2_endpoint_ref_t *epr = NULL;
+        axis2_char_t *address = NULL;
+
+        address = AXIS2_ENDPOINT_REF_GET_ADDRESS (endpoint_ref, env);
+        if (address)
+        {
+            epr = axis2_endpoint_ref_create (env, address);
+            AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(msg_info_headers, env, epr);
+        }
+    }*/
+        
     
     fault_to = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(old_msg_info_headers, env);
     AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(msg_info_headers, env, fault_to);
