@@ -21,6 +21,8 @@
 #include <axis2_soap_envelope.h>
 #include <axis2_soap_body.h>
 #include <axis2_soap_fault.h>
+#include <axis2_soap_header.h>
+#include <axis2_soap_header_block.h>
 #include <axis2_transport_sender.h>
 #include <axis2_http_transport.h>
 #include <axis2_addr.h>
@@ -111,6 +113,8 @@ axis2_status_t AXIS2_CALL
 axis2_engine_free(struct axis2_engine *engine, 
                   axis2_env_t **env);
     
+axis2_status_t axis2_engine_check_must_understand_headers(axis2_env_t **env,
+        axis2_msg_ctx_t *msg_ctx);
 
 AXIS2_DECLARE(axis2_engine_t*)
 axis2_engine_create(axis2_env_t **env, 
@@ -414,6 +418,11 @@ axis2_engine_receive(struct axis2_engine *engine,
     if ( (AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env)) && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))) 
     {
         axis2_msg_recv_t *receiver = NULL;
+       
+        status = axis2_engine_check_must_understand_headers(env, msg_ctx);
+        if (status != AXIS2_SUCCESS)
+            return status;
+        
         /* invoke the Message Receivers */
         if (!op)
             return AXIS2_FAILURE;
@@ -431,25 +440,6 @@ axis2_engine_receive(struct axis2_engine *engine,
     }
     AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Axis2 engine receive successful");
 
-    /*soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE (msg_ctx, env);
-    if (soap_envelope)
-    {
-        axis2_soap_body_t *body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
-        if (body)
-        {
-            /* in case of a SOAP fault, we got to return failure so that 
-               transport gets to know that it should send 500 */
-      /*      if (AXIS2_SOAP_BODY_HAS_FAULT(body, env))
-            {
-                status = AXIS2_FAILURE;
-                AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
-            }
-            else
-            {
-                status = AXIS2_SUCCESS;
-            }
-        }
-    }*/
     return status;
 }
 
@@ -651,22 +641,20 @@ axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine,
         
     }
     
-    if (!fault_to)
+    property = AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, 
+            AXIS2_TRANSPORT_OUT, AXIS2_FALSE);
+    if(property)
     {
-        property = AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, 
-                AXIS2_TRANSPORT_OUT, AXIS2_FALSE);
-        if(property)
-        {
-            AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_TRANSPORT_OUT, property, 
-                AXIS2_FALSE); 
-            property = NULL;
-        }
-        else 
-        {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NOWHERE_TO_SEND_FAULT, AXIS2_FAILURE);
-            return NULL;
-        }
+        AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_TRANSPORT_OUT, property, 
+            AXIS2_FALSE); 
     }
+   
+    if (!fault_to && !property)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NOWHERE_TO_SEND_FAULT, AXIS2_FAILURE);
+        return NULL;
+    }
+    property = NULL;
 
     /* set soap action */
     wsa_action = AXIS2_MSG_CTX_GET_SOAP_ACTION(processing_context, env);
@@ -978,3 +966,93 @@ axis2_engine_get_receiver_fault_code(struct axis2_engine *engine,
         return AXIS2_SOAP11_FAULT_CODE_RECEIVER;
     return NULL;
 }
+
+axis2_status_t axis2_engine_check_must_understand_headers(axis2_env_t **env,
+        axis2_msg_ctx_t *msg_ctx) 
+{
+    axis2_soap_envelope_t *soap_envelope = NULL;
+    axis2_soap_header_t *soap_header = NULL;
+    axis2_hash_t *header_block_ht = NULL;
+    axis2_hash_index_t *hash_index = NULL;
+    axis2_qname_t *wsa_qname = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+
+    soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    if (!soap_envelope)
+        return AXIS2_FAILURE;
+
+    soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
+    if (!soap_header)
+        return AXIS2_SUCCESS;
+
+    header_block_ht = AXIS2_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(soap_header, env);
+    if(!header_block_ht)
+        return AXIS2_SUCCESS;            
+    
+    for(hash_index = axis2_hash_first(header_block_ht, env); hash_index;
+            hash_index = axis2_hash_next(env, hash_index))
+    {   
+        void *hb = NULL;
+        axis2_soap_header_block_t *header_block = NULL;
+        axis2_char_t *role = NULL;
+        
+        axis2_hash_this(hash_index, NULL, NULL, &hb);
+        header_block = (axis2_soap_header_block_t *)hb;
+
+        if (header_block)
+        {
+            if (AXIS2_SOAP_HEADER_BLOCK_IS_PROCESSED(header_block , env) ||
+                    AXIS2_SOAP_HEADER_BLOCK_GET_MUST_UNDERSTAND(header_block, env))
+            {
+                continue;
+            }
+            
+            /* if this header block is not targetted to me then its not my
+               problem. Currently this code only supports the "next" role; we
+               need to fix this to allow the engine/service to be in one or more
+               additional roles and then to check that any headers targetted for
+               that role too have been dealt with. */
+            role = AXIS2_SOAP_HEADER_BLOCK_GET_ROLE(header_block, env);
+            
+            if (AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) != AXIS2_TRUE )
+            {
+                /* SOAP 1.2 */
+                if (!role || AXIS2_STRCMP(role, AXIS2_SOAP12_SOAP_ROLE_NEXT) != 0 )
+                {
+                    axis2_soap_envelope_t *temp_env = 
+                            axis2_soap_envelope_create_default_soap_fault_envelope(env,
+                                    "soapenv:MustUnderstand",
+                                    "Header not understood",
+                                    AXIS2_SOAP12, NULL, NULL);
+                    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, temp_env);
+                    AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env,
+                             "http://www.w3.org/2005/08/addressing/fault");
+                    return AXIS2_FAILURE;
+                }
+            }
+            else
+            {
+                /* SOAP 1.1 */
+                if (!role || AXIS2_STRCMP(role, AXIS2_SOAP11_SOAP_ACTOR_NEXT) != 0 )
+                {
+                    axis2_soap_envelope_t *temp_env = 
+                            axis2_soap_envelope_create_default_soap_fault_envelope(env,
+                                    "soapenv:MustUnderstand",
+                                    "Header not understood",
+                                    AXIS2_SOAP11, NULL, NULL);
+                    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, temp_env);
+                    AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env,
+                             "http://www.w3.org/2005/08/addressing/fault");
+                    return AXIS2_FAILURE;
+                }
+
+            }
+            
+        }
+    }
+
+    return AXIS2_SUCCESS;
+}
+

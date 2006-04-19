@@ -765,7 +765,7 @@ axis2_addr_in_create_fault_envelope(axis2_env_t **env,
             "A header representing a Message Addressing Property is not valid and the message cannot be processed",
             soap_version, sub_codes, text_om_node);
     AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, envelope);
-    AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env,
+    AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env,
             "http://www.w3.org/2005/08/addressing/fault");
     return;
 }
