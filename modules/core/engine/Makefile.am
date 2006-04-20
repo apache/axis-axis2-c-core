@@ -71,7 +71,6 @@ libaxis2_engine_la_SOURCES = handler.c \
 				                ../transport/http/http_request_line.c\
 				                ../transport/http/http_status_line.c\
 				                ../transport/http/http_header.c\
-                                ../transport/http/url.c\
                                 ../transport/http/http_out_transport_info.c\
                                 ../transport/http/http_chunked_stream.c
 
