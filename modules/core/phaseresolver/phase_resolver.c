@@ -476,11 +476,12 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
         }
 
     }
+
     
     /**************************************************************************/
     /************************** SERVICE HANDLERS ******************************/
     /**************************************************************************/
-    
+    flow = NULL; 
     switch (type) 
     {
             
@@ -607,7 +608,8 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             }
         }
     }
-    else
+    
+    else if (!all_handlers)
     {
         /* no flows configured */
         return AXIS2_SUCCESS;

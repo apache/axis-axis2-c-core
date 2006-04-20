@@ -1362,10 +1362,10 @@ axis2_call_assume_svc_ctx(axis2_call_t *call,
         AXIS2_QNAME_FREE(qtemp_op, env);
         info = AXIS2_CONF_GET_PHASESINFO(conf, env);
         /* to set the operation flows */
-        if(info != NULL)
+        /*if(info != NULL)
         {
             AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, call_impl->op_template);
-        }
+        }*/
         AXIS2_SVC_ADD_OP(axis_svc, env, call_impl->op_template);
         AXIS2_CONF_ADD_SVC(conf, env, axis_svc);
     }

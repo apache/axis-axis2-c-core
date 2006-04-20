@@ -937,7 +937,8 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
         /* notifyObservers(AxisEvent.SERVICE_DEPLOY ,description); */
         index_i = axis2_hash_next(env, index_i);
     }
-    size = AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules, env);
+    
+    /*size = AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules, env);
     while(i < size)
     {
         axis2_qname_t *module_desc = NULL;
@@ -950,7 +951,7 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
             return status;
         }
         i++;    
-    }
+    }*/
 
     svc_grp_name = AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
     if(!config_impl->svc_grps)
