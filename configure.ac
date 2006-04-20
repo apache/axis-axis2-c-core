@@ -231,6 +231,7 @@ AC_CONFIG_FILES([Makefile \
     modules/util/Makefile \
     modules/platforms/unix/Makefile \
     modules/wsdl/Makefile \
+    modules/wsdl/woden/Makefile \
     modules/wsdl/builder/Makefile \
     modules/mod_addr/Makefile \
     test/Makefile \
