@@ -10,7 +10,6 @@ libaxis2_http_la_SOURCES = \
 				                http_request_line.c\
 				                http_status_line.c\
 				                http_header.c\
-                                url.c\
                                 http_out_transport_info.c\
                                 http_chunked_stream.c
 

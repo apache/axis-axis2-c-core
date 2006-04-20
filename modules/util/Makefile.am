@@ -25,6 +25,7 @@ libaxis2_util_la_SOURCES = hash.c \
 						param.c \
 						param_container.c \
 						dll_desc.c\
+						url.c\
                         stack.c
 
 INCLUDES = -I$(top_builddir)/include \
