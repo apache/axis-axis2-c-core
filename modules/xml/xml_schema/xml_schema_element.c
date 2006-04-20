@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_element.h>
-#include <axis2_xml_schema_annotation.h>
-#include <axis2_xml_schema_type_receiver.h>
-#include <axis2_xml_schema_particle.h>
-#include <axis2_xml_schema_derivation_method.h>
-#include <axis2_xml_schema_obj_collection.h>
-#include <axis2_xml_schema_type.h>
-#include <axis2_xml_schema_form.h>
+#include <xml_schema/axis2_xml_schema_element.h>
+#include <xml_schema/axis2_xml_schema_annotation.h>
+#include <xml_schema/axis2_xml_schema_type_receiver.h>
+#include <xml_schema/axis2_xml_schema_particle.h>
+#include <xml_schema/axis2_xml_schema_derivation_method.h>
+#include <xml_schema/axis2_xml_schema_obj_collection.h>
+#include <xml_schema/axis2_xml_schema_type.h>
+#include <xml_schema/axis2_xml_schema_form.h>
 
 typedef struct axis2_xml_schema_element_impl axis2_xml_schema_element_impl_t;
 

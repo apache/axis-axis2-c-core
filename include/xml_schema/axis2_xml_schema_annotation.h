@@ -22,7 +22,7 @@
  * @brief Axis2 Xml Schema Annotation Interface
  */
 
-#include <axis2_xml_schema_obj.h>
+#include <xml_schema/axis2_xml_schema_obj.h>
 #include <axis2_hash.h>
 
 /** @defgroup axis2_xml_schema_annotation Xml Schema Annotation

@@ -25,7 +25,7 @@
  *
  */
 
-#include <axis2_xml_schema_obj.h>
+#include <xml_schema/axis2_xml_schema_obj.h>
 #include <axis2_hash.h>
 
 /** @defgroup axis2_xml_schema_app_info Xml Schema App Info

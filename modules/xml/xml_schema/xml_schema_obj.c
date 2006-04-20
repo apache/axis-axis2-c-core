@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <axis2_xml_schema_obj.h>
+#include <xml_schema/axis2_xml_schema_obj.h>
 #include <axis2_hash.h>
 
 typedef struct axis2_xml_schema_obj_impl axis2_xml_schema_obj_impl_t;

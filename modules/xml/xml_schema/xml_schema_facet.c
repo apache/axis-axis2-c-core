@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_facet.h>
+#include <xml_schema/axis2_xml_schema_facet.h>
 
 typedef struct axis2_xml_schema_facet_impl axis2_xml_schema_facet_impl_t;
 

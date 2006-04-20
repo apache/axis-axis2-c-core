@@ -23,7 +23,7 @@
  *          Base class for all particle types.
  */
 
-#include <axis2_xml_schema_annotated.h>
+#include <xml_schema/axis2_xml_schema_annotated.h>
 #include <axis2_hash.h>
 
 /** @defgroup axis2_xml_schema_particle Xml Schema Particle

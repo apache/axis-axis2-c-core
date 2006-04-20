@@ -24,7 +24,7 @@
  *          derived by restriction.
  */
 
-#include <axis2_xml_schema_annotated.h>
+#include <xml_schema/axis2_xml_schema_annotated.h>
 #include <axis2_om_element.h>
 #include <axis2_om_node.h>
 #include <axis2_hash.h>

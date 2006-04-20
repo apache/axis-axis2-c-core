@@ -26,7 +26,7 @@
  *          Represents the World Wide Web Consortium (W3C) group element.
  */
 
-#include <axis2_xml_schema_annotated.h>
+#include <xml_schema/axis2_xml_schema_annotated.h>
 #include <axis2_hash.h>
 
 /** @defgroup axis2_xml_schema_group Xml Schema Group

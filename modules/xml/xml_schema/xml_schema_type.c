@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_type.h>
-#include <axis2_xml_schema_data_type.h>
-#include <axis2_xml_schema_derivation_method.h>
-#include <axis2_xml_schema.h>
+#include <xml_schema/axis2_xml_schema_type.h>
+#include <xml_schema/axis2_xml_schema_data_type.h>
+#include <xml_schema/axis2_xml_schema_derivation_method.h>
+#include <xml_schema/axis2_xml_schema.h>
 
 typedef struct axis2_xml_schema_type_impl axis2_xml_schema_type_impl_t;
 

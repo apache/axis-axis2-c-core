@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_group_ref.h>
-#include <axis2_xml_schema_group_base.h>
+#include <xml_schema/axis2_xml_schema_group_ref.h>
+#include <xml_schema/axis2_xml_schema_group_base.h>
 
 typedef struct axis2_xml_schema_group_ref_impl axis2_xml_schema_group_ref_impl_t;
 

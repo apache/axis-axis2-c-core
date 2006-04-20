@@ -24,7 +24,7 @@
  *
  */
 
-#include <axis2_xml_schema_enum.h>
+#include <xml_schema/axis2_xml_schema_enum.h>
 
 /** @defgroup axis2_xml_schema_derivation_method Xml Schema Derivation Method
   * @ingroup axis2_xml_schema

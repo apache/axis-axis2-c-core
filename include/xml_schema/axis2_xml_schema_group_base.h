@@ -25,8 +25,8 @@
  *
  */
 
-#include <axis2_xml_schema_particle.h>
-#include <axis2_xml_schema_obj_collection.h>
+#include <xml_schema/axis2_xml_schema_particle.h>
+#include <xml_schema/axis2_xml_schema_obj_collection.h>
 
 /** @defgroup axis2_xml_schema_group_base Xml Schema Group Base
   * @ingroup axis2_xml_schema
