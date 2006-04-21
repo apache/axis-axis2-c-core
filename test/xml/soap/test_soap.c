@@ -175,7 +175,7 @@ int build_soap(axis2_env_t **env, char *filename,axis2_char_t *uri)
     om_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
     if(om_node)
     {
-        while(!(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env)))
+        while(!(AXIS2_OM_NODE_IS_COMPLETE(om_node, env)))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(soap_builder, env);
             if(status == AXIS2_FAILURE)
