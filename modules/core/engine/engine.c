@@ -1004,7 +1004,7 @@ axis2_status_t axis2_engine_check_must_understand_headers(axis2_env_t **env,
         if (header_block)
         {
             if (AXIS2_SOAP_HEADER_BLOCK_IS_PROCESSED(header_block , env) ||
-                    AXIS2_SOAP_HEADER_BLOCK_GET_MUST_UNDERSTAND(header_block, env))
+                    !AXIS2_SOAP_HEADER_BLOCK_GET_MUST_UNDERSTAND(header_block, env))
             {
                 continue;
             }

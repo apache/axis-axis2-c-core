@@ -144,8 +144,8 @@ axis2_callback_recv_free (struct axis2_callback_recv *callback_recv,
     
     if (callback_recv_impl->base)
     {
-        AXIS2_MSG_RECV_FREE(callback_recv_impl->base, env);
-        callback_recv_impl->base = NULL;
+        /*AXIS2_MSG_RECV_FREE(callback_recv_impl->base, env);
+        callback_recv_impl->base = NULL;*/
     }    
     
     if (callback_recv_impl->callback_map)
@@ -204,6 +204,7 @@ axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv,
     axis2_msg_info_headers_t *msg_info_headers = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    printf("axis2_callback_recv_receive\n");
     
     callback_recv_impl = AXIS2_INTF_TO_IMPL(msg_recv->derived);
     

@@ -154,8 +154,12 @@ AXIS2_DECLARE(axis2_mep_client_t*) axis2_mep_client_create(axis2_env_t **env,
     axis2_char_t *mep);
 
 axis2_msg_ctx_t* AXIS2_CALL 
-axis2_two_way_send(axis2_env_t **env, 
+axis2_mep_client_two_way_send(axis2_env_t **env, 
 				   axis2_msg_ctx_t *msg_ctx);
+
+axis2_msg_ctx_t* AXIS2_CALL 
+axis2_mep_client_receive(axis2_env_t **env, 
+                         axis2_msg_ctx_t *msg_ctx);
     
 /************************** Start of function macros **************************/
 

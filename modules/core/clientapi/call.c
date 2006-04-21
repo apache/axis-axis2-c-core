@@ -424,6 +424,16 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
         axis2_callback_t *callback = NULL;
         axis2_status_t status = AXIS2_FAILURE;
         
+        axis2_char_t *address = NULL;
+        axis2_char_t *epr_address = NULL;
+        property = axis2_property_create(env);
+        AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+        epr_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(call_impl->to, env);
+		address = AXIS2_STRDUP(epr_address, env);
+        AXIS2_PROPERTY_SET_VALUE(property, env, address);
+        AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
+                                    AXIS2_TRANSPORT_URL, property, AXIS2_FALSE);
+        
         long index = 0;
         /* This means doing a Request-Response invocation using two channels. 
         If the transport is a two way transport (e.g. http), only one channel is used
@@ -440,13 +450,23 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
         if (status != AXIS2_SUCCESS)
             return NULL;
         
-        index = call_impl->timeout_ms / 100;
+        index = call_impl->timeout_ms / 10;
         while (!(AXIS2_CALLBACK_GET_COMPLETE(callback, env))) 
         {
+            axis2_bool_t same_channel_processed = AXIS2_FALSE;
             /*wait till the reponse arrives*/
             if (index-- >= 0) 
             {
-                AXIS2_USLEEP(100);
+                AXIS2_USLEEP(10000);
+                if (!same_channel_processed)
+                {
+                    axis2_msg_ctx_t *response_msg_ctx =
+                            axis2_mep_client_receive(env, msg_ctx);
+                    if (response_msg_ctx)
+                        if (AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(response_msg_ctx, env))
+                            return response_msg_ctx;
+                    same_channel_processed = AXIS2_TRUE;
+                }
             } 
             else 
             {
@@ -454,6 +474,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
                 return NULL;
             }
         }
+        
         /* process the result of the invocation */
         if (AXIS2_CALLBACK_GET_ENVELOPE(callback, env))
         {
@@ -501,7 +522,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
         AXIS2_OP_REGISTER_OP_CTX(op, env, msg_ctx, op_ctx);
 
         /*Send the SOAP Message and receive a response */
-        response = axis2_two_way_send(env, msg_ctx);
+        response = axis2_mep_client_two_way_send(env, msg_ctx);
         if (!response)
             return NULL;
         
@@ -893,7 +914,7 @@ axis2_call_worker_func(axis2_thread_t *thd, void *data)
     AXIS2_MSG_CTX_SET_SVC_CTX(args_list->msg_ctx, thread_env, args_list->call_impl->svc_ctx);
 
     /* send the request and wait for reponse */
-    response = axis2_two_way_send(thread_env, args_list->msg_ctx);
+    response = axis2_mep_client_two_way_send(thread_env, args_list->msg_ctx);
     args_list->call_impl->async_result = axis2_async_result_create(thread_env, response);
     AXIS2_CALLBACK_INVOKE_ON_COMPLETE(args_list->callback, thread_env, args_list->call_impl->async_result);
     AXIS2_CALLBACK_SET_COMPLETE(args_list->callback, thread_env, AXIS2_TRUE);
