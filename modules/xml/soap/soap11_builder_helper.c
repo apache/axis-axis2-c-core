@@ -228,7 +228,7 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             }
             axis2_om_stax_builder_set_lastnode(builder_helper_impl->om_builder,
                                                 env, om_element_node); 
-            axis2_om_node_set_build_status(om_element_node, env, AXIS2_TRUE); 
+            axis2_om_node_set_complete(om_element_node, env, AXIS2_TRUE); 
             
             axis2_om_stax_builder_set_element_level(builder_helper_impl->om_builder, 
                     env, (element_level-1));
@@ -274,7 +274,7 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             
             axis2_om_stax_builder_set_lastnode(builder_helper_impl->om_builder, env, om_element_node);
             
-            axis2_om_node_set_build_status(om_element_node, env, AXIS2_TRUE);
+            axis2_om_node_set_complete(om_element_node, env, AXIS2_TRUE);
             
             axis2_om_stax_builder_set_element_level(builder_helper_impl->om_builder, 
                 env , (element_level -1));

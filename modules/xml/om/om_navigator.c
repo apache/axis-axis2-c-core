@@ -234,7 +234,7 @@ axis2_om_navigator_update_next_node(axis2_om_navigator_t *om_navigator,
 		{
 			navigator_impl->next = 	AXIS2_OM_NODE_GET_FIRST_CHILD(navigator_impl->next, env);
 		}
-		else if(AXIS2_TRUE == AXIS2_OM_NODE_GET_BUILD_STATUS(navigator_impl->next, env))
+		else if(AXIS2_TRUE == AXIS2_OM_NODE_IS_COMPLETE(navigator_impl->next, env))
 		{
 			navigator_impl->backtracked = AXIS2_TRUE;				
 		}			
@@ -256,7 +256,7 @@ axis2_om_navigator_update_next_node(axis2_om_navigator_t *om_navigator,
 		{
 			navigator_impl->next = next_sibling;	
 		}			
-		else if((NULL != parent) && AXIS2_OM_NODE_GET_BUILD_STATUS(parent, env))
+		else if((NULL != parent) && AXIS2_OM_NODE_IS_COMPLETE(parent, env))
 		{
 			navigator_impl->next = parent;
 			navigator_impl->backtracked = AXIS2_TRUE;	

@@ -102,7 +102,6 @@ axis2_xml_schema_data_type_resolve_methods(
 		(((axis2_xml_schema_data_type_t *) data_type)->ops->tokenized_type (\
         data_type, env))
 
-
 /** @} */
 #ifdef __cplusplus
 }

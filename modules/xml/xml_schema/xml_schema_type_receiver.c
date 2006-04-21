@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  
-#include <xml_schema/axis2_xml_schema_type_receiver.h>
-#include <xml_schema/axis2_xml_schema_type.h>
+#include <axis2_xml_schema_type_receiver.h>
+#include <axis2_xml_schema_type.h>
 #include <axis2_hash.h>
 
 typedef struct axis2_xml_schema_type_receiver_impl axis2_xml_schema_type_receiver_impl_t;
@@ -29,7 +29,7 @@ struct axis2_xml_schema_type_receiver_impl
     axis2_xml_schema_type_receiver_t type_receiver;
 };
 
-#define INTF_TO_IMPL(type_receiver) ((axis2_xml_schema_type_receiver_impl_t *) type_receiver)
+#define AXIS2_INTF_TO_IMPL(type_receiver) ((axis2_xml_schema_type_receiver_impl_t *) type_receiver)
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_type_receiver_free(void *type_receiver,
@@ -65,7 +65,7 @@ axis2_xml_schema_type_receiver_free(void *type_receiver,
 {
     axis2_xml_schema_type_receiver_impl_t *type_receiver_impl = NULL;
 
-    type_receiver_impl = INTF_TO_IMPL(type_receiver);
+    type_receiver_impl = AXIS2_INTF_TO_IMPL(type_receiver);
 
     if((&(type_receiver_impl->type_receiver))->ops)
     {
@@ -112,7 +112,7 @@ axis2_xml_schema_type_receiver_set_type(void *type_receiver,
 {
     axis2_xml_schema_type_receiver_impl_t *type_receiver_impl = NULL;
 
-    type_receiver_impl = INTF_TO_IMPL(type_receiver);
+    type_receiver_impl = AXIS2_INTF_TO_IMPL(type_receiver);
 
     return AXIS2_SUCCESS;
 }

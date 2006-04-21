@@ -273,9 +273,9 @@ axis2_soap_fault_reason_get_soap_fault_text
     {
     
         if(NULL != fault_reason_impl->soap_builder &&
-            !(AXIS2_OM_NODE_GET_BUILD_STATUS(fault_reason_impl->om_ele_node, env)))
+            !(AXIS2_OM_NODE_IS_COMPLETE(fault_reason_impl->om_ele_node, env)))
         {
-            while(!(AXIS2_OM_NODE_GET_BUILD_STATUS(fault_reason_impl->om_ele_node, env)))
+            while(!(AXIS2_OM_NODE_IS_COMPLETE(fault_reason_impl->om_ele_node, env)))
             {
                 status = AXIS2_SOAP_BUILDER_NEXT(fault_reason_impl->soap_builder, env);
                 if(status == AXIS2_FAILURE)
@@ -366,9 +366,9 @@ axis2_soap_fault_reason_get_all_soap_fault_texts
     
     if(!(fault_reason_impl->fault_texts) && (NULL != fault_reason_impl->soap_builder))
     {
-       if(!(AXIS2_OM_NODE_GET_BUILD_STATUS(fault_reason_impl->om_ele_node, env)))
+       if(!(AXIS2_OM_NODE_IS_COMPLETE(fault_reason_impl->om_ele_node, env)))
         {
-            while(!(AXIS2_OM_NODE_GET_BUILD_STATUS(fault_reason_impl->om_ele_node, env)))
+            while(!(AXIS2_OM_NODE_IS_COMPLETE(fault_reason_impl->om_ele_node, env)))
             {
                 status = AXIS2_SOAP_BUILDER_NEXT(fault_reason_impl->soap_builder, env);
                 if(status == AXIS2_FAILURE)
@@ -391,9 +391,9 @@ axis2_soap_fault_reason_get_first_soap_fault_text
     
     if(!(fault_reason_impl->fault_texts) && (NULL != fault_reason_impl->soap_builder))
     {
-       if(!(AXIS2_OM_NODE_GET_BUILD_STATUS(fault_reason_impl->om_ele_node, env)))
+       if(!(AXIS2_OM_NODE_IS_COMPLETE(fault_reason_impl->om_ele_node, env)))
         {
-            while(!(AXIS2_OM_NODE_GET_BUILD_STATUS(fault_reason_impl->om_ele_node, env)))
+            while(!(AXIS2_OM_NODE_IS_COMPLETE(fault_reason_impl->om_ele_node, env)))
             {
                 status = AXIS2_SOAP_BUILDER_NEXT(fault_reason_impl->soap_builder, env);
                 if(status == AXIS2_FAILURE)

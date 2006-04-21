@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_identity_constraint.h>
-#include <xml_schema/axis2_xml_schema_obj_collection.h>
-#include <xml_schema/axis2_xml_schema_xpath.h>
+#include <axis2_xml_schema_identity_constraint.h>
+#include <axis2_xml_schema_obj_collection.h>
+#include <axis2_xml_schema_xpath.h>
 
 typedef struct axis2_xml_schema_identity_constraint_impl axis2_xml_schema_identity_constraint_impl_t;
 
@@ -34,7 +34,7 @@ struct axis2_xml_schema_identity_constraint_impl
     axis2_xml_schema_xpath_t *selector;
 };
 
-#define INTF_TO_IMPL(identity_constraint) ((axis2_xml_schema_identity_constraint_impl_t *) identity_constraint)
+#define AXIS2_INTF_TO_IMPL(identity_constraint) ((axis2_xml_schema_identity_constraint_impl_t *) identity_constraint)
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_identity_constraint_free(void *identity_constraint,
@@ -132,7 +132,7 @@ axis2_xml_schema_identity_constraint_free(void *identity_constraint,
     axis2_xml_schema_identity_constraint_impl_t *identity_constraint_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    identity_constraint_impl = INTF_TO_IMPL(identity_constraint);
+    identity_constraint_impl = AXIS2_INTF_TO_IMPL(identity_constraint);
 
     if(identity_constraint_impl->name)
     {
@@ -179,7 +179,7 @@ axis2_xml_schema_identity_constraint_get_base_impl(void *identity_constraint,
     axis2_xml_schema_identity_constraint_impl_t *identity_constraint_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    identity_constraint_impl = INTF_TO_IMPL(identity_constraint);
+    identity_constraint_impl = AXIS2_INTF_TO_IMPL(identity_constraint);
 
     return identity_constraint_impl->annotated;
 }
@@ -224,15 +224,15 @@ axis2_xml_schema_obj_collection_t *AXIS2_CALL
 axis2_xml_schema_identity_constraint_get_fields(void *identity_constraint,
                                                 axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return INTF_TO_IMPL(identity_constraint)->fields;
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(identity_constraint)->fields;
 }
 axis2_char_t *AXIS2_CALL
 axis2_xml_schema_identity_constraint_get_name(void *identity_constraint,
                                 axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return INTF_TO_IMPL(identity_constraint)->name;
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(identity_constraint)->name;
 }
 
 axis2_status_t AXIS2_CALL
@@ -243,7 +243,7 @@ axis2_xml_schema_identity_constraint_set_name(void *identity_constraint,
     axis2_xml_schema_identity_constraint_impl_t *identity_constraint_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    identity_constraint_impl = INTF_TO_IMPL(identity_constraint);
+    identity_constraint_impl = AXIS2_INTF_TO_IMPL(identity_constraint);
 
     if(identity_constraint_impl->name)
     {
@@ -263,8 +263,8 @@ axis2_xml_schema_xpath_t *AXIS2_CALL
 axis2_xml_schema_identity_constraint_get_selector(void *identity_constraint,
                                                     axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return INTF_TO_IMPL(identity_constraint)->selector;
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(identity_constraint)->selector;
 }
 
 axis2_status_t AXIS2_CALL
@@ -276,7 +276,7 @@ axis2_xml_schema_identity_constraint_set_selector(void *identity_constraint,
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, selector, AXIS2_FAILURE);
-    identity_constraint_impl = INTF_TO_IMPL(identity_constraint);
+    identity_constraint_impl = AXIS2_INTF_TO_IMPL(identity_constraint);
     
     identity_constraint_impl->selector = selector;
     return AXIS2_SUCCESS;

@@ -25,7 +25,7 @@
  *          Wide Web Consortium (W3C) all element (compositor).
  */
 
-#include <xml_schema/axis2_xml_schema_group_base.h>
+#include <axis2_xml_schema_group_base.h>
 #include <axis2_hash.h>
 
 /** @defall axis2_xml_schema_all Xml Schema All

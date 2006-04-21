@@ -260,7 +260,7 @@ axis2_soap_fault_sub_code_get_value
     if(fault_subcode_impl->builder)
     {
         while(!(fault_subcode_impl->value) &&  
-                !AXIS2_OM_NODE_GET_BUILD_STATUS(fault_subcode_impl->om_ele_node, env))
+                !AXIS2_OM_NODE_IS_COMPLETE(fault_subcode_impl->om_ele_node, env))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(fault_subcode_impl->builder, env); 
             if(status == AXIS2_FAILURE)
@@ -314,7 +314,7 @@ axis2_soap_fault_sub_code_get_sub_code(
     if(fault_subcode_impl->builder)
     {
         while(!(fault_subcode_impl->subcode) && 
-            !AXIS2_OM_NODE_GET_BUILD_STATUS(fault_subcode_impl->om_ele_node, env))
+            !AXIS2_OM_NODE_IS_COMPLETE(fault_subcode_impl->om_ele_node, env))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(fault_subcode_impl->builder, env);   
             if(status == AXIS2_FAILURE)

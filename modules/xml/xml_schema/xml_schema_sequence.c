@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_sequence.h>
-#include <xml_schema/axis2_xml_schema_group_base.h>
+#include <axis2_xml_schema_sequence.h>
+#include <axis2_xml_schema_group_base.h>
 
-typedef struct axis2_xml_schema_sequence_impl axis2_xml_schema_sequence_impl_t;
+typedef struct axis2_xml_schema_sequence_impl 
+                axis2_xml_schema_sequence_impl_t;
 
 /** 
  * @brief Other Extension Struct Impl
@@ -31,7 +32,8 @@ struct axis2_xml_schema_sequence_impl
     axis2_xml_schema_obj_collection_t *items;
 };
 
-#define INTF_TO_IMPL(sequence) ((axis2_xml_schema_sequence_impl_t *) sequence)
+#define AXIS2_INTF_TO_IMPL(sequence) \
+        ((axis2_xml_schema_sequence_impl_t *) sequence)
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_sequence_free(void *sequence,
@@ -54,13 +56,27 @@ axis2_xml_schema_sequence_create(axis2_env_t **env)
 
     sequence_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_sequence_impl_t));
-
+    if(!sequence_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY , AXIS2_FAILURE);
+        return NULL;
+    }
+    
     sequence_impl->base = NULL;
     sequence_impl->methods = NULL;
     sequence_impl->items = NULL;
+    sequence_impl->sequence.base.ops = NULL;
+    sequence_impl->sequence.ops = NULL;
+    
     sequence_impl->sequence.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_sequence_ops_t));
 
+    if(!sequence_impl->sequence.ops)
+    {
+        axis2_xml_schema_sequence_free(&(sequence_impl->sequence), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     sequence_impl->sequence.ops->free = axis2_xml_schema_sequence_free;
     sequence_impl->sequence.ops->get_base_impl = 
             axis2_xml_schema_sequence_get_base_impl;
@@ -70,6 +86,7 @@ axis2_xml_schema_sequence_create(axis2_env_t **env)
     sequence_impl->methods = axis2_hash_make(env);
     if(!sequence_impl->methods)
     {
+        axis2_xml_schema_sequence_free(&(sequence_impl->sequence), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -79,6 +96,11 @@ axis2_xml_schema_sequence_create(axis2_env_t **env)
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_sequence_get_items);
     
     sequence_impl->base = axis2_xml_schema_group_base_create(env);
+    if(!sequence_impl->base)
+    {
+        axis2_xml_schema_sequence_free(&(sequence_impl->sequence), env);
+        return NULL;
+    }
     status = axis2_xml_schema_group_base_resolve_methods(
             &(sequence_impl->sequence.base), env, sequence_impl->base, 
             sequence_impl->methods);
@@ -93,32 +115,36 @@ axis2_xml_schema_sequence_free(void *sequence,
     axis2_xml_schema_sequence_impl_t *sequence_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    sequence_impl = INTF_TO_IMPL(sequence);
+    sequence_impl = AXIS2_INTF_TO_IMPL(sequence);
 
-    if(sequence_impl->items)
+    if(NULL != sequence_impl->items)
     {
         AXIS2_XML_SCHEMA_OBJ_COLLECTION_FREE(sequence_impl->items, env);
         sequence_impl->items = NULL;
     }
     
-    if(sequence_impl->methods)
+    if(NULL != sequence_impl->methods)
     {
         axis2_hash_free(sequence_impl->methods, env);
         sequence_impl->methods = NULL;
     }
 
-    if(sequence_impl->base)
+    if(NULL != sequence_impl->base)
     {
         AXIS2_XML_SCHEMA_GROUP_BASE_FREE(sequence_impl->base, env);
         sequence_impl->base = NULL;
     }
     
-    if((&(sequence_impl->sequence))->ops)
+    if(NULL != sequence_impl->sequence.ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(sequence_impl->sequence))->ops);
-        (&(sequence_impl->sequence))->ops = NULL;
+        AXIS2_FREE((*env)->allocator, sequence_impl->sequence.ops);
+        sequence_impl->sequence.ops = NULL;
     }
-
+    if(NULL != sequence_impl->sequence.base.ops)
+    {
+        AXIS2_FREE((*env)->allocator, sequence_impl->sequence.base.ops);
+        sequence_impl->sequence.base.ops = NULL;
+    }
     if(sequence_impl)
     {
         AXIS2_FREE((*env)->allocator, sequence_impl);
@@ -134,7 +160,7 @@ axis2_xml_schema_sequence_get_base_impl(void *sequence,
     axis2_xml_schema_sequence_impl_t *sequence_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    sequence_impl = INTF_TO_IMPL(sequence);
+    sequence_impl = AXIS2_INTF_TO_IMPL(sequence);
 
     return sequence_impl->base;
 }
@@ -171,7 +197,7 @@ axis2_xml_schema_obj_collection_t *AXIS2_CALL
 axis2_xml_schema_sequence_get_items(void *sequence,
                                     axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return INTF_TO_IMPL(sequence)->items;
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(sequence)->items;
 }
 

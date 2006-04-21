@@ -815,7 +815,7 @@ axis2_soap_builder_parse_headers(axis2_soap_builder_t *builder,
     {
         om_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
         if(om_node)
-        {        while(!AXIS2_OM_NODE_GET_BUILD_STATUS(om_node, env))
+        {        while(!AXIS2_OM_NODE_IS_COMPLETE(om_node, env))
                 {
                     status = axis2_soap_builder_next(builder, env);
                     if(status == AXIS2_FAILURE)

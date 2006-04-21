@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_particle.h>
+#include <axis2_xml_schema_particle.h>
 
-typedef struct axis2_xml_schema_particle_impl axis2_xml_schema_particle_impl_t;
+typedef struct axis2_xml_schema_particle_impl 
+                    axis2_xml_schema_particle_impl_t;
 
 /** 
  * @brief Other Extension Struct Impl
@@ -25,16 +26,25 @@ typedef struct axis2_xml_schema_particle_impl axis2_xml_schema_particle_impl_t;
 struct axis2_xml_schema_particle_impl
 {
     axis2_xml_schema_particle_t particle;
+    
     axis2_xml_schema_annotated_t *annotated;
+    
     long max_occurs;
+    
     axis2_char_t *max_occurs_string;
+    
     long min_occurs;
+    
     axis2_char_t *min_occurs_string;
+    
     axis2_hash_t *methods;
-    void *inherited;
+    
 };
 
-#define INTF_TO_IMPL(particle) ((axis2_xml_schema_particle_impl_t *) particle)
+#define AXIS2_INTF_TO_IMPL(particle) \
+        ((axis2_xml_schema_particle_impl_t *) particle)
+        
+/*************** function prototypes *****************************************/
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_particle_free(void *particle,
@@ -62,6 +72,8 @@ axis2_xml_schema_particle_set_min_occurs(void *particle,
                                             axis2_env_t **env,
                                             long min_occurs);
 
+/*************** function prototypes *****************************************/
+
 AXIS2_DECLARE(axis2_xml_schema_particle_t *)
 axis2_xml_schema_particle_create(axis2_env_t **env)
 {
@@ -70,13 +82,33 @@ axis2_xml_schema_particle_create(axis2_env_t **env)
 
     particle_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_particle_impl_t));
-
+    
+    if(!particle_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     particle_impl->annotated = NULL;
+    particle_impl->particle.ops = NULL;
+    particle_impl->particle.base.ops = NULL;
     particle_impl->methods = NULL;
+    particle_impl->max_occurs_string = NULL;
+    particle_impl->min_occurs_string = NULL;
+    
+    
     particle_impl->particle.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_particle_ops_t));
 
-    particle_impl->particle.ops->free = axis2_xml_schema_particle_free;
+    if(!particle_impl->particle.ops)
+    {
+        axis2_xml_schema_particle_free(&(particle_impl->particle), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
+    particle_impl->particle.ops->free = 
+            axis2_xml_schema_particle_free;
     particle_impl->particle.ops->get_base_impl = 
             axis2_xml_schema_particle_get_base_impl;
     particle_impl->particle.ops->get_max_occurs = 
@@ -91,6 +123,7 @@ axis2_xml_schema_particle_create(axis2_env_t **env)
     particle_impl->methods = axis2_hash_make(env);
     if(!particle_impl->methods)
     {
+        axis2_xml_schema_particle_free(&(particle_impl->particle), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -106,6 +139,11 @@ axis2_xml_schema_particle_create(axis2_env_t **env)
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_particle_set_min_occurs);
     
     particle_impl->annotated = axis2_xml_schema_annotated_create(env);
+    if(!particle_impl->annotated)
+    {
+        axis2_xml_schema_particle_free(&(particle_impl->particle), env);
+        return NULL;        
+    }
     status = axis2_xml_schema_annotated_resolve_methods(
             &(particle_impl->particle.base), env, particle_impl->annotated, 
             particle_impl->methods);
@@ -120,27 +158,32 @@ axis2_xml_schema_particle_free(void *particle,
     axis2_xml_schema_particle_impl_t *particle_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    particle_impl = INTF_TO_IMPL(particle);
+    particle_impl = AXIS2_INTF_TO_IMPL(particle);
 
-    if(particle_impl->methods)
+    if(NULL != particle_impl->methods)
     {
         axis2_hash_free(particle_impl->methods, env);
         particle_impl->methods = NULL;
     }
 
-    if(particle_impl->annotated)
+    if(NULL != particle_impl->annotated)
     {
-        AXIS2_XML_SCHEMA_OBJ_FREE(particle_impl->annotated, env);
+        AXIS2_XML_SCHEMA_ANNOTATED_FREE(particle_impl->annotated, env);
         particle_impl->annotated = NULL;
     }
     
-    if((&(particle_impl->particle))->ops)
+    if(NULL != particle_impl->particle.ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(particle_impl->particle))->ops);
-        (&(particle_impl->particle))->ops = NULL;
+        AXIS2_FREE((*env)->allocator, particle_impl->particle.ops);
+        particle_impl->particle.ops = NULL;
     }
-
-    if(particle_impl)
+    if(NULL != particle_impl->particle.base.ops)
+    {
+        AXIS2_FREE((*env)->allocator, particle_impl->particle.base.ops);
+        particle_impl->particle.base.ops = NULL;
+    }
+    
+    if(NULL != particle_impl)
     {
         AXIS2_FREE((*env)->allocator, particle_impl);
         particle_impl = NULL;
@@ -155,7 +198,7 @@ axis2_xml_schema_particle_get_base_impl(void *particle,
     axis2_xml_schema_particle_impl_t *particle_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    particle_impl = INTF_TO_IMPL(particle);
+    particle_impl = AXIS2_INTF_TO_IMPL(particle);
 
     return particle_impl->annotated;
 }
@@ -177,6 +220,12 @@ axis2_xml_schema_particle_resolve_methods(
     
     particle->ops = AXIS2_MALLOC((*env)->allocator, 
             sizeof(axis2_xml_schema_particle_ops_t));
+    if(NULL != particle->ops)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }            
+    
     particle->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
     particle->ops->get_base_impl = 
@@ -199,7 +248,7 @@ axis2_xml_schema_particle_get_max_occurs(void *particle,
                                             axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return INTF_TO_IMPL(particle)->max_occurs;
+    return AXIS2_INTF_TO_IMPL(particle)->max_occurs;
 }
 
 axis2_status_t AXIS2_CALL
@@ -208,7 +257,7 @@ axis2_xml_schema_particle_set_max_occurs(void *particle,
                                             long max_occurs)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    INTF_TO_IMPL(particle)->max_occurs = max_occurs;
+    AXIS2_INTF_TO_IMPL(particle)->max_occurs = max_occurs;
     return AXIS2_SUCCESS;
 }
 
@@ -217,7 +266,7 @@ axis2_xml_schema_particle_get_min_occurs(void *particle,
                                             axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return INTF_TO_IMPL(particle)->min_occurs;
+    return AXIS2_INTF_TO_IMPL(particle)->min_occurs;
 }
 
 axis2_status_t AXIS2_CALL
@@ -226,7 +275,7 @@ axis2_xml_schema_particle_set_min_occurs(void *particle,
                                             long min_occurs)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    INTF_TO_IMPL(particle)->min_occurs = min_occurs;
+    AXIS2_INTF_TO_IMPL(particle)->min_occurs = min_occurs;
     return AXIS2_SUCCESS;
 }
 

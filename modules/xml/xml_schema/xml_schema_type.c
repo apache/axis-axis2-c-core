@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_type.h>
-#include <xml_schema/axis2_xml_schema_data_type.h>
-#include <xml_schema/axis2_xml_schema_derivation_method.h>
-#include <xml_schema/axis2_xml_schema.h>
+#include <axis2_xml_schema_type.h>
+#include <axis2_xml_schema_data_type.h>
+#include <axis2_xml_schema_derivation_method.h>
+#include <axis2_xml_schema.h>
 
-typedef struct axis2_xml_schema_type_impl axis2_xml_schema_type_impl_t;
+typedef struct axis2_xml_schema_type_impl 
+                axis2_xml_schema_type_impl_t;
 
 /** 
  * @brief Other Extension Struct Impl
@@ -40,7 +41,9 @@ struct axis2_xml_schema_type_impl
     axis2_xml_schema_t *schema;
 };
 
-#define INTF_TO_IMPL(type) ((axis2_xml_schema_type_impl_t *) type)
+#define AXIS2_INTF_TO_IMPL(type) ((axis2_xml_schema_type_impl_t *) type)
+
+/************************** function prototypes ******************************/
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_type_free(void *type,
@@ -96,6 +99,8 @@ axis2_xml_schema_type_set_name(void *type,
 axis2_qname_t *AXIS2_CALL
 axis2_xml_schema_type_get_qname(void *type,
                                 axis2_env_t **env);
+                                
+/************************** end       ****************************************/                                
 
 AXIS2_DECLARE(axis2_xml_schema_type_t *)
 axis2_xml_schema_type_create(axis2_env_t **env,
@@ -106,12 +111,36 @@ axis2_xml_schema_type_create(axis2_env_t **env,
 
     type_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_type_impl_t));
+    if(!type_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error,
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
 
-    type_impl->annotated = NULL;
+    type_impl->type.base.ops = NULL;
+    type_impl->name = NULL;
+    type_impl->derive_by = NULL;
+    type_impl->final_derivation = NULL;
+    type_impl->final_resolved = NULL;
+    type_impl->schema = NULL;
+    type_impl->data_type = NULL;
     type_impl->methods = NULL;
+    type_impl->annotated = NULL;
+
+
     type_impl->schema = schema;
     type_impl->type.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_type_ops_t));
+
+
+    if(!type_impl->type.ops)
+    {
+        axis2_xml_schema_type_free(&(type_impl->type), env);
+        AXIS2_ERROR_SET((*env)->error,
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
 
     type_impl->type.ops->free = axis2_xml_schema_type_free;
     type_impl->type.ops->get_base_impl = 
@@ -142,6 +171,7 @@ axis2_xml_schema_type_create(axis2_env_t **env,
     type_impl->methods = axis2_hash_make(env);
     if(!type_impl->methods)
     {
+        axis2_xml_schema_type_free(&(type_impl->type), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -175,6 +205,11 @@ axis2_xml_schema_type_create(axis2_env_t **env,
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_type_get_qname);
     
     type_impl->annotated = axis2_xml_schema_annotated_create(env);
+    if(!type_impl->annotated)
+    {
+        axis2_xml_schema_type_free(&(type_impl->annotated), env);
+        return NULL;
+    }
     status = axis2_xml_schema_annotated_resolve_methods(
             &(type_impl->type.base), env, type_impl->annotated, 
             type_impl->methods);
@@ -189,31 +224,32 @@ axis2_xml_schema_type_free(void *type,
     axis2_xml_schema_type_impl_t *type_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    type_impl = INTF_TO_IMPL(type);
+    type_impl = AXIS2_INTF_TO_IMPL(type);
 
-    if(type_impl->methods)
+    if(NULL != type_impl->methods)
     {
         axis2_hash_free(type_impl->methods, env);
         type_impl->methods = NULL;
     }
 
-    if(type_impl->annotated)
+    if(NULL != type_impl->annotated)
     {
-        AXIS2_XML_SCHEMA_OBJ_FREE(type_impl->annotated, env);
+        AXIS2_XML_SCHEMA_ANNOTATED_FREE(type_impl->annotated, env);
         type_impl->annotated = NULL;
     }
     
-    if((&(type_impl->type))->ops)
+    if(NULL != type_impl->type.ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(type_impl->type))->ops);
-        (&(type_impl->type))->ops = NULL;
+        AXIS2_FREE((*env)->allocator, type_impl->type.ops);
+        type_impl->type.ops = NULL;
     }
-
-    if(type_impl)
+    if(NULL != type_impl->type.base.ops)
     {
-        AXIS2_FREE((*env)->allocator, type_impl);
-        type_impl = NULL;
+        AXIS2_FREE((*env)->allocator, type_impl->type.base.ops);
+        type_impl->type.base.ops = NULL;
     }
+    AXIS2_FREE((*env)->allocator, type_impl);
+    type_impl = NULL;
     return AXIS2_SUCCESS;
 }
 
@@ -224,7 +260,7 @@ axis2_xml_schema_type_get_base_impl(void *type,
     axis2_xml_schema_type_impl_t *type_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    type_impl = INTF_TO_IMPL(type);
+    type_impl = AXIS2_INTF_TO_IMPL(type);
 
     return type_impl->annotated;
 }
@@ -246,6 +282,12 @@ axis2_xml_schema_type_resolve_methods(
     
     type->ops = AXIS2_MALLOC((*env)->allocator, 
             sizeof(axis2_xml_schema_type_ops_t));
+    if(!type->ops)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;     
+    }       
+            
     type->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
     type->ops->get_base_impl = 
@@ -281,7 +323,7 @@ void *AXIS2_CALL
 axis2_xml_schema_type_get_base_schema_type(void *type,
                                             axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     return NULL;
 }
 
@@ -289,7 +331,7 @@ axis2_xml_schema_data_type_t *AXIS2_CALL
 axis2_xml_schema_type_get_data_type(void *type,
                                         axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     return NULL;
 }
 
@@ -297,7 +339,7 @@ axis2_xml_schema_derivation_method_t *AXIS2_CALL
 axis2_xml_schema_type_get_derive_by(void *type,
                                     axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     return NULL;
 }
 
@@ -305,7 +347,7 @@ axis2_xml_schema_derivation_method_t *AXIS2_CALL
 axis2_xml_schema_type_get_final(void *type,
                                 axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     return NULL;
 }
 

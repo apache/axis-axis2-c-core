@@ -330,7 +330,7 @@ axis2_soap_fault_get_code(axis2_soap_fault_t *fault,
     } 
     else if(fault_impl->soap_builder)
     {
-        while(!(fault_impl->fcode) && !(AXIS2_OM_NODE_GET_BUILD_STATUS(fault_impl->om_ele_node, env)))
+        while(!(fault_impl->fcode) && !(AXIS2_OM_NODE_IS_COMPLETE(fault_impl->om_ele_node, env)))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(fault_impl->soap_builder, env);
             if(status == AXIS2_FAILURE)
@@ -380,7 +380,7 @@ axis2_soap_fault_get_reason(axis2_soap_fault_t *fault,
     } 
     else if(fault_impl->soap_builder)
     {
-        while(!(fault_impl->freason) && !(AXIS2_OM_NODE_GET_BUILD_STATUS(fault_impl->om_ele_node, env)))
+        while(!(fault_impl->freason) && !(AXIS2_OM_NODE_IS_COMPLETE(fault_impl->om_ele_node, env)))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(fault_impl->soap_builder, env);
             if(status == AXIS2_FAILURE)
@@ -432,7 +432,7 @@ axis2_soap_fault_get_node(axis2_soap_fault_t *fault,
     } 
     else if(fault_impl->soap_builder)
     {
-        while(!(fault_impl->fnode) && !(AXIS2_OM_NODE_GET_BUILD_STATUS(fault_impl->om_ele_node, env)))
+        while(!(fault_impl->fnode) && !(AXIS2_OM_NODE_IS_COMPLETE(fault_impl->om_ele_node, env)))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(fault_impl->soap_builder, env);
             if(status == AXIS2_FAILURE)
@@ -486,7 +486,7 @@ axis2_soap_fault_get_role(axis2_soap_fault_t *fault,
     } 
     else if(fault_impl->soap_builder)
     {
-        while(!(fault_impl->frole) && !(AXIS2_OM_NODE_GET_BUILD_STATUS(fault_impl->om_ele_node, env)))
+        while(!(fault_impl->frole) && !(AXIS2_OM_NODE_IS_COMPLETE(fault_impl->om_ele_node, env)))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(fault_impl->soap_builder, env);
             if(status == AXIS2_FAILURE)
@@ -538,7 +538,7 @@ axis2_soap_fault_get_detail(axis2_soap_fault_t *fault,
     } 
     else if(fault_impl->soap_builder)
     {
-        while(!(fault_impl->fdetail) && !(AXIS2_OM_NODE_GET_BUILD_STATUS(fault_impl->om_ele_node, env)))
+        while(!(fault_impl->fdetail) && !(AXIS2_OM_NODE_IS_COMPLETE(fault_impl->om_ele_node, env)))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(fault_impl->soap_builder, env);
             if(status == AXIS2_FAILURE)

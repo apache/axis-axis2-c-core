@@ -24,7 +24,7 @@
  *          the World Wide Web Consortium (W3C) choice (compositor) element.
  */
 
-#include <xml_schema/axis2_xml_schema_group_base.h>
+#include <axis2_xml_schema_group_base.h>
 #include <axis2_hash.h>
 
 /** @defchoice axis2_xml_schema_choice Xml Schema Choice
@@ -32,8 +32,11 @@
   * @{
   */
 
-typedef struct axis2_xml_schema_choice axis2_xml_schema_choice_t;
-typedef struct axis2_xml_schema_choice_ops axis2_xml_schema_choice_ops_t;
+typedef struct axis2_xml_schema_choice 
+                axis2_xml_schema_choice_t;
+typedef struct axis2_xml_schema_choice_ops 
+                axis2_xml_schema_choice_ops_t;
+                
 struct axis2_xml_schema_group_base;
 struct axis2_xml_schema_obj_collection;
 
@@ -83,6 +86,7 @@ axis2_xml_schema_choice_resolve_methods(
                                 axis2_env_t **env,
                                 axis2_xml_schema_choice_t *choice_impl,
                                 axis2_hash_t *methods);
+/***************** MACROS *****************************************************/
 
 #define AXIS2_XML_SCHEMA_CHOICE_FREE(choice, env) \
 		(((axis2_xml_schema_choice_t *) choice)->ops->\
@@ -96,6 +100,7 @@ axis2_xml_schema_choice_resolve_methods(
 		(((axis2_xml_schema_choice_t *) choice)->ops->\
             get_items(choice, env))
 
+/**************** END MACROS ****************************************************/
 /** @} */
 #ifdef __cplusplus
 }

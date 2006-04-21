@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema.h>
-#include <xml_schema/axis2_xml_schema_collection.h>
-#include <xml_schema/axis2_xml_schema_form.h>
-#include <xml_schema/axis2_xml_schema_obj_table.h>
-#include <xml_schema/axis2_xml_schema_derivation_method.h>
-#include <xml_schema/axis2_xml_schema_type.h>
-#include <xml_schema/axis2_xml_schema_obj_collection.h>
-#include <xml_schema/axis2_validation_event_handler.h>
-#include <xml_schema/axis2_xml_schema_element.h>
+#include <axis2_xml_schema.h>
+#include <axis2_xml_schema_collection.h>
+#include <axis2_xml_schema_form.h>
+#include <axis2_xml_schema_obj_table.h>
+#include <axis2_xml_schema_derivation_method.h>
+#include <axis2_xml_schema_type.h>
+#include <axis2_xml_schema_obj_collection.h>
+#include <axis2_validation_event_handler.h>
+#include <axis2_xml_schema_element.h>
 
 typedef struct axis2_xml_schema_impl axis2_xml_schema_impl_t;
 /** 
@@ -54,7 +54,7 @@ struct axis2_xml_schema_impl
     axis2_xml_schema_collection_t *parent;
 };
 
-#define INTF_TO_IMPL(schema) ((axis2_xml_schema_impl_t *) schema)
+#define AXIS2_INTF_TO_IMPL(schema) ((axis2_xml_schema_impl_t *) schema)
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_free(void *schema,
@@ -167,7 +167,7 @@ axis2_xml_schema_get_version(void *schema,
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_compile(void *schema,
                             axis2_env_t **env,
-                            axis2_xml_schema_validation_event_handler_t *eh);
+                            axis2_validation_event_handler_t *eh);
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_write_a_out(void *schema,
@@ -371,7 +371,7 @@ axis2_xml_schema_free(void *schema,
     axis2_xml_schema_impl_t *schema_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    schema_impl = INTF_TO_IMPL(schema);
+    schema_impl = AXIS2_INTF_TO_IMPL(schema);
 
     if(schema_impl->methods)
     {
@@ -406,7 +406,7 @@ axis2_xml_schema_get_base_impl(void *schema,
     axis2_xml_schema_impl_t *schema_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    schema_impl = INTF_TO_IMPL(schema);
+    schema_impl = AXIS2_INTF_TO_IMPL(schema);
 
     return schema_impl->annotated;
 }
@@ -511,7 +511,7 @@ axis2_xml_schema_get_attr_form_default(void *schema,
     axis2_xml_schema_impl_t *schema_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    schema_impl = INTF_TO_IMPL(schema);
+    schema_impl = AXIS2_INTF_TO_IMPL(schema);
     
     return NULL;
 }
@@ -524,7 +524,7 @@ axis2_xml_schema_set_attr_form_default(void *schema,
     axis2_xml_schema_impl_t *schema_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    schema_impl = INTF_TO_IMPL(schema);
+    schema_impl = AXIS2_INTF_TO_IMPL(schema);
     
     return AXIS2_SUCCESS;
 }
@@ -536,7 +536,7 @@ axis2_xml_schema_get_attr_groups(void *schema,
     axis2_xml_schema_impl_t *schema_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    schema_impl = INTF_TO_IMPL(schema);
+    schema_impl = AXIS2_INTF_TO_IMPL(schema);
     
     return NULL;
 }
@@ -548,7 +548,7 @@ axis2_xml_schema_get_attrs(void *schema,
     axis2_xml_schema_impl_t *schema_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    schema_impl = INTF_TO_IMPL(schema);
+    schema_impl = AXIS2_INTF_TO_IMPL(schema);
     
     return NULL;
 }
@@ -689,7 +689,7 @@ axis2_xml_schema_get_version(void *schema,
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_compile(void *schema,
                             axis2_env_t **env,
-                            axis2_xml_schema_validation_event_handler_t *eh) 
+                            axis2_validation_event_handler_t *veh) 
 {
     return AXIS2_SUCCESS;
 

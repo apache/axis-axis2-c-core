@@ -25,10 +25,11 @@
  *          Represents the World Wide Web Consortium (W3C) schema element
  */
 
-#include <xml_schema/axis2_xml_schema_annotated.h>
+#include <axis2_xml_schema_annotated.h>
 #include <axis2_om_element.h>
 #include <axis2_om_node.h>
 #include <axis2_hash.h>
+#include <axis2_validation_event_handler.h>
 
 /** @defgroup axis2_xml_schema Xml Schema
   * @ingroup axis2_xml_schema
@@ -37,7 +38,6 @@
 
 typedef struct axis2_xml_schema axis2_xml_schema_t;
 typedef struct axis2_xml_schema_ops axis2_xml_schema_ops_t;
-struct axis2_xml_schema_validation_event_handler;
 struct axis2_xml_schema_form;
 struct axis2_xml_schema_obj_table;
 struct axis2_xml_schema_derivation_method;
@@ -170,7 +170,7 @@ struct axis2_xml_schema_ops
     axis2_status_t (AXIS2_CALL *
     compile) (void *schema,
                     axis2_env_t **env,
-                    struct axis2_xml_schema_validation_event_handler *eh);
+                    axis2_validation_event_handler_t  *veh);
 
     axis2_status_t (AXIS2_CALL *
     write_a_out) (void *schema,

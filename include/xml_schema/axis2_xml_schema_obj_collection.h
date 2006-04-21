@@ -31,15 +31,17 @@
 #include <axis2.h>
 #include <axis2_array_list.h>
 #include <axis2_hash.h>
-#include <xml_schema/axis2_xml_schema_obj.h>
+#include <axis2_xml_schema_obj.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_xml_schema_obj_collection axis2_xml_schema_obj_collection_t;
-typedef struct axis2_xml_schema_obj_collection_ops axis2_xml_schema_obj_collection_ops_t;
+typedef struct axis2_xml_schema_obj_collection 
+                    axis2_xml_schema_obj_collection_t;
+typedef struct axis2_xml_schema_obj_collection_ops 
+                    axis2_xml_schema_obj_collection_ops_t;
 
 /** @defgroup axis2_xml_schema_obj_collection Xml Schema Obj Collection
   * @ingroup axis2_xml_schema
@@ -53,43 +55,47 @@ struct axis2_xml_schema_obj_collection_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *obj_collection,
+    free) (axis2_xml_schema_obj_collection_t *obj_collection,
             axis2_env_t **env);
 
     int (AXIS2_CALL *
-    get_count) (void *obj_collection,
+    get_count) (axis2_xml_schema_obj_collection_t *obj_collection,
                     axis2_env_t **env);
 
     axis2_xml_schema_obj_t *(AXIS2_CALL *
-    get_item) (void *obj_collection,
+    get_item) (axis2_xml_schema_obj_collection_t *obj_collection,
                     axis2_env_t **env,
                     int i);
 
     axis2_status_t (AXIS2_CALL *
-    set_item) (void *obj_collection,
+    set_item) (axis2_xml_schema_obj_collection_t *obj_collection,
                     axis2_env_t **env,
                     int i,
                     axis2_xml_schema_obj_t *item);
 
     axis2_status_t (AXIS2_CALL *
-    add) (void *obj_collection,
+    add) (axis2_xml_schema_obj_collection_t *obj_collection,
                     axis2_env_t **env,
                     axis2_xml_schema_obj_t *item);
 
     axis2_bool_t (AXIS2_CALL *
-    contains) (void *obj_collection,
+    contains) (axis2_xml_schema_obj_collection_t *obj_collection,
                         axis2_env_t **env,
                         axis2_xml_schema_obj_t *item);
 
     axis2_status_t (AXIS2_CALL *
-    index_of) (void *obj_collection,
+    index_of) (axis2_xml_schema_obj_collection_t *obj_collection,
                         axis2_env_t **env,
                         axis2_xml_schema_obj_t *item);
 
-    axis2_status_t (AXIS2_CALL *
-    remove_at) (void *obj_collection,
+    void* (AXIS2_CALL *
+    remove_at) (axis2_xml_schema_obj_collection_t *obj_collection,
                 axis2_env_t **env,
                 int i);
+                
+    axis2_array_list_t* (AXIS2_CALL *
+    to_array)(axis2_xml_schema_obj_collection_t *obj_collection,
+              axis2_env_t **env);                
 
 };
 
@@ -101,42 +107,34 @@ struct axis2_xml_schema_obj_collection
 AXIS2_DECLARE(axis2_xml_schema_obj_collection_t *)
 axis2_xml_schema_obj_collection_create(axis2_env_t **env);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
- */
-AXIS2_DECLARE(axis2_status_t)
-axis2_xml_schema_obj_collection_resolve_methods(
-                        axis2_xml_schema_obj_collection_t *obj_collection,
-                        axis2_env_t **env,
-                        axis2_xml_schema_obj_collection_t *obj_collection_impl,
-                        axis2_hash_t *methods);
-
+/******************* MACROS ***************************************************/
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_FREE(obj_collection, env) \
-		(((axis2_xml_schema_obj_collection_t *) obj_collection)->ops->free (obj_collection, env))
+		((obj_collection)->ops->free (obj_collection, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_GET_COUNT(obj_collection, env) \
-		(((axis2_xml_schema_obj_collection_t *) obj_collection)->ops->get_count (obj_collection, env))
+		((obj_collection)->ops->get_count (obj_collection, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(obj_collection, env, i) \
-		(((axis2_xml_schema_obj_collection_t *) obj_collection)->ops->get_item (obj_collection, env, i))
+		((obj_collection)->ops->get_item (obj_collection, env, i))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_SET_ITEM(obj_collection, env, i, item) \
-		(((axis2_xml_schema_obj_collection_t *) obj_collection)->ops->set_item (obj_collection, env, i, item))
+		((obj_collection)->ops->set_item (obj_collection, env, i, item))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(obj_collection, env, item) \
-		(((axis2_xml_schema_obj_collection_t *) obj_collection)->ops->add (obj_collection, env, item))
+		((obj_collection)->ops->add (obj_collection, env, item))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_CONTAINS(obj_collection, env, item) \
-		(((axis2_xml_schema_obj_collection_t *) obj_collection)->ops->contains (obj_collection, env, item))
+		((obj_collection)->ops->contains (obj_collection, env, item))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_INDEX_OF(obj_collection, env, item) \
-		(((axis2_xml_schema_obj_collection_t *) obj_collection)->ops->index_of (obj_collection, env, \
-                                                                item))
+		((obj_collection)->ops->index_of (obj_collection, env, item))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_REMOVE_AT(obj_collection, env, i) \
-		(((axis2_xml_schema_obj_collection_t *) obj_collection)->ops->remove_at (obj_collection, env, i))
+		((obj_collection)->ops->remove_at (obj_collection, env, i))
 
-
+#define AXIS2_XML_SCHEMA_OBJ_COLLECTION_TO_ARRAY(obj_collection, env) \
+        ((obj_collection)->ops->to_array(obj_collection, env))
+        
 /** @} */
 #ifdef __cplusplus
 }

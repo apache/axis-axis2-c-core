@@ -22,7 +22,7 @@
  * @brief Axis2 Xml Schema Annotation Interface
  */
 
-#include <xml_schema/axis2_xml_schema_obj.h>
+#include <axis2_xml_schema_obj.h>
 #include <axis2_hash.h>
 
 /** @defgroup axis2_xml_schema_annotation Xml Schema Annotation
@@ -85,6 +85,9 @@ axis2_xml_schema_annotation_resolve_methods(
 		(((axis2_xml_schema_annotation_t *) annotation)->ops->\
             get_items(annotation, env))
 
+#define AXIS2_XML_SCHEMA_ANNOTATION_GET_BASE_IMPL(annotation, env) \
+		(((axis2_xml_schema_annotation_t *) annotation)->ops->\
+            get_base_impl(annotation, env))
 
 /** @} */
 #ifdef __cplusplus

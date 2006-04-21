@@ -222,14 +222,14 @@ AXIS2_DECLARE_DATA   typedef struct axis2_om_node_ops
     get_data_element)(axis2_om_node_t  *om_node,
                       axis2_env_t **env);    
     /**
-    * get_build_status 
+    * Indicates whether parser has parsed this information item completely or not 
     * @param om_node om_node struct
     * @param env environment, MUST NOT be NULL.
     * @returns AXIS2_TRUE if node is completly build, 
     *          AXIS2_FALSE if node is not completed
     */                                                
     axis2_bool_t (AXIS2_CALL *
-    get_build_status)(axis2_om_node_t  *om_node,
+    is_complete)(axis2_om_node_t  *om_node,
                       axis2_env_t **env); 
    /**
     * returns the associated document,
@@ -299,8 +299,9 @@ axis2_om_node_create (axis2_env_t **env);
 #define AXIS2_OM_NODE_GET_PREVIOUS_SIBLING(om_node,env) \
         ((om_node)->ops->get_previous_sibling(om_node,env))
 /** get build status */
-#define AXIS2_OM_NODE_GET_BUILD_STATUS(om_node,env) \
-        ((om_node)->ops->get_build_status(om_node,env))
+
+#define AXIS2_OM_NODE_IS_COMPLETE(om_node,env) \
+        ((om_node)->ops->is_complete(om_node,env))
 /** get data element of this node can be om_element om_text etc */
 #define AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node,env) \
         ((om_node)->ops->get_data_element(om_node,env))

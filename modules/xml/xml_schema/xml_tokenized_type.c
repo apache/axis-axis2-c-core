@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_tokenized_type.h>
+#include <axis2_xml_tokenized_type.h>
 
 typedef struct axis2_xml_tokenized_type_impl axis2_xml_tokenized_type_impl_t;
 
@@ -30,7 +30,7 @@ struct axis2_xml_tokenized_type_impl
     axis2_array_list_t *members;
 };
 
-#define INTF_TO_IMPL(tokenized_type) ((axis2_xml_tokenized_type_impl_t *) tokenized_type)
+#define AXIS2_INTF_TO_IMPL(tokenized_type) ((axis2_xml_tokenized_type_impl_t *) tokenized_type)
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_tokenized_type_free(void *tokenized_type,
@@ -61,48 +61,68 @@ axis2_xml_tokenized_type_create(axis2_env_t **env,
     
     tokenized_type_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_tokenized_type_impl_t));
-
+    if(!tokenized_type_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
     tokenized_type_impl->schema_enum = NULL;
     tokenized_type_impl->methods = NULL;
     tokenized_type_impl->members = NULL;
+    tokenized_type_impl->tokenized_type.ops = NULL;
+    
     tokenized_type_impl->tokenized_type.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_tokenized_type_ops_t));
-
-    tokenized_type_impl->tokenized_type.ops->free = axis2_xml_tokenized_type_free;
-    tokenized_type_impl->tokenized_type.ops->get_base_impl = axis2_xml_tokenized_type_get_base_impl;
+    if(!tokenized_type_impl->tokenized_type.ops)
+    {
+        axis2_xml_tokenized_type_free(&(tokenized_type_impl->tokenized_type), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
+    tokenized_type_impl->tokenized_type.ops->free =
+        axis2_xml_tokenized_type_free;
+        
+    tokenized_type_impl->tokenized_type.ops->get_base_impl = 
+        axis2_xml_tokenized_type_get_base_impl;
+        
     tokenized_type_impl->tokenized_type.ops->get_values = 
             axis2_xml_tokenized_type_get_values;
    
+
+    tokenized_type_impl->members = axis2_array_list_create(env, 0);
     if(!tokenized_type_impl->members)
-    {
-        tokenized_type_impl->members = axis2_array_list_create(env, 0);
-        if(!tokenized_type_impl->members)
-            return NULL;
-        AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "CDATA");
-        AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "IDREF");
-        AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "IDREFS");
-        AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "ENTITY");
-        AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "ENTITIES");
-        AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "NMTOKEN");
-        AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "NMTOKENS");
-        AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "NOTATION");
-        AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "ENUMERATION");
-        AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "QName");
-        AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "NCName");
-        AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "None");
-    }
+        return NULL;
+        
+    AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "CDATA");
+    AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "IDREF");
+    AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "IDREFS");
+    AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "ENTITY");
+    AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "ENTITIES");
+    AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "NMTOKEN");
+    AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "NMTOKENS");
+    AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "NOTATION");
+    AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "ENUMERATION");
+    AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "QName");
+    AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "NCName");
+    AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, "None");
+
     tokenized_type_impl->methods = axis2_hash_make(env);
+    
     if(!tokenized_type_impl->methods)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+    
     axis2_hash_set(tokenized_type_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
             axis2_xml_tokenized_type_free);
     axis2_hash_set(tokenized_type_impl->methods, "get_values", AXIS2_HASH_KEY_STRING, 
             axis2_xml_tokenized_type_get_values);
 
     tokenized_type_impl->schema_enum = axis2_xml_schema_enum_create(env, value);
+    
     status = axis2_xml_schema_enum_resolve_methods(
             &(tokenized_type_impl->tokenized_type.base), env, tokenized_type_impl->schema_enum, 
             tokenized_type_impl->methods); 
@@ -112,12 +132,12 @@ axis2_xml_tokenized_type_create(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_tokenized_type_free(void *tokenized_type,
-                                        axis2_env_t **env)
+                              axis2_env_t **env)
 {
     axis2_xml_tokenized_type_impl_t *tokenized_type_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    tokenized_type_impl = INTF_TO_IMPL(tokenized_type);
+    tokenized_type_impl = AXIS2_INTF_TO_IMPL(tokenized_type);
 
     if(tokenized_type_impl->members)
     {
@@ -127,17 +147,30 @@ axis2_xml_tokenized_type_free(void *tokenized_type,
     
     if(tokenized_type_impl->schema_enum)
     {
+        int size = 0;
+        int i    = 0;
+        size = AXIS2_ARRAY_LIST_SIZE(tokenized_type_impl->members, env);
+        for(i = 0; i < size ; i++)
+        {
+            axis2_char_t *value = NULL;
+            value =(axis2_char_t* ) AXIS2_ARRAY_LIST_GET(tokenized_type_impl->members, env, i);
+            if(NULL != value)
+            {
+                AXIS2_FREE((*env)->allocator, value);
+                value = NULL;
+            }
+        }
         AXIS2_XML_SCHEMA_ENUM_FREE(tokenized_type_impl->schema_enum, env);
         tokenized_type_impl->schema_enum = NULL;
     }
     
-    if((&(tokenized_type_impl->tokenized_type))->ops)
+    if(NULL != (&(tokenized_type_impl->tokenized_type))->ops)
     {
         AXIS2_FREE((*env)->allocator, (&(tokenized_type_impl->tokenized_type))->ops);
         (&(tokenized_type_impl->tokenized_type))->ops = NULL;
     }
 
-    if(tokenized_type_impl)
+    if(NULL != tokenized_type_impl)
     {
         AXIS2_FREE((*env)->allocator, tokenized_type_impl);
         tokenized_type_impl = NULL;
@@ -152,7 +185,7 @@ axis2_xml_tokenized_type_get_base_impl(void *tokenized_type,
     axis2_xml_tokenized_type_impl_t *tokenized_type_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    tokenized_type_impl = INTF_TO_IMPL(tokenized_type);
+    tokenized_type_impl = AXIS2_INTF_TO_IMPL(tokenized_type);
 
     return tokenized_type_impl->schema_enum;
 }
@@ -167,6 +200,7 @@ axis2_xml_tokenized_type_resolve_methods(
     axis2_xml_tokenized_type_impl_t *tokenized_type_impl_l = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
     AXIS2_PARAM_CHECK((*env)->error, tokenized_type_impl, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
     
@@ -175,8 +209,14 @@ axis2_xml_tokenized_type_resolve_methods(
     
     tokenized_type->ops = AXIS2_MALLOC((*env)->allocator, 
             sizeof(axis2_xml_tokenized_type_ops_t));
-    tokenized_type->ops->free = axis2_hash_get(methods, "free", 
-            AXIS2_HASH_KEY_STRING);
+    if(!tokenized_type->ops)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    
+    tokenized_type->ops->free = axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
+    
     tokenized_type->ops->get_base_impl = 
             tokenized_type_impl_l->tokenized_type.ops->get_base_impl;
     tokenized_type->ops->get_values = 
@@ -190,6 +230,6 @@ axis2_array_list_t *AXIS2_CALL
 axis2_xml_tokenized_type_get_values(void *tokenized_type,
                                         axis2_env_t **env)
 {
-    return INTF_TO_IMPL(tokenized_type)->members;
+    return AXIS2_INTF_TO_IMPL(tokenized_type)->members;
 }
 

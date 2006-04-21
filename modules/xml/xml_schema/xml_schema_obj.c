@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <xml_schema/axis2_xml_schema_obj.h>
+#include <axis2_xml_schema_obj.h>
 #include <axis2_hash.h>
 
 typedef struct axis2_xml_schema_obj_impl axis2_xml_schema_obj_impl_t;
@@ -31,7 +31,9 @@ struct axis2_xml_schema_obj_impl
     axis2_char_t *source_uri;
 };
 
-#define INTF_TO_IMPL(obj) ((axis2_xml_schema_obj_impl_t *) obj)
+#define AXIS2_INTF_TO_IMPL(obj) ((axis2_xml_schema_obj_impl_t *) obj)
+
+/***************** function pointers ******************************************/
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_obj_free(void *obj,
@@ -69,31 +71,54 @@ axis2_xml_schema_obj_set_line_pos(void *obj,
                         axis2_env_t **env,
                         int line_pos);
 
+/******************* end function pointers ************************************/
+
 AXIS2_DECLARE(axis2_xml_schema_obj_t *)
 axis2_xml_schema_obj_create(axis2_env_t **env)
 {
     axis2_xml_schema_obj_impl_t *obj_impl = NULL;
     
+    AXIS2_ENV_CHECK(env, NULL);
+    
     obj_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_obj_impl_t));
+    if(!obj_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
 
     obj_impl->line_num = -1;
     obj_impl->line_pos = -1;
     obj_impl->source_uri = NULL;
-
+    obj_impl->obj.ops   = NULL;
+    
     obj_impl->obj.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_obj_ops_t)); 
+    if(!obj_impl->obj.ops)
+    {
+        axis2_xml_schema_obj_free(&(obj_impl->obj), env);
+        AXIS2_ERROR_SET((*env)->error , 
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
 
-
-    obj_impl->obj.ops->free = axis2_xml_schema_obj_free;
-    obj_impl->obj.ops->get_line_num = axis2_xml_schema_obj_get_line_num;
-    obj_impl->obj.ops->set_line_num = axis2_xml_schema_obj_set_line_num;
-    obj_impl->obj.ops->get_line_pos = axis2_xml_schema_obj_get_line_pos;
-    obj_impl->obj.ops->set_line_pos = axis2_xml_schema_obj_set_line_pos;
-    obj_impl->obj.ops->get_source_uri = axis2_xml_schema_obj_get_source_uri;
-    obj_impl->obj.ops->set_source_uri = axis2_xml_schema_obj_set_source_uri;
-    obj_impl->obj.ops->equals = axis2_xml_schema_obj_equals;
-
+    obj_impl->obj.ops->free = 
+        axis2_xml_schema_obj_free;
+    obj_impl->obj.ops->get_line_num = 
+        axis2_xml_schema_obj_get_line_num;
+    obj_impl->obj.ops->set_line_num = 
+        axis2_xml_schema_obj_set_line_num;
+    obj_impl->obj.ops->get_line_pos = 
+        axis2_xml_schema_obj_get_line_pos;
+    obj_impl->obj.ops->set_line_pos = 
+        axis2_xml_schema_obj_set_line_pos;
+    obj_impl->obj.ops->get_source_uri = 
+        axis2_xml_schema_obj_get_source_uri;
+    obj_impl->obj.ops->set_source_uri = 
+        axis2_xml_schema_obj_set_source_uri;
+    obj_impl->obj.ops->equals = 
+        axis2_xml_schema_obj_equals;
     return &(obj_impl->obj);
 }
 
@@ -104,23 +129,23 @@ axis2_xml_schema_obj_free(void *obj,
 {
     axis2_xml_schema_obj_impl_t *obj_impl = NULL;
 
-    obj_impl = INTF_TO_IMPL(obj);
+    obj_impl = AXIS2_INTF_TO_IMPL(obj);
 
-    if(obj_impl->source_uri)
+    if(NULL != obj_impl->source_uri)
     {
         AXIS2_FREE((*env)->allocator, obj_impl->source_uri);
         obj_impl->source_uri = NULL;
     }
 
-    if((&(obj_impl->obj))->ops)
+    if(NULL != obj_impl->obj.ops)
     {
-        free((&(obj_impl->obj))->ops);
-        (&(obj_impl->obj))->ops = NULL;
+        AXIS2_FREE((*env)->allocator, obj_impl->obj.ops);
+        obj_impl->obj.ops = NULL;
     }
 
-    if(obj_impl)
+    if(NULL != obj_impl)
     {
-        free(obj_impl);
+        AXIS2_FREE((*env)->allocator, obj_impl);
         obj_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -142,8 +167,15 @@ axis2_xml_schema_obj_resolve_methods(axis2_xml_schema_obj_t *obj,
     
     obj->ops = AXIS2_MALLOC((*env)->allocator, 
             sizeof(axis2_xml_schema_obj_ops_t));
+    if(!obj->ops)
+    {
+        AXIS2_ERROR_SET((*env)->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }            
+            
     obj->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
+
     obj->ops->get_line_num = 
             obj_impl_l->obj.ops->get_line_num;
     obj->ops->set_line_num = 
@@ -156,8 +188,8 @@ axis2_xml_schema_obj_resolve_methods(axis2_xml_schema_obj_t *obj,
             obj_impl_l->obj.ops->get_source_uri;
     obj->ops->set_source_uri = 
             obj_impl_l->obj.ops->set_source_uri; 
-    obj->ops->equals = 
-            obj_impl_l->obj.ops->equals;
+    obj->ops->equals = obj_impl_l->obj.ops->equals;
+    
     return AXIS2_SUCCESS;    
 
 }
@@ -167,7 +199,7 @@ axis2_xml_schema_obj_get_line_num(void *obj,
 {
     axis2_xml_schema_obj_impl_t *obj_impl = NULL;
     
-    obj_impl = INTF_TO_IMPL(obj);
+    obj_impl = AXIS2_INTF_TO_IMPL(obj);
     return obj_impl->line_num;
 }
 
@@ -178,7 +210,7 @@ axis2_xml_schema_obj_set_line_num(void *obj,
 {
     axis2_xml_schema_obj_impl_t *obj_impl = NULL;
 
-    obj_impl = INTF_TO_IMPL(obj);
+    obj_impl = AXIS2_INTF_TO_IMPL(obj);
 
     obj_impl->line_num = line_num;
 
@@ -191,7 +223,7 @@ axis2_xml_schema_obj_get_line_pos(void *obj,
 {
     axis2_xml_schema_obj_impl_t *obj_impl = NULL;
     
-    obj_impl = INTF_TO_IMPL(obj);
+    obj_impl = AXIS2_INTF_TO_IMPL(obj);
     return obj_impl->line_pos;
 }
 
@@ -202,7 +234,7 @@ axis2_xml_schema_obj_set_line_pos(void *obj,
 {
     axis2_xml_schema_obj_impl_t *obj_impl = NULL;
 
-    obj_impl = INTF_TO_IMPL(obj);
+    obj_impl = AXIS2_INTF_TO_IMPL(obj);
 
     obj_impl->line_pos = line_pos;
 
@@ -215,7 +247,7 @@ axis2_xml_schema_obj_get_source_uri(void *obj,
 {
     axis2_xml_schema_obj_impl_t *obj_impl = NULL;
     
-    obj_impl = INTF_TO_IMPL(obj);
+    obj_impl = AXIS2_INTF_TO_IMPL(obj);
     return obj_impl->source_uri;
 }
 
@@ -226,11 +258,11 @@ axis2_xml_schema_obj_set_source_uri(void *obj,
 {
     axis2_xml_schema_obj_impl_t *obj_impl = NULL;
 
-    obj_impl = INTF_TO_IMPL(obj);
+    obj_impl = AXIS2_INTF_TO_IMPL(obj);
 
-    if(obj_impl->source_uri)
+    if(NULL != obj_impl->source_uri)
     {
-        free(obj_impl->source_uri);
+        AXIS2_FREE((*env)->allocator, obj_impl->source_uri);
         obj_impl->source_uri = NULL;
     }
     obj_impl->source_uri = AXIS2_STRDUP(source_uri, env);
@@ -245,7 +277,7 @@ axis2_xml_schema_obj_equals(void *obj,
 {
     axis2_xml_schema_obj_impl_t *obj_impl = NULL;
 
-    obj_impl = INTF_TO_IMPL(obj);
+    obj_impl = AXIS2_INTF_TO_IMPL(obj);
 
     return AXIS2_TRUE;
 }

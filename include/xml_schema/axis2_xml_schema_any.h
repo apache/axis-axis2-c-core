@@ -26,8 +26,8 @@
  *
  */
 
-#include <xml_schema/axis2_xml_schema_particle.h>
-#include <xml_schema/axis2_xml_schema_content_processing.h>
+#include <axis2_xml_schema_particle.h>
+#include <axis2_xml_schema_content_processing.h>
 
 /** @defgroup axis2_xml_schema_any Xml Schema Any
   * @ingroup axis2_xml_schema
@@ -63,19 +63,17 @@ struct axis2_xml_schema_any_ops
 
     axis2_status_t (AXIS2_CALL *
     set_namespace) (void *any,
-                        axis2_env_t **env,
-                        axis2_char_t *namespc);
+                    axis2_env_t **env,
+                    axis2_char_t *ns);
 
     struct axis2_xml_schema_content_processing *(AXIS2_CALL *
     get_process_content) (void *any,
-                            axis2_env_t **env);
+                          axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL *
-    set_process_content) (void *any,
-                            axis2_env_t **env,
-                            struct axis2_xml_schema_content_processing *
-                            process_content);
- 
+    set_process_content)(void *any,
+                        axis2_env_t **env,
+                        struct axis2_xml_schema_content_processing *process_content);
 };
 
 struct axis2_xml_schema_any

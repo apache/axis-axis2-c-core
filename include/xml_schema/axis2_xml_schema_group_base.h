@@ -25,17 +25,18 @@
  *
  */
 
-#include <xml_schema/axis2_xml_schema_particle.h>
-#include <xml_schema/axis2_xml_schema_obj_collection.h>
+#include <axis2_xml_schema_particle.h>
+#include <axis2_xml_schema_obj_collection.h>
 
 /** @defgroup axis2_xml_schema_group_base Xml Schema Group Base
   * @ingroup axis2_xml_schema
   * @{
   */
 
-typedef struct axis2_xml_schema_group_base axis2_xml_schema_group_base_t;
-typedef struct axis2_xml_schema_group_base_ops axis2_xml_schema_group_base_ops_t;
-struct axis2_xml_schema_content_processing_t;
+typedef struct axis2_xml_schema_group_base 
+                    axis2_xml_schema_group_base_t;
+typedef struct axis2_xml_schema_group_base_ops 
+                    axis2_xml_schema_group_base_ops_t;
 
 #ifdef __cplusplus
 extern "C"

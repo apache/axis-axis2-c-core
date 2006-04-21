@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_xpath.h>
+#include <axis2_xml_schema_xpath.h>
 
 typedef struct axis2_xml_schema_xpath_impl axis2_xml_schema_xpath_impl_t;
 
@@ -30,7 +30,7 @@ struct axis2_xml_schema_xpath_impl
     axis2_char_t *x_path;
 };
 
-#define INTF_TO_IMPL(xpath) ((axis2_xml_schema_xpath_impl_t *) xpath)
+#define AXIS2_INTF_TO_IMPL(xpath) ((axis2_xml_schema_xpath_impl_t *) xpath)
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_xpath_free(void *xpath,
@@ -102,7 +102,7 @@ axis2_xml_schema_xpath_free(void *xpath,
     axis2_xml_schema_xpath_impl_t *xpath_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    xpath_impl = INTF_TO_IMPL(xpath);
+    xpath_impl = AXIS2_INTF_TO_IMPL(xpath);
 
     if(xpath_impl->x_path)
     {
@@ -143,7 +143,7 @@ axis2_xml_schema_xpath_get_base_impl(void *xpath,
     axis2_xml_schema_xpath_impl_t *xpath_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    xpath_impl = INTF_TO_IMPL(xpath);
+    xpath_impl = AXIS2_INTF_TO_IMPL(xpath);
 
     return xpath_impl->annotated;
 }
@@ -182,8 +182,8 @@ axis2_char_t *AXIS2_CALL
 axis2_xml_schema_xpath_get_xpath(void *xpath,
                                  axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return INTF_TO_IMPL(xpath)->x_path;
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(xpath)->x_path;
 }
 
 axis2_status_t AXIS2_CALL
@@ -195,7 +195,7 @@ axis2_xml_schema_xpath_set_xpath(void *xpath,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, xpath, AXIS2_FAILURE);
-    xpath_impl = INTF_TO_IMPL(xpath);
+    xpath_impl = AXIS2_INTF_TO_IMPL(xpath);
     
     if(xpath_impl->x_path)
     {

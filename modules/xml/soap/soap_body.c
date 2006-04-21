@@ -235,7 +235,7 @@ axis2_bool_t AXIS2_CALL axis2_soap_body_has_fault(axis2_soap_body_t *body,
     else{
         if(NULL != body_impl->soap_builder )
         {
-            while(!(body_impl->soap_fault) && !(AXIS2_OM_NODE_GET_BUILD_STATUS(body_impl->om_ele_node, env)))
+            while(!(body_impl->soap_fault) && !(AXIS2_OM_NODE_IS_COMPLETE(body_impl->om_ele_node, env)))
             {
                 status = AXIS2_SOAP_BUILDER_NEXT(body_impl->soap_builder, env);
                 if(status == AXIS2_FAILURE)
@@ -272,7 +272,7 @@ axis2_soap_body_get_fault(axis2_soap_body_t *body,
     }
     else if(NULL != body_impl->soap_builder )
     {
-        while(!(body_impl->soap_fault) && !(AXIS2_OM_NODE_GET_BUILD_STATUS(body_impl->om_ele_node, env)))
+        while(!(body_impl->soap_fault) && !(AXIS2_OM_NODE_IS_COMPLETE(body_impl->om_ele_node, env)))
         {
             int status = AXIS2_SUCCESS;
             status = AXIS2_SOAP_BUILDER_NEXT(body_impl->soap_builder, env);
@@ -370,7 +370,7 @@ axis2_soap_body_build(axis2_soap_body_t *body,
     soap_body_impl = AXIS2_INTF_TO_IMPL(body);
     if(soap_body_impl->om_ele_node && soap_body_impl->soap_builder)
     {
-        while(AXIS2_OM_NODE_GET_BUILD_STATUS(soap_body_impl->om_ele_node, env) != AXIS2_TRUE)
+        while(AXIS2_OM_NODE_IS_COMPLETE(soap_body_impl->om_ele_node, env) != AXIS2_TRUE)
         {
             status = AXIS2_SOAP_BUILDER_NEXT(soap_body_impl->soap_builder, env);
             if(status == AXIS2_FAILURE)

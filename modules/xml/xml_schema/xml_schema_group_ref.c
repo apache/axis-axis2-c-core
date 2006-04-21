@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_group_ref.h>
-#include <xml_schema/axis2_xml_schema_group_base.h>
+#include <axis2_xml_schema_group_ref.h>
+#include <axis2_xml_schema_group_base.h>
 
-typedef struct axis2_xml_schema_group_ref_impl axis2_xml_schema_group_ref_impl_t;
+typedef struct axis2_xml_schema_group_ref_impl 
+                axis2_xml_schema_group_ref_impl_t;
 
 /** 
  * @brief Other Extension Struct Impl
@@ -26,13 +27,18 @@ typedef struct axis2_xml_schema_group_ref_impl axis2_xml_schema_group_ref_impl_t
 struct axis2_xml_schema_group_ref_impl
 {
     axis2_xml_schema_group_ref_t group_ref;
+    
     axis2_xml_schema_particle_t *base;
+    
     axis2_hash_t *methods;
+    
     axis2_qname_t *ref_qname;
+    
     axis2_xml_schema_group_base_t *particle;
 };
 
-#define INTF_TO_IMPL(group_ref) ((axis2_xml_schema_group_ref_impl_t *) group_ref)
+#define AXIS2_INTF_TO_IMPL(group_ref) \
+        ((axis2_xml_schema_group_ref_impl_t *) group_ref)
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_group_ref_free(void *group_ref,
@@ -68,15 +74,31 @@ axis2_xml_schema_group_ref_create(axis2_env_t **env)
 
     group_ref_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_group_ref_impl_t));
-
+    if(!group_ref_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
+    group_ref_impl->group_ref.base.ops = NULL;
     group_ref_impl->base = NULL;
     group_ref_impl->methods = NULL;
     group_ref_impl->ref_qname = NULL;
     group_ref_impl->particle = NULL;
+    group_ref_impl->group_ref.ops = NULL;
+    
     group_ref_impl->group_ref.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_group_ref_ops_t));
-
-    group_ref_impl->group_ref.ops->free = axis2_xml_schema_group_ref_free;
+    
+    if(!group_ref_impl->group_ref.ops)
+    {
+        axis2_xml_schema_group_ref_free(&(group_ref_impl->group_ref), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
+    group_ref_impl->group_ref.ops->free = 
+            axis2_xml_schema_group_ref_free;
     group_ref_impl->group_ref.ops->get_base_impl = 
             axis2_xml_schema_group_ref_get_base_impl;
     group_ref_impl->group_ref.ops->get_ref_qname = 
@@ -89,6 +111,7 @@ axis2_xml_schema_group_ref_create(axis2_env_t **env)
     group_ref_impl->methods = axis2_hash_make(env);
     if(!group_ref_impl->methods)
     {
+        axis2_xml_schema_group_ref_free(&(group_ref_impl->group_ref), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -102,6 +125,11 @@ axis2_xml_schema_group_ref_create(axis2_env_t **env)
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_group_ref_get_particle);
     
     group_ref_impl->base = axis2_xml_schema_particle_create(env);
+     if(!group_ref_impl->base)
+    {
+        axis2_xml_schema_group_ref_free(&(group_ref_impl->group_ref), env);
+        return NULL;
+    }
     status = axis2_xml_schema_particle_resolve_methods(
             &(group_ref_impl->group_ref.base), env, group_ref_impl->base, 
             group_ref_impl->methods);
@@ -116,43 +144,44 @@ axis2_xml_schema_group_ref_free(void *group_ref,
     axis2_xml_schema_group_ref_impl_t *group_ref_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    group_ref_impl = INTF_TO_IMPL(group_ref);
+    group_ref_impl = AXIS2_INTF_TO_IMPL(group_ref);
 
-    if(group_ref_impl->ref_qname)
+    if(NULL != group_ref_impl->ref_qname)
     {
         AXIS2_FREE((*env)->allocator, group_ref_impl->ref_qname);
         group_ref_impl->ref_qname = NULL;
     }
 
-    if(group_ref_impl->particle)
+    if(NULL != group_ref_impl->particle)
     {
         AXIS2_XML_SCHEMA_GROUP_BASE_FREE(group_ref_impl->particle, env);
         group_ref_impl->particle = NULL;
     }
     
-    if(group_ref_impl->methods)
+    if(NULL != group_ref_impl->methods)
     {
         axis2_hash_free(group_ref_impl->methods, env);
         group_ref_impl->methods = NULL;
     }
 
-    if(group_ref_impl->base)
+    if(NULL != group_ref_impl->base)
     {
         AXIS2_XML_SCHEMA_PARTICLE_FREE(group_ref_impl->base, env);
         group_ref_impl->base = NULL;
     }
     
-    if((&(group_ref_impl->group_ref))->ops)
+    if(NULL != group_ref_impl->group_ref.base.ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(group_ref_impl->group_ref))->ops);
-        (&(group_ref_impl->group_ref))->ops = NULL;
+        AXIS2_FREE((*env)->allocator, group_ref_impl->group_ref.base.ops);
+        group_ref_impl->group_ref.base.ops = NULL;
     }
-
-    if(group_ref_impl)
+    if(NULL != group_ref_impl->group_ref.ops)
     {
-        AXIS2_FREE((*env)->allocator, group_ref_impl);
-        group_ref_impl = NULL;
+        AXIS2_FREE((*env)->allocator, group_ref_impl->group_ref.ops);
+        group_ref_impl->group_ref.ops = NULL;
     }
+    AXIS2_FREE((*env)->allocator, group_ref_impl);
+    group_ref_impl = NULL;
     return AXIS2_SUCCESS;
 }
 
@@ -163,7 +192,7 @@ axis2_xml_schema_group_ref_get_base_impl(void *group_ref,
     axis2_xml_schema_group_ref_impl_t *group_ref_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    group_ref_impl = INTF_TO_IMPL(group_ref);
+    group_ref_impl = AXIS2_INTF_TO_IMPL(group_ref);
 
     return group_ref_impl->base;
 }
@@ -204,8 +233,8 @@ axis2_qname_t *AXIS2_CALL
 axis2_xml_schema_group_ref_get_ref_qname(void *group_ref,
                                 axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return INTF_TO_IMPL(group_ref)->ref_qname;
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(group_ref)->ref_qname;
 }
 
 axis2_status_t AXIS2_CALL
@@ -216,7 +245,7 @@ axis2_xml_schema_group_ref_set_ref_qname(void *group_ref,
     axis2_xml_schema_group_ref_impl_t *group_ref_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    group_ref_impl = INTF_TO_IMPL(group_ref);
+    group_ref_impl = AXIS2_INTF_TO_IMPL(group_ref);
 
     if(group_ref_impl->ref_qname)
     {
@@ -236,7 +265,7 @@ axis2_xml_schema_group_base_t *AXIS2_CALL
 axis2_xml_schema_group_ref_get_particle(void *group_ref,
                                         axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return INTF_TO_IMPL(group_ref)->particle;
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(group_ref)->particle;
 }
 

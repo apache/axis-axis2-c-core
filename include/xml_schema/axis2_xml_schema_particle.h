@@ -23,7 +23,7 @@
  *          Base class for all particle types.
  */
 
-#include <xml_schema/axis2_xml_schema_annotated.h>
+#include <axis2_xml_schema_annotated.h>
 #include <axis2_hash.h>
 
 /** @defgroup axis2_xml_schema_particle Xml Schema Particle
@@ -31,8 +31,10 @@
   * @{
   */
 
-typedef struct axis2_xml_schema_particle axis2_xml_schema_particle_t;
-typedef struct axis2_xml_schema_particle_ops axis2_xml_schema_particle_ops_t;
+typedef struct axis2_xml_schema_particle 
+                    axis2_xml_schema_particle_t;
+typedef struct axis2_xml_schema_particle_ops 
+                    axis2_xml_schema_particle_ops_t;
 
 #ifdef __cplusplus
 extern "C"

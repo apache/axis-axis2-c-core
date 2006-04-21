@@ -14,17 +14,18 @@
  * limitations under the License.
  */
  
-#include <xml_schema/axis2_xml_schema_collection.h>
-#include <xml_schema/axis2_xml_schema_element.h>
-#include <xml_schema/axis2_xml_schema_type.h>
-#include <xml_schema/axis2_xml_schema.h>
-#include <xml_schema/axis2_validation_event_handler.h> 
+#include <axis2_xml_schema_collection.h>
+#include <axis2_xml_schema_element.h>
+#include <axis2_xml_schema_type.h>
+#include <axis2_xml_schema.h>
+#include <axis2_validation_event_handler.h> 
 #include <axis2_hash.h>
-#include <xml_schema/axis2_xml_schema_type.h>
-#include <xml_schema/axis2_xml_schema_type_receiver.h>
-#include <xml_schema/axis2_xml_schema_element.h>
+#include <axis2_xml_schema_type.h>
+#include <axis2_xml_schema_type_receiver.h>
+#include <axis2_xml_schema_element.h>
 
-typedef struct axis2_xml_schema_collection_impl axis2_xml_schema_collection_impl_t;
+typedef struct axis2_xml_schema_collection_impl 
+                axis2_xml_schema_collection_impl_t;
 
 /** 
  * @brief Xml Schema Obj Struct Impl
@@ -34,9 +35,8 @@ struct axis2_xml_schema_collection_impl
 {
     axis2_xml_schema_collection_t collection;
     /**
-     * Namespaces we know about.  Each one has an equivalent XmlSchema.
      */
-    axis2_hash_t *namespcs;
+    axis2_hash_t *namespaces;
     /**
      * base URI is used as the base for loading the
      * imports
@@ -45,127 +45,126 @@ struct axis2_xml_schema_collection_impl
     /**
      * In-scope namespaces for XML processing
      */
-    axis2_hash_t *in_scope_namespcs;
+    axis2_hash_t *in_scope_namespaces;
+    
     axis2_xml_schema_t *xml_schema;
+    
     axis2_hash_t *unresolved_types;
 };
 
-#define INTF_TO_IMPL(collection) ((axis2_xml_schema_collection_impl_t *) collection)
+#define AXIS2_INTF_TO_IMPL(collection) \
+        ((axis2_xml_schema_collection_impl_t *) collection)
 
-axis2_status_t AXIS2_CALL 
-axis2_xml_schema_collection_free(void *collection,
-                axis2_env_t **env);
 
-/**
- * Set the base URI. This is used when schemas need to be
- * loaded from relative locations
- * @param base_uri
- */
-axis2_status_t AXIS2_CALL 
-axis2_xml_schema_collection_set_base_uri(void *collection,
-                                            axis2_env_t **env,
-                                            axis2_char_t *base_uri);
+/************* function prototypes *******************************************/
 
-/**
- * This section should comply to the XMLSchema specification
- * @see http://www.w3.org/TR/2004/PER-xmlschema-2-20040318/datatypes.html#built-in-datatypes
- *
- * This needs to be inspected by another pair of eyes
- */
-axis2_status_t AXIS2_CALL 
-axis2_xml_schema_collection_init(void *collection,
-                                    axis2_env_t **env);
 
-static axis2_status_t add_simple_type(void *collection,
-                                        axis2_env_t **env,
-                                        axis2_xml_schema_t *schema,
-                                        axis2_char_t *type_name);
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_collection_free(axis2_xml_schema_collection_t* collection,
+                                 axis2_env_t **env);
 
-axis2_xml_schema_t *AXIS2_CALL
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_collection_set_base_uri
+                  (axis2_xml_schema_collection_t* collection,
+                   axis2_env_t **env,
+                   axis2_char_t *base_uri);
+                   
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_collection_init(axis2_xml_schema_collection_t* collection,
+                                 axis2_env_t **env);
+
+
+struct axis2_xml_schema* AXIS2_CALL
 axis2_xml_schema_collection_read_a_reader_and_validation_event_handler(
-                                            void *collection,
-                                            axis2_env_t **env,
-                                            void *reader, 
-                                            axis2_xml_schema_validation_event_handler_t *veh); 
-
-axis2_xml_schema_t *AXIS2_CALL
+                            axis2_xml_schema_collection_t* collection,
+                            axis2_env_t **env,
+                            void *reader, 
+                            axis2_validation_event_handler_t *veh); 
+                            
+struct axis2_xml_schema* AXIS2_CALL
 axis2_xml_schema_collection_read_a_input_source_and_validation_event_handler(
-                                            void *collection,
-                                            axis2_env_t **env,
-                                            void *input_source, 
-                                            axis2_xml_schema_validation_event_handler_t *veh);
+                                axis2_xml_schema_collection_t* collection,
+                                axis2_env_t **env,
+                                void *input_source, 
+                                axis2_validation_event_handler_t *veh);
 
-axis2_xml_schema_t *AXIS2_CALL
+struct axis2_xml_schema *   AXIS2_CALL
 axis2_xml_schema_collection_read_a_source_and_validation_event_handler(
-                                            void *collection,
-                                            axis2_env_t **env,
-                                            void *source, 
-                                            axis2_xml_schema_validation_event_handler_t *veh); 
+                                axis2_xml_schema_collection_t* collection,
+                                axis2_env_t **env,
+                                void *source, 
+                                axis2_validation_event_handler_t *veh); 
 
-axis2_xml_schema_t *AXIS2_CALL
-axis2_xml_schema_collection_read_a_document_and_validation_event_handler(
-                                            void *collection,
-                                            axis2_env_t **env,
-                                            void *source, 
-                                            axis2_xml_schema_validation_event_handler_t *veh);
+struct axis2_xml_schema * AXIS2_CALL
+axis2_xml_schema_collection_read_a_document_and_validation_event_handler (
+                                axis2_xml_schema_collection_t* collection,
+                                axis2_env_t **env,
+                                void *document, 
+                                axis2_validation_event_handler_t *veh);
 
-axis2_xml_schema_t *AXIS2_CALL
-axis2_xml_schema_collection_read_a_element(
-                                            void *collection,
-                                            axis2_env_t **env,
-                                            axis2_om_element_t *element, 
-                                            axis2_om_node_t *node);
+struct axis2_xml_schema * AXIS2_CALL
+axis2_xml_schema_collection_read_a_element
+                    (axis2_xml_schema_collection_t* collection,
+                     axis2_env_t **env,
+                     struct axis2_om_node *node);
 
-axis2_xml_schema_t *AXIS2_CALL
-axis2_xml_schema_collection_read_a_document_and_uri_and_validation_event_handler(
-                                            void *collection,
-                                            axis2_env_t **env,
-                                            void *document,
-                                            axis2_char_t *uri,
-                                            axis2_xml_schema_validation_event_handler_t *veh); 
+struct axis2_xml_schema* AXIS2_CALL
+axis2_xml_schema_collection_read_a_document_uri_and_validation_event_handler
+                         (axis2_xml_schema_collection_t* collection,
+                        axis2_env_t **env,
+                        void *document,
+                        axis2_char_t *uri,
+                        axis2_validation_event_handler_t *veh); 
 
-axis2_xml_schema_t *AXIS2_CALL
-axis2_xml_schema_collection_read_a_element_and_uri(
-                                            void *collection,
-                                            axis2_env_t **env,
-                                            axis2_om_element_t *element,
-                                            axis2_om_node_t *node,
-                                            axis2_char_t *uri);
+struct axis2_xml_schema * AXIS2_CALL
+axis2_xml_schema_collection_read_a_element_and_uri
+                           (axis2_xml_schema_collection_t* collection,
+                             axis2_env_t **env,
+                             struct axis2_om_node *node,
+                             axis2_char_t *uri);
 
-axis2_xml_schema_element_t *AXIS2_CALL
-axis2_xml_schema_collection_get_element_by_qname(void *collection,
-                                                 axis2_env_t **env,
-                                                 axis2_qname_t *qname);
+struct axis2_xml_schema_element * AXIS2_CALL
+axis2_xml_schema_collection_get_element_by_qname
+                       (axis2_xml_schema_collection_t* collection,
+                        axis2_env_t **env,
+                        axis2_qname_t *qname);
 
-axis2_xml_schema_type_t *AXIS2_CALL
-axis2_xml_schema_collection_get_type_by_qname(void *collection,
-                                             axis2_env_t **env,
-                                             axis2_qname_t *schema_type_qname);
+struct axis2_xml_schema_type * AXIS2_CALL
+axis2_xml_schema_collection_get_type_by_qname
+                   (axis2_xml_schema_collection_t* collection,
+                    axis2_env_t **env,
+                    axis2_qname_t *schema_type_qname);
 
-
-axis2_status_t AXIS2_CALL
-axis2_xml_schema_collection_add_unresolved_type(void *collection,
-                                                axis2_env_t **env,
-                                                axis2_qname_t *qtype, 
-                                                axis2_xml_schema_type_receiver_t *receiver); 
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_collection_resolve_type(void *collection,
-                                            axis2_env_t **env,
-                                            axis2_qname_t *type_qame, 
-                                         struct axis2_xml_schema_type *type); 
+axis2_xml_schema_collection_add_unresolved_type
+                       (axis2_xml_schema_collection_t* collection,
+                        axis2_env_t **env,
+                        axis2_qname_t *qtype, 
+                        struct axis2_xml_schema_type_receiver *receiver); 
 
-axis2_char_t *AXIS2_CALL 
-axis2_xml_schema_collection_get_namespace_for_prefix(void *collection,
-                                                    axis2_env_t **env,
-                                                    axis2_char_t *prefix); 
+axis2_status_t AXIS2_CALL 
+axis2_xml_schema_collection_resolve_type
+               (axis2_xml_schema_collection_t* collection,
+                axis2_env_t **env,
+                axis2_qname_t *type_qame, 
+                struct axis2_xml_schema_type *type); 
+
+axis2_char_t * AXIS2_CALL
+axis2_xml_schema_collection_get_namespace_for_prefix
+                (axis2_xml_schema_collection_t *collection,
+                 axis2_env_t **env,
+                 axis2_char_t *prefix); 
+                     
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_collection_map_namespace(void *collection,
-                                            axis2_env_t **env,
-                                            axis2_char_t *prefix, 
-                                            axis2_char_t *namespc_uri);
-
+axis2_xml_schema_collection_map_namespace
+                (axis2_xml_schema_collection_t* collection,
+                 axis2_env_t **env,
+                 axis2_char_t *prefix, 
+                 axis2_char_t *namespc_uri);
+                    
+                    
 
 AXIS2_DECLARE(axis2_xml_schema_collection_t *)
 axis2_xml_schema_collection_create(axis2_env_t **env)
@@ -174,10 +173,29 @@ axis2_xml_schema_collection_create(axis2_env_t **env)
     
     collection_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_collection_impl_t));
-
+    if(!collection_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
+    collection_impl->base_uri  = NULL;
+    collection_impl->collection.ops = NULL;
+    collection_impl->in_scope_namespaces = NULL;
+    collection_impl->namespaces = NULL;
+    collection_impl->unresolved_types = NULL;
+    collection_impl->xml_schema = NULL;
+    
     collection_impl->collection.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_collection_ops_t)); 
-
+    
+    if(!collection_impl->collection.ops)
+    {
+        axis2_xml_schema_collection_free(&(collection_impl->collection), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
     axis2_xml_schema_collection_init(&(collection_impl->collection), env);
 
     collection_impl->collection.ops->free = 
@@ -186,18 +204,24 @@ axis2_xml_schema_collection_create(axis2_env_t **env)
             axis2_xml_schema_collection_set_base_uri;
     collection_impl->collection.ops->init = 
             axis2_xml_schema_collection_init;
+            
     collection_impl->collection.ops->read_a_reader_and_validation_event_handler = 
             axis2_xml_schema_collection_read_a_reader_and_validation_event_handler;
+            
     collection_impl->collection.ops->read_a_input_source_and_validation_event_handler = 
             axis2_xml_schema_collection_read_a_input_source_and_validation_event_handler;
+            
     collection_impl->collection.ops->read_a_source_and_validation_event_handler = 
             axis2_xml_schema_collection_read_a_source_and_validation_event_handler;
+            
     collection_impl->collection.ops->read_a_document_and_validation_event_handler = 
             axis2_xml_schema_collection_read_a_document_and_validation_event_handler;
+            
     collection_impl->collection.ops->read_a_element = 
             axis2_xml_schema_collection_read_a_element;
-    collection_impl->collection.ops->read_a_document_and_uri_and_validation_event_handler= 
-            axis2_xml_schema_collection_read_a_document_and_uri_and_validation_event_handler;
+            
+    collection_impl->collection.ops->read_a_document_uri_and_validation_event_handler= 
+        axis2_xml_schema_collection_read_a_document_uri_and_validation_event_handler;
     collection_impl->collection.ops->read_a_element_and_uri = 
             axis2_xml_schema_collection_read_a_element_and_uri;
     collection_impl->collection.ops->get_element_by_qname = 
@@ -218,87 +242,20 @@ axis2_xml_schema_collection_create(axis2_env_t **env)
 
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_collection_free(void *collection,
-                                        axis2_env_t **env)
+axis2_xml_schema_collection_free(axis2_xml_schema_collection_t *collection,
+                                 axis2_env_t **env)
 {
-    axis2_xml_schema_collection_impl_t *collection_impl = NULL;
-
-    collection_impl = INTF_TO_IMPL(collection);
-
-    if((&(collection_impl->collection))->ops)
+    if(NULL != collection->ops)
     {
-        free((&(collection_impl->collection))->ops);
-        (&(collection_impl->collection))->ops = NULL;
+        AXIS2_FREE((*env)->allocator, collection->ops);
+        collection->ops = NULL;
     }
-
-    if(collection_impl)
-    {
-        free(collection_impl);
-        collection_impl = NULL;
-    }
+    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(collection));
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_status_t)
-axis2_xml_schema_collection_resolve_methods(
-                        axis2_xml_schema_collection_t *collection,
-                        axis2_env_t **env,
-                        axis2_xml_schema_collection_t *collection_impl,
-                        axis2_hash_t *methods)
-{    
-    axis2_xml_schema_collection_impl_t *collection_impl_l = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, collection_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
-    
-    collection_impl_l = (axis2_xml_schema_collection_impl_t *) collection_impl;
-    
-    collection->ops = AXIS2_MALLOC((*env)->allocator, 
-            sizeof(axis2_xml_schema_collection_ops_t));
-    collection->ops->free = axis2_hash_get(methods, "free", 
-            AXIS2_HASH_KEY_STRING);
-    collection->ops->set_base_uri = 
-            collection_impl_l->collection.ops->set_base_uri;
-    collection->ops->init = 
-            collection_impl_l->collection.ops->init; 
-    collection->ops->read_a_reader_and_validation_event_handler = 
-            collection_impl_l->collection.ops->read_a_reader_and_validation_event_handler; 
-    collection->ops->read_a_input_source_and_validation_event_handler = 
-            collection_impl_l->collection.ops->read_a_input_source_and_validation_event_handler; 
-    collection->ops->read_a_source_and_validation_event_handler = 
-            collection_impl_l->collection.ops->read_a_source_and_validation_event_handler; 
-    collection->ops->read_a_document_and_validation_event_handler = 
-            collection_impl_l->collection.ops->read_a_document_and_validation_event_handler; 
-    collection->ops->read_a_element = 
-            collection_impl_l->collection.ops->read_a_element; 
-    collection->ops->read_a_document_and_uri_and_validation_event_handler = 
-            collection_impl_l->collection.ops->read_a_document_and_uri_and_validation_event_handler; 
-    collection->ops->read_a_element_and_uri = 
-            collection_impl_l->collection.ops->read_a_element_and_uri; 
-    collection->ops->get_element_by_qname = 
-            collection_impl_l->collection.ops->get_element_by_qname; 
-    collection->ops->get_type_by_qname = 
-            collection_impl_l->collection.ops->get_type_by_qname; 
-    collection->ops->add_unresolved_type = 
-            collection_impl_l->collection.ops->add_unresolved_type; 
-    collection->ops->resolve_type = 
-            collection_impl_l->collection.ops->resolve_type; 
-    collection->ops->get_namespace_for_prefix = 
-            collection_impl_l->collection.ops->get_namespace_for_prefix; 
-    collection->ops->map_namespace = 
-            collection_impl_l->collection.ops->map_namespace; 
-    return AXIS2_SUCCESS;    
-
-}
-
-/**
- * Set the base URI. This is used when schemas need to be
- * loaded from relative locations
- * @param base_uri
- */
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_collection_set_base_uri(void *collection,
+axis2_xml_schema_collection_set_base_uri(axis2_xml_schema_collection_t*collection,
                                             axis2_env_t **env,
                                             axis2_char_t *base_uri)
 {
@@ -312,7 +269,7 @@ axis2_xml_schema_collection_set_base_uri(void *collection,
  * This needs to be inspected by another pair of eyes
  */
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_collection_init(void *collection,
+axis2_xml_schema_collection_init(axis2_xml_schema_collection_t   *collection,
                                     axis2_env_t **env) 
 {
     /*
@@ -374,7 +331,7 @@ axis2_xml_schema_collection_init(void *collection,
     return AXIS2_SUCCESS;
 }
 
-static axis2_status_t add_simple_type(void *collection,
+static axis2_status_t add_simple_type(axis2_xml_schema_collection_t  *collection,
                                         axis2_env_t **env,
                                         axis2_xml_schema_t *schema,
                                         axis2_char_t *type_name)
@@ -384,70 +341,68 @@ static axis2_status_t add_simple_type(void *collection,
 
 axis2_xml_schema_t *AXIS2_CALL
 axis2_xml_schema_collection_read_a_reader_and_validation_event_handler(
-                                            void *collection,
+                                            axis2_xml_schema_collection_t  *collection,
                                             axis2_env_t **env,
-                                            void *reader, 
-                                            axis2_xml_schema_validation_event_handler_t *veh) 
+                                            axis2_xml_schema_collection_t  *reader, 
+                                            axis2_validation_event_handler_t *veh) 
 {
     return NULL;
 }
 
 axis2_xml_schema_t *AXIS2_CALL
 axis2_xml_schema_collection_read_a_input_source_and_validation_event_handler(
-                                            void *collection,
+                                            axis2_xml_schema_collection_t  *collection,
                                             axis2_env_t **env,
-                                            void *input_source, 
-                                            axis2_xml_schema_validation_event_handler_t *veh) 
+                                            axis2_xml_schema_collection_t  *input_source, 
+                                            axis2_validation_event_handler_t *veh) 
 {
     return NULL;
 }
 
 axis2_xml_schema_t *AXIS2_CALL
 axis2_xml_schema_collection_read_a_source_and_validation_event_handler(
-                                            void *collection,
+                                            axis2_xml_schema_collection_t  *collection,
                                             axis2_env_t **env,
-                                            void *source, 
-                                            axis2_xml_schema_validation_event_handler_t *veh) 
+                                            axis2_xml_schema_collection_t  *source, 
+                                            axis2_validation_event_handler_t *veh) 
 {
     return NULL;
 }
 
 axis2_xml_schema_t *AXIS2_CALL
 axis2_xml_schema_collection_read_a_document_and_validation_event_handler(
-                                            void *collection,
+                                            axis2_xml_schema_collection_t  *collection,
                                             axis2_env_t **env,
                                             void *source, 
-                                            axis2_xml_schema_validation_event_handler_t *veh) 
+                                            axis2_validation_event_handler_t *veh) 
 {
     return NULL;
 }
 
 axis2_xml_schema_t *AXIS2_CALL
 axis2_xml_schema_collection_read_a_element(
-                                            void *collection,
+                                            axis2_xml_schema_collection_t  *collection,
                                             axis2_env_t **env,
-                                            axis2_om_element_t *element, 
                                             axis2_om_node_t *node)
 {
     return NULL;
 }
 
 axis2_xml_schema_t *AXIS2_CALL
-axis2_xml_schema_collection_read_a_document_and_uri_and_validation_event_handler(
-                                            void *collection,
+axis2_xml_schema_collection_read_a_document_uri_and_validation_event_handler(
+                                            axis2_xml_schema_collection_t  *collection,
                                             axis2_env_t **env,
                                             void *document,
                                             axis2_char_t *uri,
-                                            axis2_xml_schema_validation_event_handler_t *veh) 
+                                            axis2_validation_event_handler_t *veh) 
 {
     return NULL;
 }
 
 axis2_xml_schema_t *AXIS2_CALL
 axis2_xml_schema_collection_read_a_element_and_uri(
-                                            void *collection,
+                                            axis2_xml_schema_collection_t  *collection,
                                             axis2_env_t **env,
-                                            axis2_om_element_t *element,
                                             axis2_om_node_t *node,
                                             axis2_char_t *uri) 
 {
@@ -455,7 +410,7 @@ axis2_xml_schema_collection_read_a_element_and_uri(
 }
 
 axis2_xml_schema_element_t *AXIS2_CALL
-axis2_xml_schema_collection_get_element_by_qname(void *collection,
+axis2_xml_schema_collection_get_element_by_qname(axis2_xml_schema_collection_t  *collection,
                                                  axis2_env_t **env,
                                                  axis2_qname_t *qname) 
 {
@@ -463,7 +418,7 @@ axis2_xml_schema_collection_get_element_by_qname(void *collection,
 }
 
 axis2_xml_schema_type_t *AXIS2_CALL
-axis2_xml_schema_collection_get_type_by_qname(void *collection,
+axis2_xml_schema_collection_get_type_by_qname(axis2_xml_schema_collection_t  *collection,
                                              axis2_env_t **env,
                                              axis2_qname_t *schema_type_qname) 
 {
@@ -472,7 +427,7 @@ axis2_xml_schema_collection_get_type_by_qname(void *collection,
 
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_collection_add_unresolved_type(void *collection,
+axis2_xml_schema_collection_add_unresolved_type(axis2_xml_schema_collection_t  *collection,
                                                 axis2_env_t **env,
                                                 axis2_qname_t *qtype, 
                                                 axis2_xml_schema_type_receiver_t *receiver) 
@@ -481,7 +436,7 @@ axis2_xml_schema_collection_add_unresolved_type(void *collection,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_collection_resolve_type(void *collection,
+axis2_xml_schema_collection_resolve_type(axis2_xml_schema_collection_t  *collection,
                                          axis2_env_t **env,
                                          axis2_qname_t *type_qame, 
                                           struct axis2_xml_schema_type *type) 
@@ -490,7 +445,7 @@ axis2_xml_schema_collection_resolve_type(void *collection,
 }
 
 axis2_char_t *AXIS2_CALL 
-axis2_xml_schema_collection_get_namespace_for_prefix(void *collection,
+axis2_xml_schema_collection_get_namespace_for_prefix(axis2_xml_schema_collection_t  *collection,
                                                     axis2_env_t **env,
                                                     axis2_char_t *prefix) 
 {
@@ -498,7 +453,7 @@ axis2_xml_schema_collection_get_namespace_for_prefix(void *collection,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_collection_map_namespace(void *collection,
+axis2_xml_schema_collection_map_namespace(axis2_xml_schema_collection_t  *collection,
                                             axis2_env_t **env,
                                             axis2_char_t *prefix, 
                                             axis2_char_t *namespc_uri)

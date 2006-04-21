@@ -285,7 +285,7 @@ axis2_soap_fault_code_get_sub_code(axis2_soap_fault_code_t *fault_code,
     else if(NULL != fault_code_impl->builder)
     {
         while(!(fault_code_impl->subcode) && 
-            !(AXIS2_OM_NODE_GET_BUILD_STATUS(fault_code_impl->om_ele_node, env)))
+            !(AXIS2_OM_NODE_IS_COMPLETE(fault_code_impl->om_ele_node, env)))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(fault_code_impl->builder, env);
             if(status == AXIS2_FAILURE)
@@ -316,7 +316,7 @@ axis2_soap_fault_code_get_value(axis2_soap_fault_code_t *fault_code,
     else if(fault_code_impl->builder)
     {
         while(!(fault_code_impl->value) && 
-            !(AXIS2_OM_NODE_GET_BUILD_STATUS(fault_code_impl->om_ele_node, env)))
+            !(AXIS2_OM_NODE_IS_COMPLETE(fault_code_impl->om_ele_node, env)))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(fault_code_impl->builder, env);
             if(status == AXIS2_FAILURE)

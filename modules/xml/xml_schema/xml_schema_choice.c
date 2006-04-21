@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_choice.h>
-#include <xml_schema/axis2_xml_schema_group_base.h>
+#include <axis2_xml_schema_choice.h>
+#include <axis2_xml_schema_group_base.h>
 
-typedef struct axis2_xml_schema_choice_impl axis2_xml_schema_choice_impl_t;
+typedef struct axis2_xml_schema_choice_impl 
+                axis2_xml_schema_choice_impl_t;
 
 /** 
  * @brief Other Extension Struct Impl
@@ -26,12 +27,18 @@ typedef struct axis2_xml_schema_choice_impl axis2_xml_schema_choice_impl_t;
 struct axis2_xml_schema_choice_impl
 {
     axis2_xml_schema_choice_t choice;
+    
     axis2_xml_schema_group_base_t *base;
+    
     axis2_hash_t *methods;
+    
     axis2_xml_schema_obj_collection_t *items;
 };
 
-#define INTF_TO_IMPL(choice) ((axis2_xml_schema_choice_impl_t *) choice)
+#define AXIS2_INTF_TO_IMPL(choice) \
+        ((axis2_xml_schema_choice_impl_t *) choice)
+
+/********************* function prototypes ************************************/
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_choice_free(void *choice,
@@ -45,6 +52,7 @@ axis2_xml_schema_obj_collection_t *AXIS2_CALL
 axis2_xml_schema_choice_get_items(void *choice,
                                 axis2_env_t **env);
 
+/******************** end function prototypes ********************************/
 
 AXIS2_DECLARE(axis2_xml_schema_choice_t *)
 axis2_xml_schema_choice_create(axis2_env_t **env)
@@ -54,35 +62,58 @@ axis2_xml_schema_choice_create(axis2_env_t **env)
 
     choice_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_choice_impl_t));
-
+    if(!choice_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error , 
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     choice_impl->base = NULL;
     choice_impl->methods = NULL;
     choice_impl->items = NULL;
+    choice_impl->choice.base.ops = NULL;
+    choice_impl->choice.ops = NULL;
+    
     choice_impl->choice.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_choice_ops_t));
-
-    choice_impl->choice.ops->free = axis2_xml_schema_choice_free;
+    if(!choice_impl->choice.ops)
+    {
+        axis2_xml_schema_choice_free(&(choice_impl->choice), env);
+        AXIS2_ERROR_SET((*env)->error , 
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
+    choice_impl->choice.ops->free = 
+        axis2_xml_schema_choice_free;
     choice_impl->choice.ops->get_base_impl = 
-            axis2_xml_schema_choice_get_base_impl;
+        axis2_xml_schema_choice_get_base_impl;
     choice_impl->choice.ops->get_items = 
-            axis2_xml_schema_choice_get_items;
+        axis2_xml_schema_choice_get_items;
    
     choice_impl->methods = axis2_hash_make(env);
     if(!choice_impl->methods)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        axis2_xml_schema_choice_free(&(choice_impl->choice), env);
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+    
     axis2_hash_set(choice_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_choice_free);
+       axis2_xml_schema_choice_free);
     axis2_hash_set(choice_impl->methods, "get_items", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_choice_get_items);
+       AXIS2_HASH_KEY_STRING, axis2_xml_schema_choice_get_items);
     
     choice_impl->base = axis2_xml_schema_group_base_create(env);
+    if(!choice_impl->base)
+    {
+        axis2_xml_schema_choice_free(&(choice_impl->choice), env);
+        return NULL;
+    }
     status = axis2_xml_schema_group_base_resolve_methods(
             &(choice_impl->choice.base), env, choice_impl->base, 
             choice_impl->methods);
-    
     return &(choice_impl->choice);
 }
 
@@ -93,33 +124,37 @@ axis2_xml_schema_choice_free(void *choice,
     axis2_xml_schema_choice_impl_t *choice_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    choice_impl = INTF_TO_IMPL(choice);
+    choice_impl = AXIS2_INTF_TO_IMPL(choice);
 
-    if(choice_impl->items)
+    if(NULL != choice_impl->items)
     {
         AXIS2_XML_SCHEMA_OBJ_COLLECTION_FREE(choice_impl->items, env);
         choice_impl->items = NULL;
     }
     
-    if(choice_impl->methods)
+    if(NULL != choice_impl->methods)
     {
         axis2_hash_free(choice_impl->methods, env);
         choice_impl->methods = NULL;
     }
 
-    if(choice_impl->base)
+    if(NULL != choice_impl->base)
     {
         AXIS2_XML_SCHEMA_GROUP_BASE_FREE(choice_impl->base, env);
         choice_impl->base = NULL;
     }
     
-    if((&(choice_impl->choice))->ops)
+    if(NULL != choice_impl->choice.ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(choice_impl->choice))->ops);
-        (&(choice_impl->choice))->ops = NULL;
+        AXIS2_FREE((*env)->allocator, choice_impl->choice.ops);
+        choice_impl->choice.ops = NULL;
     }
-
-    if(choice_impl)
+    if(NULL != choice_impl->choice.base.ops)
+    {
+        AXIS2_FREE((*env)->allocator, choice_impl->choice.base.ops);
+        choice_impl->choice.base.ops = NULL;
+    }
+    if(NULL != choice_impl)
     {
         AXIS2_FREE((*env)->allocator, choice_impl);
         choice_impl = NULL;
@@ -134,8 +169,7 @@ axis2_xml_schema_choice_get_base_impl(void *choice,
     axis2_xml_schema_choice_impl_t *choice_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    choice_impl = INTF_TO_IMPL(choice);
-
+    choice_impl = AXIS2_INTF_TO_IMPL(choice);
     return choice_impl->base;
 }
 
@@ -171,7 +205,7 @@ axis2_xml_schema_obj_collection_t *AXIS2_CALL
 axis2_xml_schema_choice_get_items(void *choice,
                                     axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return INTF_TO_IMPL(choice)->items;
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(choice)->items;
 }
 

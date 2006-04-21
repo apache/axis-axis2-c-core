@@ -359,7 +359,7 @@ axis2_soap_envelope_get_header(axis2_soap_envelope_t *envelope,
     }
     else if(envelope_impl->soap_builder)
     {
-        while(!(envelope_impl->header) && !AXIS2_OM_NODE_GET_BUILD_STATUS(
+        while(!(envelope_impl->header) && !AXIS2_OM_NODE_IS_COMPLETE(
                 envelope_impl->om_ele_node, env))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(envelope_impl->soap_builder, env);  
@@ -409,7 +409,7 @@ axis2_soap_envelope_get_body(axis2_soap_envelope_t *envelope,
     }
     else if(envelope_impl->soap_builder)
     {
-        while(!(envelope_impl->body)  && !AXIS2_OM_NODE_GET_BUILD_STATUS(envelope_impl->om_ele_node, env))
+        while(!(envelope_impl->body)  && !AXIS2_OM_NODE_IS_COMPLETE(envelope_impl->om_ele_node, env))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(envelope_impl->soap_builder, env);
             if(status == AXIS2_FAILURE)

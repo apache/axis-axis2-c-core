@@ -117,14 +117,14 @@ axis2_om_node_set_data_element(axis2_om_node_t *om_node,
                                axis2_env_t **env,
                                void* data_element);
 /**
-* set build status, if the node if completety build build status is
+* sets the build status , if the node if completety build, this attribute  is
 * set to AXIS2_TRUE , otherwise AXIS2_FALSE  
 * @param om_node 
 * @param env environment, MUST NOT be NULL.
 * @param done                   
 */                                    
 AXIS2_DECLARE(axis2_status_t)
-axis2_om_node_set_build_status(axis2_om_node_t *om_node,
+axis2_om_node_set_complete(axis2_om_node_t *om_node,
                                axis2_env_t **env,
                                axis2_bool_t done);  
   

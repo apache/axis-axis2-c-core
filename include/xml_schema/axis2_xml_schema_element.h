@@ -24,7 +24,7 @@
  *          element element.
  */
 
-#include <xml_schema/axis2_xml_schema_type_receiver.h>
+#include <axis2_xml_schema_type_receiver.h>
 #include <axis2_qname.h>
 
 /** @defgroup axis2_xml_schema_element Xml Schema Element

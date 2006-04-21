@@ -281,7 +281,7 @@ axis2_om_element_create (axis2_env_t **env,
         AXIS2_OM_NODE_ADD_CHILD(parent, env, (*node));
          
     }
-    axis2_om_node_set_build_status((*node), env, AXIS2_FALSE);
+    axis2_om_node_set_complete((*node), env, AXIS2_FALSE);
     axis2_om_node_set_node_type((*node), env, AXIS2_OM_ELEMENT);
     axis2_om_node_set_data_element((*node), env, element);
 
@@ -1473,7 +1473,7 @@ axis2_om_element_build(axis2_om_element_t *om_ele,
     builder = axis2_om_node_get_builder(om_ele_node, env);
     if(!builder)
         return AXIS2_FAILURE;
-    while(!AXIS2_OM_NODE_GET_BUILD_STATUS(om_ele_node, env) && 
+    while(!AXIS2_OM_NODE_IS_COMPLETE(om_ele_node, env) && 
             !AXIS2_OM_STAX_BUILDER_IS_COMPLETE(builder, env))
     {
         void *value  = NULL;

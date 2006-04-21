@@ -205,6 +205,7 @@ axis2_om_stax_builder_process_attributes (axis2_om_stax_builder_t *om_builder,
                 }                        
             }
         }
+        
         attr_name = AXIS2_XML_READER_GET_ATTRIBUTE_NAME_BY_NUMBER(
                                  builder_impl->parser, env, i);
         
@@ -230,6 +231,8 @@ axis2_om_stax_builder_process_attributes (axis2_om_stax_builder_t *om_builder,
             AXIS2_XML_READER_XML_FREE(builder_impl->parser, env, attr_name);
         if(attr_value)
             AXIS2_XML_READER_XML_FREE(builder_impl->parser, env, attr_value);
+            
+        ns = NULL;            
     }
     return status;
 }
@@ -260,7 +263,7 @@ axis2_om_stax_builder_create_om_text (axis2_om_stax_builder_t * om_stax_builder,
         return NULL;
     }
   
-    if (AXIS2_OM_NODE_GET_BUILD_STATUS(builder->lastnode, env))
+    if (AXIS2_OM_NODE_IS_COMPLETE(builder->lastnode, env))
     {
         axis2_om_text_create (env, 
                               AXIS2_OM_NODE_GET_PARENT(builder->lastnode, env),
@@ -272,7 +275,7 @@ axis2_om_stax_builder_create_om_text (axis2_om_stax_builder_t * om_stax_builder,
         axis2_om_text_create (env, builder->lastnode, temp_value, &node);
     }
 
-    axis2_om_node_set_build_status(node , env, AXIS2_TRUE);
+    axis2_om_node_set_complete(node , env, AXIS2_TRUE);
     builder->lastnode = node;
     
     AXIS2_XML_READER_XML_FREE(builder->parser , env, temp_value);
@@ -295,7 +298,7 @@ axis2_om_stax_builder_discard_current_element (axis2_om_stax_builder_t *om_stax_
     
     element = builder->lastnode;
 
-    if (AXIS2_OM_NODE_GET_BUILD_STATUS(element, env) || !(builder->cache))
+    if (AXIS2_OM_NODE_IS_COMPLETE(element, env) || !(builder->cache))
     {
         AXIS2_ERROR_SET((*env)->error,
                 AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD, AXIS2_FAILURE);
@@ -309,7 +312,7 @@ axis2_om_stax_builder_discard_current_element (axis2_om_stax_builder_t *om_stax_
         while (AXIS2_XML_READER_NEXT (builder->parser, env)
                 != AXIS2_XML_READER_END_ELEMENT);
     }
-    while (!(AXIS2_OM_NODE_GET_BUILD_STATUS(element, env)));
+    while (!(AXIS2_OM_NODE_IS_COMPLETE(element, env)));
 
     /*All children of this element is pulled now */
 
@@ -479,7 +482,7 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
             AXIS2_OM_DOCUMENT_SET_ROOT_ELEMENT(builder_impl->document, env, element_node);
         }
     }
-    else if(AXIS2_OM_NODE_GET_BUILD_STATUS(builder_impl->lastnode, env))
+    else if(AXIS2_OM_NODE_IS_COMPLETE(builder_impl->lastnode, env))
     {   
         axis2_om_element_t *om_ele = NULL;
         
@@ -546,7 +549,7 @@ axis2_om_stax_builder_create_om_comment (axis2_om_stax_builder_t *builder,
         AXIS2_XML_READER_XML_FREE(builder_impl->parser , env, comment_value);
         return NULL;   
     }
-    else if (AXIS2_OM_NODE_GET_BUILD_STATUS(builder_impl->lastnode, env))
+    else if (AXIS2_OM_NODE_IS_COMPLETE(builder_impl->lastnode, env))
     {
         axis2_om_comment_create (env, 
                 AXIS2_OM_NODE_GET_PARENT(builder_impl->lastnode, env),
@@ -632,7 +635,7 @@ axis2_om_stax_builder_create_om_processing_instruction (axis2_om_stax_builder_t 
         AXIS2_XML_READER_XML_FREE(builder_impl->parser , env, value);
         return NULL;
     }
-    else if (AXIS2_OM_NODE_GET_BUILD_STATUS(builder_impl->lastnode, env) ||
+    else if (AXIS2_OM_NODE_IS_COMPLETE(builder_impl->lastnode, env) ||
      (AXIS2_OM_NODE_GET_NODE_TYPE(builder_impl->lastnode, env) == AXIS2_OM_TEXT))
     {
         axis2_om_processing_instruction_create(env,
@@ -675,23 +678,23 @@ axis2_om_stax_builder_end_element (axis2_om_stax_builder_t *om_stax_builder,
     
     if (builder->lastnode)
     {
-        if (AXIS2_OM_NODE_GET_BUILD_STATUS((builder->lastnode), env))
+        if (AXIS2_OM_NODE_IS_COMPLETE((builder->lastnode), env))
         {
             parent = AXIS2_OM_NODE_GET_PARENT((builder->lastnode), env);
             if (parent)
             {
-                axis2_om_node_set_build_status(parent, env, AXIS2_TRUE);
+                axis2_om_node_set_complete(parent, env, AXIS2_TRUE);
                 builder->lastnode= parent;
             }
         }
         else
         {
-            axis2_om_node_set_build_status((builder->lastnode), env, AXIS2_TRUE);
+            axis2_om_node_set_complete((builder->lastnode), env, AXIS2_TRUE);
         }
     }
     if(builder->root_node)
     {
-        if(AXIS2_OM_NODE_GET_BUILD_STATUS(builder->root_node , env))
+        if(AXIS2_OM_NODE_IS_COMPLETE(builder->root_node , env))
         {
             builder->done = AXIS2_TRUE;
         }   

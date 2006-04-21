@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_element.h>
-#include <xml_schema/axis2_xml_schema_annotation.h>
-#include <xml_schema/axis2_xml_schema_type_receiver.h>
-#include <xml_schema/axis2_xml_schema_particle.h>
-#include <xml_schema/axis2_xml_schema_derivation_method.h>
-#include <xml_schema/axis2_xml_schema_obj_collection.h>
-#include <xml_schema/axis2_xml_schema_type.h>
-#include <xml_schema/axis2_xml_schema_form.h>
+#include <axis2_xml_schema_element.h>
+#include <axis2_xml_schema_annotation.h>
+#include <axis2_xml_schema_type_receiver.h>
+#include <axis2_xml_schema_particle.h>
+#include <axis2_xml_schema_derivation_method.h>
+#include <axis2_xml_schema_obj_collection.h>
+#include <axis2_xml_schema_type.h>
+#include <axis2_xml_schema_form.h>
 
 typedef struct axis2_xml_schema_element_impl axis2_xml_schema_element_impl_t;
 
@@ -94,7 +94,7 @@ struct axis2_xml_schema_element_impl
 
 };
 
-#define INTF_TO_IMPL(element) ((axis2_xml_schema_element_impl_t *) element)
+#define AXIS2_INTF_TO_IMPL(element) ((axis2_xml_schema_element_impl_t *) element)
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_element_free(void *element,
@@ -415,7 +415,7 @@ axis2_xml_schema_element_free(void *element,
     axis2_xml_schema_element_impl_t *element_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    element_impl = INTF_TO_IMPL(element);
+    element_impl = AXIS2_INTF_TO_IMPL(element);
 
     if(element_impl->particle)
     {
@@ -456,7 +456,7 @@ axis2_xml_schema_element_get_base_impl(void *element,
     axis2_xml_schema_element_impl_t *element_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    element_impl = INTF_TO_IMPL(element);
+    element_impl = AXIS2_INTF_TO_IMPL(element);
 
     return element_impl->type_recv;
 }

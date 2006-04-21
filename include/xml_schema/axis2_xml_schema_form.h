@@ -25,7 +25,7 @@
  *
  */
 
-#include <xml_schema/axis2_xml_schema_enum.h>
+#include <axis2_xml_schema_enum.h>
 
 /** @defgroup axis2_xml_schema_form Xml Schema Form
   * @ingroup axis2_xml_schema

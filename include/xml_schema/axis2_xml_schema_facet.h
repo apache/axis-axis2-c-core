@@ -24,7 +24,7 @@
  *          derived by restriction.
  */
 
-#include <xml_schema/axis2_xml_schema_annotated.h>
+#include <axis2_xml_schema_annotated.h>
 #include <axis2_om_element.h>
 #include <axis2_om_node.h>
 #include <axis2_hash.h>
@@ -74,12 +74,6 @@ struct axis2_xml_schema_facet_ops
                     axis2_env_t **env,
                     void *value);
 
-    axis2_xml_schema_facet_t *(AXIS2_CALL *
-    construct) (axis2_xml_schema_facet_t *facet,
-                axis2_env_t **env,
-                axis2_om_element_t *element,
-                axis2_om_node_t **node);
-               
 };
 
 struct axis2_xml_schema_facet
@@ -105,6 +99,11 @@ axis2_xml_schema_facet_resolve_methods(
                                 axis2_env_t **env,
                                 axis2_xml_schema_facet_t *facet_impl,
                                 axis2_hash_t *methods);
+                                
+AXIS2_DECLARE(axis2_xml_schema_facet_t *)
+axis2_xml_schema_facet_construct(axis2_env_t **env,
+                                 axis2_om_node_t *node);
+                                                                 
 
 #define AXIS2_XML_SCHEMA_FACET_FREE(facet, env) \
 		(((axis2_xml_schema_facet_t *) facet)->ops->\
@@ -129,10 +128,6 @@ axis2_xml_schema_facet_resolve_methods(
 #define AXIS2_XML_SCHEMA_FACET_SET_VALUE(facet, env, value) \
 		(((axis2_xml_schema_facet_t *) facet)->ops->\
             set_value(facet, env, value))
-
-#define AXIS2_XML_SCHEMA_FACET_CONSTRUCT(facet, env, element, node) \
-		(((axis2_xml_schema_facet_t *) facet)->ops->\
-            construct(facet, env, element, node))
 
 /** @} */
 #ifdef __cplusplus

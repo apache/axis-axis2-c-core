@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_content_processing.h>
+#include <axis2_xml_schema_content_processing.h>
 
 typedef struct axis2_xml_schema_content_processing_impl 
         axis2_xml_schema_content_processing_impl_t;
@@ -26,12 +26,15 @@ typedef struct axis2_xml_schema_content_processing_impl
 struct axis2_xml_schema_content_processing_impl
 {
     axis2_xml_schema_content_processing_t content_processing;
+    
     axis2_xml_schema_enum_t *schema_enum;
+    
     axis2_hash_t *methods;
+    
     axis2_array_list_t *members;
 };
 
-#define INTF_TO_IMPL(content_processing) \
+#define AXIS2_INTF_TO_IMPL(content_processing) \
         ((axis2_xml_schema_content_processing_impl_t *) content_processing)
 
 axis2_status_t AXIS2_CALL 
@@ -56,44 +59,66 @@ axis2_xml_schema_content_processing_create(axis2_env_t **env,
     
     content_processing_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_content_processing_impl_t));
-
-    content_processing_impl->schema_enum = NULL;
-    content_processing_impl->methods = NULL;
-    content_processing_impl->members = NULL;
-    content_processing_impl->content_processing.ops = 
-            AXIS2_MALLOC((*env)->allocator, 
-                    sizeof(axis2_xml_schema_content_processing_ops_t));
-
-    content_processing_impl->content_processing.ops->free = 
-            axis2_xml_schema_content_processing_free;
-    content_processing_impl->content_processing.ops->get_base_impl = 
-            axis2_xml_schema_content_processing_get_base_impl;
-    content_processing_impl->content_processing.ops->get_values = 
-            axis2_xml_schema_content_processing_get_values;
-   
-    if(!content_processing_impl->members)
-    {
-        content_processing_impl->members = axis2_array_list_create(env, 0);
-        if(!content_processing_impl->members)
-            return NULL;
-        AXIS2_ARRAY_LIST_ADD(content_processing_impl->members, env, "Lax");
-        AXIS2_ARRAY_LIST_ADD(content_processing_impl->members, env, "None");
-        AXIS2_ARRAY_LIST_ADD(content_processing_impl->members, env, "Skip");
-        AXIS2_ARRAY_LIST_ADD(content_processing_impl->members, env, "Strict");
-    }
-    
-    content_processing_impl->methods = axis2_hash_make(env);
-    if(!content_processing_impl->methods)
+    if(!content_processing_impl)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+    
+    content_processing_impl->schema_enum = NULL;
+    content_processing_impl->content_processing.base.ops = NULL;
+    content_processing_impl->methods = NULL;
+    content_processing_impl->members = NULL;
+    content_processing_impl->content_processing.ops = NULL;
+    
+    content_processing_impl->content_processing.ops = 
+            AXIS2_MALLOC((*env)->allocator, 
+                    sizeof(axis2_xml_schema_content_processing_ops_t));
+    if(!content_processing_impl->content_processing.ops)
+    {
+        axis2_xml_schema_content_processing_free(
+            &(content_processing_impl->content_processing), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;            
+    }
+    
+    content_processing_impl->content_processing.ops->free = 
+            axis2_xml_schema_content_processing_free;
+    content_processing_impl->content_processing.ops->get_base_impl = 
+            axis2_xml_schema_content_processing_get_base_impl;
+            
+    content_processing_impl->content_processing.ops->get_values = 
+            axis2_xml_schema_content_processing_get_values;
+   
+    content_processing_impl->members = axis2_array_list_create(env, 0);
+    if(!content_processing_impl->members)
+    {
+         axis2_xml_schema_content_processing_free(
+            &(content_processing_impl->content_processing), env);
+        return NULL;
+    }   
+    AXIS2_ARRAY_LIST_ADD(content_processing_impl->members, env, "Lax");
+    AXIS2_ARRAY_LIST_ADD(content_processing_impl->members, env, "None");
+    AXIS2_ARRAY_LIST_ADD(content_processing_impl->members, env, "Skip");
+    AXIS2_ARRAY_LIST_ADD(content_processing_impl->members, env, "Strict");
+    
+    content_processing_impl->methods = axis2_hash_make(env);
+    if(!content_processing_impl->methods)
+    {
+         axis2_xml_schema_content_processing_free(
+            &(content_processing_impl->content_processing), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
     axis2_hash_set(content_processing_impl->methods, "free", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_content_processing_free);
+            
     axis2_hash_set(content_processing_impl->methods, "get_values", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_content_processing_get_values);
     
     content_processing_impl->schema_enum = axis2_xml_schema_enum_create(env, NULL);
+    
     status = axis2_xml_schema_enum_resolve_methods(
             &(content_processing_impl->content_processing.base), env, 
             content_processing_impl->schema_enum, 
@@ -109,33 +134,50 @@ axis2_xml_schema_content_processing_free(void *content_processing,
     axis2_xml_schema_content_processing_impl_t *content_processing_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    content_processing_impl = INTF_TO_IMPL(content_processing);
+    content_processing_impl = AXIS2_INTF_TO_IMPL(content_processing);
 
-    if(content_processing_impl->members)
-    {
+    if(NULL != content_processing_impl->members)
+    {   
+        int size = 0;
+        int i    = 0;
+        size = AXIS2_ARRAY_LIST_SIZE(content_processing_impl->members, env);
+        for(i = 0; i < size ; i++)
+        {
+            axis2_char_t *value = NULL;
+            value =(axis2_char_t* ) 
+                AXIS2_ARRAY_LIST_GET(content_processing_impl->members, env, i);
+            if(NULL != value)
+            {
+                AXIS2_FREE((*env)->allocator, value);
+                value = NULL;
+            }
+        }
         AXIS2_ARRAY_LIST_FREE(content_processing_impl->members, env);
         content_processing_impl->members = NULL;
     }
     
-    if(content_processing_impl->methods)
+    if(NULL != content_processing_impl->methods)
     {
         axis2_hash_free(content_processing_impl->methods, env);
         content_processing_impl->methods = NULL;
     }
-    if(content_processing_impl->schema_enum)
+    if(NULL != content_processing_impl->schema_enum)
     {
         AXIS2_XML_SCHEMA_ENUM_FREE(content_processing_impl->schema_enum, env);
         content_processing_impl->schema_enum = NULL;
     }
     
-    if((&(content_processing_impl->content_processing))->ops)
+    if(NULL != content_processing_impl->content_processing.ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(content_processing_impl->
-                        content_processing))->ops);
-        (&(content_processing_impl->content_processing))->ops = NULL;
+        AXIS2_FREE((*env)->allocator, content_processing_impl->content_processing.ops);
+        content_processing_impl->content_processing.ops = NULL;
     }
-
-    if(content_processing_impl)
+    if(NULL != content_processing_impl->content_processing.base.ops)
+    {
+        AXIS2_FREE((*env)->allocator, content_processing_impl->content_processing.base.ops);
+        content_processing_impl->content_processing.base.ops = NULL;
+    }
+    if(NULL != content_processing_impl)
     {
         AXIS2_FREE((*env)->allocator, content_processing_impl);
         content_processing_impl = NULL;
@@ -150,7 +192,7 @@ axis2_xml_schema_content_processing_get_base_impl(void *content_processing,
     axis2_xml_schema_content_processing_impl_t *content_processing_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    content_processing_impl = INTF_TO_IMPL(content_processing);
+    content_processing_impl = AXIS2_INTF_TO_IMPL(content_processing);
 
     return content_processing_impl->schema_enum;
 }
@@ -189,6 +231,6 @@ axis2_array_list_t *AXIS2_CALL
 axis2_xml_schema_content_processing_get_values(void *content_processing,
                                         axis2_env_t **env)
 {
-    return INTF_TO_IMPL(content_processing)->members;
+    return AXIS2_INTF_TO_IMPL(content_processing)->members;
 }
 

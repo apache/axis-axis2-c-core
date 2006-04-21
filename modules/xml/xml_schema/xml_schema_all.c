@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_all.h>
-#include <xml_schema/axis2_xml_schema_group_base.h>
+#include <axis2_xml_schema_all.h>
+#include <axis2_xml_schema_group_base.h>
 
 typedef struct axis2_xml_schema_all_impl axis2_xml_schema_all_impl_t;
 
@@ -31,7 +31,7 @@ struct axis2_xml_schema_all_impl
     axis2_xml_schema_obj_collection_t *items;
 };
 
-#define INTF_TO_IMPL(all) ((axis2_xml_schema_all_impl_t *) all)
+#define AXIS2_INTF_TO_IMPL(all) ((axis2_xml_schema_all_impl_t *) all)
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_all_free(void *all,
@@ -93,7 +93,7 @@ axis2_xml_schema_all_free(void *all,
     axis2_xml_schema_all_impl_t *all_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    all_impl = INTF_TO_IMPL(all);
+    all_impl = AXIS2_INTF_TO_IMPL(all);
 
     if(all_impl->items)
     {
@@ -134,7 +134,7 @@ axis2_xml_schema_all_get_base_impl(void *all,
     axis2_xml_schema_all_impl_t *all_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    all_impl = INTF_TO_IMPL(all);
+    all_impl = AXIS2_INTF_TO_IMPL(all);
 
     return all_impl->base;
 }
@@ -171,7 +171,7 @@ axis2_xml_schema_obj_collection_t *AXIS2_CALL
 axis2_xml_schema_all_get_items(void *all,
                                     axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return INTF_TO_IMPL(all)->items;
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(all)->items;
 }
 

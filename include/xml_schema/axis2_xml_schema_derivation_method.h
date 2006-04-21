@@ -24,7 +24,7 @@
  *
  */
 
-#include <xml_schema/axis2_xml_schema_enum.h>
+#include <axis2_xml_schema_enum.h>
 
 /** @defgroup axis2_xml_schema_derivation_method Xml Schema Derivation Method
   * @ingroup axis2_xml_schema
@@ -80,13 +80,16 @@ axis2_xml_schema_derivation_method_resolve_methods(
                                 axis2_hash_t *methods);
 
 #define AXIS2_XML_SCHEMA_DERIVATION_METHOD_FREE(derivation_method, env) \
-		(((axis2_xml_schema_derivation_method_t *) derivation_method)->ops->free(derivation_method, env))
+		(((axis2_xml_schema_derivation_method_t *) \
+		 derivation_method)->ops->free(derivation_method, env))
 
 #define AXIS2_XML_SCHEMA_DERIVATION_METHOD_GET_BASE_IMPL(derivation_method, env) \
-		(((axis2_xml_schema_derivation_method_t *) derivation_method)->ops->get_base_impl(derivation_method, env))
+		(((axis2_xml_schema_derivation_method_t *) \
+		derivation_method)->ops->get_base_impl(derivation_method, env))
 
 #define AXIS2_XML_SCHEMA_DERIVATION_METHOD_GET_VALUES(derivation_method, env) \
-		(((axis2_xml_schema_derivation_method_t *) derivation_method)->ops->values(derivation_method, env))
+		(((axis2_xml_schema_derivation_method_t *) \
+		derivation_method)->ops->values(derivation_method, env))
 
 /** @} */
 #ifdef __cplusplus

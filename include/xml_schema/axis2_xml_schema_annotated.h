@@ -22,17 +22,18 @@
  * @brief Axis2 Xml Schema Annotated Interface
  */
 
-#include <xml_schema/axis2_xml_schema_obj.h>
+#include <axis2_xml_schema_obj.h>
 
 /** @defgroup axis2_xml_schema_annotated Xml Schema Annotated
   * @ingroup axis2_xml_schema
   * @{
   */
 
-typedef struct axis2_xml_schema_annotated axis2_xml_schema_annotated_t;
-typedef struct axis2_xml_schema_annotated_ops axis2_xml_schema_annotated_ops_t;
-struct axis2_xml_schema;
-
+typedef struct axis2_xml_schema_annotated 
+                    axis2_xml_schema_annotated_t;
+typedef struct axis2_xml_schema_annotated_ops 
+                    axis2_xml_schema_annotated_ops_t;
+                    
 #ifdef __cplusplus
 extern "C"
 {

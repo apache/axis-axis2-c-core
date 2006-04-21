@@ -87,7 +87,7 @@ axis2_om_node_get_data_element(axis2_om_node_t *om_node,
                                axis2_env_t **env);                                
 
 axis2_bool_t AXIS2_CALL
-axis2_om_node_get_build_status(axis2_om_node_t *om_node,
+axis2_om_node_is_complete(axis2_om_node_t *om_node,
                                axis2_env_t **env);
 
 struct axis2_om_document* AXIS2_CALL
@@ -181,7 +181,7 @@ axis2_om_node_create (axis2_env_t **env)
     node->om_node.ops->get_previous_sibling = axis2_om_node_get_previous_sibling;
     node->om_node.ops->get_parent = axis2_om_node_get_parent ;
     node->om_node.ops->get_node_type = axis2_om_node_get_node_type;
-    node->om_node.ops->get_build_status = axis2_om_node_get_build_status;
+    node->om_node.ops->is_complete = axis2_om_node_is_complete;
     node->om_node.ops->get_data_element = axis2_om_node_get_data_element;
     node->om_node.ops->get_document = axis2_om_node_get_document;
         
@@ -632,7 +632,7 @@ axis2_om_node_get_next_sibling(axis2_om_node_t *om_node,
     om_node_impl = AXIS2_INTF_TO_IMPL(om_node);
     /*****************************************************/
     while(!(om_node_impl->next_sibling) && om_node_impl->parent &&
-    om_node_impl->builder && !(AXIS2_OM_NODE_GET_BUILD_STATUS(om_node_impl->parent, env)))
+    om_node_impl->builder && !(AXIS2_OM_NODE_IS_COMPLETE(om_node_impl->parent, env)))
     {
         token = AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node_impl->builder, env);
         if(token == -1)
@@ -651,7 +651,7 @@ axis2_om_node_get_node_type(axis2_om_node_t *om_node,
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_om_node_get_build_status(axis2_om_node_t *om_node,
+axis2_om_node_is_complete(axis2_om_node_t *om_node,
                                axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -766,7 +766,7 @@ axis2_om_node_set_data_element(axis2_om_node_t *om_node,
 
 */
 AXIS2_DECLARE(axis2_status_t)
-axis2_om_node_set_build_status(axis2_om_node_t *om_node,
+axis2_om_node_set_complete(axis2_om_node_t *om_node,
                                axis2_env_t **env,
                                axis2_bool_t done)
 {

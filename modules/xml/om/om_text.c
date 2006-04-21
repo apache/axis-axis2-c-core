@@ -181,7 +181,7 @@ axis2_om_text_create (axis2_env_t **env,
 
     axis2_om_node_set_data_element((*node), env, om_text);
     axis2_om_node_set_node_type((*node), env, AXIS2_OM_TEXT);
-    axis2_om_node_set_build_status((*node), env, AXIS2_FALSE);
+    axis2_om_node_set_complete((*node), env, AXIS2_FALSE);
 
     if (parent && AXIS2_OM_NODE_GET_NODE_TYPE(parent, env) == AXIS2_OM_ELEMENT)
     {

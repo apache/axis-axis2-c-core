@@ -91,10 +91,12 @@ axis2_xml_schema_enum_resolve_methods(axis2_xml_schema_enum_t *schema_enum,
                                       axis2_xml_schema_enum_t *schema_enum_impl,
                                       axis2_hash_t *methods);
 
-int AXIS2_CALL
+AXIS2_DECLARE(int)
 axis2_xml_schema_enum_index(axis2_char_t *value,
-                            axis2_array_list_t *values,
-                            axis2_env_t **env);
+                            axis2_env_t **env,
+                            axis2_array_list_t *values);
+                            
+/***************** macros ****************************************************/                           
 
 #define AXIS2_XML_SCHEMA_ENUM_FREE(schema_enum, env) \
 		(((axis2_xml_schema_enum_t *) schema_enum)->ops->free (schema_enum, env))
@@ -114,6 +116,7 @@ axis2_xml_schema_enum_index(axis2_char_t *value,
 		(((axis2_xml_schema_enum_t *) schema_enum)->ops->get_values \
          (schema_enum, env))
 
+/**************** end macros *************************************************/
 /** @} */
 #ifdef __cplusplus
 }
