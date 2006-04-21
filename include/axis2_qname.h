@@ -97,6 +97,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
     /**
      * returns a unique string created by concatanting namespace uri 
      * and localpart .
+     * The string is of the form localpart|url
      * The returned char* is freed when qname free function is called.
      */
     axis2_char_t* (AXIS2_CALL *

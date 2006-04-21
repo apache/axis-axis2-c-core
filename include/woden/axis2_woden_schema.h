@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_SCHEMA_H
-#define AXIS2_SCHEMA_H
+#ifndef AXIS2_WODEN_SCHEMA_H
+#define AXIS2_WODEN_SCHEMA_H
 
 /**
  * @file axis2_woden_schema.h
@@ -93,7 +93,7 @@ struct axis2_woden_schema_ops
     axis2_status_t (AXIS2_CALL *
     set_referenceable) (void *schema,
                         axis2_env_t **env,
-                        axis2_bool_t *referenceable);
+                        axis2_bool_t referenceable);
 
     axis2_bool_t (AXIS2_CALL *
     is_referenceable) (void *schema,
@@ -124,7 +124,7 @@ axis2_woden_schema_resolve_methods(axis2_woden_schema_t *schema,
                                 axis2_woden_schema_t *schema_impl,
                                 axis2_hash_t *methods);
 
-#define AXIS2_SCHEMA_FREE(schema, env) \
+#define AXIS2_WODEN_SCHEMA_FREE(schema, env) \
 		(((axis2_woden_schema_t *) schema)->ops->free (schema, env))
 
 #define AXIS2_WODEN_SCHEMA_SET_NAMESPACE(schema, env, namespc) \
@@ -156,4 +156,4 @@ axis2_woden_schema_resolve_methods(axis2_woden_schema_t *schema,
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_SCHEMA_H */
+#endif /* AXIS2_WODEN_SCHEMA_H */

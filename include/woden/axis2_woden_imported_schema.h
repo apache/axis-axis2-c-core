@@ -25,7 +25,7 @@
  *          <code>schemaLocation</code> attribute.
  */
 
-#include "axis2_wsdl_ext.h"
+#include <woden/axis2_woden_schema.h>
 
 /** @defgroup axis2_woden_imported_schema Imported Schema
   * @ingroup axis2_wsdl
@@ -53,7 +53,7 @@ struct axis2_woden_imported_schema_ops
     /**
      * @return the base implementation class
      */
-    axis2_wsdl_ext_t *(AXIS2_CALL *
+    axis2_woden_schema_t *(AXIS2_CALL *
     get_base_impl) (void *schema,
                     axis2_env_t **env);
 
@@ -71,7 +71,7 @@ struct axis2_woden_imported_schema_ops
 
 struct axis2_woden_imported_schema
 {
-    axis2_wsdl_ext_t base;
+    axis2_woden_schema_t base;
     axis2_woden_imported_schema_ops_t *ops;
 };
 
