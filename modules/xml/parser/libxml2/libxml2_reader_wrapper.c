@@ -132,6 +132,10 @@ axis2_libxml2_reader_wrapper_read_input_callback(void *ctx,
                                                  
 static int 
 axis2_libxml2_reader_wrapper_close_input_callback(void *ctx);
+
+static void
+axis2_libxml2_reader_wrapper_init_ops(axis2_xml_reader_t *reader);
+
                                    
 /************* End function parameters , axis2_libxml2_reader_wrapper_impl_t struct ***/
 
@@ -216,7 +220,50 @@ axis2_libxml2_reader_wrapper_init_map(axis2_libxml2_reader_wrapper_impl_t *parse
     return AXIS2_FAILURE;
 }
 
-
+static void
+axis2_libxml2_reader_wrapper_init_ops(axis2_xml_reader_t *parser)
+{
+   parser->ops->free = 
+        axis2_libxml2_reader_wrapper_free;
+   parser->ops->next = 
+        axis2_libxml2_reader_wrapper_next;
+   parser->ops->xml_free = 
+        axis2_libxml2_reader_wrapper_xml_free;
+   parser->ops->get_attribute_count =
+        axis2_libxml2_reader_wrapper_get_attribute_count;
+   parser->ops->get_attribute_name_by_number =
+        axis2_libxml2_reader_wrapper_get_attribute_name_by_number;
+   parser->ops->get_attribute_value_by_number = 
+        axis2_libxml2_reader_wrapper_get_attribute_value_by_number;
+   parser->ops->get_attribute_namespace_by_number =
+        axis2_libxml2_reader_wrapper_get_attribute_namespace_by_number;
+   parser->ops->get_attribute_prefix_by_number =
+        axis2_libxml2_reader_wrapper_get_attribute_prefix_by_number;
+   parser->ops->get_value =
+        axis2_libxml2_reader_wrapper_get_value;
+   parser->ops->get_prefix =
+        axis2_libxml2_reader_wrapper_get_prefix;
+   parser->ops->get_name =
+        axis2_libxml2_reader_wrapper_get_name;
+   parser->ops->get_namespace_count =
+        axis2_libxml2_reader_wrapper_get_namespace_count;
+   parser->ops->get_namespace_prefix_by_number =
+        axis2_libxml2_reader_wrapper_get_namespace_prefix_by_number;
+   parser->ops->get_namespace_uri_by_number =
+        axis2_libxml2_reader_wrapper_get_namespace_uri_by_number;
+   parser->ops->get_pi_target =
+        axis2_libxml2_reader_wrapper_get_pi_target;
+   parser->ops->get_pi_data =
+        axis2_libxml2_reader_wrapper_get_pi_data;
+   parser->ops->get_dtd =
+        axis2_libxml2_reader_wrapper_get_dtd;
+   parser->ops->get_char_set_encoding =
+        axis2_libxml2_reader_wrapper_get_char_set_encoding;            
+   parser->ops->get_namespace_uri = 
+        axis2_libxml2_reader_wrapper_get_namespace_uri;
+   parser->ops->get_namespace_uri_by_prefix = 
+        axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix;           
+}
 
 
 /*******************************************************************************/
@@ -281,53 +328,7 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
         return NULL;
     }
 	/* ops */
-	
-	wrapper_impl->parser.ops->free = axis2_libxml2_reader_wrapper_free;
-    wrapper_impl->parser.ops->next = axis2_libxml2_reader_wrapper_next;
-    wrapper_impl->parser.ops->xml_free = axis2_libxml2_reader_wrapper_xml_free;
-    
-    wrapper_impl->parser.ops->get_attribute_count =
-        axis2_libxml2_reader_wrapper_get_attribute_count;
-    wrapper_impl->parser.ops->get_attribute_name_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_name_by_number;
-    wrapper_impl->parser.ops->get_attribute_value_by_number = 
-        axis2_libxml2_reader_wrapper_get_attribute_value_by_number;
-    wrapper_impl->parser.ops->get_attribute_namespace_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_namespace_by_number;
-    wrapper_impl->parser.ops->get_attribute_prefix_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_prefix_by_number;
-    
-    wrapper_impl->parser.ops->get_value =
-        axis2_libxml2_reader_wrapper_get_value;
-    wrapper_impl->parser.ops->get_prefix =
-        axis2_libxml2_reader_wrapper_get_prefix;
-    wrapper_impl->parser.ops->get_name =
-        axis2_libxml2_reader_wrapper_get_name;
-        
-        
-    wrapper_impl->parser.ops->get_namespace_count =
-        axis2_libxml2_reader_wrapper_get_namespace_count;
-    wrapper_impl->parser.ops->get_namespace_prefix_by_number =
-        axis2_libxml2_reader_wrapper_get_namespace_prefix_by_number;
-    wrapper_impl->parser.ops->get_namespace_uri_by_number =
-        axis2_libxml2_reader_wrapper_get_namespace_uri_by_number;
-        
-    wrapper_impl->parser.ops->get_pi_target =
-        axis2_libxml2_reader_wrapper_get_pi_target;
-    wrapper_impl->parser.ops->get_pi_data =
-        axis2_libxml2_reader_wrapper_get_pi_data;
-        
-    wrapper_impl->parser.ops->get_dtd =
-        axis2_libxml2_reader_wrapper_get_dtd;
-        
-    wrapper_impl->parser.ops->get_char_set_encoding =
-        axis2_libxml2_reader_wrapper_get_char_set_encoding;            
-        
-    wrapper_impl->parser.ops->get_namespace_uri = 
-        axis2_libxml2_reader_wrapper_get_namespace_uri;
-        
-    wrapper_impl->parser.ops->get_namespace_uri_by_prefix = 
-        axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix;           
+	axis2_libxml2_reader_wrapper_init_ops(&(wrapper_impl->parser));
 	return &(wrapper_impl->parser);
 }
 
@@ -400,54 +401,7 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
         return NULL;
     }
 
-	
-	wrapper_impl->parser.ops->free = axis2_libxml2_reader_wrapper_free;
-    wrapper_impl->parser.ops->next = axis2_libxml2_reader_wrapper_next;
-    wrapper_impl->parser.ops->xml_free = axis2_libxml2_reader_wrapper_xml_free;
-    
-    wrapper_impl->parser.ops->get_attribute_count =
-        axis2_libxml2_reader_wrapper_get_attribute_count;
-    wrapper_impl->parser.ops->get_attribute_name_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_name_by_number;
-    wrapper_impl->parser.ops->get_attribute_value_by_number = 
-        axis2_libxml2_reader_wrapper_get_attribute_value_by_number;
-    wrapper_impl->parser.ops->get_attribute_namespace_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_namespace_by_number;
-    wrapper_impl->parser.ops->get_attribute_prefix_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_prefix_by_number;
-    
-    wrapper_impl->parser.ops->get_value =
-        axis2_libxml2_reader_wrapper_get_value;
-    wrapper_impl->parser.ops->get_prefix =
-        axis2_libxml2_reader_wrapper_get_prefix;
-    wrapper_impl->parser.ops->get_name =
-        axis2_libxml2_reader_wrapper_get_name;
-        
-        
-    wrapper_impl->parser.ops->get_namespace_count =
-        axis2_libxml2_reader_wrapper_get_namespace_count;
-    wrapper_impl->parser.ops->get_namespace_prefix_by_number =
-        axis2_libxml2_reader_wrapper_get_namespace_prefix_by_number;
-    wrapper_impl->parser.ops->get_namespace_uri_by_number =
-        axis2_libxml2_reader_wrapper_get_namespace_uri_by_number;
-        
-    wrapper_impl->parser.ops->get_pi_target =
-        axis2_libxml2_reader_wrapper_get_pi_target;
-    wrapper_impl->parser.ops->get_pi_data =
-        axis2_libxml2_reader_wrapper_get_pi_data;
-        
-    wrapper_impl->parser.ops->get_dtd =
-        axis2_libxml2_reader_wrapper_get_dtd;
-        
-    wrapper_impl->parser.ops->get_char_set_encoding =
-        axis2_libxml2_reader_wrapper_get_char_set_encoding;     
-        
-    wrapper_impl->parser.ops->get_namespace_uri = 
-        axis2_libxml2_reader_wrapper_get_namespace_uri;
-        
-    wrapper_impl->parser.ops->get_namespace_uri_by_prefix = 
-        axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix; 
-                       
+	axis2_libxml2_reader_wrapper_init_ops(&(wrapper_impl->parser));
 	return &(wrapper_impl->parser);
 }
 
@@ -505,54 +459,7 @@ axis2_xml_reader_create_for_buffer(axis2_env_t **env,
         return NULL;
     }
 
-	
-	wrapper_impl->parser.ops->free = axis2_libxml2_reader_wrapper_free;
-    wrapper_impl->parser.ops->next = axis2_libxml2_reader_wrapper_next;
-    wrapper_impl->parser.ops->xml_free = axis2_libxml2_reader_wrapper_xml_free;
-    
-    wrapper_impl->parser.ops->get_attribute_count =
-        axis2_libxml2_reader_wrapper_get_attribute_count;
-    wrapper_impl->parser.ops->get_attribute_name_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_name_by_number;
-    wrapper_impl->parser.ops->get_attribute_value_by_number = 
-        axis2_libxml2_reader_wrapper_get_attribute_value_by_number;
-    wrapper_impl->parser.ops->get_attribute_namespace_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_namespace_by_number;
-    wrapper_impl->parser.ops->get_attribute_prefix_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_prefix_by_number;
-    
-    wrapper_impl->parser.ops->get_value =
-        axis2_libxml2_reader_wrapper_get_value;
-    wrapper_impl->parser.ops->get_prefix =
-        axis2_libxml2_reader_wrapper_get_prefix;
-    wrapper_impl->parser.ops->get_name =
-        axis2_libxml2_reader_wrapper_get_name;
-        
-        
-    wrapper_impl->parser.ops->get_namespace_count =
-        axis2_libxml2_reader_wrapper_get_namespace_count;
-    wrapper_impl->parser.ops->get_namespace_prefix_by_number =
-        axis2_libxml2_reader_wrapper_get_namespace_prefix_by_number;
-    wrapper_impl->parser.ops->get_namespace_uri_by_number =
-        axis2_libxml2_reader_wrapper_get_namespace_uri_by_number;
-        
-    wrapper_impl->parser.ops->get_pi_target =
-        axis2_libxml2_reader_wrapper_get_pi_target;
-    wrapper_impl->parser.ops->get_pi_data =
-        axis2_libxml2_reader_wrapper_get_pi_data;
-        
-    wrapper_impl->parser.ops->get_dtd =
-        axis2_libxml2_reader_wrapper_get_dtd;
-        
-    wrapper_impl->parser.ops->get_char_set_encoding =
-        axis2_libxml2_reader_wrapper_get_char_set_encoding;
-        
-    wrapper_impl->parser.ops->get_namespace_uri = 
-        axis2_libxml2_reader_wrapper_get_namespace_uri;
-        
-    wrapper_impl->parser.ops->get_namespace_uri_by_prefix = 
-        axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix; 
-                            
+	axis2_libxml2_reader_wrapper_init_ops(&(wrapper_impl->parser));
 	return &(wrapper_impl->parser);
 }
 
@@ -607,48 +514,8 @@ axis2_xml_reader_create_for_xml_doc(axis2_env_t **env,
         return NULL;
     }
 
+	axis2_libxml2_reader_wrapper_init_ops(&(wrapper_impl->parser));
 	
-	wrapper_impl->parser.ops->free = axis2_libxml2_reader_wrapper_free;
-    wrapper_impl->parser.ops->next = axis2_libxml2_reader_wrapper_next;
-    wrapper_impl->parser.ops->xml_free = axis2_libxml2_reader_wrapper_xml_free;
-    
-    wrapper_impl->parser.ops->get_attribute_count =
-        axis2_libxml2_reader_wrapper_get_attribute_count;
-    wrapper_impl->parser.ops->get_attribute_name_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_name_by_number;
-    wrapper_impl->parser.ops->get_attribute_value_by_number = 
-        axis2_libxml2_reader_wrapper_get_attribute_value_by_number;
-    wrapper_impl->parser.ops->get_attribute_namespace_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_namespace_by_number;
-    wrapper_impl->parser.ops->get_attribute_prefix_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_prefix_by_number;
-    
-    wrapper_impl->parser.ops->get_value =
-        axis2_libxml2_reader_wrapper_get_value;
-    wrapper_impl->parser.ops->get_prefix =
-        axis2_libxml2_reader_wrapper_get_prefix;
-    wrapper_impl->parser.ops->get_name =
-        axis2_libxml2_reader_wrapper_get_name;
-        
-        
-    wrapper_impl->parser.ops->get_namespace_count =
-        axis2_libxml2_reader_wrapper_get_namespace_count;
-    wrapper_impl->parser.ops->get_namespace_prefix_by_number =
-        axis2_libxml2_reader_wrapper_get_namespace_prefix_by_number;
-    wrapper_impl->parser.ops->get_namespace_uri_by_number =
-        axis2_libxml2_reader_wrapper_get_namespace_uri_by_number;
-        
-    wrapper_impl->parser.ops->get_pi_target =
-        axis2_libxml2_reader_wrapper_get_pi_target;
-    wrapper_impl->parser.ops->get_pi_data =
-        axis2_libxml2_reader_wrapper_get_pi_data;
-        
-    wrapper_impl->parser.ops->get_dtd =
-        axis2_libxml2_reader_wrapper_get_dtd;
-        
-    wrapper_impl->parser.ops->get_char_set_encoding =
-		axis2_libxml2_reader_wrapper_get_char_set_encoding;
-
 	return &(wrapper_impl->parser);
 }
 /****************** end create functions ***************************************/

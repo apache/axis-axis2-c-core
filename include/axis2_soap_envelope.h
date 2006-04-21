@@ -121,14 +121,6 @@ extern "C"
 		get_soap_version)(axis2_soap_envelope_t *envelope,
                           axis2_env_t **env);
                    
-        /**
-         * set soap version, This is internal function do not use outside of soap
-         */         
-        axis2_status_t (AXIS2_CALL *
-		set_soap_version)(axis2_soap_envelope_t *envelope,
-                          axis2_env_t **env,
-                          int soap_version);
-     
         /** return the soap envelope namespace 
          * @param envelope 
          * @param env 
@@ -159,6 +151,21 @@ AXIS2_DECLARE(axis2_soap_envelope_t*)
 axis2_soap_envelope_create(axis2_env_t **env, 
 						   axis2_om_namespace_t *ns);
 
+ /**
+  * @param env Environment. MUST NOT be NULL
+  * create a soap_envelope with the given namespace prefix and uri is selected 
+  * according to soap_version, soap version should be one of AXIS2_SOAP11
+  * or AXIS2_SOAP12
+  * @param prefix soap envelope prefix
+  * if prefix is NULL default prefix is used
+  * @returns a pointer to soap envelope struct
+  * 
+  */						   
+AXIS2_DECLARE(axis2_soap_envelope_t*)
+axis2_soap_envelope_create_with_soap_version_prefix(axis2_env_t **env,
+                                                    int soap_version,
+                                                    axis2_char_t *prefix);						   
+
 AXIS2_DECLARE(axis2_soap_envelope_t *)
 axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
                                                  int soap_version);
@@ -188,9 +195,6 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
 
 #define AXIS2_SOAP_ENVELOPE_GET_SOAP_VERSION(envelope, env) \
         ((envelope)->ops->get_soap_version(envelope, env))
-
-#define AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(envelope, env, soap_version) \
-        ((envelope)->ops->set_soap_version(envelope, env, soap_version))
 
 #define AXIS2_SOAP_ENVELOPE_GET_NAMESPACE(envelope, env) \
         ((envelope)->ops->get_namespace(envelope, env))

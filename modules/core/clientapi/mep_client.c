@@ -314,20 +314,12 @@ axis2_soap_envelope_t* AXIS2_CALL axis2_mep_client_create_default_soap_envelope(
     
     if (AXIS2_STRCMP(AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, mep_client_impl->soap_version_uri) == 0) 
     {
-        envelope = axis2_soap_envelope_create(env, NULL);
-        if (envelope)
-        {
-            AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(envelope, env, AXIS2_SOAP12);
-        }
+        envelope = axis2_soap_envelope_create_with_soap_version_prefix(env, AXIS2_SOAP12,NULL);
     }
     
     if (AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, mep_client_impl->soap_version_uri) == 0) 
     {
-        envelope = axis2_soap_envelope_create(env, NULL);
-        if (envelope)
-        {
-            AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(envelope, env, AXIS2_SOAP11);
-        }
+        envelope = axis2_soap_envelope_create_with_soap_version_prefix(env, AXIS2_SOAP11,NULL);
     }
     return envelope;
 }
