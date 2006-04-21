@@ -173,7 +173,7 @@ axis2_soap_header_create_with_parent(axis2_env_t **env,
     
     axis2_om_element_t *this_ele = NULL;
     axis2_om_node_t *this_node = NULL;
-    
+    axis2_om_node_t *body_node = NULL;    
     axis2_om_node_t *parent_node = NULL;
     axis2_om_element_t *parent_ele = NULL;
     
@@ -193,21 +193,27 @@ axis2_soap_header_create_with_parent(axis2_env_t **env,
         
     parent_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(envelope, env);
     
-    if(!parent_node || AXIS2_OM_NODE_GET_NODE_TYPE(parent_node, env) != AXIS2_OM_ELEMENT)
+    if(!parent_node || 
+            AXIS2_OM_NODE_GET_NODE_TYPE(parent_node, env) != AXIS2_OM_ELEMENT)
     {
         AXIS2_SOAP_HEADER_FREE(header, env);
         return NULL;
     }        
 
-    parent_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(parent_node, env);
+    parent_ele = (axis2_om_element_t *)
+                    AXIS2_OM_NODE_GET_DATA_ELEMENT(parent_node, env);
     if(!parent_ele)
     {
         AXIS2_SOAP_HEADER_FREE(header, env);
         return NULL;
     }
-    
+    if(NULL != AXIS2_OM_NODE_GET_FIRST_CHILD(parent_node, env))
+    {
+        body_node = AXIS2_OM_NODE_GET_FIRST_CHILD(parent_node, env);
+        AXIS2_OM_NODE_DETACH(body_node, env);
+    }
+
     parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
-    
     this_ele = axis2_om_element_create(env, parent_node,
                  AXIS2_SOAP_HEADER_LOCAL_NAME, parent_ns, &this_node);
     if(!this_ele)
@@ -217,9 +223,12 @@ axis2_soap_header_create_with_parent(axis2_env_t **env,
     }
                            
     header_impl->om_ele_node = this_node;
-    
     axis2_soap_envelope_set_header(envelope, env, header);
     
+    if(NULL != body_node)
+    {
+        AXIS2_OM_NODE_ADD_CHILD(parent_node, env, body_node);
+    }
     return &(header_impl->soap_header);                 
 }
 
