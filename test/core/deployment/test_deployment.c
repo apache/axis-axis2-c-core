@@ -12,6 +12,9 @@
 #include <axis2_log_default.h>
 #include <axis2_transport_sender.h>
 #include <axis2_transport_receiver.h>
+#include <axis2_core_utils.h>
+
+axis2_env_t *env = NULL;
 
 int axis2_test_dep_engine_load()
 {
@@ -20,17 +23,11 @@ int axis2_test_dep_engine_load()
     axis2_hash_t *svc_map = NULL;
     axis2_array_list_t *in_phases = NULL;
     axis2_char_t *axis2c_home = NULL;
-    axis2_env_t *env = NULL;
 
     printf("******************************************\n");
     printf("testing dep_engine_load method \n");
     printf("******************************************\n");
    
-	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_error_t *error = axis2_error_create(allocator);
-    axis2_log_t *log = axis2_log_create(allocator, NULL, "test_deployment.log");
-    env = axis2_env_create_with_error_log(allocator, error, log);
-    env->log->level = AXIS2_LOG_LEVEL_INFO;
     
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     dep_engine = axis2_dep_engine_create_with_repos_name(&env, 
@@ -129,9 +126,6 @@ int axis2_test_transport_receiver_load()
     printf("testing axis2_transport_recv load\n"); 
     printf("******************************************\n");
 
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create (allocator);
-    
     dll_desc = axis2_dll_desc_create(&env);
     
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
@@ -165,8 +159,6 @@ int axis2_test_transport_sender_load()
     printf("testing axis2_transport_sender load\n"); 
     printf("******************************************\n");
 
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create (allocator);
     msg_ctx = (axis2_msg_ctx_t *) AXIS2_MALLOC(env->allocator, 5);
     dll_desc = axis2_dll_desc_create(&env);
     
@@ -188,10 +180,86 @@ int axis2_test_transport_sender_load()
     return 0;
 }
 
+int axis2_test_default_module_version()
+{
+    
+    axis2_conf_t *axis_conf = NULL;
+    axis2_qname_t *mod_qname1 = NULL;
+    axis2_qname_t *mod_qname2 = NULL;
+    axis2_qname_t *mod_qname3 = NULL;
+    axis2_qname_t *mod_qname4 = NULL;
+    axis2_qname_t *mod_qname5 = NULL;
+    axis2_module_desc_t *module1 = NULL;
+    axis2_module_desc_t *module2 = NULL;
+    axis2_module_desc_t *module3 = NULL;
+    axis2_module_desc_t *module4 = NULL;
+    axis2_module_desc_t *module5 = NULL;
+    axis2_module_desc_t *def_mod = NULL;
+
+    printf("******************************************\n");
+    printf("testing axis2_default_module_version\n");
+    printf("******************************************\n");
+    
+
+    axis_conf = axis2_conf_create(&env);
+    mod_qname1 = axis2_qname_create(&env, "module1", NULL, NULL);
+    module1 = axis2_module_desc_create_with_qname(&env, mod_qname1);
+    AXIS2_CONF_ADD_MODULE(axis_conf, &env, module1);
+    
+    mod_qname2 = axis2_qname_create(&env, "module2-0.90", NULL, NULL); 
+    module2 = axis2_module_desc_create_with_qname(&env, mod_qname2);
+    AXIS2_CONF_ADD_MODULE(axis_conf, &env, module2);
+
+    mod_qname3 = axis2_qname_create(&env, "module2-0.92", NULL, NULL);
+    module3 = axis2_module_desc_create_with_qname(&env, mod_qname3);
+    AXIS2_CONF_ADD_MODULE(axis_conf, &env, module3);
+    
+    mod_qname4 = axis2_qname_create(&env, "module2-0.91", NULL, NULL);
+    module4 = axis2_module_desc_create_with_qname(&env, mod_qname4);
+    AXIS2_CONF_ADD_MODULE(axis_conf, &env, module4);
+
+    mod_qname5 = axis2_qname_create(&env, "test_module-1.92", NULL, NULL);
+    module5 = axis2_module_desc_create_with_qname(&env, mod_qname5);
+    AXIS2_CONF_ADD_MODULE(axis_conf, &env, module5);
+
+    axis2_core_utils_calculate_default_module_version(&env, AXIS2_CONF_GET_MODULES(
+                        axis_conf, &env), axis_conf);
+    def_mod = AXIS2_CONF_GET_DEFAULT_MODULE(axis_conf, &env, "module1");
+    if(def_mod != module1)
+    {
+        printf("axis2_default_module_version (module1) .. FAILED\n");
+        return AXIS2_FAILURE;
+    }
+    def_mod = AXIS2_CONF_GET_DEFAULT_MODULE(axis_conf, &env, "module2");
+    if(def_mod != module3)
+    {
+        printf("axis2_default_module_version (module2) .. FAILED\n");
+        return AXIS2_FAILURE;
+    } 
+    def_mod = AXIS2_CONF_GET_DEFAULT_MODULE(axis_conf, &env, "test_module");
+    if(def_mod != module5)
+    {
+        printf("axis2_default_module_version (test_module) .. FAILED\n");
+        return AXIS2_FAILURE;
+    } 
+    printf("axis2_default_module_version  .. SUCCESS\n");
+    return AXIS2_SUCCESS; 
+}
+
 int main()
 {
+	axis2_allocator_t *allocator = NULL;
+    axis2_error_t *error = NULL;
+    axis2_log_t *log = NULL;
+
+    allocator = axis2_allocator_init (NULL);
+    error = axis2_error_create(allocator);
+    log = axis2_log_create(allocator, NULL, "test_deployment.log");
+    env = axis2_env_create_with_error_log(allocator, error, log);
+    env->log->level = AXIS2_LOG_LEVEL_INFO;
     /*axis2_test_transport_receiver_load();
     axis2_test_transport_sender_load();*/
     axis2_test_dep_engine_load();
+    axis2_test_default_module_version();
 	return 0;
 }

@@ -370,10 +370,10 @@ int dir_select(struct dirent *entry)
     }
  
 	/* Check for filename extensions */
-	ptr = AXIS2_RINDEX(entry->d_name, '.');
+	/*ptr = AXIS2_RINDEX(entry->d_name, '.');
 	if (ptr != NULL)
     {
 		return (AXIS2_FALSE);
-    }
+    }*/
 	return AXIS2_TRUE;
 }

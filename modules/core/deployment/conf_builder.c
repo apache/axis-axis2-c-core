@@ -71,7 +71,12 @@ static axis2_status_t
 axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                                     axis2_env_t **env,
                                     axis2_om_children_qname_iterator_t *trs_recvs);
-
+                                    
+static axis2_status_t 
+axis2_conf_builder_process_default_module_versions(
+                            axis2_conf_builder_t *conf_builder,
+                            axis2_env_t **env, 
+                            axis2_om_children_qname_iterator_t *module_versions);
 /************************** End of function prototypes ************************/
 
 AXIS2_DECLARE(axis2_conf_builder_t *) 
@@ -181,12 +186,14 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     axis2_qname_t *qtransportsender = NULL;
     axis2_qname_t *qtransportrecv = NULL;
     axis2_qname_t *qphaseorder = NULL;
+    axis2_qname_t *qdefmodver = NULL;
     axis2_om_children_qname_iterator_t *itr = NULL;
     axis2_om_children_qname_iterator_t *msg_recvs = NULL;
     axis2_om_children_qname_iterator_t *module_itr = NULL;
     axis2_om_children_qname_iterator_t *trs_senders = NULL;
     axis2_om_children_qname_iterator_t *trs_recvs = NULL;
     axis2_om_children_qname_iterator_t *phase_orders = NULL;
+    axis2_om_children_qname_iterator_t *def_mod_versions = NULL;
     axis2_om_element_t *conf_element = NULL;
     axis2_om_node_t *conf_node = NULL;
     axis2_om_element_t *disp_order_element = NULL;
@@ -298,6 +305,21 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     AXIS2_QNAME_FREE(qphaseorder, env);
     axis2_conf_builder_process_phase_orders(conf_builder, env, phase_orders);
 
+    /* Processing default module versions */
+    qdefmodver = axis2_qname_create(env, AXIS2_DEFAULT_MODULE_VERSION, NULL, 
+                        NULL);
+    def_mod_versions = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, 
+                                    env, qdefmodver, conf_node);
+    AXIS2_QNAME_FREE(qphaseorder, env);
+    if(NULL != def_mod_versions)
+    {
+        status = axis2_conf_builder_process_default_module_versions(conf_builder
+                        , env, def_mod_versions);
+        if(AXIS2_FAILURE == status)
+        {
+            return AXIS2_FAILURE;
+        }                        
+    }
     /* TODO processing Axis Storages */
     return AXIS2_SUCCESS;
 }
@@ -1074,6 +1096,62 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
     return AXIS2_SUCCESS;
 }
 
+axis2_status_t AXIS2_CALL
+axis2_conf_builder_process_default_module_versions(
+                            axis2_conf_builder_t *conf_builder,
+                            axis2_env_t **env, 
+                            axis2_om_children_qname_iterator_t *module_versions)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, module_versions, AXIS2_FAILURE);
+    
+    while (AXIS2_OM_CHILDREN_ITERATOR_HAS_NEXT(module_versions, env))
+    {
+        axis2_om_element_t *om_element = NULL;
+        axis2_char_t *name = NULL;
+        axis2_char_t *default_version = NULL;
+        axis2_qname_t *attribute_qname = NULL;
+        
+        om_element = (axis2_om_element_t *) 
+                        AXIS2_OM_CHILDREN_ITERATOR_NEXT(module_versions, env);
+        if(NULL == om_element)
+        {
+            continue;
+        }
+        attribute_qname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
+        if(NULL == attribute_qname)
+        {
+            continue;
+        }
+        name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE(om_element, env, 
+                                                    attribute_qname);
+        AXIS2_QNAME_FREE(attribute_qname, env);
+        attribute_qname = NULL;
+        if (NULL == name)
+        {
+            return AXIS2_FAILURE;
+        }
+        attribute_qname = axis2_qname_create(env, 
+                        AXIS2_ATTRIBUTE_DEFAULT_VERSION, NULL, NULL);
+        if(NULL == attribute_qname)
+        {
+            continue;
+        }
+        default_version = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE(om_element, env, 
+                        attribute_qname);
+        AXIS2_QNAME_FREE(attribute_qname, env);
+        attribute_qname = NULL;
+        if (NULL == default_version) 
+        {
+            return AXIS2_FAILURE;
+        }
+        AXIS2_CONF_ADD_DEFAULT_MODULE_VERSION(
+                        AXIS2_INTF_TO_IMPL(conf_builder)->conf, env, name, 
+                        default_version);
+    }
+    return AXIS2_SUCCESS;
+}
+    
 /**
  * To process AxisObservers
  * @param oservers

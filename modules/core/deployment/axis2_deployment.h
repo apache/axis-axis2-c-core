@@ -128,6 +128,9 @@ extern "C"
  * msg recv library handler
  */
 #define AXIS2_MSG_RECV_PARAM "msg_recv_param"
+
+#define AXIS2_ATTRIBUTE_DEFAULT_VERSION "version"
+#define AXIS2_DEFAULT_MODULE_VERSION "defaultModuleVersions"
 	
 /*********************************** Constants*********************************/	
 	

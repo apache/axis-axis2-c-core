@@ -22,12 +22,14 @@
 #include <axis2_error.h>
 #include <axis2_env.h>
 #include <axis2_msg_ctx.h>
+#include <axis2_qname.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+struct axis2_conf;
 /**
  * @defgroup axis2_core_utils Core Utils
  * @ingroup axis2_core_utils
@@ -40,6 +42,29 @@ extern "C"
     AXIS2_DECLARE(void)
     axis2_core_utils_reset_out_msg_ctx(axis2_env_t **env,
                                     axis2_msg_ctx_t *out_msg_ctx);
+                                    
+    AXIS2_DECLARE(axis2_qname_t*)
+    axis2_core_utils_get_module_qname(axis2_env_t **env, axis2_char_t *name, 
+                                    axis2_char_t *version);
+                                    
+    AXIS2_DECLARE(axis2_status_t)
+    axis2_core_utils_calculate_default_module_version(axis2_env_t **env, 
+                        axis2_hash_t *modules_map, struct axis2_conf *axis_conf);
+    
+    AXIS2_DECLARE(axis2_char_t *)
+    axis2_core_utils_get_module_name(axis2_env_t **env, 
+                                    axis2_char_t *module_name);
+                                    
+    AXIS2_DECLARE(axis2_char_t *)
+    axis2_core_utils_get_module_version(axis2_env_t **env, 
+                                        axis2_char_t *module_name);
+                                        
+    AXIS2_DECLARE(axis2_bool_t)
+    axis2_core_utils_is_latest_mod_ver(axis2_env_t **env, 
+                                        axis2_char_t *module_ver, 
+                                        axis2_char_t *current_def_ver);
+                                                                                
+                                    
 /** @} */
     
 #ifdef __cplusplus

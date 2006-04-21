@@ -807,6 +807,9 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
         return NULL;
     }
     AXIS2_CONF_SET_REPOS(dep_engine_impl->conf, env, dep_engine_impl->axis2_repos);
+    axis2_core_utils_calculate_default_module_version(env, 
+                            AXIS2_CONF_GET_MODULES(dep_engine_impl->conf, env), 
+                            dep_engine_impl->conf);
     status = axis2_dep_engine_validate_system_predefined_phases(dep_engine, env);
     if(AXIS2_SUCCESS != status)
     {
@@ -913,6 +916,9 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
     }
     
     AXIS2_CONF_SET_REPOS(dep_engine_impl->conf, env, dep_engine_impl->axis2_repos);
+    axis2_core_utils_calculate_default_module_version(env, 
+                            AXIS2_CONF_GET_MODULES(dep_engine_impl->conf, env), 
+                            dep_engine_impl->conf);
     AXIS2_CONF_SET_PHASESINFO(dep_engine_impl->conf, env, dep_engine_impl->phases_info);
     status = axis2_dep_engine_engage_modules(dep_engine, env);
     if(AXIS2_FAILURE == status)

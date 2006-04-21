@@ -26,6 +26,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/transport \
             -I$(top_builddir)/modules/core/engine \
             -I$(top_builddir)/modules/core/clientapi \
+            -I$(top_builddir)/modules/core/util \
             -I$(top_builddir)/modules/platforms \
             -I$(top_builddir)/modules/xml/parser \
             -I$(top_builddir)/include

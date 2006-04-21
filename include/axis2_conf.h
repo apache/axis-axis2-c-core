@@ -163,7 +163,7 @@ struct axis2_conf_ops
     get_module) (axis2_conf_t *conf,
                     axis2_env_t **env,
                     axis2_qname_t *qname);
-    
+   
     /**
      * Method getEngadgedModules
      *
@@ -308,7 +308,26 @@ struct axis2_conf_ops
     set_dep_engine)(axis2_conf_t *conf,
                                 axis2_env_t **env,
                                 struct axis2_dep_engine *dep_engine);
-                   
+    
+    axis2_char_t * (AXIS2_CALL *
+    get_default_module_version)(axis2_conf_t *conf, 
+                                axis2_env_t **env, 
+                                axis2_char_t* module_name);
+                                
+    struct axis2_module_desc * (AXIS2_CALL *
+    get_default_module)(axis2_conf_t *conf,axis2_env_t **env, 
+                                axis2_char_t *module_name);
+
+    axis2_status_t (AXIS2_CALL *
+    add_default_module_version)(axis2_conf_t *conf, axis2_env_t **env,
+                                axis2_char_t *module_name, 
+                                axis2_char_t *module_version);
+
+    axis2_status_t (AXIS2_CALL *
+    engage_module_with_version)(axis2_conf_t *conf, axis2_env_t **env,
+                                            axis2_char_t *module_name,
+                                            axis2_char_t *version_id);
+                                
 };
 
 /**
@@ -402,7 +421,6 @@ axis2_conf_create(axis2_env_t **env);
 #define AXIS2_CONF_GET_OUT_FAULT_FLOW(conf, env) \
         ((conf)->ops->get_out_faultflow(conf , env)) 
 
-
 #define AXIS2_CONF_GET_FAULTY_SVCS(conf, env) \
         ((conf)->ops->get_faulty_svcs(conf , env)) 
 
@@ -463,6 +481,18 @@ axis2_conf_create(axis2_env_t **env);
 #define AXIS2_CONF_SET_DEP_ENGINE(conf, env, dep_engine) \
         ((conf)->ops->set_dep_engine(conf, env, dep_engine))
 
+#define AXIS2_CONF_GET_DEFAULT_MODULE_VERSION(conf, env, module_name)\
+        ((conf)->ops->get_default_module_version(conf, env, module_name))
+
+#define AXIS2_CONF_GET_DEFAULT_MODULE(conf, env, module_name)\
+        ((conf)->ops->get_default_module(conf, env, module_name))
+        
+#define AXIS2_CONF_ADD_DEFAULT_MODULE_VERSION(conf, env, mod_name, mod_ver)\
+        ((conf)->ops->add_default_module_version(conf, env, mod_name, mod_ver))
+        
+#define AXIS2_CONF_ENGAGE_MODULE_WITH_VERSION(conf, env, mod_name, mod_ver)\
+        ((conf)->ops->engage_module_with_version(conf, env, mod_name, mod_ver))       
+        
 /************************* End of function macros *****************************/
 
 /** @} */
