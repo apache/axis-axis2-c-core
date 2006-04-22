@@ -316,6 +316,7 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
         axis2_om_element_t *header_block_ele = NULL;
         axis2_char_t *ele_localname = NULL;
         axis2_endpoint_ref_t *epr = NULL;        
+        axis2_char_t *role = NULL;
         
         axis2_hash_this(hash_index, NULL, NULL, &hb);
         
@@ -323,6 +324,13 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
         header_block_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block, env);
         header_block_ele  = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(header_block_node, env);
         ele_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(header_block_ele, env);
+
+        role = AXIS2_SOAP_HEADER_BLOCK_GET_ROLE(header_block, env);
+        if (role && AXIS2_STRCMP(role, AXIS2_SOAP12_SOAP_ROLE_NONE) == 0)
+        {
+            /* Role is none, no need of processing */
+            continue;
+        }
         
         if(AXIS2_STRCMP(ele_localname, AXIS2_WSA_TO) == 0)
         {
