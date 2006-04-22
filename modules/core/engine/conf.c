@@ -974,11 +974,8 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
     axis2_hash_index_t *index_i = NULL;
     axis2_char_t *svc_name = NULL;
     axis2_char_t *svc_grp_name = NULL;
-    int i = 0;
     int k = 0;
-    int size = 0;
-    axis2_status_t status = AXIS2_FAILURE;
-    
+        
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
     
@@ -1999,15 +1996,17 @@ axis2_conf_engage_module(axis2_conf_t *conf,
     {
         int size = 0;
         int i = 0;
+        axis2_qname_t *module_qname = NULL;
         
         size = AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules, env);
+        module_qname = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
         for(i = 0; i < size; i++)
         {
             axis2_qname_t *qname = NULL;
             
             qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(config_impl->
                 engaged_modules, env, i);
-            if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_ref, env, qname))
+            if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_qname, env, qname))
             {
                 to_be_engaged = AXIS2_FALSE;
                 /* Instead of throwing the error, we can just log this problem */
@@ -2024,6 +2023,7 @@ axis2_conf_engage_module(axis2_conf_t *conf,
     {
         axis2_phase_resolver_t *phase_resolver = NULL;
         axis2_qname_t *module_qref_l = NULL;
+        axis2_qname_t *module_qname = NULL;
 
         phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
         if(!phase_resolver)
@@ -2038,7 +2038,8 @@ axis2_conf_engage_module(axis2_conf_t *conf,
         {
             return AXIS2_FAILURE;
         }
-        module_qref_l = AXIS2_QNAME_CLONE(module_ref, env);
+        module_qname = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
+        module_qref_l = AXIS2_QNAME_CLONE(module_qname, env);
         status = AXIS2_ARRAY_LIST_ADD(config_impl->engaged_modules, env, 
             module_qref_l);
     }

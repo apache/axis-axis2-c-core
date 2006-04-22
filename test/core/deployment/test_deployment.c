@@ -195,6 +195,11 @@ int axis2_test_default_module_version()
     axis2_module_desc_t *module4 = NULL;
     axis2_module_desc_t *module5 = NULL;
     axis2_module_desc_t *def_mod = NULL;
+    axis2_array_list_t *engaged_modules = NULL;
+    axis2_qname_t *engage_qname = NULL;
+    axis2_bool_t found1 = AXIS2_FALSE;
+    axis2_bool_t found2 = AXIS2_FALSE;
+    axis2_bool_t found3 = AXIS2_FALSE;
 
     printf("******************************************\n");
     printf("testing axis2_default_module_version\n");
@@ -242,7 +247,64 @@ int axis2_test_default_module_version()
         printf("axis2_default_module_version (test_module) .. FAILED\n");
         return AXIS2_FAILURE;
     } 
+    engage_qname = axis2_qname_create(&env, "module2", NULL, NULL);
+    AXIS2_CONF_ENGAGE_MODULE(axis_conf, &env, engage_qname);
+    AXIS2_QNAME_FREE(engage_qname, &env);
+    engage_qname = NULL;
+    
+    engage_qname = axis2_qname_create(&env, "module1", NULL, NULL);
+    AXIS2_CONF_ENGAGE_MODULE(axis_conf, &env, engage_qname);
+    AXIS2_QNAME_FREE(engage_qname, &env);
+    engage_qname = NULL;
+    
+    AXIS2_CONF_ENGAGE_MODULE_WITH_VERSION(axis_conf, &env, "test_module", "1.92");
+
+    engaged_modules = AXIS2_CONF_GET_ENGAGED_MODULES(axis_conf, &env);
+    
+    if(NULL != engaged_modules)
+    {
+        int list_size = 0;
+        int i = 0;
+        list_size = AXIS2_ARRAY_LIST_SIZE(engaged_modules, &env);
+        for(i = 0; i < list_size; i++)
+        {
+            axis2_qname_t *engaged_mod_qname = NULL;
+            engaged_mod_qname = AXIS2_ARRAY_LIST_GET(engaged_modules, &env, i); 
+            if(0 == AXIS2_STRCMP("module2-0.92", 
+                        AXIS2_QNAME_GET_LOCALPART(engaged_mod_qname, &env)))
+            {
+                found1 = AXIS2_TRUE;
+            }
+            if(0 == AXIS2_STRCMP("module1", 
+                        AXIS2_QNAME_GET_LOCALPART(engaged_mod_qname, &env)))
+            {
+                found2 = AXIS2_TRUE;
+            }
+            if(0 == AXIS2_STRCMP("test_module-1.92", 
+                        AXIS2_QNAME_GET_LOCALPART(engaged_mod_qname, &env)))
+            {
+                found3 = AXIS2_TRUE;
+            }
+            
+        }
+    } 
+    if(AXIS2_FALSE == found1)
+    {
+       printf("axis2_default_module_version (module2 engaging) .. FAILED\n");
+       return AXIS2_FAILURE; 
+    }
+    if(AXIS2_FALSE == found2)
+    {
+       printf("axis2_default_module_version (module1 engaging) .. FAILED\n");
+       return AXIS2_FAILURE; 
+    }
+    if(AXIS2_FALSE == found3)
+    {
+       printf("axis2_default_module_version (test_module engaging) .. FAILED\n");
+       return AXIS2_FAILURE; 
+    }
     printf("axis2_default_module_version  .. SUCCESS\n");
+    AXIS2_CONF_FREE(axis_conf, &env);
     return AXIS2_SUCCESS; 
 }
 
