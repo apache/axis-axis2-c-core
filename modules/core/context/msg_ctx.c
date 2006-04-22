@@ -362,6 +362,10 @@ axis2_msg_ctx_get_do_rest_through_post(struct axis2_msg_ctx *msg_ctx,
 axis2_bool_t AXIS2_CALL
 axis2_msg_ctx_get_is_soap_11(struct axis2_msg_ctx *msg_ctx, 
                                 axis2_env_t **env);
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_is_soap_11(struct axis2_msg_ctx *msg_ctx, 
+                                axis2_env_t **env,
+                                axis2_bool_t is_soap11);
 struct axis2_svc_grp_ctx* AXIS2_CALL
 axis2_msg_ctx_get_svc_grp_ctx(struct axis2_msg_ctx *msg_ctx, 
                                 axis2_env_t **env);    
@@ -568,6 +572,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->msg_ctx.ops->set_do_rest_through_post = axis2_msg_ctx_set_do_rest_through_post;
     msg_ctx_impl->msg_ctx.ops->get_do_rest_through_post = axis2_msg_ctx_get_do_rest_through_post;
     msg_ctx_impl->msg_ctx.ops->get_is_soap_11 = axis2_msg_ctx_get_is_soap_11;
+    msg_ctx_impl->msg_ctx.ops->set_is_soap_11 = axis2_msg_ctx_set_is_soap_11;
     msg_ctx_impl->msg_ctx.ops->get_svc_grp_ctx = axis2_msg_ctx_get_svc_grp_ctx;
     msg_ctx_impl->msg_ctx.ops->set_svc_grp_ctx = axis2_msg_ctx_set_svc_grp_ctx;
     msg_ctx_impl->msg_ctx.ops->get_op = axis2_msg_ctx_get_op;
@@ -1784,6 +1789,16 @@ axis2_bool_t AXIS2_CALL axis2_msg_ctx_get_is_soap_11(struct axis2_msg_ctx *msg_c
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(msg_ctx)->is_soap_11;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_is_soap_11(struct axis2_msg_ctx *msg_ctx, 
+                                axis2_env_t **env,
+                                axis2_bool_t is_soap11)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(msg_ctx)->is_soap_11 = is_soap11;
+    return AXIS2_SUCCESS;
 }
 
 struct axis2_svc_grp_ctx *AXIS2_CALL axis2_msg_ctx_get_svc_grp_ctx(struct axis2_msg_ctx *msg_ctx, 

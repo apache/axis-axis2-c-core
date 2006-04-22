@@ -156,8 +156,11 @@ axis2_core_utils_create_out_msg_ctx(axis2_env_t **env,
     server_side = AXIS2_MSG_CTX_GET_SERVER_SIDE(in_msg_ctx, env);
     AXIS2_MSG_CTX_SET_SERVER_SIDE(new_msg_ctx, env, server_side);
     
-    svc_grp_ctx = AXIS2_MSG_CTX_GET_SVC_GRP_CTX(new_msg_ctx, env);
+    svc_grp_ctx = AXIS2_MSG_CTX_GET_SVC_GRP_CTX(in_msg_ctx, env);
     AXIS2_MSG_CTX_SET_SVC_GRP_CTX(new_msg_ctx, env, svc_grp_ctx);
+
+    AXIS2_MSG_CTX_SET_IS_SOAP_11(new_msg_ctx, env, 
+        AXIS2_MSG_CTX_GET_IS_SOAP_11(in_msg_ctx, env));
     
     return new_msg_ctx;
 }

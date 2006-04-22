@@ -596,6 +596,11 @@ struct axis2_msg_ctx_ops
 	get_is_soap_11)(struct axis2_msg_ctx *msg_ctx, 
                     axis2_env_t **env);
     
+    axis2_status_t (AXIS2_CALL *
+    set_is_soap_11)(struct axis2_msg_ctx *msg_ctx, 
+                                axis2_env_t **env,
+                                axis2_bool_t is_soap11);
+
     struct axis2_svc_grp_ctx* (AXIS2_CALL *
 	get_svc_grp_ctx)(struct axis2_msg_ctx *msg_ctx, 
                      axis2_env_t **env);
@@ -898,6 +903,9 @@ axis2_msg_ctx_create (axis2_env_t **env,
 		
 #define AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) \
 		((msg_ctx)->ops->get_is_soap_11(msg_ctx, env))
+		
+#define AXIS2_MSG_CTX_SET_IS_SOAP_11(msg_ctx, env, is_soap11) \
+		((msg_ctx)->ops->set_is_soap_11(msg_ctx, env, is_soap11))
 		
 #define AXIS2_MSG_CTX_GET_SVC_GRP_CTX(msg_ctx, env) \
 		((msg_ctx)->ops->get_svc_grp_ctx(msg_ctx, env))
