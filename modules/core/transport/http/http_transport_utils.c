@@ -326,7 +326,7 @@ axis2_http_transport_utils_process_http_post_request
     
 	if(AXIS2_TRUE == AXIS2_SOAP_BODY_HAS_FAULT(soap_body, env))
 	{
-		AXIS2_ENGINE_RECEIVE_FAULT(engine, env, msg_ctx);
+		status = AXIS2_ENGINE_RECEIVE_FAULT(engine, env, msg_ctx);
 	}
 	else
 	{
