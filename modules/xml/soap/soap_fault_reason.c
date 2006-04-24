@@ -403,7 +403,6 @@ axis2_soap_fault_reason_get_first_soap_fault_text
     }   
     if(NULL != fault_reason_impl->fault_texts)
     {
-        axis2_soap_fault_text_t *fault_text = NULL;
         void *value = NULL;
         value = AXIS2_ARRAY_LIST_GET(fault_reason_impl->fault_texts, env, 0);
         if(NULL != value)

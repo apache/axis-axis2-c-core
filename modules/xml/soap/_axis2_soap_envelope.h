@@ -59,9 +59,9 @@ axis2_soap_envelope_set_builder(axis2_soap_envelope_t *envelope,
                                 struct axis2_soap_builder *soap_builder); 
                                 
 axis2_status_t AXIS2_CALL 
-axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *envelope,
-                                   axis2_env_t **env,
-                                   int soap_version);                                
+axis2_soap_envelope_set_soap_version_internal(axis2_soap_envelope_t *envelope,
+                                              axis2_env_t **env,
+                                              int soap_version);                                
 
 AXIS2_DECLARE(axis2_soap_envelope_t*)
 axis2_soap_envelope_create_null(axis2_env_t **env);

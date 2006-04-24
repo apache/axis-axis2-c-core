@@ -129,6 +129,11 @@ extern "C"
         axis2_om_namespace_t* (AXIS2_CALL *
 		get_namespace)(axis2_soap_envelope_t *envelope,
                        axis2_env_t **env);
+
+        axis2_status_t (AXIS2_CALL *
+        set_soap_version)(axis2_soap_envelope_t *envelope,
+                          axis2_env_t **env,
+                          int soap_version);
      
     };
 
@@ -198,6 +203,10 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
 
 #define AXIS2_SOAP_ENVELOPE_GET_NAMESPACE(envelope, env) \
         ((envelope)->ops->get_namespace(envelope, env))
+
+#define AXIS2_SOAP_ENVELOPE_SET_SOAP_VERSION(envelope, env, soap_version) \
+        ((envelope)->ops->set_soap_version(envelope, env, soap_version))
+        
 
 /** @} */
 

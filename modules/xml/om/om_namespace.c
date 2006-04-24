@@ -16,7 +16,7 @@
 
 #include <axis2_om_namespace.h>
 #include <axis2_string.h>
-
+#include <axis2_om_namespace_internal.h>
 /**************************** Function Prototypes ******************************/
 
 axis2_status_t AXIS2_CALL 
@@ -313,7 +313,8 @@ axis2_om_namespace_to_string(axis2_om_namespace_t *om_namespace,
     ns_impl = AXIS2_INTF_TO_IMPL(om_namespace);
     if(NULL != ns_impl->key)
     {
-        return ns_impl->key;        
+        AXIS2_FREE((*env)->allocator, ns_impl->key);
+        ns_impl->key = NULL;
     }
     if((NULL != ns_impl->uri) && (NULL != ns_impl->prefix))
     {
@@ -334,4 +335,31 @@ axis2_om_namespace_to_string(axis2_om_namespace_t *om_namespace,
         }
     }
     return ns_impl->key;    
-}                             
+} 
+
+
+AXIS2_DECLARE(axis2_status_t)
+axis2_om_namespace_set_uri(axis2_om_namespace_t *ns,
+                           axis2_env_t **env,
+                           axis2_char_t *uri)
+{
+    axis2_om_namespace_impl_t *ns_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, uri, AXIS2_FAILURE);
+    ns_impl = AXIS2_INTF_TO_IMPL(ns);
+
+    if(NULL != ns_impl->uri)
+    {   
+        AXIS2_FREE((*env)->allocator, ns_impl->uri);
+        ns_impl->uri = NULL;
+    }
+    
+    ns_impl->uri = AXIS2_STRDUP(uri, env);
+    if(!(ns_impl->uri))
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    
+    }
+    return AXIS2_SUCCESS;
+}                           

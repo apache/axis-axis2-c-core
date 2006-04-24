@@ -771,7 +771,7 @@ axis2_soap_builder_identify_soap_version(axis2_soap_builder_t *builder,
       
             AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Identified soap version is soap11");
 
-            axis2_soap_envelope_set_soap_version(builder_impl->soap_envelope, 
+            axis2_soap_envelope_set_soap_version_internal(builder_impl->soap_envelope, 
                 env, builder_impl->soap_version);        
 
             return AXIS2_SUCCESS;
@@ -782,7 +782,7 @@ axis2_soap_builder_identify_soap_version(axis2_soap_builder_t *builder,
         
             AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "identified soap version is soap12");
             
-            axis2_soap_envelope_set_soap_version(builder_impl->soap_envelope, 
+            axis2_soap_envelope_set_soap_version_internal(builder_impl->soap_envelope, 
                 env, builder_impl->soap_version);        
 
             return AXIS2_SUCCESS;                
