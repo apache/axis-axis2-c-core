@@ -294,6 +294,21 @@ axis2_simple_http_svr_conn_read_request(axis2_simple_http_svr_conn_t *svr_conn,
 			break;
 		}
 	}
+    if(NULL != str_line)
+    {
+        if(0 != AXIS2_STRNCASECMP(str_line, "GET", 3) && 0 != 
+                        AXIS2_STRNCASECMP(str_line, "POST", 4))
+        {
+            char write_buf[512];
+            sprintf(write_buf, "%s %s\r\n%s: close\r\n\r\n", 
+                        AXIS2_HTTP_HEADER_PROTOCOL_11, 
+                        AXIS2_HTTP_RESPONSE_BAD_REQUEST, 
+                        AXIS2_HTTP_HEADER_CONNECTION);
+            AXIS2_STREAM_WRITE(svr_conn_impl->stream, env, write_buf,
+                        AXIS2_STRLEN(write_buf) + 1);
+            return NULL;
+        }
+    }
 	request_line = axis2_http_request_line_parse_line(env, str_line);
 	if(NULL == request_line)
 	{
