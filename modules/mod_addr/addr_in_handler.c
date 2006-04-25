@@ -125,9 +125,6 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
     
-    /*op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
-    svc_ctx = AXIS2_MSG_CTX_GET_SVC_CTX(msg_ctx, env);*/
-    
     AXIS2_LOG_INFO((*env)->log, "Starting addressing in handler .........");
     
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
@@ -356,8 +353,9 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
                 epr = AXIS2_MSG_INFO_HEADERS_GET_FROM(msg_info_headers, env);
                 if(!epr)
                 {
-                    /* I don't know the address now. Let me pass the empty 
-                        string now and fill this once I process the Elements under this. */
+                    /* The address is not know now. Pass the empty 
+                        string now and fill this once the element 
+                        under this is processed. */
                     
                     epr = axis2_endpoint_ref_create(env, "");
                     AXIS2_MSG_INFO_HEADERS_SET_FROM(msg_info_headers, env, epr);
@@ -542,14 +540,6 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
         {
             axis2_om_child_element_iterator_t *ref_param_iter = NULL;       
             
-            /*axis2_any_content_type_t *any_content_type = NULL;
-            any_content_type = AXIS2_ENDPOINT_REF_GET_REF_PARAMS(endpoint_ref, env);
-            if(any_content_type == NULL)
-            {
-                any_content_type = axis2_any_content_type_create(env);
-                AXIS2_ENDPOINT_REF_SET_REF_PARAMS(endpoint_ref, env, any_content_type);
-            } */           
-
             ref_param_iter = AXIS2_OM_ELEMENT_GET_CHILD_ELEMENTS(child_ele, env, child_node);
             if(ref_param_iter)
             {
@@ -557,28 +547,13 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
                 {
                    axis2_om_node_t *om_node =  NULL;
                    axis2_om_element_t *om_ele = NULL;
-                   /*axis2_any_content_type_t *any_content = NULL;*/
                    om_node = AXIS2_OM_CHILD_ELEMENT_ITERATOR_NEXT(ref_param_iter, env);
                    om_ele  = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);
-                   /*any_content = AXIS2_ENDPOINT_REF_GET_REF_PARAMS(endpoint_ref, env);
-                   if(any_content && om_ele)
-                   {
-                       AXIS2_ANY_CONTENT_TYPE_ADD_VALUE(any_content, env, 
-                            AXIS2_OM_ELEMENT_GET_QNAME(om_ele, env), AXIS2_OM_ELEMENT_GET_TEXT(om_ele, env, om_node));
-                       
-                   } */                      
                 }                    
             }
             
         }else if(axis2_addr_in_check_element(env, wsa_meta_qn, child_qn))        
         {
-           /*axis2_any_content_type_t *any_content_type = AXIS2_ENDPOINT_REF_GET_METADATA(endpoint_ref, env);
-           if(any_content_type)
-           {
-               AXIS2_ANY_CONTENT_TYPE_ADD_VALUE(any_content_type, env, 
-                            child_qn , AXIS2_OM_ELEMENT_GET_TEXT(child_ele, env, child_node));
-           } */              
-            
         }
     }        
     AXIS2_QNAME_FREE(epr_addr_qn, env);
@@ -587,17 +562,6 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
     return AXIS2_SUCCESS;
 }
  
-
-
-
-
-/**
- * WSA 1.0 specification mandates all the reference parameters to have a attribute as wsa:Type=???parameter???. So
- * here this will check for soap_header blocks with the above attribute and will put them in message information soap_header collection
- *
- * @param soap_header
- * @param messageInformationHeaders
- */
 axis2_status_t 
 axis2_addr_in_extract_ref_params(axis2_env_t **env, 
                    axis2_soap_header_t *soap_header,
@@ -701,9 +665,6 @@ axis2_addr_in_extract_to_epr_ref_params(axis2_env_t **env,
                     if(AXIS2_STRCMP("true", attr_value) == 0)
                     {
                         AXIS2_ENDPOINT_REF_ADD_REF_PARAM(to_epr, env, header_block_node);
-                        /*
-                            AXIS2_OM_ELEMENT_GET_QNAME(header_block_ele, env), 
-                            AXIS2_OM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node));*/
                     }
               }                    
         }
@@ -777,4 +738,3 @@ axis2_addr_in_create_fault_envelope(axis2_env_t **env,
             "http://www.w3.org/2005/08/addressing/fault");
     return;
 }
-

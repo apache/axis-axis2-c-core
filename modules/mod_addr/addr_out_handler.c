@@ -101,16 +101,6 @@ axis2_addr_out_handler_create (axis2_env_t ** env, axis2_qname_t * qname)
         return NULL;
     }
 
-    /* handler desc of base handler */
-    /*handler_desc = axis2_handler_desc_create_with_qname (env, handler_qname);
-    if (!handler_desc)
-    {
-        AXIS2_HANDLER_FREE (handler, env);
-        return NULL;
-    }
-
-    AXIS2_HANDLER_INIT (handler, env, handler_desc);*/
-
     /* set the base struct's invoke op */
     if (handler->ops)
         handler->ops->invoke = axis2_addr_out_handler_invoke;
@@ -299,20 +289,6 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                     }
                 }
             }
-
-
-            /*reference_parameters = AXIS2_ENDPOINT_REF_GET_REF_PARAMS (epr, env);
-            if (reference_parameters)
-            {
-
-                axis2_addr_out_handler_process_any_content_type (env,
-                                                                 reference_parameters,
-                                                                 soap_header_node,
-                                                                 addr_ns);
-                axis2_addr_out_handler_add_to_header (env, epr, &soap_header_node,
-                                                      addr_ns);
-            }*/
-
         }
 
         action = AXIS2_MSG_INFO_HEADERS_GET_ACTION (msg_info_headers, env);
@@ -356,21 +332,6 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         if (svc_group_context_id
             && AXIS2_STRCMP (svc_group_context_id, "") != 0)
         {
-            /*axis2_any_content_type_t *any_content = NULL;
-            axis2_qname_t *svc_qn = NULL;
-            if (!AXIS2_ENDPOINT_REF_GET_REF_PARAMS (epr, env))
-            {
-                axis2_any_content_type_t *any_content_type =
-                    axis2_any_content_type_create (env);
-                AXIS2_ENDPOINT_REF_SET_REF_PARAMS (epr, env,
-                                                   any_content_type);
-            }
-            any_content = AXIS2_ENDPOINT_REF_GET_REF_PARAMS (epr, env);
-            svc_qn = axis2_qname_create (env, AXIS2_SVC_GRP_ID,
-                                    AXIS2_NAMESPACE_URI,
-                                    AXIS2_NAMESPACE_PREFIX);
-            AXIS2_ANY_CONTENT_TYPE_ADD_VALUE (any_content, env, svc_qn,
-                                              svc_group_context_id);*/
         }
 
         axis2_addr_out_handler_add_to_soap_header (env, epr,
@@ -629,37 +590,6 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
     axis2_addr_out_handler_add_to_header (env, endpoint_ref,
                                           &header_block_node, addr_ns);
 
-    /*reference_param = AXIS2_ENDPOINT_REF_GET_REF_PARAMS (endpoint_ref, env);
-
-    if (reference_param)
-    {
-        axis2_om_node_t *reference_node = NULL;
-        axis2_om_element_t *reference_ele = NULL;
-        
-        addr_ns_obj = axis2_om_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
-         
-        reference_ele = axis2_om_element_create (env,
-                                                 header_block_node,
-                                                 EPR_REFERENCE_PARAMETERS,
-                                                 addr_ns_obj,
-                                                 &reference_node);
-        axis2_addr_out_handler_process_any_content_type (env, reference_param,
-                                                         reference_node,
-                                                         addr_ns);
-
-        if(NULL != reference_ele)
-        {
-            axis2_om_namespace_t *dec_ns = NULL;
-            dec_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE( reference_ele , env,
-                                                 addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
-            if(! dec_ns)
-            {
-                 AXIS2_OM_NAMESPACE_FREE(addr_ns_obj, env);
-                 addr_ns_obj = NULL;
-            }
-        }
-    }*/
-    
     ref_param_list = AXIS2_ENDPOINT_REF_GET_REF_PARAM_LIST(endpoint_ref, env);
     if (ref_param_list && AXIS2_ARRAY_LIST_SIZE(ref_param_list, env) > 0)
     {
@@ -742,7 +672,6 @@ axis2_addr_out_handler_add_to_soap_header (axis2_env_t ** env,
                 AXIS2_OM_NODE_ADD_CHILD(reference_node, env, ref_node);
             }
         }
-        
     }
     
     extension_list = AXIS2_ENDPOINT_REF_GET_REF_EXTENSION_LIST(endpoint_ref, env);
@@ -861,59 +790,6 @@ axis2_addr_out_handler_add_to_header (axis2_env_t ** env,
     }
 
     service_name = AXIS2_ENDPOINT_REF_GET_SVC_NAME (epr, env);
-    /*if (service_name)
-    {
-        axis2_char_t *service_name_text = NULL;
-
-        axis2_qname_t *svc_qname = NULL;
-        axis2_char_t *svc_qn_prefix = NULL;
-        axis2_char_t *svc_qn_localpart = NULL;
-
-        axis2_om_node_t *service_name_node = NULL;
-        axis2_om_element_t *service_name_ele = NULL;
-
-        axis2_om_attribute_t *om_attr = NULL;
-        axis2_char_t *attr_localname = NULL;
-
-        service_name_ele =
-            axis2_om_element_create (env, NULL, EPR_SERVICE_NAME, addr_ns_obj,
-                                     &service_name_node);
-        if (AXIS2_STRCMP (addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
-        {
-            attr_localname = EPR_SERVICE_NAME_PORT_NAME;
-        }
-        else
-        {
-            attr_localname = AXIS2_WSA_SERVICE_NAME_ENDPOINT_NAME;
-        }
-        om_attr = axis2_om_attribute_create (env, attr_localname,
-                                             AXIS2_SVC_NAME_GET_ENDPOINT_NAME
-                                             (service_name, env),
-                                             addr_ns_obj);
-        AXIS2_OM_ELEMENT_ADD_ATTRIBUTE (service_name_ele, env, om_attr,
-                                        service_name_node);
-
-        svc_qname = AXIS2_SVC_NAME_GET_QNAME (service_name, env);
-        if (svc_qname)
-        {
-            svc_qn_localpart = AXIS2_QNAME_GET_LOCALPART (svc_qname, env);
-            svc_qn_prefix = AXIS2_QNAME_GET_PREFIX (svc_qname, env);
-
-            service_name_text = AXIS2_MALLOC ((*env)->allocator,
-                                              sizeof (axis2_char_t) *
-                                              (AXIS2_STRLEN (svc_qn_prefix) +
-                                               AXIS2_STRLEN (svc_qn_localpart)
-                                               + 2));
-            sprintf (service_name_text, "%s:%s", svc_qn_prefix,
-                     svc_qn_localpart);
-
-            AXIS2_OM_ELEMENT_SET_TEXT (service_name_ele, env,
-                                       service_name_text, service_name_node);
-            AXIS2_FREE ((*env)->allocator, service_name_text);
-
-        }
-
-    }*/
     return AXIS2_SUCCESS;
 }
 
