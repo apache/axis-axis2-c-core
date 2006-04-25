@@ -310,7 +310,7 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
                         NULL);
     def_mod_versions = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, 
                                     env, qdefmodver, conf_node);
-    AXIS2_QNAME_FREE(qphaseorder, env);
+    AXIS2_QNAME_FREE(qdefmodver, env);
     if(NULL != def_mod_versions)
     {
         status = axis2_conf_builder_process_default_module_versions(conf_builder
