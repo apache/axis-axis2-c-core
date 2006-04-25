@@ -735,7 +735,12 @@ axis2_libxml2_writer_wrapper_free(axis2_xml_writer_t *writer,
     axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
-
+    
+    if(NULL != writer_impl->buffer)
+    {
+        xmlBufferFree(writer_impl->buffer);
+    	writer_impl->buffer = NULL;
+    }    	
     if(NULL != writer_impl->encoding)
     {
         AXIS2_FREE((*env)->allocator, writer_impl->encoding);
@@ -761,6 +766,8 @@ axis2_libxml2_writer_wrapper_free(axis2_xml_writer_t *writer,
         AXIS2_FREE((*env)->allocator, writer->ops);
         writer->ops = NULL;
     }
+    
+    
     
     AXIS2_FREE((*env)->allocator, writer_impl);
     writer_impl = NULL;
@@ -1618,8 +1625,7 @@ axis2_libxml2_writer_wrapper_get_xml(axis2_xml_writer_t *writer,
                         strlen((const axis2_char_t*)(writer_impl->buffer->content))+1));
             sprintf(output, 
                     ((const axis2_char_t*)(writer_impl->buffer->content)));
-    	    xmlBufferFree(writer_impl->buffer);
-    	    writer_impl->buffer = NULL;
+    	   
         }
     }
     else if(writer_impl->writer_type == AXIS2_LIBXML2_WRITER_FILE)
