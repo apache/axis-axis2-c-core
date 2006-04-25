@@ -93,9 +93,9 @@ axis2_xml_schema_form_create(axis2_env_t **env,
         axis2_xml_schema_form_free(&(form_impl->form), env);
         return NULL;
     }       
-    AXIS2_ARRAY_LIST_ADD(form_impl->members, env, AXIS2_XML_SCHEMA_NONE);
-    AXIS2_ARRAY_LIST_ADD(form_impl->members, env, AXIS2_XML_SCHEMA_QUALIFIED);
-    AXIS2_ARRAY_LIST_ADD(form_impl->members, env, AXIS2_XML_SCHEMA_UNQUALIFIED);
+    AXIS2_ARRAY_LIST_ADD(form_impl->members, env, "qualified");
+    AXIS2_ARRAY_LIST_ADD(form_impl->members, env, "unqualified");
+    AXIS2_ARRAY_LIST_ADD(form_impl->members, env, "none");
 
     form_impl->methods = axis2_hash_make(env);
     if(!form_impl->methods)

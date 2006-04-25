@@ -229,7 +229,8 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         }
     }
     else
-    {*/
+    */
+    {
         axis2_arch_file_data_t *file_data = NULL;
         axis2_char_t *module_name = NULL;
         axis2_qname_t *module_qname = NULL;
@@ -242,7 +243,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         AXIS2_MODULE_DESC_SET_NAME(builder_impl->module_desc, env, module_qname);
         if(module_qname)
             AXIS2_QNAME_FREE(module_qname, env);
-    /*}*/
+    }
 
     /* Setting Module Dll Name , if it is there */
     

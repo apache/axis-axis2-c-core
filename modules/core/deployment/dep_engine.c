@@ -26,6 +26,7 @@
 #include <axis2_class_loader.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
+#include <axis2_core_utils.h>
 
 /** 
  * @brief DLL Description struct impl

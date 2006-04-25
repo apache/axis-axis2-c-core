@@ -87,10 +87,10 @@ axis2_xml_schema_use_create(axis2_env_t **env,
     use_impl->members = axis2_array_list_create(env, 0);
     if(!use_impl->members)
         return NULL;
-    AXIS2_ARRAY_LIST_ADD(use_impl->members, env, "None");
-    AXIS2_ARRAY_LIST_ADD(use_impl->members, env, "Optional");
-    AXIS2_ARRAY_LIST_ADD(use_impl->members, env, "Prohibited");
-    AXIS2_ARRAY_LIST_ADD(use_impl->members, env, "Required");
+    AXIS2_ARRAY_LIST_ADD(use_impl->members, env, "none");
+    AXIS2_ARRAY_LIST_ADD(use_impl->members, env, "optional");
+    AXIS2_ARRAY_LIST_ADD(use_impl->members, env, "prohibited");
+    AXIS2_ARRAY_LIST_ADD(use_impl->members, env, "required");
 
     use_impl->methods = axis2_hash_make(env);
     if(!use_impl->methods)

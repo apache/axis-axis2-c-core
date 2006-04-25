@@ -72,7 +72,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                                     axis2_env_t **env,
                                     axis2_om_children_qname_iterator_t *trs_recvs);
                                     
-static axis2_status_t 
+axis2_status_t AXIS2_CALL
 axis2_conf_builder_process_default_module_versions(
                             axis2_conf_builder_t *conf_builder,
                             axis2_env_t **env, 

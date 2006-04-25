@@ -423,7 +423,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
     {
         axis2_callback_t *callback = NULL;
         axis2_status_t status = AXIS2_FAILURE;
-        
+        long index = 0;
         axis2_char_t *address = NULL;
         axis2_char_t *epr_address = NULL;
         property = axis2_property_create(env);
@@ -434,7 +434,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
         AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
                                     AXIS2_TRANSPORT_URL, property, AXIS2_FALSE);
         
-        long index = 0;
+        
         /* This means doing a Request-Response invocation using two channels. 
         If the transport is a two way transport (e.g. http), only one channel is used
         (e.g. in http cases 202 OK is sent to say no repsone avalible). 

@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+#include <axis2_xml_schema_constants.h>
 #include <axis2_xml_schema_derivation_method.h>
+
 
 typedef struct axis2_xml_schema_derivation_method_impl 
                axis2_xml_schema_derivation_method_impl_t;
@@ -100,14 +102,29 @@ axis2_xml_schema_derivation_method_create(axis2_env_t **env,
             &(derivation_method_impl->derivation_method), env);
         return NULL;
     }   
-    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env, "All");
-    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env, "Empty");
-    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env, "Extension");
-    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env, "List");
-    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env, "None");
-    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env, "Restriction");
-    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env, "Substitution");
-    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env, "Union");
+    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env,
+        AXIS2_STRDUP("all", env));
+        
+    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env, 
+        AXIS2_STRDUP("empty", env));
+        
+    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env, 
+        AXIS2_STRDUP("extension", env));
+        
+    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env,
+        AXIS2_STRDUP("list", env));
+        
+    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env, 
+        AXIS2_STRDUP("none", env));
+        
+    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env,
+        AXIS2_STRDUP("restriction", env));
+        
+    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env,
+        AXIS2_STRDUP("substitution", env));
+        
+    AXIS2_ARRAY_LIST_ADD(derivation_method_impl->members, env,
+        AXIS2_STRDUP("union", env));
 
     derivation_method_impl->methods = axis2_hash_make(env);
 
