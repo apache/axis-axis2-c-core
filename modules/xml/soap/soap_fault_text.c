@@ -68,7 +68,9 @@ axis2_soap_fault_text_set_text(axis2_soap_fault_text_t *fault_text,
                                axis2_char_t *value,
                                axis2_char_t *lang);
                                                                     
-                                      
+axis2_char_t* AXIS2_CALL
+axis2_soap_fault_text_get_text(axis2_soap_fault_text_t *fault_text,
+                               axis2_env_t **env);                                      
 /***************************** functions **************************************/                                      
                                                        
 
@@ -123,7 +125,11 @@ axis2_soap_fault_text_create(axis2_env_t **env)
         axis2_soap_fault_text_get_base_node;
         
     fault_text_impl->fault_text.ops->set_text =
-        axis2_soap_fault_text_set_text;        
+        axis2_soap_fault_text_set_text;   
+        
+    fault_text_impl->fault_text.ops->get_text =
+        axis2_soap_fault_text_get_text;
+                 
 
     return &(fault_text_impl->fault_text);    
 }
@@ -368,3 +374,27 @@ axis2_soap_fault_text_set_text(axis2_soap_fault_text_t *fault_text,
     return AXIS2_FAILURE;     
 }                               
                                
+axis2_char_t* AXIS2_CALL
+axis2_soap_fault_text_get_text(axis2_soap_fault_text_t *fault_text,
+                               axis2_env_t **env)
+{
+    axis2_soap_fault_text_impl_t *text_impl = NULL;
+    axis2_char_t *text = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    text_impl = AXIS2_INTF_TO_IMPL(fault_text);
+    
+    if(NULL != text_impl->om_ele_node)
+    {
+        axis2_om_element_t *text_ele = NULL;
+        text_ele = (axis2_om_element_t *) 
+                AXIS2_OM_NODE_GET_DATA_ELEMENT(text_impl->om_ele_node, env);
+        if(NULL != text_ele)
+        {
+            text = AXIS2_OM_ELEMENT_GET_TEXT(text_ele, env, 
+                        text_impl->om_ele_node);
+            return text;
+        }
+    } 
+    return NULL;
+}                               

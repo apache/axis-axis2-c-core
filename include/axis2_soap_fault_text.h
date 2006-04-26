@@ -73,6 +73,10 @@ extern "C"
                   axis2_env_t **env,
                   axis2_char_t *value,
                   axis2_char_t *lang);
+                  
+        axis2_char_t * (AXIS2_CALL *
+        get_text)(axis2_soap_fault_text_t *fault_text,
+                  axis2_env_t **env);
                                                             
     };      
 
@@ -112,7 +116,9 @@ axis2_soap_fault_text_create_with_parent(axis2_env_t **env,
 
 #define AXIS2_SOAP_FAULT_TEXT_SET_TEXT(fault_text, env, value, lang) \
         ((fault_text)->ops->set_text(fault_text, env, value, lang))
-        
+
+#define AXIS2_SOAP_FAULT_TEXT_GET_TEXT(fault_text, env) \
+        ((fault_text)->ops->get_text(fault_text, env))        
 /** @} */
 
 #ifdef __cplusplus

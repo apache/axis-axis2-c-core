@@ -40,7 +40,7 @@ axis2_char_2_byte(axis2_env_t **env, axis2_char_t *char_buffer, axis2_byte_t **b
     int length;
     int i = 0;
     axis2_byte_t *bytes;
-    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     length = AXIS2_STRLEN(char_buffer);
     bytes = AXIS2_MALLOC((*env)->allocator, length * sizeof(axis2_byte_t));
