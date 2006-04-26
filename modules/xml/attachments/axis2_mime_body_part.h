@@ -37,47 +37,46 @@ extern "C"
 {
 #endif
 
-
-/* This should be moved to header file later axis2_defines.h*/    
-#define axis2_byte_t char
 	
 typedef struct axis2_mime_body_part_ops axis2_mime_body_part_ops_t;
 typedef struct axis2_mime_body_part axis2_mime_body_part_t;	
 
-/*
-      private final DataSource ds;
-      private final DataFlavor flavor;
-      private CommandMap commandMap;
-      private DataContentHandler dch;
-*/
-
-/** @defgroup axis2_mime_body_part Flow
+/** @defgroup axis2_mime_body_part
   * @ingroup axis2_mime_body_part
   * @{
   */
 
 /** 
- * @brief Flow ops struct
+ * @brief ops struct
  * Encapsulator struct for ops of axis2_mime_body_part
  */
 struct axis2_mime_body_part_ops
 {
-	axis2_status_t (AXIS2_CALL *add_header)(axis2_mime_body_part_t *mime_body_part, axis2_env_t **env, axis2_char_t *name, axis2_char_t *value); 
+	axis2_status_t (AXIS2_CALL *
+    add_header)(axis2_mime_body_part_t *mime_body_part, 
+            axis2_env_t **env, 
+            axis2_char_t *name, 
+            axis2_char_t *value); 
 	
-    axis2_status_t (AXIS2_CALL *set_data_handler)(axis2_mime_body_part_t *mime_body_part, axis2_env_t **env, axis2_data_handler_t *data_handler); 
+    axis2_status_t (AXIS2_CALL *
+    set_data_handler)(axis2_mime_body_part_t *mime_body_part, 
+            axis2_env_t **env, 
+            axis2_data_handler_t *data_handler); 
 
-    axis2_status_t (AXIS2_CALL *write_to)(axis2_mime_body_part_t *mime_body_part, axis2_env_t **env,axis2_byte_t **output_stream, int *output_stream_size, axis2_char_t *ignore_list); 
+    axis2_status_t (AXIS2_CALL *
+    write_to)(axis2_mime_body_part_t *mime_body_part, 
+            axis2_env_t **env,
+            axis2_byte_t **output_stream, 
+            int *output_stream_size); 
 
 	/** Deallocate memory
      * @return status code
      */
-    axis2_status_t (AXIS2_CALL *free) (axis2_mime_body_part_t *mime_body_part, axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+    free) (axis2_mime_body_part_t *mime_body_part, 
+            axis2_env_t **env);
 };
 
-/** 
- * @brief Flow struct
- *	Flow  
- */ 
 struct axis2_mime_body_part
 {
 	axis2_mime_body_part_ops_t *ops;
@@ -93,14 +92,17 @@ axis2_mime_body_part_create (axis2_env_t **env);
 
 /*************************** Function macros **********************************/
 
-#define AXIS2_MIME_BODY_PART_FREE(mime_body_part, env) ((mime_body_part)->ops->free (mime_body_part, env))
+#define AXIS2_MIME_BODY_PART_FREE(mime_body_part, env) \
+    ((mime_body_part)->ops->free (mime_body_part, env))
 
-#define AXIS2_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, name, value) ((mime_body_part)->ops->add_header (mime_body_part, env, name, value))
+#define AXIS2_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, name, value) \
+    ((mime_body_part)->ops->add_header (mime_body_part, env, name, value))
 
-#define AXIS2_MIME_BODY_PART_SET_DATA_HANDLER(mime_body_part, env, data_handler) ((mime_body_part)->ops->set_data_handler (mime_body_part, env, data_handler))
+#define AXIS2_MIME_BODY_PART_SET_DATA_HANDLER(mime_body_part, env, data_handler) \
+    ((mime_body_part)->ops->set_data_handler (mime_body_part, env, data_handler))
 
-#define AXIS2_MIME_BODY_WRITE_TO(mime_body_part, env, output_stream, output_stream_size, ignore_list)
-
+#define AXIS2_MIME_BODY_PART_WRITE_TO(mime_body_part, env, output_stream, output_stream_size) \
+    ((mime_body_part)->ops->write_to (mime_body_part, env, output_stream, output_stream_size))
 
 /*************************** End of function macros ***************************/
 

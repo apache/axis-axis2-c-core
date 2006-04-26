@@ -57,12 +57,15 @@ struct axis2_mime_output_ops
 {
 
     axis2_byte_t* (AXIS2_CALL *complete)(axis2_mime_output_t *mime_output,
-                            axis2_env_t **env, axis2_byte_t **output_stream,
+                            axis2_env_t **env, 
+                            axis2_byte_t **output_stream,
 							int *output_stream_size,
-                            axis2_char_t *string_to_write, 
+                            axis2_char_t *soap_body_buffer,
                             axis2_array_list_t *binary_node_list,
-                            axis2_char_t *boundary, axis2_char_t *content_id,
-                            axis2_char_t *char_set_encoding,axis2_char_t *soap_content_type);
+                            axis2_char_t *boundary, 
+                            axis2_char_t *content_id,
+                            axis2_char_t *char_set_encoding,
+                            axis2_char_t *soap_content_type);
 
     axis2_char_t* (AXIS2_CALL *get_content_type_for_mime)(axis2_mime_output_t *mime_output, axis2_env_t **env, 
                         axis2_char_t *boundary, axis2_char_t *content_id, axis2_char_t *char_set_encoding, axis2_char_t *soap_content_type);
@@ -95,8 +98,8 @@ axis2_mime_output_create (axis2_env_t **env);
 
 #define AXIS2_MIME_OUTPUT_FREE(mime_output, env) ((mime_output)->ops->free (mime_output, env))
 
-#define AXIS2_MIME_OUTPUT_COMPLETE(mime_output, env, output_stream, output_stream_size, string_to_write, binary_node_list, boundary, content_id, char_set_encoding, soap_content_type) \
-((mime_output)->ops->complete(mime_output, env, output_stream, output_stream_size, string_to_write, boundary, binary_node_list, content_id, char_set_encoding, soap_content_type))
+#define AXIS2_MIME_OUTPUT_COMPLETE(mime_output, env, output_stream, output_stream_size, soap_body_buffer, binary_node_list, boundary, content_id, char_set_encoding, soap_content_type) \
+((mime_output)->ops->complete(mime_output, env, output_stream, output_stream_size, soap_body_buffer, binary_node_list, boundary, content_id, char_set_encoding, soap_content_type))
 
 #define AXIS2_MIME_OUTPUT_GET_CONTENT_TYPE_FOR_MIME(mime_output, env, boundary, content_id, char_set_encoding, soap_content_type) \
 ((mime_output)->ops->get_content_type_for_mime(mime_output, env, boundary, content_id, char_set_encoding, soap_content_type))
