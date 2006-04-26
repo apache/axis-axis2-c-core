@@ -190,6 +190,10 @@ extern "C"
 /**
  * Platform specific file handling
  */
+#define AXIS2_FOPEN fopen
+#define AXIS2_FREAD fread
+#define AXIS2_FWRITE fwrite
+#define AXIS2_FCLOSE fclose
 #define AXIS2_ACCESS(zpath,imode) access(zpath,imode)
 #define AXIS2_R_OK R_OK /* test for read permission */
 #define AXIS2_W_OK W_OK /* test for write permission */

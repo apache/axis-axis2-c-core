@@ -56,7 +56,7 @@ typedef enum soap_version
 
 #define AXIS2_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME "detail"
 
-#define AXIS2_SOAP_11_CONTENT_TYPE "text/xml"
+#define AXIS2_SOAP11_CONTENT_TYPE "text/xml"
 
 #define AXIS2_SOAP11_FAULT_CODE_SENDER "Client"
 
@@ -107,7 +107,7 @@ typedef enum soap_version
 
 #define AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME "Role"
 
-#define AXIS2_SOAP_12_CONTENT_TYPE "application/soap+xml"
+#define AXIS2_SOAP12_CONTENT_TYPE "application/soap+xml"
 
 #define AXIS2_SOAP12_FAULT_CODE_SENDER "Sender"
 

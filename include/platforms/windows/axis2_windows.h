@@ -162,6 +162,10 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
 /**
  * Platform specific file handling
  */
+#define AXIS2_FOPEN fopen
+#define AXIS2_FREAD fread
+#define AXIS2_FWRITE fwrite
+#define AXIS2_FCLOSE fclose
 #define AXIS2_ACCESS(zpath,imode) _access(zpath,imode)
 #define AXIS2_R_OK 04 /* test for read permission */
 #define AXIS2_W_OK 02 /* test for write permission */

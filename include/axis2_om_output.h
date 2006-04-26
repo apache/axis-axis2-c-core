@@ -172,6 +172,13 @@ AXIS2_DECLARE_DATA struct axis2_om_output_ops
     axis2_char_t* (AXIS2_CALL *
     get_mime_boundry)(axis2_om_output_t *om_output,
                       axis2_env_t **env);                       
+
+    axis2_byte_t* (AXIS2_CALL *
+    flush)(axis2_om_output_t *om_output,
+                      axis2_env_t **env,
+                      axis2_byte_t **output_stream,
+                      int *output_stream_size);
+
                                                   
 };  
     
@@ -267,7 +274,8 @@ axis2_om_output_write_optimized(axis2_om_output_t *om_output,
 #define AXIS2_OM_OUTPUT_GET_MIME_BOUNDRY(om_output, env) \
         ((om_output)->ops->get_mime_boundry(om_output, env))                
 
-   
+#define AXIS2_OM_OUTPUT_FLUSH(om_output, env, output_stream, output_stream_size) \
+        ((om_output)->ops->flush(om_output, env, output_stream, output_stream_size))                
 /** @} */
 
 #ifdef __cplusplus

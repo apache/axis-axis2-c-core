@@ -25,6 +25,7 @@
 #include <axis2_env.h>
 #include <axis2_om_node.h>
 #include <axis2_om_output.h>
+#include <axis2_data_handler.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -112,6 +113,14 @@ extern "C"
         set_is_binary)(struct axis2_om_text *om_text,
                        axis2_env_t **env,
                        axis2_bool_t is_binary);
+        
+        axis2_data_handler_t* (AXIS2_CALL *
+        get_data_handler)(struct axis2_om_text *om_text,
+                        axis2_env_t **env);
+        
+        axis2_char_t* (AXIS2_CALL *
+        get_content_id)(struct axis2_om_text *om_text,
+                        axis2_env_t **env);
                                                                                                 
     } axis2_om_text_ops_t;
 
@@ -144,6 +153,23 @@ extern "C"
                           const axis2_char_t *value,
                           axis2_om_node_t ** node);
                           
+  /**
+    * Creates a new text struct for binary data (MTOM)
+    * @param env Environment. MUST  NOT be NULL, .
+    * @param parent parent of the new node. Optinal, can be NULL. 
+    *          The parent element must be of type AXIS2_OM_ELEMENT
+    * @param data_handler data handler. Optinal, can be NULL.
+    * @param comment_node This is an out parameter.  cannot be NULL.
+    *                       Returns the node corresponding to the text struct created.
+    *                       Node type will be set to AXIS2_OM_TEXT    
+    * @return pointer to newly created text struct 
+    */
+    AXIS2_DECLARE(axis2_om_text_t*)
+    axis2_om_text_create_with_data_handler (axis2_env_t **env,
+                          axis2_om_node_t * parent,
+                          axis2_data_handler_t* data_handler,
+                          axis2_om_node_t **node);
+
 /** frees given text */
 #define AXIS2_OM_TEXT_FREE( om_text,env) \
         ((om_text)->ops->free(om_text,env))                          
@@ -165,7 +191,13 @@ extern "C"
 /** set whether it binary */
 #define AXIS2_OM_TEXT_SET_IS_BINARY(om_text, env, is_binary) \
         ((om_text)->ops->set_is_binary(om_text, env, is_binary))    
-              
+
+#define AXIS2_OM_TEXT_SET_GET_DATA_HANDLER(om_text, env) \
+        ((om_text)->ops->get_data_handler(om_text, env))
+        
+#define AXIS2_OM_TEXT_SET_GET_CONTENT_ID(om_text, env) \
+        ((om_text)->ops->get_content_id(om_text, env))
+        
 /** @} */
 
 #ifdef __cplusplus

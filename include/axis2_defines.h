@@ -21,6 +21,9 @@ extern "C"
     typedef int axis2_status_t;
     typedef int axis2_scope_t;
     typedef unsigned int axis2_ssize_t;
+    typedef char axis2_byte_t;
+
+#define AXIS2_CRLF_LENGTH 2
 
 /* These constant definitions should later be moved to platform dependant
  * files
