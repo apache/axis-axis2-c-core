@@ -179,7 +179,7 @@ axis2_data_handler_write_to(axis2_data_handler_t *data_handler, axis2_env_t **en
                 }
                 return AXIS2_FAILURE;
             }
-            count = fread(read_stream, sizeof(axis2_byte_t), 1024, f);
+            count = fread(read_stream, 1, 1024, f);
             if (ferror(f) != 0)
             {
                 /*TODO : need to set the correct error code */

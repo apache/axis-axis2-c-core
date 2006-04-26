@@ -279,6 +279,7 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
     
     if (soap_body_buffer)
     {
+        soap_body_buffer = AXIS2_STRACAT(soap_body_buffer, "\r\n", env);
         soap_body_buffer_size = AXIS2_STRLEN(soap_body_buffer);
     }
     

@@ -181,6 +181,9 @@ axis2_mime_body_part_write_to (axis2_mime_body_part_t *mime_body_part, axis2_env
         }
     }
     
+    if (mime_body_part_impl->data_handler)
+        header_str = AXIS2_STRACAT(header_str, "\r\n", env);
+
     if (header_str)
         header_str_size = AXIS2_STRLEN(header_str);
     
