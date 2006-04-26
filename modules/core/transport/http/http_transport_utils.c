@@ -505,9 +505,21 @@ AXIS2_DECLARE(axis2_bool_t)
 axis2_http_transport_utils_do_write_mtom(axis2_env_t **env, 
                                         axis2_msg_ctx_t *msg_ctx)
 {
-   /*
-        TODO implement when MTOM support is added
-    */
+    axis2_property_t *property = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);    
+    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
+        AXIS2_ENABLE_MTOM, AXIS2_FALSE);
+    if(property)
+    {
+        axis2_char_t *value = (axis2_char_t *)AXIS2_PROPERTY_GET_VALUE(property, env);
+
+        if (value)
+        {
+            return (AXIS2_STRCMP(value, AXIS2_VALUE_TRUE) == 0);
+        }
+    }
+
     return AXIS2_FALSE;
 }
 

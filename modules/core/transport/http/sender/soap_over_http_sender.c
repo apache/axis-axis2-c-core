@@ -186,6 +186,9 @@ axis2_soap_over_http_sender_send
 	axis2_http_simple_response_t *response = NULL;
 	axis2_char_t *content_type = NULL;
     axis2_property_t *property = NULL;
+    axis2_byte_t *output_stream = NULL;
+    int output_stream_size = 0;
+    axis2_bool_t doing_mtom = AXIS2_FALSE;
 		
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
@@ -222,6 +225,8 @@ axis2_soap_over_http_sender_send
     AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_HTTP_CLIENT,
                     property, AXIS2_TRUE);
 
+    doing_mtom = AXIS2_MSG_CTX_GET_DOING_MTOM(msg_ctx, env);
+
 	if(NULL == sender_impl->om_output)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_OM_OUTPUT, 
@@ -241,14 +246,24 @@ axis2_soap_over_http_sender_send
 	{
 		char_set_enc = AXIS2_DEFAULT_CHAR_SET_ENCODING;
 	}
-	/* AXIS2_OM_OUTPUT_SET_DO_OPTIMIZE(om_output, env, 
-	 *				AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
-	 */
+	
+    AXIS2_OM_OUTPUT_SET_DO_OPTIMIZE(sender_impl->om_output, env, 
+					doing_mtom);
+	
 	AXIS2_SOAP_ENVELOPE_SERIALIZE (out, env, sender_impl->om_output, 
 						AXIS2_FALSE);
-	buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
 
-    if(NULL == buffer)
+    if (doing_mtom)
+    {
+        AXIS2_OM_OUTPUT_FLUSH(sender_impl->om_output, env, &output_stream,
+                                    &output_stream_size);
+    }
+    else
+    {
+        buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+    }
+
+    if(NULL == buffer && !doing_mtom)
     {
         AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "NULL xml returned"
                         "from xml writer");
@@ -274,7 +289,17 @@ axis2_soap_over_http_sender_send
 	if(AXIS2_FALSE == sender_impl->chunked)
 	{
 		axis2_char_t tmp_buf[10];
-		sprintf(tmp_buf, "%d", strlen(buffer));
+        int size = 0;
+        if (buffer)
+        {
+            size = strlen(buffer);
+        }
+        else
+        {
+            size = output_stream_size;
+        }
+        
+		sprintf(tmp_buf, "%d", size);
 		http_header = axis2_http_header_create(env, 
 						AXIS2_HTTP_HEADER_CONTENT_LENGTH, tmp_buf);
 		AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
@@ -287,7 +312,11 @@ axis2_soap_over_http_sender_send
 		AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
 	}
 	/* TODO we need to set the content type with soap action header for soap12*/
-	if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
+    if (doing_mtom)
+    {
+        content_type = AXIS2_OM_OUTPUT_GET_CONTENT_TYPE(sender_impl->om_output, env);
+    }
+	else if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
 	{
 		content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
         content_type = AXIS2_STRACAT(content_type, ";charset=", env);
@@ -319,7 +348,20 @@ axis2_soap_over_http_sender_send
 						AXIS2_URL_GET_SERVER(url, env));
 		AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
 	}
-	AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(request, env, buffer);
+
+    if (doing_mtom)
+    {
+        axis2_stream_t* stream = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY(request, env);
+        if (stream)
+        {
+            AXIS2_STREAM_WRITE(stream, env, output_stream, output_stream_size);
+        }
+    }
+    else
+    {
+        AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(request, env, buffer);
+    }
+    
 	axis2_soap_over_http_sender_get_timeout_values(sender, env, msg_ctx);
 	AXIS2_HTTP_CLIENT_SET_TIMEOUT(sender_impl->client, env, 
 						sender_impl->so_timeout);

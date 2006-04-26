@@ -137,6 +137,20 @@ axis2_http_simple_request_create
     simple_request_impl->stream = content;
     simple_request_impl->header_group = NULL;
     simple_request_impl->owns_stream = AXIS2_FALSE;
+
+    if (!(simple_request_impl->stream))
+    {
+        simple_request_impl->stream = axis2_stream_create_basic(env);
+        if(NULL == simple_request_impl->stream)
+        {
+            axis2_http_simple_request_free((axis2_http_simple_request_t*)
+                            simple_request_impl, env);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return NULL;
+        }
+        simple_request_impl->owns_stream = AXIS2_TRUE;
+    }
+    
     if(http_hdr_count > 0 && NULL != http_headers)
     {
         int i = 0; 
