@@ -19,14 +19,13 @@
 #include <axis2_string.h>
 #include <axis2_xml_writer.h>
 #include <axis2_om_text.h>
+#include <axis2_soap.h>
 #include <axis2_array_list.h>
 #include <axis2_uuid_gen.h>
+#include <axis2_mime_output.h>
 
 #define AXIS2_DEFAULT_CHAR_SET_ENCODING  "UTF-8"
 /** also defined in axis2_soap.h */
-
-#define _AXIS2_SOAP11_CONTENT_TYPE "text/xml"
-#define _AXIS2_SOAP12_CONTEXT_TYPE "application/soap+xml"
 
 /** max args for om_output_write function */
 #define MAX_ARGS  4
@@ -60,6 +59,10 @@ typedef struct axis2_om_output_impl_t
     axis2_bool_t ignore_xml_declaration;
   
     axis2_array_list_t *binary_node_list;    
+
+    axis2_mime_output_t *mime_output;
+    
+    axis2_char_t *mime_boundry;
 
 }axis2_om_output_impl_t;
 
@@ -139,9 +142,11 @@ axis2_char_t* AXIS2_CALL
 axis2_om_output_get_mime_boundry(axis2_om_output_t *om_output,
                                  axis2_env_t **env);
                                                                         
-axis2_status_t AXIS2_CALL 
+axis2_byte_t* AXIS2_CALL 
 axis2_om_output_flush(axis2_om_output_t *om_output,
-                      axis2_env_t **env);
+                      axis2_env_t **env,
+                      axis2_byte_t **output_stream,
+                      int *output_stream_size);
 
 axis2_char_t* AXIS2_CALL 
 axis2_om_output_get_content_type(axis2_om_output_t *om_output,
@@ -174,28 +179,19 @@ axis2_om_output_create (axis2_env_t **env,
     }
 
     om_output_impl->xml_writer = NULL;
-    om_output_impl->xml_writer = xml_writer;
-   
-    om_output_impl->do_optimize = AXIS2_FALSE;
-    
-    om_output_impl->mime_boundary = NULL;
-    
-    om_output_impl->root_content_id = NULL;
-    
-    om_output_impl->next_content_id = NULL;
-    
-    om_output_impl->next_id = 0;
-    
+    om_output_impl->xml_writer = xml_writer;   
+    om_output_impl->do_optimize = AXIS2_FALSE;    
+    om_output_impl->mime_boundary = NULL;    
+    om_output_impl->root_content_id = NULL;    
+    om_output_impl->next_content_id = NULL;    
+    om_output_impl->next_id = 0;    
     om_output_impl->is_soap11 = AXIS2_TRUE;
-    
     om_output_impl->char_set_encoding = NULL;
-    
     om_output_impl->xml_version = NULL;
-    
     om_output_impl->ignore_xml_declaration = AXIS2_TRUE;
-    
     om_output_impl->binary_node_list = NULL;
-    
+    om_output_impl->mime_output = NULL;
+    om_output_impl->mime_boundry = NULL;
     om_output_impl->om_output.ops = NULL;
     
     om_output_impl->char_set_encoding = AXIS2_STRDUP(
@@ -241,6 +237,9 @@ axis2_om_output_create (axis2_env_t **env,
     om_output_impl->om_output.ops->set_do_optimize =
         axis2_om_output_set_do_optimize;
     
+    om_output_impl->om_output.ops->is_optimized =
+        axis2_om_output_is_optimized;
+    
     om_output_impl->om_output.ops->is_ignore_xml_declaration = 
         axis2_om_output_is_ignore_xml_declaration;
         
@@ -250,7 +249,7 @@ axis2_om_output_create (axis2_env_t **env,
     om_output_impl->om_output.ops->write_xml_version_encoding =
         axis2_om_output_write_xml_version_encoding;
     
-    om_output_impl->om_output.ops->get_next_content_id =                                                          axis2_om_output_get_next_content_id;
+    om_output_impl->om_output.ops->get_next_content_id = axis2_om_output_get_next_content_id;
     
     om_output_impl->om_output.ops->get_content_type =
         axis2_om_output_get_content_type;        
@@ -261,7 +260,9 @@ axis2_om_output_create (axis2_env_t **env,
     om_output_impl->om_output.ops->get_mime_boundry =
         axis2_om_output_get_mime_boundry;
                 
-           
+    om_output_impl->om_output.ops->flush =
+        axis2_om_output_flush;
+
     return &(om_output_impl->om_output);
 }
 
@@ -305,6 +306,13 @@ axis2_om_output_create (axis2_env_t **env,
         AXIS2_XML_WRITER_FREE(om_output_impl->xml_writer, env);
         om_output_impl->xml_writer = NULL;
     }        
+    
+    if (om_output_impl->binary_node_list)
+    {
+        AXIS2_ARRAY_LIST_FREE(om_output_impl->binary_node_list, env);
+        om_output_impl->binary_node_list = NULL;
+    }
+
     if(NULL != om_output->ops)
     {
         AXIS2_FREE((*env)->allocator, om_output->ops);
@@ -451,34 +459,36 @@ axis2_char_t* AXIS2_CALL
 axis2_om_output_get_content_type(axis2_om_output_t *om_output,
                                  axis2_env_t **env)
 {
-    axis2_om_output_impl_t *om_output_impl = NULL;
+    axis2_om_output_impl_t *output_impl = NULL;
     axis2_char_t *soap_content_type = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    om_output_impl = AXIS2_INTF_TO_IMPL(om_output);    
-    if(AXIS2_TRUE == om_output_impl->do_optimize)
+    output_impl = AXIS2_INTF_TO_IMPL(om_output);    
+    if(AXIS2_TRUE == output_impl->do_optimize)
     {
-        if(AXIS2_TRUE == om_output_impl->is_soap11)
+        if(AXIS2_TRUE == output_impl->is_soap11)
         {
-            soap_content_type = _AXIS2_SOAP11_CONTENT_TYPE;
+            soap_content_type = AXIS2_SOAP11_CONTENT_TYPE;
         }
         else
         {
-            soap_content_type = _AXIS2_SOAP12_CONTEXT_TYPE;
+            soap_content_type = AXIS2_SOAP12_CONTENT_TYPE;
         }    
-        /**
-            to be implemented 
-            return ;        
-        */    
+
+        return AXIS2_MIME_OUTPUT_GET_CONTENT_TYPE_FOR_MIME(
+            output_impl->mime_output, 
+            env, output_impl->mime_boundry,
+            output_impl->root_content_id, output_impl->char_set_encoding, 
+            soap_content_type);
     }
     else
     {
-        if(AXIS2_TRUE == om_output_impl->is_soap11)
+        if(AXIS2_TRUE == output_impl->is_soap11)
         {
-            return _AXIS2_SOAP11_CONTENT_TYPE;
+            return AXIS2_SOAP11_CONTENT_TYPE;
         }
         else
         {
-            return _AXIS2_SOAP12_CONTEXT_TYPE;
+            return AXIS2_SOAP12_CONTENT_TYPE;
         }
     }
     return NULL;
@@ -518,7 +528,7 @@ axis2_om_output_get_next_content_id(axis2_om_output_t *om_output,
     axis2_char_t id[256];
     AXIS2_ENV_CHECK(env, NULL);
     
-    om_output_impl = AXIS2_INTF_TO_IMPL(om_output_impl);
+    om_output_impl = AXIS2_INTF_TO_IMPL(om_output);
     
     om_output_impl->next_id++;
     
@@ -777,32 +787,44 @@ axis2_om_output_write_xml_version_encoding(axis2_om_output_t *om_output,
     
 }
 
+axis2_byte_t* AXIS2_CALL 
+axis2_om_output_flush(axis2_om_output_t *om_output,
+                      axis2_env_t **env,
+                      axis2_byte_t **output_stream,
+                      int *output_stream_size)
+{
+    axis2_om_output_impl_t *output_impl = NULL;
+    axis2_char_t *soap_content_type = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    output_impl = AXIS2_INTF_TO_IMPL(om_output);
 
-
-
-/*@TODO Following method method must be implemented*/
-
-/*
-    public void flush() throws XMLStreamException {
-        xmlWriter.flush();
-        String SOAPContentType;
-        if (format.isOptimized()) {
-            if (format.isSOAP11()) {
-                SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
-            } else {
-                SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
-            }
-            MIMEOutputUtils.complete(
-                    outStream,
-                    bufferedSOAPBody,
-                    binaryNodeList,
-                    format.getMimeBoundary(),
-                    format.getRootContentId(),
-                    format.getCharSetEncoding(), SOAPContentType);
+    if (output_impl->do_optimize)
+    {
+        axis2_byte_t* byte_stream = NULL;
+        axis2_char_t *root_content_id = NULL;
+        axis2_char_t *buffer = AXIS2_XML_WRITER_GET_XML(output_impl->xml_writer, env);
+        int stream_size = 0;
+        if (output_impl->is_soap11)
+        {
+            soap_content_type = AXIS2_SOAP11_CONTENT_TYPE;
         }
+        else
+        {
+            soap_content_type = AXIS2_SOAP12_CONTENT_TYPE;
+        }
+        output_impl->mime_output = axis2_mime_output_create(env);
+        output_impl->mime_boundry = axis2_om_output_get_mime_boundry(om_output, env);
+        root_content_id = axis2_om_output_get_root_content_id(om_output, env);
+        AXIS2_MIME_OUTPUT_COMPLETE(output_impl->mime_output, env, &byte_stream, &stream_size,
+            buffer, output_impl->binary_node_list, output_impl->mime_boundry, 
+            output_impl->root_content_id, output_impl->char_set_encoding,
+            soap_content_type); 
+
+        *output_stream = byte_stream;
+        *output_stream_size = stream_size;
+
+        return byte_stream;
     }
-*/
-
-
-
-
+    return NULL;
+}

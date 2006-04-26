@@ -75,11 +75,6 @@ axis2_char_t* AXIS2_CALL
 axis2_om_text_get_localname(axis2_om_text_t *om_text,
                         axis2_env_t **env);
 
-axis2_status_t AXIS2_CALL
-axis2_om_text_set_localname(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
-                        const axis2_char_t *localname);
-
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_content_id(axis2_om_text_t *om_text,
                         axis2_env_t **env);
@@ -92,23 +87,28 @@ axis2_om_text_set_content_id(axis2_om_text_t *om_text,
 axis2_status_t AXIS2_CALL
 axis2_om_text_serialize_start_part(axis2_om_text_t *om_text,
                         axis2_env_t **env,
-                        const axis2_om_output_t *om_output_t);
+                        axis2_om_output_t *om_output_t);
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_serialize_attribute(axis2_om_text_t *om_text,
                         axis2_env_t **env,
-                        const axis2_om_output_t *om_output, 
+                        axis2_om_output_t *om_output, 
                         axis2_om_attribute_t *om_attribute);
                         
 axis2_status_t AXIS2_CALL
 axis2_om_text_serialize_namespace(axis2_om_text_t *om_text,
                         axis2_env_t **env,
                         const axis2_om_namespace_t *om_namespace, 
-                        const axis2_om_output_t *om_output);
+                        axis2_om_output_t *om_output);
 
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_text(axis2_om_text_t *om_text,
                         axis2_env_t **env);
+
+axis2_data_handler_t *AXIS2_CALL
+axis2_om_text_get_data_handler(axis2_om_text_t *om_text,
+                        axis2_env_t **env);
+
 /********************* axis2_om_text_impl_struct ***************/
 
 typedef struct axis2_om_text_impl_t
@@ -116,8 +116,7 @@ typedef struct axis2_om_text_impl_t
     axis2_om_text_t om_text;
     /** Text value */
     axis2_char_t *value;
-    /** The following fields are for MTOM
-        TODO: Implement MTOM support */
+    /** The following fields are for MTOM */
     axis2_char_t *mime_type;
     axis2_bool_t optimize;
     axis2_char_t *localname;
@@ -125,6 +124,7 @@ typedef struct axis2_om_text_impl_t
     axis2_char_t *content_id;
     axis2_om_attribute_t *om_attribute;    
     axis2_om_namespace_t *ns;
+    axis2_data_handler_t *data_handler;
 }axis2_om_text_impl_t;
 
 
@@ -164,20 +164,19 @@ axis2_om_text_create (axis2_env_t **env,
 
     om_text->mime_type = NULL;
     om_text->optimize = AXIS2_FALSE;
-    om_text->localname = NULL;
+    om_text->localname = "Include";
     om_text->is_binary = AXIS2_FALSE;
     om_text->content_id = NULL;
     om_text->om_attribute = NULL;
     om_text->value = NULL;
     om_text->ns = NULL;
+    om_text->data_handler = NULL;
+    om_text->mime_type = NULL;
+
     om_text->ns = axis2_om_namespace_create(env, "http://www.w3.org/2004/08/xop/include", "xop");
 
     if (value)
         om_text->value = (axis2_char_t *) AXIS2_STRDUP(value,env);
-
-    /* om_text->attribute = NULL; */
-    om_text->content_id = NULL;
-    om_text->mime_type = NULL;
 
     axis2_om_node_set_data_element((*node), env, om_text);
     axis2_om_node_set_node_type((*node), env, AXIS2_OM_TEXT);
@@ -206,9 +205,31 @@ axis2_om_text_create (axis2_env_t **env,
     om_text->om_text.ops->serialize = axis2_om_text_serialize;
     om_text->om_text.ops->set_value = axis2_om_text_set_value;
     om_text->om_text.ops->get_value = axis2_om_text_get_value;
+    om_text->om_text.ops->get_data_handler = axis2_om_text_get_data_handler;
+    om_text->om_text.ops->get_content_id = axis2_om_text_get_content_id;
+    
     return &(om_text->om_text);
 }
 
+AXIS2_DECLARE(axis2_om_text_t*)
+axis2_om_text_create_with_data_handler (axis2_env_t **env,
+                      axis2_om_node_t * parent,
+                      axis2_data_handler_t* data_handler,
+                      axis2_om_node_t **node)
+{
+
+    axis2_om_text_impl_t *om_text_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, data_handler, NULL);
+
+    om_text_impl = (axis2_om_text_impl_t*)axis2_om_text_create(env, parent, NULL, node);
+    if (!om_text_impl)
+        return NULL;
+    om_text_impl->optimize = AXIS2_TRUE;
+    om_text_impl->is_binary = AXIS2_TRUE;
+    om_text_impl->data_handler = data_handler;
+    return &(om_text_impl->om_text);
+}
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_free (axis2_om_text_t * om_text,
@@ -228,6 +249,12 @@ axis2_om_text_free (axis2_om_text_t * om_text,
     {
         AXIS2_OM_NAMESPACE_FREE(text_impl->ns, env);
         text_impl->ns = NULL;
+    }
+    
+    if(text_impl->content_id)
+    {
+        AXIS2_FREE((*env)->allocator, text_impl->content_id);
+        text_impl->content_id = NULL;
     }
                             
     if(NULL != om_text->ops)
@@ -256,16 +283,6 @@ axis2_om_text_serialize (axis2_om_text_t *om_text,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
-    /*
-    if (AXIS2_INTF_TO_IMPL(om_text)->value)
-        status = axis2_om_output_write (om_output, env,
-                                        AXIS2_OM_TEXT, 1,
-                                        AXIS2_INTF_TO_IMPL(om_text)->value);
-    return status;
-    */
-    /*@TODO get the xml_writer*/
-    
-    /*xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);*/
 
     if(!axis2_om_text_get_is_binary(om_text, env))
     {
@@ -276,44 +293,29 @@ axis2_om_text_serialize (axis2_om_text_t *om_text,
     }
     else
     {
-        om_output_is_optimized = AXIS2_OM_OUTPUT_IS_OPTIMIZED(om_output, env);
         om_output_xml_writer = AXIS2_OM_OUTPUT_GET_XML_WRITER(om_output, env);
-        if(om_output_is_optimized)
+        if(om_text_impl->optimize)
         {
             if(axis2_om_text_get_content_id(om_text, env) == NULL)
             {
-                om_text_impl->content_id = AXIS2_OM_OUTPUT_GET_NEXT_CONTENT_ID(om_output, env);
+                axis2_char_t *content_id = AXIS2_OM_OUTPUT_GET_NEXT_CONTENT_ID(om_output, env);
+                if (content_id)
+                    om_text_impl->content_id = AXIS2_STRDUP(content_id, env);
             }    
-            om_namespace = axis2_om_namespace_create(env, "" , "");
             attribute_value = AXIS2_STRDUP("cid:", env);
-            AXIS2_STRACAT(attribute_value, axis2_om_text_get_content_id(om_text, env), env);
+            attribute_value = AXIS2_STRACAT(attribute_value, om_text_impl->content_id, env);
             /*send binary as MTOM optimised*/
-            om_text_impl->om_attribute = axis2_om_attribute_create(env, "href", attribute_value, om_namespace);
+            om_text_impl->om_attribute = axis2_om_attribute_create(env, "href", attribute_value, NULL);
             axis2_om_text_serialize_start_part(om_text, env, om_output);
             
             axis2_om_output_write_optimized(om_output, env, om_text);            
             
-            AXIS2_XML_WRITER_WRITE_END_ELEMENT(om_output_xml_writer, env);
-            /*@TODO*/
-            /**
-                // send binary as MTOM optimised
-                this.attribute = new OMAttributeImpl("href",
-                        new OMNamespaceImpl("", ""), "cid:" + getContentID());
-                this.serializeStartpart(omSUCESSOutput);
-                omOutput.writeOptimized(this);
-                omOutput.getXmlStreamWriter().writeEndElement();
-            */
-            
-            
+            axis2_om_output_write (om_output, env, AXIS2_OM_ELEMENT, 0);
         }
         else
         {
-            /*@TODO pls check the corectness*/
             text = axis2_om_text_get_text(om_text, env);
             AXIS2_XML_WRITER_WRITE_CHARACTERS(om_output_xml_writer, env, text);
-            
-           /*omOutput.getXmlStreamWriter().writeCharacters(this.getText());*/ 
-                       
         }
     }
     return status;    
@@ -426,19 +428,6 @@ axis2_om_text_get_localname(axis2_om_text_t *om_text,
     return AXIS2_INTF_TO_IMPL(om_text)->localname;
 }                        
 
-axis2_status_t AXIS2_CALL
-axis2_om_text_set_localname(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
-                        const axis2_char_t *localname)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error , om_text, AXIS2_FAILURE);
-    if(AXIS2_INTF_TO_IMPL(om_text)->localname)
-        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(om_text)->localname);
-    AXIS2_INTF_TO_IMPL(om_text)->localname = (axis2_char_t*)AXIS2_STRDUP(localname,env);
-    return AXIS2_SUCCESS;
-}
-
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_content_id(axis2_om_text_t *om_text,
                         axis2_env_t **env)
@@ -456,146 +445,71 @@ axis2_om_text_set_content_id(axis2_om_text_t *om_text,
     AXIS2_PARAM_CHECK((*env)->error , om_text, AXIS2_FAILURE);
     if(AXIS2_INTF_TO_IMPL(om_text)->content_id)
         AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(om_text)->content_id);
-    AXIS2_INTF_TO_IMPL(om_text)->content_id = (axis2_char_t*)AXIS2_STRDUP(content_id,env);
+    AXIS2_INTF_TO_IMPL(om_text)->content_id = (axis2_char_t*)AXIS2_STRDUP(content_id, env);
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_serialize_start_part(axis2_om_text_t *om_text,
                         axis2_env_t **env,
-                        const axis2_om_output_t *om_output)
+                        axis2_om_output_t *om_output)
 {
     axis2_om_text_impl_t *om_text_impl = NULL;
-    axis2_char_t *namespace_uri = NULL;/*namespace_name */
-    axis2_char_t *writer_prefix = NULL;
+    axis2_char_t *namespace_uri = NULL;
     axis2_char_t *prefix = NULL;
-    axis2_xml_writer_t *xml_writer = NULL;
     axis2_char_t *local_name = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
     local_name = axis2_om_text_get_localname(om_text, env);    
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
-    /*
-    axis2_xml_writer_create_for_memory(axis2_env_t **env,
-                                   axis2_char_t *encoding,
-                                   int is_prefix_default,
-                                   int compression);    
-    */
+    
     if (om_text_impl->ns != NULL)
     {
         namespace_uri = AXIS2_OM_NAMESPACE_GET_URI(om_text_impl->ns, env);
-        if (namespace_uri != NULL) {
-            writer_prefix = AXIS2_XML_WRITER_GET_PREFIX(xml_writer, env, namespace_uri);
+        if (namespace_uri != NULL) 
+        {
             prefix = AXIS2_OM_NAMESPACE_GET_PREFIX(om_text_impl->ns, env);
 
-            if (writer_prefix != NULL) 
+            if(prefix != NULL)
             {
-                AXIS2_XML_WRITER_WRITE_START_ELEMENT(xml_writer, env, local_name);
-                /***writer.writeStartElement(nameSpaceName, this.getLocalName());*/
-             } else {
-                /*@TODO pls review the following code 04-03-2006*/
-                 if(prefix != NULL)
-                 {
-                     AXIS2_XML_WRITER_WRITE_START_ELEMENT_WITH_NAMESPACE(xml_writer, env, local_name, namespace_uri);
-                     AXIS2_XML_WRITER_SET_PREFIX(xml_writer, env, prefix, namespace_uri);  
-                 }
-                 else
-                 {
-                         AXIS2_XML_WRITER_WRITE_START_ELEMENT_WITH_NAMESPACE(xml_writer, env, local_name, namespace_uri);
-                         AXIS2_XML_WRITER_WRITE_DEFAULT_NAMESPACE(xml_writer, env, namespace_uri);
-                         /*@TODO writer.setDefaultNamespace(nameSpaceName);*/   
-                 }
-                 /*        if (prefix != null) {
-                            writer.writeStartElement(prefix, this.getLocalName(),
-                                    nameSpaceName);
-                            //TODO FIX ME
-                            //writer.writeNamespace(prefix, nameSpaceName);
-                            writer.setPrefix(prefix, nameSpaceName);
-                        } else {
-                            writer.writeStartElement(nameSpaceName, this
-                                    .getLocalName());
-                            writer.writeDefaultNamespace(nameSpaceName);
-                            writer.setDefaultNamespace(nameSpaceName);
-                        }
-                */                
-             }            
+                axis2_om_output_write (om_output, env, AXIS2_OM_ELEMENT, 3,
+                            local_name, namespace_uri, prefix);
+            }
+            else
+            {
+                axis2_om_output_write (om_output, env, AXIS2_OM_ELEMENT, 2,
+                            local_name, namespace_uri);
+            }
         }
         else
         {
-            AXIS2_XML_WRITER_WRITE_START_ELEMENT(xml_writer, env, local_name);
-            /*writer.writeStartElement(this.getLocalName());*/
+            axis2_om_output_write (om_output, env, AXIS2_OM_ELEMENT, 1,
+                            local_name);
         }            
     }
     else
     {
-        AXIS2_XML_WRITER_WRITE_START_ELEMENT(xml_writer, env, local_name);
-        /*writer.writeStartElement(this.getLocalName());*/
+        axis2_om_output_write (om_output, env, AXIS2_OM_TEXT, 1,
+                            local_name);
     }
-    /**
-        // add the elements attribute "href"
-        serializeAttribute(this.attribute, omOutput);
-        // add the namespace
-        serializeNamespace(this.ns, omOutput);
-    */    
-    axis2_om_text_serialize_attribute(om_text, env, om_output, om_text_impl->om_attribute);
-    axis2_om_text_serialize_namespace(om_text, env, om_text_impl->ns, om_output);
+    if (om_text_impl->om_attribute)
+        AXIS2_OM_ATTRIBUTE_SERIALIZE(om_text_impl->om_attribute, env, om_output);
+    if (om_text_impl->ns)
+        AXIS2_OM_NAMESPACE_SERIALIZE(om_text_impl->ns, env, om_output);
     
     return AXIS2_SUCCESS;
 }
 
-
-
-/**
-    private void serializeStartpart(OMOutputImpl omOutput)
-            throws XMLStreamException {
-        if (this.ns != null) {
-            nameSpaceName = this.ns.getName();
-            writer_prefix = writer.getPrefix(nameSpaceName);
-            prefix = this.ns.getPrefix();
-            if (nameSpaceName != null) {
-                if (writer_prefix != null) {
-                    writer
-                            .writeStartElement(nameSpaceName, this
-                                    .getLocalName());
-                } else {
-                    if (prefix != null) {
-                        writer.writeStartElement(prefix, this.getLocalName(),
-                                nameSpaceName);
-                        //TODO FIX ME
-                        //writer.writeNamespace(prefix, nameSpaceName);
-                        writer.setPrefix(prefix, nameSpaceName);
-                    } else {
-                        writer.writeStartElement(nameSpaceName, this
-                                .getLocalName());
-                        writer.writeDefaultNamespace(nameSpaceName);
-                        writer.setDefaultNamespace(nameSpaceName);
-                    }
-                }
-            } else {
-                writer.writeStartElement(this.getLocalName());
-            }
-        } else {
-            writer.writeStartElement(this.getLocalName());
-        }
-        // add the elements attribute "href"
-        serializeAttribute(this.attribute, omOutput);
-        // add the namespace
-        serializeNamespace(this.ns, omOutput);
-    }
-
-
-*/
 axis2_status_t AXIS2_CALL
 axis2_om_text_serialize_attribute(axis2_om_text_t *om_text,
                         axis2_env_t **env,
-                        const axis2_om_output_t *om_output, 
+                        axis2_om_output_t *om_output, 
                         axis2_om_attribute_t *om_attribute)
 {
     axis2_xml_writer_t *xml_writer = NULL;
     axis2_om_namespace_t *om_namespace = NULL;
     
     axis2_om_text_impl_t *om_text_impl = NULL;
-    axis2_char_t *namespace_uri = NULL;/*namespace_name */
+    axis2_char_t *namespace_uri = NULL;
     axis2_char_t *prefix = NULL;
     axis2_char_t *attribute_local_name = NULL;
     axis2_char_t *attribute_value = NULL;
@@ -627,50 +541,15 @@ axis2_om_text_serialize_attribute(axis2_om_text_t *om_text,
     return AXIS2_SUCCESS;    
 }
 
-/**
-    static void serializeAttribute(OMAttribute attr, OMOutputImpl omOutput)
-            throws XMLStreamException {
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
-        // first check whether the attribute is associated with a namespace
-        OMNamespace ns = attr.getNamespace();
-        String prefix;
-        String namespaceName;
-        if (ns != null) {
-            // add the prefix if it's availble
-            prefix = ns.getPrefix();
-            namespaceName = ns.getName();
-            if (prefix != null) {
-                writer.writeAttribute(prefix, namespaceName, attr
-                        .getLocalName(), attr.getAttributeValue());
-            } else {
-                writer.writeAttribute(namespaceName, attr.getLocalName(), attr
-                        .getAttributeValue());
-            }
-        } else {
-            writer.writeAttribute(attr.getLocalName(), attr.getAttributeValue());
-        }
-    }
-     */
-     
-    /*static void serializeNamespace(OMNamespace namespace, OMOutputImpl omOutput)
-            throws XMLStreamException {
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
-        if (namespace != null) {
-            String uri = namespace.getName();
-            String ns_prefix = namespace.getPrefix();
-            writer.writeNamespace(ns_prefix, namespace.getName());
-            writer.setPrefix(ns_prefix, uri);
-        }
-    }*/     
 axis2_status_t AXIS2_CALL
 axis2_om_text_serialize_namespace(axis2_om_text_t *om_text,
                         axis2_env_t **env,
                         const axis2_om_namespace_t *om_namespace, 
-                        const axis2_om_output_t *om_output)
+                        axis2_om_output_t *om_output)
 {
     axis2_xml_writer_t *xml_writer = NULL;
     axis2_om_text_impl_t *om_text_impl = NULL;
-    axis2_char_t *namespace_uri = NULL;/*namespace_name */
+    axis2_char_t *namespace_uri = NULL;
     axis2_char_t *namespace_prefix = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -689,35 +568,6 @@ axis2_om_text_serialize_namespace(axis2_om_text_t *om_text,
     return AXIS2_SUCCESS;    
 }
 
-
-/*@TODO following method must be implemented*/
-/**    public String getText() throws OMException {
-        if (this.value != null) {
-            return this.value;
-        } else {
-            try {
-                InputStream inStream;
-                inStream = this.getInputStream();
-                byte[] data;
-                StringBuffer text = new StringBuffer();
-                do {
-                	data = new byte[1024];
-                	int len;
-                	while((len = inStream.read(data)) > 0) {
-                		byte[] temp = new byte[len];
-                		System.arraycopy(data,0,temp,0,len);
-                		text.append(Base64.encode(temp));
-                	}
-
-                } while (inStream.available() > 0);
-                
-                return text.toString();
-            } catch (Exception e) {
-                throw new OMException(e);
-            }
-        }
-    }
-    */
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_text(axis2_om_text_t *om_text,
                         axis2_env_t **env)
@@ -735,4 +585,12 @@ axis2_om_text_get_text(axis2_om_text_t *om_text,
         
     }
     return om_text_impl->value;    
+}
+
+axis2_data_handler_t *AXIS2_CALL
+axis2_om_text_get_data_handler(axis2_om_text_t *om_text,
+                        axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env,NULL);
+    return AXIS2_INTF_TO_IMPL(om_text)->data_handler;
 }
