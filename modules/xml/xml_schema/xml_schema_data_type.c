@@ -69,10 +69,14 @@ axis2_xml_schema_data_type_create(axis2_env_t **env)
         return NULL;
     }
 
-    data_type_impl->data_type.ops->free = axis2_xml_schema_data_type_free;
-    data_type_impl->data_type.ops->parse_value = axis2_xml_schema_data_type_parse_value;
-    data_type_impl->data_type.ops->value_type = axis2_xml_schema_data_type_value_type;
-    data_type_impl->data_type.ops->tokenized_type = axis2_xml_schema_data_type_tokenized_type;
+    data_type_impl->data_type.ops->free = 
+        axis2_xml_schema_data_type_free;
+    data_type_impl->data_type.ops->parse_value = 
+        axis2_xml_schema_data_type_parse_value;
+    data_type_impl->data_type.ops->value_type = 
+        axis2_xml_schema_data_type_value_type;
+    data_type_impl->data_type.ops->tokenized_type = 
+        axis2_xml_schema_data_type_tokenized_type;
 
     return &(data_type_impl->data_type);
 }
@@ -86,7 +90,7 @@ axis2_xml_schema_data_type_free(void *data_type,
 
     data_type_impl = AXIS2_INTF_TO_IMPL(data_type);
 
-    if(data_type_impl->data_type.ops)
+    if(NULL != data_type_impl->data_type.ops)
     {
         AXIS2_FREE((*env)->allocator ,data_type_impl->data_type.ops);
         data_type_impl->data_type.ops = NULL;

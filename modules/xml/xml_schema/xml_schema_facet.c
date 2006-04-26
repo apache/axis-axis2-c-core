@@ -20,6 +20,8 @@
 
 typedef struct axis2_xml_schema_facet_impl 
                 axis2_xml_schema_facet_impl_t;
+                
+               
 
 /** 
  * @brief Other Extension Struct Impl
@@ -34,6 +36,8 @@ struct axis2_xml_schema_facet_impl
     axis2_hash_t *methods;
     
     axis2_bool_t fixed;
+    
+    int facet_type;
     
     void *value;
 };
@@ -68,6 +72,15 @@ axis2_status_t AXIS2_CALL
 axis2_xml_schema_facet_set_value(void *facet,
                                  axis2_env_t **env,
                                  void *value);
+                                 
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_facet_set_facet_type(void *facet,
+                                      axis2_env_t **env,
+                                      int facet_type);
+                                      
+int AXIS2_CALL
+axis2_xml_schema_facet_get_facet_type(void *facet,
+                                      axis2_env_t **env);                                                                       
 
 /********************** end function prototypes *******************************/
 
@@ -89,6 +102,7 @@ axis2_xml_schema_facet_create(axis2_env_t **env,
 
     facet_impl->annotated = NULL;
     facet_impl->facet.ops = NULL;
+    facet_impl->facet_type = AXIS2_XML_SCHEMA_FACET;
     facet_impl->facet.base.ops = NULL;
     facet_impl->methods = NULL;
     facet_impl->fixed = fixed;
@@ -286,3 +300,25 @@ axis2_xml_schema_facet_construct (axis2_env_t **env,
     
     return NULL;
 }
+
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_facet_set_facet_type(void *facet,
+                                      axis2_env_t **env,
+                                      int facet_type)
+{
+    axis2_xml_schema_facet_impl_t *facet_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    facet_impl = AXIS2_INTF_TO_IMPL(facet);
+    facet_impl->facet_type = facet_type;
+    return AXIS2_SUCCESS;
+}                                      
+                                      
+int AXIS2_CALL
+axis2_xml_schema_facet_get_facet_type(void *facet,
+                                      axis2_env_t **env)
+{
+    axis2_xml_schema_facet_impl_t *facet_impl = NULL;
+    AXIS2_ENV_CHECK(env, -1);
+    facet_impl = AXIS2_INTF_TO_IMPL(facet);
+    return facet_impl->facet_type;
+}                                      

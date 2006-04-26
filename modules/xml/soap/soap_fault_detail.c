@@ -63,6 +63,7 @@ AXIS2_DECLARE(axis2_soap_fault_detail_t *)
 axis2_soap_fault_detail_create(axis2_env_t **env)
 {
     axis2_soap_fault_detail_impl_t *fault_detail_impl = NULL;
+    
     AXIS2_ENV_CHECK(env, NULL);
     
     fault_detail_impl = (axis2_soap_fault_detail_impl_t*)AXIS2_MALLOC(
@@ -115,6 +116,7 @@ axis2_soap_fault_detail_create_with_parent
     axis2_om_node_t *parent_node = NULL;
     axis2_om_element_t *parent_ele = NULL;
     axis2_om_namespace_t *parent_ns = NULL;
+    int soap_version = -1;
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, fault, NULL);
@@ -133,9 +135,11 @@ axis2_soap_fault_detail_create_with_parent
                         parent_node, env);
     if(!parent_ele)
         return NULL;
-    
-    parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
-    
+    soap_version = axis2_soap_fault_get_soap_version(fault, env);
+    if(soap_version == AXIS2_SOAP12)
+    {
+        parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+    }
     this_ele = axis2_om_element_create(env, 
                                        parent_node,                             
                                        AXIS2_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME,

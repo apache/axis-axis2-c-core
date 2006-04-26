@@ -68,6 +68,15 @@ axis2_soap_fault_set_builder(axis2_soap_fault_t *fault,
                              axis2_env_t **env,
                              struct axis2_soap_builder *builder);
     
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_set_soap_version(axis2_soap_fault_t *fault,
+                                  axis2_env_t **env,
+                                  int soap_version);
+                                  
+int AXIS2_CALL
+axis2_soap_fault_get_soap_version(axis2_soap_fault_t *fault,
+                                  axis2_env_t **env);
+    
     
 AXIS2_DECLARE(axis2_soap_fault_t *)
 axis2_soap_fault_create(axis2_env_t **env);    

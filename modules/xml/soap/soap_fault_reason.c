@@ -33,6 +33,8 @@ typedef struct axis2_soap_fault_reason_impl_t
     /* pointer to soap builder */
     axis2_soap_builder_t *soap_builder;
     
+    int soap_version;
+    
 }axis2_soap_fault_reason_impl_t;
 
 /*************************** Macro ********************************************/
@@ -163,9 +165,12 @@ axis2_soap_fault_reason_create_with_parent(axis2_env_t **env,
     {
         return NULL;
     }
-    
-    parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
-    
+    fault_reason_impl->soap_version = 
+        axis2_soap_fault_get_soap_version(fault, env);
+    if(fault_reason_impl->soap_version == AXIS2_SOAP12)
+    {
+        parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+    }
     this_ele = axis2_om_element_create(env, 
                                        parent_node,                             
                                        AXIS2_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME,
@@ -224,33 +229,7 @@ axis2_soap_fault_reason_free(axis2_soap_fault_reason_t *fault_reason,
     
     return AXIS2_SUCCESS;
 }
-
-axis2_status_t AXIS2_CALL 
-axis2_soap_fault_reason_set_soap_fault_text
-                                (axis2_soap_fault_reason_t *fault_reason,
-                                 axis2_env_t **env,
-                                 axis2_soap_fault_text_t *soap_text)
-{
-    /*
-    axis2_soap_fault_reason_impl_t *fault_reason_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, soap_text, AXIS2_FAILURE);
-    fault_reason_impl = AXIS2_INTF_TO_IMPL(fault_reason);
-    if(!(fault_reason_impl->text))
-    {
-        fault_reason_impl->text = soap_text;
-        return AXIS2_SUCCESS;
-    }
-    else
-    {
-        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
-            " error trying to set soap fault text twice");
-        
-    }
-    */
-    return AXIS2_FAILURE;
-}
-                                
+                       
 axis2_soap_fault_text_t* AXIS2_CALL 
 axis2_soap_fault_reason_get_soap_fault_text
                                 (axis2_soap_fault_reason_t *fault_reason,
@@ -481,3 +460,25 @@ axis2_soap_fault_reason_lang_exists(axis2_soap_fault_reason_t *fault_reason,
     }                    
     return AXIS2_FALSE;
 }                                                                 
+/** internal function */
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_reason_set_soap_version(axis2_soap_fault_reason_t *fault_reason,
+                                         axis2_env_t **env,
+                                         int soap_version)
+{
+    axis2_soap_fault_reason_impl_t *fault_reason_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    fault_reason_impl = AXIS2_INTF_TO_IMPL(fault_reason);
+    fault_reason_impl->soap_version = soap_version;
+    return AXIS2_SUCCESS;
+}                                         
+
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_reason_get_soap_version(axis2_soap_fault_reason_t *fault_reason,
+                                         axis2_env_t **env)
+{
+    axis2_soap_fault_reason_impl_t *fault_reason_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    fault_reason_impl = AXIS2_INTF_TO_IMPL(fault_reason);
+    return fault_reason_impl->soap_version;
+}                                         

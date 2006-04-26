@@ -50,6 +50,8 @@ typedef struct axis2_soap_fault_impl_t
     /* reference to soap builder */
     axis2_soap_builder_t *soap_builder;
     
+    int soap_version;
+    
 }axis2_soap_fault_impl_t;
 
 /************************* Macro **********************************************/
@@ -196,6 +198,8 @@ axis2_soap_fault_create_with_parent(axis2_env_t **env,
         AXIS2_FREE((*env)->allocator, fault_impl);
         return NULL;
     }
+    fault_impl->soap_version = 
+        AXIS2_SOAP_BODY_GET_SOAP_VERSION(body, env);
     
     parent_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
                         parent_node, env);
@@ -757,3 +761,25 @@ axis2_soap_fault_create_default_fault(axis2_env_t **env,
     
     return soap_fault;
 }
+
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_set_soap_version(axis2_soap_fault_t *fault,
+                                  axis2_env_t **env,
+                                  int soap_version)
+{
+    axis2_soap_fault_impl_t *fault_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    fault_impl = AXIS2_INTF_TO_IMPL(fault);
+    fault_impl->soap_version = soap_version;
+    return AXIS2_SUCCESS;
+}                                  
+                                  
+int AXIS2_CALL
+axis2_soap_fault_get_soap_version(axis2_soap_fault_t *fault,
+                                  axis2_env_t **env)
+{
+    axis2_soap_fault_impl_t *fault_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    fault_impl = AXIS2_INTF_TO_IMPL(fault);
+    return fault_impl->soap_version;
+}                                  

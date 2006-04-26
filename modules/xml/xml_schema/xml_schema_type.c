@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+ 
+ 
+#include <axis2_xml_schema_constants.h>
 #include <axis2_xml_schema_type.h>
 #include <axis2_xml_schema_data_type.h>
 #include <axis2_xml_schema_derivation_method.h>
 #include <axis2_xml_schema.h>
+
 
 typedef struct axis2_xml_schema_type_impl 
                 axis2_xml_schema_type_impl_t;
@@ -29,15 +32,26 @@ typedef struct axis2_xml_schema_type_impl
 struct axis2_xml_schema_type_impl
 {
     axis2_xml_schema_type_t type;
+    /** parent type */
+    void *base_schema_type;
+    
     axis2_xml_schema_annotated_t *annotated;
+    
     axis2_hash_t *methods;
+    
     axis2_xml_schema_data_type_t *data_type;
+    
     axis2_xml_schema_derivation_method_t *derive_by;
+    
     axis2_xml_schema_derivation_method_t *final_derivation;
+    
     axis2_xml_schema_derivation_method_t *final_resolved;
+    
     axis2_bool_t is_mixed;
     /* Name of the type */
+    
     axis2_char_t *name;
+    
     axis2_xml_schema_t *schema;
 };
 
@@ -177,7 +191,12 @@ axis2_xml_schema_type_create(axis2_env_t **env,
     }
 
     type_impl->final_derivation = axis2_xml_schema_derivation_method_create(env, 
-            "None");
+            "none");
+    if(!(type_impl->final_derivation))
+    {
+        axis2_xml_schema_type_free(&(type_impl->type), env);
+        return NULL;
+    }            
     
     axis2_hash_set(type_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_type_free);
@@ -323,8 +342,10 @@ void *AXIS2_CALL
 axis2_xml_schema_type_get_base_schema_type(void *type,
                                             axis2_env_t **env)
 {
+    axis2_xml_schema_type_impl_t *type_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    return NULL;
+    type_impl = AXIS2_INTF_TO_IMPL(type);
+    return type_impl->base_schema_type;
 }
 
 axis2_xml_schema_data_type_t *AXIS2_CALL
@@ -339,16 +360,20 @@ axis2_xml_schema_derivation_method_t *AXIS2_CALL
 axis2_xml_schema_type_get_derive_by(void *type,
                                     axis2_env_t **env)
 {
+    axis2_xml_schema_type_impl_t *type_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    return NULL;
+    type_impl = AXIS2_INTF_TO_IMPL(type);
+    return type_impl->derive_by;
 }
 
 axis2_xml_schema_derivation_method_t *AXIS2_CALL
 axis2_xml_schema_type_get_final(void *type,
                                 axis2_env_t **env)
 {
+    axis2_xml_schema_type_impl_t *type_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    return NULL;
+    type_impl = AXIS2_INTF_TO_IMPL(type);
+    return type_impl->final_derivation;
 }
 
 axis2_status_t AXIS2_CALL
@@ -356,8 +381,17 @@ axis2_xml_schema_type_set_final(void *type,
                             axis2_env_t **env,
                             axis2_xml_schema_derivation_method_t *final_derivation)
 {
+    axis2_xml_schema_type_impl_t *type_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return AXIS2_SUCCESS;
+    AXIS2_PARAM_CHECK((*env)->error, final_derivation, AXIS2_FAILURE);
+    type_impl = AXIS2_INTF_TO_IMPL(type);
+    if(NULL != type_impl->final_derivation)
+    {
+        AXIS2_XML_SCHEMA_DERIVATION_METHOD_FREE(type_impl->final_derivation, env);
+        type_impl->final_derivation = NULL;
+    }
+    type_impl->final_derivation = final_derivation;
+    return AXIS2_SUCCESS;    
 }
 
 axis2_xml_schema_derivation_method_t *AXIS2_CALL

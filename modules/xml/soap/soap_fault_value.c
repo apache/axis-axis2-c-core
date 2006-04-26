@@ -109,9 +109,10 @@ axis2_soap_fault_value_create_with_subcode(axis2_env_t **env,
     
     axis2_om_element_t *this_ele = NULL;
     axis2_om_node_t *this_node = NULL;
-    
+    axis2_om_namespace_t *parent_ns = NULL;
     axis2_om_node_t *parent_node = NULL;
     axis2_om_element_t *parent_ele = NULL;
+    int soap_version = -1;
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, parent, NULL);
@@ -142,10 +143,17 @@ axis2_soap_fault_value_create_with_subcode(axis2_env_t **env,
         AXIS2_SOAP_FAULT_VALUE_FREE(fault_value, env);
         return NULL;
     }
+    soap_version = 
+        axis2_soap_fault_sub_code_get_soap_version(parent, env);
+    if(soap_version == AXIS2_SOAP12)
+    {
+        parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+    }
+    
     this_ele = axis2_om_element_create(env, 
                     parent_node,
                     AXIS2_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME, 
-                    AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node),
+                    parent_ns,
                     &this_node);
     if(!this_ele)
     {
@@ -166,10 +174,10 @@ axis2_soap_fault_value_create_with_code(axis2_env_t **env,
 {
     axis2_soap_fault_value_impl_t *fault_val_impl = NULL;
     axis2_soap_fault_value_t *fault_value = NULL;
-    
+    int soap_version = -1;
     axis2_om_element_t *this_ele = NULL;
     axis2_om_node_t *this_node = NULL;
-    
+    axis2_om_namespace_t *parent_ns = NULL;
     axis2_om_node_t *parent_node = NULL;
     axis2_om_element_t *parent_ele = NULL;
     
@@ -198,12 +206,15 @@ axis2_soap_fault_value_create_with_code(axis2_env_t **env,
         AXIS2_SOAP_FAULT_VALUE_FREE(fault_value, env);
         return NULL;
     }
-    
+    soap_version = axis2_soap_fault_code_get_soap_version(parent, env);
+    if(soap_version == AXIS2_SOAP12)
+    {
+        parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+    }
     this_ele = axis2_om_element_create(env, 
-                    parent_node,
-                    AXIS2_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME, 
-                    AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node),
-                    &this_node);
+                parent_node, AXIS2_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME, 
+                parent_ns, &this_node);
+                
     if(!this_ele)
     {
         AXIS2_SOAP_FAULT_VALUE_FREE(fault_value, env);

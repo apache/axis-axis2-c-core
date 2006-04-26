@@ -151,8 +151,9 @@ struct axis2_soap_builder;
        */
         axis2_om_node_t* (AXIS2_CALL *
 		get_base_node)(axis2_soap_fault_t *fault,
-                       axis2_env_t **env);  
-                                                     
+                       axis2_env_t **env);
+                       
+                                 
     };
 
   /**

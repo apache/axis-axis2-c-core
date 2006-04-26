@@ -34,6 +34,8 @@
     
     axis2_soap_builder_t *soap_builder;
     
+    int soap_version;
+    
  }axis2_soap_body_impl_t;
  
  /****************** Macro ****************************************************/
@@ -74,6 +76,12 @@ axis2_status_t AXIS2_CALL
 axis2_soap_body_add_child(axis2_soap_body_t *body,
                           axis2_env_t **env,
                           axis2_om_node_t *child);
+                          
+int AXIS2_CALL
+axis2_soap_body_get_soap_version(axis2_soap_body_t *body,
+                                 axis2_env_t **env);                          
+                          
+                          
                           
 /*************** function implementations *************************************/
 axis2_soap_body_t* AXIS2_CALL
@@ -125,6 +133,9 @@ axis2_soap_body_create(axis2_env_t **env)
     
     body_impl->soap_body.ops->add_child = 
         axis2_soap_body_add_child;
+        
+    body_impl->soap_body.ops->get_soap_version =
+        axis2_soap_body_get_soap_version;        
         
     return &(body_impl->soap_body);
     
@@ -422,3 +433,31 @@ axis2_soap_body_add_child(axis2_soap_body_t *body,
     }
     return AXIS2_FAILURE;
 }                          
+int AXIS2_CALL
+axis2_soap_body_get_soap_version(axis2_soap_body_t *body,
+                                 axis2_env_t **env)
+{
+    axis2_soap_body_impl_t *body_impl = NULL;
+    axis2_om_element_t *body_ele = NULL;
+    axis2_om_namespace_t *om_ns = NULL;
+    axis2_char_t *uri           = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    body_impl = AXIS2_INTF_TO_IMPL(body);
+    if(!body_impl->om_ele_node)
+        return AXIS2_FAILURE;
+    body_ele = AXIS2_OM_NODE_GET_DATA_ELEMENT(body_impl->om_ele_node, env);
+    if(!body_ele)
+        return AXIS2_FAILURE;
+    om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(body_ele, env, body_impl->om_ele_node);
+    if(!om_ns)
+        return AXIS2_FAILURE;
+    uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
+    if(NULL != uri)
+    {
+        if(AXIS2_STRCMP(uri, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+            return AXIS2_SOAP11;
+        else if(AXIS2_STRCMP(uri, AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+            return AXIS2_SOAP12;
+    }                    
+    return AXIS2_FAILURE;
+}                                 

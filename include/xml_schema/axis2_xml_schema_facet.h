@@ -33,14 +33,32 @@
   * @ingroup axis2_xml_schema
   * @{
   */
-
-typedef struct axis2_xml_schema_facet axis2_xml_schema_facet_t;
-typedef struct axis2_xml_schema_facet_ops axis2_xml_schema_facet_ops_t;
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+typedef struct axis2_xml_schema_facet axis2_xml_schema_facet_t;
+typedef struct axis2_xml_schema_facet_ops axis2_xml_schema_facet_ops_t;
+
+typedef enum axis2_xml_schema_facet_type
+{
+    AXIS2_XML_SCHEMA_FACET = 0,
+    AXIS2_XML_SCHEMA_ENUMARATION_FACET,
+    AXIS2_XML_SCHEMA_FRACTION_DIGITS_FACET,
+    AXIS2_XML_SCHEMA_LENGTH_FACET,
+    AXIS2_XML_SCHEMA_MAX_EXCLUSIVE_FACET,
+    AXIS2_XML_SCHEMA_MAX_INCLUSIVE_FACET,
+    AXIS2_XML_SCHEMA_MAX_LENGTH_FACET,
+    AXIS2_XML_SCHEMA_MIN_EXCLUSIVE_FACET,
+    AXIS2_XML_SCHEMA_MIN_INCLUSIVE_FACET,
+    AXIS2_XML_SCHEMA_MIN_LENGTH_FACET,
+    AXIS2_XML_SCHEMA_NUMERAIC_FACET,
+    AXIS2_XML_SCHEMA_PATTERN_FACET,
+    AXIS2_XML_SCHEMA_TATAL_DIGITS_FACET,
+    AXIS2_XML_SCHEMA_WHITE_SPACE_FACET
+    
+}axis2_xml_schema_facet_type_t; 
 
 struct axis2_xml_schema_facet_ops
 {
@@ -73,7 +91,16 @@ struct axis2_xml_schema_facet_ops
     set_value)(void *facet,
                     axis2_env_t **env,
                     void *value);
-
+    
+    int (AXIS2_CALL *
+    get_facet_type)(void *facet,
+                    axis2_env_t **env);
+                    
+    axis2_status_t (AXIS2_CALL *
+    set_facet_type)(void *facet,
+                    axis2_env_t **env,
+                    int facet_type);                    
+    
 };
 
 struct axis2_xml_schema_facet
@@ -128,6 +155,14 @@ axis2_xml_schema_facet_construct(axis2_env_t **env,
 #define AXIS2_XML_SCHEMA_FACET_SET_VALUE(facet, env, value) \
 		(((axis2_xml_schema_facet_t *) facet)->ops->\
             set_value(facet, env, value))
+            
+#define AXIS2_XML_SCHEMA_FACET_SET_FACET_TYPE(facet, env, facet_type) \
+        (((axis2_xml_schema_facet_t *) facet)->ops->\
+            set_facet_type(facet, env, facet_type))
+            
+#define AXIS2_XML_SCHEMA_FACET_GET_FACET_TYPE(facet, env) \
+        (((axis2_xml_schema_facet_t *) facet)->ops->\
+            get_facet_type(facet, env))                        
 
 /** @} */
 #ifdef __cplusplus

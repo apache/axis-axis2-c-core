@@ -98,7 +98,7 @@ extern "C"
 #define XSD_ID "URI_2001_SCHEMA_XSD|ID"
 #define XSD_SCHEMA "URI_2001_SCHEMA_XSD|schema"
 
-/************End Constants  --  start block constants*****************************/	
+
 
 #define AXIS2_XML_SCHEMA_CONST_ALL "all"
 #define AXIS2_XML_SCHEMA_CONST_NONE "none"

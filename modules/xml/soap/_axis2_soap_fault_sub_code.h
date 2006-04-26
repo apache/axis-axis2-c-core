@@ -60,6 +60,18 @@ axis2_soap_fault_sub_code_set_builder(
                                 axis2_soap_fault_sub_code_t *fault_sub_code,
                                 axis2_env_t **env,
                                 struct axis2_soap_builder *builder);
+                                
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_sub_code_set_soap_version(
+                axis2_soap_fault_sub_code_t *fault_sub_code,
+                axis2_env_t **env,
+                int soap_version);
+                
+int AXIS2_CALL
+axis2_soap_fault_sub_code_get_soap_version
+                (axis2_soap_fault_sub_code_t *fault_sub_code,
+                 axis2_env_t **env);
+                
                                     
 AXIS2_DECLARE(axis2_soap_fault_sub_code_t *)
 axis2_soap_fault_sub_code_create(axis2_env_t **env);

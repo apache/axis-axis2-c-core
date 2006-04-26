@@ -109,6 +109,7 @@ axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
 {
     axis2_soap_fault_role_impl_t *fault_role_impl = NULL;
     axis2_soap_fault_role_t *fault_role = NULL;
+    int soap_version = -1;
     
     axis2_om_element_t *this_ele = NULL;
     axis2_om_node_t *this_node = NULL;
@@ -141,14 +142,14 @@ axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
         AXIS2_SOAP_FAULT_ROLE_FREE(fault_role, env);
         return NULL;
     }
-    
-    parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
-       
+    soap_version = axis2_soap_fault_get_soap_version(fault, env);
+    if(soap_version == AXIS2_SOAP12)
+    {
+        parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+    }       
     this_ele = axis2_om_element_create(env, 
-                                       parent_node,                             
-                                       AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME,
-                                       parent_ns,
-                                       &this_node);
+                    parent_node, AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME,
+                    parent_ns, &this_node);
     if(!this_ele)
     {
         AXIS2_SOAP_FAULT_ROLE_FREE(fault_role, env);

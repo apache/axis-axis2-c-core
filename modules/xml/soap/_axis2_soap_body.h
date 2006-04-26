@@ -48,8 +48,8 @@ axis2_soap_body_set_builder(axis2_soap_body_t *body,
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_set_fault(axis2_soap_body_t *body,
                           axis2_env_t **env,
-                          struct axis2_soap_fault *soap_fault);    
-    
+                          struct axis2_soap_fault *soap_fault);
+                          
 AXIS2_DECLARE(axis2_soap_body_t *)
 axis2_soap_body_create(axis2_env_t **env);     
 /** @} */

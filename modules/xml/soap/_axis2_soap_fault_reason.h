@@ -55,7 +55,15 @@ axis2_soap_fault_reason_set_soap_fault_text
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  axis2_env_t **env,
                                  struct axis2_soap_fault_text *soap_text);
+                                 
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_reason_set_soap_version(axis2_soap_fault_reason_t *fault_reason,
+                                         axis2_env_t **env,
+                                         int soap_version);
 
+axis2_status_t AXIS2_CALL
+axis2_soap_fault_reason_get_soap_version(axis2_soap_fault_reason_t *fault_reason,
+                                         axis2_env_t **env);                                         
 AXIS2_DECLARE(axis2_soap_fault_reason_t *)
 axis2_soap_fault_reason_create(axis2_env_t **env);
 
