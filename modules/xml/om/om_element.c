@@ -1073,10 +1073,10 @@ axis2_om_element_get_namespace(axis2_om_element_t *om_element,
     }
     else
     {   /* TODO need to change get_namespace and get_qname methods so
-            that default namespace is handled properly
+            that default namespace is handled properly */
         ns = axis2_om_element_get_default_namespace(
-                om_element, env, element_node);
-        */                
+                om_element, env, ele_node);
+                       
     }
     return ns;
 }                               
