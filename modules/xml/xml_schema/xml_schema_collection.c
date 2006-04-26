@@ -343,7 +343,7 @@ axis2_xml_schema_t *AXIS2_CALL
 axis2_xml_schema_collection_read_a_reader_and_validation_event_handler(
                                             axis2_xml_schema_collection_t  *collection,
                                             axis2_env_t **env,
-                                            axis2_xml_schema_collection_t  *reader, 
+                                            void *reader, 
                                             axis2_validation_event_handler_t *veh) 
 {
     return NULL;
@@ -353,7 +353,7 @@ axis2_xml_schema_t *AXIS2_CALL
 axis2_xml_schema_collection_read_a_input_source_and_validation_event_handler(
                                             axis2_xml_schema_collection_t  *collection,
                                             axis2_env_t **env,
-                                            axis2_xml_schema_collection_t  *input_source, 
+                                            void *input_source, 
                                             axis2_validation_event_handler_t *veh) 
 {
     return NULL;
@@ -363,7 +363,7 @@ axis2_xml_schema_t *AXIS2_CALL
 axis2_xml_schema_collection_read_a_source_and_validation_event_handler(
                                             axis2_xml_schema_collection_t  *collection,
                                             axis2_env_t **env,
-                                            axis2_xml_schema_collection_t  *source, 
+                                            void  *source, 
                                             axis2_validation_event_handler_t *veh) 
 {
     return NULL;
