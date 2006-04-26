@@ -34,4 +34,5 @@ libaxis2_xml_schema_la_SOURCES = \
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
+            -I$(top_builddir)/include/xml_schema \
             -I$(top_builddir)/modules/platforms
