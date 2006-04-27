@@ -6,7 +6,15 @@ libmod_axis2_la_SOURCES = mod_axis2.c\
                        apache2_worker.c
 AM_CFLAGS = -DAP_HAVE_DESIGNATED_INITIALIZER -DLINUX=2 -D_REENTRANT -D_XOPEN_SOURCE=500 -D_BSD_SOURCE -D_SVID_SOURCE -D_GNU_SOURCE
 libmod_axis2_la_LIBADD   = $(LDFLAGS) \
-                    -L$(AXIS2C_HOME)/lib \
+                    -L$(top_builddir)/modules/util \
+                    -L$(top_builddir)/modules/wsdl \
+                    -L$(top_builddir)/modules/core/engine \
+                    -L$(top_builddir)/modules/core/transport/http/sender \
+                    -L$(top_builddir)/modules/core/transport/http/receiver \
+                    -L$(top_builddir)/modules/xml/om \
+                    -L$(top_builddir)/modules/xml/parser/libxml2 \
+                    -L$(top_builddir)/modules/xml/soap \
+                    -L$(top_builddir)/modules/platforms/unix \
                     -laxis2_om \
                     -laxis2_engine \
                     -laxis2_soap \
@@ -17,17 +25,8 @@ libmod_axis2_la_LIBADD   = $(LDFLAGS) \
                     -laxis2_http_receiver \
                     -lxml2 \
                     -laxis2_unix\
-                    -L$(top_builddir)/modules/util \
-                    -L$(top_builddir)/modules/wsdl \
-                    -L$(top_builddir)/modules/core/engine \
-                    -L$(top_builddir)/modules/core/transport/http/sender \
-                    -L$(top_builddir)/modules/core/transport/http/receiver \
-                    -L$(top_builddir)/modules/xml/om \
-                    -L$(top_builddir)/modules/xml/parser/libxml2 \
-                    -L$(top_builddir)/modules/xml/soap \
-                    -L$(top_builddir)/modules/platforms/unix \
-                    -L$(LIBXML2_LIB) $(LIBXML2_LIBNAME) \
-                    -L$(GUTHTHILA_LIB) $(GUTHTHILA_LIBNAME)
+					$(LIBXML2_LIBS) \
+					$(GUTHTHILA_LIBS)
 
 INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/modules/util \
