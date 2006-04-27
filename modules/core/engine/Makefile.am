@@ -1,9 +1,9 @@
 TESTS =
-noinst_LTLIBRARIES = libaxis2_int_engine.la
+lib_LTLIBRARIES = libaxis2_engine.la
 noinst_HEADERS = axis2_engine.h \
                     axis2_event.h
 
-libaxis2_int_engine_la_SOURCES = handler.c \
+libaxis2_engine_la_SOURCES = handler.c \
                                 conf.c \
                                 phase.c \
                                 disp_checker.c \
@@ -15,6 +15,16 @@ libaxis2_int_engine_la_SOURCES = handler.c \
                                 soap_body_disp.c \
                                 ctx_handler.c \
                                 engine.c
+
+libaxis2_engine_la_LIBADD = $(top_builddir)/modules/core/description/libaxis2_description.la \
+                    $(top_builddir)/modules/core/receivers/libaxis2_receivers.la \
+					$(top_builddir)/modules/core/deployment/libaxis2_deployment.la \
+					$(top_builddir)/modules/core/context/libaxis2_context.la \
+					$(top_builddir)/modules/core/addr/libaxis2_addr.la \
+					$(top_builddir)/modules/core/clientapi/libaxis2_clientapi.la \
+					$(top_builddir)/modules/core/phaseresolver/libaxis2_phaseresolver.la \
+					$(top_builddir)/modules/core/util/libaxis2_core_utils.la \
+					$(top_builddir)/modules/core/transport/http/libaxis2_http.la
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
