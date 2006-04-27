@@ -11,4 +11,4 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/xml/parser \
             -I$(top_builddir)/modules/platforms
 
-EXTRA_DIST = axis2_data_handler.h axis2_mime_body_part.h axis2_mime_output.h
+EXTRA_DIST = axis2_mime_body_part.h axis2_mime_output.h
