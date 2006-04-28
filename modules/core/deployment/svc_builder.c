@@ -64,7 +64,6 @@ axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
 
 /**
  * To get the list og modules that is requird to be engage globally
- * @param moduleRefs  <code>java.util.Iterator</code>
  */
 axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,

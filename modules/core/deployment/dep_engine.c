@@ -1223,7 +1223,6 @@ axis2_dep_engine_load_svc_props(axis2_dep_engine_t *dep_engine,
     {
         axis2_dep_engine_add_flow_handlers(dep_engine, env, out_fault_flow);
     }
-    /* axisService.setClassLoader(currentArchiveFile.getClassLoader()); */
     return AXIS2_SUCCESS;
 }
 
@@ -1457,7 +1456,6 @@ axis2_dep_engine_add_new_module(axis2_dep_engine_t *dep_engine,
     
     AXIS2_CONF_ADD_MODULE(AXIS2_INTF_TO_IMPL(dep_engine)->conf, env, 
         module_metadata);
-    /* log.info(Messages.getMessage(DeploymentErrorMsgs.ADDING_NEW_MODULE)); */
 
     return AXIS2_SUCCESS;
 }
@@ -1518,8 +1516,6 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                             AXIS2_FAILURE);
                         return status;
                     }
-                    /* log.info(Messages.getMessage(
-                            DeploymentErrorMsgs.DEPLOYING_WS, currentArchiveFile.getName())); */
                     dep_engine_impl->curr_file = NULL;
                     break;
                 case AXIS2_MODULE:
@@ -1548,8 +1544,6 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                         return AXIS2_FAILURE;
                     }
                         
-                    /*log.info(Messages.getMessage(DeploymentErrorMsgs.DEPLOYING_MODULE,
-                            metaData.getName().getLocalPart())); */
                     dep_engine_impl->curr_file = NULL;
                     break;
             }
@@ -1592,8 +1586,6 @@ axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
                     file_name);
                 
                 AXIS2_CONF_REMOVE_SVC(dep_engine_impl->conf, env, svc_name);
-                /*log.info(Messages.getMessage(DeploymentErrorMsgs.SERVICE_REMOVED,
-                        wsInfo.getFilename()));*/
             }
             faulty_svcs = AXIS2_CONF_GET_FAULTY_SVCS(dep_engine_impl->conf, env);
             axis2_hash_set(faulty_svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
@@ -1821,34 +1813,4 @@ axis2_dep_engine_set_arch_reader(axis2_dep_engine_t *dep_engine,
     return AXIS2_SUCCESS;
 }
 
-/* public AxisService deployService(ClassLoader classLoder, InputStream serviceStream, String servieName) throws DeploymentException {
-AxisService service = null;
-try {
-currentArchiveFileile = new ArchiveFileData(SERVICE, servieName);
-currentArchiveFileile.setClassLoader(classLoder);
-service = new AxisService();
-DeploymentParser schme = new DeploymentParser(serviceStream, this);
-schme.parseServiceXML(service);
-service = loadServiceProperties(service);
-} catch (XMLStreamException e) {
-throw  new DeploymentException(e.getMessage());
-} catch (PhaseException e) {
-throw  new DeploymentException(e.getMessage());
-} catch (AxisFault axisFault) {
-throw  new DeploymentException(axisFault.getMessage());
-}
-return service;
-}
-*/
 
-/**
- * this method use to start the Deployment engine
- * inorder to perform Hot deployment and so on..
- */
-/*
-private void startSearch(DeploymentEngine engine) {
-    Scheduler scheduler = new Scheduler();
-    scheduler.schedule(new SchedulerTask(engine, folderName),
-            new DeploymentIterator());
-}
-*/

@@ -1483,7 +1483,6 @@ axis2_status_t AXIS2_CALL
 axis2_svc_set_last_update(axis2_svc_t *svc,
                             axis2_env_t **env)
 {
-    /*last_update = new Date().getTime(); */
     return AXIS2_SUCCESS;
 }
 

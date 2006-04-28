@@ -717,41 +717,6 @@ axis2_stub_get_call_obj(axis2_stub_t *stub,
     return AXIS2_INTF_TO_IMPL(stub)->call;
 }
 
-/**
- *
- * @param doRest
- */
-/*    public void setDoREST(boolean doRest) {
-        this.doRest = doRest;
-    }
-*/
-
-/*
-protected void setValueRPC(SOAPEnvelope env,
-                           String methodNamespaceURI,
-                           String methodName,
-                           String[] paramNames,
-                           Object[] values) {
-    SOAPBody body = env.getBody();
-    OMFactory fac = this.getFactory(this.soapVesrion);
-
-    OMNamespace methodNamespace = fac.createOMNamespace(methodNamespaceURI,
-            "ns1");
-    OMElement elt = fac.createOMElement(methodName, methodNamespace);
-    if (paramNames != null) {
-        //find the relevant object here, convert it and add it to the elt
-        for (int i = 0; i < paramNames.length; i++) {
-            String paramName = paramNames[i];
-            Object value = values[i];
-            elt.addChild(StubSupporter.createRPCMappedElement(paramName,
-                    fac.createOMNamespace("", null), //empty namespace
-                    value,
-                    fac));
-        }
-    }
-    body.addChild(elt);
-}
-*/
 
 /*
 public void _setSessionInfo(String key, Object value) throws java.lang.Exception {

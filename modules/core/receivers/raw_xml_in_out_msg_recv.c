@@ -322,23 +322,6 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     return status;
 }
 
-
-
-/*
-public Method findOperation(AxisOperation op, Class ImplClass) {
-    Method method = null;
-    String methodName = op.getName().getLocalPart();
-    Method[] methods = ImplClass.getMethods();
-    for (int i = 0; i < methods.length; i++) {
-        if (methods[i].getName().equals(methodName)) {
-            method = methods[i];
-            break;
-        }
-    }
-    return method;
-}
-*/
-
 /**
  * Following block distinguish the exposed part of the dll.
  */

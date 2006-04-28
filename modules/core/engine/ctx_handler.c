@@ -115,7 +115,6 @@ axis2_ctx_handler_invoke(struct axis2_handler *handler,
     
     op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
     
-    /*  1. look up opCtxt using mc.addressingHeaders.relatesTo[0] */
     op_ctx = AXIS2_OP_FIND_FOR_EXISTING_OP_CTX(op, env, msg_ctx);
     
     if (op_ctx)

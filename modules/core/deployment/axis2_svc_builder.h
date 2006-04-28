@@ -78,7 +78,6 @@ AXIS2_DECLARE_DATA struct axis2_svc_builder_ops
     
     /**
      * To get the list og modules that is requird to be engage globally
-     * @param moduleRefs  <code>java.util.Iterator</code>
      */
     axis2_status_t (AXIS2_CALL *
     process_module_refs) (axis2_svc_builder_t *svc_builder,

@@ -67,7 +67,6 @@ AXIS2_DECLARE_DATA struct axis2_conf_builder_ops
     
     /**
      * To get the list og modules that is requird to be engage globally
-     * @param moduleRefs  <code>java.util.Iterator</code>
      */
     axis2_status_t (AXIS2_CALL *
     process_module_refs) (axis2_conf_builder_t *conf_builder,

@@ -302,23 +302,6 @@ axis2_wsdl_component_get_extensibility_elements(axis2_wsdl_component_t *wsdl_com
 }
 
 /**
- * Adds the <code>ExtensibilityAttribute</code> as a attrebute of this
- * Component.
- *
- * @param attribute <code>ExtensibilityAttribute</code>
- */
-/*axis2_status_t AXIS2_CALL
-axis2_wsdl_component_add_extensible_attributes(WSDLExtensibilityAttribute attribute) {
-    if (NULL == this.attributes) {
-        this.attributes = new LinkedList();
-    }
-    if (null == attribute)
-        return;
-    this.attributes.add(attribute);
-}
-*/
-
-/**
  * Returns a <code>List</code> of ExtensibleAttributes of this component.
  *
  * @return <code>List</code>

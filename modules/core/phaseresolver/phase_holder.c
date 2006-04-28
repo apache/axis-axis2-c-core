@@ -292,13 +292,6 @@ axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_hol
     {
         handler_desc = (axis2_handler_desc_t *) AXIS2_ARRAY_LIST_GET(
             handlers, env, i);
-        /* Write the handler loading logic here */
-        /*handlerClass =
-                Class.forName(description.getClassName(),
-                        true,
-                        Thread.currentThread().getContextClassLoader());
-        handler =
-                (Handler) handlerClass.newInstance();*/
         status = AXIS2_HANDLER_INIT(handler, env, handler_desc);
         if(AXIS2_FAILURE == status)
             return status;
