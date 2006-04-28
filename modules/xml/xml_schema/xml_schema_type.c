@@ -20,7 +20,7 @@
 #include <axis2_xml_schema_data_type.h>
 #include <axis2_xml_schema_derivation_method.h>
 #include <axis2_xml_schema.h>
-
+#include <axis2_qname.h>
 
 typedef struct axis2_xml_schema_type_impl 
                 axis2_xml_schema_type_impl_t;
@@ -53,6 +53,8 @@ struct axis2_xml_schema_type_impl
     axis2_char_t *name;
     
     axis2_xml_schema_t *schema;
+    
+    axis2_qname_t *qname;
 };
 
 #define AXIS2_INTF_TO_IMPL(type) ((axis2_xml_schema_type_impl_t *) type)
@@ -141,7 +143,8 @@ axis2_xml_schema_type_create(axis2_env_t **env,
     type_impl->data_type = NULL;
     type_impl->methods = NULL;
     type_impl->annotated = NULL;
-
+    type_impl->base_schema_type = NULL;
+    type_impl->qname = NULL;
 
     type_impl->schema = schema;
     type_impl->type.ops = AXIS2_MALLOC((*env)->allocator, 
@@ -350,10 +353,12 @@ axis2_xml_schema_type_get_base_schema_type(void *type,
 
 axis2_xml_schema_data_type_t *AXIS2_CALL
 axis2_xml_schema_type_get_data_type(void *type,
-                                        axis2_env_t **env)
+                                    axis2_env_t **env)
 {
+    axis2_xml_schema_type_impl_t *type_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    return NULL;
+    type_impl = AXIS2_INTF_TO_IMPL(type);
+    return type_impl->data_type;
 }
 
 axis2_xml_schema_derivation_method_t *AXIS2_CALL
@@ -398,14 +403,21 @@ axis2_xml_schema_derivation_method_t *AXIS2_CALL
 axis2_xml_schema_type_get_final_resolved(void *type,
                                             axis2_env_t **env) 
 {
-    return NULL;
+    axis2_xml_schema_type_impl_t *type_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    type_impl = AXIS2_INTF_TO_IMPL(type);
+    return type_impl->final_resolved;
+
 }
 
 axis2_bool_t AXIS2_CALL
 axis2_xml_schema_type_is_mixed(void *type,
                                 axis2_env_t **env) 
 {
-    return AXIS2_TRUE;
+    axis2_xml_schema_type_impl_t *type_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    type_impl = AXIS2_INTF_TO_IMPL(type);
+    return type_impl->is_mixed;
 }
 
 axis2_status_t AXIS2_CALL
@@ -413,14 +425,20 @@ axis2_xml_schema_type_set_mixed(void *type,
                                 axis2_env_t **env,
                                 axis2_bool_t is_mixed) 
 {
-    return AXIS2_SUCCESS;
+    axis2_xml_schema_type_impl_t *type_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    type_impl = AXIS2_INTF_TO_IMPL(type);
+    return type_impl->is_mixed = is_mixed;
 }
 
 axis2_char_t *AXIS2_CALL
 axis2_xml_schema_type_get_name(void *type,
                                 axis2_env_t **env) 
 {
-    return NULL;
+    axis2_xml_schema_type_impl_t *type_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    type_impl = AXIS2_INTF_TO_IMPL(type);
+    return type_impl->name;
 }
 
 axis2_status_t AXIS2_CALL
@@ -428,6 +446,20 @@ axis2_xml_schema_type_set_name(void *type,
                                 axis2_env_t **env,
                                 axis2_char_t *name) 
 {
+    axis2_xml_schema_type_impl_t *type_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
+    type_impl = AXIS2_INTF_TO_IMPL(type);
+    if(NULL != type_impl->name)
+    {
+        AXIS2_FREE((*env)->allocator, type_impl->name);
+        type_impl->name = NULL;
+    }
+    type_impl->name = AXIS2_STRDUP(name, env);
+    if(!type_impl->name)
+    {
+        return AXIS2_FAILURE;
+    }
     return AXIS2_SUCCESS;
 }
 
@@ -435,6 +467,26 @@ axis2_qname_t *AXIS2_CALL
 axis2_xml_schema_type_get_qname(void *type,
                                 axis2_env_t **env) 
 {
-    return NULL;
+    axis2_xml_schema_type_impl_t *type_impl =  NULL;
+    axis2_char_t *target_ns = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    type_impl = AXIS2_INTF_TO_IMPL(type);
+    if(!(type_impl->name))
+    {
+        return NULL;
+    }
+    if(NULL != type_impl->qname)
+    {
+        AXIS2_QNAME_FREE(type_impl->qname, env);
+        type_impl->qname = NULL;
+    }
+    if(NULL != type_impl->schema)
+    {
+        target_ns = 
+            AXIS2_XML_SCHEMA_GET_TARGET_NAMESPACE(type_impl->schema, env);
+    }
+    
+    type_impl->qname = axis2_qname_create(env, type_impl->name, target_ns, NULL);
+    return type_impl->qname;
 }
 

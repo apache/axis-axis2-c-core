@@ -796,7 +796,7 @@ axis2_om_output_flush(axis2_om_output_t *om_output,
     axis2_om_output_impl_t *output_impl = NULL;
     axis2_char_t *soap_content_type = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     output_impl = AXIS2_INTF_TO_IMPL(om_output);
 
     if (output_impl->do_optimize)

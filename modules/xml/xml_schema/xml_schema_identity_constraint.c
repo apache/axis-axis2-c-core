@@ -1,4 +1,4 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           /*
+/*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,8 @@
 #include <axis2_xml_schema_obj_collection.h>
 #include <axis2_xml_schema_xpath.h>
 
-typedef struct axis2_xml_schema_identity_constraint_impl axis2_xml_schema_identity_constraint_impl_t;
+typedef struct axis2_xml_schema_identity_constraint_impl 
+                axis2_xml_schema_identity_constraint_impl_t;
 
 /** 
  * @brief Other Extension Struct Impl
@@ -74,6 +75,11 @@ axis2_xml_schema_identity_constraint_create(axis2_env_t **env)
 
     identity_constraint_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_identity_constraint_impl_t));
+    if(!identity_constraint_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }                    
 
     identity_constraint_impl->annotated = NULL;
     identity_constraint_impl->methods = NULL;
@@ -82,7 +88,13 @@ axis2_xml_schema_identity_constraint_create(axis2_env_t **env)
     identity_constraint_impl->selector = NULL;
     identity_constraint_impl->identity_constraint.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_identity_constraint_ops_t));
-
+    if(!(identity_constraint_impl->identity_constraint.ops))
+    {
+        axis2_xml_schema_identity_constraint_free(
+            &(identity_constraint_impl->identity_constraint), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     identity_constraint_impl->identity_constraint.ops->free = 
             axis2_xml_schema_identity_constraint_free;
     identity_constraint_impl->identity_constraint.ops->get_base_impl = 
@@ -118,10 +130,12 @@ axis2_xml_schema_identity_constraint_create(axis2_env_t **env)
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_identity_constraint_set_selector);
     
     identity_constraint_impl->annotated = axis2_xml_schema_annotated_create(env);
+    if(!identity_constraint_impl->annotated)
+        return NULL;
     status = axis2_xml_schema_annotated_resolve_methods(
-            &(identity_constraint_impl->identity_constraint.base), env, identity_constraint_impl->annotated, 
+            &(identity_constraint_impl->identity_constraint.base), 
+            env, identity_constraint_impl->annotated, 
             identity_constraint_impl->methods);
-    
     return &(identity_constraint_impl->identity_constraint);
 }
 
@@ -134,37 +148,42 @@ axis2_xml_schema_identity_constraint_free(void *identity_constraint,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     identity_constraint_impl = AXIS2_INTF_TO_IMPL(identity_constraint);
 
-    if(identity_constraint_impl->name)
+    if(NULL != identity_constraint_impl->name)
     {
         AXIS2_FREE((*env)->allocator, identity_constraint_impl->name);
         identity_constraint_impl->name = NULL;
     }
 
-    if(identity_constraint_impl->selector)
+    if(NULL != identity_constraint_impl->selector)
     {
         AXIS2_XML_SCHEMA_XPATH_FREE(identity_constraint_impl->selector, env);
         identity_constraint_impl->selector = NULL;
     }
     
-    if(identity_constraint_impl->methods)
+    if(NULL != identity_constraint_impl->methods)
     {
         axis2_hash_free(identity_constraint_impl->methods, env);
         identity_constraint_impl->methods = NULL;
     }
 
-    if(identity_constraint_impl->annotated)
+    if(NULL != identity_constraint_impl->annotated)
     {
         AXIS2_XML_SCHEMA_ANNOTATED_FREE(identity_constraint_impl->annotated, env);
         identity_constraint_impl->annotated = NULL;
     }
     
-    if((&(identity_constraint_impl->identity_constraint))->ops)
+    if(NULL != identity_constraint_impl->identity_constraint.ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(identity_constraint_impl->identity_constraint))->ops);
-        (&(identity_constraint_impl->identity_constraint))->ops = NULL;
+        AXIS2_FREE((*env)->allocator, identity_constraint_impl->identity_constraint.ops);
+        identity_constraint_impl->identity_constraint.ops = NULL;
+    }
+    if(NULL != identity_constraint_impl->identity_constraint.base.ops)
+    {
+        AXIS2_FREE((*env)->allocator, identity_constraint_impl->identity_constraint.base.ops);
+        identity_constraint_impl->identity_constraint.base.ops = NULL;
     }
 
-    if(identity_constraint_impl)
+    if(NULL != identity_constraint_impl)
     {
         AXIS2_FREE((*env)->allocator, identity_constraint_impl);
         identity_constraint_impl = NULL;
@@ -201,6 +220,11 @@ axis2_xml_schema_identity_constraint_resolve_methods(
     
     identity_constraint->ops = AXIS2_MALLOC((*env)->allocator, 
             sizeof(axis2_xml_schema_identity_constraint_ops_t));
+    if(NULL == identity_constraint->ops)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }            
     identity_constraint->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
     identity_constraint->ops->get_base_impl = 

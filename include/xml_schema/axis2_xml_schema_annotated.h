@@ -46,7 +46,7 @@ struct axis2_xml_schema_annotated_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *annotated,
+    free)(void *annotated,
             axis2_env_t **env);
     
     axis2_xml_schema_obj_t *(AXIS2_CALL *

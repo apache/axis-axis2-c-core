@@ -142,22 +142,50 @@ axis2_xml_schema_type_resolve_methods(
 		(((axis2_xml_schema_type_t *) type)->ops->\
             get_base_impl(type, env))
 
-#define AXIS2_XML_SCHEMA_TYPE_GET_MAX_OCCURS(type, env) \
+#define AXIS2_XML_SCHEMA_TYPE_GET_BASE_SCHEMA_TYPE(type, env) \
 		(((axis2_xml_schema_type_t *) type)->ops->\
-            get_max_occurs(type, env))
+            get_base_schema_type(type, env))
 
-#define AXIS2_XML_SCHEMA_TYPE_SET_MAX_OCCURS(type, env, max_occurs) \
+#define AXIS2_XML_SCHEMA_TYPE_GET_DATA_TYPE(type, env, max_occurs) \
 		(((axis2_xml_schema_type_t *) type)->ops->\
-            set_max_occurs(type, env, max_occurs))
+            get_data_type(type, env, max_occurs))
 
-#define AXIS2_XML_SCHEMA_TYPE_GET_MIN_OCCURS(type, env) \
+#define AXIS2_XML_SCHEMA_TYPE_DERIVE_BY(type, env) \
 		(((axis2_xml_schema_type_t *) type)->ops->\
-            get_min_occurs(type, env))
+            get_derive_by(type, env))
 
-#define AXIS2_XML_SCHEMA_TYPE_SET_MIN_OCCURS(type, env, min_occurs) \
+#define AXIS2_XML_SCHEMA_TYPE_GET_FINAL(type, env) \
 		(((axis2_xml_schema_type_t *) type)->ops->\
-            set_min_occurs(type, env, min_occurs))
+            get_final(type, env))
 
+#define AXIS2_XML_SCHEMA_TYPE_SET_FINAL(type, env, final_derivation) \
+        (((axis2_xml_schema_type_t *) type)->ops->\
+            set_final(type, env, final_derivation)) 
+            
+#define AXIS2_XML_SCHEMA_TYPE_GET_FINAL_RESOLVED(type, env) \
+        (((axis2_xml_schema_type_t *) type)->ops->\
+            get_final_resolved(type, env))
+            
+#define AXIS2_XML_SCHEMA_TYPE_IS_MIXED(type, env) \
+        (((axis2_xml_schema_type_t *) type)->ops->\
+            get_is_mixed(type, env))   
+            
+#define AXIS2_XML_SCHEMA_TYPE_SET_MIXED(type, env) \
+        (((axis2_xml_schema_type_t *) type)->ops->\
+            get_set_mixed(type, env))  
+            
+#define AXIS2_XML_SCHEMA_TYPE_GET_NAME(type, env) \
+        (((axis2_xml_schema_type_t *) type)->ops->\
+            get_name(type, env))    
+
+#define AXIS2_XML_SCHEMA_TYPE_SET_NAME(type, env, name) \
+        (((axis2_xml_schema_type_t *) type)->ops->\
+            set_name(type, env, name)) 
+            
+#define AXIS2_XML_SCHEMA_TYPE_GET_QNAME(type, env) \
+        (((axis2_xml_schema_type_t *) type)->ops->\
+            get_qname(type, env))    
+                                                           
 /** @} */
 #ifdef __cplusplus
 }

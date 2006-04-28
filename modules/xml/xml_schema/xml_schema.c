@@ -100,9 +100,9 @@ axis2_xml_schema_get_element_form_default(void *schema,
                                             axis2_env_t **env); 
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_set_element_form_default(
-                            axis2_xml_schema_form_t *element_form_default,
-                            axis2_env_t **env); 
+axis2_xml_schema_set_element_form_default(void *schema,
+                            axis2_env_t **env,
+                            axis2_xml_schema_form_t *element_form_default); 
 
 axis2_xml_schema_obj_table_t *AXIS2_CALL
 axis2_xml_schema_get_elements(void *schema,
@@ -123,9 +123,9 @@ axis2_xml_schema_get_final_default(void *schema,
                                     axis2_env_t **env); 
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_set_final_default(
-                        axis2_xml_schema_derivation_method_t *final_default,
-                        axis2_env_t **env); 
+axis2_xml_schema_set_final_default(void *schema,
+                        axis2_env_t **env,
+                        axis2_xml_schema_derivation_method_t *final_default); 
 
 axis2_xml_schema_obj_table_t *AXIS2_CALL
 axis2_xml_schema_get_groups(void *schema,
@@ -170,12 +170,12 @@ axis2_xml_schema_compile(void *schema,
                             axis2_validation_event_handler_t *eh);
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_write_a_out(void *schema,
+axis2_xml_schema_write_with_out(void *schema,
                                 axis2_env_t **env,
                                 void *outstream); 
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_write_a_writer(void *schema,
+axis2_xml_schema_write_with_writer(void *schema,
                                 void *writer); 
 
 static axis2_status_t 
@@ -278,10 +278,10 @@ axis2_xml_schema_create(axis2_env_t **env,
             axis2_xml_schema_get_version;
     schema_impl->schema.ops->compile = 
             axis2_xml_schema_compile;
-    schema_impl->schema.ops->write_a_out = 
-            axis2_xml_schema_write_a_out;
-    schema_impl->schema.ops->write_a_writer = 
-            axis2_xml_schema_write_a_writer;
+    schema_impl->schema.ops->write_with_out = 
+            axis2_xml_schema_write_with_out;
+    schema_impl->schema.ops->write_with_writer = 
+            axis2_xml_schema_write_with_writer;
     schema_impl->schema.ops->get_prefix_to_namespace_map = 
             axis2_xml_schema_get_prefix_to_namespace_map;
     schema_impl->schema.ops->set_prefix_to_namespace_map = 
@@ -346,9 +346,9 @@ axis2_xml_schema_create(axis2_env_t **env,
     axis2_hash_set(schema_impl->methods, "compile", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_compile);
     axis2_hash_set(schema_impl->methods, "write_a_out", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_write_a_out);
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_write_with_out);
     axis2_hash_set(schema_impl->methods, "write_a_writer", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_write_a_writer);
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_write_with_writer);
     axis2_hash_set(schema_impl->methods, "get_prefix_to_namespace_map", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_get_prefix_to_namespace_map);
     axis2_hash_set(schema_impl->methods, "set_prefix_to_namespace_map", 
@@ -480,10 +480,10 @@ axis2_xml_schema_resolve_methods(
             schema_impl_l->schema.ops->get_version;
     schema->ops->compile = 
             schema_impl_l->schema.ops->compile;
-    schema->ops->write_a_out = 
-            schema_impl_l->schema.ops->write_a_out;
-    schema->ops->write_a_writer = 
-            schema_impl_l->schema.ops->write_a_writer;
+    schema->ops->write_with_out = 
+            schema_impl_l->schema.ops->write_with_out;
+    schema->ops->write_with_writer = 
+            schema_impl_l->schema.ops->write_with_writer;
     schema->ops->get_prefix_to_namespace_map = 
             schema_impl_l->schema.ops->get_prefix_to_namespace_map;
     schema->ops->set_prefix_to_namespace_map = 
@@ -576,9 +576,9 @@ axis2_xml_schema_get_element_form_default(void *schema,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_set_element_form_default(
-                            axis2_xml_schema_form_t *element_form_default,
-                            axis2_env_t **env) 
+axis2_xml_schema_set_element_form_default(void *schema,
+                            axis2_env_t **env,
+                            axis2_xml_schema_form_t *element_form_default) 
 {
     return AXIS2_SUCCESS;
 }
@@ -614,9 +614,9 @@ axis2_xml_schema_get_final_default(void *schema,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_set_final_default(
-                        axis2_xml_schema_derivation_method_t *final_default,
-                        axis2_env_t **env) 
+axis2_xml_schema_set_final_default(void *schema,
+                        axis2_env_t **env,
+                        axis2_xml_schema_derivation_method_t *final_default) 
 {
     return AXIS2_SUCCESS;
 }
@@ -696,7 +696,7 @@ axis2_xml_schema_compile(void *schema,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_write_a_out(void *schema,
+axis2_xml_schema_write_with_out(void *schema,
                                 axis2_env_t **env,
                                 void *outstream) 
 {
@@ -704,7 +704,7 @@ axis2_xml_schema_write_a_out(void *schema,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_write_a_writer(void *schema,
+axis2_xml_schema_write_with_writer(void *schema,
                         void *writer) 
 {
     return AXIS2_SUCCESS;
