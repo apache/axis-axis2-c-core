@@ -798,6 +798,11 @@ axis2_http_transport_utils_get_charset_enc(axis2_env_t **env,
 	tmp2 = strchr(tmp, ';');
 	if(NULL != tmp2)
 	{
+        if('\'' == *(tmp2 - sizeof(axis2_char_t)) ||
+                        '\"' == *(tmp2 - sizeof(axis2_char_t)))
+        {
+           tmp2 -= sizeof(axis2_char_t); 
+        }
 		*tmp2 = '\0';
 	}
 	if(NULL == tmp)
@@ -805,6 +810,21 @@ axis2_http_transport_utils_get_charset_enc(axis2_env_t **env,
         AXIS2_FREE((*env)->allocator, tmp_content_type);
 		return AXIS2_STRDUP(AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING, env);
 	}
+    /* Following formats are acceptable
+     * charset="UTF-8"
+     * charser='UTF-8'
+     * charset=UTF-8
+     * But for our requirements charset we get should be UTF-8
+     */
+    if('\'' == *(tmp + sizeof(axis2_char_t)) || '\"' == *(tmp + 
+                        sizeof(axis2_char_t)))
+    {
+       tmp += 2*sizeof(axis2_char_t); 
+    }
+    else
+    {
+        tmp += sizeof(axis2_char_t);
+    }
 	tmp2 =  AXIS2_STRDUP(tmp, env);
 	AXIS2_FREE((*env)->allocator, tmp_content_type);
 	return tmp2;
