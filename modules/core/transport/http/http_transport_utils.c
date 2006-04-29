@@ -367,8 +367,6 @@ axis2_http_transport_utils_process_http_post_request
                         else
                         {
                             old_pos = pos + 1;
-                            /*printf("pos %c\n", *pos);
-                            printf("pos + 1 %c\n", *(pos + 1));*/
                             if (old_pos - mime_binary > mime_binary_len)
                             {
                                 pos = NULL;
@@ -380,51 +378,10 @@ axis2_http_transport_utils_process_http_post_request
 
                     if ( pos && *(pos + 1) == AXIS2_MIME_BOUNDARY_BYTE && temp_pos == pos + 2)
                     {
-                        printf("\nMIME end found\n");
-                        printf ("mime_binary_len %d\n", mime_binary_len);
                         mime_binary_len = pos - mime_binary;
-                        printf ("mime_binary_len %d\n", mime_binary_len);
                     }
                     else
                         pos = NULL;
-                }
-
-                if (pos)
-                {
-                    /*if (*(pos + 1) == AXIS2_MIME_BOUNDARY_BYTE)
-                    {
-                        axis2_char_t *temp_pos = NULL;
-                        temp_pos = AXIS2_STRSTR(pos + 1, mime_boundary);
-                        
-                        if (temp_pos)
-                            printf("temp_pos + 1 %c\n", *(temp_pos + 1));
-                        
-                        if (temp_pos == pos + 2 )
-                        {
-                            printf("\nMIME end found\n");
-                            printf ("mime_binary_len %d\n", mime_binary_len);
-                            mime_binary_len = pos - mime_binary;
-                            printf ("mime_binary_len %d\n", mime_binary_len);
-                        }
-                        else
-                        {
-                            pos = NULL;
-                        }
-                    }
-                    else
-                    {
-                        pos = NULL;
-                    }*/
-                    
-                    /*if (body_mime_len > (pos - body_mime + 4))
-                    {
-                        mime_binary_len = body_mime_len - (pos - body_mime + 4);
-                        mime_binary = AXIS2_MALLOC((*env)->allocator,
-                                        sizeof(char) * (mime_binary_len + 1));
-                        memcpy(mime_binary, pos + 4, mime_binary_len);
-                        mime_binary[mime_binary_len] = '\0';
-                        *pos = '\0';
-                    }*/
                 }
                 
                 if (!pos)
@@ -453,10 +410,6 @@ axis2_http_transport_utils_process_http_post_request
             
             } while(!pos && len > 0);
 
-            printf("mime_boundary %s\n", mime_boundary);
-            printf("\nroot_mime %s\n", root_mime);
-            printf("body_mime %s\n", body_mime);
-            printf("\nsoap_body %s..............\n soap_body_len %d \n", soap_body_str, soap_body_len);
             if (soap_body_str) 
             {
                 /* create a basic stream with soap string to pull SOAP */
@@ -1238,7 +1191,6 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
                 ((axis2_callback_info_t*)ctx)->unread_len -= len;
             }            
         }
-        printf ("\n\n***************************\nbuffer %s\nlen %d\n\n", buffer, len);
         return len;
     }
 	return 0;	
