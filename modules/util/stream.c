@@ -602,15 +602,18 @@ axis2_stream_read_socket (axis2_stream_t *stream, axis2_env_t **env,
     len = recv(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count, 0);
     
 #ifdef AXIS2_TCPMON
-    temp = (axis2_char_t *)AXIS2_MALLOC((*env)->allocator, 
-            (len + 1) * sizeof(axis2_char_t));
-    if (temp)
+    if (len > 1)
     {
-        memcpy(temp, buffer, len * sizeof(axis2_char_t));
-        temp[len] = '\0';
-        fprintf (stderr, "%s", temp);
-        AXIS2_FREE((*env)->allocator, temp);
-        temp = NULL;
+        temp = (axis2_char_t *)AXIS2_MALLOC((*env)->allocator, 
+                (len + 1) * sizeof(axis2_char_t));
+        if (temp)
+        {
+            memcpy(temp, buffer, len * sizeof(axis2_char_t));
+            temp[len] = '\0';
+            fprintf (stderr, "%s", temp);
+            AXIS2_FREE((*env)->allocator, temp);
+            temp = NULL;
+        }
     }
 #endif
     return len;
@@ -635,15 +638,18 @@ axis2_stream_write_socket(axis2_stream_t *stream, axis2_env_t **env,
 		return -1;
 	len = send(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count, 0);
 #ifdef AXIS2_TCPMON
-    temp = (axis2_char_t *)AXIS2_MALLOC((*env)->allocator, 
-            (len + 1) * sizeof(axis2_char_t));
-    if (temp)
+    if (len > 0)
     {
-        memcpy(temp, buffer, len * sizeof(axis2_char_t));
-        temp[len] = '\0';
-        fprintf (stderr, "%s", temp);
-        AXIS2_FREE((*env)->allocator, temp);
-        temp = NULL;
+        temp = (axis2_char_t *)AXIS2_MALLOC((*env)->allocator, 
+                (len + 1) * sizeof(axis2_char_t));
+        if (temp)
+        {
+            memcpy(temp, buffer, len * sizeof(axis2_char_t));
+            temp[len] = '\0';
+            fprintf (stderr, "%s", temp);
+            AXIS2_FREE((*env)->allocator, temp);
+            temp = NULL;
+        }
     }
 #endif
 	return len;
