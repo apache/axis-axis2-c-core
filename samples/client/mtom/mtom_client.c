@@ -40,7 +40,7 @@
 #include <axis2_data_handler.h>
 
 axis2_om_node_t *
-build_om_programatically(axis2_env_t **env);
+build_om_programatically(axis2_env_t **env, axis2_char_t *image_name, axis2_char_t *to_save_name);
 
 int main(int argc, char** argv)
 {
@@ -51,7 +51,6 @@ int main(int argc, char** argv)
     axis2_log_t *log = NULL;
     axis2_allocator_t *allocator = NULL;
     axis2_char_t *address = NULL;
-    axis2_char_t *wsa_action = NULL;
     axis2_char_t *client_home = NULL;
     axis2_om_node_t *ret_node = NULL;
     axis2_svc_t *svc = NULL;
@@ -64,6 +63,8 @@ int main(int argc, char** argv)
     axis2_conf_t *conf = NULL;
     axis2_msg_ctx_t *response_ctx = NULL;
     axis2_property_t *property = NULL;
+    axis2_char_t *image_name = "axis2.jpg";
+    axis2_char_t *to_save_name = "test.jpg";
     
     /* set up the envioronment with allocator and log*/
     allocator = axis2_allocator_init (NULL);
@@ -85,21 +86,24 @@ int main(int argc, char** argv)
         client_home = "../../deploy";
     
     /* Set end point reference of mtom service */
-    address = "http://localhost:9090/axis2/services/mtomSample";
-    wsa_action = "http://localhost:9090/axis2/services/mtom/mtomSample";
+    address = "http://localhost:9090/axis2/services/mtom";
     if (argc > 1 )
         address = argv[1];
     if (AXIS2_STRCMP(address, "-h") == 0)
     {
-        printf("Usage : %s [endpoint_url]\n", argv[0]);
+        printf("Usage : %s [endpoint_url] [image_name] [to_save_name]\n", argv[0]);
         printf("use -h for help\n");
         return 0;
     }
+    if (argc > 2)
+        image_name = argv[2];
+    if (argc > 3)
+        to_save_name = argv[3];
 
     printf ("Using endpoint : %s\n", address);
 
     /* build the SOAP request message content using OM API.*/
-    node = build_om_programatically(&env);
+    node = build_om_programatically(&env, image_name, to_save_name);
 
     /* create call struct */
     call = axis2_call_create(&env, NULL, client_home);
@@ -133,8 +137,6 @@ int main(int argc, char** argv)
     /* Set header parameters, required for WS-Addressing. 
      * Required only if you need to make use of WS-Addressing.
      */
-  /*  AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, &env, endpoint_ref); */
-  /*  AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, &env, wsa_action); */
     
     AXIS2_CALL_SET_TO(call, &env, endpoint_ref);
 
@@ -239,7 +241,7 @@ int main(int argc, char** argv)
 
 /* build SOAP request message content using OM */
 axis2_om_node_t *
-build_om_programatically(axis2_env_t **env)
+build_om_programatically(axis2_env_t **env, axis2_char_t *image_name, axis2_char_t *to_save_name)
 {
     axis2_om_node_t *mtom_om_node = NULL;
     axis2_om_element_t* mtom_om_ele = NULL;
@@ -263,11 +265,11 @@ build_om_programatically(axis2_env_t **env)
     mtom_om_ele = axis2_om_element_create(env, NULL, "mtomSample", ns1, &mtom_om_node);
     
     file_om_ele = axis2_om_element_create(env, mtom_om_node, "fileName", ns1, &file_om_node);
-    AXIS2_OM_ELEMENT_SET_TEXT(file_om_ele, env, "test.jpg", file_om_node);
+    AXIS2_OM_ELEMENT_SET_TEXT(file_om_ele, env, to_save_name, file_om_node);
 
     image_om_ele = axis2_om_element_create(env, mtom_om_node, "image", ns1, &image_om_node);
 
-    data_handler = axis2_data_handler_create(env, "axis2.jpg", "image/jpeg");
+    data_handler = axis2_data_handler_create(env, image_name, "image/jpeg");
     data_text = axis2_om_text_create_with_data_handler(env, image_om_node, data_handler, &data_om_node);
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     om_output = axis2_om_output_create( env, xml_writer);
