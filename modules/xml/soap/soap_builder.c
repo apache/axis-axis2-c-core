@@ -62,6 +62,8 @@
     int last_node_status;
     
     axis2_bool_t  done;
+
+    axis2_hash_t *mime_body_parts;
     
 }axis2_soap_builder_impl_t;
 
@@ -161,7 +163,11 @@ axis2_soap_builder_is_processing_detail_elements
 int AXIS2_CALL
 axis2_soap_builder_get_soap_version (axis2_soap_builder_t *builder, 
                              axis2_env_t **env);                                                                                                                   
-
+axis2_status_t AXIS2_CALL 
+axis2_soap_builder_set_mime_body_parts
+                            (axis2_soap_builder_t *builder, 
+                             axis2_env_t **env,
+                             axis2_hash_t *map); 
 /***************** function implementations ***********************************/
 
 AXIS2_DECLARE(axis2_soap_builder_t *)
@@ -199,6 +205,7 @@ axis2_soap_builder_create(axis2_env_t **env,
     builder_impl->envelope_ns = NULL;
     builder_impl->soap_envelope = NULL;
     builder_impl->soap_message = NULL;
+    builder_impl->mime_body_parts = NULL;
 
     builder_impl->soap_builder.ops = (axis2_soap_builder_ops_t*)
             AXIS2_MALLOC((*env)->allocator, sizeof(axis2_soap_builder_ops_t));
@@ -229,6 +236,8 @@ axis2_soap_builder_create(axis2_env_t **env,
             axis2_soap_builder_get_soap_version;
     builder_impl->soap_builder.ops->process_namespace_data =
             axis2_soap_builder_process_namespace_data;
+    builder_impl->soap_builder.ops->set_mime_body_parts =
+            axis2_soap_builder_set_mime_body_parts;
     
     status = axis2_soap_builder_identify_soap_version(&(builder_impl->soap_builder), env, soap_version);
     if(status == AXIS2_FAILURE)
@@ -476,7 +485,55 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
     ele_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_element, env);
     if(!ele_localname)
         return AXIS2_FAILURE;
-    
+   
+    /* start: handle MTOM stuff */
+    if (AXIS2_STRCMP(ele_localname, AXIS2_XOP_INCLUDE) == 0)
+    {
+        axis2_om_namespace_t *ns = NULL;
+        ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_element, env, om_element_node);
+        if (ns)
+        {
+            axis2_char_t *uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+            if (uri)
+            {
+                if (AXIS2_STRCMP(uri, AXIS2_XOP_NAMESPACE_URI) == 0)
+                {
+                    axis2_qname_t *qname = NULL;
+                    qname = axis2_qname_create(env, "href", NULL, NULL);
+                    if (qname)
+                    {
+                        axis2_char_t *id = NULL;
+                        id = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE(om_element, env, qname);                        
+                        if (id)
+                        {
+                            axis2_char_t *pos = NULL;
+                            pos = AXIS2_STRSTR(id, "cid:");
+                            if (pos)
+                            {
+                                axis2_data_handler_t *data_handler = NULL;
+                                id += 4;
+                                if (builder_impl->mime_body_parts)
+                                {
+                                    data_handler = (axis2_data_handler_t *)axis2_hash_get(
+                                        builder_impl->mime_body_parts, 
+                                        (void*)id, AXIS2_HASH_KEY_STRING);
+                                    if (data_handler)
+                                    {
+                                        axis2_om_text_t *data_text = NULL;
+                                        axis2_om_node_t *data_om_node = NULL;
+                                        data_text = axis2_om_text_create_with_data_handler(
+                                            env, om_element_node, data_handler, &data_om_node);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    /* end: handle MTOM stuff */
+   
     if(parent)
     {
         /** a parent node exist , so not soap envelope element */
@@ -876,6 +933,17 @@ axis2_soap_builder_get_soap_version (axis2_soap_builder_t *builder,
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
      builder_impl = AXIS2_INTF_TO_IMPL(builder);
     return builder_impl->soap_version ;
+}
+
+axis2_status_t AXIS2_CALL 
+axis2_soap_builder_set_mime_body_parts
+                            (axis2_soap_builder_t *builder, 
+                             axis2_env_t **env,
+                             axis2_hash_t *map)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(builder)->mime_body_parts = map;
+    return AXIS2_SUCCESS;
 }
 
 static axis2_status_t

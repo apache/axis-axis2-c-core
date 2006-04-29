@@ -32,6 +32,8 @@
 #include <axis2_http_header.h>
 #include <axis2_property.h>
 
+#define AXIS2_MIME_BOUNDARY_BYTE 45
+
 /***************************** Function headers *******************************/
 
 AXIS2_DECLARE(axis2_status_t)
@@ -97,6 +99,9 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx);
 AXIS2_DECLARE(axis2_soap_envelope_t*)
 axis2_http_transport_utils_create_soap_msg(axis2_env_t **env, 
                         axis2_msg_ctx_t *msg_ctx, axis2_char_t *soap_ns_uri);
+AXIS2_DECLARE(axis2_char_t*)
+axis2_http_transport_utils_get_value_from_content_type(axis2_env_t **env, 
+						axis2_char_t *content_type, axis2_char_t *key);
 /***************************** End of function headers ************************/
 
 AXIS2_DECLARE(axis2_status_t ) 
@@ -121,6 +126,7 @@ axis2_http_transport_utils_process_http_post_request
 	axis2_soap_body_t *soap_body = NULL;
     axis2_property_t *property = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_hash_t *binary_data_map = NULL;
 	
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK((*env)->error, in_stream, AXIS2_FAILURE);
@@ -182,6 +188,343 @@ axis2_http_transport_utils_process_http_post_request
 			}
 		}
 	}
+    
+    if (NULL != strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED))
+    {
+        /* get mime boundry */
+        axis2_char_t *mime_boundary = 
+            axis2_http_transport_utils_get_value_from_content_type(env, 
+                content_type, AXIS2_HTTP_HEADER_CONTENT_TYPE_MIME_BOUNDARY);
+
+        if (mime_boundary)
+        {
+            axis2_char_t *buffer = NULL;
+            int size = 1024;
+            int len = 0;
+            axis2_char_t *root_mime = NULL;
+            int root_mime_len = 0;
+            axis2_char_t *soap_body_str = NULL;
+            int soap_body_len = 0;
+            axis2_char_t *body_mime = NULL;
+            int body_mime_len = 0;
+            axis2_char_t *mime_binary = NULL;
+            int mime_binary_len = 0;
+            axis2_char_t *pos = NULL;
+            
+            buffer = AXIS2_MALLOC((*env)->allocator, sizeof(axis2_char_t) * (size + 1));
+           
+            do 
+            {    
+                len = axis2_http_transport_utils_on_data_request(buffer, size, (void*)&callback_ctx);
+                if (len > 0)
+                {
+                    axis2_char_t *temp_root_mime = root_mime;
+                    root_mime = AXIS2_MALLOC((*env)->allocator, 
+                        sizeof(char) * (root_mime_len + len + 1));
+                    if (root_mime)
+                    {
+                        if (temp_root_mime)
+                        {
+                            memcpy(root_mime, temp_root_mime, root_mime_len);
+                            AXIS2_FREE((*env)->allocator, temp_root_mime);
+                            temp_root_mime = NULL;
+                        }
+                        
+                        memcpy(root_mime + root_mime_len, buffer, len);
+                        root_mime_len += len;
+                        root_mime[root_mime_len] = '\0';
+
+                        pos = AXIS2_STRSTR(root_mime, "\r\n\r\n");
+                        if (pos)
+                        {
+                            if (root_mime_len > (pos - root_mime + 4))
+                            {
+                                soap_body_len = root_mime_len - (pos - root_mime + 4);
+                                soap_body_str = AXIS2_MALLOC((*env)->allocator,
+                                                sizeof(char) * (soap_body_len + 1));
+                                memcpy(soap_body_str, pos + 4, soap_body_len);
+                                soap_body_str[soap_body_len] = '\0';
+                                *pos = '\0';
+                            }
+                        }
+                    }
+                }
+                
+            } while(!pos && len > 0);
+
+            pos = NULL;
+            len = 0;
+
+            do 
+            {
+                if (soap_body_str)
+                {
+                    pos = AXIS2_STRSTR(soap_body_str, mime_boundary);
+                }
+                
+                if (pos)
+                {
+                    pos -= 2;
+                    body_mime_len = soap_body_len - (pos - soap_body_str);
+                    body_mime = AXIS2_MALLOC((*env)->allocator,
+                                    sizeof(char) * (body_mime_len + 1));
+                    memcpy(body_mime, pos, body_mime_len);
+                    body_mime[body_mime_len] = '\0';
+                    
+                    *(pos)  = '\0';
+                    soap_body_len = (pos - soap_body_str);
+                }
+                else
+                {
+                    len = axis2_http_transport_utils_on_data_request(buffer, size, (void*)&callback_ctx);
+                    if (len > 0)
+                    {
+                        axis2_char_t *temp_soap_body = soap_body_str;
+                        soap_body_str = AXIS2_MALLOC((*env)->allocator, 
+                            sizeof(char) * (soap_body_len + len + 1));
+                        if (soap_body_str)
+                        {
+                            if (temp_soap_body)
+                            {
+                                memcpy(soap_body_str, temp_soap_body, soap_body_len);
+                                AXIS2_FREE((*env)->allocator, temp_soap_body);
+                                temp_soap_body = NULL;
+                            }
+                            
+                            memcpy(soap_body_str + soap_body_len, buffer, len);
+                            soap_body_len += len;
+                            soap_body_str[soap_body_len] = '\0';
+                        }
+                     }
+                 }
+            } while(!pos && len > 0);
+            
+            pos = NULL;
+            len = 0;
+
+            do 
+            {
+                if (body_mime)
+                {
+                    pos = AXIS2_STRSTR(body_mime, "\r\n\r\n");
+                }
+                
+                if (pos)
+                {
+                    if (body_mime_len > (pos - body_mime + 4))
+                    {
+                        mime_binary_len = body_mime_len - (pos - body_mime + 4);
+                        mime_binary = AXIS2_MALLOC((*env)->allocator,
+                                        sizeof(char) * (mime_binary_len + 1));
+                        memcpy(mime_binary, pos + 4, mime_binary_len);
+                        mime_binary[mime_binary_len] = '\0';
+                        *pos = '\0';
+                    }
+                }
+                else
+                {
+                    len = axis2_http_transport_utils_on_data_request(buffer, size, (void*)&callback_ctx);
+                    if (len > 0)
+                    {
+                        axis2_char_t *temp_body_mime = body_mime;
+                        body_mime = AXIS2_MALLOC((*env)->allocator, 
+                            sizeof(char) * (body_mime_len + len + 1));
+                        if (body_mime)
+                        {
+                            if (temp_body_mime)
+                            {
+                                memcpy(body_mime, temp_body_mime, body_mime_len);
+                                AXIS2_FREE((*env)->allocator, temp_body_mime);
+                                temp_body_mime = NULL;
+                            }
+                            
+                            memcpy(body_mime + body_mime_len, buffer, len);
+                            body_mime_len += len;
+                            body_mime[body_mime_len] = '\0';
+                        }
+                     }
+                }
+            } while(!pos && len > 0);
+
+
+            /* TODO: need to address the ultiple attachment case */
+            pos = NULL;
+            len = 0;
+            do 
+            {
+                axis2_char_t *old_pos = NULL;
+                if (mime_binary)
+                {
+                    old_pos = mime_binary;
+                    axis2_char_t *temp_pos = NULL;
+                    do
+                    {
+                        
+                        pos = memchr(old_pos, AXIS2_MIME_BOUNDARY_BYTE, 
+                            (mime_binary_len - (old_pos - mime_binary)));
+                        if (!pos)
+                            break;
+                        else
+                        {
+                            old_pos = pos + 1;
+                            /*printf("pos %c\n", *pos);
+                            printf("pos + 1 %c\n", *(pos + 1));*/
+                            if (old_pos - mime_binary > mime_binary_len)
+                            {
+                                pos = NULL;
+                                break;
+                            }
+                            temp_pos = AXIS2_STRSTR(pos + 1, mime_boundary);
+                        }
+                    } while ( *(pos + 1) != AXIS2_MIME_BOUNDARY_BYTE || temp_pos != pos + 2);
+
+                    if ( pos && *(pos + 1) == AXIS2_MIME_BOUNDARY_BYTE && temp_pos == pos + 2)
+                    {
+                        printf("\nMIME end found\n");
+                        printf ("mime_binary_len %d\n", mime_binary_len);
+                        mime_binary_len = pos - mime_binary;
+                        printf ("mime_binary_len %d\n", mime_binary_len);
+                    }
+                    else
+                        pos = NULL;
+                }
+
+                if (pos)
+                {
+                    /*if (*(pos + 1) == AXIS2_MIME_BOUNDARY_BYTE)
+                    {
+                        axis2_char_t *temp_pos = NULL;
+                        temp_pos = AXIS2_STRSTR(pos + 1, mime_boundary);
+                        
+                        if (temp_pos)
+                            printf("temp_pos + 1 %c\n", *(temp_pos + 1));
+                        
+                        if (temp_pos == pos + 2 )
+                        {
+                            printf("\nMIME end found\n");
+                            printf ("mime_binary_len %d\n", mime_binary_len);
+                            mime_binary_len = pos - mime_binary;
+                            printf ("mime_binary_len %d\n", mime_binary_len);
+                        }
+                        else
+                        {
+                            pos = NULL;
+                        }
+                    }
+                    else
+                    {
+                        pos = NULL;
+                    }*/
+                    
+                    /*if (body_mime_len > (pos - body_mime + 4))
+                    {
+                        mime_binary_len = body_mime_len - (pos - body_mime + 4);
+                        mime_binary = AXIS2_MALLOC((*env)->allocator,
+                                        sizeof(char) * (mime_binary_len + 1));
+                        memcpy(mime_binary, pos + 4, mime_binary_len);
+                        mime_binary[mime_binary_len] = '\0';
+                        *pos = '\0';
+                    }*/
+                }
+                
+                if (!pos)
+                {
+                    len = axis2_http_transport_utils_on_data_request(buffer, size, (void*)&callback_ctx);
+                    if (len > 0)
+                    {
+                        axis2_char_t *temp_mime_binary = mime_binary;
+                        mime_binary = AXIS2_MALLOC((*env)->allocator, 
+                            sizeof(char) * (mime_binary_len + len + 1));
+                        if (mime_binary)
+                        {
+                            if (temp_mime_binary)
+                            {
+                                memcpy(mime_binary, temp_mime_binary, mime_binary_len);
+                                AXIS2_FREE((*env)->allocator, temp_mime_binary);
+                                temp_mime_binary = NULL;
+                            }
+                            
+                            memcpy(mime_binary + mime_binary_len, buffer, len);
+                            mime_binary_len += len;
+                            mime_binary[mime_binary_len] = '\0';
+                        }
+                     }
+                }
+            
+            } while(!pos && len > 0);
+
+            printf("mime_boundary %s\n", mime_boundary);
+            printf("\nroot_mime %s\n", root_mime);
+            printf("body_mime %s\n", body_mime);
+            printf("\nsoap_body %s..............\n soap_body_len %d \n", soap_body_str, soap_body_len);
+            if (soap_body_str) 
+            {
+                /* create a basic stream with soap string to pull SOAP */
+                axis2_stream_t *stream = axis2_stream_create_basic(env);
+                if (stream)
+                {
+                    AXIS2_STREAM_WRITE(stream, env, soap_body_str, soap_body_len);
+                    callback_ctx.in_stream = stream;
+                    callback_ctx.chunked_stream = NULL;
+                    callback_ctx.content_length = soap_body_len;
+                    callback_ctx.unread_len = soap_body_len;
+                }
+                
+                /* data handler hash map */
+                binary_data_map = axis2_hash_make(env);
+                if (binary_data_map)
+                {
+                    /* get MIME ID */
+                    axis2_char_t *id = NULL;
+                    id = AXIS2_STRSTR(body_mime, "content-id");
+                    if (id)
+                    {
+                        id += AXIS2_STRLEN("content-id");
+                        while (id && *id && *id != ':')
+                            id++;
+                        if (id)
+                        {
+                            while (id && *id && *id != '<')
+                                id++;
+                            id++;
+                            if (id)
+                            {
+                                axis2_char_t *pos = NULL;
+                                pos = AXIS2_STRSTR(id, ">");
+                                if (pos)
+                                {
+                                    axis2_char_t *mime_id = NULL;
+                                    int mime_id_len = 0;
+                                    mime_id_len = pos - id;
+                                    mime_id = AXIS2_MALLOC((*env)->allocator, 
+                                        sizeof(axis2_char_t) * mime_id_len + 1);
+                                    if (mime_id)
+                                    {
+                                        axis2_data_handler_t *data_handler = NULL;
+                                        memcpy(mime_id, id, mime_id_len);
+                                        mime_id[mime_id_len] = '\0';
+                                        data_handler = axis2_data_handler_create(env, NULL, NULL);
+                                        AXIS2_DATA_HANDLER_SET_BINARY_DATA(data_handler, env,
+                                            mime_binary, mime_binary_len);                                        
+                                        axis2_hash_set(binary_data_map, mime_id,
+                                            AXIS2_HASH_KEY_STRING, data_handler);                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                
+            }
+        }
+    }
+    
+
+    /*TODO for MTOM:create a basic stream
+    set callback_ctx.in_stream to this basic stream
+    make callback_ctx.chunked_stream null but keep the referance */
+
 	AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env, soap_action_header);
 	AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env, soap_action_header);
 	AXIS2_MSG_CTX_SET_TO(msg_ctx, env, axis2_endpoint_ref_create(env, 
@@ -212,6 +555,7 @@ axis2_http_transport_utils_process_http_post_request
 		xml_reader = NULL;
 		return AXIS2_FAILURE;
 	}
+
 	if(NULL != strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP))
 	{
 		is_soap11 = AXIS2_FALSE;
@@ -226,6 +570,7 @@ axis2_http_transport_utils_process_http_post_request
 			xml_reader = NULL;
 			return AXIS2_FAILURE;
 		}
+
 		soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder,
 					env);
 		if(NULL == soap_envelope)
@@ -288,6 +633,13 @@ axis2_http_transport_utils_process_http_post_request
         }
 		 		
 	}
+    
+    if (binary_data_map)
+    {
+        AXIS2_SOAP_BUILDER_SET_MIME_BODY_PARTS(soap_builder, env, 
+            binary_data_map);
+    }
+        
 	/* xml_char_set = AXIS2_OM_DOCUMENT_GET_CHARSET_ENC(
 	 *					AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(env om_builder),
 	 *					env);
@@ -886,6 +1238,7 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
                 ((axis2_callback_info_t*)ctx)->unread_len -= len;
             }            
         }
+        printf ("\n\n***************************\nbuffer %s\nlen %d\n\n", buffer, len);
         return len;
     }
 	return 0;	
@@ -1042,3 +1395,46 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
      */
     return NULL;
 }
+
+
+AXIS2_DECLARE(axis2_char_t*)
+axis2_http_transport_utils_get_value_from_content_type(axis2_env_t **env, 
+						axis2_char_t *content_type, axis2_char_t *key)
+{
+	axis2_char_t *tmp = NULL;
+	axis2_char_t *tmp_content_type = NULL;
+	axis2_char_t *tmp2 = NULL;
+	
+	AXIS2_ENV_CHECK(env, NULL);
+	AXIS2_PARAM_CHECK((*env)->error, content_type, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, key, NULL);
+	
+	tmp_content_type = AXIS2_STRDUP(content_type, env);
+	if(NULL == tmp_content_type)
+	{
+		return NULL;
+	}
+	tmp = strstr(tmp_content_type, key);
+	if(NULL == tmp)
+	{
+        AXIS2_FREE((*env)->allocator, tmp_content_type);
+		return NULL;
+	}
+
+	tmp = strchr(tmp, '=');
+	tmp2 = strchr(tmp, ';');
+	
+    if(NULL != tmp2)
+	{
+		*tmp2 = '\0';
+	}
+	if(NULL == tmp)
+	{
+        AXIS2_FREE((*env)->allocator, tmp_content_type);
+		return NULL;
+	}
+	tmp2 =  AXIS2_STRDUP(tmp + 1, env);
+	AXIS2_FREE((*env)->allocator, tmp_content_type);
+	return tmp2;
+}
+

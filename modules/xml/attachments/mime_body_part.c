@@ -193,7 +193,7 @@ axis2_mime_body_part_write_to (axis2_mime_body_part_t *mime_body_part, axis2_env
     */
     if (mime_body_part_impl->data_handler)
     {
-        status = AXIS2_DATA_HANDLER_WRITE_TO(mime_body_part_impl->data_handler, env,
+        status = AXIS2_DATA_HANDLER_READ_FROM(mime_body_part_impl->data_handler, env,
                     &data_handler_stream, &data_handler_stream_size);
         if (status == AXIS2_FAILURE)
             return AXIS2_FAILURE;

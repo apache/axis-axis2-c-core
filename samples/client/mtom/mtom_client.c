@@ -86,7 +86,7 @@ int main(int argc, char** argv)
     
     /* Set end point reference of mtom service */
     address = "http://localhost:9090/axis2/services/mtomSample";
-    wsa_action = "http://localhost:9090/axis2/services/mtom/mtomString";
+    wsa_action = "http://localhost:9090/axis2/services/mtom/mtomSample";
     if (argc > 1 )
         address = argv[1];
     if (AXIS2_STRCMP(address, "-h") == 0)
@@ -149,7 +149,7 @@ int main(int argc, char** argv)
     svc = AXIS2_CONF_GET_SVC(conf, &env, "mtom");
     if (svc)
     {
-        op = AXIS2_SVC_GET_OP_WITH_NAME(svc, &env, "mtomString");
+        op = AXIS2_SVC_GET_OP_WITH_NAME(svc, &env, "mtomSample");
         if (op)
         {
             AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, &env, AXIS2_MEP_URI_OUT_IN);
@@ -164,7 +164,7 @@ int main(int argc, char** argv)
         axis2_qname_t *op_qname = NULL;
         axis2_qname_t *svc_qname = axis2_qname_create(&env, "mtom", NULL, NULL);
         svc = axis2_svc_create_with_qname(&env, svc_qname);
-        op_qname = axis2_qname_create(&env, "mtomString", NULL, NULL);
+        op_qname = axis2_qname_create(&env, "mtomSample", NULL, NULL);
         op = axis2_op_create_with_qname(&env, op_qname);
         AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, &env, AXIS2_MEP_URI_OUT_IN);
         AXIS2_SVC_ADD_OP(svc, &env, op);

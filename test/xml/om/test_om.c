@@ -42,7 +42,17 @@ FILE *f = NULL;
 
 int read_input(char *buffer,int size,void* ctx)
 {
-   return fread(buffer, sizeof(char),size,f);
+   int len = 0;
+   char* pos = NULL;
+   len = fread(buffer, sizeof(char),size,f);
+   if (buffer)
+       pos = strstr(buffer, "---");
+   if (pos)
+   {
+        len = pos - buffer;
+        *pos = '\0';
+   }
+   return len;
 }
 
 int

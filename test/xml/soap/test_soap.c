@@ -24,11 +24,26 @@
 #include <axis2_soap_fault_role.h>
 
 FILE *f = NULL;
+int read_soap(char *buffer,int size,void* ctx)
+{
+   int len = 0;
+   char* pos = NULL;
+   len = fread(buffer, sizeof(char),size,f);
+   if (buffer)
+       pos = strstr(buffer, "---");
+   if (pos)
+   {
+        len = pos - buffer;
+        *pos = '\0';
+   }
+   printf("buffer = %s\n", buffer);
+   return len;
+}
 
-int read_soap(char *buffer, int size, void *ctx)
+/*int read_soap(char *buffer, int size, void *ctx)
 {
     return fread(buffer, sizeof(char), size, f); 
-}
+}*/
 
 int close_soap(void *ctx)
 {
@@ -384,10 +399,10 @@ int main(int argc, char *argv[])
     env = axis2_env_create_with_error_log(allocator, error,  log);
     
     axis2_error_init(); 
-    build_soap_programatically(&env);   
+    /*build_soap_programatically(&env);   */
     build_soap(&env, filename,uri); 
-    create_soap_fault(&env); 
-	test_soap_fault_value(&env); 
+    /*create_soap_fault(&env); 
+	test_soap_fault_value(&env); */
     axis2_env_free(env); 
     axis2_allocator_free(allocator);
     return 0;        

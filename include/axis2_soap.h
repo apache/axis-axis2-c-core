@@ -161,6 +161,11 @@ typedef enum soap_version
 
 #define AXIS2_SOAP_FAULT_CODE_RECEIVER ""
 
+/* MTOM related  */
+
+#define AXIS2_XOP_NAMESPACE_URI "http://www.w3.org/2004/08/xop/include"
+
+#define AXIS2_XOP_INCLUDE "Include"
 /** @} */
 
 #ifdef __cplusplus

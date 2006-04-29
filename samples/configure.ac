@@ -67,6 +67,7 @@ AC_CONFIG_FILES([Makefile \
     server/math/Makefile \
     server/notify/Makefile \
     server/sg_math/Makefile \
+    server/mtom/Makefile \
     client/Makefile \
     client/echo/Makefile \
     client/math/Makefile \

@@ -62,18 +62,39 @@ typedef struct axis2_data_handler axis2_data_handler_t;
  */
 struct axis2_data_handler_ops
 {
-	axis2_char_t * (AXIS2_CALL *get_content_type)(axis2_data_handler_t *data_handler, axis2_env_t **env); 
+	axis2_char_t *(AXIS2_CALL *
+    get_content_type)(axis2_data_handler_t *data_handler, 
+        axis2_env_t **env); 
 	
-	axis2_byte_t * (AXIS2_CALL *get_input_stream)(axis2_data_handler_t *data_handler, axis2_env_t **env); 
+	axis2_byte_t* (AXIS2_CALL *
+    get_input_stream)(axis2_data_handler_t *data_handler, 
+        axis2_env_t **env); 
 
     axis2_status_t (AXIS2_CALL *
-    write_to)(axis2_data_handler_t *data_handler, axis2_env_t **env, 
-                axis2_byte_t** output_stream, int *output_stream_size);
+    read_from)(axis2_data_handler_t *data_handler, 
+        axis2_env_t **env, 
+        axis2_byte_t** output_stream, 
+        int *output_stream_size);
 
-	/** Deallocate memory
-     * @return status code
-     */
-    axis2_status_t (AXIS2_CALL *free) (axis2_data_handler_t *data_handler, axis2_env_t **env);
+    axis2_status_t (AXIS2_CALL *
+    set_binary_data)(axis2_data_handler_t *data_handler, 
+        axis2_env_t **env, 
+        axis2_byte_t* input_stream, 
+        int input_stream_len);
+
+    axis2_status_t (AXIS2_CALL *
+    write_to)(axis2_data_handler_t *data_handler, 
+        axis2_env_t **env);
+
+    axis2_status_t ( AXIS2_CALL *
+    set_file_name )(
+        axis2_data_handler_t *data_handler, 
+        axis2_env_t **env, 
+        axis2_char_t* file_name);
+    
+    axis2_status_t (AXIS2_CALL *
+    free) (axis2_data_handler_t *data_handler, 
+        axis2_env_t **env);
 };
 
 /** 
@@ -108,8 +129,17 @@ axis2_data_handler_create (axis2_env_t **env, axis2_char_t *file_name, axis2_cha
 #define AXIS2_DATA_HANDLER_GET_INPUT_STREAM(data_handler, env) \
     ((data_handler)->ops->get_input_stream (data_handler, env))
 
-#define AXIS2_DATA_HANDLER_WRITE_TO(data_handler, env, output_stream, output_stream_size) \
-    ((data_handler)->ops->write_to (data_handler, env, output_stream, output_stream_size))
+#define AXIS2_DATA_HANDLER_READ_FROM(data_handler, env, output_stream, output_stream_size) \
+    ((data_handler)->ops->read_from (data_handler, env, output_stream, output_stream_size))
+
+#define AXIS2_DATA_HANDLER_SET_BINARY_DATA(data_handler, env, input_stream, input_stream_size) \
+    ((data_handler)->ops->set_binary_data (data_handler, env, input_stream, input_stream_size))
+
+#define AXIS2_DATA_HANDLER_WRITE_TO(data_handler, env) \
+    ((data_handler)->ops->write_to (data_handler, env))
+
+#define AXIS2_DATA_HANDLER_SET_FILE_NAME(data_handler, env, file_name) \
+    ((data_handler)->ops->set_file_name (data_handler, env, file_name))
 
 /*************************** End of function macros ***************************/
 

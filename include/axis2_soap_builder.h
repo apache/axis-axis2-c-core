@@ -89,6 +89,11 @@ AXIS2_DECLARE_DATA   struct axis2_soap_builder_ops
                                            axis2_env_t **env,
                                            axis2_om_node_t *om_node,
                                            axis2_bool_t is_soap_element);
+        axis2_status_t (AXIS2_CALL *
+        set_mime_body_parts)
+                                    (axis2_soap_builder_t *builder, 
+                                     axis2_env_t **env,
+                                     axis2_hash_t *map); 
 };
                                                       
 
@@ -148,6 +153,9 @@ axis2_soap_builder_create(axis2_env_t **env,
         
 #define AXIS2_SOAP_BUILDER_PROCESS_NAMESPACE_DATA(builder, env, om_node, is_soap_element) \
         ((builder)->ops->process_namespace_data(builder, env, om_node, is_soap_element))
+        
+#define AXIS2_SOAP_BUILDER_SET_MIME_BODY_PARTS(builder, env, map) \
+        ((builder)->ops->set_mime_body_parts(builder, env, map))
         
 /** @} */
 #ifdef __cplusplus

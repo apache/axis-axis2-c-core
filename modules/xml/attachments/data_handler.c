@@ -22,6 +22,8 @@ typedef struct axis2_data_handler_impl
 	axis2_data_handler_t data_handler;
 	axis2_char_t* mime_type;
     axis2_char_t* file_name;
+    axis2_byte_t* buffer;
+    int buffer_len;
 } axis2_data_handler_impl_t;
 
 
@@ -40,8 +42,19 @@ axis2_byte_t * AXIS2_CALL
 axis2_data_handler_get_input_stream (axis2_data_handler_t *data_handler, axis2_env_t **env); 
 
 axis2_status_t AXIS2_CALL
-axis2_data_handler_write_to(axis2_data_handler_t *data_handler, axis2_env_t **env, 
+axis2_data_handler_read_from(axis2_data_handler_t *data_handler, axis2_env_t **env, 
                                 axis2_byte_t** output_stream, int *output_stream_size);
+
+axis2_status_t AXIS2_CALL
+axis2_data_handler_set_binary_data(axis2_data_handler_t *data_handler, axis2_env_t **env, 
+                                axis2_byte_t* input_stream, int input_stream_len);
+
+axis2_status_t AXIS2_CALL
+axis2_data_handler_write_to(axis2_data_handler_t *data_handler, axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL
+axis2_data_handler_set_file_name(axis2_data_handler_t *data_handler, axis2_env_t **env, 
+                                axis2_char_t* file_name);
 
 /************************** End of Function headers ************************/
 
@@ -63,6 +76,8 @@ axis2_data_handler_create (axis2_env_t **env, axis2_char_t *file_name, axis2_cha
     data_handler_impl->data_handler.ops = NULL;
     data_handler_impl->mime_type = NULL;
     data_handler_impl->file_name = NULL;
+    data_handler_impl->buffer = NULL;
+    data_handler_impl->buffer_len = 0;
 
     if (mime_type)
     {
@@ -97,7 +112,10 @@ axis2_data_handler_create (axis2_env_t **env, axis2_char_t *file_name, axis2_cha
 	data_handler_impl->data_handler.ops->free =  axis2_data_handler_free;
     data_handler_impl->data_handler.ops->get_content_type = axis2_data_handler_get_content_type;
     data_handler_impl->data_handler.ops->get_input_stream = axis2_data_handler_get_input_stream;
+    data_handler_impl->data_handler.ops->read_from = axis2_data_handler_read_from;
     data_handler_impl->data_handler.ops->write_to = axis2_data_handler_write_to;
+    data_handler_impl->data_handler.ops->set_binary_data = axis2_data_handler_set_binary_data;
+    data_handler_impl->data_handler.ops->set_file_name = axis2_data_handler_set_file_name;
 	return &(data_handler_impl->data_handler);
 }
 
@@ -143,7 +161,7 @@ axis2_data_handler_get_input_stream (axis2_data_handler_t *data_handler, axis2_e
 }
 
 axis2_status_t AXIS2_CALL
-axis2_data_handler_write_to(axis2_data_handler_t *data_handler, axis2_env_t **env, 
+axis2_data_handler_read_from(axis2_data_handler_t *data_handler, axis2_env_t **env, 
 							axis2_byte_t** output_stream, int *output_stream_size)
 {
     axis2_data_handler_impl_t *data_handler_impl = NULL;
@@ -256,3 +274,83 @@ axis2_data_handler_write_to(axis2_data_handler_t *data_handler, axis2_env_t **en
 	
     return AXIS2_SUCCESS;
 }
+
+axis2_status_t AXIS2_CALL
+axis2_data_handler_set_binary_data(axis2_data_handler_t *data_handler, axis2_env_t **env, 
+                                axis2_byte_t* input_stream, int input_stream_len)
+{
+    axis2_data_handler_impl_t *data_handler_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    data_handler_impl = AXIS2_INTF_TO_IMPL(data_handler);
+    
+    data_handler_impl->buffer = input_stream;
+    data_handler_impl->buffer_len = input_stream_len;
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_data_handler_write_to(axis2_data_handler_t *data_handler, axis2_env_t **env)
+{
+    axis2_data_handler_impl_t *data_handler_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    data_handler_impl = AXIS2_INTF_TO_IMPL(data_handler);
+    
+    if (data_handler_impl->file_name)
+    {
+        FILE *f = NULL;
+        axis2_byte_t *byte_stream = NULL;
+        axis2_byte_t *temp_byte_stream = NULL;
+        axis2_byte_t *read_stream = NULL;
+        int byte_stream_size = 0;
+        int temp_byte_stream_size = 0;
+        int read_stream_size = 0;
+        int count = 0;
+        
+        f = fopen(data_handler_impl->file_name, "wb");
+        if (!f)
+            return AXIS2_FAILURE;
+            
+        count = fwrite(data_handler_impl->buffer, 1, data_handler_impl->buffer_len, f);
+        
+        if (ferror(f) != 0)
+        {
+            /*TODO : need to set the correct error code */
+            return AXIS2_FAILURE;
+        }
+        fclose(f);
+    }
+
+    return AXIS2_SUCCESS;        
+}
+
+axis2_status_t AXIS2_CALL
+axis2_data_handler_set_file_name(axis2_data_handler_t *data_handler, axis2_env_t **env, 
+                                axis2_char_t* file_name)
+{
+    axis2_data_handler_impl_t *data_handler_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    data_handler_impl = AXIS2_INTF_TO_IMPL(data_handler);
+    
+    if(data_handler_impl->file_name)
+    {
+        AXIS2_FREE((*env)->allocator, data_handler_impl->file_name);
+        data_handler_impl->file_name = NULL;
+    }
+    
+    if (file_name)
+    {
+        data_handler_impl->file_name = AXIS2_STRDUP(file_name, env);
+        if (!(data_handler_impl->file_name))
+        {
+            axis2_data_handler_free(&(data_handler_impl->data_handler), env);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+    }
+    
+    return AXIS2_SUCCESS;
+}
+
