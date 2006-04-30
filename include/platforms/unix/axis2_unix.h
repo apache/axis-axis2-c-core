@@ -99,7 +99,6 @@ extern "C"
 #include <sys/timeb.h>
 #include <unistd.h>
 #include <errno.h>
-#include <sys/dir.h>
 #include <sys/param.h>
 #include <stdio.h>
 #include <stdlib.h>
