@@ -9,7 +9,10 @@ libaxis2_clientapi_la_SOURCES = \
                                 callback_recv.c \
                                 call.c \
                                 msg_sender.c \
-                                stub.c
+                                stub.c \
+								options.c \
+								op_client.c \
+								svc_client.c
 
 noinst_HEADERS = callback_recv.h \
                     listener_manager.h \
