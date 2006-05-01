@@ -655,6 +655,7 @@ axis2_conf_ctx_fill_ctxs(struct axis2_conf_ctx *conf_ctx,
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_svc_t *svc = NULL;
+    axis2_svc_grp_t *svc_grp = NULL;
     axis2_qname_t *qname = NULL;
     axis2_char_t *svc_id = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
@@ -689,8 +690,17 @@ axis2_conf_ctx_fill_ctxs(struct axis2_conf_ctx *conf_ctx,
             AXIS2_ERROR_INVALID_STATE_SVC, AXIS2_FAILURE);
         return NULL;
     }
+
+    svc_grp = AXIS2_SVC_GET_PARENT(svc, env);
+    if (svc_grp)
+    {
+        svc_grp_ctx_id = AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
+    }
     
-    svc_grp_ctx_id = AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID(msg_ctx, env);
+    if (!svc_grp_ctx_id)
+    {
+        svc_grp_ctx_id = AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID(msg_ctx, env);
+    }
     
     /* by this time service group context id must have a value, 
     either from transport or from addressing */

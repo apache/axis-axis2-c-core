@@ -24,6 +24,8 @@
 #include <axis2_om_node.h>
 #include <axis2_om_element.h>
 
-axis2_om_node_t *axis2_add_add(axis2_env_t **env, axis2_om_node_t *node);
+axis2_om_node_t *axis2_add_add(axis2_env_t **env, 
+    axis2_om_node_t *node, 
+    axis2_msg_ctx_t *msg_ctx);
 
 #endif /* ADD_H*/

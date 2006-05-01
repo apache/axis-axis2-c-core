@@ -109,7 +109,7 @@ add_invoke(axis2_svc_skeleton_t *svc_skeleton,
                 if (op_name)
                 {
                     if ( AXIS2_STRCMP(op_name, "add") == 0 )
-                        return axis2_add_add(env, node);
+                        return axis2_add_add(env, node, msg_ctx);
                 }
             }
         }
