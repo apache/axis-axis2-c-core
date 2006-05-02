@@ -15,17 +15,11 @@
  */
 
 #include <axis2_call.h>
-#include <axis2_om_stax_builder.h>
-#include <axis2_om_document.h>
-#include <axis2_om_node.h>
-#include <axis2_om_element.h>
-#include <axis2_om_text.h>
+#include <axis2_om.h>
 #include <axis2_stream.h>
 #include <axis2_log_default.h>
 #include <axis2_error_default.h>
-#include <axis2_xml_reader.h>
 #include <stdio.h>
-#include <axis2_xml_writer.h>
 #include <axis2_soap.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
