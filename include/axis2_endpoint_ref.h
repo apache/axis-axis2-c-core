@@ -24,7 +24,7 @@
 
 #include <axis2_defines.h>
 #include <axis2_env.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_array_list.h>
 #include <axis2_any_content_type.h>
 #include <axis2_svc_name.h>

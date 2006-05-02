@@ -22,7 +22,7 @@
  * @brief axis2 DESCRIPTION
  */
  
-#include <axis2.h>
+#include <axis2_const.h>
 
 #ifdef __cplusplus
 extern "C" 

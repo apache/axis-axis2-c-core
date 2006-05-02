@@ -22,7 +22,7 @@
  * @brief axis2 math stub interface
  */
 
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
 #include <axis2_env.h>

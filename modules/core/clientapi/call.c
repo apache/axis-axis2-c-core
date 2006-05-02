@@ -15,7 +15,7 @@
  */
 
 #include <axis2_call.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_transport_receiver.h>
 #include <axis2_transport_in_desc.h>
 #include <axis2_transport_out_desc.h>

@@ -23,7 +23,7 @@
  *          Constants for XML Schema elements, attributes and URIs.
  */
  
-#include <axis2.h>
+#include <axis2_const.h>
 
 #ifdef __cplusplus
 extern "C" 

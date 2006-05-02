@@ -18,7 +18,7 @@
 #include <axis2_phase.h>
 #include <axis2_array_list.h>
 #include <axis2_msg_ctx.h>
-#include <axis2.h>
+#include <axis2_const.h>
 
 
 typedef struct axis2_phase_impl 

@@ -23,7 +23,7 @@
   * @brief axis2 HTTP Worker
   */
 
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_simple_http_svr_conn.h>

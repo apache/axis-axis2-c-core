@@ -23,7 +23,7 @@
   * @brief axis2 HTTP Transport Sender (Handler) implementation
   */
   
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_msg_ctx.h>

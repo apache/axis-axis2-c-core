@@ -15,7 +15,7 @@
  */
 
 #include <axis2_param.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_string.h>
 
 typedef struct axis2_param_impl_s

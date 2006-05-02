@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_phase_rule.h>
 #include <axis2_string.h>
 

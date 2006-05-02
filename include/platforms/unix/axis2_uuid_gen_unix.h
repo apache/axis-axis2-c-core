@@ -17,7 +17,7 @@
 #ifndef AXIS2_UUID_GEN_UNIX_H
 #define AXIS2_UUID_GEN_UNIX_H
 
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_defines.h>
 
 

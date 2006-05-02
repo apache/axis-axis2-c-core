@@ -9,7 +9,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <stdlib.h>
 
 /* Function prototypes */

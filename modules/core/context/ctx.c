@@ -15,7 +15,7 @@
  */
 
 #include <axis2_ctx.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_hash.h>
 
 typedef struct axis2_ctx_impl

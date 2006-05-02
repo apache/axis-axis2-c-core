@@ -22,7 +22,7 @@
  * @brief axis2 HTTP Request Line
  */
 
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_defines.h>
 #include <axis2_env.h>
 

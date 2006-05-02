@@ -16,7 +16,7 @@
 
 #include <axis2_svc_grp_ctx.h>
 #include <axis2_svc_grp.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_hash.h>
 
 typedef struct axis2_svc_grp_ctx_impl

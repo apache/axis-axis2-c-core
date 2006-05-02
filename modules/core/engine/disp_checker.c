@@ -19,7 +19,7 @@
 #include <axis2_qname.h>
 #include <axis2_relates_to.h>
 #include <axis2_svc.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_op_ctx.h>
 #include <axis2_svc_ctx.h>

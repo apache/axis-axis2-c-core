@@ -15,7 +15,7 @@
  */
 
 #include <axis2_engine.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_hash.h>
 #include <axis2_soap_const.h>
 #include <axis2_soap_envelope.h>

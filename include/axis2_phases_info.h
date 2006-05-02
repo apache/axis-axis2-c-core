@@ -5,7 +5,7 @@
  * @file axis2_phases_info.h
  * @brief axis2 phases info interface. 
  */
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
 #include <axis2_env.h>

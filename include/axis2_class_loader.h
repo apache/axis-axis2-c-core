@@ -25,7 +25,7 @@
 #include <axis2_defines.h>
 #include <axis2_qname.h>
 #include <axis2_error.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_dll_desc.h>
 #include <axis2_svc_skeleton.h>
 #include <axis2_param.h>

@@ -22,7 +22,7 @@
  * @brief Axis2 Xml Schema Constants
  */
  
-#include <axis2.h>
+#include <axis2_const.h>
 
 #ifdef __cplusplus
 extern "C" 

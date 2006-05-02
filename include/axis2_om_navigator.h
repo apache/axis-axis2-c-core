@@ -29,7 +29,7 @@
  * @brief defines axis2_om_navigator struct and its ops
  */
 
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_env.h>
 #include <axis2_om_node.h>
 

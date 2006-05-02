@@ -15,7 +15,7 @@
  */
 
 #include <callback_recv.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_hash.h>
 
 /**

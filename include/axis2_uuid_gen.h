@@ -17,7 +17,7 @@
 #ifndef AXIS2_UUID_GEN_H
 #define AXIS2_UUID_GEN_H
 
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <platforms/axis2_platform_auto_sense.h>

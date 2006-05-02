@@ -1,6 +1,6 @@
 #include <axis2_conf_ctx.h>
 #include <axis2_svc_grp.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_allocator.h>
 #include <axis2_env.h>
 #include <stdio.h>

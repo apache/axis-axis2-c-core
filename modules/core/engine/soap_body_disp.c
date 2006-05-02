@@ -18,7 +18,7 @@
 #include <axis2_handler_desc.h>
 #include <axis2_qname.h>
 #include <axis2_svc.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_utils.h>
 #include <axis2_soap_envelope.h>

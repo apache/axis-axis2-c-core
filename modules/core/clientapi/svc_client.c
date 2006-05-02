@@ -15,7 +15,7 @@
  */
 
 #include <axis2_svc_client.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_hash.h>
 #include <callback_recv.h>
 #include <axis2_soap_const.h>

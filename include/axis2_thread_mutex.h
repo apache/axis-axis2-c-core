@@ -23,7 +23,7 @@
  * @brief AXIS2 Thread Mutex Routines
  */
 
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_allocator.h>
 
 #ifdef __cplusplus

@@ -23,7 +23,7 @@
   * @brief axis2 Apache2 Worker
   */
 
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_conf_ctx.h>

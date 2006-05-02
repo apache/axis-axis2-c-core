@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2.h>
+#include <axis2_const.h>
 #include <platforms/windows/axis2_thread_windows.h>
 
 AXIS2_DECLARE(axis2_threadattr_t*)

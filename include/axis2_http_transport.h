@@ -17,7 +17,7 @@
 #ifndef AXIS2_HTTP_TRANSPORT_H
 #define AXIS2_HTTP_TRANSPORT_H
 
-#include <axis2.h>
+#include <axis2_const.h>
 
 #ifdef __cplusplus
 extern "C"

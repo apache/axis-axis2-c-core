@@ -17,7 +17,7 @@
  
 #include <axis2_xml_reader.h>
 #include <axis2_env.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <guththila_xml_pull_parser.h>
 
 /**************** function prototypes ******************************************/

@@ -33,7 +33,7 @@ extern "C"
   */
 
 #include <axis2_defines.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_msg_ctx.h>
 
 typedef struct axis2_svr_callback axis2_svr_callback_t;

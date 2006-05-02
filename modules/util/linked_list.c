@@ -15,7 +15,7 @@
  */
 
 #include <axis2_linked_list.h>
-#include <axis2.h>
+#include <axis2_const.h>
 
 typedef struct axis2_linked_list_impl
 {

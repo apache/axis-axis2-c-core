@@ -16,7 +16,7 @@
 
 #include <axis2_qname.h>
 #include <axis2_env.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_defines.h>
 #include <string.h>
 

@@ -15,7 +15,7 @@
  */
 
 #include <axis2_options.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_hash.h>
 #include <axis2_soap_const.h>
 #include <axis2_msg_info_headers.h>

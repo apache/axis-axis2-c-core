@@ -15,7 +15,7 @@
  */
 
 #include <axis2_op_client.h>
-#include <axis2.h>
+#include <axis2_const.h>
 #include <axis2_hash.h>
 #include <axis2_mep_client.h>
 #include <axis2_uuid_gen.h>

@@ -19,7 +19,7 @@
  #include <libxml/xmlreader.h>
  #include <libxml/parser.h>
  #include <axis2_defines.h>
- #include <axis2.h>
+ #include <axis2_const.h>
  #include <string.h>
  #include <axis2_string.h>
  
