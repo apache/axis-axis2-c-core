@@ -18,7 +18,7 @@
 #include <axis2.h>
 #include <axis2_hash.h>
 #include <callback_recv.h>
-#include <axis2_soap.h>
+#include <axis2_soap_const.h>
 #include <axis2_soap_body.h>
 #include <listener_manager.h>
 #include <axis2_module_desc.h>
@@ -1015,4 +1015,3 @@ static axis2_bool_t fill_soap_envelope(axis2_env_t **env, axis2_svc_client_impl_
     AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, envelope);
 	return AXIS2_TRUE;
 }
-

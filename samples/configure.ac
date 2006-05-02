@@ -77,6 +77,8 @@ AC_CONFIG_FILES([Makefile \
     client/echo_non_blocking/Makefile \
     client/notify/Makefile \
     client/google/Makefile \
+    user_guide/Makefile \
+    user_guide/clients/Makefile \
     ])
     
 AC_OUTPUT

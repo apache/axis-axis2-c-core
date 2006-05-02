@@ -17,12 +17,11 @@
  #include "_axis2_soap_envelope.h"
  #include "_axis2_soap_body.h"
  #include <axis2_hash.h>
- #include <axis2_soap.h>
+ #include <axis2_soap_const.h>
  #include <axis2_soap_builder.h>
  
- /******************* impl struct *********************************************/
- 
- typedef struct axis2_soap_body_impl_t
+ /******************* impl struct ****************************************/
+typedef struct axis2_soap_body_impl_t
  {
     axis2_soap_body_t soap_body;
     
@@ -460,4 +459,4 @@ axis2_soap_body_get_soap_version(axis2_soap_body_t *body,
             return AXIS2_SOAP12;
     }                    
     return AXIS2_FAILURE;
-}                                 
+}

@@ -18,7 +18,7 @@
 #include <axis2.h>
 #include <axis2_hash.h>
 #include <axis2_engine.h>
-#include <axis2_soap.h>
+#include <axis2_soap_const.h>
 #include <axis2_soap_body.h>
 #include <axis2_http_transport_utils.h>
 #include <axis2_property.h>
@@ -697,4 +697,3 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_receive(axis2_env_t **env, axis2_ms
     } 
     return response;
 }
-

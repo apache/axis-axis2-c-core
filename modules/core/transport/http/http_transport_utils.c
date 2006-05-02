@@ -28,7 +28,7 @@
 #include <axis2_om_namespace.h>
 #include <axis2_om_node.h>
 #include <axis2_hash.h>
-#include <axis2_soap.h>
+#include <axis2_soap_const.h>
 #include <axis2_http_header.h>
 #include <axis2_property.h>
 
@@ -1389,4 +1389,3 @@ axis2_http_transport_utils_get_value_from_content_type(axis2_env_t **env,
 	AXIS2_FREE((*env)->allocator, tmp_content_type);
 	return tmp2;
 }
-

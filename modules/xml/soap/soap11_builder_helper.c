@@ -17,7 +17,7 @@
  #include <axis2_soap11_builder_helper.h>
  #include <axis2_om_stax_builder.h>
  #include <axis2_soap_builder.h>
- #include <axis2_soap.h>
+ #include <axis2_soap_const.h>
  #include "_axis2_soap_fault_code.h"
  #include "_axis2_soap_fault_value.h"
  #include "_axis2_soap_fault_reason.h"

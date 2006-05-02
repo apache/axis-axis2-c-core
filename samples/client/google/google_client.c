@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <axis2_xml_writer.h>
 #include <axis2_soap_builder.h>
-#include <axis2_soap.h>
+#include <axis2_soap_const.h>
 #include <axis2_soap_envelope.h>
 #include <axis2_soap_body.h>
 #include <axis2_soap_header.h>
@@ -321,5 +321,3 @@ axis2_google_stub_call(axis2_stub_t *stub,
 
 	return ret_node;
 }*/
-
-

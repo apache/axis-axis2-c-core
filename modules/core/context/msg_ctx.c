@@ -23,7 +23,7 @@
 #include <axis2_transport_in_desc.h>
 #include <axis2_transport_out_desc.h>
 #include <axis2_soap_envelope.h>
-#include <axis2_soap.h>
+#include <axis2_soap_const.h>
 
 typedef struct axis2_msg_ctx_impl axis2_msg_ctx_impl_t;
 

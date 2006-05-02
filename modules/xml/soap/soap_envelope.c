@@ -19,7 +19,7 @@
  #include <axis2_soap_header.h>
  #include <axis2_soap_header_block.h>
  #include <axis2_hash.h>
- #include <axis2_soap.h>
+ #include <axis2_soap_const.h>
  #include <axis2_soap_builder.h>
  #include <axis2_soap_fault_code.h>
  #include <axis2_soap_fault_reason.h>
@@ -851,4 +851,4 @@ axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *soap_envelope,
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
-}                                     
+}

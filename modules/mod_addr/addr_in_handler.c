@@ -18,7 +18,7 @@
 #include <axis2_addr.h>
 #include <axis2_handler_desc.h>
 #include <axis2_array_list.h>
-#include <axis2_soap.h>
+#include <axis2_soap_const.h>
 #include <axis2_soap_envelope.h>
 #include <axis2_soap_header.h>
 #include <axis2_soap_header_block.h>

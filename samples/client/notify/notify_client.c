@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <axis2_xml_writer.h>
 #include <axis2_soap_builder.h>
-#include <axis2_soap.h>
+#include <axis2_soap_const.h>
 #include <axis2_soap_envelope.h>
 #include <axis2_soap_body.h>
 #include <axis2_soap_header.h>
@@ -219,4 +219,3 @@ build_om_programatically(axis2_env_t **env)
 
     return notify_om_node;
 }
-

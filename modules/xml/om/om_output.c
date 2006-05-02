@@ -19,7 +19,7 @@
 #include <axis2_string.h>
 #include <axis2_xml_writer.h>
 #include <axis2_om_text.h>
-#include <axis2_soap.h>
+#include <axis2_soap_const.h>
 #include <axis2_array_list.h>
 #include <axis2_uuid_gen.h>
 #include <axis2_mime_output.h>

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
  
- #include "_axis2_soap_envelope.h"
+#include <axis2_soap_const.h>envelope.h"
  #include "_axis2_soap_header.h"
  #include <axis2_soap_header_block.h>
  #include <axis2_hash.h>
- #include <axis2_soap.h>
+ #include <axis2_soap_const.h>
  #include <axis2_soap_builder.h>
  #include <stdio.h>
  #include <axis2_om_node_internal.h>

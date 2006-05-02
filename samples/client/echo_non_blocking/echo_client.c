@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <axis2_xml_writer.h>
 #include <axis2_soap_builder.h>
-#include <axis2_soap.h>
+#include <axis2_soap_const.h>
 #include <axis2_soap_envelope.h>
 #include <axis2_soap_body.h>
 #include <axis2_soap_header.h>
@@ -291,4 +291,3 @@ my_on_error(struct axis2_callback *callback,
 	isComplete = 1;
 	return AXIS2_SUCCESS;
 }
-

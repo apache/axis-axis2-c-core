@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  #include "_axis2_soap_fault.h"
- #include <axis2_soap.h>
+ #include <axis2_soap_const.h>
  #include "_axis2_soap_body.h"
  #include <axis2_om_node.h>
  #include <axis2_om_element.h>
@@ -782,4 +782,4 @@ axis2_soap_fault_get_soap_version(axis2_soap_fault_t *fault,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     fault_impl = AXIS2_INTF_TO_IMPL(fault);
     return fault_impl->soap_version;
-}                                  
+}
