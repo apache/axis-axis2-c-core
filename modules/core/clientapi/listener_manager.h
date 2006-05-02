@@ -104,7 +104,7 @@ axis2_listener_manager_create(axis2_env_t **env);
 #define AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(listener_manager, env, transport, conf_ctx)\
         ((listener_manager)->ops->make_sure_started(listener_manager, env, transport, conf_ctx))
         
-#define AXIS2_LISTNER_MANAGER_STOP(listener_manager, env, transport)\
+#define AXIS2_LISTENER_MANAGER_STOP(listener_manager, env, transport)\
         ((listener_manager)->ops->stop(listener_manager, env, transport))
         
 #define AXIS2_LISTNER_MANAGER_REPLY_TO_EPR(listener_manager, env, svc_name, transport) \

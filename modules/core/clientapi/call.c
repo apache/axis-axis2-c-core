@@ -887,7 +887,7 @@ axis2_status_t AXIS2_CALL axis2_call_close(struct axis2_call *call,
     if (!transport_name)
         return AXIS2_FAILURE;
     
-    return AXIS2_LISTNER_MANAGER_STOP(call_impl->listener_manager, env, transport_name);
+    return AXIS2_LISTENER_MANAGER_STOP(call_impl->listener_manager, env, transport_name);
 }
 
 void * AXIS2_THREAD_FUNC
