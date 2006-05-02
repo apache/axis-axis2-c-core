@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#include <config.h>
+
 #include <sys/ioctl.h>
+#include <string.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netdb.h>
@@ -21,8 +25,18 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <linux/if.h>
 #include <sys/time.h>
+
+#ifdef HAVE_LINUX_IF_H
+#include <linux/if.h>
+#else 
+#if 1  /* this should be HAVE_NET_IF_H && SMELLS_LIKE_SOLARIS */
+#include <sys/sockio.h>
+#include <net/if.h>
+#include <net/if_arp.h>
+#endif
+#endif
+
 #include <platforms/unix/axis2_uuid_gen_unix.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
@@ -182,6 +196,7 @@ axis2_platform_uuid_gen(char *s)
 	return uuid_str;	
 }
 
+#ifdef HAVE_LINUX_IF_H
 char * AXIS2_CALL
 axis2_uuid_get_mac_addr()
 {
@@ -208,3 +223,71 @@ axis2_uuid_get_mac_addr()
 	close(s);
 	return buffer;	
 }
+
+#else 
+/* code modified from that posted on:
+ * http://forum.sun.com/jive/thread.jspa?threadID=84804&tstart=30
+ */
+char * AXIS2_CALL
+axis2_uuid_get_mac_addr()
+{
+	unsigned char eth_addr[6];
+	int sock;
+	int i;
+	struct lifconf lic;
+	struct lifreq *lifrs;
+	struct lifnum num;
+
+	/* How many interfaces do we have? */
+	sock=socket(PF_INET,SOCK_DGRAM,IPPROTO_IP);
+	num.lifn_family=AF_INET;
+	num.lifn_flags=0;
+	ioctl(sock,SIOCGLIFNUM,&num);
+
+	/* get details of the interfaces */
+	lifrs = malloc( (num.lifn_count + 1) * sizeof(*lifrs));
+	if (NULL == lifrs) {
+		exit(1); /* what is the right error handling here ? */
+	}
+	lic.lifc_family=AF_INET;
+	lic.lifc_flags=0;
+	lic.lifc_len=sizeof(lifrs);
+	lic.lifc_buf=(caddr_t)lifrs;
+	ioctl(sock,SIOCGLIFCONF,&lic);
+
+	/* Get the ethernet address for each of them */
+	for(i=0;i<num.lifn_count;i++)
+	{
+		struct sockaddr_in *soapip,*soapmac;
+		struct arpreq ar;
+
+		/* Get IP address of interface i */
+		ioctl(sock,SIOCGLIFADDR,&(lifrs[ i ]));
+		soapip=(struct sockaddr_in *)&(lifrs[ i ].lifr_addr);
+
+
+		/* Get ethernet address */
+		soapmac=(struct sockaddr_in *)&(ar.arp_pa);
+		*soapmac=*soapip;
+
+		if(ioctl(sock,SIOCGARP,&ar) == 0)
+		{
+			int j;
+			char *buffer = malloc(6);
+
+			if (buffer) {
+				for (j = 0 ; j < 6 ; ++j) {
+					buffer[j] = ((unsigned char *)&(ar.arp_ha.sa_data))[j];
+				}
+			}
+			close(sock);
+			free(lifrs);
+			return buffer;
+		}
+	}
+	close(sock);
+	free(lifrs);
+	return NULL;
+}
+
+#endif

@@ -118,7 +118,6 @@ extern "C"
 #include <netinet/in.h>
 #include <netdb.h>
 #include <sys/ioctl.h>
-#include <linux/if.h>
 
 /* dir handling */
 #include <dirent.h>
