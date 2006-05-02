@@ -24,6 +24,7 @@
 #include <axis2_module_desc.h>
 #include <axis2_array_list.h>
 #include <axis2_options.h>
+#include <axis2_conf_init.h>
 
 typedef struct axis2_svc_client_impl
 {
@@ -320,7 +321,7 @@ axis2_svc_client_set_options(struct axis2_svc_client *svc_client,
 	
 	/*TODO:double check whether we need to free*/
 	if (svc_client_impl->options)
-		axis2_options_free(svc_client_impl->options, env);
+		AXIS2_OPTIONS_FREE(svc_client_impl->options, env);
    	svc_client_impl->options = options;
 	return AXIS2_SUCCESS;	
 }
@@ -347,7 +348,7 @@ axis2_svc_client_set_override_options(struct axis2_svc_client *svc_client,
 	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
 
 	if (svc_client_impl->override_options)
-		axis2_options_free(svc_client_impl->override_options, env);
+		AXIS2_OPTIONS_FREE(svc_client_impl->override_options, env);
 
 	svc_client_impl->override_options = override_options;
 

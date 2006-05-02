@@ -355,8 +355,9 @@ axis2_http_transport_utils_process_http_post_request
                 axis2_char_t *old_pos = NULL;
                 if (mime_binary)
                 {
-                    old_pos = mime_binary;
                     axis2_char_t *temp_pos = NULL;
+                    old_pos = mime_binary;
+                    
                     do
                     {
                         

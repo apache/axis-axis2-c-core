@@ -18,6 +18,7 @@
 #include <axis2.h>
 #include <axis2_hash.h>
 #include <axis2_mep_client.h>
+#include <axis2_uuid_gen.h>
 #include <listener_manager.h> /*TODO:change too axis2_listener_manager.h*/
 
 typedef struct axis2_op_client_impl
@@ -139,7 +140,7 @@ axis2_op_client_create(axis2_env_t **env, axis2_op_t *operation,
     if (!op_client_impl->op_client.ops)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_callback_free(&(op_client_impl->op_client), env);
+        AXIS2_CALLBACK_FREE(&(op_client_impl->op_client), env);
         return NULL;        
     }
 
