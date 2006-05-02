@@ -169,6 +169,10 @@ struct axis2_op_client_ops
      */
 	axis2_op_ctx_t* (AXIS2_CALL *
 	get_operation_context)(struct axis2_op_client *op_client);
+
+	axis2_status_t (AXIS2_CALL *
+	free)(struct axis2_op_client *op_client,
+				axis2_env_t **env);
 };
 
 /** 
@@ -213,6 +217,9 @@ AXIS2_DECLARE(axis2_op_client_t*) axis2_op_client_create(axis2_env_t **env,
 
 #define AXIS2_OPERATION_CLIENT_GET_OPERATION_CONTEXT(op_client, env) \
 		((op_client)->ops->get_operation_context(op_client, env))
+
+#define AXIS2_OPERATION_CLIENT_FREE(op_client, env) \
+		((op_client)->ops->free(op_client, env))
 
 /************************** End of function macros ****************************/    
 

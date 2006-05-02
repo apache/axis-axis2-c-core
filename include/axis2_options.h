@@ -360,7 +360,7 @@ AXIS2_DECLARE(axis2_options_t*) axis2_options_create_with_parent(axis2_env_t **e
 #define AXIS2_OPTIONS_GET_TO(options, env) \
 		((options)->ops->get_to(options, env))
 
-#define AXIS2_OPTIONS_IS_SEPERATE_LISTNER(options, env) \
+#define AXIS2_OPTIONS_IS_USE_SEPERATE_LISTENER(options, env) \
 		((options)->ops->is_use_seperate_listener(options, env))
 
 #define AXIS2_OPTIONS_GET_PARENT(options, env) \

@@ -275,7 +275,10 @@ struct axis2_svc_client_ops
 	axis2_svc_ctx_t* (AXIS2_CALL *
 	get_svc_ctx)(struct axis2_svc_client *svc_client,
 	   				axis2_env_t **env);		
-	
+
+	axis2_status_t (AXIS2_CALL *
+	free)(struct axis2_svc_client *svc_client,
+		                                axis2_env_t **env)	
 };
 
 /** 
@@ -370,6 +373,9 @@ AXIS2_DECLARE(axis2_svc_client_t*) axis2_svc_client_create_with_conf_ctx_and_svc
 #define AXIS2_SERVICE_CLIENT_GET_SERVICE_CONTEXT(svc_client, env) \
 		((svc_client)->ops->get_svc_ctx(svc_client, env))
 
+
+#define AXIS2_SERVICE_FREE(svc_client, env) \
+		((svc_client)->ops->free(svc_client, env))
 
 /************************** End of function macros ****************************/    
 
