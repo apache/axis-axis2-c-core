@@ -69,6 +69,16 @@ extern "C"
 		axis2_thread_pool_t *thread_pool;
     } axis2_env_t;
 
+    /**
+    * Creates an environment struct with all of its default parts,
+    * that is an allocator, error, log and a thread pool.
+    * @param log_file name of the log file
+    * @param log_level log level to be used
+    * @return pointer to the newly created environment struct 
+    */
+    AXIS2_DECLARE(axis2_env_t *) axis2_env_create_all (axis2_char_t *log_file, 
+        axis2_log_levels_t log_level);                                                   
+
 	/**
     * Creates an environment struct. Users of axis2 should not use this function
 	* to create an environment. He should use the other two create functions.

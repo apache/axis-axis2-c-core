@@ -18,7 +18,31 @@
 #include <string.h>
 #include <axis2_env.h>
 #include <axis2_error_default.h>
+#include <axis2_log_default.h>
 #include <axis2_string.h>
+
+AXIS2_DECLARE(axis2_env_t *) axis2_env_create_all (axis2_char_t *log_file,
+        axis2_log_levels_t log_level)
+{
+    axis2_env_t *env = NULL;
+    axis2_error_t *error = NULL;
+    axis2_log_t *log = NULL;
+    axis2_allocator_t *allocator = NULL;
+    axis2_thread_pool_t *thread_pool = NULL;
+
+    if (!log_file)
+        log_file = "/dev/stderr";
+                    
+    allocator = axis2_allocator_init (NULL);
+    error = axis2_error_create(allocator);
+    log = axis2_log_create(allocator, NULL, log_file);
+    thread_pool = axis2_thread_pool_init(allocator);
+    env = axis2_env_create_with_error_log_thread_pool(allocator, error, log, thread_pool);
+    env->log->level = log_level;
+    axis2_error_init();
+
+    return env;
+}
 
 AXIS2_DECLARE(axis2_status_t)  axis2_env_free (axis2_env_t *env)
 {

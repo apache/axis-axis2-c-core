@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <axis2_client.h>
-#include <axis2_om.h>
-#include <axis2_util.h>
 #include <stdio.h>
+#include <axis2_util.h>
+#include <axis2_om.h>
 #include <axis2_soap.h>
+#include <axis2_client.h>
 
 axis2_om_node_t *
 build_om_programatically(axis2_env_t **env);
@@ -28,9 +28,9 @@ int main(int argc, char** argv)
     axis2_om_node_t *node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_env_t *env = NULL;
-    axis2_error_t *error = NULL;
+    /*axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
-    axis2_allocator_t *allocator = NULL;
+    axis2_allocator_t *allocator = NULL;*/
     axis2_char_t *address = NULL;
     axis2_char_t *wsa_action = NULL;
     axis2_char_t *client_home = NULL;
@@ -46,12 +46,12 @@ int main(int argc, char** argv)
     axis2_msg_ctx_t *response_ctx = NULL;
     
     /* set up the envioronment with allocator and log*/
-    allocator = axis2_allocator_init (NULL);
+    /*allocator = axis2_allocator_init (NULL);
     error = axis2_error_create(allocator);
-    log = axis2_log_create(allocator, NULL, "addr_echo.log");
-    env = axis2_env_create_with_error_log(allocator, error, log);
-    env->log->level = AXIS2_LOG_LEVEL_TRACE;
-    axis2_error_init();
+    log = axis2_log_create(allocator, NULL, "addr_echo.log");*/
+    env = axis2_env_create_all("echo_blocking.log", AXIS2_LOG_LEVEL_TRACE);
+    /*env->log->level = AXIS2_LOG_LEVEL_TRACE;
+    axis2_error_init();*/
 
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
      * using the axis2.xml file.
