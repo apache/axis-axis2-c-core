@@ -281,8 +281,21 @@ axis2_soap_over_http_sender_send
 	AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
     if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
     {
-        http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_SOAP_ACTION, 
-                            soap_action);
+        if('\"' != *soap_action)
+        {
+            axis2_char_t *tmp_soap_action = NULL;
+            tmp_soap_action = AXIS2_MALLOC((*env)->allocator, (
+                        AXIS2_STRLEN(soap_action) + 2) * sizeof(axis2_char_t));
+            sprintf(tmp_soap_action, "\"%s\"", soap_action);
+            http_header = axis2_http_header_create(env, 
+                        AXIS2_HTTP_HEADER_SOAP_ACTION, tmp_soap_action);
+            AXIS2_FREE((*env)->allocator, tmp_soap_action);            
+        }
+        else
+        {
+            http_header = axis2_http_header_create(env, 
+                        AXIS2_HTTP_HEADER_SOAP_ACTION, soap_action);
+        }
         AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
     }
 
@@ -314,7 +327,8 @@ axis2_soap_over_http_sender_send
 	/* TODO we need to set the content type with soap action header for soap12*/
     if (doing_mtom)
     {
-        content_type = AXIS2_OM_OUTPUT_GET_CONTENT_TYPE(sender_impl->om_output, env);
+        content_type = AXIS2_OM_OUTPUT_GET_CONTENT_TYPE(sender_impl->om_output, 
+                        env);
     }
 	else if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
 	{
@@ -327,9 +341,9 @@ axis2_soap_over_http_sender_send
 		content_type = AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP;
         content_type = AXIS2_STRACAT(content_type, ";charset=", env);
         content_type = AXIS2_STRACAT(content_type, char_set_enc, env);
-        content_type = AXIS2_STRACAT(content_type, ";action=\"", env);
+        content_type = AXIS2_STRACAT(content_type, ";action=", env);
         content_type = AXIS2_STRACAT(content_type, soap_action, env);
-        content_type = AXIS2_STRACAT(content_type, "\";", env);
+        content_type = AXIS2_STRACAT(content_type, ";", env);
 	}
 	http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_TYPE, 
 						content_type);
