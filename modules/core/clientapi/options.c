@@ -323,7 +323,7 @@ axis2_options_create_with_parent(axis2_env_t **env,
 
 	axis2_options_impl_t *options_impl = NULL;
 
-	options_impl = AXIS2_INTF_TO_IMPL(axis2_create_options(env));
+	options_impl = AXIS2_INTF_TO_IMPL(axis2_options_create(env));
 
 	if (options_impl)
 	{

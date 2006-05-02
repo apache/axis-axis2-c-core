@@ -91,7 +91,9 @@ axis2_op_client_compelete(struct axis2_op_client *op_client,
 axis2_op_ctx_t* AXIS2_CALL 
 axis2_op_client_get_operation_context(struct axis2_op_client *op_client);
 
-
+axis2_status_t AXIS2_CALL
+axis2_op_client_free(struct axis2_op_client *op_client, 
+						axis2_env_t **env);
 
 axis2_op_client_t* AXIS2_CALL 
 axis2_op_client_create(axis2_env_t **env, axis2_op_t *operation,
@@ -321,7 +323,7 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
 	}
 
 	if (!(AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env)))
-		AXIS2_MSG_CTX_SET_TRANSPORT(msg_ctx, env, transport_out);
+		AXIS2_MSG_CTX_SET_TRANSPORT_OUT_DESC(msg_ctx, env, transport_out);
         
 
 	transport_in = AXIS2_OPTIONS_GET_TRANSPORT_IN(op_client_impl->options, env);
@@ -471,7 +473,21 @@ axis2_op_client_get_operation_context(struct axis2_op_client *op_client)
 	
 	return op_client_impl->op_ctx;
 }
-		
+	
+axis2_status_t AXIS2_CALL
+axis2_op_client_free(struct axis2_op_client *op_client,
+		                        axis2_env_t **env)
+{
+	axis2_op_client_impl_t *op_client_impl = NULL;
+
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+	op_client_impl = AXIS2_INTF_TO_IMPL(op_client);
+
+	/*TODO:free*/
+
+	return AXIS2_SUCCESS;
+}
 /** private functions - implementation */
 
 static void axis2_op_client_init_data(axis2_op_client_impl_t *op_client_impl)
@@ -494,6 +510,7 @@ static void axis2_op_client_init_ops(axis2_op_client_t *op_client)
 	op_client->ops->reset = axis2_op_client_reset;
 	op_client->ops->compelete = axis2_op_client_compelete;
 	op_client->ops->get_operation_context = axis2_op_client_get_operation_context;
+	op_client->ops->free = axis2_op_client_free;
 }
 
 static axis2_msg_ctx_t* axis2_op_client_invoke_blocking(axis2_op_client_impl_t *op_client_impl, 

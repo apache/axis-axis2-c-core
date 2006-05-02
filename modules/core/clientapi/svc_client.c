@@ -186,6 +186,9 @@ axis2_svc_ctx_t* AXIS2_CALL
 axis2_svc_client_get_svc_ctx(struct axis2_svc_client *svc_client,
                     axis2_env_t **env);
 
+axis2_status_t AXIS2_CALL
+axis2_svc_client_free(struct axis2_svc_client *svc_client,
+						axis2_env_t **env);
 
 axis2_svc_client_t* AXIS2_CALL
 axis2_svc_client_create(axis2_env_t **env, axis2_char_t *client_home)
@@ -225,7 +228,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(axis2_env_t **env,
     if (!axis2_svc_client_init_data(env, svc_client_impl))
 	{
 		axis2_svc_client_free(&(svc_client_impl->svc_client), env);
-		retrun NULL;
+		return NULL;
 	}
 	
 	if (!initialize_transport(env, svc_client_impl, conf_ctx, client_home))
@@ -573,8 +576,8 @@ axis2_svc_client_send_receive_with_operation(struct axis2_svc_client *svc_client
 		
 		mep_client = axis2_svc_client_create_client(&(svc_client_impl->svc_client), env, operation);
 		
-		AXIS2_OP_CLIENT_ADD_MSG_CTX(mep_client, env, mc);
-		AXIS2_OP_CLIENT_EXECUTE(mep_client, env, AXIS2_TRUE);
+		AXIS2_OPERATION_CLIENT_ADD_MSG_CTX(mep_client, env, mc);
+		AXIS2_OPERATION_CLIENT_EXECUTE(mep_client, env, AXIS2_TRUE);
 		res_msg_ctx = AXIS2_OP_CTX_GET_MSG_CTX(mep_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE);
 		
 		if (!res_msg_ctx)
@@ -852,6 +855,7 @@ static void axis2_svc_client_init_ops(axis2_svc_client_t *svc_client)
 	svc_client->ops->get_target_epr = axis2_svc_client_get_target_epr;
 	svc_client->ops->set_target_epr = axis2_svc_client_set_target_epr;
 	svc_client->ops->get_svc_ctx = axis2_svc_client_get_svc_ctx;
+	svc_client->ops->free = axis2_svc_client_free;
 }
 
 /**
@@ -949,6 +953,21 @@ static axis2_svc_t* axis2_create_annonymous_svc(axis2_env_t **env)
 	AXIS2_SVC_ADD_OP(svc, env, op_out_only);
 	AXIS2_SVC_ADD_OP(svc, env, op_robust_out_only);
 	return svc;	
+}
+
+axis2_status_t AXIS2_CALL
+axis2_svc_client_free(struct axis2_svc_client *svc_client,
+		                        axis2_env_t **env)
+{
+	axis2_svc_client_impl_t *svc_client_impl = NULL;
+
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
+
+	/*TODO:fill*/
+
+	return AXIS2_SUCCESS;
 }
 
 static axis2_bool_t fill_soap_envelope(axis2_env_t **env, axis2_svc_client_impl_t *svc_client_impl,
