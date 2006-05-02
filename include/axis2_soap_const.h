@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  
- #ifndef AXIS2_SOAP_H
- #define AXIS2_SOAP_H
+ #ifndef AXIS2_SOAP_CONST_H
+ #define AXIS2_SOAP_CONST_H
  
  /**
  * @file axis2_soap.h

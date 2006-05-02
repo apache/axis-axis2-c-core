@@ -26,16 +26,7 @@
 #include <axis2_xml_reader.h>
 #include <stdio.h>
 #include <axis2_xml_writer.h>
-#include <axis2_soap_builder.h>
-#include <axis2_soap_const.h>
-#include <axis2_soap_envelope.h>
-#include <axis2_soap_body.h>
-#include <axis2_soap_header.h>
-#include <axis2_soap_message.h>
-#include <axis2_soap_header_block.h>
-#include <axis2_soap_fault.h>
-#include <axis2_soap_fault_code.h>
-#include <axis2_soap_fault_role.h>
+#include <axis2_soap.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
 axis2_om_node_t *
