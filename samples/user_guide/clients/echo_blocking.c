@@ -16,12 +16,9 @@
 
 #include <axis2_call.h>
 #include <axis2_om.h>
-#include <axis2_stream.h>
-#include <axis2_log_default.h>
-#include <axis2_error_default.h>
+#include <axis2_util.h>
 #include <stdio.h>
 #include <axis2_soap.h>
-#include <platforms/axis2_platform_auto_sense.h>
 
 axis2_om_node_t *
 build_om_programatically(axis2_env_t **env);
