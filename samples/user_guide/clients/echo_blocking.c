@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_call.h>
+#include <axis2_client.h>
 #include <axis2_om.h>
 #include <axis2_util.h>
 #include <stdio.h>
