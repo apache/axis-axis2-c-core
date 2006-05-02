@@ -278,7 +278,7 @@ struct axis2_svc_client_ops
 
 	axis2_status_t (AXIS2_CALL *
 	free)(struct axis2_svc_client *svc_client,
-		                                axis2_env_t **env)	
+							axis2_env_t **env);	
 };
 
 /** 
