@@ -429,6 +429,10 @@ axis2_error_init()
 	"Interfaces or Ports not found for the partially built WOM";
     axis2_error_messages[AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR] = 
      "Error occured in transport";
+    axis2_error_messages[AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL] = 
+     "Transport protocol is unsupported by axis2";
+    axis2_error_messages[AXIS2_ERROR_SSL_ENGINE] = 
+     "Error occured in SSL engine";
 
     return AXIS2_SUCCESS;
 }

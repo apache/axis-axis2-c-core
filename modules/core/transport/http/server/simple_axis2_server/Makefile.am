@@ -36,7 +36,6 @@ INCLUDES =  -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/deployment\
             -I$(top_builddir)/modules/core/phaseresolver \
             -I$(top_builddir)/modules/core/engine \
-            -I$(top_builddir)/modules/core/transport\
             -I$(top_builddir)/modules/xml/om\
             -I$(top_builddir)/modules/xml/parser\
             -I$(top_builddir)/modules/xml/soap\

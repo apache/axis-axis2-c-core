@@ -130,7 +130,6 @@ extern "C"
     #define AXIS2_HTTP_HEADER_CONTENT_TYPE_MIME_BOUNDARY "boundary"
     
     /**
-    /**
      * HEADER_CONTENT_TRANSFER_ENCODING
      */
     #define AXIS2_HTTP_HEADER_CONTENT_TRANSFER_ENCODING \

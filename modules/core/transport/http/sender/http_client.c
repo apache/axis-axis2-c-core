@@ -209,8 +209,23 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
 		axis2_network_handler_set_sock_option(env, client_impl->sockfd, 
 						SO_SNDTIMEO, client_impl->timeout);
 	}
-	client_impl->data_stream = axis2_stream_create_socket(env, 
+    if(0 == AXIS2_STRCASECMP(AXIS2_URL_GET_PROTOCOL(client_impl->url, env), 
+                        "HTTPS"))
+    {
+#ifdef AXIS2_SSL_ENABLED
+        client_impl->data_stream = axis2_stream_create_ssl(env, 
+                        client_impl->sockfd)
+#else
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL,
+                        AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+#endif
+    }
+    else
+    {
+	    client_impl->data_stream = axis2_stream_create_socket(env, 
 					client_impl->sockfd);
+    }
 	
 	if(NULL == client_impl->data_stream)
 	{

@@ -427,6 +427,10 @@ extern "C"
 		AXIS2_ERROR_INTERFACES_OR_PORTS_NOT_FOUND_FOR_PARTIALLY_BUILT_WOM,
         /* Error occured in transport */
         AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+        /* Transport protocol is unsupported by axis2 */
+        AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL,
+        /* Error occured in SSL engine */
+        AXIS2_ERROR_SSL_ENGINE,
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
             AXIS2_ERROR_LAST is used to track the number of error codes present
