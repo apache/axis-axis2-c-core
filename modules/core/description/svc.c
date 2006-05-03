@@ -1450,7 +1450,23 @@ axis2_char_t * AXIS2_CALL
 axis2_svc_get_axis2_svc_name(axis2_svc_t *svc,
                             axis2_env_t **env) 
 {
-    return AXIS2_INTF_TO_IMPL(svc)->axis_svc_name;
+    axis2_svc_impl_t *svc_impl = NULL;
+    axis2_qname_t *qname = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    
+    if (svc_impl->axis_svc_name)
+        return svc_impl->axis_svc_name;
+
+    qname = AXIS2_WSDL_SVC_GET_QNAME(svc->wsdl_svc, env);
+    if (qname)
+    {
+        return AXIS2_QNAME_GET_LOCALPART(qname, env);
+    }
+        
+    return NULL;
 }
 
 axis2_status_t AXIS2_CALL

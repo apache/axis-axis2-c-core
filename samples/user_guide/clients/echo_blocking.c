@@ -25,15 +25,14 @@ build_om_programatically(axis2_env_t **env);
 
 int main(int argc, char** argv)
 {
+    axis2_env_t *env = NULL;
+    axis2_char_t *client_home = NULL;
+    axis2_svc_client_t* svc_client = NULL;
+
     axis2_om_node_t *node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_env_t *env = NULL;
-    /*axis2_error_t *error = NULL;
-    axis2_log_t *log = NULL;
-    axis2_allocator_t *allocator = NULL;*/
     axis2_char_t *address = NULL;
     axis2_char_t *wsa_action = NULL;
-    axis2_char_t *client_home = NULL;
     axis2_om_node_t *ret_node = NULL;
     axis2_svc_t *svc = NULL;
     axis2_op_t *op = NULL;
@@ -45,24 +44,29 @@ int main(int argc, char** argv)
     axis2_conf_t *conf = NULL;
     axis2_msg_ctx_t *response_ctx = NULL;
     
-    /* set up the envioronment with allocator and log*/
-    /*allocator = axis2_allocator_init (NULL);
-    error = axis2_error_create(allocator);
-    log = axis2_log_create(allocator, NULL, "addr_echo.log");*/
+    /* set up the envioronment */
     env = axis2_env_create_all("echo_blocking.log", AXIS2_LOG_LEVEL_TRACE);
-    /*env->log->level = AXIS2_LOG_LEVEL_TRACE;
-    axis2_error_init();*/
 
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
      * using the axis2.xml file.
      * In this sample client_home points to the Axis2/C default deploy folder. The client_home can 
      * be different from this folder on your system. For example, you may have a different folder 
-     *(say, my_client_folder) with its own axis2.xml file. my_client_folder/modules will have the 
+     * (say, my_client_folder) with its own axis2.xml file. my_client_folder/modules will have the 
      * modules that the client uses
      */
     client_home = AXIS2_GETENV("AXIS2C_HOME");
     if (!client_home)
         client_home = "../../deploy";
+
+    svc_client = axis2_svc_client_create(&env, client_home);
+
+    if (!svc_client)
+    {
+        printf("Error creating service client\n");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+						" %d :: %s", env->error->error_number,
+                        AXIS2_ERROR_GET_MESSAGE(env->error));
+    }
     
     /* Set end point reference of echo service */
     address = "http://localhost:9090/axis2/services/echo";

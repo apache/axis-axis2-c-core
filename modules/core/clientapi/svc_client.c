@@ -54,14 +54,14 @@ typedef struct axis2_svc_client_impl
 #define AXIS2_INTF_TO_IMPL(svc_client) ((axis2_svc_client_impl_t *)svc_client)
 
 /** private functions */
-static axis2_bool_t initialize_transport(axis2_env_t **env, 
+static axis2_bool_t axis2_svc_client_initialize_transport(axis2_env_t **env, 
 									axis2_svc_client_impl_t *svc_client_impl,
 									axis2_conf_ctx_t *conf_ctx,
 									axis2_char_t *client_home);
 static axis2_bool_t axis2_svc_client_init_data(axis2_env_t **env,
 									axis2_svc_client_impl_t *svc_client_impl);
 static void axis2_svc_client_init_ops(axis2_svc_client_t *svc_client);
-static axis2_svc_t* axis2_create_annonymous_svc(axis2_env_t **env);
+static axis2_svc_t* axis2_svc_client_create_annonymous_svc(axis2_env_t **env);
 static axis2_bool_t fill_soap_envelope(axis2_env_t **env, axis2_svc_client_impl_t *svc_client_impl,
                                 axis2_msg_ctx_t *msg_ctx, axis2_om_node_t *payload);
 
@@ -215,6 +215,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(axis2_env_t **env,
     axis2_svc_client_impl_t *svc_client_impl = NULL;
 	axis2_svc_grp_t *svc_grp = NULL;
 	axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
+    axis2_char_t *svc_grp_name = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -231,8 +232,13 @@ axis2_svc_client_create_with_conf_ctx_and_svc(axis2_env_t **env,
 		axis2_svc_client_free(&(svc_client_impl->svc_client), env);
 		return NULL;
 	}
+
+    if (!conf_ctx)
+    {
+        
+    }
 	
-	if (!initialize_transport(env, svc_client_impl, conf_ctx, client_home))
+	if (!axis2_svc_client_initialize_transport(env, svc_client_impl, conf_ctx, client_home))
 	{
 		axis2_svc_client_free(&(svc_client_impl->svc_client), env);
 		return NULL;
@@ -246,7 +252,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(axis2_env_t **env,
 	}
 	else
 	{
-		if (NULL == (svc_client_impl->svc = axis2_create_annonymous_svc(env)))
+		if (NULL == (svc_client_impl->svc = axis2_svc_client_create_annonymous_svc(env)))
 		{
 			axis2_svc_client_free(&(svc_client_impl->svc_client), env);
 			return NULL;
@@ -273,8 +279,12 @@ axis2_svc_client_create_with_conf_ctx_and_svc(axis2_env_t **env,
     if (!svc_grp_ctx)
         return NULL;
     
+    svc_grp_name = AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
+    if (!svc_grp_name)
+        return NULL; /* cannot proceed without svc group name */
+        
 	AXIS2_CONF_CTX_REGISTER_SVC_GRP_CTX(svc_client_impl->conf_ctx, env, 
-		AXIS2_SVC_GET_AXIS2_SVC_NAME(svc_client_impl->svc, env), svc_grp_ctx);
+		svc_grp_name, svc_grp_ctx);
     
 	svc_client_impl->svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env,
 		        AXIS2_SVC_GET_AXIS2_SVC_NAME(svc_client_impl->svc, env));
@@ -751,7 +761,7 @@ axis2_svc_client_get_svc_ctx(struct axis2_svc_client *svc_client,
 
 /** private function implementation */
 
-static axis2_bool_t initialize_transport(axis2_env_t **env,
+static axis2_bool_t axis2_svc_client_initialize_transport(axis2_env_t **env,
                                     axis2_svc_client_impl_t *svc_client_impl,
                                     axis2_conf_ctx_t *conf_ctx,
 									axis2_char_t *client_home)
@@ -867,7 +877,7 @@ static void axis2_svc_client_init_ops(axis2_svc_client_t *svc_client)
   * @return the minted anonymous service
   */
 
-static axis2_svc_t* axis2_create_annonymous_svc(axis2_env_t **env)
+static axis2_svc_t* axis2_svc_client_create_annonymous_svc(axis2_env_t **env)
 {
 	/**
 	now add anonymous operations to the axis2 service for use with the
