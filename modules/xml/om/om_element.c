@@ -1536,6 +1536,9 @@ axis2_om_element_declare_default_namespace(axis2_om_element_t *om_element,
     AXIS2_PARAM_CHECK((*env)->error, uri, NULL);
     
     om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
+    if(AXIS2_STRCMP(uri,"") == 0)
+        return NULL;
+        
     default_ns = axis2_om_namespace_create(env, uri, "");
     if(!default_ns)
     {

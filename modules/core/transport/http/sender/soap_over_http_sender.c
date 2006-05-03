@@ -285,7 +285,7 @@ axis2_soap_over_http_sender_send
         {
             axis2_char_t *tmp_soap_action = NULL;
             tmp_soap_action = AXIS2_MALLOC((*env)->allocator, (
-                        AXIS2_STRLEN(soap_action) + 2) * sizeof(axis2_char_t));
+                        AXIS2_STRLEN(soap_action) + 5) * sizeof(axis2_char_t));
             sprintf(tmp_soap_action, "\"%s\"", soap_action);
             http_header = axis2_http_header_create(env, 
                         AXIS2_HTTP_HEADER_SOAP_ACTION, tmp_soap_action);
