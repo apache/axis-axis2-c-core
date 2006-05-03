@@ -144,7 +144,7 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
 )
 
 AC_MSG_CHECKING(whether to enable trace)
-AC_ARG_ENABLE(tests, [  --enable-trace    enable trace. default=no],
+AC_ARG_ENABLE(trace, [  --enable-trace    enable trace. default=no],
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
@@ -159,7 +159,8 @@ AC_ARG_ENABLE(tests, [  --enable-trace    enable trace. default=no],
   CFLAGS="$CFLAGS"
 )
 
-AC_ARG_ENABLE(tests, [  --enable-multi_threaded  enable trace. default=yes],
+AC_MSG_CHECKING(whether to enable multi threading)
+AC_ARG_ENABLE(multi-thread, [  --enable-multi-thread  enable multi thread. default=yes],
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
@@ -169,10 +170,29 @@ AC_ARG_ENABLE(tests, [  --enable-multi_threaded  enable trace. default=yes],
     AC_MSG_RESULT(yes)
     CFLAGS="$CFLAGS -DAXIS2_SVR_MULTI_THREADED"
     ;;
+  esac ],[
+  AC_MSG_RESULT(yes)
+  CFLAGS="$CFLAGS -DAXIS2_SVR_MULTI_THREADED"]
+)
+
+AC_MSG_CHECKING(whether to use openssl)
+AC_ARG_ENABLE(openssl, [  --enable-openssl  enable ssl. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    CFLAGS="$CFLAGS"
+    ssl_enabled=false
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -DAXIS2_SSL_ENABLED"
+    ssl_enabled=true
+    ;;
   esac ],
   AC_MSG_RESULT(no)
   CFLAGS="$CFLAGS"
 )
+
 
 AC_MSG_CHECKING(whether to build dynamic invocation client library)
 AC_ARG_ENABLE(diclient, [  --enable-diclient    build diclient library wrapper. default=no],
@@ -208,6 +228,7 @@ AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(TESTDIR)
 AC_SUBST(SAMPLES)
 AC_SUBST(APACHE2BUILD)
+AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
 
 AC_CONFIG_FILES([Makefile \
     modules/Makefile \

@@ -25,6 +25,10 @@
 #include <axis2_http_chunked_stream.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
+#ifdef AXIS2_SSL_ENABLED
+#include "ssl/ssl_stream.h"
+#endif
+
 
 /** 
  * @brief HTTP Client struct impl
@@ -214,7 +218,7 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
     {
 #ifdef AXIS2_SSL_ENABLED
         client_impl->data_stream = axis2_stream_create_ssl(env, 
-                        client_impl->sockfd)
+                        client_impl->sockfd);
 #else
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL,
                         AXIS2_FAILURE);

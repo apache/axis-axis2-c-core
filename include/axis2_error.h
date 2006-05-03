@@ -431,6 +431,8 @@ extern "C"
         AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL,
         /* Error occured in SSL engine */
         AXIS2_ERROR_SSL_ENGINE,
+        /* Either axis2c cannot find certificates or the env variable is not set*/
+        AXIS2_ERROR_SSL_NO_CA_FILE,
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
             AXIS2_ERROR_LAST is used to track the number of error codes present

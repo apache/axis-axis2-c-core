@@ -433,7 +433,8 @@ axis2_error_init()
      "Transport protocol is unsupported by axis2";
     axis2_error_messages[AXIS2_ERROR_SSL_ENGINE] = 
      "Error occured in SSL engine";
-
+    axis2_error_messages[AXIS2_ERROR_SSL_NO_CA_FILE] = 
+    "Either axis2c cannot find certificates or the env variable is not set";
     return AXIS2_SUCCESS;
 }
 
