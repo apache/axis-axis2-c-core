@@ -301,80 +301,80 @@ AXIS2_DECLARE(axis2_svc_client_t*) axis2_svc_client_create_with_conf_ctx_and_svc
 
 /************************** Start of function macros **************************/
 
-#define AXIS2_SERVICE_CLIENT_GET_AXIS_SERVICE(svc_client) \
+#define AXIS2_SVC_CLIENT_GET_AXIS_SERVICE(svc_client) \
 		((svc_client)->ops->get_axis_service(svc_client))
 
-#define AXIS2_SERVICE_CLIENT_SET_OPTIONS(svc_client, env, options) \
+#define AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options) \
 		((svc_client)->ops->set_options(svc_client, env, options))
 
-#define AXIS2_SERVICE_CLIENT_GET_OPTIONS(svc_client) \
+#define AXIS2_SVC_CLIENT_GET_OPTIONS(svc_client) \
 		((svc_client)->ops->get_options(svc_client))
 
-#define AXIS2_SERVICE_CLIENT_SET_OVERRIDE_OPTIONS(svc_client, env, override_options) \
+#define AXIS2_SVC_CLIENT_SET_OVERRIDE_OPTIONS(svc_client, env, override_options) \
 		((svc_client)->ops->set_override_options(svc_client, env, override_options))
 
-#define AXIS2_SERVICE_CLIENT_GET_OVERRIDE_OPTIONS(svc_client) \
+#define AXIS2_SVC_CLIENT_GET_OVERRIDE_OPTIONS(svc_client) \
 	    ((svc_client)->ops->get_override_options(svc_client))
 
-#define AXIS2_SERVICE_CLIENT_ENGAGE_MODULE(svc_client, env, module_name) \
+#define AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, module_name) \
 		((svc_client)->ops->engage_module(svc_client, env, module_name))
 
-#define AXIS2_SERVICE_CLIENT_DISENGAGE_MODULE(svc_client, env, module_name) \
+#define AXIS2_SVC_CLIENT_DISENGAGE_MODULE(svc_client, env, module_name) \
 		((svc_client)->ops->disengage_module(svc_client, env, module_name))
 
-#define AXIS2_SERVICE_CLIENT_ADD_HEADER(svc_client, env, header) \
+#define AXIS2_SVC_CLIENT_ADD_HEADER(svc_client, env, header) \
 		((svc_client)->ops->add_header(svc_client, env, header))
 
-#define AXIS2_SERVICE_CLIENT_REMOVE_HEADERS(svc_client, env) \
+#define AXIS2_SVC_CLIENT_REMOVE_HEADERS(svc_client, env) \
 		((svc_client)->ops->remove_headers(svc_client, env))
 
-#define AXIS2_SERVICE_CLIENT_ADD_HEADER_WITH_TEXT(svc_client, env, header_name, header_text) \
+#define AXIS2_SVC_CLIENT_ADD_HEADER_WITH_TEXT(svc_client, env, header_name, header_text) \
 		((svc_client)->ops->add_header_with_text(svc_client, env, header_name, header_text))
 
-#define AXIS2_SERVICE_CLIENT_SEND_ROBUST(svc_client, env, payload) \
+#define AXIS2_SVC_CLIENT_SEND_ROBUST(svc_client, env, payload) \
 		((svc_client)->ops->send_robust(svc_client, env, payload))
 
-#define AXIS2_SERVICE_CLIENT_SEND_ROBUST_WITH_OPERATION(svc_client, env, operation, payload) \
+#define AXIS2_SVC_CLIENT_SEND_ROBUST_WITH_OPERATION(svc_client, env, operation, payload) \
 		((svc_client)->ops->send_robust_with_operation(svc_client, env, operation, payload))
 
-#define AXIS2_SERVICE_CLIENT_FIRE_AND_FORGET(svc_client, env, payload) \
+#define AXIS2_SVC_CLIENT_FIRE_AND_FORGET(svc_client, env, payload) \
 		((svc_client)->ops->fire_and_forget(svc_client, env, payload))
 
-#define AXIS2_SERVICE_CLIENT_FIRE_AND_FORGET_WITH_OPERATION(svc_client, env, operation, payload) \
+#define AXIS2_SVC_CLIENT_FIRE_AND_FORGET_WITH_OPERATION(svc_client, env, operation, payload) \
 		((svc_client)->ops->fire_and_forget_with_operation(svc_client, env, operation, payload))
 
-#define AXIS2_SERVICE_CLIENT_SEND_RECEIVE(svc_client, env, payload) \
+#define AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload) \
 		((svc_client)->ops->send_receive(svc_client, env, payload))
 
-#define AXIS2_SERVICE_CLIENT_SEND_RECEIVE_WITH_OPERATION(svc_client, env, operation, payload) \
+#define AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OPERATION(svc_client, env, operation, payload) \
 		((svc_client)->ops->send_receive_with_operation(svc_client, env, operation, payload))
 
-#define AXIS2_SERVICE_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback) \
+#define AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback) \
 		((svc_client)->ops->send_receive_non_blocking(svc_client, env, payload, callback))
 
-#define AXIS2_SERVICE_CLIENT_SEND_RECEIVE_NON_BLOCKING_WITH_OPERATION(svc_client, env, operation, payload, callback) \
+#define AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING_WITH_OPERATION(svc_client, env, operation, payload, callback) \
 		((svc_client)->ops->send_receive_non_blocking_with_operation(svc_client, env, operation, payload, callback))
 	
-#define AXIS2_SERVICE_CLIENT_CREATE_CLIENT(svc_client, env, operation) \
+#define AXIS2_SVC_CLIENT_CREATE_CLIENT(svc_client, env, operation) \
 		((svc_client)->ops->create_client(svc_client, env, operation))
 
-#define AXIS2_SERVICE_CLIENT_FINALIZE_INVOKE(svc_client, env) \
+#define AXIS2_SVC_CLIENT_FINALIZE_INVOKE(svc_client, env) \
 		((svc_client)->ops->finalize_invoke(svc_client, env))
 
-#define AXIS2_SERVICE_CLIENT_GET_MY_EPR(svc_client, env, transport) \
+#define AXIS2_SVC_CLIENT_GET_MY_EPR(svc_client, env, transport) \
 		((svc_client)->ops->get_my_epr(svc_client, env, transport))
 
-#define AXIS2_SERVICE_CLIENT_GET_TARGET_EPR(svc_client, env) \
+#define AXIS2_SVC_CLIENT_GET_TARGET_EPR(svc_client, env) \
 		((svc_client)->ops->get_target_epr(svc_client, env))
 
-#define AXIS2_SERVICE_CLIENT_SET_TARGET_EPR(svc_client, env, target_epr) \
+#define AXIS2_SVC_CLIENT_SET_TARGET_EPR(svc_client, env, target_epr) \
 		((svc_client)->ops->set_target_epr(svc_client, env, target_epr))
 
-#define AXIS2_SERVICE_CLIENT_GET_SERVICE_CONTEXT(svc_client, env) \
+#define AXIS2_SVC_CLIENT_GET_SERVICE_CONTEXT(svc_client, env) \
 		((svc_client)->ops->get_svc_ctx(svc_client, env))
 
 
-#define AXIS2_SERVICE_FREE(svc_client, env) \
+#define AXIS2_SVC_CLIENT_FREE(svc_client, env) \
 		((svc_client)->ops->free(svc_client, env))
 
 /************************** End of function macros ****************************/    

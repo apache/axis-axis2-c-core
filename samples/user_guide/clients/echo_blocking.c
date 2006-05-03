@@ -21,7 +21,10 @@
 #include <axis2_client.h>
 
 axis2_om_node_t *
-build_om_programatically(axis2_env_t **env);
+build_om_payload(axis2_env_t **env);
+
+void 
+print_om(axis2_env_t **env, axis2_om_node_t *node);
 
 int main(int argc, char** argv)
 {
@@ -31,23 +34,10 @@ int main(int argc, char** argv)
     axis2_options_t *options = NULL;
     axis2_char_t *client_home = NULL;
     axis2_svc_client_t* svc_client = NULL;
-
-    axis2_om_node_t *node = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
-    
-    axis2_char_t *wsa_action = NULL;
+    axis2_om_node_t *payload = NULL;
     axis2_om_node_t *ret_node = NULL;
-    axis2_svc_t *svc = NULL;
-    axis2_op_t *op = NULL;
-    axis2_call_t *call = NULL;
-    axis2_msg_ctx_t *msg_ctx = NULL;
-    axis2_mep_client_t *mep_client = NULL;
-    axis2_msg_info_headers_t *msg_info_headers = NULL;
-    
-    axis2_conf_t *conf = NULL;
-    axis2_msg_ctx_t *response_ctx = NULL;
-    
-    /* set up the envioronment */
+   
+    /* Set up the envioronment */
     env = axis2_env_create_all("echo_blocking.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */
@@ -62,7 +52,7 @@ int main(int argc, char** argv)
     }
     printf ("Using endpoint : %s\n", address);
     
-    /* create EPR with given address */
+    /* Create EPR with given address */
     endpoint_ref = axis2_endpoint_ref_create(&env, address);
 
     /* Setup options */
@@ -80,9 +70,8 @@ int main(int argc, char** argv)
     if (!client_home)
         client_home = "../../deploy";
 
+    /* Create service client */
     svc_client = axis2_svc_client_create(&env, client_home);
-    AXIS2_SERVICE_CLIENT_SET_OPTIONS(svc_client, &env, options);
-
     if (!svc_client)
     {
         printf("Error creating service client\n");
@@ -90,139 +79,46 @@ int main(int argc, char** argv)
 						" %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
     }
+
+    /* Set service client options */
+    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, &env, options);    
+
+    /* Build the SOAP request message payload using OM API.*/
+    payload = build_om_payload(&env);
     
-
-    /* build the SOAP request message content using OM API.*/
-    node = build_om_programatically(&env);
-
-    /* create call struct */
-    call = axis2_call_create(&env, NULL, client_home);
-    mep_client = AXIS2_CALL_GET_BASE(call, &env);
-
-    /* Prepare the SOAP envelope, using the SOAP message content to be sent.
-     * Get a reference to the message context */
-    msg_ctx = AXIS2_MEP_CLIENT_PREPARE_SOAP_ENVELOPE(mep_client, &env, node);
-    if (!msg_ctx)
-    {
-        printf("ERROR: Could not prepare message context. ");
-        printf("May be you havent set the repository corretly.\n");
-        return -1;
-    }
-
-    /* Get the reference to message info headers structure from the message context. 
-       This can be used to manipulate SOAP header content when using WS-Addressing. */
-    msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, &env);
-
-
-    /* Set header parameters, required for WS-Addressing. 
-     * Required only if you need to make use of WS-Addressing.
-     */
-  /*  AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, &env, endpoint_ref); */
-    AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, &env, wsa_action); 
+    /* Send request */
+    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, &env, payload);
     
-    AXIS2_CALL_SET_TO(call, &env, endpoint_ref);
-
-    /* Get the configuration context */
-    conf = AXIS2_CONF_CTX_GET_CONF(
-                            AXIS2_SVC_CTX_GET_CONF_CTX(
-                                AXIS2_MEP_CLIENT_GET_SVC_CTX(mep_client, &env), 
-                                &env), 
-                                &env);
-
-    /* Get the echo service context if it is already loaded to service context*/
-    svc = AXIS2_CONF_GET_SVC(conf, &env, "echo");
-    if (svc)
-    {
-        op = AXIS2_SVC_GET_OP_WITH_NAME(svc, &env, "echoString");
-        if (op)
-        {
-            AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, &env, AXIS2_MEP_URI_OUT_IN);
-        }
-    }
-    else
-    {
-       /* echo service is not in the configuration context. We need to create the 
-        * operation and add it to service context. Then add service context into 
-        * configuration context.
-        */
-        axis2_qname_t *op_qname = NULL;
-        axis2_qname_t *svc_qname = axis2_qname_create(&env, "echo", NULL, NULL);
-        svc = axis2_svc_create_with_qname(&env, svc_qname);
-        op_qname = axis2_qname_create(&env, "echoString", NULL, NULL);
-        op = axis2_op_create_with_qname(&env, op_qname);
-        AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, &env, AXIS2_MEP_URI_OUT_IN);
-        AXIS2_SVC_ADD_OP(svc, &env, op);
-        AXIS2_CONF_ADD_SVC(conf, &env, svc);
-    }
-
-    if (!op)
-    {
-        printf("ERROR: operation not present in service\n");
-        return -1;
-    }
-
-   /* Invoke the operation. Client blocks until the response message comes. 
-    * Response message gets set in the response message context.
-    */
-    response_ctx = AXIS2_CALL_INVOKE_BLOCKING(call, &env, op, msg_ctx);
-
-    if (response_ctx)
-    {
-        /* Get the response SOAP message from response message context */
-        axis2_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(response_ctx, &env);
-        ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, &env);
-    }
-                                                        
     if(ret_node)
     {
-        /* Get the response value from the SOAP message */
-        axis2_xml_writer_t *writer = NULL;
-        axis2_om_output_t *om_output = NULL;
-        axis2_char_t *buffer = NULL;
-        
-        printf("\necho stub invoke SUCCESSFUL!\n");
-        writer = axis2_xml_writer_create_for_memory(&env, NULL, AXIS2_TRUE, 0);
-        om_output = axis2_om_output_create (&env, writer);
-
-        AXIS2_OM_NODE_SERIALIZE (ret_node, &env, om_output);
-        buffer = AXIS2_XML_WRITER_GET_XML(writer, &env);
-        printf ("\nReceived OM node in XML : %s\n", buffer);
-        AXIS2_FREE(env->allocator, buffer);
-        AXIS2_OM_OUTPUT_FREE(om_output, &env);
+        printf("\nReceived OM : ");
+        print_om(&env, ret_node);
+        printf("\necho client invoke SUCCESSFUL!\n");
     }
     else
     {
 		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
 						" %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
-        printf("echo stub invoke FAILED!\n");
+        printf("echo client invoke FAILED!\n");
     }
     
-    if (msg_ctx)
+    if (svc_client)
     {
-        AXIS2_MSG_CTX_FREE(msg_ctx, &env);
-        msg_ctx = NULL;
-    }
-    if (response_ctx)
-    {
-        AXIS2_MSG_CTX_FREE(response_ctx, &env);
-        response_ctx = NULL;
-    }
-    if (call)
-    {
-        AXIS2_CALL_FREE(call, &env);
+        AXIS2_SVC_CLIENT_FREE(svc_client, &env);
+        svc_client = NULL;
     }
     if (endpoint_ref)
     {
         AXIS2_ENDPOINT_REF_FREE(endpoint_ref, &env);
         endpoint_ref = NULL;
     }
-    return status;
+    return 0;
 }
 
 /* build SOAP request message content using OM */
 axis2_om_node_t *
-build_om_programatically(axis2_env_t **env)
+build_om_payload(axis2_env_t **env)
 {
     axis2_om_node_t *echo_om_node = NULL;
     axis2_om_element_t* echo_om_ele = NULL;
@@ -230,28 +126,30 @@ build_om_programatically(axis2_env_t **env)
     axis2_om_element_t * text_om_ele = NULL;
     axis2_om_namespace_t *ns1 = NULL;
     
+    ns1 = axis2_om_namespace_create (env, "http://ws.apache.org/axis2/c/samples", "ns1");
+    echo_om_ele = axis2_om_element_create(env, NULL, "echoString", ns1, &echo_om_node);
+    text_om_ele = axis2_om_element_create(env, echo_om_node, "text", NULL, &text_om_node);
+    AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, "echo5", text_om_node);
+    
+    printf("\nSending OM : ");
+    print_om(env, echo_om_node);
 
+    return echo_om_node;
+}
+
+void print_om(axis2_env_t **env, axis2_om_node_t *node)
+{
     axis2_xml_writer_t *xml_writer = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
 
-    ns1 = axis2_om_namespace_create (env, "http://ws.apache.org/axis2/c/samples", "ns1");
-
-    echo_om_ele = axis2_om_element_create(env, NULL, "echoString", ns1, &echo_om_node);
-    
-    text_om_ele = axis2_om_element_create(env, echo_om_node, "text", NULL, &text_om_node);
-
-    AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, "echo5", text_om_node);
-    
-    
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
     om_output = axis2_om_output_create( env, xml_writer);
     
-    AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
+    AXIS2_OM_NODE_SERIALIZE(node, env, om_output);
     buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
-    printf("\nSending OM node in XML : %s \n",  buffer); 
+    printf("%s\n",  buffer); 
     AXIS2_FREE((*env)->allocator, buffer);
     AXIS2_OM_OUTPUT_FREE(om_output, env);
-
-    return echo_om_node;
+    return;
 }

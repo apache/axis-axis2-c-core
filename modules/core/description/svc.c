@@ -618,19 +618,34 @@ axis2_svc_get_op_with_qname (axis2_svc_t *svc,
     axis2_svc_impl_t *svc_impl = NULL;
     axis2_op_t *op_l = NULL;
     axis2_char_t *op_str = NULL;
+    axis2_char_t *op_qname_str = NULL;
     /*axis2_hash_t *all_ops = NULL; */
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, op_name, NULL);
     svc_impl = AXIS2_INTF_TO_IMPL(svc);
     
-    op_str = AXIS2_QNAME_GET_LOCALPART(op_name, env);
+    op_qname_str = AXIS2_QNAME_TO_STRING(op_name, env);    
+    if (op_qname_str)
+    {
+        axis2_wsdl_interface_t *wsdl_interface = NULL;
+        
+        wsdl_interface = axis2_svc_get_svc_interface(svc, env);
+        op_l = (axis2_op_t *)AXIS2_WSDL_INTERFACE_GET_OP(wsdl_interface, env, 
+            op_qname_str);
+        if (op_l)
+        {
+            return op_l;
+        }
+    }
+
     /*TODO commented until AXIS2_WSDL_INTERFACE_GET_ALL_OPS is implemented
     all_ops = AXIS2_WSDL_INTERFACE_GET_ALL_OPS(
         axis2_svc_get_svc_interface(svc, env), env);
     op_l = (axis2_op_t) (axis2_hash_get (all_ops, 
         op_str, AXIS2_HASH_KEY_STRING));
     */
+    op_str = AXIS2_QNAME_GET_LOCALPART(op_name, env);
     if(NULL == op_l )
     {
         op_l = (axis2_op_t *) (axis2_hash_get (

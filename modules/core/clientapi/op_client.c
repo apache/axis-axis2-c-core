@@ -44,7 +44,6 @@ typedef struct axis2_op_client_impl
 #define AXIS2_INTF_TO_IMPL(op_client) ((axis2_op_client_impl_t *)op_client)
 
 /** private function prototypes */
-static void axis2_op_client_init_data(axis2_op_client_impl_t *op_client_impl);
 static void axis2_op_client_init_ops(axis2_op_client_t *op_client);
 static axis2_msg_ctx_t* axis2_op_client_invoke_blocking(axis2_op_client_impl_t *op_client_impl,
 															axis2_env_t **env,
@@ -97,7 +96,7 @@ axis2_op_client_free(struct axis2_op_client *op_client,
 						axis2_env_t **env);
 
 axis2_op_client_t* AXIS2_CALL 
-axis2_op_client_create(axis2_env_t **env, axis2_op_t *operation,
+axis2_op_client_create(axis2_env_t **env, axis2_op_t *op,
 						axis2_svc_ctx_t *svc_ctx,
 						axis2_options_t *options)
 {
@@ -105,6 +104,9 @@ axis2_op_client_create(axis2_env_t **env, axis2_op_t *operation,
 	axis2_char_t *mep_uri = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, op, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, svc_ctx, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, options, NULL);
     
     op_client_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_op_client_impl_t) );
     if (!op_client_impl)
@@ -114,11 +116,25 @@ axis2_op_client_create(axis2_env_t **env, axis2_op_t *operation,
     }
 
 	/** initialize data */
-   	axis2_op_client_init_data(op_client_impl);
+    op_client_impl->base = NULL;
+	op_client_impl->svc_ctx = NULL;
+	op_client_impl->options = NULL;
+	op_client_impl->op_ctx = NULL;
+    op_client_impl->callback = NULL;
+    op_client_impl->completed = AXIS2_FALSE;
+    
 	op_client_impl->options = options;
 	op_client_impl->svc_ctx = svc_ctx;
-
-	mep_uri = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(operation, env);
+    
+    op_client_impl->op_ctx = axis2_op_ctx_create(env, op, 
+        op_client_impl->svc_ctx);
+    if (!(op_client_impl->op_ctx))
+    {
+        axis2_op_client_free(&(op_client_impl->op_client), env);
+		return NULL;
+    }
+    
+	mep_uri = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
 
 	if (!mep_uri)
 	{
@@ -360,15 +376,12 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
 		return AXIS2_FAILURE;
 	
 	msg_id = (axis2_char_t*)axis2_uuid_gen(env);
-	if(NULL != msg_id)
+	AXIS2_MSG_CTX_SET_MESSAGE_ID(msg_ctx, env, msg_id);
+    if(NULL != msg_id)
     {
 		AXIS2_FREE((*env)->allocator, msg_id);
 		msg_id = NULL;
-	}
-
-	AXIS2_MSG_CTX_SET_MESSAGE_ID(msg_ctx, env, msg_id);
-
-		
+	}		
 
 	if (AXIS2_OPTIONS_IS_USE_SEPERATE_LISTENER(op_client_impl->options, env))
 	{
@@ -391,14 +404,16 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
         	address = AXIS2_STRDUP(epr_address, env);
         	AXIS2_PROPERTY_SET_VALUE(property, env, address);
         	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
-                                    AXIS2_TRANSPORT_URL, property, AXIS2_FALSE);
+                AXIS2_TRANSPORT_URL, property, AXIS2_FALSE);
         	/*AXIS2_MSG_CTX_SET_TO(msg_ctx, env, call_impl->to);*/
         	AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, op_client_impl->svc_ctx);
-        	AXIS2_MSG_CTX_SET_CONF_CTX(msg_ctx, env, AXIS2_SVC_CTX_GET_CONF_CTX(op_client_impl->svc_ctx, env));
+        	AXIS2_MSG_CTX_SET_CONF_CTX(msg_ctx, env, 
+                AXIS2_SVC_CTX_GET_CONF_CTX(op_client_impl->svc_ctx, env));
+            AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, op_client_impl->op_ctx);
 
 			/*TODO: check this if it is necessary*/
-        	op_ctx = axis2_op_ctx_create(env, op, op_client_impl->svc_ctx);
-        	AXIS2_OP_REGISTER_OP_CTX(op, env, msg_ctx, op_ctx);
+        	/*op_ctx = axis2_op_ctx_create(env, op, op_client_impl->svc_ctx);
+        	AXIS2_OP_REGISTER_OP_CTX(op, env, msg_ctx, op_ctx);*/
 
         	/*Send the SOAP Message and receive a response */
         	response_mc = axis2_mep_client_two_way_send(env, msg_ctx);
@@ -490,15 +505,6 @@ axis2_op_client_free(struct axis2_op_client *op_client,
 	return AXIS2_SUCCESS;
 }
 /** private functions - implementation */
-
-static void axis2_op_client_init_data(axis2_op_client_impl_t *op_client_impl)
-{
-	op_client_impl->svc_ctx = NULL;
-	op_client_impl->options = NULL;
-	op_client_impl->op_ctx = NULL;
-	op_client_impl->callback = NULL;
-	op_client_impl->completed = AXIS2_FALSE;
-}
 
 static void axis2_op_client_init_ops(axis2_op_client_t *op_client)
 {

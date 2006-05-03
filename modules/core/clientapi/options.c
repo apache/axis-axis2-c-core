@@ -1118,5 +1118,6 @@ static void axis2_options_init_ops(struct axis2_options *options)
 	options->ops->add_reference_parameter = axis2_options_add_reference_parameter;
 	options->ops->set_manage_session = axis2_options_set_manage_session;
 	options->ops->is_manage_session = axis2_options_is_manage_session;
+    options->ops->get_msg_info_headers = axis2_options_get_msg_info_headers;
 	options->ops->free = axis2_options_free;
 }

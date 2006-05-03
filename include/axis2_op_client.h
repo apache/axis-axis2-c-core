@@ -191,34 +191,34 @@ AXIS2_DECLARE(axis2_op_client_t*) axis2_op_client_create(axis2_env_t **env,
     
 /************************** Start of function macros **************************/
 
-#define AXIS2_OPERATION_CLIENT_SET_OPTIONS(op_client, env, options) \
+#define AXIS2_OP_CLIENT_SET_OPTIONS(op_client, env, options) \
 		((op_client)->ops->set_options(op_client, env, options))
 
-#define AXIS2_OPERATION_CLIENT_GET_OPTIONS(op_client, env) \
+#define AXIS2_OP_CLIENT_GET_OPTIONS(op_client, env) \
 		((op_client)->ops->get_options(op_client, env))
 
-#define AXIS2_OPERATION_CLIENT_ADD_MSG_CTX(op_client, env, mc) \
+#define AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, mc) \
 		((op_client)->ops->add_msg_ctx(op_client, env, mc))
 
-#define AXIS2_OPERATION_CLIENT_GET_MSG_CTX(op_client, env, message_label) \
+#define AXIS2_OP_CLIENT_GET_MSG_CTX(op_client, env, message_label) \
 		((op_client)->ops->get_msg_ctx(op_client, env, message_label))
 
-#define AXIS2_OPERATION_CLIENT_SET_CALLBACK(op_client, env, callback) \
+#define AXIS2_OP_CLIENT_SET_CALLBACK(op_client, env, callback) \
 		((op_client)->ops->set_callback(op_client, env, callback))
 
-#define AXIS2_OPERATION_CLIENT_EXECUTE(op_client, env, block) \
+#define AXIS2_OP_CLIENT_EXECUTE(op_client, env, block) \
 		((op_client)->ops->execute(op_client, env, block))
 
-#define AXIS2_OPERATION_CLIENT_RESET(op_client, env) \
+#define AXIS2_OP_CLIENT_RESET(op_client, env) \
 		((op_client)->ops->reset(op_client, env))
 
-#define AXIS2_OPERATION_CLIENT_COMPLETE(op_client, env, mc) \
+#define AXIS2_OP_CLIENT_COMPLETE(op_client, env, mc) \
 		((op_client)->ops->compelete(op_client, env, mc))
 
-#define AXIS2_OPERATION_CLIENT_GET_OPERATION_CONTEXT(op_client, env) \
+#define AXIS2_OP_CLIENT_GET_OPERATION_CONTEXT(op_client, env) \
 		((op_client)->ops->get_operation_context(op_client, env))
 
-#define AXIS2_OPERATION_CLIENT_FREE(op_client, env) \
+#define AXIS2_OP_CLIENT_FREE(op_client, env) \
 		((op_client)->ops->free(op_client, env))
 
 /************************** End of function macros ****************************/    

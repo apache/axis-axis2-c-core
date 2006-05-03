@@ -541,7 +541,7 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
     }
     
 
-    temp_node = node_impl->first_child;
+    temp_node = axis2_om_node_get_first_child(om_node, env);
     /* serialize children of this node */
     while(NULL != temp_node)
     {
