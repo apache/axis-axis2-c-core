@@ -225,6 +225,16 @@ axis2_svc_client_create_with_conf_ctx_and_svc(axis2_env_t **env,
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+    
+    svc_client_impl->svc = NULL;
+    svc_client_impl->conf = NULL;
+    svc_client_impl->conf_ctx = NULL;
+	svc_client_impl->svc_ctx = NULL;
+    svc_client_impl->options = NULL;
+    svc_client_impl->override_options = NULL;
+    svc_client_impl->headers = NULL;
+	svc_client_impl->callback_recv = NULL;	
+
 
     /** initialize private data to NULL, create options */
     if (!axis2_svc_client_init_data(env, svc_client_impl))
@@ -233,11 +243,6 @@ axis2_svc_client_create_with_conf_ctx_and_svc(axis2_env_t **env,
 		return NULL;
 	}
 
-    if (!conf_ctx)
-    {
-        
-    }
-	
 	if (!axis2_svc_client_initialize_transport(env, svc_client_impl, conf_ctx, client_home))
 	{
 		axis2_svc_client_free(&(svc_client_impl->svc_client), env);
@@ -818,7 +823,7 @@ static axis2_bool_t axis2_svc_client_init_data(axis2_env_t **env,
 
     svc_client_impl->svc_ctx = NULL;
 
-	svc_client_impl->options = AXIS2_MALLOC((*env)->allocator, sizeof(axis2_options_t));
+	svc_client_impl->options = axis2_options_create(env);
     if (!svc_client_impl->options)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

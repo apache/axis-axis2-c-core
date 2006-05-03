@@ -26,12 +26,15 @@ build_om_programatically(axis2_env_t **env);
 int main(int argc, char** argv)
 {
     axis2_env_t *env = NULL;
+    axis2_char_t *address = NULL;
+    axis2_endpoint_ref_t* endpoint_ref = NULL;
+    axis2_options_t *options = NULL;
     axis2_char_t *client_home = NULL;
     axis2_svc_client_t* svc_client = NULL;
 
     axis2_om_node_t *node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_char_t *address = NULL;
+    
     axis2_char_t *wsa_action = NULL;
     axis2_om_node_t *ret_node = NULL;
     axis2_svc_t *svc = NULL;
@@ -40,12 +43,31 @@ int main(int argc, char** argv)
     axis2_msg_ctx_t *msg_ctx = NULL;
     axis2_mep_client_t *mep_client = NULL;
     axis2_msg_info_headers_t *msg_info_headers = NULL;
-    axis2_endpoint_ref_t* endpoint_ref = NULL;
+    
     axis2_conf_t *conf = NULL;
     axis2_msg_ctx_t *response_ctx = NULL;
     
     /* set up the envioronment */
     env = axis2_env_create_all("echo_blocking.log", AXIS2_LOG_LEVEL_TRACE);
+
+    /* Set end point reference of echo service */
+    address = "http://localhost:9090/axis2/services/echo";
+    if (argc > 1 )
+        address = argv[1];
+    if (AXIS2_STRCMP(address, "-h") == 0)
+    {
+        printf("Usage : %s [endpoint_url]\n", argv[0]);
+        printf("use -h for help\n");
+        return 0;
+    }
+    printf ("Using endpoint : %s\n", address);
+    
+    /* create EPR with given address */
+    endpoint_ref = axis2_endpoint_ref_create(&env, address);
+
+    /* Setup options */
+    options = axis2_options_create(&env);
+    AXIS2_OPTIONS_SET_TO(options, &env, endpoint_ref);
 
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
      * using the axis2.xml file.
@@ -59,6 +81,7 @@ int main(int argc, char** argv)
         client_home = "../../deploy";
 
     svc_client = axis2_svc_client_create(&env, client_home);
+    AXIS2_SERVICE_CLIENT_SET_OPTIONS(svc_client, &env, options);
 
     if (!svc_client)
     {
@@ -68,19 +91,6 @@ int main(int argc, char** argv)
                         AXIS2_ERROR_GET_MESSAGE(env->error));
     }
     
-    /* Set end point reference of echo service */
-    address = "http://localhost:9090/axis2/services/echo";
-    wsa_action = "http://ws.apache.org/axis2/c/samples/echoString";
-    if (argc > 1 )
-        address = argv[1];
-    if (AXIS2_STRCMP(address, "-h") == 0)
-    {
-        printf("Usage : %s [endpoint_url]\n", argv[0]);
-        printf("use -h for help\n");
-        return 0;
-    }
-
-    printf ("Using endpoint : %s\n", address);
 
     /* build the SOAP request message content using OM API.*/
     node = build_om_programatically(&env);
@@ -103,8 +113,6 @@ int main(int argc, char** argv)
        This can be used to manipulate SOAP header content when using WS-Addressing. */
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, &env);
 
-    /* create an axis2_endpoint_ref_t struct with ERP assigned */
-    endpoint_ref = axis2_endpoint_ref_create(&env, address);
 
     /* Set header parameters, required for WS-Addressing. 
      * Required only if you need to make use of WS-Addressing.
