@@ -85,6 +85,17 @@ struct axis2_ctx_ops
      */
     axis2_status_t (AXIS2_CALL *free)(axis2_ctx_t *ctx,
                                         axis2_env_t **env); 
+    axis2_status_t (AXIS2_CALL *
+    set_non_persistent_map)(
+        struct axis2_ctx *ctx, 
+        axis2_env_t **env,
+        axis2_hash_t* map);
+        
+    axis2_status_t (AXIS2_CALL *
+    set_persistent_map)(
+        struct axis2_ctx *ctx, 
+        axis2_env_t **env,
+        axis2_hash_t* map);
 };
 
 /** 
@@ -100,11 +111,20 @@ AXIS2_DECLARE(axis2_ctx_t*) axis2_ctx_create (axis2_env_t **env);
     
 /************************** Start of function macros **************************/
 
-#define AXIS2_CTX_SET_PROPERTY(ctx, env, key, value, persistent) ((ctx)->ops->set_property(ctx, env, key, value, persistent))
-#define AXIS2_CTX_GET_PROPERTY(ctx, env, key, persistent) ((ctx)->ops->get_property(ctx, env, key, persistent))
-#define AXIS2_CTX_GET_NON_PERSISTANT_MAP(ctx, env) ((ctx)->ops->get_non_persistent_map(ctx, env))
-#define AXIS2_CTX_GET_PERSISTANT_MAP(ctx, env) ((ctx)->ops->get_persistent_map(ctx, env))
-#define AXIS2_CTX_FREE(ctx, env) ((ctx)->ops->free (ctx, env))
+#define AXIS2_CTX_SET_PROPERTY(ctx, env, key, value, persistent) \
+    ((ctx)->ops->set_property(ctx, env, key, value, persistent))
+#define AXIS2_CTX_GET_PROPERTY(ctx, env, key, persistent) \
+    ((ctx)->ops->get_property(ctx, env, key, persistent))
+#define AXIS2_CTX_GET_NON_PERSISTANT_MAP(ctx, env) \
+    ((ctx)->ops->get_non_persistent_map(ctx, env))
+#define AXIS2_CTX_GET_PERSISTANT_MAP(ctx, env) \
+    ((ctx)->ops->get_persistent_map(ctx, env))
+#define AXIS2_CTX_SET_NON_PERSISTANT_MAP(ctx, env, map) \
+    ((ctx)->ops->set_non_persistent_map(ctx, env, map))
+#define AXIS2_CTX_SET_PERSISTANT_MAP(ctx, env, map) \
+    ((ctx)->ops->set_persistent_map(ctx, env, map))
+#define AXIS2_CTX_FREE(ctx, env) \
+    ((ctx)->ops->free (ctx, env))
 
 /************************** End of function macros ****************************/    
 

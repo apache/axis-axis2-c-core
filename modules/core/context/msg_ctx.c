@@ -24,6 +24,7 @@
 #include <axis2_transport_out_desc.h>
 #include <axis2_soap_envelope.h>
 #include <axis2_soap_const.h>
+#include <axis2_options.h>
 
 typedef struct axis2_msg_ctx_impl axis2_msg_ctx_impl_t;
 
@@ -410,7 +411,10 @@ axis2_svc_t* AXIS2_CALL axis2_msg_ctx_find_svc(axis2_msg_ctx_t *msg_ctx,
 axis2_op_t* AXIS2_CALL axis2_msg_ctx_find_op(axis2_msg_ctx_t *msg_ctx,
                             axis2_env_t **env,
                             axis2_svc_t *svc);
-
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_options (axis2_msg_ctx_t *msg_ctx,
+    axis2_env_t **env,
+    axis2_options_t *options);
 
 /************************* End of function headers ****************************/	
 
@@ -586,7 +590,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->msg_ctx.ops->is_paused = axis2_msg_ctx_is_paused;
     msg_ctx_impl->msg_ctx.ops->find_svc = axis2_msg_ctx_find_svc;
     msg_ctx_impl->msg_ctx.ops->find_op = axis2_msg_ctx_find_op;
-    
+    msg_ctx_impl->msg_ctx.ops->set_options = axis2_msg_ctx_set_options;
     return &(msg_ctx_impl->msg_ctx);
 }
 
@@ -1946,4 +1950,23 @@ axis2_op_t* AXIS2_CALL axis2_msg_ctx_find_op(axis2_msg_ctx_t *msg_ctx,
                             axis2_svc_t *svc)
 {
     return NULL;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_options (axis2_msg_ctx_t *msg_ctx,
+    axis2_env_t **env,
+    axis2_options_t *options)
+{
+    axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, options, AXIS2_FAILURE);
+    
+    msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
+    
+    msg_ctx_impl->msg_info_headers = 
+        AXIS2_OPTIONS_GET_MSG_INFO_HEADERS(options, env);
+    AXIS2_CTX_SET_NON_PERSISTANT_MAP(msg_ctx_impl->base, env, 
+        AXIS2_OPTIONS_GET_PROPERTIES(options, env));
+    
 }

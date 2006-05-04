@@ -74,6 +74,7 @@ struct axis2_svc_ctx;
 struct axis2_op_ctx;
 struct axis2_conf;
 struct axis2_soap_envelope;
+struct axis2_options;
     
 /** 
  * @brief Message Context ops struct
@@ -679,6 +680,12 @@ struct axis2_msg_ctx_ops
     axis2_bool_t (AXIS2_CALL *
 	is_paused) (axis2_msg_ctx_t *msg_ctx,
                 axis2_env_t **env);
+             
+    axis2_status_t (AXIS2_CALL *
+	set_options )(
+        axis2_msg_ctx_t *msg_ctx,
+        axis2_env_t **env,
+        struct axis2_options *options);
 };
 
 /** 
@@ -946,6 +953,8 @@ axis2_msg_ctx_create (axis2_env_t **env,
 #define AXIS2_MSG_CTX_FIND_OP(msg_ctx, env, svc) \
 		((msg_ctx)->ops->find_op(msg_ctx, env, svc))
 		
+#define AXIS2_MSG_CTX_SET_OPTIONS(msg_ctx, env, options) \
+		((msg_ctx)->ops->set_options(msg_ctx, env, options))
 
 /************************** End of function macros ****************************/    
 
