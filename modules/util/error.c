@@ -44,10 +44,6 @@ axis2_error_init()
     axis2_error_messages[AXIS2_ERROR_NO_MEMORY] = "Out of memory";
     axis2_error_messages[AXIS2_ERROR_INVALID_NULL_PARAM] = 
         "NULL paramater was passed when a non NULL parameter was expected";
-    axis2_error_messages[AXIS2_ERROR_INVALID_ITERATOR_STATE] = 
-        "Iterator state invalid e.g. next called before calling first";
-    axis2_error_messages[AXIS2_ERROR_INVALID_NODE_TYPE] = 
-        "Node type is different from what is expected";
     axis2_error_messages[AXIS2_ERROR_XML_READER_ELEMENT_NULL] = 
         "axis2_xml_reader returned NULL element";
     axis2_error_messages[AXIS2_ERROR_XML_READER_VALUE_NULL] = 
@@ -56,32 +52,22 @@ axis2_error_init()
         "Builder done with pulling. Cannot pull any more";
     axis2_error_messages[AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL] = 
         "Bulder's last node is NULL when it is not supposed to be NULL";
-    axis2_error_messages[AXIS2_ERROR_BUILDER_NOT_ASSOCIATED_WITH_DOCUMENT] = 
-        "A document not associated with builder";
     axis2_error_messages[AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD] = 
         "Discard faile because the builder state is invalid";
     axis2_error_messages[AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL] = 
         "Document root is NULL] =  when it is not supposed to be NULL";
     axis2_error_messages[AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE] = 
         "Undefined namespace used";
-    axis2_error_messages[AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED] = 
-        "Trying to release unallocated memory";
-    axis2_error_messages[AXIS2_ERROR_STRUCT_NOT_INITIALIZED] = 
-        "Struct is not properly initialized";
     axis2_error_messages[AXIS2_ERROR_COULD_NOT_OPEN_FILE] = 
         "Could not open the file";
     axis2_error_messages[AXIS2_ERROR_ENVIRONMENT_IS_NULL] = 
         "Environment passed is null";
-    axis2_error_messages[AXIS2_ERROR_INVALID_STATE_PARENT_NULL] = 
-        "Parent requested, but parent is null";
     axis2_error_messages[AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE] = 
         "Parameter locked, Cannot override";
     axis2_error_messages[AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER] = 
         "Parameter container not set";
     axis2_error_messages[AXIS2_ERROR_INVALID_STATE_PARAM] = 
         "Parameter not set";
-    axis2_error_messages[AXIS2_ERROR_INVALID_STATE_OP] = 
-        "Operation accessed has invalid state";
     axis2_error_messages[AXIS2_ERROR_INVALID_STATE_SVC] = 
         "Service accessed has invalid state";
     axis2_error_messages[AXIS2_ERROR_INVALID_STATE_WSDL_SVC] = 
@@ -196,8 +182,6 @@ axis2_error_init()
         "AXIS2_ERROR_HANDLER_CREATION_FAILED";
     axis2_error_messages[AXIS2_ERROR_MSG_RECV_CREATION_FAILED] = 
         "AXIS2_ERROR_MSG_RECV_CREATION_FAILED";
-    axis2_error_messages[AXIS2_ERROR_OPERATION_CANNOT_BE_NULL_IN_MEP_CLIENT] = 
-        "Operation cannot be NULL in MEP client";
     axis2_error_messages[AXIS2_ERROR_MEP_CANNOT_BE_NULL_IN_MEP_CLIENT] = 
         "MEP cannot be NULL in MEP client";
     axis2_error_messages[AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT] = 
@@ -236,8 +220,6 @@ axis2_error_init()
         "AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND";
     axis2_error_messages[AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY] = 
         "only one SOAP fault allowed in SOAP body";
-    axis2_error_messages[AXIS2_ERROR_SOCKET_STREAM_CREATION] = 
-        "Error in creating the stream for the socket";
     axis2_error_messages[AXIS2_ERROR_INVALID_SOCKET] = 
         "Trying to do operation on closed/not opened socket";
     axis2_error_messages[AXIS2_ERROR_INVALID_FD] = 
@@ -294,8 +276,6 @@ axis2_error_init()
         "AXIS2_ERROR_INVALID_MODULE";
     axis2_error_messages[AXIS2_ERROR_MODULE_CREATION_FAILED] = 
         "AXIS2_ERROR_MODULE_CREATION_FAILED";
-    axis2_error_messages[AXIS2_ERROR_SOAP_ENVELOPE_MUST_HAVE_BODY_ELEMENT] = 
-        "AXIS2_ERROR_SOAP_ENVELOPE_MUST_HAVE_BODY_ELEMENT";
     axis2_error_messages[AXIS2_ERROR_INVALID_MODULE_CONF] = 
         "AXIS2_ERROR_INVALID_MODULE_CONF";
     axis2_error_messages[AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME] = 
@@ -326,8 +306,6 @@ axis2_error_init()
         "AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED";
     axis2_error_messages[AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE] =
         "AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE";
-    axis2_error_messages[AXIS2_ERROR_SOAP_FAULT_SUB_CODE_DOES_NOT_HAVE_A_VALUE] = 
-        "AXIS2_ERROR_SOAP_FAULT_SUB_CODE_DOES_NOT_HAVE_A_VALUE";
     axis2_error_messages[AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED] =
         "AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED";
     axis2_error_messages[AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT] = 
@@ -352,8 +330,6 @@ axis2_error_init()
         "AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_REASON_ELEMENT";
     axis2_error_messages[AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT] = 
         "AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT";
-    axis2_error_messages[AXIS2_ERROR_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT] = 
-        "AXIS2_ERROR_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT";
     axis2_error_messages[AXIS2_ERROR_NULL_OM_OUTPUT] = 
         "OM output is NULL";
     axis2_error_messages[AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY] = 
@@ -401,8 +377,6 @@ axis2_error_init()
         "Input stream is NULL in msg_ctx"; 
     axis2_error_messages[AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM] =
         "NULL stream in the http chunked stream";
-    axis2_error_messages[AXIS2_ERROR_FLOW_TYPE_CANNOT_BE_NULL] =
-        "Flow type of PhaseOrder element cannot be null";
     axis2_error_messages[AXIS2_ERROR_DATA_ELEMENT_IS_NULL] =
         "Data element of the OM Node is null";
     axis2_error_messages[AXIS2_ERROR_WSDL_BINDING_NAME_IS_REQUIRED] =

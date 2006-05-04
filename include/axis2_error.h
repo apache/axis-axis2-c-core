@@ -95,8 +95,6 @@ extern "C"
          */
         /** Invalid SOAP envelope state */
         AXIS2_ERROR_INVALID_SOAP_ENVELOPE_STATE,
-        /** Invalid SOAP version */
-        AXIS2_ERROR_INVALID_SOAP_VERSION,
         /** Invalid message context state  */
         AXIS2_ERROR_INVALID_STATE_MSG_CTX,
         /** Service accessed has invalid state */
@@ -277,6 +275,8 @@ extern "C"
         AXIS2_ERROR_SSL_ENGINE,
         /* Either axis2c cannot find certificates or the env variable is not set*/
         AXIS2_ERROR_SSL_NO_CA_FILE,
+        /* Error in writing the response in response writer */
+        AXIS2_ERROR_WRITING_RESPONSE,
        /*
         * Group - mod_addr
         */ 
@@ -288,10 +288,18 @@ extern "C"
        /*
         * Group - utils
         */
+		/** Could not open the file */
+		AXIS2_ERROR_COULD_NOT_OPEN_FILE,
         /*TODO ADDCOMMENT*/
         AXIS2_ERROR_DLL_CREATE_FAILED,
         /*TODO ADDCOMMENT*/
         AXIS2_ERROR_DLL_LOADING_FAILED,
+		/** Environment passed is null */
+		AXIS2_ERROR_ENVIRONMENT_IS_NULL,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_FILE_NAME_NOT_SET,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_INVALID_STATE_DLL_DESC,
         /*TODO ADDCOMMENT*/
         AXIS2_ERROR_HANDLER_CREATION_FAILED,
         /** Array list index out of bounds */
@@ -419,126 +427,85 @@ extern "C"
         AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE_PREFIX,
         /** error in writing cdata section */
         AXIS2_ERROR_WRITING_CDATA,
-        
-        /*================================================================ */
-        /** Iterator state invalid e.g. next called before calling first */
-        AXIS2_ERROR_INVALID_ITERATOR_STATE,
-        /** Node type is different from what is expected */
-        AXIS2_ERROR_INVALID_NODE_TYPE,
-        /** A document not associated with builder */
-        AXIS2_ERROR_BUILDER_NOT_ASSOCIATED_WITH_DOCUMENT,
-        /** Trying to release unallocated memory */
-        AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED,
-		/** Struct is not properly initialized */
-		AXIS2_ERROR_STRUCT_NOT_INITIALIZED,
-		/** Could not open the file */
-		AXIS2_ERROR_COULD_NOT_OPEN_FILE,
-		/** Environment passed is null */
-		AXIS2_ERROR_ENVIRONMENT_IS_NULL,
-        /** Parent requested, but parent is null */
-        AXIS2_ERROR_INVALID_STATE_PARENT_NULL,
-        /** Operation accessed has invalid state */
-        AXIS2_ERROR_INVALID_STATE_OP,
-        
-        
-        
-        
-        /* Operation cannot be NULL in MEP client */
-        AXIS2_ERROR_OPERATION_CANNOT_BE_NULL_IN_MEP_CLIENT,
+       /*
+        * Group - xml:soap
+        */
         /** invalid type passed */
         AXIS2_ERROR_INVALID_BASE_TYPE,
-        /** om element is expected */
-        AXIS2_ERROR_OM_ELEMENT_EXPECTED,
-
+        /** invalid soap namespace uri found */
+        AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI,
+        /** Invalid SOAP version */
+        AXIS2_ERROR_INVALID_SOAP_VERSION,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_MULTIPLE_DETAIL_ELEMENTS_ENCOUNTERED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_MULTIPLE_VALUE_ENCOUNTERED_IN_CODE_ELEMENT,
         /* must understatnd attribute should have values of true or false */
         AXIS2_ERROR_MUST_UNDERSTAND_SHOULD_BE_1_0_TRUE_FALSE,
-        
-        AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND,
+        /** om element is expected */
+        AXIS2_ERROR_OM_ELEMENT_EXPECTED,
+        /* processing soap11 fault value element should have only
+           text as its children */
+        AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE,
         /** only one SOAP fault allowed in SOAP body */
         AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY,
-		/** Error in creating the stream for the socket */
-		AXIS2_ERROR_SOCKET_STREAM_CREATION,
-        
-        
-        
-        
-        
-        
-        AXIS2_ERROR_SOAP_ENVELOPE_MUST_HAVE_BODY_ELEMENT,
-
-        
-        AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME,
-        /** soap builder encountered multiple headers */
-        AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS,
+        /** soap builder found a child element other than header or body in envelope 
+        element */
+        AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY,
         /** soap builder encounterd body element first and header next */
         AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER,
         /** soap builder multiple body elements encounterd */
         AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED,
-        /** soap builder found a child element other than header or body in envelope 
-        element */
-        AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY,
-
-        /** invalid soap namespace uri found */
-        AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI,
+        /** soap builder encountered multiple headers */
+        AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_SOAP_FAULT_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE,
         /** soap message does not have an envelope element */
         AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE,
-       
-        AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP,
-        
-        /* Error in writing the response in response writer */
-        AXIS2_ERROR_WRITING_RESPONSE,
-        
-        AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED,
-        
-        AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED,
-        
-        AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED,
-        
-        AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE,
-        
-        AXIS2_ERROR_SOAP_FAULT_SUB_CODE_DOES_NOT_HAVE_A_VALUE,
-        
-        AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED,
-        AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT,
-        
-        AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED,
-        
-        AXIS2_ERROR_SOAP_FAULT_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT,
-        
-        AXIS2_ERROR_MULTIPLE_DETAIL_ELEMENTS_ENCOUNTERED,
-        
-        AXIS2_ERROR_UNSUPPORTED_ELEMENT_IN_SOAP_FAULT_ELEMENT,
-        
-        AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED,
-        
-        AXIS2_ERROR_MULTIPLE_VALUE_ENCOUNTERED_IN_CODE_ELEMENT,
-        
-        AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE,
-        
-        AXIS2_ERROR_THIS_LOCALNAME_NOT_SUPPORTED_INSIDE_THE_CODE_ELEMENT,
-        
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME,
+        /*TODO ADDCOMMENT*/
         AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_REASON_ELEMENT,
-        
+        /*TODO ADDCOMMENT*/
         AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT,
-
-        AXIS2_ERROR_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT,
-        
-        AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS,
-        
-        /* processing soap11 fault value element should have only
-           text as its children */
-        AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE,
-
-        AXIS2_ERROR_FILE_NAME_NOT_SET,
-        AXIS2_ERROR_INVALID_STATE_DLL_DESC,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_THIS_LOCALNAME_NOT_SUPPORTED_INSIDE_THE_CODE_ELEMENT,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_UNSUPPORTED_ELEMENT_IN_SOAP_FAULT_ELEMENT,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED,
+       /*
+        * Group - services
+        */
         /** Invalid XML format in request */
         AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST,
         /** Input OM node NULL, Probably error in SOAP request */
         AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL,
         /** Invalid parameters for service operation in SOAP request */
         AXIS2_ERROR_SVC_SKEL_INVALID_OPERATION_PARAMETERS_IN_SOAP_REQUEST,
-        /* Flow type of PhaseOrder element cannot be null */
-        AXIS2_ERROR_FLOW_TYPE_CANNOT_BE_NULL,
+        
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
             AXIS2_ERROR_LAST is used to track the number of error codes present

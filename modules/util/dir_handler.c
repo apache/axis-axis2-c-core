@@ -360,7 +360,6 @@ int file_select(struct dirent *entry)
 int dir_select(struct dirent *entry)
  
 {
-	axis2_char_t *ptr;
 	axis2_char_t *rindex(const axis2_char_t *s, int c);
  
 	if ((strcmp(entry->d_name, ".")== 0) ||
