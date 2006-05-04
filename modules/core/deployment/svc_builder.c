@@ -568,7 +568,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         qattname = NULL;
         if(NULL == op_name_att)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_OPERATION_NAME_MISSING,
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_OP_NAME_MISSING,
                 AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
