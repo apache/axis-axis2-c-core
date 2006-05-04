@@ -1564,70 +1564,44 @@ axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
     {
         axis2_flow_t *flow = NULL;
         axis2_array_list_t *phases = NULL;
+        
+        if(resolver_impl->phase_holder)
+        {
+            AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
+            resolver_impl->phase_holder = NULL;
+        }
+        
         switch (type) 
         {
             case AXIS2_INFLOW:
             {
                 phases = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(axis_op, env);
-                if(phases)
-                {
-                    if(resolver_impl->phase_holder)
-                    {
-                        AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
-                        resolver_impl->phase_holder = NULL;
-                    }
-                    resolver_impl->phase_holder = 
-                        axis2_phase_holder_create_with_phases(env, phases);
-                }
                 break;
             }
             case AXIS2_OUTFLOW:
             {
                 phases = AXIS2_OP_GET_PHASES_OUTFLOW(axis_op, env);
-                if(phases)
-                {
-                    if(resolver_impl->phase_holder)
-                    {
-                        AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
-                        resolver_impl->phase_holder = NULL;
-                    }
-                    resolver_impl->phase_holder = 
-                        axis2_phase_holder_create_with_phases(env, phases);
-                }
                 break;
             }
             case AXIS2_FAULT_INFLOW:
             {
                 phases = AXIS2_OP_GET_PHASES_IN_FAULT_FLOW(axis_op, env);
-                if(phases)
-                {
-                    if(resolver_impl->phase_holder)
-                    {
-                        AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
-                        resolver_impl->phase_holder = NULL;
-                    }
-                    resolver_impl->phase_holder = 
-                        axis2_phase_holder_create_with_phases(env, phases);
-                }
                 break;
             }
             case AXIS2_FAULT_OUTFLOW:
             {
                 phases = AXIS2_OP_GET_PHASES_OUT_FAULT_FLOW(axis_op, env);
-                if(phases)
-                {
-                    if(resolver_impl->phase_holder)
-                    {
-                        AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
-                        resolver_impl->phase_holder = NULL;
-                    }
-                    resolver_impl->phase_holder = 
-                        axis2_phase_holder_create_with_phases(env, phases);
-                }
                 break;
             }
         }
 
+        if(phases)
+        {
+            resolver_impl->phase_holder = 
+                axis2_phase_holder_create_with_phases(env, phases);
+        }
+
+        
         switch (type) 
         {
             case AXIS2_INFLOW:
@@ -1651,7 +1625,8 @@ axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
                 break;
             }
         }
-        if (NULL != flow) 
+        
+        if (NULL != flow && NULL != resolver_impl->phase_holder) 
         {
             int j = 0;
             int handler_count = 0;
