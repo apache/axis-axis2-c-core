@@ -713,7 +713,8 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
                 if(parent && AXIS2_TRUE == is_param_locked)
                 {
                     AXIS2_PARAM_FREE(param, env);
-                    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CONF_NOT_FOUND,
+                    AXIS2_ERROR_SET((*env)->error, 
+                        AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, 
                         AXIS2_FAILURE);
                     return AXIS2_FAILURE;
                 }
