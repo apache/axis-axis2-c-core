@@ -54,11 +54,186 @@ extern "C"
             error codes to error messages that the error codes are contiguous and 
             the last error value is always AXIS2_ERROR_LAST.
           */
+        /* 
+         * Group - Common Errors
+         */
         AXIS2_ERROR_NONE = 0,
         /** Out of memory */
         AXIS2_ERROR_NO_MEMORY,
         /** NULL paramater was passed when a non NULL parameter was expected */
         AXIS2_ERROR_INVALID_NULL_PARAM,
+
+        /*
+         * Group - core:addr
+         */
+
+        /*
+         * Group - core:clientapi
+         */
+        /** Blocking invocation expects response */
+        AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE,
+        /** cannot infer transport from URL */
+        AXIS2_ERROR_CANNOT_INFER_TRANSPORT,
+        /** Client side support only one configuration context */
+        AXIS2_ERROR_CLIENT_SIDE_SUPPORT_ONLY_ONE_CONF_CTX,
+        /* MEP cannot be NULL in MEP client */
+        AXIS2_ERROR_MEP_CANNOT_BE_NULL_IN_MEP_CLIENT,
+        /* MEP Mismatch */
+        AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT,
+        /** Response timed out */
+        AXIS2_ERROR_RESPONSE_TIMED_OUT,
+        /** SOAP envelope or SOAP body NULL */
+        AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
+        /** Two way channel needs addressing module to be engaged */
+        AXIS2_ERROR_TWO_WAY_CHANNEL_NEEDS_ADDRESSING,
+        /** Unknown Transport */
+        AXIS2_ERROR_UNKNOWN_TRANSPORT,
+        /* Unsupported SOAP style */
+        AXIS2_ERROR_UNSUPPORTED_TYPE,
+        /*
+         * Group - core:clientapi:diclient
+         */
+
+        /*
+         * Group - core:context
+         */
+        /** Invalid SOAP envelope state */
+        AXIS2_ERROR_INVALID_SOAP_ENVELOPE_STATE,
+        /** Invalid SOAP version */
+        AXIS2_ERROR_INVALID_SOAP_VERSION,
+        /** Invalid message context state  */
+        AXIS2_ERROR_INVALID_STATE_MSG_CTX,
+        /** Service accessed has invalid state */
+        AXIS2_ERROR_INVALID_STATE_SVC,
+        /** Service group accessed has invalid state */
+        AXIS2_ERROR_INVALID_STATE_SVC_GRP,
+        /** Service not yet found */
+        AXIS2_ERROR_SERVICE_NOT_YET_FOUND,
+
+       /*
+        * Group - core:deployment
+        */ 
+        /* Invalid phase found in phase validation*/
+        AXI2_ERROR_INVALID_PHASE,
+        /* axis2.xml cannot be not found*/
+        AXIS2_ERROR_CONFIG_NOT_FOUND,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_CONF_NOT_FOUND,
+        /** error occured creating xml stream reader */
+        AXIS2_ERROR_CREATING_XML_STREAM_READER,
+        /* Data element of the OM Node is null */
+        AXIS2_ERROR_DATA_ELEMENT_IS_NULL,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_INFLOW_NOT_ALLOWED_IN_TRS_OUT,
+        /** Invalid handler state */
+        AXIS2_ERROR_INVALID_HANDLER_STATE,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_INVALID_MODUELE_REF,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_INVALID_MODUELE_REF_BY_OP,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_INVALID_MODULE_CONF,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_INVALID_STATE_DESC_BUILDER,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_MODULE_NOT_FOUND,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_MODULE_VALIDATION_FAILED,
+        /** Module xml file is not found in the given path */
+        AXIS2_ERROR_MODULE_XML_NOT_FOUND_FOR_THE_MODULE,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_NO_DISPATCHER_FOUND,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_OPERATION_NAME_MISSING,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_OP_NAME_MISSING,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_OUTFLOW_NOT_ALLOWED_IN_TRS_IN,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_REPO_CAN_NOT_BE_NULL,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_REPOSITORY_NOT_EXIST,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_REPOS_LISTENER_INIT_FAILED,
+        /** Service xml file is not found in the given path */
+        AXIS2_ERROR_SERVICE_XML_NOT_FOUND,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_SVC_NAME_ERROR,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_TRANSPORT_SENDER_ERROR,
+        /* TODO ADDCOMMENT*/
+        AXIS2_PATH_TO_CONFIG_CAN_NOT_BE_NULL,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_INVALID_SVC,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_MODULE_CREATION_FAILED,
+       /*
+        * Group - core:description
+        */ 
+        /* Cannot correlate message*/
+        AXIS2_ERROR_CANNOT_CORRELATE_MSG,
+        /** Could not Map the MEP URI to a axis MEP constant value */
+        AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT,
+        /* Invalid messge addition , operation context completed */
+        AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
+        /** Module description accessed has invalid state */
+        AXIS2_ERROR_INVALID_STATE_MODULE_DESC,
+        /** Parameter not set */
+        AXIS2_ERROR_INVALID_STATE_PARAM,
+        /** Parameter container not set */
+        AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER,
+        /** module has alredy engaged to the op op terminated !!! */
+        AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP,
+        /** module has alredy been engaged on the service.Operation terminated !!! */
+        AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC,
+        /** module has alredy been engaged on the service. Group Operation terminated !!! */
+        AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC_GRP,
+        /** Parameter locked, Cannot override */
+        AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
+       /*
+        * Group - core:engine
+        */ 
+        /** Both before and after handlers cannot be the same */
+        AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME,
+        /** Invalid handler rules  */
+        AXIS2_ERROR_INVALID_HANDLER_RULES,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_INVALID_MODULE,
+        /** Invalid first handler for phase  */
+        AXIS2_ERROR_INVALID_PHASE_FIRST_HANDLER,
+        /** Invalid last handler for phase  */
+        AXIS2_ERROR_INVALID_PHASE_LAST_HANDLER,
+        /** Invalid engine config state */
+        AXIS2_ERROR_INVALID_STATE_CONF,
+        /** Message context processing a fault already */
+        AXIS2_ERROR_INVALID_STATE_PROCESSING_FAULT_ALREADY,
+        /** fault to field not specified in message context */
+        AXIS2_ERROR_NOWHERE_TO_SEND_FAULT,
+        /** Only one handler allowed for phase, adding handler is not allowed  */
+        AXIS2_ERROR_PHASE_ADD_HANDLER_INVALID,
+        /** First handler of phase already set */
+        AXIS2_ERROR_PHASE_FIRST_HANDLER_ALREADY_SET,
+        /** Last handler of phase already set */
+        AXIS2_ERROR_PHASE_LAST_HANDLER_ALREADY_SET,
+        /**Two service can not have same name, a service with same name alredy 
+           exist in the system */
+        AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME,
+       /*
+        * Group - core:phaseresolver
+        */ 
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_INVALID_MODULE_REF,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_INVALID_PHASE,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_NO_TRANSPORT_IN_CONFIGURED,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_NO_TRANSPORT_OUT_CONFIGURED,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_PHASE_IS_NOT_SPECIFED,
+        /* TODO ADDCOMMENT*/
+        AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE,
+        /*================================================================ */
         /** Iterator state invalid e.g. next called before calling first */
         AXIS2_ERROR_INVALID_ITERATOR_STATE,
         /** Node type is different from what is expected */
@@ -89,70 +264,22 @@ extern "C"
 		AXIS2_ERROR_ENVIRONMENT_IS_NULL,
         /** Parent requested, but parent is null */
         AXIS2_ERROR_INVALID_STATE_PARENT_NULL,
-        /** Parameter locked, Cannot override */
-        AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
-        /** Parameter container not set */
-        AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER,
-        /** Parameter not set */
-        AXIS2_ERROR_INVALID_STATE_PARAM,
         /** Operation accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_OP,
-        /** Service accessed has invalid state */
-        AXIS2_ERROR_INVALID_STATE_SVC,
         /** Wsdl Service accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_WSDL_SVC,
-        /** Service group accessed has invalid state */
-        AXIS2_ERROR_INVALID_STATE_SVC_GRP,
         /** Wsdl op accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_WSDL_OP,
-        /** Module description accessed has invalid state */
-        AXIS2_ERROR_INVALID_STATE_MODULE_DESC,
         /** Array list index out of bounds */
         AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
-        /** Both before and after handlers cannot be the same */
-        AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME,
-        /** First handler of phase already set */
-        AXIS2_ERROR_PHASE_FIRST_HANDLER_ALREADY_SET,
-        /** Invalid first handler for phase  */
-        AXIS2_ERROR_INVALID_PHASE_FIRST_HANDLER,
-        /** Last handler of phase already set */
-        AXIS2_ERROR_PHASE_LAST_HANDLER_ALREADY_SET,
-        /** Invalid last handler for phase  */
-        AXIS2_ERROR_INVALID_PHASE_LAST_HANDLER,
-        /** Only one handler allowed for phase, adding handler is not allowed  */
-        AXIS2_ERROR_PHASE_ADD_HANDLER_INVALID,
-        /** Invalid handler rules  */
-        AXIS2_ERROR_INVALID_HANDLER_RULES,
-        /** Invalid handler state */
-        AXIS2_ERROR_INVALID_HANDLER_STATE,
         /** No such element */
         AXIS2_ERROR_NO_SUCH_ELEMENT,
-        /** Could not Map the MEP URI to a axis MEP constant value */
-        AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT,
-        /** module has alredy engaged to the op op terminated !!! */
-        AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP,
-        /** module has alredy been engaged on the service.Operation terminated !!! */
-        AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC,
-        /** module has alredy been engaged on the service. Group Operation terminated !!! */
-        AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC_GRP,
-        /** Invalid message context state  */
-        AXIS2_ERROR_INVALID_STATE_MSG_CTX,
-        /** Invalid engine config state */
-        AXIS2_ERROR_INVALID_STATE_CONF,
-        /** Service not yet found */
-        AXIS2_ERROR_SERVICE_NOT_YET_FOUND,
         /** error occured creating xml stream writer */
         AXIS2_ERROR_CREATING_XML_STREAM_WRITER,
-        /** error occured creating xml stream writer */
-        AXIS2_ERROR_CREATING_XML_STREAM_READER,
         
-        AXIS2_ERROR_INVALID_MODULE_REF,
         
-        AXIS2_ERROR_PHASE_IS_NOT_SPECIFED,
         
-        AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE,
         
-        AXIS2_ERROR_INVALID_PHASE,
         /** error a namespace should have a valid uri */
         AXIS2_ERROR_INVALID_EMPTY_NAMESPACE_URI,
         /** error occured in writing start element in xml writer */
@@ -189,21 +316,8 @@ extern "C"
         AXIS2_ERROR_WRITING_DTD,
         /** error in writing default namespace */
         AXIS2_ERROR_WRITING_DEFAULT_NAMESPACE,
-        /**Two service can not have same name, a service with same name alredy 
-          * exist in the system
-          */
-        AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME,
-        /** Message context processing a fault already */
-        AXIS2_ERROR_INVALID_STATE_PROCESSING_FAULT_ALREADY,
-        /** fault to field not specified in message context */
-        AXIS2_ERROR_NOWHERE_TO_SEND_FAULT,
         /* Invalid status line or invalid request line */
         AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
-        /* Cannot correlate message*/
-        AXIS2_ERROR_CANNOT_CORRELATE_MSG,
-        AXIS2_ERROR_INVALID_STATE_DESC_BUILDER,
-        AXIS2_ERROR_CONF_NOT_FOUND,
-        AXIS2_ERROR_MODULE_NOT_FOUND,
         AXIS2_ERROR_DLL_CREATE_FAILED,
         AXIS2_ERROR_DLL_LOADING_FAILED,
         AXIS2_ERROR_SVC_SKELETON_CREATION_FAILED,
@@ -211,16 +325,8 @@ extern "C"
         AXIS2_ERROR_MSG_RECV_CREATION_FAILED,
         /* Operation cannot be NULL in MEP client */
         AXIS2_ERROR_OPERATION_CANNOT_BE_NULL_IN_MEP_CLIENT,
-        /* MEP cannot be NULL in MEP client */
-        AXIS2_ERROR_MEP_CANNOT_BE_NULL_IN_MEP_CLIENT,
-        /* MEP Mismatch */
-        AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT,
         /* Cannot determine MEP */
         AXIS2_ERROR_MEP_CANNOT_DETERMINE_MEP,
-        /** cannot infer transport from URL */
-        AXIS2_ERROR_CANNOT_INFER_TRANSPORT,
-        /** Invalid SOAP version */
-        AXIS2_ERROR_INVALID_SOAP_VERSION,
         /* HTTP version cannot be null in the status/request line */ 
         AXIS2_ERROR_NULL_HTTP_VERSION,
         /* A valid conf_ctx is reqd for the http worker */
@@ -229,22 +335,10 @@ extern "C"
         AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL,
         /** invalid type passed */
         AXIS2_ERROR_INVALID_BASE_TYPE,
-        /** Response timed out */
-        AXIS2_ERROR_RESPONSE_TIMED_OUT,
-        /** Blocking invocation expects response */
-        AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE,
-        /** Client side support only one configuration context */
-        AXIS2_ERROR_CLIENT_SIDE_SUPPORT_ONLY_ONE_CONF_CTX,
-        /** Unknown Transport */
-        AXIS2_ERROR_UNKNOWN_TRANSPORT,
-        /** Two way channel needs addressing module to be engaged */
-        AXIS2_ERROR_TWO_WAY_CHANNEL_NEEDS_ADDRESSING,
         /** om element is expected */
         AXIS2_ERROR_OM_ELEMENT_EXPECTED,
 
         AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE,
-        /** SOAP envelope or SOAP body NULL */
-        AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
         /* must understatnd attribute should have values of true or false */
         AXIS2_ERROR_MUST_UNDERSTAND_SHOULD_BE_1_0_TRUE_FALSE,
         
@@ -271,39 +365,14 @@ extern "C"
         AXIS2_ERROR_INVALID_HEADER,
         /** No body present in the request or the response */
         AXIS2_ERROR_NULL_BODY,
-        /** Invalid SOAP envelope state */
-        AXIS2_ERROR_INVALID_SOAP_ENVELOPE_STATE,
-        /** Service xml file is not found in the given path */
-        AXIS2_ERROR_SERVICE_XML_NOT_FOUND,
-        /** Module xml file is not found in the given path */
-        AXIS2_ERROR_MODULE_XML_NOT_FOUND_FOR_THE_MODULE,
         
-        AXIS2_ERROR_OPERATION_NAME_MISSING,
         
-        AXIS2_ERROR_SVC_NAME_ERROR,
         
-        AXIS2_ERROR_OP_NAME_MISSING,
         
-        AXIS2_ERROR_OUTFLOW_NOT_ALLOWED_IN_TRS_IN,
         
-        AXIS2_ERROR_INFLOW_NOT_ALLOWED_IN_TRS_OUT,
         
-        AXIS2_ERROR_NO_DISPATCHER_FOUND,
-        AXIS2_ERROR_TRANSPORT_SENDER_ERROR,
-        AXIS2_ERROR_REPO_CAN_NOT_BE_NULL,
-        AXIS2_ERROR_REPOSITORY_NOT_EXIST,
-        AXIS2_ERROR_CONFIG_NOT_FOUND,
-        AXIS2_PATH_TO_CONFIG_CAN_NOT_BE_NULL,
-        AXIS2_ERROR_MODULE_VALIDATION_FAILED,
-        AXI2_ERROR_INVALID_PHASE,
-        AXIS2_ERROR_INVALID_MODUELE_REF,
-        AXIS2_ERROR_INVALID_MODUELE_REF_BY_OP,
-        AXIS2_ERROR_INVALID_SVC,
-        AXIS2_ERROR_INVALID_MODULE,
-        AXIS2_ERROR_MODULE_CREATION_FAILED,
         AXIS2_ERROR_SOAP_ENVELOPE_MUST_HAVE_BODY_ELEMENT,
 
-        AXIS2_ERROR_INVALID_MODULE_CONF,
         
         AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME,
         /** soap builder encountered multiple headers */
@@ -316,8 +385,6 @@ extern "C"
         element */
         AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY,
 
-        /* Invalid messge addition , operation context completed */
-        AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
         /** invalid soap namespace uri found */
         AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI,
         /** soap message does not have an envelope element */
@@ -385,14 +452,10 @@ extern "C"
 
         AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED,
         AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED,
-        AXIS2_ERROR_NO_TRANSPORT_IN_CONFIGURED,
-        AXIS2_ERROR_NO_TRANSPORT_OUT_CONFIGURED,
         /* Listen failed for the server socket */
         AXIS2_ERROR_SOCKET_LISTEN_FAILED,
         AXIS2_ERROR_FILE_NAME_NOT_SET,
-        AXIS2_ERROR_REPOS_LISTENER_INIT_FAILED,
         AXIS2_ERROR_INVALID_STATE_DLL_DESC,
-        AXIS2_ERROR_UNSUPPORTED_TYPE,
         /* Null soap envelope in msg_ctx */
         AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX,
         /* Generation of platform dependent uuid failed */
@@ -409,8 +472,6 @@ extern "C"
         AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM,
         /* Flow type of PhaseOrder element cannot be null */
         AXIS2_ERROR_FLOW_TYPE_CANNOT_BE_NULL,
-        /* Data element of the OM Node is null */
-        AXIS2_ERROR_DATA_ELEMENT_IS_NULL,
         /* Wsdl binding name cannot be NULL(Is required) */
         AXIS2_ERROR_WSDL_BINDING_NAME_IS_REQUIRED,
         /* PortType/Interface name cannot be null(Required) */
