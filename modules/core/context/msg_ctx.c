@@ -1958,6 +1958,7 @@ axis2_msg_ctx_set_options (axis2_msg_ctx_t *msg_ctx,
     axis2_options_t *options)
 {
     axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
+    axis2_char_t *rest_val = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, options, AXIS2_FAILURE);
@@ -1968,5 +1969,13 @@ axis2_msg_ctx_set_options (axis2_msg_ctx_t *msg_ctx,
         AXIS2_OPTIONS_GET_MSG_INFO_HEADERS(options, env);
     AXIS2_CTX_SET_NON_PERSISTANT_MAP(msg_ctx_impl->base, env, 
         AXIS2_OPTIONS_GET_PROPERTIES(options, env));
+    rest_val = (axis2_char_t)AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
+        AXIS2_ENABLE_REST, AXIS2_FALSE);
+    if (rest_val)
+    {
+       if (AXIS2_STRCMP(rest_val, AXIS2_VALUE_TRUE) == 0)
+           msg_ctx_impl->doing_rest = AXIS2_TRUE;
+    }
     
+    return AXIS2_SUCCESS;
 }
