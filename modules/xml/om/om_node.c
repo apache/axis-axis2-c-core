@@ -55,6 +55,10 @@ axis2_status_t AXIS2_CALL
 axis2_om_node_serialize (axis2_om_node_t * om_node,
                          axis2_env_t **env,
                          axis2_om_output_t * om_output);
+                         
+axis2_char_t * AXIS2_CALL
+axis2_om_node_to_string(axis2_om_node_t *om_node,
+                        axis2_env_t **env);                         
                               
                               
 /****************************** accessor mutator *********************************************/
@@ -170,7 +174,7 @@ axis2_om_node_create (axis2_env_t **env)
     node->om_node.ops->add_child = axis2_om_node_add_child;
     node->om_node.ops->free = axis2_om_node_free_tree;
     node->om_node.ops->detach = axis2_om_node_detach;
-    
+    node->om_node.ops->to_string = axis2_om_node_to_string;    
     node->om_node.ops->insert_sibling_after = axis2_om_node_insert_sibling_after;
     node->om_node.ops->insert_sibling_before = axis2_om_node_insert_sibling_before;
     node->om_node.ops->serialize = axis2_om_node_serialize;
@@ -821,3 +825,34 @@ axis2_om_node_get_builder(axis2_om_node_t *om_node,
         return NULL;
     return AXIS2_INTF_TO_IMPL(om_node)->builder;
 }
+
+axis2_char_t * AXIS2_CALL
+axis2_om_node_to_string(axis2_om_node_t *om_node,
+                        axis2_env_t **env)
+{
+
+    int status = AXIS2_SUCCESS;
+    axis2_om_output_t *om_output = NULL;
+    axis2_xml_writer_t *xml_writer = NULL;
+    axis2_char_t *xml = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, om_node, NULL);    
+    
+    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
+    if(!xml_writer)
+        return NULL;
+    
+    om_output = axis2_om_output_create(env, xml_writer);
+    if(!om_output)
+    {
+        AXIS2_XML_WRITER_FREE(xml_writer, env);
+        return NULL;
+    }
+    status = AXIS2_OM_NODE_SERIALIZE(om_node, env, om_output);
+    if(status == AXIS2_SUCCESS)
+    {
+        xml = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+    }
+    AXIS2_OM_OUTPUT_FREE(om_output, env);
+    return xml;    
+}                        

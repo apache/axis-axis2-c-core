@@ -242,6 +242,10 @@ AXIS2_DECLARE_DATA   typedef struct axis2_om_node_ops
     struct axis2_om_document* (AXIS2_CALL *
     get_document)(axis2_om_node_t *om_node,
                   axis2_env_t **env);
+                  
+    axis2_char_t* (AXIS2_CALL *
+    to_string)(axis2_om_node_t *om_node,
+               axis2_env_t **env);                  
                                                                         
 } axis2_om_node_ops_t;
 
@@ -311,7 +315,9 @@ axis2_om_node_create (axis2_env_t **env);
 /** get document */        
 #define AXIS2_OM_NODE_GET_DOCUMENT(om_node, env) \
         ((om_node)->ops->get_document(om_node, env))
-        
+
+#define AXIS2_OM_NODE_TO_STRING(om_node, env) \
+        ((om_node)->ops->to_string(om_node, env))        
 /** @} */
 
 #ifdef __cplusplus
