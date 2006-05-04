@@ -398,12 +398,14 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(out_msg_ctx, env);
     if(!op_ctx)
     {
+        axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
         AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
         return AXIS2_FAILURE;
     }
     status = AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, out_msg_ctx);
     if(AXIS2_SUCCESS != status)
     {
+        axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
         AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
         return status;
     }
@@ -411,6 +413,7 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
         msg_ctx, out_msg_ctx);
     if(AXIS2_SUCCESS != status)
     {
+        axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
         AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
         return status;
     }
