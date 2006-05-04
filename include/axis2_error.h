@@ -117,55 +117,51 @@ extern "C"
         AXI2_ERROR_INVALID_PHASE,
         /* axis2.xml cannot be not found*/
         AXIS2_ERROR_CONFIG_NOT_FOUND,
-        /* TODO ADDCOMMENT*/
-        AXIS2_ERROR_CONF_NOT_FOUND,
         /** error occured creating xml stream reader */
         AXIS2_ERROR_CREATING_XML_STREAM_READER,
         /* Data element of the OM Node is null */
         AXIS2_ERROR_DATA_ELEMENT_IS_NULL,
-        /* TODO ADDCOMMENT*/
+        /* In transport sender, Inflow is not allowed */
         AXIS2_ERROR_INFLOW_NOT_ALLOWED_IN_TRS_OUT,
         /** Invalid handler state */
         AXIS2_ERROR_INVALID_HANDLER_STATE,
-        /* TODO ADDCOMMENT*/
+        /* Invalid Module Ref encountered */
         AXIS2_ERROR_INVALID_MODUELE_REF,
-        /* TODO ADDCOMMENT*/
+        /* Invalid Module Reference by Operation*/
         AXIS2_ERROR_INVALID_MODUELE_REF_BY_OP,
-        /* TODO ADDCOMMENT*/
+        /* Invalid Module Configuration */
         AXIS2_ERROR_INVALID_MODULE_CONF,
-        /* TODO ADDCOMMENT*/
+        /* Description Builder is found to be in invalid state */
         AXIS2_ERROR_INVALID_STATE_DESC_BUILDER,
-        /* TODO ADDCOMMENT*/
+        /* Module Not Found */
         AXIS2_ERROR_MODULE_NOT_FOUND,
-        /* TODO ADDCOMMENT*/
+        /* Module Validation Failed*/
         AXIS2_ERROR_MODULE_VALIDATION_FAILED,
         /** Module xml file is not found in the given path */
         AXIS2_ERROR_MODULE_XML_NOT_FOUND_FOR_THE_MODULE,
-        /* TODO ADDCOMMENT*/
+        /* No dispatcher found*/
         AXIS2_ERROR_NO_DISPATCHER_FOUND,
-        /* TODO ADDCOMMENT*/
-        AXIS2_ERROR_OPERATION_NAME_MISSING,
-        /* TODO ADDCOMMENT*/
+        /* Operation name is missing */
         AXIS2_ERROR_OP_NAME_MISSING,
-        /* TODO ADDCOMMENT*/
+        /* In transport Receiver, Outflow is not allowed*/
         AXIS2_ERROR_OUTFLOW_NOT_ALLOWED_IN_TRS_IN,
-        /* TODO ADDCOMMENT*/
+        /* Repository name cannot be NULL */
         AXIS2_ERROR_REPO_CAN_NOT_BE_NULL,
-        /* TODO ADDCOMMENT*/
+        /* Repository in path does not exist */
         AXIS2_ERROR_REPOSITORY_NOT_EXIST,
-        /* TODO ADDCOMMENT*/
+        /* Repository Listener initialization failed */
         AXIS2_ERROR_REPOS_LISTENER_INIT_FAILED,
         /** Service xml file is not found in the given path */
         AXIS2_ERROR_SERVICE_XML_NOT_FOUND,
-        /* TODO ADDCOMMENT*/
+        /* Service Name Error */
         AXIS2_ERROR_SVC_NAME_ERROR,
-        /* TODO ADDCOMMENT*/
+        /* Transport Sender Error */
         AXIS2_ERROR_TRANSPORT_SENDER_ERROR,
-        /* TODO ADDCOMMENT*/
+        /* Path to Config can not be NULL */
         AXIS2_PATH_TO_CONFIG_CAN_NOT_BE_NULL,
-        /* TODO ADDCOMMENT*/
+        /* Invalid Service */
         AXIS2_ERROR_INVALID_SVC,
-        /* TODO ADDCOMMENT*/
+        /* Module create failed */
         AXIS2_ERROR_MODULE_CREATION_FAILED,
        /*
         * Group - core:description
@@ -197,7 +193,7 @@ extern "C"
         AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME,
         /** Invalid handler rules  */
         AXIS2_ERROR_INVALID_HANDLER_RULES,
-        /* TODO ADDCOMMENT*/
+        /* Invalid Module */
         AXIS2_ERROR_INVALID_MODULE,
         /** Invalid first handler for phase  */
         AXIS2_ERROR_INVALID_PHASE_FIRST_HANDLER,
@@ -221,17 +217,17 @@ extern "C"
        /*
         * Group - core:phaseresolver
         */ 
-        /* TODO ADDCOMMENT*/
+        /* Invalid Module Ref */
         AXIS2_ERROR_INVALID_MODULE_REF,
-        /* TODO ADDCOMMENT*/
+        /* Invalid Phase */
         AXIS2_ERROR_INVALID_PHASE,
-        /* TODO ADDCOMMENT*/
+        /* No Tranport Receiver is configured */
         AXIS2_ERROR_NO_TRANSPORT_IN_CONFIGURED,
-        /* TODO ADDCOMMENT*/
+        /* No Transport Sender is configured */
         AXIS2_ERROR_NO_TRANSPORT_OUT_CONFIGURED,
-        /* TODO ADDCOMMENT*/
+        /* Phase is not specified */
         AXIS2_ERROR_PHASE_IS_NOT_SPECIFED,
-        /* TODO ADDCOMMENT*/
+        /* Service module can not refer global phase */
         AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE,
         /*================================================================ */
         /** Iterator state invalid e.g. next called before calling first */
