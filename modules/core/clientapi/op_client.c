@@ -315,9 +315,7 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
 		return AXIS2_FAILURE;
 	}
 	
-	msg_info_headers = AXIS2_OPTIONS_GET_MSG_INFO_HEADERS(op_client_impl->options,
-							env);	
-	AXIS2_MSG_CTX_SET_MSG_INFO_HEADERS(msg_ctx, env, msg_info_headers);
+	AXIS2_MSG_CTX_SET_OPTIONS(msg_ctx, env, op_client_impl->options);
 	
 	/** 
 	if the transport to use for sending is not specified, try to find it
