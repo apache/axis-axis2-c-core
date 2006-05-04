@@ -463,7 +463,7 @@ axis2_msg_ctx_create (axis2_env_t **env,
     msg_ctx_impl->soap_action = NULL;
     msg_ctx_impl->doing_mtom = AXIS2_FALSE;
     msg_ctx_impl->doing_rest = AXIS2_FALSE;
-    msg_ctx_impl->do_rest_through_post = AXIS2_TRUE;
+    msg_ctx_impl->do_rest_through_post = AXIS2_FALSE;
     msg_ctx_impl->is_soap_11 = AXIS2_FALSE;
     msg_ctx_impl->svc_grp_ctx_id = NULL;
     msg_ctx_impl->transport_in_desc_qname = NULL;
@@ -1969,7 +1969,7 @@ axis2_msg_ctx_set_options (axis2_msg_ctx_t *msg_ctx,
         AXIS2_OPTIONS_GET_MSG_INFO_HEADERS(options, env);
     AXIS2_CTX_SET_NON_PERSISTANT_MAP(msg_ctx_impl->base, env, 
         AXIS2_OPTIONS_GET_PROPERTIES(options, env));
-    rest_val = (axis2_char_t)AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
+    rest_val = (axis2_char_t *)AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
         AXIS2_ENABLE_REST, AXIS2_FALSE);
     if (rest_val)
     {

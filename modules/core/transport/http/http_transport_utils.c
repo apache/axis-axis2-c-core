@@ -1340,12 +1340,37 @@ axis2_http_transport_utils_create_soap_msg(axis2_env_t **env,
         soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
         return soap_envelope;
     }
-    /**
-     * TODO REST handling
-     * else
-     * {
-     * }
-     */
+    else
+    {
+        axis2_xml_reader_t *xml_reader = NULL;
+        axis2_om_stax_builder_t *om_builder = NULL;
+        axis2_soap_envelope_t *soap_envelope = NULL;
+        axis2_soap_body_t *def_body = NULL;
+        axis2_om_document_t *om_doc = NULL;
+        axis2_om_node_t *root_node = NULL;
+
+        xml_reader = axis2_xml_reader_create_for_memory(env,
+                        axis2_http_transport_utils_on_data_request,NULL,
+                        (void *)callback_ctx, char_set_enc);
+        if(NULL == xml_reader)
+        {
+            return NULL;
+        }
+        om_builder = axis2_om_stax_builder_create(env, xml_reader);
+        if(NULL == om_builder)
+        {
+            AXIS2_XML_READER_FREE(xml_reader, env);
+            xml_reader = NULL;
+            return NULL;
+        }
+        soap_envelope = axis2_soap_envelope_create_default_soap_envelope
+                            (env, AXIS2_SOAP11);
+        def_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+        om_doc = AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
+        root_node = AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
+        AXIS2_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
+        return soap_envelope;
+    }
     return NULL;
 }
 
