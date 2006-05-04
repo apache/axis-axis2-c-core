@@ -184,8 +184,6 @@ axis2_error_init()
         "Cannot correlate message";
     axis2_error_messages[AXIS2_ERROR_INVALID_STATE_DESC_BUILDER] = 
         "AXIS2_ERROR_INVALID_STATE_DESC_BUILDER";
-    axis2_error_messages[AXIS2_ERROR_CONF_NOT_FOUND] = 
-        "AXIS2_ERROR_CONF_NOT_FOUND";
     axis2_error_messages[AXIS2_ERROR_MODULE_NOT_FOUND] = 
         "AXIS2_ERROR_MODULE_NOT_FOUND";
     axis2_error_messages[AXIS2_ERROR_DLL_CREATE_FAILED] = 
@@ -266,8 +264,6 @@ axis2_error_init()
         "Service xml file is not found in the given path";
     axis2_error_messages[AXIS2_ERROR_MODULE_XML_NOT_FOUND_FOR_THE_MODULE] = 
         "Module xml file is not found in the given path";
-    axis2_error_messages[AXIS2_ERROR_OPERATION_NAME_MISSING] = 
-        "AXIS2_ERROR_OPERATION_NAME_MISSING";
     axis2_error_messages[AXIS2_ERROR_SVC_NAME_ERROR] = 
         "AXIS2_ERROR_SVC_NAME_ERROR";
     axis2_error_messages[AXIS2_ERROR_OP_NAME_MISSING] = 
