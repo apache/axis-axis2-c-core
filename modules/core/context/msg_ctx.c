@@ -1971,6 +1971,8 @@ axis2_msg_ctx_set_options (axis2_msg_ctx_t *msg_ctx,
         AXIS2_OPTIONS_GET_PROPERTIES(options, env));
     rest_val = (axis2_char_t *)AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
         AXIS2_ENABLE_REST, AXIS2_FALSE);
+    axis2_msg_ctx_set_soap_action(msg_ctx, env, 
+        AXIS2_OPTIONS_GET_ACTION(options, env));
     if (rest_val)
     {
        if (AXIS2_STRCMP(rest_val, AXIS2_VALUE_TRUE) == 0)

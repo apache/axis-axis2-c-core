@@ -88,12 +88,12 @@ axis2_svc_client_get_override_options(struct axis2_svc_client *svc_client);
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_engage_module(struct axis2_svc_client *svc_client,
                     axis2_env_t **env,
-                    axis2_qname_t *module_name);
+                    axis2_char_t *module_name);
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_disengage_module(struct axis2_svc_client *svc_client,
                         axis2_env_t **env,
-                        axis2_qname_t *module_name);
+                        axis2_char_t *module_name);
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_add_header(struct axis2_svc_client *svc_client,
@@ -384,15 +384,19 @@ axis2_svc_client_get_override_options(struct axis2_svc_client *svc_client)
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_engage_module(struct axis2_svc_client *svc_client,
                     axis2_env_t **env,
-                    axis2_qname_t *module_name)
+                    axis2_char_t *module_name)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
 	axis2_module_desc_t *module = NULL;
+    axis2_qname_t *mod_qname = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FAILURE);
 
 	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
-
-	module = AXIS2_CONF_GET_MODULE(svc_client_impl->conf, env, module_name);
+    mod_qname = axis2_qname_create(env, module_name, NULL, NULL);
+    
+	module = AXIS2_CONF_GET_MODULE(svc_client_impl->conf, env, mod_qname);
 
 	if (module)
 	{
@@ -405,15 +409,19 @@ axis2_svc_client_engage_module(struct axis2_svc_client *svc_client,
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_disengage_module(struct axis2_svc_client *svc_client,
                         axis2_env_t **env,
-                        axis2_qname_t *module_name)
+                        axis2_char_t *module_name)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
 	axis2_module_desc_t *module = NULL;
+    axis2_qname_t *mod_qname = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
+    AXIS2_PARAM_CHECK((*env)->error, module_name, AXIS2_FAILURE);
+    
 	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
-
-	module = AXIS2_CONF_GET_MODULE(svc_client_impl->conf, env, module_name);
+    mod_qname = axis2_qname_create(env, module_name, NULL, NULL);
+    
+	module = AXIS2_CONF_GET_MODULE(svc_client_impl->conf, env, mod_qname);
 
 	/**TODO:uncomment once axis2_svc_disengage_module is implemented
 	if (module)

@@ -1106,7 +1106,7 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
         }
         index_i = axis2_hash_next (env, index_i);
            
-    }     
+    }
     return status;
 }
 
@@ -1496,6 +1496,7 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
         int size = 0;
         int j = 0;
         void *v = NULL;
+        axis2_bool_t engaged = AXIS2_FALSE;
 
         axis2_hash_this (index_i, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
@@ -1505,7 +1506,6 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
         {
             axis2_module_desc_t *module_desc_l = NULL;
             axis2_qname_t *module_d_qname_l = NULL;
-            axis2_bool_t engaged = AXIS2_FALSE;
 
             module_desc_l = AXIS2_ARRAY_LIST_GET(modules, env, j);
             module_d_qname_l = AXIS2_MODULE_DESC_GET_NAME(module_desc_l, env);
@@ -1514,7 +1514,7 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
                 engaged = AXIS2_TRUE;
                 break;
             }
-            if(AXIS2_FALSE == engaged)
+            /*if(AXIS2_FALSE == engaged)
             {
                 status = axis2_phase_resolver_engage_module_to_op(
                     phase_resolver, env, op_desc, module_desc);
@@ -1525,7 +1525,20 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
                 
                 status = AXIS2_OP_ADD_TO_ENGAGE_MODULE_LIST(op_desc, env, 
                     module_desc);
+            }*/
+        }
+        
+        if(AXIS2_FALSE == engaged)
+        {
+            status = axis2_phase_resolver_engage_module_to_op(
+                phase_resolver, env, op_desc, module_desc);
+            if(AXIS2_SUCCESS != status)
+            {
+                return status;
             }
+            
+            status = AXIS2_OP_ADD_TO_ENGAGE_MODULE_LIST(op_desc, env, 
+                module_desc);
         }
 
     }

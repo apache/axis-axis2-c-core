@@ -584,6 +584,9 @@ axis2_stream_read_socket (axis2_stream_t *stream, axis2_env_t **env,
 						void *buffer, size_t count)
 {
 	int len = 0;
+#ifdef AXIS2_TCPMON
+    axis2_char_t *temp = NULL;
+#endif
     
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	
@@ -623,6 +626,9 @@ axis2_stream_write_socket(axis2_stream_t *stream, axis2_env_t **env,
 						const void *buffer, size_t count)
 {
     int len = 0;
+#ifdef AXIS2_TCPMON
+    axis2_char_t *temp = NULL;
+#endif
 			
 	AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 	

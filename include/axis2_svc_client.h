@@ -109,12 +109,12 @@ struct axis2_svc_client_ops
 	axis2_status_t (AXIS2_CALL *
 	engage_module)(struct axis2_svc_client *svc_client,
 					axis2_env_t **env,
-					axis2_qname_t *module_name);
+					axis2_char_t *module_name);
 
 	axis2_status_t (AXIS2_CALL *
 	disengage_module)(struct axis2_svc_client *svc_client,
 						axis2_env_t **env,
-						axis2_qname_t *module_name);
+						axis2_char_t *module_name);
 	
 	/**
      * Add an XML element as a header to be sent with interactions. This allows
