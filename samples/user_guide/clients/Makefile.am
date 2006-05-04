@@ -1,8 +1,8 @@
 prgbindir=$(prefix)/bin/samples
 prgbin_PROGRAMS = echo_blocking
 samplesdir=$(prefix)/samples/user_guide/clients
-samples_DATA=echo_blocking.c Makefile.am Makefile.in
-echo_blocking_SOURCES = echo_blocking.c
+samples_DATA=echo_util.h echo_util.c echo_blocking.c Makefile.am Makefile.in
+echo_blocking_SOURCES = echo_blocking.c echo_util.c
 echo_blocking_LDADD   = $(LDFLAGS) \
                     -L$(AXIS2C_HOME)/lib \
 					-laxis2_util \

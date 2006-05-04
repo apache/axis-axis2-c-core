@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-#include <stdio.h>
+#include "echo_util.h"
 #include <axis2_util.h>
-#include <axis2_om.h>
 #include <axis2_soap.h>
 #include <axis2_client.h>
-
-axis2_om_node_t *
-build_om_payload(axis2_env_t **env);
-
-void 
-print_om(axis2_env_t **env, axis2_om_node_t *node);
 
 int main(int argc, char** argv)
 {
@@ -84,15 +77,17 @@ int main(int argc, char** argv)
     AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, &env, options);    
 
     /* Build the SOAP request message payload using OM API.*/
-    payload = build_om_payload(&env);
+    payload = build_om_payload_for_echo_svc(&env);
     
     /* Send request */
     ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, &env, payload);
     
     if(ret_node)
     {
-        printf("\nReceived OM : ");
-        print_om(&env, ret_node);
+        axis2_char_t *om_str = NULL;
+        om_str = AXIS2_OM_NODE_TO_STRING(ret_node, &env);
+        if (om_str)
+            printf("\nReceived OM : %s\n", om_str);
         printf("\necho client invoke SUCCESSFUL!\n");
     }
     else
@@ -114,42 +109,4 @@ int main(int argc, char** argv)
         endpoint_ref = NULL;
     }
     return 0;
-}
-
-/* build SOAP request message content using OM */
-axis2_om_node_t *
-build_om_payload(axis2_env_t **env)
-{
-    axis2_om_node_t *echo_om_node = NULL;
-    axis2_om_element_t* echo_om_ele = NULL;
-    axis2_om_node_t* text_om_node = NULL;
-    axis2_om_element_t * text_om_ele = NULL;
-    axis2_om_namespace_t *ns1 = NULL;
-    
-    ns1 = axis2_om_namespace_create (env, "http://ws.apache.org/axis2/c/samples", "ns1");
-    echo_om_ele = axis2_om_element_create(env, NULL, "echoString", ns1, &echo_om_node);
-    text_om_ele = axis2_om_element_create(env, echo_om_node, "text", NULL, &text_om_node);
-    AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, "echo5", text_om_node);
-    
-    printf("\nSending OM : ");
-    print_om(env, echo_om_node);
-
-    return echo_om_node;
-}
-
-void print_om(axis2_env_t **env, axis2_om_node_t *node)
-{
-    axis2_xml_writer_t *xml_writer = NULL;
-    axis2_om_output_t *om_output = NULL;
-    axis2_char_t *buffer = NULL;
-
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
-    om_output = axis2_om_output_create( env, xml_writer);
-    
-    AXIS2_OM_NODE_SERIALIZE(node, env, om_output);
-    buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
-    printf("%s\n",  buffer); 
-    AXIS2_FREE((*env)->allocator, buffer);
-    AXIS2_OM_OUTPUT_FREE(om_output, env);
-    return;
 }
