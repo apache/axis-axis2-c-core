@@ -133,10 +133,30 @@ axis2_ssl_stream_read(axis2_stream_t *stream, axis2_env_t **env,
 {
     ssl_stream_impl_t *stream_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    int read = -1;
+    int len = -1;
     
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
 
-    return SSL_read(stream_impl->ssl ,buffer,count);
+    read = SSL_read(stream_impl->ssl ,buffer,count);
+    switch(SSL_get_error(stream_impl->ssl ,read))
+    {
+        case SSL_ERROR_NONE:
+            len = read;
+            break;
+        case SSL_ERROR_ZERO_RETURN:
+            len = -1;
+            break;
+        case SSL_ERROR_SYSCALL:
+            AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, 
+                        "SSL Error: Premature close");
+            len = -1;
+            break;
+        default:
+            len = -1;
+            break;
+     } 
+    return len;
 }
 
 int AXIS2_CALL
@@ -144,12 +164,23 @@ axis2_ssl_stream_write(axis2_stream_t *stream, axis2_env_t **env,
 						const void *buf, size_t count)
 {
 	ssl_stream_impl_t *stream_impl = NULL;
+    int write = -1;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, buf, AXIS2_FAILURE);
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    return SSL_write(stream_impl->ssl, buf, count);
+    write = SSL_write(stream_impl->ssl, buf, count);
 
+    switch(SSL_get_error(stream_impl->ssl , write))
+    {
+        case SSL_ERROR_NONE:
+            if(count != write)
+            AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Incomplete SSL write!");
+            break;
+        default:
+            return -1;
+    }
+    return write;
 }
 
 

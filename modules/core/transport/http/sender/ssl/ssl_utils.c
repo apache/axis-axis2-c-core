@@ -90,6 +90,12 @@ axis2_ssl_utils_initialize_ssl(axis2_env_t **env, SSL_CTX *ctx,
         return NULL;
     }
     SSL_set_bio(ssl, sbio, sbio);
+    if(SSL_connect(ssl) <=0 )
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SSL_ENGINE, 
+                        AXIS2_FAILURE);
+        return NULL;
+    }
     return ssl;
 }
 
