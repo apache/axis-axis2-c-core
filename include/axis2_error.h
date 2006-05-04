@@ -80,10 +80,6 @@ extern "C"
         AXIS2_ERROR_MEP_CANNOT_BE_NULL_IN_MEP_CLIENT,
         /* MEP Mismatch */
         AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT,
-        /** Response timed out */
-        AXIS2_ERROR_RESPONSE_TIMED_OUT,
-        /** SOAP envelope or SOAP body NULL */
-        AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
         /** Two way channel needs addressing module to be engaged */
         AXIS2_ERROR_TWO_WAY_CHANNEL_NEEDS_ADDRESSING,
         /** Unknown Transport */
@@ -117,8 +113,6 @@ extern "C"
         AXI2_ERROR_INVALID_PHASE,
         /* axis2.xml cannot be not found*/
         AXIS2_ERROR_CONFIG_NOT_FOUND,
-        /** error occured creating xml stream reader */
-        AXIS2_ERROR_CREATING_XML_STREAM_READER,
         /* Data element of the OM Node is null */
         AXIS2_ERROR_DATA_ELEMENT_IS_NULL,
         /* In transport sender, Inflow is not allowed */
@@ -161,8 +155,6 @@ extern "C"
         AXIS2_PATH_TO_CONFIG_CAN_NOT_BE_NULL,
         /* Invalid Service */
         AXIS2_ERROR_INVALID_SVC,
-        /* Module create failed */
-        AXIS2_ERROR_MODULE_CREATION_FAILED,
        /*
         * Group - core:description
         */ 
@@ -174,8 +166,6 @@ extern "C"
         AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
         /** Module description accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_MODULE_DESC,
-        /** Parameter not set */
-        AXIS2_ERROR_INVALID_STATE_PARAM,
         /** Parameter container not set */
         AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER,
         /** module has alredy engaged to the op op terminated !!! */
@@ -229,27 +219,214 @@ extern "C"
         AXIS2_ERROR_PHASE_IS_NOT_SPECIFED,
         /* Service module can not refer global phase */
         AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE,
+       /*
+        * Group - core:receivers
+        */ 
+        /* TODO ADDCOMMENT */
+        AXIS2_ERROR_OM_ELEMENT_INVALID_STATE,
+        /* TODO ADDCOMMENT */
+        AXIS2_ERROR_OM_ELEMENT_MISMATCH,
+        /* TODO ADDCOMMENT */
+        AXIS2_ERROR_RPC_NEED_MATCHING_CHILD,
+        /* TODO ADDCOMMENT */
+        AXIS2_ERROR_UNKNOWN_STYLE,
+       /*
+        * Group - core:transport
+        */ 
+
+       /*
+        * Group - core:transport:http
+        */ 
+        /* Error occured in transport */
+        AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+        /** A read attempt(HTTP) for the reply without sending the request */
+        AXIS2_ERROR_HTTP_REQUEST_NOT_SENT,
+        /** Invalid string passed as a http header */
+        AXIS2_ERROR_INVALID_HEADER,
+        /* Invalid header start linei (request line or response line) */
+        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
+        /* Transport protocol is unsupported by axis2 */
+        AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL,
+        /** No body present in the request or the response */
+        AXIS2_ERROR_NULL_BODY,
+        /* A valid conf_ctx is reqd for the http worker */
+        AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
+        /* HTTP version cannot be null in the status/request line */ 
+        AXIS2_ERROR_NULL_HTTP_VERSION,
+        /* Input stream is NULL in msg_ctx */
+        AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX,
+        /* OM output is NULL */
+        AXIS2_ERROR_NULL_OM_OUTPUT,
+        /* Null soap envelope in msg_ctx */
+        AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX,
+        /* NULL stream in the http chunked stream */
+        AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM,
+        /* We got a NULL strem in the response body */
+        AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY,
+		/** URL NULL in http client */
+		AXIS2_ERROR_NULL_URL,
+        /* We need transport_info in msg_ctx*/
+        AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL,
+        /*Content-Type header missing in HTTP response" */
+        AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING,
+        /** Response timed out */
+        AXIS2_ERROR_RESPONSE_TIMED_OUT,
+        /** SOAP envelope or SOAP body NULL */
+        AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
+        /* Error occured in SSL engine */
+        AXIS2_ERROR_SSL_ENGINE,
+        /* Either axis2c cannot find certificates or the env variable is not set*/
+        AXIS2_ERROR_SSL_NO_CA_FILE,
+       /*
+        * Group - mod_addr
+        */ 
+
+       /*
+        * Group - platforms
+        */
+    
+       /*
+        * Group - utils
+        */
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_DLL_CREATE_FAILED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_DLL_LOADING_FAILED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_HANDLER_CREATION_FAILED,
+        /** Array list index out of bounds */
+        AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
+		/** Invalid IP or hostname */
+		AXIS2_ERROR_INVALID_ADDRESS,
+		/** Trying to do operation on invalid file descriptor */
+		AXIS2_ERROR_INVALID_FD,
+		/** Trying to do operation on closed/not opened socket */
+		AXIS2_ERROR_INVALID_SOCKET,
+        /** Parameter not set */
+        AXIS2_ERROR_INVALID_STATE_PARAM,
+        /* Module create failed */
+        AXIS2_ERROR_MODULE_CREATION_FAILED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_MSG_RECV_CREATION_FAILED,
+        /** No such element */
+        AXIS2_ERROR_NO_SUCH_ELEMENT,
+		/** Socket bind failed. Another process may be already using this port*/
+		AXIS2_ERROR_SOCKET_BIND_FAILED,
+		/** Error creating a socket. Most probably error returned by OS */
+		AXIS2_ERROR_SOCKET_ERROR,
+        /* Listen failed for the server socket */
+        AXIS2_ERROR_SOCKET_LISTEN_FAILED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_SVC_SKELETON_CREATION_FAILED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED,
+        /*TODO ADDCOMMENT*/
+        AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED,
+        /* Generation of platform dependent uuid failed */
+        AXIS2_ERROR_UUID_GEN_FAILED,
+       /*
+        * Group - wsdl
+        */
+        /* Interface or Port Type not found for the binding */
+        AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING,
+		/* Interfaces or Ports not found for the partially built WOM */
+		AXIS2_ERROR_INTERFACES_OR_PORTS_NOT_FOUND_FOR_PARTIALLY_BUILT_WOM,
+        /** Wsdl op accessed has invalid state */
+        AXIS2_ERROR_INVALID_STATE_WSDL_OP,
+        /** Wsdl Service accessed has invalid state */
+        AXIS2_ERROR_INVALID_STATE_WSDL_SVC,
+        /* Cannot determine MEP */
+        AXIS2_ERROR_MEP_CANNOT_DETERMINE_MEP,
+        /* Wsdl binding name cannot be NULL(Is required) */
+        AXIS2_ERROR_WSDL_BINDING_NAME_IS_REQUIRED,
+        /* PortType/Interface name cannot be null(Required) */
+        AXIS2_ERROR_WSDL_INTERFACE_NAME_IS_REQUIRED,
+        /* Wsdl parsing has resulted in an invalid state */
+        AXIS2_ERROR_WSDL_PARSER_INVALID_STATE,
+        /* Wsdl svc name cannot be null(Required) */
+        AXIS2_ERROR_WSDL_SVC_NAME_IS_REQUIRED,
+       /*
+        * Group - xml
+        */
+
+       /*
+        * Group - xml:attachments
+        */
+        
+       /*
+        * Group - xml:om
+        */
+        /** Builder done with pulling. Cannot pull any more */
+        AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL,
+        /** Discard faile because the builder state is invalid */
+        AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD,
+        /** Bulder's last node is NULL when it is not supposed to be NULL */
+        AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL,
+        /** Document root is NULL, when it is not supposed to be NULL */
+        AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL,
+        /** Undefined namespace used */
+        AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE,
+        /** error a namespace should have a valid uri */
+        AXIS2_ERROR_INVALID_EMPTY_NAMESPACE_URI,
+        /** next method has not been called so cannot remove
+        an element before calling next valid for any om iterator */
+        AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED,
+        /** remove method has alread been called once so cann't remove till 
+         next method is called valid for any om children iterator*/
+        AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED,
+        /** axis2_xml_reader returned NULL element */
+        AXIS2_ERROR_XML_READER_ELEMENT_NULL,
+        /** axis2_xml_reader returned NULL value */
+        AXIS2_ERROR_XML_READER_VALUE_NULL,
+       /*
+        * Group - xml:parser
+        */
+        /** error occured creating xml stream reader */
+        AXIS2_ERROR_CREATING_XML_STREAM_READER,
+        /** error occured creating xml stream writer */
+        AXIS2_ERROR_CREATING_XML_STREAM_WRITER,
+        /** error in writing attribute */
+        AXIS2_ERROR_WRITING_ATTRIBUTE,
+        /** error in writing attribute with namespace */
+        AXIS2_ERROR_WRITING_ATTRIBUTE_WITH_NAMESPACE,
+        /** error in writing attribute with namespace prefix */
+        AXIS2_ERROR_WRITING_ATTRIBUTE_WITH_NAMESPACE_PREFIX,
+        /** error in writing comment */
+        AXIS2_ERROR_WRITING_COMMENT,
+        /** error in writing default namespace */
+        AXIS2_ERROR_WRITING_DEFAULT_NAMESPACE,
+        /** error in writing dtd */
+        AXIS2_ERROR_WRITING_DTD,
+        /** error occured in writing empty element */
+        AXIS2_ERROR_WRITING_EMPTY_ELEMENT,
+        /** error occured in writing empty element with namespace */
+        AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE,
+        /** error in writing empty element with namespace prefix */
+        AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE_PREFIX,
+        /** error occured in writing end document in xml writer */
+        AXIS2_ERROR_WRITING_END_DOCUMENT,
+        /** error occured in writing end element in xml writer */
+        AXIS2_ERROR_WRITING_END_ELEMENT,
+        /** error in writing processing instruction */
+        AXIS2_ERROR_WRITING_PROCESSING_INSTRUCTION,
+        /** error occured in writing start element in start document in xml writer */
+        AXIS2_ERROR_WRITING_START_DOCUMENT,
+        /** error occured in writing start element in xml writer */
+        AXIS2_ERROR_WRITING_START_ELEMENT,
+        /** error occured in writing start element with namespace in xml writer*/
+        AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE,
+        /** error occured in writing start element with namespace prefix */
+        AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE_PREFIX,
+        /** error in writing cdata section */
+        AXIS2_ERROR_WRITING_CDATA,
+        
         /*================================================================ */
         /** Iterator state invalid e.g. next called before calling first */
         AXIS2_ERROR_INVALID_ITERATOR_STATE,
         /** Node type is different from what is expected */
         AXIS2_ERROR_INVALID_NODE_TYPE,
-        /** axis2_xml_reader returned NULL element */
-        AXIS2_ERROR_XML_READER_ELEMENT_NULL,
-        /** axis2_xml_reader returned NULL value */
-        AXIS2_ERROR_XML_READER_VALUE_NULL,
-        /** Builder done with pulling. Cannot pull any more */
-        AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL,
-        /** Bulder's last node is NULL when it is not supposed to be NULL */
-        AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL,
         /** A document not associated with builder */
         AXIS2_ERROR_BUILDER_NOT_ASSOCIATED_WITH_DOCUMENT,
-        /** Discard faile because the builder state is invalid */
-        AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD,
-        /** Document root is NULL, when it is not supposed to be NULL */
-        AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL,
-        /** Undefined namespace used */
-        AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE,
         /** Trying to release unallocated memory */
         AXIS2_ERROR_UNALLOCATED_MEMEORY_RELEASE_REQUESTED,
 		/** Struct is not properly initialized */
@@ -262,79 +439,17 @@ extern "C"
         AXIS2_ERROR_INVALID_STATE_PARENT_NULL,
         /** Operation accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_OP,
-        /** Wsdl Service accessed has invalid state */
-        AXIS2_ERROR_INVALID_STATE_WSDL_SVC,
-        /** Wsdl op accessed has invalid state */
-        AXIS2_ERROR_INVALID_STATE_WSDL_OP,
-        /** Array list index out of bounds */
-        AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
-        /** No such element */
-        AXIS2_ERROR_NO_SUCH_ELEMENT,
-        /** error occured creating xml stream writer */
-        AXIS2_ERROR_CREATING_XML_STREAM_WRITER,
         
         
         
         
-        /** error a namespace should have a valid uri */
-        AXIS2_ERROR_INVALID_EMPTY_NAMESPACE_URI,
-        /** error occured in writing start element in xml writer */
-        AXIS2_ERROR_WRITING_START_ELEMENT,
-        /** error occured in writing start element in start document in xml writer */
-        AXIS2_ERROR_WRITING_START_DOCUMENT,
-        /** error occured in writing end element in xml writer */
-        AXIS2_ERROR_WRITING_END_ELEMENT,
-        /** error occured in writing end document in xml writer */
-        AXIS2_ERROR_WRITING_END_DOCUMENT,
-        /** error occured in writing start element with namespace in xml writer*/
-        AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE,
-        /** error occured in writing start element with namespace prefix */
-        AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE_PREFIX,
-        /** error occured in writing empty element */
-        AXIS2_ERROR_WRITING_EMPTY_ELEMENT,
-        /** error occured in writing empty element with namespace */
-        AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE,
-        /** error in writing empty element with namespace prefix */
-        AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE_PREFIX,
-        /** error in writing attribute */
-        AXIS2_ERROR_WRITING_ATTRIBUTE,
-        /** error in writing attribute with namespace */
-        AXIS2_ERROR_WRITING_ATTRIBUTE_WITH_NAMESPACE,
-        /** error in writing attribute with namespace prefix */
-        AXIS2_ERROR_WRITING_ATTRIBUTE_WITH_NAMESPACE_PREFIX,
-        /** error in writing comment */
-        AXIS2_ERROR_WRITING_COMMENT,
-        /** error in writing processing instruction */
-        AXIS2_ERROR_WRITING_PROCESSING_INSTRUCTION,
-        /** error in writing cdata section */
-        AXIS2_ERROR_WTRING_CDATA,
-        /** error in writing dtd */
-        AXIS2_ERROR_WRITING_DTD,
-        /** error in writing default namespace */
-        AXIS2_ERROR_WRITING_DEFAULT_NAMESPACE,
-        /* Invalid status line or invalid request line */
-        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
-        AXIS2_ERROR_DLL_CREATE_FAILED,
-        AXIS2_ERROR_DLL_LOADING_FAILED,
-        AXIS2_ERROR_SVC_SKELETON_CREATION_FAILED,
-        AXIS2_ERROR_HANDLER_CREATION_FAILED,
-        AXIS2_ERROR_MSG_RECV_CREATION_FAILED,
         /* Operation cannot be NULL in MEP client */
         AXIS2_ERROR_OPERATION_CANNOT_BE_NULL_IN_MEP_CLIENT,
-        /* Cannot determine MEP */
-        AXIS2_ERROR_MEP_CANNOT_DETERMINE_MEP,
-        /* HTTP version cannot be null in the status/request line */ 
-        AXIS2_ERROR_NULL_HTTP_VERSION,
-        /* A valid conf_ctx is reqd for the http worker */
-        AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
-        /* We need transport_info in msg_ctx*/
-        AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL,
         /** invalid type passed */
         AXIS2_ERROR_INVALID_BASE_TYPE,
         /** om element is expected */
         AXIS2_ERROR_OM_ELEMENT_EXPECTED,
 
-        AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE,
         /* must understatnd attribute should have values of true or false */
         AXIS2_ERROR_MUST_UNDERSTAND_SHOULD_BE_1_0_TRUE_FALSE,
         
@@ -343,24 +458,6 @@ extern "C"
         AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY,
 		/** Error in creating the stream for the socket */
 		AXIS2_ERROR_SOCKET_STREAM_CREATION,
-		/** Trying to do operation on closed/not opened socket */
-		AXIS2_ERROR_INVALID_SOCKET,
-		/** Trying to do operation on invalid file descriptor */
-		AXIS2_ERROR_INVALID_FD,
-		/** Error creating a socket. Most probably error returned by OS */
-		AXIS2_ERROR_SOCKET_ERROR,
-		/** Invalid IP or hostname */
-		AXIS2_ERROR_INVALID_ADDRESS,
-		/** Socket bind failed. Another process may be already using this port*/
-		AXIS2_ERROR_SOCKET_BIND_FAILED,
-		/** URL NULL in http client */
-		AXIS2_ERROR_NULL_URL,
-        /** A read attempt(HTTP) for the reply without sending the request */
-        AXIS2_ERROR_HTTP_REQUEST_NOT_SENT,
-        /** Invalid string passed as a http header */
-        AXIS2_ERROR_INVALID_HEADER,
-        /** No body present in the request or the response */
-        AXIS2_ERROR_NULL_BODY,
         
         
         
@@ -427,69 +524,21 @@ extern "C"
         AXIS2_ERROR_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT,
         
         AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS,
-        /** next method has not been called so cannot remove
-        an element before calling next valid for any om iterator */
-        AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED,
-        /** remove method has alread been called once so cann't remove till 
-         next method is called valid for any om children iterator*/
-        AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED,
         
-        /* OM output is NULL */
-        AXIS2_ERROR_NULL_OM_OUTPUT,
-        /* We got a NULL strem in the response body */
-        AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY,
-        AXIS2_ERROR_OM_ELEMENT_MISMATCH,
-        AXIS2_ERROR_OM_ELEMENT_INVALID_STATE,
-        AXIS2_ERROR_RPC_NEED_MATCHING_CHILD,
-        AXIS2_ERROR_UNKNOWN_STYLE,
         /* processing soap11 fault value element should have only
            text as its children */
         AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE,
 
-        AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED,
-        AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED,
-        /* Listen failed for the server socket */
-        AXIS2_ERROR_SOCKET_LISTEN_FAILED,
         AXIS2_ERROR_FILE_NAME_NOT_SET,
         AXIS2_ERROR_INVALID_STATE_DLL_DESC,
-        /* Null soap envelope in msg_ctx */
-        AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX,
-        /* Generation of platform dependent uuid failed */
-        AXIS2_ERROR_UUID_GEN_FAILED,
         /** Invalid XML format in request */
         AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST,
         /** Input OM node NULL, Probably error in SOAP request */
         AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL,
         /** Invalid parameters for service operation in SOAP request */
         AXIS2_ERROR_SVC_SKEL_INVALID_OPERATION_PARAMETERS_IN_SOAP_REQUEST,
-        /* Input stream is NULL in msg_ctx */
-        AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX,
-        /* NULL stream in the http chunked stream */
-        AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM,
         /* Flow type of PhaseOrder element cannot be null */
         AXIS2_ERROR_FLOW_TYPE_CANNOT_BE_NULL,
-        /* Wsdl binding name cannot be NULL(Is required) */
-        AXIS2_ERROR_WSDL_BINDING_NAME_IS_REQUIRED,
-        /* PortType/Interface name cannot be null(Required) */
-        AXIS2_ERROR_WSDL_INTERFACE_NAME_IS_REQUIRED,
-        /* Wsdl svc name cannot be null(Required) */
-        AXIS2_ERROR_WSDL_SVC_NAME_IS_REQUIRED,
-        /*Content-Type header missing in HTTP response" */
-        AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING,
-        /* Wsdl parsing has resulted in an invalid state */
-        AXIS2_ERROR_WSDL_PARSER_INVALID_STATE,
-        /* Interface or Port Type not found for the binding */
-        AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING,
-		/* Interfaces or Ports not found for the partially built WOM */
-		AXIS2_ERROR_INTERFACES_OR_PORTS_NOT_FOUND_FOR_PARTIALLY_BUILT_WOM,
-        /* Error occured in transport */
-        AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
-        /* Transport protocol is unsupported by axis2 */
-        AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL,
-        /* Error occured in SSL engine */
-        AXIS2_ERROR_SSL_ENGINE,
-        /* Either axis2c cannot find certificates or the env variable is not set*/
-        AXIS2_ERROR_SSL_NO_CA_FILE,
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
             AXIS2_ERROR_LAST is used to track the number of error codes present

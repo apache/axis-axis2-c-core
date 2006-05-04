@@ -163,7 +163,7 @@ axis2_http_request_line_parse_line(axis2_env_t **env, const axis2_char_t *str)
     if(NULL == tmp)
     {
         AXIS2_ERROR_SET((*env)->error, 
-                        AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
+                        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, 
                         AXIS2_FAILURE);
         return NULL;
     }
@@ -184,7 +184,7 @@ axis2_http_request_line_parse_line(axis2_env_t **env, const axis2_char_t *str)
     {
         AXIS2_FREE((*env)->allocator, req_line);
         AXIS2_ERROR_SET((*env)->error, 
-                    AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
+                    AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, 
                     AXIS2_FAILURE);
         return NULL;
     }
@@ -195,7 +195,7 @@ axis2_http_request_line_parse_line(axis2_env_t **env, const axis2_char_t *str)
     {
         AXIS2_FREE((*env)->allocator, req_line);
         AXIS2_ERROR_SET((*env)->error, 
-                    AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
+                    AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, 
                     AXIS2_FAILURE);
         return NULL;
     }

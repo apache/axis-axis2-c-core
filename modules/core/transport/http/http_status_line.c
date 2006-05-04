@@ -98,7 +98,7 @@ axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
         axis2_http_status_line_free((axis2_http_status_line_t*)
                          status_line_impl, env);
         AXIS2_ERROR_SET((*env)->error, 
-                        AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
+                        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, 
                         AXIS2_FAILURE);
         return NULL;
     }
@@ -124,7 +124,7 @@ axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
         axis2_http_status_line_free((axis2_http_status_line_t*)
                          status_line_impl, env);
         AXIS2_ERROR_SET((*env)->error, 
-                        AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
+                        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, 
                         AXIS2_FAILURE);
         return NULL;
     }
@@ -137,7 +137,7 @@ axis2_http_status_line_create(axis2_env_t **env, axis2_char_t *str)
         axis2_http_status_line_free((axis2_http_status_line_t*)
                          status_line_impl, env);
         AXIS2_ERROR_SET((*env)->error, 
-                        AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
+                        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, 
                         AXIS2_FAILURE);
         return NULL;
     }

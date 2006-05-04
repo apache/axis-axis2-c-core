@@ -393,7 +393,7 @@ axis2_http_client_recieve_header(axis2_http_client_t *client, axis2_env_t **env)
         if(NULL == status_line)
         {
             AXIS2_ERROR_SET((*env)->error, 
-                            AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
+                            AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, 
                             AXIS2_FAILURE);
             /*return -1;*/
             http_status = 0;

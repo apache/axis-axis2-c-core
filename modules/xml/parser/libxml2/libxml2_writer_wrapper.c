@@ -1395,7 +1395,7 @@ axis2_libxml2_writer_wrapper_write_cdata(axis2_xml_writer_t *writer,
     status = xmlTextWriterWriteCDATA(writer_impl->xml_writer, BAD_CAST data);
     if(status < 0)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WTRING_CDATA, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WRITING_CDATA, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;    

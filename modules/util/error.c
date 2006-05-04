@@ -166,7 +166,7 @@ axis2_error_init()
         "AXIS2_ERROR_WRITING_COMMENT";
     axis2_error_messages[AXIS2_ERROR_WRITING_PROCESSING_INSTRUCTION] = 
         "AXIS2_ERROR_WRITING_PROCESSING_INSTRUCTION";
-    axis2_error_messages[AXIS2_ERROR_WTRING_CDATA] = 
+    axis2_error_messages[AXIS2_ERROR_WRITING_CDATA] = 
         "AXIS2_ERROR_WTRING_CDATA";
     axis2_error_messages[AXIS2_ERROR_WRITING_DTD] = 
         "AXIS2_ERROR_WRITING_DTD";
@@ -228,8 +228,6 @@ axis2_error_init()
         "Two way channel needs addressing module to be engaged";
     axis2_error_messages[AXIS2_ERROR_OM_ELEMENT_EXPECTED] = 
         "om element is expected";
-    axis2_error_messages[AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE] = 
-        "AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE";
     axis2_error_messages[AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL] = 
         "SOAP envelope or SOAP body NULL";
     axis2_error_messages[AXIS2_ERROR_MUST_UNDERSTAND_SHOULD_BE_1_0_TRUE_FALSE] = 
@@ -266,8 +264,6 @@ axis2_error_init()
         "Module xml file is not found in the given path";
     axis2_error_messages[AXIS2_ERROR_SVC_NAME_ERROR] = 
         "AXIS2_ERROR_SVC_NAME_ERROR";
-    axis2_error_messages[AXIS2_ERROR_OP_NAME_MISSING] = 
-        "AXIS2_ERROR_OP_NAME_MISSING";
     axis2_error_messages[AXIS2_ERROR_OUTFLOW_NOT_ALLOWED_IN_TRS_IN] = 
         "AXIS2_ERROR_OUTFLOW_NOT_ALLOWED_IN_TRS_IN";
     axis2_error_messages[AXIS2_ERROR_INFLOW_NOT_ALLOWED_IN_TRS_OUT] = 

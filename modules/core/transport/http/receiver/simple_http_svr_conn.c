@@ -313,7 +313,7 @@ axis2_simple_http_svr_conn_read_request(axis2_simple_http_svr_conn_t *svr_conn,
 	if(NULL == request_line)
 	{
 		AXIS2_ERROR_SET((*env)->error, 
-						AXIS2_ERROR_INVALID_HTTP_INVALID_HEADER_START_LINE, 
+						AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, 
 						AXIS2_FAILURE);
 		return NULL;
 	}
