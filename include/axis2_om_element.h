@@ -417,7 +417,20 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          find_namespace_uri)(axis2_om_element_t *om_element,
                              axis2_env_t **env,
                              axis2_char_t *prefix,
-                             axis2_om_node_t *element_node);                                   
+                             axis2_om_node_t *element_node);  
+        /**
+         *This will not search the namespace in the scope nor will 
+         * declare in the current element, as in set_namespace. This will
+         * just assign the given namespace to the element.
+         * @param om_ns pointer to namespace to be set
+         * @returns 
+         */
+         axis2_status_t (AXIS2_CALL *
+         set_namespace_with_no_find_in_current_scope)(
+                        axis2_om_element_t *om_element,
+                        axis2_env_t **env,
+                        axis2_om_namespace_t *om_ns);                                
+    
     };
 
     
@@ -567,6 +580,10 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         
 #define AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE(om_element, env, qname) \
         ((om_element)->ops->get_attribute_value(om_element, env, qname))
+        
+#define AXIS2_OM_ELEMENT_SET_NAMESPACE_WITH_NO_FIND_IN_CURRENT_SCOPE(om_element, env, om_ns) \
+        ((om_element)->ops->set_namespace_with_no_find_in_current_scope(om_element, env, om_ns))
+               
                                        
 /** @} */
 

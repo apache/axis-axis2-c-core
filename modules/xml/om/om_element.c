@@ -191,7 +191,14 @@ axis2_om_namespace_t* AXIS2_CALL
 axis2_om_element_find_namespace_uri(axis2_om_element_t *om_element,
                                     axis2_env_t **env,
                                     axis2_char_t *prefix,
-                                    axis2_om_node_t *element_node);                          
+                                    axis2_om_node_t *element_node);   
+                                    
+axis2_status_t AXIS2_CALL
+axis2_om_element_set_namespace_with_no_find_in_current_scope(
+                                    axis2_om_element_t *om_element,
+                                    axis2_env_t **env,
+                                    axis2_om_namespace_t  *om_ns);
+                                                               
                                          
 /************************** end function prototypes **********************/
 typedef struct axis2_om_element_impl
@@ -401,6 +408,9 @@ axis2_om_element_create (axis2_env_t **env,
 
     element->om_element.ops->build =
         axis2_om_element_build;
+        
+    element->om_element.ops->set_namespace_with_no_find_in_current_scope =
+        axis2_om_element_set_namespace_with_no_find_in_current_scope;        
 
     return &(element->om_element);
 }
@@ -489,9 +499,10 @@ axis2_om_element_find_namespace (axis2_om_element_t *om_element,
     
     /** TODO uri should not be null but when null check added 
         other services fail, fix them and the fix this */
-        
-    /*AXIS2_PARAM_CHECK((*env)->error, uri, NULL); */
-    
+    /*
+    if(NULL == uri)
+        return NULL;
+    */ 
     if (!element_node || !om_element)
     {
         AXIS2_ERROR_SET((*env)->error, 
@@ -1628,3 +1639,17 @@ axis2_om_element_get_attribute_value (axis2_om_element_t *om_element,
     }
     return NULL;
 }
+
+axis2_status_t AXIS2_CALL
+axis2_om_element_set_namespace_with_no_find_in_current_scope(
+                                    axis2_om_element_t *om_element,
+                                    axis2_env_t **env,
+                                    axis2_om_namespace_t  *om_ns)
+{
+    axis2_om_element_impl_t *om_ele_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, om_ns, AXIS2_FAILURE);        
+    om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
+    om_ele_impl->ns = om_ns;
+    return AXIS2_SUCCESS;
+}                                    

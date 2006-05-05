@@ -33,8 +33,6 @@
   * @{
   */
 
-
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -83,18 +81,20 @@ struct axis2_xml_schema_complex_content_restriction_ops
             axis2_env_t **env,
             axis2_qname_t *qname); 
             
-    axis2_xml_schema_simple_type_t* (AXIS2_CALL*
-    get_base_type)(void *cmp_content_res,
-                   axis2_env_t **env);
-                   
+    axis2_xml_schema_particle_t* (AXIS2_CALL *
+    get_particle)(void *cmp_content_res,
+                  axis2_env_t **env);
+                  
     axis2_status_t (AXIS2_CALL *
-    set_base_type)(void *cmp_content_res,
-                   axis2_env_t **env,
-                   axis2_xml_schema_simple_type_t *base_type); 
-                   
-    axis2_xml_schema_obj_collection_t* (AXIS2_CALL *
-    get_facets)(void *cmp_content_res,
-                axis2_env_t **env);                   
+    set_particle)(void *cmp_content_res,
+                  axis2_env_t **env,
+                  axis2_xml_schema_particle_t *particle);
+                  
+    axis2_char_t* (AXIS2_CALL *
+    to_string)(void *cmp_content_res,
+               axis2_env_t **env,
+               axis2_char_t *prefix,
+               int tab);
 };
 
 struct axis2_xml_schema_complex_content_restriction
@@ -139,19 +139,16 @@ axis2_xml_schema_complex_content_restriction_create(axis2_env_t **env);
         (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
             set_base_type_name(cmp_content_res, env, base_type_name))
             
-#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_SET_BASE_TYPE(cmp_content_res, env, base_type) \
+#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_GET_PARTICLE(cmp_content_res, env) \
         (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
-            set_base_type(cmp_content_res, env, base_type)) 
+            get_particle(cmp_content_res, env))
             
-#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_GET_BASE_TYPE(cmp_content_res, env)\
+#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_SET_PARTICLE(cmp_content_res, env) \
         (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
-            get_base_type(cmp_content_res, env))
-            
-#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_GET_FACETS(cmp_content_res, env)\
-        (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
-            get_facets(cmp_content_res, env))            
-            
-                                            
+            set_particle(cmp_content_res, env))
+                        
+#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_TO_STRING(cmp_content_res, env) \
+        (((            
 /** @} */
 #ifdef __cplusplus
 }
