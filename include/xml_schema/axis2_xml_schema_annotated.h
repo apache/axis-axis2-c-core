@@ -29,15 +29,33 @@
   * @{
   */
 
-typedef struct axis2_xml_schema_annotated 
-                    axis2_xml_schema_annotated_t;
-typedef struct axis2_xml_schema_annotated_ops 
-                    axis2_xml_schema_annotated_ops_t;
+
                     
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+typedef struct axis2_xml_schema_annotated 
+                    axis2_xml_schema_annotated_t;
+typedef struct axis2_xml_schema_annotated_ops 
+                    axis2_xml_schema_annotated_ops_t;
+                    
+typedef enum axis2_xml_schema_content_model_types_t
+{
+    AXIS2_XML_SCHEMA_SIMPLE_CONTENT = 0,
+    AXIS2_XML_SCHEMA_COMPLEX_CONTENT
+}axis2_xml_schema_content_model_types_t; 
+
+
+typedef enum axis2_xml_schema_content_types_t
+{
+    AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION = 0,
+    AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION,
+    AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION,
+    AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION 
+
+}axis2_xml_schema_content_types_t;
 
 struct axis2_xml_schema_annotated_ops
 {
