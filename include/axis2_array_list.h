@@ -53,21 +53,31 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         *
         * @param min_capacity the minimum guaranteed capacity
         */
-        axis2_status_t (AXIS2_CALL *ensure_capacity)(struct axis2_array_list *array_list, axis2_env_t **env, int min_capacity);
+        axis2_status_t (AXIS2_CALL *
+        ensure_capacity) (
+                struct axis2_array_list *array_list, 
+                axis2_env_t **env, 
+                int min_capacity);
         
        /**
         * Returns the number of elements in this list.
         *
         * @return the list size
         */
-        int (AXIS2_CALL *size)(struct axis2_array_list *array_list, axis2_env_t **env);
+        int (AXIS2_CALL *
+        size) (
+                struct axis2_array_list *array_list, 
+                axis2_env_t **env);
         
        /**
         * Checks if the list is empty.
         *
         * @return true if there are no elements, else false
         */
-        axis2_bool_t (AXIS2_CALL *is_empty)(struct axis2_array_list *array_list, axis2_env_t **env);
+        axis2_bool_t (AXIS2_CALL *
+        is_empty) (
+                struct axis2_array_list *array_list, 
+                axis2_env_t **env);
         
        /**
         * Returns true iff element is in this array_list.
@@ -75,7 +85,11 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         * @param e the element whose inclusion in the List is being tested
         * @return true if the list contains e
         */
-        axis2_bool_t (AXIS2_CALL *contains)(struct axis2_array_list *array_list, axis2_env_t **env, void *e);
+        axis2_bool_t (AXIS2_CALL *
+        contains) (
+                struct axis2_array_list *array_list, 
+                axis2_env_t **env, 
+                void *e);
             
        /**
         * Returns the lowest index at which element appears in this List, or
@@ -85,7 +99,11 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         * @param e the element whose inclusion in the List is being tested
         * @return the index where e was found
         */
-        int (AXIS2_CALL *index_of)(struct axis2_array_list *array_list, axis2_env_t **env, void *e);
+        int (AXIS2_CALL *
+        index_of) (
+                struct axis2_array_list *array_list, 
+                axis2_env_t **env, 
+                void *e);
         
        /**
         * Returns the highest index at which element appears in this List, or
@@ -95,7 +113,11 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         * @param e the element whose inclusion in the List is being tested
         * @return the index where e was found
         */
-        int (AXIS2_CALL *last_index_of)(struct axis2_array_list *array_list, axis2_env_t **env, void *e);
+        int (AXIS2_CALL *
+        last_index_of) (
+                struct axis2_array_list *array_list, 
+                axis2_env_t **env, 
+                void *e);
         
        /**
         * Returns a void* array containing all of the elements in this array_list.
@@ -103,7 +125,10 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         *
         * @return array of elements in this list
         */
-        void** (AXIS2_CALL *to_array)(struct axis2_array_list *array_list, axis2_env_t **env);
+        void** (AXIS2_CALL *
+        to_array) (
+                struct axis2_array_list *array_list, 
+                axis2_env_t **env);
         
        /**
         * Retrieves the element at the user-supplied index.
@@ -111,7 +136,10 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         * @param index the index of the element we are fetching
         * @return element at the given index
         */
-        void* (AXIS2_CALL *get)(struct axis2_array_list *array_list, axis2_env_t **env, int index);
+        void* (AXIS2_CALL *
+        get) (struct axis2_array_list *array_list, 
+                axis2_env_t **env, 
+                int index);
         
        /**
         * Sets the element at the specified index.  The new element, e,
@@ -121,7 +149,12 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         * @param e the element to be set
         * @return the element previously at the specified index
         */
-        void* (AXIS2_CALL *set)(struct axis2_array_list *array_list, axis2_env_t **env, int index, void* e);
+        void* (AXIS2_CALL *
+        set) (
+                struct axis2_array_list *array_list, 
+                axis2_env_t **env, 
+                int index, 
+                void* e);
         
        /**
         * Appends the supplied element to the end of this list.
@@ -130,7 +163,11 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         * @param e the element to be appended to this list
         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *add)(struct axis2_array_list *array_list, axis2_env_t **env, void* e);
+        axis2_status_t (AXIS2_CALL *
+        add) (
+                struct axis2_array_list *array_list, 
+                axis2_env_t **env, 
+                void* e);
         
        /**
         * Adds the supplied element at the specified index, shifting all
@@ -141,7 +178,12 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         * @param e the item being added
         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *add_at)(struct axis2_array_list *array_list, axis2_env_t **env, int index, void* e);
+        axis2_status_t (AXIS2_CALL *
+        add_at) (
+                struct axis2_array_list *array_list, 
+                axis2_env_t **env, 
+                int index, 
+                void* e);
         
        /**
         * Removes the element at the user-supplied index.
@@ -149,7 +191,10 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         * @param index the index of the element to be removed
         * @return the removed void* pointer
         */
-        void* (AXIS2_CALL *remove)(struct axis2_array_list *array_list, axis2_env_t **env, int index);
+        void* (AXIS2_CALL *
+        remove) (struct axis2_array_list *array_list, 
+                axis2_env_t **env, 
+                int index);
         
        /**
         * Checks that the index is in the range of possible elements (inclusive).
@@ -157,7 +202,11 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         * @param index the index to check
         * @return AXIS2_FALSE if index &gt; size or index &lt; 0, else AXIS2_TRUE
         */
-        axis2_bool_t (AXIS2_CALL *check_bound_inclusive)(struct axis2_array_list *array_list, axis2_env_t **env, int index);
+        axis2_bool_t (AXIS2_CALL *
+        check_bound_inclusive) (
+                struct axis2_array_list *array_list, 
+                axis2_env_t **env, 
+                int index);
         
        /**
         * Checks that the index is in the range of existing elements (exclusive).
@@ -165,9 +214,16 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         * @param index the index to check
         * @return AXIS2_FALSE if index &gt;= size or index &lt; 0, else AXIS2_TRUE
         */
-        axis2_bool_t (AXIS2_CALL *check_bound_exclusive)(struct axis2_array_list *array_list, axis2_env_t **env, int index);
+        axis2_bool_t (AXIS2_CALL *
+        check_bound_exclusive) (
+                struct axis2_array_list *array_list, 
+                axis2_env_t **env, 
+                int index);
             
-        axis2_status_t (AXIS2_CALL *free)(struct axis2_array_list *array_list, axis2_env_t **env);
+        axis2_status_t (AXIS2_CALL *
+        free) (
+                struct axis2_array_list *array_list, 
+                axis2_env_t **env);
 
     } axis2_array_list_ops_t;
 
@@ -192,8 +248,9 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
      * Free array passed as void pointer.
      */
     AXIS2_DECLARE(axis2_status_t)
-    axis2_array_list_free_void_arg(void *array_list, 
-                                axis2_env_t **env);
+    axis2_array_list_free_void_arg(
+            void *array_list, 
+            axis2_env_t **env);
 
 
 #define AXIS2_ARRAY_LIST_FREE(array_list, env) ((array_list)->ops->free(array_list, env))
