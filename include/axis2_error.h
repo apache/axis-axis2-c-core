@@ -217,16 +217,22 @@ extern "C"
         AXIS2_ERROR_PHASE_IS_NOT_SPECIFED,
         /* Service module can not refer global phase */
         AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE,
+
+        /*
+         * Group - core:wsdl
+         */
+        /**  Schema is NULL */
+        AXIS2_ERROR_WSDL_SCHEMA_IS_NULL,
        /*
         * Group - core:receivers
         */ 
-        /* TODO ADDCOMMENT */
+        /* Om Element has invalid state */
         AXIS2_ERROR_OM_ELEMENT_INVALID_STATE,
-        /* TODO ADDCOMMENT */
+        /* Om Elements do not match */
         AXIS2_ERROR_OM_ELEMENT_MISMATCH,
-        /* TODO ADDCOMMENT */
+        /* RPC style soap body don't have a child element */
         AXIS2_ERROR_RPC_NEED_MATCHING_CHILD,
-        /* TODO ADDCOMMENT */
+        /* Operation Description has unknown operation style  */
         AXIS2_ERROR_UNKNOWN_STYLE,
        /*
         * Group - core:transport
@@ -288,19 +294,19 @@ extern "C"
        /*
         * Group - utils
         */
-		/** Could not open the file */
+		/** Could not open the axis2 file */
 		AXIS2_ERROR_COULD_NOT_OPEN_FILE,
-        /*TODO ADDCOMMENT*/
+        /* Failed in creating DLL */
         AXIS2_ERROR_DLL_CREATE_FAILED,
-        /*TODO ADDCOMMENT*/
+        /* DLL loading failed */
         AXIS2_ERROR_DLL_LOADING_FAILED,
 		/** Environment passed is null */
 		AXIS2_ERROR_ENVIRONMENT_IS_NULL,
-        /*TODO ADDCOMMENT*/
+        /* Axis2 File does not have a file name */
         AXIS2_ERROR_FILE_NAME_NOT_SET,
-        /*TODO ADDCOMMENT*/
+        /* DLL Description Info Object has invalid state */
         AXIS2_ERROR_INVALID_STATE_DLL_DESC,
-        /*TODO ADDCOMMENT*/
+        /* Failed in creating Handler*/
         AXIS2_ERROR_HANDLER_CREATION_FAILED,
         /** Array list index out of bounds */
         AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
@@ -314,7 +320,7 @@ extern "C"
         AXIS2_ERROR_INVALID_STATE_PARAM,
         /* Module create failed */
         AXIS2_ERROR_MODULE_CREATION_FAILED,
-        /*TODO ADDCOMMENT*/
+        /* Failed in creating Message Receiver*/
         AXIS2_ERROR_MSG_RECV_CREATION_FAILED,
         /** No such element */
         AXIS2_ERROR_NO_SUCH_ELEMENT,
@@ -324,11 +330,11 @@ extern "C"
 		AXIS2_ERROR_SOCKET_ERROR,
         /* Listen failed for the server socket */
         AXIS2_ERROR_SOCKET_LISTEN_FAILED,
-        /*TODO ADDCOMMENT*/
+        /* Failed in creating Service Skeleton */
         AXIS2_ERROR_SVC_SKELETON_CREATION_FAILED,
-        /*TODO ADDCOMMENT*/
+        /* Failed in creating Transport Receiver */
         AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED,
-        /*TODO ADDCOMMENT*/
+        /* Failed in creating Transport Sender */
         AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED,
         /* Generation of platform dependent uuid failed */
         AXIS2_ERROR_UUID_GEN_FAILED,
