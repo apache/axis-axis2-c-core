@@ -40,10 +40,14 @@ axis2_error_init()
         axis2_error_messages[i] = "Unknown Error :(";
     }
     
+    /* Common Errors */ 
     axis2_error_messages[AXIS2_ERROR_NONE] = "No Error";
     axis2_error_messages[AXIS2_ERROR_NO_MEMORY] = "Out of memory";
     axis2_error_messages[AXIS2_ERROR_INVALID_NULL_PARAM] = 
         "NULL paramater was passed when a non NULL parameter was expected";
+    /* core:addr */
+
+    /* core:clientapi */
     axis2_error_messages[AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE] = 
         "Blocking invocation expects response";
     axis2_error_messages[AXIS2_ERROR_CANNOT_INFER_TRANSPORT] = 
@@ -60,6 +64,9 @@ axis2_error_init()
         "Unknown Transport";
     axis2_error_messages[AXIS2_ERROR_UNSUPPORTED_TYPE] =
         "type is not supported";
+    /* core:clientapi:diclient */
+
+    /* core:context */
     axis2_error_messages[AXIS2_ERROR_INVALID_SOAP_ENVELOPE_STATE] = 
         "Invalid SOAP envelope state";
     axis2_error_messages[AXIS2_ERROR_INVALID_STATE_MSG_CTX] = 
@@ -70,6 +77,7 @@ axis2_error_init()
         "Service group accessed has invalid state"; 
     axis2_error_messages[AXIS2_ERROR_SERVICE_NOT_YET_FOUND] = 
         "Service not yet found";
+    /* core:deployment */
     axis2_error_messages[AXI2_ERROR_INVALID_PHASE] = 
         "Invalid phase found in phase validation*";
     axis2_error_messages[AXIS2_ERROR_CONFIG_NOT_FOUND] = 
@@ -116,6 +124,7 @@ axis2_error_init()
         "Path to Config can not be NULL";
     axis2_error_messages[AXIS2_ERROR_INVALID_SVC] = 
         "Invalid Service";
+    /* core:description */
     axis2_error_messages[AXIS2_ERROR_CANNOT_CORRELATE_MSG] = 
         "Cannot correlate message";
     axis2_error_messages[AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT] = 
@@ -134,6 +143,7 @@ axis2_error_init()
         "module has alredy been engaged on the service. Group Operation terminated !!!";
     axis2_error_messages[AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE] = 
         "Parameter locked, Cannot override";
+    /* core:engine */
     axis2_error_messages[AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME] = 
         "Both before and after handlers cannot be the same";
     axis2_error_messages[AXIS2_ERROR_INVALID_HANDLER_RULES] = 
@@ -158,6 +168,7 @@ axis2_error_init()
         "Last handler of phase already set";
     axis2_error_messages[AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME] = 
         "Two service can not have same name, a service with same name alredy";
+    /* core:phaseresolver */
     axis2_error_messages[AXIS2_ERROR_INVALID_MODULE_REF] = 
         "Invalid Module Ref";
     axis2_error_messages[AXIS2_ERROR_INVALID_PHASE] = 
@@ -170,14 +181,21 @@ axis2_error_init()
         "Phase is not specified";
     axis2_error_messages[AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE] = 
         "Service module can not refer global phase";
+    /* core:wsdl*/
+    axis2_error_messages[AXIS2_ERROR_WSDL_SCHEMA_IS_NULL] =
+        "Schema is NULL";
+    /* core:receivers */
     axis2_error_messages[AXIS2_ERROR_OM_ELEMENT_INVALID_STATE] =
-        "AXIS2_ERROR_OM_ELEMENT_INVALID_STATE";
+        "Om Element has invalid state";
     axis2_error_messages[AXIS2_ERROR_OM_ELEMENT_MISMATCH] =
-        "AXIS2_ERROR_OM_ELEMENT_MISMATCH";
+        "Om Elements do not match";
     axis2_error_messages[AXIS2_ERROR_RPC_NEED_MATCHING_CHILD] =
-        "AXIS2_ERROR_RPC_NEED_MATCHING_CHILD";
+        "RPC style soap body don't have a child element";
     axis2_error_messages[AXIS2_ERROR_UNKNOWN_STYLE] =
-        "AXIS2_ERROR_UNKNOWN_STYLE";
+        "Operation Description has unknown operation style";
+    /* core:transport */
+
+    /* core:transport:http */
     axis2_error_messages[AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR] = 
      "Error occured in transport";
     axis2_error_messages[AXIS2_ERROR_HTTP_REQUEST_NOT_SENT] = 
@@ -220,21 +238,26 @@ axis2_error_init()
     "Either axis2c cannot find certificates or the env variable is not set";
     axis2_error_messages[AXIS2_ERROR_WRITING_RESPONSE] = 
         "Error in writing the response in response writer";
+    /* mod_addr */
+
+    /* platforms */
+
+    /* utils */
     axis2_error_messages[AXIS2_ERROR_COULD_NOT_OPEN_FILE] = 
         "Could not open the file";
     axis2_error_messages[AXIS2_ERROR_DLL_CREATE_FAILED] = 
-        "AXIS2_ERROR_DLL_CREATE_FAILED";
+        "Failed in creating DLL";
     axis2_error_messages[AXIS2_ERROR_DLL_LOADING_FAILED] = 
-        "AXIS2_ERROR_DLL_LOADING_FAILED";
+        "DLL loading failed";
     axis2_error_messages[AXIS2_ERROR_ENVIRONMENT_IS_NULL] = 
         "Environment passed is null";
     axis2_error_messages[AXIS2_ERROR_FILE_NAME_NOT_SET] =
-        "AXIS2_ERROR_FILE_NAME_NOT_SET";
+        "Axis2 File does not have a file name";
     axis2_error_messages[AXIS2_ERROR_INVALID_STATE_DLL_DESC] =
         "dll description has invalid state of not having valid dll create function, \
             of valid delete function or valid dll_handler";
     axis2_error_messages[AXIS2_ERROR_HANDLER_CREATION_FAILED] = 
-        "AXIS2_ERROR_HANDLER_CREATION_FAILED";
+        "Failed in creating Handler";
     axis2_error_messages[AXIS2_ERROR_INDEX_OUT_OF_BOUNDS] = 
         "Array list index out of bounds";
     axis2_error_messages[AXIS2_ERROR_INVALID_ADDRESS] = 
@@ -246,9 +269,9 @@ axis2_error_init()
     axis2_error_messages[AXIS2_ERROR_INVALID_STATE_PARAM] = 
         "Parameter not set";
     axis2_error_messages[AXIS2_ERROR_MODULE_CREATION_FAILED] = 
-        "AXIS2_ERROR_MODULE_CREATION_FAILED";
+        "Module create failed";
     axis2_error_messages[AXIS2_ERROR_MSG_RECV_CREATION_FAILED] = 
-        "AXIS2_ERROR_MSG_RECV_CREATION_FAILED";
+        "Failed in creating Message Receiver";
     axis2_error_messages[AXIS2_ERROR_NO_SUCH_ELEMENT] = 
         "No such element";
     axis2_error_messages[AXIS2_ERROR_SOCKET_BIND_FAILED] = 
@@ -258,13 +281,14 @@ axis2_error_init()
     axis2_error_messages[AXIS2_ERROR_SOCKET_LISTEN_FAILED] =
         "Listen failed for the server socket";
     axis2_error_messages[AXIS2_ERROR_SVC_SKELETON_CREATION_FAILED] = 
-        "AXIS2_ERROR_SVC_SKELETON_CREATION_FAILED";
+        "Failed in creating Service Skeleton";
     axis2_error_messages[AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED] =
-        "AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED";
+        "Failed in creating Transport Receiver";
     axis2_error_messages[AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED] =
-        "AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED";
+        "Failed in creating Transport Sender";
     axis2_error_messages[AXIS2_ERROR_UUID_GEN_FAILED] = 
         "Generation of platform dependent uuid failed"; 
+    /* wsdl */
     axis2_error_messages[AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING] =
         "Interface or Port Type not found for the binding";
 	axis2_error_messages[AXIS2_ERROR_INTERFACES_OR_PORTS_NOT_FOUND_FOR_PARTIALLY_BUILT_WOM] =
@@ -283,6 +307,11 @@ axis2_error_init()
         "Wsdl parsing has resulted in an invalid state";
     axis2_error_messages[AXIS2_ERROR_WSDL_SVC_NAME_IS_REQUIRED] = 
         " Wsdl svc name cannot be null(Required)";
+    /* xml */
+
+    /* xml:attachments */
+
+    /* xml:om */
     axis2_error_messages[AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL] = 
         "Builder done with pulling. Cannot pull any more";
     axis2_error_messages[AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD] = 
@@ -304,6 +333,7 @@ axis2_error_init()
         "axis2_xml_reader returned NULL element";
     axis2_error_messages[AXIS2_ERROR_XML_READER_VALUE_NULL] = 
         "axis2_xml_reader returned NULL value";
+    /* xml:parser */
     axis2_error_messages[AXIS2_ERROR_CREATING_XML_STREAM_READER] = 
         "error occured creating xml stream writer";
     axis2_error_messages[AXIS2_ERROR_CREATING_XML_STREAM_WRITER] = 
@@ -342,6 +372,7 @@ axis2_error_init()
         "error occured in writing start element with namespace prefix";
     axis2_error_messages[AXIS2_ERROR_WRITING_CDATA] = 
         "error in writing cdata section";
+    /* invalid type passed */
     axis2_error_messages[AXIS2_ERROR_INVALID_BASE_TYPE] = 
         "invalid type passed";
     axis2_error_messages[AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI] = 
@@ -408,6 +439,7 @@ axis2_error_init()
         "unsupported element found in soap fault element";
     axis2_error_messages[AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED] = 
         "wrong element order encountered ";
+    /* services */
     axis2_error_messages[AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST] =
         "Invalid XML format in request";
     axis2_error_messages[AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL] =
