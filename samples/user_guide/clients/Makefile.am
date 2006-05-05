@@ -1,9 +1,10 @@
 prgbindir=$(prefix)/bin/samples
-prgbin_PROGRAMS = echo_blocking echo_blocking_addr echo_rest
+prgbin_PROGRAMS = echo_blocking echo_non_blocking echo_blocking_addr echo_rest
 samplesdir=$(prefix)/samples/user_guide/clients
-samples_DATA=echo_util.h echo_util.c echo_blocking.c echo_blocking_addr.c echo_rest.c Makefile.am Makefile.in
+samples_DATA=echo_util.h echo_util.c echo_blocking.c echo_non_blocking.c echo_blocking_addr.c echo_rest.c Makefile.am Makefile.in
 
 echo_blocking_SOURCES = echo_blocking.c echo_util.c
+echo_non_blocking_SOURCES = echo_non_blocking.c echo_util.c
 echo_blocking_addr_SOURCES = echo_blocking_addr.c echo_util.c
 echo_rest_SOURCES = echo_util.c echo_rest.c
 
@@ -23,6 +24,7 @@ LINK_FLAGS = $(LDFLAGS) \
              $(LIBXML2_LIBS)
 
 echo_blocking_LDADD = $(LINK_FLAGS)
+echo_non_blocking_LDADD = $(LINK_FLAGS)
 echo_blocking_addr_LDADD = $(LINK_FLAGS)
 echo_rest_LDADD = $(LINK_FLAGS)
 

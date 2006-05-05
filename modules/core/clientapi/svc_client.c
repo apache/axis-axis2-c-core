@@ -558,14 +558,14 @@ axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
                     axis2_om_node_t *payload)
 {
 	axis2_svc_client_impl_t *svc_client_impl = NULL;
-	axis2_qname_t *op = NULL;
+	axis2_qname_t *op_qname = NULL;
 	AXIS2_ENV_CHECK(env, NULL);
 
 	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
-	op = axis2_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
+	op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
 	
 	return axis2_svc_client_send_receive_with_op_qname(
-			&(svc_client_impl->svc_client), env, op, payload);
+			&(svc_client_impl->svc_client), env, op_qname, payload);
 }
 
 
@@ -589,19 +589,26 @@ axis2_svc_client_send_receive_with_op_qname(struct axis2_svc_client *svc_client,
 	{
 		axis2_op_client_t *op_client = NULL;
 		axis2_msg_ctx_t *res_msg_ctx = NULL;
-		axis2_msg_ctx_t *mc = NULL;
+		axis2_msg_ctx_t *msg_ctx = NULL;
 		axis2_soap_envelope_t *soap_envelope = NULL;
 		axis2_soap_body_t *soap_body = NULL;
 		axis2_om_node_t *soap_node = NULL;
 
-		mc = axis2_msg_ctx_create(env, 
-				AXIS2_SVC_CTX_GET_CONF_CTX(svc_client_impl->svc_ctx, env), NULL, NULL);
-		if (!axis2_svc_client_fill_soap_envelope(env, svc_client_impl, mc, payload))
+        msg_ctx = axis2_msg_ctx_create(env, 
+            AXIS2_SVC_CTX_GET_CONF_CTX(svc_client_impl->svc_ctx, env), NULL, NULL);
+		if (!axis2_svc_client_fill_soap_envelope(env, svc_client_impl, msg_ctx, 
+            payload))
+        {
 			return NULL;
+        }
 		
 		op_client = axis2_svc_client_create_op_client(&(svc_client_impl->svc_client), env, op_qname);
-		
-		AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, mc);
+		if (!op_client)
+        {
+            return NULL;
+        }
+        
+		AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
 		AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
 		res_msg_ctx = AXIS2_OP_CTX_GET_MSG_CTX(op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE);
 		
@@ -638,7 +645,16 @@ axis2_svc_client_send_receive_non_blocking(struct axis2_svc_client *svc_client,
                     axis2_om_node_t *payload,
                     axis2_callback_t *callback)
 {
+    axis2_svc_client_impl_t *svc_client_impl = NULL;
+	axis2_qname_t *op_qname = NULL;
+	AXIS2_ENV_CHECK(env, NULL);
 
+	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
+	op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
+	
+	axis2_svc_client_send_receive_non_blocking_with_operation(
+			&(svc_client_impl->svc_client), env, op_qname, payload, callback);
+    return;
 }
 
 void AXIS2_CALL 
@@ -648,7 +664,41 @@ axis2_svc_client_send_receive_non_blocking_with_operation(struct axis2_svc_clien
                     axis2_om_node_t *payload,
                     axis2_callback_t *callback)
 {
+    axis2_svc_client_impl_t *svc_client_impl = NULL;
+    axis2_op_client_t *op_client = NULL;
+	axis2_msg_ctx_t *res_msg_ctx = NULL;
+    axis2_msg_ctx_t *msg_ctx = NULL;
+    axis2_soap_envelope_t *soap_envelope = NULL;
+    axis2_soap_body_t *soap_body = NULL;
+    axis2_om_node_t *soap_node = NULL;
 
+	AXIS2_ENV_CHECK(env, NULL);
+
+	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
+
+    msg_ctx = axis2_msg_ctx_create(env, 
+    AXIS2_SVC_CTX_GET_CONF_CTX(svc_client_impl->svc_ctx, env), NULL, NULL);
+    if (!axis2_svc_client_fill_soap_envelope(env, svc_client_impl, msg_ctx, payload))
+        return;
+    
+    op_client = axis2_svc_client_create_op_client(&(svc_client_impl->svc_client), 
+        env, op_qname);
+    if (!op_client)
+    {
+        return;
+    }
+
+    AXIS2_OP_CLIENT_SET_CALLBACK(op_client, env, callback);
+    AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
+    
+    if (AXIS2_OPTIONS_IS_USE_SEPERATE_LISTENER(svc_client_impl->options, env))
+    {
+		return;
+	}
+    
+    AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_FALSE);
+    
+    return;
 }
 
 axis2_op_client_t* AXIS2_CALL 

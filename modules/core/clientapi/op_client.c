@@ -37,11 +37,25 @@ typedef struct axis2_op_client_impl
 	axis2_callback_t *callback;
 
 	axis2_bool_t completed;
-
+    /* to hold the locally created async result */
+    axis2_async_result_t *async_result;
 } axis2_op_client_impl_t;
 
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(op_client) ((axis2_op_client_impl_t *)op_client)
+
+typedef struct axis2_op_client_worker_func_args
+{
+    axis2_env_t **env;
+    axis2_op_client_impl_t *op_client_impl;
+    axis2_callback_t *callback;
+    axis2_op_t *op;
+    axis2_msg_ctx_t *msg_ctx;
+} axis2_op_client_worker_func_args_t;
+
+void * AXIS2_THREAD_FUNC
+axis2_op_client_worker_func(axis2_thread_t *thd, void *data);
+
 
 /** private function prototypes */
 static void axis2_op_client_init_ops(axis2_op_client_t *op_client);
@@ -122,6 +136,7 @@ axis2_op_client_create(axis2_env_t **env, axis2_op_t *op,
 	op_client_impl->op_ctx = NULL;
     op_client_impl->callback = NULL;
     op_client_impl->completed = AXIS2_FALSE;
+    op_client_impl->async_result = NULL;
     
 	op_client_impl->options = options;
 	op_client_impl->svc_ctx = svc_ctx;
@@ -286,8 +301,7 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
     axis2_op_client_impl_t *op_client_impl = NULL;
    	axis2_conf_ctx_t *conf_ctx = NULL;
    	axis2_msg_ctx_t *msg_ctx = NULL;
-	axis2_msg_info_headers_t *msg_info_headers = NULL;
-	
+
 	axis2_transport_out_desc_t *transport_out = NULL;
 	axis2_transport_in_desc_t *transport_in = NULL;
 
@@ -388,7 +402,6 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
 	{
 		if (block)
 		{
-			axis2_op_ctx_t *op_ctx = NULL;
         	axis2_msg_ctx_t *response_mc = NULL;
         	axis2_char_t *address = NULL;
         	axis2_char_t *epr_address = NULL;
@@ -403,24 +416,54 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
         	AXIS2_PROPERTY_SET_VALUE(property, env, address);
         	AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
                 AXIS2_TRANSPORT_URL, property, AXIS2_FALSE);
-        	/*AXIS2_MSG_CTX_SET_TO(msg_ctx, env, call_impl->to);*/
         	AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, op_client_impl->svc_ctx);
         	AXIS2_MSG_CTX_SET_CONF_CTX(msg_ctx, env, 
                 AXIS2_SVC_CTX_GET_CONF_CTX(op_client_impl->svc_ctx, env));
             AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, op_client_impl->op_ctx);
 
-			/*TODO: check this if it is necessary*/
-        	/*op_ctx = axis2_op_ctx_create(env, op, op_client_impl->svc_ctx);
-        	AXIS2_OP_REGISTER_OP_CTX(op, env, msg_ctx, op_ctx);*/
-
-        	/*Send the SOAP Message and receive a response */
+            /*Send the SOAP Message and receive a response */
         	response_mc = axis2_mep_client_two_way_send(env, msg_ctx);
         	if (!response_mc)
             	return AXIS2_FAILURE;
-			axis2_op_client_add_msg_ctx(&(op_client_impl->op_client), env, response_mc);	
+			axis2_op_client_add_msg_ctx(&(op_client_impl->op_client), env, 
+                response_mc);	
 		}
 		else
 		{
+            axis2_thread_t *worker_thread = NULL;
+            axis2_op_client_worker_func_args_t *arg_list = NULL;
+            arg_list = AXIS2_MALLOC((*env)->allocator, 
+                            sizeof(axis2_op_client_worker_func_args_t));
+            if(NULL == arg_list)
+            {
+                return AXIS2_FAILURE;			
+            }
+            arg_list->env = env;
+            arg_list->op_client_impl = op_client_impl;
+            arg_list->callback = op_client_impl->callback;
+            arg_list->op = op;
+            arg_list->msg_ctx = msg_ctx;
+#ifdef AXIS2_SVR_MULTI_THREADED
+            if ((*env)->thread_pool)
+            {
+                worker_thread = AXIS2_THREAD_POOL_GET_THREAD((*env)->thread_pool,
+                                                 axis2_op_client_worker_func, (void*)arg_list);
+                if(NULL == worker_thread)
+                {
+                    AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread creation failed"
+                                     "call invoke non blocking");
+                }
+                AXIS2_THREAD_POOL_THREAD_DETACH((*env)->thread_pool, worker_thread);
+            }
+            else
+            {
+                AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread pool not set in envioronment."
+                                             " Cannot invoke call non blocking");
+            }
+#else
+            axis2_op_client_worker_func(NULL, (void*)arg_list);
+#endif
+            
 		}
 	}
 	return AXIS2_SUCCESS;
@@ -523,4 +566,36 @@ static axis2_msg_ctx_t* axis2_op_client_invoke_blocking(axis2_op_client_impl_t *
 										axis2_msg_ctx_t *mc)
 {
 	return NULL;
+}
+
+void * AXIS2_THREAD_FUNC
+axis2_op_client_worker_func(axis2_thread_t *thd, void *data)
+{
+    axis2_op_client_worker_func_args_t *args_list = NULL;
+    axis2_op_ctx_t *op_ctx = NULL;
+    axis2_msg_ctx_t *response = NULL;
+	axis2_env_t **thread_env = NULL;
+	axis2_env_t *th_env = NULL;
+    
+    args_list = (axis2_op_client_worker_func_args_t *) data;
+    if (!args_list)
+        return NULL;
+        
+    AXIS2_ENV_CHECK(args_list->env, AXIS2_FAILURE);
+	th_env = axis2_init_thread_env(args_list->env);
+    thread_env = &th_env;
+
+    op_ctx = axis2_op_ctx_create(thread_env, args_list->op, args_list->op_client_impl->svc_ctx);
+    if (!op_ctx)
+        return NULL;
+    AXIS2_MSG_CTX_SET_OP_CTX(args_list->msg_ctx, thread_env, op_ctx);
+    AXIS2_MSG_CTX_SET_SVC_CTX(args_list->msg_ctx, thread_env, args_list->op_client_impl->svc_ctx);
+
+    /* send the request and wait for reponse */
+    response = axis2_mep_client_two_way_send(thread_env, args_list->msg_ctx);
+    args_list->op_client_impl->async_result = axis2_async_result_create(thread_env, response);
+    AXIS2_CALLBACK_INVOKE_ON_COMPLETE(args_list->callback, thread_env, args_list->op_client_impl->async_result);
+    AXIS2_CALLBACK_SET_COMPLETE(args_list->callback, thread_env, AXIS2_TRUE);
+    
+    return NULL; 
 }
