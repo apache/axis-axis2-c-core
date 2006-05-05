@@ -436,21 +436,21 @@ extern "C"
         AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI,
         /** Invalid SOAP version */
         AXIS2_ERROR_INVALID_SOAP_VERSION,
-        /*TODO ADDCOMMENT*/
+        /* invalid value found in must understand attribute*/
         AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND,
-        /*TODO ADDCOMMENT*/
+        /*multiple code elements encountered in soap fault element*/
         AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED,
-        /*TODO ADDCOMMENT*/
+        /*multiple detail elements encountered in soap fault element*/
         AXIS2_ERROR_MULTIPLE_DETAIL_ELEMENTS_ENCOUNTERED,
-        /*TODO ADDCOMMENT*/
+        /*multiple node elements encountered in soap fault element*/
         AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED,
-        /*TODO ADDCOMMENT*/
+        /*multiple reason elements encountered in soap fault element*/
         AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED,
-        /*TODO ADDCOMMENT*/
+        /*multiple role elements encounterd in soap fault element*/
         AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED,
-        /*TODO ADDCOMMENT*/
+        /*multiple sub code values encountered in soap fault element*/
         AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED,
-        /*TODO ADDCOMMENT*/
+        /* multiple value elements encounered */
         AXIS2_ERROR_MULTIPLE_VALUE_ENCOUNTERED_IN_CODE_ELEMENT,
         /* must understatnd attribute should have values of true or false */
         AXIS2_ERROR_MUST_UNDERSTAND_SHOULD_BE_1_0_TRUE_FALSE,
@@ -461,7 +461,7 @@ extern "C"
         AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE,
         /** only one SOAP fault allowed in SOAP body */
         AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY,
-        /*TODO ADDCOMMENT*/
+        /*soap11 fault actor element should not have child elements*/
         AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS,
         /** soap builder found a child element other than header or body in envelope 
         element */
@@ -472,29 +472,29 @@ extern "C"
         AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED,
         /** soap builder encountered multiple headers */
         AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED,
-        /*TODO ADDCOMMENT*/
+        /*soap fault code element should a mandatory fault value element */
         AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE,
-        /*TODO ADDCOMMENT*/
+        /*soap fault reason element should have a text */
         AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT,
-        /*TODO ADDCOMMENT*/
+        /*soap fault role element should have a text value*/
         AXIS2_ERROR_SOAP_FAULT_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT,
-        /*TODO ADDCOMMENT*/
+        /* soap fault value should be present before sub code element in soap fault code*/
         AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE,
         /** soap message does not have an envelope element */
         AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE,
-        /*TODO ADDCOMMENT*/
+        /*soap message first element must contain a localname*/
         AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME,
-        /*TODO ADDCOMMENT*/
+        /* this localname is not supported inside a reason element*/
         AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_REASON_ELEMENT,
-        /*TODO ADDCOMMENT*/
+        /*this localname is not supported inside a sub code element*/
         AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT,
-        /*TODO ADDCOMMENT*/
+        /*this localname is not supported inside the code element*/
         AXIS2_ERROR_THIS_LOCALNAME_NOT_SUPPORTED_INSIDE_THE_CODE_ELEMENT,
-        /*TODO ADDCOMMENT*/
+        /*transport level identified soap version does not match with the soap version*/
         AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP,
-        /*TODO ADDCOMMENT*/
+        /*unsupported element in soap fault element*/
         AXIS2_ERROR_UNSUPPORTED_ELEMENT_IN_SOAP_FAULT_ELEMENT,
-        /*TODO ADDCOMMENT*/
+        /*wrong element order encounterd*/
         AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED,
        /*
         * Group - services

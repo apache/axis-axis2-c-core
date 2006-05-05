@@ -349,21 +349,21 @@ axis2_error_init()
     axis2_error_messages[AXIS2_ERROR_INVALID_SOAP_VERSION] = 
         "Invalid SOAP version";
     axis2_error_messages[AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND] = 
-        "AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND";
+        "invalid value found in must understand";
     axis2_error_messages[AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED] = 
-        "AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED";
+        "multiple  fault code elements encountered in soap fault";
     axis2_error_messages[AXIS2_ERROR_MULTIPLE_DETAIL_ELEMENTS_ENCOUNTERED] = 
-        "AXIS2_ERROR_MULTIPLE_DETAIL_ELEMENTS_ENCOUNTERED";
+        "multiple fault detail elements encountered in soap fault";
     axis2_error_messages[AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED] =
-        "AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED";
+        "multiple fault node elements encountered in soap fault";
     axis2_error_messages[AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED] = 
-        "AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED";
+        "multiple fault reason elements encountered in soap fault";
     axis2_error_messages[AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED] = 
-        "AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED";
+        "multiple fault role elements encountered in soap fault ";
     axis2_error_messages[AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED] = 
-        "AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED";
+        "multiple fault subcode value elements encountered";
     axis2_error_messages[AXIS2_ERROR_MULTIPLE_VALUE_ENCOUNTERED_IN_CODE_ELEMENT] = 
-        "AXIS2_ERROR_MULTIPLE_VALUE_ENCOUNTERED_IN_CODE_ELEMENT";
+        "multiple fault value elements encounterd";
     axis2_error_messages[AXIS2_ERROR_MUST_UNDERSTAND_SHOULD_BE_1_0_TRUE_FALSE] = 
         "must understatnd attribute should have values of true or false";
     axis2_error_messages[AXIS2_ERROR_OM_ELEMENT_EXPECTED] = 
@@ -389,25 +389,25 @@ axis2_error_init()
     axis2_error_messages[AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT] = 
         "AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT";
     axis2_error_messages[AXIS2_ERROR_SOAP_FAULT_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT] = 
-        "AXIS2_ERROR_SOAP_FAULT_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT";
+        "soap fault role element should have a text value";
     axis2_error_messages[AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE] = 
-        "AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE";
+        "soap fault value should be present before subcode element in soap fault code";
     axis2_error_messages[AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE] = 
-        "AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE";
+        "soap message does not contain a soap envelope element";
     axis2_error_messages[AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME] = 
-        "AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME";
+        "soap messgae first element should have a localname";
     axis2_error_messages[AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_REASON_ELEMENT] = 
-        "AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_REASON_ELEMENT";
+        "localname not supported inside a reason element";
     axis2_error_messages[AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT] = 
-        "AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT";
+        "localname not supported inside the subcode element";
     axis2_error_messages[AXIS2_ERROR_THIS_LOCALNAME_NOT_SUPPORTED_INSIDE_THE_CODE_ELEMENT] = 
-        "AXIS2_ERROR_THIS_LOCALNAME_NOT_SUPPORTED_INSIDE_THE_CODE_ELEMENT";
+        "localname not supported inside the code element";
     axis2_error_messages[AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP] = 
-        "AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP";
+        "transport identified soap version does not match with soap message version ";
     axis2_error_messages[AXIS2_ERROR_UNSUPPORTED_ELEMENT_IN_SOAP_FAULT_ELEMENT] = 
-        "AXIS2_ERROR_UNSUPPORTED_ELEMENT_IN_SOAP_FAULT_ELEMENT";
+        "unsupported element found in soap fault element";
     axis2_error_messages[AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED] = 
-        "AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED";
+        "wrong element order encountered ";
     axis2_error_messages[AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST] =
         "Invalid XML format in request";
     axis2_error_messages[AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL] =
