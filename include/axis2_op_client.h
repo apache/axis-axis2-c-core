@@ -38,6 +38,7 @@
 #include <axis2_options.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_callback.h>
+#include <callback_recv.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -170,6 +171,12 @@ struct axis2_op_client_ops
 	axis2_op_ctx_t* (AXIS2_CALL *
 	get_operation_context)(struct axis2_op_client *op_client);
 
+    axis2_status_t (AXIS2_CALL *
+    set_callback_recv)(
+        struct axis2_op_client *op_client, 
+        axis2_env_t **env,
+        axis2_callback_recv_t *callback_recv);
+
 	axis2_status_t (AXIS2_CALL *
 	free)(struct axis2_op_client *op_client,
 				axis2_env_t **env);
@@ -220,6 +227,9 @@ AXIS2_DECLARE(axis2_op_client_t*) axis2_op_client_create(axis2_env_t **env,
 
 #define AXIS2_OP_CLIENT_FREE(op_client, env) \
 		((op_client)->ops->free(op_client, env))
+
+#define AXIS2_OP_CLIENT_SET_CALLBACK_RECV(op_client, env, callback_recv) \
+		((op_client)->ops->set_callback_recv(op_client, env, callback_recv))
 
 /************************** End of function macros ****************************/    
 

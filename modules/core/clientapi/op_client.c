@@ -19,7 +19,8 @@
 #include <axis2_hash.h>
 #include <axis2_mep_client.h>
 #include <axis2_uuid_gen.h>
-#include <listener_manager.h> /*TODO:change too axis2_listener_manager.h*/
+#include <listener_manager.h> 
+#include <axis2_engine.h>
 
 typedef struct axis2_op_client_impl
 {
@@ -39,6 +40,7 @@ typedef struct axis2_op_client_impl
 	axis2_bool_t completed;
     /* to hold the locally created async result */
     axis2_async_result_t *async_result;
+    axis2_callback_recv_t *callback_recv;
 } axis2_op_client_impl_t;
 
 /** Interface to implementation conversion macro */
@@ -106,6 +108,11 @@ axis2_op_ctx_t* AXIS2_CALL
 axis2_op_client_get_operation_context(struct axis2_op_client *op_client);
 
 axis2_status_t AXIS2_CALL
+axis2_op_client_set_callback_recv(struct axis2_op_client *op_client, 
+    axis2_env_t **env,
+    axis2_callback_recv_t *callback_recv);
+
+axis2_status_t AXIS2_CALL
 axis2_op_client_free(struct axis2_op_client *op_client, 
 						axis2_env_t **env);
 
@@ -137,6 +144,7 @@ axis2_op_client_create(axis2_env_t **env, axis2_op_t *op,
     op_client_impl->callback = NULL;
     op_client_impl->completed = AXIS2_FALSE;
     op_client_impl->async_result = NULL;
+    op_client_impl->callback_recv = NULL;
     
 	op_client_impl->options = options;
 	op_client_impl->svc_ctx = svc_ctx;
@@ -397,6 +405,21 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
 
 	if (AXIS2_OPTIONS_IS_USE_SEPERATE_LISTENER(op_client_impl->options, env))
 	{
+        axis2_engine_t *engine = NULL;
+        
+        AXIS2_CALLBACK_RECV_ADD_CALLBACK(op_client_impl->callback_recv, env, 
+            AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env),
+            op_client_impl->callback);
+        /* TODO: set up reply to */
+        AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, AXIS2_OP_FIND_OP_CTX(op, env, 
+            msg_ctx, op_client_impl->svc_ctx));
+        AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, op_client_impl->svc_ctx);
+
+        /* send the message */
+        engine = axis2_engine_create(env, conf_ctx);
+        if (!engine)
+            return AXIS2_FAILURE;
+        AXIS2_ENGINE_SEND(engine, env, msg_ctx);
 	}
 	else
 	{
@@ -558,6 +581,7 @@ static void axis2_op_client_init_ops(axis2_op_client_t *op_client)
 	op_client->ops->reset = axis2_op_client_reset;
 	op_client->ops->compelete = axis2_op_client_compelete;
 	op_client->ops->get_operation_context = axis2_op_client_get_operation_context;
+    op_client->ops->set_callback_recv = axis2_op_client_set_callback_recv;
 	op_client->ops->free = axis2_op_client_free;
 }
 
@@ -598,4 +622,14 @@ axis2_op_client_worker_func(axis2_thread_t *thd, void *data)
     AXIS2_CALLBACK_SET_COMPLETE(args_list->callback, thread_env, AXIS2_TRUE);
     
     return NULL; 
+}
+
+axis2_status_t AXIS2_CALL
+axis2_op_client_set_callback_recv(struct axis2_op_client *op_client, 
+    axis2_env_t **env,
+    axis2_callback_recv_t *callback_recv)
+{
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_INTF_TO_IMPL(op_client)->callback_recv = callback_recv;
+	return AXIS2_SUCCESS;
 }

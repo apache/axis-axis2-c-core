@@ -576,6 +576,9 @@ axis2_svc_client_send_receive_with_op_qname(struct axis2_svc_client *svc_client,
                     axis2_om_node_t *payload)
 {
 	axis2_svc_client_impl_t *svc_client_impl = NULL;
+    axis2_soap_envelope_t *soap_envelope = NULL;
+    axis2_soap_body_t *soap_body = NULL;
+    axis2_om_node_t *soap_node = NULL;
 
 	AXIS2_ENV_CHECK(env, NULL);
 
@@ -583,16 +586,77 @@ axis2_svc_client_send_receive_with_op_qname(struct axis2_svc_client *svc_client,
 
 	if (AXIS2_OPTIONS_IS_USE_SEPERATE_LISTENER(svc_client_impl->options, env))
 	{
-		return NULL;
+        axis2_callback_t *callback = NULL;
+        axis2_status_t status = AXIS2_FAILURE;
+        long index = 0;
+        
+
+        /*axis2_char_t *address = NULL;
+        axis2_char_t *epr_address = NULL;
+        property = axis2_property_create(env);
+        AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+        epr_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(call_impl->to, env);
+		address = AXIS2_STRDUP(epr_address, env);
+        AXIS2_PROPERTY_SET_VALUE(property, env, address);
+        AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
+                                    AXIS2_TRANSPORT_URL, property, AXIS2_FALSE);
+        */
+        
+        /* This means doing a Request-Response invocation using two channels. 
+        If the transport is a two way transport (e.g. http), only one channel is used
+        (e.g. in http cases 202 OK is sent to say no repsone avalible). 
+        Axis2 gets blocked and return when the response is avalible.
+        */
+        
+        callback = axis2_callback_create(env);
+        if (!callback)
+            return NULL;
+        
+        /* call two channel non blocking invoke to do the work and wait on the callbck */
+        axis2_svc_client_send_receive_non_blocking_with_operation(
+            svc_client, env, op_qname, payload, callback);
+                
+        index = AXIS2_OPTIONS_GET_TIMEOUT_IN_MILLI_SECONDS(svc_client_impl->options, env) / 10;
+        while (!(AXIS2_CALLBACK_GET_COMPLETE(callback, env))) 
+        {
+            /*wait till the reponse arrives*/
+            if (index-- >= 0) 
+            {
+                AXIS2_USLEEP(10000);
+            } 
+            else 
+            {
+                AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_RESPONSE_TIMED_OUT, AXIS2_FAILURE);
+                return NULL;
+            }
+        }
+        
+        soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, env);
+        /* process the result of the invocation */
+        /*if (AXIS2_CALLBACK_GET_ENVELOPE(callback, env))
+        {
+            axis2_msg_ctx_t *response_msg_ctx =
+                    axis2_msg_ctx_create(env, AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env), NULL, NULL);
+            if (!response_msg_ctx)
+                return NULL;
+            AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response_msg_ctx, env, AXIS2_CALLBACK_GET_ENVELOPE(callback, env));
+            return response_msg_ctx;
+        } 
+        else */
+        if (!soap_envelope)
+        {
+            if (AXIS2_CALLBACK_GET_ERROR(callback, env) != AXIS2_ERROR_NONE)
+            {
+                AXIS2_ERROR_SET((*env)->error, AXIS2_CALLBACK_GET_ERROR(callback, env), AXIS2_FAILURE);
+                return NULL;
+            }
+        }
 	}
 	else
 	{
 		axis2_op_client_t *op_client = NULL;
 		axis2_msg_ctx_t *res_msg_ctx = NULL;
 		axis2_msg_ctx_t *msg_ctx = NULL;
-		axis2_soap_envelope_t *soap_envelope = NULL;
-		axis2_soap_body_t *soap_body = NULL;
-		axis2_om_node_t *soap_node = NULL;
 
         msg_ctx = axis2_msg_ctx_create(env, 
             AXIS2_SVC_CTX_GET_CONF_CTX(svc_client_impl->svc_ctx, env), NULL, NULL);
@@ -618,24 +682,26 @@ axis2_svc_client_send_receive_with_op_qname(struct axis2_svc_client *svc_client,
 		}
 
         soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(res_msg_ctx, env);
-        if (!soap_envelope)
-        {
-			return NULL;
-		}
-        soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
-
-        if (!soap_body)
-        {
-			return NULL;
-		}
         
-        soap_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
-        if (!soap_node)
-        {
-			return NULL;
-		}
-        return AXIS2_OM_NODE_GET_FIRST_CHILD(soap_node, env);
 	}
+    
+    if (!soap_envelope)
+    {
+        return NULL;
+    }
+    soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+
+    if (!soap_body)
+    {
+        return NULL;
+    }
+    
+    soap_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+    if (!soap_node)
+    {
+        return NULL;
+    }
+    return AXIS2_OM_NODE_GET_FIRST_CHILD(soap_node, env);
 }
 
 
@@ -693,7 +759,12 @@ axis2_svc_client_send_receive_non_blocking_with_operation(struct axis2_svc_clien
     
     if (AXIS2_OPTIONS_IS_USE_SEPERATE_LISTENER(svc_client_impl->options, env))
     {
-		return;
+        axis2_op_t *op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_client_impl->svc, env, 
+            op_qname);
+        AXIS2_OP_SET_MSG_RECEIVER(op, env, 
+            AXIS2_CALLBACK_RECV_GET_BASE(svc_client_impl->callback_recv, env));
+        AXIS2_OP_CLIENT_SET_CALLBACK_RECV(op_client, env, 
+            svc_client_impl->callback_recv);
 	}
     
     AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_FALSE);
@@ -831,45 +902,33 @@ static axis2_bool_t axis2_svc_client_init_transports_from_conf_ctx(axis2_env_t *
 									axis2_char_t *client_home)
 {
 	axis2_listener_manager_t *listener_manager = NULL;
-
-	if (conf_ctx)
-	{
-		svc_client_impl->conf_ctx = conf_ctx;
-		/*TODO:uncomment once implemented
-		listener_manager = AXIS2_CONF_CTX_GET_LISTENER_MANAGER(conf_ctx, env);
-		*/
-    	if (!listener_manager)
-    	{
-		    listener_manager = axis2_listener_manager_create(env);
-			if (!listener_manager)
-			{
-				AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        		return AXIS2_FALSE;
-			}
-			/*TODO:uncomment once implemented
-			AXIS2_LISTENER_MANAGER_INIT(listener_manager, conf_ctx);
-			*/
-    	}
-
-	}
-	else
-	{
-		svc_client_impl->conf_ctx = build_client_conf_ctx(env, client_home);
-		if (!svc_client_impl->conf_ctx)
+    axis2_char_t *transport_in_protocol = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    svc_client_impl->conf_ctx = conf_ctx;
+    if (!(svc_client_impl->conf_ctx))
+    {
+        svc_client_impl->conf_ctx = build_client_conf_ctx(env, client_home);
+		if (!(svc_client_impl->conf_ctx))
 		{
-			AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 			return AXIS2_FALSE;
 		}
-		listener_manager = axis2_listener_manager_create(env);
-		if (!listener_manager)
-        {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return AXIS2_FALSE;
-        }
-		/*TODO:uncomment when implemented
-		AXIS2_LISTENER_MANAGER_INIT(listener_manager, svc_client_impl->conf_ctx);
-		*/
+    }
+    
+	listener_manager = axis2_listener_manager_create(env);
+	if (!listener_manager)
+	{
+        return AXIS2_FALSE;
 	}
+    
+    transport_in_protocol = AXIS2_OPTIONS_GET_TRANSPORT_IN_PROTOCOL(
+        svc_client_impl->options, env);
+    if (!transport_in_protocol)
+        transport_in_protocol = AXIS2_TRANSPORT_HTTP;
+    AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(listener_manager, env, 
+        transport_in_protocol, svc_client_impl->conf_ctx);
+
 	return AXIS2_TRUE;
 }
 
