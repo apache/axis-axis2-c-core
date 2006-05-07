@@ -21,6 +21,7 @@
 #include <axis2_uuid_gen.h>
 #include <listener_manager.h> 
 #include <axis2_engine.h>
+#include <callback_recv.h>
 
 typedef struct axis2_op_client_impl
 {
