@@ -1048,6 +1048,24 @@ axis2_options_free (struct axis2_options *options,
 		axis2_hash_free(options_impl->properties, env);
 		options_impl->properties = NULL;
 	}
+    
+	if (options_impl->soap_version_uri)
+    {
+        AXIS2_FREE((*env)->allocator, options_impl->soap_version_uri);
+        options_impl->soap_version_uri = NULL;
+    }
+
+	if (options_impl->transport_in_protocol)
+    {
+        AXIS2_FREE((*env)->allocator, options_impl->transport_in_protocol);
+        options_impl->transport_in_protocol = NULL;
+    }
+
+    if (options_impl->sender_transport_protocol)
+    {
+        AXIS2_FREE((*env)->allocator, options_impl->sender_transport_protocol);
+        options_impl->sender_transport_protocol = NULL;
+    }
 
     AXIS2_FREE((*env)->allocator, options_impl);
     options_impl = NULL;

@@ -384,10 +384,6 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
         AXIS2_MSG_CTX_SET_TRANSPORT_IN_DESC(msg_ctx, env, transport_in);
     }
 
-	/*TODO:check - soap_action*/
-
-	/*TODO:check - add reference parametes*/	
-
 	op = AXIS2_OP_CTX_GET_OP(op_client_impl->op_ctx, env);
 	if (!op)
 		return AXIS2_FAILURE;
@@ -564,8 +560,27 @@ axis2_op_client_free(struct axis2_op_client *op_client,
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
 	op_client_impl = AXIS2_INTF_TO_IMPL(op_client);
+    
+    if (op_client_impl->base)
+    {
+        AXIS2_MEP_CLIENT_FREE(op_client_impl->base, env);
+        op_client_impl->base = NULL;
+    }   
 
-	/*TODO:free*/
+    if (op_client_impl->callback)
+    {
+        AXIS2_CALLBACK_FREE(op_client_impl->callback, env);
+        op_client_impl->callback = NULL;
+    }
+   
+    if (op_client_impl->op_client.ops)
+    {
+        AXIS2_FREE((*env)->allocator, op_client_impl->op_client.ops);
+        op_client_impl->op_client.ops = NULL;
+    }
+
+    AXIS2_FREE((*env)->allocator, op_client_impl);
+    op_client_impl = NULL;
 
 	return AXIS2_SUCCESS;
 }

@@ -46,7 +46,11 @@ typedef struct axis2_svc_client_impl
 	axis2_array_list_t *headers;
 	
 	/** for receiving the async messages */
-	axis2_callback_recv_t *callback_recv;	
+	axis2_callback_recv_t *callback_recv;
+    
+    axis2_listener_manager_t *listener_manager;
+    
+    axis2_op_client_t *op_client;
 
 } axis2_svc_client_impl_t;
 
@@ -234,6 +238,8 @@ axis2_svc_client_create_with_conf_ctx_and_svc(axis2_env_t **env,
     svc_client_impl->override_options = NULL;
     svc_client_impl->headers = NULL;
 	svc_client_impl->callback_recv = NULL;	
+    svc_client_impl->listener_manager = NULL;
+    svc_client_impl->op_client = NULL;
 
 
     /** initialize private data to NULL, create options */
@@ -587,7 +593,6 @@ axis2_svc_client_send_receive_with_op_qname(struct axis2_svc_client *svc_client,
 	if (AXIS2_OPTIONS_IS_USE_SEPERATE_LISTENER(svc_client_impl->options, env))
 	{
         axis2_callback_t *callback = NULL;
-        axis2_status_t status = AXIS2_FAILURE;
         long index = 0;
         
 
@@ -713,7 +718,6 @@ axis2_svc_client_send_receive_non_blocking(struct axis2_svc_client *svc_client,
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
 	axis2_qname_t *op_qname = NULL;
-	AXIS2_ENV_CHECK(env, NULL);
 
 	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
 	op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
@@ -732,13 +736,7 @@ axis2_svc_client_send_receive_non_blocking_with_operation(struct axis2_svc_clien
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_op_client_t *op_client = NULL;
-	axis2_msg_ctx_t *res_msg_ctx = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
-    axis2_soap_envelope_t *soap_envelope = NULL;
-    axis2_soap_body_t *soap_body = NULL;
-    axis2_om_node_t *soap_node = NULL;
-
-	AXIS2_ENV_CHECK(env, NULL);
 
 	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
 
@@ -778,7 +776,6 @@ axis2_svc_client_create_op_client(struct axis2_svc_client *svc_client,
                     axis2_qname_t *op_qname)
 {
 	axis2_op_t *op = NULL;
-	axis2_op_client_t *op_client = NULL;
 	axis2_svc_client_impl_t *svc_client_impl = NULL;
 
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -791,8 +788,11 @@ axis2_svc_client_create_op_client(struct axis2_svc_client *svc_client,
 		/*TODO:error - svc does not have the operation*/
 		return NULL;
 	}
-	op_client = axis2_op_client_create(env, op, svc_client_impl->svc_ctx, 
+	if (!(svc_client_impl->op_client))
+    {
+        svc_client_impl->op_client = axis2_op_client_create(env, op, svc_client_impl->svc_ctx, 
 			svc_client_impl->options);
+    }
 	/**
 	 if overide options have been set, that means we need to make sure
      those options override the options of even the operation client. So,
@@ -801,11 +801,12 @@ axis2_svc_client_create_op_client(struct axis2_svc_client *svc_client,
 	if (svc_client_impl->override_options)
 	{
 		AXIS2_OPTIONS_SET_PARENT(svc_client_impl->override_options, env, 
-			AXIS2_OP_CLIENT_GET_OPTIONS(op_client, env));
-		AXIS2_OP_CLIENT_SET_OPTIONS(op_client, env, svc_client_impl->override_options);
+			AXIS2_OP_CLIENT_GET_OPTIONS(svc_client_impl->op_client, env));
+		AXIS2_OP_CLIENT_SET_OPTIONS(svc_client_impl->op_client, env, 
+            svc_client_impl->override_options);
 	}
 
-	return op_client;	
+	return svc_client_impl->op_client;	
 }
 
 axis2_status_t AXIS2_CALL 
@@ -813,25 +814,24 @@ axis2_svc_client_finalize_invoke(struct axis2_svc_client *svc_client,
                         axis2_env_t **env)
 {
 	axis2_svc_client_impl_t *svc_client_impl = NULL;
-	axis2_listener_manager_t *listener_manager = NULL;
-	axis2_char_t *transport = NULL;
+	axis2_char_t *transport_in_protocol = NULL;
 
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
 	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
+    
+    transport_in_protocol = AXIS2_OPTIONS_GET_TRANSPORT_IN_PROTOCOL(
+        svc_client_impl->options, env);
+    if (!transport_in_protocol)
+        transport_in_protocol = AXIS2_TRANSPORT_HTTP;
 
-	/*TODO:uncomment once implemented
-	listener_manager = AXIS2_CONF_CTX_GET_LISTENER_MANAGER(svc_client_impl->conf_ctx,
-			env);
-			*/
-
-	if (!listener_manager)
+	if (svc_client_impl->listener_manager)
 	{
-		/*TODO:error - listener manager not found*/
-		return AXIS2_FAILURE;
+		return AXIS2_LISTENER_MANAGER_STOP(svc_client_impl->listener_manager, 
+            env, transport_in_protocol);
 	}
-	/*TODO:set transport*/
-	return AXIS2_LISTENER_MANAGER_STOP(listener_manager, env, transport);
+
+	return AXIS2_SUCCESS;
 }
     
 axis2_endpoint_ref_t* AXIS2_CALL 
@@ -901,7 +901,6 @@ static axis2_bool_t axis2_svc_client_init_transports_from_conf_ctx(axis2_env_t *
                                     axis2_conf_ctx_t *conf_ctx,
 									axis2_char_t *client_home)
 {
-	axis2_listener_manager_t *listener_manager = NULL;
     axis2_char_t *transport_in_protocol = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -916,8 +915,12 @@ static axis2_bool_t axis2_svc_client_init_transports_from_conf_ctx(axis2_env_t *
 		}
     }
     
-	listener_manager = axis2_listener_manager_create(env);
-	if (!listener_manager)
+    if (!(svc_client_impl->listener_manager))
+    {
+        svc_client_impl->listener_manager = axis2_listener_manager_create(env);
+    }
+    
+	if (!(svc_client_impl->listener_manager))
 	{
         return AXIS2_FALSE;
 	}
@@ -926,7 +929,7 @@ static axis2_bool_t axis2_svc_client_init_transports_from_conf_ctx(axis2_env_t *
         svc_client_impl->options, env);
     if (!transport_in_protocol)
         transport_in_protocol = AXIS2_TRANSPORT_HTTP;
-    AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(listener_manager, env, 
+    AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(svc_client_impl->listener_manager, env, 
         transport_in_protocol, svc_client_impl->conf_ctx);
 
 	return AXIS2_TRUE;
@@ -1099,9 +1102,46 @@ axis2_svc_client_free(struct axis2_svc_client *svc_client,
 
 	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
 
-	/*TODO:fill*/
+    if (svc_client_impl->callback_recv)
+    {
+        AXIS2_CALLBACK_RECV_FREE(svc_client_impl->callback_recv, env);
+        svc_client_impl->callback_recv = NULL;
+    }   
 
-	return AXIS2_SUCCESS;
+    if (svc_client_impl->conf_ctx)
+    {
+        AXIS2_CONF_CTX_FREE(svc_client_impl->conf_ctx, env);
+        svc_client_impl->conf_ctx = NULL;
+    }
+   
+    if (svc_client_impl->options)
+    {
+        AXIS2_OPTIONS_FREE(svc_client_impl->options, env);
+        svc_client_impl->options = NULL;
+    }
+
+    if(NULL != svc_client_impl->listener_manager)
+    {
+        AXIS2_LISTNER_MANAGER_FREE(svc_client_impl->listener_manager, env);
+        svc_client_impl->listener_manager = NULL;
+    }
+    
+    if (svc_client_impl->op_client)
+    {
+        AXIS2_OP_CLIENT_FREE(svc_client_impl->op_client, env);
+        svc_client_impl->op_client = NULL;
+    }
+
+    if (svc_client_impl->svc_client.ops)
+    {
+        AXIS2_FREE((*env)->allocator, svc_client_impl->svc_client.ops);
+        svc_client_impl->svc_client.ops = NULL;
+    }
+
+    AXIS2_FREE((*env)->allocator, svc_client_impl);
+    svc_client_impl = NULL;
+
+    return AXIS2_SUCCESS;
 }
 
 static axis2_bool_t axis2_svc_client_fill_soap_envelope(axis2_env_t **env, axis2_svc_client_impl_t *svc_client_impl,
