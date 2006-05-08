@@ -31,8 +31,8 @@
 #include <axis2_array_list.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_xml_schema_obj.h>
-#include <axis2_validation_event_handler.h>
+#include <xml_schema/axis2_xml_schema_obj.h>
+#include <xml_schema/axis2_validation_event_handler.h>
 
 #ifdef __cplusplus
 extern "C"

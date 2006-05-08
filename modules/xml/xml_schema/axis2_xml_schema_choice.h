@@ -24,7 +24,7 @@
  *          the World Wide Web Consortium (W3C) choice (compositor) element.
  */
 
-#include <axis2_xml_schema_group_base.h>
+#include <xml_schema/axis2_xml_schema_group_base.h>
 #include <axis2_hash.h>
 
 /** @defchoice axis2_xml_schema_choice Xml Schema Choice

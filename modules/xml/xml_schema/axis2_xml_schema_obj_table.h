@@ -35,7 +35,7 @@
 #include <axis2_array_list.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_xml_schema_obj.h>
+#include <xml_schema/axis2_xml_schema_obj.h>
 
 #ifdef __cplusplus
 extern "C"

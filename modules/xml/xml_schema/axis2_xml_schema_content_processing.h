@@ -24,7 +24,7 @@
  *
  */
 
-#include <axis2_xml_schema_enum.h>
+#include <xml_schema/axis2_xml_schema_enum.h>
 
 /** @defgroup axis2_xml_schema_content_processing Xml Schema Content Processing
   * @ingroup axis2_xml_schema

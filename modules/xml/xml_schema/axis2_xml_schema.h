@@ -25,11 +25,11 @@
  *          Represents the World Wide Web Consortium (W3C) schema element
  */
 
-#include <axis2_xml_schema_annotated.h>
+#include <xml_schema/axis2_xml_schema_annotated.h>
 #include <axis2_om_element.h>
 #include <axis2_om_node.h>
 #include <axis2_hash.h>
-#include <axis2_validation_event_handler.h>
+#include <xml_schema/axis2_validation_event_handler.h>
 
 /** @defgroup axis2_xml_schema Xml Schema
   * @ingroup axis2_xml_schema

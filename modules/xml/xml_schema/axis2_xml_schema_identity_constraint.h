@@ -23,7 +23,7 @@
  *          Class for the identity constraints: key, keyref, and unique elements.
  */
 
-#include <axis2_xml_schema_annotated.h>
+#include <xml_schema/axis2_xml_schema_annotated.h>
 #include <axis2_hash.h>
 
 /** @defidentity_constraint axis2_xml_schema_identity_constraint Xml Schema 
