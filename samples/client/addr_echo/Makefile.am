@@ -1,10 +1,10 @@
 prgbindir=$(prefix)/bin/samples
-prgbin_PROGRAMS = addr_echo
-samplesdir=$(prefix)/samples/client/addr_echo
-samples_DATA=echo_client.c README.txt Makefile.am Makefile.in
-addr_echo_SOURCES = echo_client.c
+prgbin_PROGRAMS = echo
+samplesdir=$(prefix)/samples/client/echo
+samples_DATA=echo.c README.txt Makefile.am Makefile.in
+echo_SOURCES = echo.c
 
-addr_echo_LDADD   = $(LDFLAGS) \
+echo_LDADD   = $(LDFLAGS) \
                     -L$(AXIS2C_HOME)/lib \
 					-laxis2_util \
                     -laxis2_om \
