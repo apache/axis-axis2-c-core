@@ -71,10 +71,7 @@ AC_CONFIG_FILES([Makefile \
     client/Makefile \
     client/echo/Makefile \
     client/math/Makefile \
-    client/addr_echo/Makefile \
     client/mtom/Makefile \
-    client/diclient/Makefile \
-    client/echo_non_blocking/Makefile \
     client/notify/Makefile \
     client/google/Makefile \
     user_guide/Makefile \
