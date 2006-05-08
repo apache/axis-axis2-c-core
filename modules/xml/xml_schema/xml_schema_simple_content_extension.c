@@ -132,7 +132,8 @@ axis2_xml_schema_simple_content_extension_create(axis2_env_t **env)
             axis2_xml_schema_simple_content_extension_get_base_type_name;
     sim_content_ext_impl->sim_content_ext.ops->set_base_type_name =
             axis2_xml_schema_simple_content_extension_set_base_type_name; 
-
+    
+    sim_content_ext_impl->annotated = axis2_xml_schema_annotated_create(env);
     if(!sim_content_ext_impl->annotated)
     {
         axis2_xml_schema_simple_content_extension_free(
