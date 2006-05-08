@@ -32,6 +32,8 @@ typedef struct axis2_options_impl
 	axis2_hash_t *properties;
 
 	axis2_char_t *soap_version_uri;
+    
+    int soap_version;
 
 	long timeout_in_milli_seconds;
 	
@@ -263,6 +265,16 @@ axis2_options_is_manage_session(struct axis2_options *options,
 axis2_msg_info_headers_t* AXIS2_CALL 
 axis2_options_get_msg_info_headers(struct axis2_options *options,
                             axis2_env_t **env);
+
+int AXIS2_CALL 
+axis2_options_get_soap_version(struct axis2_options *options,
+                            		axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL 
+axis2_options_set_soap_version(struct axis2_options *options,
+                            		axis2_env_t **env,
+                                    int soap_version);
+
 
 axis2_status_t AXIS2_CALL
 axis2_options_free (struct axis2_options *options,
@@ -887,7 +899,7 @@ axis2_options_set_sender_transport(struct axis2_options *options,
 	options_impl->transport_out = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, tmp);
 	AXIS2_QNAME_FREE(tmp, env);
 
-	if (!options_impl->transport_out)
+	if (!(options_impl->transport_out))
 	{
 		/*TODO:error*/
 		return AXIS2_FAILURE;
@@ -904,7 +916,16 @@ axis2_options_set_soap_version_uri(struct axis2_options *options,
 
 	options_impl = AXIS2_INTF_TO_IMPL(options);
 
-	options_impl->soap_version_uri = soap_version_uri;
+    if (options_impl->soap_version_uri)
+    {
+        AXIS2_FREE((*env)->allocator, options_impl->soap_version_uri);
+        options_impl->soap_version_uri = NULL;
+    }
+    
+    if (soap_version_uri)
+    {
+        options_impl->soap_version_uri = AXIS2_STRDUP(soap_version_uri, env);
+    }
 }
 
 void AXIS2_CALL 
@@ -1091,6 +1112,7 @@ static void axis2_options_init_data(axis2_options_impl_t *options_impl)
 	options_impl->transport_out = NULL;
 	options_impl->sender_transport_protocol = NULL;
 	options_impl->manage_session = -1;
+    options_impl->soap_version = AXIS2_SOAP12;
 }
 
 static void axis2_options_init_ops(struct axis2_options *options)
@@ -1137,5 +1159,41 @@ static void axis2_options_init_ops(struct axis2_options *options)
 	options->ops->set_manage_session = axis2_options_set_manage_session;
 	options->ops->is_manage_session = axis2_options_is_manage_session;
     options->ops->get_msg_info_headers = axis2_options_get_msg_info_headers;
+    options->ops->set_soap_version = axis2_options_set_soap_version;
+    options->ops->get_soap_version = axis2_options_get_soap_version;
 	options->ops->free = axis2_options_free;
+}
+
+int AXIS2_CALL 
+axis2_options_get_soap_version(struct axis2_options *options,
+                            		axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(options)->soap_version;
+
+}
+
+axis2_status_t AXIS2_CALL 
+axis2_options_set_soap_version(struct axis2_options *options,
+                            		axis2_env_t **env,
+                                    int soap_version)
+{
+    axis2_options_impl_t *options_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+
+	options_impl = AXIS2_INTF_TO_IMPL(options);
+    
+    if (soap_version == AXIS2_SOAP11)
+    {
+        options_impl->soap_version = soap_version;
+        axis2_options_set_soap_version_uri(options, env, 
+            AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
+    }
+    else
+    {
+        options_impl->soap_version = AXIS2_SOAP12;
+        axis2_options_set_soap_version_uri(options, env, 
+            AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+    }
+    return AXIS2_SUCCESS;
 }

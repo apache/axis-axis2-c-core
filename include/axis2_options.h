@@ -290,6 +290,18 @@ struct axis2_options_ops
 	axis2_msg_info_headers_t* (AXIS2_CALL *	
 	get_msg_info_headers)(struct axis2_options *options,
 							axis2_env_t **env);
+
+    int (AXIS2_CALL *
+    get_soap_version)(
+        struct axis2_options *options,
+        axis2_env_t **env);
+
+    axis2_status_t (AXIS2_CALL *
+    set_soap_version)(
+        struct axis2_options *options,
+        axis2_env_t **env,
+        int soap_version);
+
 	
 	axis2_status_t (AXIS2_CALL *	
 	free)(struct axis2_options *options,
@@ -434,6 +446,12 @@ AXIS2_DECLARE(axis2_options_t*) axis2_options_create_with_parent(axis2_env_t **e
 
 #define AXIS2_OPTIONS_GET_MSG_INFO_HEADERS(options, env) \
 		((options)->ops->get_msg_info_headers(options, env))
+
+#define AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, soap_version) \
+		((options)->ops->set_soap_version(options, env, soap_version))
+
+#define AXIS2_OPTIONS_GET_SOAP_VERSION(options, env) \
+		((options)->ops->get_soap_version(options, env))
 
 #define AXIS2_OPTIONS_FREE(options, env) \
 		((options)->ops->free(options, env))
