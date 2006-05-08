@@ -20,12 +20,12 @@
 /**
  * @file axis2_woden_inlined_schema.h
  * @brief Axis2 Inlined Schema Interface
- *          This class represents an inlined schema, &lt;xs:schema&gt;. 
- *          It extends the abstract class SchemaImpl, adding support for the 
- *          <code>id</code> attribute.
+ * This class represents an inlined schema, &lt;xs:schema&gt;. 
+ * It extends the abstract class schema, adding support for the 
+ * <code>id</code> attribute.
  */
 
-#include <woden/axis2_woden_schema.h>
+#include <woden/schema/axis2_woden_schema.h>
 
 /** @defgroup axis2_woden_inlined_schema Inlined Schema
   * @ingroup axis2_wsdl
@@ -47,46 +47,63 @@ struct axis2_woden_inlined_schema_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *schema,
+    free) (
+            void *schema,
+            axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    to_inlined_schema_free) (
+            void *schema,
             axis2_env_t **env);
 
+    axis2_woden_obj_types_t (AXIS2_CALL *
+    type) (
+            void *schema,
+            axis2_env_t **env);
     /**
      * @return the base implementation class
      */
     axis2_woden_schema_t *(AXIS2_CALL *
-    get_base_impl) (void *schema,
-                    axis2_env_t **env);
+    get_base_impl) (
+            void *schema,
+            axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL *
-    set_id) (void *schema,
-                    axis2_env_t **env,
-                    axis2_char_t *id);
+    set_id) (
+            void *schema,
+            axis2_env_t **env,
+            axis2_char_t *id);
 
     axis2_char_t *(AXIS2_CALL *
-    get_id) (void *schema,
-                    axis2_env_t **env);
+    get_id) (
+            void *schema,
+            axis2_env_t **env);
 
   
 };
 
 struct axis2_woden_inlined_schema
 {
-    axis2_woden_schema_t base;
+    axis2_woden_schema_t schema;
     axis2_woden_inlined_schema_ops_t *ops;
 };
 
 AXIS2_DECLARE(axis2_woden_inlined_schema_t *)
-axis2_woden_inlined_schema_create(axis2_env_t **env);
+axis2_woden_inlined_schema_create(
+        axis2_env_t **env);
 
-/**
- * This is an Axis2 C internal method. This is used only from constructor
- * of the child class
- */
+/************************Woden C Internal Methods******************************/
+AXIS2_DECLARE(axis2_woden_inlined_schema_t *)
+axis2_woden_inlined_schema_to_schema(
+        void *schema,
+        axis2_env_t **env);
+
 AXIS2_DECLARE(axis2_status_t)
-axis2_woden_inlined_schema_resolve_methods(axis2_woden_inlined_schema_t *schema,
-                                axis2_env_t **env,
-                                axis2_woden_inlined_schema_t *schema_impl,
-                                axis2_hash_t *methods);
+axis2_woden_inlined_schema_resolve_methods(
+        axis2_woden_inlined_schema_t *schema,
+        axis2_env_t **env,
+        axis2_hash_t *methods);
+/************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_INLINED_SCHEMA_FREE(schema, env) \
 		(((axis2_woden_inlined_schema_t *) schema)->ops->free(schema, env))

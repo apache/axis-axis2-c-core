@@ -44,6 +44,7 @@ AC_CONFIG_FILES([Makefile \
     src/schema/Makefile \
     src/xml/Makefile \
     src/wsdl20/Makefile \
+    src/wsdl20/xml/Makefile \
     src/wsdl20/extensions/Makefile
     ])
     

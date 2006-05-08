@@ -14,10 +14,8 @@
  * limitations under the License.
  */
  
-#include <woden/axis2_woden_schema.h>
+#include <woden/schema/axis2_woden_schema.h>
 #include <xml_schema/axis2_xml_schema.h>
-#include <axis2_url.h>
-#include <axis2_hash.h>
 
 typedef struct axis2_woden_schema_impl axis2_woden_schema_impl_t;
 
@@ -36,41 +34,51 @@ struct axis2_woden_schema_impl
 #define INTF_TO_IMPL(schema) ((axis2_woden_schema_impl_t *) schema)
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_schema_free(void *schema,
-                axis2_env_t **envv);
+axis2_woden_schema_free(
+        void *schema,
+        axis2_env_t **envv);
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_schema_set_namespace(void *schema,
-                            axis2_env_t **env,
-                            axis2_url_t *namespc);
+axis2_woden_schema_set_namespace(
+        void *schema,
+        axis2_env_t **env,
+        axis2_url_t *namespc);
 
 axis2_url_t *AXIS2_CALL 
-axis2_woden_schema_get_namespace(void *schema,
-                            axis2_env_t **env);
+axis2_woden_schema_get_namespace(
+        void *schema,
+        axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_schema_set_schema_def(void *schema,
-                            axis2_env_t **env,
-                            axis2_xml_schema_t *schema_def);
+axis2_woden_schema_set_schema_def(
+        void *schema,
+        axis2_env_t **env,
+        axis2_xml_schema_t *schema_def);
 
 axis2_xml_schema_t *AXIS2_CALL 
-axis2_woden_schema_get_schema_def(void *schema,
-                            axis2_env_t **env);
+axis2_woden_schema_get_schema_def(
+        void *schema,
+        axis2_env_t **env);
+
 axis2_status_t AXIS2_CALL 
-axis2_woden_schema_set_referenceable(void *schema,
-                            axis2_env_t **env,
-                            axis2_bool_t referenceable);
+axis2_woden_schema_set_referenceable(
+        void *schema,
+        axis2_env_t **env,
+        axis2_bool_t referenceable);
 
 axis2_bool_t AXIS2_CALL 
-axis2_woden_schema_is_referenceable(void *schema,
-                            axis2_env_t **env);
+axis2_woden_schema_is_referenceable(
+        void *schema,
+        axis2_env_t **env);
 
 axis2_char_t *AXIS2_CALL 
-axis2_woden_schema_get_namespace_as_string(void *schema,
-                                        axis2_env_t **env);
+axis2_woden_schema_get_namespace_as_string(
+        void *schema,
+        axis2_env_t **env);
 
 AXIS2_DECLARE(axis2_woden_schema_t *)
-axis2_woden_schema_create(axis2_env_t **env)
+axis2_woden_schema_create(
+        axis2_env_t **env)
 {
     axis2_woden_schema_impl_t *schema_impl = NULL;
     
@@ -101,8 +109,9 @@ axis2_woden_schema_create(axis2_env_t **env)
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_schema_free(void *schema,
-                axis2_env_t **env)
+axis2_woden_schema_free(
+        void *schema,
+        axis2_env_t **env)
 {
     axis2_woden_schema_impl_t *schema_impl = NULL;
 
@@ -136,38 +145,38 @@ axis2_woden_schema_free(void *schema,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_schema_resolve_methods(axis2_woden_schema_t *schema,
-                                axis2_env_t **env,
-                                axis2_woden_schema_t *schema_impl,
-                                axis2_hash_t *methods)
+axis2_woden_schema_resolve_methods(
+        axis2_woden_schema_t *schema,
+        axis2_env_t **env,
+        axis2_hash_t *methods)
 {
-    axis2_woden_schema_impl_t *schema_impl_l = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, schema_impl, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
     
-    schema_impl_l = (axis2_woden_schema_impl_t *) schema_impl;
-    
-    schema->ops = AXIS2_MALLOC((*env)->allocator, 
-            sizeof(axis2_woden_schema_ops_t));
     schema->ops->free = axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
-    schema->ops->set_namespace = schema_impl_l->schema.ops->set_namespace;
-    schema->ops->get_namespace = schema_impl_l->schema.ops->get_namespace;
-    schema->ops->set_schema_def = schema_impl_l->schema.ops->set_schema_def;
-    schema->ops->get_schema_def = schema_impl_l->schema.ops->get_schema_def;
-    schema->ops->set_referenceable = schema_impl_l->schema.ops->set_referenceable;
-    schema->ops->is_referenceable = schema_impl_l->schema.ops->is_referenceable;
-    schema->ops->get_namespace_as_string = 
-        schema_impl_l->schema.ops->get_namespace_as_string;
+    schema->ops->set_namespace = axis2_hash_get(methods, "set_namespace", 
+            AXIS2_HASH_KEY_STRING);
+    schema->ops->get_namespace = axis2_hash_get(methods, 
+            "get_namespace", AXIS2_HASH_KEY_STRING);
+    schema->ops->set_schema_def = axis2_hash_get(methods, 
+            "set_schema_def", AXIS2_HASH_KEY_STRING);
+    schema->ops->get_schema_def = axis2_hash_get(methods, 
+            "get_schema_def", AXIS2_HASH_KEY_STRING);
+    schema->ops->set_referenceable = axis2_hash_get(methods, 
+            "set_referenceable", AXIS2_HASH_KEY_STRING);
+    schema->ops->is_referenceable = axis2_hash_get(methods, 
+            "is_referenceable", AXIS2_HASH_KEY_STRING);
+    schema->ops->get_namespace_as_string = axis2_hash_get(methods, 
+            "get_namespace_as_string", AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;    
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_schema_set_namespace(void *schema,
-                            axis2_env_t **env,
-                            axis2_url_t *namespc)
+axis2_woden_schema_set_namespace(
+        void *schema,
+        axis2_env_t **env,
+        axis2_url_t *namespc)
 {
     axis2_woden_schema_impl_t *schema_impl = NULL;
 
@@ -175,14 +184,20 @@ axis2_woden_schema_set_namespace(void *schema,
     AXIS2_PARAM_CHECK((*env)->error, namespc, AXIS2_FAILURE);
     schema_impl = INTF_TO_IMPL(schema);
 
+    if(schema_impl->f_namespc)
+    {
+        AXIS2_URL_FREE(schema_impl->f_namespc, env);
+        schema_impl->f_namespc = NULL;
+    }
     schema_impl->f_namespc = namespc;
     
     return AXIS2_SUCCESS;
 }
 
 axis2_url_t *AXIS2_CALL 
-axis2_woden_schema_get_namespace(void *schema,
-                            axis2_env_t **env)
+axis2_woden_schema_get_namespace(
+        void *schema,
+        axis2_env_t **env)
 {
     axis2_woden_schema_impl_t *schema_impl = NULL;
 
@@ -193,24 +208,31 @@ axis2_woden_schema_get_namespace(void *schema,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_schema_set_schema_def(void *schema,
-                            axis2_env_t **env,
-                            axis2_xml_schema_t *schema_def)
+axis2_woden_schema_set_schema_def(
+        void *schema,
+        axis2_env_t **env,
+        axis2_xml_schema_t *schema_def)
 {
     axis2_woden_schema_impl_t *schema_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, schema_def, AXIS2_FAILURE);
     schema_impl = INTF_TO_IMPL(schema);
-
+    
+    if(schema_impl->f_schema_def)
+    {
+        AXIS2_XML_SCHEMA_FREE(schema_impl->f_schema_def, env);
+        schema_impl->f_schema_def = NULL;
+    }
     schema_impl->f_schema_def = schema_def;
     
     return AXIS2_SUCCESS;
 }
 
 axis2_xml_schema_t *AXIS2_CALL 
-axis2_woden_schema_get_schema_def(void *schema,
-                            axis2_env_t **env)
+axis2_woden_schema_get_schema_def(
+        void *schema,
+        axis2_env_t **env)
 {
     axis2_woden_schema_impl_t *schema_impl = NULL;
 
@@ -221,9 +243,10 @@ axis2_woden_schema_get_schema_def(void *schema,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_schema_set_referenceable(void *schema,
-                            axis2_env_t **env,
-                            axis2_bool_t referenceable)
+axis2_woden_schema_set_referenceable(
+        void *schema,
+        axis2_env_t **env,
+        axis2_bool_t referenceable)
 {
     axis2_woden_schema_impl_t *schema_impl = NULL;
 
@@ -236,8 +259,9 @@ axis2_woden_schema_set_referenceable(void *schema,
 }
 
 axis2_bool_t AXIS2_CALL 
-axis2_woden_schema_is_referenceable(void *schema,
-                            axis2_env_t **env)
+axis2_woden_schema_is_referenceable(
+        void *schema,
+        axis2_env_t **env)
 {
     axis2_woden_schema_impl_t *schema_impl = NULL;
 
@@ -248,8 +272,9 @@ axis2_woden_schema_is_referenceable(void *schema,
 }
 
 axis2_char_t *AXIS2_CALL 
-axis2_woden_schema_get_namespace_as_string(void *schema,
-                                        axis2_env_t **env)
+axis2_woden_schema_get_namespace_as_string(
+        void *schema,
+        axis2_env_t **env)
 {
     axis2_woden_schema_impl_t *schema_impl = NULL;
 

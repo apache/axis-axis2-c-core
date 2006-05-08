@@ -34,14 +34,18 @@
 #include <axis2_const.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
+#include <woden/wsdl20/xml/axis2_woden_wsdl_element.h>
+#include <woden/axis2_woden.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_documentation_element axis2_woden_documentation_element_t;
-typedef struct axis2_woden_documentation_element_ops axis2_woden_documentation_element_ops_t;
+typedef struct axis2_woden_documentation_element 
+        axis2_woden_documentation_element_t;
+typedef struct axis2_woden_documentation_element_ops 
+        axis2_woden_documentation_element_ops_t;
 
 /** @defgroup axis2_woden_documentation_element Documentation Element
   * @ingroup axis2_wsdl
@@ -55,7 +59,17 @@ struct axis2_woden_documentation_element_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *doc_el,
+    free) (
+            void *doc_el,
+            axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    to_documentation_element_free) (
+            void *doc_el,
+            axis2_env_t **env);
+    
+    axis2_woden_obj_types_t (AXIS2_CALL *
+    type) (void *doc_el,
             axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
@@ -71,26 +85,30 @@ struct axis2_woden_documentation_element_ops
 
 struct axis2_woden_documentation_element
 {
+    axis2_woden_wsdl_element_t wsdl_element;
     axis2_woden_documentation_element_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_documentation_element_t *)
-axis2_woden_documentation_element_create(axis2_env_t **env);
-
-/**
- * This is an Axis2 C internal method. This is used only from constructor
- * of the child class
- */
-AXIS2_DECLARE(axis2_status_t)
+/************************Woden C Internal Methods******************************/
+axis2_status_t AXIS2_CALL
 axis2_woden_documentation_element_resolve_methods(
-                                axis2_woden_documentation_element_t *doc_el,
-                                axis2_env_t **env,
-                                axis2_woden_documentation_element_t *doc_el_impl,
-                                axis2_hash_t *methods);
+        axis2_woden_documentation_element_t *documentation_element,
+        axis2_env_t **env,
+        axis2_hash_t *methods);
+/************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_DOCUMENTATION_ELEMENT_FREE(doc_el, env) \
 		(((axis2_woden_documentation_element_t *) doc_el)->ops->\
          free (doc_el, env))
+
+#define AXIS2_WODEN_DOCUMENTATION_ELEMENT_TO_DOCUMENTATION_ELEMENT_FREE(doc_el, \
+        env) \
+		(((axis2_woden_documentation_element_t *) doc_el)->ops->\
+         to_documentation_element_free (doc_el, env))
+
+#define AXIS2_WODEN_DOCUMENTATION_ELEMENT_TYPE(doc_el, env) \
+		(((axis2_woden_documentation_element_t *) doc_el)->ops->\
+         type (doc_el, env))
 
 #define AXIS2_WODEN_DOCUMENTATION_ELEMENT_SET_CONTENT(doc_el, env, doc_elem) \
 		(((axis2_woden_documentation_element_t *) doc_el)->ops->\

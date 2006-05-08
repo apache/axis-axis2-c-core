@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <woden/axis2_woden_bool_attr.h>
+#include <woden/xml/axis2_woden_bool_attr.h>
 #include <axis2_om_element.h>
 #include <axis2_om_node.h>
 
@@ -28,6 +28,7 @@ struct axis2_woden_bool_attr_impl
 {
     axis2_woden_bool_attr_t bool_attr;
     axis2_woden_xml_attr_t *xml_attr;
+    axis2_woden_obj_types_t obj_type;
     axis2_hash_t *methods;
 };
 
@@ -36,6 +37,10 @@ struct axis2_woden_bool_attr_impl
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_bool_attr_free(void *bool_attr,
+                        axis2_env_t **env);
+
+axis2_woden_obj_types_t AXIS2_CALL 
+axis2_woden_bool_attr_type(void *bool_attr,
                         axis2_env_t **env);
 
 axis2_woden_xml_attr_t *AXIS2_CALL
@@ -53,24 +58,17 @@ axis2_woden_bool_attr_convert(void *bool_attr,
                                 axis2_om_node_t *owner_node,
                                 axis2_char_t *attr_value);
 
-/*
- * TODO This constructor is not used for extension attributes, but may be useful if
- * parsing of native WSDL attributes is changed to use the XMLAttr interface.
- */
-AXIS2_DECLARE(axis2_woden_bool_attr_t *)
-axis2_woden_bool_attr_create(axis2_env_t **env,
-                                axis2_om_element_t *owner_el,
-                                axis2_om_node_t *owner_node,
-                                axis2_qname_t *attr_type,
-                                axis2_char_t *attr_value)
+static axis2_woden_bool_attr_t *
+create(
+        axis2_env_t **env)
 {
     axis2_woden_bool_attr_impl_t *bool_attr_impl = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
      
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     bool_attr_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_woden_bool_attr_impl_t));
 
+    bool_attr_impl->obj_type = AXIS2_WODEN_BOOL_ATTR;
     bool_attr_impl->xml_attr = NULL;
     bool_attr_impl->methods = NULL;
     bool_attr_impl->bool_attr.ops = 
@@ -79,6 +77,8 @@ axis2_woden_bool_attr_create(axis2_env_t **env,
 
     bool_attr_impl->bool_attr.ops->free = 
         axis2_woden_bool_attr_free;
+    bool_attr_impl->bool_attr.ops->type = 
+        axis2_woden_bool_attr_type;
     bool_attr_impl->bool_attr.ops->get_base_impl = 
         axis2_woden_bool_attr_get_base_impl;
     bool_attr_impl->bool_attr.ops->get_boolean = 
@@ -95,18 +95,48 @@ axis2_woden_bool_attr_create(axis2_env_t **env,
     }
     axis2_hash_set(bool_attr_impl->methods, "free", 
             AXIS2_HASH_KEY_STRING, axis2_woden_bool_attr_free);
+    axis2_hash_set(bool_attr_impl->methods, "type", 
+            AXIS2_HASH_KEY_STRING, axis2_woden_bool_attr_type);
     axis2_hash_set(bool_attr_impl->methods, "get_boolean", 
             AXIS2_HASH_KEY_STRING, axis2_woden_bool_attr_get_boolean);
     axis2_hash_set(bool_attr_impl->methods, "convert", 
             AXIS2_HASH_KEY_STRING, axis2_woden_bool_attr_convert);
 
+    return &(bool_attr_impl->bool_attr);
+}
+/*
+ * TODO This constructor is not used for extension attributes, but may be useful if
+ * parsing of native WSDL attributes is changed to use the XMLAttr interface.
+ */
+AXIS2_DECLARE(axis2_woden_bool_attr_t *)
+axis2_woden_bool_attr_create(
+        axis2_env_t **env,
+        axis2_om_element_t *owner_el,
+        axis2_om_node_t *owner_node,
+        axis2_qname_t *attr_type,
+        axis2_char_t *attr_value)
+{
+    axis2_woden_bool_attr_impl_t *bool_attr_impl = NULL;
+     
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    bool_attr_impl = (axis2_woden_bool_attr_impl_t *) create(env);
+
     bool_attr_impl->xml_attr = axis2_woden_xml_attr_create(env, owner_el, 
             owner_node, attr_type, attr_value);
-    status = axis2_woden_xml_attr_resolve_methods(&(bool_attr_impl->
-                bool_attr.base), env, bool_attr_impl->
-                xml_attr, bool_attr_impl->methods);
-    if(AXIS2_SUCCESS != status) return NULL;
     return &(bool_attr_impl->bool_attr);
+}
+
+axis2_woden_obj_types_t AXIS2_CALL
+axis2_woden_bool_attr_type(
+        void *bool_attr,
+        axis2_env_t **env)
+{
+    axis2_woden_bool_attr_impl_t *bool_attr_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    bool_attr_impl = INTF_TO_IMPL(bool_attr);
+
+    return bool_attr_impl->obj_type;
 }
 
 axis2_status_t AXIS2_CALL
@@ -160,28 +190,23 @@ axis2_status_t AXIS2_CALL
 axis2_woden_bool_attr_resolve_methods(
                     axis2_woden_bool_attr_t *bool_attr,
                     axis2_env_t **env,
-                    axis2_woden_bool_attr_t *bool_attr_impl,
                     axis2_hash_t *methods)
 {
-    axis2_woden_bool_attr_impl_t *bool_attr_impl_l = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, bool_attr_impl, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
     
-    bool_attr_impl_l = (axis2_woden_bool_attr_impl_t *) bool_attr_impl;
-    
-    bool_attr->ops = AXIS2_MALLOC((*env)->allocator, 
-                            sizeof(axis2_woden_bool_attr_ops_t));
     bool_attr->ops->free = 
                 axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
-    bool_attr->ops->get_base_impl = 
-                bool_attr_impl_l->bool_attr.ops->get_base_impl;
-    bool_attr->ops->get_boolean = bool_attr_impl_l->bool_attr.ops->get_boolean;
-    bool_attr->ops->convert = bool_attr_impl_l->bool_attr.ops->convert;
-    
-    return axis2_woden_xml_attr_resolve_methods(&(bool_attr->base), 
-            env, bool_attr_impl_l->xml_attr, methods);
+    bool_attr->ops->to_bool_attr_free = axis2_hash_get(methods, 
+            "to_bool_attr_free", AXIS2_HASH_KEY_STRING);
+    bool_attr->ops->type = 
+                axis2_hash_get(methods, "type", AXIS2_HASH_KEY_STRING);
+    bool_attr->ops->get_boolean = axis2_hash_get(methods, "get_boolean", 
+            AXIS2_HASH_KEY_STRING);
+    bool_attr->ops->convert = axis2_hash_get(methods, "convert", 
+            AXIS2_HASH_KEY_STRING);
+
+    return AXIS2_SUCCESS;
 }
 
 axis2_bool_t AXIS2_CALL

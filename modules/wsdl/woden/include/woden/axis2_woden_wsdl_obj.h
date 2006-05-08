@@ -30,8 +30,9 @@
  * 
  */
 
-#include <woden/axis2_woden_wsdl_element.h>
-#include <woden/axis2_woden_wsdl_component.h>
+#include <woden/axis2_woden.h>
+#include <woden/wsdl20/xml/axis2_woden_wsdl_element.h>
+#include <woden/wsdl20/axis2_woden_wsdl_component.h>
 
 /** @defgroup axis2_woden_wsdl_obj Wsdl Object
   * @ingroup axis2_wsdl
@@ -55,36 +56,46 @@ struct axis2_woden_wsdl_obj_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *wsdl_obj,
+    free) (
+            void *wsdl_obj,
+            axis2_env_t **env);
+    
+    axis2_woden_obj_types_t (AXIS2_CALL *
+    type) (
+            void *wsdl_obj,
             axis2_env_t **env);
 
     /**
      * @return the base implementation class
      */
     axis2_woden_wsdl_element_t *(AXIS2_CALL *
-    get_base_impl) (void *wsdl_obj,
-                    axis2_env_t **env);
+    get_base_impl) (
+            void *wsdl_obj,
+            axis2_env_t **env);
 
     struct axis2_woden_component_exts *(AXIS2_CALL *
-    get_component_exts_for_namespace) (void *wsdl_obj,
-                                            axis2_env_t **env,
-                                            axis2_url_t *namespc);
+    get_component_exts_for_namespace) (
+            void *wsdl_obj,
+            axis2_env_t **env,
+            axis2_url_t *namespc);
+    
     /*
      * Store the extensions in a map using the namespace string as the key.
      * If the extensions value is null, delete any existing entry in the map
      * for this namespace. If the nsmespace string is null, do nothing.
      */
     axis2_status_t (AXIS2_CALL *
-    set_component_exts) (void *wsdl_obj,
-                            axis2_env_t **env,
-                            axis2_url_t *namespc,
-                            struct axis2_woden_component_exts *exts);
+    set_component_exts) (
+            void *wsdl_obj,
+            axis2_env_t **env,
+            axis2_url_t *namespc,
+            struct axis2_woden_component_exts *exts);
 };
 
 union axis2_woden_wsdl_obj_base
 {
-    axis2_woden_wsdl_element_t element_base;
-    axis2_woden_wsdl_component_t component_base;
+    axis2_woden_wsdl_element_t wsdl_element;
+    axis2_woden_wsdl_component_t wsdl_component;
 };
 
 struct axis2_woden_wsdl_obj
@@ -94,24 +105,22 @@ struct axis2_woden_wsdl_obj
 };
 
 AXIS2_DECLARE(axis2_woden_wsdl_obj_t *)
-axis2_woden_wsdl_obj_create(axis2_env_t **env);
+axis2_woden_wsdl_obj_create(
+        axis2_env_t **env);
 
-AXIS2_DECLARE(axis2_woden_wsdl_obj_t *)
-axis2_woden_wsdl_obj_create_for_wsdl_component(axis2_env_t **env);
-
-/**
- * This is an Axis2 C internal method. This is used only from constructor
- * of the child class
- */
+/************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
-axis2_woden_wsdl_obj_resolve_methods(axis2_woden_wsdl_obj_t *wsdl_obj,
-                                axis2_env_t **env,
-                                axis2_woden_wsdl_obj_t *wsdl_obj_impl,
-                                axis2_hash_t *methods);
-
+axis2_woden_wsdl_obj_resolve_methods(
+        axis2_woden_wsdl_obj_t *wsdl_obj,
+        axis2_env_t **env,
+        axis2_hash_t *methods);
+/************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_WSDL_OBJ_FREE(wsdl_obj, env) \
 		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->free(wsdl_obj, env))
+
+#define AXIS2_WODEN_WSDL_OBJ_TYPE(wsdl_obj, env) \
+		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->type(wsdl_obj, env))
 
 #define AXIS2_WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env) \
 		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->get_base_impl(wsdl_obj, env))
@@ -122,8 +131,8 @@ axis2_woden_wsdl_obj_resolve_methods(axis2_woden_wsdl_obj_t *wsdl_obj,
          get_component_exts_for_namespace(wsdl_obj, env, namespc))
 
 #define AXIS2_WODEN_WSDL_OBJ_SET_COMPONENT_EXTS(wsdl_obj, env, namespc, exts) \
-		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->set_component_exts(wsdl_obj, \
-                                                           env, namespc, exts))
+		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->set_component_exts(\
+        wsdl_obj, env, namespc, exts))
 
 /** @} */
 #ifdef __cplusplus

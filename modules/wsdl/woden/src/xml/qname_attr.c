@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <woden/axis2_woden_qname_attr.h>
+#include <woden/xml/axis2_woden_qname_attr.h>
 #include <axis2_om_element.h>
 #include <axis2_om_node.h>
 
@@ -28,6 +28,7 @@ struct axis2_woden_qname_attr_impl
 {
     axis2_woden_qname_attr_t qname_attr;
     axis2_woden_xml_attr_t *xml_attr;
+    axis2_woden_obj_types_t obj_type;
     axis2_hash_t *methods;
 };
 
@@ -35,42 +36,52 @@ struct axis2_woden_qname_attr_impl
     ((axis2_woden_qname_attr_impl_t *) qname_attr)
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_qname_attr_free(void *qname_attr,
-                        axis2_env_t **env);
+axis2_woden_qname_attr_free(
+        void *qname_attr,
+        axis2_env_t **env);
+
+axis2_woden_obj_types_t AXIS2_CALL 
+axis2_woden_qname_attr_type(
+        void *qname_attr,
+        axis2_env_t **env);
 
 axis2_woden_xml_attr_t *AXIS2_CALL
-axis2_woden_qname_attr_get_base_impl(void *qname_attr,
-                                axis2_env_t **env);
+axis2_woden_qname_attr_get_base_impl(
+        void *qname_attr,
+        axis2_env_t **env);
 
 axis2_qname_t *AXIS2_CALL
-axis2_woden_qname_attr_get_qname(void *qname_attr,
-                                    axis2_env_t **env);
+axis2_woden_qname_attr_get_qname(
+        void *qname_attr,
+        axis2_env_t **env);
 
 void *AXIS2_CALL
-axis2_woden_qname_attr_convert(void *qname_attr,
-                                axis2_env_t **env,
-                                axis2_om_element_t *owner_el,
-                                axis2_om_node_t *owner_node,
-                                axis2_char_t *attr_value);
+axis2_woden_qname_attr_convert(
+        void *qname_attr,
+        axis2_env_t **env,
+        axis2_om_element_t *owner_el,
+        axis2_om_node_t *owner_node,
+        axis2_char_t *attr_value);
 
 /*
  * TODO This constructor is not used for extension attributes, but may be useful if
  * parsing of native WSDL attributes is changed to use the XMLAttr interface.
  */
 AXIS2_DECLARE(axis2_woden_qname_attr_t *)
-axis2_woden_qname_attr_create(axis2_env_t **env,
-                                axis2_om_element_t *owner_el,
-                                axis2_om_node_t *owner_node,
-                                axis2_qname_t *attr_type,
-                                axis2_char_t *attr_value)
+axis2_woden_qname_attr_create(
+        axis2_env_t **env,
+        axis2_om_element_t *owner_el,
+        axis2_om_node_t *owner_node,
+        axis2_qname_t *attr_type,
+        axis2_char_t *attr_value)
 {
     axis2_woden_qname_attr_impl_t *qname_attr_impl = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
      
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     qname_attr_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_woden_qname_attr_impl_t));
 
+    qname_attr_impl->obj_type = AXIS2_WODEN_QNAME_ATTR;
     qname_attr_impl->xml_attr = NULL;
     qname_attr_impl->methods = NULL;
     qname_attr_impl->qname_attr.ops = 
@@ -79,6 +90,8 @@ axis2_woden_qname_attr_create(axis2_env_t **env,
 
     qname_attr_impl->qname_attr.ops->free = 
         axis2_woden_qname_attr_free;
+    qname_attr_impl->qname_attr.ops->type = 
+        axis2_woden_qname_attr_type;
     qname_attr_impl->qname_attr.ops->get_base_impl = 
         axis2_woden_qname_attr_get_base_impl;
     qname_attr_impl->qname_attr.ops->get_qname = 
@@ -95,6 +108,8 @@ axis2_woden_qname_attr_create(axis2_env_t **env,
     }
     axis2_hash_set(qname_attr_impl->methods, "free", 
             AXIS2_HASH_KEY_STRING, axis2_woden_qname_attr_free);
+    axis2_hash_set(qname_attr_impl->methods, "type", 
+            AXIS2_HASH_KEY_STRING, axis2_woden_qname_attr_type);
     axis2_hash_set(qname_attr_impl->methods, "get_qname", 
             AXIS2_HASH_KEY_STRING, axis2_woden_qname_attr_get_qname);
     axis2_hash_set(qname_attr_impl->methods, "convert", 
@@ -102,16 +117,27 @@ axis2_woden_qname_attr_create(axis2_env_t **env,
 
     qname_attr_impl->xml_attr = axis2_woden_xml_attr_create(env, owner_el, 
             owner_node, attr_type, attr_value);
-    status = axis2_woden_xml_attr_resolve_methods(&(qname_attr_impl->
-                qname_attr.base), env, qname_attr_impl->
-                xml_attr, qname_attr_impl->methods);
-    if(AXIS2_SUCCESS != status) return NULL;
+    
     return &(qname_attr_impl->qname_attr);
 }
 
+axis2_woden_obj_types_t AXIS2_CALL
+axis2_woden_qname_attr_type(
+        void *qname_attr,
+        axis2_env_t **env)
+{
+    axis2_woden_qname_attr_impl_t *qname_attr_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    qname_attr_impl = INTF_TO_IMPL(qname_attr);
+
+    return qname_attr_impl->obj_type;
+}
+
 axis2_status_t AXIS2_CALL
-axis2_woden_qname_attr_free(void *qname_attr,
-                        axis2_env_t **env)
+axis2_woden_qname_attr_free(
+        void *qname_attr,
+        axis2_env_t **env)
 {
     axis2_woden_qname_attr_impl_t *qname_attr_impl = NULL;
 
@@ -145,8 +171,9 @@ axis2_woden_qname_attr_free(void *qname_attr,
 }
 
 axis2_woden_xml_attr_t *AXIS2_CALL
-axis2_woden_qname_attr_get_base_impl(void *qname_attr,
-                                axis2_env_t **env)
+axis2_woden_qname_attr_get_base_impl(
+        void *qname_attr,
+        axis2_env_t **env)
 {
     axis2_woden_qname_attr_impl_t *qname_attr_impl = NULL;
 
@@ -158,35 +185,31 @@ axis2_woden_qname_attr_get_base_impl(void *qname_attr,
 
 axis2_status_t AXIS2_CALL
 axis2_woden_qname_attr_resolve_methods(
-                    axis2_woden_qname_attr_t *qname_attr,
-                    axis2_env_t **env,
-                    axis2_woden_qname_attr_t *qname_attr_impl,
-                    axis2_hash_t *methods)
+        axis2_woden_qname_attr_t *qname_attr,
+        axis2_env_t **env,
+        axis2_hash_t *methods)
 {
-    axis2_woden_qname_attr_impl_t *qname_attr_impl_l = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, qname_attr_impl, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
     
-    qname_attr_impl_l = (axis2_woden_qname_attr_impl_t *) qname_attr_impl;
+    qname_attr->ops->free = axis2_hash_get(methods, 
+            "free", AXIS2_HASH_KEY_STRING);
+    qname_attr->ops->to_qname_attr_free = axis2_hash_get(methods, 
+            "to_qname_attr_free", AXIS2_HASH_KEY_STRING);
+    qname_attr->ops->type = axis2_hash_get(methods, 
+            "type", AXIS2_HASH_KEY_STRING);
+    qname_attr->ops->get_qname = axis2_hash_get(methods, 
+            "get_qname", AXIS2_HASH_KEY_STRING);
+    qname_attr->ops->convert = axis2_hash_get(methods, 
+            "convert", AXIS2_HASH_KEY_STRING);
     
-    qname_attr->ops = AXIS2_MALLOC((*env)->allocator, 
-                            sizeof(axis2_woden_qname_attr_ops_t));
-    qname_attr->ops->free = 
-                axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
-    qname_attr->ops->get_base_impl = 
-                qname_attr_impl_l->qname_attr.ops->get_base_impl;
-    qname_attr->ops->get_qname = qname_attr_impl_l->qname_attr.ops->get_qname;
-    qname_attr->ops->convert = qname_attr_impl_l->qname_attr.ops->convert;
-    
-    return axis2_woden_xml_attr_resolve_methods(&(qname_attr->base), 
-            env, qname_attr_impl_l->xml_attr, methods);
+    return AXIS2_SUCCESS;
 }
 
 axis2_qname_t *AXIS2_CALL
-axis2_woden_qname_attr_get_qname(void *qname_attr,
-                                    axis2_env_t **env)
+axis2_woden_qname_attr_get_qname(
+        void *qname_attr,
+        axis2_env_t **env)
 {
     axis2_woden_qname_attr_impl_t *qname_attr_impl = NULL;
     
@@ -197,11 +220,12 @@ axis2_woden_qname_attr_get_qname(void *qname_attr,
 }
 
 void *AXIS2_CALL
-axis2_woden_qname_attr_convert(void *qname_attr,
-                                axis2_env_t **env,
-                                axis2_om_element_t *owner_el,
-                                axis2_om_node_t *owner_node,
-                                axis2_char_t *attr_value)
+axis2_woden_qname_attr_convert(
+        void *qname_attr,
+        axis2_env_t **env,
+        axis2_om_element_t *owner_el,
+        axis2_om_node_t *owner_node,
+        axis2_char_t *attr_value)
 {
     axis2_woden_qname_attr_impl_t *qname_attr_impl = NULL;
     axis2_qname_t *qn = NULL;

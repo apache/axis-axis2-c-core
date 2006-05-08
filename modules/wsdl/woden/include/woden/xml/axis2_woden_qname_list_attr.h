@@ -24,7 +24,8 @@
  *          xs:list of QNames.
  */
 
-#include <woden/axis2_woden_xml_attr.h>
+#include <woden/axis2_woden.h>
+#include <woden/xml/axis2_woden_xml_attr.h>
 #include <axis2_array_list.h>
 
 /** @defgroup axis2_woden_qname_list_attr QName List Attribute
@@ -49,23 +50,36 @@ struct axis2_woden_qname_list_attr_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *qname_list_attr,
+    free) (
+            void *qname_list_attr,
+            axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    to_qname_list_attr_free) (
+            void *qname_list_attr,
+            axis2_env_t **env);
+    
+    axis2_woden_obj_types_t (AXIS2_CALL *
+    type) (
+            void *qname_list_attr,
             axis2_env_t **env);
 
     /**
      * @return the base implementation class
      */
     axis2_woden_xml_attr_t *(AXIS2_CALL *
-    get_base_impl) (void *qname_list_attr,
-                    axis2_env_t **env);
+    get_base_impl) (
+            void *qname_list_attr,
+            axis2_env_t **env);
 
     /* ************************************************************
      *  QNameAttr interface declared methods 
      * ************************************************************/
 
     axis2_array_list_t *(AXIS2_CALL *
-    get_qnames) (void *qname_list_attr,
-                    axis2_env_t **env);
+    get_qnames) (
+            void *qname_list_attr,
+            axis2_env_t **env);
 
     /* ************************************************************
      *  Non-API implementation methods 
@@ -80,11 +94,12 @@ struct axis2_woden_qname_list_attr_ops
      * be converted, a null value will be returned.
      */
     void *(AXIS2_CALL *
-    convert) (void *qname_list_attr,
-                    axis2_env_t **env,
-                    struct axis2_om_element *owner_el,
-                    struct axis2_om_node *owner_node,
-                    axis2_char_t *attr_value);
+    convert) (
+            void *qname_list_attr,
+            axis2_env_t **env,
+            struct axis2_om_element *owner_el,
+            struct axis2_om_node *owner_node,
+            axis2_char_t *attr_value);
 
   
 };
@@ -100,37 +115,44 @@ struct axis2_woden_qname_list_attr
  * parsing of native WSDL attributes is changed to use the XMLAttr interface.
  */
 AXIS2_DECLARE(axis2_woden_qname_list_attr_t *)
-axis2_woden_qname_list_attr_create(axis2_env_t **env,
-                                struct axis2_om_element *owner_el,
-                                struct axis2_om_node *owner_node,
-                                axis2_qname_t *attr_type,
-                                axis2_char_t *attr_value);
+axis2_woden_qname_list_attr_create(
+        axis2_env_t **env,
+        struct axis2_om_element *owner_el,
+        struct axis2_om_node *owner_node,
+        axis2_qname_t *attr_type,
+        axis2_char_t *attr_value);
 
 
-/**
- * This is an Axis2 C internal method. This is used only from constructor
- * of the child class
- */
+/************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
-axis2_woden_qname_list_attr_resolve_methods(axis2_woden_qname_list_attr_t *qname_list_attr,
-                                axis2_env_t **env,
-                                axis2_woden_qname_list_attr_t *qname_list_attr_impl,
-                                axis2_hash_t *methods);
+axis2_woden_qname_list_attr_resolve_methods(
+        axis2_woden_qname_list_attr_t *qname_list_attr,
+        axis2_env_t **env,
+        axis2_hash_t *methods);
+/************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_QNAME_LIST_ATTR_FREE(qname_list_attr, env) \
 		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->free(qname_list_attr, env))
 
+#define AXIS2_WODEN_QNAME_LIST_ATTR_TO_QNAME_LIST_ATTR_FREE(qname_list_attr, env) \
+		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
+         to_qname_list_attr_free(qname_list_attr, env))
+
+#define AXIS2_WODEN_QNAME_LIST_ATTR_TYPE(qname_list_attr, env) \
+		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
+         type(qname_list_attr, env))
+
 #define AXIS2_WODEN_QNAME_LIST_ATTR_GET_BASE_IMPL(qname_list_attr, env) \
-		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->get_base_impl(qname_list_attr, \
-                                                                        env))
+		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
+         get_base_impl(qname_list_attr, env))
 
 #define AXIS2_WODEN_QNAME_LIST_ATTR_GET_QNAMES(qname_list_attr, env) \
-		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->get_qnames(qname_list_attr, \
-                                                                    env))
+		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
+         get_qnames(qname_list_attr, env))
 
 #define AXIS2_WODEN_QNAME_LIST_ATTR_CONVERT(qname_list_attr, env) \
-		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->convert(qname_list_attr, \
-                                                                       env))
+		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
+         convert(qname_list_attr, env))
 
 /** @} */
 #ifdef __cplusplus

@@ -39,6 +39,8 @@
 #include <axis2_const.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
+#include <woden/axis2_woden.h>
+#include <woden/wsdl20/xml/axis2_woden_wsdl_element.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -61,42 +63,58 @@ struct axis2_woden_nested_element_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *doc_el,
+    free) (
+            void *doc_el,
             axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
-    set_parent_element) (void *doc_el,
-                        axis2_env_t **env,
-                        struct axis2_woden_wsdl_element *parent);
+    to_nested_element_free) (
+            void *doc_el,
+            axis2_env_t **env);
+    
+    axis2_woden_obj_types_t (AXIS2_CALL *
+    type) (
+            void *doc_el,
+            axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_parent_element) (
+            void *doc_el,
+            axis2_env_t **env,
+            struct axis2_woden_wsdl_element *parent);
 
-    struct axis2_woden_wsdl_element *(AXIS2_CALL *
-    get_parent_element) (void *doc_el,
-                        axis2_env_t **env);
+    void *(AXIS2_CALL *
+    get_parent_element) (
+            void *doc_el,
+            axis2_env_t **env);
 
 };
 
 struct axis2_woden_nested_element
 {
+    axis2_woden_wsdl_element_t wsdl_element;
     axis2_woden_nested_element_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_nested_element_t *)
-axis2_woden_nested_element_create(axis2_env_t **env);
-
-/**
- * This is an Axis2 C internal method. This is used only from constructor
- * of the child class
- */
-AXIS2_DECLARE(axis2_status_t)
+/************************Woden C Internal Methods*****************************/
+axis2_status_t AXIS2_CALL
 axis2_woden_nested_element_resolve_methods(
-                                axis2_woden_nested_element_t *doc_el,
-                                axis2_env_t **env,
-                                axis2_woden_nested_element_t *doc_el_impl,
-                                axis2_hash_t *methods);
+        axis2_woden_nested_element_t *nested_element,
+        axis2_env_t **env,
+        axis2_hash_t *methods);
+/************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_NESTED_ELEMENT_FREE(doc_el, env) \
 		(((axis2_woden_nested_element_t *) doc_el)->ops->\
          free (doc_el, env))
+
+#define AXIS2_WODEN_NESTED_ELEMENT_TO_NESTED_ELEMENT_FREE(doc_el, env) \
+		(((axis2_woden_nested_element_t *) doc_el)->ops->\
+         to_nested_element_free (doc_el, env))
+
+#define AXIS2_WODEN_NESTED_ELEMENT_TYPE(doc_el, env) \
+		(((axis2_woden_nested_element_t *) doc_el)->ops->\
+         type (doc_el, env))
 
 #define AXIS2_WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(doc_el, env, parent) \
 		(((axis2_woden_nested_element_t *) doc_el)->ops->\

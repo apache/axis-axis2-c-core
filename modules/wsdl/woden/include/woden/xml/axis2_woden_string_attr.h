@@ -23,7 +23,8 @@
  *          This class represents XML attribute information items of type xs:string.
  */
 
-#include <woden/axis2_woden_xml_attr.h>
+#include <woden/xml/axis2_woden_xml_attr.h>
+#include <woden/axis2_woden.h>
 
 /** @defgroup axis2_woden_string_attr String Attribute
   * @ingroup axis2_wsdl
@@ -34,7 +35,6 @@ typedef struct axis2_woden_string_attr axis2_woden_string_attr_t;
 typedef struct axis2_woden_string_attr_ops axis2_woden_string_attr_ops_t;
 struct axis2_om_element;
 struct axis2_om_node;
-struct axis2_url;
 
 #ifdef __cplusplus
 extern "C"
@@ -48,23 +48,36 @@ struct axis2_woden_string_attr_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *string_attr,
+    free) (
+            void *string_attr,
+            axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    to_string_attr_free) (
+            void *string_attr,
+            axis2_env_t **env);
+    
+    axis2_woden_obj_types_t (AXIS2_CALL *
+    type) (
+            void *string_attr,
             axis2_env_t **env);
 
     /**
      * @return the base implementation class
      */
     axis2_woden_xml_attr_t *(AXIS2_CALL *
-    get_base_impl) (void *string_attr,
-                    axis2_env_t **env);
+    get_base_impl) (
+            void *string_attr,
+            axis2_env_t **env);
 
     /* ************************************************************
      *  QNameAttr interface declared methods 
      * ************************************************************/
 
     axis2_char_t *(AXIS2_CALL *
-    get_string) (void *string_attr,
-                    axis2_env_t **env);
+    get_string) (
+            void *string_attr,
+            axis2_env_t **env);
 
     /* ************************************************************
      *  Non-API implementation methods 
@@ -76,11 +89,12 @@ struct axis2_woden_string_attr_ops
      * Any conversion error will be reported and a null value will be returned.
      */
     void *(AXIS2_CALL *
-    convert) (void *string_attr,
-                    axis2_env_t **env,
-                    struct axis2_om_element *owner_el,
-                    struct axis2_om_node *owner_node,
-                    axis2_char_t *attr_value);
+    convert) (
+            void *string_attr,
+            axis2_env_t **env,
+            struct axis2_om_element *owner_el,
+            struct axis2_om_node *owner_node,
+            axis2_char_t *attr_value);
 
   
 };
@@ -96,37 +110,45 @@ struct axis2_woden_string_attr
  * parsing of native WSDL attributes is changed to use the XMLAttr interface.
  */
 AXIS2_DECLARE(axis2_woden_string_attr_t *)
-axis2_woden_string_attr_create(axis2_env_t **env,
-                                struct axis2_om_element *owner_el,
-                                struct axis2_om_node *owner_node,
-                                axis2_qname_t *attr_type,
-                                axis2_char_t *attr_value);
+axis2_woden_string_attr_create(
+        axis2_env_t **env,
+        struct axis2_om_element *owner_el,
+        struct axis2_om_node *owner_node,
+        axis2_qname_t *attr_type,
+        axis2_char_t *attr_value);
 
 
-/**
- * This is an Axis2 C internal method. This is used only from constructor
- * of the child class
- */
+/************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
-axis2_woden_string_attr_resolve_methods(axis2_woden_string_attr_t *string_attr,
-                                axis2_env_t **env,
-                                axis2_woden_string_attr_t *string_attr_impl,
-                                axis2_hash_t *methods);
+axis2_woden_string_attr_resolve_methods(
+        axis2_woden_string_attr_t *string_attr,
+        axis2_env_t **env,
+        axis2_hash_t *methods);
+/************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_STRING_ATTR_FREE(string_attr, env) \
-		(((axis2_woden_string_attr_t *) string_attr)->ops->free(string_attr, env))
+		(((axis2_woden_string_attr_t *) string_attr)->ops->\
+         free(string_attr, env))
+
+#define AXIS2_WODEN_STRING_ATTR_TO_STRING_ATTR_FREE(string_attr, env) \
+		(((axis2_woden_string_attr_t *) string_attr)->ops->\
+         to_string_attr_free(string_attr, env))
+
+#define AXIS2_WODEN_STRING_ATTR_TYPE(string_attr, env) \
+		(((axis2_woden_string_attr_t *) string_attr)->ops->\
+         type(string_attr, env))
 
 #define AXIS2_WODEN_STRING_ATTR_GET_BASE_IMPL(string_attr, env) \
-		(((axis2_woden_string_attr_t *) string_attr)->ops->get_base_impl(string_attr, \
-                                                                        env))
+		(((axis2_woden_string_attr_t *) string_attr)->ops->\
+         get_base_impl(string_attr, env))
 
 #define AXIS2_WODEN_STRING_ATTR_GET_URI(string_attr, env) \
-		(((axis2_woden_string_attr_t *) string_attr)->ops->get_string(string_attr, \
-                                                                    env))
+		(((axis2_woden_string_attr_t *) string_attr)->ops->\
+         get_string(string_attr, env))
 
 #define AXIS2_WODEN_STRING_ATTR_CONVERT(string_attr, env) \
-		(((axis2_woden_string_attr_t *) string_attr)->ops->convert(string_attr, \
-                                                                       env))
+		(((axis2_woden_string_attr_t *) string_attr)->ops->\
+         convert(string_attr, env))
 
 /** @} */
 #ifdef __cplusplus

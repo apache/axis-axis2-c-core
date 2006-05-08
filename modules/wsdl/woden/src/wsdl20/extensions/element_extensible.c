@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  
-#include <woden/axis2_woden_element_extensible.h>
-#include <woden/axis2_woden_ext_element.h>
+#include <woden/wsdl20/extensions/axis2_woden_element_extensible.h>
+#include <woden/wsdl20/extensions/axis2_woden_ext_element.h>
 #include <axis2_url.h>
 #include <axis2_hash.h>
 
@@ -28,6 +28,7 @@ typedef struct axis2_woden_element_extensible_impl axis2_woden_element_extensibl
 struct axis2_woden_element_extensible_impl
 {
     axis2_woden_element_extensible_t extensible;
+    axis2_woden_obj_types_t obj_type;
     axis2_array_list_t *f_ext_elements;
     axis2_array_list_t *temp_elems;
 };
@@ -36,40 +37,49 @@ struct axis2_woden_element_extensible_impl
     ((axis2_woden_element_extensible_impl_t *) extensible)
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_element_extensible_free(void *extensible,
-                axis2_env_t **envv);
+axis2_woden_element_extensible_free(
+        void *extensible,
+        axis2_env_t **envv);
+
+axis2_woden_obj_types_t AXIS2_CALL 
+axis2_woden_element_extensible_type(
+        void *extensible,
+        axis2_env_t **envv);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_element_extensible_add_ext_element(
-                                    void *extensible,
-                                    axis2_env_t **env,
-                                    axis2_woden_ext_element_t *ext_el); 
+        void *extensible,
+        axis2_env_t **env,
+        axis2_woden_ext_element_t *ext_el); 
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_element_extensible_remove_ext_element(
-                                    void *extensible,
-                                    axis2_env_t **env,
-                                    axis2_woden_ext_element_t *ext_el); 
+        void *extensible,
+        axis2_env_t **env,
+        axis2_woden_ext_element_t *ext_el); 
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_woden_element_extensible_get_ext_elements(void *extensible,
-                                                axis2_env_t **env); 
+axis2_woden_element_extensible_get_ext_elements(
+        void *extensible,
+        axis2_env_t **env); 
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_woden_element_extensible_get_ext_elements_of_type(void *extensible,
-                                                        axis2_env_t **env,
-                                                        axis2_qname_t *ext_type);
+axis2_woden_element_extensible_get_ext_elements_of_type(
+        void *extensible,
+        axis2_env_t **env,
+        axis2_qname_t *ext_type);
 
 axis2_bool_t AXIS2_CALL 
 axis2_woden_element_extensible_has_ext_elements_for_namespace(
-                                                       void *extensible,
-                                                       axis2_env_t **env,
-                                                       axis2_url_t *namespc);
+        void *extensible,
+        axis2_env_t **env,
+        axis2_url_t *namespc);
 
 
 
 AXIS2_DECLARE(axis2_woden_element_extensible_t *)
-axis2_woden_element_extensible_create(axis2_env_t **env)
+axis2_woden_element_extensible_create(
+        axis2_env_t **env)
 {
     axis2_woden_element_extensible_impl_t *extensible_impl = NULL;
     
@@ -77,6 +87,7 @@ axis2_woden_element_extensible_create(axis2_env_t **env)
     extensible_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_woden_element_extensible_impl_t));
 
+    extensible_impl->obj_type = AXIS2_WODEN_ELEMENT_EXTENSIBLE;
     extensible_impl->f_ext_elements = NULL;
     extensible_impl->temp_elems = NULL;
 
@@ -86,6 +97,8 @@ axis2_woden_element_extensible_create(axis2_env_t **env)
     
     extensible_impl->extensible.ops->free = 
         axis2_woden_element_extensible_free;
+    extensible_impl->extensible.ops->type = 
+        axis2_woden_element_extensible_type;
     extensible_impl->extensible.ops->add_ext_element = 
         axis2_woden_element_extensible_add_ext_element;
     extensible_impl->extensible.ops->remove_ext_element = 
@@ -144,33 +157,42 @@ axis2_woden_element_extensible_free(void *extensible,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
-axis2_woden_element_extensible_resolve_methods(axis2_woden_element_extensible_t *extensible,
-                                axis2_env_t **env,
-                                axis2_woden_element_extensible_t *extensible_impl,
-                                axis2_hash_t *methods)
+axis2_woden_obj_types_t AXIS2_CALL 
+axis2_woden_element_extensible_type(
+        void *extensible,
+        axis2_env_t **env)
 {
-    axis2_woden_element_extensible_impl_t *extensible_impl_l = NULL;
+    axis2_woden_element_extensible_impl_t *extensible_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, extensible_impl, AXIS2_FAILURE);
+    extensible_impl = INTF_TO_IMPL(extensible);
+    
+    return extensible_impl->obj_type;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_woden_element_extensible_resolve_methods(
+        axis2_woden_element_extensible_t *extensible,
+        axis2_env_t **env,
+        axis2_hash_t *methods)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
     
-    extensible_impl_l = (axis2_woden_element_extensible_impl_t *) extensible_impl;
-    
-    extensible->ops = AXIS2_MALLOC((*env)->allocator, 
-            sizeof(axis2_woden_element_extensible_ops_t));
-    extensible->ops->free = axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
-    extensible->ops->add_ext_element = 
-        extensible_impl_l->extensible.ops->add_ext_element;
-    extensible->ops->remove_ext_element = 
-        extensible_impl_l->extensible.ops->remove_ext_element;
-    extensible->ops->get_ext_elements = 
-        extensible_impl_l->extensible.ops->get_ext_elements;
-    extensible->ops->get_ext_elements_of_type = 
-        extensible_impl_l->extensible.ops->get_ext_elements_of_type;
-    extensible->ops->has_ext_elements_for_namespace = 
-        extensible_impl_l->extensible.ops->has_ext_elements_for_namespace;
+    extensible->ops->free = axis2_hash_get(methods, "free", 
+            AXIS2_HASH_KEY_STRING);
+    extensible->ops->to_element_extensible_free = axis2_hash_get(methods, 
+            "to_element_extensible_free", AXIS2_HASH_KEY_STRING); 
+    extensible->ops->add_ext_element = axis2_hash_get(methods, 
+            "add_ext_element", AXIS2_HASH_KEY_STRING); 
+    extensible->ops->remove_ext_element = axis2_hash_get(methods, 
+            "remove_ext_element", AXIS2_HASH_KEY_STRING); 
+    extensible->ops->get_ext_elements = axis2_hash_get(methods, 
+            "get_ext_elements", AXIS2_HASH_KEY_STRING); 
+    extensible->ops->get_ext_elements_of_type = axis2_hash_get(methods, 
+            "get_ext_elements_of_type", AXIS2_HASH_KEY_STRING);
+    extensible->ops->has_ext_elements_for_namespace = axis2_hash_get(methods, 
+            "has_ext_elements_for_namespace", AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;    
 }

@@ -26,7 +26,8 @@
  *          but the isValid() method will return "false".
  */
 
-#include <woden/axis2_woden_xml_attr.h>
+#include <woden/xml/axis2_woden_xml_attr.h>
+#include <woden/axis2_woden.h>
 
 /** @defgroup axis2_woden_bool_attr Boolean Attribute
   * @ingroup axis2_wsdl
@@ -50,39 +51,54 @@ struct axis2_woden_bool_attr_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *bool_attr,
+    free) (
+            void *bool_attr,
+            axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    to_bool_attr_free) (
+            void *bool_attr,
+            axis2_env_t **env);
+    
+    axis2_woden_obj_types_t (AXIS2_CALL *
+    type) (
+            void *bool_attr,
             axis2_env_t **env);
 
     /**
      * @return the base implementation class
      */
     axis2_woden_xml_attr_t *(AXIS2_CALL *
-    get_base_impl) (void *bool_attr,
-                    axis2_env_t **env);
+    get_base_impl) (
+            void *bool_attr,
+            axis2_env_t **env);
 
     /* ************************************************************
-     *  QNameAttr interface declared methods 
+     *  BooleanAttr interface declared methods 
      * ************************************************************/
 
     axis2_bool_t (AXIS2_CALL *
-    get_boolean) (void *bool_attr,
-                    axis2_env_t **env);
+    get_boolean) (
+            void *bool_attr,
+            axis2_env_t **env);
 
     /* ************************************************************
      *  Non-API implementation methods 
      * ************************************************************/
 
-    /*
-     * Convert a string of type xs:QName to a axis2_bool_t.
-     * A a null argument will return a null value.
-     * Any conversion error will be reported and a null value will be returned.
+    /**
+     * Convert a string of type xs:boolean to a axis2_bool_t.
+     * An empty string or a null argument will initialize the Boolean to false.
+     * Any conversion error will be reported and will initialize the Boolean to false.
+     * If the attrValue does not match the Boolean value the Attr is marked invalid.
      */
     void *(AXIS2_CALL *
-    convert) (void *bool_attr,
-                    axis2_env_t **env,
-                    struct axis2_om_element *owner_el,
-                    struct axis2_om_node *owner_node,
-                    axis2_char_t *attr_value);
+    convert) (
+            void *bool_attr,
+            axis2_env_t **env,
+            struct axis2_om_element *owner_el,
+            struct axis2_om_node *owner_node,
+            axis2_char_t *attr_value);
 
   
 };
@@ -98,39 +114,44 @@ struct axis2_woden_bool_attr
  * parsing of native WSDL attributes is changed to use the axis2_xml_attr interface.
  */
 AXIS2_DECLARE(axis2_woden_bool_attr_t *)
-axis2_woden_bool_attr_create(axis2_env_t **env,
-                                struct axis2_om_element *owner_el,
-                                struct axis2_om_node *owner_node,
-                                axis2_qname_t *attr_type,
-                                axis2_char_t *attr_value);
+axis2_woden_bool_attr_create(
+        axis2_env_t **env,
+        struct axis2_om_element *owner_el,
+        struct axis2_om_node *owner_node,
+        axis2_qname_t *attr_type,
+        axis2_char_t *attr_value);
 
 
-/**
- * Convert a string of type xs:boolean to a java.lang.Boolean.
- * An empty string or a null argument will initialize the Boolean to false.
- * Any conversion error will be reported and will initialize the Boolean to false.
- * If the attrValue does not match the Boolean value the Attr is marked invalid.
- */
+/************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
-axis2_woden_bool_attr_resolve_methods(axis2_woden_bool_attr_t *bool_attr,
-                                axis2_env_t **env,
-                                axis2_woden_bool_attr_t *bool_attr_impl,
-                                axis2_hash_t *methods);
+axis2_woden_bool_attr_resolve_methods(
+        axis2_woden_bool_attr_t *bool_attr,
+        axis2_env_t **env,
+        axis2_hash_t *methods);
+/************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_BOOL_ATTR_FREE(bool_attr, env) \
 		(((axis2_woden_bool_attr_t *) bool_attr)->ops->free(bool_attr, env))
 
+#define AXIS2_WODEN_BOOL_ATTR_TO_BOOL_ATTR_FREE(bool_attr, env) \
+		(((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+         to_bool_attr_free(bool_attr, env))
+
+#define AXIS2_WODEN_BOOL_ATTR_TYPE(bool_attr, env) \
+		(((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+         type(bool_attr, env))
+
 #define AXIS2_WODEN_BOOL_ATTR_GET_BASE_IMPL(bool_attr, env) \
-		(((axis2_woden_bool_attr_t *) bool_attr)->ops->get_base_impl(bool_attr, \
-                                                                        env))
+		(((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+         get_base_impl(bool_attr, env))
 
 #define AXIS2_WODEN_BOOL_ATTR_GET_BOOL(bool_attr, env) \
-		(((axis2_woden_bool_attr_t *) bool_attr)->ops->get_boolean(bool_attr, \
-                                                                    env))
+		(((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+         get_boolean(bool_attr, env))
 
 #define AXIS2_WODEN_BOOL_ATTR_CONVERT(bool_attr, env) \
-		(((axis2_woden_bool_attr_t *) bool_attr)->ops->convert(bool_attr, \
-                                                                       env))
+		(((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+         convert(bool_attr, env))
 
 /** @} */
 #ifdef __cplusplus

@@ -926,4 +926,5 @@ axis2_om_util_get_node_namespace_uri(axis2_om_node_t *om_node,
             return AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);                    
     }        
     return NULL;
-}                                                                             
+}
+

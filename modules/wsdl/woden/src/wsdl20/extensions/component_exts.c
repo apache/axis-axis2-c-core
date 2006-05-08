@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  
-#include <woden/axis2_woden_component_exts.h>
-#include <woden/axis2_woden_wsdl_element.h>
+#include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
+#include <woden/wsdl20/xml/axis2_woden_wsdl_element.h>
 #include <axis2_url.h>
 #include <axis2_hash.h>
 
@@ -35,21 +35,24 @@ struct axis2_woden_component_exts_impl
 #define INTF_TO_IMPL(component_exts) ((axis2_woden_component_exts_impl_t *) component_exts)
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_component_exts_free(void *component_exts,
-                axis2_env_t **envv);
+axis2_woden_component_exts_free(
+        void *component_exts,
+        axis2_env_t **envv);
 
 axis2_url_t *AXIS2_CALL
 axis2_woden_component_exts_get_namespace(void *component_exts,
                                 axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_woden_component_exts_init(void *component_exts,
-                                axis2_env_t **env,
-                                axis2_woden_wsdl_element_t *parent_el,
-                                axis2_url_t *namespc);
+axis2_woden_component_exts_init(
+        void *component_exts,
+        axis2_env_t **env,
+        axis2_woden_wsdl_element_t *parent_el,
+        axis2_url_t *namespc);
  
 AXIS2_DECLARE(axis2_woden_component_exts_t *)
-axis2_woden_component_exts_create(axis2_env_t **env)
+axis2_woden_component_exts_create(
+        axis2_env_t **env)
 {
     axis2_woden_component_exts_impl_t *component_exts_impl = NULL;
     
@@ -63,17 +66,20 @@ axis2_woden_component_exts_create(axis2_env_t **env)
     component_exts_impl->component_exts.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_woden_component_exts_ops_t)); 
     
-    component_exts_impl->component_exts.ops->free = axis2_woden_component_exts_free;
-    component_exts_impl->component_exts.ops->init = axis2_woden_component_exts_init;
+    component_exts_impl->component_exts.ops->free = 
+            axis2_woden_component_exts_free;
+    component_exts_impl->component_exts.ops->init = 
+            axis2_woden_component_exts_init;
     component_exts_impl->component_exts.ops->get_namespace = 
-        axis2_woden_component_exts_get_namespace;
+            axis2_woden_component_exts_get_namespace;
     
     return &(component_exts_impl->component_exts);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_component_exts_free(void *component_exts,
-                axis2_env_t **env)
+axis2_woden_component_exts_free(
+        void *component_exts,
+        axis2_env_t **env)
 {
     axis2_woden_component_exts_impl_t *component_exts_impl = NULL;
 
@@ -107,32 +113,34 @@ axis2_woden_component_exts_free(void *component_exts,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_component_exts_resolve_methods(axis2_woden_component_exts_t *component_exts,
-                                axis2_env_t **env,
-                                axis2_woden_component_exts_t *component_exts_impl,
-                                axis2_hash_t *methods)
+axis2_woden_component_exts_resolve_methods(
+        axis2_woden_component_exts_t *component_exts,
+        axis2_env_t **env,
+        axis2_hash_t *methods)
 {
-    axis2_woden_component_exts_impl_t *component_exts_impl_l = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, component_exts_impl, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
-    
-    component_exts_impl_l = (axis2_woden_component_exts_impl_t *) component_exts_impl;
     
     component_exts->ops = AXIS2_MALLOC((*env)->allocator, 
             sizeof(axis2_woden_component_exts_ops_t));
-    component_exts->ops->free = axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
-    component_exts->ops->init = component_exts_impl_l->component_exts.ops->init;
-    component_exts->ops->get_namespace = 
-        component_exts_impl_l->component_exts.ops->get_namespace;
+    component_exts->ops->free = axis2_hash_get(methods, "free", 
+            AXIS2_HASH_KEY_STRING);
+    component_exts->ops->to_component_exts_free = axis2_hash_get(methods, 
+            "to_component_exts_free", AXIS2_HASH_KEY_STRING);
+    component_exts->ops->type = axis2_hash_get(methods, "type", 
+            AXIS2_HASH_KEY_STRING);
+    component_exts->ops->init = axis2_hash_get(methods, 
+            "init", AXIS2_HASH_KEY_STRING); ;
+    component_exts->ops->get_namespace = axis2_hash_get(methods, 
+            "get_namespace", AXIS2_HASH_KEY_STRING); 
 
     return AXIS2_SUCCESS;    
 }
 
 axis2_url_t *AXIS2_CALL
-axis2_woden_component_exts_get_namespace(void *component_exts,
-                                axis2_env_t **env)
+axis2_woden_component_exts_get_namespace(
+        void *component_exts,
+        axis2_env_t **env)
 {
     axis2_woden_component_exts_impl_t *component_exts_impl = NULL;
 
@@ -142,10 +150,11 @@ axis2_woden_component_exts_get_namespace(void *component_exts,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_component_exts_init(void *component_exts,
-                                axis2_env_t **env,
-                                axis2_woden_wsdl_element_t *parent_el,
-                                axis2_url_t *namespc) 
+axis2_woden_component_exts_init(
+        void *component_exts,
+        axis2_env_t **env,
+        axis2_woden_wsdl_element_t *parent_el,
+        axis2_url_t *namespc) 
 {
     axis2_woden_component_exts_impl_t *component_exts_impl = NULL;
 

@@ -29,6 +29,8 @@
 #include <axis2_string.h>
 #include <axis2_const.h>
 #include <axis2_hash.h>
+#include <axis2_url.h>
+#include <woden/axis2_woden.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -38,7 +40,6 @@ extern "C"
 typedef struct axis2_woden_schema axis2_woden_schema_t;
 typedef struct axis2_woden_schema_ops axis2_woden_schema_ops_t;
 struct axis2_xml_schema;
-struct axis2_url;
 
 /** @defgroup axis2_woden_schema Schema
   * @ingroup axis2_wsdl
@@ -52,26 +53,36 @@ struct axis2_woden_schema_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *schema,
+    free) (
+            void *schema,
             axis2_env_t **env);
     
-      axis2_status_t (AXIS2_CALL *
-    set_namespace) (void *schema,
-                        axis2_env_t **env,
-                        struct axis2_url *namespc);
+    axis2_woden_obj_types_t (AXIS2_CALL *
+    type) (
+            void *schema,
+            axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_namespace) (
+            void *schema,
+            axis2_env_t **env,
+            axis2_url_t *namespc);
 
-    struct axis2_url *(AXIS2_CALL *
-    get_namespace) (void *schema,
-                        axis2_env_t **env);
+    axis2_url_t *(AXIS2_CALL *
+    get_namespace) (
+            void *schema,
+            axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL *
-    set_schema_def) (void *schema,
-                        axis2_env_t **env,
-                        struct axis2_xml_schema *schema_def);
+    set_schema_def) (
+            void *schema,
+            axis2_env_t **env,
+            struct axis2_xml_schema *schema_def);
 
     struct axis2_xml_schema *(AXIS2_CALL *
-    get_schema_def) (void *schema,
-                        axis2_env_t **env);
+    get_schema_def) (
+            void *schema,
+            axis2_env_t **env);
 
     /* ************************************************************
      *  Non-API implementation methods
@@ -91,17 +102,20 @@ struct axis2_woden_schema_ops
      * is disabled, any inlined or imported schema will be considered referenceable.
      */
     axis2_status_t (AXIS2_CALL *
-    set_referenceable) (void *schema,
-                        axis2_env_t **env,
-                        axis2_bool_t referenceable);
+    set_referenceable) (
+            void *schema,
+            axis2_env_t **env,
+            axis2_bool_t referenceable);
 
     axis2_bool_t (AXIS2_CALL *
-    is_referenceable) (void *schema,
-                        axis2_env_t **env);
+    is_referenceable) (
+            void *schema,
+            axis2_env_t **env);
 
     axis2_char_t *(AXIS2_CALL *
-    get_namespace_as_string) (void *schema,
-                                axis2_env_t **env);
+    get_namespace_as_string) (
+            void *schema,
+            axis2_env_t **env);
 
   
 };
@@ -114,18 +128,19 @@ struct axis2_woden_schema
 AXIS2_DECLARE(axis2_woden_schema_t *)
 axis2_woden_schema_create(axis2_env_t **env);
 
-/**
- * This is an Axis2 C internal method. This is used only from constructor
- * of the child class
- */
+/************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
-axis2_woden_schema_resolve_methods(axis2_woden_schema_t *schema,
-                                axis2_env_t **env,
-                                axis2_woden_schema_t *schema_impl,
-                                axis2_hash_t *methods);
+axis2_woden_schema_resolve_methods(
+        axis2_woden_schema_t *schema,
+        axis2_env_t **env,
+        axis2_hash_t *methods);
+/************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_SCHEMA_FREE(schema, env) \
 		(((axis2_woden_schema_t *) schema)->ops->free (schema, env))
+
+#define AXIS2_WODEN_SCHEMA_TYPE(schema, env) \
+		(((axis2_woden_schema_t *) schema)->ops->type (schema, env))
 
 #define AXIS2_WODEN_SCHEMA_SET_NAMESPACE(schema, env, namespc) \
 		(((axis2_woden_schema_t *) schema)->ops->set_namespace(schema, env, \
@@ -138,7 +153,7 @@ axis2_woden_schema_resolve_methods(axis2_woden_schema_t *schema,
 		(((axis2_woden_schema_t *) schema)->ops->set_schema_def(schema, env, \
                                                                 schema_def))
 
-#define AXIS2_WODEN_SCHEMA_GET_SHCEMA_DEF(schema, env) \
+#define AXIS2_WODEN_SCHEMA_GET_SCHEMA_DEF(schema, env) \
 		(((axis2_woden_schema_t *) schema)->ops->get_schema_def(schema, env))
 
 #define AXIS2_WODEN_SCHEMA_SET_REFERENCEABLE(schema, env, referenceable) \

@@ -35,6 +35,9 @@
 #include <axis2_qname.h>
 #include <axis2_url.h>
 #include <axis2_array_list.h>
+#include <woden/axis2_woden.h>
+#include <woden/wsdl20/extensions/axis2_woden_attr_extensible.h>
+#include <woden/wsdl20/extensions/axis2_woden_element_extensible.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -43,8 +46,7 @@ extern "C"
 
 typedef struct axis2_woden_wsdl_element axis2_woden_wsdl_element_t;
 typedef struct axis2_woden_wsdl_element_ops axis2_woden_wsdl_element_ops_t;
-struct axis2_woden_element_extensible;
-struct axis2_woden_attr_extensible;
+typedef union axis2_woden_wsdl_element_base axis2_woden_wsdl_element_base_t;
 struct axis2_woden_xml_attr;
 struct axis2_woden_ext_element;
 
@@ -60,128 +62,67 @@ struct axis2_woden_wsdl_element_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *wsdl_element,
+    free) (
+            void *wsdl_element,
             axis2_env_t **env);
  
     axis2_status_t (AXIS2_CALL *
-    set_ext_attr) (void *extensible,
-                    axis2_env_t **env,
-                    axis2_qname_t *attr_type,
-                    struct axis2_woden_xml_attr *attr); 
+    to_wsdl_element_free) (
+            void *wsdl_element,
+            axis2_env_t **env);
+    
+    axis2_woden_obj_types_t (AXIS2_CALL *
+    type) (
+            void *wsdl_element,
+            axis2_env_t **env);
+    
+};
 
-    struct axis2_woden_xml_attr *(AXIS2_CALL *
-    get_ext_attr) (void *extensible,
-                    axis2_env_t **env,
-                    axis2_qname_t *attr_type); 
-
-    axis2_array_list_t *(AXIS2_CALL *
-    get_ext_attrs) (void *extensible,
-                        axis2_env_t **env); 
-
-    axis2_array_list_t *(AXIS2_CALL *
-    get_ext_attrs_for_namespace) (void *extensible,
-                                    axis2_env_t **env,
-                                    axis2_url_t *namespc);
-
-    axis2_bool_t (AXIS2_CALL *
-    has_ext_attrs_for_namespace) (void *extensible,
-                                   axis2_env_t **env,
-                                   axis2_url_t *namespc);
-
-    axis2_status_t (AXIS2_CALL *
-    add_ext_element) (void *extensible,
-                      axis2_env_t **env,
-                      struct axis2_woden_ext_element *ext_el); 
-
-    axis2_status_t (AXIS2_CALL *
-    remove_ext_element) (void *extensible,
-                            axis2_env_t **env,
-                            struct axis2_woden_ext_element *ext_el); 
-
-    axis2_array_list_t *(AXIS2_CALL *
-    get_ext_elements) (void *extensible,
-                       axis2_env_t **env); 
-
-    axis2_array_list_t *(AXIS2_CALL *
-    get_ext_elements_of_type) (void *extensible,
-                               axis2_env_t **env,
-                               axis2_qname_t *ext_type);
-
-    axis2_bool_t (AXIS2_CALL *
-    has_ext_elements_for_namespace) (void *extensible,
-                                           axis2_env_t **env,
-                                           axis2_url_t *namespc);
-  
-
+union axis2_woden_wsdl_element_base
+{
+    axis2_woden_attr_extensible_t attr_extensible;
+    axis2_woden_element_extensible_t element_extensible;
 };
 
 struct axis2_woden_wsdl_element
 {
+    axis2_woden_wsdl_element_base_t base;
     axis2_woden_wsdl_element_ops_t *ops;
 };
 
 AXIS2_DECLARE(axis2_woden_wsdl_element_t *)
-axis2_woden_wsdl_element_create(axis2_env_t **env);
+axis2_woden_wsdl_element_create(
+        axis2_env_t **env);
 
-/**
- * This is an Axis2 C internal method. This is used only from constructor
- * of the child class
- */
+/************************Woden C Internal Methods******************************/
+AXIS2_DECLARE(axis2_woden_wsdl_element_t *)
+axis2_woden_wsdl_element_to_attr_extensible(
+        void *wsdl_element,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_wsdl_element_t *)
+axis2_woden_wsdl_element_to_element_extensible(
+        void *wsdl_element,
+        axis2_env_t **env);
+
 AXIS2_DECLARE(axis2_status_t)
-axis2_woden_wsdl_element_resolve_methods(axis2_woden_wsdl_element_t *extensible,
-                                axis2_env_t **env,
-                                axis2_woden_wsdl_element_t *extensible_impl,
-                                axis2_hash_t *methods);
+axis2_woden_wsdl_element_resolve_methods(
+        axis2_woden_wsdl_element_t *wsdl_element,
+        axis2_env_t **env,
+        axis2_hash_t *methods);
+/************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_WSDL_ELEMENT_FREE(extensible, env) \
-		(((axis2_woden_wsdl_element_t *) extensible)->ops->free (extensible, env))
+#define AXIS2_WODEN_WSDL_ELEMENT_FREE(wsdl_element, env) \
+		(((axis2_woden_wsdl_element_t *) wsdl_element)->ops->\
+         free (wsdl_element, env))
 
-#define AXIS2_WODEN_WSDL_ELEMENT_SET_EXT_ATTR(extensible, env, attr_type, \
-        attr) \
-		(((axis2_woden_wsdl_element_t *) extensible)->ops->\
-         set_ext_attr(extensible, env, attr_type, attr))
+#define AXIS2_WODEN_WSDL_ELEMENT_TO_WSDL_ELEMENT_FREE(wsdl_element, env) \
+		(((axis2_woden_wsdl_element_t *) wsdl_element)->ops->\
+         to_wsdl_element_free (wsdl_element, env))
 
-#define AXIS2_WODEN_WSDL_ELEMENT_GET_EXT_ATTR(extensible, env, \
-        attr_type) \
-		(((axis2_woden_wsdl_element_t *) extensible)->ops->\
-         get_ext_attr(extensible, env, attr_type))
-
-#define AXIS2_WODEN_WSDL_ELEMENT_GET_EXT_ATTRS(extensible, env) \
-		(((axis2_woden_wsdl_element_t *) extensible)->ops->\
-         get_ext_attrs(extensible, env))
-
-#define AXIS2_WODEN_WSDL_ELEMENT_GET_EXT_ATTRS_FOR_NAMESPACE(extensible, \
-        env, namespc) \
-		(((axis2_woden_wsdl_element_t *) extensible)->ops->\
-         get_ext_attrs_for_namespace(extensible, env, namespc))
-
-#define AXIS2_WODEN_WSDL_ELEMENT_HAS_EXT_ATTRS_FOR_NAMESPACE(\
-        extensible, env, namespc) \
-		(((axis2_woden_wsdl_element_t *) extensible)->ops->\
-         has_ext_attrs_for_namespace(extensible, env, namespc))
-
-#define AXIS2_WODEN_WSDL_ELEMENT_ADD_EXT_ELEMENT(extensible, env, ext_el) \
-		(((axis2_woden_element_extensible_t *) extensible)->ops->\
-         add_ext_element(extensible, env, ext_el))
-
-#define AXIS2_WODEN_WSDL_ELEMENT_REMOVE_EXT_ELEMENT(extensible, env, \
-        ext_el) \
-		(((axis2_woden_element_extensible_t *) extensible)->ops->\
-         remove_ext_element(extensible, env, ext_el))
-
-#define AXIS2_WODEN_WSDL_ELEMENT_GET_EXT_ELEMENTS(extensible, env) \
-		(((axis2_woden_element_extensible_t *) extensible)->ops->\
-         get_ext_elements(element_extensible, env))
-
-#define AXIS2_WODEN_WSDL_ELEMENT_GET_EXT_ELEMENTS_OF_TYPE(extensible, \
-        env, ext_type) \
-		(((axis2_woden_element_extensible_t *) extensible)->ops->\
-         get_ext_elements_of_type(extensible, env, ext_type))
-
-#define AXIS2_WODEN_WSDL_ELEMENT_HAS_EXT_ELEMENTS_FOR_NAMESPACE(\
-        extensible, env, namespc) \
-		(((axis2_woden_element_extensible_t *) extensible)->ops->\
-         has_ext_elements_for_namespce(extensible, env, namespc))
+#define AXIS2_WODEN_WSDL_ELEMENT_TYPE(wsdl_element, env) \
+		(((axis2_woden_wsdl_element_t *) wsdl_element)->ops->\
+         type (wsdl_element, env))
 
 /** @} */
 #ifdef __cplusplus

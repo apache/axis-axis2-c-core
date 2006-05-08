@@ -31,6 +31,7 @@
 #include <axis2_const.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
+#include <woden/axis2_woden.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -54,43 +55,60 @@ struct axis2_woden_xml_attr_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *xml_attr,
+    free) (
+            void *xml_attr,
             axis2_env_t **env);
       
     axis2_status_t (AXIS2_CALL *
-    init) (void *xml_attr,
-                axis2_env_t **env,
-                struct axis2_om_element *owner_el,
-                struct axis2_om_node *owner_node,
-                axis2_qname_t *attr_type, 
-                axis2_char_t *attr_value);
+    to_xml_attr_free) (
+            void *xml_attr,
+            axis2_env_t **env);
+
+    axis2_woden_obj_types_t (AXIS2_CALL *
+    type) (
+            void *xml_attr,
+            axis2_env_t **env);
+    
+    axis2_status_t (AXIS2_CALL *
+    init) (
+            void *xml_attr,
+            axis2_env_t **env,
+            struct axis2_om_element *owner_el,
+            struct axis2_om_node *owner_node,
+            axis2_qname_t *attr_type, 
+            axis2_char_t *attr_value);
 
     axis2_qname_t *(AXIS2_CALL *
-    get_attribute_type) (void *xml_attr,
-                            axis2_env_t **env);
+    get_attribute_type) (
+            void *xml_attr,
+            axis2_env_t **env);
 
     void *(AXIS2_CALL *
-    get_content) (void *xml_attr,
-                        axis2_env_t **env);
+    get_content) (
+            void *xml_attr,
+            axis2_env_t **env);
 
     axis2_char_t *(AXIS2_CALL *
-    to_external_form) (void *xml_attr,
-                            axis2_env_t **env);
+    to_external_form) (
+            void *xml_attr,
+            axis2_env_t **env);
 
     axis2_bool_t (AXIS2_CALL *
-    is_valid) (void *xml_attr,
-                    axis2_env_t **env);
+    is_valid) (
+            void *xml_attr,
+            axis2_env_t **env);
 
     /* ************************************************************
      *  Non-API implementation methods 
      * ************************************************************/
 
     void *(AXIS2_CALL *
-    convert) (void *xml_attr,
-                    axis2_env_t **env,
-                    struct axis2_om_element *owner_el,
-                    struct axis2_om_node *ownder_node,
-                    axis2_char_t *attr_value);
+    convert) (
+            void *xml_attr,
+            axis2_env_t **env,
+            struct axis2_om_element *owner_el,
+            struct axis2_om_node *ownder_node,
+            axis2_char_t *attr_value);
 
     /*
      * Validity is initialized to true, but set to false if the attribute's
@@ -101,9 +119,10 @@ struct axis2_woden_xml_attr_ops
      * TODO confirm this method is needed, otherwise remove it.
      */
     axis2_status_t (AXIS2_CALL *
-    set_valid) (void *xml_attr,
-                    axis2_env_t **env,
-                    axis2_bool_t validity);
+    set_valid) (
+            void *xml_attr,
+            axis2_env_t **env,
+            axis2_bool_t validity);
       
 };
 
@@ -113,24 +132,30 @@ struct axis2_woden_xml_attr
 };
 
 AXIS2_DECLARE(axis2_woden_xml_attr_t *)
-axis2_woden_xml_attr_create(axis2_env_t **env,
-                            struct axis2_om_element *owner_el,
-                            struct axis2_om_node *owner_node,
-                            axis2_qname_t *attr_type, 
-                            axis2_char_t *attr_value);
+axis2_woden_xml_attr_create(
+        axis2_env_t **env,
+        struct axis2_om_element *owner_el,
+        struct axis2_om_node *owner_node,
+        axis2_qname_t *attr_type, 
+        axis2_char_t *attr_value);
 
-/**
- * This is an Axis2 C internal method. This is used only from constructor
- * of the child class
- */
+/************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
-axis2_woden_xml_attr_resolve_methods(axis2_woden_xml_attr_t *xml_attr,
-                                axis2_env_t **env,
-                                axis2_woden_xml_attr_t *xml_attr_impl,
-                                axis2_hash_t *methods);
+axis2_woden_xml_attr_resolve_methods(
+        axis2_woden_xml_attr_t *xml_attr,
+        axis2_env_t **env,
+        axis2_hash_t *methods);
+/************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_XML_ATTR_FREE(xml_attr, env) \
 		(((axis2_woden_xml_attr_t *) xml_attr)->ops->free (xml_attr, env))
+
+#define AXIS2_WODEN_XML_ATTR_TO_XML_ATTR_FREE(xml_attr, env) \
+		(((axis2_woden_xml_attr_t *) xml_attr)->ops->to_xml_attr_free (\
+        xml_attr, env))
+
+#define AXIS2_WODEN_XML_ATTR_TYPE(xml_attr, env) \
+		(((axis2_woden_xml_attr_t *) xml_attr)->ops->type (xml_attr, env))
 
 #define AXIS2_WODEN_XML_ATTR_INIT(xml_attr, env, owner_el, owner_node, \
         attr_type, attr_value) \
@@ -138,13 +163,15 @@ axis2_woden_xml_attr_resolve_methods(axis2_woden_xml_attr_t *xml_attr,
             owner_el, owner_node, attr_type, attr_value))
 
 #define AXIS2_WODEN_XML_ATTR_GET_ATTRIBUTE_TYPE(xml_attr, env) \
-		(((axis2_woden_xml_attr_t *) xml_attr)->ops->get_attribute_type(xml_attr, env))
+		(((axis2_woden_xml_attr_t *) xml_attr)->ops->\
+         get_attribute_type(xml_attr, env))
 
 #define AXIS2_WODEN_XML_ATTR_GET_CONTENT(xml_attr, env) \
 		(((axis2_woden_xml_attr_t *) xml_attr)->ops->get_content(xml_attr, env))
 
 #define AXIS2_WODEN_XML_ATTR_TO_EXTERNAL_FORM(xml_attr, env) \
-		(((axis2_woden_xml_attr_t *) xml_attr)->ops->to_external_form(xml_attr, env))
+		(((axis2_woden_xml_attr_t *) xml_attr)->ops->\
+         to_external_form(xml_attr, env))
 
 #define AXIS2_WODEN_XML_ATTR_IS_VALID(xml_attr, env) \
 		(((axis2_woden_xml_attr_t *) xml_attr)->ops->is_valid(xml_attr, env))
