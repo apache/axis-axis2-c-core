@@ -121,13 +121,6 @@ extern "C"
 #define AXIS2_XML_SCHEMA_CONST_WARNING "warning"
 
 	
-typedef enum axis2_xml_schema_content_model_types_t
-{
-    AXIS2_XML_SCHEMA_SIMPLE_CONTENT = 0,
-    AXIS2_XML_SCHEMA_COMPLEX_CONTENT
-}axis2_xml_schema_content_model_types_t;	
-	
-	
 #ifdef __cplusplus
 }
 #endif

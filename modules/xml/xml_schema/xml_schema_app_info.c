@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_app_info.h>
+#include <xml_schema/axis2_xml_schema_app_info.h>
 
 typedef struct axis2_xml_schema_app_info_impl axis2_xml_schema_app_info_impl_t;
 

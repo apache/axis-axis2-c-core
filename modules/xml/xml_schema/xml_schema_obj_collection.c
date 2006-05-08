@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <axis2_xml_schema_obj_collection.h>
+#include <xml_schema/axis2_xml_schema_obj_collection.h>
 #include <axis2_hash.h>
 
 typedef struct axis2_xml_schema_obj_collection_impl 

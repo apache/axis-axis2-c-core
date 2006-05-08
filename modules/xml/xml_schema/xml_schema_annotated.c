@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_annotated.h>
-#include <axis2_xml_schema_annotation.h>
+#include <xml_schema/axis2_xml_schema_annotated.h>
+#include <xml_schema/axis2_xml_schema_annotation.h>
 
 typedef struct axis2_xml_schema_annotated_impl 
                     axis2_xml_schema_annotated_impl_t;
@@ -100,7 +100,7 @@ axis2_xml_schema_annotated_to_annotated(
             AXIS2_MALLOC((*env)->allocator, 
             sizeof(axis2_xml_schema_obj_ops_t));
     axis2_xml_schema_obj_resolve_methods(&(annotated_impl->
-            annotated.base), env, annotated_impl->methods);
+            annotated.base), NULL, env, annotated_impl->methods);
     return annotated;
 
 }
@@ -159,8 +159,8 @@ axis2_xml_schema_annotated_create(axis2_env_t **env)
     
     annotated_impl->annotated.ops->free = 
             axis2_xml_schema_annotated_free;
-    annotated_impl->annotated.ops->to_xml_schema_annoteted_free = 
-            axis2_xml_schema_annotated_to_xml_schema_annotated_free;
+    annotated_impl->annotated.ops->to_annotated_free = 
+            axis2_xml_schema_annotated_to_annotated_free;
     annotated_impl->annotated.ops->get_base_impl = 
             axis2_xml_schema_annotated_get_base_impl;
     annotated_impl->annotated.ops->get_id = 

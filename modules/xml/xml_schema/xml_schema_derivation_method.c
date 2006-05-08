@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_constants.h>
-#include <axis2_xml_schema_derivation_method.h>
+#include <xml_schema/axis2_xml_schema_constants.h>
+#include <xml_schema/axis2_xml_schema_derivation_method.h>
 
 
 typedef struct axis2_xml_schema_derivation_method_impl 

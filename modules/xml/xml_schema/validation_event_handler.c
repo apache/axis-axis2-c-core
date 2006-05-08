@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <axis2_validation_event_handler.h>
+#include <xml_schema/axis2_validation_event_handler.h>
 #include <axis2_hash.h>
 
 typedef struct axis2_validation_event_handler_impl 

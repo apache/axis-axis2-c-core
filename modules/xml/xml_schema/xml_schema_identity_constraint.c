@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_identity_constraint.h>
-#include <axis2_xml_schema_obj_collection.h>
-#include <axis2_xml_schema_xpath.h>
+#include <xml_schema/axis2_xml_schema_identity_constraint.h>
+#include <xml_schema/axis2_xml_schema_obj_collection.h>
+#include <xml_schema/axis2_xml_schema_xpath.h>
 
 typedef struct axis2_xml_schema_identity_constraint_impl 
                 axis2_xml_schema_identity_constraint_impl_t;

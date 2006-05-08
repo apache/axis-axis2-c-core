@@ -14,15 +14,15 @@
  * limitations under the License.
  */
  
-#include <axis2_xml_schema_collection.h>
-#include <axis2_xml_schema_element.h>
-#include <axis2_xml_schema_type.h>
-#include <axis2_xml_schema.h>
-#include <axis2_validation_event_handler.h> 
+#include <xml_schema/axis2_xml_schema_collection.h>
+#include <xml_schema/axis2_xml_schema_element.h>
+#include <xml_schema/axis2_xml_schema_type.h>
+#include <xml_schema/axis2_xml_schema.h>
+#include <xml_schema/axis2_validation_event_handler.h> 
 #include <axis2_hash.h>
-#include <axis2_xml_schema_type.h>
-#include <axis2_xml_schema_type_receiver.h>
-#include <axis2_xml_schema_element.h>
+#include <xml_schema/axis2_xml_schema_type.h>
+#include <xml_schema/axis2_xml_schema_type_receiver.h>
+#include <xml_schema/axis2_xml_schema_element.h>
 
 typedef struct axis2_xml_schema_collection_impl 
                 axis2_xml_schema_collection_impl_t;

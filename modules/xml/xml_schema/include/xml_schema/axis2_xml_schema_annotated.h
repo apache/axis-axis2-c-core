@@ -120,11 +120,6 @@ axis2_xml_schema_annotated_to_annotated(
         void *annotated,
         axis2_env_t **env);
 
-axis2_status_t AXIS2_CALL
-axis2_xml_schema_annotated_to_annotated_free(
-        void *annotated,
-        axis2_env_t **env);
-
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_annotated_resolve_methods(
                                 axis2_xml_schema_annotated_t *annotated,

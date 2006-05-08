@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_facet.h>
+#include <xml_schema/axis2_xml_schema_facet.h>
 #include <axis2_om_element.h>
 #include <axis2_om_node.h>
 

@@ -15,10 +15,10 @@
  */
  
 #include <axis2_xml_schema.h>
-#include <axis2_xml_schema_constants.h>
-#include <axis2_xml_schema_simple_type.h>
-#include <axis2_xml_schema_data_type.h>
-#include <axis2_xml_schema_derivation_method.h>
+#include <xml_schema/axis2_xml_schema_constants.h>
+#include <xml_schema/axis2_xml_schema_simple_type.h>
+#include <xml_schema/axis2_xml_schema_data_type.h>
+#include <xml_schema/axis2_xml_schema_derivation_method.h>
 
 #include <axis2_qname.h>
 

@@ -33,6 +33,4 @@ libaxis2_xml_schema_la_SOURCES = \
 								 xml_schema.c
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util \
-            -I$(top_builddir)/include/xml_schema \
-            -I$(top_builddir)/modules/platforms
+            -I$(AXIS2C_HOME)/include

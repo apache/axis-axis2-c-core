@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_xpath.h>
+#include <xml_schema/axis2_xml_schema_xpath.h>
 
 typedef struct axis2_xml_schema_xpath_impl axis2_xml_schema_xpath_impl_t;
 
