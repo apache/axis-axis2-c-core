@@ -31,7 +31,7 @@ int main(int argc, char** argv)
     axis2_om_node_t *ret_node = NULL;
    
     /* Set up the envioronment */
-    env = axis2_env_create_all("echo_blocking.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axis2_env_create_all("echo_blocking_soap11.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */
     address = "http://localhost:9090/axis2/services/echo";

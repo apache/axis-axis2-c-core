@@ -208,9 +208,12 @@ axis2_listener_manager_make_sure_started(struct axis2_listener_manager *listener
                             if(NULL == worker_thread)
                             {
                                 AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread creation failed"
-                                                 "call invoke non blocking");
+                                                 "Invoke non blocking failed");
                             }
-                            AXIS2_THREAD_POOL_THREAD_DETACH((*env)->thread_pool, worker_thread);
+                            else
+                            {
+                                AXIS2_THREAD_POOL_THREAD_DETACH((*env)->thread_pool, worker_thread);
+                            }
                         }
                         else
                         {
@@ -218,7 +221,10 @@ axis2_listener_manager_make_sure_started(struct axis2_listener_manager *listener
                                                          " Cannot invoke call non blocking");
                         }
 #else
-                        axis2_listener_manager_worker_func(NULL, (void*)arg_list);
+                        /*axis2_listener_manager_worker_func(NULL, (void*)arg_list);*/
+                        AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Threading not enabled."
+                                                         " Cannot start seperate listener");
+                        return AXIS2_FAILURE;
 #endif
                         
                         tl_state  = AXIS2_MALLOC( (*env)->allocator, 

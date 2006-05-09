@@ -46,7 +46,7 @@ int main(int argc, char** argv)
     int count = 0;
    
     /* Set up the envioronment */
-    env = axis2_env_create_all("echo_blocking.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axis2_env_create_all("echo_non_blocking.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */
     address = "http://localhost:9090/axis2/services/echo";

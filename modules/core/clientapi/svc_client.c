@@ -737,6 +737,7 @@ axis2_svc_client_send_receive_non_blocking_with_operation(struct axis2_svc_clien
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_op_client_t *op_client = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
+    axis2_char_t *transport_in_protocol = NULL;
 
 	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
 
@@ -757,7 +758,16 @@ axis2_svc_client_send_receive_non_blocking_with_operation(struct axis2_svc_clien
     
     if (AXIS2_OPTIONS_IS_USE_SEPERATE_LISTENER(svc_client_impl->options, env))
     {
-        axis2_op_t *op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_client_impl->svc, env, 
+        axis2_op_t *op = NULL;
+
+        transport_in_protocol = AXIS2_OPTIONS_GET_TRANSPORT_IN_PROTOCOL(
+            svc_client_impl->options, env);
+        if (!transport_in_protocol)
+            transport_in_protocol = AXIS2_TRANSPORT_HTTP;
+        AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(svc_client_impl->listener_manager, env, 
+            transport_in_protocol, svc_client_impl->conf_ctx);
+
+        op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_client_impl->svc, env, 
             op_qname);
         AXIS2_OP_SET_MSG_RECEIVER(op, env, 
             AXIS2_CALLBACK_RECV_GET_BASE(svc_client_impl->callback_recv, env));
@@ -901,7 +911,6 @@ static axis2_bool_t axis2_svc_client_init_transports_from_conf_ctx(axis2_env_t *
                                     axis2_conf_ctx_t *conf_ctx,
 									axis2_char_t *client_home)
 {
-    axis2_char_t *transport_in_protocol = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -925,12 +934,6 @@ static axis2_bool_t axis2_svc_client_init_transports_from_conf_ctx(axis2_env_t *
         return AXIS2_FALSE;
 	}
     
-    transport_in_protocol = AXIS2_OPTIONS_GET_TRANSPORT_IN_PROTOCOL(
-        svc_client_impl->options, env);
-    if (!transport_in_protocol)
-        transport_in_protocol = AXIS2_TRANSPORT_HTTP;
-    AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(svc_client_impl->listener_manager, env, 
-        transport_in_protocol, svc_client_impl->conf_ctx);
 
 	return AXIS2_TRUE;
 }
