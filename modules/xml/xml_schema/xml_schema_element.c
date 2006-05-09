@@ -32,8 +32,11 @@ typedef struct axis2_xml_schema_element_impl axis2_xml_schema_element_impl_t;
 struct axis2_xml_schema_element_impl
 {
     axis2_xml_schema_element_t element;
+    
     axis2_xml_schema_type_receiver_t *type_recv;
+    
     axis2_xml_schema_particle_t *particle;
+    
     axis2_hash_t *methods;
     /**
      * Attribute used to block a type derivation.
@@ -46,6 +49,7 @@ struct axis2_xml_schema_element_impl
      * type, taken from the schema element.
      */
     axis2_xml_schema_derivation_method_t *block_resolved;
+    
     axis2_xml_schema_obj_collection_t *constraints;
 
     /**
@@ -53,6 +57,7 @@ struct axis2_xml_schema_element_impl
      * is a simple type or the element's content is textOnly.
      */
     axis2_char_t *default_value;
+    
     axis2_char_t *fixed_value;
 
     /**
@@ -62,6 +67,7 @@ struct axis2_xml_schema_element_impl
     void *element_type;
 
     axis2_xml_schema_derivation_method_t *final_derivation;
+    
     axis2_xml_schema_derivation_method_t *final_derivation_resolved;
 
     /**
@@ -69,10 +75,15 @@ struct axis2_xml_schema_element_impl
      * the schema element containing the attribute. The default is Unqualified.
      */
     axis2_xml_schema_form_t *form;
+    
     axis2_bool_t is_abstract;
+    
     axis2_bool_t is_nillable;
+    
     axis2_char_t *name;
+    
     axis2_qname_t *qualified_qname;
+    
     axis2_qname_t *ref_qname;
 
     /**
@@ -257,6 +268,30 @@ axis2_xml_schema_element_create(axis2_env_t **env)
 
     element_impl->type_recv = NULL;
     element_impl->methods = NULL;
+    element_impl->block = NULL;
+    element_impl->block_resolved = NULL;
+    element_impl->constraints = NULL;
+    element_impl->default_value = NULL;
+    element_impl->element_type = NULL;
+    element_impl->final_derivation = NULL;
+    element_impl->final_derivation_resolved = NULL;
+    element_impl->fixed_value = NULL;
+    element_impl->form = NULL;
+    element_impl->is_abstract = AXIS2_FALSE;
+    element_impl->is_nillable = AXIS2_FALSE;
+    element_impl->methods = NULL;
+    element_impl->schema_type = NULL;
+    element_impl->schema_type_qname = NULL;
+    element_impl->element.ops = NULL;
+    element_impl->element.base.ops = NULL;
+    element_impl->name = NULL;
+    element_impl->particle = NULL;
+    element_impl->ref_qname = NULL;
+    element_impl->substitution_group = NULL;
+    element_impl->type_recv = NULL;
+    element_impl->schema_type_qname = NULL;
+    element_impl->substitution_group = NULL;
+    
 
     element_impl->element.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_element_ops_t));
@@ -557,14 +592,14 @@ axis2_xml_schema_obj_collection_t *AXIS2_CALL
 axis2_xml_schema_element_get_constraints(void *element,
                                             axis2_env_t **env) 
 {
-    return NULL;
+    return AXIS2_INTF_TO_IMPL(element)->constraints;
 }
 
 axis2_char_t *AXIS2_CALL 
 axis2_xml_schema_element_get_default_value(void *element,
                                             axis2_env_t **env) 
 {
-    return NULL;
+    return AXIS2_INTF_TO_IMPL(element)->default_value;
 }
 
 axis2_status_t AXIS2_CALL 
@@ -572,14 +607,24 @@ axis2_xml_schema_element_set_default_value(void *element,
                                             axis2_env_t **env,
                                             axis2_char_t *default_value) 
 {
-    return AXIS2_SUCCESS;
+   axis2_xml_schema_element_impl_t *element_impl = NULL;
+   AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+   AXIS2_PARAM_CHECK((*env)->error, default_value, AXIS2_FAILURE);
+   element_impl = AXIS2_INTF_TO_IMPL(element);
+   if(NULL != element_impl->default_value)
+   {
+        AXIS2_FREE((*env)->allocator, element_impl->default_value);
+        element_impl->default_value = NULL;
+   }
+   element_impl->default_value = default_value;
+   return AXIS2_SUCCESS;
 }
 
 axis2_xml_schema_derivation_method_t *AXIS2_CALL
 axis2_xml_schema_element_get_block(void *element,
                                     axis2_env_t **env) 
 {
-    return NULL;
+    return AXIS2_INTF_TO_IMPL(element)->block;
 }
 
 axis2_status_t AXIS2_CALL 
@@ -587,6 +632,17 @@ axis2_xml_schema_element_set_block(void *element,
                                     axis2_env_t **env,
                                     axis2_xml_schema_derivation_method_t * block)
 {
+    axis2_xml_schema_element_impl_t *element_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, block, AXIS2_FAILURE);
+    
+    element_impl = AXIS2_INTF_TO_IMPL(element);
+    if(NULL != element_impl->block)
+    {
+        /** TODO Free block */
+    
+    }
+    element_impl->block = block;
     return AXIS2_SUCCESS;
 }
 
@@ -594,14 +650,24 @@ axis2_xml_schema_derivation_method_t *AXIS2_CALL
 axis2_xml_schema_element_get_final(void *element,
                                     axis2_env_t **env)
 {
-    return NULL;
+    return AXIS2_INTF_TO_IMPL(element)->final_derivation;    
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_element_set_final(void *element,
-                                    axis2_env_t **env,
-                                    axis2_xml_schema_derivation_method_t *final_derivation)
+axis2_xml_schema_element_set_final(
+    void *element,
+    axis2_env_t **env,
+    axis2_xml_schema_derivation_method_t *final_derivation)
 {
+    axis2_xml_schema_element_impl_t *element_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    element_impl = AXIS2_INTF_TO_IMPL(element);
+    if(NULL != element_impl->final_derivation)
+    {
+        /** TODO Free */
+    
+    }
+    element_impl->final_derivation = final_derivation;
     return AXIS2_SUCCESS;
 }
 
@@ -609,7 +675,7 @@ axis2_xml_schema_derivation_method_t *AXIS2_CALL
 axis2_xml_schema_element_get_block_resolved(void *element,
                                             axis2_env_t **env)
 {
-    return NULL;
+    return AXIS2_INTF_TO_IMPL(element)->final_derivation_resolved;    
 }
 
 axis2_char_t *AXIS2_CALL 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_simple_type_list.h>
+#include <xml_schema/axis2_xml_schema_simple_type_list.h>
 
 typedef struct axis2_xml_schema_simple_type_list_impl 
                     axis2_xml_schema_simple_type_list_impl_t;

@@ -26,9 +26,9 @@
  *          Represents the World Wide Web Consortium (W3C) sim_content_ext element.
  */
 
-#include <axis2_xml_schema_annotated.h>
-#include <axis2_xml_schema_obj_collection.h>
-#include <axis2_xml_schema_any_attribute.h>
+#include <xml_schema/axis2_xml_schema_annotated.h>
+#include <xml_schema/axis2_xml_schema_obj_collection.h>
+#include <xml_schema/axis2_xml_schema_any_attribute.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 /** @defgroup axis2_xml_schema_simple_content_extension Xml Schema Group

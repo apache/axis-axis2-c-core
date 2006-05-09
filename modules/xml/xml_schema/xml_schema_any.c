@@ -278,8 +278,8 @@ axis2_xml_schema_any_get_process_content(void *any,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_any_set_process_content(void *any,
-                                            axis2_env_t **env,
-                                            axis2_xml_schema_content_processing_t *
+                                        axis2_env_t **env,
+                                        axis2_xml_schema_content_processing_t *
                                                 process_content)
 {
     axis2_xml_schema_any_impl_t *any_impl = NULL;

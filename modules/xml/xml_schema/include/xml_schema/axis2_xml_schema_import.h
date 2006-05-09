@@ -23,7 +23,7 @@
  *          Base class for all import types.
  */
 
-#include <axis2_xml_schema_external.h>
+#include <xml_schema/axis2_xml_schema_external.h>
 #include <axis2_hash.h>
 
 /** @defgroup axis2_xml_schema_include Xml Schema Particle

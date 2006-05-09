@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_severity_type.h>
+#include <xml_schema/axis2_xml_severity_type.h>
 
 typedef struct axis2_xml_severity_type_impl 
                 axis2_xml_severity_type_impl_t;

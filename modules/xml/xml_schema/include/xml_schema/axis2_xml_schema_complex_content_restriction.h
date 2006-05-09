@@ -21,10 +21,10 @@
  * @file axis2_xml_schema_complex_content_restriction.h
  */
 
-#include <axis2_xml_schema_annotated.h>
-#include <axis2_xml_schema_obj_collection.h>
-#include <axis2_xml_schema_any_attribute.h>
-#include <axis2_xml_schema_simple_type.h>
+#include <xml_schema/axis2_xml_schema_annotated.h>
+#include <xml_schema/axis2_xml_schema_obj_collection.h>
+#include <xml_schema/axis2_xml_schema_any_attribute.h>
+#include <xml_schema/axis2_xml_schema_simple_type.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 

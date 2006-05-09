@@ -24,9 +24,9 @@
  */
 
 
-#include <axis2_xml_schema_simple_type.h>
-#include <axis2_xml_schema_simple_type_content.h>
-#include <axis2_xml_schema_obj_collection.h>
+#include <xml_schema/axis2_xml_schema_simple_type.h>
+#include <xml_schema/axis2_xml_schema_simple_type_content.h>
+#include <xml_schema/axis2_xml_schema_obj_collection.h>
 #include <axis2_hash.h>
 /** @defgroup axis2_xml_schema_simple_type_list 
   * @ingroup axis2_xml_schema

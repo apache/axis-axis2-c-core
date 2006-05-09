@@ -23,11 +23,11 @@
  *          The base class for all simple types and complex types.
  */
 
-#include <axis2_xml_schema_annotated.h>
-#include <axis2_xml_schema_type.h>
+#include <xml_schema/axis2_xml_schema_annotated.h>
+#include <xml_schema/axis2_xml_schema_type.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_xml_schema_simple_type_content.h>
+#include <xml_schema/axis2_xml_schema_simple_type_content.h>
 /** @defgroup axis2_xml_schema_simple_type Xml Schema Type
   * @ingroup axis2_xml_schema
   * @{
