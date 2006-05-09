@@ -27,6 +27,8 @@ struct axis2_xml_schema_all_impl
 {
     axis2_xml_schema_all_t all;
     axis2_xml_schema_group_base_t *base;
+    axis2_xml_schema_types_t obj_type;
+    axis2_hash_t *super;
     axis2_hash_t *methods;
     axis2_xml_schema_obj_collection_t *items;
 };
@@ -34,12 +36,24 @@ struct axis2_xml_schema_all_impl
 #define AXIS2_INTF_TO_IMPL(all) ((axis2_xml_schema_all_impl_t *) all)
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_all_free(void *all,
-                        axis2_env_t **env);
+axis2_xml_schema_all_free(
+        void *all,
+        axis2_env_t **env);
+
+axis2_hash_t *AXIS2_CALL 
+axis2_xml_schema_all_super_objs(
+        void *all,
+        axis2_env_t **env);
+
+axis2_xml_schema_types_t AXIS2_CALL 
+axis2_xml_schema_all_type(
+        void *all,
+        axis2_env_t **env);
 
 axis2_xml_schema_group_base_t *AXIS2_CALL
-axis2_xml_schema_all_get_base_impl(void *all,
-                                        axis2_env_t **env);
+axis2_xml_schema_all_get_base_impl(
+        void *all,
+        axis2_env_t **env);
 
 axis2_xml_schema_obj_collection_t *AXIS2_CALL
 axis2_xml_schema_all_get_items(void *all,
@@ -56,6 +70,8 @@ axis2_xml_schema_all_create(axis2_env_t **env)
                     sizeof(axis2_xml_schema_all_impl_t));
 
     all_impl->base = NULL;
+    all_impl->super = NULL;
+    all_impl->obj_type = AXIS2_XML_SCHEMA_ALL;
     all_impl->methods = NULL;
     all_impl->items = NULL;
     all_impl->all.ops = AXIS2_MALLOC((*env)->allocator, 
@@ -75,10 +91,26 @@ axis2_xml_schema_all_create(axis2_env_t **env)
     }
     axis2_hash_set(all_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_all_free);
+    axis2_hash_set(all_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_all_super_objs);
+    axis2_hash_set(all_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_all_type);
     axis2_hash_set(all_impl->methods, "get_items", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_all_get_items);
     
     all_impl->base = axis2_xml_schema_group_base_create(env);
+    
+    all_impl->super = axis2_hash_make(env);
+    if(!all_impl->super)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    axis2_hash_set(all_impl->super, "AXIS2_XML_SCHEMA_GROUP_BASE", AXIS2_HASH_KEY_STRING, 
+            all_impl->base);
+    axis2_hash_set(all_impl->super, "AXIS2_XML_SCHEMA_ALL", AXIS2_HASH_KEY_STRING, 
+            &(all_impl->all));
+
     status = axis2_xml_schema_group_base_resolve_methods(
             &(all_impl->all.base), env, all_impl->base, 
             all_impl->methods);
@@ -106,6 +138,12 @@ axis2_xml_schema_all_free(void *all,
         axis2_hash_free(all_impl->methods, env);
         all_impl->methods = NULL;
     }
+    
+    if(all_impl->super)
+    {
+        axis2_hash_free(all_impl->super, env);
+        all_impl->super = NULL;
+    }
 
     if(all_impl->base)
     {
@@ -127,16 +165,30 @@ axis2_xml_schema_all_free(void *all,
     return AXIS2_SUCCESS;
 }
 
-axis2_xml_schema_group_base_t *AXIS2_CALL
-axis2_xml_schema_all_get_base_impl(void *all,
-                                axis2_env_t **env)
+axis2_hash_t *AXIS2_CALL
+axis2_xml_schema_all_super_objs(
+        void *all,
+        axis2_env_t **env)
 {
     axis2_xml_schema_all_impl_t *all_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     all_impl = AXIS2_INTF_TO_IMPL(all);
 
-    return all_impl->base;
+    return all_impl->super;
+}
+
+axis2_xml_schema_types_t AXIS2_CALL
+axis2_xml_schema_all_type(
+        void *all,
+        axis2_env_t **env)
+{
+    axis2_xml_schema_all_impl_t *all_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    all_impl = AXIS2_INTF_TO_IMPL(all);
+
+    return all_impl->obj_type;
 }
 
 AXIS2_DECLARE(axis2_status_t)
@@ -158,9 +210,15 @@ axis2_xml_schema_all_resolve_methods(
             sizeof(axis2_xml_schema_all_ops_t));
     all->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    all->ops->get_base_impl = 
-            all_impl_l->all.ops->get_base_impl;
-    all->ops->get_items = 
+    all->ops->super_objs = axis2_hash_get(methods, "super_objs", 
+            AXIS2_HASH_KEY_STRING);
+    all->ops->type = axis2_hash_get(methods, "type", 
+            AXIS2_HASH_KEY_STRING);
+
+    all->ops->get_items = axis2_hash_get(methods, "get_items",
+            AXIS2_HASH_KEY_STRING);
+    if(!all->ops->get_items)
+            all->ops->get_items = 
             all_impl_l->all.ops->get_items;
     
     return axis2_xml_schema_group_base_resolve_methods(&(all->base), 
@@ -171,7 +229,14 @@ axis2_xml_schema_obj_collection_t *AXIS2_CALL
 axis2_xml_schema_all_get_items(void *all,
                                     axis2_env_t **env)
 {
+    axis2_xml_schema_all_impl_t *all_impl = NULL;
+    axis2_hash_t *super = NULL;
+
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(all)->items;
+    super = AXIS2_XML_SCHEMA_ALL_SUPER_OBJS(all, env);
+    all_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, 
+        "AXIS2_XML_SCHEMA_ALL", AXIS2_HASH_KEY_STRING));
+
+    return all_impl->items;
 }
 

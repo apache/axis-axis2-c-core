@@ -25,6 +25,7 @@
  *          Wide Web Consortium (W3C) all element (compositor).
  */
 
+#include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_group_base.h>
 #include <axis2_hash.h>
 
@@ -50,9 +51,20 @@ struct axis2_xml_schema_all_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *all,
+    free) (
+            void *all,
             axis2_env_t **env);
 
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (
+            void *all,
+            axis2_env_t **env);
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (
+            void *all,
+            axis2_env_t **env);
+    
     struct axis2_xml_schema_group_base *(AXIS2_CALL *
     get_base_impl) (void *all,
                     axis2_env_t **env);
@@ -88,6 +100,14 @@ axis2_xml_schema_all_resolve_methods(
 #define AXIS2_XML_SCHEMA_ALL_FREE(all, env) \
 		(((axis2_xml_schema_all_t *) all)->ops->\
             free(all, env))
+
+#define AXIS2_XML_SCHEMA_ALL_SUPER_OBJS(all, env) \
+		(((axis2_xml_schema_all_t *) all)->ops->\
+            super_objs(all, env))
+
+#define AXIS2_XML_SCHEMA_ALL_TYPE(all, env) \
+		(((axis2_xml_schema_all_t *) all)->ops->\
+            type(all, env))
 
 #define AXIS2_XML_SCHEMA_ALL_GET_BASE_IMPL(all, env) \
 		(((axis2_xml_schema_all_t *) all)->ops->\

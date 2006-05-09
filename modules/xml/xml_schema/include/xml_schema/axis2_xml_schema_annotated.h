@@ -22,6 +22,7 @@
  * @brief Axis2 Xml Schema Annotated Interface
  */
 
+#include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_obj.h>
 
 /** @defgroup axis2_xml_schema_annotated Xml Schema Annotated
@@ -65,6 +66,16 @@ struct axis2_xml_schema_annotated_ops
     free)(void *annotated,
             axis2_env_t **env);
     
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs)(
+            void *annotated,
+            axis2_env_t **env);
+    
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type)(
+            void *annotated,
+            axis2_env_t **env);
+
     axis2_xml_schema_obj_t *(AXIS2_CALL *
     get_base_impl) (void *annotated,
                     axis2_env_t **env);
@@ -120,6 +131,14 @@ axis2_xml_schema_annotated_resolve_methods(
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_FREE(annotated, env) \
 		(((axis2_xml_schema_annotated_t *) annotated)->ops->free(\
+            annotated, env))
+
+#define AXIS2_XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env) \
+		(((axis2_xml_schema_annotated_t *) annotated)->ops->super_objs(\
+            annotated, env))
+
+#define AXIS2_XML_SCHEMA_ANNOTATED_TYPE(annotated, env) \
+		(((axis2_xml_schema_annotated_t *) annotated)->ops->type(\
             annotated, env))
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env) \

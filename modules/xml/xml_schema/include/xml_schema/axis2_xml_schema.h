@@ -25,6 +25,7 @@
  *          Represents the World Wide Web Consortium (W3C) schema element
  */
 
+#include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_annotated.h>
 #include <axis2_om_element.h>
 #include <axis2_om_node.h>
@@ -63,6 +64,14 @@ struct axis2_xml_schema_ops
     free) (void *schema,
             axis2_env_t **env);
 
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (void *schema,
+            axis2_env_t **env);
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (void *schema,
+            axis2_env_t **env);
+    
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *schema,
                     axis2_env_t **env);
@@ -224,6 +233,14 @@ axis2_xml_schema_resolve_methods(
 #define AXIS2_XML_SCHEMA_FREE(schema, env) \
 		(((axis2_xml_schema_t *) schema)->ops->\
             free(schema, env))
+
+#define AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env) \
+		(((axis2_xml_schema_t *) schema)->ops->\
+            super_objs(schema, env))
+
+#define AXIS2_XML_SCHEMA_TYPE(schema, env) \
+		(((axis2_xml_schema_t *) schema)->ops->\
+            type(schema, env))
 
 #define AXIS2_XML_SCHEMA_GET_BASE_IMPL(schema, env) \
 		(((axis2_xml_schema_t *) schema)->ops->\
