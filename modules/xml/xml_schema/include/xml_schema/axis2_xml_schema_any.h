@@ -26,6 +26,7 @@
  *
  */
 
+#include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_particle.h>
 #include <xml_schema/axis2_xml_schema_content_processing.h>
 
@@ -50,7 +51,18 @@ struct axis2_xml_schema_any_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *any,
+    free) (
+            void *any,
+            axis2_env_t **env);
+
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (
+            void *any,
+            axis2_env_t **env);
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (
+            void *any,
             axis2_env_t **env);
 
     axis2_xml_schema_particle_t *(AXIS2_CALL *
@@ -90,13 +102,19 @@ axis2_xml_schema_any_create(axis2_env_t **env);
  */
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_any_resolve_methods(
-                                axis2_xml_schema_any_t *any,
-                                axis2_env_t **env,
-                                axis2_xml_schema_any_t *any_impl,
-                                axis2_hash_t *methods);
+           axis2_xml_schema_any_t *any,
+           axis2_env_t **env,
+           axis2_xml_schema_any_t *any_impl,
+           axis2_hash_t *methods);
 
 #define AXIS2_XML_SCHEMA_ANY_FREE(any, env) \
 		(((axis2_xml_schema_any_t *) any)->ops->free(any, env))
+
+#define AXIS2_XML_SCHEMA_ANY_SUPER_OBJS(any, env) \
+		(((axis2_xml_schema_any_t *) any)->ops->super_objs(any, env))
+
+#define AXIS2_XML_SCHEMA_ANY_TYPE(any, env) \
+		(((axis2_xml_schema_any_t *) any)->ops->type(any, env))
 
 #define AXIS2_XML_SCHEMA_ANY_GET_BASE_IMPL(any, env) \
 		(((axis2_xml_schema_any_t *) any)->ops->get_base_impl(any, env))

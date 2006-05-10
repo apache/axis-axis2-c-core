@@ -29,6 +29,7 @@
 #include <axis2_const.h>
 #include <axis2_array_list.h>
 #include <axis2_hash.h>
+#include <xml_schema/axis2_xml_schema_defines.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -50,7 +51,18 @@ struct axis2_xml_schema_enum_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *schema_enum,
+    free) (
+            void *schema_enum,
+            axis2_env_t **env);
+
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (
+            void *schema_enum,
+            axis2_env_t **env);
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (
+            void *schema_enum,
             axis2_env_t **env);
 
     axis2_char_t * (AXIS2_CALL *
@@ -100,6 +112,12 @@ axis2_xml_schema_enum_index(axis2_char_t *value,
 
 #define AXIS2_XML_SCHEMA_ENUM_FREE(schema_enum, env) \
 		(((axis2_xml_schema_enum_t *) schema_enum)->ops->free (schema_enum, env))
+
+#define AXIS2_XML_SCHEMA_ENUM_SUPER_OBJS(schema_enum, env) \
+		(((axis2_xml_schema_enum_t *) schema_enum)->ops->super_objs (schema_enum, env))
+
+#define AXIS2_XML_SCHEMA_ENUM_TYPE(schema_enum, env) \
+		(((axis2_xml_schema_enum_t *) schema_enum)->ops->type (schema_enum, env))
 
 #define AXIS2_XML_SCHEMA_ENUM_GET_VALUE(schema_enum, env) \
 		(((axis2_xml_schema_enum_t *) schema_enum)->ops->get_value \

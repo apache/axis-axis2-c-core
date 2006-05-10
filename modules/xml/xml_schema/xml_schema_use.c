@@ -26,6 +26,8 @@ struct axis2_xml_schema_use_impl
 {
     axis2_xml_schema_use_t use;
     axis2_xml_schema_enum_t *schema_enum;
+    axis2_xml_schema_types_t obj_type; 
+    axis2_hash_t *super;
     axis2_hash_t *methods;
     axis2_array_list_t *members;
 };
@@ -35,6 +37,16 @@ struct axis2_xml_schema_use_impl
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_use_free(void *use,
                         axis2_env_t **env);
+
+axis2_hash_t *AXIS2_CALL 
+axis2_xml_schema_use_super_objs(
+        void *use,
+        axis2_env_t **env);
+
+axis2_xml_schema_types_t AXIS2_CALL 
+axis2_xml_schema_use_type(
+        void *use,
+        axis2_env_t **env);
 
 axis2_xml_schema_enum_t *AXIS2_CALL
 axis2_xml_schema_use_get_base_impl(void *use,
@@ -68,6 +80,8 @@ axis2_xml_schema_use_create(axis2_env_t **env,
     }                    
 
     use_impl->schema_enum = NULL;
+    use_impl->obj_type = AXIS2_XML_SCHEMA_USE;
+    use_impl->super = NULL;
     use_impl->methods = NULL;
     use_impl->members = NULL;
     use_impl->use.ops = AXIS2_MALLOC((*env)->allocator, 
@@ -80,6 +94,8 @@ axis2_xml_schema_use_create(axis2_env_t **env,
         return NULL;
     }
     use_impl->use.ops->free = axis2_xml_schema_use_free;
+    use_impl->use.ops->super_objs = axis2_xml_schema_use_super_objs;
+    use_impl->use.ops->type = axis2_xml_schema_use_type;
     use_impl->use.ops->get_base_impl = axis2_xml_schema_use_get_base_impl;
     use_impl->use.ops->get_values = 
             axis2_xml_schema_use_get_values;
@@ -101,10 +117,28 @@ axis2_xml_schema_use_create(axis2_env_t **env,
     axis2_hash_set(use_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_use_free);
 
+    axis2_hash_set(use_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_use_super_objs);
+
+    axis2_hash_set(use_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_use_type);
+
     axis2_hash_set(use_impl->methods, "get_values", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_use_get_values);
 
     use_impl->schema_enum = axis2_xml_schema_enum_create(env, value);
+
+    use_impl->super = axis2_hash_make(env);
+    if(!use_impl->super)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    axis2_hash_set(use_impl->super, "AXIS2_XML_SCHEMA_USE", AXIS2_HASH_KEY_STRING, 
+            &(use_impl->use));
+    axis2_hash_set(use_impl->super, "AXIS2_XML_SCHEMA_ENUM", AXIS2_HASH_KEY_STRING, 
+            use_impl->schema_enum);
+
 
     status = axis2_xml_schema_enum_resolve_methods(
             &(use_impl->use.base), env, use_impl->schema_enum, 
@@ -147,6 +181,18 @@ axis2_xml_schema_use_free(void *use,
         use_impl->schema_enum = NULL;
     }
     
+    if(NULL != use_impl->super)
+    {
+        axis2_hash_free(use_impl->super, env);
+        use_impl->super = NULL;
+    }
+    
+    if(NULL != use_impl->methods)
+    {
+        axis2_hash_free(use_impl->methods, env);
+        use_impl->methods = NULL;
+    }
+
     if((&(use_impl->use))->ops)
     {
         AXIS2_FREE((*env)->allocator, (&(use_impl->use))->ops);
@@ -159,6 +205,32 @@ axis2_xml_schema_use_free(void *use,
         use_impl = NULL;
     }
     return AXIS2_SUCCESS;
+}
+
+axis2_hash_t *AXIS2_CALL
+axis2_xml_schema_use_super_objs(
+        void *use,
+        axis2_env_t **env)
+{
+    axis2_xml_schema_use_impl_t *use_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    use_impl = AXIS2_INTF_TO_IMPL(use);
+
+    return use_impl->super;
+}
+
+axis2_xml_schema_types_t AXIS2_CALL
+axis2_xml_schema_use_type(
+        void *use,
+        axis2_env_t **env)
+{
+    axis2_xml_schema_use_impl_t *use_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    use_impl = AXIS2_INTF_TO_IMPL(use);
+
+    return use_impl->obj_type;
 }
 
 axis2_xml_schema_enum_t *AXIS2_CALL
@@ -175,10 +247,10 @@ axis2_xml_schema_use_get_base_impl(void *use,
 
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_use_resolve_methods(
-                                axis2_xml_schema_use_t *use,
-                                axis2_env_t **env,
-                                axis2_xml_schema_use_t *use_impl,
-                                axis2_hash_t *methods)
+       axis2_xml_schema_use_t *use,
+       axis2_env_t **env,
+       axis2_xml_schema_use_t *use_impl,
+       axis2_hash_t *methods)
 {
     axis2_xml_schema_use_impl_t *use_impl_l = NULL;
 
@@ -198,9 +270,15 @@ axis2_xml_schema_use_resolve_methods(
     }
     use->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    use->ops->get_base_impl = 
-            use_impl_l->use.ops->get_base_impl;
-    use->ops->get_values = 
+    use->ops->super_objs = axis2_hash_get(methods, "super_objs", 
+            AXIS2_HASH_KEY_STRING);
+    use->ops->type = axis2_hash_get(methods, "type", 
+            AXIS2_HASH_KEY_STRING);
+    
+    use->ops->get_values = axis2_hash_get(methods, "get_values", 
+            AXIS2_HASH_KEY_STRING);
+    if(!use->ops->get_values)
+            use->ops->get_values = 
             use_impl_l->use.ops->get_values;
     
     return axis2_xml_schema_enum_resolve_methods(&(use->base), 
@@ -211,6 +289,12 @@ axis2_array_list_t *AXIS2_CALL
 axis2_xml_schema_use_get_values(void *use,
                                         axis2_env_t **env)
 {
-    return AXIS2_INTF_TO_IMPL(use)->members;
+    axis2_xml_schema_use_impl_t *use_impl = NULL;
+    axis2_hash_t *super = NULL;
+
+    super = AXIS2_XML_SCHEMA_USE_SUPER_OBJS(use, env);
+    use_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, "AXIS2_XML_SCHEMA_USE",
+                AXIS2_HASH_KEY_STRING));
+    return use_impl->members;
 }
 

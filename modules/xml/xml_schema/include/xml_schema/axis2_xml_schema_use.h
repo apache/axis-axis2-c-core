@@ -24,6 +24,7 @@
  *
  */
 
+#include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_enum.h>
 
 /** @defgroup axis2_xml_schema_use Xml Schema Use
@@ -47,6 +48,16 @@ struct axis2_xml_schema_use_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *use,
+            axis2_env_t **env);
+
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (
+            void *use,
+            axis2_env_t **env);
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (
+            void *use,
             axis2_env_t **env);
 
     axis2_xml_schema_enum_t *(AXIS2_CALL *
@@ -74,13 +85,19 @@ axis2_xml_schema_use_create(axis2_env_t **env,
  */
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_use_resolve_methods(
-                                axis2_xml_schema_use_t *use,
-                                axis2_env_t **env,
-                                axis2_xml_schema_use_t *use_impl,
-                                axis2_hash_t *methods);
+           axis2_xml_schema_use_t *use,
+           axis2_env_t **env,
+           axis2_xml_schema_use_t *use_impl,
+           axis2_hash_t *methods);
 
 #define AXIS2_XML_SCHEMA_USE_FREE(use, env) \
 		(((axis2_xml_schema_use_t *) use)->ops->free(use, env))
+
+#define AXIS2_XML_SCHEMA_USE_SUPER_OBJS(use, env) \
+		(((axis2_xml_schema_use_t *) use)->ops->super_objs(use, env))
+
+#define AXIS2_XML_SCHEMA_USE_TYPE(use, env) \
+		(((axis2_xml_schema_use_t *) use)->ops->type(use, env))
 
 #define AXIS2_XML_SCHEMA_USE_GET_BASE_IMPL(use, env) \
 		(((axis2_xml_schema_use_t *) use)->ops->get_base_impl(use, env))

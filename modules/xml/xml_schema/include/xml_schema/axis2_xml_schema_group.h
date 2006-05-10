@@ -26,6 +26,7 @@
  *          Represents the World Wide Web Consortium (W3C) group element.
  */
 
+#include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_annotated.h>
 #include <axis2_hash.h>
 
@@ -51,6 +52,14 @@ struct axis2_xml_schema_group_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *group,
+            axis2_env_t **env);
+
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (void *group,
+            axis2_env_t **env);
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (void *group,
             axis2_env_t **env);
 
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
@@ -101,6 +110,14 @@ axis2_xml_schema_group_resolve_methods(
 #define AXIS2_XML_SCHEMA_GROUP_FREE(group, env) \
 		(((axis2_xml_schema_group_t *) group)->ops->\
             free(group, env))
+
+#define AXIS2_XML_SCHEMA_GROUP_SUPER_OBJS(group, env) \
+		(((axis2_xml_schema_group_t *) group)->ops->\
+            super_objs(group, env))
+
+#define AXIS2_XML_SCHEMA_GROUP_TYPE(group, env) \
+		(((axis2_xml_schema_group_t *) group)->ops->\
+            type(group, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_GET_BASE_IMPL(group, env) \
 		(((axis2_xml_schema_group_t *) group)->ops->\

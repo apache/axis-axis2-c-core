@@ -25,6 +25,7 @@
  *
  */
 
+#include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_obj.h>
 #include <axis2_hash.h>
 
@@ -48,7 +49,18 @@ struct axis2_xml_schema_app_info_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *app_info,
+    free) (
+            void *app_info,
+            axis2_env_t **env);
+
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (
+            void *app_info,
+            axis2_env_t **env);
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (
+            void *app_info,
             axis2_env_t **env);
 
     axis2_xml_schema_obj_t *(AXIS2_CALL *
@@ -91,14 +103,22 @@ axis2_xml_schema_app_info_create(axis2_env_t **env);
  */
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_app_info_resolve_methods(
-                                axis2_xml_schema_app_info_t *app_info,
-                                axis2_env_t **env,
-                                axis2_xml_schema_app_info_t *app_info_impl,
-                                axis2_hash_t *methods);
+       axis2_xml_schema_app_info_t *app_info,
+       axis2_env_t **env,
+       axis2_xml_schema_app_info_t *app_info_impl,
+       axis2_hash_t *methods);
 
 #define AXIS2_XML_SCHEMA_APP_INFO_FREE(app_info, env) \
 		(((axis2_xml_schema_app_info_t *) app_info)->ops->\
             free(app_info, env))
+
+#define AXIS2_XML_SCHEMA_APP_INFO_SUPER_OBJS(app_info, env) \
+		(((axis2_xml_schema_app_info_t *) app_info)->ops->\
+            super_objs(app_info, env))
+
+#define AXIS2_XML_SCHEMA_APP_INFO_TYPE(app_info, env) \
+		(((axis2_xml_schema_app_info_t *) app_info)->ops->\
+            type(app_info, env))
 
 #define AXIS2_XML_SCHEMA_APP_INFO_GET_SOURCE(app_info, env) \
 		(((axis2_xml_schema_app_info_t *) app_info)->ops->\

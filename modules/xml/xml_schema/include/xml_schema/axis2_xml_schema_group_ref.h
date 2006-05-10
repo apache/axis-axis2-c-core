@@ -25,6 +25,7 @@
  *          Web Consortium (W3C) group element with ref attribute.
  */
 
+#include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_particle.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
@@ -51,6 +52,16 @@ struct axis2_xml_schema_group_ref_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *group_ref,
+            axis2_env_t **env);
+
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (
+            void *group_ref,
+            axis2_env_t **env);
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (
+            void *group_ref,
             axis2_env_t **env);
 
     axis2_xml_schema_particle_t *(AXIS2_CALL *
@@ -97,6 +108,12 @@ axis2_xml_schema_group_ref_resolve_methods(
 #define AXIS2_XML_SCHEMA_GROUP_REF_FREE(group_ref, env) \
 		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
             free(group_ref, env))
+
+#define AXIS2_XML_SCHEMA_GROUP_REF_SUPER_OBJS(group_ref, env) \
+		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->super_objs(group_ref, env))
+
+#define AXIS2_XML_SCHEMA_GROUP_REF_TYPE(group_ref, env) \
+		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->type(group_ref, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_REF_GET_BASE_IMPL(group_ref, env) \
 		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->\

@@ -23,6 +23,7 @@
  *          Base class for all particle types.
  */
 
+#include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_annotated.h>
 #include <axis2_hash.h>
 
@@ -48,7 +49,18 @@ struct axis2_xml_schema_particle_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *particle,
+    free) (
+            void *particle,
+            axis2_env_t **env);
+
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (
+            void *particle,
+            axis2_env_t **env);
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (
+            void *particle,
             axis2_env_t **env);
 
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
@@ -104,6 +116,14 @@ axis2_xml_schema_particle_resolve_methods(
 #define AXIS2_XML_SCHEMA_PARTICLE_FREE(particle, env) \
 		(((axis2_xml_schema_particle_t *) particle)->ops->\
             free(particle, env))
+
+#define AXIS2_XML_SCHEMA_PARTICLE_SUPER_OBJS(particle, env) \
+		(((axis2_xml_schema_particle_t *) particle)->ops->\
+            super_objs(particle, env))
+
+#define AXIS2_XML_SCHEMA_PARTICLE_TYPE(particle, env) \
+		(((axis2_xml_schema_particle_t *) particle)->ops->\
+            type(particle, env))
 
 #define AXIS2_XML_SCHEMA_PARTICLE_GET_BASE_IMPL(particle, env) \
 		(((axis2_xml_schema_particle_t *) particle)->ops->\

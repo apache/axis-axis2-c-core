@@ -36,8 +36,9 @@ struct axis2_xml_schema_obj_collection_impl
 /**************************** end function prototypes ************************/ 
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_obj_collection_free(axis2_xml_schema_obj_collection_t *obj_collection,
-                axis2_env_t **env);
+axis2_xml_schema_obj_collection_free(
+        axis2_xml_schema_obj_collection_t *obj_collection,
+        axis2_env_t **env);
 
 int AXIS2_CALL
 axis2_xml_schema_obj_collection_get_count(axis2_xml_schema_obj_collection_t *obj_collection,

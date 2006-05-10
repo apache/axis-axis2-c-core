@@ -24,6 +24,7 @@
  *
  */
 
+#include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_enum.h>
 
 /** @defgroup axis2_xml_schema_content_processing Xml Schema Content Processing
@@ -50,6 +51,14 @@ struct axis2_xml_schema_content_processing_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *content_processing,
+            axis2_env_t **env);
+
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (void *content_processing,
+            axis2_env_t **env);
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (void *content_processing,
             axis2_env_t **env);
 
     axis2_xml_schema_enum_t *(AXIS2_CALL *
@@ -85,6 +94,14 @@ axis2_xml_schema_content_processing_resolve_methods(
 #define AXIS2_XML_SCHEMA_CONTENT_PROCESSING_FREE(content_processing, env) \
 		(((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
          free(content_processing, env))
+
+#define AXIS2_XML_SCHEMA_CONTENT_PROCESSING_SUPER_OBJS(content_processing, env) \
+		(((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
+         super_objs(content_processing, env))
+
+#define AXIS2_XML_SCHEMA_CONTENT_PROCESSING_TYPE(content_processing, env) \
+		(((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
+         type(content_processing, env))
 
 
 #define AXIS2_XML_SCHEMA_CONTENT_PROCESSING_GET_BASE_IMPL(content_processing, env) \
