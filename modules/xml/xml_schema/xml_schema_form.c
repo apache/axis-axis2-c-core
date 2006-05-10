@@ -27,6 +27,8 @@ struct axis2_xml_schema_form_impl
 {
     axis2_xml_schema_form_t form;
     axis2_xml_schema_enum_t *schema_enum;
+    axis2_xml_schema_types_t obj_type;
+    axis2_hash_t *super;
     axis2_hash_t *methods;
     axis2_array_list_t *members;
 };
@@ -34,8 +36,19 @@ struct axis2_xml_schema_form_impl
 #define AXIS2_INTF_TO_IMPL(form) ((axis2_xml_schema_form_impl_t *) form)
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_form_free(void *form,
-                        axis2_env_t **env);
+axis2_xml_schema_form_free(
+        void *form,
+        axis2_env_t **env);
+
+axis2_hash_t *AXIS2_CALL 
+axis2_xml_schema_form_super_objs(
+        void *form,
+        axis2_env_t **env);
+
+axis2_xml_schema_types_t AXIS2_CALL 
+axis2_xml_schema_form_type(
+        void *form,
+        axis2_env_t **env);
 
 axis2_xml_schema_enum_t *AXIS2_CALL
 axis2_xml_schema_form_get_base_impl(void *form,
@@ -69,6 +82,8 @@ axis2_xml_schema_form_create(axis2_env_t **env,
     }                    
 
     form_impl->schema_enum = NULL;
+    form_impl->obj_type = AXIS2_XML_SCHEMA_FORM;
+    form_impl->super = NULL;
     form_impl->methods = NULL;
     form_impl->members = NULL;
     form_impl->form.ops = AXIS2_MALLOC((*env)->allocator, 
@@ -82,6 +97,8 @@ axis2_xml_schema_form_create(axis2_env_t **env,
     
                         
     form_impl->form.ops->free = axis2_xml_schema_form_free;
+    form_impl->form.ops->super_objs = axis2_xml_schema_form_super_objs;
+    form_impl->form.ops->type = axis2_xml_schema_form_type;
     form_impl->form.ops->get_base_impl = axis2_xml_schema_form_get_base_impl;
     form_impl->form.ops->get_values = 
             axis2_xml_schema_form_get_values;
@@ -107,6 +124,10 @@ axis2_xml_schema_form_create(axis2_env_t **env,
 
     axis2_hash_set(form_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_form_free);
+    axis2_hash_set(form_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_form_super_objs);
+    axis2_hash_set(form_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_form_type);
     axis2_hash_set(form_impl->methods, "get_values", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_form_get_values);
 
@@ -117,6 +138,19 @@ axis2_xml_schema_form_create(axis2_env_t **env,
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+ 
+    form_impl->super = axis2_hash_make(env);
+    if(!form_impl->super)
+    {
+        axis2_xml_schema_form_free(&(form_impl->form), env);
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    axis2_hash_set(form_impl->super, "AXIS2_XML_SCHEMA_FORM", AXIS2_HASH_KEY_STRING, 
+            &(form_impl->form));
+    axis2_hash_set(form_impl->super, "AXIS2_XML_SCHEMA_ENUM", AXIS2_HASH_KEY_STRING, 
+            form_impl->schema_enum);
     
     status = axis2_xml_schema_enum_resolve_methods(
             &(form_impl->form.base), env, form_impl->schema_enum, 
@@ -152,7 +186,19 @@ axis2_xml_schema_form_free(void *form,
         AXIS2_ARRAY_LIST_FREE(form_impl->members, env);
         form_impl->members = NULL;
     }
-    
+   
+    if(form_impl->super)
+    {
+        axis2_hash_free(form_impl->super, env);
+        form_impl->super = NULL;
+    }
+   
+    if(form_impl->methods)
+    {
+        axis2_hash_free(form_impl->methods, env);
+        form_impl->methods = NULL;
+    }
+
     if(form_impl->schema_enum)
     {
         AXIS2_XML_SCHEMA_ENUM_FREE(form_impl->schema_enum, env);
@@ -171,6 +217,28 @@ axis2_xml_schema_form_free(void *form,
         form_impl = NULL;
     }
     return AXIS2_SUCCESS;
+}
+
+axis2_hash_t *AXIS2_CALL
+axis2_xml_schema_form_super_objs(void *form,
+                                axis2_env_t **env)
+{
+    axis2_xml_schema_form_impl_t *form_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    form_impl = AXIS2_INTF_TO_IMPL(form);
+    return form_impl->super;
+}
+
+axis2_xml_schema_types_t AXIS2_CALL
+axis2_xml_schema_form_type(void *form,
+                                axis2_env_t **env)
+{
+    axis2_xml_schema_form_impl_t *form_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    form_impl = AXIS2_INTF_TO_IMPL(form);
+    return form_impl->obj_type;
 }
 
 axis2_xml_schema_enum_t *AXIS2_CALL
@@ -203,9 +271,15 @@ axis2_xml_schema_form_resolve_methods(
             sizeof(axis2_xml_schema_form_ops_t));
     form->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    form->ops->get_base_impl = 
-            form_impl_l->form.ops->get_base_impl;
-    form->ops->get_values = 
+    form->ops->super_objs = axis2_hash_get(methods, "super_objs", 
+            AXIS2_HASH_KEY_STRING);
+    form->ops->type = axis2_hash_get(methods, "type", 
+            AXIS2_HASH_KEY_STRING);
+    
+    form->ops->get_values = axis2_hash_get(methods, "get_values", 
+            AXIS2_HASH_KEY_STRING);
+    if(!form->ops->get_values)
+            form->ops->get_values = 
             form_impl_l->form.ops->get_values;
     
     return axis2_xml_schema_enum_resolve_methods(&(form->base), 
@@ -216,6 +290,14 @@ axis2_array_list_t* AXIS2_CALL
 axis2_xml_schema_form_get_values(void *form,
                                 axis2_env_t **env)
 {
-    return AXIS2_INTF_TO_IMPL(form)->members;
+    axis2_xml_schema_form_impl_t *form_impl = NULL;
+    axis2_hash_t *super = NULL;
+    
+    super = AXIS2_XML_SCHEMA_FORM_SUPER_OBJS(form, env); 
+    form_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_XML_SCHEMA_FORM", AXIS2_HASH_KEY_STRING));
+    
+
+    return form_impl->members;
 }
 

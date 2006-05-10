@@ -25,6 +25,7 @@
  *
  */
 
+#include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_enum.h>
 
 /** @defgroup axis2_xml_schema_form Xml Schema Form
@@ -52,6 +53,14 @@ struct axis2_xml_schema_form_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *form,
+            axis2_env_t **env);
+
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (void *form,
+            axis2_env_t **env);
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (void *form,
             axis2_env_t **env);
 
     axis2_xml_schema_enum_t *(AXIS2_CALL *
@@ -86,6 +95,12 @@ axis2_xml_schema_form_resolve_methods(
 
 #define AXIS2_XML_SCHEMA_FORM_FREE(form, env) \
 		(((axis2_xml_schema_form_t *) form)->ops->free(form, env))
+
+#define AXIS2_XML_SCHEMA_FORM_SUPER_OBJS(form, env) \
+		(((axis2_xml_schema_form_t *) form)->ops->super_objs(form, env))
+
+#define AXIS2_XML_SCHEMA_FORM_TYPE(form, env) \
+		(((axis2_xml_schema_form_t *) form)->ops->type(form, env))
 
 #define AXIS2_XML_SCHEMA_FORM_GET_BASE_IMPL(form, env) \
 		(((axis2_xml_schema_form_t *) form)->ops->get_base_impl(form, env))

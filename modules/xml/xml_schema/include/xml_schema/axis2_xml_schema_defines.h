@@ -58,7 +58,8 @@ extern "C"
         AXIS2_XML_SCHEMA_APP_INFO,
         AXIS2_XML_SCHEMA_GROUP,
         AXIS2_XML_SCHEMA_GROUP_BASE,
-        AXIS2_XML_SCHEMA_GROUP_REF
+        AXIS2_XML_SCHEMA_GROUP_REF,
+        AXIS2_XML_SCHEMA_FORM
     } axis2_xml_schema_types_t;
 
 /** @} */
