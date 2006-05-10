@@ -72,6 +72,7 @@ AC_CONFIG_FILES([Makefile \
     client/echo/Makefile \
     client/math/Makefile \
     client/mtom/Makefile \
+    client/mtom/resources/Makefile \
     client/notify/Makefile \
     client/google/Makefile \
     user_guide/Makefile \

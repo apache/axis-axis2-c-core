@@ -63,7 +63,7 @@ int main(int argc, char** argv)
     axis2_conf_t *conf = NULL;
     axis2_msg_ctx_t *response_ctx = NULL;
     axis2_property_t *property = NULL;
-    axis2_char_t *image_name = "axis2.jpg";
+    axis2_char_t *image_name = "resources/axis2.jpg";
     axis2_char_t *to_save_name = "test.jpg";
     
     /* set up the envioronment with allocator and log*/
