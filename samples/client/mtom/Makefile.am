@@ -1,7 +1,10 @@
 prgbindir=$(prefix)/bin/samples
 prgbin_PROGRAMS = mtom
 samplesdir=$(prefix)/samples/client/mtom
+imgdir=$(prefix)/bin/samples/resources
 samples_DATA=mtom_client.c Makefile.am Makefile.in
+img_DATA=axis2.jpg
+
 mtom_SOURCES = mtom_client.c
 
 mtom_LDADD   = $(LDFLAGS) \
