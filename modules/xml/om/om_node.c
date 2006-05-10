@@ -838,7 +838,8 @@ axis2_om_node_to_string(axis2_om_node_t *om_node,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, om_node, NULL);    
     
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
+    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+					AXIS2_XML_PARSER_TYPE_BUFFER);
     if(!xml_writer)
         return NULL;
     
@@ -851,7 +852,7 @@ axis2_om_node_to_string(axis2_om_node_t *om_node,
     status = AXIS2_OM_NODE_SERIALIZE(om_node, env, om_output);
     if(status == AXIS2_SUCCESS)
     {
-        xml = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+        xml = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
     }
     AXIS2_OM_OUTPUT_FREE(om_output, env);
     return xml;    

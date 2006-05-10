@@ -372,6 +372,9 @@ axis2_error_init()
         "error occured in writing start element with namespace prefix";
     axis2_error_messages[AXIS2_ERROR_WRITING_CDATA] = 
         "error in writing cdata section";
+	axis2_error_messages[AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE] =
+		"AXIS2_XML_PARSER_TYPE_BUFFER or AXIS2_XML_PARSER_TYPE_DOC is expected";
+	
     /* invalid type passed */
     axis2_error_messages[AXIS2_ERROR_INVALID_BASE_TYPE] = 
         "invalid type passed";

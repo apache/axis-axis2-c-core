@@ -241,7 +241,7 @@ axis2_http_transport_sender_invoke
         return AXIS2_FAILURE;
     }
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, 
-                    AXIS2_TRUE, 0);
+                    AXIS2_TRUE, 0, AXIS2_XML_PARSER_TYPE_BUFFER);
     if(NULL == xml_writer)
     {
         return AXIS2_FAILURE;
@@ -362,13 +362,13 @@ axis2_http_transport_sender_invoke
                     return AXIS2_FAILURE;
                 }
                 AXIS2_OM_NODE_SERIALIZE(data_out, env, om_output);
-                buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+                buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
             }
             else
             {
                 AXIS2_SOAP_ENVELOPE_SERIALIZE (soap_data_out, env, om_output, 
                             AXIS2_FALSE);
-                buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+                buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
             }
 			AXIS2_STREAM_WRITE(out_stream, env, buffer, AXIS2_STRLEN(buffer));				
 			AXIS2_FREE((*env)->allocator, buffer);

@@ -433,6 +433,9 @@ extern "C"
         AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE_PREFIX,
         /** error in writing cdata section */
         AXIS2_ERROR_WRITING_CDATA,
+		/** AXIS2_XML_PARSER_TYPE_BUFFER or AXIS2_XML_PARSER_TYPE_DOC is expected */
+		AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE,
+		
        /*
         * Group - xml:soap
         */

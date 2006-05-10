@@ -453,7 +453,7 @@ color="#FF0000">"\necho stub invoke SUCCESSFUL!\n"</font>);<br>
         <font color="#000000">writer</font> = <font
 color="#000000">axis2_xml_writer_create_for_memory</font>(&amp;<font
 color="#000000">env</font>, <font color="#000000">NULL</font>, <font
-color="#000000">AXIS2_TRUE</font>, <font color="#0000FF">0</font>);<br>
+color="#000000">AXIS2_TRUE</font>, <font color="#0000FF">0</font>,| <font color="#0000FF">AXIS2_XML_PARSER_TYPE_BUFFER</font>);<br>
         <font color="#000000">om_output</font> = <font
 color="#000000">axis2_om_output_create</font> (&amp;<font
 color="#000000">env</font>, <font color="#000000">writer</font>);<br>
@@ -462,7 +462,7 @@ color="#000000">env</font>, <font color="#000000">writer</font>);<br>
 color="#000000">ret_node</font>, &amp;<font color="#000000">env</font>, <font
 color="#000000">om_output</font>);<br>
         <font color="#000000">buffer</font> = <font
-color="#000000">AXIS2_XML_WRITER_GET_XML</font>(<font
+color="#000000">(axis2_char_t*)AXIS2_XML_WRITER_GET_XML</font>(<font
 color="#000000">writer</font>, &amp;<font color="#000000">env</font>);<br>
         <font color="#000000">printf</font> (<font
 color="#FF0000">"\nReceived OM node in XML : %s\n"</font>, <font
@@ -549,7 +549,7 @@ color="#000000">text_om_node</font>);<br>
 color="#000000">axis2_xml_writer_create_for_memory</font>(<font
 color="#000000">env</font>, <font color="#000000">NULL</font>, <font
 color="#000000">AXIS2_FALSE</font>, <font
-color="#000000">AXIS2_FALSE</font>);<br>
+color="#000000">AXIS2_FALSE</font>,| <font color="#0000FF">AXIS2_XML_PARSER_TYPE_BUFFER</font>);<br>
     <font color="#000000">om_output</font> = <font
 color="#000000">axis2_om_output_create</font>( <font
 color="#000000">env</font>, <font color="#000000">xml_writer</font>);<br>
@@ -558,7 +558,7 @@ color="#000000">env</font>, <font color="#000000">xml_writer</font>);<br>
 color="#000000">echo_om_node</font>, <font color="#000000">env</font>, <font
 color="#000000">om_output</font>);<br>
     <font color="#000000">buffer</font> = <font
-color="#000000">AXIS2_XML_WRITER_GET_XML</font>(<font
+color="#000000">(axis2_char_t*)AXIS2_XML_WRITER_GET_XML</font>(<font
 color="#000000">xml_writer</font>, <font
 color="#000000">env</font>);         <br>
     <font color="#000000">printf</font>(<font
@@ -757,11 +757,11 @@ color="#000000">node</font>);</font></p>
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#808080"><i>/*we&nbsp;just&nbsp;serialize&nbsp;the&nbsp;SOAP&nbsp;message&nbsp;and&nbsp;output&nbsp;to&nbsp;stdout&nbsp;*/</i></font><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>(<font color="#FF0000">&quot;\necho&nbsp;stub&nbsp;invoke&nbsp;SUCCESSFUL!\n&quot;</font>);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">writer</font>&nbsp;=&nbsp;<font color="#000000">axis2_xml_writer_create_for_memory</font>(<font color="#000000">env</font>,&nbsp;<font color="#000000">NULL</font>,&nbsp;<font color="#000000">AXIS2_TRUE</font>,&nbsp;<font color="#0000FF">0</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">writer</font>&nbsp;=&nbsp;<font color="#000000">axis2_xml_writer_create_for_memory</font>(<font color="#000000">env</font>,&nbsp;<font color="#000000">NULL</font>,&nbsp;<font color="#000000">AXIS2_TRUE</font>,&nbsp;<font color="#0000FF">0</font>,| <font color="#0000FF">AXIS2_XML_PARSER_TYPE_BUFFER</font>);<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">om_output</font>&nbsp;=&nbsp;<font color="#000000">axis2_om_output_create</font>&nbsp;(<font color="#000000">env</font>,&nbsp;<font color="#000000">writer</font>);<br>
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_OM_NODE_SERIALIZE</font>&nbsp;(<font color="#000000">ret_node</font>,&nbsp;<font color="#000000">env</font>,&nbsp;<font color="#000000">om_output</font>);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">buffer</font>&nbsp;=&nbsp;<font color="#000000">AXIS2_XML_WRITER_GET_XML</font>(<font color="#000000">writer</font>,&nbsp;<font color="#000000">env</font>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">buffer</font>&nbsp;=&nbsp;<font color="#000000">(axis2_char_t*)AXIS2_XML_WRITER_GET_XML</font>(<font color="#000000">writer</font>,&nbsp;<font color="#000000">env</font>);<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">printf</font>&nbsp;(<font color="#FF0000">&quot;\nReceived&nbsp;OM&nbsp;node&nbsp;in&nbsp;XML&nbsp;:&nbsp;%s\n&quot;</font>,&nbsp;<font color="#000000">buffer</font>);<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_OM_OUTPUT_FREE</font>(<font color="#000000">om_output</font>,&nbsp;<font color="#000000">env</font>);<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">AXIS2_FREE</font>((*<font color="#000000">env</font>)-&gt;<font color="#000000">allocator</font>,&nbsp;<font color="#000000">buffer</font>);<br>

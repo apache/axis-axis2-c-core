@@ -33,7 +33,6 @@ extern "C"
 typedef struct axis2_xml_writer_ops axis2_xml_writer_ops_t;    
 typedef struct axis2_xml_writer axis2_xml_writer_t;
 
-
 /**
  * @defgroup axis2_xml_writer 
  * @ingroup axis2_om_parser
@@ -431,10 +430,13 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
                        axis2_char_t *text,
                        int in_attr);
                                                  
-        axis2_char_t* (AXIS2_CALL *
+        void* (AXIS2_CALL *
 		get_xml)(axis2_xml_writer_t *writer,
                  axis2_env_t **env);                                                 
 
+        int (AXIS2_CALL *
+		get_type)(axis2_xml_writer_t *writer,
+                 axis2_env_t **env);                                                 
     };
 
 /** 
@@ -462,14 +464,9 @@ AXIS2_DECLARE(axis2_xml_writer_t *)
 axis2_xml_writer_create_for_memory(axis2_env_t **env,
                                    axis2_char_t *encoding,
                                    int is_prefix_default,
-                                   int compression);
+                                   int compression,
+								   int type);
 
-AXIS2_DECLARE(axis2_xml_writer_t *)
-	axis2_xml_writer_create_for_xml_doc(axis2_env_t **env,
-                                   axis2_char_t *encoding,
-                                   int is_prefix_default,
-                                   int compression);
-	
 /********************** start macros *******************************************/
 
 #define AXIS2_XML_WRITER_FREE(writer, env) \
@@ -577,6 +574,10 @@ AXIS2_DECLARE(axis2_xml_writer_t *)
         
 #define AXIS2_XML_WRITER_GET_XML(writer, env) \
         ((writer)->ops->get_xml(writer, env))        
+
+#define AXIS2_XML_WRITER_GET_TYPE(writer, env) \
+        ((writer)->ops->get_type(writer, env)) 
+
 /** @} */
 
 

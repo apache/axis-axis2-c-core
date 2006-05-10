@@ -194,7 +194,7 @@ guththila_xml_writer_wrapper_write_encoded(
                                          axis2_char_t *text,
                                          int in_attr);
 
-axis2_char_t* AXIS2_CALL 
+void* AXIS2_CALL 
 guththila_xml_writer_wrapper_get_xml(axis2_xml_writer_t *writer,
                                      axis2_env_t **env);                                         
 
@@ -332,7 +332,8 @@ AXIS2_DECLARE(axis2_xml_writer_t *)
 axis2_xml_writer_create_for_memory(axis2_env_t **env,
                                    axis2_char_t *encoding,
                                    int is_prefix_default,
-                                   int compression)
+                                   int compression,
+								   int type)
 {
     
     return axis2_xml_writer_create(env, NULL, encoding, is_prefix_default, compression);
@@ -786,9 +787,9 @@ guththila_xml_writer_wrapper_write_encoded(
                     AXIS2_INTF_TO_IMPL(writer)->guththila_writer, text, in_attr);
 }
 
-axis2_char_t* AXIS2_CALL 
+void* AXIS2_CALL 
 guththila_xml_writer_wrapper_get_xml(axis2_xml_writer_t *writer,
                                      axis2_env_t **env)
 {
-    return NULL;
+    return (void*)NULL;
 }

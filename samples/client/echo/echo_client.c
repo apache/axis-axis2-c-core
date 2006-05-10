@@ -187,11 +187,12 @@ int main(int argc, char** argv)
         axis2_char_t *buffer = NULL;
         
         printf("\necho stub invoke SUCCESSFUL!\n");
-        writer = axis2_xml_writer_create_for_memory(&env, NULL, AXIS2_TRUE, 0);
+        writer = axis2_xml_writer_create_for_memory(&env, NULL, AXIS2_TRUE, 0,
+						AXIS2_XML_PARSER_TYPE_BUFFER);
         om_output = axis2_om_output_create (&env, writer);
 
         AXIS2_OM_NODE_SERIALIZE (ret_node, &env, om_output);
-        buffer = AXIS2_XML_WRITER_GET_XML(writer, &env);
+        buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(writer, &env);
         printf ("\nReceived OM node in XML : %s\n", buffer);
         AXIS2_FREE(env->allocator, buffer);
         AXIS2_OM_OUTPUT_FREE(om_output, &env);
@@ -250,11 +251,12 @@ build_om_programatically(axis2_env_t **env)
     AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, "echo5", text_om_node);
     
     
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
+    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE,
+					AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axis2_om_output_create( env, xml_writer);
     
     AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
-    buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
+    buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
     printf("\nSending OM node in XML : %s \n",  buffer); 
     AXIS2_FREE((*env)->allocator, buffer);
     AXIS2_OM_OUTPUT_FREE(om_output, env);

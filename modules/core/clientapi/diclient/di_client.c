@@ -453,11 +453,12 @@ axis2_diclient_invoke(axis2_diclient_t *diclient,
         axis2_char_t *buffer = NULL;
         
         printf("\necho stub invoke SUCCESSFUL!\n");
-        writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
+        writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+					AXIS2_XML_PARSER_TYPE_BUFFER);
         om_output = axis2_om_output_create (env, writer);
 
         AXIS2_OM_NODE_SERIALIZE (ret_node, env, om_output);
-        buffer = AXIS2_XML_WRITER_GET_XML(writer, env);
+        buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(writer, env);
         printf ("\nReceived OM node in XML : %s\n", buffer);
     }
     else

@@ -37,6 +37,16 @@ extern "C"
 #define AXIS2_TRUE 1
 #define AXIS2_FALSE 0
 
+/** 
+  * This enum is used to decide the type of storage used 
+  */
+typedef enum _axis2_xml_parser_type
+{
+    AXIS2_XML_PARSER_TYPE_BUFFER = 1,
+	AXIS2_XML_PARSER_TYPE_FILE,
+    AXIS2_XML_PARSER_TYPE_DOC
+} axis2_xml_parser_type;
+
 /**
   *	Exporting 
   */

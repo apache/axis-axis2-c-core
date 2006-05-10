@@ -306,14 +306,14 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
             axis2_char_t *svc_name = NULL;
             
             xml_writer = axis2_xml_writer_create_for_memory(env, NULL, 
-                AXIS2_TRUE, 0);
+                AXIS2_TRUE, 0, AXIS2_XML_PARSERT_TYPE_BUFFER);
             om_output = axis2_om_output_create(env, xml_writer);
             status = AXIS2_OM_NODE_SERIALIZE(desc_value_node, env, om_output);
             if(status != AXIS2_SUCCESS)
             {
                 return AXIS2_FAILURE;
             }
-            svc_name = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+            svc_name = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
             AXIS2_SVC_SET_AXIS2_SVC_NAME(builder_impl->svc, env, 
                 svc_name);
             AXIS2_OM_OUTPUT_FREE(om_output, env);

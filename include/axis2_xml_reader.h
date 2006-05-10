@@ -335,7 +335,7 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
  */
  
 AXIS2_DECLARE(axis2_xml_reader_t *)
-axis2_xml_reader_create_for_memory(axis2_env_t **env,
+axis2_xml_reader_create_for_io(axis2_env_t **env,
                                     int (*read_input_callback)(char *buffer,int size,void* ctx),
                                     int (*close_input_callback)(void *ctx),
                                     void *ctx,
@@ -350,14 +350,12 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
  * @return pointer to axis2_xml_reader_t struct on success , NULL otherwise
  */
 AXIS2_DECLARE(axis2_xml_reader_t *)
-axis2_xml_reader_create_for_buffer(axis2_env_t **env,
-                                  const axis2_char_t *buffer,
+axis2_xml_reader_create_for_memory(axis2_env_t **env,
+                                  void *container,
                                   int size,
-                                  const axis2_char_t *encoding);
+                                  const axis2_char_t *encoding,
+								  int type);
 
-AXIS2_DECLARE(axis2_xml_reader_t *)
-axis2_xml_reader_create_for_xml_doc(axis2_env_t **env, 
-									void *doc);	
 /**
  * init function initializes the parser 
  */

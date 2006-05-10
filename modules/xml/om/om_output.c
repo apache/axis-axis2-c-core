@@ -803,7 +803,7 @@ axis2_om_output_flush(axis2_om_output_t *om_output,
     {
         axis2_byte_t* byte_stream = NULL;
         axis2_char_t *root_content_id = NULL;
-        axis2_char_t *buffer = AXIS2_XML_WRITER_GET_XML(output_impl->xml_writer, env);
+        axis2_char_t *buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(output_impl->xml_writer, env);
         int stream_size = 0;
         if (output_impl->is_soap11)
         {

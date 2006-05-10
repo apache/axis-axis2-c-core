@@ -335,7 +335,7 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
 /************** create function for io callback function **********************/
 
 AXIS2_DECLARE(axis2_xml_reader_t *)
-axis2_xml_reader_create_for_memory(axis2_env_t **env,
+axis2_xml_reader_create_for_io(axis2_env_t **env,
                                     int (*read_input_callback)(char *buffer,int size,void *ctx),
                                     int (*close_input_callback)(void *ctx),
                                     void* ctx,
@@ -405,17 +405,18 @@ axis2_xml_reader_create_for_memory(axis2_env_t **env,
 	return &(wrapper_impl->parser);
 }
 
-/***************** create function for character buffer ************************/
+/***************** create function for character buffer or xml doc ************************/
 AXIS2_DECLARE(axis2_xml_reader_t *)
-axis2_xml_reader_create_for_buffer(axis2_env_t **env,
-                                  const axis2_char_t *buffer,
+axis2_xml_reader_create_for_memory(axis2_env_t **env,
+                                  void *container,
                                   int size,
-                                  const axis2_char_t *encoding)
+                                  const axis2_char_t *encoding,
+								  int type)
 {    
 	axis2_libxml2_reader_wrapper_impl_t *wrapper_impl = NULL;
     
     AXIS2_ENV_CHECK( env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, buffer , NULL);
+    AXIS2_PARAM_CHECK((*env)->error, container , NULL);
         
     wrapper_impl = (axis2_libxml2_reader_wrapper_impl_t*)AXIS2_MALLOC((*env)->allocator,
          sizeof(axis2_libxml2_reader_wrapper_impl_t));
@@ -427,9 +428,22 @@ axis2_xml_reader_create_for_buffer(axis2_env_t **env,
     wrapper_impl->close_input_callback = NULL;
     wrapper_impl->read_input_callback = NULL;
 	wrapper_impl->ctx = NULL;
-	
-    wrapper_impl->reader =  xmlReaderForMemory(buffer, size, 
-								NULL, encoding, XML_PARSE_RECOVER);
+
+	if (AXIS2_XML_PARSER_TYPE_BUFFER == type)
+	{	
+    	wrapper_impl->reader =  xmlReaderForMemory((axis2_char_t*)container, size, 
+									NULL, encoding, XML_PARSE_RECOVER);
+	}
+	else if (AXIS2_XML_PARSER_TYPE_DOC == type)
+	{
+    	wrapper_impl->reader =  xmlReaderWalker((xmlDocPtr)container);
+	}
+	else 
+	{
+        AXIS2_FREE((*env)->allocator, wrapper_impl);
+		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE, AXIS2_FAILURE);
+		return NULL;
+	}
 
     if(!(wrapper_impl->reader))
     {
@@ -439,9 +453,12 @@ axis2_xml_reader_create_for_buffer(axis2_env_t **env,
         return NULL;
     }
 
-    xmlTextReaderSetErrorHandler(wrapper_impl->reader, 
-         (xmlTextReaderErrorFunc)axis2_libxml2_reader_wrapper_error_handler, 
-         (*env));
+	if (AXIS2_XML_PARSER_TYPE_BUFFER == type)
+	{
+    	xmlTextReaderSetErrorHandler(wrapper_impl->reader, 
+         	(xmlTextReaderErrorFunc)axis2_libxml2_reader_wrapper_error_handler, 
+         	(*env));
+	}
 
     wrapper_impl->current_event = -1;
     
@@ -464,61 +481,6 @@ axis2_xml_reader_create_for_buffer(axis2_env_t **env,
 }
 
 
-/***************** create function for xmlDoc ************************/
-AXIS2_DECLARE(axis2_xml_reader_t *)
-axis2_xml_reader_create_for_xml_doc(axis2_env_t **env,
-									void *doc)
-{    
-	axis2_libxml2_reader_wrapper_impl_t *wrapper_impl = NULL;
-    
-    AXIS2_ENV_CHECK( env, NULL);
-        
-    wrapper_impl = (axis2_libxml2_reader_wrapper_impl_t*)AXIS2_MALLOC((*env)->allocator,
-         sizeof(axis2_libxml2_reader_wrapper_impl_t));
-    if(!wrapper_impl)
-    {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;   
-    }
-    wrapper_impl->close_input_callback = NULL;
-    wrapper_impl->read_input_callback = NULL;
-	wrapper_impl->ctx = NULL;
-	
-    wrapper_impl->reader =  xmlReaderWalker((xmlDocPtr)doc);
-
-    if(!(wrapper_impl->reader))
-    {
-        AXIS2_FREE((*env)->allocator, wrapper_impl);
-        AXIS2_ERROR_SET((*env)->error, 
-				AXIS2_ERROR_CREATING_XML_STREAM_READER, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    /*xmlTextReaderSetErrorHandler(wrapper_impl->reader, 
-         (xmlTextReaderErrorFunc)axis2_libxml2_reader_wrapper_error_handler, 
-         (*env));
-	*/
-    wrapper_impl->current_event = -1;
-    
-    axis2_libxml2_reader_wrapper_init_map(wrapper_impl);
-    
-    wrapper_impl->parser.ops = NULL;
-    wrapper_impl->parser.ops = (axis2_xml_reader_ops_t*)AXIS2_MALLOC((*env)->allocator,
-                                sizeof(axis2_xml_reader_ops_t));
-    
-    if(!(wrapper_impl->parser.ops))
-    {
-        xmlFreeTextReader(wrapper_impl->reader);
-        AXIS2_FREE((*env)->allocator, wrapper_impl);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-	axis2_libxml2_reader_wrapper_init_ops(&(wrapper_impl->parser));
-	
-	return &(wrapper_impl->parser);
-}
-/****************** end create functions ***************************************/
 
 int AXIS2_CALL
 axis2_libxml2_reader_wrapper_next(axis2_xml_reader_t *parser,

@@ -293,11 +293,12 @@ build_soap_body_content(axis2_env_t **env, axis2_char_t *echo_operation,
     text_om_ele = axis2_om_element_create(env, echo_om_node, input_type_buff, NULL, &text_om_node);
     AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, word_to_echo, text_om_node);
     
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE);
+    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE, 
+														AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axis2_om_output_create( env, xml_writer);
     
     AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
-    buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
+    buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
     AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "\nSending OM node in XML : %s \n",  buffer); 
 
     return echo_om_node;
@@ -309,10 +310,11 @@ void print_invalid_om(axis2_env_t **env, axis2_om_node_t *ret_node)
     axis2_xml_writer_t *writer = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
-    writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
+    writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0, 
+													AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axis2_om_output_create (env, writer);
 
     AXIS2_OM_NODE_SERIALIZE (ret_node, env, om_output);
-    buffer = AXIS2_XML_WRITER_GET_XML(writer, env);
+    buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(writer, env);
     printf ("\nReceived OM as result : %s\n", buffer);
 }

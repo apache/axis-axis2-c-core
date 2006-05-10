@@ -516,7 +516,8 @@ axis2_om_text_serialize_attribute(axis2_om_text_t *om_text,
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
+    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+				AXIS2_XML_PARSER_TYPE_BUFFER);
     om_namespace = axis2_om_namespace_create(env, "" , "");
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
 
@@ -554,7 +555,8 @@ axis2_om_text_serialize_namespace(axis2_om_text_t *om_text,
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
+    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+					AXIS2_XML_PARSER_TYPE_BUFFER);
     om_namespace = axis2_om_namespace_create(env, "" , "");
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
 

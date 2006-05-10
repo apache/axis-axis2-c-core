@@ -576,7 +576,7 @@ xml_writer = axis2_xml_writer_create(env, NULL, 0, 0);
 om_output = axis2_om_output_create(env, xml_writer);
 
 AXIS2_SOAP_ENVELOPE_SERIALIZE(envelope, env, om_output);
-buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
 printf("%s ", buffer);</pre>
 
 <p>An easy way to serialize is to use the to_string function in om_element</p>
@@ -610,10 +610,10 @@ different xml input sources.</p>
 <p>axis2_xml_reader_create_for_file() functon can be used to read from a
 file.</p>
 
-<p>axis2_xml_reader_create_for_memory uses a user defined callback function
+<p>axis2_xml_reader_create_for_io uses a user defined callback function
 to pull xml.</p>
 
-<p>axis2_xml_reader_create_for_buffer can be used to read from an xml string
+<p>axis2_xml_reader_create_for_memory can be used to read from an xml string
 that is in a character buffer.</p>
 
 <p>Similarly xml_writer provides two create functions,</p>
@@ -739,7 +739,7 @@ build_and_serialize_om(axis2_env_t **env)
     axis2_char_t *buffer = NULL;
     
     f = fopen("test.xml","r");
-    xml_reader = axis2_xml_reader_create_for_memory(env, read_input_callback,
+    xml_reader = axis2_xml_reader_create_for_io(env, read_input_callback,
                                                     close_input_callback, NULL, NULL);
     <b>if</b>(!xml_reader)
         <b>return</b> -1;
@@ -776,12 +776,12 @@ build_and_serialize_om(axis2_env_t **env)
     }
     AXIS2_OM_DOCUMENT_BUILD_ALL(document, env);
     
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0);
+    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0, AXIS2_XML_PARSER_TYPE_BUFFER);
     
     om_output = axis2_om_output_create(env, xml_writer);
     
     AXIS2_OM_NODE_SERIALIZE(root_node, env, om_output);
-    buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+    buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
 
     printf("The output XML is -&gt;&gt;&gt;&gt;\n %s ", buffer);
 
