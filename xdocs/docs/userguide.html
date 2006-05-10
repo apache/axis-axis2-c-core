@@ -1,76 +1,799 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
   <title>Axis2/C User's Guide</title>
-  <meta name="generator" content="amaya 9.2.1, see http://www.w3.org/Amaya/"
+  <meta name="generator" content="amaya 9.2.2, see http://www.w3.org/Amaya/"
   />
 </head>
 
 <body>
 <h1>Axis2/C User's Guide</h1>
-<p>Pages: <b>Content</b>, <a href="userguide1.html">1</a>, <a
- href="userguide2.html">2</a>, <a href="userguide3.html">3</a></p>
+
 <h2>Content</h2>
 <ul>
-  <li>
-    <p><a href="userguide1.html#Introduction">Introduction</a></p>
+  <li><p><a href="#Introduction">Introduction</a></p>
     <ul>
-      <li><a href="userguide1.html#Attention">Attention</a></li>
-      <li><a href="userguide1.html#What_is_Axis2_">What is Axis2/C?</a></li>
+      <li><a href="#What_is_Axis2_">What is Axis2/C?</a></li>
     </ul>
   </li>
-  <li>
-    <p><a href="userguide2.html#Web_Service_Clients_Using_Axis2">Web
-Service Clients Using Axis2/C</a></p>
+  <li><a href="#Web_Services_Using_Axis2">Web Services Using Axis2/C</a>
     <ul>
-      <li><a
- href="userguide2.html#Writing_Web_Service_Clients_using_Axis2%27s_Primary_APIs">Writing
-Web Service Clients Using Axis2's Primary APIs</a></li>
-      <ul>
-        <li><a href="userguide2.html#EchoBlockingClient">EchoBlockingClient</a></li>
-        <li><a href="userguide2.html#Request_SOAP_Message">Request SOAP
-Message</a></li>
-        <li><a href="userguide2.html#Response_SOAP_Message">Response
-SOAP Message</a></li>
-      </ul>
-    </ul>
-  </li>
-  <li>
-    <p><a href="userguide3.html#Web_Services_Using_Axis2">Web Services
-Using Axis2/C</a></p>
-    <ul>
-      <li><a href="userguide3.html#Conventions">Conventions used in the
-document</a></li>
-      <li><a href="userguide3.html#Writing_Web_Services_Using%20Axis2_C">Writing
-Web Services Using Axis2/C</a>
+      <li><a href="#Writing_Web_Services_Using%20Axis2_C">Writing Web
+        Services Using Axis2/C</a>
         <ul>
-          <li><a href="userguide3.html#Creating_Web_Service__MyService_">Creating
-Web Service (Echo service)</a></li>
-          <li><a href="userguide3.html#How_to_write_the_Web_Service_">How
-to write the Web Service?</a>
+          <li><a href="#Creating_Web_Service__MyService_">Creating Web
+            Service (Echo service)</a></li>
+          <li><a href="#How_to_write_the_Web_Service_">How to write the Web
+            Service?</a>
             <ul>
-              <li><a href="userguide3.html#Step1">Step1 :Write the
-echo_skeleton.c file implementing the axis2_svc_skeleton.h</a></li>
-              <li><a href="userguide3.html#Step2">Step2 : Now we can
-write the echo service in a file echo.c</a></li>
-              <li><a href="userguide3.html#Step3">Step3 :Write the
-services.xml file</a></li>
-              <li><a href="userguide3.html#Step4">Step4 :Create the
-WebService Folder in services folder.</a></li>
+              <li><a href="#Step1">Step1 :Write the echo_skeleton.c file
+                implementing the axis2_svc_skeleton.h</a></li>
+              <li><a href="#Step2">Step2 : Now we can write the echo service
+                in a file echo.c</a></li>
+              <li><a href="#Step3">Step3 :Write the services.xml file</a></li>
+              <li><a href="#Step4">Step4 :Create the WebService Folder in
+                services folder.</a></li>
             </ul>
           </li>
         </ul>
       </li>
-      <li><a href="userguide3.html#deploy">Deploy the Web Service</a></li>
+      <li><a href="#deploy">Deploy the Web Service</a></li>
+    </ul>
+  </li>
+  <li><p><a href="#Web_Service_Clients_Using_Axis2">Web Service Clients Using
+    Axis2/C</a></p>
+    <ul>
+      <li><a
+        href="#Writing_Web_Service_Clients_using_Axis2%27s_Primary_APIs">Writing
+        Web Service Clients Using Axis2's Primary APIs</a>
+        <ul>
+          <li><a href="#EchoBlockingClient">echo_blocking Client</a></li>
+          <li><a href="#EchoNonBlockingClient">echo_non_blocking
+          Client</a></li>
+          <li><a href="#EchoNonBlockingDualClient">echo_non_blocking_dual
+            Client</a></li>
+          <li><a href="#EchoBlockingDualClient">echo_blocking_dual
+          Client</a></li>
+        </ul>
+      </li>
     </ul>
   </li>
 </ul>
-<p><a href="userguide1.html">Next Page <img
- src="images/arrow_right.gif"/></a></p>
-<p>Pages: <b>Content</b>, <a href="userguide1.html">1</a>, <a
- href="userguide2.html">2</a>, <a href="userguide3.html">3</a></p>
+
+<h2><a id="Introduction">Introduction</a></h2>
+
+<p>Welcome to Axis2/C, the Apache Axis2 implemented in C. This User's Guide
+will help you to understand what Axis2/C has to offer and how to get started
+with it.</p>
+
+<h3><a id="What_is_Axis2_">What is Axis2/C?</a></h3>
+
+<p>Axis2/C is an effort to implement the Axis2 architecture in C programming
+language.</p>
+
+<p>After months of continued discussion and coding in this direction, Axis2/C
+now delivers the following key features:</p>
+<ul>
+  <li><p style="margin-bottom: 0in;"><strong>Speed</strong> - Axis2/C uses
+    its own XML object model and StAX (Streaming API for XML) parsing to
+    achieve significant speed. In addition to that, Axis2/C is inherently
+    benefited by the speed of its implementation language, namely C, compared
+    to the Java implementation.</p>
+  </li>
+  <li><p style="margin-bottom: 0in;"><strong>Low memory foot print</strong>-
+    Axis2 architecture was designed ground-up keeping the low memory foot
+    print in mind. Axis2/C strives to achieve the same with a well designed
+    memory management strategy.</p>
+  </li>
+  <li><p style="margin-bottom: 0in;"><strong>AXIOM/C</strong> Axis2/C comes
+    with its own light-weight object model for XML, AXIOM/C which is the C
+    implementation of <a
+    href="http://ws.apache.org/axis2/0_93/OMTutorial.html">AXIOM</a>.</p>
+  </li>
+  <li><p style="margin-bottom: 0in;"><strong>MEP Support</strong> - Support
+    Message Exchange Patterns (MEP s) with in-built support for basic MEP s
+    defined in WSDL 2.0.</p>
+  </li>
+  <li><p style="margin-bottom: 0in;"><strong>Flexibility</strong> - The
+    Axis2/C architecture gives the developer complete freedom to insert
+    extensions into the engine (using modules and handlers) for custom SOAP
+    header processing.</p>
+  </li>
+  <li><p style="margin-bottom: 0in;"><strong>Transport Framework</strong> -
+    We have a clean and simple abstraction for integrating and using
+    transports and the core of the engine is completely
+    transport-independent.</p>
+  </li>
+  <li><p style="margin-bottom: 0in;"><strong>Composition and
+    Extensibility</strong> - modules and phases improve support for
+    composability and extensibility. Modules supports composability and is
+    able to add support for new WS-* specifications in a simple and clean
+    manner. They are however not hot deployable as they change the overall
+    behavior of the system.</p>
+  </li>
+</ul>
+
+<p>Axis2/C team is working hard to continuously improve the implementation.
+Please note that this is an open-source effort. If you feel you have some
+time to spare, please get involved and lend us a hand! The Axis2/C developer
+community welcomes your participation and contributions.</p>
+
+<p>Let us know what you think! Please send your feedback on Axis2/C to "<a
+href="mailto:axis-user@ws.apache.org">axis-c-user@ws.apache.org</a>" and
+please remember to prefix the subject of the mail with [Axis2].</p>
+
+<p>The following sections will guide through how to write web service clients
+and services.</p>
+
+<p></p>
+
+<p>Web Services Using Axis2/C</p>
+
+<p>Before starting, please make sure that you have installed Axis2/C
+correctly and check whether you can run the axis2_http_server located in
+AXIS2C_HOME/bin . (See <a href="installationguide.html">Installation
+Guide</a>).</p>
+<a id="Writing_Web_Services_Using_Axis2_C"></a>
+
+<h3>Writing Web Services Using Axis2/C</h3>
+
+<h4><a id="Creating_Web_Service__MyService_">Creating Web Service (Echo
+service)</a></h4>
+
+<p>First let's see how we can write a simple Web Service (echo service) using
+Axis2/C's primary interfaces and deploy it. For this purpose we will create a
+Web Service with one operation as follows.</p>
+<pre><br />axis2_om_node_t* axis2_echo_echo(axis2_om_node_t *echo_node){}<br /> </pre>
+
+<p>You can have peek at the complete source code for this example echo
+service located in the "AXIS2C_HOME/samples/server/echo" directory .</p>
+
+<h4><a id="How_to_write_the_Web_Service_">How to write the Web
+Service?</a></h4>
+
+<p>Writing a new Web Service with Axis2/C involve four steps.</p>
+
+<p>(eg . echo service )</p>
+<ol>
+  <li><p style="margin-bottom: 0in;">Write a echo_skeleton.c file which
+    implements the API given inaxis2_svc_skeleton.h header file.</p>
+  </li>
+  <li>Write the service implementation source file file (in this case echo.c
+    service) which implements the actual business logic.</li>
+  <li>Write a services.xml file to explain the Web Service.</li>
+  <li>Create a folder with the service name under AXIS2C_HOME/services and
+    put the compiled service ( .dll or .so file) for the Web Service and
+    services.xml file in to that folder</li>
+</ol>
+
+<p><a id="Step1"></a></p>
+
+<h4>Step1 :Write the echo_skeleton.c file implementing the
+axis2_svc_skeleton.h</h4>
+
+<p>axis2_svc_skeleton.h header file has the axis2_svc_skeleton_ops_t
+operations struct which defines four function pointers to be implemented and
+assigned by a service skeleton.</p>
+
+<p>They are:-</p>
+<pre class="code">int (AXIS2_CALL * init) (axis2_svc_skeleton_t *svc_skeleton,
+                         axis2_env_t **env);
+
+axis2_om_node_t * (AXIS2_CALL* invoke)(axis2_svc_skeleton_t *svc_skeli, 
+                    axis2_env_t **env, axis2_om_node_t *node);
+
+axis2_om_node_t *(AXIS2_CALL* on_fault)(axis2_svc_skeleton_t *svc_skeli,
+                    axis2_env_t **env, axis2_om_node_t *node);
+
+int (AXIS2_CALL *free)(axis2_svc_skeleton_t *svc_skeli, 
+                       axis2_env_t **env);</pre>
+
+<p>Lets implement the above functions for echo service.</p>
+
+<p><i>/* Initialize the service */</i><br />
+int AXIS2_CALL<br />
+echo_init(axis2_svc_skeleton_t *svc_skeleton,<br />
+                        axis2_env_t **env)<br />
+{<br />
+    svc_skeleton-&gt;func_array = axis2_array_list_create(env, 0);<br />
+    <i>/* Add the implemented operation names of the service to  <br />
+     * the array list of functions <br />
+     */</i><br />
+    AXIS2_ARRAY_LIST_ADD(svc_skeleton-&gt;func_array, env, "echoString");<br
+/>
+    <i>/* Any initialization stuff of echo service should go here */</i><br />
+    <b>return</b> AXIS2_SUCCESS;<br />
+}<br />
+<br />
+<i>/*<br />
+ * This method invokes the right service method <br />
+ */</i><br />
+axis2_om_node_t* AXIS2_CALL<br />
+echo_invoke(axis2_svc_skeleton_t *svc_skeleton,<br />
+            axis2_env_t **env,<br />
+            axis2_om_node_t *node)<br />
+{<br />
+    <i>/* Invoke the business logic.<br />
+     * Depending on the function name invoke the correct impl method.<br />
+     * We have only echo in this sample, hence invoke echo method.<br />
+     * To see how to deal with multiple impl methods, have a look at the<br />
+     * math sample.<br />
+     */</i><br />
+    <b>return</b> axis2_echo_echo(env, node);<br />
+}<br />
+<br />
+<i>/* On fault, handle the fault */</i><br />
+axis2_om_node_t* AXIS2_CALL<br />
+echo_on_fault(axis2_svc_skeleton_t *svc_skeli, <br />
+              axis2_env_t **env, axis2_om_node_t *node)<br />
+{<br />
+   <i>/* Here we are just setting a simple error message inside an element <br
+/>
+    * called 'EchoServiceError' <br />
+    */</i><br />
+    axis2_om_node_t *error_node = NULL;<br />
+    axis2_om_node_t* text_node = NULL;<br />
+    axis2_om_element_t *error_ele = NULL;<br />
+    error_ele = axis2_om_element_create(env, node, "EchoServiceError", NULL, <br
+/>
+        &amp;error_node);<br />
+    AXIS2_OM_ELEMENT_SET_TEXT(error_ele, env, "Echo service failed ", <br />
+        text_node);<br />
+    <b>return</b> error_node;<br />
+}<br />
+<br />
+<i>/* Free the resources used */</i><br />
+int AXIS2_CALL<br />
+echo_free(axis2_svc_skeleton_t *svc_skeleton,<br />
+            axis2_env_t **env)<br />
+{<br />
+    <i>/* Free the function array */</i><br />
+    <b>if</b>(svc_skeleton-&gt;func_array)<br />
+    {<br />
+        AXIS2_ARRAY_LIST_FREE(svc_skeleton-&gt;func_array, env);<br />
+        svc_skeleton-&gt;func_array = NULL;<br />
+    }<br />
+    <br />
+    <i>/* Free the function array */</i><br />
+    <b>if</b>(svc_skeleton-&gt;ops)<br />
+    {<br />
+        AXIS2_FREE((*env)-&gt;allocator, svc_skeleton-&gt;ops);<br />
+        svc_skeleton-&gt;ops = NULL;<br />
+    }<br />
+    <br />
+    <i>/* Free the service skeleton */</i><br />
+    <b>if</b>(svc_skeleton)<br />
+    {<br />
+        AXIS2_FREE((*env)-&gt;allocator, svc_skeleton);<br />
+        svc_skeleton = NULL;<br />
+    }<br />
+<br />
+    <b>return</b> AXIS2_SUCCESS; <br />
+}<br />
+</p>
+
+<p>Now we can write the create function of the echo_service_skeleton as<br />
+follows.</p>
+
+<p><i>/*Create function */<br />
+</i> axis2_svc_skeleton_t *<br />
+axis2_echo_create(axis2_env_t **env)<br />
+{<br />
+    axis2_svc_skeleton_t *svc_skeleton = NULL;<br />
+    <i>/* Allocate memory for the structs */</i><br />
+    svc_skeleton = AXIS2_MALLOC((*env)-&gt;allocator, <br />
+        <b>sizeof</b>(axis2_svc_skeleton_t));<br />
+<br />
+    svc_skeleton-&gt;ops = AXIS2_MALLOC(<br />
+        (*env)-&gt;allocator, <b>sizeof</b>(axis2_svc_skeleton_ops_t));<br />
+<br />
+    <i>/* Assign function pointers */</i><br />
+    svc_skeleton-&gt;ops-&gt;free = echo_free;<br />
+    svc_skeleton-&gt;ops-&gt;init = echo_init;<br />
+    svc_skeleton-&gt;ops-&gt;invoke = echo_invoke;<br />
+    svc_skeleton-&gt;ops-&gt;on_fault = echo_on_fault;<br />
+<br />
+    <b>return</b> svc_skeleton;<br />
+}</p>
+
+<p></p>
+
+<p>In addition to the above functions every service must have the following
+two functions with exactly the same function signature as in xxx_skeleton.c
+file.</p>
+
+<p><br />
+</p>
+
+<p>AXIS2_EXPORT int <br />
+axis2_get_instance(axis2_svc_skeleton_t **inst,<br />
+                   axis2_env_t **env)<br />
+{<br />
+    *inst = axis2_echo_create(env);<br />
+    <b>if</b>(!(*inst))<br />
+    {<br />
+        <b>return</b> AXIS2_FAILURE;<br />
+    }<br />
+    <b>return</b> AXIS2_SUCCESS;<br />
+}<br />
+<br />
+AXIS2_EXPORT int <br />
+axis2_remove_instance(axis2_svc_skeleton_t *inst,<br />
+                      axis2_env_t **env)<br />
+{<br />
+    axis2_status_t status = AXIS2_FAILURE;<br />
+    <b>if</b> (inst)<br />
+    {<br />
+        status = AXIS2_SVC_SKELETON_FREE(inst, env);<br />
+    }<br />
+    <b>return</b> status;<br />
+}<br />
+</p>
+
+<p>Axis2/C engine can load the service dll, however, it needs to know which
+method to call. Since C does not have reflection, we need to have some dll
+exposed functions known to Axis2/C engine. <b>axis2_get_instance</b> and
+<b>axis2_remove_instance</b> are the two functions that need to be exposed
+from a service dll (or any other dll of Axis2/C engine). Axis2/C engine calls
+axis2_get_instance method, which creates a new service instance, an cast the
+return pointer to axis2_svc_skeleton interface.Then the interface methods can
+be called by Axis2/C engine.</p>
+
+<p><a id="Step2"></a></p>
+
+<h4>Step2 : Now we can write the echo service in a file echo.c</h4>
+
+<p><a id="Step3">axis2_om_node_t *<br />
+axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)<br />
+{<br />
+    axis2_om_node_t *text_parent_node = NULL;<br />
+    axis2_om_node_t *text_node = NULL;<br />
+    axis2_om_node_t *ret_node = NULL;<br />
+<br />
+    AXIS2_ENV_CHECK(env, NULL);<br />
+   <br />
+    <i>/* Expected request format is :-<br />
+     * &lt;ns1:echoString xmlns:ns1="http://localhost:9090/axis2/services/echo"&gt;<br
+/>
+     *      &lt;text&gt;echo5&lt;/text&gt;<br />
+     * &lt;/ns1:echoString&gt;<br />
+     */</i><br />
+    <b>if</b> (!node) <i>/* 'echoString' node */</i><br />
+    {<br />
+        AXIS2_ERROR_SET((*env)-&gt;error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL, AXIS2_FAILURE);<br
+/>
+        printf("Echo client ERROR: input parameter NULL\n");<br />
+        <b>return</b> NULL;<br />
+    }<br />
+<br />
+    text_parent_node = AXIS2_OM_NODE_GET_FIRST_CHILD(node, env);<br />
+    <b>if</b> (!text_parent_node) <i>/* 'text' node */</i><br />
+    {<br />
+        AXIS2_ERROR_SET((*env)-&gt;error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);<br
+/>
+        printf("Echo client ERROR: invalid XML in request\n");<br />
+        <b>return</b> NULL;<br />
+    }<br />
+    <br />
+    text_node = AXIS2_OM_NODE_GET_FIRST_CHILD(text_parent_node, env);<br />
+    <b>if</b> (!text_node) <i>/* actual text to echo */</i><br />
+    {<br />
+        AXIS2_ERROR_SET((*env)-&gt;error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);<br
+/>
+        printf("Echo client ERROR: invalid XML in request\n");<br />
+        <b>return</b> NULL;<br />
+    }<br />
+    <br />
+    <b>if</b> (AXIS2_OM_NODE_GET_NODE_TYPE(text_node, env) == AXIS2_OM_TEXT)<br
+/>
+    {<br />
+        axis2_om_text_t *text = (axis2_om_text_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(text_node, env);<br
+/>
+        <b>if</b>( text &amp;&amp; AXIS2_OM_TEXT_GET_VALUE(text , env))<br />
+        {<br />
+            axis2_char_t *text_str = AXIS2_OM_TEXT_GET_VALUE(text, env);<br />
+            printf("Echoing text value  %s \n", text_str);<br />
+            ret_node = build_om_programatically(env, text_str);<br />
+        }<br />
+    }<br />
+    <b>else</b><br />
+    {<br />
+        AXIS2_ERROR_SET((*env)-&gt;error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);<br
+/>
+        printf("Echo client ERROR: invalid XML in request\n");<br />
+        <b>return</b> NULL;<br />
+    }<br />
+        <br />
+    <b>return</b> ret_node;<br />
+}<br />
+<br />
+<i>/* Builds the response content */</i><br />
+axis2_om_node_t *<br />
+build_om_programatically(axis2_env_t **env, axis2_char_t *text)<br />
+{<br />
+    axis2_om_node_t *echo_om_node = NULL;<br />
+    axis2_om_element_t* echo_om_ele = NULL;<br />
+    axis2_om_node_t* text_om_node = NULL;<br />
+    axis2_om_element_t * text_om_ele = NULL;<br />
+    axis2_om_namespace_t *ns1 = NULL;<br />
+    <br />
+    ns1 = axis2_om_namespace_create (env, "http://localhost:9090/axis2/services/echo", "ns1");<br
+/>
+<br />
+    echo_om_ele = axis2_om_element_create(env, NULL, "echoString", ns1, &amp;echo_om_node);<br
+/>
+    <br />
+    text_om_ele = axis2_om_element_create(env, echo_om_node, "text", NULL, &amp;text_om_node);<br
+/>
+<br />
+    AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, text, text_om_node);<br />
+    <br />
+    <b>return</b> echo_om_node;<br />
+}<br />
+</a></p>
+
+<h4>Step3 :Write the services.xml file</h4>
+
+<p>Axis2/C uses "services.xml" to keep configurations for a Web Service. Each
+Web Service deployed in Axis2/C needs a "services.xml" containing the
+configurations. Note that services.xml has the same semantics as Axis2 Java's
+services.xml file. Only difference is that for class attributes instead of
+giving package qualified class name, we use dll name. services.xml for echo
+will be as follows.</p>
+<pre class="code">&lt;service name="echo"&gt;
+    &lt;parameter name="ServiceClass" locked="xsd:false"&gt;echo&lt;/parameter&gt;
+    &lt;description&gt;
+        This is a echo service
+    &lt;/description&gt;
+
+    &lt;operation name="echoString"&gt;
+        &lt;parameter name="wsamapping"&gt;
+            http://localhost:9090/axis2/services/echo/echoString
+        &lt;/parameter&gt;
+    &lt;/operation&gt;
+&lt;/service&gt;</pre>
+
+<p><em></em></p>
+
+<p>Name of the service will be the name of the Folder with the shared library
+and the services.xml , in this example case we will have a folder named echo
+in which we have the echo.dll (or libecho.so on Linux platform) and
+services.xml file.</p>
+
+<p>You can write a services.xml file to include a group of services instead
+of a single service. This makes management and deployment of a set of related
+services very easy. At runtime you can share information between these
+services within a single interaction using the axis2_svc_grp_ctx (Service
+Group Context ). If you hope to use this functionality, the services.xml file
+should have following format.<br />
+</p>
+<pre class="code">&lt;serviceGroup&gt;
+  &lt;service name="Service1"&gt;
+    &lt;!-- details for Service1 --&gt;
+  &lt;/service&gt;<br />  &lt;service name="Service2"&gt;
+    &lt;!-- details for Service2 --&gt;
+  &lt;/service&gt;
+  &lt;module ref="ModuleName" /&gt;
+  &lt;parameter name="serviceGroupParam1" locked="false"&gt;value 1&lt;/parameter&gt;
+&lt;/serviceGroup&gt;</pre>
+
+<p>Note : name of the service is a compulsory attribute</p>
+
+<p><a id="Step4"></a></p>
+
+<h4>Step4 :Create the Web Service Folder in services folder of the
+repository.</h4>
+
+<p>In Axis2/C , it is required to create a folder with the corresponding
+service/service group name which will contain the shared library (compiled
+service) and the services.xml file which describe the web service. So in this
+example case we will have a folder named echo which contain the services,xml
+file and echo dll.</p>
+
+<p><a id="deploy"></a></p>
+
+<h3>Deploy the Web Service</h3>
+
+<p>Deploying the service means putting the service folder to the services
+directory. At the moment the server has to be restarted for the service to be
+deployed since hot deployment has not yet been implemented.</p>
+<a id="Web_Service_Clients_Using_Axis2"></a>
+
+<h2>Web Service Clients UsingAxis2/C</h2>
+
+<p>Now let's see how we can write a Web Service Client to consume a Web
+Service.</p>
+
+<p>Web Services can be used to provide wide range of functionality to the
+users ranging from simple, less time consuming  operations such as
+"getStockQuote"  to time consuming business services. When we utilize (invoke
+using client applications) these Web Service we cannot use some simple
+generic invocation paradigm that suites all the timing complexities involved
+in the service operations. For example, if we use a single transport channel
+(such as HTTP) to invoke a Web Service with and IN-OUT operation that take
+long time to complete, then most of the time we may end up with "connection
+time outs". On the other hand, if there are simultaneous service invocations
+that  we need to perform from a single client application, then the use of a
+"blocking" client API will degrade the performance of the client application.
+Similarly there are various other consequences such as One-Way transports
+that come in to play when we need them. Let's try to analyze some common
+service invocation paradigms.</p>
+
+<p>Many Web service engines provide the users with a Blocking and
+Non-Blocking client APIs.</p>
+<ul>
+  <li><p style="margin-bottom: 0in"><b>Blocking API</b> -Once the service
+    invocation is called, the client application hangs and only gets control
+    back when the operation completes, after which client receives a response
+    or a fault. This is the simplest way of invoking Web Services and it also
+    suites many business situations.</p>
+  </li>
+  <li><b>Non-Blocking API</b>- This is a callback or polling based API, hence
+    once a service invocation is called, the client application immediately
+    gets the control back and the response is retrieved using the callback
+    object provided. This approach provides the flexibility to the client
+    application to invoke several Web Services simultaneously without
+    blocking the operation already invoked.</li>
+</ul>
+
+<p>Both these mechanisms work in the API level. Let's name the  asynchronous
+behavior that we can get using the <strong>Non-Blocking API</strong> as
+<b>API Level Asynchrony.</b></p>
+
+<p>Both these mechanisms use single transport connection to send the request
+and to receive the response. They severely lags the capability of using two
+transport connections for the request and the response (either One-Way of
+Two-Way). So both these mechanisms fail to address the problem of long
+running transactions (the transport connection may time-out before the
+operation completes). A possible solution would be to use <strong>two
+separate transport connections for request and response</strong>. The
+asynchronous behavior that we gain using this solution can be called
+<b>Transport Level Asynchrony</b>.</p>
+
+<p>By combining API Level Asynchrony &amp; Transport Level Asynchrony we can
+obtain four different invocation patterns for Web services as shown in the
+following table.</p>
+
+<p><a id="table1"></a></p>
+
+<table width="100%" border="1" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td><strong>API (Blocking/Non-Blocking)</strong></td>
+      <td><strong> Dual Transports (Yes/No)</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr>
+      <td>Blocking</td>
+      <td>No</td>
+      <td>Simplest and the familiar invocation pattern</td>
+    </tr>
+    <tr>
+      <td>Non-Blocking</td>
+      <td>No</td>
+      <td>Using callbacks or polling</td>
+    </tr>
+    <tr>
+      <td>Blocking</td>
+      <td>Yes</td>
+      <td>This is useful when the service operation is IN-OUT in nature but
+        the transport used is One-Way (e.g. SMTP)</td>
+    </tr>
+    <tr>
+      <td>Non-Blocking</td>
+      <td>Yes</td>
+      <td>This is can be used to gain the maximum asynchronous behavior. No
+        blocking in the API level and also in the transport level</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Axis2/C provides the user with all these possibilities to invoke Web
+Services.</p>
+
+<p>Below we describe how to write Web Services Clients using Axis2/C.</p>
+<a id="Writing_Web_Service_Clients_using_Axis2's_Primary_APIs"></a>
+
+<h3>Writing Web Service Clients Using Axis2's Primary APIs</h3>
+<a id="EchoBlockingClient"></a>
+
+<h4>echo_blocking Client</h4>
+
+<p>Axis2/C provides the user with several invocation patterns for Web
+Services, ranging from pure blocking single channel invocations to a
+non-blocking dual channel invocations. Let's first see how we can write a
+client to invoke "echo" operation of "echo" service using the simplest
+blocking invocation. The client code you need to write is as follows.</p>
+<pre>    
+    <span style="color: #24C113">/* Create EPR with given address */</span>
+    endpoint_ref = axis2_endpoint_ref_create(&amp;env, address);
+
+    <span style="color: #24C113">/* Setup options */</span>
+    options = axis2_options_create(&amp;env);
+    AXIS2_OPTIONS_SET_TO(options, &amp;env, endpoint_ref);
+
+    <span style="color: #24C113">/* Set the deploy folder */</span>
+    client_home = AXIS2_GETENV("AXIS2C_HOME");
+    if (!client_home)
+        client_home = "../../deploy";
+
+    <span style="color: #24C113">/* Create service client */</span>
+    svc_client = axis2_svc_client_create(&amp;env, client_home);
+    if (!svc_client)
+    {
+        printf("Error creating service client\n");
+        AXIS2_LOG_ERROR(env-&gt;log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+            " %d :: %s", env-&gt;error-&gt;error_number,
+            AXIS2_ERROR_GET_MESSAGE(env-&gt;error));
+    }
+
+    <span style="color: #24C113">/* Set service client options */</span>
+    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, &amp;env, options);    
+
+    <span style="color: #24C113">/* Build the SOAP request message payload using OM API.*/</span>
+    payload = build_om_payload_for_echo_svc(&amp;env);
+    
+    <span style="color: #24C113">/* Send request */</span>
+    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, &amp;env, payload);
+    
+    <span style="color: #24C113">/* Print result */</span>
+    if(ret_node)
+    {
+        axis2_char_t *om_str = NULL;
+        om_str = AXIS2_OM_NODE_TO_STRING(ret_node, &amp;env);
+        if (om_str)
+            printf("\nReceived OM : %s\n", om_str);
+        printf("\necho client invoke SUCCESSFUL!\n");
+    }
+    else
+    {
+        AXIS2_LOG_ERROR(env-&gt;log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+            " %d :: %s", env-&gt;error-&gt;error_number,
+            AXIS2_ERROR_GET_MESSAGE(env-&gt;error));
+        printf("echo client invoke FAILED!\n");
+    }</pre>
+
+<p>The comments in the above code explains the code. In simple terms, these
+are the steps:</p>
+<ol>
+  <li>Set up the options to be used in the invocation.</li>
+  <li>Create the service client.</li>
+  <li>Set the options to service client.</li>
+  <li>Build the XML payload to be sent out using OM.</li>
+  <li>Send payload and receive result XML as OM.</li>
+  <li>Consume result.</li>
+</ol>
+
+<p>Options can be used define the invocation parameters such as target
+endpoint, soap version, addressing parameters, etc.. When creating service
+client, the deployment folder has to be passed as a parameter. It is from the
+deploy folder, the configuration is picked up, using the axis2.xml file. The
+send_receive function of the service client sends the XML given as payload to
+the server side and returns the result received, basically this is the XML
+in/out model. Once the result is received, the user can consume the result in
+whichever the way (s)he wishes.</p>
+
+<a id="EchoNonBlockingClient"></a>
+<h4>echo_non_blocking Client</h4>
+
+<p>In the echo_blocking client once the "send_receive" function is called,
+the client is blocked till the operation is completed. This behavior is not
+desirable when there are many Web Service invocations to be done in a single
+client application or within a GUI. A solution would be to use a non-blocking
+API to invoke Web Services. Axis2/C provides a callback based non-blocking
+API for users.</p>
+
+<p>A sample client for this can be found under
+"Axis2CHome/samples/userguide/clients" with the name echo_non_blocking.c. The
+changes that user may have to do with respect to the "echo_blocking" client
+to make it non-blocking would be as follows:</p>
+<pre style="margin-bottom: 0.2in">AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, &amp;env, payload, callback);</pre>
+
+<p>Unlike "send_receive", "send_receive_non_blocking" accepts a callback
+struct in addtion to payload. Axis2/C client API provides a callback struct
+with the following associated functions:</p>
+<pre>axis2_status_t (AXIS2_CALL *
+on_complete)(
+    struct axis2_cllback *callback,
+    axis2_env_t **env);
+
+axis2_status_t (AXIS2_CALL *
+on_error)(
+    struct axis2_callback *callback,
+    axis2_env_t **env,
+    int exception);
+
+axis2_bool_t (AXIS2_CALL *
+get_complete)(
+    struct axis2_callback *callback,
+    axis2_env_t **env);</pre>
+
+<p>The user is expected to implement the "on_complete " and "on_error "
+functions and set them on the callback using the "set_on_complete" and
+"set_on_error" API calls. In the sample, on complete is implemented by
+"echo_callback_on_complete" function and is set on the callback struct creatd
+ad followed:</p>
+<pre style="margin-bottom: 0.2in">AXIS2_CALLBACK_SET_ON_COMPLETE(callback, echo_callback_on_complete);</pre>
+
+<p>Axis2/C engine calls the on_complete method once the Web Service response
+is received by the Axis2/C client API (that is service_client). This will
+eliminate the blocking nature of the Web Service invocations and provides the
+user with the flexibility to use non-blocking API for Web Service clients.</p>
+
+<p>Please have a look at the echo_non_blocking.c for more details.</p>
+
+<a id="EchoNonBlockingDualClient"></a>
+<h4>echo_non_blocking_dual Client</h4>
+
+<p>The solution provided by the non-blocking API has one limitation when it
+comes to  Web Service invocations which takes long time to complete. The
+limitation is due to the use of single transport connection to invoke the Web
+Service and to retrieve the response. In other words, client API provides a
+non blocking invocation mechanism for the users, but the request and the
+response comes in a single transport (Two-Way transport) connection (like
+HTTP). Long running Web Service invocations or Web Service invocations using
+One-Way transports (like SMTP) cannot be utilized by simply using a non
+blocking invocation.</p>
+
+<p>The trivial solution is to use separate transport connections (either
+One-Way or Two-Way) for the request and response. The next problem that needs
+to be solved is the correlation (correlating the request and the response).
+<a href="http://www.w3.org/2002/ws/addr/">WS-Addressing</a> provides a neat
+solution to this using &lt;wsa:MessageID&gt; and &lt;wsa:RelatesTo&gt;
+headers. Axis2/C provides support for addressing  based correlation mechanism
+and a complying client API to invoke Web Services with two transport
+connections.</p>
+
+<p>Users can select between blocking or non-blocking APIs for the Web Service
+clients with two transport connections. By simply using a boolean flag, the
+same API can be used to invoke Web Services (IN-OUT operations) using two
+separate transport connections. All that you have to do is to set
+"use_seperate_listner" to true in options:</p>
+<pre>AXIS2_OPTIONS_SET_USE_SEPERATE_LISTENER(options, &amp;env, AXIS2_TRUE);</pre>
+
+<p>In addtion to setting the use_seperate_listner to true, to use dual
+transports one has to"engage" addressing module.</p>
+
+<h5>Engaging Addressing on Server Side</h5>
+
+<p>To engage addressing module simply add a module reference for addressing
+in the "axis2.xml" configuration file. This can be done by adding the
+following line to "axis2.xml" file in the deploment folder.</p>
+<pre style="margin-bottom: 0.2in"> &lt;module ref="addressing"/&gt;</pre>
+
+<p>Note: Once you modify the "axis2.xml" file you have to restart the server.
+You also have to have the addressing module installed in the modules folder
+of the deployment folder. This is done by default when you make the
+installation.</p>
+
+<h5>Engaging Addressing on Client Side</h5>
+
+<p>There are two ways of doing that. <br />
+One way is to engage addressing globally. This can be done by following the
+same steps as done in the case of the server side, add module ref to axi2.xml
+and have the module installed in the modules folder of the deploy folder.</p>
+
+<p>The second method is to engage the module on service client using the
+service_client API.</p>
+<pre>AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, &amp;env, AXIS2_MODULE_ADDRESSING);</pre>
+
+<p>Once addressing is engaged, echo_non_blocking_dual client would work
+perfectly. Note that by default, Axis2/C comes with addressing enabled
+globally.</p>
+<a id="EchoBlockingDualClient"></a>
+<h4>echo_blocking_dual Client</h4>
+
+<p>This is again a Two-Way transport request/response client, but this time,
+we use a Blocking API in the client code. Sample code for this can be found
+in the "Axis2Home/samples/userguide/src/userguide/clients/" directory and the
+explanation is similar to the <a
+href="#EchoNonBlockingDualClient">EchoNonBlockingDualClient</a>, except that
+here we do not use a callback object to handle response. This is a very
+useful mechanism when the service invocation is IN-OUT in nature and the
+transports are One-Way (e.g. SMTP). For the sample client we use two HTTP
+connections for request and response.</p>
 </body>
 </html>
