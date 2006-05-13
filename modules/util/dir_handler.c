@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#ifndef S_ISDIR
+#   define S_ISDIR(m) ((m & S_IFMT) == S_IFDIR)
+#endif
  
 #include <axis2_dir_handler.h>
 #include <axis2_file.h>
@@ -22,6 +26,7 @@
 extern int AXIS2_ALPHASORT();
 
 int dir_select(struct dirent *entry);
+
 /**
  * List the dll files in the given service or module folder path
  * @param pathname path to your service or module directory
@@ -183,10 +188,16 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
 { 
     axis2_array_list_t *file_list = NULL;
     struct stat *buf = NULL;
-	int count = 1;
+    int count = 1;
     int i = 0;
-	struct dirent **files = NULL;
-	
+    struct dirent **files = NULL;
+/**FIXME:
+ * This magic number 500 was selected as a temperary solution. It has to be
+ * replaced with dinamic memory allocation. This will be done once the use of
+ * errno after getwcd() on Windows is figured out.
+ */
+    char cwd[500];
+
 	/*int dir_select();*/
     axis2_status_t status = AXIS2_FAILURE;
     
@@ -197,7 +208,10 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
 		return NULL;
 	}*/
     file_list = axis2_array_list_create(env, 0);
+	if (!getcwd(cwd, 500)) exit(1);
+	chdir(pathname);
 	count = AXIS2_SCANDIR(pathname, &files, dir_select, AXIS2_ALPHASORT);
+	chdir(cwd);
 	/* If no files found, make a non-selectable menu item */
 	if (count <= 0)
 	{		 
@@ -360,10 +374,14 @@ int file_select(struct dirent *entry)
 int dir_select(struct dirent *entry)
  
 {
+	struct stat stat_p;
+
+	if (-1 ==  stat (entry->d_name, &stat_p))
+		return (AXIS2_FALSE);
+
 	axis2_char_t *rindex(const axis2_char_t *s, int c);
- 
-	if ((strcmp(entry->d_name, ".")== 0) ||
-			(strcmp(entry->d_name, "..") == 0))
+
+	if ((entry->d_name[0] == '.') || (!S_ISDIR(stat_p.st_mode)))
     {
 		return (AXIS2_FALSE);
     }
