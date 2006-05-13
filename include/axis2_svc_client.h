@@ -477,19 +477,19 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
 		((svc_client)->ops->send_robust(svc_client, env, payload))
 
 #define AXIS2_SVC_CLIENT_SEND_ROBUST_WITH_OP_QNAME(svc_client, env, op_qname, payload) \
-		((svc_client)->ops->send_robust_with_operation(svc_client, env, op_qname, payload))
+		((svc_client)->ops->send_robust_with_op_qname(svc_client, env, op_qname, payload))
 
 #define AXIS2_SVC_CLIENT_FIRE_AND_FORGET(svc_client, env, payload) \
 		((svc_client)->ops->fire_and_forget(svc_client, env, payload))
 
 #define AXIS2_SVC_CLIENT_FIRE_AND_FORGET_WITH_OP_QNAME(svc_client, env, op_qname, payload) \
-		((svc_client)->ops->fire_and_forget_with_operation(svc_client, env, op_qname, payload))
+		((svc_client)->ops->fire_and_forget_with_op_qname(svc_client, env, op_qname, payload))
 
 #define AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload) \
 		((svc_client)->ops->send_receive(svc_client, env, payload))
 
 #define AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload) \
-		((svc_client)->ops->send_receive_with_operation(svc_client, env, op_qname, payload))
+		((svc_client)->ops->send_receive_with_op_qname(svc_client, env, op_qname, payload))
 
 #define AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback) \
 		((svc_client)->ops->send_receive_non_blocking(svc_client, env, payload, callback))
