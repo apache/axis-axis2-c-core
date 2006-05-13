@@ -152,8 +152,6 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     axis2_module_builder_impl_t *builder_impl = NULL;
     axis2_om_element_t *module_element = NULL;
     axis2_om_node_t *module_node = NULL;
-    axis2_om_attribute_t *module_name_att = NULL;
-    axis2_qname_t *qattname = NULL;
     axis2_qname_t *qdllname = NULL;
     axis2_qname_t *qparamst = NULL;
     axis2_qname_t *qinflowst = NULL;

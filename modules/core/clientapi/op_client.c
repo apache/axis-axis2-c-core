@@ -63,9 +63,7 @@ axis2_op_client_worker_func(axis2_thread_t *thd, void *data);
 
 /** private function prototypes */
 static void axis2_op_client_init_ops(axis2_op_client_t *op_client);
-static axis2_msg_ctx_t* axis2_op_client_invoke_blocking(axis2_op_client_impl_t *op_client_impl,
-															axis2_env_t **env,
-															axis2_msg_ctx_t *mc);
+
 /** public function prototypes */
 axis2_status_t AXIS2_CALL 
 axis2_op_client_set_options(struct axis2_op_client *op_client,
@@ -601,13 +599,6 @@ static void axis2_op_client_init_ops(axis2_op_client_t *op_client)
 	op_client->ops->get_operation_context = axis2_op_client_get_operation_context;
     op_client->ops->set_callback_recv = axis2_op_client_set_callback_recv;
 	op_client->ops->free = axis2_op_client_free;
-}
-
-static axis2_msg_ctx_t* axis2_op_client_invoke_blocking(axis2_op_client_impl_t *op_client_impl, 
-										axis2_env_t **env,
-										axis2_msg_ctx_t *mc)
-{
-	return NULL;
 }
 
 void * AXIS2_THREAD_FUNC

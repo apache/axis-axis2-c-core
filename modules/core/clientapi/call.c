@@ -613,8 +613,6 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
             axis2_char_t *svc_name = NULL, *temp = NULL;
             axis2_qname_t *svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
             axis2_qname_t *op_qname = AXIS2_OP_GET_QNAME(op, env);
-            axis2_qname_t *transport_qname = AXIS2_TRANSPORT_IN_DESC_GET_QNAME(call_impl->listener_transport, env);
-            axis2_endpoint_ref_t *epr = NULL;
             
             temp = AXIS2_STRACAT(AXIS2_QNAME_GET_LOCALPART(svc_qname, env), "/", env);
             svc_name = AXIS2_STRACAT(temp, AXIS2_QNAME_GET_LOCALPART(op_qname, env), env);

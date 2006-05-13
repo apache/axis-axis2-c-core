@@ -324,7 +324,6 @@ int create_soap_fault(axis2_env_t **env)
     axis2_soap_envelope_t *soap_envelope= NULL;
     axis2_soap_body_t *soap_body = NULL;
     axis2_soap_fault_t *soap_fault = NULL;
-    axis2_soap_fault_detail_t *fault_detail = NULL;
     axis2_xml_writer_t *xml_writer = NULL;
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;

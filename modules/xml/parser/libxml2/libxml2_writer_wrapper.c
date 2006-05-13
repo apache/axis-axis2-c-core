@@ -1144,7 +1144,7 @@ axis2_libxml2_writer_wrapper_write_default_namespace
     sprintf(xmlns,"xmlns");
     
     status = xmlTextWriterWriteAttribute(writer_impl->xml_writer,
-                   xmlns , BAD_CAST namespace_uri);
+                   (const xmlChar *)xmlns , BAD_CAST namespace_uri);
     
     if(NULL != xmlns)
     {

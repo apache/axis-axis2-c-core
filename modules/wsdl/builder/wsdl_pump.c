@@ -658,7 +658,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
     int soap_op_binding_id = 0;
     void *soap = NULL;
     axis2_char_t *action = NULL;
-    int style = 0;
+    axis2_wsdl4c_style_t style = 0;
 	axis2_char_t *str_style = NULL;
     axis2_qname_t *binding_op_qname = NULL;
     int nbindings = 0;
@@ -712,7 +712,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
         if(AXIS2_TRUE == axis2_wsdl4c_soap_is_soap_body(soap, bindings[i]))
         {
             axis2_wsdl_ext_soap_body_t *soap_body = NULL;
-            axis2_wsdl4c_style_t use = 0;
+            axis2_wsdl4c_encoding_t use = 0;
             axis2_char_t *nsp = NULL;
 			axis2_char_t *str_use = NULL;
             axis2_char_t *encoding_style = NULL;
@@ -779,7 +779,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
         if(AXIS2_TRUE == axis2_wsdl4c_soap_is_soap_body(soap, bindings[i]))
         {
             axis2_wsdl_ext_soap_body_t *soap_body = NULL;
-            axis2_wsdl4c_style_t use = 0;
+            axis2_wsdl4c_encoding_t use = 0;
 			axis2_char_t *str_use = NULL;
             axis2_char_t *nsp = NULL;
             axis2_char_t *encoding_style = NULL;
@@ -836,7 +836,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
         if(AXIS2_TRUE == axis2_wsdl4c_soap_is_soap_body(soap, bindings[i]))
         {
             axis2_wsdl_ext_soap_body_t *soap_body = NULL;
-            axis2_wsdl4c_style_t use = 0;
+            axis2_wsdl4c_encoding_t use = 0;
 			axis2_char_t *str_use = NULL;
             axis2_char_t *nsp = NULL;
             axis2_char_t *encoding_style;

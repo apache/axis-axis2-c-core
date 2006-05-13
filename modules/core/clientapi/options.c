@@ -1179,7 +1179,7 @@ axis2_options_set_soap_version(struct axis2_options *options,
                                     int soap_version)
 {
     axis2_options_impl_t *options_impl = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
 	options_impl = AXIS2_INTF_TO_IMPL(options);
     

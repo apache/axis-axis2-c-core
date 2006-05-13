@@ -174,10 +174,8 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
                             axis2_char_t *soap_content_type)
 {
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_char_t *encoding_string = NULL;
     axis2_char_t *header_value = NULL;
     axis2_char_t *content_id_string = NULL;
-    axis2_data_handler_t *data_handler = NULL;
 	axis2_mime_body_part_t *root_mime_body_part = NULL;
     axis2_byte_t *output_stream_start = NULL;
     int output_stream_start_size = 0;
@@ -431,7 +429,7 @@ axis2_write_body_part (axis2_mime_output_t *mime_output, axis2_env_t **env,
     if (!byte_stream)
     {
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
+        return AXIS2_FAILURE;
     }
 
     byte_stream[0] = AXIS2_CRLF[0];

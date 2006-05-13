@@ -481,4 +481,5 @@ axis2_soap_fault_reason_get_soap_version(axis2_soap_fault_reason_t *fault_reason
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     fault_reason_impl = AXIS2_INTF_TO_IMPL(fault_reason);
     return fault_reason_impl->soap_version;
-}                                         
+}
+

@@ -1444,14 +1444,12 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
                 } 
                 /*else 
                 {
-                    /**
                      * These handlers will go to op's handler chains , since 
                      * the module try to add handlres to both sytem predefined
                      * phases and user defined phase so global module can do 
                      * that. here the global module are the module which are
                      * reffred by axis2.xml
-                     */
-                /*}*/
+                }*/
             }
         }
     }

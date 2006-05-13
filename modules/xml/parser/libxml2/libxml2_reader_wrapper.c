@@ -847,7 +847,7 @@ axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix
     if(!prefix || AXIS2_STRCMP(prefix, "" ) == 0)
         return NULL;
     
-    return (axis2_char_t *)xmlTextReaderLookupNamespace(parser_impl->reader, prefix);        
+    return (axis2_char_t *)xmlTextReaderLookupNamespace(parser_impl->reader, (const xmlChar *)prefix);        
 }                                                                   
 
 axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axis2_xml_reader_t *parser,

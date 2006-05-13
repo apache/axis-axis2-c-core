@@ -198,13 +198,11 @@ axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv,
                             axis2_msg_ctx_t *msg_ctx,
                             void *callback_recv_param)
 {
-    axis2_callback_recv_t *callback_recv = NULL;
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
     axis2_relates_to_t *relates_to = NULL;
     axis2_msg_info_headers_t *msg_info_headers = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    printf("axis2_callback_recv_receive\n");
     
     callback_recv_impl = AXIS2_INTF_TO_IMPL(msg_recv->derived);
     

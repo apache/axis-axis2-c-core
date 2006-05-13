@@ -401,4 +401,5 @@ axis2_soap_fault_sub_code_get_soap_version
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     subcode_impl = AXIS2_INTF_TO_IMPL(fault_sub_code);    
     return subcode_impl->soap_version;
-}                 
+}
+

@@ -9,7 +9,7 @@
   />
 </head>
 
-<body>
+<body xml:lang="en">
 <h1>Axis2/C User's Guide</h1>
 
 <h2>Content</h2>
@@ -91,11 +91,10 @@ now delivers the following key features:</p>
   <li><p style="margin-bottom: 0in;"><strong>AXIOM/C</strong> Axis2/C comes
     with its own light-weight object model for XML, AXIOM/C which is the C
     implementation of <a
-    href="http://ws.apache.org/axis2/0_93/OMTutorial.html">AXIOM</a>.</p>
+    href="http://ws.apache.org/commons/axiom/OMTutorial.html">AXIOM</a>.</p>
   </li>
   <li><p style="margin-bottom: 0in;"><strong>MEP Support</strong> - Support
-    Message Exchange Patterns (MEP s) with in-built support for basic MEP s
-    defined in WSDL 2.0.</p>
+    Message Exchange Patterns (MEP s)</p>
   </li>
   <li><p style="margin-bottom: 0in;"><strong>Flexibility</strong> - The
     Axis2/C architecture gives the developer complete freedom to insert
@@ -675,8 +674,8 @@ send_receive function of the service client sends the XML given as payload to
 the server side and returns the result received, basically this is the XML
 in/out model. Once the result is received, the user can consume the result in
 whichever the way (s)he wishes.</p>
-
 <a id="EchoNonBlockingClient"></a>
+
 <h4>echo_non_blocking Client</h4>
 
 <p>In the echo_blocking client once the "send_receive" function is called,
@@ -693,11 +692,11 @@ to make it non-blocking would be as follows:</p>
 <pre style="margin-bottom: 0.2in">AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, &amp;env, payload, callback);</pre>
 
 <p>Unlike "send_receive", "send_receive_non_blocking" accepts a callback
-struct in addtion to payload. Axis2/C client API provides a callback struct
+struct in addition to payload. Axis2/C client API provides a callback struct
 with the following associated functions:</p>
 <pre>axis2_status_t (AXIS2_CALL *
 on_complete)(
-    struct axis2_cllback *callback,
+    struct axis2_callback *callback,
     axis2_env_t **env);
 
 axis2_status_t (AXIS2_CALL *
@@ -714,8 +713,8 @@ get_complete)(
 <p>The user is expected to implement the "on_complete " and "on_error "
 functions and set them on the callback using the "set_on_complete" and
 "set_on_error" API calls. In the sample, on complete is implemented by
-"echo_callback_on_complete" function and is set on the callback struct creatd
-ad followed:</p>
+"echo_callback_on_complete" function and is set on the callback struct
+created ad followed:</p>
 <pre style="margin-bottom: 0.2in">AXIS2_CALLBACK_SET_ON_COMPLETE(callback, echo_callback_on_complete);</pre>
 
 <p>Axis2/C engine calls the on_complete method once the Web Service response
@@ -724,8 +723,8 @@ eliminate the blocking nature of the Web Service invocations and provides the
 user with the flexibility to use non-blocking API for Web Service clients.</p>
 
 <p>Please have a look at the echo_non_blocking.c for more details.</p>
-
 <a id="EchoNonBlockingDualClient"></a>
+
 <h4>echo_non_blocking_dual Client</h4>
 
 <p>The solution provided by the non-blocking API has one limitation when it
@@ -751,17 +750,17 @@ connections.</p>
 clients with two transport connections. By simply using a boolean flag, the
 same API can be used to invoke Web Services (IN-OUT operations) using two
 separate transport connections. All that you have to do is to set
-"use_seperate_listner" to true in options:</p>
+"use_separate_listener" to true in options:</p>
 <pre>AXIS2_OPTIONS_SET_USE_SEPERATE_LISTENER(options, &amp;env, AXIS2_TRUE);</pre>
 
-<p>In addtion to setting the use_seperate_listner to true, to use dual
+<p>In addition to setting the use_separate_listener to true, to use dual
 transports one has to"engage" addressing module.</p>
 
 <h5>Engaging Addressing on Server Side</h5>
 
 <p>To engage addressing module simply add a module reference for addressing
 in the "axis2.xml" configuration file. This can be done by adding the
-following line to "axis2.xml" file in the deploment folder.</p>
+following line to "axis2.xml" file in the deployment folder.</p>
 <pre style="margin-bottom: 0.2in"> &lt;module ref="addressing"/&gt;</pre>
 
 <p>Note: Once you modify the "axis2.xml" file you have to restart the server.
@@ -784,6 +783,7 @@ service_client API.</p>
 perfectly. Note that by default, Axis2/C comes with addressing enabled
 globally.</p>
 <a id="EchoBlockingDualClient"></a>
+
 <h4>echo_blocking_dual Client</h4>
 
 <p>This is again a Two-Way transport request/response client, but this time,

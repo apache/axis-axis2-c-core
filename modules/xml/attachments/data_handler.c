@@ -300,12 +300,6 @@ axis2_data_handler_write_to(axis2_data_handler_t *data_handler, axis2_env_t **en
     if (data_handler_impl->file_name)
     {
         FILE *f = NULL;
-        axis2_byte_t *byte_stream = NULL;
-        axis2_byte_t *temp_byte_stream = NULL;
-        axis2_byte_t *read_stream = NULL;
-        int byte_stream_size = 0;
-        int temp_byte_stream_size = 0;
-        int read_stream_size = 0;
         int count = 0;
         
         f = fopen(data_handler_impl->file_name, "wb");

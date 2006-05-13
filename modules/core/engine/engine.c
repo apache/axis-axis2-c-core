@@ -342,7 +342,6 @@ axis2_engine_receive(struct axis2_engine *engine,
     axis2_op_t *op = NULL;
     axis2_array_list_t *pre_calculated_phases = NULL;
     axis2_array_list_t *op_specific_phases = NULL;
-    axis2_soap_envelope_t *soap_envelope = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -974,7 +973,6 @@ axis2_status_t axis2_engine_check_must_understand_headers(axis2_env_t **env,
     axis2_soap_header_t *soap_header = NULL;
     axis2_hash_t *header_block_ht = NULL;
     axis2_hash_index_t *hash_index = NULL;
-    axis2_qname_t *wsa_qname = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);

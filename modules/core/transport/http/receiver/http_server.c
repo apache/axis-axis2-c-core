@@ -170,7 +170,7 @@ axis2_http_server_init(axis2_transport_receiver_t *server, axis2_env_t **env,
     server_impl = AXIS2_INTF_TO_IMPL(server);
 	
 	server_impl->conf_ctx = conf_ctx;
-    param = (axis2_char_t*)AXIS2_PARAM_CONTAINER_GET_PARAM(
+    param = (axis2_param_t*)AXIS2_PARAM_CONTAINER_GET_PARAM(
 						in_desc->param_container, env, "port");
     if(NULL != param)
     {

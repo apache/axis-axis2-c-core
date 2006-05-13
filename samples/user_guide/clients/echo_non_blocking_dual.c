@@ -98,6 +98,8 @@ int main(int argc, char** argv)
 
     /* Set service client options */
     AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, &env, options);    
+    
+    AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, &env, AXIS2_MODULE_ADDRESSING);  
 
     /* Build the SOAP request message payload using OM API.*/
     payload = build_om_payload_for_echo_svc(&env);
