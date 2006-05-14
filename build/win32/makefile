@@ -392,10 +392,12 @@ axis2_client_notify:
 
 axis2_client_mtom:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\mtom\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:mtom.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_ATTACHMENTS).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:mtom.exe 
 	del *.obj
 	
 	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
+      mkdir $(AXIS2_BINS)\samples\resources 
+	xcopy $(AXIS2_SOURCE_DIR)\samples\client\mtom\resources $(AXIS2_BINS)\samples\resources 
 
 	copy mtom.exe $(AXIS2_BINS)\samples
 	del mtom.exe
@@ -501,9 +503,8 @@ mv_dist:
 	xcopy /E /I $(AXIS2_INSTALL_DIR) ..\axis2c-bin-$(RELEASE_VER)-win32
 	rmdir /S /Q $(AXIS2_INSTALL_DIR)
 
-all: clean_make_dir clean deploy axis2_win axis2_util axis2_parser axis2_attachments axis2_om axis2_soap axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_notify axis2_client_userguide copy_include clean_make_dir 
+all: clean_make_dir clean deploy axis2_win axis2_util axis2_parser axis2_attachments axis2_om axis2_soap axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_notify axis2_client_mtom axis2_client_userguide copy_include clean_make_dir 
  
-
 install: all
 
 dist: all axis2_apache_module copy_extra copy_samples mv_dist
