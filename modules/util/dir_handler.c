@@ -379,8 +379,6 @@ int dir_select(struct dirent *entry)
 	if (-1 ==  stat (entry->d_name, &stat_p))
 		return (AXIS2_FALSE);
 
-	axis2_char_t *rindex(const axis2_char_t *s, int c);
-
 	if ((entry->d_name[0] == '.') || (!S_ISDIR(stat_p.st_mode)))
     {
 		return (AXIS2_FALSE);
