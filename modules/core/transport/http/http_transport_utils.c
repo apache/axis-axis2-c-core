@@ -199,7 +199,7 @@ axis2_http_transport_utils_process_http_post_request
         if (mime_boundary)
         {
             axis2_char_t *buffer = NULL;
-            int size = 1024;
+            int size = 1024 * 1024;
             int len = 0;
             axis2_char_t *root_mime = NULL;
             int root_mime_len = 0;

@@ -16,6 +16,7 @@
  
 #include <axis2_data_handler.h>
 #include <stdio.h>
+#include <sys/stat.h>
 
 typedef struct axis2_data_handler_impl
 {
@@ -185,7 +186,12 @@ axis2_data_handler_read_from(axis2_data_handler_t *data_handler, axis2_env_t **e
             return AXIS2_FAILURE;
         
         do {
-            read_stream_size = 1024;
+            struct stat stat_p;
+            if ( -1 ==  stat (data_handler_impl->file_name, &stat_p))
+            {
+                return AXIS2_FAILURE;
+            }
+            read_stream_size = stat_p.st_size;
             read_stream = AXIS2_MALLOC((*env)->allocator, (read_stream_size) * sizeof(axis2_byte_t));
             if (!read_stream)
             {
@@ -197,7 +203,7 @@ axis2_data_handler_read_from(axis2_data_handler_t *data_handler, axis2_env_t **e
                 }
                 return AXIS2_FAILURE;
             }
-            count = fread(read_stream, 1, 1024, f);
+            count = fread(read_stream, 1, read_stream_size, f);
             if (ferror(f) != 0)
             {
                 /*TODO : need to set the correct error code */
