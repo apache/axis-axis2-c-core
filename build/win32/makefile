@@ -90,7 +90,7 @@ AXIS2_INCP = /I$(AXIS2_SOURCE_DIR)\modules\util /I$(AXIS2_SOURCE_DIR)\modules\xm
 
  
 CC = cl.exe 
-CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT" /w /nologo
+CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT" /D "AXIS2_SVR_MULTI_THREADED" /w /nologo
 CFLAGS = $(CFLAGS) $(AXIS2_INCP) $(GUTHTHILA_INCP) $(APACHE_INCP)
 
 
@@ -239,7 +239,7 @@ axis2_services_echo:
 	copy echo.dll $(AXIS2_SERVICES)\echo
 
 	del *.dll
-
+	del *.exp
 	del *.lib
 	
 	copy $(AXIS2_SOURCE_DIR)\samples\server\echo\services.xml $(AXIS2_SERVICES)\echo
@@ -275,6 +275,50 @@ axis2_services_math:
 	
 	copy $(AXIS2_SOURCE_DIR)\samples\server\math\services.xml $(AXIS2_SERVICES)\math
 
+axis2_services_mtom:
+	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\mtom  $(AXIS2_SOURCE_DIR)\samples\server\mtom\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:mtom.dll  
+	del *.obj
+	
+	if not exist $(AXIS2_SERVICES)\mtom mkdir $(AXIS2_SERVICES)\mtom
+
+	copy mtom.dll $(AXIS2_SERVICES)\mtom
+
+	del *.dll
+	del *.exp
+	del *.lib
+	
+	copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\services.xml $(AXIS2_SERVICES)\mtom
+
+axis2_services_sg_math:
+	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\sg_math  $(AXIS2_SOURCE_DIR)\samples\server\sg_math\add.c $(AXIS2_SOURCE_DIR)\samples\server\sg_math\add_skeleton.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:add.dll  
+	del *.obj
+
+	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\sg_math  $(AXIS2_SOURCE_DIR)\samples\server\sg_math\div.c $(AXIS2_SOURCE_DIR)\samples\server\sg_math\div_skeleton.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:div.dll  
+	del *.obj
+	
+	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\sg_math  $(AXIS2_SOURCE_DIR)\samples\server\sg_math\sub.c $(AXIS2_SOURCE_DIR)\samples\server\sg_math\sub_skeleton.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:sub.dll  
+	del *.obj
+	
+	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\sg_math  $(AXIS2_SOURCE_DIR)\samples\server\sg_math\mul.c $(AXIS2_SOURCE_DIR)\samples\server\sg_math\mul_skeleton.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:mul.dll  
+	del *.obj
+	
+	if not exist $(AXIS2_SERVICES)\sg_math mkdir $(AXIS2_SERVICES)\sg_math
+
+	copy *.dll $(AXIS2_SERVICES)\sg_math\
+
+	del *.dll
+	del *.exp
+	del *.lib
+	
+	copy $(AXIS2_SOURCE_DIR)\samples\server\sg_math\services.xml $(AXIS2_SERVICES)\sg_math
+
+
+
 axis2_mod_addr:
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\mod_addr\*.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:axis2_mod_addr.dll  /IMPLIB:axis2_mod_addr.lib
@@ -285,7 +329,7 @@ axis2_mod_addr:
 	copy axis2_mod_addr.dll $(AXIS2_MODULES)\addressing\
 
 	del *.dll
-
+	
 	del *.lib
 	
 	copy $(AXIS2_SOURCE_DIR)\modules\mod_addr\module.xml $(AXIS2_MODULES)\addressing
@@ -299,7 +343,7 @@ axis2_apache_module:
 	copy mod_axis2.lib $(AXIS2_LIBS)\
 
 	del *.dll
-
+	del *.exp
 	del *.lib
 	
 axis2_client_math:
@@ -314,7 +358,7 @@ axis2_client_math:
 	del math.exp
 
 axis2_client_echo:
-	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\echo\*.c /c
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\echo\echo.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo.exe 
 	del *.obj
 	
@@ -346,7 +390,53 @@ axis2_client_notify:
 	del notify.exe
 	del notify.exp
 
+axis2_client_mtom:
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\mtom\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:mtom.exe 
+	del *.obj
+	
+	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
 
+	copy mtom.exe $(AXIS2_BINS)\samples
+	del mtom.exe
+	del mtom.exp
+
+axis2_client_userguide:
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_blocking.exe 
+	del *.obj
+	
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_non_blocking.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_non_blocking.exe 
+	del *.obj
+
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_addr.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_blocking_addr.exe 
+	del *.obj
+
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_rest.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_rest.exe 
+	del *.obj
+
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_dual.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_blocking_dual.exe 
+	del *.obj
+
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_non_blocking_dual.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_non_blocking_dual.exe 
+	del *.obj
+
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_soap11.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_blocking_soap11.exe 
+	del *.obj
+	
+	
+	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
+
+	copy *.exe $(AXIS2_BINS)\samples
+	del *.exe
+	
+	
 copy_extra:
 	copy $(AXIS2_SOURCE_DIR)\INSTALL $(AXIS2_INSTALL_DIR)
 	copy $(AXIS2_SOURCE_DIR)\LICENSE $(AXIS2_INSTALL_DIR)
@@ -358,8 +448,9 @@ copy_samples:
 	if not exist $(AXIS2_INSTALL_DIR)\samples\client mkdir $(AXIS2_INSTALL_DIR)\samples\client
 
 	if not exist $(AXIS2_INSTALL_DIR)\samples\client\echo mkdir $(AXIS2_INSTALL_DIR)\samples\client\echo
-	copy $(AXIS2_SOURCE_DIR)\samples\client\echo\*.c $(AXIS2_INSTALL_DIR)\samples\client\echo
-	copy $(AXIS2_SOURCE_DIR)\samples\client\echo\*.h $(AXIS2_INSTALL_DIR)\samples\client\echo
+	copy $(AXIS2_SOURCE_DIR)\samples\client\echo\echo.c $(AXIS2_INSTALL_DIR)\samples\client\echo
+	copy $(AXIS2_SOURCE_DIR)\samples\client\echo\README.txt $(AXIS2_INSTALL_DIR)\samples\client\echo
+	
 
 	if not exist $(AXIS2_INSTALL_DIR)\samples\client\math mkdir $(AXIS2_INSTALL_DIR)\samples\client\math
 	copy $(AXIS2_SOURCE_DIR)\samples\client\math\*.c $(AXIS2_INSTALL_DIR)\samples\client\math
@@ -371,6 +462,12 @@ copy_samples:
 
 	if not exist $(AXIS2_INSTALL_DIR)\samples\client\notify mkdir $(AXIS2_INSTALL_DIR)\samples\client\notify
 	copy $(AXIS2_SOURCE_DIR)\samples\client\notify\*.c $(AXIS2_INSTALL_DIR)\samples\client\notify
+
+	if not exist $(AXIS2_INSTALL_DIR)\samples\client\mtom\resources mkdir $(AXIS2_INSTALL_DIR)\samples\client\mtom\resources
+	copy $(AXIS2_SOURCE_DIR)\samples\client\mtom\*.c $(AXIS2_INSTALL_DIR)\samples\client\mtom
+	copy $(AXIS2_SOURCE_DIR)\samples\client\mtom\resources\*.jpg $(AXIS2_INSTALL_DIR)\samples\client\mtom\resources
+
+	xcopy /E /I $(AXIS2_SOURCE_DIR)\samples\user_guide $(AXIS2_INSTALL_DIR)\samples
 
 	if not exist $(AXIS2_INSTALL_DIR)\samples\server mkdir $(AXIS2_INSTALL_DIR)\samples\server
 
@@ -384,18 +481,27 @@ copy_samples:
 	copy $(AXIS2_SOURCE_DIR)\samples\server\math\*.h $(AXIS2_INSTALL_DIR)\samples\server\math
 	copy $(AXIS2_SOURCE_DIR)\samples\server\math\*.xml $(AXIS2_INSTALL_DIR)\samples\server\math
 
-	
 	if not exist $(AXIS2_INSTALL_DIR)\samples\server\notify mkdir $(AXIS2_INSTALL_DIR)\samples\server\notify
 	copy $(AXIS2_SOURCE_DIR)\samples\server\notify\*.c $(AXIS2_INSTALL_DIR)\samples\server\notify
 	copy $(AXIS2_SOURCE_DIR)\samples\server\notify\*.h $(AXIS2_INSTALL_DIR)\samples\server\notify
 	copy $(AXIS2_SOURCE_DIR)\samples\server\notify\*.xml $(AXIS2_INSTALL_DIR)\samples\server\notify
+
+	if not exist $(AXIS2_INSTALL_DIR)\samples\server\sg_math mkdir $(AXIS2_INSTALL_DIR)\samples\server\sg_math
+	copy $(AXIS2_SOURCE_DIR)\samples\server\sg_math\*.c $(AXIS2_INSTALL_DIR)\samples\server\sg_math
+	copy $(AXIS2_SOURCE_DIR)\samples\server\sg_math\*.h $(AXIS2_INSTALL_DIR)\samples\server\sg_math
+	copy $(AXIS2_SOURCE_DIR)\samples\server\sg_math\*.xml $(AXIS2_INSTALL_DIR)\samples\server\sg_math
+
+	if not exist $(AXIS2_INSTALL_DIR)\samples\server\mtom mkdir $(AXIS2_INSTALL_DIR)\samples\server\mtom
+	copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\*.c $(AXIS2_INSTALL_DIR)\samples\server\mtom
+	copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\*.h $(AXIS2_INSTALL_DIR)\samples\server\mtom
+	copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\*.xml $(AXIS2_INSTALL_DIR)\samples\server\mtom
 
 mv_dist:
 	if exist ..\axis2c-bin-$(RELEASE_VER)-win32 rmdir /S /Q ..\axis2c-bin-$(RELEASE_VER)-win32
 	xcopy /E /I $(AXIS2_INSTALL_DIR) ..\axis2c-bin-$(RELEASE_VER)-win32
 	rmdir /S /Q $(AXIS2_INSTALL_DIR)
 
-all: clean_make_dir clean deploy axis2_win axis2_util axis2_parser axis2_attachments axis2_om axis2_soap axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server axis2_services_echo axis2_services_math axis2_services_notify axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_notify copy_include clean_make_dir 
+all: clean_make_dir clean deploy axis2_win axis2_util axis2_parser axis2_attachments axis2_om axis2_soap axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_notify axis2_client_userguide copy_include clean_make_dir 
  
 
 install: all
