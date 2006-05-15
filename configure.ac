@@ -20,6 +20,7 @@ AC_PROG_MAKE_SET
 dnl Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_LIB(cutest, CuTestInit)
+AC_CHECK_LIB(z, inflate)
 
 #CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
@@ -257,6 +258,7 @@ AC_CONFIG_FILES([Makefile \
     modules/xml/om/Makefile \
     modules/xml/attachments/Makefile \
     modules/util/Makefile \
+    modules/util/minizip/Makefile \
     modules/platforms/unix/Makefile \
     modules/wsdl/Makefile \
     modules/wsdl/woden/Makefile \
