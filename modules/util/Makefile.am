@@ -1,5 +1,8 @@
 TESTS =
+SUBDIRS=minizip
 lib_LTLIBRARIES = libaxis2_util.la
+
+libaxis2_util_la_LIBADD = minizip/libaxis2_minizip.la 
 
 libaxis2_util_la_SOURCES = hash.c \
                         allocator.c \
@@ -26,7 +29,8 @@ libaxis2_util_la_SOURCES = hash.c \
 						param_container.c \
 						dll_desc.c\
 						url.c\
-                        stack.c
+                        stack.c 
+
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/util \
