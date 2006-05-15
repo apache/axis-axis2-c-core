@@ -108,6 +108,8 @@ extern "C"
 #include <sys/types.h>
 #include "axis2_uuid_gen_unix.h" /* uuid_gen unix implementation */
 #include <netinet/tcp.h>    /* TCP_NODELAY */
+# include <utime.h>
+
 
 /* for file access handling */
 #include <unistd.h>
@@ -178,7 +180,7 @@ extern "C"
 #define AXIS2_PATH_SEP_STR "/"
 #define AXIS2_LIB_PREFIX "lib"
 #define AXIS2_LIB_SUFFIX ".so"
-
+#define AXIS2_AAR_SUFFIX ".aar"
 
 /**
  * Platform specific time

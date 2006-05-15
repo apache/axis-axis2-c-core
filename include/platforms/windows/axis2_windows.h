@@ -43,6 +43,10 @@ extern "C"
 #define _WINSOCKAPI_ /* Prevent inclusion of winsock.h in windows.h */
 #include <windows.h>
 
+/*for minizip uncompression library */
+# include <direct.h>
+
+
 /*for file access check*/
 #include <io.h>
 #include <sys/stat.h>
@@ -56,6 +60,11 @@ extern "C"
 #include <sys/timeb.h>
 /* get opt */
 #include "axis2_getopt_windows.h"
+
+/* for minizip uncompression library */
+#define USEWIN32IOAPI
+#include "iowin32.h"
+
 
 /***************************************************************
  * Default paths to shared library/DLLs and files
@@ -149,6 +158,7 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
 #define AXIS2_PATH_SEP_STR "/"
 #define AXIS2_LIB_PREFIX ""
 #define AXIS2_LIB_SUFFIX ".dll"
+#define AXIS2_AAR_SUFFIX ".aar"
 
 /**
  * Platform specific time
