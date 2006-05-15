@@ -147,7 +147,7 @@ Axis2/C's primary interfaces and deploy it. For this purpose we will create a
 Web Service with one operation as follows.</p>
 <pre><br />axis2_om_node_t* axis2_echo_echo(axis2_om_node_t *echo_node){}<br /> </pre>
 
-<p>You can have peek at the complete source code for this example echo
+<p>You can have a peek at the complete source code for this example echo
 service located in the "AXIS2C_HOME/samples/server/echo" directory .</p>
 
 <h4><a id="How_to_write_the_Web_Service_">How to write the Web
@@ -158,9 +158,9 @@ Service?</a></h4>
 <p>(eg . echo service )</p>
 <ol>
   <li><p style="margin-bottom: 0in;">Write a echo_skeleton.c file which
-    implements the API given inaxis2_svc_skeleton.h header file.</p>
+    implements the API given in axis2_svc_skeleton.h header file.</p>
   </li>
-  <li>Write the service implementation source file file (in this case echo.c
+  <li>Write the service implementation source file (in this case echo.c
     service) which implements the actual business logic.</li>
   <li>Write a services.xml file to explain the Web Service.</li>
   <li>Create a folder with the service name under AXIS2C_HOME/services and
@@ -337,7 +337,7 @@ method to call. Since C does not have reflection, we need to have some dll
 exposed functions known to Axis2/C engine. <b>axis2_get_instance</b> and
 <b>axis2_remove_instance</b> are the two functions that need to be exposed
 from a service dll (or any other dll of Axis2/C engine). Axis2/C engine calls
-axis2_get_instance method, which creates a new service instance, an cast the
+axis2_get_instance method, which creates a new service instance, and cast the
 return pointer to axis2_svc_skeleton interface.Then the interface methods can
 be called by Axis2/C engine.</p>
 
@@ -512,7 +512,7 @@ users ranging from simple, less time consuming  operations such as
 using client applications) these Web Service we cannot use some simple
 generic invocation paradigm that suites all the timing complexities involved
 in the service operations. For example, if we use a single transport channel
-(such as HTTP) to invoke a Web Service with and IN-OUT operation that take
+(such as HTTP) to invoke a Web Service with an IN-OUT operation that take
 long time to complete, then most of the time we may end up with "connection
 time outs". On the other hand, if there are simultaneous service invocations
 that  we need to perform from a single client application, then the use of a
@@ -666,7 +666,7 @@ are the steps:</p>
   <li>Consume result.</li>
 </ol>
 
-<p>Options can be used define the invocation parameters such as target
+<p>Options can be used to define the invocation parameters such as target
 endpoint, soap version, addressing parameters, etc.. When creating service
 client, the deployment folder has to be passed as a parameter. It is from the
 deploy folder, the configuration is picked up, using the axis2.xml file. The
@@ -686,9 +686,9 @@ API to invoke Web Services. Axis2/C provides a callback based non-blocking
 API for users.</p>
 
 <p>A sample client for this can be found under
-"Axis2CHome/samples/userguide/clients" with the name echo_non_blocking.c. The
-changes that user may have to do with respect to the "echo_blocking" client
-to make it non-blocking would be as follows:</p>
+"Axis2CHome/samples/user_guide/clients" with the name echo_non_blocking.c.
+The changes that user may have to do with respect to the "echo_blocking"
+client to make it non-blocking would be as follows:</p>
 <pre style="margin-bottom: 0.2in">AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, &amp;env, payload, callback);</pre>
 
 <p>Unlike "send_receive", "send_receive_non_blocking" accepts a callback
@@ -714,7 +714,7 @@ get_complete)(
 functions and set them on the callback using the "set_on_complete" and
 "set_on_error" API calls. In the sample, on complete is implemented by
 "echo_callback_on_complete" function and is set on the callback struct
-created ad followed:</p>
+created as shown below:</p>
 <pre style="margin-bottom: 0.2in">AXIS2_CALLBACK_SET_ON_COMPLETE(callback, echo_callback_on_complete);</pre>
 
 <p>Axis2/C engine calls the on_complete method once the Web Service response
@@ -743,7 +743,7 @@ to be solved is the correlation (correlating the request and the response).
 <a href="http://www.w3.org/2002/ws/addr/">WS-Addressing</a> provides a neat
 solution to this using &lt;wsa:MessageID&gt; and &lt;wsa:RelatesTo&gt;
 headers. Axis2/C provides support for addressing  based correlation mechanism
-and a complying client API to invoke Web Services with two transport
+and a compliant client API to invoke Web Services with two transport
 connections.</p>
 
 <p>Users can select between blocking or non-blocking APIs for the Web Service
@@ -772,8 +772,9 @@ installation.</p>
 
 <p>There are two ways of doing that. <br />
 One way is to engage addressing globally. This can be done by following the
-same steps as done in the case of the server side, add module ref to axi2.xml
-and have the module installed in the modules folder of the deploy folder.</p>
+same steps as done in the case of the server side, add module ref to
+axis2.xml and have the module installed in the modules folder of the deploy
+folder.</p>
 
 <p>The second method is to engage the module on service client using the
 service_client API.</p>
@@ -788,8 +789,8 @@ globally.</p>
 
 <p>This is again a Two-Way transport request/response client, but this time,
 we use a Blocking API in the client code. Sample code for this can be found
-in the "Axis2Home/samples/userguide/src/userguide/clients/" directory and the
-explanation is similar to the <a
+in the "Axis2CHome/samples/user_guide/clients/" directory and the explanation
+is similar to the <a
 href="#EchoNonBlockingDualClient">EchoNonBlockingDualClient</a>, except that
 here we do not use a callback object to handle response. This is a very
 useful mechanism when the service invocation is IN-OUT in nature and the
