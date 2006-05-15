@@ -541,7 +541,7 @@ axis2_woden_interface_fault_ref_resolve_methods(
             interface_fault_ref_impl_l->interface_fault_ref.ops->get_interface_fault;
     
     interface_fault_ref->ops->get_msg_label = axis2_hash_get(methods, 
-            "", AXIS2_HASH_KEY_STRING);
+            "get_msg_label", AXIS2_HASH_KEY_STRING);
     if(!interface_fault_ref->ops->get_msg_label && interface_fault_ref_impl_l)
             interface_fault_ref->ops->get_msg_label = 
             interface_fault_ref_impl_l->interface_fault_ref.ops->get_msg_label;

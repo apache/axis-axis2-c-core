@@ -84,6 +84,9 @@ struct axis2_woden_binding_fault_ops
             void *binding_fault,
             axis2_env_t **env);
 
+    /**************************************************************************
+     *                      Non-API implementation methods
+     **************************************************************************/
     axis2_status_t (AXIS2_CALL *
     set_interface_fault_element) (
             void *binding_fault,

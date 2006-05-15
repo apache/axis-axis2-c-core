@@ -70,7 +70,8 @@ extern "C"
         AXIS2_WODEN_INTERFACE_MSG_REF,
         AXIS2_WODEN_INTERFACE_OP,
         AXIS2_WODEN_BINDING,
-        AXIS2_WODEN_BINDING_FAULT
+        AXIS2_WODEN_BINDING_FAULT,
+        AXIS2_WODEN_BINDING_FAULT_REF
     } axis2_woden_obj_types_t;
 
 /** @} */
