@@ -20,7 +20,7 @@
 #include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
 #include <woden/xml/axis2_woden_xml_attr.h>
 #include <woden/wsdl20/xml/axis2_woden_documentation_element.h>
-#include <woden/wsdl20/axis2_woden_binding_fault.h>
+/*#include <woden/wsdl20/axis2_woden_binding_fault.h>*/
 
 typedef struct axis2_woden_binding_impl axis2_woden_binding_impl_t;
 
@@ -37,10 +37,20 @@ struct axis2_woden_binding_impl
     axis2_hash_t *methods;
     axis2_array_list_t *f_extended_bindings;
     axis2_qname_t *f_qname;
-    axis2_array_list_t *f_extends_qnames;
-    axis2_array_list_t *f_style_default;
-    axis2_array_list_t *f_binding_fault_elements;
-    axis2_array_list_t *f_binding_op_elements;
+    axis2_qname_t *f_interface_qname;
+    void *f_interface;
+    axis2_url_t *f_type;
+    /*
+     * Binding faults and operations may be referred to specifically by the qname represented by
+     * their 'ref' attribute. This typically suggests a Map implementation keyed by 'ref' qname. 
+     * However if the validation feature is disabled, it is possible that the 'ref' attribute may 
+     * be missing, which will cause a null key problem if a Map is used.
+     * To avoid this problem, binding faults and operations will be stored in Lists instead. 
+     * This will avoid any null key issues, however it will make the implementation of 'ref' based
+     * access more complicated. 
+     */
+    axis2_array_list_t *f_faults;
+    axis2_array_list_t *f_ops;
 };
 
 #define INTF_TO_IMPL(binding) ((axis2_woden_binding_impl_t *) binding)
@@ -66,15 +76,20 @@ axis2_woden_binding_get_base_impl(
         axis2_env_t **env);
 
 /* ************************************************************
- *  Binding binding methods (the WSDL Component model)
+ *  Binding interface methods (the WSDL Component model)
  * ************************************************************/
 axis2_qname_t *AXIS2_CALL
 axis2_woden_binding_get_qname(
         void *binding,
         axis2_env_t **env);
 
-axis2_array_list_t *AXIS2_CALL
-axis2_woden_binding_get_extended_bindings(
+void *AXIS2_CALL
+axis2_woden_binding_get_interface(
+        void *binding,
+        axis2_env_t **env);
+
+axis2_url_t *AXIS2_CALL
+axis2_woden_binding_get_type(
         void *binding,
         axis2_env_t **env);
 
@@ -82,12 +97,6 @@ axis2_array_list_t *AXIS2_CALL
 axis2_woden_binding_get_binding_faults(
         void *binding,
         axis2_env_t **env);
-
-void *AXIS2_CALL
-axis2_woden_binding_get_binding_fault(
-        void *binding,
-        axis2_env_t **env,
-        axis2_qname_t *qname);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_binding_get_binding_ops(
@@ -100,7 +109,7 @@ axis2_woden_binding_to_element(
         axis2_env_t **env);
 
 /* ************************************************************
- *  BindingElement binding methods (the XML Element model)
+ *  Binding Element interface methods (the XML Element model)
  * ************************************************************/
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_set_qname(
@@ -109,26 +118,26 @@ axis2_woden_binding_set_qname(
         axis2_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
-axis2_woden_binding_add_style_default_uri(
+axis2_woden_binding_set_interface_qname(
         void *binding,
         axis2_env_t **env,
-        axis2_url_t *uri);
+        axis2_qname_t *qname);
+
+axis2_qname_t *AXIS2_CALL
+axis2_woden_binding_get_interface_qname(
+        void *binding,
+        axis2_env_t **env);
 
 void *AXIS2_CALL
-axis2_woden_binding_get_style_default(
+axis2_woden_binding_get_interface_element(
         void *binding,
         axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_woden_binding_add_extended_qname(
+axis2_woden_binding_set_type(
         void *binding,
         axis2_env_t **env,
-        axis2_woden_wsdl_element_t *qname);
-
-axis2_array_list_t *AXIS2_CALL
-axis2_woden_binding_get_extends_qnames(
-        void *binding,
-        axis2_env_t **env);
+        axis2_url_t *type);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_add_binding_fault_element(
@@ -152,12 +161,26 @@ axis2_woden_binding_get_binding_op_elements(
         void *binding,
         axis2_env_t **env);
 
-axis2_status_t AXIS2_CALL
-axis2_woden_binding_add_extended_binding(
+/* ************************************************************
+ *  Non-API implementation methods
+ * ************************************************************/
+void *AXIS2_CALL
+axis2_woden_binding_get_binding_fault_element(
         void *binding,
         axis2_env_t **env,
-        void *extended_binding);
+        axis2_qname_t *qname);
 
+void *AXIS2_CALL
+axis2_woden_binding_get_binding_op_element(
+        void *binding,
+        axis2_env_t **env,
+        axis2_qname_t *qname);
+
+axis2_status_t AXIS2_CALL
+axis2_woden_binding_set_interface_element(
+        void *binding,
+        axis2_env_t **env,
+        void *interface);
 
 static axis2_woden_binding_t *
 create(axis2_env_t **env);
@@ -349,11 +372,11 @@ create(axis2_env_t **env)
     binding_impl->super = NULL;
     binding_impl->methods = NULL;
     binding_impl->f_qname = NULL;
-    binding_impl->f_extended_bindings = NULL;
-    binding_impl->f_extends_qnames = NULL;
-    binding_impl->f_style_default = NULL;
-    binding_impl->f_binding_fault_elements = NULL;
-    binding_impl->f_binding_op_elements = NULL;
+    binding_impl->f_interface_qname = NULL;
+    binding_impl->f_interface = NULL;
+    binding_impl->f_type = NULL;
+    binding_impl->f_faults = NULL;
+    binding_impl->f_ops = NULL;
     
     binding_impl->binding.base.binding_element.ops = NULL;
     binding_impl->binding.base.binding_element.base.documentable_element.ops = NULL;
@@ -369,16 +392,19 @@ create(axis2_env_t **env)
     binding_impl->binding.ops->get_base_impl = axis2_woden_binding_get_base_impl;
     
     binding_impl->binding.ops->get_qname = axis2_woden_binding_get_qname;
-    binding_impl->binding.ops->get_extended_bindings = 
-        axis2_woden_binding_get_extended_bindings;
+    binding_impl->binding.ops->get_interface = axis2_woden_binding_get_interface;
+    binding_impl->binding.ops->get_type = axis2_woden_binding_get_type;
     binding_impl->binding.ops->get_binding_faults = 
         axis2_woden_binding_get_binding_faults;
-    binding_impl->binding.ops->get_binding_fault = 
-        axis2_woden_binding_get_binding_fault;
     binding_impl->binding.ops->get_binding_ops = 
         axis2_woden_binding_get_binding_ops;
-    binding_impl->binding.ops->to_element = 
-        axis2_woden_binding_to_element;
+    binding_impl->binding.ops->to_element = axis2_woden_binding_to_element;
+    binding_impl->binding.ops->get_binding_fault_element = 
+        axis2_woden_binding_get_binding_fault_element;
+    binding_impl->binding.ops->get_binding_op_element = 
+        axis2_woden_binding_get_binding_op_element;
+    binding_impl->binding.ops->set_interface_element = 
+        axis2_woden_binding_set_interface_element;
  
     binding_impl->methods = axis2_hash_make(env);
     if(!binding_impl->methods) 
@@ -408,15 +434,15 @@ create(axis2_env_t **env)
     axis2_hash_set(binding_impl->methods, "get_qname", 
             AXIS2_HASH_KEY_STRING, 
             axis2_woden_binding_get_qname);
-    axis2_hash_set(binding_impl->methods, "get_extended_bindings", 
+    axis2_hash_set(binding_impl->methods, "get_interface", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_binding_get_extended_bindings);
+            axis2_woden_binding_get_interface);
+    axis2_hash_set(binding_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, 
+            axis2_woden_binding_get_type);
     axis2_hash_set(binding_impl->methods, "get_binding_faults", 
             AXIS2_HASH_KEY_STRING, 
             axis2_woden_binding_get_binding_faults);
-    axis2_hash_set(binding_impl->methods, "get_binding_fault", 
-            AXIS2_HASH_KEY_STRING, 
-            axis2_woden_binding_get_binding_fault);
     axis2_hash_set(binding_impl->methods, "get_binding_ops", 
             AXIS2_HASH_KEY_STRING, 
             axis2_woden_binding_get_binding_ops);
@@ -426,18 +452,18 @@ create(axis2_env_t **env)
     axis2_hash_set(binding_impl->methods, "set_qname", 
             AXIS2_HASH_KEY_STRING, 
             axis2_woden_binding_set_qname);
-    axis2_hash_set(binding_impl->methods, "add_style_default_uri", 
+    axis2_hash_set(binding_impl->methods, "set_interface_qname", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_binding_add_style_default_uri);
-    axis2_hash_set(binding_impl->methods, "get_style_default", 
+            axis2_woden_binding_set_interface_qname);
+    axis2_hash_set(binding_impl->methods, "get_interface_qname", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_binding_get_style_default);
-    axis2_hash_set(binding_impl->methods, "add_extends_qnames", 
+            axis2_woden_binding_get_interface_qname);
+    axis2_hash_set(binding_impl->methods, "get_interface_element", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_binding_get_extends_qnames);
-    axis2_hash_set(binding_impl->methods, "get_extends_qnames", 
+            axis2_woden_binding_get_interface_element);
+    axis2_hash_set(binding_impl->methods, "set_type", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_binding_get_extends_qnames);
+            axis2_woden_binding_set_type);
     axis2_hash_set(binding_impl->methods, "add_binding_fault_element", 
             AXIS2_HASH_KEY_STRING, 
             axis2_woden_binding_add_binding_fault_element);
@@ -450,9 +476,15 @@ create(axis2_env_t **env)
     axis2_hash_set(binding_impl->methods, "get_binding_op_elements", 
             AXIS2_HASH_KEY_STRING, 
             axis2_woden_binding_get_binding_op_elements);
-    axis2_hash_set(binding_impl->methods, "add_extended_binding", 
+    axis2_hash_set(binding_impl->methods, "get_binding_fault_element", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_binding_add_extended_binding);
+            axis2_woden_binding_get_binding_fault_element);
+    axis2_hash_set(binding_impl->methods, "get_binding_op_element", 
+            AXIS2_HASH_KEY_STRING, 
+            axis2_woden_binding_get_binding_op_element);
+    axis2_hash_set(binding_impl->methods, "set_interface_element", 
+            AXIS2_HASH_KEY_STRING, 
+            axis2_woden_binding_set_interface_element);
 
     return &(binding_impl->binding);
 }
@@ -490,40 +522,40 @@ axis2_woden_binding_free(void *binding,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     binding_impl = INTF_TO_IMPL(binding);
 
-    if(binding_impl->f_extended_bindings)
-    {
-        AXIS2_ARRAY_LIST_FREE(binding_impl->f_extended_bindings, env);
-        binding_impl->f_extended_bindings = NULL;
-    }
-
     if(binding_impl->f_qname)
     {
         AXIS2_QNAME_FREE(binding_impl->f_qname, env);
         binding_impl->f_qname = NULL;
     }
 
-    if(binding_impl->f_extends_qnames)
+    if(binding_impl->f_interface_qname)
     {
-        AXIS2_ARRAY_LIST_FREE(binding_impl->f_extends_qnames, env);
-        binding_impl->f_extends_qnames = NULL;
+        AXIS2_QNAME_FREE(binding_impl->f_interface_qname, env);
+        binding_impl->f_interface_qname = NULL;
     }
 
-    if(binding_impl->f_style_default)
+    if(binding_impl->f_interface)
     {
-        AXIS2_ARRAY_LIST_FREE(binding_impl->f_style_default, env);
-        binding_impl->f_style_default = NULL;
+        AXIS2_WODEN_INTERFACE_FREE(binding_impl->f_interface, env);
+        binding_impl->f_interface = NULL;
     }
 
-    if(binding_impl->f_binding_fault_elements)
+    if(binding_impl->f_type)
     {
-        AXIS2_ARRAY_LIST_FREE(binding_impl->f_binding_fault_elements, env);
-        binding_impl->f_binding_fault_elements = NULL;
+        AXIS2_URL_FREE(binding_impl->f_type, env);
+        binding_impl->f_type = NULL;
     }
 
-    if(binding_impl->f_binding_op_elements)
+    if(binding_impl->f_faults)
     {
-        AXIS2_ARRAY_LIST_FREE(binding_impl->f_binding_op_elements, env);
-        binding_impl->f_binding_op_elements = NULL;
+        AXIS2_ARRAY_LIST_FREE(binding_impl->f_faults, env);
+        binding_impl->f_faults = NULL;
+    }
+
+    if(binding_impl->f_ops)
+    {
+        AXIS2_ARRAY_LIST_FREE(binding_impl->f_ops, env);
+        binding_impl->f_ops = NULL;
     }
    
     if(binding_impl->super)
@@ -656,23 +688,23 @@ axis2_woden_binding_resolve_methods(
             binding->ops->get_qname = 
             binding_impl_l->binding.ops->get_qname;
     
-    binding->ops->get_extended_bindings = axis2_hash_get(methods, 
-            "get_extended_bindings", AXIS2_HASH_KEY_STRING);
-    if(!binding->ops->get_extended_bindings && binding_impl_l)
-            binding->ops->get_extended_bindings = 
-            binding_impl_l->binding.ops->get_extended_bindings;
+    binding->ops->get_interface = axis2_hash_get(methods, 
+            "get_interface", AXIS2_HASH_KEY_STRING);
+    if(!binding->ops->get_interface && binding_impl_l)
+            binding->ops->get_interface = 
+            binding_impl_l->binding.ops->get_interface;
     
+    binding->ops->get_type = axis2_hash_get(methods, 
+            "get_type", AXIS2_HASH_KEY_STRING);
+    if(!binding->ops->get_type && binding_impl_l)
+            binding->ops->get_type = 
+            binding_impl_l->binding.ops->get_type;
+
     binding->ops->get_binding_faults = axis2_hash_get(methods, 
             "get_binding_faults", AXIS2_HASH_KEY_STRING);
     if(!binding->ops->get_binding_faults && binding_impl_l)
             binding->ops->get_binding_faults = 
             binding_impl_l->binding.ops->get_binding_faults;
-
-    binding->ops->get_binding_fault = axis2_hash_get(methods, 
-            "get_binding_fault", AXIS2_HASH_KEY_STRING);
-    if(!binding->ops->get_binding_fault && binding_impl_l)
-            binding->ops->get_binding_fault = 
-            binding_impl_l->binding.ops->get_binding_fault;
 
     binding->ops->get_binding_ops = axis2_hash_get(methods, 
             "get_binding_ops", AXIS2_HASH_KEY_STRING);
@@ -685,12 +717,31 @@ axis2_woden_binding_resolve_methods(
     if(!binding->ops->to_element && binding_impl_l)
             binding->ops->to_element = 
             binding_impl_l->binding.ops->to_element;
+ 
+    binding->ops->get_binding_fault_element = axis2_hash_get(methods, 
+            "get_binding_fault_element", AXIS2_HASH_KEY_STRING);
+    if(!binding->ops->get_binding_fault_element && binding_impl_l)
+            binding->ops->get_binding_fault_element = 
+            binding_impl_l->binding.ops->get_binding_fault_element;
+ 
+    binding->ops->get_binding_op_element = axis2_hash_get(methods, 
+            "get_binding_op_element", AXIS2_HASH_KEY_STRING);
+    if(!binding->ops->get_binding_op_element && binding_impl_l)
+            binding->ops->get_binding_op_element = 
+            binding_impl_l->binding.ops->get_binding_op_element;
+ 
+    binding->ops->set_interface_element = axis2_hash_get(methods, 
+            "set_interface_element", AXIS2_HASH_KEY_STRING);
+    if(!binding->ops->set_interface_element && binding_impl_l)
+            binding->ops->set_interface_element = 
+            binding_impl_l->binding.ops->set_interface_element;
    
+  
     return AXIS2_SUCCESS;
 }
 
 /* ************************************************************
- *  Binding binding methods (the WSDL Component model)
+ *  Binding interface methods (the WSDL Component model)
  * ************************************************************/
 axis2_qname_t *AXIS2_CALL
 axis2_woden_binding_get_qname(
@@ -708,21 +759,38 @@ axis2_woden_binding_get_qname(
     return binding_impl->f_qname;
 }
 
-axis2_array_list_t *AXIS2_CALL
-axis2_woden_binding_get_extended_bindings(
+void *AXIS2_CALL
+axis2_woden_binding_get_interface(
         void *binding,
         axis2_env_t **env)
 {
     axis2_woden_binding_impl_t *binding_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = AXIS2_WODEN_BINDING_SUPER_OBJS(binding, env);
     binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
-
-    return binding_impl->f_extended_bindings;
+    
+    return binding_impl->f_interface;
 }
+
+axis2_url_t *AXIS2_CALL
+axis2_woden_binding_get_type(
+        void *binding,
+        axis2_env_t **env)
+{
+    axis2_woden_binding_impl_t *binding_impl = NULL;
+    axis2_hash_t *super = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    super = AXIS2_WODEN_BINDING_SUPER_OBJS(binding, env);
+    binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
+    
+    return binding_impl->f_type;
+}
+
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_binding_get_binding_faults(
@@ -737,43 +805,7 @@ axis2_woden_binding_get_binding_faults(
     binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
 
-    return binding_impl->f_binding_fault_elements;
-}
-
-void *AXIS2_CALL
-axis2_woden_binding_get_binding_fault(
-        void *binding,
-        axis2_env_t **env,
-        axis2_qname_t *qname)
-{
-    axis2_woden_binding_impl_t *binding_impl = NULL;
-    axis2_hash_t *super = NULL;
-    int i = 0, size = 0;
-    void *fault;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
-    super = AXIS2_WODEN_BINDING_SUPER_OBJS(binding, env);
-    binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
-
-    size = AXIS2_ARRAY_LIST_SIZE(binding_impl->f_binding_fault_elements, env);
-    for(i = 0; i < size; i++)
-    {
-        void *flt = NULL;
-        axis2_qname_t *qname_l = NULL;
-        
-        flt = AXIS2_ARRAY_LIST_GET(binding_impl->f_binding_fault_elements, 
-                env, i);
-        qname_l = (axis2_qname_t *) AXIS2_BINDING_FAULT_GET_QNAME(flt, env);
-        if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(qname, env, qname_l))
-        {
-            fault = flt;
-            break;
-        }
-    }
-
-    return fault;
+    return binding_impl->f_faults;
 }
 
 axis2_array_list_t *AXIS2_CALL
@@ -789,7 +821,7 @@ axis2_woden_binding_get_binding_ops(
     binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
 
-    return binding_impl->f_binding_op_elements;
+    return binding_impl->f_ops;
 }
 
 void *AXIS2_CALL
@@ -809,7 +841,7 @@ axis2_woden_binding_to_element(
 }
 
 /* ************************************************************
- *  BindingElement binding methods (the XML Element model)
+ *  Binding Element interface methods (the XML Element model)
  * ************************************************************/
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_set_qname(
@@ -835,55 +867,10 @@ axis2_woden_binding_set_qname(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_binding_add_style_default_uri(
+axis2_woden_binding_set_interface_qname(
         void *binding,
         axis2_env_t **env,
-        axis2_url_t *uri)
-{
-    axis2_woden_binding_impl_t *binding_impl = NULL;
-    axis2_hash_t *super = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, uri, AXIS2_FAILURE);
-    super = AXIS2_WODEN_BINDING_SUPER_OBJS(binding, env);
-    binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
-
-    if(!binding_impl->f_style_default)
-    {
-        binding_impl->f_style_default = axis2_array_list_create(env, 0);
-        if(!binding_impl->f_style_default)
-        {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
-        }
-    }
-    AXIS2_ARRAY_LIST_ADD(binding_impl->f_style_default, env, uri);
-
-    return AXIS2_SUCCESS;
-}
-
-void *AXIS2_CALL
-axis2_woden_binding_get_style_default(
-        void *binding,
-        axis2_env_t **env)
-{
-    axis2_woden_binding_impl_t *binding_impl = NULL;
-    axis2_hash_t *super = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    super = AXIS2_WODEN_BINDING_SUPER_OBJS(binding, env);
-    binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
-
-    return binding_impl->f_style_default;
-}
-
-axis2_status_t AXIS2_CALL
-axis2_woden_binding_add_extended_qname(
-        void *binding,
-        axis2_env_t **env,
-        axis2_woden_wsdl_element_t *qname)
+        axis2_qname_t *qname)
 {
     axis2_woden_binding_impl_t *binding_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -893,23 +880,18 @@ axis2_woden_binding_add_extended_qname(
     super = AXIS2_WODEN_BINDING_SUPER_OBJS(binding, env);
     binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
-    
-    if(!binding_impl->f_extends_qnames)
+
+    if(binding_impl->f_interface_qname)
     {
-        binding_impl->f_extends_qnames = axis2_array_list_create(env, 0);
-        if(!binding_impl->f_extends_qnames)
-        {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
-        }
+        AXIS2_QNAME_FREE(binding_impl->f_interface_qname, env);
     }
-    AXIS2_ARRAY_LIST_ADD(binding_impl->f_extends_qnames, env, qname);
+    binding_impl->f_interface_qname = AXIS2_QNAME_CLONE(qname, env);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t *AXIS2_CALL
-axis2_woden_binding_get_extends_qnames(
+axis2_qname_t *AXIS2_CALL
+axis2_woden_binding_get_interface_qname(
         void *binding,
         axis2_env_t **env)
 {
@@ -921,7 +903,48 @@ axis2_woden_binding_get_extends_qnames(
     binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
 
-    return binding_impl->f_extends_qnames;
+    return binding_impl->f_interface_qname;
+}
+
+void *AXIS2_CALL
+axis2_woden_binding_get_interface_element(
+        void *binding,
+        axis2_env_t **env)
+{
+    axis2_woden_binding_impl_t *binding_impl = NULL;
+    axis2_hash_t *super = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    super = AXIS2_WODEN_BINDING_SUPER_OBJS(binding, env);
+    binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
+
+    return binding_impl->f_interface;
+}
+
+
+axis2_status_t AXIS2_CALL
+axis2_woden_binding_set_type(
+        void *binding,
+        axis2_env_t **env,
+        axis2_url_t *type)
+{
+    axis2_woden_binding_impl_t *binding_impl = NULL;
+    axis2_hash_t *super = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, type, AXIS2_FAILURE);
+    super = AXIS2_WODEN_BINDING_SUPER_OBJS(binding, env);
+    binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
+    
+    if(binding_impl->f_type)
+    {
+        /* TODO */
+    }
+    binding_impl->f_type = type;
+
+    return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
@@ -939,16 +962,16 @@ axis2_woden_binding_add_binding_fault_element(
     binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
     
-    if(!binding_impl->f_binding_fault_elements)
+    if(!binding_impl->f_faults)
     {
-        binding_impl->f_binding_fault_elements = axis2_array_list_create(env, 0);
-        if(!binding_impl->f_binding_fault_elements)
+        binding_impl->f_faults = axis2_array_list_create(env, 0);
+        if(!binding_impl->f_faults)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    AXIS2_ARRAY_LIST_ADD(binding_impl->f_binding_fault_elements, env, fault);
+    AXIS2_ARRAY_LIST_ADD(binding_impl->f_faults, env, fault);
 
     return AXIS2_SUCCESS;
 }
@@ -966,7 +989,7 @@ axis2_woden_binding_get_binding_fault_elements(
     binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
 
-    return binding_impl->f_binding_fault_elements;
+    return binding_impl->f_faults;
 }
 
 axis2_status_t AXIS2_CALL
@@ -984,16 +1007,16 @@ axis2_woden_binding_add_binding_op_element(
     binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
     
-    if(!binding_impl->f_binding_op_elements)
+    if(!binding_impl->f_ops)
     {
-        binding_impl->f_binding_op_elements = axis2_array_list_create(env, 0);
-        if(!binding_impl->f_binding_op_elements)
+        binding_impl->f_ops = axis2_array_list_create(env, 0);
+        if(!binding_impl->f_ops)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    AXIS2_ARRAY_LIST_ADD(binding_impl->f_binding_op_elements, env, op);
+    AXIS2_ARRAY_LIST_ADD(binding_impl->f_ops, env, op);
 
     return AXIS2_SUCCESS;
 }
@@ -1011,38 +1034,107 @@ axis2_woden_binding_get_binding_op_elements(
     binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
 
-    return binding_impl->f_binding_op_elements;
+    return binding_impl->f_ops;
+}
+
+/* ************************************************************
+ *  Non-API implementation methods
+ * ************************************************************/
+void *AXIS2_CALL
+axis2_woden_binding_get_binding_fault_element(
+        void *binding,
+        axis2_env_t **env,
+        axis2_qname_t *qname)
+{
+    axis2_woden_binding_impl_t *binding_impl = NULL;
+    axis2_hash_t *super = NULL;
+    int i = 0, size = 0;
+    void *fault = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
+    super = AXIS2_WODEN_BINDING_SUPER_OBJS(binding, env);
+    binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
+
+    size = AXIS2_ARRAY_LIST_SIZE(binding_impl->f_faults, env);
+    for(i = 0; i < size; i++)
+    {
+        void *bind_fault = NULL;
+        axis2_qname_t *qname_l = NULL;
+        
+        bind_fault = AXIS2_ARRAY_LIST_GET(binding_impl->f_faults, 
+                env, i);
+        qname_l = (axis2_qname_t *) AXIS2_BINDING_FAULT_ELEMENT_GET_REF(
+                bind_fault, env);
+        if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(qname, env, qname_l))
+        {
+            fault = bind_fault;
+            break;
+        }
+    }
+
+    return fault;
+}
+
+void *AXIS2_CALL
+axis2_woden_binding_get_binding_op_element(
+        void *binding,
+        axis2_env_t **env,
+        axis2_qname_t *qname)
+{
+    axis2_woden_binding_impl_t *binding_impl = NULL;
+    axis2_hash_t *super = NULL;
+    int i = 0, size = 0;
+    void *op = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
+    super = AXIS2_WODEN_BINDING_SUPER_OBJS(binding, env);
+    binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
+
+    size = AXIS2_ARRAY_LIST_SIZE(binding_impl->f_ops, env);
+    for(i = 0; i < size; i++)
+    {
+        void *bind_op = NULL;
+        axis2_qname_t *qname_l = NULL;
+        
+        bind_op = AXIS2_ARRAY_LIST_GET(binding_impl->f_ops, 
+                env, i);
+        qname_l = (axis2_qname_t *) AXIS2_BINDING_OP_ELEMENT_GET_REF(
+                bind_op, env);
+        if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(qname, env, qname_l))
+        {
+            op = bind_op;
+            break;
+        }
+    }
+
+    return op;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_binding_add_extended_binding(
+axis2_woden_binding_set_interface_element(
         void *binding,
         axis2_env_t **env,
-        void *extended_binding)
+        void *interface)
 {
     axis2_woden_binding_impl_t *binding_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, binding, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, interface, AXIS2_FAILURE);
     super = AXIS2_WODEN_BINDING_SUPER_OBJS(binding, env);
     binding_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING", AXIS2_HASH_KEY_STRING));
 
-    if(!binding_impl->f_extended_bindings)
+    if(binding_impl->f_interface)
     {
-        binding_impl->f_extended_bindings = axis2_array_list_create(env, 0);
-        if(!binding_impl->f_extended_bindings)
-        {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
-        }
+        /* TODO */
     }
-    AXIS2_ARRAY_LIST_ADD(binding_impl->f_extended_bindings, env, extended_binding);
+    binding_impl->f_interface = interface;
+
     return AXIS2_SUCCESS;
 }
-
-
-
-
 

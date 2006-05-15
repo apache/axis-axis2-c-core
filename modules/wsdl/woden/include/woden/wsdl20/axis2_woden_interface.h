@@ -177,15 +177,15 @@ axis2_woden_interface_resolve_methods(
 		(((axis2_woden_interface_t *) interface)->\
          get_extended_interfaces(interface, env))
 
-#define AXIS2_WODEN_INTERFACE_GET_GET_INTERFACE_FAULTS(interface, env) \
+#define AXIS2_WODEN_INTERFACE_GET_INTERFACE_FAULTS(interface, env) \
 		(((axis2_woden_interface_t *) interface)->ops->\
          get_interface_faults(interface, env))
 
-#define AXIS2_WODEN_INTERFACE_GET_GET_INTERFACE_FAULT(interface, env, qname) \
+#define AXIS2_WODEN_INTERFACE_GET_INTERFACE_FAULT(interface, env, qname) \
 		(((axis2_woden_interface_t *) interface)->ops->\
          get_interface_fault(interface, env, qname))
 
-#define AXIS2_WODEN_INTERFACE_GET_GET_INTERFACE_OPS(interface, env) \
+#define AXIS2_WODEN_INTERFACE_GET_INTERFACE_OPS(interface, env) \
 		(((axis2_woden_interface_t *) interface)->ops->\
          get_interface_ops(interface, env))
 
