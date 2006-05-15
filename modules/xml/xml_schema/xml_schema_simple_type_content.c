@@ -29,10 +29,11 @@ struct axis2_xml_schema_simple_type_content_impl
     
     axis2_xml_schema_annotated_t *annotated;
 
-    int type;
-    
     axis2_hash_t *methods;
+
+    axis2_hash_t *ht_super; 
     
+    axis2_xml_schema_types_t obj_type;   
 };
 
 #define AXIS2_INTF_TO_IMPL(sim_type_cont) \
@@ -48,14 +49,13 @@ axis2_xml_schema_annotated_t *AXIS2_CALL
 axis2_xml_schema_simple_type_content_get_base_impl(void *sim_type_cont,
                                         axis2_env_t **env);
 
-int AXIS2_CALL
-axis2_xml_schema_simple_type_content_get_type(void *sim_type_cont,
+axis2_xml_schema_types_t AXIS2_CALL
+axis2_xml_schema_simple_type_content_type(void *sim_type_cont,
                                             axis2_env_t **env);
 
-axis2_status_t AXIS2_CALL
-axis2_xml_schema_simple_type_content_set_type(void *sim_type_cont,
-                                            axis2_env_t **env,
-                                            int type);
+axis2_hash_t* AXIS2_CALL
+axis2_xml_schema_simple_type_content_super_objs(void *sim_type_cont,
+                                                axis2_env_t **env);
 
 /*************** function prototypes *****************************************/
 
@@ -78,8 +78,8 @@ axis2_xml_schema_simple_type_content_create(axis2_env_t **env)
     sim_type_cont_impl->sim_type_cont.ops = NULL;
     sim_type_cont_impl->sim_type_cont.base.ops = NULL;
     sim_type_cont_impl->methods = NULL;
-    sim_type_cont_impl->type = AXIS2_XML_SCHEMA_SIMPLE_CONTENT_TYPE;
-    
+    sim_type_cont_impl->ht_super = NULL;
+    sim_type_cont_impl->obj_type = AXIS2_XML_SCHEMA_SIMPLE_TYPE_CONTENT;
     
     sim_type_cont_impl->sim_type_cont.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_simple_type_content_ops_t));
@@ -95,13 +95,14 @@ axis2_xml_schema_simple_type_content_create(axis2_env_t **env)
             axis2_xml_schema_simple_type_content_free;
     sim_type_cont_impl->sim_type_cont.ops->get_base_impl = 
             axis2_xml_schema_simple_type_content_get_base_impl;
-    sim_type_cont_impl->sim_type_cont.ops->get_type = 
-            axis2_xml_schema_simple_type_content_get_type;
-    sim_type_cont_impl->sim_type_cont.ops->set_type = 
-            axis2_xml_schema_simple_type_content_set_type;
+    sim_type_cont_impl->sim_type_cont.ops->type = 
+            axis2_xml_schema_simple_type_content_type;
+    sim_type_cont_impl->sim_type_cont.ops->super_objs = 
+            axis2_xml_schema_simple_type_content_super_objs;
    
     sim_type_cont_impl->methods = axis2_hash_make(env);
-    if(!sim_type_cont_impl->methods)
+    sim_type_cont_impl->ht_super = axis2_hash_make(env);
+    if(!sim_type_cont_impl->methods || !sim_type_cont_impl->ht_super)
     {
         axis2_xml_schema_simple_type_content_free(&(sim_type_cont_impl->sim_type_cont), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -109,10 +110,10 @@ axis2_xml_schema_simple_type_content_create(axis2_env_t **env)
     }
     axis2_hash_set(sim_type_cont_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_simple_type_content_free);
-    axis2_hash_set(sim_type_cont_impl->methods, "get_type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_content_get_type);
-    axis2_hash_set(sim_type_cont_impl->methods, "set_type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_content_set_type);
+    axis2_hash_set(sim_type_cont_impl->methods, "type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_content_type);
+    axis2_hash_set(sim_type_cont_impl->methods, "super_objs", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_content_super_objs);
 
     sim_type_cont_impl->annotated = axis2_xml_schema_annotated_create(env);
     if(!sim_type_cont_impl->annotated)
@@ -120,6 +121,17 @@ axis2_xml_schema_simple_type_content_create(axis2_env_t **env)
         axis2_xml_schema_simple_type_content_free(&(sim_type_cont_impl->sim_type_cont), env);
         return NULL;        
     }
+    
+    axis2_hash_set(sim_type_cont_impl->ht_super, "AXIS2_XML_SCHEMA_SIMPLE_TYPE_CONTENT",
+        AXIS2_HASH_KEY_STRING, &(sim_type_cont_impl->sim_type_cont));
+        
+    axis2_hash_set(sim_type_cont_impl->ht_super, "AXIS2_XML_SCHEMA_ANNOTATED",
+        AXIS2_HASH_KEY_STRING, sim_type_cont_impl->annotated);
+    
+    axis2_hash_set(sim_type_cont_impl->ht_super, "AXIS2_XML_SCHEMA_OBJ",
+        AXIS2_HASH_KEY_STRING, 
+        AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(sim_type_cont_impl->annotated, env));
+    
     status = axis2_xml_schema_annotated_resolve_methods(
             &(sim_type_cont_impl->sim_type_cont.base), env, sim_type_cont_impl->annotated, 
             sim_type_cont_impl->methods);
@@ -140,6 +152,11 @@ axis2_xml_schema_simple_type_content_free(void *sim_type_cont,
     {
         axis2_hash_free(sim_type_cont_impl->methods, env);
         sim_type_cont_impl->methods = NULL;
+    }
+     if(NULL != sim_type_cont_impl->ht_super)
+    {
+        axis2_hash_free(sim_type_cont_impl->ht_super, env);
+        sim_type_cont_impl->ht_super = NULL;
     }
 
     if(NULL != sim_type_cont_impl->annotated)
@@ -203,32 +220,27 @@ axis2_xml_schema_simple_type_content_resolve_methods(
     
     sim_type_cont->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    sim_type_cont->ops->get_base_impl = 
-            sim_type_cont_impl_l->sim_type_cont.ops->get_base_impl;
-    sim_type_cont->ops->get_type = 
-            sim_type_cont_impl_l->sim_type_cont.ops->get_type;
-    sim_type_cont->ops->set_type = 
-            sim_type_cont_impl_l->sim_type_cont.ops->set_type;
+    sim_type_cont->ops->type = axis2_hash_get(methods, "type", 
+            AXIS2_HASH_KEY_STRING);
+    sim_type_cont->ops->super_objs = axis2_hash_get(methods, "super_objs", 
+            AXIS2_HASH_KEY_STRING);
 
     return axis2_xml_schema_annotated_resolve_methods(&(sim_type_cont->base), 
             env, sim_type_cont_impl_l->annotated, methods);
 }
 
-int AXIS2_CALL
-axis2_xml_schema_simple_type_content_get_type(void *sim_type_cont,
-                                              axis2_env_t **env)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return AXIS2_INTF_TO_IMPL(sim_type_cont)->type;
-}
 
-axis2_status_t AXIS2_CALL
-axis2_xml_schema_simple_type_content_set_type(void *sim_type_cont,
-                                              axis2_env_t **env,
-                                              int type)
+axis2_xml_schema_types_t AXIS2_CALL
+axis2_xml_schema_simple_type_content_type(void *sim_type_cont,
+                                            axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(sim_type_cont)->type = type;
-    return AXIS2_SUCCESS;
-}
+    return AXIS2_INTF_TO_IMPL(sim_type_cont)->obj_type;
+}                                            
+
+axis2_hash_t* AXIS2_CALL
+axis2_xml_schema_simple_type_content_super_objs(void *sim_type_cont,
+                                                axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(sim_type_cont)->ht_super;
+}                                                
 

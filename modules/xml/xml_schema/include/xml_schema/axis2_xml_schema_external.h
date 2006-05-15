@@ -52,19 +52,45 @@ struct axis2_xml_schema_external_ops
     axis2_status_t (AXIS2_CALL *
     free) (void *external,
             axis2_env_t **env);
+            
+    axis2_xml_schema_annotated_t* (AXIS2_CALL *
+    get_base_impl)(
+            void *external,
+            axis2_env_t **env);            
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type)(
+            void *external,
+            axis2_env_t **env);            
+
+
+    axis2_hash_t* (AXIS2_CALL *
+    super_objs)(
+            void *external,
+            axis2_env_t **env);            
 
     struct axis2_xml_schema* (AXIS2_CALL *
-    get_schema)(void *external,
-                axis2_env_t **env);
+    get_schema)(
+            void *external,
+            axis2_env_t **env);
                 
     axis2_status_t (AXIS2_CALL *
-    set_schema)(void *external,
-                axis2_env_t **env,
-                struct axis2_xml_schema* schema);
+    set_schema)(
+            void *external,
+            axis2_env_t **env,
+            struct axis2_xml_schema* schema);
+                
+    axis2_char_t* (AXIS2_CALL *
+    get_schema_location)(
+            void *external,
+            axis2_env_t **env);
+                               
+    axis2_status_t (AXIS2_CALL *
+    set_schema_location)(
+            void *external,
+            axis2_env_t **env,
+            axis2_char_t *location);
 
-    axis2_xml_schema_annotated_t* (AXIS2_CALL *
-    get_base_impl)(void *external,
-                   axis2_env_t **env);
 };
 
 struct axis2_xml_schema_external
@@ -79,6 +105,9 @@ struct axis2_xml_schema_external
 AXIS2_DECLARE(axis2_xml_schema_external_t *)
 axis2_xml_schema_external_create(axis2_env_t **env);
 
+AXIS2_DECLARE(axis2_xml_schema_external_t *)
+axis2_xml_schema_include_create(axis2_env_t **env);
+
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
  */
@@ -89,6 +118,7 @@ axis2_xml_schema_external_resolve_methods(
                                 axis2_xml_schema_external_t *external_impl,
                                 axis2_hash_t *methods);
 
+
 #define AXIS2_XML_SCHEMA_EXTERNAL_FREE(external, env) \
 		(((axis2_xml_schema_external_t *) external)->ops->\
             free(external, env))
@@ -97,6 +127,14 @@ axis2_xml_schema_external_resolve_methods(
 		(((axis2_xml_schema_external_t *) external)->ops->\
             get_base_impl(external, env))
 
+#define AXIS2_XML_SCHEMA_EXTERNAL_SUPER_OBJS(external, env) \
+		(((axis2_xml_schema_external_t *) external)->ops->\
+            super_objs(external, env))
+
+#define AXIS2_XML_SCHEMA_EXTERNAL_TYPE(external, env) \
+		(((axis2_xml_schema_external_t *) external)->ops->\
+            type(external, env))
+
 #define AXIS2_XML_SCHEMA_EXTERNAL_GET_SCHEMA(external, env) \
 		(((axis2_xml_schema_external_t *) external)->ops->\
             get_schema(external, env))
@@ -104,6 +142,14 @@ axis2_xml_schema_external_resolve_methods(
 #define AXIS2_XML_SCHEMA_EXTERNAL_SET_SCHEMA(external, env, max_occurs) \
 		(((axis2_xml_schema_external_t *) external)->ops->\
             set_schema(external, env, max_occurs))
+            
+#define AXIS2_XML_SCHEMA_EXTERNAL_GET_SCHEMA_LOCATION(external, env) \
+		(((axis2_xml_schema_external_t *) external)->ops->\
+            get_schema(external, env))
+
+#define AXIS2_XML_SCHEMA_EXTERNAL_SET_SCHEMA_LOCATION(external, env, location) \
+		(((axis2_xml_schema_external_t *) external)->ops->\
+            set_schema(external, env, location))            
 
 /** @} */
 #ifdef __cplusplus

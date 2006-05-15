@@ -98,29 +98,6 @@ extern "C"
 #define XSD_ID "URI_2001_SCHEMA_XSD|ID"
 #define XSD_SCHEMA "URI_2001_SCHEMA_XSD|schema"
 
-
-
-#define AXIS2_XML_SCHEMA_CONST_ALL "all"
-#define AXIS2_XML_SCHEMA_CONST_NONE "none"
-#define AXIS2_XML_SCHEMA_CONST_EXTENSION "extension"
-#define AXIS2_XML_SCHEMA_CONST_LIST "list"
-#define AXIS2_XML_SCHEMA_CONST_RESTRICTION "restriction"
-#define AXIS2_XML_SCHEMA_CONST_SUBSITUTION "substitution"
-#define AXIS2_XML_SCHEMA_CONST_UNION "union"
-#define AXIS2_XML_SCHEMA_CONST_EMPTY "empty"
-#define AXIS2_XML_SCHEMA_CONST_ELEMENT_ONLY "elementOnly"
-#define AXIS2_XML_SCHEMA_CONST_MIXED "mixed"
-#define AXIS2_XML_SCHEMA_CONST_TEXT_ONLY "textOnly"
-#define AXIS2_XML_SCHEMA_CONST_LAX "lax"
-#define AXIS2_XML_SCCHMA_CONST_SKIP "skip"
-#define AXIS2_XML_SCHEMA_CONST_STRICT "strict"
-#define AXIS2_XML_SCHEMA_CONST_OPTIONAL "optional"
-#define AXIS2_XML_SCHEMA_CONST_PROHIBITED "prohibited"
-#define AXIS2_XML_SCCHMA_CONST_REQUIRED "required"
-#define AXIS2_XML_SCHEMA_CONST_ERROR "error"
-#define AXIS2_XML_SCHEMA_CONST_WARNING "warning"
-
-	
 #ifdef __cplusplus
 }
 #endif

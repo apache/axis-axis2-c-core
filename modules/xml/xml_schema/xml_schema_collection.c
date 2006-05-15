@@ -438,9 +438,22 @@ axis2_xml_schema_collection_add_unresolved_type(axis2_xml_schema_collection_t  *
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_collection_resolve_type(axis2_xml_schema_collection_t  *collection,
                                          axis2_env_t **env,
-                                         axis2_qname_t *type_qame, 
+                                         axis2_qname_t *type_qname, 
                                           struct axis2_xml_schema_type *type) 
 {
+    axis2_xml_schema_collection_impl_t *collection_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, type_qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, type, AXIS2_FAILURE);
+    
+    collection_impl = AXIS2_INTF_TO_IMPL(collection);
+    if(NULL != collection_impl->unresolved_types)
+    {
+        
+    }
+    
+
+
     return AXIS2_SUCCESS;
 }
 
@@ -449,6 +462,17 @@ axis2_xml_schema_collection_get_namespace_for_prefix(axis2_xml_schema_collection
                                                     axis2_env_t **env,
                                                     axis2_char_t *prefix) 
 {
+    axis2_xml_schema_collection_impl_t *collection_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, prefix, NULL);
+    collection_impl = AXIS2_INTF_TO_IMPL(collection);
+    if(NULL != collection_impl->in_scope_namespaces)
+    {
+        axis2_char_t *ns = NULL;
+        ns = (axis2_char_t *)axis2_hash_get(
+                collection_impl->in_scope_namespaces, prefix, AXIS2_HASH_KEY_STRING);
+        return ns;                
+    }
     return NULL;
 }
 
@@ -458,7 +482,16 @@ axis2_xml_schema_collection_map_namespace(axis2_xml_schema_collection_t  *collec
                                             axis2_char_t *prefix, 
                                             axis2_char_t *namespc_uri)
 {
-    return AXIS2_SUCCESS;
+    axis2_xml_schema_collection_impl_t *collection_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    collection_impl = AXIS2_INTF_TO_IMPL(collection);
+    if(NULL != collection_impl->in_scope_namespaces)
+    {
+        axis2_hash_set(collection_impl->in_scope_namespaces, prefix,
+            AXIS2_HASH_KEY_STRING, namespc_uri);
+        return AXIS2_SUCCESS;
+    }
+    return AXIS2_FAILURE;
 }
 
 

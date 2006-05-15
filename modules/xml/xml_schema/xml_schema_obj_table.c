@@ -48,7 +48,7 @@ int AXIS2_CALL
 axis2_xml_schema_obj_table_get_count(axis2_xml_schema_obj_table_t *obj_table,
                                      axis2_env_t **env);
 
-axis2_xml_schema_obj_t *AXIS2_CALL
+void *AXIS2_CALL
 axis2_xml_schema_obj_table_get_item(axis2_xml_schema_obj_table_t *obj_table,
                                     axis2_env_t **env,
                                     axis2_qname_t *qname);
@@ -70,7 +70,7 @@ axis2_status_t AXIS2_CALL
 axis2_xml_schema_obj_table_add(axis2_xml_schema_obj_table_t *obj_table,
                                     axis2_env_t **env,
                                     axis2_qname_t *qname,
-                                    axis2_xml_schema_obj_t *value);
+                                    void *value);
                                     
 /******************** end function pointers ***********************************/
 
@@ -179,10 +179,10 @@ axis2_xml_schema_obj_table_get_count(axis2_xml_schema_obj_table_t *obj_table,
         return -1;
 }   
 
-axis2_xml_schema_obj_t *AXIS2_CALL
+void *AXIS2_CALL
 axis2_xml_schema_obj_table_get_item(axis2_xml_schema_obj_table_t *obj_table,
-                                            axis2_env_t **env,
-                                            axis2_qname_t *qname)
+                                    axis2_env_t **env,
+                                    axis2_qname_t *qname)
 {
     axis2_xml_schema_obj_table_impl_t *obj_table_impl = NULL;
     axis2_char_t *name = NULL;
@@ -294,9 +294,9 @@ axis2_xml_schema_obj_table_contains(axis2_xml_schema_obj_table_t *obj_table,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_obj_table_add(axis2_xml_schema_obj_table_t *obj_table,
-                                    axis2_env_t **env,
-                                    axis2_qname_t *qname,
-                                    axis2_xml_schema_obj_t *value)
+                                axis2_env_t **env,
+                                axis2_qname_t *qname,
+                                void *value)
 {
     axis2_xml_schema_obj_table_impl_t *obj_table_impl = NULL;
     axis2_char_t *name = NULL;

@@ -80,15 +80,7 @@ AXIS2_DECLARE(axis2_xml_schema_use_t *)
 axis2_xml_schema_use_create(axis2_env_t **env,
                                     axis2_char_t* value);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
- */
-AXIS2_DECLARE(axis2_status_t)
-axis2_xml_schema_use_resolve_methods(
-           axis2_xml_schema_use_t *use,
-           axis2_env_t **env,
-           axis2_xml_schema_use_t *use_impl,
-           axis2_hash_t *methods);
+/******************* macros ***************************************/
 
 #define AXIS2_XML_SCHEMA_USE_FREE(use, env) \
 		(((axis2_xml_schema_use_t *) use)->ops->free(use, env))

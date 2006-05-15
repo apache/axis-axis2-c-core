@@ -137,7 +137,6 @@ axis2_xml_schema_obj_resolve_methods(axis2_xml_schema_obj_t *schema_obj,
 #define AXIS2_XML_SCHEMA_OBJ_SET_LINE_POS(obj, env, line_pos) \
 		(((axis2_xml_schema_obj_t *) obj)->ops->set_line_pos (obj, env, line_pos))
 
-
 #define AXIS2_XML_SCHEMA_OBJ_GET_SOURCE_URI(obj, env) \
 		(((axis2_xml_schema_obj_t *) obj)->ops->get_source_uri (obj, env))
 
@@ -147,7 +146,6 @@ axis2_xml_schema_obj_resolve_methods(axis2_xml_schema_obj_t *schema_obj,
 
 #define AXIS2_XML_SCHEMA_OBJ_EQUALS(obj, env) \
 		(((axis2_xml_schema_obj_t *) obj)->ops->equals (obj, env))
-
 
 /** @} */
 #ifdef __cplusplus

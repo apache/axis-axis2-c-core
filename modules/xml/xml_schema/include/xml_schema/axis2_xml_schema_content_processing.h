@@ -81,15 +81,7 @@ AXIS2_DECLARE(axis2_xml_schema_content_processing_t *)
 axis2_xml_schema_content_processing_create(axis2_env_t **env,
                                     axis2_char_t* value);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
- */
-AXIS2_DECLARE(axis2_status_t)
-axis2_xml_schema_content_processing_resolve_methods(
-                axis2_xml_schema_content_processing_t *content_processing,
-                axis2_env_t **env,
-                axis2_xml_schema_content_processing_t *content_processing_impl,
-                axis2_hash_t *methods);
+/*********************** macros ***********************************************/
 
 #define AXIS2_XML_SCHEMA_CONTENT_PROCESSING_FREE(content_processing, env) \
 		(((axis2_xml_schema_content_processing_t *) content_processing)->ops->\

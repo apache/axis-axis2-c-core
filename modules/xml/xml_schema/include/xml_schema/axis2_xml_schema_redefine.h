@@ -47,18 +47,21 @@ extern "C"
 
 struct axis2_xml_schema_redefine_ops
 {
-	/** 
-     * Deallocate memory
-     * @return status code
-     */
     axis2_status_t (AXIS2_CALL *
     free) (void *redefine,
             axis2_env_t **env);
             
-            
     axis2_xml_schema_external_t* (AXIS2_CALL *
     get_base_impl)(void *redefine,
                    axis2_env_t **env);            
+
+    axis2_hash_t* (AXIS2_CALL *
+    super_objs)(void *redefine,
+                axis2_env_t **env);            
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type)(void *redefine,
+          axis2_env_t **env);            
 
     axis2_xml_schema_obj_table_t* (AXIS2_CALL *
     get_attribute_group)(void *redefine,
@@ -68,8 +71,6 @@ struct axis2_xml_schema_redefine_ops
     set_attribute_group)(void *redefine,
                 axis2_env_t **env,
                 axis2_xml_schema_obj_table_t *group);
-
-   
                    
     axis2_xml_schema_obj_collection_t* (AXIS2_CALL *
     get_items)(void *redefine,
@@ -83,8 +84,6 @@ struct axis2_xml_schema_redefine_ops
     get_group)(void *redefine, 
                axis2_env_t **env);                      
                       
-                                       
-                       
 };
 
 struct axis2_xml_schema_redefine
@@ -101,14 +100,15 @@ axis2_xml_schema_redefine_create(axis2_env_t **env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
- */
+
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_redefine_resolve_methods(
                                 axis2_xml_schema_redefine_t *redefine,
                                 axis2_env_t **env,
                                 axis2_xml_schema_redefine_t *redefine_impl,
                                 axis2_hash_t *methods);
-
+ */
+ 
 #define AXIS2_XML_SCHEMA_REDEFINE_FREE(redefine, env) \
 		(((axis2_xml_schema_redefine_t *) redefine)->ops->\
             free(redefine, env))
@@ -116,6 +116,14 @@ axis2_xml_schema_redefine_resolve_methods(
 #define AXIS2_XML_SCHEMA_REDEFINE_GET_BASE_IMPL(redefine, env) \
 		(((axis2_xml_schema_redefine_t *) redefine)->ops->\
             get_base_impl(redefine, env))
+
+#define AXIS2_XML_SCHEMA_REDEFINE_TYPE(redefine, env) \
+		(((axis2_xml_schema_redefine_t *) redefine)->ops->\
+            type(redefine, env))
+
+#define AXIS2_XML_SCHEMA_REDEFINE_SUPER_OBJS(redefine, env) \
+		(((axis2_xml_schema_redefine_t *) redefine)->ops->\
+            super_objs(redefine, env))
 
 #define AXIS2_XML_SCHEMA_REDEFINE_GET_ATTRIBUTE_GROUP(redefine, env) \
 		(((axis2_xml_schema_redefine_t *) redefine)->ops->\

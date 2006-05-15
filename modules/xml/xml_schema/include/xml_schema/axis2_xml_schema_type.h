@@ -56,6 +56,14 @@ struct axis2_xml_schema_type_ops
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *type,
                     axis2_env_t **env);
+                    
+    axis2_hash_t* (AXIS2_CALL *
+    super_objs)(void *type,
+                axis2_env_t **env);
+                   
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type)(void *type,
+          axis2_env_t **env);                                                  
 
     void *(AXIS2_CALL *
     get_base_schema_type) (void *type,
@@ -141,6 +149,14 @@ axis2_xml_schema_type_resolve_methods(
 #define AXIS2_XML_SCHEMA_TYPE_GET_BASE_IMPL(type, env) \
 		(((axis2_xml_schema_type_t *) type)->ops->\
             get_base_impl(type, env))
+            
+#define AXIS2_XML_SCHEMA_TYPE_TYPE(type, env) \
+		(((axis2_xml_schema_type_t *) type)->ops->\
+           type(type, env)) 
+           
+#define AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env) \
+		(((axis2_xml_schema_type_t *) type)->ops->\
+           super_objs(type, env))                       
 
 #define AXIS2_XML_SCHEMA_TYPE_GET_BASE_SCHEMA_TYPE(type, env) \
 		(((axis2_xml_schema_type_t *) type)->ops->\

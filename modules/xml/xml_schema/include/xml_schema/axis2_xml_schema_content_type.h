@@ -37,10 +37,6 @@ typedef struct axis2_xml_schema_content_type
 typedef struct axis2_xml_schema_content_type_ops 
                     axis2_xml_schema_content_type_ops_t;
 
-#define AXIS2_XML_SCHEMA_QUALIFIED "qualified"
-#define AXIS2_XML_SCHEMA_UNQUALIFIED "unqualified"
-#define AXIS2_XML_SCHEMA_NONE "none"
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -55,6 +51,14 @@ struct axis2_xml_schema_content_type_ops
     axis2_status_t (AXIS2_CALL *
     free) (void *content_type,
             axis2_env_t **env);
+            
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (void *content_type,
+            axis2_env_t **env);
+
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (void *content_type,
+            axis2_env_t **env);                
 
     axis2_xml_schema_enum_t *(AXIS2_CALL *
     get_base_impl) (void *content_type,
@@ -76,16 +80,7 @@ AXIS2_DECLARE(axis2_xml_schema_content_type_t *)
 axis2_xml_schema_content_type_create(axis2_env_t **env,
                                     axis2_char_t* value);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
- */
-AXIS2_DECLARE(axis2_status_t)
-axis2_xml_schema_content_type_resolve_methods(
-                                axis2_xml_schema_content_type_t *content_type,
-                                axis2_env_t **env,
-                                axis2_xml_schema_content_type_t *content_type_impl,
-                                axis2_hash_t *methods);
-
+/************************* Macros ************************************************/
 #define AXIS2_XML_SCHEMA_CONTENT_TYPE_FREE(content_type, env) \
 		(((axis2_xml_schema_content_type_t *) content_type)->ops->free(content_type, env))
 
@@ -94,6 +89,13 @@ axis2_xml_schema_content_type_resolve_methods(
 
 #define AXIS2_XML_SCHEMA_CONTENT_TYPE_GET_VALUES(content_type, env) \
 		(((axis2_xml_schema_content_type_t *) content_type)->ops->values(content_type, env))
+
+#define AXIS2_XML_SCHEMA_CONTENT_TYPE_SUPER_OBJS(content_type, env) \
+        (((axis2_xml_schema_content_type_t *) content_type)->ops->super_objs(content_type, env))
+        
+#define AXIS2_XML_SCHEMA_CONTENT_TYPE_TYPE(content_type, env) \
+        (((axis2_xml_schema_content_type_t *) content_type) \
+         content_type)->ops->type(content_type, env))        
 
 /** @} */
 #ifdef __cplusplus

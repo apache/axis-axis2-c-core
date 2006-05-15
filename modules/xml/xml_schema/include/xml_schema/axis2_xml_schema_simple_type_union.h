@@ -56,6 +56,14 @@ struct axis2_xml_schema_simple_type_union_ops
     axis2_xml_schema_simple_type_content_t *(AXIS2_CALL *
     get_base_impl) (void *simple_type_union,
                     axis2_env_t **env);
+                    
+    axis2_hash_t*(AXIS2_CALL *
+    super_objs)(void *simple_type_union,
+                    axis2_env_t **env);                    
+    
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type)(void *simple_type_union,
+          axis2_env_t **env);
 
     axis2_xml_schema_obj_collection_t*(AXIS2_CALL *
     get_base_types)(void *simple_type_union,
@@ -95,21 +103,30 @@ axis2_xml_schema_simple_type_union_create(axis2_env_t **env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
- */
+
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_simple_type_union_resolve_methods(
                     axis2_xml_schema_simple_type_union_t *simple_type_union,
                     axis2_env_t **env,
                     axis2_xml_schema_simple_type_union_t *simple_type_union_impl,
                     axis2_hash_t *methods);
-
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_FREE(simple_type_union, env) \
+ */
+ 
+ #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_FREE(simple_type_union, env) \
 		(((axis2_xml_schema_simple_type_union_t *) simple_type_union)->ops->\
             free(simple_type_union, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_GET_BASE_IMPL(simple_type_union, env) \
 		(((axis2_xml_schema_simple_type_union_t *) simple_type_union)->ops->\
             get_base_impl(simple_type_union, env))
+
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_SUPER_OBJS(simple_type_union, env) \
+		(((axis2_xml_schema_simple_type_union_t *) simple_type_union)->ops->\
+            super_objs(simple_type_union, env))
+
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_TYPE(simple_type_union, env) \
+		(((axis2_xml_schema_simple_type_union_t *) simple_type_union)->ops->\
+            type(simple_type_union, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_GET_BASE_TYPES(simple_type_union, env) \
 		(((axis2_xml_schema_simple_type_union_t *) simple_type_union)->ops->\

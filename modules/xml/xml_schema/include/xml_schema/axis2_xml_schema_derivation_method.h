@@ -56,6 +56,14 @@ struct axis2_xml_schema_derivation_method_ops
     axis2_array_list_t *(AXIS2_CALL *
     get_values)(void *derivation_method,
                 axis2_env_t **env);
+                
+    axis2_hash_t* (AXIS2_CALL *
+    super_objs)(void *derivation_method,
+                axis2_env_t **env);
+    
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type)(void *derivation_method,
+          axis2_env_t **env);                                
     
 };
 
@@ -69,15 +77,6 @@ AXIS2_DECLARE(axis2_xml_schema_derivation_method_t *)
 axis2_xml_schema_derivation_method_create(axis2_env_t **env,
                                     axis2_char_t* value);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
- */
-AXIS2_DECLARE(axis2_status_t)
-axis2_xml_schema_derivation_method_resolve_methods(
-                                axis2_xml_schema_derivation_method_t *derivation_method,
-                                axis2_env_t **env,
-                                axis2_xml_schema_derivation_method_t *derivation_method_impl,
-                                axis2_hash_t *methods);
 
 #define AXIS2_XML_SCHEMA_DERIVATION_METHOD_FREE(derivation_method, env) \
 		(((axis2_xml_schema_derivation_method_t *) \
@@ -91,6 +90,15 @@ axis2_xml_schema_derivation_method_resolve_methods(
 		(((axis2_xml_schema_derivation_method_t *) \
 		derivation_method)->ops->values(derivation_method, env))
 
+#define AXIS2_XML_SCHEMA_DERIVATION_METHOD_TYPE(derivation_method, env) \
+		(((axis2_xml_schema_derivation_method_t *) \
+		derivation_method)->ops->type(derivation_method, env))
+		
+#define AXIS2_XML_SCHEMA_DERIVATION_METHOD_SUPER_OBJS(derivation_method, env) \
+        (((axis2_xml_schema_derivation_method_t *) \
+		derivation_method)->ops->super_objs(derivation_method, env))
+		
+		
 /** @} */
 #ifdef __cplusplus
 }

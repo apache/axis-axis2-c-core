@@ -52,37 +52,45 @@ typedef struct axis2_xml_schema_simple_content_extension_ops
 struct axis2_xml_schema_simple_content_extension_ops
 {
     axis2_status_t (AXIS2_CALL *
-    free) (axis2_xml_schema_simple_content_extension_t *sim_content_ext,
+    free) (void *sim_content_ext,
             axis2_env_t **env);
 
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
-    get_base_impl) (axis2_xml_schema_simple_content_extension_t *sim_content_ext,
+    get_base_impl) (void *sim_content_ext,
                     axis2_env_t **env);
+                    
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type)(void *sim_content_ext,
+          axis2_env_t **env);
+          
+    axis2_hash_t* (AXIS2_CALL *
+    super_objs)(void *sim_content_ext,
+                axis2_env_t **env);                              
 
     axis2_xml_schema_any_attribute_t* (AXIS2_CALL *
     get_any_attribute)(
-            axis2_xml_schema_simple_content_extension_t *sim_content_ext,
+            void* sim_content_ext,
             axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
     set_any_attribute)(
-            axis2_xml_schema_simple_content_extension_t *sim_content_ext,
+            void *sim_content_ext,
             axis2_env_t **env,
             axis2_xml_schema_any_attribute_t *any_attr);
     
     axis2_xml_schema_obj_collection_t* (AXIS2_CALL *
     get_attributes)(
-            axis2_xml_schema_simple_content_extension_t *sim_content_ext,
+            void *sim_content_ext,
             axis2_env_t **env);
             
     axis2_qname_t* (AXIS2_CALL*
     get_base_type_name)(
-            axis2_xml_schema_simple_content_extension_t *sim_content_ext,
+            void *sim_content_ext,
             axis2_env_t **env);
             
     axis2_status_t (AXIS2_CALL *
     set_base_type_name)(
-            axis2_xml_schema_simple_content_extension_t *sim_content_ext,
+            void *sim_content_ext,
             axis2_env_t **env,
             axis2_qname_t *qname);
             
@@ -92,6 +100,7 @@ struct axis2_xml_schema_simple_content_extension_ops
 
 struct axis2_xml_schema_simple_content_extension
 {
+    axis2_xml_schema_annotated_t base;
     axis2_xml_schema_simple_content_extension_ops_t *ops;
 };
 
@@ -101,29 +110,44 @@ struct axis2_xml_schema_simple_content_extension
 AXIS2_DECLARE(axis2_xml_schema_simple_content_extension_t *)
 axis2_xml_schema_simple_content_extension_create(axis2_env_t **env);
 
-
+/************************** Macros ****************************************************/
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_FREE(sim_content_ext, env) \
-		((sim_content_ext)->ops->free(sim_content_ext, env))
+		(((axis2_xml_schema_simple_content_extension_t *)sim_content_ext)->ops->\
+		    free(sim_content_ext, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_GET_BASE_IMPL(sim_content_ext, env) \
-		((sim_content_ext)->ops->get_base_impl(sim_content_ext, env))
+		(((axis2_xml_schema_simple_content_extension_t *)sim_content_ext)->ops->\
+            get_base_impl(sim_content_ext, env))
 
+#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_TYPE(sim_content_ext, env) \
+		(((axis2_xml_schema_simple_content_extension_t *)sim_content_ext)->ops->\
+            type(sim_content_ext, env))
+            
+#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_SUPER_OBJS(sim_content_ext, env) \
+		(((axis2_xml_schema_simple_content_extension_t *)sim_content_ext)->ops->\
+            super_objs(sim_content_ext, env))            
+    
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_GET_ANY_ATTRIBUTE(sim_content_ext, env) \
-		((sim_content_ext)->ops->get_any_attribute(sim_content_ext, env))
+		(((axis2_xml_schema_simple_content_extension_t *)sim_content_ext)->ops->\
+		    get_any_attribute(sim_content_ext, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_SET__ANY_ATTRIBUTE(sim_content_ext, env, any_attr)\
-		((sim_content_ext)->ops->set_content(sim_content_ext, env, any_attr ))
+		(((axis2_xml_schema_simple_content_extension_t *)sim_content_ext)->ops->\
+		    set_content(sim_content_ext, env, any_attr ))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_GET_ATTRIBUTES(sim_content_ext, env) \
-		((sim_content_ext)->ops->get_attributes(sim_content_ext, env))
+		(((axis2_xml_schema_simple_content_extension_t *)sim_content_ext)->ops->\
+		    get_attributes(sim_content_ext, env))
             
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_GET_BASE_TYPE_NAME(sim_content_ext, env)\
-        ((sim_content_ext)->ops->get_base_type_name(sim_content_ext, env))            
+        (((axis2_xml_schema_simple_content_extension_t *)sim_content_ext)->ops->\
+            get_base_type_name(sim_content_ext, env))            
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_SET_BASE_TYPE_NAME(sim_content_ext, \
           env, base_type_name) \
-        ((sim_content_ext)->ops->set_base_type_name(sim_content_ext, env, base_type_name))
+        (((axis2_xml_schema_simple_content_extension_t *)sim_content_ext)->ops->\
+            set_base_type_name(sim_content_ext, env, base_type_name))
             
             
 /** @} */

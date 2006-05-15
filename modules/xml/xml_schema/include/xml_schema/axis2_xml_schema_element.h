@@ -25,6 +25,7 @@
  */
 
 #include <xml_schema/axis2_xml_schema_type_receiver.h>
+#include <xml_schema/axis2_xml_schema_particle.h>
 #include <axis2_qname.h>
 
 /** @defgroup axis2_xml_schema_element Xml Schema Element
@@ -48,77 +49,91 @@ extern "C"
 
 struct axis2_xml_schema_element_ops
 {
-	/** 
-     * Deallocate memory
-     * @return status code
-     */
     axis2_status_t (AXIS2_CALL *
     free) (void *element,
             axis2_env_t **env);
     
-    struct axis2_xml_schema_type_receiver *(AXIS2_CALL *
-    get_base_impl) (void *element,
-                    axis2_env_t **env);
+    axis2_xml_schema_particle_t *(AXIS2_CALL *
+    get_base_impl) (
+            void *element,
+            axis2_env_t **env);
 
-    /**
-     * Returns a collection of constraints on the element.
-     */
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type)(void *element,
+          axis2_env_t **env);
+          
+    axis2_hash_t* (AXIS2_CALL *
+    super_objs)(void *element,
+                axis2_env_t **env);          
+
     struct axis2_xml_schema_obj_collection *(AXIS2_CALL *
-    get_constraints) (void *element,
-                                axis2_env_t **env); 
+    get_constraints)(
+            void *element,
+            axis2_env_t **env); 
 
     axis2_char_t *(AXIS2_CALL * 
-    get_default_value) (void *element,
-                                axis2_env_t **env);
+    get_default_value)(
+            void *element,
+            axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL * 
-    set_default_value) (void *element,
-                                axis2_env_t **env,
-                                axis2_char_t *default_value);
+    set_default_value)(
+            void *element,
+            axis2_env_t **env,
+            axis2_char_t *default_value);
 
     struct axis2_xml_schema_derivation_method *(AXIS2_CALL *
-    get_block) (void *element,
-                        axis2_env_t **env); 
+    get_block)(
+            void *element,
+            axis2_env_t **env); 
 
     axis2_status_t (AXIS2_CALL * 
-    set_block) (void *element,
-                        axis2_env_t **env,
-                        struct axis2_xml_schema_derivation_method * block);
+    set_block)(
+            void *element,
+            axis2_env_t **env,
+            struct axis2_xml_schema_derivation_method * block);
+            
 
     struct axis2_xml_schema_derivation_method *(AXIS2_CALL *
     get_final) (void *element,
-                        axis2_env_t **env);
+                axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL *
-    set_final) (void *element,
-                        axis2_env_t **env,
-                        struct axis2_xml_schema_derivation_method *final_derivation);
+    set_final)(void *element,
+               axis2_env_t **env,
+               struct axis2_xml_schema_derivation_method *final_derivation);
 
     struct axis2_xml_schema_derivation_method *(AXIS2_CALL * 
-    get_block_resolved) (void *element,
-                                axis2_env_t **env);
+    get_block_resolved)(
+            void *element,
+            axis2_env_t **env);
 
     axis2_char_t *(AXIS2_CALL * 
-    get_fixed_value) (void *element,
-                                axis2_env_t **env); 
+    get_fixed_value)(
+            void *element,
+            axis2_env_t **env); 
 
     axis2_status_t (AXIS2_CALL *
-    set_fixed_value) (void *element,
-                                axis2_env_t **env,
-                                axis2_char_t *fixed_value); 
+    set_fixed_value)(
+            void *element,
+            axis2_env_t **env,
+            axis2_char_t *fixed_value); 
+            
 
     void *(AXIS2_CALL *
-    get_element_type) (void *element,
-                                axis2_env_t **env); 
+    get_element_type)(
+            void *element,
+            axis2_env_t **env); 
+            
 
     struct axis2_xml_schema_form *(AXIS2_CALL *
-    get_form) (void *element,
-                        axis2_env_t **env); 
+    get_form)(void *element,
+              axis2_env_t **env); 
 
     axis2_status_t (AXIS2_CALL *
-    set_form) (void *element,
-                        axis2_env_t **env,
-                        struct axis2_xml_schema_form *form); 
+    set_form)(void *element,
+               axis2_env_t **env,
+                struct axis2_xml_schema_form *form); 
 
     axis2_bool_t (AXIS2_CALL *
     is_abstract) (void *element,
@@ -207,7 +222,7 @@ struct axis2_xml_schema_element_ops
 
 struct axis2_xml_schema_element
 {
-    axis2_xml_schema_type_receiver_t base;
+    axis2_xml_schema_particle_t base;
     axis2_xml_schema_element_ops_t *ops;
 };
 
@@ -216,14 +231,14 @@ axis2_xml_schema_element_create(axis2_env_t **env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
- */
+ 
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_element_resolve_methods(
                                 axis2_xml_schema_element_t *element,
                                 axis2_env_t **env,
                                 axis2_xml_schema_element_t *element_impl,
                                 axis2_hash_t *methods);
-
+*/
 #define AXIS2_XML_SCHEMA_ELEMENT_FREE(element, env) \
 		(((axis2_xml_schema_element_t *) element)->ops->free(\
             element, env))
@@ -231,6 +246,15 @@ axis2_xml_schema_element_resolve_methods(
 #define AXIS2_XML_SCHEMA_ELEMENT_GET_BASE_IMPL(element, env) \
 		(((axis2_xml_schema_element_t *) element)->ops->get_base_impl(\
             element, env))
+
+#define AXIS2_XML_SCHEMA_ELEMENT_TYPE(element, env) \
+		(((axis2_xml_schema_element_t *) element)->ops->type(\
+            element, env))
+
+#define AXIS2_XML_SCHEMA_ELEMENT_SUPER_OBJS(element, env) \
+		(((axis2_xml_schema_element_t *) element)->ops->super_objs(\
+            element, env))
+
 
 #define AXIS2_XML_SCHEMA_ELEMENT_GET_ID(element, env) \
 		(((axis2_xml_schema_element_t *) element)->ops->get_id(\

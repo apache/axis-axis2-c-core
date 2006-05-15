@@ -53,6 +53,14 @@ struct axis2_xml_schema_complex_content_ops
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *complex_content,
                     axis2_env_t **env);
+                    
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (void *complex_content,
+            axis2_env_t **env);
+                    
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (void *complex_content,
+                    axis2_env_t **env);                                        
 
     void* (AXIS2_CALL *
     get_content)(
@@ -63,14 +71,8 @@ struct axis2_xml_schema_complex_content_ops
     set_content)(
             void *complex_content,
             axis2_env_t **env,
-            void *content,
-            int content_type);
+            void *content);
     
-    int (AXIS2_CALL *
-    get_content_type)(
-            void *complex_content,
-            axis2_env_t **env);
-            
     axis2_char_t* (AXIS2_CALL*
     to_string)(void *complex_content,
                axis2_env_t **env,
@@ -101,13 +103,14 @@ axis2_xml_schema_complex_content_create(axis2_env_t **env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
- */
+ 
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_complex_content_resolve_methods(
                                 axis2_xml_schema_complex_content_t *complex_content,
                                 axis2_env_t **env,
                                 axis2_xml_schema_complex_content_t *group_impl,
                                 axis2_hash_t *methods);
+*/
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_FREE(complex_content, env) \
 		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
@@ -116,6 +119,14 @@ axis2_xml_schema_complex_content_resolve_methods(
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_GET_BASE_IMPL(complex_content, env) \
 		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
             get_base_impl(complex_content, env))
+            
+#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_TYPE(complex_content, env) \
+		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
+            type(complex_content, env))
+            
+#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_SUPER_OBJS(complex_content, env) \
+		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
+            super_objs(complex_content, env))                        
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_GET_CONTENT(complex_content, env) \
 		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
@@ -125,14 +136,9 @@ axis2_xml_schema_complex_content_resolve_methods(
 		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
             set_content(complex_content, env, content, content_type ))
 
-#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_GET_CONTENT_TYPE(complex_content, env) \
-		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
-            get_content_type(complex_content, env))
-            
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_TO_STRING(complex_content, env, prefix, tab) \
         (((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
             to_string(complex_content, env, prefix, tab))            
-
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_IS_MIXED(complex_content, env) \
         (((axis2_xml_schema_complex_content_t *) complex_content)->ops->\

@@ -36,6 +36,12 @@ struct axis2_xml_schema_complex_content_extension_impl
     axis2_qname_t *base_type_name;
     
     axis2_xml_schema_particle_t *particle;
+    
+    axis2_hash_t *methods;
+    
+    axis2_hash_t *ht_super;
+    
+    axis2_xml_schema_types_t obj_type;
 };
 
 #define AXIS2_INTF_TO_IMPL(cmp_cnt_ext) \
@@ -43,56 +49,66 @@ struct axis2_xml_schema_complex_content_extension_impl
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_complex_content_extension_free(
-        axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+        void *cmp_cnt_ext,
         axis2_env_t **env);
 
 axis2_xml_schema_annotated_t *AXIS2_CALL
 axis2_xml_schema_complex_content_extension_get_base_impl(
-        axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+        void *cmp_cnt_ext,
         axis2_env_t **env);
+        
+axis2_xml_schema_types_t AXIS2_CALL
+axis2_xml_schema_complex_content_extension_type(
+        void *cmp_cnt_ext,
+        axis2_env_t **env);
+        
+axis2_hash_t *AXIS2_CALL
+axis2_xml_schema_complex_content_extension_super_objs(
+        void *cmp_cnt_ext,
+        axis2_env_t **env);                
 
 axis2_xml_schema_any_attribute_t* AXIS2_CALL
 axis2_xml_schema_complex_content_extension_get_any_attribute(
-        axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+        void *cmp_cnt_ext,
         axis2_env_t **env);
         
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_complex_content_extension_set_any_attribute(
-        axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+        void *cmp_cnt_ext,
         axis2_env_t **env,
         axis2_xml_schema_any_attribute_t *any_attr);
 
 axis2_xml_schema_obj_collection_t* AXIS2_CALL
 axis2_xml_schema_complex_content_extension_get_attributes(
-        axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+        void *cmp_cnt_ext,
         axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_complex_content_extension_set_base_type_name(
-        axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+        void *cmp_cnt_ext,
         axis2_env_t **env,
         axis2_qname_t *base_type_name);
                                           
 axis2_qname_t* AXIS2_CALL
 axis2_xml_schema_complex_content_extension_get_base_type_name(
-        axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+        void *cmp_cnt_ext,
         axis2_env_t **env);
         
                                           
 axis2_xml_schema_particle_t* AXIS2_CALL
 axis2_xml_schema_complex_content_extension_get_particle( 
-        axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+        void *cmp_cnt_ext,
         axis2_env_t **env);                                       
                               
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_complex_content_extension_set_particle( 
-        axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+        void *cmp_cnt_ext,
         axis2_env_t **env,
         axis2_xml_schema_particle_t *particle);
         
 axis2_char_t *AXIS2_CALL
 axis2_xml_schema_complex_content_extension_to_string(
-        axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+        void *cmp_cnt_ext,
         axis2_env_t **env,
         axis2_char_t *prefix,
         int tab);                                      
@@ -120,6 +136,9 @@ axis2_xml_schema_complex_content_extension_create(axis2_env_t **env)
     cmp_cnt_ext_impl->base_type_name = NULL;
     cmp_cnt_ext_impl->any_attribute = NULL;
     cmp_cnt_ext_impl->particle = NULL;
+    cmp_cnt_ext_impl->ht_super = NULL;
+    cmp_cnt_ext_impl->methods = NULL;
+    cmp_cnt_ext_impl->obj_type = AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION;
     
     cmp_cnt_ext_impl->cmp_cnt_ext.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_complex_content_extension_ops_t));
@@ -133,9 +152,12 @@ axis2_xml_schema_complex_content_extension_create(axis2_env_t **env)
         return NULL;
     }
 
-
     cmp_cnt_ext_impl->cmp_cnt_ext.ops->free = 
             axis2_xml_schema_complex_content_extension_free;
+    cmp_cnt_ext_impl->cmp_cnt_ext.ops->type = 
+            axis2_xml_schema_complex_content_extension_type;            
+    cmp_cnt_ext_impl->cmp_cnt_ext.ops->super_objs = 
+            axis2_xml_schema_complex_content_extension_super_objs;            
     cmp_cnt_ext_impl->cmp_cnt_ext.ops->get_base_impl = 
             axis2_xml_schema_complex_content_extension_get_base_impl;
     cmp_cnt_ext_impl->cmp_cnt_ext.ops->get_any_attribute = 
@@ -154,10 +176,42 @@ axis2_xml_schema_complex_content_extension_create(axis2_env_t **env)
             axis2_xml_schema_complex_content_extension_set_particle;
     cmp_cnt_ext_impl->cmp_cnt_ext.ops->to_string =
             axis2_xml_schema_complex_content_extension_to_string;            
-                    
-            
-            
-            
+
+    cmp_cnt_ext_impl->methods = axis2_hash_make(env);
+    cmp_cnt_ext_impl->ht_super = axis2_hash_make(env);
+    if(!cmp_cnt_ext_impl->ht_super || !cmp_cnt_ext_impl->methods)
+    {
+        axis2_xml_schema_complex_content_extension_free(
+                &(cmp_cnt_ext_impl->cmp_cnt_ext), env);
+        return NULL;
+    }
+
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"free", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_complex_content_extension_free);
+
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"type", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_complex_content_extension_type);            
+    
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"super_objs", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_complex_content_extension_super_objs);            
+    
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"get_any_attribute", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_complex_content_extension_get_any_attribute);
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"set_any_attribute", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_complex_content_extension_set_any_attribute);
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"get_attributes", AXIS2_HASH_KEY_STRING,                
+            axis2_xml_schema_complex_content_extension_get_attributes);
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"get_base_type_name", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_complex_content_extension_get_base_type_name);
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"set_base_type_name", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_complex_content_extension_set_base_type_name); 
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"get_particle", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_complex_content_extension_get_particle);
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"set_particle", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_complex_content_extension_set_particle);
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"free", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_complex_content_extension_to_string);            
+                
     if(!cmp_cnt_ext_impl->annotated)
     {
         axis2_xml_schema_complex_content_extension_free(
@@ -170,11 +224,21 @@ axis2_xml_schema_complex_content_extension_create(axis2_env_t **env)
         axis2_xml_schema_complex_content_extension_free(&(cmp_cnt_ext_impl->cmp_cnt_ext), env);
         return NULL;
     }
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION",
+        AXIS2_HASH_KEY_STRING, &(cmp_cnt_ext_impl->cmp_cnt_ext));   
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"AXIS2_XML_SCHEMA_ANNOTATED",
+        AXIS2_HASH_KEY_STRING, cmp_cnt_ext_impl->annotated);   
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"AXIS2_XML_SCHEMA_OBJ",
+        AXIS2_HASH_KEY_STRING, 
+        AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(cmp_cnt_ext_impl->annotated, env));   
+            
+    axis2_xml_schema_annotated_resolve_methods(&(cmp_cnt_ext_impl->cmp_cnt_ext.base), env, 
+        cmp_cnt_ext_impl->annotated, cmp_cnt_ext_impl->methods);
     return &(cmp_cnt_ext_impl->cmp_cnt_ext);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_complex_content_extension_free(axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext_ext_ext,
+axis2_xml_schema_complex_content_extension_free(void *cmp_cnt_ext_ext_ext,
                                     axis2_env_t **env)
 {
     axis2_xml_schema_complex_content_extension_impl_t *content_ext_impl = NULL;
@@ -205,6 +269,11 @@ axis2_xml_schema_complex_content_extension_free(axis2_xml_schema_complex_content
         AXIS2_FREE((*env)->allocator, content_ext_impl->cmp_cnt_ext.ops);
         content_ext_impl->cmp_cnt_ext.ops = NULL;
     }
+    if(NULL != content_ext_impl->cmp_cnt_ext.base.ops)
+    {
+        AXIS2_FREE((*env)->allocator, content_ext_impl->cmp_cnt_ext.base.ops);
+        content_ext_impl->cmp_cnt_ext.base.ops = NULL;
+    }
  
     AXIS2_FREE((*env)->allocator, content_ext_impl);
     content_ext_impl = NULL;
@@ -212,7 +281,7 @@ axis2_xml_schema_complex_content_extension_free(axis2_xml_schema_complex_content
 }
 
 axis2_xml_schema_annotated_t *AXIS2_CALL
-axis2_xml_schema_complex_content_extension_get_base_impl(axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+axis2_xml_schema_complex_content_extension_get_base_impl(void *cmp_cnt_ext,
                                 axis2_env_t **env)
 {
     axis2_xml_schema_complex_content_extension_impl_t *content_ext_impl = NULL;
@@ -224,7 +293,7 @@ axis2_xml_schema_complex_content_extension_get_base_impl(axis2_xml_schema_comple
 
 
 axis2_xml_schema_any_attribute_t* AXIS2_CALL
-axis2_xml_schema_complex_content_extension_get_any_attribute(axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+axis2_xml_schema_complex_content_extension_get_any_attribute(void *cmp_cnt_ext,
                                                             axis2_env_t **env)
 {
     axis2_xml_schema_complex_content_extension_impl_t *cnt_ext_impl = NULL;
@@ -234,7 +303,7 @@ axis2_xml_schema_complex_content_extension_get_any_attribute(axis2_xml_schema_co
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_complex_content_extension_set_any_attribute(axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+axis2_xml_schema_complex_content_extension_set_any_attribute(void *cmp_cnt_ext,
                                 axis2_env_t **env,
                                 axis2_xml_schema_any_attribute_t *any_attr)
 {
@@ -252,7 +321,7 @@ axis2_xml_schema_complex_content_extension_set_any_attribute(axis2_xml_schema_co
 }
 
 axis2_xml_schema_obj_collection_t* AXIS2_CALL
-axis2_xml_schema_complex_content_extension_get_attributes(axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+axis2_xml_schema_complex_content_extension_get_attributes(void *cmp_cnt_ext,
                                                         axis2_env_t **env)
 {
     axis2_xml_schema_complex_content_extension_impl_t *cnt_ext_impl = NULL;
@@ -263,7 +332,7 @@ axis2_xml_schema_complex_content_extension_get_attributes(axis2_xml_schema_compl
 
 axis2_qname_t* AXIS2_CALL
 axis2_xml_schema_complex_content_extension_get_base_type_name(
-                                          axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+                                          void *cmp_cnt_ext,
                                           axis2_env_t **env)
 {
     axis2_xml_schema_complex_content_extension_impl_t *content_ext_impl = NULL;
@@ -274,7 +343,7 @@ axis2_xml_schema_complex_content_extension_get_base_type_name(
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_complex_content_extension_set_base_type_name(
-                                          axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+                                          void *cmp_cnt_ext,
                                           axis2_env_t **env,
                                           axis2_qname_t *base_type_name)
 {
@@ -292,7 +361,7 @@ axis2_xml_schema_complex_content_extension_set_base_type_name(
 
 axis2_xml_schema_particle_t* AXIS2_CALL
 axis2_xml_schema_complex_content_extension_get_particle( 
-        axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+        void *cmp_cnt_ext,
         axis2_env_t **env)
 {
     return AXIS2_INTF_TO_IMPL(cmp_cnt_ext)->particle;
@@ -300,7 +369,7 @@ axis2_xml_schema_complex_content_extension_get_particle(
                               
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_complex_content_extension_set_particle( 
-        axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+        void *cmp_cnt_ext,
         axis2_env_t **env,
         axis2_xml_schema_particle_t *particle)
 {
@@ -319,10 +388,26 @@ axis2_xml_schema_complex_content_extension_set_particle(
         
 axis2_char_t *AXIS2_CALL
 axis2_xml_schema_complex_content_extension_to_string(
-        axis2_xml_schema_complex_content_extension_t *cmp_cnt_ext,
+        void *cmp_cnt_ext,
         axis2_env_t **env,
         axis2_char_t *prefix,
         int tab)
 {
     return NULL;
+} 
+
+axis2_xml_schema_types_t AXIS2_CALL
+axis2_xml_schema_complex_content_extension_type(
+        void *cmp_cnt_ext,
+        axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(cmp_cnt_ext)->obj_type;
+}        
+        
+axis2_hash_t *AXIS2_CALL
+axis2_xml_schema_complex_content_extension_super_objs(
+        void *cmp_cnt_ext,
+        axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(cmp_cnt_ext)->ht_super;
 }        

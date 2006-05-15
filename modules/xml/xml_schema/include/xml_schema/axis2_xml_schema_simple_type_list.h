@@ -56,14 +56,24 @@ struct axis2_xml_schema_simple_type_list_ops
     get_base_impl) (void *simple_type_list,
                     axis2_env_t **env);
 
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type)(void *simple_type_list,
+          axis2_env_t **env);
+    
+    axis2_hash_t* (AXIS2_CALL *
+    super_objs)(void *simple_type_list,
+          axis2_env_t **env);
+          
+
     axis2_xml_schema_simple_type_t *(AXIS2_CALL *
     get_item_type)(void *simple_type_list,
                 axis2_env_t **env);
-    
+
+    /** */
     axis2_status_t (AXIS2_CALL *
     set_item_type)(void *simple_type_list,
-                    axis2_env_t **env,
-                    axis2_xml_schema_simple_type_t *base_type);
+                   axis2_env_t **env,
+                   axis2_xml_schema_simple_type_t *base_type);
     
     axis2_qname_t* (AXIS2_CALL *
     get_item_type_name)(void *simple_type_list,
@@ -94,14 +104,17 @@ axis2_xml_schema_simple_type_list_create(axis2_env_t **env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
- */
+
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_simple_type_list_resolve_methods(
                     axis2_xml_schema_simple_type_list_t *simple_type_list,
                     axis2_env_t **env,
                     axis2_xml_schema_simple_type_list_t *simple_type_list_impl,
                     axis2_hash_t *methods);
-
+ */
+ 
+ /********************** Macros ***********************************************/
+ 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_FREE(simple_type_list, env) \
 		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
             free(simple_type_list, env))
@@ -109,12 +122,20 @@ axis2_xml_schema_simple_type_list_resolve_methods(
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_GET_BASE_IMPL(simple_type_list, env) \
 		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
             get_base_impl(simple_type_list, env))
+            
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_TYPE(simple_type_list, env) \
+		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
+            type(simple_type_list, env))
+            
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_SUPER_OBJS(simple_type_list, env) \
+		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
+            super_objs(simple_type_list, env))                        
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_GET_ITEM_TYPE(simple_type_list, env) \
 		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
             get_item_type(simple_type_list, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_SET_BASE_TYPE(simple_type_list,\
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_SET_ITEM_TYPE(simple_type_list,\
          env, base_type) \
 		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
             set_item_type(simple_type_list, env, base_type))
@@ -128,6 +149,7 @@ axis2_xml_schema_simple_type_list_resolve_methods(
 		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
             set_item_type_name(simple_type_list, env, base_type_name))
 
+/************************ end macros **********************************************/
 /** @} */
 #ifdef __cplusplus
 }

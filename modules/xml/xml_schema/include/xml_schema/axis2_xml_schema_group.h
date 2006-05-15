@@ -99,14 +99,16 @@ axis2_xml_schema_group_create(axis2_env_t **env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
- */
+ 
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_group_resolve_methods(
                                 axis2_xml_schema_group_t *group,
                                 axis2_env_t **env,
                                 axis2_xml_schema_group_t *group_impl,
                                 axis2_hash_t *methods);
+*/
 
+/**************************** Macros *************************************/
 #define AXIS2_XML_SCHEMA_GROUP_FREE(group, env) \
 		(((axis2_xml_schema_group_t *) group)->ops->\
             free(group, env))

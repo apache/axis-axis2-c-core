@@ -28,6 +28,10 @@ struct axis2_xml_schema_xpath_impl
     axis2_xml_schema_annotated_t *annotated;
     axis2_hash_t *methods;
     axis2_char_t *x_path;
+    
+    axis2_hash_t *ht_super;
+    
+    axis2_xml_schema_types_t obj_type;
 };
 
 #define AXIS2_INTF_TO_IMPL(xpath) ((axis2_xml_schema_xpath_impl_t *) xpath)
@@ -40,6 +44,14 @@ axis2_xml_schema_annotated_t *AXIS2_CALL
 axis2_xml_schema_xpath_get_base_impl(void *xpath,
                                         axis2_env_t **env);
 
+axis2_xml_schema_types_t AXIS2_CALL
+axis2_xml_schema_xpath_type(void *xpath,
+                            axis2_env_t **env);
+                                        
+axis2_hash_t *AXIS2_CALL
+axis2_xml_schema_xpath_super_objs(void *xpath,
+                                  axis2_env_t **env);
+                                                                                
 axis2_char_t *AXIS2_CALL
 axis2_xml_schema_xpath_get_xpath(void *xpath,
                                  axis2_env_t **env);
@@ -63,6 +75,8 @@ axis2_xml_schema_xpath_create(axis2_env_t **env,
     xpath_impl->annotated = NULL;
     xpath_impl->methods = NULL;
     xpath_impl->x_path = NULL;
+    xpath_impl->ht_super = NULL;
+    xpath_impl->obj_type = AXIS2_XML_SCHEMA_XPATH;
     xpath_impl->xpath.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_xpath_ops_t));
 
@@ -73,6 +87,10 @@ axis2_xml_schema_xpath_create(axis2_env_t **env,
             axis2_xml_schema_xpath_get_xpath;
     xpath_impl->xpath.ops->set_xpath = 
             axis2_xml_schema_xpath_set_xpath;
+    xpath_impl->xpath.ops->type =
+            axis2_xml_schema_xpath_type; 
+    xpath_impl->xpath.ops->super_objs =
+            axis2_xml_schema_xpath_super_objs;                       
    
     xpath_impl->methods = axis2_hash_make(env);
     if(!xpath_impl->methods)
@@ -88,6 +106,21 @@ axis2_xml_schema_xpath_create(axis2_env_t **env,
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_xpath_set_xpath);
     
     xpath_impl->annotated = axis2_xml_schema_annotated_create(env);
+    
+    xpath_impl->ht_super = axis2_hash_make(env);
+    if(!xpath_impl->ht_super)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    axis2_hash_set(xpath_impl->ht_super, "AXIS2_XML_SCHEMA_XPATH", AXIS2_HASH_KEY_STRING,
+        &(xpath_impl->xpath));
+    axis2_hash_set(xpath_impl->ht_super, "AXIS2_XML_SCHEMA_ANNOTATED", AXIS2_HASH_KEY_STRING,
+        xpath_impl->annotated);        
+    axis2_hash_set(xpath_impl->ht_super, "AXIS2_XML_SCHEMA_OBJ", AXIS2_HASH_KEY_STRING,
+        AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(xpath_impl->annotated, env));
+
     status = axis2_xml_schema_annotated_resolve_methods(
             &(xpath_impl->xpath.base), env, xpath_impl->annotated, 
             xpath_impl->methods);
@@ -108,6 +141,11 @@ axis2_xml_schema_xpath_free(void *xpath,
     {
         AXIS2_FREE((*env)->allocator, xpath_impl->x_path);
         xpath_impl->x_path = NULL;
+    }
+    if(xpath_impl->ht_super)
+    {
+        axis2_hash_free(xpath_impl->ht_super, env);
+        xpath_impl->ht_super = NULL;
     }
 
     if(xpath_impl->methods)
@@ -148,6 +186,7 @@ axis2_xml_schema_xpath_get_base_impl(void *xpath,
     return xpath_impl->annotated;
 }
 
+/*
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_xpath_resolve_methods(
                                 axis2_xml_schema_xpath_t *xpath,
@@ -177,6 +216,7 @@ axis2_xml_schema_xpath_resolve_methods(
     return axis2_xml_schema_annotated_resolve_methods(&(xpath->base), 
             env, xpath_impl_l->annotated, methods);
 }
+*/
 
 axis2_char_t *AXIS2_CALL
 axis2_xml_schema_xpath_get_xpath(void *xpath,
@@ -211,4 +251,16 @@ axis2_xml_schema_xpath_set_xpath(void *xpath,
 
     return AXIS2_SUCCESS;
 }
-
+axis2_xml_schema_types_t AXIS2_CALL
+axis2_xml_schema_xpath_type(void *xpath,
+                            axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(xpath)->obj_type;
+}
+                                        
+axis2_hash_t *AXIS2_CALL
+axis2_xml_schema_xpath_super_objs(void *xpath,
+                                  axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(xpath)->ht_super;
+}

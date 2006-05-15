@@ -56,6 +56,14 @@ struct axis2_xml_schema_simple_type_ops
     get_base_impl) (void *simple_type,
                     axis2_env_t **env);
                     
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (void *simple_type,
+            axis2_env_t **env);
+                    
+    axis2_hash_t* (AXIS2_CALL *
+    super_objs) (void *simple_type,
+                 axis2_env_t **env);                                        
+                    
     axis2_xml_schema_simple_type_content_t* (AXIS2_CALL *
     get_content)(void *simple_type,
                  axis2_env_t **env);
@@ -92,14 +100,15 @@ axis2_xml_schema_simple_type_create(axis2_env_t **env,
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
- */
+
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_simple_type_resolve_methods(
                                 axis2_xml_schema_simple_type_t *simple_type,
                                 axis2_env_t **env,
                                 axis2_xml_schema_simple_type_t *type_impl,
                                 axis2_hash_t *methods);
-
+ */
+ /***************** Macros ***************************************************/
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_FREE(simple_type, env) \
 		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
             free(simple_type, env))
@@ -107,6 +116,14 @@ axis2_xml_schema_simple_type_resolve_methods(
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_GET_BASE_IMPL(simple_type, env) \
 		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
             get_base_impl(simple_type, env))
+
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_TYPE(simple_type, env) \
+		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
+            type(simple_type, env))
+            
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_SUPER_OBJS(simple_type, env) \
+		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
+            super_objs(simple_type, env))            
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_GET_CONTENT(simple_type, env) \
 		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
@@ -120,6 +137,7 @@ axis2_xml_schema_simple_type_resolve_methods(
 		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
             to_string(simple_type, env))
                                                            
+/************************ end macros ********************************************/                                                           
 /** @} */
 #ifdef __cplusplus
 }

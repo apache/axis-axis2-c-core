@@ -36,6 +36,10 @@ typedef struct axis2_xml_schema_redefine_impl
     axis2_xml_schema_obj_table_t *schema_types;
         
     axis2_hash_t *methods;
+    
+    axis2_hash_t *ht_super;
+    
+    axis2_xml_schema_types_t obj_type;
 
 }axis2_xml_schema_redefine_impl_t;
 
@@ -51,6 +55,14 @@ axis2_xml_schema_redefine_free(void *redefine,
 axis2_xml_schema_external_t *AXIS2_CALL
 axis2_xml_schema_redefine_get_base_impl(void *redefine,
                                         axis2_env_t **env);
+                                        
+axis2_xml_schema_types_t AXIS2_CALL
+axis2_xml_schema_redefine_type(void *redefine,
+                                axis2_env_t **env);
+
+axis2_hash_t *AXIS2_CALL
+axis2_xml_schema_redefine_super_objs(void *redefine,
+                                     axis2_env_t **env);                                                                                
 
 axis2_xml_schema_obj_table_t* AXIS2_CALL
 axis2_xml_schema_redefine_get_attribute_group(void *redefine,
@@ -82,6 +94,7 @@ AXIS2_DECLARE(axis2_xml_schema_redefine_t *)
 axis2_xml_schema_redefine_create(axis2_env_t **env)
 {
     axis2_xml_schema_redefine_impl_t *redefine_impl = NULL;
+    axis2_xml_schema_annotated_t *annotated = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     redefine_impl = AXIS2_MALLOC((*env)->allocator, 
@@ -99,6 +112,8 @@ axis2_xml_schema_redefine_create(axis2_env_t **env)
     redefine_impl->groups = NULL;
     redefine_impl->schema_types = NULL;
     redefine_impl->items = NULL;
+    redefine_impl->obj_type = AXIS2_XML_SCHEMA_REDEFINE;
+    redefine_impl->ht_super = NULL;
     
     redefine_impl->redefine.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_redefine_ops_t));
@@ -114,15 +129,24 @@ axis2_xml_schema_redefine_create(axis2_env_t **env)
         axis2_xml_schema_redefine_free;
     redefine_impl->redefine.ops->get_base_impl = 
         axis2_xml_schema_redefine_get_base_impl;
-        
+    redefine_impl->redefine.ops->type =
+        axis2_xml_schema_redefine_type;
+    redefine_impl->redefine.ops->super_objs =
+        axis2_xml_schema_redefine_super_objs;
     redefine_impl->redefine.ops->get_items = 
-            axis2_xml_schema_redefine_get_items;
-            
+        axis2_xml_schema_redefine_get_items;
     redefine_impl->redefine.ops->get_group = 
-            axis2_xml_schema_redefine_get_group;
+        axis2_xml_schema_redefine_get_group;
+    redefine_impl->redefine.ops->get_attribute_group =
+        axis2_xml_schema_redefine_get_attribute_group;
+    redefine_impl->redefine.ops->set_attribute_group =
+        axis2_xml_schema_redefine_set_attribute_group;
+    redefine_impl->redefine.ops->get_schema_types =
+        axis2_xml_schema_redefine_get_schema_types;                            
 
     redefine_impl->methods = axis2_hash_make(env);
-    if(!redefine_impl->methods)
+    redefine_impl->ht_super = axis2_hash_make(env);
+    if(!redefine_impl->methods || !redefine_impl->ht_super)
     {
         axis2_xml_schema_redefine_free(&(redefine_impl->redefine), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -131,7 +155,10 @@ axis2_xml_schema_redefine_create(axis2_env_t **env)
 
     axis2_hash_set(redefine_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_redefine_free);
-
+    axis2_hash_set(redefine_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_redefine_type);
+    axis2_hash_set(redefine_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_redefine_super_objs);
     axis2_hash_set(redefine_impl->methods, "get_items", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_redefine_get_items);
     axis2_hash_set(redefine_impl->methods, "get_group", 
@@ -143,6 +170,24 @@ axis2_xml_schema_redefine_create(axis2_env_t **env)
         axis2_xml_schema_redefine_free(&(redefine_impl->redefine), env);
         return NULL;
     }
+    
+    
+    axis2_hash_set(redefine_impl->ht_super, "AXIS2_XML_SCHEMA_REDEFINE", 
+            AXIS2_HASH_KEY_STRING, &(redefine_impl->redefine));
+    axis2_hash_set(redefine_impl->ht_super, "AXIS2_XML_SCHEMA_EXTERNAL", 
+            AXIS2_HASH_KEY_STRING, redefine_impl->external);
+            
+    annotated = AXIS2_XML_SCHEMA_EXTERNAL_GET_BASE_IMPL(redefine_impl->external, env);
+    if(NULL != redefine_impl->external)
+    {
+        
+        axis2_hash_set(redefine_impl->ht_super, "AXIS2_XML_SCHEMA_ANNOTATED", 
+            AXIS2_HASH_KEY_STRING, annotated);
+        axis2_hash_set(redefine_impl->ht_super, "AXIS2_XML_SCHEMA_OBJ", 
+            AXIS2_HASH_KEY_STRING, 
+            AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));        
+    }            
+
     status = axis2_xml_schema_external_resolve_methods(
             &(redefine_impl->redefine.base), env, redefine_impl->external, 
             redefine_impl->methods);
@@ -163,6 +208,11 @@ axis2_xml_schema_redefine_free(void *redefine,
     {
         axis2_hash_free(redefine_impl->methods, env);
         redefine_impl->methods = NULL;
+    }
+    if(NULL != redefine_impl->ht_super)
+    {
+        axis2_hash_free(redefine_impl->ht_super, env);
+        redefine_impl->ht_super = NULL;
     }
 
     if(NULL != redefine_impl->external)
@@ -194,9 +244,11 @@ axis2_xml_schema_redefine_get_base_impl(void *redefine,
 
     AXIS2_ENV_CHECK(env, NULL);
     redefine_impl = AXIS2_INTF_TO_IMPL(redefine);
-
     return redefine_impl->external;
 }
+
+
+/*
 
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_redefine_resolve_methods(
@@ -229,26 +281,66 @@ axis2_xml_schema_redefine_resolve_methods(
     return axis2_xml_schema_external_resolve_methods(&(redefine->base), 
             env, redefine_impl_l->external, methods);
 }
-
+*/
 axis2_xml_schema_obj_table_t* AXIS2_CALL
 axis2_xml_schema_redefine_get_attribute_group(void *redefine,
-                                              axis2_env_t **env){}
+                                              axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(redefine)->attr_groups;
+}
                 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_redefine_set_attribute_group(void *redefine,
                 axis2_env_t **env,
-                axis2_xml_schema_obj_table_t *group){}
+                axis2_xml_schema_obj_table_t *group)
+{
+    axis2_xml_schema_redefine_impl_t *red_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, group, AXIS2_FAILURE);
+    red_impl = AXIS2_INTF_TO_IMPL(redefine);
+    if(NULL != red_impl->groups)
+    {
+    
+    }
+    red_impl->groups = group;
+    return AXIS2_SUCCESS;
+}
 
    
                    
 axis2_xml_schema_obj_collection_t* AXIS2_CALL
 axis2_xml_schema_redefine_get_items(void *redefine,
-               axis2_env_t **env){}
+               axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(redefine)->items;
+}
                
 axis2_xml_schema_obj_table_t* AXIS2_CALL
 axis2_xml_schema_redefine_get_schema_types(void *redefine,
-                      axis2_env_t **env){}
+                      axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(redefine)->schema_types;
+}
                       
 axis2_xml_schema_obj_table_t* AXIS2_CALL
 axis2_xml_schema_redefine_get_group(void *redefine, 
-               axis2_env_t **env){}
+               axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(redefine)->groups;
+}
+
+axis2_xml_schema_types_t AXIS2_CALL
+axis2_xml_schema_redefine_type(void *redefine,
+                                axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(redefine)->obj_type;
+}
+                                
+
+axis2_hash_t *AXIS2_CALL
+axis2_xml_schema_redefine_super_objs(void *redefine,
+                                     axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(redefine)->ht_super;
+}                                     
+                                     

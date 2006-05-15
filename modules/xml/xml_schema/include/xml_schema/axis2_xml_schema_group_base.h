@@ -69,6 +69,15 @@ struct axis2_xml_schema_group_base_ops
     axis2_xml_schema_obj_collection_t *(AXIS2_CALL *
     get_items)(void *group_base,
                     axis2_env_t **env);
+    /**
+     * only valid if the type is AXIS2_XML_SCHEMA_SEQUENCE
+     */
+    axis2_status_t (AXIS2_CALL *
+    to_string)(void *group_base,
+               axis2_env_t **env,
+               axis2_char_t *prefix,
+               int tab);
+               
 
 };
 
@@ -78,19 +87,23 @@ struct axis2_xml_schema_group_base
     axis2_xml_schema_group_base_ops_t *ops;
 };
 
+
 AXIS2_DECLARE(axis2_xml_schema_group_base_t *)
 axis2_xml_schema_group_base_create(axis2_env_t **env);
 
+AXIS2_DECLARE(axis2_xml_schema_group_base_t *)
+axis2_xml_schema_all_create(axis2_env_t **env);
+
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
- */
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_group_base_resolve_methods(
                                 axis2_xml_schema_group_base_t *group_base,
                                 axis2_env_t **env,
                                 axis2_xml_schema_group_base_t *group_base_impl,
                                 axis2_hash_t *methods);
-
+*/
+/********************** macros ***********************************************/
 #define AXIS2_XML_SCHEMA_GROUP_BASE_FREE(group_base, env) \
 		(((axis2_xml_schema_group_base_t *) group_base)->ops->free(group_base, env))
 
@@ -106,7 +119,11 @@ axis2_xml_schema_group_base_resolve_methods(
 #define AXIS2_XML_SCHEMA_GROUP_BASE_GET_ITEMS(group_base, env) \
 		(((axis2_xml_schema_group_base_t *) group_base)->ops->get_items(group_base, env))
 
+#define AXIS2_XML_SCHEMA_GROUP_BASE_TO_STRING(group_base, env, prefix, tab) \
+        (((axis2_xml_schema_group_base_t *) group_base)->ops->to_string(group_base, \
+            env, prefix, tab))
 
+/*********************** end macros ********************************************/
 /** @} */
 #ifdef __cplusplus
 }

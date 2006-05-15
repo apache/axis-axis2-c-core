@@ -53,6 +53,15 @@ struct axis2_xml_schema_any_attribute_ops
     axis2_status_t (AXIS2_CALL *
     free) (void *any_attr,
             axis2_env_t **env);
+            
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type)(void *any_attr,
+          axis2_env_t **env);
+          
+    axis2_hash_t* (AXIS2_CALL *
+    super_objs)(void *any_attr,
+                axis2_env_t **env);
+                                      
 
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *any_attr,
@@ -88,20 +97,31 @@ axis2_xml_schema_any_attribute_create(axis2_env_t **env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
- */
+
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_any_attribute_resolve_methods(
                                 axis2_xml_schema_any_attribute_t *any_attr,
                                 axis2_env_t **env,
                                 axis2_xml_schema_any_attribute_t *any_impl,
                                 axis2_hash_t *methods);
-
+ */
+/******************************* Macros *************************************************/ 
+ 
 #define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_FREE(any_attr, env) \
 		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->free(any_attr, env))
 
 #define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_GET_BASE_IMPL(any_attr, env) \
 		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->get_base_impl(any_attr, env))
 
+
+#define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_TYPE(any_attr, env) \
+		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->type(any_attr, env))
+		
+		
+#define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_SUPER_OBJS(any_attr, env) \
+		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->super_objs(any_attr, env))
+		
+		
 #define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_GET_NAMESPACE(any_attr, env) \
 		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->get_namespace(any_attr, env))
 
@@ -114,6 +134,7 @@ axis2_xml_schema_any_attribute_resolve_methods(
 #define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_SET_PROCESS_CONTENT(any_attr, env, process_content) \
 		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->set_process_content(any_attr, env, process_content))
 
+/******************************* end macros ***********************************************/
 /** @} */
 #ifdef __cplusplus
 }

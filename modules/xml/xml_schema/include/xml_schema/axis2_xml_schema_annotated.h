@@ -40,31 +40,11 @@ typedef struct axis2_xml_schema_annotated
 typedef struct axis2_xml_schema_annotated_ops 
                     axis2_xml_schema_annotated_ops_t;
                     
-typedef enum axis2_xml_schema_content_model_types_t
-{
-    AXIS2_XML_SCHEMA_SIMPLE_CONTENT = 0,
-    AXIS2_XML_SCHEMA_COMPLEX_CONTENT
-}axis2_xml_schema_content_model_types_t; 
-
-
-typedef enum axis2_xml_schema_content_types_t
-{
-    AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION = 0,
-    AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION,
-    AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION,
-    AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION 
-
-}axis2_xml_schema_content_types_t;
-
 struct axis2_xml_schema_annotated_ops
 {
-	/** 
-     * Deallocate memory
-     * @return status code
-     */
     axis2_status_t (AXIS2_CALL *
     free)(void *annotated,
-            axis2_env_t **env);
+          axis2_env_t **env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs)(
@@ -77,37 +57,41 @@ struct axis2_xml_schema_annotated_ops
             axis2_env_t **env);
 
     axis2_xml_schema_obj_t *(AXIS2_CALL *
-    get_base_impl) (void *annotated,
-                    axis2_env_t **env);
+    get_base_impl)(
+            void *annotated,
+            axis2_env_t **env);
 
     axis2_char_t *(AXIS2_CALL *
     get_id) (void *annotated,
-                axis2_env_t **env);
+             axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL *
-    set_id) (void *annotated,
-                axis2_env_t **env,
-                axis2_char_t *id);
+    set_id) (
+            void *annotated,
+            axis2_env_t **env,
+            axis2_char_t *id);
 
     struct axis2_xml_schema_annotation *(AXIS2_CALL *
-    get_annotation) (void *annotated,
-                        axis2_env_t **env);
+    get_annotation) (
+            void *annotated,
+            axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL *
-    set_annotation) (void *annotated,
-                        axis2_env_t **env,
-                        struct axis2_xml_schema_annotation *
-                            annotation);
+    set_annotation)(
+            void *annotated,
+            axis2_env_t **env,
+            struct axis2_xml_schema_annotation *annotation);
 
     axis2_array_list_t *(AXIS2_CALL *
-    get_unhandled_attrs) (void *annotated,
-                            axis2_env_t **env);
+    get_unhandled_attrs) (
+            void *annotated,
+            axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL *
-    set_unhandled_attrs) (void *annotated,
-                            axis2_env_t **env,
-                            axis2_array_list_t *
-                                unhandled_attrs);
+    set_unhandled_attrs) (
+            void *annotated,
+            axis2_env_t **env,
+            axis2_array_list_t *unhandled_attrs);
 };
 
 struct axis2_xml_schema_annotated
@@ -128,6 +112,8 @@ axis2_xml_schema_annotated_resolve_methods(
                                 axis2_env_t **env,
                                 axis2_xml_schema_annotated_t *annotated_impl,
                                 axis2_hash_t *methods);
+                                
+/*************** Macros *******************************************************/                                
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_FREE(annotated, env) \
 		(((axis2_xml_schema_annotated_t *) annotated)->ops->free(\
@@ -171,7 +157,7 @@ axis2_xml_schema_annotated_resolve_methods(
 		(((axis2_xml_schema_annotated_t *) annotated)->ops->set_unhandled_attrs(\
             annotated, env, unhandled_attrs))
 
-
+/**************************** end macros ***************************************/
 /** @} */
 #ifdef __cplusplus
 }

@@ -56,6 +56,14 @@ struct axis2_xml_schema_simple_content_ops
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *sim_content,
                     axis2_env_t **env);
+                    
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (void *sim_content,
+                axis2_env_t **env);
+                    
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type) (void *sim_content,
+           axis2_env_t **env);                                        
 
     void* (AXIS2_CALL *
     get_content)(
@@ -66,14 +74,8 @@ struct axis2_xml_schema_simple_content_ops
     set_content)(
             void *sim_content,
             axis2_env_t **env,
-            void *content,
-            int content_type);
+            void *content);
     
-    int (AXIS2_CALL *
-    get_content_type)(
-            void *sim_content,
-            axis2_env_t **env);
-            
     axis2_char_t* (AXIS2_CALL*
     to_string)(void *sim_content,
                axis2_env_t **env,
@@ -96,14 +98,15 @@ axis2_xml_schema_simple_content_create(axis2_env_t **env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
- */
+
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_simple_content_resolve_methods(
                                 axis2_xml_schema_simple_content_t *sim_content,
                                 axis2_env_t **env,
                                 axis2_xml_schema_simple_content_t *group_impl,
                                 axis2_hash_t *methods);
-
+ */
+ 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_FREE(sim_content, env) \
 		(((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
             free(sim_content, env))
@@ -112,18 +115,22 @@ axis2_xml_schema_simple_content_resolve_methods(
 		(((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
             get_base_impl(sim_content, env))
 
+#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_SUPER_OBJS(sim_content, env) \
+		(((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
+            super_objs(sim_content, env))
+            
+#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_TYPE(sim_content, env) \
+		(((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
+            type(sim_content, env))
+                        
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_GET_CONTENT(sim_content, env) \
 		(((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
             get_content(sim_content, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_SET_CONTENT(sim_content, env, content, content_type) \
+#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_SET_CONTENT(sim_content, env, content) \
 		(((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
-            set_content(sim_content, env, content, content_type ))
+            set_content(sim_content, env, content))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_GET_CONTENT_TYPE(sim_content, env) \
-		(((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
-            get_content_type(sim_content, env))
-            
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_TO_STRING(sim_content, env, prefix, tab) \
         (((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
             to_string(sim_content, env, prefix, tab))            

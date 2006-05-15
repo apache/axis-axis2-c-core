@@ -240,3 +240,12 @@ axis2_xml_schema_all_get_items(void *all,
     return all_impl->items;
 }
 
+axis2_xml_schema_group_base_t *AXIS2_CALL
+axis2_xml_schema_all_get_base_impl(
+        void *all,
+        axis2_env_t **env)
+{
+    axis2_xml_schema_all_impl_t *schema_all = NULL;
+    schema_all = AXIS2_INTF_TO_IMPL(all);
+    return schema_all->base;
+}        

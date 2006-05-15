@@ -98,15 +98,8 @@ struct axis2_xml_schema_app_info
 AXIS2_DECLARE(axis2_xml_schema_app_info_t *)
 axis2_xml_schema_app_info_create(axis2_env_t **env);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
- */
-AXIS2_DECLARE(axis2_status_t)
-axis2_xml_schema_app_info_resolve_methods(
-       axis2_xml_schema_app_info_t *app_info,
-       axis2_env_t **env,
-       axis2_xml_schema_app_info_t *app_info_impl,
-       axis2_hash_t *methods);
+
+/*********************** macros ***********************************************/
 
 #define AXIS2_XML_SCHEMA_APP_INFO_FREE(app_info, env) \
 		(((axis2_xml_schema_app_info_t *) app_info)->ops->\
@@ -136,6 +129,7 @@ axis2_xml_schema_app_info_resolve_methods(
 		(((axis2_xml_schema_app_info_t *) app_info)->ops->\
             set_markup(app_info, env, markup))
 
+/************************ end macros ******************************************/
 /** @} */
 #ifdef __cplusplus
 }

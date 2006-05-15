@@ -55,9 +55,14 @@ struct axis2_xml_schema_type_impl
     axis2_xml_schema_t *schema;
     
     axis2_qname_t *qname;
+    
+    axis2_hash_t *ht_super;
+    
+    axis2_xml_schema_types_t obj_type;
 };
 
-#define AXIS2_INTF_TO_IMPL(type) ((axis2_xml_schema_type_impl_t *) type)
+#define AXIS2_INTF_TO_IMPL(type) \
+        ((axis2_xml_schema_type_impl_t *) type)
 
 /************************** function prototypes ******************************/
 
@@ -68,6 +73,14 @@ axis2_xml_schema_type_free(void *type,
 axis2_xml_schema_annotated_t *AXIS2_CALL
 axis2_xml_schema_type_get_base_impl(void *type,
                                         axis2_env_t **env);
+                                        
+axis2_xml_schema_types_t AXIS2_CALL
+axis2_xml_schema_type_type(void *type,
+                           axis2_env_t **env); 
+                                        
+axis2_hash_t*  AXIS2_CALL
+axis2_xml_schema_type_super_objs(void *type,
+                                axis2_env_t **env);                                                                               
 
 void *AXIS2_CALL
 axis2_xml_schema_type_get_base_schema_type(void *type,
@@ -145,8 +158,10 @@ axis2_xml_schema_type_create(axis2_env_t **env,
     type_impl->annotated = NULL;
     type_impl->base_schema_type = NULL;
     type_impl->qname = NULL;
-
+    type_impl->ht_super = NULL;
+    type_impl->obj_type = AXIS2_XML_SCHEMA_TYPE;
     type_impl->schema = schema;
+
     type_impl->type.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_type_ops_t));
 
@@ -159,9 +174,14 @@ axis2_xml_schema_type_create(axis2_env_t **env,
         return NULL;
     }
 
-    type_impl->type.ops->free = axis2_xml_schema_type_free;
+    type_impl->type.ops->free = 
+            axis2_xml_schema_type_free;
     type_impl->type.ops->get_base_impl = 
             axis2_xml_schema_type_get_base_impl;
+    type_impl->type.ops->type =
+            axis2_xml_schema_type_type;
+    type_impl->type.ops->super_objs =
+            axis2_xml_schema_type_super_objs;
     type_impl->type.ops->get_base_schema_type = 
             axis2_xml_schema_type_get_base_schema_type;
     type_impl->type.ops->get_data_type = 
@@ -205,6 +225,10 @@ axis2_xml_schema_type_create(axis2_env_t **env,
             axis2_xml_schema_type_free);
     axis2_hash_set(type_impl->methods, "get_base_schema_type", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_type_get_base_schema_type);
+    axis2_hash_set(type_impl->methods, "type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_type_type);
+    axis2_hash_set(type_impl->methods, "super_objs", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_type_super_objs);            
     axis2_hash_set(type_impl->methods, "get_data_type", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_type_get_data_type);
     axis2_hash_set(type_impl->methods, "get_derive_by", 
@@ -232,6 +256,23 @@ axis2_xml_schema_type_create(axis2_env_t **env,
         axis2_xml_schema_type_free(&(type_impl->annotated), env);
         return NULL;
     }
+    type_impl->ht_super = axis2_hash_make(env);
+    if(!type_impl->ht_super)
+    {
+        axis2_xml_schema_type_free(&(type_impl->annotated), env);
+        return NULL;
+    }
+    axis2_hash_set(type_impl->ht_super, "AXIS2_XML_SCHEMA_TYPE", 
+        AXIS2_HASH_KEY_STRING, &(type_impl->type));
+        
+    axis2_hash_set(type_impl->ht_super, "AXIS2_XML_SCHEMA_ANNOTATED", 
+        AXIS2_HASH_KEY_STRING, type_impl->annotated);
+            
+    axis2_hash_set(type_impl->ht_super, "AXIS2_XML_SCHEMA_OBJ", 
+        AXIS2_HASH_KEY_STRING, 
+        AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(type_impl->annotated, env));
+            
+    
     status = axis2_xml_schema_annotated_resolve_methods(
             &(type_impl->type.base), env, type_impl->annotated, 
             type_impl->methods);
@@ -280,10 +321,8 @@ axis2_xml_schema_type_get_base_impl(void *type,
                                 axis2_env_t **env)
 {
     axis2_xml_schema_type_impl_t *type_impl = NULL;
-
     AXIS2_ENV_CHECK(env, NULL);
     type_impl = AXIS2_INTF_TO_IMPL(type);
-
     return type_impl->annotated;
 }
 
@@ -294,13 +333,13 @@ axis2_xml_schema_type_resolve_methods(
                                 axis2_xml_schema_type_t *type_impl,
                                 axis2_hash_t *methods)
 {
-    axis2_xml_schema_type_impl_t *type_impl_l = NULL;
+    axis2_xml_schema_type_impl_t *sch_type_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, type_impl, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
     
-    type_impl_l = (axis2_xml_schema_type_impl_t *) type_impl;
+    sch_type_impl = (axis2_xml_schema_type_impl_t *) type_impl;
     
     type->ops = AXIS2_MALLOC((*env)->allocator, 
             sizeof(axis2_xml_schema_type_ops_t));
@@ -312,33 +351,80 @@ axis2_xml_schema_type_resolve_methods(
             
     type->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    type->ops->get_base_impl = 
-            type_impl_l->type.ops->get_base_impl;
-    type->ops->get_base_schema_type = 
-            type_impl_l->type.ops->get_base_schema_type;
-    type->ops->get_data_type = 
-            type_impl_l->type.ops->get_data_type;
-    type->ops->get_derive_by = 
-            type_impl_l->type.ops->get_derive_by;
+    type->ops->type = axis2_hash_get(methods, "type",
+            AXIS2_HASH_KEY_STRING);
+    type->ops->type = axis2_hash_get(methods, "super_objs",
+            AXIS2_HASH_KEY_STRING);                        
+            
+
+    type->ops->get_base_schema_type = axis2_hash_get(methods, "get_base_schema_type",
+         AXIS2_HASH_KEY_STRING);            
+    if(!type->ops->get_base_schema_type)           
+        type->ops->get_base_schema_type = 
+            sch_type_impl->type.ops->get_base_schema_type;
+
+    type->ops->get_data_type = axis2_hash_get(methods, "get_data_type",
+         AXIS2_HASH_KEY_STRING);            
+    if(!type->ops->get_data_type)           
+        type->ops->get_data_type = 
+            sch_type_impl->type.ops->get_data_type;
+
+    type->ops->get_derive_by = axis2_hash_get(methods, "get_derive_by",
+         AXIS2_HASH_KEY_STRING);            
+    if(!type->ops->get_derive_by)           
+        type->ops->get_derive_by = 
+            sch_type_impl->type.ops->get_derive_by;
+            
+    type->ops->get_final = axis2_hash_get(methods, "get_final",
+         AXIS2_HASH_KEY_STRING);            
+    if(!type->ops->get_final)         
     type->ops->get_final = 
-            type_impl_l->type.ops->get_final;
-    type->ops->set_final = 
-            type_impl_l->type.ops->set_final;
+            sch_type_impl->type.ops->get_final;
+            
+    type->ops->set_final = axis2_hash_get(methods, "set_final",
+        AXIS2_HASH_KEY_STRING);            
+    if(!type->ops->set_final)          
+        type->ops->set_final = 
+            sch_type_impl->type.ops->set_final;
+
+    type->ops->get_final_resolved = axis2_hash_get(methods, "get_final_resolved",
+        AXIS2_HASH_KEY_STRING);            
+    if(!type->ops->get_final_resolved)            
     type->ops->get_final_resolved = 
-            type_impl_l->type.ops->get_final_resolved;
+            sch_type_impl->type.ops->get_final_resolved;
+            
+    type->ops->is_mixed = axis2_hash_get(methods, "is_mixed",
+        AXIS2_HASH_KEY_STRING);            
+    if(!type->ops->is_mixed)  
     type->ops->is_mixed = 
-            type_impl_l->type.ops->is_mixed;
+            sch_type_impl->type.ops->is_mixed;
+     
+    type->ops->set_mixed = axis2_hash_get(methods, "set_mixed",
+        AXIS2_HASH_KEY_STRING);            
+    if(!type->ops->set_mixed)              
     type->ops->set_mixed = 
-            type_impl_l->type.ops->set_mixed;
-    type->ops->get_name = 
-            type_impl_l->type.ops->get_name;
+            sch_type_impl->type.ops->set_mixed;
+            
+    type->ops->get_name = axis2_hash_get(methods, "get_name",
+        AXIS2_HASH_KEY_STRING);            
+    if(!type->ops->get_name)             
+        type->ops->get_name = 
+            sch_type_impl->type.ops->get_name;
+            
+    type->ops->set_name = axis2_hash_get(methods, "set_name",
+        AXIS2_HASH_KEY_STRING);            
+    if(!type->ops->set_name)             
     type->ops->set_name = 
-            type_impl_l->type.ops->set_name;
+            sch_type_impl->type.ops->set_name;
+            
+    type->ops->get_qname = axis2_hash_get(methods, "get_qname",
+        AXIS2_HASH_KEY_STRING);            
+    if(!type->ops->get_qname)            
     type->ops->get_qname = 
-            type_impl_l->type.ops->get_qname;
+            sch_type_impl->type.ops->get_qname;
     
     return axis2_xml_schema_annotated_resolve_methods(&(type->base), 
-            env, type_impl_l->annotated, methods);
+            env, sch_type_impl->annotated, methods);
 }
 
 void *AXIS2_CALL
@@ -346,8 +432,16 @@ axis2_xml_schema_type_get_base_schema_type(void *type,
                                             axis2_env_t **env)
 {
     axis2_xml_schema_type_impl_t *type_impl = NULL;
+    axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    type_impl = AXIS2_INTF_TO_IMPL(type);
+    ht_super = AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env);
+    if(NULL != ht_super)
+    {
+        type_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
+                    "AXIS2_XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING));
+        if(!type_impl)                
+            return NULL;
+    }
     return type_impl->base_schema_type;
 }
 
@@ -356,8 +450,16 @@ axis2_xml_schema_type_get_data_type(void *type,
                                     axis2_env_t **env)
 {
     axis2_xml_schema_type_impl_t *type_impl = NULL;
+    axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    type_impl = AXIS2_INTF_TO_IMPL(type);
+    ht_super = AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env);
+    if(NULL != ht_super)
+    {
+        type_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
+                    "AXIS2_XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING));
+        if(!type_impl)                
+            return NULL;
+    }
     return type_impl->data_type;
 }
 
@@ -366,8 +468,16 @@ axis2_xml_schema_type_get_derive_by(void *type,
                                     axis2_env_t **env)
 {
     axis2_xml_schema_type_impl_t *type_impl = NULL;
+    axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    type_impl = AXIS2_INTF_TO_IMPL(type);
+    ht_super = AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env);
+    if(NULL != ht_super)
+    {
+        type_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
+                    "AXIS2_XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING));
+        if(!type_impl)                
+            return NULL;
+    }
     return type_impl->derive_by;
 }
 
@@ -376,8 +486,16 @@ axis2_xml_schema_type_get_final(void *type,
                                 axis2_env_t **env)
 {
     axis2_xml_schema_type_impl_t *type_impl = NULL;
+    axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    type_impl = AXIS2_INTF_TO_IMPL(type);
+    ht_super = AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env);
+    if(NULL != ht_super)
+    {
+        type_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
+                    "AXIS2_XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING));
+        if(!type_impl)                
+            return NULL;
+    }
     return type_impl->final_derivation;
 }
 
@@ -387,9 +505,17 @@ axis2_xml_schema_type_set_final(void *type,
                             axis2_xml_schema_derivation_method_t *final_derivation)
 {
     axis2_xml_schema_type_impl_t *type_impl = NULL;
+    axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, final_derivation, AXIS2_FAILURE);
-    type_impl = AXIS2_INTF_TO_IMPL(type);
+    ht_super = AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env);
+    if(NULL != ht_super)
+    {
+        type_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
+                    "AXIS2_XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING));
+        if(!type_impl)                
+            return AXIS2_FAILURE;
+    }
     if(NULL != type_impl->final_derivation)
     {
         AXIS2_XML_SCHEMA_DERIVATION_METHOD_FREE(type_impl->final_derivation, env);
@@ -404,8 +530,16 @@ axis2_xml_schema_type_get_final_resolved(void *type,
                                             axis2_env_t **env) 
 {
     axis2_xml_schema_type_impl_t *type_impl = NULL;
+    axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    type_impl = AXIS2_INTF_TO_IMPL(type);
+    ht_super = AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env);
+    if(NULL != ht_super)
+    {
+        type_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
+                    "AXIS2_XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING));
+        if(!type_impl)                
+            return NULL;
+    }
     return type_impl->final_resolved;
 
 }
@@ -415,8 +549,16 @@ axis2_xml_schema_type_is_mixed(void *type,
                                 axis2_env_t **env) 
 {
     axis2_xml_schema_type_impl_t *type_impl = NULL;
+    axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    type_impl = AXIS2_INTF_TO_IMPL(type);
+    ht_super = AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env);
+    if(NULL != ht_super)
+    {
+        type_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
+                    "AXIS2_XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING));
+        if(!type_impl)                
+            return AXIS2_FAILURE;
+    }
     return type_impl->is_mixed;
 }
 
@@ -426,8 +568,16 @@ axis2_xml_schema_type_set_mixed(void *type,
                                 axis2_bool_t is_mixed) 
 {
     axis2_xml_schema_type_impl_t *type_impl = NULL;
+    axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    type_impl = AXIS2_INTF_TO_IMPL(type);
+    ht_super = AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env);
+    if(NULL != ht_super)
+    {
+        type_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
+                    "AXIS2_XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING));
+        if(!type_impl)                
+            return AXIS2_FAILURE;
+    }
     return type_impl->is_mixed = is_mixed;
 }
 
@@ -436,8 +586,16 @@ axis2_xml_schema_type_get_name(void *type,
                                 axis2_env_t **env) 
 {
     axis2_xml_schema_type_impl_t *type_impl = NULL;
+    axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    type_impl = AXIS2_INTF_TO_IMPL(type);
+    ht_super = AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env);
+    if(NULL != ht_super)
+    {
+        type_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
+                    "AXIS2_XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING));
+        if(!type_impl)                
+            return NULL;
+    }
     return type_impl->name;
 }
 
@@ -447,9 +605,17 @@ axis2_xml_schema_type_set_name(void *type,
                                 axis2_char_t *name) 
 {
     axis2_xml_schema_type_impl_t *type_impl = NULL;
+    axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
-    type_impl = AXIS2_INTF_TO_IMPL(type);
+    ht_super = AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env);
+    if(NULL != ht_super)
+    {
+        type_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
+                    "AXIS2_XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING));
+        if(!type_impl)                
+            return AXIS2_FAILURE;
+    }
     if(NULL != type_impl->name)
     {
         AXIS2_FREE((*env)->allocator, type_impl->name);
@@ -467,10 +633,19 @@ axis2_qname_t *AXIS2_CALL
 axis2_xml_schema_type_get_qname(void *type,
                                 axis2_env_t **env) 
 {
-    axis2_xml_schema_type_impl_t *type_impl =  NULL;
+    axis2_xml_schema_type_impl_t *type_impl = NULL;
+    axis2_hash_t *ht_super = NULL;
     axis2_char_t *target_ns = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    type_impl = AXIS2_INTF_TO_IMPL(type);
+    ht_super = AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env);
+    if(NULL != ht_super)
+    {
+        type_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
+                    "AXIS2_XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING));
+        if(!type_impl)                
+            return NULL;
+    }
+
     if(!(type_impl->name))
     {
         return NULL;
@@ -490,3 +665,16 @@ axis2_xml_schema_type_get_qname(void *type,
     return type_impl->qname;
 }
 
+axis2_xml_schema_types_t AXIS2_CALL
+axis2_xml_schema_type_type(void *type,
+                           axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(type)->obj_type;
+}                           
+                                        
+axis2_hash_t*  AXIS2_CALL
+axis2_xml_schema_type_super_objs(void *type,
+                                axis2_env_t **env)
+{
+    return AXIS2_INTF_TO_IMPL(type)->ht_super;
+}                                

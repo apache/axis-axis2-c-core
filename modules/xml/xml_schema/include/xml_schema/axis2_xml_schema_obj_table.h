@@ -66,7 +66,7 @@ struct axis2_xml_schema_obj_table_ops
     get_count) (axis2_xml_schema_obj_table_t *obj_table,
                 axis2_env_t **env);
 
-    axis2_xml_schema_obj_t *(AXIS2_CALL *
+    void *(AXIS2_CALL *
     get_item) (axis2_xml_schema_obj_table_t *obj_table,
                axis2_env_t **env,
                axis2_qname_t *qname);
@@ -88,7 +88,7 @@ struct axis2_xml_schema_obj_table_ops
     add) (axis2_xml_schema_obj_table_t *obj_table,
           axis2_env_t **env,
           axis2_qname_t *qname,
-          axis2_xml_schema_obj_t *value);
+          void *value);
 };
 
 struct axis2_xml_schema_obj_table
@@ -118,8 +118,8 @@ axis2_xml_schema_obj_table_create(axis2_env_t **env);
 #define AXIS2_XML_SCHEMA_OBJ_TABLE_CONTAINS(obj_table, env, qname) \
 		((obj_table)->ops->contains (obj_table, env, qname))
 
-#define AXIS2_XML_SCHEMA_OBJ_TABLE_ADD(obj_table, env, value) \
-		((obj_table)->ops->add (obj_table, env, value))
+#define AXIS2_XML_SCHEMA_OBJ_TABLE_ADD(obj_table, env, qname, value) \
+		((obj_table)->ops->add (obj_table, env, qname, value))
 
 /** @} */
 #ifdef __cplusplus

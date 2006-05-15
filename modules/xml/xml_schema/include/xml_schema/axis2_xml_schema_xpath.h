@@ -57,6 +57,14 @@ struct axis2_xml_schema_xpath_ops
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *xpath,
                     axis2_env_t **env);
+                    
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type)(void *xpath,
+          axis2_env_t **env);
+          
+    axis2_hash_t* (AXIS2_CALL *
+    super_objs)(void *xpath,
+                axis2_env_t **env);
 
     axis2_char_t *(AXIS2_CALL *
     get_xpath)(void *xpath,
@@ -85,14 +93,15 @@ axis2_xml_schema_xpath_create(axis2_env_t **env,
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
- */
+
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_xpath_resolve_methods(
                                 axis2_xml_schema_xpath_t *xpath,
                                 axis2_env_t **env,
                                 axis2_xml_schema_xpath_t *xpath_impl,
                                 axis2_hash_t *methods);
-
+ */
+ 
 #define AXIS2_XML_SCHEMA_XPATH_FREE(xpath, env) \
 		(((axis2_xml_schema_xpath_t *) xpath)->ops->\
             free(xpath, env))
@@ -100,6 +109,14 @@ axis2_xml_schema_xpath_resolve_methods(
 #define AXIS2_XML_SCHEMA_XPATH_GET_BASE_IMPL(xpath, env) \
 		(((axis2_xml_schema_xpath_t *) xpath)->ops->\
             get_base_impl(xpath, env))
+
+#define AXIS2_XML_SCHEMA_XPATH_TYPE(xpath, env) \
+		(((axis2_xml_schema_xpath_t *) xpath)->ops->\
+            type(xpath, env))
+
+#define AXIS2_XML_SCHEMA_XPATH_SUPER_OBJS(xpath, env) \
+		(((axis2_xml_schema_xpath_t *) xpath)->ops->\
+            super_objs(xpath, env))
 
 #define AXIS2_XML_SCHEMA_XPATH_GET_XPATH(xpath, env) \
 		(((axis2_xml_schema_xpath_t *) xpath)->ops->\

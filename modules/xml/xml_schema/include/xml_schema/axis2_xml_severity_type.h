@@ -60,6 +60,14 @@ struct axis2_xml_severity_type_ops
     axis2_array_list_t *(AXIS2_CALL *
     get_values)(void *severity,
                 axis2_env_t **env);
+                
+    axis2_hash_t* (AXIS2_CALL *
+    super_objs)(void *severity,
+                axis2_env_t **env);
+                
+    axis2_xml_schema_types_t (AXIS2_CALL*
+    type)(void *severity,
+          axis2_env_t **env);                              
     
 };
 
@@ -73,15 +81,7 @@ AXIS2_DECLARE(axis2_xml_severity_type_t *)
 axis2_xml_severity_type_create(axis2_env_t **env,
                                     axis2_char_t* value);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
- */
-AXIS2_DECLARE(axis2_status_t)
-axis2_xml_severity_type_resolve_methods(
-                                axis2_xml_severity_type_t *severity,
-                                axis2_env_t **env,
-                                axis2_xml_severity_type_t *severity_impl,
-                                axis2_hash_t *methods);
+/***************************** Macros ******************************************/
 
 #define AXIS2_XML_SEREVITY_TYPE_FREE(severity, env) \
 		(((axis2_xml_severity_type_t *) severity)->ops->free(severity, env))
@@ -91,6 +91,12 @@ axis2_xml_severity_type_resolve_methods(
 
 #define AXIS2_XML_SEREVITY_TYPE_GET_VALUES(severity, env) \
 		(((axis2_xml_severity_type_t *) severity)->ops->values(severity, env))
+
+#define AXIS2_XML_SEREVITY_TYPE_TYPE(severity, env) \
+		(((axis2_xml_severity_type_t *) severity)->ops->type(severity, env))
+
+#define AXIS2_XML_SEREVITY_TYPE_SUPER_OBJS(severity, env) \
+		(((axis2_xml_severity_type_t *) severity)->ops->super_objs(severity, env))
 
 /** @} */
 #ifdef __cplusplus

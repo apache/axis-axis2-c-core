@@ -45,26 +45,34 @@ extern "C"
 
 struct axis2_xml_schema_import_ops
 {
-	/** 
-     * Deallocate memory
-     * @return status code
-     */
     axis2_status_t (AXIS2_CALL *
     free) (void *import,
             axis2_env_t **env);
 
+    axis2_xml_schema_external_t* (AXIS2_CALL *
+    get_base_impl)(void *import,
+                   axis2_env_t **env);
+
+
+    axis2_hash_t* (AXIS2_CALL *
+    super_objs)(void *import,
+                axis2_env_t **env);
+                
+    axis2_xml_schema_types_t (AXIS2_CALL *
+    type)(void *import,
+                axis2_env_t **env);                
+    
     axis2_char_t* (AXIS2_CALL *
     get_namespace)(void *import,
                 axis2_env_t **env);
+                
+                
                 
     axis2_status_t (AXIS2_CALL *
     set_namespace)(void *import,
                 axis2_env_t **env,
                 axis2_char_t *ns);
 
-    axis2_xml_schema_external_t* (AXIS2_CALL *
-    get_base_impl)(void *import,
-                   axis2_env_t **env);
 };
 
 struct axis2_xml_schema_import
@@ -81,14 +89,16 @@ axis2_xml_schema_import_create(axis2_env_t **env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
- */
+
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_import_resolve_methods(
                                 axis2_xml_schema_import_t *import,
                                 axis2_env_t **env,
                                 axis2_xml_schema_import_t *import_impl,
                                 axis2_hash_t *methods);
-
+ */
+ 
+ 
 #define AXIS2_XML_SCHEMA_IMPORT_FREE(import, env) \
 		(((axis2_xml_schema_import_t *) import)->ops->\
             free(import, env))
@@ -96,6 +106,14 @@ axis2_xml_schema_import_resolve_methods(
 #define AXIS2_XML_SCHEMA_IMPORT_GET_BASE_IMPL(import, env) \
 		(((axis2_xml_schema_import_t *) import)->ops->\
             get_base_impl(import, env))
+            
+#define AXIS2_XML_SCHEMA_IMPORT_TYPE(import, env) \
+		(((axis2_xml_schema_import_t *) import)->ops->\
+            type(import, env))
+            
+#define AXIS2_XML_SCHEMA_IMPORT_SUPER_OBJS(import, env) \
+		(((axis2_xml_schema_import_t *) import)->ops->\
+            super_objs(import, env))                        
 
 #define AXIS2_XML_SCHEMA_IMPORT_GET_NAMESPACE(import, env) \
 		(((axis2_xml_schema_import_t *) import)->ops->\

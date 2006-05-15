@@ -35,16 +35,6 @@ extern "C"
 {
 #endif
 
-typedef enum axis2_xml_simple_content_types_t
-{
-    AXIS2_XML_SCHEMA_SIMPLE_CONTENT_TYPE = 0,
-    AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST,
-    AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION,
-    AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION
-
-}axis2_xml_simple_content_types_t;
-
-
 typedef struct axis2_xml_schema_simple_type_content 
                     axis2_xml_schema_simple_type_content_t;
 typedef struct axis2_xml_schema_simple_type_content_ops 
@@ -65,14 +55,13 @@ struct axis2_xml_schema_simple_type_content_ops
     get_base_impl) (void *sim_type_cont,
                     axis2_env_t **env);
 
-    int (AXIS2_CALL *
-    get_type)(void *sim_type_cont,
+    axis2_xml_schema_types_t    (AXIS2_CALL *
+    type)(void *sim_type_cont,
               axis2_env_t **env);
     
-    axis2_status_t (AXIS2_CALL *
-    set_type)(void *sim_type_cont,
-              axis2_env_t **env,
-              int type);
+    axis2_hash_t* (AXIS2_CALL *
+    super_objs)(void *sim_type_cont,
+                axis2_env_t **env);
     
 };
 
@@ -103,6 +92,7 @@ axis2_xml_schema_simple_type_content_resolve_methods(
                                 axis2_xml_schema_simple_type_content_t *sim_type_cont_impl,
                                 axis2_hash_t *methods);
 
+/*************************** Macros **********************************************/
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_CONTENT_FREE(sim_type_cont, env) \
 		(((axis2_xml_schema_simple_type_content_t *) sim_type_cont)->ops->\
             free(sim_type_cont, env))
@@ -111,14 +101,15 @@ axis2_xml_schema_simple_type_content_resolve_methods(
 		(((axis2_xml_schema_simple_type_content_t *) sim_type_cont)->ops->\
             get_base_impl(sim_type_cont, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_CONTENT_SET_TYPE(sim_type_cont, env, type) \
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_CONTENT_TYPE(sim_type_cont, env) \
 		(((axis2_xml_schema_simple_type_content_t *) sim_type_cont)->ops->\
-            set_type(sim_type_cont, env, type))
+            type(sim_type_cont, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_CONTENT_GET_TYPE(sim_type_cont, env) \
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_CONTENT_SUPER_OBJS(sim_type_cont, env) \
 		(((axis2_xml_schema_simple_type_content_t *) sim_type_cont)->ops->\
-            get_type(sim_type_cont, env))
+            super_objs(sim_type_cont, env))
 
+/************************ end macros *********************************************/
 /** @} */
 #ifdef __cplusplus
 }
