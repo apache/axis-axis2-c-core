@@ -20,7 +20,8 @@ libaxis2_woden_wsdl20_la_SOURCES = \
 							interface_fault_ref.c \
 							interface_msg_ref.c \
 							interface_op.c \
-							binding.c
+							binding.c \
+							binding_fault.c
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(AXIS2C_HOME)/include

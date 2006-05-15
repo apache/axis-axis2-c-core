@@ -20,10 +20,8 @@
 /**
  * @file axis2_woden_binding.h
  * @brief Axis2 Binding Interface
- * Represents the Binding component from the WSDL 2.0 Component model.
- * This component provides a read-only, abstract view of the WSDL 
- * interface, including any interface information defined within
- * imported or included WSDL documents. 
+ * This class represents the Binding component from the WSDL 2.0 Component Model 
+ * and the WSDL &lt;binding&gt; element.
  * 
  */
 
