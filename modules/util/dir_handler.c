@@ -24,7 +24,7 @@
 #include <axis2_string.h>
 #include <zlib.h>
 #include <fcntl.h>
-#include "minizip/unzip.h"
+#include <unzip.h>
 
 #define CASESENSITIVITY (0)
 #define WRITEBUFFERSIZE (8192)
