@@ -63,6 +63,10 @@ struct axis2_woden_feature_ops
     to_feature_free) (void *feature,
             axis2_env_t **env);
     
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (void *feature,
+            axis2_env_t **env);
+
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *feature,
             axis2_env_t **env);
@@ -165,6 +169,7 @@ AXIS2_DECLARE(axis2_status_t)
 axis2_woden_feature_resolve_methods(
         axis2_woden_feature_t *feature,
         axis2_env_t **env,
+        axis2_woden_feature_t *feature_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
@@ -173,6 +178,9 @@ axis2_woden_feature_resolve_methods(
 
 #define AXIS2_WODEN_FEATURE_TO_FEATURE_FREE(feature, env) \
 		(((axis2_woden_feature_t *) feature)->ops->to_feature_free(feature, env))
+
+#define AXIS2_WODEN_FEATURE_SUPER_OBJS(feature, env) \
+		(((axis2_woden_feature_t *) feature)->ops->super_objs(feature, env))
 
 #define AXIS2_WODEN_FEATURE_TYPE(feature, env) \
 		(((axis2_woden_feature_t *) feature)->ops->type(feature, env))

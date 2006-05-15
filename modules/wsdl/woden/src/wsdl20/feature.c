@@ -32,6 +32,7 @@ struct axis2_woden_feature_impl
     axis2_woden_feature_t feature;
     axis2_woden_obj_types_t obj_type;
     axis2_woden_documentable_t *documentable;
+    axis2_hash_t *super;
     axis2_hash_t *methods;
     axis2_url_t *f_ref;
     axis2_bool_t f_required;
@@ -42,6 +43,11 @@ struct axis2_woden_feature_impl
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_feature_free(
+        void *feature,
+        axis2_env_t **env);
+
+axis2_hash_t *AXIS2_CALL 
+axis2_woden_feature_super_objs(
         void *feature,
         axis2_env_t **env);
 
@@ -78,19 +84,6 @@ axis2_woden_feature_is_required(
         axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_woden_feature_set_component_exts(
-        void *feature,
-        axis2_env_t **env,
-        axis2_url_t *namespc,
-        axis2_woden_component_exts_t *exts);
-
-void *AXIS2_CALL
-axis2_woden_feature_get_component_exts_for_namespace(
-        void *feature,
-        axis2_env_t **env,
-        axis2_url_t *namespc);
-
-axis2_status_t AXIS2_CALL
 axis2_woden_feature_set_parent_element(
         void *feature,
         axis2_env_t **env,
@@ -110,105 +103,6 @@ void *AXIS2_CALL
 axis2_woden_feature_to_element(
         void *feature,
         axis2_env_t **env);
-
-axis2_status_t AXIS2_CALL
-axis2_woden_feature_add_documentation_element(
-        void *feature,
-        axis2_env_t **env,
-        axis2_woden_documentation_element_t *documentation);
-
-axis2_array_list_t *AXIS2_CALL
-axis2_woden_feature_get_documentation_elements(
-        void *feature,
-        axis2_env_t **env);
-
-axis2_status_t AXIS2_CALL 
-axis2_woden_feature_set_ext_attr(
-        void *feature,
-        axis2_env_t **env,
-        axis2_qname_t *attr_type,
-        axis2_woden_xml_attr_t *attr); 
-
-void *AXIS2_CALL 
-axis2_woden_feature_get_ext_attr(
-        void *feature,
-        axis2_env_t **env,
-        axis2_qname_t *attr_type); 
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_feature_get_ext_attrs(
-        void *feature,
-        axis2_env_t **env); 
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_feature_get_ext_attrs_for_namespace(
-        void *feature,
-        axis2_env_t **env,
-        axis2_url_t *namespc);
-
-axis2_bool_t AXIS2_CALL 
-axis2_woden_feature_has_ext_attrs_for_namespace(
-        void *feature,
-        axis2_env_t **env,
-        axis2_url_t *namespc);
-
-axis2_status_t AXIS2_CALL 
-axis2_woden_feature_add_ext_element(
-        void *feature,
-        axis2_env_t **env,
-        axis2_woden_ext_element_t *ext_el); 
-
-axis2_status_t AXIS2_CALL 
-axis2_woden_feature_remove_ext_element(
-        void *feature,
-        axis2_env_t **env,
-        axis2_woden_ext_element_t *ext_el); 
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_feature_get_ext_elements(
-        void *feature,
-        axis2_env_t **env); 
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_feature_get_ext_elements_of_type(
-        void *feature,
-        axis2_env_t **env,
-        axis2_qname_t *elem_type);
-
-axis2_bool_t AXIS2_CALL 
-axis2_woden_feature_has_ext_elements_for_namespace(
-void *feature,
-        axis2_env_t **env,
-        axis2_url_t *namespc);
-
-axis2_status_t AXIS2_CALL 
-axis2_woden_feature_add_ext_element(
-        void *feature,
-        axis2_env_t **env,
-        axis2_woden_ext_element_t *ext_el); 
-
-axis2_status_t AXIS2_CALL 
-axis2_woden_feature_remove_ext_element(
-        void *feature,
-        axis2_env_t **env,
-        axis2_woden_ext_element_t *ext_el);
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_feature_get_ext_elements(
-        void *feature,
-        axis2_env_t **env); 
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_feature_get_ext_elements_of_type(
-        void *feature,
-        axis2_env_t **env,
-        axis2_qname_t *ext_type);
-
-axis2_bool_t AXIS2_CALL 
-axis2_woden_feature_has_ext_elements_for_namespace(
-        void *feature,
-        axis2_env_t **env,
-        axis2_url_t *namespc);
 
 static axis2_woden_feature_t *
 create(axis2_env_t **env);
@@ -362,7 +256,8 @@ axis2_woden_feature_to_documentable(
         AXIS2_MALLOC((*env)->allocator, 
                 sizeof(axis2_woden_documentable_ops_t));
     axis2_woden_documentable_resolve_methods(&(feature_impl->feature.base.
-            documentable), env, feature_impl->methods);
+            documentable), env, feature_impl->documentable, 
+            feature_impl->methods);
     return feature;
 }
 
@@ -391,6 +286,7 @@ axis2_woden_feature_to_wsdl_obj(
         axis2_env_t **env)
 {
     axis2_woden_feature_impl_t *feature_impl = NULL;
+    void *wsdl_obj = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!feature)
@@ -403,8 +299,10 @@ axis2_woden_feature_to_wsdl_obj(
     feature_impl->feature.base.documentable.base.wsdl_obj.ops = 
         AXIS2_MALLOC((*env)->allocator, 
                 sizeof(axis2_woden_wsdl_obj_ops_t));
+    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(
+            feature_impl->documentable, env);
     axis2_woden_wsdl_obj_resolve_methods(&(feature_impl->feature.base.
-            documentable.base.wsdl_obj), env, feature_impl->methods);
+            documentable.base.wsdl_obj), env, wsdl_obj, feature_impl->methods);
     return feature;
 }
 
@@ -533,7 +431,7 @@ axis2_woden_feature_to_attr_extensible(
             sizeof(axis2_woden_attr_extensible_ops_t));
     axis2_woden_attr_extensible_resolve_methods(&(feature_impl->feature.base.
             documentable.base.wsdl_obj.base.wsdl_element.base.attr_extensible), 
-            env, feature_impl->methods);
+            env, NULL, feature_impl->methods);
     return feature;
 
 }
@@ -579,7 +477,7 @@ axis2_woden_feature_to_element_extensible(
                 sizeof(axis2_woden_element_extensible_ops_t));
     axis2_woden_element_extensible_resolve_methods(&(feature_impl->feature.base.
             documentable.base.wsdl_obj.base.wsdl_element.base.element_extensible), 
-            env, feature_impl->methods);
+            env, NULL, feature_impl->methods);
     return feature;
 
 }
@@ -616,6 +514,7 @@ create(axis2_env_t **env)
                     sizeof(axis2_woden_feature_impl_t));
 
     feature_impl->obj_type= AXIS2_WODEN_FEATURE;
+    feature_impl->super = NULL;
     feature_impl->methods = NULL;
     feature_impl->f_parent = NULL;
     feature_impl->f_ref = NULL;
@@ -638,6 +537,7 @@ create(axis2_env_t **env)
             sizeof(axis2_woden_feature_ops_t));
 
     feature_impl->feature.ops->free = axis2_woden_feature_free;
+    feature_impl->feature.ops->super_objs = axis2_woden_feature_super_objs;
     feature_impl->feature.ops->type = axis2_woden_feature_type;
     feature_impl->feature.ops->get_base_impl = axis2_woden_feature_get_base_impl;
     feature_impl->feature.ops->get_ref = axis2_woden_feature_get_ref;
@@ -682,6 +582,8 @@ create(axis2_env_t **env)
     axis2_hash_set(feature_impl->methods, "to_element_extensible_free", 
             AXIS2_HASH_KEY_STRING, 
             axis2_woden_feature_to_element_extensible_free);
+    axis2_hash_set(feature_impl->methods, "super_objs", 
+            AXIS2_HASH_KEY_STRING, axis2_woden_feature_super_objs);
     axis2_hash_set(feature_impl->methods, "type", 
             AXIS2_HASH_KEY_STRING, axis2_woden_feature_type);
 
@@ -706,46 +608,9 @@ create(axis2_env_t **env)
     axis2_hash_set(feature_impl->methods, "is_required", 
             AXIS2_HASH_KEY_STRING, 
             axis2_woden_feature_is_required);
-    axis2_hash_set(feature_impl->methods, "get_component_exts_for_namespace", 
-            AXIS2_HASH_KEY_STRING, 
-            axis2_woden_feature_get_component_exts_for_namespace);
-    axis2_hash_set(feature_impl->methods, "set_component_exts", 
-            AXIS2_HASH_KEY_STRING, 
-            axis2_woden_feature_set_component_exts);
     axis2_hash_set(feature_impl->methods, "to_element", 
             AXIS2_HASH_KEY_STRING, 
             axis2_woden_feature_to_element);
-    axis2_hash_set(feature_impl->methods, "add_documentation_element", 
-            AXIS2_HASH_KEY_STRING, 
-            axis2_woden_feature_add_documentation_element);
-    axis2_hash_set(feature_impl->methods, "get_documentation_elements", 
-            AXIS2_HASH_KEY_STRING, 
-            axis2_woden_feature_get_documentation_elements);
-    axis2_hash_set(feature_impl->methods, "set_ext_attr", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_feature_set_ext_attr);
-    axis2_hash_set(feature_impl->methods, "get_ext_attr", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_feature_get_ext_attr);
-    axis2_hash_set(feature_impl->methods, "get_ext_attrs", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_feature_get_ext_attrs);
-    axis2_hash_set(feature_impl->methods, "get_ext_attrs_for_namespace", 
-            AXIS2_HASH_KEY_STRING, 
-            axis2_woden_feature_get_ext_attrs_for_namespace);
-    axis2_hash_set(feature_impl->methods, "has_ext_attrs_for_namespace", 
-            AXIS2_HASH_KEY_STRING, 
-            axis2_woden_feature_has_ext_attrs_for_namespace);
-    axis2_hash_set(feature_impl->methods, "add_ext_element", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_feature_add_ext_element);
-    axis2_hash_set(feature_impl->methods, "remove_ext_element", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_feature_remove_ext_element);
-    axis2_hash_set(feature_impl->methods, "get_ext_elements", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_feature_get_ext_elements);
-    axis2_hash_set(feature_impl->methods, "get_ext_elements_of_type", 
-            AXIS2_HASH_KEY_STRING, 
-            axis2_woden_feature_get_ext_elements_of_type);
-    axis2_hash_set(feature_impl->methods, "has_ext_elements_for_namespace", 
-            AXIS2_HASH_KEY_STRING, 
-            axis2_woden_feature_has_ext_elements_for_namespace);
-    
 
     return &(feature_impl->feature);
 }
@@ -760,6 +625,17 @@ axis2_woden_feature_create(axis2_env_t **env)
 
     feature_impl->documentable = axis2_woden_documentable_create(env);
 
+    feature_impl->super = axis2_hash_make(env);
+    if(!feature_impl->super) 
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    axis2_hash_set(feature_impl->super, "AXIS2_WODEN_FEATURE", AXIS2_HASH_KEY_STRING, 
+            &(feature_impl->feature));
+    axis2_hash_set(feature_impl->super, "AXIS2_WODEN_DOCUMENTABLE", AXIS2_HASH_KEY_STRING, 
+            feature_impl->documentable);
+ 
     return &(feature_impl->feature);
 }
 
@@ -779,6 +655,12 @@ axis2_woden_feature_free(void *feature,
     }
    
     /* TODO free f_parent */
+    
+    if(feature_impl->super)
+    {
+        axis2_hash_free(feature_impl->super, env);
+        feature_impl->super = NULL;
+    }
     
     if(feature_impl->methods)
     {
@@ -877,6 +759,19 @@ axis2_woden_feature_free(void *feature,
     return AXIS2_SUCCESS;
 }
 
+axis2_hash_t *AXIS2_CALL
+axis2_woden_feature_super_objs(
+        void *feature,
+        axis2_env_t **env)
+{
+    axis2_woden_feature_impl_t *feature_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    feature_impl = INTF_TO_IMPL(feature);
+
+    return feature_impl->super;
+}
+
 axis2_woden_obj_types_t AXIS2_CALL
 axis2_woden_feature_type(
         void *feature,
@@ -891,8 +786,9 @@ axis2_woden_feature_type(
 }
 
 axis2_woden_documentable_t *AXIS2_CALL
-axis2_woden_feature_get_base_impl(void *feature,
-                                axis2_env_t **env)
+axis2_woden_feature_get_base_impl(
+        void *feature,
+        axis2_env_t **env)
 {
     axis2_woden_feature_impl_t *feature_impl = NULL;
 
@@ -903,58 +799,52 @@ axis2_woden_feature_get_base_impl(void *feature,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_feature_resolve_methods(axis2_woden_feature_t *feature,
-                                axis2_env_t **env,
-                                axis2_hash_t *methods)
+axis2_woden_feature_resolve_methods(
+        axis2_woden_feature_t *feature,
+        axis2_env_t **env,
+        axis2_woden_feature_t *feature_impl,
+        axis2_hash_t *methods)
 {
+    axis2_woden_feature_impl_t *feature_impl_l = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    feature_impl_l = INTF_TO_IMPL(feature_impl);
     
     feature->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
     feature->ops->to_feature_free = axis2_hash_get(methods, "to_feature_free", 
             AXIS2_HASH_KEY_STRING);
+    feature->ops->super_objs = axis2_hash_get(methods, "super_objs", 
+            AXIS2_HASH_KEY_STRING);
     feature->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
+    
     feature->ops->get_ref = axis2_hash_get(methods, 
             "get_ref", AXIS2_HASH_KEY_STRING);
+    if(!feature->ops->get_ref && feature_impl_l)
+            feature->ops->get_ref = 
+            feature_impl_l->feature.ops->get_ref;
+    
     feature->ops->is_required = axis2_hash_get(methods, 
             "is_required", AXIS2_HASH_KEY_STRING);
+    if(!feature->ops->is_required && feature_impl_l)
+            feature->ops->is_required = 
+            feature_impl_l->feature.ops->is_required;
+    
     feature->ops->get_parent = axis2_hash_get(methods, 
             "get_parent", AXIS2_HASH_KEY_STRING);
+    if(!feature->ops->get_parent && feature_impl_l)
+            feature->ops->get_parent = 
+            feature_impl_l->feature.ops->get_parent;
+
     feature->ops->to_element = axis2_hash_get(methods, 
             "to_element", AXIS2_HASH_KEY_STRING);
+    if(!feature->ops->to_element && feature_impl_l)
+            feature->ops->to_element = 
+            feature_impl_l->feature.ops->to_element;
    
     return AXIS2_SUCCESS;
-}
-
-axis2_status_t AXIS2_CALL
-axis2_woden_feature_add_documentation_element(
-        void *feature,
-        axis2_env_t **env,
-        axis2_woden_documentation_element_t *documentation)
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, documentation, AXIS2_FAILURE);
-    feature_impl = INTF_TO_IMPL(feature);
-
-    return AXIS2_WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(
-            feature_impl->documentable, env, documentation);
-}
-
-axis2_array_list_t *AXIS2_CALL
-axis2_woden_feature_get_documentation_elements(
-        void *feature,
-        axis2_env_t **env)
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    feature_impl = INTF_TO_IMPL(feature);
-
-    return AXIS2_WODEN_DOCUMENTABLE_GET_DOCUMENTATION_ELEMENTS(
-            feature_impl->documentable, env);
 }
 
 axis2_status_t AXIS2_CALL
@@ -964,9 +854,12 @@ axis2_woden_feature_set_ref(
         axis2_url_t *ref)
 {
     axis2_woden_feature_impl_t *feature_impl = NULL;
+    axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    feature_impl = INTF_TO_IMPL(feature);
+    super = AXIS2_WODEN_FEATURE_SUPER_OBJS(feature, env);
+    feature_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     if(feature_impl->f_ref)
     {
@@ -982,9 +875,12 @@ axis2_woden_feature_get_ref(
         axis2_env_t **env)
 {
     axis2_woden_feature_impl_t *feature_impl = NULL;
+    axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    feature_impl = INTF_TO_IMPL(feature);
+    super = AXIS2_WODEN_FEATURE_SUPER_OBJS(feature, env);
+    feature_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
     
     return feature_impl->f_ref;
 }
@@ -996,9 +892,12 @@ axis2_woden_feature_set_required(
         axis2_bool_t required)
 {
     axis2_woden_feature_impl_t *feature_impl = NULL;
+    axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    feature_impl = INTF_TO_IMPL(feature);
+    super = AXIS2_WODEN_FEATURE_SUPER_OBJS(feature, env);
+    feature_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     feature_impl->f_required = required;
     return AXIS2_SUCCESS;
@@ -1010,49 +909,16 @@ axis2_woden_feature_is_required(
         axis2_env_t **env)
 {
     axis2_woden_feature_impl_t *feature_impl = NULL;
+    axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    feature_impl = INTF_TO_IMPL(feature);
+    super = AXIS2_WODEN_FEATURE_SUPER_OBJS(feature, env);
+    feature_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     return feature_impl->f_required;
 }
 
-axis2_status_t AXIS2_CALL
-axis2_woden_feature_set_component_exts(
-        void *feature,
-        axis2_env_t **env,
-        axis2_url_t *namespc,
-        axis2_woden_component_exts_t *exts)
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-    void *wsdl_obj = NULL;
-    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    feature_impl = INTF_TO_IMPL(feature);
-
-    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(feature_impl->documentable, 
-            env);
-    return AXIS2_WODEN_WSDL_OBJ_SET_COMPONENT_EXTS(wsdl_obj, env, namespc, exts);
-}
-
-void *AXIS2_CALL
-axis2_woden_feature_get_component_exts_for_namespace(
-        void *feature,
-        axis2_env_t **env,
-        axis2_url_t *namespc)
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-    void *wsdl_obj = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    feature_impl = INTF_TO_IMPL(feature);
-    
-    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(feature_impl->documentable, 
-            env);
-    return AXIS2_WODEN_WSDL_OBJ_GET_COMPONENT_EXTS_FOR_NAMESPACE(wsdl_obj, env, 
-            namespc);
-
-}
 axis2_status_t AXIS2_CALL
 axis2_woden_feature_set_parent_element(
         void *feature,
@@ -1060,9 +926,12 @@ axis2_woden_feature_set_parent_element(
         axis2_woden_wsdl_element_t *parent)
 {
     axis2_woden_feature_impl_t *feature_impl = NULL;
+    axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    feature_impl = INTF_TO_IMPL(feature);
+    super = AXIS2_WODEN_FEATURE_SUPER_OBJS(feature, env);
+    feature_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     if(feature_impl->f_parent)
     {
@@ -1078,9 +947,12 @@ axis2_woden_feature_get_parent_element(
         axis2_env_t **env)
 {
     axis2_woden_feature_impl_t *feature_impl = NULL;
+    axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    feature_impl = INTF_TO_IMPL(feature);
+    super = AXIS2_WODEN_FEATURE_SUPER_OBJS(feature, env);
+    feature_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     return feature_impl->f_parent;
 }
@@ -1091,9 +963,12 @@ axis2_woden_feature_get_parent(
         axis2_env_t **env)
 {
     axis2_woden_feature_impl_t *feature_impl = NULL;
+    axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    feature_impl = INTF_TO_IMPL(feature);
+    super = AXIS2_WODEN_FEATURE_SUPER_OBJS(feature, env);
+    feature_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     /* TODO complete this */
     return NULL;
@@ -1105,241 +980,13 @@ axis2_woden_feature_to_element(
         axis2_env_t **env)
 {
     axis2_woden_feature_impl_t *feature_impl = NULL;
+    axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    feature_impl = INTF_TO_IMPL(feature);
+    super = AXIS2_WODEN_FEATURE_SUPER_OBJS(feature, env);
+    feature_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
     
     return &(feature_impl->feature);
 }
-
-axis2_status_t AXIS2_CALL 
-axis2_woden_feature_set_ext_attr(
-        void *feature,
-        axis2_env_t **env,
-        axis2_qname_t *attr_type,
-        axis2_woden_xml_attr_t *attr)
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-    void *wsdl_obj = NULL;
-    void *wsdl_element = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
-
-    feature_impl = INTF_TO_IMPL(feature);
-    
-    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(feature_impl->documentable, 
-            env);
-    wsdl_element = AXIS2_WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
-    wsdl_element = axis2_woden_wsdl_element_to_attr_extensible(wsdl_element, env);
-    status = AXIS2_WODEN_ATTR_EXTENSIBLE_SET_EXT_ATTR(wsdl_element, env, attr_type, 
-            attr);
-    AXIS2_ATTR_EXTENSIBLE_TO_ATTR_EXTENSIBLE_FREE(wsdl_element, env);
-    return status;
-}
-
-void *AXIS2_CALL 
-axis2_woden_feature_get_ext_attr(
-        void *feature,
-        axis2_env_t **env,
-        axis2_qname_t *attr_type) 
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-    void *wsdl_obj = NULL;
-    void *wsdl_element = NULL;
-    void *ret = NULL;
-
-    feature_impl = INTF_TO_IMPL(feature);
-    
-    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(feature_impl->documentable, 
-            env);
-    wsdl_element = AXIS2_WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
-    wsdl_element = axis2_woden_wsdl_element_to_attr_extensible(wsdl_element, env);
-    ret = AXIS2_WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(wsdl_element, env, attr_type);
-    AXIS2_ATTR_EXTENSIBLE_TO_ATTR_EXTENSIBLE_FREE(wsdl_element, env);
-    return ret;
-}
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_feature_get_ext_attrs(
-        void *feature,
-        axis2_env_t **env) 
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-    void *wsdl_obj = NULL;
-    void *wsdl_element = NULL;
-    void *ret = NULL;
-    
-    feature_impl = INTF_TO_IMPL(feature);
-
-    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(feature_impl->documentable, 
-            env);
-    wsdl_element = AXIS2_WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
-    wsdl_element = axis2_woden_wsdl_element_to_attr_extensible(wsdl_element, env);
-    ret = AXIS2_WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTRS(wsdl_element, env);
-    AXIS2_ATTR_EXTENSIBLE_TO_ATTR_EXTENSIBLE_FREE(wsdl_element, env);
-    return ret;
-}
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_feature_get_ext_attrs_for_namespace(
-        void *feature,
-        axis2_env_t **env,
-        axis2_url_t *namespc) 
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-    void *wsdl_obj = NULL;
-    void *wsdl_element = NULL;
-    void *ret = NULL;
-    
-    feature_impl = INTF_TO_IMPL(feature);
-
-    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(feature_impl->documentable, 
-            env);
-    wsdl_element = AXIS2_WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
-    wsdl_element = axis2_woden_wsdl_element_to_attr_extensible(wsdl_element, env);
-    ret = AXIS2_WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTRS_FOR_NAMESPACE(
-            wsdl_element, env, namespc);
-    AXIS2_ATTR_EXTENSIBLE_TO_ATTR_EXTENSIBLE_FREE(wsdl_element, env);
-    return ret;
-}
-
-axis2_bool_t AXIS2_CALL 
-axis2_woden_feature_has_ext_attrs_for_namespace(
-        void *feature,
-        axis2_env_t **env,
-        axis2_url_t *namespc)
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-    void *wsdl_obj = NULL;
-    void *wsdl_element = NULL;
-    axis2_bool_t ret = AXIS2_FALSE;
-
-    feature_impl = INTF_TO_IMPL(feature);
-
-    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(feature_impl->documentable, 
-            env);
-    wsdl_element = AXIS2_WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
-    wsdl_element = axis2_woden_wsdl_element_to_attr_extensible(wsdl_element, env);
-    ret = AXIS2_WODEN_ATTR_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(
-            wsdl_element, env, namespc);
-    AXIS2_ATTR_EXTENSIBLE_TO_ATTR_EXTENSIBLE_FREE(wsdl_element, env);
-    return ret;
-}
-
-axis2_status_t AXIS2_CALL 
-axis2_woden_feature_add_ext_element(
-        void *feature,
-        axis2_env_t **env,
-        axis2_woden_ext_element_t *ext_el) 
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-    void *wsdl_obj = NULL;
-    void *wsdl_element = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
-
-    feature_impl = INTF_TO_IMPL(feature);
-    
-    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(feature_impl->documentable, 
-            env);
-    wsdl_element = AXIS2_WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
-    wsdl_element = axis2_woden_wsdl_element_to_element_extensible(wsdl_element, 
-            env);
-    status = AXIS2_WSDL_ELEMENT_ADD_EXT_ELEMENT(wsdl_element, env, ext_el);
-    AXIS2_ELEMENT_EXTENSIBLE_TO_ELEMENT_EXTENSIBLE_FREE(wsdl_element, env);
-    return status;
-}
-
-axis2_status_t AXIS2_CALL 
-axis2_woden_feature_remove_ext_element(
-        void *feature,
-        axis2_env_t **env,
-        axis2_woden_ext_element_t *ext_el) 
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-    void *wsdl_obj = NULL;
-    void *wsdl_element = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
-
-    feature_impl = INTF_TO_IMPL(feature);
-
-    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(feature_impl->documentable, 
-            env);
-    wsdl_element = AXIS2_WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
-    wsdl_element = axis2_woden_wsdl_element_to_element_extensible(wsdl_element, 
-            env);
-    status = AXIS2_WSDL_ELEMENT_REMOVE_EXT_ELEMENT(wsdl_element, env, ext_el);
-    AXIS2_ELEMENT_EXTENSIBLE_TO_ELEMENT_EXTENSIBLE_FREE(wsdl_element, env);
-    return status;
-}
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_feature_get_ext_elements(
-        void *feature,
-        axis2_env_t **env) 
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-    void *wsdl_obj = NULL;
-    void *wsdl_element = NULL;
-    void *ret = NULL;
-
-    feature_impl = INTF_TO_IMPL(feature);
-    
-    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(feature_impl->documentable, 
-            env);
-    wsdl_element = AXIS2_WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
-    wsdl_element = axis2_woden_wsdl_element_to_element_extensible(wsdl_element, 
-            env);
-    ret = (axis2_array_list_t *) AXIS2_WSDL_ELEMENT_GET_EXT_ELEMENTS(
-            wsdl_element, env);
-    AXIS2_ELEMENT_EXTENSIBLE_TO_ELEMENT_EXTENSIBLE_FREE(wsdl_element, env);
-    return ret;
-}
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_feature_get_ext_elements_of_type(
-        void *feature,
-        axis2_env_t **env,
-        axis2_qname_t *ext_type) 
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-    void *wsdl_obj = NULL;
-    void *wsdl_element = NULL;
-    void *ret = NULL;
-    
-    feature_impl = INTF_TO_IMPL(feature);
-
-    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(feature_impl->documentable, 
-            env);
-    wsdl_element = AXIS2_WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
-    wsdl_element = axis2_woden_wsdl_element_to_element_extensible(wsdl_element, 
-            env);
-    ret = (axis2_array_list_t *) AXIS2_WSDL_ELEMENT_GET_EXT_ELEMENTS_OF_TYPE(
-            wsdl_element, env, ext_type);
-    AXIS2_ELEMENT_EXTENSIBLE_TO_ELEMENT_EXTENSIBLE_FREE(wsdl_element, env);
-    return ret;
-}
-
-axis2_bool_t AXIS2_CALL 
-axis2_woden_feature_has_ext_elements_for_namespace(
-        void *feature,
-        axis2_env_t **env,
-        axis2_url_t *namespc)
-{
-    axis2_woden_feature_impl_t *feature_impl = NULL;
-    void *wsdl_obj = NULL;
-    void *wsdl_element = NULL;
-    axis2_bool_t ret = AXIS2_FALSE;
-
-    feature_impl = INTF_TO_IMPL(feature);
-
-    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(feature_impl->documentable, 
-            env);
-    wsdl_element = AXIS2_WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
-    wsdl_element = axis2_woden_wsdl_element_to_element_extensible(wsdl_element, 
-            env);
-    ret = AXIS2_WSDL_ELEMENT_HAS_EXT_ELEMENTS_FOR_NAMESPACE(wsdl_element, env, 
-            namespc);
-    AXIS2_ELEMENT_EXTENSIBLE_TO_ELEMENT_EXTENSIBLE_FREE(wsdl_element, env);
-    return ret;
-}
-
 

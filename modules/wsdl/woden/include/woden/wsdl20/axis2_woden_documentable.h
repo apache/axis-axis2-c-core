@@ -55,9 +55,14 @@ struct axis2_woden_documentable_ops
     free) (
             void *documentable,
             axis2_env_t **env);
-
+    
     axis2_status_t (AXIS2_CALL *
-    type) (
+    to_documentable_free) (
+            void *documentable,
+            axis2_env_t **env);
+
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (
             void *documentable,
             axis2_env_t **env);
     
@@ -104,6 +109,7 @@ AXIS2_DECLARE(axis2_status_t)
 axis2_woden_documentable_resolve_methods(
         axis2_woden_documentable_t *documentable,
         axis2_env_t **env,
+        axis2_woden_documentable_t *documentable_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
@@ -112,9 +118,13 @@ axis2_woden_documentable_resolve_methods(
 		(((axis2_woden_documentable_t *) documentable)->ops->\
          free(documentable, env))
 
-#define AXIS2_WODEN_DOCUMENTABLE_TYPE(documentable, env) \
+#define AXIS2_WODEN_DOCUMENTABLE_TO_DOCUMENTABLE_FREE(documentable, env) \
 		(((axis2_woden_documentable_t *) documentable)->ops->\
-         type(documentable, env))
+         to_documentable_free(documentable, env))
+
+#define AXIS2_WODEN_DOCUMENTABLE_SUPER_OBJS(documentable, env) \
+		(((axis2_woden_documentable_t *) documentable)->ops->\
+         super_objs(documentable, env))
 
 #define AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env) \
 		(((axis2_woden_documentable_t *) documentable)->ops->\

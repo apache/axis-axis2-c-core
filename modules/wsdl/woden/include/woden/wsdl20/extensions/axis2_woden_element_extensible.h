@@ -67,6 +67,12 @@ struct axis2_woden_element_extensible_ops
             element_extensible,
             axis2_env_t **env);
     
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (
+            void *
+            element_extensible,
+            axis2_env_t **env);
+    
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *element_extensible,
@@ -119,6 +125,7 @@ AXIS2_DECLARE(axis2_status_t)
 axis2_woden_element_extensible_resolve_methods(
         axis2_woden_element_extensible_t *extensible,
         axis2_env_t **env,
+        axis2_woden_element_extensible_t *extensible_impl,
         axis2_hash_t *methods);
 
 #define AXIS2_WODEN_ELEMENT_EXTENSIBLE_FREE(extensible, env) \
@@ -129,6 +136,10 @@ axis2_woden_element_extensible_resolve_methods(
         env) \
 		(((axis2_woden_element_extensible_t *) extensible)->ops->\
          to_element_extensible_free (extensible, env))
+
+#define AXIS2_WODEN_ELEMENT_EXTENSIBLE_SUPER_OBJS(extensible, env) \
+		(((axis2_woden_element_extensible_t *) extensible)->ops->\
+         super_objs (extensible, env))
 
 #define AXIS2_WODEN_ELEMENT_EXTENSIBLE_TYPE(extensible, env) \
 		(((axis2_woden_element_extensible_t *) extensible)->ops->\

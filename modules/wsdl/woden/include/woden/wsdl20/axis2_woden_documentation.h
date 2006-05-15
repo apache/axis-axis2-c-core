@@ -61,6 +61,10 @@ struct axis2_woden_documentation_ops
     to_documentation_free) (void *documentation,
             axis2_env_t **env);
 
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (void *documentation,
+            axis2_env_t **env);
+    
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *documentation,
             axis2_env_t **env);
@@ -109,6 +113,7 @@ AXIS2_DECLARE(axis2_status_t)
 axis2_woden_documentation_resolve_methods(
         axis2_woden_documentation_t *documentation,
         axis2_env_t **env,
+        axis2_woden_documentation_t *documentation_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
@@ -116,11 +121,16 @@ axis2_woden_documentation_resolve_methods(
 #define AXIS2_WODEN_DOCUMENTATION_FREE(documentation, env) \
 		(((axis2_woden_documentation_t *) documentation)->ops->free(documentation, env))
 
+#define AXIS2_WODEN_DOCUMENTATION_SUPER_OBJS(documentation, env) \
+		(((axis2_woden_documentation_t *) documentation)->ops->\
+         super_objs(documentation, env))
+
 #define AXIS2_WODEN_DOCUMENTATION_TYPE(documentation, env) \
 		(((axis2_woden_documentation_t *) documentation)->ops->type(documentation, env))
 
 #define AXIS2_WODEN_DOCUMENTATION_GET_BASE_IMPL(documentation, env) \
-		(((axis2_woden_documentation_t *) documentation)->ops->get_base_impl(documentation, env))
+		(((axis2_woden_documentation_t *) documentation)->ops->\
+         get_base_impl(documentation, env))
 
 
 /** @} */

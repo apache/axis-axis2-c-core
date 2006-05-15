@@ -70,6 +70,10 @@ struct axis2_woden_types_ops
     to_types_free) (void *types,
             axis2_env_t **env);
 
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (void *types,
+            axis2_env_t **env);
+
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *types,
             axis2_env_t **env);
@@ -248,6 +252,7 @@ AXIS2_DECLARE(axis2_status_t)
 axis2_woden_types_resolve_methods(
         axis2_woden_types_t *types,
         axis2_env_t **env,
+        axis2_woden_types_t *types_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
@@ -256,6 +261,9 @@ axis2_woden_types_resolve_methods(
 
 #define AXIS2_WODEN_TYPES_TO_TYPES_FREE(types, env) \
 		(((axis2_woden_types_t *) types)->ops->to_types_free(types, env))
+
+#define AXIS2_WODEN_TYPES_SUPER_OBJS(types, env) \
+		(((axis2_woden_types_t *) types)->ops->super_objs(types, env))
 
 #define AXIS2_WODEN_TYPES_TYPE(types, env) \
 		(((axis2_woden_types_t *) types)->ops->type(types, env))

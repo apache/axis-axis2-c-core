@@ -60,6 +60,11 @@ struct axis2_woden_wsdl_obj_ops
             void *wsdl_obj,
             axis2_env_t **env);
     
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (
+            void *wsdl_obj,
+            axis2_env_t **env);
+    
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *wsdl_obj,
@@ -113,11 +118,15 @@ AXIS2_DECLARE(axis2_status_t)
 axis2_woden_wsdl_obj_resolve_methods(
         axis2_woden_wsdl_obj_t *wsdl_obj,
         axis2_env_t **env,
+        axis2_woden_wsdl_obj_t *wsdl_obj_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_WSDL_OBJ_FREE(wsdl_obj, env) \
 		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->free(wsdl_obj, env))
+
+#define AXIS2_WODEN_WSDL_OBJ_SUPER_OBJS(wsdl_obj, env) \
+		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->super_objs(wsdl_obj, env))
 
 #define AXIS2_WODEN_WSDL_OBJ_TYPE(wsdl_obj, env) \
 		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->type(wsdl_obj, env))
