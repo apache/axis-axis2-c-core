@@ -8,3 +8,4 @@ logs_DATA=samples/server/axis2.log
 EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE samples/server/axis2.log samples build
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
+	rm -rf `find $(distdir)/ -type d -name .deps`
