@@ -198,6 +198,12 @@ axis2_om_element_set_namespace_with_no_find_in_current_scope(
                                     axis2_om_element_t *om_element,
                                     axis2_env_t **env,
                                     axis2_om_namespace_t  *om_ns);
+                                    
+axis2_hash_t* AXIS2_CALL
+axis2_om_element_extract_attributes(axis2_om_element_t *om_element,
+                                    axis2_env_t **env,
+                                    axis2_om_node_t *ele_node);
+                                        
                                                                
                                          
 /************************** end function prototypes **********************/
@@ -410,7 +416,10 @@ axis2_om_element_create (axis2_env_t **env,
         axis2_om_element_build;
         
     element->om_element.ops->set_namespace_with_no_find_in_current_scope =
-        axis2_om_element_set_namespace_with_no_find_in_current_scope;        
+        axis2_om_element_set_namespace_with_no_find_in_current_scope;
+        
+    element->om_element.ops->extract_attributes =
+        axis2_om_element_extract_attributes;                
 
     return &(element->om_element);
 }
@@ -1653,4 +1662,64 @@ axis2_om_element_set_namespace_with_no_find_in_current_scope(
     om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
     om_ele_impl->ns = om_ns;
     return AXIS2_SUCCESS;
+}                                    
+
+axis2_hash_t* AXIS2_CALL
+axis2_om_element_extract_attributes(axis2_om_element_t *om_element,
+                                    axis2_env_t **env,
+                                    axis2_om_node_t *ele_node)
+{
+    axis2_om_element_impl_t *om_ele_impl = NULL;
+    axis2_hash_index_t *hi = NULL;
+    axis2_hash_t *ht_cloned = NULL;
+    
+    axis2_om_attribute_t *om_attr = NULL;
+    axis2_om_attribute_t *cloned_attr = NULL;
+    
+    axis2_om_namespace_t *om_ns = NULL;
+    axis2_om_namespace_t *cloned_ns = NULL;
+    
+    axis2_char_t *key = NULL;
+    axis2_qname_t *qn = NULL;
+    
+    AXIS2_PARAM_CHECK((*env)->error, ele_node, NULL);
+    om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
+    if(!om_ele_impl->attributes)
+        return NULL;
+    ht_cloned = axis2_hash_make(env);
+    if(!ht_cloned)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }        
+    
+    for(hi = axis2_hash_first(om_ele_impl->attributes, env);
+        hi; axis2_hash_next(env, hi))
+    {
+        void *val = NULL;
+        axis2_hash_this(hi, NULL, NULL, &val);
+        if(NULL != val)
+        {
+            om_attr = (axis2_om_attribute_t *)val;
+            cloned_attr = AXIS2_OM_ATTRIBUTE_CLONE(om_attr, env);
+            
+            om_ns = AXIS2_OM_ATTRIBUTE_GET_NAMESPACE(om_attr, env);
+            if(NULL != om_ns)
+            {
+                cloned_ns = AXIS2_OM_NAMESPACE_CLONE(om_ns, env);
+                AXIS2_OM_ATTRIBUTE_SET_NAMESPACE(cloned_attr, env, cloned_ns);
+            }
+            qn = AXIS2_OM_ATTRIBUTE_GET_QNAME(cloned_attr, env);
+            key = AXIS2_QNAME_TO_STRING(qn, env);
+            axis2_hash_set(ht_cloned, key, AXIS2_HASH_KEY_STRING, cloned_attr);
+        }
+        val = NULL;
+        key = NULL;
+        qn  = NULL;
+        om_attr = NULL;
+        cloned_attr = NULL;
+        om_ns = NULL;
+        cloned_ns = NULL;
+    }        
+    return ht_cloned;
 }                                    

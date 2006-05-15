@@ -429,7 +429,16 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          set_namespace_with_no_find_in_current_scope)(
                         axis2_om_element_t *om_element,
                         axis2_env_t **env,
-                        axis2_om_namespace_t *om_ns);                                
+                        axis2_om_namespace_t *om_ns); 
+                        
+        /**
+         *  Extract attributes , returns a clones hash table of attributes,
+         *  if attributes are associated with a namespace it is also cloned
+         */                                                       
+         axis2_hash_t* (AXIS2_CALL *
+         extract_attributes)(axis2_om_element_t *om_element,
+                             axis2_env_t **env,
+                             axis2_om_node_t *ele_node);
     
     };
 
@@ -584,7 +593,8 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
 #define AXIS2_OM_ELEMENT_SET_NAMESPACE_WITH_NO_FIND_IN_CURRENT_SCOPE(om_element, env, om_ns) \
         ((om_element)->ops->set_namespace_with_no_find_in_current_scope(om_element, env, om_ns))
                
-                                       
+#define AXIS2_OM_ELEMENT_EXTRACT_ATTRIBUTES(om_element, env, ele_node) \
+        ((om_element)->ops->extract_attributes(om_element, env, ele_node))                                       
 /** @} */
 
 
