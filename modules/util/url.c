@@ -135,6 +135,7 @@ axis2_url_parse_string(axis2_env_t **env, axis2_char_t *str_url)
 	/**
 	 * Only accepted format is : 
 	 * protocol://server:port/path
+     * Added file:///path
 	 * port is optional and the default port is assumed
 	 * if path is not present / (root) is assumed
 	 */
@@ -180,6 +181,15 @@ axis2_url_parse_string(axis2_env_t **env, axis2_char_t *str_url)
 		AXIS2_FREE((*env)->allocator, tmp_url_str);
 		return NULL;
 	}
+    /* if the url is file:// thing we need the protocol and
+     * path only
+     */
+    if(0 == AXIS2_STRCASECMP(protocol, "file"))
+    {
+        ret = axis2_url_create(env, protocol, NULL, 0, server);
+        AXIS2_FREE((*env)->allocator, tmp_url_str);
+        return ret;
+    }
 	port_str = strchr(server, ':');
 	if(NULL == port_str)
 	{
