@@ -15,28 +15,11 @@
  */
 
 #include "axis2_math_stub.h"
-#include <axis2_om_stax_builder.h>
-#include <axis2_om_document.h>
-#include <axis2_om_node.h>
-#include <axis2_om_element.h>
-#include <axis2_om_text.h>
-#include <axis2_stream.h>
-#include <axis2_log_default.h>
-#include <axis2_error_default.h>
-#include <axis2_xml_reader.h>
 #include <stdio.h>
-#include <axis2_xml_writer.h>
-#include <axis2_soap_builder.h>
-#include <axis2_soap_const.h>
-#include <axis2_soap_envelope.h>
-#include <axis2_soap_body.h>
-#include <axis2_soap_header.h>
-#include <axis2_soap_message.h>
-#include <axis2_soap_header_block.h>
-#include <axis2_soap_fault.h>
-#include <axis2_soap_fault_code.h>
-#include <axis2_soap_fault_role.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <axis2_om.h>
+#include <axis2_util.h>
+#include <axis2_soap.h>
+#include <axis2_client.h>
 
 axis2_om_node_t *
 build_om_programatically(axis2_env_t **env, axis2_char_t *operation, axis2_char_t *param1, axis2_char_t *param2);
@@ -47,9 +30,6 @@ int main(int argc, char** argv)
     axis2_om_node_t *node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_env_t *env = NULL;
-    axis2_error_t *error = NULL;
-    axis2_log_t *log = NULL;
-    axis2_allocator_t *allocator = NULL;
     axis2_char_t *address = NULL;
     axis2_char_t *client_home = NULL;
     axis2_om_node_t *ret_node = NULL;
@@ -57,13 +37,8 @@ int main(int argc, char** argv)
     axis2_char_t *operation = "add";
     axis2_char_t *param1 = "40";
     axis2_char_t *param2 = "8";
-    
-    allocator = axis2_allocator_init (NULL);
-    error = axis2_error_create(allocator);
-    log = axis2_log_create(allocator, NULL, "math_client.log");
-    env = axis2_env_create_with_error_log(allocator, error, log);
-    env->log->level = AXIS2_LOG_LEVEL_INFO;
-    axis2_error_init();
+	
+    env = axis2_env_create_all( "math_blocking.log", AXIS2_LOG_LEVEL_TRACE);
 
     client_home = AXIS2_GETENV("AXIS2C_HOME");
     if (!client_home)
@@ -95,10 +70,7 @@ int main(int argc, char** argv)
 
     node = build_om_programatically(&env, operation, param1, param2);
     stub = 
-        axis2_stub_create_with_endpoint_uri_and_client_home(&env, address,
-            client_home);
-    AXIS2_STUB_SET_TRANSPORT_INFO(stub, &env, AXIS2_TRANSPORT_HTTP, 
-        AXIS2_TRANSPORT_HTTP, AXIS2_FALSE);
+        axis2_math_stub_create_with_endpoint_uri_and_client_home(&env, address,   client_home);
     /* create node and invoke math */
     ret_node = axis2_math_stub_add(stub, &env, node);
     if(ret_node)

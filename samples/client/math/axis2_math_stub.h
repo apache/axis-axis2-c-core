@@ -22,14 +22,7 @@
  * @brief axis2 math stub interface
  */
 
-#include <axis2_const.h>
-#include <axis2_error.h>
-#include <axis2_defines.h>
-#include <axis2_env.h>
-#include <axis2_allocator.h>
 #include <axis2_stub.h>
-#include <axis2_endpoint_ref.h>
-#include <axis2_om_node.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -55,6 +48,10 @@ axis2_om_node_t *
 axis2_math_stub_div(axis2_stub_t *stub,
                         axis2_env_t **env,
                         axis2_om_node_t *node);
+/**
+ * populate services
+ */
+void axis2_populate_axis_service( axis2_stub_t* stub, axis2_env_t** env);
 
 /**
  * Creates axis2_stub struct
