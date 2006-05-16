@@ -635,7 +635,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
         }*/
         
         /* Setting attributes */
-        attrs = AXIS2_OM_ELEMENT_EXTRACT_ATTRIBUTES(param_element, env);
+        attrs = AXIS2_OM_ELEMENT_EXTRACT_ATTRIBUTES(param_element, env, param_node);
         AXIS2_PARAM_SET_ATTRIBUTES(param, env, attrs);
 
         /* Setting paramter name */
