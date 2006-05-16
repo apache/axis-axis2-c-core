@@ -189,6 +189,25 @@ axis2_xml_schema_all_create(axis2_env_t **env)
     return grp_base;    
 }
 
+AXIS2_DECLARE(axis2_xml_schema_group_base_t *)
+axis2_xml_schema_sequence_create(axis2_env_t **env)
+{
+    axis2_xml_schema_group_base_t *grp_base = NULL;
+    grp_base = axis2_xml_schema_group_base_create(env);
+    AXIS2_INTF_TO_IMPL(grp_base)->obj_type = AXIS2_XML_SCHEMA_SEQUENCE;
+    return grp_base;    
+}
+
+AXIS2_DECLARE(axis2_xml_schema_group_base_t *)
+axis2_xml_schema_choice_create(axis2_env_t **env)
+{
+    axis2_xml_schema_group_base_t *grp_base = NULL;
+    grp_base = axis2_xml_schema_group_base_create(env);
+    AXIS2_INTF_TO_IMPL(grp_base)->obj_type = AXIS2_XML_SCHEMA_CHOICE;
+    return grp_base;    
+}
+
+
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_group_base_free(void *group_base,
                             axis2_env_t **env)

@@ -217,7 +217,12 @@ axis2_xml_schema_create(axis2_env_t **env,
 
     schema_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_impl_t));
-
+    if(!schema_impl)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }                        
+    
     schema_impl->annotated = NULL;
     schema_impl->super = NULL;
     schema_impl->obj_type = AXIS2_XML_SCHEMA;
@@ -236,9 +241,16 @@ axis2_xml_schema_create(axis2_env_t **env,
     schema_impl->groups = NULL;
     schema_impl->notations = NULL;
     schema_impl->schema_types = NULL;
+    schema_impl->target_namespc = namespc;
     
     schema_impl->schema.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_ops_t));
+    if(!schema_impl->schema.ops)
+    {
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        axis2_xml_schema_free(&(schema_impl->schema), env);
+        return NULL;
+    }
 
     schema_impl->schema.ops->free = axis2_xml_schema_free;
     schema_impl->schema.ops->super_objs = axis2_xml_schema_super_objs;

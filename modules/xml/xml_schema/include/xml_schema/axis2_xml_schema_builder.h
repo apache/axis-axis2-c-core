@@ -27,11 +27,9 @@
 
 #include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_annotated.h>
-#include <axis2_om_element.h>
-#include <axis2_om_node.h>
+#include <axis2_om.h>
 #include <axis2_hash.h>
-#include <xml_schema/axis2_validation_event_handler.h>
-
+#include <xml_schema/axis2_xml_schema_collection.h>
 /** @defgroup axis2_xml_schema_builder Xml Schema
   * @ingroup axis2_xml_schema_builder
   * @{
@@ -52,28 +50,39 @@ extern "C"
 struct axis2_xml_schema_builder_ops
 {
     axis2_xml_schema_t* (AXIS2_CALL *
-    build)(axis2_xml_schema_builder_t *builder,
-           axis2_env_t **env,
-           axis2_om_document_t *om_doc,
-           axis2_char_t *uri);
+    build)(
+            axis2_xml_schema_builder_t *builder,
+            axis2_env_t **env,
+            axis2_om_document_t *om_doc,
+            axis2_char_t *uri);
            
     axis2_xml_schema_t* (AXIS2_CALL *
-    builder_with_root_node)(axis2_xml_schema_builder_t *builder,
-                        axis2_env_t **env,
-                        axis2_om_node_t *root,
-                        axis2_char_t *uri);
-                        
+    build_with_root_node)(
+            axis2_xml_schema_builder_t *builder,
+            axis2_env_t **env,
+            axis2_om_node_t *root,
+            axis2_char_t *uri);
+            
+    axis2_status_t (AXIS2_CALL *
+    free)(axis2_xml_schema_builder_t *builder,
+          axis2_env_t **env);            
 };
 
 struct axis2_xml_schema_builder
 {
-    axis2_xml_schema_ops_t *ops;
+    axis2_xml_schema_builder_ops_t *ops;
 };
 
+
 AXIS2_DECLARE(axis2_xml_schema_builder_t *)
-axis2_xml_schema_builder_create(env);
+axis2_xml_schema_builder_create(
+        axis2_env_t **env,
+        axis2_xml_schema_collection_t *sch_collection);
 
 /***************** Macros *****************************************************/
+
+#define AXIS2_XML_SCHEMA_BUILDER_FREE(builder, env) \
+        ((builder)->ops->free(builder, env))
 
 #define AXIS2_XML_SCHEMA_BUILDER_BUILD(builder, env, om_doc, uri) \
         ((builder)->ops->build(builder, env, om_doc, uri))
