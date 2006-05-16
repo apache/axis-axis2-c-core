@@ -15,9 +15,6 @@ libaxis2_xml_schema_la_SOURCES = \
 								 xml_schema_group.c \
 								 xml_schema_group_ref.c \
 								 xml_schema_form.c \
-								 xml_schema_all.c \
-								 xml_schema_choice.c \
-								 xml_schema_sequence.c \
 								 xml_tokenized_type.c \
 								 xml_schema_data_type.c \
 								 xml_schema_facet.c \
@@ -30,7 +27,21 @@ libaxis2_xml_schema_la_SOURCES = \
 								 xml_schema_type_receiver.c \
 								 xml_schema_element.c \
 								 validation_event_handler.c \
-								 xml_schema.c
+								 xml_schema_any_attribute.c \
+                                 xml_schema_builder.c \
+                                 xml_schema_external.c \
+                                 xml_schema_import.c \
+                                 xml_schema_redefine.c \
+                                 xml_schema_simple_content.c \
+                                 xml_schema_simple_content_extension.c \
+                                 xml_schema_simple_content_restriction.c \
+                                 xml_schema_simple_type.c \
+                                 xml_schema_simple_type_content.c \
+                                 xml_schema_simple_type_list.c \
+                                 xml_schema_simple_type_restriction.c \
+                                 xml_schema_simple_type_union.c \
+                                 xml_schema.c 
+                                 
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(AXIS2C_HOME)/include
+           -I$(top_builddir)/modules/xml/xml_schema/include 
