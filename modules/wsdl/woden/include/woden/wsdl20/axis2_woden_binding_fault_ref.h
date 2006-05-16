@@ -20,6 +20,9 @@
 /**
  * @file axis2_woden_binding_fault_ref.h
  * @brief Axis2 Binding Fault Reference Binding Fault Reference
+ * This class represents the Binding Fault Reference component of the
+ * WSDL 2.0 Component model and the &lt;infault&gt; or &lt;outfault&gt; 
+ * child element of a WSDL binding &lt;operation&gt;.
  * 
  */
 

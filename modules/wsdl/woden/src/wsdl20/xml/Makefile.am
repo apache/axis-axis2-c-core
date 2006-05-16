@@ -16,7 +16,11 @@ libaxis2_woden_xml_la_SOURCES = \
 							binding_element.c \
 							binding_fault_element.c \
 							binding_fault_ref_element.c \
-							binding_msg_ref_element.c
+							binding_msg_ref_element.c \
+							binding_op_element.c \
+							include_element.c \
+							import_element.c \
+							fault_ref_element.c
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(AXIS2C_HOME)/include

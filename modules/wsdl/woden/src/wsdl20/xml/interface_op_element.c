@@ -34,40 +34,40 @@ axis2_woden_interface_op_element_resolve_methods(
             AXIS2_HASH_KEY_STRING);
 
     interface_op_element->ops->set_qname = 
-            axis2_hash_get(methods, "", 
+            axis2_hash_get(methods, "set_qname", 
             AXIS2_HASH_KEY_STRING);
 
     interface_op_element->ops->get_qname = 
-            axis2_hash_get(methods, "", 
+            axis2_hash_get(methods, "get_qname", 
             AXIS2_HASH_KEY_STRING);
  
     interface_op_element->ops->set_pattern = 
-            axis2_hash_get(methods, "", 
+            axis2_hash_get(methods, "set_pattern", 
             AXIS2_HASH_KEY_STRING);
 
     interface_op_element->ops->get_pattern = 
-            axis2_hash_get(methods, "", 
+            axis2_hash_get(methods, "get_pattern", 
             AXIS2_HASH_KEY_STRING);
  
     interface_op_element->ops->add_style_uri = 
-            axis2_hash_get(methods, "", 
+            axis2_hash_get(methods, "add_style_uri", 
             AXIS2_HASH_KEY_STRING);
 
     interface_op_element->ops->remove_style_uri = 
-            axis2_hash_get(methods, "", 
+            axis2_hash_get(methods, "remove_style_uri", 
             AXIS2_HASH_KEY_STRING);
 
     interface_op_element->ops->get_style = 
-            axis2_hash_get(methods, "", 
+            axis2_hash_get(methods, "get_style", 
             AXIS2_HASH_KEY_STRING);
 
    
     interface_op_element->ops->add_interface_msg_ref_element = 
-            axis2_hash_get(methods, "", 
+            axis2_hash_get(methods, "add_interface_msg_ref_element", 
             AXIS2_HASH_KEY_STRING);
 
     interface_op_element->ops->remove_interface_msg_ref_element = 
-            axis2_hash_get(methods, "", 
+            axis2_hash_get(methods, "remove_interface_msg_ref_element", 
             AXIS2_HASH_KEY_STRING);
 
     interface_op_element->ops->get_interface_msg_ref_elements = 

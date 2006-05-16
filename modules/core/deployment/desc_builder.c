@@ -615,6 +615,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
         axis2_qname_t *att_locked = NULL;
         axis2_qname_t *att_qname = NULL;
         axis2_char_t *pname = NULL;
+        axis2_hash_t *attrs = NULL;
         
         /* This is to check whether some one has locked the parmter at the top 
          * level
@@ -632,6 +633,11 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
             AXIS2_PARAM_FREE(param, env);
             return status;
         }*/
+        
+        /* Setting attributes */
+        attrs = AXIS2_OM_ELEMENT_EXTRACT_ATTRIBUTES(param_element, env);
+        AXIS2_PARAM_SET_ATTRIBUTES(param, env, attrs);
+
         /* Setting paramter name */
         att_qname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         para_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(param_element, env, 
@@ -727,6 +733,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
                 AXIS2_PARAM_SET_LOCKED(param, env, AXIS2_FALSE);
             }
         }
+
         
         if(parent)
         {

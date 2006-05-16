@@ -253,7 +253,6 @@ AC_CONFIG_FILES([Makefile \
     modules/xml/Makefile \
     modules/xml/parser/Makefile \
     modules/xml/parser/libxml2/Makefile \
-    modules/xml/xml_schema/Makefile \
     modules/xml/soap/Makefile \
     modules/xml/om/Makefile \
     modules/xml/attachments/Makefile \
@@ -261,7 +260,6 @@ AC_CONFIG_FILES([Makefile \
     modules/util/minizip/Makefile \
     modules/platforms/unix/Makefile \
     modules/wsdl/Makefile \
-    modules/wsdl/woden/Makefile \
     modules/wsdl/builder/Makefile \
     modules/mod_addr/Makefile \
     test/Makefile \

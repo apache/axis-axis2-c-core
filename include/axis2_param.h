@@ -25,6 +25,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_om_node.h>
+#include <axis2_hash.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -150,7 +151,18 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
      axis2_status_t (AXIS2_CALL *
 	 free)(struct axis2_param *param, 
 	 	   axis2_env_t **env);
-     
+
+    axis2_status_t (AXIS2_CALL *
+    set_attributes) (
+            struct axis2_param *param,
+            axis2_env_t **env,
+            axis2_hash_t *attrs);
+
+    axis2_hash_t* (AXIS2_CALL *
+    get_attributes) (
+            struct axis2_param *param,
+            axis2_env_t **env);
+         
     axis2_status_t (AXIS2_CALL *
     value_free) (void *param_value, 
                  axis2_env_t **env);
@@ -205,6 +217,12 @@ axis2_param_create(axis2_env_t **env,
 
 #define AXIS2_PARAM_GET_ELEMENT(param, env) \
     ((param)->ops->get_param_element (param, env))
+    
+#define AXIS2_PARAM_SET_ATTRIBUTES(param, env, attrs) \
+    ((param)->ops->set_attributes (param , env, attrs))
+
+#define AXIS2_PARAM_GET_ATTRIBUTES(param, env) \
+    ((param)->ops->get_attributes (param, env))
 	
 /** @} */
     

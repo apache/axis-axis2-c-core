@@ -36,6 +36,7 @@ typedef struct axis2_param_impl_s
      * org.apache.axis2.sample.echo.EchoImpl</parameter>
      */
     axis2_om_node_t *param_element ;
+    axis2_hash_t *attrs;
 } axis2_param_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(param) ((axis2_param_impl_t *)param)
@@ -83,6 +84,18 @@ axis2_param_set_param_element(axis2_param_t *param,
 axis2_om_node_t* AXIS2_CALL 
 axis2_param_get_param_element(axis2_param_t *param, 
 										axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL 
+axis2_param_set_attributes(
+        axis2_param_t *param,
+        axis2_env_t **env,
+        axis2_hash_t *attrs);
+
+axis2_hash_t* AXIS2_CALL 
+axis2_param_get_attributes(
+        axis2_param_t *param,
+        axis2_env_t **env);
+
 axis2_status_t AXIS2_CALL 
 axis2_param_free(axis2_param_t *param, 
 						axis2_env_t **env);
@@ -109,6 +122,7 @@ axis2_param_create(axis2_env_t **env,
     param_impl->locked = AXIS2_FALSE;
     param_impl->type = AXIS2_TEXT_PARAM;
     param_impl->param_element = NULL;
+    param_impl->attrs = NULL;
     
     param_impl->param.ops = 
 		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_param_ops_t));
@@ -134,6 +148,10 @@ axis2_param_create(axis2_env_t **env,
 		axis2_param_set_param_element;
     param_impl->param.ops->get_param_element = 
 		axis2_param_get_param_element;
+    param_impl->param.ops->set_attributes = 
+        axis2_param_set_attributes;
+    param_impl->param.ops->get_attributes = 
+        axis2_param_get_attributes;
     param_impl->param.ops->free = axis2_param_free;
     
     return &(param_impl->param);
@@ -256,13 +274,58 @@ axis2_param_get_param_element(axis2_param_t *param,
 }
 
 axis2_status_t AXIS2_CALL 
+axis2_param_set_attributes(
+        axis2_param_t *param,
+        axis2_env_t **env,
+        axis2_hash_t *attrs)
+{
+    axis2_param_impl_t *param_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, attrs, AXIS2_FAILURE);
+    param_impl = AXIS2_INTF_TO_IMPL(param);
+
+    if(param_impl->attrs)
+    {
+        axis2_hash_index_t *i = NULL;
+        void *v = NULL;
+
+        for (i = axis2_hash_first (param_impl->attrs, env); i; 
+                i = axis2_hash_next (env, i))
+        {
+            axis2_hash_this (i, NULL, NULL, &v);
+            AXIS2_OM_ATTRIBUTE_FREE(v, env);
+        }
+        axis2_hash_free(param_impl->attrs, env);
+    }
+    
+    param_impl->attrs = attrs;
+    return AXIS2_SUCCESS;
+
+
+}
+
+axis2_hash_t* AXIS2_CALL 
+axis2_param_get_attributes(
+        axis2_param_t *param,
+        axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    return AXIS2_INTF_TO_IMPL(param)->attrs;
+}
+
+
+axis2_status_t AXIS2_CALL 
 axis2_param_free(axis2_param_t *param, 
 						axis2_env_t **env)
 {
+    axis2_param_impl_t *param_impl = NULL;
     void *param_value = NULL;
     axis2_char_t *param_name = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    param_impl = AXIS2_INTF_TO_IMPL(param);
     
     param_value = axis2_param_get_value(param, env);
     if(param_value)
@@ -276,9 +339,24 @@ axis2_param_free(axis2_param_t *param,
             AXIS2_FREE((*env)->allocator, param_value);
         }
     }
+
+    if(param_impl->attrs)
+    {
+        axis2_hash_index_t *i = NULL;
+        void *v = NULL;
+
+        for (i = axis2_hash_first (param_impl->attrs, env); i; 
+                i = axis2_hash_next (env, i))
+        {
+            axis2_hash_this (i, NULL, NULL, &v);
+            AXIS2_OM_ATTRIBUTE_FREE(v, env);
+        }
+        axis2_hash_free(param_impl->attrs, env);
+    }
     param_name = axis2_param_get_name(param, env);
     AXIS2_FREE((*env)->allocator, param_name);
     AXIS2_FREE((*env)->allocator, param->ops);
     AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(param));    
     return AXIS2_SUCCESS;
 }
+
