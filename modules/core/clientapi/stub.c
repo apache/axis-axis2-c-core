@@ -50,7 +50,7 @@ axis2_stub_set_endpoint_uri (axis2_stub_t *stub,
 /**
  * @param use_separate_transport
  */
-axis2_status_t AXIS2_CALL //set use_seperate_listener
+axis2_status_t AXIS2_CALL 
 axis2_stub_set_use_seperate_listener(axis2_stub_t *stub,
                                 axis2_env_t **env,
                                 axis2_bool_t use_separate_listener);
