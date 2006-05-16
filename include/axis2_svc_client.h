@@ -443,20 +443,20 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
    
 /************************** Start of function macros **************************/
 
-#define AXIS2_SVC_CLIENT_GET_AXIS_SERVICE(svc_client) \
-		((svc_client)->ops->get_svc(svc_client))
+#define AXIS2_SVC_CLIENT_GET_AXIS_SERVICE(svc_client, env) \
+		((svc_client)->ops->get_svc(svc_client, env))
 
 #define AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options) \
 		((svc_client)->ops->set_options(svc_client, env, options))
 
-#define AXIS2_SVC_CLIENT_GET_OPTIONS(svc_client) \
-		((svc_client)->ops->get_options(svc_client))
+#define AXIS2_SVC_CLIENT_GET_OPTIONS(svc_client, env) \
+		((svc_client)->ops->get_options(svc_client, env))
 
 #define AXIS2_SVC_CLIENT_SET_OVERRIDE_OPTIONS(svc_client, env, override_options) \
 		((svc_client)->ops->set_override_options(svc_client, env, override_options))
 
-#define AXIS2_SVC_CLIENT_GET_OVERRIDE_OPTIONS(svc_client) \
-	    ((svc_client)->ops->get_override_options(svc_client))
+#define AXIS2_SVC_CLIENT_GET_OVERRIDE_OPTIONS(svc_client, env) \
+	    ((svc_client)->ops->get_override_options(svc_client, env))
 
 #define AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, module_name) \
 		((svc_client)->ops->engage_module(svc_client, env, module_name))
