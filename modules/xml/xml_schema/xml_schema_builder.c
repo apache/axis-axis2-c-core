@@ -337,7 +337,7 @@ static axis2_bool_t
 value_exist_in_hash(
         axis2_env_t **env,
         axis2_hash_t *ht,
-        axis2_char_t *value);        
+        axis2_char_t *value);
         
 /*************** end function prototypes **************************************/
 
@@ -533,7 +533,6 @@ set_namespace_attribute(
     if(NULL != contain && (value_exist_in_hash(env, ht_sch_ns, contain)) == AXIS2_FALSE)
     {
         put_namespace(builder, env, "", contain);
-/*        axis2_hash_set(ht_sch_ns, "", AXIS2_HASH_KEY_STRING, contain); */
         if(AXIS2_STRCMP(contain,"") != 0)
         {
             AXIS2_XML_SCHEMA_SET_SCHEMA_NS_PREFIX(schema, env, contain);

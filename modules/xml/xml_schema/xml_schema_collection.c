@@ -44,11 +44,12 @@ struct axis2_xml_schema_collection_impl
     
     axis2_hash_t *schema_id2_schemas;
     
-    axis2_xml_schema_t *xml_schema;
+    axis2_xml_schema_t *xsd;
     
     axis2_hash_t *schemas;
     
     axis2_hash_t *unresolved_types;
+    
 };
 
 #define AXIS2_INTF_TO_IMPL(collection) \
@@ -152,7 +153,6 @@ static axis2_status_t
 add_simple_type(
         axis2_env_t **env,
         axis2_xml_schema_t* schema,
-        axis2_xml_schema_simple_type_t *simple_type,
         axis2_char_t *type_name);
 
 /*************** end function prototypes ****************************/                    
@@ -175,7 +175,7 @@ axis2_xml_schema_collection_create(axis2_env_t **env)
     collection_impl->in_scope_namespaces = NULL;
     collection_impl->namespaces = NULL;
     collection_impl->unresolved_types = NULL;
-    collection_impl->xml_schema = NULL;
+    collection_impl->xsd = NULL;
     collection_impl->schema_id2_schemas = NULL;
     collection_impl->schemas = NULL;
     
@@ -189,8 +189,7 @@ axis2_xml_schema_collection_create(axis2_env_t **env)
         return NULL;
     }
     
-    axis2_xml_schema_collection_init(&(collection_impl->collection), env);
-
+    
     collection_impl->collection.ops->free = 
             axis2_xml_schema_collection_free;
     collection_impl->collection.ops->set_base_uri = 
@@ -231,6 +230,12 @@ axis2_xml_schema_collection_create(axis2_env_t **env)
     collection_impl->collection.ops->map_namespace = 
             axis2_xml_schema_collection_map_namespace;
 
+    collection_impl->xsd = axis2_xml_schema_create(env, AXIS2_XML_SCHEMA_NS ,&(collection_impl->collection));
+    
+    axis2_xml_schema_collection_init(&(collection_impl->collection), env);
+
+    
+
     return &(collection_impl->collection);
 }
 
@@ -267,6 +272,10 @@ axis2_xml_schema_collection_init(
         axis2_xml_schema_collection_t* collection,
         axis2_env_t **env)
 {
+    axis2_xml_schema_collection_impl_t *collection_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    collection_impl = AXIS2_INTF_TO_IMPL(collection);
+    
 
     return AXIS2_SUCCESS;
 }
@@ -403,10 +412,9 @@ static axis2_status_t
 add_simple_type(
         axis2_env_t **env,
         axis2_xml_schema_t* schema,
-        axis2_xml_schema_simple_type_t *simple_type,
         axis2_char_t *type_name)
 {
-    axis2_xml_schema_simple_type_t* type = NULL;
+    void* type = NULL;
     type = axis2_xml_schema_simple_type_create(env, schema);
     AXIS2_XML_SCHEMA_TYPE_SET_NAME(type, env, type_name);
     AXIS2_XML_SCHEMA_ADD_TYPE(schema, env, type);
