@@ -18,6 +18,7 @@
 #include <axis2_string.h>
 #include <axis2_class_loader.h>
 #include <axis2_utils.h>
+#include <axis2_generic_obj.h>
 #include <axis2_raw_xml_in_out_msg_recv.h>
 
 /** 
@@ -636,7 +637,43 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
         
         /* Setting attributes */
         attrs = AXIS2_OM_ELEMENT_EXTRACT_ATTRIBUTES(param_element, env, param_node);
-        AXIS2_PARAM_SET_ATTRIBUTES(param, env, attrs);
+        if(attrs)
+        {
+            axis2_hash_index_t *i = NULL;
+
+            for (i = axis2_hash_first (attrs, env); i; i = 
+                    axis2_hash_next (env, i))
+            {
+                void *v = NULL;
+                axis2_om_attribute_t *value = NULL;
+                axis2_generic_obj_t *obj = NULL;
+                axis2_qname_t *attr_qname = NULL;
+                axis2_char_t *attr_name = NULL;
+
+                axis2_hash_this (i, NULL, NULL, &v);
+                if(!v) 
+                {
+                    AXIS2_PARAM_FREE(param, env);
+                    return AXIS2_FAILURE;
+                }
+                obj = axis2_generic_obj_create(env);
+                if(!obj)
+                {
+                    AXIS2_PARAM_FREE(param, env);
+                    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, 
+                            AXIS2_FAILURE);
+                    return AXIS2_FAILURE;
+                }
+                value = (axis2_om_attribute_t *) v;
+                AXIS2_GENERIC_OBJ_SET_VALUE(obj, env, value);
+                AXIS2_GENERIC_OBJ_SET_FREE_FUNC(obj, env, 
+                        axis2_om_attribute_free_void_arg);
+                attr_qname = AXIS2_OM_ATTRIBUTE_GET_QNAME(value, env);
+                attr_name = AXIS2_QNAME_TO_STRING(attr_qname, env);
+                axis2_hash_set(attrs, attr_name, AXIS2_HASH_KEY_STRING, obj); 
+            }
+            AXIS2_PARAM_SET_ATTRIBUTES(param, env, attrs);
+        }
 
         /* Setting paramter name */
         att_qname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);

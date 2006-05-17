@@ -184,7 +184,16 @@ extern "C"
                                const axis2_char_t *localname,
                                const axis2_char_t *value,
                                axis2_om_namespace_t *ns);
-
+    /**
+     * Free om attribute passed as void pointer. This will be
+     * cast into appropriate type and then pass the cast object
+     * into the om_attribute structure's free method
+     */
+    AXIS2_DECLARE(axis2_status_t) 
+    axis2_om_attribute_free_void_arg (
+            void *om_attribute,
+            axis2_env_t **env);
+     
 /******************** Macros **************************************************/
     
     

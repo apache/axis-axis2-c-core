@@ -191,6 +191,19 @@ axis2_om_attribute_free (axis2_om_attribute_t *om_attribute,
     return AXIS2_SUCCESS;
 }
 
+axis2_status_t AXIS2_CALL
+axis2_om_attribute_free_void_arg (
+        void *om_attribute,
+        axis2_env_t **env)
+{
+    axis2_om_attribute_t *om_attribute_l = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    om_attribute_l = (axis2_om_attribute_t *) om_attribute;
+    return axis2_om_attribute_free(om_attribute_l, env);
+}
+
+
 axis2_qname_t * AXIS2_CALL 
 axis2_om_attribute_get_qname (axis2_om_attribute_t *om_attribute,
                                    axis2_env_t **env)
