@@ -365,7 +365,7 @@ axis2_phases_info_get_op_in_phases(axis2_phases_info_t *phases_info,
     {
         phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(phases_info_impl->in_phases, env, i);
         if (0 == AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name) ||
-                0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name) ||
+                /*0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name) ||*/
                 0 == AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name) ||
                 0 == AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) 
         {

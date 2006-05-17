@@ -1274,18 +1274,18 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
                     {
                         return AXIS2_FAILURE;
                     }
-                    if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) &&
+                    /*if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) &&
                         (0 != AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) &&
                         (0 != AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
                         (0 != AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
-                    {
+                    {*/
                         status = AXIS2_PHASE_HOLDER_ADD_HANDLER(resolver_impl->
                             phase_holder, env, metadata);
-                        if(AXIS2_SUCCESS != status)
+                       /* if(AXIS2_SUCCESS != status)
                         {
                             return status;
                         }
-                    }
+                    }*/
                 }
             }
         }
@@ -1552,6 +1552,7 @@ axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
     int type = 0;
+    axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, axis_op, AXIS2_FAILURE);
@@ -1639,15 +1640,19 @@ axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
                 metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
                 phase_rule = AXIS2_HANDLER_DESC_GET_RULES(metadata, env);
                 phase_name = AXIS2_PHASE_RULE_GET_NAME(phase_rule, env);
-                if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) &&
+                /*if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) &&
                     (0 != AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) &&
                     (0 != AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
                     (0 != AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
-                {
-                    AXIS2_PHASE_HOLDER_ADD_HANDLER(resolver_impl->phase_holder, 
+                {*/
+                    status = AXIS2_PHASE_HOLDER_ADD_HANDLER(resolver_impl->phase_holder, 
                         env, metadata);
+                    if (status != AXIS2_SUCCESS)
+                    {
+                       axis2_phase_resolver_engage_to_global_chain(phase_resolver, env, module_desc);
+                    }
            
-                } 
+                /*} 
                 else 
                 {
                     AXIS2_ERROR_SET((*env)->error, 
@@ -1655,7 +1660,7 @@ axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
                             AXIS2_FAILURE);
                     continue;
                     
-                }
+                }*/
             }
         }
     }
