@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-#ifndef S_ISDIR
-#   define S_ISDIR(m) ((m & S_IFMT) == S_IFDIR)
-#endif
- 
 #include <axis2_dir_handler.h>
 #include <axis2_file.h>
 #include <platforms/axis2_platform_auto_sense.h>
