@@ -445,14 +445,9 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(axis2_env_t **env,
     AXIS2_FREE((*env)->allocator, conf_file_l);
     if(!dep_engine_impl->conf_name)
     {
-        dep_engine_impl->conf_name = 
-            AXIS2_STRDUP(AXIS2_CONFIGURATION_RESOURCE, env);
-        if(!dep_engine_impl->conf_name)
-        {
             axis2_dep_engine_free(&(dep_engine_impl->dep_engine), env);
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_REPO_CAN_NOT_BE_NULL , AXIS2_FAILURE);
             return NULL;
-        }
     }
     status = axis2_file_handler_access(dep_engine_impl->conf_name, AXIS2_F_OK);
     if(AXIS2_SUCCESS != status)
