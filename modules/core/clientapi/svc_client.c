@@ -579,6 +579,16 @@ axis2_svc_client_fire_and_forget(struct axis2_svc_client *svc_client,
                     axis2_env_t **env,
                     axis2_om_node_t *payload)
 {
+	axis2_svc_client_impl_t *svc_client_impl = NULL;
+	axis2_qname_t *op_qname = NULL;
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
+	op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
+	
+	axis2_svc_client_fire_and_forget_with_op_qname(
+			&(svc_client_impl->svc_client), env, op_qname, payload);
+
 
 }
 
@@ -588,7 +598,32 @@ axis2_svc_client_fire_and_forget_with_op_qname(struct axis2_svc_client *svc_clie
                     axis2_qname_t *op_qname,
                     axis2_om_node_t *payload)
 {
+    axis2_svc_client_impl_t *svc_client_impl = NULL;
+    axis2_op_client_t *op_client = NULL;
+    axis2_msg_ctx_t *msg_ctx = NULL;
 
+    if (!env || !(*env))
+        return;
+
+    svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
+    
+    msg_ctx = axis2_msg_ctx_create(env, 
+        AXIS2_SVC_CTX_GET_CONF_CTX(svc_client_impl->svc_ctx, env), NULL, NULL);
+    if (!axis2_svc_client_fill_soap_envelope(env, svc_client_impl, msg_ctx, 
+        payload))
+    {
+        return;
+    }
+
+    op_client = axis2_svc_client_create_op_client(&(svc_client_impl->svc_client), env, op_qname);
+    if (!op_client)
+    {
+        return;
+    }
+
+    AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
+    AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_FALSE);
+    return;
 }
 
 axis2_om_node_t* AXIS2_CALL 
