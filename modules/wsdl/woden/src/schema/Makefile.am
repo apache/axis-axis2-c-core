@@ -6,4 +6,5 @@ libaxis2_woden_schema_la_SOURCES = \
 							inlined_schema.c
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(AXIS2C_HOME)/include
+            -I$(AXIS2C_HOME)/include \
+            -I$(XML_SCHEMA)/include
