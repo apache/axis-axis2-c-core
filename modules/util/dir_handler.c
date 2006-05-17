@@ -433,6 +433,7 @@ int aar_select()
 		}
 	free(namelist);
 	}
+	return (AXIS2_TRUE);
 }
 
 int aar_extract(axis2_char_t *d_name)
@@ -496,7 +497,6 @@ int axis2_extract_onefile(uf,filename,opt_extract_without_path,opt_overwrite,pas
 		int opt_overwrite;
 		const axis2_char_t* password;
 {
-	int err = UNZ_OK;
 	if (unzLocateFile(uf,filename,CASESENSITIVITY)!=UNZ_OK)
 		return -1;
 
@@ -519,7 +519,6 @@ int axis2_extract(uf,opt_extract_without_path,opt_overwrite,password)
 	uLong i;
 	unz_global_info gi;
 	int err;
-	FILE* fout=NULL;
 
 	err = unzGetGlobalInfo (uf,&gi);
 	if (err!=UNZ_OK)
