@@ -36,9 +36,9 @@
 typedef struct axis2_xml_schema_form axis2_xml_schema_form_t;
 typedef struct axis2_xml_schema_form_ops axis2_xml_schema_form_ops_t;
 
-#define AXIS2_XML_SCHEMA_QUALIFIED "qualified"
-#define AXIS2_XML_SCHEMA_UNQUALIFIED "unqualified"
-#define AXIS2_XML_SCHEMA_NONE "none"
+#define AXIS2_XML_SCHEMA_FORM_QUALIFIED "qualified"
+#define AXIS2_XML_SCHEMA_FORM_UNQUALIFIED "unqualified"
+#define AXIS2_XML_SCHEMA_FORM_NONE "none"
 
 #ifdef __cplusplus
 extern "C"

@@ -16,7 +16,7 @@
 
 #include <axis2_om_namespace.h>
 #include <axis2_string.h>
-#include <axis2_om_namespace_internal.h>
+#include "axis2_om_namespace_internal.h"
 /**************************** Function Prototypes ******************************/
 
 axis2_status_t AXIS2_CALL 

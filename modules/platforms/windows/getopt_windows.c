@@ -7,7 +7,7 @@
 int		opterr = 1; /*default - log error*/
 int		optind = 1;
 int		optopt;
-char	*optarg;
+char*	optarg;
 
 #define AXIS2_OPT_ERR_NO_ARG			1
 #define	AXIS2_OPT_ERR_INVALID_OPTION	2

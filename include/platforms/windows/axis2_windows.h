@@ -61,11 +61,11 @@ extern "C"
 /* get opt */
 #include "axis2_getopt_windows.h"
 
-/* for minizip uncompression library */
+/* for minizip uncompression library 
 #define USEWIN32IOAPI
 #include "iowin32.h"
 
-
+*/
 /***************************************************************
  * Default paths to shared library/DLLs and files
  ***************************************************************

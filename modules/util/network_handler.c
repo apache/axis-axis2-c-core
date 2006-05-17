@@ -83,11 +83,11 @@ if (is_init_socket == 0)
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
         return AXIS2_INVALID_SOCKET;
     }
-	setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, &nodelay, 
+	setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *)&nodelay, 
 						sizeof(nodelay));
 	ll.l_onoff = 1;
     ll.l_linger = 5;
-    setsockopt(sock, SOL_SOCKET, SO_LINGER , &ll, sizeof(struct linger));
+    setsockopt(sock, SOL_SOCKET, SO_LINGER , (const char *)&ll, sizeof(struct linger));
 	return sock;
 }
 
@@ -175,7 +175,7 @@ axis2_network_handler_set_sock_option(axis2_env_t **env, axis2_socket_t socket,
 	return AXIS2_FAILURE;    
 }
 
-AXIS2_DECLARE(axis2_socket_t)						
+AXIS2_DECLARE(int)						
 axis2_network_handler_svr_socket_accept(axis2_env_t **env, 
 						axis2_socket_t svr_socket)
 {

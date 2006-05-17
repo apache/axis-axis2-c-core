@@ -18,8 +18,8 @@
  #include <axis2_soap_message.h>
  #include "_axis2_soap_envelope.h"
  #include "_axis2_soap_header.h"
- #include <axis2_soap11_builder_helper.h>
- #include <axis2_soap12_builder_helper.h>
+ #include "axis2_soap11_builder_helper.h"
+ #include "axis2_soap12_builder_helper.h"
  #include <axis2_soap_const.h>
  #include "_axis2_soap_body.h"
  #include "_axis2_soap_header_block.h"

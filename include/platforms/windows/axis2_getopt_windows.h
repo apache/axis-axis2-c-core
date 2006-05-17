@@ -16,9 +16,9 @@ extern "C" {
  * @{
  */
 
-AXIS2_DECLARE_DATA  extern int	opterr;
-AXIS2_DECLARE_DATA  extern int 	optopt;	
-AXIS2_DECLARE_DATA  extern char	*optarg;
+AXIS2_DECLARE_DATA  int	opterr;
+AXIS2_DECLARE_DATA  int 	optopt;	
+AXIS2_DECLARE_DATA  char	*optarg;
 
 /**
   * return and log error

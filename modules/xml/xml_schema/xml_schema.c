@@ -207,6 +207,15 @@ axis2_xml_schema_add_type(void *schema,
                             axis2_env_t **env,
                             axis2_xml_schema_type_t *type);
 
+axis2_status_t AXIS2_CALL 
+axis2_xml_schema_set_schema_ns_prefix(void *schema,
+                            axis2_env_t **env,
+                            axis2_char_t *ns_prefix);
+                            
+
+/********************** end function prototypes ******************************/
+
+
 AXIS2_DECLARE(axis2_xml_schema_t *)
 axis2_xml_schema_create(axis2_env_t **env,
                                 axis2_char_t *namespc,
@@ -315,7 +324,42 @@ axis2_xml_schema_create(axis2_env_t **env,
             axis2_xml_schema_set_prefix_to_namespace_map;
     schema_impl->schema.ops->add_type = 
             axis2_xml_schema_add_type;
-   
+            
+    /************ create objs *******************************/            
+            
+    schema_impl->parent = parent;
+    
+    schema_impl->attr_form_default = axis2_xml_schema_form_create(env,
+            AXIS2_XML_SCHEMA_FORM_UNQUALIFIED);       
+    
+    schema_impl->element_form_default = axis2_xml_schema_form_create(env,
+            AXIS2_XML_SCHEMA_FORM_UNQUALIFIED);
+    
+    schema_impl->block_default = axis2_xml_schema_derivation_method_create(env,
+            AXIS2_XML_SCHEMA_CONST_NONE);
+    
+    schema_impl->final_default = axis2_xml_schema_derivation_method_create(env,
+            AXIS2_XML_SCHEMA_CONST_NONE);
+    
+    
+    schema_impl->items = axis2_xml_schema_obj_collection_create(env);
+    
+    schema_impl->includes = axis2_xml_schema_obj_collection_create(env);
+    
+    schema_impl->namespaces_map = axis2_hash_make(env);
+    
+    schema_impl->elements = axis2_xml_schema_obj_table_create(env);
+    
+    schema_impl->attr_groups = axis2_xml_schema_obj_table_create(env);
+    
+    schema_impl->attrs = axis2_xml_schema_obj_table_create(env);
+    
+    schema_impl->groups = axis2_xml_schema_obj_table_create(env);
+    
+    schema_impl->notations = axis2_xml_schema_obj_table_create(env);
+    
+    schema_impl->schema_types = axis2_xml_schema_obj_table_create(env);
+    
     schema_impl->methods = axis2_hash_make(env);
     if(!schema_impl->methods)
     {
@@ -1268,3 +1312,21 @@ axis2_xml_schema_add_type(void *schema,
     }    
     return AXIS2_SUCCESS;
 }
+
+axis2_status_t AXIS2_CALL 
+axis2_xml_schema_set_schema_ns_prefix(void *schema,
+                            axis2_env_t **env,
+                            axis2_char_t *ns_prefix)
+{
+    axis2_xml_schema_impl_t *sch_impl = NULL;
+    AXIS2_PARAM_CHECK((*env)->error, ns_prefix, AXIS2_FAILURE);
+    sch_impl = AXIS2_INTF_TO_IMPL(schema);
+    if(NULL != sch_impl->schema_ns_prefix)
+    {
+        AXIS2_FREE((*env)->allocator, sch_impl->schema_ns_prefix);
+        sch_impl->schema_ns_prefix = NULL;
+    
+    }
+    sch_impl->schema_ns_prefix = AXIS2_STRDUP(ns_prefix, env);
+    return AXIS2_FAILURE;
+}                            

@@ -152,7 +152,7 @@ axis2_generic_obj_get_value(axis2_generic_obj_t *generic_obj,
 {
     axis2_generic_obj_impl_t *generic_obj_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     generic_obj_impl = AXIS2_INTF_TO_IMPL(generic_obj);
 
     return generic_obj_impl->value;

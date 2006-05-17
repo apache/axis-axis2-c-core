@@ -203,6 +203,11 @@ struct axis2_xml_schema_ops
     add_type) (void *schema,
                     axis2_env_t **env,
                     struct axis2_xml_schema_type *type);
+                    
+    axis2_status_t (AXIS2_CALL *
+    set_schema_ns_prefix)(void *schema,
+                          axis2_env_t **env,
+                          axis2_char_t *ns_prefix);                    
 
 };
 
@@ -362,7 +367,13 @@ axis2_xml_schema_resolve_methods(
             
 #define AXIS2_XML_SCHEMA_ADD_TYPE(schema, env, type)\
         (((axis2_xml_schema_t *) schema)->ops->\
-            add_type(schema, env, type))                 
+            add_type(schema, env, type)) 
+            
+#define AXIS2_XML_SCHEMA_SET_SCHEMA_NS_PREFIX(schema, env, ns_prefix) \
+        (((axis2_xml_schema_t *) schema)->ops->\
+            set_schema_ns_prefix(schema, env, ns_prefix))
+            
+                                        
                                               
                       
 /** @} */
