@@ -17,6 +17,7 @@
 #include <axis2_param.h>
 #include <axis2_const.h>
 #include <axis2_string.h>
+#include <axis2_generic_obj.h>
 
 typedef struct axis2_param_impl_s
 {
@@ -30,12 +31,6 @@ typedef struct axis2_param_impl_s
     axis2_bool_t locked;
     /** Parameter type */
     int type; /*default is AXIS2_TEXT_PARAM */
-    /**
-     * to store the param element
-     * <parameter name="ServiceClass1" locked="false">
-     * org.apache.axis2.sample.echo.EchoImpl</parameter>
-     */
-    axis2_om_node_t *param_element ;
     axis2_hash_t *attrs;
 } axis2_param_impl_t;
 
@@ -77,15 +72,6 @@ axis2_param_set_param_type(axis2_param_t *param,
 									int type);
 
 axis2_status_t AXIS2_CALL 
-axis2_param_set_param_element(axis2_param_t *param, 
-										axis2_env_t **env, 
-										axis2_om_node_t *element);
-
-axis2_om_node_t* AXIS2_CALL 
-axis2_param_get_param_element(axis2_param_t *param, 
-										axis2_env_t **env);
-
-axis2_status_t AXIS2_CALL 
 axis2_param_set_attributes(
         axis2_param_t *param,
         axis2_env_t **env,
@@ -121,7 +107,6 @@ axis2_param_create(axis2_env_t **env,
     param_impl->value = value; /* shallow copy.*/
     param_impl->locked = AXIS2_FALSE;
     param_impl->type = AXIS2_TEXT_PARAM;
-    param_impl->param_element = NULL;
     param_impl->attrs = NULL;
     
     param_impl->param.ops = 
@@ -144,10 +129,6 @@ axis2_param_create(axis2_env_t **env,
 		axis2_param_get_param_type;
     param_impl->param.ops->set_param_type = 
 		axis2_param_set_param_type;
-    param_impl->param.ops->set_param_element = 
-		axis2_param_set_param_element;
-    param_impl->param.ops->get_param_element = 
-		axis2_param_get_param_element;
     param_impl->param.ops->set_attributes = 
         axis2_param_set_attributes;
     param_impl->param.ops->get_attributes = 
@@ -250,27 +231,6 @@ axis2_param_set_param_type(axis2_param_t *param,
     AXIS2_INTF_TO_IMPL(param)->type = type;
     return AXIS2_SUCCESS;
 
-}
-
-axis2_status_t AXIS2_CALL 
-axis2_param_set_param_element(axis2_param_t *param, 
-										axis2_env_t **env, 
-										axis2_om_node_t *element)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
-    AXIS2_INTF_TO_IMPL(param)->param_element = element; /* shallow copy */
-    return AXIS2_SUCCESS;
-
-}
-
-axis2_om_node_t* AXIS2_CALL 
-axis2_param_get_param_element(axis2_param_t *param, 
-										axis2_env_t **env)
-{
-    AXIS2_ENV_CHECK(env, NULL);
-    
-    return AXIS2_INTF_TO_IMPL(param)->param_element;
 }
 
 axis2_status_t AXIS2_CALL 

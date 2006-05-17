@@ -1694,7 +1694,7 @@ axis2_om_element_extract_attributes(axis2_om_element_t *om_element,
     }        
     
     for(hi = axis2_hash_first(om_ele_impl->attributes, env);
-        hi; axis2_hash_next(env, hi))
+        hi; hi = axis2_hash_next(env, hi))
     {
         void *val = NULL;
         axis2_hash_this(hi, NULL, NULL, &val);

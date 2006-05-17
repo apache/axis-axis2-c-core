@@ -15,6 +15,7 @@ axis2_http_server_LDADD   =  $(LDFLAGS) \
                             -L$(top_builddir)/modules/xml/parser/libxml2 \
                             -L$(top_builddir)/modules/xml/soap \
                             -L$(top_builddir)/modules/platforms/unix \
+                            -laxis2_util \
                             -laxis2_om \
                             -laxis2_engine \
                             -laxis2_soap \

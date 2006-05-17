@@ -24,7 +24,6 @@
 
 #include <axis2_defines.h>
 #include <axis2_env.h>
-#include <axis2_om_node.h>
 #include <axis2_hash.h>
 
 #ifdef __cplusplus
@@ -125,29 +124,6 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
 				     axis2_env_t **env,
 					 int type);
 
-    /**
-     *  Paramter can be any thing it can be XML element with number of child 
-	 *  elements , so if someone wants to access the XML elemet we need to store 
-	 *  that , at the deployment time , to store the XMLelment of the param 
-	 *  can use this method it will store whole
-     * <parameter name="ServiceClass1" locked="false">org.apache.axis2.sample.
-	 * echo.EchoImpl</parameter> element
-     * @param element  <code>OMElement<code>
-     */
-
-     axis2_status_t (AXIS2_CALL *
-	 set_param_element)(struct axis2_param *param, 
-						axis2_env_t **env, 
-						axis2_om_node_t *element);
-
-    /**
-     *  To get the whole paramter element
-     * @return <code>axis2_om_node_t<code>
-     */
-     axis2_om_node_t* (AXIS2_CALL *
-	 get_param_element)(struct axis2_param *param, 
-						axis2_env_t **env);
-         
      axis2_status_t (AXIS2_CALL *
 	 free)(struct axis2_param *param, 
 	 	   axis2_env_t **env);
@@ -211,12 +187,6 @@ axis2_param_create(axis2_env_t **env,
  
 #define AXIS2_PARAM_GET_PARAM_TYPE(param, env) \
     ((param)->ops->get_param_type (param, env))
-    
-#define AXIS2_PARAM_SET_ELEMENT(param, env, element) \
-    ((param)->ops->set_param_element (param , env, element))
-
-#define AXIS2_PARAM_GET_ELEMENT(param, env) \
-    ((param)->ops->get_param_element (param, env))
     
 #define AXIS2_PARAM_SET_ATTRIBUTES(param, env, attrs) \
     ((param)->ops->set_attributes (param , env, attrs))
