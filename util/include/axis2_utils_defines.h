@@ -149,11 +149,11 @@ extern "C"
 #elif defined(AXIS2_DECLARE_EXPORT)
 #define AXIS2_DECLARE(type)            AXIS2_EXPORT type AXIS2_CALL
 #define AXIS2_DECLARE_NONSTD(type)     AXIS2_EXPORT type
-#define AXIS2_DECLARE_DATA             AXIS2_EXPORT
+#define AXIS2_DECLARE_DATA             
 #else
 #define AXIS2_DECLARE(type)            AXIS2_IMPORT type AXIS2_CALL
 #define AXIS2_DECLARE_NONSTD(type)     AXIS2_IMPORT type
-#define AXIS2_DECLARE_DATA             AXIS2_IMPORT
+#define AXIS2_DECLARE_DATA             
 #endif
 
 /** 

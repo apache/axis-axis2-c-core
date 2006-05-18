@@ -23,7 +23,7 @@
  */
 
 #include <axis2_const.h>
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_env.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_om_output.h>
