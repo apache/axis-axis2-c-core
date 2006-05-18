@@ -581,7 +581,8 @@ axis2_svc_client_fire_and_forget(struct axis2_svc_client *svc_client,
 {
 	axis2_svc_client_impl_t *svc_client_impl = NULL;
 	axis2_qname_t *op_qname = NULL;
-	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	if (!env || !(*env))
+        return;
 
 	svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
 	op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
@@ -1258,5 +1259,6 @@ static axis2_bool_t axis2_svc_client_fill_soap_envelope(axis2_env_t **env, axis2
     }
 
     AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, envelope);
+    
 	return AXIS2_TRUE;
 }

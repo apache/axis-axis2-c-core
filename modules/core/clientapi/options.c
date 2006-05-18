@@ -48,14 +48,12 @@ typedef struct axis2_options_impl
 
 	axis2_char_t *transport_in_protocol;
 
-
 	/** for sending and receiving messages */
-
 	axis2_transport_out_desc_t *transport_out;
-
 	axis2_char_t *sender_transport_protocol;
 
 	axis2_bool_t manage_session;
+    axis2_bool_t enable_mtom;
 } axis2_options_impl_t;
 
 /** Interface to implementation conversion macro */
@@ -280,6 +278,14 @@ axis2_status_t AXIS2_CALL
 axis2_options_free (struct axis2_options *options,
 		                     axis2_env_t **env);
 
+axis2_status_t AXIS2_CALL 
+axis2_options_set_enable_mtom(struct axis2_options *options,
+    axis2_env_t **env,
+    axis2_bool_t enable_mtom);
+
+axis2_bool_t AXIS2_CALL 
+axis2_options_get_enable_mtom(struct axis2_options *options,
+    axis2_env_t **env);
 
 axis2_options_t* AXIS2_CALL 
 axis2_options_create(axis2_env_t **env)
@@ -1113,6 +1119,7 @@ static void axis2_options_init_data(axis2_options_impl_t *options_impl)
 	options_impl->sender_transport_protocol = NULL;
 	options_impl->manage_session = -1;
     options_impl->soap_version = AXIS2_SOAP12;
+    options_impl->enable_mtom = AXIS2_FALSE;
 }
 
 static void axis2_options_init_ops(struct axis2_options *options)
@@ -1161,6 +1168,8 @@ static void axis2_options_init_ops(struct axis2_options *options)
     options->ops->get_msg_info_headers = axis2_options_get_msg_info_headers;
     options->ops->set_soap_version = axis2_options_set_soap_version;
     options->ops->get_soap_version = axis2_options_get_soap_version;
+    options->ops->set_enable_mtom = axis2_options_set_enable_mtom;
+    options->ops->get_enable_mtom = axis2_options_get_enable_mtom;
 	options->ops->free = axis2_options_free;
 }
 
@@ -1196,4 +1205,33 @@ axis2_options_set_soap_version(struct axis2_options *options,
             AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
     }
     return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL 
+axis2_options_set_enable_mtom(struct axis2_options *options,
+                            axis2_env_t **env,
+                            axis2_bool_t enable_mtom)
+{
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_INTF_TO_IMPL(options)->enable_mtom = enable_mtom;
+    
+    if (enable_mtom)
+    {
+        axis2_property_t *property = axis2_property_create(env);
+        if (property)
+        {
+            AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+            AXIS2_PROPERTY_SET_VALUE(property, env, AXIS2_STRDUP(AXIS2_VALUE_TRUE, env));
+            axis2_options_set_property(options, env, AXIS2_ENABLE_MTOM, property);
+        }
+    }
+    return AXIS2_SUCCESS;
+}
+
+axis2_bool_t AXIS2_CALL 
+axis2_options_get_enable_mtom(struct axis2_options *options,
+                            axis2_env_t **env)
+{
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	return AXIS2_INTF_TO_IMPL(options)->enable_mtom;
 }

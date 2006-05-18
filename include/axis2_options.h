@@ -302,7 +302,17 @@ struct axis2_options_ops
         axis2_env_t **env,
         int soap_version);
 
-	
+    axis2_status_t (AXIS2_CALL *
+    set_enable_mtom)(
+        struct axis2_options *options,
+        axis2_env_t **env,
+        axis2_bool_t enable_mtom);
+
+    axis2_bool_t (AXIS2_CALL *
+    get_enable_mtom)(
+        struct axis2_options *options,
+        axis2_env_t **env);
+
 	axis2_status_t (AXIS2_CALL *	
 	free)(struct axis2_options *options,
 							axis2_env_t **env);
@@ -452,6 +462,12 @@ AXIS2_DECLARE(axis2_options_t*) axis2_options_create_with_parent(axis2_env_t **e
 
 #define AXIS2_OPTIONS_GET_SOAP_VERSION(options, env) \
 		((options)->ops->get_soap_version(options, env))
+
+#define AXIS2_OPTIONS_SET_ENABLE_MTOM(options, env, enable_mtom) \
+		((options)->ops->set_enable_mtom(options, env, enable_mtom))
+
+#define AXIS2_OPTIONS_GET_ENABLE_MTOM(options, env) \
+		((options)->ops->get_enable_mtom(options, env))
 
 #define AXIS2_OPTIONS_FREE(options, env) \
 		((options)->ops->free(options, env))
