@@ -296,7 +296,8 @@ AC_CONFIG_FILES([Makefile \
     test/itest/whitemesa/round2/Makefile \
     test/tools/Makefile \
     ides/Makefile \
-    ides/anjuta/Makefile
+    ides/anjuta/Makefile \
+    include/Makefile
     ])
     
 AC_OUTPUT
