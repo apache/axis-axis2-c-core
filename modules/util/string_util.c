@@ -16,7 +16,7 @@
  
 #include <axis2_string_util.h>
 #include <string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 
 AXIS2_DECLARE(axis2_array_list_t *)
 axis2_tokenize(axis2_env_t **env,

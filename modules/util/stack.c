@@ -15,7 +15,7 @@
  */
  
 #include <axis2_stack.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_env.h>
 #include <stdlib.h>
 #include <string.h>

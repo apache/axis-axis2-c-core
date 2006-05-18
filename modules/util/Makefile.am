@@ -1,10 +1,8 @@
 TESTS =
-SUBDIRS=minizip
+SUBDIRS = platforms/unix
 lib_LTLIBRARIES = libaxis2_util.la
-
-libaxis2_util_la_LIBADD = minizip/libaxis2_minizip.la 
-
-libaxis2_util_la_SOURCES = hash.c \
+libaxis2_util_la_SOURCES = \
+						hash.c \
                         allocator.c \
                         env.c \
                         error.c \
@@ -32,7 +30,7 @@ libaxis2_util_la_SOURCES = hash.c \
                         stack.c \
 						generic_obj.c
 
-
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util \
-            -I$(top_builddir)/modules/platforms
+           -I$(top_builddir)/include/platforms \
+           -I$(top_builddir)/include/platforms/unix
+EXTRA_DIST=platforms/windows

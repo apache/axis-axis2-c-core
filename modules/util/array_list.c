@@ -15,7 +15,7 @@
  */
 
 #include <axis2_array_list.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 
 typedef struct axis2_array_list_impl
 {

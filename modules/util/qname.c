@@ -16,8 +16,8 @@
 
 #include <axis2_qname.h>
 #include <axis2_env.h>
-#include <axis2_const.h>
-#include <axis2_defines.h>
+#include <axis2_utils.h>
+#include <axis2_utils_defines.h>
 #include <string.h>
 
 /********************************** Function prototypes *****************/

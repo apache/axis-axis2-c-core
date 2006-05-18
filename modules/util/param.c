@@ -15,7 +15,7 @@
  */
 
 #include <axis2_param.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_string.h>
 #include <axis2_generic_obj.h>
 

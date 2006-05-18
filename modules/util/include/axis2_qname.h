@@ -22,7 +22,7 @@
  * @brief represents a qualified name
  */
 
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_env.h>
 
 #include <axis2_string.h>

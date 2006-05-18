@@ -17,8 +17,8 @@
 #include <axis2_string.h>
 #include <stdlib.h>
 #include <string.h>
-#include <axis2_const.h>
-#include <axis2_defines.h>
+#include <axis2_utils.h>
+#include <axis2_utils_defines.h>
 #include <ctype.h>
 
 AXIS2_DECLARE(void*)
