@@ -224,9 +224,9 @@ AC_ARG_WITH(axiom,
     dnl Find axiom include dir in the path
     if test -d $withval; then
         axiominc="-I$withval"
-    dnl else find the axiom include dir in $(AXIS2C_HOME)/modules/xml/om/include
-    elif test -d '$(AXIS2C_HOME)/modules/xml/om/include'; then
-        axiominc="-I$(AXIS2C_HOME)/modules/xml/om/include"
+    dnl else find the axiom include dir in $(AXIS2C_HOME)/axiom/include
+    elif test -d '$(AXIS2C_HOME)/axiom/include'; then
+        axiominc="-I$(AXIS2C_HOME)/axiom/include"
     else
         AC_MSG_ERROR(could not find axiom. stop)
     fi
@@ -247,9 +247,9 @@ AC_ARG_WITH(axis2_util,
     dnl Find axis2_util include dir in the path
     if test -d $withval; then
         axis2_utilinc="-I$withval"
-    dnl else find the axis2_util include dir in $(AXIS2C_HOME)/modules/util/include
-    elif test -d '$(AXIS2C_HOME)/modules/util/include'; then
-        axis2_utilinc="-I$(AXIS2C_HOME)/modules/util/include"
+    dnl else find the axis2_util include dir in $(AXIS2C_HOME)/util/include
+    elif test -d '$(AXIS2C_HOME)/util/include'; then
+        axis2_utilinc="-I$(AXIS2C_HOME)/util/include"
     else
         AC_MSG_ERROR(could not find axis2_util. stop)
     fi
@@ -262,13 +262,13 @@ PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
 CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
 
 APACHE2INC=$apache2inc
-OMINC=$axiominc
+AXIOMINC=$axiominc
 UTILINC=$axis2_utilinc
 APRINC=$aprinc
 
 AC_SUBST(APACHE2INC)
 AC_SUBST(APRINC)
-AC_SUBST(OMINC)
+AC_SUBST(AXIOMINC)
 AC_SUBST(UTILINC)
 AC_SUBST(LIBXML2_CFLAGS)
 AC_SUBST(LIBXML2_LIBS)
