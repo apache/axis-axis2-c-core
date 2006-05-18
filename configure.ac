@@ -93,40 +93,6 @@ AC_ARG_WITH(apr,
   AC_MSG_RESULT(no)
 )
 
-AC_MSG_CHECKING(whether to build guththila xml parser library)
-AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=no],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    GUTHTHILA_DIR=""
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    GUTHTHILA_DIR="guththila"
-
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-  GUTHTHILA_DIR=""
-)
-
-AC_MSG_CHECKING(whether to build libxml2 xml parser library)
-AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=yes],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    LIBXML2_DIR=""
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    LIBXML2_DIR="libxml2"
-
-    ;;
-  esac ],
-  AC_MSG_RESULT(yes)
-  LIBXML2_DIR="libxml2"
-)
-
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
 [ case "${enableval}" in
@@ -212,7 +178,7 @@ AC_ARG_ENABLE(diclient, [  --enable-diclient    build diclient library wrapper. 
   DICLIENT_DIR="diclient"
 )
 
-AC_MSG_CHECKING(To Use Axis2 C OM. This is a compulsory module to build Axis2 C)
+AC_MSG_CHECKING(To Use Axis2 C AXIOM. This is a compulsory module to build Axis2 C)
 AC_ARG_WITH(axiom,
 [  --with-axiom[=PATH]      use axiom.],
 [ case "$withval" in
@@ -258,8 +224,6 @@ AC_ARG_WITH(axis2_util,
   AC_MSG_RESULT(no)
 )
 
-PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
-CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
 
 APACHE2INC=$apache2inc
 AXIOMINC=$axiominc
@@ -270,12 +234,7 @@ AC_SUBST(APACHE2INC)
 AC_SUBST(APRINC)
 AC_SUBST(AXIOMINC)
 AC_SUBST(UTILINC)
-AC_SUBST(LIBXML2_CFLAGS)
-AC_SUBST(LIBXML2_LIBS)
-AC_SUBST(LIBXML2_DIR)
 AC_SUBST(DICLIENT_DIR)
-AC_SUBST(GUTHTHILA_DIR)
-AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(TESTDIR)
 AC_SUBST(SAMPLES)
 AC_SUBST(APACHE2BUILD)
@@ -338,7 +297,6 @@ AC_CONFIG_FILES([Makefile \
     test/tools/Makefile \
     ides/Makefile \
     ides/anjuta/Makefile
-    include/Makefile \
     ])
     
 AC_OUTPUT

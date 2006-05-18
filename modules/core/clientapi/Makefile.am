@@ -20,11 +20,11 @@ noinst_HEADERS = callback_recv.h \
                     
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/engine \
             -I$(top_builddir)/modules/core/deployment \
-            -I$(top_builddir)/modules/xml/parser \
-            -I$(top_builddir)/modules/platforms
+			@AXIOMINC@ \
+			@UTILINC@ \
+			@UTILINC@/platforms
 
 EXTRA_DIST=diclient

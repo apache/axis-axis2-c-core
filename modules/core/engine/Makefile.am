@@ -27,7 +27,6 @@ libaxis2_engine_la_LIBADD = $(top_builddir)/modules/core/description/libaxis2_de
 					$(top_builddir)/modules/core/transport/http/libaxis2_http.la
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/description \
             -I$(top_builddir)/modules/core/engine \
@@ -36,5 +35,6 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/context \
             -I$(top_builddir)/modules/core/util \
             -I$(top_builddir)/modules/core/clientapi \
-            -I$(top_builddir)/modules/xml/parser \
-            -I$(top_builddir)/modules/platforms
+			@AXIOMINC@ \
+			@UTILINC@ \
+			@UTILINC@/platforms

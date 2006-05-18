@@ -7,17 +7,16 @@ libaxis2_mod_addr_la_SOURCES = addr_in_handler.c \
                                 addr_out_handler.c \
                                 mod_addr.c
 
-libaxis2_mod_addr_la_LIBADD = $(top_builddir)/modules/util/libaxis2_util.la \
-                    $(top_builddir)/modules/xml/om/libaxis2_om.la \
+libaxis2_mod_addr_la_LIBADD =  \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util \
-            -I$(top_builddir)/modules/xml/parser \
             -I$(top_builddir)/modules/core/description \
             -I$(top_builddir)/modules/core/context \
             -I$(top_builddir)/modules/core/phaseresolver \
             -I$(top_builddir)/modules/core/engine \
             -I$(top_builddir)/modules/core/deployment \
             -I$(top_builddir)/modules/wsdl \
-            -I$(top_builddir)/modules/platforms
+			@AXIOMINC@ \
+			@UTILINC@ \
+			@UTILINC@/platforms

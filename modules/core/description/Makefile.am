@@ -15,8 +15,8 @@ libaxis2_description_la_SOURCES = \
                                 transport_out_desc.c
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/engine \
-            -I$(top_builddir)/modules/xml/parser \
-            -I$(top_builddir)/modules/platforms
+			@AXIOMINC@ \
+			@UTILINC@ \
+			@UTILINC@/platforms

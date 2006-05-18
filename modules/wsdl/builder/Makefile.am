@@ -5,6 +5,6 @@ libaxis2_wom_la_SOURCES = \
 							wsdl_pump.c
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util \
-            -I$(top_builddir)/modules/platforms \
-            -I$(top_builddir)/modules/wsdl/builder
+            -I$(top_builddir)/modules/wsdl/builder \
+			@UTILINC@ \
+			@UTILINC@/platforms
