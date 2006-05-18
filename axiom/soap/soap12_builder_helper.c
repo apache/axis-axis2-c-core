@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
- #include <axis2_soap12_builder_helper.h>
+ #include "axis2_soap12_builder_helper.h"
  #include <axis2_array_list.h>
  #include "_axis2_soap_body.h"
  #include "_axis2_soap_fault.h"
