@@ -119,7 +119,8 @@ AC_CONFIG_FILES([Makefile \
     parser/libxml2/Makefile \
     soap/Makefile \
     om/Makefile \
-    attachments/Makefile
+    attachments/Makefile \
+    include/Makefile
     ])
     
 AC_OUTPUT

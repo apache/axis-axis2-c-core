@@ -9,4 +9,6 @@ SUBDIRS =
 libecho_la_SOURCES = echo.c echo_skeleton.c
 libecho_la_LIBADD  =
 INCLUDES = -I$(AXIS2C_HOME)/include \
-            -I$(AXIS2C_HOME)/platforms
+			@UTILINC@ \
+			@UTILINC@/platforms \
+			@AXIOMINC@
