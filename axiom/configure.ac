@@ -91,9 +91,9 @@ AC_ARG_WITH(axis2_util,
     dnl Find axis2_util include dir in the path
     if test -d $withval; then
         axis2_utilinc="-I$withval"
-    dnl else find the axis2_util include dir in $(AXIS2C_HOME)/include/util/include
-    elif test -d '$(AXIS2C_HOME)/include/util/include'; then
-        axis2_utilinc="-I$(AXIS2C_HOME)/include/util/include"
+    dnl else find the axis2_util include dir in $(AXIS2C_HOME)/include
+    elif test -d '$(AXIS2C_HOME)/include'; then
+        axis2_utilinc="-I$(AXIS2C_HOME)/include"
     else
         AC_MSG_ERROR(could not find axis2_util. stop)
     fi

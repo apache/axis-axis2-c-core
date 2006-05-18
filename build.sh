@@ -1,4 +1,10 @@
 #!/bin/bash
+cd util
+sh build.sh
+cd ..
+cd axiom
+sh build.sh
+cd ..
 ./autogen.sh
 AXIS2C_HOME=`pwd`/deploy
 AXIS2C=`pwd`
