@@ -29,7 +29,6 @@
 #include <axis2_allocator.h>
 #include <axis2_string.h>
 #include <axis2_array_list.h>
-#include <axis2_handler_desc.h>
 
 
 #ifdef __cplusplus

@@ -16,6 +16,7 @@
  
 #include <axis2_mime_body_part.h>
 #include <axis2_data_handler.h>
+#include <axis2_hash.h>
 
 typedef struct axis2_mime_body_part_impl
 {

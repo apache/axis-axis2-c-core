@@ -7,8 +7,8 @@ libaxis2_attachments_la_SOURCES = mime_output.c \
 
 libaxis2_attachments_la_LIBADD =  ../../util/libaxis2_util.la 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util \
-            -I$(top_builddir)/modules/xml/parser \
-            -I$(top_builddir)/modules/platforms
+            -I$(top_builddir)/parser \
+			@UTILINC@ \
+			@UTILINC@/platforms
 
 EXTRA_DIST = axis2_mime_body_part.h axis2_mime_output.h

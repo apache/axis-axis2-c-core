@@ -18,10 +18,10 @@ libaxis2_soap_la_SOURCES = soap_fault.c \
 
 libaxis2_soap_la_LIBADD = 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/xml/parser \
-            -I$(top_builddir)/modules/util \
-            -I$(top_builddir)/modules/platforms \
-            -I$(top_builddir)/modules/xml/om
+            -I$(top_builddir)/parser \
+            -I$(top_builddir)/om \
+			@UTILINC@ \
+			@UTILINC@/platforms
 
 EXTRA_DIST=_axis2_soap_body.h _axis2_soap_fault.h _axis2_soap_fault_code.h \
 		_axis2_soap_fault_reason.h _axis2_soap_fault_value.h \
