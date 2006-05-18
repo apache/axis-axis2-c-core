@@ -18,13 +18,13 @@
 #include <axis2_file.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <axis2_string.h>
-#include <zlib.h>
+/*#include <zlib.h>
 #include <fcntl.h>
 #include <minizip/unzip.h>
 
 #define CASESENSITIVITY (0)
 #define WRITEBUFFERSIZE (8192)
-#define MAXFILENAME (256)
+#define MAXFILENAME (256)*/
 
 #ifndef S_ISDIR
 #   define S_ISDIR(m) ((m & S_IFMT) == S_IFDIR)
@@ -32,8 +32,8 @@
 
 extern int AXIS2_ALPHASORT();
 
-int dir_select(struct dirent *entry);
-int aar_select();
+/*int dir_select(struct dirent *entry);
+int aar_select();*/
 
 /**
  * List the dll files in the given service or module folder path
@@ -218,7 +218,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
     file_list = axis2_array_list_create(env, 0);
 	if (!getcwd(cwd, 500)) exit(1);
 	chdir(pathname);
-    aar_select();
+/*    aar_select();*/
 	count = AXIS2_SCANDIR(pathname, &files, dir_select, AXIS2_ALPHASORT);
 	chdir(cwd);
 
@@ -405,7 +405,7 @@ int dir_select(struct dirent *entry)
 	return AXIS2_TRUE;
 }
 
-int aar_select()
+/*int aar_select()
 {
 	struct dirent **namelist;
 	int n;
@@ -708,4 +708,4 @@ int axis2_mkdir(dir_name)
 	#endif
 	return value;
 }
-
+*/
