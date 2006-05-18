@@ -17,7 +17,7 @@
 #ifndef AXIS2_TYPES_H
 #define AXIS2_TYPES_H
 
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_error.h>
 #include <axis2_env.h>
 

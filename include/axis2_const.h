@@ -35,31 +35,11 @@ extern "C"
   *  @{
  */
 
-typedef int (AXIS2_CALL *AXIS2_FREE_VOID_ARG) (void *obj_to_be_freed, axis2_env_t **env);
-
-/** 
-    * \brief Axis2 scopes
-    *
-    * Possible scope value for Axis2
-    */
-    enum axis2_scopes
-    {
-        /** Application scope */
-        AXIS2_SCOPE_APPLICATION = 0,
-        /** Session scope */
-        AXIS2_SCOPE_SESSION,
-        /** Request scope */
-        AXIS2_SCOPE_REQUEST
-    };
 
 /******************************************************************************/
 /********************Axis2 specific constants**********************************/
 /******************************************************************************/
 
-/** Method names in the loadable libraries */
-
-#define AXIS2_CREATE_FUNCTION "axis2_get_instance"
-#define AXIS2_DELETE_FUNCTION "axis2_remove_instance"
 
 /**
  * Field SOAP_STYLE_RPC_ENCODED

@@ -26,7 +26,6 @@
 #include <axis2_qname.h>
 #include <axis2_error.h>
 #include <axis2_utils.h>
-#include <axis2_svc_skeleton.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
 #ifdef __cplusplus

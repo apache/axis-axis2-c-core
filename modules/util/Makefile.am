@@ -1,5 +1,5 @@
 TESTS =
-SUBDIRS = platforms/unix
+SUBDIRS = platforms/unix minizip
 lib_LTLIBRARIES = libaxis2_util.la
 libaxis2_util_la_SOURCES = \
 						hash.c \

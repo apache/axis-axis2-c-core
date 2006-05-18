@@ -17,7 +17,7 @@
 #include <axis2_file_diff.h>
 #include <axis2_file_handler.h>
 #include <axis2_stream.h>
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 
 void *expected_file, *actual_file; /* File pointers */
 axis2_stream_t *expected_file_stream, *actual_file_stream; /* Streams corresponding to above files*/

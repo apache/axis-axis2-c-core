@@ -22,7 +22,7 @@
  * @brief Axis2 param interface
  */
 
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_env.h>
 #include <axis2_hash.h>
 

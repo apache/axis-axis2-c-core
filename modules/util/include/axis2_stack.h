@@ -23,7 +23,7 @@
  * @brief represents a stack
  */
 
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_env.h>
 
 #ifdef __cplusplus
