@@ -15,6 +15,7 @@
  */
 
 #include <xml_schema/axis2_xml_schema_use.h>
+#include <axis2_utils.h>
 
 typedef struct axis2_xml_schema_use_impl axis2_xml_schema_use_impl_t;
 

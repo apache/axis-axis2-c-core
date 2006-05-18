@@ -24,6 +24,7 @@
 #include <xml_schema/axis2_xml_schema_type_receiver.h>
 #include <xml_schema/axis2_xml_schema_element.h>
 #include <xml_schema/axis2_xml_schema_simple_type.h>
+#include <xml_schema/axis2_xml_schema_constants.h>
 
 typedef struct axis2_xml_schema_collection_impl 
                 axis2_xml_schema_collection_impl_t;
@@ -42,7 +43,7 @@ struct axis2_xml_schema_collection_impl
 
     axis2_hash_t *in_scope_namespaces;
     
-    axis2_hash_t *schema_id2_schemas;
+    axis2_hash_t *systemid2_schemas;
     
     axis2_xml_schema_t *xsd;
     
@@ -154,6 +155,12 @@ add_simple_type(
         axis2_env_t **env,
         axis2_xml_schema_t* schema,
         axis2_char_t *type_name);
+        
+axis2_hash_t* AXIS2_CALL
+get_systemid2_schemas(
+        axis2_xml_schema_collection_t *collection,
+        axis2_env_t **env);
+        
 
 /*************** end function prototypes ****************************/                    
 
@@ -176,7 +183,7 @@ axis2_xml_schema_collection_create(axis2_env_t **env)
     collection_impl->namespaces = NULL;
     collection_impl->unresolved_types = NULL;
     collection_impl->xsd = NULL;
-    collection_impl->schema_id2_schemas = NULL;
+    collection_impl->systemid2_schemas = NULL;
     collection_impl->schemas = NULL;
     
     collection_impl->collection.ops = AXIS2_MALLOC((*env)->allocator, 
@@ -261,12 +268,6 @@ axis2_xml_schema_collection_set_base_uri(axis2_xml_schema_collection_t*collectio
     return AXIS2_SUCCESS;
 }
 
-/**
- * This section should comply to the XMLSchema specification
- * @see http://www.w3.org/TR/2004/PER-xmlschema-2-20040318/datatypes.html#built-in-datatypes
- *
- * This needs to be inspected by another pair of eyes
- */
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_collection_init(
         axis2_xml_schema_collection_t* collection,
@@ -275,8 +276,83 @@ axis2_xml_schema_collection_init(
     axis2_xml_schema_collection_impl_t *collection_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     collection_impl = AXIS2_INTF_TO_IMPL(collection);
-    
+      /*
+        Primitive types
 
+        3.2.1 string
+        3.2.2 boolean
+        3.2.3 decimal
+        3.2.4 float
+        3.2.5 double
+        3.2.6 duration
+        3.2.7 dateTime
+        3.2.8 time
+        3.2.9 date
+        3.2.10 gYearMonth
+        3.2.11 gYear
+        3.2.12 gMonthDay
+        3.2.13 gDay
+        3.2.14 gMonth
+        3.2.15 hexBinary
+        3.2.16 base64Binary
+        3.2.17 anyURI
+        3.2.18 QName
+        3.2.19 NOTATION
+        */
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_STRING);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_BOOLEAN);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_FLOAT);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_DOUBLE);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_QNAME);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_DECIMAL);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_DURATION);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_DATE);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_TIME);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_DATETIME);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_DAY);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_MONTH);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_MONTHDAY);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_YEAR);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_YEARMONTH);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_NOTATION);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_HEXBIN);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_BASE64);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_ANYURI);
+
+    /** derived types from decimal */
+
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_LONG);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_SHORT);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_BYTE);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_INTEGER);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_INT);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_POSITIVEINTEGER);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_NEGATIVEINTEGER);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_NONPOSITIVEINTEGER);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_NONNEGATIVEINTEGER);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_UNSIGNEDBYTE);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_UNSIGNEDINT);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_UNSIGNEDLONG);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_UNSIGNEDSHORT);
+    
+    /** derived types from string */
+    
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_NAME);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_NORMALIZEDSTRING);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_NCNAME);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_NMTOKEN);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_NMTOKENS);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_ENTITY);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_ENTITIES);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_ID);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_IDREF);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_IDREFS);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_LANGUAGE);
+    add_simple_type(env, collection_impl->xsd, AXIS2_XML_SCHEMA_XSD_TOKEN);
+    
+    axis2_hash_set(collection_impl->namespaces, AXIS2_XML_SCHEMA_NS,
+            AXIS2_HASH_KEY_STRING,  collection_impl->xsd);
+        
     return AXIS2_SUCCESS;
 }
 
@@ -421,3 +497,13 @@ add_simple_type(
     return AXIS2_SUCCESS;
 }        
 
+axis2_hash_t* AXIS2_CALL 
+get_systemid2_schemas(
+        axis2_xml_schema_collection_t *collection,
+        axis2_env_t **env)
+{
+    axis2_xml_schema_collection_impl_t *collection_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    collection_impl = AXIS2_INTF_TO_IMPL(collection);
+    
+}        

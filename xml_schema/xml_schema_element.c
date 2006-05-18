@@ -22,6 +22,8 @@
 #include <xml_schema/axis2_xml_schema_obj_collection.h>
 #include <xml_schema/axis2_xml_schema_type.h>
 #include <xml_schema/axis2_xml_schema_form.h>
+#include <axis2_utils.h>
+
 
 typedef struct axis2_xml_schema_element_impl axis2_xml_schema_element_impl_t;
 

@@ -16,6 +16,7 @@
  
 #include <xml_schema/axis2_validation_event_handler.h>
 #include <axis2_hash.h>
+#include <axis2_utils.h>
 
 typedef struct axis2_validation_event_handler_impl 
                 axis2_validation_event_handler_impl_t;

@@ -111,7 +111,7 @@ handle_redefine(
         axis2_om_node_t *sch_node);
         
 static axis2_status_t
-set_namespace_attribute(
+set_namespace_attributes(
         axis2_xml_schema_builder_t* builder,
         axis2_env_t **env,
         axis2_xml_schema_t *schema,
@@ -416,12 +416,23 @@ axis2_xml_schema_builder_build_with_root_node(
         axis2_xml_schema_builder_t *builder,
         axis2_env_t **env,
         axis2_om_node_t *root,
-        axis2_char_t *uri){}
+        axis2_char_t *uri)
+{
+
+
+}
         
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_builder_free(
         axis2_xml_schema_builder_t *builder,
-        axis2_env_t **env){} 
+        axis2_env_t **env)
+{
+    axis2_xml_schema_builder_impl_t *builder_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    
+
+} 
 
 
 static axis2_xml_schema_t*
@@ -429,7 +440,20 @@ handle_xml_schema_element(
         axis2_xml_schema_builder_t *builder,
         axis2_env_t **env,
         axis2_om_node_t *ele_node,
-        axis2_char_t  *uri){}
+        axis2_char_t  *uri)
+{
+    axis2_xml_schema_builder_impl_t *builder_impl = NULL;
+    
+    axis2_hash_t *ht_sch2schemas = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, ele_node, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, uri, AXIS2_FAILURE);
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    
+    set_namespace_attributes( builder, env, builder_impl->schema, ele_node);
+    
+}
         
 static axis2_xml_schema_annotation_t* 
 handle_annotation(
@@ -446,7 +470,7 @@ handle_redefine(
         axis2_om_node_t *sch_node){}
         
 static axis2_status_t
-set_namespace_attribute(
+set_namespace_attributes(
         axis2_xml_schema_builder_t* builder,
         axis2_env_t **env,
         axis2_xml_schema_t *schema,
@@ -472,7 +496,7 @@ set_namespace_attribute(
     if(NULL != parent_node && 
         AXIS2_OM_NODE_GET_NODE_TYPE(sch_node, env) == AXIS2_OM_ELEMENT)
     {
-        set_namespace_attribute(builder, env, schema, parent_node);
+        set_namespace_attributes(builder, env, schema, parent_node);
     }
     
     om_ele = AXIS2_OM_NODE_GET_DATA_ELEMENT(sch_node, env);

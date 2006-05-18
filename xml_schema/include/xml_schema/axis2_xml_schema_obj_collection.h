@@ -28,7 +28,6 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
 #include <axis2_array_list.h>
 #include <axis2_hash.h>
 #include <xml_schema/axis2_xml_schema_obj.h>

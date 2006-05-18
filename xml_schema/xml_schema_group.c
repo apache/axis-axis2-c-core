@@ -16,6 +16,7 @@
 
 #include <xml_schema/axis2_xml_schema_group.h>
 #include <xml_schema/axis2_xml_schema_group_base.h>
+#include <axis2_utils.h>
 
 typedef struct axis2_xml_schema_group_impl axis2_xml_schema_group_impl_t;
 

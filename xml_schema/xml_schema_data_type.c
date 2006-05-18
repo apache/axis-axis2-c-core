@@ -17,6 +17,7 @@
 #include <xml_schema/axis2_xml_schema_data_type.h>
 #include <xml_schema/axis2_xml_tokenized_type.h>
 #include <axis2_hash.h>
+#include <axis2_utils.h>
 
 typedef struct axis2_xml_schema_data_type_impl 
             axis2_xml_schema_data_type_impl_t;

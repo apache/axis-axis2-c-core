@@ -16,7 +16,7 @@
 
 #include  <xml_schema/axis2_xml_schema_import.h>
 #include  <xml_schema/axis2_xml_schema.h>
-
+#include <axis2_utils.h>
 /** 
  * @brief Other Extension Struct Impl
  *	Axis2 Other Extension  

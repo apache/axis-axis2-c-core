@@ -27,7 +27,8 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
+
 #include <axis2_array_list.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
@@ -154,7 +155,11 @@ struct axis2_xml_schema_collection_ops
             axis2_char_t *prefix, 
             axis2_char_t *namespc_uri);
             
-};
+    axis2_hash_t* (AXIS2_CALL *
+    get_systemid2_schemas)(
+            axis2_xml_schema_collection_t* collection,
+            axis2_env_t **env);
+};            
 
 struct axis2_xml_schema_collection
 {
@@ -210,6 +215,8 @@ axis2_xml_schema_collection_create(axis2_env_t **env);
 #define AXIS2_XML_SCHEMA_COLLECTION_GET_NAMESPACE_FOR_PREFIX(collection, env, prefix) \
         ((collection)->ops->get_namespace_for_prefix(collection, env, prefix))
         
+#define AXIS2_XML_SCHEMA_COLLECTION_GET_SYSTEMID2_SCHEMAS(collection, env) \
+        ((collection)->ops->get_systemid2_schemas(collection, env))
         
         
 /** @} */
