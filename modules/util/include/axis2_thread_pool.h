@@ -22,7 +22,7 @@
  * @brief Axis2 thread pool interface
  */
 
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_allocator.h>
 #include <axis2_thread.h>
 

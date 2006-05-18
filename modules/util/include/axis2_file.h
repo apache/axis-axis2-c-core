@@ -17,10 +17,10 @@
 #ifndef AXIS2_FILE_H
 #define AXIS2_FILE_H
 
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_error.h>
 #include <axis2_env.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
 

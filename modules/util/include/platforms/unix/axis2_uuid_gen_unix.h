@@ -17,8 +17,8 @@
 #ifndef AXIS2_UUID_GEN_UNIX_H
 #define AXIS2_UUID_GEN_UNIX_H
 
-#include <axis2_const.h>
-#include <axis2_defines.h>
+#include <axis2_utils.h>
+#include <axis2_utils_defines.h>
 
 
 #define UUIDS_PER_TICK 100

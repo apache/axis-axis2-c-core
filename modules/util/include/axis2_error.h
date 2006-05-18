@@ -17,7 +17,7 @@
 #ifndef AXIS2_ERROR_H
 #define AXIS2_ERROR_H
 
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_allocator.h>
 
 #ifdef __cplusplus

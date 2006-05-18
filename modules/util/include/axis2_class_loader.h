@@ -22,10 +22,10 @@
   * @brief axis2 class loader interface
   */
 
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_qname.h>
 #include <axis2_error.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_dll_desc.h>
 #include <axis2_svc_skeleton.h>
 #include <axis2_param.h>

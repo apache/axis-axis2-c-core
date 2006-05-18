@@ -17,12 +17,12 @@
 #ifndef AXIS2_DIR_HANDLER_H
 #define AXIS2_DIR_HANDLER_H
 
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_error.h>
 #include <axis2_env.h>
 #include <axis2_string.h>
 #include <axis2_array_list.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 
 
 #ifdef __cplusplus

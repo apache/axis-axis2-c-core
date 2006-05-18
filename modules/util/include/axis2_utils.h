@@ -17,8 +17,7 @@
 #ifndef AXIS2_UTILS_H
 #define AXIS2_UTILS_H
 
-#include <axis2_const.h>
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_error.h>
 #include <axis2_env.h>
 
@@ -32,6 +31,71 @@ extern "C"
  * @ingroup axis2_utils
  * @{
  */
+
+/** This macro is called to check whether structure on which function is called
+ *  is NULL and to check whether the environment structure passed is valid.
+ * @param object structure on which function is called
+ * @param env environment to be checked for validity
+ * @param error_return If function return a status it should pass here 
+ *        AXIS2_FAILURE. If function return a type pointer it should
+ *        pass NULL
+ * @return If function return a status code return AXIS2_SUCCESS. Else if
+ *         function return a type pointer return NULL
+ */
+#define AXIS2_FUNC_PARAM_CHECK(object, env, error_return) \
+    AXIS2_ENV_CHECK(env, error_return);\
+    if (!object) \
+    { \
+        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM); \
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE); \
+        return error_return; \
+    } \
+    else \
+    { \
+        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_SUCCESS); \
+    }
+ 
+/**This macro is called to check whether an object is NULL.
+ * if object is NULL error number and status code is set
+ * @param object object to be check for NULL
+ * @param error_return If function return a status it should pass here 
+ *        AXIS2_FAILURE. If function return a type pointer it should
+ *        pass NULL
+ * @return If function return a status code return AXIS2_SUCCESS. Else if
+ *         function return a type pointer return NULL
+ */
+#define AXIS2_PARAM_CHECK(error, object, error_return) \
+    if (!object) \
+    { \
+        AXIS2_ERROR_SET_ERROR_NUMBER(error, AXIS2_ERROR_INVALID_NULL_PARAM); \
+        AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_FAILURE); \
+        return error_return; \
+    } \
+    else \
+    { \
+        AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_SUCCESS); \
+    } 
+
+/**This macro is used to handle error situation. 
+ * @param error_number Error number for the error occured
+ * @param error_return If function return a status it should pass here 
+ *        AXIS2_FAILURE. If function return a type pointer it should
+ *        pass NULL
+ * @return If function return a status code return AXIS2_SUCCESS. Else if
+ *         function return a type pointer return NULL
+ */    
+#define AXIS2_ERROR_SET(error, error_number, status_code) \
+    { \
+        AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number); \
+        AXIS2_ERROR_SET_STATUS_CODE(error, status_code); \
+    }      
+
+
+
+
+
+
+    
 #define AXIS2_REQUEST_URL_PREFIX "/services"
     /**
      * This function allows users to reolve the service and op from the 

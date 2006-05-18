@@ -23,8 +23,8 @@
   * @brief axis2 URL container implementation
   */
   
-#include <axis2_const.h>
-#include <axis2_defines.h>
+#include <axis2_utils.h>
+#include <axis2_utils_defines.h>
 #include <axis2_env.h>
 
 #ifdef __cplusplus

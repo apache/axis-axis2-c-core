@@ -22,7 +22,7 @@
  * @brief Axis2 memory allocator interface
  */
 
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 
 #ifdef __cplusplus
 extern "C"
