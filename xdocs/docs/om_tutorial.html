@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
@@ -65,13 +66,13 @@ basics of XML.</p>
 
 <h3>What is Pull Parsing ?</h3>
 Pull parsing is a new trend in XML processing. The previously popular XML
-processing frameworks such as SAX and DOM were "push-based" which means the
-control of the parsing was with the parser itself. This approach is fine and
-easy to use but it is not efficient in handling large XML documents since a
-complete memory model will be generated in the memory. Pull parsing inverts
-the control and hence the parser only proceeds at the users command. The user
-can decide to store or discard events generated from the parser. OM is based
-on pull parsing. To learn more about XML pull parsing see the <a
+processing frameworks such as DOM were "push-based" which means the control
+of the parsing was with the parser itself. This approach is fine and easy to
+use but it is not efficient in handling large XML documents since a complete
+memory model will be generated in the memory. Pull parsing inverts the
+control and hence the parser only proceeds at the users command. The user can
+decide to store or discard events generated from the parser. OM is based on
+pull parsing. To learn more about XML pull parsing see the <a
 href="http://www.bearcave.com/software/java/xml/xmlpull.html">XML pull
 parsing introduction</a>. <a id="Features_of_OM"></a>
 
@@ -259,8 +260,7 @@ will get the value as AXIS2_OM_ELEMENT .</p>
 <div>
 <p><b>Code Listing 1</b></p>
 </div>
-<pre>
-axis2_xml_reader_t *xml_reader = NULL;<br />
+<pre>axis2_xml_reader_t *xml_reader = NULL;<br />
 axis2_om_stax_builder_t *om_builder = NULL;<br />
 axis2_soap_builder_t *soap_builder = NULL;<br />
 axis2_soap_envelope_t *soap_envelope = NULL;<br />
@@ -300,7 +300,7 @@ ns2 = axis2_om_namespace_create(env, "bar1", "y");
 
 
 root_ele = axis2_om_element_create(env, NULL, "root", ns1, &amp;root_ele_node);
-ele1_node     = axis2_om_element_create(env, root_node, "foo1", ns2, &amp;ele1_node);</pre>
+ele1     = axis2_om_element_create(env, root_node, "foo1", ns2, &amp;ele1_node);</pre>
 
 <p>Several differences exist between a programmatically created
 axis2_om_node_t and a conventionally built axis2_om_node_t. The most
@@ -610,8 +610,8 @@ different xml input sources.</p>
 <p>axis2_xml_reader_create_for_file() functon can be used to read from a
 file.</p>
 
-<p>axis2_xml_reader_create_for_io uses a user defined callback function
-to pull xml.</p>
+<p>axis2_xml_reader_create_for_io uses a user defined callback function to
+pull xml.</p>
 
 <p>axis2_xml_reader_create_for_memory can be used to read from an xml string
 that is in a character buffer.</p>
@@ -682,8 +682,7 @@ console.</p>
 
 <p></p>
 </div>
-<pre>
-#include &lt;axis2_om_node.h&gt;
+<pre>#include &lt;axis2_om_node.h&gt;
 #include &lt;axis2.h&gt;
 #include &lt;axis2_env.h&gt;
 #include &lt;axis2_om_element.h&gt;
@@ -816,7 +815,6 @@ int main()
     axis2_env_free(env);
     
     <b>return</b> 0;
-}
-</pre>
+}</pre>
 </body>
 </html>
