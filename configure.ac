@@ -300,9 +300,6 @@ AC_CONFIG_FILES([Makefile \
     modules/core/clientapi/diclient/Makefile \
     modules/core/receivers/Makefile \
     modules/core/util/Makefile \
-    modules/util/Makefile \
-    modules/util/minizip/Makefile \
-    modules/platforms/unix/Makefile \
     modules/wsdl/Makefile \
     modules/wsdl/builder/Makefile \
     modules/mod_addr/Makefile \
