@@ -25,7 +25,7 @@
 #include <axis2_om_children_qname_iterator.h>
 #include <axis2_om_child_element_iterator.h>
 #include <axis2_hash.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 
 #ifdef __cplusplus
 extern "C"

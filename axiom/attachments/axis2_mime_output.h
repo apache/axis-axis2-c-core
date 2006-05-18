@@ -24,7 +24,7 @@
 
 #include <axis2_utils.h>
 #include <axis2_error.h>
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_env.h>
 #include <axis2_allocator.h>
 #include <axis2_string.h>
@@ -37,7 +37,7 @@ extern "C"
 {
 #endif
 
-/* This should be moved to header file later axis2_defines.h*/    
+/* This should be moved to header file later axis2_utils_defines.h*/    
 #define axis2_byte_t char
 	
 typedef struct axis2_mime_output_ops axis2_mime_output_ops_t;

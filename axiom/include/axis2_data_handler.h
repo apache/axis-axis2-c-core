@@ -22,14 +22,13 @@
  * @brief axis2 data_handler interface
  */
 
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_error.h>
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_env.h>
 #include <axis2_allocator.h>
 #include <axis2_string.h>
 #include <axis2_array_list.h>
-#include <axis2_handler_desc.h>
 
 
 #ifdef __cplusplus

@@ -19,7 +19,7 @@
 
 #include <axis2_env.h>
 #include <axis2_om_node.h>
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 #include <axis2_om_output.h>
 
 #ifdef __cplusplus

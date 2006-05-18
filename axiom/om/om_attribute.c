@@ -16,7 +16,7 @@
 
 #include <axis2_om_attribute.h>
 #include <string.h>
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 
 axis2_status_t AXIS2_CALL 
 axis2_om_attribute_free (axis2_om_attribute_t *om_attribute,

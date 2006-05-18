@@ -15,7 +15,7 @@
  */
  
 #include <guththila_xml_stream_writer.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_env.h>
 #include <axis2_xml_writer.h>
 /*********************** function prototypes ***********************************/

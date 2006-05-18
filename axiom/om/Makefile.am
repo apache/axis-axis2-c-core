@@ -19,10 +19,10 @@ libaxis2_om_la_SOURCES = om_attribute.c \
 
 libaxis2_om_la_LIBADD =  ../../util/libaxis2_util.la ../attachments/libaxis2_attachments.la
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util \
-            -I$(top_builddir)/modules/xml/parser \
-            -I$(top_builddir)/modules/platforms \
-            -I$(top_builddir)/modules/xml/om\
-            -I$(top_builddir)/modules/xml/attachments
+            -I$(top_builddir)/parser \
+            -I$(top_builddir)/om \
+            -I$(top_builddir)/attachments \
+			@UTILINC@ \
+			@UTILINC@/platforms
 
 EXTRA_DIST=axis2_om_node_internal.h axis2_om_stax_builder_internal.h axis2_om_namespace_internal.h 

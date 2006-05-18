@@ -22,8 +22,8 @@
  * @brief interface of om xml writer
  */
 
-#include <axis2_defines.h>
-#include <axis2_const.h>
+#include <axis2_utils_defines.h>
+#include <axis2_utils.h>
 #include <axis2_env.h>
 #include <axis2_om_node.h>
 #include <axis2_xml_writer.h>

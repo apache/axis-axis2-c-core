@@ -224,9 +224,9 @@ AC_ARG_WITH(axiom,
     dnl Find axiom include dir in the path
     if test -d $withval; then
         axiominc="-I$withval"
-    dnl else find the axiom include dir in $(AXIS2C_HOME)/axiom/include
-    elif test -d '$(AXIS2C_HOME)/axiom/include'; then
-        axiominc="-I$(AXIS2C_HOME)/axiom/include"
+    dnl else find the axiom include dir in $(AXIS2C_HOME)/include/axiom/include
+    elif test -d '$(AXIS2C_HOME)/include/axiom/include'; then
+        axiominc="-I$(AXIS2C_HOME)/include/axiom/include"
     else
         AC_MSG_ERROR(could not find axiom. stop)
     fi
@@ -247,9 +247,9 @@ AC_ARG_WITH(axis2_util,
     dnl Find axis2_util include dir in the path
     if test -d $withval; then
         axis2_utilinc="-I$withval"
-    dnl else find the axis2_util include dir in $(AXIS2C_HOME)/util/include
-    elif test -d '$(AXIS2C_HOME)/util/include'; then
-        axis2_utilinc="-I$(AXIS2C_HOME)/util/include"
+    dnl else find the axis2_util include dir in $(AXIS2C_HOME)/include/util/include
+    elif test -d '$(AXIS2C_HOME)/include/util/include'; then
+        axis2_utilinc="-I$(AXIS2C_HOME)/include/util/include"
     else
         AC_MSG_ERROR(could not find axis2_util. stop)
     fi
