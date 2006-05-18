@@ -17,12 +17,12 @@
 #ifndef AXIS2_UDDI_GEN_WINDOWS_H
 #define AXIS2_UDDI_GEN_WINDOWS_H
 
+#include <axis2_utils_defines.h>
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-#include <axis2_defines.h>
 
 /* Function prototypes */
 

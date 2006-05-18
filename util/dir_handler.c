@@ -32,8 +32,9 @@
 
 extern int AXIS2_ALPHASORT();
 
-/*int dir_select(struct dirent *entry);
-int aar_select();*/
+int dir_select(struct dirent *entry);
+
+/* int aar_select();*/
 
 /**
  * List the dll files in the given service or module folder path
@@ -388,8 +389,6 @@ int dir_select(struct dirent *entry)
 
 	if (-1 ==  stat (entry->d_name, &stat_p))
 		return (AXIS2_FALSE);
-
-	axis2_char_t *rindex(const axis2_char_t *s, int c);
 
 	if ((entry->d_name[0] == '.') || (!S_ISDIR(stat_p.st_mode)))
     {

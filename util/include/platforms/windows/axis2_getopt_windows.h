@@ -1,7 +1,7 @@
 #ifndef _AXIS2_GETOPT_WINDOWS_H_
 #define _AXIS2_GETOPT_WINDOWS_H_
 
-#include <axis2_defines.h>
+#include <axis2_utils_defines.h>
 /**
  * @file axis2_getopt_windows.h
  * @brief windows cutdown version of getopt function in unix

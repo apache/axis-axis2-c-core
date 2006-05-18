@@ -23,8 +23,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <windows.h>
-#include <axis2_defines.h>
-
+#include <axis2_utils_defines.h>
 
 /* struct dirent - same as Unix dirent.h */
 AXIS2_DECLARE_DATA struct dirent 

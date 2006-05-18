@@ -19,6 +19,7 @@
 #include <rpc.h>
 #include <stdio.h>
 #include <string.h>
+#include <axis2_utils_defines.h>
 
 
 AXIS2_DECLARE(axis2_char_t *)  axis2_platform_uuid_gen(char *s)
