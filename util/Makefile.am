@@ -1,6 +1,6 @@
 TESTS =
 include_HEADERS=$(top_builddir)/include/*.h
-SUBDIRS = platforms/unix minizip
+SUBDIRS = platforms/unix minizip include
 lib_LTLIBRARIES = libaxis2_util.la
 libaxis2_util_la_SOURCES = \
 						hash.c \
