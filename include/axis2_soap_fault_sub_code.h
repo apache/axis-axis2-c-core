@@ -106,7 +106,7 @@ axis2_soap_fault_sub_code_create_with_parent_value(axis2_env_t **env,
         ((fault_sub_code)->ops->get_value(fault_sub_code, env)) 
         
 #define AXIS2_SOAP_FAULT_SUB_CODE_GET_SUB_CODE(fault_sub_code , env) \
-        ((fault_sub_code)->ops->get_subcode(fault_sub_code, env))        
+        ((fault_sub_code)->ops->get_sub_code(fault_sub_code, env))        
         
 #define AXIS2_SOAP_FAULT_SUB_CODE_GET_BASE_NODE(fault_sub_code, env) \
         ((fault_sub_code)->ops->get_base_node(fault_sub_code, env))         
