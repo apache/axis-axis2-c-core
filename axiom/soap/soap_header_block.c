@@ -506,18 +506,18 @@ axis2_soap_header_block_get_attribute
     header_node = AXIS2_OM_NODE_GET_PARENT(header_block_impl->om_ele_node, env);
     if(!header_node)
     {
-        return AXIS2_FAILURE;    
+        return NULL;    
     }
     if(AXIS2_OM_NODE_GET_NODE_TYPE(header_node, env) == AXIS2_OM_ELEMENT)
     {
         header_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(header_node, env);        
         if(!header_ele)
         {
-            return AXIS2_FAILURE;
+            return NULL;
         }
         header_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(header_ele, env, header_node); 
         if(!header_ns)
-            return AXIS2_FAILURE;
+            return NULL;
         prefix = AXIS2_OM_NAMESPACE_GET_PREFIX(header_ns, env);            
     }
     qn = axis2_qname_create(env, attr_name, soap_envelope_namespace_uri, prefix);

@@ -17,10 +17,10 @@
 #include <axis2_svc_client.h>
 #include <axis2_const.h>
 #include <axis2_hash.h>
-#include <callback_recv.h>
+#include "callback_recv.h"
 #include <axis2_soap_const.h>
 #include <axis2_soap_body.h>
-#include <listener_manager.h>
+#include "listener_manager.h"
 #include <axis2_module_desc.h>
 #include <axis2_array_list.h>
 #include <axis2_options.h>

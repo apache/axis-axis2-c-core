@@ -19,9 +19,9 @@
 #include <axis2_hash.h>
 #include <axis2_mep_client.h>
 #include <axis2_uuid_gen.h>
-#include <listener_manager.h> 
+#include "listener_manager.h"
 #include <axis2_engine.h>
-#include <callback_recv.h>
+#include "callback_recv.h"
 #include <axis2_xml_reader.h>
 
 typedef struct axis2_op_client_impl

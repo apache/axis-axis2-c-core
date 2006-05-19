@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_msg_sender.h>
+#include "axis2_msg_sender.h"
 #include <axis2_msg_ctx.h>
 #include <axis2_svc_ctx.h>
 #include <axis2_engine.h>
