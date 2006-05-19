@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_H
-#define AXIS2_H
+#ifndef AXIS2_CONST_H
+#define AXIS2_CONST_H
 
 /**
  * @file axis2.h
@@ -249,4 +249,4 @@ extern "C"
 }
 #endif
 
-#endif /* AXIS2_H */
+#endif /* AXIS2_CONST_H */
