@@ -65,10 +65,13 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
 AC_SUBST(TESTDIR)
 
 AC_CONFIG_FILES([Makefile \
-    platforms/unix/Makefile \
-    minizip/Makefile \
+    src/Makefile \
+    src/platforms/unix/Makefile \
+    src/minizip/Makefile \
     include/Makefile \
+    test/Makefile \
     test/util/Makefile \
+    test/unit/Makefile \
     test/unit/util/Makefile
     ])
     

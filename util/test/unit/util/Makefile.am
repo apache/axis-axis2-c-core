@@ -17,8 +17,8 @@ noinst_HEADERS=$(top_builddir)/test/unit/util/*.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
-            -I$(top_builddir)/modules/util \
-            -I$(top_builddir)/modules/platforms
+            -I$(top_builddir)/src \
+            -I$(top_builddir)/src/platforms
 
 prgbin_PROGRAMS = util_test
 check_PROGRAMS = util_test
@@ -27,8 +27,8 @@ util_test_LDADD   =   \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                      $(top_builddir)/test/unit/util/libtest_util.la \
-                    $(top_builddir)/modules/util/libaxis2_util.la \
-					$(top_builddir)/modules/platforms/unix/libaxis2_unix.la \
+                    $(top_builddir)/src/libaxis2_util.la \
+					$(top_builddir)/src/platforms/unix/libaxis2_unix.la \
                     -lpthread \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
