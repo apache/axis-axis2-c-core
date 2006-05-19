@@ -58,12 +58,9 @@ AXIS2_MICRO_VERSION = 9
 
 #binary distribution dll names
 
-AXIS2_WINDOWS = axis2_windows
 AXIS2_UTIL   = axis2_util
 AXIS2_PARSER = axis2_parser
-AXIS2_ATTACHMENTS = axis2_attachments
-AXIS2_OM     = axis2_om
-AXIS2_SOAP   = axis2_soap
+AXIOM = axiom
 AXIS2_WSDL   = axis2_wsdl
 AXIS2_TRANSPORT_SENDER = axis2_http_sender
 AXIS2_TRANSPORT_RECEIVER = axis2_http_receiver
@@ -83,12 +80,12 @@ CPPFLAGS = /nologo /I$(AXIS2_SOURCE_DIR)\include
 #The compiler and its options
 
 # include path
-GUTHTHILA_INCP = /I$(AXIS2_SOURCE_DIR)\modules\xml\parser\guththila\impl\src
+GUTHTHILA_INCP = /I$(AXIS2_SOURCE_DIR)\\guththila\impl\src
 APACHE_INCP = /I$(APACHE_INSTALL_DIR)\include
-AXIS2_INCP = /I$(AXIS2_SOURCE_DIR)\modules\util /I$(AXIS2_SOURCE_DIR)\modules\xml\parser /I$(AXIS2_SOURCE_DIR)\modules\platforms /I$(AXIS2_SOURCE_DIR)\modules\platforms\windows /I$(AXIS2_SOURCE_DIR)\modules\wsdl /I$(AXIS2_SOURCE_DIR)\modules\wsdl /I$(AXIS2_SOURCE_DIR)\modules\core\clientapi /I$(AXIS2_SOURCE_DIR)\modules\core\deployment /I$(AXIS2_SOURCE_DIR)\modules\core\description /I$(AXIS2_SOURCE_DIR)\modules\core\transport /I$(AXIS2_SOURCE_DIR)\include /I$(LIBXML2_INSTALL_DIR)\include /I$(ICONV_INSTALL_DIR)\include /I$(AXIS2_SOURCE_DIR)\modules\core\engine /I$(AXIS2_SOURCE_DIR)\modules\core\context /I$(AXIS2_SOURCE_DIR)\modules\core\util /I$(AXIS2_SOURCE_DIR)\include\platforms /I$(AXIS2_SOURCE_DIR)\include\platforms\windows /I$(AXIS2_SOURCE_DIR)\modules\xml\om /I$(AXIS2_SOURCE_DIR)\modules\xml\soap  /I$(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\apache2 /I$(AXIS2_SOURCE_DIR)\modules\xml\attachments
+AXIS2_INCP = /I$(AXIS2_SOURCE_DIR)\util\include /I$(AXIS2_SOURCE_DIR)\axiom\include /I$(AXIS2_SOURCE_DIR)\axiom\src\om /I$(AXIS2_SOURCE_DIR)\axiom\src\soap  /I$(AXIS2_SOURCE_DIR)\util\include\platforms /I$(AXIS2_SOURCE_DIR)\modules\wsdl /I$(AXIS2_SOURCE_DIR)\modules\core\clientapi /I$(AXIS2_SOURCE_DIR)\modules\core\deployment /I$(AXIS2_SOURCE_DIR)\modules\core\description /I$(AXIS2_SOURCE_DIR)\modules\core\transport /I$(AXIS2_SOURCE_DIR)\include /I$(LIBXML2_INSTALL_DIR)\include /I$(ICONV_INSTALL_DIR)\include /I$(AXIS2_SOURCE_DIR)\modules\core\engine /I$(AXIS2_SOURCE_DIR)\modules\core\context /I$(AXIS2_SOURCE_DIR)\modules\core\util /I$(AXIS2_SOURCE_DIR)\include\platforms /I$(AXIS2_SOURCE_DIR)\include\platforms\windows /I$(AXIS2_SOURCE_DIR)\modules\xml\om /I$(AXIS2_SOURCE_DIR)\modules\xml\soap  /I$(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\apache2 /I$(AXIS2_SOURCE_DIR)\axiom\src\attachments
 
 
- 
+
 CC = cl.exe 
 CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT" /D "AXIS2_SVR_MULTI_THREADED" /w /nologo
 CFLAGS = $(CFLAGS) $(AXIS2_INCP) $(GUTHTHILA_INCP) $(APACHE_INCP)
@@ -134,56 +131,40 @@ clean_make_dir:
 	del *.obj del *.exe del *.exp
 
 copy_include: deploy
-	xcopy /E /I $(AXIS2_SOURCE_DIR)\include $(AXIS2_INSTALL_DIR)\include\
-	
+	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\include $(AXIS2_INSTALL_DIR)\include\
 
-axis2_win: 
-	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\platforms\windows\*.c  /c
-	$(LD) $(LDFLAGS) *.obj $(LIBS) /DLL /OUT:$(AXIS2_WINDOWS).dll /IMPLIB:$(AXIS2_WINDOWS).lib
-	del *.obj
-	copy $(AXIS2_WINDOWS).*  $(AXIS2_LIBS)\
+	if exist $(AXIS2_INSTALL_DIR)\include\Makefile.am del $(AXIS2_INSTALL_DIR)\include\Makefile.am
 
-	del axis2*.*
-			
+	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\axiom\include $(AXIS2_INSTALL_DIR)\include\
+
+	if exist $(AXIS2_INSTALL_DIR)\include\Makefile.am del $(AXIS2_INSTALL_DIR)\include\Makefile.am
+
+	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\util\include $(AXIS2_INSTALL_DIR)\include\
+
 axis2_util: 
-	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\util\*.c /c
-	$(LD) $(LDFLAGS) *.obj axis2_windows.lib $(LIBS) /DLL /OUT:$(AXIS2_UTIL).dll /IMPLIB:$(AXIS2_UTIL).lib
+	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\util\src\platforms\windows\*.c $(AXIS2_SOURCE_DIR)\util\src\*.c  /c
+	$(LD) $(LDFLAGS) *.obj $(LIBS) /DLL /OUT:$(AXIS2_UTIL).dll /IMPLIB:$(AXIS2_UTIL).lib
 	del *.obj
 	copy $(AXIS2_UTIL).* $(AXIS2_LIBS)\
 	
 	del axis2*.*
 
 axis2_parser: 
-	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\xml\parser\libxml2\*.c /c
+	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\axiom\src\parser\libxml2\*.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(LIBS) $(LIBXML2_INSTALL_DIR)\lib\libxml2.lib /DLL /OUT:$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_PARSER).lib
 	del *.obj
 	copy $(AXIS2_PARSER).* $(AXIS2_LIBS)\
-	
+
 	del axis2*.*
 
-axis2_attachments:
-	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\xml\attachments\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_PARSER).lib $(LIBS)  /DLL /OUT:$(AXIS2_ATTACHMENTS).dll /IMPLIB:$(AXIS2_ATTACHMENTS).lib
+axiom: 
+	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\axiom\src\om\*.c $(AXIS2_SOURCE_DIR)\axiom\src\soap\*.c $(AXIS2_SOURCE_DIR)\axiom\src\attachments\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_PARSER).lib $(LIBS)  /DLL /OUT:$(AXIOM).dll /IMPLIB:$(AXIOM).lib
 	del *.obj
-	copy $(AXIS2_ATTACHMENTS).* $(AXIS2_LIBS)\
+	copy $(AXIOM).* $(AXIS2_LIBS)\
 	
-	del axis2*.*
+	del $(AXIOM).*
 
-axis2_om: 
-	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\xml\om\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_PARSER).lib $(AXIS2_ATTACHMENTS).lib $(LIBS)  /DLL /OUT:$(AXIS2_OM).dll /IMPLIB:$(AXIS2_OM).lib
-	del *.obj
-	copy $(AXIS2_OM).* $(AXIS2_LIBS)\
-	
-	del axis2*.*
-
-axis2_soap: 
-	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\xml\soap\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(LIBS)  /DLL /OUT:$(AXIS2_SOAP).dll /IMPLIB:$(AXIS2_SOAP).lib
-	del *.obj
-	copy $(AXIS2_SOAP).* $(AXIS2_LIBS)\
-	
-	del axis2*.*
 
 axis2_wsdl: 
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\wsdl\*.c /c
@@ -194,8 +175,8 @@ axis2_wsdl:
 	del axis2*.*
 
 axis2_engine: 
-	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\core\addr\*.c $(AXIS2_SOURCE_DIR)\modules\core\clientapi\*.c $(AXIS2_SOURCE_DIR)\modules\core\context\*.c $(AXIS2_SOURCE_DIR)\modules\core\deployment\*.c $(AXIS2_SOURCE_DIR)\modules\core\description\*.c $(AXIS2_SOURCE_DIR)\modules\core\engine\*.c $(AXIS2_SOURCE_DIR)\modules\core\phaseresolver\*.c $(AXIS2_SOURCE_DIR)\modules\core\receivers\*.c $(AXIS2_SOURCE_DIR)\modules\core\util\*.c $(AXIS2_SOURCE_DIR)\modules\core\transport\http\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_ATTACHMENTS).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib $(AXIS2_WSDL).lib $(AXIS2_WINDOWS).lib $(LIBS)  /DLL /OUT:$(AXIS2_ENGINE).dll /IMPLIB:$(AXIS2_ENGINE).lib
+	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\core\addr\*.c $(AXIS2_SOURCE_DIR)\modules\core\clientapi\*.c $(AXIS2_SOURCE_DIR)\modules\core\context\*.c $(AXIS2_SOURCE_DIR)\modules\core\deployment\*.c $(AXIS2_SOURCE_DIR)\modules\core\description\*.c $(AXIS2_SOURCE_DIR)\modules\core\engine\*.c $(AXIS2_SOURCE_DIR)\modules\core\phaseresolver\*.c $(AXIS2_SOURCE_DIR)\modules\core\receivers\*.c $(AXIS2_SOURCE_DIR)\modules\core\util\*.c $(AXIS2_SOURCE_DIR)\modules\core\transport\http\*.c $(AXIS2_SOURCE_DIR)\modules\wsdl\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(AXIS2_WSDL).lib $(LIBS)  /DLL /OUT:$(AXIS2_ENGINE).dll /IMPLIB:$(AXIS2_ENGINE).lib
 	del *.obj
 	copy $(AXIS2_ENGINE).* $(AXIS2_LIBS)\
 	
@@ -203,7 +184,7 @@ axis2_engine:
 
 axis2_http_sender: 
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\core\transport\http\sender\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_ATTACHMENTS).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib $(AXIS2_WSDL).lib $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /DLL /OUT:$(AXIS2_TRANSPORT_SENDER).dll /IMPLIB:$(AXIS2_TRANSPORT_SENDER).lib
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /DLL /OUT:$(AXIS2_TRANSPORT_SENDER).dll /IMPLIB:$(AXIS2_TRANSPORT_SENDER).lib
 	del *.obj
 	copy $(AXIS2_TRANSPORT_SENDER).* $(AXIS2_LIBS)\
 	
@@ -212,16 +193,34 @@ axis2_http_sender:
 		
 axis2_http_receiver: 
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\core\transport\http\receiver\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_ATTACHMENTS).lib $(AXIS2_PARSER).lib $(AXIS2_WSDL).lib $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /DLL /OUT:$(AXIS2_TRANSPORT_RECEIVER).dll /IMPLIB:$(AXIS2_TRANSPORT_RECEIVER).lib
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /DLL /OUT:$(AXIS2_TRANSPORT_RECEIVER).dll /IMPLIB:$(AXIS2_TRANSPORT_RECEIVER).lib
 	del *.obj
 	copy $(AXIS2_TRANSPORT_RECEIVER).* $(AXIS2_LIBS)\
 	
 	del axis2*.*	
 
+# modules 
+
+axis2_mod_addr:
+	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\mod_addr\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:axis2_mod_addr.dll  /IMPLIB:axis2_mod_addr.lib
+	del *.obj
+	
+	if not exist $(AXIS2_MODULES)\addressing mkdir $(AXIS2_MODULES)\addressing
+
+	copy axis2_mod_addr.dll $(AXIS2_MODULES)\addressing\
+
+	del *.dll
+	
+	del *.lib
+	
+	copy $(AXIS2_SOURCE_DIR)\modules\mod_addr\module.xml $(AXIS2_MODULES)\addressing
+
+# end modules
 
 axis2_server: 
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP) $(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\simple_axis2_server\http_server_main.c /c
-	$(LD) $(LDFLAGS) http_server_main.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib  /OUT:$(AXIS2_SERVER).exe 
+	$(LD) $(LDFLAGS) http_server_main.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib  /OUT:$(AXIS2_SERVER).exe 
 	del *.obj
 	copy $(AXIS2_SERVER).exe $(AXIS2_BINS)\
 	
@@ -231,7 +230,7 @@ axis2_server:
 
 axis2_services_echo:
 	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\echo  $(AXIS2_SOURCE_DIR)\samples\server\echo\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:echo.dll  
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:echo.dll  
 	del *.obj
 	
 	if not exist $(AXIS2_SERVICES)\echo mkdir $(AXIS2_SERVICES)\echo
@@ -246,7 +245,7 @@ axis2_services_echo:
 
 axis2_services_notify:
 	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\echo  $(AXIS2_SOURCE_DIR)\samples\server\notify\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:notify.dll  
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:notify.dll  
 	del *.obj
 	
 	if not exist $(AXIS2_SERVICES)\notify mkdir $(AXIS2_SERVICES)\notify
@@ -262,7 +261,7 @@ axis2_services_notify:
 
 axis2_services_math:
 	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\math  $(AXIS2_SOURCE_DIR)\samples\server\math\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:math.dll  
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:math.dll  
 	del *.obj
 	
 	if not exist $(AXIS2_SERVICES)\math mkdir $(AXIS2_SERVICES)\math
@@ -277,7 +276,7 @@ axis2_services_math:
 
 axis2_services_mtom:
 	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\mtom  $(AXIS2_SOURCE_DIR)\samples\server\mtom\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:mtom.dll  
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:mtom.dll  
 	del *.obj
 	
 	if not exist $(AXIS2_SERVICES)\mtom mkdir $(AXIS2_SERVICES)\mtom
@@ -292,19 +291,19 @@ axis2_services_mtom:
 
 axis2_services_sg_math:
 	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\sg_math  $(AXIS2_SOURCE_DIR)\samples\server\sg_math\add.c $(AXIS2_SOURCE_DIR)\samples\server\sg_math\add_skeleton.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:add.dll  
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:add.dll  
 	del *.obj
 
 	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\sg_math  $(AXIS2_SOURCE_DIR)\samples\server\sg_math\div.c $(AXIS2_SOURCE_DIR)\samples\server\sg_math\div_skeleton.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:div.dll  
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:div.dll  
 	del *.obj
 	
 	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\sg_math  $(AXIS2_SOURCE_DIR)\samples\server\sg_math\sub.c $(AXIS2_SOURCE_DIR)\samples\server\sg_math\sub_skeleton.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:sub.dll  
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:sub.dll  
 	del *.obj
 	
 	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\sg_math  $(AXIS2_SOURCE_DIR)\samples\server\sg_math\mul.c $(AXIS2_SOURCE_DIR)\samples\server\sg_math\mul_skeleton.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:mul.dll  
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib $(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:mul.dll  
 	del *.obj
 	
 	if not exist $(AXIS2_SERVICES)\sg_math mkdir $(AXIS2_SERVICES)\sg_math
@@ -317,26 +316,9 @@ axis2_services_sg_math:
 	
 	copy $(AXIS2_SOURCE_DIR)\samples\server\sg_math\services.xml $(AXIS2_SERVICES)\sg_math
 
-
-
-axis2_mod_addr:
-	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\mod_addr\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:axis2_mod_addr.dll  /IMPLIB:axis2_mod_addr.lib
-	del *.obj
-	
-	if not exist $(AXIS2_MODULES)\addressing mkdir $(AXIS2_MODULES)\addressing
-
-	copy axis2_mod_addr.dll $(AXIS2_MODULES)\addressing\
-
-	del *.dll
-	
-	del *.lib
-	
-	copy $(AXIS2_SOURCE_DIR)\modules\mod_addr\module.xml $(AXIS2_MODULES)\addressing
-
 axis2_apache_module:
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\apache2\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib $(APACHE_LIBS) /DLL /OUT:mod_axis2.dll  /IMPLIB:mod_axis2.lib 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib $(APACHE_LIBS) /DLL /OUT:mod_axis2.dll  /IMPLIB:mod_axis2.lib 
 	del *.obj
 	copy mod_axis2.dll $(AXIS2_LIBS)\
 
@@ -348,7 +330,7 @@ axis2_apache_module:
 	
 axis2_client_math:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\math\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:math.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:math.exe 
 	del *.obj
 	
 	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
@@ -359,7 +341,7 @@ axis2_client_math:
 
 axis2_client_echo:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\echo\echo.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo.exe 
 	del *.obj
 	
 	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
@@ -371,7 +353,7 @@ axis2_client_echo:
 
 axis2_client_google_spell:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\google\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:google_spell.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:google_spell.exe 
 	del *.obj
 	
 	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
@@ -381,7 +363,7 @@ axis2_client_google_spell:
 
 axis2_client_notify:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\notify\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:notify.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:notify.exe 
 	del *.obj
 	
 	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
@@ -392,11 +374,11 @@ axis2_client_notify:
 
 axis2_client_mtom:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\client\mtom\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_ATTACHMENTS).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:mtom.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:mtom.exe 
 	del *.obj
 	
 	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
-      mkdir $(AXIS2_BINS)\samples\resources 
+	mkdir $(AXIS2_BINS)\samples\resources 
 	xcopy $(AXIS2_SOURCE_DIR)\samples\client\mtom\resources $(AXIS2_BINS)\samples\resources 
 
 	copy mtom.exe $(AXIS2_BINS)\samples
@@ -405,31 +387,31 @@ axis2_client_mtom:
 
 axis2_client_userguide:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_blocking.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_blocking.exe 
 	del *.obj
 	
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_non_blocking.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_non_blocking.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_non_blocking.exe 
 	del *.obj
 
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_addr.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_blocking_addr.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_blocking_addr.exe 
 	del *.obj
 
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_rest.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_rest.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_rest.exe 
 	del *.obj
 
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_dual.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_blocking_dual.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_blocking_dual.exe 
 	del *.obj
 
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_non_blocking_dual.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_non_blocking_dual.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_non_blocking_dual.exe 
 	del *.obj
 
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCP)  $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_soap11.c $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIS2_OM).lib $(AXIS2_SOAP).lib $(AXIS2_PARSER).lib  $(AXIS2_WINDOWS).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_blocking_soap11.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_blocking_soap11.exe 
 	del *.obj
 	
 	
@@ -503,7 +485,7 @@ mv_dist:
 	xcopy /E /I $(AXIS2_INSTALL_DIR) ..\axis2c-bin-$(RELEASE_VER)-win32
 	rmdir /S /Q $(AXIS2_INSTALL_DIR)
 
-all: clean_make_dir clean deploy axis2_win axis2_util axis2_parser axis2_attachments axis2_om axis2_soap axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_notify axis2_client_mtom axis2_client_userguide copy_include clean_make_dir 
+all: clean_make_dir clean deploy axis2_util axis2_parser axiom axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_notify axis2_client_mtom axis2_client_userguide copy_include clean_make_dir 
  
 install: all
 
