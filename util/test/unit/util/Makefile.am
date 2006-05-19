@@ -18,7 +18,8 @@ noinst_HEADERS=$(top_builddir)/test/unit/util/*.h
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/src \
-            -I$(top_builddir)/src/platforms
+            -I$(top_builddir)/src/platforms \
+			-I${AXIS2C_HOME}/include
 
 prgbin_PROGRAMS = util_test
 check_PROGRAMS = util_test

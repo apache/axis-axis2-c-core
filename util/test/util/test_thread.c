@@ -21,7 +21,7 @@
 #include <axis2_log.h>
 #include <axis2_log_default.h>
 #include <axis2_allocator.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include "test_thread.h"
 #include <unistd.h>
 
