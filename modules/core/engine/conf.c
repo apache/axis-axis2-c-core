@@ -1269,7 +1269,7 @@ axis2_conf_add_transport_in(axis2_conf_t *conf,
     if(!config_impl->transports_in)
     {
         config_impl->transports_in = (axis2_hash_t *) axis2_hash_make(env);
-        if(!transports_in)
+        if(!config_impl->transports_in)
             return AXIS2_FAILURE;
     }
     qname = AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport, env);
@@ -1319,7 +1319,7 @@ axis2_conf_add_transport_out(axis2_conf_t *conf,
     if(!config_impl->transports_out)
     {
         config_impl->transports_out = axis2_hash_make(env);
-        if(!transports_out)
+        if(!config_impl->transports_out)
             return AXIS2_FAILURE;
     }
     

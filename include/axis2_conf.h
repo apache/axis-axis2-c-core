@@ -45,8 +45,6 @@ extern "C"
 
 struct axis2_msg_recv;
 struct axis2_phases_info;    
-struct axis2_transport_in_desc *transports_in;
-struct axis2_transport_out_desc *transports_out;
 typedef struct axis2_conf_ops axis2_conf_ops_t;
 typedef struct axis2_conf axis2_conf_t;
     

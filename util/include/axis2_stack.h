@@ -84,7 +84,7 @@ AXIS2_DECLARE_DATA struct axis2_stack_ops
             int i);
                                        
           
-}axis2_stack_ops;
+};
  
 struct axis2_stack
 {
