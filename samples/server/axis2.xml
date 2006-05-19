@@ -68,10 +68,10 @@
     <transportSender name="http" class="axis2_http_sender">
         <parameter name="PROTOCOL" locked="false">HTTP/1.1</parameter>
         <!--parameter name="Transfer-Encoding">chunked</parameter-->
+        <!--parameter name="PROXY" proxy_host="127.0.0.1" proxy_port="8080" locked="true"/-->
     </transportSender>
     <!--
-    <transportSender name="https"
-                     class="org.apache.axis2.transport.http.CommonsHTTPTransportSender">
+    <transportSender name="https" class="axis2_http_sender">
         <parameter name="PROTOCOL" locked="false">HTTP/1.1</parameter>
     </transportSender>
     -->
