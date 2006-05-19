@@ -263,9 +263,6 @@ AC_CONFIG_FILES([Makefile \
     modules/wsdl/builder/Makefile \
     modules/mod_addr/Makefile \
     test/Makefile \
-    test/xml/Makefile \
-    test/xml/om/Makefile \
-    test/xml/soap/Makefile \
     test/wsdl/Makefile \
     test/wsdl/builder/Makefile \
     test/wsdl/builder/print/Makefile \
@@ -284,8 +281,6 @@ AC_CONFIG_FILES([Makefile \
     test/unit/core/phaseresolver/Makefile \
     test/unit/core/deployment/Makefile \
     test/unit/wsdl/Makefile \
-    test/unit/xml/Makefile \
-    test/unit/xml/om/Makefile\
     test/core/transport/Makefile\
     test/core/transport/http/Makefile \
     test/itest/Makefile \
