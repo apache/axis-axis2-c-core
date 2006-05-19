@@ -3,13 +3,12 @@
 #include <axis2_param.h>
 #include <axis2_class_loader.h>
 #include <stdio.h>
-#include <axis2_svc_skeleton.h>
 
 void Testaxis2_class_loader_create_dll(CuTest *tc)
 {
     axis2_dll_desc_t *dll_desc = NULL;
     axis2_char_t *dll_name = NULL;
-    axis2_svc_skeleton_t *svc = NULL;
+    void *svc = NULL;
     axis2_param_t *impl_info_param = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_status_t expected = AXIS2_SUCCESS;
@@ -32,9 +31,7 @@ void Testaxis2_class_loader_create_dll(CuTest *tc)
     impl_info_param = axis2_param_create(&env, NULL, NULL);
     AXIS2_PARAM_SET_VALUE(impl_info_param, &env, dll_desc);
     axis2_class_loader_init(&env);
-    svc = (axis2_svc_skeleton_t *) axis2_class_loader_create_dll(&env, 
-        impl_info_param);
-    status = AXIS2_SVC_SKELETON_INIT(svc, &env);
+    svc = axis2_class_loader_create_dll(&env, impl_info_param);
     AXIS2_FREE(env->allocator, dll_name);
     CuAssertIntEquals(tc, expected, status);
 }
