@@ -45,11 +45,31 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
+AC_MSG_CHECKING(whether to build tests)
+AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    TESTDIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    TESTDIR="test"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  TESTDIR=""
+)
+
+AC_SUBST(TESTDIR)
 
 AC_CONFIG_FILES([Makefile \
     platforms/unix/Makefile \
     minizip/Makefile \
     include/Makefile \
+    test/util/Makefile \
+    test/unit/util/Makefile
     ])
     
 AC_OUTPUT
