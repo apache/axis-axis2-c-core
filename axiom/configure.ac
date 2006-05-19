@@ -102,6 +102,24 @@ AC_ARG_WITH(axis2_util,
   AC_MSG_RESULT(no)
 )
 
+AC_MSG_CHECKING(whether to build tests)
+AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    TESTDIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    TESTDIR="test"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  TESTDIR=""
+)
+
+
 PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
 CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
 
@@ -113,13 +131,20 @@ AC_SUBST(LIBXML2_LIBS)
 AC_SUBST(LIBXML2_DIR)
 AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
+AC_SUBST(TESTDIR)
 
 AC_CONFIG_FILES([Makefile \
-    parser/Makefile \
-    parser/libxml2/Makefile \
-    soap/Makefile \
-    om/Makefile \
-    attachments/Makefile \
+    src/Makefile \
+    src/parser/Makefile \
+    src/parser/libxml2/Makefile \
+    src/soap/Makefile \
+    src/om/Makefile \
+    src/attachments/Makefile \
+    test/xml/Makefile \
+    test/xml/om/Makefile \
+    test/xml/soap/Makefile \
+    test/unit/xml/Makefile \
+    test/unit/xml/om/Makefile\
     include/Makefile
     ])
     
