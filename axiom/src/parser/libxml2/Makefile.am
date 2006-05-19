@@ -9,7 +9,5 @@ libaxis2_parser_la_SOURCES = libxml2_reader_wrapper.c \
 libaxis2_parser_la_LIBADD = -lxml2
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util \
-            -I$(top_builddir)/xml/parser \
-            -I$(top_builddir)/modules/platforms \
+            -I$(top_builddir)/src/parser \
 			@UTILINC@
