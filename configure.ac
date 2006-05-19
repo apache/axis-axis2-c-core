@@ -276,7 +276,6 @@ AC_CONFIG_FILES([Makefile \
     test/core/clientapi/Makefile \
     test/core/engine/Makefile \
     test/core/addr/Makefile \
-    test/util/Makefile \
     test/unit/Makefile \
     test/unit/core/Makefile \
     test/unit/core/description/Makefile \
@@ -284,7 +283,6 @@ AC_CONFIG_FILES([Makefile \
     test/unit/core/context/Makefile \
     test/unit/core/phaseresolver/Makefile \
     test/unit/core/deployment/Makefile \
-    test/unit/util/Makefile \
     test/unit/wsdl/Makefile \
     test/unit/xml/Makefile \
     test/unit/xml/om/Makefile\
