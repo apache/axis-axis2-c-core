@@ -140,11 +140,11 @@ AC_CONFIG_FILES([Makefile \
     src/soap/Makefile \
     src/om/Makefile \
     src/attachments/Makefile \
-    test/xml/Makefile \
-    test/xml/om/Makefile \
-    test/xml/soap/Makefile \
-    test/unit/xml/Makefile \
-    test/unit/xml/om/Makefile\
+    test/Makefile \
+    test/om/Makefile \
+    test/soap/Makefile \
+    test/unit/Makefile \
+    test/unit/om/Makefile\
     include/Makefile
     ])
     

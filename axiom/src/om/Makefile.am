@@ -18,11 +18,11 @@ libaxis2_om_la_SOURCES = om_attribute.c \
                         om_navigator.c
 
 libaxis2_om_la_LIBADD = \
-					$(top_builddir)/attachments/libaxis2_attachments.la
+					$(top_builddir)/src/attachments/libaxis2_attachments.la
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/parser \
-            -I$(top_builddir)/om \
-            -I$(top_builddir)/attachments \
+            -I$(top_builddir)/src/parser \
+            -I$(top_builddir)/src/om \
+            -I$(top_builddir)/src/attachments \
 			@UTILINC@ \
 			@UTILINC@/platforms
 

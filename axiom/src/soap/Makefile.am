@@ -18,8 +18,8 @@ libaxis2_soap_la_SOURCES = soap_fault.c \
 
 libaxis2_soap_la_LIBADD = 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/parser \
-            -I$(top_builddir)/om \
+            -I$(top_builddir)/src/parser \
+            -I$(top_builddir)/src/om \
 			@UTILINC@ \
 			@UTILINC@/platforms
 
