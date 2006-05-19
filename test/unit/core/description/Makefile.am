@@ -12,7 +12,6 @@ noinst_HEADERS=$(top_builddir)/test/unit/core/description/*.h \
                 $(top_builddir)/test/unit/core/phaseresolver/*.h
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util \
             -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/description \
             -I$(top_builddir)/modules/core/context \
@@ -21,20 +20,22 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/engine \
             -I$(top_builddir)/modules/core/clientapi \
             -I${CUTEST_HOME}/include \
-            -I$(top_builddir)/modules/platforms
+			@AXIOMINC@ \
+			@UTILINC@ \
+			@UTILINC@/platforms
 
 prgbin_PROGRAMS = description_test
 check_PROGRAMS = description_test
 description_test_SOURCES = main.c
 description_test_LDADD   =   libtest_description.la  \
                      -L$(CUTEST_HOME)/lib \
-                   	$(top_builddir)/modules/util/libaxis2_util.la \
-				    $(top_builddir)/modules/platforms/unix/libaxis2_unix.la \
-					$(top_builddir)/modules/xml/om/libaxis2_om.la \
-					$(top_builddir)/modules/xml/soap/libaxis2_soap.la \
+                   	-laxis2_util \
+				    -laxis2_unix \
+					-laxis2_om \
+					-laxis2_soap \
+					-laxis2_parser \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
-					$(top_builddir)/modules/xml/parser/libxml2/libaxis2_parser.la \
                      -lcutest \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)

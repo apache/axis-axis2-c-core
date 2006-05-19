@@ -16,5 +16,6 @@ test_print_LDADD   =  \
                     -laxis2_wsdl4c
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/util
+			@UTILINC@ \
+			@UTILINC@/platforms
 
