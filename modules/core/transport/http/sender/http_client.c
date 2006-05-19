@@ -45,6 +45,10 @@ struct axis2_http_client_impl
 	axis2_http_simple_response_t *response;
 	axis2_bool_t request_sent;
 	int timeout;
+    axis2_bool_t proxy_enabled;
+    axis2_char_t *proxy_host;
+    int proxy_port;
+    axis2_char_t *proxy_host_port;
 };
 
 #define AXIS2_INTF_TO_IMPL(http_client) \
@@ -75,6 +79,17 @@ int AXIS2_CALL
 axis2_http_client_get_timeout (axis2_http_client_t *client, axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
+axis2_http_client_set_proxy(axis2_http_client_t *client, axis2_env_t **env, 
+                        axis2_char_t *proxy_host, int proxy_port);
+
+axis2_char_t* AXIS2_CALL 
+axis2_http_client_get_proxy(axis2_http_client_t *client, axis2_env_t **env);
+
+axis2_status_t AXIS2_CALL 
+axis2_http_client_connect_ssl_host(axis2_http_client_t *client, 
+                        axis2_env_t **env, axis2_char_t *host, int port);
+
+axis2_status_t AXIS2_CALL 
 axis2_http_client_free (axis2_http_client_t *client, axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
@@ -103,6 +118,10 @@ axis2_http_client_create (axis2_env_t **env, axis2_url_t *url)
 	http_client_impl->response = NULL;
 	http_client_impl->request_sent = AXIS2_FALSE;
 	http_client_impl->timeout = AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
+    http_client_impl->proxy_enabled = AXIS2_FALSE;
+    http_client_impl->proxy_port = 0;
+    http_client_impl->proxy_host = NULL;
+    http_client_impl->proxy_host_port = NULL;
 	
     http_client_impl->http_client.ops = AXIS2_MALLOC((*env)->allocator,
 						sizeof(axis2_http_client_ops_t));
@@ -124,6 +143,10 @@ axis2_http_client_create (axis2_env_t **env, axis2_url_t *url)
 						axis2_http_client_set_timeout;
 	http_client_impl->http_client.ops->get_timeout = 
 						axis2_http_client_get_timeout;
+    http_client_impl->http_client.ops->set_proxy = 
+                        axis2_http_client_set_proxy;
+    http_client_impl->http_client.ops->get_proxy = 
+                        axis2_http_client_get_proxy;
     http_client_impl->http_client.ops->free = axis2_http_client_free;
                         
 	return &(http_client_impl->http_client);
@@ -193,10 +216,21 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_URL, AXIS2_FAILURE);
 		return AXIS2_FAILURE;
 	}
-    
-	client_impl->sockfd = axis2_network_handler_open_socket(env, 
+    if(AXIS2_TRUE == client_impl->proxy_enabled)
+    {
+        if(NULL == client_impl->proxy_host || client_impl->proxy_port <= 0)
+        {
+            return AXIS2_FAILURE;
+        }
+	    client_impl->sockfd = axis2_network_handler_open_socket(env, 
+						client_impl->proxy_host, client_impl->proxy_port);
+    }
+    else
+    {
+        client_impl->sockfd = axis2_network_handler_open_socket(env, 
 						AXIS2_URL_GET_SERVER(client_impl->url, env), 
 						AXIS2_URL_GET_PORT(client_impl->url, env));
+    }
 	if(client_impl->sockfd < 0)
 	{
 		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
@@ -217,6 +251,15 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
                         "HTTPS"))
     {
 #ifdef AXIS2_SSL_ENABLED
+        if(AXIS2_TRUE == client_impl->proxy_enabled) 
+        {
+            if(AXIS2_SUCCESS != axis2_http_client_connect_ssl_host(client, env, 
+                        AXIS2_URL_GET_SERVER(client_impl->url, env), 
+                        AXIS2_URL_GET_PORT(client_impl->url, env)))
+            {
+                return AXIS2_FAILURE;
+            }
+        }
         client_impl->data_stream = axis2_stream_create_ssl(env, 
                         client_impl->sockfd);
 #else
@@ -271,9 +314,44 @@ axis2_http_client_send (axis2_http_client_t *client, axis2_env_t **env,
 			str_header = str_header2;
 		}
 	}
-	str_request_line = AXIS2_HTTP_REQUEST_LINE_TO_STRING(
+    if(AXIS2_FALSE == client_impl->proxy_enabled)
+    {
+        str_request_line = AXIS2_HTTP_REQUEST_LINE_TO_STRING(
 						AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(request, env)
 						, env);
+    }
+    else
+    {
+        /* we need the request line in the format
+         * POST http://host:port/path HTTP/1.x if we have enabled proxies
+         */
+        axis2_char_t *host_port_str = NULL;
+        axis2_char_t *server = AXIS2_URL_GET_SERVER(client_impl->url, env);
+        axis2_http_request_line_t *request_line = 
+                        AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(request, env);
+        axis2_char_t *path = AXIS2_HTTP_REQUEST_LINE_GET_URI(request_line, env);
+                
+        
+        /* length = len(server) + len(:port) + len("http://") + len(path) + 1*/
+        host_port_str = AXIS2_MALLOC((*env)->allocator, AXIS2_STRLEN(server) +
+                        + AXIS2_STRLEN(path) +  20 * sizeof(axis2_char_t));
+        if(NULL == host_port_str)
+        {
+            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+        sprintf(host_port_str, "http://%s:%d%s", server, AXIS2_URL_GET_PORT(
+                        client_impl->url, env), path);
+        str_request_line = AXIS2_MALLOC((*env)->allocator, 
+                        AXIS2_STRLEN(host_port_str) + 20 * sizeof(axis2_char_t));
+        sprintf(str_request_line, "%s %s %s\r\n", 
+                        AXIS2_HTTP_REQUEST_LINE_GET_METHOD(request_line, env), 
+                        host_port_str, AXIS2_HTTP_REQUEST_LINE_GET_HTTP_VERSION(
+                        request_line, env));
+        AXIS2_FREE((*env)->allocator, host_port_str);
+        host_port_str = NULL;
+         
+    }
 	wire_format = AXIS2_STRACAT(str_request_line, str_header, env);
 	AXIS2_FREE((*env)->allocator, str_header);
 	str_header = NULL;
@@ -349,9 +427,9 @@ axis2_http_client_recieve_header(axis2_http_client_t *client, axis2_env_t **env)
 	int status_code = -1;
 	axis2_http_client_impl_t *client_impl = NULL;
 	axis2_http_status_line_t *status_line = NULL;
-	char str_status_line[512];
-	char tmp_buf[3];
-	char str_header[512];
+	axis2_char_t str_status_line[512];
+	axis2_char_t tmp_buf[3];
+	axis2_char_t str_header[512];
 	int read = 0;
 	int http_status = 0;
 	axis2_bool_t end_of_line = AXIS2_FALSE;
@@ -514,4 +592,139 @@ axis2_http_client_get_timeout (axis2_http_client_t *client, axis2_env_t **env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(client)->timeout;
+}
+
+axis2_status_t AXIS2_CALL 
+axis2_http_client_set_proxy(axis2_http_client_t *client, axis2_env_t **env, 
+                        axis2_char_t *proxy_host, int proxy_port)
+{
+    axis2_http_client_impl_t *client_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, proxy_host, AXIS2_FAILURE);
+    if(proxy_port <= 0)
+    {
+        return AXIS2_FAILURE;
+    }
+    client_impl = AXIS2_INTF_TO_IMPL(client);
+    client_impl->proxy_port = proxy_port;
+    if(NULL != client_impl->proxy_host)
+    {
+        AXIS2_FREE((*env)->allocator, client_impl->proxy_host);
+        client_impl->proxy_host = NULL;
+    }
+    if(NULL != client_impl->proxy_host_port)
+    {
+        AXIS2_FREE((*env)->allocator, client_impl->proxy_host_port);
+        client_impl->proxy_host_port = NULL;
+    }
+    client_impl->proxy_host = AXIS2_STRDUP(proxy_host, env);
+    if(NULL == client_impl->proxy_host)
+    {
+        return AXIS2_FAILURE;
+    }
+    client_impl->proxy_host_port = AXIS2_MALLOC((*env)->allocator, AXIS2_STRLEN(
+                            proxy_host) + 10 * sizeof(axis2_char_t));
+    sprintf(client_impl->proxy_host_port, "%s:%d", proxy_host, proxy_port);
+    client_impl->proxy_enabled = AXIS2_TRUE;
+    return AXIS2_SUCCESS;
+}
+
+axis2_char_t* AXIS2_CALL 
+axis2_http_client_get_proxy(axis2_http_client_t *client, axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(client)->proxy_host_port;
+}
+
+axis2_status_t AXIS2_CALL 
+axis2_http_client_connect_ssl_host(axis2_http_client_t *client, 
+                        axis2_env_t **env, axis2_char_t *host, int port)
+{
+    axis2_stream_t *tmp_stream = NULL;
+    axis2_char_t *connect_string = NULL;
+    axis2_char_t str_status_line[512];
+    axis2_char_t tmp_buf[3];
+    int read = 0;
+    axis2_bool_t end_of_line = AXIS2_FALSE;
+    axis2_bool_t end_of_response = AXIS2_FALSE;
+    axis2_http_client_impl_t *client_impl = NULL;
+    axis2_http_status_line_t *status_line = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, host, AXIS2_FAILURE);
+    
+    client_impl = AXIS2_INTF_TO_IMPL(client);
+    if(port <= 0)
+    {
+        return AXIS2_FAILURE;
+    }
+    
+    tmp_stream = axis2_stream_create_socket(env, client_impl->sockfd);
+    if(NULL == tmp_stream)
+    {
+        return AXIS2_FAILURE;
+    }
+    connect_string = AXIS2_MALLOC((*env)->allocator, 
+                        AXIS2_STRLEN(host) * sizeof(axis2_char_t) +
+                        30 * sizeof(axis2_char_t));
+    sprintf(connect_string, "CONNECT %s:%d HTTP/1.0\r\n\r\n", host, port);
+    AXIS2_STREAM_WRITE(tmp_stream, env, connect_string, 
+                    AXIS2_STRLEN(connect_string) * sizeof(axis2_char_t));
+    
+    memset(str_status_line, 0, 512);
+    while((read = AXIS2_STREAM_READ(tmp_stream, env, tmp_buf, 1)) > 0)
+    {
+        tmp_buf[read] = '\0';
+        strcat(str_status_line, tmp_buf);
+        if(0 != strstr(str_status_line, AXIS2_HTTP_CRLF))
+        {
+            end_of_line = AXIS2_TRUE;
+            break;
+        }
+    }
+    if (read < 0)
+    {
+        AXIS2_ERROR_SET((*env)->error, 
+                        AXIS2_ERROR_RESPONSE_TIMED_OUT, 
+                        AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    status_line = axis2_http_status_line_create(env, str_status_line);
+    if(NULL == status_line)
+    {
+        AXIS2_ERROR_SET((*env)->error, 
+                        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, 
+                        AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    if(200 != AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(status_line, env))
+    {
+        return AXIS2_FAILURE;
+    }
+    /* We need to empty the stream before we return
+     */
+    memset(str_status_line, 0, 512);
+    while (AXIS2_FALSE == end_of_response)
+    {
+        while((read = AXIS2_STREAM_READ(tmp_stream, env, tmp_buf, 1)) > 0)
+        {
+            tmp_buf[read] = '\0';
+            strcat(str_status_line, tmp_buf);
+            if(0 != strstr(str_status_line, AXIS2_HTTP_CRLF))
+            {
+                end_of_line = AXIS2_TRUE;
+                break;
+            }
+        }
+        if(AXIS2_TRUE == end_of_line)
+        {
+            if(0 == AXIS2_STRCMP(str_status_line, AXIS2_HTTP_CRLF))
+            {
+                end_of_response = AXIS2_TRUE;
+            }
+        }
+    }
+    AXIS2_STREAM_FREE(tmp_stream, env);
+    return AXIS2_SUCCESS;
 }

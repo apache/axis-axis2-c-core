@@ -271,9 +271,17 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
 	if(0 == AXIS2_STRCMP(sender_impl->http_version, 
 		AXIS2_HTTP_HEADER_PROTOCOL_11))
 	{
+		axis2_char_t *header = NULL;
+        header = AXIS2_MALLOC((*env)->allocator, AXIS2_STRLEN(
+                        AXIS2_URL_GET_SERVER(url, env)) + 10 * sizeof(
+                        axis2_char_t));
+        sprintf(header, "%s:%d", AXIS2_URL_GET_SERVER(url, env), 
+                        AXIS2_URL_GET_PORT(url, env));
 		http_header = axis2_http_header_create(env, 
 						AXIS2_HTTP_HEADER_HOST, 
-						AXIS2_URL_GET_SERVER(url, env));
+						header);
+        AXIS2_FREE((*env)->allocator, header);
+        header = NULL;
 		AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
 	}
 	AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(request, env, buffer);

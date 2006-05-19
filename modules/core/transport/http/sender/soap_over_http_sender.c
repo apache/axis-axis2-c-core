@@ -25,6 +25,7 @@
 #include <axis2_xml_writer.h>
 #include <axis2_property.h>
 #include <axis2_types.h>
+#include <axis2_generic_obj.h>
 
 /** 
  * @brief SOAP over HTTP sender struct impl
@@ -86,6 +87,12 @@ axis2_status_t AXIS2_CALL
 axis2_soap_over_http_sender_set_http_version
 									(axis2_soap_over_http_sender_t *sender, 
 									axis2_env_t **env, axis2_char_t *version);
+                                    
+axis2_status_t AXIS2_CALL
+axis2_soap_over_http_sender_configure_proxy(
+                                    axis2_soap_over_http_sender_t *sender, 
+									axis2_env_t **env, 
+                                    axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_over_http_sender_free
@@ -214,6 +221,9 @@ axis2_soap_over_http_sender_send
 	{
 		return AXIS2_FAILURE;
 	}
+    /* configure proxy settings if we have set so 
+     */
+    axis2_soap_over_http_sender_configure_proxy(sender, env, msg_ctx);
     /* We put the client into msg_ctx so that we can free it once the processing
      * is done at client side
      */
@@ -357,9 +367,17 @@ axis2_soap_over_http_sender_send
 	if(0 == AXIS2_STRCMP(sender_impl->http_version, 
 		AXIS2_HTTP_HEADER_PROTOCOL_11))
 	{
+        axis2_char_t *header = NULL;
+        header = AXIS2_MALLOC((*env)->allocator, AXIS2_STRLEN(
+                        AXIS2_URL_GET_SERVER(url, env)) + 10 * sizeof(
+                        axis2_char_t));
+        sprintf(header, "%s:%d", AXIS2_URL_GET_SERVER(url, env), 
+                        AXIS2_URL_GET_PORT(url, env));
 		http_header = axis2_http_header_create(env, 
 						AXIS2_HTTP_HEADER_HOST, 
-						AXIS2_URL_GET_SERVER(url, env));
+						header);
+        AXIS2_FREE((*env)->allocator, header);
+        header = NULL;
 		AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
 	}
 
@@ -631,4 +649,97 @@ axis2_soap_over_http_sender_set_http_version
 		return AXIS2_FAILURE;
 	}
 	return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_soap_over_http_sender_configure_proxy(axis2_soap_over_http_sender_t *sender, 
+									axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
+{
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_conf_t *conf = NULL;
+    axis2_transport_out_desc_t *trans_desc = NULL;
+    axis2_param_t *proxy_param = NULL;
+    axis2_qname_t *transport_qname = NULL;
+    axis2_hash_t *transport_attrs = NULL;
+    axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+    
+    sender_impl = AXIS2_INTF_TO_IMPL(sender);
+    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+    if(NULL == conf_ctx)
+    {
+        return AXIS2_FAILURE;
+    }
+    conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+    if(NULL == conf)
+    {
+        return AXIS2_FAILURE;
+    }
+    transport_qname = axis2_qname_create(env, "http", NULL, NULL);
+    if(transport_qname == NULL)
+    {
+        return AXIS2_FAILURE;
+    }
+    trans_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, transport_qname);
+    if(NULL == trans_desc)
+    {
+        return AXIS2_FAILURE;
+    }
+    proxy_param = AXIS2_PARAM_CONTAINER_GET_PARAM(trans_desc->param_container, 
+                            env, AXIS2_HTTP_PROXY);
+    if(NULL != proxy_param)
+    {
+        transport_attrs = AXIS2_PARAM_GET_ATTRIBUTES(proxy_param, env);
+        if(NULL != transport_attrs)
+        {
+            axis2_generic_obj_t *obj = NULL;
+            axis2_om_attribute_t *host_attr = NULL;
+            axis2_om_attribute_t *port_attr = NULL;
+            axis2_char_t *proxy_host = NULL;
+            axis2_char_t *proxy_port = NULL;
+            
+            obj = axis2_hash_get(transport_attrs, AXIS2_PROXY_HOST_NAME,
+                        AXIS2_HASH_KEY_STRING);
+            if(NULL == obj)
+            {
+                return AXIS2_FAILURE;
+            }
+            host_attr = (axis2_om_attribute_t*)AXIS2_GENERIC_OBJ_GET_VALUE(obj,
+                        env);
+            if(NULL == host_attr)
+            {
+                return AXIS2_FAILURE;
+            }
+            proxy_host = AXIS2_OM_ATTRIBUTE_GET_VALUE(host_attr, env);
+            if(NULL == proxy_host)
+            {
+                return AXIS2_FAILURE;
+            }
+            /* Now we get the port */
+            obj = NULL;
+            
+            obj = axis2_hash_get(transport_attrs, AXIS2_PROXY_HOST_PORT,
+                        AXIS2_HASH_KEY_STRING);
+            port_attr = (axis2_om_attribute_t*)AXIS2_GENERIC_OBJ_GET_VALUE(obj,
+                        env);
+            if(NULL == port_attr)
+            {
+                return AXIS2_FAILURE;
+            }
+            proxy_port = AXIS2_OM_ATTRIBUTE_GET_VALUE(port_attr, env);
+            if(NULL == proxy_port)
+            {
+                return AXIS2_FAILURE;
+            }
+            if(NULL != proxy_host && NULL != proxy_port)
+            {
+                AXIS2_HTTP_CLIENT_SET_PROXY(sender_impl->client, env, proxy_host,
+                        AXIS2_ATOI(proxy_port));
+                return AXIS2_SUCCESS;
+            }
+        }
+    }
+    return AXIS2_SUCCESS;
 }

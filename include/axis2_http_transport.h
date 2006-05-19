@@ -372,6 +372,21 @@ extern "C"
      * Content type for MTOM
      */
     #define MTOM_RECIVED_CONTENT_TYPE "MTOM_RECEIVED"
+
+    /**
+     * Constant for HTTP proxy
+     */
+    #define AXIS2_HTTP_PROXY "PROXY"
+    
+    /**
+     * Constant for HTTP proxy host
+     */
+    #define AXIS2_PROXY_HOST_NAME "proxy_host"
+    
+    /**
+     * Constant for HTTP proxy port
+     */
+    #define AXIS2_PROXY_HOST_PORT "proxy_port"
     
 /** @} */
     

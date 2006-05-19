@@ -70,6 +70,13 @@ AXIS2_DECLARE_DATA struct axis2_http_client_ops
     int (AXIS2_CALL *get_timeout) (axis2_http_client_t *client, 
                     axis2_env_t **env);
 	
+    axis2_status_t (AXIS2_CALL *set_proxy) (axis2_http_client_t *client, 
+                    axis2_env_t **env, axis2_char_t *proxy_host,
+                    int proxy_port);
+	
+    axis2_char_t* (AXIS2_CALL *get_proxy) (axis2_http_client_t *client, 
+                    axis2_env_t **env);
+	
     axis2_status_t (AXIS2_CALL *free) (axis2_http_client_t *client, 
                     axis2_env_t **env);
 };
@@ -112,6 +119,11 @@ axis2_http_client_free_void_arg (void *client, axis2_env_t **env);
 								timeout))
 #define AXIS2_HTTP_CLIENT_GET_TIMEOUT(client, env) \
                                 ((client)->ops->get_url(client, env))
+#define AXIS2_HTTP_CLIENT_SET_PROXY(client, env, proxy_host, proxy_port) \
+                                ((client)->ops->set_proxy(client, env,\
+								proxy_host, proxy_port))
+#define AXIS2_HTTP_CLIENT_GET_PROXY(client, env) \
+                                ((client)->ops->get_proxy(client, env))
 #define AXIS2_HTTP_CLIENT_FREE(client, env) \
                                 ((client)->ops->free(client, env))
 /************************** End of function macros ****************************/    
