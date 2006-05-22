@@ -20,6 +20,7 @@
 #include "callback_recv.h"
 #include <axis2_soap_const.h>
 #include <axis2_soap_body.h>
+#include <axis2_soap_header.h>
 #include "listener_manager.h"
 #include <axis2_module_desc.h>
 #include <axis2_array_list.h>
@@ -1241,6 +1242,34 @@ static axis2_bool_t axis2_svc_client_fill_soap_envelope(axis2_env_t **env, axis2
     if (!envelope)
     {
         return AXIS2_FALSE;
+    }
+
+    if (svc_client_impl->headers)
+    {
+        axis2_soap_header_t *soap_header = NULL;
+        soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(envelope, env);
+    
+        if (soap_header)
+        {
+            axis2_om_node_t *header_node = NULL;
+            header_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
+
+            if (header_node)
+            {
+                int size = 0;
+                int i = 0;
+                size = AXIS2_ARRAY_LIST_SIZE(svc_client_impl->headers, env);
+                for (i = 0; i < size; i++)
+                {
+                    axis2_om_node_t *node = NULL;
+                    node = AXIS2_ARRAY_LIST_GET(svc_client_impl->headers, env, i);
+                    if (node)
+                    {
+                        AXIS2_OM_NODE_ADD_CHILD(header_node, env, node);
+                    }
+                }
+            }
+        }
     }
 
     if (payload)
