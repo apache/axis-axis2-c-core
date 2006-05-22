@@ -6,4 +6,6 @@ libaxis2_woden_extensions_la_SOURCES = \
 							component_exts.c
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(AXIS2C_HOME)/include
+			@AXIOMINC@ \
+			@UTILINC@ \
+			@XMLSCHEMAINC@

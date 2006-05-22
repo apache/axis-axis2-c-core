@@ -11,4 +11,6 @@ libaxis2_woden_xml_la_SOURCES = \
 							bool_attr.c
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(AXIS2C_HOME)/include
+			@AXIOMINC@ \
+			@UTILINC@ \
+			@XMLSCHEMAINC@

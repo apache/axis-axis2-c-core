@@ -27,5 +27,6 @@ libaxis2_woden_wsdl20_la_SOURCES = \
 							binding_op.c
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(AXIS2C_HOME)/include \
-            -I$(XML_SCHEMA)/include
+			@AXIOMINC@ \
+			@UTILINC@ \
+			@XMLSCHEMAINC@

@@ -65,16 +65,16 @@ struct axis2_woden_desc_element_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (
-            void *doc_el,
+            void *desc_el,
             axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
     to_desc_element_free) (
-            void *doc_el,
+            void *desc_el,
             axis2_env_t **env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
-    type) (void *doc_el,
+    type) (void *desc_el,
             axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
@@ -314,7 +314,7 @@ struct axis2_woden_desc_element_ops
             axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL *
-    add_extension_registry) (
+    set_extension_registry) (
             void *desc_ele,
             axis2_env_t **env,
             void *ext_reg);
@@ -349,33 +349,182 @@ axis2_woden_desc_element_resolve_methods(
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_DESC_ELEMENT_FREE(doc_el, env) \
-		(((axis2_woden_desc_element_t *) doc_el)->ops->\
-         free (doc_el, env))
+#define AXIS2_WODEN_DESC_ELEMENT_FREE(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+         free (desc_el, env))
 
-#define AXIS2_WODEN_DESC_ELEMENT_TO_DESC_ELEMENT_FREE(doc_el, env) \
-		(((axis2_woden_desc_element_t *) doc_el)->ops->\
-         to_desc_element_free (doc_el, env))
+#define AXIS2_WODEN_DESC_ELEMENT_TO_DESC_ELEMENT_FREE(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+         to_desc_element_free (desc_el, env))
 
-#define AXIS2_WODEN_DESC_ELEMENT_TYPE(doc_el, env) \
-		(((axis2_woden_desc_element_t *) doc_el)->ops->\
-         type (doc_el, env))
+#define AXIS2_WODEN_DESC_ELEMENT_TYPE(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+         type (desc_el, env))
 
-#define AXIS2_WODEN_DESC_ELEMENT_SET_REF(doc_el, env, uri) \
-		(((axis2_woden_desc_element_t *) doc_el)->ops->\
-         set_ref(doc_el, env, uri))
+#define AXIS2_WODEN_DESC_ELEMENT_SET_DOCUMENT_BASE_URI(desc_el, env, document_base_uri) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+         set_document_base_uri(desc_el, env, document_base_uri))
 
-#define AXIS2_WODEN_DESC_ELEMENT_GET_REF(doc_el, env) \
-		(((axis2_woden_desc_element_t *) doc_el)->ops->\
-         get_ref(doc_el, env))
+#define AXIS2_WODEN_DESC_ELEMENT_GET_DOCUMENT_BASE_UTI(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+         get_document_base_uri(desc_el, env))
 
-#define AXIS2_WODEN_DESC_ELEMENT_SET_REQUIRED(doc_el, env, required) \
-		(((axis2_woden_desc_element_t *) doc_el)->ops->\
-         set_required(doc_el, env, required))
+#define AXIS2_WODEN_DESC_ELEMENT_SET_TARGET_NAMESPACE(desc_el, env, namespc_uri) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+         set_target_namespace(desc_el, env, namespc_uri))
 
-#define AXIS2_WODEN_DESC_ELEMENT_IS_REQUIRED(doc_el, env) \
-		(((axis2_woden_desc_element_t *) doc_el)->ops->\
-         is_required(doc_el, env))
+#define AXIS2_WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+         get_target_namespace(desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_ADD_NAMESPACE(desc_el, env, namespc) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        add_namespace (desc_el, env, namespc))
+
+#define AXIS2_WODEN_DESC_ELEMENT_REMOVE_NAMESPACE(desc_el, env, prefix) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        remove_namespace (desc_el, env, prefix))
+
+#define AXIS2_WODEN_DESC_ELEMENT_GET_NAMESPACE(desc_el, env, prefix) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        get_namespace (desc_el, env, prefix))
+
+#define AXIS2_WODEN_DESC_ELEMENT_GET_NAMESPACES(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        get_namespaces (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_DOCUMENTATION_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_documentation_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_IMPORT_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_import_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_INCLUDE_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_include_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATET_TYPES_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_types_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_INTERFACE_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_interface_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_INTERFACE_FAULT_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_interface_fault_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_INTERFACE_OP_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_interace_op_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_INTERFACE_FAULT_REF_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        craete_interface_fault_ref_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_INTERFACE_MSG_REF_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_interface_msg_ref_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_BINDING_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_binding_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_BINDING_FAULT_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_binding_fault_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_BINDING_OP_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_binding_op_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_BINDING_FAULT_REF_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_binding_fault_ref_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_BINDING_MSG_REF_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_binding_msg_ref_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_FEATURE_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_feature_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_SVC_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_svc_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_ENDPOINT_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_endpoint_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_PROPERTY_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        create_property_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_ADD_IMPORT_ELEMENT(desc_el, env, import_el) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        add_import_element (desc_el, env, import_el))
+
+#define AXIS2_WODEN_DESC_ELEMENT_GET_IMPORT_ELEMENTS(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        get_import_elements (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_ADD_INCLUDE_ELEMENT(desc_el, env, include_el) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        add_include_element (desc_el, env, include_el))
+
+#define AXIS2_WODEN_DESC_ELEMENT_GET_INCLUDE_ELEMENTS(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        get_include_elements (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_SET_TYPES_ELEMENT(desc_el, env, types_el) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        set_types_element (desc_el, env, types_el))
+
+#define AXIS2_WODEN_DESC_ELEMENT_GET_TYPES_ELEMENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        get_types_element (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_ADD_INTERFACE_ELEMENT(desc_el, env, interface_el) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        add_interface_element (desc_el, env, interface_el))
+
+#define AXIS2_WODEN_DESC_ELEMENT_GET_INTERFACE_ELEMENTS(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        get_interface_elements (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_ADD_BINDING_ELEMENT(desc_el, env, binding_el) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        add_binding_element (desc_el, env, binding_el))
+
+#define AXIS2_WODEN_DESC_ELEMENT_GET_BINDING_ELEMENTS(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        get_svc_elements (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_ADD_SVC_ELEMENT(desc_el, env, svc_el) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        add_svc_element (desc_el, env, svc_el))
+
+#define AXIS2_WODEN_DESC_ELEMENT_GET_SVC_ELEMENTS(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        get_svc_elements (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_SET_EXTENSION_REGISTRY(desc_el, env, ext_reg) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        set_extension_registry (desc_el, env, ext_reg))
+
+#define AXIS2_WODEN_DESC_ELEMENT_GET_EXTENSION_REGISTRY(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        get_extension_registry (desc_el, env))
+
+#define AXIS2_WODEN_DESC_ELEMENT_TO_COMPONENT(desc_el, env) \
+		(((axis2_woden_desc_element_t *) desc_el)->ops->\
+        to_component (desc_el, env))
+
 
 /** @} */
 #ifdef __cplusplus

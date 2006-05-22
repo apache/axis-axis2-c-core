@@ -6,4 +6,4 @@ libaxis2_woden_util_la_SOURCES = \
 								 generic_obj.c
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(AXIS2C_HOME)/include
+			@UTILINC@

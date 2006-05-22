@@ -120,7 +120,7 @@ axis2_woden_schema_free(
 
     if(schema_impl->f_namespc)
     {
-        AXIS2_URI_FREE((*env)->allocator, schema_impl->f_namespc);
+        AXIS2_URI_FREE(schema_impl->f_namespc, env);
         schema_impl->f_namespc = NULL;
     }
     
