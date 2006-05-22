@@ -460,7 +460,7 @@ axis2_engine_send_fault(struct axis2_engine *engine,
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     
     /* find and execute the Fault Out Flow Handlers */
-    if (op_ctx) 
+    /*if (op_ctx) 
     {
         axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);        
         axis2_array_list_t *phases = AXIS2_OP_GET_PHASES_OUTFLOW(op, env);
@@ -473,7 +473,7 @@ axis2_engine_send_fault(struct axis2_engine *engine,
         {
             axis2_engine_invoke_phases(engine, env, phases, msg_ctx);
         }
-    }
+    }*/
     /* it is possible that op context is NULL as the error occered before the
     dispatcher. We do not run Handlers in that case */
 
