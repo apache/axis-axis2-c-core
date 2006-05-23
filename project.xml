@@ -146,19 +146,6 @@
                 <role>Handle Axis2/C Firefox Extension</role>
             </roles>
 		</contributor>
-		<contributor>
-			<name>Sanjaya Rathnaweera</name>
-			<email>sanjaya AT wso2.com</email>
-			<organization>WSO2</organization>
-		</contributor>
-		<contributor>
-			<name>Nabeel Yoosuf</name>
-			<email>nabeel AT wso2.com</email>
-			<organization>WSO2</organization>
-            <roles>
-                <role>Handle Axis2/C PHP Binding</role>
-            </roles>
-		</contributor>
 	</contributors>
 
     <!-- ################################################################ -->
