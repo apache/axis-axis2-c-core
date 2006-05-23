@@ -106,6 +106,12 @@
 			<organization>University of Moratuwa</organization>
 		</developer>
 		<developer>
+			<name>Sanjaya Rathnaweera</name>
+			<id>pini</id>
+			<email>sanjaya AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
 			<name>Davanum Srinivas</name>
 			<id>dims</id>
 			<email>dims AT wso2.com</email>
@@ -115,6 +121,12 @@
 			<name>Sanjiva Weerawarana</name>
 			<id>sanjiva</id>
 			<email>sanjiva AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
+			<name>Nabeel Yoosuf</name>
+			<id>nabeel</id>
+			<email>nabeel AT wso2.com</email>
 			<organization>WSO2</organization>
 		</developer>
 	</developers>
