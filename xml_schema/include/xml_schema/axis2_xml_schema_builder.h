@@ -27,6 +27,7 @@
 
 #include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_annotated.h>
+#include <xml_schema/axis2_xml_schema.h>
 #include <axis2_om.h>
 #include <axis2_hash.h>
 #include <xml_schema/axis2_xml_schema_collection.h>

@@ -121,7 +121,7 @@ axis2_xml_schema_import_resolve_methods(
 
 #define AXIS2_XML_SCHEMA_IMPORT_SET_NAMESPACE(import, env, ns) \
 		(((axis2_xml_schema_import_t *) import)->ops->\
-            set_schema(import, env, ns))
+            set_namespace(import, env, ns))
 
 /** @} */
 #ifdef __cplusplus

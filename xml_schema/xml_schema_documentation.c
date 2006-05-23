@@ -33,13 +33,15 @@ struct axis2_xml_schema_documentation_impl
     
     axis2_xml_schema_types_t obj_type;
     
+    axis2_char_t *language;
+    
     axis2_hash_t *ht_super;
     
     axis2_hash_t *methods;
 
     axis2_char_t *source;
     
-    void *markup; /* TODO Replace (void *) with node list */
+    axis2_om_child_element_iterator_t *markup; 
 };
 
 #define AXIS2_INTF_TO_IMPL(documentation) \
@@ -73,16 +75,27 @@ axis2_xml_schema_documentation_set_source(void *documentation,
                                         axis2_env_t **env,
                                         axis2_char_t *source);
 
-/* TODO replace (void *) mark up with node list */
-void *AXIS2_CALL
+axis2_om_child_element_iterator_t *AXIS2_CALL
 axis2_xml_schema_documentation_get_markup(void *documentation,
                                         axis2_env_t **env);
 
-/* TODO replace (void *) mark up with node list */
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_documentation_set_markup(void *documentation,
-                                        axis2_env_t **env,
-                                        void *markup);
+axis2_xml_schema_documentation_set_markup(
+        void *documentation,
+        axis2_env_t **env,
+        axis2_om_child_element_iterator_t *markup);
+        
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_documentation_set_language(
+        void *documentation,
+        axis2_env_t **env,
+        axis2_char_t *language);
+        
+axis2_char_t* AXIS2_CALL
+axis2_xml_schema_documentation_get_language(
+        void *documentation,
+        axis2_env_t **env);        
+
 /****************** end macros ***********************************************/
 
 AXIS2_DECLARE(axis2_xml_schema_documentation_t *)
@@ -107,6 +120,7 @@ axis2_xml_schema_documentation_create(axis2_env_t **env)
     documentation_impl->methods = NULL;
     documentation_impl->source = NULL;
     documentation_impl->markup = NULL;
+    documentation_impl->language  = NULL;
     
     documentation_impl->documentation.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_documentation_ops_t));
@@ -140,6 +154,13 @@ axis2_xml_schema_documentation_create(axis2_env_t **env)
     
     documentation_impl->documentation.ops->set_markup = 
         axis2_xml_schema_documentation_set_markup;
+        
+    documentation_impl->documentation.ops->set_language =
+        axis2_xml_schema_documentation_set_language;
+        
+    documentation_impl->documentation.ops->get_language =
+        axis2_xml_schema_documentation_get_language;
+                   
    
     documentation_impl->methods = axis2_hash_make(env);
     if(!documentation_impl->methods) 
@@ -304,7 +325,7 @@ axis2_xml_schema_documentation_set_source(void *documentation,
     ht_super = AXIS2_XML_SCHEMA_USE_SUPER_OBJS(documentation, env);
     if(NULL != ht_super)
     {
-        documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "AXIS2_XML_SCHEMA_APP_INFO",
+        documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "AXIS2_XML_SCHEMA_DOCUMENTATION",
                 AXIS2_HASH_KEY_STRING));
         if(NULL != documentation_impl)
             return  AXIS2_FAILURE;   
@@ -325,8 +346,7 @@ axis2_xml_schema_documentation_set_source(void *documentation,
     return AXIS2_SUCCESS;
 }
 
-/* TODO replace (void *) mark up with node list */
-void *AXIS2_CALL
+axis2_om_child_element_iterator_t *AXIS2_CALL
 axis2_xml_schema_documentation_get_markup(void *documentation,
                                         axis2_env_t **env)
 {
@@ -336,7 +356,7 @@ axis2_xml_schema_documentation_get_markup(void *documentation,
     ht_super = AXIS2_XML_SCHEMA_USE_SUPER_OBJS(documentation, env);
     if(NULL != ht_super)
     {
-        documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "AXIS2_XML_SCHEMA_APP_INFO",
+        documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "AXIS2_XML_SCHEMA_DOCUMENTATION",
                 AXIS2_HASH_KEY_STRING));
         if(NULL != documentation_impl)
             return  NULL;   
@@ -344,11 +364,10 @@ axis2_xml_schema_documentation_get_markup(void *documentation,
     return documentation_impl->markup;
 }
 
-/* TODO replace (void *) mark up with node list */
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_documentation_set_markup(void *documentation,
                                         axis2_env_t **env,
-                                        void *markup)
+                                        axis2_om_child_element_iterator_t *markup)
 {
     axis2_xml_schema_documentation_impl_t *documentation_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -357,11 +376,40 @@ axis2_xml_schema_documentation_set_markup(void *documentation,
     ht_super = AXIS2_XML_SCHEMA_USE_SUPER_OBJS(documentation, env);
     if(NULL != ht_super)
     {
-        documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "AXIS2_XML_SCHEMA_APP_INFO",
-                AXIS2_HASH_KEY_STRING));
+        documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
+            "AXIS2_XML_SCHEMA_DOCUMENTATION", AXIS2_HASH_KEY_STRING));
         if(NULL != documentation_impl)
             return  AXIS2_FAILURE;   
     } 
     documentation_impl->markup = markup;
     return AXIS2_SUCCESS;
 }
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_documentation_set_language(
+        void *documentation,
+        axis2_env_t **env,
+        axis2_char_t *language)
+{
+    axis2_xml_schema_documentation_impl_t *documentation_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, language, AXIS2_FAILURE);
+    
+    documentation_impl = AXIS2_INTF_TO_IMPL(documentation);
+    if(NULL != documentation_impl->language)
+    {
+        AXIS2_FREE((*env)->allocator, documentation_impl->language);
+        documentation_impl->language = NULL;
+    }
+    documentation_impl->language = AXIS2_STRDUP(language, env);
+    return AXIS2_SUCCESS;
+}        
+        
+axis2_char_t* AXIS2_CALL
+axis2_xml_schema_documentation_get_language(
+        void *documentation,
+        axis2_env_t **env)
+{
+    axis2_xml_schema_documentation_impl_t *documentation_impl = NULL;
+    documentation_impl = AXIS2_INTF_TO_IMPL(documentation);
+    return documentation_impl->language;
+}        

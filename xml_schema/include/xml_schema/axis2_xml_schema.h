@@ -251,17 +251,17 @@ axis2_xml_schema_resolve_methods(
 		(((axis2_xml_schema_t *) schema)->ops->\
             get_base_impl(schema, env))
             
-#define AXIS2_XML_SCHEMA_GET_NAMESPACE(schema, env) \
+#define AXIS2_XML_SCHEMA_GET_NAMESPACE(schema, env, prefix) \
         (((axis2_xml_schema_t *) schema)->ops->\
-            get_schema(schema, env))            
+            get_namespace(schema, env, prefix))            
 
 #define AXIS2_XML_SCHEMA_GET_ATTR_FORM_DEFAULT(schema, env) \
 		(((axis2_xml_schema_t *) schema)->ops->\
             get_attr_form_default(schema, env))
 
-#define AXIS2_XML_SCHEMA_SET_ATTR_FORM_DEFAULT(schema, env) \
+#define AXIS2_XML_SCHEMA_SET_ATTR_FORM_DEFAULT(schema, env, attr_form) \
 		(((axis2_xml_schema_t *) schema)->ops->\
-            set_attr_form_default(schema, env))
+            set_attr_form_default(schema, env, attr_form))
 
 #define AXIS2_XML_SCHEMA_GET_ATTR_GROUPS(schema, env) \
 		(((axis2_xml_schema_t *) schema)->ops->\

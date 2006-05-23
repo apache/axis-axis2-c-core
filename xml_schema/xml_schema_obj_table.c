@@ -72,6 +72,24 @@ axis2_xml_schema_obj_table_add(axis2_xml_schema_obj_table_t *obj_table,
                                     axis2_qname_t *qname,
                                     void *value);
                                     
+axis2_status_t AXIS2_CALL 
+axis2_xml_schema_obj_table_put(
+        axis2_xml_schema_obj_table_t *obj_table,
+        axis2_env_t **env,
+        axis2_char_t *key,
+        void *value);
+        
+void* AXIS2_CALL 
+axis2_xml_schema_obj_table_get(
+        axis2_xml_schema_obj_table_t *obj_table,
+        axis2_env_t **env,
+        axis2_char_t *key);
+
+axis2_hash_t* AXIS2_CALL 
+axis2_xml_schema_obj_table_get_hash_table(
+        axis2_xml_schema_obj_table_t *obj_table,
+        axis2_env_t **env);
+                                    
 /******************** end function pointers ***********************************/
 
 AXIS2_DECLARE(axis2_xml_schema_obj_table_t *)
@@ -315,4 +333,43 @@ axis2_xml_schema_obj_table_add(axis2_xml_schema_obj_table_t *obj_table,
     return AXIS2_FAILURE;        
 }
 
+axis2_status_t AXIS2_CALL 
+axis2_xml_schema_obj_table_put(
+        axis2_xml_schema_obj_table_t *obj_table,
+        axis2_env_t **env,
+        axis2_char_t *key,
+        void *value)
+{
+    axis2_xml_schema_obj_table_impl_t *obj_table_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, key, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
+    
+    obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
+    axis2_hash_set(obj_table_impl->collection, key, AXIS2_HASH_KEY_STRING, 
+        value);
+    return AXIS2_SUCCESS;
+}        
+        
+void* AXIS2_CALL 
+axis2_xml_schema_obj_table_get(
+        axis2_xml_schema_obj_table_t *obj_table,
+        axis2_env_t **env,
+        axis2_char_t *key)
+{
+    axis2_xml_schema_obj_table_impl_t *obj_table_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, key, AXIS2_FAILURE);
+    obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
+    return axis2_hash_get(obj_table_impl->collection, key, AXIS2_HASH_KEY_STRING);
+}        
 
+axis2_hash_t* AXIS2_CALL 
+axis2_xml_schema_obj_table_get_hash_table(
+        axis2_xml_schema_obj_table_t *obj_table,
+        axis2_env_t **env)
+{
+    axis2_xml_schema_obj_table_impl_t *obj_table_impl = NULL;
+    obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
+    return obj_table_impl->collection;
+}        

@@ -18,6 +18,94 @@
 #include <axis2_om_element.h>
 #include <axis2_array_list.h>
 
+
+AXIS2_DECLARE(axis2_om_element_t *)
+axis2_om_util_get_first_child_element_with_uri(
+        axis2_om_node_t *ele_node,
+        axis2_env_t **env,
+        axis2_char_t *uri,
+        axis2_om_node_t **child)
+{
+    axis2_om_node_t *child_node = NULL;
+    if(!ele_node || !uri)
+    {
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    child_node = AXIS2_OM_NODE_GET_FIRST_CHILD(ele_node, env);
+    while(NULL != child_node)
+    {
+        if(AXIS2_OM_NODE_GET_NODE_TYPE(child_node, env) == AXIS2_OM_ELEMENT)
+        {
+            axis2_om_element_t *child_ele = NULL;
+            axis2_om_namespace_t *ns = NULL;
+            
+            child_ele = (axis2_om_element_t*)
+                AXIS2_OM_NODE_GET_DATA_ELEMENT(child_node, env);
+            ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(child_ele, env, child_node);
+            if(NULL != ns)
+            {
+                axis2_char_t *child_uri = NULL;
+                child_uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+                if(NULL != child_uri && AXIS2_STRCMP(child_uri, uri) == 0)
+                {
+                    (*child) = child_node;
+                    return child_ele;
+                }
+            }
+        }    
+        child_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(child_node, env);
+    }
+    return NULL;
+}        
+        
+        
+AXIS2_DECLARE(axis2_om_element_t *)
+axis2_om_util_get_next_sibling_element_with_uri(
+        axis2_om_node_t *ele_node,
+        axis2_env_t **env,
+        axis2_char_t *uri,
+        axis2_om_node_t **next_node)
+{
+axis2_om_node_t *next_sib_node = NULL;
+    if(!ele_node || !uri)
+    {
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    next_sib_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(ele_node, env);
+    while(NULL != next_sib_node)
+    {
+        if(AXIS2_OM_NODE_GET_NODE_TYPE(next_sib_node, env) == AXIS2_OM_ELEMENT)
+        {
+            axis2_om_element_t *sib_ele = NULL;
+            axis2_om_namespace_t *ns = NULL;
+            
+            sib_ele = (axis2_om_element_t*)
+                AXIS2_OM_NODE_GET_DATA_ELEMENT(next_sib_node, env);
+            ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(sib_ele, env, next_sib_node);
+            if(NULL != ns)
+            {
+                axis2_char_t *sib_uri = NULL;
+                sib_uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+                if(NULL != sib_uri && AXIS2_STRCMP(sib_uri, uri) == 0)
+                {
+                    (*next_node) = next_sib_node;
+                    return sib_ele;
+                }
+            }
+        }    
+        next_sib_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(next_sib_node, env);
+    }
+    return NULL;
+}        
+        
+        
+
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_first_child_element(axis2_om_element_t *ele,
                                       axis2_env_t **env,
@@ -926,4 +1014,22 @@ axis2_om_util_get_node_namespace_uri(axis2_om_node_t *om_node,
             return AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);                    
     }        
     return NULL;
-}                                                                             
+} 
+
+AXIS2_DECLARE(axis2_om_child_element_iterator_t*)
+axis2_om_util_get_child_elements(axis2_om_element_t *om_ele, 
+                                 axis2_env_t **env,
+                                 axis2_om_node_t *om_node)
+{
+    axis2_om_element_t *first_ele = NULL;
+    axis2_om_node_t *first_node   = NULL;
+    AXIS2_PARAM_CHECK((*env)->error, om_node, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, om_ele, NULL);
+    first_ele = 
+        AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(om_ele, env, om_node, &first_node);
+    if(NULL != first_ele)
+    {
+        return axis2_om_child_element_iterator_create(env, first_node);
+    }        
+    return NULL;
+}                                                                                                             

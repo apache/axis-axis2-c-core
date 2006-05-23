@@ -24,6 +24,7 @@
 
 #include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_obj.h>
+#include <xml_schema/axis2_xml_schema_obj_collection.h>
 #include <axis2_hash.h>
 
 /** @defgroup axis2_xml_schema_annotation Xml Schema Annotation
@@ -63,7 +64,7 @@ struct axis2_xml_schema_annotation_ops
     get_base_impl) (void *annotation,
                         axis2_env_t **env);
     
-    axis2_hash_t *(AXIS2_CALL *
+    axis2_xml_schema_obj_collection_t *(AXIS2_CALL *
     get_items)(void *annotation,
                 axis2_env_t **env);
     

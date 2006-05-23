@@ -16,7 +16,7 @@
  
 #ifndef AXIS2_OM_H
 #define AXIS2_OM_H
-
+#include <axis2_om_node.h>
 #include <axis2_om_attribute.h>
 #include <axis2_om_child_element_iterator.h>
 #include <axis2_om_children_iterator.h>
@@ -28,7 +28,6 @@
 #include <axis2_om_element.h>
 #include <axis2_om_namespace.h>
 #include <axis2_om_navigator.h>
-#include <axis2_om_node.h>
 #include <axis2_om_output.h>
 #include <axis2_om_processing_instruction.h>
 #include <axis2_om_stax_builder.h>

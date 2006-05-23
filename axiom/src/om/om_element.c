@@ -203,6 +203,12 @@ axis2_hash_t* AXIS2_CALL
 axis2_om_element_extract_attributes(axis2_om_element_t *om_element,
                                     axis2_env_t **env,
                                     axis2_om_node_t *ele_node);
+                                    
+axis2_char_t* AXIS2_CALL
+axis2_om_element_get_attribute_value_by_name(
+        axis2_om_element_t *om_element,
+        axis2_env_t **env,
+        axis2_char_t *attr_name);                                    
                                         
                                                                
                                          
@@ -419,7 +425,10 @@ axis2_om_element_create (axis2_env_t **env,
         axis2_om_element_set_namespace_with_no_find_in_current_scope;
         
     element->om_element.ops->extract_attributes =
-        axis2_om_element_extract_attributes;                
+        axis2_om_element_extract_attributes;  
+        
+    element->om_element.ops->get_attribute_value_by_name =
+        axis2_om_element_get_attribute_value_by_name;                      
 
     return &(element->om_element);
 }
@@ -1723,3 +1732,39 @@ axis2_om_element_extract_attributes(axis2_om_element_t *om_element,
     }        
     return ht_cloned;
 }                                    
+
+axis2_char_t* AXIS2_CALL
+axis2_om_element_get_attribute_value_by_name(
+        axis2_om_element_t *om_element,
+        axis2_env_t **env,
+        axis2_char_t *attr_name)
+{
+    axis2_om_element_impl_t *om_ele_impl = NULL;
+    axis2_hash_index_t *hi = NULL;
+
+    AXIS2_PARAM_CHECK((*env)->error, attr_name, NULL);
+    om_ele_impl = AXIS2_INTF_TO_IMPL(om_element);
+    if(!om_ele_impl->attributes)
+        return NULL;
+    for(hi = axis2_hash_first(om_ele_impl->attributes, env); hi;
+        hi = axis2_hash_next(env, hi))
+    {
+        void *attr = NULL;
+        axis2_om_attribute_t *om_attr = NULL;
+        axis2_hash_this(hi, NULL, NULL, &attr);
+        if(NULL != attr)
+        {
+            axis2_char_t *this_attr_name;
+            axis2_char_t *this_attr_value;
+            
+            om_attr = (axis2_om_attribute_t*)attr;
+            this_attr_name = AXIS2_OM_ATTRIBUTE_GET_LOCALNAME(om_attr, env);
+            this_attr_value = AXIS2_OM_ATTRIBUTE_GET_VALUE(om_attr, env);
+            if(NULL != this_attr_name && AXIS2_STRCMP(this_attr_name, attr_name) == 0)
+            {
+                return this_attr_value;
+            }
+        }
+    }
+    return NULL;        
+}        

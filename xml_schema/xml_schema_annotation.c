@@ -36,7 +36,7 @@ struct axis2_xml_schema_annotation_impl
     
     axis2_xml_schema_obj_t *schema_obj;
     
-    axis2_hash_t *items;
+    axis2_xml_schema_obj_collection_t *items;
 };
 
 
@@ -64,7 +64,7 @@ axis2_xml_schema_obj_t *AXIS2_CALL
 axis2_xml_schema_annotation_get_base_impl(void *annotation,
                                 axis2_env_t **env);
 
-axis2_hash_t * AXIS2_CALL
+axis2_xml_schema_obj_collection_t * AXIS2_CALL
 axis2_xml_schema_annotation_get_items(void *annotation,
                         axis2_env_t **env);
 
@@ -115,7 +115,7 @@ axis2_xml_schema_annotation_create(axis2_env_t **env)
     annotation_impl->annotation.ops->get_items = 
         axis2_xml_schema_annotation_get_items;
    
-    annotation_impl->items = axis2_hash_make(env);
+    annotation_impl->items = axis2_xml_schema_obj_collection_create(env);
     if(!annotation_impl->items)
     {
         axis2_xml_schema_annotation_free(&(annotation_impl->annotation), env);
@@ -181,7 +181,7 @@ axis2_xml_schema_annotation_free(void *annotation,
 
     if(NULL != annotation_impl->items)
     {
-        axis2_hash_free(annotation_impl->items, env);
+        AXIS2_XML_SCHEMA_OBJ_COLLECTION_FREE(annotation_impl->items, env);
         annotation_impl->items = NULL;
     }
     
@@ -231,7 +231,7 @@ axis2_xml_schema_annotation_get_base_impl(void *annotation,
     return annotation_impl->schema_obj;
 }
 
-axis2_hash_t *AXIS2_CALL
+axis2_xml_schema_obj_collection_t *AXIS2_CALL
 axis2_xml_schema_annotation_get_items(void *annotation,
                                         axis2_env_t **env)
 {

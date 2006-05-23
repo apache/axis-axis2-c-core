@@ -59,36 +59,62 @@ struct axis2_xml_schema_obj_table_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (axis2_xml_schema_obj_table_t *obj_table,
+    free)(
+            axis2_xml_schema_obj_table_t *obj_table,
             axis2_env_t **env);
 
     int (AXIS2_CALL *
-    get_count) (axis2_xml_schema_obj_table_t *obj_table,
-                axis2_env_t **env);
+    get_count)(
+            axis2_xml_schema_obj_table_t *obj_table,
+            axis2_env_t **env);
 
     void *(AXIS2_CALL *
-    get_item) (axis2_xml_schema_obj_table_t *obj_table,
-               axis2_env_t **env,
-               axis2_qname_t *qname);
+    get_item)(
+            axis2_xml_schema_obj_table_t *obj_table,
+            axis2_env_t **env,
+            axis2_qname_t *qname);
 
     axis2_array_list_t *(AXIS2_CALL *
-    get_names) (axis2_xml_schema_obj_table_t *obj_table,
-                axis2_env_t **env);
+    get_names)(
+            axis2_xml_schema_obj_table_t *obj_table,
+            axis2_env_t **env);
 
     axis2_array_list_t *(AXIS2_CALL *
-    get_values) (axis2_xml_schema_obj_table_t *obj_table,
-                 axis2_env_t **env);
+    get_values)(
+            axis2_xml_schema_obj_table_t *obj_table,
+            axis2_env_t **env);
 
     axis2_bool_t (AXIS2_CALL *
-    contains) (axis2_xml_schema_obj_table_t *obj_table,
-               axis2_env_t **env,
-               axis2_qname_t *qname);
+    contains)(
+            axis2_xml_schema_obj_table_t *obj_table,
+            axis2_env_t **env,
+            axis2_qname_t *qname);
 
     axis2_status_t (AXIS2_CALL *
-    add) (axis2_xml_schema_obj_table_t *obj_table,
-          axis2_env_t **env,
-          axis2_qname_t *qname,
-          void *value);
+    add) (
+            axis2_xml_schema_obj_table_t *obj_table,
+            axis2_env_t **env,
+            axis2_qname_t *qname,
+            void *value);
+          
+    axis2_status_t (AXIS2_CALL *
+    put)(
+            axis2_xml_schema_obj_table_t *obj_table,
+            axis2_env_t **env,
+            axis2_char_t *key,
+            void *value);
+         
+    axis2_hash_t* (AXIS2_CALL *
+    get_hash_table)(
+            axis2_xml_schema_obj_table_t *obj_table,
+            axis2_env_t **env);
+            
+    void* (AXIS2_CALL*
+    get)(   axis2_xml_schema_obj_table_t *obj_table,
+            axis2_env_t **env,
+            axis2_char_t *key);            
+            
+                                           
 };
 
 struct axis2_xml_schema_obj_table
@@ -120,6 +146,15 @@ axis2_xml_schema_obj_table_create(axis2_env_t **env);
 
 #define AXIS2_XML_SCHEMA_OBJ_TABLE_ADD(obj_table, env, qname, value) \
 		((obj_table)->ops->add (obj_table, env, qname, value))
+		
+#define AXIS2_XML_SCHEMA_OBJ_TABLE_PUT(obj_table, env, key, value) \
+		((obj_table)->ops->put(obj_table, env, key, value))
+		
+#define AXIS2_XML_SCHEMA_OBJ_TABLE_GET(obj_table, env, key) \
+		((obj_table)->ops->get(obj_table, env, key))
+		
+#define AXIS2_XML_SCHEMA_OBJ_TABLE_GET_HASH_TABLE(obj_table, env) \
+		((obj_table)->ops->get_hash_table(obj_table, env))
 
 /** @} */
 #ifdef __cplusplus

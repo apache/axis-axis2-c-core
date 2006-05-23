@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_STRING_UTILS_H
-#define AXIS2_STRING_UTILS_H
+#ifndef AXIS2_STRING_UTIL_H
+#define AXIS2_STRING_UTIL_H
 
 #include <axis2_array_list.h>
 #include <axis2_string.h>
@@ -42,4 +42,4 @@ axis2_last_token(axis2_env_t **env,
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_STRING_UTILS_H */
+#endif /* AXIS2_STRING_UTIL_H */

@@ -137,7 +137,7 @@ struct axis2_xml_schema_collection_ops
     resolve_type)(
             axis2_xml_schema_collection_t* collection,
             axis2_env_t **env,
-            axis2_qname_t *type_qame, 
+            axis2_qname_t *type_qname, 
             struct axis2_xml_schema_type *type); 
             
 
@@ -159,6 +159,29 @@ struct axis2_xml_schema_collection_ops
     get_systemid2_schemas)(
             axis2_xml_schema_collection_t* collection,
             axis2_env_t **env);
+            
+    axis2_array_list_t* (AXIS2_CALL *
+    get_schemas)(
+            axis2_xml_schema_collection_t* collection,
+            axis2_env_t **env);
+            
+    axis2_status_t* (AXIS2_CALL *
+    set_schemas)(
+            axis2_xml_schema_collection_t *collection,
+            axis2_env_t **env,
+            axis2_array_list_t *schemas);            
+                      
+    axis2_hash_t* (AXIS2_CALL *
+    get_namespaces)(
+            axis2_xml_schema_collection_t *collection,
+            axis2_env_t **env);
+            
+    axis2_status_t (AXIS2_CALL *
+    set_namespaces)(
+            axis2_xml_schema_collection_t *collection,
+            axis2_env_t **env);
+            
+                            
 };            
 
 struct axis2_xml_schema_collection
@@ -209,8 +232,8 @@ axis2_xml_schema_collection_create(axis2_env_t **env);
 #define AXIS2_XML_SCHEMA_COLLECTION_ADD_UNRESOLVED_TYPE(collection, env, qtype, receiver) \
         ((collection)->ops->add_unresolved_type(collection, env, qtype, receiver))
         
-#define AXIS2_XML_SCHEMA_COLLECTION_RESOLVE_TYPE(collection, env, type) \
-        ((collection)->ops->resolve_type(collection, env, type))
+#define AXIS2_XML_SCHEMA_COLLECTION_RESOLVE_TYPE(collection, env, type_qname, type) \
+        ((collection)->ops->resolve_type(collection, env, type_qname, type))
         
 #define AXIS2_XML_SCHEMA_COLLECTION_GET_NAMESPACE_FOR_PREFIX(collection, env, prefix) \
         ((collection)->ops->get_namespace_for_prefix(collection, env, prefix))
@@ -218,6 +241,18 @@ axis2_xml_schema_collection_create(axis2_env_t **env);
 #define AXIS2_XML_SCHEMA_COLLECTION_GET_SYSTEMID2_SCHEMAS(collection, env) \
         ((collection)->ops->get_systemid2_schemas(collection, env))
         
+#define AXIS2_XML_SCHEMA_COLLECTION_GET_SCHEMAS(collection, env) \
+        ((collection)->ops->get_schemas(collection, env))
+        
+#define AXIS2_XML_SCHEMA_COLLECTION_SET_SCHEMAS(collection, env) \
+        ((collection)->ops->set_schemas(collection, env))
+        
+#define AXIS2_XML_SCHEMA_COLLECTION_GET_NAMESPACES(collection, env) \
+        ((collection)->ops->get_namespaces(collection, env))
+        
+#define AXIS2_XML_SCHEMA_COLLECTION_SET_NAMESPACES(collection, env, ht_ns) \
+        ((collection)->ops->set_namespaces(collection, env, ht_ns))                
+                
         
 /** @} */
 #ifdef __cplusplus

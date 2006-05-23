@@ -139,17 +139,17 @@ axis2_xml_schema_external_resolve_methods(
 		(((axis2_xml_schema_external_t *) external)->ops->\
             get_schema(external, env))
 
-#define AXIS2_XML_SCHEMA_EXTERNAL_SET_SCHEMA(external, env, max_occurs) \
+#define AXIS2_XML_SCHEMA_EXTERNAL_SET_SCHEMA(external, env, sch) \
 		(((axis2_xml_schema_external_t *) external)->ops->\
-            set_schema(external, env, max_occurs))
+            set_schema(external, env, sch))
             
 #define AXIS2_XML_SCHEMA_EXTERNAL_GET_SCHEMA_LOCATION(external, env) \
 		(((axis2_xml_schema_external_t *) external)->ops->\
-            get_schema(external, env))
+            get_schema_location(external, env))
 
 #define AXIS2_XML_SCHEMA_EXTERNAL_SET_SCHEMA_LOCATION(external, env, location) \
 		(((axis2_xml_schema_external_t *) external)->ops->\
-            set_schema(external, env, location))            
+            set_schema_location(external, env, location))            
 
 /** @} */
 #ifdef __cplusplus

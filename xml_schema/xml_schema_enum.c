@@ -106,8 +106,7 @@ axis2_xml_schema_enum_create(axis2_env_t **env,
         return NULL;
     }
             
-    axis2_xml_schema_enum_set_value(&(schema_enum_impl->schema_enum), 
-            env, value);
+    
 
     schema_enum_impl->schema_enum.ops->free = 
             axis2_xml_schema_enum_free;
@@ -140,6 +139,9 @@ axis2_xml_schema_enum_create(axis2_env_t **env,
     axis2_hash_set(schema_enum_impl->ht_super, "AXIS2_XML_SCHEMA_ENUM", 
             AXIS2_HASH_KEY_STRING, &(schema_enum_impl->schema_enum));
 
+    axis2_xml_schema_enum_set_value(&(schema_enum_impl->schema_enum), 
+            env, value);
+    
     return &(schema_enum_impl->schema_enum);
 }
 

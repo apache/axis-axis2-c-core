@@ -87,9 +87,7 @@ struct axis2_xml_schema_xpath
  * Creates new Xml Schema Xpath
  */
 AXIS2_DECLARE(axis2_xml_schema_xpath_t *)
-axis2_xml_schema_xpath_create(axis2_env_t **env,
-                                void *value,
-                                axis2_bool_t fixed);
+axis2_xml_schema_xpath_create(axis2_env_t **env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor

@@ -353,7 +353,7 @@ axis2_xml_schema_type_resolve_methods(
             AXIS2_HASH_KEY_STRING);
     type->ops->type = axis2_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
-    type->ops->type = axis2_hash_get(methods, "super_objs",
+    type->ops->super_objs = axis2_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);                        
             
 

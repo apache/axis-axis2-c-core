@@ -157,7 +157,7 @@ axis2_xml_schema_identity_constraint_resolve_methods(
             
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_SET_REFER(id_constr, env, refer) \
 		(((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
-            get_refer(id_constr, env, refer))            
+            set_refer(id_constr, env, refer))            
 
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_GET_FIELDS(id_constr, env) \
 		(((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\

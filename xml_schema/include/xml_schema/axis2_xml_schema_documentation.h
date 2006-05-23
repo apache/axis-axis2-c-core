@@ -28,6 +28,7 @@
 #include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_obj.h>
 #include <axis2_hash.h>
+#include <axis2_om.h>
 
 /** @defgroup axis2_xml_schema_documentation Xml Schema App Info
   * @ingroup axis2_xml_schema
@@ -76,17 +77,25 @@ struct axis2_xml_schema_documentation_ops
                 axis2_env_t **env,
                 axis2_char_t *source);
 
-    /* TODO replace (void *) mark up with node list */
-    void *(AXIS2_CALL *
+    axis2_om_child_element_iterator_t *(AXIS2_CALL *
     get_markup) (void *documentation,
                     axis2_env_t **env);
 
-    /* TODO replace (void *) mark up with node list */
     axis2_status_t (AXIS2_CALL *
     set_markup) (void *documentation,
-                    axis2_env_t **env,
-                    void *markup);
-
+                 axis2_env_t **env,
+                 axis2_om_child_element_iterator_t *markup);
+                 
+    axis2_char_t *(AXIS2_CALL *
+    get_language)(
+            void *documentation,
+            axis2_env_t **env);
+            
+    axis2_status_t (AXIS2_CALL *
+    set_language)(
+            void *documentation,
+            axis2_env_t **env,
+            axis2_char_t *language);            
 };
 
 struct axis2_xml_schema_documentation
@@ -128,6 +137,15 @@ axis2_xml_schema_documentation_create(axis2_env_t **env);
 #define AXIS2_XML_SCHEMA_DOCUMENTATION_SET_MARKUP(documentation, env, markup) \
 		(((axis2_xml_schema_documentation_t *) documentation)->ops->\
             set_markup(documentation, env, markup))
+
+
+#define AXIS2_XML_SCHEMA_DOCUMENTATION_GET_LANGUAGE(documentation, env) \
+        (((axis2_xml_schema_documentation_t*) documentation)->ops->\
+            get_language(documentation, env))
+            
+#define AXIS2_XML_SCHEMA_DOCUMENTATION_SET_LANGUAGE(documentation, env, language)\
+        (((axis2_xml_schema_documentation_t *) documentation)->ops->\
+            set_language(documentation, env, language))            
 
 /************************ end macros ******************************************/
 /** @} */

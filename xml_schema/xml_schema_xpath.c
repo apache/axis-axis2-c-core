@@ -62,9 +62,7 @@ axis2_xml_schema_xpath_set_xpath(void *xpath,
                                  axis2_char_t *x_path);
 
 AXIS2_DECLARE(axis2_xml_schema_xpath_t *)
-axis2_xml_schema_xpath_create(axis2_env_t **env,
-                                void *value,
-                                axis2_bool_t fixed)
+axis2_xml_schema_xpath_create(axis2_env_t **env)
 {
     axis2_xml_schema_xpath_impl_t *xpath_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
