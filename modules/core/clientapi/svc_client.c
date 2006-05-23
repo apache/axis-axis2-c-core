@@ -698,6 +698,31 @@ axis2_svc_client_send_receive_with_op_qname(struct axis2_svc_client *svc_client,
             if (index-- >= 0) 
             {
                 AXIS2_USLEEP(10000);
+                axis2_msg_ctx_t *msg_ctx = AXIS2_OP_CLIENT_GET_MSG_CTX(svc_client_impl->op_client, env, 
+                    AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE); 
+                if (msg_ctx)
+                {
+                    axis2_msg_ctx_t *res_msg_ctx =
+                            axis2_mep_client_receive(env, msg_ctx);
+                    if (res_msg_ctx)
+                    {
+                        soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(res_msg_ctx, env);
+                        if (soap_envelope)
+                        {
+                            soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+                        
+                            if (soap_body)
+                            {
+                                soap_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+                                if (soap_node)
+                                {
+                                    return AXIS2_OM_NODE_GET_FIRST_CHILD(soap_node, env);
+                                }
+                            }
+                        }
+                    }
+                }
+                
             } 
             else 
             {

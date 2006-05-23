@@ -34,7 +34,7 @@
 #include <axis2_om_element.h>
 #include <axis2_msg_info_headers.h>
 
-#define AXIS2_DEFAULT_TIMEOUT_MILLISECONDS 5000
+#define AXIS2_DEFAULT_TIMEOUT_MILLISECONDS 30000
 #define AXIS2_COPY_PROPERTIES	"copy_properties"
 
 #ifdef __cplusplus
