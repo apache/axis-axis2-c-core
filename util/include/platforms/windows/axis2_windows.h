@@ -61,11 +61,6 @@ extern "C"
 /* get opt */
 #include "axis2_getopt_windows.h"
 
-/* for minizip uncompression library 
-#define USEWIN32IOAPI
-#include "iowin32.h"
-
-*/
 /***************************************************************
  * Default paths to shared library/DLLs and files
  ***************************************************************
@@ -159,6 +154,7 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
 #define AXIS2_LIB_PREFIX ""
 #define AXIS2_LIB_SUFFIX ".dll"
 #define AXIS2_AAR_SUFFIX ".aar"
+#define AXIS2_MAR_SUFFIX ".mar"
 
 /**
  * Platform specific time
@@ -210,6 +206,12 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
  * Platform specific environment variable access method
  */
 #define AXIS2_GETENV(_env_var_name) getenv(_env_var_name)
+
+/**
+ * minizip functions
+ */
+#define axis2_fill_win32_filefunc(ffunc) fill_win32_filefunc(ffunc)
+#define AXIS2_UNZOPEN2(zipfilename,ffunc)   unzOpen2(zipfilename,NULL)
 
 /**
   * handling variable number of arguments (for log.c)
