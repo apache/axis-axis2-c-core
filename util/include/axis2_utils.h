@@ -96,8 +96,15 @@ extern "C"
 #define AXIS2_CREATE_FUNCTION "axis2_get_instance"
 #define AXIS2_DELETE_FUNCTION "axis2_remove_instance"
 
-typedef int (AXIS2_CALL *AXIS2_FREE_VOID_ARG) (void *obj_to_be_freed, axis2_env_t **env);
-
+typedef int (AXIS2_CALL *AXIS2_FREE_VOID_ARG) (void *obj_to_be_freed, 
+    axis2_env_t **env);
+    
+/* Function pointer typedef for read callback */
+typedef int (AXIS2_CALL *AXIS2_READ_INPUT_CALLBACK)(char *buffer, int size, 
+    void* ctx);
+/* Function pointer typedef for close callback */    
+typedef int (AXIS2_CALL *AXIS2_CLOSE_INPUT_CALLBACK)(void *ctx)
+    
 /** 
     * \brief Axis2 scopes
     *
