@@ -3,7 +3,8 @@ lib_LTLIBRARIES = libaxis2_minizip.la
 
 
 libaxis2_minizip_la_SOURCES = 	ioapi.c \
-							unzip.c 
+								unzip.c \
+								archive_extract.c
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/platforms
