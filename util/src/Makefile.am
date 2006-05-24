@@ -30,6 +30,8 @@ libaxis2_util_la_SOURCES = \
                         stack.c \
 						generic_obj.c
 
+libaxis2_util_la_LIBADD = minizip/libaxis2_minizip.la 
+
 INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/include/platforms \
            -I$(top_builddir)/include/platforms/unix
