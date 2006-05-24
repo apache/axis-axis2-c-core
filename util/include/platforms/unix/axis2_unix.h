@@ -121,6 +121,10 @@ extern "C"
 #include <netdb.h>
 #include <sys/ioctl.h>
 
+#include <zlib.h>
+#include <fcntl.h>
+
+
 /* dir handling */
 #include <dirent.h>
 
@@ -181,6 +185,7 @@ extern "C"
 #define AXIS2_LIB_PREFIX "lib"
 #define AXIS2_LIB_SUFFIX ".so"
 #define AXIS2_AAR_SUFFIX ".aar"
+#define AXIS2_MAR_SUFFIX ".mar"
 
 /**
  * Platform specific time
@@ -231,6 +236,10 @@ extern "C"
 
 /** getopt function */
 #define AXIS2_GETOPT getopt
+
+/** minizip functions */
+#define axis2_fill_win32_filefunc(ffunc) NULL
+#define AXIS2_UNZOPEN2(zipfilename,ffunc) 	unzOpen2(zipfilename,NULL)
 
 /**
   * handling variable number of arguments (for log.c)
