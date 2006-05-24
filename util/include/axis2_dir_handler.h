@@ -58,8 +58,8 @@ extern "C"
 	*      * Extract the archives in services and modules directories
 	*           * */
 
-	AXIS2_DECLARE(axis2_status_t *)
-	axis2_aar_extract();
+	/*AXIS2_DECLARE(axis2_status_t *)
+	axis2_aar_extract();*/
 
 
                                 
