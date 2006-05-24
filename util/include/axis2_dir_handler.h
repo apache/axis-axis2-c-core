@@ -54,13 +54,11 @@ extern "C"
     axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
                                 axis2_char_t *pathname);
 
-	/**
-	*      * Extract the archives in services and modules directories
-	*           * */
-
-	/*AXIS2_DECLARE(axis2_status_t *)
-	axis2_aar_extract();*/
-
+/*
+ *extentions for module and service archives
+ */
+#define AXIS2_AAR_SUFFIX ".aar"
+#define AXIS2_MAR_SUFFIX ".mar"
 
                                 
 /***********************Function Macros****************************************/
@@ -72,7 +70,9 @@ extern "C"
         (axis2_dir_handler_list_service_or_module_dirs(env, pathname))        
 
 /** @} */
+
     
+
 #ifdef __cplusplus
 }
 #endif

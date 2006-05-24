@@ -153,8 +153,6 @@ AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib);
 #define AXIS2_PATH_SEP_STR "/"
 #define AXIS2_LIB_PREFIX ""
 #define AXIS2_LIB_SUFFIX ".dll"
-#define AXIS2_AAR_SUFFIX ".aar"
-#define AXIS2_MAR_SUFFIX ".mar"
 
 /**
  * Platform specific time

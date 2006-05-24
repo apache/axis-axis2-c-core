@@ -184,8 +184,6 @@ extern "C"
 #define AXIS2_PATH_SEP_STR "/"
 #define AXIS2_LIB_PREFIX "lib"
 #define AXIS2_LIB_SUFFIX ".so"
-#define AXIS2_AAR_SUFFIX ".aar"
-#define AXIS2_MAR_SUFFIX ".mar"
 
 /**
  * Platform specific time
