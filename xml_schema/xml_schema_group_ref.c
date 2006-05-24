@@ -134,6 +134,9 @@ axis2_xml_schema_group_ref_create(axis2_env_t **env)
     
     group_ref_impl->group_ref.ops->get_particle = 
             axis2_xml_schema_group_ref_get_particle;
+            
+    group_ref_impl->group_ref.ops->set_particle =
+            axis2_xml_schema_group_ref_set_particle;            
    
     group_ref_impl->methods = axis2_hash_make(env);
     if(!group_ref_impl->methods)
@@ -386,3 +389,19 @@ axis2_xml_schema_group_ref_get_particle(void *group_ref,
     return AXIS2_INTF_TO_IMPL(group_ref)->particle;
 }
 
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_group_ref_set_particle(void *group_ref,
+                                    axis2_env_t **env,
+                                    axis2_xml_schema_group_base_t *particle)
+{
+    axis2_xml_schema_group_ref_impl_t *grp_ref_impl = NULL;
+    
+    grp_ref_impl = AXIS2_INTF_TO_IMPL(group_ref);
+    
+    if(grp_ref_impl->particle)
+    {
+        /** TODO free */
+    }
+    grp_ref_impl->particle = particle;
+    return AXIS2_SUCCESS;
+}                                    

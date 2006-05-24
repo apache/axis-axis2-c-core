@@ -26,6 +26,7 @@
 #include <axis2_array_list.h>
 #include <axis2_options.h>
 #include <axis2_conf_init.h>
+#include <axis2_mep_client.h>
 
 typedef struct axis2_svc_client_impl
 {
@@ -697,8 +698,9 @@ axis2_svc_client_send_receive_with_op_qname(struct axis2_svc_client *svc_client,
             /*wait till the reponse arrives*/
             if (index-- >= 0) 
             {
+                axis2_msg_ctx_t *msg_ctx = NULL;
                 AXIS2_USLEEP(10000);
-                axis2_msg_ctx_t *msg_ctx = AXIS2_OP_CLIENT_GET_MSG_CTX(svc_client_impl->op_client, env, 
+                msg_ctx = AXIS2_OP_CLIENT_GET_MSG_CTX(svc_client_impl->op_client, env, 
                     AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE); 
                 if (msg_ctx)
                 {

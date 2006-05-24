@@ -141,9 +141,10 @@ axis2_xml_schema_complex_content_extension_create(axis2_env_t **env);
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_GET_ANY_ATTRIBUTE(cmp_content_ext, env) \
 		(((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->get_any_attribute(cmp_content_ext, env))
 
-#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_SET__ANY_ATTRIBUTE(cmp_content_ext, \
+#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_SET_ANY_ATTRIBUTE(cmp_content_ext, \
          env, any_attr)\
-		(((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->set_content(cmp_content_ext, env, any_attr ))
+		(((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->\
+		set_any_attribute(cmp_content_ext, env, any_attr ))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_GET_ATTRIBUTES(cmp_content_ext, env) \
 		(((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->get_attributes(cmp_content_ext, env))

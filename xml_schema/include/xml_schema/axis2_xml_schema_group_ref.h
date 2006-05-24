@@ -80,6 +80,12 @@ struct axis2_xml_schema_group_ref_ops
     struct axis2_xml_schema_group_base *(AXIS2_CALL *
     get_particle)(void *group_ref,
                     axis2_env_t **env);
+                    
+    axis2_status_t (AXIS2_CALL *
+    set_particle)(void *group_ref,
+                  axis2_env_t **env,
+                  void *particle);
+                        
     
 };
 
@@ -133,6 +139,9 @@ axis2_xml_schema_group_ref_resolve_methods(
 		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
             get_particle(group_ref, env))
 
+#define AXIS2_XML_SCHEMA_GROUP_REF_SET_PARTICLE(group_ref, env, particle) \
+		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
+            set_particle(group_ref, env, particle))
 /*************************** end macros ****************************************/
 /** @} */
 #ifdef __cplusplus

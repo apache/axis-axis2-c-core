@@ -31,6 +31,7 @@
 #include <axis2_soap_const.h>
 #include <axis2_http_header.h>
 #include <axis2_property.h>
+#include <axis2_utils.h>
 
 #define AXIS2_MIME_BOUNDARY_BYTE 45
 
@@ -93,7 +94,7 @@ axis2_http_transport_utils_get_services_html(axis2_env_t **env,
 AXIS2_DECLARE(axis2_char_t*)
 axis2_http_transport_utils_get_charset_enc(axis2_env_t **env, 
 						axis2_char_t *content_type);
-int
+int AXIS2_CALL
 axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx);
 
 AXIS2_DECLARE(axis2_soap_envelope_t*)
@@ -1136,7 +1137,7 @@ axis2_http_transport_utils_get_charset_enc(axis2_env_t **env,
 	return tmp2;
 }
 
-int
+int AXIS2_CALL
 axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
 {
 	axis2_env_t **env = NULL;

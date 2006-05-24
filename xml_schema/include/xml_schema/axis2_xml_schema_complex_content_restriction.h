@@ -149,7 +149,7 @@ axis2_xml_schema_complex_content_restriction_create(axis2_env_t **env);
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_SET_ANY_ATTRIBUTE(cmp_content_res,\
          env, any_attr)\
 		(((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
-		    set_content(cmp_content_res, env, any_attr ))
+		    set_any_attribute(cmp_content_res, env, any_attr ))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_GET_ATTRIBUTES(cmp_content_res, env) \
 		(((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
@@ -168,9 +168,9 @@ axis2_xml_schema_complex_content_restriction_create(axis2_env_t **env);
         (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
             get_particle(cmp_content_res, env))
             
-#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_SET_PARTICLE(cmp_content_res, env) \
+#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_SET_PARTICLE(cmp_content_res, env, particle) \
         (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
-            set_particle(cmp_content_res, env))
+            set_particle(cmp_content_res, env, particle))
                         
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_TO_STRING(cmp_content_res, env) \
         (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\

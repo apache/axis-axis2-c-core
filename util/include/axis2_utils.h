@@ -103,7 +103,7 @@ typedef int (AXIS2_CALL *AXIS2_FREE_VOID_ARG) (void *obj_to_be_freed,
 typedef int (AXIS2_CALL *AXIS2_READ_INPUT_CALLBACK)(char *buffer, int size, 
     void* ctx);
 /* Function pointer typedef for close callback */    
-typedef int (AXIS2_CALL *AXIS2_CLOSE_INPUT_CALLBACK)(void *ctx)
+typedef int (AXIS2_CALL *AXIS2_CLOSE_INPUT_CALLBACK)(void *ctx);
     
 /** 
     * \brief Axis2 scopes

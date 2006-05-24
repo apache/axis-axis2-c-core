@@ -140,13 +140,15 @@ struct axis2_xml_schema_element_ops
                             axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL * 
-    set_abstract) (void *element,
-                            axis2_env_t **env,
-                            axis2_bool_t is_abstract);
+    set_abstract) (
+            void *element,
+            axis2_env_t **env,
+            axis2_bool_t is_abstract);
 
     axis2_bool_t (AXIS2_CALL *
-    is_nillable) (void *element,
-                            axis2_env_t **env);
+    is_nillable)(
+            void *element,
+            axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL * 
     set_nillable) (void *element,
@@ -313,9 +315,9 @@ axis2_xml_schema_element_create(axis2_env_t **env);
 		(((axis2_xml_schema_element_t *) element)->ops->is_abstract(\
             element, env))
 
-#define AXIS2_XML_SCHEMA_ELEMENT_SET_ABSTRACT(element, env) \
+#define AXIS2_XML_SCHEMA_ELEMENT_SET_ABSTRACT(element, env, is_abstract) \
 		(((axis2_xml_schema_element_t *) element)->ops->set_abstract(\
-            element, env))   
+            element, env, is_abstract))   
             
 
 #define AXIS2_XML_SCHEMA_ELEMENT_IS_NILLABLE(element, env) \
@@ -340,7 +342,7 @@ axis2_xml_schema_element_create(axis2_env_t **env);
             element, env)) 
             
 #define AXIS2_XML_SCHEMA_ELEMENT_SET_REF_NAME(element, env, ref_name) \
-		(((axis2_xml_schema_element_t *) element)->ops->get_ref_qname(\
+		(((axis2_xml_schema_element_t *) element)->ops->set_ref_qname(\
             element, env, ref_name))
             
 #define AXIS2_XML_SCHEMA_ELEMENT_GET_QNAME(element, env) \

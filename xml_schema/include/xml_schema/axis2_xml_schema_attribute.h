@@ -210,7 +210,7 @@ axis2_xml_schema_attribute_resolve_methods(
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_DEFAULT_VALUE(attr, env, default_val) \
 		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    get_default_value(attr, env, default_val))
+		    set_default_value(attr, env, default_val))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_FIXED_VALUE(attr, env) \
 		(((axis2_xml_schema_attribute_t *) attr)->ops->\
@@ -218,11 +218,15 @@ axis2_xml_schema_attribute_resolve_methods(
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_FIXED_VALUE(attr, env, default_val) \
 		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    get_fixed_value(attr, env, default_val))
+		    set_fixed_value(attr, env, default_val))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_SCHEMA_FORM(attr, env) \
 		(((axis2_xml_schema_attribute_t *) attr)->ops->\
 		    get_schema_form(attr, env))
+
+#define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_SCHEMA_FORM(attr, env, form) \
+		(((axis2_xml_schema_attribute_t *) attr)->ops->\
+		    set_schema_form(attr, env, form))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_QNAME(attr, env) \
 		(((axis2_xml_schema_attribute_t *) attr)->ops->\
@@ -244,9 +248,9 @@ axis2_xml_schema_attribute_resolve_methods(
 		(((axis2_xml_schema_attribute_t *) attr)->ops->\
 		    get_ref_name(attr, env))
 		    
-#define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_REF_QNAME(attr, env, ref_name) \
+#define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_REF_NAME(attr, env, ref_name) \
 		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    set_ref_qname(attr, env, ref_name))
+		    set_ref_name(attr, env, ref_name))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_SCHEMA_TYPE(attr, env) \
 		(((axis2_xml_schema_attribute_t *) attr)->ops->\

@@ -573,7 +573,7 @@ axis2_wsdl_desc_get_binding(axis2_wsdl_desc_t *wsdl_desc,
     axis2_wsdl_desc_impl_t *wsdl_desc_impl = NULL;
     axis2_char_t *name = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     wsdl_desc_impl = AXIS2_INTF_TO_IMPL(wsdl_desc);
     
     name = AXIS2_QNAME_TO_STRING(qname, env);
@@ -642,7 +642,7 @@ axis2_wsdl_desc_get_interface(axis2_wsdl_desc_t *wsdl_desc,
     axis2_wsdl_desc_impl_t *wsdl_desc_impl = NULL;
     axis2_char_t *name = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     wsdl_desc_impl = AXIS2_INTF_TO_IMPL(wsdl_desc);
     
     name = AXIS2_QNAME_TO_STRING(qname, env);
@@ -736,7 +736,7 @@ axis2_wsdl_desc_get_svc(axis2_wsdl_desc_t *wsdl_desc,
     axis2_wsdl_desc_impl_t *wsdl_desc_impl = NULL;
     axis2_char_t *name = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     wsdl_desc_impl = AXIS2_INTF_TO_IMPL(wsdl_desc);
     
     name = AXIS2_QNAME_TO_STRING(qname, env);

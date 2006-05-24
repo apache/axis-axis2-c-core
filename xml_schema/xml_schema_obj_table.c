@@ -358,8 +358,8 @@ axis2_xml_schema_obj_table_get(
         axis2_char_t *key)
 {
     axis2_xml_schema_obj_table_impl_t *obj_table_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, key, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK((*env)->error, key, NULL);
     obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
     return axis2_hash_get(obj_table_impl->collection, key, AXIS2_HASH_KEY_STRING);
 }        

@@ -24,7 +24,7 @@
  */
 
 #include <axis2_env.h>
-
+#include <axis2_utils.h>
 
 #ifdef __cplusplus
 extern "C"

@@ -132,9 +132,9 @@ axis2_xml_schema_simple_content_extension_create(axis2_env_t **env);
 		(((axis2_xml_schema_simple_content_extension_t *)sim_content_ext)->ops->\
 		    get_any_attribute(sim_content_ext, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_SET__ANY_ATTRIBUTE(sim_content_ext, env, any_attr)\
+#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_SET_ANY_ATTRIBUTE(sim_content_ext, env, any_attr)\
 		(((axis2_xml_schema_simple_content_extension_t *)sim_content_ext)->ops->\
-		    set_content(sim_content_ext, env, any_attr ))
+		    set_any_attribute(sim_content_ext, env, any_attr ))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_GET_ATTRIBUTES(sim_content_ext, env) \
 		(((axis2_xml_schema_simple_content_extension_t *)sim_content_ext)->ops->\
