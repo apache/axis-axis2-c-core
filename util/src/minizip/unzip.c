@@ -170,7 +170,7 @@ typedef struct
 
 
 #ifndef NOUNCRYPT
-#include <crypt.h>
+#include <axis2_crypt.h>
 #endif
 
 /* ===========================================================================

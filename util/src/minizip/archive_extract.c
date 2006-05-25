@@ -4,7 +4,7 @@
 #include <zlib.h>
 #include <fcntl.h>
 #include <unzip.h>
-#include <crypt.h>
+#include <axis2_crypt.h>
 
 #define CASESENSITIVITY (0)
 #define WRITEBUFFERSIZE (8192)

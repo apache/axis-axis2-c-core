@@ -72,7 +72,7 @@ extern "C" {
 #endif
 
 #ifndef _ZLIBIOAPI_H
-#include "ioapi.h"
+#include "axis2_ioapi.h"
 #endif
 
 #if defined(STRICTUNZIP) || defined(STRICTZIPUNZIP)
@@ -165,7 +165,7 @@ extern unzFile ZEXPORT unzOpen2 OF((const char *path,
                                     zlib_filefunc_def* pzlib_filefunc_def));
 /*
    Open a Zip file, like unzOpen, but provide a set of file low level API
-      for read/write the zip file (see ioapi.h)
+      for read/write the zip file (see axis2_ioapi.h)
 */
 
 extern int ZEXPORT unzClose OF((unzFile file));

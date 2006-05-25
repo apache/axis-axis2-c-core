@@ -10,8 +10,8 @@
 #include <stdlib.h>
 
 #include "zlib.h"
-#include "ioapi.h"
-#include "iowin32.h"
+#include "axis2_ioapi.h"
+#include "axis2_iowin32.h"
 
 #ifndef INVALID_HANDLE_VALUE
 #define INVALID_HANDLE_VALUE (0xFFFFFFFF)
