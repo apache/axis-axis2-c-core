@@ -23,6 +23,7 @@ typedef struct axis2_mime_parser_impl
 	axis2_mime_parser_t mime_parser;
     axis2_hash_t *mime_parts_map;
     int soap_body_len;
+    axis2_char_t* soap_body_str;
 } axis2_mime_parser_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(mime_parser) ((axis2_mime_parser_impl_t *)(mime_parser))
@@ -49,6 +50,11 @@ int AXIS2_CALL
 axis2_mime_parser_get_soap_body_len(axis2_mime_parser_t *mime_parser, 
     axis2_env_t **env);
 
+axis2_char_t* AXIS2_CALL
+axis2_mime_parser_get_soap_body_str(axis2_mime_parser_t *mime_parser, 
+    axis2_env_t **env);
+
+
 /************************** End of Function headers ************************/
 
 AXIS2_DECLARE(axis2_mime_parser_t *)
@@ -69,6 +75,7 @@ axis2_mime_parser_create (axis2_env_t **env)
     mime_parser_impl->mime_parser.ops = NULL;
     mime_parser_impl->mime_parts_map = NULL;
     mime_parser_impl->soap_body_len = 0;
+    mime_parser_impl->soap_body_str = NULL; /* shallow copy */
     
     mime_parser_impl->mime_parts_map = axis2_hash_make(env);
     if (!(mime_parser_impl->mime_parts_map))
@@ -353,6 +360,7 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
         if (soap_body_str) 
         {
             mime_parser_impl->soap_body_len = soap_body_len;
+            mime_parser_impl->soap_body_str = soap_body_str;
             /* create a basic stream with soap string to pull SOAP */
             /*axis2_stream_t *stream = axis2_stream_create_basic(env);
             if (stream)
@@ -427,4 +435,12 @@ axis2_mime_parser_get_soap_body_len(axis2_mime_parser_t *mime_parser,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(mime_parser)->soap_body_len;
+}
+
+axis2_char_t* AXIS2_CALL
+axis2_mime_parser_get_soap_body_str(axis2_mime_parser_t *mime_parser, 
+    axis2_env_t **env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(mime_parser)->soap_body_str;
 }

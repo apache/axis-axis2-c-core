@@ -203,15 +203,18 @@ axis2_http_transport_utils_process_http_post_request
             axis2_mime_parser_t *mime_parser = NULL;
             axis2_stream_t *stream = NULL;
             int soap_body_len = 0;
+            axis2_char_t* soap_body_str = NULL;
             
             mime_parser = axis2_mime_parser_create(env);
             if (mime_parser)
             {
                 binary_data_map = AXIS2_MIME_PARSER_PARSE(mime_parser, env, 
                     axis2_http_transport_utils_on_data_request, 
-                    callback_ctx, mime_boundary);
+                    (void*)&callback_ctx, mime_boundary);
                 
                 soap_body_len = AXIS2_MIME_PARSER_GET_SOAP_BODY_LENGTH(
+                    mime_parser, env);
+                soap_body_str = AXIS2_MIME_PARSER_GET_SOAP_BODY_STR(
                     mime_parser, env);
             }
             

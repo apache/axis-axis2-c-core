@@ -76,6 +76,11 @@ struct axis2_mime_parser_ops
     get_soap_body_len)(
         axis2_mime_parser_t *mime_parser, 
         axis2_env_t **env);
+        
+    axis2_char_t* (AXIS2_CALL *
+    get_soap_body_str)(
+        axis2_mime_parser_t *mime_parser, 
+        axis2_env_t **env);
 };
 
 /** 
@@ -99,7 +104,7 @@ axis2_mime_parser_create (axis2_env_t **env);
 #define AXIS2_MIME_PARSER_FREE(mime_parser, env) \
 ((mime_parser)->ops->free (mime_parser, env))
 
-#define AXIS2_MIME_PARSER_PARSE(mime_parser, env, callback) \
+#define AXIS2_MIME_PARSER_PARSE(mime_parser, env, callback, callback_ctx, mime_boundary) \
 ((mime_parser)->ops->parse(mime_parser, env, callback, callback_ctx, mime_boundary))
 
 #define AXIS2_MIME_PARSER_GET_MIME_PARTS_MAP(mime_parser, env) \
@@ -107,6 +112,9 @@ axis2_mime_parser_create (axis2_env_t **env);
 
 #define AXIS2_MIME_PARSER_GET_SOAP_BODY_LENGTH(mime_parser, env) \
 ((mime_parser)->ops->get_soap_body_len(mime_parser, env))
+
+#define AXIS2_MIME_PARSER_GET_SOAP_BODY_STR(mime_parser, env) \
+((mime_parser)->ops->get_soap_body_str(mime_parser, env))
 
 /*************************** End of function macros ***************************/
 
