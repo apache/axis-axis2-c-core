@@ -336,8 +336,8 @@ axis2_xml_reader_create_for_file(axis2_env_t **env,
 
 AXIS2_DECLARE(axis2_xml_reader_t *)
 axis2_xml_reader_create_for_io(axis2_env_t **env,
-                                    int (*read_input_callback)(char *buffer,int size,void *ctx),
-                                    int (*close_input_callback)(void *ctx),
+                                    AXIS2_READ_INPUT_CALLBACK read_input_callback,
+                                    AXIS2_CLOSE_INPUT_CALLBACK close_input_callback,
                                     void* ctx,
                                     const axis2_char_t *encoding)
 {
