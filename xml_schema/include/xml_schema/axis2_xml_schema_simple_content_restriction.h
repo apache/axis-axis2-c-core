@@ -38,8 +38,6 @@
   * @{
   */
 
-
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -142,7 +140,7 @@ axis2_xml_schema_simple_content_restriction_create(axis2_env_t **env);
 		(((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
         get_any_attribute(sim_content_res, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_SET__ANY_ATTRIBUTE(sim_content_res,\
+#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_SET_ANY_ATTRIBUTE(sim_content_res,\
          env, any_attr)\
 		(((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
 		    set_content(sim_content_res, env, any_attr ))
@@ -155,13 +153,11 @@ axis2_xml_schema_simple_content_restriction_create(axis2_env_t **env);
         (((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
             get_base_type_name(sim_content_res, env))            
     
-#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_SET_BASE_TYPE_NAME\
-            (sim_content_res, env, base_type_name) \
+#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_SET_BASE_TYPE_NAME(sim_content_res, env, base_type_name) \
         (((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
         set_base_type_name(sim_content_res, env, base_type_name))
                 
-#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_SET_BASE_TYPE\
-            (sim_content_res, env, base_type) \
+#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_SET_BASE_TYPE(sim_content_res, env, base_type) \
         (((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
             set_base_type(sim_content_res, env, base_type)) 
             

@@ -324,10 +324,86 @@ axis2_xml_schema_facet_construct (axis2_env_t **env,
                                   axis2_om_node_t *node)
 {
     axis2_om_element_t *om_ele = NULL;
+    axis2_char_t *localname = NULL;
+    axis2_char_t *attr_value = NULL;
+    axis2_bool_t is_fixed = AXIS2_FALSE;
+    axis2_char_t *value = NULL;
+
+    void *facet = NULL;
+    int facet_type;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK((*env)->error, node, NULL);
-    /** TODO */
+    if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) == AXIS2_OM_ELEMENT)
+        return NULL;
     
+    om_ele = AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
+    localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env);
+
+    if(AXIS2_STRCMP(localname,"enumeration") == 0)
+    {
+        facet_type = AXIS2_XML_SCHEMA_ENUMARATION_FACET;
+    }
+    else if(AXIS2_STRCMP(localname,"maxExclusive") == 0)
+    {
+        facet_type = AXIS2_XML_SCHEMA_MAX_EXCLUSIVE_FACET;
+    }
+    else if(AXIS2_STRCMP(localname,"maxInclusive") == 0)
+    {
+        facet_type = AXIS2_XML_SCHEMA_MAX_INCLUSIVE_FACET;
+    }
+    else if(AXIS2_STRCMP(localname,"minExclusive") == 0)
+    {
+        facet_type = AXIS2_XML_SCHEMA_MIN_EXCLUSIVE_FACET;
+    }
+    else if(AXIS2_STRCMP(localname,"maxInclusive") == 0)
+    {
+        facet_type = AXIS2_XML_SCHEMA_MIN_INCLUSIVE_FACET;
+    }
+    else if(AXIS2_STRCMP(localname,"pattern") == 0)
+    {
+        facet_type = AXIS2_XML_SCHEMA_PATTERN_FACET;
+    }
+    else if(AXIS2_STRCMP(localname,"whiteSpace") == 0)
+    {
+        facet_type = AXIS2_XML_SCHEMA_WHITE_SPACE_FACET;
+    }
+    else if(AXIS2_STRCMP(localname,"fractionDigits") == 0)
+    {
+        facet_type = AXIS2_XML_SCHEMA_FRACTION_DIGITS_FACET;
+    }
+    else if(AXIS2_STRCMP(localname,"length") == 0)
+    {
+        facet_type = AXIS2_XML_SCHEMA_LENGTH_FACET;
+    }
+    else if(AXIS2_STRCMP(localname,"maxLength") == 0)
+    {
+        facet_type = AXIS2_XML_SCHEMA_MAX_LENGTH_FACET;
+    }
+    else if(AXIS2_STRCMP(localname,"minLength") == 0)
+    {
+        facet_type = AXIS2_XML_SCHEMA_MIN_LENGTH_FACET;
+    }
+    else if(AXIS2_STRCMP(localname,"totalDigits") == 0)
+    {
+        facet_type = AXIS2_XML_SCHEMA_TATAL_DIGITS_FACET;
+    }
+    else 
+        return NULL;
+    
+    attr_value = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, "fixed");
+    if(NULL != attr_value && AXIS2_STRCMP(attr_value, "fixed") == 0)
+        is_fixed = AXIS2_TRUE;
+    
+    attr_value = NULL;
+    attr_value = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, "value");
+    if(NULL != attr_value)
+        value = attr_value;
+    else
+        return NULL;
+        
+    facet = axis2_xml_schema_facet_create(env, value, is_fixed, facet_type);
+    if(NULL != facet)
+        return facet;            
     return NULL;
 }
 

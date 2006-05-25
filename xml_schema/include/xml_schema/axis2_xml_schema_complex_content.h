@@ -132,9 +132,9 @@ axis2_xml_schema_complex_content_resolve_methods(
 		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
             get_content(complex_content, env))
 
-#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_SET_CONTENT(complex_content, env, content, content_type) \
+#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_SET_CONTENT(complex_content, env, content) \
 		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
-            set_content(complex_content, env, content, content_type ))
+            set_content(complex_content, env, content ))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_TO_STRING(complex_content, env, prefix, tab) \
         (((axis2_xml_schema_complex_content_t *) complex_content)->ops->\

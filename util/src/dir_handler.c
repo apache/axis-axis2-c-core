@@ -18,10 +18,11 @@
 #include <axis2_file.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <axis2_string.h>
-
 #ifndef S_ISDIR
 #   define S_ISDIR(m) ((m & S_IFMT) == S_IFDIR)
 #endif
+
+#include <axis2_archive_extract.h>
 
 extern int AXIS2_ALPHASORT();
 
@@ -210,7 +211,7 @@ axis2_dir_handler_list_service_or_module_dirs(axis2_env_t **env,
     file_list = axis2_array_list_create(env, 0);
 	if (!getcwd(cwd, 500)) exit(1);
 	chdir(pathname);
-	axis2_aar_extract(pathname);
+	axis2_archive_extract();
 
 	count = AXIS2_SCANDIR(pathname, &files, dir_select, AXIS2_ALPHASORT);
 	chdir(cwd);

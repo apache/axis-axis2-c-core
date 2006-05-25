@@ -257,9 +257,10 @@ axis2_xml_schema_complex_type_create(axis2_env_t **env,
 		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
 		    get_content_model(complex_type, env, cnt_mtype))	
 		
-#define AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_CONTENT_MODEL(complex_type, env, cnt_model, cnt_mtype) \
+#define AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_CONTENT_MODEL(complex_type, env, cnt_model) \
 		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    set_content_model(complex_type, env, cnt_model, cnt_mtype))							
+		    set_content_model(complex_type, env, cnt_model))
+		    							
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_CONTENT_TYPE(complex_type, env) \
 		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
 		    get_content_type(complex_type, env))			
@@ -293,7 +294,8 @@ axis2_xml_schema_complex_type_create(axis2_env_t **env,
             get_particle(complex_type, env))
         
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_PARTICLE(complex_type, env, particle) \
-        ((complex_type)->ops->set_particle(complex_type, env, particle))        		
+        (((axis2_xml_schema_complex_type_t *)complex_type)->ops->\
+            set_particle(complex_type, env, particle))        		
 		
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_TO_STRING(complex_type, env, prefix, tab) \
 		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\

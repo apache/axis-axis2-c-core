@@ -990,21 +990,239 @@ handle_complex_type(
         axis2_xml_schema_builder_t *builder,
         axis2_env_t **env,
         axis2_om_node_t *complex_node,
-        axis2_om_node_t *schema_node){}
+        axis2_om_node_t *schema_node)
+{
+    void *cmp_type = NULL;
+    
+    axis2_om_element_t *cmp_ele = NULL;
+    
+    axis2_om_element_t *ele1 = NULL;
+    axis2_om_node_t *node1   = NULL;
+    axis2_char_t *attr_value = NULL;
+    
+    axis2_xml_schema_builder_impl_t *builder_impl = NULL;
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    
+    cmp_type = axis2_xml_schema_complex_type_create(env, builder_impl->schema);
+    
+    cmp_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(complex_node, env);
+    
+    attr_value = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(cmp_ele, env, "name");
+    
+    if(NULL != attr_value)
+    {
+        AXIS2_XML_SCHEMA_TYPE_SET_NAME(cmp_type, env, attr_value);
+        attr_value = NULL;
+    }
+    
+     ele1 = axis2_om_util_get_first_child_element_with_uri(complex_node , env, 
+        AXIS2_XML_SCHEMA_NS, &node1);
+     while(NULL != ele1)
+    {
+        axis2_char_t *localname = NULL;
+        localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(ele1, env);
+        
+        if(AXIS2_STRCMP(localname, "sequence") == 0)
+        {
+            void *sequence = NULL;
+            
+            sequence = handle_sequence(builder, env,
+                node1, schema_node);
+            AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_PARTICLE(cmp_type, env, sequence);                
+            
+        }
+        else if(AXIS2_STRCMP(localname, "choice") == 0)
+        {
+            void *choice = NULL;
+            
+            choice = handle_choice(builder, env,
+                node1, schema_node);
+            
+            AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_PARTICLE(cmp_type, env, choice);
+        }
+        else if(AXIS2_STRCMP(localname, "all") == 0)
+        {
+            void *all = NULL;           
+            all = handle_all(builder, env, node1, schema_node);
+            
+            AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_PARTICLE(cmp_type, env, all);
+        }
+        else if(AXIS2_STRCMP(localname, "attribute") == 0)
+        {
+            void *attribute = NULL;
+            axis2_xml_schema_obj_collection_t *attributes = NULL;
+            attribute = handle_attribute(builder, env, node1, schema_node);
+            attributes = AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_ATTRIBUTES(cmp_type, env);
+            AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(attributes, env, attribute);
+        }
+        else if(AXIS2_STRCMP(localname, "attributeGroup") == 0)
+        {
+            void *attr_grp = NULL;
+            axis2_xml_schema_obj_collection_t *attributes = NULL;
+            attr_grp = handle_attribute_group(builder, env, node1, schema_node);
+            attributes = AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_ATTRIBUTES(cmp_type, env);
+            AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(attributes, env, attribute);
+        }
+        else if(AXIS2_STRCMP(localname, "group") == 0)
+        {
+            void *grp = NULL;
+            void *cmp_type_particle = NULL;
+            void *grp_particle = NULL;
+            grp = handle_group(builder, env, node1, schema_node);
+            grp_particle = AXIS2_XML_SCHEMA_GROUP_GET_PARTICLE(grp, env);
+            if(NULL == grp_particle)
+            {
+                AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_PARTICLE(cmp_type, env, grp); 
+            }
+            else
+            {
+                AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_PARTICLE(cmp_type, env, grp_particle);
+            }
+        }
+        else if(AXIS2_STRCMP(localname, "simpleContent") == 0)
+        {
+            void *sim_cnt = NULL;
+            sim_cnt = handle_simple_content(builder, node1, schema_node);
+            AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_CONTENT_MODEL(cmp_type, env, sim_cnt);
+        } 
+        else if(AXIS2_STRCMP(localname, "complexContent") == 0)
+        {
+            void *cmp_cnt = NULL;
+            cmp_cnt = handle_complex_content(builder, env, node1, schema_node);
+            AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_CONTENT_MODEL(cmp_cnt, env,         
+        }
+
+    
+        ele1 = axis2_om_util_get_next_sibling_element_with_uri(node1, env, 
+            AXIS2_XML_SCHEMA_NS, &node1);
+    }    
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
         
 static axis2_xml_schema_simple_content_t*
 handle_simple_content(
         axis2_xml_schema_builder_t *builder,
         axis2_env_t **env,
         axis2_om_node_t *simple_node,
-        axis2_om_node_t *schema_node){}        
+        axis2_om_node_t *schema_node)
+{
+    
+    void *sim_cnt = NULL;
+    axis2_om_element_t *sim_cnt_ele = NULL;
+    
+    axis2_om_element_t *ele1 = NULL;
+    axis2_om_node_t   *node1 = NULL;
+    
+    sim_cnt = axis2_xml_schema_simple_content_create(env);
+    
+    sim_cnt_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(simple_node, env);
+    
+    ele1 = axis2_om_util_get_first_child_element_with_uri(simple_node , env, 
+        AXIS2_XML_SCHEMA_NS, &node1);
+        
+    while(NULL != ele1)
+    {
+        axis2_char_t *localname = NULL;
+        localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(ele1, env);
+        
+        if(AXIS2_STRCMP(localname, "restriction") == 0)
+        {
+            void *sim_res = NULL;
+            
+            sim_res = handle_simple_content_restriction(builder, env,
+                node1, schema_node);
+            
+            AXIS2_XML_SCHEMA_SIMPLE_CONTENT_SET_CONTENT(sim_cnt, env, sim_res);
+        }
+        else if(AXIS2_STRCMP(localname, "extension") == 0)
+        {
+            void *sim_ext = NULL;
+            
+            sim_ext = handle_simple_content_extension(builder, env,
+                node1, schema_node);
+            
+            AXIS2_XML_SCHEMA_SIMPLE_CONTENT_SET_CONTENT(sim_cnt, env, sim_ext);
+        }
+        else if(AXIS2_STRCMP(localname, "annotation") == 0)
+        {
+            void *annotation = NULL;            
+            annotation = handle_annotation_with_element(builder, env, node1);            
+            AXIS2_XML_SCHEMA_ANNOTATED_SET_ANNOTATION(sim_cnt, env, annotation);
+        }
+    
+        ele1 = axis2_om_util_get_next_sibling_element_with_uri(node1, env, 
+            AXIS2_XML_SCHEMA_NS, &node1);
+    }        
+    return sim_cnt;
+}        
 
 static axis2_xml_schema_complex_content_t*
 handle_complex_content(
         axis2_xml_schema_builder_t *builder,
         axis2_env_t **env,
         axis2_om_node_t *complex_node,
-        axis2_om_node_t *schema_node){}
+        axis2_om_node_t *schema_node)
+{
+    void *cmp_cnt = NULL;
+    axis2_om_element_t *cmp_cnt_ele = NULL;
+    
+    axis2_om_element_t *ele1 = NULL;
+    axis2_om_node_t   *node1 = NULL;
+    
+    cmp_cnt = axis2_xml_schema_complex_content_create(env);
+    
+    cmp_cnt_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(complex_node, env);
+    
+    ele1 = axis2_om_util_get_first_child_element_with_uri(complex_node , env, 
+        AXIS2_XML_SCHEMA_NS, &node1);
+        
+    while(NULL != ele1)
+    {
+        axis2_char_t *localname = NULL;
+        localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(ele1, env);
+        
+        if(AXIS2_STRCMP(localname, "restriction") == 0)
+        {
+            void *cmp_res = NULL;
+            
+            cmp_res = handle_complex_content_restriction(builder, env,
+                node1, schema_node);
+            
+            AXIS2_XML_SCHEMA_COMPLEX_CONTENT_SET_CONTENT(cmp_cnt, env, cmp_res);
+        }
+        else if(AXIS2_STRCMP(localname, "extension") == 0)
+        {
+            void *cmp_ext = NULL;
+            
+            cmp_ext = handle_complex_content_extension(builder, env,
+                node1, schema_node);
+            
+            AXIS2_XML_SCHEMA_COMPLEX_CONTENT_SET_CONTENT(cmp_cnt, env, cmp_ext);
+        }
+        else if(AXIS2_STRCMP(localname, "annotation") == 0)
+        {
+            void *annotation = NULL;            
+            annotation = handle_annotation_with_element(builder, env, node1);            
+            AXIS2_XML_SCHEMA_ANNOTATED_SET_ANNOTATION(cmp_cnt, env, annotation);
+        }
+    
+        ele1 = axis2_om_util_get_next_sibling_element_with_uri(node1, env, 
+            AXIS2_XML_SCHEMA_NS, &node1);
+    }        
+    return cmp_cnt;
+}
 
 static axis2_xml_schema_simple_content_restriction_t*
 handle_simple_content_restriction(
@@ -1013,9 +1231,9 @@ handle_simple_content_restriction(
         axis2_om_node_t *res_node,
         axis2_om_node_t *schema_node)
 {
-    void *cmp_cnt_ext = NULL;
+    void *sim_cnt_res = NULL;
     
-    axis2_om_element_t *ext_ele = NULL;
+    axis2_om_element_t *res_ele = NULL;
     axis2_char_t *attr_value = NULL;
     
     axis2_om_element_t *ele1 = NULL;
@@ -1023,12 +1241,14 @@ handle_simple_content_restriction(
     
     axis2_xml_schema_builder_impl_t *builder_impl = NULL;
     
-    ext_ele = (axis2_om_element_t*)
+    res_ele = (axis2_om_element_t*)
         AXIS2_OM_NODE_GET_DATA_ELEMENT(res_node, env);
+    
+    sim_cnt_res = axis2_xml_schema_simple_content_restriction_create(env);
     
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
-    attr_value = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ext_ele, env, "base");
+    attr_value = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(res_ele, env, "base");
     if(NULL != attr_value)
     {
         axis2_char_t *ns_from_ele = "";
@@ -1062,48 +1282,73 @@ handle_simple_content_restriction(
         
         qn = axis2_qname_create(env, name, result, NULL);
         
-        AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_SET_BASE_TYPE_NAME(cmp_cnt_ext, env, qn); 
-       
+        AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_SET_BASE_TYPE_NAME(sim_cnt_res, env, qn); 
+        attr_value = NULL;
     }
-
+    
+    attr_value = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(res_ele, env, "id");
+    if(NULL != attr_value)
+    {
+        AXIS2_XML_SCHEMA_ANNOTATED_SET_ID(sim_cnt_res, env, attr_value);
+    }
     ele1 = axis2_om_util_get_first_child_element_with_uri(res_node, env, AXIS2_XML_SCHEMA_NS, &node1);
     
     if(NULL != ele1)
     {
         axis2_char_t *localname = NULL;
         localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(ele1, env);
-        
         if(AXIS2_STRCMP(localname, "attribute") == 0)
         {
             void *attribute = NULL;
             axis2_xml_schema_obj_collection_t *attributes = NULL;
             attribute = handle_attribute(builder, env, node1, schema_node);
-            attributes = AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_GET_ATTRIBUTES(cmp_cnt_ext, env);
+            attributes = AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_GET_ATTRIBUTES(sim_cnt_res, env);
             AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(attributes, env, attribute);
         }
-        
         else if(AXIS2_STRCMP(localname, "attributeGroup") == 0)
         {
             void *attr_grp_ref = NULL;
             axis2_xml_schema_obj_collection_t *attributes = NULL;
             attr_grp_ref = handle_attribute_group_ref(builder, env, node1, schema_node);
-            attributes = AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_GET_ATTRIBUTES(cmp_cnt_ext, env);
+            attributes = AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_GET_ATTRIBUTES(sim_cnt_res, env);
             AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(attributes, env, attr_grp_ref);
         }
-        else if(AXIS2_STRCMP(localname, "anyAttribute") == 0)
+        else if(AXIS2_STRCMP(localname, "simpleType") == 0)
         {
-            void *any_attr = NULL;
-            any_attr = handle_any_attribute(builder, env, node1, schema_node);
-            AXIS2_XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_SET_ANY_ATTRIBUTE(cmp_cnt_ext, env, any_attr);
+            void *simple_type = NULL;
+            simple_type = handle_simple_type(builder, env, node1, schema_node);
+            AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_SET_BASE_TYPE(sim_cnt_res, env, simple_type);
         }
         else if(AXIS2_STRCMP(localname, "annotation") == 0)
         {
             void *annotation = NULL;
             annotation = handle_annotation_with_element(builder, env, node1);
-            AXIS2_XML_SCHEMA_ANNOTATED_SET_ANNOTATION(cmp_cnt_ext, env, annotation);
+            AXIS2_XML_SCHEMA_ANNOTATED_SET_ANNOTATION(sim_cnt_res, env, annotation);
+        }
+        else
+        {
+            void *facet = NULL;
+            axis2_xml_schema_obj_collection_t *facets = NULL;
+            axis2_om_element_t *child_ele = NULL;
+            axis2_om_node_t *child_node   = NULL;
+            facet = axis2_xml_schema_facet_construct(env, node1);    
+            
+            child_ele = axis2_om_util_get_first_child_element_with_uri_localname(ele1, env, 
+                node1, "annotation", AXIS2_XML_SCHEMA_NS, &child_node);
+            while(NULL != child_ele)
+            {
+                void *annotation = NULL;
+                annotation = handle_annotation_with_element(builder, env, child_node);
+                AXIS2_XML_SCHEMA_ANNOTATED_SET_ANNOTATION(facet, env, annotation);            
+                child_ele = axis2_om_util_get_next_sibling_element_with_uri_localname(child_ele,
+                    env, child_node, "annotation", AXIS2_XML_SCHEMA_NS, &child_node);            
+            }                
+                    
+            facets = AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_GET_FACETS(sim_cnt_res, env);
+            AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(facets, env, facet);                    
         }
     }
-    return cmp_cnt_ext;
+    return sim_cnt_res;
 }
         
         
@@ -1126,6 +1371,8 @@ handle_simple_content_extension(
     
     ext_ele = (axis2_om_element_t*)
         AXIS2_OM_NODE_GET_DATA_ELEMENT(ext_node, env);
+    
+    sim_cnt_ext = axis2_xml_schema_simple_content_extension_create(env);
     
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
@@ -1226,6 +1473,8 @@ handle_complex_content_restriction(
     
     res_ele = (axis2_om_element_t*)
         AXIS2_OM_NODE_GET_DATA_ELEMENT(res_node, env);
+    
+    cmp_cnt_res = axis2_xml_schema_complex_content_create(env);
     
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
@@ -1342,6 +1591,8 @@ handle_complex_content_extension(
     
     ext_ele = (axis2_om_element_t*)
         AXIS2_OM_NODE_GET_DATA_ELEMENT(ext_node, env);
+    
+    cmp_cnt_ext = axis2_xml_schema_complex_content_extension_create(env);
     
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
