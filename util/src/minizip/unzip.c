@@ -20,7 +20,7 @@
 
    Copyright (C) 1998-2005 Gilles Vollant
 
-   Read unzip.h for more info
+   Read axis2_unzip.h for more info
 */
 
 /* Decryption code comes from crypt.c by Info-ZIP but has been greatly reduced in terms of
@@ -56,7 +56,7 @@ woven in by Terry Thorsen 1/2003.
 #include <stdlib.h>
 #include <string.h>
 #include "zlib.h"
-#include "unzip.h"
+#include "axis2_unzip.h"
 
 #ifdef STDC
 #  include <stddef.h>

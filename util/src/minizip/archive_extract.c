@@ -3,7 +3,7 @@
 #include <axis2_string.h>
 #include <zlib.h>
 #include <fcntl.h>
-#include <unzip.h>
+#include <axis2_unzip.h>
 #include <axis2_crypt.h>
 #include <axis2_ioapi.h>
 
