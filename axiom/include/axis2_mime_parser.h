@@ -29,7 +29,7 @@
 #include <axis2_allocator.h>
 #include <axis2_string.h>
 #include <axis2_hash.h>
-
+#include <axis2_mime_const.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -55,7 +55,9 @@ struct axis2_mime_parser_ops
     parse)(
         axis2_mime_parser_t *mime_parser,
         axis2_env_t **env, 
-        AXIS2_READ_INPUT_CALLBACK);
+        AXIS2_READ_INPUT_CALLBACK,
+        void *callback_ctx,
+        axis2_char_t *mime_boundary);
     
     axis2_hash_t* (AXIS2_CALL *
     get_mime_parts_map)(
@@ -68,6 +70,11 @@ struct axis2_mime_parser_ops
     axis2_status_t (AXIS2_CALL *
     free)(
         axis2_mime_parser_t *mime_parser,
+        axis2_env_t **env);
+    
+    int (AXIS2_CALL *
+    get_soap_body_len)(
+        axis2_mime_parser_t *mime_parser, 
         axis2_env_t **env);
 };
 
@@ -93,10 +100,13 @@ axis2_mime_parser_create (axis2_env_t **env);
 ((mime_parser)->ops->free (mime_parser, env))
 
 #define AXIS2_MIME_PARSER_PARSE(mime_parser, env, callback) \
-((mime_parser)->ops->parse(mime_parser, env, callback))
+((mime_parser)->ops->parse(mime_parser, env, callback, callback_ctx, mime_boundary))
 
 #define AXIS2_MIME_PARSER_GET_MIME_PARTS_MAP(mime_parser, env) \
 ((mime_parser)->ops->get_mime_parts_map(mime_parser, env))
+
+#define AXIS2_MIME_PARSER_GET_SOAP_BODY_LENGTH(mime_parser, env) \
+((mime_parser)->ops->get_soap_body_len(mime_parser, env))
 
 /*************************** End of function macros ***************************/
 

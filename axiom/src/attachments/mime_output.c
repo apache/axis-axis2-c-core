@@ -19,6 +19,7 @@
 #include "axis2_mime_body_part.h"
 #include <axis2_string.h>
 #include <axis2_om_text.h>
+#include <axis2_mime_const.h>
 
 axis2_char_t AXIS2_CRLF[] =  { 13, 10 };
 
@@ -28,13 +29,11 @@ typedef struct axis2_mime_output_impl
 } axis2_mime_output_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(mime_output) ((axis2_mime_output_impl_t *)(mime_output))
-#define AXIS2_MIME_BOUNDARY_BYTE 45
-#define AXIS2_MIME_CRLF_BYTE 13
 
 
 axis2_status_t axis2_char_2_byte(axis2_env_t **env, axis2_char_t *char_buffer, axis2_byte_t **byte_buffer, int *byte_buffer_size);
 
-axis2_status_t 
+axis2_status_t
 axis2_char_2_byte(axis2_env_t **env, axis2_char_t *char_buffer, axis2_byte_t **byte_buffer, int *byte_buffer_size)
 {
     int length;
