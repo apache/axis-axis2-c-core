@@ -30,4 +30,5 @@ EXTRA_DIST=_axis2_soap_body.h _axis2_soap_fault.h _axis2_soap_fault_code.h \
 		 _axis2_soap_fault.h _axis2_soap_fault_sub_code.h \
 		_axis2_soap_header.h _axis2_soap_envelope.h \
 		_axis2_soap_fault_node.h _axis2_soap_fault_text.h \
-		axis2_soap11_builder_helper.h axis2_soap12_builder_helper.h
+		axis2_soap11_builder_helper.h axis2_soap12_builder_helper.h \
+		maven.xml project.xml

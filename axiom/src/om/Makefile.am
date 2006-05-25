@@ -26,4 +26,5 @@ INCLUDES = -I$(top_builddir)/include \
 			@UTILINC@ \
 			@UTILINC@/platforms
 
-EXTRA_DIST=axis2_om_node_internal.h axis2_om_stax_builder_internal.h axis2_om_namespace_internal.h 
+EXTRA_DIST=axis2_om_node_internal.h axis2_om_stax_builder_internal.h axis2_om_namespace_internal.h \
+			maven.xml project.xml
