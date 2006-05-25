@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_FEATURE_ELEMENT_H
-#define AXIS2_WODEN_FEATURE_ELEMENT_H
+#ifndef AXIS2_WODEN_SVC_ELEMENT_H
+#define AXIS2_WODEN_SVC_ELEMENT_H
 
 /**
  * @file axis2_woden_endpoint_element.h
- * @brief Axis2 Feature Element Interface
+ * @brief Axis2 Endpoint Element Interface
  * This interface represents an &lt;endpoint&gt; element 
  * information item, a child element of WSDL &lt;service&gt;.
  *
@@ -48,7 +48,7 @@ typedef struct axis2_woden_endpoint_element axis2_woden_endpoint_element_t;
 typedef struct axis2_woden_endpoint_element_ops axis2_woden_endpoint_element_ops_t;
 typedef union axis2_woden_endpoint_element_base axis2_woden_endpoint_element_base_t;
 
-/** @defgroup axis2_woden_endpoint_element Feature Element
+/** @defgroup axis2_woden_endpoint_element Endpoint Element
   * @ingroup axis2_wsdl
   * @{
   */
@@ -135,48 +135,48 @@ axis2_woden_endpoint_element_resolve_methods(
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_FREE(endpoint_el, env) \
+#define AXIS2_WODEN_SVC_ELEMENT_FREE(endpoint_el, env) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          free (endpoint_el, env))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_TO_FEATURE_ELEMENT_FREE(endpoint_el, env) \
+#define AXIS2_WODEN_SVC_ELEMENT_TO_SVC_ELEMENT_FREE(endpoint_el, env) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          to_endpoint_element_free (endpoint_el, env))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_TYPE(endpoint_el, env) \
+#define AXIS2_WODEN_SVC_ELEMENT_TYPE(endpoint_el, env) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          type (endpoint_el, env))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_SET_NAME(endpoint_el, env, name) \
+#define AXIS2_WODEN_SVC_ELEMENT_SET_NAME(endpoint_el, env, name) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
-         set_ref(endpoint_el, env, name))
+         set_name(endpoint_el, env, name))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_GET_NAME(endpoint_el, env) \
+#define AXIS2_WODEN_SVC_ELEMENT_GET_NAME(endpoint_el, env) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
-         get_ref(endpoint_el, env))
+         get_name(endpoint_el, env))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_SET_BINDING_QNAME(endpoint_el, env, qname) \
+#define AXIS2_WODEN_SVC_ELEMENT_SET_BINDING_QNAME(endpoint_el, env, qname) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
-         set_required(endpoint_el, env, qname))
+         set_binding_qname(endpoint_el, env, qname))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_GET_BINDING_QNAME(endpoint_el, env) \
+#define AXIS2_WODEN_SVC_ELEMENT_GET_BINDING_QNAME(endpoint_el, env) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
-         is_required(endpoint_el, env))
+         get_binding_qname(endpoint_el, env))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_GET_BINDING_ELEMENT(endpoint_el, env) \
+#define AXIS2_WODEN_SVC_ELEMENT_GET_BINDING_ELEMENT(endpoint_el, env) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
-         is_required(endpoint_el, env))
+         get_binding_element(endpoint_el, env))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_SET_ADDRESS(endpoint_el, env, uri) \
+#define AXIS2_WODEN_SVC_ELEMENT_SET_ADDRESS(endpoint_el, env, uri) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
-         set_ref(endpoint_el, env, uri))
+         set_address(endpoint_el, env, uri))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_GET_ADDRESS(endpoint_el, env) \
+#define AXIS2_WODEN_SVC_ELEMENT_GET_ADDRESS(endpoint_el, env) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
-         get_ref(endpoint_el, env))
+         get_address(endpoint_el, env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_FEATURE_ELEMENT_H */
+#endif /* AXIS2_WODEN_SVC_ELEMENT_H */

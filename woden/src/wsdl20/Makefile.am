@@ -25,7 +25,8 @@ libaxis2_woden_wsdl20_la_SOURCES = \
 							binding_fault_ref.c \
 							binding_msg_ref.c \
 							binding_op.c \
-							endpoint.c
+							endpoint.c \
+							svc.c
 
 INCLUDES = -I$(top_builddir)/include \
 			@AXIOMINC@ \

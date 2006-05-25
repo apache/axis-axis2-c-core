@@ -22,7 +22,8 @@ libaxis2_woden_xml_la_SOURCES = \
 							import_element.c \
 							fault_ref_element.c \
 							desc_element.c \
-							endpoint_element.c
+							endpoint_element.c \
+							svc_element.c
 
 INCLUDES = -I$(top_builddir)/include \
 			@AXIOMINC@ \
