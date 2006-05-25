@@ -2,7 +2,7 @@
 
 ./autogen.sh
 
-./configure --prefix=${AXIS2C_HOME} --with-axis2_util=${AXIS2C_HOME}/include --with-axiom=${AXIS2C_HOME}/include
+./configure --prefix=${AXIS2C_HOME} --with-axis2_util=${AXIS2C_HOME}/include --with-axiom=${AXIS2C_HOME}/include 2> error.log
 if [ -s error.log ]
 then
     echo "Error, see error.log for details"
