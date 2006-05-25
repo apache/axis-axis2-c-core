@@ -35,4 +35,4 @@ libaxis2_util_la_LIBADD = minizip/libaxis2_minizip.la
 INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/include/platforms \
            -I$(top_builddir)/include/platforms/unix
-EXTRA_DIST=platforms/windows
+EXTRA_DIST=platforms/windows string_util.c
