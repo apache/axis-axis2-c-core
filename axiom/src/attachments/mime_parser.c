@@ -154,7 +154,7 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
     int mime_binary_len = 0;
     axis2_char_t *pos = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     mime_parser_impl = AXIS2_INTF_TO_IMPL(mime_parser);
     
         buffer = AXIS2_MALLOC((*env)->allocator, sizeof(axis2_char_t) * (size + 1));
@@ -425,7 +425,7 @@ axis2_hash_t* AXIS2_CALL
 axis2_mime_parser_get_mime_parts_map(axis2_mime_parser_t *mime_parser, 
     axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(mime_parser)->mime_parts_map;
 }
 

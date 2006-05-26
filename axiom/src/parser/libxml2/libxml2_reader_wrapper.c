@@ -156,10 +156,15 @@ typedef struct axis2_libxml2_reader_wrapper_impl_t
     int namespace_map[AXIS2_ATTR_NS_MAX];
     int attribute_map[AXIS2_ATTR_NS_MAX];
     /******************************************/
-    /* read callback function */
+    /* read callback function 
     int (*read_input_callback)(char *buffer, int size,void* ctx);
 
     int (*close_input_callback)(void *ctx);
+    */
+    
+    AXIS2_READ_INPUT_CALLBACK read_input_callback;
+    
+    AXIS2_CLOSE_INPUT_CALLBACK close_input_callback;
     
 } axis2_libxml2_reader_wrapper_impl_t;
 

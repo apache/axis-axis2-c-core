@@ -80,9 +80,9 @@ CPPFLAGS = /nologo /I$(AXIS2_SOURCE_DIR)\include
 #The compiler and its options
 
 # include path
-GUTHTHILA_INCP = /I$(AXIS2_SOURCE_DIR)\\guththila\impl\src
+GUTHTHILA_INCP = /I$(AXIS2_SOURCE_DIR)\guththila\impl\src
 APACHE_INCP = /I$(APACHE_INSTALL_DIR)\include
-AXIS2_INCP = /I$(AXIS2_SOURCE_DIR)\util\include /I$(AXIS2_SOURCE_DIR)\axiom\include /I$(AXIS2_SOURCE_DIR)\axiom\src\om /I$(AXIS2_SOURCE_DIR)\axiom\src\soap  /I$(AXIS2_SOURCE_DIR)\util\include\platforms /I$(AXIS2_SOURCE_DIR)\modules\wsdl /I$(AXIS2_SOURCE_DIR)\modules\core\clientapi /I$(AXIS2_SOURCE_DIR)\modules\core\deployment /I$(AXIS2_SOURCE_DIR)\modules\core\description /I$(AXIS2_SOURCE_DIR)\modules\core\transport /I$(AXIS2_SOURCE_DIR)\include /I$(LIBXML2_INSTALL_DIR)\include /I$(ICONV_INSTALL_DIR)\include /I$(AXIS2_SOURCE_DIR)\modules\core\engine /I$(AXIS2_SOURCE_DIR)\modules\core\context /I$(AXIS2_SOURCE_DIR)\modules\core\util /I$(AXIS2_SOURCE_DIR)\include\platforms /I$(AXIS2_SOURCE_DIR)\include\platforms\windows /I$(AXIS2_SOURCE_DIR)\modules\xml\om /I$(AXIS2_SOURCE_DIR)\modules\xml\soap  /I$(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\apache2 /I$(AXIS2_SOURCE_DIR)\axiom\src\attachments
+AXIS2_INCP = /I$(AXIS2_SOURCE_DIR)\util\include /I$(AXIS2_SOURCE_DIR)\util\src\ /I$(AXIS2_SOURCE_DIR)\util\src\minizip\ /I$(AXIS2_SOURCE_DIR)\axiom\include /I$(AXIS2_SOURCE_DIR)\axiom\src\om /I$(AXIS2_SOURCE_DIR)\axiom\src\soap  /I$(AXIS2_SOURCE_DIR)\util\include\platforms /I$(AXIS2_SOURCE_DIR)\modules\wsdl /I$(AXIS2_SOURCE_DIR)\modules\core\clientapi /I$(AXIS2_SOURCE_DIR)\modules\core\deployment /I$(AXIS2_SOURCE_DIR)\modules\core\description /I$(AXIS2_SOURCE_DIR)\modules\core\transport /I$(AXIS2_SOURCE_DIR)\include /I$(LIBXML2_INSTALL_DIR)\include /I$(ICONV_INSTALL_DIR)\include /I$(ZLIB_INSTALL_DIR)\include /I$(AXIS2_SOURCE_DIR)\modules\core\engine /I$(AXIS2_SOURCE_DIR)\modules\core\context /I$(AXIS2_SOURCE_DIR)\modules\core\util /I$(AXIS2_SOURCE_DIR)\include\platforms /I$(AXIS2_SOURCE_DIR)\include\platforms\windows /I$(AXIS2_SOURCE_DIR)\modules\xml\om /I$(AXIS2_SOURCE_DIR)\modules\xml\soap  /I$(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\apache2 /I$(AXIS2_SOURCE_DIR)\axiom\src\attachments
 
 
 
@@ -95,7 +95,7 @@ CFLAGS = $(CFLAGS) $(AXIS2_INCP) $(GUTHTHILA_INCP) $(APACHE_INCP)
 # linker options
 
 LD = link.exe
-LDFLAGS = /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXML2_INSTALL_DIR)\lib /LIBPATH:$(APACHE_INSTALL_DIR)\lib
+LDFLAGS = /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXML2_INSTALL_DIR)\lib /LIBPATH:$(APACHE_INSTALL_DIR)\lib /LIBPATH:$(ZLIB_INSTALL_DIR)\lib
 LIBS =  Rpcrt4.lib Ws2_32.lib
 APACHE_LIBS = apr.lib xml.lib libhttpd.lib aprutil.lib libapr.lib
 
@@ -106,7 +106,7 @@ ARFLAGS = /nologo
 #debug symbols
 !if "$(DEBUG)" == "1"
 CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Z7
-LDFLAGS = $(LDFLAGS) /DEBUG
+LDFLAGS = $(LDFLAGS) /DEBUG /NODEFAULTLIB:LIBCMTD.lib
 !else
 CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 
 LDFLAGS = $(LDFLAGS)
@@ -142,8 +142,8 @@ copy_include: deploy
 	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\util\include $(AXIS2_INSTALL_DIR)\include\
 
 axis2_util: 
-	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\util\src\platforms\windows\*.c $(AXIS2_SOURCE_DIR)\util\src\*.c  /c
-	$(LD) $(LDFLAGS) *.obj $(LIBS) /DLL /OUT:$(AXIS2_UTIL).dll /IMPLIB:$(AXIS2_UTIL).lib
+	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\util\src\platforms\windows\*.c $(AXIS2_SOURCE_DIR)\util\src\minizip\*.c $(AXIS2_SOURCE_DIR)\util\src\*.c  /c
+	$(LD) $(LDFLAGS) *.obj $(LIBS) $(ZLIB_INSTALL_DIR)\lib\zdll.lib /DLL  /OUT:$(AXIS2_UTIL).dll /IMPLIB:$(AXIS2_UTIL).lib
 	del *.obj
 	copy $(AXIS2_UTIL).* $(AXIS2_LIBS)\
 	
@@ -151,7 +151,7 @@ axis2_util:
 
 axis2_parser: 
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\axiom\src\parser\libxml2\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(LIBS) $(LIBXML2_INSTALL_DIR)\lib\libxml2.lib /DLL /OUT:$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_PARSER).lib
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(LIBS) $(LIBXML2_INSTALL_DIR)\lib\libxml2.lib  /DLL /OUT:$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_PARSER).lib
 	del *.obj
 	copy $(AXIS2_PARSER).* $(AXIS2_LIBS)\
 
