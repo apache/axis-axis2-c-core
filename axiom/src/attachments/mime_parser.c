@@ -96,6 +96,8 @@ axis2_mime_parser_create (axis2_env_t **env)
 	mime_parser_impl->mime_parser.ops->free =  axis2_mime_parser_free;
     mime_parser_impl->mime_parser.ops->parse = axis2_mime_parser_parse;
     mime_parser_impl->mime_parser.ops->get_mime_parts_map = axis2_mime_parser_get_mime_parts_map;
+	mime_parser_impl->mime_parser.ops->get_soap_body_len = axis2_mime_parser_get_soap_body_len;
+	mime_parser_impl->mime_parser.ops->get_soap_body_str = axis2_mime_parser_get_soap_body_str;
     
 	return &(mime_parser_impl->mime_parser);
 }
