@@ -391,7 +391,10 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
         {
             /* get MIME ID */
             axis2_char_t *id = NULL;
-            id = AXIS2_STRSTR(body_mime, "content-id");
+            if (body_mime)
+            {
+                id = AXIS2_STRSTR(body_mime, "content-id");
+            }
             if (id)
             {
                 id += AXIS2_STRLEN("content-id");

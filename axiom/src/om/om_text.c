@@ -207,6 +207,8 @@ axis2_om_text_create (axis2_env_t **env,
     om_text->om_text.ops->get_value = axis2_om_text_get_value;
     om_text->om_text.ops->get_data_handler = axis2_om_text_get_data_handler;
     om_text->om_text.ops->get_content_id = axis2_om_text_get_content_id;
+    om_text->om_text.ops->set_optimize = axis2_om_text_set_optimize;
+    om_text->om_text.ops->set_is_binary = axis2_om_text_set_is_binary;
     
     return &(om_text->om_text);
 }
@@ -582,7 +584,27 @@ axis2_om_text_get_text(axis2_om_text_t *om_text,
     }
     else
     {
-        
+        axis2_char_t *data_handler_stream = NULL;
+        int data_handler_stream_size = 0;
+        if (om_text_impl->data_handler)
+        {
+            int encoded_len = 0;
+            axis2_char_t *encoded_str = NULL;
+            AXIS2_DATA_HANDLER_READ_FROM(om_text_impl->data_handler, env,
+                        &data_handler_stream, &data_handler_stream_size);
+            if (data_handler_stream)
+            {
+                encoded_len = axis2_base64_encode_len(data_handler_stream_size);
+                encoded_str = AXIS2_MALLOC((*env)->allocator, encoded_len);
+                if (encoded_str)
+                {
+                    encoded_len = axis2_base64_encode(encoded_str, 
+                        data_handler_stream, data_handler_stream_size);
+                    encoded_str[encoded_len] = '\0';
+                    return encoded_str;
+                }                
+            }
+        }
     }
     return om_text_impl->value;    
 }
