@@ -304,12 +304,19 @@ axis2_xml_schema_element_create(axis2_env_t **env)
     element_impl->type_recv = NULL;
     element_impl->schema_type_qname = NULL;
     element_impl->substitution_group = NULL;
+    element_impl->qualified_qname = NULL;
     element_impl->ht_super = NULL;
     element_impl->obj_type = AXIS2_XML_SCHEMA_ELEMENT;
     
 
     element_impl->element.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_element_ops_t));
+    
+    if(!element_impl->element.ops)
+    {
+        AXIS2_FREE((*env)->allocator, element_impl);
+        return NULL;
+    }                    
 
     element_impl->element.ops->free = axis2_xml_schema_element_free;
     element_impl->element.ops->get_base_impl = 

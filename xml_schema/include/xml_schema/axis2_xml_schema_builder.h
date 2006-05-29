@@ -61,7 +61,7 @@ struct axis2_xml_schema_builder_ops
     build_with_root_node)(
             axis2_xml_schema_builder_t *builder,
             axis2_env_t **env,
-            axis2_om_node_t *root,
+            axis2_om_node_t *om_node,
             axis2_char_t *uri);
             
     axis2_status_t (AXIS2_CALL *
@@ -88,8 +88,8 @@ axis2_xml_schema_builder_create(
 #define AXIS2_XML_SCHEMA_BUILDER_BUILD(builder, env, om_doc, uri) \
         ((builder)->ops->build(builder, env, om_doc, uri))
         
-#define AXIS2_XML_SCHEMA_BUILDER_BUILD_WITH_ROOT_NODE(builder, env, om_doc, uri) \
-        ((builder)->ops->build_with_root_node(builder, env, root, uri))
+#define AXIS2_XML_SCHEMA_BUILDER_BUILD_WITH_ROOT_NODE(builder, env, om_node, uri) \
+        ((builder)->ops->build_with_root_node(builder, env, om_node, uri))
         
 /**************** end macros **************************************************/
 

@@ -129,9 +129,9 @@ axis2_xml_schema_simple_type_resolve_methods(
 		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
             get_content(simple_type, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_SET_CONTENT(simple_type, env, max_occurs) \
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_SET_CONTENT(simple_type, env, content) \
 		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
-            get_set_content(simple_type, env, max_occurs))
+            set_content(simple_type, env, content))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_TO_STRING(simple_type, env) \
 		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\

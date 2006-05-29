@@ -18,13 +18,15 @@
 #include <xml_schema/axis2_xml_schema_element.h>
 #include <xml_schema/axis2_xml_schema_type.h>
 #include <xml_schema/axis2_xml_schema.h>
-#include <xml_schema/axis2_validation_event_handler.h> 
 #include <axis2_hash.h>
 #include <xml_schema/axis2_xml_schema_type.h>
 #include <xml_schema/axis2_xml_schema_type_receiver.h>
 #include <xml_schema/axis2_xml_schema_element.h>
 #include <xml_schema/axis2_xml_schema_simple_type.h>
 #include <xml_schema/axis2_xml_schema_constants.h>
+#include <xml_schema/axis2_xml_schema_builder.h>
+#include <xml_schema/axis2_xml_schema.h>
+
 
 typedef struct axis2_xml_schema_collection_impl 
                 axis2_xml_schema_collection_impl_t;
@@ -407,8 +409,32 @@ axis2_xml_schema_collection_read_with_reader(
         axis2_env_t **env,
         axis2_xml_reader_t *reader)
 {
-
-    return NULL;
+    axis2_xml_schema_builder_t *sch_builder = NULL;
+    axis2_om_document_t *om_doc = NULL;
+    axis2_om_stax_builder_t *om_builder = NULL;
+    
+    AXIS2_PARAM_CHECK((*env)->error, reader, NULL);
+    
+    om_builder = axis2_om_stax_builder_create(env, reader);
+    if(!om_builder)
+        return NULL;
+        
+    om_doc = axis2_om_document_create(env, NULL, om_builder);
+    if(!om_doc)
+    {
+        AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+        return NULL;
+    }    
+    AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
+    
+    sch_builder = axis2_xml_schema_builder_create(env, collection);
+    if(!sch_builder)
+    {
+        AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+        return NULL;
+    }
+    
+    return AXIS2_XML_SCHEMA_BUILDER_BUILD(sch_builder, env, om_doc, NULL);
 }
                             
 axis2_xml_schema_t * AXIS2_CALL
@@ -417,8 +443,13 @@ axis2_xml_schema_collection_read_document(
         axis2_env_t **env,
         axis2_om_document_t* document)
 {
-
-    return NULL;
+    axis2_xml_schema_collection_impl_t *sch_col_impl = NULL;
+    axis2_xml_schema_builder_t *sch_builder = NULL;
+    AXIS2_PARAM_CHECK((*env)->error , document, NULL);
+    
+    sch_builder = axis2_xml_schema_builder_create(env, collection);
+    return AXIS2_XML_SCHEMA_BUILDER_BUILD(sch_builder, env, document, NULL);    
+    
 }
 
 axis2_xml_schema_t * AXIS2_CALL
@@ -427,7 +458,16 @@ axis2_xml_schema_collection_read_element(
         axis2_env_t **env,
         axis2_om_node_t *node)
 {
-    return NULL;
+    axis2_xml_schema_builder_t *sch_builder = NULL;
+    
+    AXIS2_PARAM_CHECK((*env)->error, node, NULL);
+    
+    sch_builder = axis2_xml_schema_builder_create(env, collection);
+    
+    if(!sch_builder)
+        return NULL;
+        
+    return AXIS2_XML_SCHEMA_BUILDER_BUILD_WITH_ROOT_NODE(sch_builder, env, node, NULL);
 }
 
 axis2_xml_schema_t* AXIS2_CALL
@@ -456,7 +496,21 @@ axis2_xml_schema_collection_get_element_by_qname(
         axis2_env_t **env,
         axis2_qname_t *qname)
 {
-    return NULL;
+    axis2_char_t *uri = NULL;
+    axis2_xml_schema_t *schema = NULL;
+    axis2_xml_schema_collection_impl_t *collec_impl = NULL;
+    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
+    
+    collec_impl = AXIS2_INTF_TO_IMPL(collection);
+    
+    uri = AXIS2_QNAME_GET_URI(qname, env);
+
+    if(NULL != collec_impl->namespaces)
+        schema = axis2_hash_get(collec_impl->namespaces, uri, AXIS2_HASH_KEY_STRING);              
+
+    if(NULL != schema)
+        return NULL;
+    return AXIS2_XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qname);
 }
 
 axis2_xml_schema_type_t * AXIS2_CALL
@@ -465,7 +519,19 @@ axis2_xml_schema_collection_get_type_by_qname(
         axis2_env_t **env,
         axis2_qname_t *schema_type_qname)
 {
-    return NULL;
+    axis2_xml_schema_collection_impl_t *collecion_impl = NULL;
+    axis2_char_t *uri = NULL;
+    axis2_xml_schema_t *schema = NULL;
+    
+    AXIS2_PARAM_CHECK((*env)->error, schema_type_qname, NULL);
+    collecion_impl = AXIS2_INTF_TO_IMPL(collection);
+    uri = AXIS2_QNAME_GET_URI(schema_type_qname, env);
+    if(NULL != collecion_impl->namespaces)
+        schema = axis2_hash_get(collecion_impl->namespaces, uri, AXIS2_HASH_KEY_STRING);
+    
+    if(!schema)
+        return NULL;         
+    return AXIS2_XML_SCHEMA_GET_TYPE_BY_QNAME(schema, env, schema_type_qname);
 }
 
 
@@ -474,8 +540,34 @@ axis2_xml_schema_collection_add_unresolved_type(
         axis2_xml_schema_collection_t* collection,
         axis2_env_t **env,
         axis2_qname_t *qtype, 
-        void *receiver)
+        void *obj)
 {
+    axis2_xml_schema_collection_impl_t *collection_impl = NULL;
+    axis2_char_t *qn_string = NULL;
+    axis2_array_list_t *receivers = NULL;
+    
+        
+    AXIS2_PARAM_CHECK((*env)->error, qtype, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, obj, AXIS2_FAILURE);
+    collection_impl = AXIS2_INTF_TO_IMPL(collection);
+        
+    qn_string = AXIS2_QNAME_TO_STRING(qtype, env);
+    if(NULL != collection_impl->unresolved_types && 
+        NULL != qn_string)
+    {
+        receivers = axis2_hash_get(collection_impl->unresolved_types, 
+            qn_string, AXIS2_HASH_KEY_STRING);
+            
+        if(!receivers)
+        {
+            receivers = axis2_array_list_create(env, 10);            
+            axis2_hash_set(collection_impl->unresolved_types, qn_string,
+                AXIS2_HASH_KEY_STRING, receivers);
+        }    
+    }
+        
+    AXIS2_ARRAY_LIST_ADD(receivers, env, obj);
+
     return AXIS2_SUCCESS;
 } 
 
@@ -486,6 +578,41 @@ axis2_xml_schema_collection_resolve_type(
         axis2_qname_t *type_qname, 
         axis2_xml_schema_type_t *type)
 {
+    axis2_xml_schema_collection_impl_t *collection_impl = NULL;
+    axis2_char_t *qn_string = NULL;
+    axis2_array_list_t *receivers = NULL;
+    AXIS2_PARAM_CHECK((*env)->error, type_qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK((*env)->error, type, AXIS2_FAILURE);
+    
+    collection_impl = AXIS2_INTF_TO_IMPL(collection);
+    qn_string = AXIS2_QNAME_TO_STRING(type_qname, env);
+    if(NULL != qn_string && NULL != collection_impl->unresolved_types)
+    {
+        receivers = axis2_hash_get(collection_impl->unresolved_types, 
+            qn_string, AXIS2_HASH_KEY_STRING);
+            
+        if(NULL != receivers)
+        {
+            int i = 0;
+            
+            for(i = 0; i < AXIS2_ARRAY_LIST_SIZE(receivers, env); i++)
+            {
+                void *obj = NULL;
+                obj = AXIS2_ARRAY_LIST_GET(receivers, env, i);
+                if(NULL != obj)
+                {
+                    AXIS2_XML_SCHEMA_ELEMENT_SET_SCHEMA_TYPE(obj, env, type);
+                }
+            }
+        }
+        else
+        {
+            return AXIS2_FAILURE;
+        }            
+        if(NULL != collection_impl->unresolved_types)
+            axis2_hash_set(collection_impl->unresolved_types, qn_string, 
+                AXIS2_HASH_KEY_STRING, NULL);
+    }
     return AXIS2_SUCCESS;
 } 
 
@@ -503,7 +630,8 @@ axis2_xml_schema_collection_get_namespace_for_prefix(
     {
         axis2_char_t *ns = NULL;
         ns = (axis2_char_t *)axis2_hash_get(
-                collection_impl->in_scope_namespaces, prefix, AXIS2_HASH_KEY_STRING);
+                collection_impl->in_scope_namespaces, 
+                prefix, AXIS2_HASH_KEY_STRING);
         return ns;                
     }
     return NULL;
@@ -552,7 +680,6 @@ axis2_xml_schema_collection_get_systemid2_schemas(
     return collection_impl->systemid2_schemas; 
 }        
 
-        
 axis2_array_list_t* AXIS2_CALL 
 axis2_xml_schema_collection_get_schemas(
         axis2_xml_schema_collection_t *collection,

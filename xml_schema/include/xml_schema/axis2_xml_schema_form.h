@@ -47,10 +47,6 @@ extern "C"
 
 struct axis2_xml_schema_form_ops
 {
-	/** 
-     * Deallocate memory
-     * @return status code
-     */
     axis2_status_t (AXIS2_CALL *
     free) (void *form,
             axis2_env_t **env);

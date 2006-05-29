@@ -24,7 +24,6 @@
  *          element element.
  */
 
-#include <xml_schema/axis2_xml_schema_type_receiver.h>
 #include <xml_schema/axis2_xml_schema_particle.h>
 #include <axis2_qname.h>
 

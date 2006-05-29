@@ -45,42 +45,50 @@ typedef struct axis2_xml_schema_simple_type_union_ops
 
 struct axis2_xml_schema_simple_type_union_ops
 {
-	/** 
-     * Deallocate memory
-     * @return status code
-     */
     axis2_status_t (AXIS2_CALL *
-    free) (void *simple_type_union,
-            axis2_env_t **env);
+    free)(void *sim_type_union, axis2_env_t **env);
 
     axis2_xml_schema_simple_type_content_t *(AXIS2_CALL *
-    get_base_impl) (void *simple_type_union,
-                    axis2_env_t **env);
+    get_base_impl)(
+            void *sim_type_union,
+            axis2_env_t **env);
                     
     axis2_hash_t*(AXIS2_CALL *
-    super_objs)(void *simple_type_union,
-                    axis2_env_t **env);                    
+    super_objs)(
+            void *sim_type_union,
+            axis2_env_t **env);                    
     
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(void *simple_type_union,
-          axis2_env_t **env);
+    type)(
+            void *sim_type_union,
+            axis2_env_t **env);
 
     axis2_xml_schema_obj_collection_t*(AXIS2_CALL *
-    get_base_types)(void *simple_type_union,
-                    axis2_env_t **env);
+    get_base_types)(
+            void *sim_type_union,
+            axis2_env_t **env);
     
     axis2_status_t (AXIS2_CALL *
-    set_member_types_source)(void *simple_type_union,
-                             axis2_env_t **env,
-                             axis2_char_t *member_types_source);
+    set_member_types_source)(
+            void *sim_type_union,
+            axis2_env_t **env,
+            axis2_char_t *member_types_source);
     
     axis2_char_t* (AXIS2_CALL *
-    get_member_types_source)(void *simple_type_union,
-                            axis2_env_t **env);
+    get_member_types_source)(
+            void *sim_type_union,
+            axis2_env_t **env);
                     
     axis2_array_list_t* (AXIS2_CALL *
-    get_member_types_qnames)(void *simple_type_union,
-                axis2_env_t **env);
+    get_member_types_qnames)(
+            void *sim_type_union,
+            axis2_env_t **env);
+                
+    axis2_status_t (AXIS2_CALL *
+    set_member_types_qnames)(
+            void *sim_type_union,
+            axis2_env_t **env,
+            axis2_array_list_t *qns);                
                 
 };
 
@@ -106,44 +114,44 @@ axis2_xml_schema_simple_type_union_create(axis2_env_t **env);
 
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_simple_type_union_resolve_methods(
-                    axis2_xml_schema_simple_type_union_t *simple_type_union,
+                    axis2_xml_schema_simple_type_union_t *sim_type_union,
                     axis2_env_t **env,
                     axis2_xml_schema_simple_type_union_t *simple_type_union_impl,
                     axis2_hash_t *methods);
  */
  
- #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_FREE(simple_type_union, env) \
-		(((axis2_xml_schema_simple_type_union_t *) simple_type_union)->ops->\
-            free(simple_type_union, env))
+ #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_FREE(sim_type_union, env) \
+		(((axis2_xml_schema_simple_type_union_t *) sim_type_union)->ops->\
+            free(sim_type_union, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_GET_BASE_IMPL(simple_type_union, env) \
-		(((axis2_xml_schema_simple_type_union_t *) simple_type_union)->ops->\
-            get_base_impl(simple_type_union, env))
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_GET_BASE_IMPL(sim_type_union, env) \
+		(((axis2_xml_schema_simple_type_union_t *) sim_type_union)->ops->\
+            get_base_impl(sim_type_union, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_SUPER_OBJS(simple_type_union, env) \
-		(((axis2_xml_schema_simple_type_union_t *) simple_type_union)->ops->\
-            super_objs(simple_type_union, env))
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_SUPER_OBJS(sim_type_union, env) \
+		(((axis2_xml_schema_simple_type_union_t *) sim_type_union)->ops->\
+            super_objs(sim_type_union, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_TYPE(simple_type_union, env) \
-		(((axis2_xml_schema_simple_type_union_t *) simple_type_union)->ops->\
-            type(simple_type_union, env))
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_TYPE(sim_type_union, env) \
+		(((axis2_xml_schema_simple_type_union_t *) sim_type_union)->ops->\
+            type(sim_type_union, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_GET_BASE_TYPES(simple_type_union, env) \
-		(((axis2_xml_schema_simple_type_union_t *) simple_type_union)->ops->\
-            get_max_occurs(simple_type_union, env))
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_GET_BASE_TYPES(sim_type_union, env) \
+		(((axis2_xml_schema_simple_type_union_t *) sim_type_union)->ops->\
+            get_base_types(sim_type_union, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_SET_MEMBER_TYPES_SOURCE(simple_type_union,\
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_SET_MEMBER_TYPES_SOURCE(sim_type_union,\
          env, member_types_sources) \
-		(((axis2_xml_schema_simple_type_union_t *) simple_type_union)->ops->\
-            set_member_types_source(simple_type_union, env, member_types_sources))
+		(((axis2_xml_schema_simple_type_union_t *) sim_type_union)->ops->\
+            set_member_types_source(sim_type_union, env, member_types_sources))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_GET_MEMBER_TYPES_SOURCE(simple_type_union, env) \
-		(((axis2_xml_schema_simple_type_union_t *) simple_type_union)->ops->\
-            get_member_types_source(simple_type_union, env))
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_GET_MEMBER_TYPES_SOURCE(sim_type_union, env) \
+		(((axis2_xml_schema_simple_type_union_t *) sim_type_union)->ops->\
+            get_member_types_source(sim_type_union, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_GET_MEMBER_TYPES_QNAMES(simple_type_union, env) \
-		(((axis2_xml_schema_simple_type_union_t *) simple_type_union)->ops->\
-            set_member_types_qnames(simple_type_union, env))
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_SET_MEMBER_TYPES_QNAMES(sim_type_union, env, qns) \
+		(((axis2_xml_schema_simple_type_union_t *) sim_type_union)->ops->\
+            set_member_types_qnames(sim_type_union, env, qns))
 
 /** @} */
 #ifdef __cplusplus

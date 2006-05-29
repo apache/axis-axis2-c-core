@@ -170,7 +170,7 @@ struct axis2_xml_schema_ops
     axis2_status_t (AXIS2_CALL *
     set_target_namespace) (void *schema,
                                 axis2_env_t **env,
-                                axis2_char_t *target_namespc); 
+                                axis2_char_t *target_namespace); 
 
     axis2_char_t *(AXIS2_CALL *
     get_version) (void *schema,

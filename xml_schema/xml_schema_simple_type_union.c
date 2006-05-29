@@ -63,7 +63,8 @@ axis2_xml_schema_simple_type_union_super_objs(void *simple_type_union,
 
 axis2_xml_schema_simple_type_content_t *AXIS2_CALL
 axis2_xml_schema_simple_type_union_get_base_impl(void *simple_type_union,
-                                        axis2_env_t **env);                                                                                
+                                        axis2_env_t **env);                                     
+                                                                                   
 
 axis2_xml_schema_obj_collection_t* AXIS2_CALL
 axis2_xml_schema_simple_type_union_get_base_types(void *simple_type_union,
@@ -80,8 +81,15 @@ axis2_xml_schema_simple_type_union_get_member_types_source
                              axis2_env_t **env);
 
 axis2_array_list_t* AXIS2_CALL
-axis2_xml_schema_simple_type_union_get_member_types_qnames(void *simple_type_union,
-                                                           axis2_env_t **env);
+axis2_xml_schema_simple_type_union_get_member_types_qnames(
+        void *simple_type_union,
+        axis2_env_t **env);
+        
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_simple_type_union_set_member_types_qnames(
+        void *simple_type_union,
+        axis2_env_t **env,
+        axis2_array_list_t *qns);        
 
 /*************** function prototypes *****************************************/
 
@@ -139,6 +147,9 @@ axis2_xml_schema_simple_type_union_create(axis2_env_t **env)
             axis2_xml_schema_simple_type_union_get_member_types_source;
     simple_type_union_impl->simple_type_union.ops->get_member_types_qnames = 
             axis2_xml_schema_simple_type_union_get_member_types_qnames;
+    simple_type_union_impl->simple_type_union.ops->set_member_types_qnames =
+            axis2_xml_schema_simple_type_union_set_member_types_qnames;            
+            
    
     simple_type_union_impl->methods = axis2_hash_make(env);
     simple_type_union_impl->ht_super = axis2_hash_make(env);
@@ -378,3 +389,16 @@ axis2_xml_schema_simple_type_union_super_objs(void *simple_type_union,
 {
     return AXIS2_INTF_TO_IMPL(simple_type_union)->ht_super;
 }                                        
+
+axis2_status_t AXIS2_CALL
+axis2_xml_schema_simple_type_union_set_member_types_qnames(
+        void *simple_type_union,
+        axis2_env_t **env,
+        axis2_array_list_t *qns)
+{
+    axis2_xml_schema_simple_type_union_impl_t *sim_type_union_impl = NULL;
+    AXIS2_PARAM_CHECK((*env)->error, qns, AXIS2_FAILURE);
+    sim_type_union_impl = AXIS2_INTF_TO_IMPL(simple_type_union);
+    sim_type_union_impl->member_types_qnames = qns;
+    return AXIS2_FAILURE;
+}        

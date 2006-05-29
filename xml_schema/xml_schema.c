@@ -24,6 +24,8 @@
 #include <xml_schema/axis2_validation_event_handler.h>
 #include <xml_schema/axis2_xml_schema_element.h>
 
+#define AXIS2_XML_SCHEMA_DEFAULT_TARGET_NS "DEFAULT"
+
 typedef struct axis2_xml_schema_impl axis2_xml_schema_impl_t;
 /** 
  * @brief Other Extension Struct Impl
@@ -32,27 +34,49 @@ typedef struct axis2_xml_schema_impl axis2_xml_schema_impl_t;
 struct axis2_xml_schema_impl
 {
     axis2_xml_schema_t schema;
+    
     axis2_xml_schema_annotated_t *annotated;
+    
     axis2_xml_schema_types_t obj_type;
-    axis2_hash_t *super;
+    
+    axis2_hash_t *ht_super;
+    
     axis2_hash_t *methods;
+    
     axis2_xml_schema_form_t *attr_form_default;
+    
     axis2_xml_schema_form_t *element_form_default;
+    
     axis2_xml_schema_obj_table_t *attr_groups;
+    
     axis2_xml_schema_obj_table_t *attrs;
+
     axis2_xml_schema_obj_table_t *elements;
+
     axis2_xml_schema_obj_table_t *groups;
+
     axis2_xml_schema_obj_table_t *notations;
+
     axis2_xml_schema_obj_table_t *schema_types;
+
     axis2_xml_schema_derivation_method_t *block_default;
+
     axis2_xml_schema_derivation_method_t *final_default;
+
     axis2_xml_schema_obj_collection_t *includes;
+
     axis2_xml_schema_obj_collection_t *items;
+
     axis2_bool_t is_compiled;
-    axis2_char_t *target_namespc;
+
+    axis2_char_t *target_namespace;
+
     axis2_char_t *version;
+
     axis2_hash_t *namespaces_map;
+
     axis2_char_t *schema_ns_prefix;
+
     axis2_xml_schema_collection_t *parent;
 };
 
@@ -168,7 +192,7 @@ axis2_xml_schema_get_target_namespace(void *schema,
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_set_target_namespace(void *schema,
                                         axis2_env_t **env,
-                                        axis2_char_t *target_namespc); 
+                                        axis2_char_t *target_namespace); 
 
 axis2_char_t *AXIS2_CALL 
 axis2_xml_schema_get_version(void *schema,
@@ -218,8 +242,8 @@ axis2_xml_schema_set_schema_ns_prefix(void *schema,
 
 AXIS2_DECLARE(axis2_xml_schema_t *)
 axis2_xml_schema_create(axis2_env_t **env,
-                                axis2_char_t *namespc,
-                                axis2_xml_schema_collection_t *parent)
+                        axis2_char_t *namespc,
+                        axis2_xml_schema_collection_t *parent)
 {
     axis2_xml_schema_impl_t *schema_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -233,7 +257,7 @@ axis2_xml_schema_create(axis2_env_t **env,
     }                        
     
     schema_impl->annotated = NULL;
-    schema_impl->super = NULL;
+    schema_impl->ht_super = NULL;
     schema_impl->obj_type = AXIS2_XML_SCHEMA;
     schema_impl->methods = NULL;
     schema_impl->parent = parent;
@@ -250,8 +274,14 @@ axis2_xml_schema_create(axis2_env_t **env,
     schema_impl->groups = NULL;
     schema_impl->notations = NULL;
     schema_impl->schema_types = NULL;
-    schema_impl->target_namespc = namespc;
-    
+    schema_impl->target_namespace = NULL;
+    if(NULL != namespc)
+        schema_impl->target_namespace = AXIS2_STRDUP(namespc, env);
+    if(!schema_impl->target_namespace)
+    {
+        schema_impl->target_namespace = 
+            AXIS2_STRDUP(AXIS2_XML_SCHEMA_DEFAULT_TARGET_NS, env);
+    }
     schema_impl->schema.ops = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_ops_t));
     if(!schema_impl->schema.ops)
@@ -433,15 +463,22 @@ axis2_xml_schema_create(axis2_env_t **env,
     
     schema_impl->annotated = axis2_xml_schema_annotated_create(env);
 
-    schema_impl->super = axis2_hash_make(env);
-    if(!schema_impl->super)
+    schema_impl->ht_super = axis2_hash_make(env);
+    if(!schema_impl->ht_super)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(schema_impl->super, "AXIS2_XML_SCHEMA", AXIS2_HASH_KEY_STRING, 
-            &(schema_impl->schema));
-
+    axis2_hash_set(schema_impl->ht_super, "AXIS2_XML_SCHEMA", 
+        AXIS2_HASH_KEY_STRING, &(schema_impl->schema));
+        
+    axis2_hash_set(schema_impl->ht_super, "AXIS2_XML_SCHEMA_ANNOTATED", 
+        AXIS2_HASH_KEY_STRING, schema_impl->annotated);
+        
+    axis2_hash_set(schema_impl->ht_super, "AXIS2_XML_SCHEMA_OBJ",
+        AXIS2_HASH_KEY_STRING, 
+        AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(schema_impl->annotated, env));
+        
     status = axis2_xml_schema_annotated_resolve_methods(
             &(schema_impl->schema.base), env, schema_impl->annotated, 
             schema_impl->methods);
@@ -464,10 +501,10 @@ axis2_xml_schema_free(void *schema,
         schema_impl->methods = NULL;
     }
 
-    if(schema_impl->super)
+    if(schema_impl->ht_super)
     {
-        axis2_hash_free(schema_impl->super, env);
-        schema_impl->super = NULL;
+        axis2_hash_free(schema_impl->ht_super, env);
+        schema_impl->ht_super = NULL;
     }
 
     if(schema_impl->annotated)
@@ -511,7 +548,7 @@ axis2_xml_schema_super_objs(void *schema,
     AXIS2_ENV_CHECK(env, NULL);
     schema_impl = AXIS2_INTF_TO_IMPL(schema);
 
-    return schema_impl->super;
+    return schema_impl->ht_super;
 }
 
 axis2_xml_schema_annotated_t *AXIS2_CALL
@@ -920,6 +957,11 @@ axis2_xml_schema_set_element_form_default(void *schema,
         if(!schema_impl)
             return AXIS2_FAILURE;            
     }
+    if(NULL != schema_impl->element_form_default)
+    {
+        AXIS2_XML_SCHEMA_FORM_FREE(schema_impl->element_form_default, env);
+        schema_impl->element_form_default = NULL;
+    }
     schema_impl->element_form_default = element_form_default;
     return AXIS2_SUCCESS;
 }
@@ -1138,7 +1180,7 @@ axis2_xml_schema_get_schema_types(void *schema,
 
 axis2_char_t *AXIS2_CALL
 axis2_xml_schema_get_target_namespace(void *schema,
-                                        axis2_env_t **env) 
+                                      axis2_env_t **env) 
 {    axis2_xml_schema_impl_t *schema_impl = NULL;
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -1149,15 +1191,16 @@ axis2_xml_schema_get_target_namespace(void *schema,
         "AXIS2_XML_SCHEMA", AXIS2_HASH_KEY_STRING));
     if(!schema_impl)
         return NULL; 
-    return schema_impl->target_namespc;
+    return schema_impl->target_namespace;
 }
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_set_target_namespace(void *schema,
                                         axis2_env_t **env,
-                                        axis2_char_t *target_namespc) 
+                                        axis2_char_t *target_namespace) 
 {
     axis2_xml_schema_impl_t *schema_impl = NULL;
+   
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ht_super = AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env);
@@ -1167,13 +1210,13 @@ axis2_xml_schema_set_target_namespace(void *schema,
         "AXIS2_XML_SCHEMA", AXIS2_HASH_KEY_STRING));
     if(!schema_impl)
         return AXIS2_FAILURE; 
-    if(NULL != schema_impl->target_namespc)
+    if(NULL != schema_impl->target_namespace)
     {
-        AXIS2_FREE((*env)->allocator, schema_impl->target_namespc);
-        schema_impl->target_namespc = NULL;
+        AXIS2_FREE((*env)->allocator, schema_impl->target_namespace);
+        schema_impl->target_namespace = NULL;
     }
     
-    schema_impl->target_namespc = AXIS2_STRDUP(target_namespc, env);
+    schema_impl->target_namespace = AXIS2_STRDUP(target_namespace, env);
 
     return AXIS2_SUCCESS;
 }
@@ -1210,11 +1253,11 @@ axis2_xml_schema_write_with_out(void *schema,
                                 void *outstream) 
 {
     axis2_xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axis2_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env,  AXIS2_FAILURE);
-    super = AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env);
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, 
+    ht_super = AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env);
+    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
         "AXIS2_XML_SCHEMA", AXIS2_HASH_KEY_STRING));
     
     return AXIS2_SUCCESS;
@@ -1233,11 +1276,11 @@ serialize_internal(void *schema,
                     void *writer)
 {
     axis2_xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axis2_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env,  AXIS2_FAILURE);
-    super = AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env);
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, 
+    ht_super = AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env);
+    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
         "AXIS2_XML_SCHEMA", AXIS2_HASH_KEY_STRING));
     
     return AXIS2_SUCCESS;
@@ -1249,11 +1292,11 @@ axis2_xml_schema_get_prefix_to_namespace_map(void *schema,
 {
 
     axis2_xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axis2_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env,  NULL);
-    super = AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env);
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, 
+    ht_super = AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env);
+    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
         "AXIS2_XML_SCHEMA", AXIS2_HASH_KEY_STRING));
     
     return NULL;
@@ -1265,11 +1308,11 @@ axis2_xml_schema_set_prefix_to_namespace_map(void *schema,
                                                 axis2_hash_t *map) 
 {
     axis2_xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, map, AXIS2_FAILURE);
-    super = AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env);
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, 
+    ht_super = AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env);
+    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
         "AXIS2_XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         
     if(NULL != schema_impl->namespaces_map)
@@ -1288,14 +1331,14 @@ axis2_xml_schema_add_type(void *schema,
 
     axis2_qname_t *qname = NULL;
     axis2_xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axis2_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, type, AXIS2_FAILURE);
     
-    super = AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env);
+    ht_super = AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env);
 
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, 
+    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
         "AXIS2_XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         
     qname = AXIS2_XML_SCHEMA_TYPE_GET_QNAME(type, env);

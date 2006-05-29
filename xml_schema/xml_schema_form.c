@@ -26,10 +26,15 @@ typedef struct axis2_xml_schema_form_impl
 struct axis2_xml_schema_form_impl
 {
     axis2_xml_schema_form_t form;
+    
     axis2_xml_schema_enum_t *schema_enum;
+    
     axis2_xml_schema_types_t obj_type;
+    
     axis2_hash_t *ht_super;
+    
     axis2_hash_t *methods;
+    
     axis2_array_list_t *members;
 };
 
@@ -77,7 +82,8 @@ axis2_xml_schema_form_create(axis2_env_t **env,
                     sizeof(axis2_xml_schema_form_impl_t));
     if(!form_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }                    
 
@@ -91,67 +97,89 @@ axis2_xml_schema_form_create(axis2_env_t **env,
     if(!form_impl->form.ops)
     {
         axis2_xml_schema_form_free(&(form_impl->form), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
                         
-    form_impl->form.ops->free = axis2_xml_schema_form_free;
-    form_impl->form.ops->super_objs = axis2_xml_schema_form_super_objs;
-    form_impl->form.ops->type = axis2_xml_schema_form_type;
-    form_impl->form.ops->get_base_impl = axis2_xml_schema_form_get_base_impl;
+    form_impl->form.ops->free = 
+        axis2_xml_schema_form_free;
+        
+    form_impl->form.ops->super_objs = 
+        axis2_xml_schema_form_super_objs;
+        
+    form_impl->form.ops->type = 
+        axis2_xml_schema_form_type;
+        
+    form_impl->form.ops->get_base_impl = 
+        axis2_xml_schema_form_get_base_impl;
+        
     form_impl->form.ops->get_values = 
-            axis2_xml_schema_form_get_values;
+        axis2_xml_schema_form_get_values;
    
-
     form_impl->members = axis2_array_list_create(env, 0);
     if(!form_impl->members)
     {    
         axis2_xml_schema_form_free(&(form_impl->form), env);
         return NULL;
     }       
-    AXIS2_ARRAY_LIST_ADD(form_impl->members, env, AXIS2_STRDUP("qualified", env));
-    AXIS2_ARRAY_LIST_ADD(form_impl->members, env, AXIS2_STRDUP("unqualified", env));
-    AXIS2_ARRAY_LIST_ADD(form_impl->members, env, AXIS2_STRDUP("none", env));
+
+    AXIS2_ARRAY_LIST_ADD(form_impl->members, env, 
+        AXIS2_STRDUP(AXIS2_XML_SCHEMA_FORM_QUALIFIED, env));
+
+    AXIS2_ARRAY_LIST_ADD(form_impl->members, env, 
+        AXIS2_STRDUP(AXIS2_XML_SCHEMA_FORM_UNQUALIFIED, env));
+
+    AXIS2_ARRAY_LIST_ADD(form_impl->members, env, 
+        AXIS2_STRDUP(AXIS2_XML_SCHEMA_FORM_NONE, env));
 
     form_impl->methods = axis2_hash_make(env);
     if(!form_impl->methods)
     {
         axis2_xml_schema_form_free(&(form_impl->form), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    axis2_hash_set(form_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_form_free);
-    axis2_hash_set(form_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_form_super_objs);
-    axis2_hash_set(form_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_form_type);
-    axis2_hash_set(form_impl->methods, "get_values", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_form_get_values);
+    axis2_hash_set(form_impl->methods, "free", 
+        AXIS2_HASH_KEY_STRING, axis2_xml_schema_form_free);
+        
+    axis2_hash_set(form_impl->methods, "super_objs", 
+        AXIS2_HASH_KEY_STRING, axis2_xml_schema_form_super_objs);
+        
+    axis2_hash_set(form_impl->methods, "type", 
+        AXIS2_HASH_KEY_STRING, axis2_xml_schema_form_type);
+        
+    axis2_hash_set(form_impl->methods, "get_values", 
+        AXIS2_HASH_KEY_STRING, axis2_xml_schema_form_get_values);
 
     form_impl->schema_enum = axis2_xml_schema_enum_create(env, value);
     if(!form_impl->schema_enum)
     {
         axis2_xml_schema_form_free(&(form_impl->form), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
  
     form_impl->ht_super = axis2_hash_make(env);
+    
     if(!form_impl->ht_super)
     {
         axis2_xml_schema_form_free(&(form_impl->form), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    axis2_hash_set(form_impl->ht_super, "AXIS2_XML_SCHEMA_FORM", AXIS2_HASH_KEY_STRING, 
-            &(form_impl->form));
-    axis2_hash_set(form_impl->ht_super, "AXIS2_XML_SCHEMA_ENUM", AXIS2_HASH_KEY_STRING, 
-            form_impl->schema_enum);
-    
+    axis2_hash_set(form_impl->ht_super, "AXIS2_XML_SCHEMA_FORM",
+        AXIS2_HASH_KEY_STRING, &(form_impl->form));
+        
+    axis2_hash_set(form_impl->ht_super, "AXIS2_XML_SCHEMA_ENUM",
+        AXIS2_HASH_KEY_STRING, form_impl->schema_enum);
+        
     status = axis2_xml_schema_enum_resolve_methods(
             &(form_impl->form.base), env, form_impl->schema_enum, 
             form_impl->methods); 
@@ -161,7 +189,7 @@ axis2_xml_schema_form_create(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_form_free(void *form,
-                                    axis2_env_t **env)
+                           axis2_env_t **env)
 {
     axis2_xml_schema_form_impl_t *form_impl = NULL;
 
@@ -204,11 +232,16 @@ axis2_xml_schema_form_free(void *form,
         AXIS2_XML_SCHEMA_ENUM_FREE(form_impl->schema_enum, env);
         form_impl->schema_enum = NULL;
     }
-    
-    if((&(form_impl->form))->ops)
+    if(form_impl->form.base.ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(form_impl->form))->ops);
-        (&(form_impl->form))->ops = NULL;
+        AXIS2_FREE((*env)->allocator, form_impl->form.base.ops);
+        form_impl->form.base.ops = NULL;    
+    
+    }
+    if(form_impl->form.ops)
+    {
+        AXIS2_FREE((*env)->allocator, form_impl->form.ops);
+        form_impl->form.ops = NULL;
     }
 
     if(form_impl)

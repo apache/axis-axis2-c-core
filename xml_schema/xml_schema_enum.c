@@ -57,22 +57,26 @@ axis2_xml_schema_enum_type(
         axis2_env_t **env);
 
 axis2_char_t * AXIS2_CALL
-axis2_xml_schema_enum_get_value(void *schema_enum,
-                        axis2_env_t **env);
+axis2_xml_schema_enum_get_value(
+        void *schema_enum,
+        axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_enum_set_value(void *schema_enum,
-                        axis2_env_t **env,
-                        axis2_char_t *value);
+axis2_xml_schema_enum_set_value(
+        void *schema_enum,
+        axis2_env_t **env,
+        axis2_char_t *value);
 
 axis2_bool_t AXIS2_CALL
-axis2_xml_schema_enum_equals(void *schema_enum,
-                                axis2_env_t **env,
-                                void *obj);
+axis2_xml_schema_enum_equals(
+        void *schema_enum,
+        axis2_env_t **env,
+        void *obj);
 
 axis2_array_list_t *AXIS2_CALL
-axis2_xml_schema_enum_get_values(void *schema_enum,
-                                axis2_env_t **env);
+axis2_xml_schema_enum_get_values(
+        void *schema_enum,
+        axis2_env_t **env);
 
 /************************** function impl ************************************/
 
@@ -86,7 +90,8 @@ axis2_xml_schema_enum_create(axis2_env_t **env,
                     sizeof(axis2_xml_schema_enum_impl_t));
     if(!schema_enum_impl)
     {
-        AXIS2_ERROR_SET((*env)->error,  AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error,  
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -97,17 +102,16 @@ axis2_xml_schema_enum_create(axis2_env_t **env,
     schema_enum_impl->schema_enum.ops = NULL;
 
     schema_enum_impl->schema_enum.ops = AXIS2_MALLOC((*env)->allocator, 
-                    sizeof(axis2_xml_schema_enum_ops_t)); 
+        sizeof(axis2_xml_schema_enum_ops_t)); 
     
     if(!(schema_enum_impl->schema_enum.ops))
     {
         AXIS2_FREE((*env)->allocator, schema_enum_impl);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
             
-    
-
     schema_enum_impl->schema_enum.ops->free = 
             axis2_xml_schema_enum_free;
 
@@ -130,12 +134,14 @@ axis2_xml_schema_enum_create(axis2_env_t **env,
             axis2_xml_schema_enum_get_values;
 
     schema_enum_impl->ht_super = axis2_hash_make(env);
+    
     if(!schema_enum_impl->ht_super)
     {
         axis2_xml_schema_enum_free(&(schema_enum_impl->schema_enum), env);
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+    
     axis2_hash_set(schema_enum_impl->ht_super, "AXIS2_XML_SCHEMA_ENUM", 
             AXIS2_HASH_KEY_STRING, &(schema_enum_impl->schema_enum));
 
@@ -171,10 +177,10 @@ axis2_xml_schema_enum_free(void *schema_enum,
         schema_enum_impl->ht_super = NULL;
     }
 
-    if(NULL != (&(schema_enum_impl->schema_enum))->ops)
+    if(NULL != schema_enum_impl->schema_enum.ops)
     {
-        AXIS2_FREE((*env)->allocator, ((&(schema_enum_impl->schema_enum))->ops));
-        (&(schema_enum_impl->schema_enum))->ops = NULL;
+        AXIS2_FREE((*env)->allocator, schema_enum_impl->schema_enum.ops);
+        schema_enum_impl->schema_enum.ops = NULL;
     }
 
     if(NULL != schema_enum_impl)
@@ -214,53 +220,45 @@ axis2_xml_schema_enum_resolve_methods(
         axis2_xml_schema_enum_t *schema_enum_impl,
         axis2_hash_t *methods)
 {    
-    axis2_xml_schema_enum_impl_t *schema_enum_impl_l = NULL;
+    axis2_xml_schema_enum_impl_t *this_sch_enum_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
     AXIS2_PARAM_CHECK((*env)->error, schema_enum_impl, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
     
-    schema_enum_impl_l = (axis2_xml_schema_enum_impl_t *) schema_enum_impl;
+    this_sch_enum_impl = (axis2_xml_schema_enum_impl_t*) schema_enum_impl;
     
     schema_enum->ops = AXIS2_MALLOC((*env)->allocator, 
             sizeof(axis2_xml_schema_enum_ops_t));
-    if(NULL != schema_enum->ops)
+    if(!schema_enum->ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
+    
     schema_enum->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
+    
     schema_enum->ops->super_objs = axis2_hash_get(methods, "super_objs", 
             AXIS2_HASH_KEY_STRING);
     schema_enum->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
     
-    schema_enum->ops->get_value = axis2_hash_get(methods, 
-            "get_value", AXIS2_HASH_KEY_STRING);
-    if(!schema_enum->ops->get_value)
-            schema_enum->ops->get_value = 
-            schema_enum_impl_l->schema_enum.ops->get_value;
+    schema_enum->ops->get_value = 
+        this_sch_enum_impl->schema_enum.ops->get_value;
     
-    schema_enum->ops->set_value = axis2_hash_get(methods, 
-            "set_value", AXIS2_HASH_KEY_STRING);
-    if(!schema_enum->ops->set_value)
     schema_enum->ops->set_value = 
-            schema_enum_impl_l->schema_enum.ops->set_value; 
+        this_sch_enum_impl->schema_enum.ops->set_value; 
     
-    schema_enum->ops->equals = axis2_hash_get(methods, 
-            "equals", AXIS2_HASH_KEY_STRING);
-    if(!schema_enum->ops->equals)
     schema_enum->ops->equals = 
-            schema_enum_impl_l->schema_enum.ops->equals;
+        this_sch_enum_impl->schema_enum.ops->equals;
     
     schema_enum->ops->get_values = axis2_hash_get(methods, 
             "get_values", AXIS2_HASH_KEY_STRING);
     if(!schema_enum->ops->get_values)
     schema_enum->ops->get_values = 
-            schema_enum_impl_l->schema_enum.ops->get_values;
-
+            this_sch_enum_impl->schema_enum.ops->get_values;
     return AXIS2_SUCCESS;    
 
 }
@@ -271,10 +269,10 @@ axis2_xml_schema_enum_get_value(void *schema_enum,
                         axis2_env_t **env)
 {
     axis2_xml_schema_enum_impl_t *schema_enum_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axis2_hash_t *ht_super = NULL;
     
-    super = AXIS2_XML_SCHEMA_ENUM_SUPER_OBJS(schema_enum, env);
-    schema_enum_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, 
+    ht_super = AXIS2_XML_SCHEMA_ENUM_SUPER_OBJS(schema_enum, env);
+    schema_enum_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
                 "AXIS2_XML_SCHEMA_ENUM", AXIS2_HASH_KEY_STRING));
 
     return schema_enum_impl->value;

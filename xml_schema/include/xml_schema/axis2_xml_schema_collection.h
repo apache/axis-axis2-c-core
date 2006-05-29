@@ -203,7 +203,7 @@ axis2_xml_schema_collection_create(axis2_env_t **env);
 #define AXIS2_XML_SCHEMA_COLLECTION_INIT(collection, env) \
 		((collection)->ops->init(collection, env))
 		
-#define AXIS2_XML_SCHEMA_COLLECTION_READ_WITH_READER(collection, env, reader, veh ) \
+#define AXIS2_XML_SCHEMA_COLLECTION_READ_WITH_READER(collection, env, reader) \
         ((collection)->ops->read_with_reader( \
         collection, env, reader))
         

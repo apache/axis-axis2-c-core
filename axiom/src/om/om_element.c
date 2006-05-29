@@ -1756,14 +1756,43 @@ axis2_om_element_get_attribute_value_by_name(
         {
             axis2_char_t *this_attr_name;
             axis2_char_t *this_attr_value;
+            axis2_char_t *attr_qn_str = NULL;
+            axis2_om_namespace_t *attr_ns = NULL;   
+            axis2_char_t *prefix          = NULL;
             
             om_attr = (axis2_om_attribute_t*)attr;
             this_attr_name = AXIS2_OM_ATTRIBUTE_GET_LOCALNAME(om_attr, env);
             this_attr_value = AXIS2_OM_ATTRIBUTE_GET_VALUE(om_attr, env);
-            if(NULL != this_attr_name && AXIS2_STRCMP(this_attr_name, attr_name) == 0)
+            attr_ns = AXIS2_OM_ATTRIBUTE_GET_NAMESPACE(om_attr, env);
+            if(NULL != attr_ns)
             {
+                prefix = AXIS2_OM_NAMESPACE_GET_PREFIX(attr_ns, env);
+                if(NULL != prefix)
+                {
+                    axis2_char_t *tmp_val = NULL;
+                    tmp_val = AXIS2_STRACAT(prefix, ":", env);
+                    attr_qn_str = AXIS2_STRACAT(tmp_val, this_attr_name, env);
+                    if(NULL != tmp_val)
+                    {
+                        AXIS2_FREE((*env)->allocator, tmp_val);
+                        tmp_val = NULL;
+                    }    
+                }
+            }               
+            else
+            {
+                attr_qn_str = AXIS2_STRDUP(this_attr_name, env);
+            }
+            
+            if(NULL != attr_qn_str && AXIS2_STRCMP(attr_qn_str, attr_name) == 0)
+            {
+                AXIS2_FREE((*env)->allocator, attr_qn_str);
+                attr_qn_str = NULL;      
                 return this_attr_value;
             }
+            
+            AXIS2_FREE((*env)->allocator, attr_qn_str);
+            attr_qn_str = NULL;
         }
     }
     return NULL;        
