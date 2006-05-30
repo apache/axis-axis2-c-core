@@ -234,6 +234,8 @@ extern "C"
         AXIS2_ERROR_RPC_NEED_MATCHING_CHILD,
         /* Operation Description has unknown operation style  */
         AXIS2_ERROR_UNKNOWN_STYLE,
+        /* String does not represent a valid NCName */
+        AXIS2_ERROR_STRING_DOES_NOT_REPRESENT_A_VALID_NC_NAME,
        /*
         * Group - core:transport
         */ 

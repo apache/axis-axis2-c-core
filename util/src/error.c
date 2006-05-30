@@ -193,6 +193,8 @@ axis2_error_init()
         "RPC style soap body don't have a child element";
     axis2_error_messages[AXIS2_ERROR_UNKNOWN_STYLE] =
         "Operation Description has unknown operation style";
+    axis2_error_messages[AXIS2_ERROR_STRING_DOES_NOT_REPRESENT_A_VALID_NC_NAME] =
+        "String does not represent a valid NCName";
     /* core:transport */
 
     /* core:transport:http */
