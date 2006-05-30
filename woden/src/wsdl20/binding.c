@@ -185,6 +185,11 @@ axis2_woden_binding_set_interface_element(
 static axis2_woden_binding_t *
 create(axis2_env_t **env);
 
+static axis2_status_t
+axis2_woden_binding_free_ops(
+        void *binding,
+        axis2_env_t **env);
+
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_woden_binding_t *)
 axis2_woden_binding_to_binding_element(
@@ -200,6 +205,7 @@ axis2_woden_binding_to_binding_element(
     }
     else
         binding_impl = (axis2_woden_binding_impl_t *) binding;
+    axis2_woden_binding_free_ops(binding, env);
 
     binding_impl->binding.base.binding_element.ops = 
         AXIS2_MALLOC((*env)->allocator, 
@@ -207,25 +213,6 @@ axis2_woden_binding_to_binding_element(
     axis2_woden_binding_element_resolve_methods(&(binding_impl->binding.base.
             binding_element), env, binding_impl->methods);
     return binding;
-}
-
-axis2_status_t AXIS2_CALL
-axis2_woden_binding_to_binding_element_free(
-        void *binding,
-        axis2_env_t **env)
-{
-    axis2_woden_binding_impl_t *binding_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    binding_impl = INTF_TO_IMPL(binding);
-
-    if(binding_impl->binding.base.binding_element.ops)
-    {
-        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
-                binding_element.ops);
-        binding_impl->binding.base.binding_element.ops = NULL;
-    }
-    return AXIS2_SUCCESS;
 }
 
 AXIS2_DECLARE(axis2_woden_binding_t *)
@@ -242,6 +229,7 @@ axis2_woden_binding_to_configurable_element(
     }
     else
         binding_impl = (axis2_woden_binding_impl_t *) binding;
+    axis2_woden_binding_free_ops(binding, env);
 
     binding_impl->binding.base.binding_element.base.configurable_element.ops = 
         AXIS2_MALLOC((*env)->allocator, 
@@ -249,26 +237,6 @@ axis2_woden_binding_to_configurable_element(
     axis2_woden_configurable_element_resolve_methods(&(binding_impl->binding.base.
             binding_element.base.configurable_element), env, binding_impl->methods);
     return binding;
-}
-
-axis2_status_t AXIS2_CALL
-axis2_woden_binding_to_configurable_element_free(
-        void *binding,
-        axis2_env_t **env)
-{
-    axis2_woden_binding_impl_t *binding_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    binding_impl = INTF_TO_IMPL(binding);
-
-    if(binding_impl->binding.base.binding_element.base.configurable_element.ops)
-    {
-        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
-                binding_element.base.configurable_element.ops);
-        binding_impl->binding.base.binding_element.base.configurable_element.ops = 
-            NULL;
-    }
-    return AXIS2_SUCCESS;
 }
 
 AXIS2_DECLARE(axis2_woden_binding_t *)
@@ -285,6 +253,7 @@ axis2_woden_binding_to_documentable_element(
     }
     else
         binding_impl = (axis2_woden_binding_impl_t *) binding;
+    axis2_woden_binding_free_ops(binding, env);
 
     binding_impl->binding.base.binding_element.base.documentable_element.ops = 
         AXIS2_MALLOC((*env)->allocator, 
@@ -293,26 +262,6 @@ axis2_woden_binding_to_documentable_element(
             binding_element.base.documentable_element), env, 
             binding_impl->methods);
     return binding;
-}
-
-axis2_status_t AXIS2_CALL
-axis2_woden_binding_to_documentable_element_free(
-        void *binding,
-        axis2_env_t **env)
-{
-    axis2_woden_binding_impl_t *binding_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    binding_impl = INTF_TO_IMPL(binding);
-
-    if(binding_impl->binding.base.binding_element.base.documentable_element.ops)
-    {
-        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
-                binding_element.base.documentable_element.ops);
-        binding_impl->binding.base.binding_element.base.documentable_element.ops = 
-            NULL;
-    }
-    return AXIS2_SUCCESS;
 }
 
 AXIS2_DECLARE(axis2_woden_binding_t *)
@@ -329,6 +278,7 @@ axis2_woden_binding_to_configurable(
     }
     else
         binding_impl = (axis2_woden_binding_impl_t *) binding;
+    axis2_woden_binding_free_ops(binding, env);
 
     binding_impl->binding.base.configurable.ops = 
         AXIS2_MALLOC((*env)->allocator, 
@@ -339,24 +289,114 @@ axis2_woden_binding_to_configurable(
     return binding;
 }
 
-axis2_status_t AXIS2_CALL
-axis2_woden_binding_to_configurable_free(
+AXIS2_DECLARE(axis2_woden_binding_t *)
+axis2_woden_binding_to_wsdl_obj(
         void *binding,
         axis2_env_t **env)
 {
     axis2_woden_binding_impl_t *binding_impl = NULL;
-
+    void *documentable = NULL;
+    void *wsdl_obj = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    binding_impl = INTF_TO_IMPL(binding);
-
-    if(binding_impl->binding.base.configurable.ops)
+    if(!binding)
     {
-        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
-                configurable.ops);
-        binding_impl->binding.base.configurable.ops = NULL;
+        binding_impl = (axis2_woden_binding_impl_t *) create(env);
     }
-    return AXIS2_SUCCESS;
+    else
+        binding_impl = (axis2_woden_binding_impl_t *) binding;
+    axis2_woden_binding_free_ops(binding, env);
+
+    binding_impl->binding.base.configurable.
+        base.documentable.base.wsdl_obj.ops = AXIS2_MALLOC((*env)->allocator, 
+                sizeof(axis2_woden_wsdl_obj_ops_t));
+    documentable = AXIS2_WODEN_CONFIGURABLE_GET_BASE_IMPL(
+            binding_impl->configurable, env);
+    wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(
+            documentable, env);
+    axis2_woden_wsdl_obj_resolve_methods(&(binding_impl->binding.base.
+            configurable.base.documentable.base.wsdl_obj), 
+            env, wsdl_obj, binding_impl->methods);
+    return binding;
 }
+
+AXIS2_DECLARE(axis2_woden_binding_t *)
+axis2_woden_binding_to_wsdl_component(
+        void *binding,
+        axis2_env_t **env)
+{
+    axis2_woden_binding_impl_t *binding_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!binding)
+    {
+        binding_impl = (axis2_woden_binding_impl_t *) create(env);
+    }
+    else
+        binding_impl = (axis2_woden_binding_impl_t *) binding;
+    axis2_woden_binding_free_ops(binding, env);
+
+    binding_impl->binding.base.configurable.base.
+        configurable_component.wsdl_component.ops = AXIS2_MALLOC((*env)->allocator, 
+                sizeof(axis2_woden_wsdl_component_ops_t));
+    axis2_woden_wsdl_component_resolve_methods(&(binding_impl->binding.base.
+            configurable.base.configurable_component.wsdl_component), 
+            env, binding_impl->methods);
+    return binding;
+}
+
+AXIS2_DECLARE(axis2_woden_binding_t *)
+axis2_woden_binding_to_attr_extensible(
+        void *binding,
+        axis2_env_t **env)
+{
+    axis2_woden_binding_impl_t *binding_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!binding)
+    {
+        binding_impl = (axis2_woden_binding_impl_t *) create(env);
+    }
+    else
+        binding_impl = (axis2_woden_binding_impl_t *) binding;
+    axis2_woden_binding_free_ops(binding, env);
+
+    binding_impl->binding.base.binding_element.
+        base.documentable_element.wsdl_element.base.attr_extensible.ops = 
+        AXIS2_MALLOC((*env)->allocator, 
+                sizeof(axis2_woden_attr_extensible_ops_t));
+    axis2_woden_element_ext_resolve_methods(&(binding_impl->binding.base.
+            binding_element.base.documentable_element.
+            wsdl_element.base.attr_extensible), env, binding_impl->methods);
+    return binding;
+}
+
+AXIS2_DECLARE(axis2_woden_binding_t *)
+axis2_woden_binding_to_element_extensible(
+        void *binding,
+        axis2_env_t **env)
+{
+    axis2_woden_binding_impl_t *binding_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!binding)
+    {
+        binding_impl = (axis2_woden_binding_impl_t *) create(env);
+    }
+    else
+        binding_impl = (axis2_woden_binding_impl_t *) binding;
+    axis2_woden_binding_free_ops(binding, env);
+
+    binding_impl->binding.base.binding_element.
+        base.documentable_element.wsdl_element.base.element_extensible.ops = 
+        AXIS2_MALLOC((*env)->allocator, 
+                sizeof(axis2_woden_element_extensible_ops_t));
+    axis2_woden_element_ext_resolve_methods(&(binding_impl->binding.base.
+            binding_element.base.documentable_element.
+            wsdl_element.base.element_extensible), env, binding_impl->methods);
+    return binding;
+}
+
 
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_binding_t *
@@ -414,18 +454,6 @@ create(axis2_env_t **env)
     }
     axis2_hash_set(binding_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
             axis2_woden_binding_free);
-    axis2_hash_set(binding_impl->methods, "to_binding_element_free", 
-            AXIS2_HASH_KEY_STRING, 
-            axis2_woden_binding_to_binding_element_free);
-    axis2_hash_set(binding_impl->methods, "to_configurable_element_free", 
-            AXIS2_HASH_KEY_STRING, 
-            axis2_woden_binding_to_configurable_element_free);
-    axis2_hash_set(binding_impl->methods, "to_documentable_element_free", 
-            AXIS2_HASH_KEY_STRING, 
-            axis2_woden_binding_to_documentable_element_free);
-    axis2_hash_set(binding_impl->methods, "to_configurable_free", 
-            AXIS2_HASH_KEY_STRING, 
-            axis2_woden_binding_to_configurable_free);
     axis2_hash_set(binding_impl->methods, "super_objs", 
             AXIS2_HASH_KEY_STRING, axis2_woden_binding_super_objs);
     axis2_hash_set(binding_impl->methods, "type", 
@@ -513,6 +541,90 @@ axis2_woden_binding_create(axis2_env_t **env)
     return &(binding_impl->binding);
 }
 
+static axis2_status_t
+axis2_woden_binding_free_ops(
+        void *binding,
+        axis2_env_t **env)
+{
+    axis2_woden_binding_impl_t *binding_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    binding_impl = INTF_TO_IMPL(binding);
+
+    if(binding_impl->binding.base.binding_element.ops)
+    {
+        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
+                binding_element.ops);
+        binding_impl->binding.base.binding_element.ops = NULL;
+    }
+
+    if(binding_impl->binding.base.binding_element.base.configurable_element.ops)
+    {
+        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
+                binding_element.base.configurable_element.ops);
+        binding_impl->binding.base.binding_element.base.configurable_element.ops = 
+            NULL;
+    }
+    
+    if(binding_impl->binding.base.binding_element.base.documentable_element.ops)
+    {
+        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
+                binding_element.base.documentable_element.ops);
+        binding_impl->binding.base.binding_element.base.documentable_element.ops = 
+            NULL;
+    }
+    
+    if(binding_impl->binding.base.configurable.ops)
+    {
+        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
+                configurable.ops);
+        binding_impl->binding.base.configurable.ops = 
+            NULL;
+    }
+  
+    if(binding_impl->binding.base.
+            configurable.base.documentable.base.wsdl_obj.ops)
+    {
+        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
+                configurable.base.documentable.base.wsdl_obj.ops);
+        binding_impl->binding.base.configurable.base.documentable.base.wsdl_obj.ops = NULL;
+    }
+    
+    if(binding_impl->binding.base.configurable.base.
+            configurable_component.wsdl_component.ops)
+    {
+        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
+                configurable.base.configurable_component.wsdl_component.ops);
+        binding_impl->binding.base.configurable.base.
+            configurable_component.wsdl_component.ops = NULL;
+    }
+    
+    if(binding_impl->binding.base.binding_element.
+            base.documentable_element.wsdl_element.base.attr_extensible.ops)
+    {
+        AXIS2_FREE((*env)->allocator, binding_impl->binding.
+                base.binding_element.base.documentable_element.
+                wsdl_element.base.attr_extensible.ops );
+        binding_impl->binding.
+                base.binding_element.base.documentable_element.
+                wsdl_element.base.attr_extensible.ops = NULL;
+    }
+    
+    if(binding_impl->binding.base.binding_element.
+            base.documentable_element.wsdl_element.base.element_extensible.ops)
+    {
+        AXIS2_FREE((*env)->allocator, binding_impl->binding.
+                base.binding_element.base.documentable_element.
+                wsdl_element.base.element_extensible.ops );
+        binding_impl->binding.
+                base.binding_element.base.documentable_element.
+                wsdl_element.base.element_extensible.ops = NULL;
+    }
+   
+    return AXIS2_SUCCESS;
+}
+
+
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_free(void *binding,
                         axis2_env_t **env)
@@ -575,38 +687,8 @@ axis2_woden_binding_free(void *binding,
         AXIS2_WODEN_CONFIGURABLE_FREE(binding_impl->configurable, env);
         binding_impl->configurable = NULL;
     }
+    axis2_woden_binding_free_ops(binding, env);
 
-    if(binding_impl->binding.base.binding_element.ops)
-    {
-        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
-                binding_element.ops);
-        binding_impl->binding.base.binding_element.ops = NULL;
-    }
-
-    if(binding_impl->binding.base.binding_element.base.configurable_element.ops)
-    {
-        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
-                binding_element.base.configurable_element.ops);
-        binding_impl->binding.base.binding_element.base.configurable_element.ops = 
-            NULL;
-    }
-    
-    if(binding_impl->binding.base.binding_element.base.documentable_element.ops)
-    {
-        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
-                binding_element.base.documentable_element.ops);
-        binding_impl->binding.base.binding_element.base.documentable_element.ops = 
-            NULL;
-    }
-    
-    if(binding_impl->binding.base.configurable.ops)
-    {
-        AXIS2_FREE((*env)->allocator, binding_impl->binding.base.
-                configurable.ops);
-        binding_impl->binding.base.configurable.ops = 
-            NULL;
-    }
-    
     if((&(binding_impl->binding))->ops)
     {
         AXIS2_FREE((*env)->allocator, (&(binding_impl->binding))->ops);
@@ -674,8 +756,6 @@ axis2_woden_binding_resolve_methods(
     binding_impl_l = INTF_TO_IMPL(binding_impl);
     
     binding->ops->free = axis2_hash_get(methods, "free", 
-            AXIS2_HASH_KEY_STRING);
-    binding->ops->to_binding_free = axis2_hash_get(methods, "to_binding_free", 
             AXIS2_HASH_KEY_STRING);
     binding->ops->super_objs = axis2_hash_get(methods, "super_objs", 
             AXIS2_HASH_KEY_STRING);

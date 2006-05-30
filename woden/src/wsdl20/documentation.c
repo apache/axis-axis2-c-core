@@ -32,6 +32,7 @@ struct axis2_woden_documentation_impl
     axis2_woden_wsdl_element_t *wsdl_element;
     axis2_hash_t *super;
     axis2_hash_t *methods;
+
     void *f_content;
 };
 

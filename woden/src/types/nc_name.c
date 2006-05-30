@@ -147,7 +147,7 @@ woden_nc_name_set_value(
 
     if(AXIS2_TRUE != woden_nc_name_is_valid(nc_name, env, value))
     {
-        AXIS2_ERROR_SET((*env)->error, STRING_DOES_NOT_REPRESENT_A_VALID_NC_NAME, 
+        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_STRING_DOES_NOT_REPRESENT_A_VALID_NC_NAME, 
                 AXIS2_FAILURE);
     }
     if(nc_name_impl->f_value)

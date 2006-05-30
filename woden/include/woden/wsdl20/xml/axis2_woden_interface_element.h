@@ -63,16 +63,6 @@ struct axis2_woden_interface_element_ops
             void *interface_element,
             axis2_env_t **env);
  
-    axis2_status_t (AXIS2_CALL *
-    to_interface_element_free) (
-            void *interface_element,
-            axis2_env_t **env);
-    
-    axis2_hash_t *(AXIS2_CALL *
-    super_objs) (
-            void *interface_element,
-            axis2_env_t **env);
- 
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *interface_element,
@@ -162,14 +152,6 @@ axis2_woden_interface_element_resolve_methods(
 #define AXIS2_WODEN_INTERFACE_ELEMENT_FREE(interface_element, env) \
 		(((axis2_woden_interface_element_t *) interface_element)->ops->\
          free (interface_element, env))
-
-#define AXIS2_WODEN_INTERFACE_ELEMENT_TO_INTERFACE_ELEMENT_FREE(interface_element, env) \
-		(((axis2_woden_interface_element_t *) interface_element)->ops->\
-         to_interface_element_free (interface_element, env))
-
-#define AXIS2_WODEN_INTERFACE_ELEMENT_SUPER_OBJS(interface_element, env) \
-		(((axis2_woden_interface_element_t *) interface_element)->ops->\
-         super_objs (interface_element, env))
 
 #define AXIS2_WODEN_INTERFACE_ELEMENT_TYPE(interface_element, env) \
 		(((axis2_woden_interface_element_t *) interface_element)->ops->\

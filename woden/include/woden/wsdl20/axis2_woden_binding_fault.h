@@ -55,10 +55,6 @@ struct axis2_woden_binding_fault_ops
     free) (void *binding_fault,
             axis2_env_t **env);
 
-    axis2_status_t (AXIS2_CALL *
-    to_binding_fault_free) (void *binding_fault,
-            axis2_env_t **env);
-    
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *binding_fault,
             axis2_env_t **env);
@@ -127,6 +123,31 @@ axis2_woden_binding_fault_to_configurable(
         void *binding_fault,
         axis2_env_t **env);
 
+AXIS2_DECLARE(axis2_woden_binding_fault_t *)
+axis2_woden_binding_fault_to_wsdl_obj(
+        void *binding_fault,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_fault_t *)
+axis2_woden_binding_fault_to_nested_element(
+        void *binding_fault,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_fault_t *)
+axis2_woden_binding_fault_to_wsdl_component(
+        void *binding_fault,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_fault_t *)
+axis2_woden_binding_fault_to_attr_extensible(
+        void *binding_fault,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_fault_t *)
+axis2_woden_binding_fault_to_element_extensible(
+        void *binding_fault,
+        axis2_env_t **env);
+
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_binding_fault_resolve_methods(
         axis2_woden_binding_fault_t *binding_fault,
@@ -137,9 +158,6 @@ axis2_woden_binding_fault_resolve_methods(
 
 #define AXIS2_WODEN_BINDING_FAULT_FREE(binding_fault, env) \
 		(((axis2_woden_binding_fault_t *) binding_fault)->ops->free(binding_fault, env))
-
-#define AXIS2_WODEN_BINDING_FAULT_TO_BINDING_FAULT_FREE(binding_fault, env) \
-		(((axis2_woden_binding_fault_t *) binding_fault)->ops->to_binding_fault_free(binding_fault, env))
 
 #define AXIS2_WODEN_BINDING_FAULT_SUPER_OBJS(binding_fault, env) \
 		(((axis2_woden_binding_fault_t *) binding_fault)->ops->super_objs(binding_fault, env))

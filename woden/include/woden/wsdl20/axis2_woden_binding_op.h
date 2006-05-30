@@ -135,6 +135,33 @@ axis2_woden_binding_op_to_configurable(
         void *binding_op,
         axis2_env_t **env);
 
+AXIS2_DECLARE(axis2_woden_binding_op_t *)
+axis2_woden_binding_op_to_wsdl_obj(
+        void *binding_op,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_op_t *)
+axis2_woden_binding_op_to_nested_element(
+        void *binding_op,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_op_t *)
+axis2_woden_binding_op_to_wsdl_component(
+        void *binding_op,
+        axis2_env_t **env);
+
+
+AXIS2_DECLARE(axis2_woden_binding_op_t *)
+axis2_woden_binding_op_to_attr_extensible(
+        void *binding_op,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_op_t *)
+axis2_woden_binding_op_to_element_extensible(
+        void *binding_op,
+        axis2_env_t **env);
+
+
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_binding_op_resolve_methods(
         axis2_woden_binding_op_t *binding_op,

@@ -104,6 +104,20 @@ struct axis2_woden_interface_msg_ref_ops
             void *interface_msg_ref,
             axis2_env_t **env);
 
+/* ************************************************************
+ *  Non-API implementation methods
+ * ************************************************************/
+    axis2_status_t (AXIS2_CALL *
+    set_element_declaration) (
+            void *interface_msg_ref,
+            axis2_env_t **env,
+            void *element);
+
+    axis2_status_t (AXIS2_CALL *
+    set_types) (
+            void *interface_msg_ref,
+            axis2_env_t **env,
+            void *types);
 };
 
 union axis2_woden_interface_msg_ref_base
@@ -181,6 +195,14 @@ axis2_woden_interface_msg_ref_resolve_methods(
 #define AXIS2_WODEN_INTERFACE_MSG_REF_TO_ELEMENT(interface_msg_ref, env) \
 		(((axis2_woden_interface_msg_ref_t *) interface_msg_ref)->ops->\
          to_element(interface_msg_ref, env))
+
+#define AXIS2_WODEN_INTERFACE_MSG_REF_SET_ELEMENT_DECLARATION(interface_msg_ref, env, element) \
+		(((axis2_woden_interface_msg_ref_t *) interface_msg_ref)->\
+         set_element_declaration(interface_msg_ref, env, element))
+
+#define AXIS2_WODEN_INTERFACE_MSG_REF_SET_TYPES(interface_msg_ref, env, types) \
+		(((axis2_woden_interface_msg_ref_t *) interface_msg_ref)->\
+         set_types(interface_msg_ref, env, types))
 
 /** @} */
 #ifdef __cplusplus

@@ -28,7 +28,8 @@
 
 #include <woden/axis2_woden.h>
 #include <woden/wsdl20/xml/axis2_woden_configurable_element.h>
-#include <woden/axis2_woden_wsdl_obj.h>
+#include <woden/wsdl20/axis2_woden_configurable_component.h>
+#include <woden/wsdl20/axis2_woden_documentable.h>
 
 /** @defgroup axis2_woden_configurable Configurable
   * @ingroup axis2_wsdl
@@ -79,8 +80,9 @@ struct axis2_woden_configurable_ops
 
 union axis2_woden_configurable_base
 {
-    axis2_woden_wsdl_obj_t wsdl_obj;
+    axis2_woden_documentable_t documentable;
     axis2_woden_configurable_element_t configurable_elem;
+    axis2_woden_configurable_component_t configurable_component;
 };
 
 struct axis2_woden_configurable

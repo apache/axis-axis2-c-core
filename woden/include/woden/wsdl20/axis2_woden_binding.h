@@ -54,10 +54,6 @@ struct axis2_woden_binding_ops
     free) (void *binding,
             axis2_env_t **env);
 
-    axis2_status_t (AXIS2_CALL *
-    to_binding_free) (void *binding,
-            axis2_env_t **env);
-    
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *binding,
             axis2_env_t **env);
@@ -180,6 +176,32 @@ axis2_woden_binding_to_configurable(
         void *binding,
         axis2_env_t **env);
 
+AXIS2_DECLARE(axis2_woden_binding_t *)
+axis2_woden_binding_to_wsdl_obj(
+        void *binding,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_t *)
+axis2_woden_binding_to_nested_element(
+        void *binding,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_t *)
+axis2_woden_binding_to_wsdl_component(
+        void *binding,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_t *)
+axis2_woden_binding_to_attr_extensible(
+        void *binding,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_t *)
+axis2_woden_binding_to_element_extensible(
+        void *binding,
+        axis2_env_t **env);
+
+
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_binding_resolve_methods(
         axis2_woden_binding_t *binding,
@@ -190,9 +212,6 @@ axis2_woden_binding_resolve_methods(
 
 #define AXIS2_WODEN_BINDING_FREE(binding, env) \
 		(((axis2_woden_binding_t *) binding)->ops->free(binding, env))
-
-#define AXIS2_WODEN_BINDING_TO_BINDING_FREE(binding, env) \
-		(((axis2_woden_binding_t *) binding)->ops->to_binding_free(binding, env))
 
 #define AXIS2_WODEN_BINDING_SUPER_OBJS(binding, env) \
 		(((axis2_woden_binding_t *) binding)->ops->super_objs(binding, env))

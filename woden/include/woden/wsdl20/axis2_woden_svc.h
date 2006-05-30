@@ -133,22 +133,12 @@ axis2_woden_svc_to_svc_element(
         axis2_env_t **env);
 
 AXIS2_DECLARE(axis2_woden_svc_t *)
-axis2_woden_svc_to_nested_element(
-        void *svc,
-        axis2_env_t **env);
-
-AXIS2_DECLARE(axis2_woden_svc_t *)
 axis2_woden_svc_to_documentable_element(
         void *svc,
         axis2_env_t **env);
 
 AXIS2_DECLARE(axis2_woden_svc_t *)
 axis2_woden_svc_to_configurable(
-        void *svc,
-        axis2_env_t **env);
-
-AXIS2_DECLARE(axis2_woden_svc_t *)
-axis2_woden_svc_to_nested_component(
         void *svc,
         axis2_env_t **env);
 

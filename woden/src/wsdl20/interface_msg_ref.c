@@ -326,6 +326,10 @@ create(axis2_env_t **env)
         axis2_woden_interface_msg_ref_get_element_declaration;
     interface_msg_ref_impl->interface_msg_ref.ops->to_element = 
         axis2_woden_interface_msg_ref_to_element;
+    interface_msg_ref_impl->interface_msg_ref.ops->set_element_declaration = 
+        axis2_woden_interface_msg_ref_set_element_declaration;
+    interface_msg_ref_impl->interface_msg_ref.ops->set_types = 
+        axis2_woden_interface_msg_ref_set_types;
  
     interface_msg_ref_impl->methods = axis2_hash_make(env);
     if(!interface_msg_ref_impl->methods) 
@@ -616,6 +620,18 @@ axis2_woden_interface_msg_ref_resolve_methods(
     if(!interface_msg_ref->ops->to_element && interface_msg_ref_impl_l)
             interface_msg_ref->ops->to_element = 
             interface_msg_ref_impl_l->interface_msg_ref.ops->to_element;
+    
+    interface_msg_ref->ops->set_element_declaration = axis2_hash_get(methods, 
+            "set_element_declaration", AXIS2_HASH_KEY_STRING);
+    if(!interface_msg_ref->ops->set_element_declaration && interface_msg_ref_impl_l)
+            interface_msg_ref->ops->set_element_declaration = 
+            interface_msg_ref_impl_l->interface_msg_ref.ops->set_element_declaration;
+    
+    interface_msg_ref->ops->set_types = axis2_hash_get(methods, 
+            "set_types", AXIS2_HASH_KEY_STRING);
+    if(!interface_msg_ref->ops->set_types && interface_msg_ref_impl_l)
+            interface_msg_ref->ops->set_types = 
+            interface_msg_ref_impl_l->interface_msg_ref.ops->set_types;
    
     return AXIS2_SUCCESS;
 }

@@ -56,10 +56,6 @@ struct axis2_woden_binding_fault_ref_ops
     free) (void *binding_fault_ref,
             axis2_env_t **env);
 
-    axis2_status_t (AXIS2_CALL *
-    to_binding_fault_ref_free) (void *binding_fault_ref,
-            axis2_env_t **env);
-    
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *binding_fault_ref,
             axis2_env_t **env);
@@ -135,6 +131,32 @@ axis2_woden_binding_fault_ref_to_configurable(
         void *binding_fault_ref,
         axis2_env_t **env);
 
+AXIS2_DECLARE(axis2_woden_binding_fault_ref_t *)
+axis2_woden_binding_fault_ref_to_wsdl_obj(
+        void *binding_fault_ref,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_fault_ref_t *)
+axis2_woden_binding_fault_ref_to_nested_element(
+        void *binding_fault_ref,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_fault_ref_t *)
+axis2_woden_binding_fault_ref_to_wsdl_component(
+        void *binding_fault_ref,
+        axis2_env_t **env);
+
+
+AXIS2_DECLARE(axis2_woden_binding_fault_ref_t *)
+axis2_woden_binding_fault_ref_to_attr_extensible(
+        void *binding_fault_ref,
+        axis2_env_t **env);
+
+AXIS2_DECLARE(axis2_woden_binding_fault_ref_t *)
+axis2_woden_binding_fault_ref_to_element_extensible(
+        void *binding_fault_ref,
+        axis2_env_t **env);
+
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_binding_fault_ref_resolve_methods(
         axis2_woden_binding_fault_ref_t *binding_fault_ref,
@@ -145,9 +167,6 @@ axis2_woden_binding_fault_ref_resolve_methods(
 
 #define AXIS2_WODEN_BINDING_FAULT_REF_FREE(binding_fault_ref, env) \
 		(((axis2_woden_binding_fault_ref_t *) binding_fault_ref)->ops->free(binding_fault_ref, env))
-
-#define AXIS2_WODEN_BINDING_FAULT_REF_TO_BINDING_FAULT_REF_FREE(binding_fault_ref, env) \
-		(((axis2_woden_binding_fault_ref_t *) binding_fault_ref)->ops->to_binding_fault_ref_free(binding_fault_ref, env))
 
 #define AXIS2_WODEN_BINDING_FAULT_REF_SUPER_OBJS(binding_fault_ref, env) \
 		(((axis2_woden_binding_fault_ref_t *) binding_fault_ref)->ops->super_objs(binding_fault_ref, env))

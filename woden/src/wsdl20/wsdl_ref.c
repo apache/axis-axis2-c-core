@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-#include <woden/axis2_woden_wsdl_ref.h>
+#include <woden/wsdl20/axis2_woden_wsdl_ref.h>
 #include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
+#include <woden/wsdl20/xml/axis2_woden_desc_element.h>
 
 typedef struct axis2_woden_wsdl_ref_impl axis2_woden_wsdl_ref_impl_t;
 
@@ -31,7 +32,7 @@ struct axis2_woden_wsdl_ref_impl
     axis2_woden_obj_types_t obj_type;
     axis2_array_list_t *f_documentation_elements;
     axis2_url_t *f_location;
-    axis2_desc_element_t *f_desc_element;
+    axis2_woden_desc_element_t *f_desc_element;
 };
 
 #define INTF_TO_IMPL(wsdl_ref) ((axis2_woden_wsdl_ref_impl_t *) wsdl_ref)
@@ -274,7 +275,6 @@ axis2_woden_wsdl_ref_get_location(
         axis2_env_t **env)
 {
     axis2_woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
-    axis2_char_t *str_namespc = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -292,7 +292,6 @@ axis2_woden_wsdl_ref_set_location(
         axis2_url_t *loc_uri)
 {
     axis2_woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
-    axis2_char_t *str_namespc;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -314,7 +313,6 @@ axis2_woden_wsdl_ref_get_desc_element(
         axis2_env_t **env)
 {
     axis2_woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
-    axis2_char_t *str_namespc = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -332,7 +330,6 @@ axis2_woden_wsdl_ref_set_desc_element(
         void *desc)
 {
     axis2_woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
-    axis2_char_t *str_namespc;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -355,7 +352,6 @@ axis2_woden_wsdl_ref_add_documentation_element(
         void *doc_el)
 {
     axis2_woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
-    axis2_char_t *str_namespc;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -365,8 +361,8 @@ axis2_woden_wsdl_ref_add_documentation_element(
 
     if(!wsdl_ref_impl->f_documentation_elements)
     {
-        f_documentation_elements = axis2_array_list_create(env, 0);
-        if(!f_documentation_elements)
+        wsdl_ref_impl->f_documentation_elements = axis2_array_list_create(env, 0);
+        if(!wsdl_ref_impl->f_documentation_elements)
         {
             AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -382,7 +378,6 @@ axis2_woden_wsdl_ref_get_documentation_elements(
         axis2_env_t **env)
 {
     axis2_woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
-    axis2_char_t *str_namespc = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
