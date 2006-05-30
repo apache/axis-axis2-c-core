@@ -462,6 +462,6 @@ axis2_char_t* AXIS2_CALL
 axis2_mime_parser_get_soap_body_str(axis2_mime_parser_t *mime_parser, 
     axis2_env_t **env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(mime_parser)->soap_body_str;
 }

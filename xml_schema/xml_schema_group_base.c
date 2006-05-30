@@ -83,7 +83,7 @@ axis2_xml_schema_group_base_create(axis2_env_t **env)
     
     group_base_impl = AXIS2_MALLOC((*env)->allocator, 
                     sizeof(axis2_xml_schema_group_base_impl_t));
-    if(NULL != group_base_impl)
+    if(!group_base_impl)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

@@ -22,6 +22,7 @@
 #include <axis2_om_output.h>
 #include <axis2_om_attribute.h>
 #include <axis2_om_namespace.h>
+#include <axis2_base64.h>
 
 /* ops */
 axis2_status_t AXIS2_CALL

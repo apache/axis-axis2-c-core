@@ -606,7 +606,7 @@ handle_xml_schema_element(
                     
                     elements = AXIS2_XML_SCHEMA_GET_ELEMENTS(builder_impl->schema, env);
                     
-                    qualified_qname = AXIS2_XML_SCHEMA_ELEMENT_GET_REF_NAME(sch_ele, env);
+                    qualified_qname = AXIS2_XML_SCHEMA_ELEMENT_GET_QNAME(sch_ele, env);
                     ref_qname = AXIS2_XML_SCHEMA_ELEMENT_GET_REF_NAME(sch_ele, env);
                     
                     if(NULL != qualified_qname && NULL != elements)
@@ -915,7 +915,7 @@ set_namespace_attributes(
                 schema.namespaces.put(map.item(i).getLocalName(),
                         map.item(i).getNodeValue());
              */
-            if(NULL != prefix)
+            if(NULL != prefix && AXIS2_STRCMP(prefix,"") != 0)
             {                              
                 axis2_hash_set(ht_sch_ns, prefix, AXIS2_HASH_KEY_STRING,
                     uri);
@@ -943,7 +943,12 @@ set_namespace_attributes(
         {
             AXIS2_XML_SCHEMA_SET_SCHEMA_NS_PREFIX(schema, env, contain);
         }               
-    }                    
+    } 
+    if(NULL != contain && (AXIS2_STRCMP(contain, "") != 0) && 
+        (NULL != builder_impl->schema))
+    {
+        AXIS2_XML_SCHEMA_SET_TARGET_NAMESPACE(builder_impl->schema, env, contain);
+    }
     return AXIS2_SUCCESS;
 }    
         
@@ -3012,6 +3017,12 @@ handle_element(
     axis2_om_element_t *unique_ele = NULL;
     axis2_om_node_t    *unique_node = NULL;
     
+    int max_occurs = 0;
+    int min_occurs = 0;
+    
+    
+    axis2_char_t *ele_n = NULL; /* to be removed */
+    
     AXIS2_PARAM_CHECK((*env)->error, ele_node, NULL);
 
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
@@ -3023,6 +3034,8 @@ handle_element(
     element_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env,
             "name");
       
+    ele_n = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env);
+          
     if(NULL != element_name)
     {
         AXIS2_XML_SCHEMA_ELEMENT_SET_NAME(sch_ele, env, element_name);
@@ -3323,8 +3336,11 @@ handle_element(
         attr_value = NULL;            
     }     
     
-    AXIS2_XML_SCHEMA_PARTICLE_SET_MAX_OCCURS(sch_ele, env, get_max_occurs(env, ele_node));
-    AXIS2_XML_SCHEMA_PARTICLE_SET_MIN_OCCURS(sch_ele, env, get_min_occurs(env, ele_node));
+    max_occurs = get_max_occurs(env, ele_node);
+    min_occurs = get_min_occurs(env, ele_node);
+    
+    AXIS2_XML_SCHEMA_PARTICLE_SET_MAX_OCCURS(sch_ele, env, max_occurs);
+    AXIS2_XML_SCHEMA_PARTICLE_SET_MIN_OCCURS(sch_ele, env, min_occurs);
     return sch_ele;    
 }                                            
 
@@ -3761,7 +3777,9 @@ get_min_occurs(
     axis2_om_element_t *om_ele = NULL;
     if(!ele_node || AXIS2_OM_NODE_GET_NODE_TYPE(ele_node, env) != AXIS2_OM_ELEMENT)
         return AXIS2_FAILURE;
-    attr_value = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, "maxOccurs");
+    om_ele = (axis2_om_element_t*)
+        AXIS2_OM_NODE_GET_DATA_ELEMENT(ele_node, env);        
+    attr_value = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, "minOccurs");
     if(NULL != attr_value)
     {
         if(AXIS2_STRCMP(attr_value,"unbounded") == 0)
@@ -3876,10 +3894,11 @@ value_exist_in_hash(
         axis2_hash_this(hi, NULL, NULL, &val);
         if(NULL != val )
         {
-            if(AXIS2_STRCMP(value, val) == 0)
+            axis2_char_t *htvalue = NULL;
+            htvalue = (axis2_char_t *)val;
+            if(AXIS2_STRCMP(value, htvalue) == 0)
                 return AXIS2_TRUE;
         }
-    
     }        
     return AXIS2_FALSE;    
 }    

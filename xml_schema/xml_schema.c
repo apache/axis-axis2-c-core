@@ -275,6 +275,8 @@ axis2_xml_schema_create(axis2_env_t **env,
     schema_impl->notations = NULL;
     schema_impl->schema_types = NULL;
     schema_impl->target_namespace = NULL;
+    schema_impl->schema_ns_prefix = NULL;
+    
     if(NULL != namespc)
         schema_impl->target_namespace = AXIS2_STRDUP(namespc, env);
     if(!schema_impl->target_namespace)
@@ -354,6 +356,9 @@ axis2_xml_schema_create(axis2_env_t **env,
             axis2_xml_schema_set_prefix_to_namespace_map;
     schema_impl->schema.ops->add_type = 
             axis2_xml_schema_add_type;
+    schema_impl->schema.ops->set_schema_ns_prefix =
+            axis2_xml_schema_set_schema_ns_prefix;
+            
             
     /************ create objs *******************************/            
             
@@ -1292,14 +1297,9 @@ axis2_xml_schema_get_prefix_to_namespace_map(void *schema,
 {
 
     axis2_xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
-
     AXIS2_ENV_CHECK(env,  NULL);
-    ht_super = AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env);
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
-        "AXIS2_XML_SCHEMA", AXIS2_HASH_KEY_STRING));
-    
-    return NULL;
+    schema_impl = AXIS2_INTF_TO_IMPL(schema);
+    return schema_impl->namespaces_map;
 }
 
 axis2_status_t AXIS2_CALL 
@@ -1308,13 +1308,9 @@ axis2_xml_schema_set_prefix_to_namespace_map(void *schema,
                                                 axis2_hash_t *map) 
 {
     axis2_xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK((*env)->error, map, AXIS2_FAILURE);
-    ht_super = AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env);
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
-        "AXIS2_XML_SCHEMA", AXIS2_HASH_KEY_STRING));
-        
+    schema_impl = AXIS2_INTF_TO_IMPL(schema);        
     if(NULL != schema_impl->namespaces_map)
     {
         /** TODO */        
@@ -1368,7 +1364,6 @@ axis2_xml_schema_set_schema_ns_prefix(void *schema,
     {
         AXIS2_FREE((*env)->allocator, sch_impl->schema_ns_prefix);
         sch_impl->schema_ns_prefix = NULL;
-    
     }
     sch_impl->schema_ns_prefix = AXIS2_STRDUP(ns_prefix, env);
     return AXIS2_FAILURE;

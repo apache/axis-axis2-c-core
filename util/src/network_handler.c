@@ -175,7 +175,7 @@ axis2_network_handler_set_sock_option(axis2_env_t **env, axis2_socket_t socket,
 	return AXIS2_FAILURE;    
 }
 
-AXIS2_DECLARE(int)						
+AXIS2_DECLARE(axis2_socket_t)						
 axis2_network_handler_svr_socket_accept(axis2_env_t **env, 
 						axis2_socket_t svr_socket)
 {

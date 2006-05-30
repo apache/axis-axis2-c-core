@@ -914,8 +914,9 @@ axis2_xml_schema_type_t *AXIS2_CALL
 axis2_xml_schema_element_get_schema_type(void *element,
                                             axis2_env_t **env) 
 {
-    return AXIS2_INTF_TO_IMPL(element)->schema_type;
-    
+    axis2_xml_schema_element_impl_t *element_impl = NULL;
+    element_impl = AXIS2_INTF_TO_IMPL(element);
+    return element_impl->schema_type;    
 }
 
 axis2_status_t AXIS2_CALL 

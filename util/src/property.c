@@ -177,7 +177,7 @@ axis2_property_get_value(axis2_property_t *property,
 {
     axis2_property_impl_t *property_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     property_impl = AXIS2_INTF_TO_IMPL(property);
 
     return property_impl->value;

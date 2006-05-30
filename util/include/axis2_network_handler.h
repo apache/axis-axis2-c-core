@@ -83,7 +83,7 @@ axis2_network_handler_set_sock_option(axis2_env_t **env,
  * @param socket valid server socket (obtained by socket() or similar call)
  * @return created socket to handle the incoming client connection
  */						
-AXIS2_DECLARE(int)						
+AXIS2_DECLARE(axis2_socket_t)						
 axis2_network_handler_svr_socket_accept(axis2_env_t **env, 
 										axis2_socket_t socket);
 

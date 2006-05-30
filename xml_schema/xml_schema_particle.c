@@ -293,7 +293,7 @@ axis2_xml_schema_particle_resolve_methods(
     
     particle->ops = AXIS2_MALLOC((*env)->allocator, 
             sizeof(axis2_xml_schema_particle_ops_t));
-    if(NULL != particle->ops)
+    if(!particle->ops)
     {
         AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
