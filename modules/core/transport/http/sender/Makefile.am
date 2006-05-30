@@ -21,5 +21,4 @@ INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/modules/core/engine \
            -I$(top_builddir)/modules/core/deployment \
 			@AXIOMINC@ \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 

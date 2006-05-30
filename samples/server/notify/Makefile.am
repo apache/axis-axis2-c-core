@@ -9,4 +9,5 @@ SUBDIRS =
 libnotify_la_SOURCES = notify.c notify_skeleton.c
 libnotify_la_LIBADD  =
 INCLUDES = -I$(AXIS2C_HOME)/include \
-            -I$(AXIS2C_HOME)/platforms
+			@UTILINC@ \
+			@AXIOMINC@

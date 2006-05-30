@@ -9,9 +9,7 @@ test_clientapi_SOURCES = test_clientapi.c
 
 test_clientapi_LDADD   =  \
                     -laxis2_util \
-					-laxis2_unix \
-					-laxis2_om \
-					-laxis2_soap \
+					-laxis2_axiom \
                     -laxis2_parser \
 	                -lpthread \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
@@ -22,9 +20,7 @@ test_clientapi_LDADD   =  \
 
 test_client_LDADD   =  \
                     -laxis2_util \
-					-laxis2_unix \
-					-laxis2_om \
-					-laxis2_soap \
+					-laxis2_axiom \
                     -laxis2_parser \
 	                -lpthread \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
@@ -43,6 +39,5 @@ INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/core/engine \
             -I$(top_builddir)/modules/core/clientapi \
 			@AXIOMINC@ \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 
 

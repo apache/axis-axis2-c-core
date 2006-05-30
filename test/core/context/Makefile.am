@@ -9,9 +9,7 @@ test_context_SOURCES = test_context.c
 
 test_context_LDADD   =   \
                     -laxis2_util \
-					-laxis2_unix \
-					-laxis2_om \
-					-laxis2_soap \
+					-laxis2_axiom \
 					-laxis2_parser \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
@@ -24,6 +22,5 @@ INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/description \
 			@AXIOMINC@ \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 
 

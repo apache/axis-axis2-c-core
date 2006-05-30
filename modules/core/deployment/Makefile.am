@@ -38,5 +38,4 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/deployment \
             -I$(top_builddir)/modules/core/util \
 			@AXIOMINC@ \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 

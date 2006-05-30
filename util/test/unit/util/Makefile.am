@@ -18,8 +18,7 @@ noinst_HEADERS=$(top_builddir)/test/unit/util/*.h
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/src \
-            -I$(top_builddir)/src/platforms \
-			-I${AXIS2C_HOME}/include
+            -I$(top_builddir)/src/platforms
 
 prgbin_PROGRAMS = util_test
 check_PROGRAMS = util_test
@@ -27,10 +26,9 @@ util_test_SOURCES = main.c
 util_test_LDADD   =   \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
+                    -lpthread \
                      $(top_builddir)/test/unit/util/libtest_util.la \
                     $(top_builddir)/src/libaxis2_util.la \
-					$(top_builddir)/src/platforms/unix/libaxis2_unix.la \
-                    -lpthread \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
 

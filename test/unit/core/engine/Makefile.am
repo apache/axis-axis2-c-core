@@ -15,21 +15,18 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/wsdl \
             -I${CUTEST_HOME}/include \
 			@AXIOMINC@ \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 
 
 check_PROGRAMS = engine_test
 prgbin_PROGRAMS = engine_test
 engine_test_SOURCES = main.c
 engine_test_LDADD   =   libtest_engine.la  \
                      -L$(CUTEST_HOME)/lib \
+                     -lcutest \
                    	-laxis2_util \
-				    -laxis2_unix \
-					-laxis2_om \
-					-laxis2_soap \
+					-laxis2_axiom \
 					-laxis2_parser \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
-                     -lcutest \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)

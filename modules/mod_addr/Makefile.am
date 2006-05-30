@@ -18,5 +18,4 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/deployment \
             -I$(top_builddir)/modules/wsdl \
 			@AXIOMINC@ \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 

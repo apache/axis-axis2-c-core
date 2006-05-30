@@ -29,6 +29,5 @@ libaxis2_wsdl_la_SOURCES = wsdl_op.c \
                         wsdl_ext_soap_op.c
 
 INCLUDES = -I$(top_builddir)/include \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 
 

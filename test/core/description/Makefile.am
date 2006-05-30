@@ -7,9 +7,7 @@ test_description_SOURCES = test_description.c
 
 test_description_LDADD   =  \
                     -laxis2_util \
-					-laxis2_unix \
-				    -laxis2_om \
-					-laxis2_soap \
+				    -laxis2_axiom \
 					-laxis2_parser \
                     -lpthread \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
@@ -28,6 +26,5 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/clientapi \
             -I$(top_builddir)/include \
 			@AXIOMINC@ \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 
 

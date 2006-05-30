@@ -1,2 +1,3 @@
 TESTS =
-SUBDIRS = parser attachments om soap
+SUBDIRS = parser attachments soap om
+

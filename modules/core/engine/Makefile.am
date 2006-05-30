@@ -24,8 +24,7 @@ libaxis2_engine_la_LIBADD = $(top_builddir)/modules/core/description/libaxis2_de
 					$(top_builddir)/modules/core/clientapi/libaxis2_clientapi.la \
 					$(top_builddir)/modules/core/phaseresolver/libaxis2_phaseresolver.la \
 					$(top_builddir)/modules/core/util/libaxis2_core_utils.la \
-					$(top_builddir)/modules/core/transport/http/libaxis2_http.la \
-                    -laxis2_util -laxis2_om -laxis2_soap
+					$(top_builddir)/modules/core/transport/http/libaxis2_http.la
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/wsdl \
@@ -37,5 +36,4 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/util \
             -I$(top_builddir)/modules/core/clientapi \
 			@AXIOMINC@ \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 

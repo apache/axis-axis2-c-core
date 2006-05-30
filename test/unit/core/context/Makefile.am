@@ -9,8 +9,7 @@ noinst_HEADERS=$(top_builddir)/test/unit/core/context/*.h
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
 			@AXIOMINC@ \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 
 
 prgbin_PROGRAMS = context_test
 check_PROGRAMS = context_test
@@ -18,14 +17,12 @@ context_test_SOURCES = main.c
 context_test_LDADD   =   \
                         libtest_context.la  \
                         -L$(CUTEST_HOME)/lib \
+                        -lcutest \
                    		-laxis2_util \
-				        -laxis2_unix \
-						-laxis2_om \
-						-laxis2_soap \
+						-laxis2_axiom \
 						-laxis2_parser \
 						$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 						$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
-                        -lcutest \
                         $(GUTHTHILA_LIBS) \
                         $(LIBXML2_LIBS)
 

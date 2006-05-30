@@ -17,8 +17,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/engine \
             -I$(top_builddir)/modules/core/clientapi \
 			@AXIOMINC@ \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 
 
 
 check_PROGRAMS = wsdl_test
@@ -30,9 +29,7 @@ wsdl_test_LDADD   =   \
                     -lcutest \
                     $(top_builddir)/test/unit/wsdl/libtest_wsdl.la \
                     -laxis2_util \
-					-laxis2_unix \
-					-laxis2_om \
-					-laxis2_soap \
+					-laxis2_axiom \
 					-laxis2_parser \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \

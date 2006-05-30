@@ -10,16 +10,14 @@ libmod_axis2_la_LIBADD   = $(LDFLAGS) \
                     -L$(top_builddir)/modules/core/engine \
                     -L$(top_builddir)/modules/core/transport/http/sender \
                     -L$(top_builddir)/modules/core/transport/http/receiver \
-                    -laxis2_om \
+                    -laxis2_axiom \
                     -laxis2_engine \
-                    -laxis2_soap \
                     -lpthread \
                     -laxis2_wsdl \
                     -laxis2_libxml2 \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
                     -lxml2 \
-                    -laxis2_unix\
 					$(LIBXML2_LIBS) \
 					$(GUTHTHILA_LIBS)
 
@@ -34,7 +32,6 @@ INCLUDES = -I$(top_builddir)/include \
             @APACHE2INC@ \
             @APRINC@ \
 			@AXIOMINC@ \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 
 
 EXTRA_DIST=axis2_apache2_worker.h apache2_stream.h axis2_apache2_out_transport_info.h

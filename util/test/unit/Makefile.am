@@ -8,10 +8,8 @@ main_unit_test_suite_LDADD   =   \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                     -L$(top_builddir)/test/unit/util -ltest_util \
-                    $(top_builddir)/src/libaxis2_util.la \
-					$(top_builddir)/src/platforms/unix/libaxis2_unix.la
+                    $(top_builddir)/src/libaxis2_util.la
                     
 
 INCLUDES = -I${CUTEST_HOME}/include \
-            -I$(top_builddir)/include \
-            -I$(top_builddir)/include/platforms
+            -I$(top_builddir)/include

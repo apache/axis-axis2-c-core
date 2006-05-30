@@ -9,4 +9,5 @@ SUBDIRS =
 libmtom_la_SOURCES = mtom.c mtom_skeleton.c
 libmtom_la_LIBADD  =
 INCLUDES = -I$(AXIS2C_HOME)/include \
-            -I$(AXIS2C_HOME)/platforms
+			@UTILINC@ \
+			@AXIOMINC@

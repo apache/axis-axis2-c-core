@@ -10,13 +10,10 @@ test_thread_SOURCES = test_thread.c
 
 test_util_LDADD   =   \
                     $(top_builddir)/src/libaxis2_util.la \
-					$(top_builddir)/src/platforms/unix/libaxis2_unix.la \
                         -lpthread
 
 test_thread_LDADD   =   \
                     $(top_builddir)/src/libaxis2_util.la \
-					$(top_builddir)/src/platforms/unix/libaxis2_unix.la \
                         -lpthread
 
-INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/platforms
+INCLUDES = -I$(top_builddir)/include

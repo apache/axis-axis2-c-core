@@ -10,5 +10,4 @@ libecho_la_SOURCES = echo.c echo_skeleton.c
 libecho_la_LIBADD  =
 INCLUDES = -I$(AXIS2C_HOME)/include \
 			@UTILINC@ \
-			@UTILINC@/platforms \
 			@AXIOMINC@

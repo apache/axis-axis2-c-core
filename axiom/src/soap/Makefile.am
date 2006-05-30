@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libaxis2_soap.la
+noinst_LTLIBRARIES = libaxis2_soap.la
 libaxis2_soap_la_SOURCES = soap_fault.c \
                            soap_fault_code.c \
                            soap_fault_detail.c \
@@ -20,8 +20,7 @@ libaxis2_soap_la_LIBADD =
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/parser \
             -I$(top_builddir)/src/om \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@
 
 EXTRA_DIST=_axis2_soap_body.h _axis2_soap_fault.h _axis2_soap_fault_code.h \
 		_axis2_soap_fault_reason.h _axis2_soap_fault_value.h \

@@ -11,11 +11,9 @@ test_print_LDADD   =  \
                     -lxmlpull \
                     -lwsdl \
                     -laxis2_util \
-                    -laxis2_unix \
                     -lpthread \
                     -laxis2_wsdl4c
 
 INCLUDES = -I$(top_builddir)/include \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 
 

@@ -13,9 +13,7 @@ main_unit_test_suite_LDADD   =   \
                     -L$(top_builddir)/test/unit/core/phaseresolver -ltest_phaseresolver \
                     -L$(top_builddir)/test/unit/wsdl -ltest_wsdl \
                     -laxis2_util \
-					-laxis2_unix \
-					-laxis2_om \
-					-laxis2_soap \
+					-laxis2_axiom \
 					-laxis2_parser \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
@@ -36,5 +34,4 @@ INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/core/engine \
             -I$(top_builddir)/modules/core/clientapi \
 			@AXIOMINC@ \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 

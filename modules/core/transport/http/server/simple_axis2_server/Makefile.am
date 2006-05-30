@@ -11,16 +11,14 @@ axis2_http_server_LDADD   =  $(LDFLAGS) \
                             -L$(top_builddir)/modules/core/transport/http/sender \
                             -L$(top_builddir)/modules/core/transport/http/receiver \
                             -laxis2_util \
-                            -laxis2_om \
+                            -laxis2_axiom \
                             -laxis2_engine \
-                            -laxis2_soap \
                             -lpthread \
                             -laxis2_wsdl \
                             -laxis2_libxml2 \
                             -laxis2_http_sender \
                             -laxis2_http_receiver \
                             -lxml2 \
-                            -laxis2_unix\
                             $(LIBXML2_LIBS) \
                             $(GUTHTHILA_LIBS)
                     
@@ -32,5 +30,4 @@ INCLUDES =  -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/phaseresolver \
             -I$(top_builddir)/modules/core/engine \
 			@AXIOMINC@ \
-			@UTILINC@ \
-			@UTILINC@/platforms
+			@UTILINC@ 

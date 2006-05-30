@@ -9,4 +9,5 @@ SUBDIRS =
 libmath_la_SOURCES = math.c math_skeleton.c
 libmath_la_LIBADD  =
 INCLUDES = -I$(AXIS2C_HOME)/include \
-            -I$(AXIS2C_HOME)/platforms
+			@UTILINC@ \
+			@AXIOMINC@
