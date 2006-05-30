@@ -1,0 +1,63 @@
+We are pleased to announce the release of Apache Axis2/C version 0.91.
+You can download this release from
+http://ws.apache.org/axis2/c/download.cgi
+
+Key Features
+
+  1. AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages.
+This has complete XML infoset support.
+  2. Support for One-Way Messaging (In-Only) and Request Response
+Messaging (In-Out)
+  3. Module architecture, mechanism to extend the SOAP processing model
+  4. Context hierarchy
+  5. Directory based deployment model
+  6. Raw XML providers
+  7. WS-Addressing, both the submission (2004/08) and final (2005/08)
+versions
+  8. Transports: HTTP
+         * Both simple axis server and Apache2 httpd module
+         * SSL client transport - New
+  9. Service Groups - New
+ 10. Service client and operation client APIs - New
+ 11. REST support (POST case) - New
+ 12. Module version support - New
+ 13. MTOM support - New
+
+Other notes
+
+  1. Interoperability tested with Axis2/Java for XML in/out client and
+services
+  2. Addressing 1.0 interoperability
+
+Major changes since last release
+
+  1. Full Addressing 1.0 support
+  2. Improved fault handling model
+  3. SSL client transport
+  4. MTOM implementation
+  5. Implementation of easy to use service client and operation client
+APIs for client side programming
+  6. REST support (POST case)
+  7. Module version support
+  8. Service groups
+  9. Numerous bug fixes since last release
+
+Un-Implemented Architecture Features (TBD in 1.0)
+
+  1. Sessions scoping for application, SOAP, transport and request levels
+  2. Different character encoding support
+  3. Dynamic invocation
+  4. Archive based deployment Model
+
+Un-Implemented Architecture Features (TBD post 1.0)
+
+  1. WSDL code generation tool for stub and skeletons (based on Java tool)
+  2. Security module
+  3. REST (REpresentational State Transfer) support (GET case)
+  4. Web Services policy support
+  5. Axis2 Web application (Web App)
+
+We welcome your early feedback on this implementation.
+Thanks for your interest in Axis2C
+
+-- Apache Axis2C Team -- 
