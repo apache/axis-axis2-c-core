@@ -35,7 +35,10 @@
 #include <axis2_conf_ctx.h>
 #include <axis2_op_client.h>
 
+/** Name of anonymous service */
 #define AXIS2_ANON_SERVICE 				"__ANONYMOUS_SERVICE__"
+
+/** Operation names for operations representing different MEPs */
 #define AXIS2_ANON_OUT_ONLY_OP 			"__OPERATION_OUT_ONLY__"
 #define AXIS2_ANON_ROBUST_OUT_ONLY_OP	"__OPERATION_ROBUST_OUT_ONLY__"
 #define AXIS2_ANON_OUT_IN_OP			"__OPERATION_OUT_IN__"
@@ -46,7 +49,8 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_svc_client Service Client 
+/** 
+ * @defgroup axis2_svc_client Service Client 
  * @ingroup axis2_core_clientapi
  * @{
  */
@@ -57,12 +61,12 @@ typedef struct axis2_svc_client axis2_svc_client_t;
     
 /** 
  * @brief Service Client ops struct
- * Encapsulator struct for ops of axis2_svc_client
+ * Encapsulator struct for operations of axis2_svc_client
  */  
 struct axis2_svc_client_ops
 {
   /**
-    * Returns the axis2_svc_t this is a client for. This is primarily useful
+    * Returns the axis2_svc_t this it is a client for. This is primarily useful
     * when the service is created anonymously or from WSDL.
     * @param svc_client pointer to service client struct
     * @param env double pointer to environment struct. MUST NOT be NULL
@@ -115,7 +119,7 @@ struct axis2_svc_client_ops
     * Gets the overriding options
     * @param svc_client pointer to service client struct
     * @param env double pointer to environment struct. MUST NOT be NULL
-    * @return pointer to options struct 
+    * @return pointer to overriding options struct 
     */
 	axis2_options_t* (AXIS2_CALL *
 	get_override_options)(
@@ -207,7 +211,7 @@ struct axis2_svc_client_ops
     * This is a simple client API to invoke a service operation who's MEP is
     * Robust In-Only. This API can be used to simply send a bit of XML.
     * The difference between this function and "send_robust" is that this
-    * method has to be given the operation name as a qname, wehre as 
+    * method has to be given the operation name as a qname, where as 
     * "send_robust" assumes the operation name to be 
     * "__OPERATION_ROBUST_OUT_ONLY__"
     * @param svc_client pointer to service client struct
@@ -224,7 +228,7 @@ struct axis2_svc_client_ops
 		axis2_om_node_t *payload);
 	
   /**
-    * Sends a bit of XML and forget about it. This API is used to interact with
+    * Sends a bit of XML and forgets about it. This API is used to interact with
     * a service operation who's MEP is In-Only. That is, there is no
     * opportunity to get an error from the service via this API; one may still
     * get client-side errors, such as host unknown etc.
@@ -244,7 +248,7 @@ struct axis2_svc_client_ops
     * opportunity to get an error from the service via this API; one may still
     * get client-side errors, such as host unknown etc.
     * The difference between this function and "fire_and_forget" is that this
-    * method has to be given the operation name as a qname, wehre as 
+    * method has to be given the operation name as a qname, where as 
     * "fire_and_forget" assumes the operation name to be 
     * "__OPERATION_OUT_ONLY__"
     * @param svc_client pointer to service client struct
@@ -261,7 +265,8 @@ struct axis2_svc_client_ops
 
   /**
     * Sends XML request and receives XML response.
-    * This API is used to interact with a service operation who's MEP is In-Out.
+    * This API can be used to interact with a service operation who's 
+    * MEP is In-Out.
     * @param svc_client pointer to service client struct
     * @param env double pointer to environment struct. MUST NOT be NULL
     * @param payload pointer to OM node representing the XML payload to be sent
@@ -277,7 +282,7 @@ struct axis2_svc_client_ops
     * Sends XML request and receives XML response.
     * This API is used to interact with a service operation who's MEP is In-Out.
     * The difference between this function and "send_receive" is that this
-    * method has to be given the operation name as a qname, wehre as 
+    * method has to be given the operation name as a qname, where as 
     * "send_receive" assumes the operation name to be 
     * "__OPERATION_OUT_IN__"
     * @param svc_client pointer to service client struct
@@ -315,7 +320,7 @@ struct axis2_svc_client_ops
     * This API is used to interact with a service operation who's MEP is In-Out,
     * in a non blocking mode.
     * The difference between this function and "send_receive_non_blocking" is that this
-    * method has to be given the operation name as a qname, wehre as 
+    * method has to be given the operation name as a qname, where as 
     * "send_receive_non_blocking" assumes the operation name to be 
     * "__OPERATION_OUT_IN__"
     * @param svc_client pointer to service client struct
@@ -333,8 +338,8 @@ struct axis2_svc_client_ops
 		axis2_callback_t *callback);
 	
   /**
-    * Create an op_client for a specific operation. This is the way one can
-    * create a full function MEP client which can be used to exchange messages
+    * Creates an op_client for a specific operation. This is the way one can
+    * create a full functional MEP client which can be used to exchange messages
     * for this specific operation. 
     * @param svc_client pointer to service client struct
     * @param env double pointer to environment struct. MUST NOT be NULL
@@ -349,7 +354,7 @@ struct axis2_svc_client_ops
 
   /**
     * This will close the output stream and/or remove entry from waiting
-    * queue of the transport Listener queue
+    * queue of the transport listener queue
     * @param svc_client pointer to service client struct
     * @param env double pointer to environment struct. MUST NOT be NULL
     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
@@ -421,19 +426,36 @@ struct axis2_svc_client_ops
 };
 
 /** 
- * @brief Serivce Client struct
-  *	Axis2 Service Client
+ * @brief Service Client struct
+ * Axis2 Service Client
  */
 struct axis2_svc_client
 {
     axis2_svc_client_ops_t *ops;    
 };
 
+/**
+ * Creates a service client struct 
+ * @param env Environment. MUST NOT be NULL
+ * @param client_home name of the directory that contains the Axis2/C repository
+ * @return a pointer to newly created service client struct, 
+ *          returns NULL on error with error code set in environment's error. 
+ */
 AXIS2_DECLARE(axis2_svc_client_t*) 
 axis2_svc_client_create(
     axis2_env_t **env, 
     axis2_char_t *client_home);
 
+/**
+ * Creates a service client struct, for the given service and the configuration
+ * context
+ * @param env Environment. MUST NOT be NULL
+ * @param conf_ctx pointer to configuration context
+ * @param svc pointer to service struct representing the service to be consumed
+ * @param client_home name of the directory that contains the Axis2/C repository
+ * @return a pointer to newly created service client struct, 
+ *          returns NULL on error with error code set in environment's error. 
+ */
 AXIS2_DECLARE(axis2_svc_client_t*) 
 axis2_svc_client_create_with_conf_ctx_and_svc(
     axis2_env_t **env,
@@ -442,80 +464,105 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     axis2_char_t *client_home);
    
 /************************** Start of function macros **************************/
-
+/** Gets the service consumed by service client */
 #define AXIS2_SVC_CLIENT_GET_AXIS_SERVICE(svc_client, env) \
 		((svc_client)->ops->get_svc(svc_client, env))
-
+        
+/** Sets the options to be used by service client */
 #define AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options) \
 		((svc_client)->ops->set_options(svc_client, env, options))
-
+        
+/** Gets the options being used by service client */
 #define AXIS2_SVC_CLIENT_GET_OPTIONS(svc_client, env) \
 		((svc_client)->ops->get_options(svc_client, env))
 
+/** Sets the overriding options to be used by service client */
 #define AXIS2_SVC_CLIENT_SET_OVERRIDE_OPTIONS(svc_client, env, override_options) \
 		((svc_client)->ops->set_override_options(svc_client, env, override_options))
 
+/** Gets the overriding options being used by service client */
 #define AXIS2_SVC_CLIENT_GET_OVERRIDE_OPTIONS(svc_client, env) \
 	    ((svc_client)->ops->get_override_options(svc_client, env))
 
+/** Engages the given module */
 #define AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, module_name) \
 		((svc_client)->ops->engage_module(svc_client, env, module_name))
 
+/** Dis-engages the given module */
 #define AXIS2_SVC_CLIENT_DISENGAGE_MODULE(svc_client, env, module_name) \
 		((svc_client)->ops->disengage_module(svc_client, env, module_name))
 
+/** Adds a SOAP header to be sent by the service client */
 #define AXIS2_SVC_CLIENT_ADD_HEADER(svc_client, env, header) \
 		((svc_client)->ops->add_header(svc_client, env, header))
 
+/** Removes all the SOAP headers currently set on service client */
 #define AXIS2_SVC_CLIENT_REMOVE_HEADERS(svc_client, env) \
 		((svc_client)->ops->remove_headers(svc_client, env))
 
+/** Adds a SOAP header to be sent by the service client with given text */
 #define AXIS2_SVC_CLIENT_ADD_HEADER_WITH_TEXT(svc_client, env, header_name, header_text) \
 		((svc_client)->ops->add_header_with_text(svc_client, env, header_name, header_text))
 
+/** Sends the given payload in a robust manner, SOAP faults are captured */
 #define AXIS2_SVC_CLIENT_SEND_ROBUST(svc_client, env, payload) \
 		((svc_client)->ops->send_robust(svc_client, env, payload))
 
+/** Sends the given payload in a robust manner targeted to named operation */
 #define AXIS2_SVC_CLIENT_SEND_ROBUST_WITH_OP_QNAME(svc_client, env, op_qname, payload) \
 		((svc_client)->ops->send_robust_with_op_qname(svc_client, env, op_qname, payload))
 
+/** Sends the given payload and forgets about it, no SOAP faults are reported */
 #define AXIS2_SVC_CLIENT_FIRE_AND_FORGET(svc_client, env, payload) \
 		((svc_client)->ops->fire_and_forget(svc_client, env, payload))
 
+/** Sends the given payload targeted to named operation and forgets about it */
 #define AXIS2_SVC_CLIENT_FIRE_AND_FORGET_WITH_OP_QNAME(svc_client, env, op_qname, payload) \
 		((svc_client)->ops->fire_and_forget_with_op_qname(svc_client, env, op_qname, payload))
 
+/** Sends the given payload and receives the response */
 #define AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload) \
 		((svc_client)->ops->send_receive(svc_client, env, payload))
 
+/** Sends the given payload targeted to named operation and receives the response */
 #define AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload) \
 		((svc_client)->ops->send_receive_with_op_qname(svc_client, env, op_qname, payload))
 
+/** Sends the given payload and receives the response.
+    Does not block till response arrives. Uses the callback to capture response */
 #define AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback) \
 		((svc_client)->ops->send_receive_non_blocking(svc_client, env, payload, callback))
 
+/** Sends the given payload targeted to named operation and receives the response.
+    Does not block till response arrives. Uses the callback to capture response */
 #define AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING_WITH_OP_QNAME(svc_client, env, op_qname, payload, callback) \
 		((svc_client)->ops->send_receive_non_blocking_with_op_qname(svc_client, env, op_qname, payload, callback))
 	
+/** Creates the operation client to be used by the service client */
 #define AXIS2_SVC_CLIENT_CREATE_OP_CLIENT(svc_client, env, op_qname) \
 		((svc_client)->ops->create_op_client(svc_client, env, op_qname))
 
+/** Cleans up after the invocations */
 #define AXIS2_SVC_CLIENT_FINALIZE_INVOKE(svc_client, env) \
 		((svc_client)->ops->finalize_invoke(svc_client, env))
 
+/** Gets the EPR of the service client */
 #define AXIS2_SVC_CLIENT_GET_MY_EPR(svc_client, env, transport) \
 		((svc_client)->ops->get_my_epr(svc_client, env, transport))
 
+/** Gets the target EPR */
 #define AXIS2_SVC_CLIENT_GET_TARGET_EPR(svc_client, env) \
 		((svc_client)->ops->get_target_epr(svc_client, env))
 
+/** Sets the target EPR */
 #define AXIS2_SVC_CLIENT_SET_TARGET_EPR(svc_client, env, target_epr) \
 		((svc_client)->ops->set_target_epr(svc_client, env, target_epr))
 
+/** Gets the service context being used by the service client */
 #define AXIS2_SVC_CLIENT_GET_SERVICE_CONTEXT(svc_client, env) \
 		((svc_client)->ops->get_svc_ctx(svc_client, env))
 
-
+/** Frees given service client */
 #define AXIS2_SVC_CLIENT_FREE(svc_client, env) \
 		((svc_client)->ops->free(svc_client, env))
 
