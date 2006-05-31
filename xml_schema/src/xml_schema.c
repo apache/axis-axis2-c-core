@@ -21,7 +21,6 @@
 #include <xml_schema/axis2_xml_schema_derivation_method.h>
 #include <xml_schema/axis2_xml_schema_type.h>
 #include <xml_schema/axis2_xml_schema_obj_collection.h>
-#include <xml_schema/axis2_validation_event_handler.h>
 #include <xml_schema/axis2_xml_schema_element.h>
 
 #define AXIS2_XML_SCHEMA_DEFAULT_TARGET_NS "DEFAULT"
@@ -200,8 +199,7 @@ axis2_xml_schema_get_version(void *schema,
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_compile(void *schema,
-                            axis2_env_t **env,
-                            axis2_validation_event_handler_t *eh);
+                            axis2_env_t **env);
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_write_with_out(void *schema,
@@ -1245,8 +1243,7 @@ axis2_xml_schema_get_version(void *schema,
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_compile(void *schema,
-                            axis2_env_t **env,
-                            axis2_validation_event_handler_t *veh) 
+                         axis2_env_t **env)
 {
     /** TODO */
     return AXIS2_SUCCESS;

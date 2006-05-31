@@ -30,7 +30,6 @@
 #include <axis2_om_element.h>
 #include <axis2_om_node.h>
 #include <axis2_hash.h>
-#include <xml_schema/axis2_validation_event_handler.h>
 
 /** @defgroup axis2_xml_schema Xml Schema
   * @ingroup axis2_xml_schema
@@ -178,8 +177,7 @@ struct axis2_xml_schema_ops
 
     axis2_status_t (AXIS2_CALL *
     compile) (void *schema,
-                    axis2_env_t **env,
-                    axis2_validation_event_handler_t  *veh);
+                    axis2_env_t **env);
 
     axis2_status_t (AXIS2_CALL *
     write_with_out) (void *schema,

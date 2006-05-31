@@ -16,7 +16,6 @@
 
 #include <xml_schema/axis2_xml_schema_element.h>
 #include <xml_schema/axis2_xml_schema_annotation.h>
-#include <xml_schema/axis2_xml_schema_type_receiver.h>
 #include <xml_schema/axis2_xml_schema_particle.h>
 #include <xml_schema/axis2_xml_schema_derivation_method.h>
 #include <xml_schema/axis2_xml_schema_obj_collection.h>
@@ -35,7 +34,7 @@ struct axis2_xml_schema_element_impl
 {
     axis2_xml_schema_element_t element;
     
-    axis2_xml_schema_type_receiver_t *type_recv;
+    axis2_xml_schema_annotated_t *type_recv;
     
     axis2_xml_schema_particle_t *particle;
     
@@ -523,7 +522,7 @@ axis2_xml_schema_element_free(void *element,
     
     if(element_impl->type_recv)
     {
-        AXIS2_XML_SCHEMA_TYPE_RECEIVER_FREE(element_impl->type_recv, env);
+        AXIS2_XML_SCHEMA_ANNOTATED_FREE(element_impl->type_recv, env);
         element_impl->type_recv = NULL;
     }
     

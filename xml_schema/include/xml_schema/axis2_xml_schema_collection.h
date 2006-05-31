@@ -33,7 +33,6 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <xml_schema/axis2_xml_schema_obj.h>
-#include <xml_schema/axis2_validation_event_handler.h>
 #include <axis2_xml_reader.h>
 #include <axis2_om_document.h>
 

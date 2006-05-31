@@ -32,7 +32,6 @@
 #include "axis2_xml_schema_simple_content.h"
 #include "axis2_xml_schema_app_info.h"
 #include "axis2_xml_schema_collection.h"
-#include "axis2_validation_event_handler.h"
 #include "axis2_xml_schema_group.h"
 #include "axis2_xml_schema_complex_content_extension.h"
 #include "axis2_xml_schema_xpath.h"
