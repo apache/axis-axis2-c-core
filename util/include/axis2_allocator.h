@@ -55,7 +55,7 @@ extern "C"
         * @param size size of the memory block to be allocated
         * @return pointer to the allocated memory block
         */
-         void * (*malloc) (struct axis2_allocator *allocator, size_t size);
+         void * (AXIS2_CALL *malloc) (struct axis2_allocator *allocator, size_t size);
       /**
         * re-llocates memory
         * @param allocator pointer to allocator struct. In the default 
@@ -65,7 +65,7 @@ extern "C"
         * @param size size of the memory block to be allocated
         * @return pointer to the allocated memory block
         */
-         void * (*realloc) (struct axis2_allocator *allocator, void *ptr, size_t size);
+         void * (AXIS2_CALL *realloc) (struct axis2_allocator *allocator, void *ptr, size_t size);
       /**
         * frees memory
         * @param allocator pointer to allocator struct. In the default 
@@ -73,7 +73,7 @@ extern "C"
         * when the allocator implementation is dealing with a memory pool.
         * @param ptr pointer to be freed
         */
-         void (*free) (struct axis2_allocator *allocator, void *ptr);
+         void (AXIS2_CALL *free) (struct axis2_allocator *allocator, void *ptr);
     } axis2_allocator_t;
 
   /**
